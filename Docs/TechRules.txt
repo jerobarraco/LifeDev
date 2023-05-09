@@ -1,0 +1,4 @@
+* tabs
+* case sensitive
+* organize assets by feature NOT by type
+* don't use hungarian notation 
