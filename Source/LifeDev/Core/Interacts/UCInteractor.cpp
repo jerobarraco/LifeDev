@@ -58,7 +58,7 @@ void UCInteractor::DoEnd() {
 
 void UCInteractor::DoStart(AActor* Actor) {
 	if (InteractActor) DoEnd();
-	if (!IsValid(InteractActor)) return;
+	if (!IsValid(Actor)) return;
 
 	InteractActor = Actor;
 	OnStart.Broadcast(InteractActor);
