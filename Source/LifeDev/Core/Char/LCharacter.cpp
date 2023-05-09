@@ -1,19 +1,16 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #include "LCharacter.h"
-#include "LCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
-#include "InputMappingContext.h"
-
+#include "LifeDev/Core/Interacts/UCInteractor.h"
 
 // ALifeDevCharacter
 
-ALCharacter::ALCharacter()
+ALCharacter::ALCharacter(): Super()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -33,6 +30,10 @@ ALCharacter::ALCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
+	Interactor->SetupAttachment(Camera);
+
+	SetActorTickEnabled(false);
 	// TODO find a better option 
 	// static ConstructorHelpers::FClassFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Core/Input/IMC_Default"));
 	// Mapping = DefaultMapping.Class.GetDefaultObject();

@@ -8,6 +8,7 @@
 
 #include "LCharacter.generated.h"
 
+class UCInteractor;
 class UInputComponent;
 class USkeletalMeshComponent;
 class USceneComponent;
@@ -21,7 +22,7 @@ class UInputMappingContext;
 
 // base class for the character
 UCLASS(config=Game)
-class ALCharacter : public ACharacter
+class LIFEDEV_API ALCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -34,6 +35,9 @@ class ALCharacter : public ACharacter
 	// First person camera
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UCInteractor* Interactor = nullptr;
 
 	//* MappingContext 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -65,5 +69,7 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+	
 };
 

@@ -7,8 +7,8 @@
 #include "LGameMode.generated.h"
 
 // Game mode class 
-UCLASS(minimalapi)
-class ALGameMode : public AGameModeBase
+UCLASS(Blueprintable)
+class LIFEDEV_API ALGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
