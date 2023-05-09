@@ -1,14 +1,16 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #include "LCharacter.h"
+#include "LCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include "InputMappingContext.h"
 
-//////////////////////////////////////////////////////////////////////////
+
 // ALifeDevCharacter
 
 ALCharacter::ALCharacter()
@@ -31,6 +33,19 @@ ALCharacter::ALCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	// TODO find a better option 
+	// static ConstructorHelpers::FClassFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Core/Input/IMC_Default"));
+	// Mapping = DefaultMapping.Class.GetDefaultObject();
+	
+	// static ConstructorHelpers::FClassFinder<UInputAction> CActionJump(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Jump"));
+	// ActionJump = CActionJump.Class.GetDefaultObject();
+	// static ConstructorHelpers::FClassFinder<UInputAction> CActionLook(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Look"));
+	// ActionLook = CActionLook.Class.GetDefaultObject();
+	// static ConstructorHelpers::FClassFinder<UInputAction> CActionMove(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Move"));
+	// ActionMove = CActionMove.Class.GetDefaultObject();
+
+	// maybe this?
+	// return Cast(StaticLoadObject( UInputMappingContext::StaticClass(), NULL, TEXT("/Game/Content/LifeDev/Core/Input/IMC_Default")));
 }
 
 void ALCharacter::BeginPlay()
@@ -47,7 +62,7 @@ void ALCharacter::BeginPlay()
 	Subsystem->AddMappingContext(Mapping, 0);
 }
 
-//////////////////////////////////////////////////////////////////////////// Input
+/// Input
 
 void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -55,39 +70,36 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
 	//Jumping
-	Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	Input->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 	//Moving
-	Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALCharacter::Move);
+	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALCharacter::Move);
 
 	//Looking
-	Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ALCharacter::Look);
+	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALCharacter::Look);
 }
 
 
 void ALCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
-	{
-		// add movement 
-		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
-	}
+	if (!Controller )return;
+
+	const FVector2D& MovementVector = Value.Get<FVector2D>();
+	// add movement 
+	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+	AddMovementInput(GetActorRightVector(), MovementVector.X);
 }
 
 void ALCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
-	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
+	if (!Controller) return;
+	const FVector2D& LookAxisVector = Value.Get<FVector2D>();
+	// add yaw and pitch input to controller
+	AddControllerYawInput(LookAxisVector.X);
+	AddControllerPitchInput(LookAxisVector.Y);
 }

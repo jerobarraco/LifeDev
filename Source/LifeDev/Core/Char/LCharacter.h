@@ -24,6 +24,8 @@ class ALCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	ALCharacter();
+	
 	//* Pawn mesh: 1st person view (arms; seen only by self) 
 	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
@@ -38,26 +40,21 @@ class ALCharacter : public ACharacter
 
 	//* Jump Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* JumpAction;
+	UInputAction* ActionJump;
 
 	//* Move Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* MoveAction;
+	UInputAction* ActionMove;
+		
+	//* Look Input Action 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ActionLook;
 
-	
-public:
-	ALCharacter();
+	TSoftObjectPtr<UInputMappingContext> Mapping2;
 
 protected:
 	virtual void BeginPlay();
 
-public:
-		
-	//* Look Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* LookAction;
-
-protected:
 	//* Called for movement input 
 	void Move(const FInputActionValue& Value);
 
