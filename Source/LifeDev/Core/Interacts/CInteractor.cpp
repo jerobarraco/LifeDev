@@ -32,7 +32,6 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.1f, false, 1.f);
 	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
 	
-	AActor* Actor = nullptr;
 	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 
 	// if we get a box component we need to go to the parent.
@@ -42,11 +41,6 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 		if  (Parents.Num() > 0) {
 			Component = Parents[0];
 		}
-	}
-
-	const bool IsInteract = IsValid(Component) && Component->IsA(UCInteract::StaticClass());
-	if (!IsInteract) {
-		Component = nullptr;
 	}
 
 	DoStart(Cast<UCInteract>(Component));
