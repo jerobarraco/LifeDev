@@ -75,18 +75,19 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
 	//Jumping
-	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	Input->BindAction(InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	Input->BindAction(InputJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 	//Moving
-	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALCharacter::Move);
+	Input->BindAction(InputMove, ETriggerEvent::Triggered, this, &ALCharacter::ActMove);
 
 	//Looking
-	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALCharacter::Look);
+	Input->BindAction(InputLook, ETriggerEvent::Triggered, this, &ALCharacter::ActLook);
+	Input->BindAction(InputInteract, ETriggerEvent::Triggered, this, &ALCharacter::ActInteract);
 }
 
 
-void ALCharacter::Move(const FInputActionValue& Value)
+void ALCharacter::ActMove(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 
@@ -98,7 +99,7 @@ void ALCharacter::Move(const FInputActionValue& Value)
 	AddMovementInput(GetActorRightVector(), MovementVector.X);
 }
 
-void ALCharacter::Look(const FInputActionValue& Value)
+void ALCharacter::ActLook(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 
@@ -107,4 +108,10 @@ void ALCharacter::Look(const FInputActionValue& Value)
 	// add yaw and pitch input to controller
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
+}
+
+void ALCharacter::ActInteract(const FInputActionValue& Value) {
+	if (!Controller) return;
+	if (!Interactor) return;
+	Interactor->TryTrigger();
 }

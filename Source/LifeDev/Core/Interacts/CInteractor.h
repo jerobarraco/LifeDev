@@ -7,8 +7,8 @@
 class UCInteract;
 class UInteractorUI;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Actor);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Actor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Comp);
 
 class UBoxComponent;
 // Will be interacting with interact objects

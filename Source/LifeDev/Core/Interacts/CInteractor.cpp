@@ -29,7 +29,7 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	FHitResult Hit;
 	const FVector& Start = GetComponentLocation();
 	const FVector& End = GetComponentRotation().Vector() * TraceLen;
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.f, false, .5f);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.1f, false, 1.f);
 	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
 	
 	AActor* Actor = nullptr;

@@ -45,33 +45,33 @@ class LIFEDEV_API ALCharacter : public ACharacter
 
 	//* Jump Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* ActionJump;
+	UInputAction* InputJump;
 
 	//* Move Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* ActionMove;
+	UInputAction* InputMove;
 		
 	//* Look Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* ActionLook;
+	UInputAction* InputLook;
 
-	TSoftObjectPtr<UInputMappingContext> Mapping2;
+	//* Interact Input Action 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InputInteract;
 
+	
 protected:
-	UFUNCTION()
-	void InteractStart(AActor* Actor) {};
-
-	UFUNCTION()
-	void InteractStop(AActor* Actor) {};
 	
 	virtual void BeginPlay();
 
 	//* Called for movement input 
-	void Move(const FInputActionValue& Value);
+	void ActMove(const FInputActionValue& Value);
 
 	//* Called for looking input 
-	void Look(const FInputActionValue& Value);
+	void ActLook(const FInputActionValue& Value);
 
+	void ActInteract(const FInputActionValue& Value);
+	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
