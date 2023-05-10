@@ -1,14 +1,26 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "UCInteractor.h"
+#include "CInteractor.h"
 
-#include "UCInteract.h"
+#include "CInteract.h"
+#include "InteractorUI.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/BoxComponent.h"
 
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
+}
+
+void UCInteractor::SetEnabled(bool Enabled) {
+	SetComponentTickEnabled(Enabled);
+	SetUIVisible(false);
+}
+
+void UCInteractor::TryTrigger() {
+	if (!IsValid(InterComp)) return;
+	InterComp->Trigger();
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
@@ -33,11 +45,21 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	}
 
 	const bool IsInteract = IsValid(Component) && Component->IsA(UCInteract::StaticClass());
-	if (IsInteract) {
-		Actor = Hit.GetActor();
+	if (!IsInteract) {
+		Component = nullptr;
 	}
 
-	DoStart(Actor);
+	DoStart(Cast<UCInteract>(Component));
+}
+
+void UCInteractor::BeginPlay() {
+	Super::BeginPlay();
+	UClass* const Class = UIClass.Get();
+	if (IsValid(Class)) {
+		UI = NewObject<UInteractorUI>(GetOwner(), Class);
+		UI->AddToViewport();
+		SetUIVisible(false);
+	}
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -45,28 +67,39 @@ void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void UCInteractor::DoEnd() {
-	if (InteractActor) {
-		OnEnd.Broadcast(InteractActor);
-	}
-	InteractActor = nullptr;
+void UCInteractor::SetUIVisible(bool Visible) const {
+	if (!IsValid(UI)) return;
+	UI->SetVisibility(Visible? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
-void UCInteractor::DoStart(AActor* Actor) {
+void UCInteractor::DoEnd() {
+	if (InterComp) {
+		OnStop.Broadcast(InterComp);
+		SetUIVisible(false);
+	}
+	InterComp = nullptr;
+}
+
+void UCInteractor::DoStart(UCInteract* Component) {
 	// skip retries
-	if (Actor == InteractActor) return;
+	if (Component == InterComp) return;
 
 	// notifies on changes
-	if (InteractActor) {
+	if (InterComp) {
 		DoEnd();
-		InteractActor = nullptr;
+		InterComp = nullptr;
 	}
 
-	if (!IsValid(Actor)) {
+	if (!IsValid(Component)) {
 		return;
 	}
 
-	InteractActor = Actor;
-	OnStart.Broadcast(InteractActor);
+	InterComp = Component;
+	SetUIVisible(true);
+	if (IsValid(UI)) {
+		UI->SetPrompt(InterComp->Text);
+	}
+	// TODO show intercomponent text into the ui
+	OnStart.Broadcast(InterComp);
 }
 #pragma optimize("", on)

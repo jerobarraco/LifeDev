@@ -6,7 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "LifeDev/Core/Interacts/UCInteractor.h"
+
+#include "LifeDev/Core/Interacts/CInteractor.h"
 
 // ALifeDevCharacter
 
@@ -61,6 +62,9 @@ void ALCharacter::BeginPlay()
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 	if (!Subsystem) return;
 	Subsystem->AddMappingContext(Mapping, 0);
+
+	// Interactor->OnStart.AddUniqueDynamic(this, &ALCharacter::InteractStart);
+	// Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
 }
 
 /// Input
