@@ -13,35 +13,31 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	FHitResult Hit;
 	const FVector& Start = GetComponentLocation();
 	const FVector& End = GetComponentRotation().Vector() * TraceLen;
-	FCollisionQueryParams Params;
-	Params.bDebugQuery = true;
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 2.f, false, 2.f);
-	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.f, false, .5f);
+	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
 	
-	AActor* const Actor = Hit.GetActor();
+	AActor* Actor = nullptr;
 	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
-	
+
+	// if we get a box component we need to go to the parent.
 	if (Component && Component->IsA(UBoxComponent::StaticClass())) {
-		UE_LOG(LogTemp,Log, TEXT("Is box component"));
 		TArray<USceneComponent*> Parents;
 		Component->GetParentComponents(Parents);
-		if  (Parents.Num()>0) {
+		if  (Parents.Num() > 0) {
 			Component = Parents[0];
 		}
 	}
+
 	const bool IsInteract = IsValid(Component) && Component->IsA(UCInteract::StaticClass());
 	if (IsInteract) {
-		UE_LOG(LogTemp,Log, TEXT("Is interact component"));
+		Actor = Hit.GetActor();
 	}
 
-	if (!IsValid(Actor) || !Hit.Component.IsValid() || !IsInteract) {
-		DoEnd();
-		return;
-	}
-	DoStart(InteractActor);
+	DoStart(Actor);
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -57,8 +53,18 @@ void UCInteractor::DoEnd() {
 }
 
 void UCInteractor::DoStart(AActor* Actor) {
-	if (InteractActor) DoEnd();
-	if (!IsValid(Actor)) return;
+	// skip retries
+	if (Actor == InteractActor) return;
+
+	// notifies on changes
+	if (InteractActor) {
+		DoEnd();
+		InteractActor = nullptr;
+	}
+
+	if (!IsValid(Actor)) {
+		return;
+	}
 
 	InteractActor = Actor;
 	OnStart.Broadcast(InteractActor);
