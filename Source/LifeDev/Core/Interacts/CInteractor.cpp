@@ -59,6 +59,9 @@ void UCInteractor::SetUIVisible(bool Visible) const {
 
 void UCInteractor::DoEnd() {
 	if (InterComp) {
+		if (IsValid(InterComp)) {
+			InterComp->Hover(false);
+		}
 		OnStop.Broadcast(InterComp);
 		SetUIVisible(false);
 	}
@@ -80,12 +83,14 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	}
 
 	InterComp = Component;
+	InterComp->Hover(true);
 
 	// show text on screen
 	SetUIVisible(true);
 	if (IsValid(UI)) {
 		UI->SetPrompt(InterComp->Text);
 	}
+
 	
 	OnStart.Broadcast(InterComp);
 }

@@ -14,7 +14,11 @@ ALDoor::ALDoor(const FObjectInitializer& ObjectInitializer):Super(ObjectInitiali
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetComponentTickEnabled(false);
-	
+	Mesh->SetGenerateOverlapEvents(false);
+	Mesh->SetCollisionProfileName("NoCollision");
+	Mesh->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+	Mesh->SetCanEverAffectNavigation(false);
+
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
 	Interact->SetComponentTickEnabled(false);
