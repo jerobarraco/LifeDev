@@ -1,4 +1,36 @@
+(I don't like/believe in hard rules, but saying "guidelines" sounds confusing and misleanding, so...)
 * tabs
 * case sensitive
-* organize assets by feature NOT by type
-* don't use hungarian notation 
+* organize assets by FEATURE. NOT by type.
+* DO NOT use hungarian notation 
+* NO DEPENDENCY INJECTION! (except if approved by jeronimo)
+* NO COROUTINES. Only async-tasks and timers.
+* NO ASSERTS OR CHECKS. use an actual if and manage the situation.
+* NO abstract classes. base classes have to be instance-ables. The methods can be emptied but the instance needs to not break (crash). Better to have a base functionality there.
+* Minimal usage of lambdas, and only if less than 10 LOC. otherwise make a function.
+* Use BlueprintNativeEvent when interacting with blueprints. Never use BlueprintImplementableEvent. NEVER EVER use delegates for this case.
+** Use BlueprintNativeEvents EVEN if the cpp body is empty. keep the control in cpp. avoid having function chains that only exists on bp.
+* Use minimal decoupling. Use polymorphism to achieve it.
+** This is tricky if you're not me (hard to explain). Check the code for examples, and ask me to verify.
+** Avoid usage of events when possible. 
+** Ensure a direct top-down hierarchy.
+** Do use subsystems
+** Do use delegates
+*** But avoid having stuff self-registering automatically. Tell them to initialize instead. 
+* forward declare as much as possible. includes on cpp instead of .h
+* avoid overusing set/gets. public vars are fine when makes sense.
+** flexibility is more important than "university purity".
+* Ensure proper lifecycle. Initialize variables. And nullify/destroy on endplay or when needed.
+* USE DEFAULT VARIABLES VALUES, (instead of) initializing variables in custom constructors. except variables that will be overwritten.
+* Use UPROPERTY on all pointers. nullify at end if is transient.
+* Use Transient on all variables that are transient.
+* use const& widely. 
+** SPECIALLY on delegates and for loops
+** To Pass structures as you WILL modify them in the body.
+** same for variables in functions.
+* use MoveTemp when possible.
+* DO NOT define structures or types on BP only. create stubs in cpp then inherit. this is contagious.
+* Don't be overly private. 
+** Make your functions be public (when calling them from outside won't break). Aim to make your functions able to be public.
+** Make your functions and variable accessible from bps. and callable.
+* Avoid using interfaces. use inheritance whenever possible.
