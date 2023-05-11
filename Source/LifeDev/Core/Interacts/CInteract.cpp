@@ -12,5 +12,6 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 }
 
 void UCInteract::Trigger() const {
+	UE_LOG(LogTemp,Log, TEXT("Interact triggered!"));
 	OnTrigger.Broadcast();
 }
