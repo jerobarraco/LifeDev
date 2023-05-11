@@ -1,15 +1,14 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Components/BoxComponent.h"
 
 #include "CInteract.generated.h"
-
-class UBoxComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LIFEDEV_API UCInteract: public USceneComponent {
+class LIFEDEV_API UCInteract: public UBoxComponent {
 public:
 	GENERATED_BODY()
 

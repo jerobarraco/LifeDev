@@ -33,17 +33,8 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
 	
 	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
-
-	// if we get a box component we need to go to the parent.
-	if (Component && Component->IsA(UBoxComponent::StaticClass())) {
-		TArray<USceneComponent*> Parents;
-		Component->GetParentComponents(Parents);
-		if  (Parents.Num() > 0) {
-			Component = Parents[0];
-		}
-	}
-
-	DoStart(Cast<UCInteract>(Component));
+	UCInteract* const Interact = Cast<UCInteract>(Component);
+	DoStart(Interact);
 }
 
 void UCInteractor::BeginPlay() {
@@ -89,11 +80,13 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	}
 
 	InterComp = Component;
+
+	// show text on screen
 	SetUIVisible(true);
 	if (IsValid(UI)) {
 		UI->SetPrompt(InterComp->Text);
 	}
-	// TODO show intercomponent text into the ui
+	
 	OnStart.Broadcast(InterComp);
 }
 #pragma optimize("", on)
