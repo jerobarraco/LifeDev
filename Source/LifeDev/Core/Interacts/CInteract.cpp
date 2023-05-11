@@ -9,6 +9,7 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	bNavigationRelevant = false;
 	UBoxComponent::SetCollisionProfileName("BlockAllDynamic");
 	SetGenerateOverlapEvents(false);
+	UBoxComponent::SetComponentTickEnabled(false);
 }
 
 void UCInteract::Trigger() const {
