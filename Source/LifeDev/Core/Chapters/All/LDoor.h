@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "LifeDev/Core/Interacts/Interact.h"
 
 #include "LDoor.generated.h"
 
@@ -8,14 +9,13 @@ class UCInteract;
 
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALDoor: public AActor {
+class LIFEDEV_API ALDoor: public AInteract {
 public:
 	GENERATED_BODY()
 
 	ALDoor(const FObjectInitializer& ObjectInitializer);
 
-	UFUNCTION(BlueprintCallable)
-	void Trigger();
+	virtual void Trigger_Implementation() override;
 	
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
@@ -38,23 +38,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DT) override;
-
-	UFUNCTION(BlueprintCallable)
-	void SetText();
+	virtual void SetText_Implementation() override;
 	
 	UFUNCTION(BlueprintCallable)
 	void SetIsRotating(bool NewIsRotating);
 	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	UCInteract* Interact = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	UStaticMeshComponent* Mesh = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsOpen = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsRotating = false;
-
 	// Rotation at the start of the lifecycle
 	float RotStart = 0;
 	float RotStop = 0;
