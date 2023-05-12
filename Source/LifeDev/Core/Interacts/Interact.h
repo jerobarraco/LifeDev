@@ -22,6 +22,10 @@ public:
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
+	// Mesh to automatically high
+	UPROPERTY(BlueprintReadWrite, Transient)
+	UStaticMeshComponent* HoverMesh = nullptr;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -37,4 +41,5 @@ protected:
 	UCInteract* Interact = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;
+
 };
