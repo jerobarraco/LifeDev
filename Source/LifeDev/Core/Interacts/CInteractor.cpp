@@ -2,28 +2,24 @@
 
 #include "CInteractor.h"
 
-#include "CInteract.h"
-#include "InteractorUI.h"
-#include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
 
-// TODO remove the ui from here
+#include "CInteract.h"
+
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
 
 	// TODO make the arrow parent correctly
-	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("InterArrow"));
-	Arrow->SetupAttachment(this);
-	Arrow->RegisterComponent();
-	Arrow->SetComponentTickEnabled(false);
-	Arrow->SetArrowLength(TraceLen);
+	IArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("IArrow"));
+	IArrow->SetupAttachment(this);
+	IArrow->SetComponentTickEnabled(false);
+	IArrow->SetArrowLength(TraceLen);
 }
 
 void UCInteractor::SetEnabled(bool Enabled) {
 	SetComponentTickEnabled(Enabled);
-	SetUIVisible(false);
 	DoEnd(); // force clearing currently selected
 }
 
@@ -49,38 +45,21 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
-	UClass* const Class = UIClass.Get();
-	if (IsValid(Class)) {
-		UI = NewObject<UInteractorUI>(GetOwner(), Class);
-		UI->AddToViewport();
-		SetUIVisible(false);
-	}
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DoEnd();
-	if (IsValid(UI)) {
-		UI->RemoveFromParent();
-	}
-	UI = nullptr;
 	Super::EndPlay(EndPlayReason);
-	
-}
-
-void UCInteractor::SetUIVisible(bool Visible) const {
-	if (!IsValid(UI)) return;
-	UI->SetVisibility(Visible? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UCInteractor::DoEnd() {
-	if (InterComp) {
-		if (IsValid(InterComp)) {
-			InterComp->Hover(false);
-		}
-		OnToggle.Broadcast(false, InterComp);
-		OnStop.Broadcast(InterComp);
-		SetUIVisible(false);
+	if (!InterComp) return;
+	if (IsValid(InterComp)) {
+		InterComp->Hover(false);
 	}
+	OnToggle.Broadcast(false, InterComp);
+	OnStop.Broadcast(InterComp);
+
 	InterComp = nullptr;
 }
 
@@ -100,12 +79,6 @@ void UCInteractor::DoStart(UCInteract* Component) {
 
 	InterComp = Component;
 	InterComp->Hover(true);
-
-	// show text on screen
-	SetUIVisible(true);
-	if (IsValid(UI)) {
-		UI->SetPrompt(InterComp->Text);
-	}
 
 	OnToggle.Broadcast(true, InterComp);
 	OnStart.Broadcast(InterComp);

@@ -16,10 +16,17 @@ public:
 
 	UCInteract(const FObjectInitializer& ObjectInitializer);
 
-	void Trigger() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
+
+	// used by the interactor. don't call directly. subscribe to OnTrigger.
+	UFUNCTION()
+	void Trigger() const;
+	
+	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
+	UFUNCTION()
+	void Hover(bool IsHover) const;
 
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FInteractOnTrigger OnTrigger;
@@ -31,6 +38,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FText Text = FText::GetEmpty();
 
-	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
-	void Hover(bool IsHover) {OnHover.Broadcast(IsHover);}
+	
 };

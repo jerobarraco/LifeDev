@@ -18,6 +18,10 @@ void UCInteract::Trigger() const {
 	OnTrigger.Broadcast();
 }
 
+void UCInteract::Hover(bool IsHover) const {
+	OnHover.Broadcast(IsHover);
+}
+
 void UCInteract::SetEnabled(bool IsEnabled) {
 	SetCollisionEnabled(IsEnabled ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 }

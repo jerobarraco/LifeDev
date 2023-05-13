@@ -68,10 +68,8 @@ protected:
 	
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
-
 	//* Called for looking input 
 	void ActLook(const FInputActionValue& Value);
-
 	void ActInteract(const FInputActionValue& Value);
 	
 	// APawn interface
@@ -79,14 +77,14 @@ protected:
 	// End of APawn interface
 
 	//* Pawn mesh: 1st person view (arms; seen only by self) 
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
 	// First person camera
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere,Category = Camera)
 	UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCInteractor* Interactor = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)

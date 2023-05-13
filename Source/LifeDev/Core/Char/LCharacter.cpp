@@ -36,7 +36,7 @@ ALCharacter::ALCharacter(): Super()
 
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
-
+	
 	UIClass = UGameUI::StaticClass();
 	
 	SetActorTickEnabled(false);

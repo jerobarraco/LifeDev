@@ -22,8 +22,8 @@ public:
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
-	// Mesh to automatically high
-	UPROPERTY(BlueprintReadWrite, Transient)
+	// Mesh to automatically highlight
+	UPROPERTY(BlueprintReadWrite, Category=SetUP)
 	UStaticMeshComponent* HoverMesh = nullptr;
 	
 protected:
@@ -39,7 +39,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;
-
 };
