@@ -10,6 +10,7 @@ class UInteractorUI;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
 
 class UBoxComponent;
 // Will be interacting with interact objects
@@ -33,9 +34,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UInteractorUI> UIClass = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UArrowComponent* Arrow = nullptr;
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractToggle OnToggle;
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractStarts OnStart;
 	UPROPERTY(BlueprintAssignable)
@@ -51,6 +51,9 @@ protected:
 	void DoEnd();
 	// attempts to trigger a start
 	void DoStart(UCInteract* Component);
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UArrowComponent* Arrow = nullptr;
 
 	UPROPERTY(Transient)
 	UCInteract* InterComp = nullptr;

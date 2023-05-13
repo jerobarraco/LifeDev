@@ -6,6 +6,9 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameUI.h"
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "LifeDev/Core/Interacts/CInteractor.h"
 
@@ -34,6 +37,8 @@ ALCharacter::ALCharacter(): Super()
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
 
+	UIClass = UGameUI::StaticClass();
+	
 	SetActorTickEnabled(false);
 	// TODO find a better option 
 	// static ConstructorHelpers::FClassFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Core/Input/IMC_Default"));
@@ -50,6 +55,25 @@ ALCharacter::ALCharacter(): Super()
 	// return Cast(StaticLoadObject( UInputMappingContext::StaticClass(), NULL, TEXT("/Game/Content/LifeDev/Core/Input/IMC_Default")));
 }
 
+void ALCharacter::SetUIVisible(bool Visible) {
+	if (!IsValid(UI)) return;
+	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
+}
+
+// void ALCharacter::InteractToggle(bool IsOn, UCInteract* Comp) {
+// }
+
+void ALCharacter::InteractStart(UCInteract* Comp) {
+	if (IsValid(UI)) {
+		UI->InteractShowPrompt(Comp->Text);
+	}
+}
+void ALCharacter::InteractStop(UCInteract* Comp) {
+	if (IsValid(UI)) {
+		UI->InteractHidePrompt();
+	}
+}
+
 void ALCharacter::BeginPlay()
 {
 	// Call the base class  
@@ -60,11 +84,30 @@ void ALCharacter::BeginPlay()
 	if (!PlayerController) return;
 
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-	if (!Subsystem) return;
-	Subsystem->AddMappingContext(Mapping, 0);
+	if (Subsystem) {
+		Subsystem->AddMappingContext(Mapping, 0);
+	}
 
-	// Interactor->OnStart.AddUniqueDynamic(this, &ALCharacter::InteractStart);
-	// Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
+	UClass* const Class = UIClass.Get();
+	if (IsValid(Class)) {
+		UI = NewObject<UGameUI>(this, Class);
+		UI->AddToViewport();
+		// It is of utmost important that ANY canvas (and or root element) in the widget ui to be have its visibilty
+		// set to HitTestInvisible or not hit testable. or it will "eat" the cursor
+		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
+	}
+	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
+	Interactor->OnStart.AddUniqueDynamic(this, &ALCharacter::InteractStart);
+	Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
+}
+
+void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (IsValid(UI)) {
+		UI->RemoveFromParent();
+	}
+	UI = nullptr;
+
+	Super::EndPlay(EndPlayReason);
 }
 
 /// Input

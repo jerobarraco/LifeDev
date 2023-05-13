@@ -7,13 +7,14 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
 
+// TODO remove the ui from here
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
 
 	// TODO make the arrow parent correctly
-	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("InterArrow"));
 	Arrow->SetupAttachment(this);
 	Arrow->RegisterComponent();
 	Arrow->SetComponentTickEnabled(false);
@@ -58,7 +59,12 @@ void UCInteractor::BeginPlay() {
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DoEnd();
+	if (IsValid(UI)) {
+		UI->RemoveFromParent();
+	}
+	UI = nullptr;
 	Super::EndPlay(EndPlayReason);
+	
 }
 
 void UCInteractor::SetUIVisible(bool Visible) const {
@@ -71,6 +77,7 @@ void UCInteractor::DoEnd() {
 		if (IsValid(InterComp)) {
 			InterComp->Hover(false);
 		}
+		OnToggle.Broadcast(false, InterComp);
 		OnStop.Broadcast(InterComp);
 		SetUIVisible(false);
 	}
@@ -100,7 +107,7 @@ void UCInteractor::DoStart(UCInteract* Component) {
 		UI->SetPrompt(InterComp->Text);
 	}
 
-	
+	OnToggle.Broadcast(true, InterComp);
 	OnStart.Broadcast(InterComp);
 }
 #pragma optimize("", on)

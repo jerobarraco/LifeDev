@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "LifeDev/Core/Interacts/CInteract.h"
 
 #include "LCharacter.generated.h"
 
@@ -17,8 +18,7 @@ class UAnimMontage;
 class USoundBase;
 class UInputAction;
 class UInputMappingContext;
-
-// TODO remove unnecessary
+class UGameUI;
 
 // base class for the character
 UCLASS(config=Game)
@@ -26,44 +26,46 @@ class LIFEDEV_API ALCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
 	ALCharacter();
 	
-	//* Pawn mesh: 1st person view (arms; seen only by self) 
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
-	USkeletalMeshComponent* Mesh1P;
-
-	// First person camera
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* Camera;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UCInteractor* Interactor = nullptr;
+	UFUNCTION(BlueprintCallable)
+	void SetUIVisible(bool bCond);
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<UGameUI> UIClass = nullptr;
 
 	//* MappingContext 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputMappingContext* Mapping;
 
 	//* Jump Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* InputJump;
 
 	//* Move Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* InputMove;
 		
 	//* Look Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
 	UInputAction* InputLook;
 
 	//* Interact Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
 	UInputAction* InputInteract;
 
-	
 protected:
-	
-	virtual void BeginPlay();
+	// UFUNCTION()
+	// void InteractToggle(bool IsOn, UCInteract* Comp);
+	UFUNCTION()
+	void InteractStart(UCInteract* Comp);
+	UFUNCTION()
+	void InteractStop(UCInteract* Comp);
 
+	virtual void BeginPlay();
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
 
@@ -75,5 +77,19 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+	//* Pawn mesh: 1st person view (arms; seen only by self) 
+	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	USkeletalMeshComponent* Mesh1P;
+
+	// First person camera
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UCInteractor* Interactor = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UGameUI* UI = nullptr;
 };
 
