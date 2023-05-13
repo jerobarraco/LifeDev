@@ -18,6 +18,9 @@ public:
 
 	void Trigger() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetEnabled(bool IsEnabled);
+
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FInteractOnTrigger OnTrigger;
 	

@@ -8,6 +8,7 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	bNavigationRelevant = false;
 	UBoxComponent::SetCollisionProfileName("BlockAllDynamic");
+	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetGenerateOverlapEvents(false);
 	UBoxComponent::SetComponentTickEnabled(false);
 }
@@ -15,4 +16,8 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 void UCInteract::Trigger() const {
 	UE_LOG(LogTemp,Log, TEXT("Interact triggered!"));
 	OnTrigger.Broadcast();
+}
+
+void UCInteract::SetEnabled(bool IsEnabled) {
+	SetCollisionEnabled(IsEnabled ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 }
