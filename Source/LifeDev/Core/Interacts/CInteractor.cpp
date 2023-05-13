@@ -5,8 +5,8 @@
 #include "CInteract.h"
 #include "InteractorUI.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/BoxComponent.h"
 
+// TODO add option to dis/enable the collision here 
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
