@@ -5,17 +5,25 @@
 #include "CInteract.h"
 #include "InteractorUI.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ArrowComponent.h"
 
-// TODO add option to dis/enable the collision here 
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
+
+	// TODO make the arrow parent correctly
+	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	Arrow->SetupAttachment(this);
+	Arrow->RegisterComponent();
+	Arrow->SetComponentTickEnabled(false);
+	Arrow->SetArrowLength(TraceLen);
 }
 
 void UCInteractor::SetEnabled(bool Enabled) {
 	SetComponentTickEnabled(Enabled);
 	SetUIVisible(false);
+	DoEnd(); // force clearing currently selected
 }
 
 void UCInteractor::TryTrigger() {

@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Components/ArrowComponent.h"
 
 #include "CInteractor.generated.h"
 
@@ -31,11 +32,15 @@ public:
 	// The class of the ui to use
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UInteractorUI> UIClass = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UArrowComponent* Arrow = nullptr;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractStarts OnStart;
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractStop OnStop;
+	
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
