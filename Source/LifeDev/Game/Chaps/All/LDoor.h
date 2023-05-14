@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Core/Interacts/Interact.h"
+#include "LifeDev/Game/Interact/Interact.h"
 
 #include "LDoor.generated.h"
 

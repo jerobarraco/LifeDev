@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
-#include "LifeDev/Core/Interacts/CInteract.h"
 
 #include "LCharacter.generated.h"
 
 class UCInteractor;
+class UCInteract;
 class UInputComponent;
 class USkeletalMeshComponent;
 class USceneComponent;

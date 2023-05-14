@@ -2,8 +2,9 @@
 
 #include "LGMGame.h"
 
-#include "LifeDev/Core/Char/LCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+
+#include "LifeDev/Game/Char/LCharacter.h"
 
 ALGMGame::ALGMGame():Super() {
 	// set default pawn class to our Blueprinted character

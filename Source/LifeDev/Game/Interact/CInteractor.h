@@ -1,12 +1,12 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "Components/ArrowComponent.h"
 
 #include "CInteractor.generated.h"
 
 class UCInteract;
 class UInteractorUI;
+class UArrowComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Comp);
@@ -47,7 +47,7 @@ protected:
 	// attempts to trigger a start
 	void DoStart(UCInteract* Component);
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UArrowComponent* IArrow = nullptr;
 
 	UPROPERTY(Transient)

@@ -1,6 +1,7 @@
-// Copyright Jerónimo Barraco-Mármol
+// Copyright  Jerónimo Barraco-Mármol
 
 #include "LCharacter.h"
+
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -10,7 +11,8 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
-#include "LifeDev/Core/Interacts/CInteractor.h"
+#include "LifeDev/Game/Interact/CInteractor.h"
+#include "LifeDev/Game/Interact/CInteract.h"
 
 // ALifeDevCharacter
 
