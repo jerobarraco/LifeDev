@@ -37,7 +37,7 @@ public:
 
 	//* MappingContext 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputMappingContext* Mapping;
+	UInputMappingContext* Mapping = nullptr;
 
 	//* Jump Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
