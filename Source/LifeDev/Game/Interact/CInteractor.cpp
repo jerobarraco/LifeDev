@@ -11,11 +11,10 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
 
-	// TODO make the arrow parent correctly
-	IArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("IArrow"));
-	IArrow->SetupAttachment(this);
-	IArrow->SetComponentTickEnabled(false);
-	IArrow->SetArrowLength(TraceLen);
+	// the arrow doesnt parent correctly. so.. beat it
+	// IArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("IArrow"));
+	// IArrow->SetupAttachment(this);
+	// IArrow->SetComponentTickEnabled(false);
 }
 
 void UCInteractor::SetEnabled(bool Enabled) {
@@ -45,6 +44,13 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
+
+
+	IArrow = NewObject<UArrowComponent>(this, TEXT("IArrow"));
+	IArrow->CreationMethod = EComponentCreationMethod::Instance;
+	IArrow->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	IArrow->RegisterComponent();
+	IArrow->SetArrowLength(TraceLen);
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {

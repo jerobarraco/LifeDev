@@ -6,18 +6,21 @@
 
 #include "GameFramework/GameModeBase.h"
 
-#include "LGMGame.generated.h"
+#include "LGGameMode.generated.h"
 
 class UInputMappingContext;
 
 // Game mode class 
 UCLASS(Blueprintable)
-class LIFEDEV_API ALGMGame : public AGameModeBase
+class LIFEDEV_API ALGGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
-	ALGMGame();
+	ALGGameMode();
+
+	UFUNCTION(BlueprintCallable)
+	void Init() const;
 
 	virtual void BeginPlay() override;
 };
