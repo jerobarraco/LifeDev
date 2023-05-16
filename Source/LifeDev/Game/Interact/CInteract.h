@@ -28,6 +28,9 @@ public:
 	UFUNCTION()
 	void Hover(bool IsHover) const;
 
+	UFUNCTION()
+	void DeInit();
+	
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FInteractOnTrigger OnTrigger;
 	
@@ -38,5 +41,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FText Text = FText::GetEmpty();
 
-	
+	// Mesh to automatically highlight, if any.
+	UPROPERTY(BlueprintReadWrite, Category=SetUP)
+	UStaticMeshComponent* HoverMesh = nullptr;	
 };

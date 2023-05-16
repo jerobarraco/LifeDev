@@ -19,7 +19,18 @@ void UCInteract::Trigger() const {
 }
 
 void UCInteract::Hover(bool IsHover) const {
+	if (IsValid(HoverMesh)) {
+		HoverMesh->SetRenderCustomDepth(IsHover);
+		// To have this working you need to enable the usage of custom stencils on the settings to
+		// "Custom depth stencil pass : Enabled WITH STENCIL"
+		HoverMesh->SetCustomDepthStencilValue(IsHover?255:0);
+	}
+	
 	OnHover.Broadcast(IsHover);
+}
+
+void UCInteract::DeInit() {
+	HoverMesh = nullptr; // free resources to get gcd -Jero
 }
 
 void UCInteract::SetEnabled(bool IsEnabled) {

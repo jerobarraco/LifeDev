@@ -22,10 +22,6 @@ public:
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
-	// Mesh to automatically highlight
-	UPROPERTY(BlueprintReadWrite, Category=SetUP)
-	UStaticMeshComponent* HoverMesh = nullptr;
-	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

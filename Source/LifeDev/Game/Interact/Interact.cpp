@@ -11,7 +11,7 @@ AInteract::AInteract(const FObjectInitializer& ObjectInitializer):Super(ObjectIn
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
-	HoverMesh = Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->PrimaryComponentTick.bStartWithTickEnabled = false;
 	Mesh->SetComponentTickEnabled(false);
@@ -23,7 +23,7 @@ AInteract::AInteract(const FObjectInitializer& ObjectInitializer):Super(ObjectIn
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
 	Interact->SetComponentTickEnabled(false);
-	
+	Interact->HoverMesh = Mesh;
 }
 
 void AInteract::BeginPlay() {
@@ -37,7 +37,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 	Interact->OnTrigger.RemoveAll(this);
 	Interact->OnHover.RemoveAll(this);
-	HoverMesh = nullptr; // free resources to get gcd -Jero
+	Interact->DeInit();
 }
 
 void AInteract::SetText_Implementation() {}
@@ -53,10 +53,4 @@ void AInteract::Trigger_Implementation() {
 	SetText();
 }
 
-void AInteract::Hover_Implementation(bool IsOn) {
-	if (!IsValid(HoverMesh)) return;
-	HoverMesh->SetRenderCustomDepth(IsOn);
-	// To have this working you need to enable the usage of custom stencils on the settings to
-	// "Custom depth stencil pass : Enabled WITH STENCIL"
-	HoverMesh->SetCustomDepthStencilValue(IsOn?255:0);
-}
+void AInteract::Hover_Implementation(bool IsOn) {}
