@@ -50,8 +50,6 @@ void ADialogManager::Show(const FDialog& Diag) {
 		return;
 	}
 
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
-	UI->SetVisibility(ESlateVisibility::Visible);
 	UI->Show(Diag);
 }
 
@@ -63,8 +61,6 @@ void ADialogManager::Stop() {
 void ADialogManager::HideUI() const {
 	if (!IsValid(UI)) return;
 	UI->Hide();
-	UI->SetVisibility(ESlateVisibility::Hidden);
-	UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 }
 
 void ADialogManager::BeginPlay() {
