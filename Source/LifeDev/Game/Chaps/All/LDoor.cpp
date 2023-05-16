@@ -14,20 +14,21 @@ ALDoor::ALDoor(const FObjectInitializer& ObjectInitializer):Super(ObjectInitiali
 
 void ALDoor::BeginPlay() {
 	Super::BeginPlay();
-	RotBegin = GetActorRotation();
+	RotClosed = GetActorRotation();
+	RotOpen = RotClosed + Rot;
 }
 
 void ALDoor::Tick(float DT) {
 	Super::Tick(DT);
 	if (!IsRotating) return;
 
+	// adjust for duration
 	const float ndt = DT/RotDuration;
 	RotProgress += ndt;
 
-	FRotator NewRot(RotBegin);
-
+	// not using a lerp because lerping with rotations has the nice properties that -90 becomes 270 and spins the other way around
 	const float Alpha = IsValid(RotCurve)? RotCurve->GetFloatValue(RotProgress) : RotProgress;
-	NewRot.Yaw = FMath::Lerp(RotStart, RotStop, Alpha);
+	FRotator NewRot = RotStart + (RotDelta*Alpha);
 	SetActorRotation(NewRot);
 	
 	if (RotProgress>1) SetIsRotating(false);
@@ -42,17 +43,17 @@ void ALDoor::SetIsRotating(bool NewIsRotating) {
 	SetActorTickEnabled(IsRotating);
 	if (!IsRotating) return;
 
-	const float RotTarget = Rots[IsOpen?0:1];
-	RotStart = GetActorRotation().Yaw;
-	RotStop = RotBegin.Yaw + RotTarget;
+	RotStart = IsOpen ? RotOpen : RotClosed;
+	RotDelta = IsOpen ? Rot * -1 : Rot;
 	RotProgress = 0.0;
 }
 
 void ALDoor::Trigger_Implementation() {
 	if (IsRotating) return;
-	IsOpen = !IsOpen;
 	
 	SetText();
 	SetIsRotating(true);
+	// change the flag after we start rotating. now the change has happened.
+	IsOpen = !IsOpen;
 	UE_LOG(LogTemp, Log, TEXT("Door changed open=%i"), IsOpen ? 0:1);
 }

@@ -33,7 +33,7 @@ public:
 
 	// the door rotations. Open and closed.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TArray<float> Rots = { -90, 0 };
+	FRotator Rot = {0,-90, 0};
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,10 +47,13 @@ protected:
 	bool IsOpen = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsRotating = false;
-	// Rotation at the start of the lifecycle
-	float RotStart = 0;
-	float RotStop = 0;
-	// Rotation at beginplay
-	FRotator RotBegin = FRotator::ZeroRotator;
+	// Reference rotations
+	FRotator RotClosed = FRotator::ZeroRotator;
+	FRotator RotOpen = FRotator::ZeroRotator;
+	// Relative rotations for the animation
+	// at the start of the animation
+	FRotator RotStart = FRotator::ZeroRotator;
+	// The target delta to apply
+	FRotator RotDelta = FRotator::ZeroRotator;
 	float RotProgress = 0.0;
 };
