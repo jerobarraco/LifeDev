@@ -1,4 +1,5 @@
 (I don't like/believe in hard rules, but saying "guidelines" sounds confusing and misleanding, so...)
+* KISS! (Keep it simple)
 * tabs
 * case sensitive
 * organize assets by FEATURE. NOT by type.
