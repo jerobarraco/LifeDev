@@ -8,8 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 
 ADialogManager::ADialogManager():Super() {
-	PrimaryActorTick.bCanEverTick = true;
-	SetActorTickEnabled(true);
+	PrimaryActorTick.bCanEverTick = false;
+	SetActorTickEnabled(false);
 
 	UIClass = UDialogUI::StaticClass();
 }
@@ -58,19 +58,6 @@ void ADialogManager::Show(const FDialog& Diag) {
 void ADialogManager::Stop() {
 	if (!IsValid(UI)) return;
 	HideUI();
-}
-
-void ADialogManager::Tick(float DeltaSeconds) {
-	Super::Tick(DeltaSeconds);
-	if (!IsShowing) return;
-
-	const float Pressed = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetInputAnalogKeyState(FKey("E"));
-	if (Pressed < .5) return;
-
-	if (!IsValid(Dialogs)) return;
-	// reset flag before calling done. done should be the last thing we do.
-	IsShowing = false;
-	Dialogs->DiagDone();
 }
 
 void ADialogManager::HideUI() const {

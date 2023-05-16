@@ -31,7 +31,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Stop();
 	
-	virtual void Tick(float DeltaSeconds) override;
 	void HideUI() const;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -51,5 +50,4 @@ private:
 	UDialogUI* UI = nullptr;
 
 	bool IsShowing = false;
-
 };
