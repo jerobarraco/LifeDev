@@ -18,21 +18,21 @@ public:
 	virtual void Trigger_Implementation() override;
 	
 	// Text to be displayed on interaction
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
 		FText::FromString(TEXT("Close the door")), // isOpen
 		FText::FromString(TEXT("Open the door")), // !IsOpen
 	};
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	UCurveFloat* RotCurve = nullptr;
 
 	// Duration of the animation
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float RotDuration = 2.0;
 
 	// the door rotations. Open and closed.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FRotator Rot = {0,-90, 0};
 
 protected:
