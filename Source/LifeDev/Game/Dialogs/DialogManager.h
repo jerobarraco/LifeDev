@@ -41,7 +41,7 @@ public:
 private:
 	// stub. the manager will handle input. will it?
 	UFUNCTION()
-	void UIFinished();
+	void UIDone();
 	
 	UPROPERTY(Transient)
 	ULDialogs* Dialogs = nullptr;

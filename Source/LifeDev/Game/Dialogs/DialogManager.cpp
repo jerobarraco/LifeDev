@@ -4,8 +4,6 @@
 
 #include "DialogUI.h"
 #include "LDialogs.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Kismet/GameplayStatics.h"
 
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -72,7 +70,7 @@ void ADialogManager::BeginPlay() {
 		if (IsValid(UI)) {
 			UI->AddToViewport();
 			HideUI();
-			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIFinished);
+			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIDone);
 		}
 	}
 }
@@ -82,7 +80,7 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ADialogManager::UIFinished() {
+void ADialogManager::UIDone() {
 	if (!IsValid(Dialogs)) return;
 	Dialogs->DiagDone();
 }

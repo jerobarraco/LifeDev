@@ -19,6 +19,15 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Hide();
 
+	// skips animation or the current dialog. will trigger an ondone if so.
+	UFUNCTION(BlueprintNativeEvent)
+	void Skip();
+
+	// variable that indicates when the dialog is ready to progress.
+	// false when animating.
+	UPROPERTY(BlueprintReadWrite)
+	bool IsReady = false;
+	
 	// this is stub. the manager will handle this.
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FDialogUIDone OnDone;
