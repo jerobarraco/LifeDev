@@ -11,7 +11,7 @@ public class LifeDev : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput",
-			"UMG"
+			"UMG", "DeveloperSettings"
 		});
 	}
 }

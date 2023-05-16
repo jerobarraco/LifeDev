@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "LSettings.generated.h"
 
+// used for user settings
 UCLASS(config = MySetting)
 class LIFEDEV_API ULSettings : public UObject
 {
