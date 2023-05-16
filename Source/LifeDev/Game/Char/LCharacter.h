@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "LifeDev/Game/Dialogs/DiagTypes.h"
 
 #include "LCharacter.generated.h"
 
@@ -63,6 +64,11 @@ protected:
 	UFUNCTION()
 	void InteractStop(UCInteract* Comp);
 
+	UFUNCTION()
+	void InteractPause(const FDialog& Diag);
+	UFUNCTION()
+	void InteractResume();
+	
 	virtual void BeginPlay();
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	

@@ -10,6 +10,7 @@
 #include "GameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "LifeDev/Game/Dialogs/LDialogs.h"
 
 #include "LifeDev/Game/Interact/CInteractor.h"
 #include "LifeDev/Game/Interact/CInteract.h"
@@ -76,6 +77,14 @@ void ALCharacter::InteractStop(UCInteract* Comp) {
 	}
 }
 
+void ALCharacter::InteractPause(const FDialog& Diag) {
+	Interactor->SetEnabled(false);
+}
+
+void ALCharacter::InteractResume() {
+	Interactor->SetEnabled(true);
+}
+
 void ALCharacter::BeginPlay()
 {
 	// Call the base class  
@@ -101,6 +110,11 @@ void ALCharacter::BeginPlay()
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
 	Interactor->OnStart.AddUniqueDynamic(this, &ALCharacter::InteractStart);
 	Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
+
+	UWorld* const World = GetWorld();
+	ULDialogs* const UlDialogs = World->GetSubsystem<ULDialogs>();
+	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
+	UlDialogs->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractResume);
 }
 
 void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
