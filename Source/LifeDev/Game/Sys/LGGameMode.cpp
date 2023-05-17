@@ -2,11 +2,11 @@
 
 #include "LGGameMode.h"
 
+#include "Dialogs/DialogManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 #include "LifeDev/Game/Char/LCharacter.h"
-#include "LifeDev/Game/Dialogs/DialogManager.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	// set default pawn class to our Blueprinted character

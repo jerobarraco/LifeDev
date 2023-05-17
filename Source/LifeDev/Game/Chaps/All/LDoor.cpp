@@ -2,7 +2,8 @@
 
 #include "LDoor.h"
 
-#include "LifeDev/Game/Interact/CInteract.h"
+#include "Interact/CInteract.h"
+
 
 ALDoor::ALDoor(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer) {
 	Interact->SetRelativeTransform(FTransform(

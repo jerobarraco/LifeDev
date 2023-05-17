@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
-#include "LifeDev/Game/Dialogs/DiagTypes.h"
 
 #include "LCharacter.generated.h"
 

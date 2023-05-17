@@ -13,5 +13,6 @@ public class LifeDev : ModuleRules
 			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput",
 			"UMG", "DeveloperSettings"
 		});
+		PrivateDependencyModuleNames.AddRange(new string[] { "Interact", "Dialogs" });
 	}
 }

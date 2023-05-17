@@ -1,0 +1,55 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#pragma once
+
+#include "CInteractor.generated.h"
+
+class UCInteract;
+class UInteractorUI;
+class UArrowComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
+
+// Will be interacting with interact objects
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class INTERACT_API UCInteractor: public USceneComponent {
+public:
+	GENERATED_BODY()
+
+	UCInteractor(const FObjectInitializer& ObjectInitializer);
+
+	UFUNCTION(BlueprintCallable)
+	void SetEnabled(bool Enabled);
+
+	UFUNCTION(BlueprintCallable)
+	void TryTrigger();
+	
+	// The max length to trace for
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float TraceLen = 500.0;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractToggle OnToggle;
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractStarts OnStart;
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractStop OnStop;
+
+protected:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	// ends an interaction
+	void DoEnd();
+	// attempts to trigger a start
+	void DoStart(UCInteract* Component);
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UArrowComponent* IArrow = nullptr;
+
+	UPROPERTY(Transient)
+	UCInteract* InterComp = nullptr;
+};

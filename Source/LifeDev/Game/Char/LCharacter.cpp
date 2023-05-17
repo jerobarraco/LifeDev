@@ -10,10 +10,10 @@
 #include "GameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "LifeDev/Game/Dialogs/LDialogs.h"
 
-#include "LifeDev/Game/Interact/CInteractor.h"
-#include "LifeDev/Game/Interact/CInteract.h"
+#include "Dialogs/Dialogs.h"
+#include "Interact/CInteract.h"
+#include "Interact/CInteractor.h"
 
 // ALifeDevCharacter
 
@@ -112,7 +112,7 @@ void ALCharacter::BeginPlay()
 	Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
 
 	UWorld* const World = GetWorld();
-	ULDialogs* const UlDialogs = World->GetSubsystem<ULDialogs>();
+	UDialogs* const UlDialogs = World->GetSubsystem<UDialogs>();
 	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
 	UlDialogs->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractResume);
 }

@@ -14,7 +14,7 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
-	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux", "Windows"],
+	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
 	"Modules": [
 		{
 			"Name": "JUtils",
