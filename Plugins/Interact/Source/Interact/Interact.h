@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Components/PostProcessComponent.h"
 
 #include "Interact.generated.h"
 
@@ -38,4 +39,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPostProcessComponent* PostProcess = nullptr;
 };

@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Components/BoxComponent.h"
+#include "Components/PostProcessComponent.h"
 
 #include "CInteract.generated.h"
 
@@ -15,7 +16,6 @@ public:
 	GENERATED_BODY()
 
 	UCInteract(const FObjectInitializer& ObjectInitializer);
-
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
@@ -43,5 +43,5 @@ public:
 
 	// Mesh to automatically highlight, if any.
 	UPROPERTY(BlueprintReadWrite, Category=SetUP)
-	UStaticMeshComponent* HoverMesh = nullptr;	
+	UStaticMeshComponent* HoverMesh = nullptr;
 };

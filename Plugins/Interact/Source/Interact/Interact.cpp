@@ -24,6 +24,14 @@ AInteract::AInteract(const FObjectInitializer& ObjectInitializer):Super(ObjectIn
 	Interact->SetupAttachment(Mesh);
 	Interact->SetComponentTickEnabled(false);
 	Interact->HoverMesh = Mesh;
+
+	PostProcess = CreateDefaultSubobject<UPostProcessComponent>(TEXT("PostProcess"));
+	PostProcess->SetupAttachment(Mesh);
+	// TODO fix this. 
+	static ConstructorHelpers::FObjectFinder<UObject> MatObj(TEXT("/Game/Interact/MI_PostHover"));
+    if (MatObj.Succeeded()) {
+        PostProcess->Settings.WeightedBlendables.Array.Add({1, MatObj.Object});
+    } 
 }
 
 void AInteract::BeginPlay() {
@@ -31,6 +39,7 @@ void AInteract::BeginPlay() {
 	SetText();
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::Trigger);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
+	
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
