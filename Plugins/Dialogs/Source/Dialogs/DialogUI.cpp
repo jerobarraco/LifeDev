@@ -17,12 +17,14 @@ void UDialogUI::Skip_Implementation() {
 
 void UDialogUI::FinishHide() {
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	Controller->bShowMouseCursor = false;
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UDialogUI::PreShow() {
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	Controller->bShowMouseCursor = true;
 	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
 	SetVisibility(ESlateVisibility::Visible);
 }

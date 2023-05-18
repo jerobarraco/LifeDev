@@ -72,14 +72,13 @@ void ALCharacter::SetUIVisible(bool Visible) {
 // }
 
 void ALCharacter::InteractBegin(UCInteract* Comp) {
-	if (IsValid(UI)) {
-		UI->InteractShowPrompt(Comp->Text);
-	}
+	if (!IsValid(UI)) return;
+	UI->InteractShowPrompt(Comp->Text);
 }
+
 void ALCharacter::InteractEnd(UCInteract* Comp) {
-	if (IsValid(UI)) {
-		UI->InteractHidePrompt();
-	}
+	if (!IsValid(UI)) return;
+	UI->InteractHidePrompt();
 }
 
 void ALCharacter::InteractPause(const FDialog& Diag) {
