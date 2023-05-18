@@ -11,6 +11,7 @@
 
 #include "DialogUI.h"
 #include "Dialogs.h"
+#include "JUtils/JMiscUtils.h"
 
 // Needs to be 10 so that it takes precedence over the character
 static uint8 InputPrio = 10;
@@ -60,7 +61,7 @@ void ADialogManager::Show(const FDialog& Diag) {
 
 	UI->Show(Diag);
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	ToggleMapping(Mapping, InputPrio, true, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
 }
 
 void ADialogManager::Stop() {
@@ -71,7 +72,7 @@ void ADialogManager::Stop() {
 void ADialogManager::HideUI() const {
 	if (!IsValid(UI)) return;
 	UI->Hide();
-	ToggleMapping(Mapping, InputPrio, false, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
 
 void ADialogManager::BeginPlay() {
@@ -99,7 +100,7 @@ void ADialogManager::BeginPlay() {
 }
 
 void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	ToggleMapping(Mapping, 10, false, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, 10, false, GetWorld());
 	DeInit();
 
 	// TODO unbind action

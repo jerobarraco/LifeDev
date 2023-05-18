@@ -15,10 +15,19 @@
 	// return nullptr;
 // }
 
+bool UJMiscUtils::IsWithEditor()
+{
+#if WITH_EDITOR
+	return true;
+#else
+	return false;
+#endif
+}
+
 UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
 
-	World = GetWorld();
+	// World = GetWorld();
 	if (IsValid(World)) return World;
 
 	// TODO this is not working as expected.

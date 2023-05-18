@@ -14,6 +14,7 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
+#include "JUtils/JMiscUtils.h"
 #include "JUtils/MiscUtils.h"
 
 // ALifeDevCharacter
@@ -94,7 +95,7 @@ void ALCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	ToggleMapping(Mapping, 1, true, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, 1, true, GetWorld());
 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -120,7 +121,7 @@ void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
-	ToggleMapping(Mapping, 1, false, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, 1, false, GetWorld());
 	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
 }

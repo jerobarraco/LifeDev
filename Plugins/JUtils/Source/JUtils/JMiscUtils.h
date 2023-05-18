@@ -9,9 +9,12 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// static UJMiscUtils* Get();
 	
-	UFUNCTION(BlueprintCallable)
-	UWorld* JGetWorld(UWorld* World);
+	UFUNCTION(BlueprintPure)
+	static bool IsWithEditor();
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World);
+	static UWorld* JGetWorld(UWorld* World);
+
+	UFUNCTION(BlueprintCallable)
+	static void ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World);
 };
