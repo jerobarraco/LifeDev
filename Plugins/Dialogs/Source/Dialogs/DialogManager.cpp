@@ -2,8 +2,19 @@
 
 #include "DialogManager.h"
 
+// these two are needed anyway otherwise it wont compile
+#include "InputMappingContext.h"
+#include "InputAction.h"
+#include "EnhancedInputComponent.h"
+
+#include "JUtils/MiscUtils.h"
+
 #include "DialogUI.h"
 #include "Dialogs.h"
+
+// Needs to be 10 so that it takes precedence over the character
+static uint8 InputPrio = 10;
+
 
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -33,7 +44,6 @@ void ADialogManager::DeInit() {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
-	
 }
 
 void ADialogManager::Show(const FDialog& Diag) {
@@ -49,6 +59,8 @@ void ADialogManager::Show(const FDialog& Diag) {
 	}
 
 	UI->Show(Diag);
+	// we need to actually add and remove so that it doesn't eat the input while not showing
+	ToggleMapping(Mapping, InputPrio, true, GetWorld());
 }
 
 void ADialogManager::Stop() {
@@ -59,11 +71,22 @@ void ADialogManager::Stop() {
 void ADialogManager::HideUI() const {
 	if (!IsValid(UI)) return;
 	UI->Hide();
+	ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
 
 void ADialogManager::BeginPlay() {
 	Super::BeginPlay();
 
+	// bind the action
+	UWorld* const World = GetWorld();
+	if (ActionSkip) {
+		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
+		if (IsValid(Input)) {
+			Input->BindAction<ADialogManager>(
+				ActionSkip, ETriggerEvent::Triggered, this, &ADialogManager::Skip);
+		}
+	}
+	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
 		UI = NewObject<UDialogUI>(this, Class);
@@ -76,11 +99,19 @@ void ADialogManager::BeginPlay() {
 }
 
 void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	ToggleMapping(Mapping, 10, false, GetWorld());
 	DeInit();
+
+	// TODO unbind action
 	Super::EndPlay(EndPlayReason);
 }
 
 void ADialogManager::UIDone() {
 	if (!IsValid(Dialogs)) return;
 	Dialogs->DiagDone();
+}
+
+void ADialogManager::Skip() {
+	if(!IsValid(UI)) return;
+	UI->Skip();
 }

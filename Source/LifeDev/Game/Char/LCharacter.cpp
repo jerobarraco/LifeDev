@@ -6,7 +6,6 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h" // for the get object
 #include "GameUI.h"
 #include "Blueprint/UserWidget.h"
@@ -15,6 +14,7 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
+#include "JUtils/MiscUtils.h"
 
 // ALifeDevCharacter
 
@@ -94,14 +94,7 @@ void ALCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	//Add Input Mapping Context
-	APlayerController* const PlayerController = Cast<APlayerController>(Controller);
-	if (!PlayerController) return;
-
-	UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-	if (Subsystem) {
-		Subsystem->AddMappingContext(Mapping, 0);
-	}
+	ToggleMapping(Mapping, 1, true, GetWorld());
 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -127,7 +120,8 @@ void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
-
+	ToggleMapping(Mapping, 1, false, GetWorld());
+	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
 }
 

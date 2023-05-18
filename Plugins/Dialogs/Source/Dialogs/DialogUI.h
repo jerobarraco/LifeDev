@@ -3,6 +3,8 @@
 #pragma once
 #include "Blueprint/UserWidget.h"
 
+#include "DiagTypes.h"
+
 #include "DialogUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDialogUIDone);
@@ -19,7 +21,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Hide();
 
-	// skips animation or the current dialog. will trigger an ondone if so.
+	// skips animation or the current dialog. will trigger an onDone if already ready.
 	UFUNCTION(BlueprintNativeEvent)
 	void Skip();
 

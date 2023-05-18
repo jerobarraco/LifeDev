@@ -35,11 +35,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UGameUI> UIClass = nullptr;
 
-	//* MappingContext 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
 
-	//* Jump Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionJump = nullptr;
 

@@ -18,6 +18,7 @@ public:
 	UCInteract(const FObjectInitializer& ObjectInitializer);
 
 	virtual void BeginPlay() override;
+
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
 

@@ -26,7 +26,7 @@ public class JUtils: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine"
+			"CoreUObject", "Engine", "EnhancedInput",
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
@@ -35,7 +35,7 @@ public class JUtils: ModuleRules
 		
 		if (Target.bBuildEditor)
 		{
-			// PrivateDependencyModuleNames.AddRange(new string[]{});
+			PrivateDependencyModuleNames.AddRange(new string[]{ "UnrealEd"});
 		}
 	}
 }

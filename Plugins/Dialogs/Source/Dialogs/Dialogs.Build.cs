@@ -26,7 +26,7 @@ public class Dialogs: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "UMG"
+			"CoreUObject", "Engine", "UMG", "EnhancedInput", "JUtils"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

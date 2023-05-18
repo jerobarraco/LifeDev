@@ -13,12 +13,10 @@ public class Interact: ModuleRules
 				// ... add public include paths required here ...
 		});
 				
-		
 		PrivateIncludePaths.AddRange(new string[] {
 				// ... add other private include paths required here ...
 		});
 			
-		
 		// ... add other public dependencies that you statically link with here ...
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
