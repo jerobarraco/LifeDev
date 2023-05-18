@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h" // for the get object
 #include "GameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -43,19 +44,23 @@ ALCharacter::ALCharacter(): Super()
 	UIClass = UGameUI::StaticClass();
 	
 	SetActorTickEnabled(false);
-	// TODO find a better option 
-	// static ConstructorHelpers::FClassFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Core/Input/IMC_Default"));
-	// Mapping = DefaultMapping.Class.GetDefaultObject();
-	
-	// static ConstructorHelpers::FClassFinder<UInputAction> CActionJump(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Jump"));
-	// ActionJump = CActionJump.Class.GetDefaultObject();
-	// static ConstructorHelpers::FClassFinder<UInputAction> CActionLook(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Look"));
-	// ActionLook = CActionLook.Class.GetDefaultObject();
-	// static ConstructorHelpers::FClassFinder<UInputAction> CActionMove(TEXT("/Game/LifeDev/Core/Input/Actions/IA_Move"));
-	// ActionMove = CActionMove.Class.GetDefaultObject();
-
-	// maybe this?
-	// return Cast(StaticLoadObject( UInputMappingContext::StaticClass(), NULL, TEXT("/Game/Content/LifeDev/Core/Input/IMC_Default")));
+	// load the ui class here with the class finder.
+	// and also all the other default objects
+	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
+	UIClass = DefaultUI.Class;
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
+	Mapping = DefaultMapping.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionJump(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Jump"));
+	ActionJump = CActionJump.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Look"));
+	ActionLook = CActionLook.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionMove(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Move"));
+	ActionMove = CActionMove.Object;
+	// This version does NOT work
+	// static ConstructorHelpers::FClassFinder<UInputAction> CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
+	// ActionInteract = CActionInteract.Class.GetDefaultObject();
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
+	ActionInteract = CActionInteract.Object;
 }
 
 void ALCharacter::SetUIVisible(bool Visible) {
@@ -66,12 +71,12 @@ void ALCharacter::SetUIVisible(bool Visible) {
 // void ALCharacter::InteractToggle(bool IsOn, UCInteract* Comp) {
 // }
 
-void ALCharacter::InteractStart(UCInteract* Comp) {
+void ALCharacter::InteractBegin(UCInteract* Comp) {
 	if (IsValid(UI)) {
 		UI->InteractShowPrompt(Comp->Text);
 	}
 }
-void ALCharacter::InteractStop(UCInteract* Comp) {
+void ALCharacter::InteractEnd(UCInteract* Comp) {
 	if (IsValid(UI)) {
 		UI->InteractHidePrompt();
 	}
@@ -109,13 +114,13 @@ void ALCharacter::BeginPlay()
 		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
 	}
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
-	Interactor->OnStart.AddUniqueDynamic(this, &ALCharacter::InteractStart);
-	Interactor->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractStop);
+	Interactor->OnBegin.AddUniqueDynamic(this, &ALCharacter::InteractBegin);
+	Interactor->OnEnd.AddUniqueDynamic(this, &ALCharacter::InteractEnd);
 
 	UWorld* const World = GetWorld();
 	UDialogs* const UlDialogs = World->GetSubsystem<UDialogs>();
 	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
-	UlDialogs->OnStop.AddUniqueDynamic(this, &ALCharacter::InteractResume);
+	UlDialogs->OnHide.AddUniqueDynamic(this, &ALCharacter::InteractResume);
 }
 
 void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -135,15 +140,15 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
 	//Jumping
-	Input->BindAction(InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	Input->BindAction(InputJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 	//Moving
-	Input->BindAction(InputMove, ETriggerEvent::Triggered, this, &ALCharacter::ActMove);
+	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALCharacter::ActMove);
 
 	//Looking
-	Input->BindAction(InputLook, ETriggerEvent::Triggered, this, &ALCharacter::ActLook);
-	Input->BindAction(InputInteract, ETriggerEvent::Triggered, this, &ALCharacter::ActInteract);
+	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALCharacter::ActLook);
+	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALCharacter::ActInteract);
 }
 
 

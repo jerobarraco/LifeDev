@@ -28,7 +28,7 @@ public:
 	FDiagOnShow OnShow;
 	
 	UPROPERTY(BlueprintAssignable)
-	FDiagOnStop OnStop;
+	FDiagOnStop OnHide;
 
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable)

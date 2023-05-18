@@ -17,6 +17,7 @@ public:
 
 	UCInteract(const FObjectInitializer& ObjectInitializer);
 
+	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
 
@@ -44,4 +45,7 @@ public:
 	// Mesh to automatically highlight, if any.
 	UPROPERTY(BlueprintReadWrite, Category=SetUP)
 	UStaticMeshComponent* HoverMesh = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPostProcessComponent* PostProcess = nullptr;
 };

@@ -41,6 +41,6 @@ void UDialogs::Stop() {
 	if (!IsShowing) return;
 	IsShowing = false;
 
-	OnStop.Broadcast();
+	OnHide.Broadcast();
 }
 #pragma optimize("", on)

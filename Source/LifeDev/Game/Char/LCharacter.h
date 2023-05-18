@@ -41,27 +41,27 @@ public:
 
 	//* Jump Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputAction* InputJump;
+	UInputAction* ActionJump = nullptr;
 
 	//* Move Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputAction* InputMove;
+	UInputAction* ActionMove = nullptr;
 		
 	//* Look Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
-	UInputAction* InputLook;
+	UInputAction* ActionLook = nullptr;
 
 	//* Interact Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
-	UInputAction* InputInteract;
+	UInputAction* ActionInteract = nullptr;
 
 protected:
 	// UFUNCTION()
 	// void InteractToggle(bool IsOn, UCInteract* Comp);
 	UFUNCTION()
-	void InteractStart(UCInteract* Comp);
+	void InteractBegin(UCInteract* Comp);
 	UFUNCTION()
-	void InteractStop(UCInteract* Comp);
+	void InteractEnd(UCInteract* Comp);
 
 	UFUNCTION()
 	void InteractPause(const FDialog& Diag);

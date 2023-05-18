@@ -8,8 +8,8 @@ class UCInteract;
 class UInteractorUI;
 class UArrowComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStarts, UCInteract*, Comp);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractStop, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractBegin, UCInteract*, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
 
 // Will be interacting with interact objects
@@ -32,10 +32,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractToggle OnToggle;
+	// triggered when it begins hovering an interact
 	UPROPERTY(BlueprintAssignable)
-	FOnInteractStarts OnStart;
+	FOnInteractBegin OnBegin;
+	// triggered when ends hovering an interact
 	UPROPERTY(BlueprintAssignable)
-	FOnInteractStop OnStop;
+	FOnInteractEnd OnEnd;
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

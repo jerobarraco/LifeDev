@@ -64,7 +64,7 @@ void UCInteractor::DoEnd() {
 		InterComp->Hover(false);
 	}
 	OnToggle.Broadcast(false, InterComp);
-	OnStop.Broadcast(InterComp);
+	OnEnd.Broadcast(InterComp);
 
 	InterComp = nullptr;
 }
@@ -87,6 +87,6 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	InterComp->Hover(true);
 
 	OnToggle.Broadcast(true, InterComp);
-	OnStart.Broadcast(InterComp);
+	OnBegin.Broadcast(InterComp);
 }
 #pragma optimize("", on)

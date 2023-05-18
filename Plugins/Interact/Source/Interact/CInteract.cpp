@@ -11,6 +11,26 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetGenerateOverlapEvents(false);
 	UBoxComponent::SetComponentTickEnabled(false);
+		
+	PostProcess = CreateDefaultSubobject<UPostProcessComponent>(TEXT("PostProcess"));
+	PostProcess->SetupAttachment(this);
+	PostProcess->bUnbound = false;
+	// this only works on the constructor
+	// https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/ProgrammingWithCPP/Assets/ReferencingAssets/
+	// /Script/Engine.MaterialInstanceConstant'/Interact/MI_PostHover.MI_PostHover'
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> MatObj(TEXT("/Interact/MI_PostHover"));
+    if (MatObj.Succeeded()) {
+        PostProcess->Settings.WeightedBlendables.Array.Add({1, MatObj.Object});
+    }
+}
+
+void UCInteract::BeginPlay() {
+	Super::BeginPlay();
+	if (!IsValid(HoverMesh)){
+		PostProcess->SetActive(false);
+		PostProcess->SetVisibility(false);
+		PostProcess->bEnabled = false;
+	}
 }
 
 void UCInteract::Trigger() const {
