@@ -112,7 +112,7 @@ void ALCharacter::BeginPlay()
 	UWorld* const World = GetWorld();
 	UDialogs* const UlDialogs = World->GetSubsystem<UDialogs>();
 	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
-	UlDialogs->OnHide.AddUniqueDynamic(this, &ALCharacter::InteractResume);
+	UlDialogs->OnDone.AddUniqueDynamic(this, &ALCharacter::InteractResume);
 }
 
 void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {

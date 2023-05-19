@@ -30,7 +30,7 @@ void ADialogManager::Init() {
 	if (!IsValid(Dialogs)) return;
 
 	Dialogs->OnShow.AddUniqueDynamic(this, &ADialogManager::Show);
-	Dialogs->OnHide.AddUniqueDynamic(this, &ADialogManager::Stop);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADialogManager::Stop);
 }
 
 void ADialogManager::DeInit() {

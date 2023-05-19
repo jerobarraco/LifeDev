@@ -32,10 +32,10 @@ void ALGGameMode::Init() {
 
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
-	if (IsValid(Settings) && IsValid(Dialogs) && Chapter < Settings->ChapDialogs.Num())  {
+	if (IsValid(Settings) && IsValid(Dialogs) && Chapter < Settings->ChapDialogs.Num() && Chapter<Settings->Sequences.Num())  {
 		UDataTable* const DT = Settings->ChapDialogs[Chapter].LoadSynchronous();
 		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
-		UDataTable* const Seqs = Settings->Sequences.LoadSynchronous();
+		UDataTable* const Seqs = Settings->Sequences[Chapter].LoadSynchronous();
 		Dialogs->Load(DT, Chars, Seqs);
 	}
 }

@@ -30,7 +30,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsReady = false;
 	
-	// this is stub. the manager will handle this.
+	// the manager will handle this.
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FDialogUIDone OnDone;
 	

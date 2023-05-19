@@ -20,19 +20,23 @@ class DIALOGS_API UDialogs : public UWorldSubsystem
 public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void Add(const FDialog& Diag);
-
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddId(const FName& Row, FDialog& OutDialog, FDialogChar& OutChar);
-
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddMany(const TArray<FDialog>& Seq);
-	
+
 	// Use this to AddManyById
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars);
-	
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars);
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetChar(const FName& RowName, FDialogChar& OutChar) const;
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq) const;
 
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
@@ -44,18 +48,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void UnLoad();
 
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetChar(const FName& RowName, FDialogChar& OutChar) const;
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq) const;
-
+	// when a dialog needs to show
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
-	
+
+	// when there are no more dialogs to show now
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
-	FDiagOnStop OnHide;
+	FDiagOnStop OnDone;
 
 protected:
 
