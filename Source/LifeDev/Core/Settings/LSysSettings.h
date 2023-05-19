@@ -6,7 +6,11 @@
 
 class UDataTable;
 
-UCLASS(Config=LifeDevSysSettings, DefaultConfig, meta=(DisplayName="LifeDev System Settings"))
+// Note the Config meta tag on the properties are critical or it might crash
+
+
+// Settings for the game (to be built)
+UCLASS(Config=LDSettings, defaultconfig, meta=(DisplayName="LifeDevSystemSettings"))
 class LIFEDEV_API ULSysSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
@@ -17,6 +21,9 @@ public:
 	virtual FName GetCategoryName() const override;
 
 	// The dialogs for each chapter
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Dialogs")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="Dialog"))
 	TArray<TSoftObjectPtr<UDataTable>> ChapDialogs;
+	// The list of characters
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="DialogChar"))
+	TSoftObjectPtr<UDataTable> Characters = nullptr;
 };

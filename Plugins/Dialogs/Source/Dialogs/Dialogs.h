@@ -29,11 +29,16 @@ public:
 	void DiagDone();
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void Load(UDataTable* AllDialogs);
+	void Load(UDataTable* AllDialogs, UDataTable* Chars);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetDiag(const FName& RowName, FDialog& OutRow);
-	
+	void UnLoad();
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetChar(const FName& RowName, FDialogChar& OutChar) const;
+
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
 	
@@ -47,6 +52,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDataTable* AllDiags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDataTable* AllChars = nullptr;
+	
 	FDialogSeq Pending;
 	bool IsShowing = false;
 };

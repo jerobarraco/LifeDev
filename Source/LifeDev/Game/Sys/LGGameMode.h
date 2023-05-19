@@ -24,9 +24,14 @@ public:
 	void Init();
 
 	virtual void BeginPlay() override;
-
+	void DeInit();
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ADialogManager* DiagManager = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	int32 Chapter = 1; // Maybe this could be on the game instance. ?
 };
 
 

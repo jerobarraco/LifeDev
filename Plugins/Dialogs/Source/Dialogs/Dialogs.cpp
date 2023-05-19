@@ -19,18 +19,31 @@ void UDialogs::DiagDone() {
 	ShowNext();
 }
 
-void UDialogs::Load(UDataTable* AllDialogs) {
-	AllDiags = nullptr;
-	if (!IsValid(AllDialogs)) return;
-	AllDiags = AllDialogs;
+void UDialogs::Load(UDataTable* AllDialogs, UDataTable* Chars) {
+	AllDiags = IsValid(AllDialogs)? AllDialogs : nullptr;
+	AllChars = IsValid(Chars)? Chars: nullptr;
 }
 
-bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow) {
+void UDialogs::UnLoad() {
+	AllDiags = nullptr;
+	AllChars = nullptr;
+}
+
+bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
 	if (!IsValid(AllDiags)) return false;
 	const FDialog* const Row = AllDiags->FindRow<FDialog>(RowName, TEXT(""));
 	if (!Row) return false;
 
-	OutRow = *Row; // here im coping, which s-u-x. but blueprints wont take a pointer.
+	OutRow = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
+	return GetChar(OutRow.CharRow, OutChar);
+}
+
+bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
+	if (!IsValid(AllChars)) return false;
+	const FDialogChar* const Row = AllChars->FindRow<FDialogChar>(RowName, TEXT(""));
+	if (!Row) return false;
+
+	OutChar = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
 	return true;
 }
 

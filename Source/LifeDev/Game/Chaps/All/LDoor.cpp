@@ -11,6 +11,8 @@ ALDoor::ALDoor(const FObjectInitializer& ObjectInitializer):Super(ObjectInitiali
 		FVector(25,80,125),
 		FVector::OneVector
 	));
+	static ConstructorHelpers::FObjectFinder<UCurveFloat> CActionJump(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/C_Door00"));
+	RotCurve = CActionJump.Object;
 }
 
 void ALDoor::BeginPlay() {

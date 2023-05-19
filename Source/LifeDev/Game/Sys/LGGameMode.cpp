@@ -32,10 +32,10 @@ void ALGGameMode::Init() {
 
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
-	constexpr uint8 ChapId = 1;
-	if (IsValid(Settings) && IsValid(Dialogs) && ChapId < Settings->ChapDialogs.Num())  {
-		UDataTable* const DT = Settings->ChapDialogs[ChapId].LoadSynchronous();
-		Dialogs->Load(DT);
+	if (IsValid(Settings) && IsValid(Dialogs) && Chapter < Settings->ChapDialogs.Num())  {
+		UDataTable* const DT = Settings->ChapDialogs[Chapter].LoadSynchronous();
+		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
+		Dialogs->Load(DT, Chars);
 	}
 }
 
@@ -43,4 +43,19 @@ void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 
 	Init();
+}
+
+void ALGGameMode::DeInit() {
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
+	if (!IsValid(Dialogs)) return;
+	Dialogs->UnLoad();
+
+	DiagManager = nullptr;
+}
+
+void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	DeInit();
+	Super::EndPlay(EndPlayReason);
 }
