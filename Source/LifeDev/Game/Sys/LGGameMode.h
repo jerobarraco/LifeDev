@@ -9,6 +9,7 @@
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
+class ADialogManager;
 
 // Game mode class 
 UCLASS(Blueprintable)
@@ -20,9 +21,12 @@ public:
 	ALGGameMode();
 
 	UFUNCTION(BlueprintCallable)
-	void Init() const;
+	void Init();
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ADialogManager* DiagManager = nullptr;
 };
 
 

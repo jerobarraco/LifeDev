@@ -3,18 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/GameUserSettings.h"
+
 #include "LSettings.generated.h"
 
 // used for user settings
 UCLASS(config = MySetting)
-class LIFEDEV_API ULSettings : public UObject
+class LIFEDEV_API ULSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
 
 public:
 	ULSettings(const FObjectInitializer& obj);
-
-
+	
 	// UPROPERTY(Config, EditAnywhere, Category = "My Custom Settings")
 	// int32 CustomInteger;
 };

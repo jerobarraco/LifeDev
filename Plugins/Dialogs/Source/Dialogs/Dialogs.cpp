@@ -19,6 +19,21 @@ void UDialogs::DiagDone() {
 	ShowNext();
 }
 
+void UDialogs::Load(UDataTable* AllDialogs) {
+	AllDiags = nullptr;
+	if (!IsValid(AllDialogs)) return;
+	AllDiags = AllDialogs;
+}
+
+bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow) {
+	if (!IsValid(AllDiags)) return false;
+	const FDialog* const Row = AllDiags->FindRow<FDialog>(RowName, TEXT(""));
+	if (!Row) return false;
+
+	OutRow = *Row; // here im coping, which s-u-x. but blueprints wont take a pointer.
+	return true;
+}
+
 void UDialogs::ShowNext() {
 	if (IsShowing) return;
 	// this is important for stop to work correctly.

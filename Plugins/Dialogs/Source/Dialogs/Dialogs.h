@@ -12,34 +12,41 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnStop);
 
 // World subsystem to deal with dialogs
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Category="Dialogs")
 class DIALOGS_API UDialogs : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void Add(const FDialog& Diag);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddSeq(const TArray<FDialog>& Seq);
 
-	UPROPERTY(BlueprintAssignable)
+	// called by the dialog manager when a dialogue is done showing
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void DiagDone();
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void Load(UDataTable* AllDialogs);
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetDiag(const FName& RowName, FDialog& OutRow);
+	
+	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
 	
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnStop OnHide;
-
-	// called by the dialog manager when a dialogue is done showing
-	UFUNCTION(BlueprintCallable)
-	void DiagDone();
 
 protected:
 
 	void ShowNext();
 	void Stop();
 	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDataTable* AllDiags = nullptr;
 	FDialogSeq Pending;
-
 	bool IsShowing = false;
 };

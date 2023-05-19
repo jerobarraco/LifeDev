@@ -7,8 +7,6 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/MiscUtils.h"
-
 #include "DialogUI.h"
 #include "Dialogs.h"
 #include "JUtils/JMiscUtils.h"
@@ -59,9 +57,9 @@ void ADialogManager::Show(const FDialog& Diag) {
 		return;
 	}
 
-	UI->Show(Diag);
 	// we need to actually add and remove so that it doesn't eat the input while not showing
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
+	UI->Show(Diag);
 }
 
 void ADialogManager::Stop() {
@@ -109,6 +107,7 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ADialogManager::UIDone() {
 	if (!IsValid(Dialogs)) return;
+	IsShowing = false;
 	Dialogs->DiagDone();
 }
 

@@ -2,10 +2,12 @@
 
 #include "LGGameMode.h"
 
-#include "Dialogs/DialogManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
+#include "Dialogs/DialogManager.h"
+
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
 
 ALGGameMode::ALGGameMode():Super() {
@@ -17,11 +19,23 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = ALCharacter::StaticClass();
 }
 
-void ALGGameMode::Init() const {
+void ALGGameMode::Init() {
 	// this is the place were we are going to be initializing everything. -Jero
-	ADialogManager* const DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ADialogManager::StaticClass()));
+
+	UWorld* const World = GetWorld();
+	DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
 	if (IsValid(DiagManager)) {
 		DiagManager->Init();
+	} else {
+		DiagManager = nullptr;
+	}
+
+	ULSysSettings* const Settings = ULSysSettings::Get();
+	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
+	constexpr uint8 ChapId = 1;
+	if (IsValid(Settings) && IsValid(Dialogs) && ChapId < Settings->ChapDialogs.Num())  {
+		UDataTable* const DT = Settings->ChapDialogs[ChapId].LoadSynchronous();
+		Dialogs->Load(DT);
 	}
 }
 

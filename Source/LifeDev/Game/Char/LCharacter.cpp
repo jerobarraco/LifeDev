@@ -15,7 +15,6 @@
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "JUtils/JMiscUtils.h"
-#include "JUtils/MiscUtils.h"
 
 // ALifeDevCharacter
 
@@ -150,7 +149,7 @@ void ALCharacter::ActMove(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 
-	if (!Controller )return;
+	if (!Controller) return;
 
 	const FVector2D& MovementVector = Value.Get<FVector2D>();
 	// add movement 
