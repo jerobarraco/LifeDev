@@ -26,4 +26,7 @@ public:
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="DialogChar"))
 	TSoftObjectPtr<UDataTable> Characters = nullptr;
+	// The list of sequences
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="DialogChar"))
+	TSoftObjectPtr<UDataTable> Sequences = nullptr;
 };

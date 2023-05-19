@@ -35,7 +35,8 @@ void ALGGameMode::Init() {
 	if (IsValid(Settings) && IsValid(Dialogs) && Chapter < Settings->ChapDialogs.Num())  {
 		UDataTable* const DT = Settings->ChapDialogs[Chapter].LoadSynchronous();
 		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
-		Dialogs->Load(DT, Chars);
+		UDataTable* const Seqs = Settings->Sequences.LoadSynchronous();
+		Dialogs->Load(DT, Chars, Seqs);
 	}
 }
 

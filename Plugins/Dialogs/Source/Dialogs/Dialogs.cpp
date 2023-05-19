@@ -9,9 +9,53 @@ void UDialogs::Add(const FDialog& Diag) {
 	ShowNext();
 }
 
-void UDialogs::AddSeq(const TArray<FDialog>& Seq) {
+void UDialogs::AddMany(const TArray<FDialog>& Seq) {
 	Pending.Append(Seq);	
 	ShowNext();
+}
+
+bool UDialogs::AddId(const FName& Row, FDialog& OutDialog, FDialogChar& OutChar) {
+	const bool Ok = GetDiag(Row, OutDialog, OutChar);
+	if (!Ok) return false;
+
+	Add(OutDialog);
+	return true;
+}
+
+bool UDialogs::AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars) {
+	OutDialogs.Empty();
+	OutChars.Empty();
+
+	const TArray<FName>& Rows = Seq.DiagRows;
+	const int32 Num = Rows.Num();
+	OutDialogs.Reserve(Num);
+	OutChars.Reserve(Num);
+
+	// success is whether they succeeded all at once
+	bool Success = true;
+	for (int32 i =0; i<Num; ++i) {
+		const FName& Row = Rows[i];
+		FDialog Diag; FDialogChar Char;
+		const bool Ok = GetDiag(Row, Diag, Char);
+		if (!Ok) {
+			Success = false;
+			continue;
+		}
+
+		OutDialogs.Add(Diag);
+		OutChars.Add(Char);
+	}
+
+	AddMany(OutDialogs);
+	
+	return Success;
+}
+
+bool UDialogs::AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars) {
+	const bool Ok = GetSeq(RowName, OutSeq);
+	if (!Ok) return false;
+	
+	return AddSeq(OutSeq, OutDiags, OutChars);
 }
 
 void UDialogs::DiagDone() {
@@ -19,31 +63,55 @@ void UDialogs::DiagDone() {
 	ShowNext();
 }
 
-void UDialogs::Load(UDataTable* AllDialogs, UDataTable* Chars) {
-	AllDiags = IsValid(AllDialogs)? AllDialogs : nullptr;
-	AllChars = IsValid(Chars)? Chars: nullptr;
+void UDialogs::Load(UDataTable* AllDialogs, UDataTable* AllChars, UDataTable* AllSeqs) {
+	Diags = IsValid(AllDialogs)? AllDialogs : nullptr;
+	Chars = IsValid(AllChars)? AllChars: nullptr;
+	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
 }
 
 void UDialogs::UnLoad() {
-	AllDiags = nullptr;
-	AllChars = nullptr;
+	Diags = nullptr;
+	Chars = nullptr;
+	Seqs = nullptr;
 }
 
 bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
-	if (!IsValid(AllDiags)) return false;
-	const FDialog* const Row = AllDiags->FindRow<FDialog>(RowName, TEXT(""));
-	if (!Row) return false;
+	if (!IsValid(Diags)) return false;
+
+	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""));
+	if (!Row) {
+		UE_LOG(LogTemp, Warning, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
+		return false;
+	}
 
 	OutRow = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
-	return GetChar(OutRow.CharRow, OutChar);
+	GetChar(OutRow.CharRow, OutChar); // ignore if the char is not found for the result, we only care about dialogs
+	return true;
 }
 
 bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
-	if (!IsValid(AllChars)) return false;
-	const FDialogChar* const Row = AllChars->FindRow<FDialogChar>(RowName, TEXT(""));
-	if (!Row) return false;
+	if (!IsValid(Chars)) return false;
+
+	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""));
+	if (!Row)  {
+		UE_LOG(LogTemp, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
+		return false;
+	}
 
 	OutChar = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
+	return true;
+}
+
+bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
+	if (!IsValid(Seqs)) return false;
+
+	const FDialogSequence* const Row = Seqs->FindRow<FDialogSequence>(RowName, TEXT(""));
+	if (!Row) {
+		UE_LOG(LogTemp, Warning, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
+		return false;
+	}
+
+	OutSeq = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
 	return true;
 }
 

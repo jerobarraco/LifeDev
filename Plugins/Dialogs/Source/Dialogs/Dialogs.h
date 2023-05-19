@@ -22,14 +22,24 @@ public:
 	void Add(const FDialog& Diag);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void AddSeq(const TArray<FDialog>& Seq);
+	bool AddId(const FName& Row, FDialog& OutDialog, FDialogChar& OutChar);
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void AddMany(const TArray<FDialog>& Seq);
+	
+	// Use this to AddManyById
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars);
+	
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars);
 
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void Load(UDataTable* AllDialogs, UDataTable* Chars);
+	void Load(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void UnLoad();
@@ -38,6 +48,8 @@ public:
 	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetChar(const FName& RowName, FDialogChar& OutChar) const;
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq) const;
 
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
@@ -51,10 +63,12 @@ protected:
 	void Stop();
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDataTable* AllDiags = nullptr;
+	UDataTable* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDataTable* AllChars = nullptr;
+	UDataTable* Chars = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDataTable* Seqs = nullptr;
 	
-	FDialogSeq Pending;
+	TArray<FDialog> Pending;
 	bool IsShowing = false;
 };

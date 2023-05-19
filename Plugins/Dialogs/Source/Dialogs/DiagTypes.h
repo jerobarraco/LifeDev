@@ -28,7 +28,16 @@ public:
 	FText Text;
 };
 
-typedef TArray<FDialog> FDialogSeq;
+// The base structure for dialog sequences
+USTRUCT(Blueprintable, BlueprintType)
+struct DIALOGS_API FDialogSequence: public FTableRowBase {
+	GENERATED_BODY()
+
+public:
+	// this is the row name in the datatable of type FChar
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> DiagRows;
+};
 
 // chars
 // structure to define a character
