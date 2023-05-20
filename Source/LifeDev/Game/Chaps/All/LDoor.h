@@ -8,7 +8,7 @@
 class UCInteract;
 
 // Helps define an interaction volume
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, meta=(DeprecatedNode, DeprecationMessage="Use AInteractAnim"))
 class LIFEDEV_API ALDoor: public AInteract {
 public:
 	GENERATED_BODY()

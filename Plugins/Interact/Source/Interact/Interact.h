@@ -33,7 +33,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();
-	
+
+	// the root for animations, and positioning the mesh.
+	// Don't change the transform of this guy. change the transform of the children.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* IRoot = nullptr;
 	

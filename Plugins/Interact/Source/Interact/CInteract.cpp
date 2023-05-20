@@ -7,11 +7,12 @@
 UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	bNavigationRelevant = false;
+	bCanEverAffectNavigation = false;
 	UBoxComponent::SetCollisionProfileName("BlockAllDynamic");
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetGenerateOverlapEvents(false);
 	UBoxComponent::SetComponentTickEnabled(false);
-		
+	
 	PostProcess = CreateDefaultSubobject<UPostProcessComponent>(TEXT("PostProcess"));
 	PostProcess->SetupAttachment(this);
 	PostProcess->bUnbound = false;
