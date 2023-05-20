@@ -35,6 +35,9 @@ protected:
 	void SetInteractAutoBounds();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	USceneComponent* IRoot = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
