@@ -11,13 +11,15 @@ ALDoor::ALDoor(const FObjectInitializer& ObjectInitializer):Super(ObjectInitiali
 		FVector(25,80,125),
 		FVector::OneVector
 	));
+	// TODO consider adding an extra scene component to the interact between the root and the mesh
+	// and rotate that.
 	static ConstructorHelpers::FObjectFinder<UCurveFloat> CActionJump(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/C_Door00"));
 	RotCurve = CActionJump.Object;
 }
 
 void ALDoor::BeginPlay() {
 	Super::BeginPlay();
-	RotClosed = GetActorRotation();
+	RotClosed = Mesh->GetRelativeRotation();
 	RotOpen = RotClosed + Rot;
 }
 
@@ -32,7 +34,7 @@ void ALDoor::Tick(float DT) {
 	// not using a lerp because lerping with rotations has the nice properties that -90 becomes 270 and spins the other way around
 	const float Alpha = IsValid(RotCurve)? RotCurve->GetFloatValue(RotProgress) : RotProgress;
 	FRotator NewRot = RotStart + (RotDelta*Alpha);
-	SetActorRotation(NewRot);
+	Mesh->SetRelativeRotation(NewRot);
 	
 	if (RotProgress>1) SetIsRotating(false);
 }

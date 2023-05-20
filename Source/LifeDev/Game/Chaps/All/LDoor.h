@@ -42,7 +42,7 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetIsRotating(bool NewIsRotating);
-	
+	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsOpen = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
