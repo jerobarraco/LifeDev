@@ -33,7 +33,7 @@ void ALDoor::Tick(float DT) {
 
 	// not using a lerp because lerping with rotations has the nice properties that -90 becomes 270 and spins the other way around
 	const float Alpha = IsValid(RotCurve)? RotCurve->GetFloatValue(RotProgress) : RotProgress;
-	FRotator NewRot = RotStart + (RotDelta*Alpha);
+	const FRotator& NewRot = RotStart + (RotDelta*Alpha);
 	Mesh->SetRelativeRotation(NewRot);
 	
 	if (RotProgress>1) SetIsRotating(false);
