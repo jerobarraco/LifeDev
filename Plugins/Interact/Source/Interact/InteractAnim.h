@@ -35,7 +35,7 @@ public:
 	
 	// The animation transform
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FTransform TAnim;
+	FTransform TAnim = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::ZeroVector);
 
 protected:
 	virtual void BeginPlay() override;
