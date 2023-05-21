@@ -4,7 +4,7 @@
 
 #include "CInteract.h"
 
-AInteract::AInteract(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer) {
+AInteract::AInteract():Super() {
 	// super important or it will NOT work
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;

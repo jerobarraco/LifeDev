@@ -5,8 +5,8 @@
 #include "Interact/CInteract.h"
 
 
-AInteractAnim::AInteractAnim(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer) {
-	static ConstructorHelpers::FObjectFinder<UCurveFloat> CCurve(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/C_Door00"));
+AInteractAnim::AInteractAnim():Super() {
+	static ConstructorHelpers::FObjectFinder<UCurveFloat> CCurve(TEXT("/Interact/C_Interact.C_Interact"));
 	AnimCurve = CCurve.Object;
 }
 
@@ -15,7 +15,6 @@ void AInteractAnim::BeginPlay() {
 	TClosed = IRoot->GetRelativeTransform();
 	TClosed.BlendFromIdentityAndAccumulate(TOpen, TAnim, (ScalarOne));
 }
-
 
 void AInteractAnim::Tick(float DT) {
 	Super::Tick(DT);

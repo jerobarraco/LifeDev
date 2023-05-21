@@ -13,7 +13,7 @@ class INTERACT_API AInteract: public AActor {
 public:
 	GENERATED_BODY()
 
-	AInteract(const FObjectInitializer& ObjectInitializer);
+	AInteract();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Trigger();

@@ -5,13 +5,13 @@
 
 #include "InteractAnim.generated.h"
 
-// Helps define an interaction volume
+// An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteractAnim: public AInteract {
 public:
 	GENERATED_BODY()
 
-	AInteractAnim(const FObjectInitializer& ObjectInitializer);
+	AInteractAnim();
 
 	virtual void Trigger_Implementation() override;
 	
