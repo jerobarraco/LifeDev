@@ -7,8 +7,8 @@
 AInteract::AInteract(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer) {
 	// super important or it will NOT work
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 	SetActorTickEnabled(false); // ensure we don't animate on start
-
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
 	IRoot = CreateDefaultSubobject<USceneComponent>(TEXT("IRoot"));
