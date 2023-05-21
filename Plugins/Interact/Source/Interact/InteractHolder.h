@@ -5,6 +5,7 @@
 
 #include "InteractHolder.generated.h"
 
+// TODO this class is broken. find a better way to achieve this.
 // An interactive actor that can have an animation and hold an item
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteractHolder: public AInteractAnim {
