@@ -1,4 +1,4 @@
-// Copyright Jerónimo Barraco-Mármol
+// Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
 

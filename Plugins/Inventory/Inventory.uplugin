@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Inventory",
+	"Description": "Inventory system",
+	"Category": "Utilities",
+	"CreatedBy": "Jeronimo Barraco-Marmol",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
+	"Modules": [
+		{
+			"Name": "Inventory",
+			"Type": "RuntimeAndProgram",
+			"LoadingPhase": "PostEngineInit"
+		}
+	],
+	"Plugins": []
+}

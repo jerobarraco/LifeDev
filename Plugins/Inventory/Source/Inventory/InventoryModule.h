@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 
-class INTERACT_API FInteractModule : public IModuleInterface
+class INVENTORY_API FInventoryModule : public IModuleInterface
 {
 public:
 	virtual void StartupModule() override;
