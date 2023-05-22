@@ -20,13 +20,17 @@ public:
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
 
+	// The list of items
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory", meta=(RowType="Item"))
+	TSoftObjectPtr<UDataTable> Inventory = nullptr;
+
 	// The list of characters
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="DialogChar"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType="DialogChar"))
 	TSoftObjectPtr<UDataTable> Characters = nullptr;
 	// The dialogs for each chapter
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="Dialog"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType="Dialog"))
 	TArray<TSoftObjectPtr<UDataTable>> ChapDialogs;
 	// The list of sequences
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, AdvancedDisplay, Category="Dialogs", meta=(RowType="DialogChar"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType="DialogChar"))
 	TArray<TSoftObjectPtr<UDataTable>> Sequences;
 };

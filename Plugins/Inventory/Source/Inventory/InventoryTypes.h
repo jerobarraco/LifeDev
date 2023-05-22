@@ -21,3 +21,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<AActor> Obj = nullptr;
 };
+
+// The base structure for holding items
+USTRUCT(Blueprintable, BlueprintType)
+struct INVENTORY_API FSlot: public FTableRowBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Count = 0;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FItem Item;
+};

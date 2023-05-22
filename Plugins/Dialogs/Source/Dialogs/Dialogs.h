@@ -43,10 +43,10 @@ public:
 	void DiagDone();
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void Load(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
+	void Init(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void UnLoad();
+	void DeInit();
 
 	// when a dialog needs to show
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")

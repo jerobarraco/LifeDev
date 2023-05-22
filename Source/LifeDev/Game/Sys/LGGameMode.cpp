@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "Dialogs/DialogManager.h"
+#include "Inventory/Inventory.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
@@ -23,6 +24,7 @@ void ALGGameMode::Init() {
 	// this is the place were we are going to be initializing everything. -Jero
 
 	UWorld* const World = GetWorld();
+	/// Dialogs
 	DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
 	if (IsValid(DiagManager)) {
 		DiagManager->Init();
@@ -36,8 +38,13 @@ void ALGGameMode::Init() {
 		UDataTable* const DT = Settings->ChapDialogs[Chapter].LoadSynchronous();
 		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
 		UDataTable* const Seqs = Settings->Sequences[Chapter].LoadSynchronous();
-		Dialogs->Load(DT, Chars, Seqs);
+		Dialogs->Init(DT, Chars, Seqs);
 	}
+
+
+	/// Inventory
+	UInventory* const Inventory =  World->GetSubsystem<UInventory>();
+	Inventory->Init(nullptr);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -51,7 +58,10 @@ void ALGGameMode::DeInit() {
 	if (!IsValid(World)) return;
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
 	if (!IsValid(Dialogs)) return;
-	Dialogs->UnLoad();
+	Dialogs->DeInit();
+	UInventory* const Inventory = World->GetSubsystem<UInventory>();
+	if (!IsValid(Inventory)) return;
+	Inventory->DeInit();
 
 	DiagManager = nullptr;
 }
