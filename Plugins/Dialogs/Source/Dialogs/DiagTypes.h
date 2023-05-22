@@ -50,7 +50,7 @@ public:
 	FText Name;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Dialogs")
-	FLinearColor Color;
+	FLinearColor Color = FLinearColor::Gray;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Dialogs")
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
