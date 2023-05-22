@@ -41,7 +41,6 @@ void ALGGameMode::Init() {
 		Dialogs->Init(DT, Chars, Seqs);
 	}
 
-
 	/// Inventory
 	UInventory* const Inventory =  World->GetSubsystem<UInventory>();
 	Inventory->Init(nullptr);

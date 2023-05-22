@@ -18,4 +18,12 @@ void UInventory::DeInit() {
 	Slots.Empty();
 }
 
+TMap<FName, int32> UInventory::GetItems() {
+	return Items; // purposely creating a copy
+}
+
+void UInventory::GetItems(const TMap<FName, int32>& NewItems) {
+	Items = NewItems;
+}
+
 #pragma optimize("", on)

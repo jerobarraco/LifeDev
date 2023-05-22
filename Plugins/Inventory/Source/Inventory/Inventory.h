@@ -22,7 +22,14 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
+
+	UFUNCTION(BlueprintCallable)
+	TMap<FName, int32> GetItems();
+
+	UFUNCTION(BlueprintCallable)
+	void GetItems(const TMap<FName, int32>& NewItems);
 	
+protected:
 	// TODO is a map better?
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FSlot> Slots;
@@ -30,7 +37,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, int32> Items;
 
-protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UDataTable* DT = nullptr;
 };
