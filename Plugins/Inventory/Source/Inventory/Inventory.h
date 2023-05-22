@@ -8,6 +8,7 @@
 #include "InventoryTypes.h"
 #include "Inventory.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FInventoryOnMod, const FName&, Name, const FItem&, Item, int32, NewCount);
 
 class UDataTable;
 // World subsystem to deal with Inventory
@@ -17,6 +18,18 @@ class INVENTORY_API UInventory : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
+
+	// regular ones ////////
+
+	// Used for Add, Rem, and Use
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Mod(const FName& Name, int32 Count);
+	
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Get(const FName& Name, FItem& OutItem, int32& OutCount);
+
+	
+	// system ones ////////
 	UFUNCTION(BlueprintCallable)
 	void Init(UDataTable* DataTable);
 	
@@ -27,8 +40,12 @@ public:
 	TMap<FName, int32> GetItems();
 
 	UFUNCTION(BlueprintCallable)
-	void GetItems(const TMap<FName, int32>& NewItems);
-	
+	void SetItems(const TMap<FName, int32>& NewItems);
+
+	// ~system
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	FInventoryOnMod OnMod;
+
 protected:
 	// TODO is a map better?
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

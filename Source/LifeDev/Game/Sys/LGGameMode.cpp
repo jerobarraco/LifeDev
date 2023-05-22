@@ -39,11 +39,13 @@ void ALGGameMode::Init() {
 		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
 		UDataTable* const Seqs = Settings->Sequences[Chapter].LoadSynchronous();
 		Dialogs->Init(DT, Chars, Seqs);
+	}else {
+		UE_LOG(LogTemp, Warning, TEXT("Did not loaded the dialog tables for some weird reason"));
 	}
 
 	/// Inventory
 	UInventory* const Inventory =  World->GetSubsystem<UInventory>();
-	Inventory->Init(nullptr);
+	Inventory->Init(Settings->Inventory.LoadSynchronous());
 }
 
 void ALGGameMode::BeginPlay() {
