@@ -5,6 +5,7 @@
 
 #include "Interact.generated.h"
 
+class UCAnimator;
 class UCInteract;
 
 // Base class for interact actors
@@ -22,6 +23,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
+
 
 protected:
 	virtual void BeginPlay() override;
