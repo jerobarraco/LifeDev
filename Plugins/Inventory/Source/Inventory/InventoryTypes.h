@@ -13,6 +13,8 @@ struct INVENTORY_API FItem: public FTableRowBase {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool Consumable = true;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Name;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Description;
