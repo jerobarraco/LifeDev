@@ -53,5 +53,5 @@ public:
 	FLinearColor Color;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Dialogs")
-	UTexture2D* Img = nullptr;
+	TSoftObjectPtr<UTexture2D> Img = nullptr;
 };

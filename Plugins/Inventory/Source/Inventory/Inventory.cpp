@@ -1,5 +1,4 @@
-// Copyright (C) 2023 Jeronimo Barraco-Marmol
-
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol
 
 #include "Inventory.h"
 
