@@ -14,24 +14,21 @@ struct INVENTORY_API FItem: public FTableRowBase {
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Consumable = true;
+	// an item that can be used, or only held. Tentative, might get removed
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool Usable = true;
+	// max allowed number of items, -1 is unlimited.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 MaxCount = -1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Name;
+	// the action text for this item
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FText Action;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Description;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<AActor> Obj = nullptr;
-};
-
-// The base structure for holding items
-USTRUCT(Blueprintable, BlueprintType)
-struct INVENTORY_API FSlot: public FTableRowBase {
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 Count = 0;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FItem Item;
 };

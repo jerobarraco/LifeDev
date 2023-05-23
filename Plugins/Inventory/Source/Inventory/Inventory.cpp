@@ -6,15 +6,22 @@
 
 #pragma optimize("", off)
 
-bool UInventory::Mod(const FName& Name, int32 Count) {
+bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 	FItem Item;
 	int32 Current;
 	const bool Found = Get(Name, Item, Current);
 	// the item does not exists, can't progress.
 	if (!Found) return false;
 
+	// calculate the difference. non-consumable are always 0. the rest are clamped to the produce (0, MaxCount)
+	OutDiff = Item.Consumable ? FMath::Clamp(Diff, -Current, Item.MaxCount - Current) : 0;
 	// for non-consumables use always -1, for consumables clamp at 0
-	Current = Item.Consumable ? FMath::Max(0, Count+Current) : -1;
+	Current = Item.Consumable ? FMath::Max(0, Current+OutDiff) : -1;
+
+	if (Item.Consumable && (Current <0 || Current > Item.MaxCount)) {
+		UE_LOG(LogTemp, Error, TEXT(" DONT LET THE RACOON DO MATH!! "));
+		return false;
+	}
 
 	// remove empty consumables
 	if (Item.Consumable && Current == 0) {
@@ -33,6 +40,7 @@ bool UInventory::Get(const FName& Name, FItem& OutItem, int32& OutCount) {
 
 	const FItem* const Item = DT->FindRow<FItem>(Name, TEXT(""));
 	if (!Item) return false;
+
 	// set the item anyway even if not found
 	OutItem = *Item;
 
@@ -53,7 +61,6 @@ void UInventory::Init(UDataTable* DataTable) {
 void UInventory::DeInit() {
 	DT = nullptr;
 	Items.Empty();
-	Slots.Empty();
 }
 
 TMap<FName, int32> UInventory::GetItems() {

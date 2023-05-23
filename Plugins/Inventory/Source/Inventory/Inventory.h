@@ -21,13 +21,13 @@ public:
 
 	// regular ones ////////
 
-	// Used for Add, Rem, and Use
+	// Used for Add, Rem, and Use. Returns false if not found.
+	// Note: It does check for maxCount but will return true even when capped.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Mod(const FName& Name, int32 Count);
-	
+	bool Mod(const FName& Name, int32 Diff, int32& OutDiff);
+
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Get(const FName& Name, FItem& OutItem, int32& OutCount);
-
 	
 	// system ones ////////
 	UFUNCTION(BlueprintCallable)
@@ -41,16 +41,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetItems(const TMap<FName, int32>& NewItems);
+	/// ~system
 
-	// ~system
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FInventoryOnMod OnMod;
 
 protected:
-	// TODO is a map better?
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FSlot> Slots;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, int32> Items;
 
