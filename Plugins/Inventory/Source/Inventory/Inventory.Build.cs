@@ -24,7 +24,7 @@ public class Inventory: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "EnhancedInput", "UMG"
+			"CoreUObject", "Engine", "EnhancedInput", "UMG", "JUtils"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

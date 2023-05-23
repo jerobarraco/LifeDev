@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 
 #include "InventoryUI.h"
+#include "JUtils/JMiscUtils.h"
 
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;
@@ -20,9 +21,29 @@ AInventoryManager::AInventoryManager():Super(){
 }
 
 void AInventoryManager::Init() {}
-void AInventoryManager::DeInit() {}
-void AInventoryManager::Show() {}
-void AInventoryManager::Hide() {}
+void AInventoryManager::DeInit() {
+	Hide();
+	if (IsValid(UI)) {
+		UI->RemoveFromParent();
+		UI->OnDone.RemoveAll(this);
+	}
+	UI = nullptr;
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
+}
+
+void AInventoryManager::Show() {
+	if (IsShowing) return;
+	IsShowing = true;
+	if (IsValid(UI)) {
+		UI->Show();
+	}
+}
+void AInventoryManager::Hide() {
+	if (IsValid(UI)) {
+		UI->Hide();
+	}
+	IsShowing = false;
+}
 
 void AInventoryManager::BeginPlay() {
 	Super::BeginPlay();
@@ -37,10 +58,24 @@ void AInventoryManager::BeginPlay() {
 		}
 	}
 	
+	UClass* const Class = UIClass.Get();
+	if (IsValid(Class)) {
+		UI = NewObject<UInventoryUI>(this, Class);
+		if (IsValid(UI)) {
+			UI->AddToViewport();
+			Hide();
+			UI->OnDone.AddUniqueDynamic(this, &AInventoryManager::UIDone);
+		}
+	}
+
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
 }
 
 void AInventoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
+	DeInit();
 }
 
-void AInventoryManager::UIDone() {}
+void AInventoryManager::UIDone() {
+	Hide();
+}

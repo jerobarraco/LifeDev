@@ -41,6 +41,7 @@ void ADialogManager::DeInit() {
 
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
+		UI->OnDone.RemoveAll(this);
 	}
 	UI = nullptr;
 }
