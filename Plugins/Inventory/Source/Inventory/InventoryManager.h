@@ -47,7 +47,7 @@ public:
 	UInputMappingContext* Mapping = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputAction* ActionSkip = nullptr;
+	UInputAction* ActionOpen = nullptr;
 
 private:
 	// stub. the manager will handle input. will it?

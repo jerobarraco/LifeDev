@@ -14,7 +14,11 @@
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
-
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Dialogs/Input/IMC_Dialogs"));
+	Mapping = DefaultMapping.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Dialogs/Input/IA_Skip"));
+	ActionSkip = CActionSkip.Object;
+	
 	UIClass = UDialogUI::StaticClass();
 }
 
