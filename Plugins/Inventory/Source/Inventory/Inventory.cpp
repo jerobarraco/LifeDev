@@ -13,14 +13,17 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 	// the item does not exists, can't progress.
 	if (!Found) return false;
 
-	// calculate the difference. non-consumable are always 0. the rest are clamped to the produce (0, MaxCount)
-	OutDiff = Item.Consumable ? FMath::Clamp(Diff, -Current, Item.MaxCount - Current) : 0;
+	// clamp values
 	// for non-consumables use always -1, for consumables clamp at 0
-	Current = Item.Consumable ? FMath::Max(0, Current+OutDiff) : -1;
-
-	if (Item.Consumable && (Current <0 || Current > Item.MaxCount)) {
-		UE_LOG(LogTemp, Error, TEXT(" DONT LET THE RACOON DO MATH!! "));
-		return false;
+	if (Item.Consumable) {
+		// calculate the difference. are clamped to the produce (0, MaxCount)
+		const int32 Max = Item.MaxCount <= 0 ? Current + Diff: Item.MaxCount; 
+		OutDiff = FMath::Clamp(Diff, -Current, Max - Current);
+		Current = FMath::Max(0, Current+OutDiff);
+	} else {
+		// calculate the difference. non-consumable are always 0. the rest are clamped to the produce (0, MaxCount)
+		OutDiff = Diff;
+		Current = -1;
 	}
 
 	// remove empty consumables

@@ -59,7 +59,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	}
 	AnimRoot->SetRelativeTransform(TNew);
 	
-	UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f"), Progress, Alpha);
+	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f"), Progress, Alpha);
 	OnChange.Broadcast(Progress, Alpha);
 }
 
