@@ -21,9 +21,14 @@ void UCAnimator::BeginPlay() {
 	// PrimaryComponentTick.Target = this;
 	// PrimaryComponentTick.SetTickFunctionEnable(true);
 	// RegisterComponentTickFunctions(true); will crash
-	if (IsAccumulated && IsValid(AnimRoot)) {
+	if (IsValid(AnimRoot)) {
 		TStart = AnimRoot->GetRelativeTransform();
 	}
+}
+
+void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Super::EndPlay(EndPlayReason);
+	AnimRoot = nullptr;
 }
 
 void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
@@ -45,7 +50,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	// small trick to ensure we can reverse an animation.
 	const float Alpha = IsReversed ? 1.0 - NProg : NProg;
 	FTransform TNew = TStart;
-	if (IsAccumulated) {
+	if (IsAdditive) {
 		TStart.BlendFromIdentityAndAccumulate(TNew, TEnd, (const ScalarRegister) Alpha);
 		// TNew.Accumulate(TEnd, (const ScalarRegister) Alpha); // not what i want, does something different with the scale.
 	}else {

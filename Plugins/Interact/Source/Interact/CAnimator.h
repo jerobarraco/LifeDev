@@ -4,6 +4,9 @@
 
 #include "CAnimator.generated.h"
 
+class UCurveFloat;
+class USceneComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorOnEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorOnChange, float, Progress, float, Alpha);
 
@@ -28,12 +31,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float Duration = 2.0;
 
-	// uses accumulated or non accumulated version. accumulated will replace the start transform with the one at beginplay
+	// uses accumulated (relative to start) version, or not.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool IsAccumulated = false;
+	bool IsAdditive = true;
 	
-	// The animation transform
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	// The animation transform. You don't necessarily need to set this up, but you can change it.
+	// It's going to be automatically set to the current transform of the AnimRoot
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
 	
 	// The animation transform
@@ -52,16 +56,16 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UFUNCTION(BlueprintCallable)
 	void SetIsAnimating(bool NewIsRotating);
 	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsAnimating = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	bool IsReversed = false;
 };
