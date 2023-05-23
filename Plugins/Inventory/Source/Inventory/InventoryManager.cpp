@@ -7,6 +7,8 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
+#include "InventoryUI.h"
+
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
@@ -14,7 +16,7 @@ AInventoryManager::AInventoryManager():Super(){
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionOpen(TEXT("/Inventory/Input/IA_Open"));
 	ActionOpen = CActionOpen.Object;
-	// UIClass = UDialogUI::StaticClass();
+	UIClass = UInventoryUI::StaticClass();
 }
 
 void AInventoryManager::Init() {}

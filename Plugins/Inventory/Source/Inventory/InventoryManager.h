@@ -10,6 +10,7 @@
 class UInventory;
 class UInputMappingContext;
 class UInputAction;
+class UInventoryUI;
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
@@ -17,7 +18,6 @@ class INVENTORY_API AInventoryManager : public AActor {
 	GENERATED_BODY()
 
 public:
-	
 	AInventoryManager();
 	
 	UFUNCTION(BlueprintCallable)
@@ -32,7 +32,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 	
-	
 	// void HideUI() const;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -40,8 +39,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=SetUp)
 	int32 InputPrio = 9;
 	
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	// TSubclassOf<UUserWidget> UIClass = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<UUserWidget> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
@@ -57,8 +56,8 @@ private:
 	UPROPERTY(Transient)
 	UInventory* Inventory = nullptr;
 
-	// UPROPERTY(Transient)
-	// UInventoryUI* UI = nullptr;
+	UPROPERTY(Transient)
+	UInventoryUI* UI = nullptr;
 
 	bool IsShowing = false;
 };

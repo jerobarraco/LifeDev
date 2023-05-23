@@ -3,36 +3,30 @@
 #pragma once
 #include "Blueprint/UserWidget.h"
 
-#include "DiagTypes.h"
+#include "InventoryUI.generated.h"
 
-#include "DialogUI.generated.h"
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDialogUIDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryUIDone);
 
 // Helps define an interaction volume
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DIALOGS_API UDialogUI: public UUserWidget {
+class INVENTORY_API UInventoryUI: public UUserWidget {
 public:
 	GENERATED_BODY()
 	
 	UFUNCTION(BlueprintNativeEvent)
-	void Show(const FDialog& Diag);
+	void Show();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Hide();
 
-	// skips animation or the current dialog. will trigger an onDone if already ready.
-	UFUNCTION(BlueprintNativeEvent)
-	void Skip();
-
-	// variable that indicates when the dialog is ready to progress.
+	// variable that indicates when the Inventory is ready to progress.
 	// false when animating.
 	UPROPERTY(BlueprintReadWrite)
 	bool IsReady = false;
 	
 	// the manager will handle this.
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
-	FDialogUIDone OnDone;
+	FInventoryUIDone OnDone;
 	
 protected:
 	UFUNCTION(BlueprintCallable)

@@ -14,7 +14,7 @@ void UDialogUI::Skip_Implementation() {
 	if (IsReady) OnDone.Broadcast();
 }
 
-void UDialogUI::FinishHide() {
+void UDialogUI::PostHide() {
 	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// these are not needed since we are using the input actions
 	// Controller->bShowMouseCursor = false;
