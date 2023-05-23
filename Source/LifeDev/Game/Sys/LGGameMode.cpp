@@ -7,6 +7,7 @@
 
 #include "Dialogs/DialogManager.h"
 #include "Inventory/Inventory.h"
+#include "Inventory/InventoryManager.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
@@ -24,9 +25,17 @@ void ALGGameMode::Init() {
 	// this is the place were we are going to be initializing everything. -Jero
 
 	UWorld* const World = GetWorld();
+
+	ALCharacter* Char = Cast<ALCharacter>(UGameplayStatics::GetActorOfClass(World, ALCharacter::StaticClass()));
+	if (IsValid(Char)) {
+		Char->InputPrio = 1;
+	}
+	
 	/// Dialogs
 	DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
 	if (IsValid(DiagManager)) {
+		// Needs to be 10 so that it takes precedence over the character
+		DiagManager->InputPrio = 10;
 		DiagManager->Init();
 	} else {
 		DiagManager = nullptr;
@@ -46,6 +55,15 @@ void ALGGameMode::Init() {
 	/// Inventory
 	UInventory* const Inventory =  World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
+
+	InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
+	if (IsValid(InvManager)) {
+		// goes below the dialogs. because some items will trigger a dialog.
+		InvManager->InputPrio = 9;
+		InvManager->Init();
+	} else {
+		InvManager = nullptr;
+	}
 }
 
 void ALGGameMode::BeginPlay() {
@@ -58,13 +76,24 @@ void ALGGameMode::DeInit() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
-	if (!IsValid(Dialogs)) return;
-	Dialogs->DeInit();
+	if (IsValid(Dialogs)) {
+		Dialogs->DeInit();
+	}
+	
 	UInventory* const Inventory = World->GetSubsystem<UInventory>();
-	if (!IsValid(Inventory)) return;
-	Inventory->DeInit();
-
+	if (IsValid(Inventory)) {
+		Inventory->DeInit();
+	}
+	
+	if (IsValid(DiagManager)) {
+		DiagManager->DeInit();
+	}
 	DiagManager = nullptr;
+
+	if (IsValid(InvManager)) {
+		InvManager->DeInit();
+	}
+	InvManager = nullptr;
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {

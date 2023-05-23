@@ -3,24 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DiagTypes.h"
-#include "Dialogs.h"
 #include "EnhancedInputComponent.h"
 
-#include "DialogManager.generated.h"
+#include "InventoryManager.generated.h"
 
-class UDialogUI;
+class UInventory;
 class UInputMappingContext;
 class UInputAction;
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
-class DIALOGS_API ADialogManager : public AActor {
+class INVENTORY_API AInventoryManager : public AActor {
 	GENERATED_BODY()
 
 public:
 	
-	ADialogManager();
+	AInventoryManager();
 	
 	UFUNCTION(BlueprintCallable)
 	void Init();
@@ -29,23 +27,21 @@ public:
 	void DeInit();
 	
 	UFUNCTION(BlueprintCallable)
-	void Show(const FDialog& Diag);
+	void Show();
 
 	UFUNCTION(BlueprintCallable)
-	void Stop();
+	void Hide();
 	
-	UFUNCTION(BlueprintCallable)
-	void Skip();
 	
-	void HideUI() const;
+	// void HideUI() const;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	int32 InputPrio = 10;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TSubclassOf<UDialogUI> UIClass = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=SetUp)
+	int32 InputPrio = 9;
+	
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	// TSubclassOf<UUserWidget> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
@@ -59,10 +55,10 @@ private:
 	void UIDone();
 	
 	UPROPERTY(Transient)
-	UDialogs* Dialogs = nullptr;
+	UInventory* Inventory = nullptr;
 
-	UPROPERTY(Transient)
-	UDialogUI* UI = nullptr;
+	// UPROPERTY(Transient)
+	// UInventoryUI* UI = nullptr;
 
 	bool IsShowing = false;
 };

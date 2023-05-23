@@ -11,10 +11,6 @@
 #include "Dialogs.h"
 #include "JUtils/JMiscUtils.h"
 
-// Needs to be 10 so that it takes precedence over the character
-static uint8 InputPrio = 10;
-
-
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
@@ -98,7 +94,7 @@ void ADialogManager::BeginPlay() {
 }
 
 void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJMiscUtils::ToggleMapping(Mapping, 10, false, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	DeInit();
 
 	// TODO unbind action

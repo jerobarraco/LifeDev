@@ -33,6 +33,9 @@ public:
 	void SetUIVisible(bool bCond);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 InputPrio = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UGameUI> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)

@@ -22,5 +22,8 @@
 			"LoadingPhase": "PostEngineInit"
 		}
 	],
-	"Plugins": []
+	"Plugins": [{
+		"Name": "EnhancedInput",
+		"Enabled": true
+	}]
 }

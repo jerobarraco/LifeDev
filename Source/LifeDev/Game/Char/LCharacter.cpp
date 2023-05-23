@@ -94,7 +94,7 @@ void ALCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	UJMiscUtils::ToggleMapping(Mapping, 1, true, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -120,7 +120,7 @@ void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
-	UJMiscUtils::ToggleMapping(Mapping, 1, false, GetWorld());
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
 }

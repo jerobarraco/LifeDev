@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 
 #include "GameFramework/GameModeBase.h"
+#include "Inventory/InventoryManager.h"
 
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
 class ADialogManager;
+class AInventoryManager;
 
 // Game mode class 
 UCLASS(Blueprintable)
@@ -29,6 +31,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ADialogManager* DiagManager = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AInventoryManager* InvManager = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	int32 Chapter = 1; // Maybe this could be on the game instance. ?
