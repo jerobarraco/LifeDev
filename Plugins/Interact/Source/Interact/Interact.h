@@ -32,7 +32,6 @@ public:
 	bool TryUseItem(const FName& Name);
 	virtual bool TryUseItem_Implementation(const FName& Name);
 
-	// FName ItemToUse = "" smth 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

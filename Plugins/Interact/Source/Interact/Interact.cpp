@@ -30,6 +30,7 @@ AInteract::AInteract():Super() {
 }
 
 bool AInteract::TryUseItem_Implementation(const FName& Name) {
+	UE_LOG(LogTemp, Log, TEXT("Ainteract.TryUseItem=%s"), *Name.ToString());
 	return false;
 }
 

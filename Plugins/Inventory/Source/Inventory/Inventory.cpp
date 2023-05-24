@@ -36,9 +36,8 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 			const int32 NCount = Keys.Num() -1;
 			// todo check this is correct.
 			Index = Keys.Find(Name);
-			Index = Index < NCount -1 ? Index : (Index >0 ? Index-1: -1);
-			FName NewSel = NCount > 0 ? Keys[Index] : FName();
-			
+			Index = Index < NCount ? Index+1 : (Index >0 ? Index-1: -1);
+			FName NewSel = Index >= 0 ? Keys[Index] : FName();
 			SetSelected(NewSel);
 		}
 

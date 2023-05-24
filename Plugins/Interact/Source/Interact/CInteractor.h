@@ -26,6 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
 
+	// don't call directly the character will. doesnt deal with the inventory.
+	UFUNCTION(BlueprintCallable)
+	bool TryUseItem(const FName& Name);
+
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float TraceLen = 500.0;

@@ -5,6 +5,7 @@
 #include "Components/ArrowComponent.h"
 
 #include "CInteract.h"
+#include "Interact.h"
 
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
@@ -25,6 +26,22 @@ void UCInteractor::SetEnabled(bool Enabled) {
 void UCInteractor::TryTrigger() {
 	if (!IsValid(InterComp)) return;
 	InterComp->Trigger();
+}
+
+bool UCInteractor::TryUseItem(const FName& Name) {
+	if (!IsValid(InterComp)) {
+		UE_LOG(LogTemp, Warning, TEXT("Nothing to use the item with"));
+		return false;
+	}
+	
+	AActor* Src = InterComp->GetOwner();
+	AInteract* const Actor = Cast<AInteract>(Src);
+	if (!IsValid(Actor)) {
+		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
+		return false;
+	}
+
+	return Actor->TryUseItem(Name);
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

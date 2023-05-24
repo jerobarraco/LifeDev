@@ -181,22 +181,17 @@ void ALCharacter::ActInteract(const FInputActionValue& Value) {
 }
 
 void ALCharacter::ActItem() {
-	if (!IsValid(Inventory)) return;	
+	if (!IsValid(Inventory)) return;
 	const FName& Selected = Inventory->GetSelected();
+	UE_LOG(LogTemp, Log, TEXT("ActItem=%s"), *Selected.ToString());
+
 	if (Selected.IsNone()) {
 		UE_LOG(LogTemp, Warning, TEXT("No item is selected."));
 		return;
 	}
 
-	AActor* Src = Interactor->GetOwner();
-	AInteract* const Actor = Cast<AInteract>(Src);
-	if (!IsValid(Actor)) {
-		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
-		return;
-	}
-
-	if (!Actor->TryUseItem(Selected)) {
-		UE_LOG(LogTemp, Log, TEXT("The actor doesnt care about that item"));
+	if (!Interactor->TryUseItem(Selected)){
+		UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
 		return;
 	}
 
