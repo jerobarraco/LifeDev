@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Inventory/Inventory.h"
 
 #include "LCharacter.generated.h"
 
@@ -52,6 +53,8 @@ public:
 	//* Interact Input Action 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
 	UInputAction* ActionInteract = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UInputAction* ActionItem = nullptr;
 
 protected:
 	// UFUNCTION()
@@ -74,7 +77,8 @@ protected:
 	//* Called for looking input 
 	void ActLook(const FInputActionValue& Value);
 	void ActInteract(const FInputActionValue& Value);
-	
+	void ActItem();
+
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
@@ -90,7 +94,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCInteractor* Interactor = nullptr;
 	
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
 	UGameUI* UI = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
+	UInventory* Inventory = nullptr;
 };
 

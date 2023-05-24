@@ -26,7 +26,6 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 		Current = -1;
 	}
 
-	FName NewSelected;
 	// remove empty consumables
 	if (Item.Consumable && Current == 0) {
 		int32 Index = -1;
@@ -34,24 +33,24 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 		if (Name == Selected) {
 			TArray<FName> Keys;
 			Items.GetKeys(Keys);
-			Index = Keys.Find(Name);
-			const int32 Count = Keys.Num();
+			const int32 NCount = Keys.Num() -1;
 			// todo check this is correct.
-			Index = Index < Count -1 ? Index : (Index >0 ? Index-1: -1);
-			NewSelected = Keys[Index];
+			Index = Keys.Find(Name);
+			Index = Index < NCount -1 ? Index : (Index >0 ? Index-1: -1);
+			FName NewSel = NCount > 0 ? Keys[Index] : FName();
+			
+			SetSelected(NewSel);
 		}
 
 		Items.Remove(Name);
 	}else{
 		Items.Add(Name, Current);
+		
 		if (Selected.IsNone()) {
-			NewSelected = Name;
+			SetSelected(Name);
 		}
 	}
 
-	if (!NewSelected.IsNone()) {
-		OnSelected.Broadcast(Selected);
-	}
 	OnMod.Broadcast(Name, Item, Current);
 	return true;
 }
@@ -91,6 +90,29 @@ TMap<FName, int32> UInventory::GetItems() {
 
 void UInventory::SetItems(const TMap<FName, int32>& NewItems) {
 	Items = NewItems;
+}
+
+const FName& UInventory::GetSelected() {
+	return Selected;
+}
+
+bool UInventory::SetSelected(const FName& Name) {
+	if (!Items.Contains(Name)) return false;
+
+	Selected = Name;
+	OnSelected.Broadcast(Selected);
+	return true;
+}
+
+void UInventory::Use(const FName& Name) {
+	const bool Exists = Items.Contains(Name);
+	if (!Exists) {
+		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that i don't have!"));
+		return;
+	}
+	int32 OutDiff;
+	Mod(Name, -1, OutDiff);
+	OnUsed.Broadcast(Name);
 }
 
 #pragma optimize("", on)

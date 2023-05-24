@@ -14,6 +14,8 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
+#include "Interact/Interact.h"
+#include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
 // ALifeDevCharacter
@@ -61,6 +63,8 @@ ALCharacter::ALCharacter(): Super()
 	// ActionInteract = CActionInteract.Class.GetDefaultObject();
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
 	ActionInteract = CActionInteract.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionItem(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Item"));
+	ActionItem = CActionItem.Object;
 }
 
 void ALCharacter::SetUIVisible(bool Visible) {
@@ -94,7 +98,9 @@ void ALCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
+	UWorld* const World = GetWorld();
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, World);
+	
 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -109,10 +115,11 @@ void ALCharacter::BeginPlay()
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALCharacter::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALCharacter::InteractEnd);
 
-	UWorld* const World = GetWorld();
 	UDialogs* const UlDialogs = World->GetSubsystem<UDialogs>();
 	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
 	UlDialogs->OnDone.AddUniqueDynamic(this, &ALCharacter::InteractResume);
+
+	Inventory = World->GetSubsystem<UInventory>();
 }
 
 void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -120,6 +127,8 @@ void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
+	Inventory = nullptr;
+
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
@@ -132,16 +141,13 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Set up action bindings
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
-	//Jumping
+
 	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
-	//Moving
 	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALCharacter::ActMove);
-
-	//Looking
 	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALCharacter::ActLook);
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALCharacter::ActInteract);
+	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALCharacter::ActItem);
 }
 
 
@@ -172,4 +178,27 @@ void ALCharacter::ActInteract(const FInputActionValue& Value) {
 	if (!Controller) return;
 	if (!Interactor) return;
 	Interactor->TryTrigger();
+}
+
+void ALCharacter::ActItem() {
+	if (!IsValid(Inventory)) return;	
+	const FName& Selected = Inventory->GetSelected();
+	if (Selected.IsNone()) {
+		UE_LOG(LogTemp, Warning, TEXT("No item is selected."));
+		return;
+	}
+
+	AActor* Src = Interactor->GetOwner();
+	AInteract* const Actor = Cast<AInteract>(Src);
+	if (!IsValid(Actor)) {
+		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
+		return;
+	}
+
+	if (!Actor->TryUseItem(Selected)) {
+		UE_LOG(LogTemp, Log, TEXT("The actor doesnt care about that item"));
+		return;
+	}
+
+	Inventory->Use(Selected);
 }

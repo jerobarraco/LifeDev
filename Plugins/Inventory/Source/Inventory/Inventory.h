@@ -10,6 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FInventoryOnMod, const FName&, Name, const FItem&, Item, int32, NewCount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnSelected, const FName&, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnUsed, const FName&, Name);
 
 class UDataTable;
 // World subsystem to deal with Inventory
@@ -42,6 +43,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetItems(const TMap<FName, int32>& NewItems);
+	
+	UFUNCTION(BlueprintCallable)
+	const FName& GetSelected();
+
+	UFUNCTION(BlueprintCallable)
+	bool SetSelected(const FName& Name);
+
+	UFUNCTION(BlueprintCallable)
+	void Use(const FName& Name);
+
+
 	/// ~system
 
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
@@ -49,6 +61,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FInventoryOnSelected OnSelected;
+
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	FInventoryOnUsed OnUsed;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

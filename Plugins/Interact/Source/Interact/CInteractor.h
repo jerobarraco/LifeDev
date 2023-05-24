@@ -22,10 +22,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool Enabled);
-
+	
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
-	
+
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	float TraceLen = 500.0;

@@ -24,7 +24,15 @@ public:
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
+	// returns true if the item has been used (notice past tense)
+	// Override and activate the item here. dont modify the inventory.
+	// will return if the item is usable, (and trigger action with custom code)
+	// To be overriden on child objects
+	UFUNCTION(BlueprintNativeEvent)
+	bool TryUseItem(const FName& Name);
+	virtual bool TryUseItem_Implementation(const FName& Name);
 
+	// FName ItemToUse = "" smth 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

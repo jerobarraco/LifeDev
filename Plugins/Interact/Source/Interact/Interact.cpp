@@ -29,6 +29,10 @@ AInteract::AInteract():Super() {
 	Interact->HoverMesh = Mesh;
 }
 
+bool AInteract::TryUseItem_Implementation(const FName& Name) {
+	return false;
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
