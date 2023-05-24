@@ -27,27 +27,32 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 	}
 
 	// remove empty consumables
+	FName NewSel = FName(); 
 	if (Item.Consumable && Current == 0) {
 		int32 Index = -1;
 		// this code sucks i don't like it. todo improve.
 		if (Name == Selected) {
 			TArray<FName> Keys;
 			Items.GetKeys(Keys);
+			Index = Keys.Find(Name);
 			const int32 NCount = Keys.Num() -1;
 			// todo check this is correct.
-			Index = Keys.Find(Name);
 			Index = Index < NCount ? Index+1 : (Index >0 ? Index-1: -1);
-			FName NewSel = Index >= 0 ? Keys[Index] : FName();
-			SetSelected(NewSel);
+			NewSel = Index >= 0 ? Keys[Index] : FName();
 		}
-
 		Items.Remove(Name);
 	}else{
 		Items.Add(Name, Current);
-		
 		if (Selected.IsNone()) {
-			SetSelected(Name);
+			NewSel = Name;
 		}
+	}
+
+	// Set selected only after removing.
+	// there's something fishy going on. otherwise it will remove the wrong object!
+	// also triggering it at the end works better with the ui
+	if (!NewSel.IsNone()) {
+		SetSelected(Name);
 	}
 
 	OnMod.Broadcast(Name, Item, Current);
@@ -83,7 +88,7 @@ void UInventory::DeInit() {
 	Items.Empty();
 }
 
-TMap<FName, int32> UInventory::GetItems() {
+const TMap<FName, int32>& UInventory::GetItems() {
 	return Items; // purposely creating a copy
 }
 
@@ -97,7 +102,8 @@ const FName& UInventory::GetSelected() {
 
 bool UInventory::SetSelected(const FName& Name) {
 	if (!Items.Contains(Name)) return false;
-
+	if (Name == Selected) return false;
+	
 	Selected = Name;
 	OnSelected.Broadcast(Selected);
 	return true;

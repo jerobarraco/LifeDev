@@ -18,6 +18,9 @@ AInventoryManager::AInventoryManager():Super(){
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionOpen(TEXT("/Inventory/Input/IA_Open"));
 	ActionOpen = CActionOpen.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSelect(TEXT("/Inventory/Input/IA_Select"));
+	ActionSelect = CActionSelect.Object;
+	
 	UIClass = UInventoryUI::StaticClass();
 }
 
@@ -32,13 +35,30 @@ void AInventoryManager::DeInit() {
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
 
-void AInventoryManager::Show() {
+void AInventoryManager::ActOpen() {
 	if (IsShowing) return;
 	IsShowing = true;
 	if (IsValid(UI)) {
 		UI->Show();
 	}
 }
+
+void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
+	const bool Next = InputActionValue.GetMagnitude() > 0;
+	const TMap<FName, int32>& Items = Inventory->GetItems();
+	// nothing to do
+	if (Items.Num() <= 0 ) return;
+	
+	// This code has a lot of similarities with the selected change on Inventory.Mod
+	TArray<FName> Keys;
+	Items.GetKeys(Keys);
+	const FName& Selected = Inventory->GetSelected();
+	const int32 Index = Keys.Find(Selected);
+	int32 NewIndex = Index +  (Next ? 1 : -1);
+	NewIndex = FMath::Clamp(NewIndex, 0, Keys.Num() -1);
+	Inventory->SetSelected(Keys[NewIndex]);
+}
+
 void AInventoryManager::Hide() {
 	if (IsValid(UI)) {
 		UI->Hide();
@@ -63,7 +83,9 @@ void AInventoryManager::BeginPlay() {
 		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
 		if (IsValid(Input)) {
 			Input->BindAction<AInventoryManager>(
-				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryManager::Show);
+				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryManager::ActOpen);
+			Input->BindAction<AInventoryManager>(
+				ActionSelect, ETriggerEvent::Triggered, this, &AInventoryManager::ActSelect);
 		}
 	}
 	

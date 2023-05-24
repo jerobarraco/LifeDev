@@ -39,7 +39,7 @@ public:
 	void DeInit();
 
 	UFUNCTION(BlueprintCallable)
-	TMap<FName, int32> GetItems();
+	const TMap<FName, int32>& GetItems();
 
 	UFUNCTION(BlueprintCallable)
 	void SetItems(const TMap<FName, int32>& NewItems);
@@ -69,7 +69,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Selected;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TMap<FName, int32> Items;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

@@ -26,15 +26,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
 	
-	UFUNCTION(BlueprintCallable)
-	void Show();
 
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SetSelected(const FName& Name);
-	
+
+	UFUNCTION()
+	void ActOpen();
+	UFUNCTION()
+	void ActSelect(const FInputActionValue& InputActionValue);
+
 	// void HideUI() const;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -50,6 +53,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionOpen = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UInputAction* ActionSelect = nullptr;
 
 private:
 	// stub. the manager will handle input. will it?
