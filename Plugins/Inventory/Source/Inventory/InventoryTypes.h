@@ -20,6 +20,10 @@ public:
 	// max allowed number of items, -1 is unlimited.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 MaxCount = -1;
+	// 0 == no cooldown. used for cards.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Cooldown = 0;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Name;
 	// the action text for this item

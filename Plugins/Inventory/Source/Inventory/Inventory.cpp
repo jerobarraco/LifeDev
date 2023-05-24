@@ -26,13 +26,32 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 		Current = -1;
 	}
 
+	FName NewSelected;
 	// remove empty consumables
 	if (Item.Consumable && Current == 0) {
+		int32 Index = -1;
+		// this code sucks i don't like it. todo improve.
+		if (Name == Selected) {
+			TArray<FName> Keys;
+			Items.GetKeys(Keys);
+			Index = Keys.Find(Name);
+			const int32 Count = Keys.Num();
+			// todo check this is correct.
+			Index = Index < Count -1 ? Index : (Index >0 ? Index-1: -1);
+			NewSelected = Keys[Index];
+		}
+
 		Items.Remove(Name);
 	}else{
 		Items.Add(Name, Current);
+		if (Selected.IsNone()) {
+			NewSelected = Name;
+		}
 	}
 
+	if (!NewSelected.IsNone()) {
+		OnSelected.Broadcast(Selected);
+	}
 	OnMod.Broadcast(Name, Item, Current);
 	return true;
 }

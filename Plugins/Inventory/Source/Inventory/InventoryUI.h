@@ -18,6 +18,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Hide();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void SetSelected(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
 	// false when animating.

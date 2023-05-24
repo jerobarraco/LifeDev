@@ -31,6 +31,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Hide();
+
+	UFUNCTION()
+	void SetSelected(const FName& Name);
 	
 	// void HideUI() const;
 	virtual void BeginPlay() override;

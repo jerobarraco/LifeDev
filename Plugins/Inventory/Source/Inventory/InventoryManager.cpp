@@ -6,6 +6,7 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "Inventory.h"
 
 #include "InventoryUI.h"
 #include "JUtils/JMiscUtils.h"
@@ -45,11 +46,19 @@ void AInventoryManager::Hide() {
 	IsShowing = false;
 }
 
+void AInventoryManager::SetSelected(const FName& Name) {
+	if (IsValid(UI)) {
+		UI->SetSelected(Name);
+	}
+}
+
 void AInventoryManager::BeginPlay() {
 	Super::BeginPlay();
 
 	// bind the action
 	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+	
 	if (ActionOpen) {
 		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
 		if (IsValid(Input)) {
@@ -69,6 +78,9 @@ void AInventoryManager::BeginPlay() {
 	}
 
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
+
+	Inventory = World->GetSubsystem<UInventory>();
+	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryManager::SetSelected);
 }
 
 void AInventoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
