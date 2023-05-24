@@ -3,6 +3,19 @@
 
 #include "LGameInstance.h"
 
+bool ULGameInstance::HasFeat(EFeat Feat) {
+	return Feats.Contains(Feat);	
+}
+
+void ULGameInstance::SetFeat(EFeat Feat, bool Enable) {
+	const bool Has = Feats.Contains(Feat);
+	if (Enable) {
+		if (!Has) Feats.Add(Feat);
+	} else {
+		if (Has) Feats.Remove(Feat);
+	}
+}
+
 
 /*
 
@@ -47,3 +60,4 @@ void USGEGameInstance::SaveGame()
     
 }
 */
+

@@ -6,9 +6,16 @@
 
 class UDataTable;
 
+
+// game feature
+UENUM(BlueprintType)
+enum class EFeat {
+	DUNNO,
+	// INVENTORY,
+	// DIALOGS,
+};
+
 // Note the Config meta tag on the properties are critical or it might crash
-
-
 // Settings for the game (to be built)
 UCLASS(Config=LDSettings, defaultconfig, meta=(DisplayName="LifeDevSystemSettings"))
 class LIFEDEV_API ULSysSettings : public UDeveloperSettings
@@ -33,4 +40,8 @@ public:
 	// The list of sequences
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType= "/Script/Dialogs.DialogChar"))
 	TArray<TSoftObjectPtr<UDataTable>> Sequences;
+
+	// The default features
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
+	TSet<EFeat> Feats = {EFeat::DUNNO};
 };

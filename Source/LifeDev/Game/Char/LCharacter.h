@@ -11,11 +11,8 @@
 class UCInteractor;
 class UCInteract;
 class UInputComponent;
-class USkeletalMeshComponent;
 class USceneComponent;
 class UCameraComponent;
-class UAnimMontage;
-class USoundBase;
 class UInputAction;
 class UInputMappingContext;
 class UGameUI;
