@@ -28,8 +28,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Mod(const FName& Name, int32 Diff, int32& OutDiff);
 
+	// returns an item from the datatable if exists
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Get(const FName& Name, FItem& OutItem, int32& OutCount) const;
+	bool GetRaw(const FName& Name, FItem& OutItem) const;
+
+	// returns an item given the key name
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Get(const FName& Name, FItem& OutItem) const;
 	
 	// system ones ////////
 	UFUNCTION(BlueprintCallable)
@@ -38,15 +43,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
 
+	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable)
-	const TMap<FName, int32>& GetItems() const;
+	const TMap<FName, FItem>& GetItems() const;
 
 	UFUNCTION(BlueprintCallable)
-	void SetItems(const TMap<FName, int32>& NewItems);
+	void SetItems(const TMap<FName, FItem>& NewItems);
 	
 	UFUNCTION(BlueprintCallable)
 	const FName& GetSelected();
 
+	// returns the next key on the list. forwards says the direction, from says which key from, if not specified it will be the selected.
+	UFUNCTION(BlueprintCallable)
+	FName GetNextKey(bool Forward = true, FName From = FName("")) const;
+	
 	UFUNCTION(BlueprintCallable)
 	bool SetSelected(const FName& Name);
 
@@ -70,7 +80,7 @@ protected:
 	FName Selected;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	TMap<FName, int32> Items;
+	TMap<FName, FItem> Items;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UDataTable* DT = nullptr;

@@ -25,7 +25,7 @@ public:
 	int32 Cooldown = 0;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FText Name;
+	FText Title;
 	// the action text for this item
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Action;
@@ -33,6 +33,15 @@ public:
 	FText Description;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
+	// do i need this? TSubClass or TSubPtr
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<AActor> Obj = nullptr;
+
+	// used during runtime to keep track of the count
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	int32 Count = 0;
+
+	// used during runtime to keep track of the cooldown
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	int32 LastUsed = 0;
 };

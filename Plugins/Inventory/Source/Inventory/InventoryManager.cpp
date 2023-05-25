@@ -45,18 +45,10 @@ void AInventoryManager::ActOpen() {
 
 void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
 	const bool Next = InputActionValue.GetMagnitude() > 0;
-	const TMap<FName, int32>& Items = Inventory->GetItems();
-	// nothing to do
-	if (Items.Num() <= 0 ) return;
-	
-	// This code has a lot of similarities with the selected change on Inventory.Mod
-	TArray<FName> Keys;
-	Items.GetKeys(Keys);
-	const FName& Selected = Inventory->GetSelected();
-	const int32 Index = Keys.Find(Selected);
-	int32 NewIndex = Index +  (Next ? 1 : -1);
-	NewIndex = FMath::Clamp(NewIndex, 0, Keys.Num() -1);
-	Inventory->SetSelected(Keys[NewIndex]);
+	const FName& NextKey = Inventory->GetNextKey(Next);
+	if (NextKey.IsNone()) return;
+
+	Inventory->SetSelected(NextKey);
 }
 
 void AInventoryManager::Hide() {
