@@ -59,7 +59,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 	return true;
 }
 
-bool UInventory::Get(const FName& Name, FItem& OutItem, int32& OutCount) {
+bool UInventory::Get(const FName& Name, FItem& OutItem, int32& OutCount) const {
 	OutCount = 0;
 	if (!IsValid(DT)) return false;
 
@@ -88,8 +88,8 @@ void UInventory::DeInit() {
 	Items.Empty();
 }
 
-const TMap<FName, int32>& UInventory::GetItems() {
-	return Items; // purposely creating a copy
+const TMap<FName, int32>& UInventory::GetItems() const {
+	return Items;
 }
 
 void UInventory::SetItems(const TMap<FName, int32>& NewItems) {

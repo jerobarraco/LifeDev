@@ -29,7 +29,7 @@ public:
 	bool Mod(const FName& Name, int32 Diff, int32& OutDiff);
 
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Get(const FName& Name, FItem& OutItem, int32& OutCount);
+	bool Get(const FName& Name, FItem& OutItem, int32& OutCount) const;
 	
 	// system ones ////////
 	UFUNCTION(BlueprintCallable)
@@ -39,7 +39,7 @@ public:
 	void DeInit();
 
 	UFUNCTION(BlueprintCallable)
-	const TMap<FName, int32>& GetItems();
+	const TMap<FName, int32>& GetItems() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetItems(const TMap<FName, int32>& NewItems);
