@@ -43,5 +43,5 @@ public:
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> Feats = {EFeat::DUNNO};
+	TSet<EFeat> DefaultFeats = {EFeat::DUNNO};
 };

@@ -17,6 +17,8 @@ class LIFEDEV_API ULGameInstance : public UGameInstance
 	GENERATED_BODY()
 public:
 
+	virtual void Init() override;
+	
 	UFUNCTION(BlueprintCallable)
 	bool HasFeat(EFeat Feat);
 

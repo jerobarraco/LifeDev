@@ -3,6 +3,11 @@
 
 #include "LGameInstance.h"
 
+void ULGameInstance::Init() {
+	Super::Init();
+	Feats = ULSysSettings::Get()->DefaultFeats;
+}
+
 bool ULGameInstance::HasFeat(EFeat Feat) {
 	return Feats.Contains(Feat);	
 }
