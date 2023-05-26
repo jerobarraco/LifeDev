@@ -32,6 +32,13 @@ void AInventoryManager::DeInit() {
 		UI->OnDone.RemoveAll(this);
 	}
 	UI = nullptr;
+	if (IsValid(Inventory)) {
+		Inventory->OnMod.RemoveAll(this);
+		Inventory->OnSelected.RemoveAll(this);
+		Inventory->OnUsed.RemoveAll(this);
+		Inventory->OnCold.RemoveAll(this);
+	}
+	Inventory = nullptr;
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
 
@@ -61,6 +68,24 @@ void AInventoryManager::Hide() {
 void AInventoryManager::SetSelected(const FName& Name) {
 	if (IsValid(UI)) {
 		UI->SetSelected(Name);
+	}
+}
+
+void AInventoryManager::SetItemMod(const FName& Name, const FItem& Item) {
+	if (IsValid(UI)) {
+		UI->SetItemMod(Name, Item);
+	}
+}
+
+void AInventoryManager::SetItemCold(const FName& Name) {
+	if (IsValid(UI)) {
+		UI->SetItemCold(Name);
+	}
+}
+
+void AInventoryManager::SetItemUsed(const FName& Name) {
+	if (IsValid(UI)) {
+		UI->SetItemUsed(Name);
 	}
 }
 
@@ -95,6 +120,9 @@ void AInventoryManager::BeginPlay() {
 
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryManager::SetSelected);
+	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryManager::SetItemMod);
+	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryManager::SetItemCold);
+	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryManager::SetItemUsed);
 }
 
 void AInventoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {

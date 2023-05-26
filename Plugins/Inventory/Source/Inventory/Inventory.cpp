@@ -59,7 +59,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		Items.Remove(Name);
 	}
 
-	OnMod.Broadcast(Name, *Item, Current);
+	OnMod.Broadcast(Name, *Item);
 
 	// Set selected only after removing.
 	// there's something fishy going on. otherwise it will remove the wrong object!
@@ -231,7 +231,7 @@ void UInventory::CoolTimerTick() {
 
 	const int32 ColdNum = ColdItems.Num();
 	for (int32 i=0; i<ColdNum; ++i) {
-		OnItemCold.Broadcast(ColdItems[i]);
+		OnCold.Broadcast(ColdItems[i]);
 	}
 }
 #pragma optimize("", on)

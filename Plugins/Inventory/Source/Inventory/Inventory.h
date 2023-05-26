@@ -8,7 +8,7 @@
 #include "InventoryTypes.h"
 #include "Inventory.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FInventoryOnMod, const FName&, Name, const FItem&, Item, int32, NewCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInventoryOnMod, const FName&, Name, const FItem&, Item);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnSelected, const FName&, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnUsed, const FName&, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnItemCold, const FName&, Name);
@@ -79,7 +79,7 @@ public:
 	FInventoryOnUsed OnUsed;
 
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
-	FInventoryOnItemCold OnItemCold;
+	FInventoryOnItemCold OnCold;
 
 protected:
 	void SetCoolTimerEnabled(bool Enable);

@@ -21,6 +21,15 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void SetSelected(const FName& Name);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void SetItemCold(const FName& Name);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetItemMod(const FName& Name, const FItem& Item);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetItemUsed(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
 	// false when animating.

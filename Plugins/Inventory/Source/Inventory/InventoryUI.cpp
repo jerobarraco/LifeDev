@@ -11,6 +11,12 @@ void UInventoryUI::Show_Implementation() {}
 
 void UInventoryUI::SetSelected_Implementation(const FName& Name) {}
 
+void UInventoryUI::SetItemMod_Implementation(const FName& Name, const FItem& Item) {}
+
+void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
+
+void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {}
+
 void UInventoryUI::PostHide() {
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// these are not needed since we are using the input actions

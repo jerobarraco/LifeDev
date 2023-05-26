@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
+#include "InventoryTypes.h"
 
 #include "InventoryManager.generated.h"
 
@@ -32,6 +33,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetSelected(const FName& Name);
+	UFUNCTION(BlueprintCallable)
+	void SetItemMod(const FName& Name, const FItem& Item);
+	UFUNCTION(BlueprintCallable)
+	void SetItemCold(const FName& Name);
+	UFUNCTION(BlueprintCallable)
+	void SetItemUsed(const FName& Name);
 
 	UFUNCTION()
 	void ActOpen();
