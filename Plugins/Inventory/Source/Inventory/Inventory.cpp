@@ -79,7 +79,9 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 
 	// set the item anyway even if not found
 	OutItem = *Item;
+	// reset transient variables to avoid issues with input.
 	OutItem.Count = 0;
+	OutItem.ActiveCoolDown = 0;
 	return true;
 }
 
@@ -154,22 +156,29 @@ bool UInventory::Use(const FName& Name) {
 	FItem& Item = Items[Name];
 
 	// intentionally not calling iscold for performance. if i end up uisng IsCold then call IsCold for simplicity here.
-	if (Item.CurrentCoolDown>0) {
-		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that haven't cooled down. '%s': wait=%i"), *Name.ToString(), Item.CurrentCoolDown);
+	if (Item.ActiveCoolDown>0) {
+		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that haven't cooled down. '%s': wait=%i"), *Name.ToString(), Item.ActiveCoolDown);
 		return false;
 	}
 
+	// intentionally make a copy since when an object gets removed from the pool, the fname automagically transforms to the next name. W T F
+	FName OldName = Name;
 	Mod(Name, -1);
+	// item was the last one in the inventory.
+	if (!Items.Contains(OldName)) return true;
 
-	Item.CurrentCoolDown = Item.CoolDown;
-	if (Item.CurrentCoolDown>0) {SetCoolTimerEnabled(true);}
+	// at this point the item reference is ok, se keep it.
+	Item.ActiveCoolDown = Item.CoolDown;
+	if (Item.ActiveCoolDown>0) {
+		SetCoolTimerEnabled(true);
+	}
 	
-	OnUsed.Broadcast(Name);
+	OnUsed.Broadcast(OldName);
 	return true;
 }
 
 // do i need this?
-// returns cold if it doesnt need to cool down, wether it uses or not cooldowns
+// returns cold if it doesn't need to cool down, whether it uses or not cooldowns
 bool UInventory::IsCold(const FName& Name) const {
 	const bool Exists = Items.Contains(Name);
 	if (!Exists) {
@@ -177,7 +186,7 @@ bool UInventory::IsCold(const FName& Name) const {
 		return false;
 	}
 
-	return Items[Name].CurrentCoolDown <= 0;
+	return Items[Name].ActiveCoolDown <= 0;
 }
 
 void UInventory::SetCoolTimerEnabled(bool Enable) {
@@ -188,9 +197,10 @@ void UInventory::SetCoolTimerEnabled(bool Enable) {
 
 	if (Enable) {
 		// check if the timer is still valid
-		if (CoolTimer.IsValid()) return;
+		if (CoolTimer.IsValid() && Time.TimerExists(CoolTimer)) return;
 		Time.SetTimer(CoolTimer, this, &UInventory::CoolTimerTick, 1, true);
 	} else {
+		CoolTimer.Invalidate();
 		Time.ClearAllTimersForObject(this);
 	}
 }
@@ -199,20 +209,27 @@ void UInventory::CoolTimerTick() {
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
 	TArray<FName> ColdItems;
-	
+
+	bool AllCool = true;
 	const int32 ItemsNum = Keys.Num();
 	for(int32 i=0; i<ItemsNum; ++i){
 		const FName& Name = Keys[i];
 		FItem& Item = Items[Name];
-		if (Item.CurrentCoolDown<=0) continue;
+		if (Item.ActiveCoolDown<=0) continue;
 		
-		Item.CurrentCoolDown = FMath::Max(0, Item.CurrentCoolDown-1);
-		if (Item.CurrentCoolDown > 0) continue;
+		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-1);
+		if (Item.ActiveCoolDown > 0) {
+			AllCool = false;
+			continue;
+		}
 		ColdItems.Add(Name);
 	}
 
+	if (AllCool) {
+		SetCoolTimerEnabled(false);
+	}
+
 	const int32 ColdNum = ColdItems.Num();
-	if (ColdNum == 0){ SetCoolTimerEnabled(false); }
 	for (int32 i=0; i<ColdNum; ++i) {
 		OnItemCold.Broadcast(ColdItems[i]);
 	}

@@ -85,11 +85,16 @@ void ALCharacter::InteractEnd(UCInteract* Comp) {
 }
 
 void ALCharacter::InteractPause(const FDialog& Diag) {
-	Interactor->SetEnabled(false);
+	SetInputEnabled(false);
 }
 
 void ALCharacter::InteractResume() {
-	Interactor->SetEnabled(true);
+	SetInputEnabled(true);
+}
+
+void ALCharacter::SetInputEnabled(bool Enabled) {
+	Interactor->SetEnabled(Enabled);
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
 }
 
 void ALCharacter::BeginPlay()
@@ -100,7 +105,6 @@ void ALCharacter::BeginPlay()
 	UWorld* const World = GetWorld();
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, World);
 	
-
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
 		UI = NewObject<UGameUI>(this, Class);
@@ -194,9 +198,33 @@ void ALCharacter::ActItem() {
 		return;
 	}
 
-	if (!Interactor->TryUseItem(Selected)){
-		UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
+	// TODO this needs to be improved
+	FItem Item;
+	if (!Inventory->Get(Selected, Item)) {
+		UE_LOG(LogTemp, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
 		return;
+	}
+
+	if (!Item.Usable) {
+		// TODO open the ui and show it
+		UE_LOG(LogTemp, Warning, TEXT(
+			"This is a erzats display for the item '%s'. Look how beautiful it is!"
+			"you have %i of them, and the description is : '%s'. "),
+			*Item.Title.ToString(), Item.Count, *Item.Description.ToString())
+		return;
+	}
+
+	// TODO this try use item and inventory.use are out of sync. either of them could fail...
+	// TODO find a better way
+	if (!Interactor->TryUseItem(Selected)){
+		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too
+		if (Item.AutoTrigger) {
+			// TODO trigger effect here
+			UE_LOG(LogTemp, Warning, TEXT("Stub effect trigger for item '%s'."), *Item.Title.ToString());
+		} else {
+			UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
+			return;
+		}
 	}
 
 	Inventory->Use(Selected);

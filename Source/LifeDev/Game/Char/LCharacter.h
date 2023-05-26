@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetUIVisible(bool bCond);
 	
+	UFUNCTION(BlueprintCallable)
+	void SetInputEnabled(bool Enabled);
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
 

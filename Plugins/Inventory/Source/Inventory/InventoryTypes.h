@@ -47,5 +47,5 @@ public:
 
 	// the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
-	int32 CurrentCoolDown = 0;
+	int32 ActiveCoolDown = 0;
 };
