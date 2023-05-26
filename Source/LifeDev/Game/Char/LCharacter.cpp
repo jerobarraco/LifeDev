@@ -1,4 +1,4 @@
-// Copyright  Jerónimo Barraco-Mármol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LCharacter.h"
 
@@ -14,7 +14,6 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
-#include "Interact/Interact.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
@@ -187,6 +186,11 @@ void ALCharacter::ActItem() {
 
 	if (Selected.IsNone()) {
 		UE_LOG(LogTemp, Warning, TEXT("No item is selected."));
+		return;
+	}
+
+	if (!Inventory->IsCold(Selected)) {
+		UE_LOG(LogTemp, Warning, TEXT("Item is not cold."));
 		return;
 	}
 

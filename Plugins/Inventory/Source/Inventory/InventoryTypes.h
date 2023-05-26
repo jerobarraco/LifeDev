@@ -12,9 +12,13 @@ struct INVENTORY_API FItem: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
+	// Each trigger will consume one unit
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Consumable = true;
-	// an item that can be used, or only held. Tentative, might get removed
+	// For things that trigger by themselves (not with other objects (e.g. cards))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool AutoTrigger = false;
+	// an item that can be used, or only held. Tentative, might get removed. (mementos are false)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Usable = true;
 	// max allowed number of items, -1 is unlimited.
@@ -22,7 +26,7 @@ public:
 	int32 MaxCount = -1;
 	// 0 == no cooldown. used for cards.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 Cooldown = 0;
+	int32 CoolDown = 0;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
@@ -41,7 +45,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	int32 Count = 0;
 
-	// used during runtime to keep track of the cooldown
+	// the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
-	int32 LastUsed = 0;
+	int32 CurrentCoolDown = 0;
 };

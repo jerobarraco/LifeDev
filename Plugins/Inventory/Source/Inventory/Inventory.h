@@ -11,6 +11,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FInventoryOnMod, const FName&, Name, const FItem&, Item, int32, NewCount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnSelected, const FName&, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnUsed, const FName&, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnItemCold, const FName&, Name);
 
 class UDataTable;
 // World subsystem to deal with Inventory
@@ -26,7 +27,7 @@ public:
 	// Used for Add, Rem, and Use. Returns false if not found.
 	// Note: It does check for maxCount but will return true even when capped.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Mod(const FName& Name, int32 Diff, int32& OutDiff);
+	bool Mod(const FName& Name, int32 Diff);
 
 	// returns an item from the datatable if exists
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -61,8 +62,10 @@ public:
 	bool SetSelected(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
-	void Use(const FName& Name);
+	bool Use(const FName& Name);
 
+	UFUNCTION(BlueprintCallable)
+	bool IsCold(const FName& Name) const;
 
 	/// ~system
 
@@ -75,13 +78,21 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FInventoryOnUsed OnUsed;
 
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	FInventoryOnItemCold OnItemCold;
+
 protected:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	void SetCoolTimerEnabled(bool Enable);
+	void CoolTimerTick();
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName Selected;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Transient)
 	TMap<FName, FItem> Items;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	UDataTable* DT = nullptr;
+
+	FTimerHandle CoolTimer;
 };

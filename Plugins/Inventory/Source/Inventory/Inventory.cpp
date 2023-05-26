@@ -1,4 +1,4 @@
-// Copyright (C) 2023 - Jeronimo Barraco-Marmol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "Inventory.h"
 
@@ -6,11 +6,11 @@
 
 #pragma optimize("", off)
 
-bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
-
+bool UInventory::Mod(const FName& Name, int32 Diff) {
 	FName NewSel = FName();
 	bool SetSelect = false;
-	
+
+	// get or create the item
 	FItem* Item = Items.Find(Name);
 	if (!Item) {
 		if (Diff<=0) {
@@ -33,7 +33,6 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 	}
 
 	int32 Current = Item->Count;
-
 	// clamp values
 	// for non-consumables use always -1, for consumables clamp at 0
 	if (Item->Consumable) {
@@ -41,12 +40,11 @@ bool UInventory::Mod(const FName& Name, int32 Diff, int32& OutDiff) {
 		// get the max we can go. Current+diff to allow to grow.
 		const int32 Max = Item->MaxCount <= 0 ? Current + Diff: Item->MaxCount;
 		// clamp the diff to the max. and min.
-		OutDiff = FMath::Clamp(Diff, -Current, Max - Current);
+		const int32 CurDiff = FMath::Clamp(Diff, -Current, Max - Current);
 		// apply diff
-		Current = FMath::Max(0, Current+OutDiff);
+		Current = FMath::Max(0, Current+CurDiff);
 	} else {
 		// calculate the difference. non-consumable are always 0. the rest are clamped to the produce (0, MaxCount)
-		OutDiff = Diff;
 		Current = -1;
 	}
 
@@ -81,6 +79,7 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 
 	// set the item anyway even if not found
 	OutItem = *Item;
+	OutItem.Count = 0;
 	return true;
 }
 
@@ -146,15 +145,76 @@ bool UInventory::SetSelected(const FName& Name) {
 	return true;
 }
 
-void UInventory::Use(const FName& Name) {
+bool UInventory::Use(const FName& Name) {
 	const bool Exists = Items.Contains(Name);
 	if (!Exists) {
-		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that i don't have!"));
-		return;
+		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that i don't have. '%s'"), *Name.ToString());
+		return false;
 	}
-	int32 OutDiff;
-	Mod(Name, -1, OutDiff);
+	FItem& Item = Items[Name];
+
+	// intentionally not calling iscold for performance. if i end up uisng IsCold then call IsCold for simplicity here.
+	if (Item.CurrentCoolDown>0) {
+		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that haven't cooled down. '%s': wait=%i"), *Name.ToString(), Item.CurrentCoolDown);
+		return false;
+	}
+
+	Mod(Name, -1);
+
+	Item.CurrentCoolDown = Item.CoolDown;
+	if (Item.CurrentCoolDown>0) {SetCoolTimerEnabled(true);}
+	
 	OnUsed.Broadcast(Name);
+	return true;
 }
 
+// do i need this?
+// returns cold if it doesnt need to cool down, wether it uses or not cooldowns
+bool UInventory::IsCold(const FName& Name) const {
+	const bool Exists = Items.Contains(Name);
+	if (!Exists) {
+		UE_LOG(LogTemp, Error, TEXT("attempt to check for cold an item i don't have. '%s'"), *Name.ToString());
+		return false;
+	}
+
+	return Items[Name].CurrentCoolDown <= 0;
+}
+
+void UInventory::SetCoolTimerEnabled(bool Enable) {
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	
+	FTimerManager& Time = World->GetTimerManager();
+
+	if (Enable) {
+		// check if the timer is still valid
+		if (CoolTimer.IsValid()) return;
+		Time.SetTimer(CoolTimer, this, &UInventory::CoolTimerTick, 1, true);
+	} else {
+		Time.ClearAllTimersForObject(this);
+	}
+}
+
+void UInventory::CoolTimerTick() {
+	TArray<FName> Keys;
+	Items.GetKeys(Keys);
+	TArray<FName> ColdItems;
+	
+	const int32 ItemsNum = Keys.Num();
+	for(int32 i=0; i<ItemsNum; ++i){
+		const FName& Name = Keys[i];
+		FItem& Item = Items[Name];
+		if (Item.CurrentCoolDown<=0) continue;
+		
+		Item.CurrentCoolDown = FMath::Max(0, Item.CurrentCoolDown-1);
+		if (Item.CurrentCoolDown > 0) continue;
+		ColdItems.Add(Name);
+	}
+
+	const int32 ColdNum = ColdItems.Num();
+	if (ColdNum == 0){ SetCoolTimerEnabled(false); }
+	for (int32 i=0; i<ColdNum; ++i) {
+		OnItemCold.Broadcast(ColdItems[i]);
+	}
+}
 #pragma optimize("", on)
