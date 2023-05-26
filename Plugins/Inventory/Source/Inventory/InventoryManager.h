@@ -46,7 +46,7 @@ public:
 	int32 InputPrio = 9;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TSubclassOf<UUserWidget> UIClass = nullptr;
+	TSubclassOf<UInventoryUI> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;

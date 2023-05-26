@@ -10,4 +10,5 @@ class LIFEDEV_API ALInventoryManager : public AInventoryManager {
 	GENERATED_BODY()
 
 public:
+	ALInventoryManager();
 };

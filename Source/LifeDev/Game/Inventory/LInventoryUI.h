@@ -2,13 +2,14 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Inventory/InventoryUI.h"
 
 #include "LInventoryUI.generated.h"
 
 UCLASS(Blueprintable)
-class LIFEDEV_API ULInventoryUI : public UUserWidget {
+class LIFEDEV_API ULInventoryUI : public UInventoryUI {
 	GENERATED_BODY()
 
 public:
+	
 };
