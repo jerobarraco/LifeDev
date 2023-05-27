@@ -1,0 +1,65 @@
+// Copyright (C) 2023 - Jerónimo Barraco-Mármol
+
+#pragma once
+
+#include "CAnimatorRaw.generated.h"
+
+class UCurveFloat;
+class USceneComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnChange, float, Progress, float, Alpha);
+
+// An interactive actor that can have an animation
+UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+class INTERACT_API UCAnimatorRaw: public UActorComponent {
+	GENERATED_BODY()
+public:
+
+	UCAnimatorRaw();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Play(bool Reversed = false);
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Stop();
+
+	UFUNCTION(BlueprintCallable)
+	inline bool GetIsAnimating() { return IsAnimating; }
+
+	
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UCurveFloat* Curve = nullptr;
+
+	// Duration of the animation in seconds
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	float Duration = 2.0;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	FCAnimatorRawOnEnd OnEnd;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	FCAnimatorRawOnChange OnChange;
+
+protected:
+	// override me on child classes :) (Progress can be read directly)
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void Update(float Alpha);
+	virtual void Update_Implementation(float Alpha);
+	
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	UFUNCTION(BlueprintCallable)
+	void SetIsAnimating(bool NewIsRotating);
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsAnimating = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	float Progress = 0.0;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsReversed = false;
+};
+

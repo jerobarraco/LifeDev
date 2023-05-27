@@ -3,37 +3,40 @@
 #pragma once
 #include "CAnimatorRaw.h"
 
-#include "CAnimator.generated.h"
+#include "CAnimatorMat.generated.h"
 
-class UCurveFloat;
 class USceneComponent;
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimator: public UCAnimatorRaw {
+class INTERACT_API UCAnimatorMat: public UCAnimatorRaw {
 	GENERATED_BODY()
 
 public:
-	// uses accumulated (relative to start) version, or not.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName ParamFName;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool IsAdditive = true;
+	float FStart = 0.0;
 	
-	// The animation transform. You don't necessarily need to set this up, but you can change it.
-	// It's going to be automatically set to the current transform of the AnimRoot
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
-	
-	// The animation transform
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FTransform TEnd = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
+	float FEnd = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName ParamVName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FVector VStart;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FVector VEnd = FVector::OneVector;
 
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USceneComponent* AnimRoot = nullptr;
+	UMaterialInstanceDynamic* Mat = nullptr;
 
 protected:
 	virtual void Update_Implementation(float Alpha) override;
 	
-	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
