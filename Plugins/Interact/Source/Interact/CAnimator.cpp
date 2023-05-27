@@ -4,7 +4,9 @@
 
 void UCAnimator::Update_Implementation(float Alpha) {
 	Super::Update_Implementation(Alpha);
-	
+
+	if (!IsValid(AnimRoot)) return;
+
 	FTransform TNew = TStart;
 	if (IsAdditive) {
 		TStart.BlendFromIdentityAndAccumulate(TNew, TEnd, (const ScalarRegister) Alpha);
