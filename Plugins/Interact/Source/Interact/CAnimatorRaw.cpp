@@ -10,8 +10,10 @@ UCAnimatorRaw::UCAnimatorRaw():Super() {
 	Curve = CCurve.Object;
 }
 
-void UCAnimatorRaw::Play(bool NewIsReversed) {
-	IsReversed = NewIsReversed;
+void UCAnimatorRaw::Play(bool Reversed, bool Loop, bool Bounce) {
+	IsReversed = Reversed;
+	IsLooping = Loop;
+	IsBouncing = Bounce;
 	SetIsAnimating(true);
 }
 
@@ -20,6 +22,11 @@ void UCAnimatorRaw::Stop() {
 }
 
 void UCAnimatorRaw::Update_Implementation(float Alpha) {}
+
+void UCAnimatorRaw::End_Implementation() {
+	Progress = 0.0;
+	OnEnd.Broadcast();
+}
 
 void UCAnimatorRaw::BeginPlay() {
 	Super::BeginPlay();
@@ -30,7 +37,7 @@ void UCAnimatorRaw::BeginPlay() {
 }
 
 void UCAnimatorRaw::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	SetIsAnimating(false);
+	Stop();
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -38,15 +45,23 @@ void UCAnimatorRaw::TickComponent(float DT, ELevelTick TickType, FActorComponent
 	Super::TickComponent(DT, TickType, ThisTickFunction);
 	// to allow to dis-able tick
 	if (!IsAnimating) {
-		SetIsAnimating(false); return;
+		Stop();
+		return;
 	}
 
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
-	if (Progress>=1.0) {
-		SetIsAnimating(false);
-		return;
+	if (Progress >= 1.0) {
+		if (!IsLooping) {
+			Stop();
+			return;
+		}
+		End(); // it technically ended
+
+		if (IsBouncing) {
+			IsReversed = !IsReversed;
+		}
 	}
 
 	const float NProg = IsValid(Curve)? Curve->GetFloatValue(Progress) : Progress;
@@ -55,16 +70,17 @@ void UCAnimatorRaw::TickComponent(float DT, ELevelTick TickType, FActorComponent
 
 	Update_Implementation(Alpha);
 	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f"), Progress, Alpha);
-	OnChange.Broadcast(Progress, Alpha);
+	OnUpdate.Broadcast(Progress, Alpha);
 }
 
 void UCAnimatorRaw::SetIsAnimating(bool NewIsAnimating) {
+	const bool WasAnimating = IsAnimating;
 	IsAnimating = NewIsAnimating;
 	SetComponentTickEnabled(IsAnimating);
-	if (!IsAnimating) {
-		OnEnd.Broadcast();
+	Progress = 0.0; // force it because of the if below
+
+	if (WasAnimating && !IsAnimating) {
+		End();
 		return;
 	}
-
-	Progress = 0.0;
 }

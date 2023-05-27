@@ -8,7 +8,7 @@ class UCurveFloat;
 class USceneComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnChange, float, Progress, float, Alpha);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
@@ -19,15 +19,13 @@ public:
 	UCAnimatorRaw();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Play(bool Reversed = false);
+	void Play(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Stop();
 
 	UFUNCTION(BlueprintCallable)
 	inline bool GetIsAnimating() { return IsAnimating; }
-
-	
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	UCurveFloat* Curve = nullptr;
@@ -40,13 +38,18 @@ public:
 	FCAnimatorRawOnEnd OnEnd;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
-	FCAnimatorRawOnChange OnChange;
-
+	FCAnimatorRawOnUpdate OnUpdate;
+	
 protected:
 	// override me on child classes :) (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha);
+
+	// override me on child classes :)
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void End();
+	virtual void End_Implementation();
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -54,12 +57,17 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetIsAnimating(bool NewIsRotating);
-
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsLooping = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsBouncing = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsReversed = false;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsAnimating = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	bool IsReversed = false;
 };
 
