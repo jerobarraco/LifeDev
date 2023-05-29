@@ -8,7 +8,7 @@
 
 #include "Story.generated.h"
 
-
+class AStep;
 class UDataTable;
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, Category="Inventory")
@@ -18,6 +18,27 @@ class STORY_API UStory : public UWorldSubsystem
 
 public:
 
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Init();
+	virtual void Init_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void DeInit();
+	virtual void DeInit_Implementation();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Start(const FName& Name);
+	virtual void Start_Implementation(const FName& Name);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void StopCurrent();
+	virtual void StopCurrent_Implementation();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	TArray<AStep*> Steps;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	AStep* Current = nullptr;
 protected:
 
 };

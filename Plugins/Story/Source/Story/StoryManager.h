@@ -21,12 +21,4 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
-	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Start(const FName& Name);
-	virtual void Start_Implementation(const FName& Name);
-
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TArray<AStep*> Steps;
-
 };

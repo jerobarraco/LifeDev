@@ -4,6 +4,7 @@
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 void ALStep::Start_Implementation() {
+	Super::Start_Implementation();
 	if (DisablePlayer) {
 		// AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
 		ALGGameMode* const LGGameMode = ALGGameMode::Get();

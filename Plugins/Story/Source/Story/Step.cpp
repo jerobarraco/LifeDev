@@ -5,9 +5,13 @@
 #include "Camera/CameraActor.h"
 
 void AStep::Start_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
+
 	if (IsValid(Camera)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Camera, 1, VTBlend_EaseInOut);
 	}
 }
 
-void AStep::Stop_Implementation() {}
+void AStep::Stop_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("Stopping step '%s'"), *Name.ToString());
+}

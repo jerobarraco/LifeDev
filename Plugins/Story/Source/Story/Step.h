@@ -18,12 +18,12 @@ public:
 	void Start() ;
 	virtual void Start_Implementation();
 	UFUNCTION(BlueprintNativeEvent)
-	void Stop() ;
+	void Stop();
 	virtual void Stop_Implementation();
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName Name;
-	
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	ACameraActor* Camera = nullptr;
 };

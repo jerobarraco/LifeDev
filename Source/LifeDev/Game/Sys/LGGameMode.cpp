@@ -9,9 +9,11 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryManager.h"
 
+#include "Story/StoryManager.h"
+#include "Story/Story.h"
+
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
-#include "Story/StoryManager.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	// set default pawn class to our Blueprinted character
@@ -72,6 +74,9 @@ void ALGGameMode::Init_Implementation() {
 
 
 	/// Story
+	UStory* const Story = World->GetSubsystem<UStory>();
+	Story->Init();
+
 	StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
 	if (IsValid(StoryManager)) {
 		StoryManager->Init();
@@ -149,6 +154,9 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALGGameMode::StartStory() const {
-	if (!IsValid(StoryManager)) return;
-	StoryManager->Start(FName("C0S0")); // TODO put these names somewhere else
+
+	// Should this be here?
+	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	if (!IsValid(Story)) return;
+	Story->Start(FName("C0S0")); // TODO put these names somewhere else
 }
