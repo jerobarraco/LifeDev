@@ -13,6 +13,15 @@ enum class EDialogEmotion : uint8 {
 	DISGUST,
 };
 
+UENUM(BlueprintType)
+enum class EDialogType : uint8 {
+	NORMAL,
+	SYSTEM,
+	WHISPER,
+	GROUP,
+	MISTERY,
+};
+
 // The base structure for dialogs
 USTRUCT(Blueprintable, BlueprintType)
 struct DIALOGS_API FDialog: public FTableRowBase {
@@ -24,6 +33,8 @@ public:
 	FName CharRow;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EDialogType Type = EDialogType::NORMAL;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Text;
 };

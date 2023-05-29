@@ -16,30 +16,42 @@ public:
 
 	AInteract();
 
+	// Call this to trigger the interaction. will check if it's locked.
 	UFUNCTION(BlueprintNativeEvent)
-	void Trigger();
-	virtual void Trigger_Implementation();
+	bool TryTrigger();
+	virtual bool TryTrigger_Implementation();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
 	// returns true if the item has been used (notice past tense)
-	// Override and activate the item here. dont modify the inventory.
+	// Override and activate the item here, but don't modify the inventory.
 	// will return if the item is usable, (and trigger action with custom code)
 	// To be overriden on child objects
 	UFUNCTION(BlueprintNativeEvent)
 	bool TryUseItem(const FName& Name);
 	virtual bool TryUseItem_Implementation(const FName& Name);
 
+	// used for binding only. since ue will complain about the return value. but i still wanna keep it.
+	UFUNCTION(BlueprintCallable)
+	void TryTriggerWrapped() {TryTrigger();}
+
+	UPROPERTY(BlueprintReadWrite)
+	bool Locked = false;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void SetText();
 	virtual void SetText_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void Trigger();
+	virtual void Trigger_Implementation();
+	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();
 

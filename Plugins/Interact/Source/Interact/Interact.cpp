@@ -29,6 +29,12 @@ AInteract::AInteract():Super() {
 	Interact->HoverMesh = Mesh;
 }
 
+bool AInteract::TryTrigger_Implementation() {
+	if (Locked) return false;
+	Trigger();
+	return true;
+}
+
 bool AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogTemp, Log, TEXT("Ainteract.TryUseItem=%s"), *Name.ToString());
 	return false;
@@ -37,7 +43,7 @@ bool AInteract::TryUseItem_Implementation(const FName& Name) {
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
-	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::Trigger);
+	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrapped);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 }
 
