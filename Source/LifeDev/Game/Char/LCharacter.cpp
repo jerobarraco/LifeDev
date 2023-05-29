@@ -94,6 +94,7 @@ void ALCharacter::InteractResume() {
 }
 
 void ALCharacter::SetInputEnabled(bool Enabled) {
+	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	Interactor->SetEnabled(Enabled);
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
 }

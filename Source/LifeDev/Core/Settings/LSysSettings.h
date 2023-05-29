@@ -11,6 +11,7 @@ class UDataTable;
 UENUM(BlueprintType)
 enum class EFeat {
 	DUNNO,
+	INTRO,
 	// INVENTORY,
 	// DIALOGS,
 };
@@ -45,8 +46,8 @@ public:
 	bool UseDebugFeats = false;
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> DefaultFeats = {EFeat::DUNNO};
+	TSet<EFeat> DefaultFeats = {EFeat::INTRO};
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> DebugFeats = {EFeat::DUNNO};
+	TSet<EFeat> DebugFeats = {EFeat::INTRO};
 };
