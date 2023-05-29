@@ -5,7 +5,12 @@
 
 void ULGameInstance::Init() {
 	Super::Init();
-	Feats = ULSysSettings::Get()->DefaultFeats;
+	Reset();
+}
+
+void ULGameInstance::Reset() {
+	ULSysSettings* const Settings = ULSysSettings::Get();
+	Feats = Settings->UseDebugFeats ? Settings->DebugFeats : Settings->DefaultFeats;
 }
 
 bool ULGameInstance::HasFeat(EFeat Feat) {

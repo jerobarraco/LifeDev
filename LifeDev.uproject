@@ -15,6 +15,10 @@
 	],
 	"Plugins": [
 		{
+			"Name": "Story",
+			"Enabled": true
+		},
+		{
 			"Name": "Dialogs",
 			"Enabled": true
 		},

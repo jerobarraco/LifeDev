@@ -15,7 +15,7 @@ public class LifeDev : ModuleRules
 		});
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"Interact", "Dialogs", "JUtils", "Inventory"
+			"Interact", "Dialogs", "JUtils", "Inventory", "Story"
 		});
 	}
 }

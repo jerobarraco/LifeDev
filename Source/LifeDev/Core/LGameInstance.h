@@ -20,6 +20,9 @@ public:
 	virtual void Init() override;
 	
 	UFUNCTION(BlueprintCallable)
+	void Reset();
+
+	UFUNCTION(BlueprintCallable)
 	bool HasFeat(EFeat Feat);
 
 	UFUNCTION(BlueprintCallable)

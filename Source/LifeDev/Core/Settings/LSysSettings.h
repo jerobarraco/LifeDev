@@ -41,7 +41,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType= "/Script/Dialogs.DialogChar"))
 	TArray<TSoftObjectPtr<UDataTable>> Sequences;
 
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
+	bool UseDebugFeats = false;
+
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DefaultFeats = {EFeat::DUNNO};
+
+	// The debug features
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
+	TSet<EFeat> DebugFeats = {EFeat::DUNNO};
+	
 };
