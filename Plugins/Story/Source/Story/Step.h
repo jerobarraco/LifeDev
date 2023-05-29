@@ -4,7 +4,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Step.generated.h"
+
+class ACameraActor;
 
 UCLASS(Blueprintable, BlueprintType)
 class AStep : public AActor {
@@ -17,4 +20,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FName Name;
+	
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	ACameraActor* Camera = nullptr;
 };

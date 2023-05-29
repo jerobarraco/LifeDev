@@ -13,8 +13,6 @@ class STORY_API AStoryManager: public AActor {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite)
-	TMap<int32, TSubclassOf<AStep>> Steps;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
@@ -23,4 +21,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Start(const FName& Name);
+	virtual void Start_Implementation(const FName& Name);
+
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	TMap<FName, AStep*> Steps;
 };

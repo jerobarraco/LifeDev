@@ -39,5 +39,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	int32 Chapter = 1; // Maybe this could be on the game instance. ?
-	
+
+protected:
+	void StartStory() const;
 };

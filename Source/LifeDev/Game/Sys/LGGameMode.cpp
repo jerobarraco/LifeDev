@@ -74,7 +74,9 @@ void ALGGameMode::Init() {
 	} else {
 		StoryManager = nullptr;
 	}
-	
+
+	FTimerHandle Handle;
+	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 3);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -110,11 +112,14 @@ void ALGGameMode::DeInit() {
 		StoryManager->DeInit();
 	}
 	StoryManager = nullptr;
-
-	
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALGGameMode::StartStory() const {
+	if (!IsValid(StoryManager)) return;
+	StoryManager->Start(FName("C0S0")); // TODO put these names somewhere else
 }
