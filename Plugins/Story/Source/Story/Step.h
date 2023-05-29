@@ -10,13 +10,16 @@
 class ACameraActor;
 
 UCLASS(Blueprintable, BlueprintType)
-class AStep : public AActor {
+class STORY_API AStep : public AActor {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Start() ;
 	virtual void Start_Implementation();
+	UFUNCTION(BlueprintNativeEvent)
+	void Stop() ;
+	virtual void Stop_Implementation();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FName Name;

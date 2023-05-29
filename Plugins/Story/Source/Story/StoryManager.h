@@ -28,4 +28,5 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TArray<AStep*> Steps;
+
 };

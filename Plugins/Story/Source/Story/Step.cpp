@@ -9,3 +9,5 @@ void AStep::Start_Implementation() {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Camera, 1, VTBlend_EaseInOut);
 	}
 }
+
+void AStep::Stop_Implementation() {}

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "LifeDev/Game/Char/LCharacter.h"
 
 #include "LGGameMode.generated.h"
 
@@ -22,12 +23,22 @@ public:
 	ALGGameMode();
 
 	UFUNCTION(BlueprintCallable)
+	static ALGGameMode* Get();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Init();
+	virtual void Init_Implementation();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DeInit();
+	virtual void DeInit_Implementation();
+
+	UFUNCTION(BlueprintCallable)
+	void SetCharInputEnabled(bool Enabled);
 
 	virtual void BeginPlay() override;
-	void DeInit();
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ADialogManager* DiagManager = nullptr;
 	
@@ -36,6 +47,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	AStoryManager* StoryManager = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ALCharacter* Char = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	int32 Chapter = 1; // Maybe this could be on the game instance. ?

@@ -22,22 +22,26 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = ALCharacter::StaticClass();
 }
 
-void ALGGameMode::Init() {
-	// this is the place were we are going to be initializing everything. -Jero
+void ALGGameMode::Init_Implementation() {
+	// this is the place were we are going to be initializing everything.
 
 	UWorld* const World = GetWorld();
 
-	ALCharacter* Char = Cast<ALCharacter>(UGameplayStatics::GetActorOfClass(World, ALCharacter::StaticClass()));
+	/// Character
+	Char = Cast<ALCharacter>(UGameplayStatics::GetActorOfClass(World, ALCharacter::StaticClass()));
 	if (IsValid(Char)) {
-		Char->InputPrio = 1;
+		Char->InputPrio = 1; // todo move this inside init
+		// Char->Init();
+	} else {
+		Char = nullptr;
 	}
 	
 	/// Dialogs
 	DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
 	if (IsValid(DiagManager)) {
 		// Needs to be 10 so that it takes precedence over the character
-		DiagManager->InputPrio = 10;
-		DiagManager->Init();
+		DiagManager->InputPrio = 10; // todo pass inside init
+		DiagManager->Init(); 
 	} else {
 		DiagManager = nullptr;
 	}
@@ -85,7 +89,8 @@ void ALGGameMode::BeginPlay() {
 	Init();
 }
 
-void ALGGameMode::DeInit() {
+void ALGGameMode::DeInit_Implementation() {
+
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
@@ -112,6 +117,30 @@ void ALGGameMode::DeInit() {
 		StoryManager->DeInit();
 	}
 	StoryManager = nullptr;
+
+	if (IsValid(Char)) {
+		// Char->DeInit();
+	}
+	Char = nullptr;
+}
+
+void ALGGameMode::SetCharInputEnabled(bool Enabled) {
+	if(!IsValid(Char)) return;
+	Char->SetInputEnabled(Enabled);
+}
+
+ALGGameMode* ALGGameMode::Get() {
+	if (!GEngine) return nullptr;
+	UWorld* const World = GEngine->GetWorld();
+	if (!IsValid(World)) return nullptr;
+
+	AGameModeBase* const AuthGameMode = World->GetAuthGameMode();
+	if (!IsValid(AuthGameMode)) return nullptr;
+	
+	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(AuthGameMode);
+	if (!IsValid(LGGameMode)) return nullptr;
+
+	return LGGameMode;
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {

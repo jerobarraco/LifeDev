@@ -89,6 +89,7 @@ void ALCharacter::InteractPause(const FDialog& Diag) {
 }
 
 void ALCharacter::InteractResume() {
+	// TODO only re-enable if it was enabled before pause. Also rename to DialogShows or smth
 	SetInputEnabled(true);
 }
 
