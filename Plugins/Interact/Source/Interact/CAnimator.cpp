@@ -1,4 +1,4 @@
-// Copyright Jerónimo Barraco-Mármol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "CAnimator.h"
 
