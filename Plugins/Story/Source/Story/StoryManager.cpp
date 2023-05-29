@@ -17,7 +17,6 @@ void AStoryManager::Start_Implementation(const FName& Name) {
 		}
 	}
 	
-	
 	if (!IsValid(Step)) {
 		UE_LOG(LogTemp, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
 		return;

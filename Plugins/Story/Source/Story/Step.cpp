@@ -2,4 +2,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "Step.h"
 
-void AStep::Start_Implementation() {}
+#include "Camera/CameraActor.h"
+
+void AStep::Start_Implementation() {
+	if (IsValid(Camera)) {
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Camera, 1, VTBlend_EaseInOut);
+	}
+}
