@@ -27,5 +27,5 @@ public:
 	virtual void Start_Implementation(const FName& Name);
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TMap<FName, AStep*> Steps;
+	TArray<AStep*> Steps;
 };
