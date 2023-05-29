@@ -41,7 +41,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType= "/Script/Dialogs.DialogChar"))
 	TArray<TSoftObjectPtr<UDataTable>> Sequences;
 
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	bool UseDebugFeats = false;
 

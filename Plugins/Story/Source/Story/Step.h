@@ -3,3 +3,18 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
+#include "Step.generated.h"
+
+UCLASS(Blueprintable, BlueprintType)
+class AStep : public AActor {
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintNativeEvent)
+	void Start() ;
+	virtual void Start_Implementation();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FName Name;
+};

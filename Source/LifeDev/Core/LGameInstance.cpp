@@ -5,10 +5,10 @@
 
 void ULGameInstance::Init() {
 	Super::Init();
-	Reset();
+	ResetFeats();
 }
 
-void ULGameInstance::Reset() {
+void ULGameInstance::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	Feats = Settings->UseDebugFeats ? Settings->DebugFeats : Settings->DefaultFeats;
 }

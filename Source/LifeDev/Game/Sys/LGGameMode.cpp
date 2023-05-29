@@ -11,6 +11,7 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
+#include "Story/StoryManager.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	// set default pawn class to our Blueprinted character
@@ -64,6 +65,16 @@ void ALGGameMode::Init() {
 	} else {
 		InvManager = nullptr;
 	}
+
+
+	/// Story
+	StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
+	if (IsValid(StoryManager)) {
+		StoryManager->Init();
+	} else {
+		StoryManager = nullptr;
+	}
+	
 }
 
 void ALGGameMode::BeginPlay() {
@@ -94,6 +105,13 @@ void ALGGameMode::DeInit() {
 		InvManager->DeInit();
 	}
 	InvManager = nullptr;
+
+	if (IsValid(StoryManager)) {
+		StoryManager->DeInit();
+	}
+	StoryManager = nullptr;
+
+	
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
