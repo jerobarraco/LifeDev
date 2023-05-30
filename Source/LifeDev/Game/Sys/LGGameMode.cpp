@@ -64,8 +64,11 @@ void ALGGameMode::Init_Implementation() {
 		DiagManager = nullptr;
 	}
 
+	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
+	
 	/// todo make this into its own function for when i need to load the next chapter
-	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
 	UDataTable* const Chaps = Settings->Chapters.LoadSynchronous();
 	if (!IsValid(Chaps)) {
 		return;
@@ -124,11 +127,10 @@ void ALGGameMode::DeInit_Implementation() {
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
-	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
 	if (IsValid(Dialogs)) {
 		Dialogs->DeInit();
 	}
-	
+	Dialogs = nullptr;	
 	UInventory* const Inventory = World->GetSubsystem<UInventory>();
 	if (IsValid(Inventory)) {
 		Inventory->DeInit();
@@ -156,9 +158,18 @@ void ALGGameMode::DeInit_Implementation() {
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
-	if(!IsValid(Char)) return;
-	Char->SetInputEnabled(Enabled);
-	InvManager->SetVisible(Enabled);
+	CharInputEnabled = Enabled;
+	SetTempInputEnabled(Enabled);
+}
+
+void ALGGameMode::SetTempInputEnabled(bool Enabled) {
+	if (Enabled && !CharInputEnabled) return;
+	if(IsValid(Char)) {
+		Char->SetInputEnabled(Enabled);
+	}
+	if (IsValid(InvManager)) {
+		InvManager->SetVisible(Enabled);
+	}
 }
 
 ALGGameMode* ALGGameMode::Get() {
@@ -189,4 +200,11 @@ void ALGGameMode::StartStory() const {
 	if (!IsValid(Story)) return;
 
 	Story->StartSequence(Chapter.StorySeq);
+}
+
+void ALGGameMode::DiagShown(const FDialog& Diag) {
+	SetCharInputEnabled(false);
+}
+void ALGGameMode::DiagDone() {
+	SetCharInputEnabled(true);
 }

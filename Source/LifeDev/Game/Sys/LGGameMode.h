@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Dialogs/Dialogs.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Game/Char/LCharacter.h"
@@ -28,14 +29,20 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Init();
+	UFUNCTION()
 	virtual void Init_Implementation();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DeInit();
 	virtual void DeInit_Implementation();
 
+	// enables or disables char input. and stays like that even though of dialogs.
 	UFUNCTION(BlueprintCallable)
 	void SetCharInputEnabled(bool Enabled);
+
+	// disables input temporarily, enables only if char is enabled. used for dialogs.
+	UFUNCTION(BlueprintCallable)
+	void SetTempInputEnabled(bool Enabled);
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -50,6 +57,9 @@ public:
 	AStoryManager* StoryManager = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UDialogs* Dialogs = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALCharacter* Char = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -60,4 +70,8 @@ public:
 
 protected:
 	void StartStory() const;
+
+	void DiagShown(const FDialog& Diag);
+	void DiagDone();
+	bool CharInputEnabled = true;
 };

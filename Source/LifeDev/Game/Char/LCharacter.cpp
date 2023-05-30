@@ -119,11 +119,6 @@ void ALCharacter::BeginPlay()
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALCharacter::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALCharacter::InteractEnd);
-
-	UDialogs* const UlDialogs = World->GetSubsystem<UDialogs>();
-	UlDialogs->OnShow.AddUniqueDynamic(this, &ALCharacter::InteractPause);
-	UlDialogs->OnDone.AddUniqueDynamic(this, &ALCharacter::InteractResume);
-
 	Inventory = World->GetSubsystem<UInventory>();
 }
 

@@ -9,9 +9,9 @@
 
 #pragma optimize("", off)
 
-#pragma optimize("", on)
 void UStory::Init_Implementation() {
 	TArray<AActor*> Actors;
+	// TODO find another way, they could be unloaded
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStep::StaticClass(), Actors);
 	Steps.Empty();
 	for (int32 i= 0; i<Actors.Num(); ++i) {
@@ -94,3 +94,4 @@ bool UStory::StartSequence_Implementation(const TArray<FName>& InSeq) {
 	SeqStep = -1;
 	return StartNextStep();
 }
+#pragma optimize("", on)
