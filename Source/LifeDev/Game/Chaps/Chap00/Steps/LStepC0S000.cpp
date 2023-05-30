@@ -3,7 +3,7 @@
 
 ALStepC0S000::ALStepC0S000():Super() {
 	Name = FName("C0S0");
-	DisablePlayer = true;
+	InputEnabled = true;
 }
 
 void ALStepC0S000::Start_Implementation() {

@@ -44,15 +44,21 @@ void UStory::Start_Implementation(const FName& Name) {
 	}
 
 	// Is this a good idea?
-	StopCurrent();
+	Stop();
 
 	UE_LOG(LogTemp, Warning, TEXT("About to start step : '%s'"), *Name.ToString());
 	Current = Step;
 	Step->Start();
 }
 
-void UStory::StopCurrent_Implementation() {
+void UStory::Stop_Implementation(const FName& WithName) {
 	if (!IsValid(Current)) return;
+	if (!WithName.IsNone() && Current->Name != WithName) {
+		UE_LOG(LogTemp, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
+			*Current->Name.ToString(), *WithName.ToString());
+		return;
+	}
+
 	AStep* Step = Current;
 	UE_LOG(LogTemp, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
 	Current = nullptr; // done before calling stop to allow for other functions to call this.

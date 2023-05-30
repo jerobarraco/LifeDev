@@ -5,25 +5,14 @@
 
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
-	if (DisablePlayer) {
-		AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
-		ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-		// ALGGameMode* const LGGameMode = ALGGameMode::Get();
-		if (LGGameMode) {
-			LGGameMode->SetCharInputEnabled(false);
-		}
+	AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
+	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
+	// ALGGameMode* const LGGameMode = ALGGameMode::Get();
+	if (LGGameMode) {
+		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
 }
 
 void ALStep::Stop_Implementation() {
 	Super::Stop_Implementation();
-
-	if (DisablePlayer) {
-		AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
-		ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-		// ALGGameMode* const LGGameMode = ALGGameMode::Get();
-		if (IsValid(LGGameMode)) {
-			LGGameMode->SetCharInputEnabled(true);
-		}
-	}
 }

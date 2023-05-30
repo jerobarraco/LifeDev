@@ -13,8 +13,9 @@ class ALStep : public AStep {
 
 public:
 	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
 	
+	virtual void Stop_Implementation() override;
+
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	bool DisablePlayer = false;
+	bool InputEnabled = false;
 };

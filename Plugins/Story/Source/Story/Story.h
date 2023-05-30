@@ -18,7 +18,6 @@ class STORY_API UStory : public UWorldSubsystem
 
 public:
 
-	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
 	virtual void Init_Implementation();
@@ -31,8 +30,8 @@ public:
 	virtual void Start_Implementation(const FName& Name);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void StopCurrent();
-	virtual void StopCurrent_Implementation();
+	void Stop(const FName& WithName=FName(""));
+	virtual void Stop_Implementation(const FName& WithName=FName(""));
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	TArray<AStep*> Steps;

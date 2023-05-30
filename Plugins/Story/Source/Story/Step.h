@@ -14,13 +14,17 @@ class STORY_API AStep : public AActor {
 	GENERATED_BODY()
 
 public:
+	AStep();
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void Start() ;
 	virtual void Start_Implementation();
 	UFUNCTION(BlueprintNativeEvent)
 	void Stop();
 	virtual void Stop_Implementation();
-
+	UFUNCTION(BlueprintNativeEvent)
+	void Finish();
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName Name;
 
