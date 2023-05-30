@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Game/Char/LCharacter.h"
 
 #include "LGGameMode.generated.h"
@@ -39,20 +40,23 @@ public:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ADialogManager* DiagManager = nullptr;
 	
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AInventoryManager* InvManager = nullptr;
 	
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALCharacter* Char = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Transient)
-	int32 Chapter = 1; // Maybe this could be on the game instance. ?
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	int32 ChapterId = 1; // Maybe this could be on the game instance. ?
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	FLChapter Chapter;
 
 protected:
 	void StartStory() const;

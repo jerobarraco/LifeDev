@@ -33,15 +33,12 @@ public:
 	TSoftObjectPtr<UDataTable> Inventory = nullptr;
 
 	// The list of characters
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType="/Script/Dialogs.DialogChar"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story", meta=(RowType="/Script/Dialogs.DialogChar"))
 	TSoftObjectPtr<UDataTable> Characters = nullptr;
-	// The dialogs for each chapter
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType="/Script/Dialogs.Dialog"))
-	TArray<TSoftObjectPtr<UDataTable>> ChapDialogs;
-	// The list of sequences
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Dialogs", meta=(RowType= "/Script/Dialogs.DialogChar"))
-	TArray<TSoftObjectPtr<UDataTable>> Sequences;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story", meta=(RowType="LChapter"))
+	TSoftObjectPtr<UDataTable> Chapters;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	bool UseDebugFeats = false;
 	// The default features
@@ -50,4 +47,5 @@ public:
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DebugFeats = {EFeat::CHAP_00};
+	
 };

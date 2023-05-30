@@ -8,6 +8,8 @@ ALStepC0S000::ALStepC0S000():Super() {
 
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &ALStepC0S000::Finish, 4);
 }
 
 void ALStepC0S000::Stop_Implementation() {

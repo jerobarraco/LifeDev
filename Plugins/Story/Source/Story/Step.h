@@ -16,10 +16,10 @@ class STORY_API AStep : public AActor {
 public:
 	AStep();
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Start() ;
 	virtual void Start_Implementation();
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Stop();
 	virtual void Stop_Implementation();
 	UFUNCTION(BlueprintNativeEvent)
@@ -29,5 +29,5 @@ public:
 	FName Name;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ACameraActor* Camera = nullptr;
+	AActor* CamTarget = nullptr;
 };

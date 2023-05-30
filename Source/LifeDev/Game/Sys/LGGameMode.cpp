@@ -9,6 +9,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryManager.h"
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/FLChapter.h"
 
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
@@ -29,7 +30,21 @@ void ALGGameMode::Init_Implementation() {
 	// this is the place were we are going to be initializing everything.
 
 	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (!IsValid(Instance)) return;
+	
+	ULSysSettings* const Settings = ULSysSettings::Get();
+	if (!IsValid(Settings)) {
+		UE_LOG(LogTemp, Warning, TEXT("Settings not valid"));
+		return;
+	}
 
+	
+	// todo improve
+	const bool HasChap0 = Instance->HasFeat(EFeat::CHAP_00);
+	ChapterId = HasChap0 ? 0: 1;
+	
 	/// Character
 	Char = Cast<ALCharacter>(UGameplayStatics::GetActorOfClass(World, ALCharacter::StaticClass()));
 	if (IsValid(Char)) {
@@ -49,19 +64,29 @@ void ALGGameMode::Init_Implementation() {
 		DiagManager = nullptr;
 	}
 
-	ULSysSettings* const Settings = ULSysSettings::Get();
+	/// todo make this into its own function for when i need to load the next chapter
 	UDialogs* const Dialogs = World->GetSubsystem<UDialogs>();
-	if (IsValid(Settings) && IsValid(Dialogs) && Chapter < Settings->ChapDialogs.Num() && Chapter<Settings->Sequences.Num())  {
-		UDataTable* const DT = Settings->ChapDialogs[Chapter].LoadSynchronous();
-		UDataTable* const Chars = Settings->Characters.LoadSynchronous();
-		UDataTable* const Seqs = Settings->Sequences[Chapter].LoadSynchronous();
-		Dialogs->Init(DT, Chars, Seqs);
-	}else {
-		UE_LOG(LogTemp, Warning, TEXT("Did not loaded the dialog tables for some weird reason"));
+	UDataTable* const Chaps = Settings->Chapters.LoadSynchronous();
+	if (!IsValid(Chaps)) {
+		return;
+	}
+	
+	FName ChapName = *FString::FromInt(ChapterId);
+	FLChapter* pChap = Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
+	if (!pChap) {
+		UE_LOG(LogTemp, Warning, TEXT("Cant get the chapter from datatable"));
+		return;
 	}
 
+	Chapter = *pChap;
+	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
+	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
+	Dialogs->Init(Diags, Chars, Seqs);
+	/////~
+
 	/// Inventory
-	UInventory* const Inventory =  World->GetSubsystem<UInventory>();
+	UInventory* const Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
 
 	InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
@@ -163,8 +188,5 @@ void ALGGameMode::StartStory() const {
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
 
-	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)) return;
-	const bool HasChap0 = Instance->HasFeat(EFeat::CHAP_00);
-	Story->Start( HasChap0? FName("C0S0") : FName("C1S0"));
+	Story->StartSequence(Chapter.StorySeq);
 }

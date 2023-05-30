@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StoryTypes.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Subsystems/WorldSubsystem.h"
 
@@ -10,12 +11,16 @@
 
 class AStep;
 class UDataTable;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, const FName& ,Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, const FName&, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
+
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, Category="Inventory")
 class STORY_API UStory : public UWorldSubsystem
 {
 	GENERATED_BODY()
-
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -25,19 +30,45 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool StartSequence(const TArray<FName>& InSeq);
+	virtual bool StartSequence_Implementation(const TArray<FName>& InSeq);
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Start(const FName& Name);
 	virtual void Start_Implementation(const FName& Name);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Stop(const FName& WithName=FName(""));
-	virtual void Stop_Implementation(const FName& WithName=FName(""));
-	
+	void Stop(const FName& IfName=FName(""));
+	virtual void Stop_Implementation(const FName& IfName=FName(""));
+
+	UFUNCTION(BlueprintCallable)
+	const FName& GetCurrent();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	bool AutoPlay = true;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStoryStepStart OnStepStart;
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStoryStepStop OnStepStop;
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStorySeqStop OnSeqStop;
+	
+protected:
+	bool StartNextStep();
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TArray<AStep*> Steps;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStep* Current = nullptr;
-protected:
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TArray<FName> Sequence;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	int32 SeqStep = -1;
+};	
 
-};

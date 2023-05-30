@@ -3,6 +3,7 @@
 #include "Story.h"
 
 #include "Step.h"
+#include "StoryTypes.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -49,18 +50,47 @@ void UStory::Start_Implementation(const FName& Name) {
 	UE_LOG(LogTemp, Warning, TEXT("About to start step : '%s'"), *Name.ToString());
 	Current = Step;
 	Step->Start();
+	OnStepStart.Broadcast(Step->Name);
 }
 
-void UStory::Stop_Implementation(const FName& WithName) {
+void UStory::Stop_Implementation(const FName& IfName) {
 	if (!IsValid(Current)) return;
-	if (!WithName.IsNone() && Current->Name != WithName) {
+	if (!IfName.IsNone() && Current->Name != IfName) {
 		UE_LOG(LogTemp, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
-			*Current->Name.ToString(), *WithName.ToString());
+			*Current->Name.ToString(), *IfName.ToString());
 		return;
 	}
 
-	AStep* Step = Current;
+	AStep* const Step = Current;
 	UE_LOG(LogTemp, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
-	Current = nullptr; // done before calling stop to allow for other functions to call this.
+	// done before calling stop to allow for other functions to call this.
+	Current = nullptr;
 	Step->Stop();
+	OnStepStop.Broadcast(Step->Name);
+	
+	StartNextStep();
+}
+
+const FName& UStory::GetCurrent() {
+	static FName Empty;
+	return IsValid(Current) ? Current->Name : Empty;
+}
+
+bool UStory::StartNextStep() {
+	++SeqStep;
+	if (SeqStep>=Sequence.Num()) {
+		OnSeqStop.Broadcast();
+		return false;
+	}
+
+	Start(Sequence[SeqStep]);
+	return true;
+}
+
+bool UStory::StartSequence_Implementation(const TArray<FName>& InSeq) {
+	Sequence = InSeq;
+	if (Sequence.IsEmpty()) return false;
+
+	SeqStep = -1;
+	return StartNextStep();
 }

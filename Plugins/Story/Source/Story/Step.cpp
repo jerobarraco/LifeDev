@@ -13,8 +13,8 @@ AStep::AStep():Super() {
 void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
 
-	if (IsValid(Camera)) {
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Camera, 1, VTBlend_EaseInOut);
+	if (IsValid(CamTarget)) {
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, 1, VTBlend_EaseInOut);
 	}
 }
 
