@@ -1,9 +1,11 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: GPL-2.0
+
 #include "Step.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Story.h"
-#include "Camera/CameraActor.h"
 
 AStep::AStep():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -13,6 +15,16 @@ AStep::AStep():Super() {
 void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
 
+	if (IsPawnTarget) {
+		AActor* Actor = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
+		APawn* Pawn = Cast<APawn>(Actor);
+		if (!IsValid(Pawn)) {
+			UE_LOG(LogTemp, Warning, TEXT("Could not get the pawn!!!!"));
+		} else {
+			CamTarget = Pawn;
+		}
+	}
+	
 	if (IsValid(CamTarget)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, 1, VTBlend_EaseInOut);
 	}
@@ -22,8 +34,9 @@ void AStep::Stop_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Stopping step '%s'"), *Name.ToString());
 }
 
-// TODO should i invert this with stop???
 void AStep::Finish_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("Finishing step '%s'"), *Name.ToString());
+
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 

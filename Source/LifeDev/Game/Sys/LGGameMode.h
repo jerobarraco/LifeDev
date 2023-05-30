@@ -6,7 +6,6 @@
 #include "Dialogs/Dialogs.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
-#include "LifeDev/Game/Char/LCharacter.h"
 
 #include "LGGameMode.generated.h"
 
@@ -14,6 +13,8 @@ class UInputMappingContext;
 class ADialogManager;
 class AInventoryManager;
 class AStoryManager;
+class ULSysSettings;
+class ALCharacter;
 
 // Game mode class 
 UCLASS(Blueprintable)
@@ -23,6 +24,7 @@ class LIFEDEV_API ALGGameMode : public AGameModeBase
 
 public:
 	ALGGameMode();
+	bool LoadChapter(ULSysSettings* Settings);
 
 	UFUNCTION(BlueprintCallable)
 	static ALGGameMode* Get();

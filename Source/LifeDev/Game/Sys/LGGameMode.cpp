@@ -26,6 +26,28 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = ALCharacter::StaticClass();
 }
 
+bool ALGGameMode::LoadChapter(ULSysSettings* const Settings) {
+	
+	UDataTable* const DT_Chaps = Settings->Chapters.LoadSynchronous();
+	if (!IsValid(DT_Chaps)) {
+		return true;
+	}
+	
+	const FName ChapName = *FString::FromInt(ChapterId); // todo find a betterest way
+	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
+	if (!pChap) {
+		UE_LOG(LogTemp, Warning, TEXT("Cant get the chapter from datatable"));
+		return true;
+	}
+
+	Chapter = *pChap;
+	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
+	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
+	Dialogs->Init(Diags, Chars, Seqs);
+	return false;
+}
+
 void ALGGameMode::Init_Implementation() {
 	// this is the place were we are going to be initializing everything.
 
@@ -40,8 +62,7 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 
-	
-	// todo improve
+	// todo improve. should come from savestate
 	const bool HasChap0 = Instance->HasFeat(EFeat::CHAP_00);
 	ChapterId = HasChap0 ? 0: 1;
 	
@@ -64,28 +85,7 @@ void ALGGameMode::Init_Implementation() {
 		DiagManager = nullptr;
 	}
 
-	Dialogs = World->GetSubsystem<UDialogs>();
-	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
-	
-	/// todo make this into its own function for when i need to load the next chapter
-	UDataTable* const Chaps = Settings->Chapters.LoadSynchronous();
-	if (!IsValid(Chaps)) {
-		return;
-	}
-	
-	FName ChapName = *FString::FromInt(ChapterId);
-	FLChapter* pChap = Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
-	if (!pChap) {
-		UE_LOG(LogTemp, Warning, TEXT("Cant get the chapter from datatable"));
-		return;
-	}
 
-	Chapter = *pChap;
-	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
-	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Dialogs->Init(Diags, Chars, Seqs);
 	/////~
 
 	/// Inventory
@@ -101,7 +101,6 @@ void ALGGameMode::Init_Implementation() {
 		InvManager = nullptr;
 	}
 
-
 	/// Story
 	UStory* const Story = World->GetSubsystem<UStory>();
 	Story->Init();
@@ -113,6 +112,12 @@ void ALGGameMode::Init_Implementation() {
 		StoryManager = nullptr;
 	}
 
+	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
+
+	LoadChapter(Settings);
+	
 	FTimerHandle Handle;
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 3);
 }
@@ -127,10 +132,14 @@ void ALGGameMode::DeInit_Implementation() {
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
+
 	if (IsValid(Dialogs)) {
+		Dialogs->OnShow.RemoveAll(this);
+		Dialogs->OnDone.RemoveAll(this);
 		Dialogs->DeInit();
 	}
-	Dialogs = nullptr;	
+	Dialogs = nullptr;
+
 	UInventory* const Inventory = World->GetSubsystem<UInventory>();
 	if (IsValid(Inventory)) {
 		Inventory->DeInit();
@@ -203,8 +212,8 @@ void ALGGameMode::StartStory() const {
 }
 
 void ALGGameMode::DiagShown(const FDialog& Diag) {
-	SetCharInputEnabled(false);
+	SetTempInputEnabled(false);
 }
 void ALGGameMode::DiagDone() {
-	SetCharInputEnabled(true);
+	SetTempInputEnabled(true);
 }

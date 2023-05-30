@@ -19,9 +19,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Start() ;
 	virtual void Start_Implementation();
+	// don't call this one directly. called by the system. Override to perform whatever the step needs to do at the end.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Stop();
-	virtual void Stop_Implementation();
+
+	// Call this one to stop the step from outside the system, or from the step itself.
 	UFUNCTION(BlueprintNativeEvent)
 	void Finish();
 	
@@ -30,4 +32,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AActor* CamTarget = nullptr;
+
+	// will target pawn automatically, will override the camtarget
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsPawnTarget = false;
 };

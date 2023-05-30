@@ -9,7 +9,7 @@
 #include "Dialogs.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnStop);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
 
 // World subsystem to deal with dialogs
 UCLASS(Blueprintable, Category="Dialogs")
@@ -54,7 +54,7 @@ public:
 
 	// when there are no more dialogs to show now
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
-	FDiagOnStop OnDone;
+	FDiagOnDone OnDone;
 
 protected:
 
