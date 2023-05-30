@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStep0000.generated.h"
+#include "LStepC0S000.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class ALStep0000 : public ALStep {
+class ALStepC0S000 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStep0000();
+	ALStepC0S000();
 	
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;

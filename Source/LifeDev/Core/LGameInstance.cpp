@@ -26,7 +26,6 @@ void ULGameInstance::SetFeat(EFeat Feat, bool Enable) {
 	}
 }
 
-
 /*
 
 void USGEGameInstance::LoadGame()
