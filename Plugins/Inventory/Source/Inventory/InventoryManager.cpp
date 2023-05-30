@@ -43,11 +43,7 @@ void AInventoryManager::DeInit() {
 }
 
 void AInventoryManager::ActOpen() {
-	if (IsShowing) return;
-	IsShowing = true;
-	if (IsValid(UI)) {
-		UI->Show();
-	}
+	Show();
 }
 
 void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
@@ -56,6 +52,22 @@ void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
 	if (NextKey.IsNone()) return;
 
 	Inventory->SetSelected(NextKey);
+}
+
+void AInventoryManager::SetVisible(bool Vis) {
+	if (Vis) {
+		Show();
+	} else {
+		Hide();
+	}
+}
+
+void AInventoryManager::Show() {
+	if (IsShowing) return;
+	IsShowing = true;
+	if (IsValid(UI)) {
+		UI->Show();
+	}
 }
 
 void AInventoryManager::Hide() {

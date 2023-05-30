@@ -8,7 +8,10 @@ public:
 	// TODO implement to be able to use this
 	// UFUNCTION(BlueprintCallable)
 	// static UJMiscUtils* Get();
-	
+
+	UFUNCTION(BlueprintPure)
+	static UWorld* GetEdWorld();
+
 	UFUNCTION(BlueprintPure)
 	static bool IsWithEditor();
 

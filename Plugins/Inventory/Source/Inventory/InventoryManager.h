@@ -26,8 +26,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
-	
 
+	UFUNCTION(BlueprintCallable)
+	void SetVisible(bool Vis);
+
+	UFUNCTION(BlueprintCallable)
+	void Show();
+	
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 

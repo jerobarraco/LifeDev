@@ -20,14 +20,14 @@ void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {}
 void UInventoryUI::PostHide() {
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// these are not needed since we are using the input actions
-	Controller->bShowMouseCursor = false;
-	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	// Controller->bShowMouseCursor = false;
+	// UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInventoryUI::PreShow() {
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	Controller->bShowMouseCursor = true;
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
+	// Controller->bShowMouseCursor = true;
+	// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
 	SetVisibility(ESlateVisibility::Visible);
 }

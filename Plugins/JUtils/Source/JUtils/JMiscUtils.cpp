@@ -7,6 +7,7 @@
 
 #ifdef WITH_EDITOR
 	#include "Editor.h"
+	#include "EditorScriptingHelpers.h"
 #else
 	#include "Engine/Engine.h"
 #endif
@@ -14,6 +15,20 @@
 // UJMiscUtils* UJMiscUtils::Get() {
 	// return nullptr;
 // }
+
+UWorld* UJMiscUtils::GetEdWorld()
+{
+#if WITH_EDITOR
+	if (!GEditor) return nullptr;
+	if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
+		FWorldContext* const PieContext = GEditor->GetPIEWorldContext(0);
+		return PieContext ? PieContext->World() : nullptr;
+	}
+	return GEditor->GetEditorWorldContext(false).World(); 
+#else
+	return nullptr;
+#endif
+}
 
 bool UJMiscUtils::IsWithEditor()
 {
@@ -28,17 +43,18 @@ UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
 
 	// World = GetWorld();
-	if (IsValid(World)) return World;
+	// if (IsValid(World)) return World;
 
 	// TODO this is not working as expected.
 	#ifdef WITH_EDITOR
-		const bool bIsInPIE = (GEditor != nullptr && GEditor->PlayWorld != nullptr) || GIsPlayInEditorWorld;
-		if (bIsInPIE)
-    		return GEditor->GetWorld();
-		else
-			return GEngine->GetWorld();
+		World = GetEdWorld();
+		
+		if (!World) {
+			World = GEngine->GetWorld();	
+		}
+		return World;
     #else
-    		return GEngine->GetWorld();
+    	return GEngine->GetWorld();
     #endif
 }
 

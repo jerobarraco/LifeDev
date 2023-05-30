@@ -8,6 +8,7 @@
 #include "Dialogs/DialogManager.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryManager.h"
+#include "LifeDev/Core/LGameInstance.h"
 
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
@@ -132,6 +133,7 @@ void ALGGameMode::DeInit_Implementation() {
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
 	if(!IsValid(Char)) return;
 	Char->SetInputEnabled(Enabled);
+	InvManager->SetVisible(Enabled);
 }
 
 ALGGameMode* ALGGameMode::Get() {
@@ -154,9 +156,15 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALGGameMode::StartStory() const {
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
 
 	// Should this be here?
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
-	Story->Start(FName("C0S0")); // TODO put these names somewhere else
+
+	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (!IsValid(Instance)) return;
+	const bool HasChap0 = Instance->HasFeat(EFeat::CHAP_00);
+	Story->Start( HasChap0? FName("C0S0") : FName("C1S0"));
 }
