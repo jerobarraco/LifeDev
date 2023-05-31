@@ -63,11 +63,13 @@ void UDialogs::DiagDone() {
 	ShowNext();
 }
 
-void UDialogs::Init(UDataTable* AllDialogs, UDataTable* AllChars, UDataTable* AllSeqs) {
+void UDialogs::SetData(UDataTable* AllDialogs, UDataTable* AllChars, UDataTable* AllSeqs) {
 	Diags = IsValid(AllDialogs)? AllDialogs : nullptr;
 	Chars = IsValid(AllChars)? AllChars: nullptr;
 	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
 }
+
+void UDialogs::Init() {}
 
 void UDialogs::DeInit() {
 	Diags = nullptr;

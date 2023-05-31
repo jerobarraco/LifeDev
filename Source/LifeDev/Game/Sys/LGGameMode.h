@@ -24,7 +24,7 @@ class LIFEDEV_API ALGGameMode : public AGameModeBase
 
 public:
 	ALGGameMode();
-	bool LoadChapter(ULSysSettings* Settings);
+	bool LoadChapter();
 
 	UFUNCTION(BlueprintCallable)
 	static ALGGameMode* Get();

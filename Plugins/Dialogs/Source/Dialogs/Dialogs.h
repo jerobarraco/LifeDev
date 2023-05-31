@@ -43,7 +43,10 @@ public:
 	void DiagDone();
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void Init(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
+	void SetData(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
+
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void Init();
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DeInit();

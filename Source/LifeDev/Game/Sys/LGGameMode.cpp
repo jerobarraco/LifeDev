@@ -26,8 +26,8 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = ALCharacter::StaticClass();
 }
 
-bool ALGGameMode::LoadChapter(ULSysSettings* const Settings) {
-	
+bool ALGGameMode::LoadChapter() {
+	ULSysSettings* const Settings = GetWorld()->GetSubsystem<ULSysSettings>();
 	UDataTable* const DT_Chaps = Settings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
 		return true;
@@ -44,7 +44,7 @@ bool ALGGameMode::LoadChapter(ULSysSettings* const Settings) {
 	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
 	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Dialogs->Init(Diags, Chars, Seqs);
+	Dialogs->SetData(Diags, Chars, Seqs);
 	return false;
 }
 
@@ -113,10 +113,11 @@ void ALGGameMode::Init_Implementation() {
 	}
 
 	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs->Init();
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 
-	LoadChapter(Settings);
+	LoadChapter();
 	
 	FTimerHandle Handle;
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 3);
