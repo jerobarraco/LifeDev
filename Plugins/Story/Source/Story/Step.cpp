@@ -35,7 +35,7 @@ void AStep::Start_Implementation() {
 	}
 	
 	if (IsValid(CamTarget)) {
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, 2, VTBlend_Cubic);
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 	}
 }
 

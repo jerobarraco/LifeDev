@@ -118,9 +118,19 @@ void ALGGameMode::Init_Implementation() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 
 	LoadChapter();
+
 	
+	auto disableInput = [this] {
+		SetCharInputEnabled(false);
+	};
+	// disable input on next tick to avoid a crash otherwise....
+	FTimerDelegate Delegate;
+	Delegate.BindLambda(disableInput);
+	World->GetTimerManager().SetTimerForNextTick(Delegate);
+
+	// start's the story
 	FTimerHandle Handle;
-	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 3);
+	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 2.0);
 }
 
 void ALGGameMode::BeginPlay() {

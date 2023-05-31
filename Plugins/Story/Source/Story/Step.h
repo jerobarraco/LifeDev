@@ -41,6 +41,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseCam = false;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float CamBlendTime = 2.0;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
