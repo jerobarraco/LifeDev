@@ -7,6 +7,7 @@
 
 #include "Step.generated.h"
 
+class UCameraComponent;
 class ACameraActor;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -37,7 +38,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsPawnTarget = false;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseCam = false;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	USceneComponent* Root = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
+	UCameraComponent* Cam = nullptr;
 };

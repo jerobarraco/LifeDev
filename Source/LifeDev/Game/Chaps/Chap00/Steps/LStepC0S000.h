@@ -17,6 +17,8 @@ public:
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	AActor* FakeChar = nullptr;
 protected:
 	void StartDiag();
 };
