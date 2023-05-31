@@ -5,22 +5,9 @@
 #include "Step.h"
 #include "StoryTypes.h"
 
-#include "Kismet/GameplayStatics.h"
-
 #pragma optimize("", off)
 
 void UStory::Init_Implementation() {
-	TArray<AActor*> Actors;
-	// TODO find another way, they could be unloaded
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStep::StaticClass(), Actors);
-	Steps.Empty();
-	for (int32 i= 0; i<Actors.Num(); ++i) {
-		AActor* Actor = Actors[i];
-		if (!IsValid(Actor)) continue;
-		AStep* Step = Cast<AStep>(Actor);
-		if (!IsValid(Step)) continue;
-		Steps.Add(Step);
-	}
 }
 
 void UStory::DeInit_Implementation() {
@@ -28,20 +15,17 @@ void UStory::DeInit_Implementation() {
 	Steps.Empty();
 }
 
-void UStory::Start_Implementation(const FName& Name) {
-	AStep *Step = nullptr;
-	const int32 Num = Steps.Num();
-	for (int32 i = 0; i< Num; ++i) {
-		AStep* const iStep = Steps[i];
-		if (iStep && IsValid(iStep) && iStep->Name == Name) {
-			Step = iStep;
-			break;
-		}
-	}
-	
-	if (!IsValid(Step)) {
+bool UStory::Start_Implementation(const FName& Name) {
+	AStep ** const pStep = Steps.Find(Name);
+	if (!pStep) {
 		UE_LOG(LogTemp, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
-		return;
+		return false;
+	}
+
+	AStep* Step = *pStep;
+	if (!IsValid(Step)) {
+		UE_LOG(LogTemp, Warning, TEXT("Step was not valid. '%s'"), *Name.ToString());
+		return false;
 	}
 
 	// Is this a good idea?
@@ -51,6 +35,8 @@ void UStory::Start_Implementation(const FName& Name) {
 	Current = Step;
 	Step->Start();
 	OnStepStart.Broadcast(Step->Name);
+
+	return true;
 }
 
 void UStory::Stop_Implementation(const FName& IfName) {
@@ -71,6 +57,17 @@ void UStory::Stop_Implementation(const FName& IfName) {
 	StartNextStep();
 }
 
+void UStory::Add(AStep* Step) {
+	if (!IsValid(Step)) return;
+	// i think this replaces something if it already exists. and that's exactly what i want.
+	Steps.Add(Step->Name, Step);
+}
+
+void UStory::Rem(const FName& Name) {
+	// i think this doesn't crashes when it doesn't exists. if it does, change.
+	Steps.Remove(Name);
+}
+
 const FName& UStory::GetCurrent() {
 	static FName Empty;
 	return IsValid(Current) ? Current->Name : Empty;
@@ -83,8 +80,7 @@ bool UStory::StartNextStep() {
 		return false;
 	}
 
-	Start(Sequence[SeqStep]);
-	return true;
+	return Start(Sequence[SeqStep]);
 }
 
 bool UStory::StartSequence_Implementation(const TArray<FName>& InSeq) {

@@ -36,12 +36,18 @@ public:
 	virtual bool StartSequence_Implementation(const TArray<FName>& InSeq);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Start(const FName& Name);
-	virtual void Start_Implementation(const FName& Name);
+	bool Start(const FName& Name);
+	virtual bool Start_Implementation(const FName& Name);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Stop(const FName& IfName=FName(""));
 	virtual void Stop_Implementation(const FName& IfName=FName(""));
+
+	UFUNCTION(BlueprintCallable)
+	void Add(AStep* Step);
+
+	UFUNCTION(BlueprintCallable)
+	void Rem(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
@@ -58,9 +64,9 @@ public:
 	
 protected:
 	bool StartNextStep();
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TArray<AStep*> Steps;
+	TMap<FName, AStep*> Steps;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStep* Current = nullptr;
@@ -70,5 +76,5 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 SeqStep = -1;
-};	
+};
 

@@ -30,6 +30,19 @@ void AStep::Start_Implementation() {
 	}
 }
 
+void AStep::BeginPlay() {
+	Super::BeginPlay();
+	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	Story->Add(this);
+}
+
+void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	Story->Rem(this->Name);
+
+	Super::EndPlay(EndPlayReason);
+}
+
 void AStep::Stop_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Stopping step '%s'"), *Name.ToString());
 }

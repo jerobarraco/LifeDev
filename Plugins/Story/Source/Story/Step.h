@@ -36,4 +36,8 @@ public:
 	// will target pawn automatically, will override the camtarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsPawnTarget = false;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };

@@ -27,7 +27,7 @@ ALGGameMode::ALGGameMode():Super() {
 }
 
 bool ALGGameMode::LoadChapter() {
-	ULSysSettings* const Settings = GetWorld()->GetSubsystem<ULSysSettings>();
+	ULSysSettings* const Settings = ULSysSettings::Get();
 	UDataTable* const DT_Chaps = Settings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
 		return true;

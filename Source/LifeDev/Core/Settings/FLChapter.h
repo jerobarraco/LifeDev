@@ -8,8 +8,8 @@
 USTRUCT(BlueprintType)
 struct LIFEDEV_API FLChapter: public FTableRowBase {
 	GENERATED_BODY()
+
 public:
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
