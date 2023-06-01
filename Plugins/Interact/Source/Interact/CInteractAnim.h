@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CInteractPart.generated.h"
+#include "CInteractAnim.generated.h"
 
 class UCInteract;
 class UCAnimatorTrans;
@@ -10,11 +10,11 @@ class UStaticMeshComponent;
 
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCInteractPart: public USceneComponent {
+class INTERACT_API UCInteractAnim: public USceneComponent {
 public:
 	GENERATED_BODY()
 
-	UCInteractPart(const FObjectInitializer& ObjectInitializer);
+	UCInteractAnim(const FObjectInitializer& ObjectInitializer);
 	virtual void PostInitProperties() override;
 	virtual void PostCDOContruct() override;
 	virtual void BeginPlay() override;
@@ -46,13 +46,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool Locked = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UCInteract* Interact1 = nullptr;
+	UCInteract* Interact = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	USceneComponent* Root = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UCAnimatorTrans* Animator1 = nullptr;
+	UCAnimatorTrans* Animator = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UStaticMeshComponent* Mesh1 = nullptr;
+	UStaticMeshComponent* Mesh = nullptr;
 protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	bool IsOpen = false;
