@@ -30,22 +30,23 @@ bool ALGGameMode::LoadChapter() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	UDataTable* const DT_Chaps = Settings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
-		return true;
+		return false;
 	}
 	
 	const FName ChapName = *FString::FromInt(ChapterId); // todo find a betterest way
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
 	if (!pChap) {
-		UE_LOG(LogTemp, Warning, TEXT("Cant get the chapter from datatable"));
-		return true;
+		UE_LOG(LogTemp, Warning, TEXT("Can't get the chapter from datatable"));
+		return false;
 	}
 
-	Chapter = *pChap;
+	Chapter = *pChap; // Make a copy
+	// set them on the dialog subsystem
 	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
 	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
 	Dialogs->SetData(Diags, Chars, Seqs);
-	return false;
+	return true;
 }
 
 void ALGGameMode::Init_Implementation() {
@@ -85,9 +86,6 @@ void ALGGameMode::Init_Implementation() {
 		DiagManager = nullptr;
 	}
 
-
-	/////~
-
 	/// Inventory
 	UInventory* const Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
@@ -102,7 +100,8 @@ void ALGGameMode::Init_Implementation() {
 	}
 
 	/// Story
-	UStory* const Story = World->GetSubsystem<UStory>();
+	Story = World->GetSubsystem<UStory>();
+	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 	Story->Init();
 
 	StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
@@ -117,9 +116,7 @@ void ALGGameMode::Init_Implementation() {
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 
-	LoadChapter();
-
-	
+	// start by disabling the input
 	auto disableInput = [this] {
 		SetCharInputEnabled(false);
 	};
@@ -140,7 +137,6 @@ void ALGGameMode::BeginPlay() {
 }
 
 void ALGGameMode::DeInit_Implementation() {
-
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
@@ -170,6 +166,10 @@ void ALGGameMode::DeInit_Implementation() {
 		StoryManager->DeInit();
 	}
 	StoryManager = nullptr;
+	if (IsValid(Story)) {
+		Story->OnSeqStop.RemoveAll(this);
+	}
+	Story = nullptr;
 
 	if (IsValid(Char)) {
 		// Char->DeInit();
@@ -211,15 +211,20 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALGGameMode::StartStory() const {
-	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
-
+void ALGGameMode::StartStory() {
 	// Should this be here?
-	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
-
+	if (!LoadChapter()) {
+		UE_LOG(LogTemp, Warning, TEXT("Chapter didn' load. Won't start any sequence."));
+		return;
+	}
 	Story->StartSequence(Chapter.StorySeq);
+}
+
+void ALGGameMode::StartNextChapter() {
+	// Chapter done. go to the next one.
+	++ChapterId;
+	StartStory();
 }
 
 void ALGGameMode::DiagShown(const FDialog& Diag) {

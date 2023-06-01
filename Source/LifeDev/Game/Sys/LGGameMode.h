@@ -3,10 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Dialogs/Dialogs.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
-
+#include "Dialogs/DiagTypes.h"
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
@@ -15,6 +14,8 @@ class AInventoryManager;
 class AStoryManager;
 class ULSysSettings;
 class ALCharacter;
+class UStory;
+class UDialogs;
 
 // Game mode class 
 UCLASS(Blueprintable)
@@ -31,7 +32,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Init();
-	UFUNCTION()
 	virtual void Init_Implementation();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -51,18 +51,16 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ADialogManager* DiagManager = nullptr;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AInventoryManager* InvManager = nullptr;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALCharacter* Char = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UStory* Story = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 ChapterId = 1; // Maybe this could be on the game instance. ?
@@ -71,8 +69,9 @@ public:
 	FLChapter Chapter;
 
 protected:
-	void StartStory() const;
-
+	void StartStory();
+	UFUNCTION() // bind to delegate
+	void StartNextChapter();
 	void DiagShown(const FDialog& Diag);
 	void DiagDone();
 	bool CharInputEnabled = true;

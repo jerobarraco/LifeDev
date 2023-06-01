@@ -9,4 +9,6 @@ ALStepC0S001::ALStepC0S001():Super() {
 
 void ALStepC0S001::Start_Implementation() {
 	Super::Start_Implementation();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ALStepC0S001::Finish, 2);
 }
