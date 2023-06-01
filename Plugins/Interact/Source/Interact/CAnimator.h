@@ -1,39 +1,73 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
-#include "CAnimatorRaw.h"
 
 #include "CAnimator.generated.h"
 
 class UCurveFloat;
 class USceneComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
+
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimator: public UCAnimatorRaw {
+class INTERACT_API UCAnimator: public UActorComponent {
 	GENERATED_BODY()
-
 public:
-	// uses accumulated (relative to start) version, or not.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool IsAdditive = true;
-	
-	// The animation transform. You don't necessarily need to set this up, but you can change it.
-	// It's going to be automatically set to the current transform of the AnimRoot
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
-	
-	// The animation transform
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FTransform TEnd = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
 
-	// the component to be animated (hint, use the root component for "global" positioning)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USceneComponent* AnimRoot = nullptr;
+	UCAnimator();
 
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Play(bool Reversed = false, bool Loop = false, bool Bounce = false);
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Stop();
+
+	UFUNCTION(BlueprintCallable)
+	inline bool GetIsAnimating() { return IsAnimating; }
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UCurveFloat* Curve = nullptr;
+
+	// Duration of the animation in seconds
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	float Duration = 2.0;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	FCAnimatorRawOnEnd OnEnd;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	FCAnimatorRawOnUpdate OnUpdate;
+	
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	// override me on child classes :) (Progress can be read directly)
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void Update(float Alpha);
+	virtual void Update_Implementation(float Alpha);
+
+	// override me on child classes :)
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void End();
+	virtual void End_Implementation();
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	UFUNCTION(BlueprintCallable)
+	void SetIsAnimating(bool NewIsRotating);
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsLooping = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsBouncing = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsReversed = false;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	bool IsAnimating = false;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	float Progress = 0.0;
 };
+

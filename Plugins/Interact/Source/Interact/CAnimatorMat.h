@@ -1,7 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
-#include "CAnimatorRaw.h"
+#include "CAnimator.h"
 
 #include "CAnimatorMat.generated.h"
 
@@ -9,7 +9,7 @@ class USceneComponent;
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimatorMat: public UCAnimatorRaw {
+class INTERACT_API UCAnimatorMat: public UCAnimator {
 	GENERATED_BODY()
 
 public:

@@ -12,7 +12,6 @@ public:
 
 	AInteractAnim();
 
-	virtual void Trigger_Implementation() override;
 	
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
@@ -23,9 +22,10 @@ public:
 
 protected:
 	virtual void SetText_Implementation() override;
+	virtual void Trigger_Implementation() override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimator* Animator = nullptr;
+	UCAnimatorTrans* Animator = nullptr;
 
 	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

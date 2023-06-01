@@ -5,7 +5,7 @@
 
 #include "Interact.generated.h"
 
-class UCAnimator;
+class UCAnimatorTrans;
 class UCInteract;
 
 // Base class for interact actors

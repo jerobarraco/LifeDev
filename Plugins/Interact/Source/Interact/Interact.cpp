@@ -25,8 +25,9 @@ AInteract::AInteract():Super() {
 
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
-	Interact->SetComponentTickEnabled(false);
+	// Interact->SetComponentTickEnabled(false);
 	Interact->HoverMesh = Mesh;
+	// Interact->PostProcess->AttachToComponent(Interact, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 bool AInteract::TryTrigger_Implementation() {
@@ -43,6 +44,7 @@ bool AInteract::TryUseItem_Implementation(const FName& Name) {
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
+
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrapped);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 }

@@ -1,12 +1,12 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "249C7069-B838-425E-BCA2-0B3B6FD8B002",
+	"EngineAssociation": "5.2",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "LifeDev",
-			"Type": "Runtime",
+			"Type": "RuntimeAndProgram",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine"
