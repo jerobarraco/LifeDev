@@ -58,6 +58,20 @@ bool UDialogs::AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FD
 	return AddSeq(OutSeq, OutDiags, OutChars);
 }
 
+bool UDialogs::AddRnd(const FDialogSequence& Seq, FDialog& OutDiag, FDialogChar& OutChar) {
+	int32 Num = Seq.DiagRows.Num();
+	if (Num <= 0) return false;
+	const int32 i = FMath::RandRange(0, Num);
+	return AddId(Seq.DiagRows[i], OutDiag, OutChar);
+}
+
+bool UDialogs::AddRndId(const FName& RowName, FDialog& OutDiag, FDialogChar& OutChar) {
+	FDialogSequence Seq;
+	const bool Ok = GetSeq(RowName, Seq);
+	if (!Ok) return false;
+	return AddRnd(Seq, OutDiag, OutChar);
+}
+
 void UDialogs::DiagDone() {
 	IsShowing = false;
 	ShowNext();

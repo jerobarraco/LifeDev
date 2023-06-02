@@ -30,6 +30,10 @@ public:
 	bool AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars);
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool AddRnd(const FDialogSequence& Seq, FDialog& OutDiag, FDialogChar& OutChar);
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool AddRndId(const FName& RowName, FDialog& OutDiag, FDialogChar& OutChar);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
