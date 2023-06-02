@@ -7,6 +7,7 @@
 #include "StoryManager.generated.h"
 
 class AStep;
+class UStoryUI;
 
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStoryManager: public AActor {
@@ -14,6 +15,8 @@ class STORY_API AStoryManager: public AActor {
 
 public:
 
+	AStoryManager();
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
 	virtual void Init_Implementation();
@@ -21,4 +24,20 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
+	
+	UFUNCTION(BlueprintCallable)
+	void FadeIn(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
+
+	UFUNCTION(BlueprintCallable)
+	void FadeOut();
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<UStoryUI> UIClass = nullptr;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UStoryUI* UI = nullptr;
 };

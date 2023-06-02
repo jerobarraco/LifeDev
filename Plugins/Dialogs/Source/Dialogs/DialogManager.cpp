@@ -18,7 +18,8 @@ ADialogManager::ADialogManager():Super() {
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Dialogs/Input/IA_Skip"));
 	ActionSkip = CActionSkip.Object;
-	
+
+	// i don't have a default ui class in the plugin content yet
 	UIClass = UDialogUI::StaticClass();
 }
 

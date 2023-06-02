@@ -64,5 +64,6 @@ private:
 	UPROPERTY(Transient)
 	UDialogUI* UI = nullptr;
 
+	UPROPERTY(Transient)
 	bool IsShowing = false;
 };

@@ -128,8 +128,10 @@ void ALGGameMode::Init_Implementation() {
 	World->GetTimerManager().SetTimerForNextTick(Delegate);
 
 	// start's the story
-	FTimerHandle Handle;
-	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 2.0);
+	// FTimerHandle Handle;
+	// StartStory();
+	// World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 1.0);
+	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartStory);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -217,10 +219,22 @@ void ALGGameMode::StartStory() {
 	// Should this be here?
 	if (!IsValid(Story)) return;
 	if (!LoadChapter()) {
-		UE_LOG(LogTemp, Warning, TEXT("Chapter didn' load. Won't start any sequence."));
+		UE_LOG(LogTemp, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
 		return;
 	}
-	Story->StartSequence(Chapter.StorySeq);
+	FText DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
+	StoryManager->FadeIn(DecoratedTitle);
+	
+	FTimerManager& Time = GetWorld()->GetTimerManager();
+	FTimerHandle Handle1;
+	FTimerDelegate Delegate1;
+	Delegate1.BindLambda([this] {
+		Story->StartSequence(Chapter.StorySeq);
+	});
+	Time.SetTimer(Handle1, Delegate1, 2, false);
+	
+	FTimerHandle Handle2;
+	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, 5);
 }
 
 void ALGGameMode::StartNextChapter() {

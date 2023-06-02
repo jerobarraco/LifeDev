@@ -26,8 +26,10 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsShowing = false;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetAnimSpeed() const { return AnimDuration > 0? 1.0f/AnimDuration: 1.0f;}
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float AnimSpeed = 1.0;
+	float AnimDuration = 2.f;
 
 	// the manager will handle this.
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
