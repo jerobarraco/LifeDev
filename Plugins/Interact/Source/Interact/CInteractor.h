@@ -26,7 +26,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
 
-	// don't call directly the character will. doesnt deal with the inventory.
+	// don't call directly the character will. doesn't deal with the inventory.
 	UFUNCTION(BlueprintCallable)
 	bool TryUseItem(const FName& Name);
 
@@ -43,6 +43,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractEnd OnEnd;
 
+	// you need to set this once.
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	static void SetCollisionChannel(ECollisionChannel Channel) {
+		InteractChannel = Channel;
+	}
+
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void BeginPlay() override;
@@ -58,4 +64,6 @@ protected:
 
 	UPROPERTY(Transient)
 	UCInteract* InterComp = nullptr;
+
+	inline static ECollisionChannel InteractChannel = ECC_GameTraceChannel1;
 };

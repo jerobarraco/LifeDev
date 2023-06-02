@@ -8,13 +8,12 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	// these 2 seems to work ok. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 	UBoxComponent::SetComponentTickEnabled(false);
-
 	
 	CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	bNavigationRelevant = false;
 	bCanEverAffectNavigation = false;
-	UBoxComponent::SetCollisionProfileName("BlockAllDynamic"); // has to be block all dynamic or the pointer won't work
-	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	UBoxComponent::SetCollisionProfileName("Interact");
+	// UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	SetGenerateOverlapEvents(false);
 	UBoxComponent::SetComponentTickEnabled(false);
 	

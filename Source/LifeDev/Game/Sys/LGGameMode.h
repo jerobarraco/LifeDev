@@ -17,6 +17,9 @@ class ALCharacter;
 class UStory;
 class UDialogs;
 
+// to get the collision channel read https://gamedev.stackexchange.com/a/178812/44866
+#define InteractTraceChannel ECC_GameTraceChannel1
+
 // Game mode class 
 UCLASS(Blueprintable)
 class LIFEDEV_API ALGGameMode : public AGameModeBase

@@ -11,8 +11,8 @@
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
-
-	// the arrow doesnt parent correctly. so.. beat it
+	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
+	// the arrow doesn't parent correctly. so.. beat it
 	// IArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("IArrow"));
 	// IArrow->SetupAttachment(this);
 	// IArrow->SetComponentTickEnabled(false);
@@ -52,7 +52,7 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	const FVector& Direction = GetComponentRotation().Vector() * TraceLen;
 	const FVector& End = Start + Direction;
 	// DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.1f, false, 1.f);
-	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
+	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
 	
 	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);

@@ -13,6 +13,7 @@
 
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
+#include "Interact/CInteractor.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/LCharacter.h"
@@ -24,6 +25,7 @@ ALGGameMode::ALGGameMode():Super() {
 
 	SetActorTickEnabled(false);
 	DefaultPawnClass = ALCharacter::StaticClass();
+	UCInteractor::SetCollisionChannel(InteractTraceChannel);
 }
 
 bool ALGGameMode::LoadChapter() {
