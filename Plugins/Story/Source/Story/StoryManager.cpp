@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "StoryManager.h"
 
-#include "Story.h"
 #include "StoryUI.h"
 
 AStoryManager::AStoryManager():Super() {
@@ -28,6 +27,10 @@ void AStoryManager::FadeOut() {
 	UI->FadeOut();
 }
 
+void AStoryManager::UIFaded() {
+	OnFaded.Broadcast();
+}
+
 void AStoryManager::BeginPlay() {
 	Super::BeginPlay();
 
@@ -36,6 +39,7 @@ void AStoryManager::BeginPlay() {
 		if (IsValid(UI)) {
 			UI->AddToViewport();
 		}
+		UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
 	}
 }
 

@@ -6,6 +6,8 @@
 
 #include "StoryManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStoryManagerOnFaded);
+
 class AStep;
 class UStoryUI;
 
@@ -34,7 +36,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UStoryUI> UIClass = nullptr;
 
+	FStoryManagerOnFaded OnFaded;
+	
 protected:
+	// called when the ui is done fading
+	UFUNCTION()
+	void UIFaded();
+	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
