@@ -75,7 +75,9 @@ protected:
 	void StartStory();
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();
+	UFUNCTION() // bind to delegate
 	void DiagShown(const FDialog& Diag);
+	UFUNCTION() // bind to delegate
 	void DiagDone();
 	bool CharInputEnabled = true;
 };

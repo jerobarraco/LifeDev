@@ -46,6 +46,8 @@ void AStep::BeginPlay() {
 	if (!UseCam && IsValid(Cam)) {
 		Cam->SetActive(false);
 		Cam->SetHiddenInGame(true);
+		Cam->SetVisibility(false);
+		Cam->SetComponentTickEnabled(false);
 	}
 }
 
@@ -58,7 +60,8 @@ void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AStep::PostLoad() {
 	Super::PostLoad();
-	if (!UseCam) {
+	if (!UseCam && IsValid(Cam)) {
+		Cam->SetActive(false);
 		Cam->SetHiddenInGame(true);
 		Cam->SetVisibility(false);
 		Cam->SetComponentTickEnabled(false);
@@ -78,6 +81,7 @@ void AStep::Finish_Implementation() {
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
 	// TODO should i make this a delegate instead?
+	// --not for now, binding and unbiding is not my favorite
 
 	Story->Stop(Name);
 }

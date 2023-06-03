@@ -222,6 +222,10 @@ void ALGGameMode::StartStory() {
 		UE_LOG(LogTemp, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
 		return;
 	}
+
+	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
+	SetTempInputEnabled(false);
+
 	FText DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
 	StoryManager->FadeIn(DecoratedTitle);
 	
@@ -234,7 +238,14 @@ void ALGGameMode::StartStory() {
 	Time.SetTimer(Handle1, Delegate1, 2, false);
 	
 	FTimerHandle Handle2;
-	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, 5);
+	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, 2+3);
+
+	FTimerHandle Handle3;
+	FTimerDelegate Delegate3;
+	Delegate3.BindLambda([this] {
+		SetTempInputEnabled(true);
+	});
+	Time.SetTimer(Handle3, Delegate3, 2+3+3, false);
 }
 
 void ALGGameMode::StartNextChapter() {
@@ -246,6 +257,7 @@ void ALGGameMode::StartNextChapter() {
 void ALGGameMode::DiagShown(const FDialog& Diag) {
 	SetTempInputEnabled(false);
 }
+
 void ALGGameMode::DiagDone() {
 	SetTempInputEnabled(true);
 }
