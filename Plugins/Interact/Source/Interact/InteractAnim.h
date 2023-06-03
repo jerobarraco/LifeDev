@@ -11,13 +11,12 @@ public:
 	GENERATED_BODY()
 
 	AInteractAnim();
-
 	
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
-		FText::FromString(TEXT("Opened Text")), // isOpen
-		FText::FromString(TEXT("Closed text")), // !IsOpen
+		FText::FromString(TEXT("Close")), // isOpen // Opened text
+		FText::FromString(TEXT("Open")), // !IsOpen // Closed text
 	};
 
 protected:

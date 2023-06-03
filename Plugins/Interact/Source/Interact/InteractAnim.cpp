@@ -24,10 +24,10 @@ void AInteractAnim::Trigger_Implementation() {
 
 	if (Animator->GetIsAnimating()) return;
 
-	SetText();
 	Animator->Play(IsOpen);
 
 	// change the flag after we start rotating. now the change has happened.
 	IsOpen = !IsOpen;
+	SetText(); // change the text after the flag has changed
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 }

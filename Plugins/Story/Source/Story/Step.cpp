@@ -56,6 +56,15 @@ void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
+void AStep::PostLoad() {
+	Super::PostLoad();
+	if (!UseCam) {
+		Cam->SetHiddenInGame(true);
+		Cam->SetVisibility(false);
+		Cam->SetComponentTickEnabled(false);
+	}
+}
+
 void AStep::Stop_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Stopping step '%s'"), *Name.ToString());
 }
