@@ -37,6 +37,7 @@ ARange::ARange():Super() {
 	Animator->AnimRoot = AnimRoot;
 	Animator->IsAdditive = false;
 	Animator->Duration = 3;
+	Animator->TEnd.SetScale3D(FVector(10));
 }
 
 void ARange::BeginPlay() {
