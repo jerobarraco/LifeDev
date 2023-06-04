@@ -19,6 +19,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool AutoTrigger = false;
 	// an item that can be used, or only held. Tentative, might get removed. (mementos are false)
+	// TODO change the name because it's ambiguous
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Usable = true;
 	// max allowed number of items, -1 is unlimited.

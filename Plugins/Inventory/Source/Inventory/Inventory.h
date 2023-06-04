@@ -13,6 +13,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnSelected, const FName&, 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnUsed, const FName&, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnItemCold, const FName&, Name);
 
+DECLARE_LOG_CATEGORY_CLASS(LogInventory, Log, Log);
+
 class UDataTable;
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, Category="Inventory")
@@ -51,8 +53,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetItems(const TMap<FName, FItem>& NewItems);
 	
-	UFUNCTION(BlueprintCallable)
-	const FName& GetSelected();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	const FName& GetSelected() const;
+	UFUNCTION(BlueprintCallable) // not pure because it creates a copy
+	bool GetSelectedItem(FItem& Item) const;
 
 	// returns the next key on the list. forwards says the direction, from says which key from, if not specified it will be the selected.
 	UFUNCTION(BlueprintCallable)
@@ -63,9 +67,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool Use(const FName& Name);
-
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsUsable(const FItem& Item) const;
 	UFUNCTION(BlueprintCallable)
-	bool IsCold(const FName& Name) const;
+	static bool IsCold(const FItem& Item);
 
 	/// ~system
 
@@ -85,6 +90,12 @@ protected:
 	void SetCoolTimerEnabled(bool Enable);
 	void CoolTimerTick();
 
+	UFUNCTION(BlueprintCallable)
+	FItem& GetRef(const FName& Name, bool& OutFound);
+
+	UFUNCTION(BlueprintCallable)
+	const FItem& GetRefC(const FName& Name, bool& OutFound) const;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName Selected;
 

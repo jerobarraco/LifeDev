@@ -26,9 +26,9 @@ public:
 	virtual void Hover_Implementation(bool IsOn);
 
 	// returns true if the item has been used (notice past tense)
-	// Override and activate the item here, but don't modify the inventory.
-	// will return if the item is usable, (and trigger action with custom code)
-	// To be overriden on child objects
+	//  this means when calling this function the item WILL trigger
+	// Override and activate the item here.
+	//  (but don't modify the inventory as part of this, and you wont be able since this plugin can't see the inventory)
 	UFUNCTION(BlueprintNativeEvent)
 	bool TryUseItem(const FName& Name);
 	virtual bool TryUseItem_Implementation(const FName& Name);

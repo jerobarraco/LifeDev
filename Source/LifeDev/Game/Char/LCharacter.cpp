@@ -17,8 +17,6 @@
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
-// ALifeDevCharacter
-
 ALCharacter::ALCharacter(): Super()
 {
 	// Set size for collision capsule
@@ -71,9 +69,6 @@ void ALCharacter::SetUIVisible(bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-// void ALCharacter::InteractToggle(bool IsOn, UCInteract* Comp) {
-// }
-
 void ALCharacter::InteractBegin(UCInteract* Comp) {
 	if (!IsValid(UI)) return;
 	UI->InteractShowPrompt(Comp->Text);
@@ -84,19 +79,14 @@ void ALCharacter::InteractEnd(UCInteract* Comp) {
 	UI->InteractHidePrompt();
 }
 
-void ALCharacter::InteractPause(const FDialog& Diag) {
-	SetInputEnabled(false);
-}
-
-void ALCharacter::InteractResume() {
-	// TODO only re-enable if it was enabled before pause. Also rename to DialogShows or smth
-	SetInputEnabled(true);
-}
-
 void ALCharacter::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	Interactor->SetEnabled(Enabled);
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
+	InteractSetEnabled(Enabled);
+}
+
+void ALCharacter::InteractSetEnabled(bool Enabled) {
+	Interactor->SetEnabled(Enabled);
 }
 
 void ALCharacter::BeginPlay()
@@ -185,20 +175,9 @@ void ALCharacter::ActItem() {
 	const FName& Selected = Inventory->GetSelected();
 	UE_LOG(LogTemp, Log, TEXT("ActItem=%s"), *Selected.ToString());
 
-	if (Selected.IsNone()) {
-		UE_LOG(LogTemp, Warning, TEXT("No item is selected."));
-		return;
-	}
-
-	if (!Inventory->IsCold(Selected)) {
-		UE_LOG(LogTemp, Warning, TEXT("Item is not cold."));
-		return;
-	}
-
-	// TODO this needs to be improved
 	FItem Item;
-	if (!Inventory->Get(Selected, Item)) {
-		UE_LOG(LogTemp, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
+	const bool Found = Inventory->GetSelectedItem(Item);
+	if (!Found) {
 		return;
 	}
 
@@ -211,10 +190,15 @@ void ALCharacter::ActItem() {
 		return;
 	}
 
+	if (!Inventory->IsUsable(Item)) {
+		UE_LOG(LogTemp, Warning, TEXT("Can't use item."));
+		return;
+	}
+
 	// TODO this try use item and inventory.use are out of sync. either of them could fail...
 	// TODO find a better way
 	if (!Interactor->TryUseItem(Selected)){
-		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too
+		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
 		if (Item.AutoTrigger) {
 			// TODO trigger effect here
 			UE_LOG(LogTemp, Warning, TEXT("Stub effect trigger for item '%s'."), *Item.Title.ToString());

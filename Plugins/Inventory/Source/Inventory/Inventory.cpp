@@ -14,13 +14,13 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	FItem* Item = Items.Find(Name);
 	if (!Item) {
 		if (Diff<=0) {
-			UE_LOG(LogTemp, Warning, TEXT("Attempt to substract from an item i dont have. Name=%s"), *Name.ToString());
+			UE_LOG(LogInventory, Warning, TEXT("Attempt to substract from an item i dont have. Name=%s"), *Name.ToString());
 			return false;
 		} else {
 			FItem NewItem;
 			const bool FoundRaw = GetRaw(Name, NewItem);
 			if (!FoundRaw) {
-				UE_LOG(LogTemp, Warning, TEXT("Attempted to add an item that doesnt exists. Name=%s"), *Name.ToString());
+				UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesnt exists. Name=%s"), *Name.ToString());
 				return false;
 			}
 
@@ -114,8 +114,22 @@ void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
 	Items = NewItems;
 }
 
-const FName& UInventory::GetSelected() {
+const FName& UInventory::GetSelected() const {
 	return Selected;
+}
+
+bool UInventory::GetSelectedItem(FItem& Item) const {
+	if (Selected.IsNone()) {
+		UE_LOG(LogInventory, Warning, TEXT("No item is selected."));
+		return false;
+	}
+	
+	if (!Get(Selected, Item)) {
+		UE_LOG(LogInventory, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
+		return false;
+	}
+
+	return true;
 }
 
 FName UInventory::GetNextKey(bool Forward, FName From) const {
@@ -148,25 +162,22 @@ bool UInventory::SetSelected(const FName& Name) {
 }
 
 bool UInventory::Use(const FName& Name) {
-	const bool Exists = Items.Contains(Name);
-	if (!Exists) {
-		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that i don't have. '%s'"), *Name.ToString());
-		return false;
-	}
-	FItem& Item = Items[Name];
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (!Found)	return false; 
 
-	// intentionally not calling iscold for performance. if i end up uisng IsCold then call IsCold for simplicity here.
-	if (Item.ActiveCoolDown>0) {
-		UE_LOG(LogTemp, Error, TEXT("Tried to use an item that haven't cooled down. '%s': wait=%i"), *Name.ToString(), Item.ActiveCoolDown);
+	if (!IsUsable(Item)) {
+		UE_LOG(LogInventory, Error, TEXT("Item is unusable. '%s'"), *Name.ToString());
 		return false;
 	}
 
 	// intentionally make a copy since when an object gets removed from the pool, the fname automagically transforms to the next name. W T F
 	FName OldName = Name;
 	Mod(Name, -1);
-	// item was the last one in the inventory.
+	// item was the last one in the inventory. we have no more of it.
 	if (!Items.Contains(OldName)) return true;
 
+	// TODO verify this works setting the value on the reference
 	// at this point the item reference is ok, se keep it.
 	Item.ActiveCoolDown = Item.CoolDown;
 	if (Item.ActiveCoolDown>0) {
@@ -177,16 +188,19 @@ bool UInventory::Use(const FName& Name) {
 	return true;
 }
 
-// do i need this?
-// returns cold if it doesn't need to cool down, whether it uses or not cooldowns
-bool UInventory::IsCold(const FName& Name) const {
-	const bool Exists = Items.Contains(Name);
-	if (!Exists) {
-		UE_LOG(LogTemp, Error, TEXT("attempt to check for cold an item i don't have. '%s'"), *Name.ToString());
+bool UInventory::IsUsable(const FItem& Item) const {
+	if (!Item.Usable) return false;
+	if (!IsCold(Item)) {
+		UE_LOG(LogInventory, Log, TEXT("Item is not cold. title='%s' wait=%i"), *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
 	}
+	return true;
+}
 
-	return Items[Name].ActiveCoolDown <= 0;
+// do i need this?
+// returns cold if it doesn't need to cool down, whether it uses or not cooldowns
+bool UInventory::IsCold(const FItem& Item) {
+	return Item.ActiveCoolDown <= 0;
 }
 
 void UInventory::SetCoolTimerEnabled(bool Enable) {
@@ -234,4 +248,27 @@ void UInventory::CoolTimerTick() {
 		OnCold.Broadcast(ColdItems[i]);
 	}
 }
+
+FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
+	static FItem FauxItem;
+	FItem* const pItem = Items.Find(Name);
+	OutFound = !!pItem;
+	if (!OutFound) {
+		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
+		return FauxItem;
+	}
+	return *pItem;
+}
+
+const FItem& UInventory::GetRefC(const FName& Name, bool& OutFound) const {
+	static FItem FauxItemConst;
+	const FItem* const pItem = Items.Find(Name);
+	OutFound = !!pItem;
+	if (!OutFound) {
+		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
+		return FauxItemConst;
+	}
+	return *pItem;
+}
+
 #pragma optimize("", on)

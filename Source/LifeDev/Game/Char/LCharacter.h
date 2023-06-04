@@ -33,6 +33,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInputEnabled(bool Enabled);
 
+	UFUNCTION(BlueprintCallable)
+	void InteractSetEnabled(bool Enabled);
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
 
@@ -60,18 +63,11 @@ public:
 	UInputAction* ActionItem = nullptr;
 
 protected:
-	// UFUNCTION()
-	// void InteractToggle(bool IsOn, UCInteract* Comp);
 	UFUNCTION()
 	void InteractBegin(UCInteract* Comp);
 	UFUNCTION()
 	void InteractEnd(UCInteract* Comp);
 
-	UFUNCTION()
-	void InteractPause(const FDialog& Diag);
-	UFUNCTION()
-	void InteractResume();
-	
 	virtual void BeginPlay();
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
