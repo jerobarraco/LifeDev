@@ -40,6 +40,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool Locked = false;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCInteract* Interact = nullptr;
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -59,9 +61,6 @@ protected:
 	// Don't change the transform of this guy. change the transform of the children.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* IRoot = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCInteract* Interact = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;

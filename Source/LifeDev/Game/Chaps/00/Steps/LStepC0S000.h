@@ -19,6 +19,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	AActor* FakeChar = nullptr;
+
 protected:
+	virtual void BeginPlay() override;
+	
 	void StartDiag();
 };

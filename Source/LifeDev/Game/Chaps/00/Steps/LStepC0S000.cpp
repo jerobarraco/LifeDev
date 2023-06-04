@@ -2,6 +2,8 @@
 #include "LStepC0S000.h"
 
 #include "Dialogs/Dialogs.h"
+#include "Interact/CInteract.h"
+#include "Interact/Interact.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
 	Name = FName("C0S0");
@@ -22,7 +24,16 @@ void ALStepC0S000::Stop_Implementation() {
 	UDialogs* Dialogs = GetWorld()->GetSubsystem<UDialogs>();
 	Dialogs->OnDone.RemoveAll(this);
 	if (IsValid(FakeChar)) {
-		FakeChar->SetActorHiddenInGame(true);
+		// FakeChar->SetActorHiddenInGame(true);
+		FakeChar->Destroy();
+	}
+}
+
+void ALStepC0S000::BeginPlay() {
+	Super::BeginPlay();
+	AInteract* const FakeInter = Cast<AInteract> (FakeChar);
+	if (FakeInter) {
+		FakeInter->Interact->SetEnabled(false);
 	}
 }
 
