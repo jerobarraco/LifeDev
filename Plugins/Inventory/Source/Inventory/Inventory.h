@@ -31,6 +31,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Mod(const FName& Name, int32 Diff);
 
+	// uses an item. removes it from the inventory if needed. returns success.
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Use(const FName& Name);
+
 	// returns an item from the datatable if exists
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
@@ -39,38 +43,43 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Get(const FName& Name, FItem& OutItem) const;
 	
-	// system ones ////////
-	UFUNCTION(BlueprintCallable)
-	void Init(UDataTable* DataTable);
-	
-	UFUNCTION(BlueprintCallable)
-	void DeInit();
-
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Inventory")
 	const TMap<FName, FItem>& GetItems() const;
 
-	UFUNCTION(BlueprintCallable)
+	// overrides the current items
+	UFUNCTION(BlueprintCallable, Category="Inventory")
 	void SetItems(const TMap<FName, FItem>& NewItems);
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+
+	// returns the selected item name
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	const FName& GetSelected() const;
-	UFUNCTION(BlueprintCallable) // not pure because it creates a copy
+
+	// returns the selected item
+	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
 	bool GetSelectedItem(FItem& Item) const;
 
-	// returns the next key on the list. forwards says the direction, from says which key from, if not specified it will be the selected.
-	UFUNCTION(BlueprintCallable)
-	FName GetNextKey(bool Forward = true, FName From = FName("")) const;
-	
-	UFUNCTION(BlueprintCallable)
+	// sets an item as selected
+	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetSelected(const FName& Name);
 
-	UFUNCTION(BlueprintCallable)
-	bool Use(const FName& Name);
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
+	bool Has(const FName& Name);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	bool IsUsable(const FItem& Item) const;
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
+
+	/// system
+
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	void Init(UDataTable* DataTable);
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	void DeInit();
+	
+	// returns the next key on the list. forwards says the direction, from says which key from, if not specified it will be the selected.
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	FName GetNextKey(bool Forward = true, FName From = FName("")) const;
 
 	/// ~system
 

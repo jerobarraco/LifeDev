@@ -161,6 +161,10 @@ bool UInventory::SetSelected(const FName& Name) {
 	return true;
 }
 
+bool UInventory::Has(const FName& Name) {
+	return Items.Contains(Name);
+}
+
 bool UInventory::Use(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
