@@ -19,12 +19,35 @@ public:
 		FText::FromString(TEXT("Open")), // !IsOpen // Closed text
 	};
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	USoundBase* SFX_Open = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	USoundBase* SFX_OpenEnd = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	USoundBase* SFX_Close = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	USoundBase* SFX_CloseEnd = nullptr;
+
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	virtual void SetText_Implementation() override;
 	virtual void Trigger_Implementation() override;
+	virtual bool TryTrigger_Implementation() override;
+	
+	UFUNCTION(BlueprintNativeEvent) // bound
+	void AnimBegin();
+	virtual void AnimBegin_Implementation();
+	UFUNCTION(BlueprintNativeEvent) // bound
+	void AnimEnd();
+	virtual void AnimEnd_Implementation();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorTrans* Animator = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UAudioComponent* SFX = nullptr;
 
 	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
