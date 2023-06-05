@@ -21,13 +21,6 @@ void UCAnimator::Stop() {
 	SetIsAnimating(false);
 }
 
-void UCAnimator::Update_Implementation(float Alpha) {}
-
-void UCAnimator::End_Implementation() {
-	Progress = 0.0;
-	OnEnd.Broadcast();
-}
-
 void UCAnimator::BeginPlay() {
 	Super::BeginPlay();
 	// PrimaryComponentTick.bCanEverTick = true;
@@ -79,8 +72,10 @@ void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
 	SetComponentTickEnabled(IsAnimating);
 	Progress = 0.0; // force it because of the if below
 
-	if (WasAnimating && !IsAnimating) {
+	if (IsAnimating) {
+		OnBegin.Broadcast();
+	} else if (WasAnimating) {
 		End();
-		return;
+		OnEnd.Broadcast();
 	}
 }
