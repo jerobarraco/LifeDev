@@ -21,6 +21,14 @@ void UCAnimator::Stop() {
 	SetIsAnimating(false);
 }
 
+void UCAnimator::End_Implementation() {
+	OnEnd.Broadcast();
+}
+
+void UCAnimator::Begin_Implementation() {
+	OnBegin.Broadcast();
+}
+
 void UCAnimator::BeginPlay() {
 	Super::BeginPlay();
 	// PrimaryComponentTick.bCanEverTick = true;
@@ -55,6 +63,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 		if (IsBouncing) {
 			IsReversed = !IsReversed;
 		}
+		Begin(); // it technically started
 	}
 
 	const float NProg = IsValid(Curve)? Curve->GetFloatValue(Progress) : Progress;
@@ -73,9 +82,8 @@ void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
 	Progress = 0.0; // force it because of the if below
 
 	if (IsAnimating) {
-		OnBegin.Broadcast();
+		Begin();
 	} else if (WasAnimating) {
 		End();
-		OnEnd.Broadcast();
 	}
 }

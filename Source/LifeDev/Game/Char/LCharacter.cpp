@@ -199,7 +199,7 @@ void ALCharacter::ActItem() {
 	// TODO find a better way
 	if (!Interactor->TryUseItem(Selected)){
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
-		if (Item.AutoTrigger) {
+		if (Item.SelfUsable) {
 			// TODO trigger effect here
 			UE_LOG(LogTemp, Warning, TEXT("Stub effect trigger for item '%s'."), *Item.Title.ToString());
 		} else {

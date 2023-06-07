@@ -54,11 +54,11 @@ protected:
 	// override me on child classes :)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void End();
-	virtual void End_Implementation() {};
+	virtual void End_Implementation();
 	// override me on child classes :)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Begin();
-	virtual void Begin_Implementation(){};
+	virtual void Begin_Implementation();
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -79,4 +79,3 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
 };
-

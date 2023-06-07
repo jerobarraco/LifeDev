@@ -5,7 +5,6 @@
 
 #include "InventoryTypes.generated.h"
 
-
 // The base structure for ITEMS
 USTRUCT(Blueprintable, BlueprintType)
 struct INVENTORY_API FItem: public FTableRowBase {
@@ -15,11 +14,10 @@ public:
 	// Each trigger will consume one unit
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Consumable = true;
-	// For things that trigger by themselves (not with other objects (e.g. cards))
+	// For things that trigger by themselves (and/or with other objects (e.g. cards))
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool AutoTrigger = false;
-	// an item that can be used, or only held. Tentative, might get removed. (mementos are false)
-	// TODO change the name because it's ambiguous
+	bool SelfUsable = false;
+	// For items that can be used with other objects. Tentative, might get removed. (mementos are false)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Usable = true;
 	// max allowed number of items, -1 is unlimited.
@@ -31,11 +29,9 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
-	// the action text for this item
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FText Action;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Description;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
 	// do i need this? TSubClass or TSubPtr
