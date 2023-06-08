@@ -34,7 +34,7 @@ bool UCInteractor::TryUseItem(const FName& Name) {
 		return false;
 	}
 	
-	AActor* Src = InterComp->GetOwner();
+	AActor* const Src = InterComp->GetOwner();
 	AInteract* const Actor = Cast<AInteract>(Src);
 	if (!IsValid(Actor)) {
 		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
@@ -61,7 +61,6 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
-
 
 	IArrow = NewObject<UArrowComponent>(this, TEXT("IArrow"));
 	IArrow->CreationMethod = EComponentCreationMethod::Instance;

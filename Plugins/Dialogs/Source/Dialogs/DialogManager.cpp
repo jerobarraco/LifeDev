@@ -42,7 +42,6 @@ void ADialogManager::DeInit() {
 
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
-		UI->OnDone.RemoveAll(this);
 	}
 	UI = nullptr;
 }
@@ -94,7 +93,6 @@ void ADialogManager::BeginPlay() {
 		if (IsValid(UI)) {
 			UI->AddToViewport();
 			HideUI();
-			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIDone);
 		}
 	}
 }
@@ -107,13 +105,18 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ADialogManager::UIDone() {
+void ADialogManager::DiagDone() {
 	if (!IsValid(Dialogs)) return;
 	IsShowing = false;
 	Dialogs->DiagDone();
 }
 
 void ADialogManager::Skip() {
+	UE_LOG(LogTemp, Log, TEXT("C Skip"));
 	if(!IsValid(UI)) return;
+	if (UI->IsReady) {
+		DiagDone();
+		return;
+	}
 	UI->Skip();
 }

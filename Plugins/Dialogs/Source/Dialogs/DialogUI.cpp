@@ -5,14 +5,13 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 // TODO fix issue where i need to click again after hiding the ui to regain control of player
-// TODO fix the issue where the dialog is skipped as soon as shown !!! (only the 2nd time and onwards)
 void UDialogUI::Hide_Implementation() {}
 
-void UDialogUI::Show_Implementation(const FDialog& Diag) {}
-
-void UDialogUI::Skip_Implementation() {
-	if (IsReady) OnDone.Broadcast();
+void UDialogUI::Show_Implementation(const FDialog& Diag) {
+	PreShow();
 }
+
+void UDialogUI::Skip_Implementation() {}
 
 void UDialogUI::PostHide() {
 	// i've disabled changing the input mode and showing the mouse cursor because

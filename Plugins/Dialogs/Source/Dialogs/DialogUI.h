@@ -7,8 +7,6 @@
 
 #include "DialogUI.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDialogUIDone);
-
 // Helps define an interaction volume
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DIALOGS_API UDialogUI: public UUserWidget {
@@ -29,10 +27,6 @@ public:
 	// false when animating.
 	UPROPERTY(BlueprintReadWrite)
 	bool IsReady = false;
-	
-	// the manager will handle this.
-	UPROPERTY(BlueprintCallable, BlueprintAssignable)
-	FDialogUIDone OnDone;
 	
 protected:
 	UFUNCTION(BlueprintCallable)

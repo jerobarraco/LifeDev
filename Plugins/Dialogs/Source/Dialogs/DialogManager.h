@@ -56,7 +56,7 @@ public:
 private:
 	// stub. the manager will handle input. will it?
 	UFUNCTION()
-	void UIDone();
+	void DiagDone();
 	
 	UPROPERTY(Transient)
 	UDialogs* Dialogs = nullptr;

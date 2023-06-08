@@ -35,6 +35,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void InteractSetEnabled(bool Enabled);
+
+	UFUNCTION(BlueprintCallable)
+	void LookItem(const FItem& Item);
+
+	UFUNCTION(BlueprintCallable)
+	bool Say(const FName& Name);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
@@ -76,6 +82,7 @@ protected:
 	//* Called for looking input 
 	void ActLook(const FInputActionValue& Value);
 	void ActInteract(const FInputActionValue& Value);
+	
 	void ActItem();
 
 	// APawn interface

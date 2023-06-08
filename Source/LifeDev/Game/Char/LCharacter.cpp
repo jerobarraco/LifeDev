@@ -170,6 +170,34 @@ void ALCharacter::ActInteract(const FInputActionValue& Value) {
 	Interactor->TryTrigger();
 }
 
+void ALCharacter::LookItem(const FItem& Item) {
+	// TODO open the ui and show it
+	UE_LOG(LogTemp, Warning, TEXT(
+				"This is a erzats display for the item '%s'. Look how beautiful it is!"
+				"you have %i of them, and the description is : '%s'. "),
+			*Item.Title.ToString(), Item.Count, *Item.Description.ToString());
+
+	// show the dialog with the description. this is temporary until i make the ui
+	FDialog Diag;
+	Diag.Type = EDialogType::SYSTEM;
+	Diag.Text = Item.Description;
+	Diag.CharRow = "Main"; 
+	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
+	if (!D) return;
+	D->Add(Diag);
+
+	// Say(FName("IT_NotUsable"))
+	// FDialogChar Char;
+	// D->AddId(FName("ItemNotUsable"), Diag, Char);
+}
+
+bool ALCharacter::Say(const FName& Name) {
+	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
+	if (!D) return false;
+	FDialog Diag; FDialogChar Char;
+	return D->AddId(Name, Diag, Char);
+}
+
 void ALCharacter::ActItem() {
 	if (!IsValid(Inventory)) return;
 	const FName& Selected = Inventory->GetSelected();
@@ -182,27 +210,27 @@ void ALCharacter::ActItem() {
 	}
 
 	if (!Item.Usable) {
-		// TODO open the ui and show it
-		UE_LOG(LogTemp, Warning, TEXT(
-			"This is a erzats display for the item '%s'. Look how beautiful it is!"
-			"you have %i of them, and the description is : '%s'. "),
-			*Item.Title.ToString(), Item.Count, *Item.Description.ToString())
+		LookItem(Item);
 		return;
 	}
 
 	if (!Inventory->IsUsable(Item)) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't use item."));
+		if (Say(FName("IT_NotReady"))) return;
+		// TODO show text
 		return;
 	}
 
-	// TODO this try use item and inventory.use are out of sync. either of them could fail...
-	// TODO find a better way
+	// this will try trigger the item. i can show dialogs there if i need to.
+	// though maybe it would be nice to have something generic as well.
 	if (!Interactor->TryUseItem(Selected)){
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
 		if (Item.SelfUsable) {
 			// TODO trigger effect here
 			UE_LOG(LogTemp, Warning, TEXT("Stub effect trigger for item '%s'."), *Item.Title.ToString());
 		} else {
+			// Say(FName("IT_WrongCombo"));
+			// the issue is that the item itself will be displaying a text. and i can't tell if there is no item
 			UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
 			return;
 		}
