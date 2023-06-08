@@ -12,6 +12,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractBegin, UCInteract*, Comp)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
 
+UENUM(BlueprintType)
+enum class EItemUseResult: uint8 {
+	SUCCESS,
+	NO_TARGET,
+	BAD_TARGET
+};
+
 // Will be interacting with interact objects
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteractor: public USceneComponent {
@@ -28,7 +35,7 @@ public:
 
 	// don't call directly the character will. doesn't deal with the inventory.
 	UFUNCTION(BlueprintCallable)
-	bool TryUseItem(const FName& Name);
+	bool TryUseItem(const FName& Name, EItemUseResult& Result) const;
 
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

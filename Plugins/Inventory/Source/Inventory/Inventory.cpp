@@ -204,7 +204,9 @@ bool UInventory::IsUsable(const FItem& Item) const {
 // do i need this?
 // returns cold if it doesn't need to cool down, whether it uses or not cooldowns
 bool UInventory::IsCold(const FItem& Item) {
-	return Item.ActiveCoolDown <= 0;
+	const bool Cold = Item.ActiveCoolDown <= 0;
+	UE_LOG(LogInventory, Log, TEXT("Item Is cold?. cold=%i wait=%i title='%s'"), Cold, Item.ActiveCoolDown, *Item.Title.ToString());
+	return Cold;
 }
 
 void UInventory::SetCoolTimerEnabled(bool Enable) {

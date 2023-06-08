@@ -28,20 +28,25 @@ void UCInteractor::TryTrigger() {
 	InterComp->Trigger();
 }
 
-bool UCInteractor::TryUseItem(const FName& Name) {
+bool UCInteractor::TryUseItem(const FName& Name, EItemUseResult& Result) const {
+	// i can't see the inventory from here!
 	if (!IsValid(InterComp)) {
 		UE_LOG(LogTemp, Warning, TEXT("Nothing to use the item with"));
+		Result = EItemUseResult::NO_TARGET;
 		return false;
 	}
 	
 	AActor* const Src = InterComp->GetOwner();
 	AInteract* const Actor = Cast<AInteract>(Src);
 	if (!IsValid(Actor)) {
+		Result = EItemUseResult::NO_TARGET;
 		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
 		return false;
 	}
 
-	return Actor->TryUseItem(Name);
+	const bool TargetSucceed = Actor->TryUseItem(Name);
+	Result = TargetSucceed ? EItemUseResult::SUCCESS : EItemUseResult::BAD_TARGET;
+	return TargetSucceed;
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
