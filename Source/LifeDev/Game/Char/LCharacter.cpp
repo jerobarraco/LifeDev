@@ -62,6 +62,8 @@ ALCharacter::ALCharacter(): Super()
 	ActionInteract = CActionInteract.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionItem(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Item"));
 	ActionItem = CActionItem.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionItemLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_ItemLook"));
+	ActionItemLook = CActionItemLook.Object;
 }
 
 void ALCharacter::SetUIVisible(bool Visible) {
@@ -138,6 +140,7 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALCharacter::ActLook);
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALCharacter::ActInteract);
 	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALCharacter::ActItem);
+	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALCharacter::ActItemLook);
 }
 
 
@@ -237,4 +240,11 @@ void ALCharacter::ActItem() {
 	}
 
 	Inventory->Use(Selected);
+}
+
+void ALCharacter::ActItemLook() {
+	UInventory* const Inventory = GetWorld()->GetSubsystem<UInventory>();
+	FItem Item;
+	Inventory->GetSelectedItem(Item);
+	LookItem(Item);
 }

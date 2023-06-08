@@ -67,6 +67,8 @@ public:
 	UInputAction* ActionInteract = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
 	UInputAction* ActionItem = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UInputAction* ActionItemLook = nullptr;
 
 protected:
 	UFUNCTION()
@@ -82,8 +84,8 @@ protected:
 	//* Called for looking input 
 	void ActLook(const FInputActionValue& Value);
 	void ActInteract(const FInputActionValue& Value);
-	
 	void ActItem();
+	void ActItemLook();
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
