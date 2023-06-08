@@ -33,7 +33,7 @@ void ALStepC0S000::BeginPlay() {
 	Super::BeginPlay();
 	AInteract* const FakeInter = Cast<AInteract> (FakeChar);
 	if (FakeInter) {
-		FakeInter->Interact->SetEnabled(false);
+		FakeInter->SetEnabled(false);
 	}
 }
 

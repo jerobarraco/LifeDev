@@ -37,12 +37,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TryTriggerWrapped() {TryTrigger();}
 
-	UPROPERTY(BlueprintReadWrite)
+	UFUNCTION(BlueprintCallable)
+	void SetEnabled(bool Enabled);
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Locked = false;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCInteract* Interact = nullptr;
-	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -58,6 +58,9 @@ protected:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCInteract* Interact = nullptr;
+	
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

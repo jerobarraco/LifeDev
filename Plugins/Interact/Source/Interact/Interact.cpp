@@ -41,6 +41,12 @@ bool AInteract::TryUseItem_Implementation(const FName& Name) {
 	return false;
 }
 
+void AInteract::SetEnabled(bool Enabled) {
+	if (IsValid(Interact)) {
+		Interact->SetEnabled(Enabled);
+	}
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
