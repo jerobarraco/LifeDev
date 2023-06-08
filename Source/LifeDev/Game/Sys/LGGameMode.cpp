@@ -223,6 +223,8 @@ void ALGGameMode::StartStory() {
 		return;
 	}
 
+	// TODO make these times into parameters
+	
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 
@@ -235,17 +237,17 @@ void ALGGameMode::StartStory() {
 	Delegate1.BindLambda([this] {
 		Story->StartSequence(Chapter.StorySeq);
 	});
-	Time.SetTimer(Handle1, Delegate1, 2, false);
+	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	
 	FTimerHandle Handle2;
-	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, 2+3);
+	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, TimeFadeIn+TimeHold);
 
 	FTimerHandle Handle3;
 	FTimerDelegate Delegate3;
 	Delegate3.BindLambda([this] {
 		SetTempInputEnabled(true);
 	});
-	Time.SetTimer(Handle3, Delegate3, 2+3+3, false);
+	Time.SetTimer(Handle3, Delegate3, TimeFadeIn+TimeFadeOut+TimeHold, false);
 }
 
 void ALGGameMode::StartNextChapter() {

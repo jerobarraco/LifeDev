@@ -243,7 +243,6 @@ void ALCharacter::ActItem() {
 }
 
 void ALCharacter::ActItemLook() {
-	UInventory* const Inventory = GetWorld()->GetSubsystem<UInventory>();
 	FItem Item;
 	Inventory->GetSelectedItem(Item);
 	LookItem(Item);

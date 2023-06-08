@@ -70,6 +70,12 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TimeFadeIn = 2;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TimeHold = 2;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TimeFadeOut = 2;
 
 protected:
 	void StartStory();
