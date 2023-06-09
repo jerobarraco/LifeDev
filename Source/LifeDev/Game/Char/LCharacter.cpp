@@ -46,7 +46,7 @@ ALCharacter::ALCharacter(): Super()
 	// load the ui class here with the class finder.
 	// and also all the other default objects
 	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
-	UIClass = DefaultUI.Class;
+	UIClass = DefaultUI.Succeeded() ? DefaultUI.Class.Get() : UGameUI::StaticClass();
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionJump(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Jump"));

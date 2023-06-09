@@ -3,6 +3,7 @@
 #include "InventoryManager.h"
 
 // these two are needed anyway otherwise it wont compile
+#include "CItemView.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
@@ -14,6 +15,9 @@
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
+
+	View = CreateDefaultSubobject<UCItemView>(TEXT("View"));
+
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Inventory/Input/IMC_Inventory"));
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionOpen(TEXT("/Inventory/Input/IA_Open"));
@@ -25,6 +29,7 @@ AInventoryManager::AInventoryManager():Super(){
 }
 
 void AInventoryManager::Init() {}
+
 void AInventoryManager::DeInit() {
 	Hide();
 	if (IsValid(UI)) {

@@ -13,7 +13,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractBegin, UCInteract*, Comp)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
 
-// Will be interacting with interact objects
+// Will be interacting with interact objects.
+// Subclass of scene component so you can attach it and aim from there
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteractor: public USceneComponent {
 public:

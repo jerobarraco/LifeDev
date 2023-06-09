@@ -12,6 +12,7 @@ class UInventory;
 class UInputMappingContext;
 class UInputAction;
 class UInventoryUI;
+class UCItemView;
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
@@ -69,11 +70,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionSelect = nullptr;
 
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCItemView* View = nullptr;
+
 private:
 	// stub. the manager will handle input. will it?
 	UFUNCTION()
 	void UIDone();
-	
+
 	UPROPERTY(Transient)
 	UInventory* Inventory = nullptr;
 
