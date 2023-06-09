@@ -18,11 +18,11 @@ public:
 	AInteract();
 
 	// Call this to trigger the interaction. Returns the success (false if locked)
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool TryTrigger();
 	virtual bool TryTrigger_Implementation();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
@@ -30,7 +30,7 @@ public:
 	//  this means when calling this function the item WILL trigger
 	// Override and activate the item here.
 	//  (but don't modify the inventory as part of this, and you wont be able since this plugin can't see the inventory)
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 

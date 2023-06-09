@@ -32,24 +32,28 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EItemUseResult TryUseItem(const FName& Name) const;
 
-	// The max length to trace for
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	float TraceLen = 500.0;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnInteractToggle OnToggle;
-	// triggered when it begins hovering an interact
-	UPROPERTY(BlueprintAssignable)
-	FOnInteractBegin OnBegin;
-	// triggered when ends hovering an interact
-	UPROPERTY(BlueprintAssignable)
-	FOnInteractEnd OnEnd;
-
 	// you need to set this once.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	static void SetCollisionChannel(ECollisionChannel Channel) {
 		InteractChannel = Channel;
 	}
+
+	// the currently hovered component. can be null.
+	UFUNCTION(BlueprintCallable)
+	UCInteract* GetInterComp() { return InterComp; }
+
+	// The max length to trace for
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float TraceLen = 500.0;
+
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	FOnInteractToggle OnToggle;
+	// triggered when it begins hovering an interact
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	FOnInteractBegin OnBegin;
+	// triggered when ends hovering an interact
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	FOnInteractEnd OnEnd;
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -61,11 +65,11 @@ protected:
 	// attempts to trigger a start
 	void DoStart(UCInteract* Component);
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	inline static ECollisionChannel InteractChannel = ECC_GameTraceChannel1;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UArrowComponent* IArrow = nullptr;
 
-	UPROPERTY(Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCInteract* InterComp = nullptr;
-
-	inline static ECollisionChannel InteractChannel = ECC_GameTraceChannel1;
 };

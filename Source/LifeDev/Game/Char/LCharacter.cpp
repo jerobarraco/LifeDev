@@ -143,13 +143,11 @@ void ALCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALCharacter::ActItemLook);
 }
 
-
 void ALCharacter::ActMove(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-
 	if (!Controller) return;
 
+	// input is a Vector2D
 	const FVector2D& MovementVector = Value.Get<FVector2D>();
 	// add movement 
 	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -168,9 +166,12 @@ void ALCharacter::ActLook(const FInputActionValue& Value)
 }
 
 void ALCharacter::ActInteract(const FInputActionValue& Value) {
-	if (!Controller) return;
 	if (!Interactor) return;
 	Interactor->TryTrigger();
+	const UCInteract* const Comp = Interactor->GetInterComp();
+	if (IsValid(Comp) && IsValid(UI)) {
+		UI->SetPrompt(Comp->Text);
+	}
 }
 
 void ALCharacter::LookItem(const FItem& Item) {
