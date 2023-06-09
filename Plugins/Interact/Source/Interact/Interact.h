@@ -8,7 +8,7 @@
 class UCAnimatorTrans;
 class UCInteract;
 
-// Base class for interact actors
+// Base class for interact actors (actors to interact with)
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteract: public AActor {
 public:
@@ -16,7 +16,7 @@ public:
 
 	AInteract();
 
-	// Call this to trigger the interaction. will check if it's locked.
+	// Call this to trigger the interaction. Returns the success (false if locked)
 	UFUNCTION(BlueprintNativeEvent)
 	bool TryTrigger();
 	virtual bool TryTrigger_Implementation();
@@ -54,6 +54,10 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Trigger();
 	virtual void Trigger_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	void TriggerLocked();
+	virtual void TriggerLocked_Implementation() {};
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();

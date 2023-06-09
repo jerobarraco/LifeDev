@@ -31,7 +31,11 @@ AInteract::AInteract():Super() {
 }
 
 bool AInteract::TryTrigger_Implementation() {
-	if (Locked) return false;
+	if (Locked) {
+		TriggerLocked();
+		return false;
+	}
+
 	Trigger();
 	return true;
 }
