@@ -60,7 +60,7 @@ void UCInteract::Hover(bool IsHover) const {
 		// "Custom depth stencil pass : Enabled WITH STENCIL"
 		HoverMesh->SetCustomDepthStencilValue(IsHover?255:0);
 	}
-	
+
 	OnHover.Broadcast(IsHover);
 }
 

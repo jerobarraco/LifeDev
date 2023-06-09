@@ -42,7 +42,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
 
-	// returns an item given the key name
+	// returns an item given the key name (in the loaded inventory, not the datatable)
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Get(const FName& Name, FItem& OutItem) const;
 	
