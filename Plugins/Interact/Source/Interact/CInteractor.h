@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "InteractTypes.h"
 
 #include "CInteractor.generated.h"
 
@@ -11,13 +12,6 @@ class UArrowComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractBegin, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
-
-UENUM(BlueprintType)
-enum class EItemUseResult: uint8 {
-	SUCCESS,
-	NO_TARGET,
-	BAD_TARGET
-};
 
 // Will be interacting with interact objects
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -35,7 +29,7 @@ public:
 
 	// don't call directly the character will. doesn't deal with the inventory.
 	UFUNCTION(BlueprintCallable)
-	bool TryUseItem(const FName& Name, EItemUseResult& Result) const;
+	EItemUseResult TryUseItem(const FName& Name) const;
 
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

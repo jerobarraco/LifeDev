@@ -6,6 +6,7 @@
 
 #include "CInteract.h"
 #include "Interact.h"
+#include "InteractTypes.h"
 
 #pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
@@ -28,25 +29,22 @@ void UCInteractor::TryTrigger() {
 	InterComp->Trigger();
 }
 
-bool UCInteractor::TryUseItem(const FName& Name, EItemUseResult& Result) const {
+EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 	// i can't see the inventory from here!
 	if (!IsValid(InterComp)) {
 		UE_LOG(LogTemp, Warning, TEXT("Nothing to use the item with"));
-		Result = EItemUseResult::NO_TARGET;
-		return false;
+		return EItemUseResult::NO_TARGET;
 	}
 	
 	AActor* const Src = InterComp->GetOwner();
 	AInteract* const Actor = Cast<AInteract>(Src);
 	if (!IsValid(Actor)) {
-		Result = EItemUseResult::NO_TARGET;
 		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
-		return false;
+		return EItemUseResult::NO_TARGET;
 	}
 
-	const bool TargetSucceed = Actor->TryUseItem(Name);
-	Result = TargetSucceed ? EItemUseResult::SUCCESS : EItemUseResult::BAD_TARGET;
-	return TargetSucceed;
+	const EItemUseResult& Result = Actor->TryUseItem(Name);
+	return Result;
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

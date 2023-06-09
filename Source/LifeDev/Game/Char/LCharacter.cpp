@@ -226,8 +226,8 @@ void ALCharacter::ActItem() {
 
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
-	EItemUseResult Result;
-	if (!Interactor->TryUseItem(Selected, Result)){
+	EItemUseResult Res = Interactor->TryUseItem(Selected);
+	if (Res != EItemUseResult::SUCCESS){
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
 		if (Item.SelfUsable) {
 			// TODO trigger effect here
@@ -236,7 +236,7 @@ void ALCharacter::ActItem() {
 			// Say(FName("IT_WrongCombo"));
 			// the issue is that the item itself will be displaying a text. and i can't tell if there is no item
 			UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
-			Say(Result == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
+			Say(Res == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
 			return;
 		}
 	}

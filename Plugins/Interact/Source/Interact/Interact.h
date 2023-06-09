@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "InteractTypes.h"
 #include "Components/PostProcessComponent.h"
 
 #include "Interact.generated.h"
@@ -30,8 +31,8 @@ public:
 	// Override and activate the item here.
 	//  (but don't modify the inventory as part of this, and you wont be able since this plugin can't see the inventory)
 	UFUNCTION(BlueprintNativeEvent)
-	bool TryUseItem(const FName& Name);
-	virtual bool TryUseItem_Implementation(const FName& Name);
+	EItemUseResult TryUseItem(const FName& Name);
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
 	// used for binding only. since ue will complain about the return value. but i still wanna keep it.
 	UFUNCTION(BlueprintCallable)

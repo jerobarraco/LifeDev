@@ -40,9 +40,9 @@ bool AInteract::TryTrigger_Implementation() {
 	return true;
 }
 
-bool AInteract::TryUseItem_Implementation(const FName& Name) {
+EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogTemp, Log, TEXT("Ainteract.TryUseItem=%s"), *Name.ToString());
-	return false;
+	return EItemUseResult::BAD_TARGET;
 }
 
 void AInteract::SetEnabled(bool Enabled) {
