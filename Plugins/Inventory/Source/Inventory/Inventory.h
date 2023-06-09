@@ -34,6 +34,9 @@ public:
 	// uses an item. removes it from the inventory if needed. returns success.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Use(const FName& Name);
+	
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool SetBlocked(const FName& Name, bool NewBlocked);
 
 	// returns an item from the datatable if exists
 	UFUNCTION(BlueprintCallable, Category="Inventory")

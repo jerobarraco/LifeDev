@@ -192,8 +192,21 @@ bool UInventory::Use(const FName& Name) {
 	return true;
 }
 
+bool UInventory::SetBlocked(const FName& Name, bool NewBlocked) {
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (!Found)	return false;
+
+	Item.IsBlocked = NewBlocked;
+	return true;
+}
+
 bool UInventory::IsUsable(const FItem& Item) const {
 	if (!Item.Usable) return false;
+	if (Item.IsBlocked) {
+		UE_LOG(LogInventory, Log, TEXT("Item is blocked. title='%s'"), *Item.Title.ToString());
+		return false;
+	}
 	if (!IsCold(Item)) {
 		UE_LOG(LogInventory, Log, TEXT("Item is not cold. title='%s' wait=%i"), *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
@@ -263,6 +276,9 @@ FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
 		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
 		return FauxItem;
 	}
+	
+	// needs to return a reference and not return by param since cpp seems to not be able to set the reference to the new object
+	// and tries to copy it instead. maybe i should return a pointer by param.... but i prefer this.
 	return *pItem;
 }
 

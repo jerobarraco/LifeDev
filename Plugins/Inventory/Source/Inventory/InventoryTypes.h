@@ -45,4 +45,7 @@ public:
 	// the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	int32 ActiveCoolDown = 0;
+	// whether the item is temporarily blocked (used on runtime)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	bool IsBlocked = false;
 };
