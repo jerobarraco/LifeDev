@@ -199,7 +199,7 @@ bool ALCharacter::Say(const FName& Name) {
 	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
 	if (!D) return false;
 	FDialog Diag; FDialogChar Char;
-	return D->AddId(Name, Diag, Char);
+	return D->AddId(Name);
 }
 
 void ALCharacter::ActItem() {

@@ -14,13 +14,13 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	FItem* Item = Items.Find(Name);
 	if (!Item) {
 		if (Diff<=0) {
-			UE_LOG(LogInventory, Warning, TEXT("Attempt to substract from an item i dont have. Name=%s"), *Name.ToString());
+			UE_LOG(LogInventory, Warning, TEXT("Attempt to substract from an item i don't have. Name=%s"), *Name.ToString());
 			return false;
 		} else {
 			FItem NewItem;
 			const bool FoundRaw = GetRaw(Name, NewItem);
 			if (!FoundRaw) {
-				UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesnt exists. Name=%s"), *Name.ToString());
+				UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesn't exists. Name=%s"), *Name.ToString());
 				return false;
 			}
 

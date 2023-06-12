@@ -21,7 +21,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void Add(const FDialog& Diag);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddId(const FName& Row, FDialog& OutDialog, FDialogChar& OutChar);
+	bool AddId(const FName& Row);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddMany(const TArray<FDialog>& Seq);
 

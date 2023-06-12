@@ -14,7 +14,8 @@ void UDialogs::AddMany(const TArray<FDialog>& Seq) {
 	ShowNext();
 }
 
-bool UDialogs::AddId(const FName& Row, FDialog& OutDialog, FDialogChar& OutChar) {
+bool UDialogs::AddId(const FName& Row) {
+	FDialog OutDialog; FDialogChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar);
 	if (!Ok) return false;
 
@@ -62,7 +63,7 @@ bool UDialogs::AddRnd(const FDialogSequence& Seq, FDialog& OutDiag, FDialogChar&
 	int32 Num = Seq.DiagRows.Num();
 	if (Num <= 0) return false;
 	const int32 i = FMath::RandRange(0, Num);
-	return AddId(Seq.DiagRows[i], OutDiag, OutChar);
+	return AddId(Seq.DiagRows[i]);
 }
 
 bool UDialogs::AddRndId(const FName& RowName, FDialog& OutDiag, FDialogChar& OutChar) {

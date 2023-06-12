@@ -15,8 +15,8 @@ public:
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
-		FText::FromString(TEXT("Close")), // isOpen // Opened text
 		FText::FromString(TEXT("Open")), // !IsOpen // Closed text
+		FText::FromString(TEXT("Close")), // isOpen // Opened text
 	};
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -28,6 +28,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	USoundBase* SFX_CloseEnd = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool AnimEnabled = true;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -35,13 +38,18 @@ protected:
 	virtual void SetText_Implementation() override;
 	virtual void Trigger_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
-	
-	UFUNCTION(BlueprintNativeEvent) // bound
+
+	// Called when the animation begins. It gets called each loop.
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
 	void AnimBegin();
 	virtual void AnimBegin_Implementation();
-	UFUNCTION(BlueprintNativeEvent) // bound
+	// Called when the animation end. It gets called each loop.
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
 	void AnimEnd();
 	virtual void AnimEnd_Implementation();
+
+	UFUNCTION(BlueprintCallable)
+	void PlaySFX(USoundBase* Snd);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorTrans* Animator = nullptr;

@@ -9,6 +9,8 @@
 class UCAnimatorTrans;
 class UCInteract;
 
+// Don't use unless you really need it.
+// It's better to use AInteractAnim and disable the animations.
 // Base class for interact actors (actors to interact with)
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteract: public AActor {
