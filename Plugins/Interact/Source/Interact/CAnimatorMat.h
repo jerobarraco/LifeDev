@@ -7,8 +7,8 @@
 
 class USceneComponent;
 
-// An interactive actor that can have an animation
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+// An interactive actor that can have an animation. Use UCAnimatorMix
+UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent, DeprecatedNode))
 class INTERACT_API UCAnimatorMat: public UCAnimator {
 	GENERATED_BODY()
 

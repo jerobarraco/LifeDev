@@ -13,7 +13,11 @@ public:
 	GENERATED_BODY()
 
 	AInteractAnim();
-	
+
+	// whether it will trigger animations from the Anim component
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool AnimEnabled = true;
+
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
@@ -21,17 +25,14 @@ public:
 		FText::FromString(TEXT("Close")), // isOpen // Opened text
 	};
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Open = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_OpenEnd = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Close = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_CloseEnd = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool AnimEnabled = true;
 
 protected:
 	virtual void BeginPlay() override;
@@ -60,6 +61,6 @@ protected:
 	UAudioComponent* SFX = nullptr;
 
 	// starts closed
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="Lock")
 	bool IsOpen = false;
 };

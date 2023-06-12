@@ -50,7 +50,7 @@ public:
 	FName MatVName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FVector MatVStart;
+	FVector MatVStart = FVector::ZeroVector;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FVector MatVEnd = FVector::OneVector;

@@ -43,7 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool Enabled);
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
 protected:

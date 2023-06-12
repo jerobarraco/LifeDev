@@ -11,23 +11,23 @@ public:
 	GENERATED_BODY()
 
 	// name of the item that will unlock this. setting it will lock the actor on start.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItem = NAME_None;
 
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockItemDlg = NAME_None;
 
 	// dialog to show when the object is locked and we DON'T have the ULockItem
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockDlg = NAME_None;
 
 	// Dialog to show when unlocking, or none to not say anything
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockDlg = NAME_None;
 
 	// played when triggering on locked
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
 	// setting this will reward the item on trigger and self-destruct
