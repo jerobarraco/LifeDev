@@ -4,14 +4,15 @@
 
 #include "Components/AudioComponent.h"
 
-#include "CAnimatorTrans.h"
 #include "Interact/CInteract.h"
+#include "CAnimatorMix.h"
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	SetActorTickEnabled(false);
-	Animator = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Animator"));
-	Animator->AnimRoot = IRoot;
+	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
+	Anim->TRoot = IRoot;
+	Anim->Mat = Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(0));
 	
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(IRoot);
@@ -23,14 +24,14 @@ AInteractAnim::AInteractAnim():Super() {
 
 void AInteractAnim::BeginPlay() {
 	Super::BeginPlay();
-	Animator->OnBegin.AddUniqueDynamic(this, &AInteractAnim::AnimBegin);
-	Animator->OnEnd.AddUniqueDynamic(this, &AInteractAnim::AnimEnd);
+	Anim->OnBegin.AddUniqueDynamic(this, &AInteractAnim::AnimBegin);
+	Anim->OnEnd.AddUniqueDynamic(this, &AInteractAnim::AnimEnd);
 }
 
 void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
-	Animator->OnBegin.RemoveAll(this);
-	Animator->OnEnd.RemoveAll(this);
+	Anim->OnBegin.RemoveAll(this);
+	Anim->OnEnd.RemoveAll(this);
 }
 
 void AInteractAnim::SetText_Implementation() {
@@ -46,13 +47,13 @@ void AInteractAnim::Trigger_Implementation() {
 	IsOpen = !IsOpen;
 	SetText(); // change the text after the flag has changed
 	// this creates so many issues. notice how it's set.
-	Animator->Play(!IsOpen);
+	Anim->Play(!IsOpen);
 
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
-	if (AnimEnabled && Animator->GetIsAnimating()) return false;
+	if (AnimEnabled && Anim->GetIsAnimating()) return false;
 	return Super::TryTrigger_Implementation();
 }
 

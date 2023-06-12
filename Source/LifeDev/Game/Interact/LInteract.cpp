@@ -5,7 +5,7 @@
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
-	if (ULockItem != NAME_None) {
+	if (!ULockItem.IsNone()) {
 		Locked = true;
 	}
 }
@@ -28,7 +28,7 @@ void ALInteract::TriggerLocked_Implementation() {
 	UDialogs* const Dialogs = GetWorld()->GetSubsystem<UDialogs>();
 	if (!Inventory || !Dialogs) return;
 	const bool Has = Inventory->Has(ULockItem);
-	const FName& Dlg = Has && (LockItemDlg != NAME_None) ? LockItemDlg : LockDlg;
+	const FName& Dlg = Has && (!LockItemDlg.IsNone())? LockItemDlg : LockDlg;
 	FDialog D; FDialogChar C;
 	Dialogs->AddId(Dlg);
 	PlaySFX(SFX_Locked);
@@ -39,7 +39,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
 	const bool Ok = Name == ULockItem;
 	if (Ok) {
 		UDialogs* const Dialogs = GetWorld()->GetSubsystem<UDialogs>();
-		if (Dialogs && ULockDlg != NAME_None) {
+		if (Dialogs && !ULockDlg.IsNone()) {
 			Dialogs->AddId(ULockDlg);
 		}
 		// force unlock or trigger won't work

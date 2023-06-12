@@ -28,21 +28,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	inline bool GetIsAnimating() { return IsAnimating; }
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
 
 	// Duration of the animation in seconds
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	float Duration = 2.0;
 
 	// triggers when the animation ends. but not if it wasn't playing.
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
 
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnBegin OnBegin;
 
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 	
 protected:

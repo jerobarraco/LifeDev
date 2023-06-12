@@ -4,6 +4,8 @@
 
 #include "InteractAnim.generated.h"
 
+class UCAnimatorMix;
+
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteractAnim: public AInteract {
@@ -52,7 +54,7 @@ protected:
 	void PlaySFX(USoundBase* Snd);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimatorTrans* Animator = nullptr;
+	UCAnimatorMix* Anim = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UAudioComponent* SFX = nullptr;
