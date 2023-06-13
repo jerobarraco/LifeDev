@@ -18,8 +18,6 @@ AInteractAnim::AInteractAnim():Super() {
 	SFX->SetupAttachment(IRoot);
 	SFX->SetAutoActivate(false);
 	SFX->SetHiddenInGame(true);
-
-	// Animator->RegisterComponent();
 }
 
 void AInteractAnim::BeginPlay() {

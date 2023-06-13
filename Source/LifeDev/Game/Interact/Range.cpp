@@ -10,20 +10,9 @@ ARange::ARange():Super() {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	SetActorTickEnabled(false); // ensure we don't animate on start
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
-	AnimRoot = CreateDefaultSubobject<USceneComponent>(TEXT("AnimRoot"));
-	AnimRoot->SetupAttachment(RootComponent);
-	AnimRoot->SetRelativeScale3D(FVector(0));
+	IRoot->SetRelativeScale3D(FVector(0));
 	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(AnimRoot);
-	Mesh->PrimaryComponentTick.bStartWithTickEnabled = false;
-	Mesh->SetComponentTickEnabled(false);
-	Mesh->SetGenerateOverlapEvents(false);
-	Mesh->SetCollisionProfileName("NoCollision");
-	Mesh->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
-	Mesh->SetCanEverAffectNavigation(false);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
@@ -32,7 +21,6 @@ ARange::ARange():Super() {
 	if (ObjMat.Succeeded()) {
 		Mat = ObjMat.Object;
 	}
-	Anim->TRoot = AnimRoot;
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;
 	Anim->TEnd.SetScale3D(FVector(10));
@@ -47,7 +35,7 @@ void ARange::BeginPlay() {
 }
 
 void ARange::Trigger_Implementation() {
-	AnimRoot->SetRelativeScale3D(FVector(0));
+	IRoot->SetRelativeScale3D(FVector(0));
 	Super::Trigger_Implementation(); // TODO should i call it or not?
 }
 
