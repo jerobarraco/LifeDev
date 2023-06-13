@@ -1,7 +1,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Dialogs/Dialogs.h"
 #include "Interact/InteractAnim.h"
+#include "Inventory/Inventory.h"
 
 #include "LInteract.generated.h"
 // An interactive actor that can have an animation
@@ -14,6 +16,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItem = NAME_None;
 
+	// Dialog to show when unlocking, or none to not say anything
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FName ULockDlg = NAME_None;
+
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockItemDlg = NAME_None;
@@ -22,21 +28,27 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockDlg = NAME_None;
 
-	// Dialog to show when unlocking, or none to not say anything
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	FName ULockDlg = NAME_None;
+	// dialog to show when the object is triggered.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FName TriggerDlg = NAME_None;
+
+	
+	// setting this will reward the item on trigger and self-destruct
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName ItemReward = NAME_None;
 
 	// played when triggering on locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
-
-	// setting this will reward the item on trigger and self-destruct
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName ItemReward = NAME_None;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UInventory* Inventory;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UDialogs* Dialogs = nullptr;
 };
