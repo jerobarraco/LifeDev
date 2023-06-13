@@ -15,7 +15,7 @@ class INTERACT_API UCAnimatorTrans: public UCAnimator {
 
 public:
 	// uses accumulated (relative to start) version, or not.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	bool IsAdditive = true;
 	
 	// The animation transform. You don't necessarily need to set this up, but you can change it.
@@ -24,18 +24,15 @@ public:
 	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
 	
 	// The animation transform
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FTransform TEnd = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
+	FTransform TEnd = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::ZeroVector);
 
 	// the component to be animated (hint, use the root component for "global" positioning)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USceneComponent* AnimRoot = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
+	USceneComponent* TRoot = nullptr;
 
-	UFUNCTION(BlueprintCallable)
-	void DeInit();
 protected:
 	virtual void Update_Implementation(float Alpha) override;
-	
+	virtual void DeInit() override;
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };

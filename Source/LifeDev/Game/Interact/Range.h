@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Interact/InteractAnim.h"
 
 #include "Range.generated.h"
 
@@ -8,34 +9,29 @@ class UCInteract;
 class UCAnimatorTrans;
 class UCRange;
 
+// TODO change parent to InteractAnim or LInteract. and remove the usage of the component.
 // Base class for Range actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ARange: public AActor {
+class LIFEDEV_API ARange: public AInteractAnim {
 public:
 	GENERATED_BODY()
 
 	ARange();
 
-	// lamest lame thing
+	// lamest lame thing. to test in editor
 	UFUNCTION(BlueprintCallable)
 	void ETrigger() { Trigger(); }
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Trigger();
-	virtual void Trigger_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 	void SetMaxSize(float Size);
+
+	virtual void Trigger_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UMaterialInterface* Mat = nullptr;
 
 protected:
-	UFUNCTION()
-	void AnimUpdate(float Progress, float Alpha);
-	
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
@@ -43,9 +39,4 @@ protected:
 	USceneComponent* AnimRoot = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimatorTrans* Animator = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UMaterialInstanceDynamic* MatI = nullptr;
 };

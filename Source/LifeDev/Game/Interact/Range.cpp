@@ -2,6 +2,7 @@
 
 #include "Range.h"
 
+#include "Interact/CAnimatorMix.h"
 #include "Interact/CAnimatorTrans.h"
 
 ARange::ARange():Super() {
@@ -31,35 +32,25 @@ ARange::ARange():Super() {
 	if (ObjMat.Succeeded()) {
 		Mat = ObjMat.Object;
 	}
-	
-
-	Animator = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Animator"));
-	Animator->AnimRoot = AnimRoot;
-	Animator->IsAdditive = false;
-	Animator->Duration = 3;
-	Animator->TEnd.SetScale3D(FVector(10));
+	Anim->TRoot = AnimRoot;
+	Anim->IsAdditive = false;
+	Anim->Duration = 3;
+	Anim->TEnd.SetScale3D(FVector(10));
+	Anim->MatFName = TEXT("Opacity");
+	Anim->MatFStart = 1;
+	Anim->MatFEnd = 0;
 }
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
-	Animator->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpdate);
-	MatI = Mesh->CreateDynamicMaterialInstance(0, Mat);
-}
-
-void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-	Animator->OnUpdate.RemoveAll(this);
+	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0, Mat); 
 }
 
 void ARange::Trigger_Implementation() {
 	AnimRoot->SetRelativeScale3D(FVector(0));
-	Animator->Play();
+	Super::Trigger_Implementation(); // TODO should i call it or not?
 }
 
 void ARange::SetMaxSize(float Size) {
-	Animator->TEnd.SetScale3D(FVector(Size));
-}
-
-void ARange::AnimUpdate(float Progress, float Alpha) {
-	MatI->SetScalarParameterValue(TEXT("Opacity"), 1-Alpha);
+	Anim->TEnd.SetScale3D(FVector(Size));
 }

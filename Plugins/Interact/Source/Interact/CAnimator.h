@@ -27,7 +27,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	inline bool GetIsAnimating() { return IsAnimating; }
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
 
@@ -60,13 +60,14 @@ protected:
 	void Begin();
 	virtual void Begin_Implementation();
 	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
 	UFUNCTION(BlueprintCallable)
 	void SetIsAnimating(bool NewIsRotating);
 	
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void DeInit();
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsLooping = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

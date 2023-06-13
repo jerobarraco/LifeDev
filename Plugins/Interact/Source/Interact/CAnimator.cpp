@@ -21,6 +21,8 @@ void UCAnimator::Stop() {
 	SetIsAnimating(false);
 }
 
+void UCAnimator::DeInit() {}
+
 void UCAnimator::End_Implementation() {
 	OnEnd.Broadcast();
 }
@@ -39,6 +41,7 @@ void UCAnimator::BeginPlay() {
 
 void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Stop();
+	DeInit();
 	Super::EndPlay(EndPlayReason);
 }
 

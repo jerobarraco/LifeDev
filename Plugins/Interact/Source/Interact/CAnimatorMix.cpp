@@ -4,6 +4,7 @@
 
 void UCAnimatorMix::DeInit() {
 	TRoot = nullptr;
+	Super::DeInit();
 }
 
 void UCAnimatorMix::Update_Implementation(float Alpha) {
@@ -43,10 +44,4 @@ void UCAnimatorMix::BeginPlay() {
 	if (IsValid(TRoot)) {
 		TStart = TRoot->GetRelativeTransform();
 	}
-}
-
-void UCAnimatorMix::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-	TRoot = nullptr;
-	Mat = nullptr;
 }

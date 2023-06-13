@@ -3,13 +3,14 @@
 #include "CAnimatorTrans.h"
 
 void UCAnimatorTrans::DeInit() {
-	AnimRoot = nullptr;
+	TRoot = nullptr;
+	Super::DeInit();
 }
 
 void UCAnimatorTrans::Update_Implementation(float Alpha) {
 	Super::Update_Implementation(Alpha);
 
-	if (!IsValid(AnimRoot)) return;
+	if (!IsValid(TRoot)) return;
 
 	FTransform TNew = TStart;
 	if (IsAdditive) {
@@ -19,7 +20,7 @@ void UCAnimatorTrans::Update_Implementation(float Alpha) {
 		// Thanks Tim! this actually works very well!
 		TNew.BlendWith(TEnd, Alpha);
 	}
-	AnimRoot->SetRelativeTransform(TNew);
+	TRoot->SetRelativeTransform(TNew);
 }
 
 void UCAnimatorTrans::BeginPlay() {
@@ -28,12 +29,7 @@ void UCAnimatorTrans::BeginPlay() {
 	// PrimaryComponentTick.Target = this;
 	// PrimaryComponentTick.SetTickFunctionEnable(true);
 	// RegisterComponentTickFunctions(true); will crash
-	if (IsValid(AnimRoot)) {
-		TStart = AnimRoot->GetRelativeTransform();
+	if (IsValid(TRoot)) {
+		TStart = TRoot->GetRelativeTransform();
 	}
-}
-
-void UCAnimatorTrans::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-	AnimRoot = nullptr;
 }
