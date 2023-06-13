@@ -12,8 +12,8 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	bNavigationRelevant = false;
 	bCanEverAffectNavigation = false;
-	// UBoxComponent::SetCollisionProfileName("BlockAllDynamic"); // nopes because it will create collision issues.
-	UBoxComponent::SetCollisionProfileName("Interact");
+	// nopes because it will create collision issues.
+	UBoxComponent::SetCollisionProfileName(CollisionProfile);
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	SetGenerateOverlapEvents(false);
 	UBoxComponent::SetComponentTickEnabled(false);

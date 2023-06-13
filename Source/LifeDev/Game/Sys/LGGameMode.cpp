@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "Dialogs/DialogManager.h"
+#include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryManager.h"
 #include "LifeDev/Core/LGameInstance.h"
@@ -27,6 +28,9 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = ALCharacter::StaticClass();
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
+	// UCInteract::CollisionProfile = "BlockAllDynamic";
+	UCInteract::SetCollisionProfile("Interact");
+	// UCInteract::CollisionProfile = "Interact";
 }
 
 bool ALGGameMode::LoadChapter() {

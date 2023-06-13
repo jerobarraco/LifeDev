@@ -65,7 +65,7 @@ protected:
 	// attempts to trigger a start
 	void DoStart(UCInteract* Component);
 
-	inline static ECollisionChannel InteractChannel = ECC_GameTraceChannel1;
+	inline static ECollisionChannel InteractChannel = ECC_Visibility;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UArrowComponent* IArrow = nullptr;

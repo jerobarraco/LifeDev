@@ -9,6 +9,11 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, bool, IsOn);
 
+// You will need to define a collision profile. and set it here.
+// Use BlockAllDynamic as last resource. since that will collide with objects and might create issues.
+// All you need is a profile that blocks the same channel you set on CInteractor::SetCollisionChannel
+// i recommend visibility
+
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {
@@ -22,6 +27,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
+
+	// you need to set this once.
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	static void SetCollisionProfile(const FName& Name) {
+		CollisionProfile = Name;
+	}
 
 	// used by the interactor. don't call directly. subscribe to OnTrigger.
 	UFUNCTION()
@@ -44,6 +55,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FText Text = FText::GetEmpty();
 
+	inline static FName CollisionProfile = "Interact";
+	
 	// Mesh to automatically highlight, if any.
 	UPROPERTY(BlueprintReadWrite, Category=SetUP)
 	UStaticMeshComponent* HoverMesh = nullptr;
