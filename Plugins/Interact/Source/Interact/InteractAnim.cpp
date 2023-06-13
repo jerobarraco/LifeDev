@@ -9,11 +9,13 @@
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 	SetActorTickEnabled(false);
+	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
 	Anim->Mat = Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(0));
-	
+
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(IRoot);
 	SFX->SetAutoActivate(false);

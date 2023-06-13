@@ -9,7 +9,6 @@ class UCInteract;
 class UCAnimatorTrans;
 class UCRange;
 
-// TODO change parent to InteractAnim or LInteract. and remove the usage of the component.
 // Base class for Range actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ARange: public AInteractAnim {
