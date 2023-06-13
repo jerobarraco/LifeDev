@@ -25,7 +25,8 @@ ALGGameMode::ALGGameMode():Super() {
 
 	SetActorTickEnabled(false);
 	DefaultPawnClass = ALCharacter::StaticClass();
-	UCInteractor::SetCollisionChannel(InteractTraceChannel);
+	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
+	UCInteractor::SetCollisionChannel(ECC_Visibility);
 }
 
 bool ALGGameMode::LoadChapter() {
