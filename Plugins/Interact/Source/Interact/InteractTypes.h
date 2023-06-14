@@ -8,5 +8,7 @@ enum class EItemUseResult: uint8 {
 	// not a target available
 	NO_TARGET,
 	// the target rejected the item
-	BAD_TARGET
+	BAD_TARGET,
+	// the target rejected the item AND handled it (e.g. showed a dialog)
+	BAD_HANDLED
 };
