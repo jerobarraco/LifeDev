@@ -4,7 +4,7 @@
 ALStepC0S001::ALStepC0S001():Super() {
 	Name = FName("C0S1");
 	InputEnabled = false;
-	IsPawnTarget = false;
+	UsePawnCam = false;
 	UseCam = false;
 }
 

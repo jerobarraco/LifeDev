@@ -5,6 +5,6 @@ ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
 	SeqId = FName("C1S0");
 	InputEnabled = false;
-	IsPawnTarget = true;
+	UsePawnCam = true;
 	UseCam = false;
 }

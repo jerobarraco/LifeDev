@@ -37,10 +37,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AActor* CamTarget = nullptr;
 
-	// todo rename to UsePawnCam
 	// will target pawn automatically, will override the camtarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool IsPawnTarget = false;
+	bool UsePawnCam = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseCam = false;

@@ -31,10 +31,14 @@ void AStep::Start_Implementation() {
 
 void AStep::BeginPlay() {
 	Super::BeginPlay();
+	if (Name.IsNone()) {
+		UE_LOG(LogTemp, Warning, TEXT("Step name is none! story won't work properly"));
+	}
+
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
 	Story->Add(this);
 	
-	if (IsPawnTarget) {
+	if (UsePawnCam) {
 		AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
 		APawn* const Pawn = Cast<APawn>(Actor);
 		if (!IsValid(Pawn)) {
@@ -47,7 +51,7 @@ void AStep::BeginPlay() {
 
 void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
-	Story->Rem(this->Name);
+	Story->Rem(Name);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -58,15 +62,16 @@ void AStep::PostLoad() {
 }
 
 void AStep::UpdateCamEnabled() {
-	if (!IsValid(Cam)) return;
 	// Sets the cam to false if the pawn target is set
-	UseCam = UseCam && !IsPawnTarget;
+	UseCam = UseCam && !UsePawnCam;
 	
 	const bool Enabled = UseCam;
-	Cam->SetActive(Enabled);
-	Cam->SetHiddenInGame(!Enabled);
-	Cam->SetVisibility(Enabled);
-	Cam->SetComponentTickEnabled(Enabled);
+	if (IsValid(Cam)) {
+		Cam->SetActive(Enabled);
+		Cam->SetHiddenInGame(!Enabled);
+		Cam->SetVisibility(Enabled);
+		Cam->SetComponentTickEnabled(Enabled);
+	}
 	if (CamTarget == this && !Enabled) {
 		CamTarget = nullptr;
 	}
