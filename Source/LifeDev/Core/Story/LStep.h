@@ -7,6 +7,8 @@
 
 #include "LStep.generated.h"
 
+class UDialogs;
+
 UCLASS(Blueprintable, BlueprintType)
 class ALStep : public AStep {
 	GENERATED_BODY()
@@ -18,4 +20,14 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool InputEnabled = false;
+
+	// dialog sequence to trigger on start
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName SeqId = NAME_None;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UDialogs* Dialogs = nullptr;
 };

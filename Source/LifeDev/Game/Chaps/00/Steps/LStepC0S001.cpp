@@ -3,8 +3,9 @@
 
 ALStepC0S001::ALStepC0S001():Super() {
 	Name = FName("C0S1");
-	InputEnabled = true;
-	IsPawnTarget = true;
+	InputEnabled = false;
+	IsPawnTarget = false;
+	UseCam = false;
 }
 
 void ALStepC0S001::Start_Implementation() {

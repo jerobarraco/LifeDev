@@ -44,7 +44,7 @@ public:
 
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	float TraceLen = 500.0;
+	float TraceLen = 200.0;
 
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnInteractToggle OnToggle;

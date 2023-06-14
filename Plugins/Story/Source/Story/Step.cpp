@@ -23,16 +23,6 @@ AStep::AStep():Super() {
 
 void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
-
-	if (IsPawnTarget) {
-		AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
-		APawn* const Pawn = Cast<APawn>(Actor);
-		if (!IsValid(Pawn)) {
-			UE_LOG(LogTemp, Warning, TEXT("Could not get the pawn!!!!"));
-		} else {
-			CamTarget = Pawn;
-		}
-	}
 	
 	if (IsValid(CamTarget)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
@@ -43,11 +33,15 @@ void AStep::BeginPlay() {
 	Super::BeginPlay();
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
 	Story->Add(this);
-	if (!UseCam && IsValid(Cam)) {
-		Cam->SetActive(false);
-		Cam->SetHiddenInGame(true);
-		Cam->SetVisibility(false);
-		Cam->SetComponentTickEnabled(false);
+	
+	if (IsPawnTarget) {
+		AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
+		APawn* const Pawn = Cast<APawn>(Actor);
+		if (!IsValid(Pawn)) {
+			UE_LOG(LogTemp, Warning, TEXT("Could not get the pawn!!!!"));
+		} else {
+			CamTarget = Pawn;
+		}
 	}
 }
 
@@ -60,11 +54,21 @@ void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AStep::PostLoad() {
 	Super::PostLoad();
-	if (!UseCam && IsValid(Cam)) {
-		Cam->SetActive(false);
-		Cam->SetHiddenInGame(true);
-		Cam->SetVisibility(false);
-		Cam->SetComponentTickEnabled(false);
+	UpdateCamEnabled();
+}
+
+void AStep::UpdateCamEnabled() {
+	if (!IsValid(Cam)) return;
+	// Sets the cam to false if the pawn target is set
+	UseCam = UseCam && !IsPawnTarget;
+	
+	const bool Enabled = UseCam;
+	Cam->SetActive(Enabled);
+	Cam->SetHiddenInGame(!Enabled);
+	Cam->SetVisibility(Enabled);
+	Cam->SetComponentTickEnabled(Enabled);
+	if (CamTarget == this && !Enabled) {
+		CamTarget = nullptr;
 	}
 }
 
@@ -80,8 +84,5 @@ void AStep::Finish_Implementation() {
 
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
-	// TODO should i make this a delegate instead?
-	// --not for now, binding and unbiding is not my favorite
-
 	Story->Stop(Name);
 }

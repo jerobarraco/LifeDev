@@ -5,12 +5,12 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStepC1S000.generated.h"
+#include "LStepC1S001.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC1S000 : public ALStep {
+class ALStepC1S001 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStepC1S000();
+	ALStepC1S001();
 };
