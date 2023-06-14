@@ -43,6 +43,8 @@ void ALInteractSpot::Trigger_Implementation() {
 void ALInteractSpot::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	if (!Inventory || !Dialogs) return;
+	Dialogs->AddId(FullDlg);
+
 	// const bool Has = Inventory->Has(ULockItem);
 	// const FName& Dlg = Has && (!LockItemDlg.IsNone())? LockItemDlg : LockDlg;
 	// FDialog D; FDialogChar C;
@@ -52,16 +54,20 @@ void ALInteractSpot::TriggerLocked_Implementation() {
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	Super::TryUseItem_Implementation(Name); // unnecessary actually
-	if (Items.IsEmpty()) return EItemUseResult::BAD_TARGET;
+	if (Items.IsEmpty()) {
+		Locked = true;
+		if (FullDlg.IsNone() || !IsValid(Dialogs)) {
+			return EItemUseResult::BAD_TARGET;
+		}
+		Dialogs->AddId(FullDlg);
+		return EItemUseResult::BAD_HANDLED;
+	}
 
 	int32 Id;
 	const bool Ok = Items.Find(Name, Id);
-	
-	EItemUseResult Result = Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
 	if (Ok) {
 		if (Dialogs && !CorrectDlg.IsNone()) {
 			Dialogs->AddId(CorrectDlg);
-			Result = EItemUseResult::BAD_HANDLED;
 		}
 		Items.RemoveAt(Id);
 	}
@@ -72,6 +78,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 		Locked = true; // avoid further triggering
 	}
 
+	const EItemUseResult Result = Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
 	return Result;
 }
 
