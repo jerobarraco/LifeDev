@@ -36,6 +36,12 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteractAnim::SetText_Implementation() {
 	Super::SetText_Implementation();
+	if (Texts.Num()<2) {
+		if (Texts.Num()>0) {
+			Interact->Text = Texts[0];
+		}
+		return;
+	}
 	Interact->Text = Texts[IsOpen?1:0];
 }
 

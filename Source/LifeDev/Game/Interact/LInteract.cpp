@@ -16,7 +16,7 @@ void ALInteract::BeginPlay() {
 
 void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
-	if (ItemReward == NAME_None) return;
+	if (ItemReward.IsNone()) return;
 	if (!IsValid(Inventory)) return;
 	if (!Inventory->Mod(ItemReward, 1)) return;
 	if (IsValid(Dialogs) && !TriggerDlg.IsNone()) {
@@ -41,9 +41,11 @@ void ALInteract::TriggerLocked_Implementation() {
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
 	Super::TryUseItem_Implementation(Name); // unnecessary actually
 	const bool Ok = Name == ULockItem;
+	EItemUseResult Result = Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
 	if (Ok) {
 		if (Dialogs && !ULockDlg.IsNone()) {
 			Dialogs->AddId(ULockDlg);
+			Result = EItemUseResult::BAD_HANDLED;
 		}
 		// force unlock or trigger won't work
 		Locked = false;
@@ -51,5 +53,5 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
 		Trigger();
 	}
 
-	return Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
+	return Result;
 }
