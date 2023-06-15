@@ -6,10 +6,6 @@ ALStepC0S001::ALStepC0S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	UseCam = false;
-}
-
-void ALStepC0S001::Start_Implementation() {
-	Super::Start_Implementation();
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ALStepC0S001::Finish, 2);
+	WaitTime = 2;
+	FinishPostWait = true;
 }

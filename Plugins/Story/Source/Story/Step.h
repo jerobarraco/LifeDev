@@ -44,15 +44,29 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseCam = false;
 
+	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool FinishPostWait = false;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float CamBlendTime = 2.0;
 
+	// >0 will set the seconds to wait since the start of this step. will trigger TimerEnded. see note.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float WaitTime = 0;
+
 protected:
+	// Will be triggered when the wait time ends. if it's set.
+	// if you don't override or if you call the parent (this) it will finish the step.
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void PostWait();
+	virtual void PostWait_Implementation();
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	void UpdateCamEnabled();
-	
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)

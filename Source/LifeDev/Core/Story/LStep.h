@@ -15,19 +15,30 @@ class ALStep : public AStep {
 
 public:
 	virtual void Start_Implementation() override;
-	
 	virtual void Stop_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool InputEnabled = false;
 
+	// when set to true, the game mode will set the fade time.
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	bool UseFadeTime = false;
+
 	// dialog sequence to trigger on start
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName SeqId = NAME_None;
 
+	// the game fade time, please set this from outside.
+	inline static float FadeTime = 0;
+
 protected:
+	virtual void PostWait_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PostLoad() override;
+	// will start the dialogs
+	void StartDialogs();
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
 };

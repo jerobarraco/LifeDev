@@ -98,6 +98,7 @@ void UDialogs::DeInit() {
 }
 
 bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
+	if (RowName.IsNone()) return false;
 	if (!IsValid(Diags)) return false;
 
 	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""));
@@ -112,6 +113,7 @@ bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutCh
 }
 
 bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
+	if (RowName.IsNone()) return false;
 	if (!IsValid(Chars)) return false;
 
 	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""));
@@ -125,6 +127,7 @@ bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
 }
 
 bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
+	if (RowName.IsNone()) return false;
 	if (!IsValid(Seqs)) return false;
 
 	const FDialogSequence* const Row = Seqs->FindRow<FDialogSequence>(RowName, TEXT(""));

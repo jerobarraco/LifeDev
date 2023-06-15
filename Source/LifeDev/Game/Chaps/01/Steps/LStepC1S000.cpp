@@ -7,4 +7,5 @@ ALStepC1S000::ALStepC1S000():Super() {
 	InputEnabled = false;
 	UsePawnCam = true;
 	UseCam = false;
+	UseFadeTime = true;
 }

@@ -23,9 +23,22 @@ AStep::AStep():Super() {
 
 void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
-	
+
+	UWorld* const World = GetWorld();
+	if (WaitTime>0) {
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
+	} else {
+		PostWait();
+	}
+}
+
+void AStep::PostWait_Implementation() {
 	if (IsValid(CamTarget)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	}
+	if (FinishPostWait) {
+		Finish();
 	}
 }
 

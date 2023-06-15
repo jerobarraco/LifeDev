@@ -12,15 +12,24 @@ void ALStep::Start_Implementation() {
 	if (LGGameMode) {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
-
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
-	FDialogSequence Seq; TArray<FDialog> Diags; TArray<FDialogChar> Chars;
-	Dialogs->AddSeqId(SeqId);
 }
 
 void ALStep::Stop_Implementation() {
 	Super::Stop_Implementation();
 	Dialogs->OnDone.RemoveAll(this);
+}
+
+void ALStep::PostWait_Implementation() {
+	Super::PostWait_Implementation();
+	// otherwise show dialogs
+	StartDialogs();
+}
+
+void ALStep::StartDialogs() {
+	if (SeqId.IsNone()) return;
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
+	FDialogSequence Seq; TArray<FDialog> Diags; TArray<FDialogChar> Chars;
+	Dialogs->AddId(SeqId);
 }
 
 void ALStep::BeginPlay() {
@@ -31,4 +40,16 @@ void ALStep::BeginPlay() {
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 	Dialogs = nullptr;
+}
+
+void ALStep::PostLoad() {
+	Super::PostLoad();
+	if (UseFadeTime) {
+		WaitTime = FadeTime; 
+	}
+	
+	// avoid finishing earlier if we have dialogs
+	if (!SeqId.IsNone()) {
+		FinishPostWait = false;
+	}
 }

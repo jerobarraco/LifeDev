@@ -85,7 +85,8 @@ protected:
 	void DiagShown(const FDialog& Diag);
 	UFUNCTION() // bind to delegate
 	void DiagDone();
-
+	
+	virtual void PostLoad() override;
 
 	bool CharInputEnabled = true;
 };

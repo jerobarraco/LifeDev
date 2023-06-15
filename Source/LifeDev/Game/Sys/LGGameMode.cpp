@@ -17,6 +17,7 @@
 #include "Interact/CInteractor.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
+#include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Game/Char/LCharacter.h"
 
 ALGGameMode::ALGGameMode():Super() {
@@ -267,4 +268,9 @@ void ALGGameMode::DiagShown(const FDialog& Diag) {
 
 void ALGGameMode::DiagDone() {
 	SetTempInputEnabled(true);
+}
+
+void ALGGameMode::PostLoad() {
+	Super::PostLoad();
+	ALStep::FadeTime = TimeFadeOut+TimeHold;
 }
