@@ -18,22 +18,29 @@ class DIALOGS_API UDialogs : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void Add(const FDialog& Diag);
+	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddId(const FName& Row);
+
+	// add a dialog by its id
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void AddMany(const TArray<FDialog>& Seq);
+	bool AddDiagId(const FName& Row);
+	// add a dialog
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void AddDiag(const FDialog& Diag);
+	// add many dialogs
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	void AddMany(const TArray<FDialog>& Diags);
 
 	// Use this to AddManyById
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars);
+	bool AddSeq(const FDialogSequence& Seq);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars);
+	bool AddSeqId(const FName& RowName);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddRnd(const FDialogSequence& Seq, FDialog& OutDiag, FDialogChar& OutChar);
+	bool AddRnd(const FDialogSequence& Seq);
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddRndId(const FName& RowName, FDialog& OutDiag, FDialogChar& OutChar);
+	bool AddRndId(const FName& RowName);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;

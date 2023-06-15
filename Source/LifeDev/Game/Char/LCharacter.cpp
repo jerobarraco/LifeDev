@@ -188,7 +188,7 @@ void ALCharacter::LookItem(const FItem& Item) {
 	Diag.CharRow = "Main"; 
 	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
 	if (!D) return;
-	D->Add(Diag);
+	D->AddDiag(Diag);
 
 	// Say(FName("IT_NotUsable"))
 	// FDialogChar Char;

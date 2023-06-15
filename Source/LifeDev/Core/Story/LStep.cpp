@@ -15,7 +15,7 @@ void ALStep::Start_Implementation() {
 
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 	FDialogSequence Seq; TArray<FDialog> Diags; TArray<FDialogChar> Chars;
-	Dialogs->AddSeqId(SeqId, Seq, Diags, Chars);
+	Dialogs->AddSeqId(SeqId);
 }
 
 void ALStep::Stop_Implementation() {

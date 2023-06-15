@@ -4,28 +4,32 @@
 #include "Dialogs.h"
 
 #pragma optimize("", off)
-void UDialogs::Add(const FDialog& Diag) {
+void UDialogs::AddDiag(const FDialog& Diag) {
 	Pending.Add(Diag);
 	ShowNext();
 }
 
-void UDialogs::AddMany(const TArray<FDialog>& Seq) {
-	Pending.Append(Seq);	
+void UDialogs::AddMany(const TArray<FDialog>& InDiags) {
+	Pending.Append(InDiags);
 	ShowNext();
 }
 
-bool UDialogs::AddId(const FName& Row) {
+bool UDialogs::AddDiagId(const FName& Row) {
 	FDialog OutDialog; FDialogChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar);
 	if (!Ok) return false;
 
-	Add(OutDialog);
+	AddDiag(OutDialog);
 	return true;
 }
 
-bool UDialogs::AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, TArray<FDialogChar>& OutChars) {
-	OutDialogs.Empty();
-	OutChars.Empty();
+bool UDialogs::AddId(const FName& Row) {
+	if (AddSeqId(Row)) return true;
+	return AddDiagId(Row);
+}
+
+bool UDialogs::AddSeq(const FDialogSequence& Seq) {
+	TArray<FDialog> OutDialogs; TArray<FDialogChar> OutChars;
 
 	const TArray<FName>& Rows = Seq.DiagRows;
 	const int32 Num = Rows.Num();
@@ -52,25 +56,26 @@ bool UDialogs::AddSeq(const FDialogSequence& Seq, TArray<FDialog>& OutDialogs, T
 	return Success;
 }
 
-bool UDialogs::AddSeqId(const FName& RowName, FDialogSequence& OutSeq, TArray<FDialog>& OutDiags, TArray<FDialogChar>& OutChars) {
+bool UDialogs::AddSeqId(const FName& RowName) {
+	FDialogSequence OutSeq; TArray<FDialog> OutDiags; TArray<FDialogChar> OutChars;
 	const bool Ok = GetSeq(RowName, OutSeq);
 	if (!Ok) return false;
 	
-	return AddSeq(OutSeq, OutDiags, OutChars);
+	return AddSeq(OutSeq);
 }
 
-bool UDialogs::AddRnd(const FDialogSequence& Seq, FDialog& OutDiag, FDialogChar& OutChar) {
+bool UDialogs::AddRnd(const FDialogSequence& Seq) {
 	int32 Num = Seq.DiagRows.Num();
 	if (Num <= 0) return false;
 	const int32 i = FMath::RandRange(0, Num);
 	return AddId(Seq.DiagRows[i]);
 }
 
-bool UDialogs::AddRndId(const FName& RowName, FDialog& OutDiag, FDialogChar& OutChar) {
+bool UDialogs::AddRndId(const FName& RowName) {
 	FDialogSequence Seq;
 	const bool Ok = GetSeq(RowName, Seq);
 	if (!Ok) return false;
-	return AddRnd(Seq, OutDiag, OutChar);
+	return AddRnd(Seq);
 }
 
 void UDialogs::DiagDone() {
