@@ -1,0 +1,25 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "Spot00.h"
+
+#include "Interact/CInteract.h"
+
+ASpot00::ASpot00():Super() {
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));
+	if (ObjMesh.Succeeded()) {
+		Mesh->SetStaticMesh(ObjMesh.Object);
+	}
+
+	Mesh->SetRelativeLocation(FVector(-17.500000,22.500000,-0.000000));
+	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,7.500000));
+	Interact->SetBoxExtent(FVector(18.000000,23.000000,10.000000));
+	Texts = {
+		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
+		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
+	};
+	DropDlg = TEXT("IS_C0C");
+	TriggerDlg = FName("IS_C0T");
+	Items = {
+		FName("C1C00"), FName("C1C01"),
+	};
+}

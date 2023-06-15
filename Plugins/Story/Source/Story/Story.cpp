@@ -31,7 +31,7 @@ bool UStory::Start_Implementation(const FName& Name) {
 	// Is this a good idea?
 	Stop();
 
-	UE_LOG(LogTemp, Warning, TEXT("About to start step : '%s'"), *Name.ToString());
+	UE_LOG(LogTemp, Log, TEXT("About to start step : '%s'"), *Name.ToString());
 	Current = Step;
 	Step->Start();
 	OnStepStart.Broadcast(Step->Name);

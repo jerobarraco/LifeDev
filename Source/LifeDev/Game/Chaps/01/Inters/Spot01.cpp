@@ -11,10 +11,10 @@ ASpot01::ASpot01():Super() {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
 
-	// ItemReward = TEXT("C1C00"); // chapter 1 clout 0
 	Mesh->SetRelativeLocation(FVector(-17.500000,17.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,5.0));
 	Interact->SetBoxExtent(FVector(20.000000,20.000000,9.000000));
 	Texts[0] = FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop here"));
-	TriggerDlg = FName("Sp01.0");
+	TriggerDlg = FName("IS_C1T");
+	Items = {FName("C1C03")};
 }

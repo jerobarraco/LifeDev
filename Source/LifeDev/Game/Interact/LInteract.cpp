@@ -52,10 +52,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
 		// force trigger
 		Trigger();
 	} else {
-		if (IsValid(Dialogs) && !ULockBadDlg.IsNone()) {
-			const bool Added = Dialogs->AddId(ULockBadDlg);
-			Result = Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-		}
+		const bool Added = IsValid(Dialogs) && Dialogs->AddId(ULockBadDlg);
+		Result = Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	return Result;

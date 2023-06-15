@@ -15,25 +15,33 @@ class LIFEDEV_API ALInteractSpot: public AInteract {
 public:
 	GENERATED_BODY()
 
-	// ALInteractSpot();
-	
-	// When the reward is triggered
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FName TriggerDlg = NAME_None;
+	ALInteractSpot();
 
 	// When a drop is correct
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName CorrectDlg = NAME_None;
+	FName DropDlg = NAME_None;
 
-	// When a drop is correct
+	// When a drop is not correct
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName DropBadDlg = NAME_None;
+
+	// When i TRY to drop but it's full
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName FullDlg = NAME_None;
 
+	// When the is triggered due to be just full
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FName TriggerDlg = NAME_None;
+
+	// When attempted to trigger manually (disabled) 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName TriggerBadDlg = NAME_None;
+	
 	// the item to reward
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName ItemReward = NAME_None;
 
-	// items to listen to
+	// items to listen to. these are the items that are allowed to be dropped here.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> Items;
 
