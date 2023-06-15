@@ -162,6 +162,7 @@ bool UInventory::SetSelected(const FName& Name) {
 }
 
 bool UInventory::Has(const FName& Name) {
+	if (Name.IsNone()) return false;
 	return Items.Contains(Name);
 }
 
@@ -270,6 +271,11 @@ void UInventory::CoolTimerTick() {
 
 FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
 	static FItem FauxItem;
+	if (Name.IsNone()) {
+		OutFound = false;
+		return FauxItem;
+	}
+
 	FItem* const pItem = Items.Find(Name);
 	OutFound = !!pItem;
 	if (!OutFound) {

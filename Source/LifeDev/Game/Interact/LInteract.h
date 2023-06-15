@@ -20,6 +20,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockDlg = NAME_None;
 
+	// dialog to trigger when tried to use the wrong item to unlock this
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FName ULockBadDlg = NAME_None;
+
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockItemDlg = NAME_None;
@@ -44,6 +48,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
+	
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
