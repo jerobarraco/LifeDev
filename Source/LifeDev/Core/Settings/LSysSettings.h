@@ -6,12 +6,25 @@
 
 class UDataTable;
 
-
 // game feature
 UENUM(BlueprintType)
-enum class EFeat {
-	DUNNO,
+enum class EFeat: uint8 {
+	NONE, // empty one to be able to add to the set.
+	// Shows the dialogs, otherwise they get muted
+	DIALOGS,
+	// Muted dialogs
+	DIALOG_TEXT,
 	CHAP_00,
+	CHAP_01,
+	CHAP_02,
+	CHAP_03,
+	CHAP_04,
+	CHAP_05,
+	CHAP_06,
+	CHAP_07,
+	CHAP_08,
+	CHAP_09,
+	
 	// INVENTORY,
 	// DIALOGS,
 };

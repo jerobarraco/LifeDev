@@ -23,7 +23,7 @@ public:
 	void ResetFeats();
 
 	UFUNCTION(BlueprintCallable)
-	bool HasFeat(EFeat Feat);
+	bool GetFeat(EFeat Feat) const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetFeat(EFeat Feat, bool Enable = true);

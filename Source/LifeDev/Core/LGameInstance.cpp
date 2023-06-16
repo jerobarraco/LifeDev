@@ -13,7 +13,7 @@ void ULGameInstance::ResetFeats() {
 	Feats = Settings->UseDebugFeats ? Settings->DebugFeats : Settings->DefaultFeats;
 }
 
-bool ULGameInstance::HasFeat(EFeat Feat) {
+bool ULGameInstance::GetFeat(EFeat Feat) const {
 	return Feats.Contains(Feat);	
 }
 

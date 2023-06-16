@@ -153,7 +153,7 @@ void UDialogs::ShowNext() {
 	// Do NOT get a reference here,
 	// since we will remove later, it will actually return weird data.
 	FDialog Diag = Pending[0];
-	Pending.RemoveAt(0); // im sorry mama, i never meant to hurt you.~
+	Pending.RemoveAt(0);
 
 	OnShow.Broadcast(Diag);
 }

@@ -72,7 +72,7 @@ void ALGGameMode::Init_Implementation() {
 	}
 
 	// todo improve. should come from savestate
-	const bool HasChap0 = Instance->HasFeat(EFeat::CHAP_00);
+	const bool HasChap0 = Instance->GetFeat(EFeat::CHAP_00);
 	ChapterId = HasChap0 ? 0: 1;
 	
 	/// Character
