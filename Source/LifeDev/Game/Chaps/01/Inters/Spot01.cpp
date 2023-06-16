@@ -5,7 +5,6 @@
 #include "Interact/CInteract.h"
 
 ASpot01::ASpot01():Super() {
-	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt00.Shirt00"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
@@ -16,5 +15,5 @@ ASpot01::ASpot01():Super() {
 	Interact->SetBoxExtent(FVector(20.000000,20.000000,9.000000));
 	Texts[0] = FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop here"));
 	TriggerDlg = FName("IS_C1T");
-	Items = {FName("C1C03")};
+	Items = {FName("C1C03")}; // the bra
 }

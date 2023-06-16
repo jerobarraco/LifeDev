@@ -20,6 +20,7 @@ ASpot00::ASpot00():Super() {
 	DropDlg = TEXT("IS_C0C");
 	TriggerDlg = FName("IS_C0T");
 	Items = {
-		FName("C1C00"), FName("C1C01"),
+		// two shirts and a boxer
+		FName("C1C00"), FName("C1C01"), "C1C02"
 	};
 }

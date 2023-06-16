@@ -3,7 +3,6 @@
 #include "Clout02.h"
 
 #include "Interact/CAnimatorMix.h"
-#include "Interact/CAnimatorTrans.h"
 #include "Interact/CInteract.h"
 
 AClout02::AClout02():Super() {

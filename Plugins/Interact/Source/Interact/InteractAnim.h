@@ -33,14 +33,16 @@ public:
 	USoundBase* SFX_Close = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_CloseEnd = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	USoundBase* SFX_Locked = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 	virtual void SetText_Implementation() override;
-	virtual void Trigger_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
+	virtual void Trigger_Implementation() override;
+	virtual void TriggerLocked_Implementation() override;
 
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound

@@ -40,10 +40,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName ItemReward = NAME_None;
 
-	// played when triggering on locked
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	USoundBase* SFX_Locked = nullptr;
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;

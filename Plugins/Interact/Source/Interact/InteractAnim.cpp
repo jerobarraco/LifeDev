@@ -58,6 +58,11 @@ void AInteractAnim::Trigger_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 }
 
+void AInteractAnim::TriggerLocked_Implementation() {
+	Super::TriggerLocked_Implementation();
+	PlaySFX(SFX_Locked);
+}
+
 bool AInteractAnim::TryTrigger_Implementation() {
 	if (AnimEnabled && Anim->GetIsAnimating()) return false;
 	return Super::TryTrigger_Implementation();
@@ -77,6 +82,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 
 void AInteractAnim::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
+	SFX->SetHiddenInGame(false);
 	SFX->SetSound(Snd);
 	SFX->SetActive(true, true);
 	SFX->Play(0);
