@@ -34,17 +34,12 @@
 			"Name": "JUtils",
 			"Enabled": true
 		},
-		
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "ActorSequence",
-			"Enabled": false
 		},
 		{
 			"Name": "AlembicImporter",
