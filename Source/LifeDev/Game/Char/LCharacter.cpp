@@ -46,7 +46,10 @@ ALCharacter::ALCharacter(): Super()
 	Noiser = CreateDefaultSubobject<UCNoiser>(TEXT("Noiser"));
 	Noiser->TimeMin = 5;
 	Noiser->TimeMax = 10;
-	Noiser->HalfRadius = (360.0-90.0)/2.0;
+	Noiser->HalfAngleWidth = (360.0-90.0)/2.0;
+	Noiser->HalfAngleHeight = 40.0;
+	Noiser->DistMin = 50;
+	Noiser->DistMax = 600;
 	static ConstructorHelpers::FObjectFinder<USoundBase> CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation> CSfxAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises_Att.Noises_Att"));
@@ -123,6 +126,8 @@ void ALCharacter::BeginPlay()
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALCharacter::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALCharacter::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
+
+	Noiser->Start();
 }
 
 void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -131,6 +136,10 @@ void ALCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	UI = nullptr;
 	Inventory = nullptr;
+	if (IsValid(Noiser)) {
+		Noiser->Stop();
+	}
+	Noiser = nullptr;
 
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	// TODO unbind actions

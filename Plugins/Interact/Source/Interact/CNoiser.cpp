@@ -55,16 +55,26 @@ void UCNoiser::PlayNow_Implementation() {
 
 	const FVector& OwnerLocation = Owner->GetActorLocation();
 	const FVector& OwnerFwd = Owner->GetActorForwardVector();
+	// actually point at the back
 	const FVector OwnerBwd = -OwnerFwd;
-	const FVector& Dir = FMath::VRandCone(OwnerBwd, FMath::DegreesToRadians(HalfRadius));
-	
-	FVector Location = OwnerLocation + (Dir*DistMax);
+
+	const float AngleWidth = FMath::DegreesToRadians(HalfAngleWidth);
+	const float AngleHeight = FMath::DegreesToRadians(HalfAngleHeight);
+	const FVector& Dir = FMath::VRandCone(
+		OwnerBwd,AngleWidth, AngleHeight);
+	const float Dist = FMath::FRandRange(DistMin, DistMax);
+	FVector Location = OwnerLocation + (Dir*Dist);
 	const FRotator& Rotation = (OwnerLocation - Location).Rotation();
+	
+	UWorld* const World = GetWorld();
 	if (Debug) {
-		DrawDebugLine(GetWorld(), Location, Location + (Rotation.Vector() * DistMax), FColor::Purple, false, 4);
+		DrawDebugLine(World, Location, Location + (Rotation.Vector() * Dist), FColor::Purple, false, 4);
+		DrawDebugPoint(World, Location, 4, FColor::Green, false, 4);
+		DrawDebugPoint(World, OwnerLocation, 4, FColor::Red, false, 4);
+		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
 	UGameplayStatics::PlaySoundAtLocation(
-		GetWorld(), SFX, Location, Rotation,
+		World, SFX, Location, Rotation,
 		1, 1, 0,
 		Attenuation
 	);
