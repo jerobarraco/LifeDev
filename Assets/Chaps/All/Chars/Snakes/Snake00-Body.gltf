@@ -1,0 +1,100 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5123,
+      "type": "SCALAR",
+      "count": 36
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "type": "VEC3",
+      "count": 24,
+      "min": [3, 2, 0],
+      "max": [4, 3, 1]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "type": "VEC3",
+      "byteOffset": 12,
+      "count": 24
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5121,
+      "type": "VEC4",
+      "normalized": true,
+      "byteOffset": 24,
+      "count": 24
+    }
+  ],
+  "asset": {
+    "generator": "goxel",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 1,
+      "byteLength": 72
+    },
+    {
+      "buffer": 0,
+      "byteLength": 768,
+      "byteStride": 32
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AABAQAAAAEAAAAAAAAAAAAAAgL8AAAAAIkQi/wAAAAAAAIBAAAAAQAAAAAAAAAAAAACAvwAAAAAiRCL/AAAAAAAAgEAAAABAAACAPwAAAAAAAIC/AAAAACJEIv8AAAAAAABAQAAAAEAAAIA/AAAAAAAAgL8AAAAAIkQi/wAAAAAAAIBAAABAQAAAAAAAAAAAAACAPwAAAAAiRCL/AAAAAAAAQEAAAEBAAAAAAAAAAAAAAIA/AAAAACJEIv8AAAAAAABAQAAAQEAAAIA/AAAAAAAAgD8AAAAAIkQi/wAAAAAAAIBAAABAQAAAgD8AAAAAAACAPwAAAAAiRCL/AAAAAAAAQEAAAABAAAAAAAAAAAAAAAAAAACAvyJEIv8AAAAAAABAQAAAQEAAAAAAAAAAAAAAAAAAAIC/IkQi/wAAAAAAAIBAAABAQAAAAAAAAAAAAAAAAAAAgL8iRCL/AAAAAAAAgEAAAABAAAAAAAAAAAAAAAAAAACAvyJEIv8AAAAAAACAQAAAAEAAAIA/AAAAAAAAAAAAAIA/IkQi/wAAAAAAAIBAAABAQAAAgD8AAAAAAAAAAAAAgD8iRCL/AAAAAAAAQEAAAEBAAACAPwAAAAAAAAAAAACAPyJEIv8AAAAAAABAQAAAAEAAAIA/AAAAAAAAAAAAAIA/IkQi/wAAAAAAAIBAAAAAQAAAAAAAAIA/AAAAAAAAAAAiRCL/AAAAAAAAgEAAAEBAAAAAAAAAgD8AAAAAAAAAACJEIv8AAAAAAACAQAAAQEAAAIA/AACAPwAAAAAAAAAAIkQi/wAAAAAAAIBAAAAAQAAAgD8AAIA/AAAAAAAAAAAiRCL/AAAAAAAAQEAAAABAAAAAAAAAgL8AAAAAAAAAACJEIv8AAAAAAABAQAAAAEAAAIA/AACAvwAAAAAAAAAAIkQi/wAAAAAAAEBAAABAQAAAgD8AAIC/AAAAAAAAAAAiRCL/AAAAAAAAQEAAAEBAAAAAAAAAgL8AAAAAAAAAACJEIv8AAAAA",
+      "byteLength": 768
+    },
+    {
+      "uri": "data:application/octet-stream;base64,AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQA",
+      "byteLength": 72
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "indices": 0,
+          "material": 0,
+          "attributes": {
+            "POSITION": 1,
+            "NORMAL": 2,
+            "COLOR_0": 3
+          }
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "Material.1",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.200000003,
+        "roughnessFactor": 0.5
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "children": [ 2 ],
+      "matrix": [1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1]
+    },
+    {
+      "mesh": 0,
+      "translation": [-16, -16, 0]
+    },
+    {
+      "children": [ 1 ]
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [ 0 ]
+    }
+  ]
+}
