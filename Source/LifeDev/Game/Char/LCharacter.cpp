@@ -44,8 +44,8 @@ ALCharacter::ALCharacter(): Super()
 	Interactor->SetupAttachment(Camera);
 
 	Noiser = CreateDefaultSubobject<UCNoiser>(TEXT("Noiser"));
-	Noiser->TimeMin = 5;
-	Noiser->TimeMax = 10;
+	Noiser->TimeMin = 45;
+	Noiser->TimeMax = 150;
 	Noiser->HalfAngleWidth = (360.0-90.0)/2.0;
 	Noiser->HalfAngleHeight = 40.0;
 	Noiser->DistMin = 50;
