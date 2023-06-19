@@ -17,6 +17,7 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UGameUI;
+class UCNoiser;
 
 // base class for the character
 UCLASS(config=Game)
@@ -96,11 +97,13 @@ protected:
 	USkeletalMeshComponent* Mesh1P;
 
 	// First person camera
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere,Category = Camera)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Camera)
 	UCameraComponent* Camera;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCInteractor* Interactor = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UCNoiser* Noiser = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
 	UGameUI* UI = nullptr;

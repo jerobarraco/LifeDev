@@ -14,11 +14,14 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
+#include "Interact/CNoiser.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
 ALCharacter::ALCharacter(): Super()
 {
+	SetActorTickEnabled(false);
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
@@ -39,10 +42,18 @@ ALCharacter::ALCharacter(): Super()
 
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
+
+	Noiser = CreateDefaultSubobject<UCNoiser>(TEXT("Noiser"));
+	Noiser->TimeMin = 5;
+	Noiser->TimeMax = 10;
+	Noiser->HalfRadius = (360.0-90.0)/2.0;
+	static ConstructorHelpers::FObjectFinder<USoundBase> CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises.Noises"));
+	Noiser->SFX = CSfx.Object;
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation> CSfxAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises_Att.Noises_Att"));
+	Noiser->Attenuation = CSfxAtt.Object;
 	
 	UIClass = UGameUI::StaticClass();
 	
-	SetActorTickEnabled(false);
 	// load the ui class here with the class finder.
 	// and also all the other default objects
 	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
