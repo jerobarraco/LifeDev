@@ -2,6 +2,7 @@
 #include "LStep.h"
 
 #include "Dialogs/Dialogs.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 void ALStep::Start_Implementation() {
@@ -12,11 +13,19 @@ void ALStep::Start_Implementation() {
 	if (LGGameMode) {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
+
+	if (!ItemsPass.IsEmpty()) {
+		Inventory = GetWorld()->GetSubsystem<UInventory>();
+		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
+	}
 }
 
 void ALStep::Stop_Implementation() {
 	Super::Stop_Implementation();
 	Dialogs->OnDone.RemoveAll(this);
+	if (IsValid(Inventory)) {
+		Inventory->OnMod.RemoveAll(this);
+	}
 }
 
 void ALStep::PostWait_Implementation() {
@@ -32,14 +41,26 @@ void ALStep::StartDialogs() {
 	Dialogs->AddId(SeqId);
 }
 
+void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
+	const int32 NumItems = ItemsPass.Num();
+	if (NumItems<=0) return;
+	if (Diff<=0) return;
+	for (int32 i=0; i<NumItems; ++i) {
+		if (!Inventory->Has(ItemsPass[i])) return;
+	}
+
+	Finish();
+}
+
 void ALStep::BeginPlay() {
 	Super::BeginPlay();
 	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
 	Dialogs = nullptr;
+	Inventory = nullptr;
+	Super::EndPlay(EndPlayReason);
 }
 
 void ALStep::PostLoad() {

@@ -33,6 +33,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	}
 
 	int32 Current = Item->Count;
+	int32 CurDiff = 0;
 	// clamp values
 	// for non-consumables use always -1, for consumables clamp at 0
 	if (Item->Consumable) {
@@ -40,7 +41,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		// get the max we can go. Current+diff to allow to grow.
 		const int32 Max = Item->MaxCount <= 0 ? Current + Diff: Item->MaxCount;
 		// clamp the diff to the max. and min.
-		const int32 CurDiff = FMath::Clamp(Diff, -Current, Max - Current);
+		CurDiff = FMath::Clamp(Diff, -Current, Max - Current);
 		// apply diff
 		Current = FMath::Max(0, Current+CurDiff);
 	} else {
@@ -49,6 +50,9 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	}
 
 	Item->Count = Current;
+	
+	// intentionally copying the item, to avoid issues. the item might have been removed, or might 
+	FItem ItemCopy = *Item;
 	// remove empty consumables
 	if (Item->Consumable && Item->Count <= 0) {
 		// this code sucks i don't like it. todo improve.
@@ -59,7 +63,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		Items.Remove(Name);
 	}
 
-	OnMod.Broadcast(Name, *Item);
+	OnMod.Broadcast(Name, CurDiff, MoveTemp(ItemCopy));
 
 	// Set selected only after removing.
 	// there's something fishy going on. otherwise it will remove the wrong object!
@@ -178,6 +182,7 @@ bool UInventory::Use(const FName& Name) {
 
 	// intentionally make a copy since when an object gets removed from the pool, the fname automagically transforms to the next name. W T F
 	FName OldName = Name;
+	// intentionally calling mod so that onMod is triggered
 	Mod(Name, -1);
 	// item was the last one in the inventory. we have no more of it.
 	if (!Items.Contains(OldName)) return true;

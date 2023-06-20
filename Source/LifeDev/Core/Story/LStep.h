@@ -3,17 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Inventory/InventoryTypes.h"
 #include "Story/Step.h"
 
 #include "LStep.generated.h"
 
 class UDialogs;
+class UInventory;
 
 UCLASS(Blueprintable, BlueprintType)
 class ALStep : public AStep {
 	GENERATED_BODY()
 
 public:
+	
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 
@@ -28,6 +31,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName SeqId = NAME_None;
 
+	// if this is set. it will advance once ALL items are obtained.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<FName> ItemsPass;
+
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;
 
@@ -39,6 +46,11 @@ protected:
 	// will start the dialogs
 	void StartDialogs();
 
+	UFUNCTION()// bound
+	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UInventory* Inventory = nullptr;
 };

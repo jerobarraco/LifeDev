@@ -99,6 +99,8 @@ void ALCharacter::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
 	InteractSetEnabled(Enabled);
+	// this is a stub behaviour to disable noises while the player is not actively playing.
+	// it just happens to make sense and require little code. to be improved.
 	Noiser->SetIsPlaying(Enabled);
 }
 

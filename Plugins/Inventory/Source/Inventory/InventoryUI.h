@@ -26,7 +26,7 @@ public:
 	void SetItemCold(const FName& Name);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void SetItemMod(const FName& Name, const FItem& Item);
+	void SetItemMod(const FName& Name, int32 Diff, const FItem& Item);
 
 	UFUNCTION(BlueprintNativeEvent)
 	void SetItemUsed(const FName& Name);

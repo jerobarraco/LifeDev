@@ -88,9 +88,9 @@ void AInventoryManager::SetSelected(const FName& Name) {
 	}
 }
 
-void AInventoryManager::SetItemMod(const FName& Name, const FItem& Item) {
+void AInventoryManager::SetItemMod(const FName& Name, int32 Diff, const FItem& Item) {
 	if (IsValid(UI)) {
-		UI->SetItemMod(Name, Item);
+		UI->SetItemMod(Name, Diff, Item);
 	}
 }
 

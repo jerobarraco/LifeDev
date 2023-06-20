@@ -11,7 +11,7 @@ void UInventoryUI::Show_Implementation() {}
 
 void UInventoryUI::SetSelected_Implementation(const FName& Name) {}
 
-void UInventoryUI::SetItemMod_Implementation(const FName& Name, const FItem& Item) {}
+void UInventoryUI::SetItemMod_Implementation(const FName& Name, int32 Diff, const FItem& Item) {}
 
 void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 
