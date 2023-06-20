@@ -26,6 +26,8 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
+	// ensure we don't double trigger
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 }
 
 void ALStep::PostWait_Implementation() {
