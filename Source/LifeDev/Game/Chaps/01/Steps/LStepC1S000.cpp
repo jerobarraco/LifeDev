@@ -3,14 +3,10 @@
 
 ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
-	SeqId = FName("C1S0");
+	DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = true;
 	UseFadeTime = true;
-
-	// finish on obtaining these.
-	FinishItems = {
-		"T0",
-		"Walkman"
-	};
+	FinishPostWait = false; // will be set by seqid anyway
+	CamTarget = nullptr; // use previous camera
 }

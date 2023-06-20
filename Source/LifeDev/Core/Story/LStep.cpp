@@ -35,16 +35,19 @@ void ALStep::PostWait_Implementation() {
 }
 
 void ALStep::StartDialogs() {
-	if (SeqId.IsNone()) return;
+	if (DlgId.IsNone()) return;
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 	FDialogSequence Seq; TArray<FDialog> Diags; TArray<FDialogChar> Chars;
-	Dialogs->AddId(SeqId);
+	if (!Dialogs->AddId(DlgId)) {
+		// if it fails to add it, then finish manually
+		Finish();
+	};
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	const int32 NumItems = FinishItems.Num();
 	if (NumItems<=0) return;
-	if (Diff<=0) return;
+	// if (Diff<=0) return; // this is causing issues. todo fix
 	for (int32 i=0; i<NumItems; ++i) {
 		if (!Inventory->Has(FinishItems[i])) return;
 	}
@@ -74,7 +77,7 @@ void ALStep::PostLoad() {
 	}
 	
 	// avoid finishing earlier if we have dialogs
-	if (!SeqId.IsNone()) {
+	if (!DlgId.IsNone()) {
 		FinishPostWait = false;
 	}
 }

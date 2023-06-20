@@ -25,7 +25,7 @@ void ALInteract::Trigger_Implementation() {
 	}
 	
 	Destroy();
-	// TODO trigger sfx? i cannot because i just destroyed myself
+	// TODO trigger sfx? i can use gamestatics::playsoundatlocation
 }
 
 // TODO maybe have 2 more sounds for locked and unlocked

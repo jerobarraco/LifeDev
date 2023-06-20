@@ -28,9 +28,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool UseFadeTime = false;
 
-	// dialog sequence to trigger on start
+	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
+	// it will also disable FinishPostWait
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName SeqId = NAME_None;
+	FName DlgId = NAME_None;
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)

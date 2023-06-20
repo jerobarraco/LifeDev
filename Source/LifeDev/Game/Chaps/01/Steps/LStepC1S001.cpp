@@ -4,6 +4,12 @@
 ALStepC1S001::ALStepC1S001():Super() {
 	Name = FName("C1S1");
 	InputEnabled = true;
-	UsePawnCam = false;
+	UsePawnCam = true;
+	
+	// finish on obtaining these.
+	FinishItems = {
+		"T0",
+		"Walkman"
+	};
 }
 
