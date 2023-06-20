@@ -6,11 +6,10 @@ ALStepC1S000::ALStepC1S000():Super() {
 	SeqId = FName("C1S0");
 	InputEnabled = false;
 	UsePawnCam = true;
-	UseCam = false;
 	UseFadeTime = true;
 
 	// finish on obtaining these.
-	ItemsPass = {
+	FinishItems = {
 		"T0",
 		"Walkman"
 	};

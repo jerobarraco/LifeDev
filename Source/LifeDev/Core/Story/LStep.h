@@ -20,10 +20,11 @@ public:
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 
+	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool InputEnabled = false;
 
-	// when set to true, the game mode will set the fade time.
+	// when set to true, the game mode will set the wait time to the fade time. Also check FinishPostWait
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool UseFadeTime = false;
 
@@ -33,7 +34,7 @@ public:
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<FName> ItemsPass;
+	TArray<FName> FinishItems;
 
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;

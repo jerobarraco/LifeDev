@@ -5,7 +5,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	Name = FName("C0S1");
 	InputEnabled = false;
 	UsePawnCam = false;
-	UseCam = false;
+	CamTarget = nullptr; // will keep the current camera
 	WaitTime = 2;
 	FinishPostWait = true;
 }

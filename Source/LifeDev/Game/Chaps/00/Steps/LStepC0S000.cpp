@@ -7,7 +7,6 @@ ALStepC0S000::ALStepC0S000():Super() {
 	Name = FName("C0S0");
 	SeqId = FName("Intro");
 	InputEnabled = false;
-	UseCam = true;
 	UseFadeTime = true;
 }
 

@@ -34,6 +34,7 @@ void AStep::Start_Implementation() {
 }
 
 void AStep::PostWait_Implementation() {
+	// set camera if camtarget is set
 	if (IsValid(CamTarget)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 	}
@@ -75,18 +76,12 @@ void AStep::PostLoad() {
 }
 
 void AStep::UpdateCamEnabled() {
-	// Sets the cam to false if the pawn target is set
-	UseCam = UseCam && !UsePawnCam;
-	
-	const bool Enabled = UseCam;
+	const bool Enabled = CamTarget == this;
 	if (IsValid(Cam)) {
 		Cam->SetActive(Enabled);
 		Cam->SetHiddenInGame(!Enabled);
 		Cam->SetVisibility(Enabled);
 		Cam->SetComponentTickEnabled(Enabled);
-	}
-	if (CamTarget == this && !Enabled) {
-		CamTarget = nullptr;
 	}
 }
 

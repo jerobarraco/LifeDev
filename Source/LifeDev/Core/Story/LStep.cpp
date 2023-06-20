@@ -14,7 +14,7 @@ void ALStep::Start_Implementation() {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
 
-	if (!ItemsPass.IsEmpty()) {
+	if (!FinishItems.IsEmpty()) {
 		Inventory = GetWorld()->GetSubsystem<UInventory>();
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 	}
@@ -42,14 +42,18 @@ void ALStep::StartDialogs() {
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
-	const int32 NumItems = ItemsPass.Num();
+	const int32 NumItems = FinishItems.Num();
 	if (NumItems<=0) return;
 	if (Diff<=0) return;
 	for (int32 i=0; i<NumItems; ++i) {
-		if (!Inventory->Has(ItemsPass[i])) return;
+		if (!Inventory->Has(FinishItems[i])) return;
 	}
-
-	Finish();
+	// if i have all the items. schedule a finish
+	// wait for dialogs to end
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
+	FTimerHandle Handle;
+	// also set a time out if the player takes too long.
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &ALStep::Finish, FadeTime*2);
 }
 
 void ALStep::BeginPlay() {

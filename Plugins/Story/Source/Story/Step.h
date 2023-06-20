@@ -34,15 +34,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName Name;
 
+	// the camera to switch to automatically. Set to null to not switch to.
+	// By default is the own camera. or you can set UsePanwCam to use the pawn's camera 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AActor* CamTarget = nullptr;
 
 	// will target pawn automatically, will override the camtarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UsePawnCam = false;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool UseCam = false;
 
 	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
