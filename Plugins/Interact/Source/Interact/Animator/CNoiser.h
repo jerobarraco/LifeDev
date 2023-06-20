@@ -28,6 +28,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	inline bool GetIsPlaying() const { return IsPlaying; }
 
+	// will start or stop the noises accordingly
+	UFUNCTION(BlueprintCallable)
+	void SetIsPlaying(bool NewIsRotating);
+	
 	// Half Radius of the one facing back of the actor. On the horizontal axis. Degrees
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	float HalfAngleWidth = 120.0;
@@ -63,8 +67,6 @@ public:
 	bool Debug = true;
 
 protected:
-	UFUNCTION(BlueprintCallable)
-	void SetIsPlaying(bool NewIsRotating);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, CallInEditor)
 	void PlayNow();

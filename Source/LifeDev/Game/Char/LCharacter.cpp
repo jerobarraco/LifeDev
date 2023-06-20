@@ -99,8 +99,10 @@ void ALCharacter::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
 	InteractSetEnabled(Enabled);
+	Noiser->SetIsPlaying(Enabled);
 }
 
+// can't remember why i made this into its own function, probably to be able to call from the outside.
 void ALCharacter::InteractSetEnabled(bool Enabled) {
 	Interactor->SetEnabled(Enabled);
 }
