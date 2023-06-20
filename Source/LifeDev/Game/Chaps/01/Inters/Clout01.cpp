@@ -2,9 +2,8 @@
 
 #include "Clout01.h"
 
-#include "Interact/CAnimatorMix.h"
-#include "Interact/CAnimatorTrans.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 
 AClout01::AClout01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));

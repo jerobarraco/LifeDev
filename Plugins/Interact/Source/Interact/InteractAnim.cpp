@@ -5,7 +5,7 @@
 #include "Components/AudioComponent.h"
 
 #include "Interact/CInteract.h"
-#include "CAnimatorMix.h"
+#include "Animator/CAnimatorMix.h"
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;

@@ -5,7 +5,7 @@
 
 #include "Clout03.generated.h"
 
-// Base class for Clout00 actors
+// Base class for Clout03 actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AClout03: public ALInteract {
 public:

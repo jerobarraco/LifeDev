@@ -14,7 +14,7 @@
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
-#include "Interact/CNoiser.h"
+#include "Interact/Animator/CNoiser.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 

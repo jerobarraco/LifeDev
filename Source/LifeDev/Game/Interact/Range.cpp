@@ -2,8 +2,7 @@
 
 #include "Range.h"
 
-#include "Interact/CAnimatorMix.h"
-#include "Interact/CAnimatorTrans.h"
+#include "Interact/Animator/CAnimatorMix.h"
 
 ARange::ARange():Super() {
 	// super important or it will NOT work

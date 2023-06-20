@@ -2,8 +2,8 @@
 
 #include "Clout02.h"
 
-#include "Interact/CAnimatorMix.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 
 AClout02::AClout02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
