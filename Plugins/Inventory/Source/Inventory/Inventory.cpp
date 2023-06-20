@@ -33,7 +33,8 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	}
 
 	int32 Current = Item->Count;
-	int32 CurDiff = 0;
+	// used to broadcast even on non-consumable
+	int32 CurDiff = Diff;
 	// clamp values
 	// for non-consumables use always -1, for consumables clamp at 0
 	if (Item->Consumable) {

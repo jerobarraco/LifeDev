@@ -8,4 +8,10 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UsePawnCam = true;
 	UseCam = false;
 	UseFadeTime = true;
+
+	// finish on obtaining these.
+	ItemsPass = {
+		"T0",
+		"Walkman"
+	};
 }
