@@ -6,6 +6,7 @@
 
 #include "LNPC.generated.h"
 
+// base npc class
 UCLASS(Blueprintable, BlueprintType)
 class ALNPC : public AActor {
 	GENERATED_BODY()

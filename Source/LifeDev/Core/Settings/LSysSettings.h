@@ -14,6 +14,8 @@ enum class EFeat: uint8 {
 	DIALOGS,
 	// Muted dialogs
 	DIALOG_TEXT,
+	// Debug steps (cheats)
+	DEBUG_STEPS,
 	CHAP_00,
 	CHAP_01,
 	CHAP_02,

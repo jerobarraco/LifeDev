@@ -5,6 +5,8 @@
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
+// TODO add a function called Debug. that is called on start if the settings have the Debug_Step flag added
+
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
 	AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
