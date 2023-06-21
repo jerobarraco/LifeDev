@@ -17,16 +17,22 @@ public:
 	ALStepC1S002();
 
 	virtual void Start_Implementation() override;
-
+	virtual void Stop_Implementation() override;
+	
 protected:
 	void SpawnGhosts() const;
-	void SpawnChar() const;
+	void SpawnChar();
+	void DestroyChar();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Ghosts = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UClass* CharClass = nullptr;
+	TSubclassOf<AActor> CharClass = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	FTransform CharT; 
+	FTransform CharT = FTransform(
+		FRotator(0.000000,-109.999999,0.000000),
+		FVector(47.491408,906.723833,9.062187));
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
+	AActor* Char = nullptr;
 };

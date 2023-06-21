@@ -1,6 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LStepC1S002.h"
+
+#include "LifeDev/Game/Chaps/All/Chars/LNPC01.h"
 #include "Niagara/Public/NiagaraComponent.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
@@ -21,12 +23,25 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Ghosts->SetRelativeLocation(FVector(207.355288,0.509086,48.526007));
 
 	// static ConstructorHelpers::FClassFinder<UClass> CChar(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
-	// CharClass = CChar.Class; 	
+	CharClass = ALNPC01::StaticClass(); 	
 }
 
 void ALStepC1S002::Start_Implementation() {
 	Super::Start_Implementation();
 	SpawnGhosts();
+	SpawnChar();
+}
+
+void ALStepC1S002::DestroyChar() {
+	if (IsValid(Char)) {
+		Char->Destroy();
+	}
+	Char = nullptr;
+}
+
+void ALStepC1S002::Stop_Implementation() {
+	Super::Stop_Implementation();
+	DestroyChar();
 }
 
 void ALStepC1S002::SpawnGhosts() const {
@@ -34,12 +49,11 @@ void ALStepC1S002::SpawnGhosts() const {
 	// Ghosts->ResetSystem();
 }
 
-void ALStepC1S002::SpawnChar() const {
-	if (CharClass) {
-		FActorSpawnParameters Params;
-		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-		GetWorld()->SpawnActor(CharClass, &CharT, Params);
-		
-	}
+void ALStepC1S002::SpawnChar() {
+	if (!IsValid(CharClass)) return;
+
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	Char = GetWorld()->SpawnActor(CharClass, &CharT, Params);
 }
 
