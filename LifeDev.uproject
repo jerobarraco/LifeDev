@@ -33,8 +33,10 @@
 		{
 			"Name": "JUtils",
 			"Enabled": true
-		},
-		{
+		},{
+			"Name": "Niagara",
+			"Enabled": true
+		},{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
 			"TargetAllowList": [

@@ -7,6 +7,7 @@
 
 #include "LStepC1S002.generated.h"
 
+class UNiagaraComponent;
 // when the chap 1 boss enters
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S002 : public ALStep {
@@ -14,4 +15,11 @@ class ALStepC1S002 : public ALStep {
 
 public:
 	ALStepC1S002();
+
+	virtual void Start_Implementation() override;
+
+protected:
+	void SpawnGhosts();
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UNiagaraComponent* Ghosts = nullptr;
 };
