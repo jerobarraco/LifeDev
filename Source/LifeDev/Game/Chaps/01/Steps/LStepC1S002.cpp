@@ -10,14 +10,18 @@ ALStepC1S002::ALStepC1S002():Super() {
 	UsePawnCam = false;
 	UseFadeTime = false;
 
-	Ghosts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Ghosts"));
-	Ghosts->SetupAttachment(Root);
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
-	Ghosts->SetAutoActivate(false);
-	Ghosts->SetAsset(CNiagara.Object);
-	Ghosts->SetRelativeLocation(FVector(207.355288,0.509086,48.526007));
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
+
+	Ghosts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Ghosts"));
+	Ghosts->SetupAttachment(Root);
+	Ghosts->SetAutoActivate(false);
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
+	Ghosts->SetAsset(CNiagara.Object);
+	Ghosts->SetRelativeLocation(FVector(207.355288,0.509086,48.526007));
+
+	// static ConstructorHelpers::FClassFinder<UClass> CChar(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
+	// CharClass = CChar.Class; 	
 }
 
 void ALStepC1S002::Start_Implementation() {
@@ -25,9 +29,17 @@ void ALStepC1S002::Start_Implementation() {
 	SpawnGhosts();
 }
 
-void ALStepC1S002::SpawnGhosts() {
-	
+void ALStepC1S002::SpawnGhosts() const {
 	Ghosts->Activate(true);
-	// Ghosts->ResetSystem();	
+	// Ghosts->ResetSystem();
+}
+
+void ALStepC1S002::SpawnChar() const {
+	if (CharClass) {
+		FActorSpawnParameters Params;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		GetWorld()->SpawnActor(CharClass, &CharT, Params);
+		
+	}
 }
 

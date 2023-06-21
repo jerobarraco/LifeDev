@@ -19,7 +19,14 @@ public:
 	virtual void Start_Implementation() override;
 
 protected:
-	void SpawnGhosts();
+	void SpawnGhosts() const;
+	void SpawnChar() const;
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Ghosts = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UClass* CharClass = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	FTransform CharT; 
 };
