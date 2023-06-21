@@ -42,33 +42,37 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool Say(const FName& Name);
-	
+
+	// factor to apply to look when hovering an interact
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float InteractDrag = .4;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UGameUI> UIClass = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	UInputAction* ActionJump = nullptr;
 
 	//* Move Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	UInputAction* ActionMove = nullptr;
 		
 	//* Look Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	UInputAction* ActionLook = nullptr;
 
 	//* Interact Input Action 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	UInputAction* ActionInteract = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	UInputAction* ActionItem = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	UInputAction* ActionItemLook = nullptr;
 
 protected:

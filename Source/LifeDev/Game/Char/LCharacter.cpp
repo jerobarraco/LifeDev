@@ -183,10 +183,13 @@ void ALCharacter::ActLook(const FInputActionValue& Value)
 	// input is a Vector2D
 
 	if (!Controller) return;
-	const FVector2D& LookAxisVector = Value.Get<FVector2D>();
+	FVector2D Vector = Value.Get<FVector2D>();
+	if (Interactor->GetInterComp()) {
+		Vector *= InteractDrag;
+	}
 	// add yaw and pitch input to controller
-	AddControllerYawInput(LookAxisVector.X);
-	AddControllerPitchInput(LookAxisVector.Y);
+	AddControllerYawInput(Vector.X);
+	AddControllerPitchInput(Vector.Y);
 }
 
 void ALCharacter::ActInteract(const FInputActionValue& Value) {

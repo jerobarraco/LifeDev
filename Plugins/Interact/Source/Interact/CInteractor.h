@@ -43,9 +43,9 @@ public:
 	UCInteract* GetInterComp() { return InterComp; }
 
 	// The max length to trace for
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TraceLen = 200.0;
-
+	
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnInteractToggle OnToggle;
 	// triggered when it begins hovering an interact
