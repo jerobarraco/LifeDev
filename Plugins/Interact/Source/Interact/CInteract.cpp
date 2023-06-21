@@ -23,7 +23,7 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	// we can't actually create nested components. this worked for some strange reason, but need the postcdoconstruct fix.
 	// i tried to replicate and it doesn't
 	// https://forums.unrealengine.com/t/how-do-you-make-a-component-with-nested-components/375589/4
-	PostProcess->SetupAttachment(this);
+	// PostProcess->SetupAttachment(this);
 	// you need to reparent on the actor that creates this interact.
 	PostProcess->bUnbound = false;
 	// this only works on the constructor
@@ -50,7 +50,7 @@ void UCInteract::BeginPlay() {
 }
 
 void UCInteract::Trigger() const {
-	UE_LOG(LogTemp,Log, TEXT("Interact triggered!"));
+	UE_LOG(LogTemp, Log, TEXT("Interact triggered!"));
 	OnTrigger.Broadcast();
 }
 

@@ -8,6 +8,7 @@
 * NO COROUTINES. Only async-tasks and timers.
 * NO ASSERTS OR CHECKS. use an actual if and manage the situation.
 * NO abstract classes. base classes have to be instance-ables. The methods can be emptied but the instance needs to not break (crash). Better to have a base functionality there.
+* * No Final either
 * Minimal usage of lambdas, and only if less than 10 LOC. otherwise make a function.
 * Use BlueprintNativeEvent when interacting with blueprints. Never use BlueprintImplementableEvent. NEVER EVER use delegates for this case.
 ** Use BlueprintNativeEvents EVEN if the cpp body is empty. keep the control in cpp. avoid having function chains that only exists on bp.

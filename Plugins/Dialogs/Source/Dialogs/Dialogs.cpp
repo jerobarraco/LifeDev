@@ -9,11 +9,6 @@ void UDialogs::AddDiag(const FDialog& Diag) {
 	ShowNext();
 }
 
-void UDialogs::AddMany(const TArray<FDialog>& InDiags) {
-	Pending.Append(InDiags);
-	ShowNext();
-}
-
 bool UDialogs::AddDiagId(const FName& Row) {
 	FDialog OutDialog; FDialogChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar);
@@ -25,35 +20,32 @@ bool UDialogs::AddDiagId(const FName& Row) {
 
 bool UDialogs::AddId(const FName& Row) {
 	if (AddSeqId(Row)) return true;
-	return AddDiagId(Row);
+	if (AddDiagId(Row)) return true;
+	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString() );
+	return false;
+}
+
+bool UDialogs::AddManyIds(const TArray<FName>& Rows) {
+	bool Success = true;
+	const int32 Num = Rows.Num();
+	for (int32 i = 0; i < Num; ++i) {
+		// done this way on purpose, so if a sequence adds another sequence
+		// it will get "expanded" as a parenthesis.
+		// AddId is safe to call many times since ShowNext has a flag
+		const FName& Row = Rows[i];
+		const bool Ok = AddId(Row);
+		// notice this is kind of recursive. that's on purpose but be careful.
+		if (!Ok) {
+			Success = false;
+		}
+	}
+
+	return Success;
 }
 
 bool UDialogs::AddSeq(const FDialogSequence& Seq) {
-	TArray<FDialog> OutDialogs; TArray<FDialogChar> OutChars;
-
 	const TArray<FName>& Rows = Seq.DiagRows;
-	const int32 Num = Rows.Num();
-	OutDialogs.Reserve(Num);
-	OutChars.Reserve(Num);
-
-	// success is whether they succeeded all at once
-	bool Success = true;
-	for (int32 i =0; i<Num; ++i) {
-		const FName& Row = Rows[i];
-		FDialog Diag; FDialogChar Char;
-		const bool Ok = GetDiag(Row, Diag, Char);
-		if (!Ok) {
-			Success = false;
-			continue;
-		}
-
-		OutDialogs.Add(Diag);
-		OutChars.Add(Char);
-	}
-
-	AddMany(OutDialogs);
-	
-	return Success;
+	return AddManyIds(Rows);
 }
 
 bool UDialogs::AddSeqId(const FName& RowName) {
@@ -132,7 +124,7 @@ bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 
 	const FDialogSequence* const Row = Seqs->FindRow<FDialogSequence>(RowName, TEXT(""));
 	if (!Row) {
-		UE_LOG(LogTemp, Warning, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
+		UE_LOG(LogTemp, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
 	}
 
