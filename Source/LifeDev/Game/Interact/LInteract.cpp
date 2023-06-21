@@ -5,13 +5,14 @@
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
-	if (!ULockItem.IsNone()) {
+	if (!ULockItem.IsNone() || !ULockItemReq.IsNone()) {
 		// note only setting it if the ulock is set.
 		Locked = true;
 	}
-	
-	Inventory = GetWorld()->GetSubsystem<UInventory>();
-	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
+
+	UWorld* const World = GetWorld();
+	Inventory = World->GetSubsystem<UInventory>();
+	Dialogs = World->GetSubsystem<UDialogs>();
 }
 
 void ALInteract::Trigger_Implementation() {
@@ -33,10 +34,24 @@ void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	if (!Inventory || !Dialogs) return;
 	const bool Has = Inventory->Has(ULockItem);
-	const FName& Dlg = Has && (!LockItemDlg.IsNone())? LockItemDlg : LockDlg;
+	const FName& Dlg = Has && (!ULockItemDlg.IsNone())? ULockItemDlg : LockDlg;
 	FDialog D; FDialogChar C;
 	Dialogs->AddId(Dlg);
 	PlaySFX(SFX_Locked);
+}
+
+bool ALInteract::TryTrigger_Implementation() {
+	// handle item req
+	if (!ULockItemReq.IsNone()) {
+		// check if we have the item
+		bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
+			// unlock if no item is needed to unlock
+		if (Ok && ULockItem.IsNone()) {
+			Locked = false;
+		}
+	}
+
+	return Super::TryTrigger_Implementation();
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
