@@ -8,5 +8,6 @@ ALStepC1S004::ALStepC1S004():Super() {
 	// uses own camera
 	UsePawnCam = true;
 	UseFadeTime = false;
+	FinishItems = {"C1"};
 }
 

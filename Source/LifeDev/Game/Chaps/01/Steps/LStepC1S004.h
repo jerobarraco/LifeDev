@@ -8,7 +8,8 @@
 #include "LStepC1S004.generated.h"
 
 class UNiagaraComponent;
-// regaining control for player after npc01 (might not be necessary)
+// regaining control for player after npc01.
+// NPC01 will trigger step finish on rewarding the card, or maybe i can put the itemfinish as the card
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S004 : public ALStep {
 	GENERATED_BODY()
