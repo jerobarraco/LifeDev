@@ -23,6 +23,7 @@ protected:
 	void SpawnGhosts() const;
 	void SpawnChar();
 	void DestroyChar();
+	void DestroyGhosts();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Ghosts = nullptr;

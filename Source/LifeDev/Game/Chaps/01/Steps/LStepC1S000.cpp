@@ -13,6 +13,13 @@ ALStepC1S000::ALStepC1S000():Super() {
 	CamTarget = nullptr; // use previous camera
 }
 
+void ALStepC1S000::Start_Implementation() {
+	Super::Start_Implementation();
+	UInventory* Inventory = GetWorld()->GetSubsystem<UInventory>();
+    if (!IsValid(Inventory)) return;
+	Inventory->Mod("C0", 1);
+}
+
 void ALStepC1S000::Debug_Implementation() {
 	Super::Debug_Implementation();
 	UInventory* Inventory = GetWorld()->GetSubsystem<UInventory>();

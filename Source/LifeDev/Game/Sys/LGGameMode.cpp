@@ -21,12 +21,11 @@
 #include "LifeDev/Game/Pawn/LPawn.h"
 
 ALGGameMode::ALGGameMode():Super() {
-	// set default pawn class to our Blueprinted character
-	// static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPerson/Blueprints/BP_FirstPersonCharacter"));
-	// DefaultPawnClass = PlayerPawnClassFinder.Class;
-
 	SetActorTickEnabled(false);
-	DefaultPawnClass = ALPawn::StaticClass();
+	// set default pawn class to our Blueprinted character
+	static ConstructorHelpers::FObjectFinder<ALPawn> CPawn(TEXT("/Game/LifeDev/Game/Pawn/LPawn_B.LPawn_B"));
+	DefaultPawnClass = CPawn.Succeeded() ? CPawn.Object->GetClass(): ALPawn::StaticClass();
+
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
 	// UCInteract::CollisionProfile = "BlockAllDynamic";

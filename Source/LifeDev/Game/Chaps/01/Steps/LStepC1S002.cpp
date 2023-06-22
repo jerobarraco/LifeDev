@@ -2,7 +2,7 @@
 
 #include "LStepC1S002.h"
 
-#include "LifeDev/Game/Chaps/All/NPCS/LNPC01.h"
+#include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "Niagara/Public/NiagaraComponent.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
@@ -42,6 +42,10 @@ void ALStepC1S002::DestroyChar() {
 void ALStepC1S002::Stop_Implementation() {
 	Super::Stop_Implementation();
 	DestroyChar();
+}
+
+void ALStepC1S002::DestroyGhosts() {
+	Ghosts->Deactivate();
 }
 
 void ALStepC1S002::SpawnGhosts() const {
