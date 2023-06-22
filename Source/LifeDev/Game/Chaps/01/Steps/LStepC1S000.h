@@ -15,5 +15,6 @@ public:
 	ALStepC1S000();
 
 protected:
+	virtual void Start_Implementation() override;
 	virtual void Debug_Implementation() override;
 };

@@ -2,7 +2,7 @@
 
 #include "LStepC1S002.h"
 
-#include "LifeDev/Game/Chaps/All/Chars/LNPC01.h"
+#include "LifeDev/Game/Chaps/All/NPCS/LNPC01.h"
 #include "Niagara/Public/NiagaraComponent.h"
 
 ALStepC1S002::ALStepC1S002():Super() {

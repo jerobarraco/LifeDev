@@ -18,7 +18,7 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Story/LStep.h"
-#include "LifeDev/Game/Char/LCharacter.h"
+#include "LifeDev/Game/Pawn/LPawn.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	// set default pawn class to our Blueprinted character
@@ -26,7 +26,7 @@ ALGGameMode::ALGGameMode():Super() {
 	// DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 	SetActorTickEnabled(false);
-	DefaultPawnClass = ALCharacter::StaticClass();
+	DefaultPawnClass = ALPawn::StaticClass();
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
 	// UCInteract::CollisionProfile = "BlockAllDynamic";
@@ -76,7 +76,7 @@ void ALGGameMode::Init_Implementation() {
 	ChapterId = HasChap0 ? 0: 1;
 	
 	/// Character
-	Char = Cast<ALCharacter>(UGameplayStatics::GetActorOfClass(World, ALCharacter::StaticClass()));
+	Char = Cast<ALPawn>(UGameplayStatics::GetActorOfClass(World, ALPawn::StaticClass()));
 	if (IsValid(Char)) {
 		Char->InputPrio = 1; // todo move this inside init
 		// Char->Init();
