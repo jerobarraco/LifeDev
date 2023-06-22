@@ -20,10 +20,19 @@ public:
 	virtual void Stop_Implementation() override;
 	
 protected:
+	// ufunctions needed for bindings
+
+	UFUNCTION()
+	void PostSpawnGhosts();
 	void SpawnGhosts() const;
-	void SpawnChar();
-	void DestroyChar();
 	void DestroyGhosts();
+	UFUNCTION()
+	void NPCDiagStop();
+	UFUNCTION()
+	void NPCDiagStart();
+	UFUNCTION()
+	void NPCSpawn();
+	void NPCDestroy();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Ghosts = nullptr;

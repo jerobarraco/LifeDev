@@ -12,6 +12,8 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "Dialogs/Dialogs.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CNoiser.h"
@@ -22,13 +24,20 @@ ALPawn::ALPawn(): Super()
 {
 	SetActorTickEnabled(false);
 
+	UCapsuleComponent* const Capsule = GetCapsuleComponent();
 	// Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
+	Capsule->InitCapsuleSize(35.f, 75.0f);
+	Capsule->SetCapsuleSize(35,75,true);
+
+	UCharacterMovementComponent* const MovementComponent = GetCharacterMovement();
+	if (MovementComponent) {
+		MovementComponent->MaxWalkSpeed = 150;
+		MovementComponent->MaxWalkSpeedCrouched = 75;
+	}
 	// Create a CameraComponent	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(GetCapsuleComponent());
-	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	Camera->SetupAttachment(Capsule);
+	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 50.f)); // Position the camera
 	Camera->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
@@ -180,9 +189,8 @@ void ALPawn::ActMove(const FInputActionValue& Value)
 
 void ALPawn::ActLook(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-
 	if (!Controller) return;
+	// input is a Vector2D
 	FVector2D Vector = Value.Get<FVector2D>();
 	if (Interactor->GetInterComp()) {
 		Vector *= InteractDrag;
