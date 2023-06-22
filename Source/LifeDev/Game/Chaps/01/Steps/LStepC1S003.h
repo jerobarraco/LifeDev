@@ -5,36 +5,37 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStepC1S002.generated.h"
+#include "LStepC1S003.generated.h"
 
 class UNiagaraComponent;
-// when the chap 1 boss enters
+// blending to and spawning npc01
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC1S002 : public ALStep {
+class ALStepC1S003 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStepC1S002();
-	virtual void Start_Implementation() override;
+	ALStepC1S003();
 
+	virtual void Start_Implementation() override;
+	virtual void Stop_Implementation() override;
+	
 protected:
 	// ufunctions needed for bindings
-
 	UFUNCTION()
-	void PostSpawnGhosts();
-	void SpawnGhosts() const;
-	UFUNCTION() // bind
-	void DestroyGhosts();
+	void NPCDiagStop();
+	UFUNCTION()
+	void NPCDiagStart();
+	UFUNCTION()
+	void NPCSpawn();
+	void NPCDestroy();
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UNiagaraComponent* Ghosts = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<AActor> CharClass = nullptr;
+	// TODO fix this position is not working!!!!
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FTransform CharT = FTransform(
-		FRotator(0.000000,-109.999999,0.000000),
-		FVector(47.491408,906.723833,9.062187));
+		FRotator(0.000000,-289.999998,0.000000),
+		FVector(-140.801513,899.912999,10.516852));
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
 };

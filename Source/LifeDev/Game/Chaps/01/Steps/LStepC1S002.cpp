@@ -18,7 +18,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Ghosts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Ghosts"));
 	Ghosts->SetupAttachment(Root);
 	Ghosts->SetAutoActivate(false);
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_NS.Ghost_NS"));
 	Ghosts->SetAsset(CNiagara.Object);
 	Ghosts->SetRelativeLocation(FVector(207.355288,0.509086,48.526007));
 
@@ -31,23 +31,6 @@ void ALStepC1S002::Start_Implementation() {
 	SpawnGhosts();
 }
 
-void ALStepC1S002::NPCDestroy() {
-	if (IsValid(Char)) {
-		Char->Destroy();
-	}
-	Char = nullptr;
-}
-
-void ALStepC1S002::Stop_Implementation() {
-	Super::Stop_Implementation();
-	NPCDestroy();
-}
-
-
-void ALStepC1S002::DestroyGhosts() {
-	Ghosts->Deactivate();
-}
-
 void ALStepC1S002::SpawnGhosts() const {
 	Ghosts->Activate(true);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::PostSpawnGhosts);
@@ -55,40 +38,17 @@ void ALStepC1S002::SpawnGhosts() const {
 	// Ghosts->ResetSystem();
 }
 
-
 void ALStepC1S002::PostSpawnGhosts() {
 	Dialogs->OnDone.RemoveAll(this);
 	// TODO camera shakes
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::NPCSpawn);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::DestroyGhosts);
 	Dialogs->AddId("C1S2.1");
 }
 
-void ALStepC1S002::NPCSpawn() {
+void ALStepC1S002::DestroyGhosts() {
 	Dialogs->OnDone.RemoveAll(this);
 	Ghosts->Deactivate();
-	if (!IsValid(CharClass)) {
-		NPCDiagStart();
-		return;
-	}
-
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	UWorld* const World = GetWorld();
-	Char = World->SpawnActor(CharClass, &CharT, Params);
-
-	// TODO camera blend ( maybe a step is better)
-	FTimerHandle Handle;
-	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S002::NPCDiagStart, 3);
-}
-
-void ALStepC1S002::NPCDiagStart() {
-	Dialogs->AddId("C1S2.2");
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::NPCDiagStop);
-}
-
-void ALStepC1S002::NPCDiagStop() {
-	Dialogs->OnDone.RemoveAll(this);
-	NPCDestroy();
-	// TODO NPC has been added to the party?
-	Finish();
+	FTimerHandle H;
+	// TODO stop camera shake
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::Finish, 2);
 }
