@@ -16,7 +16,6 @@ class ALStep : public AStep {
 	GENERATED_BODY()
 
 public:
-	
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 
@@ -41,10 +40,17 @@ public:
 	inline static float FadeTime = 0;
 
 protected:
+	// will get called when DEBUG_STEPS flag is set
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Debug();
+	virtual void Debug_Implementation();
+	
 	virtual void PostWait_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
+
+	
 	// will start the dialogs
 	void StartDialogs();
 

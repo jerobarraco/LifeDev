@@ -11,7 +11,7 @@
 class ULSave;
 
 // LifeDev GameInstance
-UCLASS()
+UCLASS(Blueprintable)
 class LIFEDEV_API ULGameInstance : public UGameInstance
 {
 	GENERATED_BODY()

@@ -3,6 +3,7 @@
 
 #include "Dialogs/Dialogs.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 // TODO add a function called Debug. that is called on start if the settings have the Debug_Step flag added
@@ -14,6 +15,11 @@ void ALStep::Start_Implementation() {
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get();
 	if (LGGameMode) {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
+		ULGameInstance* const Instance = Cast<ULGameInstance>(LGGameMode->GetGameInstance());
+		bool UseDebug = IsValid(Instance) && Instance->GetFeat(EFeat::DEBUG_STEPS);
+		if (UseDebug) {
+			Debug();
+		}
 	}
 
 	if (!FinishItems.IsEmpty()) {
@@ -85,3 +91,5 @@ void ALStep::PostLoad() {
 		FinishPostWait = false;
 	}
 }
+
+void ALStep::Debug_Implementation() {}

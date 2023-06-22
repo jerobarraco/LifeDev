@@ -58,9 +58,8 @@ public:
 	bool UseDebugFeats = false;
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> DefaultFeats = {EFeat::CHAP_00};
+	TSet<EFeat> DefaultFeats = {EFeat::CHAP_00, EFeat::CHAP_01};
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> DebugFeats = {EFeat::CHAP_00};
-	
+	TSet<EFeat> DebugFeats = {EFeat::DEBUG_STEPS, EFeat::CHAP_01};
 };

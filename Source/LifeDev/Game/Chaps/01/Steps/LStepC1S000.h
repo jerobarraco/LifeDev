@@ -13,4 +13,7 @@ class ALStepC1S000 : public ALStep {
 
 public:
 	ALStepC1S000();
+
+protected:
+	virtual void Debug_Implementation() override;
 };
