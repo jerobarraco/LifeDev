@@ -3,6 +3,7 @@
 #include "LStepC1S002.h"
 
 #include "Niagara/Public/NiagaraComponent.h"
+#include "Niagara/Classes/NiagaraSystem.h"
 #include "GameplayCameras/Public/DefaultCameraShakeBase.h"
 
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"

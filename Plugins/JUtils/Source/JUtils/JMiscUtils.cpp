@@ -5,7 +5,9 @@
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
 
-#ifdef WITH_EDITOR
+// TODO fix packaging fails with this one
+#ifdef XXXXX
+	// false && WITH_EDITOR
 	#include "Editor.h"
 	#include "EditorScriptingHelpers.h"
 #else
