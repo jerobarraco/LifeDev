@@ -13,11 +13,9 @@ class ALNPC01 : public ALNPC{
 
 public:
 	ALNPC01();
-
 	
-	virtual void Trigger_Implementation() override;
 protected:
 	UFUNCTION()
 	void DiagDone();
-	
+	void TriggerLocked_Implementation();
 };

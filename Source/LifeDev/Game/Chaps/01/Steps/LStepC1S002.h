@@ -39,7 +39,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FTransform CharT = FTransform(
 		FRotator(0.000000,-109.999999,0.000000),
-		FVector(47.491408,906.723833,9.062187));
+		FVector(-102.567499,918.952130,11.503022));
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Ghosts = nullptr;

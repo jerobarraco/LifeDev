@@ -54,7 +54,7 @@ void ALStepC1S002::StartShake() {
 	CameraManager->StartCameraShake(ShakeClass);
 
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
+	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 5);
 }
 
 void ALStepC1S002::ShakeStarted() {
@@ -66,7 +66,7 @@ void ALStepC1S002::DestroyGhosts() {
 	Dialogs->OnDone.RemoveAll(this);
 	Ghosts->Deactivate();
 	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 2);
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 3);
 }
 
 void ALStepC1S002::GhostDestroyed() {

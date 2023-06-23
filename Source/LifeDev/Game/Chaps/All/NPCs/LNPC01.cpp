@@ -4,7 +4,6 @@
 #include "Interact/CInteract.h"
 
 ALNPC01::ALNPC01():Super() {
-	TriggerDlg = "N01";
 	AnimEnabled = false;
 	Locked = true;
 	Texts = { FText::FromString("Talk") };
@@ -23,8 +22,8 @@ void ALNPC01::DiagDone() {
 	Inventory->Mod("C1", 1);
 }
 
-void ALNPC01::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void ALNPC01::TriggerLocked_Implementation() {
+	Super::TriggerLocked_Implementation();
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01::DiagDone);
 	Dialogs->AddId("N01.0");
 	
