@@ -18,8 +18,8 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Story/LStep.h"
-#include "LifeDev/Game/Pawn/LChar.h"
-#include "LifeDev/Game/Pawn/LGPController.h"
+#include "LifeDev/Game/Char/LChar.h"
+#include "LifeDev/Game/Char/LGPController.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	SetActorTickEnabled(false);
