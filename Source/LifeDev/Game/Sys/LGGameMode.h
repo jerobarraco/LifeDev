@@ -13,7 +13,7 @@ class ADialogManager;
 class AInventoryManager;
 class AStoryManager;
 class ULSysSettings;
-class ALPawn;
+class ALChar;
 class UStory;
 class UDialogs;
 
@@ -61,7 +61,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALPawn* Char = nullptr;
+	ALChar* Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UStory* Story = nullptr;
 

@@ -1,6 +1,6 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-#include "LPawn.h"
+#include "LChar.h"
 
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -13,14 +13,13 @@
 
 #include "Dialogs/Dialogs.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/PawnMovementComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CNoiser.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
-ALPawn::ALPawn(): Super()
+ALChar::ALChar(): Super()
 {
 	SetActorTickEnabled(false);
 
@@ -68,43 +67,50 @@ ALPawn::ALPawn(): Super()
 	
 	// load the ui class here with the class finder.
 	// and also all the other default objects
-	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Pawn/W_GameUI"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
 	UIClass = DefaultUI.Succeeded() ? DefaultUI.Class.Get() : UGameUI::StaticClass();
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Game/LifeDev/Game/Pawn/Input/IMC_Char"));
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
+	 	DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
 	Mapping = DefaultMapping.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionJump(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_Jump"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+	 	CActionJump(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Jump"));
 	ActionJump = CActionJump.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionLook(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_Look"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+	 	CActionLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Look"));
 	ActionLook = CActionLook.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionMove(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_Move"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+	 	CActionMove(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Move"));
 	ActionMove = CActionMove.Object;
 	// This version does NOT work
 	// static ConstructorHelpers::FClassFinder<UInputAction> CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
 	// ActionInteract = CActionInteract.Class.GetDefaultObject();
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionInteract(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_Interact"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
 	ActionInteract = CActionInteract.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionItem(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_Item"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionItem(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Item"));
 	ActionItem = CActionItem.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionItemLook(TEXT("/Game/LifeDev/Game/Pawn/Input/Actions/IA_ItemLook"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionItemLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_ItemLook"));
 	ActionItemLook = CActionItemLook.Object;
 }
 
-void ALPawn::SetUIVisible(bool Visible) {
+void ALChar::SetUIVisible(bool Visible) {
 	if (!IsValid(UI)) return;
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALPawn::InteractBegin(UCInteract* Comp) {
+void ALChar::InteractBegin(UCInteract* Comp) {
 	if (!IsValid(UI)) return;
 	UI->InteractShowPrompt(Comp->Text);
 }
 
-void ALPawn::InteractEnd(UCInteract* Comp) {
+void ALChar::InteractEnd(UCInteract* Comp) {
 	if (!IsValid(UI)) return;
 	UI->InteractHidePrompt();
 }
 
-void ALPawn::SetInputEnabled(bool Enabled) {
+void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
 	InteractSetEnabled(Enabled);
@@ -114,11 +120,11 @@ void ALPawn::SetInputEnabled(bool Enabled) {
 }
 
 // can't remember why i made this into its own function, probably to be able to call from the outside.
-void ALPawn::InteractSetEnabled(bool Enabled) {
+void ALChar::InteractSetEnabled(bool Enabled) {
 	Interactor->SetEnabled(Enabled);
 }
 
-void ALPawn::BeginPlay()
+void ALChar::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
@@ -136,14 +142,14 @@ void ALPawn::BeginPlay()
 		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
 	}
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
-	Interactor->OnBegin.AddUniqueDynamic(this, &ALPawn::InteractBegin);
-	Interactor->OnEnd.AddUniqueDynamic(this, &ALPawn::InteractEnd);
+	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
+	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
 
 	Noiser->Start();
 }
 
-void ALPawn::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
 	}
@@ -161,7 +167,7 @@ void ALPawn::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 /// Input
 
-void ALPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
@@ -169,14 +175,14 @@ void ALPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALPawn::ActMove);
-	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALPawn::ActLook);
-	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALPawn::ActInteract);
-	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALPawn::ActItem);
-	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALPawn::ActItemLook);
+	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALChar::ActMove);
+	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALChar::ActLook);
+	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALChar::ActInteract);
+	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALChar::ActItem);
+	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALChar::ActItemLook);
 }
 
-void ALPawn::ActMove(const FInputActionValue& Value)
+void ALChar::ActMove(const FInputActionValue& Value)
 {
 	if (!Controller) return;
 
@@ -187,7 +193,7 @@ void ALPawn::ActMove(const FInputActionValue& Value)
 	AddMovementInput(GetActorRightVector(), MovementVector.X);
 }
 
-void ALPawn::ActLook(const FInputActionValue& Value)
+void ALChar::ActLook(const FInputActionValue& Value)
 {
 	if (!Controller) return;
 	// input is a Vector2D
@@ -200,7 +206,7 @@ void ALPawn::ActLook(const FInputActionValue& Value)
 	AddControllerPitchInput(Vector.Y);
 }
 
-void ALPawn::ActInteract(const FInputActionValue& Value) {
+void ALChar::ActInteract(const FInputActionValue& Value) {
 	if (!Interactor) return;
 	Interactor->TryTrigger();
 	const UCInteract* const Comp = Interactor->GetInterComp();
@@ -209,7 +215,7 @@ void ALPawn::ActInteract(const FInputActionValue& Value) {
 	}
 }
 
-void ALPawn::LookItem(const FItem& Item) {
+void ALChar::LookItem(const FItem& Item) {
 	// TODO open the ui and show it
 	UE_LOG(LogTemp, Warning, TEXT(
 				"This is a erzats display for the item '%s'. Look how beautiful it is!"
@@ -230,14 +236,14 @@ void ALPawn::LookItem(const FItem& Item) {
 	// D->AddId(FName("ItemNotUsable"), Diag, Char);
 }
 
-bool ALPawn::Say(const FName& Name) {
+bool ALChar::Say(const FName& Name) {
 	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
 	if (!D) return false;
 	FDialog Diag; FDialogChar Char;
 	return D->AddId(Name);
 }
 
-void ALPawn::ActItem() {
+void ALChar::ActItem() {
 	if (!IsValid(Inventory)) return;
 	const FName& Selected = Inventory->GetSelected();
 	UE_LOG(LogTemp, Log, TEXT("ActItem=%s"), *Selected.ToString());
@@ -282,7 +288,7 @@ void ALPawn::ActItem() {
 	Inventory->Use(Selected);
 }
 
-void ALPawn::ActItemLook() {
+void ALChar::ActItemLook() {
 	FItem Item;
 	Inventory->GetSelectedItem(Item);
 	LookItem(Item);

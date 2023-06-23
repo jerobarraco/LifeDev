@@ -7,7 +7,7 @@
 #include "InputActionValue.h"
 #include "Inventory/Inventory.h"
 
-#include "LPawn.generated.h"
+#include "LChar.generated.h"
 
 class UCInteractor;
 class UCInteract;
@@ -21,12 +21,12 @@ class UCNoiser;
 
 // base class for the character
 UCLASS(config=Game)
-class LIFEDEV_API ALPawn : public ACharacter
+class LIFEDEV_API ALChar : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	ALPawn();
+	ALChar();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetUIVisible(bool bCond);

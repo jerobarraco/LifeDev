@@ -18,14 +18,18 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Story/LStep.h"
-#include "LifeDev/Game/Pawn/LPawn.h"
+#include "LifeDev/Game/Pawn/LChar.h"
+#include "LifeDev/Game/Pawn/LGPController.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FObjectFinder<ALPawn> CPawn(TEXT("/Game/LifeDev/Game/Pawn/LPawn_B.LPawn_B"));
-	DefaultPawnClass = CPawn.Succeeded() ? CPawn.Object->GetClass(): ALPawn::StaticClass();
+	static ConstructorHelpers::FClassFinder<ALChar>
+		CChar(TEXT("/Game/LifeDev/Game/Char/LChar_B"));
+	DefaultPawnClass = CChar.Succeeded() ? CChar.Class.Get(): ALChar::StaticClass();
 
+	PlayerControllerClass = ALGPController::StaticClass();
+	
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
 	// UCInteract::CollisionProfile = "BlockAllDynamic";
@@ -75,7 +79,7 @@ void ALGGameMode::Init_Implementation() {
 	ChapterId = HasChap0 ? 0: 1;
 	
 	/// Character
-	Char = Cast<ALPawn>(UGameplayStatics::GetActorOfClass(World, ALPawn::StaticClass()));
+	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {
 		Char->InputPrio = 1; // todo move this inside init
 		// Char->Init();
