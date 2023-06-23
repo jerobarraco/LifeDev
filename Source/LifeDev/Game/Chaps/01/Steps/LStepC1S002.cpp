@@ -29,7 +29,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	CharClass = ALNPC01::StaticClass();
 	
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
-		CShake(TEXT("/Game/LifeDev/Game/Chaps/All/Steps/02/CamShake_B"));
+		CShake(TEXT("/Game/LifeDev/Game/Chaps/1/Steps/02/CamShake_B"));
 	ShakeClass = CShake.Succeeded()? CShake.Class.Get() : UDefaultCameraShakeBase::StaticClass();
 }
 
@@ -73,6 +73,6 @@ void ALStepC1S002::GhostDestroyed() {
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
-	CameraManager->StopAllCameraShakes(false);
+	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no ed
 	Finish();
 }
