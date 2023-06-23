@@ -9,7 +9,7 @@
 
 class UNiagaraComponent;
 // regaining control for player after npc01.
-// NPC01 will trigger step finish on rewarding the card, or maybe i can put the itemfinish as the card
+// This finishes when the player receives or picks the card c1
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S004 : public ALStep {
 	GENERATED_BODY()
