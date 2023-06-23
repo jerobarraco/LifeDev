@@ -15,15 +15,14 @@ ALStepC1S000::ALStepC1S000():Super() {
 
 void ALStepC1S000::Start_Implementation() {
 	Super::Start_Implementation();
-	UInventory* Inventory = GetWorld()->GetSubsystem<UInventory>();
-    if (!IsValid(Inventory)) return;
-	Inventory->Mod("C0", 1);
+	// do always, not debug, since we could be skipping the chapter 0
+	if (!Inventory->Has("C0")) {
+		Inventory->Mod("C0", 1);
+	}
 }
 
 void ALStepC1S000::Debug_Implementation() {
 	Super::Debug_Implementation();
-	UInventory* Inventory = GetWorld()->GetSubsystem<UInventory>();
-	if (!IsValid(Inventory)) return;
 	Inventory->Mod("Walkman", 1);
 	Inventory->Mod("C1KD1", 1);
 }

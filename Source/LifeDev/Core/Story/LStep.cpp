@@ -10,21 +10,19 @@
 
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
+	if (!FinishItems.IsEmpty()) {
+		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
+	}
+	
 	AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get();
-	if (LGGameMode) {
-		LGGameMode->SetCharInputEnabled(InputEnabled);
-		ULGameInstance* const Instance = Cast<ULGameInstance>(LGGameMode->GetGameInstance());
-		bool UseDebug = IsValid(Instance) && Instance->GetFeat(EFeat::DEBUG_STEPS);
-		if (UseDebug) {
-			Debug();
-		}
-	}
-
-	if (!FinishItems.IsEmpty()) {
-		Inventory = GetWorld()->GetSubsystem<UInventory>();
-		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
+	if (!IsValid(LGGameMode)) return;
+	LGGameMode->SetCharInputEnabled(InputEnabled);
+	ULGameInstance* const Instance = Cast<ULGameInstance>(LGGameMode->GetGameInstance());
+	const bool UseDebug = IsValid(Instance) && Instance->GetFeat(EFeat::DEBUG_STEPS);
+	if (UseDebug) {
+		Debug();
 	}
 }
 
@@ -72,10 +70,17 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 void ALStep::BeginPlay() {
 	Super::BeginPlay();
 	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
+	Inventory = GetWorld()->GetSubsystem<UInventory>();
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Dialogs = nullptr;
+	if (IsValid(Dialogs)) {
+		Dialogs->OnDone.RemoveAll(this);
+	}
+	if (IsValid(Inventory)) {
+		Inventory->OnMod.RemoveAll(this);
+	}
 	Inventory = nullptr;
 	Super::EndPlay(EndPlayReason);
 }

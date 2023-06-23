@@ -1,5 +1,7 @@
 #pragma once
 
+// TODO rename to JUtils
+
 #include "JMiscUtils.generated.h"
 UCLASS(Blueprintable)
 class JUTILS_API UJMiscUtils: public UBlueprintFunctionLibrary {

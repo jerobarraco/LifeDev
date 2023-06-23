@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerController.h"
 
 // TODO fix packaging fails with this one
-#ifdef XXXXX
+#ifdef UE_EDITOR
 	// false && WITH_EDITOR
 	#include "Editor.h"
 	#include "EditorScriptingHelpers.h"
@@ -22,10 +22,10 @@ UWorld* UJMiscUtils::GetEdWorld()
 {
 #if WITH_EDITOR
 	if (!GEditor) return nullptr;
-	if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
-		FWorldContext* const PieContext = GEditor->GetPIEWorldContext(0);
-		return PieContext ? PieContext->World() : nullptr;
-	}
+	// if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
+		// FWorldContext* const PieContext = GEditor->GetPIEWorldContext(0);
+		// return PieContext ? PieContext->World() : nullptr;
+	// }
 	return GEditor->GetEditorWorldContext(false).World(); 
 #else
 	return nullptr;

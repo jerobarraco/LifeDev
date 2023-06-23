@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "Dialogs/DiagTypes.h"
+#include "Inventory/Inventory.h"
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
@@ -30,7 +31,8 @@ public:
 	ALGGameMode();
 	bool LoadChapter();
 
-	UFUNCTION(BlueprintCallable)
+	// not working properly atm
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
 	static ALGGameMode* Get();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -61,9 +63,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALChar* Char = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UStory* Story = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	ALChar* Char = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 ChapterId = 1; // Maybe this could be on the game instance. ?
@@ -78,7 +82,7 @@ public:
 	float TimeFadeOut = 2;
 
 protected:
-	void StartStory();
+	void StartChapter();
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();
 	UFUNCTION() // bind to delegate

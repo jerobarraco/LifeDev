@@ -37,6 +37,12 @@
 			"Name": "Niagara",
 			"Enabled": true
 		},{
+			"Name": "ChaosNiagara",
+			"Enabled": true
+		},{
+			"Name": "GameplayCameras",
+			"Enabled": true
+		},{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
 			"TargetAllowList": [
@@ -49,7 +55,10 @@
 		},
 		{
 			"Name": "ScaleUI",
-			"Enabled": true
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
 		}
 	]
 }

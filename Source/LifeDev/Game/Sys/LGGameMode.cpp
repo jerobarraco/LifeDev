@@ -98,7 +98,7 @@ void ALGGameMode::Init_Implementation() {
 	}
 
 	/// Inventory
-	UInventory* const Inventory = World->GetSubsystem<UInventory>();
+	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
 
 	InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
@@ -140,7 +140,7 @@ void ALGGameMode::Init_Implementation() {
 	// FTimerHandle Handle;
 	// StartStory();
 	// World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 1.0);
-	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartStory);
+	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartChapter);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -160,10 +160,10 @@ void ALGGameMode::DeInit_Implementation() {
 	}
 	Dialogs = nullptr;
 
-	UInventory* const Inventory = World->GetSubsystem<UInventory>();
 	if (IsValid(Inventory)) {
 		Inventory->DeInit();
 	}
+	Inventory = nullptr;
 	
 	if (IsValid(DiagManager)) {
 		DiagManager->DeInit();
@@ -206,6 +206,7 @@ void ALGGameMode::SetTempInputEnabled(bool Enabled) {
 }
 
 ALGGameMode* ALGGameMode::Get() {
+	// TODO this doesnt work properly on PIE, fix and use the version in JMiscUtils
 	if (!GEngine) return nullptr;
 	UWorld* const World = GEngine->GetWorld();
 	if (!IsValid(World)) return nullptr;
@@ -224,7 +225,7 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALGGameMode::StartStory() {
+void ALGGameMode::StartChapter() {
 	// Should this be here?
 	if (!IsValid(Story)) return;
 	if (!LoadChapter()) {
@@ -262,7 +263,7 @@ void ALGGameMode::StartStory() {
 void ALGGameMode::StartNextChapter() {
 	// Chapter done. go to the next one.
 	++ChapterId;
-	StartStory();
+	StartChapter();
 }
 
 void ALGGameMode::DiagShown(const FDialog& Diag) {
