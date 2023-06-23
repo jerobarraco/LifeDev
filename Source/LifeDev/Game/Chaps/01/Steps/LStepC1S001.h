@@ -7,10 +7,14 @@
 
 #include "LStepC1S001.generated.h"
 
+// main game step
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S001 : public ALStep {
 	GENERATED_BODY()
 
 public:
 	ALStepC1S001();
+
+protected:
+	virtual void Debug_Implementation() override;
 };

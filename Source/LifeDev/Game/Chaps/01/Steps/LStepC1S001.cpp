@@ -1,6 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC1S001.h"
 
+#include "Kismet/GameplayStatics.h"
+
 ALStepC1S001::ALStepC1S001():Super() {
 	Name = FName("C1S1");
 	InputEnabled = true;
@@ -11,5 +13,13 @@ ALStepC1S001::ALStepC1S001():Super() {
 		"T0",
 		"Walkman"
 	};
+}
+
+void ALStepC1S001::Debug_Implementation() {
+	Super::Debug_Implementation();
+	AActor* Pawn = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
+	if (Pawn) {
+		Pawn->SetActorLocation(FVector(-57.163605,815.932276,79.606879));
+	}
 }
 

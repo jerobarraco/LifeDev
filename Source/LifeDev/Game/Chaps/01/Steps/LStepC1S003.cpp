@@ -41,7 +41,7 @@ void ALStepC1S003::NPCSpawn() {
 	}
 
 	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	UWorld* const World = GetWorld();
 	Char = World->SpawnActor(CharClass, &CharT, Params);
 

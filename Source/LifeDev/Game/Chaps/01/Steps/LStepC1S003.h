@@ -31,11 +31,11 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<AActor> CharClass = nullptr;
-	// TODO fix this position is not working!!!!
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FTransform CharT = FTransform(
 		FRotator(0.000000,-289.999998,0.000000),
-		FVector(-140.801513,899.912999,10.516852));
+		FVector(-140.801513,899.912999,11.503021));
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
 };
