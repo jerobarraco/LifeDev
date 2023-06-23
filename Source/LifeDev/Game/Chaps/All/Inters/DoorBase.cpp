@@ -2,16 +2,24 @@
 
 #include "DoorBase.h"
 
-ADoorBase::ADoorBase():Super() {
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/SBvfe1_Door_Handle_D_002.SBvfe1_Door_Handle_D_002"));
-	SFX_Open = SOpen.Object;
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		SClose(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/door-02.door-02"));
-	SFX_CloseEnd = SClose.Object;
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		SLocked(TEXT("/Game/LifeDev/Game/Chaps/All/Interact/Door00/door_lock_007.door_lock_007"));
-	SFX_Locked = SLocked.Object;
+#include "Interact/CInteract.h"
 
-	AnimEnabled = true;
+ADoorBase::ADoorBase():Super() {
+
+	Interact->SetRelativeLocation(FVector(-60.039127,-7.825052,100.782019));
+	Interact->SetBoxExtent(FVector(60.000000,10.000000,103.743262));
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00.Door00"));
+	Mesh->SetStaticMesh(CMesh.Object);
+
+	/*
+	TODO reparent all the other stuff to doorlike and then add the frame here
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CFrame(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00-Frame.Door00-Frame"));
+	Frame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Frame"));
+	Frame->SetupAttachment(RootComponent);
+	Frame->SetStaticMesh(CFrame.Object);
+	Frame->SetRelativeRotation(FRotator(0.000000,180.000000,-0.000000));
+	*/
 }
