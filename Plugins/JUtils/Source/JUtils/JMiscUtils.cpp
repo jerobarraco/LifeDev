@@ -6,8 +6,8 @@
 #include "GameFramework/PlayerController.h"
 
 // TODO fix packaging fails with this one
-#ifdef UE_EDITOR
-	// false && WITH_EDITOR
+// https://www.reddit.com/r/unrealengine/comments/sbqb5k/comment/hu4c6ze/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+#if WITH_EDITOR
 	#include "Editor.h"
 	#include "EditorScriptingHelpers.h"
 #else

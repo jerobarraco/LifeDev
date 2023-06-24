@@ -19,7 +19,9 @@
 		{
 			"Name": "Dialogs",
 			"Type": "RuntimeAndProgram",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "Default",
+			"WhitelistTargets": ["Game", "Editor",  "Client", "Program",  "Server"],
+			"WhitelistPrograms": ["Win64", "Linux", "Mac"]
 		}
 	],
 	"Plugins": [

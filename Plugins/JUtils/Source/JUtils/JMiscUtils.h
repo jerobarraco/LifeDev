@@ -1,6 +1,7 @@
 #pragma once
 
-// TODO rename to JUtils
+// This is called misc utils because is the misc group
+// later i plan on having more groups
 
 #include "JMiscUtils.generated.h"
 UCLASS(Blueprintable)

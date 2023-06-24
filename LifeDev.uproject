@@ -6,33 +6,84 @@
 	"Modules": [
 		{
 			"Name": "LifeDev",
-			"Type": "RuntimeAndProgram",
+			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine"
+			],
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Windows",
+				"Mac",
+				"Linux",
+				"LinuxArm64", 
+				"AllDesktop",
+				"Android",
+				"IOS"
 			]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "Story",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux",
+				"AllDesktop"
+			]
 		},
 		{
 			"Name": "Dialogs",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux",
+				"AllDesktop"
+			]
 		},
 		{
 			"Name": "Interact",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux",
+				"AllDesktop"
+			]
 		},
 		{
 			"Name": "Inventory",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux",
+				"AllDesktop"
+			]
 		},
 		{
 			"Name": "JUtils",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux",
+				"AllDesktop"
+			]
 		},{
 			"Name": "Niagara",
 			"Enabled": true
@@ -44,7 +95,7 @@
 			"Enabled": true
 		},{
 			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
+			"Enabled": false,
 			"TargetAllowList": [
 				"Editor"
 			]
