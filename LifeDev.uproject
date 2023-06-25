@@ -105,7 +105,14 @@
 			"Enabled": false
 		},
 		{
-			"Name": "ScaleUI",
+			"Name":"ScaleUI", 
+			"Enabled": false,
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
+			"Name":"EditorUIScaleCustomization", 
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
