@@ -18,7 +18,7 @@ protected:
 	UFUNCTION()
 	void DiagDone();
 	void TriggerLocked_Implementation();
-
+	virtual void BeginPlay() override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Head;

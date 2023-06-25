@@ -116,20 +116,7 @@ ALNPCA01::ALNPCA01():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_MI.Ghost_MI"));
-	SetFadeMat(CMat.Object);
-	Pelvis->SetMaterial(0, FadeMat);
-	Torso->SetMaterial(0, FadeMat);
-	Head->SetMaterial(0, FadeMat);
-	ArmL1->SetMaterial(0, FadeMat);
-	ArmR1->SetMaterial(0, FadeMat);
-	ArmL2->SetMaterial(0, FadeMat);
-	ArmR2->SetMaterial(0, FadeMat);
-	FootL->SetMaterial(0, FadeMat);
-	FootR->SetMaterial(0, FadeMat);
-	LegL1->SetMaterial(0, FadeMat);
-	LegL2->SetMaterial(0, FadeMat);
-	LegR1->SetMaterial(0, FadeMat);
-	LegR2->SetMaterial(0, FadeMat);	
+	FadeMatClass = CMat.Object;	
 }
 
 void ALNPCA01::DiagDone() {
@@ -148,4 +135,25 @@ void ALNPCA01::TriggerLocked_Implementation() {
 	// and reward card
 	// TODO reward new card. 
 	// TODO finish the chapter after that
+}
+
+void ALNPCA01::BeginPlay() {
+	Super::BeginPlay();
+	// has to be done on begin play or the bp wont save
+	// also i think the translucent material breaks the outline shader
+	// maybe use a different animation then, maybe a color override
+	SetFadeMat();
+	Pelvis->SetMaterial(0, FadeMat);
+	Torso->SetMaterial(0, FadeMat);
+	Head->SetMaterial(0, FadeMat);
+	ArmL1->SetMaterial(0, FadeMat);
+	ArmR1->SetMaterial(0, FadeMat);
+	ArmL2->SetMaterial(0, FadeMat);
+	ArmR2->SetMaterial(0, FadeMat);
+	FootL->SetMaterial(0, FadeMat);
+	FootR->SetMaterial(0, FadeMat);
+	LegL1->SetMaterial(0, FadeMat);
+	LegL2->SetMaterial(0, FadeMat);
+	LegR1->SetMaterial(0, FadeMat);
+	LegR2->SetMaterial(0, FadeMat);
 }
