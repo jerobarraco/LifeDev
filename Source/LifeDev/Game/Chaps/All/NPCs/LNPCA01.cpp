@@ -90,7 +90,7 @@ ALNPCA01::ALNPCA01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh10(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/NPC01/Parts/Char18-Leg2.Char18-Leg2"));
 	LegL2->SetStaticMesh(CMesh10.Object);
-	LegR2->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
+	LegL2->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
 
 	LegR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LegR2"));
 	LegR2->SetupAttachment(LegR1);
@@ -113,11 +113,29 @@ ALNPCA01::ALNPCA01():Super() {
 		CMesh13(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/NPC01/Parts/Char18-Foot.Char18-Foot"));
 	FootR->SetStaticMesh(CMesh13.Object);
 	FootR->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMat(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_MI.Ghost_MI"));
+	SetFadeMat(CMat.Object);
+	Pelvis->SetMaterial(0, FadeMat);
+	Torso->SetMaterial(0, FadeMat);
+	Head->SetMaterial(0, FadeMat);
+	ArmL1->SetMaterial(0, FadeMat);
+	ArmR1->SetMaterial(0, FadeMat);
+	ArmL2->SetMaterial(0, FadeMat);
+	ArmR2->SetMaterial(0, FadeMat);
+	FootL->SetMaterial(0, FadeMat);
+	FootR->SetMaterial(0, FadeMat);
+	LegL1->SetMaterial(0, FadeMat);
+	LegL2->SetMaterial(0, FadeMat);
+	LegR1->SetMaterial(0, FadeMat);
+	LegR2->SetMaterial(0, FadeMat);	
 }
 
 void ALNPCA01::DiagDone() {
 	Destroy();
 	Dialogs->OnDone.RemoveAll(this);
+	// TODO spawn a card instead
 	Inventory->Mod("C1", 1);
 }
 
