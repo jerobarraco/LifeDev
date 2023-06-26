@@ -14,44 +14,39 @@ ALStepC1S003::ALStepC1S003():Super() {
 
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));
-
-	CharClass = ALNPC01::StaticClass(); 	
 }
 
 void ALStepC1S003::Start_Implementation() {
 	Super::Start_Implementation();
-	NPCSpawn();
-}
-
-void ALStepC1S003::NPCDestroy() {
-	if (IsValid(Char)) {
-		Char->Destroy();
-	}
-	Char = nullptr;
+	NPCShow();
 }
 
 void ALStepC1S003::Stop_Implementation() {
 	Super::Stop_Implementation();
 }
 
-void ALStepC1S003::NPCSpawn() {
-	if (!IsValid(CharClass)) {
+void ALStepC1S003::NPCShow() {
+	if (!IsValid(NPC)) {
 		NPCDiagStart();
 		return;
 	}
 
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	UWorld* const World = GetWorld();
-	Char = World->SpawnActor(CharClass, &CharT, Params);
+	NPC->Show();
 
 	FTimerHandle Handle;
-	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
 }
 
 void ALStepC1S003::NPCDiagStart() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S003::NPCDiagStop);
 	Dialogs->AddId("C1S3.0");
+}
+
+void ALStepC1S003::BeginPlay() {
+	Super::BeginPlay();
+	if (NPC) {
+		NPC->SetActorHiddenInGame(true);
+	}
 }
 
 void ALStepC1S003::NPCDiagStop() {

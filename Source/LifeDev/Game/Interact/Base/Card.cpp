@@ -5,11 +5,10 @@
 #include "Interact/CInteract.h"
 
 ACard::ACard():Super() {
-
-	Interact->SetRelativeLocation(FVector(-60.039127,-7.825052,100.782019));
-	Interact->SetBoxExtent(FVector(60.000000,10.000000,103.743262));
+	Interact->SetRelativeLocation(FVector(5.000000,-2.500000,0.000000));
+	Interact->SetBoxExtent(FVector(10.000000,5.000000,5.000000));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00.Door00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Card00/Card00.Card00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 }

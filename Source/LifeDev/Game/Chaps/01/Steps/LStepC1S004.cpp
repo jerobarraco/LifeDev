@@ -8,6 +8,7 @@ ALStepC1S004::ALStepC1S004():Super() {
 	// uses own camera
 	UsePawnCam = true;
 	UseFadeTime = false;
+	// wait for the player to talk with the npc and get the card
 	FinishItems = {"C1"};
 }
 

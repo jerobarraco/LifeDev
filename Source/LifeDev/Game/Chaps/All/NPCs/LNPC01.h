@@ -14,9 +14,30 @@ class ALNPC01 : public ALNPCH {
 
 public:
 	ALNPC01();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetPoseStand();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetPoseSit();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Show();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	AActor* Card = nullptr;
 	
 protected:
+	virtual void BeginPlay() override;
+	
 	UFUNCTION()
-	void DiagDone();
+	void DiagStandDone();
+	UFUNCTION()
+	void DiagSitDone();
 	void TriggerLocked_Implementation();
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FNPCHPose PoseSit;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FNPCHPose PoseStand;
 };

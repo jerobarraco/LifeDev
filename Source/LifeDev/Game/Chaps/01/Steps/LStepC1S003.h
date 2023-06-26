@@ -8,6 +8,8 @@
 #include "LStepC1S003.generated.h"
 
 class UNiagaraComponent;
+class ALNPC01;
+
 // blending to and spawning npc01
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S003 : public ALStep {
@@ -15,27 +17,20 @@ class ALStepC1S003 : public ALStep {
 
 public:
 	ALStepC1S003();
-
+	
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	ALNPC01* NPC = nullptr;
+	
 protected:
+	virtual void BeginPlay() override;
 	// ufunctions needed for bindings
 	UFUNCTION()
 	void NPCDiagStop();
 	UFUNCTION()
 	void NPCDiagStart();
 	UFUNCTION()
-	void NPCSpawn();
-	void NPCDestroy();
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TSubclassOf<AActor> CharClass = nullptr;
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	FTransform CharT = FTransform(
-		FRotator(0.000000,-289.999998,0.000000),
-		FVector(-140.801513,899.912999,11.503021));
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
-	AActor* Char = nullptr;
+	void NPCShow();
 };
