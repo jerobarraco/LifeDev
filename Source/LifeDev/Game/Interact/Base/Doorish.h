@@ -3,13 +3,13 @@
 #pragma once
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "DoorLike.generated.h"
+#include "Doorish.generated.h"
 
 // Base class for door-like and drawer actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ADoorLike: public ALInteract {
+class LIFEDEV_API ADoorish: public ALInteract {
 public:
 	GENERATED_BODY()
 
-	ADoorLike();
+	ADoorish();
 };

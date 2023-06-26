@@ -1,9 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "DoorLike.h"
+#include "Doorish.h"
 
 
-ADoorLike::ADoorLike():Super() {
+ADoorish::ADoorish():Super() {
 	AnimEnabled = true;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>

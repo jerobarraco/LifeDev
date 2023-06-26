@@ -1,18 +1,18 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "DoorLike.h"
-#include "LifeDev/Game/Interact/LInteract.h"
+#include "Doorish.h"
 
-#include "DoorBase.generated.h"
+#include "Door.generated.h"
 
+// TODO move to Game/Interact/Base
 // Base class for door-like and drawer actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ADoorBase: public ADoorLike {
+class LIFEDEV_API ADoor: public ADoorish {
 public:
 	GENERATED_BODY()
 
-	ADoorBase();
+	ADoor();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
