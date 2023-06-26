@@ -5,19 +5,17 @@
 #include "CoreMinimal.h"
 #include "LNPC.h"
 
-#include "LNPCA01.generated.h"
+#include "LNPCH.generated.h"
 
+// Base class for human-like npcs
 UCLASS(Blueprintable, BlueprintType)
-class ALNPCA01 : public ALNPC{
+class ALNPCH : public ALNPC{
 	GENERATED_BODY()
 
 public:
-	ALNPCA01();
+	ALNPCH();
 	
 protected:
-	UFUNCTION()
-	void DiagDone();
-	void TriggerLocked_Implementation();
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

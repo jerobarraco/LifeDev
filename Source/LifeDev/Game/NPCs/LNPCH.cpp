@@ -1,9 +1,9 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-#include "LNPCA01.h"
+#include "LNPCH.h"
 
 #include "Interact/CInteract.h"
 
-ALNPCA01::ALNPCA01():Super() {
+ALNPCH::ALNPCH():Super() {
 	AnimEnabled = false;
 	Locked = true;
 	Texts = { FText::FromString("Talk") };
@@ -116,28 +116,10 @@ ALNPCA01::ALNPCA01():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_MI.Ghost_MI"));
-	FadeMatClass = CMat.Object;	
+	FadeMatClass = CMat.Object;
 }
 
-void ALNPCA01::DiagDone() {
-	Destroy();
-	Dialogs->OnDone.RemoveAll(this);
-	// TODO spawn a card instead
-	Inventory->Mod("C1", 1);
-}
-
-void ALNPCA01::TriggerLocked_Implementation() {
-	Super::TriggerLocked_Implementation();
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPCA01::DiagDone);
-	Dialogs->AddId("N01.0");
-	
-	// TODO add dialog for join the party
-	// and reward card
-	// TODO reward new card. 
-	// TODO finish the chapter after that
-}
-
-void ALNPCA01::BeginPlay() {
+void ALNPCH::BeginPlay() {
 	Super::BeginPlay();
 	// has to be done on begin play or the bp wont save
 	// also i think the translucent material breaks the outline shader
