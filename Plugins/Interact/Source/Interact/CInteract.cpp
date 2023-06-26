@@ -37,6 +37,7 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 
 void UCInteract::PostCDOContruct() {
 	Super::PostCDOContruct();
+	// this is not doing what it should. 
 	PostProcess->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
@@ -55,12 +56,32 @@ void UCInteract::Trigger() const {
 }
 
 void UCInteract::Hover(bool IsHover) const {
+	// Apply the hover to the hover mesh AND all its children
+
+	// wrapped to always trigger the delegate
 	if (IsValid(HoverMesh)) {
+		TArray<USceneComponent*> Children;
+		HoverMesh->GetChildrenComponents(true, Children);
+		Children.Add(HoverMesh);
+		const int32 Num = Children.Num();
+		for (int32 i = 0; i<Num; ++i) {
+			UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Children[i]);
+			if (!IsValid(Child)) continue;
+			
+			Child->SetRenderCustomDepth(IsHover);
+			// To have this working you need to enable the usage of custom stencils on the settings to
+			// "Custom depth stencil pass : Enabled WITH STENCIL"
+			Child->SetCustomDepthStencilValue(IsHover?255:0);
+		}
+	}
+
+
+	/* if (IsValid(HoverMesh)) {
 		HoverMesh->SetRenderCustomDepth(IsHover);
 		// To have this working you need to enable the usage of custom stencils on the settings to
 		// "Custom depth stencil pass : Enabled WITH STENCIL"
 		HoverMesh->SetCustomDepthStencilValue(IsHover?255:0);
-	}
+	} */
 
 	OnHover.Broadcast(IsHover);
 }
