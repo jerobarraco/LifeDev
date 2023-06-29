@@ -22,10 +22,30 @@ AInteractAnim::AInteractAnim():Super() {
 	SFX->SetHiddenInGame(true);
 }
 
+void AInteractAnim::SetFadeMat_Implementation() {
+	// has to be done on begin play or the bp wont save
+	// also i think the translucent material breaks the outline shader
+	// maybe use a different animation then, maybe a color override
+	if (!FadeMatClass->GetClass()) return;
+	FadeMat = Mesh->CreateDynamicMaterialInstance(0, FadeMatClass);
+	Anim->Mat = FadeMat;
+	Anim->MatFEnd = 1;
+	Anim->MatFStart = 0;
+	Anim->MatFName = "Opacity";
+}
+
+void AInteractAnim::Fade(bool In) {
+	const bool Rev = !In;
+	Anim->Play(Rev);
+}
+
 void AInteractAnim::BeginPlay() {
 	Super::BeginPlay();
 	Anim->OnBegin.AddUniqueDynamic(this, &AInteractAnim::AnimBegin);
 	Anim->OnEnd.AddUniqueDynamic(this, &AInteractAnim::AnimEnd);
+	if (FadeMatClass->GetClass()) {
+		SetFadeMat();
+	}
 }
 
 void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {

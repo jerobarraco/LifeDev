@@ -14,10 +14,16 @@ public:
 
 	AInteractAnim();
 
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
+	void Fade(bool In);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
+	void FadeIn() {Fade(true);}
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
+	void FadeOut(){Fade(false);}
+
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;
-
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
@@ -36,6 +42,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
+	// the material class to use for fading. please set this to use the fade functions
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UMaterialInterface* FadeMatClass = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -43,6 +53,12 @@ protected:
 	virtual bool TryTrigger_Implementation() override;
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
+
+	// Sets the material for the fade function. Will be called on begin play or the bp won't be saved.
+	// Set the variable FadeMatClass to have this enabled
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetFadeMat();
+	virtual void SetFadeMat_Implementation();
 
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
@@ -65,4 +81,8 @@ protected:
 	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="Lock")
 	bool IsOpen = false;
+
+	// the current fade material to be used. Use this when subclassing interactanim
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
+	UMaterialInstanceDynamic* FadeMat = nullptr;
 };

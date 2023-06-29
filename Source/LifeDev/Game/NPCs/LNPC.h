@@ -16,18 +16,4 @@ class ALNPC : public ALInteract {
 
 public:
 	ALNPC();
-
-	UFUNCTION(BlueprintCallable)
-	void SetFadeMat(UMaterialInterface* NewMat = nullptr);
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Fade(bool In);
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void FadeIn() {Fade(true);};
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void FadeOut(){Fade(false);};
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UMaterialInterface* FadeMatClass = nullptr;
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
-	UMaterialInstanceDynamic* FadeMat = nullptr;
 };

@@ -147,6 +147,10 @@ void ALNPCH::BeginPlay() {
 	// also i think the translucent material breaks the outline shader
 	// maybe use a different animation then, maybe a color override
 	SetFadeMat();
+}
+
+void ALNPCH::SetFadeMat_Implementation() {
+	Super::SetFadeMat_Implementation();
 	Pelvis->SetMaterial(0, FadeMat);
 	Torso->SetMaterial(0, FadeMat);
 	Head->SetMaterial(0, FadeMat);
