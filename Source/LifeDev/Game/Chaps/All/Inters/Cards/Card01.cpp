@@ -5,5 +5,6 @@
 ACard01::ACard01():Super() {
 	AnimEnabled = false;
 	ItemReward = "C1";
+	TriggerDlg = "C1_PICK";
 	Texts = { FText::FromString(TEXT("Pick Up")), FText::FromString(TEXT("Pick Up")) } ;
 }

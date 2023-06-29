@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LNPC01.h"
 
-#include "Interact/CInteract.h"
 
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;
@@ -101,7 +100,6 @@ ALNPC01::ALNPC01():Super() {
 
 	// Copy the translation and base rotations
 	PoseSit = PoseStand;
-	// TODO fix this org and extent is broken
 	PoseSit.InteractOrg = FVector(15.000000,0.000000,40.000000);
 	PoseSit.InteractExt = FVector(40.000000,30.000000,40.000000);
 	PoseSit.Pelvis.SetLocation(FVector(-7.635560,0.000000,6.696581));

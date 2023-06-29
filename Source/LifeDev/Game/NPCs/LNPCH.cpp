@@ -12,9 +12,9 @@ ALNPCH::ALNPCH():Super() {
 	// Mesh->SetStaticMesh(CMesh.Object);
 	// Mesh->SetRelativeLocation(FVector(-30.000000,30.000000,10.092946));
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_MI.Ghost_MI"));
-	FadeMatClass = CMat.Object;
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		// CMat(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_MI.Ghost_MI"));
+	// FadeMatClass = CMat.Object;
 	
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	Pelvis = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pelvis"));
