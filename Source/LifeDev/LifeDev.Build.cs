@@ -15,7 +15,7 @@ public class LifeDev : ModuleRules
 		});
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"Interact", "Dialogs", "JUtils", "Inventory", "Story", "Niagara", "GameplayCameras"
+			"Interact", "Dialogs", "JUtils", "Inventory", "Story", "Niagara", "GameplayCameras", "Sounds"
 		});
 	}
 }

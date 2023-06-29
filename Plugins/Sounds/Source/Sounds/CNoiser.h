@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCNoiserRawOnPlay);
 
 // Plays a sound at random intervals, at a random distance, on a random point in a cone facing on the back of the owner actor.
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCNoiser: public UActorComponent {
+class SOUNDS_API UCNoiser: public UActorComponent {
 	GENERATED_BODY()
 public:
 

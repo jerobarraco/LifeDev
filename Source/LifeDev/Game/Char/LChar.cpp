@@ -15,7 +15,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
-#include "Interact/Animator/CNoiser.h"
+#include "Sounds/CNoiser.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/JMiscUtils.h"
 
