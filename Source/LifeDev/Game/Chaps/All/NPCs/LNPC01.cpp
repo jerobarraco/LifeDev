@@ -2,6 +2,9 @@
 #include "LNPC01.h"
 
 
+#include "GameplayTagContainer.h"
+#include "SoundScape/Public/SoundscapeSubsystem.h"
+
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;
 	Locked = true;
@@ -133,6 +136,10 @@ void ALNPC01::SetPoseSit() {
 void ALNPC01::Show() {
 	SetPoseSit();
 	SetActorHiddenInGame(false);
+	// TODO move this into a field
+	FGameplayTag Rain = FGameplayTag::RequestGameplayTag(TEXT("Sounds.Rain"));
+	USoundscapeSubsystem* SScape = GetWorld()->GetGameInstance()->GetSubsystem<USoundscapeSubsystem>();
+	SScape->SetState(Rain);
 }
 
 void ALNPC01::BeginPlay() {
@@ -148,6 +155,9 @@ void ALNPC01::DiagStandDone() {
 		Card->SetActorHiddenInGame(false);
 	}
 	Destroy();
+	FGameplayTag Rain = FGameplayTag::RequestGameplayTag(TEXT("Sounds.Rain"));
+	USoundscapeSubsystem* SScape = GetWorld()->GetGameInstance()->GetSubsystem<USoundscapeSubsystem>();
+	SScape->ClearState(Rain);
 }
 
 void ALNPC01::DiagSitDone() {
@@ -155,17 +165,12 @@ void ALNPC01::DiagSitDone() {
 	SetPoseStand();
 	AddActorLocalRotation(FRotator(0, -120, 0));
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01::DiagStandDone);
-	Dialogs->AddId("N01.1"); // TODO ensure this exists
+	Dialogs->AddId("N01.1");
 }
 
 void ALNPC01::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01::DiagSitDone);
 	Dialogs->AddId("N01.0");
-	
-	// TODO add dialog for join the party
-	// and reward card
-	// TODO reward new card. 
-	// TODO finish the chapter after that
 }
 

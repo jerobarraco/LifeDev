@@ -2,6 +2,7 @@
 
 #include "LStepC1S003.h"
 
+
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 ALStepC1S003::ALStepC1S003():Super() {
@@ -14,6 +15,13 @@ ALStepC1S003::ALStepC1S003():Super() {
 
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));
+}
+
+void ALStepC1S003::BeginPlay() {
+	Super::BeginPlay();
+	if (NPC) {
+		NPC->SetActorHiddenInGame(true);
+	}
 }
 
 void ALStepC1S003::Start_Implementation() {
@@ -32,21 +40,14 @@ void ALStepC1S003::NPCShow() {
 	}
 
 	NPC->Show();
-
+	UWorld* const World = GetWorld();
 	FTimerHandle Handle;
-	GetWorld()->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
+	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
 }
 
 void ALStepC1S003::NPCDiagStart() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S003::NPCDiagStop);
 	Dialogs->AddId("C1S3.0");
-}
-
-void ALStepC1S003::BeginPlay() {
-	Super::BeginPlay();
-	if (NPC) {
-		NPC->SetActorHiddenInGame(true);
-	}
 }
 
 void ALStepC1S003::NPCDiagStop() {

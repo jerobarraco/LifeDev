@@ -26,7 +26,7 @@ void AInteractAnim::SetFadeMat_Implementation() {
 	// has to be done on begin play or the bp wont save
 	// also i think the translucent material breaks the outline shader
 	// maybe use a different animation then, maybe a color override
-	if (!FadeMatClass->GetClass()) return;
+	if (!FadeMatClass || !FadeMatClass->GetClass()) return;
 	FadeMat = Mesh->CreateDynamicMaterialInstance(0, FadeMatClass);
 	Anim->Mat = FadeMat;
 	Anim->MatFEnd = 1;
@@ -43,7 +43,7 @@ void AInteractAnim::BeginPlay() {
 	Super::BeginPlay();
 	Anim->OnBegin.AddUniqueDynamic(this, &AInteractAnim::AnimBegin);
 	Anim->OnEnd.AddUniqueDynamic(this, &AInteractAnim::AnimEnd);
-	if (FadeMatClass->GetClass()) {
+	if (FadeMatClass && FadeMatClass->GetClass()) {
 		SetFadeMat();
 	}
 }

@@ -8,18 +8,18 @@
 			"Name": "LifeDev",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			],
-			"WhitelistPlatforms": [
+			"PlatformAllowList": [
 				"Win64",
 				"Windows",
 				"Mac",
 				"Linux",
-				"LinuxArm64", 
+				"LinuxArm64",
 				"AllDesktop",
 				"Android",
 				"IOS"
+			],
+			"AdditionalDependencies": [
+				"Engine"
 			]
 		}
 	],
@@ -95,16 +95,20 @@
 				"Linux",
 				"AllDesktop"
 			]
-		},{
+		},
+		{
 			"Name": "Niagara",
 			"Enabled": true
-		},{
+		},
+		{
 			"Name": "ChaosNiagara",
 			"Enabled": true
-		},{
+		},
+		{
 			"Name": "GameplayCameras",
 			"Enabled": true
-		},{
+		},
+		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": false,
 			"TargetAllowList": [
@@ -115,15 +119,16 @@
 			"Name": "AlembicImporter",
 			"Enabled": false
 		},
+		{"Name": "Soundscape", "Enabled": true},
 		{
-			"Name":"ScaleUI", 
+			"Name": "ScaleUI",
 			"Enabled": false,
 			"TargetAllowList": [
 				"Editor"
 			]
 		},
 		{
-			"Name":"EditorUIScaleCustomization", 
+			"Name": "EditorUIScaleCustomization",
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
