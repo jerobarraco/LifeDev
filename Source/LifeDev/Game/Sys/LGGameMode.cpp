@@ -137,10 +137,11 @@ void ALGGameMode::Init_Implementation() {
 	World->GetTimerManager().SetTimerForNextTick(Delegate);
 
 	// start's the story
-	// FTimerHandle Handle;
+	FTimerHandle Handle;
 	// StartStory();
-	// World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartStory, 1.0);
-	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartChapter);
+	// wait for loading
+	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
+	// World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartChapter);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -233,6 +234,11 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
+	if (!IsValid(StoryManager)) {
+		UE_LOG(LogTemp, Error, TEXT("Could not find the StoryManager can't progress!"));
+		return;
+	}
+	
 	// TODO make these times into parameters
 	
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.

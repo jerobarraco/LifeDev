@@ -15,9 +15,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UIntroUI> UIClass = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly,  Category=SetUp)
-	FString NextLevel = "/Game/LifeDev/Game/Chaps/All/L_Game";
-
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category=SetUp)
+	// FString NextLevel = "/Game/LifeDev/Game/Chaps/All/L_Game";
+	FString NextLevel = "L_Game";
+	// need to define it under project settings > map & modes > advanced > gamemode aliases
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category=SetUp)
+	FString NextLevelMode = "LDG";
 protected:
 	virtual void BeginPlay() override;
 	void AddUI();

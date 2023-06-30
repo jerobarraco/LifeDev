@@ -28,7 +28,13 @@ void AIntroMan::AddUI() {
 }
 
 void AIntroMan::Done() {
-	GetWorld()->ServerTravel(NextLevel);
+	// GetWorld()->ServerTravel(NextLevel);
+	// https://stackoverflow.com/a/50205038
+	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+	
+	FString Options = "Game="+ NextLevelMode;
+	// TODO the game mode seems to be set, so maybe i don't need this
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
 }
 
 void AIntroMan::BeginPlay() {
