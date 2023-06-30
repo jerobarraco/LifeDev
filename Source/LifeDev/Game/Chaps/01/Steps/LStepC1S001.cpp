@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC1S001.h"
 
-#include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
 
 ALStepC1S001::ALStepC1S001():Super() {
