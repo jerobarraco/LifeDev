@@ -3,6 +3,8 @@
 #pragma once
 #include "Blueprint/UserWidget.h"
 
+#include "InventoryTypes.h"
+
 #include "InventoryUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryUIDone);
