@@ -22,7 +22,7 @@ public:
 	void SetPoseSit();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Show();
+	void SetVisible(bool Vis);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	AActor* Card = nullptr;

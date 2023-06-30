@@ -119,7 +119,6 @@
 			"Name": "AlembicImporter",
 			"Enabled": false
 		},
-		{"Name": "Soundscape", "Enabled": true},
 		{
 			"Name": "ScaleUI",
 			"Enabled": false,

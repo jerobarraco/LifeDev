@@ -20,7 +20,7 @@ ALStepC1S003::ALStepC1S003():Super() {
 void ALStepC1S003::BeginPlay() {
 	Super::BeginPlay();
 	if (NPC) {
-		NPC->SetActorHiddenInGame(true);
+		NPC->SetVisible(false);
 	}
 }
 
@@ -39,7 +39,7 @@ void ALStepC1S003::NPCShow() {
 		return;
 	}
 
-	NPC->Show();
+	NPC->SetVisible(true);
 	UWorld* const World = GetWorld();
 	FTimerHandle Handle;
 	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
