@@ -3,7 +3,6 @@
 #include "InventoryUI.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Kismet/GameplayStatics.h"
 
 void UInventoryUI::Hide_Implementation() {}
 
@@ -18,7 +17,7 @@ void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {}
 
 void UInventoryUI::PostHide() {
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// these are not needed since we are using the input actions
 	// Controller->bShowMouseCursor = false;
 	// UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
@@ -26,7 +25,7 @@ void UInventoryUI::PostHide() {
 }
 
 void UInventoryUI::PreShow() {
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// Controller->bShowMouseCursor = true;
 	// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
 	SetVisibility(ESlateVisibility::Visible);
