@@ -147,6 +147,7 @@ void ALGGameMode::Init_Implementation() {
 void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 
+	// TODO have a functino to create the objects and create them here
 	Init();
 }
 
