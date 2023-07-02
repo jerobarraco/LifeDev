@@ -20,7 +20,7 @@ class MUSE_API UMuse : public UWorldSubsystem
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Init(const FString& Address, int32 Port);
+	void Init(const FString& Address = "0.0.0.0", int32 Port=5000);
 	void Init_Implementation(const FString& Address, int32 Port);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
