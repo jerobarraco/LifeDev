@@ -11,6 +11,8 @@ Assets/ExtraAssets/
 .ignore
 Makefile
 *.code-workspace
+# backups
+*~
 
 # Compiled Object files
 *.slo

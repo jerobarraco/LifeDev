@@ -19,7 +19,7 @@
 		{
 			"Name": "Story",
 			"Type": "RuntimeAndProgram",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
