@@ -140,7 +140,7 @@ void ALNPC01::SetVisible(bool Vis) {
 	// SScape->SetState(Rain);
 	}
 	Interact->SetEnabled(Vis);
-	SetActorHiddenInGame(Vis);
+	SetActorHiddenInGame(!Vis);
 }
 
 void ALNPC01::BeginPlay() {

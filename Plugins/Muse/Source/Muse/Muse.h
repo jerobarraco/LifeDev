@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "OSCServer.h"
 #include "Subsystems/WorldSubsystem.h"
 
 #include "Muse.generated.h"
@@ -13,14 +14,20 @@ UCLASS(Blueprintable, Category="Muse")
 class MUSE_API UMuse : public UWorldSubsystem
 {
 	GENERATED_BODY()
+
+	UMuse();
+
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Init();
-	virtual void Init_Implementation();
+	void Init(const FString& Address, int32 Port);
+	void Init_Implementation(const FString& Address, int32 Port);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UOSCServer* Server = nullptr;
 };
 
