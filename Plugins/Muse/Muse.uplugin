@@ -23,5 +23,6 @@
 		}
 	],
 	"Plugins": [
+		{ "Name": "OSC", "Enabled": true }
 	]
 }

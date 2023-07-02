@@ -24,7 +24,7 @@ public class Muse: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine",
+			"CoreUObject", "Engine", "OSC"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

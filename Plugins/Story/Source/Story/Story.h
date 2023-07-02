@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Subsystems/WorldSubsystem.h"
+
 #include "StoryTypes.h"
-#include "Subsystems/WorldSubsystem.h"
-#include "Subsystems/WorldSubsystem.h"
 
 #include "Story.generated.h"
 
@@ -17,7 +17,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, const FName&, Name)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 
 // World subsystem to deal with Inventory
-UCLASS(Blueprintable, Category="Inventory")
+UCLASS(Blueprintable, Category="Story")
 class STORY_API UStory : public UWorldSubsystem
 {
 	GENERATED_BODY()
