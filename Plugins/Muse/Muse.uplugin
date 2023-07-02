@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Muse",
+	"Description": "Muse tools",
+	"Category": "Muse tools",
+	"CreatedBy": "Jeronimo Barraco-Marmol",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
+	"Modules": [
+		{
+			"Name": "Muse",
+			"Type": "RuntimeAndProgram",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+	]
+}

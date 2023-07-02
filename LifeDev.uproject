@@ -97,6 +97,9 @@
 			]
 		},
 		{
+			"Name": "Muse", "Enabled": true
+		},
+		{
 			"Name": "Niagara",
 			"Enabled": true
 		},
