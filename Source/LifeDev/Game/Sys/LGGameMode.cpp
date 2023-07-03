@@ -20,6 +20,8 @@
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
+#include "LifeDev/Game/Dialogs/LDialogMan.h"
+#include "LifeDev/Game/Inventory/LInventoryManager.h"
 
 ALGGameMode::ALGGameMode():Super() {
 	SetActorTickEnabled(false);
@@ -89,7 +91,7 @@ void ALGGameMode::Init_Implementation() {
 	
 	/// Dialogs
 	// DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
-	DiagManager = Cast<ADialogManager>(World->SpawnActor(ADialogManager::StaticClass()));
+	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
 	if (IsValid(DiagManager)) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagManager->InputPrio = 10; // todo pass inside init
@@ -102,7 +104,7 @@ void ALGGameMode::Init_Implementation() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
 
-	InvManager = Cast<AInventoryManager>(World->SpawnActor(AInventoryManager::StaticClass()));
+	InvManager = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
 	// InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
 	if (IsValid(InvManager)) {
 		// goes below the dialogs. because some items will trigger a dialog.

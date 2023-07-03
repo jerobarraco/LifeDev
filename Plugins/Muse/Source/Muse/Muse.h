@@ -12,6 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnMuseBands, int32, BandNum, flo
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseGyro, const FVector&, V);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseAcc, const FVector&, V);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnMusePPG, float, Ambient, float, IR, float, Red); 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseStatus, const TArray<float>&, Vals);
 
 class UOSCServer;
 // World subsystem to deal with muse head band

@@ -6,5 +6,5 @@
 
 ALInventoryManager::ALInventoryManager():Super() {
 	static ConstructorHelpers::FClassFinder<ULInventoryUI> CUI(TEXT("/Game/LifeDev/Game/Inventory/UI/W_InventoryUI"));
-	UIClass = CUI.Class;
+	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UInventoryUI::StaticClass();
 }

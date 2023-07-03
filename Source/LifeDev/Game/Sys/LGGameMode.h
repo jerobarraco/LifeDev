@@ -10,8 +10,8 @@
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
-class ADialogManager;
-class AInventoryManager;
+class ALDialogMan;
+class ALInventoryManager;
 class AStoryManager;
 class ULSysSettings;
 class ALChar;
@@ -55,9 +55,9 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ADialogManager* DiagManager = nullptr;
+	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AInventoryManager* InvManager = nullptr;
+	ALInventoryManager* InvManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

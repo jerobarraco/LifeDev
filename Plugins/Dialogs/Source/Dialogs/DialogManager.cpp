@@ -18,8 +18,7 @@ ADialogManager::ADialogManager():Super() {
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Dialogs/Input/IA_Skip"));
 	ActionSkip = CActionSkip.Object;
-	static ConstructorHelpers::FClassFinder<UDialogUI> CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_DialogUI"));
-	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UDialogUI::StaticClass();
+	UIClass = UDialogUI::StaticClass();
 }
 
 void ADialogManager::Init() {
