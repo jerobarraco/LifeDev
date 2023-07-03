@@ -89,6 +89,9 @@ public:
 	FOnMuseAcc OnAcc;
 	UPROPERTY(BlueprintAssignable, Category=Signals)
 	FOnMusePPG OnPPG;
+	UPROPERTY(BlueprintAssignable, Category=Signals)
+	FOnMuseStatus OnStatus;
+
 
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
 	FString PathEEG = "/muse/eeg";
@@ -147,7 +150,9 @@ protected:
 	void MsgAcc(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
 	UFUNCTION()
 	void MsgPPG(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
-		
+	UFUNCTION()
+	void MsgStatus(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UOSCServer* Server = nullptr;
 };

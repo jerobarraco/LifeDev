@@ -133,6 +133,12 @@ void UMuse::MsgPPG(const FOSCAddress& AddressPattern, const FOSCMessage& Message
 	OnPPG.Broadcast(Amb, IR, Red);
 }
 
+void UMuse::MsgStatus(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetFloats(Message);
+	OnStatus.Broadcast(Vals);
+}
+
 void UMuse::Bind() {
 	if (!IsValid(Server)) return;
 

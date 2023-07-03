@@ -11,5 +11,4 @@ AIntroGameMode::AIntroGameMode():Super() {
 	// static ConstructorHelpers::FClassFinder<ALChar>
 		// CChar(TEXT("/Game/LifeDev/Game/Char/LChar_B"));
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
-
 }

@@ -2,6 +2,7 @@
 
 #include "LGGameMode.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -76,6 +77,12 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 
+	// this is critical or the dialogs will break
+	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	// these are not needed since we are using the input actions
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	Controller->bShowMouseCursor = false;
+	
 	// todo improve. should come from savestate
 	const bool HasChap0 = Instance->GetFeat(EFeat::CHAP_00);
 	ChapterId = HasChap0 ? 0: 1;

@@ -20,21 +20,28 @@ void AIntroMan::AddUI() {
 	if (!IsValid(UI)) return;
 	
 	UI->AddToViewport();
+	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
+
+	// enable ui controls
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	// these are not needed since we are using the input actions
 	Controller->bShowMouseCursor = true;
 	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, UI);
-	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 }
 
 void AIntroMan::Done() {
 	// GetWorld()->ServerTravel(NextLevel);
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-	
-	FString Options = "Game="+ NextLevelMode;
-	// TODO the game mode seems to be set, so maybe i don't need this
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
+
+	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	Controller->bShowMouseCursor = false;
+
+	// this is actually not needed since the game mode is set on the world settings
+	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
+	// FString Options = "Game="+ NextLevelMode;
+	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }
 
 void AIntroMan::BeginPlay() {
