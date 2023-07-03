@@ -25,6 +25,11 @@ void AMuseActor::SetConfig_Implementation() {
 	System->SetAddress("0.0.0.0", 5000);
 	System->UseEEG = true;
 	System->UseAlpha = System->UseBeta = System->UseGamma = System->UseDelta = System->UseTheta = true;
+	System->UseMarker = true;
+	System->UseTouch = true;
+	System->UseBlink = true;
+	System->UseJaw = true;
+	System->UsePPG = true;
 }
 
 void AMuseActor::BeginPlay() {

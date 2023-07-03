@@ -9,15 +9,20 @@
 
 #define QUIT_INVALID(Obj) if (!IsValid(Obj)) return;
 #define BindOSC(Path, F) \
-		FOSCAddress Address(Path);\
-		FOSCDispatchMessageEventBP Event;\
-		Event.BindDynamic(this, &F);\
-		Server->BindEventToOnOSCAddressPatternMatchesPath(Address, Event);
+	FOSCAddress Address(Path);\
+	FOSCDispatchMessageEventBP Event;\
+	Event.BindDynamic(this, &F);\
+	Server->BindEventToOnOSCAddressPatternMatchesPath(Address, Event);
+
+#define GetInts(Message)\
+	TArray<int32> Vals;\
+	UOSCManager::GetAllInt32s(Message, Vals);\
+	const int32 Num = Vals.Num();
 
 #define GetFloats(Message)\
 	TArray<float> Vals;\
 	UOSCManager::GetAllFloats(Message, Vals);\
-	const int32 Num = Vals.Num();\
+	const int32 Num = Vals.Num();
 
 #define GetVector(Message) \
 	GetFloats(Message)\
@@ -25,7 +30,11 @@
 	if (Num>0) {V.X = Vals[0];}\
 	if (Num>1) {V.Y = Vals[1];}\
 	if (Num>2) {V.Z = Vals[2];}\
-	
+
+#define GetIntBool(Message)\
+	GetInts(Message)\
+	const bool Bool = Num>0 ? Vals[0] !=0 : false;
+
 UMuse::UMuse():Super() {
 }
 
@@ -126,10 +135,10 @@ void UMuse::MsgAcc(const FOSCAddress& AddressPattern, const FOSCMessage& Message
 void UMuse::MsgPPG(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
 	int32 Port) {
 	GetFloats(Message);
-	// TODO check if the heartrate is already added
 	const float Amb = Num>0? Vals[0]: 0;
 	const float IR = Num>1? Vals[1]: 0;
 	const float Red = Num>2? Vals[2]: 0;
+	// for ppg fff "PPG_Ambient, PPG_IR, PPG_Red, Heart_Rate"
 	OnPPG.Broadcast(Amb, IR, Red);
 }
 
@@ -139,10 +148,56 @@ void UMuse::MsgStatus(const FOSCAddress& AddressPattern, const FOSCMessage& Mess
 	OnStatus.Broadcast(Vals);
 }
 
+void UMuse::MsgBatt(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetFloats(Message);
+	OnBatt.Broadcast(Vals); // param is iiii
+}
+
 void UMuse::MsgBlink(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
 	int32 Port) {
-	// TODO find out the parameters
-	OnBlink.Broadcast();
+	GetIntBool(Message)
+	OnBlink.Broadcast(Bool);
+}
+
+void UMuse::MsgJaw(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetIntBool(Message)
+	OnJaw.Broadcast(Bool);
+}
+
+void UMuse::MsgTouch(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetIntBool(Message)
+	OnTouch.Broadcast(Bool);
+}
+
+void UMuse::MsgMarker(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	const FString Right = Message.GetAddress().GetFullPath().Right(1);
+	const int32 Mark = FCString::Atoi(*Right);
+	OnMarker.Broadcast(Mark);
+}
+
+void UMuse::MsgConnect(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	FString S("");
+	UOSCManager::GetString(Message,0, S);
+	OnConnect.Broadcast(S);	
+}
+
+void UMuse::MsgMellow(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetFloats(Message)
+	const float M = Num>0?Vals[0]:0.0;
+	OnMellow.Broadcast(M);
+}
+
+void UMuse::MsgConcentrate(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	GetFloats(Message)
+	const float C = Num>0?Vals[0]:0.0;
+	OnMellow.Broadcast(C);
 }
 
 void UMuse::Bind() {
@@ -187,12 +242,33 @@ void UMuse::Bind() {
 	if (UseStatus) {
 		BindOSC(PathStatus, UMuse::MsgStatus);
 	}
+	if (UseBatt) {
+		BindOSC(PathBatt, UMuse::MsgBatt);
+	}
 	if (UseBlink) {
 		BindOSC(PathBlink, UMuse::MsgBlink);
 	}
-	// add others
-	
+	if (UseJaw) {
+		BindOSC(PathJaw, UMuse::MsgJaw);
+	}
+	if (UseTouch) {
+		BindOSC(PathTouch, UMuse::MsgTouch);
+	}
+
+	if (UseMarker) {
+		BindOSC(PathMarker, UMuse::MsgMarker);
+	}
+	if (UseConnect) {
+		BindOSC(PathConnect, UMuse::MsgConnect);
+	}
+	if (UseMellow) {
+		BindOSC(PathMellow, UMuse::MsgMellow);
+	}
+	if (UseConnect) {
+		BindOSC(PathConnect, UMuse::MsgConnect);
+	}
 }
+
 void UMuse::UnBind() {
 	Server->UnbindAllEventsFromOnOSCAddressPatternMatching();
 }
