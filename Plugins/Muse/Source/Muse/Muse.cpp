@@ -139,6 +139,12 @@ void UMuse::MsgStatus(const FOSCAddress& AddressPattern, const FOSCMessage& Mess
 	OnStatus.Broadcast(Vals);
 }
 
+void UMuse::MsgBlink(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress,
+	int32 Port) {
+	// TODO find out the parameters
+	OnBlink.Broadcast();
+}
+
 void UMuse::Bind() {
 	if (!IsValid(Server)) return;
 
@@ -177,6 +183,12 @@ void UMuse::Bind() {
 
 	if (UsePPG) {
 		BindOSC(PathPPG, UMuse::MsgPPG);
+	}
+	if (UseStatus) {
+		BindOSC(PathStatus, UMuse::MsgStatus);
+	}
+	if (UseBlink) {
+		BindOSC(PathBlink, UMuse::MsgBlink);
 	}
 	// add others
 	

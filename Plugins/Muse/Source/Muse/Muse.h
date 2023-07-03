@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseGyro, const FVector&, V);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseAcc, const FVector&, V);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnMusePPG, float, Ambient, float, IR, float, Red); 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMuseStatus, const TArray<float>&, Vals);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMuseBlink);
 
 class UOSCServer;
 // World subsystem to deal with muse head band
@@ -91,6 +92,8 @@ public:
 	FOnMusePPG OnPPG;
 	UPROPERTY(BlueprintAssignable, Category=Signals)
 	FOnMuseStatus OnStatus;
+	UPROPERTY(BlueprintAssignable, Category=Signals)
+	FOnMuseBlink OnBlink;
 
 
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
@@ -98,9 +101,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
 	FString PathAcc = "/muse/acc";
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
-	FString PathPPG = "/muse/ppg";
-	UPROPERTY(BlueprintReadWrite, Category=Paths)
 	FString PathGyro = "/muse/gyro";
+	UPROPERTY(BlueprintReadWrite, Category=Paths)
+	FString PathPPG = "/muse/ppg";
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
 	FString PathBatt = "/muse/batt";
 	UPROPERTY(BlueprintReadWrite, Category=Paths)
@@ -152,6 +155,8 @@ protected:
 	void MsgPPG(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
 	UFUNCTION()
 	void MsgStatus(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
+	UFUNCTION()
+	void MsgBlink(const FOSCAddress& AddressPattern, const FOSCMessage& Message, const FString& IPAddress, int32 Port);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UOSCServer* Server = nullptr;
