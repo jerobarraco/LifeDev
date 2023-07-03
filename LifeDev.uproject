@@ -110,7 +110,19 @@
 		{
 			"Name": "GameplayCameras",
 			"Enabled": true
+		},{
+			"Name": "EditorUIScaleCustomization",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
 		},
+		
+		
+		
+		
+		
+		
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": false,
@@ -130,11 +142,35 @@
 			]
 		},
 		{
-			"Name": "EditorUIScaleCustomization",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
+			"Name": "CLionSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "ArchVisCharacter",
+			"Enabled": false
+		},
+		{
+			"Name": "PlasticSourceControl",
+			"Enabled": false
+		},
+		{
+			"Name": "SubversionSourceControl",
+			"Enabled": false
+		},
+		{
+			"Name": "AudioCapture",
+			"Enabled": false
+		},
+		{
+			"Name": "Paper2D",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidFetchBackgroundDownload",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Android"
 			]
-		}
+		},
 	]
 }
