@@ -24,8 +24,8 @@ AInventoryManager::AInventoryManager():Super(){
 	ActionOpen = CActionOpen.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSelect(TEXT("/Inventory/Input/IA_Select"));
 	ActionSelect = CActionSelect.Object;
-	
-	UIClass = UInventoryUI::StaticClass();
+	static ConstructorHelpers::FClassFinder<UInventoryUI> CUI(TEXT("/Game/LifeDev/Game/Inventory/UI/W_InventoryUI"));
+	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UInventoryUI::StaticClass();
 }
 
 void AInventoryManager::Init() {}

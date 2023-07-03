@@ -117,6 +117,7 @@
 				"Editor"
 			]
 		},
+		{"Name": "DisasterRecoveryClient", "Enabled": true},
 		
 		
 		
@@ -171,6 +172,6 @@
 			"SupportedTargetPlatforms": [
 				"Android"
 			]
-		},
+		}
 	]
 }

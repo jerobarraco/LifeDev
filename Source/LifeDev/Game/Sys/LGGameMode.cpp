@@ -88,7 +88,8 @@ void ALGGameMode::Init_Implementation() {
 	}
 	
 	/// Dialogs
-	DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
+	// DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
+	DiagManager = Cast<ADialogManager>(World->SpawnActor(ADialogManager::StaticClass()));
 	if (IsValid(DiagManager)) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagManager->InputPrio = 10; // todo pass inside init
@@ -101,7 +102,8 @@ void ALGGameMode::Init_Implementation() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
 
-	InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
+	InvManager = Cast<AInventoryManager>(World->SpawnActor(AInventoryManager::StaticClass()));
+	// InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
 	if (IsValid(InvManager)) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InvManager->InputPrio = 9;
@@ -115,7 +117,8 @@ void ALGGameMode::Init_Implementation() {
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 	Story->Init();
 
-	StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
+	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
+	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
 	if (IsValid(StoryManager)) {
 		StoryManager->Init();
 	} else {
