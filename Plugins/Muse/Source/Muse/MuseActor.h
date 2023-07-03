@@ -17,6 +17,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetEEG(const TArray<float>& Eeg);
 	virtual void SetEEG_Implementation(const TArray<float>& Eeg);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetBands(int32 BandNum, float Avg, const TArray<float>& Vals);
+	void SetBands_Implementation(int32 BandNum, float Avg, const TArray<float>& Vals);
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetConfig();
 	virtual void SetConfig_Implementation();
