@@ -7,6 +7,7 @@
 
 #include "IntroGameMode.generated.h"
 
+class AIntroMan;
 
 // Game mode class for the intro 
 UCLASS(Blueprintable)
@@ -16,4 +17,11 @@ class LIFEDEV_API AIntroGameMode : public AGameModeBase
 
 public:
 	AIntroGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
+	AIntroMan* Manager = nullptr;
 };
