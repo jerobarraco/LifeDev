@@ -17,7 +17,7 @@ public:
 	TSubclassOf<UOutroUI> UIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category=SetUp)
-	FString GameLevel = "L_Game";
+	FString GameLevel = "Game_L";
 
 protected:
 	virtual void BeginPlay() override;
