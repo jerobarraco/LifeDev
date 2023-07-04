@@ -2,10 +2,10 @@
 
 #include "OutroMan.h"
 
-#include "OutroUI.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "OutroUI.h"
 
 AOutroMan::AOutroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UOutroUI>
@@ -20,12 +20,17 @@ void AOutroMan::AddUI() {
 	if (!IsValid(UI)) return;
 	
 	UI->AddToViewport();
-	UI->OnDone.AddDynamic(this, &AOutroMan::Done);
-
+	UI->OnDone.AddUniqueDynamic(this, &AOutroMan::Done);
+	UI->OnQuit.AddUniqueDynamic(this, &AOutroMan::Quit);
 	// enable ui controls
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	Controller->bShowMouseCursor = true;
 	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, UI);
+}
+
+void AOutroMan::Quit() {
+	UKismetSystemLibrary::QuitGame(
+		GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }
 
 void AOutroMan::Done() {

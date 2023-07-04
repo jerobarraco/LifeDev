@@ -1,9 +1,10 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
 #include "CoreMinimal.h"
-#include "OutroUI.h"
 
 #include "OutroMan.generated.h"
+
+class UOutroUI;
 
 UCLASS(Blueprintable)
 class LIFEDEV_API AOutroMan : public AActor {
@@ -21,6 +22,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void AddUI();
+
+	UFUNCTION()
+	void Quit();
+	
 	UFUNCTION()
 	void Done();
 	
