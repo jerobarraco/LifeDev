@@ -1,11 +1,11 @@
 // Copyright Jeronimo Barraco-Marmol
 
-#include "IntroGameMode.h"
+#include "OutroGameMode.h"
 
 #include "GameFramework/SpectatorPawn.h"
 #include "UObject/ConstructorHelpers.h"
 
-AIntroGameMode::AIntroGameMode():Super() {
+AOutroGameMode::AOutroGameMode():Super() {
 	SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
