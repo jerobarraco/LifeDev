@@ -25,10 +25,8 @@ AInteract::AInteract():Super() {
 
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
-	// Interact->SetComponentTickEnabled(false);
 	Interact->HoverMesh = Mesh;
 	// added so that it gets reparented. but ideally it should happen on the component.
-	// TODO either find the way to make the post process fit the mesh or remove and use only one postprocess volume
 	// Interact->PostProcess->AttachToComponent(IRoot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
