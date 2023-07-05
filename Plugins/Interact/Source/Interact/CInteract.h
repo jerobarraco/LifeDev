@@ -14,6 +14,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, bool, IsOn);
 // All you need is a profile that blocks the same channel you set on CInteractor::SetCollisionChannel
 // i recommend visibility
 
+// You also need to set up a post process volume with a material set for the hover effect. for example MI_PostHover
+// hint: you might want to make it unbound
+
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {
@@ -21,9 +24,6 @@ public:
 	GENERATED_BODY()
 
 	UCInteract(const FObjectInitializer& ObjectInitializer);
-
-	virtual void PostCDOContruct() override;
-	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
@@ -45,6 +45,8 @@ public:
 	UFUNCTION()
 	void DeInit();
 	
+	inline static FName CollisionProfile = "Interact";
+
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FInteractOnTrigger OnTrigger;
 	
@@ -54,13 +56,11 @@ public:
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FText Text = FText::GetEmpty();
-
-	inline static FName CollisionProfile = "Interact";
 	
 	// Mesh to automatically highlight, if any.
 	UPROPERTY(BlueprintReadWrite, Category=SetUP)
 	UStaticMeshComponent* HoverMesh = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UPostProcessComponent* PostProcess = nullptr;
+	// UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	// UPostProcessComponent* PostProcess = nullptr;
 };

@@ -5,7 +5,7 @@
 
 #include "WDoor00.generated.h"
 
-// Cabinet wardrobe WDoor 00
+// wardrobe WDoor 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AWDoor00: public ADrawer {
 public:
