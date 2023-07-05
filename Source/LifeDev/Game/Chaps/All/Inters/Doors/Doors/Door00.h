@@ -5,6 +5,7 @@
 
 #include "Door00.generated.h"
 
+// TODO make a base class for this
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor00: public ADoor {
 public:
