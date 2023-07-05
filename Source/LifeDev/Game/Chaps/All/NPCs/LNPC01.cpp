@@ -6,7 +6,7 @@
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;
 	Locked = true;
-	Texts = { FText::FromString("Talk") };
+	Texts = { FText::FromString("He might attack me...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

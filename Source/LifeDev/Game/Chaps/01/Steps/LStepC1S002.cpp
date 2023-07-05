@@ -43,7 +43,6 @@ void ALStepC1S002::SpawnGhosts() const {
 	Ghosts->Activate(true);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Dialogs->AddId("C1S2.0"); // i'll use the music
-	// Ghosts->ResetSystem();
 }
 
 void ALStepC1S002::StartShake() {
@@ -55,19 +54,25 @@ void ALStepC1S002::StartShake() {
 	CameraManager->StartCameraShake(ShakeClass);
 
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 5);
+	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
 }
 
+
 void ALStepC1S002::ShakeStarted() {
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::DestroyGhosts);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
 	Dialogs->AddId("C1S2.1"); // it got worse
 }
 
-void ALStepC1S002::DestroyGhosts() {
+void ALStepC1S002::StopShake() {
 	Dialogs->OnDone.RemoveAll(this);
+	FTimerHandle H;
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::DestroyGhosts, 2);
+}
+
+void ALStepC1S002::DestroyGhosts() {
 	Ghosts->Deactivate();
 	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 3);
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 2);
 }
 
 void ALStepC1S002::GhostDestroyed() {

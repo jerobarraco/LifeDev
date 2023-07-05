@@ -8,6 +8,7 @@
 
 #include "LNPC01.generated.h"
 
+// TODO have a base class for ALNPC1 and a child for ALNPC01I1 with the dialogs
 UCLASS(Blueprintable, BlueprintType)
 class ALNPC01 : public ALNPCH {
 	GENERATED_BODY()

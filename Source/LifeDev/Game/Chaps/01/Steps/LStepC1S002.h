@@ -25,6 +25,8 @@ protected:
 	UFUNCTION()
 	void StartShake();
 	UFUNCTION()
+	void StopShake();
+	UFUNCTION()
 	void ShakeStarted();
 	UFUNCTION()
 	void GhostDestroyed();
