@@ -2,6 +2,7 @@
 
 #include "Door00I00.h"
 
+// TODO needs to be done
 ADoor00I00::ADoor00I00():Super() {
 	AnimEnabled = false;
 	LockDlg = "D00_LCK";
@@ -11,6 +12,6 @@ ADoor00I00::ADoor00I00():Super() {
 	RootComponent->SetWorldRotation(FRotator(0.000000,89.999999,0.000000));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00I00/Door00I00.Door00I00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00.Door00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 }
