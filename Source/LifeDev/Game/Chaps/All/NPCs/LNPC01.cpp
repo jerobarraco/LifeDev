@@ -1,7 +1,10 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LNPC01.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Interact/CInteract.h"
+#include "LifeDev/Game/Chaps/All/Env/SRain.h"
 
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;
@@ -134,10 +137,7 @@ void ALNPC01::SetPoseSit() {
 void ALNPC01::SetVisible(bool Vis) {
 	if (Vis) {
 		SetPoseSit();
-	// TODO implement with ambient sound
-	// FGameplayTag Rain = FGameplayTag::RequestGameplayTag(TEXT("Sounds.Rain"));
-	// USoundscapeSubsystem* SScape = GetWorld()->GetGameInstance()->GetSubsystem<USoundscapeSubsystem>();
-	// SScape->SetState(Rain);
+		
 	}
 	Interact->SetEnabled(Vis);
 	SetActorHiddenInGame(!Vis);
@@ -155,10 +155,11 @@ void ALNPC01::DiagStandDone() {
 	if (IsValid(Card)) {
 		Card->SetActorHiddenInGame(false);
 	}
+
+	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
+    if (R) { R->Stop(); }
+
 	Destroy();
-	// FGameplayTag Rain = FGameplayTag::RequestGameplayTag(TEXT("Sounds.Rain"));
-	// USoundscapeSubsystem* SScape = GetWorld()->GetGameInstance()->GetSubsystem<USoundscapeSubsystem>();
-	// SScape->ClearState(Rain);
 }
 
 void ALNPC01::DiagSitDone() {

@@ -2,7 +2,6 @@
 
 #include "LStepC1S003.h"
 
-
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 ALStepC1S003::ALStepC1S003():Super() {

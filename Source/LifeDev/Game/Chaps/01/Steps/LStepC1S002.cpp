@@ -5,7 +5,9 @@
 #include "Niagara/Public/NiagaraComponent.h"
 #include "Niagara/Classes/NiagaraSystem.h"
 #include "GameplayCameras/Public/DefaultCameraShakeBase.h"
+#include "Kismet/GameplayStatics.h"
 
+#include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
@@ -53,6 +55,9 @@ void ALStepC1S002::StartShake() {
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StartCameraShake(ShakeClass);
 
+	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
+	if (R) { R->Play(); }
+	
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
 }
@@ -61,6 +66,7 @@ void ALStepC1S002::StartShake() {
 void ALStepC1S002::ShakeStarted() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
 	Dialogs->AddId("C1S2.1"); // it got worse
+	
 }
 
 void ALStepC1S002::StopShake() {
@@ -79,6 +85,6 @@ void ALStepC1S002::GhostDestroyed() {
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
-	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no ed
+	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
 	Finish();
 }
