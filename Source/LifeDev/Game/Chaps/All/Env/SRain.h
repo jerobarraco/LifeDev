@@ -24,7 +24,7 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float FadeIn = .5;
+	float FadeIn = 2.0;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float FadeOut = 2.0;
