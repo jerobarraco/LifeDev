@@ -7,11 +7,12 @@
 
 #include "LStepC1S002.generated.h"
 
+class ASGhosts;
 class UNiagaraComponent;
 
 // when the chap 1 boss enters
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC1S002 : public ALStep {
+class LIFEDEV_API ALStepC1S002 : public ALStep {
 	GENERATED_BODY()
 
 public:
@@ -21,7 +22,7 @@ public:
 protected:
 	// ufunctions needed for bindings
 
-	void SpawnGhosts() const;
+	void SpawnGhosts();
 	UFUNCTION()
 	void StartShake();
 	UFUNCTION()
@@ -44,8 +45,10 @@ protected:
 		FVector(-102.567499,918.952130,11.503022));
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UNiagaraComponent* Ghosts = nullptr;
-
+	UNiagaraComponent* Ghosts;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	ASGhosts* GhostSFX = nullptr;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
 };

@@ -157,7 +157,7 @@ void ALNPC01::DiagStandDone() {
 	}
 
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
-    if (R) { R->Stop(); }
+    if (R) { R->SetPlaying(false); }
 
 	Destroy();
 }

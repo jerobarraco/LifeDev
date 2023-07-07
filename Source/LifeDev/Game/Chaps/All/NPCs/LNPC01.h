@@ -10,7 +10,7 @@
 
 // TODO have a base class for ALNPC1 and a child for ALNPC01I1 with the dialogs and sounds
 UCLASS(Blueprintable, BlueprintType)
-class ALNPC01 : public ALNPCH {
+class LIFEDEV_API ALNPC01 : public ALNPCH {
 	GENERATED_BODY()
 
 public:

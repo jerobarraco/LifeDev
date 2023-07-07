@@ -6,9 +6,11 @@
 #include "Niagara/Classes/NiagaraSystem.h"
 #include "GameplayCameras/Public/DefaultCameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Game/Chaps/All/Env/SGhosts.h"
 
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+#include "Sounds/CSounder.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
 	Name = FName("C1S2");
@@ -41,10 +43,15 @@ void ALStepC1S002::Start_Implementation() {
 	SpawnGhosts();
 }
 
-void ALStepC1S002::SpawnGhosts() const {
+void ALStepC1S002::SpawnGhosts() {
 	Ghosts->Activate(true);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Dialogs->AddId("C1S2.0"); // i'll use the music
+	GhostSFX = Cast<ASGhosts>(GetWorld()->SpawnActor(ASGhosts::StaticClass()));
+	if (IsValid(GhostSFX)) {
+		GhostSFX->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		GhostSFX->SetPlaying(true);
+	}
 }
 
 void ALStepC1S002::StartShake() {
@@ -56,7 +63,7 @@ void ALStepC1S002::StartShake() {
 	CameraManager->StartCameraShake(ShakeClass);
 
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
-	if (R) { R->Play(); }
+	if (R) { R->SetPlaying(true); }
 	
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
@@ -66,7 +73,6 @@ void ALStepC1S002::StartShake() {
 void ALStepC1S002::ShakeStarted() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
 	Dialogs->AddId("C1S2.1"); // it got worse
-	
 }
 
 void ALStepC1S002::StopShake() {
@@ -77,6 +83,9 @@ void ALStepC1S002::StopShake() {
 
 void ALStepC1S002::DestroyGhosts() {
 	Ghosts->Deactivate();
+	if (IsValid(GhostSFX)) {
+		GhostSFX->SetPlaying(false);
+	}
 	FTimerHandle H;
 	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 2);
 }

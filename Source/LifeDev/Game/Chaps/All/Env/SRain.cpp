@@ -2,28 +2,23 @@
 #include "SRain.h"
 
 #include "Components/AudioComponent.h"
+#include "Sounds/CSounder.h"
 
 ASRain::ASRain():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
-	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
+	SFX = CreateDefaultSubobject<UCSounder>(TEXT("SFX"));
 	SFX->SetupAttachment(RootComponent);
-	SFX->SetAutoActivate(false);
-	SFX->SetHiddenInGame(true);
-
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01.Rain01"));
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01_S.Rain01_S"));
 	SFX->SetSound(CSnd.Object);
+	SFX->TimeFadeIn = 2;
+	SFX->TimeFadeOut = 2;
+	SFX->TimeStart =0;
+	SFX->TimeEnd = 120;
 }
 
-void ASRain::Play() {
+void ASRain::SetPlaying(bool IsPlaying) {
 	if (!IsValid(SFX)) return;
-	const int32 Time = FMath::RandRange(0, 120);
-	SFX->FadeIn(FadeIn, 1, Time);
-}
-
-void ASRain::Stop() {
-	if (!IsValid(SFX)) return;
-	SFX->FadeOut(FadeOut, 0);
-	SFX->StopDelayed(FadeOut);
+	SFX->SetPlaying(IsPlaying);
 }
