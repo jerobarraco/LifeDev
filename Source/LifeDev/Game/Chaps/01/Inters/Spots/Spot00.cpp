@@ -10,9 +10,9 @@ ASpot00::ASpot00():Super() {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
 
-	Mesh->SetRelativeLocation(FVector(-17.500000,22.500000,-0.000000));
-	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,7.500000));
-	Interact->SetBoxExtent(FVector(18.000000,23.000000,10.000000));
+	Mesh->SetRelativeLocation(FVector(-17.500000,22.500000,0));
+	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,7.5));
+	Interact->SetBoxExtent(FVector(18,23,10));
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
