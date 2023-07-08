@@ -1,8 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: LGPL-3.0-only
 #include "MuseActor.h"
 
-# include "Muse.h"
+#include "Muse.h"
 
 void AMuseActor::SetEEG_Implementation(const TArray<float>& Eeg) {
 	FString EEGS = "Got EEG: ";

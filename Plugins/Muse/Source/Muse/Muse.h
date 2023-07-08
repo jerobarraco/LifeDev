@@ -1,5 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: LGPL-3.0-only
 #pragma once
 
 #include "CoreMinimal.h"
@@ -210,4 +210,3 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UOSCServer* Server = nullptr;
 };
-
