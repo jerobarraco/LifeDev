@@ -10,7 +10,6 @@
 
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
-#include "Sounds/CSounder.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
 	Name = FName("C1S2");
@@ -68,7 +67,6 @@ void ALStepC1S002::StartShake() {
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
 }
-
 
 void ALStepC1S002::ShakeStarted() {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);

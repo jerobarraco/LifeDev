@@ -58,9 +58,11 @@ ALChar::ALChar(): Super()
 	Noiser->HalfAngleHeight = 40.0;
 	Noiser->DistMin = 50;
 	Noiser->DistMax = 600;
-	static ConstructorHelpers::FObjectFinder<USoundBase> CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises.Noises"));
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
-	static ConstructorHelpers::FObjectFinder<USoundAttenuation> CSfxAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Environ/Snd/Noises/Noises_Att.Noises_Att"));
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CSfxAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Noises/Noises_Att.Noises_Att"));
 	Noiser->Attenuation = CSfxAtt.Object;
 	
 	UIClass = UGameUI::StaticClass();
