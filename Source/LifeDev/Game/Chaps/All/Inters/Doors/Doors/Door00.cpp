@@ -21,10 +21,4 @@ ADoor00::ADoor00():Super() {
 
 	Interact->SetRelativeLocation(FVector(-60,-7.5,100));
 	Interact->SetBoxExtent(FVector(60,5,100));
-	
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CFrameMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00-Frame.Door00-Frame"));
-	Frame->SetStaticMesh(CFrameMesh.Object);
-	Frame->SetRelativeLocation(FVector(0,-10,0));
-	Frame->SetRelativeRotation(FRotator(0,180,0).Quaternion());
 }

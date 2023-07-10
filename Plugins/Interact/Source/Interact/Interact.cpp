@@ -3,6 +3,7 @@
 #include "Interact.h"
 
 #include "CInteract.h"
+#include "Components/AudioComponent.h"
 
 AInteract::AInteract():Super() {
 	// super important or it will NOT work
@@ -28,6 +29,11 @@ AInteract::AInteract():Super() {
 	Interact->HoverMesh = Mesh;
 	// added so that it gets reparented. but ideally it should happen on the component.
 	// Interact->PostProcess->AttachToComponent(IRoot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
+	SFX->SetupAttachment(IRoot);
+	SFX->SetAutoActivate(false);
+	SFX->SetHiddenInGame(true);
 }
 
 bool AInteract::TryTrigger_Implementation() {
@@ -77,6 +83,15 @@ void AInteract::SetInteractAutoBounds() {
 void AInteract::Trigger_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Actor Triggered"));
 	SetText();
+	PlaySFX(SFX_Trigger);
+}
+
+void AInteract::PlaySFX(USoundBase* Snd) {
+	if (!IsValid(Snd)) return;
+	SFX->SetHiddenInGame(false);
+	SFX->SetSound(Snd);
+	SFX->SetActive(true, true);
+	SFX->Play(0);
 }
 
 void AInteract::Hover_Implementation(bool IsOn) {}

@@ -8,6 +8,8 @@
 
 class UCAnimatorTrans;
 class UCInteract;
+class USoundBase;
+class UAudioComponent;
 
 // Don't use unless you really need it.
 // It's better to use AInteractAnim and disable the animations.
@@ -46,6 +48,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	USoundBase* SFX_Trigger = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -65,6 +70,9 @@ protected:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();
 
+	UFUNCTION(BlueprintCallable)
+	void PlaySFX(USoundBase* Snd);
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
 	
@@ -78,4 +86,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UPostProcessComponent* PostProcess = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UAudioComponent* SFX = nullptr;
 };

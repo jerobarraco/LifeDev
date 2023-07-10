@@ -15,7 +15,14 @@ ADoor::ADoor():Super() {
 
 	Frame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Frame"));
 	Frame->SetupAttachment(RootComponent);
+	Frame->SetComponentTickEnabled(false);
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CFrameMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00-Frame.Door00-Frame"));
+	Frame->SetStaticMesh(CFrameMesh.Object);
+	Frame->SetRelativeLocation(FVector(0,-10,0));
+	Frame->SetRelativeRotation(FRotator(0,180,0).Quaternion());
+	
 	// TODO
 	// static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		// CFrame(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00.Door00"));

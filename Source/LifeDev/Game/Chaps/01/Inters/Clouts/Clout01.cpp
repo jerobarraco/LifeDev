@@ -6,17 +6,14 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 AClout01::AClout01():Super() {
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
-	AnimEnabled = false;
-	Anim->TRoot = nullptr;
-	Anim->Mat = nullptr;
 	ItemReward = TEXT("C1C01"); // chapter 1 clout 0
 	Mesh->SetRelativeLocation(FVector(-17.500000,22.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(18.000000,23.000000,3.000000));
-	Texts[0] = FText(NSLOCTEXT("Clout01", "PickUp", "Pick up"));
 	TriggerDlg = FName("C01");
 }

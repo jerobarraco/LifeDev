@@ -69,14 +69,8 @@ protected:
 	void AnimEnd();
 	virtual void AnimEnd_Implementation();
 
-	UFUNCTION(BlueprintCallable)
-	void PlaySFX(USoundBase* Snd);
-	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorMix* Anim = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UAudioComponent* SFX = nullptr;
 
 	// starts closed
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="Lock")

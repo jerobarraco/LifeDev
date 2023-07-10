@@ -15,11 +15,6 @@ AInteractAnim::AInteractAnim():Super() {
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
 	Anim->Mat = Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(0));
-
-	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
-	SFX->SetupAttachment(IRoot);
-	SFX->SetAutoActivate(false);
-	SFX->SetHiddenInGame(true);
 }
 
 void AInteractAnim::SetFadeMat_Implementation() {
@@ -98,12 +93,4 @@ void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the isOpen flag is toggled
 	USoundBase* const Snd = IsOpen ? SFX_OpenEnd : SFX_CloseEnd;
 	PlaySFX(Snd);
-}
-
-void AInteractAnim::PlaySFX(USoundBase* Snd) {
-	if (!IsValid(Snd)) return;
-	SFX->SetHiddenInGame(false);
-	SFX->SetSound(Snd);
-	SFX->SetActive(true, true);
-	SFX->Play(0);
 }

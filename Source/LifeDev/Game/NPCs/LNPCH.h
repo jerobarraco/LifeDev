@@ -11,9 +11,9 @@ USTRUCT(BlueprintType)
 struct FNPCHPose {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FVector InteractOrg;
+	FVector InteractOrg = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FVector InteractExt;
+	FVector InteractExt = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FTransform Root;
 
