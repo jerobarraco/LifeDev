@@ -48,8 +48,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
+	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Trigger = nullptr;
+	// SFX that will be played on trigger locked
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	USoundBase* SFX_Locked = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -65,7 +69,7 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void TriggerLocked();
-	virtual void TriggerLocked_Implementation() {};
+	virtual void TriggerLocked_Implementation();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();

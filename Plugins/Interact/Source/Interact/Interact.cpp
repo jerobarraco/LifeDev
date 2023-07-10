@@ -74,6 +74,10 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::SetText_Implementation() {}
 
+void AInteract::TriggerLocked_Implementation() {
+	PlaySFX(SFX_Locked);
+}
+
 void AInteract::SetInteractAutoBounds() {
 	// Mesh->GetLocalBounds();
 	// TODO how do i get the mesh size?

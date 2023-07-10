@@ -2,8 +2,6 @@
 
 #include "InteractAnim.h"
 
-#include "Components/AudioComponent.h"
-
 #include "Interact/CInteract.h"
 #include "Animator/CAnimatorMix.h"
 
@@ -75,7 +73,6 @@ void AInteractAnim::Trigger_Implementation() {
 
 void AInteractAnim::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
-	PlaySFX(SFX_Locked);
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {

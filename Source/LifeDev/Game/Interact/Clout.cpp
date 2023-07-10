@@ -16,7 +16,7 @@ AClout::AClout():Super() {
 	// TriggerDlg = FName("C");
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
-	SFX_Open = CSnd.Object;
+	SFX_Trigger = CSnd.Object;
 	// if (CSnd.Succeeded()) {
 		// SFX->SetSound(CSnd.Object);
 	// }

@@ -31,16 +31,18 @@ public:
 		FText::FromString(TEXT("Close")), // isOpen // Opened text
 	};
 
+	// sfx on open. Only when anim is enabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Open = nullptr;
+	// sfx on open ended. Only when anim is enabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_OpenEnd = nullptr;
+	// sfx on close. Only when anim is enabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Close = nullptr;
+	// sfx on close ended. Only when anim is enabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_CloseEnd = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	USoundBase* SFX_Locked = nullptr;
 
 	// the material class to use for fading. please set this to use the fade functions
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)

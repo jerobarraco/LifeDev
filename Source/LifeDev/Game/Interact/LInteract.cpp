@@ -26,10 +26,8 @@ void ALInteract::Trigger_Implementation() {
 	}
 	
 	Destroy();
-	// TODO trigger sfx? i can use gamestatics::playsoundatlocation
 }
 
-// TODO maybe have 2 more sounds for locked and unlocked
 void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	if (!Inventory || !Dialogs) return;
@@ -37,7 +35,6 @@ void ALInteract::TriggerLocked_Implementation() {
 	const FName& Dlg = Has && (!ULockItemDlg.IsNone())? ULockItemDlg : LockDlg;
 	FDialog D; FDialogChar C;
 	Dialogs->AddId(Dlg);
-	PlaySFX(SFX_Locked);
 }
 
 bool ALInteract::TryTrigger_Implementation() {
