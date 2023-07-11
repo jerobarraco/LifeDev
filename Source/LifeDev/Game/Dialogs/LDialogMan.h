@@ -9,7 +9,7 @@
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
-class DIALOGS_API ALDialogMan : public ADialogManager {
+class LIFEDEV_API ALDialogMan : public ADialogManager {
 	GENERATED_BODY()
 
 public:
