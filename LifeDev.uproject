@@ -97,7 +97,8 @@
 			]
 		},
 		{
-			"Name": "Muse", "Enabled": true
+			"Name": "Muse",
+			"Enabled": true
 		},
 		{
 			"Name": "Niagara",
@@ -110,20 +111,18 @@
 		{
 			"Name": "GameplayCameras",
 			"Enabled": true
-		},{
+		},
+		{
 			"Name": "EditorUIScaleCustomization",
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
 			]
 		},
-		{"Name": "DisasterRecoveryClient", "Enabled": true},
-		
-		
-		
-		
-		
-		
+		{
+			"Name": "DisasterRecoveryClient",
+			"Enabled": true
+		},
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": false,
