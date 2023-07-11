@@ -5,11 +5,18 @@
 
 #include "Door01.generated.h"
 
-// TODO make a base class for this
+class UStaticMeshComponent;
+
+// TODO make and inherit this from ADoor01I01 
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor01: public ADoor {
 public:
 	GENERATED_BODY()
 
 	ADoor01();
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UStaticMeshComponent* Window;
 };
