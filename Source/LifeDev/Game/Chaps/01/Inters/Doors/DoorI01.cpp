@@ -1,9 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Door00I00.h"
+#include "DoorI01.h"
 
 // TODO needs to be done
-ADoor00I00::ADoor00I00():Super() {
+ADoorI01::ADoorI01():Super() {
 	AnimEnabled = false;
 	LockDlg = "D00_LCK";
 	Locked = true;
