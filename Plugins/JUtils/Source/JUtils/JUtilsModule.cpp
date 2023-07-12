@@ -1,6 +1,6 @@
 #include "JUtilsModule.h"
 
-IMPLEMENT_MODULE(FJUtilsModule, JUtilsModule)
+IMPLEMENT_MODULE(FJUtilsModule, JUtils)
 void FJUtilsModule::StartupModule()
 {
 	IModuleInterface::StartupModule();

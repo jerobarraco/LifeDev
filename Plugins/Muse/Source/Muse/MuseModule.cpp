@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "MuseModule.h"
 
-IMPLEMENT_MODULE(FMuseModule, MuseModule)
+IMPLEMENT_MODULE(FMuseModule, Muse)
 void FMuseModule::StartupModule()
 {
 	IModuleInterface::StartupModule();

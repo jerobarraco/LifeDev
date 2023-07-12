@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "StoryModule.h"
 
-IMPLEMENT_MODULE(FStoryModule, StoryModule)
+IMPLEMENT_MODULE(FStoryModule, Story)
 void FStoryModule::StartupModule()
 {
 	IModuleInterface::StartupModule();

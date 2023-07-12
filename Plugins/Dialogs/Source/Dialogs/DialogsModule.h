@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 
-class DIALOGS_API FDialogModule : public IModuleInterface
+class DIALOGS_API FDialogsModule : public IModuleInterface
 {
 public:
 	virtual void StartupModule() override;

@@ -1,6 +1,6 @@
 #include "SoundsModule.h"
 
-IMPLEMENT_MODULE(FSoundsModule, SoundsModule)
+IMPLEMENT_MODULE(FSoundsModule, Sounds)
 void FSoundsModule::StartupModule()
 {
 	IModuleInterface::StartupModule();

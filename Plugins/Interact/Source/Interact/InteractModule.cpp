@@ -1,7 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 #include "InteractModule.h"
 
-IMPLEMENT_MODULE(FInteractModule, InteractModule)
+IMPLEMENT_MODULE(FInteractModule, Interact)
 
 void FInteractModule::StartupModule()
 {
