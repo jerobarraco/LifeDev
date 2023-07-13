@@ -51,9 +51,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
 
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -80,8 +77,14 @@ public:
 	float TimeHold = 2;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TimeFadeOut = 2;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	bool UseDynRes = true;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	void SetDynRes();
 	void StartChapter();
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();

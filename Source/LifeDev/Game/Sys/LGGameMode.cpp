@@ -161,6 +161,7 @@ void ALGGameMode::BeginPlay() {
 
 	// TODO have a functino to create the objects and create them here
 	Init();
+	SetDynRes();
 }
 
 void ALGGameMode::DeInit_Implementation() {
@@ -237,6 +238,16 @@ ALGGameMode* ALGGameMode::Get() {
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALGGameMode::SetDynRes() {
+	if (!UseDynRes || !GEngine) return;
+	GEngine->SetDynamicResolutionUserSetting(true);
+	// GEngine->GameUserSettings->ApplyNonResolutionSettings();
+	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.OperationMode 2"));
+	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.MinScreenPercentage 50"));
+	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.MaxScreenPercentage 100"));
+	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.FrameTimeBudget 33.33333"));
 }
 
 void ALGGameMode::StartChapter() {
