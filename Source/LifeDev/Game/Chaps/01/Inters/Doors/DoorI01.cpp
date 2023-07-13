@@ -2,16 +2,14 @@
 
 #include "DoorI01.h"
 
-// TODO needs to be done
-ADoorI01::ADoorI01():Super() {
-	AnimEnabled = false;
-	LockDlg = "D00_LCK";
-	Locked = true;
-	// todo mesh should be set on the base class
-	RootComponent->SetWorldLocation(FVector(-325.000000,-170.000000,0.000005));
-	RootComponent->SetWorldRotation(FRotator(0.000000,89.999999,0.000000));
+#include "Interact/Animator/CAnimatorMix.h"
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/Door00.Door00"));
-	Mesh->SetStaticMesh(CMesh.Object);
+ADoorI01::ADoorI01():Super() {
+	Locked = true;
+	ULockItemReq = "Walkman";
+	ULockDlg = "D01_ULCK";
+	LockDlg = "D01_LCK";
+	
+	RootComponent->SetWorldLocation(FVector(-290,316,0));
+	RootComponent->SetWorldRotation(FRotator(0,180,0));
 }

@@ -4,12 +4,9 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 
 ADoor01::ADoor01():Super() {
-	// move to where this belongs (or delete)
-	// RootComponent->SetWorldLocation(FVector(-325.010101,-170.010101,0.010105));
-	// RootComponent->SetWorldRotation(FRotator(0.010101,89.999999,0.010101));
-
 	IRoot->SetRelativeLocation(FVector(0,-5,0));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door01/Door01.Door01"));
@@ -26,4 +23,7 @@ ADoor01::ADoor01():Super() {
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
 	Interact->SetRelativeLocation(FVector(-60,-7.5,101));
 	Interact->SetBoxExtent(FVector(60,5,101));
+
+	Anim->IsAdditive = true;
+	Anim->TEnd.SetRotation(FRotator(0, 90, 0).Quaternion());
 }

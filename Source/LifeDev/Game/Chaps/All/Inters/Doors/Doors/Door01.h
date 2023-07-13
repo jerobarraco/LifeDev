@@ -7,8 +7,6 @@
 
 class UStaticMeshComponent;
 
-// TODO make and inherit this from ADoor01I01 
-
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor01: public ADoor {
 public:
