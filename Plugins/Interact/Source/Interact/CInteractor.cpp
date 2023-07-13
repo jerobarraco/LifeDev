@@ -58,7 +58,12 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	// GetWorld()->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(GetOwner());
+	
+	// need to use this, unfortunately, because this variable doesn't exist otherwise
+	#if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	Params.bDebugQuery = true;
+	#endif
+
 	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
 	
 	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
