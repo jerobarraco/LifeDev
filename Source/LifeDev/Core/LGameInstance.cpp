@@ -10,7 +10,14 @@ void ULGameInstance::Init() {
 
 void ULGameInstance::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
-	Feats = Settings->UseDebugFeats ? Settings->DebugFeats : Settings->DefaultFeats;
+	 
+	#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
+		constexpr bool UseDebug = false;
+	#else
+		const bool UseDebug = Settings->UseDebugFeats;
+	#endif
+	
+	Feats = UseDebug ? Settings->DebugFeats : Settings->DefaultFeats;
 }
 
 bool ULGameInstance::GetFeat(EFeat Feat) const {

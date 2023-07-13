@@ -56,20 +56,20 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
-	if (Progress >= 1.0) {
+	if (Progress > 1.0) {
 		if (!IsLooping) {
 			Stop();
 			return;
 		}
 		End(); // it technically ended
-
-		if (IsBouncing) {
+		Progress = 0.0; // important to reset the progress
+		if (IsBouncing) { // reverse the reversed
 			IsReversed = !IsReversed;
 		}
 		Begin(); // it technically started
 	}
 
-	const float NProg = IsValid(Curve)? Curve->GetFloatValue(Progress) : Progress;
+	const float NProg = IsValid(Curve) ? Curve->GetFloatValue(Progress) : Progress;
 	// small trick to ensure we can reverse an animation.
 	const float Alpha = IsReversed ? 1.0 - NProg : NProg;
 
