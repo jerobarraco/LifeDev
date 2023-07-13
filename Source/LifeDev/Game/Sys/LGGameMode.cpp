@@ -241,6 +241,7 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALGGameMode::SetDynRes() {
+	// https://docs.unrealengine.com/5.2/en-US/dynamic-resolution-in-unreal-engine/
 	if (!UseDynRes || !GEngine) return;
 	GEngine->SetDynamicResolutionUserSetting(true);
 	// GEngine->GameUserSettings->ApplyNonResolutionSettings();

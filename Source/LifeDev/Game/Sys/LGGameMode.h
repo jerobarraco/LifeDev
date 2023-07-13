@@ -77,8 +77,11 @@ public:
 	float TimeHold = 2;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TimeFadeOut = 2;
+
+
+	// not supported on desktop and could break the game
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	bool UseDynRes = true;
+	bool UseDynRes = false;
 
 protected:
 	virtual void BeginPlay() override;
