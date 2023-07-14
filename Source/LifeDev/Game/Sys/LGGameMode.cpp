@@ -83,7 +83,8 @@ void ALGGameMode::Init_Implementation() {
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 	
-	// todo improve. should come from savestate
+	// todo improve. should come from savestate. though still check for the chapter
+	// TODO maybe check the feat on SetChapter, and if it's not available go to next
 	const bool HasChap0 = Instance->GetFeat(EFeat::CHAP_00);
 	ChapterId = HasChap0 ? 0: 1;
 	
@@ -252,6 +253,17 @@ void ALGGameMode::SetDynRes() {
 }
 
 void ALGGameMode::StartChapter() {
+	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (!IsValid(Instance)) {
+		UE_LOG(LogTemp, Warning, TEXT("No game instance? Cant proceed."));
+		return;
+	}
+
+	// TODO need an array of feats for each chapter index
+	// if (!Instance->GetFeat(EFeat::CHAP_00)) {
+		// StartNextChapter();
+	// }
+
 	// Should this be here?
 	if (!IsValid(Story)) return;
 	if (!LoadChapter()) {

@@ -8,6 +8,15 @@ void ULGameInstance::Init() {
 	ResetFeats();
 }
 
+void ULGameInstance::SetTrs(bool Enabled) {
+	GetWorld()->Exec(GetWorld(), TEXT("r.AntiAliasingMethod 2"));
+	GetWorld()->Exec(GetWorld(), TEXT("r.test.SecondaryScaleOverride 4"));
+	GetWorld()->Exec(GetWorld(), TEXT("t.MaxFPS 60"));
+	GetWorld()->Exec(GetWorld(), TEXT("r.Upscale.Quality 1")); // Simple bilinear https://docs.unrealengine.com/4.27/en-US/RenderingAndGraphics/ScreenPercentage/
+	GetWorld()->Exec(GetWorld(), TEXT("r.SecondaryScreenPercentage.GameViewport 80"));
+	GetWorld()->Exec(GetWorld(), TEXT("sg.ResolutionQuality 35"));
+}
+
 void ULGameInstance::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	 

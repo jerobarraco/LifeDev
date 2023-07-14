@@ -18,6 +18,9 @@ class LIFEDEV_API ULGameInstance : public UGameInstance
 public:
 
 	virtual void Init() override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetTrs(bool Enabled);
 	
 	UFUNCTION(BlueprintCallable)
 	void ResetFeats();

@@ -78,7 +78,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(NProg) : NProg;
 
 	Update_Implementation(Alpha);
-	UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f %05f"), Progress, Alpha, NProg);
+	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);
 }
 
