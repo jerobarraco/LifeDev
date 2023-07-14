@@ -56,7 +56,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
-	if (Progress > 1.0) {
+	if (Progress >= 1.0) {
 		if (!IsLooping) {
 			Stop();
 			return;
@@ -73,20 +73,20 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 		Begin(); // it technically started
 	}
 
-	const float NProg = IsReversed ? 1.0 - Progress : Progress;
 	// small trick to ensure we can reverse an animation.
-	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(Progress) : NProg;
+	const float NProg = IsReversed ? 1.0 - Progress : Progress;
+	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(NProg) : NProg;
 
 	Update_Implementation(Alpha);
-	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f"), Progress, Alpha);
+	UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);
 }
 
 void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
 	const bool WasAnimating = IsAnimating;
+	Progress = 0.0; // force it because of the if below which can cause new calls
 	IsAnimating = NewIsAnimating;
 	SetComponentTickEnabled(IsAnimating);
-	Progress = 0.0; // force it because of the if below
 
 	if (IsAnimating) {
 		Begin();
