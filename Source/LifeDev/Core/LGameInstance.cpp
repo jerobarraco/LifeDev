@@ -33,6 +33,8 @@ void ULGameInstance::SetFeat(EFeat Feat, bool Enable) {
 	}
 }
 
+// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
+
 /*
 
 void USGEGameInstance::LoadGame()

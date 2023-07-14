@@ -62,16 +62,20 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 			return;
 		}
 		End(); // it technically ended
-		Progress = 0.0; // important to reset the progress
+		
+		// important to reset the progress.
+		// this is ok, since if it's reversed then the end of one == the start of the reversed
+		// also if not bouncing we want to start over.
+		Progress = 0.0;
 		if (IsBouncing) { // reverse the reversed
 			IsReversed = !IsReversed;
 		}
 		Begin(); // it technically started
 	}
 
-	const float NProg = IsValid(Curve) ? Curve->GetFloatValue(Progress) : Progress;
+	const float NProg = IsReversed ? 1.0 - Progress : Progress;
 	// small trick to ensure we can reverse an animation.
-	const float Alpha = IsReversed ? 1.0 - NProg : NProg;
+	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(Progress) : NProg;
 
 	Update_Implementation(Alpha);
 	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f"), Progress, Alpha);
