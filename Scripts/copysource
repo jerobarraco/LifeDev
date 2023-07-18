@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DST=~/Downloads/vmshared/LifeDev/
+ORG=~/work/repos/LifeDev/
+
+pushd $DST || exit 1
+rm -rf ./Config
+rm -rf ./Content
+rm -rf ./Plugins
+rm -rf ./Source
+
+cp -rp "$ORG/Config" ./Config
+cp -rp "$ORG/Content" ./Content
+cp -rp "$ORG/Plugins" ./Plugins
+cp -rp "$ORG/Source" ./Source
+
+popd
