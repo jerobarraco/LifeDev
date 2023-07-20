@@ -1,0 +1,14 @@
+
+# report memory - https://forums.unrealengine.com/t/actor-tick-performance/380443/3?u=nande
+MemReport -Log
+
+# texture streaming
+stat streaming
+# also window> Statistics > Texture Stats
+# on 5.x Tools > Audit > Statistics
+
+# max fps
+t.MaxFPS 120
+
+# set ppol size
+r.streaming.poolsize 2000
