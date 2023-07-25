@@ -16,10 +16,11 @@ ARange::ARange():Super() {
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ObjMat(TEXT("/Game/LifeDev/Game/Chaps/All/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ObjMat(TEXT("/Game/LifeDev/Game/Var/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
 	if (ObjMat.Succeeded()) {
 		Mat = ObjMat.Object;
 	}
+
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;
 	Anim->TEnd.SetScale3D(FVector(10));
