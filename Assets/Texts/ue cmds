@@ -22,3 +22,12 @@ FreezeRendering
 
 # profile gpu or ctrl+shift+comma
 ProfileGPU
+
+
+# call blueprint function on level blueprint https://forums.unrealengine.com/t/call-blueprint-event-from-console/9245/5
+ce FunctionName par1 par2
+
+# call bp function on any actor. actor name can be "*" to call on all of them
+ke ActorName FunctionName par1 par2
+
+r.MaxFPS 0 # disables?
