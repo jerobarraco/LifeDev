@@ -16,7 +16,8 @@ ARange::ARange():Super() {
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ObjMat(TEXT("/Game/LifeDev/Game/Var/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		ObjMat(TEXT("/JUtils/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
 	if (ObjMat.Succeeded()) {
 		Mat = ObjMat.Object;
 	}
