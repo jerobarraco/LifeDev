@@ -1,0 +1,2 @@
+This is for the base base class.
+E.g. Door is for ALL the types of doors. Window is for all the types of windows.
