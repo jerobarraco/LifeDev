@@ -34,6 +34,8 @@ AInteract::AInteract():Super() {
 	SFX->SetupAttachment(IRoot);
 	SFX->SetAutoActivate(false);
 	SFX->SetHiddenInGame(true);
+	// todo set sfx automanage
+	// todo disable collision navigation overlap and physics on mesh
 }
 
 bool AInteract::TryTrigger_Implementation() {
