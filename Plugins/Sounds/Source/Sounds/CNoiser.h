@@ -64,7 +64,7 @@ public:
 	FCNoiserRawOnPlay OnPlay;
 	// whether to show the debug lines 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Signals")
-	bool Debug = true;
+	bool Debug = false;
 
 protected:
 
