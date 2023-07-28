@@ -15,3 +15,9 @@ You are allowed to use these assets for personal and commercial use.
 Credit would be nice but not necessary.
 
 * fonts: dafont.com
+
+
+* keys for ui
+https://beamedeighth.itch.io/simplekeys-animated-pixel-keyboard-keys
+    You can use these assets in any kind of project you want, personal or commercial. Giving credits is not necessary but appreciated.
+    You can't sell these assets.
