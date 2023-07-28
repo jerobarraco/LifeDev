@@ -32,12 +32,12 @@ AWindow00::AWindow00():Super() {
 	GlassA->SetStaticMesh(CGlass.Object);
 	GlassA->bUseAttachParentBound = true;
 
-	GlassB = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GlassA"));
+	GlassB = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GlassB"));
 	GlassB->SetupAttachment(Mesh);
 	GlassB->SetStaticMesh(CGlass.Object);
 	GlassB->bUseAttachParentBound = true;
 	
-	GlassC = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GlassA"));
+	GlassC = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GlassC"));
 	GlassC->SetupAttachment(Mesh);
 	GlassC->SetStaticMesh(CGlass.Object);
 	GlassC->bUseAttachParentBound = true;

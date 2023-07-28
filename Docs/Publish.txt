@@ -1,0 +1,19 @@
+* disable debug flag on settings
+* quick check all is good (editor play)
+
+Linux
+* make test build
+* remove the .symdebug file
+* compress
+
+Windows
+* run Script/copysource
+* on vm remove all directories from target project
+* copy source over
+* regenerate solution
+* open cmd and run PackageWin.bat
+* pray 5 ave marias
+* copy artifacts
+* add deps
+* compress
+* test with bottles
