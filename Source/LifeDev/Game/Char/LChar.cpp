@@ -17,6 +17,7 @@
 #include "Interact/CInteractor.h"
 #include "Sounds/CNoiser.h"
 #include "Inventory/Inventory.h"
+#include "Inventory/ItemMan.h"
 #include "JUtils/JMiscUtils.h"
 
 ALChar::ALChar(): Super()
@@ -33,7 +34,8 @@ ALChar::ALChar(): Super()
 		MovementComponent->MaxWalkSpeed = 150;
 		MovementComponent->MaxWalkSpeedCrouched = 75;
 	}
-	// Create a CameraComponent	
+
+	// Create a CameraComponent
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
 	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 50.f)); // Position the camera
@@ -236,6 +238,10 @@ void ALChar::LookItem(const FItem& Item) {
 	// Say(FName("IT_NotUsable"))
 	// FDialogChar Char;
 	// D->AddId(FName("ItemNotUsable"), Diag, Char);
+
+	if (IsValid(Item.Man)) {
+		Item.Man->Look();
+	}
 }
 
 bool ALChar::Say(const FName& Name) {
@@ -264,7 +270,6 @@ void ALChar::ActItem() {
 	if (!Inventory->IsCold(Item)) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't use item."));
 		if (Say(FName("IT_NotReady"))) return;
-		// TODO show text
 		return;
 	}
 
@@ -281,7 +286,7 @@ void ALChar::ActItem() {
 			return;
 		} else {
 			// the issue is that the item itself will be displaying a text. and i can't tell if there is no item
-			UE_LOG(LogTemp, Log, TEXT("Can't use item with that."));
+			UE_LOG(LogTemp, Log, TEXT("Can't use item with that. %i '%s'"), Res, *Item.Title.ToString());
 			Say(Res == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
 			return;
 		} 

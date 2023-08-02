@@ -4,11 +4,13 @@
 
 #include "Engine/DataTable.h"
 
+#include "ItemMan.h" //needed for ManType.
+
 #pragma optimize("", off)
 
 bool UInventory::Mod(const FName& Name, int32 Diff) {
-	FName NewSel = FName();
-	bool SetSelect = false;
+	FName NewSel = NAME_None;
+	bool SetSelect = false; // need another flag because we might wanna set the selected to none
 
 	// get or create the item
 	FItem* Item = Items.Find(Name);
@@ -16,22 +18,19 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		if (Diff<=0) {
 			UE_LOG(LogInventory, Warning, TEXT("Attempt to substract from an item i don't have. Name=%s"), *Name.ToString());
 			return false;
-		} else {
-			FItem NewItem;
-			const bool FoundRaw = GetRaw(Name, NewItem);
-			if (!FoundRaw) {
-				UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesn't exists. Name=%s"), *Name.ToString());
-				return false;
-			}
+		}
 
-			Item = &Items.Add(Name, NewItem);
-			if (Selected.IsNone()) {
-				NewSel = Name;
-				SetSelect = true;
-			}
+		Item = AddNew(Name);
+		if (!Item) return false;
+		
+		// select the new one if nothing was selected
+		if (Selected.IsNone()) {
+			NewSel = Name;
+			SetSelect = true;
 		}
 	}
 
+	/// update the item count
 	int32 Current = Item->Count;
 	// used to broadcast even on non-consumable
 	int32 CurDiff = Diff;
@@ -83,10 +82,7 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	if (!Item) return false;
 
 	// set the item anyway even if not found
-	OutItem = *Item;
-	// reset transient variables to avoid issues with input.
-	OutItem.Count = 0;
-	OutItem.ActiveCoolDown = 0;
+	OutItem = *Item; // note this is a copy
 	return true;
 }
 
@@ -138,16 +134,15 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 }
 
 FName UInventory::GetNextKey(bool Forward, FName From) const {
-	static const FName Empty;
 	if (From.IsNone()) {
-		if (Selected.IsNone()) return Empty;
+		if (Selected.IsNone()) return NAME_None;
 		From = Selected;
 	}
 	
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
 	// <2 because one will get removed. and we need to tell this situation apart to clear the selected
-	if (Keys.Num()<2) return Empty;
+	if (Keys.Num()<2) return NAME_None;
 
 	const int32 Num = Keys.Num();
 	int32 Index = Keys.Find(From);
@@ -194,7 +189,11 @@ bool UInventory::Use(const FName& Name) {
 	if (Item.ActiveCoolDown>0) {
 		SetCoolTimerEnabled(true);
 	}
-	
+
+	if (IsValid(Item.Man)){
+		Item.Man->Use();
+	}
+
 	OnUsed.Broadcast(OldName);
 	return true;
 }
@@ -273,6 +272,34 @@ void UInventory::CoolTimerTick() {
 	for (int32 i=0; i<ColdNum; ++i) {
 		OnCold.Broadcast(ColdItems[i]);
 	}
+}
+
+FItem* UInventory::AddNew(const FName& Name) {
+	if (Items.Contains(Name)) return nullptr;
+
+	FItem OutItem;
+	const bool FoundRaw = GetRaw(Name, OutItem);
+	if (!FoundRaw) {
+		UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesn't exists. Name=%s"), *Name.ToString());
+		return nullptr;
+	}
+
+	// replace in case .Add changes it
+	FItem* pOutItem = &Items.Add(Name, OutItem);
+	if (!pOutItem) return nullptr;
+	
+	// reset transient variables to avoid issues with input.
+	pOutItem->Count = 0;
+	pOutItem->ActiveCoolDown = 0;
+	if (IsValid(pOutItem->ManType)) { // creates the manager if possible
+		UClass* const ManType = pOutItem->ManType.Get();
+		if (IsValid(ManType)) {
+			pOutItem->Man = NewObject<UItemMan>(this, ManType);
+			pOutItem->Man->Name = Name;
+		}
+	}
+
+	return pOutItem;
 }
 
 FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {

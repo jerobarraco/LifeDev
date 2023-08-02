@@ -12,16 +12,18 @@ public:
 
 	UItemMan();
 
-	UFUNCTION(BlueprintCallable)
-	void Hide() {};
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Look();
+	void Look_Implementation() {
+		UE_LOG(LogTemp, Log, TEXT("ItemMan.Look. Looking item %lu %s"), (int64)this, *Name.ToString());
+	};
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
 	void Use_Implementation() {
-		UE_LOG(LogTemp, Warning, TEXT("Using item %llu"), (int64)this);
+		UE_LOG(LogTemp, Log, TEXT("ItemMan.Use: Using item %lu. '%s'"), (int64)this, *Name.ToString());
 	};
-	
-protected:
-	// UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	// TSubclassOf<UItemViewUI> UIClass = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	FName Name;
 };

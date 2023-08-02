@@ -16,8 +16,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryOnItemCold, const FName&, 
 DECLARE_LOG_CATEGORY_CLASS(LogInventory, Log, Log);
 
 class UDataTable;
+
 // World subsystem to deal with Inventory
-UCLASS(Blueprintable, Category="Inventory")
+UCLASS(Blueprintable, BlueprintType, Category="Inventory")
 class INVENTORY_API UInventory : public UWorldSubsystem
 {
 	GENERATED_BODY()
@@ -38,7 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetBlocked(const FName& Name, bool NewBlocked);
 
-	// returns an item from the datatable if exists
+	// returns an item from the datatable if exists. Use this only if you know what you do.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
 
@@ -101,6 +102,11 @@ public:
 protected:
 	void SetCoolTimerEnabled(bool Enable);
 	void CoolTimerTick();
+
+	// Creates a new instance of the item and adds it to the inventory
+	// returns the item or null if it doesn't exists.
+	// utility function, can't be ufunction since it can't return a pointer.
+	FItem* AddNew(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
 	FItem& GetRef(const FName& Name, bool& OutFound);
