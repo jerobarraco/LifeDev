@@ -5,6 +5,8 @@
 
 #include "InventoryTypes.generated.h"
 
+class UItemMan;
+
 // The base structure for ITEMS
 USTRUCT(Blueprintable, BlueprintType)
 struct INVENTORY_API FItem: public FTableRowBase {
@@ -34,9 +36,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
-	// do i need this? TSubClass or TSubPtr
+
+	// the class for the item manager
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<AActor> Obj = nullptr;
+	TSubclassOf<UItemMan> ManType = nullptr;
 
 	// used during runtime to keep track of the count
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
@@ -48,4 +51,7 @@ public:
 	// whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	bool IsBlocked = false;
+	// the actual manager for this item
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UItemMan* Man = nullptr;
 };
