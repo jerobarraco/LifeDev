@@ -45,7 +45,7 @@ void ADialogManager::DeInit() {
 }
 
 void ADialogManager::Show(const FDialog& Diag) {
-	UE_LOG(LogTemp, Log, TEXT("DialogManager: Diag %s"), *Diag.Text.ToString());
+	UE_LOG(LogTemp, Log, TEXT("DialogManager.Show:"));
 	if (IsShowing) {
 		UE_LOG(LogTemp, Warning, TEXT("Attempted to show text when i was already showing."));
 	}
