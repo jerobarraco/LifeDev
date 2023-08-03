@@ -1,16 +1,16 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Window00.h"
+#include "WindowA.h"
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 
-AWindow00::AWindow00():Super() {
+AWindowA::AWindowA():Super() {
 	// TODO set up
 	SFX->SetRelativeLocation(FVector(9,-55,43));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-SideA.Window00-SideA"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/WindowA/WindowA-SideA.WindowA-SideA"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 	Interact->SetRelativeLocation(FVector(9,-35,60));
@@ -21,7 +21,7 @@ AWindow00::AWindow00():Super() {
 	// TODO make a child of ustaticmeshcompont that is more optimized
 	GlassA = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GlassA"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CGlass(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-Glass.Window00-Glass"));
+		CGlass(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/WindowA/WindowA-Glass.WindowA-Glass"));
 	GlassA->SetupAttachment(Mesh);
 	GlassA->SetStaticMesh(CGlass.Object);
 	GlassA->bUseAttachParentBound = true;
