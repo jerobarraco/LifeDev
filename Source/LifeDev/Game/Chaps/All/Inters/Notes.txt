@@ -1,4 +1,4 @@
-These are generic interacts
+These are generic interacts but of a specific kind
 example the door 01 in its generic form
 the window 03 in its generic form
 

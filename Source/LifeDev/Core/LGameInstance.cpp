@@ -3,8 +3,15 @@
 
 #include "LGameInstance.h"
 
+#include "MoviePlayer.h"
+
 void ULGameInstance::Init() {
 	Super::Init();
+
+	// https://unrealcommunity.wiki/loading-screen-243mzpq1
+	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
+    FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
+    FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
 	ResetFeats();
 }
 
@@ -19,6 +26,29 @@ void ULGameInstance::SetTrs(bool Enabled) {
 	GetWorld()->Exec(GetWorld(), TEXT("r.ScreenPercentage 50"));
 	// TODO disable temporal upsampling
 	// https://forums.unrealengine.com/t/ue5p2-r-screenpercentage-not-working-for-me/509965/11?u=nande
+}
+
+
+void ULGameInstance::BeginLoadingScreen(const FString& InMapName)
+{
+	if (IsRunningDedicatedServer()) return;
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is on"));	
+	FLoadingScreenAttributes LoadingScreen;
+	LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
+	// use widget->takewidget() to get the swidget
+	// https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
+	LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+
+	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
+}
+
+void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
+{
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is done"));	
+
+	// ?
 }
 
 void ULGameInstance::ResetFeats() {

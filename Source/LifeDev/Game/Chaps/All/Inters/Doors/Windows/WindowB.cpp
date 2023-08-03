@@ -1,16 +1,16 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Window01.h"
+#include "WindowB.h"
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 
-AWindow01::AWindow01():Super() {
+AWindowB::AWindowB():Super() {
 	// TODO set up
 	SFX->SetRelativeLocation(FVector(9,-55,43));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window01/Window01-SideA.Window01-SideA"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/WindowB/WindowB-SideA.WindowB-SideA"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 	Interact->SetRelativeLocation(FVector(9,-35,60));

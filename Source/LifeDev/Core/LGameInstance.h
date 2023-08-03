@@ -36,4 +36,14 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	ULSave* Save = nullptr;
+
+
+protected:
+	UFUNCTION()
+	virtual void BeginLoadingScreen(const FString& MapName);
+	UFUNCTION()
+	virtual void EndLoadingScreen(UWorld* InLoadedWorld);
+
+	UPROPERTY(Transient)
+	UUserWidget* LoadScreen = nullptr;
 };

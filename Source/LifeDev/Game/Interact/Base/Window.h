@@ -1,6 +1,8 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "CoreMinimal.h"
+
 #include "LifeDev/Game/Interact/Base/Doorish.h"
 
 #include "Window.generated.h"
