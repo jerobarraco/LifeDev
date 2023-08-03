@@ -27,17 +27,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
-	
+
+	// show a dialog
 	UFUNCTION(BlueprintCallable)
 	void Show(const FDialog& Diag);
 
+	// stop showing dialogs (no more dialogs)
 	UFUNCTION(BlueprintCallable)
-	void Stop();
-	
+	void Hide();
+
+	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable)
 	void Skip();
-	
-	void HideUI() const;
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -54,9 +56,9 @@ public:
 	UInputAction* ActionSkip = nullptr;
 
 private:
-	// stub. the manager will handle input. will it?
+	// The ui is done with the current line
 	UFUNCTION()
-	void DiagDone();
+	void UIDiagDone();
 	
 	UPROPERTY(Transient)
 	UDialogs* Dialogs = nullptr;

@@ -4,7 +4,6 @@
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
-// TODO fix issue where i need to click again after hiding the ui to regain control of player
 void UDialogUI::Hide_Implementation() {}
 
 void UDialogUI::Show_Implementation(const FDialog& Diag) {

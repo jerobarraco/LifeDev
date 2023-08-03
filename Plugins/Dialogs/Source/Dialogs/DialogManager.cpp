@@ -29,17 +29,19 @@ void ADialogManager::Init() {
 	if (!IsValid(Dialogs)) return;
 
 	Dialogs->OnShow.AddUniqueDynamic(this, &ADialogManager::Show);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADialogManager::Stop);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADialogManager::Hide);
 }
 
 void ADialogManager::DeInit() {
 	if (IsValid(Dialogs)) {
 		Dialogs->OnShow.RemoveAll(this);
+		Dialogs->OnDone.RemoveAll(this);
 	}
 	Dialogs = nullptr;
 
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
+		UI->OnDone.RemoveAll(this);
 	}
 	UI = nullptr;
 }
@@ -61,13 +63,11 @@ void ADialogManager::Show(const FDialog& Diag) {
 	UI->Show(Diag);
 }
 
-void ADialogManager::Stop() {
+void ADialogManager::Hide() {
+	if (!IsShowing) return;
 	if (!IsValid(UI)) return;
-	HideUI();
-}
 
-void ADialogManager::HideUI() const {
-	if (!IsValid(UI)) return;
+	IsShowing = false;
 	UI->Hide();
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
@@ -84,13 +84,16 @@ void ADialogManager::BeginPlay() {
 				ActionSkip, ETriggerEvent::Triggered, this, &ADialogManager::Skip);
 		}
 	}
-	
+
+	// create ui 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
 		UI = NewObject<UDialogUI>(this, Class);
 		if (IsValid(UI)) {
 			UI->AddToViewport();
-			HideUI();
+			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIDiagDone);
+			IsShowing = true; // temporarily set, so that it hides.
+			Hide();
 		}
 	}
 }
@@ -103,18 +106,13 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ADialogManager::DiagDone() {
+void ADialogManager::UIDiagDone() {
 	if (!IsValid(Dialogs)) return;
-	IsShowing = false;
 	Dialogs->DiagDone();
 }
 
 void ADialogManager::Skip() {
 	UE_LOG(LogTemp, Log, TEXT("C Skip"));
 	if(!IsValid(UI)) return;
-	if (UI->IsReady) {
-		DiagDone();
-		return;
-	}
 	UI->Skip();
 }
