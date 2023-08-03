@@ -190,10 +190,6 @@ bool UInventory::Use(const FName& Name) {
 		SetCoolTimerEnabled(true);
 	}
 
-	if (IsValid(Item.Man)){
-		Item.Man->Use();
-	}
-
 	OnUsed.Broadcast(OldName);
 	return true;
 }

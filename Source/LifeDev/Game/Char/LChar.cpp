@@ -20,6 +20,8 @@
 #include "Inventory/ItemMan.h"
 #include "JUtils/JMiscUtils.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
+
 ALChar::ALChar(): Super()
 {
 	SetActorTickEnabled(false);
@@ -221,7 +223,7 @@ void ALChar::ActInteract(const FInputActionValue& Value) {
 
 void ALChar::LookItem(const FItem& Item) {
 	// TODO open the ui and show it
-	UE_LOG(LogTemp, Warning, TEXT(
+	UE_LOG(LogLChar, Warning, TEXT(
 				"This is a erzats display for the item '%s'. Look how beautiful it is!"
 				"you have %i of them, and the description is : '%s'. "),
 			*Item.Title.ToString(), Item.Count, *Item.Description.ToString());
@@ -239,6 +241,7 @@ void ALChar::LookItem(const FItem& Item) {
 	// FDialogChar Char;
 	// D->AddId(FName("ItemNotUsable"), Diag, Char);
 
+	// trigger manager look
 	if (IsValid(Item.Man)) {
 		Item.Man->Look();
 	}
@@ -254,7 +257,7 @@ bool ALChar::Say(const FName& Name) {
 void ALChar::ActItem() {
 	if (!IsValid(Inventory)) return;
 	const FName& Selected = Inventory->GetSelected();
-	UE_LOG(LogTemp, Log, TEXT("ActItem=%s"), *Selected.ToString());
+	UE_LOG(LogLChar, Log, TEXT("ActItem=%s"), *Selected.ToString());
 
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
@@ -268,7 +271,7 @@ void ALChar::ActItem() {
 	}
 
 	if (!Inventory->IsCold(Item)) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't use item."));
+		UE_LOG(LogLChar, Log, TEXT("Can't use item."));
 		if (Say(FName("IT_NotReady"))) return;
 		return;
 	}
@@ -276,22 +279,24 @@ void ALChar::ActItem() {
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
 	EItemUseResult Res = Interactor->TryUseItem(Selected);
-	if (Res != EItemUseResult::SUCCESS){
+	if (Res == EItemUseResult::BAD_HANDLED) {
+    	UE_LOG(LogLChar, Log, TEXT("Can't use item with that. But it was handled."));
+    	return;
+    }
+
+	if (Item.SelfUsable) {
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
-		if (Item.SelfUsable) {
-			// TODO trigger effect here
-			UE_LOG(LogTemp, Warning, TEXT("Stub effect trigger for item '%s'."), *Item.Title.ToString());
-		} if (Res == EItemUseResult::BAD_HANDLED) {
-			UE_LOG(LogTemp, Log, TEXT("Can't use item with that. But it was handled."));
-			return;
-		} else {
-			// the issue is that the item itself will be displaying a text. and i can't tell if there is no item
-			UE_LOG(LogTemp, Log, TEXT("Can't use item with that. %i '%s'"), Res, *Item.Title.ToString());
-			Say(Res == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
-			return;
-		} 
+		UE_LOG(LogLChar, Log, TEXT("Item is self-usable. will attempt in a bit. '%s'."), *Item.Title.ToString());
+		if (IsValid(Item.Man)) { // notice this if is separate from the one above
+			Item.Man->Use();
+		}
+	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
+		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s'"), Res, *Item.Title.ToString());
+		Say(Res == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
+		return;
 	}
 
+	// mark the item as used, it wont trigger the manager. since we don't wanna trigger when is used with an interaction.
 	Inventory->Use(Selected);
 }
 

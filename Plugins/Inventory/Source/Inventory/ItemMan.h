@@ -14,13 +14,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();
-	void Look_Implementation() {
+	virtual void Look_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("ItemMan.Look. Looking item %lu %s"), (int64)this, *Name.ToString());
 	};
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
-	void Use_Implementation() {
+	virtual void Use_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("ItemMan.Use: Using item %lu. '%s'"), (int64)this, *Name.ToString());
 	};
 

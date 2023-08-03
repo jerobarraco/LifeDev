@@ -33,6 +33,7 @@ public:
 	bool Mod(const FName& Name, int32 Diff);
 
 	// uses an item. removes it from the inventory if needed. returns success.
+	// it won't trigger the manager, you need to do it manually.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Use(const FName& Name);
 	
