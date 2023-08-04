@@ -8,7 +8,7 @@
 
 AFlashbackMan::AFlashbackMan():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
-		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC.Flashback_MPC"));
+		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
 	MPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
 }
 
