@@ -12,7 +12,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnBegin);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
 
 // An interactive actor that can have an animation
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+// You can set the tick interval to control the performance of this component
+UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimator: public UActorComponent {
 	GENERATED_BODY()
 public:
@@ -46,16 +47,17 @@ public:
 	FCAnimatorRawOnUpdate OnUpdate;
 	
 protected:
-	// override me on child classes :) (Progress can be read directly)
+	// override me on child classes :) But call the parent. (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha) {};
 
-	// override me on child classes :)
+	// override me on child classes :) But call the parent. 
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void End();
 	virtual void End_Implementation();
-	// override me on child classes :)
+
+	// override me on child classes :) But call the parent. 
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Begin();
 	virtual void Begin_Implementation();
