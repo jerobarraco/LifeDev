@@ -7,8 +7,6 @@
 
 // https://docs.unrealengine.com/5.0/en-US/osc-plugin-overview-for-unreal-engine/
 
-#pragma optimize("", off)
-
 #define QUIT_INVALID(Obj) if (!IsValid(Obj)) return;
 #define BindOSC(Path, F) \
 	FOSCAddress Address(Path);\
@@ -274,5 +272,3 @@ void UMuse::Bind() {
 void UMuse::UnBind() {
 	Server->UnbindAllEventsFromOnOSCAddressPatternMatching();
 }
-
-#pragma optimize("", on)
