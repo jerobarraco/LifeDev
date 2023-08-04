@@ -1,11 +1,11 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "WindowB.h"
+#include "Window01.h"
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 
-AWindowB::AWindowB():Super() {
+AWindow01::AWindow01():Super() {
 	// TODO set up
 	SFX->SetRelativeLocation(FVector(9,-55,43));
 	

@@ -5,17 +5,17 @@
 #include "LifeDev/Game/Interact/Base/Window.h"
 
 
-#include "WindowB.generated.h"
+#include "Window01.generated.h"
 
 
 // TODO fix AWindow00 not being there
 // Window 00 Window type 0 side 0
 UCLASS(Blueprintable)
-class LIFEDEV_API AWindowB: public AWindow {
+class LIFEDEV_API AWindow01: public AWindow {
 	GENERATED_BODY()
 public:
 
-	AWindowB();
+	AWindow01();
 
 protected:
 };

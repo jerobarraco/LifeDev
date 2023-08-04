@@ -4,15 +4,15 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Interact/Base/Window.h"
 
-#include "WindowA.generated.h"
+#include "Window00.generated.h"
 
 // Window 00 Window type 0 side 0
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API AWindowA: public AWindow {
+class LIFEDEV_API AWindow00: public AWindow {
 	GENERATED_BODY()
 public:
 
-	AWindowA();
+	AWindow00();
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
