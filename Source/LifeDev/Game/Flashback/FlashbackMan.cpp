@@ -13,8 +13,7 @@ AFlashbackMan::AFlashbackMan():Super() {
 }
 
 void AFlashbackMan::ValChanged(float Value) {
-	UE_LOG(LogTemp, Log, TEXT("Flashback value changed to %3.3f"), Value);
-	
+	// UE_LOG(LogTemp, Log, TEXT("Flashback value changed to %3.3f"), Value);
 	if (IsValid(MPCInst)) {
 		MPCInst->SetScalarParameterValue("Val", Value);
 	}
@@ -36,7 +35,8 @@ void AFlashbackMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 	UFlashback* const Flashback = GetWorld()->GetSubsystem<UFlashback>();
 	if (IsValid(Flashback)) {
-		Flashback->OnChange.AddUniqueDynamic(this, &AFlashbackMan::ValChanged);
+		Flashback->OnChange.RemoveAll(this);
 	}
 	MPCInst = nullptr;
+	MPC = nullptr;
 }
