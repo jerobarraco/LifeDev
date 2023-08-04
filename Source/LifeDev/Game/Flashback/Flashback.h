@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetVal(float New);
+
+	UFUNCTION(BlueprintCallable)
+	void IncVal(float By);
 	
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
 	FFBOnChange OnChange;
