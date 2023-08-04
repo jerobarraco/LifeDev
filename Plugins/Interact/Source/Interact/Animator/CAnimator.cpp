@@ -4,10 +4,12 @@
 
 UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
-	PrimaryComponentTick.bStartWithTickEnabled = true;
-	PrimaryComponentTick.SetTickFunctionEnable(true);
-	static ConstructorHelpers::FObjectFinder<UCurveFloat> CCurve(TEXT("/Interact/C_Interact.C_Interact"));
-	Curve = CCurve.Object;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.SetTickFunctionEnable(false);
+	
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/Interact/C_Interact.C_Interact"));
+	Curve = CCurve.Succeeded()? CCurve.Object : nullptr;
 }
 
 void UCAnimator::Play(bool Reversed, bool Loop, bool Bounce) {
@@ -33,10 +35,7 @@ void UCAnimator::Begin_Implementation() {
 
 void UCAnimator::BeginPlay() {
 	Super::BeginPlay();
-	// PrimaryComponentTick.bCanEverTick = true;
-	// PrimaryComponentTick.Target = this;
-	// PrimaryComponentTick.SetTickFunctionEnable(true);
-	// RegisterComponentTickFunctions(true); will crash
+	Deactivate();
 }
 
 void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -47,17 +46,12 @@ void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DT, TickType, ThisTickFunction);
-	// to allow to dis-able tick
-	if (!IsAnimating) {
-		Stop();
-		return;
-	}
 
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
 	if (Progress >= 1.0) {
-		if (!IsLooping) {
+		if (!IsLooping && !IsBouncing) {
 			Stop();
 			return;
 		}
@@ -69,6 +63,10 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 		Progress = 0.0;
 		if (IsBouncing) { // reverse the reversed
 			IsReversed = !IsReversed;
+			// only bounce once if not looping
+			if (!IsLooping) {
+				IsBouncing = false; 
+			}
 		}
 		Begin(); // it technically started
 	}
@@ -86,7 +84,13 @@ void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
 	const bool WasAnimating = IsAnimating;
 	Progress = 0.0; // force it because of the if below which can cause new calls
 	IsAnimating = NewIsAnimating;
-	SetComponentTickEnabled(IsAnimating);
+
+	// reset ticks
+	if (IsAnimating) {
+		Activate();
+	} else {
+		Deactivate();
+	}
 
 	if (IsAnimating) {
 		Begin();
