@@ -19,7 +19,8 @@ ADoor01::ADoor01():Super() {
 		CMesh1(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door01/Door01-Window.Door01-Window"));
 	Window->SetStaticMesh(CMesh1.Object);
 	Window->SetComponentTickEnabled(false);
-
+	Window->bUseAttachParentBound = true; // opt
+	
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
 	Interact->SetRelativeLocation(FVector(-60,-7.5,101));
 	Interact->SetBoxExtent(FVector(60,5,101));
