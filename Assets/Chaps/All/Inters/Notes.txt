@@ -1,0 +1,4 @@
+ Textures for icons
+
+ group : UI
+ max texture size : 256
