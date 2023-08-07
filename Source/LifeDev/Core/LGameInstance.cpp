@@ -16,6 +16,7 @@ void ULGameInstance::Init() {
 }
 
 void ULGameInstance::SetTrs(bool Enabled) {
+	// this is just test code... 
 	GetWorld()->Exec(GetWorld(), TEXT("r.AntiAliasingMethod 2"));
 	GetWorld()->Exec(GetWorld(), TEXT("r.test.SecondaryScaleOverride 4"));
 	GetWorld()->Exec(GetWorld(), TEXT("t.MaxFPS 60"));
