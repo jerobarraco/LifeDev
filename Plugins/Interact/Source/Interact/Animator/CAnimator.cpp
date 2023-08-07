@@ -9,7 +9,7 @@ UCAnimator::UCAnimator():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Interact/C_Interact.C_Interact"));
-	Curve = CCurve.Succeeded()? CCurve.Object : nullptr;
+	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
 void UCAnimator::Play(bool Reversed, bool Loop, bool Bounce) {
@@ -23,30 +23,9 @@ void UCAnimator::Stop() {
 	SetIsAnimating(false);
 }
 
-void UCAnimator::DeInit() {}
-
-void UCAnimator::End_Implementation() {
-	OnEnd.Broadcast();
-}
-
-void UCAnimator::Begin_Implementation() {
-	OnBegin.Broadcast();
-}
-
-void UCAnimator::BeginPlay() {
-	Super::BeginPlay();
-	Deactivate();
-}
-
-void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Stop();
-	DeInit();
-	Super::EndPlay(EndPlayReason);
-}
-
-void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	Super::TickComponent(DT, TickType, ThisTickFunction);
-
+void UCAnimator::DoTick(float DT) {
+	if (!IsAnimating) return;
+	
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
@@ -75,9 +54,35 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	const float NProg = IsReversed ? 1.0 - Progress : Progress;
 	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(NProg) : NProg;
 
-	Update_Implementation(Alpha);
-	// UE_LOG(LogTemp, Log, TEXT("Tick  %05f %05f %05f"), Progress, Alpha, NProg);
+	Update(Alpha);
+	UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);
+}
+
+void UCAnimator::DeInit() {}
+
+void UCAnimator::End_Implementation() {
+	OnEnd.Broadcast();
+}
+
+void UCAnimator::Begin_Implementation() {
+	OnBegin.Broadcast();
+}
+
+void UCAnimator::BeginPlay() {
+	Super::BeginPlay();
+	Deactivate();
+}
+
+void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Stop();
+	DeInit();
+	Super::EndPlay(EndPlayReason);
+}
+
+void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	Super::TickComponent(DT, TickType, ThisTickFunction);
+	DoTick(DT);
 }
 
 void UCAnimator::SetIsAnimating(bool NewIsAnimating) {

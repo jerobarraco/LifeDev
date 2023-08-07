@@ -29,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	inline bool GetIsAnimating() { return IsAnimating; }
 
+	// a tick function for when you need to use this class somewhere else. it's hacky. yes.
+	UFUNCTION(BlueprintCallable)
+	void DoTick(float DeltaSeconds);
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
 
