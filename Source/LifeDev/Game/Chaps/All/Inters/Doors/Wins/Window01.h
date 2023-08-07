@@ -2,16 +2,14 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "LifeDev/Game/Interact/Base/Window.h"
-
+#include "Window00.h"
 
 #include "Window01.generated.h"
 
 
-// TODO fix AWindow00 not being there
-// Window 00 Window type 0 side 0
+// Window 01 Window type 0 side 1
 UCLASS(Blueprintable)
-class LIFEDEV_API AWindow01: public AWindow {
+class LIFEDEV_API AWindow01: public AWindow00 {
 	GENERATED_BODY()
 public:
 

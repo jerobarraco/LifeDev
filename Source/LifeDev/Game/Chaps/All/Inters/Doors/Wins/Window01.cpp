@@ -6,17 +6,16 @@
 #include "Interact/CInteract.h"
 
 AWindow01::AWindow01():Super() {
-	// TODO set up
-	SFX->SetRelativeLocation(FVector(9,-55,43));
+	SFX->SetRelativeLocation(FVector(11,57,42));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/WindowB/WindowB-SideA.WindowB-SideA"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-SideB.Window00-SideB"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,5,0));
-	Interact->SetRelativeLocation(FVector(9,-35,60));
+	Mesh->SetRelativeLocation(FVector(0,125,0));
+	Interact->SetRelativeLocation(FVector(9,-95,60));
 	Interact->SetBoxExtent(FVector(5,30,55));
-	
-	// TODO set positions
-	// TODO set use parent bounds (what was the name? )
-	// TODO make a child of ustaticmeshcompont that is more optimized
+
+	GlassA->SetRelativeLocation(FVector(0,-60,-70));
+	GlassB->SetRelativeLocation(FVector(0,-60,-35));
+	GlassC->SetRelativeLocation(FVector(0,-60,0));
 }
