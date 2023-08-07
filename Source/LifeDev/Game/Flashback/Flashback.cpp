@@ -5,13 +5,21 @@
 
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
+	
+	// TODO will this package?
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
+	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
 void UFlashback::SetValInternal(float New) {
+	// make sure is on range. it can break other stuff.
 	New = FMath::Clamp(New, 0.0f, 1.0f);
+	// don't bother if it's the same, specially since many things could be bound to onChange
 	if (FMath::IsNearlyEqual(New, Val)) return;
+	
 	Val = New;
-	UE_LOG(LogTemp, Log, TEXT("Updating value to %.5f"), Val);
+	UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
 	OnChange.Broadcast(Val);
 }
 

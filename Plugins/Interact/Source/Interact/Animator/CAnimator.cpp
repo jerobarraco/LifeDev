@@ -55,7 +55,7 @@ void UCAnimator::DoTick(float DT) {
 	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(NProg) : NProg;
 
 	Update(Alpha);
-	UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
+	// UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);
 }
 
