@@ -22,5 +22,7 @@
 			"LoadingPhase": "PostEngineInit"
 		}
 	],
-	"Plugins": []
+	"Plugins": [
+		{"Name": "JUtils", "Enabled": true}
+	]
 }

@@ -9,26 +9,18 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, bool, IsOn);
 
-// You will need to define a collision profile. and set it here.
-// Use BlockAllDynamic as last resource. since that will collide with objects and might create issues.
-// All you need is a profile that blocks the same channel you set on CInteractor::SetCollisionChannel
-// i recommend visibility
-
-// You also need to set up a post process volume with a material set for the hover effect. for example MI_PostHover
-// hint: you might want to make it unbound
-
 // Helps define an interaction volume
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {
 public:
 	GENERATED_BODY()
 
-	UCInteract(const FObjectInitializer& ObjectInitializer);
+	UCInteract();
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool IsEnabled);
 
-	// you need to set this once.
+	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	static void SetCollisionProfile(const FName& Name) {
 		CollisionProfile = Name;

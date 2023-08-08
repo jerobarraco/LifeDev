@@ -24,7 +24,7 @@ public class Interact: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine"
+			"CoreUObject", "Engine", "JUtils"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

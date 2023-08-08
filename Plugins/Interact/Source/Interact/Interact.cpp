@@ -2,6 +2,8 @@
 
 #include "Interact.h"
 
+#include "JUtils/CQuickMesh.h"
+
 #include "CInteract.h"
 #include "Components/AudioComponent.h"
 
@@ -15,14 +17,8 @@ AInteract::AInteract():Super() {
 	IRoot = CreateDefaultSubobject<USceneComponent>(TEXT("IRoot"));
 	IRoot->SetupAttachment(RootComponent);
 	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(IRoot);
-	Mesh->PrimaryComponentTick.bStartWithTickEnabled = false;
-	Mesh->SetComponentTickEnabled(false);
-	Mesh->SetGenerateOverlapEvents(false);
-	Mesh->SetCollisionProfileName("NoCollision");
-	Mesh->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
-	Mesh->SetCanEverAffectNavigation(false);
 
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);

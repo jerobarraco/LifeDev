@@ -87,6 +87,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UStaticMeshComponent* Mesh = nullptr;
+	// not defining it as UCQuickMesh since it doesn't add anything. but it will make other files have to import quickmesh
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UPostProcessComponent* PostProcess = nullptr;

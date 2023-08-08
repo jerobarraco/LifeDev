@@ -4,7 +4,7 @@
 
 #include "Components/BoxComponent.h"
 
-UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
+UCInteract::UCInteract(): Super() {
 	// these 2 seems to work ok. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 	UBoxComponent::SetComponentTickEnabled(false);
@@ -13,10 +13,11 @@ UCInteract::UCInteract(const FObjectInitializer& ObjectInitializer): Super(Objec
 	bNavigationRelevant = false;
 	bCanEverAffectNavigation = false;
 	// nopes because it will create collision issues.
-	UBoxComponent::SetCollisionProfileName(CollisionProfile);
-	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	SetGenerateOverlapEvents(false);
+	SetCanEverAffectNavigation(false);
 	UBoxComponent::SetComponentTickEnabled(false);
+	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
+	UBoxComponent::SetCollisionProfileName(CollisionProfile);
 
 	/*
 	PostProcess = CreateDefaultSubobject<UPostProcessComponent>(TEXT("PostProcess"));
