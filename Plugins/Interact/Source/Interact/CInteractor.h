@@ -32,7 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EItemUseResult TryUseItem(const FName& Name) const;
 
-	// you need to set this once.
+	// you need to set this once. but only if you need to change the default.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	static void SetCollisionChannel(ECollisionChannel Channel) {
 		InteractChannel = Channel;
