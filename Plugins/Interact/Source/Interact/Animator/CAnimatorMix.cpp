@@ -5,6 +5,7 @@
 
 void UCAnimatorMix::DeInit() {
 	TRoot = nullptr;
+	Mat = nullptr;
 	Super::DeInit();
 }
 
