@@ -8,12 +8,12 @@
 class USceneComponent;
 
 // An interactive actor that can have an animation. Use UCAnimatorMix
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent, DeprecatedNode))
+UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent, DeprecatedNode))
 class INTERACT_API UCAnimatorMat: public UCAnimator {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName ParamFName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
@@ -22,7 +22,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float FEnd = 1;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName ParamVName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")

@@ -26,6 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Stop();
 
+	// For testing mostly
+	UFUNCTION(Blueprintable, CallInEditor)
+	void PlayNow() { Play(); }
+
 	UFUNCTION(BlueprintCallable)
 	inline bool GetIsAnimating() { return IsAnimating; }
 

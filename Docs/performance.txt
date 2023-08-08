@@ -1,5 +1,8 @@
 improve ticks
-    can we disable based on distance? or lower interval?
+    disable when possible 
+    use activate deactivate on components
+    increase interval if possible
+    disable based on distance? or lower interval?
     significance manager https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
 
 
@@ -25,12 +28,50 @@ material
     increase opacity
     saturate instead of clamp
     lower num samples
-    
+    DistanceCullFade to blend the cull
+    -  min max draw distance
+
+
 shadow maps
     r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
     r.Shadow.Virtual.UseFarShadowCulling 0
     set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
+     r.Shadow.Virtual.MaxPhysicalPages (512),
+     r.Shadow.Virtual.MaxPhysicalPagesSceneCapture (512),
+     r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
+     r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
 
+culling
+ * use distance cull volumes
+* showflag.distanceculledprimitives 1
+* stat initviews
+* freezerendering to test culling
+
+light culling
+* automatic : minScreenRadiusForLight 0.03
+* maxDrawDistance MaxDistanceFadeRange
+
+level streaming
+* streaming volume + manual
+* stat levels
+
+animation
+* fast pass
+* warnaboutblueprintusage
+* stat anim
+* update rate optimization on distance for skeletal mesh 
+* visibilitybasedanimtickoption
+* bRenderAsStatic bPauseAnims bNoSkeletonUpdate
+
+var
+* size map
+* statistics window
+* cmd ToggleForceDefaultMaterial
+* cmd dumphitches
+* stat none
+
+level streaming
+* stat levels
 
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
 

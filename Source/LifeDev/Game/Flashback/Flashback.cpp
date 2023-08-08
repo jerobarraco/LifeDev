@@ -87,5 +87,7 @@ void UFlashback::Tick(float DeltaTime) {
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
 TStatId UFlashback::GetStatId() const {
+	// https://benui.ca/unreal/tickable-object/
+	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	return GetStatID();
 }

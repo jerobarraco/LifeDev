@@ -9,7 +9,7 @@ class UCurveFloat;
 class USceneComponent;
 
 // An interactive actor that can have an animation
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorMix: public UCAnimatorTrans {
 	GENERATED_BODY()
 

@@ -7,9 +7,9 @@
 
 AWindow00::AWindow00():Super() {
 	SFX->SetRelativeLocation(FVector(9,-55,43));
-	// TODO fix glasses and frame not matching positions
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-SideB.Window00-SideB"));
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-SideA.Window00-SideA"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 	Interact->SetRelativeLocation(FVector(9,-35,60));
