@@ -5,6 +5,16 @@
 
 #include "MoviePlayer.h"
 
+ULGameInstance* ULGameInstance::Get(UWorld* World) {
+	if (!IsValid(World)) return nullptr;
+	return Cast<ULGameInstance>(World->GetGameInstance());
+}
+
+bool ULGameInstance::GetFeatS(UWorld* World, EFeat Feat) {
+	ULGameInstance* const I = ULGameInstance::Get(World);
+	return IsValid(I)? I->GetFeat(Feat) : false;
+}
+
 void ULGameInstance::Init() {
 	Super::Init();
 

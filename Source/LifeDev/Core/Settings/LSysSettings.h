@@ -30,6 +30,9 @@ enum class EFeat: uint8 {
 	
 	// INVENTORY,
 	// DIALOGS,
+
+	// General debug, deprecated
+	DEBUG,
 };
 
 // Note the Config meta tag on the properties are critical or it might crash

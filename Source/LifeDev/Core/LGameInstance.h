@@ -17,6 +17,12 @@ class LIFEDEV_API ULGameInstance : public UGameInstance
 	GENERATED_BODY()
 public:
 
+	UFUNCTION(BlueprintCallable)
+	static ULGameInstance* Get(UWorld* World);
+
+	UFUNCTION(BlueprintCallable)
+	static bool GetFeatS(UWorld* World, EFeat Feat);
+	
 	virtual void Init() override;
 
 	UFUNCTION(BlueprintCallable)
@@ -36,7 +42,6 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	ULSave* Save = nullptr;
-
 
 protected:
 	UFUNCTION()

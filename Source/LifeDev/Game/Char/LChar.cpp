@@ -19,6 +19,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/ItemMan.h"
 #include "JUtils/JMiscUtils.h"
+#include "LifeDev/Core/LGameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -152,6 +153,8 @@ void ALChar::BeginPlay()
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
 
+	ULGameInstance* const GameInstance = Cast<ULGameInstance>(GetGameInstance());
+	Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);
 	Noiser->Start();
 }
 

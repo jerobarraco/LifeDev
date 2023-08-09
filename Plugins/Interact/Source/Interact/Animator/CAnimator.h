@@ -27,7 +27,7 @@ public:
 	void Stop();
 
 	// For testing mostly
-	UFUNCTION(Blueprintable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlayNow() { Play(); }
 
 	UFUNCTION(BlueprintCallable)
