@@ -5,8 +5,10 @@
 #include "CoreGlobals.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 // TODO fix packaging fails with this one
 // https://www.reddit.com/r/unrealengine/comments/sbqb5k/comment/hu4c6ze/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -80,5 +82,24 @@ void UJMiscUtils::ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enab
 		Subsystem->AddMappingContext(Ctx, Prio);
 	} else {
 		Subsystem->RemoveMappingContext(Ctx);
+	}
+}
+
+void UJMiscUtils::ShowUI(bool Show, UWorld* World, UWidget* Focus, bool SetPaused) {
+	if (!IsValid(World)) return;
+
+	APlayerController* const Controller = World->GetFirstPlayerController();
+	if (!IsValid(Controller)) return;
+
+	if (Show) {
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(
+			Controller, Focus, EMouseLockMode::DoNotLock, true);
+	} else {
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	}
+	Controller->SetShowMouseCursor(Show);
+
+	if (SetPaused) {
+		UGameplayStatics::SetGamePaused(World, Show);
 	}
 }

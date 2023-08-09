@@ -2,8 +2,15 @@
 
 // This is called misc utils because is the misc group
 // later i plan on having more groups
+#include "CoreMinimal.h"
+
+class UInputMappingContext;
+class UWorld;
+class UWidget;
 
 #include "JMiscUtils.generated.h"
+
+
 UCLASS(Blueprintable)
 class JUTILS_API UJMiscUtils: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
@@ -23,4 +30,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static void ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World);
+
+	UFUNCTION(BlueprintCallable)
+	static void ShowUI(bool Show, UWorld* World, UWidget* Focus = nullptr, bool SetPaused = false);
 };

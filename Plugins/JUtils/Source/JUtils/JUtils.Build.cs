@@ -26,7 +26,7 @@ public class JUtils: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "EnhancedInput",
+			"CoreUObject", "Engine", "EnhancedInput", "UMG"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
