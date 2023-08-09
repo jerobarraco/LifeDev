@@ -42,12 +42,16 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName)
 	LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
 
 	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
+
+	GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->StartCameraFade(0, 1, .5f, FLinearColor::Black, true, true);
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
 {
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is done"));	
+
+	GetFirstLocalPlayerController(InLoadedWorld)->PlayerCameraManager->StartCameraFade(1, 0, .5f, FLinearColor::Black, true, true);
 
 	// ?
 }

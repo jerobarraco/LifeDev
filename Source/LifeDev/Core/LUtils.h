@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 
+// TODO move to JUtils
+
 template <typename T>
 static void GetAllTableRows(const UDataTable* Table, TArray<T>& OutRows)
 {
