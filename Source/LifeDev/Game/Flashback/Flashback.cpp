@@ -57,7 +57,7 @@ void UFlashback::SetVal(float New, float Speed) {
 	// set and play the animator
 	const float Time = Speed*Diff;
 	Animator->Duration = Time;
-	Animator->Play();
+	Animator->PlaySet();
 	// UE_LOG(LogTemp, Log, TEXT("Speed, Time %.5f %.5f"), Speed, Time);
 }
 

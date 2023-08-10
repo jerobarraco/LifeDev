@@ -29,7 +29,7 @@ void AInteractAnim::SetFadeMat_Implementation() {
 
 void AInteractAnim::Fade(bool In) {
 	const bool Rev = !In;
-	Anim->Play(Rev);
+	Anim->PlaySet(Rev);
 }
 
 void AInteractAnim::BeginPlay() {
@@ -66,7 +66,7 @@ void AInteractAnim::Trigger_Implementation() {
 	IsOpen = !IsOpen;
 	SetText(); // change the text after the flag has changed
 	// this creates so many issues. notice how it's set.
-	Anim->Play(!IsOpen);
+	Anim->PlaySet(!IsOpen);
 
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 }

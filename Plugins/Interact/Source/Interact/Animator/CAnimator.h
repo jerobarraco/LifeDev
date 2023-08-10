@@ -19,20 +19,25 @@ class INTERACT_API UCAnimator: public UActorComponent {
 public:
 
 	UCAnimator();
+	// todo fix all the bp usages of this function
+	
+	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	inline void Play() { SetIsAnimating(true); };
+
+	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Play(bool Reversed = false, bool Loop = false, bool Bounce = false);
-
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Stop();
-
-	// For testing mostly
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void PlayNow() { Play(); }
+	inline void Stop() { SetIsAnimating(false); };
 
 	UFUNCTION(BlueprintCallable)
-	inline bool GetIsAnimating() { return IsAnimating; }
+	inline bool GetIsAnimating() const { return IsAnimating; }
 
+	UFUNCTION(BlueprintCallable)
+	inline bool GetProgress() const { return Progress; }
+	
 	// a tick function for when you need to use this class somewhere else. it's hacky. yes.
 	UFUNCTION(BlueprintCallable)
 	void DoTick(float DeltaSeconds);
@@ -43,6 +48,13 @@ public:
 	// Duration of the animation in seconds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	float Duration = 2.0;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	bool IsLooping = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	bool IsBouncing = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	bool IsReversed = false;
 
 	// triggers when the animation ends. but not if it wasn't playing.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
@@ -53,7 +65,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
-	
+
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
@@ -78,13 +90,6 @@ protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void DeInit();
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	bool IsLooping = false;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	bool IsBouncing = false;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	bool IsReversed = false;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsAnimating = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

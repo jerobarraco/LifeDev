@@ -12,15 +12,11 @@ UCAnimator::UCAnimator():Super() {
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
-void UCAnimator::Play(bool Reversed, bool Loop, bool Bounce) {
+void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 	IsReversed = Reversed;
 	IsLooping = Loop;
 	IsBouncing = Bounce;
-	SetIsAnimating(true);
-}
-
-void UCAnimator::Stop() {
-	SetIsAnimating(false);
+	Play();
 }
 
 void UCAnimator::DoTick(float DT) {
