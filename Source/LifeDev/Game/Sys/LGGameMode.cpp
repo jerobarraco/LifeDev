@@ -69,7 +69,10 @@ void ALGGameMode::Init_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)) return;
+	if (!IsValid(Instance)){
+		UE_LOG(LogTemp, Warning, TEXT("Game Mode: No valid instance found"));
+		return;
+	}
 	
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	if (!IsValid(Settings)) {
@@ -98,12 +101,12 @@ void ALGGameMode::Init_Implementation() {
 	}
 	
 	/// Dialogs
-	// DiagManager = Cast<ADialogManager>(UGameplayStatics::GetActorOfClass(World, ADialogManager::StaticClass()));
 	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
 	if (IsValid(DiagManager)) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagManager->InputPrio = 10; // todo pass inside init
-		DiagManager->Init(); 
+		DiagManager->DebugSkip = !Instance->GetFeat(EFeat::DIALOGS); // skip dialogs if no feature for it
+		DiagManager->Init();
 	} else {
 		DiagManager = nullptr;
 	}

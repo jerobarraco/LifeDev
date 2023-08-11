@@ -7,9 +7,11 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
+#include "JUtils/JMiscUtils.h"
+
 #include "DialogUI.h"
 #include "Dialogs.h"
-#include "JUtils/JMiscUtils.h"
+#include "DiagTypes.h" // Log
 
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -47,17 +49,25 @@ void ADialogManager::DeInit() {
 }
 
 void ADialogManager::Show(const FDialog& Diag) {
-	UE_LOG(LogTemp, Log, TEXT("DialogManager.Show:"));
+	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager.Show:"));
 	if (IsShowing) {
-		UE_LOG(LogTemp, Warning, TEXT("Attempted to show text when i was already showing."));
+		UE_LOG(LogTextDialogs, Warning, TEXT("Attempted to show text when i was already showing."));
 	}
-	IsShowing = true;
 
-	if (!IsValid(UI)) {
-		UE_LOG(LogTemp, Warning, TEXT("DialogManager: UI was not ready"));
+	if (DebugSkip) {
+		UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: DebugSkip is set. Skipping."));
+		// skip on the next frame to avoid having issues due to call stack
+		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ADialogManager::UIDiagDone);
 		return;
 	}
 
+	if (!IsValid(UI)) {
+		UE_LOG(LogTextDialogs, Warning, TEXT("DialogManager: UI was not ready"));
+		return;
+	}
+	
+	// only set the flag if we are showing something
+	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
 	UI->Show(Diag);
@@ -112,7 +122,7 @@ void ADialogManager::UIDiagDone() {
 }
 
 void ADialogManager::Skip() {
-	UE_LOG(LogTemp, Log, TEXT("C Skip"));
+	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: Skip"));
 	if(!IsValid(UI)) return;
 	UI->Skip();
 }

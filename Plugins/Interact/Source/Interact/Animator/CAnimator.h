@@ -41,6 +41,9 @@ public:
 	// a tick function for when you need to use this class somewhere else. it's hacky. yes.
 	UFUNCTION(BlueprintCallable)
 	void DoTick(float DeltaSeconds);
+
+	// By default run at 30 fps; Optimization
+	inline static float IntervalDefault = 1.0f/30.f;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;

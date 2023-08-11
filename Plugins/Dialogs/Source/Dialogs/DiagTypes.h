@@ -3,6 +3,8 @@
 
 #include "DiagTypes.generated.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogTextDialogs, Log, Log)
+
 UENUM(BlueprintType)
 enum class EDialogEmotion : uint8 {
 	NEUTRAL,

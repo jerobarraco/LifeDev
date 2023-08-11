@@ -19,9 +19,8 @@ class DIALOGS_API ADialogManager : public AActor {
 	GENERATED_BODY()
 
 public:
-	
 	ADialogManager();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
@@ -55,11 +54,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionSkip = nullptr;
 
+	// when set it will skip showing the dialogs but still mark them as read
+	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category=Debug)
+	bool DebugSkip = false;
+
 private:
 	// The ui is done with the current line
 	UFUNCTION()
 	void UIDiagDone();
-	
+
 	UPROPERTY(Transient)
 	UDialogs* Dialogs = nullptr;
 

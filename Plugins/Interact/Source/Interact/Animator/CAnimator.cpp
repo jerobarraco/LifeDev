@@ -10,6 +10,7 @@ UCAnimator::UCAnimator():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Interact/C_Interact.C_Interact"));
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
+	SetComponentTickInterval(IntervalDefault);
 }
 
 void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {

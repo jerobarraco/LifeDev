@@ -12,7 +12,7 @@ enum class EFeat: uint8 {
 	NONE, // empty one to be able to add to the set.
 	// Shows the dialogs, otherwise they get muted
 	DIALOGS,
-	// Muted dialogs
+	// Show the text on the dialogs, otherwise they get censored
 	DIALOG_TEXT,
 	// Debug steps (cheats)
 	DEBUG_STEPS,
