@@ -17,13 +17,17 @@ void ALInteract::BeginPlay() {
 
 void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
+
+	// trigger the dialog anyway.
+	if (IsValid(Dialogs)) {
+		Dialogs->AddId(TriggerDlg);
+	}
+
+	// reward an item if possible
 	if (ItemReward.IsNone()) return;
 	if (!IsValid(Inventory)) return;
 	// return maybe we maxed out
 	if (!Inventory->Mod(ItemReward, 1)) return;
-	if (IsValid(Dialogs)) {
-		Dialogs->AddId(TriggerDlg);
-	}
 	
 	Destroy();
 }

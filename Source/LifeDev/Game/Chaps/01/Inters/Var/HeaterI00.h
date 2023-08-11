@@ -14,5 +14,4 @@ public:
 	AHeaterI00();
 
 	virtual void Trigger_Implementation() override;
-	virtual void TriggerLocked_Implementation() override;
 };

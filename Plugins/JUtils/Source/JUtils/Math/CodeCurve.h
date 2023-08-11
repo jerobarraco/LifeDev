@@ -23,13 +23,17 @@ public:
 	float Sin(float p);
 	UFUNCTION(BlueprintCallable)
 	float Cos(float p);
+	
 	UFUNCTION(BlueprintCallable)
 	float SinFull(float p);
 	UFUNCTION(BlueprintCallable)
 	float CosFull(float p);
-
-
 };
+
+// // test
+// Anim->Curve = nullptr;
+// UCodeCurveLib* Lib = NewObject<UCodeCurveLib>();
+// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::Sin);
 
 /*
  * TODO port

@@ -16,19 +16,9 @@ AHeaterI00::AHeaterI00():Super() {
 		FText::FromString(TEXT("Turn on. It's cold")),
 		FText::FromString(TEXT("Maybe not..."))
 	};
-
-
-	// test
-	Anim->Curve = nullptr;
-	UCodeCurveLib* Lib = NewObject<UCodeCurveLib>();
-	Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::SinFull);
 }
 
 void AHeaterI00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 	Locked = true;
-}
-
-void AHeaterI00::TriggerLocked_Implementation() {
-	Super::TriggerLocked_Implementation();
 }
