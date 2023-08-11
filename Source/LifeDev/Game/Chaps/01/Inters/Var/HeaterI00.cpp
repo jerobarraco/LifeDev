@@ -11,7 +11,7 @@ AHeaterI00::AHeaterI00():Super() {
 	
 	Anim->Duration = .75f;
 	TriggerDlg = "HT00_T";
-	LockedDlg = 
+	LockedDlg = "HT00_L";
 	Texts = {
 		FText::FromString(TEXT("Turn on. It's cold")),
 		FText::FromString(TEXT("Maybe not..."))
