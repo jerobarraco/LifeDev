@@ -8,7 +8,7 @@ ADoorI01::ADoorI01():Super() {
 	Locked = true;
 	ULockItemReq = "Walkman";
 	ULockDlg = "D01_ULCK";
-	LockDlg = "D01_LCK";
+	LockedDlg = "D01_LCK";
 	
 	RootComponent->SetWorldLocation(FVector(-290,316,0));
 	RootComponent->SetWorldRotation(FRotator(0,180,0));

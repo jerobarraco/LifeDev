@@ -32,7 +32,7 @@ void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	if (!Inventory || !Dialogs) return;
 	const bool Has = Inventory->Has(ULockItem);
-	const FName& Dlg = Has && (!ULockItemDlg.IsNone())? ULockItemDlg : LockDlg;
+	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
 	FDialog D; FDialogChar C;
 	Dialogs->AddId(Dlg);
 }

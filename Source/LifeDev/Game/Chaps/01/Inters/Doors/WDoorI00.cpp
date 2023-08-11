@@ -5,6 +5,6 @@
 AWDoorI00::AWDoorI00():Super() {
 	ULockItem = "C1KW0";
 	ULockDlg = "W0_ULCK";
-	ULockItemDlg = "W0_LCKIT";
-	LockDlg = "W0_LCK";
+	LockedItemDlg = "W0_LCKIT";
+	LockedDlg = "W0_LCK";
 }

@@ -30,11 +30,11 @@ public:
 
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	FName ULockItemDlg = NAME_None;
+	FName LockedItemDlg = NAME_None;
 
 	// dialog to show when the object is locked and we DON'T have the ULockItem
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	FName LockDlg = NAME_None;
+	FName LockedDlg = NAME_None;
 
 	// dialog to show when the object is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
