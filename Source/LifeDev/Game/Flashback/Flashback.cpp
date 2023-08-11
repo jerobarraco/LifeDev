@@ -19,7 +19,7 @@ void UFlashback::SetValInternal(float New) {
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
 	Val = New;
-	UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
+	// UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
 	OnChange.Broadcast(Val);
 }
 

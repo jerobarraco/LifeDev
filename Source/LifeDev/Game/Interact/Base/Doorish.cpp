@@ -9,6 +9,8 @@ ADoorish::ADoorish():Super() {
 	AnimEnabled = true;
 	Anim->TRoot = RootComponent;
 	Anim->IsAdditive = true;
+	// visual: run at 60 fps since it's movement
+	Anim->SetComponentTickInterval(1/60.f);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/SBvfe1_Door_Handle_D_002.SBvfe1_Door_Handle_D_002"));
