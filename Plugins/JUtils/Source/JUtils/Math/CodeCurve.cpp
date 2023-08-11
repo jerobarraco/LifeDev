@@ -30,4 +30,17 @@ float UCodeCurveLib::CosFull(float p) {
 	return FMath::Cos(p*UE_PI*2);
 }
 
+FFloatCurve UCodeCurveLib::GetBEaseIn() {
+	FFloatCurve F;
+
+	// 0, 0,  0.42, 0.0,  0.58, 1,  1, 1
+	F.UpdateOrAddKey(0, 0);
+	F.UpdateOrAddKey(0, .42);
+	F.UpdateOrAddKey(1, .58);
+	F.UpdateOrAddKey(1, 1);
+	// FKeyHandle Handle = F.FloatCurve.AddKey(0, 0, false);
+
+	return MoveTempIfPossible(F);
+}
+
 

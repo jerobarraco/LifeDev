@@ -23,11 +23,14 @@ public:
 	float Sin(float p);
 	UFUNCTION(BlueprintCallable)
 	float Cos(float p);
-	
+
 	UFUNCTION(BlueprintCallable)
 	float SinFull(float p);
 	UFUNCTION(BlueprintCallable)
 	float CosFull(float p);
+
+	UFUNCTION(BlueprintCallable)
+	FFloatCurve GetBEaseIn();
 };
 
 // // test
