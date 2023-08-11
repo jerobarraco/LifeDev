@@ -70,7 +70,7 @@ public:
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	FCodeCurve CodeCurve;
 
 protected:
