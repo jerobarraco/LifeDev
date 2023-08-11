@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "CAnimator.h"
+// https://doc.qt.io/qt-6/qeasingcurve.html
 
 UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -8,7 +9,7 @@ UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve(TEXT("/Interact/C_Interact.C_Interact"));
+		CCurve(TEXT("/Interact/Interact_C.Interact_C"));
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 	SetComponentTickInterval(IntervalDefault);
 }
@@ -49,8 +50,10 @@ void UCAnimator::DoTick(float DT) {
 
 	// small trick to ensure we can reverse an animation.
 	const float NProg = IsReversed ? 1.0 - Progress : Progress;
-	const float Alpha = IsValid(Curve) ? Curve->GetFloatValue(NProg) : NProg;
-
+	const float Alpha =
+		IsValid(Curve) ? Curve->GetFloatValue(NProg) :
+		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
+	
 	Update(Alpha);
 	// UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);

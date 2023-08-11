@@ -12,6 +12,7 @@ AInteract::AInteract():Super() {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	SetActorTickEnabled(false); // ensure we don't animate on start
+
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
 	IRoot = CreateDefaultSubobject<USceneComponent>(TEXT("IRoot"));
@@ -30,7 +31,7 @@ AInteract::AInteract():Super() {
 	SFX->SetupAttachment(IRoot);
 	SFX->SetAutoActivate(false);
 	SFX->SetHiddenInGame(true);
-	// todo set sfx automanage
+	SFX->bAutoManageAttachment = true;
 	// todo disable collision navigation overlap and physics on mesh
 }
 
