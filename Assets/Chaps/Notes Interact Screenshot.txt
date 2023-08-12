@@ -4,3 +4,9 @@ in goxel
 512x512
 * no transparent
 * export
+
+upon import
+ Textures for icons
+
+ group : UI
+ max texture size : 256
