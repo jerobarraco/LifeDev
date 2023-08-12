@@ -73,6 +73,35 @@ float UCodeCurveLib::OutCubic(float p) {
 	return 1.f - FMath::Pow(1.0f - p, 3.0f);
 }
 
+float UCodeCurveLib::InBack(float p) {
+	constexpr float c1 = 1.70158;
+	constexpr float c3 = c1 + 1;
+	const float pp = p*p;
+	return (c3 * pp * p) - (c1 * pp);
+}
+
+float UCodeCurveLib::OutBack(float p) {
+	constexpr float c1 = 1.70158;
+	constexpr float c3 = c1 + 1.0;
+
+	const float pn = p - 1;
+	const float ppn = pn*pn;
+	return 1.0 + (c3 * (ppn*pn)) + (c1 * ppn);
+}
+
+float UCodeCurveLib::InOutBack(float p) {
+	constexpr float c1 = 1.70158;
+	constexpr float c2 = c1 * 1.525;
+	constexpr float c21 = (c2 + 1);
+
+	const float p2 = 2 * p;
+	const float pm2 = p2 - 2;
+	
+	return p < 0.5
+		? (p2*p2 * ((c21 * p2) - c2)) / 2.0f
+		: (pm2*pm2 * ((c21 * pm2) + c2) + 2.) / 2.f;
+}
+
 // TODO implement the rest
 
 FFloatCurve UCodeCurveLib::GetBEaseIn() {

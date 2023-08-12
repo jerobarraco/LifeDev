@@ -43,6 +43,13 @@ public:
 	float InCubic(float p);
 	UFUNCTION(BlueprintCallable)
 	float OutCubic(float p);
+
+	UFUNCTION(BlueprintCallable)
+	float InBack(float p);
+	UFUNCTION(BlueprintCallable)
+	float OutBack(float p);
+	UFUNCTION(BlueprintCallable)
+	float InOutBack(float p);
 	
 
 	
