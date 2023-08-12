@@ -31,6 +31,22 @@ public:
 	float CosFull(float p);
 
 	UFUNCTION(BlueprintCallable)
+	float OutBounce(float p);
+	UFUNCTION(BlueprintCallable)
+	float InBounce(float p);
+	UFUNCTION(BlueprintCallable)
+	float InOutBounce(float p);
+
+	UFUNCTION(BlueprintCallable)
+	float InOutCubic(float p);
+	UFUNCTION(BlueprintCallable)
+	float InCubic(float p);
+	UFUNCTION(BlueprintCallable)
+	float OutCubic(float p);
+	
+
+	
+	UFUNCTION(BlueprintCallable)
 	FFloatCurve GetBEaseIn();
 
 	UFUNCTION(BlueprintCallable)
