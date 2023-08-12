@@ -12,7 +12,8 @@ void UCAnimatorMat::Update_Implementation(float Alpha) {
 	}
 
 	if (!ParamVName.IsNone()) {
-		const FVector Val = FMath::LerpStable(VStart, VEnd, Alpha);
+		// const FVector Val = FMath::LerpStable(VStart, VEnd, Alpha);
+		const FLinearColor Val = FLinearColor::LerpUsingHSV(VStart, VEnd, Alpha);
 		Mat->SetVectorParameterValue(ParamVName, Val);
 	}
 }

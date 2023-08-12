@@ -1,0 +1,6 @@
+in goxel
+* go to export
+* set custom size
+512x512
+* no transparent
+* export

@@ -7,8 +7,9 @@
 #include "CAnimatorMat.generated.h"
 
 class USceneComponent;
+// TODO delete
 
-// An interactive actor that can have an animation. Use UCAnimatorMix
+// An interactive actor that can have an animation. Derp-ecated Use UCAnimatorMix.
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent, DeprecatedNode))
 class INTERACT_API UCAnimatorMat: public UCAnimator {
 	GENERATED_BODY()
@@ -27,10 +28,10 @@ public:
 	FName ParamVName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FVector VStart;
+	FLinearColor VStart = FLinearColor::Black;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FVector VEnd = FVector::OneVector;
+	FLinearColor VEnd = FLinearColor::White;
 
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")

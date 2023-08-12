@@ -30,10 +30,10 @@ public:
 	FName MatVName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FVector MatVStart = FVector::ZeroVector;
+	FLinearColor MatVStart = FLinearColor::Black;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FVector MatVEnd = FVector::OneVector;
+	FLinearColor MatVEnd = FLinearColor::White;
 
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
