@@ -3,6 +3,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "Curves/CurveEvaluation.h"
 #include "CodeCurve.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCodeCurve, float, Progress);
@@ -34,16 +35,20 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float BBackStart(float T) {
-		static const TArray<float> Ps = {
-			0, -0.3, 0.26, 1};
-		return Bezier(T, Ps);
+		return UE::Curves::BezierInterp(0.f, -1.23f, 1.5f, 1.0f, T);
+
+		// static const TArray<float> Ps = {
+			// 0, -1.24, 1.5, 1};
+		// return Bezier(T, Ps);
 	}
 
 	// slower than BezierInterp but allows arbitrary points
+	// problem is points are equidistant.
 	UFUNCTION(BlueprintCallable)
 	float Bezier(float T, const TArray<float>& Ps);
 };
 
+// test https://math.stackexchange.com/a/27300 
 // // test
 // Anim->Curve = nullptr;
 // UCodeCurveLib* Lib = NewObject<UCodeCurveLib>();
