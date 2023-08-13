@@ -116,6 +116,11 @@ FFloatCurve UCodeCurveLib::GetBEaseIn() {
 	return MoveTempIfPossible(F);
 }
 
+float UCodeCurveLib::DualBezier(float T, const TArray<float> Py, const TArray<float> Px) {
+	const float T2 = Bezier(T, Px);
+	return Bezier(T2, Py);
+}
+
 float UCodeCurveLib::Bezier(float T, const TArray<float>& Ps) {
 	const uint8 N = Ps.Num();
 	if (N<2) return 0;

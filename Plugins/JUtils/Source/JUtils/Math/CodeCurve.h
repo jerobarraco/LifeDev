@@ -14,6 +14,8 @@ class JUTILS_API UCodeCurveLib: public UBlueprintFunctionLibrary {
 public:
 
 	// cant bind a const not static : lame :(
+
+	/// basics
 	
 	UFUNCTION(BlueprintCallable)
 	float LinCycle(float p);
@@ -30,6 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float CosFull(float p);
 
+	/// easings.net
 	UFUNCTION(BlueprintCallable)
 	float OutBounce(float p);
 	UFUNCTION(BlueprintCallable)
@@ -52,9 +55,7 @@ public:
 	float InOutBack(float p);
 	
 
-	
-	UFUNCTION(BlueprintCallable)
-	FFloatCurve GetBEaseIn();
+	/// bezier and stuff
 
 	UFUNCTION(BlueprintCallable)
 	float BBackStart(float T) {
@@ -65,10 +66,25 @@ public:
 		// return Bezier(T, Ps);
 	}
 
+	UFUNCTION(BlueprintCallable)
+	float DBWave(float T) {
+		static const TArray<float> Px({0.000000,1.325000,1.325000,0.000000});
+		static const TArray<float> Py({0.000000,-0.845715,1.210408,0.000000});
+		return DualBezier(T, Py, Px);
+	}
+	
+	// some magic that i came up with allows to create weirder bezier curves
+	UFUNCTION(BlueprintCallable)
+	float DualBezier(float T, const TArray<float>Py, const TArray<float> Px);
+	
 	// slower than BezierInterp but allows arbitrary points
-	// problem is points are equidistant.
+	// points are equidistant.
 	UFUNCTION(BlueprintCallable)
 	float Bezier(float T, const TArray<float>& Ps);
+
+	/// test
+	UFUNCTION(BlueprintCallable)
+	FFloatCurve GetBEaseIn();
 };
 
 // test https://math.stackexchange.com/a/27300 
