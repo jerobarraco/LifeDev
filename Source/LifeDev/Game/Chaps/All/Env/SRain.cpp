@@ -14,7 +14,7 @@ ASRain::ASRain():Super() {
 	SFX->SetSound(CSnd.Object);
 	SFX->TimeFadeIn = 2;
 	SFX->TimeFadeOut = 2;
-	SFX->TimeStart =0;
+	SFX->TimeStart = 0;
 	SFX->TimeEnd = 120;
 }
 
