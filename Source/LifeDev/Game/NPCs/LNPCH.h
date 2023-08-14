@@ -57,8 +57,8 @@ public:
 	void SetPose(const FNPCHPose& Pose);
 
 protected:
-	virtual void BeginPlay() override;
-	virtual void SetFadeMat_Implementation() override;
+	// virtual void BeginPlay() override;
+	// virtual void SetFadeMat_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FNPCHPose PoseBase;

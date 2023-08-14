@@ -141,27 +141,27 @@ void ALNPCH::SetPose(const FNPCHPose& Pose) {
 	Interact->SetBoxExtent(Pose.InteractExt);
 }
 
-void ALNPCH::BeginPlay() {
-	Super::BeginPlay();
+// void ALNPCH::BeginPlay() {
+	// Super::BeginPlay();
 	// has to be done on begin play or the bp wont save
 	// also i think the translucent material breaks the outline shader
 	// maybe use a different animation then, maybe a color override
-	SetFadeMat();
-}
+	// SetFadeMat();
+// }
 
-void ALNPCH::SetFadeMat_Implementation() {
-	Super::SetFadeMat_Implementation();
-	Pelvis->SetMaterial(0, FadeMat);
-	Torso->SetMaterial(0, FadeMat);
-	Head->SetMaterial(0, FadeMat);
-	ArmL1->SetMaterial(0, FadeMat);
-	ArmR1->SetMaterial(0, FadeMat);
-	ArmL2->SetMaterial(0, FadeMat);
-	ArmR2->SetMaterial(0, FadeMat);
-	FootL->SetMaterial(0, FadeMat);
-	FootR->SetMaterial(0, FadeMat);
-	LegL1->SetMaterial(0, FadeMat);
-	LegL2->SetMaterial(0, FadeMat);
-	LegR1->SetMaterial(0, FadeMat);
-	LegR2->SetMaterial(0, FadeMat);
-}
+// void ALNPCH::SetFadeMat_Implementation() {
+	// Super::SetFadeMat_Implementation();
+	// Pelvis->SetMaterial(0, FadeMat);
+	// Torso->SetMaterial(0, FadeMat);
+	// Head->SetMaterial(0, FadeMat);
+	// ArmL1->SetMaterial(0, FadeMat);
+	// ArmR1->SetMaterial(0, FadeMat);
+	// ArmL2->SetMaterial(0, FadeMat);
+	// ArmR2->SetMaterial(0, FadeMat);
+	// FootL->SetMaterial(0, FadeMat);
+	// FootR->SetMaterial(0, FadeMat);
+	// LegL1->SetMaterial(0, FadeMat);
+	// LegL2->SetMaterial(0, FadeMat);
+	// LegR1->SetMaterial(0, FadeMat);
+	// LegR2->SetMaterial(0, FadeMat);
+// }
