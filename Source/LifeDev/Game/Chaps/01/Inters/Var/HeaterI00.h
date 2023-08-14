@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Chaps/All/Inters/Doors/Var/Heater00.h"
+#include "LifeDev/Game/Chaps/All/Inters/Var/Heater00.h"
 
 #include "HeaterI00.generated.h"
 

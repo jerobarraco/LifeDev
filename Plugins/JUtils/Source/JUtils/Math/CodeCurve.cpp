@@ -138,3 +138,19 @@ float UCodeCurveLib::Bezier(float T, const TArray<float>& Ps) {
 // https://easings.net/#
 // https://doc.qt.io/qt-6/qeasingcurve.html
 // http://www.the-art-of-web.com/css/timing-function/
+
+
+/*
+ Kinda works
+UCurveFloat* CurveFloat = NewObject<UCurveFloat>();
+FRichCurve& F = CurveFloat->FloatCurve;
+
+// 0, 0,  0.42, 0.0,  0.58, 1,  1, 1
+F.UpdateOrAddKey(0, 0);
+F.UpdateOrAddKey(0, .42);
+F.UpdateOrAddKey(1, .58);
+F.UpdateOrAddKey(1, 1); 
+F.AutoSetTangents();
+Anim->Curve = CurveFloat;
+
+*/
