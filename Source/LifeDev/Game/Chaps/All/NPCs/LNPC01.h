@@ -8,7 +8,7 @@
 
 #include "LNPC01.generated.h"
 
-// TODO have a base class for ALNPC1 and a child for ALNPC01I1 with the dialogs and sounds
+// TODO move stuff from here to the child npc01I00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPC01 : public ALNPCH {
 	GENERATED_BODY()
@@ -30,12 +30,6 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	void TriggerLocked_Implementation();
-	
-	UFUNCTION()
-	void DiagStandDone();
-	UFUNCTION()
-	void DiagSitDone();
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FNPCHPose PoseSit;

@@ -1,0 +1,47 @@
+// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+
+
+#include "LNPC01I00.generated.h"
+
+// TODO move stuff from base to here
+// the instancef or the npc01 in chapter 01 at boss step 
+UCLASS(Blueprintable, BlueprintType)
+class LIFEDEV_API ALNPC01I00 : public ALNPC01 {
+	GENERATED_BODY()
+
+public:
+	ALNPC01I00();
+	//
+	// UFUNCTION(BlueprintCallable, CallInEditor)
+	// void SetPoseStand();
+	//
+	// UFUNCTION(BlueprintCallable, CallInEditor)
+	// void SetPoseSit();
+	//
+	// UFUNCTION(BlueprintCallable, CallInEditor)
+	// void SetVisible(bool Vis);
+	//
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// AActor* Card = nullptr;
+	
+protected:
+	
+	// virtual void BeginPlay() override;
+	virtual void TriggerLocked_Implementation() override;
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+
+	UFUNCTION()
+	void DiagStandDone();
+	UFUNCTION()
+	void DiagSitDone();
+	//
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	// FNPCHPose PoseSit;
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	// FNPCHPose PoseStand;
+};

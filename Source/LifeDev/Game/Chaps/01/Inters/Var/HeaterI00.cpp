@@ -39,7 +39,7 @@ void AHeaterI00::Trigger_Implementation() {
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == FItemNames::Item_Card0 && IsValid(Dialogs)) {
+	if (Name == FItemNames::Card0 && IsValid(Dialogs)) {
 		Dialogs->AddId("HT00_IC0");
 		return EItemUseResult::BAD_HANDLED;
 	}

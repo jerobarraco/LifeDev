@@ -7,6 +7,7 @@
 
 #include "SRain.generated.h"
 
+// TODO make a manager class for sound that handles the rain, and the music(s) (at least)
 class UCSounder;
 // make a baseclass for sound stuff? 
 //  class for the rain 

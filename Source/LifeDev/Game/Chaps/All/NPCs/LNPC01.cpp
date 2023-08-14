@@ -150,29 +150,3 @@ void ALNPC01::BeginPlay() {
 	}
 }
 
-void ALNPC01::DiagStandDone() {
-	Dialogs->OnDone.RemoveAll(this);
-	if (IsValid(Card)) {
-		Card->SetActorHiddenInGame(false);
-	}
-
-	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
-    if (R) { R->SetPlaying(false); }
-
-	Destroy();
-}
-
-void ALNPC01::DiagSitDone() {
-	Dialogs->OnDone.RemoveAll(this);
-	SetPoseStand();
-	AddActorLocalRotation(FRotator(0, -120, 0));
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01::DiagStandDone);
-	Dialogs->AddId("N01.1");
-}
-
-void ALNPC01::TriggerLocked_Implementation() {
-	Super::TriggerLocked_Implementation();
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01::DiagSitDone);
-	Dialogs->AddId("N01.0");
-}
-
