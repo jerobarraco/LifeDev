@@ -5,22 +5,23 @@
 
 #include "CAnimator.generated.h"
 
+class UAnimTrackBase;
 class UCurveFloat;
 class USceneComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnBegin);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
+	
 
 // An interactive actor that can have an animation
 // You can set the tick interval to control the performance of this component
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimator: public UActorComponent {
 	GENERATED_BODY()
 public:
 
 	UCAnimator();
-	// todo fix all the bp usages of this function
 	
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -73,6 +74,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	FCodeCurve CodeCurve;
 
+	// This is just experimental and can be removed at any point
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	TArray<UAnimTrackBase*> Tracks;
+
+	// experimental too
+	UFUNCTION(BlueprintCallable)
+	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName& Name, float FStart, float FEnd);
+	
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)

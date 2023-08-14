@@ -46,6 +46,9 @@ public:
 	int32 InputPrio = 10;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 ZOrder = 3;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UDialogUI> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
@@ -57,6 +60,7 @@ public:
 	// when set it will skip showing the dialogs but still mark them as read
 	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category=Debug)
 	bool DebugSkip = false;
+	
 
 private:
 	// The ui is done with the current line

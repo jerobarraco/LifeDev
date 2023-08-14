@@ -37,7 +37,7 @@ void AStoryManager::BeginPlay() {
 	if (IsValid(UIClass.Get())) {
 		UI = NewObject<UStoryUI>(this, UIClass, TEXT("StoryUI"));
 		if (IsValid(UI)) {
-			UI->AddToViewport();
+			UI->AddToViewport(ZOrder);
 		}
 		UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
 	}

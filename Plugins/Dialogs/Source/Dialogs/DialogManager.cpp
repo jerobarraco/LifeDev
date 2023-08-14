@@ -100,7 +100,7 @@ void ADialogManager::BeginPlay() {
 	if (IsValid(Class)) {
 		UI = NewObject<UDialogUI>(this, Class);
 		if (IsValid(UI)) {
-			UI->AddToViewport();
+			UI->AddToViewport(ZOrder);
 			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIDiagDone);
 			IsShowing = true; // temporarily set, so that it hides.
 			Hide();

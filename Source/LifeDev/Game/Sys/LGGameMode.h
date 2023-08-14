@@ -54,15 +54,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UDialogs* Dialogs = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALInventoryManager* InvManager = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UDialogs* Dialogs = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UStory* Story = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALChar* Char = nullptr;
 

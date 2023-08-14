@@ -1,6 +1,8 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "CAnimator.h"
+
+#include "AnimTracks.h"
 // https://doc.qt.io/qt-6/qeasingcurve.html
 
 UCAnimator::UCAnimator():Super() {
@@ -53,13 +55,26 @@ void UCAnimator::DoTick(float DT) {
 	const float Alpha =
 		IsValid(Curve) ? Curve->GetFloatValue(NProg) :
 		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
-	
+
+	for (UAnimTrackBase* T: Tracks) {
+		T->Update(Alpha);
+	}
 	Update(Alpha);
+	
 	// UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
 	OnUpdate.Broadcast(Progress, Alpha);
 }
 
 void UCAnimator::DeInit() {}
+
+void UCAnimator::AddTrackMatF(UMaterialInstanceDynamic* M, const FName& Name, float FStart, float FEnd) {
+	UAnimTrackMatF* T = NewObject<UAnimTrackMatF>();
+	T->Mat = M;
+	T->Name = Name;
+	T->Start = FStart;
+	T->End = FEnd;
+	Tracks.Add(T);
+}
 
 void UCAnimator::End_Implementation() {
 	OnEnd.Broadcast();

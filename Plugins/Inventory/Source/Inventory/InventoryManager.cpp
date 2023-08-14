@@ -126,7 +126,7 @@ void AInventoryManager::BeginPlay() {
 	if (IsValid(Class)) {
 		UI = NewObject<UInventoryUI>(this, Class);
 		if (IsValid(UI)) {
-			UI->AddToViewport();
+			UI->AddToViewport(ZOrder);
 			Hide();
 			UI->OnDone.AddUniqueDynamic(this, &AInventoryManager::UIDone);
 		}

@@ -34,10 +34,14 @@ public:
 	void FadeOut();
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 ZOrder = 5;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UStoryUI> UIClass = nullptr;
 
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FStoryManagerOnFaded OnFaded;
-	
+
 protected:
 	// called when the ui is done fading
 	UFUNCTION()
