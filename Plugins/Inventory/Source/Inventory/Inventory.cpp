@@ -4,9 +4,7 @@
 
 #include "Engine/DataTable.h"
 
-#include "ItemMan.h" //needed for ManType.
-
-#pragma optimize("", off)
+#include "ItemLogic.h" //needed for ManType.
 
 bool UInventory::Mod(const FName& Name, int32 Diff) {
 	FName NewSel = NAME_None;
@@ -287,11 +285,11 @@ FItem* UInventory::AddNew(const FName& Name) {
 	// reset transient variables to avoid issues with input.
 	pOutItem->Count = 0;
 	pOutItem->ActiveCoolDown = 0;
-	if (IsValid(pOutItem->ManType)) { // creates the manager if possible
-		UClass* const ManType = pOutItem->ManType.Get();
+	if (IsValid(pOutItem->LogicType)) { // creates the logic if possible
+		UClass* const ManType = pOutItem->LogicType.Get();
 		if (IsValid(ManType)) {
-			pOutItem->Man = NewObject<UItemMan>(this, ManType);
-			pOutItem->Man->Name = Name;
+			pOutItem->Logic = NewObject<UItemLogic>(this, ManType);
+			pOutItem->Logic->Name = Name;
 		}
 	}
 
@@ -327,5 +325,3 @@ const FItem& UInventory::GetRefC(const FName& Name, bool& OutFound) const {
 	}
 	return *pItem;
 }
-
-#pragma optimize("", on)

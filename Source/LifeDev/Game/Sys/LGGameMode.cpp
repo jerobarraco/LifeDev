@@ -16,6 +16,7 @@
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
 #include "Interact/CInteractor.h"
+#include "Interact/Animator/CAnimator.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Story/LStep.h"
@@ -85,7 +86,9 @@ void ALGGameMode::Init_Implementation() {
 	// these are not needed since we are using the input actions
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
-	
+
+	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
+
 	// todo improve. should come from savestate. though still check for the chapter
 	// TODO maybe check the feat on SetChapter, and if it's not available go to next
 	const bool HasChap0 = Instance->GetFeat(EFeat::CHAP_00);
@@ -94,17 +97,21 @@ void ALGGameMode::Init_Implementation() {
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {
-		Char->InputPrio = 1; // todo move this inside init
+		Char->InputPrio = 1;
 		// Char->Init();
 	} else {
 		Char = nullptr;
 	}
 	
 	/// Dialogs
+	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs->Init();
+
 	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
 	if (IsValid(DiagManager)) {
 		// Needs to be 10 so that it takes precedence over the character
-		DiagManager->InputPrio = 10; // todo pass inside init
+		DiagManager->InputPrio = 10;
+		DiagManager->ZOrder = 3; 
 		DiagManager->DebugSkip = !Instance->GetFeat(EFeat::DIALOGS); // skip dialogs if no feature for it
 		DiagManager->Init();
 	} else {
@@ -120,6 +127,7 @@ void ALGGameMode::Init_Implementation() {
 	if (IsValid(InvManager)) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InvManager->InputPrio = 9;
+		InvManager->ZOrder = 1; 
 		InvManager->Init();
 	} else {
 		InvManager = nullptr;
@@ -127,24 +135,25 @@ void ALGGameMode::Init_Implementation() {
 
 	/// Story
 	Story = World->GetSubsystem<UStory>();
-	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 	Story->Init();
 
 	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
 	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
 	if (IsValid(StoryManager)) {
+		StoryManager->ZOrder = 5;
 		StoryManager->Init();
 	} else {
 		StoryManager = nullptr;
 	}
 
-	Dialogs = World->GetSubsystem<UDialogs>();
-	Dialogs->Init();
+	/// others' init finalized, finish my init
+	// start listening only here. in case the previous init might trigger a false one
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
+	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 
 	// start by disabling the input
-	auto disableInput = [this] {
+	auto disableInput = [this] { // TODO maybe make this a function and be done. 
 		SetCharInputEnabled(false);
 	};
 	// disable input on next tick to avoid a crash otherwise....
@@ -157,15 +166,14 @@ void ALGGameMode::Init_Implementation() {
 	// StartStory();
 	// wait for loading
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
-	// World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::StartChapter);
 }
 
 void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 
-	// TODO have a functino to create the objects and create them here
+	// TODO have a function to create the objects and create them here (what was this?)
 	Init();
-	SetDynRes();
+	// SetDynRes(); // can break the game and it's unused anyway
 }
 
 void ALGGameMode::DeInit_Implementation() {
@@ -262,10 +270,12 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
-	// TODO need an array of feats for each chapter index
-	// if (!Instance->GetFeat(EFeat::CHAP_00)) {
-		// StartNextChapter();
-	// }
+	// skip chapter if not enabled
+	if (ChapterId < LifeDev::Feats::ChapFeatN) {
+		if (!Instance->GetFeat(LifeDev::Feats::ChapFeats[ChapterId])) {
+			StartNextChapter();
+		}
+	}
 
 	// Should this be here?
 	if (!IsValid(Story)) return;
@@ -278,9 +288,7 @@ void ALGGameMode::StartChapter() {
 		UE_LOG(LogTemp, Error, TEXT("Could not find the StoryManager can't progress!"));
 		return;
 	}
-	
-	// TODO make these times into parameters
-	
+		
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 

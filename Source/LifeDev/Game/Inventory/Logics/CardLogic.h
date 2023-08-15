@@ -2,16 +2,16 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "Inventory/ItemMan.h"
+#include "Inventory/ItemLogic.h"
 
-#include "CardMan.generated.h"
+#include "CardLogic.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API UCardMan: public UItemMan {
+class LIFEDEV_API UCardLogic: public UItemLogic {
 public:
 	GENERATED_BODY()
 
-	UCardMan();
+	UCardLogic();
 	virtual void Look_Implementation() override {};
 	virtual void Use_Implementation() override;
 };

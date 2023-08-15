@@ -2,8 +2,9 @@
 #include "LNPC01I00.h"
 
 #include "Kismet/GameplayStatics.h"
+
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
-#include "LifeDev/Game/Inventory/InvItemsNames.h"
+#include "LifeDev/Game/Inventory/ItemNames.h"
 
 ALNPC01I00::ALNPC01I00():Super() {}
 
@@ -13,7 +14,7 @@ void ALNPC01I00::TriggerLocked_Implementation() {
 }
 
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == FItemNames::Card0) {
+	if (Name == Inventory::ItemNames::Card0) {
 		Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 		Dialogs->AddId("N01.0");
 		return EItemUseResult::SUCCESS;

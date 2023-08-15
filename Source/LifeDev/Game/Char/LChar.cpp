@@ -13,12 +13,14 @@
 
 #include "Dialogs/Dialogs.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Sounds/CNoiser.h"
 #include "Inventory/Inventory.h"
-#include "Inventory/ItemMan.h"
+#include "Inventory/ItemLogic.h"
 #include "JUtils/JMiscUtils.h"
+
 #include "LifeDev/Core/LGameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
@@ -224,37 +226,30 @@ void ALChar::ActInteract(const FInputActionValue& Value) {
 	}
 }
 
+bool ALChar::Say(const FName& Name) {
+	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
+	if (!D) return false;
+	return D->AddId(Name);
+}
+
 void ALChar::LookItem(const FItem& Item) {
 	// TODO open the ui and show it
-	UE_LOG(LogLChar, Warning, TEXT(
-				"This is a erzats display for the item '%s'. Look how beautiful it is!"
-				"you have %i of them, and the description is : '%s'. "),
+	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Count=%i, description '%s'. "),
 			*Item.Title.ToString(), Item.Count, *Item.Description.ToString());
 
 	// show the dialog with the description. this is temporary until i make the ui
 	FDialog Diag;
 	Diag.Type = EDialogType::SYSTEM;
 	Diag.Text = Item.Description;
-	Diag.CharRow = "Main"; 
+	Diag.CharRow = "Sys"; 
 	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
 	if (!D) return;
 	D->AddDiag(Diag);
 
-	// Say(FName("IT_NotUsable"))
-	// FDialogChar Char;
-	// D->AddId(FName("ItemNotUsable"), Diag, Char);
-
 	// trigger manager look
-	if (IsValid(Item.Man)) {
-		Item.Man->Look();
+	if (IsValid(Item.Logic)) {
+		Item.Logic->Look();
 	}
-}
-
-bool ALChar::Say(const FName& Name) {
-	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
-	if (!D) return false;
-	FDialog Diag; FDialogChar Char;
-	return D->AddId(Name);
 }
 
 void ALChar::ActItem() {
@@ -269,7 +264,8 @@ void ALChar::ActItem() {
 	}
 
 	if (!Item.Usable) {
-		LookItem(Item);
+		Say(FName("IT_NotUsable"));
+		// LookItem(Item);
 		return;
 	}
 
@@ -289,9 +285,10 @@ void ALChar::ActItem() {
 
 	if (Item.SelfUsable) {
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
-		UE_LOG(LogLChar, Log, TEXT("Item is self-usable. will attempt in a bit. '%s'."), *Item.Title.ToString());
-		if (IsValid(Item.Man)) { // notice this if is separate from the one above
-			Item.Man->Use();
+		// (notice this if is separate from the one above)
+		UE_LOG(LogLChar, Log, TEXT("Item is self-usable. will attempt now. '%s'."), *Item.Title.ToString());
+		if (IsValid(Item.Logic)) {
+			Item.Logic->Use();
 		}
 	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
 		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s'"), Res, *Item.Title.ToString());

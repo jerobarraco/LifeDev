@@ -2,15 +2,15 @@
 
 #include "CoreMinimal.h"
 
-#include "ItemMan.generated.h"
+#include "ItemLogic.generated.h"
 
 // Base class for the manager of each item 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Inventory))
-class INVENTORY_API UItemMan: public UObject {
+class INVENTORY_API UItemLogic: public UObject {
 public:
 	GENERATED_BODY()
 
-	UItemMan();
+	UItemLogic();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();

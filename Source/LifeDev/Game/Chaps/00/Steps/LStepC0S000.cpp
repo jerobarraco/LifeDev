@@ -8,6 +8,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	DlgId = FName("Intro");
 	InputEnabled = false;
 	UseFadeTime = true;
+	FinishPostWait = false;
 }
 
 void ALStepC0S000::Start_Implementation() {

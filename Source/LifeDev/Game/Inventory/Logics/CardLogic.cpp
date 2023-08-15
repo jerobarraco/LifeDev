@@ -1,11 +1,11 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "CardMan.h"
+#include "CardLogic.h"
 
-UCardMan::UCardMan():Super() {
+UCardLogic::UCardLogic():Super() {
 }
 
-void UCardMan::Use_Implementation() {
+void UCardLogic::Use_Implementation() {
 	Super::Use_Implementation();
 	UE_LOG(LogTemp, Log, TEXT("Card being used: '%s'"), *Name.ToString());
 }

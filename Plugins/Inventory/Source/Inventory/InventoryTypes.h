@@ -5,7 +5,7 @@
 
 #include "InventoryTypes.generated.h"
 
-class UItemMan;
+class UItemLogic;
 
 // The base structure for ITEMS
 USTRUCT(Blueprintable, BlueprintType)
@@ -39,19 +39,18 @@ public:
 
 	// the class for the item manager
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<UItemMan> ManType = nullptr;
+	TSubclassOf<UItemLogic> LogicType = nullptr;
 
 	// used during runtime to keep track of the count
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	int32 Count = 0;
-
 	// the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	int32 ActiveCoolDown = 0;
 	// whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	bool IsBlocked = false;
-	// the actual manager for this item
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UItemMan* Man = nullptr;
+	// the logic for this item. created by the inventory on creation
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	UItemLogic* Logic = nullptr;
 };
