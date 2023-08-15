@@ -42,7 +42,7 @@ namespace LifeDev {
 	namespace Feats {
 		static EFeat ChapFeats[] = {
 			EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02, EFeat::CHAP_03, EFeat::CHAP_04,
-			EFeat::CHAP_05,  EFeat::CHAP_06, EFeat::CHAP_07, EFeat::CHAP_08, EFeat::CHAP_09};
+			EFeat::CHAP_05, EFeat::CHAP_06, EFeat::CHAP_07, EFeat::CHAP_08, EFeat::CHAP_09};
 		static uint8 ChapFeatN = 10;
 	}
 }

@@ -37,19 +37,20 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
 	FFBOnChange OnChange;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float AnimSpeed = 20.f;
+	
+	inline static bool Debug = false;
+
 protected:
 	void SetValInternal(float New);
 	UFUNCTION() // for binding
 	void AnimUpdate(float Progress, float Alpha);
 	
-	float Val = 0;
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Animator;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	float AnimSpeed = 20.f;
-
+	float Val = 0;
 	float AnimFrom = 0;
 	float AnimTo = 0;
 };

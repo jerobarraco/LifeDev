@@ -23,6 +23,7 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDialogMan.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Inventory/LInventoryManager.h"
 
 ALGGameMode::ALGGameMode():Super() {
@@ -88,11 +89,10 @@ void ALGGameMode::Init_Implementation() {
 	Controller->bShowMouseCursor = false;
 
 	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
+	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
 
 	// todo improve. should come from savestate. though still check for the chapter
-	// TODO maybe check the feat on SetChapter, and if it's not available go to next
-	const bool HasChap0 = Instance->GetFeat(EFeat::CHAP_00);
-	ChapterId = HasChap0 ? 0: 1;
+	ChapterId = 0;
 	
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
@@ -274,6 +274,7 @@ void ALGGameMode::StartChapter() {
 	if (ChapterId < LifeDev::Feats::ChapFeatN) {
 		if (!Instance->GetFeat(LifeDev::Feats::ChapFeats[ChapterId])) {
 			StartNextChapter();
+			return;
 		}
 	}
 
@@ -330,5 +331,5 @@ void ALGGameMode::DiagDone() {
 
 void ALGGameMode::PostLoad() {
 	Super::PostLoad();
-	ALStep::FadeTime = TimeFadeOut+TimeHold;
+	ALStep::FadeTime = TimeFadeOut+TimeHold+1.0;
 }

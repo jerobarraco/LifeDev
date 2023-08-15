@@ -5,7 +5,7 @@
 
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
-	Animator->SetComponentTickInterval(.5); // TODO test
+	Animator->SetComponentTickInterval(1.0f); // TODO test
 	// TODO will this package?
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
@@ -18,8 +18,11 @@ void UFlashback::SetValInternal(float New) {
 	// don't bother if it's the same, specially since many things could be bound to onChange
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
+	if (Debug) {
+		UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
+	}
+
 	Val = New;
-	// UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
 	OnChange.Broadcast(Val);
 }
 
@@ -58,7 +61,9 @@ void UFlashback::SetVal(float New, float Speed) {
 	const float Time = Speed*Diff;
 	Animator->Duration = Time;
 	Animator->PlaySet();
-	// UE_LOG(LogTemp, Log, TEXT("Speed, Time %.5f %.5f"), Speed, Time);
+	if (Debug) {
+		UE_LOG(LogTemp, Log, TEXT("Flashback: Speed, Time %.5f %.5f"), Speed, Time);
+	}
 }
 
 void UFlashback::Deinitialize() {
@@ -71,8 +76,8 @@ void UFlashback::Initialize(FSubsystemCollectionBase& Collection) {
 	Animator->OnUpdate.AddUniqueDynamic(this, &UFlashback::AnimUpdate);
 
 	// doesn't do anything. but maybe it helps, or maybe it crashes.
-	Animator->RegisterComponentWithWorld(GetWorld());
-	Animator->RegisterAllComponentTickFunctions(true);
+	// Animator->RegisterComponentWithWorld(GetWorld());
+	// Animator->RegisterAllComponentTickFunctions(true);
 	// Animator->RegisterComponent();
 }
 
