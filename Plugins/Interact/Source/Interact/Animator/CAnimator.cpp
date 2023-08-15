@@ -25,12 +25,11 @@ void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 void UCAnimator::TickManual(float DeltaSeconds) {
 	// basic tick interval for manual ticks
 	DTAcum += DeltaSeconds;
-	UE_LOG(LogTemp, Log, TEXT("TickManual DTAcum=%3.3f DT=%3.3f"), DTAcum, DeltaSeconds);
+	// UE_LOG(LogTemp, Log, TEXT("TickManual DTAcum=%3.3f DT=%3.3f"), DTAcum, DeltaSeconds);
 	if (DTAcum < GetComponentTickInterval()) return;
 
-	DeltaSeconds = DTAcum;
+	DoTick(DTAcum);
 	DTAcum = 0.0;
-	DoTick(DeltaSeconds);
 }
 
 void UCAnimator::DoTick(float DT) {
