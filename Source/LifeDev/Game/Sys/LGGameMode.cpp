@@ -26,6 +26,8 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Inventory/LInventoryManager.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
+
 ALGGameMode::ALGGameMode():Super() {
 	SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
@@ -52,7 +54,7 @@ bool ALGGameMode::LoadChapter() {
 	const FName ChapName = *FString::FromInt(ChapterId); // todo find a betterest way
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
 	if (!pChap) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get the chapter from datatable"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable"));
 		return false;
 	}
 
@@ -72,13 +74,13 @@ void ALGGameMode::Init_Implementation() {
 	if (!IsValid(World)) return;
 	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance)){
-		UE_LOG(LogTemp, Warning, TEXT("Game Mode: No valid instance found"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Game Mode: No valid instance found"));
 		return;
 	}
 	
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	if (!IsValid(Settings)) {
-		UE_LOG(LogTemp, Warning, TEXT("Settings not valid"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid"));
 		return;
 	}
 
@@ -264,29 +266,25 @@ void ALGGameMode::SetDynRes() {
 }
 
 void ALGGameMode::StartChapter() {
+	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
 	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)) {
-		UE_LOG(LogTemp, Warning, TEXT("No game instance? Cant proceed."));
+	if (!IsValid(Instance) || !IsValid(Story) || !IsValid(StoryManager)) {
+		// Should this be here?
+		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
 		return;
 	}
-
+	
 	// skip chapter if not enabled
 	if (ChapterId < LifeDev::Feats::ChapFeatN) {
 		if (!Instance->GetFeat(LifeDev::Feats::ChapFeats[ChapterId])) {
+			UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter not in game Feats. id=%i."), ChapterId);
 			StartNextChapter();
 			return;
 		}
 	}
 
-	// Should this be here?
-	if (!IsValid(Story)) return;
 	if (!LoadChapter()) {
-		UE_LOG(LogTemp, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
-		return;
-	}
-
-	if (!IsValid(StoryManager)) {
-		UE_LOG(LogTemp, Error, TEXT("Could not find the StoryManager can't progress!"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
 		return;
 	}
 		
