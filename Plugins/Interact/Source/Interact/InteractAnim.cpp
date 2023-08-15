@@ -45,11 +45,11 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteractAnim::SetText_Implementation() {
 	Super::SetText_Implementation();
-	if (Texts.Num()<2) {
-		if (Texts.Num()>0) {
-			Interact->Text = Texts[0];
-		}
+	if (Texts.Num()<1) {
+		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
+	} else if (Texts.Num()<2) {
+		Interact->Text = Texts[0];
 	}
 	Interact->Text = Texts[IsOpen?1:0];
 }

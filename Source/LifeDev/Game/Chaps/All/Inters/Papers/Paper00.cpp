@@ -14,7 +14,7 @@ APaper00::APaper00():Super() {
 	Interact->SetBoxExtent(FVector(7.5,10.5,.250000));
 	
 	AnimEnabled = false;
-	Texts = { FText::FromString(TEXT("Ink-lined plane")), FText::FromString(TEXT("Pick Up")) } ;
+	Texts = { FText::FromString(TEXT("A piece of paper")) } ;
 	// a lazy dog is a sheet of paper
 	// a sheet of paper is an ink lined plane
 	// an inclined plane is a slope up
