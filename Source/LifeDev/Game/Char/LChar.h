@@ -9,6 +9,7 @@
 
 #include "LChar.generated.h"
 
+class UDialogs;
 class UCInteractor;
 class UCInteract;
 class UInputComponent;
@@ -101,18 +102,19 @@ protected:
 	USkeletalMeshComponent* Mesh1P;
 
 	// First person camera
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = Camera)
+	UPROPERTY(BlueprintReadOnly, Category = Camera)
 	UCameraComponent* Camera;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly)
 	UCInteractor* Interactor = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly)
 	UCNoiser* Noiser = nullptr;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UGameUI* UI = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDialogs* Dialogs = nullptr;
 };
 

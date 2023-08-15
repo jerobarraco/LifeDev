@@ -150,12 +150,14 @@ void ALChar::BeginPlay()
 		// set to HitTestInvisible or not hit testable. or it will "eat" the cursor
 		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
 	}
+
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
+	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
 
-	ULGameInstance* const GameInstance = Cast<ULGameInstance>(GetGameInstance());
+	// ULGameInstance* const GameInstance = Cast<ULGameInstance>(GetGameInstance());
 	Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);
 	Noiser->Start();
 }
@@ -166,6 +168,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	UI = nullptr;
 	Inventory = nullptr;
+	Dialogs = nullptr;
 	if (IsValid(Noiser)) {
 		Noiser->Stop();
 	}
@@ -228,9 +231,8 @@ void ALChar::ActInteract(const FInputActionValue& Value) {
 }
 
 bool ALChar::Say(const FName& Name) {
-	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
-	if (!D) return false;
-	return D->AddId(Name);
+	if (!IsValid(Dialogs)) return false;
+	return Dialogs->AddId(Name);
 }
 
 void ALChar::LookItem(const FItem& Item) {
@@ -238,14 +240,14 @@ void ALChar::LookItem(const FItem& Item) {
 	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Count=%i, description '%s'. "),
 			*Item.Title.ToString(), Item.Count, *Item.Description.ToString());
 
-	// show the dialog with the description. this is temporary until i make the ui
-	FDialog Diag;
-	Diag.Type = EDialogType::SYSTEM;
-	Diag.Text = Item.Description;
-	Diag.CharRow = "Sys"; 
-	UDialogs* const D = GetWorld()->GetSubsystem<UDialogs>();
-	if (!D) return;
-	D->AddDiag(Diag);
+	if (IsValid(Dialogs)) {
+		// show the dialog with the description. this is temporary until i make the ui
+		FDialog Diag;
+		Diag.Type = EDialogType::SYSTEM;
+		Diag.Text = Item.Description;
+		Diag.CharRow = "Sys";
+		Dialogs->AddDiag(Diag);
+	}
 
 	// trigger manager look
 	if (IsValid(Item.Logic)) {
@@ -303,6 +305,10 @@ void ALChar::ActItem() {
 
 void ALChar::ActItemLook() {
 	FItem Item;
-	Inventory->GetSelectedItem(Item);
+	if (!Inventory->GetSelectedItem(Item)) {
+		UE_LOG(LogLChar, Warning, TEXT("No selected item to look at"));
+		return;
+	}
+
 	LookItem(Item);
 }
