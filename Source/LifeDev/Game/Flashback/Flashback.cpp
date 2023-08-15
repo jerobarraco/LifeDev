@@ -75,7 +75,7 @@ void UFlashback::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Animator->OnUpdate.AddUniqueDynamic(this, &UFlashback::AnimUpdate);
 
-	// doesn't do anything. but maybe it helps, or maybe it crashes.
+	// this won't make the animator work, but will make the uflashback get an EXTRA tick on a different interval (maybe the component's interval)
 	// Animator->RegisterComponentWithWorld(GetWorld());
 	// Animator->RegisterAllComponentTickFunctions(true);
 	// Animator->RegisterComponent();

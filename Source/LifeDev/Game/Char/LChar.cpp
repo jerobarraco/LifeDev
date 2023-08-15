@@ -184,8 +184,9 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
 
-	Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	// no jumping, i don't like. but leave in case i change my mind. also for docs
+	// Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	// Input->BindAction(ActionJump, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALChar::ActMove);
 	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALChar::ActLook);
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALChar::ActInteract);
