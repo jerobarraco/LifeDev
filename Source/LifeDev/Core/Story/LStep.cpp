@@ -6,8 +6,6 @@
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
-// TODO add a function called Debug. that is called on start if the settings have the Debug_Step flag added
-
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
 	if (!FinishItems.IsEmpty()) {
@@ -16,7 +14,7 @@ void ALStep::Start_Implementation() {
 	
 	AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-	// ALGGameMode* const LGGameMode = ALGGameMode::Get();
+	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	if (!IsValid(LGGameMode)) return;
 	LGGameMode->SetCharInputEnabled(InputEnabled);
 	ULGameInstance* const Instance = Cast<ULGameInstance>(LGGameMode->GetGameInstance());
@@ -27,13 +25,16 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::Stop_Implementation() {
-	Super::Stop_Implementation();
-	Dialogs->OnDone.RemoveAll(this);
+	if (IsValid(Dialogs)) {
+		Dialogs->OnDone.RemoveAll(this);
+	}
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
 	// ensure we don't double trigger
 	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+
+	Super::Stop_Implementation();
 }
 
 void ALStep::PostWait_Implementation() {
@@ -49,7 +50,7 @@ void ALStep::StartDialogs() {
 	if (!Dialogs->AddId(DlgId)) {
 		// if it fails to add it, then finish manually
 		Finish();
-	};
+	}
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
@@ -74,14 +75,15 @@ void ALStep::BeginPlay() {
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Dialogs = nullptr;
 	if (IsValid(Dialogs)) {
 		Dialogs->OnDone.RemoveAll(this);
 	}
+	Dialogs = nullptr;
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
 	Inventory = nullptr;
+	// always at end
 	Super::EndPlay(EndPlayReason);
 }
 
