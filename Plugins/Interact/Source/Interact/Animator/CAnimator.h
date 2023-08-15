@@ -40,39 +40,44 @@ public:
 	UFUNCTION(BlueprintCallable)
 	inline bool GetProgress() const { return Progress; }
 	
-	// a tick function for when you need to use this class somewhere else. it's hacky. yes.
+	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
-	void DoTick(float DeltaSeconds);
+	void TickManual(float DeltaSeconds);
 
 	// By default run at 30 fps; Optimization
 	inline static float IntervalDefault = 1.0f/30.f;
+	// to be set by game manager depending on the flags
+	inline static bool Debug = false;
 	
+	// curve to use, if not set then codecurve will be used, if not set then it will be linear.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
+	// a curve by code. only used if Curve is not set. if both not set it will be linear.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	FCodeCurve CodeCurve;
 
 	// Duration of the animation in seconds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	float Duration = 2.0;
-	
+	// can be changed directly, but beware if doing so while playing
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsLooping = false;
+	// Will restart the animation once completed. If not looping, then only once. can be changed directly, but beware if doing so while playing
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsBouncing = false;
+	// Whether currently reversed. changes on bounce. can be changed directly, but beware if doing so while playing
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsReversed = false;
 
 	// triggers when the animation ends. but not if it wasn't playing.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
-
+	// when it starts, obviously
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnBegin OnBegin;
-
+	// everytime the animation updates
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	FCodeCurve CodeCurve;
 
 	// This is just experimental and can be removed at any point
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
@@ -81,6 +86,7 @@ public:
 	// experimental too
 	UFUNCTION(BlueprintCallable)
 	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName& Name, float FStart, float FEnd);
+
 	
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)
@@ -105,9 +111,12 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void DeInit();
-
+	void DoTick(float DeltaSeconds);
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsAnimating = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
+
+	float DTAcum = 0.0; // used for manual ticks 
 };

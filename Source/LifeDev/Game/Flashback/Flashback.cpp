@@ -5,7 +5,7 @@
 
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
-	
+	Animator->SetComponentTickInterval(.5); // TODO test
 	// TODO will this package?
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
@@ -82,7 +82,7 @@ void UFlashback::Tick(float DeltaTime) {
 		// TEXT("Tick %f!"));	
 
 	// have to manually do it. no optimizations here.
-	Animator->DoTick(DeltaTime);
+	Animator->TickManual(DeltaTime);
 }
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
