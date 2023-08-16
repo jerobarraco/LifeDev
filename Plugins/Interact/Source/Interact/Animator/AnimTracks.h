@@ -12,7 +12,7 @@ class UAnimTrackBase : public UObject {
 	GENERATED_BODY()
 
 public:
-	virtual void Update(float Alpha);
+	virtual void Update(float Progress, float Alpha);
 };
 
 
@@ -33,7 +33,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	UMaterialInstanceDynamic* Mat = nullptr;
 
-	virtual void Update(float Alpha) override;
+	virtual void Update(float Progress, float Alpha) override;
 };
 //
 // USTRUCT(Blueprintable, BlueprintType)

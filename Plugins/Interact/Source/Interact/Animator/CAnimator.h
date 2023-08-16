@@ -83,11 +83,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	TArray<UAnimTrackBase*> Tracks;
 
-	// experimental too
+	// experimental too. For some reason this only works after begin play and not on constructor.
 	UFUNCTION(BlueprintCallable)
-	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName& Name, float FStart, float FEnd);
+	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, float FStart, float FEnd);
 
-	
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
