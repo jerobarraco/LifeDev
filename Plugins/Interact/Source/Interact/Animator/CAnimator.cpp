@@ -95,7 +95,12 @@ void UCAnimator::DoTick(float DT) {
 	}
 }
 
-void UCAnimator::DeInit() {}
+void UCAnimator::DeInit() {
+	if (IsValid(Parent)) {
+		Parent->OnBegin.RemoveAll(this);
+	}
+	Parent = nullptr;
+}
 
 // maybe make a blueprint library and move this there. in the AnimTracks file
 void UCAnimator::AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, float FStart, float FEnd) {
@@ -105,6 +110,22 @@ void UCAnimator::AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, flo
 	T->Start = FStart;
 	T->End = FEnd;
 	Tracks.Add(T);
+}
+
+void UCAnimator::BindTo(UCAnimator* NewParent) {
+	if (IsValid(Parent)) {
+		Parent->OnUpdate.RemoveAll(this);
+	}
+	Parent = nullptr;
+	if (!IsValid(NewParent)) return;
+	
+	Parent = NewParent;
+	Parent->OnUpdate.AddUniqueDynamic(this, &UCAnimator::ChildUpdate);
+}
+
+void UCAnimator::ChildUpdate(float T, float Alpha) {
+	Progress = T;
+	Update(Alpha);
 }
 
 void UCAnimator::End_Implementation() {
@@ -117,6 +138,7 @@ void UCAnimator::Begin_Implementation() {
 
 void UCAnimator::BeginPlay() {
 	Super::BeginPlay();
+	BindTo(Parent); // rebind to the parent if set
 	Deactivate();
 }
 
@@ -149,3 +171,4 @@ void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
 		End();
 	}
 }
+

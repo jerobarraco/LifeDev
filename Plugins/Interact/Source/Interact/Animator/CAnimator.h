@@ -87,6 +87,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, float FStart, float FEnd);
 
+	UFUNCTION(BlueprintCallable)
+	void BindTo(UCAnimator* Parent);
+
+	
+
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
@@ -105,7 +110,10 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetIsAnimating(bool NewIsRotating);
-	
+
+	UFUNCTION()
+	void ChildUpdate(float T, float Alpha);
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -113,9 +121,11 @@ protected:
 	void DoTick(float DeltaSeconds);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UCAnimator* Parent = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsAnimating = false;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
-
+	
 	float DTAcum = 0.0; // used for manual ticks 
 };
