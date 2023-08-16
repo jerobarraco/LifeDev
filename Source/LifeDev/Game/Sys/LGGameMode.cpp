@@ -3,6 +3,7 @@
 #include "LGGameMode.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Consts/ConstSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -275,9 +276,9 @@ void ALGGameMode::StartChapter() {
 	}
 	
 	// skip chapter if not enabled
-	if (ChapterId < LifeDev::Feats::ChapFeatN) {
-		if (!Instance->GetFeat(LifeDev::Feats::ChapFeats[ChapterId])) {
-			UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter not in game Feats. id=%i."), ChapterId);
+	if (ChapterId < LDConsts::Feats::ChapFeatN) {
+		if (!Instance->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
+			UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
 			StartNextChapter();
 			return;
 		}

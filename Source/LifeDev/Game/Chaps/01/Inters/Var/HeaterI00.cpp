@@ -3,7 +3,7 @@
 #include "HeaterI00.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "LifeDev/Game/Inventory/ItemNames.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
 	AnimEnabled = true;
@@ -39,7 +39,7 @@ void AHeaterI00::Trigger_Implementation() {
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == Inventory::ItemNames::Card0 && IsValid(Dialogs)) {
+	if (Name == LDConsts::Items::Card0 && IsValid(Dialogs)) {
 		Dialogs->AddId("HT00_IC0");
 		return EItemUseResult::BAD_HANDLED;
 	}

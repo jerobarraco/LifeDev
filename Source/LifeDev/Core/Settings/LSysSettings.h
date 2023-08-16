@@ -38,19 +38,6 @@ enum class EFeat: uint8 {
 	DEBUG,
 };
 
-// TODO move to another file. called ConstSettings.
-// Move to namespace LDConst { Feats
-
-namespace LifeDev {
-	namespace Feats {
-		// used to map chapter id with feat
-		static EFeat ChapFeats[] = {
-			EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02, EFeat::CHAP_03, EFeat::CHAP_04,
-			EFeat::CHAP_05, EFeat::CHAP_06, EFeat::CHAP_07, EFeat::CHAP_08, EFeat::CHAP_09};
-		static uint8 ChapFeatN = 10;
-	}
-}
-
 // Note the Config meta tag on the properties are critical or it might crash
 // Settings for the game (to be built)
 UCLASS(Blueprintable, Config=LSysSettings, defaultconfig, meta=(DisplayName="LifeDevSystemSettings"))
