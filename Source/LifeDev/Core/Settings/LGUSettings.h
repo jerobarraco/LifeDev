@@ -5,17 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameUserSettings.h"
 
-#include "LSettings.generated.h"
+#include "LGUSettings.generated.h"
 
 // used for user settings
-UCLASS(config = MySetting)
-class LIFEDEV_API ULSettings : public UGameUserSettings
+UCLASS(Blueprintable, config = LGUSettings, defaultconfig, meta=(DisplayName="LifeDevGameUserSettings"))
+class LIFEDEV_API ULGUSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
 
 public:
-	ULSettings(const FObjectInitializer& obj);
-	
+	ULGUSettings(const FObjectInitializer& obj);
 	// UPROPERTY(Config, EditAnywhere, Category = "My Custom Settings")
 	// int32 CustomInteger;
 };

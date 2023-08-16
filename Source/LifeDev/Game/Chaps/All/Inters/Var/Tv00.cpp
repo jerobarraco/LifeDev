@@ -19,19 +19,23 @@ ATv00::ATv00():Super() {
 	// todo
 	Interact->SetBoxExtent(FVector(7.5,10.5,.250000));
 	Interact->SetEnabled(true);
-	// todo
 	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
 
-	// todo sfx
 	SFX->SetRelativeLocation(FVector::Zero());
-	// SFX_Open 
-	// SFX_Close
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Button_Press-007.Button_Press-007"));
+	SFX_Open = SOpen.Object;
+	SFX_Close = SOpen.Object; // reusing the same
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		SOpenEnd(TEXT("/Engine/EditorSounds/Notifications/CompileFailed_Cue.CompileFailed_Cue"));
+	SFX_OpenEnd = SOpenEnd.Object;
 	
 	/// other meshes
-	// todo meshes for frame, crt, glass
-	// ** remember the cast shadows, and static on meshes, and attach parent
 	Frame = CreateDefaultSubobject<UCQuickMesh>(TEXT("Frame"));
+	Frame->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Frame->SetupAttachment(RootComponent);
+	Frame->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	Frame->SetCollisionProfileName("BlockAllDynamic");
 
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
 	Glass->SetupAttachment(Frame);
@@ -39,17 +43,19 @@ ATv00::ATv00():Super() {
 	Glass->bUseAttachParentBound = true; // opt
 
 	Crt = CreateDefaultSubobject<UCQuickMesh>(TEXT("Crt"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CCrt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Crt.Tv00-Crt"));
 	Crt->SetupAttachment(Frame);
+	Crt->SetStaticMesh(CCrt.Object);
 	Crt->SetCastShadow(false); // opt
 	Crt->bUseAttachParentBound = true; // opt
 	// TODO test what would happen if by default the mesh has a material instance and i many instance of this object
 	// will all the material instances change?
-	Crt->CreateDynamicMaterialInstance(0); // ensure we have a dynamic material set
+	// Crt->CreateDynamicMaterialInstance(0); // ensure we have a dynamic material set
 	
 	/// anims
 	AnimEnabled = true;
 	Anim->Duration = .6;
-
 	
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
 	AnimCrt->MatVName = "Emissive";
@@ -63,7 +69,7 @@ ATv00::ATv00():Super() {
 	RndCrt->DelayMax = 3;
 	RndCrt->ValueMin = .5;
 	RndCrt->ValueMax = 3;
-	
+	// TODO start rndcrt on trigger stop on close
 // TODO logic for animations
 // TODO instance with dialogs
 }

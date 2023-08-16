@@ -3,6 +3,7 @@
 
 #include "CQuickMesh.h"
 
+// TODO make quickmesh actor with a quickmesh component to spawn in world
 UCQuickMesh::UCQuickMesh(): Super() {
 	Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Super::SetCollisionProfileName("NoCollision");

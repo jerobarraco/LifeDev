@@ -7,5 +7,6 @@ ULSysSettings* ULSysSettings::Get()
 }
 
 FName ULSysSettings::GetCategoryName() const {
-	return FName(TEXT("LifeDev"));
+	static const FName Cat = FName("LifeDev"); 
+	return Cat;
 }

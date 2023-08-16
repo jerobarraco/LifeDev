@@ -12,6 +12,8 @@ class LIFEDEV_API ALInteract: public AInteractAnim {
 public:
 	GENERATED_BODY()
 
+	ALInteract();
+	
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItemReq = NAME_None;

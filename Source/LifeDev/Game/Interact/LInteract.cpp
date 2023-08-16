@@ -1,7 +1,14 @@
 #include "LInteract.h"
 
+#include "Components/AudioComponent.h"
 #include "Dialogs/Dialogs.h"
 #include "Inventory/Inventory.h"
+
+ALInteract::ALInteract():Super() {
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/SA_GenericAttenuation.SA_GenericAttenuation"));
+	SFX->AttenuationSettings = CAtt.Object; 
+}
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
