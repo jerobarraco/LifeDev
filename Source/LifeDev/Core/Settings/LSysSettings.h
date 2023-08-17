@@ -34,7 +34,7 @@ enum class EFeat: uint8 {
 	// INVENTORY,
 	// DIALOGS,
 
-	// General debug, deprecated
+	// General debug, deprecated. don't use unless you are me.
 	DEBUG,
 };
 

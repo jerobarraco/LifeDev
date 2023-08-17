@@ -4,13 +4,15 @@
 
 #include "Interact/Animator/CAnimatorMix.h"
 
-
 ADoorish::ADoorish():Super() {
 	AnimEnabled = true;
 	Anim->TRoot = RootComponent;
 	Anim->IsAdditive = true;
 	// visual: run at 60 fps since it's movement
 	Anim->SetComponentTickInterval(1/60.f);
+
+	Mesh->SetCastShadow(true);
+	Mesh->bCastDynamicShadow = true;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/SBvfe1_Door_Handle_D_002.SBvfe1_Door_Handle_D_002"));

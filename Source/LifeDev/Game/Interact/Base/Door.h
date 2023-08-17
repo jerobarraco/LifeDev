@@ -5,7 +5,6 @@
 
 #include "Door.generated.h"
 
-// TODO move to Game/Interact/Base
 // Base class for door-like and drawer actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor: public ADoorish {
