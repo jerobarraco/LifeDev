@@ -5,7 +5,7 @@
 
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
-	Animator->SetComponentTickInterval(1.0f); // TODO test
+	Animator->SetComponentTickInterval(1/30.f);
 	// TODO will this package?
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));

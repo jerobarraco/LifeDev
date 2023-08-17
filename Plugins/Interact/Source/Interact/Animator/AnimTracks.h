@@ -2,53 +2,23 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
+#include "CAnimator.h"
 
 #include "AnimTracks.generated.h"
 
 // This is just experimental and can be removed at any point
-
-UCLASS(Blueprintable, BlueprintType)
-class UAnimTrackBase : public UObject {
-	GENERATED_BODY()
-
-public:
-	virtual void Update(float Progress, float Alpha);
-};
-
-
-UCLASS(Blueprintable, BlueprintType)
-class UAnimTrackMatF : public UAnimTrackBase {
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FName Name;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	float Start = 0.0;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	float End = 1;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	UMaterialInstanceDynamic* Mat = nullptr;
-
-	virtual void Update(float Progress, float Alpha) override;
-};
 //
-// USTRUCT(Blueprintable, BlueprintType)
-// struct FFAnimTrackBase {
+// UCLASS(Blueprintable, BlueprintType)
+// class UAnimTrackBase : public UObject {
 // 	GENERATED_BODY()
 //
-// 	uint8 Type = 0;
 // public:
-// 	virtual void Update(float Alpha);
-// 	virtual ~FFAnimTrackBase(){};
+// 	virtual void Update(float Progress, float Alpha);
 // };
 //
 //
-// USTRUCT(Blueprintable, BlueprintType)
-// struct FFAnimTrackMatF : public FFAnimTrackBase {
+// UCLASS(Blueprintable, BlueprintType)
+// class UAnimTrackMatF : public UAnimTrackBase {
 // 	GENERATED_BODY()
 //
 // public:
@@ -64,6 +34,72 @@ public:
 // 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 // 	UMaterialInstanceDynamic* Mat = nullptr;
 //
-// 	virtual void Update(float Alpha) override;
-// 	virtual ~FFAnimTrackMatF() override {} ;
+// 	virtual void Update(float Progress, float Alpha) override;
 // };
+
+// USTRUCT(Blueprintable, BlueprintType)
+// struct INTERACT_API FFAnimTrackBase {
+// 	GENERATED_BODY()
+//
+// 	uint8 Type = 0;
+// public:
+// 	FFAnimTrackBase() { }
+// 	~FFAnimTrackBase() {};
+// 	void Update(float Alpha);
+// };
+
+
+USTRUCT(Blueprintable, BlueprintType)
+struct INTERACT_API FAnimTrackMatF {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FName Name;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	float Start = 0.0;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	float End = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UMaterialInstanceDynamic* Mat = nullptr;
+
+	void Update(float Alpha);
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct INTERACT_API FAnimTrackMatV  {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FName Name;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FLinearColor Start = FLinearColor::Black;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FLinearColor End = FLinearColor::White;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UMaterialInstanceDynamic* Mat = nullptr;
+
+	void Update(float Alpha);
+};
+
+// An interactive actor that can have an animation
+// You can set the tick interval to control the performance of this component
+UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+class INTERACT_API UCAnimTracks : public UCAnimator {
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
+	TArray<FAnimTrackMatF> MatFs;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
+	TArray<FAnimTrackMatV> MatVs;
+
+	virtual void Update_Implementation(float Alpha) override;
+};
