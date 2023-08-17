@@ -7,6 +7,7 @@
 
 #include "LStepC1S002.generated.h"
 
+class UFlashback;
 class ASGhosts;
 class UNiagaraComponent;
 
@@ -49,6 +50,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ASGhosts* GhostSFX = nullptr;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlashback* Flashback = nullptr;
 };

@@ -66,6 +66,13 @@ void UFlashback::SetVal(float New, float Speed) {
 	}
 }
 
+void UFlashback::SetValS(UWorld* W, float New, float Speed) {
+	if (!IsValid(W)) return;
+	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
+	if (!IsValid(Flashback)) return;
+	Flashback->SetVal(New, Speed);
+}
+
 void UFlashback::Deinitialize() {
 	Super::Deinitialize();
 	Animator->OnUpdate.RemoveAll(this);

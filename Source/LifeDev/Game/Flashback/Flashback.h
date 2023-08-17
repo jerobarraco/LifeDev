@@ -28,6 +28,9 @@ public:
 	// if it's <0 it will use the default time. 0 will be instant. >0 will use that.
 	UFUNCTION(BlueprintCallable)
 	void SetVal(float New, float Speed = -1.f);
+
+	UFUNCTION(BlueprintCallable)
+	void SetValS(UWorld*W, float New, float Speed = -1.f);
 	
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

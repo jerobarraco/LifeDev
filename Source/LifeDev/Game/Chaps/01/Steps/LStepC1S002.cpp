@@ -10,6 +10,7 @@
 
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
 	Name = FName("C1S2");
@@ -39,6 +40,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 
 void ALStepC1S002::Start_Implementation() {
 	Super::Start_Implementation();
+	Flashback = GetWorld()->GetSubsystem<UFlashback>();
 	SpawnGhosts();
 }
 
@@ -51,6 +53,9 @@ void ALStepC1S002::SpawnGhosts() {
 		GhostSFX->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		GhostSFX->SetPlaying(true);
 	}
+
+	const float Val = FMath::Max(Flashback->GetVal(), 0.7f);
+	Flashback->SetVal(Val);
 }
 
 void ALStepC1S002::StartShake() {
@@ -63,7 +68,10 @@ void ALStepC1S002::StartShake() {
 
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
 	if (R) { R->SetPlaying(true); }
-	
+
+	// bump to max
+	Flashback->SetVal(1);
+
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
 }
@@ -93,5 +101,7 @@ void ALStepC1S002::GhostDestroyed() {
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
+	Flashback->SetVal(.5);
+
 	Finish();
 }
