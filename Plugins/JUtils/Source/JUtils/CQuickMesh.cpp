@@ -17,4 +17,6 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	Super::SetComponentTickEnabled(false);
+	SetCastShadow(false);
+	bCastDynamicShadow = false;
 }

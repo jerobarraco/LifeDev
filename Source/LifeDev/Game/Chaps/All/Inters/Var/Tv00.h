@@ -14,6 +14,9 @@ public:
 	GENERATED_BODY()
 
 	ATv00();
+
+	virtual void Trigger_Implementation() override;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* RndCrt = nullptr;

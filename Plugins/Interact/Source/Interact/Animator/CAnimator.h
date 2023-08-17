@@ -79,18 +79,9 @@ public:
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
-	// This is just experimental and can be removed at any point
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	TArray<UAnimTrackBase*> Tracks;
-
-	// experimental too. For some reason this only works after begin play and not on constructor.
+	// sets/clear a parent that drives the update of this animator
 	UFUNCTION(BlueprintCallable)
-	void AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, float FStart, float FEnd);
-
-	UFUNCTION(BlueprintCallable)
-	void BindTo(UCAnimator* Parent);
-
-	
+	void BindTo(UCAnimator* Parent = nullptr);
 
 protected:
 	// override me on child classes :) But call the parent. (Progress can be read directly)

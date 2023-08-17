@@ -2,8 +2,6 @@
 
 #include "CAnimator.h"
 
-#include "AnimTracks.h"
-
 UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
@@ -13,7 +11,6 @@ UCAnimator::UCAnimator():Super() {
 		CCurve(TEXT("/Interact/Interact_C.Interact_C"));
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 	SetComponentTickInterval(IntervalDefault);
-	Tracks.Add(CreateDefaultSubobject<UAnimTrackMatF>("Name", false));
 }
 
 void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
@@ -55,12 +52,6 @@ void UCAnimator::DoTick(float DT) {
 		UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
 	}
 
-	// TODO test, might get removed
-	for (UAnimTrackBase* const T: Tracks) {
-		if (!IsValid(T)) continue;
-		T->Update(Progress, Alpha);
-	}
-
 	// update child objects
 	Update(Alpha);
 
@@ -96,20 +87,7 @@ void UCAnimator::DoTick(float DT) {
 }
 
 void UCAnimator::DeInit() {
-	if (IsValid(Parent)) {
-		Parent->OnBegin.RemoveAll(this);
-	}
-	Parent = nullptr;
-}
-
-// maybe make a blueprint library and move this there. in the AnimTracks file
-void UCAnimator::AddTrackMatF(UMaterialInstanceDynamic* M, const FName Name, float FStart, float FEnd) {
-	UAnimTrackMatF* const T = NewObject<UAnimTrackMatF>();
-	T->Mat = M;
-	T->Name = Name;
-	T->Start = FStart;
-	T->End = FEnd;
-	Tracks.Add(T);
+	BindTo(nullptr);
 }
 
 void UCAnimator::BindTo(UCAnimator* NewParent) {
@@ -117,6 +95,7 @@ void UCAnimator::BindTo(UCAnimator* NewParent) {
 		Parent->OnUpdate.RemoveAll(this);
 	}
 	Parent = nullptr;
+
 	if (!IsValid(NewParent)) return;
 	
 	Parent = NewParent;
