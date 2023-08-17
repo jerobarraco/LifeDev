@@ -5,6 +5,7 @@
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/CQuickMesh.h"
 
 ADoor01::ADoor01():Super() {
 	IRoot->SetRelativeLocation(FVector(0,-5,0));
@@ -13,12 +14,13 @@ ADoor01::ADoor01():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 
-	Window = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Window"));
+	Window = CreateDefaultSubobject<UCQuickMesh>(TEXT("Window"));
 	Window->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh1(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door01/Door01-Window.Door01-Window"));
 	Window->SetStaticMesh(CMesh1.Object);
-	Window->SetComponentTickEnabled(false);
+	Window->SetCastShadow(true);
+	Window->bCastDynamicShadow = true;
 	Window->bUseAttachParentBound = true; // opt
 	
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
