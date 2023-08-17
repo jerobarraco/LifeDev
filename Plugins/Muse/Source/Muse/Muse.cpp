@@ -44,7 +44,7 @@ void UMuse::SetAddress(const FString& Address, int32 Port) {
 }
 
 void UMuse::Start() {
-	if (!IsValid(Server)) return;
+	if (!IsValid(Server) || !Enabled) return;
 	Bind();
 	Server->Listen();
 }

@@ -13,12 +13,12 @@
 // 	GENERATED_BODY()
 //
 // public:
-// 	virtual void Update(float Progress, float Alpha);
+// 	virtual void Update(float Progress, float Alpha) {};
 // };
-//
+
 //
 // UCLASS(Blueprintable, BlueprintType)
-// class UAnimTrackMatF : public UAnimTrackBase {
+// class UOAnimTrackF : public UAnimTrackBase {
 // 	GENERATED_BODY()
 //
 // public:
@@ -34,7 +34,7 @@
 // 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 // 	UMaterialInstanceDynamic* Mat = nullptr;
 //
-// 	virtual void Update(float Progress, float Alpha) override;
+// 	virtual void Update(float Progress, float Alpha) override {};
 // };
 
 // USTRUCT(Blueprintable, BlueprintType)
@@ -124,7 +124,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
 	TArray<FAnimTrackTrans> Transfs;
-	
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Update_Implementation(float Alpha) override;

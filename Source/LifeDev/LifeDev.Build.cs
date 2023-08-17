@@ -17,7 +17,7 @@ public class LifeDev : ModuleRules
 		{
 			"Interact", "Dialogs", "JUtils", "Inventory", "Story",
 			"ChaosNiagara", "Niagara", "GameplayCameras", "Sounds",
-			"MoviePlayer" // loading screen yes.
-		});
+			"MoviePlayer",  // loading screen yes.
+        });
 	}
 }

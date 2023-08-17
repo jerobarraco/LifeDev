@@ -34,7 +34,6 @@ class MUSE_API UMuse : public UWorldSubsystem
 	UMuse();
 
 public:
-
 	UFUNCTION(BlueprintCallable)
 	void SetAddress(const FString& Address = "0.0.0.0", int32 Port=5000);
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -46,6 +45,10 @@ public:
 	void Bind();
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void UnBind();
+
+	// TODO do it better
+	UPROPERTY(BlueprintReadWrite)
+	bool Enabled = true;
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool UseEEG = false;
