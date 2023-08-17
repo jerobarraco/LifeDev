@@ -89,6 +89,27 @@ public:
 	void Update(float Alpha);
 };
 
+USTRUCT(Blueprintable, BlueprintType)
+struct INTERACT_API FAnimTrackTrans {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	USceneComponent* Root;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FTransform Start;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FTransform End;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool IsAdditive = true;
+	
+	void Update(float Alpha);
+	void Init();
+};
+
 // An interactive actor that can have an animation
 // You can set the tick interval to control the performance of this component
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
@@ -101,5 +122,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
 	TArray<FAnimTrackMatV> MatVs;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
+	TArray<FAnimTrackTrans> Transfs;
+	
+protected:
+	virtual void BeginPlay() override;
 	virtual void Update_Implementation(float Alpha) override;
 };
