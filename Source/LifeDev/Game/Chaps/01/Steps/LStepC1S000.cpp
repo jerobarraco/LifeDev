@@ -2,6 +2,8 @@
 #include "LStepC1S000.h"
 
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
@@ -16,10 +18,12 @@ ALStepC1S000::ALStepC1S000():Super() {
 void ALStepC1S000::Start_Implementation() {
 	Super::Start_Implementation();
 	// do always, not debug, since we could be skipping the chapter 0
-	if (!Inventory->Has("C0")) {
-		Inventory->Mod("C0", 1);
+	if (!Inventory->Has(LDConsts::Items::Card0)) {
+		Inventory->Mod(LDConsts::Items::Card0, 1);
 	}
+	GetWorld()->GetSubsystem<UFlashback>()->SetVal(0);
 }
+
 
 void ALStepC1S000::Debug_Implementation() {
 	Super::Debug_Implementation();
