@@ -43,7 +43,8 @@ ALChar::ALChar(): Super()
 	// Create a CameraComponent
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
-	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 50.f)); // Position the camera
+	// 40 is a biiit below c18
+	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 40.f)); // Position the camera
 	Camera->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)

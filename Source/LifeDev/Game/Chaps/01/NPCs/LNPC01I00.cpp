@@ -10,7 +10,8 @@
 
 ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
-	AnimCam->Duration = .7;
+	AnimCam->Duration = 2;
+	AnimCam->SetComponentTickInterval(1/60.f);
 }
 
 void ALNPC01I00::BeginPlay() {
@@ -54,12 +55,14 @@ void ALNPC01I00::DiagSitDone() {
 
 void ALNPC01I00::DiagStandDone() {
 	Dialogs->OnDone.RemoveAll(this);
+
 	if (IsValid(Card)) {
 		Card->SetActorHiddenInGame(false);
 	}
 
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
 	if (R) { R->SetPlaying(false); }
+
 	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.1);
 
 	Destroy();
