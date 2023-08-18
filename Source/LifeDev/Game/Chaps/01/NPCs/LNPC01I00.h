@@ -8,6 +8,7 @@
 
 #include "LNPC01I00.generated.h"
 
+class UCAnimatorCam;
 // TODO move stuff from base to here
 // the instancef or the npc01 in chapter 01 at boss step 
 UCLASS(Blueprintable, BlueprintType)
@@ -31,14 +32,18 @@ public:
 	
 protected:
 	
-	// virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+	void StandUp();
 
 	UFUNCTION()
 	void DiagStandDone();
 	UFUNCTION()
 	void DiagSitDone();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UCAnimatorCam* AnimCam = nullptr;
 	//
 	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	// FNPCHPose PoseSit;

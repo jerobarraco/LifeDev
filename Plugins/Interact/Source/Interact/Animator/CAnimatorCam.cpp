@@ -10,7 +10,7 @@ void UCAnimatorCam::Begin_Implementation() {
 	Controller = GetWorld()->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CamManager = Controller->PlayerCameraManager;
 	CamRotStart = CamManager->GetCameraRotation();
-	CamStart = CamManager->GetCameraLocation();
+	const FVector& CamStart = CamManager->GetCameraLocation();
 	CamRotEnd = UKismetMathLibrary::FindLookAtRotation(CamStart, Target);
 }
 

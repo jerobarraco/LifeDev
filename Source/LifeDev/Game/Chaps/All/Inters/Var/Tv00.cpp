@@ -69,7 +69,7 @@ ATv00::ATv00():Super() {
 	AnimCrt->MatVStart = FLinearColor::Black;
 	AnimCrt->MatVEnd = FLinearColor(10, 10, 10);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurveMat(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/C_Noise.C_Noise")); // TODO move to curves
+		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	
 	// we do need create it, or it won't work
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
