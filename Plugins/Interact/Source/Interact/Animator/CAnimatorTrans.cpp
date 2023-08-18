@@ -25,10 +25,6 @@ void UCAnimatorTrans::Update_Implementation(float Alpha) {
 
 void UCAnimatorTrans::BeginPlay() {
 	Super::BeginPlay();
-	// PrimaryComponentTick.bCanEverTick = true;
-	// PrimaryComponentTick.Target = this;
-	// PrimaryComponentTick.SetTickFunctionEnable(true);
-	// RegisterComponentTickFunctions(true); will crash
 	if (IsValid(TRoot) && IsAdditive) {
 		TStart = TRoot->GetRelativeTransform();
 	}

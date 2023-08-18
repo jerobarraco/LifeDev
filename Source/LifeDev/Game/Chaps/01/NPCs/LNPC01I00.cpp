@@ -29,8 +29,10 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 
 void ALNPC01I00::DiagSitDone() {
 	Dialogs->OnDone.RemoveAll(this);
+	// stand up
 	SetPoseStand();
 	AddActorLocalRotation(FRotator(0, -120, 0));
+	
 	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.4);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
 	Dialogs->AddId("N01.1");
