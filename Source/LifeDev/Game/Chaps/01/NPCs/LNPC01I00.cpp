@@ -2,6 +2,7 @@
 #include "LNPC01I00.h"
 
 #include "Interact/Animator/CAnimatorCam.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
@@ -12,12 +13,30 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
+
+	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
+	AnimFade->Duration = 3;
+	AnimFade->Meshes.Add(Mesh);
+	AnimFade->Meshes.Add(Head);
+	AnimFade->Meshes.Add(Torso);
+	AnimFade->Meshes.Add(ArmL1);
+	AnimFade->Meshes.Add(ArmL2);
+	AnimFade->Meshes.Add(LegL1);
+	AnimFade->Meshes.Add(LegL2);
+	AnimFade->Meshes.Add(ArmR1);
+	AnimFade->Meshes.Add(ArmR2);
+	AnimFade->Meshes.Add(LegR1);
+	AnimFade->Meshes.Add(LegR2);
+	AnimFade->Meshes.Add(Pelvis);
+	AnimFade->Meshes.Add(FootL);
+	AnimFade->Meshes.Add(FootR);
 }
 
 void ALNPC01I00::BeginPlay() {
 	Super::BeginPlay();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
+	AnimFade->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UOut);
 }
 
 void ALNPC01I00::TriggerLocked_Implementation() {
@@ -64,6 +83,10 @@ void ALNPC01I00::DiagStandDone() {
 	if (R) { R->SetPlaying(false); }
 
 	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.1);
+	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);
+	AnimFade->Play();
+}
 
+void ALNPC01I00::FadeDone() {
 	Destroy();
 }

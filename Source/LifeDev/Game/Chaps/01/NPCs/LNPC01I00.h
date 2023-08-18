@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 
@@ -41,9 +42,13 @@ protected:
 	void DiagStandDone();
 	UFUNCTION()
 	void DiagSitDone();
+	UFUNCTION()
+	void FadeDone();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCAnimatorCam* AnimCam = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UCAnimatorFade* AnimFade = nullptr;
 	//
 	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	// FNPCHPose PoseSit;

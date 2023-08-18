@@ -10,17 +10,15 @@ class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
 	GENERATED_BODY()
 
 public:
+	UCAnimatorFade();
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<UStaticMeshComponent*> Meshes; 
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UMaterialInterface* MatBase; 
 
-	UCAnimatorFade();
 protected:
 	virtual void BeginPlay() override;
-	
-	virtual void Begin_Implementation() override;
 	virtual void Update_Implementation(float Alpha) override;
-
 };

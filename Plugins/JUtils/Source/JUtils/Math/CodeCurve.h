@@ -32,6 +32,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float CosFull(float p);
 
+	// TODO check and implement the ones in UnrealMathUtility
+
+	// Unreal 
+	UFUNCTION(BlueprintCallable)
+	float UOut(float p);
+	
 	/// easings.net
 	UFUNCTION(BlueprintCallable)
 	float OutBounce(float p);

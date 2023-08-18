@@ -31,6 +31,10 @@ float UCodeCurveLib::CosFull(float p) {
 	return FMath::Cos(p*UE_PI*2);
 }
 
+float UCodeCurveLib::UOut(float p) {
+	return FMath::InterpEaseOut(0, 1, p, 1);
+}
+
 float UCodeCurveLib::OutBounce(float p) {
 	// https://easings.net/#easeOutBounce
 	constexpr float n1 = 7.5625;

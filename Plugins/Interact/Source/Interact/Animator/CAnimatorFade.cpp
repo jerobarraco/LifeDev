@@ -9,6 +9,9 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFName = "Fade";
 	MatFStart = 0;
 	MatFEnd = 1;
+	ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
+	MatBase = CMatBase.Object; 
 }
 
 void UCAnimatorFade::BeginPlay() {
@@ -19,10 +22,6 @@ void UCAnimatorFade::BeginPlay() {
 	for (UStaticMeshComponent* C: Meshes) {
 		C->SetMaterial(0, Mat);		
 	}
-}
-
-void UCAnimatorFade::Begin_Implementation() {
-	Super::Begin_Implementation();
 }
 
 void UCAnimatorFade::Update_Implementation(float Alpha) {
