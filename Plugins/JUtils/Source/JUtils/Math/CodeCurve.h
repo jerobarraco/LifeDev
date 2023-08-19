@@ -37,6 +37,10 @@ public:
 	// Unreal 
 	UFUNCTION(BlueprintCallable)
 	float UOut(float p);
+	UFUNCTION(BlueprintCallable)
+	float UIn(float p);
+	UFUNCTION(BlueprintCallable)
+	float UInOut(float p);
 	
 	/// easings.net
 	UFUNCTION(BlueprintCallable)

@@ -36,7 +36,6 @@ void ALNPC01I00::BeginPlay() {
 	Super::BeginPlay();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
-	AnimFade->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UOut);
 }
 
 void ALNPC01I00::TriggerLocked_Implementation() {

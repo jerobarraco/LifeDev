@@ -43,10 +43,14 @@ public:
 	FName TriggerDlg = NAME_None;
 
 	// setting this will reward the item on trigger and self-destruct
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName ItemReward = NAME_None;
 
 protected:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ItemRewarded();
+	virtual void ItemRewarded_Implementation();
+	
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;

@@ -35,6 +35,14 @@ float UCodeCurveLib::UOut(float p) {
 	return FMath::InterpEaseOut(0, 1, p, 1);
 }
 
+float UCodeCurveLib::UIn(float p) {
+	return FMath::InterpEaseIn(0, 1, p, 1);
+}
+
+float UCodeCurveLib::UInOut(float p) {
+	return FMath::InterpEaseInOut(0, 1, p, 1);
+}
+
 float UCodeCurveLib::OutBounce(float p) {
 	// https://easings.net/#easeOutBounce
 	constexpr float n1 = 7.5625;

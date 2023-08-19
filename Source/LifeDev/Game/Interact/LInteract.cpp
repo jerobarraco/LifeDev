@@ -33,15 +33,21 @@ void ALInteract::Trigger_Implementation() {
 	// reward an item if possible
 	if (ItemReward.IsNone()) return;
 	if (!IsValid(Inventory)) return;
-	// return maybe we maxed out
+	// return if we maxed out
 	if (!Inventory->Mod(ItemReward, 1)) return;
-	
+
+	ItemRewarded();
+}
+
+void ALInteract::ItemRewarded_Implementation() {
 	Destroy();
 }
 
 void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
+	
 	if (!Inventory || !Dialogs) return;
+
 	const bool Has = Inventory->Has(ULockItem);
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
 	FDialog D; FDialogChar C;

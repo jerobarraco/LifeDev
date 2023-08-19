@@ -18,6 +18,11 @@ void UCAnimatorFade::BeginPlay() {
 	Super::BeginPlay();
 	if (Meshes.Num()<1) return;
 
+	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
+		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
+		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UInOut);
+	}
+	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
 	for (UStaticMeshComponent* C: Meshes) {
 		C->SetMaterial(0, Mat);		

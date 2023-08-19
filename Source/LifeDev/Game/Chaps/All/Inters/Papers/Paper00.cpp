@@ -5,7 +5,6 @@
 #include "Interact/CInteract.h"
 
 APaper00::APaper00():Super() {
-	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper00.Paper00"));
 	Mesh->SetStaticMesh(CMesh.Object);
