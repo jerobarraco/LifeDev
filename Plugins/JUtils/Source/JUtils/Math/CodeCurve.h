@@ -80,6 +80,8 @@ public:
 	
 
 	/// bezier and stuff
+	UFUNCTION(BlueprintCallable)
+	float BOutInQuad(float T);
 
 	UFUNCTION(BlueprintCallable)
 	float BBackStart(float T) {
@@ -89,6 +91,14 @@ public:
 			// 0, -1.24, 1.5, 1};
 		// return Bezier(T, Ps);
 	}
+
+	UFUNCTION(BlueprintCallable)
+	float DBOutIn(float T) {
+		static const TArray<float> Px({0.000000,1.325000,1.325000,0.000000});
+		static const TArray<float> Py({0.000000,-0.845715,1.210408,0.000000});
+		return DualBezier(T, Py, Px);
+	}
+	
 
 	UFUNCTION(BlueprintCallable)
 	float DBWave(float T) {

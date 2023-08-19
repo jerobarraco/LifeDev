@@ -2,17 +2,15 @@
 
 #include "Kismet/KismetMaterialLibrary.h"
 
-
-// https://forums.unrealengine.com/t/make-the-camera-look-at-a-ball/345097/6?u=nande
-
 UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFName = "Fade";
 	MatFStart = 0;
 	MatFEnd = 1;
+	Duration = 1.f;
 	ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
 	MatBase = CMatBase.Object;
-	Duration = 2.f;
+	Curve = nullptr; // remove the interact curve.
 }
 
 void UCAnimatorFade::BeginPlay() {
@@ -21,7 +19,7 @@ void UCAnimatorFade::BeginPlay() {
 
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
 		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
-		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UOut);
+		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
 	}
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
