@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 
 #include "LNPC01I00.generated.h"
@@ -18,21 +19,8 @@ class LIFEDEV_API ALNPC01I00 : public ALNPC01 {
 
 public:
 	ALNPC01I00();
-	//
-	// UFUNCTION(BlueprintCallable, CallInEditor)
-	// void SetPoseStand();
-	//
-	// UFUNCTION(BlueprintCallable, CallInEditor)
-	// void SetPoseSit();
-	//
-	// UFUNCTION(BlueprintCallable, CallInEditor)
-	// void SetVisible(bool Vis);
-	//
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// AActor* Card = nullptr;
-	
+
 protected:
-	
 	virtual void BeginPlay() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
@@ -49,9 +37,7 @@ protected:
 	UCAnimatorCam* AnimCam = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCAnimatorFade* AnimFade = nullptr;
-	//
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	// FNPCHPose PoseSit;
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	// FNPCHPose PoseStand;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlashback* Flashback = nullptr;
 };

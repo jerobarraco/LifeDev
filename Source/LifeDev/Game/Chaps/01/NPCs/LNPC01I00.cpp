@@ -16,24 +16,17 @@ ALNPC01I00::ALNPC01I00():Super() {
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Duration = 2;
-	AnimFade->Meshes.Add(Mesh);
-	AnimFade->Meshes.Add(Head);
-	AnimFade->Meshes.Add(Torso);
-	AnimFade->Meshes.Add(ArmL1);
-	AnimFade->Meshes.Add(ArmL2);
-	AnimFade->Meshes.Add(LegL1);
-	AnimFade->Meshes.Add(LegL2);
-	AnimFade->Meshes.Add(ArmR1);
-	AnimFade->Meshes.Add(ArmR2);
-	AnimFade->Meshes.Add(LegR1);
-	AnimFade->Meshes.Add(LegR2);
-	AnimFade->Meshes.Add(Pelvis);
-	AnimFade->Meshes.Add(FootL);
-	AnimFade->Meshes.Add(FootR);
+	AnimFade->Meshes = {
+		Mesh, Head, Torso, Pelvis,
+		ArmL1, ArmL2, ArmR1, ArmR2,
+		LegL1, LegL2, LegR1, LegR2,
+		FootL, FootR
+	};
 }
 
 void ALNPC01I00::BeginPlay() {
 	Super::BeginPlay();
+	Flashback = GetWorld()->GetSubsystem<UFlashback>();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
 }
@@ -47,7 +40,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	if (Name == LDConsts::Items::Card0) {
 		Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 		Dialogs->AddId("N01.0");
-		GetWorld()->GetSubsystem<UFlashback>()->SetVal(.8);
+		GetWorld()->GetSubsystem<UFlashback>()->SetVal(1);
 		return EItemUseResult::SUCCESS;
 	}
 
@@ -55,20 +48,20 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::BAD_HANDLED;
 }
 
+void ALNPC01I00::DiagSitDone() {
+	Dialogs->OnDone.RemoveAll(this);
+	
+	StandUp();
+	Flashback->SetVal(.5);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
+	Dialogs->AddId("N01.1");
+}
+
 void ALNPC01I00::StandUp() {
 	SetPoseStand();
 	AddActorLocalRotation(FRotator(0, -120, 0));
 	AnimCam->Target = Head->GetComponentLocation();
 	AnimCam->Play();
-}
-
-void ALNPC01I00::DiagSitDone() {
-	Dialogs->OnDone.RemoveAll(this);
-	
-	StandUp();
-	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.4);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
-	Dialogs->AddId("N01.1");
 }
 
 void ALNPC01I00::DiagStandDone() {
@@ -81,7 +74,7 @@ void ALNPC01I00::DiagStandDone() {
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
 	if (R) { R->SetPlaying(false); }
 
-	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.1);
+	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.2);
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);
 	AnimFade->Play();
 }
