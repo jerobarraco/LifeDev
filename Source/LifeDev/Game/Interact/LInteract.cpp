@@ -3,6 +3,7 @@
 #include "Components/AudioComponent.h"
 #include "Dialogs/Dialogs.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
@@ -28,6 +29,10 @@ void ALInteract::Trigger_Implementation() {
 	// trigger the dialog anyway.
 	if (IsValid(Dialogs)) {
 		Dialogs->AddId(TriggerDlg);
+	}
+
+	if (!FMath::IsNearlyZero(TriggerFlashInc)) {
+		GetWorld()->GetSubsystem<UFlashback>()->IncVal(TriggerFlashInc);
 	}
 
 	// reward an item if possible

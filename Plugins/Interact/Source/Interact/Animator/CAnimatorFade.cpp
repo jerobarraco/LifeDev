@@ -11,7 +11,8 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFEnd = 1;
 	ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
-	MatBase = CMatBase.Object; 
+	MatBase = CMatBase.Object;
+	Duration = 2.f;
 }
 
 void UCAnimatorFade::BeginPlay() {
@@ -20,7 +21,7 @@ void UCAnimatorFade::BeginPlay() {
 
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
 		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
-		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UInOut);
+		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UOut);
 	}
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);

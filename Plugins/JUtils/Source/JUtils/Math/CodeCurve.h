@@ -41,6 +41,12 @@ public:
 	float UIn(float p);
 	UFUNCTION(BlueprintCallable)
 	float UInOut(float p);
+	UFUNCTION(BlueprintCallable)
+	float UStep(float p);
+	UFUNCTION(BlueprintCallable)
+	float USinIn(float p);
+	UFUNCTION(BlueprintCallable)
+	float USinOut(float p);
 	
 	/// easings.net
 	UFUNCTION(BlueprintCallable)

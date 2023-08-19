@@ -9,7 +9,6 @@ ALInteractFade::ALInteractFade():Super() {
 	SFX->AttenuationSettings = CAtt.Object;
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Meshes.Add(Mesh);
-	AnimFade->Duration= 1;
 }
 
 void ALInteractFade::FadeDone() {

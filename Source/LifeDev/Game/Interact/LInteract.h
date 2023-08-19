@@ -46,6 +46,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName ItemReward = NAME_None;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	float TriggerFlashInc = 0;
+
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ItemRewarded();
