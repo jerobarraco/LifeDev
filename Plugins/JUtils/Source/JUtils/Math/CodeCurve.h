@@ -87,9 +87,6 @@ public:
 	float BBackStart(float T) {
 		return UE::Curves::BezierInterp(0.f, -1.23f, 1.5f, 1.0f, T);
 
-		// static const TArray<float> Ps = {
-			// 0, -1.24, 1.5, 1};
-		// return Bezier(T, Ps);
 	}
 
 	UFUNCTION(BlueprintCallable)

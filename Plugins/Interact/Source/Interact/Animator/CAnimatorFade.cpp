@@ -16,18 +16,21 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 void UCAnimatorFade::BeginPlay() {
 	Super::BeginPlay();
 	if (Meshes.Num()<1) return;
-
+	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
 		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
 	}
+
+	if (!IsValid(MatBase)) {
+		MatBase = Meshes[0]->GetMaterial(0);
+	}
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
 	for (UStaticMeshComponent* C: Meshes) {
+		if (!IsValid(C)) continue;
 		C->SetMaterial(0, Mat);		
 	}
+	// Since they all share the same material instance i don't even need to have my own "update"
 }
 
-void UCAnimatorFade::Update_Implementation(float Alpha) {
-	Super::Update_Implementation(Alpha);
-}
