@@ -1,6 +1,7 @@
 #include "LInteractFade.h"
 
 #include "Components/AudioComponent.h"
+#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
 ALInteractFade::ALInteractFade():Super() {
@@ -11,12 +12,13 @@ ALInteractFade::ALInteractFade():Super() {
 	AnimFade->Meshes.Add(Mesh);
 }
 
-void ALInteractFade::FadeDone() {
-	Destroy();
-}
-
 void ALInteractFade::ItemRewarded_Implementation() {
+	Interact->SetEnabled(false); // avoid re-rewarding due to multi clicks
 	// Super::ItemRewarded_Implementation(); // not calling super since that will kill us (literally)
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteractFade::FadeDone);
 	AnimFade->Play();
+}
+
+void ALInteractFade::FadeDone() {
+	Destroy();
 }

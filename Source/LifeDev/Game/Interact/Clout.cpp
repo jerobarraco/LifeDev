@@ -15,7 +15,7 @@ AClout::AClout():Super() {
 	IRoot->SetMobility(EComponentMobility::Static);
 	Mesh->SetMobility(EComponentMobility::Static);
 	RootComponent->SetMobility(EComponentMobility::Static);
-	TriggerFlashInc = .5;
+	TriggerFlashInc = .05;
 }
 
 void AClout::ItemRewarded_Implementation() {
