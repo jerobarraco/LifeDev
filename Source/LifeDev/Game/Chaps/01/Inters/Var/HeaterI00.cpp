@@ -10,7 +10,7 @@ AHeaterI00::AHeaterI00():Super() {
 	Interact->SetEnabled(true);
 	
 	Anim->Duration = .75f;
-	TriggerFlashInc = .05f;
+	TriggerFlashInc = .1f;
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";
 	Texts = {

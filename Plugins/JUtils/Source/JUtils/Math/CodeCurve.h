@@ -51,7 +51,11 @@ public:
 	float USinInOut(float p);
 	UFUNCTION(BlueprintCallable)
 	float UCircularIn(float p);
-	
+	UFUNCTION(BlueprintCallable)
+	float UCircularOut(float p);
+	UFUNCTION(BlueprintCallable)
+	float UCircularInOut(float p);
+
 	/// easings.net
 	UFUNCTION(BlueprintCallable)
 	float OutBounce(float p);
