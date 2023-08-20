@@ -7,7 +7,6 @@
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
-
 #include "LNPC01I00.generated.h"
 
 class UCAnimatorCam;

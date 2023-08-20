@@ -21,7 +21,7 @@ ASpot00::ASpot00():Super() {
 	TriggerDlg = FName("IS_C0T");
 	TriggerBadDlg = "IS_C0TB";
 	Items = {
-		// two shirts and a boxer
-		FName("C1C00"), FName("C1C01"), "C1C02"
+		// two shirts and a boxer, and a sock
+		FName("C1C00"), FName("C1C01"), "C1C02",  "C1C04"
 	};
 }

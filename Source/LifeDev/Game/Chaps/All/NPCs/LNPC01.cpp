@@ -9,7 +9,7 @@
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;
 	Locked = true;
-	Texts = { FText::FromString("He might attack me...") };
+	Texts = { FText::FromString("He seems dangerous...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -125,7 +125,6 @@ ALNPC01::ALNPC01():Super() {
 }
 
 void ALNPC01::SetPoseStand() {
-	// TODO do fades
 	SetPose(PoseBase);
 }
 
