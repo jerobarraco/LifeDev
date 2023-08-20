@@ -73,6 +73,8 @@ void UCNoiser::PlayNow_Implementation() {
 		DrawDebugPoint(World, OwnerLocation, 4, FColor::Red, false, 4);
 		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
+	UE_LOG(LogTemp, Log, TEXT("Noiser at %s"), *Location.ToString());
+	
 	UGameplayStatics::PlaySoundAtLocation(
 		World, SFX, Location, Rotation,
 		1, 1, 0,
