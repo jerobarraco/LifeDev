@@ -4,5 +4,6 @@ namespace LDConsts {
 	namespace Items {
 		inline static FName Card0 = FName("C0");
 		inline static FName Poem0 = FName("P00");
+		inline static FName Bra = FName("C1C03");
 	}
 }

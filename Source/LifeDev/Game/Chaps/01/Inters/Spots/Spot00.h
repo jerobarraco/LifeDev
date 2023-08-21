@@ -11,4 +11,8 @@ class LIFEDEV_API ASpot00: public ALInteractSpot {
 public:
 	GENERATED_BODY()
 	ASpot00();
+
+protected:
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+
 };

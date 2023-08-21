@@ -3,6 +3,7 @@
 #include "Spot00.h"
 
 #include "Interact/CInteract.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpot00::ASpot00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));
@@ -24,4 +25,12 @@ ASpot00::ASpot00():Super() {
 		// two shirts and a boxer, and a sock
 		FName("C1C00"), FName("C1C01"), "C1C02", "C1C04"
 	};
+}
+
+EItemUseResult ASpot00::TryUseItem_Implementation(const FName& Name) {
+	if (Name == LDConsts::Items::Bra) {
+		Dialogs->AddId("IS_C0_C03");
+		return EItemUseResult::BAD_HANDLED;
+	}
+	return Super::TryUseItem_Implementation(Name);
 }
