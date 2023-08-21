@@ -15,12 +15,13 @@ class INTERACT_API UCAnimatorTrans: public UCAnimator {
 
 public:
 	// uses accumulated (relative to start) version, or not.
+	// When "IsAdditive" it is going to set "TStart" automatically to the current transform of the AnimRoot on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	bool IsAdditive = true;
 	
 	// The animation transform. You don't necessarily need to set this up, but you can change it.
-	// It's going to be automatically set to the current transform of the AnimRoot
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// When "IsAdditive" it is going to be automatically set to the current transform of the AnimRoot on begin play.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
 	
 	// The animation transform

@@ -12,4 +12,7 @@ class JUTILS_API UCQuickMesh: public UStaticMeshComponent {
 
 public:
 	UCQuickMesh();
+
+	UFUNCTION(BlueprintCallable)
+	void SetCastAllShadows(bool Cast);
 };

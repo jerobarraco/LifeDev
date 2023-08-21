@@ -17,6 +17,12 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	Super::SetComponentTickEnabled(false);
-	SetCastShadow(false);
-	bCastDynamicShadow = false;
+	SetCastAllShadows(false);
+}
+
+void UCQuickMesh::SetCastAllShadows(bool Cast) {
+	SetCastShadow(Cast);
+	bCastDynamicShadow = Cast;
+	// by default this is false, i don't wanna mess with it. so just don't.
+	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }

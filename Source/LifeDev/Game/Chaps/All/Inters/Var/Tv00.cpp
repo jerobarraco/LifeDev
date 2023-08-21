@@ -9,12 +9,16 @@
 #include "JUtils/CQuickMesh.h"
 
 ATv00::ATv00():Super() {
-	// TODO set meshes to static
+	// TODO set meshes to static,  except button, root cant be static since the button isn't
 
+	RootComponent->SetMobility(EComponentMobility::Static); // opt
+	IRoot->SetMobility(EComponentMobility::Static); // opt
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-32.5,27.5,0));
+	Mesh->bUseAttachParentBound = true;
 
 	Interact->SetRelativeLocation(FVector(34.815095,-32.798774,23.512333));
 	Interact->SetBoxExtent(FVector(35,32,23.658294));
@@ -35,34 +39,38 @@ ATv00::ATv00():Super() {
 	Frame->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CFrame(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Base.Tv00-Base"));
-	Mesh->SetStaticMesh(CFrame.Object);
+	Frame->SetStaticMesh(CFrame.Object);
 	Frame->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Frame->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Frame->SetCollisionProfileName("BlockAllDynamic");
-
+	Frame->bCastDynamicShadow = true;
+	Frame->SetCastAllShadows(true);
+	Frame->SetMobility(EComponentMobility::Static); // opt
+	
 	// TODo fix glass occluding the crt
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
 	Glass->SetupAttachment(Frame);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CGlass(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Screen.Tv00-Screen"));
 	Glass->SetStaticMesh(CGlass.Object);
-	Glass->SetCastShadow(false); // opt
+	Glass->SetCastAllShadows(false); // opt
 	Glass->bUseAttachParentBound = true; // opt
-	Glass->bCastDynamicShadow = false;
-
+	Glass->SetMobility(EComponentMobility::Static); // opt
+	
 	Crt = CreateDefaultSubobject<UCQuickMesh>(TEXT("Crt"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCrt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Crt.Tv00-Crt"));
 	Crt->SetupAttachment(Frame);
 	Crt->SetStaticMesh(CCrt.Object);
-	Crt->SetCastShadow(false); // opt
+	Crt->SetCastAllShadows(false); // opt
 	Crt->bUseAttachParentBound = true; // opt
+	Crt->SetMobility(EComponentMobility::Static); // opt. emissive works fine with ti.
 	
 	/// anims
 	AnimEnabled = true;
-	Anim->Duration = .6;
+	Anim->Duration = .5;
 	Anim->IsAdditive = true;
-	// TODO set anim (transform)
+	Anim->TEnd.SetLocation(FVector(0.0,-2.5,0));
 
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
 	AnimCrt->MatVName = "Emissive";
@@ -70,11 +78,13 @@ ATv00::ATv00():Super() {
 	AnimCrt->MatVEnd = FLinearColor(10, 10, 10);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
-	
+	AnimCrt->Curve = CCurveMat.Object;
 	// we do need create it, or it won't work
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
 	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatFName, FLinearColor::Black);
 	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+	AnimCrt->Duration = 2; // initial duration
+	
 	RndCrt = CreateDefaultSubobject<UCRandomizer>(TEXT("RndCrt"));
 	RndCrt->Anim = AnimCrt;
 	RndCrt->DelayMin = .5;

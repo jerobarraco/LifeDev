@@ -14,14 +14,6 @@ public:
 
 	AInteractAnim();
 
-	// TODO move somewhere else
-	// UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
-	// void Fade(bool In);
-	// UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
-	// void FadeIn() {Fade(true);}
-	// UFUNCTION(BlueprintCallable, CallInEditor, Category=Fade)
-	// void FadeOut(){Fade(false);}
-
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;

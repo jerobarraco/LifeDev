@@ -12,23 +12,8 @@ AInteractAnim::AInteractAnim():Super() {
 	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
-	Anim->Mat = Cast<UMaterialInstanceDynamic>(Mesh->GetMaterial(0));
+	// can't do this, the order of constructors fails. Anim->Mat = Mesh->GetMaterial(0);
 }
-
-// void AInteractAnim::SetFadeMat_Implementation() {
-	// has to be done on begin play or the bp wont save
-	// also i think the translucent material breaks the outline shader
-	// maybe use a different animation then, maybe a color override
-	// Anim->Mat = Mesh->CreateDynamicMaterialInstance(0);
-	// Anim->MatFEnd = 1;
-	// Anim->MatFStart = 0;
-	// Anim->MatFName = "Opacity";
-// }
-
-// void AInteractAnim::Fade(bool In) {
-	// const bool Rev = !In;
-	// Anim->PlaySet(Rev);
-// }
 
 void AInteractAnim::BeginPlay() {
 	Super::BeginPlay();
