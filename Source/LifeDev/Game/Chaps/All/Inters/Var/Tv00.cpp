@@ -8,8 +8,6 @@
 #include "Interact/Animator/CRandomizer.h"
 #include "JUtils/CQuickMesh.h"
 
-// TODO instance with dialogs
-
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
 	// so much optimization lost for a single button animation...
@@ -75,10 +73,6 @@ ATv00::ATv00():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
-	// we do need create it, or it won't work
-	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
-	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	AnimCrt->Duration = 2; // initial duration
 	
 	RndCrt = CreateDefaultSubobject<UCRandomizer>(TEXT("RndCrt"));
@@ -89,6 +83,15 @@ ATv00::ATv00():Super() {
 	RndCrt->ValueMax = 3;
 	RndCrt->IsLooping = true;
 	RndCrt->UseRandReverse = true;
+}
+
+void ATv00::BeginPlay() {
+	Super::BeginPlay();
+	
+	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
+	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
+	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
+	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 }
 
 void ATv00::Trigger_Implementation() {

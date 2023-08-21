@@ -39,9 +39,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UMaterialInstanceDynamic* Mat = nullptr;
 	// ~Mats
+
 protected:
 	virtual void Update_Implementation(float Alpha) override;
 	virtual void DeInit() override;
-
-	virtual void BeginPlay() override;
 };

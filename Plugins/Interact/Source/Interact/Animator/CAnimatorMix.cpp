@@ -25,7 +25,3 @@ void UCAnimatorMix::Update_Implementation(float Alpha) {
 		}
 	}
 }
-
-void UCAnimatorMix::BeginPlay() {
-	Super::BeginPlay();
-}

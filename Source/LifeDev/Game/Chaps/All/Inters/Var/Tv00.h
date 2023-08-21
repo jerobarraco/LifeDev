@@ -15,9 +15,10 @@ public:
 
 	ATv00();
 
+protected:
+	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
 
-protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* RndCrt = nullptr;
 	
