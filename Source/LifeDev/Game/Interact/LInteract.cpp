@@ -75,7 +75,7 @@ bool ALInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
-	Super::TryUseItem_Implementation(Name); // unnecessary actually
+	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	const bool Ok = !ULockItem.IsNone() && Name == ULockItem;
 	EItemUseResult Result = Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
 	if (Ok) {

@@ -22,9 +22,9 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 }
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
-	Super::TryUseItem_Implementation(Name); // unnecessary actually
+	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	if (Items.IsEmpty()) {
-		Locked = true; // unnecessary but meh
+		Locked = true; // unnecessary but complete, jic
 		const bool Added = IsValid(Dialogs) && Dialogs->AddId(FullDlg);
 		return Added ?  EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
