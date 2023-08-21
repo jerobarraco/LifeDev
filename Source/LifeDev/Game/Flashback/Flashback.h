@@ -18,20 +18,22 @@ private:
 public:
 	UFlashback();
 
+	static UFlashback* Get(UWorld* W);
+
+	UFUNCTION(BlueprintCallable)
+	static void SetValS(UWorld* W, float New, float Duration = -1.f);
+	
 	UFUNCTION(BlueprintCallable)
 	float GetVal() const { return Val; }
 
 	UFUNCTION(BlueprintCallable)
-	void IncVal(float By, float Speed = -1.f);
+	void IncVal(float By, float Duration = -1.f);
 
 	// The time is the time to go from 0 to 1. it will be proportional to the difference so the speed is always the same.
 	// if it's <0 it will use the default time. 0 will be instant. >0 will use that.
 	UFUNCTION(BlueprintCallable)
-	void SetVal(float New, float Speed = -1.f);
+	void SetVal(float New, float Duration = -1.f);
 
-	UFUNCTION(BlueprintCallable)
-	void SetValS(UWorld*W, float New, float Speed = -1.f);
-	
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Tick(float DeltaTime) override;

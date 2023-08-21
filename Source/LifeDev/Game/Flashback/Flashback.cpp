@@ -12,6 +12,12 @@ UFlashback::UFlashback():Super() {
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
+UFlashback* UFlashback::Get(UWorld* W) {
+	if (!IsValid(W)) return nullptr;
+	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
+	return IsValid(Flashback) ? Flashback : nullptr;
+}
+
 void UFlashback::SetValInternal(float New) {
 	// make sure is on range. it can break other stuff.
 	New = FMath::Clamp(New, 0.0f, 1.0f);
@@ -30,11 +36,11 @@ void UFlashback::AnimUpdate(float Progress, float Alpha) {
 	SetValInternal(FMath::Lerp(AnimFrom, AnimTo, Alpha));
 }
 
-void UFlashback::IncVal(float By, float Speed) {
-	SetVal(Val+By, Speed);
+void UFlashback::IncVal(float By, float Duration) {
+	SetVal(Val+By, Duration);
 }
 
-void UFlashback::SetVal(float New, float Speed) {
+void UFlashback::SetVal(float New, float Duration) {
 	const float Diff = FMath::Abs(Val - New);
 	// UE_LOG(LogTemp, Log, TEXT("Diff %.5f"),  Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
@@ -43,14 +49,14 @@ void UFlashback::SetVal(float New, float Speed) {
 	Animator->Stop();
 
 	// set instant if speed is 0
-	if (FMath::IsNearlyZero(Speed)) {
+	if (FMath::IsNearlyZero(Duration)) {
 		SetValInternal(New);
 		return;
 	}
 
 	// or use default anim speed
-	if (Speed < 0) {
-		Speed = AnimSpeed;
+	if (Duration < 0) {
+		Duration = AnimSpeed;
 	}
 
 	// important, set the actual targets.
@@ -58,19 +64,18 @@ void UFlashback::SetVal(float New, float Speed) {
 	AnimTo = New;
 
 	// set and play the animator
-	const float Time = Speed*Diff;
+	const float Time = Duration*Diff;
 	Animator->Duration = Time;
 	Animator->PlaySet();
 	if (Debug) {
-		UE_LOG(LogTemp, Log, TEXT("Flashback: Speed, Time %.5f %.5f"), Speed, Time);
+		UE_LOG(LogTemp, Log, TEXT("Flashback: Speed, Time %.5f %.5f"), Duration, Time);
 	}
 }
 
-void UFlashback::SetValS(UWorld* W, float New, float Speed) {
-	if (!IsValid(W)) return;
-	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
-	if (!IsValid(Flashback)) return;
-	Flashback->SetVal(New, Speed);
+void UFlashback::SetValS(UWorld* W, float New, float Duration) {
+	UFlashback* Flashback = Get(W);
+	if (!Flashback) return;
+	Flashback->SetVal(New, Duration);
 }
 
 void UFlashback::Deinitialize() {

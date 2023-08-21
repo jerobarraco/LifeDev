@@ -17,8 +17,9 @@ void ALStepC0S000::Start_Implementation() {
 	if (IsValid(FakeChar)) {
 		FakeChar->SetActorHiddenInGame(false);
 	}
-	UWorld* World = GetWorld();
-	UFlashback* Flashback = World->GetSubsystem<UFlashback>();
+
+	UFlashback* const Flashback = UFlashback::Get(GetWorld());
+	if (!Flashback) return;
 	Flashback->SetVal(0, 0);
 	Flashback->SetVal(1, 20);
 }
@@ -29,9 +30,7 @@ void ALStepC0S000::Stop_Implementation() {
 		// FakeChar->SetActorHiddenInGame(true);
 		FakeChar->Destroy();
 	}
-	UWorld* World = GetWorld();
-	UFlashback* Flashback = World->GetSubsystem<UFlashback>();
-	Flashback->SetVal(0, 5);
+	UFlashback::SetValS(GetWorld(), 0, 5);
 }
 
 void ALStepC0S000::BeginPlay() {
