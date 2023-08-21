@@ -52,10 +52,6 @@ void AInteractAnim::Trigger_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 }
 
-void AInteractAnim::TriggerLocked_Implementation() {
-	Super::TriggerLocked_Implementation();
-}
-
 bool AInteractAnim::TryTrigger_Implementation() {
 	if (AnimEnabled && Anim->GetIsAnimating()) return false;
 	return Super::TryTrigger_Implementation();

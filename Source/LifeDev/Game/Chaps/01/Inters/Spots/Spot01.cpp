@@ -19,7 +19,7 @@ ASpot01::ASpot01():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
 	};
 	TriggerDlg = FName("IS_C1T");
-	TriggerBadDlg = "IS_C1TB";
+	LockedDlg = "IS_C1TB";
 	DropDlg = TEXT("IS_C1D");
 	Items = {FName("C1C03")}; // the bra
 }

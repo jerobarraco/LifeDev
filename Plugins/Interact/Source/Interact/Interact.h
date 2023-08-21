@@ -22,6 +22,7 @@ public:
 	AInteract();
 
 	// Call this to trigger the interaction. Returns the success (false if locked)
+	// this function has side-effects (calls trigger/trigger locked) so call at the end.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool TryTrigger();
 	virtual bool TryTrigger_Implementation();

@@ -19,9 +19,9 @@ ASpot00::ASpot00():Super() {
 	};
 	DropDlg = TEXT("IS_C0D");
 	TriggerDlg = FName("IS_C0T");
-	TriggerBadDlg = "IS_C0TB";
+	LockedDlg = "IS_C0TB";
 	Items = {
 		// two shirts and a boxer, and a sock
-		FName("C1C00"), FName("C1C01"), "C1C02",  "C1C04"
+		FName("C1C00"), FName("C1C01"), "C1C02", "C1C04"
 	};
 }

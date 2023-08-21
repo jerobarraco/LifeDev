@@ -79,6 +79,7 @@ void AInteract::TriggerLocked_Implementation() {
 void AInteract::SetInteractAutoBounds() {
 	// Mesh->GetLocalBounds();
 	// TODO how do i get the mesh size?
+	// Mesh->GetLocalBounds() params?
 	Interact->Bounds = Mesh->GetPlacementExtent();
 }
 

@@ -43,15 +43,6 @@ protected:
 	virtual void SetText_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void Trigger_Implementation() override;
-	virtual void TriggerLocked_Implementation() override;
-
-	// TODO move somewhere else. add a new canimator base and use for fades.
-	// tentatively here then if works move to base interact anim
-	// Sets the material for the fade function. Will be called on begin play or the bp won't be saved.
-	// Set the variable FadeMatClass to have this enabled
-	// UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	// void SetFadeMat();
-	// virtual void SetFadeMat_Implementation();
 
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound

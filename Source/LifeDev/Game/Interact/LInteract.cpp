@@ -19,6 +19,7 @@ void ALInteract::BeginPlay() {
 	}
 
 	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();
 	Dialogs = World->GetSubsystem<UDialogs>();
 }
@@ -64,7 +65,7 @@ bool ALInteract::TryTrigger_Implementation() {
 	if (!ULockItemReq.IsNone()) {
 		// check if we have the item
 		bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
-			// unlock if no item is needed to unlock
+		// unlock if no item is needed to unlock
 		if (Ok && ULockItem.IsNone()) {
 			Locked = false;
 		}
