@@ -17,7 +17,3 @@ AClout::AClout():Super() {
 	RootComponent->SetMobility(EComponentMobility::Static);
 	TriggerFlashInc = .1;
 }
-
-void AClout::ItemRewarded_Implementation() {
-	Super::ItemRewarded_Implementation();
-}

@@ -12,7 +12,4 @@ public:
 	GENERATED_BODY()
 
 	AClout();
-
-protected:
-	virtual void ItemRewarded_Implementation() override;
 };
