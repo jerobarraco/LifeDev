@@ -2,9 +2,11 @@
 
 #include "TvI00.h"
 
-
 ATvI00::ATvI00():Super() {
-	// TODO 
-	// TriggerDlg = "HT00_T";
-	// LockedDlg = "HT00_L";
+	// TriggerDlg = "TV00_T";
+}
+
+void ATvI00::Trigger_Implementation() {
+	TriggerDlg = IsOpen ? "" : "TV00_T";
+	Super::Trigger_Implementation();
 }

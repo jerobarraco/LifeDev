@@ -12,4 +12,6 @@ public:
 	GENERATED_BODY()
 
 	ATvI00();
+protected:
+	virtual void Trigger_Implementation() override;
 };
