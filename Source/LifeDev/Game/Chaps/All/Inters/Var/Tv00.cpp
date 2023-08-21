@@ -8,11 +8,11 @@
 #include "Interact/Animator/CRandomizer.h"
 #include "JUtils/CQuickMesh.h"
 
-ATv00::ATv00():Super() {
-	// TODO set meshes to static,  except button, root cant be static since the button isn't
+// TODO instance with dialogs
 
-	RootComponent->SetMobility(EComponentMobility::Static); // opt
-	IRoot->SetMobility(EComponentMobility::Static); // opt
+ATv00::ATv00():Super() {
+	// can't set stuff to static or the button animation won't work :'(
+	// so much optimization lost for a single button animation...
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
@@ -43,9 +43,7 @@ ATv00::ATv00():Super() {
 	Frame->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Frame->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Frame->SetCollisionProfileName("BlockAllDynamic");
-	Frame->bCastDynamicShadow = true;
 	Frame->SetCastAllShadows(true);
-	Frame->SetMobility(EComponentMobility::Static); // opt
 	
 	// TODo fix glass occluding the crt
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
@@ -55,7 +53,6 @@ ATv00::ATv00():Super() {
 	Glass->SetStaticMesh(CGlass.Object);
 	Glass->SetCastAllShadows(false); // opt
 	Glass->bUseAttachParentBound = true; // opt
-	Glass->SetMobility(EComponentMobility::Static); // opt
 	
 	Crt = CreateDefaultSubobject<UCQuickMesh>(TEXT("Crt"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -64,7 +61,6 @@ ATv00::ATv00():Super() {
 	Crt->SetStaticMesh(CCrt.Object);
 	Crt->SetCastAllShadows(false); // opt
 	Crt->bUseAttachParentBound = true; // opt
-	Crt->SetMobility(EComponentMobility::Static); // opt. emissive works fine with ti.
 	
 	/// anims
 	AnimEnabled = true;
@@ -81,7 +77,7 @@ ATv00::ATv00():Super() {
 	AnimCrt->Curve = CCurveMat.Object;
 	// we do need create it, or it won't work
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatFName, FLinearColor::Black);
+	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	AnimCrt->Duration = 2; // initial duration
 	
@@ -93,8 +89,6 @@ ATv00::ATv00():Super() {
 	RndCrt->ValueMax = 3;
 	RndCrt->IsLooping = true;
 	RndCrt->UseRandReverse = true;
-	
-	// TODO instance with dialogs
 }
 
 void ATv00::Trigger_Implementation() {
@@ -105,6 +99,6 @@ void ATv00::Trigger_Implementation() {
 	} else {
 		RndCrt->Stop();
 		AnimCrt->Stop();
-		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatFName, FLinearColor::Black);
+		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	}
 }
