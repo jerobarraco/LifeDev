@@ -19,8 +19,7 @@ ADoor01::ADoor01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh1(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door01/Door01-Window.Door01-Window"));
 	Window->SetStaticMesh(CMesh1.Object);
-	Window->SetCastShadow(true);
-	Window->bCastDynamicShadow = true;
+	Window->SetCastAllShadows(true);
 	Window->bUseAttachParentBound = true; // opt
 	
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
@@ -28,5 +27,5 @@ ADoor01::ADoor01():Super() {
 	Interact->SetBoxExtent(FVector(60,5,101));
 
 	Anim->IsAdditive = true;
-	Anim->TEnd.SetRotation(FRotator(0, 90, 0).Quaternion());
+	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
 }

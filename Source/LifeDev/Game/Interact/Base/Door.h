@@ -8,9 +8,9 @@
 // Base class for door-like and drawer actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor: public ADoorish {
-public:
 	GENERATED_BODY()
 
+public:
 	ADoor();
 
 protected:

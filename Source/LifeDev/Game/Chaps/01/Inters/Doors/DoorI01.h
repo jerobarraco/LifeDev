@@ -8,8 +8,8 @@
 // Door from room00 to room01, locked with a key. Instance of the door 00 that is locked until
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoorI01: public ADoor01 {
-public:
 	GENERATED_BODY()
 
+public:
 	ADoorI01();
 };

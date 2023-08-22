@@ -5,16 +5,17 @@
 
 #include "Door01.generated.h"
 
+class UCQuickMesh;
 class UStaticMeshComponent;
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor01: public ADoor {
-public:
 	GENERATED_BODY()
 
+public:
 	ADoor01();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* Window;
+	UCQuickMesh* Window;
 };

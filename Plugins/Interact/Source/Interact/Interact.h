@@ -6,6 +6,7 @@
 
 #include "Interact.generated.h"
 
+class UCQuickMesh;
 class UCAnimatorTrans;
 class UCInteract;
 class USoundBase;
@@ -87,7 +88,7 @@ protected:
 	USceneComponent* IRoot = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* Mesh = nullptr;
+	UCQuickMesh* Mesh = nullptr;
 	// not defining it as UCQuickMesh since it doesn't add anything. but it will make other files have to import quickmesh
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
