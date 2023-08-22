@@ -19,7 +19,6 @@ void AInteractAnim::BeginPlay() {
 	Super::BeginPlay();
 	Anim->OnBegin.AddUniqueDynamic(this, &AInteractAnim::AnimBegin);
 	Anim->OnEnd.AddUniqueDynamic(this, &AInteractAnim::AnimEnd);
-	// SetFadeMat();
 }
 
 void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
