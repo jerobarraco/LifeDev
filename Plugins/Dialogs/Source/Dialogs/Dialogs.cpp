@@ -3,7 +3,6 @@
 
 #include "Dialogs.h"
 
-#pragma optimize("", off)
 void UDialogs::AddDiag(const FDialog& Diag) {
 	Pending.Add(Diag);
 	ShowNext();
@@ -21,7 +20,7 @@ bool UDialogs::AddDiagId(const FName& Row) {
 bool UDialogs::AddId(const FName& Row) {
 	if (AddSeqId(Row)) return true;
 	if (AddDiagId(Row)) return true;
-	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString() );
+	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
 	return false;
 }
 
@@ -95,7 +94,7 @@ bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutCh
 
 	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""));
 	if (!Row) {
-		UE_LOG(LogTemp, Warning, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
+		UE_LOG(LogTemp, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
 		return false;
 	}
 
@@ -156,4 +155,3 @@ void UDialogs::Stop() {
 
 	OnDone.Broadcast();
 }
-#pragma optimize("", on)
