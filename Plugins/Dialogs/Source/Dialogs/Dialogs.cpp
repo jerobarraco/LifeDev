@@ -18,6 +18,11 @@ bool UDialogs::AddDiagId(const FName& Row) {
 }
 
 bool UDialogs::AddId(const FName& Row) {
+	// TODO test
+	if (Row.ToString().ToUpper().StartsWith("RND_")) {
+		if (AddRndId(Row)) return true;
+	}
+
 	if (AddSeqId(Row)) return true;
 	if (AddDiagId(Row)) return true;
 	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
@@ -56,8 +61,9 @@ bool UDialogs::AddSeqId(const FName& RowName) {
 }
 
 bool UDialogs::AddRnd(const FDialogSequence& Seq) {
-	int32 Num = Seq.DiagRows.Num();
+	const int32 Num = Seq.DiagRows.Num();
 	if (Num <= 0) return false;
+
 	const int32 i = FMath::RandRange(0, Num);
 	return AddId(Seq.DiagRows[i]);
 }
@@ -66,6 +72,7 @@ bool UDialogs::AddRndId(const FName& RowName) {
 	FDialogSequence Seq;
 	const bool Ok = GetSeq(RowName, Seq);
 	if (!Ok) return false;
+
 	return AddRnd(Seq);
 }
 
