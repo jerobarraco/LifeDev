@@ -11,5 +11,6 @@ class LIFEDEV_API AWindowI00: public AWindow00 {
 	GENERATED_BODY()
 
 public:
-	AWindowI00();
+
+protected:
 };

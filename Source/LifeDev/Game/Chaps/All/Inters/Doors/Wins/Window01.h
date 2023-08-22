@@ -11,9 +11,7 @@
 UCLASS(Blueprintable)
 class LIFEDEV_API AWindow01: public AWindow00 {
 	GENERATED_BODY()
+
 public:
-
 	AWindow01();
-
-protected:
 };
