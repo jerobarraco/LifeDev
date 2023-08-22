@@ -3,6 +3,7 @@
 #include "Spot00.h"
 
 #include "Interact/CInteract.h"
+#include "JUtils/CQuickMesh.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpot00::ASpot00():Super() {
@@ -19,7 +20,7 @@ ASpot00::ASpot00():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
 	DropDlg = TEXT("IS_C0D");
-	TriggerDlg = FName("IS_C0T");
+	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T_RND
 	LockedDlg = "IS_C0TB";
 	Items = {
 		// two shirts and a boxer, and a sock

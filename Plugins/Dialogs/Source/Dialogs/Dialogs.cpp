@@ -19,7 +19,7 @@ bool UDialogs::AddDiagId(const FName& Row) {
 
 bool UDialogs::AddId(const FName& Row) {
 	// TODO test
-	if (Row.ToString().ToUpper().StartsWith("RND_")) {
+	if (Row.ToString().ToUpper().EndsWith("_RND")) {
 		if (AddRndId(Row)) return true;
 	}
 

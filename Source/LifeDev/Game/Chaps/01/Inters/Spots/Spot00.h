@@ -8,11 +8,11 @@
 // Spot for sisters clothes
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpot00: public ALInteractSpot {
-public:
 	GENERATED_BODY()
+
+public:
 	ASpot00();
 
 protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
-
 };
