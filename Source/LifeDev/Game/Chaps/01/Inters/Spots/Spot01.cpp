@@ -3,6 +3,7 @@
 #include "Spot01.h"
 
 #include "Interact/CInteract.h"
+#include "JUtils/CQuickMesh.h"
 
 ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -20,6 +21,6 @@ ASpot01::ASpot01():Super() {
 	};
 	TriggerDlg = FName("IS_C1T");
 	LockedDlg = "IS_C1TB";
-	DropDlg = TEXT("IS_C1D");
+	DropDlg = "IS_C1D";
 	Items = {FName("C1C03")}; // the bra
 }

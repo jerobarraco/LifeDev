@@ -23,6 +23,7 @@ bool UDialogs::AddId(const FName& Row) {
 		if (AddRndId(Row)) return true;
 	}
 
+	// first attempt to add a sequence, then a dialog
 	if (AddSeqId(Row)) return true;
 	if (AddDiagId(Row)) return true;
 	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
