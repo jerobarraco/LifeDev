@@ -64,7 +64,7 @@ bool ALInteract::TryTrigger_Implementation() {
 	// handle item req
 	if (!ULockItemReq.IsNone()) {
 		// check if we have the item
-		bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
+		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
 		// unlock if no item is needed to unlock
 		if (Ok && ULockItem.IsNone()) {
 			Locked = false;

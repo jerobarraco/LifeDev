@@ -20,7 +20,7 @@ ASpot00::ASpot00():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
 	DropDlg = TEXT("IS_C0D");
-	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T_RND
+	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T*
 	LockedDlg = "IS_C0TB";
 	Items = {
 		// two shirts and a boxer, and a sock
