@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "LifeDev/Core/Sound/MusicMan.h"
 
 #include "IntroGameMode.generated.h"
 
@@ -18,10 +19,17 @@ class LIFEDEV_API AIntroGameMode : public AGameModeBase
 public:
 	AIntroGameMode();
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	USoundBase* Music = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	AIntroMan* Manager = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
+	AMusicMan* MusicMan = nullptr;
+	
 };

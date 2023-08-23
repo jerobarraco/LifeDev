@@ -86,19 +86,24 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 
+	/// set input mode
 	// this is critical or the dialogs will break
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// these are not needed since we are using the input actions
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 
+	/// set flags
 	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
 	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
 	AMusicMan::Enabled = Instance->GetFeat(EFeat::MUSIC);
 
-	// todo improve. should come from savestate. though still check for the chapter
+	// todo should come from savestate
 	ChapterId = 0;
-	
+
+	// music
+	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
+
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {
@@ -107,8 +112,6 @@ void ALGGameMode::Init_Implementation() {
 	} else {
 		Char = nullptr;
 	}
-
-	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
 
 	/// Dialogs
 	Dialogs = World->GetSubsystem<UDialogs>();

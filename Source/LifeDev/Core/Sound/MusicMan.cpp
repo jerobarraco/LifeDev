@@ -24,6 +24,8 @@ void AMusicMan::Fade(bool In) {
 void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 	if (!IsValid(Snd)) return;
 
+	UE_LOG(LogTemp, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
+	
 	NextMusic = Snd;
 	if (FadeOut && Player->IsPlaying()) {
 		Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
@@ -73,7 +75,9 @@ void AMusicMan::SetIntensity(float V) {
 void AMusicMan::SetNextMusic() {
 	Player->OnAudioFinished.RemoveAll(this);
 	if (!IsValid(NextMusic)) return;
-	
+
+	UE_LOG(LogTemp, Log, TEXT("MusicMan SetNextMusic '%s'"), *NextMusic->GetName());
+
 	Player->SetSound(NextMusic);
 	Fade(true);
 	// buddhist say no to attachment (unnecessarily at least)
