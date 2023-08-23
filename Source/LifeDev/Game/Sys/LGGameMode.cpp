@@ -107,7 +107,9 @@ void ALGGameMode::Init_Implementation() {
 	} else {
 		Char = nullptr;
 	}
-	
+
+	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
+
 	/// Dialogs
 	Dialogs = World->GetSubsystem<UDialogs>();
 	Dialogs->Init();
@@ -211,6 +213,7 @@ void ALGGameMode::DeInit_Implementation() {
 		StoryManager->DeInit();
 	}
 	StoryManager = nullptr;
+
 	if (IsValid(Story)) {
 		Story->OnSeqStop.RemoveAll(this);
 	}
@@ -220,6 +223,11 @@ void ALGGameMode::DeInit_Implementation() {
 		// Char->DeInit();
 	}
 	Char = nullptr;
+
+	if (IsValid(MusicMan)) {
+		MusicMan->Fade(false); // probably won't get a chance to fade sinc ethe game mode is ending.
+	}
+	MusicMan = nullptr;
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
@@ -258,6 +266,8 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALGGameMode::SetDynRes() {
+	// Note this is not even being called. but left in case
+	
 	// https://docs.unrealengine.com/5.2/en-US/dynamic-resolution-in-unreal-engine/
 	if (!UseDynRes || !GEngine) return;
 	GEngine->SetDynamicResolutionUserSetting(true);
@@ -296,12 +306,15 @@ void ALGGameMode::StartChapter() {
 
 	FText DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
 	StoryManager->FadeIn(DecoratedTitle);
-	
+	MusicMan->Fade(false); // fade out preemptively. this is the best moment. seize it.
+
 	FTimerManager& Time = GetWorld()->GetTimerManager();
 	FTimerHandle Handle1;
 	FTimerDelegate Delegate1;
+	// TODO make a function of this
 	Delegate1.BindLambda([this] {
 		Story->StartSequence(Chapter.StorySeq);
+		MusicMan->PlayMusic(Chapter.Music.LoadSynchronous());
 	});
 	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	

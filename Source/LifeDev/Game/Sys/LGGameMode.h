@@ -7,6 +7,7 @@
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "Dialogs/DiagTypes.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Sound/MusicMan.h"
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
@@ -65,6 +66,8 @@ public:
 	UStory* Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALChar* Char = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	AMusicMan* MusicMan = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 ChapterId = 1; // Maybe this could be on the game instance. ?

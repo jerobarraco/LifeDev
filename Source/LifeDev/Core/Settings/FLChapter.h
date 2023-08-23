@@ -18,4 +18,6 @@ public:
 	TSoftObjectPtr<UDataTable> Sequences;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> StorySeq;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<USoundBase> Music;
 };
