@@ -55,6 +55,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Animator;
 
+	// it's super important that the value starts from 0 upon initialization
 	float Val = 0;
 	float AnimFrom = 0;
 	float AnimTo = 0;

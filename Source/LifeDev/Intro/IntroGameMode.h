@@ -26,10 +26,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	AIntroMan* Manager = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	AMusicMan* MusicMan = nullptr;
-	
 };
