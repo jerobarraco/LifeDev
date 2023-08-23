@@ -9,25 +9,25 @@ class INTERACT_API UCAnimatorSound: public UCAnimator {
 
 public:
 	// the sound component to animate
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	UAudioComponent* Snd = nullptr;
 
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FName IntName = NAME_None;
 	// the alpha is 0-1. this would be the max for an int param.
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	float IntMin = 0;
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	float IntMax = 10;
 
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FName FloatName = NAME_None;
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	float FloatMin = 0;
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	float FloatMax = 1;
 
-	UPROPERTY(BlueprintCallable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FName TriggerName = NAME_None;
 	
 protected:

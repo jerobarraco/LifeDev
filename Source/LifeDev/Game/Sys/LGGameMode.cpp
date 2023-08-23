@@ -20,6 +20,7 @@
 #include "Interact/Animator/CAnimator.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
+#include "LifeDev/Core/Sound/MusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
@@ -93,6 +94,7 @@ void ALGGameMode::Init_Implementation() {
 
 	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
 	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
+	AMusicMan::Enabled = Instance->GetFeat(EFeat::MUSIC);
 
 	// todo improve. should come from savestate. though still check for the chapter
 	ChapterId = 0;
