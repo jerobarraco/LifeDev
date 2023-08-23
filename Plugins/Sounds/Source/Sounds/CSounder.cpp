@@ -6,7 +6,6 @@
 UCSounder::UCSounder():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 	Super::SetAutoActivate(false);
-	SetHiddenInGame(true);
 	bAutoManageAttachment = true;
 	//
 	// static ConstructorHelpers::FObjectFinder<USoundBase>

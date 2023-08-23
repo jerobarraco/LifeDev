@@ -4,10 +4,7 @@
 
 #include "MusicMan.generated.h"
 
-class UCurveFloat;
-class USceneComponent;
-class USoundAttenuation;
-class USoundBase;
+class UCSounder;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCMusicManRawOnPlay);
 
@@ -20,12 +17,29 @@ public:
 	AMusicMan();
 	inline static bool Enabled = true;
 
-protected:
-	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable)
+	void Fade(bool In);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
+	FORCEINLINE void FadeIn() {Fade(true);}
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
+	FORCEINLINE void FadeOut() { Fade(false);}
 
 	UFUNCTION(BlueprintCallable)
-	void SetIntensity(float V);
+	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	UFUNCTION(BlueprintCallable)
+	void SetIntensity(float V);
+
+	UFUNCTION() // bind
+	void SetNextMusic();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	UAudioComponent* Player = nullptr;
+	UCSounder* Player = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	USoundBase* NextMusic = nullptr;
 };
