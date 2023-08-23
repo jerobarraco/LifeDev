@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Components/AudioComponent.h"
 
 #include "MusicMan.generated.h"
 
@@ -32,6 +33,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	UFUNCTION()
+	void UpdateState(EAudioComponentPlayState PlayState);
 	UFUNCTION(BlueprintCallable)
 	void SetIntensity(float V);
 

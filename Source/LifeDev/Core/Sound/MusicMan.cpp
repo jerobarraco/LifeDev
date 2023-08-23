@@ -39,8 +39,9 @@ void AMusicMan::BeginPlay() {
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
 	if (!Flashback) return;
 	
-	SetIntensity(0);
+	SetIntensity(0); // no work.
 	Flashback->OnChange.AddUniqueDynamic(this, &AMusicMan::SetIntensity);
+	Player->OnAudioPlayStateChanged.AddUniqueDynamic(this, &AMusicMan::UpdateState);
 	Player->Activate(true);
 }
 
@@ -53,6 +54,15 @@ void AMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
+void AMusicMan::UpdateState(EAudioComponentPlayState PlayState) {
+	// not checking the others. to not mangle the logic.
+	if (PlayState == EAudioComponentPlayState::Playing) {
+		UFlashback* const Flashback = UFlashback::Get(GetWorld());
+		if (!Flashback) return;
+		SetIntensity(Flashback->GetVal());
+	} 
+}
+
 void AMusicMan::SetIntensity(float V) {
 	if (!IsValid(Player) || ! Player->IsPlaying()) return;
 	static FName NInt ="Intensity";
@@ -61,6 +71,8 @@ void AMusicMan::SetIntensity(float V) {
 
 void AMusicMan::SetNextMusic() {
 	Player->OnAudioFinished.RemoveAll(this);
+	if (!IsValid(NextMusic)) return;
+	
 	Player->SetSound(NextMusic);
 	Fade(true);
 	// buddhist say no to attachment (unnecessarily at least)

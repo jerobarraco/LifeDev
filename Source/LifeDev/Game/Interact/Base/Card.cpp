@@ -3,6 +3,7 @@
 #include "Card.h"
 
 #include "Interact/CInteract.h"
+#include "JUtils/CQuickMesh.h"
 
 ACard::ACard():Super() {
 	Interact->SetRelativeLocation(FVector(5.000000,-2.500000,0.000000));
