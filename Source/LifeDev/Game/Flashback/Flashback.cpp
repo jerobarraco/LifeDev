@@ -67,7 +67,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	const float Time = Duration*Diff;
 	Animator->Duration = Time;
 	Animator->PlaySet();
-	UE_LOG(LogTemp, Log, TEXT("Flashback Val %.5f Speed %.5 Time %.5f"), Val, Duration, Time);
+	UE_LOG(LogTemp, Log, TEXT("Flashback Val %.5f Duration %.5 Time %.5f"), Val, Duration, Time);
 }
 
 void UFlashback::SetValS(UWorld* W, float New, float Duration) {
