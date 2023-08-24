@@ -28,8 +28,22 @@ public:
 	float FloatMax = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	bool VolUse = false;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	float VolMin = 0;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	float VolMax = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	bool PitchUse = false;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	float PitchMin = 0;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	float PitchMax = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FName TriggerName = NAME_None;
-	
+
 protected:
 	virtual void Update_Implementation(float Alpha) override;
 };
