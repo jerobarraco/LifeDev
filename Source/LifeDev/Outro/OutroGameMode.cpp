@@ -2,11 +2,12 @@
 
 #include "OutroGameMode.h"
 
-#include "OutroMan.h"
 #include "GameFramework/SpectatorPawn.h"
-#include "LifeDev/Core/Sound/MusicMan.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 #include "UObject/ConstructorHelpers.h"
+
+#include "OutroMan.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 AOutroGameMode::AOutroGameMode():Super() {
 	SetActorTickEnabled(false);
@@ -23,7 +24,7 @@ void AOutroGameMode::BeginPlay() {
 	Manager = Cast<AOutroMan>(GetWorld()->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
 
 	UWorld* const World = GetWorld();
-	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	MusicMan->PlayMusic(Music);
 
 	UFlashback* const FB = UFlashback::Get(World);

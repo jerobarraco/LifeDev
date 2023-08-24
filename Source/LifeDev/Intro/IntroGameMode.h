@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "LifeDev/Core/Sound/MusicMan.h"
 
 #include "IntroGameMode.generated.h"
 
 class AIntroMan;
+class ALMusicMan;
 
 // Game mode class for the intro 
 UCLASS(Blueprintable)
@@ -29,5 +29,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	AIntroMan* Manager = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	AMusicMan* MusicMan = nullptr;
+	ALMusicMan* MusicMan = nullptr;
 };

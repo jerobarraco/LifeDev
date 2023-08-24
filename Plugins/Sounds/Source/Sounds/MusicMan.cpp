@@ -1,9 +1,10 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #include "MusicMan.h"
 
+#include "SoundsModule.h"
 #include "Components/AudioComponent.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 #include "Sounds/CSounder.h"
 
 AMusicMan::AMusicMan():Super() {
@@ -24,7 +25,7 @@ void AMusicMan::Fade(bool In) {
 void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 	if (!IsValid(Snd)) return;
 
-	UE_LOG(LogTemp, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
+	UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
 	
 	NextMusic = Snd;
 	if (FadeOut && Player->IsPlaying()) {
@@ -39,34 +40,23 @@ void AMusicMan::BeginPlay() {
 	Super::BeginPlay();
 	if (!Enabled) return;
 
-	UFlashback* const Flashback = UFlashback::Get(GetWorld());
-	if (!Flashback) return;
-	
-	SetIntensity(0); // no work.
-	Flashback->OnChange.AddUniqueDynamic(this, &AMusicMan::SetIntensity);
-	Player->OnAudioPlayStateChanged.AddUniqueDynamic(this, &AMusicMan::UpdateState);
 	Player->Activate(true);
+	SetIntensity(0); // doesn't really work if it's not playing
 }
 
-void AMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UFlashback* const Flashback = UFlashback::Get(GetWorld());
-	if (Flashback) {
-		Flashback->OnChange.RemoveAll(this);
-	}
-
-	Super::EndPlay(EndPlayReason);
-}
 
 void AMusicMan::UpdateState(EAudioComponentPlayState PlayState) {
-	// not checking the others. to not mangle the logic.
+	// not checking the other states. to not mangle the logic.
 	if (PlayState == EAudioComponentPlayState::Playing) {
-		UFlashback* const Flashback = UFlashback::Get(GetWorld());
-		if (!Flashback) return;
-		SetIntensity(Flashback->GetVal());
+		// reset intensity so it's coherent. and also since we can't apply it before it's playing.
+		SetIntensity(Intensity);
 	} 
 }
 
 void AMusicMan::SetIntensity(float V) {
+	Intensity = V;
+
+	// avoid crashing
 	if (!IsValid(Player) || ! Player->IsPlaying()) return;
 	static FName NInt ="Intensity";
 	Player->SetFloatParameter(NInt, V);
@@ -76,11 +66,12 @@ void AMusicMan::SetNextMusic() {
 	Player->OnAudioFinished.RemoveAll(this);
 	if (!IsValid(NextMusic)) return;
 
-	UE_LOG(LogTemp, Log, TEXT("MusicMan SetNextMusic '%s'"), *NextMusic->GetName());
+	UE_LOG(LogSounds, Log, TEXT("MusicMan SetNextMusic '%s'"), *NextMusic->GetName());
 
 	Player->SetSound(NextMusic);
 	Fade(true);
-	// buddhist say no to attachment (unnecessarily at least)
+
+	// buddhist say no to attachment (unnecessarily at least). This is important for the above check.
 	NextMusic = nullptr;
 }
 

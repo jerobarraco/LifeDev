@@ -7,7 +7,7 @@
 
 #include "OutroGameMode.generated.h"
 
-class AMusicMan;
+class ALMusicMan;
 class AOutroMan;
 
 // Game mode class for the outro 
@@ -29,5 +29,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
 	AOutroMan* Manager = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	AMusicMan* MusicMan = nullptr;
+	ALMusicMan* MusicMan = nullptr;
 };

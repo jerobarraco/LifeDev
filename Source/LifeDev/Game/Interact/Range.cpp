@@ -3,6 +3,7 @@
 #include "Range.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/CQuickMesh.h"
 
 ARange::ARange():Super() {
 	// super important or it will NOT work

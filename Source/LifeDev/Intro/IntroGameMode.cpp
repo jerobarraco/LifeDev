@@ -6,7 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "IntroMan.h"
-#include "LifeDev/Core/Sound/MusicMan.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 AIntroGameMode::AIntroGameMode():Super() {
@@ -22,7 +22,7 @@ void AIntroGameMode::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const World = GetWorld();
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
-	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	MusicMan->PlayMusic(Music);
 
 	UFlashback* const FB = UFlashback::Get(World);

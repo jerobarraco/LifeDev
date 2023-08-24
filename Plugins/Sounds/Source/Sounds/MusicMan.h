@@ -1,4 +1,5 @@
-// Copyright (C) 2023 - Jerónimo Barraco-Mármol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
 #include "Components/AudioComponent.h"
@@ -7,11 +8,9 @@
 
 class UCSounder;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCMusicManRawOnPlay);
-
-// Plays a sound at random intervals, at a random distance, on a random point in a cone facing on the back of the owner actor.
-UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
-class LIFEDEV_API AMusicMan: public AActor {
+// Music manager for a level
+UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Sounds), meta=(BlueprintSpawnableComponent))
+class SOUNDS_API AMusicMan: public AActor {
 	GENERATED_BODY()
 
 public:
@@ -29,20 +28,25 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
 
-protected:
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
-	UFUNCTION()
-	void UpdateState(EAudioComponentPlayState PlayState);
+	// this is the intensity param, not the volume.
 	UFUNCTION(BlueprintCallable)
 	void SetIntensity(float V);
 
+protected:
+	virtual void BeginPlay() override;
+	
+	UFUNCTION() // bind
+	void UpdateState(EAudioComponentPlayState PlayState);
+	
 	UFUNCTION() // bind
 	void SetNextMusic();
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|Common")
 	UCSounder* Player = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	USoundBase* NextMusic = nullptr;
+
+	// cache the intensity to reapply on music change
+	float Intensity = 0;
 };

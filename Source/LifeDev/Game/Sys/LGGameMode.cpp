@@ -10,17 +10,17 @@
 #include "Dialogs/DialogManager.h"
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
-#include "Inventory/InventoryManager.h"
-#include "LifeDev/Core/LGameInstance.h"
-#include "LifeDev/Core/Settings/FLChapter.h"
-
-#include "Story/StoryManager.h"
-#include "Story/Story.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CAnimator.h"
+#include "Inventory/InventoryManager.h"
+#include "Story/StoryManager.h"
+#include "Story/Story.h"
+#include "Sounds/MusicMan.h"
 
+#include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
-#include "LifeDev/Core/Sound/MusicMan.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
@@ -102,7 +102,7 @@ void ALGGameMode::Init_Implementation() {
 	ChapterId = 0;
 
 	// music
-	MusicMan = Cast<AMusicMan>(World->SpawnActor(AMusicMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));

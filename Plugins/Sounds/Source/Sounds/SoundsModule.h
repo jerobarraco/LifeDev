@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSounds, Log, Log)
+
 class SOUNDS_API FSoundsModule : public IModuleInterface
 {
 public:
