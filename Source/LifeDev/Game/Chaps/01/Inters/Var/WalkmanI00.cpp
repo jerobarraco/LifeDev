@@ -24,5 +24,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	Interact->SetRelativeLocation(FVector(7,-5,1.725000));
 	Interact->SetBoxExtent(FVector(7.5,5,2));
 	// TODO set up meshes
+
+	// snd /Script/Engine.SoundCue'/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Tape_SC.Tape_SC'
 }
 
