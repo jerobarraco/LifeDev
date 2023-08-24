@@ -25,7 +25,7 @@ void UFlashback::SetValInternal(float New) {
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
 	if (Debug) {
-		UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
+		// UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
 	}
 
 	Val = New;
@@ -42,7 +42,7 @@ void UFlashback::IncVal(float By, float Duration) {
 
 void UFlashback::SetVal(float New, float Duration) {
 	const float Diff = FMath::Abs(Val - New);
-	// UE_LOG(LogTemp, Log, TEXT("Diff %.5f"),  Diff);
+	UE_LOG(LogTemp, Log, TEXT("Flashback NewVal %.5 Diff %.5f"), New, Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// reset animation if any
@@ -67,9 +67,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	const float Time = Duration*Diff;
 	Animator->Duration = Time;
 	Animator->PlaySet();
-	if (Debug) {
-		UE_LOG(LogTemp, Log, TEXT("Flashback: Speed, Time %.5f %.5f"), Duration, Time);
-	}
+	UE_LOG(LogTemp, Log, TEXT("Flashback Val %.5f Speed %.5 Time %.5f"), Val, Duration, Time);
 }
 
 void UFlashback::SetValS(UWorld* W, float New, float Duration) {
