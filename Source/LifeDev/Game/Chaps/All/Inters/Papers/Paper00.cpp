@@ -3,6 +3,7 @@
 #include "Paper00.h"
 
 #include "Interact/CInteract.h"
+#include "JUtils/CQuickMesh.h"
 
 APaper00::APaper00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -18,4 +19,8 @@ APaper00::APaper00():Super() {
 	// a sheet of paper is an ink lined plane
 	// an inclined plane is a slope up
 	// a slow pup is a lazy dog
+
+	ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Tape_SC.Tape_SC"));
+	SFX_Trigger = CSnd.Object;
 }

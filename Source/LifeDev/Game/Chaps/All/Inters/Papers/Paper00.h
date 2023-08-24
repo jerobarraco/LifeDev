@@ -8,8 +8,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APaper00: public ALInteractFade {
-public:
 	GENERATED_BODY()
 
+public:
 	APaper00();
 };
