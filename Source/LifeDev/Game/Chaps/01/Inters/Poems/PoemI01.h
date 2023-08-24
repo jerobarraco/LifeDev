@@ -7,8 +7,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APoemI01: public APaper00 {
-public:
 	GENERATED_BODY()
 
+public:
 	APoemI01();
 };
