@@ -91,6 +91,8 @@ void AInteract::Trigger_Implementation() {
 
 void AInteract::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
+
+	UE_LOG(LogTemp, Log, TEXT("Playing sound %s "), *Snd->GetName());
 	SFX->SetHiddenInGame(false);
 	SFX->SetSound(Snd);
 	SFX->SetActive(true, true);

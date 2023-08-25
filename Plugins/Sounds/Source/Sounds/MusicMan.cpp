@@ -55,9 +55,11 @@ void AMusicMan::UpdateState(EAudioComponentPlayState PlayState) {
 
 void AMusicMan::SetIntensity(float V) {
 	Intensity = V;
-
+	const bool CanSet = !IsValid(Player) || ! Player->IsPlaying();
+	UE_LOG(LogTemp, Log, TEXT("MusicMan SetIntensity %.5f %i"), V, CanSet);
+	
 	// avoid crashing
-	if (!IsValid(Player) || ! Player->IsPlaying()) return;
+	if (CanSet) return;
 	static FName NInt ="Intensity";
 	Player->SetFloatParameter(NInt, V);
 }

@@ -8,7 +8,6 @@
 #include "Interact.h"
 #include "InteractTypes.h"
 
-#pragma optimize("", off)
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
@@ -117,4 +116,3 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	OnToggle.Broadcast(true, InterComp);
 	OnBegin.Broadcast(InterComp);
 }
-#pragma optimize("", on)

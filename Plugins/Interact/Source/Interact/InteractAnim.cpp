@@ -39,16 +39,15 @@ void AInteractAnim::SetText_Implementation() {
 }
 
 void AInteractAnim::Trigger_Implementation() {
-	Super::Trigger_Implementation();
-
-	if (!AnimEnabled) return;
 	// set the flag before so that the sound triggers are consistent
 	IsOpen = !IsOpen;
-	SetText(); // change the text after the flag has changed
-	// this creates so many issues. notice how it's set.
-	Anim->PlaySet(!IsOpen);
-
-	UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
+	if (AnimEnabled) {
+		// this creates so many issues. notice how it's set.
+		Anim->PlaySet(!IsOpen);
+		UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
+	}
+	Super::Trigger_Implementation(); // trigger the trigger sound and calls set text
+	// SetText(); // change the text after the flag has changed
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
