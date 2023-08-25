@@ -34,10 +34,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
-	UFUNCTION() // bind
-	void UpdateState(EAudioComponentPlayState PlayState);
-	
+
 	UFUNCTION() // bind
 	void SetNextMusic();
 

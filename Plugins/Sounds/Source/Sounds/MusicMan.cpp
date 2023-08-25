@@ -44,19 +44,9 @@ void AMusicMan::BeginPlay() {
 	SetIntensity(0); // doesn't really work if it's not playing
 }
 
-
-void AMusicMan::UpdateState(EAudioComponentPlayState PlayState) {
-	// not checking the other states. to not mangle the logic.
-	if (PlayState == EAudioComponentPlayState::Playing) {
-		// reset intensity so it's coherent. and also since we can't apply it before it's playing.
-		SetIntensity(Intensity);
-	} 
-}
-
 void AMusicMan::SetIntensity(float V) {
 	Intensity = V;
 	const bool CanSet = !IsValid(Player) || ! Player->IsPlaying();
-	UE_LOG(LogTemp, Log, TEXT("MusicMan SetIntensity %.5f %i"), V, CanSet);
 	
 	// avoid crashing
 	if (CanSet) return;
@@ -72,6 +62,8 @@ void AMusicMan::SetNextMusic() {
 
 	Player->SetSound(NextMusic);
 	Fade(true);
+	// reset intensity so it's coherent. and also since we can't apply it before it's playing.
+	SetIntensity(Intensity);
 
 	// buddhist say no to attachment (unnecessarily at least). This is important for the above check.
 	NextMusic = nullptr;
