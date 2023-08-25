@@ -45,15 +45,30 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName)
 	if (IsRunningDedicatedServer()) return;
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is on"));	
-	FLoadingScreenAttributes LoadingScreen;
-	LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
-	// use widget->takewidget() to get the swidget
-	// https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
-	LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+	
 
-	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
+	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
+	if (MoviePlayer) {
+		FLoadingScreenAttributes LoadingScreen;
+        LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
+        // use widget->takewidget() to get the swidget
+        // https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
+        LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+		MoviePlayer->SetupLoadingScreen(LoadingScreen);
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("Can't get movie player"));
+	}
 
-	GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->StartCameraFade(0, 1, .5f, FLinearColor::Black, true, true);
+	// TODO move this to JUtils (?)
+	// UWorld* const World = GetWorld();
+	// APlayerController* const Controller = World ? GetFirstLocalPlayerController(World) : nullptr;
+	APlayerController* const Controller = GetPrimaryPlayerController();
+	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
+	if (CamManager) {
+		CamManager->StartCameraFade(0, 1, .5f, FLinearColor::Black, true, true);
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
+	}
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
@@ -61,9 +76,15 @@ void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is done"));	
 
-	GetFirstLocalPlayerController(InLoadedWorld)->PlayerCameraManager->StartCameraFade(1, 0, .5f, FLinearColor::Black, true, true);
-
-	// ?
+	// UWorld* const World = GetWorld();
+	// APlayerController* const Controller = World ? GetFirstLocalPlayerController(World) : nullptr;
+	APlayerController* const Controller = GetPrimaryPlayerController();
+	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
+	if (CamManager) {
+		CamManager->StartCameraFade(1, 0, .5f, FLinearColor::Black, true, true);
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
+	}
 }
 
 void ULGameInstance::ResetFeats() {
