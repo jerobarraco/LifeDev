@@ -32,8 +32,10 @@ void AInteractAnim::SetText_Implementation() {
 	if (Texts.Num()<1) {
 		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
-	} else if (Texts.Num()<2) {
+	}
+	if (Texts.Num()<2) {
 		Interact->Text = Texts[0];
+		return;
 	}
 	Interact->Text = Texts[IsOpen?1:0];
 }
