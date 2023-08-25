@@ -1,7 +1,6 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/LInteract.h"
 #include "LifeDev/Game/Interact/LInteractFade.h"
 
 #include "Paper00.generated.h"
