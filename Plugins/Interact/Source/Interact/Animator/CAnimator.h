@@ -32,13 +32,13 @@ public:
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	inline void Stop() { SetIsAnimating(false); };
+	FORCEINLINE void Stop() { SetIsAnimating(false); };
 
 	UFUNCTION(BlueprintCallable)
-	inline bool GetIsAnimating() const { return IsAnimating; }
+	FORCEINLINE bool GetIsAnimating() const { return IsAnimating; }
 
 	UFUNCTION(BlueprintCallable)
-	inline bool GetProgress() const { return Progress; }
+	FORCEINLINE float GetProgress() const { return Progress; }
 	
 	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
