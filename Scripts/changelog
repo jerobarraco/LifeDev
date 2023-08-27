@@ -1,0 +1,4 @@
+#!/bin/bash
+#git log 7706dc84...796f6d28 > changelog_0.2.txt
+git log $2...$1 > changelog_0.2.txt
+

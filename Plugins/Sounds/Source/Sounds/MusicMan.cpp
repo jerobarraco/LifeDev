@@ -30,7 +30,7 @@ void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 	NextMusic = Snd;
 	if (FadeOut && Player->IsPlaying()) {
 		Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
-		Player->SetPlaying(false);
+		Fade(false);
 	} else {
 		SetNextMusic();
 	}

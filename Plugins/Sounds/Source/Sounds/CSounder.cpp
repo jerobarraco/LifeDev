@@ -14,12 +14,15 @@ UCSounder::UCSounder():Super() {
 }
 
 void UCSounder::SetPlaying(bool InPlaying) {
+	// calling stopdelayed will actually bring problems when switching musics on the musicman.
+	// (presumably stopping the new one). Fadeout is good enough and seems to stop the audio,
+	// (i.e. trigger onAudioFinished at the end)
+	// Don't use Play(); StopDelayed(TimeFadeOut);
 	if (InPlaying) {
 		const float Time = TimeEnd <0 ? TimeStart :
 			FMath::RandRange(TimeStart, TimeEnd);
 		FadeIn(TimeFadeIn, 1, Time);
 	} else {
         FadeOut(TimeFadeOut, 0);
-        StopDelayed(TimeFadeOut);
 	}
 }

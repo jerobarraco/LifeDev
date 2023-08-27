@@ -317,7 +317,7 @@ void ALGGameMode::StartChapter() {
 	// TODO make a function of this
 	Delegate1.BindLambda([this] {
 		Story->StartSequence(Chapter.StorySeq);
-		MusicMan->PlayMusic(Chapter.Music.LoadSynchronous());
+		MusicMan->PlayMusic(Chapter.Music.LoadSynchronous(), true);
 	});
 	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	
