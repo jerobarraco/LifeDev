@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
-#include "Components/AudioComponent.h"
 
 #include "MusicMan.generated.h"
 
