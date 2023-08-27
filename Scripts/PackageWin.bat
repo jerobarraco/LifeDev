@@ -5,7 +5,8 @@ set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
 :: set INSTALLED=
 set MAPS=allmaps
-set CONFIG=Development
+:: cant use Test "targets cannot be built in test with this engine distribution" but "Development" will leave the debug messages on screen >_<
+set CONFIG=Shipping
 
 
 :: Build client
