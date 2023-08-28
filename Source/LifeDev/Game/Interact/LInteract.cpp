@@ -28,7 +28,7 @@ void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 
 	// trigger the dialog anyway.
-	if (!TriggerDlg.IsNone() && IsValid(Dialogs)) {
+	if (IsValid(Dialogs)) {
 		Dialogs->AddId(TriggerDlg);
 	}
 

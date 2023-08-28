@@ -18,6 +18,7 @@ bool UDialogs::AddDiagId(const FName& Row) {
 }
 
 bool UDialogs::AddId(const FName& Row) {
+	if (Row.IsNone()) return false;
 	// TODO test
 	if (Row.ToString().EndsWith("*")) {
 		if (AddRndId(Row)) return true;

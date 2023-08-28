@@ -19,11 +19,14 @@ public:
 	FName ULockItemReq = NAME_None;
 	
 	// name of the item that will unlock this. setting it will lock the actor on start.
+	// it will also decide whether to shod LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItem = NAME_None;
 
-	// Dialog to show when unlocking, or none to not say anything
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	// Dialog to show when unlocking, or none to not say anything.
+	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
+	// (e.g. useful for doors) 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock",  meta=(DeprecatedProperty))
 	FName ULockDlg = NAME_None;
 
 	// dialog to trigger when tried to use the wrong item to unlock this
@@ -38,7 +41,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName LockedDlg = NAME_None;
 
-	// dialog to show when the object is triggered.
+	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName TriggerDlg = NAME_None;
 

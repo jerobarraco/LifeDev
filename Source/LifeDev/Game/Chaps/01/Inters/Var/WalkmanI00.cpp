@@ -9,13 +9,15 @@ AWalkmanI00::AWalkmanI00():Super() {
 	Interact->SetEnabled(true);
 	
 	TriggerFlashInc = .1f;
-	// TODO rename on dialogs
-	TriggerDlg = "WM00_T"; // TODO
-	LockedDlg = "WM00_L"; // TODO WM_WrongItem
-	ItemReward = "WM00"; // TODO
+	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?
+	LockedDlg = "WM00_L";
+	LockedItemDlg = "WM00_LI"; // will trigger if i have the batteries. TODO add
+	ULockItem = "Batts";
 	
+	ItemReward = "WM00";
+	ULockBadDlg = "WM00_ULB";
+		
 	Locked = true;
-	ULockItemReq = "Batts"; // TODO Batteries. rename on inventory
 	Texts = {
 		FText::FromString(TEXT("My walkman, with no batteries")),
 	};
