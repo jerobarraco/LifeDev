@@ -29,7 +29,6 @@ void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 	
 	NextMusic = Snd;
 	if (FadeOut && Player->IsPlaying()) {
-		Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
 		Fade(false);
 	} else {
 		SetNextMusic();
@@ -39,9 +38,23 @@ void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 void AMusicMan::BeginPlay() {
 	Super::BeginPlay();
 	if (!Enabled) return;
-
-	Player->Activate(true);
+	
+	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::AudioFinished);
+	Player->Activate(true); // attempt to start playing if set.
 	SetIntensity(0); // doesn't really work if it's not playing
+}
+
+void AMusicMan::AudioFinished() {
+	if (!IsValid(NextMusic)) {
+		UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. No NextMusic."));
+		return;
+	}
+	UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. NextMusic='%s'"), *NextMusic->GetName());
+
+	// schedule a change in music in the next 100 ms.
+	// in the hope that would fix the issue on the builds where it doesn't really wanna start.
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMusicMan::SetNextMusic, .05);
 }
 
 void AMusicMan::SetIntensity(float V) {
@@ -55,9 +68,11 @@ void AMusicMan::SetIntensity(float V) {
 }
 
 void AMusicMan::SetNextMusic() {
-	Player->OnAudioFinished.RemoveAll(this);
-	if (!IsValid(NextMusic)) return;
-
+	if (!IsValid(NextMusic)) {
+		UE_LOG(LogSounds, Log, TEXT("MusicMan SetNextMusic. No NextMusic."));
+		return;
+	}
+	
 	UE_LOG(LogSounds, Log, TEXT("MusicMan SetNextMusic '%s'"), *NextMusic->GetName());
 
 	Player->SetSound(NextMusic);

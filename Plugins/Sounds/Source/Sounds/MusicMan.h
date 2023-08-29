@@ -14,6 +14,7 @@ class SOUNDS_API AMusicMan: public AActor {
 
 public:
 	AMusicMan();
+	
 	inline static bool Enabled = true;
 
 	UFUNCTION(BlueprintCallable)
@@ -33,6 +34,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION() // bind
+	void AudioFinished();
 
 	UFUNCTION() // bind
 	void SetNextMusic();

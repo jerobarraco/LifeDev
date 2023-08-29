@@ -1,5 +1,5 @@
 @echo off
-set UNREAL_ENGINE_ROOT=E:\ue\UE_5.2
+set UNREAL_ENGINE_ROOT=E:\ue\UE_5.3
 set WORKSPACE=E:\w\LifeDev
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
