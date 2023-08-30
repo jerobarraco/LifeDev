@@ -27,6 +27,6 @@ void ALStepC1S000::Start_Implementation() {
 
 void ALStepC1S000::Debug_Implementation() {
 	Super::Debug_Implementation();
-	Inventory->Mod("Walkman", 1);
+	Inventory->Mod("WM", 1);
 	Inventory->Mod("C1KD1", 1);
 }

@@ -11,7 +11,9 @@ AMusicMan::AMusicMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	PrimaryActorTick.SetTickFunctionEnable(false);
-
+	
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
+		
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
 	Player->bAutoManageAttachment = true;
 	Player->SetAutoActivate(false);

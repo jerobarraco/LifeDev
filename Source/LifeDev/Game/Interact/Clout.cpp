@@ -3,6 +3,7 @@
 #include "Clout.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/CQuickMesh.h"
 
 AClout::AClout():Super() {
 	AnimEnabled = false;
@@ -12,8 +13,8 @@ AClout::AClout():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
-	IRoot->SetMobility(EComponentMobility::Static);
-	Mesh->SetMobility(EComponentMobility::Static);
-	RootComponent->SetMobility(EComponentMobility::Static);
+	// IRoot->SetMobility(EComponentMobility::Static);
+	// Mesh->SetMobility(EComponentMobility::Static);
+	// RootComponent->SetMobility(EComponentMobility::Static);
 	TriggerFlashInc = .1;
 }
