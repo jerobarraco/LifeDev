@@ -18,7 +18,7 @@ public:
 	UCSounder();
 
 	UFUNCTION(BlueprintCallable)
-	void SetPlaying(bool InPlaying);
+	void Fade(bool In);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeIn = 2.0;

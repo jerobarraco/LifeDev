@@ -2,11 +2,9 @@
 
 #include "DoorI01.h"
 
-#include "Interact/Animator/CAnimatorMix.h"
-
 ADoorI01::ADoorI01():Super() {
 	Locked = true;
-	ULockItemReq = "Walkman";
+	ULockItemReq = "WM";
 	ULockDlg = "D01_ULCK";
 	LockedDlg = "D01_LCK";
 	

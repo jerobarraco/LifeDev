@@ -17,14 +17,20 @@ public:
 	
 	inline static bool Enabled = true;
 
+	// fades in or out. be careful since this creates issues when issues alongside PlayMusic
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool In);
 
+	// for debug only
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
 	FORCEINLINE void FadeIn() {Fade(true);}
+	// for debug only
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
 	FORCEINLINE void FadeOut() { Fade(false);}
 
+	// be careful that calling fade just before or after playmusic can cause timing issues
+	// plays a music with(out) fadeout of the previous if any
+	// if snd is invalid it will stop the previous one
 	UFUNCTION(BlueprintCallable)
 	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
 

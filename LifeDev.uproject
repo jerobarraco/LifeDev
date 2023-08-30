@@ -10,11 +10,9 @@
 			"LoadingPhase": "Default",
 			"PlatformAllowList": [
 				"Win64",
-				"Windows",
 				"Mac",
 				"Linux",
 				"LinuxArm64",
-				"AllDesktop",
 				"Android",
 				"IOS"
 			],
@@ -32,8 +30,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -44,8 +41,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -56,8 +52,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -68,8 +63,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -80,8 +74,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -92,8 +85,7 @@
 				"Mac",
 				"IOS",
 				"Android",
-				"Linux",
-				"AllDesktop"
+				"Linux"
 			]
 		},
 		{
@@ -133,13 +125,6 @@
 		{
 			"Name": "AlembicImporter",
 			"Enabled": false
-		},
-		{
-			"Name": "ScaleUI",
-			"Enabled": false,
-			"TargetAllowList": [
-				"Editor"
-			]
 		},
 		{
 			"Name": "CLionSourceCodeAccess",

@@ -10,12 +10,12 @@ AWalkmanI00::AWalkmanI00():Super() {
 	
 	TriggerFlashInc = .1f;
 	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?
-	LockedDlg = "WM00_L";
-	LockedItemDlg = "WM00_LI"; // will trigger if i have the batteries. TODO add
+	LockedDlg = "WM_L";
+	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	ULockItem = "Batts";
 	
-	ItemReward = "WM00";
-	ULockBadDlg = "WM00_ULB";
+	ItemReward = "WM";
+	ULockBadDlg = "WM_ULB";
 		
 	Locked = true;
 	Texts = {
@@ -32,7 +32,5 @@ AWalkmanI00::AWalkmanI00():Super() {
 	ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSnd.Object;
-
-	// TODO ensure the logic is all set
 }
 

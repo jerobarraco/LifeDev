@@ -13,17 +13,20 @@ AMusicMan::AMusicMan():Super() {
 	PrimaryActorTick.SetTickFunctionEnable(false);
 
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
-	Player->bAutoManageAttachment=true;
+	Player->bAutoManageAttachment = true;
 	Player->SetAutoActivate(false);
 	Player->TimeFadeIn = 1.0;
 }
 
 void AMusicMan::Fade(bool In) {
-	Player->SetPlaying(In);
+	Player->Fade(In);
 }
 
 void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
-	if (!IsValid(Snd)) return;
+	if (!IsValid(Snd))  {
+		UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic. Sound not valid!"));
+		return;
+	}
 
 	UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
 	
@@ -39,7 +42,7 @@ void AMusicMan::BeginPlay() {
 	Super::BeginPlay();
 	if (!Enabled) return;
 	
-	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::AudioFinished);
+	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
 	Player->Activate(true); // attempt to start playing if set.
 	SetIntensity(0); // doesn't really work if it's not playing
 }
@@ -51,7 +54,7 @@ void AMusicMan::AudioFinished() {
 	}
 	UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. NextMusic='%s'"), *NextMusic->GetName());
 
-	// schedule a change in music in the next 100 ms.
+	// schedule a change in music in the next ms.
 	// in the hope that would fix the issue on the builds where it doesn't really wanna start.
 	FTimerHandle Handle;
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMusicMan::SetNextMusic, .05);

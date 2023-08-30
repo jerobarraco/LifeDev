@@ -6,19 +6,19 @@
 UCSounder::UCSounder():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 	Super::SetAutoActivate(false);
-	bAutoManageAttachment = true;
+	bAutoManageAttachment = true; 
 	//
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 	// 	CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01.Rain01"));
 	// SFX->SetSound(CSnd.Object);
 }
 
-void UCSounder::SetPlaying(bool InPlaying) {
+void UCSounder::Fade(bool In) {
 	// calling stopdelayed will actually bring problems when switching musics on the musicman.
 	// (presumably stopping the new one). Fadeout is good enough and seems to stop the audio,
 	// (i.e. trigger onAudioFinished at the end)
 	// Don't use Play(); StopDelayed(TimeFadeOut);
-	if (InPlaying) {
+	if (In) {
 		const float Time = TimeEnd <0 ? TimeStart :
 			FMath::RandRange(TimeStart, TimeEnd);
 		FadeIn(TimeFadeIn, 1, Time);

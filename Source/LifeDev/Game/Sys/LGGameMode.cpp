@@ -309,7 +309,6 @@ void ALGGameMode::StartChapter() {
 
 	FText DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
 	StoryManager->FadeIn(DecoratedTitle);
-	MusicMan->Fade(false); // fade out preemptively. this is the best moment. seize it.
 
 	FTimerManager& Time = GetWorld()->GetTimerManager();
 	FTimerHandle Handle1;
@@ -317,7 +316,9 @@ void ALGGameMode::StartChapter() {
 	// TODO make a function of this
 	Delegate1.BindLambda([this] {
 		Story->StartSequence(Chapter.StorySeq);
-		MusicMan->PlayMusic(Chapter.Music.LoadSynchronous(), true);
+		// assuming this will return null if not able to load. which will stop the previous music, which is ok
+		USoundBase* const Snd = Chapter.Music.LoadSynchronous();
+		MusicMan->PlayMusic(Snd, true);
 	});
 	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	

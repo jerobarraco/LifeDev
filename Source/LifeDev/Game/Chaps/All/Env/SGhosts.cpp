@@ -19,5 +19,5 @@ ASGhosts::ASGhosts():Super() {
 }
 
 void ASGhosts::SetPlaying(bool IsPlaying) {
-	SFX->SetPlaying(IsPlaying);
+	SFX->Fade(IsPlaying);
 }

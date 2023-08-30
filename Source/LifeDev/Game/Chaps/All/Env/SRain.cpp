@@ -20,5 +20,5 @@ ASRain::ASRain():Super() {
 
 void ASRain::SetPlaying(bool IsPlaying) {
 	if (!IsValid(SFX)) return;
-	SFX->SetPlaying(IsPlaying);
+	SFX->Fade(IsPlaying);
 }
