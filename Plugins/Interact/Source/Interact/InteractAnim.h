@@ -13,13 +13,12 @@ public:
 	GENERATED_BODY()
 
 	AInteractAnim();
-
-	UFUNCTION(BlueprintCallable)
-	virtual void SetMobility(EComponentMobility::Type Mobility);
+	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;
+
 	// Text to be displayed on interaction
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
@@ -56,6 +55,7 @@ protected:
 	void AnimEnd();
 	virtual void AnimEnd_Implementation();
 
+	// The animator, by default set up for the mesh material and iroot
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorMix* Anim = nullptr;
 

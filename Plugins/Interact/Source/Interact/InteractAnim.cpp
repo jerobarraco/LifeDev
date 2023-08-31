@@ -72,10 +72,6 @@ void AInteractAnim::AnimEnd_Implementation() {
 }
 
 void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
-	Mesh->SetMobility(Mobility);
-	Interact->SetMobility(Mobility);
-	RootComponent->SetMobility(Mobility);
-	IRoot->SetMobility(Mobility);
-	SFX->SetMobility(Mobility);
+	Super::SetMobility(Mobility);
 	AnimEnabled = Mobility == EComponentMobility::Movable;
 }

@@ -55,6 +55,14 @@ void AInteract::SetEnabled(bool Enabled) {
 	}
 }
 
+void AInteract::SetMobility(EComponentMobility::Type Mobility) {
+	Mesh->SetMobility(Mobility);
+	Interact->SetMobility(Mobility);
+	RootComponent->SetMobility(Mobility);
+	IRoot->SetMobility(Mobility);
+	SFX->SetMobility(Mobility);
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();

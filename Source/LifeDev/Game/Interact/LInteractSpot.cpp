@@ -2,17 +2,13 @@
 
 #include "Dialogs/Dialogs.h"
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
 
 ALInteractSpot::ALInteractSpot():Super() {
 	// ItemSpawnPos = CreateDefaultSubobject<USceneComponent>(TEXT("ItemSpawn"));
 	// ItemSpawnPos->SetupAttachment(IRoot);
 	// always locked. we don't want it to trigger cuz that gives the reward.
 	// it will trigger automatically
-	
-	Mesh->SetMobility(EComponentMobility::Static);
-	IRoot->SetMobility(EComponentMobility::Static);
-	RootComponent->SetMobility(EComponentMobility::Static);
+	Super::SetMobility(EComponentMobility::Static);
 	AnimEnabled = false;
 	Locked = true;
 	Texts = {
