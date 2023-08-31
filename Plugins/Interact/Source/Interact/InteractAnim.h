@@ -14,6 +14,9 @@ public:
 
 	AInteractAnim();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void SetMobility(EComponentMobility::Type Mobility);
+	
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;

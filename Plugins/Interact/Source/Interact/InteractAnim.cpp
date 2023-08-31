@@ -4,11 +4,13 @@
 
 #include "Interact/CInteract.h"
 #include "Animator/CAnimatorMix.h"
+#include "Components/AudioComponent.h"
+#include "JUtils/CQuickMesh.h"
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
@@ -67,4 +69,13 @@ void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the isOpen flag is toggled
 	USoundBase* const Snd = IsOpen ? SFX_OpenEnd : SFX_CloseEnd;
 	PlaySFX(Snd);
+}
+
+void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
+	Mesh->SetMobility(Mobility);
+	Interact->SetMobility(Mobility);
+	RootComponent->SetMobility(Mobility);
+	IRoot->SetMobility(Mobility);
+	SFX->SetMobility(Mobility);
+	AnimEnabled = Mobility == EComponentMobility::Movable;
 }

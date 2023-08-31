@@ -6,10 +6,7 @@
 #include "JUtils/CQuickMesh.h"
 
 APaper00::APaper00():Super() {
-	AnimEnabled = false;
-	// Can't be static since it will be inside of a drawer for example
-	// Mesh->SetMobility(EComponentMobility::Static);
-	// GetRootComponent()->SetMobility(EComponentMobility::Static);
+	Super::SetMobility(EComponentMobility::Static);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper00.Paper00"));
