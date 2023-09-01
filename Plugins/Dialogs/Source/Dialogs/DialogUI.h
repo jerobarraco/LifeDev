@@ -12,9 +12,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogUIDone);
 // Helps define an interaction volume
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DIALOGS_API UDialogUI: public UUserWidget {
-public:
 	GENERATED_BODY()
 	
+public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Show(const FDialog& Diag);
 

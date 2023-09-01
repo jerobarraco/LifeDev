@@ -24,7 +24,7 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	UMaterialParameterCollection* MPC = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
