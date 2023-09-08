@@ -5,6 +5,7 @@
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/CQuickMesh.h"
 
 AWDoor00::AWDoor00():Super() {
 	SFX->SetRelativeLocation(FVector(37.5,2.5,110));

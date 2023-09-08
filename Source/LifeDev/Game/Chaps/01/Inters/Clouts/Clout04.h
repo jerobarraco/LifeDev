@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Clout.h"
+#include "LifeDev/Game/Interact/Base/Clout.h"
 
 #include "Clout04.generated.h"
 
