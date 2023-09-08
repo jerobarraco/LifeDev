@@ -17,9 +17,9 @@ class UAudioComponent;
 // Base class for interact actors (actors to interact with)
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteract: public AActor {
-public:
 	GENERATED_BODY()
 
+public:
 	AInteract();
 
 	// Call this to trigger the interaction. Returns the success (false if locked)

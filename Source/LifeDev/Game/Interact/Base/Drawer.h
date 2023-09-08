@@ -7,8 +7,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawer: public ADoorish {
-public:
 	GENERATED_BODY()
 
+public:
 	ADrawer();
 };

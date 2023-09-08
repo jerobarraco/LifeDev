@@ -9,9 +9,9 @@
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
-public:
 	GENERATED_BODY()
 
+public:
 	ALInteract();
 	
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)

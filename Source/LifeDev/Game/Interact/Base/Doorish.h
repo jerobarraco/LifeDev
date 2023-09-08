@@ -8,8 +8,8 @@
 // Base class for door-like and drawer actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoorish: public ALInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	ADoorish();
 };

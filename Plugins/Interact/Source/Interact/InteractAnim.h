@@ -9,9 +9,9 @@ class UCAnimatorMix;
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteractAnim: public AInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	AInteractAnim();
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	
