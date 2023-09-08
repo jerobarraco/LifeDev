@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Jeronimo Barraco-Marmol 2023. All rights reserved.
 
 using UnrealBuildTool;
 

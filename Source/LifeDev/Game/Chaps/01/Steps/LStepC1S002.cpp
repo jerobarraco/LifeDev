@@ -2,12 +2,12 @@
 
 #include "LStepC1S002.h"
 
-#include "Niagara/Public/NiagaraComponent.h"
-#include "Niagara/Classes/NiagaraSystem.h"
-#include "GameplayCameras/Public/DefaultCameraShakeBase.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
+#include "DefaultCameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "LifeDev/Game/Chaps/All/Env/SGhosts.h"
 
+#include "LifeDev/Game/Chaps/All/Env/SGhosts.h"
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "LifeDev/Game/Flashback/Flashback.h"

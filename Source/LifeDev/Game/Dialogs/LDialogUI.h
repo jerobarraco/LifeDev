@@ -8,7 +8,7 @@
 
 // Helps define an interaction volume
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DIALOGS_API ULDialogUI: public UDialogUI {
+class LIFEDEV_API ULDialogUI: public UDialogUI {
 	GENERATED_BODY()
 
 public:
