@@ -105,12 +105,14 @@ protected:
 	UFUNCTION()
 	void ChildUpdate(float T, float Alpha);
 
+	virtual void DeInit();
+	void DoTick(float DeltaSeconds);
+	// finishes, and tentatively restart if needed.
+	void Finish();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void DeInit();
-	void DoTick(float DeltaSeconds);
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCAnimator* Parent = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

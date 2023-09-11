@@ -30,8 +30,33 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 	DTAcum = 0.0;
 }
 
+void UCAnimator::Finish() {
+	// check if we can continue at all
+	if (!IsLooping && !IsBouncing) {
+		Stop();
+		return;
+	}
+
+	End(); // it technically ended (do here since stop will trigger end too)
+
+	/// start the new one
+		
+	// important to reset the progress.
+	// this is ok, since if it's reversed then the end of one == the start of the reversed
+	// also if not bouncing we want to start over.
+	Progress = 0.0;
+	if (IsBouncing) { // reverse the reversed
+		IsReversed = !IsReversed;
+		// bounce only once if not looping
+		if (!IsLooping) {
+			IsBouncing = false; 
+		}
+	}
+	Begin(); // it technically started
+}
+
 void UCAnimator::DoTick(float DT) {
-	if (!IsAnimating) return;
+	if (!IsAnimating) return; // TODO use Activate and Deactivate instead of this flag
 	
 	// adjust for duration
 	const float ndt = DT/Duration;
@@ -58,31 +83,9 @@ void UCAnimator::DoTick(float DT) {
 	// Trigger delegate
 	OnUpdate.Broadcast(Progress, Alpha);
 
-	/// restart
-	
+	/// restart if needed
 	if (Finished) {
-		// check if we can continue at all
-		if (!IsLooping && !IsBouncing) {
-			Stop();
-			return;
-		}
-
-		End(); // it technically ended 
-
-		/// start the new one
-		
-		// important to reset the progress.
-		// this is ok, since if it's reversed then the end of one == the start of the reversed
-		// also if not bouncing we want to start over.
-		Progress = 0.0;
-		if (IsBouncing) { // reverse the reversed
-			IsReversed = !IsReversed;
-			// bounce only once if not looping
-			if (!IsLooping) {
-				IsBouncing = false; 
-			}
-		}
-		Begin(); // it technically started
+		Finish();
 	}
 }
 
