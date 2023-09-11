@@ -10,11 +10,10 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 AOutroGameMode::AOutroGameMode():Super() {
-	SetActorTickEnabled(false);
-	// set default pawn class to our Blueprinted character
-	DefaultPawnClass = ASpectatorPawn::StaticClass();
+	Super::SetActorTickEnabled(false);
+	DefaultPawnClass = ASpectatorPawn::StaticClass(); // no need for a pawn
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CMusic (TEXT("/Game/LifeDev/Game/Sounds/Music/Music00/Music00_MS.Music00_MS"));
+		CMusic (TEXT("/Game/LifeDev/Game/Sounds/Music/Music03/Music03_MS.Music03_MS"));
 	Music = CMusic.Object;
 }
 
@@ -29,7 +28,7 @@ void AOutroGameMode::BeginPlay() {
 
 	UFlashback* const FB = UFlashback::Get(World);
 	if (FB) {
-		FB->SetVal(1);
+		FB->SetVal(1, 30);
 	}
 }
 
@@ -43,7 +42,6 @@ void AOutroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	if (IsValid(MusicMan)) {
 		MusicMan->Destroy();
-		
 	}
 	MusicMan = nullptr;
 }

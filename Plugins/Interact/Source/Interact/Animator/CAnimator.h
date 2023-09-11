@@ -34,9 +34,6 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
-	FORCEINLINE bool GetIsAnimating() const { return IsActive(); }
-
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetProgress() const { return Progress; }
 	
