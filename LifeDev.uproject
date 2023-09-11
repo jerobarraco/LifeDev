@@ -22,71 +22,26 @@
 		}
 	],
 	"Plugins": [
-		{
-			"Name": "Story",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
-		},
+		{ "Name": "Story", "Enabled": true },
 		{
 			"Name": "Dialogs",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "Interact",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "Inventory",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "JUtils",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "Sounds",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "Muse",
