@@ -15,6 +15,8 @@ class INTERACT_API UCAnimatorPID: public UActorComponent { // UCAnimator {
 	GENERATED_BODY()
 
 public:
+
+	UCAnimatorPID();
 	// call manually if this component is instantiated independently
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DT);
@@ -29,26 +31,26 @@ public:
 	virtual void Activate(bool bReset) override;
 	virtual void Deactivate() override;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Kp = 1;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Ki = 1;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Kd = 1;
 	// how many seconds to wait before auto-stopping when error is ==0. <=0 will disable it.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float StopTime = 1;
 
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly)
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDStart OnStart;
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly)
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDStop OnStop;
 	// triggered every time it changes the value, and outputs the .. output of the pid
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly)
+	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDUpdate OnUpdate;
 	/// This one gets called every time it needs to measure the value,
 	/// this is recommended since it will only be called when about to do the process. with tick interval it might be different. 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	FAPIDGetVal OnGetVal;
 
 protected:

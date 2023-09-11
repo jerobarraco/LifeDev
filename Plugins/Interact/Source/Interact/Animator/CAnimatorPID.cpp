@@ -3,6 +3,15 @@
 
 #include "CAnimatorPID.h"
 
+UCAnimatorPID::UCAnimatorPID():Super() {
+	// these are critical for the component to work correctly
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.SetTickFunctionEnable(true);
+	Super::SetAutoActivate(false);
+	Super::Deactivate();
+}
+
 void UCAnimatorPID::TickManual(float DT) {
 	if (!IsActive()) return;
 	// basic tick interval for manual ticks
@@ -68,12 +77,12 @@ loop:
 
 void UCAnimatorPID::SetTarget(float NewTgt) {
 	Target = NewTgt;
-	Activate(!IsActive());
+	Activate(false);
 }
 
 void UCAnimatorPID::SetVal(float NewVal) {
 	Value = NewVal;
-	Activate(!IsActive());
+	Activate(false);
 }
 
 void UCAnimatorPID::Reset() { // TODO call when activate and was not active
