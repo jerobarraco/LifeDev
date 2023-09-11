@@ -5,12 +5,14 @@
 UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
+	// if this is true, it will start active anyway.
 	PrimaryComponentTick.SetTickFunctionEnable(false);
+	SetComponentTickInterval(IntervalDefault);
+	Super::SetAutoActivate(false);
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Interact/Interact_C.Interact_C"));
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
-	SetComponentTickInterval(IntervalDefault);
 }
 
 void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
@@ -56,8 +58,6 @@ void UCAnimator::Finish() {
 }
 
 void UCAnimator::DoTick(float DT) {
-	if (!IsAnimating) return; // TODO use Activate and Deactivate instead of this flag
-	
 	// adjust for duration
 	const float ndt = DT/Duration;
 	Progress += ndt;
@@ -135,22 +135,21 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	DoTick(DT);
 }
 
-void UCAnimator::SetIsAnimating(bool NewIsAnimating) {
-	const bool WasAnimating = IsAnimating;
-	Progress = 0.0; // force it because of the if below which can cause new calls
-	IsAnimating = NewIsAnimating;
-
-	// reset ticks
-	if (IsAnimating) {
-		Activate();
-	} else {
-		Deactivate();
+void UCAnimator::Activate(bool bReset) {
+	const bool WasActive = IsActive();
+	Super::Activate(bReset);
+	if (bReset) {
+		Progress = 0;
 	}
-
-	if (IsAnimating) {
+	if (!WasActive) {
 		Begin();
-	} else if (WasAnimating) {
-		End();
 	}
 }
 
+void UCAnimator::Deactivate() {
+	const bool WasActive = IsActive();
+	Super::Deactivate();
+	if (WasActive) {
+		End();
+	}
+}

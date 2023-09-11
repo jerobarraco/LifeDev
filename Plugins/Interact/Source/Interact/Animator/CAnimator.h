@@ -22,20 +22,20 @@ class INTERACT_API UCAnimator: public UActorComponent {
 public:
 
 	UCAnimator();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	FORCEINLINE void Stop() { Deactivate(); };
 	
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	inline void Play() { SetIsAnimating(true); };
+	inline void Play() { Activate(true); };
 
 	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	FORCEINLINE void Stop() { SetIsAnimating(false); };
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool GetIsAnimating() const { return IsAnimating; }
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
+	FORCEINLINE bool GetIsAnimating() const { return IsActive(); }
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetProgress() const { return Progress; }
@@ -99,9 +99,6 @@ protected:
 	void Begin();
 	virtual void Begin_Implementation();
 	
-	UFUNCTION(BlueprintCallable)
-	void SetIsAnimating(bool NewIsRotating);
-
 	UFUNCTION()
 	void ChildUpdate(float T, float Alpha);
 
@@ -112,7 +109,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	virtual void Activate(bool bReset) override;
+	virtual void Deactivate() override;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCAnimator* Parent = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

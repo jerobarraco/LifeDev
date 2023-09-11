@@ -55,7 +55,7 @@ void AInteractAnim::Trigger_Implementation() {
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
-	if (AnimEnabled && Anim->GetIsAnimating()) return false;
+	if (AnimEnabled && Anim->IsActive()) return false;
 	return Super::TryTrigger_Implementation();
 }
 
