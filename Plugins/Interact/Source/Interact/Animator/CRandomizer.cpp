@@ -8,26 +8,28 @@
 UCRandomizer::UCRandomizer(): Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
-	Super::SetComponentTickEnabled(false);
+	PrimaryComponentTick.bCanEverTick = false;
+	Super::SetAutoActivate(false);
 	Super::SetActive(false); // not sure this does much. but...
 }
 
-void UCRandomizer::Start() {
-	Stop(); // clear timer and such
+void UCRandomizer::Activate(bool bReset) {
+	if (bReset) {
+		Reset();
+	}
 
 	UWorld* const World = GetWorld();
 	if (!World) {
 		return;
 	}
+	Super::Activate(bReset);
 	
-	Super::SetActive(true);
 	const float Delay = FMath::FRandRange(DelayMin, DelayMax);
 	FTimerManager& Manager = World->GetTimerManager();
-	Manager.SetTimer(Timer, this,&UCRandomizer::Trigger, Delay);
+	Manager.SetTimer(Timer, this, &UCRandomizer::Trigger, Delay);
 }
 
-void UCRandomizer::Stop() {
-	Super::SetActive(false);
+void UCRandomizer::Reset() {
 	UWorld* const World = GetWorld();
 	if (!World) {
 		return;
@@ -36,6 +38,11 @@ void UCRandomizer::Stop() {
 	FTimerManager& Manager = World->GetTimerManager();
 	Manager.ClearTimer(Timer);
 	Timer.Invalidate();
+}
+
+void UCRandomizer::Deactivate() {
+	Super::Deactivate();
+	Reset();
 }
 
 void UCRandomizer::Trigger() {
@@ -53,5 +60,5 @@ void UCRandomizer::Trigger() {
 	OnTriggerVal.Broadcast(Val);
 	
 	if (!IsLooping) return;
-	Start();
+	Activate(true);
 }

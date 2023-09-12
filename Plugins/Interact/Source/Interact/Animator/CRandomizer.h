@@ -18,11 +18,14 @@ class INTERACT_API UCRandomizer: public UActorComponent {
 public:
 	UCRandomizer();
 
-	UFUNCTION(BlueprintCallable)
-	void Start();
+	virtual void Activate(bool bReset) override;
+	virtual void Deactivate() override;
 	
-	UFUNCTION(BlueprintCallable)
-	void Stop();
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
+	FORCEINLINE void Start() {Activate (true);};
+	
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
+	FORCEINLINE void Stop() {Deactivate();};
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float DelayMin = 0.5;
@@ -57,6 +60,8 @@ protected:
 	// triggers the random, called by timer
 	UFUNCTION(BlueprintCallable)
 	void Trigger();
+
+	void Reset();
 
 	// the current timer if any. 
 	UPROPERTY(BlueprintReadOnly, Transient)

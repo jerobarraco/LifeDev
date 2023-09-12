@@ -37,25 +37,44 @@ void UCAnimatorPID::SetVal(float NewVal) {
 void UCAnimatorPID::Reset() { // TODO call when activate and was not active
 	Integral = 0;
 	ErrorPrev = 0;
+	ValuePrev = 0;
+	HasDerivative = false;
+}
+
+float UCAnimatorPID::GetVal_Implementation() {
+	return OnGetVal.IsBound() ? OnGetVal.Execute() : Value;
 }
 
 void UCAnimatorPID::DoTick(float DT) {
-	if (OnGetVal.IsBound()) {
-		Value = OnGetVal.Execute();
-	}
-
+	Value = GetVal();
+	
 	const float Error = Target - Value;
 	Proportional = Error;
+
 	Integral = Integral + (Error * DT);
-	Derivative = (Error - ErrorPrev) / DT;
+	if (IntegralMax>0) {
+		Integral = FMath::Clamp(Integral, -IntegralMax, IntegralMax);
+	}
+	
+	Derivative = UseVelocityElseError && HasDerivative ?
+		(Value - ValuePrev) / -DT : // note -Dt
+		(Error - ErrorPrev) / DT;
+
 	Output = (Kp * Proportional) + (Ki * Integral) + (Kd * Derivative);
-	
-	
+
+	// if (!FMath::IsNearlyZero(OutputMax) || !FMath::IsNearlyZero(OutputMin)) {
+	if (!FMath::IsNearlyEqual(OutputMin, OutputMax) && OutputMin<OutputMax) {
+		// we can't trust the < when they are equal
+		Output = FMath::Clamp(Output, OutputMin, OutputMax);
+	}
+
+	ValuePrev = Value;
 	ErrorPrev = Error;
 	OnUpdate.Broadcast(Output);
 
+	HasDerivative = true;
 	// done after so that deactivate is triggered last
-	if (StopTime>0 && FMath::IsNearlyZero(Error)) {
+	if (StopTime > 0 && FMath::IsNearlyZero(Error, StopTolerance)) {
 		CoolDown+=DT;
 		if (CoolDown>=StopTime) {
 			Deactivate();
@@ -139,3 +158,5 @@ loop:
 	wait(dt)
 	goto loop
 */
+
+// some bits taken from https://vazgriz.com/621/pid-controllers/
