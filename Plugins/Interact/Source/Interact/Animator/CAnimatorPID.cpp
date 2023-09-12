@@ -44,7 +44,7 @@ void UCAnimatorPID::Reset() { // TODO call when activate and was not active
 float UCAnimatorPID::AngleDiff(float A, float B) {
 	// while this implementation has 2 branches. the FMod one has 1 and 2 function calls.
 	// also this is simpler. and KISS.
-	return FMath::FindDeltaAngleDegrees(A, B);
+	return FMath::FindDeltaAngleDegrees(B, A); // NOTE THE ORDER IS REVERSED!!!!
 	// return FMath::Fmod( (A-B) + 540.0f, 360.0f) -180.f;
 }
 
