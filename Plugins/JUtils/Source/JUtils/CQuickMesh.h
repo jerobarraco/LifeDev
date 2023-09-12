@@ -3,6 +3,7 @@
 
 #pragma once
 
+// TODO move to Actors
 #include "CQuickMesh.generated.h"
 
 // base class for an optimized mesh. by default it well have EVERYTHING disabled, mostly.

@@ -1,5 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
+// TODO move to UI
+
 #pragma once
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
