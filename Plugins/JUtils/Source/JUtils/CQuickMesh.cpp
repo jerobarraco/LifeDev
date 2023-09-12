@@ -3,7 +3,6 @@
 
 #include "CQuickMesh.h"
 
-// TODO make quickmesh actor with a quickmesh component to spawn in world
 UCQuickMesh::UCQuickMesh(): Super() {
 	Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Super::SetCollisionProfileName("NoCollision");
@@ -12,11 +11,10 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	Super::CanCharacterStepUpOn = ECB_No;
 	bNavigationRelevant = false;
 	bCanEverAffectNavigation = false;
-	// todo disable physics
 
+	Super::SetComponentTickEnabled(false);
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
-	Super::SetComponentTickEnabled(false);
 	SetCastAllShadows(false);
 }
 

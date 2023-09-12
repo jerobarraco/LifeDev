@@ -10,8 +10,9 @@
 AInteract::AInteract():Super() {
 	// super important or it will NOT work
 	PrimaryActorTick.bCanEverTick = true;
+	// ensure we don't animate on start
+	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.bStartWithTickEnabled = false;
-	Super::SetActorTickEnabled(false); // ensure we don't animate on start
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
