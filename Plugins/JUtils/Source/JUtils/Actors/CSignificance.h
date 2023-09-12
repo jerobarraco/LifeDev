@@ -1,6 +1,9 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
 
+// TODO move this into its own plugin to be able to disable if needed.
+// also make a tickable subsystem to handle the manager update
+
 #pragma once
 
 #include "CSignificance.generated.h"
