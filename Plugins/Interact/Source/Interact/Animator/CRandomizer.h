@@ -20,10 +20,10 @@ public:
 
 	virtual void Activate(bool bReset) override;
 	virtual void Deactivate() override;
-	
+	// use Activate and deactivate
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
 	FORCEINLINE void Start() {Activate (true);};
-	
+	// use Activate and deactivate
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() {Deactivate();};
 
@@ -49,11 +49,11 @@ public:
 	UCAnimator* Anim = nullptr;
 
 	// triggers on each trigger
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FOnTrigger OnTrigger;
 
 	// trigger on each trigger, passes the random value as parameter
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FOnTriggerVal OnTriggerVal;
 	
 protected:

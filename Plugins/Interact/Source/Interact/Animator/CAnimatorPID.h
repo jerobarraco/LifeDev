@@ -33,9 +33,11 @@ public:
 	// the current output of the system
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetError() const { return ErrorPrev; };
-
+	//	start the controller
 	virtual void Activate(bool bReset) override;
+	// stops the controller
 	virtual void Deactivate() override;
+
 	// the proportional gain
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Kp = 1;
@@ -65,6 +67,9 @@ public:
 	// The first frame it will use the error anyway.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseVelocityElseError = true;
+	// when set the "value" and output is in degrees and does some angle wrapping (360==0) 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseAngles = false;
 
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDStart OnStart;
@@ -83,6 +88,8 @@ protected:
 	void DoTick(float DT);
 	void Reset();
 
+	static float AngleDiff(float A, float B);
+	
 	// must return the measured value of the system to control. override and get the appropriate value here.
 	UFUNCTION(BlueprintNativeEvent)
 	float GetVal();

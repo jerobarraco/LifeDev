@@ -41,39 +41,58 @@ void UCAnimatorPID::Reset() { // TODO call when activate and was not active
 	HasDerivative = false;
 }
 
+float UCAnimatorPID::AngleDiff(float A, float B) {
+	// while this implementation has 2 branches. the FMod one has 1 and 2 function calls.
+	// also this is simpler. and KISS.
+	return FMath::FindDeltaAngleDegrees(A, B);
+	// return FMath::Fmod( (A-B) + 540.0f, 360.0f) -180.f;
+}
+
 float UCAnimatorPID::GetVal_Implementation() {
 	return OnGetVal.IsBound() ? OnGetVal.Execute() : Value;
 }
 
 void UCAnimatorPID::DoTick(float DT) {
-	Value = GetVal();
-	
-	const float Error = Target - Value;
-	Proportional = Error;
+	Value = GetVal(); // update
 
+	/// do calculations
+	float Error = 0;
+	if (UseAngles) {
+		Error = AngleDiff(Target, Value);
+		Derivative = UseVelocityElseError && HasDerivative ?
+			AngleDiff(Value, ValuePrev) / -DT: // note -Dt
+			AngleDiff(Error, ErrorPrev) / DT;
+	} else {
+		Error = Target - Value;
+		Derivative = UseVelocityElseError && HasDerivative ?
+			(Value - ValuePrev) / -DT: // note -Dt
+			(Error - ErrorPrev) / DT;
+	}
+	
+	Proportional = Error;
 	Integral = Integral + (Error * DT);
 	if (IntegralMax>0) {
 		Integral = FMath::Clamp(Integral, -IntegralMax, IntegralMax);
 	}
 	
-	Derivative = UseVelocityElseError && HasDerivative ?
-		(Value - ValuePrev) / -DT : // note -Dt
-		(Error - ErrorPrev) / DT;
-
 	Output = (Kp * Proportional) + (Ki * Integral) + (Kd * Derivative);
 
+	// clamp output
 	// if (!FMath::IsNearlyZero(OutputMax) || !FMath::IsNearlyZero(OutputMin)) {
 	if (!FMath::IsNearlyEqual(OutputMin, OutputMax) && OutputMin<OutputMax) {
 		// we can't trust the < when they are equal
 		Output = FMath::Clamp(Output, OutputMin, OutputMax);
 	}
 
+	// store prevs
 	ValuePrev = Value;
 	ErrorPrev = Error;
+	HasDerivative = true;
+	
+	// notify
 	OnUpdate.Broadcast(Output);
 
-	HasDerivative = true;
-	// done after so that deactivate is triggered last
+	// stop check. done after so that deactivate is triggered last
 	if (StopTime > 0 && FMath::IsNearlyZero(Error, StopTolerance)) {
 		CoolDown+=DT;
 		if (CoolDown>=StopTime) {
@@ -104,7 +123,7 @@ void UCAnimatorPID::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 }
 
 
-// todo implement some of the improvement from here https://www.youtube.com/watch?v=y3K6FUgrgXw
+// some of the improvements comes from here https://www.youtube.com/watch?v=y3K6FUgrgXw
 
 
 // todo implement the more complicated version
