@@ -10,7 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStop);
 
 // Animator for a pid controller. It will activate/deactivate automatically
-UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorPID: public UActorComponent { // UCAnimator {
 	GENERATED_BODY()
 
@@ -88,8 +88,6 @@ protected:
 	void DoTick(float DT);
 	void Reset();
 
-	static float AngleDiff(float A, float B);
-	
 	// must return the measured value of the system to control. override and get the appropriate value here.
 	UFUNCTION(BlueprintNativeEvent)
 	float GetVal();

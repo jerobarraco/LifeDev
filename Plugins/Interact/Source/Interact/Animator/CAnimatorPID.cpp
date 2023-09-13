@@ -41,13 +41,6 @@ void UCAnimatorPID::Reset() { // TODO call when activate and was not active
 	HasDerivative = false;
 }
 
-float UCAnimatorPID::AngleDiff(float A, float B) {
-	// while this implementation has 2 branches. the FMod one has 1 and 2 function calls.
-	// also this is simpler. and KISS.
-	return FMath::FindDeltaAngleDegrees(B, A); // NOTE THE ORDER IS REVERSED!!!!
-	// return FMath::Fmod( (A-B) + 540.0f, 360.0f) -180.f;
-}
-
 float UCAnimatorPID::GetVal_Implementation() {
 	return OnGetVal.IsBound() ? OnGetVal.Execute() : Value;
 }
@@ -58,10 +51,10 @@ void UCAnimatorPID::DoTick(float DT) {
 	/// do calculations
 	float Error = 0;
 	if (UseAngles) {
-		Error = AngleDiff(Target, Value);
+		Error = FMath::FindDeltaAngleDegrees(Value, Target); // NOTE THE ORDER IS REVERSED
 		Derivative = UseVelocityElseError && HasDerivative ?
-			AngleDiff(Value, ValuePrev) / -DT: // note -Dt
-			AngleDiff(Error, ErrorPrev) / DT;
+			FMath::FindDeltaAngleDegrees(ValuePrev, Value) / -DT: // NOTE THE ORDER IS REVERSED!!!! // note -Dt
+			FMath::FindDeltaAngleDegrees(ErrorPrev, Error) / DT; // NOTE REVERSED
 	} else {
 		Error = Target - Value;
 		Derivative = UseVelocityElseError && HasDerivative ?
@@ -122,60 +115,12 @@ void UCAnimatorPID::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	DoTick(DeltaTime);
 }
 
-
-// some of the improvements comes from here https://www.youtube.com/watch?v=y3K6FUgrgXw
-
-
-// todo implement the more complicated version
-/*
-	A0 := Kp + Ki*dt + Kd/dt
-	A1 := -Kp - 2*Kd/dt
-	A2 := Kd/dt
-	error[2] := 0 // e(t-2)
-	error[1] := 0 // e(t-1)
-	error[0] := 0 // e(t)
-	output := u0  // Usually the current value of the actuator
-
-	loop:
-	error[2] := error[1]
-	error[1] := error[0]
-	error[0] := setpoint − measured_value
-	output := output + A0 * error[0] + A1 * error[1] + A2 * error[2]
-	wait(dt)
-goto loop
-
-
-maybe this one
-A0 := Kp + Ki*dt
-A1 := -Kp
-error[2] := 0 // e(t-2)
-error[1] := 0 // e(t-1)
-error[0] := 0 // e(t)
-output := u0  // Usually the current value of the actuator
-A0d = Kd/dt
-A1d = - 2.0*Kd/dt
-A2d = Kd/dt
-N := 5
-tau := Kd / (Kp*N) // IIR filter time constant
-alpha = dt / (2*tau)
-d0 := 0
-d1 := 0
-fd0 := 0
-fd1 := 0
-loop:
-	error[2] := error[1]
-	error[1] := error[0]
-	error[0] := setpoint − measured_value
-	// PI
-	output := output + A0 * error[0] + A1 * error[1]
-	// Filtered D
-	d1 = d0
-	d0 = A0d * error[0] + A1d * error[1] + A2d * error[2]
-	fd1 = fd0
-	fd0 = ((alpha) / (alpha + 1)) * (d0 + d1) - ((alpha - 1) / (alpha + 1)) * fd1
-	output := output + fd0      
-	wait(dt)
-	goto loop
-*/
-
 // some bits taken from https://vazgriz.com/621/pid-controllers/
+
+
+// float UCAnimatorPID::AngleDiff(float A, float B) {
+// while this implementation has 2 branches. the FMod one has 1 and 2 function calls.
+// also this is simpler. and KISS.
+// return FMath::FindDeltaAngleDegrees(B, A); // NOTE THE ORDER IS REVERSED!!!!
+// return FMath::Fmod( (A-B) + 540.0f, 360.0f) -180.f;
+// }
