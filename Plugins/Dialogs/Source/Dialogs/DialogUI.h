@@ -24,6 +24,8 @@ public:
 	// skips animation or the current dialog. will trigger an onDone if already ready.
 	UFUNCTION(BlueprintNativeEvent)
 	void Skip();
+	UFUNCTION(BlueprintNativeEvent)
+	void Back();
 
 	// variable that indicates when the dialog is ready to progress.
 	// false when animating.

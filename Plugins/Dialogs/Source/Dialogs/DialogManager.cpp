@@ -15,11 +15,15 @@
 
 ADialogManager::ADialogManager():Super() {
 	PrimaryActorTick.bCanEverTick = false;
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
+	
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Dialogs/Input/IMC_Dialogs"));
 	Mapping = DefaultMapping.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Dialogs/Input/IA_Skip"));
 	ActionSkip = CActionSkip.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionBack(TEXT("/Dialogs/Input/IA_Back"));
+	ActionBack = CActionBack.Object;
+	
 	UIClass = UDialogUI::StaticClass();
 }
 
@@ -87,11 +91,15 @@ void ADialogManager::BeginPlay() {
 
 	// bind the action
 	UWorld* const World = GetWorld();
-	if (ActionSkip) {
-		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
-		if (IsValid(Input)) {
+	UEnhancedInputComponent* const Input = World ? Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent) : nullptr;
+	if (IsValid(Input)){
+		if (IsValid(ActionSkip)) {
 			Input->BindAction<ADialogManager>(
 				ActionSkip, ETriggerEvent::Triggered, this, &ADialogManager::Skip);
+		}
+		if (IsValid(ActionBack)) {
+			Input->BindAction<ADialogManager>(
+				ActionBack, ETriggerEvent::Triggered, this, &ADialogManager::Back);
 		}
 	}
 
@@ -112,7 +120,7 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	DeInit();
 
-	// TODO unbind action
+	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -125,4 +133,10 @@ void ADialogManager::Skip() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: Skip"));
 	if(!IsValid(UI)) return;
 	UI->Skip();
+}
+
+void ADialogManager::Back() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: Back"));
+	if(!IsValid(UI)) return;
+	UI->Back();
 }

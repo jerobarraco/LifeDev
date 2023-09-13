@@ -11,6 +11,7 @@ void UDialogUI::Show_Implementation(const FDialog& Diag) {
 }
 
 void UDialogUI::Skip_Implementation() {}
+void UDialogUI::Back_Implementation() {}
 
 void UDialogUI::PostHide() {
 	// i've disabled changing the input mode and showing the mouse cursor because

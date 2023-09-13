@@ -38,6 +38,8 @@ public:
 	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable)
 	void Skip();
+	UFUNCTION(BlueprintCallable)
+	void Back();
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -56,11 +58,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionSkip = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UInputAction* ActionBack = nullptr;
 
 	// when set it will skip showing the dialogs but still mark them as read
 	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category=Debug)
 	bool DebugSkip = false;
-	
 
 private:
 	// The ui is done with the current line
