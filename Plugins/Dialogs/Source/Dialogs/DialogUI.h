@@ -15,17 +15,19 @@ class DIALOGS_API UDialogUI: public UUserWidget {
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Show(const FDialog& Diag);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Hide();
 
 	// skips animation or the current dialog. will trigger an onDone if already ready.
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Skip();
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Back();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ShowDlg(int Diff = 1);
 
 	// variable that indicates when the dialog is ready to progress.
 	// false when animating.
@@ -43,7 +45,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PreShow();
 
-	// Call when the ui finished showing the current dialog
+	// Call when the ui finished showing the current dialog sequence
 	UFUNCTION(BlueprintCallable)
 	void Done() { OnDone.Broadcast();}
+
+	// TODO port
+	UPROPERTY(BlueprintReadWrite)
+	int32 CurDlgI = -1;
 };
