@@ -27,7 +27,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
 ALChar::ALChar(): Super()
 {
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 
 	UCapsuleComponent* const Capsule = GetCapsuleComponent();
 	// Set size for collision capsule
@@ -236,18 +236,39 @@ bool ALChar::Say(const FName& Name) {
 	return Dialogs->AddId(Name);
 }
 
-void ALChar::LookItem(const FItem& Item) {
-	// TODO open the ui and show it
-	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Count=%i, description '%s'. "),
-			*Item.Title.ToString(), Item.Count, *Item.Description.ToString());
+void ALChar::LookItem(const FName& Name) {
+	if (Name.IsNone()) {
+		UE_LOG(LogLChar, Log, TEXT("LookItem tried to look at an NONE item."))
+		return;
+	}
+
+	const FString& SName = *Name.ToString();
+	
+	FItem Item;
+	if (!Inventory->Get(Name, Item)) {
+		UE_LOG(LogLChar, Log, TEXT("Can´t find the item name='%s'"), *SName);
+		return;
+	}
+	
+	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Title='%s' Count=%i, description '%s'."),
+		*SName, *Item.Title.ToString(), Item.Count, *Item.Description.ToString());
 
 	if (IsValid(Dialogs)) {
-		// show the dialog with the description. this is temporary until i make the ui
-		FDialog Diag;
-		Diag.Type = EDialogType::SYSTEM;
-		Diag.Text = Item.Description;
-		Diag.CharRow = "Sys";
-		Dialogs->AddDiag(Diag);
+		const FName DRName = FName(*(SName + "_Look*"));
+		const FName DName = FName(*(SName + "_Look"));
+		// 1st try to add a random one
+		if (!Dialogs->AddId(DRName)) {
+			// Then try to add a regular one 
+			if (!Dialogs->AddId(DName)) {
+				// otherwise compose one
+				// show the dialog with the description. this is temporary until i make the ui
+                FDialog Diag;
+                Diag.Type = EDialogType::SYSTEM;
+                Diag.Text = Item.Description;
+                Diag.CharRow = "Sys";
+                Dialogs->AddDiag(Diag);
+			}
+		}
 	}
 
 	// trigger manager look
@@ -305,11 +326,5 @@ void ALChar::ActItem() {
 }
 
 void ALChar::ActItemLook() {
-	FItem Item;
-	if (!Inventory->GetSelectedItem(Item)) {
-		UE_LOG(LogLChar, Warning, TEXT("No selected item to look at"));
-		return;
-	}
-
-	LookItem(Item);
+	LookItem( Inventory->GetSelected());
 }

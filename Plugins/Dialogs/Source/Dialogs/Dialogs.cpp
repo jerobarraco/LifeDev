@@ -66,7 +66,7 @@ bool UDialogs::AddRnd(const FDialogSequence& Seq) {
 	const int32 Num = Seq.DiagRows.Num();
 	if (Num <= 0) return false;
 
-	const int32 i = FMath::RandRange(0, Num);
+	const int32 i = FMath::RandRange(0, Num -1);
 	return AddId(Seq.DiagRows[i]);
 }
 

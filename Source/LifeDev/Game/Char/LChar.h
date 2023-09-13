@@ -39,7 +39,7 @@ public:
 	void InteractSetEnabled(bool Enabled);
 
 	UFUNCTION(BlueprintCallable)
-	void LookItem(const FItem& Item);
+	void LookItem(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
 	bool Say(const FName& Name);

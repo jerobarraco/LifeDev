@@ -19,8 +19,7 @@ class UDataTable;
 
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, BlueprintType, Category="Inventory")
-class INVENTORY_API UInventory : public UWorldSubsystem
-{
+class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
@@ -58,7 +57,7 @@ public:
 
 	// returns the selected item name
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	const FName& GetSelected() const;
+	const FName& GetSelected() const { return Selected; }
 
 	// returns the selected item
 	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy

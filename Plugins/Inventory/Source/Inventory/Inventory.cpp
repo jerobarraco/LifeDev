@@ -113,10 +113,6 @@ void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
 	Items = NewItems;
 }
 
-const FName& UInventory::GetSelected() const {
-	return Selected;
-}
-
 bool UInventory::GetSelectedItem(FItem& Item) const {
 	if (Selected.IsNone()) {
 		UE_LOG(LogInventory, Warning, TEXT("No item is selected."));
