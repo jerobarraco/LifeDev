@@ -22,6 +22,7 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/LSettingsUI.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -73,12 +74,15 @@ ALChar::ALChar(): Super()
 		CSfxAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Noises/Noises_Att.Noises_Att"));
 	Noiser->Attenuation = CSfxAtt.Object;
 	
-	UIClass = UGameUI::StaticClass();
-	
 	// load the ui class here with the class finder.
 	// and also all the other default objects
-	static ConstructorHelpers::FClassFinder<UUserWidget> DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		DefaultUI(TEXT("/Game/LifeDev/Game/Char/W_GameUI"));
 	UIClass = DefaultUI.Succeeded() ? DefaultUI.Class.Get() : UGameUI::StaticClass();
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		CSettingsUI(TEXT("/Game/LifeDev/Core/Settings/SettingsUI_W"));
+	SettingsUIClass = CSettingsUI.Succeeded() ? CSettingsUI.Class.Get() : ULSettingsUI::StaticClass();
+	
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
 	 	DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
 	Mapping = DefaultMapping.Object;
@@ -103,6 +107,9 @@ ALChar::ALChar(): Super()
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionItemLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_ItemLook"));
 	ActionItemLook = CActionItemLook.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionMenu(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Menu"));
+	ActionMenu = CActionMenu.Object;
 }
 
 void ALChar::SetUIVisible(bool Visible) {
@@ -152,6 +159,15 @@ void ALChar::BeginPlay()
 		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
 	}
 
+	UClass* const SClass = SettingsUIClass.Get();
+	if (IsValid(SClass)) {
+		SettingsUI = NewObject<ULSettingsUI>(this, SClass);
+		// SettingsUI->AddToViewport();
+		// TODO test not adding it to viewport 
+		// SettingsUI->Hide();
+		SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
+	}
+
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
@@ -164,19 +180,25 @@ void ALChar::BeginPlay()
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Inventory = nullptr;
+	Dialogs = nullptr;
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
 	}
 	UI = nullptr;
-	Inventory = nullptr;
-	Dialogs = nullptr;
+
+	if (IsValid(SettingsUI)) {
+		SettingsUI->RemoveFromParent();
+	}
+	SettingsUI = nullptr;
+
 	if (IsValid(Noiser)) {
 		Noiser->Stop();
 	}
 	Noiser = nullptr;
 
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
-	// TODO unbind actions
+	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -196,6 +218,7 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALChar::ActInteract);
 	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALChar::ActItem);
 	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALChar::ActItemLook);
+	Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALChar::ActMenu);
 }
 
 void ALChar::ActMove(const FInputActionValue& Value)
@@ -222,7 +245,7 @@ void ALChar::ActLook(const FInputActionValue& Value)
 	AddControllerPitchInput(Vector.Y);
 }
 
-void ALChar::ActInteract(const FInputActionValue& Value) {
+void ALChar::ActInteract() { // don´t make const. the input system does not like it
 	if (!Interactor) return;
 	Interactor->TryTrigger();
 	const UCInteract* const Comp = Interactor->GetInterComp();
@@ -327,4 +350,25 @@ void ALChar::ActItem() {
 
 void ALChar::ActItemLook() {
 	LookItem( Inventory->GetSelected());
+}
+
+// i've added the settings here since the character already deals with the input.
+// but honestly it'd be nice to have it somewhere else.
+void ALChar::ActMenu() { // no const
+	if (!IsValid(SettingsUI)) return;
+
+	// TODO make this work
+	if (SettingsUI->IsVisible()) {
+		MenuDone();
+		return;
+	}
+
+	SettingsUI->AddToViewport(9999);
+	SettingsUI->Show();
+}
+
+void ALChar::MenuDone() {
+	if (!IsValid(SettingsUI)) return;
+	SettingsUI->Hide();
+	SettingsUI->RemoveFromParent();
 }

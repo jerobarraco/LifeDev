@@ -9,6 +9,7 @@
 
 #include "LChar.generated.h"
 
+class ULSettingsUI;
 class UDialogs;
 class UCInteractor;
 class UCInteract;
@@ -53,6 +54,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UGameUI> UIClass = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
@@ -75,23 +78,28 @@ public:
 	UInputAction* ActionItem = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	UInputAction* ActionItemLook = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
+	UInputAction* ActionMenu = nullptr;
 
 protected:
 	UFUNCTION()
 	void InteractBegin(UCInteract* Comp);
 	UFUNCTION()
 	void InteractEnd(UCInteract* Comp);
-
-	virtual void BeginPlay();
+	UFUNCTION()
+	void MenuDone();
+	
+	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
 	//* Called for looking input 
 	void ActLook(const FInputActionValue& Value);
-	void ActInteract(const FInputActionValue& Value);
+	void ActInteract();
 	void ActItem();
 	void ActItemLook();
+	void ActMenu();
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
@@ -109,7 +117,10 @@ protected:
 	UCInteractor* Interactor = nullptr;
 	UPROPERTY(BlueprintReadOnly)
 	UCNoiser* Noiser = nullptr;
-	
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ULSettingsUI* SettingsUI = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UGameUI* UI = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

@@ -81,7 +81,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TimeFadeOut = 2;
 
-
 	// not supported on desktop and could break the game
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool UseDynRes = false;
@@ -89,8 +88,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PostLoad() override;
 
-	void SetDynRes();
 	void StartChapter();
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();
@@ -99,7 +98,7 @@ protected:
 	UFUNCTION() // bind to delegate
 	void DiagDone();
 	
-	virtual void PostLoad() override;
+	void SetDynRes();
 
 	bool CharInputEnabled = true;
 };
