@@ -1,7 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-#include "SettingsUI.h"
+#include "LSettingsUI.h"
 
-USettingsUI::USettingsUI():Super() {
+ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
 }
