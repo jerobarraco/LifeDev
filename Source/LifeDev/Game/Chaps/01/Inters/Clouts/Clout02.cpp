@@ -3,7 +3,7 @@
 #include "Clout02.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 AClout02::AClout02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

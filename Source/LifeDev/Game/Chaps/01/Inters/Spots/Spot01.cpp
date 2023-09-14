@@ -3,7 +3,7 @@
 #include "Spot01.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

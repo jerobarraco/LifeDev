@@ -3,7 +3,8 @@
 #include "Spot00.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpot00::ASpot00():Super() {

@@ -3,7 +3,9 @@
 #include "Drawer00.h"
 
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer00::ADrawer00():Super() {
 	//  Set the anim root to the root component so that i can attach items to it

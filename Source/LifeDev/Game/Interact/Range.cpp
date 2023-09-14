@@ -3,13 +3,13 @@
 #include "Range.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ARange::ARange():Super() {
 	// super important or it will NOT work
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
-	SetActorTickEnabled(false); // ensure we don't animate on start
+	Super::SetActorTickEnabled(false); // ensure we don't animate on start
 
 	IRoot->SetRelativeScale3D(FVector(0));
 	

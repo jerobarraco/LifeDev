@@ -3,7 +3,7 @@
 #include "Paper00.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 APaper00::APaper00():Super() {
 	Super::SetMobility(EComponentMobility::Static);

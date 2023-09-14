@@ -3,7 +3,7 @@
 #include "Door.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ADoor::ADoor():Super() {
 	Interact->SetRelativeLocation(FVector(-60.039127,-7.825052,100.782019));

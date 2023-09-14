@@ -4,7 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 AWindow00::AWindow00():Super() {
 	SFX->SetRelativeLocation(FVector(9,-55,43));

@@ -2,10 +2,9 @@
 
 #include "Interact.h"
 
-#include "JUtils/CQuickMesh.h"
-
 #include "CInteract.h"
 #include "Components/AudioComponent.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 AInteract::AInteract():Super() {
 	// super important or it will NOT work

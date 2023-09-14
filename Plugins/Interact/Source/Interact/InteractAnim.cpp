@@ -4,8 +4,6 @@
 
 #include "Interact/CInteract.h"
 #include "Animator/CAnimatorMix.h"
-#include "Components/AudioComponent.h"
-#include "JUtils/CQuickMesh.h"
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;

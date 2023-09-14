@@ -3,7 +3,7 @@
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ALInteractFade::ALInteractFade():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>

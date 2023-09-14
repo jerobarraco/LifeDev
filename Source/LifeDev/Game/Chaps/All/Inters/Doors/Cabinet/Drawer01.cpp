@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer01::ADrawer01():Super() {
 	SFX->SetRelativeLocation(FVector(60,0,5));

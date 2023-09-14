@@ -3,7 +3,7 @@
 #include "Doorish.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ADoorish::ADoorish():Super() {
 	AnimEnabled = true;

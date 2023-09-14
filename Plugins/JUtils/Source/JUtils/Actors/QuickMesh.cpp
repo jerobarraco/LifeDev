@@ -3,7 +3,7 @@
 
 #include "QuickMesh.h"
 
-#include "JUtils/CQuickMesh.h"
+#include "CQuickMesh.h"
 
 AQuickMesh::AQuickMesh(): Super() {
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));

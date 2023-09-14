@@ -2,7 +2,7 @@
 #include "LNPCH.h"
 
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ALNPCH::ALNPCH():Super() {
 	AnimEnabled = false;

@@ -2,7 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "JUtils/BaseUI.h"
+#include "JUtils/UI/BaseUI.h"
 
 #include "SettingsUI.generated.h"
 

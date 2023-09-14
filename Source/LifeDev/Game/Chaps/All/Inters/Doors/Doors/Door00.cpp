@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ADoor00::ADoor00():Super() {
 	IRoot->SetRelativeLocation(FVector(0,-5,0));

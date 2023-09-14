@@ -2,7 +2,7 @@
 
 #include "WalkmanI00.h"
 #include "Interact/CInteract.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 AWalkmanI00::AWalkmanI00():Super() {
 	AnimEnabled = false;

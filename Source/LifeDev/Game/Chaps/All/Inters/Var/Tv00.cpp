@@ -6,7 +6,7 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
-#include "JUtils/CQuickMesh.h"
+#include "JUtils/Actors/CQuickMesh.h"
 
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
