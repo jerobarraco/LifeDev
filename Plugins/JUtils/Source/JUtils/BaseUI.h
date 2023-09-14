@@ -9,6 +9,7 @@
 #include "BaseUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBaseUIDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBaseUIDoneVal, int32, RetVal);
 
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UBaseUI : public UUserWidget {
@@ -24,10 +25,12 @@ public:
 	void Hide_Implementation();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Done() {OnDone.Broadcast();}
+	void Done(int32 RetVal = 0);
 	
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FBaseUIDone OnDone;
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FBaseUIDoneVal OnDoneVal;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

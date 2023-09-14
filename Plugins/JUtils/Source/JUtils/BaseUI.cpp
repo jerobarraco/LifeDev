@@ -15,3 +15,8 @@ void UBaseUI::Hide_Implementation() {
 		UJMiscUtils::ShowUI(false, GetWorld(), nullptr, true);
 	}
 }
+
+void UBaseUI::Done(int32 RetVal) {
+	OnDone.Broadcast();
+	OnDoneVal.Broadcast(RetVal);
+}
