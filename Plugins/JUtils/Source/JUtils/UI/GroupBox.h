@@ -32,6 +32,12 @@ public:
 	FOnGroupBoxChanged OnChange;
 
 protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
+	
+	UFUNCTION()
+	void ResetSelected(bool bIsChecked);
+
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TArray<UCheckBox*> CheckBoxes;
 	

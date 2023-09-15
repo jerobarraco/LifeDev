@@ -24,7 +24,7 @@ public:
 protected:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
-	virtual void BeginDestroy() override;
+	virtual void NativeDestruct() override;
 	
 	UFUNCTION(BlueprintCallable)
 	void LoadQSwitches();

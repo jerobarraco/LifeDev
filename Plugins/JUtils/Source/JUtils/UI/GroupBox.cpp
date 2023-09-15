@@ -27,3 +27,37 @@ void UGroupBox::SetLabel_Implementation(const FText& Text) {
 	if (!Label_T) return;
 	Label_T->SetText(Text);
 }
+
+void UGroupBox::NativeConstruct() {
+	Super::NativeConstruct();
+	for (UCheckBox* C: CheckBoxes) {
+		if (!C) continue;
+		C->OnCheckStateChanged.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
+	}
+}
+
+void UGroupBox::NativeDestruct() {
+	for (UCheckBox* C: CheckBoxes) {
+		if (!C) continue;
+		C->OnCheckStateChanged.RemoveAll(this);
+	}
+	Super::NativeDestruct();
+}
+
+void UGroupBox::ResetSelected(bool bIsChecked) {
+	// this i dislike but until i remember how to bind a lambda to a signal...
+	Selected = -1;
+	const int32 Num = CheckBoxes.Num();
+	for (uint8 i = 0; i<Num; ++i){
+		UCheckBox* const C = CheckBoxes[i];
+		if (!C) continue;
+		if (!C->IsChecked()) continue;
+		if (Selected <0) {
+			Selected = i;
+		} else {
+			C->SetIsChecked(false); // another one is set!
+		}
+	}
+
+	OnChange.Broadcast(this, Selected);
+}

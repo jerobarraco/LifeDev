@@ -40,8 +40,7 @@ void ULSettingsUI::NativeConstruct() {
 	}
 }
 
-void ULSettingsUI::BeginDestroy() {
-	Super::BeginDestroy();
+void ULSettingsUI::NativeDestruct() {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType Q: Keys) {
@@ -49,6 +48,7 @@ void ULSettingsUI::BeginDestroy() {
 		if (!pSwitchUI) continue;
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
+	Super::NativeDestruct();
 }
 
 void ULSettingsUI::LoadQSwitches() {
