@@ -9,15 +9,15 @@ ULQualitySwitchUI::ULQualitySwitchUI(const FObjectInitializer& ObjectInitializer
 	:Super(ObjectInitializer) {
 }
 
-void ULQualitySwitchUI::SetSelected_Implementation(int32 NewSelected, bool Broadcast) {
+void ULQualitySwitchUI::SetQuality_Implementation(int32 NewQuality, bool Broadcast) {
 	const int32 N = CheckBoxes.Num();
 	// if past upper bound, then unselect
 	for (uint8 i = 0; i<N; ++i) {
-		CheckBoxes[i]->SetIsChecked(i==NewSelected);
+		CheckBoxes[i]->SetIsChecked(i==NewQuality);
 	}
-
+	Quality = NewQuality;
 	if (Broadcast) {
-		OnChange.Broadcast(NewSelected);
+		OnChange.Broadcast(NewQuality);
 	}
 	// Selected = NewSelected;
 }
