@@ -6,8 +6,6 @@
 
 #include "LSettingsUI.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSettingsUIDone);
-
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSettingsUI : public UBaseUI {
 	GENERATED_BODY()

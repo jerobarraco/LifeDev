@@ -1,6 +1,5 @@
 // Copyright Jeronimo Barraco-Marmol
 
-
 #include "LifeDev.h"
 #include "Modules/ModuleManager.h"
 
