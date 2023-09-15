@@ -10,6 +10,8 @@ ULSettingsUI::ULSettingsUI():Super() {
 	
 	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
 		FText::FromString(TEXT("Global Illumination")));
+	QSTexts.Add(EQualityType::REFLECTION,
+		FText::FromString(TEXT("Reflections")));
 }
 
 void ULSettingsUI::NativePreConstruct() {
@@ -81,6 +83,10 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 	case EQualityType::GLOBAL_ILLUMINATION:
 		Q = Settings->GetGlobalIlluminationQuality();
 		break;
+	case EQualityType::REFLECTION:
+		Q = Settings->GetReflectionQuality();
+		break;
+		
 	default: break;
 	}
 	(*pSwitchUI)->SetSelected(Q);
@@ -104,7 +110,9 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	case EQualityType::GLOBAL_ILLUMINATION:
 		Settings->SetGlobalIlluminationQuality(NewQ);
 		break;
-
+	case EQualityType::REFLECTION:
+		Settings->SetReflectionQuality(NewQ);
+		break;
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type"));
 	}

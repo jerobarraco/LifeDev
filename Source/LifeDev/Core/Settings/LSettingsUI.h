@@ -11,7 +11,8 @@ class UGroupBox;
 UENUM(Blueprintable)
 enum class EQualityType: uint8 {
 	NONE,
-	GLOBAL_ILLUMINATION
+	GLOBAL_ILLUMINATION,
+	REFLECTION,
 };
 
 UCLASS(Blueprintable, BlueprintType)

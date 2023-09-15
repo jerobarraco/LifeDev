@@ -64,7 +64,7 @@ void UGroupBox::ResetSelected(UCheckBox* CB, bool IsChecked) {
 		if (C == CB) {
 			Selected = i;
 		} else {
-			// TODO make sure this is not actually re-triggering the delegate
+			// this is not re-triggering the delegate, otherwise it will be tragic.
 			C->SetIsChecked(false); // clear the others
 		}
 	}
