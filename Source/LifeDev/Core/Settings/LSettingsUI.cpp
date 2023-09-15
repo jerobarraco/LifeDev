@@ -8,10 +8,26 @@
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
 	
+	QSTexts.Add(EQualityType::VIEW_DISTANCE,
+		FText::FromString(TEXT("View Distance")));
+	QSTexts.Add(EQualityType::ANTI_ALIAS,
+		FText::FromString(TEXT("Anti-Aliasing")));
+	QSTexts.Add(EQualityType::POST_PROCESS,
+		FText::FromString(TEXT("Post Processing")));
+	QSTexts.Add(EQualityType::SHADOW,
+        FText::FromString(TEXT("Shadows")));
 	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
 		FText::FromString(TEXT("Global Illumination")));
 	QSTexts.Add(EQualityType::REFLECTION,
 		FText::FromString(TEXT("Reflections")));
+	QSTexts.Add(EQualityType::TEXTURES,
+		FText::FromString(TEXT("Textures")));
+	QSTexts.Add(EQualityType::EFFECTS,
+		FText::FromString(TEXT("Effects")));
+	QSTexts.Add(EQualityType::FOLIAGE,
+		FText::FromString(TEXT("Foliage")));
+	QSTexts.Add(EQualityType::SHADING,
+		FText::FromString(TEXT("Shading")));
 }
 
 void ULSettingsUI::NativePreConstruct() {
@@ -80,11 +96,35 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 
 	int32 Q = -1;
 	switch(QSwitch) {
+	case EQualityType::VIEW_DISTANCE:
+		Q = Settings->GetViewDistanceQuality();
+		break;
+	case EQualityType::ANTI_ALIAS:
+		Q = Settings->GetAntiAliasingQuality();
+		break;
+	case EQualityType::POST_PROCESS:
+		Q = Settings->GetPostProcessingQuality();
+		break;
+	case EQualityType::SHADOW:
+		Q = Settings->GetShadowQuality();
+		break;
 	case EQualityType::GLOBAL_ILLUMINATION:
 		Q = Settings->GetGlobalIlluminationQuality();
 		break;
 	case EQualityType::REFLECTION:
 		Q = Settings->GetReflectionQuality();
+		break;
+	case EQualityType::TEXTURES:
+		Q = Settings->GetTextureQuality();
+		break;
+	case EQualityType::EFFECTS:
+		Q = Settings->GetVisualEffectQuality();
+		break;
+	case EQualityType::FOLIAGE:
+		Q = Settings->GetFoliageQuality();
+		break;
+	case EQualityType::SHADING:
+		Q = Settings->GetShadingQuality();
 		break;
 		
 	default: break;
@@ -107,11 +147,35 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	}
 
 	switch (Quality) {
+	case EQualityType::VIEW_DISTANCE:
+		Settings->SetViewDistanceQuality(NewQ);
+		break;
+	case EQualityType::ANTI_ALIAS:
+		Settings->SetAntiAliasingQuality(NewQ);
+		break;
+	case EQualityType::POST_PROCESS:
+		Settings->SetPostProcessingQuality(NewQ);
+		break;
+	case EQualityType::SHADOW:
+		Settings->SetShadowQuality(NewQ);
+		break;
 	case EQualityType::GLOBAL_ILLUMINATION:
 		Settings->SetGlobalIlluminationQuality(NewQ);
 		break;
 	case EQualityType::REFLECTION:
 		Settings->SetReflectionQuality(NewQ);
+		break;
+	case EQualityType::TEXTURES:
+		Settings->SetTextureQuality(NewQ);
+		break;
+	case EQualityType::EFFECTS:
+		Settings->SetVisualEffectQuality(NewQ);
+		break;
+	case EQualityType::FOLIAGE:
+		Settings->SetFoliageQuality(NewQ);
+		break;
+	case EQualityType::SHADING:
+		Settings->SetShadingQuality(NewQ);
 		break;
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type"));
