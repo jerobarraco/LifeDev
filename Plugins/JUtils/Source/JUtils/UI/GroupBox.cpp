@@ -32,30 +32,38 @@ void UGroupBox::NativeConstruct() {
 	Super::NativeConstruct();
 	for (UCheckBox* C: CheckBoxes) {
 		if (!C) continue;
-		C->OnCheckStateChanged.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
+		UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();
+		Wrapper->CB = C;
+		Wrapper->OnChange.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
+		C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::Dispatch);
 	}
 }
 
 void UGroupBox::NativeDestruct() {
 	for (UCheckBox* C: CheckBoxes) {
 		if (!C) continue;
+		// todo this is fake is not actually removing the wrapper. fix
 		C->OnCheckStateChanged.RemoveAll(this);
 	}
 	Super::NativeDestruct();
 }
 
-void UGroupBox::ResetSelected(bool bIsChecked) {
-	// this i dislike but until i remember how to bind a lambda to a signal...
+void UGroupBox::ResetSelected(UCheckBox* CB, bool IsChecked) {
+	if (!IsChecked) OnChange.Broadcast(this, -1);
+	
 	Selected = -1;
 	const int32 Num = CheckBoxes.Num();
 	for (uint8 i = 0; i<Num; ++i){
 		UCheckBox* const C = CheckBoxes[i];
 		if (!C) continue;
+		
 		if (!C->IsChecked()) continue;
-		if (Selected <0) {
+		
+		if (C == CB) {
 			Selected = i;
 		} else {
-			C->SetIsChecked(false); // another one is set!
+			// TODO make sure this is not actually re-triggering the delegate
+			C->SetIsChecked(false); // clear the others
 		}
 	}
 
