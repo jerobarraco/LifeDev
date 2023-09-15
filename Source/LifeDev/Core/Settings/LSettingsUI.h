@@ -36,7 +36,7 @@ protected:
 	void SetQuality(EQualityType Quality, int32 NewQ);
 
 	UFUNCTION()
-	void QualityChanged(UGroupBox* Group, int32 NewQ);
+	void QualityChanged(int32 ID, int32 NewQ);
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, UGroupBox*> QSwitches;

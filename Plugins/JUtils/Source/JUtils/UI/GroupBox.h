@@ -28,7 +28,7 @@ public:
 	UCheckBox* CB = nullptr;
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, class UGroupBox*, me, int32, Q);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, int32, id, int32, Q);
 
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UGroupBox : public UUserWidget {
@@ -50,6 +50,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnGroupBoxChanged OnChange;
+
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	int32 ID = -1;
 
 protected:
 	virtual void NativeConstruct() override;

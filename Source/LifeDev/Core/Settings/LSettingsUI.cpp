@@ -24,7 +24,9 @@ void ULSettingsUI::NativePreConstruct() {
 		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 
-		(*pSwitchUI)->SetLabel(*T);
+		UGroupBox* const SwitchUI = *pSwitchUI;
+		SwitchUI->SetLabel(*T);
+		SwitchUI->ID = static_cast<int32>(Q);
 	}
 }
 
@@ -108,12 +110,8 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	}
 }
 
-void ULSettingsUI::QualityChanged(UGroupBox* Group, int32 NewQ) {
-	const EQualityType* Key = QSwitches.FindKey(Group);
-	if (!Key) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't find key for quality switch %lu"), Group);
-		return;
-	}
-	
-	SetQuality(*Key, NewQ);
+void ULSettingsUI::QualityChanged(int32 ID, int32 NewQ) {
+	if (ID<0) return;
+	const EQualityType K = static_cast<EQualityType>(ID);
+	SetQuality(K, NewQ);
 }

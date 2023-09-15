@@ -18,7 +18,7 @@ void UGroupBox::SetSelected_Implementation(int32 NewSelected, bool Broadcast) {
 
 	Selected = NewSelected;
 	if (Broadcast) {
-		OnChange.Broadcast(this, NewSelected);
+		OnChange.Broadcast(ID, NewSelected);
 	}
 }
 
@@ -49,8 +49,10 @@ void UGroupBox::NativeDestruct() {
 }
 
 void UGroupBox::ResetSelected(UCheckBox* CB, bool IsChecked) {
-	if (!IsChecked) OnChange.Broadcast(this, -1);
-	
+	if (!IsChecked) {
+		CB->SetIsChecked(true); // don't allow to manually deselect
+	}
+
 	Selected = -1;
 	const int32 Num = CheckBoxes.Num();
 	for (uint8 i = 0; i<Num; ++i){
@@ -67,5 +69,5 @@ void UGroupBox::ResetSelected(UCheckBox* CB, bool IsChecked) {
 		}
 	}
 
-	OnChange.Broadcast(this, Selected);
+	OnChange.Broadcast(ID, Selected);
 }
