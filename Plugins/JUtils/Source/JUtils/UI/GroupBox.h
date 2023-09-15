@@ -8,7 +8,7 @@
 #include "GroupBox.generated.h"
 class UCheckBox;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGroupBoxChanged, int32, Q);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, class UGroupBox*, me, int32, Q);
 
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UGroupBox : public UUserWidget {

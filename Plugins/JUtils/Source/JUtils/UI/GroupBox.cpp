@@ -18,7 +18,7 @@ void UGroupBox::SetSelected_Implementation(int32 NewSelected, bool Broadcast) {
 
 	Selected = NewSelected;
 	if (Broadcast) {
-		OnChange.Broadcast(NewSelected);
+		OnChange.Broadcast(this, NewSelected);
 	}
 }
 

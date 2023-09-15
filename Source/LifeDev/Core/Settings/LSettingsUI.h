@@ -6,10 +6,10 @@
 
 #include "LSettingsUI.generated.h"
 
-class ULQualitySwitchUI;
+class UGroupBox;
 
 UENUM(Blueprintable)
-enum class ESettingsQuality: uint8 {
+enum class EQualityType: uint8 {
 	NONE,
 	GLOBAL_ILLUMINATION
 };
@@ -23,17 +23,24 @@ public:
 
 protected:
 	virtual void NativePreConstruct() override;
-
-	UFUNCTION(BlueprintCallable)
-	void LoadAllQualitySwitches();
+	virtual void NativeConstruct() override;
+	virtual void BeginDestroy() override;
 	
 	UFUNCTION(BlueprintCallable)
-	void LoadQualitySwitch(ESettingsQuality QSwitch);
-
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TMap<ESettingsQuality, ULQualitySwitchUI*> QSwitches;
-
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TMap<ESettingsQuality, FText> QSwitchesTexts;
+	void LoadQSwitches();
 	
+	UFUNCTION(BlueprintCallable)
+	void LoadQSwitch(EQualityType QSwitch);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetQuality(EQualityType Quality, int32 NewQ);
+
+	UFUNCTION()
+	void QualityChanged(UGroupBox* Group, int32 NewQ);
+	
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	TMap<EQualityType, UGroupBox*> QSwitches;
+
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	TMap<EQualityType, FText> QSTexts;
 };

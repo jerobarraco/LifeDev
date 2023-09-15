@@ -3,44 +3,66 @@
 #include "LSettingsUI.h"
 
 #include "GameFramework/GameUserSettings.h"
-#include "UI/LQualitySwitchUI.h"
+#include "JUtils/UI/GroupBox.h"
 
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
 	
-	QSwitchesTexts.Add(ESettingsQuality::GLOBAL_ILLUMINATION,
+	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
 		FText::FromString(TEXT("Global Illumination")));
 }
 
 void ULSettingsUI::NativePreConstruct() {
 	Super::NativePreConstruct();
 
-	TArray<ESettingsQuality> OutKeys;
-	QSwitchesTexts.GetKeys(OutKeys);
-	for (ESettingsQuality Q: OutKeys) {
-		const FText* const T = QSwitchesTexts.Find(Q);
+	TArray<EQualityType> Keys;
+	QSTexts.GetKeys(Keys);
+	for (EQualityType Q: Keys) {
+		const FText* const T = QSTexts.Find(Q);
 		if (!T) continue;
 		
-		ULQualitySwitchUI** const pSwitchUI = QSwitches.Find(Q);
+		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 
 		(*pSwitchUI)->SetLabel(*T);
 	}
 }
 
-void ULSettingsUI::LoadAllQualitySwitches() {
-	TArray<ESettingsQuality> OutKeys;
-	QSwitches.GetKeys(OutKeys);
-	for (ESettingsQuality Q: OutKeys) {
-		LoadQualitySwitch(Q);
+void ULSettingsUI::NativeConstruct() {
+	Super::NativeConstruct();
+	
+	TArray<EQualityType> Keys;
+	QSwitches.GetKeys(Keys);
+	for (EQualityType Q: Keys) {
+		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
+		if (!pSwitchUI) continue;
+		(*pSwitchUI)->OnChange.AddUniqueDynamic(this, &ULSettingsUI::QualityChanged);
 	}
 }
 
-void ULSettingsUI::LoadQualitySwitch(ESettingsQuality QSwitch) {
-	if (QSwitch == ESettingsQuality::NONE) return;
+void ULSettingsUI::BeginDestroy() {
+	Super::BeginDestroy();
+	TArray<EQualityType> Keys;
+	QSwitches.GetKeys(Keys);
+	for (EQualityType Q: Keys) {
+		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
+		if (!pSwitchUI) continue;
+		(*pSwitchUI)->OnChange.RemoveAll(this);
+	}
+}
+
+void ULSettingsUI::LoadQSwitches() {
+	TArray<EQualityType> Keys;
+	QSwitches.GetKeys(Keys);
+	for (EQualityType Q: Keys) {
+		LoadQSwitch(Q);
+	}
+}
+
+void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
+	if (QSwitch == EQualityType::NONE) return;
 	
-	ULQualitySwitchUI** const pSwitchUI = QSwitches.Find(QSwitch);
-	
+	UGroupBox** const pSwitchUI = QSwitches.Find(QSwitch);
 	if (!pSwitchUI || !*pSwitchUI) {
 		UE_LOG(LogTemp, Log, TEXT("Cant find quality switc for switch %i"), QSwitch );
 		return;
@@ -54,10 +76,44 @@ void ULSettingsUI::LoadQualitySwitch(ESettingsQuality QSwitch) {
 
 	int32 Q = -1;
 	switch(QSwitch) {
-	case ESettingsQuality::GLOBAL_ILLUMINATION:
+	case EQualityType::GLOBAL_ILLUMINATION:
 		Q = Settings->GetGlobalIlluminationQuality();
 		break;
 	default: break;
 	}
-	(*pSwitchUI)->SetQuality(Q);
+	(*pSwitchUI)->SetSelected(Q);
+}
+
+void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
+	UE_LOG(LogTemp, Log, TEXT("Setting quality quality=%i newq=%i"), Quality, NewQ);
+	if (Quality == EQualityType::NONE) return;
+	if (NewQ<0 || NewQ>4) {
+		UE_LOG(LogTemp, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
+		return;
+	}
+	
+	UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
+	if (!Settings) {
+		UE_LOG(LogTemp, Warning, TEXT("Can't get user settings"));
+		return;
+	}
+
+	switch (Quality) {
+	case EQualityType::GLOBAL_ILLUMINATION:
+		Settings->SetGlobalIlluminationQuality(NewQ);
+		break;
+
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type"));
+	}
+}
+
+void ULSettingsUI::QualityChanged(UGroupBox* Group, int32 NewQ) {
+	const EQualityType* Key = QSwitches.FindKey(Group);
+	if (!Key) {
+		UE_LOG(LogTemp, Warning, TEXT("Can't find key for quality switch %lu"), Group);
+		return;
+	}
+	
+	SetQuality(*Key, NewQ);
 }
