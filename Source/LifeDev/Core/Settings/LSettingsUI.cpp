@@ -28,6 +28,14 @@ void ULSettingsUI::NativePreConstruct() {
 	}
 }
 
+void ULSettingsUI::LoadAllQualitySwitches() {
+	TArray<ESettingsQuality> OutKeys;
+	QSwitches.GetKeys(OutKeys);
+	for (ESettingsQuality Q: OutKeys) {
+		LoadQualitySwitch(Q);
+	}
+}
+
 void ULSettingsUI::LoadQualitySwitch(ESettingsQuality QSwitch) {
 	if (QSwitch == ESettingsQuality::NONE) return;
 	

@@ -23,6 +23,9 @@ public:
 
 protected:
 	virtual void NativePreConstruct() override;
+
+	UFUNCTION(BlueprintCallable)
+	void LoadAllQualitySwitches();
 	
 	UFUNCTION(BlueprintCallable)
 	void LoadQualitySwitch(ESettingsQuality QSwitch);
