@@ -6,7 +6,6 @@
 // loosely based on https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Private/Components/SSignificanceComponent.cpp
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 void UCSignificance::Activate(bool bReset) {
