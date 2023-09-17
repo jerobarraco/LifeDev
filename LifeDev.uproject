@@ -22,8 +22,14 @@
 		}
 	],
 	"Plugins": [
-		{ "Name": "Story", "Enabled": true },
-		{ "Name": "Dialogs", "Enabled": true },
+		{
+			"Name": "Story",
+			"Enabled": true
+		},
+		{
+			"Name": "Dialogs",
+			"Enabled": true
+		},
 		{
 			"Name": "Interact",
 			"Enabled": true
@@ -50,7 +56,7 @@
 		},
 		{
 			"Name": "ChaosNiagara",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "GameplayCameras",
@@ -59,8 +65,12 @@
 		{
 			"Name": "EditorUIScaleCustomization",
 			"Enabled": true,
-			"TargetAllowList": [ "Editor" ],
-			"BlacklistTargets": ["Game"]
+			"TargetAllowList": [
+				"Editor"
+			],
+			"TargetDenyList": [
+				"Game"
+			]
 		},
 		{
 			"Name": "DisasterRecoveryClient",
@@ -106,6 +116,229 @@
 			"Enabled": false,
 			"SupportedTargetPlatforms": [
 				"Android"
+			]
+		},
+		{
+			"Name": "CommonUI",
+			"Enabled": true
+		},
+		{
+			"Name": "N10XSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidDeviceProfileSelector",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidMedia",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidMoviePlayer",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineSubsystemGooglePlay",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Android"
+			]
+		},
+		{
+			"Name": "AndroidPermission",
+			"Enabled": false
+		},
+		{
+			"Name": "AndroidFileServer",
+			"Enabled": false
+		},
+		{
+			"Name": "AppleImageUtils",
+			"Enabled": false
+		},
+		{
+			"Name": "AppleMoviePlayer",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosClothEditor",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosCloth",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosEditor",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosUserDataPT",
+			"Enabled": false
+		},
+		{
+			"Name": "ConsoleVariables",
+			"Enabled": true
+		},
+		{
+			"Name": "EnvironmentQueryEditor",
+			"Enabled": false
+		},
+		{
+			"Name": "GooglePAD",
+			"Enabled": false
+		},
+		{
+			"Name": "BlendSpaceMotionAnalysis",
+			"Enabled": false
+		},
+		{
+			"Name": "BlueprintFileUtils",
+			"Enabled": true
+		},
+		{
+			"Name": "BlueprintStats",
+			"Enabled": true
+		},
+		{
+			"Name": "OpenImageDenoise",
+			"Enabled": false
+		},
+		{
+			"Name": "IOSDeviceProfileSelector",
+			"Enabled": false
+		},
+		{
+			"Name": "Bridge",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
+		},
+		{
+			"Name": "FacialAnimation",
+			"Enabled": false
+		},
+		{
+			"Name": "SkeletalReduction",
+			"Enabled": false
+		},
+		{
+			"Name": "UObjectPlugin",
+			"Enabled": false
+		},
+		{
+			"Name": "BackChannel",
+			"Enabled": false
+		},
+		{
+			"Name": "GLTFExporter",
+			"Enabled": false
+		},
+		{
+			"Name": "DatasmithContent",
+			"Enabled": false
+		},
+		{
+			"Name": "SpeedTreeImporter",
+			"Enabled": false
+		},
+		{
+			"Name": "AvfMedia",
+			"Enabled": false
+		},
+		{
+			"Name": "WmfMedia",
+			"Enabled": false
+		},
+		{
+			"Name": "WindowsMoviePlayer",
+			"Enabled": false
+		},
+		{
+			"Name": "LocalizableMessage",
+			"Enabled": false
+		},
+		{
+			"Name": "LocationServicesBPLibrary",
+			"Enabled": false
+		},
+		{
+			"Name": "MobilePatchingUtils",
+			"Enabled": false
+		},
+		{
+			"Name": "ChunkDownloader",
+			"Enabled": false
+		},
+		{
+			"Name": "GoogleCloudMessaging",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineSubsystemIOS",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"IOS",
+				"TVOS"
+			]
+		},
+		{
+			"Name": "OnlineSubsystem",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineSubsystemUtils",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineSubsystemNull",
+			"Enabled": false
+		},
+		{
+			"Name": "OnlineBase",
+			"Enabled": false
+		},
+		{
+			"Name": "CodeLiteSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "VisualStudioCodeSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "VisualStudioSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "XCodeSourceCodeAccess",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Mac"
+			]
+		},
+		{
+			"Name": "PixWinPlugin",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "KDevelopSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "MsQuic",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux",
+				"Mac"
 			]
 		}
 	]
