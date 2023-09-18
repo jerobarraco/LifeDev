@@ -46,7 +46,7 @@ public:
 	FName TriggerDlg = NAME_None;
 
 	// setting this will reward the item on trigger and self-destruct
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName ItemReward = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")

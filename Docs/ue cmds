@@ -36,3 +36,6 @@ r.MaxFPS 0 # disables?
 # run on dual gpu
 
 “C:\Program Files\Epic Games\UE_5.0EA\Engine\Binaries\Win64\UnrealEditor.exe” “C:\Users\Public\Documents\Unreal Projects\UE5Test\UE5Test.uproject” -game -d3d12 -MaxGPUCount=4 -VMGPU -AFR
+
+# debug sounds by soloing ones by name
+au.Debug.AudioSoloSoundWave wordtomatch

@@ -4,7 +4,7 @@
 	"VersionName": "1.0",
 	"FriendlyName": "Muse",
 	"Description": "Muse tools",
-	"Category": "Muse tools",
+	"Category": "Tools",
 	"CreatedBy": "Jeronimo Barraco-Marmol",
 	"CreatedByURL": "https://codeberg.org/nande/ue-muse",
 	"DocsURL": "https://codeberg.org/nande/ue-muse",

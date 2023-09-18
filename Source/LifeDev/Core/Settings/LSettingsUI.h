@@ -48,6 +48,9 @@ protected:
 	void QualityChanged(int32 ID, int32 NewQ);
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	UGroupBox* QOverall = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, UGroupBox*> QSwitches;
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)

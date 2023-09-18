@@ -46,6 +46,10 @@ void ULSettingsUI::NativePreConstruct() {
 		SwitchUI->SetLabel(*T);
 		SwitchUI->ID = static_cast<int32>(Q);
 	}
+
+	if (QOverall) {
+		QOverall->SetLabel(FText::FromString("Overall"));
+	}
 }
 
 void ULSettingsUI::NativeConstruct() {

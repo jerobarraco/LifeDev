@@ -10,6 +10,8 @@ public class LifeDevTarget : TargetRules
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V4;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
+		// bUseExecCommnadInShipping
 		ExtraModuleNames.Add("LifeDev");
 	}
 }
