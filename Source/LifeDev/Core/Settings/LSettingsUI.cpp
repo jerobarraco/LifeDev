@@ -8,6 +8,8 @@
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
 	
+	QSTexts.Add(EQualityType::OVERALL,
+		FText::FromString(TEXT("Overall")));
 	QSTexts.Add(EQualityType::VIEW_DISTANCE,
 		FText::FromString(TEXT("View Distance")));
 	QSTexts.Add(EQualityType::ANTI_ALIAS,
@@ -46,10 +48,6 @@ void ULSettingsUI::NativePreConstruct() {
 		SwitchUI->SetLabel(*T);
 		SwitchUI->ID = static_cast<int32>(Q);
 	}
-
-	if (QOverall) {
-		QOverall->SetLabel(FText::FromString("Overall"));
-	}
 }
 
 void ULSettingsUI::NativeConstruct() {
@@ -72,6 +70,7 @@ void ULSettingsUI::NativeDestruct() {
 		if (!pSwitchUI) continue;
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
+
 	Super::NativeDestruct();
 }
 
@@ -100,6 +99,9 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 
 	int32 Q = -1;
 	switch(QSwitch) {
+	case EQualityType::OVERALL:
+		Q = Settings->GetOverallScalabilityLevel();
+		break;
 	case EQualityType::VIEW_DISTANCE:
 		Q = Settings->GetViewDistanceQuality();
 		break;
@@ -130,7 +132,6 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 	case EQualityType::SHADING:
 		Q = Settings->GetShadingQuality();
 		break;
-		
 	default: break;
 	}
 	(*pSwitchUI)->SetSelected(Q);
@@ -151,6 +152,9 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	}
 
 	switch (Quality) {
+	case EQualityType::OVERALL:
+		Settings->SetOverallScalabilityLevel(NewQ);
+		break;
 	case EQualityType::VIEW_DISTANCE:
 		Settings->SetViewDistanceQuality(NewQ);
 		break;
@@ -184,10 +188,13 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	default:
 		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type"));
 	}
+	
+	LoadQSwitches(); // not optimal but if i set the overall i need to reload the rest and vice versa. 
 }
 
 void ULSettingsUI::QualityChanged(int32 ID, int32 NewQ) {
-	if (ID<0) return;
+	if (ID < 0 || ID >= static_cast<uint8>(EQualityType::_MAX)) return;
+	
 	const EQualityType K = static_cast<EQualityType>(ID);
 	SetQuality(K, NewQ);
 }

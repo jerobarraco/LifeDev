@@ -11,6 +11,7 @@ class UGroupBox;
 UENUM(Blueprintable)
 enum class EQualityType: uint8 {
 	NONE,
+	OVERALL,
 	VIEW_DISTANCE,
 	ANTI_ALIAS,
 	POST_PROCESS,
@@ -20,7 +21,8 @@ enum class EQualityType: uint8 {
 	TEXTURES,
 	EFFECTS,
 	FOLIAGE,
-	SHADING
+	SHADING,
+	_MAX
 };
 
 UCLASS(Blueprintable, BlueprintType)
@@ -47,9 +49,6 @@ protected:
 	UFUNCTION()
 	void QualityChanged(int32 ID, int32 NewQ);
 	
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	UGroupBox* QOverall = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, UGroupBox*> QSwitches;
 
