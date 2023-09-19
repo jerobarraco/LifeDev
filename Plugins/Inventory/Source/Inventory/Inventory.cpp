@@ -7,6 +7,11 @@
 #include "ItemLogic.h" //needed for ManType.
 
 bool UInventory::Mod(const FName& Name, int32 Diff) {
+	if (Name.IsNone()) {
+		UE_LOG(LogInventory, Warning, TEXT("Attempt to mod item None"));
+		return false;
+	}
+
 	FName NewSel = NAME_None;
 	bool SetSelect = false; // need another flag because we might wanna set the selected to none
 

@@ -12,6 +12,7 @@
 #include "Inventory/Inventory.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CAnimator.h"
+#include "Inventory/Flags.h"
 #include "Inventory/InventoryManager.h"
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
@@ -31,7 +32,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
 ALGGameMode::ALGGameMode():Super() {
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<ALChar>
 		CChar(TEXT("/Game/LifeDev/Game/Char/LChar_B"));
@@ -129,6 +130,8 @@ void ALGGameMode::Init_Implementation() {
 	}
 
 	/// Inventory
+	Flags = World->GetSubsystem<UFlags>();
+	Flags->Init();
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(Settings->Inventory.LoadSynchronous());
 
@@ -189,7 +192,7 @@ void ALGGameMode::BeginPlay() {
 void ALGGameMode::DeInit_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
-
+	
 	if (IsValid(Dialogs)) {
 		Dialogs->OnShow.RemoveAll(this);
 		Dialogs->OnDone.RemoveAll(this);
@@ -201,6 +204,11 @@ void ALGGameMode::DeInit_Implementation() {
 		Inventory->DeInit();
 	}
 	Inventory = nullptr;
+	
+	if (IsValid(Flags)) {
+		Flags->DeInit();
+	}
+	Flags = nullptr;
 	
 	if (IsValid(DiagManager)) {
 		DiagManager->DeInit();

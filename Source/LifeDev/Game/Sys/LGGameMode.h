@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "Dialogs/DiagTypes.h"
+#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "LGGameMode.generated.h"
 
@@ -60,6 +61,9 @@ public:
 	ALInventoryManager* InvManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UFlags* Flags = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
