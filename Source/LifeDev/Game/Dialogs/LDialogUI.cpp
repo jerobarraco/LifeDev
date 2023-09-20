@@ -6,9 +6,11 @@
 #include "Materials/MaterialParameterCollectionInstance.h"
 
 ULDialogUI::ULDialogUI() :Super(){
-	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
-		CMPC(TEXT("/Game/LifeDev/Game/Dialogs/UI/Mats/Diag_MPC.Diag_MPC"));
-	TextMPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
+	// this is getting the build stuck
+	// static ConstructorHelpers::FObjectFinderOptional<UMaterialParameterCollection>
+		// CMPC(TEXT("/Game/LifeDev/Game/Dialogs/UI/Mats/Diag_MPC.Diag_MPC"), LOAD_Async);
+	// TextMPC = CMPC.Succeeded() ? CMPC.Get() : nullptr;
+	TextMPC = nullptr;
 }
 
 void ULDialogUI::NativeDestruct() {
