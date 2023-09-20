@@ -3,13 +3,13 @@
 #pragma once
 #include "LifeDev/Game/Chaps/All/Inters/Doors/Doors/Door00.h"
 
-#include "DoorI02.generated.h"
+#include "DoorI04.generated.h"
 
-// Door from room00 to room01, locked with a key. Instance of the door 00 that is locked until
+// Door from room02 to bathroom ...
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ADoorI02: public ADoor00 {
+class LIFEDEV_API ADoorI04: public ADoor00 {
 	GENERATED_BODY()
 
 public:
-	ADoorI02();
+	ADoorI04();
 };

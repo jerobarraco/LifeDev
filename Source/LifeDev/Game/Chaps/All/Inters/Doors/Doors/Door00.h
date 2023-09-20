@@ -5,11 +5,11 @@
 
 #include "Door00.generated.h"
 
-// TODO make a base class for this
+// Base class for all doors of type 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor00: public ADoor {
-public:
 	GENERATED_BODY()
 
+public:
 	ADoor00();
 };

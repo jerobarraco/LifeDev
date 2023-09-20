@@ -5,7 +5,7 @@
 
 #include "Door.generated.h"
 
-// Base class for door-like and drawer actors
+// Base class for doors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor: public ADoorish {
 	GENERATED_BODY()
