@@ -9,10 +9,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FFlagsOnMod, const FName&, Name, float, Diff, float, Total);
-
 DECLARE_LOG_CATEGORY_CLASS(LogFlags, Log, Log);
-
-class UDataTable;
 
 // TODO rename, and also add docs
 
@@ -22,11 +19,13 @@ class INVENTORY_API UFlags : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-
 	// regular ones ////////
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Mod(const FName& Name, float Diff);
+	
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	void Set(const FName& Name, float Val);
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE float Get(const FName& Name) const {
@@ -35,21 +34,21 @@ public:
 		return Val;
 	};
 	
-	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
-	UFUNCTION(BlueprintCallable, Category="Flags")
-	const TMap<FName, float>& GetAllFlags() const { return Flags; }; // can´t forceinline due to const & tmap
-
-	// overrides the current items
-	UFUNCTION(BlueprintCallable, Category="Flags")
-	FORCEINLINE void SetAllFlags(const TMap<FName, float>& NewFlags) { Flags = NewFlags;};
-
+	// this might be a bit slower than calling Get, unless you are also checking if it's 0
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
 	bool Has(const FName& Name) {
 		if (Name.IsNone()) return false;
-		return Flags.Contains(Name);
+		return !FMath::IsNearlyZero(Get(Name));
 	};
-
 	
+	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	const TMap<FName, float>& GetAllFlags() const { return Flags; }; // can't forceinline due to const & tmap
+
+	// overrides the current items. used for load and saving.
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	FORCEINLINE void SetAllFlags(const TMap<FName, float>& NewFlags) { Flags = NewFlags;};
+
 	/// system
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
