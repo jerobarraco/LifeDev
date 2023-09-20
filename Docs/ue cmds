@@ -39,3 +39,7 @@ r.MaxFPS 0 # disables?
 
 # debug sounds by soloing ones by name
 au.Debug.AudioSoloSoundWave wordtomatch
+
+# debug asset loading
+# https://docs.unrealengine.com/5.1/en-US/zen-loader-in-unreal-engine/
+./LifeDev.sh -LogCmds="LogStreaming veryverbose"
