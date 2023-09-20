@@ -78,7 +78,7 @@
 		},
 		{
 			"Name": "ModelingToolsEditorMode",
-			"Enabled": false,
+			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
 			]
@@ -360,6 +360,10 @@
 		{
 			"Name": "MediaCompositing",
 			"Enabled": false
+		},
+		{
+			"Name": "StaticMeshEditorModeling",
+			"Enabled": true
 		}
 	]
 }
