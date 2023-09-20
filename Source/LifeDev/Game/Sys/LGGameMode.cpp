@@ -27,6 +27,7 @@
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDialogMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
@@ -102,9 +103,6 @@ void ALGGameMode::Init_Implementation() {
 	// todo should come from savestate
 	ChapterId = 0;
 
-	// music
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {
@@ -114,6 +112,13 @@ void ALGGameMode::Init_Implementation() {
 		Char = nullptr;
 	}
 
+	/// music
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+
+	/// flashback
+
+	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
+	
 	/// Dialogs
 	Dialogs = World->GetSubsystem<UDialogs>();
 	Dialogs->Init();
@@ -236,9 +241,10 @@ void ALGGameMode::DeInit_Implementation() {
 	Char = nullptr;
 
 	if (IsValid(MusicMan)) {
-		MusicMan->Fade(false); // probably won't get a chance to fade sinc ethe game mode is ending.
+		MusicMan->Fade(false); // probably won't get a chance to fade since the game mode is ending.
 	}
 	MusicMan = nullptr;
+	FlashbackMan = nullptr;
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {

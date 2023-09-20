@@ -5,9 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
-#include "Dialogs/DiagTypes.h"
-#include "Inventory/Flags.h"
-#include "Inventory/Inventory.h"
+
 #include "LGGameMode.generated.h"
 
 class UInputMappingContext;
@@ -19,6 +17,9 @@ class ALChar;
 class UStory;
 class UDialogs;
 class ALMusicMan;
+class AFlashbackMan;
+class UInventory;
+class UFlags;
 
 // to get the collision channel read https://gamedev.stackexchange.com/a/178812/44866
 #define InteractTraceChannel ECC_GameTraceChannel1
@@ -72,6 +73,8 @@ public:
 	ALChar* Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALMusicMan* MusicMan = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	AFlashbackMan* FlashbackMan = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 ChapterId = 1; // Maybe this could be on the game instance. ?
