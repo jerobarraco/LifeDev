@@ -1,5 +1,6 @@
-@echo off
-set UNREAL_ENGINE_ROOT=E:/ue/UE_5.3
+:: @echo off
+:: warning pushd HATES "/" we MUST use "\"
+set UNREAL_ENGINE_ROOT=E:\ue\UE_5.3
 set WORKSPACE=E:/w/LifeDev
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
@@ -10,7 +11,7 @@ set CONFIG=Shipping
 
 
 :: Build client
-pushd %UNREAL_ENGINE_ROOT%
+pushd %UNREAL_ENGINE_ROOT% || exit /b 1
 call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% -clean -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/"
 popd
 exit /b 0
