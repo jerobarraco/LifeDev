@@ -1,4 +1,4 @@
-(I don't like/believe in hard rules, but saying "guidelines" sounds confusing and misleanding, so...)
+(I don't like/believe in hard rules, but saying "guidelines" sounds confusing and misleading, so...)
 * KISS! (Keep it simple)
 * tabs
 * case sensitive
@@ -12,13 +12,17 @@
 * NO INTERFACES
 ** make sensible base classes.
 * UI defines base class on cpp to interface with.
+** cpp controls ui via virtual functions
+** ui communicates back with delegates. ui doesn't communicate directly with other stuff. except for setting things on subsystems.
 * Minimal usage of lambdas, and only if less than 10 LOC. otherwise make a function.
-* Use BlueprintNativeEvent when interacting with blueprints. Never use BlueprintImplementableEvent. NEVER EVER use delegates for this case.
+* Use BlueprintNativeEvent when interacting with blueprints and ui. Never use BlueprintImplementableEvent. NEVER EVER use delegates for this case.
 ** Use BlueprintNativeEvents EVEN if the cpp body is empty. keep the control in cpp. avoid having function chains that only exists on bp.
 * Use minimal decoupling. Use polymorphism to achieve it.
 ** This is tricky if you're not me (hard to explain). Check the code for examples, and ask me to verify.
 ** Avoid usage of events when possible. 
 ** Ensure a direct top-down hierarchy.
+*** parents call children directly through functions.
+*** child communicate with parents through delegates.
 ** Do use subsystems
 ** Do use delegates
 *** But avoid having stuff self-registering automatically. Tell them to initialize instead. 
@@ -41,7 +45,5 @@
 ** Make your functions be public (when calling them from outside won't break). Aim to make your functions able to be public.
 ** Make your functions and variable accessible from bps. and callable.
 * Avoid using interfaces. use inheritance whenever possible.
-* parents call children directly through functions.
-* child communicate with parents through delegates.
 * callbacks are delegates
 * singletons are subsystems
