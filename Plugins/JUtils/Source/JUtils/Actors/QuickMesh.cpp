@@ -8,6 +8,9 @@
 AQuickMesh::AQuickMesh(): Super() {
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+	// TODO why did i disabled this? can i re-enable it?
+	// TODO re-enable next time i do the "optimization" pass
+	//		Make a function SetCollision (bool)
 	// Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// Super::SetCollisionProfileName("NoCollision");
 	// Super::SetGenerateOverlapEvents(false);
