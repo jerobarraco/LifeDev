@@ -27,6 +27,8 @@
 ** flexibility is more important than "university purity".
 * Ensure proper lifecycle. Initialize variables. And nullify/destroy on endplay or when needed.
 * USE DEFAULT VARIABLES VALUES, (instead of) initializing variables in custom constructors. except variables that will be overwritten.
+** NEVER initialize using the member initialization list (on the constructor)
+** ok to initialize _inside_ the constructor (with regular assignment) only if the value is non-default, and specific to that constructor.
 * Use UPROPERTY on all pointers. nullify at end if is transient.
 * Use Transient on all variables that are transient.
 * use const& widely. 
@@ -39,3 +41,7 @@
 ** Make your functions be public (when calling them from outside won't break). Aim to make your functions able to be public.
 ** Make your functions and variable accessible from bps. and callable.
 * Avoid using interfaces. use inheritance whenever possible.
+* parents call children directly through functions.
+* child communicate with parents through delegates.
+* callbacks are delegates
+* singletons are subsystems
