@@ -42,6 +42,10 @@ ALGGameMode::ALGGameMode():Super() {
 	PlayerControllerClass = ALGPController::StaticClass();
 	
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
+	// not using the interact trace channel
+	// since i want things like walls to block it,
+	// without having to set it up for every single mesh.
+	// Setting it to visibility has its downsides, like having to set up more complicated collisions
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
 	// UCInteract::CollisionProfile = "BlockAllDynamic";
 	UCInteract::SetCollisionProfile("Interact");
