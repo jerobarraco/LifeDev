@@ -1,0 +1,240 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        7
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 8,
+      "max": [
+        130.0,
+        1.0,
+        130.0
+      ],
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 12,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        7
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 8,
+      "max": [
+        130.0,
+        60.0,
+        130.0
+      ],
+      "min": [
+        0.0,
+        59.0,
+        0.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 12,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC4"
+    }
+  ],
+  "asset": {
+    "generator": "voxedit 0.0.24.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 144,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 224,
+      "byteOffset": 144,
+      "byteStride": 28,
+      "target": 34962
+    },
+    {
+      "buffer": 1,
+      "byteLength": 144,
+      "target": 34963
+    },
+    {
+      "buffer": 1,
+      "byteLength": 224,
+      "byteOffset": 144,
+      "byteStride": 28,
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 368,
+      "uri": "data:application/octet-stream;base64,AgAAAAMAAAAHAAAAAgAAAAcAAAAGAAAAAQAAAAUAAAAHAAAAAQAAAAcAAAADAAAABAAAAAYAAAAHAAAABAAAAAcAAAAFAAAAAAAAAAQAAAAFAAAAAAAAAAUAAAABAAAAAAAAAAIAAAAGAAAAAAAAAAYAAAAEAAAAAAAAAAEAAAADAAAAAAAAAAMAAAACAAAAAAAAAAAAAAAAAAAAiYgIP4mICD+JiAg/AACAPwAAAAAAAIA/AAAAAImICD+JiAg/iYgIPwAAgD8AAAJDAAAAAAAAAACJiAg/iYgIP4mICD8AAIA/AAACQwAAgD8AAAAAiYgIP4mICD+JiAg/AACAPwAAAAAAAAAAAAACQ4mICD+JiAg/iYgIPwAAgD8AAAAAAACAPwAAAkOJiAg/iYgIP4mICD8AAIA/AAACQwAAAAAAAAJDiYgIP4mICD+JiAg/AACAPwAAAkMAAIA/AAACQ4mICD+JiAg/iYgIPwAAgD8="
+    },
+    {
+      "byteLength": 368,
+      "uri": "data:application/octet-stream;base64,AgAAAAMAAAAHAAAAAgAAAAcAAAAGAAAAAQAAAAUAAAAHAAAAAQAAAAcAAAADAAAABAAAAAYAAAAHAAAABAAAAAcAAAAFAAAAAAAAAAQAAAAFAAAAAAAAAAUAAAABAAAAAAAAAAIAAAAGAAAAAAAAAAYAAAAEAAAAAAAAAAEAAAADAAAAAAAAAAMAAAACAAAAAAAAAAAAbEIAAAAAiYgIP4mICD+JiAg/AACAPwAAAAAAAHBCAAAAAImICD+JiAg/iYgIPwAAgD8AAAJDAABsQgAAAACJiAg/iYgIP4mICD8AAIA/AAACQwAAcEIAAAAAiYgIP4mICD+JiAg/AACAPwAAAAAAAGxCAAACQ4mICD+JiAg/iYgIPwAAgD8AAAAAAABwQgAAAkOJiAg/iYgIP4mICD8AAIA/AAACQwAAbEIAAAJDiYgIP4mICD+JiAg/AACAPwAAAkMAAHBCAAACQ4mICD+JiAg/iYgIPwAAgD8="
+    }
+  ],
+  "images": [
+    {
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAABCAYAAAAxWXB3AAABqklEQVR4XmNkYGD4LygoyEAu5pJiZBDgZwNidgZBAXYwLcCPYAuC5KDigkBxASAbTEPVGDLOZOAV5GDgE+QEYgTNi8YHyWOq42TwYWxg4OHngWABHgZuIJtXAMTnxSnGDZTnBekR4GUIk/Rk4OYTAGJBBh4+QTDNzYfE5schDlIDlPPVAernBdrHB8RgGmgvsXw+XgZD03oGbm52Bj4+oN/5gGHAy8nAC2dDxMB8oDgfSB4oxwtmQ9WbzmIQ4IOGPyh8+SBxAAtjATS+IB9SHAHVMyr3M/DwsjHwA+OAHxg3/AIcDMg0H4gvyM6AEEdmczAoy6cz8AhwMfCCMTdpbEFuBidVZQZOHlB88QPDnh8YZ3xgmpsfyOYDssE0UI6fDxg/IBqVHW7GwsDNC9IDleeF0kC9PLwQs3hA5vBCzQOLg+yCqAsx1QD6H+h+PiDmRdA8aHxeIJ+HF00dHzeDg3YmAz8wTCGYA8IGhis/H4QtwIcpBpfj52DQkpgIzz8CsPyDRMPyjAA07yDToPxmwjgDGPaQfAPJM5wMkLwCpQVgeQqYrgRR5UDqAK+vMIJrM3WdAAAAAElFTkSuQmCC"
+    }
+  ],
+  "materials": [
+    {
+      "name": "12212233867714465872",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "floor",
+      "primitives": [
+        {
+          "attributes": {
+            "COLOR_0": 2,
+            "POSITION": 1
+          },
+          "indices": 0,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "roof",
+      "primitives": [
+        {
+          "attributes": {
+            "COLOR_0": 5,
+            "POSITION": 4
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1,
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "root"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mesh": 0,
+      "name": "floor"
+    },
+    {
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mesh": 1,
+      "name": "roof"
+    }
+  ],
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "source": 0
+    }
+  ]
+}
