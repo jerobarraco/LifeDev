@@ -6,6 +6,7 @@
 #include "Inventory/Inventory.h"
 
 #include "LInteract.generated.h"
+
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
@@ -48,6 +49,10 @@ public:
 	// setting this will reward the item on trigger and self-destruct
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName ItemReward = NAME_None;
+
+	// setting this will reward a flag on trigger, adding 1 *each* time. (won't self-destruct due to this variable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
+	FName FlagReward = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float TriggerFlashInc = 0;

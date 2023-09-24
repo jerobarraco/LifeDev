@@ -2,6 +2,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Dialogs/Dialogs.h"
+#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -31,11 +32,21 @@ void ALInteract::Trigger_Implementation() {
 	if (IsValid(Dialogs)) {
 		Dialogs->AddId(TriggerDlg);
 	}
-
+	
+	UWorld* const World = GetWorld();
 	if (!FMath::IsNearlyZero(TriggerFlashInc)) {
-		GetWorld()->GetSubsystem<UFlashback>()->IncVal(TriggerFlashInc);
+		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
+		if (Flashback) {
+			Flashback->IncVal(TriggerFlashInc);
+		}
 	}
 
+	UFlags* const Flags = World->GetSubsystem<UFlags>();
+	if (Flags) {
+		// TODO test
+		Flags->Mod(FlagReward, 1.0);
+	}
+	
 	// reward an item if possible
 	if (ItemReward.IsNone()) return;
 	if (!IsValid(Inventory)) return;

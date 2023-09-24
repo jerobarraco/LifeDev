@@ -21,11 +21,11 @@ ASpot00::ASpot00():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
 	DropDlg = TEXT("IS_C0D");
-	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T*
+	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T* (note the random)
 	LockedDlg = "IS_C0TB";
 	Items = {
 		// two shirts and a boxer, and a sock
-		FName("C1C00"), FName("C1C01"), "C1C02", "C1C04"
+		FName("C1C00"), FName("C1C01"), FName("C1C02"), FName("C1C04")
 	};
 }
 
