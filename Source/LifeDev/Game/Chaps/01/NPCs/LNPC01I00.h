@@ -34,8 +34,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCAnimatorCam* AnimCam = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	UCAnimatorFade* AnimFade = nullptr;
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	// UCAnimatorFade* AnimFade = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* Flashback = nullptr;

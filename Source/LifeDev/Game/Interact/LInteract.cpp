@@ -2,14 +2,18 @@
 
 #include "Components/AudioComponent.h"
 #include "Dialogs/Dialogs.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "JUtils/Actors/CQuickMesh.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/SA_GenericAttenuation.SA_GenericAttenuation"));
-	SFX->AttenuationSettings = CAtt.Object; 
+	SFX->AttenuationSettings = CAtt.Object;
+	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
+	AnimFade->Meshes.Add(Mesh);
 }
 
 void ALInteract::BeginPlay() {
@@ -54,10 +58,21 @@ void ALInteract::Trigger_Implementation() {
 	SetEnabled(false); // avoid re-rewarding due to multi clicks
 
 	ItemRewarded();
+	if (!UseAnimFade) {
+		Faded();
+        return;
+    }
+    AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::Faded);
+    AnimFade->Play();
 }
 
-void ALInteract::ItemRewarded_Implementation() {
-	Destroy();
+void ALInteract::ItemRewarded_Implementation() {}
+
+void ALInteract::Faded() {
+	AnimFade->OnEnd.RemoveAll(this);
+	if (AutoDestroy) {
+		Destroy();
+	}
 }
 
 void ALInteract::TriggerLocked_Implementation() {

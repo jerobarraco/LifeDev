@@ -16,7 +16,7 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
 
-	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
+	// AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Duration = 2;
 	AnimFade->Meshes = {
 		Mesh, Head, Torso, Pelvis,

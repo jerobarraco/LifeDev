@@ -7,6 +7,7 @@
 
 #include "LInteract.generated.h"
 
+class UCAnimatorFade;
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
@@ -57,10 +58,21 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float TriggerFlashInc = 0;
 
+	// whether or not to fade when rewarding an item.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool UseAnimFade = true;
+	
+	// whether or not to auto destroy on item reward
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool AutoDestroy = true;
+	
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ItemRewarded();
 	virtual void ItemRewarded_Implementation();
+
+	UFUNCTION()
+	void Faded(); // called when the item reward fade ends
 	
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
@@ -68,6 +80,10 @@ protected:
 	virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 
+	// used for fading the object on item reward.
+	UPROPERTY(BlueprintReadOnly, Category="SetUp")
+	UCAnimatorFade* AnimFade = nullptr;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
