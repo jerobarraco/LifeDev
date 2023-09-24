@@ -39,15 +39,16 @@ void ALNPC01I00::TriggerLocked_Implementation() {
 }
 
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Card0) {
-		Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
-		Dialogs->AddId("N01.0");
-		GetWorld()->GetSubsystem<UFlashback>()->SetVal(1);
-		return EItemUseResult::SUCCESS;
+	if (Name != LDConsts::Items::Card0) {
+		Dialogs->AddId("N01.IB");
+		return EItemUseResult::BAD_HANDLED;
 	}
 
-	Dialogs->AddId("N01.IB");
-	return EItemUseResult::BAD_HANDLED;
+	SetEnabled(false); // disable the interact so it can fade better, and player won´t trigger again
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
+	Dialogs->AddId("N01.0");
+	Flashback->SetVal(1);
+	return EItemUseResult::SUCCESS;
 }
 
 void ALNPC01I00::DiagSitDone() {
@@ -61,8 +62,8 @@ void ALNPC01I00::DiagSitDone() {
 
 void ALNPC01I00::StandUp() {
 	SetPoseStand();
-	AddActorLocalRotation(FRotator(0, -120, 0));
-	AnimCam->Target = Head->GetComponentLocation();
+	AddActorLocalRotation(FRotator(0, -120, 0)); // turn around
+	AnimCam->Target = Head->GetComponentLocation(); // look at character
 	AnimCam->Play();
 }
 
@@ -76,7 +77,7 @@ void ALNPC01I00::DiagStandDone() {
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
 	if (R) { R->SetPlaying(false); }
 
-	GetWorld()->GetSubsystem<UFlashback>()->SetVal(.2);
+	Flashback->SetVal(.2);
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);
 	AnimFade->Play();
 }

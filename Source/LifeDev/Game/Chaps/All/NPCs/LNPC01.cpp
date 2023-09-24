@@ -144,6 +144,7 @@ void ALNPC01::SetVisible(bool Vis) {
 
 void ALNPC01::BeginPlay() {
 	Super::BeginPlay();
+	// TODO move the card to the LNPC01I00
 	if (IsValid(Card)) {
 		Card->SetActorHiddenInGame(true);
 	}

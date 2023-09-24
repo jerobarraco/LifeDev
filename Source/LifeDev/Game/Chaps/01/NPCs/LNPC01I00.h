@@ -11,7 +11,7 @@
 
 class UCAnimatorCam;
 // TODO move stuff from base to here
-// the instancef or the npc01 in chapter 01 at boss step 
+// the instance for the npc01 in chapter 01 at boss step 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPC01I00 : public ALNPC01 {
 	GENERATED_BODY()
