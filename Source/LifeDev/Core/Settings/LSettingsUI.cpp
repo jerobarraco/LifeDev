@@ -193,8 +193,11 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 }
 
 void ULSettingsUI::QualityChanged(int32 ID, int32 NewQ) {
-	if (ID < 0 || ID >= static_cast<uint8>(EQualityType::_MAX)) return;
+	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) return;
 	
 	const EQualityType K = static_cast<EQualityType>(ID);
 	SetQuality(K, NewQ);
 }
+
+
+// TODO disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
