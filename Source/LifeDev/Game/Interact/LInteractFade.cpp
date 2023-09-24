@@ -1,6 +1,5 @@
 #include "LInteractFade.h"
 
-#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -12,7 +11,6 @@ ALInteractFade::ALInteractFade():Super() {
 }
 
 void ALInteractFade::ItemRewarded_Implementation() {
-	Interact->SetEnabled(false); // avoid re-rewarding due to multi clicks (should i move this to LInteract?)
 	// Super::ItemRewarded_Implementation(); // not calling super since that will kill us (literally)
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteractFade::FadeDone);
 	AnimFade->Play();

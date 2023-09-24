@@ -43,7 +43,6 @@ void ALInteract::Trigger_Implementation() {
 
 	UFlags* const Flags = World->GetSubsystem<UFlags>();
 	if (Flags) {
-		// TODO test
 		Flags->Mod(FlagReward, 1.0);
 	}
 	
@@ -52,6 +51,7 @@ void ALInteract::Trigger_Implementation() {
 	if (!IsValid(Inventory)) return;
 	// return if we maxed out
 	if (!Inventory->Mod(ItemReward, 1)) return;
+	SetEnabled(false); // avoid re-rewarding due to multi clicks
 
 	ItemRewarded();
 }
