@@ -89,3 +89,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
 };
+
+// TODO at some point *consider* moving the ItemReward functionality to its own child class
+// e.g. animfade, itemreward, useanimfade(redundant), autodestroy, itemrewarded
