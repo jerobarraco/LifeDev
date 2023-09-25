@@ -13,4 +13,13 @@ class ALStepC0S001 : public ALStep {
 
 public:
 	ALStepC0S001();
+	
+	virtual void Start_Implementation() override;
+	virtual void Stop_Implementation() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	AActor* FakeChar = nullptr;
+
+protected:
+	virtual void BeginPlay() override;
 };
