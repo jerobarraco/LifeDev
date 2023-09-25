@@ -76,7 +76,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void TriggerLocked();
 	virtual void TriggerLocked_Implementation();
-	
+
+	// test function.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetInteractAutoBounds();
 
@@ -93,7 +94,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
-	// not defining it as UCQuickMesh since it doesn't add anything. but it will make other files have to import quickmesh
+	// Defined as QuickMesh so that child objects can access their properties/functions
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UPostProcessComponent* PostProcess = nullptr;

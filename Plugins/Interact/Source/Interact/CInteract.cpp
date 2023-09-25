@@ -4,6 +4,8 @@
 
 #include "Components/BoxComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCInteract, Log, Log);
+
 UCInteract::UCInteract(): Super() {
 	// these 2 seems to work ok. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
@@ -18,39 +20,11 @@ UCInteract::UCInteract(): Super() {
 	UBoxComponent::SetComponentTickEnabled(false);
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
-
-	/*
-	PostProcess = CreateDefaultSubobject<UPostProcessComponent>(TEXT("PostProcess"));
-	// we can't actually create nested components. this worked for some strange reason, but need the postcdoconstruct fix.
-	// i tried to replicate and it doesn't
-	// https://forums.unrealengine.com/t/how-do-you-make-a-component-with-nested-components/375589/4
-	// PostProcess->SetupAttachment(this);
-	// you need to reparent on the actor that creates this interact.
-	// PostProcess->bUnbound = false;
-	// this only works on the constructor
-	// https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/ProgrammingWithCPP/Assets/ReferencingAssets/
-	// /Script/Engine.MaterialInstanceConstant'/Interact/MI_PostHover.MI_PostHover'
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		MatObj(TEXT("/Interact/MI_PostHover"));
-    if (MatObj.Succeeded()) {
-        PostProcess->Settings.WeightedBlendables.Array.Add({1, MatObj.Object});
-    }
-    */
 }
-
-/*
-void UCInteract::BeginPlay() {
-	Super::BeginPlay();
-	if (!IsValid(HoverMesh)){
-		PostProcess->SetActive(false);
-		PostProcess->SetVisibility(false);
-		PostProcess->bEnabled = false;
-	}
-}
-*/
 
 void UCInteract::Trigger() const {
-	UE_LOG(LogTemp, Log, TEXT("Interact triggered!"));
+	UE_LOG(LogCInteract, Log, TEXT("Comp Interact triggered"));
+	// this is synchronous. will call AInteract(Anim, Fade) tryTrigger. and SetText at some point before this function returns
 	OnTrigger.Broadcast();
 }
 

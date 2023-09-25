@@ -65,7 +65,7 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
 	
-	USceneComponent* Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
+	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);
 	DoStart(Interact);
 }
@@ -103,12 +103,10 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	// notifies on changes
 	if (InterComp) {
 		DoEnd();
-		InterComp = nullptr;
+		InterComp = nullptr; // clear after doend in case someone needs to access it 
 	}
 
-	if (!IsValid(Component)) {
-		return;
-	}
+	if (!IsValid(Component)) return;
 
 	InterComp = Component;
 	InterComp->Hover(true);

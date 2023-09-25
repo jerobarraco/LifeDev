@@ -6,6 +6,8 @@
 #include "Components/AudioComponent.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
+
 AInteract::AInteract():Super() {
 	// super important or it will NOT work
 	PrimaryActorTick.bCanEverTick = true;
@@ -45,7 +47,7 @@ bool AInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
-	UE_LOG(LogTemp, Log, TEXT("Ainteract.TryUseItem=%s"), *Name.ToString());
+	UE_LOG(LogInteract, Log, TEXT("TryUseItem=%s"), *Name.ToString());
 	return EItemUseResult::BAD_TARGET;
 }
 
@@ -72,10 +74,13 @@ void AInteract::BeginPlay() {
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (IsValid(Interact)) {
+		Interact->OnTrigger.RemoveAll(this);
+		Interact->OnHover.RemoveAll(this);
+		Interact->DeInit();
+	}
+	Interact = nullptr;
 	Super::EndPlay(EndPlayReason);
-	Interact->OnTrigger.RemoveAll(this);
-	Interact->OnHover.RemoveAll(this);
-	Interact->DeInit();
 }
 
 void AInteract::SetText_Implementation() {}
@@ -92,7 +97,7 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::Trigger_Implementation() {
-	UE_LOG(LogTemp, Log, TEXT("Actor Triggered"));
+	UE_LOG(LogInteract, Log, TEXT("Actor Triggered"));
 	SetText();
 	PlaySFX(SFX_Trigger);
 }
@@ -100,7 +105,7 @@ void AInteract::Trigger_Implementation() {
 void AInteract::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
 
-	UE_LOG(LogTemp, Log, TEXT("Playing sound %s "), *Snd->GetName());
+	UE_LOG(LogInteract, Log, TEXT("Playing sound %s "), *Snd->GetName());
 	SFX->SetHiddenInGame(false);
 	SFX->SetSound(Snd);
 	SFX->SetActive(true, true);

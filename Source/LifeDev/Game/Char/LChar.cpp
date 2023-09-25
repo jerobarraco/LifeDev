@@ -247,10 +247,14 @@ void ALChar::ActLook(const FInputActionValue& Value)
 
 void ALChar::ActInteract() { // don´t make const. the input system does not like it
 	if (!Interactor) return;
-	Interactor->TryTrigger();
+	// store before calling TryTrigger. since it might become null afterwards :shrug:
 	const UCInteract* const Comp = Interactor->GetInterComp();
+
+	Interactor->TryTrigger(); // this is synchronous
+	
 	if (IsValid(Comp) && IsValid(UI)) {
 		UI->SetPrompt(Comp->Text);
+		UE_LOG(LogTemp, Log, TEXT("ALChar ActInteract Text = %s"), *Comp->Text.ToString());
 	}
 }
 

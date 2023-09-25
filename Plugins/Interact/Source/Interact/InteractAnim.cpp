@@ -37,7 +37,9 @@ void AInteractAnim::SetText_Implementation() {
 		Interact->Text = Texts[0];
 		return;
 	}
+	
 	Interact->Text = Texts[IsOpen?1:0];
+	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: NewText=%s"), *Interact->Text.ToString());
 }
 
 void AInteractAnim::Trigger_Implementation() {
@@ -49,7 +51,7 @@ void AInteractAnim::Trigger_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 	}
 	Super::Trigger_Implementation(); // trigger the trigger sound and calls set text
-	// SetText(); // change the text after the flag has changed
+	// SetText(); // not needed. happens on super
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {

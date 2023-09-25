@@ -10,7 +10,6 @@ AHeaterI01::AHeaterI01():Super() {
 	
 	LockedDlg = "HT01_L";
 	Texts = {
-		FText::FromString(TEXT("Turn on.")),
-		FText::FromString(TEXT("Maybe not..."))
+		FText::FromString(TEXT("Turn on")),
 	};
 }

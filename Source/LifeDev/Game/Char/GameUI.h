@@ -5,20 +5,23 @@
 
 #include "GameUI.generated.h"
 
-// Helps define an interaction volume
+class UTextBlock;
+// The main ui for in-game
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UGameUI: public UUserWidget {
-public:
 	GENERATED_BODY()
 	
+public:
 	UFUNCTION(BlueprintNativeEvent)
-	void SetPrompt(const FText& text);
+	void SetPrompt(const FText& Text);
 
 	UFUNCTION(BlueprintNativeEvent)
 	void InteractShowPrompt(const FText& Text);
-	virtual void InteractShowPrompt_Implementation(const FText& Text) {};
 
 	UFUNCTION(BlueprintNativeEvent)
 	void InteractHidePrompt();
-	virtual void InteractHidePrompt_Implementation() {};
+
+protected:
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UTextBlock* T_Prompt = nullptr;
 };
