@@ -1,9 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "DoorI04.h"
+#include "DoorI05.h"
 
-ADoorI04::ADoorI04():Super() {
+ADoorI05::ADoorI05():Super() {
 	AnimEnabled = false;
-	LockedDlg = "D04_LCK";
+	LockedDlg = "D05_LCK";
 	Locked = true;
 }
