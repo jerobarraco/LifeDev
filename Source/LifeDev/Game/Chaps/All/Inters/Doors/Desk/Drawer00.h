@@ -7,8 +7,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawer00: public ADrawer {
-public:
 	GENERATED_BODY()
 
+public:
 	ADrawer00();
 };

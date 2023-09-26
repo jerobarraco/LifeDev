@@ -12,5 +12,5 @@ class LIFEDEV_API ADrawerI01: public ADrawer02 {
 public:
 
 protected:
-	void Trigger_Implementation();
+	virtual void Trigger_Implementation() override;
 };

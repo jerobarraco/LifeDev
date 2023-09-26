@@ -8,8 +8,8 @@
 // Cabinet drawer 01
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawer02: public ADrawer {
-public:
 	GENERATED_BODY()
 
+public:
 	ADrawer02();
 };
