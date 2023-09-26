@@ -12,7 +12,8 @@ ADoorish::ADoorish():Super() {
 	Anim->SetComponentTickInterval(1/60.f);
 
 	Mesh->SetCastAllShadows(true);
-
+	Super::SetMobility(EComponentMobility::Movable);
+	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Door00/SBvfe1_Door_Handle_D_002.SBvfe1_Door_Handle_D_002"));
 	SFX_Open = SOpen.Object;
