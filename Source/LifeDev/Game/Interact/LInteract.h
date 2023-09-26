@@ -28,7 +28,7 @@ public:
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
 	// (e.g. useful for doors) 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock",  meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockDlg = NAME_None;
 
 	// dialog to trigger when tried to use the wrong item to unlock this
