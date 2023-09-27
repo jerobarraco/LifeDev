@@ -8,9 +8,11 @@
 AQuickMesh::AQuickMesh(): Super() {
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+	
 	// TODO why did i disabled this? can i re-enable it?
 	// TODO re-enable next time i do the "optimization" pass
-	//		Make a function SetCollision (bool)
+	//		TODO need to re-ensure every object that needs to move sets it to movable
+	//		TODO Make a function SetCollision (bool)
 	// Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// Super::SetCollisionProfileName("NoCollision");
 	// Super::SetGenerateOverlapEvents(false);
@@ -18,9 +20,8 @@ AQuickMesh::AQuickMesh(): Super() {
 	// Super::CanCharacterStepUpOn = ECB_No;
 	// bNavigationRelevant = false;
 	// bCanEverAffectNavigation = false;
-	//
+
 	Super::SetActorTickEnabled(false);
-	
 	PrimaryActorTick.SetTickFunctionEnable(false);
 	PrimaryActorTick.bStartWithTickEnabled = false;
 }

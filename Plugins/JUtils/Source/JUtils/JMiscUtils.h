@@ -36,7 +36,6 @@ public:
 };
 
 
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWrapper, class UWrapper*, me);
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 // A simple wrapper for binding to delegates with extra parameters.
@@ -51,6 +50,7 @@ class UWrapper : public UObject {
 	GENERATED_BODY()
 
 public:
+	// bind this function to the delegate
 	UFUNCTION()
 	void Dispatch(bool IsChecked) {
 		OnDispatch.Broadcast(this);

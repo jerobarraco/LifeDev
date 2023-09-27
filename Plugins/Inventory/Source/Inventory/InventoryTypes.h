@@ -31,7 +31,7 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Description;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

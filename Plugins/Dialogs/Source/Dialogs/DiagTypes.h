@@ -37,7 +37,7 @@ public:
 	EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EDialogType Type = EDialogType::NORMAL;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 };
 
