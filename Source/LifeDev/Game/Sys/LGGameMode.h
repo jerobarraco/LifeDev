@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
 
+	UFUNCTION(BlueprintCallable)
+	void Fade(const FText& DecoratedTitle = INVTEXT(""));
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

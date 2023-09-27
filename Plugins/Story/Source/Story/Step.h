@@ -54,6 +54,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float WaitTime = 0;
 
+	// set to true to use debug
+	inline static bool UseDebug = false;
+
 protected:
 	// Will be triggered when the wait time ends. if it's set.
 	// if you don't override or if you call the parent (this) it will finish the step.
@@ -61,6 +64,11 @@ protected:
 	void PostWait();
 	virtual void PostWait_Implementation();
 
+	// gets called when UseDebug is set. happens on postwait
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Debug();
+	virtual void Debug_Implementation() {};
+	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;

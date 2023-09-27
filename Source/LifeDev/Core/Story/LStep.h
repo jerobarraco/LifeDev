@@ -38,13 +38,9 @@ public:
 
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;
-
-protected:
-	// will get called when DEBUG_STEPS flag is set
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Debug();
-	virtual void Debug_Implementation();
+	inline static bool UseDebug = false;
 	
+protected:
 	virtual void PostWait_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

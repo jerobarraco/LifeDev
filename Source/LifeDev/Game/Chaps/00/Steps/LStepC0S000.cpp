@@ -10,6 +10,8 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
+
+	// TODO add cRandomizer here
 }
 
 void ALStepC0S000::Start_Implementation() {

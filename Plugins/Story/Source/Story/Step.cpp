@@ -10,7 +10,7 @@
 
 AStep::AStep():Super() {
 	PrimaryActorTick.bCanEverTick = false;
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
@@ -38,6 +38,11 @@ void AStep::PostWait_Implementation() {
 	if (IsValid(CamTarget)) {
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 	}
+	
+	if (UseDebug) {
+		Debug();
+	}
+	
 	if (FinishPostWait) {
 		Finish();
 	}
@@ -49,11 +54,12 @@ void AStep::BeginPlay() {
 		UE_LOG(LogTemp, Warning, TEXT("Step name is none! story won't work properly"));
 	}
 
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	UWorld* const World = GetWorld();
+	UStory* const Story = World->GetSubsystem<UStory>();
 	Story->Add(this);
 	
 	if (UsePawnCam) {
-		AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
+		AActor* const Actor = UGameplayStatics::GetActorOfClass(World, APawn::StaticClass());
 		APawn* const Pawn = Cast<APawn>(Actor);
 		if (!IsValid(Pawn)) {
 			UE_LOG(LogTemp, Warning, TEXT("Could not get the pawn!!!!"));

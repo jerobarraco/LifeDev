@@ -16,12 +16,7 @@ void ALStep::Start_Implementation() {
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	if (!IsValid(LGGameMode)) return;
-	LGGameMode->SetCharInputEnabled(InputEnabled);
-	ULGameInstance* const Instance = Cast<ULGameInstance>(LGGameMode->GetGameInstance());
-	const bool UseDebug = IsValid(Instance) && Instance->GetFeat(EFeat::DEBUG_STEPS);
-	if (UseDebug) {
-		Debug();
-	}
+	LGGameMode->SetCharInputEnabled(InputEnabled);	
 }
 
 void ALStep::Stop_Implementation() {
@@ -31,6 +26,7 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
+
 	// ensure we don't double trigger
 	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 
@@ -70,8 +66,10 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 
 void ALStep::BeginPlay() {
 	Super::BeginPlay();
-	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
-	Inventory = GetWorld()->GetSubsystem<UInventory>();
+
+	UWorld* const World = GetWorld();
+	Dialogs = World->GetSubsystem<UDialogs>();
+	Inventory = World->GetSubsystem<UInventory>();
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -98,5 +96,3 @@ void ALStep::PostLoad() {
 		FinishPostWait = false;
 	}
 }
-
-void ALStep::Debug_Implementation() {}

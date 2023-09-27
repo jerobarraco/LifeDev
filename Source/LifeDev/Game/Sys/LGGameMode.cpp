@@ -103,7 +103,8 @@ void ALGGameMode::Init_Implementation() {
 	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
 	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
 	AMusicMan::Enabled = Instance->GetFeat(EFeat::MUSIC);
-
+	AStep::UseDebug = Instance->GetFeat(EFeat::DEBUG_STEPS);
+	
 	// todo should come from savestate
 	ChapterId = 0;
 
@@ -299,6 +300,19 @@ void ALGGameMode::SetDynRes() {
 	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.FrameTimeBudget 33.33333"));
 }
 
+void ALGGameMode::Fade(const FText& DecoratedTitle) {
+	if (!IsValid(StoryManager)) {
+		// Should this be here?
+		UE_LOG(LogLGameMode, Warning, TEXT("Fade: No story manager. Can't proceed."));
+		return;
+	}
+	StoryManager->FadeIn(DecoratedTitle);
+	
+	FTimerManager& Time = GetWorld()->GetTimerManager();
+	FTimerHandle Handle;
+	Time.SetTimer(Handle, StoryManager, &AStoryManager::FadeOut, TimeFadeIn+TimeHold);
+}
+
 void ALGGameMode::StartChapter() {
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
 	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
@@ -325,13 +339,13 @@ void ALGGameMode::StartChapter() {
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 
-	FText DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
-	StoryManager->FadeIn(DecoratedTitle);
+	const FText& DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
+	Fade(DecoratedTitle);
 
 	FTimerManager& Time = GetWorld()->GetTimerManager();
 	FTimerHandle Handle1;
 	FTimerDelegate Delegate1;
-	// TODO make a function of this
+	// TODO make a function of this "StartStorySequence"
 	Delegate1.BindLambda([this] {
 		Story->StartSequence(Chapter.StorySeq);
 		// assuming this will return null if not able to load. which will stop the previous music, which is ok
@@ -340,9 +354,6 @@ void ALGGameMode::StartChapter() {
 	});
 	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	
-	FTimerHandle Handle2;
-	Time.SetTimer(Handle2, StoryManager, &AStoryManager::FadeOut, TimeFadeIn+TimeHold);
-
 	FTimerHandle Handle3;
 	FTimerDelegate Delegate3;
 	Delegate3.BindLambda([this] {
