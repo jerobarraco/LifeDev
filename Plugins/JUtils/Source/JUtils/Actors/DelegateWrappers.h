@@ -4,7 +4,7 @@
 
 #include "DelegateWrappers.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWrapperID, class UDelegateWrapperID*, Wrapper, int32, ID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, class UDelegateWrapperID*, Wrapper, int32, ID, UObject*, Obj);
 
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 // A simple wrapper for binding to delegates with extra parameters.
@@ -20,7 +20,7 @@ class UDelegateWrapperID : public UObject {
 public:
 	// bind this function to the other delegate
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void Dispatch() { OnDispatch.Broadcast(this, ID); }
+	FORCEINLINE void Dispatch() { OnDispatch.Broadcast(this, ID, Obj); }
 
 	// or bind this function to the other delegate
 	UFUNCTION(BlueprintCallable)
@@ -29,6 +29,10 @@ public:
 	// Set this
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, Category=SetUp)
 	int32 ID = -1;
+
+	// Set this
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, Category=SetUp)
+	UObject* Obj = nullptr;
 	
 	// subscribe to this 
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient)
