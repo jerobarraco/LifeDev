@@ -9,6 +9,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	DlgId = FName("Intro");
 	InputEnabled = false;
 	UseFadeTime = true;
+	UseFade = true;
 	FinishPostWait = false;
 }
 
@@ -22,6 +23,7 @@ void ALStepC0S001::Start_Implementation() {
 	if (!Flashback) return;
 	Flashback->SetVal(0, 0);
 	Flashback->SetVal(1, 20);
+	// TODO add timer here and teleport the player
 }
 
 void ALStepC0S001::Stop_Implementation() {

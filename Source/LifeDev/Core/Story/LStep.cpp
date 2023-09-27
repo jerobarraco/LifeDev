@@ -16,7 +16,10 @@ void ALStep::Start_Implementation() {
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	if (!IsValid(LGGameMode)) return;
-	LGGameMode->SetCharInputEnabled(InputEnabled);	
+	LGGameMode->SetCharInputEnabled(InputEnabled);
+	if (UseFade) {
+		LGGameMode->Fade();
+	}
 }
 
 void ALStep::Stop_Implementation() {
