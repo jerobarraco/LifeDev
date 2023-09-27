@@ -34,28 +34,3 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void ShowUI(bool Show, UWorld* World, UWidget* Focus = nullptr, bool SetPaused = false);
 };
-
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWrapper, class UWrapper*, me);
-// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
-// A simple wrapper for binding to delegates with extra parameters.
-// To use: Inherit from this object, add parameters you need.
-// then instantiate like this
-// UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();
-// Wrapper->CB = C;
-// Wrapper->OnChange.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
-// C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::Dispatch);
-UCLASS(Blueprintable, BlueprintType)
-class UWrapper : public UObject {
-	GENERATED_BODY()
-
-public:
-	// bind this function to the delegate
-	UFUNCTION()
-	void Dispatch(bool IsChecked) {
-		OnDispatch.Broadcast(this);
-	};
-
-	UPROPERTY(Transient)
-	FOnWrapper OnDispatch;
-};
