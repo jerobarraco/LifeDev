@@ -19,9 +19,6 @@ public:
 	virtual void Stop_Implementation() override;
 	
 protected:
-	virtual void BeginPlay() override;
-	UFUNCTION()
-	void TriggerFB(float Val);
 	
 	UPROPERTY(BlueprintReadOnly)
 	UCRandomizer* RandFB = nullptr;
