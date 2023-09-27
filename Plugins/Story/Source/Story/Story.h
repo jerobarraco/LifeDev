@@ -34,14 +34,17 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool StartSequence(const TArray<FName>& InSeq);
 	virtual bool StartSequence_Implementation(const TArray<FName>& InSeq);
-	
+
+	// starts a step by the name. stops the current one before that.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool Start(const FName& Name);
 	virtual bool Start_Implementation(const FName& Name);
 
+	// stops a step. if not specified it will stop the current one. then it will start the next.
+	// the name is a protection mechanism mostly, used by the story steps.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Stop(const FName& IfName=FName(""));
-	virtual void Stop_Implementation(const FName& IfName=FName(""));
+	void Stop(const FName& Name=NAME_None);
+	virtual void Stop_Implementation(const FName& Name=NAME_None);
 
 	UFUNCTION(BlueprintCallable)
 	void Add(AStep* Step);
@@ -51,9 +54,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
-	bool AutoPlay = true;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryStepStart OnStepStart;

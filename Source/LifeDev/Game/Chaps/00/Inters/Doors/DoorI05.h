@@ -12,4 +12,7 @@ class LIFEDEV_API ADoorI05: public ADoor00 {
 
 public:
 	ADoorI05();
+
+protected:
+	virtual void Trigger_Implementation() override;
 };
