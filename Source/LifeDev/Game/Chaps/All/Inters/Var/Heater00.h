@@ -8,8 +8,8 @@
 // Base Heater00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AHeater00: public ALInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	AHeater00();
 };
