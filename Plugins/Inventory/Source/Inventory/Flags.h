@@ -36,11 +36,11 @@ public:
 	
 	// this might be a bit slower than calling Get, unless you are also checking if it's 0
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
-	bool Has(const FName& Name) {
+	FORCEINLINE bool Has(const FName& Name) const {
 		if (Name.IsNone()) return false;
 		return !FMath::IsNearlyZero(Get(Name));
 	};
-	
+
 	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	const TMap<FName, float>& GetAllFlags() const { return Flags; }; // can't forceinline due to const & tmap

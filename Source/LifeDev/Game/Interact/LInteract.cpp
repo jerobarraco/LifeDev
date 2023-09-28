@@ -18,7 +18,7 @@ ALInteract::ALInteract():Super() {
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
-	if (!ULockItem.IsNone() || !ULockItemReq.IsNone()) {
+	if (!ULockItem.IsNone() || !ULockItemReq.IsNone() || !ULockFlagReq.IsNone()) {
 		// note only setting it if the ulock is set.
 		Locked = true;
 	}
@@ -27,6 +27,14 @@ void ALInteract::BeginPlay() {
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();
 	Dialogs = World->GetSubsystem<UDialogs>();
+	Flags = World->GetSubsystem<UFlags>();
+}
+
+void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Inventory = nullptr;
+	Dialogs = nullptr;
+	Flags = nullptr;
+	Super::EndPlay(EndPlayReason);
 }
 
 void ALInteract::Trigger_Implementation() {
@@ -45,8 +53,7 @@ void ALInteract::Trigger_Implementation() {
 		}
 	}
 
-	UFlags* const Flags = World->GetSubsystem<UFlags>();
-	if (Flags) {
+	if (IsValid(Flags)) {
 		Flags->Mod(FlagReward, 1.0);
 	}
 	
@@ -89,13 +96,20 @@ void ALInteract::TriggerLocked_Implementation() {
 bool ALInteract::TryTrigger_Implementation() {
 	// handle item req
 	if (!ULockItemReq.IsNone()) {
-		// check if we have the item
 		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
-		// unlock if no item is needed to unlock
-		if (Ok && ULockItem.IsNone()) {
+		if (Ok) {
 			Locked = false;
 		}
 	}
+
+	// handle flag req
+	if (!ULockFlagReq.IsNone()) {
+		const bool Ok = IsValid(Flags) && Flags->Has(ULockFlagReq);
+		if (Ok) {
+			Locked = false;
+		}
+	}
+	
 
 	return Super::TryTrigger_Implementation();
 }
@@ -103,19 +117,17 @@ bool ALInteract::TryTrigger_Implementation() {
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	const bool Ok = !ULockItem.IsNone() && Name == ULockItem;
-	EItemUseResult Result = Ok ? EItemUseResult::SUCCESS: EItemUseResult::BAD_TARGET;
-	if (Ok) {
-		if (IsValid(Dialogs)) {
-			Dialogs->AddId(ULockDlg);
-		}
-		// force unlock or trigger won't work
-		Locked = false;
-		// force trigger
-		Trigger();
-	} else {
+	if (!Ok) {
 		const bool Added = IsValid(Dialogs) && Dialogs->AddId(ULockBadDlg);
-		Result = Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	}
+		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+	} 
 
-	return Result;
+	// at this point is ok.
+	if (IsValid(Dialogs)) {
+		Dialogs->AddId(ULockDlg);
+	}
+	
+	Locked = false; // force unlock or trigger won't work
+	Trigger(); // force trigger
+	return EItemUseResult::SUCCESS;
 }

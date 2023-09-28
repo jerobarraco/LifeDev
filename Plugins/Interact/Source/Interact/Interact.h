@@ -78,7 +78,7 @@ protected:
 	virtual void TriggerLocked_Implementation();
 
 	// test function.
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
 
 	UFUNCTION(BlueprintCallable)

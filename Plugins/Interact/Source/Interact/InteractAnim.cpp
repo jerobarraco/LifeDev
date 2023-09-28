@@ -22,9 +22,9 @@ void AInteractAnim::BeginPlay() {
 }
 
 void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
 	Anim->OnBegin.RemoveAll(this);
 	Anim->OnEnd.RemoveAll(this);
+	Super::EndPlay(EndPlayReason);
 }
 
 void AInteractAnim::SetText_Implementation() {

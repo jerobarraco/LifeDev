@@ -7,7 +7,9 @@
 
 #include "LInteract.generated.h"
 
+class UFlags;
 class UCAnimatorFade;
+
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
@@ -19,6 +21,10 @@ public:
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItemReq = NAME_None;
+		
+	// name of the flag that is needed to "have" to unlock this.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FName ULockFlagReq = NAME_None;
 	
 	// name of the item that will unlock this. setting it will lock the actor on start.
 	// it will also decide whether to shod LockedDlg or LockedItemDlg on trigger(locked)
@@ -75,6 +81,7 @@ protected:
 	void Faded(); // called when the item reward fade ends
 	
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
@@ -87,8 +94,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UFlags* Flags = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDialogs* Dialogs = nullptr;
 };
 
 // TODO at some point *consider* moving the ItemReward functionality to its own child class
-// e.g. animfade, itemreward, useanimfade(redundant), autodestroy, itemrewarded
+// e.g. animfade, itemreward, useanimfade(redundant), autodestroy, itemrewarded,  flagrewarded
