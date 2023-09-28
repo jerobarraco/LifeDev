@@ -3,6 +3,8 @@
 
 #include "Dialogs.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
+
 void UDialogs::AddDiag(const FDialog& Diag) {
 	Pending.Add(Diag);
 	ShowNext();
@@ -19,15 +21,17 @@ bool UDialogs::AddDiagId(const FName& Row) {
 
 bool UDialogs::AddId(const FName& Row) {
 	if (Row.IsNone()) return false;
-	// TODO test
+	// attempt to add a random
 	if (Row.ToString().EndsWith("*")) {
 		if (AddRndId(Row)) return true;
-	}
+	// then the seq. avoid checking for seq if we already tried the rand
+	// since rand is a seq too. if rand doesn't exists the seq doesn't exists.
+	} else if (AddSeqId(Row)) return true;
 
-	// first attempt to add a sequence, then a dialog
-	if (AddSeqId(Row)) return true;
+	// finally a dialog
 	if (AddDiagId(Row)) return true;
-	UE_LOG(LogTemp, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
+
+	UE_LOG(LogDiags, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
 	return false;
 }
 
@@ -103,7 +107,7 @@ bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutCh
 
 	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""));
 	if (!Row) {
-		UE_LOG(LogTemp, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
 		return false;
 	}
 
@@ -118,7 +122,7 @@ bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
 
 	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""));
 	if (!Row)  {
-		UE_LOG(LogTemp, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
 	}
 
@@ -132,7 +136,7 @@ bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 
 	const FDialogSequence* const Row = Seqs->FindRow<FDialogSequence>(RowName, TEXT(""));
 	if (!Row) {
-		UE_LOG(LogTemp, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
 	}
 
