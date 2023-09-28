@@ -103,3 +103,14 @@ void UJMiscUtils::ShowUI(bool Show, UWorld* World, UWidget* Focus, bool SetPause
 		UGameplayStatics::SetGamePaused(World, Show);
 	}
 }
+
+void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
+	Async((EAsyncExecution) Exec, [Task, Done]
+	{
+		Task.ExecuteIfBound();
+		AsyncTask(ENamedThreads::GameThread, [Done]
+		{
+			Done.ExecuteIfBound();
+		});
+	});
+}
