@@ -20,6 +20,7 @@ class DIALOGS_API UDialogs : public UWorldSubsystem
 public:
 	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
 	// sequence ids can contain other sequences, so this could be recursive.
+	// if and only if a name ends with '*' it will add a random one instead of a regular sequence.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddId(const FName& Row);
 	// add many sequences or dialogs. can be recursive
@@ -36,14 +37,12 @@ public:
 	// add a sequence by id. a sequence can contain other sequences ids, so this could be recursive.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeqId(const FName& RowName);
-	// Use this to AddManyById
+	// Adds a sequence. Use this to AddManyById
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeq(const FDialogSequence& Seq);
-
+	// From a sequence adds one random. This will call AddID so the sequence can contain other sequences. and other random ones.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddRnd(const FDialogSequence& Seq);
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddRndId(const FName& RowName);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;

@@ -108,9 +108,11 @@ void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 	Async((EAsyncExecution) Exec, [Task, Done]
 	{
 		Task.ExecuteIfBound();
-		AsyncTask(ENamedThreads::GameThread, [Done]
-		{
-			Done.ExecuteIfBound();
-		});
+		if (Done.IsBound()) {
+			AsyncTask(ENamedThreads::GameThread, [Done]
+			{
+				Done.ExecuteIfBound();
+			});
+		}
 	});
 }

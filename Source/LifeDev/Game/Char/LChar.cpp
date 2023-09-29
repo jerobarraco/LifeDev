@@ -283,10 +283,10 @@ void ALChar::LookItem(const FName& Name) {
 	if (IsValid(Dialogs)) {
 		const FName DRName = FName(*(SName + "_Look*"));
 		const FName DName = FName(*(SName + "_Look"));
-		// 1st try to add a random one
-		if (!Dialogs->AddId(DRName)) {
-			// Then try to add a regular one 
-			if (!Dialogs->AddId(DName)) {
+		// 1st try to add a regular one
+		if (!Dialogs->AddId(DName)) {
+			// Then try to add a random one (since it's quite rare that i want a item look that is random)
+			if (!Dialogs->AddId(DRName)) {
 				// otherwise compose one
 				// show the dialog with the description. this is temporary until i make the ui
                 FDialog Diag;

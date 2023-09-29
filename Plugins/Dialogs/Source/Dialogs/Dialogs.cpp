@@ -21,14 +21,11 @@ bool UDialogs::AddDiagId(const FName& Row) {
 
 bool UDialogs::AddId(const FName& Row) {
 	if (Row.IsNone()) return false;
-	// attempt to add a random
-	if (Row.ToString().EndsWith("*")) {
-		if (AddRndId(Row)) return true;
-	// then the seq. avoid checking for seq if we already tried the rand
-	// since rand is a seq too. if rand doesn't exists the seq doesn't exists.
-	} else if (AddSeqId(Row)) return true;
 
-	// finally a dialog
+	// attempt to add a sequence (can be random)
+	if (AddSeqId(Row)) return true;
+
+	// otherwise attempt a dialog
 	if (AddDiagId(Row)) return true;
 
 	UE_LOG(LogDiags, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
@@ -59,11 +56,16 @@ bool UDialogs::AddSeq(const FDialogSequence& Seq) {
 }
 
 bool UDialogs::AddSeqId(const FName& RowName) {
-	FDialogSequence OutSeq; TArray<FDialog> OutDiags; TArray<FDialogChar> OutChars;
-	const bool Ok = GetSeq(RowName, OutSeq);
+	FDialogSequence Seq;
+	const bool Ok = GetSeq(RowName, Seq);
 	if (!Ok) return false;
-	
-	return AddSeq(OutSeq);
+
+	// add random or regular accordingly. if it ends with * it's ALWAYS random
+	if (RowName.ToString().EndsWith("*"))
+		return AddRnd(Seq);
+
+	// since rand is a seq too. if rand doesn't exists the seq doesn't exists.
+	return AddSeq(Seq);
 }
 
 bool UDialogs::AddRnd(const FDialogSequence& Seq) {
@@ -72,14 +74,6 @@ bool UDialogs::AddRnd(const FDialogSequence& Seq) {
 
 	const int32 i = FMath::RandRange(0, Num -1);
 	return AddId(Seq.DiagRows[i]);
-}
-
-bool UDialogs::AddRndId(const FName& RowName) {
-	FDialogSequence Seq;
-	const bool Ok = GetSeq(RowName, Seq);
-	if (!Ok) return false;
-
-	return AddRnd(Seq);
 }
 
 void UDialogs::DiagDone() {
