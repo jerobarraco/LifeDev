@@ -22,7 +22,7 @@ void ALStepC1S000::Start_Implementation() {
 		Inventory->Mod(LDConsts::Items::Card0, 1);
 	}
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
-	Flashback->SetMax(1);
+	Flashback->SetMax(.75);
 	Flashback->SetMin(0);
 	Flashback->SetVal(0, .5);
 }
@@ -31,5 +31,4 @@ void ALStepC1S000::Start_Implementation() {
 void ALStepC1S000::Debug_Implementation() {
 	Super::Debug_Implementation();
 	Inventory->Mod("WM", 1);
-	Inventory->Mod("C1KD1", 1);
 }

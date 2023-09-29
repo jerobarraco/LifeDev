@@ -21,7 +21,7 @@ public:
 	virtual void Start_Implementation() override;
 
 protected:
-	// ufunctions needed for bindings
+	// ufunctions are needed for bindings
 
 	void SpawnGhosts();
 	UFUNCTION()

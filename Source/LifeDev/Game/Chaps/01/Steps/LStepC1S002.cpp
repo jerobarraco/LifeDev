@@ -47,15 +47,14 @@ void ALStepC1S002::Start_Implementation() {
 void ALStepC1S002::SpawnGhosts() {
 	Ghosts->Activate(true);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
-	Dialogs->AddId("C1S2.0"); // i'll use the music
+	Dialogs->AddId("C1S2.0"); // "i'll use the tape"
 	GhostSFX = Cast<ASGhosts>(GetWorld()->SpawnActor(ASGhosts::StaticClass()));
 	if (IsValid(GhostSFX)) {
 		GhostSFX->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		GhostSFX->SetPlaying(true);
 	}
 
-	const float Val = FMath::Max(Flashback->GetVal(), 0.7f);
-	Flashback->SetVal(Val);
+	Flashback->SetVal(.75); // it's already clamped to .7 on c1s0
 }
 
 void ALStepC1S002::StartShake() {

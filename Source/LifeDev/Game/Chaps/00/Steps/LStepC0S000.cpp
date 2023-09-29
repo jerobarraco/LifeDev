@@ -19,15 +19,14 @@ ALStepC0S000::ALStepC0S000():Super() {
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
-	UFlashback::SetValS(GetWorld(), 0.1);
 	UFlashback* Flashback = UFlashback::Get(GetWorld());
 	if (!Flashback) {
-		UE_LOG(LogTemp, Warning, TEXT("ALStepC0s000 Start: can't get the flashback subsystem."));
+		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the flashback subsystem."));
 		return;
 	}
 
 	Flashback->SetVal(.1);
-	Flashback->SetMax(.7);
+	Flashback->SetMax(.75);
 	RandFB->Activate(true);
 }
 

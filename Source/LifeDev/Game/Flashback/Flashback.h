@@ -42,8 +42,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetVal(float New, float Duration = -1.f);
 
+	// Sets the max, and clamp the target value if out of range.
+	// You can set it >1 but it might break stuff i recommend keep in range [0,1]
 	UFUNCTION(BlueprintCallable)
 	void SetMax(float NewMax);
+	// Sets the min, and clamp the target value if out of range.
+	// You can set it <0 but it might break stuff i recommend keep in range [0,1]
 	UFUNCTION(BlueprintCallable)
 	void SetMin(float NewMin);
 

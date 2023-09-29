@@ -22,7 +22,7 @@ void ALStepC0S001::Start_Implementation() {
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
 	if (!Flashback) return;
 	Flashback->SetMax(1);
-	Flashback->SetVal(1, 20);
+	Flashback->SetVal(1, 10);
 	// TODO add timer here and teleport the player
 }
 
@@ -32,7 +32,7 @@ void ALStepC0S001::Stop_Implementation() {
 		// FakeChar->SetActorHiddenInGame(true);
 		FakeChar->Destroy();
 	}
-	UFlashback::SetValS(GetWorld(), 0, 5);
+	UFlashback::SetValS(GetWorld(), 0, .5);
 }
 
 void ALStepC0S001::BeginPlay() {
