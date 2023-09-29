@@ -61,8 +61,9 @@ bool UDialogs::AddSeqId(const FName& RowName) {
 	if (!Ok) return false;
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
-	if (RowName.ToString().EndsWith("*"))
+	if (RowName.ToString().EndsWith("*")) {
 		return AddRnd(Seq);
+	}
 
 	// since rand is a seq too. if rand doesn't exists the seq doesn't exists.
 	return AddSeq(Seq);

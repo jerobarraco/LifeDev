@@ -12,7 +12,6 @@ class LIFEDEV_API ALMusicMan: public AMusicMan {
 	GENERATED_BODY()
 
 public:
-	
 
 protected:
 	virtual void BeginPlay() override;

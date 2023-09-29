@@ -2,7 +2,10 @@
 #include "SRain.h"
 
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Sounds/CSounder.h"
+
+// TODO move to the music manager (LMusicMan)
 
 ASRain::ASRain():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
@@ -21,4 +24,9 @@ ASRain::ASRain():Super() {
 void ASRain::SetPlaying(bool IsPlaying) {
 	if (!IsValid(SFX)) return;
 	SFX->Fade(IsPlaying);
+}
+
+void ASRain::SSetPlaying(UWorld* W, bool IsPlaying) {
+	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(W, ASRain::StaticClass()));
+	if (R) { R->SetPlaying(IsPlaying); }
 }

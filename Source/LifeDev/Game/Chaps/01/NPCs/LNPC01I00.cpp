@@ -74,8 +74,8 @@ void ALNPC01I00::DiagStandDone() {
 		Card->SetActorHiddenInGame(false);
 	}
 
-	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
-	if (R) { R->SetPlaying(false); }
+	UWorld* const W = GetWorld();
+	ASRain::SSetPlaying(W, false);
 
 	Flashback->SetVal(.2);
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);

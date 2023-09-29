@@ -7,6 +7,8 @@
 
 #include "LStepC0S001.generated.h"
 
+class AGhosts;
+
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC0S001 : public ALStep {
 	GENERATED_BODY()
@@ -20,6 +22,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	AActor* FakeChar = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	FVector GhostLocation = FVector(210,-42,-65);
+
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AGhosts* Ghosts = nullptr;
 };

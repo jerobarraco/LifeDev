@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPlaying(bool IsPlaying);
 
+	UFUNCTION(BlueprintCallable)
+	static void SSetPlaying(UWorld* W, bool IsPlaying);
+	
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UCSounder* SFX;

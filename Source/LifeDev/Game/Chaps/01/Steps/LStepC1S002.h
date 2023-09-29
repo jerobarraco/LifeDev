@@ -48,10 +48,9 @@ protected:
 	FVector GhostLocation = FVector(200,-4,-75);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AGhosts* GhostSFX = nullptr;
+	AGhosts* Ghosts = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* Flashback = nullptr;
 };
