@@ -49,7 +49,7 @@ void ALInteract::Trigger_Implementation() {
 	if (!FMath::IsNearlyZero(TriggerFlashInc)) {
 		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
 		if (Flashback) {
-			Flashback->IncVal(TriggerFlashInc);
+			Flashback->ModVal(TriggerFlashInc);
 		}
 	}
 

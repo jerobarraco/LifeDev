@@ -21,7 +21,7 @@ void ALStepC0S001::Start_Implementation() {
 
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
 	if (!Flashback) return;
-	Flashback->SetVal(0, 0);
+	Flashback->SetMax(1);
 	Flashback->SetVal(1, 20);
 	// TODO add timer here and teleport the player
 }

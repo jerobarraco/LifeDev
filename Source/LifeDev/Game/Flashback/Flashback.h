@@ -23,16 +23,29 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void SetValS(UWorld* W, float New, float Duration = -1.f);
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetVal() const { return Val; }
 
+	// modifies the target value by an offset "by".
+	// this will work ok even if it's currently animating the value
 	UFUNCTION(BlueprintCallable)
-	void IncVal(float By, float Duration = -1.f);
+	FORCEINLINE void ModVal(float By, float Duration = -1.f) {
+		SetVal(Val+By, Duration);
+	};
 
-	// The time is the time to go from 0 to 1. it will be proportional to the difference so the speed is always the same.
-	// if it's <0 it will use the default time. 0 will be instant. >0 will use that.
+	// sets the target value to the "new" value
+	// The "Duration" is the time to go from 0 to 1.
+	// Then it will be proportional to the difference, so the speed is always the same. (Time = Duration*Diff)
+	//	if it's 0 will be instant.
+	//	<0 it will use the default time (set on AnimSpeed).
+	//	>0 will use whatever value it is.
 	UFUNCTION(BlueprintCallable)
 	void SetVal(float New, float Duration = -1.f);
+
+	UFUNCTION(BlueprintCallable)
+	void SetMax(float NewMax);
+	UFUNCTION(BlueprintCallable)
+	void SetMin(float NewMin);
 
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -48,15 +61,18 @@ public:
 	inline static bool Debug = false;
 
 protected:
+	// doesn't check the range
 	void SetValInternal(float New);
 	UFUNCTION() // for binding
 	void AnimUpdate(float Progress, float Alpha);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimator* Animator;
+	UCAnimator* Animator = nullptr;
 
 	// it's super important that the value starts from 0 upon initialization
 	float Val = 0;
 	float AnimFrom = 0;
 	float AnimTo = 0;
+	float Min = 0;
+	float Max = 1;
 };

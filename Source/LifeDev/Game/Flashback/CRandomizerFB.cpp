@@ -21,5 +21,5 @@ void UCRandomizerFB::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCRandomizerFB::TriggerFB(float Val) {
-	GetWorld()->GetSubsystem<UFlashback>()->IncVal(Val);
+	GetWorld()->GetSubsystem<UFlashback>()->ModVal(Val);
 }

@@ -21,7 +21,10 @@ void ALStepC1S000::Start_Implementation() {
 	if (!Inventory->Has(LDConsts::Items::Card0)) {
 		Inventory->Mod(LDConsts::Items::Card0, 1);
 	}
-	GetWorld()->GetSubsystem<UFlashback>()->SetVal(0);
+	UFlashback* const Flashback = UFlashback::Get(GetWorld());
+	Flashback->SetMax(1);
+	Flashback->SetMin(0);
+	Flashback->SetVal(0, .5);
 }
 
 

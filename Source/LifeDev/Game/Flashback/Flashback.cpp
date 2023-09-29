@@ -3,10 +3,12 @@
 
 #include "Interact/Animator/CAnimator.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogFlashback, Log, Log);
+
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
 	Animator->SetComponentTickInterval(1/30.f);
-	// TODO will this package?
+	// will this package, yes it does
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
@@ -19,13 +21,13 @@ UFlashback* UFlashback::Get(UWorld* W) {
 }
 
 void UFlashback::SetValInternal(float New) {
-	// make sure is on range. it can break other stuff.
-	New = FMath::Clamp(New, 0.0f, 1.0f);
+	// doesn't check the range since : it's internal, and can happen while we're animating.
+	// and we want to allow a smooth transition back to a lesser min
 	// don't bother if it's the same, specially since many things could be bound to onChange
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
 	if (Debug) {
-		// UE_LOG(LogTemp, Log, TEXT("Flashback Val = %.5f"), Val);
+		// UE_LOG(LogFlashback, Log, TEXT("Flashback Val = %.5f"), Val);
 	}
 
 	Val = New;
@@ -33,23 +35,23 @@ void UFlashback::SetValInternal(float New) {
 }
 
 void UFlashback::AnimUpdate(float Progress, float Alpha) {
-	SetValInternal(FMath::Lerp(AnimFrom, AnimTo, Alpha));
-}
-
-void UFlashback::IncVal(float By, float Duration) {
-	SetVal(Val+By, Duration);
+	SetValInternal(FMath::Lerp<float, float>(AnimFrom, AnimTo, Alpha));
 }
 
 void UFlashback::SetVal(float New, float Duration) {
+	New = FMath::Clamp(New, Min, Max);
 	const float Diff = FMath::Abs(Val - New);
-	UE_LOG(LogTemp, Log, TEXT("Flashback NewVal %.5f Diff %.5f"), New, Diff);
+	UE_LOG(LogFlashback, Log, TEXT("Flashback NewVal %.5f Diff %.5f"), New, Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// reset animation if any
 	Animator->Stop();
 
+	// important to set, set here to keep it always up to date.
+	AnimFrom = Val;
 	// set instant if speed is 0
 	if (FMath::IsNearlyZero(Duration)) {
+		AnimTo = New; // useless, but important to set so that the value is always up to date.
 		SetValInternal(New);
 		return;
 	}
@@ -60,14 +62,31 @@ void UFlashback::SetVal(float New, float Duration) {
 	}
 
 	// important, set the actual targets.
-	AnimFrom = Val;
 	AnimTo = New;
 
 	// set and play the animator
 	const float Time = Duration*Diff;
 	Animator->Duration = Time;
-	Animator->PlaySet();
-	UE_LOG(LogTemp, Log, TEXT("Flashback Val %.5f Duration %.5f Time %.5f"), Val, Duration, Time);
+	Animator->Play();
+	UE_LOG(LogFlashback, Log, TEXT("Flashback Val %.5f Duration %.5f Time %.5f"), Val, Duration, Time);
+}
+
+void UFlashback::SetMax(float NewMax) {
+	Max = NewMax;
+	
+	// clamp the value if needed
+	const bool Ok = Animator->IsActive() ? NewMax >= AnimTo : NewMax >= Val;
+	if (Ok) return;
+	SetVal(NewMax);
+}
+
+void UFlashback::SetMin(float NewMin) {
+	Min = NewMin;
+	
+	// clamp the value if needed
+	const bool Ok = Animator->IsActive() ? NewMin <= AnimTo : NewMin <= Val;
+	if (Ok) return;
+	SetVal(NewMin);
 }
 
 void UFlashback::SetValS(UWorld* W, float New, float Duration) {
