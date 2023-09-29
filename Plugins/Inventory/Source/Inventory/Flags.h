@@ -29,16 +29,22 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE float Get(const FName& Name) const {
+		if (Name.IsNone()) return 0;
 		const float* const PreFlag = Flags.Find(Name);
 		const float Val = PreFlag ? *PreFlag : 0;
 		return Val;
 	};
 	
-	// this might be a bit slower than calling Get, unless you are also checking if it's 0
+	// Returns whether a flag is set to !=0 (includes negatives).  this might be a bit slower than calling Get, unless you are also checking if it's 0
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
+	FORCEINLINE bool IsSet(const FName& Name) const {
+		return !FMath::IsNearlyZero(Get(Name));
+	};
+
+	// Returns whether a flag is set to >=1. this might be a bit slower than calling Get, unless you are also checking if it's >=1
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
 	FORCEINLINE bool Has(const FName& Name) const {
-		if (Name.IsNone()) return false;
-		return !FMath::IsNearlyZero(Get(Name));
+		return Get(Name) >= 1.0;
 	};
 
 	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.

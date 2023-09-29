@@ -1,9 +1,13 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Components/RectLightComponent.h"
 #include "LifeDev/Game/Interact/Base/LLight.h"
 
 #include "Light00.generated.h"
+
+class URectLightComponent;
+class UCQuickMesh;
 
 // Base class for Light00 actors
 UCLASS(Blueprintable, BlueprintType)
@@ -14,10 +18,10 @@ public:
 	ALight00();
 
 protected:
-
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Tube = nullptr;
-	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	URectLightComponent* RectLight = nullptr;
 };

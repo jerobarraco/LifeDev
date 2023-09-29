@@ -110,7 +110,6 @@ bool ALInteract::TryTrigger_Implementation() {
 		}
 	}
 	
-
 	return Super::TryTrigger_Implementation();
 }
 
