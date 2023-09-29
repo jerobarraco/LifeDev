@@ -2,11 +2,10 @@
 
 #include "Flashback.h"
 
-
 UCRandomizerFB::UCRandomizerFB():Super() {
-	DelayMin = 4;
-	DelayMax = 10;
-	ValueMin = -.01;
+	DelayMin = 2.5;
+	DelayMax = 5;
+	ValueMin = -.02;
 	ValueMax = .05;
 	IsLooping = true;
 }
