@@ -7,7 +7,7 @@
 #include "DefaultCameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "LifeDev/Game/Chaps/All/Env/SGhosts.h"
+#include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -21,14 +21,6 @@ ALStepC1S002::ALStepC1S002():Super() {
 
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
-
-	Ghosts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Ghosts"));
-	Ghosts->SetupAttachment(Root);
-	Ghosts->SetAutoActivate(false);
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_NS.Ghost_NS"));
-	Ghosts->SetAsset(CNiagara.Object);
-	Ghosts->SetRelativeLocation(FVector(207.355288,0.509086,48.526007));
 
 	// static ConstructorHelpers::FClassFinder<UClass> CChar(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
 	CharClass = ALNPC01::StaticClass();
@@ -45,16 +37,17 @@ void ALStepC1S002::Start_Implementation() {
 }
 
 void ALStepC1S002::SpawnGhosts() {
-	Ghosts->Activate(true);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Dialogs->AddId("C1S2.0"); // "i'll use the tape"
-	GhostSFX = Cast<ASGhosts>(GetWorld()->SpawnActor(ASGhosts::StaticClass()));
+	
+	GhostSFX = Cast<AGhosts>(GetWorld()->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(GhostSFX)) {
 		GhostSFX->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		GhostSFX->SetActorRelativeLocation(GhostLocation);
 		GhostSFX->SetPlaying(true);
 	}
-
-	Flashback->SetVal(.75); // it's already clamped to .7 on c1s0
+	Flashback->SetMax(1); // reset to 1 since we will change it several times here
+	Flashback->SetVal(.75); // was already clamped to .7 on c1s0, so it cant be bigger
 }
 
 void ALStepC1S002::StartShake() {
@@ -68,8 +61,7 @@ void ALStepC1S002::StartShake() {
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(GetWorld(), ASRain::StaticClass()));
 	if (R) { R->SetPlaying(true); }
 
-	// bump to max
-	Flashback->SetVal(1);
+	Flashback->SetVal(1); // bump to max
 
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
@@ -87,7 +79,6 @@ void ALStepC1S002::StopShake() {
 }
 
 void ALStepC1S002::DestroyGhosts() {
-	Ghosts->Deactivate();
 	if (IsValid(GhostSFX)) {
 		GhostSFX->SetPlaying(false);
 	}
@@ -102,5 +93,9 @@ void ALStepC1S002::GhostDestroyed() {
 	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
 	Flashback->SetVal(.85);
 
+	if (IsValid(GhostSFX)) {
+		GhostSFX->Destroy();
+		GhostSFX = nullptr;
+	}
 	Finish();
 }

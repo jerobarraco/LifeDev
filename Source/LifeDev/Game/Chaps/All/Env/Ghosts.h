@@ -5,22 +5,27 @@
 #include "CoreMinimal.h"
 
 
-#include "SGhosts.generated.h"
+#include "Ghosts.generated.h"
 
+class UNiagaraComponent;
 class UCSounder;
+
 // make a baseclass for sound stuff? 
 //  class for the Ghosts 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ASGhosts : public AActor {
+class LIFEDEV_API AGhosts : public AActor {
 	GENERATED_BODY()
 
 public:
-	ASGhosts();
+	AGhosts();
 
 	UFUNCTION(BlueprintCallable)
 	void SetPlaying(bool IsPlaying);
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UCSounder* SFX;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSounder* SFX = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UNiagaraComponent* Parts = nullptr;
 };

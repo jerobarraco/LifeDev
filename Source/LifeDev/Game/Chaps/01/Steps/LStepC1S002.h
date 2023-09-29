@@ -8,8 +8,7 @@
 #include "LStepC1S002.generated.h"
 
 class UFlashback;
-class ASGhosts;
-class UNiagaraComponent;
+class AGhosts;
 
 // when the chap 1 boss enters
 UCLASS(Blueprintable, BlueprintType)
@@ -44,12 +43,12 @@ protected:
 	FTransform CharT = FTransform(
 		FRotator(0.000000,-109.999999,0.000000),
 		FVector(-102.567499,918.952130,11.503022));
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UNiagaraComponent* Ghosts;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	FVector GhostLocation = FVector(200,-4,-75);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ASGhosts* GhostSFX = nullptr;
+	AGhosts* GhostSFX = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
 
