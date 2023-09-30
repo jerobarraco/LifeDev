@@ -4,7 +4,7 @@
 
 APoemI02::APoemI02():Super() {
 	ItemReward = "P02";
-	TriggerDlg = "P02_T";
+	TriggerDlg = "P02_Look";
 	TriggerFlashInc = -.2f;
 
 	
