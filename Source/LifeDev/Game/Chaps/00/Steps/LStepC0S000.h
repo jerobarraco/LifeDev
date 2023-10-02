@@ -20,6 +20,15 @@ public:
 	virtual void Stop_Implementation() override;
 
 protected:
+	void ShowDoors(bool Chap00);
+
+	// the door of the toilet on chap0
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	AActor* C0Door = nullptr;
+
+	// the door of the toilet on chap1
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	AActor* C1Door = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly)
 	UCRandomizer* RandFB = nullptr;
