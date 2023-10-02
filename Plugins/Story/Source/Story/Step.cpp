@@ -36,6 +36,7 @@ void AStep::Start_Implementation() {
 void AStep::PostWait_Implementation() {
 	// set camera if camtarget is set
 	if (IsValid(CamTarget)) {
+		UE_LOG(LogTemp, Log, TEXT("AStep Blending camera"));
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 	}
 	

@@ -19,7 +19,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
-	UFlashback* Flashback = UFlashback::Get(GetWorld());
+	UFlashback* const Flashback = UFlashback::Get(GetWorld());
 	if (!Flashback) {
 		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the flashback subsystem."));
 		return;

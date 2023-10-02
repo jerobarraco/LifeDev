@@ -2,8 +2,10 @@
 #include "LStepC0S001.h"
 
 #include "Interact/Interact.h"
+#include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Chaps/All/Env/SRain.h"
+#include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC0S001::ALStepC0S001():Super() {
@@ -23,9 +25,10 @@ void ALStepC0S001::Start_Implementation() {
 
 	UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Get(W);
-	if (!Flashback) return;
-	Flashback->SetMax(1);
-	Flashback->SetVal(1, 10);
+	if (Flashback) {
+		Flashback->SetMax(1);
+		Flashback->SetVal(1, 10);
+	}
 
 	ASRain::SSetPlaying(W, true);
 
@@ -35,7 +38,9 @@ void ALStepC0S001::Start_Implementation() {
 		Ghosts->SetActorRelativeLocation(GhostLocation);
 		Ghosts->SetPlaying(true);
 	}
-	// TODO add timer here and teleport the player
+
+	FTimerHandle H;
+	W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::TeleportPlayer, WaitTime/2.0);
 }
 
 void ALStepC0S001::Stop_Implementation() {
@@ -59,4 +64,17 @@ void ALStepC0S001::BeginPlay() {
 	if (FakeInter) {
 		FakeInter->SetEnabled(false);
 	}
+}
+
+void ALStepC0S001::TeleportPlayer() {
+	if (!IsValid(PlayerPos)) {
+		UE_LOG(LogTemp, Log, TEXT("Player pos not set on C0S001"));
+		return;
+	}
+
+	AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), ALChar::StaticClass());
+	ALChar* const Char = Cast<ALChar>(Actor);
+	if (!Char) return;
+	
+	Char->TeleportTo(PlayerPos->GetActorLocation(), PlayerPos->GetActorRotation());
 }
