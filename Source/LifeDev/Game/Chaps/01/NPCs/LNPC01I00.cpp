@@ -75,7 +75,7 @@ void ALNPC01I00::DiagStandDone() {
 	}
 
 	UWorld* const W = GetWorld();
-	ASRain::SSetPlaying(W, false);
+	ASRain::SetPlayingS(W, false);
 
 	Flashback->SetVal(.2);
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);

@@ -58,7 +58,7 @@ void ALStepC1S002::StartShake() {
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StartCameraShake(ShakeClass);
 
-	ASRain::SSetPlaying(World, true);
+	ASRain::SetPlayingS(World, true);
 
 	Flashback->SetVal(1); // bump to max
 

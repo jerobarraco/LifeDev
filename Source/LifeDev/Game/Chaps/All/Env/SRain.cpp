@@ -26,7 +26,7 @@ void ASRain::SetPlaying(bool IsPlaying) {
 	SFX->Fade(IsPlaying);
 }
 
-void ASRain::SSetPlaying(UWorld* W, bool IsPlaying) {
+void ASRain::SetPlayingS(UWorld* W, bool IsPlaying) {
 	ASRain* const R = Cast<ASRain>(UGameplayStatics::GetActorOfClass(W, ASRain::StaticClass()));
 	if (R) { R->SetPlaying(IsPlaying); }
 }

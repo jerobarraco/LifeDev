@@ -22,7 +22,7 @@ public:
 	void SetPlaying(bool IsPlaying);
 
 	UFUNCTION(BlueprintCallable)
-	static void SSetPlaying(UWorld* W, bool IsPlaying);
+	static void SetPlayingS(UWorld* W, bool IsPlaying);
 	
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

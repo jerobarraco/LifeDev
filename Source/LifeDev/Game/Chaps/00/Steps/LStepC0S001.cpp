@@ -30,7 +30,7 @@ void ALStepC0S001::Start_Implementation() {
 		Flashback->SetVal(1, 10);
 	}
 
-	ASRain::SSetPlaying(W, true);
+	ASRain::SetPlayingS(W, true);
 
 	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(Ghosts)) {
@@ -54,7 +54,7 @@ void ALStepC0S001::Stop_Implementation() {
 	}
 
 	UWorld* const W = GetWorld();
-	ASRain::SSetPlaying(W, false);
+	ASRain::SetPlayingS(W, false);
 	UFlashback::SetValS(W, 0);
 }
 
