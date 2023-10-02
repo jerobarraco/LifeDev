@@ -51,10 +51,9 @@ void ALStepC0S001::Stop_Implementation() {
 	UWorld* const W = GetWorld();
 	if (IsValid(Ghosts)) {
 		Ghosts->SetPlaying(false);
-		// Destroy them on the fade
+		// Destroy them during the fade
 		FTimerHandle H;
-		W->GetTimerManager().SetTimer(H, Ghosts, &AGhosts::K2_DestroyActor, WaitTime/2.0);
-		// not destroying here to allow ghosts to de-spawn naturally
+		W->GetTimerManager().SetTimer(H, Ghosts, &AGhosts::K2_DestroyActor, WaitTime);
 	}
 
 	ASRain::SetPlayingS(W, false);
