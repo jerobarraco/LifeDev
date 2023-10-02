@@ -316,7 +316,7 @@ void ALGGameMode::Fade(const FText& DecoratedTitle) {
 void ALGGameMode::StartChapter() {
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
 	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance) || !IsValid(Story) || !IsValid(StoryManager)) {
+	if (!IsValid(Instance) || !IsValid(Story)) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
 		return;
