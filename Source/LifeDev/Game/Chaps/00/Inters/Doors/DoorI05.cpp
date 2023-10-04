@@ -5,7 +5,7 @@
 #include "Story/Story.h"
 
 ADoorI05::ADoorI05():Super() {
-	LockedDlg = "D05_LCK";
+	// LockedDlg = "D05_LCK"; // TODO it's not locked. but will be .
 	Locked = false; // TODO need to add an interaction to unlock
 	AnimEnabled = false; // will take us directly to the next story step
 	// Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());

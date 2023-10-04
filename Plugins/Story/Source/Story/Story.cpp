@@ -27,6 +27,7 @@ bool UStory::Start_Implementation(const FName& Name) {
 		return false;
 	}
 
+	// TODO if step has fade do fade here
 	// stop the current step before starting a new one.
 	Stop();// Is this a good idea?
 

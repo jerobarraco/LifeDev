@@ -4,4 +4,6 @@
 
 ACloutI06::ACloutI06():Super() {
 	TriggerDlg = "C06_T";
+	static FText T = FText::FromString(TEXT("Dirty Clothes"));
+	Texts = { T };
 }

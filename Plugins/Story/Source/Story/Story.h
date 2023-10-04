@@ -65,7 +65,7 @@ public:
 	// TODO to be triggered when a fade should occur. the story manager should fade the ui.
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryFade OnFade;
-	
+
 protected:
 	bool StartNextStep();
 
@@ -80,5 +80,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 SeqStep = -1;
+
+	// TODO to be used to know if it needs to fade in
+	bool IsFaded = false; 
 };
 
