@@ -7,14 +7,14 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
-void UStory::Init_Implementation() {}
+void UStory::Init() {}
 
-void UStory::DeInit_Implementation() {
+void UStory::DeInit() {
 	Current = nullptr;
 	Steps.Empty();
 }
 
-bool UStory::Start_Implementation(const FName& Name) {
+bool UStory::Start(const FName& Name) {
 	AStep ** const pStep = Steps.Find(Name);
 	if (!pStep) {
 		UE_LOG(LogStory, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
@@ -39,7 +39,7 @@ bool UStory::Start_Implementation(const FName& Name) {
 	return true;
 }
 
-void UStory::Stop_Implementation(const FName& Name) {
+void UStory::Stop(const FName& Name) {
 	if (!IsValid(Current)) return; // nothing to stop
 
 	if (!Name.IsNone() && Current->Name != Name) {
@@ -76,7 +76,7 @@ const FName& UStory::GetCurrent() {
 
 bool UStory::StartNextStep() {
 	++SeqStep;
-	if (SeqStep>=Sequence.Num()) {
+	if (SeqStep >= Sequence.Num()) {
 		OnSeqStop.Broadcast();
 		return false;
 	}
@@ -84,12 +84,18 @@ bool UStory::StartNextStep() {
 	return Start(Sequence[SeqStep]);
 }
 
-bool UStory::StartSequence_Implementation(const TArray<FName>& InSeq) {
+bool UStory::StartSequence(const FText& Title, const TArray<FName>& InSeq) {
 	Sequence = InSeq;
+	SeqStep = -1;
+	Stop();
+// TODO if title is set fade in/out
 	if (Sequence.IsEmpty()) return false;
 
-	SeqStep = -1;
 	return StartNextStep();
 }
 
+// TODO:
+//	Leave this functions as they are
+//  Create new functions for the handling of the fade. that call these functions.
+// Later on rename stuff and call to the new ones instead
 // TODO slowly port over stuff from the game mode to here.
