@@ -3,6 +3,7 @@
 #include "Light00.h"
 
 #include "Components/RectLightComponent.h"
+#include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ALight00::ALight00():Super() {
@@ -17,10 +18,18 @@ ALight00::ALight00():Super() {
 	if (CTube.Succeeded()) {
 		Tube->SetStaticMesh(CTube.Object);
 	}
+	Tube->SetRelativeLocation(FVector(0.5,7.5,100));
+
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
 	RectLight->SetupAttachment(Mesh);
 	RectLight->SetRelativeLocation(FVector(0.5,7.5,100));
+	RectLight->SetIntensity(300);
+
 	// TODO light config
+
+	Interact->SetRelativeLocation(FVector(40,-50,103.734790));
+	Interact->SetBoxExtent(FVector(900,200,150));
+	SetEnabled(false);
 	// Texts = {FText::FromString("PickUp")};
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00s/Light00s.Light00s"));
