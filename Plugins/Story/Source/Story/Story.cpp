@@ -7,8 +7,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
-void UStory::Init_Implementation() {
-}
+void UStory::Init_Implementation() {}
 
 void UStory::DeInit_Implementation() {
 	Current = nullptr;
@@ -91,3 +90,5 @@ bool UStory::StartSequence_Implementation(const TArray<FName>& InSeq) {
 	SeqStep = -1;
 	return StartNextStep();
 }
+
+// TODO slowly port over stuff from the game mode to here.

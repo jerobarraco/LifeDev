@@ -15,6 +15,7 @@ class UDataTable;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, const FName& ,Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, const FName&, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryFade, bool, In);
 
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, Category="Story")
@@ -61,6 +62,9 @@ public:
 	FStoryStepStop OnStepStop;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStorySeqStop OnSeqStop;
+	// TODO to be triggered when a fade should occur. the story manager should fade the ui.
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStoryFade OnFade;
 	
 protected:
 	bool StartNextStep();
