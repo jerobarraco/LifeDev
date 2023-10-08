@@ -2,11 +2,15 @@ Two scales:
 
 
 * regular:
-
 when imported scaled down to 0.05
-cube size approx 50mm = 0.5 cm
+cube size 5 cm
 
 * small:
 1:10 of regular
 imported scaled down to 0.005
-approx size of cube = 5mm
+cube size approx 50mm = 0.5 cm
+
+* big:
+todo test
+scaled to 0.5
+approx size 50cm = .5m
