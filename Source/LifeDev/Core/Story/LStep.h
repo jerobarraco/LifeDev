@@ -26,10 +26,6 @@ public:
 	// when set to true, the game mode will set the wait time to the fade time. Also check FinishPostWait
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool UseFadeTime = false;
-
-	// when set to true, it will fade in/out using the game fade time on start.
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	bool UseFade = false;
 	
 	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait

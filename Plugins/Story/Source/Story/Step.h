@@ -54,6 +54,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float WaitTime = 0;
 
+	// when set to true, it will fade in/out using the game fade time on start.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseFade = false;
+
+	//WIP. Only shown if you also set UseFade
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FText Title;
+	
 	// set to true to use debug
 	inline static bool UseDebug = false;
 

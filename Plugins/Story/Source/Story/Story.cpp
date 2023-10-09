@@ -14,19 +14,26 @@ void UStory::DeInit() {
 	Steps.Empty();
 }
 
-bool UStory::Start(const FName& Name) {
-	AStep ** const pStep = Steps.Find(Name);
+AStep* UStory::GetStep(const FName& Name) {
+	AStep** const pStep = Steps.Find(Name);
 	if (!pStep) {
 		UE_LOG(LogStory, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
-		return false;
+		return nullptr;
 	}
 
 	AStep* const Step = *pStep;
 	if (!IsValid(Step)) {
 		UE_LOG(LogStory, Warning, TEXT("Step was not valid. '%s'"), *Name.ToString());
-		return false;
+		return nullptr;
 	}
 
+	return Step;
+}
+
+bool UStory::Start(const FName& Name) {
+	AStep* const Step = GetStep(Name);
+	if (!Step) return false;
+	
 	// TODO if step has fade do fade here
 	// stop the current step before starting a new one.
 	Stop();// Is this a good idea?
@@ -40,11 +47,31 @@ bool UStory::Start(const FName& Name) {
 }
 
 bool UStory::Start2(const FName& Name) {
-	// get the sequence
+	// get the step
+	AStep* const Step = GetStep(Name);
+	if (!Step) return false;
+
+	if (!Step->UseFade) {
+		// TODO change this function to receive an AStep instead of name and rename it
+		return Start(Name);
+	}
+
 	// do the fade
-		// callback
+	OnFade.Broadcast(true, Step->Title);
+	
+	// callback
+	auto l = [this, Name]() {
 		// - call stop and start
-	// do fade out
+		Start(Name);
+		// do fade out
+		OnFade.Broadcast(false, FText::GetEmpty());
+	};
+
+	FTimerHandle H;
+	FTimerDelegate TD;
+	TD.BindLambda(l);
+	GetWorld()->GetTimerManager().SetTimer(H, TD, FadeTime, false);
+
 	return false;
 }
 
@@ -90,7 +117,9 @@ bool UStory::StartNextStep() {
 		return false;
 	}
 
+	// TODO call Start2
 	return Start(Sequence[SeqStep]);
+	return Start2(Sequence[SeqStep]);
 }
 
 bool UStory::StartSequence(const TArray<FName>& InSeq) {

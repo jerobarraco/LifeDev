@@ -29,7 +29,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
-	
+	AStep* GetStep(const FName& Name);
+
 	UFUNCTION(BlueprintCallable)
 	bool StartSequence(const TArray<FName>& InSeq);
 
@@ -56,8 +57,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
 
-	// TODO to be used with the fade 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	// Set this from game instance or smth TODO to be used with the fade 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float FadeTime = 2;
 	
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
