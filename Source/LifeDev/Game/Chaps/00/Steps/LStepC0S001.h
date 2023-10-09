@@ -17,6 +17,7 @@ public:
 	ALStepC0S001();
 
 	virtual void Start_Implementation() override;
+	
 	virtual void Stop_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -30,6 +31,10 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void DestroyActors();
+	
 	UFUNCTION()
 	void TeleportPlayer();
 	

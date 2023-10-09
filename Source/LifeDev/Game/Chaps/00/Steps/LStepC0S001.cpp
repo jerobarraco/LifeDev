@@ -45,20 +45,33 @@ void ALStepC0S001::Start_Implementation() {
 
 void ALStepC0S001::Stop_Implementation() {
 	Super::Stop_Implementation();
-	if (IsValid(FakeChar)) {
-		FakeChar->Destroy(); // FakeChar->SetActorHiddenInGame(true);
-	}
 	UWorld* const W = GetWorld();
 	if (IsValid(Ghosts)) {
 		Ghosts->SetPlaying(false);
 		// Destroy them during the fade
 		FTimerHandle H;
-		W->GetTimerManager().SetTimer(H, Ghosts, &AGhosts::K2_DestroyActor, WaitTime);
+		W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::DestroyActors, WaitTime);
 	}
 
 	ASRain::SetPlayingS(W, false);
 	UFlashback::SetValS(W, 0);
 }
+
+void ALStepC0S001::DestroyActors() {
+	// this is a bit dangerous, we can't go back to chap 0 without reloading.
+	// but also more performant.
+
+	if (IsValid(FakeChar)) {
+		FakeChar->Destroy(); // FakeChar->SetActorHiddenInGame(true);
+	}
+	FakeChar = nullptr;
+
+	if (IsValid(Ghosts)) {
+		Ghosts->Destroy();
+	}
+	Ghosts = nullptr;
+}
+
 
 void ALStepC0S001::BeginPlay() {
 	Super::BeginPlay();
@@ -67,7 +80,6 @@ void ALStepC0S001::BeginPlay() {
 		FakeInter->SetEnabled(false);
 	}
 }
-
 void ALStepC0S001::TeleportPlayer() {
 	if (!IsValid(PlayerPos)) {
 		UE_LOG(LogTemp, Log, TEXT("Player pos not set on C0S001"));
