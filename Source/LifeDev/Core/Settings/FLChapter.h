@@ -10,7 +10,8 @@ struct LIFEDEV_API FLChapter: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// TODO remove
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
 	FText Title;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
 	TSoftObjectPtr<UDataTable> Dialogs;
@@ -18,6 +19,8 @@ public:
 	TSoftObjectPtr<UDataTable> Sequences;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> StorySeq;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+
+	// TODO remove
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
 	TSoftObjectPtr<USoundBase> Music;
 };

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "StoryManager.h"
 
+#include "Story.h"
 #include "StoryUI.h"
 
 AStoryManager::AStoryManager():Super() {
@@ -9,12 +10,27 @@ AStoryManager::AStoryManager():Super() {
 	UIClass = CUIClass.Succeeded() ? CUIClass.Class.Get() : UStoryUI::StaticClass();
 }
 
-void AStoryManager::Init_Implementation() {
-	
-}
+void AStoryManager::Init_Implementation() {}
 
 void AStoryManager::DeInit_Implementation() {
+	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	if (Story) {
+		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
+	}
+
+	if (UI) {
+		UI->RemoveFromParent();
+	}
 	UI = nullptr;
+}
+
+void AStoryManager::Fade(bool In, const FText& Title) {
+	UE_LOG(LogTemp, Log, TEXT("Fading in=%i text=%s"), In, *Title.ToString());
+	if (In) {
+		FadeIn(Title);
+	} else {
+		FadeOut();
+	}
 }
 
 void AStoryManager::FadeIn(const FText& Title, const FText& Text) {
@@ -34,6 +50,11 @@ void AStoryManager::UIFaded() {
 void AStoryManager::BeginPlay() {
 	Super::BeginPlay();
 
+	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	if (Story) {
+		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
+	}
+	
 	if (IsValid(UIClass.Get())) {
 		UI = NewObject<UStoryUI>(this, UIClass, TEXT("StoryUI"));
 		if (IsValid(UI)) {
@@ -44,7 +65,7 @@ void AStoryManager::BeginPlay() {
 }
 
 void AStoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
 	DeInit();
+	Super::EndPlay(EndPlayReason);
 }
 

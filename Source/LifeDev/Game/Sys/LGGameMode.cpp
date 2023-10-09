@@ -121,7 +121,6 @@ void ALGGameMode::Init_Implementation() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 
 	/// flashback
-
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	
 	/// Dialogs
@@ -159,7 +158,9 @@ void ALGGameMode::Init_Implementation() {
 	/// Story
 	Story = World->GetSubsystem<UStory>();
 	Story->Init();
-
+	// TODO set to constant, remove Timefadein
+	Story->FadeTime = TimeFadeIn;
+	
 	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
 	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
 	if (IsValid(StoryManager)) {
@@ -176,7 +177,7 @@ void ALGGameMode::Init_Implementation() {
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 
 	// start by disabling the input
-	auto disableInput = [this] { // TODO maybe make this a function and be done. 
+	auto disableInput = [this] { // TODO promote to function, i bind this several times
 		SetCharInputEnabled(false);
 	};
 	// disable input on next tick to avoid a crash otherwise....
@@ -186,7 +187,6 @@ void ALGGameMode::Init_Implementation() {
 
 	// start's the story
 	FTimerHandle Handle;
-	// StartStory();
 	// wait for loading
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
 }
@@ -194,7 +194,6 @@ void ALGGameMode::Init_Implementation() {
 void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 
-	// TODO have a function to create the objects and create them here (what was this?)
 	Init();
 	// SetDynRes(); // can break the game and it's unused anyway
 }
@@ -338,28 +337,31 @@ void ALGGameMode::StartChapter() {
 		
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
-
-	const FText& DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
-	Fade(DecoratedTitle);
+	
+	Story->StartSequence(Chapter.StorySeq);
+	
+	// const FText& DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
+	// Fade(DecoratedTitle);
 
 	FTimerManager& Time = GetWorld()->GetTimerManager();
 	FTimerHandle Handle1;
 	FTimerDelegate Delegate1;
 	// TODO make a function of this "StartStorySequence"
 	Delegate1.BindLambda([this] {
-		Story->StartSequence(Chapter.StorySeq);
+		// Story->StartSequence(Chapter.StorySeq);
 		// assuming this will return null if not able to load. which will stop the previous music, which is ok
+		// TODO move the music to the Step and bind musicman to onstepstart and play there.
 		USoundBase* const Snd = Chapter.Music.LoadSynchronous();
 		MusicMan->PlayMusic(Snd, true);
 	});
 	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
 	
-	FTimerHandle Handle3;
-	FTimerDelegate Delegate3;
-	Delegate3.BindLambda([this] {
+	FTimerHandle Handle2;
+	FTimerDelegate Delegate2;
+	Delegate2.BindLambda([this] {
 		SetTempInputEnabled(true);
 	});
-	Time.SetTimer(Handle3, Delegate3, TimeFadeIn+TimeFadeOut+TimeHold, false);
+	Time.SetTimer(Handle2, Delegate2, TimeFadeIn+TimeFadeIn+TimeHold, false);
 }
 
 void ALGGameMode::StartNextChapter() {
@@ -378,5 +380,6 @@ void ALGGameMode::DiagDone() {
 
 void ALGGameMode::PostLoad() {
 	Super::PostLoad();
-	ALStep::FadeTime = TimeFadeOut+TimeHold+1.0;
+	// TODO this might not be necessary. it shouldn't
+	ALStep::FadeTime = TimeFadeIn+TimeHold+1.0;
 }

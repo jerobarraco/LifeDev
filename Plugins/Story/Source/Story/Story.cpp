@@ -30,11 +30,11 @@ AStep* UStory::GetStep(const FName& Name) {
 	return Step;
 }
 
+// TODO pass the step as AStep*
 bool UStory::Start(const FName& Name) {
 	AStep* const Step = GetStep(Name);
 	if (!Step) return false;
 	
-	// TODO if step has fade do fade here
 	// stop the current step before starting a new one.
 	Stop();// Is this a good idea?
 
@@ -117,15 +117,14 @@ bool UStory::StartNextStep() {
 		return false;
 	}
 
-	// TODO call Start2
-	return Start(Sequence[SeqStep]);
+	// TODO call rename start2
 	return Start2(Sequence[SeqStep]);
+	return Start(Sequence[SeqStep]);
 }
 
 bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	Sequence = InSeq;
 	SeqStep = -1;
-	Stop();
 	if (Sequence.IsEmpty()) return false;
 
 	return StartNextStep();

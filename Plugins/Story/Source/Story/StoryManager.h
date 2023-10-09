@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 	virtual void DeInit_Implementation();
+
+	UFUNCTION(Blueprintable)
+	void Fade(bool In, const FText& Title = FText::GetEmpty());
 	
 	UFUNCTION(BlueprintCallable)
 	void FadeIn(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
@@ -39,6 +42,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UStoryUI> UIClass = nullptr;
 
+	// Triggered once the ui has completely faded
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FStoryManagerOnFaded OnFaded;
 

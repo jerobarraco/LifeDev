@@ -3,7 +3,6 @@
 
 #include "Dialogs/Dialogs.h"
 #include "Inventory/Inventory.h"
-#include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 void ALStep::Start_Implementation() {
@@ -17,9 +16,6 @@ void ALStep::Start_Implementation() {
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	if (!IsValid(LGGameMode)) return;
 	LGGameMode->SetCharInputEnabled(InputEnabled);
-	if (UseFade) {
-		LGGameMode->Fade();
-	}
 }
 
 void ALStep::Stop_Implementation() {

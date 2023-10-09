@@ -24,7 +24,9 @@ public:
 	bool InputEnabled = false;
 
 	// when set to true, the game mode will set the wait time to the fade time. Also check FinishPostWait
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	// TODO remoev, not needed anymor.
+	// TODO need to fix the steps that do use postwait
+	UPROPERTY(BlueprintReadWrite, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 	
 	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.

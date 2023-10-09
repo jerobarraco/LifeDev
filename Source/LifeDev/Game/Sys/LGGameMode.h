@@ -84,12 +84,12 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// TODO deprecated, should read the variable from the Story subs
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
 	float TimeFadeIn = 2;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// TODO deprecated, should read the variable from the Story subs
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
 	float TimeHold = 2;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float TimeFadeOut = 2;
 
 	// not supported on desktop and could break the game
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
