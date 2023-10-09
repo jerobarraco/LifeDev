@@ -39,6 +39,15 @@ bool UStory::Start(const FName& Name) {
 	return true;
 }
 
+bool UStory::Start2(const FName& Name) {
+	// get the sequence
+	// do the fade
+		// callback
+		// - call stop and start
+	// do fade out
+	return false;
+}
+
 void UStory::Stop(const FName& Name) {
 	if (!IsValid(Current)) return; // nothing to stop
 
@@ -84,11 +93,10 @@ bool UStory::StartNextStep() {
 	return Start(Sequence[SeqStep]);
 }
 
-bool UStory::StartSequence(const FText& Title, const TArray<FName>& InSeq) {
+bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	Sequence = InSeq;
 	SeqStep = -1;
 	Stop();
-// TODO if title is set fade in/out
 	if (Sequence.IsEmpty()) return false;
 
 	return StartNextStep();

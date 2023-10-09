@@ -347,7 +347,7 @@ void ALGGameMode::StartChapter() {
 	FTimerDelegate Delegate1;
 	// TODO make a function of this "StartStorySequence"
 	Delegate1.BindLambda([this, DecoratedTitle] {
-		Story->StartSequence(DecoratedTitle, Chapter.StorySeq);
+		Story->StartSequence(Chapter.StorySeq);
 		// assuming this will return null if not able to load. which will stop the previous music, which is ok
 		USoundBase* const Snd = Chapter.Music.LoadSynchronous();
 		MusicMan->PlayMusic(Snd, true);

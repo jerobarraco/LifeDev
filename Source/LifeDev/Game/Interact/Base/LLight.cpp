@@ -8,7 +8,6 @@ ALLight::ALLight():Super() {
 	Super::SetMobility(EComponentMobility::Static);
 	Anim->TRoot = nullptr;
 	Anim->Mat = nullptr;
-	AnimEnabled = false;
 	Super::SetEnabled(false);
 	// Texts = {FText::FromString("PickUp")};
 	// static ConstructorHelpers::FObjectFinder<USoundBase>

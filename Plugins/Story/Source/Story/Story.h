@@ -31,11 +31,16 @@ public:
 	void DeInit();
 	
 	UFUNCTION(BlueprintCallable)
-	bool StartSequence(const FText& Title, const TArray<FName>& InSeq);
+	bool StartSequence(const TArray<FName>& InSeq);
 
 	// starts a step by the name. stops the current one before that.
 	UFUNCTION(BlueprintCallable)
 	bool Start(const FName& Name);
+
+	// starts a step by the name. stops the current one before that.
+	// to over-write the previous
+	UFUNCTION(BlueprintCallable)
+	bool Start2(const FName& Name);
 
 	// stops a step. if not specified it will stop the current one. then it will start the next.
 	// the name is a protection mechanism mostly, used by the story steps.

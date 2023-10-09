@@ -18,6 +18,10 @@ public:
 	ALight00();
 
 protected:
+	UFUNCTION() // bind
+	void UpdateAnim(float Progress, float Alpha);
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

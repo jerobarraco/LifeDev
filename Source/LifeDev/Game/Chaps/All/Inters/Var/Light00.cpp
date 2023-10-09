@@ -4,6 +4,7 @@
 
 #include "Components/RectLightComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ALight00::ALight00():Super() {
@@ -15,14 +16,32 @@ ALight00::ALight00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/Fluorescent.Fluorescent"));
-	// TODO tube position?
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Tube->SetupAttachment(Mesh);
 	if (CTube.Succeeded()) {
 		Tube->SetStaticMesh(CTube.Object);
 	}
 	Tube->SetRelativeLocation(FVector(0.5,7.5,100));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelMetal_MI.VoxelMetal_MI"));
+	// using metal instead of glass to avoid having to deal with transparency.
+	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
+	UMaterialInterface* const Mat = CMat.Object; // /Script/Engine.MaterialInstanceConstant''
+	UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, Mat);
 
+	/// anim
+	/// // TODO fix the anim not triggering
+	AnimEnabled = true;
+	Anim->TRoot = nullptr;
+	Anim->Mat = MI;
+	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
+	Anim->MatVName = "Emissive";
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/C_Fluorescent.C_Fluorescent"));
+	if (CCurve.Succeeded()) {
+		Anim->Curve = CCurve.Object;
+	}
+	
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
 	RectLight->SetupAttachment(Mesh);
 	RectLight->SetRelativeLocation(FVector(0.5,7.5,100));
@@ -34,18 +53,35 @@ ALight00::ALight00():Super() {
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
 	RectLight->SetBarnDoorLength(7);
-	// RectLight->SetBarnDoorLength()
-	// TODO light config
 
 	Interact->SetRelativeLocation(FVector(40,-50,103.734790));
 	Interact->SetBoxExtent(FVector(900,200,150));
-	SetEnabled(false);
+
 	// Texts = {FText::FromString("PickUp")};
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00s/Light00s.Light00s"));
 	// SFX_Trigger = CSnd.Object;
 	// TriggerFlashInc = .1;
+	
+	SetEnabled(true);
 	ALight00::SetMobility(EComponentMobility::Static);
+}
+
+void ALight00::UpdateAnim(float Progress, float Alpha) {
+	const bool IsOn = Alpha >= .3;
+	RectLight->SetVisibility(IsOn);
+}
+
+void ALight00::BeginPlay() {
+	Super::BeginPlay();
+	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
+	TryTrigger(); // turns it on by default.
+}
+
+void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Anim->OnUpdate.RemoveAll(this);
+	Anim->Mat = nullptr;
+	Super::EndPlay(EndPlayReason);
 }
 
 void ALight00::SetMobility(EComponentMobility::Type Mobility) {
@@ -53,3 +89,4 @@ void ALight00::SetMobility(EComponentMobility::Type Mobility) {
 	Tube->SetMobility(Mobility);
 	RectLight->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
 }
+
