@@ -57,7 +57,7 @@ bool UStory::StartNow(AStep* NewStep) {
 
 	ToggleStepLayers();
 	
-	UE_LOG(LogStory, Log, TEXT("About to start step '%s' title =%s"), 
+	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s'"), 
 		*Current->Name.ToString(), *Current->Title.ToString());
 	Current->Start();
 	OnStart.Broadcast(Current);
@@ -142,6 +142,7 @@ const FName& UStory::GetCurrent() {
 }
 
 void UStory::ToggleDataLayer(const FName& Name, bool On) {
+	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *Name.ToString());
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	
@@ -150,9 +151,11 @@ void UStory::ToggleDataLayer(const FName& Name, bool On) {
 
 	const EDataLayerRuntimeState State = (On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
 	const UDataLayerInstance* const Instance = Layers->GetDataLayerInstance(Name);
-	if (!Instance) return;
+	if (!Instance) {
+		UE_LOG(LogStory, Warning, TEXT("Colud not get data layer instance. Name='%s'"), *Name.ToString());
+		return;
+	}
 
-	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *Name.ToString());
 	Layers->SetDataLayerRuntimeState(Instance, State, true);
 }
 
