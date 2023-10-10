@@ -9,6 +9,7 @@
 
 class UCameraComponent;
 class ACameraActor;
+class UDataLayerAsset;
 
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStep : public AActor {
@@ -50,29 +51,31 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float CamBlendTime = 2.0;
 
-	// >0 will set the seconds to wait since the start of this step. will trigger TimerEnded. see note.
+	// >0 will set the seconds to wait since the start of this step. will trigger PostWait.
+	// this affects the dialogs. See UseFadeTime
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float WaitTime = 0;
 
-	// TODO WIP. when set to true, it will fade in/out using the game fade time on start.
+	// When set to true, it will fade in/out using the game fade time on start.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseFade = false;
 
-	// TODO WIP. Only shown if you also set UseFade
+	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FText Title;
 
-	// TODO WIP
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// Music to play. Setting it to empty does not stop the music.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TSoftObjectPtr<USoundBase> Music;
 
-	// TODO WIP
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> DL_Load;
-	// TODO WIP
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> DL_Unload;
-	
+	// Data layers to load.
+	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
+	// also in the data layers panel, set the initial runtime state.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<UDataLayerAsset*> DL_Load;
+	// Data layers to unload
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<UDataLayerAsset*> DL_Unload;
 	
 	// set to true to use debug
 	inline static bool UseDebug = false;

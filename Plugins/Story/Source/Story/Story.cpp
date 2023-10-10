@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "Story.h"
 
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
+#include "WorldPartition/DataLayer/DataLayerInstance.h"
+#include "WorldPartition/DataLayer/DataLayerManager.h"
+
 #include "Step.h"
 #include "StoryTypes.h"
-#include "WorldPartition/DataLayer/WorldDataLayers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
@@ -37,15 +40,6 @@ AStep* UStory::GetStep(const FName& Name) {
 	}
 
 	return Step;
-}
-
-void UStory::ToggleStepLayers() {
-	for (const FName& Name: Current->DL_Unload) {
-		ToggleDataLayer(Name, false);
-	}
-	for (const FName& Name: Current->DL_Load) {
-		ToggleDataLayer(Name, true);
-	}
 }
 
 bool UStory::StartNow(AStep* NewStep) {
@@ -141,22 +135,46 @@ const FName& UStory::GetCurrent() {
 	return IsValid(Current) ? Current->Name : Empty;
 }
 
-void UStory::ToggleDataLayer(const FName& Name, bool On) {
-	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *Name.ToString());
-	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
-	
-	AWorldDataLayers* const Layers = World->GetWorldDataLayers();
-	if (!IsValid(Layers)) return;
+void UStory::ToggleStepLayers() {
+	if (!Current) return;
 
+	for (UDataLayerAsset* DLA: Current->DL_Unload) {
+		ToggleDataLayer(DLA, false);
+	}
+	for (UDataLayerAsset* DLA: Current->DL_Load) {
+		ToggleDataLayer(DLA, true);
+	}
+}
+
+bool UStory::ToggleDataLayer(UDataLayerAsset* DLA, bool On) {
+	if (!IsValid(DLA)) return false;
+	
+	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return false;
+	
 	const EDataLayerRuntimeState State = (On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
-	const UDataLayerInstance* const Instance = Layers->GetDataLayerInstance(Name);
-	if (!Instance) {
-		UE_LOG(LogStory, Warning, TEXT("Colud not get data layer instance. Name='%s'"), *Name.ToString());
-		return;
+
+	UDataLayerManager* const LayerManager = World->GetDataLayerManager();
+	if (!IsValid(LayerManager)) {
+		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer manager"));
+		return false;
 	}
 
+	const bool res = LayerManager->SetDataLayerRuntimeState(DLA, State, true);
+	UE_LOG(LogStory, Log, TEXT("Data layer toggle. res=%i, load=%i, name='%s'"), res, On, *DLA->GetName());
+	return res;
+	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
+	
+	/*  the subsystem  all is deprecated
+	UDataLayerSubsystem* const Layers = World->GetSubsystem<UDataLayerSubsystem>();
+	UDataLayerInstance* Instance = Layers->GetDataLayerInstanceFromAsset(DLA);
 	Layers->SetDataLayerRuntimeState(Instance, State, true);
+	if (!IsValid(Layers)) {
+		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer subsystem"), On, *DLA->GetName());
+		return;
+	}
+	*/
 }
 
 bool UStory::StartNextStep() {
@@ -173,7 +191,8 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	Sequence = InSeq;
 	SeqStep = -1;
 	if (Sequence.IsEmpty()) return false;
-	// TODO add on SeqStart?
+
+	OnSeqStart.Broadcast();
 	return StartNextStep();
 }
 

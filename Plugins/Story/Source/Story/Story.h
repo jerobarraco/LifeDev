@@ -14,8 +14,9 @@ class UDataTable;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep*, Step);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep*, Step);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, bool, In, const FText&, Text);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
 // World subsystem to deal with Inventory
 UCLASS(Blueprintable, Category="Story")
@@ -76,14 +77,16 @@ public:
 	FStoryStepStart OnStart;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryStepStop OnStop;
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FStorySeqStop OnSeqStop;
 	// triggered when a fade should occur. the story manager should fade the ui.
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryFade OnFade;
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStorySeqStop OnSeqStart;
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FStorySeqStop OnSeqStop;
 
 protected:
-	void ToggleDataLayer(const FName& Name, bool On);
+	bool ToggleDataLayer(UDataLayerAsset* DLA, bool On);
 	
 	bool StartNextStep();
 
