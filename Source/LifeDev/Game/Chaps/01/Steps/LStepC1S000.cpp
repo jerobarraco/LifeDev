@@ -6,11 +6,15 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC1S000::ALStepC1S000():Super() {
+	static FText ST = FText::FromString("~ Whatever Works ~");
+	Title = ST;
+	
 	Name = FName("C1S0");
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = true;
 	UseFadeTime = true;
+	UseFade = true;
 	FinishPostWait = false; // will be set by seqid anyway
 	CamTarget = nullptr; // use previous camera
 }

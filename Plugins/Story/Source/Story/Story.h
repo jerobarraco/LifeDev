@@ -36,12 +36,12 @@ public:
 
 	// starts a step by the name. stops the current one before that.
 	UFUNCTION(BlueprintCallable)
-	bool Start(const FName& Name);
+	bool StartNow(AStep* NewStep);
 
 	// starts a step by the name. stops the current one before that.
 	// to over-write the previous
 	UFUNCTION(BlueprintCallable)
-	bool Start2(const FName& Name);
+	bool Start(const FName& Name);
 
 	// stops a step. if not specified it will stop the current one. then it will start the next.
 	// the name is a protection mechanism mostly, used by the story steps.
@@ -60,11 +60,13 @@ public:
 	// Set this from game instance or smth TODO to be used with the fade 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float FadeTime = 2;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	float HoldTime = 1;
 	
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryStepStart OnStepStart;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FStoryStepStop OnStepStop;
+	FStoryStepStop OnStop;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStorySeqStop OnSeqStop;
 	// TODO to be triggered when a fade should occur. the story manager should fade the ui.

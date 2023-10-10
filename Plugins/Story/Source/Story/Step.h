@@ -65,6 +65,14 @@ public:
 	// TODO WIP
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<USoundBase> Music;
+
+	// TODO WIP
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> DL_Load;
+	// TODO WIP
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> DL_Unload;
+	
 	
 	// set to true to use debug
 	inline static bool UseDebug = false;

@@ -5,6 +5,7 @@
 
 #include "FLChapter.generated.h"
 
+// TODO move to the story plugin
 USTRUCT(BlueprintType)
 struct LIFEDEV_API FLChapter: public FTableRowBase {
 	GENERATED_BODY()

@@ -30,47 +30,56 @@ AStep* UStory::GetStep(const FName& Name) {
 	return Step;
 }
 
-// TODO pass the step as AStep*
-bool UStory::Start(const FName& Name) {
-	AStep* const Step = GetStep(Name);
-	if (!Step) return false;
-	
+bool UStory::StartNow(AStep* NewStep) {
 	// stop the current step before starting a new one.
-	Stop();// Is this a good idea?
+	Stop();
 
-	UE_LOG(LogStory, Log, TEXT("About to start step : '%s'"), *Name.ToString());
-	Current = Step;
-	Step->Start();
-	OnStepStart.Broadcast(Step->Name);
+	Current = NewStep;
+	if (!Current) return false;
+	
+	UE_LOG(LogStory, Log, TEXT("About to start step '%s' title =%s"), 
+		*Current->Name.ToString(), *Current->Title.ToString());
+	Current->Start();
+	OnStepStart.Broadcast(Current->Name);
 
 	return true;
 }
 
-bool UStory::Start2(const FName& Name) {
+bool UStory::Start(const FName& Name) {
 	// get the step
 	AStep* const Step = GetStep(Name);
 	if (!Step) return false;
 
 	if (!Step->UseFade) {
-		// TODO change this function to receive an AStep instead of name and rename it
-		return Start(Name);
+		return StartNow(Step);
 	}
 
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return false;
+	
 	// do the fade
 	OnFade.Broadcast(true, Step->Title);
-	
+
 	// callback
-	auto l = [this, Name]() {
+	auto l = [this, Step]() {
 		// - call stop and start
-		Start(Name);
-		// do fade out
-		OnFade.Broadcast(false, FText::GetEmpty());
+		StartNow(Step);
 	};
 
 	FTimerHandle H;
 	FTimerDelegate TD;
 	TD.BindLambda(l);
-	GetWorld()->GetTimerManager().SetTimer(H, TD, FadeTime, false);
+	World->GetTimerManager().SetTimer(H, TD, FadeTime, false);
+
+	auto l2 = [this]() {
+		// do fade out
+		OnFade.Broadcast(false, FText::GetEmpty());
+	};
+
+	FTimerHandle H2;
+	FTimerDelegate TD2;
+	TD2.BindLambda(l2);
+	World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
 
 	return false;
 }
@@ -89,7 +98,7 @@ void UStory::Stop(const FName& Name) {
 	// done before calling stop to allow for other functions to call this.
 	Current = nullptr;
 	Step->Stop();
-	OnStepStop.Broadcast(Step->Name);
+	OnStop.Broadcast(Step->Name);
 	
 	StartNextStep();
 }
@@ -117,9 +126,8 @@ bool UStory::StartNextStep() {
 		return false;
 	}
 
-	// TODO call rename start2
-	return Start2(Sequence[SeqStep]);
 	return Start(Sequence[SeqStep]);
+	// return Start(TODO);
 }
 
 bool UStory::StartSequence(const TArray<FName>& InSeq) {

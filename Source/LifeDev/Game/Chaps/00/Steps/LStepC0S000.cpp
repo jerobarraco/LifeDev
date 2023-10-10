@@ -6,9 +6,14 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
+	static FText STitle = FText::FromString("~ Intention ~");
+	Title = STitle;
+	
 	Name = FName("C0S0");
 	// DlgId = FName("Intro");
 	InputEnabled = true;
+
+	UseFade = true;
 	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
