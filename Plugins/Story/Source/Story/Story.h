@@ -12,8 +12,8 @@
 class AStep;
 class UDataTable;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, const FName&, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, const FName&, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep*, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep*, Step);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, bool, In, const FText&, Text);
 
@@ -24,6 +24,9 @@ class STORY_API UStory : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	static UStory* Get(UWorld* W);
+	
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
@@ -61,10 +64,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float FadeTime = 2;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float HoldTime = 1;
+	float HoldTime = 2;
 	
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FStoryStepStart OnStepStart;
+	FStoryStepStart OnStart;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryStepStop OnStop;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)

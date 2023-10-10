@@ -5,6 +5,7 @@
 
 #include "LMusicMan.generated.h"
 
+class AStep;
 
 // Lifedev version of the music manager
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
@@ -16,4 +17,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION() // bind
+	void SetStep(AStep* Step);
 };

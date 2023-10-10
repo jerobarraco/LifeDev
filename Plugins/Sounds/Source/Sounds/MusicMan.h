@@ -26,7 +26,7 @@ public:
 	FORCEINLINE void FadeIn() {Fade(true);}
 	// for debug only
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
-	FORCEINLINE void FadeOut() { Fade(false);}
+	FORCEINLINE void FadeOut() {Fade(false);}
 
 	// be careful that calling fade just before or after playmusic can cause timing issues
 	// plays a music with(out) fadeout of the previous if any

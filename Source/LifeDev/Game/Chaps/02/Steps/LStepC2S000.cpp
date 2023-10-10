@@ -3,6 +3,9 @@
 
 ALStepC2S000::ALStepC2S000():Super() {
 	Name = FName("C2S0");
+	static FText ST = FText::FromString("~ To be continued ... ~");
+	Title = ST;
+	UseFade = true;
 	// DlgId = FName("C2S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;

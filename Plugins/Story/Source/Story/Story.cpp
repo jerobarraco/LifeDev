@@ -14,6 +14,14 @@ void UStory::DeInit() {
 	Steps.Empty();
 }
 
+UStory* UStory::Get(UWorld* W) {
+	if (!IsValid(W)) return nullptr;
+
+	UStory* const Story = W->GetSubsystem<UStory>();
+	return IsValid(Story) ? Story : nullptr;
+}
+
+
 AStep* UStory::GetStep(const FName& Name) {
 	AStep** const pStep = Steps.Find(Name);
 	if (!pStep) {
@@ -40,7 +48,7 @@ bool UStory::StartNow(AStep* NewStep) {
 	UE_LOG(LogStory, Log, TEXT("About to start step '%s' title =%s"), 
 		*Current->Name.ToString(), *Current->Title.ToString());
 	Current->Start();
-	OnStepStart.Broadcast(Current->Name);
+	OnStart.Broadcast(Current);
 
 	return true;
 }
@@ -93,12 +101,14 @@ void UStory::Stop(const FName& Name) {
 		return;
 	}
 
+	// clear up the Current variable so that the broadcast and startnextstep works fine.
 	AStep* const Step = Current;
-	UE_LOG(LogStory, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
-	// done before calling stop to allow for other functions to call this.
 	Current = nullptr;
+	
+	UE_LOG(LogStory, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
 	Step->Stop();
-	OnStop.Broadcast(Step->Name);
+	// Call before starting the next step
+	OnStop.Broadcast(Step);
 	
 	StartNextStep();
 }
@@ -115,7 +125,7 @@ void UStory::Rem(const FName& Name) {
 }
 
 const FName& UStory::GetCurrent() {
-	static FName Empty;
+	const static FName Empty; // not NAME_None since i am returning a ref
 	return IsValid(Current) ? Current->Name : Empty;
 }
 
@@ -127,7 +137,6 @@ bool UStory::StartNextStep() {
 	}
 
 	return Start(Sequence[SeqStep]);
-	// return Start(TODO);
 }
 
 bool UStory::StartSequence(const TArray<FName>& InSeq) {
