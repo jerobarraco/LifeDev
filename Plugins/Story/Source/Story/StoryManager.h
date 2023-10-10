@@ -10,6 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStoryManagerOnFaded);
 
 class AStep;
 class UStoryUI;
+class UStory;
 
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStoryManager: public AActor {
@@ -45,7 +46,7 @@ public:
 	// Triggered once the ui has completely faded
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FStoryManagerOnFaded OnFaded;
-
+	
 protected:
 	// called when the ui is done fading
 	UFUNCTION()
@@ -56,4 +57,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UStoryUI* UI = nullptr;
+
+	UPROPERTY(Transient)
+	UStory* Story = nullptr;
 };

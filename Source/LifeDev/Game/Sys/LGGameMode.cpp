@@ -32,6 +32,9 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
+static float FadeTime = 2;
+static float HoldTime = 2;
+
 ALGGameMode::ALGGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
@@ -157,9 +160,9 @@ void ALGGameMode::Init_Implementation() {
 
 	/// Story
 	Story = World->GetSubsystem<UStory>();
+	Story->FadeTime = FadeTime;
+	Story->HoldTime = HoldTime;
 	Story->Init();
-	// TODO set to constant, remove Timefadein
-	Story->FadeTime = TimeFadeIn;
 	
 	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
 	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
@@ -299,19 +302,6 @@ void ALGGameMode::SetDynRes() {
 	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.FrameTimeBudget 33.33333"));
 }
 
-void ALGGameMode::Fade(const FText& DecoratedTitle) {
-	if (!IsValid(StoryManager)) {
-		// Should this be here?
-		UE_LOG(LogLGameMode, Warning, TEXT("Fade: No story manager. Can't proceed."));
-		return;
-	}
-	StoryManager->FadeIn(DecoratedTitle);
-	
-	FTimerManager& Time = GetWorld()->GetTimerManager();
-	FTimerHandle Handle;
-	Time.SetTimer(Handle, StoryManager, &AStoryManager::FadeOut, TimeFadeIn+TimeHold);
-}
-
 void ALGGameMode::StartChapter() {
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
 	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
@@ -339,29 +329,14 @@ void ALGGameMode::StartChapter() {
 	SetTempInputEnabled(false);
 	
 	Story->StartSequence(Chapter.StorySeq);
-	
-	// const FText& DecoratedTitle = FText::FromString(TEXT("~ ") + Chapter.Title.ToString() + TEXT(" ~"));
-	// Fade(DecoratedTitle);
 
-	FTimerManager& Time = GetWorld()->GetTimerManager();
-	FTimerHandle Handle1;
-	FTimerDelegate Delegate1;
-	// TODO make a function of this "StartStorySequence"
-	Delegate1.BindLambda([this] {
-		// Story->StartSequence(Chapter.StorySeq);
-		// assuming this will return null if not able to load. which will stop the previous music, which is ok
-		// TODO move the music to the Step and bind musicman to onstepstart and play there.
-		USoundBase* const Snd = Chapter.Music.LoadSynchronous();
-		MusicMan->PlayMusic(Snd, true);
-	});
-	Time.SetTimer(Handle1, Delegate1, TimeFadeIn, false);
-	
 	FTimerHandle Handle2;
 	FTimerDelegate Delegate2;
 	Delegate2.BindLambda([this] {
 		SetTempInputEnabled(true);
 	});
-	Time.SetTimer(Handle2, Delegate2, TimeFadeIn+TimeFadeIn+TimeHold, false);
+	FTimerManager& Time = GetWorld()->GetTimerManager();
+	Time.SetTimer(Handle2, Delegate2, (Story->FadeTime*2)+Story->HoldTime, false);
 }
 
 void ALGGameMode::StartNextChapter() {
@@ -381,5 +356,5 @@ void ALGGameMode::DiagDone() {
 void ALGGameMode::PostLoad() {
 	Super::PostLoad();
 	// TODO this might not be necessary. it shouldn't
-	ALStep::FadeTime = TimeFadeIn+TimeHold+1.0;
+	ALStep::FadeTime = (FadeTime*2)+ HoldTime;
 }

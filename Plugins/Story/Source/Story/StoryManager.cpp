@@ -13,10 +13,10 @@ AStoryManager::AStoryManager():Super() {
 void AStoryManager::Init_Implementation() {}
 
 void AStoryManager::DeInit_Implementation() {
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
-	if (Story) {
-		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
+	if (IsValid(Story)) {
+		Story->OnFade.RemoveAll(this);
 	}
+	Story = nullptr;
 
 	if (UI) {
 		UI->RemoveFromParent();
@@ -25,7 +25,7 @@ void AStoryManager::DeInit_Implementation() {
 }
 
 void AStoryManager::Fade(bool In, const FText& Title) {
-	UE_LOG(LogTemp, Log, TEXT("Fading in=%i text=%s"), In, *Title.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Fading in=%i text='%s'"), In, *Title.ToString());
 	if (In) {
 		FadeIn(Title);
 	} else {
@@ -50,7 +50,7 @@ void AStoryManager::UIFaded() {
 void AStoryManager::BeginPlay() {
 	Super::BeginPlay();
 
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	Story = GetWorld()->GetSubsystem<UStory>();
 	if (Story) {
 		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
 	}

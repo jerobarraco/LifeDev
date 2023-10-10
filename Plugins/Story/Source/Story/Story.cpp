@@ -4,6 +4,7 @@
 
 #include "Step.h"
 #include "StoryTypes.h"
+#include "WorldPartition/DataLayer/WorldDataLayers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
@@ -38,12 +39,23 @@ AStep* UStory::GetStep(const FName& Name) {
 	return Step;
 }
 
+void UStory::ToggleStepLayers() {
+	for (const FName& Name: Current->DL_Unload) {
+		ToggleDataLayer(Name, false);
+	}
+	for (const FName& Name: Current->DL_Load) {
+		ToggleDataLayer(Name, true);
+	}
+}
+
 bool UStory::StartNow(AStep* NewStep) {
 	// stop the current step before starting a new one.
 	Stop();
 
 	Current = NewStep;
 	if (!Current) return false;
+
+	ToggleStepLayers();
 	
 	UE_LOG(LogStory, Log, TEXT("About to start step '%s' title =%s"), 
 		*Current->Name.ToString(), *Current->Title.ToString());
@@ -129,6 +141,21 @@ const FName& UStory::GetCurrent() {
 	return IsValid(Current) ? Current->Name : Empty;
 }
 
+void UStory::ToggleDataLayer(const FName& Name, bool On) {
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+	
+	AWorldDataLayers* const Layers = World->GetWorldDataLayers();
+	if (!IsValid(Layers)) return;
+
+	const EDataLayerRuntimeState State = (On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
+	const UDataLayerInstance* const Instance = Layers->GetDataLayerInstance(Name);
+	if (!Instance) return;
+
+	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *Name.ToString());
+	Layers->SetDataLayerRuntimeState(Instance, State, true);
+}
+
 bool UStory::StartNextStep() {
 	++SeqStep;
 	if (SeqStep >= Sequence.Num()) {
@@ -143,12 +170,23 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	Sequence = InSeq;
 	SeqStep = -1;
 	if (Sequence.IsEmpty()) return false;
-
+	// TODO add on SeqStart?
 	return StartNextStep();
 }
 
-// TODO:
-//	Leave this functions as they are
-//  Create new functions for the handling of the fade. that call these functions.
-// Later on rename stuff and call to the new ones instead
-// TODO slowly port over stuff from the game mode to here.
+void UStory::AutoFade(const FText& Title) {
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+
+	OnFade.Broadcast(true, Title);
+	
+	auto l2 = [this]() {
+		// do fade out
+		OnFade.Broadcast(false, FText::GetEmpty());
+	};
+
+	FTimerHandle H2;
+	FTimerDelegate TD2;
+	TD2.BindLambda(l2);
+	World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
+}

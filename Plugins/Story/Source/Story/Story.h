@@ -32,7 +32,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
-	AStep* GetStep(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
 	bool StartSequence(const TArray<FName>& InSeq);
@@ -58,7 +57,14 @@ public:
 	void Rem(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
+	AStep* GetStep(const FName& Name);
+	void ToggleStepLayers();
+
+	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
+
+	UFUNCTION(BlueprintCallable)
+	void AutoFade(const FText& Title);
 
 	// Set this from game instance or smth TODO to be used with the fade 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
@@ -72,11 +78,13 @@ public:
 	FStoryStepStop OnStop;
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStorySeqStop OnSeqStop;
-	// TODO to be triggered when a fade should occur. the story manager should fade the ui.
+	// triggered when a fade should occur. the story manager should fade the ui.
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FStoryFade OnFade;
 
 protected:
+	void ToggleDataLayer(const FName& Name, bool On);
+	
 	bool StartNextStep();
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -90,8 +98,5 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 SeqStep = -1;
-
-	// TODO to be used to know if it needs to fade in
-	bool IsFaded = false; 
 };
 

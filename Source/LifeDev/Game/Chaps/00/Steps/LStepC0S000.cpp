@@ -6,18 +6,18 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
+	Name = FName("C0S0");
+	
 	static FText STitle = FText::FromString("~ Intention ~");
 	Title = STitle;
 	
-	Name = FName("C0S0");
 	// DlgId = FName("Intro");
 	InputEnabled = true;
-
 	UseFade = true;
 	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
-
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music04/Music04_MS.Music04_MS");
 	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFlashback"));
 }
 

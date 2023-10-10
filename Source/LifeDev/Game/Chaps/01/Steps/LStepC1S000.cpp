@@ -6,10 +6,10 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC1S000::ALStepC1S000():Super() {
+	Name = FName("C1S0");
 	static FText ST = FText::FromString("~ Whatever Works ~");
 	Title = ST;
 	
-	Name = FName("C1S0");
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = true;
@@ -17,6 +17,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UseFade = true;
 	FinishPostWait = false; // will be set by seqid anyway
 	CamTarget = nullptr; // use previous camera
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music02/Music02_MS.Music02_MS");
 }
 
 void ALStepC1S000::Start_Implementation() {
