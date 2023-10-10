@@ -18,6 +18,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	FinishPostWait = false; // will be set by seqid anyway
 	CamTarget = nullptr; // use previous camera
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music02/Music02_MS.Music02_MS");
+	// TODO set the load/unload here
 }
 
 void ALStepC1S000::Start_Implementation() {

@@ -19,6 +19,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UsePawnCam = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music04/Music04_MS.Music04_MS");
 	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFlashback"));
+	// TODO set load/unload asset here
 }
 
 void ALStepC0S000::ShowDoors(bool Chap00) {

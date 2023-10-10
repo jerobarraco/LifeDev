@@ -11,4 +11,5 @@ ALStepC2S000::ALStepC2S000():Super() {
 	UsePawnCam = true;
 	UseFadeTime = true;
 	FinishPostWait = false;
+	// TODO un/load data layers 
 }
