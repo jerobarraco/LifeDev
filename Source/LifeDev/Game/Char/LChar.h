@@ -19,7 +19,7 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UGameUI;
-class UCNoiser;
+class UCLNoiser;
 
 // base class for the character
 UCLASS(config=Game)
@@ -116,7 +116,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UCInteractor* Interactor = nullptr;
 	UPROPERTY(BlueprintReadOnly)
-	UCNoiser* Noiser = nullptr;
+	UCLNoiser* Noiser = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ULSettingsUI* SettingsUI = nullptr;

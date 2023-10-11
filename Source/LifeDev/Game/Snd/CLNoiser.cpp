@@ -6,12 +6,14 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 
-UCLNoiser::UCLNoiser() {
+UCLNoiser::UCLNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UCLNoiser::SetFB(float Value) {
-	
+	// note that when the fb goes up, the times and dist goes down
+	DistMax = FMath::Lerp(DistFBMax, DistFBMin, Value);
+	TimeMax = FMath::Lerp(TimeFBMax, TimeFBMin, Value);
 }
 
 void UCLNoiser::BeginPlay() {

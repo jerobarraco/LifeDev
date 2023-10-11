@@ -15,8 +15,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCNoiserRawOnPlay);
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class SOUNDS_API UCNoiser: public UActorComponent {
 	GENERATED_BODY()
-public:
 
+public:
 	UCNoiser();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -52,7 +52,7 @@ public:
 	float TimeMin = 2.0;
 	// Max sound between sounds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	float TimeMax = 5.0;
+	float TimeMax = 10.0;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	USoundBase* SFX = nullptr;

@@ -16,13 +16,13 @@
 
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
-#include "Sounds/CNoiser.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/ItemLogic.h"
 #include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
+#include "LifeDev/Game/Snd/CLNoiser.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -60,13 +60,18 @@ ALChar::ALChar(): Super()
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
 
-	Noiser = CreateDefaultSubobject<UCNoiser>(TEXT("Noiser"));
-	Noiser->TimeMin = 30;
+	Noiser = CreateDefaultSubobject<UCLNoiser>(TEXT("Noiser"));
+	Noiser->TimeMin = 10;
+	Noiser->TimeFBMin = 15; // notice this is not exactly the same as min, otherwise it will get repetitive
 	Noiser->TimeMax = 75;
+	Noiser->TimeFBMax = 75;
+	Noiser->DistMin = 30;
+	Noiser->DistFBMin = 40; // notice ont the same as min
+	Noiser->DistMax = 600;
+	Noiser->DistFBMax = 600;
 	Noiser->HalfAngleWidth = (360.0-90.0)/2.0; // the back
 	Noiser->HalfAngleHeight = 40.0;
-	Noiser->DistMin = 50;
-	Noiser->DistMax = 600;
+	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
@@ -174,9 +179,12 @@ void ALChar::BeginPlay()
 	Inventory = World->GetSubsystem<UInventory>();
 	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
 
-	// ULGameInstance* const GameInstance = Cast<ULGameInstance>(GetGameInstance());
-	Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);
-	Noiser->Start();
+	if (IsValid(Noiser)) {
+		Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);
+		Noiser->Start();
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
+	}
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
