@@ -3,8 +3,9 @@
 
 #include "Interact/Interact.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
-#include "LifeDev/Game/Chaps/All/Env/SRain.h"
+
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -30,7 +31,7 @@ void ALStepC0S001::Start_Implementation() {
 		Flashback->SetVal(1, 10);
 	}
 
-	ASRain::SetPlayingS(W, true);
+	ALMusicMan::SetRainS(W, true);
 
 	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(Ghosts)) {
@@ -53,7 +54,7 @@ void ALStepC0S001::Stop_Implementation() {
 		W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::DestroyActors, WaitTime);
 	}
 
-	ASRain::SetPlayingS(W, false);
+	ALMusicMan::SetRainS(W, false);
 	UFlashback::SetValS(W, 0);
 }
 

@@ -2,13 +2,10 @@
 
 #include "LStepC1S002.h"
 
-#include "NiagaraComponent.h"
-#include "NiagaraSystem.h"
 #include "DefaultCameraShakeBase.h"
-#include "Kismet/GameplayStatics.h"
 
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
-#include "LifeDev/Game/Chaps/All/Env/SRain.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -58,7 +55,7 @@ void ALStepC1S002::StartShake() {
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StartCameraShake(ShakeClass);
 
-	ASRain::SetPlayingS(World, true);
+	ALMusicMan::SetRainS(World, true);
 
 	Flashback->SetVal(1); // bump to max
 

@@ -15,8 +15,8 @@ AMusicMan::AMusicMan():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 		
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
-	Player->bAutoManageAttachment = true;
 	Player->SetAutoActivate(false);
+	Player->bAutoManageAttachment = true;
 	Player->TimeFadeIn = 1.0;
 }
 

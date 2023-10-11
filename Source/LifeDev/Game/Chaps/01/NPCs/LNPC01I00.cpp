@@ -1,13 +1,12 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LNPC01I00.h"
 
-#include "Kismet/GameplayStatics.h"
 
 #include "Interact/Animator/CAnimatorCam.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-#include "LifeDev/Game/Chaps/All/Env/SRain.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
@@ -75,7 +74,7 @@ void ALNPC01I00::DiagStandDone() {
 	}
 
 	UWorld* const W = GetWorld();
-	ASRain::SetPlayingS(W, false);
+	ALMusicMan::SetRainS(W, false);
 
 	Flashback->SetVal(.2);
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);

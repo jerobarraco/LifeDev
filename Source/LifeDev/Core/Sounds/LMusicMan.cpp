@@ -2,10 +2,38 @@
 
 #include "LMusicMan.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "Sounds/CSounder.h"
+
+ALMusicMan::ALMusicMan():Super() {
+	
+	Rain = CreateDefaultSubobject<UCSounder>(TEXT("Rain"));
+	Rain->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01_S.Rain01_S"));
+	Rain->SetSound(CSnd.Object);
+	Rain->SetAutoActivate(false);
+	Rain->bAutoManageAttachment = true;
+	Rain->TimeFadeIn = 2;
+	Rain->TimeFadeOut = 2;
+	Rain->TimeStart = 0;
+	Rain->TimeEnd = 120;
+}
+
+void ALMusicMan::SetRain(bool Play) {
+	if (!IsValid(Rain)) return;
+	Rain->Fade(Play);
+}
+
+void ALMusicMan::SetRainS(UWorld* W, bool Play) {
+	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
+	if (!R) return;
+	R->SetRain(Play);
+}
 
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
