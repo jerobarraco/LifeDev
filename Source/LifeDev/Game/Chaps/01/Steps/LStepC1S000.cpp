@@ -1,6 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC1S000.h"
 
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
+
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
@@ -18,7 +20,18 @@ ALStepC1S000::ALStepC1S000():Super() {
 	FinishPostWait = false; // will be set by seqid anyway
 	CamTarget = nullptr; // use previous camera
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music02/Music02_MS.Music02_MS");
-	// TODO set the load/unload here
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Chap01_DL.Chap01_DL"));
+	if (CDL1.Succeeded()) {
+		DL_Load.Add(CDL1.Object);
+	}
+	
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDL2 (TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Chap00_DL.Chap00_DL"));
+	if (CDL2.Succeeded()) {
+		DL_Unload.Add(CDL2.Object);
+	}
 }
 
 void ALStepC1S000::Start_Implementation() {
