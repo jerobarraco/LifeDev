@@ -328,7 +328,7 @@ void ALGGameMode::StartChapter() {
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 	
-	Story->StartSequence(Chapter.StorySeq);
+	Story->StartSequence(Chapter.Steps);
 
 	FTimerHandle Handle2;
 	FTimerDelegate Delegate2;
