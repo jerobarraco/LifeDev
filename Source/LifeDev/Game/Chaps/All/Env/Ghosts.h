@@ -4,10 +4,8 @@
 
 #include "CoreMinimal.h"
 
-
 #include "Ghosts.generated.h"
 
-// TODO move this to the MusicManager
 class UNiagaraComponent;
 class UCSounder;
 

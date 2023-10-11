@@ -1,10 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LNPC01.h"
 
-#include "Kismet/GameplayStatics.h"
-
 #include "Interact/CInteract.h"
-#include "LifeDev/Game/Chaps/All/Env/SRain.h"
 
 ALNPC01::ALNPC01():Super() {
 	AnimEnabled = false;

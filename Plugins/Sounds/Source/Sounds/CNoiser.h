@@ -53,7 +53,6 @@ public:
 	// Max sound between sounds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	float TimeMax = 5.0;
-
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	USoundBase* SFX = nullptr;
