@@ -18,17 +18,6 @@ AHeater00::AHeater00():Super() {
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));
 
-	// stub animation but wont play
-	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve(TEXT("/JUtils/Curves/BounceOut_C.BounceOut_C"));
-	// leave the default in case of issues
-	if (CCurve.Succeeded())
-		Anim->Curve = CCurve.Object;
-	Anim->SetComponentTickInterval(1/60.f);
-	Anim->TEnd.SetRotation(FRotator(-10,0,0).Quaternion());
-	Anim->Duration = .75f;
-	Anim->IsAdditive = true;
-
 	// disable by default
 	Interact->SetEnabled(false);
 	AnimEnabled = false;

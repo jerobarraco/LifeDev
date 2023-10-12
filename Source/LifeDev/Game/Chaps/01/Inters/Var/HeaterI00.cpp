@@ -6,10 +6,6 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
-	AnimEnabled = true;
-	Interact->SetEnabled(true);
-	
-	Anim->Duration = .75f;
 	TriggerFlashInc = .1f;
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";
@@ -18,25 +14,26 @@ AHeaterI00::AHeaterI00():Super() {
 		FText::FromString(TEXT("Maybe not..."))
 	};
 
-	/*
-	 Kinda works
-	UCurveFloat* CurveFloat = NewObject<UCurveFloat>();
-	FRichCurve& F = CurveFloat->FloatCurve;
+	// animation
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/JUtils/Curves/BounceOut_C.BounceOut_C"));
+	if (CCurve.Succeeded())
+		Anim->Curve = CCurve.Object;
+	Anim->SetComponentTickInterval(1/60.f);
+	Anim->TEnd.SetRotation(FRotator(-10,0,0).Quaternion());
+	Anim->Duration = .75f;
+	Anim->IsAdditive = true;
+	AnimEnabled = true;
+	Interact->SetEnabled(true);
 
-	// 0, 0,  0.42, 0.0,  0.58, 1,  1, 1
-	F.UpdateOrAddKey(0, 0);
-	F.UpdateOrAddKey(0, .42);
-	F.UpdateOrAddKey(1, .58);
-	F.UpdateOrAddKey(1, 1); 
-	F.AutoSetTangents();
-	Anim->Curve = CurveFloat;
-
-	*/
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));
+	SFX_Trigger = CSnd.Object;
 }
 
 void AHeaterI00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
-	Locked = true;
+	Locked = true; // lock AFTER triggering
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
