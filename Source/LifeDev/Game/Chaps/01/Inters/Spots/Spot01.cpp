@@ -4,6 +4,7 @@
 
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -22,5 +23,10 @@ ASpot01::ASpot01():Super() {
 	TriggerDlg = FName("IS_C1T");
 	LockedDlg = "IS_C1TB";
 	DropDlg = "IS_C1D";
-	Items = {FName("C1C03")}; // the bra
+	Items = {LDConsts::Items::Bra}; // the bra
+
+		
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+	SFX_Trigger = CSnd.Object;
 }

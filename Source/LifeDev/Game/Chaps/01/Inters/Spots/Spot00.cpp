@@ -27,6 +27,10 @@ ASpot00::ASpot00():Super() {
 		// two shirts and a boxer, and a sock
 		FName("C1C00"), FName("C1C01"), FName("C1C02"), FName("C1C04")
 	};
+	
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+	SFX_Trigger = CSnd.Object;
 }
 
 EItemUseResult ASpot00::TryUseItem_Implementation(const FName& Name) {

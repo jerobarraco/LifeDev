@@ -8,7 +8,8 @@
 // Spot for sisters clothes
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpot01: public ALInteractSpot {
-public:
 	GENERATED_BODY()
+
+public:
 	ASpot01();
 };
