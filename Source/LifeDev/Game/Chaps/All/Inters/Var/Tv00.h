@@ -5,6 +5,7 @@
 
 #include "Tv00.generated.h"
 
+class UCSounder;
 class UCRandomizer;
 class UCQuickMesh;
 
@@ -19,6 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Trigger_Implementation() override;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSounder* Noise = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* RndCrt = nullptr;
 	

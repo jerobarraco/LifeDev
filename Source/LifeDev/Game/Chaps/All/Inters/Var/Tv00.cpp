@@ -7,6 +7,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "Sounds/CSounder.h"
 
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
@@ -31,7 +32,7 @@ ATv00::ATv00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpenEnd(TEXT("/Engine/EditorSounds/Notifications/CompileFailed_Cue.CompileFailed_Cue"));
 	SFX_OpenEnd = SOpenEnd.Object;
-	
+
 	/// other meshes
 	Frame = CreateDefaultSubobject<UCQuickMesh>(TEXT("Frame"));
 	Frame->SetupAttachment(RootComponent);
@@ -83,6 +84,14 @@ ATv00::ATv00():Super() {
 	RndCrt->ValueMax = 3;
 	RndCrt->IsLooping = true;
 	RndCrt->UseRandReverse = true;
+
+	Noise = CreateDefaultSubobject<UCSounder>(TEXT("Noise"));
+	Noise->SetupAttachment(IRoot);
+	Noise->bAutoManageAttachment = true;
+	Noise->SetAutoActivate(false);
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSNoise(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
+	Noise->SetSound(CSNoise.Object);
 }
 
 void ATv00::BeginPlay() {
@@ -96,12 +105,17 @@ void ATv00::BeginPlay() {
 
 void ATv00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
+	Noise->Fade(IsOpen);
+	RndCrt->SetActive(IsOpen);
+	AnimCrt->SetActive(IsOpen);
+	
 	if (IsOpen) {
-		RndCrt->Start();
-		AnimCrt->Play();
+		// RndCrt->Start();
+		// AnimCrt->Play();
 	} else {
-		RndCrt->Stop();
-		AnimCrt->Stop();
+		// RndCrt->Stop();
+		// AnimCrt->Stop();
+		// reset
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	}
 }
