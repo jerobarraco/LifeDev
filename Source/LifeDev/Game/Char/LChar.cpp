@@ -61,17 +61,7 @@ ALChar::ALChar(): Super()
 	Interactor->SetupAttachment(Camera);
 
 	Noiser = CreateDefaultSubobject<UCLNoiser>(TEXT("Noiser"));
-	Noiser->TimeMin = 10;
-	Noiser->TimeFBMin = 15; // notice this is not exactly the same as min, otherwise it will get repetitive
-	Noiser->TimeMax = 75;
-	Noiser->TimeFBMax = 75;
-	Noiser->DistMin = 30;
-	Noiser->DistFBMin = 40; // notice ont the same as min
-	Noiser->DistMax = 600;
-	Noiser->DistFBMax = 600;
-	Noiser->HalfAngleWidth = (360.0-90.0)/2.0; // the back
-	Noiser->HalfAngleHeight = 40.0;
-	
+
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSfx(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
