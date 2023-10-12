@@ -20,12 +20,11 @@ ASpot01::ASpot01():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop her clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
 	};
-	TriggerDlg = FName("IS_C1T");
+	TriggerDlg = "IS_C1T";
 	LockedDlg = "IS_C1TB";
 	DropDlg = "IS_C1D";
 	Items = {LDConsts::Items::Bra}; // the bra
 
-		
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;

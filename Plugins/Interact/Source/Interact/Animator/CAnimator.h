@@ -23,12 +23,12 @@ public:
 
 	UCAnimator();
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() { Deactivate(); };
 	
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	inline void Play() { Activate(true); };
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
+	FORCEINLINE void Play() { Activate(true); };
 
 	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)

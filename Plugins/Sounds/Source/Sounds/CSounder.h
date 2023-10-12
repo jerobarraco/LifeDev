@@ -10,7 +10,7 @@
 
 // make a baseclass for sound stuff? 
 //  class for the rain 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, meta=(BlueprintSpawnableComponent))
 class SOUNDS_API UCSounder : public UAudioComponent {
 	GENERATED_BODY()
 
