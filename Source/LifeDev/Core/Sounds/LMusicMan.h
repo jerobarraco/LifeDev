@@ -18,17 +18,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetRain(bool Play);
+
+	UFUNCTION(BlueprintCallable)
+	void SetEnviron(bool On);
 	
 	UFUNCTION(BlueprintCallable)
 	static void SetRainS(UWorld* W, bool Play);
-	
+	UFUNCTION(BlueprintCallable)
+	static void SetEnvironS(UWorld* W, bool Play);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION() // bind
 	void SetStep(AStep* Step);
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCSounder* Rain = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSounder* Environ = nullptr;
 };

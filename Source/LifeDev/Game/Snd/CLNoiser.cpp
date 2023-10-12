@@ -1,10 +1,8 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-
 #include "CLNoiser.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-
 
 UCLNoiser::UCLNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;

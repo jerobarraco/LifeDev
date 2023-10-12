@@ -22,6 +22,18 @@ ALMusicMan::ALMusicMan():Super() {
 	Rain->TimeFadeOut = 2;
 	Rain->TimeStart = 0;
 	Rain->TimeEnd = 120;
+	
+	Environ = CreateDefaultSubobject<UCSounder>(TEXT("Environ"));
+	Environ->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CEnv(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Ambience/Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_.Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_"));
+	Environ->SetSound(CEnv.Object);
+	Environ->SetAutoActivate(false);
+	Environ->bAutoManageAttachment = true;
+	Environ->TimeFadeIn = 2;
+	Environ->TimeFadeOut = 2;
+	Environ->TimeStart = 0;
+	Environ->TimeEnd = 0;
 }
 
 void ALMusicMan::SetRain(bool Play) {
@@ -29,10 +41,21 @@ void ALMusicMan::SetRain(bool Play) {
 	Rain->Fade(Play);
 }
 
+void ALMusicMan::SetEnviron(bool On) {
+	if (!IsValid(Environ)) return;
+	Environ->Fade(On);
+}
+
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
 	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 	if (!R) return;
 	R->SetRain(Play);
+}
+
+void ALMusicMan::SetEnvironS(UWorld* W, bool Play) {
+	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
+	if (!R) return;
+	R->SetEnviron(Play);
 }
 
 void ALMusicMan::BeginPlay() {

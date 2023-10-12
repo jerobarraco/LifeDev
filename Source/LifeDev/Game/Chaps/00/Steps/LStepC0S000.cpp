@@ -4,6 +4,7 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Interact/Animator/CRandomizer.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -43,7 +44,11 @@ void ALStepC0S000::ShowDoors(bool Chap00) {
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
-	UFlashback* const Flashback = UFlashback::Get(GetWorld());
+	UWorld* const W = GetWorld();
+	
+	ALMusicMan::SetEnvironS(W, true);
+
+	UFlashback* const Flashback = UFlashback::Get(W);
 	if (!Flashback) {
 		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the flashback subsystem."));
 		return;

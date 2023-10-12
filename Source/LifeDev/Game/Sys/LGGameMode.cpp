@@ -270,7 +270,7 @@ void ALGGameMode::SetTempInputEnabled(bool Enabled) {
 }
 
 ALGGameMode* ALGGameMode::Get() {
-	// TODO this doesnt work properly on PIE, fix and use the version in JMiscUtils
+	// TODO this doesn't work properly on PIE, fix and use the version in JMiscUtils
 	if (!GEngine) return nullptr;
 	UWorld* const World = GEngine->GetWorld();
 	if (!IsValid(World)) return nullptr;
