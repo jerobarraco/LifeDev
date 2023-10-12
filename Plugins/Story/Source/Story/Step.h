@@ -60,6 +60,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseFade = false;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	bool TeleportChar = false;
+	
 	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FText Title;

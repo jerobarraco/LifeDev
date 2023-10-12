@@ -16,6 +16,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFadeTime = true;
 	UseFade = true;
 	FinishPostWait = false;
+	TeleportChar = true;
 }
 
 void ALStepC0S001::Start_Implementation() {
@@ -40,8 +41,8 @@ void ALStepC0S001::Start_Implementation() {
 		Ghosts->SetPlaying(true);
 	}
 
-	FTimerHandle H;
-	W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::TeleportPlayer, WaitTime/2.0);
+	// FTimerHandle H;
+	// W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::TeleportPlayer, WaitTime/2.0);
 }
 
 void ALStepC0S001::Stop_Implementation() {
@@ -87,8 +88,8 @@ void ALStepC0S001::TeleportPlayer() {
 		return;
 	}
 
-	AActor* const Actor = UGameplayStatics::GetActorOfClass(GetWorld(), ALChar::StaticClass());
-	ALChar* const Char = Cast<ALChar>(Actor);
+	// TODO use teleportChar
+	ALChar* const Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(GetWorld(), ALChar::StaticClass()));
 	if (!Char) return;
 	
 	Char->TeleportTo(PlayerPos->GetActorLocation(), PlayerPos->GetActorRotation());

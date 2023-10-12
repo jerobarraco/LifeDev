@@ -5,8 +5,10 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "Story.h"
+#include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+
+#include "Story.h"
 
 AStep::AStep():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -25,11 +27,19 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
 
 	UWorld* const World = GetWorld();
-	if (WaitTime>0) {
+	if (WaitTime>0 && World) {
 		FTimerHandle Handle;
 		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
 	} else {
 		PostWait();
+	}
+
+	if (World) {
+        ACharacter* const Char = Cast<ACharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), ACharacter::StaticClass()));
+        if (IsValid(Char)) {
+        	const FTransform& T = GetActorTransform();
+        	Char->TeleportTo(T.GetLocation(), T.Rotator());
+        }
 	}
 }
 

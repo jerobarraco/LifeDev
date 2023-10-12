@@ -24,7 +24,7 @@ public:
 	bool InputEnabled = false;
 
 	// when set to true, the game mode will set the wait time to the fade time. Also check FinishPostWait
-	// TODO remoeve, not needed anymore. TODO reconsider, this is needed for the dialogs to start after the fade-out.
+	// TODO remove, not needed anymore. TODO reconsider, this is needed for the dialogs to start after the fade-out.
 	// TODO need to fix the steps that do use postwait
 	UPROPERTY(BlueprintReadWrite, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;

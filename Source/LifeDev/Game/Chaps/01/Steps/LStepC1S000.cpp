@@ -17,6 +17,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UsePawnCam = true;
 	UseFadeTime = true;
 	UseFade = true;
+	TeleportChar = true;
 	FinishPostWait = false; // will be set by seqid anyway
 	CamTarget = nullptr; // use previous camera
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music02/Music02_MS.Music02_MS");
@@ -40,6 +41,7 @@ void ALStepC1S000::Start_Implementation() {
 	if (!Inventory->Has(LDConsts::Items::Card0)) {
 		Inventory->Mod(LDConsts::Items::Card0, 1);
 	}
+
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
 	Flashback->SetMax(.75);
 	Flashback->SetMin(0);

@@ -78,22 +78,30 @@ bool UStory::Start(const FName& Name) {
 	auto l = [this, Step]() {
 		// - call stop and start
 		StartNow(Step);
+
+		// now fade out
+		// trigger this here. since the load layers is synchronous (on purpose)
+		// so here it's the point where it "should"TM be loaded.
+		auto l2 = [this]() {
+			// do fade out
+			OnFade.Broadcast(false, FText::GetEmpty());
+		};
+
+		FTimerHandle H2;
+		FTimerDelegate TD2;
+		TD2.BindLambda(l2);
+		UWorld* const World = GetWorld();
+		if (!World) {
+			UE_LOG(LogStory, Warning, TEXT("No world while attempted to fade out. i guess everything will be black."));
+			return;
+		}
+		World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
 	};
 
 	FTimerHandle H;
 	FTimerDelegate TD;
 	TD.BindLambda(l);
 	World->GetTimerManager().SetTimer(H, TD, FadeTime, false);
-
-	auto l2 = [this]() {
-		// do fade out
-		OnFade.Broadcast(false, FText::GetEmpty());
-	};
-
-	FTimerHandle H2;
-	FTimerDelegate TD2;
-	TD2.BindLambda(l2);
-	World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
 
 	return false;
 }
