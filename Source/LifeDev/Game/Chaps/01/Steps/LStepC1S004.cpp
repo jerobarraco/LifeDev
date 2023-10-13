@@ -7,7 +7,8 @@
 ALStepC1S004::ALStepC1S004():Super() {
 	Name = FName("C1S4");
 	InputEnabled = true;
-	// uses own camera
+	// uses pawn camera
+	CamTarget = nullptr;
 	UsePawnCam = true;
 	UseFadeTime = false;
 	// wait for the player to talk with the npc and get the card
@@ -15,7 +16,7 @@ ALStepC1S004::ALStepC1S004():Super() {
 }
 
 void ALStepC1S004::Stop_Implementation() {
-	Super::Stop_Implementation();
 	GetWorld()->GetSubsystem<UFlashback>()->SetVal(0);
+	Super::Stop_Implementation();
 }
 

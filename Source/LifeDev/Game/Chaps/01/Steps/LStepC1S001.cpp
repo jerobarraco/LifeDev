@@ -7,7 +7,10 @@ ALStepC1S001::ALStepC1S001():Super() {
 	Name = FName("C1S1");
 	InputEnabled = true;
 	CamTarget = nullptr;
-	UsePawnCam = true;
+	// no need to set it again since it's already set.
+	// maybe that triggers another blend
+	UsePawnCam = false;
+	
 	// finish on obtaining these.
 	FinishItems = {
 		"T0",

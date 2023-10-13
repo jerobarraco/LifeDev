@@ -7,7 +7,7 @@
 
 #include "LStepC1S001.generated.h"
 
-// main game step
+// chapter1: main game step 
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S001 : public ALStep {
 	GENERATED_BODY()
