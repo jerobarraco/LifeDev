@@ -29,7 +29,8 @@ void AStep::Start_Implementation() {
 	UWorld* const World = GetWorld();
 
 	// teleport the character
-	if (World) {
+	// teleport before blending the camera. so they work well together.
+	if (World && TeleportChar) {
         ACharacter* const Char = Cast<ACharacter>(
         	UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
         if (IsValid(Char)) {
@@ -102,14 +103,14 @@ void AStep::PostLoad() {
 	UpdateCamEnabled();
 }
 
-void AStep::UpdateCamEnabled() {
+void AStep::UpdateCamEnabled() const {
 	const bool Enabled = CamTarget == this;
-	if (IsValid(Cam)) {
-		Cam->SetActive(Enabled);
-		Cam->SetHiddenInGame(!Enabled);
-		Cam->SetVisibility(Enabled);
-		Cam->SetComponentTickEnabled(Enabled);
-	}
+	if (!IsValid(Cam)) return;
+	
+	Cam->SetActive(Enabled);
+	Cam->SetHiddenInGame(!Enabled);
+	Cam->SetVisibility(Enabled);
+	Cam->SetComponentTickEnabled(Enabled);
 }
 
 void AStep::Stop_Implementation() {

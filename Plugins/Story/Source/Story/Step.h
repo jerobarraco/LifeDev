@@ -60,6 +60,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseFade = false;
 
+	// teleports the character to where this cam is located. and also copies the rotation
+	// beware this affects the camera blend if any (if blending from/to the character)
+	// teleports before blending. teleports on start of step.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool TeleportChar = false;
 	
@@ -98,7 +101,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
-	void UpdateCamEnabled();
+	void UpdateCamEnabled() const;
 	void BlendCam() const;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
