@@ -7,6 +7,7 @@
 
 #include "LStepC1S000.generated.h"
 
+// chapter 1 start
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S000 : public ALStep {
 	GENERATED_BODY()

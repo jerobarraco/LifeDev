@@ -20,6 +20,7 @@ public:
 	virtual void Stop_Implementation() override;
 
 protected:
+	virtual void Debug_Implementation() override;
 	void ShowDoors(bool Chap00);
 
 	// the door of the toilet on chap0

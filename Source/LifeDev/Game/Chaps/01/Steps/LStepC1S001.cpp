@@ -6,8 +6,8 @@
 ALStepC1S001::ALStepC1S001():Super() {
 	Name = FName("C1S1");
 	InputEnabled = true;
+	CamTarget = nullptr;
 	UsePawnCam = true;
-	
 	// finish on obtaining these.
 	FinishItems = {
 		"T0",

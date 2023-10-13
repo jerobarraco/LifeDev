@@ -14,12 +14,12 @@ ALStepC1S000::ALStepC1S000():Super() {
 	
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
+	CamTarget = nullptr; // use pawn cam
 	UsePawnCam = true;
 	UseFadeTime = true;
 	UseFade = true;
-	TeleportChar = true;
+	TeleportChar = true; // move the char to where this camera is
 	FinishPostWait = false; // will be set by seqid anyway
-	CamTarget = nullptr; // use previous camera
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Sounds/Music/Music02/Music02_MS.Music02_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>

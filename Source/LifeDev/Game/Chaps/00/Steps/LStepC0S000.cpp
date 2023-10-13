@@ -4,9 +4,11 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Interact/Animator/CRandomizer.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
 	Name = FName("C0S0");
@@ -32,7 +34,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 }
 
 void ALStepC0S000::ShowDoors(bool Chap00) {
-	// TODO remove this once the data-layer-loading is implemented
+	// TODO remove this, the data-layer-loading is implemented
 	if (IsValid(C0Door)) {
 		C0Door->SetActorHiddenInGame(!Chap00);
 	}
@@ -65,4 +67,9 @@ void ALStepC0S000::Stop_Implementation() {
 	ShowDoors(false);
 	Super::Stop_Implementation();
 	// UFlashback::SetValS(GetWorld(), 0, 5);
+}
+
+void ALStepC0S000::Debug_Implementation() {
+	Super::Debug_Implementation();
+	Inventory->Mod(LDConsts::Items::Poem0, 1);
 }

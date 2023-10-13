@@ -21,7 +21,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Start() ;
 	virtual void Start_Implementation();
-
+	
 	// don't call this one directly. called by the system. Override to perform whatever the step needs to do at the end.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Stop();
@@ -99,6 +99,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	void UpdateCamEnabled();
+	void BlendCam() const;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;

@@ -27,29 +27,39 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Starting step '%s'"), *Name.ToString());
 
 	UWorld* const World = GetWorld();
-	if (WaitTime>0 && World) {
-		FTimerHandle Handle;
-		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
-	} else {
-		PostWait();
-	}
 
+	// teleport the character
 	if (World) {
-        ACharacter* const Char = Cast<ACharacter>(UGameplayStatics::GetActorOfClass(GetWorld(), ACharacter::StaticClass()));
+        ACharacter* const Char = Cast<ACharacter>(
+        	UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
         if (IsValid(Char)) {
         	const FTransform& T = GetActorTransform();
         	Char->TeleportTo(T.GetLocation(), T.Rotator());
         }
 	}
+
+	// blend before the wait to avoid weird issues.
+	// if you actually wanna see the blend you may not want the fade anyway. fade and wait are weird combination. i think.
+	BlendCam();
+
+	// do after the rest since post-wait is another flow
+	if (World && WaitTime>0) {
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
+	} else {
+		PostWait();
+	}
+}
+
+void AStep::BlendCam() const {
+	// set camera if camtarget is set
+	if (!IsValid(CamTarget)) return;
+
+	UE_LOG(LogTemp, Log, TEXT("AStep Blending camera"));
+	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
 void AStep::PostWait_Implementation() {
-	// set camera if camtarget is set
-	if (IsValid(CamTarget)) {
-		UE_LOG(LogTemp, Log, TEXT("AStep Blending camera"));
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
-	}
-	
 	if (UseDebug) {
 		Debug();
 	}
