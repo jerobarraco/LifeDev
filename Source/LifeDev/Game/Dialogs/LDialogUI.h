@@ -1,7 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
-#include "Dialogs/DialogUI.h"
+#include "Diags/DialogUI.h"
 
 #include "LDialogUI.generated.h"
 

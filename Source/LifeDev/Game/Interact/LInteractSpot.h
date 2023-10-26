@@ -2,11 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "LInteract.h"
-#include "Dialogs/Dialogs.h"
-#include "Interact/InteractAnim.h"
-#include "Inventory/Inventory.h"
 
 #include "LInteractSpot.generated.h"
+
 // A Place to drop other interacts
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteractSpot: public ALInteract {

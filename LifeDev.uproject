@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.3",
+	"EngineAssociation": "FFE44E5D-AE3E-4B89-85C5-B6842D036072",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -24,27 +24,73 @@
 	"Plugins": [
 		{
 			"Name": "Story",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
-			"Name": "Dialogs",
-			"Enabled": true
+			"Name": "Diags",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
 			"Name": "Interact",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
 			"Name": "Inventory",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
 			"Name": "JUtils",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
 			"Name": "Sounds",
-			"Enabled": true
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
+		},
+		{
+			"Name": "JSig",
+			"Enabled": false
 		},
 		{
 			"Name": "Muse",

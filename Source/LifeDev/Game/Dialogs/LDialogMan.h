@@ -3,16 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Dialogs/DialogManager.h"
+#include "Diags/DiagMan.h"
 
 #include "LDialogMan.generated.h"
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
-class LIFEDEV_API ALDialogMan : public ADialogManager {
+class LIFEDEV_API ALDialogMan : public ADiagMan {
 	GENERATED_BODY()
 
 public:
-	
 	ALDialogMan();
 };

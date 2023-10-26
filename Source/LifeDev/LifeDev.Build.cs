@@ -10,14 +10,18 @@ public class LifeDev : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "EnhancedInput",
-			"UMG", "DeveloperSettings"
+			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
+			"UMG", "DeveloperSettings",
 		});
+
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"Interact", "Dialogs", "JUtils", "Inventory", "Story",
-			"ChaosNiagara", "Niagara", "GameplayCameras", "Sounds",
+			// general
+			"ChaosNiagara", "Niagara", "GameplayCameras",
 			"MoviePlayer",  // loading screen yes.
+			// my stuff
+			"JUtils", "Interact",  "Diags", "Inventory", "Story",
+			"Sounds",
         });
 	}
 }

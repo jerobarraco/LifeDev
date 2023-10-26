@@ -2,6 +2,7 @@
 #include "LNPC01I00.h"
 
 
+#include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorCam.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"

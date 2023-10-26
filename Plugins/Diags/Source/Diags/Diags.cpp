@@ -1,16 +1,16 @@
-// Copyright (C) 2023 Jeronimo Barraco-Marmol
+// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: GPL-2.0
 
-
-#include "Dialogs.h"
+#include "Diags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
-void UDialogs::AddDiag(const FDialog& Diag) {
+void UDiags::AddDiag(const FDialog& Diag) {
 	Pending.Add(Diag);
 	ShowNext();
 }
 
-bool UDialogs::AddDiagId(const FName& Row) {
+bool UDiags::AddDiagId(const FName& Row) {
 	FDialog OutDialog; FDialogChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar);
 	if (!Ok) return false;
@@ -19,7 +19,7 @@ bool UDialogs::AddDiagId(const FName& Row) {
 	return true;
 }
 
-bool UDialogs::AddId(const FName& Row) {
+bool UDiags::AddId(const FName& Row) {
 	if (Row.IsNone()) return false;
 
 	// attempt to add a sequence (can be random)
@@ -32,7 +32,7 @@ bool UDialogs::AddId(const FName& Row) {
 	return false;
 }
 
-bool UDialogs::AddManyIds(const TArray<FName>& Rows) {
+bool UDiags::AddManyIds(const TArray<FName>& Rows) {
 	bool Success = true;
 	const int32 Num = Rows.Num();
 	for (int32 i = 0; i < Num; ++i) {
@@ -50,12 +50,12 @@ bool UDialogs::AddManyIds(const TArray<FName>& Rows) {
 	return Success;
 }
 
-bool UDialogs::AddSeq(const FDialogSequence& Seq) {
+bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	const TArray<FName>& Rows = Seq.DiagRows;
 	return AddManyIds(Rows);
 }
 
-bool UDialogs::AddSeqId(const FName& RowName) {
+bool UDiags::AddSeqId(const FName& RowName) {
 	FDialogSequence Seq;
 	const bool Ok = GetSeq(RowName, Seq);
 	if (!Ok) return false;
@@ -69,7 +69,7 @@ bool UDialogs::AddSeqId(const FName& RowName) {
 	return AddSeq(Seq);
 }
 
-bool UDialogs::AddRnd(const FDialogSequence& Seq) {
+bool UDiags::AddRnd(const FDialogSequence& Seq) {
 	const int32 Num = Seq.DiagRows.Num();
 	if (Num <= 0) return false;
 
@@ -77,26 +77,26 @@ bool UDialogs::AddRnd(const FDialogSequence& Seq) {
 	return AddId(Seq.DiagRows[i]);
 }
 
-void UDialogs::DiagDone() {
+void UDiags::DiagDone() {
 	IsShowing = false;
 	ShowNext();
 }
 
-void UDialogs::SetData(UDataTable* AllDialogs, UDataTable* AllChars, UDataTable* AllSeqs) {
-	Diags = IsValid(AllDialogs)? AllDialogs : nullptr;
+void UDiags::SetData(UDataTable* AllDiags, UDataTable* AllChars, UDataTable* AllSeqs) {
+	Diags = IsValid(AllDiags)? AllDiags : nullptr;
 	Chars = IsValid(AllChars)? AllChars: nullptr;
 	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
 }
 
-void UDialogs::Init() {}
+void UDiags::Init() {}
 
-void UDialogs::DeInit() {
+void UDiags::DeInit() {
 	Diags = nullptr;
 	Chars = nullptr;
 	Seqs = nullptr;
 }
 
-bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
+bool UDiags::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Diags)) return false;
 
@@ -107,11 +107,11 @@ bool UDialogs::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutCh
 	}
 
 	OutRow = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
-	GetChar(OutRow.CharRow, OutChar); // ignore if the char is not found for the result, we only care about dialogs
+	GetChar(OutRow.CharRow, OutChar); // ignore if the char is not found for the result, we only care about Diags
 	return true;
 }
 
-bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
+bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Chars)) return false;
 
@@ -125,7 +125,7 @@ bool UDialogs::GetChar(const FName& RowName, FDialogChar& OutChar) const {
 	return true;
 }
 
-bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
+bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Seqs)) return false;
 
@@ -139,7 +139,7 @@ bool UDialogs::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 	return true;
 }
 
-void UDialogs::ShowNext() {
+void UDiags::ShowNext() {
 	if (IsShowing) return;
 	// this is important for stop to work correctly.
 	IsShowing = true;
@@ -157,7 +157,7 @@ void UDialogs::ShowNext() {
 	OnShow.Broadcast(Diag);
 }
 
-void UDialogs::Stop() {
+void UDiags::Stop() {
 	if (!IsShowing) return;
 	IsShowing = false;
 

@@ -10,6 +10,9 @@
 class UCameraComponent;
 class ACameraActor;
 class UDataLayerAsset;
+class USceneComponent;
+class AActor;
+class USoundBase;
 
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStep : public AActor {

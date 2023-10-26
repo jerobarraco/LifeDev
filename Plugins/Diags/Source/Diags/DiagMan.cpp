@@ -1,6 +1,6 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-#include "DialogManager.h"
+#include "DiagMan.h"
 
 // these two are needed anyway otherwise it wont compile
 #include "InputMappingContext.h"
@@ -10,35 +10,35 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "DialogUI.h"
-#include "Dialogs.h"
+#include "Diags.h"
 #include "DiagTypes.h" // Log
 
-ADialogManager::ADialogManager():Super() {
+ADiagMan::ADiagMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
 	
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Dialogs/Input/IMC_Dialogs"));
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Diags/Input/IMC_Dialogs"));
 	Mapping = DefaultMapping.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Dialogs/Input/IA_Skip"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Diags/Input/IA_Skip"));
 	ActionSkip = CActionSkip.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionBack(TEXT("/Dialogs/Input/IA_Back"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> CActionBack(TEXT("/Diags/Input/IA_Back"));
 	ActionBack = CActionBack.Object;
 	
 	UIClass = UDialogUI::StaticClass();
 }
 
-void ADialogManager::Init() {
+void ADiagMan::Init() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
-	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs = World->GetSubsystem<UDiags>();
 	if (!IsValid(Dialogs)) return;
 
-	Dialogs->OnShow.AddUniqueDynamic(this, &ADialogManager::Show);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADialogManager::Hide);
+	Dialogs->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
 }
 
-void ADialogManager::DeInit() {
+void ADiagMan::DeInit() {
 	if (IsValid(Dialogs)) {
 		Dialogs->OnShow.RemoveAll(this);
 		Dialogs->OnDone.RemoveAll(this);
@@ -52,21 +52,21 @@ void ADialogManager::DeInit() {
 	UI = nullptr;
 }
 
-void ADialogManager::Show(const FDialog& Diag) {
-	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager.Show:"));
+void ADiagMan::Show(const FDialog& Diag) {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan.Show:"));
 	if (IsShowing) {
 		UE_LOG(LogTextDialogs, Log, TEXT("Attempted to show text when i was already showing."));
 	}
 
 	if (DebugSkip) {
-		UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: DebugSkip is set. Skipping."));
+		UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DebugSkip is set. Skipping."));
 		// skip on the next frame to avoid having issues due to call stack
-		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ADialogManager::UIDiagDone);
+		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
 		return;
 	}
 
 	if (!IsValid(UI)) {
-		UE_LOG(LogTextDialogs, Warning, TEXT("DialogManager: UI was not ready"));
+		UE_LOG(LogTextDialogs, Warning, TEXT("DiagMan: UI was not ready"));
 		return;
 	}
 	
@@ -77,7 +77,7 @@ void ADialogManager::Show(const FDialog& Diag) {
 	UI->Show(Diag);
 }
 
-void ADialogManager::Hide() {
+void ADiagMan::Hide() {
 	if (!IsShowing) return;
 	if (!IsValid(UI)) return;
 
@@ -86,7 +86,7 @@ void ADialogManager::Hide() {
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 }
 
-void ADialogManager::BeginPlay() {
+void ADiagMan::BeginPlay() {
 	Super::BeginPlay();
 
 	// bind the action
@@ -94,12 +94,12 @@ void ADialogManager::BeginPlay() {
 	UEnhancedInputComponent* const Input = World ? Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent) : nullptr;
 	if (IsValid(Input)){
 		if (IsValid(ActionSkip)) {
-			Input->BindAction<ADialogManager>(
-				ActionSkip, ETriggerEvent::Triggered, this, &ADialogManager::Skip);
+			Input->BindAction<ADiagMan>(
+				ActionSkip, ETriggerEvent::Triggered, this, &ADiagMan::Skip);
 		}
 		if (IsValid(ActionBack)) {
-			Input->BindAction<ADialogManager>(
-				ActionBack, ETriggerEvent::Triggered, this, &ADialogManager::Back);
+			Input->BindAction<ADiagMan>(
+				ActionBack, ETriggerEvent::Triggered, this, &ADiagMan::Back);
 		}
 	}
 
@@ -109,14 +109,14 @@ void ADialogManager::BeginPlay() {
 		UI = NewObject<UDialogUI>(this, Class);
 		if (IsValid(UI)) {
 			UI->AddToViewport(ZOrder);
-			UI->OnDone.AddUniqueDynamic(this, &ADialogManager::UIDiagDone);
+			UI->OnDone.AddUniqueDynamic(this, &ADiagMan::UIDiagDone);
 			IsShowing = true; // temporarily set, so that it hides.
 			Hide();
 		}
 	}
 }
 
-void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
 	DeInit();
 
@@ -124,19 +124,19 @@ void ADialogManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ADialogManager::UIDiagDone() {
+void ADiagMan::UIDiagDone() {
 	if (!IsValid(Dialogs)) return;
 	Dialogs->DiagDone();
 }
 
-void ADialogManager::Skip() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: Skip"));
+void ADiagMan::Skip() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Skip"));
 	if(!IsValid(UI)) return;
 	UI->Skip();
 }
 
-void ADialogManager::Back() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DialogManager: Back"));
+void ADiagMan::Back() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Back"));
 	if(!IsValid(UI)) return;
 	UI->Back();
 }

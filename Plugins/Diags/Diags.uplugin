@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "Dialogs",
+	"FriendlyName": "Diags",
 	"Description": "Dialog system",
 	"Category": "JTools",
 	"CreatedBy": "Jeronimo Barraco-Marmol",
@@ -17,7 +17,7 @@
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
 	"Modules": [
 		{
-			"Name": "Dialogs",
+			"Name": "Diags",
 			"Type": "RuntimeAndProgram",
 			"LoadingPhase": "Default",
 			"WhitelistTargets": ["Game", "Editor",  "Client", "Program",  "Server"],

@@ -13,10 +13,11 @@ struct LIFEDEV_API FLChapter: public FTableRowBase {
 
 public:
 	// dialog dialogs
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Dialog"))
 	TSoftObjectPtr<UDataTable> Dialogs;
 	// dialog sequences
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="DialogSequence"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags/DialogSequence"))
 	TSoftObjectPtr<UDataTable> Sequences;
 	
 	// story steps belonging to this chapter

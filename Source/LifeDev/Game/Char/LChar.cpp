@@ -10,8 +10,8 @@
 #include "GameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Diags/Diags.h"
 
-#include "Dialogs/Dialogs.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 #include "Interact/CInteract.h"
@@ -167,7 +167,7 @@ void ALChar::BeginPlay()
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
-	Dialogs = GetWorld()->GetSubsystem<UDialogs>();
+	Dialogs = GetWorld()->GetSubsystem<UDiags>();
 
 	if (IsValid(Noiser)) {
 		Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);

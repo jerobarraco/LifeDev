@@ -2,7 +2,7 @@
 
 #include "LDialogMan.h"
 
-#include "Dialogs/DialogUI.h"
+#include "Diags/DialogUI.h"
 
 ALDialogMan::ALDialogMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI> CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_DialogUI"));

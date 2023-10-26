@@ -1,6 +1,6 @@
 #include "LInteractSpot.h"
 
-#include "Dialogs/Dialogs.h"
+#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 
 ALInteractSpot::ALInteractSpot():Super() {

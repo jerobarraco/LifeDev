@@ -6,14 +6,14 @@
 #include "Subsystems/WorldSubsystem.h"
 
 #include "DiagTypes.h"
-#include "Dialogs.generated.h"
+#include "Diags.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
 
 // World subsystem to deal with dialogs
 UCLASS(Blueprintable, Category="Dialogs")
-class DIALOGS_API UDialogs : public UWorldSubsystem
+class DIAGS_API UDiags : public UWorldSubsystem
 {
 	GENERATED_BODY()
 

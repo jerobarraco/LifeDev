@@ -1,25 +1,24 @@
-// Copyright (C) 2023 Jeronimo Barraco-Marmol
+// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: GPL-2.0
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DiagTypes.h"
-#include "Dialogs.h"
-#include "EnhancedInputComponent.h"
 
-#include "DialogManager.generated.h"
+#include "DiagMan.generated.h"
 
+class UDiags;
 class UDialogUI;
 class UInputMappingContext;
 class UInputAction;
 
 // base class for the character
 UCLASS(Blueprintable, config=Game)
-class DIALOGS_API ADialogManager : public AActor {
+class DIAGS_API ADiagMan : public AActor {
 	GENERATED_BODY()
 
 public:
-	ADialogManager();
+	ADiagMan();
 
 	UFUNCTION(BlueprintCallable)
 	void Init();
@@ -62,7 +61,7 @@ public:
 	UInputAction* ActionBack = nullptr;
 
 	// when set it will skip showing the dialogs but still mark them as read
-	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category=Debug)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
 	bool DebugSkip = false;
 
 private:
@@ -71,7 +70,7 @@ private:
 	void UIDiagDone();
 
 	UPROPERTY(Transient)
-	UDialogs* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr;
 
 	UPROPERTY(Transient)
 	UDialogUI* UI = nullptr;

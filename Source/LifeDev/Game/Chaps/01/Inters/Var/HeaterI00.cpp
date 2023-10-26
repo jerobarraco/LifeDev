@@ -1,6 +1,8 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #include "HeaterI00.h"
+
+#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"

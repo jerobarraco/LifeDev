@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Inventory/InventoryTypes.h"
 #include "Story/Step.h"
 
 #include "LStep.generated.h"
 
-class UDialogs;
+class UDiags;
 class UInventory;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -56,7 +55,7 @@ protected:
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UDialogs* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UInventory* Inventory = nullptr;
 };

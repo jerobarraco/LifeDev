@@ -7,7 +7,7 @@
 
 class UFlags;
 class UCAnimatorFade;
-class UDialogs;
+class UDiags;
 class UInventory;
 
 // An interactive actor that can have an animation
@@ -96,7 +96,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UDialogs* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr;
 };
 
 // TODO at some point *consider* moving the ItemReward functionality to its own child class

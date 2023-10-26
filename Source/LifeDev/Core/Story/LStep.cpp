@@ -1,8 +1,9 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStep.h"
 
-#include "Dialogs/Dialogs.h"
+#include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 void ALStep::Start_Implementation() {
@@ -69,7 +70,7 @@ void ALStep::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
-	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
 }
 

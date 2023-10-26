@@ -26,7 +26,7 @@ enum class EDialogType : uint8 {
 
 // The base structure for dialogs
 USTRUCT(Blueprintable, BlueprintType)
-struct DIALOGS_API FDialog: public FTableRowBase {
+struct DIAGS_API FDialog: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
@@ -43,7 +43,7 @@ public:
 
 // The base structure for dialog sequences
 USTRUCT(Blueprintable, BlueprintType)
-struct DIALOGS_API FDialogSequence: public FTableRowBase {
+struct DIAGS_API FDialogSequence: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
@@ -55,7 +55,7 @@ public:
 // chars
 // structure to define a character
 USTRUCT(Blueprintable, BlueprintType)
-struct DIALOGS_API FDialogChar: public FTableRowBase {
+struct DIAGS_API FDialogChar: public FTableRowBase {
 	GENERATED_BODY()
 
 public:

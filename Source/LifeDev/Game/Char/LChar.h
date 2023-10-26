@@ -10,7 +10,7 @@
 #include "LChar.generated.h"
 
 class ULSettingsUI;
-class UDialogs;
+class UDiags;
 class UCInteractor;
 class UCInteract;
 class UInputComponent;
@@ -126,6 +126,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDialogs* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr;
 };
 

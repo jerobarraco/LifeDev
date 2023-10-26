@@ -15,7 +15,7 @@ class AStoryManager;
 class ULSysSettings;
 class ALChar;
 class UStory;
-class UDialogs;
+class UDiags;
 class ALMusicMan;
 class AFlashbackMan;
 class UInventory;
@@ -57,7 +57,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UDialogs* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALInventoryManager* InvManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

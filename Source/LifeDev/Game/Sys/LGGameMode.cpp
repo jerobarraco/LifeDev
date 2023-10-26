@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
-#include "Dialogs/DialogManager.h"
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Interact/CInteractor.h"
@@ -17,6 +16,7 @@
 #include "Story/StoryManager.h"
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
+#include "Diags/Diags.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
@@ -127,7 +127,7 @@ void ALGGameMode::Init_Implementation() {
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	
 	/// Dialogs
-	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs = World->GetSubsystem<UDiags>();
 	Dialogs->Init();
 
 	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));

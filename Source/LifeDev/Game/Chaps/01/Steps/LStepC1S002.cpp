@@ -4,6 +4,8 @@
 
 #include "DefaultCameraShakeBase.h"
 
+#include "Diags/Diags.h"
+
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"

@@ -3,9 +3,9 @@
 
 using UnrealBuildTool;
 
-public class Dialogs: ModuleRules
+public class Diags: ModuleRules
 {
-	public Dialogs(ReadOnlyTargetRules Target) : base(Target)
+	public Diags(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -18,7 +18,6 @@ public class Dialogs: ModuleRules
 				// ... add other private include paths required here ...
 		});
 			
-		
 		// ... add other public dependencies that you statically link with here ...
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",

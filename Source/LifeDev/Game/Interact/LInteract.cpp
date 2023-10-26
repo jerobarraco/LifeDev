@@ -1,11 +1,13 @@
 #include "LInteract.h"
 
 #include "Components/AudioComponent.h"
-#include "Dialogs/Dialogs.h"
+
+#include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/Actors/CQuickMesh.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALInteract::ALInteract():Super() {
@@ -26,7 +28,7 @@ void ALInteract::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();
-	Dialogs = World->GetSubsystem<UDialogs>();
+	Dialogs = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
 }
 
