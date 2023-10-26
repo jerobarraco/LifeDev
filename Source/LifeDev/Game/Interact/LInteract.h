@@ -9,6 +9,7 @@
 
 class UFlags;
 class UCAnimatorFade;
+class UDialogs;
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
