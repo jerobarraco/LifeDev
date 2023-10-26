@@ -1,15 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Dialogs/Dialogs.h"
 #include "Interact/InteractAnim.h"
-#include "Inventory/Inventory.h"
 
 #include "LInteract.generated.h"
 
 class UFlags;
 class UCAnimatorFade;
 class UDialogs;
+class UInventory;
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)

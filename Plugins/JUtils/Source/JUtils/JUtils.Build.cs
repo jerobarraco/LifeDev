@@ -11,7 +11,9 @@ public class JUtils: ModuleRules
 		
 		PublicIncludePaths.AddRange(new string[] {
 			// ... add public include paths required here ...
-			ModuleDirectory + "/Math"
+			ModuleDirectory + "/Math",
+			ModuleDirectory + "/Actors",
+			ModuleDirectory + "/UI",
 		});
 				
 		PrivateIncludePaths.AddRange(new string[] {
@@ -26,7 +28,6 @@ public class JUtils: ModuleRules
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "EnhancedInput", "UMG",
-		//	"SignificanceManager"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
