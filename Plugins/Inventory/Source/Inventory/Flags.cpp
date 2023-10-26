@@ -1,8 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: GPL-2.0
 
 #include "Flags.h"
-
-#include "Engine/DataTable.h"
 
 void UFlags::Mod(const FName& Name, float Diff) {
 	if (Name.IsNone()) return;

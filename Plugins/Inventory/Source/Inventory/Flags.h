@@ -1,4 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol
+// SPDX-License-Identifier: GPL-2.0
 
 #pragma once
 
@@ -6,7 +7,6 @@
 #include "Subsystems/WorldSubsystem.h"
 
 #include "Flags.generated.h"
-
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FFlagsOnMod, const FName&, Name, float, Diff, float, Total);
 DECLARE_LOG_CATEGORY_CLASS(LogFlags, Log, Log);
