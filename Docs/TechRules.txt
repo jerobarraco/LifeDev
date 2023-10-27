@@ -19,7 +19,7 @@
 ** Use BlueprintNativeEvents EVEN if the cpp body is empty. keep the control in cpp. avoid having function chains that only exists on bp.
 * Use minimal decoupling. Use polymorphism to achieve it.
 ** This is tricky if you're not me (hard to explain). Check the code for examples, and ask me to verify.
-** Avoid usage of events when possible. 
+** Avoid usage of events when possible. no event driven anything.
 ** Ensure a direct top-down hierarchy.
 *** parents call children directly through functions.
 *** child communicate with parents through delegates.
