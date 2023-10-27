@@ -10,6 +10,9 @@
 
 #include "CSignificance.generated.h"
 
+// TO use. just enable this plugin and add some CSignificance components to your actors
+// Set the tick interval if desired on this subsystem.
+
 UENUM(BlueprintType)
 enum class ESignificance : uint8
 {

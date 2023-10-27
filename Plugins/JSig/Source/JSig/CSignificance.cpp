@@ -6,7 +6,7 @@
 
 #include "SignificanceManager.h"
 
-/* Allows us to force significance on all classes to quickly compare the performance differences as if the system was disabled */
+// Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 	TEXT("SigMan.SigOverride"),
@@ -14,7 +14,6 @@ static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 	TEXT("Force significance on all managed objects. -1 is default, 0-4 is hidden, lowest, medium, highest.\n"),
 	ECVF_Cheat
 );
-
 
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -62,6 +61,7 @@ void UCSignificance::Unregister() {
 
 float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
 	// you should pass for now.
+	// TODO
 	return GSigOverride;
 }
 
