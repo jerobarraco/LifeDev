@@ -12,7 +12,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, float, Value);
 UCLASS(Blueprintable, Category="LifeDev")
 class LIFEDEV_API UFlashback : public UTickableWorldSubsystem
 {
-private:
 	GENERATED_BODY()
 
 public:

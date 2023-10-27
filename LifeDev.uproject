@@ -90,7 +90,7 @@
 		},
 		{
 			"Name": "JSig",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "Muse",
