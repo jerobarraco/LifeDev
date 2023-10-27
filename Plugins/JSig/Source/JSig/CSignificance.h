@@ -1,14 +1,14 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
-
 // based on code from Tom Looman https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
-// TODO move this into its own plugin to be able to disable if needed.
-// also make a tickable subsystem to handle the manager update
 
 #pragma once
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+
+#include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this
 
 #include "CSignificance.generated.h"
-
 
 UENUM(BlueprintType)
 enum class ESignificance : uint8
@@ -19,7 +19,6 @@ enum class ESignificance : uint8
 	// No stripping/culling
 	High = 3
 };
-
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificance, Significance);
 
@@ -37,5 +36,13 @@ public:
 	FOnSignificanceChanged OnChanged;
 
 protected:
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	void Register();
+	void Unregister();
+
+	// TODO should have an override of this?
+	// maybe a delegate with retval will cover the interface AND the subclassing
+	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
+	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
 };
