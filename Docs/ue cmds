@@ -43,3 +43,7 @@ au.Debug.AudioSoloSoundWave wordtomatch
 # debug asset loading
 # https://docs.unrealengine.com/5.1/en-US/zen-loader-in-unreal-engine/
 ./LifeDev.sh -LogCmds="LogStreaming veryverbose"
+
+
+# debug input, only avail on play in editor https://forums.unrealengine.com/t/command-to-debug-show-inputs-on-screen/461998/2
+showdebug input
