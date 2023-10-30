@@ -2,7 +2,6 @@
 
 #pragma once
 #include "Components/BoxComponent.h"
-#include "Components/PostProcessComponent.h"
 
 #include "CInteract.generated.h"
 
@@ -10,11 +9,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, bool, IsOn);
 
 // Helps define an interaction volume
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {
-public:
 	GENERATED_BODY()
 
+public:
 	UCInteract();
 
 	UFUNCTION(BlueprintCallable)

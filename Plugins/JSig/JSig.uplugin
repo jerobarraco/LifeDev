@@ -22,5 +22,5 @@
 			"LoadingPhase": "PostEngineInit"
 		}
 	],
-	"Plugins": []
+	"Plugins": [ {"Name": "SignificanceManager", "Enabled": true}]
 }
