@@ -85,21 +85,13 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
-	// Verify conditions
-	// TODO check solution
+	// trigger update now, before done
 	OnUpdate.Broadcast();
 
-	if (Type == EPuzzleType::NONE || Type == EPuzzleType::COUNT) return;
-
-	UCInteract* const Inter = Cast<UCInteract>(Obj);
-	if (!IsValid(Inter)) {
-		UE_LOG(LogCPuzzle, Log, TEXT("Invalid interact calling intertrigger"));
-		return;
-	}
-
 	if (Type == EPuzzleType::SEQUENCE) {
-		if (SequenceIDs.Num()==CurrentIds.Num()) {
-			const bool Ok = CheckSequence(ID);
+		const bool Ok = CheckSequence(ID);
+		// if the length matches return done anyways
+		if (SequenceIDs.Num() == CurrentIds.Num()) {
 			Done(Ok);
 			return;
 		}
