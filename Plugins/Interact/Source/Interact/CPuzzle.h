@@ -30,10 +30,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInteracts(const TArray<UCInteract*>& Inters);
 	
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnUpdate OnUpdate;
 	
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnDone OnDone;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
@@ -59,7 +59,7 @@ protected:
 	// to be called when doned
 	void Done(bool Ok = true) const;
 
-	UFUNCTION()
+	UFUNCTION() //bound
 	void InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj);
 
 	// will try to bind if set before begin play
