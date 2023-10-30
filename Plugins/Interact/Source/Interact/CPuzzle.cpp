@@ -26,7 +26,16 @@ void UCPuzzle::SetInteracts(const TArray<UCInteract*>& Inters) {
 }
 
 void UCPuzzle::Done(bool Ok) const {
+	if (Ok && DisableOnDone) {
+		for(UCInteract* const I: Interacts) {
+			I->SetEnabled(false);
+		}
+	}
 	OnDone.Broadcast(Ok);
+}
+
+bool UCPuzzle::CheckCombination(int32 ID) {
+	return false;
 }
 
 void UCPuzzle::Bind() {
@@ -53,13 +62,51 @@ void UCPuzzle::Unbind() {
 	}
 }
 
+bool UCPuzzle::CheckSequence(int32 ID) {
+	UE_LOG(LogCPuzzle, Log, TEXT("Toggling id=%i"), ID);
+
+	if (CurrentIds.Contains(ID)) {
+		CurrentIds.Remove(ID);
+	} else {
+		CurrentIds.Add(ID);
+	}
+
+	if (CurrentIds.Num() != SequenceIDs.Num() ) return false;
+	
+	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
+		if (CurrentIds[i]!=SequenceIDs[i]) {
+			UE_LOG(LogCPuzzle, Log, TEXT("Sequence is different"));
+			return false;
+		}
+	}
+
+	UE_LOG(LogCPuzzle, Log, TEXT("Sequence is correct"));
+	return true;
+}
+
 void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	// Verify conditions
 	// TODO check solution
 	OnUpdate.Broadcast();
-	const bool Ok = true;
-	if (Ok) {
-		Done();
+
+	if (Type == EPuzzleType::NONE || Type == EPuzzleType::COUNT) return;
+
+	UCInteract* const Inter = Cast<UCInteract>(Obj);
+	if (!IsValid(Inter)) {
+		UE_LOG(LogCPuzzle, Log, TEXT("Invalid interact calling intertrigger"));
+		return;
+	}
+
+	if (Type == EPuzzleType::SEQUENCE) {
+		if (SequenceIDs.Num()==CurrentIds.Num()) {
+			const bool Ok = CheckSequence(ID);
+			Done(Ok);
+			return;
+		}
+	} else if (Type == EPuzzleType::COMBINATION) {
+		const bool Ok = CheckCombination(ID);
+	} else {
+		UE_LOG(LogCPuzzle, Log, TEXT("Invalid puzzle type"));
 	}
 }
 

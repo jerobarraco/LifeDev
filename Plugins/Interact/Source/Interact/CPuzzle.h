@@ -35,22 +35,37 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
 	FPuzzleOnDone OnDone;
-
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	EPuzzleType Type = EPuzzleType::SEQUENCE;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TArray<int32> SequenceIDs;
+	
 	// TODO implement
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	bool LockOnDone = false;
-	
+	bool DisableOnDone = false;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void Unbind();
 	void Bind();
-	void Done(bool Ok = true) const;
 	
+	// will modify the sequence toggling the id
+	bool CheckSequence(int32 ID);
+	bool CheckCombination(int32 ID);
+
+	// to be called when doned
+	void Done(bool Ok = true) const;
+
 	UFUNCTION()
 	void InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj);
 
-	// will try to bind if set before beginplay
+	// will try to bind if set before begin play
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TArray<UCInteract*> Interacts;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<int32> CurrentIds;
 };
