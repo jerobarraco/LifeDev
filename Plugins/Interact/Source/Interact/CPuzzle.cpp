@@ -2,6 +2,8 @@
 
 #include "CPuzzle.h"
 
+#include "DelegateWrappers.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 
@@ -27,19 +29,16 @@ void UCPuzzle::Done(bool Ok) const {
 	OnDone.Broadcast(Ok);
 }
 
-void UCPuzzle::Triggered() {
-	// TODO check solution
-	OnUpdate.Broadcast();
-	const bool Ok = true;
-	if (Ok) {
-		Done();
-	}
-}
-
 void UCPuzzle::Bind() {
+	int32 i = 0;
 	for (UCInteract* const I: Interacts) {
-		// TODO add wrapper
-		I->OnTrigger.AddUniqueDynamic(this, &UCPuzzle::Triggered);
+		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
+		if (!IsValid(Wrapper)) continue;
+		Wrapper->Obj = I;
+		Wrapper->ID = i;
+		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
+		I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		++i;
 	}
 }
 
@@ -50,8 +49,17 @@ void UCPuzzle::BeginPlay() {
 
 void UCPuzzle::Unbind() {
 	for (UCInteract* const I: Interacts) {
-		// TODO add wrapper
 		I->OnTrigger.RemoveAll(this);
+	}
+}
+
+void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
+	// Verify conditions
+	// TODO check solution
+	OnUpdate.Broadcast();
+	const bool Ok = true;
+	if (Ok) {
+		Done();
 	}
 }
 

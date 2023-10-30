@@ -4,7 +4,7 @@
 
 #include "DelegateWrappers.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, class UDelegateWrapperID*, Wrapper, int32, ID, UObject*, Obj);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, class UDelegateWrapper*, Wrapper, int32, ID, UObject*, Obj);
 
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 // A simple wrapper for binding to delegates with extra parameters.
@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, class UDelegateWrap
 // Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
 // C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::DispatchBool);
 UCLASS(Blueprintable, BlueprintType)
-class UDelegateWrapperID : public UObject {
+class JUTILS_API UDelegateWrapper : public UObject {
 	GENERATED_BODY()
 
 public:
@@ -22,7 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void Dispatch() { OnDispatch.Broadcast(this, ID, Obj); }
 
-	// or bind this function to the other delegate
+	// or bind this function to the other delegate (useful when the other delegate has a param)
 	UFUNCTION(BlueprintCallable)
 	void DispatchBool(bool IsChecked) { Dispatch(); };
 	
