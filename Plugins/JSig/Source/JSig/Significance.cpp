@@ -66,7 +66,7 @@ void USignificance::Tick(float DeltaTime) {
 	}
 
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs: will update"), __func__);
-	
+
 	TArray<FTransform> TransformArray;
 	for (APlayerController* PC: PCs) {
 		FVector ViewLocation;
