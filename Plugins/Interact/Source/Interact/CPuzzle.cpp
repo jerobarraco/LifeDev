@@ -6,7 +6,6 @@
 #include "CInteract.h"
 #include "DelegateWrappers.h"
 
-
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 
 UCPuzzle::UCPuzzle(): Super() {
