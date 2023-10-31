@@ -35,18 +35,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Bind();
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	EPuzzleType Type = EPuzzleType::SEQUENCE;
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TArray<int32> SequenceIDs;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<int32> SolutionIDs;
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnDone = false;
 	
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnUpdate OnUpdate;
-	
+
+	// triggers when the puzzle is completed, with or without success.
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnDone OnDone;
 	
@@ -57,9 +58,11 @@ protected:
 	//internal. will modify the sequence toggling the id
 	bool CheckSequence(int32 ID);
 	bool CheckCombination(int32 ID);
+	bool IsCurrentSolution();
 	// internal. to be called when don
 	void Done(bool Ok = true) const;
 
+	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound
 	void InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj);
 
@@ -67,6 +70,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<AInteract*> Interacts;
 
-	UPROPERTY(BlueprintReadOnly)
+	// this is recycled by both modes. and means different things :)
+	// on sequence : its a seq of the ids used
+	// on combo: its a list of each interact's state
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<int32> CurrentIds;
 };

@@ -21,6 +21,16 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 		if (!IsValid(I)) continue;
 		Interacts.Add(I);
 	}
+	
+	CurrentIds.Empty();
+	if (Type== EPuzzleType::COMBINATION) {
+		for (AInteract* const I: Interacts) {
+			CurrentIds.Add(I->State);
+		}
+		if (CurrentIds.Num()!=SolutionIDs.Num()) {
+			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
+		}
+	}
 
 	Bind();
 }
@@ -32,10 +42,6 @@ void UCPuzzle::Done(bool Ok) const {
 		}
 	}
 	OnDone.Broadcast(Ok);
-}
-
-bool UCPuzzle::CheckCombination(int32 ID) {
-	return false;
 }
 
 void UCPuzzle::Bind() {
@@ -72,6 +78,32 @@ void UCPuzzle::Unbind() {
 	}
 }
 
+bool UCPuzzle::IsCurrentSolution() {
+	if (CurrentIds.Num() != SolutionIDs.Num() ) return false;
+
+	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
+		if (CurrentIds[i]!=SolutionIDs[i]) {
+			UE_LOG(LogCPuzzle, Log, TEXT("Solution is different"));
+			return false;
+		}
+	}
+
+	UE_LOG(LogCPuzzle, Log, TEXT("Solution is correct"));
+	return true;
+}
+
+bool UCPuzzle::CheckCombination(int32 ID) {
+	if (ID<0 || ID>= CurrentIds.Num()) {
+		UE_LOG(LogCPuzzle, Warning, TEXT("CheckCombination: ID out of bounds."));
+		return false;
+	}
+
+	AInteract* const I = Interacts[ID];
+	CurrentIds[ID] = I->State;
+
+	return IsCurrentSolution();
+}
+
 bool UCPuzzle::CheckSequence(int32 ID) {
 	UE_LOG(LogCPuzzle, Log, TEXT("Toggling id=%i"), ID);
 
@@ -81,17 +113,7 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 		CurrentIds.Add(ID);
 	}
 
-	if (CurrentIds.Num() != SequenceIDs.Num() ) return false;
-	
-	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
-		if (CurrentIds[i]!=SequenceIDs[i]) {
-			UE_LOG(LogCPuzzle, Log, TEXT("Sequence is different"));
-			return false;
-		}
-	}
-
-	UE_LOG(LogCPuzzle, Log, TEXT("Sequence is correct"));
-	return true;
+	return IsCurrentSolution();
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
@@ -101,12 +123,16 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	if (Type == EPuzzleType::SEQUENCE) {
 		const bool Ok = CheckSequence(ID);
 		// if the length matches return done anyways
-		if (SequenceIDs.Num() == CurrentIds.Num()) {
+		if (SolutionIDs.Num() == CurrentIds.Num()) {
 			Done(Ok);
 			return;
 		}
 	} else if (Type == EPuzzleType::COMBINATION) {
 		const bool Ok = CheckCombination(ID);
+		if (Ok) {
+			// only trigger when complete
+			Done(true);
+		}
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("Invalid puzzle type"));
 	}

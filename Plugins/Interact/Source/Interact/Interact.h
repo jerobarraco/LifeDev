@@ -61,6 +61,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
+	// the state of the interact. will be used by the puzzle and the interactanim, but also you can use it however you want.
+	UPROPERTY(BlueprintReadWrite)
+	int32 State = 0;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
