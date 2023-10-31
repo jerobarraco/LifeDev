@@ -19,24 +19,39 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;
 
-	// Text to be displayed on interaction
+	// Number of states. it will wrap around.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	int32 StateCount = 2;
+	
+	// Text to be displayed on each state
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
-		FText::FromString(TEXT("Open")), // !IsOpen // Closed text
-		FText::FromString(TEXT("Close")), // isOpen // Opened text
+		FText::FromString(TEXT("Open")), // 0 == !IsOpen // Closed text
+		FText::FromString(TEXT("Close")), // 1 == isOpen // Opened text
 	};
 
-	// sfx on open. Only when anim is enabled.
+	// the transforms for each state. if this is set it will override the anim values.
+	// the isAdditive flag will be respected.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TArray<FTransform> Trans;
+
+	// triggered when anim starts
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TArray<USoundBase*> SFX_Start;
+	// triggered when anim ends
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TArray<USoundBase*> SFX_Stop;
+	// sfx on open. Only when anim is enabled.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	USoundBase* SFX_Open = nullptr;
 	// sfx on open ended. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	USoundBase* SFX_OpenEnd = nullptr;
 	// sfx on close. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	USoundBase* SFX_Close = nullptr;
 	// sfx on close ended. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	USoundBase* SFX_CloseEnd = nullptr;
 
 protected:
@@ -60,6 +75,6 @@ protected:
 	UCAnimatorMix* Anim = nullptr;
 
 	// starts closed
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="Lock")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, meta=(DeprecatedProperty))
 	bool IsOpen = false;
 };

@@ -28,29 +28,36 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AInteractAnim::SetText_Implementation() {
-	Super::SetText_Implementation();
+	Super::SetText_Implementation(); // useless
+
 	if (Texts.Num()<1) {
 		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
 	}
-	if (Texts.Num()<2) {
-		Interact->Text = Texts[0];
-		return;
-	}
+
+	Interact->Text = Texts[State%Texts.Num()];
+	// if (Texts.Num()<2) {
+		// Interact->Text = Texts[0];
+		// return;
+	// }
 	
-	Interact->Text = Texts[IsOpen?1:0];
+	// Interact->Text = Texts[IsOpen?1:0];
 	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: NewText=%s"), *Interact->Text.ToString());
 }
 
 void AInteractAnim::Trigger_Implementation() {
 	// set the flag before so that the sound triggers are consistent
 	IsOpen = !IsOpen;
+	State = (State +1) % StateCount;
+	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.Trigger: State=%i"), State);
+
 	if (AnimEnabled) {
 		// this creates so many issues. notice how it's set.
-		Anim->PlaySet(!IsOpen);
+		Anim->PlaySet(State==0); //!IsOpen);
 		UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
 	}
-	Super::Trigger_Implementation(); // trigger the trigger sound and calls set text
+	// trigger the trigger sound and calls set text. notice done after changing the state.
+	Super::Trigger_Implementation();
 	// SetText(); // not needed. happens on super
 }
 
@@ -61,14 +68,22 @@ bool AInteractAnim::TryTrigger_Implementation() {
 
 void AInteractAnim::AnimBegin_Implementation() {
 	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = IsOpen ? SFX_Open : SFX_Close;
+	USoundBase* const Snd = IsOpen ? SFX_Open : SFX_Close; // todo remove
 	PlaySFX(Snd);
+	
+	if (State<0 || State >= SFX_Start.Num()) return;
+	USoundBase* const Snd2 = SFX_Start[State];
+	PlaySFX(Snd2);
 }
 
 void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = IsOpen ? SFX_OpenEnd : SFX_CloseEnd;
+	USoundBase* const Snd = IsOpen ? SFX_OpenEnd : SFX_CloseEnd; // todo remove
 	PlaySFX(Snd);
+
+	if (State<0 || State >= SFX_Stop.Num()) return;
+	USoundBase* const Snd2 = SFX_Stop[State];
+	PlaySFX(Snd2);
 }
 
 void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
