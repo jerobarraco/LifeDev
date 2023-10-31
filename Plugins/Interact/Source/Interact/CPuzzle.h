@@ -1,12 +1,12 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "CInteract.h"
 #include "DelegateWrappers.h"
 
 #include "CPuzzle.generated.h"
 
-class UCInteract;
+class AInteract;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnUpdate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOn);
 
@@ -28,7 +28,7 @@ public:
 
 	// don't call on constructor. call after begin play
 	UFUNCTION(BlueprintCallable)
-	void SetInteracts(const TArray<UCInteract*>& Inters);
+	void SetInteracts(const TArray<AInteract*>& Inters);
 	
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnUpdate OnUpdate;
@@ -64,7 +64,7 @@ protected:
 
 	// will try to bind if set before begin play
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	TArray<UCInteract*> Interacts;
+	TArray<AInteract*> Interacts;
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<int32> CurrentIds;

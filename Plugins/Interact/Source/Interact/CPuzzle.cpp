@@ -2,6 +2,8 @@
 
 #include "CPuzzle.h"
 
+#include "Interact.h"
+#include "CInteract.h"
 #include "DelegateWrappers.h"
 
 
@@ -12,14 +14,13 @@ UCPuzzle::UCPuzzle(): Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UCPuzzle::SetInteracts(const TArray<UCInteract*>& Inters) {
+void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 	Unbind();
 
 	Interacts.Empty();
-	for (UCInteract* const I: Inters) {
-		if (IsValid(I)) {
-			Interacts.Add(I);
-		}
+	for (AInteract* const I: Inters) {
+		if (!IsValid(I)) continue;
+		Interacts.Add(I);
 	}
 
 	Bind();
@@ -27,7 +28,7 @@ void UCPuzzle::SetInteracts(const TArray<UCInteract*>& Inters) {
 
 void UCPuzzle::Done(bool Ok) const {
 	if (Ok && DisableOnDone) {
-		for(UCInteract* const I: Interacts) {
+		for(AInteract* const I: Interacts) {
 			I->SetEnabled(false);
 		}
 	}
@@ -40,13 +41,18 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 
 void UCPuzzle::Bind() {
 	int32 i = 0;
-	for (UCInteract* const I: Interacts) {
+	for (AInteract* const I: Interacts) {
+		if (!IsValid(I)) continue;;
+		
+		UCInteract* const CI = I->GetComponentByClass<UCInteract>();
+		if (!IsValid(CI)) continue;;
+
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
 		if (!IsValid(Wrapper)) continue;
 		Wrapper->Obj = I;
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
-		I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		CI->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 		++i;
 	}
 }
@@ -57,8 +63,13 @@ void UCPuzzle::BeginPlay() {
 }
 
 void UCPuzzle::Unbind() {
-	for (UCInteract* const I: Interacts) {
-		I->OnTrigger.RemoveAll(this);
+	for (AInteract* const I: Interacts) {
+		if (!IsValid(I)) continue;
+		
+		UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
+		if (!IsValid(Comp)) continue;
+
+		Comp->OnTrigger.RemoveAll(this);
 	}
 }
 
