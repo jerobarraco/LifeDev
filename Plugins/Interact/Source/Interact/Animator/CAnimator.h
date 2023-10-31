@@ -81,7 +81,7 @@ public:
 	void BindTo(UCAnimator* Parent = nullptr);
 
 protected:
-	// override me on child classes :) But call the parent. (Progress can be read directly)
+	// override me on child classes :) But call the parent!! (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha) {};
@@ -95,14 +95,15 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Begin();
 	virtual void Begin_Implementation();
-	
-	UFUNCTION()
+
+	// called by a parent component's update
+	UFUNCTION() // bound
 	void ChildUpdate(float T, float Alpha);
 
-	virtual void DeInit();
 	void DoTick(float DeltaSeconds);
 	// finishes, and tentatively restart if needed.
 	void Finish();
+	virtual void DeInit();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

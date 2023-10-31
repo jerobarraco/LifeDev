@@ -49,13 +49,19 @@ void AInteractAnim::Trigger_Implementation() {
 	// set the flag before so that the sound triggers are consistent
 	IsOpen = !IsOpen;
 	State = (State +1) % StateCount;
-	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.Trigger: State=%i"), State);
+	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: open=%i, state=%i"), IsOpen ? 0:1, State);
 
 	if (AnimEnabled) {
-		// this creates so many issues. notice how it's set.
-		Anim->PlaySet(State==0); //!IsOpen);
-		UE_LOG(LogTemp, Log, TEXT("InteractAnim changed open=%i"), IsOpen ? 0:1);
+		if (Trans.Num()==0 || State < 0) {
+			// this creates so many issues. notice how it's set.
+			Anim->PlaySet(State==0); //!IsOpen);
+		} else {
+			Anim->TStart = IRoot->GetRelativeTransform();
+			Anim->TEnd = Trans[State%Trans.Num()];
+			Anim->PlaySet();
+		}
 	}
+
 	// trigger the trigger sound and calls set text. notice done after changing the state.
 	Super::Trigger_Implementation();
 	// SetText(); // not needed. happens on super

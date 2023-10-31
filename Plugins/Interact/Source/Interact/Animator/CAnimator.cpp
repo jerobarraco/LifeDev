@@ -69,6 +69,7 @@ void UCAnimator::DoTick(float DT) {
 	/// process
 	// small trick to ensure we can reverse an animation.
 	const float NProg = IsReversed ? 1.0 - Progress : Progress;
+	// get the alpha. if there's a curve use it, else, if there's a code curve use it. otherwise it's the nprog
 	const float Alpha =
 		IsValid(Curve) ? Curve->GetFloatValue(NProg) :
 		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
