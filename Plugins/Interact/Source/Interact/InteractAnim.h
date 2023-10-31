@@ -31,7 +31,7 @@ public:
 	};
 
 	// the transforms for each state. if this is set it will override the anim values.
-	// the isAdditive flag will be respected.
+	// the isAdditive flag will be respected, but probably won't work nicely.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FTransform> Trans;
 

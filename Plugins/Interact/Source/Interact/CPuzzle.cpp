@@ -14,6 +14,7 @@ UCPuzzle::UCPuzzle(): Super() {
 }
 
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 	Unbind();
 
 	Interacts.Empty();
@@ -21,21 +22,12 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 		if (!IsValid(I)) continue;
 		Interacts.Add(I);
 	}
-	
-	CurrentIds.Empty();
-	if (Type== EPuzzleType::COMBINATION) {
-		for (AInteract* const I: Interacts) {
-			CurrentIds.Add(I->State);
-		}
-		if (CurrentIds.Num()!=SolutionIDs.Num()) {
-			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
-		}
-	}
 
 	Bind();
 }
 
 void UCPuzzle::Done(bool Ok) const {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 	if (Ok && DisableOnDone) {
 		for(AInteract* const I: Interacts) {
 			I->SetEnabled(false);
@@ -45,6 +37,8 @@ void UCPuzzle::Done(bool Ok) const {
 }
 
 void UCPuzzle::Bind() {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+
 	int32 i = 0;
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;;
@@ -60,6 +54,17 @@ void UCPuzzle::Bind() {
 		CI->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 		++i;
 	}
+
+	// done here so that on begin play it is also set
+	CurrentIds.Empty();
+	if (Type == EPuzzleType::COMBINATION) {
+		for (AInteract* const I: Interacts) {
+			CurrentIds.Add(I->State); // initialize to the current value. important since it could be different.
+		}
+		if (CurrentIds.Num()!=SolutionIDs.Num()) {
+			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
+		}
+	}
 }
 
 void UCPuzzle::BeginPlay() {
@@ -68,6 +73,8 @@ void UCPuzzle::BeginPlay() {
 }
 
 void UCPuzzle::Unbind() {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
 		
@@ -93,6 +100,8 @@ bool UCPuzzle::IsCurrentSolution() {
 }
 
 bool UCPuzzle::CheckCombination(int32 ID) {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
+
 	if (ID<0 || ID>= CurrentIds.Num()) {
 		UE_LOG(LogCPuzzle, Warning, TEXT("CheckCombination: ID out of bounds."));
 		return false;
@@ -105,7 +114,7 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 }
 
 bool UCPuzzle::CheckSequence(int32 ID) {
-	UE_LOG(LogCPuzzle, Log, TEXT("Toggling id=%i"), ID);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
 
 	if (CurrentIds.Contains(ID)) {
 		CurrentIds.Remove(ID);

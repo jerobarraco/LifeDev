@@ -56,7 +56,8 @@ void AInteractAnim::Trigger_Implementation() {
 			// this creates so many issues. notice how it's set.
 			Anim->PlaySet(State==0); //!IsOpen);
 		} else {
-			Anim->TStart = IRoot->GetRelativeTransform();
+			// using troot since it could be changed in any child or parent
+			Anim->TStart = Anim->TRoot->GetRelativeTransform();
 			Anim->TEnd = Trans[State%Trans.Num()];
 			Anim->PlaySet();
 		}
