@@ -14,10 +14,18 @@ class INTERACT_API AInteractAnim: public AInteract {
 public:
 	AInteractAnim();
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+
+	// true when State != 0. prefer to use the state directly
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsOpen() const { return State != 0; }
 	
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;
+
+	// will disable while playing and re-enable after. be careful if you need to disable on trigger or smth. 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool DisableWhileAnim = true;
 
 	// Number of states. it will wrap around.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -74,7 +82,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorMix* Anim = nullptr;
 
-	// starts closed
+	// starts closed. to be removed. use GetIsOpen or better yet use the State
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, meta=(DeprecatedProperty))
 	bool IsOpen = false;
 };

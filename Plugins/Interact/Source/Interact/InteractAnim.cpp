@@ -52,9 +52,13 @@ void AInteractAnim::Trigger_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: open=%i, state=%i"), IsOpen ? 0:1, State);
 
 	if (AnimEnabled) {
+		if (DisableWhileAnim) {
+			SetEnabled(false);
+		}
+
 		if (Trans.Num()==0 || State < 0) {
 			// this creates so many issues. notice how it's set.
-			Anim->PlaySet(State==0); //!IsOpen);
+			Anim->PlaySet(!GetIsOpen()); //!IsOpen); !(State!=0)
 		} else {
 			// using troot since it could be changed in any child or parent
 			Anim->TStart = Anim->TRoot->GetRelativeTransform();
@@ -75,17 +79,21 @@ bool AInteractAnim::TryTrigger_Implementation() {
 
 void AInteractAnim::AnimBegin_Implementation() {
 	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = IsOpen ? SFX_Open : SFX_Close; // todo remove
+	USoundBase* const Snd = GetIsOpen() ? SFX_Open : SFX_Close; // todo remove
 	PlaySFX(Snd);
 	
-	if (State<0 || State >= SFX_Start.Num()) return;
+	if (State < 0 || State >= SFX_Start.Num()) return;
 	USoundBase* const Snd2 = SFX_Start[State];
 	PlaySFX(Snd2);
 }
 
 void AInteractAnim::AnimEnd_Implementation() {
+	if (DisableWhileAnim) {
+		SetEnabled(true);
+	}
+	
 	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = IsOpen ? SFX_OpenEnd : SFX_CloseEnd; // todo remove
+	USoundBase* const Snd = GetIsOpen() ? SFX_OpenEnd : SFX_CloseEnd; // todo remove
 	PlaySFX(Snd);
 
 	if (State<0 || State >= SFX_Stop.Num()) return;
