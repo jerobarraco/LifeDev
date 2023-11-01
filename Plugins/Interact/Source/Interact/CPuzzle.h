@@ -80,4 +80,6 @@ protected:
 	// on combo: its a list of each interact's state
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<int32> CurrentIds;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<UDelegateWrapper*> Wrappers;
 };

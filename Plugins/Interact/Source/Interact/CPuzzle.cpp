@@ -88,6 +88,7 @@ void UCPuzzle::Bind() {
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
 		CI->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		Wrappers.AddUnique(Wrapper);
 		++i;
 	}
 
@@ -103,14 +104,21 @@ void UCPuzzle::BeginPlay() {
 void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 
-	for (AInteract* const I: Interacts) {
+	for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
+		// for (AInteract* const I: Interacts) {
+		AInteract* const I = Interacts[i];
 		if (!IsValid(I)) continue;
 		
 		UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
 		if (!IsValid(Comp)) continue;
 
-		Comp->OnTrigger.RemoveAll(this);
+		UDelegateWrapper* const W = Wrappers[i];
+		if (!IsValid(W)) continue;
+		
+		Comp->OnTrigger.RemoveAll(W);
 	}
+
+	Wrappers.Empty();
 }
 
 bool UCPuzzle::IsCurrentSolution() {
