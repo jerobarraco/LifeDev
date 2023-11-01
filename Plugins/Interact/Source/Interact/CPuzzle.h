@@ -26,10 +26,13 @@ class INTERACT_API UCPuzzle: public UActorComponent {
 public:
 	UCPuzzle();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, CallInEditor)
+	void Reset();
+	virtual void Reset_Implementation();
+	
 	// Sets which interacts to listen to, and binds. don't call on constructor. call after begin play
 	UFUNCTION(BlueprintCallable)
 	void SetInteracts(const TArray<AInteract*>& Inters);
-
 	UFUNCTION(BlueprintCallable)
 	void Unbind();
 	UFUNCTION(BlueprintCallable)

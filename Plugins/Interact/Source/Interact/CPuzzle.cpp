@@ -13,6 +13,14 @@ UCPuzzle::UCPuzzle(): Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UCPuzzle::Reset_Implementation() {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	for (AInteract* const I: Interacts) {
+		if (!IsValid(I)) continue;
+		I->Reset();
+	}
+}
+
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 	Unbind();

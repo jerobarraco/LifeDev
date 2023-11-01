@@ -65,6 +65,11 @@ void AInteract::SetMobility(EComponentMobility::Type Mobility) {
 	SFX->SetMobility(Mobility);
 }
 
+void AInteract::Reset() {
+	UE_LOG(LogInteract, Log, TEXT("%hs"), __func__);
+	Super::Reset();
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();

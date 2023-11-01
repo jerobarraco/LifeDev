@@ -41,15 +41,19 @@ public:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
 	// used for binding only. since ue will complain about the return value. but i still wanna keep it.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	void TryTriggerWrapped() {TryTrigger();}
 
+	// enables or disables the interaction
 	UFUNCTION(BlueprintCallable)
-	void SetEnabled(bool Enabled);
+	void SetEnabled(bool Enabled = true);
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
 	UFUNCTION(BlueprintCallable)
 	virtual void SetMobility(EComponentMobility::Type Mobility);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
+	virtual void Reset() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
@@ -82,7 +86,7 @@ protected:
 	virtual void TriggerLocked_Implementation();
 
 	// test function.
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
 
 	UFUNCTION(BlueprintCallable)
