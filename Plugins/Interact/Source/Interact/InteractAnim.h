@@ -15,7 +15,7 @@ public:
 	AInteractAnim();
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
-	// true when State != 0. prefer to use the state directly
+	// true when State != 0. prefer to use the state directly. only makes sense if StateNum == 2
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsOpen() const { return State != 0; }
 	
@@ -29,13 +29,13 @@ public:
 
 	// Number of states. it will wrap around.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	int32 StateCount = 2;
+	int32 StateNum = 2;
 	
 	// Text to be displayed on each state
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
-		FText::FromString(TEXT("Open")), // 0 == !IsOpen // Closed text
-		FText::FromString(TEXT("Close")), // 1 == isOpen // Opened text
+		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
+		FText::FromString(TEXT("Close")), // 1 == isOpen == Opened text
 	};
 
 	// the transforms for each state. if this is set it will override the anim values.
@@ -66,6 +66,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetText_Implementation() override;
+	virtual void SetState_Implementation(int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void Trigger_Implementation() override;
 
@@ -81,8 +82,4 @@ protected:
 	// The animator, by default set up for the mesh material and iroot
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorMix* Anim = nullptr;
-
-	// starts closed. to be removed. use GetIsOpen or better yet use the State
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, meta=(DeprecatedProperty))
-	bool IsOpen = false;
 };

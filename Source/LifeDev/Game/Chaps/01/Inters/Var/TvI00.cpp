@@ -7,6 +7,6 @@ ATvI00::ATvI00():Super() {
 }
 
 void ATvI00::Trigger_Implementation() {
-	TriggerDlg = IsOpen ? "" : "TV00_T";
+	TriggerDlg = GetIsOpen() ? "" : "TV00_T";
 	Super::Trigger_Implementation();
 }

@@ -36,36 +36,34 @@ void AInteractAnim::SetText_Implementation() {
 	}
 
 	Interact->Text = Texts[State%Texts.Num()];
-	// if (Texts.Num()<2) {
-		// Interact->Text = Texts[0];
-		// return;
-	// }
-	
-	// Interact->Text = Texts[IsOpen?1:0];
 	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: NewText=%s"), *Interact->Text.ToString());
+}
+
+void AInteractAnim::SetState_Implementation(int32 NewState) {
+	Super::SetState_Implementation(NewState);
+
+	if (!AnimEnabled) return;
+	if (DisableWhileAnim) {
+		SetEnabled(false);
+	}
+
+	if (Trans.Num()==0 || State < 0) {
+		// this creates so many issues. notice how it's set.
+		Anim->PlaySet(!GetIsOpen()); //!IsOpen); !(State!=0)
+	} else {
+		// using troot since it could be changed in any child or parent
+		Anim->TStart = Anim->TRoot->GetRelativeTransform();
+		Anim->TEnd = Trans[State%Trans.Num()];
+		Anim->PlaySet();
+	}
 }
 
 void AInteractAnim::Trigger_Implementation() {
 	// set the flag before so that the sound triggers are consistent
-	IsOpen = !IsOpen;
-	State = (State +1) % StateCount;
-	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: open=%i, state=%i"), IsOpen ? 0:1, State);
+	const int32 NewState = (State +1) % StateNum;
+	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: open=%i, state=%i"), GetIsOpen() ? 0:1, NewState);
 
-	if (AnimEnabled) {
-		if (DisableWhileAnim) {
-			SetEnabled(false);
-		}
-
-		if (Trans.Num()==0 || State < 0) {
-			// this creates so many issues. notice how it's set.
-			Anim->PlaySet(!GetIsOpen()); //!IsOpen); !(State!=0)
-		} else {
-			// using troot since it could be changed in any child or parent
-			Anim->TStart = Anim->TRoot->GetRelativeTransform();
-			Anim->TEnd = Trans[State%Trans.Num()];
-			Anim->PlaySet();
-		}
-	}
+	SetState(NewState);
 
 	// trigger the trigger sound and calls set text. notice done after changing the state.
 	Super::Trigger_Implementation();

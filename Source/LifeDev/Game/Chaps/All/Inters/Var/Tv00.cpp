@@ -105,11 +105,12 @@ void ATv00::BeginPlay() {
 
 void ATv00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
-	Noise->Fade(IsOpen);
-	RndCrt->SetActive(IsOpen);
-	AnimCrt->SetActive(IsOpen);
+	const bool _IsOpen = GetIsOpen();
+	Noise->Fade(_IsOpen);
+	RndCrt->SetActive(_IsOpen);
+	AnimCrt->SetActive(_IsOpen);
 	
-	if (IsOpen) {
+	if (_IsOpen) {
 		// RndCrt->Start();
 		// AnimCrt->Play();
 	} else {
