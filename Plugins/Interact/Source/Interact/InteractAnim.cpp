@@ -81,9 +81,7 @@ bool AInteractAnim::TryTrigger_Implementation() {
 }
 
 void AInteractAnim::AnimBegin_Implementation() {
-	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = GetIsOpen() ? SFX_Open : SFX_Close; // todo remove
-	PlaySFX(Snd);
+	// at this point the state ( isOpen ) flag is toggled
 	
 	if (State < 0 || State >= SFX_Start.Num()) return;
 	USoundBase* const Snd2 = SFX_Start[State];
@@ -91,14 +89,11 @@ void AInteractAnim::AnimBegin_Implementation() {
 }
 
 void AInteractAnim::AnimEnd_Implementation() {
+	// at this point the state ( isOpen ) flag is toggled
 	if (DisableWhileAnim) {
 		SetEnabled(true);
 	}
 	
-	// at this point the isOpen flag is toggled
-	USoundBase* const Snd = GetIsOpen() ? SFX_OpenEnd : SFX_CloseEnd; // todo remove
-	PlaySFX(Snd);
-
 	if (State<0 || State >= SFX_Stop.Num()) return;
 	USoundBase* const Snd2 = SFX_Stop[State];
 	PlaySFX(Snd2);

@@ -21,12 +21,14 @@ void UCPuzzle::Reset_Implementation() {
 		I->Reset();
 		I->SetEnabled(true);
 	}
+
+	// reset the solution and the objects
 	ResetCurrents();
 }
 
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
-	Unbind();
+	Unbind(); // unbind before emptying to make sure we don't remain subscribed to an orphan object.
 
 	Interacts.Empty();
 	for (AInteract* const I: Inters) {
@@ -44,11 +46,14 @@ void UCPuzzle::Done(bool Ok) const {
 			I->SetEnabled(false);
 		}
 	}
+
 	OnDone.Broadcast(Ok);
 }
 
 void UCPuzzle::ResetCurrents() {
-	CurrentIds.Empty();
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	
+	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
 		for (AInteract* const I: Interacts) {
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
@@ -61,7 +66,7 @@ void UCPuzzle::ResetCurrents() {
 		for (AInteract* const I: Interacts) {
 			AInteractAnim* const IA = Cast<AInteractAnim>(I);
 			if (!IsValid(IA)) continue;
-			// have to force it disable or it will break the puzzle potentially
+			// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim)
 			IA->DisableWhileAnim = false;
 		}
 	}

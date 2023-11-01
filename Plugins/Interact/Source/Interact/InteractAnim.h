@@ -31,7 +31,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 StateNum = 2;
 	
-	// Text to be displayed on each state
+	// Text to be displayed on each state. Closed, Open
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
 		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
@@ -43,25 +43,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FTransform> Trans;
 
-	// triggered when anim starts
+	// triggered when anim starts. Closed, open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<USoundBase*> SFX_Start;
-	// triggered when anim ends
+	// triggered when anim ends. Closed, Open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<USoundBase*> SFX_Stop;
-	// sfx on open. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
-	USoundBase* SFX_Open = nullptr;
-	// sfx on open ended. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
-	USoundBase* SFX_OpenEnd = nullptr;
-	// sfx on close. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
-	USoundBase* SFX_Close = nullptr;
-	// sfx on close ended. Only when anim is enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
-	USoundBase* SFX_CloseEnd = nullptr;
-
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
