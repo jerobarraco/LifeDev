@@ -27,12 +27,11 @@ ATv00::ATv00():Super() {
 	SFX->SetRelativeLocation(FVector(5.329876,21.458294,20));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Button_Press-007.Button_Press-007"));
-	SFX_Open = SOpen.Object;
-	SFX_Close = SOpen.Object; // reusing the same
+	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpenEnd(TEXT("/Engine/EditorSounds/Notifications/CompileFailed_Cue.CompileFailed_Cue"));
-	SFX_OpenEnd = SOpenEnd.Object;
-
+	SFX_Stop = {nullptr, SOpenEnd.Object};
+	
 	/// other meshes
 	Frame = CreateDefaultSubobject<UCQuickMesh>(TEXT("Frame"));
 	Frame->SetupAttachment(RootComponent);
