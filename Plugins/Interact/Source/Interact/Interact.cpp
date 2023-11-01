@@ -67,7 +67,13 @@ void AInteract::SetMobility(EComponentMobility::Type Mobility) {
 
 void AInteract::Reset() {
 	UE_LOG(LogInteract, Log, TEXT("%hs"), __func__);
+	// ideally i could call SetState( initial) but that's hard to keep track of
+	// and some child classes might not want to do that.
 	Super::Reset();
+}
+
+void AInteract::SetState_Implementation(int32 NewState) {
+	State = NewState;
 }
 
 void AInteract::BeginPlay() {

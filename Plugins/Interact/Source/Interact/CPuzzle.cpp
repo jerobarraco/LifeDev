@@ -67,7 +67,7 @@ void UCPuzzle::Bind() {
 	CurrentIds.Empty();
 	if (Type == EPuzzleType::COMBINATION) {
 		for (AInteract* const I: Interacts) {
-			CurrentIds.Add(I->State); // initialize to the current value. important since it could be different.
+			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
 		if (CurrentIds.Num()!=SolutionIDs.Num()) {
 			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
@@ -116,7 +116,7 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	}
 
 	AInteract* const I = Interacts[ID];
-	CurrentIds[ID] = I->State;
+	CurrentIds[ID] = I->GetState();
 
 	return IsCurrentSolution();
 }

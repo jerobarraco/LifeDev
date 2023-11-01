@@ -55,6 +55,13 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	virtual void Reset() override;
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetState(int32 NewState);
+	virtual void SetState_Implementation(int32 NewState);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE int32 GetState() const { return State; }
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
@@ -64,10 +71,6 @@ public:
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
-
-	// the state of the interact. will be used by the puzzle and the interactanim, but also you can use it however you want.
-	UPROPERTY(BlueprintReadWrite)
-	int32 State = 0;
 
 protected:
 	virtual void BeginPlay() override;
@@ -92,6 +95,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PlaySFX(USoundBase* Snd);
 	
+	// the state of the interact. will be used by the puzzle and the interactanim, but also you can use it however you want.
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	int32 State = 0;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
 	
