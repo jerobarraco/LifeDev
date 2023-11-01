@@ -35,6 +35,11 @@ void AInteractAnim::SetText_Implementation() {
 		return;
 	}
 
+	if (State < 0) {
+		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: Can't set text with invalid state=%i"), State);
+		return;
+	}
+
 	Interact->Text = Texts[State%Texts.Num()];
 	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: NewText=%s"), *Interact->Text.ToString());
 }

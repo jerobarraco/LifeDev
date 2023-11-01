@@ -62,8 +62,10 @@ protected:
 	bool CheckSequence(int32 ID);
 	bool CheckCombination(int32 ID);
 	bool IsCurrentSolution();
-	// internal. to be called when don
+	// internal. to be called when done
 	void Done(bool Ok = true) const;
+	// reset the current values. called on reset and begin play
+	void ResetCurrents();
 
 	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound

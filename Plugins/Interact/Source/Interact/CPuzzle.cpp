@@ -5,6 +5,7 @@
 #include "Interact.h"
 #include "CInteract.h"
 #include "DelegateWrappers.h"
+#include "InteractAnim.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 
@@ -18,7 +19,9 @@ void UCPuzzle::Reset_Implementation() {
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
 		I->Reset();
+		I->SetEnabled(true);
 	}
+	ResetCurrents();
 }
 
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
@@ -44,6 +47,26 @@ void UCPuzzle::Done(bool Ok) const {
 	OnDone.Broadcast(Ok);
 }
 
+void UCPuzzle::ResetCurrents() {
+	CurrentIds.Empty();
+	if (Type == EPuzzleType::COMBINATION) {
+		for (AInteract* const I: Interacts) {
+			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
+		}
+		if (CurrentIds.Num()!=SolutionIDs.Num()) {
+			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
+		}
+	} else if (Type == EPuzzleType::SEQUENCE) {
+		// not really need to be done each reset. but ... 
+		for (AInteract* const I: Interacts) {
+			AInteractAnim* const IA = Cast<AInteractAnim>(I);
+			if (!IsValid(IA)) continue;
+			// have to force it disable or it will break the puzzle potentially
+			IA->DisableWhileAnim = false;
+		}
+	}
+}
+
 void UCPuzzle::Bind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 
@@ -64,15 +87,7 @@ void UCPuzzle::Bind() {
 	}
 
 	// done here so that on begin play it is also set
-	CurrentIds.Empty();
-	if (Type == EPuzzleType::COMBINATION) {
-		for (AInteract* const I: Interacts) {
-			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
-		}
-		if (CurrentIds.Num()!=SolutionIDs.Num()) {
-			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
-		}
-	}
+	ResetCurrents();
 }
 
 void UCPuzzle::BeginPlay() {
@@ -124,11 +139,13 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 bool UCPuzzle::CheckSequence(int32 ID) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
 
-	if (CurrentIds.Contains(ID)) {
-		CurrentIds.Remove(ID);
-	} else {
-		CurrentIds.Add(ID);
+	if (ID<0 || ID>=Interacts.Num()) {
+		UE_LOG(LogCPuzzle, Log, TEXT("%hs. Invalid id=%i"), __func__, ID);
+		return false;
 	}
+
+	CurrentIds.AddUnique(ID);
+	Interacts[ID]->SetEnabled(false);
 
 	return IsCurrentSolution();
 }
@@ -139,7 +156,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 
 	if (Type == EPuzzleType::SEQUENCE) {
 		const bool Ok = CheckSequence(ID);
-		// if the length matches return done anyways
+		// if the length matches return done anyways (means success false)
 		if (SolutionIDs.Num() == CurrentIds.Num()) {
 			Done(Ok);
 			return;
