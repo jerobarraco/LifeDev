@@ -2,7 +2,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
 
-#pragma optimize("", off)
 bool UPool::Spawn() {
         
     static FActorSpawnParameters P;
@@ -149,5 +148,3 @@ void UPooler::Return(AActor* A) {
 
     Pool->Return(A);
 }
-
-#pragma optimize("", on)
