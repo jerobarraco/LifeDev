@@ -8,8 +8,9 @@ class JUTILS_API UPool: public UObject {
     GENERATED_BODY()
 
 public:
+    bool Spawn();
     UFUNCTION(BlueprintCallable)
-    void Set(int32 Max, bool bCanIncrease, TSubclassOf<AActor> Class);
+    void Set(int32 Max, TSubclassOf<AActor> Class, bool SetTicks = true, bool bCanGrow=false);
     UFUNCTION(BlueprintCallable)
     AActor* Get();
     UFUNCTION(BlueprintCallable)
@@ -18,11 +19,17 @@ public:
     void Empty();
 
     virtual void BeginDestroy() override;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+    bool SetTicks = true;
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+    bool CanGrow = false;
+
 protected:
+    TSubclassOf<AActor> ChildType;
     
-    UPROPERTY()
+    UPROPERTY() // gcd
     TArray<AActor*> Ready;
-    friend class UPooler;
 };
 
 // basic actor pooling. handles multiple pools
@@ -32,7 +39,7 @@ class JUTILS_API UPooler: public UWorldSubsystem {
 public:
 
     UFUNCTION(BlueprintCallable)
-    void AddPool(int32 Max, bool CanIncrease, TSubclassOf<AActor> Class);
+    void AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool CanGrow=false);
 
     UFUNCTION(BlueprintCallable)
     void RemPool(TSubclassOf<AActor> Class);

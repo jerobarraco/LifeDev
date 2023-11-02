@@ -3,48 +3,74 @@
 DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
 
 #pragma optimize("", off)
-void UPool::Set(int32 Max, bool bCanIncrease, TSubclassOf<AActor> Class) {
-    Empty();
-    
+bool UPool::Spawn() {
+        
     static FActorSpawnParameters P;
     P.bNoFail = true;
     P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-    Ready.Reserve(Max);
-    if (Ready.Num()>Max) {
-        // TODO destroy
+
+    AActor* const Actor = GetWorld()->SpawnActor(ChildType, 0, 0, P);
+    if (!IsValid(Actor)) {
+        UE_LOG(LogJPool, Log, TEXT("Could not spawn the actor."));
+        return false;
     }
-    // TODO CanIncrease
-    // TODO store class to increase
-    if (Ready.Num()<Max) {
-        for (int32 i = Ready.Num(); i<Max; ++i) {
-            AActor* const Actor = GetWorld()->SpawnActor(Class, 0, 0, P);
-            if (!IsValid(Actor)) {
-                UE_LOG(LogJPool, Log, TEXT("Could not spawn the actor"));
-                continue;
-            }
-            Ready.Add(Actor);
-            Actor->SetActorHiddenInGame(true);
-        }
+
+    Ready.Add(Actor);
+    Actor->SetActorHiddenInGame(true);
+    return true;
+}
+
+void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCanGrow) {
+    Empty();
+    
+    SetTicks = InSetTicks;
+    CanGrow = InCanGrow;
+    ChildType = Class;
+
+    while (Ready.Num()>Max) {
+        Ready[0]->Destroy();
+        Ready.RemoveAtSwap(0, 1, true);
+    }
+    
+    Ready.Reserve(Max);
+    while (Ready.Num()<Max-1) {
+        if (!Spawn()) break; // avoid infinite loops
     }
 }
 
+
 AActor* UPool::Get() {
     if (Ready.Num()<=0) {
-        UE_LOG(LogJPool, Log, TEXT("Pool is exhausted so can't return an actor."));
-        return nullptr;
+        if (!CanGrow) {
+            UE_LOG(LogJPool, Log, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
+            return nullptr;
+        }
+        if (!Spawn()) return nullptr;
     }
     
     AActor* const A = Ready[0];
     Ready.RemoveAt(0, 1, false);
     A->SetActorHiddenInGame(false);
     A->Reset();
+    if (SetTicks) {
+        A->SetActorTickEnabled(true);
+    }
+    
     UE_LOG(LogJPool, Log, TEXT("Pool gave an actor."));
     return A;
 }
 
 void UPool::Return(AActor* A) {
     UE_LOG(LogJPool, Log, TEXT("Actor returned to pool."));
+    if (!IsValid(A)) {
+        UE_LOG(LogJPool, Log, TEXT("Return: Actor was invalid."));
+        return;
+    }
+
     A->SetActorHiddenInGame(true);
+    if (SetTicks) {
+        A->SetActorTickEnabled(false);
+    }
     Ready.AddUnique(A);
 }
 
@@ -61,7 +87,7 @@ void UPool::BeginDestroy() {
     UObject::BeginDestroy();
 }
 
-void UPooler::AddPool(int32 Max, bool CanIncrease, TSubclassOf<AActor> Class) {
+void UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool CanGrow) {
     const FName Key = Class->GetFName();
     UPool** pPool = Pools.Find(Key);
     UPool* Pool = nullptr;
@@ -72,7 +98,7 @@ void UPooler::AddPool(int32 Max, bool CanIncrease, TSubclassOf<AActor> Class) {
         Pools.Add(Key, Pool);
     }
 
-    Pool->Set(Max, CanIncrease, Class);
+    Pool->Set(Max, Class, SetTicks, CanGrow);
 }
 
 void UPooler::RemPool(TSubclassOf<AActor> Class) {
@@ -116,7 +142,7 @@ void UPooler::Return(AActor* A) {
 
     UPool* const Pool = GetPool(A->GetClass());
     if (!Pool) {
-        UE_LOG(LogJPool, Log, TEXT("Pooler.Return. Could not find the pool for class=%s. Destroying the actor."), *Key.ToString());
+        UE_LOG(LogJPool, Log, TEXT("Pooler.Return. Could not find the pool. Destroying the actor."));
         A->Destroy();
         return;
     }
