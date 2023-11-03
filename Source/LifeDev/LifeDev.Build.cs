@@ -22,7 +22,7 @@ public class LifeDev : ModuleRules
 			// my stuff
 			"JUtils", "Interact",  "Diags", "Inventory", "Story",
 			"Sounds",
-			"JSig",
+			// "JSig",
         });
 	}
 }
