@@ -41,7 +41,7 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 
 void UCPuzzle::Done(bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
-	if (Ok && DisableOnDone) {
+	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
 			I->SetEnabled(false);
 		}
@@ -189,7 +189,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	} else if (Type == EPuzzleType::COMBINATION) {
 		const bool Ok = CheckCombination(ID);
 		if (Ok) {
-			// only trigger when complete
+			// only trigger when complete. combination can only be completed with ok.
 			Done(true);
 		}
 	} else {
