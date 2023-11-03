@@ -135,7 +135,6 @@ bool UCPuzzle::IsCurrentSolution() {
 }
 
 bool UCPuzzle::CheckCombination(int32 ID) {
-
 	if (ID<0 || ID>= CurrentIds.Num()) {
 		UE_LOG(LogCPuzzle, Warning, TEXT("CheckCombination: ID out of bounds."));
 		return false;
@@ -144,6 +143,11 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	AInteract* const I = Interacts[ID];
 	const int32 State = CurrentIds[ID] = I->GetState();
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i state=%i"), __func__, ID, State);
+
+	// quite silly but.. who knows, maybe you want to have only one option for a combination.
+	if (DisableOnInter) {
+		I->SetEnabled(false);
+	}
 
 	return IsCurrentSolution();
 }
@@ -156,9 +160,10 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 		return false;
 	}
 
-	CurrentIds.AddUnique(ID);
-	Interacts[ID]->SetEnabled(false);
-
+	CurrentIds.Add(ID); // Allow to add repeated ones.
+	if (DisableOnInter) {
+		Interacts[ID]->SetEnabled(false);
+	}
 	return IsCurrentSolution();
 }
 

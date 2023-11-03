@@ -10,7 +10,7 @@ class UDelegateWrapper;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnUpdate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOn);
 
-UENUM(BlueprintType)
+UENUM(BlueprintType, Category="Interact|Puzzle")
 enum class EPuzzleType: uint8 {
 	NONE,
 	SEQUENCE,
@@ -19,6 +19,7 @@ enum class EPuzzleType: uint8 {
 };
 
 // base object to create puzzle like interactions
+// it works directly with Interact actors (or interactAnim)
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCPuzzle: public UActorComponent {
 	GENERATED_BODY()
@@ -26,24 +27,35 @@ class INTERACT_API UCPuzzle: public UActorComponent {
 public:
 	UCPuzzle();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, CallInEditor)
+	// will call Reset on the interacts, and reset the current state here
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, CallInEditor, Category="Interact|Puzzle")
 	void Reset();
 	virtual void Reset_Implementation();
 	
 	// Sets which interacts to listen to, and binds. don't call on constructor. call after begin play
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void SetInteracts(const TArray<AInteract*>& Inters);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Unbind();
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Bind();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	EPuzzleType Type = EPuzzleType::SEQUENCE;
 	
+	// The solution for this puzzle.
+	// For a Sequence this is a sequence of Ids of interactions. in the order you expect them to be triggered.
+	// the Id is the index in the list of interacts.
+	// For a Combination this is a list of the States of all interactions.
+	// This array must have the same length as the Interacts
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<int32> SolutionIDs;
-	
+
+	// if true then the interact will disable once toggled.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool DisableOnInter = false;
+
+	// will disable the interacts when the puzzle is done. Beware of unchecking "DisableWhileAnim"on the interacts or this won't work well.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnDone = false;
 	

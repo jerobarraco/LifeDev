@@ -9,7 +9,7 @@
 class UCAnimatorMix;
 
 // An interactive actor that can have an animation
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Category="Interact|InteractAnim")
 class INTERACT_API AInteractAnim: public AInteract {
 	GENERATED_BODY()
 
@@ -25,7 +25,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool AnimEnabled = true;
 
-	// will disable while playing and re-enable after. be careful if you need to disable on trigger or smth. 
+	// will disable while playing and re-enable after.
+	// be careful if you need to disable on trigger or smth (for example Puzzle::DisableOnDone) 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableWhileAnim = true;
 
@@ -42,6 +43,7 @@ public:
 
 	// the transforms for each state. if this is set it will override the anim values.
 	// the isAdditive flag will be respected, but probably won't work nicely.
+	// if you need to set material values i'd recommend overriding SetState_Implementation
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FTransform> Trans;
 

@@ -93,7 +93,7 @@ AActor* UPool::Get() {
     }
     
     AActor* const A = Ready[0];
-    Ready.RemoveAt(0, 1, false);
+    Ready.RemoveAtSwap(0, 1, false);
     A->SetActorHiddenInGame(false);
     A->Reset();
     if (SetTicks) {

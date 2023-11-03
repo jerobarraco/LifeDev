@@ -6,7 +6,7 @@
 
 // basic actor pooling.
 // you can use this directly if you want a local pool. but you would need to return the actors by a ref to your pool.
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Category="JUtils|Pooler")
 class JUTILS_API UPool: public UObject {
     GENERATED_BODY()
 
@@ -66,7 +66,7 @@ protected:
 };
 
 // basic actor pooling. handles multiple pools based on the class to spawn
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Category="JUtils|Pooler")
 class JUTILS_API UPooler: public UWorldSubsystem {
     GENERATED_BODY()
 public:
