@@ -104,7 +104,6 @@ void UCPuzzle::BeginPlay() {
 void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 
-	
 	for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
 		UDelegateWrapper* const W = Wrappers[i];
 		if (!IsValid(W)) continue;
@@ -117,18 +116,6 @@ void UCPuzzle::Unbind() {
 		
 		Comp->OnTrigger.RemoveAll(W);
 	}
-	// for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
-		// AInteract* const I = Interacts[i];
-		// if (!IsValid(I)) continue;
-		
-		// UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
-		// if (!IsValid(Comp)) continue;
-
-		// UDelegateWrapper* const W = Wrappers[i];
-		// if (!IsValid(W)) continue;
-		
-		// Comp->OnTrigger.RemoveAll(W);
-	// }
 
 	Wrappers.Empty();
 }
@@ -148,7 +135,6 @@ bool UCPuzzle::IsCurrentSolution() {
 }
 
 bool UCPuzzle::CheckCombination(int32 ID) {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
 
 	if (ID<0 || ID>= CurrentIds.Num()) {
 		UE_LOG(LogCPuzzle, Warning, TEXT("CheckCombination: ID out of bounds."));
@@ -156,7 +142,8 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	}
 
 	AInteract* const I = Interacts[ID];
-	CurrentIds[ID] = I->GetState();
+	const int32 State = CurrentIds[ID] = I->GetState();
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i state=%i"), __func__, ID, State);
 
 	return IsCurrentSolution();
 }
