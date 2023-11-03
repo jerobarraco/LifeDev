@@ -104,19 +104,31 @@ void UCPuzzle::BeginPlay() {
 void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 
+	
 	for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
-		// for (AInteract* const I: Interacts) {
-		AInteract* const I = Interacts[i];
+		UDelegateWrapper* const W = Wrappers[i];
+		if (!IsValid(W)) continue;
+		
+		AInteract* const I = Cast<AInteract>(W->Obj);
 		if (!IsValid(I)) continue;
 		
 		UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
 		if (!IsValid(Comp)) continue;
-
-		UDelegateWrapper* const W = Wrappers[i];
-		if (!IsValid(W)) continue;
 		
 		Comp->OnTrigger.RemoveAll(W);
 	}
+	// for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
+		// AInteract* const I = Interacts[i];
+		// if (!IsValid(I)) continue;
+		
+		// UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
+		// if (!IsValid(Comp)) continue;
+
+		// UDelegateWrapper* const W = Wrappers[i];
+		// if (!IsValid(W)) continue;
+		
+		// Comp->OnTrigger.RemoveAll(W);
+	// }
 
 	Wrappers.Empty();
 }

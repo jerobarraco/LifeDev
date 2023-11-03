@@ -24,11 +24,11 @@ public:
 
 	// Call this to trigger the interaction. Returns the success (false if locked)
 	// this function has side-effects (calls trigger/trigger locked) so call at the end.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	bool TryTrigger();
 	virtual bool TryTrigger_Implementation();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void Hover(bool IsOn);
 	virtual void Hover_Implementation(bool IsOn);
 
@@ -36,7 +36,7 @@ public:
 	//  this means when calling this function the item WILL trigger
 	// Override and activate the item here.
 	//  (but don't modify the inventory as part of this, and you wont be able since this plugin can't see the inventory)
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
@@ -45,7 +45,7 @@ public:
 	void TryTriggerWrapped() {TryTrigger();}
 
 	// enables or disables the interaction
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Interact")
 	void SetEnabled(bool Enabled = true);
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
@@ -55,7 +55,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	virtual void Reset() override;
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void SetState(int32 NewState);
 	virtual void SetState_Implementation(int32 NewState);
 
@@ -76,15 +76,15 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void SetText();
 	virtual void SetText_Implementation();
 
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void Trigger();
 	virtual void Trigger_Implementation();
 
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void TriggerLocked();
 	virtual void TriggerLocked_Implementation();
 
@@ -92,15 +92,15 @@ protected:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Interact")
 	void PlaySFX(USoundBase* Snd);
 	
 	// the state of the interact. will be used by the puzzle and the interactanim, but also you can use it however you want.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 State = 0;
 
 	// state to reset to, if it's <0 it will take whatever state is during begin play
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 StateReset = -1;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

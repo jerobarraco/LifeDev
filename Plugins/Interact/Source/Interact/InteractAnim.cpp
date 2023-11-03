@@ -52,6 +52,7 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 		SetEnabled(false);
 	}
 
+	// both checks avoids an out of bound access
 	if (Trans.Num()==0 || State < 0) {
 		// this creates so many issues. notice how it's set.
 		Anim->PlaySet(!GetIsOpen()); //!IsOpen); !(State!=0)
