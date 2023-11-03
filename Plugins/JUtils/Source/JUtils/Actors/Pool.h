@@ -18,6 +18,7 @@ public:
     // gets an actor. returns null on exhausted or failure
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")
     AActor* Get();
+
     // returns an actor to this pool.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")
     void Return(AActor* Actor);
@@ -27,7 +28,7 @@ public:
     // spwans a new actor and stores it in the ready list
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
     bool Spawn();
-    // sets or reset the timer. calling it will stop the previous and wait again.
+    // sets or reset the trim timer. calling it will stop the previous and wait again.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
     void SetTrimTimer();
     // trims if possible, and schedule another timer if needed. (remove one and shrink up to the MAX)
@@ -36,8 +37,10 @@ public:
     // remove one item. it will shrink. regardless of max. when 0 reached if canGrow is false the pool will stop working.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
     bool RemoveOne();
-    // empties the pool. if canGrow is false, then this pool won't work anymore unless calling Set.
-    // if Set is called with a different class then empty will be called first
+    // empties the pool. Destroys the objects that are NOT used.
+    // when those objects are returned to the Pooler they will get destroyed if this pool doesn't exist anymore.
+    // if canGrow is false, then this pool won't work anymore unless calling Set.
+    // if Set is called with a different class then empty will be called first.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
     void Empty();
     /// ~advanced
@@ -52,7 +55,8 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
     bool CanGrow = false;
 
-    // allow the pool to shrink over time. one every this much time.
+    // if > 0, allow the pool to shrink over time.
+    // this is the time between each trim, at which one item will be removed while keeping at least the MAX set.
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
     int32 TrimTime = 0;
 
@@ -75,19 +79,20 @@ public:
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
     bool AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool CanGrow=false, int32 TrimTime = 5);
 
-    // removes (deletes) a pool for a given class.
+    // removes (deletes) a pool for a given class. objects that are unused will be destroyed. the rest will be destroyed on return. 
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
     void RemPool(TSubclassOf<AActor> Class);
 
-    // gets a managed pool. don't call set on that pool with another class or youll have problems.
+    // gets a managed pool. don't call Set on that pool with another class or you'll have problems.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
     UPool* GetPool(TSubclassOf<AActor> Class);
 
-    // gets an actor of a class from a pool
+    // gets an actor of a class from a pool. Returns null if exhausted or the pool has not been created.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
     AActor* Get(TSubclassOf<AActor> Class);
 
-    // returns an actor to the corresponding pool
+    // returns an actor to the corresponding pool.
+    // If the pool is removed, then the actor will get destroyed.
     UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
     void Return(AActor* Actor);
     

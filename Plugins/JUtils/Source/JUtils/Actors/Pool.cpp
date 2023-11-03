@@ -65,7 +65,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
     ItemMax = FMath::Max(Max, 0); // Clamp at 0
     TrimTime = InTrimTime; 
 
-    // reduce size if we call set with a lower value
+    // reduce size if Set was called with a smaller value
     while (Ready.Num() > ItemMax) {
         if (RemoveOne()) break; // avoid infinite loops 
     }
@@ -76,6 +76,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
         if (!Spawn()) break; // avoid infinite loops
     }
 
+    // force set timer since Spawn is not guaranteed to be called
     SetTrimTimer();
 }
 
@@ -93,6 +94,7 @@ AActor* UPool::Get() {
     }
     
     AActor* const A = Ready[0];
+    // don't shrink since it will get returned hopefully. Use Swap since it's faster and we don't need to keep the order.
     Ready.RemoveAtSwap(0, 1, false);
     A->SetActorHiddenInGame(false);
     A->Reset();
@@ -105,12 +107,12 @@ AActor* UPool::Get() {
 }
 
 void UPool::Return(AActor* Actor) {
-    UE_LOG(LogJPool, Log, TEXT("Actor returned to pool."));
     if (!IsValid(Actor)) {
         UE_LOG(LogJPool, Log, TEXT("Return: Actor was invalid."));
         return;
     }
 
+    UE_LOG(LogJPool, Log, TEXT("Actor returned to pool."));
     Actor->SetActorHiddenInGame(true);
     if (SetTicks) {
         Actor->SetActorTickEnabled(false);
@@ -181,6 +183,7 @@ bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool 
         return false;
     }
 
+    // this will set it, or update it if it exists.
     Pool->Set(Max, Class, SetTicks, CanGrow, TrimTime);
     return true;
 }
@@ -221,7 +224,7 @@ AActor* UPooler::Get(TSubclassOf<AActor> Class) {
 }
 
 void UPooler::Return(AActor* Actor) {
-    if (!IsValid(Actor)) {
+    if (!IsValid(Actor)) { // checking here to avoid problems on Actor->GetClass
         UE_LOG(LogJPool, Log, TEXT("Pooler.Return. Actor was invalid, ignoring."));
         return;
     }
