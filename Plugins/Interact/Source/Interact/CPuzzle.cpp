@@ -124,7 +124,7 @@ bool UCPuzzle::IsCurrentSolution() {
 	if (CurrentIds.Num() != SolutionIDs.Num() ) return false;
 
 	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
-		if (CurrentIds[i]!=SolutionIDs[i]) {
+		if (CurrentIds[i] != SolutionIDs[i]) {
 			UE_LOG(LogCPuzzle, Log, TEXT("Solution is different"));
 			return false;
 		}
