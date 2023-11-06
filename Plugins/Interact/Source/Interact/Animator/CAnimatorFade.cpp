@@ -22,10 +22,14 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 
 void UCAnimatorFade::SetNewMat() {
 	// TODO test
-	UMaterialInterface* const Mat = FindObjectSafe<UMaterialInterface>(this, 
-		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI")
-	);
-	MatBase = Mat;
+	// TODO would be good to be able to set this in the constructor.
+	static FSoftObjectPath P("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI");
+	TSoftObjectPtr<UMaterialInterface> NewMat (P);
+	// NewMat.LoadSynchronous()
+	MatBase = NewMat.LoadSynchronous();
+	// UMaterialInterface* const Mat = FindObjectSafe<UMaterialInterface>(this, 
+		// TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI")
+	// );
 }
 
 void UCAnimatorFade::SetMaterial() {
