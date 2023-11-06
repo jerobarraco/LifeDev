@@ -19,18 +19,12 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	Curve = nullptr; // remove the interact curve.
 }
 
-
 void UCAnimatorFade::SetNewMat() {
-	// TODO test
-	// TODO would be good to be able to set this in the constructor.
-	static FSoftObjectPath P("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI");
-	TSoftObjectPtr<UMaterialInterface> NewMat (P);
-	// NewMat.LoadSynchronous()
-	MatBase = NewMat.LoadSynchronous();
-	// UMaterialInterface* const Mat = FindObjectSafe<UMaterialInterface>(this, 
-		// TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI")
-	// );
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
+	MatBase = CMatBaseNew.Object;
 }
+
 
 void UCAnimatorFade::SetMaterial() {
 	if (Meshes.Num()<1) return;

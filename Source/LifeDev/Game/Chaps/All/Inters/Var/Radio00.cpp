@@ -43,9 +43,7 @@ ARadio00::ARadio00():Super() {
 	AnimEnabled = true;
 	
 	UseAnimFade = false;
-	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		// CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
-	// AnimFade->MatBase = CMatBaseNew.Object;
+	// AnimFade->SetNewMat();
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
 	AnimFade->SetActive(false);

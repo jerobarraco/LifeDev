@@ -14,7 +14,10 @@ class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
 
 public:
 	UCAnimatorFade();
+	// only call in the constructor please.
+	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
 	void SetNewMat();
+	
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
 	void SetMaterial();
 
