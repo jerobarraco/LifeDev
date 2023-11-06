@@ -12,7 +12,10 @@ class LIFEDEV_API ARadio00: public ALInteract {
 
 public:
 	ARadio00();
-	
+
+protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Base = NULL;
+	UCQuickMesh* Door = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	USceneComponent* DoorRoot = nullptr;
 };

@@ -4,28 +4,40 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ARadio00::ARadio00():Super() {
-	SFX->SetRelativeLocation(FVector(15,0,15));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Door.Radio00_Door"));
-	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,30,0));
-	// Mesh->SetRelativeRotation(FRotator(0,-90, 0));
-
-	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
-	Interact->SetBoxExtent(FVector(40,15,47.5));
-
+		CDoor(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Door.Radio00_Door"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CBase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Base.Radio00_Base"));
-	Base = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
-	Base->SetupAttachment(RootComponent);
-	Base->SetStaticMesh(CBase.Object);
-	Base->SetRelativeLocation(FVector(0,30,0));
+	Mesh->SetStaticMesh(CBase.Object);
+	Mesh->SetRelativeLocation(FVector(0,30,0));
+	// Mesh->SetRelativeRotation(FRotator(0,-90, 0));
 	
+	Interact->SetRelativeLocation(FVector(7.5,-30.,15));
+	Interact->SetBoxExtent(FVector(7.5,30,15));
 
-	// disable by default
-	Interact->SetEnabled(false);
-	AnimEnabled = false;
+	DoorRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DoorRoot"));
+	DoorRoot->SetupAttachment(IRoot);
+	DoorRoot->SetRelativeLocation(FVector(15,0,10));
+
+	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
+	Door->SetupAttachment(DoorRoot);
+	Door->SetStaticMesh(CDoor.Object);
+	Door->SetRelativeLocation(FVector(-15,30,-10));
+	SFX->SetRelativeLocation(FVector(12.5,0,12.5));
+
+	Anim->TRoot = DoorRoot;
+	Anim->TEnd.SetRotation(FRotator(-35,0., 0).Quaternion());
+	Anim->Duration = .5;
+	// auto Lib = CreateDefaultSubobject<UCodeCurveLib>(TEXT("CodeCurve"));
+	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InCubic);
+
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
+	Anim->Curve = CCurve.Object;
+	Interact->SetEnabled(true);
+	AnimEnabled = true;
 }
