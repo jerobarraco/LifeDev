@@ -14,6 +14,9 @@ class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
 
 public:
 	UCAnimatorFade();
+	void SetNewMat();
+	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
+	void SetMaterial();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<UStaticMeshComponent*> Meshes; 

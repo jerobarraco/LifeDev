@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -40,4 +41,12 @@ ARadio00::ARadio00():Super() {
 	Anim->Curve = CCurve.Object;
 	Interact->SetEnabled(true);
 	AnimEnabled = true;
+	
+	UseAnimFade = false;
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		// CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
+	// AnimFade->MatBase = CMatBaseNew.Object;
+	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
+	AnimFade->SetAutoActivate(false);
+	AnimFade->SetActive(false);
 }

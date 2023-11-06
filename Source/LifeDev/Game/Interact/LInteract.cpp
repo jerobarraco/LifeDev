@@ -25,6 +25,13 @@ void ALInteract::BeginPlay() {
 		Locked = true;
 	}
 
+	if (UseAnimFade) {
+		AnimFade->SetMaterial();
+	} else {
+		AnimFade->SetActive(false);
+		AnimFade->Meshes.Empty();
+	}
+
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();

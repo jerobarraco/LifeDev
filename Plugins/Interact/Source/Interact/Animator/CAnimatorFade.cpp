@@ -10,14 +10,25 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFStart = 0;
 	MatFEnd = 1;
 	Duration = 1.f;
-	ConstructorHelpers::FObjectFinder<UMaterialInterface>
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
+	
 	MatBase = CMatBase.Object;
 	Curve = nullptr; // remove the interact curve.
 }
 
-void UCAnimatorFade::BeginPlay() {
-	Super::BeginPlay();
+
+void UCAnimatorFade::SetNewMat() {
+	// TODO test
+	UMaterialInterface* const Mat = FindObjectSafe<UMaterialInterface>(this, 
+		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI")
+	);
+	MatBase = Mat;
+}
+
+void UCAnimatorFade::SetMaterial() {
 	if (Meshes.Num()<1) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
@@ -34,6 +45,11 @@ void UCAnimatorFade::BeginPlay() {
 		if (!IsValid(C)) continue;
 		C->SetMaterial(0, Mat);		
 	}
+	
 	// Since they all share the same material instance i don't even need to have my own "update"
+}
+
+void UCAnimatorFade::BeginPlay() {
+	Super::BeginPlay();
 }
 
