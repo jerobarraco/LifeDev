@@ -8,7 +8,7 @@
 
 ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt00.Shirt00"));
+		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Shirt00.Shirt00"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}

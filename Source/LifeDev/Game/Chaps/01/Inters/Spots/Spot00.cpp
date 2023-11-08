@@ -9,7 +9,7 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpot00::ASpot00():Super() {
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Shirt01.Shirt01"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Shirt01.Shirt01"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}

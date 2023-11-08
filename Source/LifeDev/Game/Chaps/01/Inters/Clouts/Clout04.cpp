@@ -7,7 +7,7 @@
 
 AClout04::AClout04():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/1/Inters/Clothes/Sock00.Sock00"));
+		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Sock00.Sock00"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
