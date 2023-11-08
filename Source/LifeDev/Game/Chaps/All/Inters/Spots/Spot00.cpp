@@ -8,7 +8,12 @@
 
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
+// TODO make a subclass ASpot01 and replace the scene one with that one. then remove the specifics from here.
 ASpot00::ASpot00():Super() {
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+	SFX_Trigger = CSnd.Object;
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Shirt01.Shirt01"));
 	if (ObjMesh.Succeeded()) {
@@ -22,23 +27,11 @@ ASpot00::ASpot00():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
-	DropDlg = TEXT("IS_C0D");
-	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T* (note the random)
-	LockedDlg = "IS_C0TB";
+	// DropDlg = TEXT("IS_C0D");
+	// TriggerDlg = "IS_C0T*";
+	// LockedDlg = "IS_C0TB";
 	Items = {
 		// two shirts and a boxer, and a sock
-		FName("C1C00"), FName("C1C01"), FName("C1C02"), FName("C1C04")
+		// FName("C1C00"), FName("C1C01"), FName("C1C02"), FName("C1C04")
 	};
-	
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
-	SFX_Trigger = CSnd.Object;
-}
-
-EItemUseResult ASpot00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Bra) {
-		Dialogs->AddId("IS_C0_C03");
-		return EItemUseResult::BAD_HANDLED;
-	}
-	return Super::TryUseItem_Implementation(Name);
 }

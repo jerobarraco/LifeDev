@@ -1,17 +1,17 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/LInteractSpot.h"
+#include "LifeDev/Game/Chaps/All/Inters/Spots/Spot00.h"
 
-#include "Spot00.generated.h"
+#include "SpotI00.generated.h"
 
 // Spot for sisters clothes
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ASpot00: public ALInteractSpot {
+class LIFEDEV_API ASpotI00: public ASpot00 {
 	GENERATED_BODY()
 
 public:
-	ASpot00();
+	ASpotI00();
 
 protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
