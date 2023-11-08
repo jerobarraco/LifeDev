@@ -10,8 +10,8 @@ ASpotI02::ASpotI02():Super() {
 	LockedDlg = "IS0_LCK"; // when not full
 	DropFullDlg = ""; // when full
 	Items = {
-		// a bra and a shirt
-		FName("C1C01"), LDConsts::Items::Bra,
+		// a bra and a shirt and a sock
+		FName("C1C01"), LDConsts::Items::Bra, FName("C1C04")
 		// FName("C1C02"), FName("C1C04")
 	};
 }
