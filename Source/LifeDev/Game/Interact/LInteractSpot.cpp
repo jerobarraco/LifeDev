@@ -26,7 +26,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	if (Items.IsEmpty()) {
 		Locked = true; // unnecessary but complete, jic
-		const bool Added = IsValid(Dialogs) && Dialogs->AddId(FullDlg);
+		const bool Added = IsValid(Dialogs) && Dialogs->AddId(DropFullDlg);
 		return Added ?  EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 

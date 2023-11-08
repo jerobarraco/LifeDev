@@ -5,7 +5,12 @@
 
 #include "LInteractSpot.generated.h"
 
-// A Place to drop other interacts
+// A Place to drop other interacts.
+// It's always locked, and unlocks only once when all the clouts are dropped.
+// It only allows for triggering once it's done.
+// It will trigger LockedDlg (when already done) and TriggerDlg (once upon done) accordingly.
+// if attempt to use an item once it's done it will trigger FullDlg
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteractSpot: public ALInteract {
 public:
@@ -23,7 +28,7 @@ public:
 
 	// When i TRY to drop but it's full
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName FullDlg = NAME_None;
+	FName DropFullDlg = NAME_None;
 
 	// items to listen to. these are the items that are allowed to be dropped here.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
