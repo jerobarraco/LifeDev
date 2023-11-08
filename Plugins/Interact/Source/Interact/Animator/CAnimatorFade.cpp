@@ -23,6 +23,9 @@ void UCAnimatorFade::SetNewMat() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
 	MatBase = CMatBaseNew.Object;
+	
+	// alternatively tsoftobjectptr
+	// StaticLoadObject()
 }
 
 
@@ -39,7 +42,7 @@ void UCAnimatorFade::SetMaterial() {
 	}
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
-	for (UStaticMeshComponent* C: Meshes) {
+	for (UStaticMeshComponent* const C: Meshes) {
 		if (!IsValid(C)) continue;
 		C->SetMaterial(0, Mat);		
 	}

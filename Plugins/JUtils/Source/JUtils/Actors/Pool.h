@@ -4,6 +4,13 @@
 
 #include "Pool.generated.h"
 
+// Note, i thought about the idea to make this into a object pool too. but there's some overhead.
+// a couple of extra castings and isValid checks. and possibly another cast on the client code's side.
+// at the moment i really don´t need a uobject pool. and can't really think of a case where that would be necessary.
+// I'm using an actor since that's more likely the type of objects to get pooled and i can use the basic functions
+// on them to set them up and disable. This is to avoid unnecessary interfaces and such. Whereas uobjects have none of that.
+// so, K.I.S.S..
+
 // basic actor pooling.
 // you can use this directly if you want a local pool. but you would need to return the actors by a ref to your pool.
 UCLASS(Blueprintable, BlueprintType, Category="JUtils|Pooler")
@@ -12,8 +19,8 @@ class JUTILS_API UPool: public UObject {
 
 public:
 	// sets the configuration for this pool. changing the class on a pool handled by Pooler can cause issues.
-	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")
-	void Set(int32 Max, TSubclassOf<AActor> Class, bool SetTicks = true, bool bCanGrow=false, int32 InTrimTime = 5);
+	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay="SetTicks,CanGrow,TrimTime"))
+	void Set(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool bCanGrow=false, int32 InTrimTime=5);
 	
 	// gets an actor. returns null on exhausted or failure
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")
@@ -73,8 +80,8 @@ protected:
 UCLASS(Blueprintable, Category="JUtils|Pooler")
 class JUTILS_API UPooler: public UWorldSubsystem {
 	GENERATED_BODY()
-public:
 
+public:
 	// adds a new pool for a class. or modifies an already existing one.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
 	bool AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool CanGrow=false, int32 TrimTime = 5);
