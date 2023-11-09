@@ -56,7 +56,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName TriggerDlg = NAME_None;
 
-	// setting this will reward the item on trigger and self-destruct
+	// setting this will reward the item on trigger. will self-destruct. will also disable the interact.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName ItemReward = NAME_None;
 
@@ -64,6 +64,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName FlagReward = NAME_None;
 
+	// the mod value for the flash system when it's triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float TriggerFlashInc = 0;
 
@@ -76,6 +77,7 @@ public:
 	bool AutoDestroy = true;
 	
 protected:
+	// triggered when item is rewarded
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ItemRewarded();
 	virtual void ItemRewarded_Implementation();

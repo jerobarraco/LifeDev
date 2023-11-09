@@ -14,7 +14,6 @@ public:
 	ADoorI05();
 
 protected:
-	virtual void BeginPlay() override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void Trigger_Implementation() override;
 };

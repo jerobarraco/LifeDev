@@ -37,6 +37,10 @@ void ALInteract::BeginPlay() {
 		AnimFade->Meshes.Empty();
 	}
 
+	if (!ItemReward.IsNone()) {
+		DisableWhileAnim = false; // will create a problem with the auto disable
+	}
+
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();

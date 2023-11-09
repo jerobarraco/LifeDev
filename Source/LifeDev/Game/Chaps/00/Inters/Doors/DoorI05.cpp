@@ -15,16 +15,10 @@ ADoorI05::ADoorI05():Super() {
 	// Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
 }
 
-void ADoorI05::BeginPlay() {
-	Super::BeginPlay();
-	// TODO This is debug. since i haven´t implemented it yet. will do later
-	Flags->Mod(LDConsts::Flags::CH0::Leak, 1);
-}
-
 bool ADoorI05::TryTrigger_Implementation() {
 	// verify the state. (pull not push, just like agile).
-	if (!Flags->IsSet(LDConsts::Flags::CH0::Leak)) {
-		LockedDlg = "D05_L.Leak";
+	if (!Flags->IsSet(LDConsts::Flags::CH0::Basin)) {
+		LockedDlg = "D05_L.Basin";
 	} else if (!Flags->IsSet(LDConsts::Flags::CH0::SpotI02)) {
 		LockedDlg = "D05_L.Spot";
 	} else if (!Inventory->Has(LDConsts::Items::Card0)) {
