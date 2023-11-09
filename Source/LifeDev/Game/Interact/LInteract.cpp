@@ -18,6 +18,11 @@ ALInteract::ALInteract():Super() {
 	AnimFade->Meshes.Add(Mesh);
 }
 
+void ALInteract::Fade(bool FadeIn) {
+	AnimFade->IsReversed = FadeIn;
+	AnimFade->Play();
+}
+
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
 	if (!ULockItem.IsNone() || !ULockItemReq.IsNone() || !ULockFlagReq.IsNone()) {
@@ -40,6 +45,8 @@ void ALInteract::BeginPlay() {
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	AnimFade->OnEnd.RemoveAll(this);
+
 	Inventory = nullptr;
 	Dialogs = nullptr;
 	Flags = nullptr;
@@ -71,24 +78,27 @@ void ALInteract::Trigger_Implementation() {
 	if (!IsValid(Inventory)) return;
 	// return if we maxed out
 	if (!Inventory->Mod(ItemReward, 1)) return;
-	SetEnabled(false); // avoid re-rewarding due to multi clicks
+
+	// avoid re-rewarding due to multi clicks
+	SetEnabled(false);
 
 	ItemRewarded();
-	if (!UseAnimFade) {
-		Faded();
-        return;
-    }
-    AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::Faded);
-    AnimFade->Play();
+	// Process auto destroy
+	if (UseAnimFade) {
+		// only bind here as we only want to destroy on reward
+		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
+		Fade(false);
+	} else {
+		RewardFaded(); // this can destroy the object. don't do anything after this.
+	}
 }
 
 void ALInteract::ItemRewarded_Implementation() {}
 
-void ALInteract::Faded() {
-	AnimFade->OnEnd.RemoveAll(this);
-	if (AutoDestroy) {
-		Destroy();
-	}
+void ALInteract::RewardFaded() {
+	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
+	if (!AutoDestroy) return;
+	Destroy();
 }
 
 void ALInteract::TriggerLocked_Implementation() {

@@ -17,6 +17,9 @@ class LIFEDEV_API ALInteract: public AInteractAnim {
 
 public:
 	ALInteract();
+
+	UFUNCTION(BlueprintCallable)
+	void Fade(bool FadeIn = false);
 	
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
@@ -68,7 +71,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool UseAnimFade = true;
 	
-	// whether or not to auto destroy on item reward
+	// whether or not to auto destroy on rewarded
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool AutoDestroy = true;
 	
@@ -77,8 +80,8 @@ protected:
 	void ItemRewarded();
 	virtual void ItemRewarded_Implementation();
 
-	UFUNCTION()
-	void Faded(); // called when the item reward fade ends
+	UFUNCTION() // bound
+	void RewardFaded(); // called when the item reward fade ends
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

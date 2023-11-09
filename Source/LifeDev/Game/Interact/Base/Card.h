@@ -8,8 +8,8 @@
 // Base class for cards
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ACard: public ALInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	ACard();
 };

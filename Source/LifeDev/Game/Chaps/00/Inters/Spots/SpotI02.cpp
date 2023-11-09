@@ -21,4 +21,6 @@ void ASpotI02::Trigger_Implementation() {
 	// Reward here the card
 	if (!IsValid(Card)) return;
 	Card->SetActorHiddenInGame(false);
+	// Card->AutoDestroy = false; // don't destroy on fade
+	Card->Fade(true);
 }

@@ -5,6 +5,8 @@
 
 #include "SpotI02.generated.h"
 
+class ALInteract;
+
 // Spot for room03 (bathroom)
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpotI02: public ASpot00 {
@@ -17,6 +19,6 @@ protected:
 	virtual void Trigger_Implementation() override;
 
 	// the reward card
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	AActor* Card = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	ALInteract* Card = nullptr;
 };
