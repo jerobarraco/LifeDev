@@ -62,6 +62,8 @@ void ALInteract::Trigger_Implementation() {
 	}
 	
 	UWorld* const World = GetWorld();
+	if (!World) return;
+	
 	if (!FMath::IsNearlyZero(TriggerFlashInc)) {
 		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
 		if (Flashback) {
