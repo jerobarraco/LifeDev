@@ -5,6 +5,7 @@ namespace LDConsts {
 	namespace Flags {
 		namespace CH0 { // chap 0
 			inline static FName SpotI02 = FName("CH0.SpotI02");
+			inline static FName Leak = FName("CH0.Leak");
 		}
 	}
 }
