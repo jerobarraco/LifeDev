@@ -7,12 +7,11 @@
 ASpotI02::ASpotI02():Super() {
 	DropDlg = TEXT("IS0_D*");
 	TriggerDlg = "IS0_T"; // when completed
-	LockedDlg = "IS0_LCK"; // when not full
+	LockedDlg = "IS0_L"; // when not full
 	DropFullDlg = ""; // when full
 	Items = {
-		// a bra and a shirt and a sock
-		FName("C1C01"), LDConsts::Items::Bra, FName("C1C04")
-		// FName("C1C02"), FName("C1C04")
+		// a bra and a shirt a boxer and a sock
+		FName("C1C01"), FName("C1C02"), LDConsts::Items::Bra, FName("C1C04")
 	};
 }
 
