@@ -12,4 +12,14 @@ ACard::ACard():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Card00/Card00.Card00"));
 	Mesh->SetStaticMesh(CMesh.Object);
+
+	// stolen from paper. maybe get a new one?
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper_SC.Paper_SC"));
+	SFX_Trigger = CSnd.Object;
+	
+	Texts = { FText::FromString(TEXT("Pick Up")) } ;
+	TriggerFlashInc = -.1;
+	AnimEnabled = false;
+	StateNum = 1;
 }

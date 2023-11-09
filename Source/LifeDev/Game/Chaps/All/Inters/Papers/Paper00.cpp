@@ -22,7 +22,7 @@ APaper00::APaper00():Super() {
 	// an inclined plane is a slope up
 	// a slow pup is a lazy dog
 
-	ConstructorHelpers::FObjectFinder<USoundBase>
+	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 }
