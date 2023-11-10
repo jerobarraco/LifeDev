@@ -56,17 +56,21 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName TriggerDlg = NAME_None;
 
-	// setting this will reward the item on trigger. will self-destruct. will also disable the interact.
+	// setting this will reward the item on trigger. will self-destroy if DestroyOnReward is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
 
-	// setting this will reward a flag on trigger, adding 1 *each* time. (won't self-destruct due to this variable)
+	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if DestroyOnReward is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	FName RewardFlag = NAME_None;
 
-	// the mod value for the flash system when it's triggered.
+	// the mod value for the flash system when it's triggered. will self-destroy if DestroyOnReward is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float RewardFlash = 0;
+
+	// An actor to reward. will self-destroy if DestroyOnReward is set.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	AActor* RewardActor = nullptr;
 
 	// whether or not to fade when rewarding an item.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
@@ -109,4 +113,4 @@ protected:
 
 // TODO at some point *consider* moving the RewardItem functionality to its own child class
 // e.g. animfade, RewardItem, useanimfade(redundant), autodestroy, RewardItemed,  flagrewarded
-//No:  is not that much code. is almost always used.
+//No:  is not that much code. is almost always used. it will have overhead

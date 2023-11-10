@@ -14,11 +14,4 @@ class LIFEDEV_API ASpotI02: public ASpot00 {
 
 public:
 	ASpotI02();
-	
-protected:
-	virtual void Trigger_Implementation() override;
-
-	// the reward card
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* Card = nullptr;
 };

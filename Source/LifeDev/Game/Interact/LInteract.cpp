@@ -38,6 +38,14 @@ void ALInteract::BeginPlay() {
 		AnimFade->Meshes.Empty();
 	}
 
+	if (IsValid(RewardActor)) {
+		RewardActor->SetActorHiddenInGame(true);
+		AInteract* const Reward = Cast<AInteract>(RewardActor);
+		if (IsValid(Reward)) {
+			Reward->SetEnabled(false);
+		}
+	}
+
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();
@@ -64,20 +72,23 @@ void ALInteract::Trigger_Implementation() {
 	
 	UWorld* const World = GetWorld();
 	if (!World) return;
-	
+
 	/// Rewards
-	// const bool Rewardless = (RewardItem.IsNone() && FlagReward.IsNone());
-	// if (Rewardless) {
-	// 	SetEnabled(false);
-	// 	return;
-	// }
-	if (!FMath::IsNearlyZero(RewardFlash)) {
+	const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
+	const bool Rewardless = (RewardItem.IsNone()
+		&& RewardFlag.IsNone()
+		&& RewardActor == nullptr
+		&& ZeroFlash);
+	if (Rewardless) {
+		return; // just return to avoid self destroying
+	}
+
+	if (!ZeroFlash) {
 		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
 		if (Flashback) {
 			Flashback->ModVal(RewardFlash);
 		}
 	}
-
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
 	if (!RewardItem.IsNone() && IsValid(Inventory)) {
@@ -90,6 +101,16 @@ void ALInteract::Trigger_Implementation() {
 	// do the flags which are more flexible.
 	if (IsValid(Flags)) {
 		Flags->Mod(RewardFlag, 1.0);
+	}
+
+	// do the actor
+	if (IsValid(RewardActor)) {
+		RewardActor->SetActorHiddenInGame(false);
+		ALInteract* RewardInter = Cast<ALInteract>(RewardActor);
+		if (IsValid(RewardInter)) {
+			RewardInter->SetEnabled(true);
+			RewardInter->Fade(true);
+		}
 	}
 
 	// not necessary to call "disable while anim = false" here.
