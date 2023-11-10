@@ -3,7 +3,9 @@
 #include "Tape00.h"
 
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ATape00::ATape00():Super() {
@@ -16,7 +18,7 @@ ATape00::ATape00():Super() {
 	Interact->SetRelativeLocation(FVector(5.725000,-2.500000,1.250000));
 	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
 
-	SFX->SetRelativeLocation(FVector(	0,-3.,1));
+	SFX->SetRelativeLocation(FVector(0,-3.,1));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
@@ -24,6 +26,7 @@ ATape00::ATape00():Super() {
 	Case->SetupAttachment(IRoot);
 	Case->SetStaticMesh(CCase.Object);	
 	Case->SetRelativeLocation(FVector(-5.725000,0,0));
+	AnimFade->Meshes.Add(Case);
 	
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);

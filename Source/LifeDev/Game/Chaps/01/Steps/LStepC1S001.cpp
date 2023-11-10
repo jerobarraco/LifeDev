@@ -13,7 +13,7 @@ ALStepC1S001::ALStepC1S001():Super() {
 	
 	// finish on obtaining these.
 	FinishItems = {
-		"T0",
+		"T00",
 		"WM"
 	};
 }

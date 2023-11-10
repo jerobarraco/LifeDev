@@ -15,7 +15,7 @@ ARadio00::ARadio00():Super() {
 		CBase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Base.Radio00_Base"));
 	Mesh->SetStaticMesh(CBase.Object);
 	Mesh->SetRelativeLocation(FVector(0,30,0));
-	// Mesh->SetRelativeRotation(FRotator(0,-90, 0));
+	Mesh->SetRelativeRotation(FRotator(-35,0, 0));
 	
 	Interact->SetRelativeLocation(FVector(7.5,-30.,15));
 	Interact->SetBoxExtent(FVector(7.5,30,15));
@@ -31,7 +31,9 @@ ARadio00::ARadio00():Super() {
 	SFX->SetRelativeLocation(FVector(12.5,0,12.5));
 
 	Anim->TRoot = DoorRoot;
-	Anim->TEnd.SetRotation(FRotator(-35,0., 0).Quaternion());
+	Anim->TStart.SetRotation(FRotator(-35,0., 0).Quaternion());
+	Anim->TEnd.SetRotation(FRotator::ZeroRotator.Quaternion());
+	Anim->IsAdditive = false;
 	Anim->Duration = .5;
 	// auto Lib = CreateDefaultSubobject<UCodeCurveLib>(TEXT("CodeCurve"));
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InCubic);
