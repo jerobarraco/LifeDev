@@ -15,7 +15,6 @@ ARadio00::ARadio00():Super() {
 		CBase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Base.Radio00_Base"));
 	Mesh->SetStaticMesh(CBase.Object);
 	Mesh->SetRelativeLocation(FVector(0,30,0));
-	Mesh->SetRelativeRotation(FRotator(-35,0, 0));
 	
 	Interact->SetRelativeLocation(FVector(7.5,-30.,15));
 	Interact->SetBoxExtent(FVector(7.5,30,15));
@@ -23,6 +22,7 @@ ARadio00::ARadio00():Super() {
 	DoorRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DoorRoot"));
 	DoorRoot->SetupAttachment(IRoot);
 	DoorRoot->SetRelativeLocation(FVector(15,0,10));
+	// DoorRoot->SetRelativeRotation(FRotator(-35,0,0));
 
 	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
 	Door->SetupAttachment(DoorRoot);
@@ -31,10 +31,13 @@ ARadio00::ARadio00():Super() {
 	SFX->SetRelativeLocation(FVector(12.5,0,12.5));
 
 	Anim->TRoot = DoorRoot;
-	Anim->TStart.SetRotation(FRotator(-35,0., 0).Quaternion());
-	Anim->TEnd.SetRotation(FRotator::ZeroRotator.Quaternion());
+	Anim->TStart = Anim->TEnd = DoorRoot->GetRelativeTransform();
+	// Anim->TStart.SetRotation(FRotator(-35,0., 0).Quaternion());
+	// Anim->TStart.SetScale3D(FVector::OneVector);
+	Anim->TEnd.SetRotation(FRotator(-35,0,0).Quaternion());
+	// Anim->TEnd.SetScale3D(FVector::OneVector);
 	Anim->IsAdditive = false;
-	Anim->Duration = .5;
+	Anim->Duration = 1;
 	// auto Lib = CreateDefaultSubobject<UCodeCurveLib>(TEXT("CodeCurve"));
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InCubic);
 
@@ -43,10 +46,15 @@ ARadio00::ARadio00():Super() {
 	Anim->Curve = CCurve.Object;
 	Interact->SetEnabled(true);
 	AnimEnabled = true;
-	
+	StateNum = 2;
 	UseRewardFade = false;
 	// AnimFade->SetNewMat();
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
 	AnimFade->SetActive(false);
+}
+
+void ARadio00::BeginPlay() {
+	Super::BeginPlay();
+	SetState(1); // start opened
 }

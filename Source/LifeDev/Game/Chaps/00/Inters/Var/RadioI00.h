@@ -12,5 +12,7 @@ class LIFEDEV_API ARadioI00: public ARadio00 {
 
 public:
 	ARadioI00();
-	
+
+protected:
+	virtual void Trigger_Implementation() override;
 };

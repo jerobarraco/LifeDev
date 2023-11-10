@@ -9,3 +9,8 @@ ARadioI00::ARadioI00():Super() {
 	TriggerDlg = "RD00_T";
 	ULockItem = "T01"; // Tape
 }
+
+void ARadioI00::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+	SetEnabled(false);// disable once activated
+}

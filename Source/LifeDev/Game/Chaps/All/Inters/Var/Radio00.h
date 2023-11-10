@@ -14,6 +14,8 @@ public:
 	ARadio00();
 
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Door = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
