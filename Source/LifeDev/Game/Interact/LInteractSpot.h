@@ -13,9 +13,9 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteractSpot: public ALInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	ALInteractSpot();
 
 	// When a drop is correct
