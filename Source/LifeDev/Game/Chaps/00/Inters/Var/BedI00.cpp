@@ -22,4 +22,5 @@ ABedI00::ABedI00():Super() {
 		FText::FromString(TEXT("I really need to sleep...")),
 	};
 	RewardFlash = .1;
+	UseRewardDestroy = false;
 }
