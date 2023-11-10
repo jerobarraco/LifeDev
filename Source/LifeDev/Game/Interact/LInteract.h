@@ -29,8 +29,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockFlagReq = NAME_None;
 	
-	// name of the item that will unlock this. setting it will lock the actor on start.
-	// it will also decide whether to shod LockedDlg or LockedItemDlg on trigger(locked)
+	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
+	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItem = NAME_None;
 

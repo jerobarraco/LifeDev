@@ -1,15 +1,16 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/LInteract.h"
+#include "LifeDev/Game/Chaps/All/Inters/Var/Radio00.h"
 
 #include "RadioI00.generated.h"
 
 // Heater00 Instance 02
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ARadioI00: public ALInteract {
+class LIFEDEV_API ARadioI00: public ARadio00 {
 	GENERATED_BODY()
 
 public:
 	ARadioI00();
+	
 };

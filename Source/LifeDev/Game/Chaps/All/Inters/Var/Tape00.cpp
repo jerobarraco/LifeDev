@@ -1,0 +1,30 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "Tape00.h"
+#include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
+ATape00::ATape00():Super() {
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
+	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetRelativeLocation(FVector(-5.725000,0,0));
+
+	Interact->SetEnabled(true);
+	Interact->SetRelativeLocation(FVector(5.725000,-2.500000,1.250000));
+	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CCase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
+	Case = CreateDefaultSubobject<UCQuickMesh>(TEXT("Case"));
+	Case->SetupAttachment(IRoot);
+	Case->SetStaticMesh(CCase.Object);	
+	Case->SetRelativeLocation(FVector(-5.725000,0,0));
+	
+	// static since we won't animate it
+	Super::SetMobility(EComponentMobility::Static);
+	
+	AnimEnabled = false;
+	Texts = {
+		FText::FromString(TEXT("Cassette Tape")),
+	};
+}

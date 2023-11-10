@@ -3,5 +3,5 @@
 #include "RadioI00.h"
 
 ARadioI00::ARadioI00():Super() {
-	
+	ULockItem = "T01"; // Tape
 }
