@@ -4,6 +4,6 @@
 
 ACard02::ACard02():Super() {
 	AnimEnabled = false;
-	ItemReward = "C2";
+	RewardItem = "C2";
 	Texts = { FText::FromString(TEXT("Pick Up")), FText::FromString(TEXT("Pick Up")) } ;
 }

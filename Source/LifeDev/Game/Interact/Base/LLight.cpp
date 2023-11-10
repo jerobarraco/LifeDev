@@ -13,5 +13,5 @@ ALLight::ALLight():Super() {
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/LLights/LLights.LLights"));
 	// SFX_Trigger = CSnd.Object;
-	// TriggerFlashInc = .1;
+	// RewardFlash = .1;
 }

@@ -12,5 +12,5 @@ AClout::AClout():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
-	TriggerFlashInc = .1;
+	RewardFlash = .1;
 }

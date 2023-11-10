@@ -6,7 +6,7 @@
 
 ACloutI06::ACloutI06():Super() {
 	TriggerDlg = "C06_T";
-	ItemReward = LDConsts::Items::Bra; // reusing the chap01 for now
+	RewardItem = LDConsts::Items::Bra; // reusing the chap01 for now
 	static FText T = FText::FromString(TEXT("Dirty Clothes"));
 	Texts = { T };
 }

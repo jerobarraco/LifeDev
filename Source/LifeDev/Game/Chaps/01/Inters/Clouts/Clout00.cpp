@@ -11,7 +11,7 @@ AClout00::AClout00():Super() {
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
-	ItemReward = TEXT("C1C00"); // chapter 1 clout 0
+	RewardItem = TEXT("C1C00"); // chapter 1 clout 0
 	Mesh->SetRelativeLocation(FVector(-17.500000,17.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,2.500000));
 	Interact->SetBoxExtent(FVector(18.000000,18.000000,3.000000));

@@ -8,7 +8,7 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
-	TriggerFlashInc = .1f;
+	RewardFlash = .1f;
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";
 	Texts = {

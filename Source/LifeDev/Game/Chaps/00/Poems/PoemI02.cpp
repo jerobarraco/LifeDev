@@ -3,9 +3,9 @@
 #include "PoemI02.h"
 
 APoemI02::APoemI02():Super() {
-	ItemReward = "P02";
+	RewardFlash = -.2f;
+	RewardItem = "P02";
 	TriggerDlg = "P02_Look";
-	TriggerFlashInc = -.2f;
 
 	
 	// Can't be static since it will be inside of a drawer for example

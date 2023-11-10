@@ -61,7 +61,7 @@ ALight00::ALight00():Super() {
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00s/Light00s.Light00s"));
 	// SFX_Trigger = CSnd.Object;
-	// TriggerFlashInc = .1;
+	// RewardFlash = .1;
 	
 	SetEnabled(true);
 	ALight00::SetMobility(EComponentMobility::Static);

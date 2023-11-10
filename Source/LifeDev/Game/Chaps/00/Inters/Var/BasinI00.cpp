@@ -17,8 +17,8 @@ ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
 	StateNum = 2;
 	TriggerDlg = "Basin00_T";
-	TriggerFlashInc = .1;
-	FlagReward = LDConsts::Flags::CH0::Basin;
+	RewardFlash = .1;
+	RewardFlag = LDConsts::Flags::CH0::Basin;
 	DisableWhileAnim = false; // we will disable manually
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

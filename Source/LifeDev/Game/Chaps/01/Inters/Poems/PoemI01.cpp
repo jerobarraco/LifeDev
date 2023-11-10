@@ -3,7 +3,7 @@
 #include "PoemI01.h"
 
 APoemI01::APoemI01():Super() {
-	ItemReward = "P01";
+	RewardItem = "P01";
 	TriggerDlg = "P01_T";
-	TriggerFlashInc = -.1f;
+	RewardFlash = -.1f;
 }

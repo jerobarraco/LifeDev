@@ -25,20 +25,17 @@ void ALInteract::Fade(bool FadeIn) {
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
+	// TODO try using PostInitProperties or PostInitializeComponents. PostLoad happens before the construction and PostActorCreated is before bps and properties maybe.
 	if (!ULockItem.IsNone() || !ULockItemReq.IsNone() || !ULockFlagReq.IsNone()) {
 		// note only setting it if the ulock is set.
 		Locked = true;
 	}
 
-	if (UseAnimFade) {
+	if (UseRewardFade) {
 		AnimFade->SetMaterial();
 	} else {
 		AnimFade->SetActive(false);
 		AnimFade->Meshes.Empty();
-	}
-
-	if (!ItemReward.IsNone()) {
-		DisableWhileAnim = false; // will create a problem with the auto disable
 	}
 
 	UWorld* const World = GetWorld();
@@ -68,29 +65,46 @@ void ALInteract::Trigger_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 	
-	if (!FMath::IsNearlyZero(TriggerFlashInc)) {
+	/// Rewards
+	// const bool Rewardless = (RewardItem.IsNone() && FlagReward.IsNone());
+	// if (Rewardless) {
+	// 	SetEnabled(false);
+	// 	return;
+	// }
+	if (!FMath::IsNearlyZero(RewardFlash)) {
 		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
 		if (Flashback) {
-			Flashback->ModVal(TriggerFlashInc);
+			Flashback->ModVal(RewardFlash);
 		}
 	}
 
-	if (IsValid(Flags)) {
-		Flags->Mod(FlagReward, 1.0);
+
+	// reward an item if possible ( the check for IsNone is to avoid return when none)
+	if (!RewardItem.IsNone() && IsValid(Inventory)) {
+		// return if we fail to reward
+		// for example on maxed-out (e.g. picked up consumables)
+		if (!Inventory->Mod(RewardItem, 1)) return;
+		// given this return will cancel the effect, do before the rest.
 	}
 	
-	// reward an item if possible
-	if (ItemReward.IsNone()) return;
-	if (!IsValid(Inventory)) return;
-	// return if we maxed out
-	if (!Inventory->Mod(ItemReward, 1)) return;
+	// do the flags which are more flexible.
+	if (IsValid(Flags)) {
+		Flags->Mod(RewardFlag, 1.0);
+	}
 
+	// not necessary to call "disable while anim = false" here.
+	// since it's up to the client to allow re-triggerables.
+	// and we're only concerned with SetEnabled(false) here. 
+	// and it's easier and clearer this way than messing with DisableWhileAnim which
+	// would step on the client's intention.
 	// avoid re-rewarding due to multi clicks
 	SetEnabled(false);
 
-	ItemRewarded();
-	// Process auto destroy
-	if (UseAnimFade) {
+	// trigger separately since sometimes the item could not be rewarded on trigger.
+	Rewarded();
+
+	// Process auto destroy. do at the end.
+	if (UseRewardFade) {
 		// only bind here as we only want to destroy on reward
 		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
 		Fade(false);
@@ -99,11 +113,11 @@ void ALInteract::Trigger_Implementation() {
 	}
 }
 
-void ALInteract::ItemRewarded_Implementation() {}
+void ALInteract::Rewarded_Implementation() {}
 
 void ALInteract::RewardFaded() {
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
-	if (!AutoDestroy) return;
+	if (!UseRewardDestroy) return;
 	Destroy();
 }
 

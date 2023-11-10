@@ -58,35 +58,38 @@ public:
 
 	// setting this will reward the item on trigger. will self-destruct. will also disable the interact.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
-	FName ItemReward = NAME_None;
+	FName RewardItem = NAME_None;
 
 	// setting this will reward a flag on trigger, adding 1 *each* time. (won't self-destruct due to this variable)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
-	FName FlagReward = NAME_None;
+	FName RewardFlag = NAME_None;
 
 	// the mod value for the flash system when it's triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	float TriggerFlashInc = 0;
+	float RewardFlash = 0;
 
 	// whether or not to fade when rewarding an item.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool UseAnimFade = true;
+	bool UseRewardFade = true;
 	
 	// whether or not to auto destroy on rewarded
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool AutoDestroy = true;
+	bool UseRewardDestroy = true;
 	
 protected:
 	// triggered when item is rewarded
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void ItemRewarded();
-	virtual void ItemRewarded_Implementation();
+	void Rewarded();
+	virtual void Rewarded_Implementation();
 
+	// called when the item reward fade ends
+	// not using rewardfaded since the latter will destroy the object and will confuse clients.
 	UFUNCTION() // bound
-	void RewardFaded(); // called when the item reward fade ends
+	void RewardFaded();
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
@@ -104,5 +107,6 @@ protected:
 	UDiags* Dialogs = nullptr;
 };
 
-// TODO at some point *consider* moving the ItemReward functionality to its own child class
-// e.g. animfade, itemreward, useanimfade(redundant), autodestroy, itemrewarded,  flagrewarded
+// TODO at some point *consider* moving the RewardItem functionality to its own child class
+// e.g. animfade, RewardItem, useanimfade(redundant), autodestroy, RewardItemed,  flagrewarded
+//No:  is not that much code. is almost always used.

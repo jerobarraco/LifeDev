@@ -34,6 +34,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	}
 
 	/// update the item count
+	
 	int32 Current = Item->Count;
 	// used to broadcast even on non-consumable
 	int32 CurDiff = Diff;
@@ -48,10 +49,15 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		// apply diff
 		Current = FMath::Max(0, Current+CurDiff);
 	} else {
-		// calculate the difference. non-consumable are always 0. the rest are clamped to the produce (0, MaxCount)
+		// calculate the difference. non-consumable are always -1. the rest are clamped to the produce (0, MaxCount)
 		Current = -1;
 	}
 
+	// notify the caller that we haven't changed anything. also avoid triggering an onMod 
+	if (CurDiff == 0) {
+		return false;
+	}
+	
 	Item->Count = Current;
 	
 	// intentionally copying the item, to avoid issues. the item might have been removed, or might 

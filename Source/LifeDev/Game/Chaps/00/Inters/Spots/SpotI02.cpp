@@ -10,7 +10,7 @@ ASpotI02::ASpotI02():Super() {
 	TriggerDlg = "IS0_T"; // when completed
 	LockedDlg = "IS0_L"; // when not full
 	DropFullDlg = ""; // when full
-	FlagReward = LDConsts::Flags::CH0::SpotI02;
+	RewardFlag = LDConsts::Flags::CH0::SpotI02;
 	Items = {
 		// a bra and a shirt a boxer and a sock
 		FName("C1C01"), FName("C1C02"), LDConsts::Items::Bra, FName("C1C04")

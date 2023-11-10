@@ -21,5 +21,5 @@ ABedI00::ABedI00():Super() {
 	Texts = {
 		FText::FromString(TEXT("I really need to sleep...")),
 	};
-	TriggerFlashInc = .1;
+	RewardFlash = .1;
 }

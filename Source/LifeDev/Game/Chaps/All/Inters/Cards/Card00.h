@@ -11,4 +11,9 @@ class LIFEDEV_API ACard00: public ACard {
 
 public:
 	ACard00();
+	
+	virtual void PostInitProperties() override;
+	virtual void PostInitializeComponents() override;
+	virtual void PostActorCreated() override;
+	virtual void BeginPlay() override;
 };

@@ -8,13 +8,13 @@ AWalkmanI00::AWalkmanI00():Super() {
 	AnimEnabled = false;
 	Interact->SetEnabled(true);
 	
-	TriggerFlashInc = .1f;
+	RewardFlash = .1f;
 	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?
 	LockedDlg = "WM_L";
 	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	ULockItem = "Batts";
 	
-	ItemReward = "WM";
+	RewardItem = "WM";
 	ULockBadDlg = "WM_ULB";
 		
 	Locked = true;

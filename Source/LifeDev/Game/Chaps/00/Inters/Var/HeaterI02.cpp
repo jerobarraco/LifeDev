@@ -14,5 +14,5 @@ AHeaterI02::AHeaterI02():Super() {
 	Texts = {
 		FText::FromString(TEXT("Turn on")),
 	};
-	TriggerFlashInc = .1;
+	RewardFlash = .1;
 }

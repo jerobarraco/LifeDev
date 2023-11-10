@@ -5,6 +5,27 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ACard00::ACard00():Super() {
-	ItemReward = LDConsts::Items::Card0;
+	RewardItem = LDConsts::Items::Card0;
 	TriggerDlg = "C0_PICK";
+	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
+}
+
+void ACard00::PostInitProperties() {
+	Super::PostInitProperties();
+	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
+}
+
+void ACard00::PostInitializeComponents() {
+	Super::PostInitializeComponents();
+	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
+}
+
+void ACard00::PostActorCreated() {
+	Super::PostActorCreated();
+	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
+}
+
+void ACard00::BeginPlay() {
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
 }
