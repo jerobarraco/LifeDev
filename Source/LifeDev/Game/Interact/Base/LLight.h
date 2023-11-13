@@ -29,6 +29,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category=SetUp)
 	float FlickrOnFB = -1;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* Rnd = nullptr;
 };
