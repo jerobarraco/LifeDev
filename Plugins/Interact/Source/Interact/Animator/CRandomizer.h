@@ -18,7 +18,7 @@ class INTERACT_API UCRandomizer: public UActorComponent {
 public:
 	UCRandomizer();
 
-	virtual void Activate(bool bReset) override;
+	virtual void Activate(bool bReset = false) override;
 	virtual void Deactivate() override;
 	// use Activate and deactivate
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))

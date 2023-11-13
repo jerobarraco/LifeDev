@@ -4,6 +4,7 @@
 
 #include "Components/RectLightComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -22,18 +23,10 @@ ALight00::ALight00():Super() {
 		Tube->SetStaticMesh(CTube.Object);
 	}
 	Tube->SetRelativeLocation(FVector(0.5,7.5,100));
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelMetal_MI.VoxelMetal_MI"));
-	// using metal instead of glass to avoid having to deal with transparency.
-	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
-	UMaterialInterface* const Mat = CMat.Object; // /Script/Engine.MaterialInstanceConstant''
-	UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, Mat);
 
 	/// anim
-	/// // TODO fix the anim not triggering
 	AnimEnabled = true;
 	Anim->TRoot = nullptr;
-	Anim->Mat = MI;
 	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
@@ -62,9 +55,10 @@ ALight00::ALight00():Super() {
 		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00s/Light00s.Light00s"));
 	// SFX_Trigger = CSnd.Object;
 	// RewardFlash = .1;
-	
-	SetEnabled(true);
+
+	FlickrOnFB = .7;
 	ALight00::SetMobility(EComponentMobility::Static);
+	SetEnabled(true);
 }
 
 void ALight00::UpdateAnim(float Progress, float Alpha) {
@@ -74,6 +68,19 @@ void ALight00::UpdateAnim(float Progress, float Alpha) {
 
 void ALight00::BeginPlay() {
 	Super::BeginPlay();
+
+	// DO NOT CREATE material instance on the constructor. or it will crash the editor at best.
+	// using metal instead of glass to avoid having to deal with transparency.
+	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
+	static FSoftObjectPath Path(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelMetal_MI.VoxelMetal_MI"));
+	TSoftObjectPtr<UMaterialInterface>
+		MatP(Path);
+	UMaterialInterface* const M = MatP.LoadSynchronous(); // i know you'll love this.
+	if (IsValid(M)) {
+		UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, M);
+		Anim->Mat=MI;
+	}
+
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
 	TryTrigger(); // turns it on by default.
 }

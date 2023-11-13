@@ -12,6 +12,7 @@ class UCRandomizerFB : public UCRandomizer {
 
 public:
 	UCRandomizerFB();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

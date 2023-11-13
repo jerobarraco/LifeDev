@@ -16,12 +16,13 @@ UCRandomizer::UCRandomizer(): Super() {
 void UCRandomizer::Activate(bool bReset) {
 	if (bReset) {
 		Reset();
+	} else if (IsActive()) {
+		return;
 	}
 
 	UWorld* const World = GetWorld();
-	if (!World) {
-		return;
-	}
+	if (!World) return;
+
 	Super::Activate(bReset);
 	
 	const float Delay = FMath::FRandRange(DelayMin, DelayMax);
@@ -31,9 +32,7 @@ void UCRandomizer::Activate(bool bReset) {
 
 void UCRandomizer::Reset() {
 	UWorld* const World = GetWorld();
-	if (!World) {
-		return;
-	}
+	if (!World) return;
 	
 	FTimerManager& Manager = World->GetTimerManager();
 	Manager.ClearTimer(Timer);
@@ -41,6 +40,7 @@ void UCRandomizer::Reset() {
 }
 
 void UCRandomizer::Deactivate() {
+	if (!IsActive()) return;
 	Super::Deactivate();
 	Reset();
 }
