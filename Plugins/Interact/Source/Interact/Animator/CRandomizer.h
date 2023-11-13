@@ -20,9 +20,11 @@ public:
 
 	virtual void Activate(bool bReset = false) override;
 	virtual void Deactivate() override;
+	
 	// use Activate and deactivate
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
 	FORCEINLINE void Start() {Activate (true);};
+
 	// use Activate and deactivate
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() {Deactivate();};
@@ -32,8 +34,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float DelayMax = 10.0;
 
+	// the minimum value to get as random. Will set that as duration to the Anim
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float ValueMin = 0.0;
+	// the max value to get as random. Will set that as duration to the Anim
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float ValueMax = 1.0f;
 

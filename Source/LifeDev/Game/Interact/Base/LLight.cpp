@@ -29,7 +29,14 @@ ALLight::ALLight():Super() {
 
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->SetAutoActivate(false);
-
+	Rnd->IsLooping = true;
+	Rnd->Anim = Anim;
+	Rnd->UseRandReverse = false; // don´t want to change the state of the light
+	Rnd->ValueMin = .1;
+	Rnd->ValueMax = 3;
+	Rnd->DelayMin = 3;
+	Rnd->DelayMax = 15;
+	
 	SetState(1); // on
 }
 
@@ -40,12 +47,14 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		return;
 	}
 
-	AnimEnabled = true;
 	UFlashback* const Fb = UFlashback::Get(GetWorld());
 	if (!Fb) return;
 	
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
-	Rnd->OnTriggerVal.AddUniqueDynamic(this, &ALLight::Flicker);
+
+	AnimEnabled = true;
+	// magically will make it flicker and get back to where it was.
+	Anim->IsBouncing = true;
 }
 
 void ALLight::BeginPlay() {
@@ -63,18 +72,10 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALLight::Flicker(float Val) {
-	// magically will make it flicker and get back to where it was.
-    Anim->IsBouncing = true;
-	// turn on if it was off
-	Anim->IsReversed = StateNum>1 && State != 0; 
-	Anim->Play();
-}
-
 void ALLight::SetFB(float Value) {
 	// activate and deactivate only run if needed.
 	if (Value > FlickrOnFB){
-		Rnd->Activate();
+		Rnd->Activate(false);
 	} else {
 		Rnd->Deactivate();
 	}

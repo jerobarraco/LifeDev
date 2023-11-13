@@ -26,6 +26,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() { Deactivate(); };
+
+	// plays the animation. optionally reset.
+	virtual void Activate(bool bReset) override;
+	// stops the animation.
+	virtual void Deactivate() override;
 	
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
@@ -42,6 +47,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DeltaSeconds);
 
+	// sets/clear a parent that drives the update of this animator
+	UFUNCTION(BlueprintCallable)
+	void BindTo(UCAnimator* Parent = nullptr);
+	
 	// By default run at 30 fps; Optimization
 	inline static float IntervalDefault = 1.0f/30.f;
 	// to be set by game manager depending on the flags
@@ -77,10 +86,6 @@ public:
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
-	// sets/clear a parent that drives the update of this animator
-	UFUNCTION(BlueprintCallable)
-	void BindTo(UCAnimator* Parent = nullptr);
-
 protected:
 	// override me on child classes :) But call the parent!! (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
@@ -108,8 +113,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void Activate(bool bReset) override;
-	virtual void Deactivate() override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCAnimator* Parent = nullptr;

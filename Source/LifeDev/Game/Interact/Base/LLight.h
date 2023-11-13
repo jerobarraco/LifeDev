@@ -23,9 +23,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
-	
-	UFUNCTION()
-	void Flicker(float Val);
 	UFUNCTION()
 	void SetFB(float Value);
 	// flickers when fb is >= this value. <0 means disabled.
