@@ -38,6 +38,9 @@ ALLight::ALLight():Super() {
 	Rnd->DelayMax = 15;
 	
 	SetState(1); // on
+
+	SetEnabled(false);
+	FlickrOnFB = .7;
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {

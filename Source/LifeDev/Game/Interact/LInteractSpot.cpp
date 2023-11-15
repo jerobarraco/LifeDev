@@ -12,6 +12,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	AnimEnabled = false;
 	Locked = true;
 	UseRewardDestroy = false;
+	UseRewardFade = false;
 	Texts = {
 		FText::FromString(TEXT("Drop here")),
 		FText::FromString(TEXT("Full"))

@@ -1,7 +1,6 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "Components/RectLightComponent.h"
 #include "LifeDev/Game/Interact/Base/LLight.h"
 
 #include "Light00.generated.h"

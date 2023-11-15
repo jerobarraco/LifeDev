@@ -4,7 +4,6 @@
 
 #include "Components/RectLightComponent.h"
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -50,19 +49,11 @@ ALight00::ALight00():Super() {
 	Interact->SetRelativeLocation(FVector(40,-50,103.734790));
 	Interact->SetBoxExtent(FVector(900,200,150));
 
-	// Texts = {FText::FromString("PickUp")};
-	// static ConstructorHelpers::FObjectFinder<USoundBase>
-		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00s/Light00s.Light00s"));
-	// SFX_Trigger = CSnd.Object;
-	// RewardFlash = .1;
-
-	FlickrOnFB = .7;
 	ALight00::SetMobility(EComponentMobility::Static);
-	SetEnabled(true);
 }
 
 void ALight00::UpdateAnim(float Progress, float Alpha) {
-	const bool IsOn = Alpha >= .3;
+	const bool IsOn = Alpha >= .45;
 	RectLight->SetVisibility(IsOn);
 }
 
@@ -82,7 +73,7 @@ void ALight00::BeginPlay() {
 	}
 
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
-	TryTrigger(); // turns it on by default.
+	// TryTrigger(); // turns it on by default.
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
