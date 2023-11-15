@@ -9,8 +9,9 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawerI00: public ADrawer01 {
 	GENERATED_BODY()
+
 public:
 
 protected:
-	void Trigger_Implementation();
+	virtual void SetState_Implementation(int32 NewState) override;
 };

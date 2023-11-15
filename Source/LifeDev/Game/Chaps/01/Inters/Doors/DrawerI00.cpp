@@ -2,7 +2,7 @@
 
 #include "DrawerI00.h"
 
-void ADrawerI00::Trigger_Implementation() {
+void ADrawerI00::SetState_Implementation(int32 NewState) {
+	Super::SetState_Implementation(NewState);
 	TriggerDlg = IsOpen() ? "" : "DR00_T";
-	Super::Trigger_Implementation();
 }
