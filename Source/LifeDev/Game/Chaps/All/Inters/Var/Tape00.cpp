@@ -34,7 +34,7 @@ ATape00::ATape00():Super() {
 	AnimEnabled = false;
 	StateNum = 1;
 	Texts = {
-		FText::FromString(TEXT("Cassette Tape")),
+		FText::FromString(TEXT("Tape")),
 	};
 }
 

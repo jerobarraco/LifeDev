@@ -11,16 +11,16 @@
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
 ABasinI00::ABasinI00():Super() {
+	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
 	AnimEnabled = false;
 	Locked = false;
-	
-	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
 	StateNum = 2;
 	TriggerDlg = "Basin00_T";
 	RewardFlash = .1;
 	RewardFlag = LDConsts::Flags::CH0::Basin;
 	DisableWhileAnim = false; // we will disable manually
-
+	UseRewardDestroy = false; // one shot but won't disappear 
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/HandBasin.HandBasin"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -46,7 +46,6 @@ ABasinI00::ABasinI00():Super() {
 }
 
 void ABasinI00::Trigger_Implementation() {
-	// TODO disable water running
 	Water->Deactivate();
 	Super::Trigger_Implementation();
 	SetEnabled(false); // trigger only once 

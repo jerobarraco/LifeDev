@@ -22,7 +22,7 @@ public:
 	// The animation transform. You don't necessarily need to set this up, but you can change it.
 	// When "IsAdditive" it is going to be automatically set to the current transform of the AnimRoot on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
-	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
+	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::ZeroVector);
 	
 	// The animation transform
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
