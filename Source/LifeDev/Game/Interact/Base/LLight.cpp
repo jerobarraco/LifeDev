@@ -13,12 +13,16 @@ ALLight::ALLight():Super() {
 	ALLight::SetMobility(EComponentMobility::Static);
 	// by default is just a static light.
 	Super::SetEnabled(false);
+
+	FlickrOnFB = .7;
 	AnimEnabled = true;
 	StateNum = 2;
-	Texts = {FText::FromString(TEXT("Turn on")), FText::FromString(TEXT("Turn off"))};
+	Texts = {FText::FromString(TEXT("Turn off")), FText::FromString(TEXT("Turn on"))};
+	Anim->TRoot = nullptr; // by default don't animate meshes
+	// Trans.Empty(); // force the simpler animation which will reverse the animation.
 	
-	// would trash the materials.
-	UseRewardFade = false; 
+	// these would trash the materials.
+	UseRewardFade = false;
 	AnimFade->Meshes.Empty();
 	
 	// Texts = {FText::FromString("PickUp")};
@@ -37,10 +41,7 @@ ALLight::ALLight():Super() {
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
 	
-	SetState(1); // on
-
 	SetEnabled(false);
-	FlickrOnFB = .7;
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
@@ -62,8 +63,8 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
-	
 	SetFBFlicker(FlickrOnFB);
+	SetState(0); // 0 == closed == on
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {

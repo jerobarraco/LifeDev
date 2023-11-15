@@ -22,10 +22,8 @@ ALight01::ALight01():Super() {
 	Glass->SetRelativeLocation(FVector(5.,-5.,5.));
 
 	/// anim
-
 	// enable the animation so that we get the update. but don't actually animate any material
 	AnimEnabled = true;
-	Anim->TRoot = nullptr;
 	Anim->Mat = nullptr;
 	// Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	// Anim->MatVName = "Emissive";

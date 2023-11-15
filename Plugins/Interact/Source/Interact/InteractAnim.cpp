@@ -54,15 +54,17 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 	}
 
 	// both checks avoids an out of bound access
-	if (Trans.Num()==0 || State < 0) {
+	if (Trans.Num() ==0 || State < 0) {
 		// this creates so many issues. notice how it's set.
-		Anim->PlaySet(!GetIsOpen()); //!IsOpen== !(State!=0)
+		Anim->IsReversed = !GetIsOpen(); //!IsOpen== !(State!=0) 
 	} else {
 		// using troot since it could be changed in any child or parent
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();
 		Anim->TEnd = Trans[State%Trans.Num()];
-		Anim->PlaySet();
 	}
+	// not calling PlaySet on purpose. since that could break things like the light.
+	// or if a child wants to do something weird.
+	Anim->Play();
 }
 
 void AInteractAnim::Trigger_Implementation() {

@@ -25,7 +25,6 @@ ALight00::ALight00():Super() {
 
 	/// anim
 	AnimEnabled = true;
-	Anim->TRoot = nullptr;
 	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
@@ -73,7 +72,6 @@ void ALight00::BeginPlay() {
 	}
 
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
-	// TryTrigger(); // turns it on by default.
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {

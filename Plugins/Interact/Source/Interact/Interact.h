@@ -42,7 +42,7 @@ public:
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
-	// used for binding only. since ue will complain about the return value. but i still wanna keep it.
+	// Don't use if possible. use TryTrigger. used for binding only. since ue will complain about the return value. but i still wanna keep it. 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	void TryTriggerWrapped() {TryTrigger();}
 
