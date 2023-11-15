@@ -7,4 +7,6 @@ ATapeI00::ATapeI00():Super() {
 		FText::FromString(TEXT("Pick up tape")),
 	};
 	RewardItem = "T01";
+	// needed to be able to attach to the drawer
+	Super::SetMobility(EComponentMobility::Movable);
 }
