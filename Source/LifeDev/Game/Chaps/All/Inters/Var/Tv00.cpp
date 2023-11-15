@@ -104,7 +104,7 @@ void ATv00::BeginPlay() {
 
 void ATv00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
-	const bool _IsOpen = GetIsOpen();
+	const bool _IsOpen = IsOpen();
 	Noise->Fade(_IsOpen);
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);

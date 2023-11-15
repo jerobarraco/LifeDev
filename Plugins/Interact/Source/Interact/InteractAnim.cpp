@@ -47,7 +47,27 @@ void AInteractAnim::SetText_Implementation() {
 
 void AInteractAnim::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
+	AnimPlay();
+}
 
+void AInteractAnim::Trigger_Implementation() {
+	// set the flag before so that the sound triggers are consistent
+	const int32 NewState = (State +1) % StateNum;
+	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: ShouldReverse=%i, state=%i"), IsOpen() ? 0:1, NewState);
+
+	SetState(NewState);
+
+	// trigger the trigger sound and calls set text. notice done after changing the state.
+	Super::Trigger_Implementation(); // calling implementation to call the super
+	// SetText(); // not needed. happens on super
+}
+
+bool AInteractAnim::TryTrigger_Implementation() {
+	if (AnimEnabled && Anim->IsActive()) return false;
+	return Super::TryTrigger_Implementation();
+}
+
+void AInteractAnim::AnimPlay() {
 	if (!AnimEnabled) return;
 	if (DisableWhileAnim) {
 		SetEnabled(false);
@@ -56,7 +76,7 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 	// both checks avoids an out of bound access
 	if (Trans.Num() ==0 || State < 0) {
 		// this creates so many issues. notice how it's set.
-		Anim->IsReversed = !GetIsOpen(); //!IsOpen== !(State!=0) 
+		Anim->IsReversed = !IsOpen(); //!IsOpen== !(State!=0) 
 	} else {
 		// using troot since it could be changed in any child or parent
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();
@@ -65,23 +85,6 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 	// not calling PlaySet on purpose. since that could break things like the light.
 	// or if a child wants to do something weird.
 	Anim->Play();
-}
-
-void AInteractAnim::Trigger_Implementation() {
-	// set the flag before so that the sound triggers are consistent
-	const int32 NewState = (State +1) % StateNum;
-	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: open=%i, state=%i"), GetIsOpen() ? 0:1, NewState);
-
-	SetState(NewState);
-
-	// trigger the trigger sound and calls set text. notice done after changing the state.
-	Super::Trigger_Implementation();
-	// SetText(); // not needed. happens on super
-}
-
-bool AInteractAnim::TryTrigger_Implementation() {
-	if (AnimEnabled && Anim->IsActive()) return false;
-	return Super::TryTrigger_Implementation();
 }
 
 void AInteractAnim::AnimBegin_Implementation() {

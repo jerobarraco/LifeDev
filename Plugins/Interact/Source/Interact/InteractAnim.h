@@ -17,9 +17,10 @@ public:
 	AInteractAnim();
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
-	// true when State != 0. prefer to use the state directly. only makes sense if StateNum == 2
+	// Flip-flops depending on the state. Starts closed. Override in case of State > 2.
+	// this also affects the "reversed" flag of the anim. if you need something else set the "Trans".
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsOpen() const { return State != 0; }
+	bool IsOpen() const { return State % 2 != 0; }
 	
 	// whether it will trigger animations from the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -38,13 +39,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<FText> Texts = {
 		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
-		FText::FromString(TEXT("Close")), // 1 == isOpen == Opened text
+		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
 	};
 
+	// mostly used for puzzles. i'm unsure i will keep this.
 	// the transforms for each state. if this is set it will override the anim values.
 	// the isAdditive flag will be respected, but probably won't work nicely.
+	// won't affect the reversed flag.
 	// if you need to set material values i'd recommend overriding SetState_Implementation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", meta=(DeprecatedProperty))
 	TArray<FTransform> Trans;
 
 	// triggered when anim starts. Closed, open.
@@ -58,6 +61,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetText_Implementation() override;
+	void AnimPlay();
 	virtual void SetState_Implementation(int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void Trigger_Implementation() override;
@@ -66,6 +70,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
 	void AnimBegin();
 	virtual void AnimBegin_Implementation();
+
 	// Called when the animation end. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
 	void AnimEnd();
