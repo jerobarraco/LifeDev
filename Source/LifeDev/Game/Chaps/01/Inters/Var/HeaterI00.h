@@ -8,9 +8,9 @@
 // Heater00 Instance 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AHeaterI00: public AHeater00 {
-public:
 	GENERATED_BODY()
 
+public:
 	AHeaterI00();
 
 	virtual void Trigger_Implementation() override;
