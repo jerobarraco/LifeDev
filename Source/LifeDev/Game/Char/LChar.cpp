@@ -279,19 +279,19 @@ void ALChar::LookItem(const FName& Name) {
 	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Title='%s' Count=%i, description '%s'."),
 		*SName, *Item.Title.ToString(), Item.Count, *Item.Description.ToString());
 
-	// say look at stuff
-	const FName DRName = FName(*(SName + "_Look*"));
-	const FName DName = FName(*(SName + "_Look"));
-	// 1st try to add a regular one
-	// Then try to add a random one (since it's quite rare that i want a item look that is random)
-	// counting on lazy evaluation here
-	// the is valid is for the add below
-	if (IsValid(Dialogs) && !Say(DName) && !Say(DRName)) {
+	// say look at stuff.
+	// don't even bother with the non-random.
+	// if you want to have a non-random sequence you'd have to add 2 keys.
+	// but it's cheaper than asking every time for random and not random.
+	const FName& DRName = FName(*(SName + "_Look*"));
+	// the isValid is for the add below
+	if (!Say(DRName) && IsValid(Dialogs)) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
         FDialog Diag;
         Diag.Type = EDialogType::SYSTEM;
         Diag.Text = Item.Description;
+		// TODO consider changing this to main
         Diag.CharRow = "Sys";
         Dialogs->AddDiag(Diag);
 	}

@@ -21,6 +21,7 @@ ABasinI00::ABasinI00():Super() {
 	RewardFlag = LDConsts::Flags::CH0::Basin;
 	DisableWhileAnim = false; // we will disable manually
 	UseRewardDestroy = false; // one shot but won't disappear 
+	UseRewardFade = false; // nor it will fade
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/HandBasin.HandBasin"));
