@@ -21,16 +21,7 @@ public:
 
 protected:
 	virtual void Debug_Implementation() override;
-	void ShowDoors(bool Chap00);
 
-	// the door of the toilet on chap0
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* C0Door = nullptr;
-
-	// the door of the toilet on chap1
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* C1Door = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* RandFB = nullptr;
 };

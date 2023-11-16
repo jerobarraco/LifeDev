@@ -9,6 +9,7 @@
 #include "Interact/CInteract.h"
 
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "Sounds/CSounder.h"
 
 ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
@@ -40,6 +41,11 @@ ABasinI00::ABasinI00():Super() {
 	Water->SetRelativeLocation(FVector(17,10,18));
 
 	// TODO add csounder for the water running.
+	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CWaterSnd(TEXT("TODO"));
+	SND_Water->SetSound(CWaterSnd.Object);
+	SND_Water->SetAutoActivate(true);
 	
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
@@ -47,6 +53,7 @@ ABasinI00::ABasinI00():Super() {
 
 void ABasinI00::Trigger_Implementation() {
 	Water->Deactivate();
+	SND_Water->Fade(false);
 	Super::Trigger_Implementation();
 	SetEnabled(false); // trigger only once 
 }

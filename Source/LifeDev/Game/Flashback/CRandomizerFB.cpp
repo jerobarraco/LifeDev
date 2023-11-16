@@ -3,10 +3,10 @@
 #include "Flashback.h"
 
 UCRandomizerFB::UCRandomizerFB():Super() {
-	DelayMin = 2.5;
-	DelayMax = 5;
-	ValueMin = -.02;
-	ValueMax = .05;
+	DelayMin = 3;
+	DelayMax = 6;
+	ValueMin = -.01;
+	ValueMax = .02;
 	IsLooping = true;
 }
 
@@ -21,5 +21,7 @@ void UCRandomizerFB::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCRandomizerFB::TriggerFB(float Val) {
-	GetWorld()->GetSubsystem<UFlashback>()->ModVal(Val);
+	UFlashback* const Flashback = UFlashback::Get(GetWorld());
+	if (!Flashback) return;
+	Flashback->ModVal(Val);
 }

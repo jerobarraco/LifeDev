@@ -33,16 +33,6 @@ ALStepC0S000::ALStepC0S000():Super() {
 	}
 }
 
-void ALStepC0S000::ShowDoors(bool Chap00) {
-	// TODO remove this, the data-layer-loading is implemented
-	if (IsValid(C0Door)) {
-		C0Door->SetActorHiddenInGame(!Chap00);
-	}
-	if(IsValid(C1Door)) {
-		C1Door->SetActorHiddenInGame(Chap00);
-	}
-}
-
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
@@ -59,12 +49,10 @@ void ALStepC0S000::Start_Implementation() {
 	Flashback->SetVal(.1);
 	Flashback->SetMax(.75);
 	RandFB->Activate(true);
-	ShowDoors(true);
 }
 
 void ALStepC0S000::Stop_Implementation() {
 	RandFB->Deactivate();
-	ShowDoors(false);
 	Super::Stop_Implementation();
 	// UFlashback::SetValS(GetWorld(), 0, 5);
 }

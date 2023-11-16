@@ -23,6 +23,7 @@
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
+#include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -278,22 +279,21 @@ void ALChar::LookItem(const FName& Name) {
 	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Title='%s' Count=%i, description '%s'."),
 		*SName, *Item.Title.ToString(), Item.Count, *Item.Description.ToString());
 
-	if (IsValid(Dialogs)) {
-		const FName DRName = FName(*(SName + "_Look*"));
-		const FName DName = FName(*(SName + "_Look"));
-		// 1st try to add a regular one
-		if (!Dialogs->AddId(DName)) {
-			// Then try to add a random one (since it's quite rare that i want a item look that is random)
-			if (!Dialogs->AddId(DRName)) {
-				// otherwise compose one
-				// show the dialog with the description. this is temporary until i make the ui
-                FDialog Diag;
-                Diag.Type = EDialogType::SYSTEM;
-                Diag.Text = Item.Description;
-                Diag.CharRow = "Sys";
-                Dialogs->AddDiag(Diag);
-			}
-		}
+	// say look at stuff
+	const FName DRName = FName(*(SName + "_Look*"));
+	const FName DName = FName(*(SName + "_Look"));
+	// 1st try to add a regular one
+	// Then try to add a random one (since it's quite rare that i want a item look that is random)
+	// counting on lazy evaluation here
+	// the is valid is for the add below
+	if (IsValid(Dialogs) && !Say(DName) && !Say(DRName)) {
+		// otherwise compose one
+		// show the dialog with the description. this is temporary until i make the ui
+        FDialog Diag;
+        Diag.Type = EDialogType::SYSTEM;
+        Diag.Text = Item.Description;
+        Diag.CharRow = "Sys";
+        Dialogs->AddDiag(Diag);
 	}
 
 	// trigger manager look
@@ -314,14 +314,15 @@ void ALChar::ActItem() {
 	}
 
 	if (!Item.Usable) {
-		Say(FName("IT_NotUsable"));
+		UE_LOG(LogLChar, Log, TEXT("Item not usable"));
+		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
 		// LookItem(Item);
-		return;
+		return; // always return if not usable
 	}
 
 	if (!Inventory->IsCold(Item)) {
-		UE_LOG(LogLChar, Log, TEXT("Can't use item."));
-		if (Say(FName("IT_NotReady"))) return;
+		UE_LOG(LogLChar, Log, TEXT("Item not ready"));
+		Say(LDConsts::Dlgs::Sys::Item::NotReady);
 		return;
 	}
 
@@ -341,8 +342,12 @@ void ALChar::ActItem() {
 			Item.Logic->Use();
 		}
 	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
-		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s'"), Res, *Item.Title.ToString());
-		Say(Res == EItemUseResult::BAD_TARGET ? FName("IT_BadTarget") : FName("IT_NoTarget"));
+		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
+		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s' badTarget=%i"), Res, *Item.Title.ToString(), isBadTarget);
+		const FName& DlgId = isBadTarget ? 
+			LDConsts::Dlgs::Sys::Item::BadTarget :
+			LDConsts::Dlgs::Sys::Item::NoTarget;
+		Say(DlgId);
 		return;
 	}
 
@@ -359,7 +364,6 @@ void ALChar::ActItemLook() {
 void ALChar::ActMenu() { // no const
 	if (!IsValid(SettingsUI)) return;
 
-	// TODO make this work
 	if (SettingsUI->IsVisible()) {
 		MenuDone();
 		return;

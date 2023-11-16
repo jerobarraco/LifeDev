@@ -6,6 +6,8 @@
 #include "BasinI00.generated.h"
 
 class UNiagaraComponent;
+class UCSounder;
+
 // Ch00 basin00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABasinI00: public ALInteract {
@@ -19,4 +21,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Water = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSounder* SND_Water = nullptr;
 };

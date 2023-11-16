@@ -21,6 +21,9 @@ class UInputMappingContext;
 class UGameUI;
 class UCLNoiser;
 
+// TODO consider moving the input stuff to another component
+// TODO consider moving the item interaction dialog stuff to another component
+
 // base class for the character
 UCLASS(config=Game)
 class LIFEDEV_API ALChar : public ACharacter
@@ -32,10 +35,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetUIVisible(bool bCond);
-	
+
+	// fully disables the input of the character. use InteractSetEnabled instead unless you really need to.
 	UFUNCTION(BlueprintCallable)
 	void SetInputEnabled(bool Enabled);
 
+	// disable the interact for the character.
 	UFUNCTION(BlueprintCallable)
 	void InteractSetEnabled(bool Enabled);
 
