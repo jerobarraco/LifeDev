@@ -8,10 +8,9 @@
 // Tv00 Instance 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATvI00: public ATv00 {
-public:
 	GENERATED_BODY()
+public:
 
-	ATvI00();
 protected:
-	virtual void Trigger_Implementation() override;
+	virtual void SetState_Implementation(int32 NewState) override;
 };

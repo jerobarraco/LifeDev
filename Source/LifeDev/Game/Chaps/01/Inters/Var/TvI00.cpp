@@ -2,11 +2,7 @@
 
 #include "TvI00.h"
 
-ATvI00::ATvI00():Super() {
-	// TriggerDlg = "TV00_T";
-}
-
-void ATvI00::Trigger_Implementation() {
-	TriggerDlg = IsOpen() ? "" : "TV00_T";
-	Super::Trigger_Implementation();
+void ATvI00::SetState_Implementation(int32 NewState) {
+	Super::SetState_Implementation(NewState);
+	TriggerDlg = IsOpen() ? "TV00_T": "";
 }
