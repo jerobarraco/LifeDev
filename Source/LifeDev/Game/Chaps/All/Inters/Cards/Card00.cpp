@@ -6,7 +6,7 @@
 
 ACard00::ACard00():Super() {
 	RewardItem = LDConsts::Items::Card0;
-	TriggerDlg = "C0_T";
+	TriggerDlg = "C0_Pick";
 	UE_LOG(LogTemp, Log, TEXT("TTT %hs"), __func__);
 }
 
