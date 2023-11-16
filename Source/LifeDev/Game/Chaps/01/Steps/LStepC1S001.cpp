@@ -10,12 +10,10 @@ ALStepC1S001::ALStepC1S001():Super() {
 	// no need to set it again since it's already set.
 	// maybe that triggers another blend
 	UsePawnCam = false;
-	
+
+	// disabled. the tape01 will terminate manually.
 	// finish on obtaining these.
-	FinishItems = {
-		"T00",
-		"WM"
-	};
+	// FinishItems = { "T00", "WM" };
 }
 
 void ALStepC1S001::Start_Implementation() {

@@ -62,14 +62,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALInteract::Trigger_Implementation() {
-	Super::Trigger_Implementation();
-
-	// trigger the dialog anyway.
-	if (IsValid(Dialogs)) {
-		Dialogs->AddId(TriggerDlg);
-	}
-	
+void ALInteract::DoRewards() {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
@@ -106,7 +99,7 @@ void ALInteract::Trigger_Implementation() {
 	// do the actor
 	if (IsValid(RewardActor)) {
 		RewardActor->SetActorHiddenInGame(false);
-		ALInteract* RewardInter = Cast<ALInteract>(RewardActor);
+		ALInteract* const RewardInter = Cast<ALInteract>(RewardActor);
 		if (IsValid(RewardInter)) {
 			RewardInter->SetEnabled(true);
 			RewardInter->Fade(true);
@@ -132,6 +125,17 @@ void ALInteract::Trigger_Implementation() {
 	} else {
 		RewardFaded(); // this can destroy the object. don't do anything after this.
 	}
+}
+
+void ALInteract::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+
+	// trigger the dialog anyway.
+	if (IsValid(Dialogs)) {
+		Dialogs->AddId(TriggerDlg);
+	}
+	
+	DoRewards();
 }
 
 void ALInteract::Rewarded_Implementation() {}

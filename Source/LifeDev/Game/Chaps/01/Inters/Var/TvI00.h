@@ -9,6 +9,7 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATvI00: public ATv00 {
 	GENERATED_BODY()
+
 public:
 
 protected:

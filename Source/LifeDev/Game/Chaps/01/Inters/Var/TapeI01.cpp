@@ -1,0 +1,26 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "TapeI01.h"
+
+#include "Interact/Animator/CAnimatorFade.h"
+#include "Story/Story.h"
+
+ATapeI01::ATapeI01():Super() {
+	Texts = { FText::FromString(TEXT("Pick up tape")) };
+	TriggerDlg = "TO"; // will say what it is. triggered on pick up
+	StateNum = 1;
+	AnimEnabled = false;
+	// RewardItem = "T01";
+	// needed to be able to attach to the drawer
+	Super::SetMobility(EComponentMobility::Movable);
+}
+
+void ATapeI01::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+	UStory* const Story = UStory::Get(GetWorld());
+	if (!Story) return;
+	Story->Stop("C1S1");
+	
+	AnimFade->OnEnd.AddUniqueDynamic(this, &ATapeI01::K2_DestroyActor);
+	Fade(false);
+}
