@@ -20,6 +20,7 @@ ALight01::ALight01():Super() {
 	Glass->SetupAttachment(Mesh);
 	Glass->SetStaticMesh(CTube.Object);
 	Glass->SetRelativeLocation(FVector(5.,-5.,5.));
+	Glass->SetCastAllShadows(false);
 
 	/// anim
 	// enable the animation so that we get the update. but don't actually animate any material

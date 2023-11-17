@@ -13,7 +13,7 @@ ALight00::ALight00():Super() {
 	Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
 	Mesh->SetRelativeScale3D(FVector(0.05,0.05,0.05));
 	Mesh->SetStaticMesh(CMesh.Object);
-
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/Fluorescent.Fluorescent"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
@@ -22,6 +22,7 @@ ALight00::ALight00():Super() {
 		Tube->SetStaticMesh(CTube.Object);
 	}
 	Tube->SetRelativeLocation(FVector(0.5,7.5,100));
+	Tube->SetCastAllShadows(false);
 
 	/// anim
 	AnimEnabled = true;

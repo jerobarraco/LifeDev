@@ -7,6 +7,8 @@
 #include "LLight.generated.h"
 
 class UCRandomizer;
+// Remember to set cast shadow on the correct meshes
+
 // Base class for LLight actors
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight: public ALInteract {
