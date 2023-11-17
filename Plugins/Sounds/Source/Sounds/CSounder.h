@@ -17,15 +17,20 @@ class SOUNDS_API UCSounder : public UAudioComponent {
 public:
 	UCSounder();
 
+	// main entry point. fades in or out with the given parameters
+	// you can still call the parent functions with less functionality
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool In);
 
+	// fade in time or 0 for none
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeIn = 2.0;
 
+	// fade out time or 0 for none
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeOut = 2.0;
-	
+
+	// time where to start the sound
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeStart = 0;
 

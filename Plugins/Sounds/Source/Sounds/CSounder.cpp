@@ -6,7 +6,7 @@
 UCSounder::UCSounder():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 	Super::SetAutoActivate(false);
-	bAutoManageAttachment = true; 
+	bAutoManageAttachment = true;
 	//
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 	// 	CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01.Rain01"));

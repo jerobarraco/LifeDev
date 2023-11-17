@@ -8,6 +8,6 @@ ARadioI01::ARadioI01():Super() {
 	Locked = true;
 	StateNum = 1;
 	Texts = {
-		FText::FromString(TEXT("Cursed radio"))
+		FText::FromString(TEXT("Noisy radio"))
 	};
 }

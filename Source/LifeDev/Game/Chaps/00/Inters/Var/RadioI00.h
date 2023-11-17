@@ -5,7 +5,9 @@
 
 #include "RadioI00.generated.h"
 
-// Heater00 Instance 02
+class UCSounder;
+
+// Radio00 Instance 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ARadioI00: public ARadio00 {
 	GENERATED_BODY()
@@ -15,4 +17,12 @@ public:
 
 protected:
 	virtual void Trigger_Implementation() override;
+
+	UFUNCTION()
+	void DialogDone();
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSounder* SFX_Ghost = nullptr;
+
+	FTimerHandle DiagDoneHandle;
 };
