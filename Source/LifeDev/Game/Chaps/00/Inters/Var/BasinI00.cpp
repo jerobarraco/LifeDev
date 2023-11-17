@@ -41,13 +41,14 @@ ABasinI00::ABasinI00():Super() {
 	Water->SetUseAutoManageAttachment(true);
 	Water->SetRelativeLocation(FVector(17,10,18));
 
-	// TODO add csounder for the water running.
 	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CWaterSnd(TEXT("TODO"));
+		CWaterSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
 	SND_Water->SetSound(CWaterSnd.Object);
 	SND_Water->SetAutoActivate(true);
-	
+	SND_Water->bAutoManageAttachment = true;
+
+	// SFX_Trigger = TODO faucet closing
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
 }
