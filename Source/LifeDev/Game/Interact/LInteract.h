@@ -56,38 +56,35 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName TriggerDlg = NAME_None;
 
-	// setting this will reward the item on trigger. will self-destroy if DestroyOnReward is set.
+	// setting this will reward the item on trigger. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
 
-	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if DestroyOnReward is set.
+	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardFlag = NAME_None;
 
-	// the mod value for the flash system when it's triggered. will self-destroy if DestroyOnReward is set.
+	// the mod value for the flash system when it's triggered. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
 
-	// An actor to reward. will self-destroy if DestroyOnReward is set.
+	// An actor to reward. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	AActor* RewardActor = nullptr;
 
-	// whether or not to fade when rewarding an item.
+	// whether or not to fade AND self-destroy when rewarding an item.
+	// uses the AnimFade object and what's set there.
+	// remember to call SetNewMat on the constructor if you use the new material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardFade = true;
 	
-	// whether or not to auto destroy on rewarded
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseRewardDestroy = true;
-	
 protected:
-	// triggered when item is rewarded
+	// triggered when something is rewarded
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Rewarded();
 	virtual void Rewarded_Implementation();
 
-	// called when the item reward fade ends
-	// not using rewardfaded since the latter will destroy the object and will confuse clients.
+	// called when the item reward fade ends. it WILL destroy the object.
 	UFUNCTION() // bound
 	void RewardFaded();
 	
@@ -100,7 +97,8 @@ protected:
 	virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 
-	// used for fading the object on item reward.
+	// used for fading this object on rewards or whenever you want.
+	// remember to call SetNewMat on the constructor if you use the new material.
 	UPROPERTY(BlueprintReadOnly, Category="SetUp")
 	UCAnimatorFade* AnimFade = nullptr;
 	
@@ -112,6 +110,6 @@ protected:
 	UDiags* Dialogs = nullptr;
 };
 
-// TODO at some point *consider* moving the RewardItem functionality to its own child class
+// TODO at some point *consider* moving the Reward functionality to its own child class
 // e.g. animfade, RewardItem, useanimfade(redundant), autodestroy, RewardItemed,  flagrewarded
 //No:  is not that much code. is almost always used. it will have overhead

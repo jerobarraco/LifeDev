@@ -18,9 +18,7 @@ ABedI00::ABedI00():Super() {
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
 	
 	LockedDlg = "BED00_L";
-	Texts = {
-		FText::FromString(TEXT("I really need to sleep...")),
-	};
+	Texts = { FText::FromString(TEXT("I really need to sleep...")) };
 	RewardFlash = .1;
-	UseRewardDestroy = false;
+	UseRewardFade = false;
 }

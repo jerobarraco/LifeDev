@@ -118,13 +118,12 @@ void ALInteract::DoRewards() {
 	Rewarded();
 
 	// Process auto destroy. do at the end.
-	if (UseRewardFade) {
-		// only bind here as we only want to destroy on reward
-		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
-		Fade(false);
-	} else {
-		RewardFaded(); // this can destroy the object. don't do anything after this.
-	}
+	if (!UseRewardFade) return;
+	
+	// only bind here as we only want to destroy on reward
+	AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
+	Fade(false);
+	RewardFaded(); // this can destroy the object. don't do anything after this.
 }
 
 void ALInteract::Trigger_Implementation() {
@@ -142,7 +141,6 @@ void ALInteract::Rewarded_Implementation() {}
 
 void ALInteract::RewardFaded() {
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
-	if (!UseRewardDestroy) return;
 	Destroy();
 }
 
