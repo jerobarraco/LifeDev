@@ -62,8 +62,11 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	// wait for dialogs to end
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 	FTimerHandle Handle;
+	
+	UWorld* const World = GetWorld();
+	if (!World) return;
 	// also set a time out if the player takes too long.
-	GetWorld()->GetTimerManager().SetTimer(Handle, this, &ALStep::Finish, FadeTime*2);
+	World->GetTimerManager().SetTimer(Handle, this, &ALStep::Finish, FadeTime*2);
 }
 
 void ALStep::BeginPlay() {

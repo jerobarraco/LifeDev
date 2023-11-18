@@ -14,7 +14,7 @@ AIntroGameMode::AIntroGameMode():Super() {
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CMusic (TEXT("/Game/LifeDev/Game/Sounds/Music/Music00/Music00_MS.Music00_MS"));
+		CMusic (TEXT("/Game/LifeDev/Game/Var/Music/Music00/Music00_MS.Music00_MS"));
 	Music = CMusic.Object;
 }
 

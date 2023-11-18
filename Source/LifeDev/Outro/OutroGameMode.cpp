@@ -13,7 +13,7 @@ AOutroGameMode::AOutroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	DefaultPawnClass = ASpectatorPawn::StaticClass(); // no need for a pawn
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CMusic (TEXT("/Game/LifeDev/Game/Sounds/Music/Music03/Music03_MS.Music03_MS"));
+		CMusic (TEXT("/Game/LifeDev/Game/Var/Music/Music03/Music03_MS.Music03_MS"));
 	Music = CMusic.Object;
 }
 
@@ -23,6 +23,8 @@ void AOutroGameMode::BeginPlay() {
 	Manager = Cast<AOutroMan>(GetWorld()->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
 
 	UWorld* const World = GetWorld();
+	if (!World) return;
+
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	MusicMan->PlayMusic(Music, true);
 
