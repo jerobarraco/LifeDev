@@ -7,7 +7,7 @@
 
 class UCSounder;
 
-// Radio00 Instance 00
+// Radio00 Instance 00. Room 03
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ARadioI00: public ARadio00 {
 	GENERATED_BODY()

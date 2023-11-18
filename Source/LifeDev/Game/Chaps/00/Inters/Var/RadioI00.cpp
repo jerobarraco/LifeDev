@@ -16,6 +16,8 @@ ARadioI00::ARadioI00():Super() {
 	//  it's all ok though, it's according to keikaku (keikaku means plan).
 	TriggerDlg = "RD00_T";
 	ULockItem = "T01"; // Tape
+	RewardFlash = .1;
+	UseRewardDestroy = UseRewardFade = false; // don't self-destroy
 	DisableWhileAnim = false; // to allow to disable once activated
 	Texts = {
 		FText::FromString(TEXT("Play"))
