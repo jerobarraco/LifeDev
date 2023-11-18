@@ -24,6 +24,7 @@ ADoor::ADoor():Super() {
 	Frame->SetRelativeRotation(FRotator(0,180,0).Quaternion());
 	Frame->SetCastShadow(true);
 	Frame->bCastDynamicShadow = true;
+
 	// Frame->SetMobility(EComponentMobility::Static);
 	// can't make static component that is child of movable
 }

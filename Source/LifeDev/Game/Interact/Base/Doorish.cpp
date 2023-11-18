@@ -3,15 +3,17 @@
 
 #include "Doorish.h"
 
+#include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "JUtils/Actors/CQuickMesh.h"
+#include "Interact/Animator/CAnimatorFade.h"
 
 ADoorish::ADoorish():Super() {
 	AnimEnabled = true;
 	Anim->IsAdditive = true;
 	// visual: run at 60 fps since it's movement
 	Anim->SetComponentTickInterval(1/60.f);
-
+	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
+	
 	Mesh->SetCastAllShadows(true);
 	Super::SetMobility(EComponentMobility::Movable);
 	
