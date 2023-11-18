@@ -12,8 +12,10 @@ ADoorish::ADoorish():Super() {
 	Anim->IsAdditive = true;
 	// visual: run at 60 fps since it's movement
 	Anim->SetComponentTickInterval(1/60.f);
-	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
 	
+	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
+	UseRewardFade = false; // will also avoid scrambled material
+
 	Mesh->SetCastAllShadows(true);
 	Super::SetMobility(EComponentMobility::Movable);
 	

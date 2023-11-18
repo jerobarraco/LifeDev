@@ -109,6 +109,7 @@ void ALGGameMode::Init_Implementation() {
 	AStep::UseDebug = Instance->GetFeat(EFeat::DEBUG_STEPS);
 	
 	// todo should come from savestate
+	// TODO disable on release make 0; (see ResetFeats)
 	ChapterId = Settings->StartChap <0 ? 0: Settings->StartChap;
 
 	/// Character

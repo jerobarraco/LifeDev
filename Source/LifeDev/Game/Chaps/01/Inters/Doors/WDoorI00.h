@@ -8,8 +8,8 @@
 // wardrobe WDoor 02. chapter 1 instance locked for the walkman
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AWDoorI00: public AWDoor02 {
-public:
 	GENERATED_BODY()
 
+public:
 	AWDoorI00();
 };

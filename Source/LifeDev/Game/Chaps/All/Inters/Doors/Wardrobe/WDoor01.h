@@ -7,7 +7,7 @@
 
 // wardrobe WDoor 01
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API AWDoor01: public ADrawer {
+class LIFEDEV_API AWDoor01: public ADoorish {
 	GENERATED_BODY()
 
 public:

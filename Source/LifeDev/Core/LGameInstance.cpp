@@ -95,7 +95,9 @@ void ULGameInstance::ResetFeats() {
 	#else
 		const bool UseDebug = Settings->UseDebugFeats;
 	#endif
-	
+	// TODO move this to the GameInstance. or the savegame. also modify the gamemode
+	// TODO ensure this doesn't break
+	Settings->StartChap = UseDebug ? Settings->StartChap : 0;
 	Feats = UseDebug ? Settings->DebugFeats : Settings->DefaultFeats;
 }
 
