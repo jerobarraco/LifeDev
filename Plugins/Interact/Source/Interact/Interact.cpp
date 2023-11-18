@@ -69,7 +69,7 @@ void AInteract::SetMobility(EComponentMobility::Type Mobility) {
 void AInteract::Reset() {
 	UE_LOG(LogInteract, Log, TEXT("%hs"), __func__);
 	Super::Reset();
-	SetState(StateReset);
+	SetState(0);
 }
 
 void AInteract::SetState_Implementation(int32 NewState) {
@@ -79,11 +79,6 @@ void AInteract::SetState_Implementation(int32 NewState) {
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
-
-	if (StateReset<0) {
-		StateReset = State;
-	}
-	
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrapped);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 }

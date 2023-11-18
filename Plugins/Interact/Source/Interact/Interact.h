@@ -100,10 +100,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 State = 0;
 
-	// state to reset to, if it's <0 it will take whatever state is during begin play
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
-	int32 StateReset = -1;
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
 	
