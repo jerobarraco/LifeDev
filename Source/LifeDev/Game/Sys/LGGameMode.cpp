@@ -109,7 +109,7 @@ void ALGGameMode::Init_Implementation() {
 	AStep::UseDebug = Instance->GetFeat(EFeat::DEBUG_STEPS);
 	
 	// todo should come from savestate
-	ChapterId = 0;
+	ChapterId = Settings->StartChap <0 ? 0: Settings->StartChap;
 
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
@@ -311,13 +311,12 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 	
-	// skip chapter if not enabled
-	if (ChapterId < LDConsts::Feats::ChapFeatN) {
-		if (!Instance->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
-			UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
-			StartNextChapter();
-			return;
-		}
+	// skip chapter if past end, or not enabled
+	if (ChapterId <0 || ChapterId >= LDConsts::Feats::ChapFeatN ||
+	!Instance->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
+		StartNextChapter();
+		return;
 	}
 
 	if (!LoadChapter()) {

@@ -53,7 +53,16 @@ public:
 	// disables input temporarily, enables only if char is enabled. used for dialogs.
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
+	
+	// here instead of the gameinstance since it depends on the current playthrough.
+	// later needs to be replicated/moved to the savegame
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	int32 ChapterId = 1;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	FLChapter Chapter;
 
+	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -76,16 +85,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AFlashbackMan* FlashbackMan = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	int32 ChapterId = 1; // Maybe this could be on the game instance. ?
-	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	FLChapter Chapter;
-
-	// not supported on desktop and could break the game
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	bool UseDynRes = false;
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -102,4 +101,8 @@ protected:
 	void SetDynRes();
 
 	bool CharInputEnabled = true;
+
+	// not supported on desktop and could break the game
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	bool UseDynRes = false;
 };

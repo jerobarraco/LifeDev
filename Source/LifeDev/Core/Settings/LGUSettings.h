@@ -7,7 +7,7 @@
 
 #include "LGUSettings.generated.h"
 
-// used for user settings
+// user settings
 UCLASS(Blueprintable, config = LGUSettings, defaultconfig, meta=(DisplayName="LifeDevGameUserSettings"))
 class LIFEDEV_API ULGUSettings : public UGameUserSettings
 {

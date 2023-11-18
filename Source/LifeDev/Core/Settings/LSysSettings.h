@@ -60,9 +60,14 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story", meta=(RowType="LChapter"))
 	TSoftObjectPtr<UDataTable> Chapters = nullptr;
-	
+
+	// the chapter to start with
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
+	int32 StartChap = -1;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	bool UseDebugFeats = false;
+
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DefaultFeats = {EFeat::DIALOGS, EFeat::DIALOG_TEXT, EFeat::MUSIC,
