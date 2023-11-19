@@ -6,6 +6,7 @@
 #include "CInteract.h"
 #include "Components/AudioComponent.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -27,8 +28,6 @@ AInteract::AInteract():Super() {
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
 	Interact->HoverMesh = Mesh;
-	// added so that it gets reparented. but ideally it should happen on the component.
-	// Interact->PostProcess->AttachToComponent(IRoot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(IRoot);
@@ -53,9 +52,9 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 }
 
 void AInteract::SetEnabled(bool Enabled) {
-	if (IsValid(Interact)) {
-		Interact->SetEnabled(Enabled);
-	}
+	if (!IsValid(Interact)) return;
+
+	Interact->SetEnabled(Enabled);
 }
 
 void AInteract::SetMobility(EComponentMobility::Type Mobility) {
@@ -114,12 +113,17 @@ void AInteract::Trigger_Implementation() {
 
 void AInteract::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
+	UE_LOG(LogInteract, Log, TEXT("Playing sound attached=%i, name='%s'."), UseAttachedSFX, *Snd->GetName());
 
-	UE_LOG(LogInteract, Log, TEXT("Playing sound %s "), *Snd->GetName());
-	SFX->SetHiddenInGame(false);
-	SFX->SetSound(Snd);
-	SFX->SetActive(true, true);
-	SFX->Play(0);
+	if (UseAttachedSFX) {
+		SFX->SetHiddenInGame(false);
+		SFX->SetSound(Snd);
+		SFX->SetActive(true, true);
+		SFX->Play(0);
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(SFX, Snd, SFX->GetComponentLocation(), SFX->GetComponentRotation());
 }
 
 void AInteract::Hover_Implementation(bool IsOn) {}

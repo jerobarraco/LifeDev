@@ -13,7 +13,7 @@
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/SA_GenericAttenuation.SA_GenericAttenuation"));
-	SFX->AttenuationSettings = CAtt.Object;
+	SFX->AttenuationSettings = CAtt.Object; 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Meshes.Add(Mesh);
 }
@@ -36,8 +36,10 @@ void ALInteract::BeginPlay() {
 	// the transition is finished. But also is unnecessary code, with unnecessary memory.
 	// and could potentially slow rendering.
 	// do not deactivate nor clear the meshes since that could break objects that reuse the AnimFade
-	if (UseRewardFade && !IsRewardless()) {
+	if (WillReward()) {
 		AnimFade->CreateMaterial();
+		// avoid getting the sound killed on self-destroy
+		UseAttachedSFX = false;
 	}
 
 	if (IsValid(RewardActor)) {

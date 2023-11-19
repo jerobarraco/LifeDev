@@ -100,6 +100,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 State = 0;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
+	bool UseAttachedSFX = true;
+
+	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCInteract* Interact = nullptr;
 	
@@ -111,9 +115,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UPostProcessComponent* PostProcess = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UAudioComponent* SFX = nullptr;

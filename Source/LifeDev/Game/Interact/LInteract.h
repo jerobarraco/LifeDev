@@ -23,9 +23,15 @@ public:
 	void Fade(bool FadeIn = false);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool WillReward() const {
+		return UseRewardFade && !IsRewardless();
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-		const bool Rewardless = (RewardItem.IsNone()
+		const bool Rewardless = (
+			RewardItem.IsNone()
 			&& RewardFlag.IsNone()
 			&& RewardActor == nullptr
 			&& ZeroFlash);
