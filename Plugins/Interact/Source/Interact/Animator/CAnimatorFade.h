@@ -19,7 +19,7 @@ public:
 	void SetNewMat();
 	
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
-	void SetMaterial();
+	void CreateMaterial();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<UStaticMeshComponent*> Meshes; 

@@ -29,7 +29,7 @@ void UCAnimatorFade::SetNewMat() {
 }
 
 
-void UCAnimatorFade::SetMaterial() {
+void UCAnimatorFade::CreateMaterial() {
 	if (Meshes.Num()<1) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {

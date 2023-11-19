@@ -31,11 +31,13 @@ void ALInteract::BeginPlay() {
 		Locked = true;
 	}
 
+	// don't set the fade material if not NECESSARY.
+	// atm i have 2 materials and this will break new objects with the new material until
+	// the transition is finished. But also is unnecessary code, with unnecessary memory.
+	// and could potentially slow rendering.
+	// do not deactivate nor clear the meshes since that could break objects that reuse the AnimFade
 	if (UseRewardFade && !IsRewardless()) {
-		AnimFade->SetMaterial();
-	} else {
-		AnimFade->SetActive(false);
-		AnimFade->Meshes.Empty();
+		AnimFade->CreateMaterial();
 	}
 
 	if (IsValid(RewardActor)) {
