@@ -40,9 +40,6 @@ void ALStepC0S001::Start_Implementation() {
 		Ghosts->SetActorRelativeLocation(GhostLocation);
 		Ghosts->SetPlaying(true);
 	}
-
-	// FTimerHandle H;
-	// W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::TeleportPlayer, WaitTime/2.0);
 }
 
 void ALStepC0S001::Stop_Implementation() {
@@ -74,7 +71,6 @@ void ALStepC0S001::DestroyActors() {
 	Ghosts = nullptr;
 }
 
-
 void ALStepC0S001::BeginPlay() {
 	Super::BeginPlay();
 	AInteract* const FakeInter = Cast<AInteract>(FakeChar);
@@ -82,13 +78,13 @@ void ALStepC0S001::BeginPlay() {
 		FakeInter->SetEnabled(false);
 	}
 }
+
 void ALStepC0S001::TeleportPlayer() {
 	if (!IsValid(PlayerPos)) {
 		UE_LOG(LogTemp, Log, TEXT("Player pos not set on C0S001"));
 		return;
 	}
 
-	// TODO use teleportChar
 	ALChar* const Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(GetWorld(), ALChar::StaticClass()));
 	if (!Char) return;
 	

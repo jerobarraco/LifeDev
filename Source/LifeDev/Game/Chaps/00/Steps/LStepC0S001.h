@@ -17,7 +17,6 @@ public:
 	ALStepC0S001();
 
 	virtual void Start_Implementation() override;
-	
 	virtual void Stop_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
