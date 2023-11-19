@@ -29,8 +29,9 @@ public:
 	// this will work ok even if it's currently animating the value
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void ModVal(float By, float Duration = -1.f) {
+		if (FMath::IsNearlyZero(By)) return;
 		SetVal(Val+By, Duration);
-	};
+	}
 
 	// sets the target value to the "new" value
 	// The "Duration" is the time to go from 0 to 1.

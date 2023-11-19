@@ -9,6 +9,7 @@ class UFlags;
 class UCAnimatorFade;
 class UDiags;
 class UInventory;
+class UFlashback;
 
 // An interactive actor that can have an animation
 UCLASS(Blueprintable, BlueprintType)
@@ -20,7 +21,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool FadeIn = false);
-	
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool IsRewardless() const {
+		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
+		const bool Rewardless = (RewardItem.IsNone()
+			&& RewardFlag.IsNone()
+			&& RewardActor == nullptr
+			&& ZeroFlash);
+		return Rewardless;
+	}
+
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
@@ -77,12 +88,12 @@ public:
 	// remember to call SetNewMat on the constructor if you use the new material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardFade = true;
-	
+
 protected:
 	// triggered when something is rewarded
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Rewarded();
-	virtual void Rewarded_Implementation();
+	virtual void Rewarded_Implementation() {};
 
 	// called when the item reward fade ends. it WILL destroy the object.
 	UFUNCTION() // bound
@@ -108,6 +119,8 @@ protected:
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UDiags* Dialogs = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UFlashback* Flashback = nullptr;
 };
 
 // TODO at some point *consider* moving the Reward functionality to its own child class

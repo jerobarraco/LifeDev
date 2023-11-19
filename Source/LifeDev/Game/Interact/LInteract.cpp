@@ -31,7 +31,7 @@ void ALInteract::BeginPlay() {
 		Locked = true;
 	}
 
-	if (UseRewardFade) {
+	if (UseRewardFade && !IsRewardless()) {
 		AnimFade->SetMaterial();
 	} else {
 		AnimFade->SetActive(false);
@@ -51,6 +51,7 @@ void ALInteract::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Dialogs = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
+	Flashback = World->GetSubsystem<UFlashback>();
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -59,6 +60,8 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Inventory = nullptr;
 	Dialogs = nullptr;
 	Flags = nullptr;
+	Flashback = nullptr;
+
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -67,20 +70,13 @@ void ALInteract::DoRewards() {
 	if (!World) return;
 
 	/// Rewards
-	const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-	const bool Rewardless = (RewardItem.IsNone()
-		&& RewardFlag.IsNone()
-		&& RewardActor == nullptr
-		&& ZeroFlash);
+	const bool Rewardless = IsRewardless();
 	if (Rewardless) {
 		return; // just return to avoid self destroying
 	}
 
-	if (!ZeroFlash) {
-		UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
-		if (Flashback) {
-			Flashback->ModVal(RewardFlash);
-		}
+	if (Flashback) {
+		Flashback->ModVal(RewardFlash);
 	}
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
@@ -136,8 +132,6 @@ void ALInteract::Trigger_Implementation() {
 	
 	DoRewards();
 }
-
-void ALInteract::Rewarded_Implementation() {}
 
 void ALInteract::RewardFaded() {
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);

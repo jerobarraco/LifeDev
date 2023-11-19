@@ -28,7 +28,6 @@ ALNPC01I00::ALNPC01I00():Super() {
 
 void ALNPC01I00::BeginPlay() {
 	Super::BeginPlay();
-	Flashback = GetWorld()->GetSubsystem<UFlashback>();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
 }
