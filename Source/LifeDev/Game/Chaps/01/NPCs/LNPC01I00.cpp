@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LNPC01I00.h"
 
-
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorCam.h"
 #include "Interact/Animator/CAnimatorFade.h"
@@ -16,7 +15,6 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
 
-	// AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Duration = 2;
 	AnimFade->Meshes = {
 		Mesh, Head, Torso, Pelvis,
@@ -43,20 +41,22 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-	SetEnabled(false); // disable the interact so it can fade better, and player won´t trigger again
+	SetEnabled(false); // disable the interact so it can fade better, and player won't trigger again
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	Dialogs->AddId("N01.0");
 	Flashback->SetVal(1);
+	
 	return EItemUseResult::SUCCESS;
 }
 
 void ALNPC01I00::DiagSitDone() {
 	Dialogs->OnDone.RemoveAll(this);
 	
-	StandUp();
 	Flashback->SetVal(.5);
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
 	Dialogs->AddId("N01.1");
+
+	StandUp();
 }
 
 void ALNPC01I00::StandUp() {
@@ -69,18 +69,9 @@ void ALNPC01I00::StandUp() {
 void ALNPC01I00::DiagStandDone() {
 	Dialogs->OnDone.RemoveAll(this);
 
-	if (IsValid(Card)) {
-		Card->SetActorHiddenInGame(false);
-	}
-
 	UWorld* const W = GetWorld();
 	ALMusicMan::SetRainS(W, false);
-
 	Flashback->SetVal(.2);
-	AnimFade->OnEnd.AddUniqueDynamic(this, &ALNPC01I00::FadeDone);
-	AnimFade->Play();
-}
 
-void ALNPC01I00::FadeDone() {
-	Destroy();
+	DoRewards(); // give the card and disappear
 }

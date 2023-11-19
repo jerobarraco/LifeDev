@@ -29,11 +29,7 @@ protected:
 	void DiagStandDone();
 	UFUNCTION()
 	void DiagSitDone();
-	UFUNCTION()
-	void FadeDone();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCAnimatorCam* AnimCam = nullptr;
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	// UCAnimatorFade* AnimFade = nullptr;
 };

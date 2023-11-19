@@ -123,7 +123,6 @@ void ALInteract::DoRewards() {
 	// only bind here as we only want to destroy on reward
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
 	Fade(false);
-	RewardFaded(); // this can destroy the object. don't do anything after this.
 }
 
 void ALInteract::Trigger_Implementation() {

@@ -100,12 +100,14 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Rewarded();
 	virtual void Rewarded_Implementation() {};
+	// gives the rewards. if UseRewardFade it WILL self-destroy.
+	UFUNCTION(BlueprintCallable)
+	void DoRewards();
 
 	// called when the item reward fade ends. it WILL destroy the object.
 	UFUNCTION() // bound
 	void RewardFaded();
 	
-	void DoRewards();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -119,13 +121,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="SetUp")
 	UCAnimatorFade* AnimFade = nullptr;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlags* Flags = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Dialogs = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* Flashback = nullptr;
 };
 
