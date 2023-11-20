@@ -17,8 +17,9 @@ public:
 	AInteractAnim();
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
-	// Flip-flops depending on the state. Starts closed. Override in case of State > 2.
-	// this also affects the "reversed" flag of the anim. if you need something else set the "Trans".
+	// Flip-flops depending on the state. Starts closed.
+	// this also affects the "reversed" flag of the anim.
+	// If you need not to use the reversed animation then the "Trans" property.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsOpen() const { return State % 2 != 0; }
 	
