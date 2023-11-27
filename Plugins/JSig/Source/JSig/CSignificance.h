@@ -33,7 +33,13 @@ class JSIG_API UCSignificance: public UActorComponent {
 
 public:
 	UCSignificance();
+
 	virtual void Activate(bool bReset) override;
+	virtual void Deactivate() override;
+	
+	// returns the current sicg
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE ESignificance GetSignificance() { return Significance; }
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsHiddenInsignificant = true;
@@ -45,20 +51,19 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnSignificanceChanged OnChanged;
 	UPROPERTY(BlueprintReadWrite)
-	FGetSignificance GetSignificance;
+	FGetSignificance CalcSignificance;
 	UPROPERTY(BlueprintReadWrite)
-	FGetLocation GetLocation;
-	
+	FGetLocation CalcLocation;
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	void Register();
 	void Unregister();
-
-	// TODO should have an override of this?
-	// maybe a delegate with retval will cover the interface AND the subclassing
 	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
 	float GetDistanceSignificance(float DistSqr);
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ESignificance Significance = ESignificance::High;
 };

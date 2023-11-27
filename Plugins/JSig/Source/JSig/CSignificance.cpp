@@ -22,7 +22,16 @@ UCSignificance::UCSignificance():Super() {
 }
 
 void UCSignificance::Activate(bool bReset) {
+	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+
 	Super::Activate(bReset);
+	Register();
+}
+
+void UCSignificance::Deactivate() {
+	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+	Unregister();
+	Super::Deactivate();
 }
 
 void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -31,6 +40,8 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCSignificance::Register() {
+	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
 
@@ -45,10 +56,10 @@ void UCSignificance::Register() {
 		return Calculate(ObjectInfo, Viewpoint);
 	};
 	
-	auto lPostUpdate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float OldSignificance, float Significance, bool bFinal)
+	auto lPostUpdate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float Old, float New, bool bFinal)
 	{
 		if (!IsValid(this)) return;
-		PostUpdate(ObjectInfo, OldSignificance, Significance, bFinal);
+		PostUpdate(ObjectInfo, Old, New, bFinal);
 	};
 	
 	// Register
@@ -73,27 +84,36 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 		return static_cast<float>(ESignificance::Hidden);
 	}
 
-	// Use Actor implemented override if present
-	if (GetSignificance.IsBound()) {
-		const float Sig = GetSignificance.Execute();
+	// Use Actor implemented override if present.
+	// otherwise we will calculate it here
+	if (CalcSignificance.IsBound()) {
+		const float Sig = CalcSignificance.Execute();
 		return Sig;
 	}
 
+	// use overriden location if set. otherwise use the actor's one
 	FVector Origin;
-	
-	if (GetLocation.IsBound()) {
-		Origin = GetLocation.Execute();	
+	if (CalcLocation.IsBound()) {
+		Origin = CalcLocation.Execute();	
 	} else {
 		Origin = Actor->GetActorLocation();
 	}
 
+	// calculate using distances
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
 	return Sig;
 }
 
 void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
-	// TODO: add nigara particles maybe
+	const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
+	if (!Equals) return;
+
+	Significance = static_cast<ESignificance>(Sig);
+	UE_LOG(LogJCSig, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
+	OnChanged.Broadcast(Significance);
+
+	// UpdateParticleSignificance(Significance);
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
