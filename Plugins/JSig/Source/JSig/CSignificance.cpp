@@ -6,6 +6,8 @@
 
 #include "SignificanceManager.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogJCSig, Log, Log);
+
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
@@ -60,12 +62,63 @@ void UCSignificance::Unregister() {
 }
 
 float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
-	// you should pass for now.
-	// TODO
-	return GSigOverride;
+	if (GSigOverride >= 0.0f)
+	{
+		return GSigOverride;
+	}
+
+	AActor* const Actor = GetOwner();
+	if (IsHiddenInsignificant && Actor->IsHidden())
+	{
+		return static_cast<float>(ESignificance::Hidden);
+	}
+
+	// Use Actor implemented override if present
+	if (GetSignificance.IsBound()) {
+		const float Sig = GetSignificance.Execute();
+		return Sig;
+	}
+
+	FVector Origin;
+	
+	if (GetLocation.IsBound()) {
+		Origin = GetLocation.Execute();	
+	} else {
+		Origin = Actor->GetActorLocation();
+	}
+
+	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
+	const float Sig = GetDistanceSignificance(DistSqr);
+	return Sig;
 }
 
 void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
-	// pass too
-	// TODO
+	// TODO: add nigara particles maybe
+}
+
+float UCSignificance::GetDistanceSignificance(float DistSqr) {
+	const int32 Num = Thresholds.Num();
+	if (Num == 0) {
+		UE_LOG(LogJCSig, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
+		return static_cast<float>(ESignificance::High);
+	}
+
+	ESignificance Sig = ESignificance::Hidden;
+
+	TArray<ESignificance> Sigs;
+	Thresholds.GetKeys(Sigs);
+	const int32 SigNum = Sigs.Num();
+	for (int32 i = 0; i<SigNum; ++i) {
+		const ESignificance& ISig = Sigs[i];
+		// avoid going back. given the significances can be unordered
+		if (ISig < Sig) continue;
+
+		// check distance, and update
+		const float SigDistSqr = Thresholds[ISig];
+		if (DistSqr <= SigDistSqr) {
+			Sig = ISig;
+		}
+	}
+	
+	return static_cast<float>(Sig);
 }

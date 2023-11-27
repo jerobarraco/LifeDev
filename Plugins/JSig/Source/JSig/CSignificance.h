@@ -13,9 +13,8 @@
 // TO use. just enable this plugin and add some CSignificance components to your actors
 // Set the tick interval if desired on this subsystem.
 
-UENUM(BlueprintType)
-enum class ESignificance : uint8
-{
+UENUM(BlueprintType, Blueprintable)
+enum class ESignificance : uint8 {
 	Hidden = 0, // Special tier while owning Actor is hidden in-game
 	Low = 1,
 	Med = 2,
@@ -24,19 +23,32 @@ enum class ESignificance : uint8
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificance, Significance);
+DECLARE_DYNAMIC_DELEGATE_RetVal(float, FGetSignificance);
+DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FGetLocation);
 
 // Manages the significance of this object
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(JSig), meta=(BlueprintSpawnableComponent))
 class JSIG_API UCSignificance: public UActorComponent {
 	GENERATED_BODY()
 
 public:
-	
 	UCSignificance();
 	virtual void Activate(bool bReset) override;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsHiddenInsignificant = true;
+
+	// distances should be in increasing order.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TMap<ESignificance, float> Thresholds;
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnSignificanceChanged OnChanged;
+	UPROPERTY(BlueprintReadWrite)
+	FGetSignificance GetSignificance;
+	UPROPERTY(BlueprintReadWrite)
+	FGetLocation GetLocation;
+	
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -48,4 +60,5 @@ protected:
 	// maybe a delegate with retval will cover the interface AND the subclassing
 	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
+	float GetDistanceSignificance(float DistSqr);
 };
