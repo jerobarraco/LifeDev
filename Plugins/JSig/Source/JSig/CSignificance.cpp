@@ -6,7 +6,7 @@
 
 #include "SignificanceManager.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogJCSig, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogJSicComp, Log, Log);
 
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
@@ -19,17 +19,18 @@ static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
+	Super::SetAutoActivate(true);
 }
 
 void UCSignificance::Activate(bool bReset) {
-	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
 
 	Super::Activate(bReset);
 	Register();
 }
 
 void UCSignificance::Deactivate() {
-	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
 	Unregister();
 	Super::Deactivate();
 }
@@ -40,7 +41,7 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCSignificance::Register() {
-	UE_LOG(LogJCSig, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
@@ -79,7 +80,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	}
 
 	AActor* const Actor = GetOwner();
-	if (IsHiddenInsignificant && Actor->IsHidden())
+	if (IsHiddenInsignificant && Actor && Actor->IsHidden())
 	{
 		return static_cast<float>(ESignificance::Hidden);
 	}
@@ -102,15 +103,16 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	// calculate using distances
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
+	// UE_LOG(LogJSicComp, Log, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
 }
 
 void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
 	const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
-	if (!Equals) return;
+	if (Equals) return;
 
-	Significance = static_cast<ESignificance>(Sig);
-	UE_LOG(LogJCSig, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
+	Significance = static_cast<ESignificance>(FMath::FloorToInt32(Sig));
+	UE_LOG(LogJSicComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
 	OnChanged.Broadcast(Significance);
 
 	// UpdateParticleSignificance(Significance);
@@ -119,10 +121,11 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	const int32 Num = Thresholds.Num();
 	if (Num == 0) {
-		UE_LOG(LogJCSig, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
+		UE_LOG(LogJSicComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
 		return static_cast<float>(ESignificance::High);
 	}
 
+	// by default is hidden
 	ESignificance Sig = ESignificance::Hidden;
 
 	TArray<ESignificance> Sigs;
