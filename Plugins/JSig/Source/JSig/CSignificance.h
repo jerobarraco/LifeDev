@@ -19,7 +19,8 @@ enum class ESignificance : uint8 {
 	Low = 1,
 	Med = 2,
 	// No stripping/culling
-	High = 3
+	High = 3,
+	MAX = 4 UMETA(Hidden)
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificance, Significance);

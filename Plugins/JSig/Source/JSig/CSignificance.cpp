@@ -6,7 +6,7 @@
 
 #include "SignificanceManager.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogJSicComp, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
@@ -23,14 +23,14 @@ UCSignificance::UCSignificance():Super() {
 }
 
 void UCSignificance::Activate(bool bReset) {
-	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
 
 	Super::Activate(bReset);
 	Register();
 }
 
 void UCSignificance::Deactivate() {
-	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
 	Unregister();
 	Super::Deactivate();
 }
@@ -41,7 +41,7 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCSignificance::Register() {
-	UE_LOG(LogJSicComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
@@ -103,7 +103,8 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	// calculate using distances
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
-	// UE_LOG(LogJSicComp, Log, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
+	
+	// UE_LOG(LogJSigComp, Log, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
 }
 
@@ -112,16 +113,17 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	if (Equals) return;
 
 	Significance = static_cast<ESignificance>(FMath::FloorToInt32(Sig));
-	UE_LOG(LogJSicComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
+	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
 	OnChanged.Broadcast(Significance);
 
+	// TODO auto handle the tick and the tick interval here with some optional flags
 	// UpdateParticleSignificance(Significance);
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	const int32 Num = Thresholds.Num();
 	if (Num == 0) {
-		UE_LOG(LogJSicComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
+		UE_LOG(LogJSigComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
 		return static_cast<float>(ESignificance::High);
 	}
 
