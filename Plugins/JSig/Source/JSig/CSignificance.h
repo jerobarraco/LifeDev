@@ -38,16 +38,22 @@ public:
 	virtual void Activate(bool bReset) override;
 	virtual void Deactivate() override;
 	
-	// returns the current sicg
+	// returns the current sig
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE ESignificance GetSignificance() { return Significance; }
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsHiddenInsignificant = true;
 
-	// distances should be in increasing order.
+	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TMap<ESignificance, float> Thresholds;
+	TMap<ESignificance, float> DistanceSqr;
+	
+	// Tick intervals per level. Interval <0 will disable ticks.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TMap<ESignificance, float> TickIntervals = {
+		{ESignificance::Hidden, -1},
+	};
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnSignificanceChanged OnChanged;
@@ -64,6 +70,7 @@ protected:
 	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
 	float GetDistanceSignificance(float DistSqr);
+	void UpdateTicks();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ESignificance Significance = ESignificance::High;

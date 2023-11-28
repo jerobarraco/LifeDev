@@ -49,10 +49,12 @@ bool UStory::StartNow(AStep* NewStep) {
 	Current = NewStep;
 	if (!Current) return false;
 
-	ToggleStepLayers();
+	const bool Success = ToggleStepLayers();
 	
-	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s'"), 
-		*Current->Name.ToString(), *Current->Title.ToString());
+	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s' DLLoadSuccess=%i"), 
+		*Current->Name.ToString(), *Current->Title.ToString(), Success);
+
+	// start before broadcasting start
 	Current->Start();
 	OnStart.Broadcast(Current);
 

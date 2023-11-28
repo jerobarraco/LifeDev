@@ -70,6 +70,7 @@ void UCSignificance::Register() {
 void UCSignificance::Unregister() {
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
+
 	Man->UnregisterObject(this);
 }
 
@@ -113,7 +114,10 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	if (Equals) return;
 
 	Significance = static_cast<ESignificance>(FMath::FloorToInt32(Sig));
-	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(GetOwner()));
+	const AActor* Owner = GetOwner();
+	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(Owner));
+
+	UpdateTicks();
 	OnChanged.Broadcast(Significance);
 
 	// TODO auto handle the tick and the tick interval here with some optional flags
@@ -121,7 +125,7 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
-	const int32 Num = Thresholds.Num();
+	const int32 Num = DistanceSqr.Num();
 	if (Num == 0) {
 		UE_LOG(LogJSigComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
 		return static_cast<float>(ESignificance::High);
@@ -131,7 +135,7 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	ESignificance Sig = ESignificance::Hidden;
 
 	TArray<ESignificance> Sigs;
-	Thresholds.GetKeys(Sigs);
+	DistanceSqr.GetKeys(Sigs);
 	const int32 SigNum = Sigs.Num();
 	for (int32 i = 0; i<SigNum; ++i) {
 		const ESignificance& ISig = Sigs[i];
@@ -139,11 +143,22 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 		if (ISig < Sig) continue;
 
 		// check distance, and update
-		const float SigDistSqr = Thresholds[ISig];
+		const float SigDistSqr = DistanceSqr[ISig];
 		if (DistSqr <= SigDistSqr) {
 			Sig = ISig;
 		}
 	}
 	
 	return static_cast<float>(Sig);
+}
+
+void UCSignificance::UpdateTicks() {
+	if (!TickIntervals.Contains(Significance)) return;
+
+	AActor* const Owner = GetOwner();
+	if (!IsValid(Owner)) return;
+	
+	float Interval = TickIntervals[Significance];
+	Owner->SetActorTickInterval(Interval);
+	Owner->SetActorTickEnabled(Interval>=0);
 }
