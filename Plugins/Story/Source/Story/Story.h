@@ -59,7 +59,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AStep* GetStep(const FName& Name);
-	void ToggleStepLayers();
 
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
@@ -86,8 +85,9 @@ public:
 	FStorySeqStop OnSeqStop;
 
 protected:
-	bool ToggleDataLayer(UDataLayerAsset* DLA, bool On);
-	
+	bool ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const;
+	bool ToggleStepLayers() const;
+
 	bool StartNextStep();
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

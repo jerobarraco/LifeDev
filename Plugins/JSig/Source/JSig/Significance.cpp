@@ -6,8 +6,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 
-USignificance::USignificance():Super() {
-}
+USignificance::USignificance():Super() {}
 
 USignificance* USignificance::Get(UWorld* W) {
 	if (!IsValid(W)) return nullptr;

@@ -143,18 +143,25 @@ const FName& UStory::GetCurrent() {
 	return IsValid(Current) ? Current->Name : Empty;
 }
 
-void UStory::ToggleStepLayers() {
-	if (!Current) return;
+bool UStory::ToggleStepLayers() const {
+	if (!Current) return false;
 
-	for (UDataLayerAsset* DLA: Current->DL_Unload) {
-		ToggleDataLayer(DLA, false);
+	bool Success = true;
+	// FIRST load all DL and THEN unload
+	// that way if there's an asset on both,
+	// it will remain loaded instead of being temporarily unloaded and reloaded.
+	// with all the possible issues it brings.
+	for (const UDataLayerAsset* const DLA: Current->DL_Load) {
+		Success = Success && ToggleDataLayer(DLA, true);
 	}
-	for (UDataLayerAsset* DLA: Current->DL_Load) {
-		ToggleDataLayer(DLA, true);
+	for (const UDataLayerAsset* const DLA: Current->DL_Unload) {
+		Success = Success && ToggleDataLayer(DLA, false);
 	}
+
+	return Success;
 }
 
-bool UStory::ToggleDataLayer(UDataLayerAsset* DLA, bool On) {
+bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
 	if (!IsValid(DLA)) return false;
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
@@ -170,7 +177,7 @@ bool UStory::ToggleDataLayer(UDataLayerAsset* DLA, bool On) {
 	}
 
 	const bool res = LayerManager->SetDataLayerRuntimeState(DLA, State, true);
-	UE_LOG(LogStory, Log, TEXT("Data layer toggle. res=%i, load=%i, name='%s'"), res, On, *DLA->GetName());
+	UE_LOG(LogStory, Log, TEXT("Data layer toggle. Ok=%i, load=%i, name='%s'"), res, On, *DLA->GetName());
 	return res;
 	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
 	
