@@ -19,9 +19,8 @@ static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
-	Super::SetAutoActivate(true);
 }
-
+.
 void UCSignificance::Activate(bool bReset) {
 	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
 
@@ -158,7 +157,14 @@ void UCSignificance::UpdateTicks() {
 	AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) return;
 	
-	float Interval = TickIntervals[Significance];
+	const float Interval = TickIntervals[Significance];
+	const bool TickEnabled = Interval>=0;
 	Owner->SetActorTickInterval(Interval);
-	Owner->SetActorTickEnabled(Interval>=0);
+	Owner->SetActorTickEnabled(TickEnabled);
+
+	for (UActorComponent* const C: Comps) {
+		if (!IsValid(C)) continue;
+		C->SetComponentTickInterval(Interval);
+		C->SetComponentTickEnabled(TickEnabled);
+	}
 }

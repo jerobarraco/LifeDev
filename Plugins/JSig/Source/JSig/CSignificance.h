@@ -54,6 +54,10 @@ public:
 	TMap<ESignificance, float> TickIntervals = {
 		{ESignificance::Hidden, -1},
 	};
+
+	// components to manage (ticks)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<UActorComponent*> Comps;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnSignificanceChanged OnChanged;
