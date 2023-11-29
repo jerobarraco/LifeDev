@@ -104,7 +104,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
 	
-	// UE_LOG(LogJSigComp, Log, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
+	UE_LOG(LogJSigComp, Verbose, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
 }
 

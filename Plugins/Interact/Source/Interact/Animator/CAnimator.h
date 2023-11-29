@@ -20,8 +20,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progr
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimator: public UActorComponent {
 	GENERATED_BODY()
-public:
 
+public:
 	UCAnimator();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
@@ -77,13 +77,13 @@ public:
 	bool IsReversed = false;
 
 	// triggers when the animation ends. but not if it wasn't playing.
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
 	// when it starts, obviously
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnBegin OnBegin;
 	// everytime the animation updates
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
 protected:
