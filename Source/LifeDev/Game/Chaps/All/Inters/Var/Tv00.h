@@ -8,12 +8,13 @@
 class UCSounder;
 class UCRandomizer;
 class UCQuickMesh;
+class UCSignificance;
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATv00: public ALInteract {
-public:
 	GENERATED_BODY()
 
+public:
 	ATv00();
 
 protected:
@@ -34,4 +35,6 @@ protected:
 	UCQuickMesh* Glass = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Crt = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSignificance* Sig = nullptr;
 };

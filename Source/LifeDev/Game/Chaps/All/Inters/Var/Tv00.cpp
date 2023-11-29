@@ -3,11 +3,13 @@
 #include "Tv00.h"
 
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JUtils/Actors/CQuickMesh.h"
 #include "Sounds/CSounder.h"
+#include "JSig/CSignificance.h"
 
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
@@ -86,11 +88,13 @@ ATv00::ATv00():Super() {
 
 	Noise = CreateDefaultSubobject<UCSounder>(TEXT("Noise"));
 	Noise->SetupAttachment(IRoot);
-	Noise->bAutoManageAttachment = true;
-	Noise->SetAutoActivate(false);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNoise(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
 	Noise->SetSound(CSNoise.Object);
+
+	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Significance"));
+	Sig->Comps.Add(AnimCrt);
+	Sig->RenderSinceMax = .2;
 }
 
 void ATv00::BeginPlay() {

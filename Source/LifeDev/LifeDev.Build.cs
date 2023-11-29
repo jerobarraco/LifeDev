@@ -21,8 +21,7 @@ public class LifeDev : ModuleRules
 			"MoviePlayer",  // loading screen yes.
 			// my stuff
 			"JUtils", "Interact",  "Diags", "Inventory", "Story",
-			"Sounds",
-			// "JSig",
+			"Sounds", "JSig",
         });
 	}
 }

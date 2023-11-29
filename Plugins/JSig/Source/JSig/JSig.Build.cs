@@ -21,12 +21,13 @@ public class JSig: ModuleRules
 		// ... add other public dependencies that you statically link with here ...
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
+			// public since it ends up being included indirectly due to the csignificance
+			"SignificanceManager",
 		});
 		
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine",
-			"SignificanceManager",
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
