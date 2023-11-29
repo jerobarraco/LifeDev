@@ -53,11 +53,11 @@ public:
 	UCAnimator* Anim = nullptr;
 
 	// triggers on each trigger
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp")
 	FOnTrigger OnTrigger;
 
 	// trigger on each trigger, passes the random value as parameter
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp")
 	FOnTriggerVal OnTriggerVal;
 	
 protected:

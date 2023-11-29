@@ -77,13 +77,13 @@ public:
 	bool IsReversed = false;
 
 	// triggers when the animation ends. but not if it wasn't playing.
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
 	// when it starts, obviously
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnBegin OnBegin;
 	// everytime the animation updates
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
 protected:

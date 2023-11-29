@@ -63,7 +63,10 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	Params.bDebugQuery = true;
 	#endif
 
-	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
+	World->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
 	
 	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);

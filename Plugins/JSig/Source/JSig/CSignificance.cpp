@@ -106,6 +106,25 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	
 	UE_LOG(LogJSigComp, Verbose, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
+
+	// TODO visibility by
+	//	1- Checking if it's in view (dot product with the viewpoint)
+	//	2- Is actually visible (some trace with visibility channel)
+	
+	// FCollisionQueryParams Params;
+	// Params.Add(Actor);
+	
+	// need to use this, unfortunately, because this variable doesn't exist otherwise
+	// #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
+	// Params.bDebugQuery = true;
+	// #endif
+
+	// UWorld* World = GetWorld();
+	// if (!World) return Sig;
+	// FHitResult Hit;
+	// World->LineTraceSingleByChannel( Hit, Viewpoint, Origin, ECC_Visibility);
+	
+	// return Sig;
 }
 
 void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
