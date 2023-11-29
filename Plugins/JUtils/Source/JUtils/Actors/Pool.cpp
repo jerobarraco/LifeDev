@@ -5,7 +5,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
 
 bool UPool::Spawn() {
-	UE_LOG(LogJPool, Log, TEXT("%hs."), __func__);
+	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
 	static FActorSpawnParameters P;
 	P.bNoFail = true;
@@ -13,7 +13,7 @@ bool UPool::Spawn() {
 
 	AActor* const Actor = GetWorld()->SpawnActor(ItemType, 0, 0, P);
 	if (!IsValid(Actor)) {
-		UE_LOG(LogJPool, Log, TEXT("Could not spawn the actor."));
+		UE_LOG(LogJPool, Warning, TEXT("Could not spawn the actor."));
 		return false;
 	}
 
@@ -24,7 +24,7 @@ bool UPool::Spawn() {
 }
 
 bool UPool::RemoveOne() {
-	UE_LOG(LogJPool, Log, TEXT("%hs."), __func__);
+	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
 	// always remove at end. we could use RemoveAtSwap but it will probably do the same arithmetic.
 	const int32 I = Ready.Num() -1;
@@ -42,7 +42,7 @@ bool UPool::RemoveOne() {
 
 void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCanGrow, int32 InTrimTime) {
 	if (!IsValid(Class)) {
-		UE_LOG(LogJPool, Log, TEXT("%hs. Invalid class, not setting anything."), __func__);
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Invalid class, not setting anything."), __func__);
 		return;
 	}
 	
@@ -51,7 +51,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 
 	// Class changed. ready elements are invalid.
 	if (Class != ItemType) {
-		UE_LOG(LogJPool, Log, TEXT("%hs: Class changed. Resetting"), __func__);
+		UE_LOG(LogJPool, Warning, TEXT("%hs: Class changed. Resetting"), __func__);
 		Empty();
 	}
 	
@@ -81,11 +81,11 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 
 
 AActor* UPool::Get() {
-	UE_LOG(LogJPool, Log, TEXT("%hs."), __func__);
+	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
-			UE_LOG(LogJPool, Log, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
+			UE_LOG(LogJPool, Warning, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
 			return nullptr;
 		}
 		// try to add a new one
@@ -100,18 +100,19 @@ AActor* UPool::Get() {
 	if (SetTicks) {
 		A->SetActorTickEnabled(true);
 	}
-	UE_LOG(LogJPool, Log, TEXT("Pool gave an actor."));
+
+	UE_LOG(LogJPool, Verbose, TEXT("Pool gave an actor."));
 
 	return A;
 }
 
 void UPool::Return(AActor* Actor) {
 	if (!IsValid(Actor)) {
-		UE_LOG(LogJPool, Log, TEXT("Return: Actor was invalid."));
+		UE_LOG(LogJPool, Warning, TEXT("Return: Actor was invalid."));
 		return;
 	}
 
-	UE_LOG(LogJPool, Log, TEXT("Actor returned to pool."));
+	UE_LOG(LogJPool, Verbose, TEXT("Actor returned to pool."));
 	Actor->SetActorHiddenInGame(true);
 	if (SetTicks) {
 		Actor->SetActorTickEnabled(false);
@@ -141,7 +142,7 @@ void UPool::BeginDestroy() {
 }
 
 void UPool::SetTrimTimer() {
-	UE_LOG(LogJPool, Log, TEXT("%hs."), __func__);
+	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
@@ -165,7 +166,7 @@ void UPool::SetTrimTimer() {
 }
 
 void UPool::Trim() {
-	UE_LOG(LogJPool, Log, TEXT("%hs."), __func__);
+	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	if (Ready.Num() <= ItemMax) {
 		UE_LOG(LogJPool, Log, TEXT("%hs. Reached max. not trimming anymore."), __func__);
 		return;
@@ -187,7 +188,7 @@ bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool 
 	}
 
 	if (!IsValid(Pool)) {
-		UE_LOG(LogJPool, Log, TEXT("Pooler.AddPool. Failed to add the pool for class=%s"), *Key.ToString());
+		UE_LOG(LogJPool, Warning, TEXT("Pooler.AddPool. Failed to add the pool for class=%s"), *Key.ToString());
 		return false;
 	}
 
@@ -201,7 +202,7 @@ void UPooler::RemPool(TSubclassOf<AActor> Class) {
 	
 	UPool** const PPool = Pools.Find(Key);
 	if (!PPool) {
-		UE_LOG(LogJPool, Log, TEXT("DelPool. Could not find the pool"));
+		UE_LOG(LogJPool, Warning, TEXT("DelPool. Could not find the pool"));
 		return;
 	}
 
@@ -215,7 +216,7 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 	const FName Key = Class->GetFName();
 	UPool** const pPool = Pools.Find(Key);
 	if (!pPool) {
-		UE_LOG(LogJPool, Log, TEXT("Pooler.GetPool. Could not find the pool for class=%s"), *Key.ToString());
+		UE_LOG(LogJPool, Warning, TEXT("Pooler.GetPool. Could not find the pool for class=%s"), *Key.ToString());
 		return nullptr;
 	}
 
@@ -233,13 +234,13 @@ AActor* UPooler::Get(TSubclassOf<AActor> Class) {
 
 void UPooler::Return(AActor* Actor) {
 	if (!IsValid(Actor)) { // checking here to avoid problems on Actor->GetClass
-		UE_LOG(LogJPool, Log, TEXT("Pooler.Return. Actor was invalid, ignoring."));
+		UE_LOG(LogJPool, Warning, TEXT("Pooler.Return. Actor was invalid, ignoring."));
 		return;
 	}
 
 	UPool* const Pool = GetPool(Actor->GetClass());
 	if (!Pool) {
-		UE_LOG(LogJPool, Log, TEXT("Pooler.Return. Could not find the pool. Destroying the actor."));
+		UE_LOG(LogJPool, Warning, TEXT("Pooler.Return. Could not find the pool. Destroying the actor."));
 		Actor->Destroy();
 		return;
 	}

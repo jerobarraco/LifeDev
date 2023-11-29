@@ -10,12 +10,10 @@
 
 #include "CSignificance.generated.h"
 
-// TO use. just enable this plugin and add some CSignificance components to your actors
-// Set the tick interval if desired on this subsystem.
 
 UENUM(BlueprintType, Blueprintable)
 enum class ESignificance : uint8 {
-	Hidden = 0, // Special tier while owning Actor is hidden in-game
+	Off = 0,
 	Low = 1,
 	Med = 2,
 	// No stripping/culling
@@ -27,7 +25,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificanc
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCalcSignificance, const FTransform& , Viewpoint);
 DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
-// Manages the significance of this object
+// Manages the significance of the owner actor
+// To use. just enable this plugin and add some CSignificance components to your actors
+// Set the tick interval if desired on this subsystem.
+// Also set the distance squared
+// you can also set the Comps if you want to manage their ticks too
+// you can also override the calculation, and bind to the significance change to implement your own tweaks.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JSig), meta=(BlueprintSpawnableComponent))
 class JSIG_API UCSignificance: public UActorComponent {
 	GENERATED_BODY()
@@ -47,12 +50,21 @@ public:
 
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TMap<ESignificance, float> DistanceSqr;
+	TMap<ESignificance, float> DistanceSqr = {
+		{ESignificance::High, 1000000},
+		{ESignificance::Med, 10000000},
+		{ESignificance::Low, 100000000},
+		{ESignificance::Off, 1000000000},
+	};
 	
-	// Tick intervals per level. Interval <0 will disable ticks.
+	// Tick intervals per level. Interval <0 will disable ticks. 0 means every tick.
+	// Higher means less frequent (slower) updates (more cpu saving)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESignificance, float> TickIntervals = {
-		{ESignificance::Hidden, -1},
+		{ESignificance::High, 0},
+		{ESignificance::Med, .2},
+		{ESignificance::Low, .5},
+		{ESignificance::Off, -1},
 	};
 
 	// components to manage (ticks)
@@ -60,17 +72,17 @@ public:
 	TArray<UActorComponent*> Comps;
 
 	// triggered when the significance changes
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnSignificanceChanged OnChanged;
 	// Set this with a callback to a custom significance calculation.
 	// When this is set, the CalcLocation is ignored.
 	// (on bp use the "Set" node) 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Transient)
 	FCalcSignificance CalcSignificance;
 	// Set this with a callback to a custom Location calculation.
 	// This location is then used for a location/based significance calculation.
 	// (on bp use the "Set" node) 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Transient)
 	FCalcLocation CalcLocation;
 
 protected:

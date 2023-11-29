@@ -82,7 +82,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	AActor* const Actor = GetOwner();
 	if (IsHiddenInsignificant && Actor && Actor->IsHidden())
 	{
-		return static_cast<float>(ESignificance::Hidden);
+		return static_cast<float>(ESignificance::Off);
 	}
 
 	// Use Actor implemented override if present.
@@ -131,7 +131,7 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	}
 
 	// by default is hidden
-	ESignificance Sig = ESignificance::Hidden;
+	ESignificance Sig = ESignificance::Off;
 
 	TArray<ESignificance> Sigs;
 	DistanceSqr.GetKeys(Sigs);
