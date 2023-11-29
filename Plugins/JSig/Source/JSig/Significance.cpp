@@ -15,7 +15,7 @@ USignificance* USignificance::Get(UWorld* W) {
 }
 
 void USignificance::Deinitialize() {
-	UE_LOG(LogJSigSub, Verbose,TEXT("%hs"), __func__);
+	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
 	Man = nullptr;
 	PCs.Empty();
 	Super::Deinitialize();
@@ -61,10 +61,10 @@ void USignificance::Tick(float DeltaTime) {
 	DTAcum = 0;
 
 	if (!Man || PCs.Num()==0) {
-		UE_LOG(LogJSigSub, Verbose, TEXT("%hs. Force Reset."), __func__);
+		UE_LOG(LogJSigSub, Log, TEXT("%hs. Force Reset."), __func__);
 		// The manager is slow to get created, so we keep querying.
 		Reset();
-		return;
+		return; // return in case the above check still fails
 	}
 
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs: will update"), __func__);
@@ -77,7 +77,7 @@ void USignificance::Tick(float DeltaTime) {
 
 		// Viewpoints
 		TransformArray.Emplace(ViewRotation, ViewLocation, FVector::OneVector);
-		UE_LOG(LogJSigSub, Verbose,TEXT("%hs Got viewport %s-%s"), __func__, *ViewLocation.ToString(), *ViewRotation.ToString());
+		UE_LOG(LogJSigSub, Log, TEXT("%hs Got viewpoint %s-%s"), __func__, *ViewLocation.ToString(), *ViewRotation.ToString());
 	}
 
 	Man->Update(TArrayView<FTransform>(TransformArray));

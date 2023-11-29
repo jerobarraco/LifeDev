@@ -51,10 +51,10 @@ public:
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESignificance, float> DistanceSqr = {
-		{ESignificance::High, 1000000},
-		{ESignificance::Med, 10000000},
-		{ESignificance::Low, 100000000},
-		{ESignificance::Off, 1000000000},
+		{ESignificance::High, 100000},
+		{ESignificance::Med, 1000000},
+		{ESignificance::Low, 10000000},
+		{ESignificance::Off, 100000000},
 	};
 	
 	// Tick intervals per level. Interval <0 will disable ticks. 0 means every tick.
@@ -72,17 +72,17 @@ public:
 	TArray<UActorComponent*> Comps;
 
 	// triggered when the significance changes
-	UPROPERTY(BlueprintAssignable, Transient)
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
 	// Set this with a callback to a custom significance calculation.
 	// When this is set, the CalcLocation is ignored.
 	// (on bp use the "Set" node) 
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcSignificance CalcSignificance;
 	// Set this with a callback to a custom Location calculation.
 	// This location is then used for a location/based significance calculation.
 	// (on bp use the "Set" node) 
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;
 
 protected:

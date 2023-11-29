@@ -19,11 +19,11 @@ static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
+	Super::SetAutoActivate(true);
 }
 
 void UCSignificance::Activate(bool bReset) {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
-
 	Super::Activate(bReset);
 	Register();
 }
