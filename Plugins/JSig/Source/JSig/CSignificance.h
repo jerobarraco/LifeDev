@@ -57,10 +57,10 @@ public:
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESignificance, float> DistanceSqr = {
-		{ESignificance::High, 1000000},
-		{ESignificance::Med, 10000000},
-		{ESignificance::Low, 50000000},
-		{ESignificance::Off, 100000000},
+		{ESignificance::High, 500000},
+		{ESignificance::Med, 1000000},
+		{ESignificance::Low, 5000000},
+		{ESignificance::Off, 10000000},
 	};
 	
 	// Tick intervals per level. Interval <0 will disable ticks. 0 means every tick.

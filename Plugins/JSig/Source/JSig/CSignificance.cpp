@@ -75,9 +75,7 @@ void UCSignificance::Unregister() {
 
 float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
 	if (GSigOverride >= 0.0f)
-	{
 		return GSigOverride;
-	}
 
 	AActor* const Actor = GetOwner();
 	if (IsOffWhenHidden && Actor && Actor->IsHidden())
@@ -85,7 +83,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 		return static_cast<float>(ESignificance::Off);
 	}
 
-	if (Actor && RenderSinceMax >= 0 && !Actor->WasRecentlyRendered(RenderSinceMax)) {
+	if (Actor && RenderSinceMax >= 0.0f && !Actor->WasRecentlyRendered(RenderSinceMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
 		return static_cast<float>(ESignificance::Off);
 	}
