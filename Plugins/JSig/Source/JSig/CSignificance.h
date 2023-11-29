@@ -45,9 +45,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE ESignificance GetSignificance() { return Significance; }
 
+	// if set, then when the actor is hidden, it will become insignificant (Off)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool IsHiddenInsignificant = true;
+	bool IsOffWhenHidden = true;
 
+	// >=0 The seconds since last render before becoming insignificant.
+	// <0 is disabled
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float RenderSinceMax = 0.5f;
+	
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESignificance, float> DistanceSqr = {

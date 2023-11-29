@@ -77,7 +77,7 @@ void USignificance::Tick(float DeltaTime) {
 
 		// Viewpoints
 		TransformArray.Emplace(ViewRotation, ViewLocation, FVector::OneVector);
-		UE_LOG(LogJSigSub, Log, TEXT("%hs Got viewpoint %s-%s"), __func__, *ViewLocation.ToString(), *ViewRotation.ToString());
+		UE_LOG(LogJSigSub, Verbose, TEXT("%hs Got viewpoint %s-%s"), __func__, *ViewLocation.ToString(), *ViewRotation.ToString());
 	}
 
 	Man->Update(TArrayView<FTransform>(TransformArray));

@@ -80,8 +80,13 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	}
 
 	AActor* const Actor = GetOwner();
-	if (IsHiddenInsignificant && Actor && Actor->IsHidden())
+	if (IsOffWhenHidden && Actor && Actor->IsHidden())
 	{
+		return static_cast<float>(ESignificance::Off);
+	}
+
+	if (Actor && RenderSinceMax >= 0 && !Actor->WasRecentlyRendered(RenderSinceMax)) {
+		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
 		return static_cast<float>(ESignificance::Off);
 	}
 
@@ -96,7 +101,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	FVector Origin;
 	if (CalcLocation.IsBound()) {
 		Origin = CalcLocation.Execute();	
-	} else {
+	} else if (Actor) {
 		Origin = Actor->GetActorLocation();
 	}
 
@@ -108,7 +113,6 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	return Sig;
 
 	// TODO visibility by
-	//	1- Checking if it's in view (dot product with the viewpoint)
 	//	2- Is actually visible (some trace with visibility channel)
 	
 	// FCollisionQueryParams Params;
