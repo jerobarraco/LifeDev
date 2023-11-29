@@ -11,8 +11,6 @@
 ALLight::ALLight():Super() {
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
-	// by default is just a static light.
-	Super::SetEnabled(false);
 
 	FlickrOnFB = .7;
 	AnimEnabled = true;
@@ -40,13 +38,16 @@ ALLight::ALLight():Super() {
 	Rnd->ValueMax = 3;
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
-	
+
+	// TODO add the csignificance here for the flicker effect
+	// by default is just a static light.
 	SetEnabled(false);
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
 	FlickrOnFB = NewFBFlicker;
-	if (FlickrOnFB<0) {
+	if (FlickrOnFB <= 0) {
+		// TODO deactivate significance too
 		Rnd->Deactivate();
 		return;
 	}
@@ -77,8 +78,12 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALLight::SetFB(float Value) {
+	const bool ShouldFlicker = Value > FlickrOnFB;
+	// TODO also activate the csignificance here
 	// activate and deactivate only run if needed.
-	if (Value > FlickrOnFB){
+	// todo attempt to use this 
+	// Rnd->SetActive(Value>FlickrOnFB, false);
+	if (ShouldFlicker){
 		Rnd->Activate(false);
 	} else {
 		Rnd->Deactivate();
