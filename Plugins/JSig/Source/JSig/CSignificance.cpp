@@ -20,16 +20,16 @@ static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
 UCSignificance::UCSignificance():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
-.
+
 void UCSignificance::Activate(bool bReset) {
-	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
 
 	Super::Activate(bReset);
 	Register();
 }
 
 void UCSignificance::Deactivate() {
-	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
 	Unregister();
 	Super::Deactivate();
 }
@@ -40,7 +40,7 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCSignificance::Register() {
-	UE_LOG(LogJSigComp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
@@ -88,7 +88,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	// Use Actor implemented override if present.
 	// otherwise we will calculate it here
 	if (CalcSignificance.IsBound()) {
-		const float Sig = CalcSignificance.Execute();
+		const float Sig = CalcSignificance.Execute(Viewpoint);
 		return Sig;
 	}
 
@@ -116,11 +116,11 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	const AActor* Owner = GetOwner();
 	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(Owner));
 
+	/// updates
 	UpdateTicks();
-	OnChanged.Broadcast(Significance);
 
-	// TODO auto handle the tick and the tick interval here with some optional flags
-	// UpdateParticleSignificance(Significance);
+	// finally notify (at the end, given the side effects)
+	OnChanged.Broadcast(Significance);
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {

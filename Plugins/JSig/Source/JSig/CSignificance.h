@@ -24,8 +24,8 @@ enum class ESignificance : uint8 {
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificance, Significance);
-DECLARE_DYNAMIC_DELEGATE_RetVal(float, FGetSignificance);
-DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FGetLocation);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCalcSignificance, const FTransform& , Viewpoint);
+DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
 // Manages the significance of this object
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JSig), meta=(BlueprintSpawnableComponent))
@@ -58,13 +58,20 @@ public:
 	// components to manage (ticks)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> Comps;
-	
+
+	// triggered when the significance changes
 	UPROPERTY(BlueprintAssignable)
 	FOnSignificanceChanged OnChanged;
+	// Set this with a callback to a custom significance calculation.
+	// When this is set, the CalcLocation is ignored.
+	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite)
-	FGetSignificance CalcSignificance;
+	FCalcSignificance CalcSignificance;
+	// Set this with a callback to a custom Location calculation.
+	// This location is then used for a location/based significance calculation.
+	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite)
-	FGetLocation CalcLocation;
+	FCalcLocation CalcLocation;
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

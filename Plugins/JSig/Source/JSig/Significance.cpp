@@ -15,13 +15,14 @@ USignificance* USignificance::Get(UWorld* W) {
 }
 
 void USignificance::Deinitialize() {
+	UE_LOG(LogJSigSub, Verbose,TEXT("%hs"), __func__);
 	Man = nullptr;
 	PCs.Empty();
 	Super::Deinitialize();
 }
 
 void USignificance::Reset() {
-	UE_LOG(LogJSigSub, Log ,TEXT("%hs"), __func__);
+	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
 
 	Man = nullptr;
 	PCs.Empty();
@@ -43,6 +44,7 @@ void USignificance::Reset() {
 }
 
 void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
+	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
 	Super::Initialize(Collection);
 	Reset();
 	// this won't make the animator work, but will make the USignificance get an EXTRA tick on a different interval (maybe the component's interval)
@@ -59,6 +61,7 @@ void USignificance::Tick(float DeltaTime) {
 	DTAcum = 0;
 
 	if (!Man || PCs.Num()==0) {
+		UE_LOG(LogJSigSub, Verbose, TEXT("%hs. Force Reset."), __func__);
 		// The manager is slow to get created, so we keep querying.
 		Reset();
 		return;
@@ -67,7 +70,7 @@ void USignificance::Tick(float DeltaTime) {
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs: will update"), __func__);
 
 	TArray<FTransform> TransformArray;
-	for (APlayerController* PC: PCs) {
+	for (APlayerController* const PC: PCs) {
 		FVector ViewLocation;
 		FRotator ViewRotation;
 		PC->GetPlayerViewPoint(ViewLocation, ViewRotation);
@@ -88,10 +91,8 @@ TStatId USignificance::GetStatId() const {
 }
 
 UGameViewportClient* USignificance::GetAnyGameViewportClient() {
-	if (GEngine->GameViewport)
-	{
-		return GEngine->GameViewport;
-	}
+	if (GEngine && GEngine->GameViewport) return GEngine->GameViewport;
+	
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
 	for (const FWorldContext& Context : WorldContexts)
