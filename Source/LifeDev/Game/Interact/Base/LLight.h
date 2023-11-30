@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "JSig/CSignificance.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LLight.generated.h"
@@ -27,10 +28,13 @@ protected:
 	
 	UFUNCTION()
 	void SetFB(float Value);
+
 	// flickers when fb is >= this value. <0 means disabled.
 	UPROPERTY(BlueprintReadOnly, Category=SetUp)
 	float FlickrOnFB = -1;
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCRandomizer* Rnd = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UCSignificance* Sig = nullptr;
 };

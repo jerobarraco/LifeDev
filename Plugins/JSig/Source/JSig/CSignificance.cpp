@@ -24,6 +24,9 @@ UCSignificance::UCSignificance():Super() {
 
 void UCSignificance::Activate(bool bReset) {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
+	// this is (ab)used in the lights. also ensures no-double registration.
+	if (!bReset && IsActive()) return;
+
 	Super::Activate(bReset);
 	Register();
 }

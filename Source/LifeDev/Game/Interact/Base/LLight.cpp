@@ -5,6 +5,7 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
+#include "JSig/CSignificance.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 // better to do light00 first then extract this one
@@ -23,12 +24,6 @@ ALLight::ALLight():Super() {
 	UseRewardFade = false;
 	AnimFade->Meshes.Empty();
 	
-	// Texts = {FText::FromString("PickUp")};
-	// static ConstructorHelpers::FObjectFinder<USoundBase>
-		// CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/LLights/LLights.LLights"));
-	// SFX_Trigger = CSnd.Object;
-	// RewardFlash = .1;
-
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->SetAutoActivate(false);
 	Rnd->IsLooping = true;
@@ -39,7 +34,10 @@ ALLight::ALLight():Super() {
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
 
-	// TODO add the csignificance here for the flicker effect
+	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	// disabled. since a light-source that is behind me might change the light in front of me.
+	Sig->RenderSinceMax = -1;
+
 	// by default is just a static light.
 	SetEnabled(false);
 }
@@ -47,7 +45,7 @@ ALLight::ALLight():Super() {
 void ALLight::SetFBFlicker(float NewFBFlicker) {
 	FlickrOnFB = NewFBFlicker;
 	if (FlickrOnFB <= 0) {
-		// TODO deactivate significance too
+		Sig->Deactivate();
 		Rnd->Deactivate();
 		return;
 	}
@@ -79,13 +77,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALLight::SetFB(float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
-	// TODO also activate the csignificance here
 	// activate and deactivate only run if needed.
-	// todo attempt to use this 
-	// Rnd->SetActive(Value>FlickrOnFB, false);
-	if (ShouldFlicker){
-		Rnd->Activate(false);
-	} else {
-		Rnd->Deactivate();
-	}
+	Rnd->SetActive(ShouldFlicker);
+	Sig->SetActive(ShouldFlicker);
 }
