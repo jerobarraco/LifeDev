@@ -34,7 +34,7 @@ public:
 
 	// seconds until next tick. 0 means every frame. discouraged.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float TickInterval = 3;
+	float TickInterval = 1.f;
 	
 	// 0 or <0 means all
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
