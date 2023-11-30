@@ -11,8 +11,7 @@ class USignificanceManager;
 
 // Base subsystem for the significance stuff
 UCLASS(Blueprintable, Category="LifeDev")
-class JSIG_API USignificance : public UTickableWorldSubsystem
-{
+class JSIG_API USignificance : public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
 public:

@@ -67,6 +67,7 @@ void UCSignificance::Register() {
 }
 
 void UCSignificance::Unregister() {
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
 

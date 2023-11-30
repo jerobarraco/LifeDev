@@ -38,7 +38,11 @@ class JSIG_API UCSignificance: public UActorComponent {
 public:
 	UCSignificance();
 
-	virtual void Activate(bool bReset) override;
+	// only used to bind to
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void ActivateNow() { Activate(); }
+	
+	virtual void Activate(bool bReset=false) override;
 	virtual void Deactivate() override;
 	
 	// returns the current sig
