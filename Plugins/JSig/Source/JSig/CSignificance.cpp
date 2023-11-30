@@ -47,7 +47,7 @@ void UCSignificance::Register() {
 
 	AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) return;
-	const FName Tag = Owner->GetClass()->GetFName();
+	const FName Tag(GetNameSafe(Owner));
 
 	// this is lame, but it's how it works
 	auto lCalculate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) -> float
@@ -61,7 +61,7 @@ void UCSignificance::Register() {
 		if (!IsValid(this)) return;
 		PostUpdate(ObjectInfo, Old, New, bFinal);
 	};
-	
+
 	// Register
 	Man->RegisterObject(this, Tag, lCalculate, USignificanceManager::EPostSignificanceType::Sequential, lPostUpdate);
 }
@@ -78,7 +78,7 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	if (GSigOverride >= 0.0f)
 		return GSigOverride;
 
-	AActor* const Actor = GetOwner();
+	const AActor* const Actor = GetOwner();
 	if (IsOffWhenHidden && Actor && Actor->IsHidden())
 	{
 		return static_cast<float>(ESignificance::Off);
@@ -135,8 +135,8 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	if (Equals) return;
 
 	Significance = static_cast<ESignificance>(FMath::FloorToInt32(Sig));
-	const AActor* Owner = GetOwner();
-	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner =%s"), Significance, *GetNameSafe(Owner));
+	const AActor* const Owner = GetOwner();
+	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"), Significance, *GetNameSafe(Owner));
 
 	/// updates
 	UpdateTicks();

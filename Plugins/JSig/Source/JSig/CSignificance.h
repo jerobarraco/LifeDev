@@ -55,6 +55,7 @@ public:
 
 	// >=0 The seconds since last render before becoming insignificant.
 	// <0 is disabled
+	// this requires the actor to have a mesh.(a light is not a mesh)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float RenderSinceMax = 0.5f;
 	
