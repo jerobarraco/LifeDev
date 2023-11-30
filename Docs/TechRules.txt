@@ -37,6 +37,7 @@
 * Use UPROPERTY on all pointers. nullify at end if is transient.
 ** Use Transient on all variables that are transient.
 ** NEVER use Edit* on components as it can break serialization.
+** ALWAYS use Transient for delegates. don't bind on constructor.
 * use const& widely. 
 ** SPECIALLY on delegates and for loops
 ** To Pass structures as you WILL modify them in the body.

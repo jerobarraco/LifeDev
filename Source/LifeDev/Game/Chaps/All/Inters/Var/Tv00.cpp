@@ -97,7 +97,7 @@ ATv00::ATv00():Super() {
 	Noise->SetSound(CSNoise.Object);
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
-	Sig->Comps.Add(AnimCrt);
+	Sig->CompsTicks.Add(AnimCrt);
 	Sig->RenderSinceMax = .2;
 }
 

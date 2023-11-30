@@ -24,7 +24,7 @@ UCSignificance::UCSignificance():Super() {
 
 void UCSignificance::Activate(bool bReset) {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
-	// this is (ab)used in the lights. also ensures no-double registration.
+	// this is (ab)used by the lights. also ensures no-double registration.
 	if (!bReset && IsActive()) return;
 
 	Super::Activate(bReset);
@@ -47,7 +47,7 @@ void UCSignificance::Register() {
 	const FName Tag(GetNameSafe(Owner));
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, Tag);
 
-	// don't register if it doesnt have an owner
+	// don't register if it doesn't have an owner
 	if (!IsValid(Owner)) {
 		UE_LOG(LogJSigComp, Warning, TEXT("Can't register, invalid owner"));
 		return;
@@ -147,7 +147,8 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 
 	/// updates
 	UpdateTicks();
-
+	UpdateActivate();
+	
 	// finally notify (at the end, given the side effects)
 	OnChanged.Broadcast(Significance);
 }
@@ -191,9 +192,16 @@ void UCSignificance::UpdateTicks() {
 	Owner->SetActorTickInterval(Interval);
 	Owner->SetActorTickEnabled(TickEnabled);
 
-	for (UActorComponent* const C: Comps) {
+	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
 		C->SetComponentTickInterval(Interval);
 		C->SetComponentTickEnabled(TickEnabled);
+	}
+}
+
+void UCSignificance::UpdateActivate() {
+	const bool IsActive = Significance != ESignificance::Off;
+	for (UActorComponent* const C: CompsTicks) {
+		C->SetActive(IsActive);
 	}
 }

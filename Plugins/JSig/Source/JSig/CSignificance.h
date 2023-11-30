@@ -80,7 +80,11 @@ public:
 
 	// components to manage (ticks)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<UActorComponent*> Comps;
+	TArray<UActorComponent*> CompsTicks;
+
+	// components to manage activate/deactivate
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<UActorComponent*> CompsActivate;
 
 	// triggered when the significance changes
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
@@ -102,6 +106,7 @@ protected:
 	void Register();
 	void Unregister();
 	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
+	void UpdateActivate();
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
 	float GetDistanceSignificance(float DistSqr);
 	void UpdateTicks();
