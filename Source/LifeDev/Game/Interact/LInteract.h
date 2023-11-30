@@ -118,7 +118,7 @@ protected:
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
-	UPROPERTY(BlueprintReadOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp")
 	UCAnimatorFade* AnimFade = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
