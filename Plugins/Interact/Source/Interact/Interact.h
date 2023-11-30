@@ -3,7 +3,6 @@
 
 #pragma once
 #include "InteractTypes.h"
-#include "Components/PostProcessComponent.h"
 
 #include "Interact.generated.h"
 
@@ -100,22 +99,24 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 State = 0;
 
+	// whether to use the attached SFX component or just spawn a "sound at location".
+	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
 	bool UseAttachedSFX = true;
 
 	// handles the interactions with this actor.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCInteract* Interact = nullptr;
 	
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	USceneComponent* IRoot = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UAudioComponent* SFX = nullptr;
 };
