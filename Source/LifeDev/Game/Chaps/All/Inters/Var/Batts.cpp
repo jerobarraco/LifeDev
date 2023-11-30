@@ -7,12 +7,10 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ABatts::ABatts():Super() {
-	Texts = { FText::FromString(TEXT("Pick up batteries")) } ;
-	RewardFlash = .1;
+	Texts = { FText::FromString(TEXT("Batteries")) } ;
+	RewardFlash = 0;
 	AnimEnabled = false;
 	StateNum = 1;
-	RewardItem = "Batts";
-	TriggerDlg = "BattsPick";
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Batts00/Batts00.Batts00"));
@@ -28,6 +26,7 @@ ABatts::ABatts():Super() {
 
 	Interact->SetRelativeLocation(FVector(2.522632,-1.030120,-0.728246));
 	Interact->SetBoxExtent(FVector(0.704907,4.189342,2.505187));
+	// TODO fix the interact box extent
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -35,5 +34,13 @@ ABatts::ABatts():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
-	AnimFade->Meshes.AddUnique(MeshB);	
+	AnimFade->Meshes.AddUnique(MeshB);
+
+	SetEnabled(false);
+	ABatts::SetMobility(EComponentMobility::Static);
+}
+
+void ABatts::SetMobility(EComponentMobility::Type Mobility) {
+	Super::SetMobility(Mobility);
+	MeshB->SetMobility(Mobility);
 }

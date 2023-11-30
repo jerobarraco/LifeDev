@@ -5,14 +5,14 @@
 
 #include "Batts.generated.h"
 
-// Base class for Batts
-// TODO create a child class of this that it's BattsI00 and remove the reward stuff from here.
+// Base class for Batts. extend for instances.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABatts: public ALInteract {
 	GENERATED_BODY()
 
 public:
 	ABatts();
+	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

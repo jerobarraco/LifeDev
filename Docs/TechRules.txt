@@ -36,7 +36,7 @@
 ** ok to initialize _inside_ the constructor (with regular assignment) only if the value is non-default, and specific to that constructor.
 * Use UPROPERTY on all pointers. nullify at end if is transient.
 ** Use Transient on all variables that are transient.
-** NEVER use Edit* on components as it can break serialization.
+** NEVER use Edit* on components as it can break serialization. Also add VisiblyAnywhere for most.
 ** ALWAYS use Transient for delegates. don't bind on constructor.
 * use const& widely. 
 ** SPECIALLY on delegates and for loops
