@@ -38,6 +38,8 @@ AStreetLight::AStreetLight():Super() {
 	Randomizer->SetAutoActivate(true);
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
+	// disabled since this requires a mesh. and that will add cost. and render check also adds a cost.
+	Sig->RenderSinceMax = -1;
 }
 
 
