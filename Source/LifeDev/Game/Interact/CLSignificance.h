@@ -28,6 +28,6 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	// cache of the bound anim
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCAnimator* BoundAnim = nullptr;
 };
