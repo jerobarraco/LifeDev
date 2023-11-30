@@ -19,13 +19,14 @@
 ** Use BlueprintNativeEvents EVEN if the cpp body is empty. keep the control in cpp. avoid having function chains that only exists on bp.
 * Use minimal decoupling. Use polymorphism to achieve it.
 ** This is tricky if you're not me (hard to explain). Check the code for examples, and ask me to verify.
-** Avoid usage of events when possible. no event driven anything.
+** Avoid usage of events. no event driven anything.
 ** Ensure a direct top-down hierarchy.
 *** parents call children directly through functions.
 *** child communicate with parents through delegates.
 ** Do use subsystems
 ** Do use delegates
 *** But avoid having stuff self-registering automatically. Tell them to initialize instead. 
+** Do not use asynchronous nodes (either mine or from engine when possible)
 * forward declare as much as possible. includes on cpp instead of .h
 * avoid overusing set/gets. public vars are fine when makes sense.
 ** flexibility is more important than "university purity".
@@ -34,7 +35,8 @@
 ** NEVER initialize using the member initialization list (on the constructor)
 ** ok to initialize _inside_ the constructor (with regular assignment) only if the value is non-default, and specific to that constructor.
 * Use UPROPERTY on all pointers. nullify at end if is transient.
-* Use Transient on all variables that are transient.
+** Use Transient on all variables that are transient.
+** NEVER use Edit* on components as it can break serialization.
 * use const& widely. 
 ** SPECIALLY on delegates and for loops
 ** To Pass structures as you WILL modify them in the body.
