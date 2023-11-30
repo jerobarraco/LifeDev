@@ -40,14 +40,18 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCSignificance::Register() {
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
+	const AActor* const Owner = GetOwner();
+	const FName Tag(GetNameSafe(Owner));
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, Tag);
+
+	// don't register if it doesnt have an owner
+	if (!IsValid(Owner)) {
+		UE_LOG(LogJSigComp, Warning, TEXT("Can't register, invalid owner"));
+		return;
+	}
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
-
-	AActor* const Owner = GetOwner();
-	if (!IsValid(Owner)) return;
-	const FName Tag(GetNameSafe(Owner));
 
 	// this is lame, but it's how it works
 	auto lCalculate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) -> float
@@ -67,7 +71,7 @@ void UCSignificance::Register() {
 }
 
 void UCSignificance::Unregister() {
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, *GetNameSafe(GetOwner()));
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (!IsValid(Man)) return;
 
