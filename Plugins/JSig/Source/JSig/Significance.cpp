@@ -53,13 +53,7 @@ void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
 	// Animator->RegisterComponent();
 }
 
-void USignificance::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
-
-	DTAcum += DeltaTime;
-	if (DTAcum< TickInterval) return;
-	DTAcum = 0;
-
+void USignificance::DoTick() {
 	if (!Man || PCs.Num()==0) {
 		UE_LOG(LogJSigSub, Log, TEXT("%hs. Force Reset."), __func__);
 		// The manager is slow to get created, so we keep querying.
@@ -81,6 +75,24 @@ void USignificance::Tick(float DeltaTime) {
 	}
 
 	Man->Update(TArrayView<FTransform>(TransformArray));
+}
+
+void USignificance::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
+
+	DTAcum += DeltaTime;
+	if (DTAcum< TickInterval) return;
+	DTAcum = 0;
+
+	if (UseBGThread) {
+		// if i make it static and the subsystem gets recreated. this might still keep a ref to the old "this"
+		TUniqueFunction<void()> F = [this] {
+			this->DoTick();
+		};
+		AsyncTask(ENamedThreads::BackgroundThreadPriority, MoveTemp(F));
+	} else {
+		DoTick();
+	}
 }
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3

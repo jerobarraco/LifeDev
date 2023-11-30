@@ -38,8 +38,12 @@ public:
 	// 0 or <0 means all
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 NumPCs = 1;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseBGThread = true;
 
 protected:
+	void DoTick();
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	USignificanceManager* Man = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
