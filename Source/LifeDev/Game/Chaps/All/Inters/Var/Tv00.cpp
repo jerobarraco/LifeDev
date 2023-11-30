@@ -10,6 +10,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 #include "Sounds/CSounder.h"
 #include "JSig/CSignificance.h"
+#include "LifeDev/Game/Interact/CLSignificance.h"
 
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
@@ -64,10 +65,12 @@ ATv00::ATv00():Super() {
 	
 	/// anims
 	AnimEnabled = true;
+	// button anim
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetLocation(FVector(0.0,-2.5,0));
 
+	// crt anim
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
 	AnimCrt->MatVName = "Emissive";
 	AnimCrt->MatVStart = FLinearColor::Black;
@@ -76,7 +79,8 @@ ATv00::ATv00():Super() {
 		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
 	AnimCrt->Duration = 2; // initial duration
-	
+
+	// randomizer for the anim
 	RndCrt = CreateDefaultSubobject<UCRandomizer>(TEXT("RndCrt"));
 	RndCrt->Anim = AnimCrt;
 	RndCrt->DelayMin = .5;
@@ -92,7 +96,7 @@ ATv00::ATv00():Super() {
 		CSNoise(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
 	Noise->SetSound(CSNoise.Object);
 
-	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Significance"));
+	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
 	Sig->Comps.Add(AnimCrt);
 	Sig->RenderSinceMax = .2;
 }
@@ -100,10 +104,21 @@ ATv00::ATv00():Super() {
 void ATv00::BeginPlay() {
 	Super::BeginPlay();
 	
+	Sig->BindAnim(AnimCrt);
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
 	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+}
+
+void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (IsValid(Sig)) {
+		Sig->UnbindAnim();
+		Sig->Deactivate();
+	}
+	Sig = nullptr;
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void ATv00::Trigger_Implementation() {

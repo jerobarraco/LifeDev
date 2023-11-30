@@ -5,10 +5,10 @@
 
 #include "Tv00.generated.h"
 
+class UCLSignificance;
 class UCSounder;
 class UCRandomizer;
 class UCQuickMesh;
-class UCSignificance;
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATv00: public ALInteract {
@@ -19,22 +19,21 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Trigger_Implementation() override;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCSounder* Noise = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCRandomizer* RndCrt = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCAnimatorMix* AnimCrt = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCQuickMesh* Frame = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCQuickMesh* Glass = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCQuickMesh* Crt = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSignificance* Sig = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UCLSignificance* Sig = nullptr;
 };

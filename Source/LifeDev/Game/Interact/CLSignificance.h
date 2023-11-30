@@ -17,10 +17,12 @@ class LIFEDEV_API UCLSignificance : public UCSignificance {
 public:
 	UCLSignificance();
 
-	// will bind to one animator, other animators will be unbound ?
+	// will bind to one animator, other animators will be unbound.
+	// don't call on CDO
 	UFUNCTION(BlueprintCallable)
 	void BindAnim(UCAnimator* Animator);
-	// will bind to one animator, other animators will be unbound ?
+
+	// will bind to one animator
 	UFUNCTION(BlueprintCallable)
 	void UnbindAnim();
 
