@@ -7,6 +7,7 @@
 #include "NiagaraSystem.h"
 
 #include "Interact/CInteract.h"
+#include "JSig/CSignificance.h"
 
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 #include "Sounds/CSounder.h"
@@ -47,9 +48,24 @@ ABasinI00::ABasinI00():Super() {
 	SND_Water->SetAutoActivate(true);
 	SND_Water->bAutoManageAttachment = true;
 
+
+	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	// Sig->Comps.AddUnique(Water); // don't do this. it will happily crash every time
+
 	// SFX_Trigger = TODO faucet closing
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
+}
+
+void ABasinI00::BeginPlay() {
+	Super::BeginPlay();
+	Sig->OnChanged.AddUniqueDynamic(this, &ABasinI00::SigChanged);
+}
+
+void ABasinI00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Sig->OnChanged.RemoveAll(this);
+	Sig->Deactivate();
+	Super::EndPlay(EndPlayReason);
 }
 
 void ABasinI00::Trigger_Implementation() {
@@ -57,4 +73,10 @@ void ABasinI00::Trigger_Implementation() {
 	SND_Water->Fade(false);
 	Super::Trigger_Implementation();
 	SetEnabled(false); // trigger only once 
+}
+
+void ABasinI00::SigChanged(ESignificance Significance) {
+	const bool Hidden = Significance == ESignificance::Off;
+	// set hidden to avoid affecting whether is active or not.
+	Water->SetHiddenInGame(Hidden);
 }
