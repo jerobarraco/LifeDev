@@ -9,6 +9,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#pragma optimize("", off)
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
@@ -172,20 +173,36 @@ bool ALInteract::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
-EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Name) {
+EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
-	const bool Ok = !ULockItem.IsNone() && Name == ULockItem;
-	if (!Ok) {
-		const bool Added = IsValid(Dialogs) && Dialogs->AddId(ULockBadDlg);
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	} 
+	const bool ValidDiags = IsValid(Dialogs);
 
-	// at this point is ok.
-	if (IsValid(Dialogs)) {
-		Dialogs->AddId(ULockDlg);
+	// trigger a dlg for the item if it has something to say
+	// only do if unlocked. if locked then ulockitem takes precedence
+	if (!Locked) {
+		// check if we can say something about this
+		const FName* const pDlg = UseItemDlgs.Find(Item);
+		const bool Added = pDlg && ValidDiags && Dialogs->AddId(*pDlg);
+		// bad handled doesn't trigger the default dialog
+		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 	
+	// at this point is locked
+	
+	// Checks if it needs an item to unlock it. and unlock if needed.
+	// Check if this item unlocks it. 
+	const bool Ok = !ULockItem.IsNone() && Item == ULockItem;
+	if (!Ok) {
+		const bool Added = ValidDiags && Dialogs->AddId(ULockBadDlg);
+		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+	}
+
+	if (ValidDiags) {
+		Dialogs->AddId(ULockDlg);
+	}
+
 	Locked = false; // force unlock or trigger won't work
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
 }
+#pragma optimize("", on)

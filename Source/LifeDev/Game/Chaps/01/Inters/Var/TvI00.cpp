@@ -2,6 +2,10 @@
 
 #include "TvI00.h"
 
+ATvI00::ATvI00() {
+	UseItemDlgs.Add("Batts", "TV00xBatts");
+}
+
 void ATvI00::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	TriggerDlg = IsOpen() ? "TV00_T": "";

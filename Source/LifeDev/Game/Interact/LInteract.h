@@ -30,11 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-		const bool Rewardless = (
-			RewardItem.IsNone()
-			&& RewardFlag.IsNone()
-			&& RewardActor == nullptr
-			&& ZeroFlash);
+		const bool Rewardless = (ZeroFlash && RewardActor == nullptr && 
+			RewardItem.IsNone() && RewardFlag.IsNone());
 		return Rewardless;
 	}
 
@@ -73,6 +70,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName TriggerDlg = NAME_None;
 
+	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
+	// the key is the item name, the value is the dialog id
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TMap<FName, FName> UseItemDlgs;
+	
 	// setting this will reward the item on trigger. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
@@ -114,7 +116,7 @@ protected:
 	virtual void Trigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
