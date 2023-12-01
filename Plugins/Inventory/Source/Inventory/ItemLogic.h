@@ -19,14 +19,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();
 	virtual void Look_Implementation() {
-		UE_LOG(LogTemp, Log, TEXT("ItemMan.Look. Looking item %lu %s"), (int64)this, *Name.ToString());
+		UE_LOG(LogTemp, Log, TEXT("ItemLogic.Look: %lu %s"), (int64)this, *Name.ToString());
 	};
 
 	// this will gets triggered only for self-use
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
 	virtual void Use_Implementation() {
-		UE_LOG(LogTemp, Log, TEXT("ItemMan.Use: Using item %lu. '%s'"), (int64)this, *Name.ToString());
+		UE_LOG(LogTemp, Log, TEXT("ItemLogic.Use: *%lu. '%s'"), (int64)this, *Name.ToString());
 	};
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)

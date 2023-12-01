@@ -7,13 +7,8 @@
 
 ULItemLogic::ULItemLogic():Super() {}
 
-void ULItemLogic::Use_Implementation() {
-	Super::Use_Implementation();
-	UE_LOG(LogTemp, Log, TEXT("Item being used: '%s'"), *Name.ToString());
-}
-
 void ULItemLogic::BeginPlay_Implementation(UWorld* NewWorld) {
-	UE_LOG(LogTemp, Log, TEXT("LItemLogic:%hs"), __func__);
+	UE_LOG(LogTemp, Verbose, TEXT("LItemLogic:%hs"), __func__);
 
 	Super::BeginPlay_Implementation(NewWorld);
 	if (!IsValid(NewWorld)) return;

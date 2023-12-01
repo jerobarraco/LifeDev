@@ -17,8 +17,6 @@ class LIFEDEV_API ULItemLogic: public UItemLogic {
 
 public:
 	ULItemLogic();
-	virtual void Look_Implementation() override {}
-	virtual void Use_Implementation() override;
 	
 protected:
 	virtual void BeginPlay_Implementation(UWorld* NewWorld) override;

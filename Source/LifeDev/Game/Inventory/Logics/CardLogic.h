@@ -14,6 +14,4 @@ class LIFEDEV_API UCardLogic: public ULItemLogic {
 
 public:
 	UCardLogic();
-	virtual void Look_Implementation() override {};
-	virtual void Use_Implementation() override;
 };
