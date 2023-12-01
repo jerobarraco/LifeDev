@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Inventory/ItemLogic.h"
 
-#include "LItemLogic.generated.h"
+#include "LLogic.generated.h"
 
 class UFlags;
 class UInventory;
@@ -15,11 +15,11 @@ class UStory;
 // base class for all item logics in LifeDev
 // (that interacts with all the other plugins)
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULItemLogic: public UItemLogic {
+class LIFEDEV_API ULLogic: public UItemLogic {
 	GENERATED_BODY()
 
 public:
-	ULItemLogic();
+	ULLogic();
 
 	// dialog to trigger on use
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)

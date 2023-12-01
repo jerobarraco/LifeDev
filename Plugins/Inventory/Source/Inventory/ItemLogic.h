@@ -4,7 +4,7 @@
 
 #include "ItemLogic.generated.h"
 
-// Base class for the manager of each item 
+// Base class for the logic of each item 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Inventory))
 class INVENTORY_API UItemLogic: public UObject {
 	GENERATED_BODY()

@@ -1,6 +1,6 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "LItemLogic.h"
+#include "LLogic.h"
 
 #include "Diags/Diags.h"
 #include "Inventory/Flags.h"
@@ -8,9 +8,9 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "Story/Story.h"
 
-ULItemLogic::ULItemLogic():Super() {}
+ULLogic::ULLogic():Super() {}
 
-void ULItemLogic::BeginPlay_Implementation(UWorld* Trash) {
+void ULLogic::BeginPlay_Implementation(UWorld* Trash) {
 	UE_LOG(LogTemp, Verbose, TEXT("LItemLogic:%hs"), __func__);
 
 	UWorld* const W = GetWorld();
@@ -33,7 +33,7 @@ void ULItemLogic::BeginPlay_Implementation(UWorld* Trash) {
 	Flags = W->GetSubsystem<UFlags>();
 }
 
-void ULItemLogic::BeginDestroy() {
+void ULLogic::BeginDestroy() {
 	Diags = nullptr;
 	FB = nullptr;
 	Story = nullptr;
@@ -43,12 +43,12 @@ void ULItemLogic::BeginDestroy() {
 	Super::BeginDestroy();
 }
 
-void ULItemLogic::Use_Implementation() {
+void ULLogic::Use_Implementation() {
 	Super::Use_Implementation(); // いらない. but still prints a nice log.
 	Say(UseDlg);
 }
 
-bool ULItemLogic::Say(const FName& Id) {
+bool ULLogic::Say(const FName& Id) {
 	if (!IsValid(Diags)) return false;
 	return Diags->AddId(Id);
 }

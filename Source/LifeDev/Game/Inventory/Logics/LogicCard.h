@@ -2,16 +2,16 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "LItemLogic.h"
+#include "LLogic.h"
 
-#include "CardLogic.generated.h"
+#include "LogicCard.generated.h"
 
 class UDiags;
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API UCardLogic: public ULItemLogic {
+class LIFEDEV_API ULogicCard: public ULLogic {
 	GENERATED_BODY()
 
 public:
-	UCardLogic();
+	ULogicCard();
 };

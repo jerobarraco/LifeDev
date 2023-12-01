@@ -2,16 +2,16 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "LifeDev/Game/Inventory/Logics/CardLogic.h"
+#include "LifeDev/Game/Inventory/Logics/LogicCard.h"
 
-#include "CardLogic00.generated.h"
+#include "LogicCard00.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API UCardLogic00: public UCardLogic {
+class LIFEDEV_API ULogicCard00: public ULogicCard {
 	GENERATED_BODY()
 
 public:
-	UCardLogic00();
+	ULogicCard00();
 
 	virtual void Use_Implementation() override;
 };
