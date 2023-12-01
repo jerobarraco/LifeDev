@@ -286,7 +286,7 @@ FItem* UInventory::AddNew(const FName& Name) {
 	}
 
 	// replace in case .Add changes it
-	FItem* pOutItem = &Items.Add(Name, OutItem);
+	FItem* const pOutItem = &Items.Add(Name, OutItem);
 	if (!pOutItem) return nullptr;
 	
 	// reset transient variables to avoid issues with input.
@@ -330,5 +330,6 @@ const FItem& UInventory::GetRefC(const FName& Name, bool& OutFound) const {
 		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
 		return FauxItemConst;
 	}
+
 	return *pItem;
 }

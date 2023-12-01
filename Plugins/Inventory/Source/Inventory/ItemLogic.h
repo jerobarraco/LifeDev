@@ -12,9 +12,11 @@ class INVENTORY_API UItemLogic: public UObject {
 public:
 	UItemLogic();
 
+	// the world passed by parameter is trash. don't use.
+	// set an appropriate outer when creating this object and use GetWorld() when needed. 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void BeginPlay(UWorld* NewWorld);
-	virtual void BeginPlay_Implementation(UWorld* NewWorld) {;}
+	void BeginPlay(UWorld* BrokenDontUse);
+	virtual void BeginPlay_Implementation(UWorld* BrokenDontUse) {;}
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();

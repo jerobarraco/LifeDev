@@ -7,11 +7,18 @@
 
 ULItemLogic::ULItemLogic():Super() {}
 
-void ULItemLogic::BeginPlay_Implementation(UWorld* NewWorld) {
+void ULItemLogic::BeginPlay_Implementation(UWorld* Trash) {
 	UE_LOG(LogTemp, Verbose, TEXT("LItemLogic:%hs"), __func__);
 
+	UWorld* const NewWorld = GetWorld();
 	Super::BeginPlay_Implementation(NewWorld);
-	if (!IsValid(NewWorld)) return;
+	
+	if (!IsValid(NewWorld)) {
+		Diags = nullptr;
+		FB = nullptr;
+		return;
+	}
+
 	Diags = NewWorld->GetSubsystem<UDiags>();
 	FB = NewWorld->GetSubsystem<UFlashback>();
 }
