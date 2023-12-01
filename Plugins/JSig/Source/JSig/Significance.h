@@ -10,7 +10,13 @@
 class USignificanceManager;
 
 // Base subsystem for the significance stuff
-UCLASS(Blueprintable, Category="LifeDev", Config="JSignificance")
+// you can set the defaults for this if you create a file in Config/DefaultJSignificance
+// with the section [/Script/JSig.Significance]
+// and then the variables like
+// UseBgThread=false
+// NumPCs=-1
+// TickInterval=3.0
+UCLASS(Blueprintable, Category="LifeDev", Config=JSignificance)
 class JSIG_API USignificance : public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
@@ -34,8 +40,7 @@ public:
 	// seconds until next tick. 0 means every frame. discouraged.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float TickInterval = 1.f;
-	
-	// 0 or <0 means all
+	// <=0 means all
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	int32 NumPCs = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)

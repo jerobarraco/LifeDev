@@ -44,7 +44,8 @@ void USignificance::Reset() {
 }
 
 void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
-	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigSub, Log, TEXT("%hs useBgThread=%i numPCs=%i interval=%5.3f"),
+		__func__, UseBGThread, NumPCs, TickInterval);
 	Super::Initialize(Collection);
 	Reset();
 	// this won't make the animator work, but will make the USignificance get an EXTRA tick on a different interval (maybe the component's interval)
