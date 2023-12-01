@@ -19,6 +19,7 @@ public class LifeDev : ModuleRules
 			// general
 			"ChaosNiagara", "Niagara", "GameplayCameras",
 			"MoviePlayer",  // loading screen yes.
+			"SlateCore", "Slate", // settings
 			// my stuff
 			"JUtils", "Interact",  "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
