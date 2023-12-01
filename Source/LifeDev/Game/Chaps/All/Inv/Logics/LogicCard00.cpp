@@ -5,7 +5,7 @@
 ULogicCard00::ULogicCard00():Super() {}
 
 void ULogicCard00::Use_Implementation() {
-	UseDlg = "TV00_T";
+	// UseDlg = "TV00_T"; // test
 
 	Super::Use_Implementation();
 }
