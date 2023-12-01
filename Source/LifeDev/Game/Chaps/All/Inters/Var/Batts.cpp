@@ -25,8 +25,7 @@ ABatts::ABatts():Super() {
 	MeshB->SetRelativeRotation(FRotator(-11,0,0));
 
 	Interact->SetRelativeLocation(FVector(2.522632,-1.030120,-0.728246));
-	Interact->SetBoxExtent(FVector(0.704907,4.189342,2.505187));
-	// TODO fix the interact box extent
+	Interact->SetBoxExtent(FVector(4.2,0.7,2.5));
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
