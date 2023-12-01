@@ -45,7 +45,7 @@ ARadio00::ARadio00():Super() {
 		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
 	Anim->Curve = CCurve.Object;
 	Interact->SetEnabled(true);
-	AnimEnabled = true;
+	UseAnim = true;
 	StateNum = 2;
 	UseRewardFade = false;
 	// AnimFade->SetNewMat();

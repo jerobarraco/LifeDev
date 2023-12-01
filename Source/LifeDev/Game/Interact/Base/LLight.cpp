@@ -14,7 +14,7 @@ ALLight::ALLight():Super() {
 	ALLight::SetMobility(EComponentMobility::Static);
 
 	FlickrOnFB = .7;
-	AnimEnabled = true;
+	UseAnim = true;
 	StateNum = 2;
 	Texts = {FText::FromString(TEXT("Turn off")), FText::FromString(TEXT("Turn on"))};
 	Anim->TRoot = nullptr; // by default don't animate meshes
@@ -55,7 +55,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
 
-	AnimEnabled = true;
+	UseAnim = true;
 	// magically will make it flicker and get back to where it was.
 	Anim->IsBouncing = true;
 }

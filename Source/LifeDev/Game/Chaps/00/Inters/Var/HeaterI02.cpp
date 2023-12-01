@@ -4,7 +4,7 @@
 #include "Interact/CInteract.h"
 
 AHeaterI02::AHeaterI02():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
 	Locked = true;

@@ -5,7 +5,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWalkmanI00::AWalkmanI00():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	Interact->SetEnabled(true);
 	
 	RewardFlash = .1f;

@@ -25,7 +25,7 @@ ALight00::ALight00():Super() {
 	Tube->SetCastAllShadows(false);
 
 	/// anim
-	AnimEnabled = true;
+	UseAnim = true;
 	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>

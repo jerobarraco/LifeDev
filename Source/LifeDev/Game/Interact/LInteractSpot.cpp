@@ -9,7 +9,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger cuz that gives the reward.
 	// it will trigger automatically
 	Super::SetMobility(EComponentMobility::Static);
-	AnimEnabled = false;
+	UseAnim = false;
 	Locked = true;
 	UseRewardFade = false;
 	Texts = {

@@ -64,7 +64,7 @@ ATv00::ATv00():Super() {
 	Crt->bUseAttachParentBound = true; // opt
 	
 	/// anims
-	AnimEnabled = true;
+	UseAnim = true;
 	// button anim
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;

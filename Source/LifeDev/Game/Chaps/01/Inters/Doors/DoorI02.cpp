@@ -3,7 +3,7 @@
 #include "DoorI02.h"
 
 ADoorI02::ADoorI02():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	LockedDlg = "D02_LCK";
 	Locked = true;
 	RootComponent->SetWorldLocation(FVector(-290,960,0));

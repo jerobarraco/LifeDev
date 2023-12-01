@@ -63,12 +63,12 @@ void AInteractAnim::Trigger_Implementation() {
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
-	if (AnimEnabled && Anim->IsActive()) return false;
+	if (UseAnim && Anim->IsActive()) return false;
 	return Super::TryTrigger_Implementation();
 }
 
 void AInteractAnim::AnimPlay() {
-	if (!AnimEnabled) return;
+	if (!UseAnim) return;
 	if (DisableWhileAnim) {
 		SetEnabled(false);
 	}
@@ -108,5 +108,5 @@ void AInteractAnim::AnimEnd_Implementation() {
 
 void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
-	AnimEnabled = Mobility == EComponentMobility::Movable;
+	UseAnim = Mobility == EComponentMobility::Movable;
 }

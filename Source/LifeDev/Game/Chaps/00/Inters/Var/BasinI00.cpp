@@ -14,7 +14,7 @@
 
 ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
-	AnimEnabled = false;
+	UseAnim = false;
 	Locked = false;
 	StateNum = 2;
 	TriggerDlg = "Basin00_T";

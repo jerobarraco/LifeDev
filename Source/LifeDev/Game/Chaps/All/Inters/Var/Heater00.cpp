@@ -19,5 +19,5 @@ AHeater00::AHeater00():Super() {
 
 	// disable by default
 	Interact->SetEnabled(false);
-	AnimEnabled = false;
+	UseAnim = false;
 }

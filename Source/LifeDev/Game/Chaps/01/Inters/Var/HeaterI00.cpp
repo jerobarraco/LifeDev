@@ -28,7 +28,7 @@ AHeaterI00::AHeaterI00():Super() {
 	Anim->TEnd.SetRotation(FRotator(-10,0,0).Quaternion());
 	Anim->Duration = .75f;
 	Anim->IsAdditive = true;
-	AnimEnabled = true;
+	UseAnim = true;
 	Interact->SetEnabled(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>

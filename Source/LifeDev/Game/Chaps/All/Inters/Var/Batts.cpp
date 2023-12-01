@@ -9,7 +9,7 @@
 ABatts::ABatts():Super() {
 	Texts = { FText::FromString(TEXT("Batteries")) } ;
 	RewardFlash = 0;
-	AnimEnabled = false;
+	UseAnim = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

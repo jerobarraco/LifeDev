@@ -4,7 +4,7 @@
 #include "Interact/CInteract.h"
 
 ALNPC01::ALNPC01():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("He seems dangerous...") };
 

@@ -20,6 +20,6 @@ ACard::ACard():Super() {
 	
 	Texts = { FText::FromString(TEXT("Pick Up")) } ;
 	RewardFlash = -.1;
-	AnimEnabled = false;
+	UseAnim = false;
 	StateNum = 1;
 }

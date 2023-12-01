@@ -8,7 +8,7 @@
 #include "Interact/Animator/CAnimatorFade.h"
 
 ADoorish::ADoorish():Super() {
-	AnimEnabled = true;
+	UseAnim = true;
 	Anim->IsAdditive = true;
 	// visual: run at 60 fps since it's movement
 	Anim->SetComponentTickInterval(1/60.f);

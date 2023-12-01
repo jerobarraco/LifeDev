@@ -34,7 +34,7 @@ ATape00::ATape00():Super() {
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
 	
-	AnimEnabled = false;
+	UseAnim = false;
 	StateNum = 1;
 	Texts = {
 		FText::FromString(TEXT("Tape")),

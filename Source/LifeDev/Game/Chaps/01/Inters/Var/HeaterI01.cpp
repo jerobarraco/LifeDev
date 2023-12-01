@@ -4,7 +4,7 @@
 #include "Interact/CInteract.h"
 
 AHeaterI01::AHeaterI01():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	Locked = true;
 	Interact->SetEnabled(true);
 	

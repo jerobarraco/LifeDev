@@ -24,7 +24,7 @@ ALight01::ALight01():Super() {
 
 	/// anim
 	// enable the animation so that we get the update. but don't actually animate any material
-	AnimEnabled = true;
+	UseAnim = true;
 	Anim->Mat = nullptr;
 	// Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	// Anim->MatVName = "Emissive";

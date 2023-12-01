@@ -10,9 +10,12 @@
 
 #include "CSignificance.generated.h"
 
-
+// Defines the different levels of significance.
+// Off means no significance at all.
+// some things should/could/would be disabled here 
 UENUM(BlueprintType, Blueprintable)
 enum class ESignificance : uint8 {
+	// Disable everything here
 	Off = 0,
 	Low = 1,
 	Med = 2,

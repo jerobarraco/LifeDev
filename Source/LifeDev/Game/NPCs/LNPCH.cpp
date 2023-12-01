@@ -5,7 +5,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ALNPCH::ALNPCH():Super() {
-	AnimEnabled = false;
+	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("Talk") };
 	

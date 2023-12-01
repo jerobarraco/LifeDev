@@ -23,9 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsOpen() const { return State % 2 != 0; }
 	
-	// whether it will trigger animations from the Anim component
+	// whether it will trigger animations using the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool AnimEnabled = true;
+	bool UseAnim = true;
 
 	// will disable while playing and re-enable after.
 	// be careful if you need to disable on trigger or smth (for example Puzzle::DisableOnDone) 
