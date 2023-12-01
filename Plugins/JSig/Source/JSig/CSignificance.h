@@ -86,16 +86,19 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
 
-	// triggered when the significance changes
+	// triggered when the significance changes. Will trigger on game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
+	
 	// Set this with a callback to a custom significance calculation.
 	// When this is set, the CalcLocation is ignored.
+	// Can be called at a bg thread if the significance subsystem wants to.
 	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcSignificance CalcSignificance;
 	// Set this with a callback to a custom Location calculation.
 	// This location is then used for a location/based significance calculation.
+	// Can be called at a bg thread if the significance subsystem wants to.
 	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;

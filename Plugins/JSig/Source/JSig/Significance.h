@@ -10,7 +10,7 @@
 class USignificanceManager;
 
 // Base subsystem for the significance stuff
-UCLASS(Blueprintable, Category="LifeDev")
+UCLASS(Blueprintable, Category="LifeDev", Config="JSignificance")
 class JSIG_API USignificance : public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
@@ -32,13 +32,13 @@ public:
 	static UGameViewportClient* GetAnyGameViewportClient();
 
 	// seconds until next tick. 0 means every frame. discouraged.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float TickInterval = 1.f;
 	
 	// 0 or <0 means all
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	int32 NumPCs = 1;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	bool UseBGThread = true;
 
 protected:

@@ -138,6 +138,9 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 }
 
 void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
+	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs threadId=%i"), __func__, ThreadId);
+	
 	const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	if (Equals) return;
 
@@ -148,9 +151,15 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	/// updates
 	UpdateTicks();
 	UpdateActivate();
-	
-	// finally notify (at the end, given the side effects)
-	OnChanged.Broadcast(Significance);
+
+	if (IsInGameThread()) {
+		// finally notify (at the end, given the side effects)
+		OnChanged.Broadcast(Significance);
+	} else {
+		AsyncTask(ENamedThreads::GameThread, [this] {
+			OnChanged.Broadcast(Significance);
+		});
+	}
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
