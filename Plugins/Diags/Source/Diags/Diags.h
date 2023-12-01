@@ -13,8 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
 
 // World subsystem to deal with dialogs
 UCLASS(Blueprintable, Category="Dialogs")
-class DIAGS_API UDiags : public UWorldSubsystem
-{
+class DIAGS_API UDiags : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:

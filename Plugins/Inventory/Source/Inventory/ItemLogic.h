@@ -13,6 +13,10 @@ public:
 	UItemLogic();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void BeginPlay(UWorld* NewWorld);
+	virtual void BeginPlay_Implementation(UWorld* NewWorld) {;}
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();
 	virtual void Look_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("ItemMan.Look. Looking item %lu %s"), (int64)this, *Name.ToString());
@@ -25,6 +29,9 @@ public:
 		UE_LOG(LogTemp, Log, TEXT("ItemMan.Use: Using item %lu. '%s'"), (int64)this, *Name.ToString());
 	};
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	FName Name;
+
+protected:
+	// I can't save the world here since it will crash the editor on load for some weird reason
 };

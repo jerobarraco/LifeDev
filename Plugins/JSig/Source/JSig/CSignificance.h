@@ -14,7 +14,7 @@
 // Off means no significance at all.
 // some things should/could/would be disabled here 
 UENUM(BlueprintType, Blueprintable)
-enum class ESignificance : uint8 {
+enum class ESignificance : uint8 { // TODO rename
 	// Disable everything here
 	Off = 0,
 	Low = 1,
