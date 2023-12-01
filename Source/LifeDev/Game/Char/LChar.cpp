@@ -316,7 +316,6 @@ void ALChar::ActItem() {
 	if (!Item.Usable) {
 		UE_LOG(LogLChar, Log, TEXT("Item not usable"));
 		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
-		// LookItem(Item);
 		return; // always return if not usable
 	}
 

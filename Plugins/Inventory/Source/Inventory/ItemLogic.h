@@ -7,9 +7,9 @@
 // Base class for the manager of each item 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Inventory))
 class INVENTORY_API UItemLogic: public UObject {
-public:
 	GENERATED_BODY()
 
+public:
 	UItemLogic();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -18,6 +18,7 @@ public:
 		UE_LOG(LogTemp, Log, TEXT("ItemMan.Look. Looking item %lu %s"), (int64)this, *Name.ToString());
 	};
 
+	// this will gets triggered only for self-use
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
 	virtual void Use_Implementation() {
