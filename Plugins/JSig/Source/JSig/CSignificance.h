@@ -14,7 +14,7 @@
 // Off means no significance at all.
 // some things should/could/would be disabled here 
 UENUM(BlueprintType, Blueprintable)
-enum class ESignificance : uint8 { // TODO rename
+enum class ESigValue : uint8 { // TODO rename
 	// Disable everything here
 	Off = 0,
 	Low = 1,
@@ -24,7 +24,7 @@ enum class ESignificance : uint8 { // TODO rename
 	MAX = 4 UMETA(Hidden)
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESignificance, Significance);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESigValue, Significance);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCalcSignificance, const FTransform& , Viewpoint);
 DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
@@ -50,7 +50,7 @@ public:
 	
 	// returns the current sig
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE ESignificance GetSignificance() { return Significance; }
+	FORCEINLINE ESigValue GetSignificance() { return Significance; }
 
 	// if set, then when the actor is hidden, it will become insignificant (Off)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -64,21 +64,21 @@ public:
 	
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TMap<ESignificance, float> DistanceSqr = {
-		{ESignificance::High, 500000},
-		{ESignificance::Med, 1000000},
-		{ESignificance::Low, 5000000},
-		{ESignificance::Off, 10000000},
+	TMap<ESigValue, float> DistanceSqr = {
+		{ESigValue::High, 500000},
+		{ESigValue::Med, 1000000},
+		{ESigValue::Low, 5000000},
+		{ESigValue::Off, 10000000},
 	};
 	
 	// Tick intervals per level. Interval <0 will disable ticks. 0 means every tick.
 	// Higher means less frequent (slower) updates (more cpu saving)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TMap<ESignificance, float> TickIntervals = {
-		{ESignificance::High, 0},
-		{ESignificance::Med, .15},
-		{ESignificance::Low, .3},
-		{ESignificance::Off, -1},
+	TMap<ESigValue, float> TickIntervals = {
+		{ESigValue::High, 0},
+		{ESigValue::Med, .15},
+		{ESigValue::Low, .3},
+		{ESigValue::Off, -1},
 	};
 
 	// components to manage (ticks)
@@ -118,5 +118,5 @@ protected:
 	void UpdateTicks();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ESignificance Significance = ESignificance::High;
+	ESigValue Significance = ESigValue::High;
 };

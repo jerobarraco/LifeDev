@@ -88,12 +88,12 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	const AActor* const Actor = GetOwner();
 	if (IsOffWhenHidden && Actor && Actor->IsHidden())
 	{
-		return static_cast<float>(ESignificance::Off);
+		return static_cast<float>(ESigValue::Off);
 	}
 
 	if (Actor && RenderSinceMax >= 0.0f && !Actor->WasRecentlyRendered(RenderSinceMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
-		return static_cast<float>(ESignificance::Off);
+		return static_cast<float>(ESigValue::Off);
 	}
 
 	// Use Actor implemented override if present.
@@ -144,7 +144,7 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	if (Equals) return;
 
-	Significance = static_cast<ESignificance>(FMath::FloorToInt32(Sig));
+	Significance = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	const AActor* const Owner = GetOwner();
 	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"), Significance, *GetNameSafe(Owner));
 
@@ -166,17 +166,17 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	const int32 Num = DistanceSqr.Num();
 	if (Num == 0) {
 		UE_LOG(LogJSigComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
-		return static_cast<float>(ESignificance::High);
+		return static_cast<float>(ESigValue::High);
 	}
 
 	// by default is hidden
-	ESignificance Sig = ESignificance::Off;
+	ESigValue Sig = ESigValue::Off;
 
-	TArray<ESignificance> Sigs;
+	TArray<ESigValue> Sigs;
 	DistanceSqr.GetKeys(Sigs);
 	const int32 SigNum = Sigs.Num();
 	for (int32 i = 0; i<SigNum; ++i) {
-		const ESignificance& ISig = Sigs[i];
+		const ESigValue& ISig = Sigs[i];
 		// avoid going back. given the significances can be unordered
 		if (ISig < Sig) continue;
 
@@ -209,7 +209,7 @@ void UCSignificance::UpdateTicks() {
 }
 
 void UCSignificance::UpdateActivate() {
-	const bool IsActive = Significance != ESignificance::Off;
+	const bool IsActive = Significance != ESigValue::Off;
 	for (UActorComponent* const C: CompsTicks) {
 		C->SetActive(IsActive);
 	}

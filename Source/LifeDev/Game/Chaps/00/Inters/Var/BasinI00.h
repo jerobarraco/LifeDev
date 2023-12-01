@@ -23,7 +23,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Trigger_Implementation() override;
 	UFUNCTION()
-	void SigChanged(ESignificance Significance);
+	void SigChanged(ESigValue Significance);
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UNiagaraComponent* Water = nullptr;

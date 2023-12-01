@@ -75,8 +75,8 @@ void ABasinI00::Trigger_Implementation() {
 	SetEnabled(false); // trigger only once 
 }
 
-void ABasinI00::SigChanged(ESignificance Significance) {
-	const bool Hidden = Significance == ESignificance::Off;
+void ABasinI00::SigChanged(ESigValue Significance) {
+	const bool Hidden = Significance == ESigValue::Off;
 	// set hidden to avoid affecting whether is active or not.
 	Water->SetHiddenInGame(Hidden);
 }
