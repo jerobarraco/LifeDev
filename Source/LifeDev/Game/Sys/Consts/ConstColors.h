@@ -1,6 +1,10 @@
 #pragma once
 namespace LDConsts {
 	namespace Colors {
+		static inline constexpr uint8 Greys(0);
+		static inline constexpr uint8 Yellows(1);
+		static inline constexpr uint8 Oranges(2);
+		static inline constexpr uint8 Brows(3);
 		static inline constexpr uint32 Palette[16][16] = {
 			{
 				0xFF000000,
