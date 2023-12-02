@@ -17,7 +17,8 @@ AStreetLight::AStreetLight():Super() {
 	Spot->SetMobility(EComponentMobility::Stationary);
 	Spot->SetIntensityUnits(ELightUnits::Lumens);
 	Spot->SetIntensity(5);
-	static const FColor Col(LDConsts::Colors::Palette[3][10]);
+	static const FColor Col(
+		LDConsts::Colors::Palette[LDConsts::Colors::Brown][10]);
 	// static constexpr FColor Col(207, 169, 134, 255);
 	
 	// (B=134,G=169,R=207,A=255)

@@ -1,10 +1,24 @@
 #pragma once
 namespace LDConsts {
 	namespace Colors {
-		static inline constexpr uint8 Greys(0);
-		static inline constexpr uint8 Yellows(1);
-		static inline constexpr uint8 Oranges(2);
-		static inline constexpr uint8 Brows(3);
+		// #Palette Name: Atari 8-Bit Series - GTIA
+		static inline constexpr uint8 Grey(0);
+		static inline constexpr uint8 Yellow(1);
+		static inline constexpr uint8 Orange(2);
+		static inline constexpr uint8 Brown(3);
+		static inline constexpr uint8 Red(4);
+		static inline constexpr uint8 Pink(5);
+		static inline constexpr uint8 Purple(6);
+		static inline constexpr uint8 Blueish(7);
+		static inline constexpr uint8 Blue(8);
+		static inline constexpr uint8 Cyan(9);
+		static inline constexpr uint8 BlueGreen(10);
+		static inline constexpr uint8 Greenish(11);
+		static inline constexpr uint8 Green(12);
+		static inline constexpr uint8 GreenYellow(13);
+		static inline constexpr uint8 Yellow2(14);
+		static inline constexpr uint8 Orange2(15);
+		
 		static inline constexpr uint32 Palette[16][16] = {
 			{
 				0xFF000000,
