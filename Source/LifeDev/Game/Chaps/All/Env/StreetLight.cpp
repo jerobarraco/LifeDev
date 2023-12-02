@@ -6,6 +6,7 @@
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
+#include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
 AStreetLight::AStreetLight():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
@@ -16,8 +17,12 @@ AStreetLight::AStreetLight():Super() {
 	Spot->SetMobility(EComponentMobility::Stationary);
 	Spot->SetIntensityUnits(ELightUnits::Lumens);
 	Spot->SetIntensity(5);
-	static constexpr FLinearColor Color(255, 244, 174);
-	Spot->SetLightColor(Color, true);
+	static const FColor Col(LDConsts::Colors::Palette[3][10]);
+	// static constexpr FColor Col(207, 169, 134, 255);
+	
+	// (B=134,G=169,R=207,A=255)
+	// (B=158,G=200,R=230,A=255)
+	Spot->SetLightColor(Col, true);
 	Spot->SetAttenuationRadius(500);
 	Spot->SetInnerConeAngle(10);
 	Spot->SetOuterConeAngle(40);

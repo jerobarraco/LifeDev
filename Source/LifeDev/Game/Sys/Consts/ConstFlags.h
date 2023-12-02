@@ -4,8 +4,8 @@
 namespace LDConsts {
 	namespace Flags {
 		namespace CH0 { // chap 0
-			inline static FName SpotI02 = FName("CH0.SpotI02");
-			inline static FName Basin = FName("CH0.Basin");
+			inline static const FName SpotI02("CH0.SpotI02");
+			inline static const FName Basin("CH0.Basin");
 		}
 	}
 }
