@@ -103,7 +103,7 @@ void ALGGameMode::Init_Implementation() {
 	Controller->bShowMouseCursor = false;
 
 	/// set flags
-	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMATOR);
+	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMS);
 	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
 	AMusicMan::Enabled = Instance->GetFeat(EFeat::MUSIC);
 	AStep::UseDebug = Instance->GetFeat(EFeat::DEBUG_STEPS);

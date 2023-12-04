@@ -6,6 +6,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JSig/CSignificance.h"
+#include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 // better to do light00 first then extract this one
@@ -25,7 +26,7 @@ ALLight::ALLight():Super() {
 	AnimFade->Meshes.Empty();
 	
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
-	Rnd->SetAutoActivate(false);
+	Rnd->SetAutoActivate(false); // important since it's feature flagged.
 	Rnd->IsLooping = true;
 	Rnd->Anim = Anim;
 	Rnd->UseRandReverse = false; // don´t want to change the state of the light
@@ -43,11 +44,21 @@ ALLight::ALLight():Super() {
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
-	FlickrOnFB = NewFBFlicker;
-	if (FlickrOnFB <= 0) {
+	// first deactivate if needed. ALWAYS deactivate (important since this is accessibility).
+	// notice the this set the flickeronfb value for an actual flicker
+	if (NewFBFlicker <= 0) {
+		FlickrOnFB = NewFBFlicker;
 		Sig->Deactivate();
 		Rnd->Deactivate();
 		return;
+	}
+
+	// Feature flag. important.
+	if (!ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+		UE_LOG(LogTemp, Log,
+			TEXT("LLigth: %hs. Attempted to set fb-flicker, but A_STROBE flag is disabled. Cancelled."),
+			__func__);
+		return;;
 	}
 
 	UFlashback* const Fb = UFlashback::Get(GetWorld());

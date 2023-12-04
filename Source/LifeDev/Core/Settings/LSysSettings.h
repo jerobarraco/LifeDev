@@ -10,16 +10,9 @@ class UDataTable;
 UENUM(BlueprintType)
 enum class EFeat: uint8 {
 	NONE, // empty one to be able to add to the set.
-	// Debug steps (cheats)
-	DEBUG_STEPS,
-	// debug the animator
-	DEBUG_ANIMATOR,
-	// Shows the dialogs, otherwise they get muted
-	DIALOGS,
-	// Show the text on the dialogs, otherwise they get censored
-	DIALOG_TEXT,
-	MUSIC,
-	// chaps
+	/// General
+
+	// Chaps
 	CHAP_00,
 	CHAP_01,
 	CHAP_02,
@@ -30,12 +23,26 @@ enum class EFeat: uint8 {
 	CHAP_07,
 	CHAP_08,
 	CHAP_09,
-	
-	// INVENTORY,
-	// DIALOGS,
+	// Shows the dialogs, otherwise they get muted
+	DIALOGS,
+	// Show the text on the dialogs, otherwise they get censored
+	DIALOG_TEXT,
+	// plays music
+	MUSIC,
 
+	/// Access
+	// strobing lights
+	A_STROBE,
+	
+	/// Debug
+	// Debug steps (cheats)
+	DEBUG_STEPS,
+	// debug the animator
+	DEBUG_ANIMS,
 	// General debug, deprecated. don't use unless you are me.
-	DEBUG,
+	DEBUG UMETA(Deprecated),
+	
+
 };
 
 // Note the Config meta tag on the properties are critical or it might crash
@@ -71,8 +78,14 @@ public:
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DefaultFeats = {EFeat::DIALOGS, EFeat::DIALOG_TEXT, EFeat::MUSIC,
-		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02};
+		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
+		EFeat::A_STROBE
+	};
+
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
-	TSet<EFeat> DebugFeats = {EFeat::DEBUG_STEPS, EFeat::DEBUG, EFeat::MUSIC, EFeat::CHAP_01};
+	TSet<EFeat> DebugFeats = {EFeat::DEBUG_STEPS, EFeat::DEBUG, EFeat::MUSIC,
+		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
+		EFeat::A_STROBE
+	};
 };

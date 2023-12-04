@@ -5,6 +5,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CRandomizer.h"
+#include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
 #include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
@@ -41,7 +42,7 @@ AStreetLight::AStreetLight():Super() {
 	Randomizer->DelayMax = 50;
 	Randomizer->ValueMin = 1;
 	Randomizer->ValueMax = 5;
-	Randomizer->SetAutoActivate(true);
+	Randomizer->SetAutoActivate(false); // important, it's feature flagged
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	// disabled since this requires a mesh. and that will add cost. and render check also adds a cost.
@@ -51,6 +52,9 @@ AStreetLight::AStreetLight():Super() {
 
 void AStreetLight::BeginPlay() {
 	Super::BeginPlay();
+
+	// don's strobe if it's not enabled
+	if (!ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)) return;
 	Sig->BindAnim(Anim);
 	Anim->OnUpdate.AddUniqueDynamic(this, &AStreetLight::AnimUpdate);
 }

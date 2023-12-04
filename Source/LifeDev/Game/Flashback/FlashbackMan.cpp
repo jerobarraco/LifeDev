@@ -3,6 +3,7 @@
 #include "FlashbackMan.h"
 
 #include "Flashback.h"
+#include "LifeDev/Core/LGameInstance.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -27,7 +28,9 @@ void AFlashbackMan::BeginPlay() {
 	}
 	
 	if (IsValid(MPC)) {
-		MPCInst = GetWorld()->GetParameterCollectionInstance(MPC); 
+		MPCInst = GetWorld()->GetParameterCollectionInstance(MPC);
+		const int Strobe = ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)?1:0;
+		MPCInst->SetScalarParameterValue("Strobe", Strobe);
 	}
 }
 
