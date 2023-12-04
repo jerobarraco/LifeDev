@@ -16,7 +16,7 @@ AFlashbackMan::AFlashbackMan():Super() {
 void AFlashbackMan::ValChanged(float Value) {
 	// UE_LOG(LogTemp, Log, TEXT("Flashback value changed to %3.3f"), Value);
 	if (IsValid(MPCInst)) {
-		MPCInst->SetScalarParameterValue("Val", Value);
+		MPCInst->SetScalarParameterValue("Intensity", Value);
 	}
 }
 
