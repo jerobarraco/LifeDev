@@ -3,19 +3,23 @@
 #pragma once
 #include "LifeDev/Game/Interact/Base/Door.h"
 
-#include "Door01.generated.h"
+#include "Door02.generated.h"
 
 class UCQuickMesh;
 class UStaticMeshComponent;
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ADoor01: public ADoor {
+class LIFEDEV_API ADoor02: public ADoor {
 	GENERATED_BODY()
 
 public:
-	ADoor01();
+	ADoor02();
 
 protected:
+	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* Window = nullptr;
+	UCQuickMesh* WinA = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UCQuickMesh* WinB = nullptr;
 };
