@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 
 // module for significance manager stuff
-class JSIG_API FJSigModule : public IModuleInterface
-{
+class JSIG_API FJSigModule : public IModuleInterface {
 public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
