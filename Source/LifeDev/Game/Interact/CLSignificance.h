@@ -10,6 +10,7 @@
 
 class UCAnimator;
 
+// LD base class for significance component. to handle significance stuff.
 UCLASS(ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UCLSignificance : public UCSignificance {
 	GENERATED_BODY()

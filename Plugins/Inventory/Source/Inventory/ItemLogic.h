@@ -13,6 +13,7 @@ public:
 	UItemLogic();
 
 	// the world passed by parameter is trash. don't use.
+	// warning: this function can sometimes be called during editor time.
 	// set an appropriate outer when creating this object and use GetWorld() when needed. 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void BeginPlay(UWorld* BrokenDontUse);

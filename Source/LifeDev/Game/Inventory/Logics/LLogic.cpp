@@ -17,6 +17,7 @@ void ULLogic::BeginPlay_Implementation(UWorld* Trash) {
 	Super::BeginPlay_Implementation(W);
 	
 	if (!IsValid(W)) {
+		// this actually happens on editor. understandable since the begin play is fake.
 		UE_LOG(LogTemp, Warning, TEXT("LItemLogic:%hs. can't find world"), __func__);
 		Diags = nullptr;
 		FB = nullptr;
