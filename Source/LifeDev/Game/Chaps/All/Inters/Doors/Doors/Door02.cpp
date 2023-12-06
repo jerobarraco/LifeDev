@@ -8,7 +8,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADoor02::ADoor02():Super() {
-	IRoot->SetRelativeLocation(FVector(0,-5,0));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door02/DoorA.DoorA"));
 	Mesh->SetStaticMesh(CMesh.Object);

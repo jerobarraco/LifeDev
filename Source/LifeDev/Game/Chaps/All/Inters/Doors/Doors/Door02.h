@@ -9,7 +9,7 @@ class UCQuickMesh;
 class UStaticMeshComponent;
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ADoor02: public ADoor {
+class LIFEDEV_API ADoor02: public ADoorish {
 	GENERATED_BODY()
 
 public:
