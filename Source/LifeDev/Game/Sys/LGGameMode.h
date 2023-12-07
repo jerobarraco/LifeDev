@@ -32,7 +32,6 @@ class LIFEDEV_API ALGGameMode : public AGameModeBase
 
 public:
 	ALGGameMode();
-	bool LoadChapter();
 
 	// not working properly atm
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
@@ -90,6 +89,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 
+	bool LoadChapter();
 	void StartChapter();
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();
