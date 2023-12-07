@@ -94,6 +94,10 @@ void ALMusicMan::SetStep(AStep* Step) {
 	if (Step->Music.IsNull()) return;
 	
 	USoundBase* const Sound = Step->Music.LoadSynchronous();
-	if (!IsValid(Sound)) return;
+	if (!IsValid(Sound)) {
+		UE_LOG(LogTemp, Warning, TEXT("Could not load music asset=%s"), *Step->Music.GetAssetName());
+		return;
+	}
+
 	PlayMusic(Sound);
 }

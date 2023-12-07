@@ -11,14 +11,14 @@
 ULLogic::ULLogic():Super() {}
 
 void ULLogic::BeginPlay_Implementation(UWorld* Trash) {
-	UE_LOG(LogTemp, Verbose, TEXT("LItemLogic:%hs"), __func__);
+	UE_LOG(LogTemp, Verbose, TEXT("LLogic:%hs"), __func__);
 
 	UWorld* const W = GetWorld();
 	Super::BeginPlay_Implementation(W);
 	
 	if (!IsValid(W)) {
 		// this actually happens on editor. understandable since the begin play is fake.
-		UE_LOG(LogTemp, Warning, TEXT("LItemLogic:%hs. can't find world"), __func__);
+		// UE_LOG(LogTemp, Warning, TEXT("LLogic:%hs. can't find world"), __func__);
 		Diags = nullptr;
 		FB = nullptr;
 		Story = nullptr;

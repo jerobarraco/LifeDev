@@ -16,7 +16,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Var/Music/Music01/Music01_MS.Music01_MS");
-	
+
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Chap02_DL.Chap02_DL"));
 	if (CDL1.Succeeded()) {
@@ -37,5 +37,5 @@ void ALStepC2S000::Start_Implementation() {
 	if (!Flashback) return;
 	Flashback->SetMax(.75);
 	Flashback->SetMin(0);
-	Flashback->SetVal(0, .5);
+	Flashback->SetVal(.20, .5);
 }
