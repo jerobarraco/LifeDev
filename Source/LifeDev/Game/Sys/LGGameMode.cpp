@@ -61,11 +61,12 @@ bool ALGGameMode::LoadChapter() {
 	if (!IsValid(DT_Chaps)) {
 		return false;
 	}
-	
+
+	// load a chapter based on the rowname. which is just an int to string of the chapter id.
 	const FName ChapName = *FString::FromInt(ChapterId); // todo find a betterest way
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
 	if (!pChap) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
 		return false;
 	}
 
