@@ -43,6 +43,7 @@ void ALStepC1S000::Start_Implementation() {
 	}
 
 	UFlashback* const Flashback = UFlashback::Get(GetWorld());
+	if (!Flashback) return;
 	Flashback->SetMax(.75);
 	Flashback->SetMin(0);
 	Flashback->SetVal(0, .5);
