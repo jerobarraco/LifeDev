@@ -115,12 +115,12 @@ protected:
 	USkeletalMeshComponent* Mesh1P;
 
 	// First person camera
-	UPROPERTY(BlueprintReadOnly, Category = Camera)
-	UCameraComponent* Camera;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
+	UCameraComponent* Camera = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteractor* Interactor = nullptr;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCLNoiser* Noiser = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)

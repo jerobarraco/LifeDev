@@ -10,6 +10,7 @@
 
 #include "CLNoiser.generated.h"
 
+// Generates random noises. interacts with the flashback system.
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UCLNoiser : public UCNoiser {
 	GENERATED_BODY()
@@ -22,14 +23,14 @@ public:
 	float DistFBMax = 120.0;
 	// minimum distance with flashback system
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float DistFBMin = 50.0;
+	float DistFBMin = 60.0;
 
 	// maximum time with flashback system
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TimeFBMax = 10.0;
+	float TimeFBMax = 20.0;
 	// minimum time with flashback system
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TimeFBMin = 5.0;
+	float TimeFBMin = 10.0;
 
 protected:
 	virtual void BeginPlay() override;
