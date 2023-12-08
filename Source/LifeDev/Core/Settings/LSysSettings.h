@@ -49,7 +49,7 @@ enum class EFeat: uint8 {
 // this class is for the settings that appears on the editor under project settings
 // Note the Config meta tag on the properties are critical or it might crash
 // Settings for the game (to be built)
-UCLASS(Blueprintable, Config=LSysSettings, meta=(DisplayName="LifeDevSystemSettings"))
+UCLASS(Blueprintable, Config=LSysSettings, DefaultConfig, meta=(DisplayName="LifeDevSystemSettings"))
 class LIFEDEV_API ULSysSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
