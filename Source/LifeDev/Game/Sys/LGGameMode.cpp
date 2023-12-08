@@ -20,6 +20,8 @@
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
+#include "LifeDev/Core/Settings/LSave.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
@@ -56,14 +58,14 @@ ALGGameMode::ALGGameMode():Super() {
 }
 
 bool ALGGameMode::LoadChapter() {
-	ULSysSettings* const Settings = ULSysSettings::Get();
-	UDataTable* const DT_Chaps = Settings->Chapters.LoadSynchronous();
+	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
 		return false;
 	}
 
 	// load a chapter based on the rowname. which is just an int to string of the chapter id.
-	const FName ChapName = *FString::FromInt(ChapterId); // todo find a betterest way
+	const FName ChapName = *FString::FromInt(Settings->Save->ChapterID); // todo find a betterest way
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
 	if (!pChap) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
@@ -72,7 +74,7 @@ bool ALGGameMode::LoadChapter() {
 
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
-	UDataTable* const Chars = Settings->Characters.LoadSynchronous();
+	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
 	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
 	Dialogs->SetData(Diags, Chars, Seqs);
@@ -90,29 +92,28 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 	
-	ULSysSettings* const Settings = ULSysSettings::Get();
-	if (!IsValid(Settings)) {
+	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (!IsValid(SysSettings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid"));
 		return;
 	}
 
 	/// set input mode
 	// this is critical or the dialogs will break
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
 	// these are not needed since we are using the input actions
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 
 	/// set flags
-	UCAnimator::Debug = Instance->GetFeat(EFeat::DEBUG_ANIMS);
-	UFlashback::Debug = Instance->GetFeat(EFeat::DEBUG);
-	AMusicMan::Enabled = Instance->GetFeat(EFeat::MUSIC);
-	AStep::UseDebug = Instance->GetFeat(EFeat::DEBUG_STEPS);
-	
-	// todo should come from savestate
-	// TODO disable on release make 0; (see ResetFeats)
-	ChapterId = Settings->StartChap <0 ? 0: Settings->StartChap;
+	UCAnimator::Debug = Settings->GetFeat(EFeat::DEBUG_ANIMS);
+	UFlashback::Debug = Settings->GetFeat(EFeat::DEBUG);
+	AMusicMan::Enabled = Settings->GetFeat(EFeat::MUSIC);
+	AStep::UseDebug = Settings->GetFeat(EFeat::DEBUG_STEPS);
 
+	//TODO New game for now until i actually implement save ui
+	Settings->NewGame();
+	
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {
@@ -137,7 +138,7 @@ void ALGGameMode::Init_Implementation() {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagManager->InputPrio = 10;
 		DiagManager->ZOrder = 3; 
-		DiagManager->DebugSkip = !Instance->GetFeat(EFeat::DIALOGS); // skip dialogs if no feature for it
+		DiagManager->DebugSkip = !Settings->GetFeat(EFeat::DIALOGS); // skip dialogs if no feature for it
 		DiagManager->Init();
 	} else {
 		DiagManager = nullptr;
@@ -147,7 +148,7 @@ void ALGGameMode::Init_Implementation() {
 	Flags = World->GetSubsystem<UFlags>();
 	Flags->Init();
 	Inventory = World->GetSubsystem<UInventory>();
-	Inventory->Init(Settings->Inventory.LoadSynchronous());
+	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
 
 	InvManager = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
 	// InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
@@ -254,6 +255,7 @@ void ALGGameMode::DeInit_Implementation() {
 	}
 	MusicMan = nullptr;
 	FlashbackMan = nullptr;
+	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
@@ -305,8 +307,10 @@ void ALGGameMode::SetDynRes() {
 }
 
 void ALGGameMode::StartChapter() {
+	const int32 ChapterId = Settings->Save->ChapterID;
+
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
-	ULGameInstance* Instance = Cast<ULGameInstance>(GetGameInstance());
+	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance) || !IsValid(Story)) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
@@ -315,7 +319,7 @@ void ALGGameMode::StartChapter() {
 	
 	// skip chapter if past end, or not enabled
 	if (ChapterId <0 || ChapterId >= LDConsts::Feats::ChapFeatN ||
-	!Instance->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
+		!Settings->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
 		StartNextChapter();
 		return;
@@ -325,7 +329,9 @@ void ALGGameMode::StartChapter() {
 		UE_LOG(LogLGameMode, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
 		return;
 	}
-		
+
+	Settings->SaveGame();
+
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 	
@@ -342,7 +348,7 @@ void ALGGameMode::StartChapter() {
 
 void ALGGameMode::StartNextChapter() {
 	// Chapter done. go to the next one.
-	++ChapterId;
+	Settings->Save->ChapterID++;
 	StartChapter();
 }
 

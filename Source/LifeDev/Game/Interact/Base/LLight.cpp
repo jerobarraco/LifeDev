@@ -6,7 +6,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JSig/CSignificance.h"
-#include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 // better to do light00 first then extract this one
@@ -53,15 +53,16 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		return;
 	}
 
+	UWorld* const W = GetWorld();
 	// Feature flag. important.
-	if (!ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+	if (!ULSettings::GetFeatS(W, EFeat::A_STROBE)) {
 		UE_LOG(LogTemp, Log,
 			TEXT("LLigth: %hs. Attempted to set fb-flicker, but A_STROBE flag is disabled. Cancelled."),
 			__func__);
 		return;;
 	}
 
-	UFlashback* const Fb = UFlashback::Get(GetWorld());
+	UFlashback* const Fb = UFlashback::Get(W);
 	if (!Fb) return;
 	
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);

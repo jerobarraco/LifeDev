@@ -20,28 +20,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static ULGameInstance* Get(UWorld* World);
 
-	UFUNCTION(BlueprintCallable)
-	static bool GetFeatS(UWorld* World, EFeat Feat);
-	
 	virtual void Init() override;
 
 	UFUNCTION(BlueprintCallable)
 	void SetTrs(bool Enabled);
-	
-	UFUNCTION(BlueprintCallable)
-	void ResetFeats();
-
-	UFUNCTION(BlueprintCallable)
-	bool GetFeat(EFeat Feat) const;
-
-	UFUNCTION(BlueprintCallable)
-	void SetFeat(EFeat Feat, bool Enable = true);
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	TSet<EFeat> Feats;
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	ULSave* Save = nullptr;
 
 protected:
 	UFUNCTION()

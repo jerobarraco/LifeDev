@@ -3,6 +3,9 @@
 
 #include "LifeDev/Core/Settings/LSave.h"
 
+#include "LSysSettings.h"
 
 
-
+void ULSave::Reset() {
+	ChapterID = ULSysSettings::Get()->StartChap;
+}

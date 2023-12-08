@@ -4,15 +4,11 @@
 #include "LGameInstance.h"
 
 #include "MoviePlayer.h"
+#include "Settings/LSettings.h"
 
 ULGameInstance* ULGameInstance::Get(UWorld* World) {
 	if (!IsValid(World)) return nullptr;
 	return Cast<ULGameInstance>(World->GetGameInstance());
-}
-
-bool ULGameInstance::GetFeatS(UWorld* World, EFeat Feat) {
-	ULGameInstance* const I = ULGameInstance::Get(World);
-	return IsValid(I)? I->GetFeat(Feat) : false;
 }
 
 void ULGameInstance::Init() {
@@ -22,7 +18,10 @@ void ULGameInstance::Init() {
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
     FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
     FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
-	ResetFeats();
+	ULSettings* Settings = GetSubsystem<ULSettings>();
+	if (IsValid(Settings)) {
+		Settings->Init();
+	}
 }
 
 void ULGameInstance::SetTrs(bool Enabled) {
@@ -87,76 +86,9 @@ void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
 	}
 }
 
-void ULGameInstance::ResetFeats() {
-	ULSysSettings* const Settings = ULSysSettings::Get();
-	 
-	#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-		constexpr bool UseDebug = false;
-	#else
-		const bool UseDebug = Settings->UseDebugFeats;
-	#endif
-	// TODO move this to the GameInstance. or the savegame. also modify the gamemode
-	// TODO ensure this doesn't break
-	Settings->StartChap = UseDebug ? Settings->StartChap : 0;
-	Feats = UseDebug ? Settings->DebugFeats : Settings->DefaultFeats;
-}
-
-bool ULGameInstance::GetFeat(EFeat Feat) const {
-	return Feats.Contains(Feat);	
-}
-
-void ULGameInstance::SetFeat(EFeat Feat, bool Enable) {
-	const bool Has = Feats.Contains(Feat);
-	if (Enable) {
-		if (!Has) Feats.Add(Feat);
-	} else {
-		if (Has) Feats.Remove(Feat);
-	}
-}
-
 // disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
 
 /*
 
-void USGEGameInstance::LoadGame()
-{
-	// Try to load a saved game file (with name: <SaveGameSlotName>.sav) if exists
-	USaveGame* LoadedGame = UGameplayStatics::LoadGameFromSlot(SaveGameSlotName, 0);
-	SaveGameObject = Cast<USGESaveGame>(LoadedGame);
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Trying to load a saved game."));
-    
-	// If file does not exist try create a new one
-	if (!SaveGameObject)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("No saved games found. Trying to save a new one."));
-        
-		// Instantiate a new SaveGame object
-		SaveGameObject = Cast<USGESaveGame>(UGameplayStatics::CreateSaveGameObject(USGESaveGame::StaticClass()));
-
-		// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
-		const bool IsSaved = UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameSlotName, 0);
-
-		LogIfGameWasSavedOrNot(IsSaved);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Saved game found. Loaded."));
-	}
-    
-}
-
-SaveGame method:
-
-void USGEGameInstance::SaveGame()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Saving game..."));
-    
-	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
-	const bool IsSaved = UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameSlotName, 0);
-
-	LogIfGameWasSavedOrNot(IsSaved);
-    
-}
 */
 

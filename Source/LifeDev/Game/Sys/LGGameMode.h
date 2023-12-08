@@ -8,6 +8,7 @@
 
 #include "LGGameMode.generated.h"
 
+class ULSettings;
 class UInputMappingContext;
 class ALDialogMan;
 class ALInventoryManager;
@@ -53,30 +54,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
 	
-	// here instead of the gameinstance since it depends on the current playthrough.
-	// later needs to be replicated/moved to the savegame
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	int32 ChapterId = 1;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
 
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UDiags* Dialogs = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALInventoryManager* InvManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UInventory* Inventory = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UFlags* Flags = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UStory* Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALChar* Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -101,7 +89,18 @@ protected:
 	void SetDynRes();
 
 	bool CharInputEnabled = true;
-
+	/// subsystem cache
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDiags* Dialogs = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlags* Flags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UStory* Story = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ULSettings* Settings = nullptr;
+	
 	// not supported on desktop and could break the game
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	bool UseDynRes = false;

@@ -3,7 +3,7 @@
 #include "FlashbackMan.h"
 
 #include "Flashback.h"
-#include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -22,15 +22,18 @@ void AFlashbackMan::ValChanged(float Value) {
 
 void AFlashbackMan::BeginPlay() {
 	Super::BeginPlay();
-	UFlashback* const Flashback = GetWorld()->GetSubsystem<UFlashback>();
+
+	UWorld* const World = GetWorld();
+	UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
 	if (IsValid(Flashback)) {
 		Flashback->OnChange.AddUniqueDynamic(this, &AFlashbackMan::ValChanged);
 	}
 	
 	if (IsValid(MPC)) {
-		MPCInst = GetWorld()->GetParameterCollectionInstance(MPC);
-		const int Strobe = ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)?1:0;
+		MPCInst = World->GetParameterCollectionInstance(MPC);
+		const int Strobe = ULSettings::GetFeatS(World, EFeat::A_STROBE)?1:0;
 		MPCInst->SetScalarParameterValue("Strobe", Strobe);
+		// TODO set the flashback feat as well
 	}
 }
 

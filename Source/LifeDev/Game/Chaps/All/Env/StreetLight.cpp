@@ -6,6 +6,7 @@
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
 #include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
@@ -54,7 +55,7 @@ void AStreetLight::BeginPlay() {
 	Super::BeginPlay();
 
 	// don's strobe if it's not enabled
-	if (!ULGameInstance::GetFeatS(GetWorld(), EFeat::A_STROBE)) return;
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) return;
 	Sig->BindAnim(Anim);
 	Anim->OnUpdate.AddUniqueDynamic(this, &AStreetLight::AnimUpdate);
 }

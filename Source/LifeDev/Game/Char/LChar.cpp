@@ -20,7 +20,7 @@
 #include "Inventory/ItemLogic.h"
 #include "JUtils/JMiscUtils.h"
 
-#include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
 #include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
@@ -168,10 +168,10 @@ void ALChar::BeginPlay()
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
-	Dialogs = GetWorld()->GetSubsystem<UDiags>();
+	Dialogs = World->GetSubsystem<UDiags>();
 
 	if (IsValid(Noiser)) {
-		Noiser->Debug = ULGameInstance::GetFeatS(World, EFeat::DEBUG);
+		Noiser->Debug = ULSettings::GetFeatS(World, EFeat::DEBUG);
 		Noiser->Start();
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));

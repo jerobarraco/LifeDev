@@ -7,8 +7,8 @@
 
 #include "LGUSettings.generated.h"
 
-// user settings
-UCLASS(Blueprintable, config = LGUSettings, defaultconfig, meta=(DisplayName="LifeDevGameUserSettings"))
+// user settings and savefile
+UCLASS(Blueprintable, config=LGUSettings, meta=(DisplayName="LifeDevGameUserSettings"))
 class LIFEDEV_API ULGUSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
