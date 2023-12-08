@@ -75,7 +75,7 @@ ATv00::ATv00():Super() {
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
 	AnimCrt->MatVName = "Emissive";
 	AnimCrt->MatVStart = FLinearColor::Black;
-	AnimCrt->MatVEnd = FLinearColor(2, 2, 2);
+	AnimCrt->MatVEnd = FLinearColor(5, 5, 5, 1);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
@@ -108,9 +108,7 @@ void ATv00::BeginPlay() {
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
 	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
-	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
-
-	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) return;
+	// AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	Sig->BindAnim(AnimCrt);
 }
 
@@ -124,14 +122,15 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ATv00::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void ATv00::SetState_Implementation(int32 NewState) {
+	UE_LOG(LogTemp, Log, TEXT("TV, setstate=%i"), NewState);
+	Super::SetState_Implementation(NewState);
 	const bool _IsOpen = IsOpen();
 	Noise->Fade(_IsOpen);
 
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
-			_IsOpen ? AnimCrt->MatVStart : AnimCrt->MatVEnd);
+			_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);
 		return;
 	}
 	

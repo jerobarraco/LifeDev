@@ -30,7 +30,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void Hover(bool IsOn);
-	virtual void Hover_Implementation(bool IsOn);
+	virtual void Hover_Implementation(bool IsOn){};
 
 	// returns true if the item has been used (notice past tense)
 	//  this means when calling this function the item WILL trigger
@@ -52,9 +52,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void SetMobility(EComponentMobility::Type Mobility);
 
+	// mostly to support the pooling system.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	virtual void Reset() override;
 
+	// call it to change the state without triggering.
+	// called when the state changes because it triggered.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void SetState(int32 NewState);
 	virtual void SetState_Implementation(int32 NewState);
@@ -78,7 +81,7 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void SetText();
-	virtual void SetText_Implementation();
+	virtual void SetText_Implementation(){};
 
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void Trigger();

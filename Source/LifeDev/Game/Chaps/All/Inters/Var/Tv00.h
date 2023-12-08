@@ -20,8 +20,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void Trigger_Implementation() override;
-
+	virtual void SetState_Implementation(int32 NewState) override;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCSounder* Noise = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

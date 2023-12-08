@@ -114,13 +114,12 @@ void ALGGameMode::Init_Implementation() {
 	AMusicMan::Enabled = Settings->GetFeat(EFeat::MUSIC);
 	AStep::UseDebug = Settings->GetFeat(EFeat::DEBUG_STEPS);
 
-	// post process (does this even works?)
+	/// post process (does this even works?)
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 
 	if (IsValid(PostProcess)) {
 		// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
-		
 		PostProcess->Settings.DynamicGlobalIlluminationMethod =
 			Settings->GetFeat(EFeat::G_LUMEN) ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;

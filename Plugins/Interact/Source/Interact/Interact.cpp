@@ -37,6 +37,7 @@ AInteract::AInteract():Super() {
 }
 
 bool AInteract::TryTrigger_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs %s"), __func__, *GetNameSafe(this));
 	if (Locked) {
 		TriggerLocked();
 		return false;
@@ -47,7 +48,7 @@ bool AInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
-	UE_LOG(LogInteract, Log, TEXT("TryUseItem=%s"), *Name.ToString());
+	UE_LOG(LogInteract, Log, TEXT("%hs %s Name=%s"), __func__, *GetNameSafe(this), *Name.ToString());
 	return EItemUseResult::BAD_TARGET;
 }
 
@@ -66,12 +67,13 @@ void AInteract::SetMobility(EComponentMobility::Type Mobility) {
 }
 
 void AInteract::Reset() {
-	UE_LOG(LogInteract, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"), __func__, *GetNameSafe(this));
 	Super::Reset();
 	SetState(0);
 }
 
 void AInteract::SetState_Implementation(int32 NewState) {
+	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s NewState=%i"), __func__, *GetNameSafe(this), NewState);
 	State = NewState;
 }
 
@@ -92,8 +94,6 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AInteract::SetText_Implementation() {}
-
 void AInteract::TriggerLocked_Implementation() {
 	PlaySFX(SFX_Locked);
 }
@@ -106,14 +106,15 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::Trigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("Actor Triggered"));
+	UE_LOG(LogInteract, Log, TEXT("%hs : %s"), __func__, *GetNameSafe(this));
 	SetText();
 	PlaySFX(SFX_Trigger);
 }
 
 void AInteract::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
-	UE_LOG(LogInteract, Log, TEXT("Playing sound attached=%i, name='%s'."), UseAttachedSFX, *Snd->GetName());
+	UE_LOG(LogInteract, Log, TEXT("%s: Playing sound attached=%i, name='%s'."),
+		*GetNameSafe(this), UseAttachedSFX, *Snd->GetName());
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);
@@ -123,7 +124,6 @@ void AInteract::PlaySFX(USoundBase* Snd) {
 		return;
 	}
 
-	UGameplayStatics::PlaySoundAtLocation(SFX, Snd, SFX->GetComponentLocation(), SFX->GetComponentRotation());
+	UGameplayStatics::PlaySoundAtLocation(SFX, Snd,
+		SFX->GetComponentLocation(), SFX->GetComponentRotation());
 }
-
-void AInteract::Hover_Implementation(bool IsOn) {}
