@@ -9,7 +9,5 @@ AHeaterI01::AHeaterI01():Super() {
 	Interact->SetEnabled(true);
 	
 	LockedDlg = "HT01_L";
-	Texts = {
-		FText::FromString(TEXT("Turn on")),
-	};
+	Texts = { FText::FromString(TEXT("Turn on")) };
 }
