@@ -16,7 +16,7 @@ class USignificanceManager;
 // UseBgThread=false
 // NumPCs=-1
 // TickInterval=3.0
-UCLASS(Blueprintable, Category="JSig", Config=JSignificance)
+UCLASS(Blueprintable, Category="JSig", Config=JSignificance, DefaultConfig)
 class JSIG_API USignificance : public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
