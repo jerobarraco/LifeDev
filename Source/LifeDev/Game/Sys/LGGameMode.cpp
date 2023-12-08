@@ -119,12 +119,18 @@ void ALGGameMode::Init_Implementation() {
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 
 	if (IsValid(PostProcess)) {
+		// Important:
+		// these properties on the editor have a checkbox next to them.
+		// i DO need to check them for the engine to pay attention to them,
+		// otherwise the changes here make no difference.
 		// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
+		const bool HasLumen = Settings->GetFeat(EFeat::G_LUMEN);
 		PostProcess->Settings.DynamicGlobalIlluminationMethod =
-			Settings->GetFeat(EFeat::G_LUMEN) ?
+			HasLumen ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
-
-		if (!Settings->GetFeat(EFeat::G_BLUR) ) {
+		PostProcess->Settings.ReflectionMethod =
+			HasLumen ? EReflectionMethod::Lumen : EReflectionMethod::None;
+		if (!Settings->GetFeat(EFeat::G_BLUR)) {
 			PostProcess->Settings.MotionBlurAmount = 0;
 			PostProcess->Settings.MotionBlurMax = 0;
 			PostProcess->Settings.SceneFringeIntensity = 0;
