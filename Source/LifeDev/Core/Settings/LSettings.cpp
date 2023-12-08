@@ -63,9 +63,9 @@ int32 ULSettings::CurrentChapter() const {
 
 bool ULSettings::IsDebugBuild() {
 #if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	return true;
-#else
 	return false;
+#else
+	return true;
 #endif
 }
 

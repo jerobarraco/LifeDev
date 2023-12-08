@@ -10,6 +10,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 #include "Sounds/CSounder.h"
 #include "JSig/CSignificance.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
 
 ATv00::ATv00():Super() {
@@ -74,7 +75,7 @@ ATv00::ATv00():Super() {
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
 	AnimCrt->MatVName = "Emissive";
 	AnimCrt->MatVStart = FLinearColor::Black;
-	AnimCrt->MatVEnd = FLinearColor(10, 10, 10);
+	AnimCrt->MatVEnd = FLinearColor(2, 2, 2);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
@@ -103,12 +104,14 @@ ATv00::ATv00():Super() {
 
 void ATv00::BeginPlay() {
 	Super::BeginPlay();
-	
-	Sig->BindAnim(AnimCrt);
+
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
+	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
 	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) return;
+	Sig->BindAnim(AnimCrt);
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -125,16 +128,18 @@ void ATv00::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 	const bool _IsOpen = IsOpen();
 	Noise->Fade(_IsOpen);
+
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
+			_IsOpen ? AnimCrt->MatVStart : AnimCrt->MatVEnd);
+		return;
+	}
+	
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
 	
-	if (_IsOpen) {
-		// RndCrt->Start();
-		// AnimCrt->Play();
-	} else {
-		// RndCrt->Stop();
-		// AnimCrt->Stop();
-		// reset
+	if (!_IsOpen) {
+		// force this so that it resets the value
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	}
 }

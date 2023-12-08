@@ -118,14 +118,18 @@ void ALGGameMode::Init_Implementation() {
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 
-	PostProcess->Settings.DynamicGlobalIlluminationMethod =
-		Settings->GetFeat(EFeat::G_LUMEN) ?
-		EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
+	if (IsValid(PostProcess)) {
+		// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
+		
+		PostProcess->Settings.DynamicGlobalIlluminationMethod =
+			Settings->GetFeat(EFeat::G_LUMEN) ?
+			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 
-	if (!Settings->GetFeat(EFeat::G_BLUR) ) {
-		PostProcess->Settings.MotionBlurAmount = 0;
-		PostProcess->Settings.MotionBlurMax = 0;
-		PostProcess->Settings.SceneFringeIntensity = 0;
+		if (!Settings->GetFeat(EFeat::G_BLUR) ) {
+			PostProcess->Settings.MotionBlurAmount = 0;
+			PostProcess->Settings.MotionBlurMax = 0;
+			PostProcess->Settings.SceneFringeIntensity = 0;
+		}
 	}
 
 	/// set input mode
