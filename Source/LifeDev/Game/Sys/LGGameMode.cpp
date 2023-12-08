@@ -17,6 +17,7 @@
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
+#include "Engine/PostProcessVolume.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
@@ -94,8 +95,37 @@ void ALGGameMode::Init_Implementation() {
 	
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (!IsValid(SysSettings)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid"));
+		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. cant continue."));
 		return;
+	}
+
+	//TODO implement save/load from ui. for now we always start a new one
+	Settings = Instance->GetSubsystem<ULSettings>();
+	if (!IsValid(Settings)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. cant continue."));
+		return;
+	}
+	
+	Settings->NewGame();
+
+	/// set flags
+	UCAnimator::Debug = Settings->GetFeat(EFeat::DEBUG_ANIMS);
+	UFlashback::Debug = Settings->GetFeat(EFeat::DEBUG);
+	AMusicMan::Enabled = Settings->GetFeat(EFeat::MUSIC);
+	AStep::UseDebug = Settings->GetFeat(EFeat::DEBUG_STEPS);
+
+	// post process (does this even works?)
+	PostProcess = Cast<APostProcessVolume>(
+		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
+
+	PostProcess->Settings.DynamicGlobalIlluminationMethod =
+		Settings->GetFeat(EFeat::G_LUMEN) ?
+		EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
+
+	if (!Settings->GetFeat(EFeat::G_BLUR) ) {
+		PostProcess->Settings.MotionBlurAmount = 0;
+		PostProcess->Settings.MotionBlurMax = 0;
+		PostProcess->Settings.SceneFringeIntensity = 0;
 	}
 
 	/// set input mode
@@ -105,15 +135,6 @@ void ALGGameMode::Init_Implementation() {
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 
-	/// set flags
-	UCAnimator::Debug = Settings->GetFeat(EFeat::DEBUG_ANIMS);
-	UFlashback::Debug = Settings->GetFeat(EFeat::DEBUG);
-	AMusicMan::Enabled = Settings->GetFeat(EFeat::MUSIC);
-	AStep::UseDebug = Settings->GetFeat(EFeat::DEBUG_STEPS);
-
-	//TODO New game for now until i actually implement save ui
-	Settings->NewGame();
-	
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (IsValid(Char)) {

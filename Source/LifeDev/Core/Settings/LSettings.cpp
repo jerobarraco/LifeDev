@@ -57,6 +57,10 @@ void ULSettings::SaveGame() {
 	}
 }
 
+int32 ULSettings::CurrentChapter() const {
+	return IsValid(Save) ? Save->ChapterID : -1;
+}
+
 bool ULSettings::IsDebugBuild() {
 #if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	return true;

@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SaveGame();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 CurrentChapter() const;
+	
 	UFUNCTION(BlueprintCallable)
 	void ResetFeats();
 	UFUNCTION(BlueprintCallable)

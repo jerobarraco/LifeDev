@@ -81,13 +81,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DefaultFeats = {EFeat::DIALOGS, EFeat::DIALOG_TEXT, EFeat::MUSIC,
 		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
-		EFeat::A_STROBE
+		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
 	};
 
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Core")
 	TSet<EFeat> DebugFeats = {EFeat::DEBUG_STEPS, EFeat::DEBUG, EFeat::MUSIC,
 		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
-		EFeat::A_STROBE
+		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
 	};
 };

@@ -8,6 +8,8 @@
 
 #include "LGGameMode.generated.h"
 
+struct FDialog;
+class APostProcessVolume;
 class ULSettings;
 class UInputMappingContext;
 class ALDialogMan;
@@ -58,9 +60,9 @@ public:
 	FLChapter Chapter;
 
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
+	/// only making public the ones that require a GetActorOfClass (not the subsystems)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALDialogMan* DiagManager = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALInventoryManager* InvManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -71,6 +73,20 @@ public:
 	ALMusicMan* MusicMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AFlashbackMan* FlashbackMan = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	APostProcessVolume* PostProcess = nullptr;
+
+	/// subsystems cache
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDiags* Dialogs = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlags* Flags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UStory* Story = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ULSettings* Settings = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -89,17 +105,6 @@ protected:
 	void SetDynRes();
 
 	bool CharInputEnabled = true;
-	/// subsystem cache
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UStory* Story = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	ULSettings* Settings = nullptr;
 	
 	// not supported on desktop and could break the game
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
