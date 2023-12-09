@@ -7,9 +7,10 @@
 
 ATapeI01::ATapeI01():Super() {
 	Texts = { FText::FromString(TEXT("Pick up tape")) };
-	TriggerDlg = "TO"; // will say what it is. triggered on pick up
+	TriggerDlg = FName("T0_T"); // will say what it is. triggered on pick up
 	StateNum = 1;
 	UseAnim = false;
+	RewardFlash = .1;
 	// RewardItem = "T01";
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);

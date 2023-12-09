@@ -90,6 +90,7 @@ public:
 	// An actor to reward. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	AActor* RewardActor = nullptr;
+	// actually editanywhere since we want to modify the pointer
 
 	// whether or not to fade AND self-destroy when rewarding an item.
 	// uses the AnimFade object and what's set there.

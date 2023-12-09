@@ -108,18 +108,18 @@ protected:
 	bool UseAttachedSFX = true;
 
 	// handles the interactions with this actor.
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteract* Interact = nullptr;
 	
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* IRoot = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UAudioComponent* SFX = nullptr;
 };
