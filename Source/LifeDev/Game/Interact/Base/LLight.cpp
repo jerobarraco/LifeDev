@@ -59,7 +59,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		UE_LOG(LogTemp, Log,
 			TEXT("LLigth: %hs. Attempted to set fb-flicker, but A_STROBE flag is disabled. Cancelled."),
 			__func__);
-		return;;
+		return;
 	}
 
 	UFlashback* const Fb = UFlashback::Get(W);

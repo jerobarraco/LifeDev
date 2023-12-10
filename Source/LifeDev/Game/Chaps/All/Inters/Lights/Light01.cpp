@@ -10,12 +10,12 @@
 
 ALight01::ALight01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00/Light00-Frame.Light00-Frame"));
+		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Light00/Light00-Frame.Light00-Frame"));
 	Mesh->SetRelativeLocation(FVector(-27.500000,27.500000,0.000000));
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Light00/Light00-GlassB.Light00-GlassB"));
+		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Light00/Light00-GlassB.Light00-GlassB"));
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Glass->SetupAttachment(Mesh);
 	Glass->SetStaticMesh(CTube.Object);
@@ -48,6 +48,7 @@ ALight01::ALight01():Super() {
 	ALight01::SetMobility(EComponentMobility::Static);
 }
 
+// TODO move this to LLight.cpp
 void ALight01::UpdateAnim(float Progress, float Alpha) {
 	Light->SetIntensity(IntensityMax*Alpha);
 	const bool IsOn = Alpha >= .05;
