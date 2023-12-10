@@ -128,7 +128,6 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ATv00::SetState_Implementation(int32 NewState) {
-	UE_LOG(LogTemp, Verbose, TEXT("TV, setstate=%i"), NewState);
 	Super::SetState_Implementation(NewState);
 
 	const bool _IsOpen = IsOpen();
@@ -144,6 +143,7 @@ void ATv00::SetState_Implementation(int32 NewState) {
 	
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
+	// TODO this is not working consistently 
 	if (!_IsOpen && IsValid(AnimCrt->Mat)) {
 		// force this so that it resets the value
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
