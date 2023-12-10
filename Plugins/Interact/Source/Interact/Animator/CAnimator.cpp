@@ -20,7 +20,7 @@ void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 	IsReversed = Reversed;
 	IsLooping = Loop;
 	IsBouncing = Bounce;
-	Play();
+	Activate(true);
 }
 
 void UCAnimator::TickManual(float DeltaSeconds) {
@@ -36,7 +36,7 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 void UCAnimator::Finish() {
 	// check if we can continue at all
 	if (!IsLooping && !IsBouncing) {
-		Stop();
+		Deactivate();
 		return;
 	}
 
@@ -112,6 +112,10 @@ void UCAnimator::ChildUpdate(float T, float Alpha) {
 	Update(Alpha);
 }
 
+void UCAnimator::Update_Implementation(float Alpha) {
+	UE_LOG(LogTemp, Verbose, TEXT("%hs %5.3f Obj=%s"), __func__, Alpha, *GetNameSafe(GetOwner()));
+}
+
 void UCAnimator::End_Implementation() {
 	OnEnd.Broadcast();
 }
@@ -123,11 +127,10 @@ void UCAnimator::Begin_Implementation() {
 void UCAnimator::BeginPlay() {
 	Super::BeginPlay();
 	BindTo(Parent); // rebind to the parent if set
-	Deactivate();
 }
 
 void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Stop();
+	Deactivate();
 	DeInit();
 	Super::EndPlay(EndPlayReason);
 }

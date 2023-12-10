@@ -38,7 +38,8 @@ void UCSignificance::Deactivate() {
 }
 
 void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Unregister(); // important or the sigmanager will leak and then crash :) (according to their docs)
+	Deactivate(); 
+	// Unregister(); // important or the sigmanager will leak and then crash :) (according to their docs)
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -204,13 +205,15 @@ void UCSignificance::UpdateTicks() {
 	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
 		C->SetComponentTickInterval(Interval);
-		C->SetComponentTickEnabled(TickEnabled);
+		// this is the appropriate way to disable ticks (needs testing)
+		C->PrimaryComponentTick.bCanEverTick = TickEnabled;
+		// C->SetComponentTickEnabled(TickEnabled); // this will break all anims
 	}
 }
 
 void UCSignificance::UpdateActivate() {
 	const bool IsActive = Significance != ESigValue::Off;
-	for (UActorComponent* const C: CompsTicks) {
+	for (UActorComponent* const C: CompsActivate) {
 		C->SetActive(IsActive);
 	}
 }

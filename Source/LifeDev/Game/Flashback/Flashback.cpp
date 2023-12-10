@@ -45,7 +45,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// reset animation if any
-	Animator->Stop();
+	Animator->Deactivate();
 
 	// important to set, set here to keep it always up to date.
 	AnimFrom = Val;

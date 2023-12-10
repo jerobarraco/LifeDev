@@ -111,11 +111,12 @@ protected:
 	
 	void Register();
 	void Unregister();
-	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
+	void UpdateTicks();
 	void UpdateActivate();
+	
+	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
 	float GetDistanceSignificance(float DistSqr);
-	void UpdateTicks();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ESigValue Significance = ESigValue::High;

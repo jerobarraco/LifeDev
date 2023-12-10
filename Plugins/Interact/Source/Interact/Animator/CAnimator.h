@@ -24,9 +24,6 @@ class INTERACT_API UCAnimator: public UActorComponent {
 public:
 	UCAnimator();
 
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
-	FORCEINLINE void Stop() { Deactivate(); };
-
 	// plays the animation. optionally reset.
 	virtual void Activate(bool bReset) override;
 	// stops the animation.
@@ -34,7 +31,7 @@ public:
 	
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
-	FORCEINLINE void Play() { Activate(true); };
+	FORCEINLINE void Play() { Activate(true); }
 
 	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -90,7 +87,7 @@ protected:
 	// override me on child classes :) But call the parent!! (Progress can be read directly)
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Update(float Alpha);
-	virtual void Update_Implementation(float Alpha) {};
+	virtual void Update_Implementation(float Alpha);
 
 	// override me on child classes :) But call the parent. 
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
