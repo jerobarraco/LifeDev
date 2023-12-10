@@ -23,7 +23,7 @@ UCSignificance::UCSignificance():Super() {
 }
 
 void UCSignificance::Activate(bool bReset) {
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	// this is (ab)used by the lights. also ensures no-double registration.
 	if (!bReset && IsActive()) return;
 
@@ -32,13 +32,15 @@ void UCSignificance::Activate(bool bReset) {
 }
 
 void UCSignificance::Deactivate() {
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	Unregister();
 	Super::Deactivate();
 }
 
 void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Deactivate(); 
+	Deactivate();
+	CompsActivate.Empty();
+	CompsTicks.Empty();
 	// Unregister(); // important or the sigmanager will leak and then crash :) (according to their docs)
 	Super::EndPlay(EndPlayReason);
 }
@@ -205,8 +207,9 @@ void UCSignificance::UpdateTicks() {
 	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
 		C->SetComponentTickInterval(Interval);
-		// this is the appropriate way to disable ticks (needs testing)
-		C->PrimaryComponentTick.bCanEverTick = TickEnabled;
+		// this is the appropriate way to disable ticks
+		C->PrimaryComponentTick.SetTickFunctionEnable(TickEnabled);
+		// C->PrimaryComponentTick.bCanEverTick = TickEnabled; // this will break all the anims and others as it breaks the tick for good
 		// C->SetComponentTickEnabled(TickEnabled); // this will break all anims
 	}
 }

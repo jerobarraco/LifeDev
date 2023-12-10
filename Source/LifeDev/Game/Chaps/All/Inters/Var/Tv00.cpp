@@ -101,7 +101,7 @@ ATv00::ATv00():Super() {
 	Noise->SetSound(CSNoise.Object);
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
-	Sig->CompsTicks.Add(AnimCrt);
+	Sig->SetAutoActivate(false);
 	Sig->RenderSinceMax = .2;
 }
 
@@ -110,9 +110,11 @@ void ATv00::BeginPlay() {
 
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	// AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
-	// AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
+	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	Sig->BindAnim(AnimCrt);
+	Sig->CompsTicks.AddUnique(AnimCrt);
+
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -126,11 +128,10 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ATv00::SetState_Implementation(int32 NewState) {
-	UE_LOG(LogTemp, Log, TEXT("TV, setstate=%i"), NewState);
+	UE_LOG(LogTemp, Verbose, TEXT("TV, setstate=%i"), NewState);
 	Super::SetState_Implementation(NewState);
-return;
+
 	const bool _IsOpen = IsOpen();
-	
 	Noise->Fade(_IsOpen);
 
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
@@ -143,9 +144,8 @@ return;
 	
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
-	
 	if (!_IsOpen && IsValid(AnimCrt->Mat)) {
 		// force this so that it resets the value
-		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
+		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
 	}
 }
