@@ -22,8 +22,9 @@ class INTERACT_API AInteract: public AActor {
 public:
 	AInteract();
 
+	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
 	// Call this to trigger the interaction. Returns the success (false if locked)
-	// this function has side-effects (calls trigger/trigger locked) so call at the end.
+	// this function has side-effects (calls trigger/triggerLocked) so call at the end of your function.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	bool TryTrigger();
 	virtual bool TryTrigger_Implementation();
@@ -56,6 +57,8 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	virtual void Reset() override;
 
+	// called on trigger or state reset.
+	// override it to do something when it's triggered or reset.
 	// call it to change the state without triggering.
 	// called when the state changes because it triggered.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
@@ -64,7 +67,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
-	
+
+	// locks the interaction, calling tryTrigger will return false
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
@@ -81,12 +85,17 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void SetText();
-	virtual void SetText_Implementation(){};
+	virtual void SetText_Implementation(){}
 
+	// called when the object actually gets triggered
+	// override if you need to change the logic for the triggering. or when trigger but not reset.
+	// otherwise setState is preferred.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void Trigger();
 	virtual void Trigger_Implementation();
 
+	// called when an attempt to trigger happened while locked.
+	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void TriggerLocked();
 	virtual void TriggerLocked_Implementation();
@@ -98,10 +107,16 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void PlaySFX(USoundBase* Snd);
 	
-	// the state of the interact. will be used by the puzzle and the interactanim, but also you can use it however you want.
+	// the state of the interact.
+	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
+	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	int32 State = 0;
 
+	// Number of states. It will wrap State around. around.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	int32 StateNum = 2;
+	
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)

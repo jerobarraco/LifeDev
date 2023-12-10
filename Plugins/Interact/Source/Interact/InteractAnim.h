@@ -31,10 +31,6 @@ public:
 	// be careful if you need to disable on trigger or smth (for example Puzzle::DisableOnDone) 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableWhileAnim = true;
-
-	// Number of states. it will wrap around.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	int32 StateNum = 2;
 	
 	// Text to be displayed on each state. Closed, Open
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")

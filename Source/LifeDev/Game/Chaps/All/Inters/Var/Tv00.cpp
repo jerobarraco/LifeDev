@@ -5,6 +5,7 @@
 #include "Components/AudioComponent.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JUtils/Actors/CQuickMesh.h"
@@ -70,14 +71,16 @@ ATv00::ATv00():Super() {
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetLocation(FVector(0.0,-2.5,0));
+	AnimFade->Meshes.Empty();
 
 	// crt anim
 	AnimCrt = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimCrt"));
-	AnimCrt->MatVName = "Emissive";
+	AnimCrt->MatVName = "Emissivei";
 	AnimCrt->MatVStart = FLinearColor::Black;
 	AnimCrt->MatVEnd = FLinearColor(5, 5, 5, 1);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
+		CCurveMat(TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
+		// CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
 	AnimCrt->Duration = 2; // initial duration
 
@@ -106,8 +109,8 @@ void ATv00::BeginPlay() {
 	Super::BeginPlay();
 
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
-	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
+	// AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
+	// AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
 	// AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	Sig->BindAnim(AnimCrt);
 }
@@ -129,15 +132,17 @@ void ATv00::SetState_Implementation(int32 NewState) {
 	Noise->Fade(_IsOpen);
 
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
-		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
-			_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);
+		if (IsValid(AnimCrt->Mat)) {
+			AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
+				_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);
+		}
 		return;
 	}
 	
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
 	
-	if (!_IsOpen) {
+	if (!_IsOpen && IsValid(AnimCrt->Mat)) {
 		// force this so that it resets the value
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, FLinearColor::Black);
 	}

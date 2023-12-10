@@ -37,7 +37,7 @@ AInteract::AInteract():Super() {
 }
 
 bool AInteract::TryTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs %s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(this));
 	if (Locked) {
 		TriggerLocked();
 		return false;
@@ -48,7 +48,7 @@ bool AInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
-	UE_LOG(LogInteract, Log, TEXT("%hs %s Name=%s"), __func__, *GetNameSafe(this), *Name.ToString());
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s Item=%s"), __func__, *GetNameSafe(this), *Name.ToString());
 	return EItemUseResult::BAD_TARGET;
 }
 
@@ -107,6 +107,9 @@ void AInteract::SetInteractAutoBounds() {
 
 void AInteract::Trigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs : %s"), __func__, *GetNameSafe(this));
+	// set the state before, so that the sound triggers are consistent
+	const int32 NewState = (State +1) % StateNum;
+	SetState(NewState);
 	SetText();
 	PlaySFX(SFX_Trigger);
 }

@@ -51,13 +51,7 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 }
 
 void AInteractAnim::Trigger_Implementation() {
-	// set the flag before so that the sound triggers are consistent
-	const int32 NewState = (State +1) % StateNum;
-	UE_LOG(LogTemp, Log, TEXT("InteractAnim.Trigger: ShouldReverse=%i, state=%i"), IsOpen() ? 0:1, NewState);
-
-	SetState(NewState);
-
-	// trigger the trigger sound and calls set text. notice done after changing the state.
+	// trigger the trigger sound and calls set text and sets the state. notice done after changing the state.
 	Super::Trigger_Implementation(); // calling implementation to call the super
 	// SetText(); // not needed. happens on super
 }
