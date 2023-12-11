@@ -18,8 +18,8 @@ class LIFEDEV_API ALLight: public ALInteract {
 public:
 	ALLight();
 
-	// don´t call before begin play.
-	UFUNCTION(BlueprintCallable)
+	// don't call before begin play.
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetFBFlicker(float NewFBFlicker);
 
 protected:

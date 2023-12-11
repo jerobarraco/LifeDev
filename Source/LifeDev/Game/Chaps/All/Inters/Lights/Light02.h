@@ -1,22 +1,21 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/Lights/LLight.h"
 #include "LifeDev/Game/Interact/Base/Lights/LLight00.h"
 
-#include "Light01.generated.h"
+#include "Light02.generated.h"
 
 class UPointLightComponent;
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base class for Light01 actors
+// Base class for Light02 actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALight01: public ALLight00 {
+class LIFEDEV_API ALight02: public ALLight00 {
 	GENERATED_BODY()
 
 public:
-	ALight01();
+	ALight02();
 
 protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;

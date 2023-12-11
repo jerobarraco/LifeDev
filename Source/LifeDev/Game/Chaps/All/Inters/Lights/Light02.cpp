@@ -1,0 +1,36 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "Light02.h"
+
+#include "Components/PointLightComponent.h"
+#include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
+ALight02::ALight02():Super() {
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
+	Mesh->SetRelativeLocation(FVector(-20,20,0));
+	Mesh->SetStaticMesh(CMesh.Object);
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Cover.Lamp00_Cover"));
+	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Cover"));
+	Glass->SetupAttachment(Mesh);
+	Glass->SetStaticMesh(CTube.Object);
+	Glass->SetRelativeLocation(FVector(0,0,0));
+	Glass->SetCastAllShadows(true);
+	Glass->bCastDistanceFieldIndirectShadow = true;
+
+	Light->SetRelativeLocation(FVector(20,-20,160));
+	
+	Interact->SetRelativeLocation(FVector(20,-20,90));
+	Interact->SetBoxExtent(FVector(20,20,90));
+
+	ALight02::SetMobility(EComponentMobility::Static);
+}
+
+void ALight02::SetMobility(EComponentMobility::Type Mobility) {
+	Super::SetMobility(Mobility);
+	Glass->SetMobility(Mobility);
+}
+

@@ -1,31 +1,32 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/Lights/LLight.h"
+#include "LLight.h"
 
-#include "Light00.generated.h"
+#include "LLight00.generated.h"
 
+class UPointLightComponent;
 class URectLightComponent;
 class UCQuickMesh;
 
-// TODO make a base for rect lights that's ALLight01, see ALLight00
-// Base class for Light00 actors
+// Base class for point light actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALight00: public ALLight {
+class LIFEDEV_API ALLight00: public ALLight {
 	GENERATED_BODY()
 
 public:
-	ALight00();
+	ALLight00();
 
 protected:
 	UFUNCTION() // bind
-	void UpdateAnim(float Progress, float Alpha);
+	void AnimLight(float Progress, float Alpha);
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
-	
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float IntensityMax = 2;
+
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* Tube = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	URectLightComponent* RectLight = nullptr;
+	UPointLightComponent* Light = nullptr;
 };
