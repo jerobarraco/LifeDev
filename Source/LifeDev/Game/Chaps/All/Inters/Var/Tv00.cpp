@@ -114,7 +114,6 @@ void ATv00::BeginPlay() {
 	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	Sig->BindAnim(AnimCrt);
 	Sig->CompsTicks.AddUnique(AnimCrt);
-
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -143,7 +142,7 @@ void ATv00::SetState_Implementation(int32 NewState) {
 	
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
-	// TODO this is not working consistently 
+	// TODO this is not working consistently. fix.
 	if (!_IsOpen && IsValid(AnimCrt->Mat)) {
 		// force this so that it resets the value
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);

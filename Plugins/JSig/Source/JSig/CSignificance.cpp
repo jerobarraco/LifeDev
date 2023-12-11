@@ -89,14 +89,16 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 		return GSigOverride;
 
 	const AActor* const Actor = GetOwner();
-	if (IsOffWhenHidden && Actor && Actor->IsHidden())
-	{
+	if (IsOffWhenHidden && Actor && Actor->IsHidden()) {
 		return static_cast<float>(ESigValue::Off);
 	}
 
 	if (Actor && RenderSinceMax >= 0.0f && !Actor->WasRecentlyRendered(RenderSinceMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
-		return static_cast<float>(ESigValue::Off);
+		
+		return static_cast<float>(
+			IsOffWhenOffscreen ? ESigValue::Off: ESigValue::Low
+		);
 	}
 
 	// Use Actor implemented override if present.
@@ -154,7 +156,9 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	/// updates
 	UpdateTicks();
 	UpdateActivate();
+	UpdateVis();
 
+	/// Finish it!!
 	if (IsInGameThread()) {
 		// finally notify (at the end, given the side effects)
 		OnChanged.Broadcast(Significance);
@@ -218,5 +222,12 @@ void UCSignificance::UpdateActivate() {
 	const bool IsActive = Significance != ESigValue::Off;
 	for (UActorComponent* const C: CompsActivate) {
 		C->SetActive(IsActive);
+	}
+}
+
+void UCSignificance::UpdateVis() {
+	const bool IsActive = Significance != ESigValue::Off;
+	for (USceneComponent* const C: CompsVis) {
+		C->SetVisibility(IsActive);
 	}
 }

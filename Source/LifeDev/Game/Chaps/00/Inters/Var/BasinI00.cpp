@@ -48,10 +48,10 @@ ABasinI00::ABasinI00():Super() {
 	SND_Water->SetAutoActivate(true);
 	SND_Water->bAutoManageAttachment = true;
 
-
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
-	// Sig->Comps.AddUnique(Water); // don't do this. it will happily crash every time
-
+	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
+	Sig->IsOffWhenOffscreen = true;
+	
 	// SFX_Trigger = TODO faucet closing
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
@@ -60,6 +60,8 @@ ABasinI00::ABasinI00():Super() {
 void ABasinI00::BeginPlay() {
 	Super::BeginPlay();
 	Sig->OnChanged.AddUniqueDynamic(this, &ABasinI00::SigChanged);
+	Sig->CompsVis.AddUnique(GetRootComponent()); //disables niagara
+	// Sig->CompsVis.AddUnique(Mesh); // TODO mesh did not come back with this
 }
 
 void ABasinI00::EndPlay(const EEndPlayReason::Type EndPlayReason) {

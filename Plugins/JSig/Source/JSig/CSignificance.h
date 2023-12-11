@@ -57,6 +57,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffWhenHidden = true;
 
+	// if set, when offscreen, it will be off, otherwise it will be low.
+	// this affects the CompsVis. when this is not set they will become invisible only by distance.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsOffWhenOffscreen = false;
+	
 	// >=0 The seconds since last render before becoming insignificant.
 	// <0 is disabled
 	// this requires the actor to have a mesh.(a light is not a mesh)
@@ -85,10 +90,12 @@ public:
 	// components to manage (ticks)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsTicks;
-
-	// components to manage activate/deactivate
+	// components to manage activate/deactivate. Not safe to use on Niagara. Use CompsVis
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
+	// components to manage visibility. Setting this on the root comp will actually disable particles 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<USceneComponent*> CompsVis;
 
 	// triggered when the significance changes. Will trigger on game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
@@ -114,6 +121,7 @@ protected:
 	void Unregister();
 	void UpdateTicks();
 	void UpdateActivate();
+	void UpdateVis();
 	
 	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
 	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);

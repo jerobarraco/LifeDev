@@ -48,7 +48,6 @@ ALight01::ALight01():Super() {
 	ALight01::SetMobility(EComponentMobility::Static);
 }
 
-// TODO move this to LLight.cpp
 void ALight01::UpdateAnim(float Progress, float Alpha) {
 	Light->SetIntensity(IntensityMax*Alpha);
 	const bool IsOn = Alpha >= .05;
@@ -56,7 +55,7 @@ void ALight01::UpdateAnim(float Progress, float Alpha) {
 }
 
 void ALight01::BeginPlay() {
-	Super::BeginPlay();	
+	Super::BeginPlay();
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALight01::UpdateAnim);
 }
 
