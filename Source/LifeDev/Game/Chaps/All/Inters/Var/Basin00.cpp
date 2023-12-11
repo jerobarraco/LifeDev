@@ -52,8 +52,8 @@ ABasin00::ABasin00():Super() {
 
 void ABasin00::BeginPlay() {
 	Super::BeginPlay();
-	Sig->CompsVis.AddUnique(GetRootComponent());
-	Sig->CompsVis.AddUnique(Water);
+	Sig->CompsHide.AddUnique(GetRootComponent());
+	Sig->CompsHide.AddUnique(Water);
 }
 
 void ABasin00::EndPlay(const EEndPlayReason::Type EndPlayReason) {

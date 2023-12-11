@@ -156,7 +156,7 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	/// updates
 	UpdateTicks();
 	UpdateActivate();
-	UpdateVis();
+	UpdateHidden();
 
 	/// Finish it!!
 	if (IsInGameThread()) {
@@ -225,13 +225,15 @@ void UCSignificance::UpdateActivate() {
 	}
 }
 
-void UCSignificance::UpdateVis() {
+void UCSignificance::UpdateHidden() {
 	// https://forums.unrealengine.com/t/set-visibility-does-it-help-with-texture-memory-and-other-optimization/138761/3?u=nande
 	// according to that setvis affects the editor, which is not exactly what i want. but is kinda the same on runtime.
 	// a reason for not using setHidden is that there's a flag (OffWhenHidden) that collides with this intention.
 	// though im not sure....
-	const bool IsActive = Significance != ESigValue::Off;
-	for (USceneComponent* const C: CompsVis) {
-		C->SetVisibility(IsActive);
+	// const bool IsActive = Significance != ESigValue::Off;
+	const bool IsHidden = Significance == ESigValue::Off;
+	for (USceneComponent* const C: CompsHide) {
+		// C->SetVisibility(IsActive);
+		C->SetHiddenInGame(IsHidden);
 	}
 }
