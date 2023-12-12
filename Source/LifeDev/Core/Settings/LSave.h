@@ -18,3 +18,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ChapterID = -1;
 };
+
+// TODO load inventory and save inventory. and flags

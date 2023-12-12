@@ -9,8 +9,8 @@ ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L";
 	Locked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CGun(TEXT("//TODO"));//Todo
-	SFX_Gun = CGun.Object ;
+		CGun(TEXT(""));//Todo
+	SFX_Gun = CGun.Object;
 }
 
 void ADoorI10::Shoot() {

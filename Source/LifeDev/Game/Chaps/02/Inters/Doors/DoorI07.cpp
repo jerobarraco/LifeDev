@@ -3,7 +3,7 @@
 #include "DoorI07.h"
 
 ADoorI07::ADoorI07():Super() {
-	UseAnim = false;
-	LockedDlg = "D07_L";
-	Locked = true;
+	// UseAnim = false;
+	// LockedDlg = "D07_L";
+	// Locked = true;
 }
