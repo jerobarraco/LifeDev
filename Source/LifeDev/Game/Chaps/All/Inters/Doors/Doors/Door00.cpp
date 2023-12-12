@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADoor00::ADoor00():Super() {
@@ -16,4 +17,6 @@ ADoor00::ADoor00():Super() {
 
 	Interact->SetRelativeLocation(FVector(-60,-7.5,100));
 	Interact->SetBoxExtent(FVector(60,5,100));
+	
+	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
 }

@@ -14,6 +14,6 @@ public:
 	ADoor();
 
 protected:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UStaticMeshComponent* Frame = nullptr;
 };
