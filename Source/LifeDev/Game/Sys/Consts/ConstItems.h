@@ -12,7 +12,11 @@ namespace LDConsts {
 		inline static const FName Card7("C7");
 		inline static const FName Card8("C8");
 		inline static const FName Card9("C9");
+
 		inline static const FName Poem0("P00");
+		inline static const FName Poem1("P01");
+		inline static const FName Poem2("P02");
+
 		inline static const FName Bra("C1C03");
 	}
 }
