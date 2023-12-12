@@ -13,11 +13,18 @@ ADoorI10::ADoorI10():Super() {
 	SFX_Gun = CGun.Object ;
 }
 
+void ADoorI10::Shoot() {
+	PlaySFX(SFX_Gun);
+	Flashback->ModVal(.3, .5);
+	Dialogs->AddId("D10_Gun");
+	LockedDlg = "D10_L.1";
+}
+
 bool ADoorI10::TryTrigger_Implementation() {
 	if(!Interacted) {
-		PlaySFX(SFX_Gun);
-		Flashback->ModVal(.3, .5);
-		Dialogs->AddId("D10_Gun");
+		FTimerHandle H;
+		GetWorld()->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 2);
+		Shoot();
 	}
 	Interacted = true;
 
