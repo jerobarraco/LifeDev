@@ -17,7 +17,8 @@ AInteract::AInteract():Super() {
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(Root);
 
 	IRoot = CreateDefaultSubobject<USceneComponent>(TEXT("IRoot"));
 	IRoot->SetupAttachment(RootComponent);

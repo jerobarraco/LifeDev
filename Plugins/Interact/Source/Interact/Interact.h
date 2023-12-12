@@ -82,7 +82,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
+
+	// sets the current text to show on this interact
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void SetText();
 	virtual void SetText_Implementation(){}
@@ -104,6 +105,8 @@ protected:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
 
+	// plays a sound using the SFX object.
+	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void PlaySFX(USoundBase* Snd);
 	
@@ -122,6 +125,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
 	bool UseAttachedSFX = true;
 
+	// added here so it can be changed in the editor. otherwise it wont show. :(
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	USceneComponent* Root = nullptr;
+	
 	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteract* Interact = nullptr;
@@ -131,10 +138,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* IRoot = nullptr;
 
+	// default mesh
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
-	
+
+	// default sfx player. Use PlaySFX 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UAudioComponent* SFX = nullptr;
 };
