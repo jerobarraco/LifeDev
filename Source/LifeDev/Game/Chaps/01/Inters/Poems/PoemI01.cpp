@@ -4,6 +4,6 @@
 
 APoemI01::APoemI01():Super() {
 	RewardItem = "P01";
-	TriggerDlg = "P01_T";
+	TriggerDlg = "P01_Look";
 	RewardFlash = -.1f;
 }
