@@ -1,0 +1,23 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#pragma once
+#include "LifeDev/Game/Chaps/All/Inters/Doors/Doors/Door02.h"
+
+#include "DoorI10.generated.h"
+
+// Door from hall00 to piano
+UCLASS(Blueprintable, BlueprintType)
+class LIFEDEV_API ADoorI10: public ADoor02 {
+	GENERATED_BODY()
+
+public:
+	ADoorI10();
+
+	virtual bool TryTrigger_Implementation() override;
+	
+protected:
+	bool Interacted = false;
+
+	UPROPERTY()
+	USoundBase* SFX_Gun = nullptr;
+};
