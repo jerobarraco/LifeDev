@@ -1,9 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "DoorI06.h"
+#include "DoorI08.h"
 
-ADoorI06::ADoorI06():Super() {
+ADoorI08::ADoorI08():Super() {
 	UseAnim = false;
-	LockedDlg = "D06_L";
+	LockedDlg = "D08_L";
 	Locked = true;
 }
