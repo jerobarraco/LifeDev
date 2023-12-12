@@ -11,7 +11,7 @@ ATapeI01::ATapeI01():Super() {
 	StateNum = 1;
 	UseAnim = false;
 	RewardFlash = .1;
-	// RewardItem = "T01";
+	// RewardItem = "T00";
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }

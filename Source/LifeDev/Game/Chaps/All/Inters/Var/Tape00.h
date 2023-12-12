@@ -1,10 +1,13 @@
 // Copyright Jerónimo Barraco-Mármol
-
 #pragma once
+
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "Tape00.generated.h"
+
 class UCQuickMesh;
+
+// TODO (at some point rename to Tape, i don´t think i'll have more tapes)
 
 // Base Tape00 
 UCLASS(Blueprintable, BlueprintType)
@@ -16,6 +19,7 @@ public:
 
 protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCQuickMesh* Case = nullptr;
 };
