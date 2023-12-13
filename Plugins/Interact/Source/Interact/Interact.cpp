@@ -70,7 +70,7 @@ void AInteract::SetMobility(EComponentMobility::Type Mobility) {
 void AInteract::Reset() {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"), __func__, *GetNameSafe(this));
 	Super::Reset();
-	SetState(0);
+	// SetState(0);
 }
 
 void AInteract::SetState_Implementation(int32 NewState) {

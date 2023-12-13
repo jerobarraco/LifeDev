@@ -85,7 +85,7 @@ void AInteractAnim::AnimPlay() {
 	}
 	// not calling PlaySet on purpose. since that could break things like the light.
 	// or if a child wants to do something weird.
-	Anim->Play();
+	Anim->Activate(true);
 }
 
 void AInteractAnim::AnimBegin_Implementation() {

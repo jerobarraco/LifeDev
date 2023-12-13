@@ -29,6 +29,8 @@ protected:
 	UFUNCTION()
 	void SetFB(float Value);
 
+	UFUNCTION()
+	void TurnOn();
 	// flickers when fb is >= this value. <0 means disabled.
 	UPROPERTY(BlueprintReadOnly, Category=SetUp)
 	float FlickrOnFB = -1;

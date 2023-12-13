@@ -72,10 +72,16 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	Anim->IsBouncing = true;
 }
 
+void ALLight::TurnOn() {
+	SetState(1); // 0 == closed == off
+}
+
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
 	SetFBFlicker(FlickrOnFB);
-	SetState(1); // 0 == closed == off
+	// doesnt work here immediately :(
+	FTimerHandle H;
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {

@@ -8,5 +8,5 @@ ATvI00::ATvI00() {
 
 void ATvI00::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
-	TriggerDlg = IsOpen() ? "TV00_T": "";
+	TriggerDlg = IsClosed() ? "": "TV00_T";
 }
