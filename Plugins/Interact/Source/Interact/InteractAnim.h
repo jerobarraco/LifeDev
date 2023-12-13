@@ -20,8 +20,10 @@ public:
 	// Flip-flops depending on the state. Starts closed.
 	// this also affects the "reversed" flag of the anim.
 	// If you need not to use the reversed animation then the "Trans" property.
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(DeprecatedFunction))
+	FORCEINLINE bool IsOpen() const { return !IsClosed();}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool IsOpen() const { return State % 2 != 0; }
+	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
 	
 	// whether it will trigger animations using the Anim component
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)

@@ -40,9 +40,9 @@ void ALLight00::AnimLight(float Progress, float Alpha) {
 }
 
 void ALLight00::BeginPlay() {
-	Super::BeginPlay();
-	Light->SetIntensity(IntensityMax);
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight00::AnimLight);
+	// will trigger the anim, so bind above
+	Super::BeginPlay();
 }
 
 void ALLight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {

@@ -76,6 +76,7 @@ void AInteract::Reset() {
 void AInteract::SetState_Implementation(int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s NewState=%i"), __func__, *GetNameSafe(this), NewState);
 	State = NewState;
+	SetText();
 }
 
 void AInteract::BeginPlay() {
@@ -111,7 +112,6 @@ void AInteract::Trigger_Implementation() {
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
-	SetText();
 	PlaySFX(SFX_Trigger);
 }
 

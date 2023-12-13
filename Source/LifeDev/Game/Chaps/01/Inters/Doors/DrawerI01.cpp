@@ -4,5 +4,5 @@
 
 void ADrawerI01::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
-	TriggerDlg = IsOpen() ? "DR01_T" : "";
+	TriggerDlg = IsClosed() ? "": "DR01_T";
 }

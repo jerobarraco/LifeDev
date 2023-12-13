@@ -47,6 +47,7 @@ void AInteractAnim::SetText_Implementation() {
 
 void AInteractAnim::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
+	// play the animation, since we want to make sure it ends where it needs to
 	AnimPlay();
 }
 
@@ -57,12 +58,14 @@ void AInteractAnim::Trigger_Implementation() {
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
+	// don't re-trigger if it's busy.
 	if (UseAnim && Anim->IsActive()) return false;
 	return Super::TryTrigger_Implementation();
 }
 
 void AInteractAnim::AnimPlay() {
 	if (!UseAnim) return;
+	
 	if (DisableWhileAnim) {
 		SetEnabled(false);
 	}
@@ -70,7 +73,11 @@ void AInteractAnim::AnimPlay() {
 	// both checks avoids an out of bound access
 	if (Trans.Num() ==0 || State < 0) {
 		// this creates so many issues. notice how it's set.
-		Anim->IsReversed = !IsOpen(); //!IsOpen== !(State!=0) 
+		// this plays AFTER the state has changed.
+		// which means: if it's open, it was closed, so it needs to play from Closed to Open
+		// closed means Alpha 0, open is Alpha 1 (0= left 1= right on the curve)
+		// Not reversed is 0 to 1 (close->Open), reversed is 1 to 0 (open->Close)
+		Anim->IsReversed = IsClosed(); 
 	} else {
 		// using troot since it could be changed in any child or parent
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();

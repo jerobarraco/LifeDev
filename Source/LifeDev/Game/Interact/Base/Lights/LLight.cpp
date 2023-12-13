@@ -14,12 +14,12 @@ ALLight::ALLight():Super() {
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
 
-	FlickrOnFB = .7;
 	UseAnim = true;
+	FlickrOnFB = .7;
 	StateNum = 2;
-	Texts = {FText::FromString(TEXT("Turn off")), FText::FromString(TEXT("Turn on"))};
+	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) };
 	Anim->TRoot = nullptr; // by default don't animate meshes
-	// Trans.Empty(); // force the simpler animation which will reverse the animation.
+	Trans.Empty(); // force the simpler animation which will reverse the animation.
 	
 	// these would trash the materials.
 	UseRewardFade = false;
@@ -75,7 +75,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
 	SetFBFlicker(FlickrOnFB);
-	SetState(0); // 0 == closed == on
+	SetState(1); // 0 == closed == off
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {

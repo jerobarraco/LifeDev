@@ -129,7 +129,7 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ATv00::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
 
-	const bool _IsOpen = IsOpen();
+	const bool _IsOpen = !IsClosed();
 	Noise->Fade(_IsOpen);
 
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
