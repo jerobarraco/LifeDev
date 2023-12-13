@@ -39,22 +39,25 @@ ALLight::ALLight():Super() {
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// disabled. since a light-source that is behind me might change the light in front of me.
 	Sig->RenderSinceMax = -1;
-
 	// by default is just a static light.
 	SetEnabled(false);
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
+	UWorld* const W = GetWorld();
+	UFlashback* const Fb = UFlashback::Get(W);
+    if (!Fb) return;
+
 	// first deactivate if needed. ALWAYS deactivate (important since this is accessibility).
 	// notice the this set the flickeronfb value for an actual flicker
 	if (NewFBFlicker <= 0) {
 		FlickrOnFB = NewFBFlicker;
 		Sig->Deactivate();
 		Rnd->Deactivate();
+		Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
 		return;
 	}
 
-	UWorld* const W = GetWorld();
 	// Feature flag. important.
 	if (!ULSettings::GetFeatS(W, EFeat::A_STROBE)) {
 		UE_LOG(LogTemp, Log,
@@ -62,19 +65,23 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 			__func__);
 		return;
 	}
-
-	UFlashback* const Fb = UFlashback::Get(W);
-	if (!Fb) return;
 	
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
-
-	UseAnim = true;
-	// magically will make it flicker and get back to where it was.
-	Anim->IsBouncing = true;
+	// TODO rework the fbflicker
 }
 
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+		UE_LOG(LogTemp, Log,
+			TEXT("LLigth: %hs. flag A_STROBE disabled. Disabling the light."),
+			__func__);
+		SetEnabled(false);
+		return;
+	}
+
+	// don't even bother with this if not A_STROBE is enabled
+	Sig->CompsTicks.AddUnique(Anim);
 	SetFBFlicker(FlickrOnFB);
 	// don't set the state here. it will break the child. we should not need it
 }

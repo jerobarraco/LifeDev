@@ -42,7 +42,7 @@ void AInteractAnim::SetText_Implementation() {
 	}
 
 	Interact->Text = Texts[State%Texts.Num()];
-	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: NewText=%s"), *Interact->Text.ToString());
+	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
 }
 
 void AInteractAnim::SetState_Implementation(int32 NewState) {
