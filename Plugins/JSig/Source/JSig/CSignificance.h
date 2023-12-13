@@ -53,13 +53,17 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE ESigValue GetSignificance() { return Significance; }
 
-	// if set, then when the actor is hidden, it will become insignificant (Off)
+	// if set, then when the actor is hidden, it will become insignificant (Off).
+	// See CompsHide and IsOffWhenHidden.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffWhenHidden = true;
 
 	// if set, when offscreen, it will be off, otherwise it will be low.
 	// this affects the CompsHide. when this is not set they will become invisible only by distance.
 	// (unless you've overriden the significance calculation)
+	// if IsOffWhenOffscreen is true, compHide contains the RootComponent, and IsOffWhenHidden is true,
+	// then, once the object is offscreen, it will be hidden,
+	// and then become insignificant and stay there and never reset. This is by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffWhenOffscreen = false;
 	
@@ -94,7 +98,8 @@ public:
 	// components to manage activate/deactivate. Not safe to use on Niagara. Use CompsHide
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
-	// components to manage hidden, ONLY when the significance is Off. see IsOffWhenOffscreen.
+	// components to manage hidden, ONLY when the significance is Off.
+	// see IsOffWhenOffscreen.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<USceneComponent*> CompsHide;
 
