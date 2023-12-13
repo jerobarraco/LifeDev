@@ -35,6 +35,7 @@ ALLight00::ALLight00():Super() {
 
 void ALLight00::AnimLight(float Progress, float Alpha) {
 	Light->SetIntensity(IntensityMax*Alpha);
+	// .05 since i modulate the intensity not on this one since it's a tungsten light
 	const bool IsOn = Alpha >= .05;
 	Light->SetVisibility(IsOn); // optimization
 }

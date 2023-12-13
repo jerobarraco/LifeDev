@@ -6,6 +6,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "JSig/CSignificance.h"
+
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -72,16 +73,10 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	Anim->IsBouncing = true;
 }
 
-void ALLight::TurnOn() {
-	SetState(1); // 0 == closed == off
-}
-
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
 	SetFBFlicker(FlickrOnFB);
-	// doesnt work here immediately :(
-	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
+	// don't set the state here. it will break the child. we should not need it
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {

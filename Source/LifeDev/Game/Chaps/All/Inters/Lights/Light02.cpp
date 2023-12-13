@@ -3,6 +3,7 @@
 #include "Light02.h"
 
 #include "Components/PointLightComponent.h"
+
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -14,12 +15,12 @@ ALight02::ALight02():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Cover.Lamp00_Cover"));
-	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Cover"));
-	Glass->SetupAttachment(Mesh);
-	Glass->SetStaticMesh(CTube.Object);
-	Glass->SetRelativeLocation(FVector(0,0,0));
-	Glass->SetCastAllShadows(true);
-	Glass->bCastDistanceFieldIndirectShadow = true;
+	Cover = CreateDefaultSubobject<UCQuickMesh>(TEXT("Cover"));
+	Cover->SetupAttachment(Mesh);
+	Cover->SetStaticMesh(CTube.Object);
+	Cover->SetRelativeLocation(FVector(0,0,0));
+	Cover->SetCastAllShadows(true);
+	Cover->bCastDistanceFieldIndirectShadow = true;
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
 	
@@ -27,10 +28,11 @@ ALight02::ALight02():Super() {
 	Interact->SetBoxExtent(FVector(20,20,90));
 
 	ALight02::SetMobility(EComponentMobility::Static);
+	SetEnabled(true); // this one is ok to toggle
 }
 
 void ALight02::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
-	Glass->SetMobility(Mobility);
+	Cover->SetMobility(Mobility);
 }
 

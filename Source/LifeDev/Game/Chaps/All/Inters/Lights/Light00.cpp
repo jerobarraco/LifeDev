@@ -58,7 +58,7 @@ void ALight00::UpdateAnim(float Progress, float Alpha) {
 }
 
 void ALight00::BeginPlay() {
-
+	Super::BeginPlay();
 	// DO NOT CREATE material instance on the constructor. or it will crash the editor at best.
 	// using metal instead of glass to avoid having to deal with transparency.
 	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
@@ -70,10 +70,7 @@ void ALight00::BeginPlay() {
 		UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, M);
 		Anim->Mat=MI;
 	}
-	// needs the material before
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
-	// will trigger the anim. so bind before.
-	Super::BeginPlay();
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {

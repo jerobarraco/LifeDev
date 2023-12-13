@@ -9,7 +9,7 @@ class UPointLightComponent;
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base class for Light02 actors
+// Base class for Light02 actors. Stand lamp.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALight02: public ALLight00 {
 	GENERATED_BODY()
@@ -21,5 +21,5 @@ protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Glass = nullptr;
+	UCQuickMesh* Cover = nullptr;
 };

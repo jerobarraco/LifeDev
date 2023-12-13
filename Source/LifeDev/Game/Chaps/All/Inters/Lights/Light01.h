@@ -9,7 +9,7 @@ class UPointLightComponent;
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base class for Light01 actors
+// Base class for Light01 actors. Glass Turtle light
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALight01: public ALLight00 {
 	GENERATED_BODY()

@@ -10,7 +10,7 @@
 class UCRandomizer;
 // Remember to set cast shadow on the correct meshes
 
-// Base class for LLight actors
+// Base class for light actors. doesn't include the light itself. see LLight00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight: public ALInteract {
 	GENERATED_BODY()
@@ -29,8 +29,6 @@ protected:
 	UFUNCTION()
 	void SetFB(float Value);
 
-	UFUNCTION()
-	void TurnOn();
 	// flickers when fb is >= this value. <0 means disabled.
 	UPROPERTY(BlueprintReadOnly, Category=SetUp)
 	float FlickrOnFB = -1;
