@@ -20,7 +20,8 @@ class STORY_API AStep : public AActor {
 
 public:
 	AStep();
-	
+	void DoTeleport();
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Start() ;
 	virtual void Start_Implementation();

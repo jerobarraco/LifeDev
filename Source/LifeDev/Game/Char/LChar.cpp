@@ -27,8 +27,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
-ALChar::ALChar(): Super()
-{
+ALChar::ALChar(): Super() {
 	Super::SetActorTickEnabled(false);
 
 	UCapsuleComponent* const Capsule = GetCapsuleComponent();
@@ -36,10 +35,10 @@ ALChar::ALChar(): Super()
 	Capsule->InitCapsuleSize(35.f, 75.0f);
 	Capsule->SetCapsuleSize(35,75,true);
 
-	UCharacterMovementComponent* const MovementComponent = GetCharacterMovement();
-	if (MovementComponent) {
-		MovementComponent->MaxWalkSpeed = 150;
-		MovementComponent->MaxWalkSpeedCrouched = 75;
+	UCharacterMovementComponent* const Movement = GetCharacterMovement();
+	if (Movement) {
+		Movement->MaxWalkSpeed = 150;
+		Movement->MaxWalkSpeedCrouched = 75;
 	}
 
 	// Create a CameraComponent
@@ -47,7 +46,7 @@ ALChar::ALChar(): Super()
 	Camera->SetupAttachment(Capsule);
 	// 40 is a biiit below c18, 45 is almost the same.
 	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 47.f)); // Position the camera
-	Camera->bUsePawnControlRotation = true;
+	Camera->bUsePawnControlRotation = true; // needed to be able to loop up
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh1P"));
