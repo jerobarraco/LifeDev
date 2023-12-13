@@ -29,6 +29,7 @@ ALight02::ALight02():Super() {
 
 	ALight02::SetMobility(EComponentMobility::Static);
 	SetEnabled(true); // this one is ok to toggle
+	// TODO fix the anim is disabled
 }
 
 void ALight02::SetMobility(EComponentMobility::Type Mobility) {

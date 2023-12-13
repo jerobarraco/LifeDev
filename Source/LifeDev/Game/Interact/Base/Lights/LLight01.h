@@ -8,7 +8,7 @@
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base class for rect lights
+// Base class for rect lights. TODO finish
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight01: public ALLight {
 	GENERATED_BODY()

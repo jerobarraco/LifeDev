@@ -53,5 +53,6 @@ void ALLight01::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALLight01::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	RectLight->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
+	// todo finish this and make the other rect inherit this
 }
 
