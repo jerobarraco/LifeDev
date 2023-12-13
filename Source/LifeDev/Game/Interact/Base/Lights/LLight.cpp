@@ -12,9 +12,6 @@
 
 // better to do light00 first then extract this one
 ALLight::ALLight():Super() {
-	// a bit dangerous to do on here. since it will execute before the constructor of the children
-	ALLight::SetMobility(EComponentMobility::Static);
-
 	UseAnim = true;
 	FlickrOnFB = .7;
 	StateNum = 2;
@@ -41,6 +38,8 @@ ALLight::ALLight():Super() {
 	Sig->RenderSinceMax = -1;
 	// by default is just a static light.
 	SetEnabled(false);
+	// a bit dangerous to do on here. since it will execute before the constructor of the children
+	ALLight::SetMobility(EComponentMobility::Static);
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
@@ -72,6 +71,9 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
+	// don't set the state here. it will break the child. we should not need it
+    FTimerHandle H;
+    GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
 		UE_LOG(LogTemp, Log,
 			TEXT("LLigth: %hs. flag A_STROBE disabled. Disabling the light."),
@@ -81,11 +83,9 @@ void ALLight::BeginPlay() {
 	}
 
 	// don't even bother with this if not A_STROBE is enabled
-	Sig->CompsTicks.AddUnique(Anim);
+	// Sig->CompsTicks.AddUnique(Anim); // will break the anim. TODO fix
 	SetFBFlicker(FlickrOnFB);
-	// don't set the state here. it will break the child. we should not need it
-	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
+	
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
