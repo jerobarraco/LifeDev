@@ -54,7 +54,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		FlickrOnFB = NewFBFlicker;
 		Sig->Deactivate();
 		Rnd->Deactivate();
-		Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
+		Fb->OnChange.RemoveAll(this);
 		return;
 	}
 
@@ -84,6 +84,8 @@ void ALLight::BeginPlay() {
 	Sig->CompsTicks.AddUnique(Anim);
 	SetFBFlicker(FlickrOnFB);
 	// don't set the state here. it will break the child. we should not need it
+	FTimerHandle H;
+	GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -93,6 +95,10 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALLight::TurnOn() {
+	SetState(1);
 }
 
 void ALLight::SetFB(float Value) {

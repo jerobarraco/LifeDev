@@ -3,7 +3,6 @@
 #include "LLight01.h"
 
 #include "Components/RectLightComponent.h"
-#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
