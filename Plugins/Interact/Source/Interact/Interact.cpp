@@ -74,7 +74,7 @@ void AInteract::Reset() {
 }
 
 void AInteract::SetState_Implementation(int32 NewState) {
-	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s NewState=%i"), __func__, *GetNameSafe(this), NewState);
+	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"), __func__, NewState, *GetNameSafe(this));
 	State = NewState;
 	SetText();
 }
