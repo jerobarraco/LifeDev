@@ -8,7 +8,7 @@
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base class for rect lights. TODO finish
+// Base class for rect lights.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight01: public ALLight {
 	GENERATED_BODY()
@@ -17,11 +17,8 @@ public:
 	ALLight01();
 
 protected:
-	UFUNCTION() // bind
-	void UpdateAnim(float Progress, float Alpha);
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+	virtual void AnimUpdate_Implementation(float P, float A) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	URectLightComponent* RectLight = nullptr;

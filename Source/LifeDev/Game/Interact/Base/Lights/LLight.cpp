@@ -9,6 +9,7 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Interact/CLSignificance.h"
 
 // better to do light00 first then extract this one
 ALLight::ALLight():Super() {
@@ -33,9 +34,13 @@ ALLight::ALLight():Super() {
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
 
-	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	// disabled. since a light-source that is behind me might change the light in front of me.
+	// only change due to distance
 	Sig->RenderSinceMax = -1;
+	// don't off when offscreen. the light might still be onscreen 
+	Sig->IsOffWhenOffscreen = false;
+	
 	// by default is just a static light.
 	SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
@@ -51,7 +56,6 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	// notice the this set the flickeronfb value for an actual flicker
 	if (NewFBFlicker <= 0) {
 		FlickrOnFB = NewFBFlicker;
-		Sig->Deactivate();
 		Rnd->Deactivate();
 		Fb->OnChange.RemoveAll(this);
 		return;
@@ -64,28 +68,32 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 			__func__);
 		return;
 	}
-	
+
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
-	// TODO rework the fbflicker
 }
 
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
+	// optimize the anim
+	Sig->BindAnim(Anim);
+	Sig->CompsTicks.AddUnique(Anim); // will break the anim
+	
 	// don't set the state here. it will break the child. we should not need it
     FTimerHandle H;
-    GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 3);
-	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+    GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 1);
+
+	const bool CanStrobe = ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE);
+	if (!CanStrobe) {
 		UE_LOG(LogTemp, Log,
-			TEXT("LLigth: %hs. flag A_STROBE disabled. Disabling the light."),
+			TEXT("LLigth: %hs. flag A_STROBE disabled. Disabling the light and UseAnim."),
 			__func__);
-		SetEnabled(false);
+		UseAnim = false;
 		return;
 	}
 
-	// don't even bother with this if not A_STROBE is enabled
-	// Sig->CompsTicks.AddUnique(Anim); // will break the anim. TODO fix
+	// don't even bother with these if not A_STROBE is enabled
+	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
 	SetFBFlicker(FlickrOnFB);
-	
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -94,7 +102,18 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Fb->OnChange.RemoveAll(this);
 	}
 
+	Anim->OnUpdate.RemoveAll(this);
+
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALLight::SetState_Implementation(int32 NewState) {
+	Super::SetState_Implementation(NewState);
+	// force light change when strobe is disabled
+	if (!UseAnim) {
+		const float P = IsClosed() ? 0 : 1;
+		AnimUpdate(P, P);
+	}
 }
 
 void ALLight::TurnOn() {

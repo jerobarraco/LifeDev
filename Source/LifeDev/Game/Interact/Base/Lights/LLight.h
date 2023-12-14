@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "JSig/CSignificance.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LLight.generated.h"
 
+class UCLSignificance;
 class UCRandomizer;
 // Remember to set cast shadow on the correct meshes
 
@@ -25,18 +25,24 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AnimUpdate(float P, float A);
+	virtual void AnimUpdate_Implementation(float P, float A) {};
+
+	virtual void SetState_Implementation(int32 NewState) override;
 	
-	UFUNCTION()
+	UFUNCTION() // bind
 	void TurnOn();
-	UFUNCTION()
+	UFUNCTION() // bind
 	void SetFB(float Value);
 
 	// flickers when fb is >= this value. <0 means disabled.
-	UPROPERTY(BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	float FlickrOnFB = -1;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCRandomizer* Rnd = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCSignificance* Sig = nullptr;
+	UCLSignificance* Sig = nullptr;
 };

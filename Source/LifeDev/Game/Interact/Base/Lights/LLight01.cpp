@@ -24,8 +24,8 @@ ALLight01::ALLight01():Super() {
 	RectLight->SetRelativeLocation(FVector(0.5,7.5,101));
 	RectLight->SetRelativeRotation(FRotator(90,90,0));
 	RectLight->SetIntensityUnits(ELightUnits::Lumens);
-	RectLight->SetIntensity(1.5);
-	RectLight->SetAttenuationRadius(701);
+	RectLight->SetIntensity(1);
+	RectLight->SetAttenuationRadius(1000);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.010101);
@@ -34,25 +34,13 @@ ALLight01::ALLight01():Super() {
 	ALLight01::SetMobility(EComponentMobility::Static);
 }
 
-void ALLight01::UpdateAnim(float Progress, float Alpha) {
-	const bool IsOn = Alpha >= .45;
-	RectLight->SetVisibility(IsOn);
-}
-
-void ALLight01::BeginPlay() {
-	Super::BeginPlay();
-	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight01::UpdateAnim);
-}
-
-void ALLight01::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Anim->OnUpdate.RemoveAll(this);
-	Anim->Mat = nullptr;
-	Super::EndPlay(EndPlayReason);
-}
-
 void ALLight01::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	RectLight->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
-	// todo finish this and make the other rect inherit this
+}
+
+void ALLight01::AnimUpdate_Implementation(float P, float A) {
+	Super::AnimUpdate_Implementation(P, A);
+	RectLight->SetHiddenInGame(A<.5);
 }
 

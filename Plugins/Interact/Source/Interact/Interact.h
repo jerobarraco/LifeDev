@@ -61,6 +61,7 @@ public:
 	// override it to do something when it's triggered or reset.
 	// call it to change the state without triggering.
 	// called when the state changes because it triggered.
+	// Starts at state 0 == closed == off
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void SetState(int32 NewState);
 	virtual void SetState_Implementation(int32 NewState);

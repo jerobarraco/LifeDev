@@ -18,14 +18,11 @@ public:
 	ALLight00();
 
 protected:
-	UFUNCTION() // bind
-	void AnimLight(float Progress, float Alpha);
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
-
+	virtual void AnimUpdate_Implementation(float P, float A) override;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float IntensityMax = 2;
+	float IntensityMax = 1;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UPointLightComponent* Light = nullptr;

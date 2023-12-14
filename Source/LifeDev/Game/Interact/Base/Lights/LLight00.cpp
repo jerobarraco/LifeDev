@@ -33,22 +33,11 @@ ALLight00::ALLight00():Super() {
 	ALLight00::SetMobility(EComponentMobility::Static);
 }
 
-void ALLight00::AnimLight(float Progress, float Alpha) {
+void ALLight00::AnimUpdate_Implementation(float Progress, float Alpha) {
 	Light->SetIntensity(IntensityMax*Alpha);
 	// .05 since i modulate the intensity not on this one since it's a tungsten light
 	const bool IsOn = Alpha >= .05;
 	Light->SetVisibility(IsOn); // optimization
-}
-
-void ALLight00::BeginPlay() {
-	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight00::AnimLight);
-	// will trigger the anim, so bind above
-	Super::BeginPlay();
-}
-
-void ALLight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Anim->OnUpdate.RemoveAll(this);
-	Super::EndPlay(EndPlayReason);
 }
 
 void ALLight00::SetMobility(EComponentMobility::Type Mobility) {

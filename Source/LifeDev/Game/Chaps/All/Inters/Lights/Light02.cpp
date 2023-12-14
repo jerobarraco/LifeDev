@@ -8,6 +8,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ALight02::ALight02():Super() {
+	UseAnim = true;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
 	Mesh->SetRelativeLocation(FVector(-20,20,0));
@@ -29,7 +30,6 @@ ALight02::ALight02():Super() {
 
 	ALight02::SetMobility(EComponentMobility::Static);
 	SetEnabled(true); // this one is ok to toggle
-	// TODO fix the anim is disabled
 }
 
 void ALight02::SetMobility(EComponentMobility::Type Mobility) {

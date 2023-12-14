@@ -34,13 +34,8 @@ ALight00::ALight00():Super() {
 		Anim->Curve = CCurve.Object;
 	}
 	
-	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
-	RectLight->SetupAttachment(Mesh);
 	RectLight->SetRelativeLocation(FVector(0.5,7.5,100));
 	RectLight->SetRelativeRotation(FRotator(90,90,0));
-	RectLight->SetIntensityUnits(ELightUnits::Lumens);
-	RectLight->SetIntensity(1.5);
-	RectLight->SetAttenuationRadius(700);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
@@ -50,11 +45,6 @@ ALight00::ALight00():Super() {
 	Interact->SetBoxExtent(FVector(900,200,150));
 
 	ALight00::SetMobility(EComponentMobility::Static);
-}
-
-void ALight00::UpdateAnim(float Progress, float Alpha) {
-	const bool IsOn = Alpha >= .45;
-	RectLight->SetVisibility(IsOn);
 }
 
 void ALight00::BeginPlay() {
@@ -70,11 +60,9 @@ void ALight00::BeginPlay() {
 		UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, M);
 		Anim->Mat=MI;
 	}
-	Anim->OnUpdate.AddUniqueDynamic(this, &ALight00::UpdateAnim);
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Anim->OnUpdate.RemoveAll(this);
 	Anim->Mat = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
@@ -82,6 +70,5 @@ void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALight00::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	Tube->SetMobility(Mobility);
-	RectLight->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
 }
 
