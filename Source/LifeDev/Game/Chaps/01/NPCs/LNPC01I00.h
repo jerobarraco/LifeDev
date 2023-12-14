@@ -3,14 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 
 #include "LNPC01I00.generated.h"
 
 class UCAnimatorCam;
-// TODO move stuff from base to here
+
 // the instance for the npc01 in chapter 01 at boss step 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPC01I00 : public ALNPC01 {

@@ -2,6 +2,7 @@
 #include "LNPC02.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 
 ALNPC02::ALNPC02():Super() {
 	UseAnim = false;
@@ -83,5 +84,7 @@ ALNPC02::ALNPC02():Super() {
 
 	Interact->SetRelativeLocation(FVector(0,0,65));
 	Interact->SetBoxExtent(FVector(25,20,65));
+
+	AnimFade->SetNewMat();
 }
 

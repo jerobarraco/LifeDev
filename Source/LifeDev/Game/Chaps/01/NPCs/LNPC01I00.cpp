@@ -3,8 +3,6 @@
 
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorCam.h"
-#include "Interact/Animator/CAnimatorFade.h"
-#include "JUtils/Actors/CQuickMesh.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -67,5 +65,3 @@ void ALNPC01I00::DiagStandDone() {
 
 	DoRewards(); // give the card and disappear
 }
-
-// TODO use reward actor for the card remove the card attribute from the parent

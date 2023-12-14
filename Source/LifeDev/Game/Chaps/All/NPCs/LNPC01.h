@@ -8,7 +8,7 @@
 
 #include "LNPC01.generated.h"
 
-// TODO move stuff from here to the child npc01I00
+// base class for npc1 "char18"
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPC01 : public ALNPCH {
 	GENERATED_BODY()
@@ -25,14 +25,10 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetVisible(bool Vis);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	AActor* Card = nullptr;
-	
 protected:
-	virtual void BeginPlay() override;
-	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FNPCHPose PoseSit;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FNPCHPose PoseStand;
 };

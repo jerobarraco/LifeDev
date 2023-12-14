@@ -50,7 +50,3 @@ void UCAnimatorFade::CreateMaterial() {
 	// Since they all share the same material instance i don't even need to have my own "update"
 }
 
-void UCAnimatorFade::BeginPlay() {
-	Super::BeginPlay();
-}
-

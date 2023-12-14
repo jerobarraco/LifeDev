@@ -8,6 +8,7 @@
 
 #include "LNPC02.generated.h"
 
+// base class for npc02 "char11"
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPC02 : public ALNPCH {
 	GENERATED_BODY()
