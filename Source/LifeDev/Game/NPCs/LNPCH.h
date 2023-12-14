@@ -57,36 +57,33 @@ public:
 	void SetPose(const FNPCHPose& Pose);
 
 protected:
-	// virtual void BeginPlay() override;
-	// virtual void SetFadeMat_Implementation() override;
-	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FNPCHPose PoseBase;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* Head;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* Torso;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* Pelvis;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* ArmL1;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* ArmR1;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* ArmL2;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* ArmR2;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* LegL1;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* LegR1;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* LegL2;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* LegR2;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* FootL;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* FootR;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* Head = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* Torso = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* Pelvis = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* ArmL1 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* ArmR1 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* ArmL2 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* ArmR2 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* LegL1 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* LegR1 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* LegL2 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* LegR2 = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* FootL = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UStaticMeshComponent* FootR = nullptr;
 };

@@ -27,6 +27,7 @@ ALNPCH::ALNPCH():Super() {
 
 	ArmL2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmL2"));
 	ArmL2->SetupAttachment(ArmL1);
+
 	ArmR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmR2"));
 	ArmR2->SetupAttachment(ArmR1);
 	
