@@ -81,6 +81,8 @@ ALNPC02::ALNPC02():Super() {
 	FootR->SetStaticMesh(CMesh13.Object);
 	FootR->SetRelativeLocation(FVector(0,0,-15));
 
+	Interact->SetRelativeLocation(FVector(0,0,65));
+	Interact->SetBoxExtent(FVector(25,20,65));
 
 	// TODO this poses are wrong
 	PoseStand.InteractOrg = FVector(2.500000,5.000000,67.500000);

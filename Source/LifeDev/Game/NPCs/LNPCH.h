@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LNPC.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LNPCH.generated.h"
 
@@ -47,7 +47,7 @@ struct FNPCHPose {
 
 // Base class for human-like npcs
 UCLASS(Blueprintable, BlueprintType)
-class ALNPCH : public ALNPC{
+class ALNPCH : public ALInteract {
 	GENERATED_BODY()
 
 public:

@@ -14,14 +14,6 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
-
-	AnimFade->Duration = 2;
-	AnimFade->Meshes = {
-		Mesh, Head, Torso, Pelvis,
-		ArmL1, ArmL2, ArmR1, ArmR2,
-		LegL1, LegL2, LegR1, LegR2,
-		FootL, FootR
-	};
 }
 
 void ALNPC01I00::BeginPlay() {
@@ -75,3 +67,5 @@ void ALNPC01I00::DiagStandDone() {
 
 	DoRewards(); // give the card and disappear
 }
+
+// TODO use reward actor for the card remove the card attribute from the parent
