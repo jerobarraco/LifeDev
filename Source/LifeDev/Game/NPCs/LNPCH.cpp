@@ -9,7 +9,7 @@ ALNPCH::ALNPCH():Super() {
 	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("Talk") };
-	
+
 	Pelvis = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pelvis"));
 	Pelvis->SetupAttachment(Mesh);
 

@@ -30,6 +30,6 @@ protected:
 	UFUNCTION()
 	void DiagSitDone();
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCAnimatorCam* AnimCam = nullptr;
 };

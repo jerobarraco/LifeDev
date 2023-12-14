@@ -8,16 +8,17 @@
 #include "LNPCI01.generated.h"
 
 class UCAnimatorCam;
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPCI01 : public ALNPC02 {
 	GENERATED_BODY()
 
 public:
 	ALNPCI01();
-	void BeginPlay();
 
 protected:
+	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCAnimatorCam* AnimCam = nullptr;
 };
