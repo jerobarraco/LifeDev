@@ -13,4 +13,5 @@ void ALNPCI01::BeginPlay() {
 	Super::BeginPlay();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
+	// AnimCam->Target = 
 }
