@@ -17,17 +17,5 @@ public:
 	ALNPC02();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetPoseStand();
-
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetPoseSit();
-
-	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetVisible(bool Vis);
-	
-protected:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FNPCHPose PoseSit;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FNPCHPose PoseStand;
 };
