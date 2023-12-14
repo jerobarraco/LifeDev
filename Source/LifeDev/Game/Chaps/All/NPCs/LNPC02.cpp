@@ -35,13 +35,13 @@ ALNPC02::ALNPC02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh5(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/NPC02/Parts/Right_Arm_High.Right_Arm_High"));
 	ArmR1->SetStaticMesh(CMesh5.Object);
-	ArmR1->SetRelativeLocation(FVector(0.000000,-15,30));
+	ArmR1->SetRelativeLocation(FVector(0,-15,30));
 
 	// (X=-30.000000,Y=12.500000,Z=-55.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh6(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/NPC02/Parts/LeftArm_Low.LeftArm_Low"));
 	ArmL2->SetStaticMesh(CMesh6.Object);
-	ArmL2->SetRelativeLocation(FVector(0,-2.5,-20));
+	ArmL2->SetRelativeLocation(FVector(0,2.5,-20));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh7(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/NPC02/Parts/Right_Arm_Low.Right_Arm_Low"));
@@ -82,6 +82,7 @@ ALNPC02::ALNPC02():Super() {
 	FootR->SetRelativeLocation(FVector(0,0,-15));
 
 
+	// TODO this poses are wrong
 	PoseStand.InteractOrg = FVector(2.500000,5.000000,67.500000);
 	PoseStand.InteractExt = FVector(20.000000,30.000000,70.000000);
 	PoseStand.Pelvis.SetLocation(FVector(0,0,50));
@@ -118,7 +119,7 @@ ALNPC02::ALNPC02():Super() {
 	PoseSit.LegR2.SetRotation(FRotator(-50.000000,0.000000,0.000000).Quaternion());
 	PoseSit.FootR.SetRotation(FRotator(-20.000000,0.000000,0.000000).Quaternion());
 
-	SetPose(PoseSit);
+	// SetPose(PoseSit);
 }
 
 void ALNPC02::SetPoseStand() {
