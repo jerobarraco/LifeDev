@@ -19,6 +19,8 @@ ABasinI00::ABasinI00():Super() {
 	
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
+	
+	SetEnabled(true); // this is necessary for some reason. TODO fix 
 }
 
 void ABasinI00::Trigger_Implementation() {

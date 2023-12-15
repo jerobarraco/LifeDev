@@ -17,7 +17,7 @@ bool ADoorI05::TryTrigger_Implementation() {
 	// verify the state. (pull not push, just like agile).
 	if (!Flags->IsSet(LDConsts::Flags::CH0::Basin)) {
 		LockedDlg = "D05_L.Basin";
-	} else if (!Flags->IsSet(LDConsts::Flags::CH0::SpotI02)) {
+	} else if (!Flags->IsSet(LDConsts::Flags::CH0::Spot)) {
 		LockedDlg = "D05_L.Spot";
 	} else if (!Inventory->Has(LDConsts::Items::Card0)) {
 		LockedDlg = "D05_L.C0";

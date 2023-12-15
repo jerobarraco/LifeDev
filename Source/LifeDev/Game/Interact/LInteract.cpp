@@ -9,7 +9,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-#pragma optimize("", off)
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
@@ -205,4 +204,3 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
 }
-#pragma optimize("", on)
