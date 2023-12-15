@@ -15,18 +15,24 @@ ADoorI10::ADoorI10():Super() {
 }
 
 void ADoorI10::Shoot() {
+	UWorld* const W = GetWorld();
+	if (!W) return;
+
 	PlaySFX(SFX_Gun);
-	Flashback->ModVal(.3, .5);
+	if (Flashback->GetVal()<.5) {
+		Flashback->SetVal(.5, 1);
+	}
 	Dialogs->AddId("D10_Gun");
-	LockedDlg = "D10_L.1";
-	UStory::Get(GetWorld())->StartNext("C2S0");
+	LockedDlg = "D10_L.1"; // new dialog from now on
+	UStory::Get(W)->StartNext("C2S0");
 }
 
 bool ADoorI10::TryTrigger_Implementation() {
 	if(!Interacted) {
 		FTimerHandle H;
-		GetWorld()->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 2);
-		Shoot();
+		UWorld* const World = GetWorld();
+		if (!World) return false;
+		World->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 3);
 	}
 	Interacted = true;
 
