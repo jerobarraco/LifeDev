@@ -19,7 +19,7 @@ void ADoorI10::Shoot() {
 	Flashback->ModVal(.3, .5);
 	Dialogs->AddId("D10_Gun");
 	LockedDlg = "D10_L.1";
-	UStory::Get(GetWorld())->StartNextStep("C2S0");
+	UStory::Get(GetWorld())->StartNext("C2S0");
 }
 
 bool ADoorI10::TryTrigger_Implementation() {

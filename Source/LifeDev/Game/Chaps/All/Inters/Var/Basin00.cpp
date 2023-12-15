@@ -52,7 +52,8 @@ ABasin00::ABasin00():Super() {
 
 void ABasin00::BeginPlay() {
 	Super::BeginPlay();
-	Sig->CompsHide.AddUnique(GetRootComponent());
+	// Sig->CompsHide.AddUnique(GetRootComponent());
+	// don't do this. it will disable the interact and never come back 
 	Sig->CompsHide.AddUnique(Water);
 }
 

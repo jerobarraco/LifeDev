@@ -208,7 +208,7 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	if (Sequence.IsEmpty()) return false;
 
 	OnSeqStart.Broadcast();
-	return StartNextStep();
+	return StartNext();
 }
 
 void UStory::AutoFade(const FText& Title) {

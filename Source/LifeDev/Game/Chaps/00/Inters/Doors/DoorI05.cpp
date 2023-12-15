@@ -34,5 +34,5 @@ void ADoorI05::Trigger_Implementation() {
 
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
-	Story->StartNextStep(Step);
+	Story->StartNext(Step);
 }

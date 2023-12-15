@@ -20,7 +20,7 @@ void ATapeI01::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 	UStory* const Story = UStory::Get(GetWorld());
 	if (!Story) return;
-	Story->StartNextStep("C1S1");
+	Story->StartNext("C1S1");
 	
 	AnimFade->OnEnd.AddUniqueDynamic(this, &ATapeI01::K2_DestroyActor);
 	Fade(false);
