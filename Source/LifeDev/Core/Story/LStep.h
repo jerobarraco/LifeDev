@@ -7,6 +7,7 @@
 
 #include "LStep.generated.h"
 
+class UFlashback;
 class UDiags;
 class UInventory;
 
@@ -54,8 +55,10 @@ protected:
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Dialogs = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlashback* FB = nullptr;
 };

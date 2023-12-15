@@ -3,6 +3,7 @@
 
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
@@ -27,8 +28,11 @@ void ALStep::Stop_Implementation() {
 		Inventory->OnMod.RemoveAll(this);
 	}
 
-	// ensure we don't double trigger
-	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+	UWorld* const W = GetWorld();
+	if (W) {
+		// ensure we don't double trigger
+		W->GetTimerManager().ClearAllTimersForObject(this);
+	}
 
 	Super::Stop_Implementation();
 }
@@ -73,8 +77,10 @@ void ALStep::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
+	if (!World) return;
 	Dialogs = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
+	FB = World->GetSubsystem<UFlashback>();
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -86,6 +92,7 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Inventory->OnMod.RemoveAll(this);
 	}
 	Inventory = nullptr;
+	FB = nullptr;
 	// always at end
 	Super::EndPlay(EndPlayReason);
 }

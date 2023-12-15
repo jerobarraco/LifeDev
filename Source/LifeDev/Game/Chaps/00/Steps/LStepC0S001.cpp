@@ -21,16 +21,13 @@ ALStepC0S001::ALStepC0S001():Super() {
 
 void ALStepC0S001::Start_Implementation() {
 	Super::Start_Implementation();
-	if (IsValid(FakeChar)) {
+	if (IsValid(FakeChar)) { // Should be on begin play ?
 		FakeChar->SetActorHiddenInGame(false);
 	}
 
 	UWorld* const W = GetWorld();
-	UFlashback* const Flashback = UFlashback::Get(W);
-	if (Flashback) {
-		Flashback->SetMax(1);
-		Flashback->SetVal(1, 10);
-	}
+	FB->SetMax(1);
+	FB->SetVal(1, 10);
 
 	ALMusicMan::SetRainS(W, true);
 
@@ -53,7 +50,7 @@ void ALStepC0S001::Stop_Implementation() {
 	}
 
 	ALMusicMan::SetRainS(W, false);
-	UFlashback::SetValS(W, 0);
+	FB->SetVal(0);
 }
 
 void ALStepC0S001::DestroyActors() {
@@ -80,6 +77,7 @@ void ALStepC0S001::BeginPlay() {
 }
 
 void ALStepC0S001::TeleportPlayer() {
+	// TODO use TeleportChar on the next step and use the step position in the world instead :V
 	if (!IsValid(PlayerPos)) {
 		UE_LOG(LogTemp, Log, TEXT("Player pos not set on C0S001"));
 		return;

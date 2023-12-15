@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Diags/DiagTypes.h"
 #include "LifeDev/Core/Story/LStep.h"
 
 #include "LStepC2S001.generated.h"
+
+class AGhosts;
 
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S001 : public ALStep {
@@ -13,6 +16,21 @@ class ALStepC2S001 : public ALStep {
 
 public:
 	ALStepC2S001();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FVector GhostPos = FVector(210,-42,-65);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	AActor* FakeChar = nullptr;
+
 protected:
-	void Start_Implementation() override;
+	virtual void BeginPlay() override;
+	virtual void Start_Implementation() override;
+	virtual void Stop_Implementation() override;
+	UFUNCTION()
+	void DestroyActors();
+	UFUNCTION()
+	void ShowDlg(const FDialog& Diag);
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AGhosts* Ghosts = nullptr;
 };
