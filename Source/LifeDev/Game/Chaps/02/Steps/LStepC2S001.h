@@ -9,6 +9,7 @@
 #include "LStepC2S001.generated.h"
 
 class AGhosts;
+class ALInteract;
 
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S001 : public ALStep {
@@ -20,7 +21,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FVector GhostPos = FVector(210,-42,-65);
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* FakeChar = nullptr;
+	ALInteract* FakeChar = nullptr;
 
 protected:
 	virtual void BeginPlay() override;

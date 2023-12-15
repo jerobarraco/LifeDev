@@ -13,6 +13,7 @@ class ALStepC2S000 : public ALStep {
 
 public:
 	ALStepC2S000();
+
 protected:
 	void Start_Implementation() override;
 };

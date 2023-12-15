@@ -32,10 +32,9 @@ ALStepC2S000::ALStepC2S000():Super() {
 
 void ALStepC2S000::Start_Implementation() {
 	Super::Start_Implementation();
-	
-	UFlashback* const Flashback = UFlashback::Get(GetWorld());
-	if (!Flashback) return;
-	Flashback->SetMax(.75);
-	Flashback->SetMin(0);
-	Flashback->SetVal(.20, .5);
+
+	if (!FB) return;
+	FB->SetMax(.75);
+	FB->SetMin(0);
+	FB->SetVal(.20, .5);
 }

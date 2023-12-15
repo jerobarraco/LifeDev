@@ -5,6 +5,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 
 ALStepC2S001::ALStepC2S001():Super() {
 	static const FName N("C2S1");
@@ -21,7 +22,7 @@ ALStepC2S001::ALStepC2S001():Super() {
 void ALStepC2S001::BeginPlay() {
 	Super::BeginPlay();
 	if (IsValid(FakeChar)) {
-		FakeChar->SetActorHiddenInGame(false);
+		FakeChar->SetActorHiddenInGame(true);
 	}
 }
 
@@ -30,12 +31,13 @@ void ALStepC2S001::Start_Implementation() {
 	if (!W) return;
 
 	// make the fb raise progressively with the dialogs
-	// bind before the super since it will trigger the dialogs probably
-	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
-	
 	FB->SetMax(1);
 	FB->SetMin(0);
 	// Flashback->SetVal(1, 10);
+	// bind before the super since it will trigger the dialogs probably
+	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
+	
+	Super::Start_Implementation();
 	
 	ALMusicMan::SetRainS(W, true);
 
@@ -46,7 +48,10 @@ void ALStepC2S001::Start_Implementation() {
 		Ghosts->SetPlaying(true);
 	}
 
-	Super::Start_Implementation();
+	if (IsValid(FakeChar)) {
+		FakeChar->SetActorHiddenInGame(false);
+		FakeChar->Fade(true);
+	}
 }
 
 void ALStepC2S001::Stop_Implementation() {
@@ -61,8 +66,12 @@ void ALStepC2S001::Stop_Implementation() {
 		W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, WaitTime);
 	}
 
+	if (IsValid(FakeChar)) {
+		FakeChar->Fade(false);
+	}
+
 	ALMusicMan::SetRainS(W, false);
-	FB->SetVal(.05);
+	FB->SetVal(.05, 10);
 
 	Super::Stop_Implementation();
 }
@@ -84,5 +93,5 @@ void ALStepC2S001::DestroyActors() {
 }
 
 void ALStepC2S001::ShowDlg(const FDialog& Diag) {
-	FB->ModVal(.2);
+	FB->ModVal(.1);
 }
