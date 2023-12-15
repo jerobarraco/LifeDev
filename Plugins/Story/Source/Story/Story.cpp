@@ -1,5 +1,6 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: GPL-2.0
+
 #include "Story.h"
 
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
@@ -89,33 +90,23 @@ bool UStory::Start(const FName& Name) {
 			OnFade.Broadcast(false, FText::GetEmpty());
 		};
 
-		FTimerHandle H2;
-		FTimerDelegate TD2;
-		TD2.BindLambda(l2);
 		UWorld* const World = GetWorld();
 		if (!World) {
 			UE_LOG(LogStory, Warning, TEXT("No world while attempted to fade out. i guess everything will be black."));
 			return;
 		}
-		World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
+		FTimerHandle H2;
+		World->GetTimerManager().SetTimer(H2, l2, FadeTime+HoldTime, false);
 	};
 
 	FTimerHandle H;
-	FTimerDelegate TD;
-	TD.BindLambda(l);
-	World->GetTimerManager().SetTimer(H, TD, FadeTime, false);
+	World->GetTimerManager().SetTimer(H, l, FadeTime, false);
 
 	return false;
 }
 
-void UStory::Stop(const FName& Name) {
+void UStory::Stop() {
 	if (!IsValid(Current)) return; // nothing to stop
-
-	if (!Name.IsNone() && Current->Name != Name) {
-		UE_LOG(LogStory, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
-			*Current->Name.ToString(), *Name.ToString());
-		return;
-	}
 
 	// clear up the Current variable so that the broadcast and startnextstep works fine.
 	AStep* const Step = Current;
@@ -123,10 +114,9 @@ void UStory::Stop(const FName& Name) {
 	
 	UE_LOG(LogStory, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
 	Step->Stop();
+
 	// Call before starting the next step
 	OnStop.Broadcast(Step);
-	
-	StartNextStep();
 }
 
 void UStory::Add(AStep* Step) {
@@ -194,9 +184,17 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
 	*/
 }
 
-bool UStory::StartNextStep() {
+bool UStory::StartNext(const FName& CurrentName) {
+	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
+	if (!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName) {
+		UE_LOG(LogStory, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
+			*Current->Name.ToString(), *CurrentName.ToString());
+		return false;
+	}
+	
 	++SeqStep;
 	if (SeqStep >= Sequence.Num()) {
+		Stop();
 		OnSeqStop.Broadcast();
 		return false;
 	}

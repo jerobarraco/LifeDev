@@ -4,6 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "Story/Story.h"
 
 ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L";
@@ -18,6 +19,7 @@ void ADoorI10::Shoot() {
 	Flashback->ModVal(.3, .5);
 	Dialogs->AddId("D10_Gun");
 	LockedDlg = "D10_L.1";
+	UStory::Get(GetWorld())->StartNextStep("C2S0");
 }
 
 bool ADoorI10::TryTrigger_Implementation() {

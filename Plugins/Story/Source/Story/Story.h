@@ -34,23 +34,30 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
 
+	// starts a sequence. if one is already running it will override it.
 	UFUNCTION(BlueprintCallable)
 	bool StartSequence(const TArray<FName>& InSeq);
 
-	// starts a step by the name. stops the current one before that.
+	// The main function to call.
+	// Stops the current step and starts the next one.
+	// the name is a protection mechanism mostly, used by the story steps.
+	UFUNCTION(BlueprintCallable)
+	bool StartNext(const FName& CurrentName = NAME_None);
+	
+	// force starts a step by the name (skips fading). stops the current one before that.
 	UFUNCTION(BlueprintCallable)
 	bool StartNow(AStep* NewStep);
 
-	// starts a step by the name. stops the current one before that.
-	// to over-write the previous
+	// starts a step by the name. stops the current one before that
+	// Stop is preferred to allow changes in the sequence since itś better that each step doesn't need to know about the others,
+	// and when you change the story you'll be embedded in a step. So stop make more sense than start.
 	UFUNCTION(BlueprintCallable)
 	bool Start(const FName& Name);
 
-	// stops a step. if not specified it will stop the current one. then it will start the next.
-	// the name is a protection mechanism mostly, used by the story steps.
+	// stops a step. if not specified it will stop the current one.
 	UFUNCTION(BlueprintCallable)
-	void Stop(const FName& Name=NAME_None);
-
+	void Stop();
+	
 	UFUNCTION(BlueprintCallable)
 	void Add(AStep* Step);
 
@@ -87,8 +94,6 @@ public:
 protected:
 	bool ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const;
 	bool ToggleStepLayers() const;
-
-	bool StartNextStep();
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TMap<FName, AStep*> Steps;

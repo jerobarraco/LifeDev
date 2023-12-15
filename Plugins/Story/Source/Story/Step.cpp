@@ -152,5 +152,5 @@ void AStep::Finish_Implementation() {
 
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
-	Story->Stop(Name);
+	Story->StartNextStep(Name);
 }
