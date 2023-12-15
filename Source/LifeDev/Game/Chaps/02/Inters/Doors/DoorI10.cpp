@@ -14,19 +14,6 @@ ADoorI10::ADoorI10():Super() {
 	SFX_Gun = CGun.Object;
 }
 
-void ADoorI10::Shoot() {
-	UWorld* const W = GetWorld();
-	if (!W) return;
-
-	PlaySFX(SFX_Gun);
-	if (Flashback->GetVal()<.5) {
-		Flashback->SetVal(.5, 1);
-	}
-	Dialogs->AddId("D10_Gun");
-	LockedDlg = "D10_L.1"; // new dialog from now on
-	UStory::Get(W)->StartNext("C2S0");
-}
-
 bool ADoorI10::TryTrigger_Implementation() {
 	if(!Interacted) {
 		FTimerHandle H;
@@ -37,5 +24,26 @@ bool ADoorI10::TryTrigger_Implementation() {
 	Interacted = true;
 
 	return Super::TryTrigger_Implementation();
+}
+
+void ADoorI10::Shoot() {
+	UWorld* const W = GetWorld();
+	if (!W) return;
+
+	PlaySFX(SFX_Gun);
+	if (Flashback->GetVal()<.5) {
+		Flashback->SetVal(.5, 1);
+	}
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::AfterShot);
+	
+	Dialogs->AddId("D10_Gun");
+	LockedDlg = "D10_L.1"; // new dialog from now on
+}
+
+void ADoorI10::AfterShot() {
+	Dialogs->OnDone.RemoveAll(this);
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	UStory::Get(W)->StartNext("C2S0");
 }
 
