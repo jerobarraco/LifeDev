@@ -14,6 +14,7 @@ class USceneComponent;
 class AActor;
 class USoundBase;
 
+// base class for story steps
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStep : public AActor {
 	GENERATED_BODY()
@@ -55,8 +56,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float CamBlendTime = 2.0;
 
-	// >0 will set the seconds to wait since the start of this step. will trigger PostWait.
-	// this affects the dialogs. See UseFadeTime
+	// >0 will set the seconds to wait since the START of this step. will trigger PostWait (override it).
+	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float WaitTime = 0;
 
@@ -66,7 +67,7 @@ public:
 
 	// teleports the character to where this cam is located. and also copies the rotation
 	// beware this affects the camera blend if any (if blending from/to the character)
-	// teleports before blending. teleports on start of step.
+	// teleports before blending. teleports on start of step. Rotation is broken.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool TeleportChar = false;
 	

@@ -44,10 +44,11 @@ void ALStepC0S001::Stop_Implementation() {
 	UWorld* const W = GetWorld();
 	if (IsValid(Ghosts)) {
 		Ghosts->SetPlaying(false);
-		// Destroy them during the fade
-		FTimerHandle H;
-		W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::DestroyActors, WaitTime);
 	}
+	// Destroy them during the fade
+	// FTimerHandle H;
+	// W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::DestroyActors, WaitTime);
+	DestroyActors(); // stop now gets called while it's fading. so wait time actually is wrong.
 
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);

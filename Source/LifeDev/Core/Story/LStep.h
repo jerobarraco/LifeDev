@@ -11,20 +11,28 @@ class UFlashback;
 class UDiags;
 class UInventory;
 
+// TODO make child classes use FB instead of flashback
+
+// LifeDev base class for story steps
+// be careful it will clear all timers on stop
 UCLASS(Blueprintable, BlueprintType)
 class ALStep : public AStep {
 	GENERATED_BODY()
 
 public:
 	virtual void Start_Implementation() override;
+	// careful this will clear all timers
 	virtual void Stop_Implementation() override;
 
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool InputEnabled = false;
 
-	// when set to true, the game mode will set the wait time to the fade time. Also check FinishPostWait
-	// TODO remove, not needed anymore. TODO reconsider, this is needed for the dialogs to start after the fade-out.
+	// when set to true, the game mode will set the wait time to the fade time.
+	// See WaitTime and FinishPostWait
+	// this is used to start something AFTER it faded
+	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
+	// TODO make sure i dont need it and remove
 	// TODO need to fix the steps that do use postwait
 	UPROPERTY(BlueprintReadWrite, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;

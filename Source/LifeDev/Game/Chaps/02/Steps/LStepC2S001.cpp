@@ -55,15 +55,14 @@ void ALStepC2S001::Start_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
+	Super::Stop_Implementation();
+	
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
 	Dialogs->OnShow.RemoveAll(this);
 	if (IsValid(Ghosts)) {
 		Ghosts->SetPlaying(false);
-		// Destroy them during the fade
-		FTimerHandle H;
-		W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, WaitTime);
 	}
 
 	if (IsValid(FakeChar)) {
@@ -73,13 +72,15 @@ void ALStepC2S001::Stop_Implementation() {
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(.05, 10);
 
-	Super::Stop_Implementation();
+	// Destroy them during the fade
+	FTimerHandle H;
+	W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, 2);
 }
 
 void ALStepC2S001::DestroyActors() {
+	UE_LOG(LogTemp, Log, TEXT("Destroy actors called"));
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
-
 	if (IsValid(FakeChar)) {
 		FakeChar->Destroy();
 	}

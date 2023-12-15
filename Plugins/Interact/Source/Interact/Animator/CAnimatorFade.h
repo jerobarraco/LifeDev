@@ -26,5 +26,5 @@ public:
 	TArray<UStaticMeshComponent*> Meshes; 
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	UMaterialInterface* MatBase; 
+	UMaterialInterface* MatBase = nullptr; 
 };
