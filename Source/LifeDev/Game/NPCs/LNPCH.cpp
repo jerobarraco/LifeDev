@@ -51,10 +51,10 @@ ALNPCH::ALNPCH():Super() {
 
 	/// anim fade
 	AnimFade->Meshes = {
-		Mesh, Head, Torso, Pelvis,
+		Head, Torso, Pelvis,
 		ArmL1, ArmL2, ArmR1, ArmR2,
 		LegL1, LegL2, LegR1, LegR2,
-		FootL, FootR
+		FootL, FootR, Mesh
 	};
 }
 

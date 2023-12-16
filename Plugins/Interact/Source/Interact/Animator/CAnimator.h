@@ -112,11 +112,9 @@ protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UCAnimator* Parent = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	bool IsAnimating = false;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float Progress = 0.0;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UCAnimator* Parent = nullptr;
 	
 	float DTAcum = 0.0; // used for manual ticks 
 };
