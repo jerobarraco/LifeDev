@@ -20,6 +20,7 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 }
 
 void UCAnimatorFade::SetNewMat() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
 	MatBase = CMatBaseNew.Object;
@@ -28,8 +29,9 @@ void UCAnimatorFade::SetNewMat() {
 	// StaticLoadObject()
 }
 
-
 void UCAnimatorFade::CreateMaterial() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	
 	if (Meshes.Num()<1) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
@@ -38,10 +40,15 @@ void UCAnimatorFade::CreateMaterial() {
 	}
 
 	if (!IsValid(MatBase)) {
+		UE_LOG(LogTemp, Log, TEXT("%hs using mesh 0's material"), __func__);
 		MatBase = Meshes[0]->GetMaterial(0);
 	}
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
+	if (!IsValid(Mat)) {
+		UE_LOG(LogTemp, Log, TEXT("%hs dynamic mat is invalid :("), __func__);
+	}
+
 	for (UStaticMeshComponent* const C: Meshes) {
 		if (!IsValid(C)) continue;
 		C->SetMaterial(0, Mat);		

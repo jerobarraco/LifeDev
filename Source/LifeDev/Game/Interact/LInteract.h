@@ -22,8 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool FadeIn = false);
 
+	// returns true if this object is set to perform a reward
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool WillReward() const {
+	FORCEINLINE bool WillRewardFade() const {
 		return UseRewardFade && !IsRewardless();
 	}
 
@@ -102,7 +103,7 @@ protected:
 	// triggered when something is rewarded
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Rewarded();
-	virtual void Rewarded_Implementation() {};
+	virtual void Rewarded_Implementation() {}
 	// gives the rewards. if UseRewardFade it WILL self-destroy.
 	UFUNCTION(BlueprintCallable)
 	void DoRewards();
@@ -121,6 +122,7 @@ protected:
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
+	// remember to call CreateMaterial on BeginPlay if there are no rewards.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp")
 	UCAnimatorFade* AnimFade = nullptr;
 	

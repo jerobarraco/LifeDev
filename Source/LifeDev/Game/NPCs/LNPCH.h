@@ -47,7 +47,7 @@ struct FNPCHPose {
 
 // Base class for human-like npcs
 UCLASS(Blueprintable, BlueprintType)
-class ALNPCH : public ALInteract {
+class ALNPCH: public ALInteract {
 	GENERATED_BODY()
 
 public:
@@ -57,6 +57,8 @@ public:
 	void SetPose(const FNPCHPose& Pose);
 
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FNPCHPose PoseBase;
 

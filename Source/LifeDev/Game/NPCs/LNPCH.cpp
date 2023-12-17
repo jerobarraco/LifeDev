@@ -77,3 +77,8 @@ void ALNPCH::SetPose(const FNPCHPose& Pose) {
 	Interact->SetBoxExtent(Pose.InteractExt);
 }
 
+void ALNPCH::BeginPlay() {
+	Super::BeginPlay();
+	AnimFade->CreateMaterial();
+}
+

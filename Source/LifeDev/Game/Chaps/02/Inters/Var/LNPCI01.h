@@ -9,6 +9,7 @@
 
 class UCAnimatorCam;
 
+// char11 on chap02
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPCI01 : public ALNPC02 {
 	GENERATED_BODY()

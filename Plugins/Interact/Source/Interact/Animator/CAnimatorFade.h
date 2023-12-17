@@ -18,13 +18,14 @@ public:
 	// only call in the constructor please.
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
 	void SetNewMat();
-	
+
+	// creates the dynamic material. using MatBase, or the material of the 1st mesh in Meshes.
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade", meta=(UnsafeDuringActorConstruction))
 	void CreateMaterial();
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TArray<UStaticMeshComponent*> Meshes; 
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Material")
 	UMaterialInterface* MatBase = nullptr; 
 };
