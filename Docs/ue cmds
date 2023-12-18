@@ -47,3 +47,8 @@ au.Debug.AudioSoloSoundWave wordtomatch
 
 # debug input, only avail on play in editor https://forums.unrealengine.com/t/command-to-debug-show-inputs-on-screen/461998/2
 showdebug input
+
+# hide texts https://forums.unrealengine.com/t/disable-all-screen-messages/84528/2
+DISABLEALLSCREENMESSAGES
+#re enable
+ENABLEALLSCREENMESSAGES
