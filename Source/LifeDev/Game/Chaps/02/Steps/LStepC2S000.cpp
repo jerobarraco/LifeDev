@@ -6,7 +6,7 @@
 
 ALStepC2S000::ALStepC2S000():Super() {
 	Name = FName("C2S0");
-	static FText ST = FText::FromString("~ Yin|Remove ~");
+	static FText ST = FText::FromString("~ Yin ~");
 	Title = ST;
 	UseFade = true;
 	// DlgId = FName("C2S0"); // this chapter finishes after the dialog
