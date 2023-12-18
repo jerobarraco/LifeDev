@@ -9,3 +9,9 @@ ACalendarI00::ACalendarI00():Super() {
 	TriggerDlg = "Cal00_T";
 	SetEnabled(true);
 }
+
+void ACalendarI00::Rewarded_Implementation() {
+	Super::Rewarded_Implementation();
+	RewardActor = nullptr;
+	SetEnabled(false);
+}
