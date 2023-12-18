@@ -2,8 +2,6 @@
 
 #include "Door03.h"
 
-#include "Components/AudioComponent.h"
-#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
