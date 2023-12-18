@@ -1,5 +1,6 @@
 (I don't like/believe in hard rules, but saying "guidelines" sounds confusing and misleading, so...)
 * KISS! (Keep it simple)
+* * no useless things. no things i don´t need.
 * tabs
 * case sensitive
 * organize assets by FEATURE. NOT by type.
@@ -42,6 +43,7 @@
 ** SPECIALLY on delegates and for loops
 ** To Pass structures as you WILL modify them in the body.
 ** same for variables in functions.
+* pure functions must be simple and not contain complex calculations. pure are very inneficient they get called multiple times. force bp to have a local var or execution pin. it might be only for loops (test this out) but in general is a way to say 'be careful when calling this, its precious'
 * use MoveTemp when possible.
 * DO NOT define structures or types on BP only. create stubs in cpp then inherit. this is contagious.
 * Don't be overly private. 

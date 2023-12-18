@@ -9,15 +9,11 @@
 
 class AGhosts;
 
+// step after the boss. will finish if all the items are obtained.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S002 : public ALStep {
 	GENERATED_BODY()
 
 public:
 	ALStepC2S002();
-	
-protected:
-	virtual void BeginPlay() override;
-	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
 };
