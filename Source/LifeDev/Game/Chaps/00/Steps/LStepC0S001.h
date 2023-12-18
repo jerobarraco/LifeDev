@@ -7,6 +7,7 @@
 
 #include "LStepC0S001.generated.h"
 
+class AInteract;
 class AGhosts;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -22,7 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FVector GhostLocation = FVector(210,-42,-65);
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* FakeChar = nullptr;
+	AInteract* FakeChar = nullptr;
 
 	// where the player will be positioned to blend the camera and when the chapter ends
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)

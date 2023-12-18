@@ -21,8 +21,9 @@ ALStepC0S001::ALStepC0S001():Super() {
 
 void ALStepC0S001::Start_Implementation() {
 	Super::Start_Implementation();
-	if (IsValid(FakeChar)) { // Should be on begin play ?
+	if (IsValid(FakeChar)) {
 		FakeChar->SetActorHiddenInGame(false);
+		FakeChar->SetEnabled(true);
 	}
 
 	UWorld* const W = GetWorld();
@@ -71,9 +72,8 @@ void ALStepC0S001::DestroyActors() {
 
 void ALStepC0S001::BeginPlay() {
 	Super::BeginPlay();
-	AInteract* const FakeInter = Cast<AInteract>(FakeChar);
-	if (FakeInter) {
-		FakeInter->SetEnabled(false);
+	if (FakeChar) {
+		FakeChar->SetEnabled(false);
 	}
 }
 

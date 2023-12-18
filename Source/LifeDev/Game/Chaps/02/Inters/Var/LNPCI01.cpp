@@ -7,6 +7,7 @@ ALNPCI01::ALNPCI01():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
+	SetEnabled(false); // not gonna interact with this
 }
 
 void ALNPCI01::BeginPlay() {

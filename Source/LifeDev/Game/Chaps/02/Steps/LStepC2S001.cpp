@@ -23,6 +23,7 @@ void ALStepC2S001::BeginPlay() {
 	Super::BeginPlay();
 	if (IsValid(FakeChar)) {
 		FakeChar->SetActorHiddenInGame(true);
+		FakeChar->SetEnabled(false);
 	}
 }
 
