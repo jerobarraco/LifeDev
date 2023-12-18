@@ -30,7 +30,10 @@ public:
 	// Note: It does check for maxCount but will return true even when capped.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Mod(const FName& Name, int32 Diff);
-
+	// ensure the item is owned, with a quantity of 1 at least.
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Ensure(const FName& Name);
+	
 	// uses an item. removes it from the inventory if needed. returns success.
 	// it won't trigger the manager, you need to do it manually.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -42,7 +45,6 @@ public:
 	// returns an item from the datatable if exists. Use this only if you know what you do.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
-
 	// returns an item given the key name (in the loaded inventory, not the datatable)
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Get(const FName& Name, FItem& OutItem) const;
@@ -50,7 +52,6 @@ public:
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	const TMap<FName, FItem>& GetItems() const;
-
 	// overrides the current items
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	void SetItems(const TMap<FName, FItem>& NewItems);
@@ -58,15 +59,14 @@ public:
 	// returns the selected item name
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	const FName& GetSelected() const { return Selected; }
-
 	// returns the selected item
 	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
 	bool GetSelectedItem(FItem& Item) const;
-
 	// sets an item as selected
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetSelected(const FName& Name);
 
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	bool Has(const FName& Name);
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")

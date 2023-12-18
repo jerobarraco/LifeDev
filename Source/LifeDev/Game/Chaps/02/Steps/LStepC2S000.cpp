@@ -1,7 +1,9 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S000.h"
 
+#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC2S000::ALStepC2S000():Super() {
@@ -37,4 +39,9 @@ void ALStepC2S000::Start_Implementation() {
 	FB->SetMax(.75);
 	FB->SetMin(0);
 	FB->SetVal(.20, .5);
+
+	// ensure items
+	Inventory->Ensure(LDConsts::Items::Walkman);
+	Inventory->Ensure(LDConsts::Items::Card0);
+	Inventory->Ensure(LDConsts::Items::Card1);
 }

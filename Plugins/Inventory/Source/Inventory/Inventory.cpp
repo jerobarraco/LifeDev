@@ -69,6 +69,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 			NewSel = GetNextKey();
 			SetSelect = true;
 		}
+		// important to remove items with quantity 0. used for "Has()"
 		Items.Remove(Name);
 	}
 
@@ -83,6 +84,12 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 
 	return true;
 }
+
+bool UInventory::Ensure(const FName& Name) {
+	if (Has(Name)) return true;
+	return Mod(Name, 1);
+}
+
 
 bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	if (!IsValid(DT)) return false;
@@ -168,6 +175,7 @@ bool UInventory::SetSelected(const FName& Name) {
 
 bool UInventory::Has(const FName& Name) {
 	if (Name.IsNone()) return false;
+	// note that this depends on items being removed when quantity is <=0
 	return Items.Contains(Name);
 }
 
