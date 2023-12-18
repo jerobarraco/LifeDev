@@ -2,12 +2,13 @@
 
 #include "PoemI02.h"
 
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+
 APoemI02::APoemI02():Super() {
 	RewardFlash = -.2f;
-	RewardItem = "P02";
-	TriggerDlg = "P02_Look";
+	RewardItem = LDConsts::Items::Poem2;
+	TriggerDlg = "P02_Look*";
 
-	
-	// Can't be static since it will be inside of a drawer for example
+	// Can't be static since it will be inside of a drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }
