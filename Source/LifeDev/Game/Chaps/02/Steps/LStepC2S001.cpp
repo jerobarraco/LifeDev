@@ -71,6 +71,7 @@ void ALStepC2S001::Stop_Implementation() {
 
 	// ALMusicMan::SetRainS(W, false);
 	// FB->SetVal(.05, 10);
+	FB->SetMin(0,1);
 
 	// Destroy them during the fade
 	FTimerHandle H;
@@ -94,5 +95,7 @@ void ALStepC2S001::DestroyActors() {
 }
 
 void ALStepC2S001::ShowDlg(const FDialog& Diag) {
-	FB->ModVal(.1);
+	// there are 11 dialogs, and the fb should be on .4 at least.
+	// with .08 we ensure that we reach 1. but with .1 is too much
+	FB->ModVal(.075);
 }

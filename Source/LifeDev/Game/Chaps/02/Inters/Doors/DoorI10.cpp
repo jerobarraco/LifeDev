@@ -47,7 +47,7 @@ void ADoorI10::Shoot() {
 	if (!W) return;
 
 	PlaySFX(SFX_Gun);
-	Flashback->SetMin(.4f);
+	Flashback->SetMin(.4f, .5);
 	LockedDlg = "D10_L.1"; // new dialog from now on
 	UStory::Get(W)->StartNext("C2S0");
 }
