@@ -69,7 +69,6 @@ void ALStepC2S001::Stop_Implementation() {
 		FakeChar->Fade(false);
 	}
 
-	// ALMusicMan::SetRainS(W, false);
 	// FB->SetVal(.05, 10);
 	FB->SetMin(0,1);
 
