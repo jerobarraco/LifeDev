@@ -13,7 +13,7 @@ class LIFEDEV_API ADoorI10: public ADoor02 {
 public:
 	ADoorI10();
 
-	virtual bool TryTrigger_Implementation() override;
+	virtual void Trigger_Implementation() override;
 	
 protected:
 	UFUNCTION()

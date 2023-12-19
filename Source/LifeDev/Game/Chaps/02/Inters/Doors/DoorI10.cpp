@@ -4,26 +4,29 @@
 
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L";
+	TriggerDlg = "D10_T";// after unlocking with the card
+	ULockItem = LDConsts::Items::Card2;
 	Locked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CGun(TEXT(""));//Todo
 	SFX_Gun = CGun.Object;
 }
 
-bool ADoorI10::TryTrigger_Implementation() {
+void ADoorI10::Trigger_Implementation() {
+	// this happens after unlocking the door with the card
 	if(!Interacted) {
 		FTimerHandle H;
 		UWorld* const World = GetWorld();
-		if (!World) return false;
 		World->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 3);
 	}
 	Interacted = true;
 
-	return Super::TryTrigger_Implementation();
+	Super::Trigger_Implementation();
 }
 
 void ADoorI10::Shoot() {
