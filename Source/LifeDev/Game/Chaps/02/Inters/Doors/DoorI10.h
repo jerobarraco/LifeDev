@@ -12,8 +12,9 @@ class LIFEDEV_API ADoorI10: public ADoor02 {
 
 public:
 	ADoorI10();
+	void DoDialog();
 
-	virtual void Trigger_Implementation() override;
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	
 protected:
 	UFUNCTION()

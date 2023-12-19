@@ -17,7 +17,7 @@ ADoorI10::ADoorI10():Super() {
 	SFX_Gun = CGun.Object;
 }
 
-void ADoorI10::Trigger_Implementation() {
+void ADoorI10::DoDialog() {
 	// this happens after unlocking the door with the card
 	if(!Interacted) {
 		FTimerHandle H;
@@ -25,8 +25,15 @@ void ADoorI10::Trigger_Implementation() {
 		World->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 3);
 	}
 	Interacted = true;
+}
 
-	Super::Trigger_Implementation();
+EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
+	if (!Interacted && Name == LDConsts::Items::Card2) {
+		DoDialog();
+		return EItemUseResult::SUCCESS;
+	}
+
+	return Super::TryUseItem_Implementation(Name);
 }
 
 void ADoorI10::Shoot() {
