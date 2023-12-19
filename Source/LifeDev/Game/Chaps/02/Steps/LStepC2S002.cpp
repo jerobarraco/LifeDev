@@ -12,7 +12,7 @@ ALStepC2S002::ALStepC2S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	// teleport after the boss interaction happens
-	TeleportChar = true;
+	TeleportChar = false;
 	// no waits
 	UseFadeTime = false;
 	FinishPostWait = false;

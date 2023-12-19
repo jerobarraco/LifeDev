@@ -22,8 +22,6 @@ protected:
 	UFUNCTION()
 	void DoDialog();
 	UFUNCTION()
-	void AfterShot();
-	UFUNCTION()
 	void Shoot();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

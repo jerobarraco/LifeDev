@@ -2,7 +2,6 @@
 #include "LStepC2S001.h"
 
 #include "Diags/Diags.h"
-#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
@@ -40,7 +39,7 @@ void ALStepC2S001::Start_Implementation() {
 	
 	Super::Start_Implementation();
 	
-	ALMusicMan::SetRainS(W, true);
+	// ALMusicMan::SetRainS(W, true);
 
 	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(Ghosts)) {
@@ -70,8 +69,8 @@ void ALStepC2S001::Stop_Implementation() {
 		FakeChar->Fade(false);
 	}
 
-	ALMusicMan::SetRainS(W, false);
-	FB->SetVal(.05, 10);
+	// ALMusicMan::SetRainS(W, false);
+	// FB->SetVal(.05, 10);
 
 	// Destroy them during the fade
 	FTimerHandle H;

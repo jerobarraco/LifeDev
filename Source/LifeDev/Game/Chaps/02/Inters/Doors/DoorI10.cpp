@@ -31,7 +31,7 @@ void ADoorI10::DoDialog() {
 	if(Interacted) return;
 	Interacted = true;
 
-		Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::AfterDlg);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::AfterDlg);
 	Dialogs->AddId("D10_T"); // after unlocking with the card
 }
 
@@ -47,19 +47,7 @@ void ADoorI10::Shoot() {
 	if (!W) return;
 
 	PlaySFX(SFX_Gun);
-	if (Flashback->GetVal() < .5) {
-		Flashback->SetVal(.5, 1);
-	}
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::AfterShot);
-	
-	Dialogs->AddId("D10_Gun");
+	Flashback->SetMin(.4f);
 	LockedDlg = "D10_L.1"; // new dialog from now on
-}
-
-void ADoorI10::AfterShot() {
-	Dialogs->OnDone.RemoveAll(this);
-	UWorld* const W = GetWorld();
-	if (!W) return;
 	UStory::Get(W)->StartNext("C2S0");
 }
-
