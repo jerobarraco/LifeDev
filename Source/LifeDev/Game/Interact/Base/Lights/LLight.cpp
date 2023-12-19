@@ -76,7 +76,7 @@ void ALLight::BeginPlay() {
 	Super::BeginPlay();
 	// optimize the anim
 	Sig->BindAnim(Anim);
-	Sig->CompsTicks.AddUnique(Anim); // will break the anim
+	Sig->CompsTicks.AddUnique(Anim);
 	
 	// don't set the state here. it will break the child. we should not need it
     FTimerHandle H;

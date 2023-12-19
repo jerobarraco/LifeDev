@@ -10,7 +10,6 @@
 ALLight00::ALLight00():Super() {
 	/// anim
 	// enable the animation so that we get the update. but don't actually animate any material
-	UseAnim = true;
 	Anim->Mat = nullptr;
 	// Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	// Anim->MatVName = "Emissive";
@@ -31,6 +30,7 @@ ALLight00::ALLight00():Super() {
 	Light->SetTemperature(3333);
 	
 	ALLight00::SetMobility(EComponentMobility::Static);
+	UseAnim = true; // important to do after setmobility since it will turn it off.
 }
 
 void ALLight00::AnimUpdate_Implementation(float Progress, float Alpha) {

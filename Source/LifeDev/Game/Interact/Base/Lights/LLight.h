@@ -28,7 +28,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AnimUpdate(float P, float A);
-	virtual void AnimUpdate_Implementation(float P, float A) {};
+	virtual void AnimUpdate_Implementation(float P, float A) {}
 
 	virtual void SetState_Implementation(int32 NewState) override;
 	
