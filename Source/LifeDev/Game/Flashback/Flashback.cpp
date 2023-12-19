@@ -71,22 +71,22 @@ void UFlashback::SetVal(float New, float Duration) {
 	UE_LOG(LogFlashback, Log, TEXT("Flashback Val %.5f Duration %.5f Time %.5f"), Val, Duration, Time);
 }
 
-void UFlashback::SetMax(float NewMax) {
+void UFlashback::SetMax(float NewMax, float Duration) {
 	Max = NewMax;
 	
 	// clamp the value if needed
 	const bool Ok = Animator->IsActive() ? NewMax >= AnimTo : NewMax >= Val;
 	if (Ok) return;
-	SetVal(NewMax);
+	SetVal(NewMax, Duration);
 }
 
-void UFlashback::SetMin(float NewMin) {
+void UFlashback::SetMin(float NewMin, float Duration) {
 	Min = NewMin;
 	
 	// clamp the value if needed
 	const bool Ok = Animator->IsActive() ? NewMin <= AnimTo : NewMin <= Val;
 	if (Ok) return;
-	SetVal(NewMin);
+	SetVal(NewMin, Duration);
 }
 
 void UFlashback::SetValS(UWorld* W, float New, float Duration) {
