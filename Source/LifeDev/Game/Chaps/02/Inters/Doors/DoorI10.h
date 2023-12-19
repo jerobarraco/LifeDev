@@ -12,11 +12,15 @@ class LIFEDEV_API ADoorI10: public ADoor02 {
 
 public:
 	ADoorI10();
-	void DoDialog();
 
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	
 protected:
+	
+	UFUNCTION()
+	void AfterDlg();
+	UFUNCTION()
+	void DoDialog();
 	UFUNCTION()
 	void AfterShot();
 	UFUNCTION()
