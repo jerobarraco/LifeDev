@@ -45,3 +45,8 @@ void ALStepC2S000::Start_Implementation() {
 	Inventory->Ensure(LDConsts::Items::Card0);
 	Inventory->Ensure(LDConsts::Items::Card1);
 }
+
+void ALStepC2S000::Debug_Implementation() {
+	Super::Debug_Implementation();
+	Inventory->Ensure(LDConsts::Items::Card2);
+}

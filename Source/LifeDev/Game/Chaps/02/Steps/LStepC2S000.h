@@ -16,4 +16,5 @@ public:
 
 protected:
 	void Start_Implementation() override;
+	void Debug_Implementation() override;
 };
