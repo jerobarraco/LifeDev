@@ -3,14 +3,22 @@
 
 #include "CQuickMesh.h"
 
+void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
+	Super::SetCanEverAffectNavigation(Enable);
+	bNavigationRelevant = Enable;
+	if (Enable) {
+		Super::SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		Super::SetCollisionProfileName("BlockAllDynamic");
+	} else {
+		Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		Super::SetCollisionProfileName("NoCollision");
+		Super::SetGenerateOverlapEvents(false);
+		Super::CanCharacterStepUpOn = ECB_No;
+	}
+}
+
 UCQuickMesh::UCQuickMesh(): Super() {
-	Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Super::SetCollisionProfileName("NoCollision");
-	Super::SetGenerateOverlapEvents(false);
-	Super::SetCanEverAffectNavigation(false);
-	Super::CanCharacterStepUpOn = ECB_No;
-	bNavigationRelevant = false;
-	bCanEverAffectNavigation = false;
+	SetQuickCollisionEnabled(false);
 
 	Super::SetComponentTickEnabled(false);
 	PrimaryComponentTick.SetTickFunctionEnable(false);

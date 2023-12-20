@@ -12,6 +12,7 @@ class JUTILS_API UCQuickMesh: public UStaticMeshComponent {
 	GENERATED_BODY()
 
 public:
+	void SetQuickCollisionEnabled(bool Enable);
 	UCQuickMesh();
 
 	UFUNCTION(BlueprintCallable)

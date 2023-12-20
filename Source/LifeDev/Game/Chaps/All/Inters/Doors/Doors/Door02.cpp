@@ -12,6 +12,7 @@ ADoor02::ADoor02():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door02/DoorA.DoorA"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5,15,0));
+	Mesh->SetQuickCollisionEnabled(true);
 
 	WinA = CreateDefaultSubobject<UCQuickMesh>(TEXT("WinA"));
 	WinA->SetupAttachment(Mesh);
