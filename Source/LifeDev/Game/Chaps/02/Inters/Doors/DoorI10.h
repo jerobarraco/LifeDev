@@ -16,9 +16,6 @@ public:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	
 protected:
-	
-	UFUNCTION()
-	void AfterDlg();
 	UFUNCTION()
 	void DoDialog();
 	UFUNCTION()

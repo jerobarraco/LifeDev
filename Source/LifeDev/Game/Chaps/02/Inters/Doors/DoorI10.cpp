@@ -31,20 +31,15 @@ void ADoorI10::DoDialog() {
 	if(Interacted) return;
 	Interacted = true;
 
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::AfterDlg);
+	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
 	Dialogs->AddId("D10_T"); // after unlocking with the card
-}
-
-void ADoorI10::AfterDlg() {
-	Dialogs->OnDone.RemoveAll(this);
-	FTimerHandle H;
-    UWorld* const World = GetWorld();
-    World->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, 3);
 }
 
 void ADoorI10::Shoot() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
+
+	Dialogs->OnDone.RemoveAll(this);
 
 	PlaySFX(SFX_Gun);
 	Flashback->SetMin(.4f, .5);

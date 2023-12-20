@@ -5,6 +5,7 @@
 
 #include "Door03.generated.h"
 
+// base double door. Right side 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor03: public ADoor02 {
 	GENERATED_BODY()

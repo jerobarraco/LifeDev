@@ -8,6 +8,7 @@
 class UCQuickMesh;
 class UStaticMeshComponent;
 
+// base Double door - Left side. Inherits doorish since Door has a frame
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoor02: public ADoorish {
 	GENERATED_BODY()
