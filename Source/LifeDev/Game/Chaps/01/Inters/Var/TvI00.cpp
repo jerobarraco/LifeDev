@@ -2,8 +2,8 @@
 
 #include "TvI00.h"
 
-ATvI00::ATvI00() {
-	UseItemDlgs.Add("Batts", "TV00xBatts");
+ATvI00::ATvI00():Super() {
+	UseItemDlgs = {{"Batts", "TV00xBatts"}};
 }
 
 void ATvI00::SetState_Implementation(int32 NewState) {

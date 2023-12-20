@@ -174,29 +174,48 @@ bool ALInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
+	if (Item == NAME_None) {
+		UE_LOG(LogTemp, Warning, TEXT("TryUseItem with item none. cancelled."));
+		return EItemUseResult::BAD_TARGET;
+	}
+
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	const bool ValidDiags = IsValid(Dialogs);
 
-	// trigger a dlg for the item if it has something to say
-	// only do if unlocked. if locked then ulockitem takes precedence
-	if (!Locked) {
-		// check if we can say something about this
-		const FName* const pDlg = UseItemDlgs.Find(Item);
-		const bool Added = pDlg && ValidDiags && Dialogs->AddId(*pDlg);
-		// bad handled doesn't trigger the default dialog
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	}
+	/// Say something about it
 	
-	// at this point is locked
-	
-	// Checks if it needs an item to unlock it. and unlock if needed.
-	// Check if this item unlocks it. 
-	const bool Ok = !ULockItem.IsNone() && Item == ULockItem;
-	if (!Ok) {
-		const bool Added = ValidDiags && Dialogs->AddId(ULockBadDlg);
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+	// 1st check if it's a regular item. since we don't care about lock at that stage
+	// and only happens if it's specified on UseItemDlgs
+	// im pretty sure this will break something else. but this needs improving later
+	{
+    	// check if we can say something about this
+    	const FName* const pDlg = UseItemDlgs.Find(Item);
+		if (pDlg) {
+    		const bool Added = pDlg && ValidDiags && Dialogs->AddId(*pDlg);
+			// assume this is not ULockItem. if you added the same item to both places then that's wrong.
+			// Using bad_handled since we don't want to consume an item.
+			// this is only to say something about the item.
+			// if this item needs to be consumed, use ulockItem 
+    		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+		}
+    }
+
+	// if it's not locked, we need not do anything with it. don't consume it.
+	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
+	if(!Locked) {
+		return EItemUseResult::BAD_TARGET;
 	}
 
+	/// Unlock with item - at this point is locked
+	
+	// Checks if it needs an item to unlock it. and unlock if needed.
+	const bool LockBad = Item != ULockItem;
+	if (LockBad) {
+		const bool Added = ValidDiags && Dialogs->AddId(ULockBadDlg);
+        return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+	}
+
+	// now unlocked
 	if (ValidDiags) {
 		Dialogs->AddId(ULockDlg);
 	}

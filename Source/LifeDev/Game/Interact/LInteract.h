@@ -72,7 +72,10 @@ public:
 	FName TriggerDlg = NAME_None;
 
 	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
-	// the key is the item name, the value is the dialog id
+	// the key is the item name, the value is the dialog id.
+	// this happens before trying to unlock.
+	// If locked it won't consume the item, otherwise it will and it's redundant with TriggerDlg.
+	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TMap<FName, FName> UseItemDlgs;
 	

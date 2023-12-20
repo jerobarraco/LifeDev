@@ -9,6 +9,11 @@
 
 ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L";
+	UseItemDlgs = {
+		{LDConsts::Items::Card0, "D10xC00"},
+		{LDConsts::Items::Card1, "D10xC01"},
+	};
+
 	// no unlock item nor trigger dlg. i want to keep this locked
 	Locked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
