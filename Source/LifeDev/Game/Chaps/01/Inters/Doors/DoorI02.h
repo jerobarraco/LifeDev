@@ -5,7 +5,7 @@
 
 #include "DoorI02.generated.h"
 
-// Door from room00 to room01, locked with a key. Instance of the door 00 that is locked until
+// Door from room01 to hall00. locked in chap01
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoorI02: public ADoor00 {
 	GENERATED_BODY()
