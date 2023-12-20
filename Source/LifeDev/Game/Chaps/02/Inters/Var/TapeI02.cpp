@@ -5,13 +5,14 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ATapeI02::ATapeI02():Super() {
-	Texts = { FText::FromString(TEXT("Another tape of mine")) };
+	Texts = { FText::FromString(TEXT("Another of my tapes")) };
 	StateNum = 1;
 	UseAnim = false;
 	RewardFlash = .1;
 	RewardItem = "T02";
 	UseRewardFade = true;
 	Locked = true;
+	// important to require batteries since im going to use it directly on c2s3
 	ULockItem = LDConsts::Items::Batts;
 	LockedDlg = FName("T02_L");
 	TriggerDlg = FName("T02_Look*"); // will say what it is. triggered on pick up

@@ -12,6 +12,8 @@ UCRandomizerFB::UCRandomizerFB():Super() {
 
 void UCRandomizerFB::BeginPlay() {
 	Super::BeginPlay();
+
+	Flashback = UFlashback::Get(GetWorld());
 	OnTriggerVal.AddUniqueDynamic(this, &UCRandomizerFB::TriggerFB);
 }
 
@@ -21,7 +23,6 @@ void UCRandomizerFB::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCRandomizerFB::TriggerFB(float Val) {
-	UFlashback* const Flashback = UFlashback::Get(GetWorld());
-	if (!Flashback) return;
+	if (!IsValid(Flashback)) return;
 	Flashback->ModVal(Val);
 }

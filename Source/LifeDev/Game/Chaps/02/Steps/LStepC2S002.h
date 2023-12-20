@@ -7,16 +7,11 @@
 
 #include "LStepC2S002.generated.h"
 
-class AGhosts;
-
-// step after the boss. will finish if all the items are obtained.
+// step after the boss. waits for tape.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S002 : public ALStep {
 	GENERATED_BODY()
 
 public:
 	ALStepC2S002();
-protected:
-	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
 };
