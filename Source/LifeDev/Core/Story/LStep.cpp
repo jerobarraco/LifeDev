@@ -9,11 +9,18 @@
 
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
+	UWorld* const W = GetWorld();
+	if (!W) return;
+
 	if (!FinishItems.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
+
+		// ensure to check if we already have the item
+		// don't do just now since the child of this class would get confused as stop will trigger before start
+		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinishItems);
 	}
 	
-	AGameModeBase* const GameModeBase = GetWorld()->GetAuthGameMode();
+	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	if (!IsValid(LGGameMode)) return;
@@ -55,6 +62,10 @@ void ALStep::StartDialogs() {
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
+	CheckFinishItems();
+}
+
+void ALStep::CheckFinishItems() {
 	const int32 NumItems = FinishItems.Num();
 	if (NumItems<=0) return;
 	// if (Diff<=0) return; // this is causing issues. todo fix

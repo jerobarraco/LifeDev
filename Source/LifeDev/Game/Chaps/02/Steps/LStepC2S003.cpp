@@ -44,6 +44,7 @@ void ALStepC2S003::Start_Implementation() {
 }
 
 void ALStepC2S003::AfterDlg() {
+	Dialogs->OnDone.RemoveAll(this);
 	// just remove since implementing the using of it is rather complex.
 	// the user interaction is not in place yet so it wont be a good exp
 	// we can't pick it up without the batteries, so story wise is safe.

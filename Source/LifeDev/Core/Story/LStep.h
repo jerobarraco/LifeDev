@@ -21,9 +21,12 @@ class ALStep : public AStep {
 
 public:
 	virtual void Start_Implementation() override;
-	// careful this will clear all timers
+	// careful this will clear all timers and remove all delegates to Dialogs.OnDone and Inventory.OnMOd
 	virtual void Stop_Implementation() override;
 
+	UFUNCTION(BlueprintCallable)
+	void CheckFinishItems();
+	
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	bool InputEnabled = false;

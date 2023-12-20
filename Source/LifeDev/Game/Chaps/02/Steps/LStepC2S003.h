@@ -17,10 +17,11 @@ public:
 	ALStepC2S003();
 
 protected:
-	UFUNCTION()
-	void AfterDlg();
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
+	UFUNCTION()
+	void AfterDlg();
+	
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCRandomizerFB* RndFB = nullptr;
