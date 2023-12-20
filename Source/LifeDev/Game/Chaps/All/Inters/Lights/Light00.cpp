@@ -53,8 +53,7 @@ void ALight00::BeginPlay() {
 	// using metal instead of glass to avoid having to deal with transparency.
 	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
 	static FSoftObjectPath Path(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelMetal_MI.VoxelMetal_MI"));
-	TSoftObjectPtr<UMaterialInterface>
-		MatP(Path);
+	TSoftObjectPtr<UMaterialInterface> MatP(Path);
 	UMaterialInterface* const M = MatP.LoadSynchronous(); // i know you'll love this.
 	if (IsValid(M)) {
 		UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, M);
