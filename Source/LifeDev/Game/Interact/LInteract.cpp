@@ -40,6 +40,7 @@ void ALInteract::BeginPlay() {
 	if (WillRewardFade()) {
 		AnimFade->CreateMaterial();
 		// avoid getting the sound killed on self-destroy
+		// set here on purpose to allow the user to override it and self-hurt.
 		UseAttachedSFX = false;
 	}
 
