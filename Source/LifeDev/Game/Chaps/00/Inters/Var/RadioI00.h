@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Diags/DiagTypes.h"
 #include "LifeDev/Game/Chaps/All/Inters/Var/Radio00.h"
 
 #include "RadioI00.generated.h"
@@ -20,6 +21,8 @@ protected:
 
 	UFUNCTION()
 	void DialogDone();
+	UFUNCTION()
+	void DialogShown(const FDialog& Diag);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCSounder* SFX_Ghost = nullptr;
