@@ -14,4 +14,10 @@ class ALStepC2S002 : public ALStep {
 
 public:
 	ALStepC2S002();
+
+protected:
+	virtual void Stop_Implementation() override;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	USoundBase* SFX_Analog = nullptr;
 };
