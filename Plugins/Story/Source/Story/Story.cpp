@@ -65,11 +65,10 @@ bool UStory::StartNow(AStep* NewStep) {
 bool UStory::Start(const FName& Name) {
 	// get the step
 	AStep* const Step = GetStep(Name);
-	if (!Step) return false;
+	if (!Step) return false; // getstep prints warning
 
-	if (!Step->UseFade) {
+	if (!Step->UseFade)
 		return StartNow(Step);
-	}
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return false;
@@ -185,6 +184,8 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
 }
 
 bool UStory::StartNext(const FName& CurrentName) {
+	UE_LOG(LogStory, Log, TEXT("%hs. OldNamePar=%s"), __func__, *CurrentName.ToString());
+
 	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
 	if (!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName) {
 		UE_LOG(LogStory, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
@@ -194,7 +195,13 @@ bool UStory::StartNext(const FName& CurrentName) {
 	
 	++SeqStep;
 	if (SeqStep >= Sequence.Num()) {
-		Stop();
+		UE_LOG(LogStory, Log, TEXT("Reached end of sequence. Stopping"));
+		// not stopping here to allow transitions between end of chapter to flow correctly (eg fade)
+		// OnSeqStop will tell the gamemode that the sequence(chapter) finished,
+		// the GM will load the next chapter, and call StartSequence
+		// StartSequence will call this, which calls Start, and since Current is still valid,
+		// it will transition correctly. 
+		// Stop();
 		OnSeqStop.Broadcast();
 		return false;
 	}
@@ -208,6 +215,7 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	if (Sequence.IsEmpty()) return false;
 
 	OnSeqStart.Broadcast();
+	// Important to call startNext to allow for appropriate transitions between sequences (chapters)
 	return StartNext();
 }
 
