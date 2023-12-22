@@ -15,6 +15,7 @@ ATapeI02::ATapeI02():Super() {
 	// important to require batteries since im going to use it directly on c2s3
 	ULockItem = LDConsts::Items::Batts;
 	LockedDlg = FName("T02_L");
+	LockedItemDlg = FName("T02_LI"); // will hint to use the batts
 	TriggerDlg = FName("T02_Look*"); // will say what it is. triggered on pick up
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);

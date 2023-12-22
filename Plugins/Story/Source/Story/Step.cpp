@@ -43,6 +43,8 @@ void AStep::DoTeleport() {
 	// TODO fix. needs to account for look speed
 	Char->AddControllerYawInput(T.Rotator().Yaw-CurRot.Yaw);
 
+	// TODO make the vertical work better. 
+	return;
 	// vertical is handled by the camera
 	TArray<UCameraComponent*> Cams; 
 	Char->GetComponents<UCameraComponent>(Cams);
