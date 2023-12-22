@@ -72,13 +72,15 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
+	Dialogs->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
+
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
 	/// Rewards
 	const bool Rewardless = IsRewardless();
 	if (Rewardless) {
-		return; // just return to avoid self destroying
+		return; // just return. nothing to do. don't self destroy or anything.
 	}
 
 	if (Flashback) {
@@ -120,6 +122,7 @@ void ALInteract::DoRewards() {
 	Rewarded();
 
 	// Process auto destroy. do at the end.
+	// don't destroy if not userewardfade
 	if (!UseRewardFade) return;
 	
 	// only bind here as we only want to destroy on reward
@@ -130,12 +133,17 @@ void ALInteract::DoRewards() {
 void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 
-	// trigger the dialog anyway.
+	// trigger the dialog in any case.
+	bool WaitForDiags = false;
 	if (IsValid(Dialogs)) {
-		Dialogs->AddId(TriggerDlg);
+		Dialogs->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
+		WaitForDiags = Dialogs->AddId(TriggerDlg);
 	}
-	
-	DoRewards();
+
+	// force trigger the rewards in case the dialog failed, otherwise it'll be stuck
+	if (!WaitForDiags) {
+		DoRewards();
+	}
 }
 
 void ALInteract::RewardFaded() {

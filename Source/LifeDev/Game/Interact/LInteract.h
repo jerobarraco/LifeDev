@@ -101,13 +101,16 @@ public:
 	// remember to call SetNewMat on the constructor if you use the new material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardFade = true;
+	// TODO rename to UseRewardDestroy
 
 protected:
-	// triggered when something is rewarded
+	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Rewarded();
 	virtual void Rewarded_Implementation() {}
-	// gives the rewards. if UseRewardFade it WILL self-destroy.
+
+	// mostly internal. gives the rewards. if UseRewardFade it WILL self-destroy.
+	// exposed in case you want to do multiple rewards, in which case don't set UseRewardFade
 	UFUNCTION(BlueprintCallable)
 	void DoRewards();
 
