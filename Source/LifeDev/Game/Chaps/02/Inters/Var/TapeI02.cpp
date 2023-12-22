@@ -16,7 +16,8 @@ ATapeI02::ATapeI02():Super() {
 	ULockItem = LDConsts::Items::Batts;
 	LockedDlg = FName("T02_L");
 	LockedItemDlg = FName("T02_LI"); // will hint to use the batts
-	TriggerDlg = FName("T02_Look*"); // will say what it is. triggered on pick up
+	// TriggerDlg = FName("T02_Look*"); // will say what it is. triggered on pick up
+	// Don't trigger the dialog here since it will trigger in the step, otherwise it will break the step
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 	// At the moment it says the whole song on look or pick.
