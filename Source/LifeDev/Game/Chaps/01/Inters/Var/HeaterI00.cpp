@@ -15,7 +15,7 @@ AHeaterI00::AHeaterI00():Super() {
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";
 	Texts = {
-		FText::FromString(TEXT("Turn on. It's cold")),
+		FText::FromString(TEXT("Turn on, it's cold")),
 		FText::FromString(TEXT("Maybe not..."))
 	};
 
