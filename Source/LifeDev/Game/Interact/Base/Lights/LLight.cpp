@@ -34,6 +34,7 @@ ALLight::ALLight():Super() {
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
 
+	// this is controlling the anim and binds to it
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	// disabled. since a light-source that is behind me might change the light in front of me.
 	// only change due to distance
@@ -54,6 +55,7 @@ ALLight::ALLight():Super() {
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
 	UWorld* const W = GetWorld();
+	if (!W) return;
 	UFlashback* const Fb = UFlashback::Get(W);
     if (!Fb) return;
 
@@ -79,13 +81,13 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
-	// optimize the anim
+
+	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
 	Sig->CompsTicks.AddUnique(Anim);
 	
 	// don't set the state here. it will break the child. we should not need it
-    FTimerHandle H;
-    GetWorld()->GetTimerManager().SetTimer(H, this, &ALLight::TurnOn, 1);
+    GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
 
 	const bool CanStrobe = ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE);
 	if (!CanStrobe) {
@@ -129,5 +131,6 @@ void ALLight::SetFB(float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
 	// activate and deactivate only run if needed.
 	Rnd->SetActive(ShouldFlicker);
-	Sig->SetActive(ShouldFlicker);
+	// don't deactivate the sig here. since there are lights that are can be toggled
+	// and the sig is bound to the anim, hence the anim manages it.
 }
