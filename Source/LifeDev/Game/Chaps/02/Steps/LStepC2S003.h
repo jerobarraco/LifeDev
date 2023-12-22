@@ -25,4 +25,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCRandomizerFB* RndFB = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	USoundBase* SFX_Analog = nullptr;
 };

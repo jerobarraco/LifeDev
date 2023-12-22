@@ -33,14 +33,11 @@ void ALStepC2S001::Start_Implementation() {
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
 	FB->SetMin(0);
-	// Flashback->SetVal(1, 10);
-	// bind before the super since it will trigger the dialogs probably
+	// bind before the super since it will trigger the dialogs
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
 	
 	Super::Start_Implementation();
 	
-	// ALMusicMan::SetRainS(W, true);
-
 	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(Ghosts)) {
 		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);

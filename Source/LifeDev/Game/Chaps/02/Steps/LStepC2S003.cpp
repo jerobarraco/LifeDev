@@ -1,8 +1,11 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S003.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -28,6 +31,10 @@ ALStepC2S003::ALStepC2S003():Super() {
 	RndFB->DelayMax = 2;
 	RndFB->ValueMin = -.07;
 	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSFX(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Analog/Analog_C.Analog_C"));
+	SFX_Analog = CSFX.Object;
 }
 
 void ALStepC2S003::Start_Implementation() {
@@ -42,6 +49,11 @@ void ALStepC2S003::Start_Implementation() {
 
 	// super will start the dialog and finish when done
 	Super::Start_Implementation();
+
+	UWorld* const W = GetWorld();
+	if (W && IsValid(SFX_Analog)) {
+		UGameplayStatics::PlaySound2D(W, SFX_Analog);
+	}
 }
 
 void ALStepC2S003::DlgShown(const FDialog& Diag) {

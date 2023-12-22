@@ -7,17 +7,11 @@
 
 #include "LStepC2S002.generated.h"
 
-// step after the boss. waits for tape.
+// step after the boss. waits for tape, that's all it does.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S002 : public ALStep {
 	GENERATED_BODY()
 
 public:
 	ALStepC2S002();
-
-protected:
-	virtual void Stop_Implementation() override;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	USoundBase* SFX_Analog = nullptr;
 };
