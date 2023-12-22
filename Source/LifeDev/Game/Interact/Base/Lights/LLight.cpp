@@ -40,7 +40,12 @@ ALLight::ALLight():Super() {
 	Sig->RenderSinceMax = -1;
 	// don't off when offscreen. the light might still be onscreen 
 	Sig->IsOffWhenOffscreen = false;
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CClick(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
+	SFX_Trigger = CClick.Object;
 	
+	/// ~
 	// by default is just a static light.
 	SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
