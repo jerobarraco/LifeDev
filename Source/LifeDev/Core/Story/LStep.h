@@ -59,6 +59,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
+	virtual void Finish_Implementation() override;
 	
 	// will start the dialogs
 	void StartDialogs();

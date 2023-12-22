@@ -34,6 +34,9 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
+	if (IsValid(FB)) {
+		FB->OnChange.RemoveAll(this);
+	}
 
 	UWorld* const W = GetWorld();
 	if (W) {
@@ -99,10 +102,15 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Dialogs->OnDone.RemoveAll(this);
 	}
 	Dialogs = nullptr;
+
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
 	}
 	Inventory = nullptr;
+	
+	if (IsValid(FB)) {
+		FB->OnChange.RemoveAll(this);
+	}
 	FB = nullptr;
 	// always at end
 	Super::EndPlay(EndPlayReason);
@@ -118,4 +126,10 @@ void ALStep::PostLoad() {
 	if (!DlgId.IsNone()) {
 		FinishPostWait = false;
 	}
+}
+
+void ALStep::Finish_Implementation() {
+	// avoid possible double triggering.
+	Dialogs->OnDone.RemoveDynamic(this, &ALStep::Finish);
+	Super::Finish_Implementation();
 }
