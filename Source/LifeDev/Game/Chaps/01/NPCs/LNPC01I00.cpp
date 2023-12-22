@@ -35,6 +35,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	Dialogs->AddId("N01.0");
 	Flashback->SetVal(1);
+	ALMusicMan::SetRainS(GetWorld(), true);
 	
 	return EItemUseResult::SUCCESS;
 }

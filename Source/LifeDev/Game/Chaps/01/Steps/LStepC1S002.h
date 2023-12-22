@@ -7,7 +7,6 @@
 
 #include "LStepC1S002.generated.h"
 
-class UFlashback;
 class AGhosts;
 
 // when the chap 1 boss enters
@@ -51,6 +50,4 @@ protected:
 	AGhosts* Ghosts = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlashback* Flashback = nullptr;
 };
