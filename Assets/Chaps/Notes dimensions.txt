@@ -11,6 +11,7 @@ imported scaled down to 0.005
 cube size approx 50mm = 0.5 cm
 
 * big:
+10:1 regular. e.g. buildings
 todo test
 scaled to 0.5
 approx size 50cm = .5m
