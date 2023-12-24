@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC0S001.h"
 
+#include "Camera/CameraComponent.h"
 #include "Interact/Interact.h"
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
@@ -17,6 +18,9 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFade = true;
 	FinishPostWait = false;
 	TeleportChar = true;
+
+	Cam->SetConstraintAspectRatio(true);
+	Cam->SetAspectRatio(2);
 }
 
 void ALStepC0S001::Start_Implementation() {

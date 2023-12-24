@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S001.h"
 
+#include "Camera/CameraComponent.h"
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -16,6 +17,9 @@ ALStepC2S001::ALStepC2S001():Super() {
 	UseFadeTime = false;
 	FinishPostWait = false;
 	TeleportChar = false;
+
+	Cam->SetConstraintAspectRatio(true);
+	Cam->AspectRatio = 2;
 }
 
 void ALStepC2S001::BeginPlay() {
