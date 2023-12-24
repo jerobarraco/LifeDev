@@ -25,7 +25,7 @@ ACalendar::ACalendar():Super() {
 	// a slow pup is a lazy dog
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Calendar/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
 	SetEnabled(false);
