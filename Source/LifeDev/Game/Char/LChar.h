@@ -26,8 +26,7 @@ class UCLNoiser;
 
 // base class for the character
 UCLASS(config=Game)
-class LIFEDEV_API ALChar : public ACharacter
-{
+class LIFEDEV_API ALChar : public ACharacter {
 	GENERATED_BODY()
 
 public:
@@ -51,8 +50,8 @@ public:
 	bool Say(const FName& Name);
 
 	// factor to apply to look when hovering an interact
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float InteractDrag = .5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, Config)
+	float InteractDrag = .4;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
