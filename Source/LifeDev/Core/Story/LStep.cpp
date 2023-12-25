@@ -44,6 +44,8 @@ void ALStep::Stop_Implementation() {
 		W->GetTimerManager().ClearAllTimersForObject(this);
 	}
 
+	RemoveItems();
+	
 	Super::Stop_Implementation();
 }
 
@@ -61,6 +63,16 @@ void ALStep::StartDialogs() {
 	if (!Dialogs->AddId(DlgId)) {
 		// if it fails to add it, then finish manually
 		Finish();
+	}
+}
+
+void ALStep::RemoveItems() {
+	FItem Item; // not reusing since some items might change the count.
+	for (const FName& N: RemItems) {
+		Item.Count = 0; // ensure it's 0 to begin with
+		const bool Has = Inventory->Get(N, Item);
+		if (!Has || Item.Count <= 0) continue;
+		Inventory->Mod(N, -Item.Count);
 	}
 }
 

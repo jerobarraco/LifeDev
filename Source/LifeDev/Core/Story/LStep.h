@@ -22,7 +22,9 @@ class ALStep : public AStep {
 
 public:
 	virtual void Start_Implementation() override;
-	// careful this will clear all timers and remove all delegates to Dialogs.OnDone and Inventory.OnMOd
+	// careful this will clear all timers
+	// and remove all delegates to Dialogs.OnDone and Inventory.OnMOd
+	// it will also remove from inventory the items on RemItems
 	virtual void Stop_Implementation() override;
 
 	UFUNCTION(BlueprintCallable)
@@ -50,6 +52,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> FinishItems;
 
+	// items to remove when the step finishes
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<FName> RemItems;
+
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;
 	inline static bool UseDebug = false;
@@ -63,7 +69,9 @@ protected:
 	
 	// will start the dialogs
 	void StartDialogs();
-
+	// removes items on RemItems
+	void RemoveItems();
+	
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 

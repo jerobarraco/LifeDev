@@ -8,6 +8,7 @@
 #include "LStepC1S004.generated.h"
 
 class UNiagaraComponent;
+
 // regaining control for player after npc01.
 // This finishes when the player receives or picks the card c1
 UCLASS(Blueprintable, BlueprintType)
