@@ -14,7 +14,7 @@ APaper00::APaper00():Super() {
 	Mesh->SetRelativeLocation(FVector(-7.5,10.5,0));
 	
 	Interact->SetRelativeLocation(FVector(7.5,-10.5,0.25));
-	Interact->SetBoxExtent(FVector(7.5,10.5,.250000));
+	Interact->SetBoxExtent(FVector(7.5,10.5,1));
 	
 	Texts = { FText::FromString(TEXT("A piece of paper")) } ;
 	// a lazy dog is a sheet of paper
