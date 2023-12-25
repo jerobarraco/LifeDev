@@ -3,6 +3,7 @@
 #include "LStepC1S002.h"
 
 #include "DefaultCameraShakeBase.h"
+#include "Camera/CameraComponent.h"
 
 #include "Diags/Diags.h"
 
@@ -26,6 +27,9 @@ ALStepC1S002::ALStepC1S002():Super() {
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
 		CShake(TEXT("/Game/LifeDev/Game/Chaps/01/Steps/02/CamShake_B"));
 	ShakeClass = CShake.Succeeded()? CShake.Class.Get() : UDefaultCameraShakeBase::StaticClass();
+
+	Cam->SetConstraintAspectRatio(true);
+	Cam->SetAspectRatio(2);
 }
 
 void ALStepC1S002::Start_Implementation() {
