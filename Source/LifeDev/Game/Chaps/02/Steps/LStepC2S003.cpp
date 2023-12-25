@@ -66,6 +66,5 @@ void ALStepC2S003::DlgShown(const FDialog& Diag) {
 void ALStepC2S003::Stop_Implementation() {
 	ALMusicMan::SetRainS(GetWorld(), false);
 	RndFB->Deactivate();
-	FB->SetVal(.1);
 	Super::Stop_Implementation();
 }

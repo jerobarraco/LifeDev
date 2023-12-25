@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S004.h"
 
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC2S004::ALStepC2S004():Super() {
@@ -21,4 +22,9 @@ ALStepC2S004::ALStepC2S004():Super() {
 		LDConsts::Items::Poem2,
 		LDConsts::Items::Card2,
 	};
+}
+
+void ALStepC2S004::Stop_Implementation() {
+	FB->SetVal(0);
+	Super::Stop_Implementation();
 }

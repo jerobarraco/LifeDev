@@ -9,7 +9,9 @@
 #include "LStepC2S003.generated.h"
 
 class UCRandomizerFB;
-// step when tape is picked. contains the dialog interaction. finishes with dialog.
+
+// step when tape is picked. contains the dialog interaction.
+// finishes with dialog.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC2S003 : public ALStep {
 	GENERATED_BODY()
