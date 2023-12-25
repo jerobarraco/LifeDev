@@ -66,7 +66,8 @@ bool ALGGameMode::LoadChapter() {
 	}
 
 	// load a chapter based on the rowname. which is just an int to string of the chapter id.
-	const FName ChapName = *FString::FromInt(Settings->Save->ChapterID); // todo find a betterest way
+	// todo find a betterest way
+	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
 	if (!pChap) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
@@ -337,7 +338,7 @@ void ALGGameMode::SetDynRes() {
 }
 
 void ALGGameMode::StartChapter() {
-	const int32 ChapterId = Settings->Save->ChapterID;
+	const int32 ChapterId = Settings->CurrentChapter();
 
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
 	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());

@@ -46,11 +46,12 @@ enum class EFeat: uint8 {
 	DEBUG UMETA(Deprecated),
 };
 
-// this class is for the settings that appears on the editor under project settings
+// this class is for the settings that appears on the editor under project settings. The general system settings.
+// For the in game settings that change during gameplay (transient ones) see LSettings
 // Note the Config meta tag on the properties are critical or it might crash
 // Settings for the game (to be built)
 // the config file is available after shipping at ~/.config/Epic/ or C:\Users\{UserName}\AppData\Local\{ProjectName}
-UCLASS(Blueprintable, Config=LSysSettings, DefaultConfig, meta=(DisplayName="LifeDevSystemSettings"))
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig, meta=(DisplayName="LifeDevSystemSettings"))
 class LIFEDEV_API ULSysSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
@@ -59,6 +60,9 @@ public:
 	static ULSysSettings* Get();
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static bool IsDebugBuild();
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory", meta=(RowType="/Script/Inventory.Item"))

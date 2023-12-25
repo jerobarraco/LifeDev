@@ -61,17 +61,10 @@ int32 ULSettings::CurrentChapter() const {
 	return IsValid(Save) ? Save->ChapterID : -1;
 }
 
-bool ULSettings::IsDebugBuild() {
-#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	return false;
-#else
-	return true;
-#endif
-}
 
 void ULSettings::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
-	const bool UseDebug = ULSettings::IsDebugBuild() && Settings->UseDebugFeats;
+	const bool UseDebug = ULSysSettings::IsDebugBuild() && Settings->UseDebugFeats;
 	Feats = UseDebug ? Settings->DebugFeats : Settings->DefaultFeats;
 }
 

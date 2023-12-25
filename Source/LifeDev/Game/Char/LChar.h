@@ -25,7 +25,7 @@ class UCLNoiser;
 // TODO consider moving the item interaction dialog stuff to another component
 
 // base class for the character
-UCLASS(config=Game)
+UCLASS(Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALChar : public ACharacter {
 	GENERATED_BODY()
 
@@ -50,7 +50,7 @@ public:
 	bool Say(const FName& Name);
 
 	// factor to apply to look when hovering an interact
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, Config)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .4;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)

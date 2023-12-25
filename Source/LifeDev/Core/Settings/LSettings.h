@@ -11,7 +11,8 @@ class ULSave;
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
 
 class ULGUSettings;
-// This class allows to interact with the settings during gameplay.
+
+// This class allows to interact with the game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSettings : public UGameInstanceSubsystem {
 	GENERATED_BODY()
@@ -21,9 +22,8 @@ public:
 	static ULSettings* Get(UWorld* World);
 	UFUNCTION(BlueprintCallable)
 	static bool GetFeatS(UWorld* World, EFeat Feat);
-	UFUNCTION(BlueprintCallable)
-	static bool IsDebugBuild();
 
+	UFUNCTION(BlueprintCallable)
 	void NewGame();
 	UFUNCTION(BlueprintCallable)
 	void LoadGame();
@@ -51,6 +51,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ULSave* Save = nullptr;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TSet<EFeat> Feats;
