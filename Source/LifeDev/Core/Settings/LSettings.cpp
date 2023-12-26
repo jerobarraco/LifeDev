@@ -76,7 +76,7 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 		if (Has) Feats.Remove(Feat);
 	}
 	
-	OnFeatUpdate.Execute(Feat, Enable);
+	OnFeatUpdate.Broadcast(Feat, Enable);
 }
 
 bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {

@@ -8,7 +8,7 @@
 #include "LSettings.generated.h"
 
 class ULSave;
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
 
 class ULGUSettings;
 
