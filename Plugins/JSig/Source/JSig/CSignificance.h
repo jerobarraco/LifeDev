@@ -122,16 +122,26 @@ public:
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	/// interface
+	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
+	void Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
+	/// ~
 	
+	/// utils
 	void Register();
 	void Unregister();
+	float GetDistanceSignificance(float DistSqr);
+	/// ~
+	
+	/// updates
+	/// all these will run on game thread
+	
+	// finish the update. calling all the update functions and triggering the delegate.
+	void ApplyUpdate();
 	void UpdateTicks();
 	void UpdateActivate();
 	void UpdateHidden();
-	
-	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
-	void PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
-	float GetDistanceSignificance(float DistSqr);
+	///~
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ESigValue Significance = ESigValue::High;

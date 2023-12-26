@@ -70,7 +70,7 @@ void UCSignificance::Register() {
 	auto lPostUpdate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float Old, float New, bool bFinal)
 	{
 		if (!IsValid(this)) return;
-		PostUpdate(ObjectInfo, Old, New, bFinal);
+		Update(ObjectInfo, Old, New, bFinal);
 	};
 
 	// Register
@@ -143,37 +143,6 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	// return Sig;
 }
 
-void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
-	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs threadId=%i"), __func__, ThreadId);
-	
-	ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
-	// return if not changed. don't trust on old and sig, use the actually stored. to ensure proper initialization.
-	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
-	const bool Equals = NewSig == Significance; 
-	if (Equals) return;
-	
-	Significance = NewSig;
-	const AActor* const Owner = GetOwner();
-	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"), Significance, *GetNameSafe(Owner));
-
-	/// updates
-	UpdateTicks();
-	UpdateActivate();
-	UpdateHidden();
-
-	/// Finish it!!
-	// finally notify (at the end, given the side effects)
-	// make sure to notify on the game thread, as clients should not worry about this, and probably will assume that.
-	if (IsInGameThread()) { // thanks ue for these super helpful functions
-		OnChanged.Broadcast(Significance);
-	} else {
-		AsyncTask(ENamedThreads::GameThread, [this] {
-			OnChanged.Broadcast(Significance);
-		});
-	}
-}
-
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	const int32 Num = DistanceSqr.Num();
 	if (Num == 0) {
@@ -202,6 +171,49 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	return static_cast<float>(Sig);
 }
 
+void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
+	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs threadId=%i"), __func__, ThreadId);
+	
+	ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
+	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
+	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
+	const bool Equals = NewSig == Significance; 
+	if (Equals) return; // return if not changed.
+	
+	Significance = NewSig;
+	const AActor* const Owner = GetOwner();
+
+	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"),
+		Significance, *GetNameSafe(Owner));
+
+	/// Finish it!!
+	// Make sure to call ApplyUpdate on the game thread.
+	if (IsInGameThread()) { // thanks ue for these super helpful functions
+		ApplyUpdate();
+	} else {
+		AsyncTask(ENamedThreads::GameThread, [this] {
+			ApplyUpdate();
+		});
+	}
+}
+
+void UCSignificance::ApplyUpdate() {
+	/// updates.
+	/// This function is called on the game thread.
+	/// Calling these Update* functions here would be less performant than in other threads.
+	/// But it's also more stable, it could crash on another thread.
+	UpdateTicks();
+	UpdateActivate();
+	UpdateHidden();
+
+	// finally notify (at the end, given the possible side effects on the bound delegate client)
+	// make sure to notify on the game thread.
+	// clients should not worry about the thread and probably assume it's the game thread.
+	OnChanged.Broadcast(Significance);
+}
+
+
 void UCSignificance::UpdateTicks() {
 	if (!TickIntervals.Contains(Significance)) return;
 
@@ -210,15 +222,41 @@ void UCSignificance::UpdateTicks() {
 	
 	const float Interval = TickIntervals[Significance];
 	const bool TickEnabled = Interval>=0;
+	UE_LOG(LogJSigComp, Verbose, TEXT("Update ticks. Interval=%f Enabled=%i Obj=%s"),
+		Interval, TickEnabled, *GetNameSafe(Owner));
+
+	/// Owner
+	// i wonder if i need to do the same round-about way than the components for the actor
 	Owner->SetActorTickInterval(Interval);
 	Owner->SetActorTickEnabled(TickEnabled);
 
+	/// Components
+	// update ticks stuff. unfortunately this code needs a lot of extra stuff to work reliably.
 	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
-		C->SetComponentTickInterval(Interval);
-		// this is the appropriate way to disable ticks
+
+		// avoid setting it to -1 if it's going to be disabled anyways.
+		if (TickEnabled) {
+			// necessary, not enough. when going from off to low, it doesn't really update the appropriate value.
+			C->SetComponentTickInterval(Interval);
+		}
+		
+		// optimization: even though SetTickFunction performs a check, but update interval does not.
+		// and i don't like the extra work they do.
+		// they do too many functions, pointer handling, and vanilla unhelpful "check"s
+		// it's prone to crash and i got one.
+		if (C->IsComponentTickEnabled() == TickEnabled) continue;
+
+		// this is the appropriate way to disable ticks.
+		// it's safe to call with enabled if it's already enabled. the code does that check.
+		// also this only gets called on significance change.
 		C->PrimaryComponentTick.SetTickFunctionEnable(TickEnabled);
-		// this will break all the anims and others as it breaks the tick completely
+		
+		// this is actually necessary, specially when going from off to on.
+		// otherwise the interval is not set correctly.
+		C->PrimaryComponentTick.UpdateTickIntervalAndCoolDown(Interval);
+
+		// don't: this will break all the anims and others as it breaks the tick completely
 		// C->PrimaryComponentTick.bCanEverTick = TickEnabled;
 		// C->SetComponentTickEnabled(TickEnabled); // this will break all anims
 	}
@@ -227,13 +265,13 @@ void UCSignificance::UpdateTicks() {
 void UCSignificance::UpdateActivate() {
 	const bool IsActive = Significance != ESigValue::Off;
 	for (UActorComponent* const C: CompsActivate) {
-		C->SetActive(IsActive);
+		C->SetActive(IsActive, false); // don't reset.
 	}
 }
 
 void UCSignificance::UpdateHidden() {
 	// https://forums.unrealengine.com/t/set-visibility-does-it-help-with-texture-memory-and-other-optimization/138761/3?u=nande
-	// according to that setvis affects the editor, which is not exactly what i want. but is kinda the same on runtime.
+	// according to that ^, setvis affects the editor, which is not exactly what i want. but is kinda the same on runtime.
 	// a reason for not using setHidden is that there's a flag (OffWhenHidden) that collides with this intention.
 	// though im not sure....
 	// const bool IsActive = Significance != ESigValue::Off;
