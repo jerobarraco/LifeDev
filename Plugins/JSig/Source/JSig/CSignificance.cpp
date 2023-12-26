@@ -38,10 +38,11 @@ void UCSignificance::Deactivate() {
 }
 
 void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Deactivate();
+	// Unregister(); call deactivate better.
+	Deactivate(); // important or the sigmanager will leak and then crash :) (according to ue docs)
+	
 	CompsActivate.Empty();
 	CompsTicks.Empty();
-	// Unregister(); // important or the sigmanager will leak and then crash :) (according to their docs)
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -146,10 +147,13 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs threadId=%i"), __func__, ThreadId);
 	
-	const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
+	ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
+	// return if not changed. don't trust on old and sig, use the actually stored. to ensure proper initialization.
+	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
+	const bool Equals = NewSig == Significance; 
 	if (Equals) return;
-
-	Significance = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
+	
+	Significance = NewSig;
 	const AActor* const Owner = GetOwner();
 	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"), Significance, *GetNameSafe(Owner));
 
@@ -159,8 +163,9 @@ void UCSignificance::PostUpdate(USignificanceManager::FManagedObjectInfo* Info, 
 	UpdateHidden();
 
 	/// Finish it!!
-	if (IsInGameThread()) {
-		// finally notify (at the end, given the side effects)
+	// finally notify (at the end, given the side effects)
+	// make sure to notify on the game thread, as clients should not worry about this, and probably will assume that.
+	if (IsInGameThread()) { // thanks ue for these super helpful functions
 		OnChanged.Broadcast(Significance);
 	} else {
 		AsyncTask(ENamedThreads::GameThread, [this] {
@@ -213,7 +218,8 @@ void UCSignificance::UpdateTicks() {
 		C->SetComponentTickInterval(Interval);
 		// this is the appropriate way to disable ticks
 		C->PrimaryComponentTick.SetTickFunctionEnable(TickEnabled);
-		// C->PrimaryComponentTick.bCanEverTick = TickEnabled; // this will break all the anims and others as it breaks the tick for good
+		// this will break all the anims and others as it breaks the tick completely
+		// C->PrimaryComponentTick.bCanEverTick = TickEnabled;
 		// C->SetComponentTickEnabled(TickEnabled); // this will break all anims
 	}
 }
