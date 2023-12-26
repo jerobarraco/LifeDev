@@ -56,6 +56,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> RemItems;
 
+	// items to ensure when starting. mostly for skipping chapters
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<FName> ItemsEnsure;
+
+	// TODO add EnsureItems to ensure you have the items by the chapter
+
+	// TODO rename these Items vars
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;
 	inline static bool UseDebug = false;
@@ -71,6 +78,7 @@ protected:
 	void StartDialogs();
 	// removes items on RemItems
 	void RemoveItems();
+	void EnsureItems();
 	
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);

@@ -12,6 +12,7 @@ void ALStep::Start_Implementation() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
+	EnsureItems();
 	if (!FinishItems.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 
@@ -73,6 +74,12 @@ void ALStep::RemoveItems() {
 		const bool Has = Inventory->Get(N, Item);
 		if (!Has || Item.Count <= 0) continue;
 		Inventory->Mod(N, -Item.Count);
+	}
+}
+
+void ALStep::EnsureItems() {
+	for(const FName& N: ItemsEnsure) {
+		Inventory->Ensure(N);
 	}
 }
 
