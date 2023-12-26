@@ -68,12 +68,8 @@ void ALStep::StartDialogs() {
 }
 
 void ALStep::RemoveItems() {
-	FItem Item; // not reusing since some items might change the count.
 	for (const FName& N: RemItems) {
-		Item.Count = 0; // ensure it's 0 to begin with
-		const bool Has = Inventory->Get(N, Item);
-		if (!Has || Item.Count <= 0) continue;
-		Inventory->Mod(N, -Item.Count);
+		Inventory->Rem(N);
 	}
 }
 

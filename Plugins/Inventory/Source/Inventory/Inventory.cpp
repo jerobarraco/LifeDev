@@ -87,7 +87,28 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 
 bool UInventory::Ensure(const FName& Name) {
 	if (Has(Name)) return true;
+
+	UE_LOG(LogInventory, Log, TEXT("Ensured item. name=%s"), *Name.ToString());
 	return Mod(Name, 1);
+}
+
+bool UInventory::Rem(const FName& Name) {
+	// this is a bit faster than using mod. But needs to ensure it triggers all the correct delegates.
+	FItem Item;
+	// Important that Get returns a copy, since we need to return this on Mod
+	const bool Has = Get(Name, Item);
+	// No item with 0 or negative should be stored. but check anyway.
+	if (!Has) return false;
+	
+	const FName NextKey = GetNextKey();
+	UE_LOG(LogInventory, Log, TEXT("Removing item. name=%s, nextSelect=%s"),
+		*Name.ToString(), *NextKey.ToString());
+	
+	Items.Remove(Name);
+	OnMod.Broadcast(Name, -Item.Count, MoveTemp(Item));
+
+	SetSelected(NextKey);	
+	return true;
 }
 
 bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
@@ -239,6 +260,8 @@ bool UInventory::IsCold(const FItem& Item) {
 void UInventory::SetCoolTimerEnabled(bool Enable) {
 	UWorld* const World = GetWorld();
 	if (!World) return;
+
+	// done this way since there could be many items hot at the same time.
 	
 	FTimerManager& Time = World->GetTimerManager();
 
