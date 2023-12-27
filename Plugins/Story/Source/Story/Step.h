@@ -68,7 +68,7 @@ public:
 	// teleports the character to where this cam is located. and also copies the rotation
 	// beware this affects the camera blend if any (if blending from/to the character)
 	// teleports before blending. teleports on start of step. Rotation is broken.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool TeleportChar = false;
 	
 	// Title to show. Only shown if you also set UseFade

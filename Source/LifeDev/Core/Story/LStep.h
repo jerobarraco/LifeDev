@@ -31,7 +31,7 @@ public:
 	void CheckFinishItems();
 	
 	// whether to dis/enable the character input
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool InputEnabled = false;
 
 	// when set to true, the game mode will set the wait time to the fade time.
@@ -40,7 +40,7 @@ public:
 	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
 	// TODO make sure i dont need it and remove
 	// TODO need to fix the steps that do use postwait
-	UPROPERTY(BlueprintReadWrite, Category=SetUp, meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 	
 	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
