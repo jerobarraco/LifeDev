@@ -47,7 +47,7 @@ AStreetLight::AStreetLight():Super() {
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	// disabled since this requires a mesh. and that will add cost. and render check also adds a cost.
-	Sig->RenderSinceMax = -1;
+	Sig->OffscreenTimeMax = -1;
 }
 
 

@@ -38,9 +38,9 @@ ALLight::ALLight():Super() {
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	// disabled. since a light-source that is behind me might change the light in front of me.
 	// only change due to distance
-	Sig->RenderSinceMax = -1;
+	Sig->OffscreenTimeMax = -1;
 	// don't off when offscreen. the light might still be onscreen 
-	Sig->IsOffWhenOffscreen = false;
+	Sig->IsOffIfOffscreen = false;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CClick(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));

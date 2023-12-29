@@ -92,23 +92,23 @@ float UCSignificance::Calculate(
 		return GSigOverride;
 
 	const AActor* const Owner = GetOwner();
-	if (IsOffWhenHidden && Owner && Owner->IsHidden()) {
+	if (IsOffIfHidden && Owner && Owner->IsHidden()) {
 		return static_cast<float>(ESigValue::Off);
 	}
 
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
 	// but in truth it will contradict the occlusion and return low even if occluded
-	if (IsOffWhenOccluded && Owner) {
+	if (IsOffIfOccluded && Owner) {
 		if (IsOccluded(Owner, Viewpoint)) return static_cast<float>(ESigValue::Off);
 	}
 	
 	// test offscreen
-	if (Owner && RenderSinceMax >= 0.0f && !Owner->WasRecentlyRendered(RenderSinceMax)) {
+	if (Owner && OffscreenTimeMax >= 0.0f && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"),
 			*GetNameSafe(Owner));
 		
-		return static_cast<float>( IsOffWhenOffscreen ? ESigValue::Off: ESigValue::Low );
+		return static_cast<float>( IsOffIfOffscreen ? ESigValue::Off: ESigValue::Low );
 	}
 
 	// Use Actor implemented override if present.

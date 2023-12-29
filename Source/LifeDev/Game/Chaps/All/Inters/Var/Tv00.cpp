@@ -102,7 +102,7 @@ ATv00::ATv00():Super() {
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
 	Sig->SetAutoActivate(false);
-	Sig->RenderSinceMax = .2;
+	Sig->OffscreenTimeMax = .2;
 }
 
 void ATv00::BeginPlay() {

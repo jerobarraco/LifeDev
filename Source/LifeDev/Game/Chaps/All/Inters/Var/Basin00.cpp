@@ -45,7 +45,8 @@ ABasin00::ABasin00():Super() {
 
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
-	Sig->IsOffWhenOffscreen = true;
+	Sig->IsOffIfOffscreen = true;
+	Sig->IsOffIfOccluded = true;
 
 	Super::SetMobility(EComponentMobility::Static);// static since we won't animate it
 }
