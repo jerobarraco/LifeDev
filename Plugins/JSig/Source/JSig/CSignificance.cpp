@@ -105,18 +105,16 @@ float UCSignificance::Calculate(
 	
 	// test offscreen
 	if (Owner && RenderSinceMax >= 0.0f && !Owner->WasRecentlyRendered(RenderSinceMax)) {
-		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Owner$));
+		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"),
+			*GetNameSafe(Owner));
 		
-		return static_cast<float>(
-			IsOffWhenOffscreen ? ESigValue::Off: ESigValue::Low
-		);
+		return static_cast<float>( IsOffWhenOffscreen ? ESigValue::Off: ESigValue::Low );
 	}
 
 	// Use Actor implemented override if present.
 	// otherwise we will calculate it here
 	if (CalcSignificance.IsBound()) {
-		const float Sig = CalcSignificance.Execute(Viewpoint);
-		return Sig;
+		return static_cast<float>(CalcSignificance.Execute(Viewpoint));
 	}
 
 	// use overriden location if set. otherwise use the actor's one

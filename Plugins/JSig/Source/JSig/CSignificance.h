@@ -25,7 +25,7 @@ enum class ESigValue : uint8 {
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESigValue, Significance);
-DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCalcSignificance, const FTransform& , Viewpoint);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(ESigValue, FCalcSignificance, const FTransform& , Viewpoint);
 DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
 // Manages the significance of the owner actor
