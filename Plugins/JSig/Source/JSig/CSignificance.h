@@ -54,28 +54,27 @@ public:
 	FORCEINLINE ESigValue GetSignificance() { return Significance; }
 
 	// if set, then when the actor is hidden, it will become insignificant (Off).
-	// See CompsHide and IsOffWhenHidden.
+	// See CompsHide and IsOffIfHidden.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool IsOffWhenHidden = true;
+	bool IsOffIfHidden = true;
 
-	// if set, when offscreen, it will be off, otherwise it will be low.
-	// this affects the CompsHide. when this is not set they will become invisible only by distance.
+	// performs a visibility test. potentially not very cheap.
+	// takes precedence over Offscreen test 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsOffIfOccluded = false;
+
+	// Works with OffscreenTimeMax.
+	// When offscreen, if this is set, it will be off, otherwise it will be low.
 	// (unless you've overriden the significance calculation)
-	// if IsOffWhenOffscreen is true, compHide contains the RootComponent, and IsOffWhenHidden is true,
-	// then, once the object is offscreen, it will be hidden,
-	// and then become insignificant and stay there and never reset. This is by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool IsOffWhenOffscreen = false;
-
-	// performs a visibility test. potentially not cheap.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool IsOffWhenOccluded = false;
+	bool IsOffIfOffscreen = false;
 	
 	// >=0 The seconds since last render before becoming insignificant.
 	// <0 is disabled
-	// this requires the actor to have a mesh.(a light is not a mesh)
+	// this requires the actor to have a mesh. (a light is not a mesh)
+	// if IsOffWhenOffscreen is true, the component will be off, otherwise it will be low.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float RenderSinceMax = 0.5f;
+	float OffscreenTimeMax = 0.5f;
 	
 	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -102,8 +101,15 @@ public:
 	// components to manage activate/deactivate. Not safe to use on Niagara. Use CompsHide
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
+	
 	// components to manage hidden, ONLY when the significance is Off.
-	// see IsOffWhenOffscreen.
+	// When significance is Off it will set all the components to HiddenInGame
+	// otherwise it will unset HiddenInGame.
+	// This is affected by: DistanceSqr, IsOffIfOffscreen, IsOffIfHidden, and IsOffIfOccluded.
+	// note if the root component is set in this array, and IsOffIfHidden is set to true.
+	// once it becomes off ONCE, it will STAY off. Since it won't come back from hidden.
+	// Probably the same will happen with the rest of IsOffIf* flags.
+	// This is by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<USceneComponent*> CompsHide;
 
