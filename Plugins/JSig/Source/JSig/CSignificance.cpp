@@ -91,21 +91,21 @@ float UCSignificance::Calculate(
 	if (GSigOverride >= 0.0f)
 		return GSigOverride;
 
-	const AActor* const Actor = GetOwner();
-	if (IsOffWhenHidden && Actor && Actor->IsHidden()) {
+	const AActor* const Owner = GetOwner();
+	if (IsOffWhenHidden && Owner && Owner->IsHidden()) {
 		return static_cast<float>(ESigValue::Off);
 	}
 
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
 	// but in truth it will contradict the occlusion and return low even if occluded
-	if (IsOffWhenOccluded && Actor) {
-		if (IsOccluded(Actor, Viewpoint)) return static_cast<float>(ESigValue::Off);
+	if (IsOffWhenOccluded && Owner) {
+		if (IsOccluded(Owner, Viewpoint)) return static_cast<float>(ESigValue::Off);
 	}
 	
 	// test offscreen
-	if (Actor && RenderSinceMax >= 0.0f && !Actor->WasRecentlyRendered(RenderSinceMax)) {
-		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
+	if (Owner && RenderSinceMax >= 0.0f && !Owner->WasRecentlyRendered(RenderSinceMax)) {
+		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Owner$));
 		
 		return static_cast<float>(
 			IsOffWhenOffscreen ? ESigValue::Off: ESigValue::Low
@@ -123,8 +123,8 @@ float UCSignificance::Calculate(
 	FVector Origin;
 	if (CalcLocation.IsBound()) {
 		Origin = CalcLocation.Execute();	
-	} else if (Actor) {
-		Origin = Actor->GetActorLocation();
+	} else if (Owner) {
+		Origin = Owner->GetActorLocation();
 	}
 
 	// calculate using distances
