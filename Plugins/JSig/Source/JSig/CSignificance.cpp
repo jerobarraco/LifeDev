@@ -8,7 +8,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 
-#pragma optimize("", off)
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
@@ -99,16 +98,21 @@ float UCSignificance::Calculate(
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
 	// but in truth it will contradict the occlusion and return low even if occluded
-	if (IsOffIfOccluded && Owner) {
-		if (IsOccluded(Owner, Viewpoint)) return static_cast<float>(ESigValue::Off);
+	if (TestOcclusion && Owner) {
+		if (IsOccluded(Owner, Viewpoint)) {
+			UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor occluded. Now is off/low. name=%s"),
+				*GetNameSafe(Owner));
+		
+			return static_cast<float>( IsOffIfOccluded ? ESigValue::Off : ESigValue::Low);
+		}
 	}
 	
 	// test offscreen
 	if (Owner && OffscreenTimeMax >= 0.0f && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
-		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"),
+		UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor offscreen for too long. Now is off/low. name=%s"),
 			*GetNameSafe(Owner));
 		
-		return static_cast<float>( IsOffIfOffscreen ? ESigValue::Off: ESigValue::Low );
+		return static_cast<float>( IsOffIfOffscreen ? ESigValue::Off : ESigValue::Low );
 	}
 
 	// Use Actor implemented override if present.
@@ -297,4 +301,3 @@ void UCSignificance::UpdateHidden() {
 		C->SetHiddenInGame(IsHidden);
 	}
 }
-#pragma optimize("", on)

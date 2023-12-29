@@ -104,6 +104,8 @@ ATv00::ATv00():Super() {
 	Sig->SetAutoActivate(false);
 	Sig->OffscreenTimeMax = .2; // manage the ticks
 	Sig->IsOffIfOffscreen = false; // avoid dead-locking the significance
+	Sig->TestOcclusion = true;
+	Sig->IsOffIfOccluded = false;
 }
 
 void ATv00::BeginPlay() {

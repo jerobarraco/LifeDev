@@ -58,8 +58,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffIfHidden = true;
 
-	// performs a visibility test. potentially not very cheap.
-	// takes precedence over Offscreen test 
+	// when set to true will test for occlusion based on the Visibility channel.
+	// if IsOffIfOccluded will set to off, otherwise it will be low.
+	// Note this is probably not very cheap and has precedence over offscreen.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool TestOcclusion = false;
+
+	// performs a visibility test.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffIfOccluded = false;
 
