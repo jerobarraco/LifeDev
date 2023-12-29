@@ -41,6 +41,8 @@ ALLight::ALLight():Super() {
 	Sig->OffscreenTimeMax = -1;
 	// don't off when offscreen. the light might still be onscreen 
 	Sig->IsOffIfOffscreen = false;
+	Sig->TestOcclusion = false; // source could be occluded but not the whole light
+	Sig->IsOffIfOccluded = false;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CClick(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));

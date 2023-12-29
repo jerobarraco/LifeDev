@@ -182,8 +182,7 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 	World->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 
 	AActor* const HitActor = Hit.GetActor();
-	// no need to check if it's valid since i already check for owner valid at the top.
-	// and if it's different it's different.
+	// no need to check if either is valid. if it's different it's different.
 	const bool Occluded = HitActor != Owner;
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Occluded=%i o=%s hit=%s"),
 		__func__, Occluded, *GetNameSafe(Owner), *GetNameSafe(HitActor));
