@@ -66,6 +66,10 @@ public:
 	// and then become insignificant and stay there and never reset. This is by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffWhenOffscreen = false;
+
+	// performs a visibility test. potentially not cheap.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsOffWhenOccluded = false;
 	
 	// >=0 The seconds since last render before becoming insignificant.
 	// <0 is disabled
@@ -131,6 +135,8 @@ protected:
 	void Register();
 	void Unregister();
 	float GetDistanceSignificance(float DistSqr);
+	// returns true when the actor is not visible (occluded or invalid)
+	bool IsOccluded(const AActor* Owner, const FTransform& Viewpoint);
 	/// ~
 	
 	/// updates

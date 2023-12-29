@@ -8,6 +8,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 
+#pragma optimize("", off)
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
@@ -49,7 +50,7 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void UCSignificance::Register() {
 	const AActor* const Owner = GetOwner();
 	const FName Tag(GetNameSafe(Owner));
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, Tag);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs tag=%s"), __func__, Tag);
 
 	// don't register if it doesn't have an owner
 	if (!IsValid(Owner)) {
@@ -85,7 +86,8 @@ void UCSignificance::Unregister() {
 	Man->UnregisterObject(this);
 }
 
-float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
+float UCSignificance::Calculate(
+	USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
 	if (GSigOverride >= 0.0f)
 		return GSigOverride;
 
@@ -94,6 +96,14 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 		return static_cast<float>(ESigValue::Off);
 	}
 
+	// test occlusion BEFORE offscreen
+	// i was tempted to believe i will save time.
+	// but in truth it will contradict the occlusion and return low even if occluded
+	if (IsOffWhenOccluded && Actor) {
+		if (IsOccluded(Actor, Viewpoint)) return static_cast<float>(ESigValue::Off);
+	}
+	
+	// test offscreen
 	if (Actor && RenderSinceMax >= 0.0f && !Actor->WasRecentlyRendered(RenderSinceMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("Actor offscreen for too long. Now is off. name=%s"), *GetNameSafe(Actor));
 		
@@ -123,24 +133,6 @@ float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* Object
 	
 	UE_LOG(LogJSigComp, Verbose, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
-
-	// TODO visibility by
-	//	2- Is actually visible (some trace with visibility channel)
-	
-	// FCollisionQueryParams Params;
-	// Params.Add(Actor);
-	
-	// need to use this, unfortunately, because this variable doesn't exist otherwise
-	// #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	// Params.bDebugQuery = true;
-	// #endif
-
-	// UWorld* World = GetWorld();
-	// if (!World) return Sig;
-	// FHitResult Hit;
-	// World->LineTraceSingleByChannel( Hit, Viewpoint, Origin, ECC_Visibility);
-	
-	// return Sig;
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
@@ -169,6 +161,35 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	}
 	
 	return static_cast<float>(Sig);
+}
+
+bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint) {
+	UWorld* const World = GetWorld();
+	if (!World) return true;
+
+	// AActor* Owner = GetOwner();
+	// if (!IsValid(Owner)) return true;
+	
+	const FVector& Start = Viewpoint.GetLocation();
+	const FVector& End = Owner->GetActorLocation(); //Vi + Direction;
+	FCollisionQueryParams Params;
+	
+#if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
+	Params.bDebugQuery = true;
+	DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 1.f, false, 1.f);
+#endif
+
+	FHitResult Hit;
+	World->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
+
+	AActor* const HitActor = Hit.GetActor();
+	// no need to check if it's valid since i already check for owner valid at the top.
+	// and if it's different it's different.
+	const bool Occluded = HitActor != Owner;
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Occluded=%i o=%s hit=%s"),
+		__func__, Occluded, *GetNameSafe(Owner), *GetNameSafe(HitActor));
+
+	return Occluded;
 }
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
@@ -281,3 +302,4 @@ void UCSignificance::UpdateHidden() {
 		C->SetHiddenInGame(IsHidden);
 	}
 }
+#pragma optimize("", on)

@@ -32,8 +32,8 @@ void USignificance::Reset() {
 
 	Man = USignificanceManager::Get(W);
 	int32 Num = NumPCs>0? NumPCs : W->GetNumPlayerControllers(); 
-	for(FConstPlayerControllerIterator Iterator = W->GetPlayerControllerIterator(); Iterator && Num > 0; ++Iterator )
-	{
+	for(FConstPlayerControllerIterator Iterator = W->GetPlayerControllerIterator();
+		Iterator && Num > 0; ++Iterator ) {
 		--Num;
 		APlayerController* const PlayerController = Iterator->Get();
 		if(!PlayerController) continue;
