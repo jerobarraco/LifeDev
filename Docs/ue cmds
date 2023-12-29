@@ -52,3 +52,9 @@ showdebug input
 DISABLEALLSCREENMESSAGES
 #re enable
 ENABLEALLSCREENMESSAGES
+
+
+# list objects
+obj list -resourcesizesort
+obj list class=SkeletalMesh -resourcesizesort
+obj list class=StaticMesh -resourcesizesort
