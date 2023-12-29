@@ -34,7 +34,7 @@ DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 // Also set the distance squared
 // you can also set the Comps if you want to manage their ticks too
 // you can also override the calculation, and bind to the significance change to implement your own tweaks.
-// Note that this is one of the few objects that have autoActivate by default.
+// Note: that this is one of the few objects that have autoActivate by default.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JSig), meta=(BlueprintSpawnableComponent))
 class JSIG_API UCSignificance: public UActorComponent {
 	GENERATED_BODY()

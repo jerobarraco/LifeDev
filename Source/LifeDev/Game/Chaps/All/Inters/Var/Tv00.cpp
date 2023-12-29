@@ -102,7 +102,8 @@ ATv00::ATv00():Super() {
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
 	Sig->SetAutoActivate(false);
-	Sig->OffscreenTimeMax = .2;
+	Sig->OffscreenTimeMax = .2; // manage the ticks
+	Sig->IsOffIfOffscreen = false; // avoid dead-locking the significance
 }
 
 void ATv00::BeginPlay() {
