@@ -88,6 +88,7 @@ void ALGGameMode::Init_Implementation() {
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
+	
 	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance)){
 		UE_LOG(LogLGameMode, Warning, TEXT("Game Mode: No valid instance found"));
@@ -100,7 +101,11 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 
-	//TODO implement save/load from ui. for now we always start a new one
+	// allow quickmesh to skip wpo
+	World->Exec(World, TEXT("r.OptimizedWPO 1"));
+	
+	//TODO implement save/load from ui. for now we always start a new one.
+	// that will have to happen on the intro level on another game mode
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (!IsValid(Settings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. cant continue."));
