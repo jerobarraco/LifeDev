@@ -161,20 +161,17 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	return static_cast<float>(Sig);
 }
 
-bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint) {
+bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint) const {
 	UWorld* const World = GetWorld();
 	if (!World) return true;
-
-	// AActor* Owner = GetOwner();
-	// if (!IsValid(Owner)) return true;
 	
 	const FVector& Start = Viewpoint.GetLocation();
-	const FVector& End = Owner->GetActorLocation(); //Vi + Direction;
+	const FVector& End = Owner->GetActorLocation();
 	FCollisionQueryParams Params;
 	
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	Params.bDebugQuery = true;
-	DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 1.f, false, 1.f);
+	// DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 1.f, false, 1.f); // annoying
 #endif
 
 	FHitResult Hit;

@@ -142,7 +142,7 @@ protected:
 	void Unregister();
 	float GetDistanceSignificance(float DistSqr);
 	// returns true when the actor is not visible (occluded or invalid)
-	bool IsOccluded(const AActor* Owner, const FTransform& Viewpoint);
+	bool IsOccluded(const AActor* Owner, const FTransform& Viewpoint) const;
 	/// ~
 	
 	/// updates
