@@ -3,6 +3,18 @@
 
 #include "CQuickMesh.h"
 
+UCQuickMesh::UCQuickMesh(): Super() {
+	Super::SetComponentTickEnabled(false);
+	PrimaryComponentTick.SetTickFunctionEnable(false);
+	PrimaryComponentTick.bStartWithTickEnabled = false;
+	
+	bEvaluateWorldPositionOffset = false;
+	bEvaluateWorldPositionOffsetInRayTracing = false;
+	
+	SetQuickCollisionEnabled(false);
+	SetCastAllShadows(false);
+}
+
 void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
 	Super::SetCanEverAffectNavigation(Enable);
 	bNavigationRelevant = Enable;
@@ -17,14 +29,6 @@ void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
 	}
 }
 
-UCQuickMesh::UCQuickMesh(): Super() {
-	SetQuickCollisionEnabled(false);
-
-	Super::SetComponentTickEnabled(false);
-	PrimaryComponentTick.SetTickFunctionEnable(false);
-	PrimaryComponentTick.bStartWithTickEnabled = false;
-	SetCastAllShadows(false);
-}
 
 void UCQuickMesh::SetCastAllShadows(bool Cast) {
 	SetCastShadow(Cast);

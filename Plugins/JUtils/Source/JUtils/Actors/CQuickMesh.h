@@ -3,7 +3,6 @@
 
 #pragma once
 
-// TODO move to Actors
 #include "CQuickMesh.generated.h"
 
 // base class for an optimized mesh. by default it well have EVERYTHING disabled, mostly.
@@ -12,8 +11,10 @@ class JUTILS_API UCQuickMesh: public UStaticMeshComponent {
 	GENERATED_BODY()
 
 public:
-	void SetQuickCollisionEnabled(bool Enable);
 	UCQuickMesh();
+	
+	UFUNCTION(BlueprintCallable)
+	void SetQuickCollisionEnabled(bool Enable);
 
 	UFUNCTION(BlueprintCallable)
 	void SetCastAllShadows(bool Cast);
