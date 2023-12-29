@@ -11,7 +11,7 @@ ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L";
 	UseItemDlgs = {
 		{LDConsts::Items::Card0, "D10xC00"},
-		{LDConsts::Items::Card1, "D10xC01"},
+		{LDConsts::Items::Card2, "D10xC02"},
 	};
 
 	// no unlock item nor trigger dlg. i want to keep this locked
@@ -23,7 +23,7 @@ ADoorI10::ADoorI10():Super() {
 
 
 EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
-	if (!Interacted && Name == LDConsts::Items::Card2) {
+	if (!Interacted && Name == LDConsts::Items::Card1) {
 		DoDialog();
 		return EItemUseResult::SUCCESS;
 	}
