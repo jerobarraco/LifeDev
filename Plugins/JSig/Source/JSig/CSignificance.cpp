@@ -74,7 +74,10 @@ void UCSignificance::Register() {
 	};
 
 	// Register
-	Man->RegisterObject(this, Tag, lCalculate, USignificanceManager::EPostSignificanceType::Sequential, lPostUpdate);
+	const USignificanceManager::EPostSignificanceType Type =
+		IsConcurrent ? USignificanceManager::EPostSignificanceType::Concurrent
+			: USignificanceManager::EPostSignificanceType::Sequential;
+	Man->RegisterObject(this, Tag, lCalculate, Type, lPostUpdate);
 }
 
 void UCSignificance::Unregister() {

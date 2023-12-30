@@ -53,6 +53,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE ESigValue GetSignificance() { return Significance; }
 
+	// whether the update of this component is concurrent or sequential.
+	// Concurrent is more performant but if you override the CalcLocation or CalcSignificance it has to be thread safe.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool IsConcurrent = true;
+
 	// if set, then when the actor is hidden, it will become insignificant (Off).
 	// See CompsHide and IsOffIfHidden.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -134,7 +139,7 @@ public:
 	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;
-
+	
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	/// interface
