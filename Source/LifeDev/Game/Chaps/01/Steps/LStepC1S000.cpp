@@ -23,13 +23,13 @@ ALStepC1S000::ALStepC1S000():Super() {
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Var/Music/Music02/Music02_MS.Music02_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Chap01_DL.Chap01_DL"));
+		CDL1 (TEXT("/Game/LifeDev/Game/Var/Datalayers/Chap01_DL.Chap01_DL"));
 	if (CDL1.Succeeded()) {
 		DL_Load.Add(CDL1.Object);
 	}
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL2 (TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Chap00_DL.Chap00_DL"));
+		CDL2 (TEXT("/Game/LifeDev/Game/Var/Datalayers/Chap00_DL.Chap00_DL"));
 	if (CDL2.Succeeded()) {
 		DL_Unload.Add(CDL2.Object);
 	}
