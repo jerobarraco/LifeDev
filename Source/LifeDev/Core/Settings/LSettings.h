@@ -50,19 +50,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
     ULSave* Save = nullptr;
 
+	// triggered when one of the feat is updated to be enabled or disabled
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FOnFeatUpdate OnFeatUpdate;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdateChap;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdateAccess;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdateSound;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdateGraph;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdateMisc;
-
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)

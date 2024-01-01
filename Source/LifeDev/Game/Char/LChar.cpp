@@ -136,8 +136,7 @@ void ALChar::InteractSetEnabled(bool Enabled) {
 	Interactor->SetEnabled(Enabled);
 }
 
-void ALChar::BeginPlay()
-{
+void ALChar::BeginPlay() {
 	// Call the base class  
 	Super::BeginPlay();
 
@@ -170,8 +169,11 @@ void ALChar::BeginPlay()
 	Dialogs = World->GetSubsystem<UDiags>();
 
 	if (IsValid(Noiser)) {
-		Noiser->Debug = ULSettings::GetFeatS(World, EFeat::DEBUG);
-		Noiser->Start();
+		ULSettings* const Settings = ULSettings::Get(World);
+		Noiser->Debug = Settings->GetFeat(EFeat::DBG_SOUND);
+		if (Settings->GetFeat(EFeat::S_NOISE)) {
+			Noiser->Start();
+		}
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
 	}

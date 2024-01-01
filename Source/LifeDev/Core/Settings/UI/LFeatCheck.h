@@ -49,8 +49,9 @@ public:
 	void SetFeat(EFeat Feat);
 
 protected:
-	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual void NativeOnInitialized() override;
+	
 	UFUNCTION()
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	

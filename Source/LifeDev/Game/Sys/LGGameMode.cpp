@@ -115,10 +115,10 @@ void ALGGameMode::Init_Implementation() {
 	Settings->NewGame();
 
 	/// set flags
-	UCAnimator::Debug = Settings->GetFeat(EFeat::DEBUG_ANIMS);
-	UFlashback::Debug = Settings->GetFeat(EFeat::DEBUG);
-	AMusicMan::Enabled = Settings->GetFeat(EFeat::MUSIC);
-	AStep::UseDebug = Settings->GetFeat(EFeat::DEBUG_STEPS);
+	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
+	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_ALL);
+	AStep::UseDebug = Settings->GetFeat(EFeat::DBG_STEPS);
+	AMusicMan::Enabled = Settings->GetFeat(EFeat::S_MUSIC);
 
 	/// post process (does this even works?)
 	PostProcess = Cast<APostProcessVolume>(
@@ -174,7 +174,7 @@ void ALGGameMode::Init_Implementation() {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagManager->InputPrio = 10;
 		DiagManager->ZOrder = 3; 
-		DiagManager->DebugSkip = !Settings->GetFeat(EFeat::DIALOGS); // skip dialogs if no feature for it
+		DiagManager->DebugSkip = !Settings->GetFeat(EFeat::D_ALL); // skip dialogs if no feature for it
 		DiagManager->Init();
 	} else {
 		DiagManager = nullptr;

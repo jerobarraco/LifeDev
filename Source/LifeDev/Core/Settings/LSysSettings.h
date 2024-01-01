@@ -24,12 +24,13 @@ enum class EFeat: uint8 {
 	CHAP_08,
 	CHAP_09,
 	// Shows the dialogs, otherwise they get muted
-	DIALOGS,
+	D_ALL,
 	// Show the text on the dialogs, otherwise they get censored
-	DIALOG_TEXT,
+	D_TEXT,
 	// plays music
-	MUSIC,
-
+	S_MUSIC,
+	S_NOISE,
+	S_ENV,
 	/// Access
 	// strobing lights
 	A_STROBE,
@@ -37,13 +38,16 @@ enum class EFeat: uint8 {
 	// Graphic
 	G_LUMEN,
 	G_BLUR,
+	// Gampleay (find another word)
+	// GP_*,
 	/// Debug
 	// Debug steps (cheats)
-	DEBUG_STEPS,
+	DBG_STEPS,
 	// debug the animator
-	DEBUG_ANIMS,
+	DBG_ANIMS,
+	DBG_SOUND,
 	// General debug, deprecated. don't use unless you are me.
-	DEBUG UMETA(Deprecated),
+	DBG_ALL UMETA(Deprecated),
 };
 
 // this class is for the settings that appears on the editor under project settings. The general system settings.
@@ -84,14 +88,16 @@ public:
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	TSet<EFeat> DefaultFeats = {EFeat::DIALOGS, EFeat::DIALOG_TEXT, EFeat::MUSIC,
+	TSet<EFeat> DefaultFeats = {EFeat::D_ALL, EFeat::D_TEXT,
+		EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
 		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
 	};
 
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	TSet<EFeat> DebugFeats = {EFeat::DEBUG_STEPS, EFeat::DEBUG, EFeat::MUSIC,
+	TSet<EFeat> DebugFeats = {EFeat::DBG_STEPS, EFeat::DBG_ALL,
+		EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
 		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
 	};

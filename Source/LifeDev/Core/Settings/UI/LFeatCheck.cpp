@@ -18,20 +18,21 @@ void ULFeatCheck::SetFeat(EFeat NFeat) {
 	FeatUpdate(Feat, Enabled);
 }
 
-
-void ULFeatCheck::NativeConstruct() {
-	Settings = GetWorld()->GetGameInstance()->GetSubsystem<ULSettings>();
-	if (!Settings) return;
-
-	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
-}
-
 void ULFeatCheck::NativeDestruct() {
 	if (!Settings) return;
 
 	Settings->OnFeatUpdate.RemoveAll(this);
 	
 	Super::NativeDestruct();
+}
+
+void ULFeatCheck::NativeOnInitialized() {
+	Super::NativeOnInitialized();
+	
+	Settings = GetWorld()->GetGameInstance()->GetSubsystem<ULSettings>();
+	if (!Settings) return;
+
+	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
 }
 
 
