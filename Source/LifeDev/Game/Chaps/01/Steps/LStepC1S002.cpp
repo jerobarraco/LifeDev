@@ -25,7 +25,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	CharClass = ALNPC01::StaticClass();
 	
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
-		CShake(TEXT("/Game/LifeDev/Game/Chaps/01/Steps/02/CamShake_B"));
+		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B.CamShake_B"));
 	ShakeClass = CShake.Succeeded()? CShake.Class.Get() : UDefaultCameraShakeBase::StaticClass();
 
 	Cam->SetConstraintAspectRatio(true);
