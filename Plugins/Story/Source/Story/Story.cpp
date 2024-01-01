@@ -44,14 +44,19 @@ AStep* UStory::GetStep(const FName& Name) {
 }
 
 bool UStory::StartNow(AStep* NewStep) {
+	// notice we don't check here to allow stop to be called. this is by design.
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *NewStep->Name.ToString());
+
 	// stop the current step before starting a new one.
 	Stop();
 
 	Current = NewStep;
-	if (!Current) return false;
+	if (!IsValid(Current)) {
+		UE_LOG(LogStory, Log, TEXT("%hs -> Invalid step. Not starting."));
+		return false;
+	}
 
 	const bool Success = ToggleStepLayers();
-	
 	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s' DLLoadSuccess=%i"), 
 		*Current->Name.ToString(), *Current->Title.ToString(), Success);
 
@@ -63,9 +68,11 @@ bool UStory::StartNow(AStep* NewStep) {
 }
 
 bool UStory::Start(const FName& Name) {
+	UE_LOG(LogStory, Log, TEXT("%hs: %s"), __func__, *Name.ToString());
+
 	// get the step
 	AStep* const Step = GetStep(Name);
-	if (!Step) return false; // getstep prints warning
+	if (!IsValid(Step)) return false; // getstep prints warning
 
 	if (!Step->UseFade)
 		return StartNow(Step);
@@ -106,12 +113,12 @@ bool UStory::Start(const FName& Name) {
 
 void UStory::Stop() {
 	if (!IsValid(Current)) return; // nothing to stop
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
 
 	// clear up the Current variable so that the broadcast and startnextstep works fine.
 	AStep* const Step = Current;
 	Current = nullptr;
 	
-	UE_LOG(LogStory, Log, TEXT("About to stop step : '%s'"), *Step->Name.ToString());
 	Step->Stop();
 
 	// Call before starting the next step
@@ -135,7 +142,9 @@ const FName& UStory::GetCurrent() {
 }
 
 bool UStory::ToggleStepLayers() const {
-	if (!Current) return false;
+	if (!IsValid(Current)) return false;
+
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
 
 	bool Success = true;
 	// FIRST load all DL and THEN unload
@@ -184,7 +193,7 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
 }
 
 bool UStory::StartNext(const FName& CurrentName) {
-	UE_LOG(LogStory, Log, TEXT("%hs. OldNamePar=%s"), __func__, *CurrentName.ToString());
+	UE_LOG(LogStory, Log, TEXT("%hs. CurrentName=%s"), __func__, *CurrentName.ToString());
 
 	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
 	if (!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName) {
@@ -210,6 +219,7 @@ bool UStory::StartNext(const FName& CurrentName) {
 }
 
 bool UStory::StartSequence(const TArray<FName>& InSeq) {
+	UE_LOG(LogStory, Log, TEXT("%hs: num=%i"), __func__, InSeq.Num());
 	Sequence = InSeq;
 	SeqStep = -1;
 	if (Sequence.IsEmpty()) return false;

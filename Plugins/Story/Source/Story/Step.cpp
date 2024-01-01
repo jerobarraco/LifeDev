@@ -83,12 +83,14 @@ void AStep::Start_Implementation() {
 void AStep::BlendCam() const {
 	// set camera if camtarget is set
 	if (!IsValid(CamTarget)) return;
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
-	UE_LOG(LogStoryStep, Log, TEXT("AStep Blending camera"));
 	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
 void AStep::PostWait_Implementation() {
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
+
 	if (UseDebug) {
 		Debug();
 	}
@@ -106,14 +108,16 @@ void AStep::BeginPlay() {
 	}
 
 	UWorld* const World = GetWorld();
+	if (!World) return;
 	UStory* const Story = World->GetSubsystem<UStory>();
+	if (!Story) return;
 	Story->Add(this);
 	
 	if (UsePawnCam) {
 		AActor* const Actor = UGameplayStatics::GetActorOfClass(World, APawn::StaticClass());
 		APawn* const Pawn = Cast<APawn>(Actor);
 		if (!IsValid(Pawn)) {
-			UE_LOG(LogStoryStep, Warning, TEXT("Could not get the pawn!!!!"));
+			UE_LOG(LogStoryStep, Warning, TEXT("UsePawnCam set but could not get cam. Won't work as expected."));
 		} else {
 			CamTarget = Pawn;
 		}
