@@ -24,20 +24,20 @@ enum class EFeat: uint8 {
 	CHAP_08,
 	CHAP_09,
 	// Shows the dialogs, otherwise they get muted
-	D_ALL,
+	D_ALL UMETA(DisplayName="Dialogs/All"),
 	// Show the text on the dialogs, otherwise they get censored
-	D_TEXT,
+	D_TEXT UMETA(DisplayName="Dialogs/Text"),
 	// plays music
-	S_MUSIC,
-	S_NOISE,
-	S_ENV,
+	S_MUSIC UMETA(DisplayName="Sound/Music"),
+	S_NOISE UMETA(DisplayName="Sound/Noise"),
+	S_ENV UMETA(DisplayName="Sound/Environment"),
 	/// Access
 	// strobing lights
 	A_STROBE,
 
 	// Graphic
 	G_LUMEN,
-	G_BLUR,
+	G_BLUR UMETA(DisplayName="Graphics/Blur"),
 	// Gampleay (find another word)
 	// GP_*,
 	/// Debug

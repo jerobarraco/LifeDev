@@ -51,7 +51,9 @@ public:
 protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
-
+	
+	UFUNCTION()
+	void CheckUpdate(bool bIsChecked);
 	UFUNCTION()
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	
