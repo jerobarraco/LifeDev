@@ -14,5 +14,5 @@ ALStepC2S002::ALStepC2S002():Super() {
 	UseFadeTime = false;
 	FinishPostWait = false;
 	// wait for the tape
-	FinishItems = { "T02" };
+	ItemsFinish = { "T02" };
 }

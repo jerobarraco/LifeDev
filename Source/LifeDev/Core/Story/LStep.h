@@ -27,8 +27,10 @@ public:
 	// it will also remove from inventory the items on RemItems
 	virtual void Stop_Implementation() override;
 
+	// checks if we have the itemsFinish and finish (after a dialog if any)
+	// no need to call this as this class will watch the inventory. but just in case.
 	UFUNCTION(BlueprintCallable)
-	void CheckFinishItems();
+	void CheckItemsFinish();
 	
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -50,16 +52,15 @@ public:
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<FName> FinishItems;
+	TArray<FName> ItemsFinish;
 
 	// items to remove when the step finishes
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<FName> RemItems;
+	TArray<FName> ItemsRem;
 
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsEnsure;
-	// TODO rename these Items vars
 
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;

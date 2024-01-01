@@ -50,13 +50,13 @@ void ALStep::PostWait_Implementation() {
 	StartDialogs();
 
 	// check items. do here to avoid possibly finishing the step while it's starting.
-	if (!FinishItems.IsEmpty()) {
+	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 		
 		// ensure to check if we already have the item
 		UWorld* const W = GetWorld();
 		if (W) {
-			W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinishItems);
+			W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
 		}
 	}
 }
@@ -77,7 +77,7 @@ void ALStep::FinishAfterDlgs() {
 }
 
 void ALStep::RemoveItems() {
-	for (const FName& N: RemItems) {
+	for (const FName& N: ItemsRem) {
 		Inventory->Rem(N);
 	}
 }
@@ -89,15 +89,15 @@ void ALStep::EnsureItems() {
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
-	CheckFinishItems();
+	CheckItemsFinish();
 }
 
-void ALStep::CheckFinishItems() {
-	const int32 NumItems = FinishItems.Num();
+void ALStep::CheckItemsFinish() {
+	const int32 NumItems = ItemsFinish.Num();
 	if (NumItems<=0) return;
 
 	for (int32 i=0; i<NumItems; ++i) {
-		if (!Inventory->Has(FinishItems[i])) return;
+		if (!Inventory->Has(ItemsFinish[i])) return;
 	}
 
 	FinishAfterDlgs();

@@ -12,10 +12,10 @@ ALStepC1S004::ALStepC1S004():Super() {
 	UsePawnCam = true;
 	UseFadeTime = false;
 	// wait for the player to talk with the npc and get the card
-	FinishItems = {"C1"};
+	ItemsFinish = {"C1"};
 	// the clothes are transient items that don't need to be carried
 	// the rest of the items are going to be used or required
-	RemItems = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"}; 
+	ItemsRem = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"}; 
 }
 
 void ALStepC1S004::Stop_Implementation() {

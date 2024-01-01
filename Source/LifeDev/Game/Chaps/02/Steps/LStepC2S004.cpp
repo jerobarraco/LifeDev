@@ -18,7 +18,7 @@ ALStepC2S004::ALStepC2S004():Super() {
 	UseFadeTime = false;
 	FinishPostWait = false;
 	// finish when found. not many items 
-	FinishItems = {
+	ItemsFinish = {
 		LDConsts::Items::Poem2,
 		LDConsts::Items::Card2,
 	};
