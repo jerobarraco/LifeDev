@@ -70,13 +70,14 @@ void ULSettings::ResetFeats() {
 
 void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 	const bool Has = Feats.Contains(Feat);
+	const bool Changed = Enable != Has;
 	if (Enable) {
 		if (!Has) Feats.Add(Feat);
 	} else {
 		if (Has) Feats.Remove(Feat);
 	}
 	
-	OnFeatUpdate.Broadcast(Feat, Enable);
+	if (Changed) OnFeatUpdate.Broadcast(Feat, Enable);
 }
 
 bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
