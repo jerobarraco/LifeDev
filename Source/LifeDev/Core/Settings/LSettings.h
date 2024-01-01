@@ -8,6 +8,7 @@
 #include "LSettings.generated.h"
 
 class ULSave;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
 
 class ULGUSettings;
@@ -45,12 +46,23 @@ public:
 	// only call once by the gameinstance or smth
 	UFUNCTION(BlueprintCallable)
 	void Init();
-	
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FOnFeatUpdate OnFeatUpdate;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ULSave* Save = nullptr;
+    ULSave* Save = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdate;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateChap;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateAccess;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateSound;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateGraph;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateMisc;
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
