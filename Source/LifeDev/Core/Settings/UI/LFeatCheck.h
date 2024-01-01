@@ -51,7 +51,7 @@ public:
 protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
-	
+
 	UFUNCTION()
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	

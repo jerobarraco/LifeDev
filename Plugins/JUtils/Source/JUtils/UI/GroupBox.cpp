@@ -28,8 +28,8 @@ void UGroupBox::SetLabel_Implementation(const FText& Text) {
 	Label_T->SetText(Text);
 }
 
-void UGroupBox::NativeConstruct() {
-	Super::NativeConstruct();
+void UGroupBox::NativeOnInitialized() {
+	Super::NativeOnInitialized();
 	for (UCheckBox* C: CheckBoxes) {
 		if (!C) continue;
 		UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();

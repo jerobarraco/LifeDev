@@ -11,6 +11,8 @@ class UCheckBox;
 // internal don´t use https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCBChange, class UCheckBox*, me, bool, IsChecked);
 
+// TODO use one of JUtils delegatewrapper
+
 // look at JMiscUtils > DelegateWrapper
 // i prefer not doing a generic lambda wrapper since i prefer this explicit way
 // internal don´t use https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
@@ -56,7 +58,7 @@ public:
 	int32 ID = -1;
 
 protected:
-	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION()
