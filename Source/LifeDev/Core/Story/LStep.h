@@ -59,10 +59,8 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsEnsure;
-
-	// TODO add EnsureItems to ensure you have the items by the chapter
-
 	// TODO rename these Items vars
+
 	// the game fade time, please set this from outside.
 	inline static float FadeTime = 0;
 	inline static bool UseDebug = false;
@@ -76,8 +74,12 @@ protected:
 	
 	// will start the dialogs
 	void StartDialogs();
-	// removes items on RemItems
+	// will finish once the dialogs are done, or immediately if not showing.
+	// safe to call multiple times.
+	void FinishAfterDlgs();
+	// on stop, removes items on RemItems
 	void RemoveItems();
+	// on start, adds the items on ItemsEnsure
 	void EnsureItems();
 	
 	UFUNCTION()// bound

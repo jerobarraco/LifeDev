@@ -23,6 +23,8 @@ public:
 	AStep();
 	void DoTeleport();
 
+	// called when the step starts.
+	// be sure not to do anything that would finish the step here, use postwait for that.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Start() ;
 	virtual void Start_Implementation();
@@ -92,8 +94,10 @@ public:
 	inline static bool UseDebug = false;
 
 protected:
-	// Will be triggered when the wait time ends. if it's set.
-	// if you don't override or if you call the parent (this) it will finish the step.
+	// Will be triggered when the wait time ends.
+	// if the WaitTime is <=0 it will be called next frame after parent start.
+	// If FinishPostWait is set, it will finish the step.
+	// this is a good place to do checks that might finish the step.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void PostWait();
 	virtual void PostWait_Implementation();

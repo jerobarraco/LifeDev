@@ -72,11 +72,15 @@ void AStep::Start_Implementation() {
 
 	// do after the rest since post-wait is another flow
 	UWorld* const World = GetWorld();
-	if (World && WaitTime>0) {
+	if (!World) return;
+	
+	if (WaitTime>0) {
 		FTimerHandle Handle;
 		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
 	} else {
-		PostWait();
+		// use next tick to avoid having post wait being called before start finishes on the children
+		// also to avoid the situation where a step might inadvertently finish the step while it's starting.  
+		World->GetTimerManager().SetTimerForNextTick(this, &AStep::PostWait);
 	}
 }
 

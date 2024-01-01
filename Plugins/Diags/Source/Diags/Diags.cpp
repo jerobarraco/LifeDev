@@ -141,7 +141,7 @@ bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 
 void UDiags::ShowNext() {
 	if (IsShowing) return;
-	// this is important for stop to work correctly.
+	// this is important for stop to work correctly. and also in general
 	IsShowing = true;
 	
 	if (Pending.IsEmpty()) {

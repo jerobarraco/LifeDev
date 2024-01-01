@@ -12,14 +12,7 @@ void ALStep::Start_Implementation() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
-	EnsureItems();
-	if (!FinishItems.IsEmpty()) {
-		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
-
-		// ensure to check if we already have the item
-		// don't do just now since the child of this class would get confused as stop will trigger before start
-		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinishItems);
-	}
+	EnsureItems(); // make sure items are awarded
 	
 	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
@@ -52,19 +45,35 @@ void ALStep::Stop_Implementation() {
 
 void ALStep::PostWait_Implementation() {
 	Super::PostWait_Implementation();
+
 	// otherwise show dialogs
 	StartDialogs();
+
+	// check items. do here to avoid possibly finishing the step while it's starting.
+	if (!FinishItems.IsEmpty()) {
+		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
+		
+		// ensure to check if we already have the item
+		UWorld* const W = GetWorld();
+		if (W) {
+			W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinishItems);
+		}
+	}
 }
 
 void ALStep::StartDialogs() {
 	if (DlgId.IsNone()) return;
 
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
-	FDialogSequence Seq; TArray<FDialog> Diags; TArray<FDialogChar> Chars;
-	if (!Dialogs->AddId(DlgId)) {
-		// if it fails to add it, then finish manually
+	Dialogs->AddId(DlgId);
+	FinishAfterDlgs();
+}
+
+void ALStep::FinishAfterDlgs() {
+	if (!Dialogs->GetIsShowing()) {
 		Finish();
+		return;
 	}
+	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 }
 
 void ALStep::RemoveItems() {
@@ -86,20 +95,12 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 void ALStep::CheckFinishItems() {
 	const int32 NumItems = FinishItems.Num();
 	if (NumItems<=0) return;
-	// if (Diff<=0) return; // this is causing issues. todo fix
 
 	for (int32 i=0; i<NumItems; ++i) {
 		if (!Inventory->Has(FinishItems[i])) return;
 	}
-	// if i have all the items. schedule a finish
-	// wait for dialogs to end
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
-	FTimerHandle Handle;
-	
-	UWorld* const World = GetWorld();
-	if (!World) return;
-	// also set a time out if the player takes too long.
-	World->GetTimerManager().SetTimer(Handle, this, &ALStep::Finish, FadeTime*2);
+
+	FinishAfterDlgs();
 }
 
 void ALStep::BeginPlay() {

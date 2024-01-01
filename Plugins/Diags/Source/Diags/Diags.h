@@ -63,6 +63,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DeInit();
 
+	// true when there's a dialog showing
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsShowing() { return IsShowing; }
+
 	// when a dialog needs to show
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
