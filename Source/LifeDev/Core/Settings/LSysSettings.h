@@ -13,34 +13,37 @@ enum class EFeat: uint8 {
 	/// General
 
 	// Chaps
-	CHAP_00,
-	CHAP_01,
-	CHAP_02,
-	CHAP_03,
-	CHAP_04,
-	CHAP_05,
-	CHAP_06,
-	CHAP_07,
-	CHAP_08,
-	CHAP_09,
+	C_00,
+	C_01,
+	C_02,
+	C_03,
+	C_04,
+	C_05,
+	C_06,
+	C_07,
+	C_08,
+	C_09,
 	// Shows the dialogs, otherwise they get muted
-	D_ALL UMETA(DisplayName="Dialogs/All"),
+	D_ALL UMETA(DisplayName="Dialog/All"),
 	// Show the text on the dialogs, otherwise they get censored
-	D_TEXT UMETA(DisplayName="Dialogs/Text"),
+	D_TEXT UMETA(DisplayName="Dialog/Text"),
 	// plays music
 	S_MUSIC UMETA(DisplayName="Sound/Music"),
 	S_NOISE UMETA(DisplayName="Sound/Noise"),
-	S_ENV UMETA(DisplayName="Sound/Environment"),
+	S_ENV UMETA(DisplayName="Sound/Environ"),
 	/// Access
 	// strobing lights
-	A_STROBE,
+	A_STROBE UMETA(DisplayName="Access/Strobe"),
 
 	// Graphic
-	G_LUMEN,
-	G_BLUR UMETA(DisplayName="Graphics/Blur"),
-	// Gampleay (find another word)
+	V_LUMEN UMETA(DisplayName="Visual/Lumen"),
+	V_BLUR UMETA(DisplayName="Visual/Blur"),
+
+	// Gameplay (find another word)
 	// GP_*,
+	
 	/// Debug
+	
 	// Debug steps (cheats)
 	DBG_STEPS,
 	// debug the animator
@@ -90,15 +93,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DefaultFeats = {EFeat::D_ALL, EFeat::D_TEXT,
 		EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
-		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
+		EFeat::C_00, EFeat::C_01, EFeat::C_02,
+		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR
 	};
 
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DebugFeats = {EFeat::DBG_STEPS, EFeat::DBG_ALL,
 		EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02,
-		EFeat::A_STROBE, EFeat::G_LUMEN, EFeat::G_BLUR
+		EFeat::C_00, EFeat::C_01, EFeat::C_02,
+		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR
 	};
 };

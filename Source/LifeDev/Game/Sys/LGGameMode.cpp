@@ -130,13 +130,13 @@ void ALGGameMode::Init_Implementation() {
 		// i DO need to check them for the engine to pay attention to them,
 		// otherwise the changes here make no difference.
 		// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
-		const bool HasLumen = Settings->GetFeat(EFeat::G_LUMEN);
+		const bool HasLumen = Settings->GetFeat(EFeat::V_LUMEN);
 		PostProcess->Settings.DynamicGlobalIlluminationMethod =
 			HasLumen ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 		PostProcess->Settings.ReflectionMethod =
 			HasLumen ? EReflectionMethod::Lumen : EReflectionMethod::None;
-		if (!Settings->GetFeat(EFeat::G_BLUR)) {
+		if (!Settings->GetFeat(EFeat::V_BLUR)) {
 			PostProcess->Settings.MotionBlurAmount = 0;
 			PostProcess->Settings.MotionBlurMax = 0;
 			PostProcess->Settings.SceneFringeIntensity = 0;

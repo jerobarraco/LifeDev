@@ -6,8 +6,8 @@ namespace LDConsts {
 	namespace Feats {
 		// used to map chapter id with feat
 		static EFeat ChapFeats[] = {
-			EFeat::CHAP_00, EFeat::CHAP_01, EFeat::CHAP_02, EFeat::CHAP_03, EFeat::CHAP_04,
-			EFeat::CHAP_05, EFeat::CHAP_06, EFeat::CHAP_07, EFeat::CHAP_08, EFeat::CHAP_09};
+			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04,
+			EFeat::C_05, EFeat::C_06, EFeat::C_07, EFeat::C_08, EFeat::C_09};
 		static uint8 ChapFeatN = 10;
 	}
 }

@@ -52,9 +52,10 @@ void ULFeatCheck::CheckUpdate(bool bIsChecked) {
 }
 
 void ULFeatCheck::FeatUpdate(EFeat NFeat, bool bEnabled) {
-	UE_LOG(LogTemp, Log, TEXT("FeatUpdate %i : %i"), NFeat, bEnabled);
 	if (Feat != NFeat) return;
 	if (!Check) return;
 
+	UE_LOG(LogTemp, Log, TEXT("FeatUpdate %i : %i (%s)"),
+		Feat, bEnabled, *UEnum::GetValueAsString(Feat));
 	Check->SetCheckedState(bEnabled ? ECheckBoxState::Checked: ECheckBoxState::Unchecked);
 }

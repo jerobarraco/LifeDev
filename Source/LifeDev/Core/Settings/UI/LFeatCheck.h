@@ -57,7 +57,7 @@ protected:
 	UFUNCTION()
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly)
 	EFeat Feat = EFeat::NONE;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
