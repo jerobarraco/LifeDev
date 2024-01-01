@@ -41,7 +41,6 @@ void ALStepC1S000::Start_Implementation() {
 	if (!Inventory->Has(LDConsts::Items::Card0)) {
 		Inventory->Mod(LDConsts::Items::Card0, 1);
 	}
-
 	
 	if (!FB) return;
 	FB->SetMax(.75);

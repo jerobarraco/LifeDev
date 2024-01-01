@@ -89,6 +89,7 @@ void ALStepC1S002::GhostDestroyed() {
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
+
 	FB->SetVal(.85);
 
 	if (IsValid(Ghosts)) {

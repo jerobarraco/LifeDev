@@ -37,17 +37,16 @@ void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
 	UWorld* const W = GetWorld();
-	
+	if (!W) return;
 	ALMusicMan::SetEnvironS(W, true);
 
-	UFlashback* const Flashback = UFlashback::Get(W);
-	if (!Flashback) {
-		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the flashback subsystem."));
+	if (!FB) {
+		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the FB subsystem."));
 		return;
 	}
 
-	Flashback->SetVal(.1);
-	Flashback->SetMax(.75);
+	FB->SetVal(.1);
+	FB->SetMax(.75);
 	RandFB->Activate(true);
 }
 
