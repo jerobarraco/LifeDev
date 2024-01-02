@@ -10,12 +10,12 @@
 ALight02::ALight02():Super() {
 	UseAnim = true;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
 	Mesh->SetRelativeLocation(FVector(-20,20,0));
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Arch/Lights/Lamp00/Lamp00_Cover.Lamp00_Cover"));
+		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Lamp00/Lamp00_Cover.Lamp00_Cover"));
 	Cover = CreateDefaultSubobject<UCQuickMesh>(TEXT("Cover"));
 	Cover->SetupAttachment(Mesh);
 	Cover->SetStaticMesh(CTube.Object);
