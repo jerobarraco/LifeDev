@@ -82,7 +82,7 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 
 bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
 	ULSettings* const I = ULSettings::Get(World);
-	return IsValid(I)? I->GetFeat(Feat) : false;
+	return IsValid(I) ? I->GetFeat(Feat) : false;
 }
 
 void ULSettings::Init() {

@@ -2,15 +2,18 @@
 
 #pragma once
 
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LLight.generated.h"
 
 class UCLSignificance;
 class UCRandomizer;
-// Remember to set cast shadow on the correct meshes
 
 // Base class for light actors. doesn't include the light itself. see LLight00
+// notice that it expects to use the Anim for animations.
+// It manages UseAnim with the A_STROBE flag. AnimUpdate will be called anyway on state change.
+// Remember to set cast shadow on the correct meshes
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight: public ALInteract {
 	GENERATED_BODY()
@@ -18,24 +21,33 @@ class LIFEDEV_API ALLight: public ALInteract {
 public:
 	ALLight();
 
-	// don't call before begin play.
+	// don't call before begin play. Sets the new threshold to flicker.
+	// It does checks for A_STROBE flag and will not set it otherwise.
+	// It will subscribe to many delegates.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetFBFlicker(float NewFBFlicker);
+
+	// Unbinds from all the flicker delegates. Disables UseAnim as well.
+	// it doesn't clear the FlickerOnFB value.
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
+	void StopFBFlicker();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void SetState_Implementation(int32 NewState) override;
 
+	// used to animate the light. in case of no A_Strobe this is called only once with the final value
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AnimUpdate(float P, float A);
 	virtual void AnimUpdate_Implementation(float P, float A) {}
 
-	virtual void SetState_Implementation(int32 NewState) override;
-	
 	UFUNCTION() // bind
 	void TurnOn();
 	UFUNCTION() // bind
 	void SetFB(float Value);
+	UFUNCTION() // bind
+	void FeatUpdated(EFeat Feat, bool bEnabled);
 
 	// flickers when fb is >= this value. <0 means disabled.
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)

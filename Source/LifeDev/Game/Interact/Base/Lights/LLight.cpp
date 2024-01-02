@@ -55,20 +55,28 @@ ALLight::ALLight():Super() {
 	ALLight::SetMobility(EComponentMobility::Static);
 }
 
+void ALLight::StopFBFlicker() {
+	UFlashback* const Fb = UFlashback::Get(GetWorld());
+	Rnd->Deactivate();
+	Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
+	Anim->OnUpdate.RemoveDynamic(this, &ALLight::AnimUpdate);
+	UseAnim = false;
+}
+
 void ALLight::SetFBFlicker(float NewFBFlicker) {
 	UWorld* const W = GetWorld();
 	if (!W) return;
-	UFlashback* const Fb = UFlashback::Get(W);
-    if (!Fb) return;
-
+	
 	// first deactivate if needed. ALWAYS deactivate (important since this is accessibility).
-	// notice the this set the flickeronfb value for an actual flicker
-	if (NewFBFlicker <= 0) {
-		FlickrOnFB = NewFBFlicker;
-		Rnd->Deactivate();
-		Fb->OnChange.RemoveAll(this);
+	if (NewFBFlicker < 0) {
+		FlickrOnFB = -1;
+		StopFBFlicker();
 		return;
 	}
+
+	// important to set the value. Notice it happens before the feature check.
+	// in case it is enabled during gameplay later.
+	FlickrOnFB = NewFBFlicker;
 
 	// Feature flag. important.
 	if (!ULSettings::GetFeatS(W, EFeat::A_STROBE)) {
@@ -78,6 +86,12 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		return;
 	}
 
+	// only re-enable if strobe is set.
+	UseAnim = true;
+	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
+
+	UFlashback* const Fb = UFlashback::Get(W);
+    if (!Fb) return;
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
 }
 
@@ -87,32 +101,33 @@ void ALLight::BeginPlay() {
 	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
 	Sig->CompsTicks.AddUnique(Anim);
-	
+
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
 	// don't set the state here. it will break the child. we should not need it
-    GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
+    World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
 
-	const bool CanStrobe = ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE);
-	if (!CanStrobe) {
-		UE_LOG(LogTemp, Log,
-			TEXT("LLigth: %hs. flag A_STROBE disabled. Disabling the light and UseAnim."),
-			__func__);
-		UseAnim = false;
-		return;
-	}
+	ULSettings* const Settings = ULSettings::Get(World);
+	if (!Settings) return;
 
-	// don't even bother with these if not A_STROBE is enabled
-	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
+	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	SetFBFlicker(FlickrOnFB);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UFlashback* const Fb = UFlashback::Get(GetWorld());
+	Anim->OnUpdate.RemoveAll(this);
+	
+	UWorld* const W = GetWorld();
+	UFlashback* const Fb = UFlashback::Get(W);
 	if (Fb) {
 		Fb->OnChange.RemoveAll(this);
 	}
 
-	Anim->OnUpdate.RemoveAll(this);
-
+	ULSettings* const Settings = ULSettings::Get(W);
+	if (Settings) {
+		Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
+	}
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -135,4 +150,13 @@ void ALLight::SetFB(float Value) {
 	Rnd->SetActive(ShouldFlicker);
 	// don't deactivate the sig here. since there are lights that are can be toggled
 	// and the sig is bound to the anim, hence the anim manages it.
+}
+
+void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
+	if (Feat != EFeat::A_STROBE) return;
+	if (bEnabled) {
+		SetFBFlicker(FlickrOnFB);
+	} else {
+		StopFBFlicker(); // notice this doesn't reset the FlickrOnFB value.
+	}
 }
