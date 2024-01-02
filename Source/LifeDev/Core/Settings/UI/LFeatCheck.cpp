@@ -7,11 +7,11 @@
 
 ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O){}
 
-void ULFeatCheck::SetFeat(EFeat NFeat) {
+void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
-	UE_LOG(LogTemp, Log, TEXT("LFeatCheck SetFeat feat =%i"), Feat);
+	UE_LOG(LogTemp, Log, TEXT("LFeatCheck SetUp feat =%i"), Feat);
 	if(Text) {
-		Text->SetText(FText::FromString(UEnum::GetValueAsString(Feat)));
+		Text->SetText(NewText);
 	}
 	if (!Settings) {
 		UE_LOG(LogTemp, Log, TEXT("LFeatCheck can't find settings"));

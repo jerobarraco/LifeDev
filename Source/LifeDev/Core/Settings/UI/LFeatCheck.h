@@ -11,6 +11,7 @@
 class UTextBlock;
 class ULSettings;
 
+// a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API ULFeatCheck: public UUserWidget {
 	GENERATED_BODY()
@@ -19,7 +20,7 @@ public:
 	ULFeatCheck(const FObjectInitializer& O);
 
 	UFUNCTION(BlueprintCallable)
-	void SetFeat(EFeat Feat);
+	void SetUp(EFeat NFeat, const FText& NewText);
 
 protected:
 	virtual void NativeDestruct() override;
