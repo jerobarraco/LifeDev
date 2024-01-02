@@ -18,7 +18,7 @@ ABasin00::ABasin00():Super() {
 	StateNum = 2;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/HandBasin.HandBasin"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/HandBasin/HandBasin.HandBasin"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(40,30,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90,0).Quaternion());
