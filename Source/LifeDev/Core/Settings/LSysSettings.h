@@ -69,8 +69,7 @@ enum class EFeat: uint8 {
 // Settings for the game (to be built)
 // the config file is available after shipping at ~/.config/Epic/ or C:\Users\{UserName}\AppData\Local\{ProjectName}
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig, meta=(DisplayName="LifeDevSystemSettings"))
-class LIFEDEV_API ULSysSettings : public UDeveloperSettings
-{
+class LIFEDEV_API ULSysSettings : public UDeveloperSettings {
 	GENERATED_BODY()
 
 public:

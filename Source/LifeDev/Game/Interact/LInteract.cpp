@@ -12,7 +12,7 @@
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		CAtt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/SA_GenericAttenuation.SA_GenericAttenuation"));
+		CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
 	SFX->AttenuationSettings = CAtt.Object;
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
