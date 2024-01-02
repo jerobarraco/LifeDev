@@ -53,8 +53,23 @@ public:
 	// triggered when one of the feat is updated to be enabled or disabled
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FOnFeatUpdate OnFeatUpdate;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateChap;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateDiags;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateSound;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateVisual;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateAccess;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnFeatUpdate OnFeatUpdateDebug;
 
 protected:
+	// broadcasts the corresponding delegates
+	void FeatUpdated(EFeat Feat, bool Enable) const;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TSet<EFeat> Feats;
 };

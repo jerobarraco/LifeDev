@@ -156,8 +156,8 @@ void ALChar::BeginPlay() {
 	UClass* const SClass = SettingsUIClass.Get();
 	if (IsValid(SClass)) {
 		SettingsUI = NewObject<ULSettingsUI>(this, SClass);
-		// SettingsUI->AddToViewport();
-		// TODO test not adding it to viewport 
+		// better not to add to viewport
+		// SettingsUI->AddToViewport(9999);
 		// SettingsUI->Hide();
 		SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 	}

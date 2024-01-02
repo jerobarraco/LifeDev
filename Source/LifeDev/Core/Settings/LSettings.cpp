@@ -61,7 +61,6 @@ int32 ULSettings::CurrentChapter() const {
 	return IsValid(Save) ? Save->ChapterID : -1;
 }
 
-
 void ULSettings::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
 	const bool UseDebug = ULSysSettings::IsDebugBuild() && Settings->UseDebugFeats;
@@ -77,8 +76,8 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 		if (Has) Feats.Remove(Feat);
 	}
 
-	// TODO move this to a function NotifyUpdate(Feat,Enable) and have a switch with multiple delegates there
-	if (Changed) OnFeatUpdate.Broadcast(Feat, Enable);
+	if (!Changed) return;
+	FeatUpdated(Feat, Enable);
 }
 
 bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
@@ -89,4 +88,22 @@ bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
 void ULSettings::Init() {
 	LoadGame();
 	ResetFeats();
+}
+
+void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {
+	OnFeatUpdate.Broadcast(Feat, Enable);
+
+	if (Feat >= EFeat::C_00 && Feat <= EFeat::C_09) {
+		OnFeatUpdateChap.Broadcast(Feat, Enable);
+	} else if (Feat >= EFeat::D_ALL && Feat <= EFeat::D_TEXT) {
+		OnFeatUpdateDiags.Broadcast(Feat, Enable);
+	} else if (Feat >= EFeat::S_MUSIC && Feat<= EFeat::S_ENV) {
+		OnFeatUpdateSound.Broadcast(Feat, Enable);
+	} else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR) {
+		OnFeatUpdateVisual.Broadcast(Feat, Enable);
+	} else if (Feat == EFeat::A_STROBE) {
+		OnFeatUpdateAccess.Broadcast(Feat, Enable);
+	} else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL) {
+		OnFeatUpdateDebug.Broadcast(Feat, Enable);
+	}
 }
