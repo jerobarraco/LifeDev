@@ -12,7 +12,7 @@ AGhosts::AGhosts():Super() {
 	SFX = CreateDefaultSubobject<UCSounder>(TEXT("SFX"));
 	SFX->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghosts_S.Ghosts_S"));
+		CSnd(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghosts_S.Ghosts_S"));
 	SFX->SetSound(CSnd.Object);
 	SFX->TimeFadeIn = 1;
 	SFX->TimeFadeOut = 2.0;
@@ -23,7 +23,7 @@ AGhosts::AGhosts():Super() {
 	Parts->SetupAttachment(RootComponent);
 	Parts->SetAutoActivate(false);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CNiagara(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghost_NS.Ghost_NS"));
+		CNiagara(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_NS.Ghost_NS"));
 	Parts->SetAsset(CNiagara.Object);
 }
 

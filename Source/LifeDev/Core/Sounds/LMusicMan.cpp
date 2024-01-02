@@ -10,11 +10,10 @@
 #include "Sounds/CSounder.h"
 
 ALMusicMan::ALMusicMan():Super() {
-	
 	Rain = CreateDefaultSubobject<UCSounder>(TEXT("Rain"));
 	Rain->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Rain/Rain01_S.Rain01_S"));
+		CSnd(TEXT("/Game/LifeDev/Game/Env/Rain/Rain01_S.Rain01_S"));
 	Rain->SetSound(CSnd.Object);
 	Rain->SetAutoActivate(false);
 	Rain->bAutoManageAttachment = true;
@@ -26,7 +25,7 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ = CreateDefaultSubobject<UCSounder>(TEXT("Environ"));
 	Environ->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CEnv(TEXT("/Game/LifeDev/Game/Chaps/All/Env/Snd/Ambience/Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_.Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_"));
+		CEnv(TEXT("/Game/LifeDev/Game/Env/Ambience/Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_.Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_"));
 	Environ->SetSound(CEnv.Object);
 	Environ->SetAutoActivate(false);
 	Environ->bAutoManageAttachment = true;
@@ -72,6 +71,7 @@ void ALMusicMan::BeginPlay() {
 	if (Story) {
 		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 	}
+	// TODO bind to the settings flag change and enable/disable the music accordingly
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -95,7 +95,7 @@ void ALMusicMan::SetStep(AStep* Step) {
 	
 	USoundBase* const Sound = Step->Music.LoadSynchronous();
 	if (!IsValid(Sound)) {
-		UE_LOG(LogTemp, Warning, TEXT("Could not load music asset=%s"), *Step->Music.GetAssetName());
+		UE_LOG(LogTemp, Warning, TEXT("MusicMan.SetStep: Could not load music asset=%s"), *Step->Music.GetAssetName());
 		return;
 	}
 

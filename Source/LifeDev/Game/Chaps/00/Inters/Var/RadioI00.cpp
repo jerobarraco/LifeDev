@@ -26,7 +26,7 @@ ARadioI00::ARadioI00():Super() {
 	SFX_Ghost = CreateDefaultSubobject<UCSounder>(TEXT("SFX_Ghost"));
 	SFX_Ghost->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/NPCs/Ghost/Ghosts_S.Ghosts_S"));
+		CSnd(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghosts_S.Ghosts_S"));
 	SFX_Ghost->SetSound(CSnd.Object);
 	SFX_Ghost->TimeFadeIn = 1;
 	SFX_Ghost->TimeFadeOut = 2.0;

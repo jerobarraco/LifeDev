@@ -157,7 +157,10 @@ void ALChar::BeginPlay() {
 	if (IsValid(SClass)) {
 		SettingsUI = NewObject<ULSettingsUI>(this, SClass);
 		// better not to add to viewport
-		// SettingsUI->AddToViewport(9999);
+		SettingsUI->AddToViewport(9999);
+		// TODO fix
+		SettingsUI->Initialize();
+		SettingsUI->RemoveFromParent();
 		// SettingsUI->Hide();
 		SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 	}
