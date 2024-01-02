@@ -11,7 +11,6 @@ FName ULSysSettings::GetCategoryName() const {
 	return Cat;
 }
 
-
 bool ULSysSettings::IsDebugBuild() {
 #if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	return false;
