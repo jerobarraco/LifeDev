@@ -29,7 +29,7 @@ void ULSettings::NewGame() {
 }
 
 void ULSettings::LoadGame() {
-	UE_LOG(LogLSettings, Log, TEXT(" %hs"), __func__);
+	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
 	// TODO use the slot at some point
 	// Try to load a saved game file (with name: <SaveSlot>.sav) if exists
 	USaveGame* const LoadedGame = UGameplayStatics::LoadGameFromSlot(SaveSlot, 0);
@@ -76,7 +76,8 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 	} else {
 		if (Has) Feats.Remove(Feat);
 	}
-	
+
+	// TODO move this to a function NotifyUpdate(Feat,Enable) and have a switch with multiple delegates there
 	if (Changed) OnFeatUpdate.Broadcast(Feat, Enable);
 }
 

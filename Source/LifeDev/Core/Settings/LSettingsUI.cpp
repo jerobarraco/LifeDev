@@ -50,8 +50,8 @@ void ULSettingsUI::NativePreConstruct() {
 	}
 }
 
-void ULSettingsUI::NativeConstruct() {
-	Super::NativeConstruct();
+void ULSettingsUI::NativeOnInitialized() {
+	Super::NativeOnInitialized();
 	
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
@@ -200,4 +200,4 @@ void ULSettingsUI::QualityChanged(int32 ID, int32 NewQ) {
 }
 
 
-// TODO disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
+// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756

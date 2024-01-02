@@ -23,9 +23,10 @@ void ULFeatCheck::SetFeat(EFeat NFeat) {
 }
 
 void ULFeatCheck::NativeDestruct() {
-	if (!Settings) {
+	if (Settings) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 	}
+	Settings = nullptr;
 
 	if (Check) {
 		Check->OnCheckStateChanged.RemoveAll(this);
@@ -52,8 +53,8 @@ void ULFeatCheck::CheckUpdate(bool bIsChecked) {
 }
 
 void ULFeatCheck::FeatUpdate(EFeat NFeat, bool bEnabled) {
-	if (Feat != NFeat) return;
 	if (!Check) return;
+	if (Feat != NFeat) return;
 
 	UE_LOG(LogTemp, Log, TEXT("FeatUpdate %i : %i (%s)"),
 		Feat, bEnabled, *UEnum::GetValueAsString(Feat));
