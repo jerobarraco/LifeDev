@@ -9,7 +9,7 @@
 
 ADoor02::ADoor02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door02/DoorA.DoorA"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Doors/Door02/DoorA.DoorA"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5,15,0));
 	Mesh->SetQuickCollisionEnabled(true);
@@ -17,7 +17,7 @@ ADoor02::ADoor02():Super() {
 	WinA = CreateDefaultSubobject<UCQuickMesh>(TEXT("WinA"));
 	WinA->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh1(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door02/DoorA-WinA.DoorA-WinA"));
+		CMesh1(TEXT("/Game/LifeDev/Game/Inters/Doors/Door02/DoorA-WinA.DoorA-WinA"));
 	WinA->SetStaticMesh(CMesh1.Object);
 	WinA->SetRelativeLocation(FVector(0,0,0));
 	WinA->SetCastAllShadows(false); // opt

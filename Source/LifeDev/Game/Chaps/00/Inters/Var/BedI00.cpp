@@ -6,7 +6,7 @@
 
 ABedI00::ABedI00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Beds/Bed00.Bed00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Beds/Bed00.Bed00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	UseAnim = false;

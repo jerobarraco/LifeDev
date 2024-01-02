@@ -12,7 +12,7 @@ AKeys00::AKeys00():Super() {
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Key00/Key00.Key00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Key00/Key00.Key00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-0.500000,-0.250000,0));
 	Mesh->SetRelativeRotation(FRotator(0,90,0));
@@ -23,7 +23,7 @@ AKeys00::AKeys00():Super() {
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Key00/Key19.Key19"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19.Key19"));
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims

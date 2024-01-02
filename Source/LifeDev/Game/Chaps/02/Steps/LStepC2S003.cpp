@@ -33,7 +33,7 @@ ALStepC2S003::ALStepC2S003():Super() {
 	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSFX(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Analog/Analog_C.Analog_C"));
+		CSFX(TEXT("/Game/LifeDev/Game/Inters/Generic/Analog/Analog_C.Analog_C"));
 	SFX_Analog = CSFX.Object;
 }
 

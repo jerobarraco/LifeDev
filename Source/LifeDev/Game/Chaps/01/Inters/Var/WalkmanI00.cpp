@@ -22,14 +22,14 @@ AWalkmanI00::AWalkmanI00():Super() {
 	};
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Walkman00.Walkman00"));
+		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Walkman00.Walkman00"));
 	Mesh->SetStaticMesh(ObjMesh.Object);
 	
 	Interact->SetRelativeLocation(FVector(7,-5,1.725000));
 	Interact->SetBoxExtent(FVector(7.5,5,2));
 
 	ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Tape_SC.Tape_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSnd.Object;
 }
 

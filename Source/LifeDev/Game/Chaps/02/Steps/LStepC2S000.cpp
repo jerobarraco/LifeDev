@@ -17,16 +17,16 @@ ALStepC2S000::ALStepC2S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Var/Music/Music01/Music01_MS.Music01_MS");
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1 (TEXT("/Game/LifeDev/Game/Var/Datalayers/Chap02_DL.Chap02_DL"));
+		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap02_DL.Chap02_DL"));
 	if (CDL1.Succeeded()) {
 		DL_Load.Add(CDL1.Object);
 	}
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL2 (TEXT("/Game/LifeDev/Game/Var/Datalayers/Chap01_DL.Chap01_DL"));
+		CDL2 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap01_DL.Chap01_DL"));
 	if (CDL2.Succeeded()) {
 		DL_Unload.Add(CDL2.Object);
 	}

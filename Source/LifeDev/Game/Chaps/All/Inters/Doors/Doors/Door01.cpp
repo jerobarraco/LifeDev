@@ -10,14 +10,14 @@
 ADoor01::ADoor01():Super() {
 	IRoot->SetRelativeLocation(FVector(0,-5,0));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door01/Door01.Door01"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Doors/Door01/Door01.Door01"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 
 	Window = CreateDefaultSubobject<UCQuickMesh>(TEXT("Window"));
 	Window->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh1(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Doors/Door01/Door01-Window.Door01-Window"));
+		CMesh1(TEXT("/Game/LifeDev/Game/Inters/Doors/Door01/Door01-Window.Door01-Window"));
 	Window->SetStaticMesh(CMesh1.Object);
 	Window->SetCastAllShadows(true);
 	Window->bUseAttachParentBound = true; // opt

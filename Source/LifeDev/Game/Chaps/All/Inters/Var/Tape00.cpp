@@ -10,7 +10,7 @@
 
 ATape00::ATape00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5.725000,0,0));
 
@@ -19,12 +19,12 @@ ATape00::ATape00():Super() {
 	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSTrigger(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Walkman00/Tape_SC.Tape_SC"));
+		CSTrigger(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSTrigger.Object;
 	SFX->SetRelativeLocation(FVector(0,-3.,1));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CCase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
+		CCase(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
 	Case = CreateDefaultSubobject<UCQuickMesh>(TEXT("Case"));
 	Case->SetupAttachment(IRoot);
 	Case->SetStaticMesh(CCase.Object);	

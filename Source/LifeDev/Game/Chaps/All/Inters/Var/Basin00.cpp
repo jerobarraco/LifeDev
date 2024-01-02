@@ -30,7 +30,7 @@ ABasin00::ABasin00():Super() {
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CWater(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/WaterTap.WaterTap"));
+		CWater(TEXT("/Game/LifeDev/Game/Inters/HandBasin/WaterTap.WaterTap"));
 	Water->SetAsset(CWater.Object);
 	Water->SetAutoActivate(false);
 	Water->SetUseAutoManageAttachment(true);
@@ -38,7 +38,7 @@ ABasin00::ABasin00():Super() {
 
 	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CWaterSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
+		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
 	SND_Water->SetSound(CWaterSnd.Object);
 	SND_Water->SetAutoActivate(false);
 	SND_Water->bAutoManageAttachment = true;

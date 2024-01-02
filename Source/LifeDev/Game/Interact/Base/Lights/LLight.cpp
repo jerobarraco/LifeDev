@@ -45,7 +45,7 @@ ALLight::ALLight():Super() {
 	Sig->IsOffIfOccluded = false;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CClick(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
+		CClick(TEXT("/Game/LifeDev/Game/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
 	SFX_Trigger = CClick.Object;
 	
 	/// ~

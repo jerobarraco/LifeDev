@@ -11,7 +11,7 @@ ACalendar::ACalendar():Super() {
 	StateNum = 1;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Calendar/Calendar.Calendar"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar.Calendar"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-22.5,22.5,0));
 	
@@ -25,7 +25,7 @@ ACalendar::ACalendar():Super() {
 	// a slow pup is a lazy dog
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
 	SetEnabled(false);

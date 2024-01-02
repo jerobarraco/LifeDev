@@ -10,7 +10,7 @@ AClout::AClout():Super() {
 	Anim->Mat = nullptr;
 	Texts = {FText::FromString("PickUp")};
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
 	RewardFlash = .1;
 }

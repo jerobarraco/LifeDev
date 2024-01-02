@@ -10,7 +10,7 @@ AWindow01::AWindow01():Super() {
 	SFX->SetRelativeLocation(FVector(11,57,42));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Window00/Window00-SideB.Window00-SideB"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Window00/Window00-SideB.Window00-SideB"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,125,0));
 	Interact->SetRelativeLocation(FVector(9,-95,60));

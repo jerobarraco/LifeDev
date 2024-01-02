@@ -13,7 +13,7 @@ AOutroGameMode::AOutroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	DefaultPawnClass = ASpectatorPawn::StaticClass(); // no need for a pawn
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CMusic (TEXT("/Game/LifeDev/Game/Var/Music/Music03/Music03_MS.Music03_MS"));
+		CMusic (TEXT("/Game/LifeDev/Game/Env/Music/Music03/Music03_MS.Music03_MS"));
 	Music = CMusic.Object;
 }
 

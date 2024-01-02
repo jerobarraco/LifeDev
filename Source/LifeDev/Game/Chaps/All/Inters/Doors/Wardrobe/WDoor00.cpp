@@ -11,7 +11,7 @@
 AWDoor00::AWDoor00():Super() {
 	SFX->SetRelativeLocation(FVector(37.5,2.5,110));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Wardrobe00/Wardrobe00-Door0.Wardrobe00-Door0"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Wardrobe00/Wardrobe00-Door0.Wardrobe00-Door0"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5,55,0));
 

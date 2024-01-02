@@ -19,7 +19,7 @@ ATv00::ATv00():Super() {
 	// so much optimization lost for a single button animation...
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Mesh->bUseAttachParentBound = true;
@@ -31,7 +31,7 @@ ATv00::ATv00():Super() {
 
 	SFX->SetRelativeLocation(FVector(5.329876,21.458294,20));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		SOpen(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Button_Press-007.Button_Press-007"));
+		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
 	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpenEnd(TEXT("/Engine/EditorSounds/Notifications/CompileFailed_Cue.CompileFailed_Cue"));
@@ -41,7 +41,7 @@ ATv00::ATv00():Super() {
 	Frame = CreateDefaultSubobject<UCQuickMesh>(TEXT("Frame"));
 	Frame->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CFrame(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Base.Tv00-Base"));
+		CFrame(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Base.Tv00-Base"));
 	Frame->SetStaticMesh(CFrame.Object);
 	Frame->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Frame->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -52,14 +52,14 @@ ATv00::ATv00():Super() {
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
 	Glass->SetupAttachment(Frame);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CGlass(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Screen.Tv00-Screen"));
+		CGlass(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Screen.Tv00-Screen"));
 	Glass->SetStaticMesh(CGlass.Object);
 	Glass->SetCastAllShadows(false); // opt
 	Glass->bUseAttachParentBound = true; // opt
 	
 	Crt = CreateDefaultSubobject<UCQuickMesh>(TEXT("Crt"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CCrt(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/Tv00-Crt.Tv00-Crt"));
+		CCrt(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Crt.Tv00-Crt"));
 	Crt->SetupAttachment(Frame);
 	Crt->SetStaticMesh(CCrt.Object);
 	Crt->SetCastAllShadows(false); // opt
@@ -97,7 +97,7 @@ ATv00::ATv00():Super() {
 	Noise = CreateDefaultSubobject<UCSounder>(TEXT("Noise"));
 	Noise->SetupAttachment(IRoot);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSNoise(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
+		CSNoise(TEXT("/Game/LifeDev/Game/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
 	Noise->SetSound(CSNoise.Object);
 
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
@@ -113,8 +113,10 @@ void ATv00::BeginPlay() {
 
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
-	AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+	if (IsValid(AnimCrt->Mat)) {
+		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
+		AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
+	}
 	Sig->BindAnim(AnimCrt);
 	Sig->CompsTicks.AddUnique(AnimCrt);
 }

@@ -8,7 +8,7 @@
 
 ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Shirt00.Shirt00"));
+		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt00.Shirt00"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}
@@ -26,6 +26,6 @@ ASpot01::ASpot01():Super() {
 	Items = {LDConsts::Items::Bra}; // the bra
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
 }

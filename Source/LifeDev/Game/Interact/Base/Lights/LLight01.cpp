@@ -8,13 +8,13 @@
 
 ALLight01::ALLight01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/Support.Support"));
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/Support.Support"));
 	Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
 	Mesh->SetRelativeScale3D(FVector(0.05,0.05,0.05));
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/C_Fluorescent.C_Fluorescent"));
+		CCurve (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/C_Fluorescent.C_Fluorescent"));
 	if (CCurve.Succeeded()) {
 		Anim->Curve = CCurve.Object;
 	}

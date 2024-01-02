@@ -32,7 +32,7 @@ AHeaterI00::AHeaterI00():Super() {
 	Interact->SetEnabled(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));
 	SFX_Trigger = CSnd.Object;
 }
 

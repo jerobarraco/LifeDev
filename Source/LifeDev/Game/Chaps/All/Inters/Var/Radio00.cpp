@@ -10,9 +10,9 @@
 
 ARadio00::ARadio00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CDoor(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Door.Radio00_Door"));
+		CDoor(TEXT("/Game/LifeDev/Game/Inters/Radio00/Radio00_Door.Radio00_Door"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CBase(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Radio00/Radio00_Base.Radio00_Base"));
+		CBase(TEXT("/Game/LifeDev/Game/Inters/Radio00/Radio00_Base.Radio00_Base"));
 	Mesh->SetStaticMesh(CBase.Object);
 	Mesh->SetRelativeLocation(FVector(0,30,0));
 	

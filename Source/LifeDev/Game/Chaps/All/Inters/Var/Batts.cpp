@@ -13,7 +13,7 @@ ABatts::ABatts():Super() {
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Batts00/Batts00.Batts00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Batts00/Batts00.Batts00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,2,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90,90));
@@ -29,7 +29,7 @@ ABatts::ABatts():Super() {
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Generic/Grab_C.Grab_C"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims

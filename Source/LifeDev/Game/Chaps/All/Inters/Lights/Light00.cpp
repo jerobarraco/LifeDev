@@ -9,13 +9,13 @@
 
 ALight00::ALight00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/Support.Support"));
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/Support.Support"));
 	Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
 	Mesh->SetRelativeScale3D(FVector(0.05,0.05,0.05));
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CTube (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/Fluorescent.Fluorescent"));
+		CTube (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/Fluorescent.Fluorescent"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Tube->SetupAttachment(Mesh);
 	if (CTube.Succeeded()) {
@@ -29,7 +29,7 @@ ALight00::ALight00():Super() {
 	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Fluorescent/C_Fluorescent.C_Fluorescent"));
+		CCurve (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/C_Fluorescent.C_Fluorescent"));
 	if (CCurve.Succeeded()) {
 		Anim->Curve = CCurve.Object;
 	}

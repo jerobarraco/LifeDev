@@ -11,11 +11,11 @@
 // TODO make a subclass ASpot01 and replace the scene one with that one. then remove the specifics from here.
 ASpot00::ASpot00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd (TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Clouts.Clouts"));
+		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Clouts/Shirt01.Shirt01"));
+		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt01.Shirt01"));
 	if (ObjMesh.Succeeded()) {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	}

@@ -9,7 +9,7 @@ APaper00::APaper00():Super() {
 	Super::SetMobility(EComponentMobility::Static);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper00.Paper00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper00.Paper00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-7.5,10.5,0));
 	
@@ -23,6 +23,6 @@ APaper00::APaper00():Super() {
 	// a slow pup is a lazy dog
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Chaps/All/Inters/Paper00/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 }
