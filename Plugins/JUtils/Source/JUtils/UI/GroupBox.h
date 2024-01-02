@@ -6,6 +6,8 @@
 #include "JUtils/UI/BaseUI.h"
 
 #include "GroupBox.generated.h"
+
+class UDelegateWrapper;
 class UCheckBox;
 
 // internal don´t use https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
@@ -16,20 +18,20 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCBChange, class UCheckBox*, me, 
 // look at JMiscUtils > DelegateWrapper
 // i prefer not doing a generic lambda wrapper since i prefer this explicit way
 // internal don´t use https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
-UCLASS()
-class UCBChangeWrapper : public UObject {
-	GENERATED_BODY()
-
-public:
-	UFUNCTION()
-	void Dispatch(bool IsChecked) {
-		OnChange.Broadcast(CB, IsChecked);
-	}
-	UPROPERTY(Transient)
-	FOnCBChange OnChange;
-	UPROPERTY(Transient)
-	UCheckBox* CB = nullptr;
-};
+// UCLASS()
+// class UCBChangeWrapper : public UObject {
+// 	GENERATED_BODY()
+//
+// public:
+// 	UFUNCTION()
+// 	void Dispatch(bool IsChecked) {
+// 		OnChange.Broadcast(CB, IsChecked);
+// 	}
+// 	UPROPERTY(Transient)
+// 	FOnCBChange OnChange;
+// 	UPROPERTY(Transient)
+// 	UCheckBox* CB = nullptr;
+// };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, int32, id, int32, Q);
 
@@ -62,7 +64,7 @@ protected:
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION()
-	void ResetSelected(UCheckBox* CB, bool IsChecked);
+	void CheckSelected(UDelegateWrapper* W, int32 CID, UObject* CB);
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TArray<UCheckBox*> CheckBoxes;
@@ -72,4 +74,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	int32 Selected = -1;
+
+private: // nobody needs to know about this
+	UPROPERTY(Transient)
+	TArray<UDelegateWrapper*> Wrappers;
 };

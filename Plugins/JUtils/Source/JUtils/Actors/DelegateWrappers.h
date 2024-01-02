@@ -13,6 +13,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, class UDelegateWrap
 // Wrapper->ID = WhateverIDGen();
 // Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
 // C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::DispatchBool);
+// Also you NEED to keep a ref to the Wrapper or it will be GCd
+// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UDelegateWrapper : public UObject {
 	GENERATED_BODY()

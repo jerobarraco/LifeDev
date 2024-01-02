@@ -77,10 +77,10 @@ void UCPuzzle::Bind() {
 
 	int32 i = 0;
 	for (AInteract* const I: Interacts) {
-		if (!IsValid(I)) continue;;
+		if (!IsValid(I)) continue;
 		
 		UCInteract* const CI = I->GetComponentByClass<UCInteract>();
-		if (!IsValid(CI)) continue;;
+		if (!IsValid(CI)) continue;
 
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
 		if (!IsValid(Wrapper)) continue;

@@ -32,9 +32,11 @@ ULSettingsUI::ULSettingsUI():Super() {
 		FText::FromString(TEXT("Shading")));
 }
 
-void ULSettingsUI::NativePreConstruct() {
-	Super::NativePreConstruct();
-
+void ULSettingsUI::NativeOnInitialized() {
+	Super::NativeOnInitialized();
+	
+	UE_LOG(LogTemp, Log, TEXT("LSettingsUI::%hs QTextsN=%i QSwitchesN=%i"),
+		__func__, QSTexts.Num(), QSwitches.Num());
 	TArray<EQualityType> Keys;
 	QSTexts.GetKeys(Keys);
 	for (EQualityType Q: Keys) {
@@ -47,18 +49,7 @@ void ULSettingsUI::NativePreConstruct() {
 		UGroupBox* const SwitchUI = *pSwitchUI;
 		SwitchUI->SetLabel(*T);
 		SwitchUI->ID = static_cast<int32>(Q);
-	}
-}
-
-void ULSettingsUI::NativeOnInitialized() {
-	Super::NativeOnInitialized();
-	
-	TArray<EQualityType> Keys;
-	QSwitches.GetKeys(Keys);
-	for (EQualityType Q: Keys) {
-		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
-		if (!pSwitchUI) continue;
-		(*pSwitchUI)->OnChange.AddUniqueDynamic(this, &ULSettingsUI::QualityChanged);
+		SwitchUI->OnChange.AddUniqueDynamic(this, &ULSettingsUI::QualityChanged);
 	}
 }
 
@@ -75,6 +66,8 @@ void ULSettingsUI::NativeDestruct() {
 }
 
 void ULSettingsUI::LoadQSwitches() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType Q: Keys) {
@@ -87,7 +80,7 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 	
 	UGroupBox** const pSwitchUI = QSwitches.Find(QSwitch);
 	if (!pSwitchUI || !*pSwitchUI) {
-		UE_LOG(LogTemp, Log, TEXT("Cant find quality switc for switch %i"), QSwitch );
+		UE_LOG(LogTemp, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
 	}
 
@@ -132,7 +125,8 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 	case EQualityType::SHADING:
 		Q = Settings->GetShadingQuality();
 		break;
-	default: break;
+	default:
+		return; // don't select anything.
 	}
 	(*pSwitchUI)->SetSelected(Q);
 }
@@ -186,14 +180,20 @@ void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 		Settings->SetShadingQuality(NewQ);
 		break;
 	default:
-		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type"));
+		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type."));
+		return;
 	}
 	
-	LoadQSwitches(); // not optimal but if i set the overall i need to reload the rest and vice versa. 
+	// not optimal but if i set the overall i need to reload the rest and vice versa.
+	// so everytime it changes i need to reload. 
+	LoadQSwitches();
 }
 
 void ULSettingsUI::QualityChanged(int32 ID, int32 NewQ) {
-	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) return;
+	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
+		return;
+	}
 	
 	const EQualityType K = static_cast<EQualityType>(ID);
 	SetQuality(K, NewQ);

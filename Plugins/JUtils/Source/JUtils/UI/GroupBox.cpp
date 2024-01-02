@@ -2,6 +2,7 @@
 
 #include "GroupBox.h"
 
+#include "DelegateWrappers.h"
 #include "Components/CheckBox.h"
 #include "Components/TextBlock.h"
 
@@ -32,23 +33,33 @@ void UGroupBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	for (UCheckBox* C: CheckBoxes) {
 		if (!C) continue;
-		UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();
-		Wrapper->CB = C;
-		Wrapper->OnChange.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
-		C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::Dispatch);
+		// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
+		// UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();
+		// Wrapper->CB = C;
+		// C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::Dispatch);
+		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
+		if (!IsValid(Wrapper)) continue;
+		Wrapper->Obj = C;
+		Wrapper->ID = -1;
+		Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::CheckSelected);
+		C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UDelegateWrapper::DispatchBool);
 	}
 }
 
 void UGroupBox::NativeDestruct() {
-	for (UCheckBox* C: CheckBoxes) {
-		if (!C) continue;
-		// todo this is fake is not actually removing the wrapper. fix
-		C->OnCheckStateChanged.RemoveAll(this);
+	for (UDelegateWrapper* W: Wrappers) {
+		if (!IsValid(W)) continue;
+		W->OnDispatch.RemoveAll(this);
 	}
+	Wrappers.Empty();
 	Super::NativeDestruct();
 }
 
-void UGroupBox::ResetSelected(UCheckBox* CB, bool IsChecked) {
+void UGroupBox::CheckSelected(UDelegateWrapper* W, int32 CID, UObject* OCB) {
+	if (!IsValid(OCB)) return;
+	UCheckBox* CB = static_cast<UCheckBox*>(OCB);
+
+	const bool IsChecked = CB->IsChecked();
 	if (!IsChecked) {
 		CB->SetIsChecked(true); // don't allow to manually deselect
 	}

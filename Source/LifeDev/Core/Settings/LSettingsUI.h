@@ -33,7 +33,6 @@ public:
 	ULSettingsUI();
 
 protected:
-	virtual void NativePreConstruct() override;
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	

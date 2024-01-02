@@ -92,6 +92,6 @@ protected:
 	// on combo: its a list of each interact's state
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<int32> CurrentIds;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient) //important so they don't get GCd
 	TArray<UDelegateWrapper*> Wrappers;
 };
