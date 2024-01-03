@@ -13,8 +13,9 @@ void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
 	if(Text) {
 		Text->SetText(NewText);
 	}
+
 	if (!Settings) {
-		UE_LOG(LogTemp, Log, TEXT("LFeatCheck can't find settings"));
+		UE_LOG(LogTemp, Log, TEXT("LFeatCheck can't find settings."));
 		return;
 	}
 

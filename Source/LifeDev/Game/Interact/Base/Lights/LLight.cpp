@@ -62,6 +62,9 @@ void ALLight::StopFBFlicker() {
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
+	UE_LOG(LogTemp, Log, TEXT("Light %hs newfbflicker=%.3f"),
+		__func__, NewFBFlicker);
+
 	UWorld* const W = GetWorld();
 	if (!W) return;
 	
@@ -92,6 +95,11 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
 
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	ULSettings* const Settings = ULSettings::Get(World);
+	if (!Settings) return;
+
 	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
 	Sig->CompsTicks.AddUnique(Anim);
@@ -99,20 +107,13 @@ void ALLight::BeginPlay() {
 	// the strobe will be set with the feat flag
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
-
-	// don't set the state here. it will break the child. we should not need it
-    World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
-
-	ULSettings* const Settings = ULSettings::Get(World);
-	if (!Settings) return;
-
 	// disable if the flag is disabled. but keep disabled if it was disabled by the parent. 
 	UseAnim = UseAnim && Settings->GetFeat(EFeat::A_STROBE);
 	
 	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	SetFBFlicker(FlickrOnFB);
+	// don't set the state here. it will break the child. we should not need it
+    World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -156,6 +157,7 @@ void ALLight::SetFB(float Value) {
 
 void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	if (Feat != EFeat::A_STROBE) return;
+	UE_LOG(LogTemp, Log, TEXT("Light:FeatUpdated f=%i, on=%i"), Feat, bEnabled);
 
 	UseAnim = bEnabled; // anim is bound to the strobe flag
 	if (bEnabled) {

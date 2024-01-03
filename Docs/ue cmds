@@ -58,3 +58,10 @@ ENABLEALLSCREENMESSAGES
 obj list -resourcesizesort
 obj list class=SkeletalMesh -resourcesizesort
 obj list class=StaticMesh -resourcesizesort
+
+# garbage collection
+OBJ GC
+gc.CollectGarbageEveryFrame 1
+GEngine->ForceGarbageCollection();
+GetWorld()->ForceGarbageCollection(true);
+# https://forums.unrealengine.com/t/force-garbage-collection/277172/2
