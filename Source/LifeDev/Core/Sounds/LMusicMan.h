@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "Sounds/MusicMan.h"
 
 #include "LMusicMan.generated.h"
@@ -21,16 +22,18 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(bool On);
+
+	virtual void Fade_Implementation(bool In) override;
 	
 	UFUNCTION(BlueprintCallable)
 	static void SetRainS(UWorld* W, bool Play);
-	UFUNCTION(BlueprintCallable)
-	static void SetEnvironS(UWorld* W, bool Play);
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION() // bind
+	void FeatUpdate(EFeat Feat, bool bEnabled);
 	UFUNCTION() // bind
 	void SetStep(AStep* Step);
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

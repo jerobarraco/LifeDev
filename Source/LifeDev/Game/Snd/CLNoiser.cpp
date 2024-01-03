@@ -46,9 +46,17 @@ void UCLNoiser::BeginPlay() {
 }
 
 void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UFlashback* const F = UFlashback::Get(GetWorld());
+	UWorld* const W = GetWorld();
+	if (!W) return;
+
+	UFlashback* const F = UFlashback::Get(W);
 	if (F) {
 		F->OnChange.RemoveAll(this);
+	}
+
+	ULSettings* const S = ULSettings::Get(W);
+	if (S) {
+		S->OnFeatUpdateSound.RemoveAll(this);
 	}
 	
 	Super::EndPlay(EndPlayReason);

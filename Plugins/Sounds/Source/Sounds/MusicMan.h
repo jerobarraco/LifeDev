@@ -15,11 +15,10 @@ class SOUNDS_API AMusicMan: public AActor {
 public:
 	AMusicMan();
 	
-	inline static bool Enabled = true;
-
 	// fades in or out. be careful since this creates issues when issues alongside PlayMusic
-	UFUNCTION(BlueprintCallable)
-	void Fade(bool In);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Fade(bool In = true);
+	virtual void Fade_Implementation(bool In);
 
 	// for debug only
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")

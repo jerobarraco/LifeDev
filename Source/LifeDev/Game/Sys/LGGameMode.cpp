@@ -118,7 +118,6 @@ void ALGGameMode::Init_Implementation() {
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
 	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_ALL);
 	AStep::UseDebug = Settings->GetFeat(EFeat::DBG_STEPS);
-	AMusicMan::Enabled = Settings->GetFeat(EFeat::S_MUSIC);
 
 	/// post process (does this even works?)
 	PostProcess = Cast<APostProcessVolume>(
@@ -231,6 +230,7 @@ void ALGGameMode::Init_Implementation() {
 	FTimerHandle Handle;
 	// wait for loading
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
+	MusicMan->SetEnviron(true);
 }
 
 void ALGGameMode::BeginPlay() {

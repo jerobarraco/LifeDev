@@ -3,6 +3,7 @@
 #include "LMusicMan.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
 
@@ -45,21 +46,24 @@ void ALMusicMan::SetEnviron(bool On) {
 	Environ->Fade(On);
 }
 
+void ALMusicMan::Fade_Implementation(bool In) {
+	// don't fade in if the music is not enabled.
+	// only needs to be done in the fade call, so that the actual music is set in the player.
+	// in case someone activates the music after the chapter has started.
+	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
+	if (In && ! ULSettings::GetFeatS(GetWorld(), EFeat::S_MUSIC)) return;
+	Super::Fade_Implementation(In);
+}
+
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
+	// TODO Might be faster easier to get it from the gamemode
 	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 	if (!R) return;
 	R->SetRain(Play);
 }
 
-void ALMusicMan::SetEnvironS(UWorld* W, bool Play) {
-	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
-	if (!R) return;
-	R->SetEnviron(Play);
-}
-
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
-	if (!Enabled) return;
 
 	UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Get(W);
@@ -71,7 +75,11 @@ void ALMusicMan::BeginPlay() {
 	if (Story) {
 		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 	}
-	// TODO bind to the settings flag change and enable/disable the music accordingly
+
+	ULSettings* S = ULSettings::Get(W);
+	if (S) {
+		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+	}
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -86,7 +94,25 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Story->OnStart.RemoveAll(this);
 	}
 
+	ULSettings* S = ULSettings::Get(W);
+	if (S) {
+		S->OnFeatUpdateSound.RemoveAll(this);
+	}
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
+	if (Feat != EFeat::S_MUSIC) return;
+	// start/stop only if it was stopped/started
+	if (bEnabled){
+		if (!Player->IsPlaying()) {
+			Fade(true);
+		}
+	} else {
+		if (Player->IsPlaying()) {
+			Fade(false);
+		}
+	}
 }
 
 void ALMusicMan::SetStep(AStep* Step) {

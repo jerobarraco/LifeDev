@@ -36,10 +36,6 @@ ALStepC0S000::ALStepC0S000():Super() {
 void ALStepC0S000::Start_Implementation() {
 	Super::Start_Implementation();
 
-	UWorld* const W = GetWorld();
-	if (!W) return;
-	ALMusicMan::SetEnvironS(W, true);
-
 	if (!FB) {
 		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the FB subsystem."));
 		return;
@@ -53,7 +49,6 @@ void ALStepC0S000::Start_Implementation() {
 void ALStepC0S000::Stop_Implementation() {
 	RandFB->Deactivate();
 	Super::Stop_Implementation();
-	// UFlashback::SetValS(GetWorld(), 0, 5);
 }
 
 void ALStepC0S000::Debug_Implementation() {

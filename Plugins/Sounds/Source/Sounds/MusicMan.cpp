@@ -20,7 +20,7 @@ AMusicMan::AMusicMan():Super() {
 	Player->TimeFadeIn = 1.0;
 }
 
-void AMusicMan::Fade(bool In) {
+void AMusicMan::Fade_Implementation(bool In) {
 	Player->Fade(In);
 }
 
@@ -42,8 +42,8 @@ void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 
 void AMusicMan::BeginPlay() {
 	Super::BeginPlay();
-	if (!Enabled) return;
-	
+
+	// used for fade from one music to the next
 	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
 	Player->Activate(true); // attempt to start playing if set.
 	SetIntensity(0); // doesn't really work if it's not playing
