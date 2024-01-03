@@ -8,6 +8,7 @@
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
 #include "Sounds/CSounder.h"
 
 ALMusicMan::ALMusicMan():Super() {
@@ -56,10 +57,11 @@ void ALMusicMan::Fade_Implementation(bool In) {
 }
 
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
-	// TODO Might be faster easier to get it from the gamemode
-	ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
-	if (!R) return;
-	R->SetRain(Play);
+	// Might be faster easier to get it from the gamemode
+	ALGGameMode* GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
+	if (!GM) return;
+	GM->MusicMan->SetRain(Play);
+	// ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 }
 
 void ALMusicMan::BeginPlay() {
@@ -102,16 +104,20 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
-	if (Feat != EFeat::S_MUSIC) return;
-	// start/stop only if it was stopped/started
-	if (bEnabled){
-		if (!Player->IsPlaying()) {
-			Fade(true);
+	if (Feat == EFeat::S_MUSIC) {
+		const bool IsPlaying = Player->IsPlaying();
+		// start/stop only if it was stopped/started
+		if (bEnabled){
+			if (!IsPlaying) {
+				Fade(true);
+			}
+		} else {
+			if (IsPlaying) {
+				Fade(false);
+			}
 		}
-	} else {
-		if (Player->IsPlaying()) {
-			Fade(false);
-		}
+	} else if (Feat == EFeat::S_ENV) {
+		SetEnviron(bEnabled);
 	}
 }
 
