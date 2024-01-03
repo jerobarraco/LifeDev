@@ -5,6 +5,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "Sounds/CNoiser.h"
 
@@ -18,6 +19,8 @@ class LIFEDEV_API UCLNoiser : public UCNoiser {
 public:
 	UCLNoiser();
 
+	virtual void Activate(bool bReset = false) override;
+	
 	// maximum distance with flashback system
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float DistFBMax = 120.0;
@@ -36,6 +39,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	UFUNCTION() // bind
+	void FeatUpdate(EFeat Feat, bool bEnabled);
 	UFUNCTION() // bind
 	void SetFB(float Value);
 };

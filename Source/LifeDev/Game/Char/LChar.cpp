@@ -128,7 +128,7 @@ void ALChar::SetInputEnabled(bool Enabled) {
 	InteractSetEnabled(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
-	Noiser->SetIsPlaying(Enabled);
+	Noiser->SetActive(Enabled, false);
 }
 
 // can't remember why i made this into its own function, probably to be able to call from the outside.
@@ -174,11 +174,7 @@ void ALChar::BeginPlay() {
 	Dialogs = World->GetSubsystem<UDiags>();
 
 	if (IsValid(Noiser)) {
-		ULSettings* const Settings = ULSettings::Get(World);
-		Noiser->Debug = Settings->GetFeat(EFeat::DBG_SOUND);
-		if (Settings->GetFeat(EFeat::S_NOISE)) {
-			Noiser->Start();
-		}
+		Noiser->Activate();
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
 	}
@@ -198,7 +194,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	SettingsUI = nullptr;
 
 	if (IsValid(Noiser)) {
-		Noiser->Stop();
+		Noiser->Deactivate();
 	}
 	Noiser = nullptr;
 

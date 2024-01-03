@@ -4,11 +4,25 @@
 #include "CNoiser.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Layers/LayersSubsystem.h"
 
 UCNoiser::UCNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	PrimaryComponentTick.SetTickFunctionEnable(false);
+	Super::SetAutoActivate(false);
+}
+
+void UCNoiser::Activate(bool bReset) {
+	Super::Activate(bReset);
+	if (IsActive() && !bReset) return;
+	
+	TimerStart(); // already checks for IsPlaying
+}
+
+void UCNoiser::Deactivate() {
+	TimerStop();
+	Super::Deactivate();
 }
 
 void UCNoiser::TimerStop() {
@@ -24,33 +38,15 @@ void UCNoiser::TimerStart() {
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UCNoiser::PlayNow, Time, false, -1);
 }
 
-void UCNoiser::Start() {
-	SetIsPlaying(true);
-}
-
-void UCNoiser::Stop() {
-	SetIsPlaying(false);
-}
-
 void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Stop();
+	Deactivate();
 	Super::EndPlay(EndPlayReason);
-}
-
-void UCNoiser::SetIsPlaying(bool NewIsPlaying) {
-	const bool WasPlaying = IsPlaying;
-	IsPlaying = NewIsPlaying;
-
-	TimerStop();
-	if (IsPlaying) {
-		TimerStart();
-	}
 }
 
 void UCNoiser::PlayNow_Implementation() {
 	AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) {
-		Stop();
+		Deactivate();
 		return;
 	}
 
@@ -82,7 +78,7 @@ void UCNoiser::PlayNow_Implementation() {
 		Attenuation
 	);
 	
-	TimerStart();
+	TimerStart(); // starts the next one.
 
 	OnPlay.Broadcast();
 }

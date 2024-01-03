@@ -2,6 +2,7 @@
 
 #include "CLNoiser.h"
 
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 UCLNoiser::UCLNoiser():Super() {
@@ -17,6 +18,12 @@ UCLNoiser::UCLNoiser():Super() {
 	HalfAngleHeight = 40.0;
 }
 
+void UCLNoiser::Activate(bool bReset) {
+	// don't activate if this is disabled
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::S_NOISE)) return;
+	Super::Activate(bReset);
+}
+
 void UCLNoiser::SetFB(float Value) {
 	// note that when the fb goes up, the times and dist goes down
 	DistMax = FMath::Lerp(DistFBMax, DistFBMin, Value);
@@ -25,9 +32,16 @@ void UCLNoiser::SetFB(float Value) {
 
 void UCLNoiser::BeginPlay() {
 	Super::BeginPlay();
-	UFlashback* const F = UFlashback::Get(GetWorld());
+	UWorld* const W = GetWorld();
+	UFlashback* const F = UFlashback::Get(W);
 	if (F) {
 		F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
+	}
+
+	ULSettings* const S = ULSettings::Get(W);
+	if (S) {
+		Debug = S->GetFeat(EFeat::DBG_SOUND);
+		S->OnFeatUpdateSound.AddUniqueDynamic(this, &UCLNoiser::FeatUpdate);
 	}
 }
 
@@ -38,4 +52,9 @@ void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	
 	Super::EndPlay(EndPlayReason);
+}
+
+void UCLNoiser::FeatUpdate(EFeat Feat, bool bEnabled) {
+	if (Feat != EFeat::S_NOISE) return;
+	SetActive(bEnabled, false);
 }

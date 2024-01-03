@@ -23,6 +23,7 @@ class UCLNoiser;
 
 // TODO consider moving the input stuff to another component
 // TODO consider moving the item interaction dialog stuff to another component
+// TODO consider moving the settings to another component
 
 // base class for the character
 UCLASS(Config=LifeDev, DefaultConfig)
