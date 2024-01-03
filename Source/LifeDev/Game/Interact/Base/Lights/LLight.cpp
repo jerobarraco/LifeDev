@@ -59,8 +59,6 @@ void ALLight::StopFBFlicker() {
 	UFlashback* const Fb = UFlashback::Get(GetWorld());
 	Rnd->Deactivate();
 	Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
-	Anim->OnUpdate.RemoveDynamic(this, &ALLight::AnimUpdate);
-	UseAnim = false;
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
@@ -86,10 +84,6 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		return;
 	}
 
-	// only re-enable if strobe is set.
-	UseAnim = true;
-	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
-
 	UFlashback* const Fb = UFlashback::Get(W);
     if (!Fb) return;
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
@@ -101,6 +95,9 @@ void ALLight::BeginPlay() {
 	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
 	Sig->CompsTicks.AddUnique(Anim);
+	// bind nevertheless since it doesn't depend on the fb but on the strobe.
+	// the strobe will be set with the feat flag
+	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
@@ -111,14 +108,19 @@ void ALLight::BeginPlay() {
 	ULSettings* const Settings = ULSettings::Get(World);
 	if (!Settings) return;
 
+	// disable if the flag is disabled. but keep disabled if it was disabled by the parent. 
+	UseAnim = UseAnim && Settings->GetFeat(EFeat::A_STROBE);
+	
 	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	SetFBFlicker(FlickrOnFB);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Anim->OnUpdate.RemoveAll(this);
-	
+
 	UWorld* const W = GetWorld();
+	if (!W) return;
+
 	UFlashback* const Fb = UFlashback::Get(W);
 	if (Fb) {
 		Fb->OnChange.RemoveAll(this);
@@ -154,6 +156,8 @@ void ALLight::SetFB(float Value) {
 
 void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	if (Feat != EFeat::A_STROBE) return;
+
+	UseAnim = bEnabled; // anim is bound to the strobe flag
 	if (bEnabled) {
 		SetFBFlicker(FlickrOnFB);
 	} else {
