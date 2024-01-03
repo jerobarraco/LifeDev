@@ -35,6 +35,16 @@ ULSettingsUI::ULSettingsUI():Super() {
 		FText::FromString(TEXT("Shading")));
 }
 
+void ULSettingsUI::Show_Implementation() {
+	Super::Show_Implementation();
+	SetVisibility(ESlateVisibility::Visible);
+}
+
+void ULSettingsUI::Hide_Implementation() {
+	Super::Hide_Implementation();
+	SetVisibility(ESlateVisibility::Collapsed);
+}
+
 void ULSettingsUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	

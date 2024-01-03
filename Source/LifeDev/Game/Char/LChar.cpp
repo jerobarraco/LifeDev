@@ -161,7 +161,6 @@ void ALChar::BeginPlay() {
 		if (SettingsUI) {
 			// important to add to the viewport otherwise the GC will delete our bindings :')
 			SettingsUI->AddToViewport(9999);
-			SettingsUI->SetVisibility(ESlateVisibility::Collapsed);
 			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 			MenuDone(); // hide
 		}
@@ -368,7 +367,6 @@ void ALChar::ActMenu() { // no const
 		return;
 	}
 
-	// SettingsUI->AddToViewport(9999);
 	SettingsUI->Show();
 	SettingsUI->SetVisibility(ESlateVisibility::Visible);
 }
@@ -376,6 +374,4 @@ void ALChar::ActMenu() { // no const
 void ALChar::MenuDone() {
 	if (!IsValid(SettingsUI)) return;
 	SettingsUI->Hide();
-	SettingsUI->SetVisibility(ESlateVisibility::Collapsed);
-	// SettingsUI->RemoveFromParent();
 }

@@ -32,6 +32,9 @@ class LIFEDEV_API ULSettingsUI : public UBaseUI {
 public:
 	ULSettingsUI();
 
+	virtual void Show_Implementation() override;
+	virtual void Hide_Implementation() override;
+
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
@@ -45,7 +48,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetQuality(EQualityType Quality, int32 NewQ);
 
-	UFUNCTION()
+	UFUNCTION() // bound
 	void QualityChanged(int32 ID, int32 NewQ);
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)

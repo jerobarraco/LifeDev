@@ -18,11 +18,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Show();
-	void Show_Implementation();
+	virtual void Show_Implementation();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Hide();
-	void Hide_Implementation();
+	virtual void Hide_Implementation();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done(int32 RetVal = 0);
@@ -33,6 +33,6 @@ public:
 	FBaseUIDoneVal OnDoneVal;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool ShowCursor = false;
 };
