@@ -5,6 +5,9 @@
 #include "GameFramework/GameUserSettings.h"
 #include "JUtils/UI/GroupBox.h"
 
+// TODO there's a bug when the gc runs the groupbox stops working.
+// is it the wrapper being gcd?
+
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
 	
@@ -66,8 +69,6 @@ void ULSettingsUI::NativeDestruct() {
 }
 
 void ULSettingsUI::LoadQSwitches() {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
-
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType Q: Keys) {
@@ -132,7 +133,7 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 }
 
 void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
-	UE_LOG(LogTemp, Log, TEXT("Setting quality quality=%i newq=%i"), Quality, NewQ);
+	UE_LOG(LogTemp, Log, TEXT("SettingsUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (Quality == EQualityType::NONE) return;
 	if (NewQ<0 || NewQ>4) {
 		UE_LOG(LogTemp, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);

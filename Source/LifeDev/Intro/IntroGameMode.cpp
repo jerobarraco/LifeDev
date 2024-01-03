@@ -10,7 +10,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 AIntroGameMode::AIntroGameMode():Super() {
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
 	static ConstructorHelpers::FObjectFinder<USoundBase>

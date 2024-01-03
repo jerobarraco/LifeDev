@@ -5,7 +5,7 @@
 #include "Components/TextBlock.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 
-ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O){}
+ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}
 
 void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
