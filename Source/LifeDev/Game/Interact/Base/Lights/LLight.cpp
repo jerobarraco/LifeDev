@@ -62,9 +62,6 @@ void ALLight::StopFBFlicker() {
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
-	UE_LOG(LogTemp, Log, TEXT("Light %hs newfbflicker=%.3f"),
-		__func__, NewFBFlicker);
-
 	UWorld* const W = GetWorld();
 	if (!W) return;
 	
@@ -90,6 +87,8 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	UFlashback* const Fb = UFlashback::Get(W);
     if (!Fb) return;
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
+	// manually update it in case the flag was toggled or the fb was already high
+	SetFB(Fb->GetVal());
 }
 
 void ALLight::BeginPlay() {
@@ -157,7 +156,6 @@ void ALLight::SetFB(float Value) {
 
 void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	if (Feat != EFeat::A_STROBE) return;
-	UE_LOG(LogTemp, Log, TEXT("Light:FeatUpdated f=%i, on=%i"), Feat, bEnabled);
 
 	UseAnim = bEnabled; // anim is bound to the strobe flag
 	if (bEnabled) {

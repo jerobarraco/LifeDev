@@ -38,7 +38,7 @@ void UGroupBox::NativeOnInitialized() {
 		// the outer hangs to keep us all awake~ (and not get gcd) (doesn't work actually)
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>(this, UDelegateWrapper::StaticClass());
 		if (!IsValid(Wrapper)) continue;
-		Wrappers.AddUnique(Wrapper); // avoid getting gcd, actually seems to work
+		Wrappers.AddUnique(Wrapper); // avoid getting gcd, actually needed
 		Wrapper->Obj = C;
 		Wrapper->ID = -1;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::CheckSelected);
