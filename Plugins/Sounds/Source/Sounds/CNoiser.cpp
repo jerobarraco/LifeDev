@@ -4,7 +4,6 @@
 #include "CNoiser.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "Layers/LayersSubsystem.h"
 
 UCNoiser::UCNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
