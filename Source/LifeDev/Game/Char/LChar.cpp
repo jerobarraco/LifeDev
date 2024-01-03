@@ -158,8 +158,13 @@ void ALChar::BeginPlay() {
 	UClass* const SClass = SettingsUIClass.Get();
 	if (IsValid(SClass)) {
 		SettingsUI = CreateWidget<ULSettingsUI>(World, SClass);
-		// better not to add to viewport
-		SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
+		if (SettingsUI) {
+			// important to add to the viewport otherwise the GC will delete our bindings :')
+			SettingsUI->AddToViewport(9999);
+			SettingsUI->SetVisibility(ESlateVisibility::Collapsed);
+			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
+			MenuDone(); // hide
+		}
 	}
 
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
@@ -204,8 +209,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 /// Input
 
-void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
+void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	// Set up action bindings
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!Input) return;
@@ -221,8 +225,7 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALChar::ActMenu);
 }
 
-void ALChar::ActMove(const FInputActionValue& Value)
-{
+void ALChar::ActMove(const FInputActionValue& Value) {
 	if (!Controller) return;
 
 	// input is a Vector2D
@@ -232,8 +235,7 @@ void ALChar::ActMove(const FInputActionValue& Value)
 	AddMovementInput(GetActorRightVector(), MovementVector.X);
 }
 
-void ALChar::ActLook(const FInputActionValue& Value)
-{
+void ALChar::ActLook(const FInputActionValue& Value) {
 	if (!Controller) return;
 	// input is a Vector2D
 	FVector2D Vector = Value.Get<FVector2D>();
@@ -364,17 +366,20 @@ void ALChar::ActItemLook() {
 void ALChar::ActMenu() { // no const
 	if (!IsValid(SettingsUI)) return;
 
+	// toggle
 	if (SettingsUI->IsVisible()) {
 		MenuDone();
 		return;
 	}
 
-	SettingsUI->AddToViewport(9999);
+	// SettingsUI->AddToViewport(9999);
 	SettingsUI->Show();
+	SettingsUI->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ALChar::MenuDone() {
 	if (!IsValid(SettingsUI)) return;
 	SettingsUI->Hide();
-	SettingsUI->RemoveFromParent();
+	SettingsUI->SetVisibility(ESlateVisibility::Collapsed);
+	// SettingsUI->RemoveFromParent();
 }
