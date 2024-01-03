@@ -57,3 +57,10 @@ void AOutroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
 }
+
+void AOutroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (UI) {
+		UI->OnDone.RemoveAll(this);
+	}
+	Super::EndPlay(EndPlayReason);
+}

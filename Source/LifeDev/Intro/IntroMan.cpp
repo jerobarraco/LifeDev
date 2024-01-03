@@ -33,19 +33,24 @@ void AIntroMan::Done() {
 	// GetWorld()->ServerTravel(NextLevel);
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-	Controller->bShowMouseCursor = false;
+	UWorld* const World = GetWorld();
+	UJMiscUtils::ShowUI(false, World);
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
 	// FString Options = "Game="+ NextLevelMode;
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
+	UGameplayStatics::OpenLevel(World, FName(*NextLevel), true);
 }
 
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
+}
+
+void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (UI) {
+		UI->OnDone.RemoveAll(this);
+	}
+	Super::EndPlay(EndPlayReason);
 }
