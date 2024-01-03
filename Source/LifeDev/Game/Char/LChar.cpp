@@ -145,12 +145,14 @@ void ALChar::BeginPlay() {
 	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
-		UI = NewObject<UGameUI>(this, Class);
-		UI->AddToViewport();
-		UI->InteractHidePrompt();
-		// It is of utmost important that ANY canvas (and or root element) in the widget ui to be have its visibilty
-		// set to HitTestInvisible or not hit testable. or it will "eat" the cursor
-		// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
+		UI = CreateWidget<UGameUI>(World, Class);
+		if (IsValid(UI)) {
+			UI->AddToViewport();
+			UI->InteractHidePrompt();
+			// It is of utmost important that ANY canvas (and or root element) in the widget ui to be have its visibilty
+			// set to HitTestInvisible or not hit testable. or it will "eat" the cursor
+			// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
+		}
 	}
 
 	UClass* const SClass = SettingsUIClass.Get();

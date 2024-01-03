@@ -4,6 +4,7 @@
 
 #include "IntroUI.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "JUtils/JMiscUtils.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -16,16 +17,16 @@ AIntroMan::AIntroMan():Super() {
 void AIntroMan::AddUI() {
 	if (!UIClass || !UIClass.Get()) return;
 
-	UI = NewObject<UIntroUI>(this, UIClass.Get());
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
+	UI = CreateWidget<UIntroUI>(World, UIClass.Get());
 	if (!IsValid(UI)) return;
 	
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 
-	// enable ui controls
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	Controller->bShowMouseCursor = true;
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, UI);
+	UJMiscUtils::ShowUI(true, World, UI, false);
 }
 
 void AIntroMan::Done() {

@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "OutroUI.h"
+#include "JUtils/JMiscUtils.h"
 
 AOutroMan::AOutroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UOutroUI>
@@ -16,21 +17,24 @@ AOutroMan::AOutroMan():Super() {
 void AOutroMan::AddUI() {
 	if (!UIClass || !UIClass.Get()) return;
 
-	UI = NewObject<UOutroUI>(this, UIClass.Get());
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
+	UI = CreateWidget<UOutroUI>(World, UIClass.Get());
 	if (!IsValid(UI)) return;
 	
 	UI->AddToViewport();
 	UI->OnDone.AddUniqueDynamic(this, &AOutroMan::Done);
 	UI->OnQuit.AddUniqueDynamic(this, &AOutroMan::Quit);
-	// enable ui controls
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	Controller->bShowMouseCursor = true;
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, UI);
+	
+	UJMiscUtils::ShowUI(true, World, UI, false);
 }
 
 void AOutroMan::Quit() {
+	UWorld* const World = GetWorld();
+	if (!World) return;
 	UKismetSystemLibrary::QuitGame(
-		GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
+		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }
 
 void AOutroMan::Done() {

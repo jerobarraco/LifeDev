@@ -124,7 +124,7 @@ void AInventoryManager::BeginPlay() {
 	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
-		UI = NewObject<UInventoryUI>(this, Class);
+		UI = CreateWidget<UInventoryUI>(World, Class);
 		if (IsValid(UI)) {
 			UI->AddToViewport(ZOrder);
 			Hide();

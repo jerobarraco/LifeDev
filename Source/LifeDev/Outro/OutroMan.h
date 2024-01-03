@@ -29,6 +29,6 @@ protected:
 	UFUNCTION()
 	void Done();
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UOutroUI* UI = nullptr;
 };

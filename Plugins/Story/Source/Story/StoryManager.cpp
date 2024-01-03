@@ -50,17 +50,20 @@ void AStoryManager::UIFaded() {
 void AStoryManager::BeginPlay() {
 	Super::BeginPlay();
 
-	Story = GetWorld()->GetSubsystem<UStory>();
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	
+	Story = World->GetSubsystem<UStory>();
 	if (Story) {
 		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
 	}
 	
 	if (IsValid(UIClass.Get())) {
-		UI = NewObject<UStoryUI>(this, UIClass, TEXT("StoryUI"));
+		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));
 		if (IsValid(UI)) {
 			UI->AddToViewport(ZOrder);
+			UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
 		}
-		UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
 	}
 }
 
