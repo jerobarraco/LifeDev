@@ -32,8 +32,17 @@ class LIFEDEV_API ULSettingsUI : public UBaseUI {
 public:
 	ULSettingsUI();
 
+	// will reload the settings
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	void Apply();
+	virtual void Apply_Implementation(){};
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	void Load();
+	virtual void Load_Implementation(){};
 
 protected:
 	virtual void NativeOnInitialized() override;

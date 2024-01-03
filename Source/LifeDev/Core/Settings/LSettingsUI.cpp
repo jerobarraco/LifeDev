@@ -36,8 +36,9 @@ ULSettingsUI::ULSettingsUI():Super() {
 }
 
 void ULSettingsUI::Show_Implementation() {
-	Super::Show_Implementation();
 	SetVisibility(ESlateVisibility::Visible);
+	Super::Show_Implementation();
+	Load();
 }
 
 void ULSettingsUI::Hide_Implementation() {

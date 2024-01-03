@@ -19,25 +19,29 @@ class JUTILS_API ULFeatCheck: public UUserWidget {
 public:
 	ULFeatCheck(const FObjectInitializer& O);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetUp(EFeat NFeat, const FText& NewText);
+
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Load();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Apply();
 
 protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
 	
-	UFUNCTION()
-	void CheckUpdate(bool bIsChecked);
-	UFUNCTION()
+	UFUNCTION() // bind
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	
-	UPROPERTY(BlueprintReadOnly)
-	EFeat Feat = EFeat::NONE;
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	UCheckBox* Check = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	UTextBlock* Text = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	EFeat Feat = EFeat::NONE;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ULSettings* Settings = nullptr;
 };

@@ -14,8 +14,12 @@ void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
 		Text->SetText(NewText);
 	}
 
+	Load();
+}
+
+void ULFeatCheck::Load() {
 	if (!Settings) {
-		UE_LOG(LogTemp, Log, TEXT("LFeatCheck can't find settings."));
+		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Load Can't find settings."));
 		return;
 	}
 
@@ -23,15 +27,24 @@ void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
 	FeatUpdate(Feat, Enabled);
 }
 
+void ULFeatCheck::Apply() {
+	if (!Settings) {
+		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Apply Can't find settings."));
+		return;
+	}
+	if (!Check) {
+		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Apply Can't find check."));
+		return;
+	}
+	
+	Settings->SetFeat(Feat, Check->IsChecked());
+}
+
 void ULFeatCheck::NativeDestruct() {
 	if (Settings) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 	}
 	Settings = nullptr;
-
-	if (Check) {
-		Check->OnCheckStateChanged.RemoveAll(this);
-	}
 
 	Super::NativeDestruct();
 }
@@ -43,21 +56,16 @@ void ULFeatCheck::NativeOnInitialized() {
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%i"), Feat);
 
 	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
-
-	if (!Check) return;
-	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULFeatCheck::CheckUpdate);
-}
-
-void ULFeatCheck::CheckUpdate(bool bIsChecked) {
-	if (!Settings) return;
-	Settings->SetFeat(Feat, bIsChecked);
 }
 
 void ULFeatCheck::FeatUpdate(EFeat NFeat, bool bEnabled) {
 	if (!Check) return;
 	if (Feat != NFeat) return;
+	if (Check->IsChecked() == bEnabled ) return;
 
 	UE_LOG(LogTemp, Log, TEXT("FeatUpdate %i : %i (%s)"),
 		Feat, bEnabled, *UEnum::GetValueAsString(Feat));
-	Check->SetCheckedState(bEnabled ? ECheckBoxState::Checked: ECheckBoxState::Unchecked);
+	const ECheckBoxState NewState = bEnabled ?
+		ECheckBoxState::Checked: ECheckBoxState::Unchecked;
+	Check->SetCheckedState(NewState);
 }
