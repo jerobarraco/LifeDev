@@ -34,11 +34,11 @@ void UGroupBox::NativeOnInitialized() {
 	for (UCheckBox* C: CheckBoxes) {
 		if (!C) continue;
 		// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
-		// UCBChangeWrapper* const Wrapper = NewObject<UCBChangeWrapper>();
-		// Wrapper->CB = C;
-		// C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::Dispatch);
-		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
+
+		// the outer hangs to keep us all awake~ (and not get gcd) (doesn't work actually)
+		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>(this, UDelegateWrapper::StaticClass());
 		if (!IsValid(Wrapper)) continue;
+		Wrappers.AddUnique(Wrapper); // avoid getting gcd, actually seems to work
 		Wrapper->Obj = C;
 		Wrapper->ID = -1;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::CheckSelected);
@@ -68,7 +68,7 @@ void UGroupBox::CheckSelected(UDelegateWrapper* W, int32 CID, UObject* OCB) {
 	const int32 Num = CheckBoxes.Num();
 	for (uint8 i = 0; i<Num; ++i){
 		UCheckBox* const C = CheckBoxes[i];
-		if (!C) continue;
+		if (!IsValid(C)) continue;
 		
 		if (!C->IsChecked()) continue;
 		
