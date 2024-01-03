@@ -155,13 +155,8 @@ void ALChar::BeginPlay() {
 
 	UClass* const SClass = SettingsUIClass.Get();
 	if (IsValid(SClass)) {
-		SettingsUI = NewObject<ULSettingsUI>(this, SClass);
+		SettingsUI = CreateWidget<ULSettingsUI>(World, SClass);
 		// better not to add to viewport
-		SettingsUI->AddToViewport(9999);
-		// TODO fix
-		SettingsUI->Initialize();
-		SettingsUI->RemoveFromParent();
-		// SettingsUI->Hide();
 		SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 	}
 

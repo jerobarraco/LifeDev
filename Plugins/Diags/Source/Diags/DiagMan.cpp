@@ -106,7 +106,7 @@ void ADiagMan::BeginPlay() {
 	// create ui 
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
-		UI = NewObject<UDialogUI>(this, Class);
+		UI = CreateWidget<UDialogUI>(World, Class);
 		if (IsValid(UI)) {
 			UI->AddToViewport(ZOrder);
 			UI->OnDone.AddUniqueDynamic(this, &ADiagMan::UIDiagDone);
