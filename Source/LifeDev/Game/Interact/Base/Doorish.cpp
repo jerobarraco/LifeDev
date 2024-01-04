@@ -20,7 +20,7 @@ ADoorish::ADoorish():Super() {
 	// important to call Super here. since this is called before the child constructor
 	// if the child overrides setmobility it could lead to a crash
 	Super::SetMobility(EComponentMobility::Movable);
-	
+
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/SBvfe1_Door_Handle_D_002.SBvfe1_Door_Handle_D_002"));
 	SFX_Start = {nullptr, SOpen.Object};
