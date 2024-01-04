@@ -241,28 +241,32 @@ void UCSignificance::UpdateTicks() {
 
 	AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) return;
-	
-	const float Interval = TickIntervals[Significance];
-	const bool TickEnabled = Interval>=0;
+
+	const float PreInterval = TickIntervals[Significance];
+	const bool TickEnabled = PreInterval>=0;
+	// avoid setting it to -1 if it's going to be disabled.
+	const float Interval = TickEnabled ? PreInterval : 999999999;
 	UE_LOG(LogJSigComp, Verbose, TEXT("Update ticks. Interval=%f Enabled=%i Obj=%s"),
 		Interval, TickEnabled, *GetNameSafe(Owner));
 
 	/// Owner
 	// i wonder if i need to do the same round-about way than the components for the actor
 	Owner->SetActorTickInterval(Interval);
-	Owner->SetActorTickEnabled(TickEnabled);
+	if (ShouldEnableTicks) {
+		Owner->SetActorTickEnabled(TickEnabled);
+	}
 
 	/// Components
 	// update ticks stuff. unfortunately this code needs a lot of extra stuff to work reliably.
 	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
 
-		// avoid setting it to -1 if it's going to be disabled anyways.
-		if (TickEnabled) {
-			// necessary, not enough. when going from off to low, it doesn't really update the appropriate value.
-			C->SetComponentTickInterval(Interval);
-		}
-		
+		// necessary, not enough. when going from off to low, it doesn't really update the appropriate value.
+		C->SetComponentTickInterval(Interval);
+		// TODO test if needed or if it breaks something.
+		C->PrimaryComponentTick.UpdateTickIntervalAndCoolDown(Interval);
+
+		if (!ShouldEnableTicks) continue;
 		// optimization: even though SetTickFunction performs a check, but update interval does not.
 		// and i don't like the extra work they do.
 		// they do too many functions, pointer handling, and vanilla unhelpful "check"s

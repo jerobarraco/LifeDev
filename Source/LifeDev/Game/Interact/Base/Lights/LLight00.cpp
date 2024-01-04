@@ -31,6 +31,7 @@ ALLight00::ALLight00():Super() {
 	
 	ALLight00::SetMobility(EComponentMobility::Static);
 	UseAnim = true; // important to do after setmobility since it will turn it off.
+	// careful that the A_STROBE will disable later maybe
 }
 
 void ALLight00::AnimUpdate_Implementation(float Progress, float Alpha) {

@@ -94,9 +94,16 @@ public:
 		{ESigValue::Low, 5000000},
 		{ESigValue::Off, 10000000},
 	};
+
+	// will set tick enabled/disabled.
+	// Use with care since this will break animators and maybe other components that use Activate/deactivate.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool ShouldEnableTicks = false;
 	
-	// Tick intervals per level. Interval <0 will disable ticks. 0 means every tick.
+	// Tick intervals per level. 0 means every frame. <0 means almost never (but still can update)
 	// Higher means less frequent (slower) updates (more cpu saving)
+	// By default it will set the tick interval on the owner actor. unless this array is empty.
+	// To manage more components set them in CompsTick
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESigValue, float> TickIntervals = {
 		{ESigValue::High, 0},

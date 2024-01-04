@@ -113,7 +113,7 @@ void UCAnimator::ChildUpdate(float T, float Alpha) {
 }
 
 void UCAnimator::Update_Implementation(float Alpha) {
-	UE_LOG(LogTemp, Verbose, TEXT("%hs %5.3f Obj=%s"), __func__, Alpha, *GetNameSafe(GetOwner()));
+	UE_LOG(LogTemp, Verbose, TEXT("%hs %3.5f Obj=%s"), __func__, Alpha, *GetNameSafe(GetOwner()));
 }
 
 void UCAnimator::End_Implementation() {
@@ -141,8 +141,10 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 }
 
 void UCAnimator::Activate(bool bReset) {
+	// activate and deactivate will set/unset tick enabled.
 	const bool WasActive = IsActive();
 	Super::Activate(bReset);
+
 	if (bReset) {
 		Progress = 0;
 	}
@@ -154,6 +156,7 @@ void UCAnimator::Activate(bool bReset) {
 void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
 	Super::Deactivate();
+	
 	if (WasActive) {
 		End();
 	}

@@ -89,7 +89,7 @@ protected:
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha);
 
-	// override me on child classes :) But call the parent. 
+	// Called when the animation ends. override me on child classes :) But call the parent. 
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void End();
 	virtual void End_Implementation();
