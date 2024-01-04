@@ -116,7 +116,7 @@ void ALGGameMode::Init_Implementation() {
 
 	/// set flags
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
-	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_ALL);
+	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
 	AStep::UseDebug = Settings->GetFeat(EFeat::DBG_STEPS);
 
 	/// post process (does this even works?)

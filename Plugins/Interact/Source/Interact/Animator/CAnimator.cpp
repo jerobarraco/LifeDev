@@ -24,9 +24,10 @@ void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 }
 
 void UCAnimator::TickManual(float DeltaSeconds) {
+	if (!IsActive()) return; // very important since this will be spammed
+
 	// basic tick interval for manual ticks
 	DTAcum += DeltaSeconds;
-	// UE_LOG(LogTemp, Log, TEXT("TickManual DTAcum=%3.3f DT=%3.3f"), DTAcum, DeltaSeconds);
 	if (DTAcum < GetComponentTickInterval()) return;
 
 	DoTick(DTAcum);
@@ -76,7 +77,8 @@ void UCAnimator::DoTick(float DT) {
 		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
 
 	if (Debug) {
-		UE_LOG(LogTemp, Log, TEXT("AnimTick %05f %05f %05f"), Progress, Alpha, NProg);
+		UE_LOG(LogTemp, Log, TEXT("UCAnimator::%hs p=%.5f a=%.5f np=%.5f n=%s"),
+			__func__, Progress, Alpha, NProg, *GetNameSafe(GetOwner()));
 	}
 
 	// update child objects
@@ -147,8 +149,10 @@ void UCAnimator::Activate(bool bReset) {
 
 	if (bReset) {
 		Progress = 0;
+		DTAcum = 0;
 	}
-	if (!WasActive) {
+
+	if (!WasActive || bReset) {
 		Begin();
 	}
 }
@@ -156,6 +160,7 @@ void UCAnimator::Activate(bool bReset) {
 void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
 	Super::Deactivate();
+	DTAcum = 0;
 	
 	if (WasActive) {
 		End();

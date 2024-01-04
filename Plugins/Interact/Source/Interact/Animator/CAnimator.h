@@ -13,7 +13,6 @@ class USceneComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnBegin);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
-	
 
 // An interactive actor that can have an animation
 // You can set the tick interval to control the performance of this component
@@ -32,6 +31,8 @@ public:
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Play() { Activate(true); }
+	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just for debug
+	FORCEINLINE void Stop() { Deactivate(); }
 
 	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
