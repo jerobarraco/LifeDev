@@ -31,7 +31,7 @@ AInteract::AInteract():Super() {
 	Interact->HoverMesh = Mesh;
 
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
-	SFX->SetupAttachment(IRoot);
+	SFX->SetupAttachment(Mesh);
 	SFX->SetAutoActivate(false);
 	SFX->SetHiddenInGame(true);
 	SFX->bAutoManageAttachment = true;
@@ -117,14 +117,15 @@ void AInteract::Trigger_Implementation() {
 
 void AInteract::PlaySFX(USoundBase* Snd) {
 	if (!IsValid(Snd)) return;
-	UE_LOG(LogInteract, Log, TEXT("%s: Playing sound attached=%i, name='%s'."),
-		*GetNameSafe(this), UseAttachedSFX, *Snd->GetName());
+	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Playing sound. attached=%i, name='%s'."),
+		__func__, *GetNameSafe(this), UseAttachedSFX, *Snd->GetName());
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);
 		SFX->SetSound(Snd);
 		SFX->SetActive(true, true);
-		SFX->Play(0);
+		// this is not necessary, but it might avoid issues when playing before the sound ends
+		// SFX->Play(0);
 		return;
 	}
 
