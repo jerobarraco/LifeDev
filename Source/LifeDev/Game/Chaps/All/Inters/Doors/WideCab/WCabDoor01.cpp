@@ -9,7 +9,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWCabDoor01::AWCabDoor01():Super() {
-	SFX->SetRelativeLocation(FVector(0,-50,32.5));
+	SFX->SetRelativeLocation(FVector(0,55,32));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet01-DoorL.Cabinet01-DoorL"));
 	Mesh->SetStaticMesh(CMesh.Object);
