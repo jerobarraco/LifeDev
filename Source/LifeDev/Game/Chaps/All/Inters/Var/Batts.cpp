@@ -5,12 +5,14 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ABatts::ABatts():Super() {
 	Texts = { FText::FromString(TEXT("Batteries")) } ;
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	RewardItem = LDConsts::Items::Batts;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Batts00/Batts00.Batts00"));

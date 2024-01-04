@@ -19,7 +19,7 @@ ALight01::ALight01():Super() {
 	Glass->SetRelativeLocation(FVector(5.,-5.,5.));
 	Glass->SetCastAllShadows(false);
 
-	Interact->SetRelativeLocation(FVector(27.500000,-27.500000,15));
+	Interact->SetRelativeLocation(FVector(27.5,-27.5,15));
 	Interact->SetBoxExtent(FVector(28,28.5,15.5));
 
 	ALight01::SetMobility(EComponentMobility::Static);
