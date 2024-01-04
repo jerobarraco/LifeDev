@@ -58,7 +58,10 @@ enum class EFeat: uint8 {
 	DBG_STEPS,
 	// debug the animator
 	DBG_ANIMS,
+	// debug sounds
 	DBG_SOUND,
+	// debug for flashbacks
+	DBG_FB,
 	// General debug, deprecated. don't use unless you are me.
 	DBG_ALL UMETA(Deprecated),
 };

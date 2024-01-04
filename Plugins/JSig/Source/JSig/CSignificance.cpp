@@ -135,7 +135,7 @@ float UCSignificance::Calculate(
 	// calculate using distances
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
-	
+
 	UE_LOG(LogJSigComp, Verbose, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
 	return Sig;
 }
@@ -246,45 +246,28 @@ void UCSignificance::UpdateTicks() {
 	const bool TickEnabled = PreInterval>=0;
 	// avoid setting it to -1 if it's going to be disabled.
 	const float Interval = TickEnabled ? PreInterval : 999999999;
+	
 	UE_LOG(LogJSigComp, Verbose, TEXT("Update ticks. Interval=%f Enabled=%i Obj=%s"),
 		Interval, TickEnabled, *GetNameSafe(Owner));
 
-	/// Owner
-	// i wonder if i need to do the same round-about way than the components for the actor
-	Owner->SetActorTickInterval(Interval);
-	if (ShouldEnableTicks) {
-		Owner->SetActorTickEnabled(TickEnabled);
-	}
+	/// Ticks
+	// Don't mess with tick enabled
+	
+	Owner->SetActorTickInterval(Interval);	// Owner
 
 	/// Components
-	// update ticks stuff. unfortunately this code needs a lot of extra stuff to work reliably.
 	for (UActorComponent* const C: CompsTicks) {
 		if (!IsValid(C)) continue;
 
-		// necessary, not enough. when going from off to low, it doesn't really update the appropriate value.
+		// necessary, not enough. when reactivating ticks, it doesn't really update the appropriate value.
 		C->SetComponentTickInterval(Interval);
-		// TODO test if needed or if it breaks something.
-		C->PrimaryComponentTick.UpdateTickIntervalAndCoolDown(Interval);
-
-		if (!ShouldEnableTicks) continue;
-		// optimization: even though SetTickFunction performs a check, but update interval does not.
-		// and i don't like the extra work they do.
-		// they do too many functions, pointer handling, and vanilla unhelpful "check"s
-		// it's prone to crash and i got one.
-		if (C->IsComponentTickEnabled() == TickEnabled) continue;
-
-		// this is the appropriate way to disable ticks.
-		// it's safe to call with enabled if it's already enabled. the code does that check.
-		// also this only gets called on significance change.
-		C->PrimaryComponentTick.SetTickFunctionEnable(TickEnabled);
-		
-		// this is actually necessary, specially when going from off to on.
-		// otherwise the interval is not set correctly.
+		// this fixes issues when disabling ticks (could happen on CompsActivate)
 		C->PrimaryComponentTick.UpdateTickIntervalAndCoolDown(Interval);
 
 		// don't: this will break all the anims and others as it breaks the tick completely
 		// C->PrimaryComponentTick.bCanEverTick = TickEnabled;
 		// C->SetComponentTickEnabled(TickEnabled); // this will break all anims
+		// use this C->PrimaryComponentTick.SetTickFunctionEnable(TickEnabled);
 	}
 }
 

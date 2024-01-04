@@ -95,15 +95,10 @@ public:
 		{ESigValue::Off, 10000000},
 	};
 
-	// will set tick enabled/disabled.
-	// Use with care since this will break animators and maybe other components that use Activate/deactivate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool ShouldEnableTicks = false;
-	
-	// Tick intervals per level. 0 means every frame. <0 means almost never (but still can update)
+	// Tick intervals per level. 0 means every frame. <0 means almost never (it will be replaced by a very high value)
 	// Higher means less frequent (slower) updates (more cpu saving)
 	// By default it will set the tick interval on the owner actor. unless this array is empty.
-	// To manage more components set them in CompsTick
+	// To manage more components set them in CompsTick.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESigValue, float> TickIntervals = {
 		{ESigValue::High, 0},
@@ -112,25 +107,25 @@ public:
 		{ESigValue::Off, -1},
 	};
 
-	// components to manage (ticks)
+	// Components to manage ticks.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsTicks;
-	// components to manage activate/deactivate. Not safe to use on Niagara. Use CompsHide
+	// components to manage activate/deactivate. Not safe to use on Niagara (Use CompsHide instead)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
 	
-	// components to manage hidden, ONLY when the significance is Off.
+	// components to manage hiddenInGame, ONLY when the significance is Off.
 	// When significance is Off it will set all the components to HiddenInGame
 	// otherwise it will unset HiddenInGame.
 	// This is affected by: DistanceSqr, IsOffIfOffscreen, IsOffIfHidden, and IsOffIfOccluded.
-	// note if the root component is set in this array, and IsOffIfHidden is set to true.
+	// Note: if the root component is set in this array, and IsOffIfHidden is set to true.
 	// once it becomes off ONCE, it will STAY off. Since it won't come back from hidden.
 	// Probably the same will happen with the rest of IsOffIf* flags.
-	// This is by design, beware.
+	// That's by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<USceneComponent*> CompsHide;
 
-	// triggered when the significance changes. Will trigger on game thread.
+	// triggered when the significance changes. Guaranteed to trigger in game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
 	
