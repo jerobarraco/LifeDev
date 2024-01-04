@@ -1,25 +1,24 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LLight.h"
+#include "LifeDev/Game/Interact/Base/Lights/LLight.h"
 
-#include "LLight00.generated.h"
+#include "LLight02.generated.h"
 
-class UPointLightComponent;
-class URectLightComponent;
+class USpotLightComponent;
 
-// Base class for point light actors
+// Base class for spot lights.
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALLight00: public ALLight {
+class LIFEDEV_API ALLight02: public ALLight {
 	GENERATED_BODY()
 
 public:
-	ALLight00();
+	ALLight02();
 
 protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	virtual void AnimUpdate_Implementation(float P, float A) override;
-
+	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UPointLightComponent* Light = nullptr;
+	USpotLightComponent* Light = nullptr;
 };

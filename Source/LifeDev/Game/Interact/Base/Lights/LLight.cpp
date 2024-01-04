@@ -49,10 +49,13 @@ ALLight::ALLight():Super() {
 	SFX_Trigger = CClick.Object;
 	
 	/// ~
-	// by default is just a static light.
+	// by default is just a static light. disable interaction
 	SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
+	// important to do after setmobility since it will turn it off.
+	// re-enable for the fb. A_Strobe might disable this
+	UseAnim = true;
 }
 
 void ALLight::StopFBFlicker() {
@@ -116,8 +119,18 @@ void ALLight::BeginPlay() {
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Anim->OnUpdate.RemoveAll(this);
-
+	if (IsValid(Rnd)) {
+		Rnd->Deactivate();
+	}
+	if (IsValid(Sig)) {
+		Sig->UnbindAnim();
+		Sig->Deactivate();
+	}
+	if (IsValid(Anim)) {
+		Anim->OnUpdate.RemoveAll(this);
+		Anim->Deactivate();	
+	}
+	
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
@@ -149,7 +162,7 @@ void ALLight::TurnOn() {
 void ALLight::SetFB(float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
 	// activate and deactivate only run if needed.
-	Rnd->SetActive(ShouldFlicker);
+	Rnd->SetActive(ShouldFlicker, false);
 	// don't deactivate the sig here. since there are lights that are can be toggled
 	// and the sig is bound to the anim, hence the anim manages it.
 }

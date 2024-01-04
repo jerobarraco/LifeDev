@@ -50,8 +50,12 @@ protected:
 	void FeatUpdated(EFeat Feat, bool bEnabled);
 
 	// flickers when fb is >= this value. <0 means disabled.
+	// 0 means always
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	float FlickrOnFB = -1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float IntensityMax = 1;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCRandomizer* Rnd = nullptr;
