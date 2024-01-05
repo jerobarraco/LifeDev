@@ -51,7 +51,7 @@ void ALStepC0S000::Stop_Implementation() {
 	Super::Stop_Implementation();
 }
 
-void ALStepC0S000::Debug_Implementation() {
-	Super::Debug_Implementation();
+void ALStepC0S000::DoDebug_Implementation() {
+	Super::DoDebug_Implementation();
 	Inventory->Mod(LDConsts::Items::Poem0, 1);
 }

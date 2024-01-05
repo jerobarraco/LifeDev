@@ -95,8 +95,8 @@ void AStep::BlendCam() const {
 void AStep::PostWait_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
-	if (UseDebug) {
-		Debug();
+	if (Debug) {
+		DoDebug();
 	}
 	
 	if (FinishPostWait) {

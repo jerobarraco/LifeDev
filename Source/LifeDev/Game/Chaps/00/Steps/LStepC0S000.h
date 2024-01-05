@@ -20,7 +20,7 @@ public:
 	virtual void Stop_Implementation() override;
 
 protected:
-	virtual void Debug_Implementation() override;
+	virtual void DoDebug_Implementation() override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* RandFB = nullptr;

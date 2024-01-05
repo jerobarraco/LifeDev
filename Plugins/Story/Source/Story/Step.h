@@ -91,7 +91,7 @@ public:
 	TArray<UDataLayerAsset*> DL_Unload;
 	
 	// set to true to use debug
-	inline static bool UseDebug = false;
+	inline static bool Debug = false;
 
 protected:
 	// Will be triggered when the wait time ends.
@@ -104,8 +104,8 @@ protected:
 
 	// gets called when UseDebug is set. happens on postwait
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Debug();
-	virtual void Debug_Implementation() {};
+	void DoDebug();
+	virtual void DoDebug_Implementation() {};
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

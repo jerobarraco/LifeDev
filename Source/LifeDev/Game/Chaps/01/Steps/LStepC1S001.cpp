@@ -20,8 +20,8 @@ void ALStepC1S001::Start_Implementation() {
 	Super::Start_Implementation();
 }
 
-void ALStepC1S001::Debug_Implementation() {
-	Super::Debug_Implementation();
+void ALStepC1S001::DoDebug_Implementation() {
+	Super::DoDebug_Implementation();
 	AActor* const Pawn = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
 	if (Pawn) {
 		Pawn->SetActorLocation(FVector(-57.163605,815.932276,79.606879));

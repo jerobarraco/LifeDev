@@ -49,7 +49,7 @@ void ALStepC1S000::Start_Implementation() {
 }
 
 
-void ALStepC1S000::Debug_Implementation() {
-	Super::Debug_Implementation();
+void ALStepC1S000::DoDebug_Implementation() {
+	Super::DoDebug_Implementation();
 	Inventory->Mod("WM", 1);
 }

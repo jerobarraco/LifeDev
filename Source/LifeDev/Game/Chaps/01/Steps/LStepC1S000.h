@@ -17,5 +17,5 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
-	virtual void Debug_Implementation() override;
+	virtual void DoDebug_Implementation() override;
 };
