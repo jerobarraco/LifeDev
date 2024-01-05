@@ -195,7 +195,6 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
 	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs threadId=%i"), __func__, ThreadId);
 	
 	ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
@@ -206,8 +205,10 @@ void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, floa
 	Significance = NewSig;
 	const AActor* const Owner = GetOwner();
 
-	UE_LOG(LogJSigComp, Log, TEXT("Significance changed. sig=%i owner=%s"),
-		Significance, *GetNameSafe(Owner));
+	if (Debug) {
+		UE_LOG(LogJSigComp, Log, TEXT("UCSignificance.%hs threadId=%i sig=%i owner=%s"),
+			__func__, ThreadId, Significance, *GetNameSafe(Owner));
+	}
 
 	/// Finish it!!
 	// Make sure to call ApplyUpdate on the game thread.

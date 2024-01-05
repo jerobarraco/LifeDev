@@ -18,6 +18,7 @@
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
 #include "Engine/PostProcessVolume.h"
+#include "JSig/CSignificance.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
@@ -118,6 +119,7 @@ void ALGGameMode::Init_Implementation() {
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
 	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
 	AStep::UseDebug = Settings->GetFeat(EFeat::DBG_STEPS);
+	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
 
 	/// post process (does this even works?)
 	PostProcess = Cast<APostProcessVolume>(

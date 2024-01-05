@@ -62,6 +62,8 @@ enum class EFeat: uint8 {
 	DBG_SOUND,
 	// debug for flashbacks
 	DBG_FB,
+	// significance
+	DBG_SIG,
 	// General debug, deprecated. don't use unless you are me.
 	DBG_ALL UMETA(Deprecated),
 };

@@ -53,6 +53,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE ESigValue GetSignificance() { return Significance; }
 
+	static inline bool Debug = false;
+
 	// whether the update of this component is concurrent or sequential.
 	// Concurrent is more performant but if you override the CalcLocation or CalcSignificance it has to be thread safe.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
