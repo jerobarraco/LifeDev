@@ -55,7 +55,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnInter = false;
 
-	// will disable the interacts when the puzzle is done. Beware of unchecking "DisableWhileAnim"on the interacts or this won't work well.
+	// will disable the interacts when the puzzle is done.
+	// Beware of unchecking "DisableWhileAnim"on the interacts or this won't work well.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnDone = false;
 	
