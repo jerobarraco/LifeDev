@@ -30,7 +30,7 @@ ADoor02::ADoor02():Super() {
 	WinB->SetCastAllShadows(false); // opt
 	WinB->bUseAttachParentBound = true; // opt
 	
-	SFX->SetRelativeLocation(FVector(-90,5,85));
+	SFX->SetRelativeLocation(FVector(100,-10,82.5));
 
 	Interact->SetRelativeLocation(FVector(55,-10,100));
 	Interact->SetBoxExtent(FVector(50,10,100));
