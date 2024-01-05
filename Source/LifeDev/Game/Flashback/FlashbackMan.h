@@ -9,8 +9,8 @@
 class UMaterialParameterCollectionInstance;
 
 // base class for the flashback manager
-UCLASS(Blueprintable, config=Game)
-class LIFEDEV_API AFlashbackMan : public AActor {
+UCLASS(Blueprintable)
+class LIFEDEV_API AFlashbackMan : public AInfo {
 	GENERATED_BODY()
 
 public:

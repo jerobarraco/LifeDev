@@ -8,7 +8,7 @@
 #include "LDialogMan.generated.h"
 
 // base class for the character
-UCLASS(Blueprintable, config=Game)
+UCLASS(Blueprintable)
 class LIFEDEV_API ALDialogMan : public ADiagMan {
 	GENERATED_BODY()
 

@@ -15,8 +15,8 @@ class UInventoryUI;
 class UCItemView;
 
 // base class for the character
-UCLASS(Blueprintable, config=Game)
-class INVENTORY_API AInventoryManager : public AActor {
+UCLASS(Blueprintable)
+class INVENTORY_API AInventoryManager : public AInfo {
 	GENERATED_BODY()
 
 public:

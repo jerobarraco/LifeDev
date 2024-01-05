@@ -22,6 +22,7 @@
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
+#include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
@@ -125,25 +126,6 @@ void ALGGameMode::Init_Implementation() {
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 
-	if (IsValid(PostProcess)) {
-		// Important:
-		// these properties on the editor have a checkbox next to them.
-		// i DO need to check them for the engine to pay attention to them,
-		// otherwise the changes here make no difference.
-		// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
-		const bool HasLumen = Settings->GetFeat(EFeat::V_LUMEN);
-		PostProcess->Settings.DynamicGlobalIlluminationMethod =
-			HasLumen ?
-			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
-		PostProcess->Settings.ReflectionMethod =
-			HasLumen ? EReflectionMethod::Lumen : EReflectionMethod::None;
-		if (!Settings->GetFeat(EFeat::V_BLUR)) {
-			PostProcess->Settings.MotionBlurAmount = 0;
-			PostProcess->Settings.MotionBlurMax = 0;
-			PostProcess->Settings.SceneFringeIntensity = 0;
-		}
-	}
-
 	/// set input mode
 	// this is critical or the dialogs will break
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
@@ -213,6 +195,10 @@ void ALGGameMode::Init_Implementation() {
 		StoryManager = nullptr;
 	}
 
+	/// feats
+	// do at the end since it depends on other things.
+	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	
 	/// others' init finalized, finish my init
 	// start listening only here. in case the previous init might trigger a false one
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);

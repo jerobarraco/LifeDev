@@ -14,13 +14,14 @@ class ULSettings;
 class UInputMappingContext;
 class ALDialogMan;
 class ALInventoryManager;
+class ALFeatsMan;
+class ALMusicMan;
+class AFlashbackMan;
 class AStoryManager;
 class ULSysSettings;
 class ALChar;
 class UStory;
 class UDiags;
-class ALMusicMan;
-class AFlashbackMan;
 class UInventory;
 class UFlags;
 
@@ -68,11 +69,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AStoryManager* StoryManager = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALChar* Char = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALMusicMan* MusicMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AFlashbackMan* FlashbackMan = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	ALFeatsMan* FeatsMan = nullptr;
+
+	/// others cache
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	ALChar* Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	APostProcessVolume* PostProcess = nullptr;
 

@@ -13,8 +13,8 @@ class UInputMappingContext;
 class UInputAction;
 
 // base class for the character
-UCLASS(Blueprintable, config=Game)
-class DIAGS_API ADiagMan : public AActor {
+UCLASS(Blueprintable)
+class DIAGS_API ADiagMan : public AInfo {
 	GENERATED_BODY()
 
 public:
@@ -75,6 +75,5 @@ private:
 	UPROPERTY(Transient)
 	UDialogUI* UI = nullptr;
 
-	UPROPERTY(Transient)
 	bool IsShowing = false;
 };
