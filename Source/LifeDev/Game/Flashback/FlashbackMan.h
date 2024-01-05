@@ -14,7 +14,6 @@ class LIFEDEV_API AFlashbackMan : public AInfo {
 	GENERATED_BODY()
 
 public:
-	
 	AFlashbackMan();
 
 	UFUNCTION()

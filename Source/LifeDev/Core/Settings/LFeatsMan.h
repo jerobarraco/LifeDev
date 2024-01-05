@@ -24,7 +24,7 @@ public:
 	float MotionBlurMax = 5;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float MotionBlurAmount = .5;
-	
+
 protected:
 	UFUNCTION()
 	void FeatVisualUpdate(EFeat Feat, bool bEnabled);

@@ -64,13 +64,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UInventoryUI> UIClass = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UInputMappingContext* Mapping = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UInputAction* ActionOpen = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UInputAction* ActionSelect = nullptr;
 
 protected:
