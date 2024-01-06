@@ -30,6 +30,7 @@ AWCube00::AWCube00():Super() {
 	DisableWhileAnim = false; // To be used with the combination puzzle.
 	StateNum = 6;
 	Anim->IsAdditive = false;
+	Anim->Duration = 1;
 	// all the faces
 	Trans = {
 		FTransform::Identity,

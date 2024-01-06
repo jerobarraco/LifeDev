@@ -17,7 +17,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap02_DL.Chap02_DL"));
