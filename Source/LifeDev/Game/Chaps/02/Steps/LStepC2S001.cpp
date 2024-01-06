@@ -36,7 +36,6 @@ void ALStepC2S001::Start_Implementation() {
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
-	FB->SetMin(0);
 	// bind before the super since it will trigger the dialogs
 	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
 	
@@ -56,23 +55,30 @@ void ALStepC2S001::Start_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
-	Super::Stop_Implementation();
-	
-	UWorld* const W = GetWorld();
-	if (!W) return;
+	if (Dialogs) {
+		Dialogs->OnShow.RemoveAll(this);
+	}
 
-	Dialogs->OnShow.RemoveAll(this);
+	if (FB) {
+		// FB->SetVal(.05, 10);
+		
+		// clamp till the end of the story, important for the randomizer in c2s4
+		// .33 is the min to hear the melody
+		FB->SetMin(.33,1);
+	}
+	
 	if (IsValid(Ghosts)) {
 		Ghosts->SetPlaying(false);
-	}
+	} // gets nullified on destroyactors
 
 	if (IsValid(FakeChar)) {
 		FakeChar->Fade(false);
 	}
+	
+	Super::Stop_Implementation();
 
-	// FB->SetVal(.05, 10);
-	FB->SetMin(0,1);
-
+	UWorld* const W = GetWorld();
+	if (!W) return;
 	// Destroy them during the fade
 	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, 2);

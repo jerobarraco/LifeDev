@@ -25,20 +25,12 @@ ALStepC2S003::ALStepC2S003():Super() {
 	UseFadeTime = false;
 	FinishPostWait = false;
 	
-	RndFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RndFB"));
-	RndFB->SetAutoActivate(false);
-	RndFB->DelayMin = .5;
-	RndFB->DelayMax = 2;
-	RndFB->ValueMin = -.07;
-	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
-
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Generic/Analog/Analog_C.Analog_C"));
 	SFX_Analog = CSFX.Object;
 }
 
 void ALStepC2S003::Start_Implementation() {
-	FB->SetMin(0); // make sure we can go low
 	// just remove the card since implementing the using of it is rather complex.
     // the user interaction is not in place yet so it wont be a good exp
     // we can't pick it up without the batteries, so story wise is safe.
@@ -60,11 +52,4 @@ void ALStepC2S003::DlgShown(const FDialog& Diag) {
 	Dialogs->OnShow.RemoveAll(this);
 	
 	ALMusicMan::SetRainS(GetWorld(), true);
-	RndFB->Activate(true);
-}
-
-void ALStepC2S003::Stop_Implementation() {
-	ALMusicMan::SetRainS(GetWorld(), false);
-	RndFB->Deactivate();
-	Super::Stop_Implementation();
 }

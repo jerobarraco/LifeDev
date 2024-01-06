@@ -20,13 +20,9 @@ public:
 	ALStepC2S003();
 
 protected:
+	virtual void Start_Implementation() override;
 	UFUNCTION()
 	void DlgShown(const FDialog& Diag);
-	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;	
-	
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCRandomizerFB* RndFB = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	USoundBase* SFX_Analog = nullptr;

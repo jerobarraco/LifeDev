@@ -1,6 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S004.h"
 
+#include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
@@ -22,9 +24,28 @@ ALStepC2S004::ALStepC2S004():Super() {
 		LDConsts::Items::Poem2,
 		LDConsts::Items::Card2,
 	};
+
+	// will decrease the fb. done in this step since this step could potentially last a while until they find the
+	// required items
+	RndFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RndFB"));
+	RndFB->SetAutoActivate(false);
+	RndFB->DelayMin = .5;
+	RndFB->DelayMax = 2;
+	RndFB->ValueMin = -.07;
+	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
+	// .02 is actually very generous 
+}
+
+void ALStepC2S004::Start_Implementation() {
+	Super::Start_Implementation();
+	RndFB->Activate(true);
 }
 
 void ALStepC2S004::Stop_Implementation() {
+	FB->SetMin(0);
+	FB->SetMax(1);
 	FB->SetVal(0);
+	RndFB->Deactivate();
+	ALMusicMan::SetRainS(GetWorld(), false);
 	Super::Stop_Implementation();
 }
