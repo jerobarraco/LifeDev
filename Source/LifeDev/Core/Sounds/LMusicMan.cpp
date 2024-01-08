@@ -68,17 +68,17 @@ void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const W = GetWorld();
-	UFlashback* const Flashback = UFlashback::Get(W);
+	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (Flashback) {
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetIntensity);
 	}
 
-	UStory* const Story = UStory::Get(W);
+	UStory* const Story = UStory::Instance(W);
 	if (Story) {
 		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 	}
 
-	ULSettings* S = ULSettings::Get(W);
+	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 	}
@@ -86,17 +86,17 @@ void ALMusicMan::BeginPlay() {
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UWorld* const W = GetWorld();
-	UFlashback* const Flashback = UFlashback::Get(W);
+	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (Flashback) {
 		Flashback->OnChange.RemoveAll(this);
 	}
 
-	UStory* const Story = UStory::Get(W);
+	UStory* const Story = UStory::Instance(W);
 	if (Story) {
 		Story->OnStart.RemoveAll(this);
 	}
 
-	ULSettings* S = ULSettings::Get(W);
+	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		S->OnFeatUpdateSound.RemoveAll(this);
 	}

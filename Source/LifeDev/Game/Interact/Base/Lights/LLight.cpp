@@ -59,7 +59,7 @@ ALLight::ALLight():Super() {
 }
 
 void ALLight::StopFBFlicker() {
-	UFlashback* const Fb = UFlashback::Get(GetWorld());
+	UFlashback* const Fb = UFlashback::Instance(GetWorld());
 	Rnd->Deactivate();
 	Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
 }
@@ -87,7 +87,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 		return;
 	}
 
-	UFlashback* const Fb = UFlashback::Get(W);
+	UFlashback* const Fb = UFlashback::Instance(W);
     if (!Fb) return;
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
 	// manually update it in case the flag was toggled or the fb was already high
@@ -99,7 +99,7 @@ void ALLight::BeginPlay() {
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
-	ULSettings* const Settings = ULSettings::Get(World);
+	ULSettings* const Settings = ULSettings::Instance(World);
 	if (!Settings) return;
 
 	// optimize the anim. do here since some lights can be toggled
@@ -134,12 +134,12 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
-	UFlashback* const Fb = UFlashback::Get(W);
+	UFlashback* const Fb = UFlashback::Instance(W);
 	if (Fb) {
 		Fb->OnChange.RemoveAll(this);
 	}
 
-	ULSettings* const Settings = ULSettings::Get(W);
+	ULSettings* const Settings = ULSettings::Instance(W);
 	if (Settings) {
 		Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	}

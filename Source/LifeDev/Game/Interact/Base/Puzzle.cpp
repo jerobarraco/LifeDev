@@ -15,9 +15,9 @@ APuzzle::APuzzle():Super() {
 void APuzzle::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const W = GetWorld();
-	FB = UFlashback::Get(W);
+	FB = UFlashback::Instance(W);
 	Flags = UFlags::Instance(W);
-	Diags = UDiags::Get(W);
+	Diags = UDiags::Instance(W);
 	Inventory = UInventory::Instance(W);
 }
 

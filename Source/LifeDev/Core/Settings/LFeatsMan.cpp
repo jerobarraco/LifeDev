@@ -16,7 +16,7 @@ void ALFeatsMan::BeginPlay() {
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
     GM = Cast<ALGGameMode>(AGMB);
 	
-	ULSettings* const S = ULSettings::Get(W);
+	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
 		// S->OnFeatUpdate.RemoveAll(this);
@@ -26,7 +26,7 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	ULSettings* const S = ULSettings::Get(GetWorld());
+	ULSettings* const S = ULSettings::Instance(GetWorld());
 	if (S) {
 		S->OnFeatUpdateVisual.RemoveAll(this);
 		S->OnFeatUpdate.RemoveAll(this);

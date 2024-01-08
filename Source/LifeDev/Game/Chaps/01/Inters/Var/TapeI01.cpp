@@ -18,7 +18,7 @@ ATapeI01::ATapeI01():Super() {
 
 void ATapeI01::Trigger_Implementation() {
 	Super::Trigger_Implementation();
-	UStory* const Story = UStory::Get(GetWorld());
+	UStory* const Story = UStory::Instance(GetWorld());
 	if (!Story) return;
 	Story->StartNext("C1S1");
 	

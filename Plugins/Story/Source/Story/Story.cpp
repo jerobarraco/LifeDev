@@ -19,7 +19,7 @@ void UStory::DeInit() {
 	Steps.Empty();
 }
 
-UStory* UStory::Get(UWorld* W) {
+UStory* UStory::Instance(UWorld* W) {
 	if (!IsValid(W)) return nullptr;
 
 	UStory* const Story = W->GetSubsystem<UStory>();

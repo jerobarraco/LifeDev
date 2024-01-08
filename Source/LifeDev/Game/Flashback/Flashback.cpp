@@ -14,7 +14,7 @@ UFlashback::UFlashback():Super() {
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
-UFlashback* UFlashback::Get(UWorld* W) {
+UFlashback* UFlashback::Instance(UWorld* W) {
 	if (!IsValid(W)) return nullptr;
 	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
 	return IsValid(Flashback) ? Flashback : nullptr;
@@ -90,7 +90,7 @@ void UFlashback::SetMin(float NewMin, float Duration) {
 }
 
 void UFlashback::SetValS(UWorld* W, float New, float Duration) {
-	UFlashback* const Flashback = Get(W);
+	UFlashback* const Flashback = Instance(W);
 	if (!Flashback) return;
 	Flashback->SetVal(New, Duration);
 }

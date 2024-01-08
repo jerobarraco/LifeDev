@@ -25,7 +25,7 @@ void AIntroGameMode::BeginPlay() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	MusicMan->PlayMusic(Music);
 
-	UFlashback* const FB = UFlashback::Get(World);
+	UFlashback* const FB = UFlashback::Instance(World);
 	if (FB) {
 		FB->SetVal(1);
 	}

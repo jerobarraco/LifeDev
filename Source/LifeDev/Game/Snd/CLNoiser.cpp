@@ -33,12 +33,12 @@ void UCLNoiser::SetFB(float Value) {
 void UCLNoiser::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const W = GetWorld();
-	UFlashback* const F = UFlashback::Get(W);
+	UFlashback* const F = UFlashback::Instance(W);
 	if (F) {
 		F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
 	}
 
-	ULSettings* const S = ULSettings::Get(W);
+	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		Debug = S->GetFeat(EFeat::DBG_SOUND);
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &UCLNoiser::FeatUpdate);
@@ -49,12 +49,12 @@ void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
-	UFlashback* const F = UFlashback::Get(W);
+	UFlashback* const F = UFlashback::Instance(W);
 	if (F) {
 		F->OnChange.RemoveAll(this);
 	}
 
-	ULSettings* const S = ULSettings::Get(W);
+	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		S->OnFeatUpdateSound.RemoveAll(this);
 	}

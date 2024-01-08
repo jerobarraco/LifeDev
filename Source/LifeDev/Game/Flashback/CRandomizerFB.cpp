@@ -13,7 +13,7 @@ UCRandomizerFB::UCRandomizerFB():Super() {
 void UCRandomizerFB::BeginPlay() {
 	Super::BeginPlay();
 
-	Flashback = UFlashback::Get(GetWorld());
+	Flashback = UFlashback::Instance(GetWorld());
 	OnTriggerVal.AddUniqueDynamic(this, &UCRandomizerFB::TriggerFB);
 }
 

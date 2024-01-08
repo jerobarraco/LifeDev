@@ -16,7 +16,7 @@ class LIFEDEV_API UFlashback: public UTickableWorldSubsystem {
 public:
 	UFlashback();
 
-	static UFlashback* Get(UWorld* W);
+	static UFlashback* Instance(UWorld* W);
 
 	UFUNCTION(BlueprintCallable)
 	static void SetValS(UWorld* W, float New, float Duration = -1.f);
