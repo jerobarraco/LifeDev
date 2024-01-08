@@ -73,21 +73,18 @@ void UCPuzzle::ResetCurrents() {
 }
 
 void UCPuzzle::Bind() {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
 	int32 i = 0;
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
 
-		UCInteract* const CI = I->GetComponentByClass<UCInteract>();
-		if (!IsValid(CI)) continue;
-		
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
 		if (!IsValid(Wrapper)) continue;
 		Wrapper->Obj = I;
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
-		CI->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 		Wrappers.AddUnique(Wrapper);
 		++i;
 	}
@@ -110,11 +107,7 @@ void UCPuzzle::Unbind() {
 		
 		AInteract* const I = Cast<AInteract>(W->Obj);
 		if (!IsValid(I)) continue;
-		
-		UCInteract* const Comp = I->GetComponentByClass<UCInteract>();
-		if (!IsValid(Comp)) continue;
-		
-		Comp->OnTrigger.RemoveAll(W);
+		I->OnTrigger.RemoveAll(W);
 	}
 
 	Wrappers.Empty();

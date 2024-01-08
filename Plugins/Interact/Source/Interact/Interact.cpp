@@ -44,7 +44,7 @@ bool AInteract::TryTrigger_Implementation() {
 		return false;
 	}
 
-	Trigger();
+	TriggerWrapped();
 	return true;
 }
 
@@ -115,7 +115,12 @@ void AInteract::Trigger_Implementation() {
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
+}
 
+void AInteract::TriggerWrapped() {
+	Trigger();
+	// at end, outside the overrideable function
+	// so that i'm sure that children are done.
 	OnTrigger.Broadcast();
 }
 

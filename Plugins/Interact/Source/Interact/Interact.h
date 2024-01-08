@@ -86,8 +86,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
+	// When this is triggered (not locked)
+	// Beware that this will trigger just before the children implementations of this class are finished processing.
+	// after long deliberation i think this is the best. either you override Trigger or you subscribe to this, but unlikely both.
+	// also Overriding Trigger is not the best, SetState is preferred.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FAInteractOnTrigger OnTrigger;
+	// When this is triggered while locked
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FAInteractOnTriggerLocked OnTriggerLocked;
 
@@ -108,7 +113,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void Trigger();
 	virtual void Trigger_Implementation();
-
+	// internal. used only so that the OnTrigger signal is ensured to be at the end.
+	void TriggerWrapped();
+	
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)

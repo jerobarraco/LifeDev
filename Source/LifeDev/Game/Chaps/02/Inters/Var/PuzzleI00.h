@@ -12,4 +12,8 @@ class LIFEDEV_API APuzzleI00: public APuzzle {
 
 public:
 	APuzzleI00();
+
+protected:
+	virtual void Done_Implementation(bool IsOk) override;
+	
 };
