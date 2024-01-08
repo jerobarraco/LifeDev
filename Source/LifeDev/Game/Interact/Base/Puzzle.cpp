@@ -11,6 +11,7 @@
 
 APuzzle::APuzzle():Super() {
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
+	GetRootComponent()->SetMobility(EComponentMobility::Static);
 }
 
 void APuzzle::BeginPlay() {

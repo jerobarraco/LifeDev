@@ -20,7 +20,7 @@ AWCube00::AWCube00():Super() {
 	// Interact->SetRelativeLocation(FVector(0,0,0));
 	Interact->SetBoxExtent(FVector(5,5,5));
 	
-	Texts = { FText::FromString(TEXT("A word Cube00")) } ;
+	Texts = { FText::FromString(TEXT("A word Cube")) } ;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
