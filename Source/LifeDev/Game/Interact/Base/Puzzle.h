@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Story/Story.h"
 
 #include "Puzzle.generated.h"
 
@@ -31,6 +32,14 @@ public:
 	APuzzle();
 
 protected:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Done(bool IsOk);
+	virtual void Done_Implementation(bool IsOk) {};
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Update();
+	virtual void Update_Implementation() {};
+	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -46,4 +55,6 @@ protected:
 	UFlags* Flags = nullptr;
 	UPROPERTY(Transient)
 	UInventory* Inventory = nullptr;
+	UPROPERTY(Transient)
+	UStory* Story = nullptr;
 };
