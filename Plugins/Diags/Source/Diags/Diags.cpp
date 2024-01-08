@@ -5,6 +5,12 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
+UDiags* UDiags::Get(UWorld* W) {
+	if (!IsValid(W)) return nullptr;
+	UDiags* const  D = W->GetSubsystem<UDiags>();
+	return IsValid(D) ? D : nullptr;
+}
+
 void UDiags::AddDiag(const FDialog& Diag) {
 	Pending.Add(Diag);
 	ShowNext();

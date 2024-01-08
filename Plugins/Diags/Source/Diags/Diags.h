@@ -6,6 +6,7 @@
 #include "Subsystems/WorldSubsystem.h"
 
 #include "DiagTypes.h"
+
 #include "Diags.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
@@ -17,6 +18,8 @@ class DIAGS_API UDiags : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
+	static UDiags* Get(UWorld* World);
+	
 	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
 	// sequence ids can contain other sequences, so this could be recursive.
 	// if and only if a name ends with '*' it will add a random one instead of a regular sequence.
