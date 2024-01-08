@@ -3,6 +3,12 @@
 
 #include "Flags.h"
 
+UFlags* UFlags::Instance(UWorld* W) {
+	if (!IsValid(W)) return nullptr;
+	UFlags* const I = W->GetSubsystem<UFlags>();
+	return IsValid(I) ? I : nullptr;
+}
+
 void UFlags::Mod(const FName& Name, float Diff) {
 	if (Name.IsNone()) return;
 
