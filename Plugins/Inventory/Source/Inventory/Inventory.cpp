@@ -6,6 +6,12 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
+UInventory* UInventory::Get(UWorld* W) {
+	if (!IsValid(W)) return nullptr;
+	UInventory* const I = W->GetSubsystem<UInventory>();
+	return IsValid(I) ? I : nullptr;
+}
+
 bool UInventory::Mod(const FName& Name, int32 Diff) {
 	if (Name.IsNone()) {
 		UE_LOG(LogInventory, Warning, TEXT("Attempt to mod item None"));
@@ -96,7 +102,7 @@ bool UInventory::Rem(const FName& Name) {
 	// this is a bit faster than using mod. But needs to ensure it triggers all the correct delegates.
 	FItem Item;
 	// Important that Get returns a copy, since we need to return this on Mod
-	const bool Has = Get(Name, Item);
+	const bool Has = GetItem(Name, Item);
 	// No item with 0 or negative should be stored. but check anyway.
 	if (!Has) return false;
 	
@@ -122,7 +128,7 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	return true;
 }
 
-bool UInventory::Get(const FName& Name, FItem& OutItem) const {
+bool UInventory::GetItem(const FName& Name, FItem& OutItem) const {
 	const FItem* pItem = Items.Find(Name);
 	if (!pItem) {
 		return false;
@@ -157,7 +163,7 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 		return false;
 	}
 	
-	if (!Get(Selected, Item)) {
+	if (!GetItem(Selected, Item)) {
 		UE_LOG(LogInventory, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
 		return false;
 	}
@@ -227,18 +233,18 @@ bool UInventory::Use(const FName& Name) {
 	return true;
 }
 
-bool UInventory::SetBlocked(const FName& Name, bool NewBlocked) {
+bool UInventory::SetLocked(const FName& Name, bool NewBlocked) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
 	if (!Found)	return false;
 
-	Item.IsBlocked = NewBlocked;
+	Item.IsLocked = NewBlocked;
 	return true;
 }
 
-bool UInventory::IsUsable(const FItem& Item) const {
+bool UInventory::IsUsable(const FItem& Item) {
 	if (!Item.Usable) return false;
-	if (Item.IsBlocked) {
+	if (Item.IsLocked) {
 		UE_LOG(LogInventory, Log, TEXT("Item is blocked. title='%s'"), *Item.Title.ToString());
 		return false;
 	}
@@ -256,6 +262,7 @@ bool UInventory::IsCold(const FItem& Item) {
 	UE_LOG(LogInventory, Log, TEXT("Item Is cold?. cold=%i wait=%i title='%s'"), Cold, Item.ActiveCoolDown, *Item.Title.ToString());
 	return Cold;
 }
+
 
 void UInventory::SetCoolTimerEnabled(bool Enable) {
 	UWorld* const World = GetWorld();

@@ -269,7 +269,7 @@ void ALChar::LookItem(const FName& Name) {
 	const FString& SName = *Name.ToString();
 	
 	FItem Item;
-	if (!Inventory->Get(Name, Item)) {
+	if (!Inventory->GetItem(Name, Item)) {
 		UE_LOG(LogLChar, Log, TEXT("Can´t find the item name='%s'"), *SName);
 		return;
 	}

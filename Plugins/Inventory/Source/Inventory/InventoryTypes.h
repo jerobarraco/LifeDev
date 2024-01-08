@@ -49,7 +49,7 @@ public:
 	int32 ActiveCoolDown = 0;
 	// whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
-	bool IsBlocked = false;
+	bool IsLocked = false;
 	// the logic for this item. created by the inventory on creation
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	UItemLogic* Logic = nullptr;

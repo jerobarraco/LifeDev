@@ -23,6 +23,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
+	static UInventory* Get(UWorld* W);
 
 	// regular ones ////////
 
@@ -43,14 +44,14 @@ public:
 	bool Use(const FName& Name);
 	
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool SetBlocked(const FName& Name, bool NewBlocked);
+	bool SetLocked(const FName& Name, bool NewBlocked);
 
 	// returns an item from the datatable if exists. Use this only if you know what you do.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
 	// returns an item given the key name (in the loaded inventory, not the datatable)
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Get(const FName& Name, FItem& OutItem) const;
+	bool GetItem(const FName& Name, FItem& OutItem) const;
 	
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
@@ -74,7 +75,7 @@ public:
 	bool Has(const FName& Name);
 	// returns true if the item is usable (implies cold)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	bool IsUsable(const FItem& Item) const;
+	static bool IsUsable(const FItem& Item);
 	// returns true if the item is cold (not waiting for cooldown)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
