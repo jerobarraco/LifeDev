@@ -14,6 +14,10 @@ APuzzle::APuzzle():Super() {
 	GetRootComponent()->SetMobility(EComponentMobility::Static);
 }
 
+void APuzzle::Done_Implementation(bool IsOk) {
+	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
+}
+
 void APuzzle::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const W = GetWorld();

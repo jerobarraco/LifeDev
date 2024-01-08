@@ -25,11 +25,11 @@ public:
 		CollisionProfile = Name;
 	}
 
-	// used by the interactor. don't call directly. subscribe to OnTrigger.
+	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
 	UFUNCTION()
 	void Trigger() const;
 	
-	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
+	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
 	UFUNCTION()
 	void Hover(bool IsHover) const;
 

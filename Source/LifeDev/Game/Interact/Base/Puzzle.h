@@ -34,7 +34,7 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Done(bool IsOk);
-	virtual void Done_Implementation(bool IsOk) {};
+	virtual void Done_Implementation(bool IsOk);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Update();
