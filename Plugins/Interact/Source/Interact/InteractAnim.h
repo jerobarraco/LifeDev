@@ -61,10 +61,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetText_Implementation() override;
-	void AnimPlay();
 	virtual void SetState_Implementation(int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
-	virtual void Trigger_Implementation() override;
+	void AnimPlay();
 
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound

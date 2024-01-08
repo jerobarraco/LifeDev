@@ -51,12 +51,6 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 	AnimPlay();
 }
 
-void AInteractAnim::Trigger_Implementation() {
-	// trigger the trigger sound and calls set text and sets the state. notice done after changing the state.
-	Super::Trigger_Implementation(); // calling implementation to call the super
-	// SetText(); // not needed. happens on super
-}
-
 bool AInteractAnim::TryTrigger_Implementation() {
 	// don't re-trigger if it's busy.
 	if (UseAnim && Anim->IsActive()) return false;

@@ -12,6 +12,10 @@ class UCInteract;
 class USoundBase;
 class UAudioComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTryTrigger);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTriggerLocked);
+
 // Don't use unless you really need it.
 // It's better to use AInteractAnim and disable the animations.
 // Base class for interact actors (actors to interact with)
@@ -66,6 +70,8 @@ public:
 	void SetState(int32 NewState);
 	virtual void SetState_Implementation(int32 NewState);
 
+	// this function has no documentation, oh noes, is so complicated i can't even
+	// begin to describe it. too bad.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
@@ -80,6 +86,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	FAInteractOnTrigger OnTrigger;
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	FAInteractOnTriggerLocked OnTriggerLocked;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -91,7 +102,9 @@ protected:
 
 	// called when the object actually gets triggered
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
-	// otherwise setState is preferred.
+	// otherwise setState is much more preferred.
+	// it will trigger OnTrigger at the end (which could be hard to time on children)
+	// another reason to prefer SetState
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void Trigger();
 	virtual void Trigger_Implementation();

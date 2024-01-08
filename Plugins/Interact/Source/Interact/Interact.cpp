@@ -98,6 +98,8 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::TriggerLocked_Implementation() {
 	PlaySFX(SFX_Locked);
+
+	OnTriggerLocked.Broadcast();
 }
 
 void AInteract::SetInteractAutoBounds() {
@@ -113,6 +115,8 @@ void AInteract::Trigger_Implementation() {
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
+
+	OnTrigger.Broadcast();
 }
 
 void AInteract::PlaySFX(USoundBase* Snd) {
