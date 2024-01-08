@@ -20,7 +20,6 @@
 #include "Inventory/ItemLogic.h"
 #include "JUtils/JMiscUtils.h"
 
-#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
 #include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
@@ -269,7 +268,7 @@ void ALChar::LookItem(const FName& Name) {
 	const FString& SName = *Name.ToString();
 	
 	FItem Item;
-	if (!Inventory->GetItem(Name, Item)) {
+	if (!Inventory->Get(Name, Item)) {
 		UE_LOG(LogLChar, Log, TEXT("Can´t find the item name='%s'"), *SName);
 		return;
 	}

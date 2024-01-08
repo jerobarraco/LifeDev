@@ -6,7 +6,7 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
-UInventory* UInventory::Get(UWorld* W) {
+UInventory* UInventory::Instance(UWorld* W) {
 	if (!IsValid(W)) return nullptr;
 	UInventory* const I = W->GetSubsystem<UInventory>();
 	return IsValid(I) ? I : nullptr;
@@ -102,7 +102,7 @@ bool UInventory::Rem(const FName& Name) {
 	// this is a bit faster than using mod. But needs to ensure it triggers all the correct delegates.
 	FItem Item;
 	// Important that Get returns a copy, since we need to return this on Mod
-	const bool Has = GetItem(Name, Item);
+	const bool Has = Get(Name, Item);
 	// No item with 0 or negative should be stored. but check anyway.
 	if (!Has) return false;
 	
@@ -128,7 +128,7 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	return true;
 }
 
-bool UInventory::GetItem(const FName& Name, FItem& OutItem) const {
+bool UInventory::Get(const FName& Name, FItem& OutItem) const {
 	const FItem* pItem = Items.Find(Name);
 	if (!pItem) {
 		return false;
@@ -163,7 +163,7 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 		return false;
 	}
 	
-	if (!GetItem(Selected, Item)) {
+	if (!Get(Selected, Item)) {
 		UE_LOG(LogInventory, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
 		return false;
 	}

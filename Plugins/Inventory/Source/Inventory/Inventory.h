@@ -23,7 +23,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UInventory* Get(UWorld* W);
+	static UInventory* Instance(UWorld* W);
 
 	// regular ones ////////
 
@@ -51,7 +51,7 @@ public:
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
 	// returns an item given the key name (in the loaded inventory, not the datatable)
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool GetItem(const FName& Name, FItem& OutItem) const;
+	bool Get(const FName& Name, FItem& OutItem) const;
 	
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))

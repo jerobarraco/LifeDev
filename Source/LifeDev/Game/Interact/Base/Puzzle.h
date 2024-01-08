@@ -16,6 +16,7 @@
 //		less code to interface between the puzzle item an the visual interact (eg changing states and locks and stuff)
 
 
+class UFlags;
 class UInventory;
 class UDiags;
 class UFlashback;
@@ -42,7 +43,7 @@ protected:
 	UPROPERTY(Transient)
 	UDiags* Diags = nullptr;
 	UPROPERTY(Transient)
-	UFlashback* Flags = nullptr;
+	UFlags* Flags = nullptr;
 	UPROPERTY(Transient)
 	UInventory* Inventory = nullptr;
 };
