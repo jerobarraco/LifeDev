@@ -39,15 +39,15 @@ bool UDiags::AddId(const FName& Row) {
 }
 
 bool UDiags::AddManyIds(const TArray<FName>& Rows) {
-	bool Success = true;
 	const int32 Num = Rows.Num();
+	bool Success = Num > 0; // return false if nothing was added
 	for (int32 i = 0; i < Num; ++i) {
 		// done this way on purpose, so if a sequence adds another sequence
 		// it will get "expanded" as a parenthesis.
 		// AddId is safe to call many times since ShowNext has a flag
 		const FName& Row = Rows[i];
+		// notice this is recursive. that's on purpose but be careful.
 		const bool Ok = AddId(Row);
-		// notice this is kind of recursive. that's on purpose but be careful.
 		if (!Ok) {
 			Success = false;
 		}
@@ -65,6 +65,18 @@ bool UDiags::AddSeqId(const FName& RowName) {
 	FDialogSequence Seq;
 	const bool Ok = GetSeq(RowName, Seq);
 	if (!Ok) return false;
+
+	// prevent recursion. Notice this doesn't fix cyclic sequences. no simple way to tell either.
+	// not a priority either.
+	// int because num-1 can be negative. iterating backwards to be able to remove easily.
+	for (int32 i = Seq.DiagRows.Num() -1; i>=0; --i) {
+		const FName& DiagName = Seq.DiagRows[i];
+		if (DiagName != RowName) continue;
+
+		UE_LOG(LogDiags, Warning, TEXT("Attempted to add a recursive sequence. Seq=%s diag=%s"),
+			*RowName.ToString(), *DiagName.ToString());
+		Seq.DiagRows.RemoveAt(i);
+	}
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
 	if (RowName.ToString().EndsWith("*")) {
@@ -141,7 +153,7 @@ bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
 		return false;
 	}
 
-	OutSeq = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
+	OutSeq = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
 	return true;
 }
 

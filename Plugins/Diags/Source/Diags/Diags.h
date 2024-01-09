@@ -22,7 +22,7 @@ public:
 	static UDiags* Instance(UWorld* World);
 	
 	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
-	// sequence ids can contain other sequences, so this could be recursive.
+	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	// if and only if a name ends with '*' it will add a random one instead of a regular sequence.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddId(const FName& Row);
@@ -37,13 +37,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddDiag(const FDialog& Diag);
 
-	// add a sequence by id. a sequence can contain other sequences ids, so this could be recursive.
+	// add a sequence by id.
+	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeqId(const FName& RowName);
-	// Adds a sequence. Use this to AddManyById
+	// Adds a sequence. Use this to AddManyById.
+	// Beware this doesn't protect you from recursive sequences.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeq(const FDialogSequence& Seq);
-	// From a sequence adds one random. This will call AddID so the sequence can contain other sequences. and other random ones.
+	// From a sequence adds one random. This will call AddId.
+	// so it can contain other sequences, and other random ones.
+	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddRnd(const FDialogSequence& Seq);
 
@@ -58,12 +62,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
+	// set the data to be used. call upon initialization. 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void SetData(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
 
+	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void Init();
 
+	// de-initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DeInit();
 
@@ -80,7 +87,6 @@ public:
 	FDiagOnDone OnDone;
 
 protected:
-
 	void ShowNext();
 	void Stop();
 	
