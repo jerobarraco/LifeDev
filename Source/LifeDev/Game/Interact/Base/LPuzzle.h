@@ -32,27 +32,27 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	// Dialog to show on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneDlg = NAME_None;
 
 	// Flag to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneFlag = NAME_None;
 
 	// Item to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneItem = NAME_None;
 
 	// Step to finish on done. If none it won't stop anything.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneStep = NAME_None;
 
 	// FB to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	float DoneFB = 0;
 
 	// Interact to trigger on Done. It will force unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	AInteract* Interact= nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)

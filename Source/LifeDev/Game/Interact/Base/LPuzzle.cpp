@@ -23,13 +23,15 @@ ALPuzzle::ALPuzzle():Super() {
 	#if WITH_EDITORONLY_DATA // inspired by AInfo
 	UBillboardComponent* const SpriteComponent = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Sprite"));
 	if (!IsRunningCommandlet() && (SpriteComponent != nullptr)) {
-		static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
+		// static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
 		// static ConstructorHelpers::FObjectFinder<UTexture2D> CSprText(TEXT("/Engine/EditorResources/S_Actor"));
+		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
+			CSprTexture(TEXT("/Engine/EditorResources/S_Solver"));
 		static const FName ID_Info = TEXT("Info");
 		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Info", "Info");
 
 		SpriteComponent->SetupAttachment(Root);
-		SpriteComponent->Sprite = SpriteTexture.Get();
+		SpriteComponent->Sprite = CSprTexture.Get();
 		// SpriteComponent->Sprite = CSprText.Object;
 		SpriteComponent->SpriteInfo.Category = ID_Info;
 		SpriteComponent->SpriteInfo.DisplayName = NAME_Info;
