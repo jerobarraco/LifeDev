@@ -6,7 +6,7 @@
 
 APuzzleI01::APuzzleI01():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->SolutionIDs = {5,4,0,5}; // A.N.G.E.R. // TODO
+	CPuzzle->SolutionIDs = {0,1,0,4,5}; // A.N.G.E.R.
 	CPuzzle->DisableOnDone = true;
 
 	static FName DoneId = "PZ01_T";
