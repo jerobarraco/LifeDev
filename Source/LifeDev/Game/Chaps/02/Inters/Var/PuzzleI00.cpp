@@ -2,7 +2,6 @@
 
 #include "PuzzleI00.h"
 
-#include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 
 APuzzleI00::APuzzleI00():Super() {
@@ -12,4 +11,5 @@ APuzzleI00::APuzzleI00():Super() {
 
 	static FName DoneId = "PZ00_T";
 	DoneDlg = DoneId;
+	DoneFB = .2;
 }
