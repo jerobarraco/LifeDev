@@ -44,7 +44,7 @@ bool AInteract::TryTrigger_Implementation() {
 		return false;
 	}
 
-	TriggerWrapped();
+	TriggerWrap();
 	return true;
 }
 
@@ -82,7 +82,7 @@ void AInteract::SetState_Implementation(int32 NewState) {
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
-	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrapped);
+	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 }
 
@@ -115,13 +115,6 @@ void AInteract::Trigger_Implementation() {
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
-}
-
-void AInteract::TriggerWrapped() {
-	Trigger();
-	// at end, outside the overrideable function
-	// so that i'm sure that children are done.
-	OnTrigger.Broadcast();
 }
 
 void AInteract::PlaySFX(USoundBase* Snd) {

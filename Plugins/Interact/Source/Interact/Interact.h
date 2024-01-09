@@ -45,9 +45,11 @@ public:
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
-	// Don't use if possible. use TryTrigger. used for binding only. since ue will complain about the return value. but i still wanna keep it. 
+	// Don't use if possible. use TryTrigger. used for binding only.
+	// since ue will complain about the return value. but i still wanna keep it.
+	// bindings don't work with forceinline
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
-	void TryTriggerWrapped() {TryTrigger();}
+	FORCEINLINE void TryTriggerWrap() {TryTrigger();}
 
 	// enables or disables the interaction
 	UFUNCTION(BlueprintCallable, Category="Interact")
@@ -114,7 +116,13 @@ protected:
 	void Trigger();
 	virtual void Trigger_Implementation();
 	// internal. used only so that the OnTrigger signal is ensured to be at the end.
-	void TriggerWrapped();
+	// Might be removed if i figure i don't need it. forceinline will hopefully not decrease performance much.
+	FORCEINLINE void TriggerWrap() {
+		Trigger();
+		// at end, outside the overrideable function
+		// so that i'm sure that children are done.
+		OnTrigger.Broadcast();
+	};
 	
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
