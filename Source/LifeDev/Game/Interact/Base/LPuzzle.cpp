@@ -2,6 +2,7 @@
 
 #include "LPuzzle.h"
 
+#include "Components/BillboardComponent.h"
 #include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/Interact.h"
@@ -13,8 +14,28 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALPuzzle::ALPuzzle():Super() {
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CLPuzzle"));
-	GetRootComponent()->SetMobility(EComponentMobility::Static);
+	
+	Root->SetMobility(EComponentMobility::Static);
+
+	/*
+	#if WITH_EDITORONLY_DATA // inspired by AInfo
+	UBillboardComponent* const SpriteComponent = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Sprite"));
+	if (!IsRunningCommandlet() && (SpriteComponent != nullptr)) {
+		// static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
+		static const FName ID_Info = TEXT("Info");
+		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Info", "Info");
+
+		SpriteComponent->SetupAttachment(Root);
+		// SpriteComponent->Sprite = SpriteTexture.Get();
+		SpriteComponent->SpriteInfo.Category = ID_Info;
+		SpriteComponent->SpriteInfo.DisplayName = NAME_Info;
+		SpriteComponent->bIsScreenSizeScaled = true;
+	}
+	// setting spatially loaded to false could break datalayer usage which is critical
+	#endif // WITH_EDITORONLY_DATA
+*/
 }
 
 void ALPuzzle::Done_Implementation(bool IsOk) {
