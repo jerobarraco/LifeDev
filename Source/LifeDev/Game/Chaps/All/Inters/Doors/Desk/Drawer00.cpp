@@ -9,7 +9,7 @@
 
 ADrawer00::ADrawer00():Super() {
 	//  Set the anim root to the root component so that i can attach items to it
-	SFX->SetRelativeLocation(FVector(62.483007,-19.063228,7.881326));
+	SFX->SetRelativeLocation(FVector(80,-50,55));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Desk00/Desk00-Drawer.Desk00-Drawer"));
 	Mesh->SetStaticMesh(CMesh.Object);
