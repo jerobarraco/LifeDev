@@ -44,9 +44,11 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
 	if (!IsOk) return;
 
-	if (Diags) {
-		Diags->AddId(DoneDlg);
-	}
+	if (Diags) Diags->AddId(DoneDlg);
+	if (FB) FB->ModVal(DoneFB);
+	if (Flags) Flags->Mod(DoneFlag, 1);
+	if (Items) Items->Mod(DoneItem, 1);
+	if (!DoneStep.IsNone() && Story) Story->StartNext(DoneStep);
 
 	if (IsValid(Interact)) {
 		// force unlock
@@ -64,7 +66,7 @@ void ALPuzzle::BeginPlay() {
 	FB = UFlashback::Instance(W);
 	Flags = UFlags::Instance(W);
 	Diags = UDiags::Instance(W);
-	Inventory = UInventory::Instance(W);
+	Items = UInventory::Instance(W);
 
 	CPuzzle->OnDone.AddUniqueDynamic(this, &ALPuzzle::Done);
 	CPuzzle->OnUpdate.AddUniqueDynamic(this, &ALPuzzle::Update);
@@ -80,6 +82,6 @@ void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
 	FB = nullptr;
 	Diags = nullptr;
-	Inventory = nullptr;
+	Items = nullptr;
 	Story = nullptr;
 }

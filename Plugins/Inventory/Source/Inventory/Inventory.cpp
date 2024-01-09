@@ -13,12 +13,9 @@ UInventory* UInventory::Instance(UWorld* W) {
 }
 
 bool UInventory::Mod(const FName& Name, int32 Diff) {
-	if (Name.IsNone()) {
-		UE_LOG(LogInventory, Warning, TEXT("Attempt to mod item None"));
-		return false;
-	}
+	if (Name.IsNone()) return false;
 
-	FName NewSel = NAME_None;
+	FName NewSel = NAME_None; // name for the new selection, none if not changed
 	bool SetSelect = false; // need another flag because we might wanna set the selected to none
 
 	// get or create the item

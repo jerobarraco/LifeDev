@@ -35,6 +35,22 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DoneDlg = NAME_None;
 
+	// Flag to reward on done.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName DoneFlag = NAME_None;
+
+	// Item to reward on done.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName DoneItem = NAME_None;
+
+	// Step to finish on done. If none it won't stop anything.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName DoneStep = NAME_None;
+
+	// FB to reward on done.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float DoneFB = 0;
+
 	// Interact to trigger on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AInteract* Interact= nullptr;
@@ -52,7 +68,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	UInventory* Items = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UStory* Story = nullptr;
 };
