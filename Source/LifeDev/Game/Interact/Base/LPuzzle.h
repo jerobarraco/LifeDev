@@ -51,9 +51,11 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	// Dialog to show on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DoneDlg = NAME_None;
 
+	// Interact to trigger on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AInteract* Interact= nullptr;
 	
