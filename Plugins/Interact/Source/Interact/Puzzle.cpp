@@ -6,6 +6,7 @@
 #include "Interact/CPuzzle.h"
 
 APuzzle::APuzzle():Super() {
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	GetRootComponent()->SetMobility(EComponentMobility::Static);
 }

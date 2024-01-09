@@ -8,7 +8,7 @@ class UCPuzzle;
 
 // Base class for Puzzles that can optionally trigger an interact
 UCLASS(Blueprintable, BlueprintType)
-class INTERACT_API APuzzle: public AInfo {
+class INTERACT_API APuzzle: public AActor {
 	GENERATED_BODY()
 
 public:
