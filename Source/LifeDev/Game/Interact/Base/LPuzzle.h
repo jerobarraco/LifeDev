@@ -55,7 +55,6 @@ protected:
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UStory* Story = nullptr;
-	
 };
 
 // TODO "Just think about it"
