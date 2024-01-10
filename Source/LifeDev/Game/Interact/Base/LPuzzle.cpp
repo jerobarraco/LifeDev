@@ -16,8 +16,10 @@
 ALPuzzle::ALPuzzle():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
-	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CLPuzzle"));
 	
+	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CLPuzzle"));
+	CPuzzle->DisableOnDone = true;
+
 	Root->SetMobility(EComponentMobility::Static);
 
 	#if WITH_EDITORONLY_DATA // inspired by AInfo
@@ -27,8 +29,8 @@ ALPuzzle::ALPuzzle():Super() {
 		// static ConstructorHelpers::FObjectFinder<UTexture2D> CSprText(TEXT("/Engine/EditorResources/S_Actor"));
 		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
 			CSprTexture(TEXT("/Engine/EditorResources/S_Solver"));
-		static const FName ID_Info = TEXT("Info");
-		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Info", "Info");
+		static const FName ID_Info = TEXT("Puzzle");
+		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Puzzle", "Puzzle");
 
 		SpriteComponent->SetupAttachment(Root);
 		SpriteComponent->Sprite = CSprTexture.Get();
