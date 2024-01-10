@@ -19,7 +19,8 @@ ALStepC2S004::ALStepC2S004():Super() {
 	// no waits
 	UseFadeTime = false;
 	FinishPostWait = false;
-	// finish when found. not many items 
+	// finish when found.
+	// the tape is not necessary since that's checked on a previous step and also consumed.
 	ItemsFinish = {
 		LDConsts::Items::Poem2,
 		LDConsts::Items::Card2,

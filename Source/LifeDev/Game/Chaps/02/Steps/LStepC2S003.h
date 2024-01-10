@@ -21,6 +21,7 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
+
 	UFUNCTION()
 	void DlgShown(const FDialog& Diag);
 	
