@@ -1,0 +1,42 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "TvI01.h"
+
+#include "Diags/Diags.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+
+ATvI01::ATvI01():Super() {
+	UseItemDlgs = {
+		{"Batts", "TV01xBatts"},
+		{LDConsts::Items::Card0, "TV01xC00"},
+		{LDConsts::Items::Card1, "TV01xC01"},
+		{LDConsts::Items::Card2, "TV01xC02"},
+	};
+}
+
+void ATvI01::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+	Locked = true;
+
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
+	AGameModeBase* const GameMode = World->GetAuthGameMode();
+	ALGGameMode* const GM = Cast<ALGGameMode>(GameMode);
+	if (!GM) return;
+
+	GM->SetTempInputEnabled(false);
+	FTimerHandle H;
+	World->GetTimerManager().SetTimer(H, this, &ATvI01::AfterOn, 5, false);	
+}
+
+void ATvI01::AfterOn() {
+	Dialogs->OnDone.AddUniqueDynamic(this, &ATvI01::AfterDlg);
+	Dialogs->AddId("TV01_T");
+}
+
+void ATvI01::AfterDlg() {
+	Dialogs->OnDone.RemoveAll(this);
+	SetState(0);
+}
