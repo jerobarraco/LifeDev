@@ -3,7 +3,6 @@
 #include "CPuzzle.h"
 
 #include "Interact.h"
-#include "CInteract.h"
 #include "DelegateWrappers.h"
 #include "InteractAnim.h"
 
@@ -58,11 +57,11 @@ void UCPuzzle::ResetCurrents() {
 		for (AInteract* const I: Interacts) {
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
-		if (CurrentIds.Num()!=SolutionIDs.Num()) {
+		if (CurrentIds.Num() != Solution.Num()) {
 			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
 		}
 	} else if (Type == EPuzzleType::SEQUENCE) {
-		// not really need to be done each reset. but ... 
+		// Disable anim. not really need to be done each reset. but ... 
 		for (AInteract* const I: Interacts) {
 			AInteractAnim* const IA = Cast<AInteractAnim>(I);
 			if (!IsValid(IA)) continue;
@@ -114,10 +113,10 @@ void UCPuzzle::Unbind() {
 }
 
 bool UCPuzzle::IsCurrentSolution() {
-	if (CurrentIds.Num() != SolutionIDs.Num() ) return false;
+	if (CurrentIds.Num() != Solution.Num()) return false;
 
 	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
-		if (CurrentIds[i] != SolutionIDs[i]) {
+		if (CurrentIds[i] != Solution[i]) {
 			UE_LOG(LogCPuzzle, Log, TEXT("Solution is different"));
 			return false;
 		}
@@ -167,7 +166,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	if (Type == EPuzzleType::SEQUENCE) {
 		const bool Ok = CheckSequence(ID);
 		// if the length matches return done anyways (means success false)
-		if (SolutionIDs.Num() == CurrentIds.Num()) {
+		if (Solution.Num() == CurrentIds.Num()) {
 			Done(Ok);
 			return;
 		}

@@ -3,13 +3,13 @@
 #pragma once
 #include "LifeDev/Game/Interact/Base/LPuzzle.h"
 
-#include "PuzzleI00.generated.h"
+#include "PuzzleI02.generated.h"
 
-// Chap 02 Puzzle Instance 00 
+// Chap 02 Puzzle Instance 02 Freeze/Sad 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API APuzzleI00: public ALPuzzle {
+class LIFEDEV_API APuzzleI02: public ALPuzzle {
 	GENERATED_BODY()
 
 public:
-	APuzzleI00();
+	APuzzleI02();
 };

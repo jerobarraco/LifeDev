@@ -44,12 +44,12 @@ public:
 	EPuzzleType Type = EPuzzleType::SEQUENCE;
 	
 	// The solution for this puzzle.
-	// For a Sequence this is a sequence of Ids of interactions. in the order you expect them to be triggered.
-	// the Id is the index in the list of interacts.
-	// For a Combination this is a list of the States of all interactions.
+	// For a Sequence this is a sequence of *Ids* of interactions. in the order you expect them to be triggered.
+	// the Id is the *index* in the list of interacts.
+	// For a Combination this is a list of the *States index* of each interaction.
 	// This array must have the same length as the Interacts
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<int32> SolutionIDs;
+	TArray<int32> Solution;
 
 	// if true then the interact will disable once toggled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
