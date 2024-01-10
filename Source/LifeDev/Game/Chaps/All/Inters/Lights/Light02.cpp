@@ -2,6 +2,7 @@
 
 #include "Light02.h"
 
+#include "Components/AudioComponent.h"
 #include "Components/PointLightComponent.h"
 
 #include "Interact/CInteract.h"
@@ -27,6 +28,8 @@ ALight02::ALight02():Super() {
 	
 	Interact->SetRelativeLocation(FVector(20,-20,90));
 	Interact->SetBoxExtent(FVector(20,20,90));
+
+	SFX->SetRelativeLocation(FVector(15,-20,145));
 
 	ALight02::SetMobility(EComponentMobility::Static);
 	SetEnabled(true); // this one is ok to toggle

@@ -28,7 +28,7 @@ ALPuzzle::ALPuzzle():Super() {
 		// static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
 		// static ConstructorHelpers::FObjectFinder<UTexture2D> CSprText(TEXT("/Engine/EditorResources/S_Actor"));
 		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
-			CSprTexture(TEXT("/Engine/EditorResources/S_Solver"));
+			CSprTexture(TEXT("/Engine/EditorResources/S_Actor")); // S_Solver
 		static const FName ID_Info = TEXT("Puzzle");
 		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Puzzle", "Puzzle");
 
