@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Diags/DiagTypes.h"
 #include "LifeDev/Core/Story/LStep.h"
 
 #include "LStepC2S003.generated.h"
-
-class UCRandomizerFB;
 
 // step when tape is picked. contains the dialog interaction.
 // finishes with dialog.

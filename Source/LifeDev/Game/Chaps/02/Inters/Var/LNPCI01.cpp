@@ -4,7 +4,3 @@
 ALNPCI01::ALNPCI01():Super() {
 	SetEnabled(false); // not gonna interact with this
 }
-
-void ALNPCI01::BeginPlay() {
-	Super::BeginPlay();
-}

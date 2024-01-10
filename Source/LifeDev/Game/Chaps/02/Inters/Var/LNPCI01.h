@@ -7,8 +7,6 @@
 
 #include "LNPCI01.generated.h"
 
-class UCAnimatorCam;
-
 // chap02 char07
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPCI01 : public ALNPC02 {
@@ -16,10 +14,4 @@ class LIFEDEV_API ALNPCI01 : public ALNPC02 {
 
 public:
 	ALNPCI01();
-
-protected:
-	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCAnimatorCam* AnimCam = nullptr;
 };
