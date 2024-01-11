@@ -4,10 +4,12 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Interact/Animator/CRandomizer.h"
+#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
@@ -53,5 +55,8 @@ void ALStepC0S000::Stop_Implementation() {
 
 void ALStepC0S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
-	Inventory->Mod(LDConsts::Items::Poem0, 1);
+	Inventory->Ensure(LDConsts::Items::Poem0);
+	Inventory->Ensure(LDConsts::Items::Card0);
+	Flags->Mod(LDConsts::Flags::CH0::Basin, 1);
+	Flags->Mod(LDConsts::Flags::CH0::Spot, 1);
 }

@@ -8,6 +8,7 @@
 
 #include "LStep.generated.h"
 
+class UFlags;
 class UFlashback;
 class UDiags;
 class UInventory;
@@ -92,4 +93,6 @@ protected:
 	UInventory* Inventory = nullptr; // Todo Items
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* FB = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlags* Flags = nullptr;
 };

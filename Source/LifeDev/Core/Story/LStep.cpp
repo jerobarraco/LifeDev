@@ -2,6 +2,7 @@
 #include "LStep.h"
 
 #include "Diags/Diags.h"
+#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -111,6 +112,7 @@ void ALStep::BeginPlay() {
 	Dialogs = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
+	Flags = UFlags::Instance(World);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
