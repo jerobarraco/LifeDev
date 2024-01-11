@@ -40,7 +40,7 @@ public:
 	// See WaitTime and FinishPostWait
 	// this is used to start something AFTER it faded
 	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
-	// TODO make sure i dont need it and remove
+	// TODO make sure i don't need it and remove
 	// TODO need to fix the steps that do use postwait
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
@@ -87,9 +87,9 @@ protected:
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr;
+	UDiags* Dialogs = nullptr; // TODo Dlgs or Diags
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	UInventory* Inventory = nullptr; // Todo Items
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* FB = nullptr;
 };

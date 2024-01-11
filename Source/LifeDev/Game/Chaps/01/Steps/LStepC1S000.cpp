@@ -37,9 +37,9 @@ ALStepC1S000::ALStepC1S000():Super() {
 
 void ALStepC1S000::Start_Implementation() {
 	Super::Start_Implementation();
-	// do always, not debug, since we could be skipping the chapter 0
-	if (!Inventory->Has(LDConsts::Items::Card0)) {
-		Inventory->Mod(LDConsts::Items::Card0, 1);
+	if (Inventory) {
+		// do always, not debug, since we could be skipping the chapter 0
+		Inventory->Ensure(LDConsts::Items::Card0);
 	}
 	
 	if (!FB) return;
@@ -51,5 +51,5 @@ void ALStepC1S000::Start_Implementation() {
 
 void ALStepC1S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
-	Inventory->Mod("WM", 1);
+	Inventory->Ensure("WM");
 }
