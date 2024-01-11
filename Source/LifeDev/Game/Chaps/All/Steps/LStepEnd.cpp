@@ -2,6 +2,9 @@
 #include "LStepEnd.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
@@ -16,17 +19,23 @@ ALStepEnd::ALStepEnd():Super() {
 	CamTarget = nullptr;
 }
 
+void ALStepEnd::OpenLevel() {
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
+}
+
 void ALStepEnd::Start_Implementation() {
 	Super::Start_Implementation();
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
+	FB->SetMin(0);
+	FB->SetVal(0);
 	
-}
+	FTimerHandle H;
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	World->GetTimerManager().SetTimer(H, this, &ALStepEnd::OpenLevel, WaitTime);
 
-void ALStepEnd::Stop_Implementation() {
-	Super::Stop_Implementation();
-	
-}
-
-void ALStepEnd::PostWait_Implementation() {
-	Super::PostWait_Implementation();
+	AGameModeBase* AuthGameMode = World->GetAuthGameMode();
+	ALGGameMode* const GM = Cast<ALGGameMode>(AuthGameMode);
+	if (GM){
+		GM->MusicMan->Fade(false);
+	}
 }
