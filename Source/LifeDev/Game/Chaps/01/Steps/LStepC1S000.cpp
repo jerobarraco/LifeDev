@@ -21,6 +21,9 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UseFade = true;
 	FinishPostWait = false; // will be set by seqid anyway
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS");
+	ItemsEnsure = {
+		LDConsts::Items::Card0
+	};
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap01_DL.Chap01_DL"));

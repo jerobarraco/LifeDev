@@ -18,15 +18,18 @@ public:
 	ALMusicMan();
 
 	UFUNCTION(BlueprintCallable)
+	static void SetRainS(UWorld* W, bool Play);
+
+	UFUNCTION(BlueprintCallable)
+	static void FadeS(UWorld* W, bool In=true);
+
+	UFUNCTION(BlueprintCallable)
 	void SetRain(bool Play);
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(bool On);
 
 	virtual void Fade_Implementation(bool In) override;
-	
-	UFUNCTION(BlueprintCallable)
-	static void SetRainS(UWorld* W, bool Play);
 
 protected:
 	virtual void BeginPlay() override;
@@ -36,6 +39,7 @@ protected:
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	UFUNCTION() // bind
 	void SetStep(AStep* Step);
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCSounder* Rain = nullptr;
 	

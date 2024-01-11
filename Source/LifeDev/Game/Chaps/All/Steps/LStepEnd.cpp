@@ -33,9 +33,5 @@ void ALStepEnd::Start_Implementation() {
 	if (!World) return;
 	World->GetTimerManager().SetTimer(H, this, &ALStepEnd::OpenLevel, WaitTime);
 
-	AGameModeBase* AuthGameMode = World->GetAuthGameMode();
-	ALGGameMode* const GM = Cast<ALGGameMode>(AuthGameMode);
-	if (GM){
-		GM->MusicMan->Fade(false);
-	}
+	ALMusicMan::FadeS(World, false);
 }

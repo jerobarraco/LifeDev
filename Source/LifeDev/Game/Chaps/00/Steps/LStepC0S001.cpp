@@ -18,7 +18,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFade = true;
 	FinishPostWait = false;
 	TeleportChar = true;
-
+	ItemsRem = {"T01"};
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
 }
@@ -51,9 +51,7 @@ void ALStepC0S001::Stop_Implementation() {
 		Ghosts->SetPlaying(false);
 	}
 	// Destroy them during the fade
-	// FTimerHandle H;
-	// W->GetTimerManager().SetTimer(H, this, &ALStepC0S001::DestroyActors, WaitTime);
-	DestroyActors(); // stop now gets called while it's fading. so wait time actually is wrong.
+	DestroyActors(); // stop gets once it's fully faded
 
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);

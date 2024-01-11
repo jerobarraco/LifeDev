@@ -58,10 +58,17 @@ void ALMusicMan::Fade_Implementation(bool In) {
 
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
 	// Might be faster easier to get it from the gamemode
-	ALGGameMode* GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
+	ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
 	if (!GM) return;
 	GM->MusicMan->SetRain(Play);
 	// ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
+}
+
+void ALMusicMan::FadeS(UWorld* W, bool In) {
+	// Might be faster easier to get it from the gamemode
+	ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
+	if (!GM) return;
+	GM->MusicMan->Fade(In);
 }
 
 void ALMusicMan::BeginPlay() {
