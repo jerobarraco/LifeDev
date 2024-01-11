@@ -89,12 +89,6 @@ void UFlashback::SetMin(float NewMin, float Duration) {
 	SetVal(NewMin, Duration);
 }
 
-void UFlashback::SetValS(UWorld* W, float New, float Duration) {
-	UFlashback* const Flashback = Instance(W);
-	if (!Flashback) return;
-	Flashback->SetVal(New, Duration);
-}
-
 void UFlashback::Deinitialize() {
 	Animator->OnUpdate.RemoveAll(this);
 	Super::Deinitialize();

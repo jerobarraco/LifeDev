@@ -103,5 +103,6 @@ void ALStepC2S001::DestroyActors() {
 void ALStepC2S001::ShowDlg(const FDialog& Diag) {
 	// there are 11 dialogs, and the fb should be on .4 at least.
 	// with .08 we ensure that we reach 1. but with .1 is too much
-	FB->ModVal(.075);
+	// .075 a couple of diags remain
+	FB->ModVal(.07);
 }

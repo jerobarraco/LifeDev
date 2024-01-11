@@ -18,9 +18,6 @@ public:
 
 	static UFlashback* Instance(UWorld* W);
 
-	UFUNCTION(BlueprintCallable)
-	static void SetValS(UWorld* W, float New, float Duration = -1.f);
-	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetVal() const { return Val; }
 

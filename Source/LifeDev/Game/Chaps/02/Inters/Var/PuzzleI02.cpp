@@ -10,5 +10,5 @@ APuzzleI02::APuzzleI02():Super() {
 
 	static FName DoneId = "PZ02_T";
 	DoneDlg = DoneId;
-	DoneFB = .2;
+	DoneFB = .15;
 }

@@ -36,9 +36,9 @@ void ALStepC2S000::Start_Implementation() {
 	Super::Start_Implementation();
 
 	if (!FB) return;
-	FB->SetMax(.75);
+	FB->SetMax(.6);
 	FB->SetMin(0);
-	FB->SetVal(.20, 1);
+	FB->SetVal(.11, 10);
 
 	// ensure items
 	Inventory->Ensure(LDConsts::Items::Walkman);

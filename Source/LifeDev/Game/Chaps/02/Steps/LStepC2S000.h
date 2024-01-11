@@ -15,6 +15,6 @@ public:
 	ALStepC2S000();
 
 protected:
-	void Start_Implementation() override;
-	void DoDebug_Implementation() override;
+	virtual void Start_Implementation() override;
+	virtual void DoDebug_Implementation() override;
 };

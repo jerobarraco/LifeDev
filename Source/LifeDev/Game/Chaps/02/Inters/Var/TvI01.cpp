@@ -3,6 +3,7 @@
 #include "TvI01.h"
 
 #include "Diags/Diags.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
@@ -28,7 +29,11 @@ void ATvI01::Trigger_Implementation() {
 
 	GM->SetTempInputEnabled(false);
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &ATvI01::AfterOn, 5, false);	
+	World->GetTimerManager().SetTimer(H, this, &ATvI01::AfterOn, 5, false);
+	UFlashback* const FB = UFlashback::Instance(World);
+	if (FB) {
+		FB->ModVal(.15, 3*(1/.15)); // 3 secs
+	}
 }
 
 void ATvI01::AfterOn() {
