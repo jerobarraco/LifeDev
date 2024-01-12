@@ -17,11 +17,24 @@ APuzzleI01::APuzzleI01():Super() {
 
 void APuzzleI01::PostLoad() {
 	Super::PostLoad();
-	if (!CPuzzle) return;
-
 	static const TMap<FName, FName> Dlgs = {
         {LDConsts::Items::Card0, "PZ01xC00"},
         {LDConsts::Items::Card1, "PZ01xC01"},
     };
     SetUseItemDlgs(Dlgs);
+
+	static const TArray<bool> Locks = {
+		true, false, true, true, false
+	};
+	SetLocks(Locks);
+}
+
+void APuzzleI01::BeginPlay() {
+	Super::BeginPlay();
+
+	// 2nd number and last are just random variations
+	static const TArray<int32> States = {
+		0, 4, 0, 4, 2 
+	};
+	SetStates(States);
 }
