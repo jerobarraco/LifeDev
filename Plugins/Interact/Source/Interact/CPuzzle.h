@@ -35,6 +35,11 @@ public:
 	// Sets which interacts to listen to, and binds. don't call on constructor. call after begin play
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void SetInteracts(const TArray<AInteract*>& Inters);
+
+	// purposely returns a copy, to modify the Interacts (after beginplay) call SetInteracts
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
+	FORCEINLINE TArray<AInteract*> GetInteracts() { return Interacts; }
+	
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Unbind();
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
