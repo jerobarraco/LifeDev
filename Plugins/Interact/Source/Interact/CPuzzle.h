@@ -45,6 +45,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Bind();
 
+	// reset the current values. called on reset and begin play. used internally.
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
+	void ResetCurrents();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	EPuzzleType Type = EPuzzleType::SEQUENCE;
 	
@@ -82,8 +86,7 @@ protected:
 	bool IsCurrentSolution();
 	// internal. to be called when done
 	void Done(bool Ok = true) const;
-	// reset the current values. called on reset and begin play
-	void ResetCurrents();
+	
 
 	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound
