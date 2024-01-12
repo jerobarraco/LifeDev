@@ -29,13 +29,13 @@ public:
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
-	void SetStates(const TArray<int32>& States);
+	void SetLocks(const TArray<bool>& Locks);
 	
 	// sets the states on each registered interact.
-	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
-	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	// Call on or after begin play.
+	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
-	void SetLocks(const TArray<bool>& Locks);
+	void SetStates(const TArray<int32>& States);
 
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

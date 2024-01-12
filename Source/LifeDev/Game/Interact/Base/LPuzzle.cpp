@@ -68,6 +68,8 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 }
 
 void ALPuzzle::SetStates(const TArray<int32>& States) {
+	if (!CPuzzle) return;
+	
 	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = States.Num();
 	const int32 Num2 = Inters.Num();
@@ -76,9 +78,14 @@ void ALPuzzle::SetStates(const TArray<int32>& States) {
 		if (!IsValid(I)) continue;
 		I->SetState(States[i]);
 	}
+
+	// reload the ids if needed. important.
+	CPuzzle->ResetCurrents();
 }
 
 void ALPuzzle::SetLocks(const TArray<bool>& Locks) {
+	if (!CPuzzle) return;
+
 	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Locks.Num();
 	const int32 Num2 = Inters.Num();
