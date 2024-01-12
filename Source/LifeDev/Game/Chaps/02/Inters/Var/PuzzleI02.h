@@ -12,4 +12,7 @@ class LIFEDEV_API APuzzleI02: public ALPuzzle {
 
 public:
 	APuzzleI02();
+
+protected:
+	virtual void PostLoad() override;
 };

@@ -19,7 +19,9 @@ class INTERACT_API ALPuzzle: public AActor {
 public:
 	ALPuzzle();
 
-	// sets the UseItemDlg map on each registered interact
+	// sets the UseItemDlg map on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
 	void SetUseItemDlgs(const TMap<FName, FName>& Map);
 
