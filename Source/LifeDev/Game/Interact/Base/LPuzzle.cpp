@@ -12,6 +12,7 @@
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 
 ALPuzzle::ALPuzzle():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -41,7 +42,32 @@ ALPuzzle::ALPuzzle():Super() {
 	}
 	// setting spatially loaded to false could break datalayer usage which is critical
 	#endif // WITH_EDITORONLY_DATA
+}
 
+void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
+	TArray<FName> Keys;
+	Dlgs.GetKeys(Keys);
+	const int32 Num = Keys.Num();
+
+	// set the dialogs on each registered interact
+	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	for (AInteract* const I: Inters) {
+		ALInteract* const LI = Cast<ALInteract>(I);
+		if (!IsValid(LI)) continue;
+
+		LI->UseItemDlgs = Dlgs;	
+	}
+	
+	/* better to override the whole array than having issues down the line.
+	 * it also allows to remove stuff.
+	// reserve
+	LI->UseItemDlgs.Reserve(LI->UseItemDlgs.Num()+Num);
+	// add each dlg
+	for (FName K:Keys) {
+		const FName* pV = Dlgs.Find(K);
+		if (!pV) continue;
+		LI->UseItemDlgs.Add(K, *pV);
+	}*/
 }
 
 void ALPuzzle::Done_Implementation(bool IsOk) {

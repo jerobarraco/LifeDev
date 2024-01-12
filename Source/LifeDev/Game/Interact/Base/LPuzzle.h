@@ -19,6 +19,10 @@ class INTERACT_API ALPuzzle: public AActor {
 public:
 	ALPuzzle();
 
+	// sets the UseItemDlg map on each registered interact
+	UFUNCTION(BlueprintCallable)
+	void SetUseItemDlgs(const TMap<FName, FName>& Map);
+
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Done(bool IsOk);
