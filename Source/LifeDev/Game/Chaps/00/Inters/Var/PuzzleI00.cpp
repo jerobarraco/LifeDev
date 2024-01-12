@@ -17,10 +17,17 @@ APuzzleI00::APuzzleI00():Super() {
 void APuzzleI00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
-	if (!CPuzzle) return;
-
 	static const TMap<FName, FName> Dlgs = {
         {LDConsts::Items::Card0, "PZ00xC00"}
     };
     SetUseItemDlgs(Dlgs);
+
+	static const TArray<bool> Locks = { true, false, true, false };
+	SetLocks(Locks);
+}
+
+void APuzzleI00::BeginPlay() {
+	Super::BeginPlay();
+	static const TArray<int32> States = { 5,0,0,0 };
+	SetStates(States);
 }
