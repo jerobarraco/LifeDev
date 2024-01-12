@@ -16,8 +16,6 @@ APuzzleI02::APuzzleI02():Super() {
 
 void APuzzleI02::PostLoad() {
 	Super::PostLoad();
-	if (!CPuzzle) return;
-
 	// common item dialogs
 	static const TMap<FName, FName> Dlgs = {
 		{LDConsts::Items::Card0, "PZ02xC00"},
@@ -25,4 +23,16 @@ void APuzzleI02::PostLoad() {
 		{LDConsts::Items::Card2, "PZ02xC02"}
 	};
 	SetUseItemDlgs(Dlgs);
+
+	static const TArray<bool> Locks = {true, false, false};
+	SetLocks(Locks);
 }
+
+void APuzzleI02::BeginPlay() {
+	Super::BeginPlay();
+
+	static const TArray<int32> States = {0, 2, 5};
+	SetStates(States);
+}
+
+
