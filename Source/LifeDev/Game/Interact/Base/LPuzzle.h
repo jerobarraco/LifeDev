@@ -24,6 +24,18 @@ public:
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
 	void SetUseItemDlgs(const TMap<FName, FName>& Map);
+	
+	// sets the states on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	UFUNCTION(BlueprintCallable)
+	void SetStates(const TArray<int32>& States);
+	
+	// sets the states on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	UFUNCTION(BlueprintCallable)
+	void SetLocks(const TArray<bool>& Locks);
 
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

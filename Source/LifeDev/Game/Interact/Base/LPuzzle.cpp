@@ -45,10 +45,7 @@ ALPuzzle::ALPuzzle():Super() {
 }
 
 void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
-	TArray<FName> Keys;
-	Dlgs.GetKeys(Keys);
-	const int32 Num = Keys.Num();
-
+	if (!CPuzzle) return;
 	// set the dialogs on each registered interact
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	for (AInteract* const I: Inters) {
@@ -68,6 +65,28 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 		if (!pV) continue;
 		LI->UseItemDlgs.Add(K, *pV);
 	}*/
+}
+
+void ALPuzzle::SetStates(const TArray<int32>& States) {
+	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	const int32 Num = States.Num();
+	const int32 Num2 = Inters.Num();
+	for (int32 i = 0; i<Num && i<Num2; ++i) {
+		AInteract* const I = Inters[i];
+		if (!IsValid(I)) continue;
+		I->SetState(States[i]);
+	}
+}
+
+void ALPuzzle::SetLocks(const TArray<bool>& Locks) {
+	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	const int32 Num = Locks.Num();
+	const int32 Num2 = Inters.Num();
+	for (int32 i = 0; i<Num && i<Num2; ++i) {
+		AInteract* const I = Inters[i];
+		if (!IsValid(I)) continue;
+		I->Locked = Locks[i];
+	}
 }
 
 void ALPuzzle::Done_Implementation(bool IsOk) {
