@@ -2,18 +2,18 @@
 
 #include "StreetLight.h"
 
+#include "CQuickMesh.h"
 #include "Components/SpotLightComponent.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
 AStreetLight::AStreetLight():Super() {
-	// TODO
-	// static ConstructorHelpers::FObjectFinder<UStaticMesh>
-	// 	CMesh (TEXT("/Game/LifeDev/Game/Inters/Fluorescent/Support.Support"));
-	// Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
-	// Mesh->SetRelativeScale3D(FVector(0.05,0.05,0.05));
-	// Mesh->SetStaticMesh(CMesh.Object);
-	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh (TEXT("/Game/LifeDev/Game/Arch/Neighborhood/StreetLight01.StreetLight01"));
+	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
+	Mesh->SetStaticMesh(CMesh.Object);
+
+	Light->SetRelativeLocation(FVector(17.5,-160,330));
 	Light->SetRelativeRotation(FRotator(-90,0,0));
 	static const FColor Col(
 		LDConsts::Colors::Palette[LDConsts::Colors::Brown][10]);
@@ -28,5 +28,5 @@ AStreetLight::AStreetLight():Super() {
 	Rnd->ValueMax = 5;
 	Rnd->UseRandReverse = true;
 
-	FlickrOnFB = 0; // always flicker
+	FlickrOnFB = .2; // always flicker
 }
