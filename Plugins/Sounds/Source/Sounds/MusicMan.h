@@ -33,7 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
 
-	// this is the intensity param, not the volume.
+	// this is the intensity param for the music. not the volume.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetIntensity(float V);
 	virtual void SetIntensity_Implementation(float V);
@@ -47,7 +47,7 @@ protected:
 	UFUNCTION() // bind
 	void SetNextMusic();
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|Common")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCSounder* Player = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)

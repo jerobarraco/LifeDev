@@ -44,6 +44,9 @@ void ALMusicMan::SetRain(bool Play) {
 
 void ALMusicMan::SetEnviron(bool On) {
 	if (!IsValid(Environ)) return;
+	// don't enable if it's disabled
+	if (On && !ULSettings::GetFeatS(GetWorld(), EFeat::S_ENV)) return;
+
 	Environ->Fade(On);
 }
 
@@ -59,7 +62,15 @@ void ALMusicMan::Fade_Implementation(bool In) {
 void ALMusicMan::SetIntensity_Implementation(float V) {
 	Super::SetIntensity_Implementation(V);
 
-	static FName NFB ="FB";
+	// temporary. force fb to 0 if the music is not playing.
+	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
+	// calling setsafeparam is safe since it will check if the environ itself is playing.
+	// that way i don't need to check for the S_ENV flag here either 
+	if (!Player->IsPlaying()) {
+		V = 0;
+	}
+
+	static FName NFB = "FB";
 	Environ->SetSafeParamFloat(NFB, V);
 }
 
