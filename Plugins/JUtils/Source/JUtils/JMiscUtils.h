@@ -66,4 +66,15 @@ public:
 	//	* Don't try to draw debug lines/points etc, as it will likely crash, ie DrawDebugLine(etc...)
 	UFUNCTION(BlueprintCallable)
 	static void BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec = EAsyncExec::ThreadPool);
+
+	UFUNCTION(BlueprintCallable)
+	static bool StringLooseEquals(const FString& A, const FString& B);
+
+	UFUNCTION(BlueprintCallable)
+	static bool IsEditor();
+
+	// can't be blueprint callable since it's templatized
+	template <typename T>
+	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
+	
 };

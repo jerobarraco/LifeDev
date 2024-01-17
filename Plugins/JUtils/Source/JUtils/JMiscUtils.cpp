@@ -116,3 +116,38 @@ void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 		}
 	});
 }
+
+template <typename T>
+bool UJMiscUtils::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
+	OutRows.Empty();
+	if (!IsValid(DT)) {
+		UE_LOG(LogTemp, Error, TEXT("Data Table is not valid or unassigned."));
+		return false;
+	}
+	
+	TArray<T*> RawRows;
+	// Can't pass pointers to bps, and don't want null values either
+	DT->GetAllRows<T>(TEXT(""), RawRows);
+	for (const T* Row: RawRows) {
+		if (!Row) continue;
+		OutRows.Add(*Row);
+	}
+	return true;
+}
+
+bool UJMiscUtils::StringLooseEquals(const FString& A, const FString& B) {
+	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
+	return A.TrimStartAndEnd().Equals(
+		B.TrimStartAndEnd(),
+		ESearchCase::IgnoreCase
+	);
+}
+
+bool UJMiscUtils::IsEditor() {
+	// TODO test if GEngine->IsEditor suffices
+#if WITH_EDITOR
+	return true;
+#else
+	return false;
+#endif
+}
