@@ -54,7 +54,7 @@ void AMusicMan::AudioFinished() {
 		UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. No NextMusic."));
 		return;
 	}
-	UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. NextMusic='%s'"), *NextMusic->GetName());
+	UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. NextMusic='%s'"), *GetNameSafe(NextMusic));
 
 	// schedule a change in music in the next ms.
 	// in the hope that would fix the issue on the builds where it doesn't really wanna start.
@@ -62,14 +62,10 @@ void AMusicMan::AudioFinished() {
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMusicMan::SetNextMusic, .05);
 }
 
-void AMusicMan::SetIntensity(float V) {
+void AMusicMan::SetIntensity_Implementation(float V) {
 	Intensity = V;
-	const bool CanSet = !IsValid(Player) || ! Player->IsPlaying();
-	
-	// avoid crashing
-	if (CanSet) return;
 	static FName NInt ="Intensity";
-	Player->SetFloatParameter(NInt, V);
+	Player->SetSafeParamFloat(NInt, V);
 }
 
 void AMusicMan::SetNextMusic() {

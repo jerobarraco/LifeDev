@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool In);
 
+	UFUNCTION(BlueprintCallable)
+	void SetSafeParamFloat(const FName& Name, const float V);
+	
 	// fade in time or 0 for none
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeIn = 2.0;

@@ -30,7 +30,8 @@ public:
 	void SetEnviron(bool On);
 
 	virtual void Fade_Implementation(bool In) override;
-
+	virtual void SetIntensity_Implementation(float V) override;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

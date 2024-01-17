@@ -26,3 +26,11 @@ void UCSounder::Fade(bool In) {
         FadeOut(TimeFadeOut, 0);
 	}
 }
+
+void UCSounder::SetSafeParamFloat(const FName& Name, const float V) {
+	const bool CanSet = !IsValid(this) || ! IsPlaying();
+	
+	// avoid crashing
+	if (CanSet) return;
+	SetFloatParameter(Name, V);
+}

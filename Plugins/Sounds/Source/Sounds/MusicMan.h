@@ -9,7 +9,7 @@ class UCSounder;
 
 // Music manager for a level
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Sounds), meta=(BlueprintSpawnableComponent))
-class SOUNDS_API AMusicMan: public AActor {
+class SOUNDS_API AMusicMan: public AInfo {
 	GENERATED_BODY()
 
 public:
@@ -34,8 +34,9 @@ public:
 	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
 
 	// this is the intensity param, not the volume.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetIntensity(float V);
+	virtual void SetIntensity_Implementation(float V);
 
 protected:
 	virtual void BeginPlay() override;

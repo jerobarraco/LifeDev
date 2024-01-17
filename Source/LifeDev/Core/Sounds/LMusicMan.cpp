@@ -27,7 +27,7 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ = CreateDefaultSubobject<UCSounder>(TEXT("Environ"));
 	Environ->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CEnv(TEXT("/Game/LifeDev/Game/Env/Ambience/Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_.Ambience__Residential__Night__Crickets__Night_Bird-AmbiX_"));
+		CEnv(TEXT("/Game/LifeDev/Game/Env/Ambience/Ambience"));
 	Environ->SetSound(CEnv.Object);
 	Environ->SetAutoActivate(false);
 	Environ->bAutoManageAttachment = true;
@@ -54,6 +54,13 @@ void ALMusicMan::Fade_Implementation(bool In) {
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
 	if (In && ! ULSettings::GetFeatS(GetWorld(), EFeat::S_MUSIC)) return;
 	Super::Fade_Implementation(In);
+}
+
+void ALMusicMan::SetIntensity_Implementation(float V) {
+	Super::SetIntensity_Implementation(V);
+
+	static FName NFB ="FB";
+	Environ->SetSafeParamFloat(NFB, V);
 }
 
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
