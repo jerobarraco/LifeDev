@@ -29,7 +29,7 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
 	Unbind(); // unbind before emptying to make sure we don't remain subscribed to an orphan object.
 
-	Interacts.Empty();
+	Interacts.Empty(Inters.Num());
 	for (AInteract* const I: Inters) {
 		if (!IsValid(I)) continue;
 		Interacts.Add(I);
@@ -80,6 +80,7 @@ void UCPuzzle::Bind() {
 
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
 		if (!IsValid(Wrapper)) continue;
+
 		Wrapper->Obj = I;
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);

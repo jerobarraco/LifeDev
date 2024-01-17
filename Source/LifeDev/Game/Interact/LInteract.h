@@ -74,9 +74,9 @@ public:
 	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
 	// the key is the item name, the value is the dialog id.
 	// this happens before trying to unlock.
-	// If locked it won't consume the item, otherwise it will and it's redundant with TriggerDlg.
 	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
 	TMap<FName, FName> UseItemDlgs;
 	
 	// setting this will reward the item on trigger. will self-destroy if UseRewardFade is set.

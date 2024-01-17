@@ -204,7 +204,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 			// assume this is not ULockItem. if you added the same item to both places then that's wrong.
 			// Using bad_handled since we don't want to consume an item.
 			// this is only to say something about the item.
-			// if this item needs to be consumed, use ulockItem 
+			// if this item needs to be consumed, use ULockItem 
     		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 		}
     }

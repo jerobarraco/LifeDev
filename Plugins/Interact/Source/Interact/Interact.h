@@ -153,7 +153,7 @@ protected:
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
 	bool UseAttachedSFX = true;
-
+	
 	// added here so it can be changed in the editor. otherwise it wont show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	USceneComponent* Root = nullptr;
