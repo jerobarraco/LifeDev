@@ -55,7 +55,7 @@ void ALInteract::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	Inventory = World->GetSubsystem<UInventory>();
-	Dialogs = World->GetSubsystem<UDiags>();
+	Diags = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
 	Flashback = World->GetSubsystem<UFlashback>();
 }
@@ -64,7 +64,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	AnimFade->OnEnd.RemoveAll(this);
 
 	Inventory = nullptr;
-	Dialogs = nullptr;
+	Diags = nullptr;
 	Flags = nullptr;
 	Flashback = nullptr;
 
@@ -72,7 +72,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
-	Dialogs->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
+	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
@@ -135,9 +135,9 @@ void ALInteract::Trigger_Implementation() {
 
 	// trigger the dialog in any case.
 	bool WaitForDiags = false;
-	if (IsValid(Dialogs)) {
-		Dialogs->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
-		WaitForDiags = Dialogs->AddId(TriggerDlg);
+	if (IsValid(Diags)) {
+		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
+		WaitForDiags = Diags->AddId(TriggerDlg);
 	}
 
 	// force trigger the rewards in case the dialog failed, otherwise it'll be stuck
@@ -154,12 +154,12 @@ void ALInteract::RewardFaded() {
 void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
 	
-	if (!Inventory || !Dialogs) return;
+	if (!Inventory || !Diags) return;
 
 	const bool Has = Inventory->Has(ULockItem);
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
 	FDialog D; FDialogChar C;
-	Dialogs->AddId(Dlg);
+	Diags->AddId(Dlg);
 }
 
 bool ALInteract::TryTrigger_Implementation() {
@@ -189,7 +189,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	}
 
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
-	const bool ValidDiags = IsValid(Dialogs);
+	const bool ValidDiags = IsValid(Diags);
 
 	/// Say something about it
 	
@@ -200,7 +200,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
     	// check if we can say something about this
     	const FName* const pDlg = UseItemDlgs.Find(Item);
 		if (pDlg) {
-    		const bool Added = pDlg && ValidDiags && Dialogs->AddId(*pDlg);
+    		const bool Added = pDlg && ValidDiags && Diags->AddId(*pDlg);
 			// assume this is not ULockItem. if you added the same item to both places then that's wrong.
 			// Using bad_handled since we don't want to consume an item.
 			// this is only to say something about the item.
@@ -220,13 +220,13 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	// Checks if it needs an item to unlock it. and unlock if needed.
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
-		const bool Added = ValidDiags && Dialogs->AddId(ULockBadDlg);
+		const bool Added = ValidDiags && Diags->AddId(ULockBadDlg);
         return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	// now unlocked
 	if (ValidDiags) {
-		Dialogs->AddId(ULockDlg);
+		Diags->AddId(ULockDlg);
 	}
 
 	Locked = false; // force unlock or trigger won't work

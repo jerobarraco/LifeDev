@@ -27,7 +27,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	if (Items.IsEmpty()) {
 		Locked = true; // unnecessary but complete, jic
-		const bool Added = IsValid(Dialogs) && Dialogs->AddId(DropFullDlg);
+		const bool Added = IsValid(Diags) && Diags->AddId(DropFullDlg);
 		return Added ?  EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
@@ -35,8 +35,8 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	const bool Ok = Items.Find(Name, Id);
 	EItemUseResult Result = Ok ? EItemUseResult::SUCCESS : EItemUseResult::BAD_TARGET;
 	if (Ok) {
-		if (IsValid(Dialogs)) {
-			Dialogs->AddId(DropDlg);
+		if (IsValid(Diags)) {
+			Diags->AddId(DropDlg);
 		}
 		Items.RemoveAt(Id);
 		if (Items.IsEmpty()) {
@@ -45,7 +45,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 			Locked = true; // avoid further triggering
 		}
 	} else {
-		const bool Added = IsValid(Dialogs) && Dialogs->AddId(DropBadDlg);
+		const bool Added = IsValid(Diags) && Diags->AddId(DropBadDlg);
 		Result = Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 

@@ -30,7 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Show(const FDialog& Diag);
 
-	// stop showing dialogs (no more dialogs)
+	// stop showing Diags (no more Diags)
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 
@@ -60,7 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	UInputAction* ActionBack = nullptr;
 
-	// when set it will skip showing the dialogs but still mark them as read
+	// when set it will skip showing the Diags but still mark them as read
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
 	bool DebugSkip = false;
 
@@ -70,7 +70,7 @@ private:
 	void UIDiagDone();
 
 	UPROPERTY(Transient)
-	UDiags* Dialogs = nullptr;
+	UDiags* Diags = nullptr;
 
 	UPROPERTY(Transient)
 	UDialogUI* UI = nullptr;

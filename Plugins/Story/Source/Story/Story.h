@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, bool, In, const FText&,
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
-// World subsystem to deal with Inventory
+// World subsystem to deal with Story flow progression
 UCLASS(Blueprintable, Category="Story")
 class STORY_API UStory : public UWorldSubsystem
 {

@@ -12,7 +12,7 @@ struct LIFEDEV_API FLChapter: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
-	// dialog dialogs
+	// dialog Diags
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Dialog"))
 	TSoftObjectPtr<UDataTable> Dialogs;

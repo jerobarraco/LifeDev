@@ -31,19 +31,19 @@ void ADiagMan::Init() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
-	Dialogs = World->GetSubsystem<UDiags>();
-	if (!IsValid(Dialogs)) return;
+	Diags = World->GetSubsystem<UDiags>();
+	if (!IsValid(Diags)) return;
 
-	Dialogs->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
+	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
+	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
 }
 
 void ADiagMan::DeInit() {
-	if (IsValid(Dialogs)) {
-		Dialogs->OnShow.RemoveAll(this);
-		Dialogs->OnDone.RemoveAll(this);
+	if (IsValid(Diags)) {
+		Diags->OnShow.RemoveAll(this);
+		Diags->OnDone.RemoveAll(this);
 	}
-	Dialogs = nullptr;
+	Diags = nullptr;
 
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
@@ -125,8 +125,8 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ADiagMan::UIDiagDone() {
-	if (!IsValid(Dialogs)) return;
-	Dialogs->DiagDone();
+	if (!IsValid(Diags)) return;
+	Diags->DiagDone();
 }
 
 void ADiagMan::Skip() {

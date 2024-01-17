@@ -36,8 +36,8 @@ void ALStepC2S001::Start_Implementation() {
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
-	// bind before the super since it will trigger the dialogs
-	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
+	// bind before the super since it will trigger the Diags
+	Diags->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
 	
 	Super::Start_Implementation();
 	
@@ -55,8 +55,8 @@ void ALStepC2S001::Start_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
-	if (Dialogs) {
-		Dialogs->OnShow.RemoveAll(this);
+	if (Diags) {
+		Diags->OnShow.RemoveAll(this);
 	}
 
 	if (FB) {

@@ -88,9 +88,9 @@ protected:
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr; // TODo Dlgs or Diags
+	UDiags* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr; // Todo Items
+	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* FB = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

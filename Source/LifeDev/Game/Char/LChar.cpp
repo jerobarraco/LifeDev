@@ -169,7 +169,7 @@ void ALChar::BeginPlay() {
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
-	Dialogs = World->GetSubsystem<UDiags>();
+	Diags = World->GetSubsystem<UDiags>();
 
 	if (IsValid(Noiser)) {
 		Noiser->Activate();
@@ -180,7 +180,7 @@ void ALChar::BeginPlay() {
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Inventory = nullptr;
-	Dialogs = nullptr;
+	Diags = nullptr;
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
 	}
@@ -255,8 +255,8 @@ void ALChar::ActInteract() { // don´t make const. the input system does not lik
 }
 
 bool ALChar::Say(const FName& Name) {
-	if (!IsValid(Dialogs)) return false;
-	return Dialogs->AddId(Name);
+	if (!IsValid(Diags)) return false;
+	return Diags->AddId(Name);
 }
 
 void ALChar::LookItem(const FName& Name) {
@@ -282,7 +282,7 @@ void ALChar::LookItem(const FName& Name) {
 	// but it's cheaper than asking every time for random and not random.
 	const FName& DRName = FName(*(SName + "_Look*"));
 	// the isValid is for the add below
-	if (!Say(DRName) && IsValid(Dialogs)) {
+	if (!Say(DRName) && IsValid(Diags)) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
         FDialog Diag;
@@ -290,7 +290,7 @@ void ALChar::LookItem(const FName& Name) {
         Diag.Text = Item.Description;
 		// TODO consider changing this to main
         Diag.CharRow = "Sys";
-        Dialogs->AddDiag(Diag);
+        Diags->AddDiag(Diag);
 	}
 
 	// trigger manager look

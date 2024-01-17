@@ -21,19 +21,19 @@ void ALNPC01I00::BeginPlay() {
 }
 
 void ALNPC01I00::TriggerLocked_Implementation() {
-	Dialogs->AddId("N01.L");
+	Diags->AddId("N01.L");
 	Super::TriggerLocked_Implementation();
 }
 
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	if (Name != LDConsts::Items::Card0) {
-		Dialogs->AddId("N01.IB");
+		Diags->AddId("N01.IB");
 		return EItemUseResult::BAD_HANDLED;
 	}
 
 	SetEnabled(false); // disable the interact so it can fade better, and player won't trigger again
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
-	Dialogs->AddId("N01.0");
+	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
+	Diags->AddId("N01.0");
 	Flashback->SetVal(1);
 	ALMusicMan::SetRainS(GetWorld(), true);
 	
@@ -41,11 +41,11 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 }
 
 void ALNPC01I00::DiagSitDone() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 	
 	Flashback->SetVal(.5);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
-	Dialogs->AddId("N01.1");
+	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
+	Diags->AddId("N01.1");
 
 	StandUp();
 }
@@ -58,7 +58,7 @@ void ALNPC01I00::StandUp() {
 }
 
 void ALNPC01I00::DiagStandDone() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 
 	UWorld* const W = GetWorld();
 	ALMusicMan::SetRainS(W, false);

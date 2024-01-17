@@ -36,15 +36,15 @@ void ADoorI10::DoDialog() {
 	if(Interacted) return;
 	Interacted = true;
 
-	Dialogs->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
-	Dialogs->AddId("D10_T"); // after unlocking with the card
+	Diags->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
+	Diags->AddId("D10_T"); // after unlocking with the card
 }
 
 void ADoorI10::Shoot() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 
 	PlaySFX(SFX_Gun);
 	Flashback->SetMin(.4f, .5);

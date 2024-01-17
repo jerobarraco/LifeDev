@@ -37,11 +37,11 @@ void ATvI01::Trigger_Implementation() {
 }
 
 void ATvI01::AfterOn() {
-	Dialogs->OnDone.AddUniqueDynamic(this, &ATvI01::AfterDlg);
-	Dialogs->AddId("TV01_T");
+	Diags->OnDone.AddUniqueDynamic(this, &ATvI01::AfterDlg);
+	Diags->AddId("TV01_T");
 }
 
 void ATvI01::AfterDlg() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 	SetState(0);
 }

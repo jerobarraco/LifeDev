@@ -37,7 +37,7 @@ void ALStepC2S003::Start_Implementation() {
 	// note apparently modding inventory while a dialog is shown could show the inventory below the dialog
     Inventory->Mod("T02", -1);
 	// start stuff only after the 1st dialog
-	Dialogs->OnShow.AddUniqueDynamic(this, &ALStepC2S003::DlgShown);
+	Diags->OnShow.AddUniqueDynamic(this, &ALStepC2S003::DlgShown);
 
 	// super will start the dialog and finish when done
 	Super::Start_Implementation();
@@ -49,7 +49,7 @@ void ALStepC2S003::Start_Implementation() {
 }
 
 void ALStepC2S003::DlgShown(const FDialog& Diag) {
-	Dialogs->OnShow.RemoveAll(this);
+	Diags->OnShow.RemoveAll(this);
 	
 	ALMusicMan::SetRainS(GetWorld(), true);
 }

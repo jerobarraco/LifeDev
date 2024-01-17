@@ -131,6 +131,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr;
+	UDiags* Diags = nullptr;
 };
 

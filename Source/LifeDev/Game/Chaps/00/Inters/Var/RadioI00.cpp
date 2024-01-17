@@ -38,8 +38,8 @@ void ARadioI00::Trigger_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
-	Dialogs->OnShow.AddUniqueDynamic(this, &ARadioI00::DialogShown);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ARadioI00::DialogDone);
+	Diags->OnShow.AddUniqueDynamic(this, &ARadioI00::DialogShown);
+	Diags->OnDone.AddUniqueDynamic(this, &ARadioI00::DialogDone);
 	// fallback in case the dialog fails. max seconds.
 	World->GetTimerManager().SetTimer(DiagDoneHandle, this, &ARadioI00::DialogDone, 120);
 
@@ -53,8 +53,8 @@ void ARadioI00::DialogShown(const FDialog& Diag) {
 }
 
 void ARadioI00::DialogDone() {
-	Dialogs->OnDone.RemoveAll(this);
-	Dialogs->OnShow.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
+	Diags->OnShow.RemoveAll(this);
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;

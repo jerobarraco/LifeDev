@@ -137,7 +137,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr;
+	UDiags* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* Flashback = nullptr;
 };

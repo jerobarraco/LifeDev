@@ -49,11 +49,11 @@ public:
 	void DeInit();
 	virtual void DeInit_Implementation();
 
-	// enables or disables char input. and stays like that even though of dialogs.
+	// enables or disables char input. and stays like that even though of Diags.
 	UFUNCTION(BlueprintCallable)
 	void SetCharInputEnabled(bool Enabled);
 
-	// disables input temporarily, enables only if char is enabled. used for dialogs.
+	// disables input temporarily, enables only if char is enabled. used for Diags.
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
 	
@@ -83,7 +83,7 @@ public:
 
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Dialogs = nullptr;
+	UDiags* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

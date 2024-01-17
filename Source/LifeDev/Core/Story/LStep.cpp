@@ -23,8 +23,8 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::Stop_Implementation() {
-	if (IsValid(Dialogs)) {
-		Dialogs->OnDone.RemoveAll(this);
+	if (IsValid(Diags)) {
+		Diags->OnDone.RemoveAll(this);
 	}
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
@@ -65,16 +65,16 @@ void ALStep::PostWait_Implementation() {
 void ALStep::StartDialogs() {
 	if (DlgId.IsNone()) return;
 
-	Dialogs->AddId(DlgId);
+	Diags->AddId(DlgId);
 	FinishAfterDlgs();
 }
 
 void ALStep::FinishAfterDlgs() {
-	if (!Dialogs->GetIsShowing()) {
+	if (!Diags->GetIsShowing()) {
 		Finish();
 		return;
 	}
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
+	Diags->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 }
 
 void ALStep::RemoveItems() {
@@ -109,17 +109,17 @@ void ALStep::BeginPlay() {
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
-	Dialogs = World->GetSubsystem<UDiags>();
+	Diags = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = UFlags::Instance(World);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Dialogs)) {
-		Dialogs->OnDone.RemoveAll(this);
+	if (IsValid(Diags)) {
+		Diags->OnDone.RemoveAll(this);
 	}
-	Dialogs = nullptr;
+	Diags = nullptr;
 
 	if (IsValid(Inventory)) {
 		Inventory->OnMod.RemoveAll(this);
@@ -140,7 +140,7 @@ void ALStep::PostLoad() {
 		WaitTime = FadeTime; 
 	}
 	
-	// avoid finishing earlier if we have dialogs
+	// avoid finishing earlier if we have Diags
 	if (!DlgId.IsNone()) {
 		FinishPostWait = false;
 	}
@@ -148,6 +148,6 @@ void ALStep::PostLoad() {
 
 void ALStep::Finish_Implementation() {
 	// avoid possible double triggering.
-	Dialogs->OnDone.RemoveDynamic(this, &ALStep::Finish);
+	Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
 	Super::Finish_Implementation();
 }

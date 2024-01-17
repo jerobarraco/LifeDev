@@ -18,7 +18,7 @@ ASpotI00::ASpotI00():Super() {
 
 EItemUseResult ASpotI00::TryUseItem_Implementation(const FName& Name) {
 	if (Name == LDConsts::Items::Bra) {
-		Dialogs->AddId("IS_C0_C03");
+		Diags->AddId("IS_C0_C03");
 		return EItemUseResult::BAD_HANDLED;
 	}
 	return Super::TryUseItem_Implementation(Name);

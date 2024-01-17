@@ -38,8 +38,8 @@ void ALStepC1S002::Start_Implementation() {
 }
 
 void ALStepC1S002::SpawnGhosts() {
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
-	Dialogs->AddId("C1S2.0"); // "i'll use the tape"
+	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
+	Diags->AddId("C1S2.0"); // "i'll use the tape"
 	
 	Ghosts = Cast<AGhosts>(GetWorld()->SpawnActor(AGhosts::StaticClass()));
 	if (IsValid(Ghosts)) {
@@ -52,7 +52,7 @@ void ALStepC1S002::SpawnGhosts() {
 }
 
 void ALStepC1S002::StartShake() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
@@ -66,12 +66,12 @@ void ALStepC1S002::StartShake() {
 }
 
 void ALStepC1S002::ShakeStarted() {
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
-	Dialogs->AddId("C1S2.1"); // it got worse
+	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
+	Diags->AddId("C1S2.1"); // it got worse
 }
 
 void ALStepC1S002::StopShake() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 	FTimerHandle H;
 	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::DestroyGhosts, 2);
 }

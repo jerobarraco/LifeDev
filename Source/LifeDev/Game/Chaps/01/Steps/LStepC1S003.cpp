@@ -47,11 +47,11 @@ void ALStepC1S003::NPCShow() {
 }
 
 void ALStepC1S003::NPCDiagStart() {
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALStepC1S003::NPCDiagStop);
-	Dialogs->AddId("C1S3.0");
+	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S003::NPCDiagStop);
+	Diags->AddId("C1S3.0");
 }
 
 void ALStepC1S003::NPCDiagStop() {
-	Dialogs->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveAll(this);
 	Finish();
 }

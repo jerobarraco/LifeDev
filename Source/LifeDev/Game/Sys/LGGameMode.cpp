@@ -79,9 +79,9 @@ bool ALGGameMode::LoadChapter() {
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
 	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* const Diags = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Dialogs->SetData(Diags, Chars, Seqs);
+	Diags->SetData(DiagData, Chars, Seqs); // TODO
 	return true;
 }
 
@@ -149,8 +149,8 @@ void ALGGameMode::Init_Implementation() {
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	
 	/// Dialogs
-	Dialogs = World->GetSubsystem<UDiags>();
-	Dialogs->Init();
+	Diags = World->GetSubsystem<UDiags>();
+	Diags->Init();
 
 	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
 	if (IsValid(DiagManager)) {
@@ -201,8 +201,8 @@ void ALGGameMode::Init_Implementation() {
 	
 	/// others' init finalized, finish my init
 	// start listening only here. in case the previous init might trigger a false one
-	Dialogs->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
-	Dialogs->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
+	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
+	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 
 	// start by disabling the input
@@ -232,12 +232,12 @@ void ALGGameMode::DeInit_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	
-	if (IsValid(Dialogs)) {
-		Dialogs->OnShow.RemoveAll(this);
-		Dialogs->OnDone.RemoveAll(this);
-		Dialogs->DeInit();
+	if (IsValid(Diags)) {
+		Diags->OnShow.RemoveAll(this);
+		Diags->OnDone.RemoveAll(this);
+		Diags->DeInit();
 	}
-	Dialogs = nullptr;
+	Diags = nullptr;
 
 	if (IsValid(Inventory)) {
 		Inventory->DeInit();
