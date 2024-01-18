@@ -15,7 +15,8 @@ ALMusicMan::ALMusicMan():Super() {
 	Rain = CreateDefaultSubobject<UCSounder>(TEXT("Rain"));
 	Rain->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Env/Rain/Rain01_S.Rain01_S"));
+		CSnd(TEXT("/Game/LifeDev/Game/Env/Rain/Rain.Rain"));
+		// CSnd(TEXT("/Game/LifeDev/Game/Env/Rain/Rain01_S.Rain01_S"));
 	Rain->SetSound(CSnd.Object);
 	Rain->SetAutoActivate(false);
 	Rain->bAutoManageAttachment = true;
