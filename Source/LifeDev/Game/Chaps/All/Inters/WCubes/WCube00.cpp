@@ -31,7 +31,7 @@ AWCube00::AWCube00():Super() {
 	StateNum = 6;
 	Anim->IsAdditive = false;
 	Anim->Duration = 1;
-	// all the faces
+	// all the faces. order is important to match the letters' order
 	Trans = {
 		FTransform::Identity,
 
