@@ -24,14 +24,12 @@ void ALStepEnd::OpenLevel() {
 }
 
 void ALStepEnd::Start_Implementation() {
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
 	Super::Start_Implementation();
 	FB->SetMin(0);
 	FB->SetVal(0);
-	
-	FTimerHandle H;
-	UWorld* const World = GetWorld();
-	if (!World) return;
-	World->GetTimerManager().SetTimer(H, this, &ALStepEnd::OpenLevel, WaitTime);
-
-	ALMusicMan::FadeS(World, false);
+	World->GetTimerManager().SetTimerForNextTick(this, &ALStepEnd::OpenLevel);
+	// ALMusicMan::FadeS(World, false); // probably unnecessary here. since we already changed levels
 }
