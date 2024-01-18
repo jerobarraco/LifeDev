@@ -5,11 +5,12 @@
 
 #include "Flashback.generated.h"
 
-class UCAnimator;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, float, Value);
 
+class UCAnimator;
+
 // Base subsystem for flashbacks
-UCLASS(Blueprintable, Category="LifeDev")
+UCLASS(Blueprintable, Category="LifeDev", DefaultConfig, Config=LifeDev)
 class LIFEDEV_API UFlashback: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
@@ -60,7 +61,7 @@ public:
 	virtual TStatId GetStatId() const override;
 
 	// default flashback anim speed
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
 	float AnimSpeed = 20.f;
 	
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)

@@ -26,7 +26,7 @@ class UCLNoiser;
 // TODO consider moving the settings to another component
 
 // base class for the character
-UCLASS(Config=LifeDev, DefaultConfig)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALChar : public ACharacter {
 	GENERATED_BODY()
 
