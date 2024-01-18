@@ -81,7 +81,7 @@ bool ALGGameMode::LoadChapter() {
 	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
 	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Diags->SetData(DiagData, Chars, Seqs); // TODO
+	Diags->SetData(DiagData, Chars, Seqs);
 	return true;
 }
 
@@ -218,7 +218,6 @@ void ALGGameMode::Init_Implementation() {
 	FTimerHandle Handle;
 	// wait for loading
 	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
-	MusicMan->SetEnviron(true);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -345,21 +344,24 @@ void ALGGameMode::StartChapter() {
 	if (ChapterId <0 || ChapterId >= LDConsts::Feats::ChapFeatN ||
 		!Settings->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
-		StartNextChapter();
+		StartNextChapter(); // note this is recursive but there ain't that many chapters
 		return;
 	}
 
+	/// finishing previous one
+	Settings->SaveGame();
+
+	/// load new one
 	if (!LoadChapter()) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
 		return;
 	}
 
-	Settings->SaveGame();
-
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	SetTempInputEnabled(false);
 	
 	Story->StartSequence(Chapter.Steps);
+	MusicMan->SetEnviron(true);
 
 	FTimerHandle Handle2;
 	FTimerDelegate Delegate2;
