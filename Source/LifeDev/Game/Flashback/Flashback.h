@@ -18,15 +18,22 @@ public:
 
 	static UFlashback* Instance(UWorld* W);
 
+	// returns the instant value (if it's animating this is the value right now).
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	float GetVal() const { return Val; }
+	FORCEINLINE float GetVal() const { return Val; }
 
+	// returns the end value (if it's animating this is the value where it want's to go).
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetValTo() const { return AnimTo; }
+	
 	// modifies the target value by an offset "by".
 	// this will work ok even if it's currently animating the value
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void ModVal(float By, float Duration = -1.f) {
 		if (FMath::IsNearlyZero(By)) return;
-		SetVal(Val+By, Duration);
+		// use animTo instead of val, to ensure the By accumulates with the target value
+		// important when skipping dialogs fast
+		SetVal(AnimTo+By, Duration);
 	}
 
 	// sets the target value to the "new" value
@@ -51,13 +58,14 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
+
+	// default flashback anim speed
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float AnimSpeed = 20.f;
 	
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
 	FFBOnChange OnChange;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	float AnimSpeed = 20.f;
-	
 	inline static bool Debug = false;
 
 protected:
