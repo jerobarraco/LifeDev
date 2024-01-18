@@ -58,16 +58,26 @@ void ALMusicMan::SetEnvironFB(float V) {
 }
 
 void ALMusicMan::Fade_Implementation(bool In) {
+	UWorld* const W = GetWorld();
+	if (!W) return;
+
 	// don't fade in if the music is not enabled.
 	// only needs to be done in the fade call, so that the actual music is set in the player.
 	// in case someone activates the music after the chapter has started.
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
-	if (In && ! ULSettings::GetFeatS(GetWorld(), EFeat::S_MUSIC)) return;
+	if (In && ! ULSettings::GetFeatS(W, EFeat::S_MUSIC)) return;
 	Super::Fade_Implementation(In);
 
 	// force fb to 0 on the environ when there's no music playing 
 	if (!In) {
 		SetEnvironFB(0);
+	} else {
+		// reset the flashback when starting. to make sure it's at the right point.
+		// only done when fading in to avoid working extra.
+		UFlashback* const Flashback = UFlashback::Instance(W);
+		if (Flashback) {
+			SetIntensity(Flashback->GetVal());
+		}
 	}
 }
 
