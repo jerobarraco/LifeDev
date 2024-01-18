@@ -50,6 +50,13 @@ void ALMusicMan::SetEnviron(bool On) {
 	Environ->Fade(On);
 }
 
+void ALMusicMan::SetEnvironFB(float V) {
+	static const FName NFB("FB");
+	// calling setsafeparam is safe since it will check if the environ itself is playing.
+	// that way i don't need to check for the S_ENV flag here either
+	Environ->SetSafeParamFloat(NFB, V);
+}
+
 void ALMusicMan::Fade_Implementation(bool In) {
 	// don't fade in if the music is not enabled.
 	// only needs to be done in the fade call, so that the actual music is set in the player.
@@ -57,21 +64,22 @@ void ALMusicMan::Fade_Implementation(bool In) {
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
 	if (In && ! ULSettings::GetFeatS(GetWorld(), EFeat::S_MUSIC)) return;
 	Super::Fade_Implementation(In);
+
+	// force fb to 0 on the environ when there's no music playing 
+	if (!In) {
+		SetEnvironFB(0);
+	}
 }
 
 void ALMusicMan::SetIntensity_Implementation(float V) {
 	Super::SetIntensity_Implementation(V);
 
-	// temporary. force fb to 0 if the music is not playing.
+	// force fb to 0 if the music is not playing.
 	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
-	// calling setsafeparam is safe since it will check if the environ itself is playing.
-	// that way i don't need to check for the S_ENV flag here either 
 	if (!Player->IsPlaying()) {
 		V = 0;
 	}
-
-	static FName NFB = "FB";
-	Environ->SetSafeParamFloat(NFB, V);
+	SetEnvironFB(V);
 }
 
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
@@ -131,7 +139,7 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
 	if (Feat == EFeat::S_MUSIC) {
 		const bool IsPlaying = Player->IsPlaying();
-		// start/stop only if it was stopped/started
+		// start/stop only if it was stopped/started. avoid double fade
 		if (bEnabled){
 			if (!IsPlaying) {
 				Fade(true);

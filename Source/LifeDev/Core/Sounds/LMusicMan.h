@@ -29,9 +29,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(bool On);
 
+	// the flashback value for the Environ
+	UFUNCTION(BlueprintCallable)
+	void SetEnvironFB(float V);
+
 	virtual void Fade_Implementation(bool In) override;
 	virtual void SetIntensity_Implementation(float V) override;
-	
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
