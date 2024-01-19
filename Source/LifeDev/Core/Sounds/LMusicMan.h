@@ -18,6 +18,9 @@ public:
 	ALMusicMan();
 
 	UFUNCTION(BlueprintCallable)
+	static ALMusicMan* Instance(UWorld* W);
+	
+	UFUNCTION(BlueprintCallable)
 	static void SetRainS(UWorld* W, bool Play);
 
 	UFUNCTION(BlueprintCallable)

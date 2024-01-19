@@ -38,6 +38,12 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->TimeEnd = 0;
 }
 
+ALMusicMan* ALMusicMan::Instance(UWorld* W) {
+	// Might be faster easier to get it from the gamemode
+	ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
+	return GM ? GM->MusicMan : nullptr;
+}
+
 void ALMusicMan::SetRain(bool Play) {
 	if (!IsValid(Rain)) return;
 	Rain->Fade(Play);
@@ -94,18 +100,16 @@ void ALMusicMan::SetIntensity_Implementation(float V) {
 }
 
 void ALMusicMan::SetRainS(UWorld* W, bool Play) {
-	// Might be faster easier to get it from the gamemode
-	ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
-	if (!GM) return;
-	GM->MusicMan->SetRain(Play);
+	ALMusicMan* const MM = Instance(W);
+	if (!MM) return;
+	MM->SetRain(Play);
 	// ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 }
 
 void ALMusicMan::FadeS(UWorld* W, bool In) {
-	// Might be faster easier to get it from the gamemode
-	ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
-	if (!GM) return;
-	GM->MusicMan->Fade(In);
+	ALMusicMan* const MM = Instance(W);
+	if (!MM) return;
+	MM->Fade(In);
 }
 
 void ALMusicMan::BeginPlay() {
