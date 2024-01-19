@@ -31,13 +31,13 @@ ALPuzzle::ALPuzzle():Super() {
 		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
 			CSprTexture(TEXT("/Engine/EditorResources/S_Actor")); // S_Solver
 		static const FName ID_Info = TEXT("Puzzle");
-		static const FText NAME_Info = NSLOCTEXT("SpriteCategory", "Puzzle", "Puzzle");
+		static const FText ID_Name = NSLOCTEXT("SpriteCategory", "Puzzle", "Puzzle");
 
 		SpriteComponent->SetupAttachment(Root);
 		SpriteComponent->Sprite = CSprTexture.Get();
 		// SpriteComponent->Sprite = CSprText.Object;
 		SpriteComponent->SpriteInfo.Category = ID_Info;
-		SpriteComponent->SpriteInfo.DisplayName = NAME_Info;
+		SpriteComponent->SpriteInfo.DisplayName = ID_Name;
 		SpriteComponent->bIsScreenSizeScaled = true;
 	}
 	// setting spatially loaded to false could break datalayer usage which is critical
@@ -51,20 +51,10 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 	for (AInteract* const I: Inters) {
 		ALInteract* const LI = Cast<ALInteract>(I);
 		if (!IsValid(LI)) continue;
-
+		// better to override the whole array than having issues down the line.
+		// it also allows to remove stuff.
 		LI->UseItemDlgs = Dlgs;	
 	}
-	
-	/* better to override the whole array than having issues down the line.
-	 * it also allows to remove stuff.
-	// reserve
-	LI->UseItemDlgs.Reserve(LI->UseItemDlgs.Num()+Num);
-	// add each dlg
-	for (FName K:Keys) {
-		const FName* pV = Dlgs.Find(K);
-		if (!pV) continue;
-		LI->UseItemDlgs.Add(K, *pV);
-	}*/
 }
 
 void ALPuzzle::SetStates(const TArray<int32>& States) {
@@ -103,7 +93,7 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	if (Diags) Diags->AddId(DoneDlg);
 	if (FB) FB->ModVal(DoneFB);
 	if (Flags) Flags->Mod(DoneFlag, 1);
-	if (Items) Items->Mod(DoneItem, 1);
+	if (Inventory) Inventory->Mod(DoneItem, 1);
 	if (!DoneStep.IsNone() && Story) Story->StartNext(DoneStep);
 
 	if (IsValid(Interact)) {
@@ -122,7 +112,7 @@ void ALPuzzle::BeginPlay() {
 	FB = UFlashback::Instance(W);
 	Flags = UFlags::Instance(W);
 	Diags = UDiags::Instance(W);
-	Items = UInventory::Instance(W);
+	Inventory = UInventory::Instance(W);
 
 	CPuzzle->OnDone.AddUniqueDynamic(this, &ALPuzzle::Done);
 	CPuzzle->OnUpdate.AddUniqueDynamic(this, &ALPuzzle::Update);
@@ -138,6 +128,6 @@ void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
 	FB = nullptr;
 	Diags = nullptr;
-	Items = nullptr;
+	Inventory = nullptr;
 	Story = nullptr;
 }

@@ -86,7 +86,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Items = nullptr;
+	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UStory* Story = nullptr;
 };
