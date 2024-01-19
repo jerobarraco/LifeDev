@@ -50,4 +50,5 @@ void ALStepC2S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 	Inventory->Ensure(LDConsts::Items::Batts);
 	Inventory->Ensure(LDConsts::Items::Card2);
+	Inventory->Ensure(LDConsts::Items::Poem2);
 }
