@@ -1,5 +1,13 @@
-* disable debug flag on settings
 * quick check all is good (editor play)
+
+* disable debug flag on settings
+* set current chapter to 0
+* update project settings
+* disable test layer
+** !initially loaded & !visible. 
+** unchecked
+** initial state : Unloaded
+** Datalayer type : Runtime 
 
 Linux
 * make test build
