@@ -13,7 +13,7 @@ class UFlashback;
 
 // Base class for LPuzzles
 UCLASS(Blueprintable, BlueprintType)
-class INTERACT_API ALPuzzle: public AActor {
+class LIFEDEV_API ALPuzzle: public AActor {
 	GENERATED_BODY()
 
 public:

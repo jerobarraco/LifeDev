@@ -13,7 +13,7 @@ class ULSettings;
 
 // a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)
-class JUTILS_API ULFeatCheck: public UUserWidget {
+class LIFEDEV_API ULFeatCheck: public UUserWidget {
 	GENERATED_BODY()
 
 public:
