@@ -12,7 +12,7 @@ set CONFIG=Shipping
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
-call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% -clean -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/"
+call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% -clean -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/" -AdditionalCookerOptions="-cookprocesscount=4"
 popd
 exit /b 0
 :: archive does nothing that staging does.
