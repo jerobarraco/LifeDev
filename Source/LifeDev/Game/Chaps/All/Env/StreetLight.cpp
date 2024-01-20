@@ -6,6 +6,7 @@
 #include "Components/AudioComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
 #include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
@@ -14,7 +15,12 @@ AStreetLight::AStreetLight():Super() {
 		CMesh (TEXT("/Game/LifeDev/Game/Arch/Neighborhood/StreetLight01.StreetLight01"));
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
 	Mesh->SetStaticMesh(CMesh.Object);
-
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+			CCurve (TEXT("/JUtils/Curves/Noise_C.Noise_C"));
+	if (CCurve.Succeeded()) {
+		Anim->Curve = CCurve.Object;
+	}
+	
 	Interact->SetRelativeLocation(FVector(17.5,-17.5,75));
 	Interact->SetBoxExtent(FVector(17.5,17.5,75));
 

@@ -80,7 +80,6 @@ ATv00::ATv00():Super() {
 	AnimCrt->MatVEnd = FLinearColor(5, 5, 5, 1);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurveMat(TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
-		// CCurveMat(TEXT("/JUtils/Curves/Noise_C.Noise_C"));
 	AnimCrt->Curve = CCurveMat.Object;
 	AnimCrt->Duration = 2; // initial duration
 
