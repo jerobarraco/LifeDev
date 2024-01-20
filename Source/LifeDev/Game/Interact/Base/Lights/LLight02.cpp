@@ -28,7 +28,7 @@ ALLight02::ALLight02():Super() {
 	Light->SetInnerConeAngle(10);
 	Light->SetOuterConeAngle(40);
 	ALLight02::SetMobility(EComponentMobility::Static);
-	UseAnim = true;
+	UseAnim = true; // restore anim set by Super::SetMobility
 }
 
 void ALLight02::SetMobility(EComponentMobility::Type Mobility) {
