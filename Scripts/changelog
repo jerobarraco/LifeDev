@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #git log 7706dc84...796f6d28 > changelog_0.2.txt
 git log --pretty=oneline --abbrev-commit $2...$1 > log.txt
 

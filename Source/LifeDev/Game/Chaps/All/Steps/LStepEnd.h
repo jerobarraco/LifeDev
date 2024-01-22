@@ -10,7 +10,6 @@
 UCLASS(Blueprintable, BlueprintType)
 class ALStepEnd : public ALStep {
 	GENERATED_BODY()
-
 	
 public:
 	ALStepEnd();
