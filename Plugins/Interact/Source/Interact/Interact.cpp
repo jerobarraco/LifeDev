@@ -40,7 +40,7 @@ AInteract::AInteract():Super() {
 bool AInteract::TryTrigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(this));
 	if (Locked) {
-		TriggerLocked();
+		TriggerLockWrap();
 		return false;
 	}
 
@@ -98,8 +98,6 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::TriggerLocked_Implementation() {
 	PlaySFX(SFX_Locked);
-
-	OnTriggerLocked.Broadcast();
 }
 
 void AInteract::SetInteractAutoBounds() {
