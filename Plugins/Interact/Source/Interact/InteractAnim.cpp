@@ -77,6 +77,7 @@ void AInteractAnim::AnimPlay() {
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();
 		Anim->TEnd = Trans[State%Trans.Num()];
 	}
+
 	// not calling PlaySet on purpose. since that could break things like the light.
 	// or if a child wants to do something weird.
 	Anim->Activate(true);

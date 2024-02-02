@@ -2,7 +2,7 @@
 
 #include "LStepC1S002.h"
 
-#include "DefaultCameraShakeBase.h"
+// #include "DefaultCameraShakeBase.h"
 #include "Camera/CameraComponent.h"
 
 #include "Diags/Diags.h"
@@ -26,7 +26,8 @@ ALStepC1S002::ALStepC1S002():Super() {
 	
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
 		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B")); // camshake doesn't work with the ".CamShake_B" ending 
-	ShakeClass = CShake.Succeeded()? CShake.Class.Get() : UDefaultCameraShakeBase::StaticClass();
+	ShakeClass = CShake.Succeeded() ? CShake.Class.Get() : ShakeClass;
+	// UDefaultCameraShakeBase::StaticClass(); // disappeared from ue5.4 without warning
 
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
