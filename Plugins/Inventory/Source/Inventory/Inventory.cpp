@@ -27,7 +27,10 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		}
 
 		Item = AddNew(Name);
-		if (!Item) return false;
+		if (!Item) {
+			UE_LOG(LogInventory, Warning, TEXT("Failed to create item object for name=%s"), *Name.ToString());
+			return false;
+		}
 		
 		// select the new one if nothing was selected
 		if (Selected.IsNone()) {
@@ -58,6 +61,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 
 	// notify the caller that we haven't changed anything. also avoid triggering an onMod 
 	if (CurDiff == 0) {
+		UE_LOG(LogInventory, Warning, TEXT("Item unchanged. Diff is 0. Maybe it has reached the maximum. Name=%s"), *Name.ToString());
 		return false;
 	}
 	

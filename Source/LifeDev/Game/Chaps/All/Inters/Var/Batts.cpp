@@ -36,7 +36,9 @@ ABatts::ABatts():Super() {
 
 	/// Anims
 	AnimFade->Meshes.AddUnique(MeshB);
+	AnimFade->SetNewMat();
 
+	// set static by default
 	SetEnabled(false);
 	ABatts::SetMobility(EComponentMobility::Static);
 }
