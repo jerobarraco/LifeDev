@@ -4,7 +4,6 @@
 #include "JMiscUtils.h"
 #include "CoreGlobals.h"
 #include "EnhancedInputSubsystems.h"
-#include "InputMappingContext.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
@@ -105,6 +104,7 @@ void UJMiscUtils::ShowUI(bool Show, UWorld* World, UWidget* Focus, bool SetPause
 }
 
 void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
+	// don't use [&Task, &Done] since that will break on calling BPAsync multiple times
 	Async((EAsyncExecution) Exec, [Task, Done]
 	{
 		Task.ExecuteIfBound();
