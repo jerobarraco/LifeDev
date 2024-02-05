@@ -36,13 +36,16 @@ ABasin00::ABasin00():Super() {
 	Water->SetUseAutoManageAttachment(true);
 	Water->SetRelativeLocation(FVector(17,10,18));
 
+	SFX->SetRelativeLocation(FVector(10,10,0));
 	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
+	SND_Water->SetupAttachment(Water);
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
 		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
 	SND_Water->SetSound(CWaterSnd.Object);
 	SND_Water->SetAutoActivate(false);
 	SND_Water->bAutoManageAttachment = true;
-	SFX->SetRelativeLocation(FVector(10,10,0));
+	
+	
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
 	Sig->IsOffIfOffscreen = true;
@@ -53,8 +56,9 @@ ABasin00::ABasin00():Super() {
 
 void ABasin00::BeginPlay() {
 	Super::BeginPlay();
+	// don't do this. it will disable the interact and never come back
 	// Sig->CompsHide.AddUnique(GetRootComponent());
-	// don't do this. it will disable the interact and never come back 
+	// Disable water when not looking at it
 	Sig->CompsHide.AddUnique(Water);
 }
 
