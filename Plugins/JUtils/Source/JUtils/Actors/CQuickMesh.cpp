@@ -7,10 +7,13 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	Super::SetComponentTickEnabled(false);
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
-	
+
+	// attempt to optimize nanite shader complexity
+	// works only with r.OptimizeWPO 1
 	bEvaluateWorldPositionOffset = false;
 	bEvaluateWorldPositionOffsetInRayTracing = false;
-	
+	WorldPositionOffsetDisableDistance = 1;
+
 	SetQuickCollisionEnabled(false);
 	SetCastAllShadows(false);
 }
