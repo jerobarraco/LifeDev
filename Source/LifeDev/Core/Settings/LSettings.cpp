@@ -60,7 +60,7 @@ void ULSettings::SaveGame() {
 
 	IsSaving = true;
 
-	Save->ReadSubsystems();
+	Save->ReadSubsystems(GetWorld());
 
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
@@ -91,7 +91,7 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 		return; // new game will trigger saveready
 	}
 
-	Save->WriteSubsystems();
+	Save->WriteSubsystems(GetWorld());
 	
 	UE_LOG(LogLSettings, Log, TEXT("Save load success"));
 	OnSaveReady.Broadcast();

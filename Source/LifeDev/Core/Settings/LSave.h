@@ -7,6 +7,7 @@
 #include "LSave.generated.h"
 
 // baseclass for lifedev savegame
+// this class can't access the world 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSave : public USaveGame {
 	GENERATED_BODY()
@@ -16,10 +17,10 @@ public:
 	void Reset();
 
 	UFUNCTION(BlueprintCallable)
-	void WriteSubsystems();
+	void WriteSubsystems(UWorld* const W);
 	
 	UFUNCTION(BlueprintCallable)
-	void ReadSubsystems();
+	void ReadSubsystems(UWorld* const W);
 	
 	// the current chapter.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

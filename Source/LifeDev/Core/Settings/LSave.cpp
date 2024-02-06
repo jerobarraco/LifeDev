@@ -12,11 +12,11 @@ void ULSave::Reset() {
 	ChapterID = ULSysSettings::Get()->StartChap;
 	SInventory.Empty();
 	SFlags.Empty();
-	WriteSubsystems();
 }
 
-void ULSave::WriteSubsystems() {
-	UWorld* const W = GetWorld();
+// TODO fix issue with cards not being restored (having count of -1)
+
+void ULSave::WriteSubsystems(UWorld* const W) {
 	if (!W) return;
 
 	UFlags* const Flags = UFlags::Instance(W);
@@ -41,8 +41,7 @@ void ULSave::WriteSubsystems() {
 	}
 }
 
-void ULSave::ReadSubsystems() {
-	UWorld* const W = GetWorld();
+void ULSave::ReadSubsystems(UWorld* const W) {
 	if (!W) return;
 
 	UFlags* const Flags = UFlags::Instance(W);
@@ -56,13 +55,12 @@ void ULSave::ReadSubsystems() {
 		SInventory.Empty(Items.Num());
 		TArray<FName> Keys;
 		Items.GetKeys(Keys);
-		for (const FName N: Keys) {
+		for (const FName& N: Keys) {
 			const FItem* const pI = Items.Find(N);
 			if (!pI) continue;
 			const FItem I = *pI;
 			SInventory.Add(N, I.Count);
-			UE_LOG(LogTemp, Log, TEXT("ULSave::ReadSub. Item=%s count=%i"), *N.ToString(), I.Count);
-
+			UE_LOG(LogTemp, Log, TEXT("ULSave::ReadSubs. Item=%s count=%i"), *N.ToString(), I.Count);
 		}
 	}
 }
