@@ -20,7 +20,7 @@ AStep::AStep():Super() {
 
 	Cam = CreateDefaultSubobject<UCameraComponent>(TEXT("Cam"));
 	Cam->SetupAttachment(Root);
-	// Cam->SetComponentTickEnabled(false);
+	Cam->SetComponentTickEnabled(false);
 	CamTarget = this;
 }
 
@@ -65,6 +65,9 @@ void AStep::Start_Implementation() {
 	// teleport the character
 	// teleport before blending the camera. so they work well together.
 	DoTeleport();
+
+	// enable cam tick only if it's the current target and only when the step starts
+	if (CamTarget == this && IsValid(Cam)) Cam->SetComponentTickEnabled(true);
 
 	// blend before the wait to avoid weird issues.
 	// if you actually wanna see the blend you may not want the fade anyway. fade and wait are weird combination. i think.
@@ -147,11 +150,13 @@ void AStep::UpdateCamEnabled() const {
 	Cam->SetActive(Enabled);
 	Cam->SetHiddenInGame(!Enabled);
 	Cam->SetVisibility(Enabled);
-	Cam->SetComponentTickEnabled(Enabled);
+	// the tick is enabled on start. only if needed
 }
 
 void AStep::Stop_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("Stopping step '%s'"), *Name.ToString());
+	// force disable since it's not wise to trust what happened before
+	if (IsValid(Cam)) Cam->SetComponentTickEnabled(false);
 }
 
 void AStep::Finish_Implementation() {
