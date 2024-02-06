@@ -118,6 +118,12 @@ bool UInventory::Rem(const FName& Name) {
 	return true;
 }
 
+bool UInventory::Clear(int32 NumReserve) {
+	Items.Empty(NumReserve);
+	SetSelected(GetNextKey());
+	return true;
+}
+
 bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	if (!IsValid(DT)) return false;
 

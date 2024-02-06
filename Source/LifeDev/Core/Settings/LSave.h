@@ -15,8 +15,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Reset();
 
+	UFUNCTION(BlueprintCallable)
+	void WriteSubsystems();
+	
+	UFUNCTION(BlueprintCallable)
+	void ReadSubsystems();
+	
+	// the current chapter.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ChapterID = -1;
+
+protected:
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TMap<FName, float> SFlags;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TMap<FName, int32> SInventory;
 };
 
 // TODO load inventory and save inventory. and flags

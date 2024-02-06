@@ -37,6 +37,9 @@ public:
 	// removes an item by modding it with negative quantity.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Rem(const FName& Name);
+	// removes all items. but does not trigger any onMod. used for savegame. be careful.
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
+	bool Clear(int32 NumReserve = 0);
 	
 	// uses an item. removes it from the inventory if needed. returns success.
 	// it won't trigger the manager, you need to do it manually.

@@ -23,7 +23,7 @@ ULSettings* ULSettings::Instance(UWorld* World) {
 void ULSettings::NewGame() {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
-	Save->Reset();
+	Save->Reset(); // does write subsystem
 
 	SaveGame();
 }
@@ -60,6 +60,8 @@ void ULSettings::SaveGame() {
 
 	IsSaving = true;
 
+	Save->ReadSubsystems();
+
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
 	UGameplayStatics::AsyncSaveGameToSlot(Save, SaveSlot, 0, OnSaveGameDone);
@@ -85,9 +87,11 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 	if (!Save) {
 		// If file does not exist try create a new one
 		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one"));
-		NewGame();
+		NewGame(); // does write subsystem (then read)
 		return; // new game will trigger saveready
 	}
+
+	Save->WriteSubsystems();
 	
 	UE_LOG(LogLSettings, Log, TEXT("Save load success"));
 	OnSaveReady.Broadcast();
