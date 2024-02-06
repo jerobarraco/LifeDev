@@ -31,7 +31,7 @@ void ULSettings::NewGame() {
 void ULSettings::LoadGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
 	if (IsSaving) {
-		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy"));
+		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy."));
 		return;
 	}
 	IsSaving = true;
@@ -45,7 +45,11 @@ void ULSettings::LoadGame() {
 
 void ULSettings::SaveGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
-	if (IsSaving) return;
+	if (IsSaving) {
+		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted, save system is busy."));
+		return;
+	}
+
 	IsSaving = true;
 
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
@@ -61,20 +65,23 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 	} else {
 		UE_LOG(LogLSettings, Warning, TEXT("Savegame save failed."));
 	}
+
+	OnSaveReady.Broadcast();
 }
 
 void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame) {
 	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
 
-	if (Save) {
-		UE_LOG(LogLSettings, Log, TEXT("Save load success"));
-		return;
+	if (!Save) {
+		// If file does not exist try create a new one
+		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one"));
+		NewGame();
+		return; // new game will trigger saveready
 	}
-
-	// If file does not exist try create a new one
-	UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one"));
-	NewGame();
+	
+	UE_LOG(LogLSettings, Log, TEXT("Save load success"));
+	OnSaveReady.Broadcast();
 }
 
 int32 ULSettings::CurrentChapter() const {
@@ -107,8 +114,8 @@ bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
 
 void ULSettings::Init() {
 	IsSaving = false;
-	LoadGame();
 	ResetFeats();
+	LoadGame();
 }
 
 void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {

@@ -87,6 +87,7 @@ bool ALGGameMode::LoadChapter() {
 
 void ALGGameMode::Init_Implementation() {
 	// this is the place were we are going to be initializing everything.
+	Settings->OnSaveReady.RemoveAll(this);
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
@@ -99,21 +100,7 @@ void ALGGameMode::Init_Implementation() {
 	
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (!IsValid(SysSettings)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. cant continue."));
-		return;
-	}
-
-	
-	//TODO implement save/load from ui. for now we always start a new one.
-	// that will have to happen on the intro level on another game mode
-	Settings = Instance->GetSubsystem<ULSettings>();
-	if (!IsValid(Settings)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
-		return;
-	}
-	if (!IsValid(Settings->Save)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Creating a new one."));
-		Settings->NewGame();
+		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
 		return;
 	}
 
@@ -223,9 +210,33 @@ void ALGGameMode::Init_Implementation() {
 
 void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
+	
+	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+	
+	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (!IsValid(Instance)){
+		UE_LOG(LogLGameMode, Warning, TEXT("No valid instance found"));
+		return;
+	}
+	
+	//TODO implement save/load from ui. for now we always start a new one.
+	// that will have to happen on the intro level on another game mode
+	Settings = Instance->GetSubsystem<ULSettings>();
+	if (!IsValid(Settings)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
+		return;
+	}
+	
+	if (!IsValid(Settings->Save)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create"));
+		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
+		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
+		return;
+	}
 
+	// manually go to init if it's already loaded.	
 	Init();
-	// SetDynRes(); // can break the game and it's unused anyway
 }
 
 void ALGGameMode::DeInit_Implementation() {

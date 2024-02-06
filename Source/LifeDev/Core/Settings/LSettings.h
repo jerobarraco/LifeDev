@@ -12,6 +12,7 @@ class ULSave;
 class ULGUSettings;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveReady);
 
 // This class allows to interact with the game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
@@ -50,6 +51,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
     ULSave* Save = nullptr;
 
+	// triggered after save or load. even on error.
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnSaveReady OnSaveReady;
+	
 	// triggered when one of the feat is updated to be enabled or disabled
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FOnFeatUpdate OnFeatUpdate;
