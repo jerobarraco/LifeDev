@@ -45,8 +45,16 @@ void ULSettings::LoadGame() {
 
 void ULSettings::SaveGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
+
+	if (!Save) {
+		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted. No savegame to save."));
+		OnSaveReady.Broadcast(); // technically done. important or objects might get stuck
+		return;
+	}
+	
 	if (IsSaving) {
 		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted, save system is busy."));
+		// not triggering onSaveReady here since there must be something else in queue.
 		return;
 	}
 
@@ -66,6 +74,7 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 		UE_LOG(LogLSettings, Warning, TEXT("Savegame save failed."));
 	}
 
+	// trigger on both cases. important or objects might get stuck.
 	OnSaveReady.Broadcast();
 }
 

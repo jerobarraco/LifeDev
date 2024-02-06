@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIntroUIDone);
 UCLASS(Blueprintable)
 class LIFEDEV_API UIntroUI : public UUserWidget {
 	GENERATED_BODY()
+
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}

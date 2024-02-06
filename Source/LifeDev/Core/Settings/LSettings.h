@@ -25,10 +25,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool GetFeatS(UWorld* World, EFeat Feat);
 
+	// overrides current save with a new game
 	UFUNCTION(BlueprintCallable)
 	void NewGame();
+	// loads a game, or creates a new one if not found.
 	UFUNCTION(BlueprintCallable)
 	void LoadGame();
+	// saves the current game if any
 	UFUNCTION(BlueprintCallable)
 	void SaveGame();
 
@@ -52,23 +55,23 @@ public:
     ULSave* Save = nullptr;
 
 	// triggered after save or load. even on error.
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnSaveReady OnSaveReady;
 	
 	// triggered when one of the feat is updated to be enabled or disabled
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdate;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateChap;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateDiags;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateSound;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateVisual;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateAccess;
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateDebug;
 
 protected:
