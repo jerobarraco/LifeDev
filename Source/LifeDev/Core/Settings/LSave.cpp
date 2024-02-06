@@ -15,6 +15,7 @@ void ULSave::Reset() {
 }
 
 // TODO fix issue with cards not being restored (having count of -1)
+// TODO fix issue with items not being restored after coming from intro level
 
 void ULSave::WriteSubsystems(UWorld* const W) {
 	if (!W) return;

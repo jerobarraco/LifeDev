@@ -45,7 +45,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	// used to broadcast even on non-consumable
 	int32 CurDiff = Diff;
 	// clamp values
-	// for non-consumables use always -1, for consumables clamp at 0
+	// for consumables clamp at 0
 	if (Item->Consumable) {
 		// calculate the difference. are clamped to the produce (0, MaxCount)
 		// get the max we can go. Current+diff to allow to grow.
@@ -55,8 +55,8 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 		// apply diff
 		Current = FMath::Max(0, Current+CurDiff);
 	} else {
-		// calculate the difference. non-consumable are always -1. the rest are clamped to the produce (0, MaxCount)
-		Current = -1;
+		// calculate the difference. non-consumable are always 1.
+		Current = 1;
 	}
 
 	// notify the caller that we haven't changed anything. also avoid triggering an onMod 
@@ -119,8 +119,13 @@ bool UInventory::Rem(const FName& Name) {
 }
 
 bool UInventory::Clear(int32 NumReserve) {
-	Items.Empty(NumReserve);
-	SetSelected(GetNextKey());
+	// TODO test
+	TArray<FName> Keys;
+	Items.GetKeys(Keys);
+	for (const FName K: Keys) {
+		Rem(K);
+	}
+	Items.Reserve(NumReserve);
 	return true;
 }
 
