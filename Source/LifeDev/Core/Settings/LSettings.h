@@ -7,11 +7,11 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "LSettings.generated.h"
 
+class USaveGame;
 class ULSave;
+class ULGUSettings;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
-
-class ULGUSettings;
 
 // This class allows to interact with the game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
@@ -69,7 +69,11 @@ public:
 protected:
 	// broadcasts the corresponding delegates
 	void FeatUpdated(EFeat Feat, bool Enable) const;
+	void SaveGameDone(const FString& Slot, int32 Index, bool Success);
+	void LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TSet<EFeat> Feats;
+	
+	bool IsSaving = false;
 };

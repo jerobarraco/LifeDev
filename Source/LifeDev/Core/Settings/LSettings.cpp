@@ -30,31 +30,51 @@ void ULSettings::NewGame() {
 
 void ULSettings::LoadGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
+	if (IsSaving) {
+		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy"));
+		return;
+	}
+	IsSaving = true;
 	// TODO use the slot at some point
+	
+	FAsyncLoadGameFromSlotDelegate OnLoadGameDone;
+	OnLoadGameDone.BindUObject(this, &ULSettings::LoadGameDone);
 	// Try to load a saved game file (with name: <SaveSlot>.sav) if exists
-	USaveGame* const LoadedGame = UGameplayStatics::LoadGameFromSlot(SaveSlot, 0);
+	UGameplayStatics::AsyncLoadGameFromSlot(SaveSlot, 0, OnLoadGameDone);
+}
+
+void ULSettings::SaveGame() {
+	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
+	if (IsSaving) return;
+	IsSaving = true;
+
+	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
+	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
+	UGameplayStatics::AsyncSaveGameToSlot(Save, SaveSlot, 0, OnSaveGameDone);
+}
+
+void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
+	IsSaving = false;
+	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
+	if (Success) {
+		UE_LOG(LogLSettings, Log, TEXT("Savegame saved"));
+	} else {
+		UE_LOG(LogLSettings, Warning, TEXT("Savegame save failed."));
+	}
+}
+
+void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame) {
+	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
 
 	if (Save) {
-		UE_LOG(LogLSettings, Log, TEXT("Success loading"));
+		UE_LOG(LogLSettings, Log, TEXT("Save load success"));
 		return;
 	}
 
 	// If file does not exist try create a new one
 	UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one"));
 	NewGame();
-}
-
-void ULSettings::SaveGame() {
-	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
-    
-	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
-	const bool IsSaved = UGameplayStatics::SaveGameToSlot(Save, SaveSlot, 0);
-	if (IsSaved) {
-		UE_LOG(LogLSettings, Log, TEXT("Savegame saved"));
-	} else {
-		UE_LOG(LogLSettings, Warning, TEXT("Savegame save failed."));
-	}
 }
 
 int32 ULSettings::CurrentChapter() const {
@@ -86,6 +106,7 @@ bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
 }
 
 void ULSettings::Init() {
+	IsSaving = false;
 	LoadGame();
 	ResetFeats();
 }
@@ -107,3 +128,4 @@ void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 	}
 }
+

@@ -18,7 +18,7 @@ void ULGameInstance::Init() {
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
     FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
     FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
-	ULSettings* Settings = GetSubsystem<ULSettings>();
+	ULSettings* const Settings = GetSubsystem<ULSettings>();
 	if (IsValid(Settings)) {
 		Settings->Init();
 	}

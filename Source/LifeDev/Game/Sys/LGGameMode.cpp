@@ -103,18 +103,19 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 
-	// allow quickmesh to skip wpo
-	World->Exec(World, TEXT("r.OptimizedWPO 1"));
 	
 	//TODO implement save/load from ui. for now we always start a new one.
 	// that will have to happen on the intro level on another game mode
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (!IsValid(Settings)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. cant continue."));
+		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
 		return;
 	}
-	
-	Settings->NewGame();
+	if (!IsValid(Settings->Save)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Creating a new one."));
+		Settings->NewGame();
+		return;
+	}
 
 	/// set flags
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
@@ -373,6 +374,11 @@ void ALGGameMode::StartChapter() {
 }
 
 void ALGGameMode::StartNextChapter() {
+	if (!IsValid(Settings->Save)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
+		return;
+	}
+
 	// Chapter done. go to the next one.
 	Settings->Save->ChapterID++;
 	StartChapter();
