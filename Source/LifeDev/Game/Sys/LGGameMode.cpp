@@ -202,10 +202,9 @@ void ALGGameMode::Init_Implementation() {
 	Delegate.BindLambda(disableInput);
 	World->GetTimerManager().SetTimerForNextTick(Delegate);
 
-	// start's the story
 	FTimerHandle Handle;
-	// wait for loading
-	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, 2.0);
+	// wait for loading. then start the story!
+	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, .5);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -361,6 +360,7 @@ void ALGGameMode::StartChapter() {
 	}
 
 	/// finishing previous one
+	// save the last played chapter
 	Settings->SaveGame();
 
 	/// load new one
@@ -369,19 +369,22 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
+	// TODO remove commented lines if nothing broke
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
-	SetTempInputEnabled(false);
+	// SetTempInputEnabled(false);
 	
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
 
-	FTimerHandle Handle2;
-	FTimerDelegate Delegate2;
-	Delegate2.BindLambda([this] {
-		SetTempInputEnabled(true);
-	});
-	FTimerManager& Time = GetWorld()->GetTimerManager();
-	Time.SetTimer(Handle2, Delegate2, (Story->FadeTime*2)+Story->HoldTime, false);
+	// todo remove these too 
+	// reset input enabled after the fadetime
+	// FTimerHandle Handle2;
+	// FTimerDelegate Delegate2;
+	// Delegate2.BindLambda([this] {
+		// SetTempInputEnabled(true);
+	// });
+	// FTimerManager& Time = GetWorld()->GetTimerManager();
+	// Time.SetTimer(Handle2, Delegate2, (Story->FadeTime*2)+Story->HoldTime, false);
 }
 
 void ALGGameMode::StartNextChapter() {
