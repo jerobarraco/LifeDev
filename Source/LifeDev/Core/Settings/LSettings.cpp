@@ -103,8 +103,8 @@ int32 ULSettings::CurrentChapter() const {
 
 void ULSettings::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
-	const bool UseDebug = ULSysSettings::IsDebugBuild() && Settings->UseDebugFeats;
-	Feats = UseDebug ? Settings->DebugFeats : Settings->DefaultFeats;
+	if (!Settings) return;
+	Feats = Settings->GetFeats();
 }
 
 void ULSettings::SetFeat(EFeat Feat, bool Enable) {

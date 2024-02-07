@@ -81,10 +81,17 @@ public:
 	static ULSysSettings* Get();
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static bool IsDebugBuild();
 
+	// use this for shipping code
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool ShouldUseDebugFeats();
+	// use this for shipping code
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool ShouldUseSaveGame();
+	// returns initial features for 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TSet<EFeat>& GetFeats();
+	
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory", meta=(RowType="/Script/Inventory.Item"))
 	TSoftObjectPtr<UDataTable> Inventory = nullptr;
@@ -100,8 +107,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
 	int32 StartChap = -1;
 
+	// whether to use the feats listed in debugfeats or in defaultfeats
+	// use ShouldUse* on shipping code
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	bool UseDebugFeats = false;
+
+	// if this is false it will always create a new savefile and ignore the saved one.
+	// this is set to false on release builds
+	// use ShouldUse* on shipping code
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
+	bool UseSaveGame = true;
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")

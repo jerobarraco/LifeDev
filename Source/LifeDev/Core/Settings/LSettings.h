@@ -14,7 +14,7 @@ class ULGUSettings;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveReady);
 
-// This class allows to interact with the game settings during gameplay.
+// This class allows to interact with the in-game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSettings : public UGameInstanceSubsystem {
 	GENERATED_BODY()

@@ -1,8 +1,8 @@
-
 #include "LSysSettings.h"
 
-ULSysSettings* ULSysSettings::Get()
-{
+#include "JUtils/JMiscUtils.h"
+
+ULSysSettings* ULSysSettings::Get() {
 	return Cast<ULSysSettings>(StaticClass()->GetDefaultObject());
 }
 
@@ -11,10 +11,15 @@ FName ULSysSettings::GetCategoryName() const {
 	return Cat;
 }
 
-bool ULSysSettings::IsDebugBuild() {
-#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	return false;
-#else
-	return true;
-#endif
+bool ULSysSettings::ShouldUseDebugFeats() {
+	return UJMiscUtils::IsDebug() ? UseDebugFeats : false;
+}
+
+bool ULSysSettings::ShouldUseSaveGame() {
+	return UJMiscUtils::IsDebug() ? UseSaveGame : true;
+}
+
+TSet<EFeat>& ULSysSettings::GetFeats() {
+	const bool UseDebug = UseDebugFeats && UJMiscUtils::IsDebug();
+	return UseDebug ? DebugFeats : DefaultFeats;
 }
