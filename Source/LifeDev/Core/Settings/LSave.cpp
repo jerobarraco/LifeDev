@@ -18,8 +18,6 @@ void ULSave::Reset() {
 	SFlags.Empty();
 }
 
-// TODO fix issue with items not being restored after coming from intro level
-
 void ULSave::WriteSubsystems(UWorld* const W) {
 	UE_LOG(LogLSave, Log, TEXT("%hs"), __func__);
 

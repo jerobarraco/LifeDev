@@ -9,7 +9,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
-static const FString SaveSlot("LifeDev");
+static const FString SaveSlot("LifeDev_");
 
 ULSettings* ULSettings::Instance(UWorld* World) {
 	if (!IsValid(World))  return nullptr;
@@ -25,23 +25,25 @@ void ULSettings::NewGame() {
 	Save->Reset(); // does write subsystem
 }
 
-void ULSettings::LoadGame() {
-	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
+void ULSettings::LoadGame(int32 SlotIndex) {
+	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
+	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
+
 	if (IsSaving) {
 		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy."));
 		return;
 	}
 	IsSaving = true;
-	// TODO use the slot at some point
 	
 	FAsyncLoadGameFromSlotDelegate OnLoadGameDone;
 	OnLoadGameDone.BindUObject(this, &ULSettings::LoadGameDone);
 	// Try to load a saved game file (with name: <SaveSlot>.sav) if exists
-	UGameplayStatics::AsyncLoadGameFromSlot(SaveSlot, 0, OnLoadGameDone);
+	UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, OnLoadGameDone);
 }
 
-void ULSettings::SaveGame() {
-	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
+void ULSettings::SaveGame(int32 SlotIndex) {
+	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
+	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
@@ -64,7 +66,7 @@ void ULSettings::SaveGame() {
 	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
-	UGameplayStatics::AsyncSaveGameToSlot(Save, SaveSlot, 0, OnSaveGameDone);
+	UGameplayStatics::AsyncSaveGameToSlot(Save, SlotName, 0, OnSaveGameDone);
 }
 
 void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {

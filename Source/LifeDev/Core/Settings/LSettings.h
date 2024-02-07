@@ -30,10 +30,10 @@ public:
 	void NewGame();
 	// loads a game, or creates a new one if not found.
 	UFUNCTION(BlueprintCallable)
-	void LoadGame();
+	void LoadGame(int32 SlotIndex =0);
 	// saves the current game if any
 	UFUNCTION(BlueprintCallable)
-	void SaveGame();
+	void SaveGame(int32 SlotIndex =0);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
