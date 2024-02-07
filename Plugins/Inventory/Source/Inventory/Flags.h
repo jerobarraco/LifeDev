@@ -50,11 +50,12 @@ public:
 
 	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	const TMap<FName, float>& GetAllFlags() const { return Flags; }; // can't forceinline due to const & tmap
-
-	// overrides the current items. used for load and saving.
+	const TMap<FName, float>& GetAll() const { return Flags; }; // can't forceinline due to const & tmap
+	// overrides the current items. used for load and saving. will trigger mod on all, beware.
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	FORCEINLINE void SetAllFlags(const TMap<FName, float>& NewFlags) { Flags = NewFlags;};
+	void SetAll(const TMap<FName, float>& NewFlags);
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	void Clear(int32 Reserve=0);
 
 	/// system
 

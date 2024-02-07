@@ -35,3 +35,30 @@ void UFlags::Set(const FName& Name, float Val) {
 	
 	OnMod.Broadcast(Name, -Old, Val);
 }
+
+void UFlags::SetAll(const TMap<FName, float>& NewFlags) {
+	Clear(NewFlags.Num());
+	
+	TArray<FName> Keys;
+	NewFlags.GetKeys(Keys);
+
+	for (const FName& K: Keys) {
+		const float* pV = NewFlags.Find(K);
+		if (!pV) continue;
+		
+		Set(K, *pV);
+	}
+}
+
+void UFlags::Clear(int32 Reserve) {
+	TArray<FName> Keys;
+	Flags.GetKeys(Keys);
+	for (const FName& K: Keys) {
+		float* pV = Flags.Find(K);
+		if (!pV) continue;
+		
+		OnMod.Broadcast(K, -*pV, 0.0);
+	}
+
+	Flags.Empty(Reserve);
+}

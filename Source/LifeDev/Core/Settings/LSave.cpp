@@ -26,7 +26,7 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Writing flags"), __func__);
-		Flags->SetAllFlags(SFlags);
+		Flags->SetAll(SFlags);
 	}
 
 	UInventory* const Inventory = UInventory::Instance(W);
@@ -53,7 +53,7 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);
-		SFlags = Flags->GetAllFlags();
+		SFlags = Flags->GetAll();
 	}
 
 	UInventory* const Inventory = UInventory::Instance(W);
