@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Settings/LSysSettings.h"
 
 #include "LGameInstance.generated.h"
 
@@ -12,18 +11,14 @@ class ULSave;
 
 // LifeDev GameInstance
 UCLASS(Blueprintable)
-class LIFEDEV_API ULGameInstance : public UGameInstance
-{
+class LIFEDEV_API ULGameInstance : public UGameInstance {
 	GENERATED_BODY()
-public:
 
+public:
 	UFUNCTION(BlueprintCallable)
-	static ULGameInstance* Get(UWorld* World);
+	static ULGameInstance* Instance(UWorld* World);
 
 	virtual void Init() override;
-
-	UFUNCTION(BlueprintCallable)
-	void SetTrs(bool Enabled);
 
 protected:
 	UFUNCTION()

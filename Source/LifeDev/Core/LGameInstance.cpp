@@ -4,9 +4,10 @@
 #include "LGameInstance.h"
 
 #include "MoviePlayer.h"
+#include "JUtils/JMiscUtils.h"
 #include "Settings/LSettings.h"
 
-ULGameInstance* ULGameInstance::Get(UWorld* World) {
+ULGameInstance* ULGameInstance::Instance(UWorld* World) {
 	if (!IsValid(World)) return nullptr;
 	return Cast<ULGameInstance>(World->GetGameInstance());
 }
@@ -18,29 +19,21 @@ void ULGameInstance::Init() {
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
     FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
     FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
+
+	// force disable debug flags
+	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (SysSettings && !UJMiscUtils::IsDebug()) {
+		SysSettings->UseDebugFeats = false;
+		SysSettings->UseSaveGame = true;
+	}
+	
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
 	if (IsValid(Settings)) {
 		Settings->Init();
 	}
 }
 
-void ULGameInstance::SetTrs(bool Enabled) {
-	// this is just test code... 
-	GetWorld()->Exec(GetWorld(), TEXT("r.AntiAliasingMethod 2"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.test.SecondaryScaleOverride 4"));
-	GetWorld()->Exec(GetWorld(), TEXT("t.MaxFPS 60"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.Upscale.Quality 1")); // Simple bilinear https://docs.unrealengine.com/4.27/en-US/RenderingAndGraphics/ScreenPercentage/
-	GetWorld()->Exec(GetWorld(), TEXT("r.SecondaryScreenPercentage.GameViewport 50"));
-	GetWorld()->Exec(GetWorld(), TEXT("sg.ResolutionQuality 40"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.TemporalAA.Upsampling 0"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.ScreenPercentage 50"));
-	// TODO disable temporal upsampling
-	// https://forums.unrealengine.com/t/ue5p2-r-screenpercentage-not-working-for-me/509965/11?u=nande
-}
-
-
-void ULGameInstance::BeginLoadingScreen(const FString& InMapName)
-{
+void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 	if (IsRunningDedicatedServer()) return;
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is on"));	

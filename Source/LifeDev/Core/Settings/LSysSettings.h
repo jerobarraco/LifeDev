@@ -82,13 +82,7 @@ public:
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
 
-	// use this for shipping code
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool ShouldUseDebugFeats();
-	// use this for shipping code
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool ShouldUseSaveGame();
-	// returns initial features for 
+	// returns initial features for shipping builds (Default on shipping, debug if debug enabled and debug build) 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSet<EFeat>& GetFeats();
 	

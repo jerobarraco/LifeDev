@@ -11,14 +11,6 @@ FName ULSysSettings::GetCategoryName() const {
 	return Cat;
 }
 
-bool ULSysSettings::ShouldUseDebugFeats() {
-	return UJMiscUtils::IsDebug() ? UseDebugFeats : false;
-}
-
-bool ULSysSettings::ShouldUseSaveGame() {
-	return UJMiscUtils::IsDebug() ? UseSaveGame : true;
-}
-
 TSet<EFeat>& ULSysSettings::GetFeats() {
 	const bool UseDebug = UseDebugFeats && UJMiscUtils::IsDebug();
 	return UseDebug ? DebugFeats : DefaultFeats;
