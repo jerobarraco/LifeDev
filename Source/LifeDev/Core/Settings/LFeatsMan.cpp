@@ -43,6 +43,7 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 	// i DO need to check them for the engine to pay attention to them,
 	// otherwise the changes here make no difference.
 	// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
+	// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
 
 	APostProcessVolume* const Post = GM->PostProcess;
 	if (Feat == EFeat::V_LUMEN) {

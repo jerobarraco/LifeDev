@@ -61,7 +61,7 @@ void ULSettings::SaveGame() {
 	IsSaving = true;
 
 	Save->ReadSubsystems(GetWorld());
-
+	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
 	UGameplayStatics::AsyncSaveGameToSlot(Save, SaveSlot, 0, OnSaveGameDone);

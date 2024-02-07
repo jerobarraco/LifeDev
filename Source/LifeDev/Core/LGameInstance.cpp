@@ -85,10 +85,3 @@ void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
 		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
 	}
 }
-
-// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
-
-/*
-
-*/
-
