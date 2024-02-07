@@ -1,6 +1,5 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-
 #include "LSettings.h"
 
 #include "LSave.h"
@@ -46,6 +45,8 @@ void ULSettings::LoadGame() {
 void ULSettings::SaveGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
 
+	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
+	
 	if (!Save) {
 		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted. No savegame to save."));
 		OnSaveReady.Broadcast(); // technically done. important or objects might get stuck
@@ -126,9 +127,14 @@ bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
 }
 
 void ULSettings::Init() {
-	IsSaving = false;
 	ResetFeats();
-	LoadGame();
+	IsSaving = false;
+	ULSysSettings* const Settings = ULSysSettings::Get();
+	if (Settings && Settings->UseSaveGame) {
+		LoadGame();
+	} else {
+		NewGame();
+	}
 }
 
 void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {

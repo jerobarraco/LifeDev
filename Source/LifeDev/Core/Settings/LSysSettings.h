@@ -102,29 +102,28 @@ public:
 	int32 StartChap = -1;
 
 	// whether to use the feats listed in debugfeats or in defaultfeats
-	// use ShouldUse* on shipping code
+	// this is set to false on release builds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	bool UseDebugFeats = false;
 
 	// if this is false it will always create a new savefile and ignore the saved one.
-	// this is set to false on release builds
-	// use ShouldUse* on shipping code
+	// this is set to true on release builds
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	bool UseSaveGame = true;
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	TSet<EFeat> DefaultFeats = {EFeat::D_ALL, EFeat::D_TEXT,
-		EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::C_00, EFeat::C_01, EFeat::C_02,
-		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR
+	TSet<EFeat> DefaultFeats = {
+		EFeat::D_ALL, EFeat::D_TEXT, EFeat::S_MUSIC, EFeat::S_NOISE,
+		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR,
+		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
 
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DebugFeats = {EFeat::DBG_STEPS, EFeat::DBG_ALL,
-		EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::C_00, EFeat::C_01, EFeat::C_02,
-		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR
+		EFeat::D_ALL, EFeat::S_MUSIC, EFeat::S_NOISE,
+		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR,
+		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
 };
