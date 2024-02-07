@@ -20,6 +20,7 @@ void ALFeatsMan::BeginPlay() {
 	if (S) {
 		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
 		// S->OnFeatUpdate.RemoveAll(this);
+		// force initialize
 		FeatVisualUpdate(EFeat::V_LUMEN, S->GetFeat(EFeat::V_LUMEN));
 		FeatVisualUpdate(EFeat::V_BLUR, S->GetFeat(EFeat::V_BLUR));
 	}

@@ -2,6 +2,7 @@
 
 #include "LifeDev/Core/Settings/LSave.h"
 
+#include "LSettings.h"
 #include "LSysSettings.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
@@ -41,8 +42,19 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 			if (!pI) continue;
 			const int32 I = *pI;
 			
-			UE_LOG(LogLSave, Log, TEXT("%hs: Name=%s count=%i"), __func__, *N.ToString(), I);
+			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *N.ToString(), I);
 			Inventory->Mod(N, I);
+		}
+	}
+
+	ULSettings* const Settings = ULSettings::Instance(W);
+	if (Settings) {
+		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
+		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
+			const bool Val = SFeats.Contains(F);
+			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
+				*UEnum::GetValueAsString(F), Val);
+			Settings->SetFeat(F, Val);
 		}
 	}
 }
@@ -58,7 +70,7 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 
 	UInventory* const Inventory = UInventory::Instance(W);
 	if (Inventory) {
-		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Inventory"), __func__);
+		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory"), __func__);
 		const TMap<FName, FItem>& Items = Inventory->GetItems();
 		SInventory.Empty(Items.Num());
 
@@ -69,9 +81,24 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 			if (!pI) continue;
 
 			const FItem I = *pI;
-			UE_LOG(LogLSave, Log, TEXT("%hs: Name=%s count=%i"), __func__, *N.ToString(), I.Count);
+			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *N.ToString(), I.Count);
 			// only saving the count. this is lame. but it's enough for now. good enough > good > perfect.
 			SInventory.Add(N, I.Count);
+		}
+	}
+
+	ULSettings* const Settings = ULSettings::Instance(W);
+	if (Settings) {
+		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
+		SFeats.Empty(); // not reserving. i don't know how many are set and we only store the set ones.
+		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
+			const bool Val = Settings->GetFeat(F);
+			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
+				*UEnum::GetValueAsString(F), Val);
+
+			if (!Val) continue; // only store if set.
+
+			SFeats.Add(F);
 		}
 	}
 }

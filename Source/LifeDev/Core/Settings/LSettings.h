@@ -37,11 +37,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
-	
+
+	// Reset all features to factory default (depends if it's a shipping build)
 	UFUNCTION(BlueprintCallable)
 	void ResetFeats();
+
+	// Sets a feature to be enabled or disabled
 	UFUNCTION(BlueprintCallable)
-	void SetFeat(EFeat Feat, bool Enable);
+	void SetFeat(EFeat Feat, bool Enable = true);
+
+	// Returns true if a feature is enabled
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE	bool GetFeat(EFeat Feat) const {
 		return Feats.Contains(Feat);
@@ -51,6 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
+	// the current save-game object. can be null.
 	UPROPERTY(BlueprintReadOnly, Transient)
     ULSave* Save = nullptr;
 
@@ -80,6 +86,7 @@ protected:
 	void SaveGameDone(const FString& Slot, int32 Index, bool Success);
 	void LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame);
 
+	// the current feats enabled in the game
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TSet<EFeat> Feats;
 	

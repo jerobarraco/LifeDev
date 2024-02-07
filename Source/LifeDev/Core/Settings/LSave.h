@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LSysSettings.h"
 #include "GameFramework/SaveGame.h"
 #include "LSave.generated.h"
 
@@ -31,6 +32,13 @@ protected:
 	TMap<FName, float> SFlags;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TMap<FName, int32> SInventory;
-};
+	// saved feats
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TSet<EFeat> SFeats;
 
-// TODO load inventory and save inventory. and flags
+	// the features to affect during load/save, the rest will be ignored.
+	inline static TSet<EFeat> WatchFeats = {
+		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
+		EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::A_STROBE,
+	};
+};
