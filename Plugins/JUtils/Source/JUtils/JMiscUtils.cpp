@@ -36,15 +36,6 @@ UWorld* UJMiscUtils::GetEdWorld()
 #endif
 }
 
-bool UJMiscUtils::IsWithEditor()
-{
-#if WITH_EDITOR
-	return true;
-#else
-	return false;
-#endif
-}
-
 UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
 
@@ -141,14 +132,5 @@ bool UJMiscUtils::StringLooseEquals(const FString& A, const FString& B) {
 		B.TrimStartAndEnd(),
 		ESearchCase::IgnoreCase
 	);
-}
-
-bool UJMiscUtils::IsEditor() {
-	// TODO test if GEngine->IsEditor suffices
-#if WITH_EDITOR
-	return true;
-#else
-	return false;
-#endif
 }
 

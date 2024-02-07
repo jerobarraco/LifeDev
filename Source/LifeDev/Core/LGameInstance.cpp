@@ -70,8 +70,7 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName)
 	}
 }
 
-void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld)
-{
+void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is done"));	
 

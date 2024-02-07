@@ -43,12 +43,27 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// static UJMiscUtils* Get();
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static UWorld* GetEdWorld();
 
-	UFUNCTION(BlueprintPure)
-	static bool IsWithEditor();
-
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsEditor() {
+		#if WITH_EDITOR
+			return true;
+		#else
+			return false;
+		#endif
+	};
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsDebug() {
+		#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
+			return false;
+		#else
+			return true;
+		#endif
+	};
+	
 	UFUNCTION(BlueprintCallable)
 	static UWorld* JGetWorld(UWorld* World);
 
@@ -69,9 +84,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
-
-	UFUNCTION(BlueprintCallable)
-	static bool IsEditor();
 
 	// can't be blueprint callable since it's templatized
 	template <typename T>
