@@ -23,8 +23,6 @@ void ULSettings::NewGame() {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	Save->Reset(); // does write subsystem
-
-	SaveGame();
 }
 
 void ULSettings::LoadGame() {
@@ -46,6 +44,7 @@ void ULSettings::SaveGame() {
 	UE_LOG(LogLSettings, Log, TEXT("%hs"), __func__);
 
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
+	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
 	if (!Save) {
 		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted. No savegame to save."));
@@ -87,14 +86,15 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 
 	if (!Save) {
 		// If file does not exist try create a new one
-		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one"));
+		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one."));
 		NewGame(); // does write subsystem (then read)
-		return; // new game will trigger saveready
+		OnSaveReady.Broadcast(); // broadcast anyway since someone might be waiting on this.
+		return;
 	}
 
 	Save->WriteSubsystems(GetWorld());
 	
-	UE_LOG(LogLSettings, Log, TEXT("Save load success"));
+	UE_LOG(LogLSettings, Log, TEXT("Load game succeeded."));
 	OnSaveReady.Broadcast();
 }
 
