@@ -83,7 +83,6 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame) {
 	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
-
 	if (!Save) {
 		// If file does not exist try create a new one
 		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one."));
@@ -92,6 +91,7 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 		return;
 	}
 
+	// TODO should i really do this here?
 	Save->WriteSubsystems(GetWorld());
 	
 	UE_LOG(LogLSettings, Log, TEXT("Load game succeeded."));

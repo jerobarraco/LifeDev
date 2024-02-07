@@ -29,6 +29,9 @@ void AIntroGameMode::BeginPlay() {
 	if (FB) {
 		FB->SetVal(1);
 	}
+
+	// very important NOT to save the save-game here.
+	// since none of the subsystems are initialized and it will save garbage
 }
 
 void AIntroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {

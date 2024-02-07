@@ -187,7 +187,14 @@ void ALGGameMode::Init_Implementation() {
 	// do at the end since it depends on other things.
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	
-	/// others' init finalized, finish my init
+	///~ Subs-init finished.
+
+	/// GameMode init starts
+	// ensure the save-game loads the data into the subsystems.
+	// do only after subsystems have been initialized.
+	// do before StartChapter since that saves the gamefile (loading from subsystems)
+	Settings->Save->WriteSubsystems(World);
+
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
@@ -226,7 +233,9 @@ void ALGGameMode::BeginPlay() {
 		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
 		return;
 	}
-	
+
+	// load the save and init. note the init is blocked until the save is available since we really
+	// need that before hand. and can't work reliably without it.
 	if (!IsValid(Settings->Save)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create"));
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
@@ -325,19 +334,6 @@ ALGGameMode* ALGGameMode::Get() {
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 	Super::EndPlay(EndPlayReason);
-}
-
-void ALGGameMode::SetDynRes() {
-	// Note this is not even being called. but left in case
-	
-	// https://docs.unrealengine.com/5.2/en-US/dynamic-resolution-in-unreal-engine/
-	if (!UseDynRes || !GEngine) return;
-	GEngine->SetDynamicResolutionUserSetting(true);
-	// GEngine->GameUserSettings->ApplyNonResolutionSettings();
-	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.OperationMode 2"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.MinScreenPercentage 50"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.MaxScreenPercentage 100"));
-	GetWorld()->Exec(GetWorld(), TEXT("r.DynamicRes.FrameTimeBudget 33.33333"));
 }
 
 void ALGGameMode::StartChapter() {
