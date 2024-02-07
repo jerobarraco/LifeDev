@@ -119,12 +119,14 @@ bool UInventory::Rem(const FName& Name) {
 }
 
 bool UInventory::Clear(int32 NumReserve) {
-	// TODO test
+	UE_LOG(LogInventory, Log, TEXT("Clearing all items. Reserve=%i"), NumReserve);
+
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
 	for (const FName K: Keys) {
 		Rem(K);
 	}
+
 	Items.Reserve(NumReserve);
 	return true;
 }

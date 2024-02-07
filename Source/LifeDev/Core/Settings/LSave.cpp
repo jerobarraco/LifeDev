@@ -6,27 +6,34 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
+
 void ULSave::Reset() {
+	UE_LOG(LogLSave, Log, TEXT("Savegame reset"));
+	
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
-	// i want to preserve the ability to skip chapters even on shipping builds
+	// not using above since i want to preserve the ability to skip chapters even on shipping builds
 	ChapterID = ULSysSettings::Get()->StartChap;
 	SInventory.Empty();
 	SFlags.Empty();
 }
 
-// TODO fix issue with cards not being restored (having count of -1)
 // TODO fix issue with items not being restored after coming from intro level
 
 void ULSave::WriteSubsystems(UWorld* const W) {
+	UE_LOG(LogLSave, Log, TEXT("%hs"), __func__);
+
 	if (!W) return;
 
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
+		UE_LOG(LogLSave, Log, TEXT("%hs: Writing flags"), __func__);
 		Flags->SetAllFlags(SFlags);
 	}
 
 	UInventory* const Inventory = UInventory::Instance(W);
 	if (Inventory) {
+		UE_LOG(LogLSave, Log, TEXT("%hs: Writing Inventory"), __func__);
 		Inventory->Clear(SInventory.Num());
 
 		TArray<FName> Keys;
@@ -36,7 +43,7 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 			if (!pI) continue;
 			const int32 I = *pI;
 			
-			UE_LOG(LogTemp, Log, TEXT("ULSave::Writesubs. Name=%s count=%i"), *N.ToString(), I);
+			UE_LOG(LogLSave, Log, TEXT("%hs: Name=%s count=%i"), __func__, *N.ToString(), I);
 			Inventory->Mod(N, I);
 		}
 	}
@@ -47,21 +54,26 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
+		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);
 		SFlags = Flags->GetAllFlags();
 	}
 
 	UInventory* const Inventory = UInventory::Instance(W);
 	if (Inventory) {
+		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Inventory"), __func__);
 		const TMap<FName, FItem>& Items = Inventory->GetItems();
 		SInventory.Empty(Items.Num());
+
 		TArray<FName> Keys;
 		Items.GetKeys(Keys);
 		for (const FName& N: Keys) {
 			const FItem* const pI = Items.Find(N);
 			if (!pI) continue;
+
 			const FItem I = *pI;
+			UE_LOG(LogLSave, Log, TEXT("%hs: Name=%s count=%i"), __func__, *N.ToString(), I.Count);
+			// only saving the count. this is lame. but it's enough for now. good enough > good > perfect.
 			SInventory.Add(N, I.Count);
-			UE_LOG(LogTemp, Log, TEXT("ULSave::ReadSubs. Item=%s count=%i"), *N.ToString(), I.Count);
 		}
 	}
 }
