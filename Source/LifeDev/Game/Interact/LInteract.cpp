@@ -72,6 +72,8 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
+	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
+
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
@@ -112,14 +114,17 @@ void ALInteract::DoRewards() {
 
 	// trigger separately since sometimes the item could not be rewarded on trigger.
 	Rewarded();
-
+	
 	// Process auto destroy. do at the end.
 	// don't destroy if not userewardfade
 	if (!UseRewardFade) return;
 	
-	// only bind here as we only want to destroy on reward
-	AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
-	Fade(false);
+	if (AnimFade->IsActive()) {
+		// only bind here as we only want to destroy on reward
+		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
+		return;
+	}
+	RewardFaded();
 }
 
 void ALInteract::RewardFaded() {
@@ -130,11 +135,21 @@ void ALInteract::RewardFaded() {
 void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 
-	if (IsValid(Diags)) Diags->AddId(TriggerDlg);
-	
-	// do reward at end since it could self-destroy.
-	// also dialog is async so it's ok. we want to reward before/with the dialog.
-	DoRewards();
+	// start fading right away to give the player the impression that they picked it up
+	if (WillRewardFade()) Fade(false);
+
+	bool DiagsShown = false;
+	if (IsValid(Diags)) {
+		// if there's a dialog. give rewards at the end of them.
+		// that way we can control the story better. it's easier to check for items than for dialogs.
+		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
+		DiagsShown = Diags->AddId(TriggerDlg);
+	}
+
+	// ensure we reward or the player could get locked
+	if (!DiagsShown) {
+		DoRewards();
+	}
 }
 
 

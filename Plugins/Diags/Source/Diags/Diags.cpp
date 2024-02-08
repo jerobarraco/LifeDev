@@ -34,7 +34,8 @@ bool UDiags::AddId(const FName& Row) {
 	// otherwise attempt a dialog
 	if (AddDiagId(Row)) return true;
 
-	UE_LOG(LogDiags, Warning, TEXT("Could not find dialog nor sequence with the id=%s"), *Row.ToString());
+	UE_LOG(LogDiags, Warning,
+		TEXT("%hs: Could not find dialog nor sequence with the id=%s"), __func__, *Row.ToString());
 	return false;
 }
 
