@@ -35,9 +35,6 @@ void ULGameInstance::Init() {
 
 void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 	if (IsRunningDedicatedServer()) return;
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is on"));	
-	
 
 	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
 	if (MoviePlayer) {
@@ -51,29 +48,9 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't get movie player"));
 	}
 
-	// TODO move this to JUtils (?)
-	// UWorld* const World = GetWorld();
-	// APlayerController* const Controller = World ? GetFirstLocalPlayerController(World) : nullptr;
-	APlayerController* const Controller = GetPrimaryPlayerController();
-	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
-	if (CamManager) {
-		CamManager->StartCameraFade(0, 1, .5f, FLinearColor::Black, true, true);
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
-	}
+	UJMiscUtils::CameraFade(this, false);
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Screen loading is done"));	
-
-	// UWorld* const World = GetWorld();
-	// APlayerController* const Controller = World ? GetFirstLocalPlayerController(World) : nullptr;
-	APlayerController* const Controller = GetPrimaryPlayerController();
-	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
-	if (CamManager) {
-		CamManager->StartCameraFade(1, 0, .5f, FLinearColor::Black, true, true);
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
-	}
+	UJMiscUtils::CameraFade(this, true);
 }

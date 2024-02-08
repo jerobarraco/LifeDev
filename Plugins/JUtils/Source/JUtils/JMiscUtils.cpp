@@ -134,3 +134,24 @@ bool UJMiscUtils::StringLooseEquals(const FString& A, const FString& B) {
 	);
 }
 
+void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const FLinearColor& Color) {
+	if (!GI) {
+		UE_LOG(LogTemp, Warning, TEXT("CameraFade: Invalid game instance. aborting"));
+		return;
+	}
+
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
+
+	APlayerController* const Controller = GI->GetPrimaryPlayerController();
+	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
+	if (!CamManager) {
+		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
+		return;
+	}
+
+	const int32 From = In ? 1 : 0;
+	const int32 To = In ? 0 : 1;
+	CamManager->StartCameraFade(From, To, Duration, Color, true, true);
+}
+

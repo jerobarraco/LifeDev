@@ -85,6 +85,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
 
+	UFUNCTION(BlueprintCallable)
+	static void CameraFade(UGameInstance* GI, bool In = false, float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
+
 	// can't be blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
