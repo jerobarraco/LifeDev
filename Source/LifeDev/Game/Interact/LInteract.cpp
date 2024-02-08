@@ -72,20 +72,14 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
-	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
-
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
 	/// Rewards
 	const bool Rewardless = IsRewardless();
-	if (Rewardless) {
-		return; // just return. nothing to do. don't self destroy or anything.
-	}
+	if (Rewardless) return; // just return. nothing to do. don't self destroy or anything.
 
-	if (Flashback) {
-		Flashback->ModVal(RewardFlash);
-	}
+	if (Flashback) Flashback->ModVal(RewardFlash);
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
 	if (!RewardItem.IsNone() && IsValid(Inventory)) {
@@ -96,9 +90,7 @@ void ALInteract::DoRewards() {
 	}
 	
 	// do the flags which are more flexible.
-	if (IsValid(Flags)) {
-		Flags->Mod(RewardFlag, 1.0);
-	}
+	if (IsValid(Flags)) Flags->Mod(RewardFlag, 1.0);
 
 	// do the actor
 	if (IsValid(RewardActor)) {
@@ -130,26 +122,21 @@ void ALInteract::DoRewards() {
 	Fade(false);
 }
 
-void ALInteract::Trigger_Implementation() {
-	Super::Trigger_Implementation();
-
-	// trigger the dialog in any case.
-	bool WaitForDiags = false;
-	if (IsValid(Diags)) {
-		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
-		WaitForDiags = Diags->AddId(TriggerDlg);
-	}
-
-	// force trigger the rewards in case the dialog failed, otherwise it'll be stuck
-	if (!WaitForDiags) {
-		DoRewards();
-	}
-}
-
 void ALInteract::RewardFaded() {
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
 	Destroy();
 }
+
+void ALInteract::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+
+	if (IsValid(Diags)) Diags->AddId(TriggerDlg);
+	
+	// do reward at end since it could self-destroy.
+	// also dialog is async so it's ok. we want to reward before/with the dialog.
+	DoRewards();
+}
+
 
 void ALInteract::TriggerLocked_Implementation() {
 	Super::TriggerLocked_Implementation();
@@ -211,9 +198,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
-	if(!Locked) {
-		return EItemUseResult::BAD_TARGET;
-	}
+	if(!Locked) return EItemUseResult::BAD_TARGET;
 
 	/// Unlock with item - at this point is locked
 	
@@ -225,9 +210,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	}
 
 	// now unlocked
-	if (ValidDiags) {
-		Diags->AddId(ULockDlg);
-	}
+	if (ValidDiags) Diags->AddId(ULockDlg);
 
 	Locked = false; // force unlock or trigger won't work
 	Trigger(); // force trigger
