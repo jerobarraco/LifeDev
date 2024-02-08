@@ -48,7 +48,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TArray<UCheckBox*> CheckBoxes;
 	
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
 	class UTextBlock* Label_T = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly)
