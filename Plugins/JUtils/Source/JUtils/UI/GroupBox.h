@@ -12,7 +12,7 @@ class UCheckBox;
 
 // internal don´t use https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCBChange, class UCheckBox*, me, bool, IsChecked);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, int32, id, int32, Q);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGroupBoxChanged, int32, GroupId, int32, CheckId);
 
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UGroupBox : public UUserWidget {
