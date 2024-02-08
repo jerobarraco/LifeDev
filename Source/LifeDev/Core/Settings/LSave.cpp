@@ -65,7 +65,7 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 	if (!W) return;
 
 	// this is a bit lame, but it's the cheapest and safest at the moment
-	Time = FDateTime::UtcNow().ToUnixTimestamp();
+	Time = FDateTime::Now().ToUnixTimestamp();
 	
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {

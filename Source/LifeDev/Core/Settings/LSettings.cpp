@@ -102,9 +102,10 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 		// If file does not exist try create a new one
 		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one."));
 		NewGame(); // does write subsystem (then read)
-		 // Slot.Right(1).FromInt()
-		// TODO should assign a new Save->SlotIndex here.
-		// this is a potential bug where it would override slot 0 
+		// should assign a new Save->SlotIndex here.
+		// otherwise if a game load fails for a given slot. it will override slot 0.
+		// that'd be terrible!
+		Save->SlotIndex = FCString::Atoi(*Slot.Right(1));
 		OnSaveReady.Broadcast(); // broadcast anyway since someone might be waiting on this.
 		return;
 	}

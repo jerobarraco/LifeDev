@@ -34,6 +34,9 @@ public:
 	// saves the current game if any
 	UFUNCTION(BlueprintCallable)
 	void SaveGame(int32 SlotIndex =-1);
+	// returns true if it's busy saving/loading
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsSaving() { return IsSaving; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
@@ -53,7 +56,7 @@ public:
 	}
 	
 	// only call once by the gameinstance or smth
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void Init();
 
 	// the current save-game object. can be null.
