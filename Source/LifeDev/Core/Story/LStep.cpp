@@ -10,16 +10,8 @@
 
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
-	UWorld* const W = GetWorld();
-	if (!W) return;
 
 	EnsureItems(); // make sure items are awarded
-	
-	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
-	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
-	if (!IsValid(LGGameMode)) return;
-	LGGameMode->SetCharInputEnabled(InputEnabled);
 }
 
 void ALStep::Stop_Implementation() {
@@ -46,20 +38,28 @@ void ALStep::Stop_Implementation() {
 
 void ALStep::PostWait_Implementation() {
 	Super::PostWait_Implementation();
+	UWorld* const W = GetWorld();
+	if (!W) return;
 
-	// otherwise show dialogs
-	StartDialogs();
 
-	// check items. do here to avoid possibly finishing the step while it's starting.
+	// check items. do on postWait to avoid possibly finishing the step while it's starting.
 	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 		
 		// ensure to check if we already have the item
-		UWorld* const W = GetWorld();
-		if (W) {
-			W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
-		}
+		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
 	}
+
+	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
+	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
+	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
+	if (IsValid(LGGameMode)) {
+		// do only on postwait. otherwise the input is reset before it faded out.
+		LGGameMode->SetCharInputEnabled(InputEnabled);
+	}
+
+	// show dialogs
+	StartDialogs();
 }
 
 void ALStep::StartDialogs() {
