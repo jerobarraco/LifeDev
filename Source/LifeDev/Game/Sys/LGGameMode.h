@@ -53,12 +53,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCharInputEnabled(bool Enabled);
 
-	// wraps SetCharInputEnabled. used for delegates
+	// wraps SetTempInputEnabled. used for delegates
 	UFUNCTION() // bind to delegate
-	void SetInputEnable() { SetCharInputEnabled(true); }
-	// wraps SetCharInputEnabled. used for delegates
+	void SetInputEnable() { SetTempInputEnabled(true); }
+	// wraps SetTempInputEnabled. used for delegates
 	UFUNCTION() // bind to delegate
-	void SetInputDisable() { SetCharInputEnabled(false); }
+	void SetInputDisable() { SetTempInputEnabled(false); }
 	
 	// disables input temporarily, enables only if char is enabled. used for Diags.
 	UFUNCTION(BlueprintCallable)

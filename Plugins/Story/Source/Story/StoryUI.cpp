@@ -3,11 +3,21 @@
 #include "StoryUI.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Components/Image.h"
 
 void UStoryUI::NativeConstruct() {
 	Super::NativeConstruct();
-	SetVisibility(ESlateVisibility::Hidden);
+	ShowBGSolid(true);
 	IsShowing = false;
+}
+
+void UStoryUI::FadeIn_Implementation() {
+	ShowBGSolid(false);
+}
+
+void UStoryUI::ShowBGSolid(bool Show) {
+	if (!BGSolid) return;
+	BGSolid->SetVisibility(Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 }
 
 void UStoryUI::AnimFinished() {

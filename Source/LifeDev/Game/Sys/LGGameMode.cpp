@@ -298,12 +298,13 @@ void ALGGameMode::DeInit_Implementation() {
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
-	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), Enabled);
+	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	CharInputEnabled = Enabled;
 	SetTempInputEnabled(Enabled);
 }
 
 void ALGGameMode::SetTempInputEnabled(bool Enabled) {
+	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	if (Enabled && !CharInputEnabled) return;
 	if(IsValid(Char)) {
 		Char->SetInputEnabled(Enabled);
