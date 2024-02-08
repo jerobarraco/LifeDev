@@ -30,8 +30,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ChapterID = -1;
 
+	// last save time
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 TimePlayed = 0;
+	int64 Time = 0;
+	// current slot index used / to use.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 SlotIndex = 0;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

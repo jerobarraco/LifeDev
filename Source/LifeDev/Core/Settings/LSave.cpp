@@ -17,7 +17,8 @@ void ULSave::Reset() {
 	ChapterID = ULSysSettings::Get()->StartChap;
 	SInventory.Empty();
 	SFlags.Empty();
-	TimePlayed = 0;
+	Time = 0;
+	SlotIndex = 0;
 }
 
 void ULSave::WriteSubsystems(UWorld* const W) {
@@ -63,6 +64,9 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 void ULSave::ReadSubsystems(UWorld* const W) {
 	if (!W) return;
 
+	// this is a bit lame, but it's the cheapest and safest at the moment
+	Time = FDateTime::UtcNow().ToUnixTimestamp();
+	
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);

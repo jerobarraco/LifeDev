@@ -10,7 +10,7 @@
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
-		CUI(TEXT("/Game/LifeDev/Intro/IntroUI_W"));
+		CUI(TEXT("/Game/LifeDev/Intro/UI/IntroUI_W"));
 	UIClass = CUI.Class;
 }
 

@@ -26,6 +26,11 @@ void ULSettings::NewGame() {
 }
 
 void ULSettings::LoadGame(int32 SlotIndex) {
+	if (SlotIndex<0) {
+		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted. Invalid SlotIndex=%i"), SlotIndex);
+		return;
+	}
+
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 
@@ -42,9 +47,6 @@ void ULSettings::LoadGame(int32 SlotIndex) {
 }
 
 void ULSettings::SaveGame(int32 SlotIndex) {
-	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
-	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
-
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
@@ -59,9 +61,20 @@ void ULSettings::SaveGame(int32 SlotIndex) {
 		// not triggering onSaveReady here since there must be something else in queue.
 		return;
 	}
-
 	IsSaving = true;
 
+	// update slot index. If parameter is set use that.
+	if (SlotIndex>=0) {
+		Save->SlotIndex = SlotIndex;	
+	}
+	// if it's invalid force to 0
+	if (Save->SlotIndex < 0) {
+		Save->SlotIndex = 0;
+	}
+
+	const FString& SlotName = SaveSlot + FString::FromInt(Save->SlotIndex);
+	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
+	
 	Save->ReadSubsystems(GetWorld());
 	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
@@ -89,6 +102,8 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 		// If file does not exist try create a new one
 		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one."));
 		NewGame(); // does write subsystem (then read)
+		// TODO should assign a new Save->SlotIndex here.
+		// this is a potential bug where it would override slot 0 
 		OnSaveReady.Broadcast(); // broadcast anyway since someone might be waiting on this.
 		return;
 	}

@@ -33,7 +33,7 @@ public:
 	void LoadGame(int32 SlotIndex =0);
 	// saves the current game if any
 	UFUNCTION(BlueprintCallable)
-	void SaveGame(int32 SlotIndex =0);
+	void SaveGame(int32 SlotIndex =-1);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
