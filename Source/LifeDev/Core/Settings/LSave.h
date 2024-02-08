@@ -23,9 +23,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReadSubsystems(UWorld* const W);
 	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
+
 	// the current chapter.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ChapterID = -1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 TimePlayed = 0;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

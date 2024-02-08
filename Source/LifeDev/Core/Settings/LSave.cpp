@@ -17,6 +17,7 @@ void ULSave::Reset() {
 	ChapterID = ULSysSettings::Get()->StartChap;
 	SInventory.Empty();
 	SFlags.Empty();
+	TimePlayed = 0;
 }
 
 void ULSave::WriteSubsystems(UWorld* const W) {
