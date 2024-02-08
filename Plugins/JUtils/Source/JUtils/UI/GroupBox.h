@@ -29,8 +29,8 @@ public:
 	void SetLabel(const FText& Text);
 	virtual void SetLabel_Implementation(const FText& Text);
 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE int32 GetSelected() { return Selected; };
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE int32 GetSelected() const { return Selected; }
 	
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnGroupBoxChanged OnChange;
