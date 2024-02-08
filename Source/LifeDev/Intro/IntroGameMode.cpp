@@ -21,6 +21,7 @@ AIntroGameMode::AIntroGameMode():Super() {
 void AIntroGameMode::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const World = GetWorld();
+
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	MusicMan->PlayMusic(Music);

@@ -224,6 +224,9 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 	SeqStep = -1;
 	if (Sequence.IsEmpty()) return false;
 
+	// this triggers before the sequence is actually started. which is inconvenient for the client,
+	// but makes sense in the code. to avoid potential issues, and keeps the order of signals.
+	// StartNext could call OnSeqStop
 	OnSeqStart.Broadcast();
 	// Important to call startNext to allow for appropriate transitions between sequences (chapters)
 	return StartNext();

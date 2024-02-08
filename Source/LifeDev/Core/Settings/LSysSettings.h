@@ -82,7 +82,8 @@ public:
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
 
-	// returns initial features for shipping builds (Default on shipping, debug if debug enabled and debug build) 
+	// returns initial features for shipping builds (Default on shipping, debug if debug enabled and debug build)
+	// for the *actual current instance* feats, get them from LSettings
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSet<EFeat>& GetFeats();
 	
