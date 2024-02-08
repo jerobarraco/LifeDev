@@ -199,19 +199,16 @@ void ALGGameMode::Init_Implementation() {
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
-
-	// start by disabling the input
-	auto disableInput = [this] { // TODO promote to function, i bind this several times
-		SetCharInputEnabled(false);
-	};
+	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
+	
+	// force the input disabled. even though the story manager will makes this disable later.
+	// in case something goes wrong.
 	// disable input on next tick to avoid a crash otherwise....
-	FTimerDelegate Delegate;
-	Delegate.BindLambda(disableInput);
-	World->GetTimerManager().SetTimerForNextTick(Delegate);
+	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::SetInputDisable);
 
 	FTimerHandle Handle;
 	// wait for loading. then start the story!
-	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, .5);
+	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, .1);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -226,8 +223,6 @@ void ALGGameMode::BeginPlay() {
 		return;
 	}
 	
-	//TODO implement save/load from ui. for now we always start a new one.
-	// that will have to happen on the intro level on another game mode
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (!IsValid(Settings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
@@ -285,6 +280,7 @@ void ALGGameMode::DeInit_Implementation() {
 
 	if (IsValid(Story)) {
 		Story->OnSeqStop.RemoveAll(this);
+		Story->OnFade.RemoveAll(this);
 	}
 	Story = nullptr;
 
@@ -302,6 +298,7 @@ void ALGGameMode::DeInit_Implementation() {
 }
 
 void ALGGameMode::SetCharInputEnabled(bool Enabled) {
+	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), Enabled);
 	CharInputEnabled = Enabled;
 	SetTempInputEnabled(Enabled);
 }
@@ -365,22 +362,10 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
-	// TODO bind to Story->OnFade and disable/enable input there
-	// TODO remove commented lines if nothing broke
-	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
-	// SetTempInputEnabled(false);
+	// the story manager will make the gm disable/enable the input
+	// Start the sequence.
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
-
-	// todo remove these too 
-	// reset input enabled after the fadetime
-	// FTimerHandle Handle2;
-	// FTimerDelegate Delegate2;
-	// Delegate2.BindLambda([this] {
-		// SetTempInputEnabled(true);
-	// });
-	// FTimerManager& Time = GetWorld()->GetTimerManager();
-	// Time.SetTimer(Handle2, Delegate2, (Story->FadeTime*2)+Story->HoldTime, false);
 }
 
 void ALGGameMode::StartNextChapter() {
@@ -400,6 +385,19 @@ void ALGGameMode::DiagShown(const FDialog& Diag) {
 
 void ALGGameMode::DiagDone() {
 	SetTempInputEnabled(true);
+}
+
+void ALGGameMode::Fade(bool bIn, const FText& Text) {
+	if (!bIn) {
+		SetInputDisable();
+		return;
+	}
+
+	// fading in requires a timer.
+	FTimerHandle Handle2;
+	const float Wait = (Story->FadeTime)+Story->HoldTime;
+	FTimerManager& Time = GetWorld()->GetTimerManager();
+	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }
 
 void ALGGameMode::PostLoad() {

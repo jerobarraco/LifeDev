@@ -53,6 +53,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCharInputEnabled(bool Enabled);
 
+	// wraps SetCharInputEnabled. used for delegates
+	UFUNCTION() // bind to delegate
+	void SetInputEnable() { SetCharInputEnabled(true); }
+	// wraps SetCharInputEnabled. used for delegates
+	UFUNCTION() // bind to delegate
+	void SetInputDisable() { SetCharInputEnabled(false); }
+	
 	// disables input temporarily, enables only if char is enabled. used for Diags.
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
@@ -100,12 +107,15 @@ protected:
 
 	bool LoadChapter();
 	void StartChapter();
+
 	UFUNCTION() // bind to delegate
 	void StartNextChapter();
 	UFUNCTION() // bind to delegate
 	void DiagShown(const FDialog& Diag);
 	UFUNCTION() // bind to delegate
 	void DiagDone();
+	UFUNCTION() // bound
+	void Fade(bool bIn, const FText& Text);
 
 	bool CharInputEnabled = true;
 	

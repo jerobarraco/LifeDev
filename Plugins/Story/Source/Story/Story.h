@@ -70,6 +70,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
 
+	// fades in/out with a text. nothing else.
 	UFUNCTION(BlueprintCallable)
 	void AutoFade(const FText& Title);
 

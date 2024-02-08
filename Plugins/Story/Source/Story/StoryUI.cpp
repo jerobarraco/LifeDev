@@ -4,10 +4,6 @@
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
-void UStoryUI::FadeOut_Implementation() {}
-
-void UStoryUI::FadeIn_Implementation(const FText& Title, const FText& Text) {}
-
 void UStoryUI::NativeConstruct() {
 	Super::NativeConstruct();
 	SetVisibility(ESlateVisibility::Hidden);

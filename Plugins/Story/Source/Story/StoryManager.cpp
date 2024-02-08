@@ -25,22 +25,22 @@ void AStoryManager::DeInit_Implementation() {
 }
 
 void AStoryManager::Fade(bool In, const FText& Title) {
-	UE_LOG(LogTemp, Log, TEXT("Fading in=%i text='%s'"), In, *Title.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Fading in=%i title='%s'"), In, *Title.ToString());
 	if (In) {
-		FadeIn(Title);
+		FadeIn();
 	} else {
-		FadeOut();
+		FadeOut(Title);
 	}
 }
 
-void AStoryManager::FadeIn(const FText& Title, const FText& Text) {
+void AStoryManager::FadeIn() {
 	if (!IsValid(UI)) return;
-	UI->FadeIn(Title, Text);
+	UI->FadeIn();
 }
 
-void AStoryManager::FadeOut() {
+void AStoryManager::FadeOut(const FText& Title, const FText& Text) {
 	if (!IsValid(UI)) return;
-	UI->FadeOut();
+	UI->FadeOut(Title, Text);
 }
 
 void AStoryManager::UIFaded() {

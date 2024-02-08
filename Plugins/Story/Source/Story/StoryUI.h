@@ -16,10 +16,12 @@ public:
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void FadeIn(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
+	void FadeIn();
+	void FadeIn_Implementation() {}
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void FadeOut();
+	void FadeOut(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
+	void FadeOut_Implementation(const FText& Title, const FText& Text) {}
 	
 	// variable that indicates when the Story is ready to progress.
 	// false when animating.
@@ -36,7 +38,6 @@ public:
 	FStoryUIDone OnDone;
 
 protected:
-
 	UFUNCTION(BlueprintCallable)
 	void AnimFinished();
 	

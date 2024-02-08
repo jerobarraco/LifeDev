@@ -81,19 +81,19 @@ bool UStory::Start(const FName& Name) {
 	if (!IsValid(World)) return false;
 	
 	// do the fade
-	OnFade.Broadcast(true, Step->Title);
+	OnFade.Broadcast(false, Step->Title);
 
 	// callback
 	auto l = [this, Step]() {
 		// - call stop and start
 		StartNow(Step);
 
-		// now fade out
+		// now fade in
 		// trigger this here. since the load layers is synchronous (on purpose)
 		// so here it's the point where it "should"TM be loaded.
 		auto l2 = [this]() {
 			// do fade out
-			OnFade.Broadcast(false, FText::GetEmpty());
+			OnFade.Broadcast(true, FText::GetEmpty());
 		};
 
 		UWorld* const World = GetWorld();
@@ -236,11 +236,11 @@ void UStory::AutoFade(const FText& Title) {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
-	OnFade.Broadcast(true, Title);
+	OnFade.Broadcast(false, Title);
 	
 	auto l2 = [this]() {
 		// do fade out
-		OnFade.Broadcast(false, FText::GetEmpty());
+		OnFade.Broadcast(true, FText::GetEmpty());
 	};
 
 	FTimerHandle H2;

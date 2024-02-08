@@ -32,10 +32,10 @@ public:
 	void Fade(bool In, const FText& Title = FText::GetEmpty());
 	
 	UFUNCTION(BlueprintCallable)
-	void FadeIn(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
+	void FadeIn();
 
 	UFUNCTION(BlueprintCallable)
-	void FadeOut();
+	void FadeOut(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 5;
