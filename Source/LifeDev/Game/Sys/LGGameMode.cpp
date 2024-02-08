@@ -221,7 +221,7 @@ void ALGGameMode::BeginPlay() {
 	if (!IsValid(World)) return;
 	
 	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)){
+	if (!IsValid(Instance)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("No valid instance found"));
 		return;
 	}
@@ -365,10 +365,10 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
+	// TODO bind to Story->OnFade and disable/enable input there
 	// TODO remove commented lines if nothing broke
 	// disable input only after conditions are met. only temp input in case the story decides to disable the whole character.
 	// SetTempInputEnabled(false);
-	
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
 

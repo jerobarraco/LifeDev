@@ -14,12 +14,15 @@ class LIFEDEV_API ULSave : public USaveGame {
 	GENERATED_BODY()
 
 public:
+	// resets the savestate. it will write to subsystems.
 	UFUNCTION(BlueprintCallable)
-	void Reset();
+	void Reset(UWorld* const W);
 
+	// sets the subsystem data to what's on the savestate.
 	UFUNCTION(BlueprintCallable)
 	void WriteSubsystems(UWorld* const W);
-	
+
+	// sets the savestate data to what's on the subsystems.
 	UFUNCTION(BlueprintCallable)
 	void ReadSubsystems(UWorld* const W);
 	

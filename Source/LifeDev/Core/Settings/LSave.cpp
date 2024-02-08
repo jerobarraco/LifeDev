@@ -8,22 +8,48 @@
 #include "Inventory/Inventory.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
+////////////
+///// DO NOT CALL GET WORLD HERE IT WON'T WORK!
+///////////////
 
-void ULSave::Reset() {
+void ULSave::Reset(UWorld* const W) {
 	UE_LOG(LogLSave, Log, TEXT("Savegame reset"));
 	
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
 	// not using above since i want to preserve the ability to skip chapters even on shipping builds
-	ChapterID = ULSysSettings::Get()->StartChap;
+	Time = FDateTime::Now().ToUnixTimestamp();
+	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	
+	ChapterID = SysSettings ? SysSettings->StartChap : 0;
 	SInventory.Empty();
 	SFlags.Empty();
-	Time = 0;
+	
+	SFeats.Empty();
+	if (SysSettings) {
+		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
+		const TSet<EFeat>& Feats = SysSettings->GetFeats();
+		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
+			const bool Val = Feats.Contains(F);
+			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
+				*UEnum::GetValueAsString(F), Val);
+
+			if (!Val) continue; // only store if set.
+
+			SFeats.Add(F);
+		}
+	}
+
+	// TODO this is a bit risky. keep an eye on it
+	WriteSubsystems(W);
 }
 
 void ULSave::WriteSubsystems(UWorld* const W) {
 	UE_LOG(LogLSave, Log, TEXT("%hs"), __func__);
 
-	if (!W) return;
+	if (!W) {
+		UE_LOG(LogLSave, Warning, TEXT("%hs. The world is fake! Can't continue."), __func__);
+		return;
+	}
 
 	UFlags* const Flags = UFlags::Instance(W);
 	if (Flags) {
@@ -51,7 +77,8 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 	ULSettings* const Settings = ULSettings::Instance(W);
 	if (Settings) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
-		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
+		// only affect the ones we watch. important or this will remove all the other flags.
+		for (const EFeat F: WatchFeats) {
 			const bool Val = SFeats.Contains(F);
 			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
 				*UEnum::GetValueAsString(F), Val);
