@@ -22,12 +22,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool FadeIn = false);
 
-	// returns true if this object is set to perform a reward
+	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool WillRewardFade() const {
 		return UseRewardFade && !IsRewardless();
 	}
 
+	// returns true if it does not have a reward (yes, i know about negations)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
@@ -101,7 +102,6 @@ public:
 	// remember to call SetNewMat on the constructor if you use the new material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardFade = true;
-	// TODO rename to UseRewardDestroy
 
 protected:
 	// triggered when something is rewarded. override to be notified.
@@ -131,6 +131,8 @@ protected:
 	// remember to call CreateMaterial on BeginPlay if there are no rewards.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp")
 	UCAnimatorFade* AnimFade = nullptr;
+
+	/// cache
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UInventory* Inventory = nullptr;

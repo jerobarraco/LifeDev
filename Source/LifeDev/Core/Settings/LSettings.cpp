@@ -23,12 +23,13 @@ void ULSettings::NewGame(int32 NewSlotIndex) {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	if (!Save) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs: Failed to create a new savegame. Can't progress."));
+		UE_LOG(LogLSettings, Warning,
+			TEXT("%hs: Failed to create a new savegame. Can't progress."), __func__);
 		return;
 	}
 
 	SlotIndex = NewSlotIndex;
-	UE_LOG(LogLSettings, Log, TEXT("%hs: Slot=%i."), SlotIndex);
+	UE_LOG(LogLSettings, Log, TEXT("%hs: Slot=%i."), __func__, SlotIndex);
 	Save->Reset(GetWorld()); // does write subsystem
 }
 
