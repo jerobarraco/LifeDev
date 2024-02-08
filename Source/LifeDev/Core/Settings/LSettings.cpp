@@ -19,34 +19,39 @@ ULSettings* ULSettings::Instance(UWorld* World) {
 	return Instance->GetSubsystem<ULSettings>();
 }
 
-void ULSettings::NewGame() {
+void ULSettings::NewGame(int32 NewSlotIndex) {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	Save->Reset(); // does write subsystem
+	SlotIndex = NewSlotIndex;
 }
 
-void ULSettings::LoadGame(int32 SlotIndex) {
-	if (SlotIndex<0) {
-		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted. Invalid SlotIndex=%i"), SlotIndex);
-		return;
-	}
-
-	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
-	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
-
+void ULSettings::LoadGame(int32 NewSlotIndex) {
+	// check before modifying internal state
 	if (IsSaving) {
 		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy."));
 		return;
 	}
 	IsSaving = true;
-	
+
+	// update target slot
+    if (NewSlotIndex>=0) {
+		SlotIndex = NewSlotIndex;
+	}
+	if (SlotIndex<0) {
+		SlotIndex = 0;
+	}
+
+	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
+	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
+
 	FAsyncLoadGameFromSlotDelegate OnLoadGameDone;
 	OnLoadGameDone.BindUObject(this, &ULSettings::LoadGameDone);
 	// Try to load a saved game file (with name: <SaveSlot>.sav) if exists
 	UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, OnLoadGameDone);
 }
 
-void ULSettings::SaveGame(int32 SlotIndex) {
+void ULSettings::SaveGame(int32 NewSlotIndex) {
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
@@ -64,15 +69,16 @@ void ULSettings::SaveGame(int32 SlotIndex) {
 	IsSaving = true;
 
 	// update slot index. If parameter is set use that.
-	if (SlotIndex>=0) {
-		Save->SlotIndex = SlotIndex;	
-	}
-	// if it's invalid force to 0
-	if (Save->SlotIndex < 0) {
-		Save->SlotIndex = 0;
+	if (NewSlotIndex>=0) {
+		SlotIndex = NewSlotIndex;	
 	}
 
-	const FString& SlotName = SaveSlot + FString::FromInt(Save->SlotIndex);
+	// if it's invalid force to 0
+	if (SlotIndex < 0) {
+		SlotIndex = 0;
+	}
+
+	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 	
 	Save->ReadSubsystems(GetWorld());
@@ -100,12 +106,11 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 	Save = Cast<ULSave>(LoadedGame);
 	if (!Save) {
 		// If file does not exist try create a new one
-		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one."));
-		NewGame(); // does write subsystem (then read)
-		// should assign a new Save->SlotIndex here.
+		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one. Slot=%i"), SlotIndex);
+		// should assign a the slot index here.
 		// otherwise if a game load fails for a given slot. it will override slot 0.
 		// that'd be terrible!
-		Save->SlotIndex = FCString::Atoi(*Slot.Right(1));
+		NewGame(SlotIndex);
 		OnSaveReady.Broadcast(); // broadcast anyway since someone might be waiting on this.
 		return;
 	}

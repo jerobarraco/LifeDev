@@ -34,10 +34,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int64 Time = 0;
 
-	// current slot index used / to use.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 SlotIndex = 0;
-
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TMap<FName, float> SFlags;

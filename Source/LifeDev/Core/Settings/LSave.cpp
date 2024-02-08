@@ -18,7 +18,6 @@ void ULSave::Reset() {
 	SInventory.Empty();
 	SFlags.Empty();
 	Time = 0;
-	SlotIndex = 0;
 }
 
 void ULSave::WriteSubsystems(UWorld* const W) {

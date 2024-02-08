@@ -26,17 +26,23 @@ public:
 	static bool GetFeatS(UWorld* World, EFeat Feat);
 
 	// overrides current save with a new game
+	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
-	void NewGame();
+	void NewGame(int32 SlotIndex =-1);
 	// loads a game, or creates a new one if not found.
+	// Defaults to current slot.
 	UFUNCTION(BlueprintCallable)
-	void LoadGame(int32 SlotIndex =0);
+	void LoadGame(int32 SlotIndex =-1);
 	// saves the current game if any
+	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
 	void SaveGame(int32 SlotIndex =-1);
 	// returns true if it's busy saving/loading
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsSaving() { return IsSaving; }
+	// returns the current slot
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE int32 GetSlotIndex() { return SlotIndex; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
@@ -94,4 +100,5 @@ protected:
 	TSet<EFeat> Feats;
 	
 	bool IsSaving = false;
+	int32 SlotIndex = 0;
 };
