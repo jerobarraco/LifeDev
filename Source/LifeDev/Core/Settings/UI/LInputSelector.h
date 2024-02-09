@@ -16,14 +16,14 @@ class LIFEDEV_API ULInputSelector : public UInputKeySelector {
 public:
 	ULInputSelector();
 
-	
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void Init(const FInputChord& Key);
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void DeInit();
 
+	// the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FName InputName = NAME_None; // the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
+	FName InputName = NAME_None;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnKeySelectedPlus OnKeySelectedPlus;
