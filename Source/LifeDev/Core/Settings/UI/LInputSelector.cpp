@@ -4,7 +4,7 @@
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it
-	Super::SetIsEnabled(false);
+	// Super::SetIsEnabled(false);
 
 	FTextBlockStyle S = GetTextStyle();
 	// TODO set proper colors
@@ -18,5 +18,5 @@ ULInputSelector::ULInputSelector():Super() {
 	SetNoKeySpecifiedText(FText::FromString(TEXT("[None]")));
 	SetAllowModifierKeys(false);
 
-	SetToolTipText(FText::FromString(TEXT("Sorry. Rebinding is not available at the moment.")));
+	// SetToolTipText(FText::FromString(TEXT("Sorry. Rebinding is not available at the moment.")));
 }
