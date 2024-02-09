@@ -20,3 +20,16 @@ ULInputSelector::ULInputSelector():Super() {
 
 	// SetToolTipText(FText::FromString(TEXT("Sorry. Rebinding is not available at the moment.")));
 }
+
+void ULInputSelector::Init(const FInputChord& Key) {
+	SetSelectedKey(Key);
+	OnKeySelected.AddUniqueDynamic(this, &ULInputSelector::KeySelected);
+}
+
+void ULInputSelector::DeInit() {
+	OnKeySelected.RemoveAll(this);
+}
+
+void ULInputSelector::KeySelected(FInputChord Key) {
+	OnKeySelectedPlus.Broadcast(this, Key);
+}

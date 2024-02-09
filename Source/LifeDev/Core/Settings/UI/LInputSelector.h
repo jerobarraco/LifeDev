@@ -7,6 +7,8 @@
 
 #include "LInputSelector.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnKeySelectedPlus, class ULInputSelector*, Sel, const FInputChord&, Key);
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULInputSelector : public UInputKeySelector {
 	GENERATED_BODY()
@@ -14,6 +16,19 @@ class LIFEDEV_API ULInputSelector : public UInputKeySelector {
 public:
 	ULInputSelector();
 
+	
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
+	void Init(const FInputChord& Key);
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
+	void DeInit();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FName InputName; // the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
+	FName InputName = NAME_None; // the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
+
+	UPROPERTY(BlueprintAssignable)
+	FOnKeySelectedPlus OnKeySelectedPlus;
+
+protected:
+	UFUNCTION()
+	void KeySelected(FInputChord Key);
 };
