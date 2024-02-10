@@ -3,6 +3,7 @@
 #include "Paper00.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 APaper00::APaper00():Super() {
@@ -25,4 +26,6 @@ APaper00::APaper00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
+
+	AnimFade->SetNewMat();
 }
