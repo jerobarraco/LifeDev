@@ -92,11 +92,11 @@ public:
 	// Beware that this will trigger just before the children implementations of this class are finished processing.
 	// after long deliberation i think this is the best. either you override Trigger or you subscribe to this, but unlikely both.
 	// also Overriding Trigger is not the best, SetState is preferred.
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTrigger;
 
 	// When this is triggered while locked
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTriggerLocked OnTriggerLocked;
 
 protected:
@@ -166,7 +166,7 @@ protected:
 	bool UseAttachedSFX = true;
 	
 	// added here so it can be changed in the editor. otherwise it wont show. :(
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	
 	// handles the interactions with this actor.

@@ -52,3 +52,15 @@
 * Avoid using interfaces. use inheritance whenever possible.
 * callbacks are delegates
 * singletons are subsystems
+
+
+
+Metas:
+objects
+* use readonly if i dont want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
+** use visibleDefaultsOnly to allow to edit on the editor 
+* use readwrite if i want to change the object
+** use Edit* if i want to be able to re-assign the object (with readwrite)
+
+deleagets
+* make transient to avoid issues when binding on constructor

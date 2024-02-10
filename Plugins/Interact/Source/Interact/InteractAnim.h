@@ -77,6 +77,6 @@ protected:
 	virtual void AnimEnd_Implementation();
 
 	// The animator, by default set up for the mesh material and iroot
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCAnimatorMix* Anim = nullptr;
 };

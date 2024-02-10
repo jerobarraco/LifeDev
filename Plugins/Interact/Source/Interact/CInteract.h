@@ -38,17 +38,17 @@ public:
 	
 	inline static FName CollisionProfile = "Interact";
 
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp")
 	FInteractOnTrigger OnTrigger;
 	
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp")
 	FInteractOnHover OnHover;
 	
 	// Text to be displayed on interaction
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FText Text = FText::GetEmpty();
 	
 	// Mesh to automatically highlight, if any.
-	UPROPERTY(BlueprintReadWrite, Category=SetUP)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UStaticMeshComponent* HoverMesh = nullptr;
 };

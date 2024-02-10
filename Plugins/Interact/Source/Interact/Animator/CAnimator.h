@@ -31,7 +31,7 @@ public:
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Play() { Activate(true); }
-	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just for debug
+	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just to get a button for debug
 	FORCEINLINE void Stop() { Deactivate(); }
 
 	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
@@ -75,13 +75,13 @@ public:
 	bool IsReversed = false;
 
 	// triggers when the animation ends. but not if it wasn't playing.
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
 	// when it starts, obviously
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnBegin OnBegin;
 	// everytime the animation updates
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp|Signals")
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnUpdate OnUpdate;
 
 protected:
@@ -112,7 +112,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
 	float Progress = 0.0;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UCAnimator* Parent = nullptr;
