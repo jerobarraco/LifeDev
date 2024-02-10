@@ -21,7 +21,7 @@ ALInteract::ALInteract():Super() {
 
 void ALInteract::Fade(bool FadeIn) {
 	AnimFade->IsReversed = FadeIn;
-	AnimFade->Play();
+	AnimFade->Activate(true);
 }
 
 void ALInteract::BeginPlay() {
