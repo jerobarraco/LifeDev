@@ -13,6 +13,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	UsePawnCam = true;
 	UseFadeTime = true;
 	FinishPostWait = false;
+	TeleportChar = true;
 
 	// TODO temporary until i get a new music
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
