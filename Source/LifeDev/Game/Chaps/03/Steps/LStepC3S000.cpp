@@ -5,7 +5,7 @@
 
 ALStepC3S000::ALStepC3S000():Super() {
 	Name = FName("C3S0");
-	static FText ST = FText::FromString("~ ??? ~");
+	static FText ST = FText::FromString("~ Perseverance ~");
 	Title = ST;
 	UseFade = true;
 	// DlgId = FName("C3S0"); // this chapter finishes after the dialog
