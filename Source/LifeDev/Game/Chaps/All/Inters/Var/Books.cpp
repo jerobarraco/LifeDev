@@ -45,7 +45,7 @@ ABooks::ABooks():Super() {
 		
 		UMaterialInterface* const Mat = Ptr.LoadSynchronous();
 		if (!IsValid(Mat)) {
-			UE_LOG(LogTemp, Warning, TEXT("%hs. could not get material ="), __func__, *Ptr.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material=%s"), __func__, *Ptr.ToString());
 			continue;
 		}
 
