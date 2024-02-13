@@ -43,7 +43,7 @@
 ** SPECIALLY on delegates and for loops
 ** To Pass structures as you WILL modify them in the body.
 ** same for variables in functions.
-* pure functions must be simple and not contain complex calculations. pure are very inneficient they get called multiple times. force bp to have a local var or execution pin. it might be only for loops (test this out) but in general is a way to say 'be careful when calling this, its precious'
+* pure functions must be simple and not contain complex calculations. pure are very inefficient they get called multiple times. force bp to have a local var or execution pin. it might be only for loops (test this out) but in general is a way to say 'be careful when calling this, its precious'
 * use MoveTemp when possible.
 * DO NOT define structures or types on BP only. create stubs in cpp then inherit. this is contagious.
 * Don't be overly private. 
@@ -57,7 +57,7 @@
 
 Metas:
 objects
-* use readonly if i dont want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
+* use readonly if i don't want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
 ** use visibleDefaultsOnly to allow to edit on the editor 
 * use readwrite if i want to change the object
 ** use Edit* if i want to be able to re-assign the object (with readwrite)
