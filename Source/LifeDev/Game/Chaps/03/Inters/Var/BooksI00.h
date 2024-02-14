@@ -3,13 +3,12 @@
 #pragma once
 #include "LifeDev/Game/Chaps/All/Inters/Var/Books.h"
 
-#include "Books00.generated.h"
+#include "BooksI00.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ABooks00: public ABooks {
+class LIFEDEV_API ABooksI00: public ABooks {
 	GENERATED_BODY()
 
 public:
-	ABooks00();
-	
+	ABooksI00();
 };

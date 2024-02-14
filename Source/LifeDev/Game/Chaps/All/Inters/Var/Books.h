@@ -33,8 +33,7 @@ protected:
 	};
 
 	int32 BookCount = 5;
-	int32 RndSeed = 4;
-	bool RndFull = true;
+	int32 RndSeed = 0;
 	float RndOff = 2;
 	float Spacing = 2.1;
 

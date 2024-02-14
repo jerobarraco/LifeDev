@@ -20,7 +20,8 @@ void ABooks::CreateBooks() {
 	/// create 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
-	FRandomStream RS(RndFull ?  FMath::Rand()*MAX_int32 : RndSeed); // not static
+	// check against 0 to be able to use negative values as well
+	FRandomStream RS(RndSeed == 0 ?  FMath::Rand()*MAX_int32 : RndSeed); // not static
 	
 	const int32 MatMax = Materials.Num() -1;
 	for (int32 i =0; i<BookCount; ++i) {
@@ -54,7 +55,7 @@ void ABooks::CreateBooks() {
 
 void ABooks::Constructor() {
 	// mesh
-	Mesh->SetRelativeLocation(FVector(-10,6.250000,0));
+	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
 
 	SetUpInteract();
 
@@ -74,11 +75,9 @@ ABooks::ABooks():Super(){
 }
 
 ABooks::ABooks(int32 nBookCount, int32 nRndSeed):Super() {
+	// check to avoid issues 
 	if (nBookCount>=0) BookCount = nBookCount;
-	if (nRndSeed>=0) {
-		RndFull = false;
-		RndSeed = nRndSeed; 
-	}
+	RndSeed = nRndSeed; 
 
 	Constructor();
 }
