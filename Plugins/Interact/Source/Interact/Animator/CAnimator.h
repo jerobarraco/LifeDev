@@ -67,10 +67,13 @@ public:
 	// can be changed directly, but beware if doing so while playing
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsLooping = false;
-	// Will restart the animation once completed. If not looping, then only once. can be changed directly, but beware if doing so while playing
+	// Will restart the animation once completed.
+	// If not looping, then only once. It will reset upon bouncing.
+	// can be changed directly, but beware if doing so while playing.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsBouncing = false;
-	// Whether currently reversed. changes on bounce. can be changed directly, but beware if doing so while playing
+	// Whether currently reversed. changes on bounce.
+	// Can be changed directly, but beware if doing so while playing.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsReversed = false;
 

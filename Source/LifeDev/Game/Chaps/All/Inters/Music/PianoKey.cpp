@@ -36,7 +36,7 @@ void APianoKey::SetState_Implementation(int32 NewState) {
 
 void APianoKey::PostInitializeComponents() {
 	Super::PostInitializeComponents();
-	// UCodeCurveLib* const CurveLib = NewObject<UCodeCurveLib>(this);
-	UCodeCurveLib* const CurveLib = Cast<UCodeCurveLib>(UCodeCurveLib::StaticClass()->GetDefaultObject(true));
+
+	UCodeCurveLib* const CurveLib = UCodeCurveLib::Instance();
 	Anim->CodeCurve.BindDynamic(CurveLib, &UCodeCurveLib::OutBack);
 }

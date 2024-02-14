@@ -4,6 +4,10 @@
 // some of these curves are taken from here https://easings.net/en#
 #include "CodeCurve.h"
 
+UCodeCurveLib* UCodeCurveLib::Instance() {
+	return Cast<UCodeCurveLib>(UCodeCurveLib::StaticClass()->GetDefaultObject(true));
+}
+
 float UCodeCurveLib::LinCycle(float p){
 	float p2 = FMath::Fmod(p,2.0f);
 	if (p2>1)

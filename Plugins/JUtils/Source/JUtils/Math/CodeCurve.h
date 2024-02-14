@@ -14,7 +14,8 @@ UCLASS(Blueprintable)
 class JUTILS_API UCodeCurveLib: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 public:
-
+	static UCodeCurveLib* Instance();
+	
 	// cant bind a const not static : lame :(
 
 	/// basics
