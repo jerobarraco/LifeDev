@@ -58,7 +58,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
 	// a curve by code. only used if Curve is not set. if both not set it will be linear.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Common")
 	FCodeCurve CodeCurve;
 
 	// Duration of the animation in seconds

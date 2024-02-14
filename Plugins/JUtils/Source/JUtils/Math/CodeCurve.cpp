@@ -120,6 +120,7 @@ float UCodeCurveLib::InBack(float p) {
 }
 
 float UCodeCurveLib::OutBack(float p) {
+	// https://easings.net/#easeOutBack
 	constexpr float c1 = 1.70158;
 	constexpr float c3 = c1 + 1.0;
 

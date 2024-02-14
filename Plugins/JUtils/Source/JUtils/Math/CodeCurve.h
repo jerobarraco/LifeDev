@@ -8,6 +8,8 @@
 
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCodeCurve, float, Progress);
 
+// 	UCodeCurveLib* const CurveLib = Cast<UCodeCurveLib>(UCodeCurveLib::StaticClass()->GetDefaultObject(true));
+// Anim->CodeCurve.BindDynamic(CurveLib, &UCodeCurveLib::OutBack);
 UCLASS(Blueprintable)
 class JUTILS_API UCodeCurveLib: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()

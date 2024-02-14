@@ -56,6 +56,7 @@ void UCAnimator::Finish() {
 			IsBouncing = false; 
 		}
 	}
+
 	Begin(); // it technically started
 }
 
