@@ -26,11 +26,6 @@ void ALInteract::Fade(bool FadeIn) {
 
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
-	// TODO try using PostInitProperties or PostInitializeComponents. PostLoad happens before the construction and PostActorCreated is before bps and properties maybe.
-	if (!ULockItem.IsNone() || !ULockItemReq.IsNone() || !ULockFlagReq.IsNone()) {
-		// note only setting it if the ulock is set.
-		Locked = true;
-	}
 
 	// don't set the fade material if not NECESSARY.
 	// atm i have 2 materials and this will break new objects with the new material until
