@@ -11,4 +11,8 @@ class LIFEDEV_API APianoKey: public ALInteract {
 
 public:
 	APianoKey();
+
+protected:
+	virtual void SetState_Implementation(int32 NewState) override;
+	virtual void PostInitializeComponents() override;
 };
