@@ -27,6 +27,10 @@ void ALInteract::Fade(bool FadeIn) {
 void ALInteract::BeginPlay() {
 	Super::BeginPlay();
 
+	// decided not to set locked here depending on the other flags, since that actually
+	// can confuse me while playing and removes the explicit-ness of the code.
+	// is not that it's a bad technique, just that in this case is not helpful.
+
 	// don't set the fade material if not NECESSARY.
 	// atm i have 2 materials and this will break new objects with the new material until
 	// the transition is finished. But also is unnecessary code, with unnecessary memory.
