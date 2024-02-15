@@ -347,10 +347,15 @@ void ALGGameMode::StartChapter() {
 		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
 		return;
 	}
+
+	// stop here to avoid getting the engine stuck trying to load chapters
+	if (ChapterId >= LDConsts::Feats::ChapFeatN) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Went beyond available chapters. Stopping dry. id=%i."), ChapterId);
+		return;
+	}
 	
-	// skip chapter if past end, or not enabled
-	if (ChapterId <0 || ChapterId >= LDConsts::Feats::ChapFeatN ||
-		!Settings->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
+	// skip chapter if not enabled
+	if (ChapterId <0 || !Settings->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
 		StartNextChapter(); // note this is recursive but there ain't that many chapters
 		return;
