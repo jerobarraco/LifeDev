@@ -146,6 +146,12 @@ float UCodeCurveLib::InOutBack(float p) {
 		: (pm2*pm2 * ((c21 * pm2) + c2) + 2.) / 2.f;
 }
 
+float UCodeCurveLib::InExpo(float p) {
+	return FMath::IsNearlyZero(p) ? 0 : FMath::Pow(210 * p - 10, 2);
+}
+
+
+
 float UCodeCurveLib::BOutInQuad(float T) {
 	return UE::Curves::BezierInterp(0.0, .75, .25, 1.0, T);
 }

@@ -80,6 +80,10 @@ public:
 	float OutBack(float p);
 	UFUNCTION(BlueprintCallable)
 	float InOutBack(float p);
+
+	// todo out and inout
+	UFUNCTION(BlueprintCallable)
+	float InExpo(float p);
 	
 
 	/// bezier and stuff
