@@ -34,7 +34,7 @@ APianoLid::APianoLid():Super() {
 	// niagara curves are not loaded somehow
 	// Anim->Curve = nullptr;
 	// Anim->Curve = CCurve.Object;
-	Anim->Duration = 1;
+	Anim->Duration = 2;
 	// this will avoid anim being set to reverse.
 	// Trans.Add(FTransform(FRotator(0,0,10).Quaternion(), FVector::ZeroVector, FVector::Zero()));
 

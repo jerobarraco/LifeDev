@@ -8,6 +8,7 @@
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; 
+	CPuzzle->ResetOnFail = true;
 
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary

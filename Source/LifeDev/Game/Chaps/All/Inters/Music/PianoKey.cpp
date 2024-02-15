@@ -12,7 +12,7 @@ APianoKey::APianoKey():Super() {
 	
 	// TODO change on sfx days
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSFX (TEXT("/Game/LifeDev/Game/Inters/Key00/Key19.Key19"));
+		CSFX (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/group_A.group_A"));
 	SFX_Trigger = CSFX.Object;
 	
 	Interact->SetRelativeLocation(FVector(0,7.5,-2.5));
