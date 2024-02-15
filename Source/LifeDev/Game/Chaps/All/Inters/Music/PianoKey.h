@@ -13,6 +13,6 @@ public:
 	APianoKey();
 
 protected:
-	virtual void SetState_Implementation(int32 NewState) override;
-	virtual void PostInitializeComponents() override;
+	// virtual void SetState_Implementation(int32 NewState) override;
+	// virtual void PostInitializeComponents() override;
 };
