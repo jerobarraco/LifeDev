@@ -8,7 +8,7 @@ class AInteract;
 class UDelegateWrapper;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnUpdate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOk);
 
 UENUM(BlueprintType, Category="Interact|Puzzle")
 enum class EPuzzleType: uint8 {
