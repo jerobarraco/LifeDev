@@ -38,29 +38,21 @@ void APuzzleI04::PostLoad() {
 
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
-
-	CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzleI04::Doned);
-	// TODO unbind
 }
 
 // TODO refactor all this
 
-void APuzzleI04::Doned(bool Ok) {
+void APuzzleI04::Done_Implementation(bool Ok) {
+	SetEnableds(false); // disable until i play the solution
 	SND = Ok ? SND_Right : SND_Wrong;
 	FTimerHandle H;
 	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PlayDone, 2);
 	// TODO disable interacts while waiting
-	
 }
-void APuzzleI04::PlayDone() {
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation() );
-}
-//
-// void APuzzleI04::BeginPlay() {
-// 	Super::BeginPlay();
-//
-// 	static const TArray<int32> States = {0, 0, 0};
-// 	SetStates(States);
-// }
-//
 
+void APuzzleI04::PlayDone() {
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation());
+	if (SND == SND_Right) return;
+	
+	SetEnableds(true);
+}

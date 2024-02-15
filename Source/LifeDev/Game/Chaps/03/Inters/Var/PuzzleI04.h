@@ -14,13 +14,13 @@ public:
 	APuzzleI04();
 
 protected:
-	UFUNCTION()
-	void PlayDone();
-	UFUNCTION()
-	void Doned(bool bIsOn);
-	
 	virtual void PostLoad() override;
 	// virtual void BeginPlay() override;
+
+	virtual void Done_Implementation(bool IsOk) override;
+
+	UFUNCTION()
+	void PlayDone();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Wrong = nullptr;
@@ -31,6 +31,5 @@ protected:
 	UPROPERTY(Transient)
 	USoundBase* SND = nullptr;
 };
-
 
 // TODO refactor all the sound stuff
