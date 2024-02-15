@@ -92,9 +92,7 @@ void APuzzle::SetEnableds(bool NewEnabled) {
 	if (!CPuzzle) return;
 
 	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
-	const int32 Num = Inters.Num();
-	for (int32 i = 0; i<Num; ++i) {
-		AInteract* const I = Inters[i];
+	for (AInteract* const I: Inters) {
 		if (!IsValid(I)) continue;
 		I->SetEnabled(NewEnabled);
 	}

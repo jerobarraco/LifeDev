@@ -2,7 +2,6 @@
 
 #include "LPuzzle.h"
 
-#include "Components/BillboardComponent.h"
 #include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/Interact.h"
