@@ -8,6 +8,7 @@ class AInteract;
 class UDelegateWrapper;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnUpdate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnReset);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOk);
 
 UENUM(BlueprintType, Category="Interact|Puzzle")
@@ -74,9 +75,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool ResetOnFail = false;
 
+	// TODO
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float ResetTimeout = 10;
+
 	// triggers when the puzzle is updated. (i.e. when an interaction is triggered).
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnUpdate OnUpdate;
+
+	// triggers on reset
+	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	FPuzzleOnReset OnReset;
 
 	// triggers when the puzzle is completed, with or without success.
 	UPROPERTY(BlueprintAssignable, Category="SetUp")

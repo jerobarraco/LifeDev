@@ -24,6 +24,8 @@ void UCPuzzle::Reset_Implementation() {
 
 	// reset the solution and the objects
 	ResetCurrents();
+
+	OnReset.Broadcast();
 }
 
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
