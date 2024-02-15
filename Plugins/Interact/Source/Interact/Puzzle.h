@@ -31,13 +31,20 @@ public:
 	void SetEnableds(bool NewEnabled);
 
 protected:
+	// called when the puzzle is done. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Done(bool IsOk);
 	virtual void Done_Implementation(bool IsOk);
 
+	// called when the puzzle is updated. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Update();
 	virtual void Update_Implementation() {};
+	
+	// called when the puzzle is reset. override if needed
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void DoReset();
+	virtual void DoReset_Implementation() {};
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

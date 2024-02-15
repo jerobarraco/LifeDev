@@ -49,6 +49,7 @@ void APuzzle::BeginPlay() {
 
 	CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzle::Done);
 	CPuzzle->OnUpdate.AddUniqueDynamic(this, &APuzzle::Update);
+	CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
 }
 
 void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -56,6 +57,7 @@ void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (CPuzzle) {
 		CPuzzle->OnDone.RemoveAll(this);
 		CPuzzle->OnUpdate.RemoveAll(this);
+		CPuzzle->OnReset.RemoveAll(this);
 	}
 }
 

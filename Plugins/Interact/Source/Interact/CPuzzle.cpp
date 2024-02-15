@@ -166,6 +166,14 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
+	UWorld* const World = GetWorld();
+	if (!World) return;
+
+	// clear the reset timer
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.ClearTimer(ResetTimer);
+	ResetTimer.Invalidate();
+	
 	// trigger update now, before done
 	OnUpdate.Broadcast();
 
@@ -184,11 +192,18 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 		if (Ok) {
 			// only trigger when complete. combination can only be completed with ok.
 			Done(true);
+			return;
 		}
 		// no way to reset here
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
 	}
+
+	// TODO test
+	// re-add the reset timer if needed
+	if (ResetTimeout >= 0) {
+		Timer.SetTimer(ResetTimer, this, &UCPuzzle::Reset, ResetTimeout );
+ 	}
 }
 
 void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {

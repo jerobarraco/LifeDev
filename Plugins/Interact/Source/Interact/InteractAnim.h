@@ -26,7 +26,6 @@ public:
 
 	// Whether it should reverse the animation.
 	// By default it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
-	// b³
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsReversed() { return StateNum > 1 && IsClosed(); }
 

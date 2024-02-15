@@ -101,7 +101,6 @@ protected:
 	bool IsCurrentSolution();
 	// internal. to be called when done
 	void Done(bool Ok = true) const;
-	
 
 	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound
@@ -118,4 +117,6 @@ protected:
 	TArray<int32> CurrentIds;
 	UPROPERTY(BlueprintReadOnly, Transient) //important so they don't get GCd
 	TArray<UDelegateWrapper*> Wrappers;
+
+	FTimerHandle ResetTimer;
 };
