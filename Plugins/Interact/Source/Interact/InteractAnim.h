@@ -24,6 +24,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
 
+	// Whether it should reverse the animation.
+	// By default it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
+	// b³
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool IsReversed() {
+		return StateNum > 1 && IsClosed();
+	}
+
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
 	// when strobe is disabled on lights, on beginplay, and many many more. :)
@@ -63,6 +71,7 @@ protected:
 	virtual void SetText_Implementation() override;
 	virtual void SetState_Implementation(int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
+	
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 

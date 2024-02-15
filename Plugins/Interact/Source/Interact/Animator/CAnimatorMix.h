@@ -15,7 +15,6 @@ class INTERACT_API UCAnimatorMix: public UCAnimatorTrans {
 	GENERATED_BODY()
 
 public:
-
 	// Mats
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FName MatFName;
