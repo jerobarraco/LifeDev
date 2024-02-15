@@ -71,7 +71,7 @@ protected:
 
 	// Interact to trigger on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	AInteract* Interact= nullptr;
+	AInteract* DoneInter = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	UCPuzzle* CPuzzle = nullptr;

@@ -94,12 +94,12 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	if (FB) FB->ModVal(DoneFB);
 	if (Flags) Flags->Mod(DoneFlag, 1);
 	if (Inventory) Inventory->Mod(DoneItem, 1);
-	if (!DoneStep.IsNone() && Story) Story->StartNext(DoneStep);
+	if (Story && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
-	if (IsValid(Interact)) {
+	if (IsValid(DoneInter)) {
 		// force unlock
-		Interact->Locked = false;
-		Interact->TryTrigger();
+		DoneInter->Locked = false;
+		DoneInter->TryTrigger();
 	}
 }
 
