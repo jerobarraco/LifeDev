@@ -2,6 +2,8 @@
 
 #include "LGGameMode.h"
 
+#include "CoreGlobals.h"
+#include "CoreGlobals.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Consts/ConstSettings.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,6 +21,7 @@
 #include "Diags/Diags.h"
 #include "Engine/PostProcessVolume.h"
 #include "JSig/CSignificance.h"
+#include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
@@ -108,6 +111,7 @@ void ALGGameMode::Init_Implementation() {
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
 	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
 	AStep::Debug = Settings->GetFeat(EFeat::DBG_STEPS);
+	ALStep::FadeTime = UJMiscUtils::IsEditor() ? .5: (FadeTime*2)+ HoldTime;
 	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
 
 	/// post process (does this even works?)
@@ -399,10 +403,4 @@ void ALGGameMode::Fade(bool bIn, const FText& Text) {
 	const float Wait = (Story->FadeTime)+Story->HoldTime;
 	FTimerManager& Time = GetWorld()->GetTimerManager();
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
-}
-
-void ALGGameMode::PostLoad() {
-	Super::PostLoad();
-	// TODO this might not be necessary. it shouldn't
-	ALStep::FadeTime = (FadeTime*2)+ HoldTime;
 }
