@@ -98,7 +98,7 @@ protected:
 	void End();
 	virtual void End_Implementation();
 
-	// override me on child classes :) But call the parent. 
+	// override me on child classes :) But call the parent.
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void Begin();
 	virtual void Begin_Implementation();
