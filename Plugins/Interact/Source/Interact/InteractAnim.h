@@ -28,9 +28,7 @@ public:
 	// By default it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
 	// b³
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool IsReversed() {
-		return StateNum > 1 && IsClosed();
-	}
+	FORCEINLINE bool IsReversed() { return StateNum > 1 && IsClosed(); }
 
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
