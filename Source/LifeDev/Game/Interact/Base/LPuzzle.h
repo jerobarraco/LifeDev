@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "Interact/Puzzle.h"
 #include "LPuzzle.generated.h"
 
 class AInteract;
@@ -13,45 +14,21 @@ class UFlashback;
 
 // Base class for LPuzzles
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALPuzzle: public AActor {
+class LIFEDEV_API ALPuzzle: public APuzzle {
 	GENERATED_BODY()
 
 public:
-	ALPuzzle();
-
 	// sets the UseItemDlg map on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
 	void SetUseItemDlgs(const TMap<FName, FName>& Map);
-	
-	// sets the states on each registered interact.
-	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
-	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
-	UFUNCTION(BlueprintCallable)
-	void SetLocks(const TArray<bool>& Locks);
-
-	// Set the interact pieces to enabled
-	UFUNCTION(BlueprintCallable)
-	void SetEnableds(bool NewEnabled);
-
-	// sets the states on each registered interact.
-	// Call on or after begin play.
-	// Note that this will reset the cpuzzle (and interacts) 
-	UFUNCTION(BlueprintCallable)
-	void SetStates(const TArray<int32>& States);
 
 protected:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Done(bool IsOk);
-	virtual void Done_Implementation(bool IsOk);
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Update();
-	virtual void Update_Implementation() {};
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	virtual void Done_Implementation(bool IsOk) override;
 
 	// Dialog to show on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
@@ -72,15 +49,6 @@ protected:
 	// FB to reward on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	float DoneFB = 0;
-
-	// Interact to trigger on Done. It will force unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	AInteract* DoneInter = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
-	UCPuzzle* CPuzzle = nullptr;
-	UPROPERTY(BlueprintReadOnly)
-	USceneComponent* Root = nullptr;
 
 	// caches
 	UPROPERTY(BlueprintReadOnly, Transient)
@@ -108,8 +76,3 @@ protected:
 //		i don't need to clone a lot of code (subsystem caching)
 //		visual LPuzzles will need an interact
 //		less code to interface between the LPuzzle item an the visual interact (eg changing states and locks and stuff)
-
-// not inheriting from APuzzle since that class doesn't really add much.
-// and having another parent might hit performance a bit,
-// more importantly it will limit how and what i do.
-// the other class is better off as a sample for the plugin.

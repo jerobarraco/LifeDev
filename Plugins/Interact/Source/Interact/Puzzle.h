@@ -13,6 +13,22 @@ class INTERACT_API APuzzle: public AActor {
 
 public:
 	APuzzle();
+	
+	// sets the states on each registered interact.
+	// Call on or after begin play.
+	// Note that this will reset the cpuzzle (and interacts) 
+	UFUNCTION(BlueprintCallable)
+	void SetStates(const TArray<int32>& States);
+	
+	// sets the states on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	UFUNCTION(BlueprintCallable)
+	void SetLocks(const TArray<bool>& Locks);
+
+	// Set the interact pieces to enabled
+	UFUNCTION(BlueprintCallable)
+	void SetEnableds(bool NewEnabled);
 
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -26,9 +42,15 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	AInteract* Interact = nullptr;
+	// Interact to trigger on Done. It will force unlock.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
+	AInteract* DoneInter = nullptr;
+
+	/// subobjects
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCPuzzle* CPuzzle = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	USceneComponent* Root = nullptr;
 };
