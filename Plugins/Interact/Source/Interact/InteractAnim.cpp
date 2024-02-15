@@ -65,7 +65,7 @@ void AInteractAnim::AnimPlay() {
 	}
 
 	// both checks avoids an out of bound access
-	if (Trans.Num() ==0 || State < 0) {
+	if (Trans.Num() == 0 || State < 0) {
 		// this creates so many issues. notice how it's set.
 		// this plays AFTER the state has changed.
 		// which means: if it's open, it was closed, so it needs to play from Closed to Open

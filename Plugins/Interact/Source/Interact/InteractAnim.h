@@ -18,12 +18,12 @@ public:
 	// sets the mobility. will disable UseAnim
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
-	// Flip-flops depending on the state. Starts closed.
-	// this also affects the "reversed" flag of the anim.
-	// If you need not to use the reversed animation then the "Trans" property.
+	// Flip-flops depending on the state. Starts closed, then open, then closed.
+	// this also controls the "reversed" flag of the anim.
+	// If you need not to use the reversed animation then use the "Trans" property.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
-	
+
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
 	// when strobe is disabled on lights, on beginplay, and many many more. :)
