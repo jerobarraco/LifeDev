@@ -10,11 +10,10 @@ APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Solution = {1, 2, 0}; 
 
 	static FName DoneId = "PZ04_T";
-	DoneDlg = DoneId;
-	DoneFB = .15;
-	// DoneStep = "C3S0";
-	// TODO trigger boss
-	
+	DoneDlg = DoneId; // really? TODO maybe not necessary
+	// DoneFB = .15;
+	// TODO this will get the engine stuck
+	DoneStep = "C3S0"; // TODO trigger boss
 }
 
 void APuzzleI04::PostLoad() {
