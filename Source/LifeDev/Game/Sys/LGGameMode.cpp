@@ -111,7 +111,6 @@ void ALGGameMode::Init_Implementation() {
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
 	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
 	AStep::Debug = Settings->GetFeat(EFeat::DBG_STEPS);
-	ALStep::FadeTime = UJMiscUtils::IsEditor() ? .5: (FadeTime*2)+ HoldTime;
 	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
 
 	/// post process (does this even works?)
@@ -174,8 +173,8 @@ void ALGGameMode::Init_Implementation() {
 
 	/// Story
 	Story = World->GetSubsystem<UStory>();
-	Story->FadeTime = FadeTime;
-	Story->HoldTime = HoldTime;
+	Story->FadeTime = UJMiscUtils::IsEditor() ? 1: FadeTime;
+	Story->HoldTime = UJMiscUtils::IsEditor() ? 1:  HoldTime;
 	Story->Init();
 	
 	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));

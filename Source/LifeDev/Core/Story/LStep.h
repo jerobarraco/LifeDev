@@ -62,9 +62,7 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsEnsure;
-
-	// the game fade time, please set this from outside.
-	inline static float FadeTime = 0;
+	
 	inline static bool UseDebug = false;
 	
 protected:

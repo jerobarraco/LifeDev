@@ -4,8 +4,8 @@
 #include "Diags/Diags.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "Story/Story.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 void ALStep::Start_Implementation() {
@@ -137,7 +137,8 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALStep::PostLoad() {
 	Super::PostLoad();
 	if (UseFadeTime) {
-		WaitTime = FadeTime; 
+		UStory* const Story = UStory::Instance(GetWorld());
+		WaitTime = Story ? Story->FadeTime : 1; 
 	}
 	
 	// avoid finishing earlier if we have Diags
