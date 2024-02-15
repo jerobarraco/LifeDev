@@ -3,6 +3,7 @@
 #include "PuzzleI04.h"
 
 #include "Interact/CPuzzle.h"
+#include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 APuzzleI04::APuzzleI04():Super() {
@@ -15,6 +16,13 @@ APuzzleI04::APuzzleI04():Super() {
 	// DoneFB = .15;
 	// TODO this will get the engine stuck
 	DoneStep = "C3S0"; // TODO trigger boss
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/piano_puzzle-bad.piano_puzzle-bad"));
+	SND_Wrong = CSWrong.Object;
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSRight (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/piano_puzzle-good.piano_puzzle-good"));
+	SND_Right = CSRight.Object;
 }
 
 void APuzzleI04::PostLoad() {
@@ -30,6 +38,22 @@ void APuzzleI04::PostLoad() {
 
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
+
+	CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzleI04::Doned);
+	// TODO unbind
+}
+
+// TODO refactor all this
+
+void APuzzleI04::Doned(bool Ok) {
+	SND = Ok ? SND_Right : SND_Wrong;
+	FTimerHandle H;
+	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PlayDone, 2);
+	// TODO disable interacts while waiting
+	
+}
+void APuzzleI04::PlayDone() {
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation() );
 }
 //
 // void APuzzleI04::BeginPlay() {

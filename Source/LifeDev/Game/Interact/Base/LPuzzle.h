@@ -30,7 +30,11 @@ public:
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
 	void SetLocks(const TArray<bool>& Locks);
-	
+
+	// Set the interact pieces to enabled
+	UFUNCTION(BlueprintCallable)
+	void SetEnableds(bool NewEnabled);
+
 	// sets the states on each registered interact.
 	// Call on or after begin play.
 	// Note that this will reset the cpuzzle (and interacts) 

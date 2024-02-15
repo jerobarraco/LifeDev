@@ -18,7 +18,7 @@ ALPuzzle::ALPuzzle():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
 	
-	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CLPuzzle"));
+	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
 
 	Root->SetMobility(EComponentMobility::Static);
@@ -46,6 +46,7 @@ ALPuzzle::ALPuzzle():Super() {
 
 void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 	if (!CPuzzle) return;
+
 	// set the dialogs on each registered interact
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	for (AInteract* const I: Inters) {
@@ -57,6 +58,7 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 	}
 }
 
+// TODO move to APuzzle
 void ALPuzzle::SetStates(const TArray<int32>& States) {
 	if (!CPuzzle) return;
 	
@@ -83,6 +85,18 @@ void ALPuzzle::SetLocks(const TArray<bool>& Locks) {
 		AInteract* const I = Inters[i];
 		if (!IsValid(I)) continue;
 		I->Locked = Locks[i];
+	}
+}
+
+void ALPuzzle::SetEnableds(bool NewEnabled) {
+	if (!CPuzzle) return;
+
+	const TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	const int32 Num = Inters.Num();
+	for (int32 i = 0; i<Num; ++i) {
+		AInteract* const I = Inters[i];
+		if (!IsValid(I)) continue;
+		I->SetEnabled(NewEnabled);
 	}
 }
 
