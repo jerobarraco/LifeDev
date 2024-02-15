@@ -22,7 +22,7 @@ APianoKey::APianoKey():Super() {
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
 	// niagara curves are not loaded somehow
 	Anim->Curve = CCurve.Object;
-	Anim->Duration = .5;
+	Anim->Duration = 1;
 	// this will avoid anim being set to reverse.
 	// Trans.Add(FTransform(FRotator(0,0,10).Quaternion(), FVector::ZeroVector, FVector::Zero()));
 
