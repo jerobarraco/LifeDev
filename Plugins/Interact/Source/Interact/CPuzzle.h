@@ -68,7 +68,13 @@ public:
 	// Beware of unchecking "DisableWhileAnim"on the interacts or this won't work well.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnDone = false;
-	
+
+	// Automatically reset the puzzle on failure.
+	// works only on SEQUENCE since combination can't fail.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool ResetOnFail = false;
+
+	// triggers when the puzzle is updated. (i.e. when an interaction is triggered).
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FPuzzleOnUpdate OnUpdate;
 

@@ -14,7 +14,8 @@ UCPuzzle::UCPuzzle(): Super() {
 }
 
 void UCPuzzle::Reset_Implementation() {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
 		I->Reset();
@@ -26,7 +27,7 @@ void UCPuzzle::Reset_Implementation() {
 }
 
 void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Unbind(); // unbind before emptying to make sure we don't remain subscribed to an orphan object.
 
 	Interacts.Empty(Inters.Num());
@@ -39,7 +40,9 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 }
 
 void UCPuzzle::Done(bool Ok) const {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
+		__func__, Ok, *GetNameSafe(this));
+
 	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
 			I->SetEnabled(false);
@@ -50,7 +53,7 @@ void UCPuzzle::Done(bool Ok) const {
 }
 
 void UCPuzzle::ResetCurrents() {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s"), __func__, *GetNameSafe(this));
 	
 	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
@@ -99,7 +102,7 @@ void UCPuzzle::BeginPlay() {
 }
 
 void UCPuzzle::Unbind() {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
 	for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
 		UDelegateWrapper* const W = Wrappers[i];
@@ -169,6 +172,9 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 		// if the length matches return done anyways (means success false)
 		if (Solution.Num() == CurrentIds.Num()) {
 			Done(Ok);
+			if (ResetOnFail && !Ok) {
+				Reset();
+			}
 			return;
 		}
 	} else if (Type == EPuzzleType::COMBINATION) {
@@ -177,8 +183,9 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 			// only trigger when complete. combination can only be completed with ok.
 			Done(true);
 		}
+		// no way to reset here
 	} else {
-		UE_LOG(LogCPuzzle, Log, TEXT("Invalid puzzle type"));
+		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
 	}
 }
 
