@@ -18,7 +18,8 @@ protected:
 	// virtual void BeginPlay() override;
 
 	virtual void Done_Implementation(bool IsOk) override;
-
+	virtual void DoReset_Implementation() override;
+	
 	UFUNCTION()
 	void PlayDone();
 
@@ -27,6 +28,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Right = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	USoundBase* SND_Reset = nullptr;
 
 	UPROPERTY(Transient)
 	USoundBase* SND = nullptr;

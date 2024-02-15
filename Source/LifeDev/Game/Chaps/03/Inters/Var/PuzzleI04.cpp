@@ -18,11 +18,14 @@ APuzzleI04::APuzzleI04():Super() {
 	DoneStep = "C3S0"; // TODO trigger boss
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/piano_puzzle-bad.piano_puzzle-bad"));
+		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
 	SND_Wrong = CSWrong.Object;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSRight (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/piano_puzzle-good.piano_puzzle-good"));
+		CSRight (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Good.Group_Good"));
 	SND_Right = CSRight.Object;
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSReset (TEXT("/Game/LifeDev/Game/Inters/Key00/Key19.Key19"));
+	SND_Reset = CSReset.Object;
 }
 
 void APuzzleI04::PostLoad() {
@@ -43,11 +46,20 @@ void APuzzleI04::PostLoad() {
 // TODO refactor all this
 
 void APuzzleI04::Done_Implementation(bool Ok) {
-	SetEnableds(false); // disable until i play the solution
+	// disable until i play the solution
+	// TODO not working
+	SetEnableds(false);
+
+	// TODO improve
 	SND = Ok ? SND_Right : SND_Wrong;
 	FTimerHandle H;
 	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PlayDone, 2);
 	// TODO disable interacts while waiting
+}
+
+void APuzzleI04::DoReset_Implementation() {
+	Super::DoReset_Implementation();
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND_Reset, GetActorLocation());
 }
 
 void APuzzleI04::PlayDone() {
