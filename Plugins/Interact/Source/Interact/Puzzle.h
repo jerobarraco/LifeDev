@@ -41,6 +41,11 @@ public:
 		if (IsValid(CPuzzle)) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	};
 
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Reset();
+	virtual void Reset_Implementation();
+	
 protected:
 	// called when the puzzle is done. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

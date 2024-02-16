@@ -11,7 +11,7 @@
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; 
-	CPuzzle->ResetOnFail = true;
+	CPuzzle->ResetOnFail = false; // NO! otherwise the setEnabled won't work.
 
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
@@ -46,8 +46,6 @@ void APuzzleI04::PostLoad() {
 	SetLocks(Locks);
 }
 
-// TODO refactor all this
-
 void APuzzleI04::Done_Implementation(bool Ok) {
 	// notice not calling super::done here
 	// disable until i play the solution
@@ -70,8 +68,7 @@ void APuzzleI04::PlayDone() {
 		WasOk ? SND_Right : SND_Wrong, GetActorLocation());
 
 	if (!WasOk) {
-		// retry
-		SetEnableds(true);
+		Reset(); // retry
 		return;
 	}
 

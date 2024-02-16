@@ -36,6 +36,10 @@ APuzzle::APuzzle():Super() {
 	Root->SetMobility(EComponentMobility::Static);
 }
 
+void APuzzle::Reset_Implementation() {
+	if (CPuzzle) CPuzzle->Reset();
+}
+
 void APuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
 	if (!IsOk) return;
