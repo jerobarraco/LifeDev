@@ -2,14 +2,18 @@
 
 #include "DoorI14.h"
 
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+
 ADoorI14::ADoorI14():Super() {
 	LockedDlg = "D14_L";
-	// UseItemDlgs = {
-	// 	{LDConsts::Items::Card0, "D10xC00"},
-	// 	{LDConsts::Items::Card2, "D10xC02"},
-	// };
+	LockedItemDlg = "D14_LI";
 	Locked = true;
-	ULockDlg = "D14_UL";
-	ULockItem = "D14_ULI";
-	ULockItemReq = "??";
+	ULockDlg = "D14_U";
+	ULockItem = LDConsts::Items::Card3;
+	
+	UseItemDlgs = {
+		{LDConsts::Items::Card0, "D14xC00"},
+		{LDConsts::Items::Card1, "D14xC01"},
+		{LDConsts::Items::Card2, "D14xC02"},
+	};
 }
