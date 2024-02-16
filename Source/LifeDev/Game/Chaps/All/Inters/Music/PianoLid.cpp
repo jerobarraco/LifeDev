@@ -27,7 +27,7 @@ APianoLid::APianoLid():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/door-02.door-02"));
 	SFX_Stop = {nullptr, CSFX.Object}; // TODO test, otherwise use SFX_Trigger
-	SFX_Trigger = CSFX.Object;
+	SFX_Trigger = nullptr;
 	
 	Anim->Curve = nullptr;
 	Anim->Duration = 2;
@@ -37,7 +37,7 @@ APianoLid::APianoLid():Super() {
 
 void APianoLid::PostInitializeComponents() {
 	Super::PostInitializeComponents();
-
+	// return;
 	UCodeCurveLib* const CurveLib = UCodeCurveLib::Instance();
 	Anim->CodeCurve.BindDynamic(CurveLib, &UCodeCurveLib::InExpo);
 }

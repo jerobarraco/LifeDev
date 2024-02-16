@@ -147,7 +147,8 @@ float UCodeCurveLib::InOutBack(float p) {
 }
 
 float UCodeCurveLib::InExpo(float p) {
-	return FMath::IsNearlyZero(p) ? 0 : FMath::Pow(10 * p - 10, 2);
+	// this is broken. fix
+	return FMath::IsNearlyZero(p) ? 0 : FMath::Pow(2, 10 * p - 10);
 }
 
 
