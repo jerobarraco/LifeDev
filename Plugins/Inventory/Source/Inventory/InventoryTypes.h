@@ -42,15 +42,15 @@ public:
 	TSubclassOf<UItemLogic> LogicType = nullptr;
 
 	// used during runtime to keep track of the count
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	int32 Count = 0;
 	// the current cool down being applied. used track how much remaining cool down there is.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	int32 ActiveCoolDown = 0;
 	// whether the item is temporarily blocked (used on runtime)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	bool IsLocked = false;
 	// the logic for this item. created by the inventory on creation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	UItemLogic* Logic = nullptr;
 };
