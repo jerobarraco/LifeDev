@@ -39,8 +39,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Reset = nullptr;
 
-	UPROPERTY(Transient)
-	USoundBase* SND = nullptr;
+	bool WasOk = false;
 };
 
 // TODO refactor all the sound stuff

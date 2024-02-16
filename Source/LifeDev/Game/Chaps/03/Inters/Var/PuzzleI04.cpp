@@ -54,11 +54,10 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	// TODO not working
 	SetEnableds(false);
 
-	// TODO improve
-	SND = Ok ? SND_Right : SND_Wrong;
+	WasOk = Ok;
 	FTimerHandle H;
+	// give time for audio to play
 	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PlayDone, 2);
-	// TODO disable interacts while waiting
 }
 
 void APuzzleI04::DoReset_Implementation() {
@@ -67,28 +66,28 @@ void APuzzleI04::DoReset_Implementation() {
 }
 
 void APuzzleI04::PlayDone() {
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation());
-	if (SND == SND_Right) {
-		if (IsValid(Lid)) {
-			Lid->Locked = false;
-			Lid->Anim->OnEnd.AddUniqueDynamic(this, &APuzzleI04::LidDone);
-			Lid->TryTrigger();
-			return;
-			// i could subscribe to the anim on end but this is safer
-			FTimerHandle H;
-			GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Lid->Anim->Duration);
-		} else {
-			LidDone();
-		}
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(),
+		WasOk ? SND_Right : SND_Wrong, GetActorLocation());
+
+	if (!WasOk) {
+		// retry
+		SetEnableds(true);
 		return;
 	}
 
-	// retry
-	SetEnableds(true);
+	if (!IsValid(Lid)) {
+		LidDone();
+		return;
+	}
+
+	Lid->Locked = false;
+	Lid->TryTrigger();
+	// i could subscribe to the anim on end but this is safer
+	FTimerHandle H;
+	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone,
+		Lid->Anim->Duration*2);
 }
 
 void APuzzleI04::LidDone() {
-	if (IsValid(Lid)) Lid->Anim->OnEnd.RemoveAll(this);
-	
 	Super::Done_Implementation(true);
 }

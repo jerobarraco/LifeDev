@@ -66,9 +66,6 @@ void UCPuzzle::ResetCurrents() {
 			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
 		}
 	} else if (Type == EPuzzleType::SEQUENCE) {
-		// Disable anim. not really need to be done each reset. but ...
-		// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim).
-		SetDisableWhileAnims(false);
 	}
 }
 
@@ -92,6 +89,10 @@ void UCPuzzle::Bind() {
 
 	// done here so that on begin play it is also set
 	ResetCurrents();
+
+	// Disable anim.
+	// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after done).
+	SetDisableWhileAnims(false);
 }
 
 void UCPuzzle::BeginPlay() {

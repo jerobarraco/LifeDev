@@ -41,8 +41,7 @@ void APuzzle::Done_Implementation(bool IsOk) {
 	if (!IsOk) return;
 
 	if (IsValid(DoneInter)) {
-		// force unlock
-		DoneInter->Locked = false;
+		DoneInter->Locked = false;// force unlock
 		DoneInter->TryTrigger();
 	}
 	
