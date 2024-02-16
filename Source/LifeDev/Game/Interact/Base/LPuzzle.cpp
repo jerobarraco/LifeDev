@@ -29,7 +29,7 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 
 void ALPuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
-	if (!IsOk) return;
+	if (!IsOk) return; // ok to skip super on not ok, since super doesn't care
 
 	if (Diags) Diags->AddId(DoneDlg);
 	if (FB) FB->ModVal(DoneFB);
@@ -41,7 +41,7 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 
 	// a bit yucky but better than subclassing cpuzzle
 	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
-	if (Reward) {
+	if (IsValid(Reward)) {
 		Reward->Fade(true);
 	}
 }

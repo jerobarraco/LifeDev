@@ -38,10 +38,13 @@ APuzzle::APuzzle():Super() {
 
 void APuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
-	if (!IsOk || !IsValid(DoneInter)) return;
-	// force unlock
-	DoneInter->Locked = false;
-	DoneInter->TryTrigger();
+	if (!IsOk) return;
+
+	if (IsValid(DoneInter)) {
+		// force unlock
+		DoneInter->Locked = false;
+		DoneInter->TryTrigger();
+	}
 	
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);

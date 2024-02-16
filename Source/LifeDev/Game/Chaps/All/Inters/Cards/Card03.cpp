@@ -7,4 +7,5 @@
 ACard03::ACard03():Super() {
 	RewardItem = LDConsts::Items::Card3;
 	TriggerDlg = "C03_Look*";
+	Super::SetMobility(EComponentMobility::Static);
 }
