@@ -87,7 +87,6 @@ public:
 	float OutExpo(float p);
 	UFUNCTION(BlueprintCallable)
 	float InOutExpo(float p);
-	
 
 	/// bezier and stuff
 	UFUNCTION(BlueprintCallable)
