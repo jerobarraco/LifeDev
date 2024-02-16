@@ -7,8 +7,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ACard03: public ACard {
-public:
 	GENERATED_BODY()
 
+public:
 	ACard03();
 };
