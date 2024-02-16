@@ -38,7 +38,6 @@ void APuzzleI04::PostLoad() {
 		{LDConsts::Items::Card3, "PZ04xC03"}
 	};
 	SetUseItemDlgs(Dlgs);
-	// SetDisableWhileAnims(false);
 	
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
@@ -87,7 +86,6 @@ void APuzzleI04::PostDoneSnd() {
 		Lid->Anim->Duration);
 }
 
-
 void APuzzleI04::LidDone() {
-	Super::Done_Implementation(true);
+	Super::Done_Implementation(true); // finally mark the puzzle as done for good
 }
