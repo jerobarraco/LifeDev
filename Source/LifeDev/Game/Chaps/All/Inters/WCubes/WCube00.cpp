@@ -27,6 +27,7 @@ AWCube00::AWCube00():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	UseAnim = true;
+	UseRewardFade = false;
 	DisableWhileAnim = false; // To be used with the combination puzzle.
 	StateNum = 6;
 	Anim->IsAdditive = false;
