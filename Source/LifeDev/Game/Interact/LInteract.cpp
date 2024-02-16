@@ -105,7 +105,7 @@ void ALInteract::DoRewards() {
 
 	// not necessary to call "disable while anim = false" here.
 	// since it's up to the client to allow re-triggerables.
-	// and we're only concerned with SetEnabled(false) here. 
+	// and we're only concerned with SetEnabled(false) here.
 	// and it's easier and clearer this way than messing with DisableWhileAnim which
 	// would step on the client's intention.
 	// avoid re-rewarding due to multi clicks
@@ -114,7 +114,8 @@ void ALInteract::DoRewards() {
 	// trigger separately since sometimes the item could not be rewarded on trigger.
 	Rewarded();
 	
-	// Process auto destroy. do at the end.
+	/// Process auto destroy. do at the end.
+
 	// don't destroy if not userewardfade
 	if (!UseRewardFade) return;
 	

@@ -38,6 +38,12 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	if (Story && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
 	Super::Done_Implementation(IsOk); // triggers the interact
+
+	// a bit yucky but better than subclassing cpuzzle
+	ALInteract* const DoneLActor = Cast<ALInteract>(DoneActor);
+	if (DoneLActor) {
+		DoneLActor->Fade(true);
+	}
 }
 
 void ALPuzzle::BeginPlay() {

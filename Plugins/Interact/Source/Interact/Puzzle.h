@@ -63,6 +63,10 @@ protected:
 	// Interact to trigger on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	AInteract* DoneInter = nullptr;
+	
+	// actor to reward on done.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
+	AActor* DoneActor = nullptr;
 
 	/// subobjects
 	
