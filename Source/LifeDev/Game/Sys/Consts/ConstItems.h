@@ -16,6 +16,7 @@ namespace LDConsts {
 		inline static const FName Poem0("P00");
 		inline static const FName Poem1("P01");
 		inline static const FName Poem2("P02");
+		inline static const FName Poem3("P03");
 
 		inline static const FName Batts("Batts");
 		inline static const FName Walkman("WM");
