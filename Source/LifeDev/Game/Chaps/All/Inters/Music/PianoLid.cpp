@@ -29,30 +29,11 @@ APianoLid::APianoLid():Super() {
 	SFX_Stop = {nullptr, CSFX.Object}; // TODO test, otherwise use SFX_Trigger
 	SFX_Trigger = CSFX.Object;
 	
-	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
-	// niagara curves are not loaded somehow
-	// Anim->Curve = nullptr;
-	// Anim->Curve = CCurve.Object;
+	Anim->Curve = nullptr;
 	Anim->Duration = 2;
-	// this will avoid anim being set to reverse.
-	// Trans.Add(FTransform(FRotator(0,0,10).Quaternion(), FVector::ZeroVector, FVector::Zero()));
-
-	// the animation needs to play in a different way than what i want, hence i need to define tstart instead
-	// Anim->IsAdditive = false;
-	// Anim->TEnd = FTransform (FQuat::Identity, FVector::ZeroVector, FVector::OneVector); 
-	// Anim->TStart = Anim->TEnd;
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetRotation(FRotator(0,0,90).Quaternion());
 }
-
-// void APianoLid::SetState_Implementation(int32 NewState) {
-	// overriden by AnimPlay and SetState
-	// when using Trans, i need to reset since bouncing will leave it on true
-	// Anim->IsReversed = false;
-	// Anim->IsBouncing = true;
-	// Super::SetState_Implementation(NewState);
-// }
 
 void APianoLid::PostInitializeComponents() {
 	Super::PostInitializeComponents();

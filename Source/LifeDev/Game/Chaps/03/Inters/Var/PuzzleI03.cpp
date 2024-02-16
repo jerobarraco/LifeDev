@@ -24,7 +24,7 @@ void APuzzleI03::PostLoad() {
 	};
 	SetUseItemDlgs(Dlgs);
 
-	static const TArray<bool> Locks = {true, false, true, false, false}; // TODO
+	static const TArray<bool> Locks = {true, false, true, false, false};
 	SetLocks(Locks);
 }
 
