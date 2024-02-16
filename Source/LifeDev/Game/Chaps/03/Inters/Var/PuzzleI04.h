@@ -5,6 +5,8 @@
 
 #include "PuzzleI04.generated.h"
 
+class AInteractAnim;
+
 // Chap 04 Puzzle Instance 04 Piano 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APuzzleI04: public ALPuzzle {
@@ -19,9 +21,14 @@ protected:
 
 	virtual void Done_Implementation(bool IsOk) override;
 	virtual void DoReset_Implementation() override;
-	
+
 	UFUNCTION()
 	void PlayDone();
+	UFUNCTION()
+	void LidDone();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	AInteractAnim* Lid = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Wrong = nullptr;

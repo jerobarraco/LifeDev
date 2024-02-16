@@ -3,9 +3,10 @@
 #include "PuzzleI04.h"
 
 #include "Interact/CPuzzle.h"
+#include "Interact/InteractAnim.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
-#include "Story/Story.h"
 
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
@@ -15,7 +16,7 @@ APuzzleI04::APuzzleI04():Super() {
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
 	// DoneFB = .15;
-	// DoneStep = "C3S0"; // TODO trigger boss
+	DoneStep = "C3S0"; // TODO trigger boss
 	// TODO end step by hand and trigger interact by hand
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -39,7 +40,8 @@ void APuzzleI04::PostLoad() {
 		{LDConsts::Items::Card3, "PZ04xC03"}
 	};
 	SetUseItemDlgs(Dlgs);
-
+	// SetDisableWhileAnims(false);
+	
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
 }
@@ -47,6 +49,7 @@ void APuzzleI04::PostLoad() {
 // TODO refactor all this
 
 void APuzzleI04::Done_Implementation(bool Ok) {
+	// notice not calling super::done here
 	// disable until i play the solution
 	// TODO not working
 	SetEnableds(false);
@@ -66,9 +69,26 @@ void APuzzleI04::DoReset_Implementation() {
 void APuzzleI04::PlayDone() {
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation());
 	if (SND == SND_Right) {
-		Story->StartNext("C3S0");
+		if (IsValid(Lid)) {
+			Lid->Locked = false;
+			Lid->Anim->OnEnd.AddUniqueDynamic(this, &APuzzleI04::LidDone);
+			Lid->TryTrigger();
+			return;
+			// i could subscribe to the anim on end but this is safer
+			FTimerHandle H;
+			GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Lid->Anim->Duration);
+		} else {
+			LidDone();
+		}
 		return;
 	}
 
+	// retry
 	SetEnableds(true);
+}
+
+void APuzzleI04::LidDone() {
+	if (IsValid(Lid)) Lid->Anim->OnEnd.RemoveAll(this);
+	
+	Super::Done_Implementation(true);
 }
