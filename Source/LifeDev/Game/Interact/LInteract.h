@@ -103,6 +103,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardFade = true;
 
+	// used for fading this object on rewards or whenever you want.
+	// remember to call SetNewMat on the constructor if you use the new material.
+	// remember to call CreateMaterial on BeginPlay if there are no rewards.
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UCAnimatorFade* AnimFade = nullptr;
+
 protected:
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -125,12 +131,6 @@ protected:
 	virtual void TriggerLocked_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;
-
-	// used for fading this object on rewards or whenever you want.
-	// remember to call SetNewMat on the constructor if you use the new material.
-	// remember to call CreateMaterial on BeginPlay if there are no rewards.
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCAnimatorFade* AnimFade = nullptr;
 
 	/// cache
 	
