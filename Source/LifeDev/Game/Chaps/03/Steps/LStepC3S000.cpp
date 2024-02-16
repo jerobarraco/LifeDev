@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC3S000.h"
 
+#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
@@ -36,4 +37,9 @@ ALStepC3S000::ALStepC3S000():Super() {
 		LDConsts::Items::Card2,
 		LDConsts::Items::Walkman
 	};
+}
+
+void ALStepC3S000::DoDebug_Implementation() {
+	Super::DoDebug_Implementation();
+	if (Inventory)	Inventory->Ensure(LDConsts::Items::Card3);
 }
