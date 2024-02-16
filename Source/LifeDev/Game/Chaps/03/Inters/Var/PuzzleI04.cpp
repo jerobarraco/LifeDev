@@ -5,6 +5,7 @@
 #include "Interact/CPuzzle.h"
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "Story/Story.h"
 
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
@@ -14,8 +15,8 @@ APuzzleI04::APuzzleI04():Super() {
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
 	// DoneFB = .15;
-	// TODO this will get the engine stuck
-	DoneStep = "C3S0"; // TODO trigger boss
+	// DoneStep = "C3S0"; // TODO trigger boss
+	// TODO end step by hand and trigger interact by hand
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
@@ -64,7 +65,10 @@ void APuzzleI04::DoReset_Implementation() {
 
 void APuzzleI04::PlayDone() {
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND, GetActorLocation());
-	if (SND == SND_Right) return;
-	
+	if (SND == SND_Right) {
+		Story->StartNext("C3S0");
+		return;
+	}
+
 	SetEnableds(true);
 }
