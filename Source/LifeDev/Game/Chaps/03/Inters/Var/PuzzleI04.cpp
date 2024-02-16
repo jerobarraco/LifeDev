@@ -15,9 +15,7 @@ APuzzleI04::APuzzleI04():Super() {
 
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
-	// DoneFB = .15;
-	DoneStep = "C3S0"; // TODO trigger boss
-	// TODO end step by hand and trigger interact by hand
+	DoneStep = "C3S0";
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
@@ -49,13 +47,12 @@ void APuzzleI04::PostLoad() {
 void APuzzleI04::Done_Implementation(bool Ok) {
 	// notice not calling super::done here
 	// disable until i play the solution
-	// TODO not working
 	SetEnableds(false);
 
 	WasOk = Ok;
 	FTimerHandle H;
 	// give time for audio to play
-	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PlayDone, 2);
+	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, 1);
 }
 
 void APuzzleI04::DoReset_Implementation() {
@@ -63,10 +60,15 @@ void APuzzleI04::DoReset_Implementation() {
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND_Reset, GetActorLocation());
 }
 
-void APuzzleI04::PlayDone() {
+void APuzzleI04::PostDone() {
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(),
 		WasOk ? SND_Right : SND_Wrong, GetActorLocation());
+	FTimerHandle H;
+	// give time for audio to play
+	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDoneSnd, 1);
+}
 
+void APuzzleI04::PostDoneSnd() {
 	if (!WasOk) {
 		Reset(); // retry
 		return;
@@ -82,8 +84,9 @@ void APuzzleI04::PlayDone() {
 	// i could subscribe to the anim on end but this is safer
 	FTimerHandle H;
 	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone,
-		Lid->Anim->Duration*2);
+		Lid->Anim->Duration);
 }
+
 
 void APuzzleI04::LidDone() {
 	Super::Done_Implementation(true);

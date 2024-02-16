@@ -23,7 +23,9 @@ protected:
 	virtual void DoReset_Implementation() override;
 
 	UFUNCTION()
-	void PlayDone();
+	void PostDone();
+	UFUNCTION()
+	void PostDoneSnd();
 	UFUNCTION()
 	void LidDone();
 
