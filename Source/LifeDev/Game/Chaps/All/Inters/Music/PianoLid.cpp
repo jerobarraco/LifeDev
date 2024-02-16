@@ -30,7 +30,7 @@ APianoLid::APianoLid():Super() {
 	SFX_Trigger = nullptr;
 	
 	Anim->Curve = nullptr;
-	Anim->Duration = 2;
+	Anim->Duration = 1;
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetRotation(FRotator(0,0,90).Quaternion());
 }

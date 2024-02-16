@@ -81,11 +81,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float InOutBack(float p);
 
-	// todo out and inout
 	UFUNCTION(BlueprintCallable)
 	float InExpo(float p);
 	UFUNCTION(BlueprintCallable)
 	float OutExpo(float p);
+	UFUNCTION(BlueprintCallable)
+	float InOutExpo(float p);
 	
 
 	/// bezier and stuff

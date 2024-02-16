@@ -155,6 +155,14 @@ float UCodeCurveLib::OutExpo(float p) {
 	return FMath::IsNearlyEqual(p, 1) ? 1 : 1 - FMath::Pow(2, -10 * p);
 }
 
+float UCodeCurveLib::InOutExpo(float p) {
+	return FMath::IsNearlyZero(p) ? 0 :
+		( FMath::IsNearlyEqual(p, 1) ? 1 :
+		( p < 0.5 ?
+			FMath::Pow(2, 20 * p - 10) / 2 :
+			(2 - FMath::Pow(2, -20 * p + 10)) / 2));
+}
+
 
 float UCodeCurveLib::BOutInQuad(float T) {
 	return UE::Curves::BezierInterp(0.0, .75, .25, 1.0, T);
