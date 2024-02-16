@@ -66,13 +66,9 @@ void UCPuzzle::ResetCurrents() {
 			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
 		}
 	} else if (Type == EPuzzleType::SEQUENCE) {
-		// Disable anim. not really need to be done each reset. but ... 
-		for (AInteract* const I: Interacts) {
-			AInteractAnim* const IA = Cast<AInteractAnim>(I);
-			if (!IsValid(IA)) continue;
-			// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim)
-			IA->DisableWhileAnim = false;
-		}
+		// Disable anim. not really need to be done each reset. but ...
+		// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim).
+		SetDisableWhileAnims(false);
 	}
 }
 
@@ -106,8 +102,7 @@ void UCPuzzle::BeginPlay() {
 void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
-	for (int32 i = 0; i<Interacts.Num() && i<Wrappers.Num(); ++i) {
-		UDelegateWrapper* const W = Wrappers[i];
+	for (UDelegateWrapper* const W: Wrappers){
 		if (!IsValid(W)) continue;
 		
 		AInteract* const I = Cast<AInteract>(W->Obj);
@@ -119,9 +114,10 @@ void UCPuzzle::Unbind() {
 }
 
 bool UCPuzzle::IsCurrentSolution() {
-	if (CurrentIds.Num() != Solution.Num()) return false;
+	const int32 IdsNum = CurrentIds.Num();
+	if (IdsNum != Solution.Num()) return false;
 
-	for (int32 i = 0; i< CurrentIds.Num(); ++i ) {
+	for (int32 i = 0; i< IdsNum; ++i ) {
 		if (CurrentIds[i] != Solution[i]) {
 			UE_LOG(LogCPuzzle, Log, TEXT("Solution is different"));
 			return false;
@@ -162,6 +158,7 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 	if (DisableOnInter) {
 		Interacts[ID]->SetEnabled(false);
 	}
+
 	return IsCurrentSolution();
 }
 
@@ -209,4 +206,45 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Unbind();
 	Super::EndPlay(EndPlayReason);
+}
+
+void UCPuzzle::SetDisableWhileAnims(bool NewDisable) {
+	for (AInteract* const I: Interacts) {
+		AInteractAnim* const IA = Cast<AInteractAnim>(I);
+		if (!IsValid(IA)) continue;
+		// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim)
+		IA->DisableWhileAnim = NewDisable;
+	}
+}
+
+void UCPuzzle::SetEnableds(bool NewEnabled) {
+	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s"), __func__, *GetNameSafe(this));
+
+	for (AInteract* const I: Interacts) {
+		if (!IsValid(I)) continue;
+		I->SetEnabled(NewEnabled);
+	}
+}
+
+void UCPuzzle::SetStates(const TArray<int32>& States) {
+	const int32 Num = States.Num();
+	const int32 Num2 = Interacts.Num();
+	for (int32 i = 0; i<Num && i<Num2; ++i) {
+		AInteract* const I = Interacts[i];
+		if (!IsValid(I)) continue;
+		I->SetState(States[i]);
+	}
+
+	// reload the ids if needed. important.
+	ResetCurrents();
+}
+
+void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
+	const int32 Num = Locks.Num();
+	const int32 Num2 = Interacts.Num();
+	for (int32 i = 0; i<Num && i<Num2; ++i) {
+		AInteract* const I = Interacts[i];
+		if (!IsValid(I)) continue;
+		I->Locked = Locks[i];
+	}
 }

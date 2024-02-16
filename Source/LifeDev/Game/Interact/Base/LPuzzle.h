@@ -62,17 +62,3 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UStory* Story = nullptr;
 };
-
-// TODO "Just think about it"
-// the other option is to have a class that inherit from ALInteract like InteractSpot
-// cons:
-//		non-visible things will need the whole alinteract stuff (eg unlocking steps, dialogs, and fb)
-//			interacts are quite too big at the moment.
-//		quite potentially i will mud the interact logic
-//			some flags could conflict (like locked and trigger)
-//			ill have to take care of many more special cases
-//			the interface becomes (too populated) uncomfortable to manage
-// pros:
-//		i don't need to clone a lot of code (subsystem caching)
-//		visual LPuzzles will need an interact
-//		less code to interface between the LPuzzle item an the visual interact (eg changing states and locks and stuff)

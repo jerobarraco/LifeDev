@@ -40,9 +40,30 @@ public:
 	// purposely returns a copy, to modify the Interacts (after beginplay) call SetInteracts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	FORCEINLINE TArray<AInteract*> GetInteracts() { return Interacts; }
+
+	UFUNCTION(BlueprintCallable)
+	void SetDisableWhileAnims(bool NewDisable);
 	
+	// Set the interact pieces to enabled
+	UFUNCTION(BlueprintCallable)
+	void SetEnableds(bool NewEnabled);
+		
+	// sets the states on each registered interact.
+	// Call on or after begin play.
+	// Note that this will reset the cpuzzle (and interacts) 
+	UFUNCTION(BlueprintCallable)
+	void SetStates(const TArray<int32>& States);
+	
+	// sets the states on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	UFUNCTION(BlueprintCallable)
+	void SetLocks(const TArray<bool>& Locks);
+	
+	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Unbind();
+	// binds to the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Bind();
 
@@ -115,7 +136,9 @@ protected:
 	// on combo: its a list of each interact's state
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<int32> CurrentIds;
-	UPROPERTY(BlueprintReadOnly, Transient) //important so they don't get GCd
+
+	//important so they don't get GCd
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<UDelegateWrapper*> Wrappers;
 
 	FTimerHandle ResetTimer;

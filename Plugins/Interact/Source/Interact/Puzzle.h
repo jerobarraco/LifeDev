@@ -1,10 +1,10 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "CPuzzle.h"
 #include "Puzzle.generated.h"
 
 class AInteract;
-class UCPuzzle;
 
 // Base class for Puzzles that can optionally trigger an interact
 UCLASS(Blueprintable, BlueprintType)
@@ -18,17 +18,28 @@ public:
 	// Call on or after begin play.
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
-	void SetStates(const TArray<int32>& States);
+	FORCEINLINE void SetStates(const TArray<int32>& States) {
+		if (IsValid(CPuzzle)) { CPuzzle->SetStates(States); }
+	};
 	
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
-	void SetLocks(const TArray<bool>& Locks);
+	FORCEINLINE void SetLocks(const TArray<bool>& Locks) {
+		if (IsValid(CPuzzle)) { CPuzzle->SetLocks(Locks); }
+	}
 
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
-	void SetEnableds(bool NewEnabled);
+	FORCEINLINE void SetEnableds(bool NewEnabled) {
+		if (IsValid(CPuzzle)) { CPuzzle->SetEnableds(NewEnabled); }
+	};
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetDisableWhileAnims(bool NewDisabled) {
+		if (IsValid(CPuzzle)) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
+	};
 
 protected:
 	// called when the puzzle is done. override if needed
