@@ -20,8 +20,7 @@ void APuzzleI03::PostLoad() {
 	static const TMap<FName, FName> Dlgs = {
 		{LDConsts::Items::Card0, "PZ03xC00"},
 		{LDConsts::Items::Card1, "PZ03xC01"},
-		{LDConsts::Items::Card2, "PZ03xC02"},
-		{LDConsts::Items::Card3, "PZ03xC03"}
+		{LDConsts::Items::Card2, "PZ03xC02"}
 	};
 	SetUseItemDlgs(Dlgs);
 
@@ -32,7 +31,7 @@ void APuzzleI03::PostLoad() {
 void APuzzleI03::BeginPlay() {
 	Super::BeginPlay();
 
-	static const TArray<int32> States = {0, 0, 0, 0, 0}; // TODO
+	static const TArray<int32> States = {0, 4, 0, 3, 2};
 	SetStates(States);
 }
 

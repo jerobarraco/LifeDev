@@ -40,9 +40,9 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	Super::Done_Implementation(IsOk); // triggers the interact
 
 	// a bit yucky but better than subclassing cpuzzle
-	ALInteract* const DoneLActor = Cast<ALInteract>(DoneActor);
-	if (DoneLActor) {
-		DoneLActor->Fade(true);
+	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
+	if (Reward) {
+		Reward->Fade(true);
 	}
 }
 

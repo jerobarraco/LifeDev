@@ -45,9 +45,9 @@ void APuzzle::Done_Implementation(bool IsOk) {
 	
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);
-		AInteract* const RewardInter = Cast<AInteract>(DoneActor);
-		if (IsValid(RewardInter)) {
-			RewardInter->SetEnabled(true);
+		AInteract* const Reward = Cast<AInteract>(DoneActor);
+		if (IsValid(Reward)) {
+			Reward->SetEnabled(true);
 		}
 	}
 }
@@ -58,7 +58,6 @@ void APuzzle::BeginPlay() {
 	CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzle::Done);
 	CPuzzle->OnUpdate.AddUniqueDynamic(this, &APuzzle::Update);
 	CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
-
 	
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(true);
