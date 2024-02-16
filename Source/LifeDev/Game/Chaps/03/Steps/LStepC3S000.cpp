@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC3S000.h"
 
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC3S000::ALStepC3S000():Super() {
@@ -28,4 +29,11 @@ ALStepC3S000::ALStepC3S000():Super() {
 	if (CDL2.Succeeded()) {
 		DL_Unload.Add(CDL2.Object);
 	}
+
+	ItemsEnsure = {
+		LDConsts::Items::Card0,
+		LDConsts::Items::Card1,
+		LDConsts::Items::Card2,
+		LDConsts::Items::Walkman
+	};
 }
