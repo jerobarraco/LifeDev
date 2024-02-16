@@ -197,9 +197,9 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	}
 
 	// TODO test
-	// re-add the reset timer if needed
+	// re-add the reset timer if needed. Notice all the types return when done
 	if (ResetTimeout >= 0) {
-		Timer.SetTimer(ResetTimer, this, &UCPuzzle::Reset, ResetTimeout );
+		Timer.SetTimer(ResetTimer, this, &UCPuzzle::Reset, ResetTimeout);
  	}
 }
 

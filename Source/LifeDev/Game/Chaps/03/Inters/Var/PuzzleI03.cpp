@@ -7,7 +7,7 @@
 
 APuzzleI03::APuzzleI03():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0, 0, 3, 0}; // F.A.W.N. // TODO
+	CPuzzle->Solution = {0, 0, 3, 0, 0}; // S.H.A.M.E // TODO
 
 	static FName DoneId = "PZ03_T";
 	DoneDlg = DoneId;
@@ -25,14 +25,14 @@ void APuzzleI03::PostLoad() {
 	};
 	SetUseItemDlgs(Dlgs);
 
-	static const TArray<bool> Locks = {false, false, false, false}; // TODO
+	static const TArray<bool> Locks = {false, false, false, false, false}; // TODO
 	SetLocks(Locks);
 }
 
 void APuzzleI03::BeginPlay() {
 	Super::BeginPlay();
 
-	static const TArray<int32> States = {0, 2, 5, 0}; // TODO
+	static const TArray<int32> States = {0, 2, 5, 0, false}; // TODO
 	SetStates(States);
 }
 

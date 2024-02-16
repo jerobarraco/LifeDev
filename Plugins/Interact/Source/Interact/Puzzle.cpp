@@ -13,8 +13,6 @@ APuzzle::APuzzle():Super() {
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
 
-	Root->SetMobility(EComponentMobility::Static);
-
 #if WITH_EDITORONLY_DATA // inspired by AInfo
 	UBillboardComponent* const SpriteComponent = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Sprite"));
 	if (!IsRunningCommandlet() && (SpriteComponent != nullptr)) {
@@ -34,6 +32,8 @@ APuzzle::APuzzle():Super() {
 	}
 	// setting spatially loaded to false could break datalayer usage which is critical
 #endif // WITH_EDITORONLY_DATA
+
+	Root->SetMobility(EComponentMobility::Static);
 }
 
 void APuzzle::Done_Implementation(bool IsOk) {

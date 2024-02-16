@@ -96,9 +96,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool ResetOnFail = false;
 
-	// TODO
+	// Will reset when reaching this time without interacting with it
+	// Disabled if <=0 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float ResetTimeout = 10;
+	float ResetTimeout = 0;
 
 	// triggers when the puzzle is updated. (i.e. when an interaction is triggered).
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
