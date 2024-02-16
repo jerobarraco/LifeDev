@@ -87,19 +87,9 @@ public:
 	bool DisableOnInter = false;
 
 	// will disable the interacts when the puzzle is done.
-	// Beware of unchecking "DisableWhileAnim"on the interacts or this won't work well.
+	// Beware of unchecking "DisableWhileAnim" on the interacts or this won't work well.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool DisableOnDone = false;
-
-	// Automatically reset the puzzle on failure.
-	// works only on SEQUENCE since combination can't fail.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool ResetOnFail = false;
-
-	// Will reset when reaching this time without interacting with it
-	// Disabled if <=0 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float ResetTimeout = 0;
 
 	// triggers when the puzzle is updated. (i.e. when an interaction is triggered).
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
@@ -141,6 +131,4 @@ protected:
 	//important so they don't get GCd
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<UDelegateWrapper*> Wrappers;
-
-	FTimerHandle ResetTimer;
 };

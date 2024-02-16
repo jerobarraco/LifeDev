@@ -29,17 +29,21 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 
 void ALPuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
+
+	Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
+	
 	if (!IsOk) return; // ok to skip super on not ok, since super doesn't care
 
+	/// do all rewardy stuff
+	
 	if (Diags) Diags->AddId(DoneDlg);
 	if (FB) FB->ModVal(DoneFB);
 	if (Flags) Flags->Mod(DoneFlag, 1);
 	if (Inventory) Inventory->Mod(DoneItem, 1);
 	if (Story && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
-	Super::Done_Implementation(IsOk); // triggers the interact
-
-	// a bit yucky but better than subclassing cpuzzle
+	// fade if it's an L interact (those can fade)
+	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
 	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
 	if (IsValid(Reward)) {
 		Reward->Fade(true);

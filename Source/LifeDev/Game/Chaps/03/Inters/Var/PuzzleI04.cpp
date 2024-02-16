@@ -8,10 +8,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
+constexpr float SndWait = 1.5;
+
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; 
-	CPuzzle->ResetOnFail = false; // NO! otherwise the setEnabled won't work.
+	ResetOnFail = true; // Allow for reset. this is handled with a careful setup of Super::Done
 
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
@@ -44,48 +46,53 @@ void APuzzleI04::PostLoad() {
 }
 
 void APuzzleI04::Done_Implementation(bool Ok) {
-	// notice not calling super::done here
+	// notice not calling super::done here since that can reset
+
 	// disable until i play the solution
 	SetEnableds(false);
 
 	WasOk = Ok;
-	FTimerHandle H;
+
 	// give time for audio to play
-	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, 1);
+	FTimerHandle H;
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
 }
 
 void APuzzleI04::DoReset_Implementation() {
 	Super::DoReset_Implementation();
+	// for tests only. TODO remove
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND_Reset, GetActorLocation());
 }
 
 void APuzzleI04::PostDone() {
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(),
-		WasOk ? SND_Right : SND_Wrong, GetActorLocation());
-	FTimerHandle H;
+	UWorld* W = GetWorld();
+	if (!W) return;
+
+	UGameplayStatics::PlaySoundAtLocation(W, WasOk ? SND_Right : SND_Wrong, GetActorLocation());
 	// give time for audio to play
-	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDoneSnd, 1);
+	FTimerHandle H;
+	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDoneSnd, SndWait);
 }
 
 void APuzzleI04::PostDoneSnd() {
-	if (!WasOk) {
-		Reset(); // retry
-		return;
-	}
-
-	if (!IsValid(Lid)) {
+	if (!WasOk || !IsValid(Lid)) {
+		// retry or skip animation
 		LidDone();
 		return;
 	}
 
 	Lid->Locked = false;
 	Lid->TryTrigger();
-	// i could subscribe to the anim on end but this is safer
+	// i could subscribe to the anim onEnd but this is safer
 	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone,
-		Lid->Anim->Duration);
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone,  Lid->Anim->Duration);
 }
 
 void APuzzleI04::LidDone() {
-	Super::Done_Implementation(true); // finally mark the puzzle as done for good
+	// finally mark the puzzle as done for good. if !WasOk it will retry
+	Super::Done_Implementation(WasOk);
 }

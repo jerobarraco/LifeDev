@@ -167,12 +167,8 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
-	// clear the reset timer
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.ClearTimer(ResetTimer);
-	ResetTimer.Invalidate();
-	
-	// trigger update now, before done
+	// trigger update now! before done.
+	// important for APuzzle timer and for logical order in the flow
 	OnUpdate.Broadcast();
 
 	if (Type == EPuzzleType::SEQUENCE) {
@@ -180,9 +176,6 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 		// if the length matches return done anyways (means success false)
 		if (Solution.Num() == CurrentIds.Num()) {
 			Done(Ok);
-			if (ResetOnFail && !Ok) {
-				Reset();
-			}
 			return;
 		}
 	} else if (Type == EPuzzleType::COMBINATION) {
@@ -196,12 +189,6 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
 	}
-
-	// TODO test
-	// re-add the reset timer if needed. Notice all the types return when done
-	if (ResetTimeout >= 0) {
-		Timer.SetTimer(ResetTimer, this, &UCPuzzle::Reset, ResetTimeout);
- 	}
 }
 
 void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {

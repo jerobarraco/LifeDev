@@ -36,13 +36,23 @@ APuzzle::APuzzle():Super() {
 	Root->SetMobility(EComponentMobility::Static);
 }
 
-void APuzzle::Reset_Implementation() {
+void APuzzle::Reset() {
 	if (CPuzzle) CPuzzle->Reset();
+
+	ClearTimer();
 }
 
 void APuzzle::Done_Implementation(bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
-	if (!IsOk) return;
+	if (!IsOk) {
+		// reset if needed. but not inside done. Since done is overrideable and can change orders
+		// it will mess with the logical flow anyway.
+		if (ResetOnFail) {
+			UWorld* const W = GetWorld();
+			if (W) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
+		}
+		return;
+	}
 
 	if (IsValid(DoneInter)) {
 		DoneInter->Locked = false;// force unlock
@@ -55,6 +65,18 @@ void APuzzle::Done_Implementation(bool IsOk) {
 		if (IsValid(Reward)) {
 			Reward->SetEnabled(true);
 		}
+	}
+}
+
+void APuzzle::Update_Implementation() {
+	// note update is called before done. so it's safe to re add the timer. done will clear it if needed.
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	
+	ClearTimer();
+	// re-add the reset timer if needed. Notice all the types return when done
+	if (ResetTimeout >= 0) {
+		W->GetTimerManager().SetTimer(ResetTimer, this, &APuzzle::Reset, ResetTimeout);
 	}
 }
 
@@ -75,10 +97,20 @@ void APuzzle::BeginPlay() {
 }
 
 void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
 	if (CPuzzle) {
 		CPuzzle->OnDone.RemoveAll(this);
 		CPuzzle->OnUpdate.RemoveAll(this);
 		CPuzzle->OnReset.RemoveAll(this);
 	}
+	ClearTimer();
+
+	Super::EndPlay(EndPlayReason);
+}
+
+void APuzzle::ClearTimer() {
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	
+	W->GetTimerManager().ClearTimer(ResetTimer);
+	ResetTimer.Invalidate();
 }

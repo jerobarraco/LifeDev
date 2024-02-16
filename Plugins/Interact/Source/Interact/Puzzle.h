@@ -36,16 +36,26 @@ public:
 		if (IsValid(CPuzzle)) { CPuzzle->SetEnableds(NewEnabled); }
 	};
 
+	// sets "DisableWhileAnims" on all the interacts.
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetDisableWhileAnims(bool NewDisabled) {
 		if (IsValid(CPuzzle)) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	};
 
+	// call to reset the puzzle. Override DoReset to do custom logic.
+	UFUNCTION(BlueprintCallable)
+	virtual void Reset() override;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Reset();
-	virtual void Reset_Implementation();
-	
+	// Automatically reset the puzzle on failure.
+	// works only on SEQUENCE since combination can't fail.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool ResetOnFail = false;
+
+	// Will reset when reaching this time without interacting with it
+	// Disabled if <=0 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float ResetTimeout = 0;
+
 protected:
 	// called when the puzzle is done. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -55,7 +65,7 @@ protected:
 	// called when the puzzle is updated. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Update();
-	virtual void Update_Implementation() {};
+	virtual void Update_Implementation();
 	
 	// called when the puzzle is reset. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -64,6 +74,7 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void ClearTimer();
 
 	// Interact to trigger on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
@@ -80,4 +91,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
+
+	/// transient
+
+	FTimerHandle ResetTimer;
 };
