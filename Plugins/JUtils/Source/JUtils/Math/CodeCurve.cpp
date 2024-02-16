@@ -147,10 +147,13 @@ float UCodeCurveLib::InOutBack(float p) {
 }
 
 float UCodeCurveLib::InExpo(float p) {
-	// this is broken. fix
+	// 2^10*p-10
 	return FMath::IsNearlyZero(p) ? 0 : FMath::Pow(2, 10 * p - 10);
 }
 
+float UCodeCurveLib::OutExpo(float p) {
+	return FMath::IsNearlyEqual(p, 1) ? 1 : 1 - FMath::Pow(2, -10 * p);
+}
 
 
 float UCodeCurveLib::BOutInQuad(float T) {

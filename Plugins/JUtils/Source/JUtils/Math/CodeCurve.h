@@ -84,6 +84,8 @@ public:
 	// todo out and inout
 	UFUNCTION(BlueprintCallable)
 	float InExpo(float p);
+	UFUNCTION(BlueprintCallable)
+	float OutExpo(float p);
 	
 
 	/// bezier and stuff
