@@ -47,6 +47,7 @@ void APuzzle::Done_Implementation(bool IsOk) {
 	if (!IsOk) {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
 		// it will mess with the logical flow anyway.
+		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
 		if (ResetOnFail) {
 			UWorld* const W = GetWorld();
 			if (W) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
