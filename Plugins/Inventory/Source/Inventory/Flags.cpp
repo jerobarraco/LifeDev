@@ -11,8 +11,10 @@ UFlags* UFlags::Instance(UWorld* W) {
 
 void UFlags::Mod(const FName& Name, float Diff) {
 	if (Name.IsNone()) return;
-
+	
 	const float Val = Get(Name) + Diff; 
+	UE_LOG(LogTemp, Log, TEXT("UFlags::Mod: name=%s diff=%3.3f new=%3.3f"), *Name.ToString(), Diff, Val);
+	
 	if (FMath::IsNearlyZero(Val)) {
 		Flags.Remove(Name);
 	} else {
@@ -23,18 +25,19 @@ void UFlags::Mod(const FName& Name, float Diff) {
 }
 
 void UFlags::Set(const FName& Name, float Val) {
-	// this is basically duplicated code...
+	// this is basically duplicated code with mod...
 	// But it will be faster than getting and mod'ing (for about one call to Get)
 	if (Name.IsNone()) return;
 
 	const float Old = Get(Name); // broadcasting the diff is what adds complexity here
+	UE_LOG(LogTemp, Log, TEXT("UFlags::Set: name=%s old=%3.3f new=%3.3f"), *Name.ToString(), Old, Val);
 	if (FMath::IsNearlyZero(Val)) {
 		Flags.Remove(Name);
 	} else {
 		Flags.Add(Name, Val);
 	}
 	
-	OnMod.Broadcast(Name, -Old, Val);
+	OnMod.Broadcast(Name, Val-Old, Val);
 }
 
 void UFlags::SetAll(const TMap<FName, float>& NewFlags) {

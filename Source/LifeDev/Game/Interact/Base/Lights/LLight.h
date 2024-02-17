@@ -14,6 +14,7 @@ class UCRandomizer;
 // notice that it expects to use the Anim for animations.
 // It manages UseAnim with the A_STROBE flag. AnimUpdate will be called anyway on state change.
 // Remember to set cast shadow on the correct meshes
+// Off = 0 (Closed) On = 1 (Open)
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight: public ALInteract {
 	GENERATED_BODY()

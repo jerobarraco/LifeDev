@@ -5,13 +5,14 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
+#include "Inventory/Flags.h"
 #include "JSig/CSignificance.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
-// better to do light00 first then extract this one
 ALLight::ALLight():Super() {
 	UseAnim = true;
 	FlickrOnFB = .7;
@@ -148,11 +149,16 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALLight::SetState_Implementation(int32 NewState) {
 	Super::SetState_Implementation(NewState);
+	const bool bClosed = IsClosed();
 	// force light change when strobe is disabled
 	if (!UseAnim) {
-		const float P = IsClosed() ? 0 : 1;
+		const float P = bClosed ? 0 : 1;
 		AnimUpdate(P, P);
 	}
+
+	// count the times you turn off a light. closed == off
+	if (Flags) Flags->Mod(LDConsts::Flags::ALL::LightsOn,
+			bClosed ? -1 : 1);
 }
 
 void ALLight::TurnOn() {
