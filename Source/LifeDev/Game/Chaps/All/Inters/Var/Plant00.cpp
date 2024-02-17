@@ -1,0 +1,47 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "Plant00.h"
+
+#include "CQuickMesh.h"
+#include "Interact/CInteract.h"
+#include "Sounds/CSounder.h"
+
+APlant00::APlant00():Super() {
+	Texts = { FText::FromString(TEXT("Plant"))};
+	UseAnim = false;
+	UseRewardFade = false;
+	StateNum = 1;
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Plants/Pot00.Pot00"));
+	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetRelativeLocation(FVector(-32.5,32.5,0));
+	Mesh->SetQuickCollisionEnabled(true);
+
+	SFX->SetRelativeLocation(FVector(32.5,-32.5,30));
+	Interact->SetRelativeLocation(FVector(32.5,-32.5,30));
+	Interact->SetBoxExtent(FVector(32.5,32.5,30));
+	Interact->SetEnabled(true); // by default don't do anything.
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CSoil(TEXT("/Game/LifeDev/Game/Inters/Plants/Soil.Soil"));
+	Soil = CreateDefaultSubobject<UCQuickMesh>(TEXT("Soil"));
+	Soil->SetupAttachment(Mesh);
+	Soil->SetStaticMesh(CSoil.Object);
+	Soil->SetRelativeLocation(FVector(5,-5,50));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CPlant(TEXT("/Game/LifeDev/Game/Inters/Plants/Plant00.Plant00"));
+	Plant = CreateDefaultSubobject<UCQuickMesh>(TEXT("Plant"));
+	Plant->SetupAttachment(Mesh);
+	Plant->SetStaticMesh(CPlant.Object);
+	Plant->SetRelativeLocation(FVector(5,-5,50));
+
+	Super::SetMobility(EComponentMobility::Static); // static since we won't animate it
+}
+
+void APlant00::SetMobility(EComponentMobility::Type Mobility) {
+	Super::SetMobility(Mobility);
+	Soil->SetMobility(Mobility);
+	Plant->SetMobility(Mobility);
+}
