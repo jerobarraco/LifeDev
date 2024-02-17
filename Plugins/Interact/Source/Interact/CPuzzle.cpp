@@ -139,7 +139,8 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	const int32 State = CurrentIds[ID] = I->GetState();
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i state=%i"), __func__, ID, State);
 
-	// quite silly but.. who knows, maybe you want to have only one option for a combination.
+	// seems silly on combination but.. maybe you want to have only one change for a combination.
+	// e.g. 2 state buttons where buttons matter but not the order in which they are pressed.
 	if (DisableOnInter) {
 		I->SetEnabled(false);
 	}
@@ -164,9 +165,6 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
-	UWorld* const World = GetWorld();
-	if (!World) return;
-
 	// trigger update now! before done.
 	// important for APuzzle timer and for logical order in the flow
 	OnUpdate.Broadcast();
@@ -182,12 +180,13 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
 		const bool Ok = CheckCombination(ID);
 		if (Ok) {
 			// only trigger when complete. combination can only be completed with ok.
-			Done(true);
+			Done(Ok);
 			return;
 		}
 		// no way to reset here
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
+		return;
 	}
 }
 

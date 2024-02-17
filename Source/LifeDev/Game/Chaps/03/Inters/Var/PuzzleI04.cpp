@@ -14,7 +14,8 @@ APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; 
 	ResetOnFail = true; // Allow for reset. this is handled with a careful setup of Super::Done
-
+	CPuzzle->DisableOnInter = true; // will make it easier. non-repeated keys. and make the waiting explicit.
+	
 	static FName DoneId = "PZ04_T";
 	DoneDlg = DoneId; // really? TODO maybe not necessary
 	DoneStep = "C3S0";
