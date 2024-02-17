@@ -28,7 +28,7 @@ APianoLid::APianoLid():Super() {
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/door-02.door-02"));
 	SFX_Stop = {nullptr, CSFX.Object}; // TODO test, otherwise use SFX_Trigger
 	SFX_Trigger = nullptr;
-	
+
 	Anim->Curve = nullptr;
 	Anim->Duration = 1;
 	Anim->IsAdditive = true;

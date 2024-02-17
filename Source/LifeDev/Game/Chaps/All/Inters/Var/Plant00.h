@@ -5,7 +5,6 @@
 
 #include "Plant00.generated.h"
 
-
 // Base Plant00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APlant00: public ALInteract {
