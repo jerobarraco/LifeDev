@@ -9,7 +9,6 @@
 #include "Flags.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FFlagsOnMod, const FName&, Name, float, Diff, float, Total);
-DECLARE_LOG_CATEGORY_CLASS(LogFlags, Log, Log);
 
 // World subsystem to deal with Flags ( float variables for stuff like "has unlocked X door, has passed this point, choice taken = 2, etc)
 UCLASS(Blueprintable, BlueprintType, Category="Flags")
