@@ -18,7 +18,7 @@ ABasin00::ABasin00():Super() {
 	StateNum = 2;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/HandBasin/HandBasin.HandBasin"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/HandBasin.HandBasin"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(40,30,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90,0).Quaternion());
@@ -30,7 +30,7 @@ ABasin00::ABasin00():Super() {
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CWater(TEXT("/Game/LifeDev/Game/Inters/HandBasin/WaterTap.WaterTap"));
+		CWater(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/WaterTap.WaterTap"));
 	Water->SetAsset(CWater.Object);
 	Water->SetAutoActivate(false);
 	Water->SetUseAutoManageAttachment(true);
@@ -40,7 +40,7 @@ ABasin00::ABasin00():Super() {
 	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
 	SND_Water->SetupAttachment(Water);
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
-		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
+		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
 	SND_Water->SetSound(CWaterSnd.Object);
 	SND_Water->SetAutoActivate(false);
 	SND_Water->bAutoManageAttachment = true;
