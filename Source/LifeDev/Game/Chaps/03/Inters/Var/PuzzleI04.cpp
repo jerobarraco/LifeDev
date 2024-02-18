@@ -8,7 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
-constexpr float SndWait = 1.5;
+constexpr float SndWait = 1.75;
 
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
@@ -38,7 +38,7 @@ void APuzzleI04::PostLoad() {
 		{LDConsts::Items::Card0, "PZ04xC00"},
 		{LDConsts::Items::Card1, "PZ04xC01"},
 		{LDConsts::Items::Card2, "PZ04xC02"},
-		{LDConsts::Items::Card3, "PZ04xC03"}
+		{LDConsts::Items::Card3, "PZ04xC03"} // TODO
 	};
 	SetUseItemDlgs(Dlgs);
 	
