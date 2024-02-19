@@ -21,11 +21,6 @@ public:
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FVector GhostLocation = FVector(210,-42,-65);
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AInteract* FakeChar = nullptr;
-
 	// where the player will be positioned to blend the camera and when the chapter ends
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AActor* PlayerPos = nullptr;
@@ -35,5 +30,4 @@ protected:
 
 	UFUNCTION()
 	void TeleportPlayer();
-	
 };

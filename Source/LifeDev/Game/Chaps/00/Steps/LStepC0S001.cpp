@@ -21,27 +21,19 @@ ALStepC0S001::ALStepC0S001():Super() {
 	ItemsRem = {"T01"};
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
+
+	GhostPos = FVector(210,-42,-65);
+	UseGhosts = true;;
 }
 
 void ALStepC0S001::Start_Implementation() {
 	Super::Start_Implementation();
-	if (IsValid(FakeChar)) {
-		FakeChar->SetActorHiddenInGame(false);
-		FakeChar->SetEnabled(true);
-	}
 
 	UWorld* const W = GetWorld();
 	FB->SetMax(1);
 	FB->SetVal(1, 10);
 
 	ALMusicMan::SetRainS(W, true);
-
-	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
-	if (IsValid(Ghosts)) {
-		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		Ghosts->SetActorRelativeLocation(GhostLocation);
-		Ghosts->SetPlaying(true);
-	}
 }
 
 void ALStepC0S001::Stop_Implementation() {
@@ -50,13 +42,6 @@ void ALStepC0S001::Stop_Implementation() {
 
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);
-}
-
-void ALStepC0S001::BeginPlay() {
-	Super::BeginPlay();
-	if (FakeChar) {
-		FakeChar->SetEnabled(false);
-	}
 }
 
 void ALStepC0S001::TeleportPlayer() {
