@@ -2,6 +2,7 @@
 #include "LStepC3S000.h"
 
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
@@ -37,6 +38,12 @@ ALStepC3S000::ALStepC3S000():Super() {
 		LDConsts::Items::Card2,
 		LDConsts::Items::Walkman
 	};
+}
+
+void ALStepC3S000::Start_Implementation() {
+	Super::Start_Implementation();
+	FB->SetMax(.4);
+	FB->SetVal(.01);
 }
 
 void ALStepC3S000::DoDebug_Implementation() {

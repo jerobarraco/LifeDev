@@ -14,4 +14,6 @@ ALStepC3S002::ALStepC3S002():Super() {
 		LDConsts::Items::Card3,
 		LDConsts::Items::Poem3,
 	}; // TODO
+
+	// TODO rain
 }

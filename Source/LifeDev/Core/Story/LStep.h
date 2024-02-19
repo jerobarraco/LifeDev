@@ -8,6 +8,7 @@
 
 #include "LStep.generated.h"
 
+class ALInteract;
 class UFlags;
 class UFlashback;
 class UDiags;
@@ -51,6 +52,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DlgId = NAME_None;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	ALInteract* Inter = nullptr;
+
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsFinish;
@@ -62,6 +66,7 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsEnsure;
+
 	
 	inline static bool UseDebug = false;
 	

@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Diags/DiagTypes.h"
 #include "LifeDev/Core/Story/LStep.h"
 
 #include "LStepC3S001.generated.h"
+
+class AGhosts;
+class ALInteract;
 
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC3S001 : public ALStep {
@@ -13,4 +17,23 @@ class ALStepC3S001 : public ALStep {
 
 public:
 	ALStepC3S001();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FVector GhostPos = FVector(210,-42,-65);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	ALInteract* FakeChar = nullptr;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Start_Implementation() override;
+	virtual void Stop_Implementation() override;
+	UFUNCTION()
+	void ShowDlg(const FDialog& Diag);
+	UFUNCTION()
+	void DestroyActors();
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AGhosts* Ghosts = nullptr;
+
+	float FbInc = .1;
 };
