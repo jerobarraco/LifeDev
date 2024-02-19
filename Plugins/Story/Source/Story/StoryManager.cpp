@@ -35,11 +35,15 @@ void AStoryManager::Fade(bool In, const FText& Title) {
 
 void AStoryManager::FadeIn() {
 	if (!IsValid(UI)) return;
+	// important to re-set the fade time
+	UI->AnimDuration = Story->FadeTime;
 	UI->FadeIn();
 }
 
 void AStoryManager::FadeOut(const FText& Title, const FText& Text) {
 	if (!IsValid(UI)) return;
+	// important to re-set the fade time
+	UI->AnimDuration = Story->FadeTime;
 	UI->FadeOut(Title, Text);
 }
 
@@ -54,9 +58,7 @@ void AStoryManager::BeginPlay() {
 	if (!World) return;
 	
 	Story = World->GetSubsystem<UStory>();
-	if (Story) {
-		Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
-	}
+	if (Story) Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
 	
 	if (IsValid(UIClass.Get())) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));

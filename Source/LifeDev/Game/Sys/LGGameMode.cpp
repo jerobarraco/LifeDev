@@ -174,7 +174,7 @@ void ALGGameMode::Init_Implementation() {
 	/// Story
 	Story = World->GetSubsystem<UStory>();
 	Story->FadeTime = UJMiscUtils::IsEditor() ? 1: FadeTime;
-	Story->HoldTime = UJMiscUtils::IsEditor() ? 1:  HoldTime;
+	Story->HoldTime = UJMiscUtils::IsEditor() ? 1: HoldTime;
 	Story->Init();
 	
 	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
@@ -405,6 +405,8 @@ void ALGGameMode::Fade(bool bIn, const FText& Text) {
 	// fading in requires a timer.
 	FTimerHandle Handle2;
 	const float Wait = (Story->FadeTime)+Story->HoldTime;
-	FTimerManager& Time = GetWorld()->GetTimerManager();
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	FTimerManager& Time = World->GetTimerManager();
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }

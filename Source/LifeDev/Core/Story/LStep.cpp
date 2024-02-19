@@ -195,5 +195,3 @@ void ALStep::Finish_Implementation() {
 	Super::Finish_Implementation();
 }
 
-
-// todo verify c0s1

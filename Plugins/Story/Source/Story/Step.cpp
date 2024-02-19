@@ -70,7 +70,8 @@ void AStep::Start_Implementation() {
 	if (CamTarget == this && IsValid(Cam)) Cam->SetComponentTickEnabled(true);
 
 	// blend before the wait to avoid weird issues.
-	// if you actually wanna see the blend you may not want the fade anyway. fade and wait are weird combination. i think.
+	// if you actually wanna see the blend you may not want the fade anyway.
+	// fade and wait are weird combination. i think.
 	BlendCam();
 
 	// do after the rest since post-wait is another flow

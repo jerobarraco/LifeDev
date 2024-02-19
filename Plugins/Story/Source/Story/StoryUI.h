@@ -32,7 +32,9 @@ public:
 	bool IsShowing = false;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	float GetAnimSpeed() const { return AnimDuration > 0? 1.0f/AnimDuration: 1.0f;}
+	float GetAnimSpeed() const { return AnimDuration > 0 ? 1.0f/AnimDuration: 1.0f;}
+
+	// How long fading in/out should take
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float AnimDuration = 2.f;
 

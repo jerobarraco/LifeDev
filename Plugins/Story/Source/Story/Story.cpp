@@ -102,7 +102,7 @@ bool UStory::Start(const FName& Name) {
 			return;
 		}
 		FTimerHandle H2;
-		World->GetTimerManager().SetTimer(H2, l2, FadeTime+HoldTime, false);
+		World->GetTimerManager().SetTimer(H2, l2, HoldTime, false);
 	};
 
 	FTimerHandle H;
