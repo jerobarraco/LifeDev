@@ -50,7 +50,6 @@ void ALStep::PostWait_Implementation() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
-
 	// check items. do on postWait to avoid possibly finishing the step while it's starting.
 	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
@@ -67,11 +66,13 @@ void ALStep::PostWait_Implementation() {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
 
-	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
-	if (IsValid(Ghosts)) {
-		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		Ghosts->SetActorRelativeLocation(GhostPos);
-		Ghosts->SetPlaying(true);
+	if (UseGhosts) {
+		Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
+		if (IsValid(Ghosts)) {
+			Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+			Ghosts->SetActorRelativeLocation(GhostPos);
+			Ghosts->SetPlaying(true);
+		}
 	}
 
 	if (IsValid(Actor)) {
@@ -195,4 +196,5 @@ void ALStep::Finish_Implementation() {
 }
 
 
-// todo fix c0s1 c1s2 c2s1 c3s1
+// todo fix  c2s1 c3s1
+// todo verify c0s1 c1s2

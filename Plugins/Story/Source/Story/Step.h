@@ -23,9 +23,9 @@ public:
 	AStep();
 	void DoTeleport();
 
-	// called when the step starts.
+	// called when the step starts. Better to override PostWait
 	// be sure not to do anything that would finish the step here, use postwait for that.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay))
 	void Start() ;
 	virtual void Start_Implementation();
 	

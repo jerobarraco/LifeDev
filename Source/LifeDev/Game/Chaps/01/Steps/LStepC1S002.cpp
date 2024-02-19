@@ -21,9 +21,6 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
 
-	// static ConstructorHelpers::FClassFinder<UClass> CChar(TEXT("/Game/LifeDev/Game/Chaps/All/Chars/Ghost/Ghost_NS.Ghost_NS"));
-	CharClass = ALNPC01::StaticClass();
-	
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
 		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B")); // camshake doesn't work with the ".CamShake_B" ending 
 	ShakeClass = CShake.Succeeded() ? CShake.Class.Get() : ShakeClass;
@@ -35,27 +32,17 @@ ALStepC1S002::ALStepC1S002():Super() {
 	UseGhosts = true;
 }
 
-void ALStepC1S002::Start_Implementation() {
-	Super::Start_Implementation();
-	SpawnGhosts();
-}
-
-void ALStepC1S002::SpawnGhosts() {
+void ALStepC1S002::PostWait_Implementation() {
+	Super::PostWait_Implementation();
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Diags->AddId("C1S2.0"); // "i'll use the tape"
 	
-	Ghosts = Cast<AGhosts>(GetWorld()->SpawnActor(AGhosts::StaticClass()));
-	if (IsValid(Ghosts)) {
-		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		Ghosts->SetActorRelativeLocation(GhostLocation);
-		Ghosts->SetPlaying(true);
-	}
 	FB->SetMax(1); // reset to 1 since we will change it several times here
 	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it cant be bigger
 }
 
 void ALStepC1S002::StartShake() {
-	Diags->OnDone.RemoveAll(this);
+	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StartShake);
 
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
@@ -74,31 +61,14 @@ void ALStepC1S002::ShakeStarted() {
 }
 
 void ALStepC1S002::StopShake() {
-	Diags->OnDone.RemoveAll(this);
-	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::DestroyGhosts, 2);
-}
+	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StopShake);
 
-void ALStepC1S002::DestroyGhosts() {
-	if (IsValid(Ghosts)) {
-		Ghosts->SetPlaying(false);
-	}
-	FTimerHandle H;
-	GetWorld()->GetTimerManager().SetTimer(H, this, &ALStepC1S002::GhostDestroyed, 2);
-}
-
-void ALStepC1S002::GhostDestroyed() {
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
 
 	FB->SetVal(.85);
-
-	if (IsValid(Ghosts)) {
-		Ghosts->Destroy();
-		Ghosts = nullptr;
-	}
 
 	Finish();
 }

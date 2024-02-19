@@ -22,6 +22,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	FinishPostWait = false; // will be set by seqid anyway
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS");
 	ItemsEnsure = {
+		// do always, not debug, since we could be skipping the chapter 0
 		LDConsts::Items::Card0
 	};
 
@@ -40,11 +41,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 
 void ALStepC1S000::Start_Implementation() {
 	Super::Start_Implementation();
-	if (Inventory) {
-		// do always, not debug, since we could be skipping the chapter 0
-		Inventory->Ensure(LDConsts::Items::Card0);
-	}
-	
+
 	if (!FB) return;
 	FB->SetMax(.75);
 	FB->SetMin(0);

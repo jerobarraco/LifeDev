@@ -26,8 +26,6 @@ public:
 	AActor* PlayerPos = nullptr;
 	
 protected:
-	virtual void BeginPlay() override;
-
 	UFUNCTION()
 	void TeleportPlayer();
 };
