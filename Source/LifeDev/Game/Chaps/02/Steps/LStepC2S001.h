@@ -20,8 +20,8 @@ class ALStepC2S001 : public ALStep {
 public:
 	ALStepC2S001();
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FVector GhostPos = FVector(210,-42,-65);
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	// FVector GhostPos = FVector(210,-42,-65);
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	ALInteract* FakeChar = nullptr;
 
@@ -31,10 +31,5 @@ protected:
 	virtual void Stop_Implementation() override;
 
 	UFUNCTION()
-	void DestroyActors();
-	UFUNCTION()
 	void ShowDlg(const FDialog& Diag);
-
-	UPROPERTY(BlueprintReadOnly, Transient)
-	AGhosts* Ghosts = nullptr;
 };

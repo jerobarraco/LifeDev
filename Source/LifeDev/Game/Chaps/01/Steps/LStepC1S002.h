@@ -47,7 +47,5 @@ protected:
 	FVector GhostLocation = FVector(200,-4,-75);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AGhosts* Ghosts = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	AActor* Char = nullptr;
 };

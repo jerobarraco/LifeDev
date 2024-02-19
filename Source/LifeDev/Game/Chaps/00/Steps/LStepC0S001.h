@@ -34,11 +34,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void DestroyActors();
-	
-	UFUNCTION()
 	void TeleportPlayer();
 	
-	UPROPERTY(BlueprintReadOnly, Transient)
-	AGhosts* Ghosts = nullptr;
 };

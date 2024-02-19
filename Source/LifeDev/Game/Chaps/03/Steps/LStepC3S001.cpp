@@ -20,6 +20,8 @@ ALStepC3S001::ALStepC3S001():Super() {
 	Cam->SetConstraintAspectRatio(true);
 	Cam->AspectRatio = 2;
 
+	GhostPos = FVector(210,-42,-65);;
+	UseGhosts = true;
 	// TODO raise the fb with each dialog
 }
 
@@ -40,7 +42,7 @@ void ALStepC3S001::Start_Implementation() {
 	FB->SetMax(1);
 		
 	constexpr int32 numDlgs = 4; //TODO??
-	FbInc = FB->GetVal() / (numDlgs-1);
+	FbDiagMod = (1.0-FB->GetVal()) / (numDlgs-1);
 	
 	// bind before the super since it will trigger the Diags
 	Diags->OnShow.AddUniqueDynamic(this, &ALStepC3S001::ShowDlg);
@@ -82,18 +84,5 @@ void ALStepC3S001::Stop_Implementation() {
 }
 
 void ALStepC3S001::ShowDlg(const FDialog& Diag) {
-	FB->ModVal(FbInc);
+	// FB->ModVal(FbInc);
 }
-
-void ALStepC3S001::DestroyActors() {
-	UE_LOG(LogTemp, Log, TEXT("Destroy actors called"));
-	// this is a bit dangerous, we can't go back to chap 0 without reloading.
-	// but also more performant.
-	if (IsValid(FakeChar)) FakeChar->Destroy();
-	FakeChar = nullptr;
-
-	if (IsValid(Ghosts)) Ghosts->Destroy();
-	Ghosts = nullptr;
-}
-
-// todo generalize this type of code. merge with c2s01

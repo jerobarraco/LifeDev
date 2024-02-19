@@ -47,29 +47,9 @@ void ALStepC0S001::Start_Implementation() {
 void ALStepC0S001::Stop_Implementation() {
 	Super::Stop_Implementation();
 	UWorld* const W = GetWorld();
-	if (IsValid(Ghosts)) {
-		Ghosts->SetPlaying(false);
-	}
-	// Destroy them during the fade
-	DestroyActors(); // stop gets once it's fully faded
 
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);
-}
-
-void ALStepC0S001::DestroyActors() {
-	// this is a bit dangerous, we can't go back to chap 0 without reloading.
-	// but also more performant.
-
-	if (IsValid(FakeChar)) {
-		FakeChar->Destroy(); // FakeChar->SetActorHiddenInGame(true);
-	}
-	FakeChar = nullptr;
-
-	if (IsValid(Ghosts)) {
-		Ghosts->Destroy();
-	}
-	Ghosts = nullptr;
 }
 
 void ALStepC0S001::BeginPlay() {

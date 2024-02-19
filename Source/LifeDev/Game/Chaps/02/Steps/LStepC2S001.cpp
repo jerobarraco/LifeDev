@@ -20,6 +20,9 @@ ALStepC2S001::ALStepC2S001():Super() {
 
 	Cam->SetConstraintAspectRatio(true);
 	Cam->AspectRatio = 2;
+
+	UseGhosts = true;
+	GhostPos = FVector(210,-42,-65);
 }
 
 void ALStepC2S001::BeginPlay() {
@@ -36,22 +39,8 @@ void ALStepC2S001::Start_Implementation() {
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
-	// bind before the super since it will trigger the Diags
-	Diags->OnShow.AddUniqueDynamic(this, &ALStepC2S001::ShowDlg);
 	
 	Super::Start_Implementation();
-	
-	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
-	if (IsValid(Ghosts)) {
-		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		Ghosts->SetActorRelativeLocation(GhostPos);
-		Ghosts->SetPlaying(true);
-	}
-
-	if (IsValid(FakeChar)) {
-		FakeChar->SetActorHiddenInGame(false);
-		FakeChar->Fade(true);
-	}
 }
 
 void ALStepC2S001::Stop_Implementation() {
@@ -77,17 +66,6 @@ void ALStepC2S001::Stop_Implementation() {
 	// Destroy them during the fade
 	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, 2);
-}
-
-void ALStepC2S001::DestroyActors() {
-	UE_LOG(LogTemp, Log, TEXT("Destroy actors called"));
-	// this is a bit dangerous, we can't go back to chap 0 without reloading.
-	// but also more performant.
-	if (IsValid(FakeChar)) FakeChar->Destroy();
-	FakeChar = nullptr;
-
-	if (IsValid(Ghosts)) Ghosts->Destroy();
-	Ghosts = nullptr;
 }
 
 void ALStepC2S001::ShowDlg(const FDialog& Diag) {

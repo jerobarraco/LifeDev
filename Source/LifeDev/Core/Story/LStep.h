@@ -8,7 +8,7 @@
 
 #include "LStep.generated.h"
 
-class ALInteract;
+class AGhosts;
 class UFlags;
 class UFlashback;
 class UDiags;
@@ -33,7 +33,11 @@ public:
 	// no need to call this as this class will watch the inventory. but just in case.
 	UFUNCTION(BlueprintCallable)
 	void CheckItemsFinish();
-	
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DlgShow(const FDialog& Diag);
+	virtual void DlgShow_Implementation(const FDialog& Diag);
+
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool InputEnabled = false;
@@ -46,14 +50,27 @@ public:
 	// TODO need to fix the steps that do use postwait
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
+
+	// whether to spawn (and destroy) ghosts. Also set ghost pos.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseGhosts = false;
+
+	// how much to mod the fb by on each dialog.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	float FbDiagMod = 0.0;
 	
 	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DlgId = NAME_None;
 
+	// interact to fade in and out. it will get destroyed on Stop, set this to null to avoid it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* Inter = nullptr;
+	AActor* Actor = nullptr;
+
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FVector GhostPos;
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -67,7 +84,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsEnsure;
 
-	
 	inline static bool UseDebug = false;
 	
 protected:
@@ -86,7 +102,10 @@ protected:
 	void RemoveItems();
 	// on start, adds the items on ItemsEnsure
 	void EnsureItems();
-	
+	// will destroy some transient actors
+	UFUNCTION()
+	void DestroyActors();
+
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
@@ -98,4 +117,6 @@ protected:
 	UFlashback* FB = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlags* Flags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AGhosts* Ghosts = nullptr;
 };

@@ -4,9 +4,13 @@
 #include "Diags/Diags.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "Story/Story.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
 
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
@@ -15,20 +19,25 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::Stop_Implementation() {
-	if (IsValid(Diags)) {
-		Diags->OnDone.RemoveAll(this);
+	if (IsValid(Diags)) Diags->OnDone.RemoveAll(this);
+	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
+	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
+
+	if (IsValid(Actor)) {
+		ALInteract* const Inter = Cast<ALInteract>(Actor);
+		if (Inter) Inter->Fade(false);
 	}
-	if (IsValid(Inventory)) {
-		Inventory->OnMod.RemoveAll(this);
-	}
-	if (IsValid(FB)) {
-		FB->OnChange.RemoveAll(this);
+	if (IsValid(Ghosts)) {
+		Ghosts->SetPlaying(false);
 	}
 
 	UWorld* const W = GetWorld();
 	if (W) {
 		// ensure we don't double trigger
 		W->GetTimerManager().ClearAllTimersForObject(this);
+		// Destroy them during the fade
+		FTimerHandle H;
+		W->GetTimerManager().SetTimer(H, this, &ALStep::DestroyActors, 2);
 	}
 
 	RemoveItems();
@@ -58,6 +67,19 @@ void ALStep::PostWait_Implementation() {
 		LGGameMode->SetCharInputEnabled(InputEnabled);
 	}
 
+	Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
+	if (IsValid(Ghosts)) {
+		Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		Ghosts->SetActorRelativeLocation(GhostPos);
+		Ghosts->SetPlaying(true);
+	}
+
+	if (IsValid(Actor)) {
+		Actor->SetActorHiddenInGame(false);
+		ALInteract* const Inter = Cast<ALInteract>(Actor);
+		if (Inter) Inter->Fade(false);
+	}
+
 	// show dialogs
 	StartDialogs();
 }
@@ -65,6 +87,7 @@ void ALStep::PostWait_Implementation() {
 void ALStep::StartDialogs() {
 	if (DlgId.IsNone()) return;
 
+	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 	Diags->AddId(DlgId);
 	FinishAfterDlgs();
 }
@@ -74,6 +97,8 @@ void ALStep::FinishAfterDlgs() {
 		Finish();
 		return;
 	}
+
+	// important that we use Unique here
 	Diags->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 }
 
@@ -87,6 +112,17 @@ void ALStep::EnsureItems() {
 	for(const FName& N: ItemsEnsure) {
 		Inventory->Ensure(N);
 	}
+}
+
+void ALStep::DestroyActors() {
+	UE_LOG(LogLStoryStep, Log, TEXT("Destroy actors called"));
+	// this is a bit dangerous, we can't go back to chap 0 without reloading.
+	// but also more performant.
+	if (IsValid(Actor)) Actor->Destroy();
+	Actor = nullptr;
+
+	if (IsValid(Ghosts)) Ghosts->Destroy();
+	Ghosts = nullptr;
 }
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
@@ -104,6 +140,10 @@ void ALStep::CheckItemsFinish() {
 	FinishAfterDlgs();
 }
 
+void ALStep::DlgShow_Implementation(const FDialog& Diag) {
+	if (FB) FB->ModVal(FbDiagMod);
+}
+
 void ALStep::BeginPlay() {
 	Super::BeginPlay();
 
@@ -113,23 +153,24 @@ void ALStep::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = UFlags::Instance(World);
+	
+	if (IsValid(Actor)) {
+		Actor->SetActorHiddenInGame(true);
+		ALInteract* const Inter = Cast<ALInteract>(Actor);
+		if (Inter) Inter->SetEnabled(false);
+	}
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Diags)) {
-		Diags->OnDone.RemoveAll(this);
-	}
+	if (IsValid(Diags)) Diags->OnDone.RemoveAll(this);
 	Diags = nullptr;
 
-	if (IsValid(Inventory)) {
-		Inventory->OnMod.RemoveAll(this);
-	}
+	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
 	Inventory = nullptr;
 	
-	if (IsValid(FB)) {
-		FB->OnChange.RemoveAll(this);
-	}
+	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	FB = nullptr;
+
 	// always at end
 	Super::EndPlay(EndPlayReason);
 }
@@ -148,7 +189,10 @@ void ALStep::PostLoad() {
 }
 
 void ALStep::Finish_Implementation() {
-	// avoid possible double triggering.
+	// avoid possible double triggering. since finish is called from several origins
 	Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
 	Super::Finish_Implementation();
 }
+
+
+// todo fix c1s2 c0s1 c3s1
