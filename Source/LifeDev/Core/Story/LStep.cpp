@@ -196,4 +196,4 @@ void ALStep::Finish_Implementation() {
 }
 
 
-// todo verify c0s1 c1s2 c2s1 c3s1
+// todo verify c0s1

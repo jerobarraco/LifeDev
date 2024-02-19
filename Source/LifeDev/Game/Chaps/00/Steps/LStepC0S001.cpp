@@ -2,11 +2,10 @@
 #include "LStepC0S001.h"
 
 #include "Camera/CameraComponent.h"
-#include "Interact/Interact.h"
 #include "Kismet/GameplayStatics.h"
-#include "LifeDev/Core/Sounds/LMusicMan.h"
-#include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -15,7 +14,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	DlgId = FName("Intro");
 	InputEnabled = false;
 	UseFadeTime = true;
-	UseFade = true;
+	UseFade = true; // important since the door, also due to the load
 	FinishPostWait = false;
 	TeleportChar = true;
 	ItemsRem = {"T01"};
@@ -23,7 +22,17 @@ ALStepC0S001::ALStepC0S001():Super() {
 	Cam->SetAspectRatio(2);
 
 	GhostPos = FVector(210,-42,-65);
-	UseGhosts = true;;
+	UseGhosts = true;
+
+
+	// This is kinda lame. but since the next chapter is so close, and we use a fade,
+	// i think i can get away with it.
+	// TODO add the objects i need to the other layer for chap00
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap01_DL.Chap01_DL"));
+	if (CDL1.Succeeded()) {
+		DL_Load.Add(CDL1.Object);
+	}
 }
 
 void ALStepC0S001::Start_Implementation() {
