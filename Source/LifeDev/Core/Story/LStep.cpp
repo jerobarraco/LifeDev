@@ -78,7 +78,7 @@ void ALStep::PostWait_Implementation() {
 	if (IsValid(Actor)) {
 		Actor->SetActorHiddenInGame(false);
 		ALInteract* const Inter = Cast<ALInteract>(Actor);
-		if (Inter) Inter->Fade(false);
+		if (Inter) Inter->Fade(true);
 	}
 
 	// show dialogs

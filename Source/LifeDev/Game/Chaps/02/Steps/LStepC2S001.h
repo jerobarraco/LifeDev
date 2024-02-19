@@ -4,12 +4,10 @@
 
 #include "CoreMinimal.h"
 
-#include "Diags/DiagTypes.h"
 #include "LifeDev/Core/Story/LStep.h"
 
 #include "LStepC2S001.generated.h"
 
-class AGhosts;
 class ALInteract;
 
 // chap02 handles the boss appearing
@@ -19,17 +17,8 @@ class ALStepC2S001 : public ALStep {
 
 public:
 	ALStepC2S001();
-	
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	// FVector GhostPos = FVector(210,-42,-65);
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* FakeChar = nullptr;
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
-
-	UFUNCTION()
-	void ShowDlg(const FDialog& Diag);
 };

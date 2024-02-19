@@ -23,14 +23,10 @@ ALStepC2S001::ALStepC2S001():Super() {
 
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);
-}
-
-void ALStepC2S001::BeginPlay() {
-	Super::BeginPlay();
-	if (IsValid(FakeChar)) {
-		FakeChar->SetActorHiddenInGame(true);
-		FakeChar->SetEnabled(false);
-	}
+	// there are 11 dialogs, and the fb should be on .4 at least.
+	// with .08 we ensure that we reach 1. but with .1 is too much
+	// .075 a couple of diags remain
+	FbDiagMod = .07;
 }
 
 void ALStepC2S001::Start_Implementation() {
@@ -44,8 +40,6 @@ void ALStepC2S001::Start_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
-	if (Diags) Diags->OnShow.RemoveAll(this);
-
 	if (FB) {
 		// FB->SetVal(.05, 10);
 		
@@ -53,24 +47,7 @@ void ALStepC2S001::Stop_Implementation() {
 		// .33 is the min to hear the melody
 		FB->SetMin(.33,1);
 	}
-	
-	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
-	// gets nullified on destroyactors
 
-	if (IsValid(FakeChar)) FakeChar->Fade(false);
-	
 	Super::Stop_Implementation();
-
-	UWorld* const W = GetWorld();
-	if (!W) return;
-	// Destroy them during the fade
-	FTimerHandle H;
-	W->GetTimerManager().SetTimer(H, this, &ALStepC2S001::DestroyActors, 2);
 }
 
-void ALStepC2S001::ShowDlg(const FDialog& Diag) {
-	// there are 11 dialogs, and the fb should be on .4 at least.
-	// with .08 we ensure that we reach 1. but with .1 is too much
-	// .075 a couple of diags remain
-	FB->ModVal(.07);
-}
