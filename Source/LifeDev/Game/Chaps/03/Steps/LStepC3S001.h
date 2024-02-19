@@ -18,15 +18,7 @@ class ALStepC3S001 : public ALStep {
 public:
 	ALStepC3S001();
 
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	// FVector GhostPos = FVector(210,-42,-65);
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* FakeChar = nullptr;
-
 protected:
-	virtual void BeginPlay() override;
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
-	UFUNCTION()
-	void ShowDlg(const FDialog& Diag);
 };

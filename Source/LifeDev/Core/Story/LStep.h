@@ -51,7 +51,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 
-	// whether to spawn (and destroy) ghosts. Also set ghost pos.
+	// whether to spawn (and destroy) ghosts. Take a look at and set GhostPos.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseGhosts = false;
 
@@ -64,13 +64,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DlgId = NAME_None;
 
-	// interact to fade in and out. it will get destroyed on Stop, set this to null to avoid it.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* Actor = nullptr;
-
-
+	// relative position where the ghosts will spawn
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FVector GhostPos;
+
+	// actor to show/hide. If it's an interact it will fade in and out.
+	// it will get destroyed on Stop, set this to null to avoid it.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	AActor* Actor = nullptr;
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -105,7 +106,7 @@ protected:
 	// will destroy some transient actors
 	UFUNCTION()
 	void DestroyActors();
-
+	// called when items get mod. checks for itemsFinish
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 
