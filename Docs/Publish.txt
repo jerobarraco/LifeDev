@@ -25,3 +25,4 @@ Windows
 * add deps
 * compress
 * test with bottles
+* step for boss

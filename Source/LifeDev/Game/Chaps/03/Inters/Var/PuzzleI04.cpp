@@ -38,7 +38,7 @@ void APuzzleI04::PostLoad() {
 		{LDConsts::Items::Card0, "PZ04xC00"},
 		{LDConsts::Items::Card1, "PZ04xC01"},
 		{LDConsts::Items::Card2, "PZ04xC02"},
-		{LDConsts::Items::Card3, "PZ04xC03"} // TODO
+		{LDConsts::Items::Card3, "PZ04xC03"} // TODO. important gives hint how to solve
 	};
 	SetUseItemDlgs(Dlgs);
 	
