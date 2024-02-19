@@ -55,9 +55,7 @@ void ALStepC2S001::Start_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
-	if (Diags) {
-		Diags->OnShow.RemoveAll(this);
-	}
+	if (Diags) Diags->OnShow.RemoveAll(this);
 
 	if (FB) {
 		// FB->SetVal(.05, 10);
@@ -67,13 +65,10 @@ void ALStepC2S001::Stop_Implementation() {
 		FB->SetMin(.33,1);
 	}
 	
-	if (IsValid(Ghosts)) {
-		Ghosts->SetPlaying(false);
-	} // gets nullified on destroyactors
+	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
+	// gets nullified on destroyactors
 
-	if (IsValid(FakeChar)) {
-		FakeChar->Fade(false);
-	}
+	if (IsValid(FakeChar)) FakeChar->Fade(false);
 	
 	Super::Stop_Implementation();
 
@@ -88,16 +83,11 @@ void ALStepC2S001::DestroyActors() {
 	UE_LOG(LogTemp, Log, TEXT("Destroy actors called"));
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
-	if (IsValid(FakeChar)) {
-		FakeChar->Destroy();
-	}
+	if (IsValid(FakeChar)) FakeChar->Destroy();
 	FakeChar = nullptr;
 
-	if (IsValid(Ghosts)) {
-		Ghosts->Destroy();
-	}
+	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;
-	FB = nullptr;
 }
 
 void ALStepC2S001::ShowDlg(const FDialog& Diag) {
