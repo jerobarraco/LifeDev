@@ -13,4 +13,8 @@ class ALStepC3S002 : public ALStep {
 
 public:
 	ALStepC3S002();
+
+protected:
+	virtual void Start_Implementation() override;
+	virtual void Stop_Implementation() override;
 };
