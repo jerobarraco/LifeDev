@@ -205,11 +205,11 @@ bool UStory::StartNext(const FName& CurrentName) {
 	++SeqStep;
 	if (SeqStep >= Sequence.Num()) {
 		UE_LOG(LogStory, Log, TEXT("Reached end of sequence. Stopping"));
-		// not stopping here to allow transitions between end of chapter to flow correctly (eg fade)
-		// OnSeqStop will tell the gamemode that the sequence(chapter) finished,
-		// the GM will load the next chapter, and call StartSequence
+		// not stopping here to allow transitions between end of chapter to flow correctly (i.e. fade)
+		// OnSeqStop will tell the gamemode that the sequence (chapter) finished,
+		// the GM will load the next chapter, and call StartSequence.
 		// StartSequence will call this, which calls Start, and since Current is still valid,
-		// it will transition correctly. 
+		// it will transition correctly.
 		// Stop();
 		OnSeqStop.Broadcast();
 		return false;

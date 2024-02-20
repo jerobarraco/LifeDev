@@ -33,22 +33,26 @@ ALStepC1S002::ALStepC1S002():Super() {
 
 void ALStepC1S002::PostWait_Implementation() {
 	Super::PostWait_Implementation();
-	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
-	Diags->AddId("C1S2.0"); // "i'll use the tape"
 	
 	FB->SetMax(1); // reset to 1 since we will change it several times here
-	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it cant be bigger
+	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger
+	FbDiagMod = (1.0 - FB->GetValTo()) / 4.0;
+
+	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
+	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow); // to fbincrease
+	Diags->AddId("C1S2.0"); // "i'll use the tape"
 }
 
 void ALStepC1S002::StartShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StartShake);
-
+	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
+	
 	UWorld* const World = GetWorld();
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	CameraManager->StartCameraShake(ShakeClass);
 
-	FB->SetVal(1); // bump to max
+	// FB->SetVal(1); // bump to max
 
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);

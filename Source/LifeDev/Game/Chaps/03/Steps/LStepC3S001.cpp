@@ -28,7 +28,7 @@ void ALStepC3S001::Start_Implementation() {
 	FB->SetMax(1);
 		
 	constexpr int32 numDlgs = 4; //TODO??
-	FbDiagMod = (1.0-FB->GetVal()) / (numDlgs-1);
+	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 	
 	Super::Start_Implementation();
 }
