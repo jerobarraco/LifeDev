@@ -116,6 +116,7 @@ protected:
 	virtual void Rewarded_Implementation() {}
 
 	// mostly internal. gives the rewards. if UseRewardFade it WILL self-destroy.
+	// it won't fade, youll have to do it manually.
 	// exposed in case you want to do multiple rewards, in which case don't set UseRewardFade
 	UFUNCTION(BlueprintCallable)
 	void DoRewards();

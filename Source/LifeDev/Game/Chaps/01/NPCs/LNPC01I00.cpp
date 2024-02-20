@@ -12,17 +12,13 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
+	LockedDlg = "N01.L";
 }
 
 void ALNPC01I00::BeginPlay() {
 	Super::BeginPlay();
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
-}
-
-void ALNPC01I00::TriggerLocked_Implementation() {
-	Diags->AddId("N01.L");
-	Super::TriggerLocked_Implementation();
 }
 
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
@@ -64,5 +60,6 @@ void ALNPC01I00::DiagStandDone() {
 	ALMusicMan::SetRainS(W, false);
 	Flashback->SetVal(.2);
 
+	Fade(false); // fade out manually. doRewards wont.
 	DoRewards(); // give the card and disappear
 }

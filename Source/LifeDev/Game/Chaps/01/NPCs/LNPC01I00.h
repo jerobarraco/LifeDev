@@ -19,7 +19,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void TriggerLocked_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	void StandUp();
 

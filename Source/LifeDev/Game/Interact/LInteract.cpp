@@ -118,7 +118,9 @@ void ALInteract::DoRewards() {
 
 	// don't destroy if not userewardfade
 	if (!UseRewardFade) return;
-	
+	// not calling fade here, since it's called on trigger.
+
+	// bind to destroy. or just destroy if the anim failed/finished.
 	if (AnimFade->IsActive()) {
 		// only bind here as we only want to destroy on reward
 		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
