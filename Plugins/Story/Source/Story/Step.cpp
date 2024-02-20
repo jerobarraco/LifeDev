@@ -93,7 +93,11 @@ void AStep::BlendCam() const {
 	if (!IsValid(CamTarget)) return;
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
-	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	APlayerController* const Controller = World->GetFirstPlayerController();
+	if (!Controller) return;
+	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
 void AStep::PostWait_Implementation() {

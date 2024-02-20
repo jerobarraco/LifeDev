@@ -79,23 +79,27 @@ public:
 	float FadeTime = 2;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float HoldTime = 2;
-	
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+
+	// triggered when a step starts
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FStoryStepStart OnStart;
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	// triggers when a step stops
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FStoryStepStop OnStop;
 	// triggered when a fade should occur. the story manager should fade the ui.
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FStoryFade OnFade;
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	// triggered when a sequence starts
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FStorySeqStop OnSeqStart;
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	// triggered when a sequence stops
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
 	FStorySeqStop OnSeqStop;
 
 protected:
 	bool ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const;
 	bool ToggleStepLayers() const;
-
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TMap<FName, AStep*> Steps;
 
