@@ -2,8 +2,10 @@
 #include "LStepC3S001.h"
 
 #include "Camera/CameraComponent.h"
-
 #include "LifeDev/Game/Flashback/Flashback.h"
+
+#include "LifeDev/Game/Chaps/All/NPCs/LNPC03.h"
+
 
 ALStepC3S001::ALStepC3S001():Super() {
 	Name = FName("C3S1");
@@ -31,6 +33,11 @@ void ALStepC3S001::Start_Implementation() {
 	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 	
 	Super::Start_Implementation();
+
+	ALNPC03* const NPC = Cast<ALNPC03>(Actor);
+	if (NPC) {
+		NPC->SetScold();
+	}
 }
 
 void ALStepC3S001::Stop_Implementation() {

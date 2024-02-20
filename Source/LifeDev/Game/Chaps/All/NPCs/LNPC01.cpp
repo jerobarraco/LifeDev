@@ -133,7 +133,6 @@ void ALNPC01::SetPoseSit() {
 void ALNPC01::SetVisible(bool Vis) {
 	if (Vis) {
 		SetPoseSit();
-		
 	}
 	Interact->SetEnabled(Vis);
 	SetActorHiddenInGame(!Vis);

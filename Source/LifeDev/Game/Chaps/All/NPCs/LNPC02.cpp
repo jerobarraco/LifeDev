@@ -77,5 +77,19 @@ ALNPC02::ALNPC02():Super() {
 	Interact->SetBoxExtent(FVector(25,25,55));
 
 	AnimFade->SetNewMat();
-}
 
+	PoseBase.InteractExt = FVector(25,25,55);
+	PoseBase.InteractOrg = FVector(0,-5,50);
+	PoseBase.Head.SetLocation(FVector(0,0,25));
+	PoseBase.Pelvis.SetLocation(FVector(0,0,35));
+	PoseBase.ArmL1.SetLocation(FVector(-10,0,25));
+	PoseBase.ArmR1.SetLocation(FVector(10,0,25));
+	PoseBase.ArmL2.SetLocation(FVector(-2.5,0,-15));
+	PoseBase.ArmR2.SetLocation(FVector(2.5,0,-15));
+	PoseBase.LegL1.SetLocation(FVector(-5,0,-10));
+	PoseBase.LegR1.SetLocation(FVector(5,0,-10));
+	PoseBase.LegL2.SetLocation(FVector(0,0,-10));
+	PoseBase.LegR2.SetLocation(FVector(0,0,-10));
+	PoseBase.FootL.SetLocation(FVector(0,0,-10));
+	PoseBase.FootR.SetLocation(FVector(0,0,-10));
+}

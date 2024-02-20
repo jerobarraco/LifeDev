@@ -59,6 +59,7 @@ ALNPCH::ALNPCH():Super() {
 }
 
 void ALNPCH::SetPose(const FNPCHPose& Pose) {
+	Mesh->SetRelativeTransform(Pose.Root);
 	Pelvis->SetRelativeTransform(Pose.Pelvis);
 	Torso->SetRelativeTransform(Pose.Torso);
 	Head->SetRelativeTransform(Pose.Head);
@@ -80,5 +81,58 @@ void ALNPCH::SetPose(const FNPCHPose& Pose) {
 void ALNPCH::BeginPlay() {
 	Super::BeginPlay();
 	AnimFade->CreateMaterial();
+}
+
+void PrintPose_Loc(const char16_t* Part, const FVector& V) {
+	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetLocation(FVector(%f, %f, %f));"),
+		Part, V.X, V.Y, V.Z);
+}
+
+void PrintPose_Sca(const char16_t* Part, const FVector& V) {
+	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetScale3D(FVector(%f, %f, %f));"),
+		Part, V.X, V.Y, V.Z);
+}
+
+void PrintPose_Rot(const char16_t* Part, const FRotator& R) {
+	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetRotation(FRotator(%f, %f, %f).Quaternion());"),
+		Part, R.Pitch, R.Yaw, R.Roll);
+}
+
+void PrintPose_I(const char16_t* Part, const FTransform& T) {
+	const FVector& L = T.GetLocation();
+	const FVector& S = T.GetScale3D();
+	const FRotator& R = T.Rotator();
+	if (!L.IsZero()) PrintPose_Loc(Part, L);
+	if (S != FVector::OneVector) PrintPose_Sca(Part, S);
+	if (!R.IsZero()) PrintPose_Rot(Part, R);
+}
+
+void ALNPCH::PrintPose() {
+	// TODO the interacts
+	const FVector& IO = Interact->GetRelativeLocation();
+	UE_LOG(LogTemp, Log, TEXT("Pose.InteractOrg = FVector(%f, %f, %f);"),
+		IO.X, IO.Y, IO.Z);
+	
+	const FVector& IE = Interact->GetUnscaledBoxExtent();
+	UE_LOG(LogTemp, Log, TEXT("Pose.InteractExt = FVector(%f, %f, %f);"),
+		IE.X, IE.Y, IE.Z);
+	
+	PrintPose_I(TEXT("Root"), Mesh->GetRelativeTransform());
+	PrintPose_I(TEXT("Head"), Head->GetRelativeTransform());
+	PrintPose_I(TEXT("Pelvis"), Pelvis->GetRelativeTransform());
+	PrintPose_I(TEXT("Torso"), Torso->GetRelativeTransform());
+
+	PrintPose_I(TEXT("ArmL2"), ArmL2->GetRelativeTransform());
+	PrintPose_I(TEXT("ArmL1"), ArmL1->GetRelativeTransform());
+	PrintPose_I(TEXT("ArmR2"), ArmR2->GetRelativeTransform());
+	PrintPose_I(TEXT("ArmR1"), ArmR1->GetRelativeTransform());
+
+	PrintPose_I(TEXT("LegL2"), LegL2->GetRelativeTransform());
+	PrintPose_I(TEXT("LegL1"), LegL1->GetRelativeTransform());
+	PrintPose_I(TEXT("LegR2"), LegR2->GetRelativeTransform());
+	PrintPose_I(TEXT("LegR1"), LegR1->GetRelativeTransform());
+	
+	PrintPose_I(TEXT("FootL"), FootL->GetRelativeTransform());
+	PrintPose_I(TEXT("FootR"), FootR->GetRelativeTransform());
 }
 

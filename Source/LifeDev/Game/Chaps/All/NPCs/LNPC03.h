@@ -15,4 +15,11 @@ class LIFEDEV_API ALNPC03 : public ALNPCH {
 
 public:
 	ALNPC03();
+
+	// test
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetScold() { SetPose(PoseScold); }
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FNPCHPose PoseScold;
 };

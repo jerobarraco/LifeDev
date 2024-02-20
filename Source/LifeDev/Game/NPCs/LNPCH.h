@@ -10,6 +10,7 @@
 USTRUCT(BlueprintType)
 struct FNPCHPose {
 	GENERATED_BODY()
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector InteractOrg = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -58,7 +59,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
+	// prints the current pose to the console
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void PrintPose();
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FNPCHPose PoseBase;
 
