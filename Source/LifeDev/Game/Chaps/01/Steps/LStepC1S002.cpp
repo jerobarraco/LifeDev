@@ -7,8 +7,6 @@
 
 #include "Diags/Diags.h"
 
-#include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
-#include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
@@ -30,6 +28,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
+	ItemsRem = { "T00"}; // use up the item
 }
 
 void ALStepC1S002::PostWait_Implementation() {

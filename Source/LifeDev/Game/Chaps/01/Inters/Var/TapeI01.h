@@ -12,7 +12,4 @@ class LIFEDEV_API ATapeI01: public ATape00 {
 
 public:
 	ATapeI01();
-
-protected:
-	virtual void Trigger_Implementation() override;
 };
