@@ -108,7 +108,6 @@ void PrintPose_I(const char16_t* Part, const FTransform& T) {
 }
 
 void ALNPCH::PrintPose() {
-	// TODO the interacts
 	const FVector& IO = Interact->GetRelativeLocation();
 	UE_LOG(LogTemp, Log, TEXT("Pose.InteractOrg = FVector(%f, %f, %f);"),
 		IO.X, IO.Y, IO.Z);
