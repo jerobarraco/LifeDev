@@ -15,7 +15,7 @@ public:
 	APuzzle();
 	
 	// sets the states on each registered interact.
-	// Call on or after begin play.
+	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetStates(const TArray<int32>& States) {
