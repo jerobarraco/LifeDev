@@ -105,7 +105,6 @@ void ALLight::BeginPlay() {
 
 	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
-	Sig->CompsTicks.AddUnique(Anim);
 	// bind nevertheless since it doesn't depend on the fb but on the strobe.
 	// the strobe will be set with the feat flag
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
