@@ -28,7 +28,7 @@ void ALStepC3S001::Start_Implementation() {
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
-		
+
 	constexpr int32 numDlgs = 4; //TODO??
 	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 	

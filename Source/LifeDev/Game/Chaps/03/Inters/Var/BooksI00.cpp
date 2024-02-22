@@ -5,6 +5,6 @@
 ABooksI00::ABooksI00():Super(3, -1) {
 	SetEnabled(true);
 	Texts = { FText::FromString(TEXT("Check"))};
-	TriggerDlg = "BKI00_T";
+	TriggerDlg = "BK00_T";
 	UseRewardFade = false;
 }
