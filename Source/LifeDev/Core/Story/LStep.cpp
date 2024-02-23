@@ -27,9 +27,8 @@ void ALStep::Stop_Implementation() {
 		ALInteract* const Inter = Cast<ALInteract>(Actor);
 		if (Inter) Inter->Fade(false);
 	}
-	if (IsValid(Ghosts)) {
-		Ghosts->SetPlaying(false);
-	}
+
+	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 
 	UWorld* const W = GetWorld();
 	if (W) {

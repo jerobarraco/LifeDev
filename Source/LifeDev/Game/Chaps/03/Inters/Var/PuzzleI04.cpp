@@ -59,7 +59,7 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	if (!W) return;
 
 	ALGGameMode* const Mode = ALGGameMode::Instance(W);
-	if (Mode) Mode->SetTempInputEnabled(false);
+	if (Mode) Mode->SetCharInputEnabled(false);
 	
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
 }
@@ -102,7 +102,7 @@ void APuzzleI04::LidDone() {
 	// actually the new step will disable the input, but better to do here in case
 	// i change that
 	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
-	if (Mode) Mode->SetTempInputEnabled(true);
+	if (Mode) Mode->SetCharInputEnabled(true);
 	
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);

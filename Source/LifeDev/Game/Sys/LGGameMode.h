@@ -60,7 +60,8 @@ public:
 	UFUNCTION() // bind to delegate
 	void SetInputDisable() { SetTempInputEnabled(false); }
 	
-	// disables input temporarily, enables only if char is enabled. used for Diags.
+	// disables input temporarily, enables only if char is enabled.
+	// used for Diags and temporary things.
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(bool Enabled);
 	
