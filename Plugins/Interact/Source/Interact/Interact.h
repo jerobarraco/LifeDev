@@ -81,6 +81,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
+	// When true will disable the interact on trigger
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool IsOneShot = false;
+	
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Trigger = nullptr;

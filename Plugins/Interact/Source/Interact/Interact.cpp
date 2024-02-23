@@ -113,6 +113,7 @@ void AInteract::Trigger_Implementation() {
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
+	if (IsOneShot) SetEnabled(false);
 }
 
 void AInteract::PlaySFX(USoundBase* Snd) {

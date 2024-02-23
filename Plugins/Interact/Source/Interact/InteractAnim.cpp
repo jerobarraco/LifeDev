@@ -52,7 +52,7 @@ void AInteractAnim::SetState_Implementation(int32 NewState) {
 }
 
 bool AInteractAnim::TryTrigger_Implementation() {
-	// don't re-trigger if it's busy.
+	// cancel re-trigger if it's busy.
 	if (UseAnim && Anim->IsActive()) return false;
 	return Super::TryTrigger_Implementation();
 }
@@ -104,5 +104,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 
 void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
-	UseAnim = Mobility == EComponentMobility::Movable;
+	// this optimization is prone to create issues if we change to Movable yet we still want to
+	// disable UseAnim. Since UseAnim is not mutual implication with mobility. then it's better not to.
+	// UseAnim = Mobility == EComponentMobility::Movable;
 }
