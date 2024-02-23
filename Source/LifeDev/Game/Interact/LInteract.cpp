@@ -134,6 +134,26 @@ void ALInteract::RewardFaded() {
 	Destroy();
 }
 
+bool ALInteract::TryTrigger_Implementation() {
+	// handle item req
+	if (!ULockItemReq.IsNone()) {
+		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
+		if (Ok) {
+			Locked = false;
+		}
+	}
+
+	// handle flag req
+	if (!ULockFlagReq.IsNone()) {
+		const bool Ok = IsValid(Flags) && Flags->Has(ULockFlagReq);
+		if (Ok) {
+			Locked = false;
+		}
+	}
+	
+	return Super::TryTrigger_Implementation();
+}
+
 void ALInteract::Trigger_Implementation() {
 	Super::Trigger_Implementation();
 
@@ -164,26 +184,6 @@ void ALInteract::TriggerLocked_Implementation() {
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
 	FDialog D; FDialogChar C;
 	Diags->AddId(Dlg);
-}
-
-bool ALInteract::TryTrigger_Implementation() {
-	// handle item req
-	if (!ULockItemReq.IsNone()) {
-		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
-		if (Ok) {
-			Locked = false;
-		}
-	}
-
-	// handle flag req
-	if (!ULockFlagReq.IsNone()) {
-		const bool Ok = IsValid(Flags) && Flags->Has(ULockFlagReq);
-		if (Ok) {
-			Locked = false;
-		}
-	}
-	
-	return Super::TryTrigger_Implementation();
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
