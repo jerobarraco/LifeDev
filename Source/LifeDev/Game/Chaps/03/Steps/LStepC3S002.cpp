@@ -14,12 +14,19 @@ ALStepC3S002::ALStepC3S002():Super() {
 	ItemsFinish = {
 		LDConsts::Items::Card3,
 		LDConsts::Items::Poem3,
-	}; // TODO
+	};
 }
 
 void ALStepC3S002::Start_Implementation() {
 	Super::Start_Implementation();
 	ALMusicMan::SetRainS(GetWorld(), true);
+	// this is the card. using this so i don't have to code the fade in
+	// setting to null to avoid getting it destroyed by the step
+	// though technically unreal will nullify this for me
+	// once the player obtains the interact and gets destroyed;
+	// there's a lot of chance of problems due to timing issues.
+	// specially since this step finishes with Card3 obtained.
+	Actor = nullptr;
 }
 
 void ALStepC3S002::Stop_Implementation() {

@@ -99,6 +99,8 @@ void APuzzleI04::PostDoneSnd() {
 
 void APuzzleI04::LidDone() {
 	// before calling done since that could trigger a new step or sequence
+	// actually the new step will disable the input, but better to do here in case
+	// i change that
 	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
 	if (Mode) Mode->SetTempInputEnabled(true);
 	

@@ -6,7 +6,6 @@
 
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC03.h"
 
-
 ALStepC3S001::ALStepC3S001():Super() {
 	Name = FName("C3S1");
 	UseFade = false;
