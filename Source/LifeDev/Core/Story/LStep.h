@@ -29,14 +29,18 @@ public:
 	// it will also remove from inventory the items on RemItems
 	virtual void Stop_Implementation() override;
 
-	// checks if we have the itemsFinish and finish (after a dialog if any)
-	// no need to call this as this class will watch the inventory. but just in case.
-	UFUNCTION(BlueprintCallable)
-	void CheckItemsFinish();
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DlgShow(const FDialog& Diag);
 	virtual void DlgShow_Implementation(const FDialog& Diag);
+
+	// checks if we have the itemsFinish and finish (after a dialog if any)
+	// no need to call this as this class will watch the inventory. but just in case.
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void CheckItemsFinish();
+
+	// enables or disables the linked actor
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void SetChildActorEnabled(const bool Enabled, const bool WithFade=true);
 
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -70,9 +74,14 @@ public:
 
 	// actor to show/hide. If it's an interact it will fade in and out.
 	// it will get destroyed on Stop, set this to null to avoid it.
+	// purposely an actor to have flexibility
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	AActor* Actor = nullptr;
-
+	// TODo rename. to something clearer. SubActor or ChildActor or LinkActor or smth
+	// i don't move this to Step because the fade has a timing component before destroy
+	// or maybe i could if i leave the destroy only for LStep
+	// but that would make it lame to use, as both classes would behave differently
+	
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> ItemsFinish;

@@ -23,10 +23,7 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 
-	if (IsValid(Actor)) {
-		ALInteract* const Inter = Cast<ALInteract>(Actor);
-		if (Inter) Inter->Fade(false);
-	}
+	SetChildActorEnabled(false, true);
 
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 
@@ -74,11 +71,7 @@ void ALStep::PostWait_Implementation() {
 		}
 	}
 
-	if (IsValid(Actor)) {
-		Actor->SetActorHiddenInGame(false);
-		ALInteract* const Inter = Cast<ALInteract>(Actor);
-		if (Inter) Inter->Fade(true);
-	}
+	SetChildActorEnabled(true, true);
 
 	// show dialogs
 	StartDialogs();
@@ -153,12 +146,8 @@ void ALStep::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = UFlags::Instance(World);
-	
-	if (IsValid(Actor)) {
-		Actor->SetActorHiddenInGame(true);
-		ALInteract* const Inter = Cast<ALInteract>(Actor);
-		if (Inter) Inter->SetEnabled(false);
-	}
+
+	SetChildActorEnabled(false, false);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -177,15 +166,14 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALStep::PostLoad() {
 	Super::PostLoad();
+
 	if (UseFadeTime) {
 		UStory* const Story = UStory::Instance(GetWorld());
 		WaitTime = Story ? Story->FadeTime : 1; 
 	}
 	
 	// avoid finishing earlier if we have Diags
-	if (!DlgId.IsNone()) {
-		FinishPostWait = false;
-	}
+	if (!DlgId.IsNone()) FinishPostWait = false;
 }
 
 void ALStep::Finish_Implementation() {
@@ -194,3 +182,13 @@ void ALStep::Finish_Implementation() {
 	Super::Finish_Implementation();
 }
 
+void ALStep::SetChildActorEnabled(const bool Enabled, const bool WithFade) {
+	if (!IsValid(Actor)) return;
+
+	Actor->SetActorHiddenInGame(!Enabled);
+	ALInteract* const Inter = Cast<ALInteract>(Actor);
+
+	if (!Inter) return;
+	if (WithFade) Inter->Fade(Enabled);
+	Inter->SetEnabled(Enabled);
+}

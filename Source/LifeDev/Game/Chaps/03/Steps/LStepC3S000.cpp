@@ -49,5 +49,5 @@ void ALStepC3S000::Start_Implementation() {
 
 void ALStepC3S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
-	if (Inventory)	Inventory->Ensure(LDConsts::Items::Card3);
+	if (Inventory) Inventory->Ensure(LDConsts::Items::Card3);
 }
