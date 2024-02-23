@@ -6,6 +6,7 @@
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 constexpr float SndWait = 1.75;
@@ -56,8 +57,13 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	FTimerHandle H;
 	UWorld* const W = GetWorld();
 	if (!W) return;
+
+	ALGGameMode* const Mode = ALGGameMode::Instance(W);
+	if (Mode) Mode->SetTempInputEnabled(false);
+	
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
 }
+	
 
 void APuzzleI04::DoReset_Implementation() {
 	Super::DoReset_Implementation();
@@ -92,6 +98,11 @@ void APuzzleI04::PostDoneSnd() {
 }
 
 void APuzzleI04::LidDone() {
+	// before calling done since that could trigger a new step or sequence
+	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
+	if (Mode) Mode->SetTempInputEnabled(true);
+	
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
+
 }

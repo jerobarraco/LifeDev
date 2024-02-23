@@ -38,21 +38,26 @@ UWorld* UJMiscUtils::GetEdWorld()
 
 UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
-
-	// World = GetWorld();
-	// if (IsValid(World)) return World;
+/*
+	*const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
+	for (const FWorldContext& Context : WorldContexts)
+	{
+	if (Context.World()->IsGameWorld() && Context.World()->GetNetMode() != ENetMode::NM_DedicatedServer)
+	{
+	DebugDrawingWorld = Context.World();
+	break;
+	}
+	}*/
+	// todo try above
+	// World = GetWorld(); // this is static cant call this
 
 	// TODO this is not working as expected.
-	#ifdef WITH_EDITOR
-		World = GetEdWorld();
-		
-		if (!World) {
-			World = GEngine->GetWorld();	
-		}
-		return World;
-    #else
-    	return GEngine->GetWorld();
-    #endif
+	World = GetEdWorld();
+	
+	if (!World) {
+		World = GEngine->GetWorld();	
+	}
+	return World;
 }
 
 void UJMiscUtils::ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World) {

@@ -38,8 +38,8 @@ public:
 	ALGGameMode();
 
 	// not working properly atm
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
-	static ALGGameMode* Get();
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction, AdvancedDisplay))
+	static ALGGameMode* Instance(UWorld* World = nullptr);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Init();
