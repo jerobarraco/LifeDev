@@ -19,7 +19,9 @@ ACard::ACard():Super() {
 	SFX_Trigger = CSnd.Object;
 	
 	Texts = { FText::FromString(TEXT("Pick Up")) } ;
-	RewardFlash = -.1;
-	UseAnim = false;
 	StateNum = 1;
+	UseAnim = false;
+	IsOneShot = true;
+	RewardFlash = -.1;
+	UseRewardFade = true;
 }
