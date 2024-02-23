@@ -57,12 +57,19 @@ bool AInteractAnim::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
+void AInteractAnim::Trigger_Implementation() {
+	Super::Trigger_Implementation();
+	// disable disableWhileAnim if this is one shot. otherwise it will try to re-enable
+	// do after Trigger so it actually disable during the animation
+	// also not doing during SetState since that can also be called by other means.
+	// done here and not on AnimEnd due to the same reason.
+	if (IsOneShot) DisableWhileAnim = false;
+}
+
 void AInteractAnim::AnimPlay() {
 	if (!UseAnim) return;
 	
-	if (DisableWhileAnim) {
-		SetEnabled(false);
-	}
+	if (DisableWhileAnim) SetEnabled(false);
 
 	// both checks avoids an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
@@ -93,9 +100,7 @@ void AInteractAnim::AnimBegin_Implementation() {
 
 void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
-	if (DisableWhileAnim) {
-		SetEnabled(true);
-	}
+	if (DisableWhileAnim) SetEnabled(true);
 	
 	if (State<0 || State >= SFX_Stop.Num()) return;
 	USoundBase* const Snd2 = SFX_Stop[State];

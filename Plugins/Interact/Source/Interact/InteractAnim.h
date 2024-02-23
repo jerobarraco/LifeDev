@@ -73,6 +73,7 @@ protected:
 	virtual void SetText_Implementation() override;
 	virtual void SetState_Implementation(int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
+	virtual void Trigger_Implementation() override;
 	
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
