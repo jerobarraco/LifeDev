@@ -107,9 +107,8 @@ void AInteractAnim::AnimEnd_Implementation() {
 	PlaySFX(Snd2);
 }
 
-void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
-	Super::SetMobility(Mobility);
+// void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
+	// Super::SetMobility(Mobility);
 	// this optimization is prone to create issues if we change to Movable yet we still want to
 	// disable UseAnim. Since UseAnim is not mutual implication with mobility. then it's better not to.
 	// UseAnim = Mobility == EComponentMobility::Movable;
-}

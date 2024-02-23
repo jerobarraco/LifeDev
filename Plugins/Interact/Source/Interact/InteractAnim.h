@@ -16,9 +16,6 @@ class INTERACT_API AInteractAnim: public AInteract {
 public:
 	AInteractAnim();
 
-	// sets the mobility. Override if you add more components that need to change.
-	virtual void SetMobility(EComponentMobility::Type Mobility) override;
-
 	// Flip-flops depending on the state. Starts closed, then open, then closed.
 	// this also controls the "reversed" flag of the anim.
 	// If you need not to use the reversed animation then use the "Trans" property.
