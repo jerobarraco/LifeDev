@@ -23,15 +23,11 @@ ALStepC3S000::ALStepC3S000():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap03_DL.Chap03_DL"));
-	if (CDL1.Succeeded()) {
-		DL_Load.Add(CDL1.Object);
-	}
+	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap02_DL.Chap02_DL"));
-	if (CDL2.Succeeded()) {
-		DL_Unload.Add(CDL2.Object);
-	}
+	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,

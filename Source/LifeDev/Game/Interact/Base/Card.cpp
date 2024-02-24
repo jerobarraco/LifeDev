@@ -18,10 +18,9 @@ ACard::ACard():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 	
-	Texts = { FText::FromString(TEXT("Pick Up")) } ;
+	Texts = { FText::FromString(TEXT("Pick Up")) };
 	StateNum = 1;
 	UseAnim = false;
-	IsOneShot = true;
 	RewardFlash = -.1;
 	UseRewardFade = true;
 }
