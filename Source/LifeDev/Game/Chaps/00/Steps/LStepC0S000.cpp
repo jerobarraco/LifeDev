@@ -30,9 +30,10 @@ ALStepC0S000::ALStepC0S000():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap00_DL.Chap00_DL"));
-	if (CDL1.Succeeded()) {
-		DL_Load.Add(CDL1.Object);
-	}
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLN(TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Neighborhood_DL.Neighborhood_DL"));
+	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
+	if (CDLN.Succeeded()) DL_Load.Add(CDLN.Object);
 }
 
 void ALStepC0S000::Start_Implementation() {

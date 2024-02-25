@@ -148,7 +148,7 @@ bool UStory::ToggleStepLayers() const {
 
 	bool Success = true;
 	// FIRST load all DL and THEN unload
-	// that way if there's an asset on both,
+	// that way if there's an asset on two DL (one being loaded and another unloaded),
 	// it will remain loaded instead of being temporarily unloaded and reloaded.
 	// with all the possible issues it brings.
 	for (const UDataLayerAsset* const DLA: Current->DL_Load) {
