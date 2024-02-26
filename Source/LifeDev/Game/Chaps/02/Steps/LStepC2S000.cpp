@@ -18,6 +18,11 @@ ALStepC2S000::ALStepC2S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS");
+	ItemsEnsure = {
+		LDConsts::Items::Walkman,
+		LDConsts::Items::Card0,
+		LDConsts::Items::Card1,
+	};
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
@@ -46,11 +51,6 @@ void ALStepC2S000::Start_Implementation() {
 	FB->SetMax(.6);
 	FB->SetMin(0);
 	FB->SetVal(.11, 10);
-
-	// ensure items
-	Inventory->Ensure(LDConsts::Items::Walkman);
-	Inventory->Ensure(LDConsts::Items::Card0);
-	Inventory->Ensure(LDConsts::Items::Card1);
 }
 
 void ALStepC2S000::DoDebug_Implementation() {
