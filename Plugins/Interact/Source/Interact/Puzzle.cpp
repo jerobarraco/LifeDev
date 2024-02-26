@@ -84,9 +84,15 @@ void APuzzle::Update_Implementation() {
 void APuzzle::BeginPlay() {
 	Super::BeginPlay();
 
-	CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzle::Done);
-	CPuzzle->OnUpdate.AddUniqueDynamic(this, &APuzzle::Update);
-	CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
+	if (IsValid(CPuzzle)) {
+		CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzle::Done);
+		CPuzzle->OnUpdate.AddUniqueDynamic(this, &APuzzle::Update);
+		CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
+	} else {
+		UE_LOG(LogTemp, Warning,
+			TEXT("CPuzzle in Puzzle is not valid!! Huge problem. o=%s")
+			*GetNameSafe(this));
+	}
 	
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(true);

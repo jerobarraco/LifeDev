@@ -83,24 +83,24 @@ public:
 	TArray<int32> Solution;
 
 	// if true then the interact will disable once toggled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")
 	bool DisableOnInter = false;
 
 	// will disable the interacts when the puzzle is done.
 	// Beware of unchecking "DisableWhileAnim" on the interacts or this won't work well.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")
 	bool DisableOnDone = false;
 
 	// triggers when the puzzle is updated. (i.e. when an interaction is triggered).
-	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Category="SetUp|Events")
 	FPuzzleOnUpdate OnUpdate;
 
 	// triggers on reset
-	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Category="SetUp|Events")
 	FPuzzleOnReset OnReset;
 
 	// triggers when the puzzle is completed, with or without success.
-	UPROPERTY(BlueprintAssignable, Category="SetUp")
+	UPROPERTY(BlueprintAssignable, Category="SetUp|Events")
 	FPuzzleOnDone OnDone;
 	
 protected:

@@ -48,12 +48,12 @@ public:
 
 	// Automatically reset the puzzle on failure.
 	// works only on SEQUENCE since combination can't fail.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")
 	bool ResetOnFail = false;
 
 	// Will reset when reaching this time without interacting with it
 	// Disabled if <=0 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")
 	float ResetTimeout = 0;
 
 protected:
