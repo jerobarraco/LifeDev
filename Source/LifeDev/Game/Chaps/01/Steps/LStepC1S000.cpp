@@ -28,15 +28,11 @@ ALStepC1S000::ALStepC1S000():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL"));
-	if (CDL1.Succeeded()) {
-		DL_Load.Add(CDL1.Object);
-	}
-	
+	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
+
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
-	if (CDL2.Succeeded()) {
-		DL_Unload.Add(CDL2.Object);
-	}
+	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
 }
 
 void ALStepC1S000::Start_Implementation() {
