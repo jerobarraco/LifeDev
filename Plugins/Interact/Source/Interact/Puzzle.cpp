@@ -90,7 +90,7 @@ void APuzzle::BeginPlay() {
 		CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
 	} else {
 		UE_LOG(LogTemp, Warning,
-			TEXT("CPuzzle in Puzzle is not valid!! Huge problem. o=%s")
+			TEXT("CPuzzle in Puzzle is not valid!! Huge problem. o=%s"),
 			*GetNameSafe(this));
 	}
 	

@@ -161,7 +161,7 @@ bool UStory::ToggleStepLayers() const {
 	return Success;
 }
 
-bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
+bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const {
 	if (!IsValid(DLA)) return false;
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
@@ -176,9 +176,12 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const{
 		return false;
 	}
 
-	const bool res = LayerManager->SetDataLayerRuntimeState(DLA, State, true);
-	UE_LOG(LogStory, Log, TEXT("Data layer toggle. Ok=%i, load=%i, name='%s'"), res, On, *DLA->GetName());
-	return res;
+	const bool Success = LayerManager->SetDataLayerRuntimeState(DLA, State, false);
+	UE_LOG(LogStory, Log, TEXT("Data layer toggle. Ok=%i, load=%i, name='%s'"), Success, On, *DLA->GetName());
+	// On loaded is usually better AFTER, on unloaded is usually better before. Which one is better? Time will tell.
+	OnDlChange.Broadcast(DLA->GetFName(), On, Success);
+
+	return Success;
 	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
 	
 	/*  the subsystem  all is deprecated

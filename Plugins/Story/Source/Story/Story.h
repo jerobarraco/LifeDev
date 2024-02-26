@@ -15,6 +15,7 @@ class UDataTable;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep*, Step);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep*, Step);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, bool, In, const FText&, Text);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FStoryDLChange, const FName&, Name, bool, On, bool, Success);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
@@ -81,20 +82,23 @@ public:
 	float HoldTime = 2;
 
 	// triggered when a step starts
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryStepStart OnStart;
 	// triggers when a step stops
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryStepStop OnStop;
 	// triggered when a fade should occur. the story manager should fade the ui.
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryFade OnFade;
 	// triggered when a sequence starts
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStorySeqStop OnSeqStart;
 	// triggered when a sequence stops
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStorySeqStop OnSeqStop;
+	// triggers *after* a data layer has been loaded/unloaded
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
+	FStoryDLChange OnDlChange;
 
 protected:
 	bool ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const;
