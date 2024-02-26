@@ -30,6 +30,18 @@ ALStepC1S000::ALStepC1S000():Super() {
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL"));
 	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
 
+	// out load
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_B.Outside_B"));
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
+
+	DL_Load.AddUnique(CDLO1.Object);
+	DL_Load.AddUnique(CDLO2.Object);
+	DL_Load.AddUnique(CDLO3.Object);
+	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
 	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
