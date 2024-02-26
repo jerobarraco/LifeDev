@@ -8,9 +8,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ATrashLid::ATrashLid():Super() {
-	Texts = {
-		FText::FromString(TEXT("Open")), FText::FromString(TEXT("Close"))
-	};
+	Texts = { FText::FromString(TEXT("Open")), FText::FromString(TEXT("Close")) };
 	RewardFlash = 0;
 	UseRewardFade = false;
 	StateNum = 2;
@@ -26,8 +24,12 @@ ATrashLid::ATrashLid():Super() {
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/foley_sports_bag_grab_pickup_catch_04.foley_sports_bag_grab_pickup_catch_04"));
-	SFX_Trigger = CSnd.Object;
+		CSndClose(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-02.Crush_Rattle_Metal_Scrap_Debris_UC_04-02"));
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03.Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
+
+	SFX_Start = { CSndClose.Object, CSndOpen.Object };
+	// SFX_Trigger = CSnd.Object;
 
 	UseAnim = true;
 	Anim->Duration = .6;
