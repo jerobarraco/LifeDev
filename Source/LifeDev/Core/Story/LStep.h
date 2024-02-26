@@ -83,15 +83,15 @@ public:
 	// but that would make it lame to use, as both classes would behave differently
 	
 	// if this is set. it will advance once ALL items are obtained.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;
 
 	// items to remove when the step finishes
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsRem;
 
 	// items to ensure when starting. mostly for skipping chapters
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsEnsure;
 
 	inline static bool UseDebug = false;
