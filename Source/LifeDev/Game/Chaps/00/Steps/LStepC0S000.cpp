@@ -29,9 +29,9 @@ ALStepC0S000::ALStepC0S000():Super() {
 	// No need to load, it should be loaded by default?
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1 (TEXT("/Game/LifeDev/Game/Chaps/All/Datalayers/Chap00_DL.Chap00_DL"));
+		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLN(TEXT("/Game/LifeDev/Game/Chaps/All/DataLayers/Neighborhood_DL.Neighborhood_DL"));
+		CDLN(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Neighborhood_DL.Neighborhood_DL"));
 
 	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
 	if (CDLN.Succeeded()) DL_Load.Add(CDLN.Object);
