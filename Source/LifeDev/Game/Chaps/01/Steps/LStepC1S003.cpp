@@ -20,9 +20,7 @@ ALStepC1S003::ALStepC1S003():Super() {
 
 void ALStepC1S003::BeginPlay() {
 	Super::BeginPlay();
-	if (NPC) {
-		NPC->SetVisible(false);
-	}
+	if (NPC) NPC->SetVisible(false);
 }
 
 void ALStepC1S003::Start_Implementation() {

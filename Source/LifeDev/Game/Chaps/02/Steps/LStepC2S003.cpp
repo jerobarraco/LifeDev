@@ -43,9 +43,7 @@ void ALStepC2S003::Start_Implementation() {
 	Super::Start_Implementation();
 
 	UWorld* const W = GetWorld();
-	if (W && IsValid(SFX_Analog)) {
-		UGameplayStatics::PlaySound2D(W, SFX_Analog);
-	}
+	if (W && IsValid(SFX_Analog)) UGameplayStatics::PlaySound2D(W, SFX_Analog);
 }
 
 void ALStepC2S003::DlgShown(const FDialog& Diag) {

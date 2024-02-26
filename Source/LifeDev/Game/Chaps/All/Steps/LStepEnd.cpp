@@ -46,6 +46,8 @@ void ALStepEnd::Start_Implementation() {
 		MusicMan->SetEnviron(false);
 		MusicMan->SetRain(false);
 	}
+
+	// TODO set the ui black overlay here
 }
 
 void ALStepEnd::PostWait_Implementation() {

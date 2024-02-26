@@ -18,3 +18,16 @@ ALStepC2S002::ALStepC2S002():Super() {
 	// wait for the tape
 	ItemsFinish = { "T02", LDConsts::Items::Card2 };
 }
+
+void ALStepC2S002::Stop_Implementation() {
+	// this is the card. using this so i don't have to code the fade in
+	// setting to null to avoid getting it destroyed by the step
+	// though technically unreal will nullify this for me,
+	// and i always check for IsValid instead of null
+	// once the player obtains the interact and gets destroyed;
+	// there's a lot of chance of problems due to timing issues.
+	// specially since this step finishes with Card2 obtained.
+	Actor = nullptr;
+
+	Super::Stop_Implementation();
+}
