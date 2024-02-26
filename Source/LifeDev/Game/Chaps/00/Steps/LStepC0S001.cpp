@@ -41,16 +41,3 @@ void ALStepC0S001::Stop_Implementation() {
 	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);
 }
-
-void ALStepC0S001::TeleportPlayer() {
-	// TODO use TeleportChar on the next step and use the step position in the world instead :V
-	if (!IsValid(PlayerPos)) {
-		UE_LOG(LogTemp, Log, TEXT("Player pos not set on C0S001"));
-		return;
-	}
-
-	ALChar* const Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(GetWorld(), ALChar::StaticClass()));
-	if (!Char) return;
-	
-	Char->TeleportTo(PlayerPos->GetActorLocation(), PlayerPos->GetActorRotation());
-}

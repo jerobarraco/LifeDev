@@ -17,12 +17,4 @@ public:
 
 	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
-
-	// where the player will be positioned to blend the camera and when the chapter ends
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	AActor* PlayerPos = nullptr;
-	
-protected:
-	UFUNCTION()
-	void TeleportPlayer();
 };
