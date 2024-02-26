@@ -25,9 +25,8 @@ APianoLid::APianoLid():Super() {
 
 	// TODO change on sfx days
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSFX (TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/door-02.door-02"));
-	SFX_Stop = {nullptr, CSFX.Object}; // TODO test, otherwise use SFX_Trigger
-	SFX_Trigger = nullptr;
+		CSFX (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04.Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04"));
+	SFX_Trigger = CSFX.Object;
 
 	Anim->Curve = nullptr;
 	Anim->Duration = 1;

@@ -44,27 +44,27 @@ public:
 
 	// the camera to switch to automatically. Set to null to not switch to.
 	// By default is the own camera. or you can set UsePanwCam to use the pawn's camera 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	AActor* CamTarget = nullptr;
 
 	// will target pawn automatically, will override the camtarget
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
 
-	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool FinishPostWait = false;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	float CamBlendTime = 2.0;
+	
+	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
+	bool FinishPostWait = false;
 
 	// >0 will set the seconds to wait since the START of this step. will trigger PostWait (override it).
 	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
 	float WaitTime = 0;
 
 	// When set to true, it will fade in/out using the game fade time on start.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
 	bool UseFade = false;
 
 	// teleports the character to where this cam is located. and also copies the rotation

@@ -22,10 +22,6 @@ ALStepC0S001::ALStepC0S001():Super() {
 	CamBlendTime = 0; // doesn't get along with fade
 	GhostPos = FVector(210,-42,-65);
 	UseGhosts = true;
-
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLOutA(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
-	DL_Unload.AddUnique(CDLOutA.Object);
 }
 
 void ALStepC0S001::Start_Implementation() {

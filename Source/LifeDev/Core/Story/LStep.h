@@ -52,30 +52,29 @@ public:
 	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
 	// TODO make sure i don't need it and remove
 	// TODO need to fix the steps that do use postwait
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait", meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 
-	// whether to spawn (and destroy) ghosts. Take a look at and set GhostPos.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool UseGhosts = false;
-
 	// how much to mod the fb by on each dialog.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FbDiagMod = 0.0;
 	
 	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName DlgId = NAME_None;
 
+	// whether to spawn (and destroy) ghosts. Take a look at and set GhostPos.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
+	bool UseGhosts = false;
 	// relative position where the ghosts will spawn
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	FVector GhostPos;
 
 	// actor to show/hide. If it's an interact it will fade in and out.
 	// it will get destroyed on Stop, set this to null to avoid it.
 	// purposely an actor to have flexibility
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	AActor* Actor = nullptr;
 	// TODo rename. to something clearer. SubActor or ChildActor or LinkActor or smth
 	// i don't move this to Step because the fade has a timing component before destroy
