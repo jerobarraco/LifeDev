@@ -3,6 +3,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "Story/StoryManager.h"
 
@@ -47,7 +48,10 @@ void ALStepEnd::Start_Implementation() {
 		MusicMan->SetEnviron(false);
 		MusicMan->SetRain(false);
 	}
-	// TODO set the ui black overlay here
+
+	// TODO need to fix the fade that hides it.
+	ALStoryMan* const StoryMan = ALStoryMan::Instance(World);
+	if (StoryMan) StoryMan->ShowBGSolid(true);
 }
 
 void ALStepEnd::PostWait_Implementation() {
