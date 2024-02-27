@@ -47,6 +47,11 @@ void AStoryManager::FadeOut(const FText& Title, const FText& Text) {
 	UI->FadeOut(Title, Text);
 }
 
+void AStoryManager::ShowBGSolid(bool Show) {
+	if (!IsValid(UI)) return;
+	UI->ShowBGSolid(Show);
+}
+
 void AStoryManager::UIFaded() {
 	OnFaded.Broadcast();
 }

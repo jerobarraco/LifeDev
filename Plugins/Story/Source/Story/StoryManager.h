@@ -36,6 +36,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void FadeOut(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
+
+	UFUNCTION(BlueprintCallable)
+	void ShowBGSolid(bool Show);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 5;
