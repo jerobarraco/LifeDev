@@ -4,6 +4,7 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Interact/LInteract.h"
+#include "Sounds/CSounder.h"
 
 #include "LLight.generated.h"
 
@@ -49,6 +50,8 @@ protected:
 	void SetFB(float Value);
 	UFUNCTION() // bind
 	void FeatUpdated(EFeat Feat, bool bEnabled);
+	UFUNCTION()
+	void DoFlicker(float V);
 
 	// flickers when fb is >= this value. <0 means disabled.
 	// 0 means always
@@ -62,4 +65,6 @@ protected:
 	UCRandomizer* Rnd = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCLSignificance* Sig = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UCSounder* SFX_Flicker = nullptr;
 };
