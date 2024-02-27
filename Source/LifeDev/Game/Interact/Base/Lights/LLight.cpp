@@ -55,6 +55,11 @@ ALLight::ALLight():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNDFlicker(TEXT("/Game/LifeDev/Game/Inters/Lights/LightFlicker_MS.LightFlicker_MS"));
 	SFX_Flicker->Sound = CSNDFlicker.Object;
+
+	// TODO fix this, with it it's inaudible. but without it they all sound equally loud.
+	// static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		// CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
+	// SFX_Flicker->AttenuationSettings = CAtt.Object;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CClick(TEXT("/Game/LifeDev/Game/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
@@ -65,9 +70,6 @@ ALLight::ALLight():Super() {
 	SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
-	// important to do after setmobility since it will turn it off.
-	// re-enable for the fb. A_Strobe might disable this
-	UseAnim = true;
 }
 
 void ALLight::StopFBFlicker() {
