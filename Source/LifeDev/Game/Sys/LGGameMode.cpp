@@ -399,6 +399,12 @@ void ALGGameMode::Fade(bool bIn, const FText& Text) {
 		return;
 	}
 
+	// remove the blinds if it's the 1st time.
+	if (IsFirstFade) {
+		IsFirstFade = false;
+		if (StoryMan) StoryMan->ShowBGSolid(false);
+	}
+
 	// fading in requires a timer.
 	FTimerHandle Handle2;
 	const float Wait = (Story->FadeTime)+Story->HoldTime;

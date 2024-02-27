@@ -118,9 +118,9 @@ protected:
 	UFUNCTION() // bound
 	void Fade(bool bIn, const FText& Text);
 
+
+	/// transients
+
 	bool CharInputEnabled = true;
-	
-	// not supported on desktop and could break the game
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	bool UseDynRes = false;
+	bool IsFirstFade = true;
 };

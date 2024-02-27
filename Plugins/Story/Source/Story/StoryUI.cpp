@@ -12,6 +12,8 @@ void UStoryUI::NativeConstruct() {
 }
 
 void UStoryUI::ShowBGSolid(bool Show) {
+	UE_LOG(LogTemp, Log, TEXT("UStoryUI::%hs show=%i"), __func__, Show);
+
 	if (!BGSolid) return;
 	BGSolid->SetVisibility(Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 }
