@@ -33,7 +33,6 @@ AInteract::AInteract():Super() {
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(Mesh);
 	SFX->SetAutoActivate(false);
-	SFX->SetHiddenInGame(true);
 	SFX->bAutoManageAttachment = true;
 }
 

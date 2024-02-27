@@ -28,7 +28,7 @@ void UCSounder::Fade(bool In) {
 }
 
 void UCSounder::SetSafeParamFloat(const FName& Name, const float V) {
-	const bool CanSet = !IsValid(this) || ! IsPlaying();
+	const bool CanSet = !IsValid(this) || !IsPlaying(); // avoid crash
 	
 	// avoid crashing
 	if (CanSet) return;
