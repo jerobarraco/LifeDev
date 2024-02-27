@@ -11,10 +11,6 @@ void UStoryUI::NativeConstruct() {
 	IsShowing = false;
 }
 
-void UStoryUI::FadeIn_Implementation() {
-	ShowBGSolid(false);
-}
-
 void UStoryUI::ShowBGSolid(bool Show) {
 	if (!BGSolid) return;
 	BGSolid->SetVisibility(Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);

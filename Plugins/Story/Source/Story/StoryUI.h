@@ -18,6 +18,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void FadeIn();
+	void FadeIn_Implementation(){};
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void FadeOut(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
