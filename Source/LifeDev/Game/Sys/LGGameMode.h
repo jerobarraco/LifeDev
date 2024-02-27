@@ -8,6 +8,7 @@
 
 #include "LGGameMode.generated.h"
 
+class ALStoryMan;
 struct FDialog;
 class APostProcessVolume;
 class ULSettings;
@@ -71,11 +72,11 @@ public:
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	/// only making public the ones that require a GetActorOfClass (not the subsystems)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALDialogMan* DiagManager = nullptr;
+	ALDialogMan* DiagMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALInventoryManager* InvManager = nullptr;
+	ALInventoryManager* InventoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AStoryManager* StoryManager = nullptr;
+	ALStoryMan* StoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	ALMusicMan* MusicMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

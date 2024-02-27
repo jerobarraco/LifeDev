@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "Story/StoryManager.h"
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
@@ -46,7 +47,6 @@ void ALStepEnd::Start_Implementation() {
 		MusicMan->SetEnviron(false);
 		MusicMan->SetRain(false);
 	}
-
 	// TODO set the ui black overlay here
 }
 

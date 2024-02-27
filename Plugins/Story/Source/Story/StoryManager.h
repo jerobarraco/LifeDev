@@ -17,9 +17,8 @@ class STORY_API AStoryManager: public AActor {
 	GENERATED_BODY()
 
 public:
-
 	AStoryManager();
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
 	virtual void Init_Implementation();
@@ -39,7 +38,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowBGSolid(bool Show);
-	
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 5;
 

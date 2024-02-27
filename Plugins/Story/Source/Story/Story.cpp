@@ -74,8 +74,7 @@ bool UStory::Start(const FName& Name) {
 	AStep* const Step = GetStep(Name);
 	if (!IsValid(Step)) return false; // getstep prints warning
 
-	if (!Step->UseFade)
-		return StartNow(Step);
+	if (!Step->UseFade)	return StartNow(Step);
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return false;

@@ -31,6 +31,7 @@
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
+#include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDialogMan.h"
@@ -143,15 +144,15 @@ void ALGGameMode::Init_Implementation() {
 	Diags = World->GetSubsystem<UDiags>();
 	Diags->Init();
 
-	DiagManager = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
-	if (IsValid(DiagManager)) {
+	DiagMan = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
+	if (IsValid(DiagMan)) {
 		// Needs to be 10 so that it takes precedence over the character
-		DiagManager->InputPrio = 10;
-		DiagManager->ZOrder = 3; 
-		DiagManager->DebugSkip = !Settings->GetFeat(EFeat::D_ALL); // skip dialogs if no feature for it
-		DiagManager->Init();
+		DiagMan->InputPrio = 10;
+		DiagMan->ZOrder = 3; 
+		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_ALL); // skip dialogs if no feature for it
+		DiagMan->Init();
 	} else {
-		DiagManager = nullptr;
+		DiagMan = nullptr;
 	}
 
 	/// Inventory
@@ -160,15 +161,15 @@ void ALGGameMode::Init_Implementation() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
 
-	InvManager = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
+	InventoryMan = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
 	// InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
-	if (IsValid(InvManager)) {
+	if (IsValid(InventoryMan)) {
 		// goes below the dialogs. because some items will trigger a dialog.
-		InvManager->InputPrio = 9;
-		InvManager->ZOrder = 1; 
-		InvManager->Init();
+		InventoryMan->InputPrio = 9;
+		InventoryMan->ZOrder = 1; 
+		InventoryMan->Init();
 	} else {
-		InvManager = nullptr;
+		InventoryMan = nullptr;
 	}
 
 	/// Story
@@ -177,13 +178,13 @@ void ALGGameMode::Init_Implementation() {
 	Story->HoldTime = UJMiscUtils::IsEditor() ? 1: HoldTime;
 	Story->Init();
 	
-	StoryManager = Cast<AStoryManager>(World->SpawnActor(AStoryManager::StaticClass()));
+	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
 	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
-	if (IsValid(StoryManager)) {
-		StoryManager->ZOrder = 5;
-		StoryManager->Init();
+	if (IsValid(StoryMan)) {
+		StoryMan->ZOrder = 5;
+		StoryMan->Init();
 	} else {
-		StoryManager = nullptr;
+		StoryMan = nullptr;
 	}
 
 	/// feats
@@ -266,20 +267,20 @@ void ALGGameMode::DeInit_Implementation() {
 	}
 	Flags = nullptr;
 	
-	if (IsValid(DiagManager)) {
-		DiagManager->DeInit();
+	if (IsValid(DiagMan)) {
+		DiagMan->DeInit();
 	}
-	DiagManager = nullptr;
+	DiagMan = nullptr;
 
-	if (IsValid(InvManager)) {
-		InvManager->DeInit();
+	if (IsValid(InventoryMan)) {
+		InventoryMan->DeInit();
 	}
-	InvManager = nullptr;
+	InventoryMan = nullptr;
 
-	if (IsValid(StoryManager)) {
-		StoryManager->DeInit();
+	if (IsValid(StoryMan)) {
+		StoryMan->DeInit();
 	}
-	StoryManager = nullptr;
+	StoryMan = nullptr;
 
 	if (IsValid(Story)) {
 		Story->OnSeqStop.RemoveAll(this);
@@ -309,12 +310,9 @@ void ALGGameMode::SetCharInputEnabled(bool Enabled) {
 void ALGGameMode::SetTempInputEnabled(bool Enabled) {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	if (Enabled && !CharInputEnabled) return;
-	if(IsValid(Char)) {
-		Char->SetInputEnabled(Enabled);
-	}
-	if (IsValid(InvManager)) {
-		InvManager->SetVisible(Enabled);
-	}
+	
+	if(IsValid(Char)) Char->SetInputEnabled(Enabled);
+	if (IsValid(InventoryMan)) InventoryMan->SetVisible(Enabled);
 }
 
 ALGGameMode* ALGGameMode::Instance(UWorld* World) {
