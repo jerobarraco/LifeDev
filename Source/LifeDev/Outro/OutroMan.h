@@ -17,7 +17,8 @@ public:
 	TSubclassOf<UOutroUI> UIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category=SetUp)
-	FString GameLevel = "Game_L";
+	FString GameLevel = "Intro_L";
+	// "Game_L"; don't go directly to game given the savegame will be finished
 
 protected:
 	virtual void BeginPlay() override;

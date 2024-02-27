@@ -9,11 +9,13 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutroUIDone);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutroUIQuit);
 
+// TODO reparent to BaseUI
+
 UCLASS(Blueprintable)
 class LIFEDEV_API UOutroUI : public UUserWidget {
 	GENERATED_BODY()
+
 public:
-	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
 	
