@@ -22,8 +22,8 @@ ALStepC2S004::ALStepC2S004():Super() {
 	// finish when found.
 	// the tape is not necessary since that's checked on a previous step and also consumed.
 	ItemsFinish = {
-		LDConsts::Items::Poem2,
 		LDConsts::Items::Card2,
+		LDConsts::Items::Poem2,
 	};
 
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
@@ -39,14 +39,16 @@ ALStepC2S004::ALStepC2S004():Super() {
 
 void ALStepC2S004::Start_Implementation() {
 	Super::Start_Implementation();
+	FB->SetMin(0);
 	RndFB->Activate(true);
+	ALMusicMan::SetRainS(GetWorld(), true);
 }
 
 void ALStepC2S004::Stop_Implementation() {
+	RndFB->Deactivate();
 	FB->SetMin(0);
 	FB->SetMax(1);
 	FB->SetVal(0);
-	RndFB->Deactivate();
 	ALMusicMan::SetRainS(GetWorld(), false);
 	Super::Stop_Implementation();
 }
