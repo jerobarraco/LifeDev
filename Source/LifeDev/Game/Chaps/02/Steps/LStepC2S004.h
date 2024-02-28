@@ -22,6 +22,6 @@ public:
 	virtual void Stop_Implementation() override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCRandomizerFB* RndFB = nullptr;
 };

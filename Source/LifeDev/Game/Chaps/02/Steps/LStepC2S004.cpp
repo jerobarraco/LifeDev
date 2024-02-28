@@ -27,7 +27,7 @@ ALStepC2S004::ALStepC2S004():Super() {
 	};
 
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
-	// required items
+	// required items, and it's hard to find them with a fb
 	RndFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RndFB"));
 	RndFB->SetAutoActivate(false);
 	RndFB->DelayMin = .5;
