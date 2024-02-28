@@ -38,8 +38,8 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	
 	if (Diags) Diags->AddId(DoneDlg);
 	if (FB) FB->ModVal(DoneFB);
-	if (Flags) Flags->Mod(DoneFlag, 1);
-	if (Inventory) Inventory->Mod(DoneItem, 1);
+	if (Flags) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
+	if (Inventory) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
 	if (Story && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
 	// fade if it's an L interact (those can fade)

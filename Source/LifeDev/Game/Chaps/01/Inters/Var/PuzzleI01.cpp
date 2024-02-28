@@ -3,6 +3,7 @@
 #include "PuzzleI01.h"
 
 #include "Interact/CPuzzle.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 APuzzleI01::APuzzleI01():Super() {
@@ -13,6 +14,7 @@ APuzzleI01::APuzzleI01():Super() {
 	static FName DoneId = "PZ01_T";
 	DoneDlg = DoneId;
 	DoneFB = .2;
+	DoneFlag = LDConsts::Flags::ALL::PuzzlesCube;
 }
 
 void APuzzleI01::PostLoad() {
