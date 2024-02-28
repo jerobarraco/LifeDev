@@ -7,8 +7,7 @@
 #include "Inventory/Inventory.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
-#include "LifeDev/Game/Flashback/CRandomizerFB.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC2S003::ALStepC2S003():Super() {
 	static const FName N("C2S3");
@@ -24,6 +23,10 @@ ALStepC2S003::ALStepC2S003():Super() {
 	// no waits
 	UseFadeTime = false;
 	FinishPostWait = false;
+	// wait for the card here. so that the previous step can lower the fb with the tape
+	// and make it easier to find the card.
+	// TODO this needs to improve
+	ItemsFinish = { LDConsts::Items::Card2, LDConsts::Items::Poem2 };
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Generic/Analog/Analog_C.Analog_C"));
