@@ -151,7 +151,10 @@ void ALStep::BeginPlay() {
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Diags)) Diags->OnDone.RemoveAll(this);
+	if (IsValid(Diags)) {
+		Diags->OnDone.RemoveAll(this);
+		Diags->OnShow.RemoveAll(this);
+	}
 	Diags = nullptr;
 
 	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
@@ -179,6 +182,7 @@ void ALStep::PostLoad() {
 void ALStep::Finish_Implementation() {
 	// avoid possible double triggering. since finish is called from several origins
 	Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
+	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
 	Super::Finish_Implementation();
 }
 
