@@ -181,6 +181,12 @@ void ALLight::SetState_Implementation(int32 NewState) {
 			bClosed ? -1 : 1);
 }
 
+void ALLight::AnimUpdate_Implementation(float P, float A) {
+	if (!SFX_Flicker) return;
+	const float v = 1.0-A;
+	SFX_Flicker->SetVolumeMultiplier(v);
+}
+
 void ALLight::TurnOn() {
 	SetState(1);
 }

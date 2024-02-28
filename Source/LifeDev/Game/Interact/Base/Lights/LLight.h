@@ -42,7 +42,7 @@ protected:
 	// used to animate the light. in case of no A_Strobe this is called only once with the final value
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AnimUpdate(float P, float A);
-	virtual void AnimUpdate_Implementation(float P, float A) {}
+	virtual void AnimUpdate_Implementation(float P, float A);
 
 	UFUNCTION() // bind
 	void TurnOn();
