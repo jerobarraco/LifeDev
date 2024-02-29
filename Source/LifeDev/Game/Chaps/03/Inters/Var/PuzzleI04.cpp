@@ -25,9 +25,6 @@ APuzzleI04::APuzzleI04():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSRight (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Good.Group_Good"));
 	SND_Right = CSRight.Object;
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSReset (TEXT("/Game/LifeDev/Game/Inters/Key00/Key19.Key19"));
-	SND_Reset = CSReset.Object;
 }
 
 void APuzzleI04::PostLoad() {
@@ -62,13 +59,6 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	if (Mode) Mode->SetCharInputEnabled(false);
 	
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
-}
-	
-
-void APuzzleI04::DoReset_Implementation() {
-	Super::DoReset_Implementation();
-	// for tests only. TODO remove
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SND_Reset, GetActorLocation());
 }
 
 void APuzzleI04::PostDone() {

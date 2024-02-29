@@ -20,7 +20,6 @@ protected:
 	// virtual void BeginPlay() override;
 
 	virtual void Done_Implementation(bool IsOk) override;
-	virtual void DoReset_Implementation() override;
 
 	UFUNCTION()
 	void PostDone();
@@ -31,15 +30,10 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	AInteractAnim* Lid = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Wrong = nullptr;
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	USoundBase* SND_Right = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USoundBase* SND_Reset = nullptr;
 
 	bool WasOk = false;
 };
