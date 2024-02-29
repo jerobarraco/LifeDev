@@ -53,23 +53,23 @@ public:
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
 	// (e.g. useful for doors) 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName ULockDlg = NAME_None;
 
 	// dialog to trigger when tried to use the wrong item to unlock this
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName ULockBadDlg = NAME_None;
 
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName LockedItemDlg = NAME_None;
 
 	// dialog to show when the object is locked and we DON'T have the ULockItem
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName LockedDlg = NAME_None;
 
 	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName TriggerDlg = NAME_None;
 
 	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
@@ -77,7 +77,7 @@ public:
 	// this happens before trying to unlock.
 	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
 	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
 	TMap<FName, FName> UseItemDlgs;
 	
 	// setting this will reward the item on trigger. will self-destroy if UseRewardFade is set.

@@ -144,7 +144,6 @@ protected:
 		OnTriggerLocked.Broadcast();
 	};
 	
-
 	// test function.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
@@ -157,36 +156,34 @@ protected:
 	// the state of the interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
 
 	// Number of states. It will wrap State around. around.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
 	
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
-	
+
+	/// CDO
+
 	// added here so it can be changed in the editor. otherwise it wont show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
-	
 	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteract* Interact = nullptr;
-	
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* IRoot = nullptr;
-
 	// default mesh
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
-
 	// default sfx player. Use PlaySFX 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UAudioComponent* SFX = nullptr;

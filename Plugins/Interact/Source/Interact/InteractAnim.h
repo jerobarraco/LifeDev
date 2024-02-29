@@ -30,28 +30,28 @@ public:
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
 	// when strobe is disabled on lights, on beginplay, and many many more. :)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseAnim = true;
 
 	// will disable while playing and re-enable after.
 	// be careful if you need to disable on trigger or smth (for example Puzzle::DisableOnDone) 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool DisableWhileAnim = true;
 	
-	// Text to be displayed on each state. Closed, Open
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TArray<FText> Texts = {
-		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
-		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
-	};
-
 	// mostly used for puzzles. i'm unsure i will keep this.
 	// the transforms for each state. if this is set it will override the anim values.
 	// the isAdditive flag will be respected, but probably won't work nicely.
 	// won't affect the reversed flag.
 	// if you need to set material values i'd recommend overriding SetState_Implementation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim", meta=(DeprecatedProperty))
 	TArray<FTransform> Trans;
+
+	// Text to be displayed on each state. Closed, Open
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TArray<FText> Texts = {
+		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
+		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
+	};
 
 	// triggered when anim starts. Closed, open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
