@@ -51,7 +51,7 @@ protected:
 	UFUNCTION() // bind
 	void FeatUpdated(EFeat Feat, bool bEnabled);
 	UFUNCTION()
-	void DoFlicker(float V);
+	void DoFlicker();
 
 	// flickers when fb is >= this value. <0 means disabled.
 	// 0 means always

@@ -16,7 +16,7 @@ UCRandomizer::UCRandomizer(): Super() {
 void UCRandomizer::Activate(bool bReset) {
 	if (bReset) {
 		Reset();
-	} else if (IsActive()) {
+	} else if (IsActive()) { // on else because reset will override active
 		return;
 	}
 
@@ -53,7 +53,7 @@ void UCRandomizer::Trigger() {
 		if (UseRandReverse) {
 			Anim->IsReversed = FMath::RandBool();
 		}
-		Anim->Play();
+		Anim->Activate(true);
 	}
 
 	OnTrigger.Broadcast();

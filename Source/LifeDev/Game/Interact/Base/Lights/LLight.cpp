@@ -123,9 +123,9 @@ void ALLight::BeginPlay() {
 	// bind nevertheless since it doesn't depend on the fb but on the strobe.
 	// the strobe will be set with the feat flag
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
+	Anim->OnBegin.AddUniqueDynamic(this, &ALLight::DoFlicker);
 	// allow to change the feature flag during runtime
 	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
-	Rnd->OnTriggerVal.AddUniqueDynamic(this, &ALLight::DoFlicker);
 	
 	// reset the system
 	SetFBFlicker(FlickrOnFB);
@@ -138,8 +138,6 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// deactivate the rnd first as it could trigger the rest
 	if (IsValid(Rnd)) {
 		Rnd->Deactivate();
-		Rnd->OnTrigger.RemoveAll(this);
-		Rnd->OnTriggerVal.RemoveAll(this);
 	}
 	if (IsValid(Sig)) {
 		Sig->UnbindAnim();
@@ -147,6 +145,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	if (IsValid(Anim)) {
 		Anim->OnUpdate.RemoveAll(this);
+		Anim->OnBegin.RemoveAll(this);
 		Anim->Deactivate();	
 	}
 	
@@ -182,6 +181,7 @@ void ALLight::SetState_Implementation(int32 NewState) {
 void ALLight::AnimUpdate_Implementation(float P, float A) {
 	if (!SFX_Flicker) return;
 	const float v = 1.0-A;
+	UE_LOG(LogTemp, Log, TEXT("Vol=%.5f"), v);
 	SFX_Flicker->SetVolumeMultiplier(v);
 }
 
@@ -208,8 +208,10 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	}
 }
 
-void ALLight::DoFlicker(float V) {
+void ALLight::DoFlicker() {
 	if (!IsValid(SFX_Flicker)) return;
-	SFX_Flicker->SetSafeParamFloat("Duration", V);
+	const float V = Anim->Duration;
+	UE_LOG(LogTemp, Log, TEXT("DoFlicker duration%.5f"), V);
 	SFX_Flicker->Fade(true);
+	SFX_Flicker->SetSafeParamFloat("Duration", V);
 }

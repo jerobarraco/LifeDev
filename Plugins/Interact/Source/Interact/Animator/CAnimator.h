@@ -24,7 +24,7 @@ public:
 	UCAnimator();
 
 	// plays the animation. optionally reset.
-	virtual void Activate(bool bReset) override;
+	virtual void Activate(bool bReset=false) override;
 	// stops the animation.
 	virtual void Deactivate() override;
 	
