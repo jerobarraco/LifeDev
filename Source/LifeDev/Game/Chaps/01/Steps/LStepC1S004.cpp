@@ -3,6 +3,7 @@
 #include "LStepC1S004.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ALStepC1S004::ALStepC1S004():Super() {
 	Name = FName("C1S4");
@@ -12,7 +13,10 @@ ALStepC1S004::ALStepC1S004():Super() {
 	UsePawnCam = true;
 	UseFadeTime = false;
 	// wait for the player to talk with the npc and get the card
-	ItemsFinish = {"C1"};
+	ItemsFinish = {
+		LDConsts::Items::Card1,
+		LDConsts::Items::Poem1,
+	};
 	// the clothes are transient items that don't need to be carried
 	// the rest of the items are going to be used or required
 	ItemsRem = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"}; 
