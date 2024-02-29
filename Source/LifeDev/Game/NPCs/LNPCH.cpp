@@ -83,6 +83,8 @@ void ALNPCH::BeginPlay() {
 	AnimFade->CreateMaterial();
 }
 
+// TODO fix this is not portable to windows
+
 void PrintPose_Loc(const char16_t* Part, const FVector& V) {
 	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetLocation(FVector(%f, %f, %f));"),
 		Part, V.X, V.Y, V.Z);

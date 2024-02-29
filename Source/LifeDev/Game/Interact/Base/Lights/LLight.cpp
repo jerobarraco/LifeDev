@@ -181,7 +181,6 @@ void ALLight::SetState_Implementation(int32 NewState) {
 void ALLight::AnimUpdate_Implementation(float P, float A) {
 	if (!SFX_Flicker) return;
 	const float v = 1.0-A;
-	UE_LOG(LogTemp, Log, TEXT("Vol=%.5f"), v);
 	SFX_Flicker->SetVolumeMultiplier(v);
 }
 
