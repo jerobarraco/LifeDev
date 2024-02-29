@@ -65,6 +65,9 @@ protected:
 	UCRandomizer* Rnd = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCLSignificance* Sig = nullptr;
+
+	// used to produce the flicker sfx. not using the regular SFX because they could cancel each other.
+	// the sound needs to be assigned. and a float param will be set for "Duration"
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCSounder* SFX_Flicker = nullptr;
 };

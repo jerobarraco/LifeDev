@@ -27,7 +27,8 @@ ALLight::ALLight():Super() {
 	// these would trash the materials.
 	UseRewardFade = false;
 	AnimFade->Meshes.Empty();
-	
+
+	// this will trigger the flicker animation randomly
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->SetAutoActivate(false); // important since it's feature flagged.
 	Rnd->IsLooping = true;
@@ -49,7 +50,8 @@ ALLight::ALLight():Super() {
 	Sig->IsOffIfOccluded = false;
 
 	SFX_Flicker = CreateDefaultSubobject<UCSounder>(TEXT("SFX_Flicker"));
-	SFX_Flicker->SetupAttachment(SFX);
+	// attaching to the SFX seems nicer. but the attenuation will break.
+	SFX_Flicker->SetupAttachment(IRoot);
 	SFX_Flicker->TimeFadeIn = .1;
     SFX_Flicker->TimeFadeOut = .1;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -57,9 +59,9 @@ ALLight::ALLight():Super() {
 	SFX_Flicker->Sound = CSNDFlicker.Object;
 
 	// TODO fix this, with it it's inaudible. but without it they all sound equally loud.
-	// static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		// CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
-	// SFX_Flicker->AttenuationSettings = CAtt.Object;
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
+	SFX_Flicker->AttenuationSettings = CAtt.Object;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CClick(TEXT("/Game/LifeDev/Game/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
@@ -137,8 +139,11 @@ void ALLight::BeginPlay() {
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	// deactivate the rnd first as it could trigger the rest
 	if (IsValid(Rnd)) {
 		Rnd->Deactivate();
+		Rnd->OnTrigger.RemoveAll(this);
+		Rnd->OnTriggerVal.RemoveAll(this);
 	}
 	if (IsValid(Sig)) {
 		Sig->UnbindAnim();
@@ -147,9 +152,6 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(Anim)) {
 		Anim->OnUpdate.RemoveAll(this);
 		Anim->Deactivate();	
-	}
-	if (IsValid(Rnd)) {
-		Rnd->OnTrigger.RemoveAll(this);
 	}
 	
 	UWorld* const W = GetWorld();
