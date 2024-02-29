@@ -48,12 +48,14 @@ public:
 
 	// Sets the max, and clamp the target value if out of range.
 	// You can set it >1 but it might break stuff i recommend keep in range [0,1]
+	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
-	void SetMax(float NewMax, float Duration=1.f);
+	void SetMax(float NewMax, float Duration=-1.f);
 	// Sets the min, and clamp the target value if out of range.
 	// You can set it <0 but it might break stuff i recommend keep in range [0,1]
+	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
-	void SetMin(float NewMin, float Duration=1.f);
+	void SetMin(float NewMin, float Duration=-1.f);
 
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

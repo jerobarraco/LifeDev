@@ -42,7 +42,7 @@ void UFlashback::AnimUpdate(float Progress, float Alpha) {
 void UFlashback::SetVal(float New, float Duration) {
 	New = FMath::Clamp(New, Min, Max);
 	const float Diff = FMath::Abs(Val - New);
-	UE_LOG(LogFlashback, Log, TEXT("Flashback NewVal %.5f Diff %.5f"), New, Diff);
+	UE_LOG(LogFlashback, Log, TEXT("Flashback NewVal=%.5f Diff=%.5f"), New, Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// important to set, set here to keep it always up to date.
@@ -71,7 +71,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	Animator->Duration = Time;
 	Animator->Activate(true);
 	
-	UE_LOG(LogFlashback, Log, TEXT("Flashback Val %.5f Duration %.5f Time %.5f"), Val, Duration, Time);
+	UE_LOG(LogFlashback, Log, TEXT("Flashback Val=%.5f Duration=%.5f Time=%.5f"), Val, Duration, Time);
 }
 
 void UFlashback::SetMax(float NewMax, float Duration) {
