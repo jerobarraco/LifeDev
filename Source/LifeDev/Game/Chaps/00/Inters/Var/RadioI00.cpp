@@ -7,6 +7,7 @@
 #include "Sounds/CSounder.h"
 
 ARadioI00::ARadioI00():Super() {
+	Locked = true;
 	// when user tries to play but has no tape
 	LockedDlg = "RD00_L";
 	// when user tries to play but has tape
