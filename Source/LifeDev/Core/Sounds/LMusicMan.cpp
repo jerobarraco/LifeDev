@@ -22,8 +22,8 @@ ALMusicMan::ALMusicMan():Super() {
 	Rain->bAutoManageAttachment = true;
 	Rain->TimeFadeIn = 2;
 	Rain->TimeFadeOut = 2;
-	Rain->TimeStart = 0;
-	Rain->TimeEnd = 120;
+	Rain->TimeStartMin = 0;
+	Rain->TimeStartMax = 120;
 	
 	Environ = CreateDefaultSubobject<UCSounder>(TEXT("Environ"));
 	Environ->SetupAttachment(RootComponent);
@@ -34,8 +34,8 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->bAutoManageAttachment = true;
 	Environ->TimeFadeIn = 2;
 	Environ->TimeFadeOut = 2;
-	Environ->TimeStart = 0;
-	Environ->TimeEnd = 0;
+	Environ->TimeStartMin = 0;
+	Environ->TimeStartMax = 0;
 }
 
 ALMusicMan* ALMusicMan::Instance(UWorld* W) {

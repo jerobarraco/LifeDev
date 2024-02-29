@@ -31,8 +31,8 @@ ARadioI00::ARadioI00():Super() {
 	SFX_Ghost->SetSound(CSnd.Object);
 	SFX_Ghost->TimeFadeIn = 1;
 	SFX_Ghost->TimeFadeOut = 2.0;
-	SFX_Ghost->TimeStart = 0;
-	SFX_Ghost->TimeEnd = 120;
+	SFX_Ghost->TimeStartMin = 0;
+	SFX_Ghost->TimeStartMax = 120;
 }
 
 void ARadioI00::Trigger_Implementation() {

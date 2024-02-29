@@ -33,11 +33,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeOut = 2.0;
 
-	// time where to start the sound
+	// time where to start the sound. See TimeStartMax
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TimeStart = 0;
+	float TimeStartMin = 0;
 
-	// if >= 0 will randomize between start and end. otherwise it will use start
+	// if >= 0 will randomize between min and max. otherwise it will use min.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TimeEnd = -1;
+	float TimeStartMax = -1;
 };

@@ -53,7 +53,7 @@ ALLight::ALLight():Super() {
 	// attaching to the SFX seems nicer. but the attenuation will break.
 	SFX_Flicker->SetupAttachment(IRoot);
 	SFX_Flicker->TimeFadeIn = .1;
-    SFX_Flicker->TimeFadeOut = .1;
+    SFX_Flicker->TimeFadeOut = .01;
 	SFX_Flicker->AttenuationSettings = SFX->AttenuationSettings;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNDFlicker(TEXT("/Game/LifeDev/Game/Inters/Lights/LightFlicker_MS.LightFlicker_MS"));
@@ -210,8 +210,10 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 
 void ALLight::DoFlicker() {
 	if (!IsValid(SFX_Flicker)) return;
+
+	// TODO fix flickr sound not playing on one of the states
 	const float V = Anim->Duration;
-	UE_LOG(LogTemp, Log, TEXT("DoFlicker duration%.5f"), V);
+	SFX_Flicker->SetVolumeMultiplier(1);
 	SFX_Flicker->Fade(true);
 	SFX_Flicker->SetSafeParamFloat("Duration", V);
 }

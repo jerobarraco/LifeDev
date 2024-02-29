@@ -19,8 +19,8 @@ void UCSounder::Fade(bool In) {
 	// (i.e. trigger onAudioFinished at the end)
 	// Don't use Play(); StopDelayed(TimeFadeOut);
 	if (In) {
-		const float Time = TimeEnd <0 ? TimeStart :
-			FMath::RandRange(TimeStart, TimeEnd);
+		const float Time = TimeStartMax <0 ? TimeStartMin :
+			FMath::RandRange(TimeStartMin, TimeStartMax);
 		FadeIn(TimeFadeIn, 1, Time);
 	} else {
         FadeOut(TimeFadeOut, 0);

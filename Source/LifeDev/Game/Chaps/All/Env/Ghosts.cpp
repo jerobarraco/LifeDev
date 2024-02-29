@@ -16,8 +16,8 @@ AGhosts::AGhosts():Super() {
 	SFX->SetSound(CSnd.Object);
 	SFX->TimeFadeIn = 1;
 	SFX->TimeFadeOut = 2.0;
-	SFX->TimeStart = 0;
-	SFX->TimeEnd = 120;
+	SFX->TimeStartMin = 0;
+	SFX->TimeStartMax = 120;
 
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(RootComponent);
