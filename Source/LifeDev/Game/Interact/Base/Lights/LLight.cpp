@@ -53,7 +53,7 @@ ALLight::ALLight():Super() {
 	// attaching to the SFX seems nicer. but the attenuation will break.
 	SFX_Flicker->SetupAttachment(IRoot);
 	SFX_Flicker->TimeFadeIn = .1;
-    SFX_Flicker->TimeFadeOut = .01;
+    SFX_Flicker->TimeFadeOut = .1;
 	SFX_Flicker->AttenuationSettings = SFX->AttenuationSettings;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNDFlicker(TEXT("/Game/LifeDev/Game/Inters/Lights/LightFlicker_MS.LightFlicker_MS"));
@@ -123,7 +123,8 @@ void ALLight::BeginPlay() {
 	// bind nevertheless since it doesn't depend on the fb but on the strobe.
 	// the strobe will be set with the feat flag
 	Anim->OnUpdate.AddUniqueDynamic(this, &ALLight::AnimUpdate);
-	Anim->OnBegin.AddUniqueDynamic(this, &ALLight::DoFlicker);
+	Anim->OnBegin.AddUniqueDynamic(this, &ALLight::FlickerBegin);
+	Anim->OnEnd.AddUniqueDynamic(this, &ALLight::FlickerEnd);
 	// allow to change the feature flag during runtime
 	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	
@@ -146,6 +147,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(Anim)) {
 		Anim->OnUpdate.RemoveAll(this);
 		Anim->OnBegin.RemoveAll(this);
+		Anim->OnEnd.RemoveAll(this);
 		Anim->Deactivate();	
 	}
 	
@@ -208,10 +210,17 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	}
 }
 
-void ALLight::DoFlicker() {
+void ALLight::FlickerBegin() {
 	if (!IsValid(SFX_Flicker)) return;
-
-	const float V = Anim->Duration;
 	SFX_Flicker->Fade(true);
-	SFX_Flicker->SetSafeParamFloat("Duration", V);
+
+	// using animOnEnd instead of setting the duration.
+	// that seems cleaner to me. and more logical. the light controls the cycle.
+	// will also work with re-playing an animation mid-way, or looping.
+	// SFX_Flicker->SetSafeParamFloat("Duration", Anim->Duration);
+}
+
+void ALLight::FlickerEnd() {
+	if (!IsValid(SFX_Flicker)) return;
+	SFX_Flicker->Fade(false);
 }
