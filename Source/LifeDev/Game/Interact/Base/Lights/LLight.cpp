@@ -181,7 +181,8 @@ void ALLight::SetState_Implementation(int32 NewState) {
 void ALLight::AnimUpdate_Implementation(float P, float A) {
 	if (!SFX_Flicker) return;
 	const float v = 1.0-A;
-	SFX_Flicker->SetVolumeMultiplier(v);
+	SFX_Flicker->SetSafeParamFloat("Volume", v);
+	// SFX_Flicker->SetVolumeMultiplier(v); // this one doesn't work well every second trigger
 }
 
 void ALLight::TurnOn() {
@@ -210,9 +211,7 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 void ALLight::DoFlicker() {
 	if (!IsValid(SFX_Flicker)) return;
 
-	// TODO fix flickr sound not playing on one of the states
 	const float V = Anim->Duration;
-	SFX_Flicker->SetVolumeMultiplier(1);
 	SFX_Flicker->Fade(true);
 	SFX_Flicker->SetSafeParamFloat("Duration", V);
 }
