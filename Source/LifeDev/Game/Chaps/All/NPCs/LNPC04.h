@@ -1,4 +1,4 @@
-// Copyright (c) 2033 Jeronimo Barraco-Marmol. All rights reserved.
+// Copyright (c) 2043 Jeronimo Barraco-Marmol. All rights reserved.
 
 #pragma once
 
@@ -6,15 +6,15 @@
 
 #include "LifeDev/Game/NPCs/LNPCH.h"
 
-#include "LNPC03.generated.h"
+#include "LNPC04.generated.h"
 
-// base class for npc03 "char11"
+// base class for npc04 "char22"
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALNPC03 : public ALNPCH {
+class LIFEDEV_API ALNPC04 : public ALNPCH {
 	GENERATED_BODY()
 
 public:
-	ALNPC03();
+	ALNPC04();
 
 	// test
 	UFUNCTION(BlueprintCallable, CallInEditor)
