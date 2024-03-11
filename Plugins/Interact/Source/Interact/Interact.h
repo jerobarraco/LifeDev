@@ -142,7 +142,6 @@ protected:
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void DoTriggerLocked();
-	virtual void DoTriggerLocked_Implementation();
 
 	// internal. used only so that the OnTrigger signal is ensured to be at the end.
 	// Might be removed if i figure i don't need it. forceinline will hopefully not decrease performance much.
