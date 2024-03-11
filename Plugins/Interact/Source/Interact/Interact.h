@@ -112,7 +112,8 @@ protected:
 	void SetText();
 	virtual void SetText_Implementation(){}
 
-	// called when the object actually gets triggered
+	// called when the object actually gets triggered. and dispatches the delegate.
+	// TryTrigger is preferred. unless you want to skip the checks.
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	FORCEINLINE void Trigger() {
 		DoTrigger();
@@ -120,7 +121,17 @@ protected:
 		// so that i'm sure that children are done.
 		OnTrigger.Broadcast();
 	}
-
+	
+	// called when the object actually gets triggered while locked. and dispatches the delegate.
+	// TryTrigger is preferred. unless you want to skip the checks.
+	UFUNCTION(BlueprintCallable, Category=Interact)
+	FORCEINLINE void TriggerLocked() {
+		DoTriggerLocked();
+		// at end, outside the overrideable function
+		// so that i'm sure that children are done.
+		OnTriggerLocked.Broadcast();
+	};
+	
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.
@@ -130,19 +141,13 @@ protected:
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
-	void TriggerLocked();
-	virtual void TriggerLocked_Implementation();
+	void DoTriggerLocked();
+	virtual void DoTriggerLocked_Implementation();
 
 	// internal. used only so that the OnTrigger signal is ensured to be at the end.
 	// Might be removed if i figure i don't need it. forceinline will hopefully not decrease performance much.
 	
 
-	FORCEINLINE void TriggerLockWrap() {
-		TriggerLocked();
-		// at end, outside the overrideable function
-		// so that i'm sure that children are done.
-		OnTriggerLocked.Broadcast();
-	};
 	
 	// test function.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))

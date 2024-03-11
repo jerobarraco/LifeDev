@@ -172,9 +172,8 @@ void ALInteract::DoTrigger_Implementation() {
 	if (!DiagsShown) DoRewards();
 }
 
-
-void ALInteract::TriggerLocked_Implementation() {
-	Super::TriggerLocked_Implementation();
+void ALInteract::DoTriggerLocked_Implementation() {
+	Super::DoTriggerLocked_Implementation();
 	
 	if (!Inventory || !Diags) return;
 
