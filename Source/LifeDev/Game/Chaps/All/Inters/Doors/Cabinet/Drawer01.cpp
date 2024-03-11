@@ -13,5 +13,6 @@ ADrawer01::ADrawer01():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(80.000000,-62.500000,0.000000));
 	Interact->SetRelativeLocation(FVector(-20.000000,62.5,5.000000));
-	Interact->SetBoxExtent(FVector(5.000000,18,5.5));
+	Interact->SetBoxExtent(FVector(5,18,5.5));
+	SFX->SetRelativeLocation(FVector(-20,62.5,5));
 }
