@@ -15,7 +15,10 @@ class LIFEDEV_API UIntroUI : public UUserWidget {
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
-	
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ShowMsg(const FText& Msg);
+
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FIntroUIDone OnDone;	
 };

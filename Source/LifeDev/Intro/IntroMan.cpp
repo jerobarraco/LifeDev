@@ -3,9 +3,13 @@
 #include "IntroMan.h"
 
 #include "IntroUI.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
-#include "JUtils/JMiscUtils.h"
+
 #include "Kismet/GameplayStatics.h"
+
+#include "JUtils/JMiscUtils.h"
+
+#include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 
 
 AIntroMan::AIntroMan():Super() {
@@ -34,6 +38,21 @@ void AIntroMan::Done() {
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 	UWorld* const World = GetWorld();
+
+	ULSettings* const Settings = ULSettings::Instance(World);
+	if (!Settings) return;
+	const int32 ChapterID = Settings->CurrentChapter();
+	if (ChapterID >= LDConsts::Feats::ChapFeatN -1) { // -1 because we never actually save that chapter.
+		UE_LOG(LogTemp, Log, TEXT("Current save is beyond the max chapter."));
+		static const FText TheEnd(
+			NSLOCTEXT("Intro", "MaxChapterReached",
+				"This save is at the current max chapter.\n"
+					"Maybe in a next release i'll add more.\n"
+					"But for now you can't go further."));
+		UI->ShowMsg(TheEnd);
+		return;
+	}
+
 	UJMiscUtils::ShowUI(false, World);
 
 	// this is actually not needed since the game mode is set on the world settings

@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveReady);
 
 // This class allows to interact with the in-game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSettings : public UGameInstanceSubsystem {
+class LIFEDEV_API ULSettings: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 
 public:
@@ -57,9 +57,7 @@ public:
 
 	// Returns true if a feature is enabled
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE	bool GetFeat(EFeat Feat) const {
-		return Feats.Contains(Feat);
-	}
+	FORCEINLINE	bool GetFeat(EFeat Feat) const { return Feats.Contains(Feat); }
 	
 	// only call once by the gameinstance or smth
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
