@@ -143,11 +143,6 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
 	void DoTriggerLocked();
 
-	// internal. used only so that the OnTrigger signal is ensured to be at the end.
-	// Might be removed if i figure i don't need it. forceinline will hopefully not decrease performance much.
-	
-
-	
 	// test function.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
