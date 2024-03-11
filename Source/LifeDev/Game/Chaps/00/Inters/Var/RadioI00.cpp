@@ -35,7 +35,7 @@ ARadioI00::ARadioI00():Super() {
 	SFX_Ghost->TimeStartMax = 120;
 }
 
-void ARadioI00::Trigger_Implementation() {
+void ARadioI00::DoTrigger_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
@@ -44,7 +44,7 @@ void ARadioI00::Trigger_Implementation() {
 	// fallback in case the dialog fails. max seconds.
 	World->GetTimerManager().SetTimer(DiagDoneHandle, this, &ARadioI00::DialogDone, 120);
 
-	Super::Trigger_Implementation(); // will trigger the dialog
+	Super::DoTrigger_Implementation(); // will trigger the dialog
 	SetEnabled(false); // disable once activated. this item is one use only.
 	SFX_Ghost->Fade(true);
 }

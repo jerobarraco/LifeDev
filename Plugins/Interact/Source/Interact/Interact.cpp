@@ -43,7 +43,7 @@ bool AInteract::TryTrigger_Implementation() {
 		return false;
 	}
 
-	TriggerWrap();
+	Trigger();
 	return true;
 }
 
@@ -108,7 +108,7 @@ void AInteract::SetInteractAutoBounds() {
 	Interact->Bounds = Mesh->GetPlacementExtent();
 }
 
-void AInteract::Trigger_Implementation() {
+void AInteract::DoTrigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs : %s"), __func__, *GetNameSafe(this));
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;

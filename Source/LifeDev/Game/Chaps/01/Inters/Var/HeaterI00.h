@@ -13,6 +13,6 @@ class LIFEDEV_API AHeaterI00: public AHeater00 {
 public:
 	AHeaterI00();
 
-	virtual void Trigger_Implementation() override;
+	virtual void DoTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 };

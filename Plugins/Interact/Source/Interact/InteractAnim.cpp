@@ -57,8 +57,8 @@ bool AInteractAnim::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
-void AInteractAnim::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void AInteractAnim::DoTrigger_Implementation() {
+	Super::DoTrigger_Implementation();
 	// disable disableWhileAnim if this is one shot. otherwise it will try to re-enable
 	// do after Trigger so it actually disable during the animation
 	// also not doing during SetState since that can also be called by other means.

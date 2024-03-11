@@ -17,7 +17,7 @@ public:
 	ARadioI00();
 
 protected:
-	virtual void Trigger_Implementation() override;
+	virtual void DoTrigger_Implementation() override;
 
 	UFUNCTION()
 	void DialogDone();

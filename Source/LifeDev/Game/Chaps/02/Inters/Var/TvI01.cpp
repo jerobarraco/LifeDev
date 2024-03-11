@@ -16,8 +16,8 @@ ATvI01::ATvI01():Super() {
 	};
 }
 
-void ATvI01::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void ATvI01::DoTrigger_Implementation() {
+	Super::DoTrigger_Implementation();
 	Locked = true;
 
 	UWorld* const World = GetWorld();

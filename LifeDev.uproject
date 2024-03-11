@@ -446,6 +446,10 @@
 		{
 			"Name": "MobileLauncherProfileWizard",
 			"Enabled": false
+		},
+		{
+			"Name": "InterchangeTests",
+			"Enabled": false
 		}
 	]
 }

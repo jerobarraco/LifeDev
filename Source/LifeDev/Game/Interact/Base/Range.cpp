@@ -36,9 +36,9 @@ void ARange::BeginPlay() {
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0, Mat); 
 }
 
-void ARange::Trigger_Implementation() {
+void ARange::DoTrigger_Implementation() {
 	IRoot->SetRelativeScale3D(FVector(0));
-	Super::Trigger_Implementation(); // TODO should i call it or not?
+	Super::DoTrigger_Implementation(); // TODO should i call it or not?
 }
 
 void ARange::SetMaxSize(float Size) {

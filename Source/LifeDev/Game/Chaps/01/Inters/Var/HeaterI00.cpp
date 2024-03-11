@@ -36,8 +36,8 @@ AHeaterI00::AHeaterI00():Super() {
 	SFX_Trigger = CSnd.Object;
 }
 
-void AHeaterI00::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void AHeaterI00::DoTrigger_Implementation() {
+	Super::DoTrigger_Implementation();
 	Locked = true; // lock AFTER triggering
 }
 

@@ -81,7 +81,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
-	// When true will disable the interact on trigger
+	// When true will disable the interact on trigger. Calling SetEnable(false)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
 	
@@ -112,16 +112,21 @@ protected:
 	void SetText();
 	virtual void SetText_Implementation(){}
 
-	// TODO rename Trigger to DoTrigger, TriggerWrap to Trigger. make BlueprintCallable TriggerWrap
-	// same for triggerLockWrap
 	// called when the object actually gets triggered
+	UFUNCTION(BlueprintCallable, Category=Interact)
+	FORCEINLINE void Trigger() {
+		DoTrigger();
+		// at end, outside the overrideable function
+		// so that i'm sure that children are done.
+		OnTrigger.Broadcast();
+	}
+
+	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.
-	// it won't trigger OnTrigger
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
-	void Trigger();
-	virtual void Trigger_Implementation();
-
+	void DoTrigger();
+	
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
@@ -130,12 +135,7 @@ protected:
 
 	// internal. used only so that the OnTrigger signal is ensured to be at the end.
 	// Might be removed if i figure i don't need it. forceinline will hopefully not decrease performance much.
-	FORCEINLINE void TriggerWrap() {
-		Trigger();
-		// at end, outside the overrideable function
-		// so that i'm sure that children are done.
-		OnTrigger.Broadcast();
-	};
+	
 
 	FORCEINLINE void TriggerLockWrap() {
 		TriggerLocked();

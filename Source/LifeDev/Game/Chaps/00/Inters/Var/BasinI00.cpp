@@ -23,9 +23,9 @@ ABasinI00::ABasinI00():Super() {
 	SetEnabled(true); // this is necessary for some reason. TODO fix 
 }
 
-void ABasinI00::Trigger_Implementation() {
+void ABasinI00::DoTrigger_Implementation() {
 	Water->Deactivate();
 	SND_Water->Fade(false);
-	Super::Trigger_Implementation();
+	Super::DoTrigger_Implementation();
 	SetEnabled(false); // trigger only once 
 }

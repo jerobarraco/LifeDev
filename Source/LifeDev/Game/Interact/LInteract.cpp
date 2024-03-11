@@ -154,8 +154,8 @@ bool ALInteract::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
-void ALInteract::Trigger_Implementation() {
-	Super::Trigger_Implementation();
+void ALInteract::DoTrigger_Implementation() {
+	Super::DoTrigger_Implementation();
 
 	// start fading right away to give the player the impression that they picked it up
 	if (WillRewardFade()) Fade(false);
@@ -169,9 +169,7 @@ void ALInteract::Trigger_Implementation() {
 	}
 
 	// ensure we reward or the player could get locked
-	if (!DiagsShown) {
-		DoRewards();
-	}
+	if (!DiagsShown) DoRewards();
 }
 
 

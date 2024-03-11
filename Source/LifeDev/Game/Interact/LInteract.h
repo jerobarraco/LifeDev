@@ -128,7 +128,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	virtual void Trigger_Implementation() override;
+	virtual void DoTrigger_Implementation() override;
 	virtual void TriggerLocked_Implementation() override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;

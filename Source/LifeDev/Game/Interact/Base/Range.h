@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMaxSize(float Size);
 
-	virtual void Trigger_Implementation() override;
+	virtual void DoTrigger_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	UMaterialInterface* Mat = nullptr;

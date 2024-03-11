@@ -28,9 +28,9 @@ bool ADoorI05::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
-void ADoorI05::Trigger_Implementation() {
+void ADoorI05::DoTrigger_Implementation() {
 	static FName Step("C0S0");
-	Super::Trigger_Implementation();
+	Super::DoTrigger_Implementation();
 
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
