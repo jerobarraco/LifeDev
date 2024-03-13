@@ -68,6 +68,7 @@ bool ALGGameMode::LoadChapter() {
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
 	UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Chapter Datatable is not properly set in the settings."));
 		return false;
 	}
 
