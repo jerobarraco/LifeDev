@@ -85,22 +85,22 @@ void ALNPCH::BeginPlay() {
 
 // TODO fix this is not portable to windows
 
-void PrintPose_Loc(const char16_t* Part, const FVector& V) {
+void PrintPose_Loc(const FString& Part, const FVector& V) {
 	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetLocation(FVector(%f, %f, %f));"),
-		Part, V.X, V.Y, V.Z);
+		*Part, V.X, V.Y, V.Z);
 }
 
-void PrintPose_Sca(const char16_t* Part, const FVector& V) {
+void PrintPose_Sca(const FString& Part, const FVector& V) {
 	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetScale3D(FVector(%f, %f, %f));"),
-		Part, V.X, V.Y, V.Z);
+		*Part, V.X, V.Y, V.Z);
 }
 
-void PrintPose_Rot(const char16_t* Part, const FRotator& R) {
+void PrintPose_Rot(const FString& Part, const FRotator& R) {
 	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetRotation(FRotator(%f, %f, %f).Quaternion());"),
-		Part, R.Pitch, R.Yaw, R.Roll);
+		*Part, R.Pitch, R.Yaw, R.Roll);
 }
 
-void PrintPose_I(const char16_t* Part, const FTransform& T) {
+void PrintPose_I(const FString& Part, const FTransform& T) {
 	const FVector& L = T.GetLocation();
 	const FVector& S = T.GetScale3D();
 	const FRotator& R = T.Rotator();
@@ -117,7 +117,7 @@ void ALNPCH::PrintPose() {
 	const FVector& IE = Interact->GetUnscaledBoxExtent();
 	UE_LOG(LogTemp, Log, TEXT("Pose.InteractExt = FVector(%f, %f, %f);"),
 		IE.X, IE.Y, IE.Z);
-	
+
 	PrintPose_I(TEXT("Root"), Mesh->GetRelativeTransform());
 	PrintPose_I(TEXT("Head"), Head->GetRelativeTransform());
 	PrintPose_I(TEXT("Pelvis"), Pelvis->GetRelativeTransform());
