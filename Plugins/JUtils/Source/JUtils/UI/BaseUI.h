@@ -1,7 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-// TODO move to UI
-
 #pragma once
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -12,10 +10,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBaseUIDone);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBaseUIDoneVal, int32, RetVal);
 
 UCLASS(Blueprintable, BlueprintType)
-class JUTILS_API UBaseUI : public UUserWidget {
+class JUTILS_API UBaseUI: public UUserWidget {
 	GENERATED_BODY()
-public:
 
+public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Show();
 	virtual void Show_Implementation();
