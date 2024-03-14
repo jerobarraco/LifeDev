@@ -15,15 +15,15 @@ class LIFEDEV_API ULSave : public USaveGame {
 
 public:
 	// resets the savestate. it will write to subsystems.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
 	void Reset(UWorld* const W);
 
 	// sets the subsystem data to what's on the savestate.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
 	void WriteSubsystems(UWorld* const W);
 
 	// sets the savestate data to what's on the subsystems.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
 	void ReadSubsystems(UWorld* const W);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
