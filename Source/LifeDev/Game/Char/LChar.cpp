@@ -21,6 +21,7 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/Settings/LSettingsUI.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
 #include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
 
@@ -36,7 +37,7 @@ ALChar::ALChar(): Super() {
 
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (Movement) {
-		Movement->MaxWalkSpeed = 150;
+		Movement->MaxWalkSpeed = SpeedMax;
 		Movement->MaxWalkSpeedCrouched = 75;
 	}
 
@@ -170,7 +171,11 @@ void ALChar::BeginPlay() {
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
-
+	UFlashback* const FB = World->GetSubsystem<UFlashback>();
+	if (FB) {
+		FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
+	}
+	
 	if (IsValid(Noiser)) {
 		Noiser->Activate();
 	} else {
@@ -179,6 +184,9 @@ void ALChar::BeginPlay() {
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	UWorld* W = GetWorld();
+	if (!W) return;
+
 	Inventory = nullptr;
 	Diags = nullptr;
 	if (IsValid(UI)) {
@@ -196,7 +204,12 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	Noiser = nullptr;
 
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
+	UFlashback* const FB = W->GetSubsystem<UFlashback>();
+	if (FB) {
+		FB->OnChange.RemoveAll(this);
+	}
+	
+	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, W);
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }
@@ -373,4 +386,10 @@ void ALChar::ActMenu() { // no const
 void ALChar::MenuDone() {
 	if (!IsValid(SettingsUI)) return;
 	SettingsUI->Hide();
+}
+
+void ALChar::SetFB(float Value) {
+	UCharacterMovementComponent* const Movement = GetCharacterMovement();
+	if (!Movement) return;
+	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 }

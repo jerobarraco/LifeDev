@@ -54,6 +54,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .4;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	float SpeedMin = 65;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	float SpeedMax = 150;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
 
@@ -87,15 +92,17 @@ public:
 	UInputAction* ActionMenu = nullptr;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UFUNCTION()
 	void InteractBegin(UCInteract* Comp);
 	UFUNCTION()
 	void InteractEnd(UCInteract* Comp);
 	UFUNCTION()
 	void MenuDone();
-	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UFUNCTION()
+	void SetFB(float Value);
 	
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
