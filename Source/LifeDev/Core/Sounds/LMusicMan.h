@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(bool On);
 
+	UFUNCTION(BlueprintCallable)
+	void SetEnvironOverride(bool On);
+
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)
 	void SetEnvironFB(float V);
@@ -53,4 +56,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCSounder* Environ = nullptr;
+
+	bool EnvironOverride = true;
 };

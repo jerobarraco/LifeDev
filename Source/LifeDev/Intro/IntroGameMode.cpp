@@ -24,7 +24,11 @@ void AIntroGameMode::BeginPlay() {
 
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	MusicMan->PlayMusic(Music);
+	if (MusicMan) {
+		MusicMan->PlayMusic(Music);
+		// fix so that the environment doesn't play during the intro level
+		MusicMan->SetEnvironOverride(false);
+	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
 	if (FB) {

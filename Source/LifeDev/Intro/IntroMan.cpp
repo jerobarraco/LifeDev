@@ -2,15 +2,13 @@
 
 #include "IntroMan.h"
 
-#include "IntroUI.h"
-
 #include "Kismet/GameplayStatics.h"
 
 #include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Sys/Consts/ConstSettings.h"
-
+#include "IntroUI.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>

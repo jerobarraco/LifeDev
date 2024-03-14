@@ -51,10 +51,14 @@ void ALMusicMan::SetRain(bool Play) {
 
 void ALMusicMan::SetEnviron(bool On) {
 	if (!IsValid(Environ)) return;
+	const bool Enabled = ULSettings::GetFeatS(GetWorld(), EFeat::S_ENV) && EnvironOverride;
 	// don't enable if it's disabled
-	if (On && !ULSettings::GetFeatS(GetWorld(), EFeat::S_ENV)) return;
-
+	if (On && !Enabled) return;
 	Environ->Fade(On);
+}
+
+void ALMusicMan::SetEnvironOverride(bool On) {
+	EnvironOverride = On;
 }
 
 void ALMusicMan::SetEnvironFB(float V) {
@@ -103,7 +107,6 @@ void ALMusicMan::SetRainS(UWorld* W, bool Play) {
 	ALMusicMan* const MM = Instance(W);
 	if (!MM) return;
 	MM->SetRain(Play);
-	// ALMusicMan* const R = Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 }
 
 void ALMusicMan::FadeS(UWorld* W, bool In) {
@@ -148,6 +151,7 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (S) {
 		S->OnFeatUpdateSound.RemoveAll(this);
 	}
+
 	Super::EndPlay(EndPlayReason);
 }
 
