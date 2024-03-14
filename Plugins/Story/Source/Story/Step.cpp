@@ -40,23 +40,20 @@ void AStep::DoTeleport() {
 	Char->SetActorLocation(T.GetLocation());
 
 	const FRotator CurRot = Char->GetActorRotation();
-	// TODO fix. needs to account for look speed
+	// In order for this to work the legacy input scale must be disabled on the project settings.
+	// "EnableLegacyInputScales"
 	Char->AddControllerYawInput(T.Rotator().Yaw-CurRot.Yaw);
-
-	// TODO make the vertical work better. 
-	return;
+	
 	// vertical is handled by the camera
 	TArray<UCameraComponent*> Cams; 
 	Char->GetComponents<UCameraComponent>(Cams);
 	if (Cams.Num()<=0) return;
 
 	UCameraComponent* const C = Cams[0];
-	if (!IsValid(C) || !C->bUsePawnControlRotation) return;
+	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
+	if (!IsValid(C)) return;
 
-	// vertical is inverted
-	Char->AddControllerPitchInput(C->GetRelativeRotation().Pitch-T.Rotator().Pitch);
-	// Char->AddControllerPitchInput(T.Rotator().Pitch-C->GetRelativeRotation().Pitch);
-	// Char->AddControllerPitchInput(T.Rotator().Yaw-C->GetRelativeRotation().Yaw);
+	Char->AddControllerPitchInput(T.Rotator().Pitch-C->GetRelativeRotation().Pitch);
 }
 
 void AStep::Start_Implementation() {
