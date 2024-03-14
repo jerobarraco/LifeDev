@@ -2,29 +2,18 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "BaseUI.h"
 
 #include "OutroUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutroUIDone);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutroUIQuit);
 
-// TODO reparent to BaseUI
-
 UCLASS(Blueprintable)
-class LIFEDEV_API UOutroUI : public UUserWidget {
+class LIFEDEV_API UOutroUI : public UBaseUI {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Done() {OnDone.Broadcast();}
-	
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Quit() {OnQuit.Broadcast();}
-	
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FOutroUIDone OnDone;
-	
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FOutroUIQuit OnQuit;	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetFlags(const TMap<FName, float>& Flags);
 };

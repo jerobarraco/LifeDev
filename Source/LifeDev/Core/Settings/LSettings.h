@@ -20,7 +20,7 @@ class LIFEDEV_API ULSettings: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(WorldContext="World"))
 	static ULSettings* Instance(UWorld* World);
 	UFUNCTION(BlueprintCallable)
 	static bool GetFeatS(UWorld* World, EFeat Feat);

@@ -29,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
+	// this is just for internal use.
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
+	FORCEINLINE TMap<FName, float> GetFlags() { return SFlags; }
+
 	// the current chapter.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ChapterID = -1;

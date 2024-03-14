@@ -5,8 +5,11 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "OutroUI.h"
 #include "JUtils/JMiscUtils.h"
+#include "LifeDev/Core/Settings/LSave.h"
+#include "LifeDev/Core/Settings/LSettings.h"
+
+#include "OutroUI.h"
 
 AOutroMan::AOutroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UOutroUI>
@@ -24,8 +27,12 @@ void AOutroMan::AddUI() {
 	if (!IsValid(UI)) return;
 	
 	UI->AddToViewport();
-	UI->OnDone.AddUniqueDynamic(this, &AOutroMan::Done);
-	UI->OnQuit.AddUniqueDynamic(this, &AOutroMan::Quit);
+	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
+
+	ULSettings* const Settings = ULSettings::Instance(World);
+	if (Settings && Settings->Save) {
+		UI->SetFlags(Settings->Save->GetFlags());
+	}
 	
 	UJMiscUtils::ShowUI(true, World, UI, false);
 }
@@ -37,7 +44,7 @@ void AOutroMan::Quit() {
 		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }
 
-void AOutroMan::Done() {
+void AOutroMan::Retry() {
 	// GetWorld()->ServerTravel(NextLevel);
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -51,6 +58,14 @@ void AOutroMan::Done() {
 	// FString Options = "Game="+ NextLevelMode;
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*GameLevel), true);
+}
+
+void AOutroMan::Done(int32 RetVal) {
+	if (RetVal == 0) {
+		Retry();
+	} else if (RetVal ==1) {
+		Quit();
+	}
 }
 
 void AOutroMan::BeginPlay() {
