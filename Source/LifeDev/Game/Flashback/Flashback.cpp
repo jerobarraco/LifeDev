@@ -9,8 +9,10 @@ UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));
 	Animator->SetComponentTickInterval(1/60.f);
 	// will this package, yes it does
+	// this curve is applied to each section from->to of values. Take a look at AnimUpdate.
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
+		// CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
+		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/SmoothRampUp.SmoothRampUp"));
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
