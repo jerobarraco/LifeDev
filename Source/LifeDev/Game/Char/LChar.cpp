@@ -237,7 +237,8 @@ void ALChar::ActMove(const FInputActionValue& Value) {
 
 	// input is a Vector2D
 	const FVector2D& MovementVector = Value.Get<FVector2D>();
-	// add movement 
+	// add movement
+	// done this way to account for player rotation
 	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 	AddMovementInput(GetActorRightVector(), MovementVector.X);
 }
