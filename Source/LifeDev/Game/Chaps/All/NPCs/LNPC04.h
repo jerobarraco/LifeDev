@@ -16,10 +16,9 @@ class LIFEDEV_API ALNPC04 : public ALNPCH {
 public:
 	ALNPC04();
 
-	// test
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetScold() { SetPose(PoseScold); }
+	// UFUNCTION(BlueprintCallable, CallInEditor)
+	// void SetScold() { SetPose(PoseScold); }
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FNPCHPose PoseScold;
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	// FNPCHPose PoseScold;
 };
