@@ -24,7 +24,7 @@ ATv00::ATv00():Super() {
 	Mesh->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Mesh->bUseAttachParentBound = true;
 
-	Interact->SetRelativeLocation(FVector(35,32,25));
+	Interact->SetRelativeLocation(FVector(35,-30,25));
 	Interact->SetBoxExtent(FVector(35,32,25));
 	Interact->SetEnabled(true);
 	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
