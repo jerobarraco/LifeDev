@@ -10,7 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, float, Value);
 class UCAnimator;
 
 // Base subsystem for flashbacks
-UCLASS(Blueprintable, Category="LifeDev", DefaultConfig, Config=LifeDev)
+UCLASS(Blueprintable, Category="LifeDev", DefaultConfig, Config="LifeDev")
 class LIFEDEV_API UFlashback: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 

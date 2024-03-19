@@ -16,6 +16,8 @@
 	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 #endif
 
+static ETraceTypeQuery TraceType = TraceTypeQuery1;
+
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
@@ -76,8 +78,6 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 	if (TraceSize > 1.0) {
 		static const TArray<AActor*> ArrEmpty;
-		// TODO optimize this
-		static const ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
 		UKismetSystemLibrary::SphereTraceSingle(
 			GetOwner(), Start, End,TraceSize,
 			TraceType,false, ArrEmpty, DrawType,
@@ -100,6 +100,8 @@ void UCInteractor::BeginPlay() {
 	IArrow->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	IArrow->RegisterComponent();
 	IArrow->SetArrowLength(TraceLen);
+
+	TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
