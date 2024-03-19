@@ -58,16 +58,20 @@ public:
 	// stops a step. if not specified it will stop the current one.
 	UFUNCTION(BlueprintCallable)
 	void Stop();
-	
+
+	// adds a Astep to be tracked and managed.
 	UFUNCTION(BlueprintCallable)
 	void Add(AStep* Step);
 
+	// Untracks/removes an AStep by name.
 	UFUNCTION(BlueprintCallable)
 	void Rem(const FName& Name);
 
+	// returns the corresponding tracked AStep by name. or nullptr otherwise.
 	UFUNCTION(BlueprintCallable)
 	AStep* GetStep(const FName& Name);
 
+	// returns the name of the current step
 	UFUNCTION(BlueprintCallable)
 	const FName& GetCurrent();
 
