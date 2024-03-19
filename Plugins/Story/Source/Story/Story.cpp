@@ -111,7 +111,10 @@ bool UStory::Start(const FName& Name) {
 }
 
 void UStory::Stop() {
-	if (!IsValid(Current)) return; // nothing to stop
+	if (!IsValid(Current)) {
+		UE_LOG(LogStory, Log, TEXT("%hs -> Nothing to stop. Skip."), __func__);
+		return; // nothing to stop
+	}
 	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
 
 	// clear up the Current variable so that the broadcast and startnextstep works fine.
