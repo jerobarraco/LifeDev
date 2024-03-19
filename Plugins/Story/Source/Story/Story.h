@@ -75,9 +75,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AutoFade(const FText& Title);
 
-	// Set this from game instance or smth TODO to be used with the fade 
+	// Set this from game instance or smth. Used for the timing on the steps. 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float FadeTime = 2;
+	// Set this from game instance or smth. Used for the timing on the steps. 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float HoldTime = 2;
 
