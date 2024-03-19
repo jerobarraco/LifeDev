@@ -24,7 +24,7 @@ ADoor01::ADoor01():Super() {
 	
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
 	Interact->SetRelativeLocation(FVector(-60,-7.5,101));
-	Interact->SetBoxExtent(FVector(60,5,101));
+	Interact->SetBoxExtent(FVector(60,10,101));
 
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
