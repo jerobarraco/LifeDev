@@ -7,6 +7,14 @@
 #include "CInteract.h"
 #include "Interact.h"
 #include "InteractTypes.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+#if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
+	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
+	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
+#else
+	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
+#endif
 
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -66,7 +74,18 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
-	World->LineTraceSingleByChannel(Hit, Start, End, InteractChannel);
+	if (TraceSize > 1.0) {
+		static const TArray<AActor*> ArrEmpty;
+		// TODO optimize this
+		static const ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
+		UKismetSystemLibrary::SphereTraceSingle(
+			GetOwner(), Start, End,TraceSize,
+			TraceType,false, ArrEmpty, DrawType,
+			Hit, true
+		);
+	} else {
+		World->LineTraceSingleByChannel(Hit, Start, End, InteractChannel, Params);
+	}
 	
 	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);

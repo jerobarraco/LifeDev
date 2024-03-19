@@ -1,0 +1,3 @@
+convert trace channel to trace query
+ ETraceQueryType MyTraceType = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel2);
+ https://forums.unrealengine.com/t/custom-trace-channel-in-c/332130/6?u=nande

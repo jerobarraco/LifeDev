@@ -21,6 +21,7 @@ AStep::AStep():Super() {
 	Cam = CreateDefaultSubobject<UCameraComponent>(TEXT("Cam"));
 	Cam->SetupAttachment(Root);
 	Cam->SetComponentTickEnabled(false);
+	Cam->SetVisibility(false);
 	CamTarget = this;
 }
 

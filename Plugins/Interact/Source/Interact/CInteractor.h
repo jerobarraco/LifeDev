@@ -15,12 +15,19 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInte
 
 // Will be interacting with interact objects.
 // Subclass of scene component so you can attach it and aim from there
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, Config="Interact", DefaultConfig,
+	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteractor: public USceneComponent {
 	GENERATED_BODY()
 
 public:
 	UCInteractor(const FObjectInitializer& ObjectInitializer);
+	
+	// you need to set this once. but only if you need to change the default.
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	static void SetCollisionChannel(ECollisionChannel Channel) {
+		InteractChannel = Channel;
+	}
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnabled(bool Enabled);
@@ -32,19 +39,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EItemUseResult TryUseItem(const FName& Name) const;
 
-	// you need to set this once. but only if you need to change the default.
-	UFUNCTION(BlueprintCallable, Category=SetUp)
-	static void SetCollisionChannel(ECollisionChannel Channel) {
-		InteractChannel = Channel;
-	}
-
 	// the currently hovered component. can be null.
 	UFUNCTION(BlueprintCallable)
-	UCInteract* GetInterComp() { return InterComp; }
+	FORCEINLINE UCInteract* GetInterComp() { return InterComp; }
 
 	// The max length to trace for
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float TraceLen = 200.0;
+	// if <1 it will use a line trace. > will use a box trace
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
+	float TraceSize = 3;
 	
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnInteractToggle OnToggle;
@@ -70,6 +74,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UArrowComponent* IArrow = nullptr;
 
+	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCInteract* InterComp = nullptr;
 };
