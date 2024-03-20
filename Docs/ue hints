@@ -1,3 +1,11 @@
 convert trace channel to trace query
  ETraceQueryType MyTraceType = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel2);
  https://forums.unrealengine.com/t/custom-trace-channel-in-c/332130/6?u=nande
+ 
+ 
+ https://dev.epicgames.com/community/snippets/3GoB/unreal-engine-how-to-set-log-verbosity-via-command-line-with-logcmds
+ set log level on config
+ [Core.Log]
+ ; This can be used to change the default log level for engine logs to help with debugging
+ LogTemp=VeryVerbose
+ LogOnlineServices=Verbose

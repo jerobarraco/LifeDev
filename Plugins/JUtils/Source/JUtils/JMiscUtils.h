@@ -64,6 +64,16 @@ public:
 		#endif
 	};
 	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsAndroid() {
+		// return UGameplayStatics::GetPlatformName() == "Android";
+		#if PLATFORM_ANDROID
+				return true;
+		#else
+				return false;
+		#endif
+	}
+	
 	UFUNCTION(BlueprintCallable)
 	static UWorld* JGetWorld(UWorld* World);
 
