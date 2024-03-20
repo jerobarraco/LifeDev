@@ -10,8 +10,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
-	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
+	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
+	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
 #else
 	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 #endif
