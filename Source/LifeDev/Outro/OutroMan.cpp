@@ -34,7 +34,7 @@ void AOutroMan::AddUI() {
 		UI->SetFlags(Settings->Save->GetFlags());
 	}
 	
-	UJMiscUtils::ShowUI(true, World, UI, false);
+	UJMiscUtils::ShowUI(this, true, UI, false);
 }
 
 void AOutroMan::Quit() {

@@ -77,17 +77,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UWorld* JGetWorld(UWorld* World);
 
-	UFUNCTION(BlueprintCallable)
-	static void ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable);
 
-	UFUNCTION(BlueprintCallable)
-	static void ShowUI(bool Show, UWorld* World, UWidget* Focus = nullptr, bool SetPaused = false);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void ShowUI(UObject* O, bool Show, UWidget* Focus = nullptr, bool SetPaused = false);
 
 	// Calls a Task (a Delegate) on another thread, when finishes calls OnDone on the game thread (if bound)
 	// What Not to Do:
 	//	* Do not try to modify, create, or delete UObjects from other threads!
 	//	* You can prepare all the data / do all the calculations, but only the game thread should be actually spawning / modifying / deleting UObjects / AActors.
-	//	* Dont try to use TimerManager outside of the game thread :)
+	//	* Don't try to use TimerManager outside of the game thread :)
 	//	* Don't try to draw debug lines/points etc, as it will likely crash, ie DrawDebugLine(etc...)
 	UFUNCTION(BlueprintCallable)
 	static void BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec = EAsyncExec::ThreadPool);
@@ -97,6 +97,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static void CameraFade(UGameInstance* GI, bool In = false, float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static APlayerController* GetFirstLocalPlayerController(UObject* O);
 
 	// can't be blueprint callable since it's templatized
 	template <typename T>

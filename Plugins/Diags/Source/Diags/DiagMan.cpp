@@ -73,7 +73,7 @@ void ADiagMan::Show(const FDialog& Diag) {
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
 	UI->Show(Diag);
 }
 
@@ -83,7 +83,7 @@ void ADiagMan::Hide() {
 
 	IsShowing = false;
 	UI->Hide();
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -117,7 +117,7 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	DeInit();
 
 	// TODO unbind actions

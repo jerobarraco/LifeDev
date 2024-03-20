@@ -14,7 +14,7 @@
 
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;
-	SetActorTickEnabled(false);
+	Super::SetActorTickEnabled(false);
 
 	View = CreateDefaultSubobject<UCItemView>(TEXT("View"));
 
@@ -43,7 +43,7 @@ void AInventoryManager::DeInit() {
 		Inventory->OnCold.RemoveAll(this);
 	}
 	Inventory = nullptr;
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
 void AInventoryManager::ActOpen() {
@@ -132,7 +132,7 @@ void AInventoryManager::BeginPlay() {
 		}
 	}
 
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryManager::SetSelected);

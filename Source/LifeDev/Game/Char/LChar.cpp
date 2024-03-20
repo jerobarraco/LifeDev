@@ -124,7 +124,7 @@ void ALChar::InteractEnd(UCInteract* Comp) {
 
 void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, Enabled, GetWorld());
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, Enabled);
 	InteractSetEnabled(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
@@ -141,7 +141,7 @@ void ALChar::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, true, World);
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -209,7 +209,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		FB->OnChange.RemoveAll(this);
 	}
 	
-	UJMiscUtils::ToggleMapping(Mapping, InputPrio, false, W);
+	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }

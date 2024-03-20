@@ -22,8 +22,7 @@
 	// return nullptr;
 // }
 
-UWorld* UJMiscUtils::GetEdWorld()
-{
+UWorld* UJMiscUtils::GetEdWorld() {
 #if WITH_EDITOR
 	if (!GEditor) return nullptr;
 	// if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
@@ -60,11 +59,8 @@ UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	return World;
 }
 
-void UJMiscUtils::ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enable, UWorld* World) {
-	// TODO this is failing.
-	World = JGetWorld(World);
-	if (!IsValid(World)) return;
-	APlayerController* Controller = World->GetFirstPlayerController();
+void UJMiscUtils::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable) {
+	APlayerController* const Controller = GetFirstLocalPlayerController(O);
 	if (!IsValid(Controller)) return;
 	
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
@@ -80,7 +76,8 @@ void UJMiscUtils::ToggleMapping(UInputMappingContext* Ctx, int32 Prio, bool Enab
 	}
 }
 
-void UJMiscUtils::ShowUI(bool Show, UWorld* World, UWidget* Focus, bool SetPaused) {
+void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
+	UWorld* const World = O ? O->GetWorld(): nullptr;
 	if (!IsValid(World)) return;
 
 	APlayerController* const Controller = World->GetFirstPlayerController();
@@ -160,3 +157,12 @@ void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const F
 	CamManager->StartCameraFade(From, To, Duration, Color, true, true);
 }
 
+APlayerController* UJMiscUtils::GetFirstLocalPlayerController(UObject* O) {
+	UWorld* const W = O?O->GetWorld():nullptr;
+	if (!W) return nullptr;
+
+	UGameInstance* const Instance = W->GetGameInstance();
+	if (!Instance) return nullptr;
+
+	return Instance->GetFirstLocalPlayerController(W);
+}

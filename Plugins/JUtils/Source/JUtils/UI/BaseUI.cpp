@@ -6,13 +6,13 @@
 
 void UBaseUI::Show_Implementation() {
 	if (ShowCursor) {
-		UJMiscUtils::ShowUI(true, GetWorld(), this, true);
+		UJMiscUtils::ShowUI(this, true, this, true);
 	}
 }
 
 void UBaseUI::Hide_Implementation() {
 	if (ShowCursor) {
-		UJMiscUtils::ShowUI(false, GetWorld(), nullptr, true);
+		UJMiscUtils::ShowUI(this, false, nullptr, true);
 	}
 }
 

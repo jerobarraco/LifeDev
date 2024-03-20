@@ -28,7 +28,7 @@ void AIntroMan::AddUI() {
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 
-	UJMiscUtils::ShowUI(true, World, UI, false);
+	UJMiscUtils::ShowUI(this, true, UI, false);
 }
 
 void AIntroMan::Done() {
@@ -51,7 +51,7 @@ void AIntroMan::Done() {
 		return;
 	}
 
-	UJMiscUtils::ShowUI(false, World);
+	UJMiscUtils::ShowUI(this, false);
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
