@@ -10,8 +10,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
-	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
-	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
+	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
+	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
 #else
 	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 #endif
@@ -23,9 +23,6 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 	UActorComponent::SetComponentTickEnabled(true);
 	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
 	// the arrow doesn't parent correctly. so.. beat it
-	// IArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("IArrow"));
-	// IArrow->SetupAttachment(this);
-	// IArrow->SetComponentTickEnabled(false);
 }
 
 void UCInteractor::SetEnabled(bool Enabled) {

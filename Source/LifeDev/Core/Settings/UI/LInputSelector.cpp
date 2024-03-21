@@ -14,7 +14,6 @@ ULInputSelector::ULInputSelector():Super() {
 	S.ColorAndOpacity = FSlateColor (FColor(LDConsts::Colors::Palette[8][3]));
 	SetTextStyle(S);
 	
-
 	FButtonStyle BS = GetButtonStyle();
 	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[3][3]));
 	SetButtonStyle(BS);

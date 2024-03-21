@@ -48,7 +48,7 @@ public:
 	float TraceLen = 200.0;
 	// if <1 it will use a line trace. > will use a box trace
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
-	float TraceSize = 3;
+	float TraceSize = 2;
 	
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FOnInteractToggle OnToggle;
@@ -71,9 +71,6 @@ protected:
 
 	inline static ECollisionChannel InteractChannel = ECC_Visibility;
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UArrowComponent* IArrow = nullptr;
-
 	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCInteract* InterComp = nullptr;
