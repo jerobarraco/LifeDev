@@ -1,33 +1,33 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Fridge.h"
+#include "Stove.h"
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-AFridge::AFridge():Super() {
-	Texts = { FText::FromString(TEXT("Fridge")) } ;
+AStove::AStove():Super() {
+	Texts = { FText::FromString(TEXT("Stove")) } ;
 	RewardFlash = 0;
 	UseAnim = false;
 	UseRewardFade = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge.Fridge"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove.Stove"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(60.5,17,0));
+	Mesh->SetRelativeLocation(FVector(0.5,45,0));
 	
-	Interact->SetRelativeLocation(FVector(-90,-12.5,90));
-	Interact->SetBoxExtent(FVector(35,7.5,85));
-	SFX->SetRelativeLocation(FVector(-90,-15,95));
-	
-	// stolen from paper. maybe get a new one?
+	Interact->SetRelativeLocation(FVector(42.5,-42.5,55));
+	Interact->SetBoxExtent(FVector(45,45,60));
+	SFX->SetRelativeLocation(FVector(42.5,-42.5,55));
+
+	// TODO new one
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
 	SFX_Trigger = CSnd.Object;
 
 	// set static by default
-	AFridge::SetMobility(EComponentMobility::Static);
+	AStove::SetMobility(EComponentMobility::Static);
 }
 
