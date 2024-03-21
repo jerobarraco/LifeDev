@@ -2,6 +2,7 @@
 
 #include "Calendar.h"
 
+#include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -9,6 +10,7 @@ ACalendar::ACalendar():Super() {
 	UseAnim = false;
 	UseRewardFade = false;
 	StateNum = 1;
+	Texts = { FText::FromString(TEXT("A calendar")) } ;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar.Calendar"));
@@ -17,8 +19,7 @@ ACalendar::ACalendar():Super() {
 	
 	Interact->SetRelativeLocation(FVector(22.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(22.500000,22.500000,2.500000));
-	
-	Texts = { FText::FromString(TEXT("A calendar")) } ;
+	SFX->SetRelativeLocation(FVector(22.500000,-22.500000,2.500000));
 	// a lazy dog is a sheet of paper
 	// a sheet of paper is an ink lined plane
 	// an inclined plane is a slope up
