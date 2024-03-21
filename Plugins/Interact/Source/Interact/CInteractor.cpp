@@ -91,13 +91,6 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
-
-	IArrow = NewObject<UArrowComponent>(this, TEXT("IArrow"));
-	IArrow->CreationMethod = EComponentCreationMethod::Instance;
-	IArrow->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	IArrow->RegisterComponent();
-	IArrow->SetArrowLength(TraceLen);
-
 	TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
 }
 
