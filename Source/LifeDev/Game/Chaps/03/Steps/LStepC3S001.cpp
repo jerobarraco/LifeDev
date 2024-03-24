@@ -34,7 +34,7 @@ void ALStepC3S001::Start_Implementation() {
 	Super::Start_Implementation();
 
 	ALNPC03* const NPC = Cast<ALNPC03>(Actor);
-	if (NPC) NPC->SetScold();
+	if (NPC) NPC->SetPoseScold();
 }
 
 void ALStepC3S001::Stop_Implementation() {
