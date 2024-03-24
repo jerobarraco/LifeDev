@@ -93,5 +93,31 @@ ALNPC02::ALNPC02():Super() {
 	PoseBase.FootL.SetLocation(FVector(0,0,-10));
 	PoseBase.FootR.SetLocation(FVector(0,0,-10));
 
-	
+	PoseChair.InteractOrg = FVector(0.000000, 5.000000, 50.000000);
+	PoseChair.InteractExt = FVector(25.000000, 25.000000, 55.000000);
+	PoseChair.Head.SetLocation(FVector(-0.000000, -0.000000, 25.000000));
+	PoseChair.Head.SetRotation(FRotator(0.867172, -9.962711, 4.924415).Quaternion());
+	PoseChair.Pelvis.SetLocation(FVector(0.000000, 0.000000, 35.000000));
+	PoseChair.Pelvis.SetRotation(FRotator(0.000000, 0.000000, -79.999999).Quaternion());
+	PoseChair.Torso.SetRotation(FRotator(0.000000, 0.000000, 89.999999).Quaternion());
+	PoseChair.ArmL2.SetLocation(FVector(-2.500000, 0.000000, -15.000000));
+	PoseChair.ArmL2.SetRotation(FRotator(-3.533287, 3.540025, -135.109220).Quaternion());
+	PoseChair.ArmL1.SetLocation(FVector(-10.000000, -0.000000, 25.000000));
+	PoseChair.ArmL1.SetRotation(FRotator(0.000000, -0.000000, -45.000000).Quaternion());
+	PoseChair.ArmR2.SetLocation(FVector(2.500000, 0.000000, -15.000000));
+	PoseChair.ArmR2.SetRotation(FRotator(-4.530509, 2.117507, -115.083770).Quaternion());
+	PoseChair.ArmR1.SetLocation(FVector(10.000000, 0.000000, 25.000000));
+	PoseChair.ArmR1.SetRotation(FRotator(0.000000, -0.000000, -45.000000).Quaternion());
+	PoseChair.LegL2.SetLocation(FVector(-0.000000, 0.000000, -10.000000));
+	PoseChair.LegL2.SetRotation(FRotator(-0.000000, -0.000000, 40.000000).Quaternion());
+	PoseChair.LegL1.SetLocation(FVector(-5.000000, 0.000000, -10.000000));
+	PoseChair.LegL1.SetRotation(FRotator(0.000000, 0.000000, 30.000000).Quaternion());
+	PoseChair.LegR2.SetLocation(FVector(-0.000000, -0.000000, -10.000000));
+	PoseChair.LegR2.SetRotation(FRotator(-0.000000, -0.000000, 45.000000).Quaternion());
+	PoseChair.LegR1.SetLocation(FVector(5.000000, 0.000000, -10.000000));
+	PoseChair.LegR1.SetRotation(FRotator(-0.000000, -0.000000, 30.000000).Quaternion());
+	PoseChair.FootL.SetLocation(FVector(-0.000000, -0.000000, -10.000000));
+	PoseChair.FootL.SetRotation(FRotator(-0.000000, -0.000000, 20.000000).Quaternion());
+	PoseChair.FootR.SetLocation(FVector(-0.000000, -0.000000, -10.000000));
+	PoseChair.FootR.SetRotation(FRotator(-0.000000, -0.000000, 20.000000).Quaternion());
 }

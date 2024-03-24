@@ -15,4 +15,11 @@ class LIFEDEV_API ALNPC02 : public ALNPCH {
 
 public:
 	ALNPC02();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetPoseChair() { SetPose(PoseChair); }
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FNPCHPose PoseChair;
 };
