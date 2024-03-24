@@ -92,4 +92,6 @@ ALNPC02::ALNPC02():Super() {
 	PoseBase.LegR2.SetLocation(FVector(0,0,-10));
 	PoseBase.FootL.SetLocation(FVector(0,0,-10));
 	PoseBase.FootR.SetLocation(FVector(0,0,-10));
+
+	
 }

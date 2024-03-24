@@ -7,7 +7,7 @@
 
 #include "LNPCI06.generated.h"
 
-// chap04 char02
+// chap04 "char07"
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPCI06 : public ALNPC02 {
 	GENERATED_BODY()
