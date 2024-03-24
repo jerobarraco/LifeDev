@@ -31,7 +31,7 @@ void UGroupBox::SetLabel_Implementation(const FText& Text) {
 
 void UGroupBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	for (UCheckBox* C: CheckBoxes) {
+	for (UCheckBox* const C: CheckBoxes) {
 		if (!C) continue;
 		// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
 
@@ -47,7 +47,7 @@ void UGroupBox::NativeOnInitialized() {
 }
 
 void UGroupBox::NativeDestruct() {
-	for (UDelegateWrapper* W: Wrappers) {
+	for (UDelegateWrapper* const W: Wrappers) {
 		if (!IsValid(W)) continue;
 		W->OnDispatch.RemoveAll(this);
 	}
@@ -57,7 +57,8 @@ void UGroupBox::NativeDestruct() {
 
 void UGroupBox::CheckSelected(UDelegateWrapper* W, int32 CID, UObject* OCB) {
 	if (!IsValid(OCB)) return;
-	UCheckBox* CB = static_cast<UCheckBox*>(OCB);
+	UCheckBox* const CB = static_cast<UCheckBox*>(OCB);
+	if (!CB) return;
 
 	const bool IsChecked = CB->IsChecked();
 	if (!IsChecked) {
