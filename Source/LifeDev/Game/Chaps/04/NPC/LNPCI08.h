@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+#include "LifeDev/Game/Chaps/All/NPCs/LNPC04.h"
 
 #include "LNPCI08.generated.h"
 
 // chap04 char04
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALNPCI08 : public ALNPC01 {
+class LIFEDEV_API ALNPCI08 : public ALNPC04 {
 	GENERATED_BODY()
 
 public:
