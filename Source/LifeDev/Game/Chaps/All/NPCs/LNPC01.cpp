@@ -118,6 +118,32 @@ ALNPC01::ALNPC01():Super() {
 	PoseSit.LegR2.SetRotation(FRotator(-50.000000,0.000000,0.000000).Quaternion());
 	PoseSit.FootR.SetRotation(FRotator(-20.000000,0.000000,0.000000).Quaternion());
 
+	PoseChair.InteractOrg = FVector(2.500000, 5.000000, 67.500000);
+	PoseChair.InteractExt = FVector(20.000000, 30.000000, 70.000000);
+	PoseChair.Head.SetLocation(FVector(-0.000000, 0.000000, 40.000000));
+	PoseChair.Head.SetRotation(FRotator(-5.000000, 0.000000, -0.000000).Quaternion());
+	PoseChair.Pelvis.SetLocation(FVector(0.000000, 0.000000, 50.000000));
+	PoseChair.Pelvis.SetRotation(FRotator(90.000000, 0.633009, 0.633009).Quaternion());
+	PoseChair.Torso.SetRotation(FRotator(-85.000000, 0.000000, 0.000000).Quaternion());
+	PoseChair.ArmL2.SetLocation(FVector(0.000000, -2.500000, -20.000000));
+	PoseChair.ArmL2.SetRotation(FRotator(-53.775460, -17.088303, 13.928088).Quaternion());
+	PoseChair.ArmL1.SetLocation(FVector(-0.000000, 15.000000, 35.000000));
+	PoseChair.ArmL1.SetRotation(FRotator(-53.775460, 162.911697, 13.928088).Quaternion());
+	PoseChair.ArmR2.SetLocation(FVector(-0.000000, -2.500000, -20.000000));
+	PoseChair.ArmR2.SetRotation(FRotator(53.775460, 17.088303, 13.928088).Quaternion());
+	PoseChair.ArmR1.SetLocation(FVector(0.000000, -15.000000, 35.000000));
+	PoseChair.ArmR1.SetRotation(FRotator(53.775460, 17.088303, 13.928088).Quaternion());
+	PoseChair.LegL2.SetLocation(FVector(-0.000000, 0.000000, -15.000000));
+	PoseChair.LegL2.SetRotation(FRotator(-35.000000, 0.000000, -0.000000).Quaternion());
+	PoseChair.LegL1.SetLocation(FVector(-0.000000, -10.000000, -15.000000));
+	PoseChair.LegL1.SetRotation(FRotator(-55.000000, 0.000000, 0.000000).Quaternion());
+	PoseChair.LegR2.SetLocation(FVector(-0.000000, 0.000000, -15.000000));
+	PoseChair.LegR2.SetRotation(FRotator(-35.000000, 0.000000, 0.000000).Quaternion());
+	PoseChair.LegR1.SetLocation(FVector(0.000000, 10.000000, -15.000000));
+	PoseChair.LegR1.SetRotation(FRotator(-55.000000, 0.000000, 0.000000).Quaternion());
+	PoseChair.FootL.SetLocation(FVector(0.000000, 0.000000, -15.000000));
+	PoseChair.FootR.SetLocation(FVector(0.000000, 0.000000, -15.000000));
+		
 	SetPose(PoseSit);
 }
 
@@ -130,10 +156,11 @@ void ALNPC01::SetPoseSit() {
 	SetPose(PoseSit);
 }
 
+void ALNPC01::SetPoseChair() {
+	SetPose(PoseChair);
+}
+
 void ALNPC01::SetVisible(bool Vis) {
-	if (Vis) {
-		SetPoseSit();
-	}
 	Interact->SetEnabled(Vis);
 	SetActorHiddenInGame(!Vis);
 }

@@ -33,13 +33,17 @@ void ALStepC1S003::Stop_Implementation() {
 }
 
 void ALStepC1S003::NPCShow() {
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	
 	if (!IsValid(NPC)) {
+		UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 		NPCDiagStart();
 		return;
 	}
 
+	NPC->SetPoseSit();
 	NPC->SetVisible(true);
-	UWorld* const World = GetWorld();
 	FTimerHandle Handle;
 	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
 }

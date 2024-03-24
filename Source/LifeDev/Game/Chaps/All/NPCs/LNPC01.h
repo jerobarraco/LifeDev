@@ -23,6 +23,9 @@ public:
 	void SetPoseSit();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetPoseChair();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void SetVisible(bool Vis);
 
 protected:
@@ -31,4 +34,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FNPCHPose PoseStand;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FNPCHPose PoseChair;
 };
