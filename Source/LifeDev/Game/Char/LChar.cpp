@@ -236,20 +236,20 @@ void ALChar::ActMove(const FInputActionValue& Value) {
 	if (!Controller) return;
 
 	// input is a Vector2D
-	const FVector2D& MovementVector = Value.Get<FVector2D>();
-	// add movement
+	const FVector2D& V2D = Value.Get<FVector2D>();
 	// done this way to account for player rotation
-	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-	AddMovementInput(GetActorRightVector(), MovementVector.X);
+	const FVector& V3D =
+		(GetActorForwardVector()*V2D.Y)
+		+ (GetActorRightVector()*V2D.X);
+	AddMovementInput(V3D);
 }
 
 void ALChar::ActLook(const FInputActionValue& Value) {
 	if (!Controller) return;
 	// input is a Vector2D
+	// not cost. i multiply below.
 	FVector2D Vector = Value.Get<FVector2D>();
-	if (Interactor->GetInterComp()) {
-		Vector *= InteractDrag;
-	}
+	if (Interactor->GetInterComp()) Vector *= InteractDrag;
 	// add yaw and pitch input to controller
 	AddControllerYawInput(Vector.X);
 	AddControllerPitchInput(Vector.Y);
