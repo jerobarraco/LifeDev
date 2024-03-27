@@ -3,7 +3,9 @@
 #include "MsgBox.h"
 
 #include "JButton.h"
+#include "Animation/WidgetAnimation.h"
 #include "Components/TextBlock.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -42,6 +44,31 @@ void UMsgBox::Init(const FText& Message, const TArray<FText>& Texts) {
 		B->SetVisibility( Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		if (!Show) continue;
 		B->SetUp(Texts[i], i);
+	}
+}
+
+void UMsgBox::Show_Implementation() {
+	Super::Show_Implementation();
+	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
+	if (AnimShow)
+		PlayAnimation(AnimShow, 0, 1,
+			EUMGSequencePlayMode::Forward, Speed);
+}
+
+void UMsgBox::HideAnimFinish() {
+	// needed so that the timer doesn't call the parent version of the virtual. (that is me)
+	Super::Hide_Implementation();
+}
+
+void UMsgBox::Hide_Implementation() {
+	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
+	if (AnimShow) {
+		PlayAnimation(AnimShow, 0, 1,
+			EUMGSequencePlayMode::Reverse, Speed);
+		FTimerHandle H;
+		GetWorld()->GetTimerManager().SetTimer(H, this, &UMsgBox::HideAnimFinish, AnimDuration);
+	} else {
+		HideAnimFinish();
 	}
 }
 

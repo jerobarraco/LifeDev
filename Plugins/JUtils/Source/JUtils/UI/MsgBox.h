@@ -18,7 +18,9 @@ class JUTILS_API UMsgBox: public UBaseUI {
 public:
 	UFUNCTION(BlueprintCallable)
 	void Init(const FText& Message, const TArray<FText>& Texts);
-	
+	virtual void Show_Implementation() override;
+	void HideAnimFinish();
+	virtual void Hide_Implementation() override;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;
 
