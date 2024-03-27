@@ -6,6 +6,7 @@
 
 #include "MsgBox.generated.h"
 
+class UJButton;
 class UDelegateWrapper;
 class UTextBlock;
 class UButton;
@@ -26,24 +27,21 @@ protected:
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION()
-	void BtnClick(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj);
+	void BtnClick(int32 ID);
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UTextBlock* Msg = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UButton* Btn0 = nullptr;
+	UJButton* Btn0 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UButton* Btn1 = nullptr;
+	UJButton* Btn1 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UButton* Btn2 = nullptr;
+	UJButton* Btn2 = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UTextBlock* Text0 = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UTextBlock* Text1 = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UTextBlock* Text2 = nullptr;
+	// has to be transient or it will not compile the bp
+	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
+	UWidgetAnimation* AnimShow = nullptr;
 
 private:
 	UPROPERTY(Transient)
