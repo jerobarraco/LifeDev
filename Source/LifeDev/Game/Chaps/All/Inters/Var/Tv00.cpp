@@ -17,7 +17,8 @@
 ATv00::ATv00():Super() {
 	// can't set stuff to static or the button animation won't work :'(
 	// so much optimization lost for a single button animation...
-	
+	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -27,9 +28,8 @@ ATv00::ATv00():Super() {
 	Interact->SetRelativeLocation(FVector(35,-30,25));
 	Interact->SetBoxExtent(FVector(35,32,25));
 	Interact->SetEnabled(true);
-	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
 
-	SFX->SetRelativeLocation(FVector(5.329876,21.458294,20));
+	SFX->SetRelativeLocation(FVector(55,0,15));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
 	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
