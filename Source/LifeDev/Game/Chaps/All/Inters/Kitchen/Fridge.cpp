@@ -29,5 +29,6 @@ AFridge::AFridge():Super() {
 
 	// set static by default
 	AFridge::SetMobility(EComponentMobility::Static);
+	Mesh->SetQuickCollisionEnabled(true);
 }
 
