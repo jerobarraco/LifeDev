@@ -15,7 +15,6 @@ APlate::APlate():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate00_P"));
-	// '/Game/LifeDev/Game/Inters/Kitchen/Plate00_P.Plate00_P'
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
 	
@@ -30,6 +29,7 @@ APlate::APlate():Super() {
 		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03.Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
 
 	// SFX_Start = { CSndClose.Object, CSndOpen.Object };
-	SFX_Trigger = CSndClose.Object;
+	// SFX_Trigger = CSndClose.Object;
+	// TODO sound
 }
 
