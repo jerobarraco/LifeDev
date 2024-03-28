@@ -2,7 +2,7 @@
 
 #include "BooksI00.h"
 
-ABooksI00::ABooksI00():Super(3, -1) {
+ABooksI00::ABooksI00():Super(3, 93) {
 	SetEnabled(true);
 	Texts = { FText::FromString(TEXT("Check"))};
 	TriggerDlg = "BK00_T";
