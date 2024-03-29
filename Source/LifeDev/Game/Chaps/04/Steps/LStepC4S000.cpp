@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S000.h"
 
-#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
@@ -18,8 +17,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
-	// TODO temporary until i get a new music
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));
@@ -46,5 +44,4 @@ void ALStepC4S000::Start_Implementation() {
 
 void ALStepC4S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
-	// if (Inventory) Inventory->Ensure(LDConsts::Items::Card3);
 }
