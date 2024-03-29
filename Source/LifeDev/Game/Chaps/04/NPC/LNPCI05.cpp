@@ -2,5 +2,7 @@
 #include "LNPCI05.h"
 
 ALNPCI05::ALNPCI05():Super() {
+	Texts = { FText::FromString("...") };
+
 	SetEnabled(true);
 }
