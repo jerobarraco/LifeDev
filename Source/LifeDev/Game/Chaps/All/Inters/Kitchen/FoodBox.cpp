@@ -1,0 +1,32 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "FoodBox.h"
+
+#include "Components/AudioComponent.h"
+#include "Interact/CInteract.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
+AFoodBox::AFoodBox():Super() {
+	Texts = { FText::FromString(TEXT("FoodBox"))};
+	RewardFlash = 0;
+	UseRewardFade = false;
+	StateNum = 1;
+	UseAnim = false;
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Box_P"));
+	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetRelativeLocation(FVector(0,0,0));
+	// not bothering with the material for now, i prefer not to load 2 materials.
+	// would have to be set on child instances.
+	
+	Interact->SetRelativeLocation(FVector(10,-5,12.5));
+	Interact->SetBoxExtent(FVector(15,10,16));
+	SFX->SetRelativeLocation(FVector(10,-5,12.5));
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
+	SFX_Trigger = CSnd.Object;
+	Super::SetMobility(EComponentMobility::Static);
+}
+
