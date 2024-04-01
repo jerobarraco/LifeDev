@@ -9,8 +9,8 @@
 
 APot::APot():Super() {
 	Texts = {
-		FText::FromString(TEXT("Pot")),
-		FText::FromString(TEXT("Pot Full"))
+		FText::FromString(TEXT("Pot Full")), // closed
+		FText::FromString(TEXT("Pot"))
 	};
 	RewardFlash = 0;
 	UseRewardFade = false;
