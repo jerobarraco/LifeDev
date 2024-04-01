@@ -1,0 +1,49 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#include "Pot.h"
+
+#include "Components/AudioComponent.h"
+#include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
+APot::APot():Super() {
+	Texts = {
+		FText::FromString(TEXT("Pot")),
+		FText::FromString(TEXT("Pot Full"))
+	};
+	RewardFlash = 0;
+	UseRewardFade = false;
+	StateNum = 2;
+	UseAnim = true;
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Pot01_Base"));
+	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetRelativeLocation(FVector(0,0,0));
+
+	Lid = CreateDefaultSubobject<UCQuickMesh>(TEXT("Lid"));
+	Lid->SetupAttachment(Mesh);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMeshLid(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Pot01_Lid"));
+	Lid->SetStaticMesh(CMeshLid.Object);
+	Lid->SetRelativeLocation(FVector(0,0,0));
+	AnimFade->Meshes.AddUnique(Lid);
+	Anim->TRoot = Lid;
+	Anim->TEnd.SetRotation(FRotator(0, -10, 0).Quaternion());
+
+	Interact->SetRelativeLocation(FVector(27.5,-17.5,12.5));
+	Interact->SetBoxExtent(FVector(17.5,12.5,12.5));
+	SFX->SetRelativeLocation(FVector(27.5,-17.5,12.5));
+	
+	// stolen from paper. maybe get a new one?
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSndClose(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-02.Crush_Rattle_Metal_Scrap_Debris_UC_04-02"));
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03.Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
+
+	// SFX_Start = { CSndClose.Object, CSndOpen.Object };
+	// SFX_Trigger = CSndClose.Object;
+	// TODO sound
+}
+
