@@ -4,6 +4,7 @@
 #include "LifeDev/Game/Chaps/All/Inters/Var/Books.h"
 
 #include "BooksI01.generated.h"
+
 // books instance 1 on chap 04
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABooksI01: public ABooks {
