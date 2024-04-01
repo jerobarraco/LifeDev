@@ -10,3 +10,8 @@ APotI00::APotI00():Super() {
 	RewardItem = "Pot00";
 }
 
+void APotI00::BeginPlay() {
+	Super::BeginPlay();
+	SetState(1); // start open
+}
+

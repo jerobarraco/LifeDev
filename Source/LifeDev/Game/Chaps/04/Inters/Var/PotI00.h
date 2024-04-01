@@ -13,4 +13,6 @@ class LIFEDEV_API APotI00: public APot {
 public:
 	APotI00();
 
+protected:
+	virtual void BeginPlay() override;
 };
