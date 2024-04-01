@@ -17,10 +17,11 @@ AStove::AStove():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove.Stove"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,45,0));
-	
-	Interact->SetRelativeLocation(FVector(42.5,-42.5,55));
-	Interact->SetBoxExtent(FVector(45,45,60));
-	SFX->SetRelativeLocation(FVector(42.5,-42.5,55));
+	Mesh->SetQuickCollisionEnabled(true);
+
+	Interact->SetRelativeLocation(FVector(37.5,-42.5,42.5));
+	Interact->SetBoxExtent(FVector(37.5,42.5,42.5));
+	SFX->SetRelativeLocation(FVector(37.5,-42.5,42.5));
 
 	// TODO new one
 	static ConstructorHelpers::FObjectFinder<USoundBase>

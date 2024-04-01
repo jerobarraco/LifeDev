@@ -12,4 +12,5 @@ class LIFEDEV_API APotI00: public APot {
 
 public:
 	APotI00();
+
 };
