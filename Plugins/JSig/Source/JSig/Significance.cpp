@@ -8,21 +8,23 @@ DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 
 USignificance::USignificance():Super() {}
 
-USignificance* USignificance::Get(UWorld* W) {
+USignificance* USignificance::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+	UWorld* const W = O->GetWorld();
 	if (!IsValid(W)) return nullptr;
 	USignificance* const Sig = W->GetSubsystem<USignificance>();
 	return IsValid(Sig) ? Sig : nullptr;
 }
 
 void USignificance::Deinitialize() {
-	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigSub, Log, TEXT("%hs"), __func__);
 	Man = nullptr;
 	PCs.Empty();
 	Super::Deinitialize();
 }
 
 void USignificance::Reset() {
-	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__); // verbose since it can be triggered every frame
 
 	Man = nullptr;
 	PCs.Empty();
@@ -44,14 +46,10 @@ void USignificance::Reset() {
 }
 
 void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
-	UE_LOG(LogJSigSub, Log, TEXT("%hs useBgThread=%i numPCs=%i interval=%5.3f"),
-		__func__, UseBGThread, NumPCs, TickInterval);
+	UE_LOG(LogJSigSub, Log, TEXT("%hs useBgThread=%i numPCs=%i interval=%5.3f tickWhenPaused=%i"),
+		__func__, UseBGThread, NumPCs, TickInterval, TickWhenPaused);
 	Super::Initialize(Collection);
 	Reset();
-	// this won't make the animator work, but will make the USignificance get an EXTRA tick on a different interval (maybe the component's interval)
-	// Animator->RegisterComponentWithWorld(GetWorld());
-	// Animator->RegisterAllComponentTickFunctions(true);
-	// Animator->RegisterComponent();
 }
 
 void USignificance::DoTick() {
@@ -85,12 +83,15 @@ void USignificance::Tick(float DeltaTime) {
 	if (DTAcum< TickInterval) return;
 	DTAcum = 0;
 
+	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
+
 	if (UseBGThread) {
 		// if i make it static and the subsystem gets recreated. this might still keep a ref to the old "this"
 		TUniqueFunction<void()> F = [this] {
 			this->DoTick();
 		};
-		AsyncTask(ENamedThreads::BackgroundThreadPriority, MoveTemp(F));
+		// this thread works on android. "BackgroundThreadPriority" will NOT execute.
+		AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, MoveTemp(F));
 	} else {
 		DoTick();
 	}
@@ -100,6 +101,7 @@ void USignificance::Tick(float DeltaTime) {
 TStatId USignificance::GetStatId() const {
 	// https://benui.ca/unreal/tickable-object/
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
+	// RETURN_QUICK_DECLARE_CYCLE_STAT(USignificance, STATGROUP_Tickables);
 	return GetStatID();
 }
 
@@ -110,7 +112,7 @@ UGameViewportClient* USignificance::GetAnyGameViewportClient() {
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
 	for (const FWorldContext& Context : WorldContexts)
 	{
-		if ((Context.WorldType == EWorldType::PIE) && Context.World() != nullptr && Context.GameViewport != nullptr)
+		if ((Context.WorldType == EWorldType::PIE) && Context.World() && Context.GameViewport)
 		{
 			return Context.GameViewport;
 		}

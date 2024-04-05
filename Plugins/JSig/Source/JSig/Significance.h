@@ -11,10 +11,11 @@ class USignificanceManager;
 
 // Base subsystem for the significance stuff
 // you can set the defaults for this if you create a file in Config/DefaultJSignificance
+// this file is mandatory for Android or it won't work.
 // with the section [/Script/JSig.Significance]
 // and then the variables like
-// UseBgThread=false
-// NumPCs=-1
+// UseBgThread=true
+// NumPCs=1
 // TickInterval=3.0
 UCLASS(Blueprintable, Category="JSig", Config=JSignificance, DefaultConfig)
 class JSIG_API USignificance : public UTickableWorldSubsystem {
@@ -23,18 +24,10 @@ class JSIG_API USignificance : public UTickableWorldSubsystem {
 public:
 	USignificance();
 
-	// will re-set some of the objects and cache values
-	UFUNCTION(BlueprintCallable)
-	void Reset();
-	
-	static USignificance* Get(UWorld* W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static USignificance* Instance(UObject* O);
 
-	virtual void Deinitialize() override;
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Tick(float DeltaTime) override;
-	virtual TStatId GetStatId() const override;
-	
-	// TODO move to JUtils blueprint library
+	UFUNCTION(BlueprintCallable)
 	static UGameViewportClient* GetAnyGameViewportClient();
 
 	// seconds until next tick. 0 means every frame. discouraged.
@@ -45,9 +38,23 @@ public:
 	int32 NumPCs = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	bool UseBGThread = true;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	bool TickWhenPaused = false;
 
 protected:
+	virtual void Deinitialize() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Tick(float DeltaTime) override;
+	virtual TStatId GetStatId() const override;
+	// the default is conditional. and works fine.
+	// virtual ETickableTickType GetTickableTickType() const override { return ETickableTickType::Always; };
+	// UTickableWorldSubsystem recommends to check for IsInitialized, but it doesn't implements this correctly.
+	virtual bool IsTickable() const override { return IsInitialized(); };
+	virtual bool IsTickableWhenPaused() const override { return IsInitialized() && TickWhenPaused; };
 	void DoTick();
+
+	// will re-set some of the objects and cache values
+	void Reset();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	USignificanceManager* Man = nullptr;

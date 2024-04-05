@@ -48,8 +48,9 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCSignificance::Register() {
 	const AActor* const Owner = GetOwner();
-	const FName Tag(GetNameSafe(Owner));
-	UE_LOG(LogJSigComp, Verbose, TEXT("%hs tag=%s"), __func__, Tag);
+	const FString& Name = GetNameSafe(Owner);
+	const FName Tag(Name);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s"), __func__, *Name);
 
 	// don't register if it doesn't have an owner
 	if (!IsValid(Owner)) {
@@ -104,7 +105,7 @@ float UCSignificance::Calculate(
 	if (TestOcclusion && Owner) {
 		if (IsOccluded(Owner, Viewpoint)) {
 			UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor occluded. Now is off/low. name=%s"),
-				*GetNameSafe(Owner));
+				__func__, *GetNameSafe(Owner));
 		
 			return static_cast<float>( IsOffIfOccluded ? ESigValue::Off : ESigValue::Low);
 		}
@@ -113,7 +114,7 @@ float UCSignificance::Calculate(
 	// test offscreen
 	if (Owner && OffscreenTimeMax >= 0.0f && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor offscreen for too long. Now is off/low. name=%s"),
-			*GetNameSafe(Owner));
+			__func__, *GetNameSafe(Owner));
 		
 		return static_cast<float>( IsOffIfOffscreen ? ESigValue::Off : ESigValue::Low );
 	}
@@ -127,7 +128,7 @@ float UCSignificance::Calculate(
 	// use overriden location if set. otherwise use the actor's one
 	FVector Origin;
 	if (CalcLocation.IsBound()) {
-		Origin = CalcLocation.Execute();	
+		Origin = CalcLocation.Execute();
 	} else if (Owner) {
 		Origin = Owner->GetActorLocation();
 	}
@@ -254,7 +255,7 @@ void UCSignificance::UpdateTicks() {
 	/// Ticks
 	// Don't mess with tick enabled
 	
-	Owner->SetActorTickInterval(Interval);	// Owner
+	Owner->SetActorTickInterval(Interval);// Owner
 
 	/// Components
 	for (UActorComponent* const C: CompsTicks) {
