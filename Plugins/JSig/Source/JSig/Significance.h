@@ -27,9 +27,6 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static USignificance* Instance(UObject* O);
 
-	UFUNCTION(BlueprintCallable)
-	static UGameViewportClient* GetAnyGameViewportClient();
-
 	// seconds until next tick. 0 means every frame. discouraged.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float TickInterval = 1.5f;

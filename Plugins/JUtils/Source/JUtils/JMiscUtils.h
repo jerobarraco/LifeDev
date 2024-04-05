@@ -101,6 +101,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static APlayerController* GetFirstLocalPlayerController(UObject* O);
 
+	UFUNCTION(BlueprintCallable)
+	static UGameViewportClient* GetAnyGameViewportClient();
+
 	// can't be blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
