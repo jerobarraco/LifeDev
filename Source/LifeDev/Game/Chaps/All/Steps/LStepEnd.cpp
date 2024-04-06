@@ -54,7 +54,7 @@ void ALStepEnd::Start_Implementation() {
 	if (StoryMan) StoryMan->ShowBGSolid(true);
 }
 
-void ALStepEnd::PostWait_Implementation() {
-	Super::PostWait_Implementation();
+void ALStepEnd::DoStart_Implementation() {
+	Super::DoStart_Implementation();
 	OpenLevel();
 }

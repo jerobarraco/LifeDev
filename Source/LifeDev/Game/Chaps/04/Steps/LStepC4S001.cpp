@@ -33,6 +33,6 @@ void ALStepC4S001::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 }
 
-void ALStepC4S001::PostWait_Implementation() {
-	Super::PostWait_Implementation();
+void ALStepC4S001::DoStart_Implementation() {
+	Super::DoStart_Implementation();
 }

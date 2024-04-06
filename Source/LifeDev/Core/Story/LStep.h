@@ -51,7 +51,7 @@ public:
 	// this is used to start something AFTER it faded
 	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
 	// TODO make sure i don't need it and remove
-	// TODO need to fix the steps that do use postwait
+	// TODO need to fix the steps that do use doStart
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait", meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 
@@ -96,7 +96,7 @@ public:
 	inline static bool UseDebug = false;
 	
 protected:
-	virtual void PostWait_Implementation() override;
+	virtual void DoStart_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;

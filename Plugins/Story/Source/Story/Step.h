@@ -22,8 +22,11 @@ class STORY_API AStep : public AActor {
 public:
 	AStep();
 
-	// called when the step starts. Better to override PostWait
-	// be sure not to do anything that would finish the step here, use postwait for that.
+	// don´t call directly. called by system.
+	// called when the step just starts. can be in the middle of a fade.
+	// You should override DoStart instead, unless you know what you're doing.
+	// one reason would be to do something just when the fade is on (like loading or fading something).
+	// be sure not to do anything that would finish the step here, use DoStart for that.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay))
 	void Start() ;
 	virtual void Start_Implementation();
@@ -101,8 +104,8 @@ protected:
 	// If FinishPostWait is set, it will finish the step.
 	// this is a good place to do checks that might finish the step.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void PostWait();
-	virtual void PostWait_Implementation();
+	void DoStart();
+	virtual void DoStart_Implementation();
 
 	// gets called when UseDebug is set. happens on postwait
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

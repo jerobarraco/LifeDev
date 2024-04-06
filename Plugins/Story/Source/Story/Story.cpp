@@ -60,7 +60,8 @@ bool UStory::StartNow(AStep* NewStep) {
 	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s' DLLoadSuccess=%i"), 
 		*Current->Name.ToString(), *Current->Title.ToString(), Success);
 
-	// start before broadcasting start
+	// start before broadcasting start.
+	// important so that it's actually ready for whom-ever is subscribed to the delegate
 	Current->Start();
 	OnStart.Broadcast(Current);
 

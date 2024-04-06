@@ -75,17 +75,17 @@ void AStep::Start_Implementation() {
 	// fade and wait are weird combination. i think.
 	BlendCam();
 
-	// do after the rest since post-wait is another flow
+	// do after the rest since doStart is another flow
 	UWorld* const World = GetWorld();
 	if (!World) return;
 	
 	if (WaitTime>0) {
 		FTimerHandle Handle;
-		World->GetTimerManager().SetTimer(Handle, this, &AStep::PostWait, WaitTime);
+		World->GetTimerManager().SetTimer(Handle, this, &AStep::DoStart, WaitTime);
 	} else {
 		// use next tick to avoid having post wait being called before start finishes on the children
 		// also to avoid the situation where a step might inadvertently finish the step while it's starting.  
-		World->GetTimerManager().SetTimerForNextTick(this, &AStep::PostWait);
+		World->GetTimerManager().SetTimerForNextTick(this, &AStep::DoStart);
 	}
 }
 
@@ -101,7 +101,7 @@ void AStep::BlendCam() const {
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
-void AStep::PostWait_Implementation() {
+void AStep::DoStart_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (Debug) {

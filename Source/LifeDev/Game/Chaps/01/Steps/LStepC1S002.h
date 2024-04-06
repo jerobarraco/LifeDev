@@ -18,7 +18,7 @@ public:
 	ALStepC1S002();
 
 protected:
-	virtual void PostWait_Implementation() override;
+	virtual void DoStart_Implementation() override;
 
 	UFUNCTION()
 	void StartShake();

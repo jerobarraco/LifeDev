@@ -31,8 +31,8 @@ ALStepC1S002::ALStepC1S002():Super() {
 	ItemsRem = { "T00"}; // use up the item
 }
 
-void ALStepC1S002::PostWait_Implementation() {
-	Super::PostWait_Implementation();
+void ALStepC1S002::DoStart_Implementation() {
+	Super::DoStart_Implementation();
 	
 	FB->SetMax(1); // reset to 1 since we will change it several times here
 	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger

@@ -41,8 +41,8 @@ void ALStep::Stop_Implementation() {
 	Super::Stop_Implementation();
 }
 
-void ALStep::PostWait_Implementation() {
-	Super::PostWait_Implementation();
+void ALStep::DoStart_Implementation() {
+	Super::DoStart_Implementation();
 	UWorld* const W = GetWorld();
 	if (!W) return;
 

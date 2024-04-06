@@ -19,7 +19,7 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
-	virtual void PostWait_Implementation() override;
+	virtual void DoStart_Implementation() override;
 	
 	UFUNCTION()
 	void OpenLevel();
