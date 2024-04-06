@@ -59,8 +59,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FbDiagMod = 0.0;
 	
-	// dialog or sequence to trigger on start. This will make the step finish when the dialog finishes.
-	// it will also disable FinishPostWait
+	// dialog or sequence to trigger on start.
+	// This will make the step finish when the dialog finishes.
+	// it will also disable FinishPostWait.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName DlgId = NAME_None;
 

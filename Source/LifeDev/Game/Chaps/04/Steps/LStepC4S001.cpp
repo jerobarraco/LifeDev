@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S001.h"
 
+#include "Diags/Diags.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALStepC4S001::ALStepC4S001():Super() {
@@ -31,4 +32,6 @@ void ALStepC4S001::DoStart_Implementation() {
     for (ALInteract* const I: Chars) {
         I->Fade(true);
     }
+	
+	Diags->AddId(FName("C4S1"));
 }
