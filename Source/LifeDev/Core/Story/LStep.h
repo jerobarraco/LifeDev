@@ -14,8 +14,6 @@ class UFlashback;
 class UDiags;
 class UInventory;
 
-// TODO make child classes use FB instead of flashback
-
 // LifeDev base class for story steps
 // be careful it will clear all timers on stop
 UCLASS(Blueprintable, BlueprintType)
