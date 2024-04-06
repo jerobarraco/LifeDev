@@ -8,5 +8,6 @@ ABooksI01::ABooksI01():Super(1, 0) {
 	TriggerDlg = "BK00_T";
 	UseRewardFade = false;
 	IsOneShot = true;
-	Locked = true;
+	Locked = false;
+	// i was pretty sure there was a StepFinish here but i can´t see it.
 }

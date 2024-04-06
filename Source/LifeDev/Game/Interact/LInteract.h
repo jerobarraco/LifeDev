@@ -5,6 +5,7 @@
 
 #include "LInteract.generated.h"
 
+class UStory;
 class UFlags;
 class UCAnimatorFade;
 class UDiags;
@@ -32,7 +33,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-		const bool Rewardless = (ZeroFlash && RewardActor == nullptr && 
+		const bool Rewardless = (!RewardStep && ZeroFlash &&
+			RewardActor == nullptr &&
 			RewardItem.IsNone() && RewardFlag.IsNone());
 		return Rewardless;
 	}
@@ -95,8 +97,13 @@ public:
 	// An actor to reward. will self-destroy if UseRewardFade is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	AActor* RewardActor = nullptr;
-	// actually editanywhere since we want to modify the pointer
+	// actually editAnywhere since we want to modify the pointer
 
+	// Will start the next story step (finishing the current one).
+	// called reward so that the UseRewardFade affects it.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	bool RewardStep = false;
+	
 	// whether or not to fade AND self-destroy when rewarding an item.
 	// uses the AnimFade object and what's set there.
 	// remember to call SetNewMat on the constructor if you use the new material.
@@ -143,6 +150,8 @@ protected:
 	UDiags* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UFlashback* Flashback = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UStory* Story = nullptr;
 };
 
 // TODO at some point *consider* moving the Reward functionality to its own child class

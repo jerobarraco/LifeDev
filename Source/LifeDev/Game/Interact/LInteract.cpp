@@ -9,6 +9,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "Story/Story.h"
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
@@ -51,12 +52,14 @@ void ALInteract::BeginPlay() {
 		}
 	}
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
+	
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
 	Flashback = World->GetSubsystem<UFlashback>();
+	Story = World->GetSubsystem<UStory>();
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -66,6 +69,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Diags = nullptr;
 	Flags = nullptr;
 	Flashback = nullptr;
+	Story = nullptr;
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -73,13 +77,21 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALInteract::DoRewards() {
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	/// Rewards
 	const bool Rewardless = IsRewardless();
 	if (Rewardless) return; // just return. nothing to do. don't self destroy or anything.
 
+	// it's not necessary to call "disable while anim = false" here.
+	// since it's up to the client to allow re-triggerables.
+	// and we're only concerned with SetEnabled(false) here.
+	// and it's easier and clearer this way than messing with DisableWhileAnim
+	// which would step on the client's intention.
+	// this is to avoid re-rewarding due to multi clicks.
+	SetEnabled(false);
+	
 	if (Flashback) Flashback->ModVal(RewardFlash);
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
@@ -103,18 +115,15 @@ void ALInteract::DoRewards() {
 		}
 	}
 
-	// not necessary to call "disable while anim = false" here.
-	// since it's up to the client to allow re-triggerables.
-	// and we're only concerned with SetEnabled(false) here.
-	// and it's easier and clearer this way than messing with DisableWhileAnim which
-	// would step on the client's intention.
-	// avoid re-rewarding due to multi clicks
-	SetEnabled(false);
+	if (RewardStep && IsValid(Story)) Story->StartNext();
 
-	// trigger separately since sometimes the item could not be rewarded on trigger.
+	/// rewards virtually done
+
+	// trigger separately,
+	// since sometimes the item could be rewarded outside of trigger. (e.g. manually)
 	Rewarded();
 	
-	/// Process auto destroy. do at the end.
+	/// done: Process auto destroy. (do at the end.)
 
 	// don't destroy if not userewardfade
 	if (!UseRewardFade) return;
