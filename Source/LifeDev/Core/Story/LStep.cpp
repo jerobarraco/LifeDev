@@ -111,8 +111,8 @@ void ALStep::DestroyActors() {
 	UE_LOG(LogLStoryStep, Log, TEXT("Destroy actors called"));
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
-	if (IsValid(Actor)) Actor->Destroy();
-	Actor = nullptr;
+	if (IsValid(ShowActor)) ShowActor->Destroy();
+	ShowActor = nullptr;
 
 	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;
@@ -187,10 +187,10 @@ void ALStep::Finish_Implementation() {
 }
 
 void ALStep::SetChildActorEnabled(const bool Enabled, const bool WithFade) {
-	if (!IsValid(Actor)) return;
+	if (!IsValid(ShowActor)) return;
 
-	Actor->SetActorHiddenInGame(!Enabled);
-	ALInteract* const Inter = Cast<ALInteract>(Actor);
+	ShowActor->SetActorHiddenInGame(!Enabled);
+	ALInteract* const Inter = Cast<ALInteract>(ShowActor);
 
 	if (!Inter) return;
 	if (WithFade) Inter->Fade(Enabled);

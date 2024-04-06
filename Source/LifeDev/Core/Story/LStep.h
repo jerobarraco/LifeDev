@@ -74,8 +74,7 @@ public:
 	// it will get destroyed on Stop, set this to null to avoid it.
 	// purposely an actor to have flexibility
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
-	AActor* Actor = nullptr;
-	// TODo rename. to something clearer. SubActor or ChildActor or LinkActor or smth
+	AActor* ShowActor = nullptr;
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could if i leave the destroy only for LStep
 	// but that would make it lame to use, as both classes would behave differently

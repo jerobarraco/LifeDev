@@ -42,7 +42,7 @@ void ALStepC3S002::Stop_Implementation() {
     // once the player obtains the interact and gets destroyed;
     // there's a lot of chance of problems due to timing issues.
     // specially since this step finishes with Card3 obtained.
-    Actor = nullptr;
+    ShowActor = nullptr;
 
 	RndFB->Deactivate();
 	FB->SetMin(0);
