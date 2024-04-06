@@ -5,7 +5,7 @@
 
 #include "FridgeI00.generated.h"
 
-// Base class for FridgeI00. extend for instances.
+// Fridge instance on chap04
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AFridgeI00: public AFridge {
 	GENERATED_BODY()
