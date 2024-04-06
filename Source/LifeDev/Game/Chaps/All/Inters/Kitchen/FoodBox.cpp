@@ -9,7 +9,7 @@
 AFoodBox::AFoodBox():Super() {
 	Texts = { FText::FromString(TEXT("FoodBox"))};
 	RewardFlash = 0;
-	UseRewardFade = false;
+	UseRewardFade = true;
 	StateNum = 1;
 	UseAnim = false;
 
@@ -29,4 +29,3 @@ AFoodBox::AFoodBox():Super() {
 	SFX_Trigger = CSnd.Object;
 	Super::SetMobility(EComponentMobility::Static);
 }
-
