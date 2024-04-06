@@ -52,10 +52,8 @@ UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 
 	// TODO this is not working as expected.
 	World = GetEdWorld();
-	
-	if (!World) {
-		World = GEngine->GetWorld();	
-	}
+	if (!World) World = GEngine->GetWorld();
+
 	return World;
 }
 
@@ -65,15 +63,11 @@ void UJMiscUtils::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Pri
 	
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
-			Controller->GetLocalPlayer()
-	);
+			Controller->GetLocalPlayer());
 	if (!IsValid(Subsystem)) return;
 
-	if (Enable) {
-		Subsystem->AddMappingContext(Ctx, Prio);
-	} else {
-		Subsystem->RemoveMappingContext(Ctx);
-	}
+	if (Enable) Subsystem->AddMappingContext(Ctx, Prio);
+	else Subsystem->RemoveMappingContext(Ctx);
 }
 
 void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
@@ -86,27 +80,21 @@ void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused)
 	if (Show) {
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(
 			Controller, Focus, EMouseLockMode::DoNotLock, true);
-	} else {
-		UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-	}
+	} else UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+
 	Controller->SetShowMouseCursor(Show);
 
-	if (SetPaused) {
-		UGameplayStatics::SetGamePaused(World, Show);
-	}
+	if (SetPaused) UGameplayStatics::SetGamePaused(World, Show);
 }
 
 void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
 	// don't use [&Task, &Done] since that will break on calling BPAsync multiple times
-	Async((EAsyncExecution) Exec, [Task, Done]
-	{
+	Async(static_cast<EAsyncExecution>(Exec), [Task, Done]{
 		Task.ExecuteIfBound();
-		if (Done.IsBound()) {
-			AsyncTask(ENamedThreads::GameThread, [Done]
-			{
-				Done.ExecuteIfBound();
-			});
-		}
+		// necessary or crash :C
+		if (Done.IsBound()) AsyncTask(ENamedThreads::GameThread, [Done]{
+			Done.ExecuteIfBound();
+		});
 	});
 }
 
@@ -130,10 +118,7 @@ bool UJMiscUtils::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 
 bool UJMiscUtils::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
-	return A.TrimStartAndEnd().Equals(
-		B.TrimStartAndEnd(),
-		ESearchCase::IgnoreCase
-	);
+	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
 }
 
 void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const FLinearColor& Color) {
