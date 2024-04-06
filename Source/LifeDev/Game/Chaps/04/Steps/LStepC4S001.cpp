@@ -21,18 +21,14 @@ void ALStepC4S001::BeginPlay() {
 	}
 }
 
-void ALStepC4S001::Start_Implementation() {
-	Super::Start_Implementation();
-	
-	for (ALInteract* const I: Chars) {
-		I->Fade(false);
-	}
-}
-
 void ALStepC4S001::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 }
 
 void ALStepC4S001::DoStart_Implementation() {
 	Super::DoStart_Implementation();
+	// fade on start to use 
+    for (ALInteract* const I: Chars) {
+        I->Fade(true);
+    }
 }

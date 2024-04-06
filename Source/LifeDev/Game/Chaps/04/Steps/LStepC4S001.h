@@ -18,7 +18,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void Start_Implementation() override;
 	virtual void DoDebug_Implementation() override;
 	virtual void DoStart_Implementation() override;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
