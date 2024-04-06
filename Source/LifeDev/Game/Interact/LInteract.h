@@ -20,6 +20,7 @@ class LIFEDEV_API ALInteract: public AInteractAnim {
 public:
 	ALInteract();
 
+	// will fade in/out the object. also sets enabled by default.
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool FadeIn = false);
 

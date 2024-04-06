@@ -15,10 +15,6 @@ ALStepC4S002::ALStepC4S002():Super() {
 
 void ALStepC4S002::BeginPlay() {
 	Super::BeginPlay();
-
-	for (ALInteract* const I: Chars) {
-		I->Fade(false);
-	}
 }
 
 void ALStepC4S002::DoDebug_Implementation() {
@@ -27,8 +23,4 @@ void ALStepC4S002::DoDebug_Implementation() {
 
 void ALStepC4S002::DoStart_Implementation() {
 	Super::DoStart_Implementation();
-	// fade on start to use 
-    for (ALInteract* const I: Chars) {
-        I->Fade(true);
-    }
 }

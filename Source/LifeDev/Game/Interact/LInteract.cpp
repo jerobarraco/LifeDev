@@ -23,6 +23,11 @@ ALInteract::ALInteract():Super() {
 void ALInteract::Fade(bool FadeIn) {
 	AnimFade->IsReversed = FadeIn;
 	AnimFade->Activate(true);
+	// i have bad feeling about this.
+	// probably could collide with the intention of fading something in without being enabled
+	// might happen on a step auto-fading something.
+	// please me from the future, be careful 
+	SetEnabled(FadeIn);
 }
 
 void ALInteract::BeginPlay() {
