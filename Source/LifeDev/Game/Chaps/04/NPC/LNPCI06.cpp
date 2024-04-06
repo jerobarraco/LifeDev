@@ -7,4 +7,5 @@ ALNPCI06::ALNPCI06():Super() {
 	RewardStep = true;
 	UseRewardFade = false;
 	Locked = false;
+	IsOneShot = true;
 }
