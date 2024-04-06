@@ -11,4 +11,10 @@ class LIFEDEV_API ASpongeI00: public ASponge {
 
 public:
 	ASpongeI00();
+
+protected:
+	virtual void DoTrigger_Implementation() override;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<ALInteract*> Plates; 
 };
