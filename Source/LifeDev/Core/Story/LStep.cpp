@@ -50,7 +50,7 @@ void ALStep::PostWait_Implementation() {
 	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 		
-		// ensure to check if we already have the item
+		// ensure to check if we already have the item. but not now to not affect the flow of child classes
 		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
 	}
 

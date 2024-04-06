@@ -23,8 +23,16 @@ void ALStepC4S001::BeginPlay() {
 
 void ALStepC4S001::Start_Implementation() {
 	Super::Start_Implementation();
+	
+	for (ALInteract* const I: Chars) {
+		I->Fade(false);
+	}
 }
 
 void ALStepC4S001::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
+}
+
+void ALStepC4S001::PostWait_Implementation() {
+	Super::PostWait_Implementation();
 }

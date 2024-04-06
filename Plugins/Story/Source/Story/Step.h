@@ -21,7 +21,6 @@ class STORY_API AStep : public AActor {
 
 public:
 	AStep();
-	void DoTeleport();
 
 	// called when the step starts. Better to override PostWait
 	// be sure not to do anything that would finish the step here, use postwait for that.
@@ -39,6 +38,9 @@ public:
 	void Finish();
 	virtual void Finish_Implementation();
 	
+	UFUNCTION(BlueprintCallable)
+	void DoTeleport();
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName Name;
 

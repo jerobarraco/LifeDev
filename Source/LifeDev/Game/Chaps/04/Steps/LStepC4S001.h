@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Start_Implementation() override;
 	virtual void DoDebug_Implementation() override;
-
+	virtual void PostWait_Implementation() override;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<ALInteract*> Chars;
 };

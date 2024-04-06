@@ -53,7 +53,7 @@ void AStep::DoTeleport() {
 	Char->GetComponents<UCameraComponent>(Cams);
 	if (Cams.Num()<=0) return;
 
-	UCameraComponent* const C = Cams[0];
+	const UCameraComponent* const C = Cams[0];
 	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
 	if (!IsValid(C)) return;
 
