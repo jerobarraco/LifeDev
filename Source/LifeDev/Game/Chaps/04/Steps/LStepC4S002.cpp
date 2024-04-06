@@ -11,14 +11,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 	TeleportChar = false;
 }
 
-void ALStepC4S002::BeginPlay() {
-	Super::BeginPlay();
-}
-
-void ALStepC4S002::DoDebug_Implementation() {
-	Super::DoDebug_Implementation();
-}
-
 void ALStepC4S002::DoStart_Implementation() {
 	Super::DoStart_Implementation();
+	ShowActor = nullptr; //forget about the sponge. don't want to destroy it.
 }
