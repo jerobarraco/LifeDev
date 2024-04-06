@@ -5,7 +5,7 @@
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
 	RewardItem = "Plates";
-	// RewardStep = true;
+	RewardStep = true;
 	Locked = false;
 	UseRewardFade = false;
 	IsOneShot = true;
@@ -17,7 +17,10 @@ void ASpongeI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	for (ALInteract* const I: Plates) {
 		if (!IsValid(I)) continue;
-		I->Fade(false);
-		I->SetEnabled(false);
+		// fading not working. time available exhausted.
+		I->Destroy();
+		// I->Fade(false);
+		// I->SetEnabled(false);
 	}
+	Plates.Empty();
 }
