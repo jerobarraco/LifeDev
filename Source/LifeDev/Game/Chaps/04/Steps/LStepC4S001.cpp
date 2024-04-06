@@ -1,13 +1,12 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S001.h"
 
-#include "Diags/Diags.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALStepC4S001::ALStepC4S001():Super() {
 	Name = FName("C4S1");
 	UseFade = false;
-	// DlgId = FName("C4S0"); // this chapter finishes after the dialog
+	DlgId = FName("C4S1"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;
@@ -32,6 +31,4 @@ void ALStepC4S001::DoStart_Implementation() {
     for (ALInteract* const I: Chars) {
         I->Fade(true);
     }
-	
-	Diags->AddId(FName("C4S1"));
 }
