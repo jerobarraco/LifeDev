@@ -3,4 +3,8 @@
 
 ALNPCI06::ALNPCI06():Super() {
 	SetEnabled(true);
+	TriggerDlg = "NPCI06_T";
+	RewardStep = true;
+	UseRewardFade = false;
+	Locked = false;
 }
