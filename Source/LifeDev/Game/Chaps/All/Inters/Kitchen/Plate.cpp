@@ -12,7 +12,7 @@ APlate::APlate():Super() {
 	UseRewardFade = false;
 	StateNum = 1;
 	UseAnim = false;
-
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -28,6 +28,7 @@ APlate::APlate():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03.Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
 
+	SetEnabled(false);
 	// SFX_Start = { CSndClose.Object, CSndOpen.Object };
 	// SFX_Trigger = CSndClose.Object;
 	// TODO sound
