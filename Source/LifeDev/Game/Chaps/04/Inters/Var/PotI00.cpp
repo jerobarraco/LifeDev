@@ -10,6 +10,10 @@ APotI00::APotI00():Super() {
 	LockedDlg = "Pot00_L";
 	TriggerDlg = "Pot00_T";
 	SetEnabled(false);
+	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
+	// and i think that the player will find easier to tell when something became enabled. 
+	// than realizing something became unlocked.
+	// (without any extra cue/feedback which i'm not going to add now)
 }
 
 void APotI00::BeginPlay() {

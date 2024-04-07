@@ -9,6 +9,7 @@ ASpongeI00::ASpongeI00():Super() {
 	Locked = false;
 	UseRewardFade = false;
 	IsOneShot = true;
+	SetEnabled(false);
 	// TODO if i have time, on trigger, fade out, then fade in and do reward
 	// might be easier to do with an extra step
 }

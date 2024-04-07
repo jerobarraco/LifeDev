@@ -16,12 +16,4 @@ class ALStepC4S003 : public ALStep {
 
 public:
 	ALStepC4S003();
-
-protected:
-	virtual void BeginPlay() override;
-	virtual void DoDebug_Implementation() override;
-	virtual void DoStart_Implementation() override;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<ALInteract*> Chars;
 };
