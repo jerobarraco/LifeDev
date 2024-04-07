@@ -5,21 +5,23 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStepC4S002.generated.h"
+#include "LStepC4S003.generated.h"
 
 class ALInteract;
 
-// pot and stove interactions
+// some dialog. pot and fridge
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC4S002 : public ALStep {
+class ALStepC4S003 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStepC4S002();
+	ALStepC4S003();
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void DoDebug_Implementation() override;
 	virtual void DoStart_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* Pot = nullptr;
+	TArray<ALInteract*> Chars;
 };

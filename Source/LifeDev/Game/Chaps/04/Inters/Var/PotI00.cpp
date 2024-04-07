@@ -4,9 +4,10 @@
 
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
-	Texts = {FText::FromString(TEXT("A")), FText::FromString(TEXT("B")) };
+	Texts = {FText::FromString(TEXT("Hot pot")), FText::FromString(TEXT("Empty pot")) };
 	UseRewardFade = false;
 	Locked = false;
+	LockedDlg = "Pot00_L";
 	TriggerDlg = "Pot00_T";
 	SetEnabled(false);
 }
