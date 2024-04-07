@@ -27,8 +27,12 @@ void ALStepC4S001::DoDebug_Implementation() {
 
 void ALStepC4S001::DoStart_Implementation() {
 	Super::DoStart_Implementation();
-	// fade on start to use 
-    for (ALInteract* const I: Chars) {
+	// fade on start to use
+	for (uint8 i = 0; i< Chars.Num(); ++i) {
+		ALInteract* const I = Chars[i];
+		if (!I) continue;
         I->Fade(true);
+		// enable npci06 and disable the rest
+		I->SetEnabled(i==0);
     }
 }
