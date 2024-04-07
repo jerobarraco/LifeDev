@@ -3,10 +3,11 @@
 #include "FridgeI00.h"
 
 AFridgeI00::AFridgeI00():Super() {
-	Locked=true;
+	// Locked=true;
 	IsOneShot=true;
-	LockedDlg="Fridge_L";
-	SetEnabled(true);
+	TriggerDlg="Fridge00_T";
 	UseRewardFade=false;
+	RewardItem = "Food01";
+	SetEnabled(true);
 }
 
