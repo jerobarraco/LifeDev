@@ -5,15 +5,15 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStepC4S002.generated.h"
+#include "LStepC4S004.generated.h"
 
 class ALInteract;
 
-// pot and stove interactions
+// fridge and rice
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC4S002 : public ALStep {
+class ALStepC4S004 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStepC4S002();
+	ALStepC4S004();
 };

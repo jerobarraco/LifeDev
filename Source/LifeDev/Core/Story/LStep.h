@@ -8,6 +8,7 @@
 
 #include "LStep.generated.h"
 
+class AInteract;
 class AGhosts;
 class UFlags;
 class UFlashback;
@@ -38,7 +39,9 @@ public:
 
 	// enables or disables the linked actor
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetChildActorEnabled(const bool Enabled, const bool WithFade=true);
+	void SetShowActorEnabled(const bool Enabled = true, const bool WithFade=true);
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void SetIntersEnabled(const bool Enabled=true);
 
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -78,7 +81,11 @@ public:
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could if i leave the destroy only for LStep
 	// but that would make it lame to use, as both classes would behave differently
-	
+
+	// interacts to enable on DoStart ( after wait)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	TArray<AInteract*> IntersEnable;
+
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;

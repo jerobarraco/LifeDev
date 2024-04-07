@@ -1,8 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-#include "LStepC4S002.h"
+#include "LStepC4S004.h"
 
-ALStepC4S002::ALStepC4S002():Super() {
-	Name = FName("C4S2");
+ALStepC4S004::ALStepC4S004():Super() {
+	Name = FName("C4S4");
 	UseFade = false;
 	// DlgId = FName("C4S1"); 
 	InputEnabled = true;
@@ -11,4 +11,4 @@ ALStepC4S002::ALStepC4S002():Super() {
 	TeleportChar = false;
 }
 
-// enables the pot
+// enables the fridge and rice and pot

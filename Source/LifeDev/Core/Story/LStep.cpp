@@ -22,10 +22,11 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Diags)) Diags->OnDone.RemoveAll(this);
 	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
-
-	SetChildActorEnabled(false, true);
-
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
+
+	SetShowActorEnabled(false, true);
+	SetIntersEnabled(false);
+	RemoveItems();
 
 	UWorld* const W = GetWorld();
 	if (W) {
@@ -36,9 +37,7 @@ void ALStep::Stop_Implementation() {
 		W->GetTimerManager().SetTimer(H, this, &ALStep::DestroyActors, 2);
 	}
 
-	RemoveItems();
-	
-	Super::Stop_Implementation();
+	Super::Stop_Implementation();	// do at end. t
 }
 
 void ALStep::DoStart_Implementation() {
@@ -71,7 +70,8 @@ void ALStep::DoStart_Implementation() {
 		}
 	}
 
-	SetChildActorEnabled(true, true);
+	SetShowActorEnabled(true, true);
+	SetIntersEnabled(true);
 
 	// show dialogs
 	StartDialogs();
@@ -147,7 +147,8 @@ void ALStep::BeginPlay() {
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = UFlags::Instance(World);
 
-	SetChildActorEnabled(false, false);
+	SetShowActorEnabled(false, false);
+	SetIntersEnabled(false);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -186,7 +187,7 @@ void ALStep::Finish_Implementation() {
 	Super::Finish_Implementation();
 }
 
-void ALStep::SetChildActorEnabled(const bool Enabled, const bool WithFade) {
+void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
 	if (!IsValid(ShowActor)) return;
 
 	ShowActor->SetActorHiddenInGame(!Enabled);
@@ -195,4 +196,10 @@ void ALStep::SetChildActorEnabled(const bool Enabled, const bool WithFade) {
 	if (!Inter) return;
 	if (WithFade) Inter->Fade(Enabled);
 	Inter->SetEnabled(Enabled);
+}
+
+void ALStep::SetIntersEnabled(const bool Enabled) {
+	for (AInteract* const I: IntersEnable) {
+		if (IsValid(I)) I->SetEnabled(Enabled);
+	}
 }
