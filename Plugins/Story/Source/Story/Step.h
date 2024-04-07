@@ -40,22 +40,25 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Finish();
 	virtual void Finish_Implementation();
-	
+
+	// teleports the player to where this step is located. including view point.
 	UFUNCTION(BlueprintCallable)
 	void DoTeleport();
 
+	// name of the step. critically necessary. for the step system to start it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName Name;
 
 	// the camera to switch to automatically. Set to null to not switch to.
-	// By default is the own camera. or you can set UsePanwCam to use the pawn's camera 
+	// By default is the own camera. or you can set UsePawnCam to use the pawn's camera 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	AActor* CamTarget = nullptr;
 
-	// will target pawn automatically, will override the camtarget
+	// will target pawn automatically, will override the camTarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
 
+	// time used to animate the change of cameras
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	float CamBlendTime = 2.0;
 	

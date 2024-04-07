@@ -9,6 +9,7 @@
 
 class ALInteract;
 
+// some dialog. between book and pot
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S001 : public ALStep {
 	GENERATED_BODY()
