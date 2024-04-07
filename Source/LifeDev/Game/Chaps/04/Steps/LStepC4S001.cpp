@@ -23,10 +23,6 @@ void ALStepC4S001::BeginPlay() {
 	}
 }
 
-void ALStepC4S001::DoDebug_Implementation() {
-	Super::DoDebug_Implementation();
-}
-
 void ALStepC4S001::DoStart_Implementation() {
 	Super::DoStart_Implementation();
 	// fade on start to use
@@ -34,7 +30,7 @@ void ALStepC4S001::DoStart_Implementation() {
 		ALInteract* const I = Chars[i];
 		if (!I) continue;
         I->Fade(true);
-		// enable npci06 and disable the rest
-		I->SetEnabled(i==0);
+		// no talking on the table (actually makes it difficult because of the steps so...)
+		I->SetEnabled(false); // I->SetEnabled(i==0);
     }
 }
