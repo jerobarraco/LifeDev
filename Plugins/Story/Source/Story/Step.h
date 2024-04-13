@@ -22,7 +22,7 @@ class STORY_API AStep : public AActor {
 public:
 	AStep();
 
-	// don´t call directly. called by system.
+	// don't call directly. called by system.
 	// called when the step just starts. can be in the middle of a fade.
 	// You should override DoStart instead, unless you know what you're doing.
 	// one reason would be to do something just when the fade is on (like loading or fading something).

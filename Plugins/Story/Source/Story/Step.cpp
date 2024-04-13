@@ -22,9 +22,13 @@ AStep::AStep():Super() {
 	Cam->SetupAttachment(Root);
 	Cam->SetComponentTickEnabled(false);
 	Cam->SetVisibility(false);
+
+#ifdef WITH_EDITORONLY_DATA
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
 	if (CCam.Succeeded()) Cam->SetCameraMesh(CCam.Object);
+#endif
+	
 	CamTarget = this;
 }
 
