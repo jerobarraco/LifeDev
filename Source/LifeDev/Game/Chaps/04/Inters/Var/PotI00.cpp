@@ -10,6 +10,7 @@ APotI00::APotI00():Super() {
 	LockedDlg = "Pot00_L";
 	TriggerDlg = "Pot00_T";
 	SetEnabled(false);
+	IsOneShot = true;
 	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
 	// and i think that the player will find easier to tell when something became enabled. 
 	// than realizing something became unlocked.
@@ -26,6 +27,6 @@ void APotI00::BeginPlay() {
 void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	if (Stove) Stove->SetEnabled(true);
-	// Locked = true;
-	SetEnabled(false);
 }
+
+// on editor. enables the stove.

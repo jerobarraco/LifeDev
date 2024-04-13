@@ -9,3 +9,5 @@ ALNPCI06::ALNPCI06():Super() {
 	Locked = false;
 	IsOneShot = true;
 }
+
+// on editor. enables the pot.
