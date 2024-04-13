@@ -81,7 +81,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
-	// When true will disable the interact on trigger. Calling SetEnable(false)
+	// When true will disable the interact on trigger. Calling SetEnable(false).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
 	

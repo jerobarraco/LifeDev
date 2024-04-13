@@ -11,10 +11,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
 static const FString SaveSlot("LifeDev_");
 
-ULSettings* ULSettings::Instance(UWorld* World) {
-	if (!IsValid(World))  return nullptr;
-	UGameInstance* const Instance = World->GetGameInstance();
-	if (!IsValid(Instance))  return nullptr;
+ULSettings* ULSettings::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+
+	const UWorld* const World = O->GetWorld();
+	if (!IsValid(World)) return nullptr;
+
+	const UGameInstance* const Instance = World->GetGameInstance();
+	if (!IsValid(Instance)) return nullptr;
 	
 	return Instance->GetSubsystem<ULSettings>();
 }
@@ -152,8 +156,8 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 	FeatUpdated(Feat, Enable);
 }
 
-bool ULSettings::GetFeatS(UWorld* World, EFeat Feat) {
-	ULSettings* const I = ULSettings::Instance(World);
+bool ULSettings::GetFeatS(UObject* O, EFeat Feat) {
+	const ULSettings* const I = ULSettings::Instance(O);
 	return IsValid(I) ? I->GetFeat(Feat) : false;
 }
 

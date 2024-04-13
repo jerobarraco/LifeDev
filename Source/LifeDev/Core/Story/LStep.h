@@ -82,7 +82,7 @@ public:
 	// or maybe i could if i leave the destroy only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 
-	// interacts to enable on DoStart ( after wait)
+	// Interacts to enable on DoStart (after wait)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
 	TArray<AInteract*> IntersEnable;
 

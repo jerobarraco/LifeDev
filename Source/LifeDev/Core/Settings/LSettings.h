@@ -20,10 +20,10 @@ class LIFEDEV_API ULSettings: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(WorldContext="World"))
-	static ULSettings* Instance(UWorld* World);
-	UFUNCTION(BlueprintCallable)
-	static bool GetFeatS(UWorld* World, EFeat Feat);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ULSettings* Instance(UObject* O);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool GetFeatS(UObject* O, EFeat Feat);
 
 	// overrides current save with a new game
 	// defaults to current slot
