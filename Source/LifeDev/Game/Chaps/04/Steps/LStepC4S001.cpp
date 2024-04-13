@@ -6,6 +6,7 @@
 ALStepC4S001::ALStepC4S001():Super() {
 	Name = FName("C4S1");
 	DlgId = Name; // this chapter finishes after the dialog
+	// includes the "im hungry"
 	UseFade = false;
 	InputEnabled = false;
 	UsePawnCam = false;
@@ -30,7 +31,9 @@ void ALStepC4S001::DoStart_Implementation() {
 		ALInteract* const I = Chars[i];
 		if (!I) continue;
         I->Fade(true);
-		// no talking on the table (actually makes it difficult because of the steps so...)
-		I->SetEnabled(false); // I->SetEnabled(i==0);
+		// no talking on the table (actually makes it difficult because of the dialogs so...)
+		// this step finishes as the dialog finishes
+		// I->SetEnabled(false);
+		I->SetEnabled(i==0); // npci6 continues the flow
     }
 }

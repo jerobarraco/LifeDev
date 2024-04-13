@@ -9,7 +9,7 @@
 
 // chap04 "char07"
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALNPCI06 : public ALNPC02 {
+class LIFEDEV_API ALNPCI06: public ALNPC02 {
 	GENERATED_BODY()
 
 public:

@@ -18,11 +18,14 @@ APotI00::APotI00():Super() {
 
 void APotI00::BeginPlay() {
 	Super::BeginPlay();
+	UseAnim = false; // sucks but avoids disable while anim breaking the set enabled
 	SetState(1); // start open
+	UseAnim = true;
 }
 
 void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	if (Stove) Stove->SetEnabled(true);
-	Locked = true;
+	// Locked = true;
+	SetEnabled(false);
 }

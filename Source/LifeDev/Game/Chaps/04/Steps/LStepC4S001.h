@@ -9,7 +9,7 @@
 
 class ALInteract;
 
-// some dialog. between book and pot
+// some dialog. between book and pot. shows characters.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S001 : public ALStep {
 	GENERATED_BODY()
