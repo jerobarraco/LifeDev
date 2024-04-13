@@ -6,7 +6,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AFoodBoxI00::AFoodBoxI00():Super() {
-	Texts = { FText::FromString(TEXT("Pick rice box"))};
+	Texts = { FText::FromString(TEXT("Rice box"))};
 	RewardItem = "Food00";
 	RewardFlash = .1;
 	UseRewardFade = true;

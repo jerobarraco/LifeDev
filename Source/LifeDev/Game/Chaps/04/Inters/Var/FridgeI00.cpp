@@ -6,8 +6,9 @@ AFridgeI00::AFridgeI00():Super() {
 	// Locked=true;
 	IsOneShot=true;
 	TriggerDlg="Fridge00_T";
-	UseRewardFade=false;
+	UseRewardFade = false;
 	RewardItem = "Food01";
-	SetEnabled(true);
+	RewardFlash = .1;
+	SetEnabled(false);
 }
 
