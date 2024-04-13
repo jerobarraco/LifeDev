@@ -114,6 +114,11 @@ void AInteract::DoTrigger_Implementation() {
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
+
+	for(AInteract* const I: RewardInterEnable) {
+		if (IsValid(I)) I->SetEnabled(true);
+	}
+	
 	if (IsOneShot) SetEnabled(false);
 }
 

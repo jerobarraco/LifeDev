@@ -167,6 +167,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<AInteract*> RewardInterEnable;
+
 	/// CDO
 
 	// added here so it can be changed in the editor. otherwise it wont show. :(
