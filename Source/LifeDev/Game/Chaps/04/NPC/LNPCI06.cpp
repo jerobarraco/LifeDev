@@ -10,4 +10,4 @@ ALNPCI06::ALNPCI06():Super() {
 	IsOneShot = true;
 }
 
-// on editor. enables the pot.
+// on editor. rewardinterenabled. enables the pot.

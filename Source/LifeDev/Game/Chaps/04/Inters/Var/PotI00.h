@@ -16,7 +16,5 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void DoTrigger_Implementation() override;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* Stove = nullptr;
 };
+
