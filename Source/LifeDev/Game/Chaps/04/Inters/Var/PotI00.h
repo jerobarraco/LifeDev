@@ -16,5 +16,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void DoTrigger_Implementation() override;
+	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+	
+	// keeps track of the interaction step. sucks, but not as much as
+	// the other things i came up with, which are : none.
+	uint8 Step = 0;
+	uint8 Foods = 0;
 };
 
