@@ -15,6 +15,8 @@ UInventory* UInventory::Instance(UWorld* W) {
 bool UInventory::Mod(const FName& Name, int32 Diff) {
 	if (Name.IsNone()) return false;
 
+	UE_LOG(LogInventory, Log, TEXT("Mod item. name=%s, diff=%i"), *Name.ToString(), Diff);
+
 	FName NewSel = NAME_None; // name for the new selection, none if not changed
 	bool SetSelect = false; // need another flag because we might wanna set the selected to none
 
@@ -144,18 +146,14 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 
 bool UInventory::Get(const FName& Name, FItem& OutItem) const {
 	const FItem* pItem = Items.Find(Name);
-	if (!pItem) {
-		return false;
-	}
+	if (!pItem) return false;
 
 	OutItem = *pItem; // purposely return a copy
 	return true;
 }
 
 void UInventory::Init(UDataTable* DataTable) {
-	if (IsValid(DataTable)) {
-		DT = DataTable;
-	}
+	if (IsValid(DataTable)) DT = DataTable;
 }
 
 void UInventory::DeInit() {
@@ -229,6 +227,8 @@ bool UInventory::Use(const FName& Name) {
 		return false;
 	}
 
+	UE_LOG(LogInventory, Log, TEXT("%hs item=%s"), __func__, *Name.ToString());
+
 	// intentionally make a copy since when an object gets removed from the pool,
 	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
 	FName OldName = Name;
@@ -278,9 +278,8 @@ bool UInventory::IsCold(const FItem& Item) {
 	return Cold;
 }
 
-
 void UInventory::SetCoolTimerEnabled(bool Enable) {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	// done this way since there could be many items hot at the same time.

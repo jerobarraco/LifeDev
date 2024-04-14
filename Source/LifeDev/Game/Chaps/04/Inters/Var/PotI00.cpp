@@ -30,7 +30,6 @@ APotI00::APotI00():Super() {
 		FText::FromString(TEXT("Empty pot")),
 		FText::FromString(TEXT("Hot pot")),
 		FText::FromString(TEXT("Done pot")),
-	
 	};
 	const FRotator State0Rot(0, -10, 0);
 	Trans = {
@@ -44,9 +43,6 @@ APotI00::APotI00():Super() {
 
 void APotI00::BeginPlay() {
 	Super::BeginPlay();
-	// setState below would re-enable the object and we don't want that
-	// DisableWhileAnim = false;
-	// SetState(1); // start open
 }
 
 void APotI00::DoTrigger_Implementation() {
