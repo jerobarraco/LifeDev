@@ -56,8 +56,9 @@ void APotI00::DoTrigger_Implementation() {
 		// locked so that player can't trigger manually but
 		// they can still use the items on it.
 		Locked = true;
-		// forget about the stove. important for the next interaction.
+		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
+		TriggerDlg = ""; // clear the trigger dialog for next step
 		// Step = 1;
 	} else if (State == 2) {
 		Story->StartNext();// TODO test
@@ -69,11 +70,9 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// TODo This is consuming both items. why?
 	// only observe these items
 	if (Name == "Food00" || Name == "Food01") {
-		const bool Ok = Inventory->Use(Name);
-		// ensure we actually have the items (should not happen unless an error or cracked)
-		if (Ok) ++Foods;
+		++Foods;
 		if (Foods == 2) DoTrigger(); // to advance the state 
-		return Ok ? EItemUseResult::SUCCESS : EItemUseResult::BAD_HANDLED;
+		return EItemUseResult::SUCCESS;
 	}
 
 	// TODO the plates

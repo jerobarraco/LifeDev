@@ -338,7 +338,7 @@ void ALChar::ActItem() {
 
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
-	EItemUseResult Res = Interactor->TryUseItem(Selected);
+	const EItemUseResult Res = Interactor->TryUseItem(Selected);
 	if (Res == EItemUseResult::BAD_HANDLED) {
     	UE_LOG(LogLChar, Log, TEXT("Can't use item with that. But it was handled."));
     	return;
@@ -361,7 +361,8 @@ void ALChar::ActItem() {
 		return;
 	}
 
-	// mark the item as used, it wont trigger the manager. since we don't wanna trigger when is used with an interaction.
+	// mark the item as used, it won't trigger the manager.
+	// since we don't wanna trigger when is used with an interaction.
 	Inventory->Use(Selected);
 }
 
