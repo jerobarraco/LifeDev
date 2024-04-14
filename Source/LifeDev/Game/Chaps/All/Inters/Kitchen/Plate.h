@@ -12,4 +12,7 @@ class LIFEDEV_API APlate: public ALInteract {
 
 public:
 	APlate();
+
+protected:
+	virtual void BeginPlay() override;
 };

@@ -18,10 +18,16 @@ void ASpongeI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	for (ALInteract* const I: Plates) {
 		if (!IsValid(I)) continue;
-		// fading not working. time available exhausted.
-		I->Destroy();
-		// I->Fade(false);
-		// I->SetEnabled(false);
+		I->Fade(false);
 	}
 	Plates.Empty();
+}
+
+void ASpongeI00::BeginPlay() {
+	Super::BeginPlay();
+	for (ALInteract* const I: Plates) {
+		if (!IsValid(I)) continue;
+		I->Fade(true);
+		I->SetEnabled(false); // force them disabled.
+	}
 }

@@ -14,6 +14,7 @@ public:
 
 protected:
 	virtual void DoTrigger_Implementation() override;
+	virtual void BeginPlay() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<ALInteract*> Plates; 

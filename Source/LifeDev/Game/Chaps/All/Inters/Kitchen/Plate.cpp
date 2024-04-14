@@ -39,3 +39,11 @@ APlate::APlate():Super() {
 	// TODO sound
 }
 
+void APlate::BeginPlay() {
+	Super::BeginPlay();
+	// forced, to be able to use fade, relies on animfade->matbase being null
+	// this is inefficient since i'm creating a new material instance and maybe i don't need it
+	// but makes the code clearer later.
+	AnimFade->CreateMaterial();
+}
+
