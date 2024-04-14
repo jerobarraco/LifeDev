@@ -67,9 +67,9 @@ void APotI00::DoTrigger_Implementation() {
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// TODO check that this actually works.
-	// TODo This is consuming both items. why?
 	// only observe these items
 	if (Name == "Food00" || Name == "Food01") {
+		// TODO dialog here
 		++Foods;
 		if (Foods == 2) DoTrigger(); // to advance the state 
 		return EItemUseResult::SUCCESS;
