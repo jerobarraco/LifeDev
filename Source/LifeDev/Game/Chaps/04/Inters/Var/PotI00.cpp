@@ -2,12 +2,13 @@
 
 #include "PotI00.h"
 
+#include "CQuickMesh.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
-	Texts = {FText::FromString(TEXT("Hot pot")), FText::FromString(TEXT("Empty pot")) };
 	UseRewardFade = false;
 	Locked = false;
 	LockedDlg = "Pot00_L";
@@ -18,35 +19,64 @@ APotI00::APotI00():Super() {
 	// and i think that the player will find easier to tell when something became enabled. 
 	// than realizing something became unlocked.
 	// (without any extra cue/feedback which i'm not going to add now)
-	Step = 0;
+	// Step = 0;
+
+	// Override the states and transforms
+	// 0: Empty pot, lid open.
+	// 1: Boiling pot, lid closed.
+	// 2: Rice and mayo added.
+	StateNum = 3;
+	Texts = {
+		FText::FromString(TEXT("Empty pot")),
+		FText::FromString(TEXT("Hot pot")),
+		FText::FromString(TEXT("Done pot")),
+	
+	};
+	const FRotator State0Rot(0, -10, 0);
+	Trans = {
+		FTransform(State0Rot),
+		FTransform(),
+		FTransform(),
+	};
+	Lid->SetRelativeRotation(State0Rot); // init the correct transform
+	Anim->IsAdditive = false;
 }
 
 void APotI00::BeginPlay() {
 	Super::BeginPlay();
 	// setState below would re-enable the object and we don't want that
-	DisableWhileAnim = false;
-	SetState(1); // start open
+	// DisableWhileAnim = false;
+	// SetState(1); // start open
 }
 
 void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
-	if (Step==0) {
+	UE_LOG(LogTemp, Log, TEXT("%hs state=%i"), __func__, State);
+	
+	// state ought to be the new one after super::doTrigger
+	if (State == 1) {
+		// }
+		// if (Step==0) {
+		// locked so that player can't trigger manually but
+		// they can still use the items on it.
 		Locked = true;
-		// locked so that we can still use the items on it.
-		RewardInterEnable.Empty(); // forget about the stove. for the next interaction.
-		Step = 1;
-	} // TODO step 01??
+		// forget about the stove. important for the next interaction.
+		RewardInterEnable.Empty();
+		// Step = 1;
+	} else if (State == 2) {
+		Story->StartNext();// TODO test
+	}
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// TODO check that this actually works.
+	// TODo This is consuming both items. why?
+	// only observe these items
 	if (Name == "Food00" || Name == "Food01") {
 		const bool Ok = Inventory->Use(Name);
+		// ensure we actually have the items (should not happen unless an error or cracked)
 		if (Ok) ++Foods;
-		if (Foods == 2) {
-			++Step; // TODO do i even need this?
-			Story->StartNext();// TODO test
-		}
+		if (Foods == 2) DoTrigger(); // to advance the state 
 		return Ok ? EItemUseResult::SUCCESS : EItemUseResult::BAD_HANDLED;
 	}
 
