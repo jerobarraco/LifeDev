@@ -2,6 +2,8 @@
 
 #include "SpongeI00.h"
 
+#include "Interact/Animator/CAnimatorMix.h"
+
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
 	RewardItem = "Plates";
@@ -12,6 +14,18 @@ ASpongeI00::ASpongeI00():Super() {
 	SetEnabled(false);
 	// TODO if i have time, on trigger, fade out, then fade in and do reward
 	// might be easier to do with an extra step
+
+	StateNum = 2;
+	Trans = {
+		FTransform(
+			FRotator(-4.923850,0.870385, -10.037423),
+			FVector(0,-5,10)
+		),
+		FTransform::Identity
+	};
+	IRoot->SetRelativeTransform(Trans[1]);
+	Anim->IsAdditive = false;
+	UseAnim = true;
 }
 
 void ASpongeI00::DoTrigger_Implementation() {
