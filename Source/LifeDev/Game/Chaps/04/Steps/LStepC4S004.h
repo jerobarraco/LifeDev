@@ -9,7 +9,7 @@
 
 class ALInteract;
 
-// fridge and rice
+// fridge and rice interact.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S004 : public ALStep {
 	GENERATED_BODY()
