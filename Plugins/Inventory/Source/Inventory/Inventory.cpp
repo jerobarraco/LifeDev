@@ -229,7 +229,8 @@ bool UInventory::Use(const FName& Name) {
 		return false;
 	}
 
-	// intentionally make a copy since when an object gets removed from the pool, the fname automagically transforms to the next name. W T F
+	// intentionally make a copy since when an object gets removed from the pool,
+	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
 	FName OldName = Name;
 	// intentionally calling mod so that onMod is triggered
 	Mod(Name, -1);
