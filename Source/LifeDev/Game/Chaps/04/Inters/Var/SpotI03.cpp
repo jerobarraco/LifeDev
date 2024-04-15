@@ -9,8 +9,8 @@ ASpotI03::ASpotI03():Super() {
 	DropFullDlg = ""; // when full
 	RewardStep = true;
 	Items = {
-		// a bra and a shirt a boxer and a sock
 		FName("Plates")
 	};
+	SetEnabled(false);
 	// RewardActor set in editor
 }
