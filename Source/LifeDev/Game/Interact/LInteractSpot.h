@@ -6,7 +6,7 @@
 #include "LInteractSpot.generated.h"
 
 // A Place to drop other interacts.
-// It's always locked, and unlocks only once when all the clouts are dropped.
+// It's always locked, and unlocks only once when all the items are dropped (used with).
 // It only allows for triggering once it's done.
 // It will trigger LockedDlg (when already done) and TriggerDlg (once upon done) accordingly.
 // if attempt to use an item once it's done it will trigger FullDlg
@@ -30,12 +30,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DropFullDlg = NAME_None;
 
+	// When i TRY to trigger but it's full.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName LockedFullDlg = NAME_None;
+
 	// items to listen to. these are the items that are allowed to be dropped here.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> Items;
 
 protected:
-	virtual bool TryTrigger_Implementation() override;
+	// virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	virtual void SetText_Implementation() override;
 };

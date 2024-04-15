@@ -14,23 +14,16 @@ ASpot02::ASpot02():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Arch/Chairs/Chair00"));
-	if (ObjMesh.Succeeded()) {
-		Mesh->SetStaticMesh(ObjMesh.Object);
-	}
+	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
 
 	StateNum = 1;
+	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
 	SFX->SetRelativeLocation(FVector(17.5,-17.5,40));
 	Interact->SetRelativeLocation(FVector(17.5,-17.5,40));
 	Interact->SetBoxExtent(FVector(17.5, 17.5, 40));
-	Texts = {
-		FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")),
-	};
 	// DropDlg = TEXT("IS_C0D");
 	// TriggerDlg = "IS_C0T*";
 	// LockedDlg = "IS_C0TB";
-	Items = {
-		// two shirts and a boxer, and a sock
-		// FName("C1C02"), FName("C1C02"), FName("C1C02"), FName("C1C04")
-	};
+	// Items = {};
 }
