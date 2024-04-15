@@ -18,18 +18,18 @@ public:
 
 	// Flip-flops depending on the state. Starts closed, then open, then closed.
 	// this also controls the "reversed" flag of the anim.
-	// If you need not to use the reversed animation then use the "Trans" property.
+	// If you need to _not_ use the reversed animation then use the "Trans" property.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
 
 	// Whether it should reverse the animation.
-	// By default it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
+	// By default, it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsReversed() { return StateNum > 1 && IsClosed(); }
 
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
-	// when strobe is disabled on lights, on beginplay, and many many more. :)
+	// when strobe is disabled on lights, on beginplay, and many, many more. :)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseAnim = true;
 
