@@ -4,8 +4,6 @@
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "Inventory/Inventory.h"
-#include "LifeDev/Game/Sys/Consts/ConstColors.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "Story/Story.h"
 
@@ -56,8 +54,6 @@ void APotI00::DoTrigger_Implementation() {
 	
 	// state ought to be the new one after super::doTrigger
 	if (State == 1) {
-		// }
-		// if (Step==0) {
 		// locked so that player can't trigger manually but
 		// they can still use the items on it.
 		Locked = true;
@@ -76,11 +72,11 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// only observe these items
 	if (State == 1 && (Name == "Food00" || Name == "Food01")) {
 		++Foods;
-		if (Foods == 2) DoTrigger(); // to advance the state 
+		if (Foods == 2) Trigger(); // to advance the state. Trigger skips the lock check
 		return EItemUseResult::SUCCESS;
 	} else if (State == 2 && (Name == LDConsts::Items::Plate01)) {
 		RewardItem = LDConsts::Items::Plate02;
-		DoTrigger();
+		Trigger();
 		return EItemUseResult::SUCCESS;
 	} 
 
