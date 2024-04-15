@@ -13,7 +13,7 @@ APotI00::APotI00():Super() {
 	UseRewardFade = false;
 	Locked = false;
 	LockedDlg = "Pot00_L";
-	TriggerDlg = "Pot00_T";
+	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	SetEnabled(false);
 	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
@@ -54,8 +54,8 @@ void APotI00::DoTrigger_Implementation() {
 	
 	// state ought to be the new one after super::doTrigger
 	if (State == 1) {
-		// locked so that player can't trigger manually but
-		// they can still use the items on it.
+		// locked so that player can't trigger manually,
+		// but they can still use the items on it.
 		Locked = true;
 		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
@@ -63,6 +63,9 @@ void APotI00::DoTrigger_Implementation() {
 	} else if (State == 2) {
 		// triggered after adding food
 		Story->StartNext();
+		// for next step (plates)
+		RewardItem = LDConsts::Items::Plate02;
+		TriggerDlg = "Pot00.1_T";
 	} else if (State == 0) { // has looped over
 		SetEnabled(false); // no more interaction for you
 	}
@@ -75,7 +78,6 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 		if (Foods == 2) Trigger(); // to advance the state. Trigger skips the lock check
 		return EItemUseResult::SUCCESS;
 	} else if (State == 2 && (Name == LDConsts::Items::Plate01)) {
-		RewardItem = LDConsts::Items::Plate02;
 		Trigger();
 		return EItemUseResult::SUCCESS;
 	} 
