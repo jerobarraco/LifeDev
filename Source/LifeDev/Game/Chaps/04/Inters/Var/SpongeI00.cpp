@@ -3,10 +3,11 @@
 #include "SpongeI00.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
-	RewardItem = "Plates";
+	RewardItem = LDConsts::Items::Plate01;
 	RewardStep = true;
 	Locked = false;
 	UseRewardFade = false;

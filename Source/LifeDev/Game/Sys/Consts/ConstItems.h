@@ -22,5 +22,8 @@ namespace LDConsts {
 		inline static const FName Walkman("WM");
 		
 		inline static const FName Bra("C1C03");
+
+		inline static const FName Plate01("Plate01");
+		inline static const FName Plate02("Plate02");
 	}
 }

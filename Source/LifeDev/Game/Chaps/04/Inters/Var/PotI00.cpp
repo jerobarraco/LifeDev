@@ -5,10 +5,13 @@
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Sys/Consts/ConstColors.h"
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
+	RewardItem = NAME_None;
 	UseRewardFade = false;
 	Locked = false;
 	LockedDlg = "Pot00_L";
@@ -25,6 +28,8 @@ APotI00::APotI00():Super() {
 	// 0: Empty pot, lid open.
 	// 1: Boiling pot, lid closed.
 	// 2: Rice and mayo added.
+	// intentionally letting it loop to empty after done.
+	// so that using the plates open the pot and reads 'empty'
 	StateNum = 3;
 	Texts = {
 		FText::FromString(TEXT("Empty pot")),
@@ -59,23 +64,26 @@ void APotI00::DoTrigger_Implementation() {
 		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
-		// Step = 1;
 	} else if (State == 2) {
-		Story->StartNext();// TODO test
+		// triggered after adding food
+		Story->StartNext();
+	} else if (State == 0) { // has looped over
+		SetEnabled(false); // no more interaction for you
 	}
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
-	// TODO check that this actually works.
 	// only observe these items
-	if (Name == "Food00" || Name == "Food01") {
-		// TODO dialog here
+	if (State == 1 && (Name == "Food00" || Name == "Food01")) {
 		++Foods;
 		if (Foods == 2) DoTrigger(); // to advance the state 
 		return EItemUseResult::SUCCESS;
-	}
+	} else if (State == 2 && (Name == LDConsts::Items::Plate01)) {
+		RewardItem = LDConsts::Items::Plate02;
+		DoTrigger();
+		return EItemUseResult::SUCCESS;
+	} 
 
-	// TODO the plates
 	return Super::TryUseItem_Implementation(Name);
 }
 

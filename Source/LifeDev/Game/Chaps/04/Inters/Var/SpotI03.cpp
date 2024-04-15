@@ -2,6 +2,8 @@
 
 #include "SpotI03.h"
 
+#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+
 ASpotI03::ASpotI03():Super() {
 	// DropDlg = TEXT("IS0_D*");
 	TriggerDlg = "IS3_T"; // when completed
@@ -9,7 +11,7 @@ ASpotI03::ASpotI03():Super() {
 	DropFullDlg = ""; // when full
 	RewardStep = true;
 	Items = {
-		FName("Plates")
+		LDConsts::Items::Plate02
 	};
 	SetEnabled(false);
 	// RewardActor set in editor
