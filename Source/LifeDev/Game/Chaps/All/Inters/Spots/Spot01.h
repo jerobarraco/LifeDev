@@ -5,7 +5,7 @@
 
 #include "Spot01.generated.h"
 
-// Spot for sisters clothes
+// Base spot with other mesh
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpot01: public ALInteractSpot {
 	GENERATED_BODY()

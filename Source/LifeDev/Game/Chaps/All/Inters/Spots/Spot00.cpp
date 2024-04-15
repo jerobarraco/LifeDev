@@ -2,7 +2,6 @@
 
 #include "Spot00.h"
 
-#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 

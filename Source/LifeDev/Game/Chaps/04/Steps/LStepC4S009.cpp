@@ -9,4 +9,5 @@ ALStepC4S009::ALStepC4S009():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
+	WaitTime = CamBlendTime = 2; // force dialog to start after blend
 }

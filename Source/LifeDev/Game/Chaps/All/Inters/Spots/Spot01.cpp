@@ -4,10 +4,12 @@
 
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
-// TODO rename carefully to ASpotI01 and replace on editor
 ASpot01::ASpot01():Super() {
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
+	SFX_Trigger = CSnd.Object;
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt00.Shirt00"));
 	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
@@ -16,16 +18,13 @@ ASpot01::ASpot01():Super() {
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,5.0));
 	Interact->SetBoxExtent(FVector(20.000000,20.000000,9.000000));
 	Texts = {
-		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop her clothes here")),
+		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
 	};
-	TriggerDlg = "IS_C1T";
-	LockedDlg = "IS_C1L"; // TODO
-	LockedFullDlg = "IS_C1TB";
-	DropDlg = "IS_C1D";
-	Items = {LDConsts::Items::Bra};
 
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
-	SFX_Trigger = CSnd.Object;
+	// TriggerDlg = "IS_C1T";
+	// LockedDlg = "IS_C1L"; // TODO
+	// LockedFullDlg = "IS_C1TB";
+	// DropDlg = "IS_C1D";
+	// Items = {LDConsts::Items::Bra};
 }

@@ -8,6 +8,7 @@ namespace LDConsts {
 		static EFeat ChapFeats[] = {
 			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04,
 			EFeat::C_05, EFeat::C_06, EFeat::C_07, EFeat::C_08, EFeat::C_09};
-		static uint8 ChapFeatN = 5; // be careful with this. as it can't be bigger than the above array.
+		static uint8 ChapFeatN = 6; // 6 to allow to load chap 5, which is the end.
+		// be careful with this. as it can't be bigger than the above array.
 	}
 }
