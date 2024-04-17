@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "Story/Step.h"
 #include "Inventory/InventoryTypes.h"
+#include "Diags/DiagTypes.h"
 
 #include "LStep.generated.h"
 
+class ALInteract;
 class AInteract;
 class AGhosts;
 class UFlags;
@@ -18,7 +20,7 @@ class UInventory;
 // LifeDev base class for story steps
 // be careful it will clear all timers on stop
 UCLASS(Blueprintable, BlueprintType)
-class ALStep : public AStep {
+class ALStep: public AStep {
 	GENERATED_BODY()
 
 public:
@@ -40,6 +42,7 @@ public:
 	// enables or disables the linked actor
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetShowActorEnabled(const bool Enabled = true, const bool WithFade=true);
+	// enables or disables the interacts on IntersEnable
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetIntersEnabled(const bool Enabled=true);
 
@@ -82,9 +85,12 @@ public:
 	// or maybe i could if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 
-	// Interacts to enable on DoStart (after wait)
+	// Interacts to enable on Start (after wait), and disable on Stop
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
 	TArray<AInteract*> IntersEnable;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	TArray<ALInteract*> IntersFadeOut;
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
@@ -122,6 +128,7 @@ protected:
 	// called when items get mod. checks for itemsFinish
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
+	void FadeOutInters();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Diags = nullptr;

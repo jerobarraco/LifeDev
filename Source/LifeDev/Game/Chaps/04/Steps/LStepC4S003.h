@@ -16,10 +16,4 @@ class ALStepC4S003 : public ALStep {
 
 public:
 	ALStepC4S003();
-	
-protected:
-	virtual void Stop_Implementation() override;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALInteract* DisableChar;
 };

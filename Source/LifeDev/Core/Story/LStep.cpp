@@ -26,6 +26,7 @@ void ALStep::Stop_Implementation() {
 
 	SetShowActorEnabled(false, true);
 	SetIntersEnabled(false);
+	FadeOutInters();
 	RemoveItems();
 
 	UWorld* const W = GetWorld();
@@ -37,7 +38,7 @@ void ALStep::Stop_Implementation() {
 		W->GetTimerManager().SetTimer(H, this, &ALStep::DestroyActors, 2);
 	}
 
-	Super::Stop_Implementation();	// do at end. t
+	Super::Stop_Implementation(); // do at end.
 }
 
 void ALStep::Start_Implementation() {
@@ -120,6 +121,12 @@ void ALStep::DestroyActors() {
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
+}
+
+void ALStep::FadeOutInters() {
+	for ( ALInteract* const I: IntersFadeOut) {
+		I->Fade(false);
+	}
 }
 
 void ALStep::CheckItemsFinish() {

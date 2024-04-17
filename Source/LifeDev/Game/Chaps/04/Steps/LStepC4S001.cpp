@@ -30,10 +30,12 @@ void ALStepC4S001::Start_Implementation() {
 	for (uint8 i = 0; i< Chars.Num(); ++i) {
 		ALInteract* const I = Chars[i];
 		if (!I) continue;
-        I->Fade(true);
+
+		I->Fade(true);
 		// no talking on the table (actually makes it difficult because of the dialogs so...)
 		// this step finishes as the dialog finishes
 		// I->SetEnabled(false);
 		I->SetEnabled(i==0); // npci6 continues the flow
-    }
+	}
 }
+// interfadeout on editor

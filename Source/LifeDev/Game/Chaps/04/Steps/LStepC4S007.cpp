@@ -10,3 +10,5 @@ ALStepC4S007::ALStepC4S007():Super() {
 	FinishPostWait = false;
 	TeleportChar = false;
 }
+
+// interfadeout on editor
