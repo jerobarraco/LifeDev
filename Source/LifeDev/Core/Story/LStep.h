@@ -22,7 +22,7 @@ class ALStep : public AStep {
 	GENERATED_BODY()
 
 public:
-	virtual void Start_Implementation() override;
+	virtual void TryStart_Implementation() override;
 	// careful this will clear all timers
 	// and remove all delegates to Dialogs.OnDone and Inventory.OnMOd
 	// it will also remove from inventory the items on RemItems
@@ -101,7 +101,7 @@ public:
 	inline static bool UseDebug = false;
 	
 protected:
-	virtual void DoStart_Implementation() override;
+	virtual void Start_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;

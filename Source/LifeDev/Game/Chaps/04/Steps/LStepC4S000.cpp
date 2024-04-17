@@ -37,8 +37,8 @@ ALStepC4S000::ALStepC4S000():Super() {
 	};
 }
 
-void ALStepC4S000::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC4S000::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 	FB->SetMax(.4);
 	FB->SetVal(.01);
 }

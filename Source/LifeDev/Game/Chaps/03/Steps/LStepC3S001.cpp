@@ -21,7 +21,7 @@ ALStepC3S001::ALStepC3S001():Super() {
 	UseGhosts = true;
 }
 
-void ALStepC3S001::Start_Implementation() {
+void ALStepC3S001::TryStart_Implementation() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
@@ -31,7 +31,7 @@ void ALStepC3S001::Start_Implementation() {
 	constexpr int32 numDlgs = 4; //TODO??
 	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 	
-	Super::Start_Implementation();
+	Super::TryStart_Implementation();
 
 	ALNPC03* const NPC = Cast<ALNPC03>(ShowActor);
 	if (NPC) NPC->SetPoseScold();

@@ -44,8 +44,8 @@ ALStepC2S000::ALStepC2S000():Super() {
 	DL_Unload.AddUnique(CDLO2.Object);
 }
 
-void ALStepC2S000::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC2S000::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 
 	if (!FB) return;
 	FB->SetMax(.6);

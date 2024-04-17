@@ -24,8 +24,8 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseGhosts = true;
 }
 
-void ALStepC0S001::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC0S001::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 
 	UWorld* const W = GetWorld();
 	FB->SetMax(1);

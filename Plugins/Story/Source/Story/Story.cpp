@@ -62,7 +62,7 @@ bool UStory::StartNow(AStep* NewStep) {
 
 	// start before broadcasting start.
 	// important so that it's actually ready for whom-ever is subscribed to the delegate
-	Current->Start();
+	Current->TryStart();
 	OnStart.Broadcast(Current);
 
 	return true;

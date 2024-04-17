@@ -19,7 +19,7 @@ public:
 	ALStepC2S003();
 
 protected:
-	virtual void Start_Implementation() override;
+	virtual void TryStart_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	USoundBase* SFX_Analog = nullptr;

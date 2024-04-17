@@ -12,8 +12,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
 
-void ALStep::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStep::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 
 	EnsureItems(); // make sure items are awarded
 }
@@ -40,8 +40,8 @@ void ALStep::Stop_Implementation() {
 	Super::Stop_Implementation();	// do at end. t
 }
 
-void ALStep::DoStart_Implementation() {
-	Super::DoStart_Implementation();
+void ALStep::Start_Implementation() {
+	Super::Start_Implementation();
 	UWorld* const W = GetWorld();
 	if (!W) return;
 

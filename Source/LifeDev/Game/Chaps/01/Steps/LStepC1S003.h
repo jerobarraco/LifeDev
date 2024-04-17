@@ -18,7 +18,7 @@ class ALStepC1S003 : public ALStep {
 public:
 	ALStepC1S003();
 	
-	virtual void Start_Implementation() override;
+	virtual void TryStart_Implementation() override;
 	virtual void Stop_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)

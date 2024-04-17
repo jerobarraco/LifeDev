@@ -24,12 +24,12 @@ public:
 
 	// don't call directly. called by system.
 	// called when the step just starts. can be in the middle of a fade.
-	// You should override DoStart instead, unless you know what you're doing.
+	// You should override Start instead, unless you know what you're doing.
 	// one reason would be to do something just when the fade is on (like loading or fading something).
 	// be sure not to do anything that would finish the step here, use DoStart for that.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay))
-	void Start() ;
-	virtual void Start_Implementation();
+	void TryStart() ;
+	virtual void TryStart_Implementation();
 	
 	// don't call this one directly. called by the system. Override to perform whatever the step needs to do at the end.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -50,7 +50,7 @@ public:
 	FName Name;
 
 	// the camera to switch to automatically. Set to null to not switch to.
-	// By default is the own camera. or you can set UsePawnCam to use the pawn's camera 
+	// By default, is the own camera. or you can set UsePawnCam to use the pawn's camera 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	AActor* CamTarget = nullptr;
 
@@ -107,8 +107,8 @@ protected:
 	// If FinishPostWait is set, it will finish the step.
 	// this is a good place to do checks that might finish the step.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DoStart();
-	virtual void DoStart_Implementation();
+	void Start();
+	virtual void Start_Implementation();
 
 	// gets called when UseDebug is set. happens on postwait
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

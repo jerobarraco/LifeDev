@@ -29,14 +29,14 @@ ALStepC2S001::ALStepC2S001():Super() {
 	FbDiagMod = .07;
 }
 
-void ALStepC2S001::Start_Implementation() {
+void ALStepC2S001::TryStart_Implementation() {
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
 	
-	Super::Start_Implementation();
+	Super::TryStart_Implementation();
 }
 
 void ALStepC2S001::Stop_Implementation() {

@@ -24,8 +24,8 @@ void ALStepC4S001::BeginPlay() {
 	}
 }
 
-void ALStepC4S001::DoStart_Implementation() {
-	Super::DoStart_Implementation();
+void ALStepC4S001::Start_Implementation() {
+	Super::Start_Implementation();
 	// fade on start to use
 	for (uint8 i = 0; i< Chars.Num(); ++i) {
 		ALInteract* const I = Chars[i];

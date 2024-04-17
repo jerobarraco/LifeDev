@@ -30,7 +30,7 @@ ALStepC2S003::ALStepC2S003():Super() {
 	SFX_Analog = CSFX.Object;
 }
 
-void ALStepC2S003::Start_Implementation() {
+void ALStepC2S003::TryStart_Implementation() {
 	// just remove the card since implementing the using of it is rather complex.
     // the user interaction is not in place yet so it wont be a good exp
     // we can't pick it up without the batteries, so story wise is safe.
@@ -38,7 +38,7 @@ void ALStepC2S003::Start_Implementation() {
     Inventory->Mod("T02", -1);
 
 	// super will start the dialog and finish when done
-	Super::Start_Implementation();
+	Super::TryStart_Implementation();
 
 	UWorld* const W = GetWorld();
 	if (W && IsValid(SFX_Analog)) UGameplayStatics::PlaySound2D(W, SFX_Analog);

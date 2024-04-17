@@ -47,8 +47,8 @@ ALStepC1S000::ALStepC1S000():Super() {
 	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
 }
 
-void ALStepC1S000::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC1S000::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 
 	if (!FB) return;
 	FB->SetMax(.6);

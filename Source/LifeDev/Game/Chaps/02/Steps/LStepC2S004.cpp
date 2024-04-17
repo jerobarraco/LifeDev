@@ -37,8 +37,8 @@ ALStepC2S004::ALStepC2S004():Super() {
 	// .02 is actually very generous 
 }
 
-void ALStepC2S004::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC2S004::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 	FB->SetMin(0);
 	RndFB->Activate(true);
 	ALMusicMan::SetRainS(GetWorld(), true);

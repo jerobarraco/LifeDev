@@ -23,8 +23,8 @@ void ALStepC1S003::BeginPlay() {
 	if (NPC) NPC->SetVisible(false);
 }
 
-void ALStepC1S003::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC1S003::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 	NPCShow();
 }
 

@@ -15,6 +15,6 @@ class ALStepC0S001 : public ALStep {
 public:
 	ALStepC0S001();
 
-	virtual void Start_Implementation() override;
+	virtual void TryStart_Implementation() override;
 	virtual void Stop_Implementation() override;
 };

@@ -28,11 +28,11 @@ void ALStepEnd::OpenLevel() {
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }
 
-void ALStepEnd::Start_Implementation() {
+void ALStepEnd::TryStart_Implementation() {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 	// constexpr float Wait = 2;
-	Super::Start_Implementation();
+	Super::TryStart_Implementation();
 
 	/// turn off everything
 	
@@ -54,7 +54,7 @@ void ALStepEnd::Start_Implementation() {
 	if (StoryMan) StoryMan->ShowBGSolid(true);
 }
 
-void ALStepEnd::DoStart_Implementation() {
-	Super::DoStart_Implementation();
+void ALStepEnd::Start_Implementation() {
+	Super::Start_Implementation();
 	OpenLevel();
 }

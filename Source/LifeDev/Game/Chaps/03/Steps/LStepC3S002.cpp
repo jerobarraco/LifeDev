@@ -27,8 +27,8 @@ ALStepC3S002::ALStepC3S002():Super() {
 	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 }
 
-void ALStepC3S002::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC3S002::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 	ALMusicMan::SetRainS(GetWorld(), true);
 	FB->SetMin(0);
 	RndFB->Activate(true);

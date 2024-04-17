@@ -64,7 +64,7 @@ void AStep::DoTeleport() {
 	Char->AddControllerPitchInput(T.Rotator().Pitch-C->GetRelativeRotation().Pitch);
 }
 
-void AStep::Start_Implementation() {
+void AStep::TryStart_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("Starting step '%s'"), *Name.ToString());
 	
 	// teleport the character
@@ -85,11 +85,11 @@ void AStep::Start_Implementation() {
 	
 	if (WaitTime>0) {
 		FTimerHandle Handle;
-		World->GetTimerManager().SetTimer(Handle, this, &AStep::DoStart, WaitTime);
+		World->GetTimerManager().SetTimer(Handle, this, &AStep::Start, WaitTime);
 	} else {
 		// use next tick to avoid having post wait being called before start finishes on the children
 		// also to avoid the situation where a step might inadvertently finish the step while it's starting.  
-		World->GetTimerManager().SetTimerForNextTick(this, &AStep::DoStart);
+		World->GetTimerManager().SetTimerForNextTick(this, &AStep::Start);
 	}
 }
 
@@ -105,7 +105,7 @@ void AStep::BlendCam() const {
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
-void AStep::DoStart_Implementation() {
+void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (Debug) {
