@@ -50,7 +50,7 @@ public:
 	// when set to true, the game mode will set the wait time to the fade time.
 	// See WaitTime and FinishPostWait
 	// this is used to start something AFTER it faded
-	// don't use for fade out, since waittime doesn't work with that, Stop is called just when the story faded out.
+	// don't use for fade out, since waitTime doesn't work with that, Stop is called just when the story faded out.
 	// TODO make sure i don't need it and remove
 	// TODO need to fix the steps that do use doStart
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait", meta=(DeprecatedProperty))
@@ -73,13 +73,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	FVector GhostPos;
 
-	// actor to show/hide. If it's an interact it will fade in and out.
+	// actor to show/hide. If it's an interact, it will fade in and out.
 	// it will get destroyed on Stop, set this to null to avoid it.
 	// purposely an actor to have flexibility
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	AActor* ShowActor = nullptr;
 	// i don't move this to Step because the fade has a timing component before destroy
-	// or maybe i could if i leave the destroy only for LStep
+	// or maybe i could if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 
 	// Interacts to enable on DoStart (after wait)
@@ -99,7 +99,7 @@ public:
 	TArray<FName> ItemsEnsure;
 
 	inline static bool UseDebug = false;
-	
+
 protected:
 	virtual void Start_Implementation() override;
 	virtual void BeginPlay() override;
