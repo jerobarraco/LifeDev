@@ -65,3 +65,7 @@ gc.CollectGarbageEveryFrame 1
 GEngine->ForceGarbageCollection();
 GetWorld()->ForceGarbageCollection(true);
 # https://forums.unrealengine.com/t/force-garbage-collection/277172/2
+
+
+; throttle annoying popup
+Slate.TooltipSummonDelay 3
