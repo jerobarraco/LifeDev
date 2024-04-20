@@ -2,6 +2,7 @@
 
 #include "PianoKey.h"
 
+#include "CQuickMesh.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
@@ -14,7 +15,8 @@ APianoKey::APianoKey():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/group_A.group_A"));
 	SFX_Trigger = CSFX.Object;
-	
+
+	Mesh->SetCastAllShadows(true);
 	Interact->SetRelativeLocation(FVector(0,7.5,-2.5));
 	Interact->SetBoxExtent(FVector(12.5,7.5,2.5)); // this is the most common
 

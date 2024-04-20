@@ -13,6 +13,7 @@ AHeater00::AHeater00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(30,40,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90, 0));
+	Mesh->SetCastAllShadows(true);
 
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));

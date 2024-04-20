@@ -13,6 +13,7 @@ ATape00::ATape00():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5.725000,0,0));
+	Mesh->SetCastAllShadows(true);
 
 	Interact->SetEnabled(true);
 	Interact->SetRelativeLocation(FVector(5.725000,-2.500000,1.250000));
@@ -27,7 +28,8 @@ ATape00::ATape00():Super() {
 		CCase(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Case.Cassette00_Case"));
 	Case = CreateDefaultSubobject<UCQuickMesh>(TEXT("Case"));
 	Case->SetupAttachment(IRoot);
-	Case->SetStaticMesh(CCase.Object);	
+	Case->SetStaticMesh(CCase.Object);
+	Case->SetCastAllShadows(true);
 	Case->SetRelativeLocation(FVector(-5.725000,0,0));
 	AnimFade->Meshes.Add(Case);
 	
@@ -36,9 +38,7 @@ ATape00::ATape00():Super() {
 	
 	UseAnim = false;
 	StateNum = 1;
-	Texts = {
-		FText::FromString(TEXT("Tape")),
-	};
+	Texts = { FText::FromString(TEXT("Tape")) };
 }
 
 void ATape00::SetMobility(EComponentMobility::Type Mobility) {

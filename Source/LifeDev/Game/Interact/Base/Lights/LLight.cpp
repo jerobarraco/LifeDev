@@ -2,6 +2,7 @@
 
 #include "LLight.h"
 
+#include "CQuickMesh.h"
 #include "Components/AudioComponent.h"
 
 #include "Interact/Animator/CAnimatorFade.h"
@@ -53,7 +54,7 @@ ALLight::ALLight():Super() {
 	// attaching to the SFX seems nicer. but the attenuation will break.
 	SFX_Flicker->SetupAttachment(IRoot);
 	SFX_Flicker->TimeFadeIn = .1;
-    SFX_Flicker->TimeFadeOut = .1;
+	SFX_Flicker->TimeFadeOut = .1;
 	SFX_Flicker->AttenuationSettings = SFX->AttenuationSettings;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNDFlicker(TEXT("/Game/LifeDev/Game/Inters/Lights/LightFlicker_MS.LightFlicker_MS"));
@@ -68,6 +69,7 @@ ALLight::ALLight():Super() {
 	SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
+	Mesh->SetCastAllShadows(true);
 }
 
 void ALLight::StopFBFlicker() {

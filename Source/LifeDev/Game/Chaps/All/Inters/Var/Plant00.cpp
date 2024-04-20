@@ -21,6 +21,7 @@ APlant00::APlant00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-32.5,32.5,0));
 	Mesh->SetQuickCollisionEnabled(true);
+	Mesh->SetCastAllShadows(true);
 
 	SFX->SetRelativeLocation(FVector(32.5,-32.5,30));
 	Interact->SetRelativeLocation(FVector(32.5,-32.5,30));
@@ -40,6 +41,7 @@ APlant00::APlant00():Super() {
 	Plant->SetupAttachment(Mesh);
 	Plant->SetStaticMesh(CPlant.Object);
 	Plant->SetRelativeLocation(FVector(5,-5,50));
+	Plant->SetCastAllShadows(true);
 
 	Super::SetMobility(EComponentMobility::Static); // static since we won't animate it
 }

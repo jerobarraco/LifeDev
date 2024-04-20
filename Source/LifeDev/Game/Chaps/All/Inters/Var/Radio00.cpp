@@ -15,7 +15,8 @@ ARadio00::ARadio00():Super() {
 		CBase(TEXT("/Game/LifeDev/Game/Inters/Radio00/Radio00_Base.Radio00_Base"));
 	Mesh->SetStaticMesh(CBase.Object);
 	Mesh->SetRelativeLocation(FVector(0,30,0));
-	
+	Mesh->SetCastAllShadows(true);
+
 	Interact->SetRelativeLocation(FVector(7.5,-30.,15));
 	Interact->SetBoxExtent(FVector(7.5,30,15));
 
@@ -27,7 +28,9 @@ ARadio00::ARadio00():Super() {
 	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
 	Door->SetupAttachment(DoorRoot);
 	Door->SetStaticMesh(CDoor.Object);
+	Door->SetCastAllShadows(true);
 	Door->SetRelativeLocation(FVector(-15,30,-10));
+
 	SFX->SetRelativeLocation(FVector(12.5,0,12.5));
 
 	Anim->TRoot = DoorRoot;

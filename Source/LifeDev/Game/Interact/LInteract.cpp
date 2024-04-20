@@ -52,9 +52,7 @@ void ALInteract::BeginPlay() {
 	if (IsValid(RewardActor)) {
 		RewardActor->SetActorHiddenInGame(true);
 		AInteract* const Reward = Cast<AInteract>(RewardActor);
-		if (IsValid(Reward)) {
-			Reward->SetEnabled(false);
-		}
+		if (IsValid(Reward)) Reward->SetEnabled(false);
 	}
 
 	const UWorld* const World = GetWorld();
