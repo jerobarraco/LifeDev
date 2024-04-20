@@ -3,6 +3,7 @@ in goxel
 * set custom size : 512x512
 * no transparent
 * export
+** name with _T postfix or unreal might confuse with the mesh
 
 upon import
  Textures for icons
