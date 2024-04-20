@@ -7,8 +7,12 @@
 #include "JUtils/JMiscUtils.h"
 #include "Settings/LSettings.h"
 
-ULGameInstance* ULGameInstance::Instance(UWorld* World) {
-	if (!IsValid(World)) return nullptr;
+ULGameInstance* ULGameInstance::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+	
+	const UWorld* const World = O->GetWorld();
+	if (!World) return nullptr;
+
 	return Cast<ULGameInstance>(World->GetGameInstance());
 }
 

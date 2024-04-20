@@ -15,8 +15,8 @@ class LIFEDEV_API ULGameInstance : public UGameInstance {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	static ULGameInstance* Instance(UWorld* World);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ULGameInstance* Instance(UObject* O);
 
 	virtual void Init() override;
 
