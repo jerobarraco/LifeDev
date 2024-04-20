@@ -1,8 +1,8 @@
-Two scales:
-
+Scales.
+beware the scale is applied ON IMPORT POPUP DIALOG
 
 * regular:
-when imported scaled down to 0.05
+>> ! when imported scaled down to 0.05 <<
 cube size 5 cm
 
 * small:
