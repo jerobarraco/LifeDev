@@ -17,7 +17,8 @@ ASponge::ASponge():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Sponge"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
-	
+	Mesh->SetCastAllShadows(true);
+
 	Interact->SetRelativeLocation(FVector(10,-5,5));
 	Interact->SetBoxExtent(FVector(15,10,10));
 	SFX->SetRelativeLocation(FVector(10,-5,5));

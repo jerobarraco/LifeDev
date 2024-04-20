@@ -18,6 +18,7 @@ AStove::AStove():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,45,0));
 	Mesh->SetQuickCollisionEnabled(true);
+	Mesh->SetCastAllShadows(true);
 
 	Interact->SetRelativeLocation(FVector(37.5,-42.5,42.5));
 	Interact->SetBoxExtent(FVector(37.5,42.5,42.5));

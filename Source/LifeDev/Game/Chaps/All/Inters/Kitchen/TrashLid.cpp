@@ -17,7 +17,8 @@ ATrashLid::ATrashLid():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Lid.Lid"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
-	
+	Mesh->SetCastAllShadows(true);
+
 	Interact->SetRelativeLocation(FVector(-20,0,2.5));
 	Interact->SetBoxExtent(FVector(20,20,2.5));
 	SFX->SetRelativeLocation(FVector(0,0,0));

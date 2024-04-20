@@ -18,7 +18,8 @@ APlate::APlate():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
-	
+	Mesh->SetCastAllShadows(true);
+
 	Interact->SetRelativeLocation(FVector(0,0,0));
 	Interact->SetBoxExtent(FVector(20,20,5));
 	SFX->SetRelativeLocation(FVector(0,0,0));
