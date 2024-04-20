@@ -36,6 +36,6 @@ void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
 void UCQuickMesh::SetCastAllShadows(bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
-	// by default this is false, i don't wanna mess with it. so just don't.
+	// by default this is false, i don't want to mess with it. so just don't.
 	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }

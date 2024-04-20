@@ -30,5 +30,7 @@ AFridge::AFridge():Super() {
 	// set static by default
 	AFridge::SetMobility(EComponentMobility::Static);
 	Mesh->SetQuickCollisionEnabled(true);
+	// too big to not cast shadows. will look weird.
+	Mesh->SetCastAllShadows(true);
 }
 
