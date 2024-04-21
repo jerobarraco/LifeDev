@@ -15,7 +15,7 @@ APlate::APlate():Super() {
 	UseAnim = false;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate00_P"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate/Plate00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
 	Mesh->SetCastAllShadows(true);
