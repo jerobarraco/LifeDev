@@ -1,4 +1,8 @@
 in goxel
+* go to >view<
+** set "hide box"
+** unset "unlit"
+
 * go to >export<
 * set custom size : 512x512
 * no transparent
