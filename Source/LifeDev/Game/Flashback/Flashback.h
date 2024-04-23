@@ -17,7 +17,8 @@ class LIFEDEV_API UFlashback: public UTickableWorldSubsystem {
 public:
 	UFlashback();
 
-	static UFlashback* Instance(UWorld* W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UFlashback* Instance(UObject* O);
 
 	// returns the instant value (if it's animating this is the value right now).
 	UFUNCTION(BlueprintCallable, BlueprintPure)

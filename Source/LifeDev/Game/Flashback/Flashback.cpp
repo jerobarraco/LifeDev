@@ -16,8 +16,12 @@ UFlashback::UFlashback():Super() {
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
-UFlashback* UFlashback::Instance(UWorld* W) {
-	if (!IsValid(W)) return nullptr;
+UFlashback* UFlashback::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+
+	const UWorld* const W = O->GetWorld();
+	if (!W) return nullptr;
+
 	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
 	return IsValid(Flashback) ? Flashback : nullptr;
 }
@@ -37,7 +41,7 @@ void UFlashback::SetValInternal(float New) {
 }
 
 void UFlashback::AnimUpdate(float Progress, float Alpha) {
-	// using animFrom and To keeps the animation stable and linear.
+	// using animFrom and To, keeps the animation stable and linear.
 	SetValInternal(FMath::Lerp<float, float>(AnimFrom, AnimTo, Alpha));
 }
 
