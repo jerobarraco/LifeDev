@@ -26,7 +26,7 @@ void ALStep::Stop_Implementation() {
 
 	SetShowActorEnabled(false, true);
 	SetIntersEnabled(false);
-	FadeOutInters();
+	FadeInters(IntersFadeOut, false);
 	RemoveItems();
 
 	UWorld* const W = GetWorld();
@@ -73,7 +73,7 @@ void ALStep::Start_Implementation() {
 
 	SetShowActorEnabled(true, true);
 	SetIntersEnabled(true);
-	FadeInInters();
+	FadeInters(IntersFadeIn, true);
 
 	// show dialogs
 	StartDialogs();
@@ -124,15 +124,9 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
 }
 
-void ALStep::FadeInInters() {
-	for ( ALInteract* const I: IntersFadeIn) {
-		I->Fade(true);
-	}
-}
-
-void ALStep::FadeOutInters() {
-	for ( ALInteract* const I: IntersFadeOut) {
-		I->Fade(false);
+void ALStep::FadeInters(const TArray<ALInteract*>& A, const bool In) {
+	for (ALInteract* const I: A) {
+		if (IsValid(I)) I->Fade(In);
 	}
 }
 

@@ -11,31 +11,27 @@ ALStepC4S001::ALStepC4S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	WaitTime = CamBlendTime = 2;
-	// set wait to blend so that FIRST you turn and THEN it fades the chars (on DoStart (after wait))
+	// set wait to blend so that
+	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
 	FinishPostWait = false;
 	TeleportChar = false;
 }
 
 void ALStepC4S001::BeginPlay() {
 	Super::BeginPlay();
-
-	for (ALInteract* const I: Chars) {
-		I->Fade(false);
-	}
+	// start with the inters faded out. a cheeky cheat to avoid doing it on each npci.
+	FadeInters(IntersFadeIn, false);
 }
 
 void ALStepC4S001::Start_Implementation() {
 	Super::Start_Implementation();
-	// fade on start to use
-	for (uint8 i = 0; i< Chars.Num(); ++i) {
-		ALInteract* const I = Chars[i];
+	// talking actually makes it difficult because of the dialogs.
+	// this step finishes as the dialog finishes. so disable all but npci6
+	// Super::Start would have faded them, but fade will set enabled.
+	for (uint8 i = 0; i< IntersFadeIn.Num(); ++i) {
+		AInteract* const I = IntersFadeIn[i];
 		if (!I) continue;
-
-		I->Fade(true);
-		// no talking on the table (actually makes it difficult because of the dialogs so...)
-		// this step finishes as the dialog finishes
-		// I->SetEnabled(false);
-		I->SetEnabled(i==0); // npci6 continues the flow
+		I->SetEnabled(i==0); // npci6 continues the flow next step
 	}
 }
-// interfadeout on editor
+// interfadeout and interfadein on editor
