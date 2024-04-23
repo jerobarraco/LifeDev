@@ -65,9 +65,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	}
 
 	// or use default anim speed
-	if (Duration < 0) {
-		Duration = AnimSpeed;
-	}
+	if (Duration < 0) Duration = AnimSpeed;
 
 	// important, set the actual targets.
 	AnimTo = New;
@@ -99,7 +97,7 @@ void UFlashback::SetMin(float NewMin, float Duration) {
 }
 
 void UFlashback::Deinitialize() {
-	Animator->OnUpdate.RemoveAll(this);
+	if (Animator) Animator->OnUpdate.RemoveAll(this);
 	Super::Deinitialize();
 }
 
@@ -116,8 +114,10 @@ void UFlashback::Initialize(FSubsystemCollectionBase& Collection) {
 
 void UFlashback::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	// GEngine->AddOnScreenDebugMessage(33, .10f, FColor::Green,
-		// TEXT("Tick %f!"));	
+	#if WITH_EDITOR
+		GEngine->AddOnScreenDebugMessage(33, DeltaTime, FColor::Green,
+			TEXT("Flashback Tick."), true);
+	#endif
 
 	// have to manually do it, not optimizations here, they are inside tickmanual
 	Animator->TickManual(DeltaTime);
@@ -128,4 +128,8 @@ TStatId UFlashback::GetStatId() const {
 	// https://benui.ca/unreal/tickable-object/
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	return GetStatID();
+}
+
+bool UFlashback::IsTickable() const {
+	return Animator && Animator->IsActive(); // small optimization
 }

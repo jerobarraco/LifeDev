@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetVal() const { return Val; }
 
-	// returns the end value (if it's animating this is the value where it want's to go).
+	// returns the end value (if it's animating this is the value where it wants to go).
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetValTo() const { return AnimTo; }
 	
@@ -48,20 +48,23 @@ public:
 	void SetVal(float New, float Duration = -1.f);
 
 	// Sets the max, and clamp the target value if out of range.
-	// You can set it >1 but it might break stuff i recommend keep in range [0,1]
+	// You can set it >1, but it might break stuff i recommend keep in range [0,1]
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
 	void SetMax(float NewMax, float Duration=-1.f);
 	// Sets the min, and clamp the target value if out of range.
-	// You can set it <0 but it might break stuff i recommend keep in range [0,1]
+	// You can set it <0, but it might break stuff i recommend keep in range [0,1]
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
 	void SetMin(float NewMin, float Duration=-1.f);
 
+#pragma region base
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
+	virtual bool IsTickable() const override;
+#pragma endregion
 
 	// default flashback anim speed
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
