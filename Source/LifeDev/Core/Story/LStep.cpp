@@ -73,6 +73,7 @@ void ALStep::Start_Implementation() {
 
 	SetShowActorEnabled(true, true);
 	SetIntersEnabled(true);
+	FadeInInters();
 
 	// show dialogs
 	StartDialogs();
@@ -121,6 +122,12 @@ void ALStep::DestroyActors() {
 
 void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
+}
+
+void ALStep::FadeInInters() {
+	for ( ALInteract* const I: IntersFadeIn) {
+		I->Fade(true);
+	}
 }
 
 void ALStep::FadeOutInters() {

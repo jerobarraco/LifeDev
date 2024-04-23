@@ -89,6 +89,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
 	TArray<AInteract*> IntersEnable;
 
+	// interacts to fade in during Start (post wait).
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	TArray<ALInteract*> IntersFadeIn;
+
+	// interacts to fade out during Stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
 	TArray<ALInteract*> IntersFadeOut;
 
@@ -128,6 +133,7 @@ protected:
 	// called when items get mod. checks for itemsFinish
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
+	void FadeInInters();
 	void FadeOutInters();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
