@@ -11,3 +11,8 @@ ALStepC4S009::ALStepC4S009():Super() {
 	TeleportChar = false;
 	WaitTime = CamBlendTime = 2; // force dialog to start after blend
 }
+
+void ALStepC4S009::BeginPlay() {
+	Super::BeginPlay();
+	FadeInters(IntersFadeIn, false); // forcefully hide the ones we're showing.
+}
