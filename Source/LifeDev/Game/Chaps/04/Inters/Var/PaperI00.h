@@ -14,8 +14,6 @@ public:
 	APaperI00();
 
 protected:
-	virtual void BeginPlay() override;
-	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UTextRenderComponent* Text = nullptr;
 };
