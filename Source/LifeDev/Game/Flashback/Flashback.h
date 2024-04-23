@@ -58,6 +58,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMin(float NewMin, float Duration=-1.f);
 
+	// default flashback anim speed
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
+	float AnimSpeed = 20.f;
+
+	// triggered on each step change.
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
+	FFBOnChange OnChange;
+
+	inline static bool Debug = false;
+
+protected:
 #pragma region base
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -66,16 +77,6 @@ public:
 	virtual bool IsTickable() const override;
 #pragma endregion
 
-	// default flashback anim speed
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
-	float AnimSpeed = 20.f;
-	
-	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
-	FFBOnChange OnChange;
-
-	inline static bool Debug = false;
-
-protected:
 	// doesn't check the range
 	void SetValInternal(float New);
 	UFUNCTION() // for binding

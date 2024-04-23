@@ -39,15 +39,18 @@ public:
 	bool TickWhenPaused = false;
 
 protected:
+#pragma region base
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
 	// the default is conditional. and works fine.
 	// virtual ETickableTickType GetTickableTickType() const override { return ETickableTickType::Always; };
-	// UTickableWorldSubsystem recommends to check for IsInitialized, but it doesn't implements this correctly.
+	// UTickableWorldSubsystem recommends to check for IsInitialized, but it doesn't implement this correctly.
 	virtual bool IsTickable() const override { return IsInitialized(); };
 	virtual bool IsTickableWhenPaused() const override { return IsInitialized() && TickWhenPaused; };
+#pragma endregion
+
 	void DoTick();
 
 	// will re-set some of the objects and cache values
