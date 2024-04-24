@@ -12,6 +12,8 @@ ASpongeI00::ASpongeI00():Super() {
 	Locked = false;
 	UseRewardDestroy = false;
 	IsOneShot = true;
+	UseAnim = true;
+	UseFade = true;
 	SetEnabled(false);
 	// TODO if i have time, on trigger, fade out, then fade in and do reward
 	// might be easier to do with an extra step
@@ -26,7 +28,6 @@ ASpongeI00::ASpongeI00():Super() {
 	};
 	IRoot->SetRelativeTransform(Trans[1]);
 	Anim->IsAdditive = false;
-	UseAnim = true;
 }
 
 void ASpongeI00::DoTrigger_Implementation() {

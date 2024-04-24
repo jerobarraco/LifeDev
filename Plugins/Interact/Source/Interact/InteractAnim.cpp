@@ -71,7 +71,7 @@ void AInteractAnim::AnimPlay() {
 	
 	if (DisableWhileAnim) SetEnabled(false);
 
-	// both checks avoids an out of bound access
+	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
 		// this creates so many issues. notice how it's set.
 		// this plays AFTER the state has changed.
