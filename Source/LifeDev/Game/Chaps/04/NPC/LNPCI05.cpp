@@ -6,4 +6,5 @@ ALNPCI05::ALNPCI05():Super() {
 
 	SetEnabled(false); // try to default to false. but the step will fade in and re-enable it :G
 	Locked = true;
+	UseFade = true;
 }

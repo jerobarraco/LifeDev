@@ -3,4 +3,5 @@
 
 ALNPCI07::ALNPCI07():Super() {
 	SetEnabled(true);
+	UseFade=true;
 }
