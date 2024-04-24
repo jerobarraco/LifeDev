@@ -67,5 +67,12 @@ GetWorld()->ForceGarbageCollection(true);
 # https://forums.unrealengine.com/t/force-garbage-collection/277172/2
 
 
-; throttle annoying popup
+# throttle annoying popup
 Slate.TooltipSummonDelay 3
+
+# audio mute
+au.Debug.SoloAudio
+au.Debug.AudioSoloSoundClass
+au.Debug.AudioSoloSoundCue
+au.Debug.AudioSoloSoundWave
+au.ClearMutesAndSolos
