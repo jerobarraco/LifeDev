@@ -10,9 +10,9 @@ ABedI00::ABedI00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	UseAnim = false;
+	Locked = true;
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
-	Locked = true;
 	Interact->SetEnabled(true);
 	Interact->SetRelativeLocation(FVector(102.5,-55,32.5));
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
@@ -20,5 +20,5 @@ ABedI00::ABedI00():Super() {
 	LockedDlg = "BED00_L";
 	Texts = { FText::FromString(TEXT("I really need to sleep...")) };
 	RewardFlash = .1;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 }

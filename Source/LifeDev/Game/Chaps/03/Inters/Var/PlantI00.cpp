@@ -5,7 +5,7 @@
 APlantI00::APlantI00():Super() {
 	Texts = { FText::FromString(TEXT("Plant"))};
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 	TriggerDlg = "PL00_T";
 }

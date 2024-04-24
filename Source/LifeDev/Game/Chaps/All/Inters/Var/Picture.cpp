@@ -8,7 +8,7 @@
 
 APicture::APicture():Super() {
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 	Texts = { FText::FromString(TEXT("A Picture")) } ;
 

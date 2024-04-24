@@ -15,7 +15,7 @@ ABasinI00::ABasinI00():Super() {
 	RewardFlash = .1;
 	RewardFlag = LDConsts::Flags::CH0::Basin;
 	DisableWhileAnim = false; // we will disable manually
-	UseRewardFade = false; // one shot but won't disappear nor it will fade
+	UseRewardDestroy = false; // one shot but won't disappear nor it will fade
 	
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);

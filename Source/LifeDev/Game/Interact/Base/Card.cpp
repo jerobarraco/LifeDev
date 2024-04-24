@@ -22,5 +22,6 @@ ACard::ACard():Super() {
 	StateNum = 1;
 	UseAnim = false;
 	RewardFlash = -.1;
-	UseRewardFade = true;
+	UseRewardDestroy = true;
+	UseFade = true;
 }

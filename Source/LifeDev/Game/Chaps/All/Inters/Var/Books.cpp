@@ -64,7 +64,7 @@ void ABooks::Constructor() {
 	/// end create
 	// make them static for now
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 	SetEnabled(false);
 	ABooks::SetMobility(EComponentMobility::Static);

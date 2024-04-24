@@ -4,7 +4,7 @@
 
 ACalendarI00::ACalendarI00():Super() {
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	RewardFlash = .1;
 	TriggerDlg = "Cal00_T";
 	SetEnabled(true);

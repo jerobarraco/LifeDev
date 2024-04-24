@@ -14,7 +14,7 @@ ADoorish::ADoorish():Super() {
 	Anim->SetComponentTickInterval(1/60.f);
 	
 	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
-	UseRewardFade = false; // will also avoid scrambled material
+	UseRewardDestroy = false; // will also avoid scrambled material
 
 	Mesh->SetCastAllShadows(true);
 	// important to call Super here. since this is called before the child constructor

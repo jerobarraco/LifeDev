@@ -10,7 +10,7 @@
 APlate::APlate():Super() {
 	Texts = { FText::FromString(TEXT("Plate"))};
 	RewardFlash = 0;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 	UseAnim = false;
 	

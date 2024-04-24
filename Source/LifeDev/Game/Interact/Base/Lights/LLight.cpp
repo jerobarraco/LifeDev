@@ -26,7 +26,7 @@ ALLight::ALLight():Super() {
 	Trans.Empty(); // force the simpler animation which will reverse the animation.
 	
 	// these would trash the materials.
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	AnimFade->Meshes.Empty();
 
 	// this will trigger the flicker animation randomly

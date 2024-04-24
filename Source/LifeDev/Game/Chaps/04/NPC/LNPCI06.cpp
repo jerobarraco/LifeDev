@@ -5,7 +5,7 @@ ALNPCI06::ALNPCI06():Super() {
 	SetEnabled(true); // does not matter. get enabled by c4s2.
 	TriggerDlg = "NPCI06_T";
 	RewardStep = false; // just enable the pot
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	Locked = false;
 	IsOneShot = true;
 }

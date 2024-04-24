@@ -9,7 +9,7 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	Texts = { FText::FromString(TEXT("Rice box"))};
 	RewardItem = "Food00";
 	RewardFlash = .1;
-	UseRewardFade = true;
+	UseRewardDestroy = true;
 	// Locked = true;
 	// LockedDlg = "Food00_L";
 	TriggerDlg = "Food00_T";

@@ -6,7 +6,7 @@ ABooksI01::ABooksI01():Super(1, 0) {
 	SetEnabled(true);
 	Texts = { FText::FromString(TEXT("Book"))};
 	TriggerDlg = "BK00_T";
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	IsOneShot = true;
 	Locked = false;
 	RewardStep = true;

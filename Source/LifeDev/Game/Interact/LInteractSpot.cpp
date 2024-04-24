@@ -11,7 +11,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	Super::SetMobility(EComponentMobility::Static);
 	UseAnim = false;
 	Locked = true;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	Texts = {
 		FText::FromString(TEXT("Drop here")),
 		FText::FromString(TEXT("Full"))

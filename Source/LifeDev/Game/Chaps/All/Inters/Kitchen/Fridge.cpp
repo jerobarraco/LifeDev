@@ -10,7 +10,7 @@ AFridge::AFridge():Super() {
 	Texts = { FText::FromString(TEXT("Fridge")) } ;
 	RewardFlash = 0;
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

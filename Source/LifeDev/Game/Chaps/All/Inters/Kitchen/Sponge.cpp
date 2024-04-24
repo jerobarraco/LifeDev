@@ -9,7 +9,7 @@
 ASponge::ASponge():Super() {
 	Texts = { FText::FromString(TEXT("Sponge"))};
 	RewardFlash = 0;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 	UseAnim = false;
 

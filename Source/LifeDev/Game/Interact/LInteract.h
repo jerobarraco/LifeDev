@@ -26,8 +26,8 @@ public:
 
 	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool WillRewardFade() const {
-		return UseRewardFade && !IsRewardless();
+	FORCEINLINE bool WillRewardDestroy() const {
+		return UseRewardDestroy && !IsRewardless();
 	}
 
 	// returns true if it does not have a reward (yes, i know about negations)
@@ -105,11 +105,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool RewardStep = false;
 	
-	// whether or not to fade AND self-destroy when rewarding an item.
-	// uses the AnimFade object and what's set there.
-	// remember to call SetNewMat on the constructor if you use the new material.
+	// whether to self-destroy when *rewarding*.
+	// if UseFade is true AND has something to reward, it will also fade.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseRewardFade = true;
+	bool UseRewardDestroy = true;
+
+	// whether to use fade at all. if set it will create a material.
+	// uses the AnimFade object and what's set there.
+	// remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
+	// By default, it's false. Since true is a performance cost and also destructive (will replace your material). 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	bool UseFade = false; // TODo set things to fade manually 
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.

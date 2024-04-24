@@ -10,7 +10,7 @@
 AHeaterI00::AHeaterI00():Super() {
 	RewardFlash = .1f;
 	// don't disappear
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";

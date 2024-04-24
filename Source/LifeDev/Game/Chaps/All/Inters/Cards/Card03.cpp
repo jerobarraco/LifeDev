@@ -7,6 +7,6 @@
 ACard03::ACard03():Super() {
 	TriggerDlg = "C03_Look*";
 	RewardItem = LDConsts::Items::Card3;
-	UseRewardFade = true;
+	UseRewardDestroy = true;
 	Super::SetMobility(EComponentMobility::Static);
 }

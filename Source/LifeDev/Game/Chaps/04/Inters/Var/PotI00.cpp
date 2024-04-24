@@ -10,7 +10,7 @@
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	Locked = false;
 	LockedDlg = "Pot00_L";
 	TriggerDlg = "Pot00.0_T";

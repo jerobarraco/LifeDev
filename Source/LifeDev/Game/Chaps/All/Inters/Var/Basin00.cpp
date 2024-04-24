@@ -14,7 +14,7 @@
 ABasin00::ABasin00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Open"))};
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 2;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

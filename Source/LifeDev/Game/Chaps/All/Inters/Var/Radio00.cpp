@@ -50,7 +50,7 @@ ARadio00::ARadio00():Super() {
 	Interact->SetEnabled(true);
 	UseAnim = true;
 	StateNum = 2;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	// AnimFade->SetNewMat();
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);

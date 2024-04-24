@@ -3,6 +3,7 @@
 #include "Pencil.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 APencil::APencil():Super() {
@@ -11,7 +12,6 @@ APencil::APencil():Super() {
 	UseAnim = false;
 	StateNum = 1;
 
-	// TODO
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Engine/BasicShapes/Cube"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -28,4 +28,6 @@ APencil::APencil():Super() {
 	/// Anims
 	SetEnabled(false);
 	APencil::SetMobility(EComponentMobility::Static);
+	UseFade = true;
+	AnimFade->SetNewMat();
 }

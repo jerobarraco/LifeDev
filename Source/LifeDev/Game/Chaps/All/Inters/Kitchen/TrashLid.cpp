@@ -10,7 +10,7 @@
 ATrashLid::ATrashLid():Super() {
 	Texts = { FText::FromString(TEXT("Open")), FText::FromString(TEXT("Close")) };
 	RewardFlash = 0;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 2;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

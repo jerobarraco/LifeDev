@@ -13,7 +13,7 @@ APot::APot():Super() {
 		FText::FromString(TEXT("Pot"))
 	};
 	RewardFlash = 0;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 2;
 	UseAnim = true;
 

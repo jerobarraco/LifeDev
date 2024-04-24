@@ -9,7 +9,7 @@
 APlant00::APlant00():Super() {
 	Texts = { FText::FromString(TEXT("Plant"))};
 	UseAnim = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>

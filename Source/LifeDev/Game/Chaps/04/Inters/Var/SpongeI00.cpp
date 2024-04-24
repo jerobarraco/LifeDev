@@ -10,7 +10,7 @@ ASpongeI00::ASpongeI00():Super() {
 	RewardItem = LDConsts::Items::Plate01;
 	RewardStep = true;
 	Locked = false;
-	UseRewardFade = false;
+	UseRewardDestroy = false;
 	IsOneShot = true;
 	SetEnabled(false);
 	// TODO if i have time, on trigger, fade out, then fade in and do reward

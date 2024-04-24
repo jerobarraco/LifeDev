@@ -19,7 +19,7 @@ ARadioI00::ARadioI00():Super() {
 	TriggerDlg = "RD00_T";
 	ULockItem = "T01"; // Tape
 	RewardFlash = 0; // the dialog will add 
-	UseRewardFade = false; // don't self-destroy
+	UseRewardDestroy = false; // don't self-destroy
 	DisableWhileAnim = false; // to allow to disable once activated
 	Texts = { FText::FromString(TEXT("Play")) };
 

@@ -21,12 +21,15 @@ ALInteract::ALInteract():Super() {
 }
 
 void ALInteract::Fade(bool FadeIn) {
-	AnimFade->IsReversed = FadeIn;
-	AnimFade->Activate(true);
-	// i have bad feeling about this.
+	if (UseFade) {
+		AnimFade->IsReversed = FadeIn;
+		AnimFade->Activate(true);
+	}
+
+	// i'm not super sure about this.
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
-	// please me from the future, be careful 
+	// please me from the future, be careful. "ki o tsukete!" 
 	SetEnabled(FadeIn);
 }
 
@@ -42,12 +45,11 @@ void ALInteract::BeginPlay() {
 	// the transition is finished. But also is unnecessary code, with unnecessary memory.
 	// and could potentially slow rendering.
 	// do not deactivate nor clear the meshes since that could break objects that reuse the AnimFade
-	if (WillRewardFade()) {
-		AnimFade->CreateMaterial();
-		// avoid getting the sound killed on self-destroy
-		// set here on purpose to allow the user to override it and self-hurt.
-		UseAttachedSFX = false;
-	}
+	if (UseFade) AnimFade->CreateMaterial();
+
+	// avoid getting the sound killed on self-destroy
+	// set here on purpose to allow the user to override it and self-hurt.
+	if (WillRewardDestroy()) UseAttachedSFX = false;
 
 	if (IsValid(RewardActor)) {
 		RewardActor->SetActorHiddenInGame(true);
@@ -84,8 +86,8 @@ void ALInteract::DoRewards() {
 	if (!World) return;
 
 	/// Rewards
-	const bool Rewardless = IsRewardless();
-	if (Rewardless) return; // just return. nothing to do. don't self destroy or anything.
+	// just return. nothing to do. don't self destroy or anything.
+	if (IsRewardless()) return;
 
 	// it's not necessary to call "disable while anim = false" here.
 	// since it's up to the client to allow re-triggerables.
@@ -128,10 +130,9 @@ void ALInteract::DoRewards() {
 	
 	/// done: Process auto destroy. (do at the end.)
 
-	// don't destroy if not userewardfade
-	if (!UseRewardFade) return;
-	// not calling fade here, since it's called on trigger.
+	if (!UseRewardDestroy) return;
 
+	// not calling fade here, since it's called on trigger.
 	// bind to destroy. or just destroy if the anim failed/finished.
 	if (AnimFade->IsActive()) {
 		// only bind here as we only want to destroy on reward
@@ -150,17 +151,13 @@ bool ALInteract::TryTrigger_Implementation() {
 	// handle item req
 	if (!ULockItemReq.IsNone()) {
 		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
-		if (Ok) {
-			Locked = false;
-		}
+		if (Ok) Locked = false;
 	}
 
 	// handle flag req
 	if (!ULockFlagReq.IsNone()) {
 		const bool Ok = IsValid(Flags) && Flags->Has(ULockFlagReq);
-		if (Ok) {
-			Locked = false;
-		}
+		if (Ok) Locked = false;
 	}
 	
 	return Super::TryTrigger_Implementation();
@@ -170,7 +167,7 @@ void ALInteract::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 
 	// start fading right away to give the player the impression that they picked it up
-	if (WillRewardFade()) Fade(false);
+	if (WillRewardDestroy()) Fade(false);
 
 	bool DiagsShown = false;
 	if (IsValid(Diags)) {

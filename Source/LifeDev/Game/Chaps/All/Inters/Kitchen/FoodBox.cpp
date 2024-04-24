@@ -9,7 +9,7 @@
 AFoodBox::AFoodBox():Super() {
 	Texts = { FText::FromString(TEXT("FoodBox"))};
 	RewardFlash = 0;
-	UseRewardFade = true;
+	UseRewardDestroy = true;
 	StateNum = 1;
 	UseAnim = false;
 
