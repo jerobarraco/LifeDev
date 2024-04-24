@@ -11,6 +11,7 @@ APencil::APencil():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Engine/BasicShapes/Cube"));
@@ -28,6 +29,5 @@ APencil::APencil():Super() {
 	/// Anims
 	SetEnabled(false);
 	APencil::SetMobility(EComponentMobility::Static);
-	UseFade = true;
 	AnimFade->SetNewMat();
 }
