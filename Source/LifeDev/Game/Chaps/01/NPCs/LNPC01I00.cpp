@@ -14,6 +14,7 @@ ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam->SetComponentTickInterval(1/60.f);
 	LockedDlg = "N01.L";
 	Texts = { FText::FromString("He seems dangerous...") };
+	UseFade = true;
 }
 
 void ALNPC01I00::BeginPlay() {

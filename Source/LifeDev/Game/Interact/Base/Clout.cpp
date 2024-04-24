@@ -13,4 +13,5 @@ AClout::AClout():Super() {
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
 	RewardFlash = .1;
+	UseFade = true; // a bit lazy, ideally should be set to true on each instance.
 }

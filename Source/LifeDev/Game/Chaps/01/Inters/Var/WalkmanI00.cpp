@@ -15,8 +15,10 @@ AWalkmanI00::AWalkmanI00():Super() {
 	ULockBadDlg = "WM_ULB";
 	ULockItem = "Batts";
 	RewardItem = "WM";
-		
+	UseRewardDestroy = true;
+	UseFade = true;
 	Locked = true;
+
 	Texts = {
 		FText::FromString(TEXT("My walkman, with no batteries")),
 	};

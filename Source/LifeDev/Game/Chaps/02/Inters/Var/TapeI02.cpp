@@ -11,6 +11,7 @@ ATapeI02::ATapeI02():Super() {
 	RewardFlash = .1;
 	RewardItem = "T02";
 	UseRewardDestroy = true;
+	UseFade = true;
 	Locked = true;
 	// important to require batteries since im going to use it directly on c2s3
 	ULockItem = LDConsts::Items::Batts;

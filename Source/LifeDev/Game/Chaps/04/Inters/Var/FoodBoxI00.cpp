@@ -10,6 +10,7 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	RewardItem = "Food00";
 	RewardFlash = .1;
 	UseRewardDestroy = true;
+	UseFade = true;
 	// Locked = true;
 	// LockedDlg = "Food00_L";
 	TriggerDlg = "Food00_T";

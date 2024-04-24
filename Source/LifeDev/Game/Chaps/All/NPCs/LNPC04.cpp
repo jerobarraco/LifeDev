@@ -4,9 +4,11 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
+// TODO make an instance class and use that instead in chap00
 ALNPC04::ALNPC04():Super() {
 	UseAnim = false;
 	Locked = true;
+	UseFade = true; // actually move this to the child instance
 	Texts = { FText::FromString("...") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

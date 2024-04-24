@@ -3,4 +3,5 @@
 
 ALNPCI01::ALNPCI01():Super() {
 	SetEnabled(false); // not gonna interact with this
+	UseFade = true;
 }

@@ -13,6 +13,8 @@ ABatts::ABatts():Super() {
 	UseAnim = false;
 	StateNum = 1;
 	RewardItem = LDConsts::Items::Batts;
+	UseRewardDestroy = true;
+	UseFade = true; // a bit lazy.
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Batts00/Batts00.Batts00"));

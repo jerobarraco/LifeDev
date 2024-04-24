@@ -4,9 +4,11 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
+// TODO create an instance class and use that in chapter 03 instead of this.
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	Locked = true;
+	UseFade = true; // TODO to a child class
 	Texts = { FText::FromString("...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)

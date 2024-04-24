@@ -8,6 +8,7 @@ ATapeI00::ATapeI00():Super() {
 	};
 	TriggerDlg = "T01_T"; // will say what it is. triggered on pick up
 	RewardItem = "T01";
+	UseFade = true;
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }

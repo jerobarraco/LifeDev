@@ -8,6 +8,6 @@ AKeysI00::AKeysI00():Super() {
 	RewardItem = "KW0";
 	UseAnim = false;
 	StateNum = 1;
-
+	UseFade = true;
 	SetEnabled(true);
 }
