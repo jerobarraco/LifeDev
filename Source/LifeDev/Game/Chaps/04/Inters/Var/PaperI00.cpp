@@ -4,13 +4,14 @@
 
 #include "CQuickMesh.h"
 #include "Components/TextRenderComponent.h"
-#include "Diags/Diags.h"
+#include "Interact/Animator/CAnimatorFade.h"
 
 APaperI00::APaperI00():Super() {
 	// just for looks
 	// RewardFlash = -.2f;
 	// RewardItem = LDConsts::Items::Poem3;
 	// TriggerDlg = "P03_Look*";
+	UseFade = true;
 
 	Super::SetMobility(EComponentMobility::Static);
 
@@ -26,4 +27,27 @@ APaperI00::APaperI00():Super() {
 	Text->SetWorldSize(1);
 	Text->SetYScale(1.5);
 	Text->SetVertSpacingAdjust(8.5);
+}
+
+void APaperI00::FadeUpdate(float Progress, float FadeV) {
+	UE_LOG(LogTemp, Log, TEXT("Paper fade %f"), FadeV);
+	// FadeV 0 means showing.
+	
+	// unreal does not really care about alpha :'{
+	Text->SetTextRenderColor(FColor::Black.WithAlpha(255.0*(1-FadeV)));
+	Text->SetHiddenInGame(FadeV>.2); 
+	// Text->TextRenderColor.A = 255*Alpha;
+	// avoid calling Text->SetTextRenderColor() which copies the value 2 times.
+	// just mark it dirty.
+	// Text->MarkRenderStateDirty();
+}
+
+void APaperI00::BeginPlay() {
+	Super::BeginPlay();
+	if (AnimFade) AnimFade->OnUpdate.AddUniqueDynamic(this, &APaperI00::FadeUpdate);
+}
+
+void APaperI00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (AnimFade) AnimFade->OnUpdate.RemoveAll(this);
+	Super::EndPlay(EndPlayReason);
 }

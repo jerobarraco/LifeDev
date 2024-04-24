@@ -14,6 +14,10 @@ public:
 	APaperI00();
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UFUNCTION()
+	void FadeUpdate(float Progress, float FadeV);
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UTextRenderComponent* Text = nullptr;
 };
