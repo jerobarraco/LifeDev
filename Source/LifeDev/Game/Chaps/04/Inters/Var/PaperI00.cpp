@@ -35,7 +35,10 @@ void APaperI00::FadeUpdate(float Progress, float FadeV) {
 	
 	// unreal does not really care about alpha :'{
 	Text->SetTextRenderColor(FColor::Black.WithAlpha(255.0*(1-FadeV)));
-	Text->SetHiddenInGame(FadeV>.2); 
+	Text->SetHiddenInGame(FadeV>.2);
+	// TODO create a custom material instance and drive the parameter here
+	// https://forums.unrealengine.com/t/text-render-alpha-not-working/87895/3?u=nande
+
 	// Text->TextRenderColor.A = 255*Alpha;
 	// avoid calling Text->SetTextRenderColor() which copies the value 2 times.
 	// just mark it dirty.
