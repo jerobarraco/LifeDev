@@ -1,6 +1,8 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S005.h"
 
+#include "LifeDev/Game/Flashback/Flashback.h"
+
 ALStepC4S005::ALStepC4S005():Super() {
 	Name = FName("C4S5");
 	DlgId = Name; // this chapter finishes after the dialog
@@ -11,6 +13,12 @@ ALStepC4S005::ALStepC4S005():Super() {
 	// set wait to blend so that FIRST you turn and THEN it fades the chars (on DoStart (after wait))
 	FinishPostWait = false;
 	TeleportChar = false;
+	FbDiagMod = .1;
+}
+
+void ALStepC4S005::Stop_Implementation() {
+	FB->SetVal(.05);
+	Super::Stop_Implementation();
 }
 
 // interfadeout on editor

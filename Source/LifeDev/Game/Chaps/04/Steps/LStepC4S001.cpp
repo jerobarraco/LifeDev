@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S001.h"
 
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALStepC4S001::ALStepC4S001():Super() {
@@ -11,6 +12,7 @@ ALStepC4S001::ALStepC4S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	WaitTime = CamBlendTime = 2;
+	FbDiagMod = .1;
 	// set wait to blend so that
 	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
 	FinishPostWait = false;
@@ -34,4 +36,11 @@ void ALStepC4S001::Start_Implementation() {
 		I->SetEnabled(i==0); // npci6 continues the flow next step
 	}
 }
+
+void ALStepC4S001::Stop_Implementation() {
+	FB->SetVal(.05);
+
+	Super::Stop_Implementation();
+}
+
 // interfadeout and interfadein on editor
