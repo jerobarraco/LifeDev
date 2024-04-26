@@ -17,7 +17,7 @@ ALStepC4S005::ALStepC4S005():Super() {
 }
 
 void ALStepC4S005::Stop_Implementation() {
-	FB->SetVal(.1);
+	FB->SetVal(.2);
 	Super::Stop_Implementation();
 }
 

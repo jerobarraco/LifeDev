@@ -38,7 +38,7 @@ void ALStepC4S001::Start_Implementation() {
 }
 
 void ALStepC4S001::Stop_Implementation() {
-	FB->SetVal(.1);
+	FB->SetVal(.2);
 
 	Super::Stop_Implementation();
 }

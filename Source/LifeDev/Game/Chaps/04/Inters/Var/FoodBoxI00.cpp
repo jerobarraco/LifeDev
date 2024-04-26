@@ -14,9 +14,11 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	// Locked = true;
 	// LockedDlg = "Food00_L";
 	TriggerDlg = "Food00_T";
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette06_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	AnimFade->MatBase = CMat.Object;
+	
 	SetEnabled(false);
 }
