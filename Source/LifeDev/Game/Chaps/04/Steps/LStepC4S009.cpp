@@ -10,6 +10,7 @@ ALStepC4S009::ALStepC4S009():Super() {
 	FinishPostWait = false;
 	TeleportChar = false;
 	WaitTime = CamBlendTime = 2; // force dialog to start after blend
+	FbDiagMod = -.1; // to end with no music.
 }
 
 void ALStepC4S009::BeginPlay() {
