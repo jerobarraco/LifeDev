@@ -27,6 +27,9 @@ ASpongeI00::ASpongeI00():Super() {
 	};
 	IRoot->SetRelativeTransform(Trans[1]);
 	Anim->IsAdditive = false;
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/washing_hands_inside_a_bathroom_mostly_empty_soap_pump_sink_on_then_off_edit"));
+	SFX_Trigger = CSnd.Object;
 }
 
 void ASpongeI00::DoTrigger_Implementation() {

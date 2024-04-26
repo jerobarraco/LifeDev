@@ -40,7 +40,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 void ALStepC4S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	FB->SetMax(1);
-	FB->SetVal(.01);
+	FB->SetVal(.1);
 }
 
 void ALStepC4S000::DoDebug_Implementation() {
