@@ -8,7 +8,8 @@ AFridgeI00::AFridgeI00():Super() {
 	TriggerDlg="Fridge00_T";
 	UseRewardDestroy = false;
 	RewardItem = "Food01";
-	RewardFlash = .1;
+	// RewardFlash = .1;
+
 	SetEnabled(false);
 }
 
