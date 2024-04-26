@@ -14,23 +14,36 @@ AFridge::AFridge():Super() {
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge.Fridge"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/Fridge.Fridge"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(60.5,17,0));
 	
 	Interact->SetRelativeLocation(FVector(-90,-12.5,90));
 	Interact->SetBoxExtent(FVector(35,7.5,85));
 	SFX->SetRelativeLocation(FVector(-90,-15,95));
+
+	SFXHum = CreateDefaultSubobject<UAudioComponent>(TEXT("SFXHum"));
+	SFXHum->SetupAttachment(Interact);
+	SFXHum->SetAutoActivate(true);
+	SFXHum->bAutoManageAttachment = true;
 	
-	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/Refrigerator_-_Closing_the_Door_03"));
 	SFX_Trigger = CSnd.Object;
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSndHum(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/kitchen_roomtone_with_refrigerator_002"));
+	SFXHum->SetSound(CSndHum.Object);
 
 	// set static by default
 	AFridge::SetMobility(EComponentMobility::Static);
 	Mesh->SetQuickCollisionEnabled(true);
 	// too big to not cast shadows. will look weird.
 	Mesh->SetCastAllShadows(true);
+}
+
+void AFridge::BeginPlay() {
+	
+	Super::BeginPlay();
 }
 

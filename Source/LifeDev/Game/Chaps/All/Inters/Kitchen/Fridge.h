@@ -12,4 +12,10 @@ class LIFEDEV_API AFridge: public ALInteract {
 
 public:
 	AFridge();
+
+protected:
+	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UAudioComponent* SFXHum = nullptr;
 };
