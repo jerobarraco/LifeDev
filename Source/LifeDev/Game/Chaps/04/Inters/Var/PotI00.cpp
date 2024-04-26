@@ -46,6 +46,9 @@ APotI00::APotI00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
 	SFX_Trigger = CSnd.Object;
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
+	SND_Drops = CSnd2.Object;
 }
 
 void APotI00::BeginPlay() {
@@ -64,14 +67,18 @@ void APotI00::DoTrigger_Implementation() {
 		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
+
+		Story->StartNext(); // manually advance. stove is disabled
 	} else if (State == 2) {
 		// triggered after adding food
-		Story->StartNext();
 		// for next step (plates)
 		RewardItem = LDConsts::Items::Plate02;
 		TriggerDlg = "Pot00.1_T";
 		SFX_Trigger = nullptr; // no sound after adding the food
+		SFX_Trigger = SND_Drops;
+		Story->StartNext();
 	} else if (State == 0) { // has looped over
+		SFX_Trigger = nullptr; // no sound after
 		SetEnabled(false); // no more interaction for you
 	}
 }
@@ -90,7 +97,7 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	return Super::TryUseItem_Implementation(Name);
 }
 
-// on editor. rewardinterenabled. enables the stove.
+// disabled: on editor. rewardinterenabled. enables the stove.
 
 // 2 interactions
 // 1st enable the stove and lock itself
