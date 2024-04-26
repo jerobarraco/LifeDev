@@ -26,7 +26,7 @@ AFoodBox::AFoodBox():Super() {
 	SFX->SetRelativeLocation(FVector(10,-5,12.5));
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue.KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
 	Super::SetMobility(EComponentMobility::Static);
 }
