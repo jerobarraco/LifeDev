@@ -15,10 +15,6 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	// LockedDlg = "Food00_L";
 	TriggerDlg = "Food00_T";
 
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
-	SFX_Trigger = CSnd.Object;
-	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette06_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
