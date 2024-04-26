@@ -21,7 +21,7 @@ void ABooks::CreateBooks() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
 	// check against 0 to be able to use negative values as well
-	FRandomStream RS(RndSeed == 0 ?  FMath::Rand() : RndSeed); // not static
+	const FRandomStream RS(RndSeed == 0 ?  FMath::Rand() : RndSeed); // not static
 	
 	const int32 MatMax = Materials.Num() -1;
 	for (int32 i =0; i<BookCount; ++i) {
@@ -57,6 +57,10 @@ void ABooks::Constructor() {
 	// mesh
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
 
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
+	SFX_Trigger = CSnd.Object;
+	
 	SetUpInteract();
 
 	CreateBooks();
