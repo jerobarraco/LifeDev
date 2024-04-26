@@ -42,6 +42,10 @@ APotI00::APotI00():Super() {
 	};
 	Lid->SetRelativeRotation(State0Rot); // init the correct transform
 	Anim->IsAdditive = false;
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
+	SFX_Trigger = CSnd.Object;
 }
 
 void APotI00::BeginPlay() {
@@ -66,6 +70,7 @@ void APotI00::DoTrigger_Implementation() {
 		// for next step (plates)
 		RewardItem = LDConsts::Items::Plate02;
 		TriggerDlg = "Pot00.1_T";
+		SFX_Trigger = nullptr; // no sound after adding the food
 	} else if (State == 0) { // has looped over
 		SetEnabled(false); // no more interaction for you
 	}
