@@ -18,7 +18,8 @@ APencil::APencil():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
 	
-	Interact->SetBoxExtent(FVector(60,75,75));
+	Interact->SetBoxExtent(FVector(7.5,1,1));
+	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));
 	
 	// TODO stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
