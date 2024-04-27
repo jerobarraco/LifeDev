@@ -22,7 +22,6 @@ APlate::APlate():Super() {
 
 	Interact->SetRelativeLocation(FVector(0,0,0));
 	Interact->SetBoxExtent(FVector(20,20,5));
-	SFX->SetRelativeLocation(FVector(0,0,0));
 	
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
