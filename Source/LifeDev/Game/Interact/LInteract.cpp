@@ -113,11 +113,13 @@ void ALInteract::DoRewards() {
 	// do the actor
 	if (IsValid(RewardActor)) {
 		RewardActor->SetActorHiddenInGame(false);
-		ALInteract* const RewardInter = Cast<ALInteract>(RewardActor);
-		if (IsValid(RewardInter)) {
-			RewardInter->SetEnabled(true);
-			RewardInter->Fade(true);
-		}
+
+		// enabled separately since on begin play it checks only for AInteract and no ALInteract
+		AInteract* const Reward = Cast<AInteract>(RewardActor);
+		if (Reward) Reward->SetEnabled(true);
+		
+		ALInteract* const LReward = Cast<ALInteract>(RewardActor);
+		if (LReward) LReward->Fade(true);
 	}
 
 	if (RewardStep && IsValid(Story)) Story->StartNext();
