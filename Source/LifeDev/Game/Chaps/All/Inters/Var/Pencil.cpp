@@ -21,9 +21,8 @@ APencil::APencil():Super() {
 	Interact->SetBoxExtent(FVector(7.5,1,1));
 	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));
 	
-	// TODO stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
