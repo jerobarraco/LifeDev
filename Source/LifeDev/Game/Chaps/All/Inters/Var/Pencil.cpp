@@ -14,10 +14,9 @@ APencil::APencil():Super() {
 	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Engine/BasicShapes/Cube"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Pencil_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(-0.500000,-0.250000,0));
-	Mesh->SetRelativeScale3D(FVector(0.100000,0.010000,0.010000));
+	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
 	
 	Interact->SetBoxExtent(FVector(60,75,75));
 	
