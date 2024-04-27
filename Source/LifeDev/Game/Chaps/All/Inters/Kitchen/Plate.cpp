@@ -34,9 +34,6 @@ APlate::APlate():Super() {
 	// not using SetNewMaterial since this mesh uses palettes, hence it will be overriden on the level outliner.
 	// still doesn't seem to work.
 	AnimFade->MatBase = nullptr;
-	// SFX_Start = { CSndClose.Object, CSndOpen.Object };
-	// SFX_Trigger = CSndClose.Object;
-	// TODO sound
 }
 
 void APlate::BeginPlay() {

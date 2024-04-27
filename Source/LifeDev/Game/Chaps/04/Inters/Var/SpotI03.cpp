@@ -10,9 +10,9 @@ ASpotI03::ASpotI03():Super() {
 	LockedDlg = "IS3_L"; // when not full
 	LockedFullDlg = "IS3_LF"; // when full
 	DropFullDlg = ""; // when full
-	RewardStep = true;
-	Items = { LDConsts::Items::Plate02 };
+	RewardStep = true; // moves to the next
+	Items = { LDConsts::Items::Plate02 }; // empty plate
 
-	SetEnabled(false);
+	SetEnabled(false); // the steps will enable it
 	// RewardActor set in editor
 }
