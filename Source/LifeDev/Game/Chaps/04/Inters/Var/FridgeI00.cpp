@@ -12,4 +12,3 @@ AFridgeI00::AFridgeI00():Super() {
 
 	SetEnabled(false);
 }
-

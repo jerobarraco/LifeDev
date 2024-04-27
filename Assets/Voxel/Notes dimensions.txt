@@ -8,7 +8,7 @@ cube size 5 cm
 * small:
 1:10 of regular
 imported scaled down to 0.005
-cube size approx 50mm = 0.5 cm
+cube size approx 5mm = 0.5 cm
 
 * big:
 10:1 regular. e.g. buildings
