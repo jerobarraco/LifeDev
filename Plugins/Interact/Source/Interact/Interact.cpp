@@ -31,7 +31,7 @@ AInteract::AInteract():Super() {
 	Interact->HoverMesh = Mesh;
 
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
-	SFX->SetupAttachment(Mesh);
+	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
 }
