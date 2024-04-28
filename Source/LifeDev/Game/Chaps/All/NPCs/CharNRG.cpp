@@ -6,6 +6,7 @@
 #include "NiagaraSystem.h"
 
 #include "CQuickMesh.h"
+#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
 // q = there are 2 ways. either i do it the "right" way or i cheat really badly.
@@ -25,7 +26,8 @@ ACharNRG::ACharNRG():Super() {
 	Parts->SetAsset(CNiag.Object);
 	Super::SetEnabled(false); // notice super
 	Anim->TRoot = Root; // nice try but... (read beginplay)
-	Anim->IsAdditive = true;
+	Anim->IsAdditive = false;
+	Interact->SetBoxExtent(FVector(3));
 }
 
 void ACharNRG::BeginPlay() {
