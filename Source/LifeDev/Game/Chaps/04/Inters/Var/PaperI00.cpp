@@ -30,7 +30,6 @@ APaperI00::APaperI00():Super() {
 }
 
 void APaperI00::FadeUpdate(float Progress, float FadeV) {
-	UE_LOG(LogTemp, Log, TEXT("Paper fade %f"), FadeV);
 	// FadeV 0 means showing.
 	
 	// unreal does not really care about alpha :'{
