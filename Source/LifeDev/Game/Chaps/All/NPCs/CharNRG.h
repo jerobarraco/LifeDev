@@ -16,7 +16,9 @@ public:
 
 	
 protected:
+	virtual void SetEnabled_Implementation(bool Enabled) override;
+	virtual void AnimEnd_Implementation() override;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UNiagaraComponent* Parts = nullptr;
-	virtual void SetEnabled_Implementation(bool Enabled) override;
 };
