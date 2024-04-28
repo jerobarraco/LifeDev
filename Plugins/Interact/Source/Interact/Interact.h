@@ -52,7 +52,7 @@ public:
 	FORCEINLINE void TryTriggerWrap() {TryTrigger();}
 
 	// enables or disables the interaction
-	UFUNCTION(BlueprintCallable, Category="Interact")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void SetEnabled(bool Enabled = true);
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)

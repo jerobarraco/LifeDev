@@ -23,6 +23,7 @@ public:
 	// will fade in/out the object. also sets enabled by default.
 	UFUNCTION(BlueprintCallable)
 	void Fade(bool FadeIn = false);
+	// TODO overrideable?^
 
 	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)

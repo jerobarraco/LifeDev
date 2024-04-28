@@ -52,7 +52,7 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::BAD_TARGET;
 }
 
-void AInteract::SetEnabled(bool Enabled) {
+void AInteract::SetEnabled_Implementation(bool Enabled) {
 	if (!IsValid(Interact)) return;
 
 	Interact->SetEnabled(Enabled);
