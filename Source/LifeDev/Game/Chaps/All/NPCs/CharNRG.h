@@ -14,8 +14,8 @@ class LIFEDEV_API ACharNRG: public ALInteract {
 public:
 	ACharNRG();
 
-	
 protected:
+	virtual void BeginPlay() override;
 	virtual void SetEnabled_Implementation(bool Enabled) override;
 	virtual void AnimEnd_Implementation() override;
 	
