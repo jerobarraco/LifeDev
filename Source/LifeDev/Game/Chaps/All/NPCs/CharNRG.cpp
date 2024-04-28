@@ -42,5 +42,7 @@ void ACharNRG::SetEnabled_Implementation(bool Enabled) {
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
+	const static FName SSpawnRate("SpawnRate");
+	Parts->SetVariableFloat(SSpawnRate, 3);
 	// SetEnabled(false); // TODO change param for spawn count
 }
