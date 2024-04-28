@@ -46,7 +46,7 @@ public:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
 	// Don't use if possible. use TryTrigger. used for binding only.
-	// since ue will complain about the return value. but i still wanna keep it.
+	// since ue will complain about the return value. but i still want to keep it.
 	// bindings don't work with forceinline
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	FORCEINLINE void TryTriggerWrap() {TryTrigger();}
@@ -172,7 +172,7 @@ protected:
 
 	/// CDO
 
-	// added here so it can be changed in the editor. otherwise it wont show. :(
+	// added here, so it can be changed in the editor. otherwise it wont show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	// handles the interactions with this actor.
