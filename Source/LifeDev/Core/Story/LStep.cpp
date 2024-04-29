@@ -4,6 +4,7 @@
 #include "Diags/Diags.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "Story/Story.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -31,6 +32,8 @@ void ALStep::Stop_Implementation() {
 
 	UWorld* const W = GetWorld();
 	if (W) {
+		if (UseRain) ALMusicMan::SetRainS(W, false);
+
 		// ensure we don't double trigger
 		W->GetTimerManager().ClearAllTimersForObject(this);
 		// Destroy them during the fade
@@ -70,6 +73,8 @@ void ALStep::Start_Implementation() {
 			Ghosts->SetPlaying(true);
 		}
 	}
+
+	if (UseRain) ALMusicMan::SetRainS(W, true);
 
 	SetShowActorEnabled(true, true);
 	SetIntersEnabled(true);

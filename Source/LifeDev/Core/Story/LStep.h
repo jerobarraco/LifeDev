@@ -69,6 +69,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName DlgId = NAME_None;
 
+	// whether to manage rain. Enable at start, disable at stop.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
+	bool UseRain = false;
 	// whether to spawn (and destroy) ghosts. Take a look at and set GhostPos.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	bool UseGhosts = false;
