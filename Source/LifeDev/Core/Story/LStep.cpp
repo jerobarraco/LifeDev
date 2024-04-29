@@ -147,7 +147,7 @@ void ALStep::CheckItemsFinish() {
 }
 
 void ALStep::DlgShow_Implementation(const FDialog& Diag) {
-	if (FB) FB->ModVal(FbDiagMod);
+	if (FB) FB->ModVal(FbDiagMod); // no need to check for IsNearlyZero. modval does it.
 }
 
 void ALStep::BeginPlay() {
@@ -177,15 +177,14 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	FB = nullptr;
 
-	// always at end
-	Super::EndPlay(EndPlayReason);
+	Super::EndPlay(EndPlayReason); // always at end
 }
 
 void ALStep::PostLoad() {
 	Super::PostLoad();
 
 	if (UseFadeTime) {
-		UStory* const Story = UStory::Instance(GetWorld());
+		const UStory* const Story = UStory::Instance(GetWorld());
 		WaitTime = Story ? Story->FadeTime : 1; 
 	}
 	
@@ -194,9 +193,11 @@ void ALStep::PostLoad() {
 }
 
 void ALStep::Finish_Implementation() {
-	// avoid possible double triggering. since finish is called from several origins
-	Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
-	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
+	if (Diags) {
+		// avoid possible double triggering. since finish is called from several origins
+		Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
+		Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
+	}
 	Super::Finish_Implementation();
 }
 
@@ -205,8 +206,8 @@ void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
 
 	ShowActor->SetActorHiddenInGame(!Enabled);
 	ALInteract* const Inter = Cast<ALInteract>(ShowActor);
-
 	if (!Inter) return;
+
 	if (WithFade) Inter->Fade(Enabled);
 	Inter->SetEnabled(Enabled);
 }
