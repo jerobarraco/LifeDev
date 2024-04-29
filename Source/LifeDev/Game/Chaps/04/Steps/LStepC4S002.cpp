@@ -9,6 +9,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
+	UseRain = true; // TODO test
 }
 
 // enables the pot

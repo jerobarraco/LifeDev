@@ -4,6 +4,8 @@
 ALStepC4S004::ALStepC4S004():Super() {
 	Name = FName("C4S4");
 	UseFade = false;
+	UseRain = true; // TODO test
+
 	// DlgId = FName("C4S1"); 
 	InputEnabled = true;
 	UsePawnCam = true;
