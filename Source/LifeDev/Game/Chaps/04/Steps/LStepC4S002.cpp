@@ -3,13 +3,13 @@
 
 ALStepC4S002::ALStepC4S002():Super() {
 	Name = FName("C4S2");
-	UseFade = false;
 	// DlgId = FName("C4S1"); 
+	UseFade = false;
+	UseRain = true;
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
-	UseRain = true; // TODO test
 }
 
 // enables the pot

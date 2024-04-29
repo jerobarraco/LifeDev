@@ -12,7 +12,7 @@ ALStepC4S001::ALStepC4S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	WaitTime = CamBlendTime = 2;
-	FbDiagMod = .1;
+	FbDiagMod = .8/22.0; // .1; // only .8 available, and more than 22 dialogs.
 	// set wait to blend so that
 	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
 	FinishPostWait = false;
