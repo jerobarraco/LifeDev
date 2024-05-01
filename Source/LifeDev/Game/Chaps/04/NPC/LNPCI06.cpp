@@ -12,6 +12,7 @@ ALNPCI06::ALNPCI06():Super() {
 	Locked = false;
 	IsOneShot = true;
 	UseFade = true;
+	UseAnim = false;
 }
 
 // on editor. rewardinterenabled. enables the pot.
