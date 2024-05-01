@@ -8,17 +8,17 @@
 AFoodBoxI00::AFoodBoxI00():Super() {
 	Texts = { FText::FromString(TEXT("Rice box"))};
 	RewardItem = "Food00";
-	// RewardFlash = .1;
 	UseRewardDestroy = true;
 	UseFade = true;
+	TriggerDlg = "Food00_T";
+	// RewardFlash = .1; // story works better this way
 	// Locked = true;
 	// LockedDlg = "Food00_L";
-	TriggerDlg = "Food00_T";
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette06_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	AnimFade->MatBase = CMat.Object;
-	
+
 	SetEnabled(false);
 }
