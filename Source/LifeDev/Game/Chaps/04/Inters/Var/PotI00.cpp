@@ -12,7 +12,6 @@ APotI00::APotI00():Super() {
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
 	Locked = false;
-	LockedDlg = "Pot00_L";
 	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	SetEnabled(false);
@@ -67,6 +66,7 @@ void APotI00::DoTrigger_Implementation() {
 		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
+		LockedDlg = "Pot00_L";
 
 		Story->StartNext(); // manually advance. stove is disabled
 	} else if (State == 2) {
@@ -74,8 +74,9 @@ void APotI00::DoTrigger_Implementation() {
 		// for next step (plates)
 		RewardItem = LDConsts::Items::Plate02;
 		TriggerDlg = "Pot00.1_T";
-		SFX_Trigger = nullptr; // no sound after adding the food
+		LockedDlg = ""; // TODO add plate dialog
 		SFX_Trigger = SND_Drops;
+
 		Story->StartNext();
 	} else if (State == 0) { // has looped over
 		SFX_Trigger = nullptr; // no sound after
