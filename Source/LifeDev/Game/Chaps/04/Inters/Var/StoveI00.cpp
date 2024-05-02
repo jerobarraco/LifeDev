@@ -4,7 +4,7 @@
 
 AStoveI00::AStoveI00():Super() {
 	Locked = false;
-	TriggerDlg = "Stove00_T";
+	// TriggerDlg = "Stove00_T";
 	// RewardStep = true; // last item in the interaction chain for this step.
 	SetEnabled(false);
 	// TODO fix stove being enabled wth

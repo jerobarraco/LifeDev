@@ -66,15 +66,16 @@ void APotI00::DoTrigger_Implementation() {
 		// forget about the stove. important for the next step
 		RewardInterEnable.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
-		LockedDlg = "Pot00_L";
+		LockedDlg = "Pot00.0_L";
 
 		Story->StartNext(); // manually advance. stove is disabled
 	} else if (State == 2) {
-		// triggered after adding food
+		// triggered after adding food, by using the empty plate
 		// for next step (plates)
 		RewardItem = LDConsts::Items::Plate02;
+		// triggers once the empty plate is used and the full rewarded
 		TriggerDlg = "Pot00.1_T";
-		LockedDlg = ""; // TODO add plate dialog
+		LockedDlg = "Pot00.1_L"; // "you'll need a plate"
 		SFX_Trigger = SND_Drops;
 
 		Story->StartNext();
