@@ -78,7 +78,9 @@ class LIFEDEV_API ULSysSettings : public UDeveloperSettings {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
 	static ULSysSettings* Get();
+
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
 
@@ -88,15 +90,18 @@ public:
 	TSet<EFeat>& GetFeats();
 	
 	// The list of items
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory", meta=(RowType="/Script/Inventory.Item"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
+		meta=(RowType="/Script/Inventory.Item"))
 	TSoftObjectPtr<UDataTable> Inventory = nullptr;
 
 	// The list of characters
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story", meta=(RowType="/Script/Dialogs.DialogChar"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
+		meta=(RowType="/Script/Dialogs.DialogChar"))
 	TSoftObjectPtr<UDataTable> Characters = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story", meta=(RowType="LChapter"))
-	TSoftObjectPtr<UDataTable> Chapters = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
+		meta=(RowType="/Script/LifeDev.LChapter"))
+	TSoftObjectPtr<UDataTable> Chapters = TSoftObjectPtr<UDataTable>(FSoftObjectPath());
 
 	// the chapter to start with
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
