@@ -40,8 +40,13 @@ public:
 	void CheckItemsFinish();
 
 	// enables or disables the linked actor
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, DeprecatedFunction))
 	void SetShowActorEnabled(const bool Enabled = true, const bool WithFade=true);
+
+	// enables or disables the linked actors
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void SetShowActorsEnabled(const bool Enabled = true, const bool WithFade=true);
+	
 	// enables or disables the interacts on IntersEnable
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetIntersEnabled(const bool Enabled=true);
@@ -82,7 +87,7 @@ public:
 	// actor to show/hide. If it's an interact, it will fade in and out.
 	// it will get destroyed on Stop, set this to null to avoid it.
 	// purposely an actor to have flexibility
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras", meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters", meta=(DeprecatedProperty))
 	AActor* ShowActor = nullptr;
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could if i leave the "destroy" only for LStep
@@ -92,26 +97,26 @@ public:
 	// it will get destroyed on Stop, set this to null to avoid it.
 	// purposely an actor to have flexibility
 	// TODO implement this and remove ShowActors (WARNING i need to port all the objects that still use showactor)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<AActor*> ShowActors;
 	
 	// Interacts to enable on Start (after wait), and disable on Stop.
 	// Will be disabled on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<AInteract*> IntersEnable;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<ALInteract*> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
 	// Note Fade also calls SetEnabled. 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<ALInteract*> IntersFadeIn;
 
 	// Interacts to fade out during *Stop*. Won't change fade during beginPlay.
 	// Note Fade also calls SetEnabled. 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Extras")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<ALInteract*> IntersFadeOut;
 	// note: not fading the intersFade* on begin play because i could have multiple
 	// steps that collide with each other. not doing it on the intersEnable because i think

@@ -26,6 +26,7 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 
 	SetShowActorEnabled(false, true);
+	SetShowActorsEnabled(false, true);
 	SetIntersEnabled(false);
 	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
@@ -77,6 +78,7 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 
 	SetShowActorEnabled(true, true);
+	SetShowActorsEnabled(true, true);
 	SetIntersEnabled(true);
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersTrigger();
@@ -122,6 +124,11 @@ void ALStep::DestroyActors() {
 	if (IsValid(ShowActor)) ShowActor->Destroy();
 	ShowActor = nullptr;
 
+	for (AActor* const A: ShowActors) {
+		if (IsValid(A)) A->Destroy();
+	}
+	ShowActors.Empty();
+
 	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;
 }
@@ -157,6 +164,7 @@ void ALStep::BeginPlay() {
 	Flags = World->GetSubsystem<UFlags>();
 
 	SetShowActorEnabled(false, false);
+	SetShowActorsEnabled(false, false);
 	SetIntersEnabled(false);
 }
 
@@ -208,6 +216,21 @@ void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
 	// fade will call set-enabled. otherwise have to call it manually.
 	// make sure to call it. Avoid calling twice just in case there are side effects.
 	else Inter->SetEnabled(Enabled);
+}
+
+void ALStep::SetShowActorsEnabled(const bool Enabled, const bool WithFade) {
+	for (AActor* const A: ShowActors) {
+		if (!IsValid(A)) continue;
+		
+		A->SetActorHiddenInGame(!Enabled);
+		ALInteract* const Inter = Cast<ALInteract>(A);
+		if (!Inter) continue;
+
+		if (WithFade) Inter->Fade(Enabled);
+		// fade will call set-enabled. otherwise have to call it manually.
+		// make sure to call it. Avoid calling twice just in case there are side effects.
+		else Inter->SetEnabled(Enabled);
+	}
 }
 
 void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {

@@ -25,7 +25,7 @@ void ALStepC2S002::Stop_Implementation() {
 	// once the player obtains the interact and gets destroyed;
 	// there's a lot of chance of problems due to timing issues.
 	// specially since this step finishes with Card2 obtained.
-	ShowActor = nullptr;
+	ShowActor = nullptr; // TODO use IntersFadeIn
 
 	Super::Stop_Implementation();
 }
