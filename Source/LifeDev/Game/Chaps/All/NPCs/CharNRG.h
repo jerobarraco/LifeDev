@@ -21,4 +21,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UNiagaraComponent* Parts = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|Nrg")
+	float SpawnRateMax = 30;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|Nrg")
+	float SpawnRateMin = 2;
 };

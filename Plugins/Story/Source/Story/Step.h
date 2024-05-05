@@ -47,7 +47,7 @@ public:
 
 	// name of the step. critically necessary. for the step system to start it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName Name;
+	FName Name = NAME_None;
 
 	// the camera to switch to automatically. Set to null to not switch to.
 	// By default, is the own camera. or you can set UsePawnCam to use the pawn's camera 
