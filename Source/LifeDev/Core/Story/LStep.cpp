@@ -27,7 +27,7 @@ void ALStep::Stop_Implementation() {
 
 	SetShowActorEnabled(false, true);
 	SetIntersEnabled(false);
-	FadeInters(IntersFadeOut, false);
+	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
 
 	UWorld* const W = GetWorld();
@@ -78,7 +78,8 @@ void ALStep::Start_Implementation() {
 
 	SetShowActorEnabled(true, true);
 	SetIntersEnabled(true);
-	FadeInters(IntersFadeIn, true);
+	DoIntersFade(IntersFadeIn, true);
+	DoIntersTrigger();
 
 	// show dialogs
 	StartDialogs();
@@ -129,12 +130,6 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
 }
 
-void ALStep::FadeInters(const TArray<ALInteract*>& A, const bool In) {
-	for (ALInteract* const I: A) {
-		if (IsValid(I)) I->Fade(In);
-	}
-}
-
 void ALStep::CheckItemsFinish() {
 	const int32 NumItems = ItemsFinish.Num();
 	if (NumItems<=0) return;
@@ -153,12 +148,13 @@ void ALStep::DlgShow_Implementation(const FDialog& Diag) {
 void ALStep::BeginPlay() {
 	Super::BeginPlay();
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
+
 	Diags = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
-	Flags = UFlags::Instance(World);
+	Flags = World->GetSubsystem<UFlags>();
 
 	SetShowActorEnabled(false, false);
 	SetIntersEnabled(false);
@@ -209,11 +205,25 @@ void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
 	if (!Inter) return;
 
 	if (WithFade) Inter->Fade(Enabled);
-	Inter->SetEnabled(Enabled);
+	// fade will call set-enabled. otherwise have to call it manually.
+	// make sure to call it. Avoid calling twice just in case there are side effects.
+	else Inter->SetEnabled(Enabled);
+}
+
+void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
+	for (ALInteract* const I: A) {
+		if (IsValid(I)) I->Fade(In);
+	}
 }
 
 void ALStep::SetIntersEnabled(const bool Enabled) {
 	for (AInteract* const I: IntersEnable) {
 		if (IsValid(I)) I->SetEnabled(Enabled);
+	}
+}
+
+void ALStep::DoIntersTrigger() const {
+	for (AInteract* const I: IntersTrigger) {
+		if (IsValid(I)) I->TryTrigger();
 	}
 }

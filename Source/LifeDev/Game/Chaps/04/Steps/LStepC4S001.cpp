@@ -22,7 +22,7 @@ ALStepC4S001::ALStepC4S001():Super() {
 void ALStepC4S001::BeginPlay() {
 	Super::BeginPlay();
 	// start with the inters faded out. a cheeky cheat to avoid doing it on each npci.
-	FadeInters(IntersFadeIn, false);
+	DoIntersFade(IntersFadeIn, false);
 }
 
 void ALStepC4S001::Start_Implementation() {

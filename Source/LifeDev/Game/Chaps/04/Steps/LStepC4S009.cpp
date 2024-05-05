@@ -15,5 +15,5 @@ ALStepC4S009::ALStepC4S009():Super() {
 
 void ALStepC4S009::BeginPlay() {
 	Super::BeginPlay();
-	FadeInters(IntersFadeIn, false); // forcefully hide the ones we're showing.
+	DoIntersFade(IntersFadeIn, false); // forcefully hide the ones we're showing.
 }
