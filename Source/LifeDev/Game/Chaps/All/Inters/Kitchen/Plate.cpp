@@ -13,6 +13,7 @@ APlate::APlate():Super() {
 	UseRewardDestroy = false;
 	StateNum = 1;
 	UseAnim = false;
+	UseFade = true;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Plate/Plate00_P"));
@@ -35,12 +36,3 @@ APlate::APlate():Super() {
 	// still doesn't seem to work.
 	AnimFade->MatBase = nullptr;
 }
-
-void APlate::BeginPlay() {
-	Super::BeginPlay();
-	// forced, to be able to use fade, relies on animfade->matbase being null
-	// this is inefficient since i'm creating a new material instance and maybe i don't need it
-	// but makes the code clearer later.
-	AnimFade->CreateMaterial();
-}
-

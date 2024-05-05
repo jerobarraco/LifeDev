@@ -15,5 +15,5 @@ APlateI00::APlateI00():Super() {
 	Interact->SetRelativeLocation(FVector(2.500000,-2.500000,10));
 	Interact->SetBoxExtent(FVector(20,20,10));
 
-	AnimFade->SetNewMat(); // won't fade without it, this mesh is not palette
+	AnimFade->SetNewMat(); // won't fade without it, this mesh does not uses a palette.
 }

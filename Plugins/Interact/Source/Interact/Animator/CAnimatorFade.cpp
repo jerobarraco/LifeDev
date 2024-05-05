@@ -52,7 +52,7 @@ void UCAnimatorFade::CreateMaterial() {
 
 	for (UStaticMeshComponent* const C: Meshes) {
 		if (!IsValid(C)) continue;
-		C->SetMaterial(0, Mat);		
+		C->SetMaterial(0, Mat);
 	}
 	
 	// Since they all share the same material instance i don't even need to have my own "update"
