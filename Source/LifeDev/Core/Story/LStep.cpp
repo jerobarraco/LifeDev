@@ -124,10 +124,10 @@ void ALStep::DestroyActors() {
 	if (IsValid(ShowActor)) ShowActor->Destroy();
 	ShowActor = nullptr;
 
-	for (AActor* const A: ShowActors) {
+	for (AActor* const A: ActorsShow) {
 		if (IsValid(A)) A->Destroy();
 	}
-	ShowActors.Empty();
+	ActorsShow.Empty();
 
 	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;
@@ -219,7 +219,7 @@ void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
 }
 
 void ALStep::SetShowActorsEnabled(const bool Enabled, const bool WithFade) {
-	for (AActor* const A: ShowActors) {
+	for (AActor* const A: ActorsShow) {
 		if (!IsValid(A)) continue;
 		
 		A->SetActorHiddenInGame(!Enabled);
