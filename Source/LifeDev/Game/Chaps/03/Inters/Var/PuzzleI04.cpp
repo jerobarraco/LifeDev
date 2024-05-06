@@ -14,9 +14,9 @@ constexpr float SndWait = 1.75;
 APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; /// piano sequence
-	ResetOnFail = true; // Allow for reset. this is handled with a careful setup of Super::Done
 	CPuzzle->DisableOnInter = true; // will make it easier. non-repeated keys. and make the waiting explicit.
-	
+	ResetOnFail = true; // Allow for reset. this is handled with a careful setup of Super::Done
+
 	DoneStep = "C3S0";
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -51,18 +51,18 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	WasOk = Ok;
 
 	// give time for audio to play
-	FTimerHandle H;
 	UWorld* const W = GetWorld();
 	if (!W) return;
 
 	ALGGameMode* const Mode = ALGGameMode::Instance(W);
 	if (Mode) Mode->SetCharInputEnabled(false);
 	
+	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
 }
 
 void APuzzleI04::PostDone() {
-	UWorld* W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	UGameplayStatics::PlaySoundAtLocation(W, WasOk ? SND_Right : SND_Wrong, GetActorLocation());
@@ -80,11 +80,12 @@ void APuzzleI04::PostDoneSnd() {
 
 	Lid->Locked = false;
 	Lid->TryTrigger();
-	// i could subscribe to the anim onEnd but this is safer
+	
+	// i could subscribe to the anim onEnd but this is safer.
 	FTimerHandle H;
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
-	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone,  Lid->Anim->Duration);
+	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Lid->Anim->Duration);
 }
 
 void APuzzleI04::LidDone() {
@@ -96,5 +97,4 @@ void APuzzleI04::LidDone() {
 	
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
-
 }

@@ -11,7 +11,8 @@ APianoLid::APianoLid():Super() {
 	Texts = {FText::FromString("")};
 	StateNum = 2;
 	UseAnim = true;
-	DisableWhileAnim = false; // avoid re-enabling the interact once triggered
+	UseFade = false;
+	DisableWhileAnim = false; // avoid re-enabling the Interact once triggered
 	SetEnabled(false); // not manually triggerable
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

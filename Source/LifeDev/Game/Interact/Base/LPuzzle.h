@@ -1,7 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "Interact/Puzzle.h"
+
 #include "LPuzzle.generated.h"
 
 class AInteract;

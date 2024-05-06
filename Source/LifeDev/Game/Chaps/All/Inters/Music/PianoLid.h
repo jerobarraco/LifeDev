@@ -13,6 +13,5 @@ public:
 	APianoLid();
 
 protected:
-	// virtual void SetState_Implementation(int32 NewState) override;
 	virtual void PostInitializeComponents() override;
 };

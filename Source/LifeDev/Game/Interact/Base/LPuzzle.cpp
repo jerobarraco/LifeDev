@@ -45,9 +45,7 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
 	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
-	if (IsValid(Reward)) {
-		Reward->Fade(true);
-	}
+	if (IsValid(Reward)) Reward->Fade(true);
 }
 
 void ALPuzzle::BeginPlay() {
