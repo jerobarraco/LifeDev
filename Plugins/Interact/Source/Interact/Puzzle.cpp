@@ -49,7 +49,7 @@ void APuzzle::Done_Implementation(bool IsOk) {
 		// it will mess with the logical flow anyway.
 		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
 		if (ResetOnFail) {
-			UWorld* const W = GetWorld();
+			const UWorld* const W = GetWorld();
 			if (W) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
 		}
 		return;
@@ -63,15 +63,13 @@ void APuzzle::Done_Implementation(bool IsOk) {
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);
 		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) {
-			Reward->SetEnabled(true);
-		}
+		if (IsValid(Reward)) Reward->SetEnabled(true);
 	}
 }
 
 void APuzzle::Update_Implementation() {
 	// note update is called before done. so it's safe to re add the timer. done will clear it if needed.
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 	
 	ClearTimer();
@@ -97,9 +95,7 @@ void APuzzle::BeginPlay() {
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(true);
 		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) {
-			Reward->SetEnabled(false);
-		}
+		if (IsValid(Reward)) Reward->SetEnabled(false);
 	}
 }
 
@@ -115,7 +111,7 @@ void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void APuzzle::ClearTimer() {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 	
 	W->GetTimerManager().ClearTimer(ResetTimer);

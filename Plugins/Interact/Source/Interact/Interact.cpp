@@ -53,7 +53,7 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 }
 
 void AInteract::SetEnabled_Implementation(bool Enabled) {
-	UE_LOG(LogInteract, Log, TEXT("%hs  Enabled=%i Obj=%s"), __func__, Enabled, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"), __func__, Enabled, *GetNameSafe(this));
 
 	if (!IsValid(Interact)) {
 		UE_LOG(LogInteract, Warning, TEXT("AInteract::SetEnabled Interact is invalid!!!!!!!"));
