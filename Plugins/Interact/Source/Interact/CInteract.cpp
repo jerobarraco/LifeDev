@@ -8,7 +8,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCInteract, Log, Log);
 
 UCInteract::UCInteract(): Super() {
-	// these 2 seems to work ok. but keep an eye on.
+	// These two seems to work ok. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 	UBoxComponent::SetComponentTickEnabled(false);
 	
@@ -19,7 +19,8 @@ UCInteract::UCInteract(): Super() {
 	SetGenerateOverlapEvents(false);
 	SetCanEverAffectNavigation(false);
 	UBoxComponent::SetComponentTickEnabled(false);
-	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
+	// it's already on the collision profile yay
+	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
 }
 
