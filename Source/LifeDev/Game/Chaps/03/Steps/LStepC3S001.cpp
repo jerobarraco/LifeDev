@@ -28,19 +28,22 @@ void ALStepC3S001::TryStart_Implementation() {
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
 
-	constexpr int32 numDlgs = 4; //TODO??
+	// calculate the correct fbdiagmod before calling TryStart
+	constexpr int32 numDlgs = 4;
 	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
-	
+
 	Super::TryStart_Implementation();
 
-	ALNPC03* const NPC = Cast<ALNPC03>(ShowActor);
+	if (ActorsShow.Num() < 1) {
+		UE_LOG(LogTemp, Warning, TEXT("NPC03 not set in c3s1."));
+		return;
+	}
+
+	ALNPC03* const NPC = Cast<ALNPC03>(ActorsShow[0]);
 	if (NPC) NPC->SetPoseScold();
 }
 
 void ALStepC3S001::Stop_Implementation() {
-	if (FB) {
-		// FB->SetVal(.05, 10);
-		FB->SetMin(.33,1); // TODO
-	}
+	if (FB) FB->SetMin(.33,1);
 	Super::Stop_Implementation();
 }
