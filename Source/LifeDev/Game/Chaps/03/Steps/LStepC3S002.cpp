@@ -27,6 +27,17 @@ ALStepC3S002::ALStepC3S002():Super() {
 	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 }
 
+void ALStepC3S002::BeginPlay() {
+	Super::BeginPlay();
+	if (IntersFadeIn.Num()<1) {
+		UE_LOG(LogTemp, Warning, TEXT("C3S2: Card not set on intersfade"));
+		return;
+	}
+
+	// force fade the card
+	DoIntersFade(IntersFadeIn, false);
+}
+
 void ALStepC3S002::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	ALMusicMan::SetRainS(GetWorld(), true);

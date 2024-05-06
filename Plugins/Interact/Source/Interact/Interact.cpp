@@ -53,9 +53,16 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 }
 
 void AInteract::SetEnabled_Implementation(bool Enabled) {
-	if (!IsValid(Interact)) return;
+	UE_LOG(LogInteract, Log, TEXT("%hs  Enabled=%i Obj=%s"), __func__, Enabled, *GetNameSafe(this));
+
+	if (!IsValid(Interact)) {
+		UE_LOG(LogInteract, Warning, TEXT("AInteract::SetEnabled Interact is invalid!!!!!!!"));
+		return;
+	}
 
 	Interact->SetEnabled(Enabled);
+	// TODO for some reason this stopped working on the constructor.
+	// TODO fix, this is important(e)!
 }
 
 void AInteract::SetMobility(EComponentMobility::Type Mobility) {

@@ -113,12 +113,12 @@ public:
 	TArray<ALInteract*> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
-	// Note Fade also calls SetEnabled. 
+	// Note Fade also calls SetEnabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<ALInteract*> IntersFadeIn;
 
 	// Interacts to fade out during *Stop*. Won't change fade during beginPlay.
-	// Note Fade also calls SetEnabled. 
+	// Note Fade also calls SetEnabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<ALInteract*> IntersFadeOut;
 	// note: not fading the intersFade* on begin play because i could have multiple

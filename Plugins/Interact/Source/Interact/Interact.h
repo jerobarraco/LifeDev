@@ -51,7 +51,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
 	FORCEINLINE void TryTriggerWrap() {TryTrigger();}
 
-	// enables or disables the interaction
+	// enables or disables the interaction.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void SetEnabled(bool Enabled = true);
 
