@@ -42,10 +42,10 @@ void ACharNRG::BeginPlay() {
 	Anim->TRoot = Root; // needed or it won't actually use it
 }
 
-// void ACharNRG::SetEnabled_Implementation(bool Enabled) {
-	// // Super::SetEnabled_Implementation(Enabled);
-	// Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
-// }
+void ACharNRG::SetEnabled(bool Enabled) {
+	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part
+	Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
+}
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();

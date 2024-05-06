@@ -16,7 +16,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	// virtual void SetEnabled_Implementation(bool Enabled) override;
+	virtual void SetEnabled(bool Enabled) override;
 	virtual void AnimEnd_Implementation() override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
