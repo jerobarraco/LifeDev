@@ -47,3 +47,5 @@ void ALStepC3S001::Stop_Implementation() {
 	if (FB) FB->SetMin(.33,1);
 	Super::Stop_Implementation();
 }
+
+// actorsShow set in editor

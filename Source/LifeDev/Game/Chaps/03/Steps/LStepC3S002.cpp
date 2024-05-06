@@ -35,15 +35,6 @@ void ALStepC3S002::TryStart_Implementation() {
 }
 
 void ALStepC3S002::Stop_Implementation() {
-	// this is the card. using this so i don't have to code the fade in
-	// setting to null to avoid getting it destroyed by the step
-	// though technically unreal will nullify this for me,
-	// and i always check for IsValid instead of null
-	// once the player obtains the interact and gets destroyed;
-	// there's a lot of chance of problems due to timing issues.
-	// specially since this step finishes with Card3 obtained.
-	ShowActor = nullptr; // TODO use IntersFadeIn
-
 	RndFB->Deactivate();
 	FB->SetMin(0);
 	FB->SetMax(1);
@@ -51,3 +42,5 @@ void ALStepC3S002::Stop_Implementation() {
 	ALMusicMan::SetRainS(GetWorld(), false);
 	Super::Stop_Implementation();
 }
+
+// IntersFade is set to the card
