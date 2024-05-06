@@ -20,13 +20,13 @@
 ACharNRG::ACharNRG():Super() {
 	Texts = { FText::FromString("") };
 	StateNum = 2;
-	// IsOneShot = true; // nopes it will call setenable as soon as it triggers.
+	// IsOneShot = true; // nopes it will call SetEnable as soon as it triggers.
 	
 	Anim->TRoot = Root; // nice try but... (read beginplay)
 	Anim->IsAdditive = false;
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
 	
-	Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
+	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
 
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(Mesh);
@@ -42,10 +42,10 @@ void ACharNRG::BeginPlay() {
 	Anim->TRoot = Root; // needed or it won't actually use it
 }
 
-void ACharNRG::SetEnabled_Implementation(bool Enabled) {
-	// Super::SetEnabled_Implementation(Enabled);
-	Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
-}
+// void ACharNRG::SetEnabled_Implementation(bool Enabled) {
+	// // Super::SetEnabled_Implementation(Enabled);
+	// Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
+// }
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
