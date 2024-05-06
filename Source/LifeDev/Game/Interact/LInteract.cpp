@@ -20,7 +20,7 @@ ALInteract::ALInteract():Super() {
 	AnimFade->Meshes.Add(Mesh);
 }
 
-void ALInteract::Fade(bool FadeIn) {
+void ALInteract::Fade_Implementation(bool FadeIn) {
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
 		AnimFade->Activate(true);
@@ -29,7 +29,7 @@ void ALInteract::Fade(bool FadeIn) {
 	// i'm not super sure about this.
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
-	// please me from the future, be careful. "ki o tsukete!" 
+	// please me from the future, be careful. "ki o tsukete!"
 	SetEnabled(FadeIn);
 }
 

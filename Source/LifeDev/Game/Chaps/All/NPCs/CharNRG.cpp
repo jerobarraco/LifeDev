@@ -15,7 +15,7 @@
 
 
 // i don't really want this to be interactable though
-// i'm just abusing the interface provided by the interact, and the setup in the steps.
+// i'm just abusing the interface provided by the Interact, and the setup in the steps.
 
 ACharNRG::ACharNRG():Super() {
 	Texts = { FText::FromString("") };
@@ -27,7 +27,8 @@ ACharNRG::ACharNRG():Super() {
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
 	
 	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
-
+	Super::SetEnabled(false); // The step will SetEnabled(true) via IntersFadeIn
+	
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(Mesh);
 	Parts->bAutoManageAttachment = true;
@@ -52,6 +53,5 @@ void ACharNRG::AnimEnd_Implementation() {
 	const static FName SSpawnRate("SpawnRate");
 	const float Rate = State == 0 ? SpawnRateMax : SpawnRateMin;
 	Parts->SetVariableFloat(SSpawnRate, Rate);
-	// leave the parts active as i still want them to keep spawning
-	// SetEnabled(false); // TODO change param for spawn count
+	// SetEnabled(false); // leave the parts active as i still want them to keep spawning
 }

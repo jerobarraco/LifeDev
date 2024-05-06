@@ -21,9 +21,9 @@ public:
 	ALInteract();
 
 	// will fade in/out the object. also sets enabled by default.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction))
 	void Fade(bool FadeIn = false);
-	// TODO overrideable?^
+	// TODO keep an eye on using this on the constructor when it's overriden and test if BlueprintNativeEvent creates issues
 
 	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
