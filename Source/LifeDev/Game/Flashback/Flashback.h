@@ -31,7 +31,7 @@ public:
 	// modifies the target value by an offset "by".
 	// this will work ok even if it's currently animating the value
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void ModVal(float By, float Duration = -1.f) {
+	FORCEINLINE void ModVal(const float By, const float Duration = -1.f) {
 		if (FMath::IsNearlyZero(By)) return;
 		// use animTo instead of val, to ensure the By accumulates with the target value
 		// important when skipping dialogs fast
