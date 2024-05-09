@@ -97,6 +97,7 @@ void ALStep::StartDialogs() {
 
 void ALStep::SetFBDiagAuto() {
 	if (!UseFBDiagAuto) return;
+
 	FDialogSequence Seq;
 	int32 Len = 0;
 	const bool Ok = Diags->GetSeq(DlgId, Seq);
@@ -114,6 +115,9 @@ void ALStep::SetFBDiagAuto() {
 	// TODO there might be an issue here. check if GetValTo or GetVal is the correct.
 	const float FBCurrent = FB->GetValTo();
 	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;
+
+	UE_LOG(LogLStoryStep, Log, TEXT("%hs DiagMod=%f, DiagAutoTo=%f, Current=%f, Len=%i"),
+		__func__, FBDiagMod, FBDiagAutoTo, FBCurrent, Len);
 }
 
 void ALStep::FinishAfterDlgs() {
