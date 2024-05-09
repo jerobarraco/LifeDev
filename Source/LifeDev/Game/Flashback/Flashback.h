@@ -26,7 +26,7 @@ public:
 
 	// returns the end value (if it's animating this is the value where it wants to go).
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetValTo() const { return AnimTo; }
+	FORCEINLINE float GetValTo() const { return ValTo; }
 	
 	// modifies the target value by an offset "by".
 	// this will work ok even if it's currently animating the value
@@ -35,7 +35,7 @@ public:
 		if (FMath::IsNearlyZero(By)) return;
 		// use animTo instead of val, to ensure the By accumulates with the target value
 		// important when skipping dialogs fast
-		SetVal(AnimTo+By, Duration);
+		SetVal(ValTo+By, Duration);
 	}
 
 	// sets the target value to the "new" value
@@ -87,8 +87,8 @@ protected:
 
 	// it's super important that the value starts from 0 upon initialization
 	float Val = 0;
-	float AnimFrom = 0;
-	float AnimTo = 0;
+	float ValFrom = 0;
+	float ValTo = 0;
 	float Min = 0;
 	float Max = 1;
 };

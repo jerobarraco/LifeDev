@@ -42,7 +42,7 @@ void UFlashback::SetValInternal(float New) {
 
 void UFlashback::AnimUpdate(float Progress, float Alpha) {
 	// using animFrom and To, keeps the animation stable and linear.
-	SetValInternal(FMath::Lerp<float, float>(AnimFrom, AnimTo, Alpha));
+	SetValInternal(FMath::Lerp<float, float>(ValFrom, ValTo, Alpha));
 }
 
 void UFlashback::SetVal(float New, float Duration) {
@@ -52,14 +52,14 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// important to set, set here to keep it always up to date.
-	AnimFrom = Val;
+	ValFrom = Val;
 	// set instant if speed is 0
 	if (FMath::IsNearlyZero(Duration)) {
 		// reset animation if any
 		Animator->Deactivate();
 		// important to set so that the value is always up-to-date.
 		// since it's used for GetValTo and in turn by SetVal
-		AnimTo = New;
+		ValTo = New;
 		SetValInternal(New);
 		return;
 	}
@@ -68,7 +68,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (Duration < 0) Duration = AnimSpeed;
 
 	// important, set the actual targets.
-	AnimTo = New;
+	ValTo = New;
 
 	// set and play the animator
 	const float Time = Duration*Diff;
