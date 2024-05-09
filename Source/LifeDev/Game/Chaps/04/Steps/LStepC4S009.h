@@ -16,6 +16,7 @@ class ALStepC4S009 : public ALStep {
 
 public:
 	ALStepC4S009();
+
 protected:
 	virtual void BeginPlay() override;
 };
