@@ -16,4 +16,6 @@ class ALStepC4S004 : public ALStep {
 
 public:
 	ALStepC4S004();
+protected:
+	virtual void Start_Implementation() override;
 };

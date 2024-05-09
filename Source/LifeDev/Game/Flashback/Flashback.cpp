@@ -57,7 +57,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (FMath::IsNearlyZero(Duration)) {
 		// reset animation if any
 		Animator->Deactivate();
-		// important to set so that the value is always up to date.
+		// important to set so that the value is always up-to-date.
 		// since it's used for GetValTo and in turn by SetVal
 		AnimTo = New;
 		SetValInternal(New);
