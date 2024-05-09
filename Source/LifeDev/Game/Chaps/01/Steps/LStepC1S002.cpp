@@ -36,7 +36,7 @@ void ALStepC1S002::Start_Implementation() {
 	
 	FB->SetMax(1); // reset to 1 since we will change it several times here
 	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger
-	FbDiagMod = (1.0 - FB->GetValTo()) / 4.0;
+	FBDiagMod = (1.0 - FB->GetValTo()) / 4.0;
 
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow); // to fbincrease

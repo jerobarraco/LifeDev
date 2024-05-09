@@ -11,7 +11,9 @@ ALStepC4S003::ALStepC4S003():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-	FbDiagMod = .1;
+	FBDiagMod = .1;
+	FBDiagAutoTo = 1;
+	UseFBDiagAuto = true;
 }
 
 void ALStepC4S003::Stop_Implementation() {

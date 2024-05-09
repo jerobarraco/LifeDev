@@ -64,15 +64,22 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait", meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 
-	// how much to mod the fb by on each dialog.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	float FbDiagMod = 0.0;
-	
 	// dialog or sequence to trigger on start.
 	// This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName DlgId = NAME_None;
+	// how much to mod the fb by on each dialog.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	float FBDiagMod = 0.0;
+	// when true, it will calculate the FBDiagMod on Start, to reach FBDiagAutoTo
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	bool UseFBDiagAuto = false;
+	// When UseFBDiagAuto is set, this is the target FB value used to calculate FBDiagMod.
+	// calculated on Start
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	float FBDiagAutoTo = 1.0;
+
 
 	// whether to manage rain. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
@@ -144,6 +151,7 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
+	void SetFBDiagAuto();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;

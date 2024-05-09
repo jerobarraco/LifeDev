@@ -61,10 +61,9 @@ void ALStep::Start_Implementation() {
 	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
-	if (IsValid(LGGameMode)) {
-		// do only on postwait. otherwise the input is reset before it faded out.
-		LGGameMode->SetCharInputEnabled(InputEnabled);
-	}
+	
+	// do only on postwait. otherwise the input is reset before it faded out.
+	if (IsValid(LGGameMode)) LGGameMode->SetCharInputEnabled(InputEnabled);
 
 	if (UseGhosts) {
 		Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
@@ -90,9 +89,31 @@ void ALStep::Start_Implementation() {
 void ALStep::StartDialogs() {
 	if (DlgId.IsNone()) return;
 
+	SetFBDiagAuto();
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 	Diags->AddId(DlgId);
 	FinishAfterDlgs();
+}
+
+void ALStep::SetFBDiagAuto() {
+	if (!UseFBDiagAuto) return;
+	FDialogSequence Seq;
+	int32 Len = 0;
+	const bool Ok = Diags->GetSeq(DlgId, Seq);
+	if (Ok) {
+		Len = Seq.DiagRows.Num();
+	} else {
+		FDialog D;
+		FDialogChar C;
+		const bool Ok2 = Diags->GetDiag(DlgId, D, C);
+		if (Ok2) Len = 1;
+	}
+	
+	// avoid division by 0, but also makes no sense otherwise.
+	if (Len <= 0 ) return;
+	// TODO there might be an issue here. check if GetValTo or GetVal is the correct.
+	const float FBCurrent = FB->GetValTo();
+	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;
 }
 
 void ALStep::FinishAfterDlgs() {
@@ -149,7 +170,7 @@ void ALStep::CheckItemsFinish() {
 }
 
 void ALStep::DlgShow_Implementation(const FDialog& Diag) {
-	if (FB) FB->ModVal(FbDiagMod); // no need to check for IsNearlyZero. modval does it.
+	if (FB) FB->ModVal(FBDiagMod); // no need to check for IsNearlyZero. modval does it.
 }
 
 void ALStep::BeginPlay() {

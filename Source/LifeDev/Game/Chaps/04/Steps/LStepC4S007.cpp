@@ -11,7 +11,7 @@ ALStepC4S007::ALStepC4S007():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-	FbDiagMod = .1;
+	FBDiagMod = .1;
 }
 
 void ALStepC4S007::Stop_Implementation() {

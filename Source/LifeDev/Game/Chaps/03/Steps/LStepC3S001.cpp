@@ -30,7 +30,7 @@ void ALStepC3S001::TryStart_Implementation() {
 
 	// calculate the correct fbdiagmod before calling TryStart
 	constexpr int32 numDlgs = 4;
-	FbDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
+	FBDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 
 	Super::TryStart_Implementation();
 
