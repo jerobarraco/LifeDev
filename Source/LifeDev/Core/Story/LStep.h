@@ -80,7 +80,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FBDiagAutoTo = 1.0;
 
-
 	// whether to manage rain. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	bool UseRain = false;

@@ -47,8 +47,9 @@ void UFlashback::AnimUpdate(float Progress, float Alpha) {
 
 void UFlashback::SetVal(float New, float Duration) {
 	New = FMath::Clamp(New, Min, Max);
-	const float Diff = FMath::Abs(Val - New);
-	UE_LOG(LogFlashback, Log, TEXT("Flashback NewVal=%.5f Diff=%.5f"), New, Diff);
+	const float Diff = FMath::Abs(ValTo - New);
+	UE_LOG(LogFlashback, Log, TEXT("%hs::Pre-start Min=%.5f Max=%.5f ValTo=%.5f NewVal=%.5f Diff=%.5f "),
+		__func__, Min, Max, ValTo, New, Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
 
 	// important to set, set here to keep it always up to date.
@@ -75,10 +76,11 @@ void UFlashback::SetVal(float New, float Duration) {
 	Animator->Duration = Time;
 	Animator->Activate(true);
 	
-	UE_LOG(LogFlashback, Log, TEXT("Flashback Val=%.5f Duration=%.5f Time=%.5f"), Val, Duration, Time);
+	UE_LOG(LogFlashback, Log, TEXT("%hs:Start Val=%.5f ValTo=%.5f Duration=%.5f Time=%.5f"),
+		__func__, Val, ValTo, Duration, Time);
 }
 
-void UFlashback::SetMax(float NewMax, float Duration) {
+void UFlashback::SetMax(const float NewMax, const float Duration) {
 	Max = NewMax;
 	
 	// clamp the value if needed
@@ -87,7 +89,7 @@ void UFlashback::SetMax(float NewMax, float Duration) {
 	SetVal(NewMax, Duration);
 }
 
-void UFlashback::SetMin(float NewMin, float Duration) {
+void UFlashback::SetMin(const float NewMin, const float Duration) {
 	Min = NewMin;
 	
 	// clamp the value if needed

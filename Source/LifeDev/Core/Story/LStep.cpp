@@ -174,7 +174,10 @@ void ALStep::CheckItemsFinish() {
 }
 
 void ALStep::DlgShow_Implementation(const FDialog& Diag) {
-	if (FB) FB->ModVal(FBDiagMod); // no need to check for IsNearlyZero. modval does it.
+	// no need to check for IsNearlyZero. modval does it.
+	// ModVal is the best, since if i trigger several dialogs very fast
+	// it should still go to the correct value.
+	if (FB) FB->ModVal(FBDiagMod);
 }
 
 void ALStep::BeginPlay() {

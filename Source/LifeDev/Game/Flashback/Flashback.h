@@ -51,12 +51,12 @@ public:
 	// You can set it >1, but it might break stuff i recommend keep in range [0,1]
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
-	void SetMax(float NewMax, float Duration=-1.f);
+	void SetMax(const float NewMax, const float Duration=-1.f);
 	// Sets the min, and clamp the target value if out of range.
 	// You can set it <0, but it might break stuff i recommend keep in range [0,1]
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
-	void SetMin(float NewMin, float Duration=-1.f);
+	void SetMin(const float NewMin, const float Duration=-1.f);
 
 	// default flashback anim speed
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
