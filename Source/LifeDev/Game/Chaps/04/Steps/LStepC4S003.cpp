@@ -11,8 +11,8 @@ ALStepC4S003::ALStepC4S003():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-	FBDiagMod = .1;
-	FBDiagAutoTo = 1;
+	// go a bit above to ensure we end up at 1 a couple of dialogs before
+	FBDiagAutoTo = 1.2;
 	UseFBDiagAuto = true;
 }
 
