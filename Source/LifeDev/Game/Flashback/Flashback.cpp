@@ -47,6 +47,8 @@ void UFlashback::AnimUpdate(float Progress, float Alpha) {
 
 void UFlashback::SetVal(float New, float Duration) {
 	New = FMath::Clamp(New, Min, Max);
+	// critical to use ValTo and not Val here or the dialogs FBDiagMod fails on quick change.
+	// keep an eye on it in case it breaks other things.
 	const float Diff = FMath::Abs(ValTo - New);
 	UE_LOG(LogFlashback, Log, TEXT("%hs::Pre-start Min=%.5f Max=%.5f ValTo=%.5f NewVal=%.5f Diff=%.5f "),
 		__func__, Min, Max, ValTo, New, Diff);
