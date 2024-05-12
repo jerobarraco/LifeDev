@@ -18,19 +18,9 @@ class ALStepC1S003 : public ALStep {
 public:
 	ALStepC1S003();
 	
-	virtual void TryStart_Implementation() override;
-	virtual void Stop_Implementation() override;
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	ALNPC01* NPC = nullptr;
-	
+
 protected:
 	virtual void BeginPlay() override;
-	// ufunctions needed for bindings
-	UFUNCTION()
-	void NPCDiagStop();
-	UFUNCTION()
-	void NPCDiagStart();
-	UFUNCTION()
-	void NPCShow();
 };

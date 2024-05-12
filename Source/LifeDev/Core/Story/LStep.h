@@ -52,7 +52,7 @@ public:
 	void SetIntersEnabled(const bool Enabled=true);
 
 	// whether to dis/enable the character input
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool InputEnabled = false;
 
 	// when set to true, the game mode will set the wait time to the fade time.
@@ -61,7 +61,7 @@ public:
 	// don't use for fade out, since waitTime doesn't work with that, Stop is called just when the story faded out.
 	// TODO make sure i don't need it and remove
 	// TODO need to fix the steps that do use doStart
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait", meta=(DeprecatedProperty))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition", meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
 
 	// dialog or sequence to trigger on start.

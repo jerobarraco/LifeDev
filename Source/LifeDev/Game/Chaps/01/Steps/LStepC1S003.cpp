@@ -13,47 +13,23 @@ ALStepC1S003::ALStepC1S003():Super() {
 	UsePawnCam = false;
 	UseFadeTime = false;
 	CamBlendTime = 3;
-
+	DlgId = "C1S3";
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));
 }
 
 void ALStepC1S003::BeginPlay() {
 	Super::BeginPlay();
-	if (NPC) NPC->SetVisible(false);
-}
 
-void ALStepC1S003::TryStart_Implementation() {
-	Super::TryStart_Implementation();
-	NPCShow();
-}
-
-void ALStepC1S003::Stop_Implementation() {
-	Super::Stop_Implementation();
-}
-
-void ALStepC1S003::NPCShow() {
-	UWorld* const World = GetWorld();
-	if (!World) return;
 	
-	if (!IsValid(NPC)) {
+	DoIntersFade(IntersFadeIn, false); // force npc faded
+	
+	if (IntersFadeIn.Num()<=0) {
 		UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
-		NPCDiagStart();
 		return;
 	}
 
-	NPC->SetPoseSit();
-	NPC->SetVisible(true);
-	FTimerHandle Handle;
-	World->GetTimerManager().SetTimer(Handle, this, &ALStepC1S003::NPCDiagStart, CamBlendTime);
-}
-
-void ALStepC1S003::NPCDiagStart() {
-	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S003::NPCDiagStop);
-	Diags->AddId("C1S3.0");
-}
-
-void ALStepC1S003::NPCDiagStop() {
-	Diags->OnDone.RemoveAll(this);
-	Finish();
+	ALNPC01* const N = Cast<ALNPC01>(IntersFadeIn[0]);
+	if (N) N->SetPoseSit();
+	else UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 }

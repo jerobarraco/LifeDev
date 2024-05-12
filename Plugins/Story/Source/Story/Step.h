@@ -46,7 +46,7 @@ public:
 	void DoTeleport();
 
 	// name of the step. critically necessary. for the step system to start it.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	FName Name = NAME_None;
 
 	// the camera to switch to automatically. Set to null to not switch to.
@@ -63,39 +63,39 @@ public:
 	float CamBlendTime = 2.0;
 	
 	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool FinishPostWait = false;
 
 	// >0 will set the seconds to wait since the START of this step. will trigger PostWait (override it).
 	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	float WaitTime = 0;
 
 	// When set to true, it will fade in/out using the game fade time on start.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Wait")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool UseFade = false;
 
 	// teleports the character to where this cam is located. and also copies the rotation
 	// beware this affects the camera blend if any (if blending from/to the character)
 	// teleports before blending. teleports on start of step. Rotation is broken.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
 	
 	// Title to show. Only shown if you also set UseFade
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	FText Title;
 
 	// Music to play. Setting it to empty does not stop the music.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TSoftObjectPtr<USoundBase> Music;
 
 	// Data layers to load.
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
 	// also in the data layers panel, set the initial runtime state.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<UDataLayerAsset*> DL_Load;
 	// Data layers to unload
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<UDataLayerAsset*> DL_Unload;
 	
 	// set to true to use debug
