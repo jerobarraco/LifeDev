@@ -19,16 +19,18 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
 
+	// classes doesn't work with the ".CamShake_B" ending 
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
-		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B")); // camshake doesn't work with the ".CamShake_B" ending 
+		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B"));
 	ShakeClass = CShake.Succeeded() ? CShake.Class.Get() : ShakeClass;
-	// UDefaultCameraShakeBase::StaticClass(); // disappeared from ue5.4 without warning
+	// disappeared from ue5.4 without warning
+	// UDefaultCameraShakeBase::StaticClass();
 
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
-	ItemsRem = { "T00"}; // use up the item
+	ItemsRem = { "T00" }; // use up the item
 }
 
 void ALStepC1S002::Start_Implementation() {
@@ -47,10 +49,12 @@ void ALStepC1S002::StartShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StartShake);
 	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
 	
-	UWorld* const World = GetWorld();
-	APlayerController* const Controller = World->GetFirstPlayerController();
-	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
-	CameraManager->StartCameraShake(ShakeClass);
+	const UWorld* const World = GetWorld();
+	if (!World) return;
+	const APlayerController* const Controller = World->GetFirstPlayerController();
+	const TObjectPtr<APlayerCameraManager> CameraManager =
+		Controller ? Controller->PlayerCameraManager : nullptr;
+	if (CameraManager) CameraManager->StartCameraShake(ShakeClass);
 
 	// FB->SetVal(1); // bump to max
 
@@ -66,10 +70,13 @@ void ALStepC1S002::ShakeStarted() {
 void ALStepC1S002::StopShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StopShake);
 
-	UWorld* const World = GetWorld();
-	APlayerController* const Controller = World->GetFirstPlayerController();
-	TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
-	CameraManager->StopAllCameraShakes(true); // immediate needed since it has no end
+	const UWorld* const World = GetWorld();
+	if (!World) return;
+	const APlayerController* const Controller = World->GetFirstPlayerController();
+	const TObjectPtr<APlayerCameraManager> CameraManager =
+		Controller ? Controller->PlayerCameraManager : nullptr;
+	// immediate needed since the shake has no end (gimme shake - Max.avi)
+	if (CameraManager) CameraManager->StopAllCameraShakes(true);
 
 	FB->SetVal(.85);
 
