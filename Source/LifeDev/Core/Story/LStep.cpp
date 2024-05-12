@@ -25,8 +25,7 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 
-	SetShowActorEnabled(false, true);
-	SetShowActorsEnabled(false, true);
+	SetActorsShowEnabled(false, true);
 	SetIntersEnabled(false);
 	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
@@ -76,8 +75,7 @@ void ALStep::Start_Implementation() {
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 
-	SetShowActorEnabled(true, true);
-	SetShowActorsEnabled(true, true);
+	SetActorsShowEnabled(true, true);
 	SetIntersEnabled(true);
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersTrigger();
@@ -146,9 +144,6 @@ void ALStep::DestroyActors() {
 	UE_LOG(LogLStoryStep, Log, TEXT("Destroy actors called"));
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
-	if (IsValid(ShowActor)) ShowActor->Destroy();
-	ShowActor = nullptr;
-
 	for (AActor* const A: ActorsShow) {
 		if (IsValid(A)) A->Destroy();
 	}
@@ -191,8 +186,7 @@ void ALStep::BeginPlay() {
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = World->GetSubsystem<UFlags>();
 
-	SetShowActorEnabled(false, false);
-	SetShowActorsEnabled(false, false);
+	SetActorsShowEnabled(false, false);
 	SetIntersEnabled(false);
 }
 
@@ -233,20 +227,7 @@ void ALStep::Finish_Implementation() {
 	Super::Finish_Implementation();
 }
 
-void ALStep::SetShowActorEnabled(const bool Enabled, const bool WithFade) {
-	if (!IsValid(ShowActor)) return;
-
-	ShowActor->SetActorHiddenInGame(!Enabled);
-	ALInteract* const Inter = Cast<ALInteract>(ShowActor);
-	if (!Inter) return;
-
-	if (WithFade) Inter->Fade(Enabled);
-	// fade will call set-enabled. otherwise have to call it manually.
-	// make sure to call it. Avoid calling twice just in case there are side effects.
-	else Inter->SetEnabled(Enabled);
-}
-
-void ALStep::SetShowActorsEnabled(const bool Enabled, const bool WithFade) {
+void ALStep::SetActorsShowEnabled(const bool Enabled, const bool WithFade) {
 	for (AActor* const A: ActorsShow) {
 		if (!IsValid(A)) continue;
 		

@@ -39,13 +39,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void CheckItemsFinish();
 
-	// enables or disables the linked actor
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, DeprecatedFunction))
-	void SetShowActorEnabled(const bool Enabled = true, const bool WithFade=true);
-
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetShowActorsEnabled(const bool Enabled = true, const bool WithFade=true);
+	void SetActorsShowEnabled(const bool Enabled = true, const bool WithFade=true);
 	
 	// enables or disables the interacts on IntersEnable
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
