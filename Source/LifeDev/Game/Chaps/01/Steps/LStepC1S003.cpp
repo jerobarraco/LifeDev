@@ -21,7 +21,6 @@ ALStepC1S003::ALStepC1S003():Super() {
 void ALStepC1S003::BeginPlay() {
 	Super::BeginPlay();
 
-	
 	DoIntersFade(IntersFadeIn, false); // force npc faded
 	
 	if (IntersFadeIn.Num()<=0) {
