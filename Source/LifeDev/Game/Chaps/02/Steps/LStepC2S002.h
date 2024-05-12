@@ -16,5 +16,5 @@ public:
 	ALStepC2S002();
 
 protected:
-	virtual void Stop_Implementation() override;
+	virtual void BeginPlay() override;
 };
