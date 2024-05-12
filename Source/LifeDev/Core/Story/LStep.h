@@ -90,19 +90,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	FVector GhostPos;
 
-	// actor to show/hide. If it's an interact, it will fade in and out.
-	// it will get destroyed on Stop, set this to null to avoid it.
-	// purposely an actor to have flexibility
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters", meta=(DeprecatedProperty))
-	AActor* ShowActor = nullptr;
-	// i don't move this to Step because the fade has a timing component before destroy
-	// or maybe i could if i leave the "destroy" only for LStep
-	// but that would make it lame to use, as both classes would behave differently
-
 	// Actors to show AND hide. If it's an interact, it will fade in and out.
 	// It will get destroyed on Stop. Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility
-	// TODO port from ShowActor (WARNING i need to port all the objects that still use showactor)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<AActor*> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy

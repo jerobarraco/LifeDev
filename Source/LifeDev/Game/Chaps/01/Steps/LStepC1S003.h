@@ -17,9 +17,6 @@ class ALStepC1S003 : public ALStep {
 
 public:
 	ALStepC1S003();
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	ALNPC01* NPC = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
