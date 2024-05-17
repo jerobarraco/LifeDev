@@ -16,7 +16,7 @@ ALStepC4S008::ALStepC4S008():Super() {
 
 void ALStepC4S008::Start_Implementation() {
 	Super::Start_Implementation();
-	FB->SetVal(.2, 180);
+	FB->SetVal(.2, 60);
 }
 
 // allows the player to sit on the table. enables a spot (set on editor)

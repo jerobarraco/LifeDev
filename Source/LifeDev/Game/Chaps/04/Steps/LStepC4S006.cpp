@@ -16,7 +16,7 @@ ALStepC4S006::ALStepC4S006():Super() {
 
 void ALStepC4S006::Start_Implementation() {
 	Super::Start_Implementation();
-	FB->SetVal(.2, 180);
+	FB->SetVal(.2, 60);
 }
 
 // enables the sponge (set in editor)

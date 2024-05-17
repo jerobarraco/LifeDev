@@ -16,7 +16,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 
 void ALStepC4S002::Start_Implementation() {
 	Super::Start_Implementation();
-	FB->SetVal(.2, 180);
+	FB->SetVal(.2, 60);
 }
 
 // enables the pot
