@@ -19,8 +19,12 @@ APaperI00::APaperI00():Super() {
 	Text->SetupAttachment(Mesh);
 	Text->SetRelativeLocation(FVector(0.400000,-19.500000,0.600000));
 	Text->SetRelativeRotation(FRotator(90,0,-90));
-	// TODO add text
-	Text->SetText(NSLOCTEXT("[F55AC1309BFDF396EFA8FD363F894B68]", "C2C0842F189C448F84E75A511F80204F", "Text\nnthous\nnthaeonuthoa\nnthoune\nnthnthNTH\nnth\nnth\nnth\nmoeunmao\nntheou"));
+	// This text must match c4s7
+	// this is ok to be here since this object is only shown by the last step (c4s9)
+	Text->SetText(
+		NSLOCTEXT("[F55AC1309BFDF396EFA8FD363F894B68]", "C2C0842F189C448F84E75A511F80204F",
+			"Even if things around me\n don't change.\nI can change.\nI still have today.\nIt's not finished yet."));
+			// "Text\nnthous\nnthaeonuthoa\nnthoune\nnthnthNTH\nnth\nnth\nnth\nmoeunmao\nntheou"));
 	Text->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
 	Text->SetTextRenderColor(FColor::Black);
 	Text->SetComponentTickEnabled(false);
