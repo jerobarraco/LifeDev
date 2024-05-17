@@ -8,9 +8,6 @@
 
 APaperI00::APaperI00():Super() {
 	// just for looks
-	// RewardFlash = -.2f;
-	// RewardItem = LDConsts::Items::Poem3;
-	// TriggerDlg = "P03_Look*";
 	UseFade = true;
 
 	Super::SetMobility(EComponentMobility::Static);
