@@ -9,7 +9,7 @@
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
-	static FText ST = FText::FromString("~ The end & the beginning ... ~");
+	static FText ST = FText::FromString("~ The End & The Beginning ~");
 	Title = ST;
 	InputEnabled = false;
 	UseFadeTime = false; // don't override wait time
