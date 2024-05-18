@@ -19,18 +19,20 @@ ALStepC3S001::ALStepC3S001():Super() {
 
 	GhostPos = FVector(200,-42,65);
 	UseGhosts = true;
+	UseFBDiagAuto = true;
+	FBDiagAutoTo = 1.2;
 }
 
 void ALStepC3S001::TryStart_Implementation() {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
 
 	// calculate the correct fbdiagmod before calling TryStart
-	constexpr int32 numDlgs = 4;
-	FBDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
+	// constexpr int32 numDlgs = 4;
+	// FBDiagMod = (1.0-FB->GetValTo()) / (numDlgs-1);
 
 	Super::TryStart_Implementation();
 
