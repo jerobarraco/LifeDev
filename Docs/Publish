@@ -2,9 +2,9 @@
 
 * make sure to update LDConsts::Feats::ChapFeatN
 
-* disable debug flag on settings
-* set current chapter to 0
 * update project settings
+* * disable debug flag on settings
+* * set current chapter to 0
 * disable test layer
 ** !initially loaded & !visible. 
 ** unchecked
@@ -24,7 +24,6 @@ Windows
 * open cmd and run PackageWin.bat
 * pray 5 ave marias
 * copy artifacts
-* add deps
 * compress
 * test with bottles
-* step for boss
+
