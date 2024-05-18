@@ -50,7 +50,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool Say(const FName& Name);
 
-	// factor to apply to look when hovering an interact
+	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .3;
 
