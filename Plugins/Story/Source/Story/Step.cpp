@@ -23,7 +23,7 @@ AStep::AStep():Super() {
 	Cam->SetComponentTickEnabled(false);
 	Cam->SetVisibility(false);
 
-#ifdef WITH_EDITORONLY_DATA
+#if WITH_EDITORONLY_DATA
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
 	if (CCam.Succeeded()) Cam->SetCameraMesh(CCam.Object);
