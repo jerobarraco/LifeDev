@@ -32,7 +32,7 @@ ALStepC2S001::ALStepC2S001():Super() {
 }
 
 void ALStepC2S001::TryStart_Implementation() {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	// make the fb raise progressively with the dialogs
