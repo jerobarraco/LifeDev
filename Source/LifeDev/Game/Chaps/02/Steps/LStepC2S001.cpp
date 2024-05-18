@@ -26,7 +26,9 @@ ALStepC2S001::ALStepC2S001():Super() {
 	// there are 11 dialogs, and the fb should be on .4 at least.
 	// with .08 we ensure that we reach 1. but with .1 is too much
 	// .075 a couple of diags remain
-	FBDiagMod = .07;
+	// FBDiagMod = .07;
+	FBDiagAutoTo = 1.2;
+	UseFBDiagAuto = true;
 }
 
 void ALStepC2S001::TryStart_Implementation() {
