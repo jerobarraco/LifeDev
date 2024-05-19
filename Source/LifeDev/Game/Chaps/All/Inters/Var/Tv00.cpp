@@ -15,7 +15,7 @@
 #include "LifeDev/Game/Interact/CLSignificance.h"
 
 ATv00::ATv00():Super() {
-	// can't set stuff to static or the button animation won't work :'(
+	// can't set meshes to static or the button animation won't work :'(
 	// so much optimization lost for a single button animation...
 	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
 
@@ -25,8 +25,10 @@ ATv00::ATv00():Super() {
 	Mesh->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Mesh->bUseAttachParentBound = true;
 
-	Interact->SetRelativeLocation(FVector(35,-30,25));
-	Interact->SetBoxExtent(FVector(35,32,25));
+	// the extent is overflowing towards the front so that when the mesh animates
+	// back, it will still be easily triggerable
+	Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
+	Interact->SetBoxExtent(FVector(35,35,25));
 	Interact->SetEnabled(true);
 
 	SFX->SetRelativeLocation(FVector(55,0,15));
