@@ -5,7 +5,8 @@
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ACard03::ACard03():Super() {
-	TriggerDlg = "C03_Look*";
+	// overriden description for this chapter. will show on trigger.
+	TriggerDlg = "C3_Look*";
 	RewardItem = LDConsts::Items::Card3;
 	UseRewardDestroy = true;
 	Super::SetMobility(EComponentMobility::Static);
