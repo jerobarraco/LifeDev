@@ -24,8 +24,9 @@ APlant00::APlant00():Super() {
 	Mesh->SetCastAllShadows(true);
 
 	SFX->SetRelativeLocation(FVector(32.5,-32.5,30));
-	Interact->SetRelativeLocation(FVector(32.5,-32.5,30));
-	Interact->SetBoxExtent(FVector(32.5,32.5,30));
+	// interact extent is a bit buffed to be easily triggerable
+	Interact->SetRelativeLocation(FVector(32.5,-32.5,50));
+	Interact->SetBoxExtent(FVector(37.5,37.5,50));
 	Interact->SetEnabled(true); // by default don't do anything.
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
