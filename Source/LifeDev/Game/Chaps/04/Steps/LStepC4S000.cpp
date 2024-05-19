@@ -7,7 +7,7 @@
 
 ALStepC4S000::ALStepC4S000():Super() {
 	Name = FName("C4S0");
-	static FText ST = FText::FromString("~ Acceptance ~");
+	const static FText ST = FText::FromString("~ Acceptance ~");
 	Title = ST;
 	UseFade = true;
 	// DlgId = FName("C4S0"); // this chapter finishes after the dialog
@@ -27,6 +27,15 @@ ALStepC4S000::ALStepC4S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
+
+	// unload unnecessary outside props
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
+	if (CDLO3.Succeeded()) DL_Unload.AddUnique(CDLO3.Object);
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO4 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D"));
+	if (CDLO4.Succeeded()) DL_Unload.Add(CDLO4.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,

@@ -18,16 +18,25 @@ ALStepC3S000::ALStepC3S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
-	// TODO temporary until i get a new music
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
+
+	// ensure to load these two. even though they are loaded by a previous chapter,
+	// the player could jump straight to this chapter via a savegame (or hack).
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
+	if (CDLO3.Succeeded()) DL_Load.AddUnique(CDLO3.Object);
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLO4 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D"));
+	if (CDLO4.Succeeded()) DL_Load.Add(CDLO4.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
-	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
+		CDL3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
+	if (CDL3.Succeeded()) DL_Unload.Add(CDL3.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,
