@@ -52,7 +52,8 @@ public:
 
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
-	float InteractDrag = .3;
+	float InteractDrag = .5;
+	// ^ .3 is too little and annoying.
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedMin = 65;
