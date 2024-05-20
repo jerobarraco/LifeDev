@@ -32,9 +32,8 @@ void ADoorI05::DoTrigger_Implementation() {
 	static FName Step("C0S0");
 	Super::DoTrigger_Implementation();
 
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
 	if (!IsValid(Story)) return;
 
-	SetEnabled(false); // avoid double triggering
+	SetEnabled(false); // avoid double triggering. done only if story is valid.
 	Story->StartNext(Step);
 }
