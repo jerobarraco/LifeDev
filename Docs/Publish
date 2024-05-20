@@ -11,6 +11,8 @@
 ** initial state : Unloaded
 ** Datalayer type : Runtime 
 
+* tag the commit
+
 Linux
 * make test build
 * remove the .symdebug file
