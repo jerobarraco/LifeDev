@@ -141,7 +141,10 @@ void ALStep::EnsureItems() {
 }
 
 void ALStep::DestroyActors() {
-	UE_LOG(LogLStoryStep, Log, TEXT("Destroy actors called"));
+	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"),
+		__func__, *Name.ToString());
+	// this function gets called multiple times. beware.
+
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
 	for (AActor* const A: ActorsShow) {
@@ -203,6 +206,10 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	FB = nullptr;
 
+	// Ensure we destroy the actors on destroying this actor.
+	// could happen if the step is unloaded because the next step unloads the data-layer.
+	DestroyActors();
+
 	Super::EndPlay(EndPlayReason); // always at end
 }
 
@@ -211,7 +218,7 @@ void ALStep::PostLoad() {
 
 	if (UseFadeTime) {
 		const UStory* const Story = UStory::Instance(GetWorld());
-		WaitTime = Story ? Story->FadeTime : 1; 
+		WaitTime = Story ? Story->FadeTime : 1;
 	}
 	
 	// avoid finishing earlier if we have Diags
