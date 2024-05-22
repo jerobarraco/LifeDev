@@ -22,22 +22,16 @@ ALStepC0S001::ALStepC0S001():Super() {
 	CamBlendTime = 0; // doesn't get along with fade
 	GhostPos = FVector(210,-42,-65);
 	UseGhosts = true;
+	UseRain = true;
 }
 
-void ALStepC0S001::TryStart_Implementation() {
-	Super::TryStart_Implementation();
-
-	UWorld* const W = GetWorld();
+void ALStepC0S001::Start_Implementation() {
+	Super::Start_Implementation();
 	FB->SetMax(1);
 	FB->SetVal(1, 10);
-
-	ALMusicMan::SetRainS(W, true);
 }
 
 void ALStepC0S001::Stop_Implementation() {
-	Super::Stop_Implementation();
-	UWorld* const W = GetWorld();
-
-	ALMusicMan::SetRainS(W, false);
 	FB->SetVal(0);
+	Super::Stop_Implementation();
 }
