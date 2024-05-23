@@ -27,6 +27,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;
 
+	// triggered once it has finished hiding.
 	UPROPERTY(BlueprintAssignable, Transient)
 	FMsgBoxHidden OnHidden;
 
@@ -58,6 +59,7 @@ private:
 	UPROPERTY(Transient)
 	TArray<UDelegateWrapper*> Wrappers;
 
+	// internal usage only.
 	UPROPERTY(Transient)
 	FWidgetAnimationDynamicEvent OnHideFinished;
 };
