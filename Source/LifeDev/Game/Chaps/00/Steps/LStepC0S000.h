@@ -16,10 +16,10 @@ class ALStepC0S000 : public ALStep {
 
 public:
 	ALStepC0S000();
-	virtual void TryStart_Implementation() override;
-	virtual void Stop_Implementation() override;
 
 protected:
+	virtual void TryStart_Implementation() override;
+	virtual void Stop_Implementation() override;
 	virtual void DoDebug_Implementation() override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
