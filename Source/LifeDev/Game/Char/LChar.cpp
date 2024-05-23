@@ -172,9 +172,7 @@ void ALChar::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
-	if (FB) {
-		FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
-	}
+	if (FB) FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
 	
 	if (IsValid(Noiser)) Noiser->Activate();
 	else UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
