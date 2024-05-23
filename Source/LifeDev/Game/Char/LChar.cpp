@@ -7,19 +7,18 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h" // for the get object
-#include "GameUI.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Diags/Diags.h"
-
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/ItemLogic.h"
 #include "JUtils/JMiscUtils.h"
 
+#include "GameUI.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
