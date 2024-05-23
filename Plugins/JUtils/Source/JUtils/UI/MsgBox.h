@@ -33,7 +33,7 @@ protected:
 	void HideAnimFinish();
 	
 	UFUNCTION()
-	void BtnClick(int32 ID);
+	void BtnClick(const int32 ID);
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UTextBlock* Msg = nullptr;
@@ -52,4 +52,7 @@ protected:
 private:
 	UPROPERTY(Transient)
 	TArray<UDelegateWrapper*> Wrappers;
+
+	UPROPERTY(Transient)
+	FWidgetAnimationDynamicEvent OnHideFinished;
 };

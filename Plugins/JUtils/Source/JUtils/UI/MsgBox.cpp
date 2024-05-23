@@ -2,7 +2,6 @@
 
 #include "MsgBox.h"
 
-#include "Animation/WidgetAnimation.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -11,6 +10,8 @@
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 
+	SetVisibility(ESlateVisibility::Collapsed); // start collapsed
+
 	const TArray<UJButton*> UBtns = {Btn0, Btn1, Btn2};
 	const int32 Num = UBtns.Num();
 	for (int32 i=0; i<Num; ++i) {
@@ -18,7 +19,8 @@ void UMsgBox::NativeOnInitialized() {
 		if (!B) continue;
 		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
 	}
-	SetVisibility(ESlateVisibility::Collapsed);
+
+	OnHideFinished.BindDynamic(this, &UMsgBox::HideAnimFinish);
 }
 
 void UMsgBox::NativeDestruct() {
@@ -61,9 +63,12 @@ void UMsgBox::Show_Implementation() {
 
 void UMsgBox::HideAnimFinish() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
-	// needed so that the timer doesn't call the parent version of the virtual. (that is this class)
+	// this func is needed so that we can call the base version after the anim finishes.
+	// i could bind to super. but then i would need to make it ufunction and not.
+
+	// important to unbind, otherwise it will be called on the next show. Y_Y
+	UnbindFromAnimationFinished(AnimShow, OnHideFinished);
 	Super::Hide_Implementation(); // this will already collapse.
-	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UMsgBox::Hide_Implementation() {
@@ -76,13 +81,13 @@ void UMsgBox::Hide_Implementation() {
 	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
 	PlayAnimation(AnimShow, 0, 1,
 		EUMGSequencePlayMode::Reverse, Speed);
-	FTimerHandle H;
-	const UWorld* const World = GetWorld();
-	World->GetTimerManager().SetTimer(H, this, &UMsgBox::HideAnimFinish,
-		AnimDuration);
+
+	// timer might not work here. who knew.
+	// important to rebind on each call, see note on hideanimfinished.
+	BindToAnimationFinished(AnimShow, OnHideFinished);
 }
 
-void UMsgBox::BtnClick(int32 ID) {
+void UMsgBox::BtnClick(const int32 ID) {
 	UE_LOG(LogTemp, Log, TEXT("Btn click id=%i"), ID);
 	Done(ID);
 }
