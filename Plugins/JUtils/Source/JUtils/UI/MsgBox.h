@@ -16,10 +16,11 @@ class JUTILS_API UMsgBox: public UBaseUI {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	void Init(const FText& Message, const TArray<FText>& Texts);
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
+
+	UFUNCTION(BlueprintCallable)
+	void Init(const FText& Message, const TArray<FText>& Texts);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;
@@ -27,6 +28,8 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
+	
+	UFUNCTION()
 	void HideAnimFinish();
 	
 	UFUNCTION()
@@ -42,7 +45,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	UJButton* Btn2 = nullptr;
 
-	// has to be transient or it will not compile the bp
+	// has to be transient, or it will not compile the bp
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
 	UWidgetAnimation* AnimShow = nullptr;
 

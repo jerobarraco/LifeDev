@@ -17,7 +17,8 @@ void UMsgBox::NativeOnInitialized() {
 		UJButton* const B = UBtns[i];
 		if (!B) continue;
 		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
-	}	
+	}
+	SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UMsgBox::NativeDestruct() {
@@ -49,28 +50,36 @@ void UMsgBox::Init(const FText& Message, const TArray<FText>& Texts) {
 }
 
 void UMsgBox::Show_Implementation() {
-	Super::Show_Implementation();
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	Super::Show_Implementation(); // will already make visible.
+	if (!AnimShow) return;
+
 	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
-	if (AnimShow)
-		PlayAnimation(AnimShow, 0, 1,
+	PlayAnimation(AnimShow, 0, 1,
 			EUMGSequencePlayMode::Forward, Speed);
 }
 
 void UMsgBox::HideAnimFinish() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	// needed so that the timer doesn't call the parent version of the virtual. (that is this class)
-	Super::Hide_Implementation();
+	Super::Hide_Implementation(); // this will already collapse.
+	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UMsgBox::Hide_Implementation() {
-	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
-	if (AnimShow) {
-		PlayAnimation(AnimShow, 0, 1,
-			EUMGSequencePlayMode::Reverse, Speed);
-		FTimerHandle H;
-		GetWorld()->GetTimerManager().SetTimer(H, this, &UMsgBox::HideAnimFinish, AnimDuration);
-	} else {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	if (!AnimShow || FMath::IsNearlyZero(AnimDuration)) {
 		HideAnimFinish();
+		return;
 	}
+
+	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
+	PlayAnimation(AnimShow, 0, 1,
+		EUMGSequencePlayMode::Reverse, Speed);
+	FTimerHandle H;
+	const UWorld* const World = GetWorld();
+	World->GetTimerManager().SetTimer(H, this, &UMsgBox::HideAnimFinish,
+		AnimDuration);
 }
 
 void UMsgBox::BtnClick(int32 ID) {
