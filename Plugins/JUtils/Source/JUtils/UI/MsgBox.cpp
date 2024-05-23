@@ -69,6 +69,7 @@ void UMsgBox::HideAnimFinish() {
 	// important to unbind, otherwise it will be called on the next show. Y_Y
 	UnbindFromAnimationFinished(AnimShow, OnHideFinished);
 	Super::Hide_Implementation(); // this will already collapse.
+	OnHidden.Broadcast();
 }
 
 void UMsgBox::Hide_Implementation() {

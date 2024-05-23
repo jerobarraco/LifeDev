@@ -11,6 +11,8 @@ class UDelegateWrapper;
 class UTextBlock;
 class UButton;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
+
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UMsgBox: public UBaseUI {
 	GENERATED_BODY()
@@ -24,6 +26,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;
+
+	UPROPERTY(BlueprintAssignable, Transient)
+	FMsgBoxHidden OnHidden;
 
 protected:
 	virtual void NativeOnInitialized() override;

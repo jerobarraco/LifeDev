@@ -176,15 +176,12 @@ void ALChar::BeginPlay() {
 		FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
 	}
 	
-	if (IsValid(Noiser)) {
-		Noiser->Activate();
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
-	}
+	if (IsValid(Noiser)) Noiser->Activate();
+	else UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UWorld* W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	Inventory = nullptr;
@@ -205,10 +202,8 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Noiser = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
-	if (FB) {
-		FB->OnChange.RemoveAll(this);
-	}
-	
+	if (FB) FB->OnChange.RemoveAll(this);
+
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
