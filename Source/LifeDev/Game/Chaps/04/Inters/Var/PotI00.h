@@ -14,12 +14,12 @@ public:
 	APotI00();
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void DoTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	USoundBase* SND_Drops = nullptr; 
+	USoundBase* SND_Drops = nullptr;
+
 	// keeps track of the interaction step. sucks, but not as much as
 	// the other things i came up with, which are : none.
 	// uint8 Step = 0;

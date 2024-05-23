@@ -8,6 +8,9 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
+// TODO i could move a bunch of these things to a step. including the animcam.
+// then use rewardstep and steps (see PotI00)
+
 ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
@@ -29,7 +32,8 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-	SetEnabled(false); // disable the interact so it can fade better, and player won't trigger again
+	// disable the interact, so it can fade better, and player won't trigger again
+	SetEnabled(false);
 	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	Diags->AddId("N01.0");
 	Flashback->SetVal(1);
@@ -62,6 +66,6 @@ void ALNPC01I00::DiagStandDone() {
 	ALMusicMan::SetRainS(W, false);
 	Flashback->SetVal(.2);
 
-	Fade(false); // fade out manually. doRewards wont.
+	Fade(false); // fade out manually. doRewards won't.
 	DoRewards(); // give the card and disappear
 }

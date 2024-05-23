@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "Sounds/MusicMan.h"
 
@@ -19,7 +20,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static ALMusicMan* Instance(UWorld* W);
-	
+	// TODO use UObject* Context instead and use the meta tag
+
 	UFUNCTION(BlueprintCallable)
 	static void SetRainS(UWorld* W, bool Play);
 

@@ -14,7 +14,7 @@ APotI00::APotI00():Super() {
 	Locked = false;
 	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	SetEnabled(false);
+	APotI00::SetEnabled(false);
 	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
 	// and i think that the player will find easier to tell when something became enabled, 
 	// rather than realizing something became unlocked.
@@ -48,10 +48,6 @@ APotI00::APotI00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
 	SND_Drops = CSnd2.Object;
-}
-
-void APotI00::BeginPlay() {
-	Super::BeginPlay();
 }
 
 void APotI00::DoTrigger_Implementation() {
@@ -89,7 +85,8 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// only observe these items
 	if (State == 1 && (Name == "Food00" || Name == "Food01")) {
 		++Foods;
-		if (Foods == 2) Trigger(); // to advance the state. Trigger skips the lock check
+		// to advance the state. Trigger skips the lock check (instead of TryTrigger)
+		if (Foods == 2) Trigger();
 		return EItemUseResult::SUCCESS;
 	} else if (State == 2 && (Name == LDConsts::Items::Plate01)) {
 		Trigger();
