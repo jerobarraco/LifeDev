@@ -70,7 +70,7 @@ void ULSettingsUI::NativeOnInitialized() {
 void ULSettingsUI::NativeDestruct() {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
-	for (EQualityType Q: Keys) {
+	for (EQualityType const Q: Keys) {
 		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 		(*pSwitchUI)->OnChange.RemoveAll(this);
@@ -82,7 +82,7 @@ void ULSettingsUI::NativeDestruct() {
 void ULSettingsUI::LoadQSwitches() {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
-	for (EQualityType Q: Keys) {
+	for (EQualityType const Q: Keys) {
 		LoadQSwitch(Q);
 	}
 }
@@ -96,7 +96,7 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 		return;
 	}
 
-	UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
+	const UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
 	if (!Settings) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't get user settings"));
 		return;

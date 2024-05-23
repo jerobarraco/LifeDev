@@ -2,10 +2,11 @@
 
 #include "MsgBox.h"
 
-#include "JButton.h"
 #include "Animation/WidgetAnimation.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
+
+#include "JButton.h"
 
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -56,7 +57,7 @@ void UMsgBox::Show_Implementation() {
 }
 
 void UMsgBox::HideAnimFinish() {
-	// needed so that the timer doesn't call the parent version of the virtual. (that is me)
+	// needed so that the timer doesn't call the parent version of the virtual. (that is this class)
 	Super::Hide_Implementation();
 }
 
