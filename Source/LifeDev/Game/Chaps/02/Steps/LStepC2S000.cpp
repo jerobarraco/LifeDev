@@ -1,21 +1,24 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
+
 #include "LStepC2S000.h"
 
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
+
 #include "Inventory/Inventory.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
-#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC2S000::ALStepC2S000():Super() {
 	Name = FName("C2S0");
-	static FText ST = FText::FromString("~ Yin ~");
+	const static FText ST = FText::FromString("~ Yin ~");
 	Title = ST;
 	UseFade = true;
+	UseFadeTime = true;
+	FinishPostWait = false;
 	// DlgId = FName("C2S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;
-	UseFadeTime = true;
-	FinishPostWait = false;
 	TeleportChar = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS");
 	ItemsEnsure = {

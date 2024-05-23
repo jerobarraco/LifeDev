@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC2S004.h"
 
-#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
@@ -10,15 +9,16 @@ ALStepC2S004::ALStepC2S004():Super() {
 	static const FName N("C2S4");
 	Name = N;
 	// DlgId = N; // this chapter finishes after the dialog
+	// no waits
 	UseFade = false;
+	UseFadeTime = false;
+	FinishPostWait = false;
 	// returns to the player camera and control
 	InputEnabled = true;
 	UsePawnCam = true;
 	// teleport after the boss interaction happens
 	TeleportChar = false;
-	// no waits
-	UseFadeTime = false;
-	FinishPostWait = false;
+	UseRain = true;
 	// finish when found.
 	// the tape is not necessary since that's checked on a previous step and also consumed.
 	ItemsFinish = {
@@ -41,7 +41,6 @@ void ALStepC2S004::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	FB->SetMin(0);
 	RndFB->Activate(true);
-	ALMusicMan::SetRainS(GetWorld(), true);
 }
 
 void ALStepC2S004::Stop_Implementation() {
@@ -49,6 +48,5 @@ void ALStepC2S004::Stop_Implementation() {
 	FB->SetMin(0);
 	FB->SetMax(1);
 	FB->SetVal(0);
-	ALMusicMan::SetRainS(GetWorld(), false);
 	Super::Stop_Implementation();
 }

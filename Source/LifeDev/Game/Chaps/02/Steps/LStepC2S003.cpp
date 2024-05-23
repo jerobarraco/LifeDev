@@ -3,10 +3,7 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
-
-#include "LifeDev/Core/Sounds/LMusicMan.h"
 
 // this step is only to show a dialog on picking up the card and starting the rain + playing a sound
 // it could be inside the tape ... but this is ok also.
@@ -40,6 +37,6 @@ void ALStepC2S003::TryStart_Implementation() {
 	// super will start the dialog and finish when done
 	Super::TryStart_Implementation();
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (W && IsValid(SFX_Analog)) UGameplayStatics::PlaySound2D(W, SFX_Analog);
 }

@@ -9,7 +9,7 @@
 
 ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
-	static FText ST = FText::FromString("~ Whatever Works ~");
+	const static FText ST = FText::FromString("~ Whatever Works ~");
 	Title = ST;
 	
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog

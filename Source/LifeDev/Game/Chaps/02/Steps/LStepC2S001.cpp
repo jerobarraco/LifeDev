@@ -1,11 +1,10 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
+
 #include "LStepC2S001.h"
 
 #include "Camera/CameraComponent.h"
-#include "Diags/Diags.h"
-#include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Interact/LInteract.h"
 
 ALStepC2S001::ALStepC2S001():Super() {
 	static const FName N("C2S1");
