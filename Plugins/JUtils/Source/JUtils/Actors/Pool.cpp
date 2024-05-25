@@ -79,10 +79,11 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 	}
 }
 
-
 AActor* UPool::Get() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
+	// TODO this is crashing somewhere maybe.
+	
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
 			UE_LOG(LogJPool, Warning, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
@@ -97,9 +98,7 @@ AActor* UPool::Get() {
 	Ready.RemoveAtSwap(0, 1, false);
 	A->SetActorHiddenInGame(false);
 	A->Reset();
-	if (SetTicks) {
-		A->SetActorTickEnabled(true);
-	}
+	if (SetTicks) A->SetActorTickEnabled(true);
 
 	UE_LOG(LogJPool, Verbose, TEXT("Pool gave an actor."));
 
@@ -224,10 +223,9 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 }
 
 AActor* UPooler::Get(TSubclassOf<AActor> Class) {
+	// TODO might be crashing here?
 	UPool* const Pool = GetPool(Class); 
-	if (!Pool) {
-		return nullptr;
-	}
+	if (!Pool) return nullptr;
 
 	return Pool->Get();
 }
