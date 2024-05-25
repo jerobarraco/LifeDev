@@ -6,6 +6,7 @@
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
@@ -65,7 +66,9 @@ void APuzzleI04::PostDone() {
 	const UWorld* const W = GetWorld();
 	if (!W) return;
 
-	UGameplayStatics::PlaySoundAtLocation(W, WasOk ? SND_Right : SND_Wrong, GetActorLocation());
+	SND->SetSound(WasOk ? SND_Right : SND_Wrong);
+	SND->Play();
+
 	// give time for audio to play
 	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDoneSnd, SndWait);

@@ -6,6 +6,7 @@
 
 #include "LPuzzle.generated.h"
 
+class UCLSounder;
 class AInteract;
 class UCPuzzle;
 class UStory;
@@ -20,6 +21,8 @@ class LIFEDEV_API ALPuzzle: public APuzzle {
 	GENERATED_BODY()
 
 public:
+	ALPuzzle();
+
 	// sets the UseItemDlg map on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
@@ -51,6 +54,9 @@ protected:
 	// FB to reward on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	float DoneFB = 0;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp")
+	UCLSounder* SND = nullptr;
 
 	// caches
 	UPROPERTY(BlueprintReadOnly, Transient)

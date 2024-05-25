@@ -12,6 +12,12 @@
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
+
+ALPuzzle::ALPuzzle():Super() {
+	SND = CreateDefaultSubobject<UCLSounder>(TEXT("Sounder"));
+	SND->SetupAttachment(Root);
+}
 
 void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
 	if (!CPuzzle) return;
