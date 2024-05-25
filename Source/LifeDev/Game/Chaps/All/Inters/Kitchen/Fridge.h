@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "Fridge.generated.h"
@@ -14,8 +15,6 @@ public:
 	AFridge();
 
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UAudioComponent* SFXHum = nullptr;
 };

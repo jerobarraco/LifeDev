@@ -26,6 +26,9 @@ AFridge::AFridge():Super() {
 	SFXHum->SetupAttachment(Interact);
 	SFXHum->SetAutoActivate(true);
 	SFXHum->bAutoManageAttachment = true;
+	// make sure the hum behaves.
+	SFXHum->AttenuationSettings = SFX->AttenuationSettings;
+	SFXHum->SoundClassOverride = SFX->SoundClassOverride;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/Refrigerator_-_Closing_the_Door_03"));
@@ -41,9 +44,3 @@ AFridge::AFridge():Super() {
 	// too big to not cast shadows. will look weird.
 	Mesh->SetCastAllShadows(true);
 }
-
-void AFridge::BeginPlay() {
-	
-	Super::BeginPlay();
-}
-
