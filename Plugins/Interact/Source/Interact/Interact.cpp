@@ -146,5 +146,8 @@ void AInteract::PlaySFX(USoundBase* Snd) {
 	// do i care? Not now. past-me thinks future-me should not need to play the same sound on two different classes.
 	if (SFX->SoundClassOverride) Snd->SoundClassObject = SFX->SoundClassOverride;
 	UGameplayStatics::PlaySoundAtLocation(SFX, Snd,
-		SFX->GetComponentLocation(), SFX->GetComponentRotation());
+		SFX->GetComponentLocation(), SFX->GetComponentRotation()
+		// ,1, 1, 0, SFX->AttenuationSettings
+		// // I could add the attenuation but since it's not attached with the object it occludes with it!
+	);
 }
