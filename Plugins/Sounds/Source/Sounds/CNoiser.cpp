@@ -26,10 +26,10 @@ void UCNoiser::Deactivate() {
 
 void UCNoiser::TimerStop() {
 	const UWorld* const World = GetWorld();
-	if (!World || !Handle.IsValid()) return;
+	if (!World || !TimerPlay.IsValid()) return;
 
-	World->GetTimerManager().ClearTimer(Handle);
-	Handle.Invalidate();
+	World->GetTimerManager().ClearTimer(TimerPlay);
+	TimerPlay.Invalidate();
 }
 
 void UCNoiser::TimerStart() {
@@ -37,7 +37,7 @@ void UCNoiser::TimerStart() {
 	if (!World || !IsPlaying) return;
 	const float Time = FMath::FRandRange(TimeMin, TimeMax);
 	
-	World->GetTimerManager().SetTimer(Handle, this, &UCNoiser::PlayNow, Time, false, -1);
+	World->GetTimerManager().SetTimer(TimerPlay, this, &UCNoiser::PlayNow, Time, false, -1);
 }
 
 void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -75,7 +75,9 @@ void UCNoiser::PlayNow_Implementation() {
 		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
 	UE_LOG(LogTemp, Log, TEXT("Noiser at %s"), *Location.ToString());
-	
+
+	if (SoundClass) SFX->SoundClassObject = SoundClass;
+
 	UGameplayStatics::PlaySoundAtLocation(
 		World, SFX, Location, Rotation,
 		1, 1, 0,

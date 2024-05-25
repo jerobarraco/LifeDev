@@ -2,6 +2,8 @@
 
 #include "CLNoiser.h"
 
+#include "Sound/SoundClass.h"
+
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -16,6 +18,10 @@ UCLNoiser::UCLNoiser():Super() {
 	DistFBMax = DistMax = 500;
 	HalfAngleWidth = (360.0-90.0)/2.0; // the back
 	HalfAngleHeight = 40.0;
+
+	static ConstructorHelpers::FObjectFinder<USoundClass>
+		CSClass(TEXT("/Game/LifeDev/Core/Audio/Classes/SFX"));
+	SoundClass = CSClass.Object;
 }
 
 void UCLNoiser::Activate(bool bReset) {
@@ -50,14 +56,10 @@ void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (!W) return;
 
 	UFlashback* const F = UFlashback::Instance(W);
-	if (F) {
-		F->OnChange.RemoveAll(this);
-	}
+	if (F) F->OnChange.RemoveAll(this);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
-		S->OnFeatUpdateSound.RemoveAll(this);
-	}
+	if (S) S->OnFeatUpdateSound.RemoveAll(this);
 	
 	Super::EndPlay(EndPlayReason);
 }

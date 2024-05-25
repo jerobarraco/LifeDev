@@ -174,6 +174,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	AGhosts* Ghosts = nullptr;
 
-	
 	FTimerHandle TimerDestroy;
 };

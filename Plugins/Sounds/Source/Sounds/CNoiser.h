@@ -49,6 +49,8 @@ public:
 	USoundBase* SFX = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	USoundAttenuation* Attenuation = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	USoundClass* SoundClass = nullptr;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCNoiserRawOnPlay OnPlay;
@@ -69,5 +71,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	bool IsPlaying = false;
 
-	FTimerHandle Handle;
+	FTimerHandle TimerPlay;
 };
