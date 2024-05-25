@@ -6,6 +6,7 @@
 
 #include "RadioI00.generated.h"
 
+class UCLSounder;
 class UCSounder;
 
 // Radio00 Instance 00. Room 03
@@ -25,7 +26,7 @@ protected:
 	void DialogShown(const FDialog& Diag);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSounder* SFX_Ghost = nullptr;
+	UCLSounder* SFX_Ghost = nullptr;
 
 	FTimerHandle DiagDoneHandle;
 };

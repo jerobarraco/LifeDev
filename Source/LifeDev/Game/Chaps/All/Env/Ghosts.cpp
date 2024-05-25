@@ -3,13 +3,13 @@
 
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
-#include "Components/AudioComponent.h"
-#include "Sounds/CSounder.h"
+
+#include "LifeDev/Game/Snd/CLSounder.h"
 
 AGhosts::AGhosts():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
 
-	SFX = CreateDefaultSubobject<UCSounder>(TEXT("SFX"));
+	SFX = CreateDefaultSubobject<UCLSounder>(TEXT("SFX"));
 	SFX->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghosts_S.Ghosts_S"));

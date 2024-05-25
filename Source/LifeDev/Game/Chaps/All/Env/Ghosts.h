@@ -6,8 +6,8 @@
 
 #include "Ghosts.generated.h"
 
+class UCLSounder;
 class UNiagaraComponent;
-class UCSounder;
 
 // make a baseclass for sound stuff? 
 //  class for the Ghosts 
@@ -23,7 +23,7 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSounder* SFX = nullptr;
+	UCLSounder* SFX = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UNiagaraComponent* Parts = nullptr;

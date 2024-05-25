@@ -4,6 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 #include "Sounds/CSounder.h"
 
 ARadioI00::ARadioI00():Super() {
@@ -24,7 +25,7 @@ ARadioI00::ARadioI00():Super() {
 	Texts = { FText::FromString(TEXT("Play")) };
 
 	// use a sounder and not the ghost object since i want to only use the sound.
-	SFX_Ghost = CreateDefaultSubobject<UCSounder>(TEXT("SFX_Ghost"));
+	SFX_Ghost = CreateDefaultSubobject<UCLSounder>(TEXT("SFX_Ghost"));
 	SFX_Ghost->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghosts_S.Ghosts_S"));
