@@ -46,7 +46,10 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCNoiser::PlayNow_Implementation() {
-	AActor* const Owner = GetOwner();
+	const UWorld* const World = GetWorld();
+	if (!World) return;
+
+	const AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) {
 		Deactivate();
 		return;
@@ -55,17 +58,16 @@ void UCNoiser::PlayNow_Implementation() {
 	const FVector& OwnerLocation = Owner->GetActorLocation();
 	const FVector& OwnerFwd = Owner->GetActorForwardVector();
 	// actually point at the back
-	const FVector OwnerBwd = -OwnerFwd;
+	const FVector& OwnerBwd = -OwnerFwd;
 
 	const float AngleWidth = FMath::DegreesToRadians(HalfAngleWidth);
 	const float AngleHeight = FMath::DegreesToRadians(HalfAngleHeight);
 	const FVector& Dir = FMath::VRandCone(
 		OwnerBwd,AngleWidth, AngleHeight);
 	const float Dist = FMath::FRandRange(DistMin, DistMax);
-	FVector Location = OwnerLocation + (Dir*Dist);
+	const FVector& Location = OwnerLocation + (Dir*Dist);
 	const FRotator& Rotation = (OwnerLocation - Location).Rotation();
 	
-	UWorld* const World = GetWorld();
 	if (Debug) {
 		DrawDebugLine(World, Location, Location + (Rotation.Vector() * Dist), FColor::Purple, false, 4);
 		DrawDebugPoint(World, Location, 4, FColor::Green, false, 4);
