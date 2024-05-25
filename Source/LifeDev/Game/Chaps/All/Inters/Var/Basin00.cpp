@@ -8,6 +8,7 @@
 
 #include "Interact/CInteract.h"
 #include "JSig/CSignificance.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 
 #include "Sounds/CSounder.h"
 
@@ -38,7 +39,7 @@ ABasin00::ABasin00():Super() {
 	Water->SetRelativeLocation(FVector(17,10,18));
 
 	SFX->SetRelativeLocation(FVector(10,10,0));
-	SND_Water = CreateDefaultSubobject<UCSounder>("SND_Water");
+	SND_Water = CreateDefaultSubobject<UCLSounder>("SND_Water");
 	SND_Water->SetupAttachment(Water);
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
 		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));

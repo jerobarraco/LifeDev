@@ -5,8 +5,8 @@
 
 #include "Basin00.generated.h"
 
+class UCLSounder;
 class UNiagaraComponent;
-class UCSounder;
 class UCSignificance;
 
 // Ch00 basin00
@@ -24,7 +24,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UNiagaraComponent* Water = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCSounder* SND_Water = nullptr;
+	UCLSounder* SND_Water = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCSignificance* Sig = nullptr;
 };
