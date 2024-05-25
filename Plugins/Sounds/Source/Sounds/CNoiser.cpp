@@ -79,8 +79,7 @@ void UCNoiser::PlayNow_Implementation() {
 	if (SoundClass) SFX->SoundClassObject = SoundClass;
 
 	UGameplayStatics::PlaySoundAtLocation(
-		World, SFX, Location, Rotation,
-		1, 1, 0,
+		World, SFX, Location, Rotation, 1, 1, 0,
 		Attenuation
 	);
 	
