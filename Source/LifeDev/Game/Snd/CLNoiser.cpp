@@ -6,6 +6,7 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 
 UCLNoiser::UCLNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -20,7 +21,7 @@ UCLNoiser::UCLNoiser():Super() {
 	HalfAngleHeight = 40.0;
 
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(TEXT("/Game/LifeDev/Core/Audio/Classes/SFX"));
+		CSClass(LDConsts::Audio::SFXClass);
 	SoundClass = CSClass.Object;
 }
 

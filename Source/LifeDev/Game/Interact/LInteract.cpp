@@ -10,14 +10,16 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 #include "Story/Story.h"
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
+		CAtt(LDConsts::Audio::SFXAttn);
 	SFX->AttenuationSettings = CAtt.Object;
+
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(TEXT("/Game/LifeDev/Core/Audio/Classes/SFX"));
+		CSClass(LDConsts::Audio::SFXClass);
 	SFX->SoundClassOverride = CSClass.Object;
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
