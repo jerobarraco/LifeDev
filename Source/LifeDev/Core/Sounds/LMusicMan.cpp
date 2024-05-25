@@ -44,7 +44,8 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->TimeFadeOut = 2;
 	Environ->TimeStartMin = 0;
 	Environ->TimeStartMax = 0;
-
+	// clear the attenuation from the clsounder which would make them not audible.
+	Environ->AttenuationSettings = Rain->AttenuationSettings = nullptr;
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
 }
