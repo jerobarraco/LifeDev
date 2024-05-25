@@ -18,7 +18,8 @@ AGhosts::AGhosts():Super() {
 	SFX->TimeFadeOut = 2.0;
 	SFX->TimeStartMin = 0;
 	SFX->TimeStartMax = 120;
-
+	SFX->AttenuationSettings = nullptr; // they need to play loudly and clear.
+	
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(RootComponent);
 	Parts->SetAutoActivate(false);
