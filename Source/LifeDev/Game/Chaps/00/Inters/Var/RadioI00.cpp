@@ -3,9 +3,9 @@
 #include "RadioI00.h"
 
 #include "Diags/Diags.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Snd/CLSounder.h"
-#include "Sounds/CSounder.h"
 
 ARadioI00::ARadioI00():Super() {
 	Locked = true;
@@ -37,7 +37,7 @@ ARadioI00::ARadioI00():Super() {
 }
 
 void ARadioI00::DoTrigger_Implementation() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ARadioI00::DialogShown);
@@ -58,7 +58,7 @@ void ARadioI00::DialogDone() {
 	Diags->OnDone.RemoveAll(this);
 	Diags->OnShow.RemoveAll(this);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
 	World->GetTimerManager().ClearTimer(DiagDoneHandle);
