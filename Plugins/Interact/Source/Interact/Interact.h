@@ -80,14 +80,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
+	// When true will disable the Interact once triggered. Calling SetEnable(false).
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	bool IsOneShot = false;
+	
 	// locks the interaction, calling tryTrigger will return false
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
-	// When true will disable the Interact once triggered. Calling SetEnable(false).
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool IsOneShot = false;
-	
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Trigger = nullptr;

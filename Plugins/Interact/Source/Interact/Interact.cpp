@@ -144,7 +144,7 @@ void AInteract::PlaySFX(USoundBase* Snd) {
 	// little patch to test whether we can play un-attached sounds with a sound class.
 	// will this change ALL instances loaded of this sound? who knows!?
 	// do i care? Not now. past-me thinks future-me should not need to play the same sound on two different classes.
-	Snd->SoundClassObject = SFX->SoundClassOverride;
+	if (SFX->SoundClassOverride) Snd->SoundClassObject = SFX->SoundClassOverride;
 	UGameplayStatics::PlaySoundAtLocation(SFX, Snd,
 		SFX->GetComponentLocation(), SFX->GetComponentRotation());
 }
