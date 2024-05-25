@@ -6,9 +6,8 @@
 #include "Sounds/MusicMan.h"
 
 #include "LMusicMan.generated.h"
-
+class UCLSounder;
 class AStep;
-class UCSounder;
 
 // Lifedev version of the music manager
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
@@ -54,10 +53,10 @@ protected:
 	void SetStep(AStep* Step);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSounder* Rain = nullptr;
+	UCLSounder* Rain = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSounder* Environ = nullptr;
+	UCLSounder* Environ = nullptr;
 
 	bool EnvironOverride = true;
 };

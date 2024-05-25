@@ -13,6 +13,8 @@ namespace LDConsts {
 	}
 
 	namespace Audio {
+		static constexpr const TCHAR* const MusicClass =
+			TEXT("/Game/LifeDev/Core/Audio/Classes/Music");
 		static constexpr const TCHAR* const SFXClass =
 			TEXT("/Game/LifeDev/Core/Audio/Classes/SFX");
 		static constexpr const TCHAR* const SFXAttn =

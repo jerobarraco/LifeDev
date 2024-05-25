@@ -5,15 +5,16 @@
 
 #include "SoundsModule.h"
 #include "Components/AudioComponent.h"
+
 #include "Sounds/CSounder.h"
 
 AMusicMan::AMusicMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	PrimaryActorTick.SetTickFunctionEnable(false);
-	
+
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
-		
+
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
 	Player->SetAutoActivate(false);
 	Player->bAutoManageAttachment = true;

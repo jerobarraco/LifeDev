@@ -11,11 +11,17 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 
 ALMusicMan::ALMusicMan():Super() {
-	Rain = CreateDefaultSubobject<UCSounder>(TEXT("Rain"));
+	// set the class to the player
+	static ConstructorHelpers::FObjectFinder<USoundClass>
+		CSClass(LDConsts::Audio::MusicClass);
+	Player->SoundClassOverride = CSClass.Object;
+	
+	Rain = CreateDefaultSubobject<UCLSounder>(TEXT("Rain"));
 	Rain->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Env/Rain/Rain.Rain"));
@@ -27,7 +33,7 @@ ALMusicMan::ALMusicMan():Super() {
 	Rain->TimeStartMin = 0;
 	Rain->TimeStartMax = 120;
 
-	Environ = CreateDefaultSubobject<UCSounder>(TEXT("Environ"));
+	Environ = CreateDefaultSubobject<UCLSounder>(TEXT("Environ"));
 	Environ->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CEnv(TEXT("/Game/LifeDev/Game/Env/Ambience/Ambience"));
@@ -39,11 +45,8 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->TimeStartMin = 0;
 	Environ->TimeStartMax = 0;
 
-	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(LDConsts::Audio::SFXClass);
-	Rain->SoundClassOverride = CSClass.Object;
-	Environ->SoundClassOverride = CSClass.Object;
-	// environ uses the same class as sfx since they behave the same way, and i've already paid a lot of attention trying to mix them.
+	// environ uses the same class as sfx since they behave the same way,
+	// and i've already paid a lot of attention trying to mix them.
 }
 
 ALMusicMan* ALMusicMan::Instance(UWorld* W) {
