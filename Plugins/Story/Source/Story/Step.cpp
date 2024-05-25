@@ -33,9 +33,8 @@ AStep::AStep():Super() {
 }
 
 void AStep::DoTeleport() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
-	
 	if (!TeleportChar) return;
 
 	ACharacter* const Char = Cast<ACharacter>(
@@ -75,7 +74,7 @@ void AStep::TryStart_Implementation() {
 	if (CamTarget == this && IsValid(Cam)) Cam->SetComponentTickEnabled(true);
 
 	// blend before the wait to avoid weird issues.
-	// if you actually wanna see the blend you may not want the fade anyway.
+	// if you actually want to see the blend you may not want the fade anyway.
 	// fade and wait are weird combination. i think.
 	BlendCam();
 
@@ -126,7 +125,7 @@ void AStep::BeginPlay() {
 
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!Story) return;
-
+ 
 	Story->Add(this);
 	
 	if (UsePawnCam) {
