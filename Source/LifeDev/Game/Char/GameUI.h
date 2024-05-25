@@ -6,6 +6,7 @@
 #include "GameUI.generated.h"
 
 class UTextBlock;
+
 // The main ui for in-game
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UGameUI: public UUserWidget {
