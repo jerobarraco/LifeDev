@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LSysSettings.h"
 #include "GameFramework/SaveGame.h"
+
+#include "LSysSettings.h"
+
 #include "LSave.generated.h"
 
 // baseclass for lifedev savegame

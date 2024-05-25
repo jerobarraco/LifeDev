@@ -17,6 +17,5 @@ namespace LDConsts {
 			TEXT("/Game/LifeDev/Core/Audio/Classes/SFX");
 		static constexpr const TCHAR* const SFXAttn =
 			TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att");
-		
 	}
 }

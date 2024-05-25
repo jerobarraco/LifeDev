@@ -58,6 +58,6 @@ void ALStepC0S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 	Inventory->Ensure(LDConsts::Items::Poem0);
 	Inventory->Ensure(LDConsts::Items::Card0);
-	Flags->Mod(LDConsts::Flags::CH0::Basin, 1);
-	Flags->Mod(LDConsts::Flags::CH0::Spot, 1);
+	Flags->Set(LDConsts::Flags::CH0::Basin);
+	Flags->Set(LDConsts::Flags::CH0::Spot);
 }

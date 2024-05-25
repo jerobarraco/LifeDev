@@ -65,7 +65,7 @@ public:
 
 	// the current save-game object. can be null.
 	UPROPERTY(BlueprintReadOnly, Transient)
-    ULSave* Save = nullptr;
+	ULSave* Save = nullptr;
 
 	// triggered after save or load. even on error.
 	UPROPERTY(BlueprintAssignable, Transient)

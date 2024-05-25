@@ -15,15 +15,20 @@ void UFlags::Mod(const FName& Name, float Diff) {
 	if (Name.IsNone()) return;
 	
 	const float Val = Get(Name) + Diff; 
-	UE_LOG(LogFlags, Log, TEXT("UFlags::Mod: name=%s diff=%3.3f new=%3.3f"), *Name.ToString(), Diff, Val);
+	UE_LOG(LogFlags, Log, TEXT("Mod: name=%s diff=%3.3f new=%3.3f"), *Name.ToString(), Diff, Val);
 	
-	if (FMath::IsNearlyZero(Val)) {
-		Flags.Remove(Name);
-	} else {
-		Flags.Add(Name, Val);
-	}
-
+	Flags.Add(Name, Val);
 	OnMod.Broadcast(Name, Diff, Val);
+}
+
+void UFlags::Rem(const FName& Name) {
+	if (Name.IsNone()) return;
+	
+	const float Val = Get(Name); 
+	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s old=%3.3f"), *Name.ToString(), Val);
+	
+	Flags.Remove(Name);
+	OnMod.Broadcast(Name, -Val, 0);
 }
 
 void UFlags::Set(const FName& Name, float Val) {
@@ -32,18 +37,14 @@ void UFlags::Set(const FName& Name, float Val) {
 	if (Name.IsNone()) return;
 
 	const float Old = Get(Name); // broadcasting the diff is what adds complexity here
-	UE_LOG(LogFlags, Log, TEXT("UFlags::Set: name=%s old=%3.3f new=%3.3f"), *Name.ToString(), Old, Val);
-	if (FMath::IsNearlyZero(Val)) {
-		Flags.Remove(Name);
-	} else {
-		Flags.Add(Name, Val);
-	}
-	
+	UE_LOG(LogFlags, Log, TEXT("Set: name=%s old=%3.3f new=%3.3f"), *Name.ToString(), Old, Val);
+
+	Flags.Add(Name, Val);
 	OnMod.Broadcast(Name, Val-Old, Val);
 }
 
 void UFlags::SetAll(const TMap<FName, float>& NewFlags) {
-	UE_LOG(LogFlags, Log, TEXT("UFlags::SetAll: Num=%i"), NewFlags.Num());
+	UE_LOG(LogFlags, Log, TEXT("SetAll: Num=%i"), NewFlags.Num());
 	Clear(NewFlags.Num());
 	
 	TArray<FName> Keys;
@@ -58,13 +59,15 @@ void UFlags::SetAll(const TMap<FName, float>& NewFlags) {
 }
 
 void UFlags::Clear(int32 Reserve) {
-	UE_LOG(LogFlags, Log, TEXT("UFlags::Clear: Reserve=%i"), Reserve);
+	// probably faster than calling Rem. since it removes all at once.
+	UE_LOG(LogFlags, Log, TEXT("Clear: Reserve=%i"), Reserve);
 	TArray<FName> Keys;
 	Flags.GetKeys(Keys);
 	for (const FName& K: Keys) {
 		float* pV = Flags.Find(K);
 		if (!pV) continue;
-		
+
+		// important but forgot why.
 		OnMod.Broadcast(K, -*pV, 0.0);
 	}
 

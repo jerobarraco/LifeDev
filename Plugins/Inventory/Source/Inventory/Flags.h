@@ -21,35 +21,46 @@ public:
 	
 	// regular ones ////////
 
+	// when a flag is set to 0 it will be removed from memory.
+	// this is consistent to how Get works
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	void Mod(const FName& Name, float Diff);
-	
-	UFUNCTION(BlueprintCallable, Category="Flags")
-	void Set(const FName& Name, float Val);
+	void Set(const FName& Name, float Val = 1);
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	FORCEINLINE float Get(const FName& Name) const {
+	void Mod(const FName& Name, float Diff);
+
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	void Rem(const FName& Name);
+
+	UFUNCTION(BlueprintCallable, Category="Flags")
+	FORCEINLINE float Get(const FName& Name, const float Default=0) const {
 		if (Name.IsNone()) return 0;
+
 		const float* const PreFlag = Flags.Find(Name);
-		const float Val = PreFlag ? *PreFlag : 0;
+		const float Val = PreFlag ? *PreFlag : Default;
 		return Val;
 	};
 	
-	// Returns whether a flag is set to !=0 (includes negatives).  this might be a bit slower than calling Get, unless you are also checking if it's 0
+	// Returns whether a flag is set. regardless of the value. it can be 0.
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
 	FORCEINLINE bool IsSet(const FName& Name) const {
-		return !FMath::IsNearlyZero(Get(Name));
+		if (Name.IsNone()) return false;
+		// this works because set doesn't remove on 0
+		return Flags.Contains(Name);
 	};
 
 	// Returns whether a flag is set to >=1. this might be a bit slower than calling Get, unless you are also checking if it's >=1
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
 	FORCEINLINE bool Has(const FName& Name) const {
-		return Get(Name) >= 1.0;
-	};
+		const float V = Get(Name);
+		return FMath::IsNearlyEqual(V, 1) || V >= 1.0;
+	}
 
 	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	const TMap<FName, float>& GetAll() const { return Flags; }; // can't forceinline due to const & tmap
+	const TMap<FName, float>& GetAll() const { return Flags; };
+	// can't forceinline due to const & tmap
+
 	// overrides the current items. used for load and saving. will trigger mod on all, beware.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void SetAll(const TMap<FName, float>& NewFlags);

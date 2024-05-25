@@ -11,5 +11,13 @@ namespace LDConsts {
 			inline static const FName Spot("CH0.SpotI02");
 			inline static const FName Basin("CH0.Basin");
 		}
+		namespace Settings {
+			namespace Audio {
+				inline static const FName VolMaster("Set.Audio.VolMaster");
+				inline static const FName VolMusic("Set.Audio.VolMusic");
+				inline static const FName VolSFX("Set.Audio.VolSFX");
+				inline static const FName VolUI("Set.Audio.VolUI");
+			}
+		}
 	}
 }
