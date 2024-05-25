@@ -5,11 +5,10 @@
 #include "CoreMinimal.h"
 #include "Components/AudioComponent.h"
 
-
 #include "CSounder.generated.h"
 
-// make a baseclass for sound stuff? 
-//  class for the rain 
+// make a baseclass for sound stuff?
+// use CLSounder on LifeDev
 UCLASS(Blueprintable, BlueprintType, meta=(BlueprintSpawnableComponent))
 class SOUNDS_API UCSounder : public UAudioComponent {
 	GENERATED_BODY()
@@ -33,7 +32,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeFadeOut = 2.0;
 
-	// time where to start the sound. See TimeStartMax
+	// time when to start the sound. See TimeStartMax
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TimeStartMin = 0;
 

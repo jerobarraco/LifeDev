@@ -4,10 +4,10 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Interact/LInteract.h"
-#include "Sounds/CSounder.h"
 
 #include "LLight.generated.h"
 
+class UCLSounder;
 class UCLSignificance;
 class UCRandomizer;
 
@@ -70,5 +70,5 @@ protected:
 	// used to produce the flicker sfx. not using the regular SFX because they could cancel each other.
 	// the sound needs to be assigned. and a float param will be set for "Duration"
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCSounder* SFX_Flicker = nullptr;
+	UCLSounder* SFX_Flicker = nullptr;
 };

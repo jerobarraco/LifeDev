@@ -42,7 +42,7 @@ public:
 	};
 	
 	// Returns whether a flag is set. regardless of the value. it can be 0.
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
+	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE bool IsSet(const FName& Name) const {
 		if (Name.IsNone()) return false;
 		// this works because set doesn't remove on 0
@@ -50,7 +50,7 @@ public:
 	};
 
 	// Returns whether a flag is set to >=1. this might be a bit slower than calling Get, unless you are also checking if it's >=1
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Flags")
+	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE bool Has(const FName& Name) const {
 		const float V = Get(Name);
 		return FMath::IsNearlyEqual(V, 1) || V >= 1.0;

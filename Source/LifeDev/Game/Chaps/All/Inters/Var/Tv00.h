@@ -5,8 +5,8 @@
 
 #include "Tv00.generated.h"
 
+class UCLSounder;
 class UCLSignificance;
-class UCSounder;
 class UCRandomizer;
 class UCQuickMesh;
 
@@ -23,7 +23,7 @@ protected:
 	virtual void SetState_Implementation(int32 NewState) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCSounder* Noise = nullptr;
+	UCLSounder* Noise = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCRandomizer* RndCrt = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

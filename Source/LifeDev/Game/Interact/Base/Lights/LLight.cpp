@@ -15,6 +15,7 @@
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
 ALLight::ALLight():Super() {
@@ -50,7 +51,7 @@ ALLight::ALLight():Super() {
 	Sig->TestOcclusion = false; // source could be occluded but not the whole light
 	Sig->IsOffIfOccluded = false;
 
-	SFX_Flicker = CreateDefaultSubobject<UCSounder>(TEXT("SFX_Flicker"));
+	SFX_Flicker = CreateDefaultSubobject<UCLSounder>(TEXT("SFX_Flicker"));
 	// attaching to the SFX seems nicer. but the attenuation will break.
 	SFX_Flicker->SetupAttachment(IRoot);
 	SFX_Flicker->TimeFadeIn = .1;
@@ -66,7 +67,7 @@ ALLight::ALLight():Super() {
 	
 	/// ~
 	// by default is just a static light. disable interaction
-	SetEnabled(false);
+	ALLight::SetEnabled(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
 	Mesh->SetCastAllShadows(true);
@@ -113,6 +114,7 @@ void ALLight::BeginPlay() {
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
+
 	ULSettings* const Settings = ULSettings::Instance(World);
 	if (!Settings) return;
 	
@@ -139,13 +141,13 @@ void ALLight::BeginPlay() {
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// deactivate the rnd first as it could trigger the rest
-	if (IsValid(Rnd)) {
-		Rnd->Deactivate();
-	}
+	if (IsValid(Rnd)) Rnd->Deactivate();
+
 	if (IsValid(Sig)) {
 		Sig->UnbindAnim();
 		Sig->Deactivate();
 	}
+
 	if (IsValid(Anim)) {
 		Anim->OnUpdate.RemoveAll(this);
 		Anim->OnBegin.RemoveAll(this);
@@ -157,14 +159,11 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (!W) return;
 
 	UFlashback* const Fb = UFlashback::Instance(W);
-	if (Fb) {
-		Fb->OnChange.RemoveAll(this);
-	}
+	if (Fb) Fb->OnChange.RemoveAll(this);
 
 	ULSettings* const Settings = ULSettings::Instance(W);
-	if (Settings) {
-		Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
-	}
+	if (Settings) Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
+
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -178,12 +177,12 @@ void ALLight::SetState_Implementation(int32 NewState) {
 	}
 
 	// count the times you turn off a light. closed == off
-	if (Flags) Flags->Mod(LDConsts::Flags::ALL::LightsOn,
-			bClosed ? -1 : 1);
+	if (Flags) Flags->Mod(LDConsts::Flags::ALL::LightsOn, bClosed ? -1 : 1);
 }
 
 void ALLight::AnimUpdate_Implementation(float P, float A) {
 	if (!SFX_Flicker) return;
+
 	const float v = 1.0-A;
 	SFX_Flicker->SetSafeParamFloat("Volume", v);
 	// SFX_Flicker->SetVolumeMultiplier(v); // this one doesn't work well every second trigger
@@ -205,11 +204,8 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 	if (Feat != EFeat::A_STROBE) return;
 
 	UseAnim = bEnabled; // anim is bound to the strobe flag
-	if (bEnabled) {
-		SetFBFlicker(FlickrOnFB);
-	} else {
-		StopFBFlicker(); // notice this doesn't reset the FlickrOnFB value.
-	}
+	if (bEnabled) SetFBFlicker(FlickrOnFB);
+	else StopFBFlicker(); // notice this doesn't reset the FlickrOnFB value.
 }
 
 void ALLight::FlickerBegin() {

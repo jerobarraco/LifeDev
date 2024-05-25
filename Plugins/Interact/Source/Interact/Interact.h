@@ -189,7 +189,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCQuickMesh* Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
+	
 	// default sfx player. Use PlaySFX 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UAudioComponent* SFX = nullptr;
+	// cant be a clsounder since this is the plugin
 };

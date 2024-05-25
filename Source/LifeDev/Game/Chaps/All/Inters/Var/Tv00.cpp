@@ -4,15 +4,17 @@
 
 #include "Components/AudioComponent.h"
 
+#include "JSig/CSignificance.h"
+#include "JUtils/Actors/CQuickMesh.h"
+
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
-#include "JUtils/Actors/CQuickMesh.h"
-#include "Sounds/CSounder.h"
-#include "JSig/CSignificance.h"
+
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 
 ATv00::ATv00():Super() {
 	// can't set meshes to static or the button animation won't work :'(
@@ -95,7 +97,7 @@ ATv00::ATv00():Super() {
 	RndCrt->IsLooping = true;
 	RndCrt->UseRandReverse = true;
 
-	Noise = CreateDefaultSubobject<UCSounder>(TEXT("Noise"));
+	Noise = CreateDefaultSubobject<UCLSounder>(TEXT("Noise"));
 	Noise->SetupAttachment(IRoot);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSNoise(TEXT("/Game/LifeDev/Game/Inters/Tv00/NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off.NOISE_EMF_Radiation__Constant_Hum__LCD_TV_Screen_Off"));
@@ -104,7 +106,7 @@ ATv00::ATv00():Super() {
 	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Significance"));
 	Sig->SetAutoActivate(false);
 	Sig->OffscreenTimeMax = .2; // manage the ticks
-	Sig->IsOffIfOffscreen = false; // avoid dead-locking the significance
+	Sig->IsOffIfOffscreen = false; // avoid deadlocking the significance
 	Sig->TestOcclusion = true;
 	Sig->IsOffIfOccluded = false;
 }
