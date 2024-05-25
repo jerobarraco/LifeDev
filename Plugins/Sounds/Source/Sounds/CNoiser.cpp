@@ -25,16 +25,19 @@ void UCNoiser::Deactivate() {
 }
 
 void UCNoiser::TimerStop() {
-	if (Handle.IsValid()) {
-		GetWorld()->GetTimerManager().ClearTimer(Handle);
-		Handle.Invalidate();
-	}
+	const UWorld* const World = GetWorld();
+	if (!World || !Handle.IsValid()) return;
+
+	World->GetTimerManager().ClearTimer(Handle);
+	Handle.Invalidate();
 }
 
 void UCNoiser::TimerStart() {
-	if (!IsPlaying) return;
+	const UWorld* const World = GetWorld();
+	if (!World || !IsPlaying) return;
 	const float Time = FMath::FRandRange(TimeMin, TimeMax);
-	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UCNoiser::PlayNow, Time, false, -1);
+	
+	World->GetTimerManager().SetTimer(Handle, this, &UCNoiser::PlayNow, Time, false, -1);
 }
 
 void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {

@@ -25,9 +25,10 @@ class ALStep: public AStep {
 
 public:
 	virtual void TryStart_Implementation() override;
-	// careful this will clear all timers
-	// and remove all delegates to Dialogs.OnDone and Inventory.OnMOd
+	
+	// Be careful! this will remove all delegates to Dialogs.OnDone and Inventory.OnMOd
 	// it will also remove from inventory the items on RemItems
+	// and it's possible this class will get unloaded by the next step.
 	virtual void Stop_Implementation() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -172,4 +173,7 @@ protected:
 	UFlags* Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	AGhosts* Ghosts = nullptr;
+
+	
+	FTimerHandle TimerDestroy;
 };

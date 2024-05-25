@@ -108,26 +108,25 @@ void AStep::BlendCam() const {
 void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
-	if (Debug) {
-		DoDebug();
-	}
+	if (Debug) DoDebug();
 	
-	if (FinishPostWait) {
-		Finish();
-	}
+	if (FinishPostWait) Finish();
 }
 
 void AStep::BeginPlay() {
 	Super::BeginPlay();
+
 	if (Name.IsNone()) {
 		UE_LOG(LogStoryStep, Warning, TEXT("Step name is none! Step won't work properly, so not adding to the story."));
 		return;
 	}
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
+
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (!Story) return;
+
 	Story->Add(this);
 	
 	if (UsePawnCam) {

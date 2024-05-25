@@ -34,11 +34,14 @@ void ALStep::Stop_Implementation() {
 	if (W) {
 		if (UseRain) ALMusicMan::SetRainS(W, false);
 
-		// ensure we don't double trigger
-		W->GetTimerManager().ClearAllTimersForObject(this);
+		// ensure we don't double trigger.
+		// this timer is stored in the class since clearAllTimers here could accidentally stop timers from child classes.
+		// anyway timers on or after Stop are really dangerous as the class could be unloaded.
+		// Proof of that is the patch i had to do with destroy actors.
+		W->GetTimerManager().ClearTimer(TimerDestroy);
 		// Destroy them during the fade
-		FTimerHandle H;
-		W->GetTimerManager().SetTimer(H, this, &ALStep::DestroyActors, 2);
+		TimerDestroy.Invalidate();
+		W->GetTimerManager().SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
 	}
 
 	Super::Stop_Implementation(); // do at end.
@@ -141,10 +144,14 @@ void ALStep::EnsureItems() {
 }
 
 void ALStep::DestroyActors() {
-	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"),
-		__func__, *Name.ToString());
 	// this function gets called multiple times. beware.
+	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 
+	const UWorld* const W = GetWorld();
+	if (!W) return;
+
+	W->GetTimerManager().ClearTimer(TimerDestroy);
+	
 	// this is a bit dangerous, we can't go back to chap 0 without reloading.
 	// but also more performant.
 	for (AActor* const A: ActorsShow) {
