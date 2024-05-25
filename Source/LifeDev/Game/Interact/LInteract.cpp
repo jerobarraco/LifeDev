@@ -1,6 +1,7 @@
 #include "LInteract.h"
 
 #include "Components/AudioComponent.h"
+#include "Sound/SoundClass.h"
 
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorFade.h"
@@ -15,6 +16,9 @@ ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att.Generic_Att"));
 	SFX->AttenuationSettings = CAtt.Object;
+	static ConstructorHelpers::FObjectFinder<USoundClass>
+		CSClass(TEXT("/Game/LifeDev/Core/Audio/Classes/SFX"));
+	SFX->SoundClassOverride = CSClass.Object;
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Meshes.Add(Mesh);
