@@ -12,11 +12,11 @@ ALStepC4S002::ALStepC4S002():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
-	UseRandFB = true;
 
+	UseRandFB = true;
 	RandFB->DelayMin = .2;
 	RandFB->DelayMax = .75;
-	RandFB->ValueMin = -.02;
+	RandFB->ValueMin = -.015;
 	RandFB->ValueMax = .005;
 	// min is limited in c4s0
 }

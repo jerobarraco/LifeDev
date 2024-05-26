@@ -25,6 +25,6 @@ void UCRandomizerFB::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCRandomizerFB::TriggerFB(float Val) {
 	if (!IsValid(Flashback)) return;
-	const float Avg = (DelayMax+DelayMin)/2;
-	Flashback->ModVal(Val, Avg) ;
+
+	Flashback->ModVal(Val);
 }
