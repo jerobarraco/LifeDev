@@ -13,9 +13,11 @@ UCNoiser::UCNoiser():Super() {
 }
 
 void UCNoiser::Activate(bool bReset) {
-	Super::Activate(bReset);
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs Reset=%i"), __func__, bReset);
 	if (IsActive() && !bReset) return;
+
+	// has to be after the IsActive check!
+	Super::Activate(bReset);
 	
 	TimerStart(); // already checks for IsPlaying
 }
@@ -39,9 +41,14 @@ void UCNoiser::TimerStart() {
 	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 
 	const UWorld* const World = GetWorld();
-	if (!World || !IsPlaying) return;
+	if (!World) return;
+
+	if (IsPlaying) {
+		UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs IsPlaying true. skip."), __func__);
+		return;
+	}
+
 	const float Time = FMath::FRandRange(TimeMin, TimeMax);
-	
 	World->GetTimerManager().SetTimer(TimerPlay, this, &UCNoiser::PlayNow, Time, false, -1);
 }
 
@@ -53,12 +60,11 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void UCNoiser::PlayNow_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 	const UWorld* const World = GetWorld();
-	if (!World) {
-		return;
-	}
+	if (!World) return;
 
 	const AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) {
+		UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs No owner. Stopping."), __func__);
 		Deactivate();
 		return;
 	}

@@ -124,7 +124,7 @@ void ALChar::SetInputEnabled(bool Enabled) {
 	InteractSetEnabled(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
-	Noiser->SetActive(Enabled, false);
+	Noiser->SetActive(Enabled, true);
 }
 
 // can't remember why i made this into its own function, probably to be able to call from the outside.
