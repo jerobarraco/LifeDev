@@ -116,9 +116,9 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
 	if (!Save) {
-		// If file does not exist try create a new one
+		// If file does not exist, try to create a new one
 		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one. Slot=%i"), SlotIndex);
-		// should assign a the slot index here.
+		// should assign the slot index here.
 		// otherwise if a game load fails for a given slot. it will override slot 0.
 		// that'd be terrible!
 		NewGame(SlotIndex);

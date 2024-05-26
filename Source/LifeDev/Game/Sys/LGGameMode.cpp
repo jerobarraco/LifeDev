@@ -92,6 +92,7 @@ bool ALGGameMode::LoadChapter() {
 
 void ALGGameMode::Init_Implementation() {
 	// this is the place were we are going to be initializing everything.
+	// the savegame should be already loaded.
 	Settings->OnSaveReady.RemoveAll(this);
 
 	UWorld* const World = GetWorld();
@@ -103,7 +104,7 @@ void ALGGameMode::Init_Implementation() {
 		return;
 	}
 	
-	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (!IsValid(SysSettings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
 		return;
@@ -128,12 +129,8 @@ void ALGGameMode::Init_Implementation() {
 
 	/// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	if (IsValid(Char)) {
-		Char->InputPrio = 1;
-		// Char->Init();
-	} else {
-		Char = nullptr;
-	}
+	if (IsValid(Char)) Char->InputPrio = 1; // Char->Init();
+	else Char = nullptr;
 
 	/// music
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
@@ -152,9 +149,8 @@ void ALGGameMode::Init_Implementation() {
 		DiagMan->ZOrder = 3; 
 		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_ALL); // skip dialogs if no feature for it
 		DiagMan->Init();
-	} else {
+	} else
 		DiagMan = nullptr;
-	}
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
@@ -163,7 +159,6 @@ void ALGGameMode::Init_Implementation() {
 	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
 
 	InventoryMan = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
-	// InvManager = Cast<AInventoryManager>(UGameplayStatics::GetActorOfClass(World, AInventoryManager::StaticClass()));
 	if (IsValid(InventoryMan)) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;
@@ -180,7 +175,6 @@ void ALGGameMode::Init_Implementation() {
 	Story->Init();
 	
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
-	// StoryManager = Cast<AStoryManager>(UGameplayStatics::GetActorOfClass(World, AStoryManager::StaticClass()));
 	if (IsValid(StoryMan)) {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
@@ -206,7 +200,7 @@ void ALGGameMode::Init_Implementation() {
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
 	
-	// force the input disabled. even though the story manager will makes this disable later.
+	// force the input disabled. even though the story manager will make this disable later.
 	// in case something goes wrong.
 	// disable input on next tick to avoid a crash otherwise....
 	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::SetInputDisable);
@@ -219,10 +213,10 @@ void ALGGameMode::Init_Implementation() {
 void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 	
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 	
-	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("No valid instance found"));
 		return;
@@ -234,8 +228,11 @@ void ALGGameMode::BeginPlay() {
 		return;
 	}
 
-	// load the save and init. note the init is blocked until the save is available since we really
-	// need that before hand. and can't work reliably without it.
+	// load the save and init. note: the init is blocked until the save is available since we really
+	// need that beforehand. and can't work reliably without it.
+	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
+	// - Thank you so much Jero, that's really how i needed it.
+	// - dou itashimashite!
 	if (!IsValid(Settings->Save)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create"));
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
@@ -243,7 +240,7 @@ void ALGGameMode::BeginPlay() {
 		return;
 	}
 
-	// manually go to init if it's already loaded.	
+	// manually go to init if it's already loaded.
 	Init();
 }
 

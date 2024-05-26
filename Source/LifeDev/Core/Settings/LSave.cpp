@@ -9,7 +9,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
 ////////////
-///// DO NOT CALL GET WORLD HERE IT WON'T WORK!
+///// DO NOT CALL GET WORLD HERE. IT WON'T WORK!
 ///////////////
 
 void ULSave::Reset(UWorld* const W) {
