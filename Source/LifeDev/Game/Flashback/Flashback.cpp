@@ -32,9 +32,8 @@ void UFlashback::SetValInternal(float New) {
 	// don't bother if it's the same, specially since many things could be bound to onChange
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
-	if (Debug) {
+	if (Debug)
 		UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Val = %.5f"), __func__, Val);
-	}
 
 	Val = New;
 	OnChange.Broadcast(Val);
@@ -97,6 +96,7 @@ void UFlashback::SetMin(const float NewMin, const float Duration) {
 	// clamp the value if needed
 	const bool Ok = NewMin <= GetValTo();
 	if (Ok) return;
+
 	SetVal(NewMin, Duration);
 }
 
