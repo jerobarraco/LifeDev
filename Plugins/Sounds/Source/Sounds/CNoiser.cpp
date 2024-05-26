@@ -21,11 +21,13 @@ void UCNoiser::Activate(bool bReset) {
 }
 
 void UCNoiser::Deactivate() {
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
 	TimerStop();
 	Super::Deactivate();
 }
 
 void UCNoiser::TimerStop() {
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World || !TimerPlay.IsValid()) return;
 
@@ -34,6 +36,8 @@ void UCNoiser::TimerStop() {
 }
 
 void UCNoiser::TimerStart() {
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
+
 	const UWorld* const World = GetWorld();
 	if (!World || !IsPlaying) return;
 	const float Time = FMath::FRandRange(TimeMin, TimeMax);
@@ -47,9 +51,11 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCNoiser::PlayNow_Implementation() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs at %s"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (!World) {
+		return;
+	}
 
 	const AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) {

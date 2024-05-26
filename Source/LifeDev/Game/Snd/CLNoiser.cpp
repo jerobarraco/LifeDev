@@ -15,7 +15,7 @@ UCLNoiser::UCLNoiser():Super() {
 	TimeFBMin = 10; // notice this is not exactly the same as min, otherwise it will get repetitive
 	TimeFBMax = TimeMax = 55; // this is the same, that's fine. the fb will change the max
 	DistMin = 10;
-	DistFBMin = 15; // notice ont the same as min
+	DistFBMin = 15; // notice not the same as min
 	DistFBMax = DistMax = 500;
 	HalfAngleWidth = (360.0-90.0)/2.0; // the back
 	HalfAngleHeight = 40.0;
