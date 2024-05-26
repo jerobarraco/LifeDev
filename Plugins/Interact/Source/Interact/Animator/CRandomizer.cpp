@@ -9,8 +9,8 @@ UCRandomizer::UCRandomizer(): Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	PrimaryComponentTick.bCanEverTick = false;
-	Super::SetAutoActivate(false);
-	Super::SetActive(false); // not sure if this does much. but...
+	UCRandomizer::SetAutoActivate(false);
+	UCRandomizer::SetActive(false); // not sure if this does much. but...
 }
 
 void UCRandomizer::Activate(bool bReset) {
@@ -20,7 +20,7 @@ void UCRandomizer::Activate(bool bReset) {
 		return;
 	}
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	Super::Activate(bReset);
@@ -31,7 +31,7 @@ void UCRandomizer::Activate(bool bReset) {
 }
 
 void UCRandomizer::Reset() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 	
 	FTimerManager& Manager = World->GetTimerManager();
@@ -50,9 +50,7 @@ void UCRandomizer::Trigger() {
 
 	if (IsValid(Anim)) {
 		Anim->Duration = Val;
-		if (UseRandReverse) {
-			Anim->IsReversed = FMath::RandBool();
-		}
+		if (UseRandReverse) Anim->IsReversed = FMath::RandBool();
 		Anim->Activate(true);
 	}
 
@@ -60,5 +58,6 @@ void UCRandomizer::Trigger() {
 	OnTriggerVal.Broadcast(Val);
 	
 	if (!IsLooping) return;
+
 	Activate(true);
 }
