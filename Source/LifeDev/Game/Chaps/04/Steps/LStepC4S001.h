@@ -7,8 +7,6 @@
 
 #include "LStepC4S001.generated.h"
 
-class ALInteract;
-
 // some dialog. between book and pot. shows characters.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S001 : public ALStep {

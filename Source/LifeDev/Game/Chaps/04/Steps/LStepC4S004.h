@@ -7,8 +7,6 @@
 
 #include "LStepC4S004.generated.h"
 
-class ALInteract;
-
 // fridge and rice interact.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S004 : public ALStep {
@@ -16,6 +14,4 @@ class ALStepC4S004 : public ALStep {
 
 public:
 	ALStepC4S004();
-protected:
-	virtual void Start_Implementation() override;
 };

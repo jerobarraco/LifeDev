@@ -7,8 +7,6 @@
 
 #include "LStepC4S002.generated.h"
 
-class ALInteract;
-
 // pot and stove interactions
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S002 : public ALStep {

@@ -7,8 +7,6 @@
 
 #include "LStepC4S003.generated.h"
 
-class ALInteract;
-
 // some dialog. between pot and fridge.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S003 : public ALStep {

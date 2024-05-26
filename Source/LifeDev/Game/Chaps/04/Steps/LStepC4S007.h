@@ -7,8 +7,6 @@
 
 #include "LStepC4S007.generated.h"
 
-class ALInteract;
-
 // some dialog. between sponge and plates/sit
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S007 : public ALStep {

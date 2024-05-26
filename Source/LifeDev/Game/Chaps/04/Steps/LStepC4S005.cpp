@@ -11,7 +11,7 @@ ALStepC4S005::ALStepC4S005():Super() {
 	// set wait to blend so that FIRST you turn, and THEN it fades the chars (on DoStart (after wait))
 	FinishPostWait = false;
 	TeleportChar = false;
-	// FBDiagMod = .1;
+	
 	UseFBDiagAuto = true;
 	FBDiagAutoTo = 1.2;
 }

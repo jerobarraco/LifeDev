@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S008.h"
 
-#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 
 ALStepC4S008::ALStepC4S008():Super() {
 	Name = FName("C4S8");
@@ -12,11 +12,12 @@ ALStepC4S008::ALStepC4S008():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
-}
 
-void ALStepC4S008::Start_Implementation() {
-	Super::Start_Implementation();
-	FB->SetVal(.2, 60);
+	UseRandFB = true; // min is limited in c4s0
+	RandFB->DelayMin = .2;
+	RandFB->DelayMax = .75;
+	RandFB->ValueMin = -.015;
+	RandFB->ValueMax = .005;
 }
 
 // allows the player to sit on the table. enables a spot (set on editor)

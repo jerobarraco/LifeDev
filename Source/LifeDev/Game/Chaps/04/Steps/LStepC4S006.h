@@ -7,8 +7,6 @@
 
 #include "LStepC4S006.generated.h"
 
-class ALInteract;
-
 // sponge interact.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S006: public ALStep {
@@ -16,6 +14,4 @@ class ALStepC4S006: public ALStep {
 
 public:
 	ALStepC4S006();
-protected:
-	virtual void Start_Implementation() override;
 };
