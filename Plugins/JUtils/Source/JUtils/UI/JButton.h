@@ -19,13 +19,13 @@ public:
 	void DoClick();
 
 	UFUNCTION(BlueprintCallable)
-	void SetUp(const FText& NewText, const int32 NewId = 0);
+	void SetUp(const FText& NewText, const int32 NewId = -1);
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 Id=-1;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FJButtonClick OnClick;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	int32 Id=0;
 
 protected:
 	virtual void NativeOnInitialized() override;
