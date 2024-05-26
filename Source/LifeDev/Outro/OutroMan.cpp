@@ -29,17 +29,17 @@ void AOutroMan::AddUI() {
 	UI->AddToViewport();
 	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
 
-	ULSettings* const Settings = ULSettings::Instance(World);
-	if (Settings && Settings->Save) {
+	const ULSettings* const Settings = ULSettings::Instance(World);
+	if (Settings && Settings->Save)
 		UI->SetFlags(Settings->Save->GetFlags());
-	}
-	
+
 	UJMiscUtils::ShowUI(this, true, UI, false);
 }
 
 void AOutroMan::Quit() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
+
 	UKismetSystemLibrary::QuitGame(
 		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }
@@ -61,11 +61,8 @@ void AOutroMan::Retry() {
 }
 
 void AOutroMan::Done(int32 RetVal) {
-	if (RetVal == 0) {
-		Retry();
-	} else if (RetVal ==1) {
-		Quit();
-	}
+	if (RetVal == 0) Retry();
+	else if (RetVal ==1) Quit();
 }
 
 void AOutroMan::BeginPlay() {
@@ -74,8 +71,7 @@ void AOutroMan::BeginPlay() {
 }
 
 void AOutroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (UI) {
-		UI->OnDone.RemoveAll(this);
-	}
+	if (UI) UI->OnDone.RemoveAll(this);
+
 	Super::EndPlay(EndPlayReason);
 }
