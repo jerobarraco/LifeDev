@@ -5,8 +5,12 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogFlags, Log, Log);
 
-UFlags* UFlags::Instance(UWorld* W) {
+UFlags* UFlags::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+	
+	const UWorld* const W = O->GetWorld();
 	if (!IsValid(W)) return nullptr;
+
 	UFlags* const I = W->GetSubsystem<UFlags>();
 	return IsValid(I) ? I : nullptr;
 }

@@ -5,6 +5,7 @@
 #include "NiagaraSystem.h"
 
 #include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 
 AGhosts::AGhosts():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
@@ -18,7 +19,9 @@ AGhosts::AGhosts():Super() {
 	SFX->TimeFadeOut = 2.0;
 	SFX->TimeStartMin = 0;
 	SFX->TimeStartMax = 120;
-	SFX->AttenuationSettings = nullptr; // they need to play loudly and clear.
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CAttn(LDConsts::Audio::Attns::Env);
+	SFX->AttenuationSettings = CAttn.Object; // they need to play loudly and clear.
 	
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(RootComponent);

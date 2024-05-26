@@ -16,8 +16,8 @@ class INVENTORY_API UFlags : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	static UFlags* Instance(UWorld* W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UFlags* Instance(UObject* O);
 	
 	// regular ones ////////
 

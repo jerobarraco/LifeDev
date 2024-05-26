@@ -14,6 +14,7 @@ UCNoiser::UCNoiser():Super() {
 
 void UCNoiser::Activate(bool bReset) {
 	Super::Activate(bReset);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 	if (IsActive() && !bReset) return;
 	
 	TimerStart(); // already checks for IsPlaying

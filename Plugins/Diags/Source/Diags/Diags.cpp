@@ -5,9 +5,13 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
-UDiags* UDiags::Instance(UWorld* W) {
+UDiags* UDiags::Instance(UObject* O) {
+	if (!IsValid(O)) return nullptr;
+	
+	const UWorld* const W = O->GetWorld();
 	if (!IsValid(W)) return nullptr;
-	UDiags* const  D = W->GetSubsystem<UDiags>();
+
+	UDiags* const D = W->GetSubsystem<UDiags>();
 	return IsValid(D) ? D : nullptr;
 }
 

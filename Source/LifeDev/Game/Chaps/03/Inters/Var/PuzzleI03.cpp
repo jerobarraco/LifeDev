@@ -13,7 +13,7 @@ APuzzleI03::APuzzleI03():Super() {
 	static FName DoneId = "PZ03_T";
 	DoneDlg = DoneId;
 	DoneFB = .15;
-	DoneFlag = LDConsts::Flags::ALL::PuzzlesCube;
+	DoneFlag = LDConsts::Flags::Play::PuzzlesCube;
 }
 
 void APuzzleI03::PostLoad() {

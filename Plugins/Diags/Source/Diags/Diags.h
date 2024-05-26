@@ -18,8 +18,8 @@ class DIAGS_API UDiags : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	static UDiags* Instance(UWorld* World);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UDiags* Instance(UObject* O);
 	
 	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
