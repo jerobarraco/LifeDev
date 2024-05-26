@@ -10,8 +10,10 @@ USignificance::USignificance():Super() {}
 
 USignificance* USignificance::Instance(UObject* O) {
 	if (!IsValid(O)) return nullptr;
-	UWorld* const W = O->GetWorld();
+
+	const UWorld* const W = O->GetWorld();
 	if (!IsValid(W)) return nullptr;
+
 	USignificance* const Sig = W->GetSubsystem<USignificance>();
 	return IsValid(Sig) ? Sig : nullptr;
 }
@@ -29,7 +31,7 @@ void USignificance::Reset() {
 	Man = nullptr;
 	PCs.Empty();
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	Man = USignificanceManager::Get(W);
