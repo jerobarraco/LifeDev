@@ -21,13 +21,13 @@ void UCNoiser::Activate(bool bReset) {
 }
 
 void UCNoiser::Deactivate() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 	TimerStop();
 	Super::Deactivate();
 }
 
 void UCNoiser::TimerStop() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World || !TimerPlay.IsValid()) return;
 
@@ -36,7 +36,7 @@ void UCNoiser::TimerStop() {
 }
 
 void UCNoiser::TimerStart() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 
 	const UWorld* const World = GetWorld();
 	if (!World || !IsPlaying) return;
@@ -51,7 +51,7 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCNoiser::PlayNow_Implementation() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs %s"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World) {
 		return;
@@ -82,7 +82,7 @@ void UCNoiser::PlayNow_Implementation() {
 		DrawDebugPoint(World, OwnerLocation, 4, FColor::Red, false, 4);
 		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs at %s"), __func__, *Location.ToString());
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs at %s"), __func__, *Location.ToString());
 
 	// force the soundclass, used by child classes.
 	if (SoundClass) SFX->SoundClassObject = SoundClass;
@@ -93,7 +93,6 @@ void UCNoiser::PlayNow_Implementation() {
 	);
 	
 	TimerStart(); // starts the next one.
-
 	OnPlay.Broadcast();
 }
 
