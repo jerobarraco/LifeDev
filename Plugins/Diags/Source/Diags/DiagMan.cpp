@@ -27,18 +27,17 @@ ADiagMan::ADiagMan():Super() {
 	UIClass = UDialogUI::StaticClass();
 }
 
-void ADiagMan::Init() {
-	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
-
-	Diags = World->GetSubsystem<UDiags>();
+void ADiagMan::Init_Implementation() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Init"));
 	if (!IsValid(Diags)) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
 	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
 }
 
-void ADiagMan::DeInit() {
+void ADiagMan::DeInit_Implementation() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DeInit"));
+
 	if (IsValid(Diags)) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
@@ -52,11 +51,10 @@ void ADiagMan::DeInit() {
 	UI = nullptr;
 }
 
-void ADiagMan::Show(const FDialog& Diag) {
+void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan.Show:"));
-	if (IsShowing) {
+	if (IsShowing)
 		UE_LOG(LogTextDialogs, Log, TEXT("Attempted to show text when i was already showing."));
-	}
 
 	if (DebugSkip) {
 		UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DebugSkip is set. Skipping."));
@@ -77,7 +75,8 @@ void ADiagMan::Show(const FDialog& Diag) {
 	UI->Show(Diag);
 }
 
-void ADiagMan::Hide() {
+void ADiagMan::Hide_Implementation() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone IsShowing=%i"), IsShowing);
 	if (!IsShowing) return;
 	if (!IsValid(UI)) return;
 
@@ -89,18 +88,19 @@ void ADiagMan::Hide() {
 void ADiagMan::BeginPlay() {
 	Super::BeginPlay();
 
-	// bind the action
 	UWorld* const World = GetWorld();
+	if (!IsValid(World)) return;
+
+	Diags = World->GetSubsystem<UDiags>();
+	// bind the action
 	UEnhancedInputComponent* const Input = World ? Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent) : nullptr;
 	if (IsValid(Input)){
-		if (IsValid(ActionSkip)) {
+		if (IsValid(ActionSkip))
 			Input->BindAction<ADiagMan>(
 				ActionSkip, ETriggerEvent::Triggered, this, &ADiagMan::Skip);
-		}
-		if (IsValid(ActionBack)) {
+		if (IsValid(ActionBack))
 			Input->BindAction<ADiagMan>(
 				ActionBack, ETriggerEvent::Triggered, this, &ADiagMan::Back);
-		}
 	}
 
 	// create ui 
@@ -125,6 +125,7 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ADiagMan::UIDiagDone() {
+	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone"));
 	if (!IsValid(Diags)) return;
 	Diags->DiagDone();
 }

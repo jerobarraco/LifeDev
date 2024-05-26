@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Diags/DiagMan.h"
 #include "Diags/DiagTypes.h"
+#include "Inventory/Flags.h"
 
 #include "LDialogMan.generated.h"
 
@@ -18,8 +19,9 @@ public:
 
 protected:
 	void BeginPlay() override;
-	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	virtual void Show_Implementation(const FDialog& Diag) override;
 	
-	UFUNCTION()
-	void DiagShown(const FDialog& Diag);
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UFlags* Flags = nullptr;
 };

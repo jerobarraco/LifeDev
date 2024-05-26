@@ -4,6 +4,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DiagTypes.h"
 
 #include "DiagMan.generated.h"
 
@@ -20,19 +21,21 @@ class DIAGS_API ADiagMan : public AInfo {
 public:
 	ADiagMan();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeInit();
 
 	// show a dialog
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Show(const FDialog& Diag);
-
 	// stop showing Diags (no more Diags)
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Hide();
+	// whether the ui is showing
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsShowing() const { return IsShowing; };
 
 	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable)
@@ -64,16 +67,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
 	bool DebugSkip = false;
 
+protected:
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDiags* Diags = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UDialogUI* UI = nullptr;
+	
 private:
 	// The ui is done with the current line
 	UFUNCTION()
 	void UIDiagDone();
-
-	UPROPERTY(Transient)
-	UDiags* Diags = nullptr;
-
-	UPROPERTY(Transient)
-	UDialogUI* UI = nullptr;
 
 	bool IsShowing = false;
 };

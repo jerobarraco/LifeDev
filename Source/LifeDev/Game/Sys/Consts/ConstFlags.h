@@ -3,10 +3,10 @@
 // these are flags for use with the flag subsystem (interact) not .. other regular flags.
 namespace LDConsts {
 	namespace Flags {
-		namespace Play {
-			inline static const FName LightsOn("Play.Lights.On");
-			inline static const FName PuzzlesCube("Play.Puzzles.Cube");
-			inline static const FName DiagShown("Play.Diags.Shown");
+		namespace Stats {
+			inline static const FName LightsOn("Stats.Lights.On");
+			inline static const FName PuzzlesCube("Stats.Puzzles.Cube");
+			inline static const FName DiagShown("Stats.Diags.Shown");
 		}
 		namespace CH0 { // chap 0
 			inline static const FName Spot("CH0.SpotI02");

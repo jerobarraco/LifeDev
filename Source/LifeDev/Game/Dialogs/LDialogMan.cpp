@@ -2,7 +2,6 @@
 
 #include "LDialogMan.h"
 
-#include "Diags/Diags.h"
 #include "Diags/DialogUI.h"
 #include "Inventory/Flags.h"
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
@@ -15,19 +14,11 @@ ALDialogMan::ALDialogMan():Super() {
 
 void ALDialogMan::BeginPlay() {
 	Super::BeginPlay();
-
-	UDiags* Diags = UDiags::Instance(this);
-	if (Diags) Diags->OnShow.AddUniqueDynamic(this, &ALDialogMan::DiagShown);
+	Flags = UFlags::Instance(this);
 }
 
-void ALDialogMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UDiags* Diags = UDiags::Instance(this);
-	if (Diags) Diags->OnShow.RemoveAll(this);
+void ALDialogMan::Show_Implementation(const FDialog& Diag) {
+	Super::Show_Implementation(Diag);
 	
-	Super::EndPlay(EndPlayReason);
-}
-
-void ALDialogMan::DiagShown(const FDialog& Diag) {
-	UFlags* Flags = UFlags::Instance(this);
-	if (Flags) Flags->Mod(LDConsts::Flags::Play::DiagShown, 1);
+	if (Flags) Flags->Mod(LDConsts::Flags::Stats::DiagShown, 1);
 }
