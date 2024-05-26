@@ -2,9 +2,10 @@
 
 #include "LStepC4S000.h"
 
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
-#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC4S000::ALStepC4S000():Super() {
 	Name = FName("C4S0");

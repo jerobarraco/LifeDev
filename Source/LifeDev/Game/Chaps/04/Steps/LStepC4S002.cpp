@@ -16,6 +16,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 
 void ALStepC4S002::Start_Implementation() {
 	Super::Start_Implementation();
+	// TODO use randfb
 	FB->SetVal(.2, 60);
 }
 

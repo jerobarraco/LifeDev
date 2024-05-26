@@ -8,6 +8,7 @@ UCRandomizerFB::UCRandomizerFB():Super() {
 	ValueMin = -.01;
 	ValueMax = .02;
 	IsLooping = true;
+	UCRandomizerFB::SetAutoActivate(false);
 }
 
 void UCRandomizerFB::BeginPlay() {

@@ -25,7 +25,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	FinishPostWait = false;
 	UsePawnCam = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS");
-	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFlashback"));
+	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFB"));
 	// No need to load, it should be loaded by default?
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
