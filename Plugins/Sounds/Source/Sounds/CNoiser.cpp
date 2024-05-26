@@ -46,6 +46,7 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCNoiser::PlayNow_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs at %s"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World) return;
 

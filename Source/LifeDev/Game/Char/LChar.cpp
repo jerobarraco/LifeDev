@@ -190,9 +190,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	SettingsUI = nullptr;
 
-	if (IsValid(Noiser)) {
-		Noiser->Deactivate();
-	}
+	if (IsValid(Noiser)) Noiser->Deactivate();
 	Noiser = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();

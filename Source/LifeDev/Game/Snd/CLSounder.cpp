@@ -14,4 +14,6 @@ UCLSounder::UCLSounder():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(LDConsts::Audio::Attns::SFX);
 	AttenuationSettings = CAtt.Object;
+	// unnecessary, but if someone checks "bOverrideAttenuation" it will try to use this.
+	AttenuationOverrides = AttenuationSettings->Attenuation;
 }
