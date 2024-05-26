@@ -74,8 +74,9 @@ void UCNoiser::PlayNow_Implementation() {
 		DrawDebugPoint(World, OwnerLocation, 4, FColor::Red, false, 4);
 		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
-	UE_LOG(LogTemp, Log, TEXT("Noiser at %s"), *Location.ToString());
+	UE_LOG(LogTemp, Log, TEXT("UCNoiser::hs at %s"), __func__, *Location.ToString());
 
+	// force the soundclass, used by child classes.
 	if (SoundClass) SFX->SoundClassObject = SoundClass;
 
 	UGameplayStatics::PlaySoundAtLocation(

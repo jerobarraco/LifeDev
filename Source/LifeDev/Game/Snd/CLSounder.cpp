@@ -8,10 +8,10 @@
 
 UCLSounder::UCLSounder():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(LDConsts::Audio::SFXClass);
+		CSClass(LDConsts::Audio::Classes::SFX);
 	SoundClassOverride = CSClass.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		CAtt(LDConsts::Audio::SFXAttn);
+		CAtt(LDConsts::Audio::Attns::SFX);
 	AttenuationSettings = CAtt.Object;
 }

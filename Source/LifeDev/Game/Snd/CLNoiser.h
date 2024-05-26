@@ -12,6 +12,7 @@
 #include "CLNoiser.generated.h"
 
 // Generates random noises. interacts with the flashback system.
+// uses the sfx class, and noise attn.
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UCLNoiser : public UCNoiser {
 	GENERATED_BODY()

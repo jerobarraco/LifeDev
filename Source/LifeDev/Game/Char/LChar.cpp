@@ -64,9 +64,6 @@ ALChar::ALChar(): Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSfx(TEXT("/Game/LifeDev/Game/Env/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
-	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		CSfxAtt(TEXT("/Game/LifeDev/Game/Env/Noises/Noises_Att.Noises_Att"));
-	Noiser->Attenuation = CSfxAtt.Object;
 	
 	// load the ui class here with the class finder.
 	// and also all the other default objects

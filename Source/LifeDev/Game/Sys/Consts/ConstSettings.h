@@ -13,11 +13,23 @@ namespace LDConsts {
 	}
 
 	namespace Audio {
-		static constexpr const TCHAR* const MusicClass =
-			TEXT("/Game/LifeDev/Core/Audio/Classes/Music");
-		static constexpr const TCHAR* const SFXClass =
-			TEXT("/Game/LifeDev/Core/Audio/Classes/SFX");
-		static constexpr const TCHAR* const SFXAttn =
-			TEXT("/Game/LifeDev/Game/Inters/Generic/Generic_Att");
+		namespace Attns {
+			static constexpr const TCHAR* const SFX =
+				TEXT("/Game/LifeDev/Core/Audio/Attenuations/SFX");
+			static constexpr const TCHAR* const Noise =
+				TEXT("/Game/LifeDev/Core/Audio/Attenuations/Noise");
+			static constexpr const TCHAR* const Env =
+				TEXT("/Game/LifeDev/Core/Audio/Attenuations/Environ");
+			static constexpr const TCHAR* const Music =
+				TEXT("/Game/LifeDev/Core/Audio/Attenuations/Music");
+		}
+		namespace Classes {
+			static constexpr const TCHAR* const Music =
+				TEXT("/Game/LifeDev/Core/Audio/Classes/Music");
+			static constexpr const TCHAR* const SFX =
+				TEXT("/Game/LifeDev/Core/Audio/Classes/SFX");
+			static constexpr const TCHAR* const UI =
+				TEXT("/Game/LifeDev/Core/Audio/Classes/UI");
+		}
 	}
 }

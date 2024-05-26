@@ -15,11 +15,11 @@
 
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
-		CAtt(LDConsts::Audio::SFXAttn);
+		CAtt(LDConsts::Audio::Attns::SFX);
 	SFX->AttenuationSettings = CAtt.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(LDConsts::Audio::SFXClass);
+		CSClass(LDConsts::Audio::Classes::SFX);
 	SFX->SoundClassOverride = CSClass.Object;
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));

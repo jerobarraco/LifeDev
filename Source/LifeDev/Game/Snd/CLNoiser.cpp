@@ -20,9 +20,14 @@ UCLNoiser::UCLNoiser():Super() {
 	HalfAngleWidth = (360.0-90.0)/2.0; // the back
 	HalfAngleHeight = 40.0;
 
+	// use the sfx class, since the volume is the same as sfx
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(LDConsts::Audio::SFXClass);
+		CSClass(LDConsts::Audio::Classes::SFX);
 	SoundClass = CSClass.Object;
+	// use the noise attn. fixes occlusion and falloff
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CAttn(LDConsts::Audio::Attns::Noise);
+	Attenuation = CAttn.Object;
 }
 
 void UCLNoiser::Activate(bool bReset) {
@@ -41,9 +46,7 @@ void UCLNoiser::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const W = GetWorld();
 	UFlashback* const F = UFlashback::Instance(W);
-	if (F) {
-		F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
-	}
+	if (F) F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
 
 	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {

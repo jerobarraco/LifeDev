@@ -18,8 +18,11 @@
 ALMusicMan::ALMusicMan():Super() {
 	// set the class to the player
 	static ConstructorHelpers::FObjectFinder<USoundClass>
-		CSClass(LDConsts::Audio::MusicClass);
+		CSClass(LDConsts::Audio::Classes::Music);
 	Player->SoundClassOverride = CSClass.Object;
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CSAttn(LDConsts::Audio::Attns::Music);
+	Player->AttenuationSettings = CSAttn.Object;
 	
 	Rain = CreateDefaultSubobject<UCLSounder>(TEXT("Rain"));
 	Rain->SetupAttachment(RootComponent);
@@ -45,7 +48,10 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->TimeStartMin = 0;
 	Environ->TimeStartMax = 0;
 	// clear the attenuation from the clsounder which would make them not audible.
-	Environ->AttenuationSettings = Rain->AttenuationSettings = nullptr;
+	
+	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
+		CEnvAttn(LDConsts::Audio::Attns::Env);
+	Environ->AttenuationSettings = Rain->AttenuationSettings = CEnvAttn.Object; 
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
 }

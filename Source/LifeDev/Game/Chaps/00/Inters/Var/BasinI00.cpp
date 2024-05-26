@@ -5,7 +5,7 @@
 #include "NiagaraComponent.h"
 
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
-#include "Sounds/CSounder.h"
+#include "LifeDev/Game/Snd/CLSounder.h"
 
 ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
@@ -20,7 +20,7 @@ ABasinI00::ABasinI00():Super() {
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
 	
-	SetEnabled(true); // this is necessary for some reason. TODO fix 
+	ABasinI00::SetEnabled(true); // this is necessary for some reason. TODO fix 
 }
 
 void ABasinI00::DoTrigger_Implementation() {
