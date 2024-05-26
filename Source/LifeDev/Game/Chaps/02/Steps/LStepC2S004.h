@@ -7,8 +7,6 @@
 
 #include "LStepC2S004.generated.h"
 
-class UCRandomizerFB;
-
 // step after the tape has been played.
 // will finish if all the items are obtained.
 UCLASS(Blueprintable, BlueprintType)
@@ -20,8 +18,4 @@ public:
 
 	virtual void TryStart_Implementation() override;
 	virtual void Stop_Implementation() override;
-
-protected:
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCRandomizerFB* RndFB = nullptr;
 };

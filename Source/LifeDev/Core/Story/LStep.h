@@ -169,7 +169,7 @@ protected:
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCRandomizerFB* RandFB = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)

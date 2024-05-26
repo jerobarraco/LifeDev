@@ -7,9 +7,6 @@
 
 #include "LStepC0S000.generated.h"
 
-class UCRandomizer;
-class AActor;
-
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC0S000 : public ALStep {
 	GENERATED_BODY()
