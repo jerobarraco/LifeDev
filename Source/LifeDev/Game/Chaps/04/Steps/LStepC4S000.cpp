@@ -51,6 +51,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 void ALStepC4S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	FB->SetMax(1);
+	FB->SetMin(.2); // this limits the fbs on the next steps too.
 	FB->SetVal(.2);
 }
 

@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC4S002.h"
 
-#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 
 ALStepC4S002::ALStepC4S002():Super() {
 	Name = FName("C4S2");
@@ -12,12 +12,13 @@ ALStepC4S002::ALStepC4S002():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
-}
+	UseRandFB = true;
 
-void ALStepC4S002::Start_Implementation() {
-	Super::Start_Implementation();
-	// TODO use randfb
-	FB->SetVal(.2, 60);
+	RandFB->DelayMin = .2;
+	RandFB->DelayMax = .75;
+	RandFB->ValueMin = -.02;
+	RandFB->ValueMax = .005;
+	// min is limited in c4s0
 }
 
 // enables the pot
