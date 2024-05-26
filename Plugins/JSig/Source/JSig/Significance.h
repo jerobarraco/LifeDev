@@ -11,7 +11,7 @@ class USignificanceManager;
 
 // Base subsystem for the significance stuff
 // you can set the defaults for this if you create a file in Config/DefaultJSignificance
-// this file is mandatory for Android or it won't work.
+// this file is mandatory for Android, or it won't work.
 // with the section [/Script/JSig.Significance]
 // and then the variables like
 // UseBgThread=true

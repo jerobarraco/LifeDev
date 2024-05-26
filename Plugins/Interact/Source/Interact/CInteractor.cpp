@@ -2,18 +2,17 @@
 
 #include "CInteractor.h"
 
-#include "Components/ArrowComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #include "CInteract.h"
 #include "Interact.h"
 #include "InteractTypes.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
-	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
+	constexpr static EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
 #else
-	EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
+	constexpr static EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 #endif
 
 static ETraceTypeQuery TraceType = TraceTypeQuery1;
@@ -22,7 +21,7 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(true);
 	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
-	// the arrow doesn't parent correctly. so.. beat it
+	// the arrow doesn't parent correctly. so... beat it
 }
 
 void UCInteractor::SetEnabled(bool Enabled) {
@@ -32,6 +31,7 @@ void UCInteractor::SetEnabled(bool Enabled) {
 
 void UCInteractor::TryTrigger() {
 	if (!IsValid(InterComp)) return;
+
 	InterComp->Trigger();
 }
 
@@ -101,9 +101,8 @@ void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCInteractor::DoEnd() {
 	if (!InterComp) return;
-	if (IsValid(InterComp)) {
-		InterComp->Hover(false);
-	}
+	if (IsValid(InterComp)) InterComp->Hover(false);
+
 	OnToggle.Broadcast(false, InterComp);
 	OnEnd.Broadcast(InterComp);
 

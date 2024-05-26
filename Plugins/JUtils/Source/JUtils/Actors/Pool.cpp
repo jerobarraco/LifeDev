@@ -11,7 +11,10 @@ bool UPool::Spawn() {
 	P.bNoFail = true;
 	P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	AActor* const Actor = GetWorld()->SpawnActor(ItemType, 0, 0, P);
+	UWorld* const World = GetWorld();
+	if (!World) return false;
+	
+	AActor* const Actor = World->SpawnActor(ItemType, 0, 0, P);
 	if (!IsValid(Actor)) {
 		UE_LOG(LogJPool, Warning, TEXT("Could not spawn the actor."));
 		return false;
@@ -113,9 +116,8 @@ void UPool::Return(AActor* Actor) {
 
 	UE_LOG(LogJPool, Verbose, TEXT("Actor returned to pool."));
 	Actor->SetActorHiddenInGame(true);
-	if (SetTicks) {
-		Actor->SetActorTickEnabled(false);
-	}
+	if (SetTicks) Actor->SetActorTickEnabled(false);
+
 	// add. ensure no duplicates in case someone is doing something weird.
 	Ready.AddUnique(Actor);
 	
