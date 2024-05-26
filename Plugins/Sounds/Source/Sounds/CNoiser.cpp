@@ -5,6 +5,8 @@
 
 #include "Kismet/GameplayStatics.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCNoiser, Log, Log);
+
 UCNoiser::UCNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
@@ -13,7 +15,7 @@ UCNoiser::UCNoiser():Super() {
 }
 
 void UCNoiser::Activate(bool bReset) {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs Reset=%i"), __func__, bReset);
+	UE_LOG(LogCNoiser, Log, TEXT("%hs Reset=%i"), __func__, bReset);
 	if (IsActive() && !bReset) return;
 
 	// has to be after the IsActive check!
@@ -23,13 +25,13 @@ void UCNoiser::Activate(bool bReset) {
 }
 
 void UCNoiser::Deactivate() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
+	UE_LOG(LogCNoiser, Log, TEXT("%hs"), __func__);
 	TimerStop();
 	Super::Deactivate();
 }
 
 void UCNoiser::TimerStop() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
+	UE_LOG(LogCNoiser, Log, TEXT("%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World || !TimerPlay.IsValid()) return;
 
@@ -38,13 +40,13 @@ void UCNoiser::TimerStop() {
 }
 
 void UCNoiser::TimerStart() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
+	UE_LOG(LogCNoiser, Log, TEXT("%hs"), __func__);
 
 	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	if (IsPlaying) {
-		UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs IsPlaying true. skip."), __func__);
+		UE_LOG(LogCNoiser, Log, TEXT("%hs IsPlaying true. skip."), __func__);
 		return;
 	}
 
@@ -58,13 +60,13 @@ void UCNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCNoiser::PlayNow_Implementation() {
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs"), __func__);
+	UE_LOG(LogCNoiser, Log, TEXT("%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	const AActor* const Owner = GetOwner();
 	if (!IsValid(Owner)) {
-		UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs No owner. Stopping."), __func__);
+		UE_LOG(LogCNoiser, Log, TEXT("%hs No owner. Stopping."), __func__);
 		Deactivate();
 		return;
 	}
@@ -88,8 +90,8 @@ void UCNoiser::PlayNow_Implementation() {
 		DrawDebugPoint(World, OwnerLocation, 4, FColor::Red, false, 4);
 		DrawDebugCone(World, OwnerLocation, OwnerBwd, Dist,  AngleWidth, AngleHeight, 20, FColor::Silver, false, 4);
 	}
-	UE_LOG(LogTemp, Log, TEXT("UCNoiser::%hs at %s"), __func__, *Location.ToString());
-
+	
+	UE_LOG(LogCNoiser, Log, TEXT("%hs Play at %s"), __func__, *Location.ToString());
 	// force the soundclass, used by child classes.
 	if (SoundClass) SFX->SoundClassObject = SoundClass;
 
