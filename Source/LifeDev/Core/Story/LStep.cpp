@@ -4,14 +4,20 @@
 #include "Diags/Diags.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "Story/Story.h"
+
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
-#include "Story/Story.h"
+#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
+
+ALStep::ALStep():Super() {
+	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFB"));
+}
 
 void ALStep::TryStart_Implementation() {
 	Super::TryStart_Implementation();
@@ -24,7 +30,8 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
-
+	if (UseRandFB && IsValid(RandFB)) RandFB->Deactivate();
+	
 	SetActorsShowEnabled(false, true);
 	SetIntersEnabled(false);
 	DoIntersFade(IntersFadeOut, false);
@@ -77,6 +84,7 @@ void ALStep::Start_Implementation() {
 	}
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
+	if (UseRandFB && IsValid(RandFB)) RandFB->Activate(true);
 
 	SetActorsShowEnabled(true, true);
 	SetIntersEnabled(true);

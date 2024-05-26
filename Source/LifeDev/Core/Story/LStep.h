@@ -9,6 +9,7 @@
 
 #include "LStep.generated.h"
 
+class UCRandomizerFB;
 class ALInteract;
 class AInteract;
 class AGhosts;
@@ -24,6 +25,8 @@ class ALStep: public AStep {
 	GENERATED_BODY()
 
 public:
+	ALStep();
+	
 	virtual void TryStart_Implementation() override;
 	
 	// Be careful! this will remove all delegates to Dialogs.OnDone and Inventory.OnMOd
@@ -77,6 +80,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FBDiagAutoTo = 1.0;
 
+	// whether to manage the RandFB. Enable at start, disable at stop.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
+	bool UseRandFB = false;
 	// whether to manage rain. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	bool UseRain = false;
@@ -162,7 +168,10 @@ protected:
 	void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
-	
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCRandomizerFB* RandFB = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

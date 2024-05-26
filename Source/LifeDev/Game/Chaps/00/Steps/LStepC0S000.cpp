@@ -24,8 +24,8 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
+	UseRandFB = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS");
-	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFB"));
 	// No need to load, it should be loaded by default?
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
@@ -46,12 +46,6 @@ void ALStepC0S000::TryStart_Implementation() {
 
 	FB->SetVal(.1);
 	FB->SetMax(.75);
-	RandFB->Activate(true);
-}
-
-void ALStepC0S000::Stop_Implementation() {
-	RandFB->Deactivate();
-	Super::Stop_Implementation();
 }
 
 void ALStepC0S000::DoDebug_Implementation() {
