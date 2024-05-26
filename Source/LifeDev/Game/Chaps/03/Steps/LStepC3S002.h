@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
-#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 
 #include "LStepC3S002.generated.h"
 
@@ -17,9 +16,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void TryStart_Implementation() override;
+	virtual void Start_Implementation() override;
 	virtual void Stop_Implementation() override;
-
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCRandomizerFB* RndFB = nullptr;
 };

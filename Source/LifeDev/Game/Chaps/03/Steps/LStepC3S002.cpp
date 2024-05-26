@@ -20,12 +20,11 @@ ALStepC3S002::ALStepC3S002():Super() {
 	
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb
-	RndFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RndFB"));
-	RndFB->SetAutoActivate(false);
-	RndFB->DelayMin = .5;
-	RndFB->DelayMax = 2;
-	RndFB->ValueMin = -.07;
-	RndFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
+	RandFB->DelayMin = .5;
+	RandFB->DelayMax = 2;
+	RandFB->ValueMin = -.07;
+	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
+	UseRandFB = true;
 }
 
 void ALStepC3S002::BeginPlay() {
@@ -39,15 +38,13 @@ void ALStepC3S002::BeginPlay() {
 	DoIntersFade(IntersFadeIn, false);
 }
 
-void ALStepC3S002::TryStart_Implementation() {
-	Super::TryStart_Implementation();
+void ALStepC3S002::Start_Implementation() {
+	Super::Start_Implementation();
 	ALMusicMan::SetRainS(GetWorld(), true);
 	FB->SetMin(0);
-	RndFB->Activate(true);
 }
 
 void ALStepC3S002::Stop_Implementation() {
-	RndFB->Deactivate();
 	FB->SetMin(0);
 	FB->SetMax(1);
 	FB->SetVal(0);
