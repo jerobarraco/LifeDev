@@ -72,8 +72,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 
 	// only reduce the size NOW if the trim time is not set
 	if (TrimTime > 0) {
-		// force set timer
-		SetTrimTimer();
+		SetTrimTimer(); // force set timer
 	} else {
 		// reduce size if Set was called with a smaller value
 		while (Ready.Num() > ItemMax) {
