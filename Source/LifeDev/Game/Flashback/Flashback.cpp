@@ -82,6 +82,9 @@ void UFlashback::SetVal(float New, float Duration) {
 }
 
 void UFlashback::SetMax(const float NewMax, const float Duration) {
+	UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Old=%.5f New=%.5f Duration=%.5f"),
+		__func__, Max, NewMax, Duration);
+
 	Max = NewMax;
 	
 	// clamp the value if needed
@@ -91,6 +94,8 @@ void UFlashback::SetMax(const float NewMax, const float Duration) {
 }
 
 void UFlashback::SetMin(const float NewMin, const float Duration) {
+		UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Old=%.5f New=%.5f Duration=%.5f"),
+		__func__, Min, NewMin, Duration);
 	Min = NewMin;
 	
 	// clamp the value if needed

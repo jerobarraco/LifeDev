@@ -51,9 +51,11 @@ void ALStepC1S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 
 	if (!FB) return;
-	FB->SetMax(.6);
-	FB->SetMin(0);
-	FB->SetVal(0, .5);
+	// important to set a short duration since this comes from another chapter
+	// that happened some time ago.
+	FB->SetMin(0, .1);
+	FB->SetMax(.6, .1);
+	FB->SetVal(0, .1);
 }
 
 
