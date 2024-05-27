@@ -19,7 +19,8 @@ void UFlags::Mod(const FName& Name, float Diff) {
 	if (Name.IsNone()) return;
 	
 	const float Val = Get(Name) + Diff; 
-	UE_LOG(LogFlags, Log, TEXT("Mod: name=%s diff=%3.3f new=%3.3f"), *Name.ToString(), Diff, Val);
+	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
+		__func__, *Name.ToString(), Diff, Val);
 	
 	Flags.Add(Name, Val);
 	OnMod.Broadcast(Name, Diff, Val);

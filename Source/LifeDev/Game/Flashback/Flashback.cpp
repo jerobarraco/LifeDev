@@ -33,7 +33,7 @@ void UFlashback::SetValInternal(float New) {
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
 	if (Debug)
-		UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Val = %.5f"), __func__, Val);
+		UE_LOG(LogFlashback, Log, TEXT("%hs Val = %.5f"), __func__, Val);
 
 	Val = New;
 	OnChange.Broadcast(Val);
@@ -49,7 +49,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	// critical to use ValTo and not Val here or the dialogs FBDiagMod fails on quick change.
 	// keep an eye on it in case it breaks other things.
 	const float Diff = FMath::Abs(ValTo - New);
-	UE_LOG(LogFlashback, Log, TEXT("%hs::Pre-start Min=%.5f Max=%.5f ValTo=%.5f NewVal=%.5f Diff=%.5f "),
+	UE_LOG(LogFlashback, Log, TEXT("%hs:Pre-start Min=%.5f Max=%.5f ValTo=%.5f NewVal=%.5f Diff=%.5f "),
 		__func__, Min, Max, ValTo, New, Diff);
 	if (FMath::IsNearlyZero(Diff)) return;
 
@@ -82,7 +82,7 @@ void UFlashback::SetVal(float New, float Duration) {
 }
 
 void UFlashback::SetMax(const float NewMax, const float Duration) {
-	UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Old=%.5f New=%.5f Duration=%.5f"),
+	UE_LOG(LogFlashback, Log, TEXT("%hs Old=%.5f New=%.5f Duration=%.5f"),
 		__func__, Max, NewMax, Duration);
 
 	Max = NewMax;
@@ -94,7 +94,7 @@ void UFlashback::SetMax(const float NewMax, const float Duration) {
 }
 
 void UFlashback::SetMin(const float NewMin, const float Duration) {
-		UE_LOG(LogFlashback, Log, TEXT("Flashback:%hs Old=%.5f New=%.5f Duration=%.5f"),
+		UE_LOG(LogFlashback, Log, TEXT("%hs Old=%.5f New=%.5f Duration=%.5f"),
 		__func__, Min, NewMin, Duration);
 	Min = NewMin;
 	

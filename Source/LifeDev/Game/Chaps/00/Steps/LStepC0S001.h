@@ -17,5 +17,4 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
 };

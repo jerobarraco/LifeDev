@@ -55,9 +55,8 @@ void ALStepC1S000::TryStart_Implementation() {
 	// that happened some time ago.
 	FB->SetMin(0, .1);
 	FB->SetMax(.6, .1);
-	FB->SetVal(0, .1);
+	FB->SetVal(0, .1); // might not have an effect if setmin or setmax change the val
 }
-
 
 void ALStepC1S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();

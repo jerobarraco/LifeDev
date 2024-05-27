@@ -31,7 +31,7 @@ void ALStepC0S001::Start_Implementation() {
 	FB->SetVal(1, 10);
 }
 
-void ALStepC0S001::Stop_Implementation() {
-	FB->SetVal(0);
-	Super::Stop_Implementation();
-}
+// don't change the fb val for the next chapter here. since it's not the responsibility of this class.
+// in other words: don't put your nose where it doesn't belong. don't do what you're not asked.
+// because you might not know what is needed (it was actually introducing a soft error by using the default time.)
+// also it makes it harder to find the origin.
