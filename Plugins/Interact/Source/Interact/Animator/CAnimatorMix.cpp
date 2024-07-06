@@ -34,8 +34,8 @@ void UCAnimatorMix::Update_Implementation(float Alpha) {
 		}
 		if (MatVIndex >= 0) {
 			const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-			MatVStart, MatVEnd, Alpha);
-			Prim->SetCustomPrimitiveDataVector4(MatFIndex, Val);
+				MatVStart, MatVEnd, Alpha);
+			Prim->SetCustomPrimitiveDataVector4(MatVIndex, Val);
 		}
 	}
 }
