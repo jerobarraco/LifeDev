@@ -136,7 +136,7 @@ void ALLight::BeginPlay() {
 	SetFBFlicker(FlickrOnFB);
 
 	// don't set the state here. it will break the child. we should not need it
-    World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
+	World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
