@@ -14,14 +14,11 @@ ARange::ARange():Super() {
 	IRoot->SetRelativeScale3D(FVector(0));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
-	if (ObjMesh.Succeeded()) {
-		Mesh->SetStaticMesh(ObjMesh.Object);
-	}
+	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		ObjMat(TEXT("/JUtils/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
-	if (ObjMat.Succeeded()) {
-		Mat = ObjMat.Object;
-	}
+	if (ObjMat.Succeeded()) Mat = ObjMat.Object;
 
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;

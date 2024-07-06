@@ -151,8 +151,7 @@ void ATv00::SetState_Implementation(int32 NewState) {
 	RndCrt->SetActive(_IsOpen);
 	AnimCrt->SetActive(_IsOpen);
 	// TODO this is not working consistently. fix.
-	if (!_IsOpen && IsValid(AnimCrt->Mat)) {
-		// force this so that it resets the value
+	// force this so that it resets the value
+	if (!_IsOpen && IsValid(AnimCrt->Mat))
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
-	}
 }
