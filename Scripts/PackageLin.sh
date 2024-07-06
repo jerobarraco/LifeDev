@@ -2,7 +2,7 @@
 WORKSPACE=/home/nande/work/repos/LifeDev
 ORG=/home/nande/work/repos/LifeDev/Build
 DST=/home/nande/work/repos/LifeDev/Assets/ExtraAssets/Builds/
-ENGINE=/home/nande/work/UE5.3
+ENGINE=/home/nande/work/UE5.4
 PROJECT_NAME=LifeDev
 CONFIG=Shipping
 pushd $ENGINE || exit 1

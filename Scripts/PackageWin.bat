@@ -1,6 +1,6 @@
 :: @echo off
 :: warning pushd HATES "/" we MUST use "\"
-set UNREAL_ENGINE_ROOT=E:\ue\UE_5.3
+set UNREAL_ENGINE_ROOT=E:\ue\UE_5.4
 set WORKSPACE=E:/w/LifeDev
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
