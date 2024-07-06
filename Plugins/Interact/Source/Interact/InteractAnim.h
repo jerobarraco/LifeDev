@@ -75,6 +75,9 @@ protected:
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 
+	// note there's no animUpdate. because it's quite costly and almost never needed.
+	// so it's specified when needed.
+
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
 	void AnimBegin();

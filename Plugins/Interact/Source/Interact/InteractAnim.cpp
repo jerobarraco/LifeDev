@@ -110,6 +110,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 	PlaySFX(Snd2);
 }
 
+
 // void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
 	// Super::SetMobility(Mobility);
 	// this optimization is prone to create issues if we change to Movable yet we still want to
