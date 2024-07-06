@@ -3,8 +3,9 @@
 
 #include "InteractAnim.h"
 
+#include "CQuickMesh.h"
 #include "Interact/CInteract.h"
-#include "Animator/CAnimatorMix.h"
+#include "Animator/CAnimatorMix.h" // needed for Prim = Mesh. yes.
 
 AInteractAnim::AInteractAnim():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -13,6 +14,8 @@ AInteractAnim::AInteractAnim():Super() {
 	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
+	Anim->Prim = Mesh;
+
 	// can't do this, the order of constructors fails. Anim->Mat = Mesh->GetMaterial(0);
 }
 

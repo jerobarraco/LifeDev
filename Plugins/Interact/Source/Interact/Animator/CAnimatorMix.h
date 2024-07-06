@@ -45,7 +45,6 @@ public:
 	// primitive component to be animated (only for data.)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UPrimitiveComponent* Prim = nullptr;
-
 	
 	// ~Mats
 

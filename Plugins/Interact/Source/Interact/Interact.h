@@ -155,7 +155,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void PlaySFX(USoundBase* Snd);
 	
-	// the state of the interact.
+	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
