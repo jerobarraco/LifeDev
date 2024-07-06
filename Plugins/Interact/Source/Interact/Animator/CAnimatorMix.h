@@ -18,7 +18,9 @@ public:
 	// Mats
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FName MatFName;
-
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	int32 MatFIndex = INDEX_NONE;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	float MatFStart = 0.0;
 	
@@ -27,6 +29,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FName MatVName;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	int32 MatVIndex = INDEX_NONE;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor MatVStart = FLinearColor::Black;
@@ -37,6 +41,12 @@ public:
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UMaterialInstanceDynamic* Mat = nullptr;
+
+	// primitive component to be animated (only for data.)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	UPrimitiveComponent* Prim = nullptr;
+
+	
 	// ~Mats
 
 protected:
