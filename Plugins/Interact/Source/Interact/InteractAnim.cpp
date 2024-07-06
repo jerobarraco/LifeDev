@@ -14,7 +14,6 @@ AInteractAnim::AInteractAnim():Super() {
 	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
-	Anim->Prim = Mesh;
 
 	// can't do this, the order of constructors fails. Anim->Mat = Mesh->GetMaterial(0);
 }

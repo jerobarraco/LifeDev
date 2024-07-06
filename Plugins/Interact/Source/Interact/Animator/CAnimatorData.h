@@ -4,38 +4,43 @@
 #pragma once
 #include "CAnimatorTrans.h"
 
-#include "CAnimatorMix.generated.h"
+#include "CAnimatorData.generated.h"
 
 class UCurveFloat;
 class USceneComponent;
 
-// A component to animate dynamic material parameters and transforms
+// while this is a cool idea, i'm not going to use it.
+// because of how i've already organized the assets.
+// Nanite seems to be grouping the assets on their material even though they are dynamic.
+
+// Allows to animate custom data on primitives (meshes)
+// only for the non-dynamic materials though.
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimatorMix: public UCAnimatorTrans {
+class INTERACT_API UCAnimatorData: public UCAnimatorTrans {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FName MatFName;
+	int32 DataFIndex = INDEX_NONE;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	float MatFStart = 0.0;
+	float DataFStart = 0.0;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	float MatFEnd = 1;
+	float DataFEnd = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FName MatVName;
+	int32 DataVIndex = INDEX_NONE;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FLinearColor MatVStart = FLinearColor::Black;
+	FLinearColor DataVStart = FLinearColor::Black;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FLinearColor MatVEnd = FLinearColor::White;
+	FLinearColor DataVEnd = FLinearColor::White;
 
-	// the component to be animated (hint, use the root component for "global" positioning)
+	// primitive component to be animated (only for data.)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	UMaterialInstanceDynamic* Mat = nullptr;
+	UPrimitiveComponent* Prim = nullptr;
 
 protected:
 	virtual void Update_Implementation(float Alpha) override;

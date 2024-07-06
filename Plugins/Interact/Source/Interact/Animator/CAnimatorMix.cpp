@@ -5,37 +5,23 @@
 
 void UCAnimatorMix::DeInit() {
 	Mat = nullptr;
-	Prim = nullptr;
 	Super::DeInit();
 }
 
 void UCAnimatorMix::Update_Implementation(float Alpha) {
 	Super::Update_Implementation(Alpha);
 
-	if (IsValid(Mat)) {
-		if (!MatFName.IsNone()) {
-			const float Val = FMath::LerpStable(MatFStart, MatFEnd, Alpha);
-			Mat->SetScalarParameterValue(MatFName, Val);
-		}
-
-		if (!MatVName.IsNone()) {
-			// more expensive but more cool
-			const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-				MatVStart, MatVEnd, Alpha);
-			// const FLinearColor Val = FMath::Lerp(MatVStart, MatVEnd, Alpha);
-			Mat->SetVectorParameterValue(MatVName, Val);
-		}
+	if (!IsValid(Mat)) return;
+	if (!MatFName.IsNone()) {
+		const float Val = FMath::LerpStable(MatFStart, MatFEnd, Alpha);
+		Mat->SetScalarParameterValue(MatFName, Val);
 	}
 
-	if (IsValid(Prim)) {
-		if (MatFIndex >= 0) {
-			const float Val = FMath::LerpStable(MatFStart, MatFEnd, Alpha);
-			Prim->SetCustomPrimitiveDataFloat(MatFIndex, Val);
-		}
-		if (MatVIndex >= 0) {
-			const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-				MatVStart, MatVEnd, Alpha);
-			Prim->SetCustomPrimitiveDataVector4(MatVIndex, Val);
-		}
+	if (!MatVName.IsNone()) {
+		// more expensive but more cool
+		const FLinearColor& Val = FLinearColor::LerpUsingHSV(
+			MatVStart, MatVEnd, Alpha);
+		// const FLinearColor Val = FMath::Lerp(MatVStart, MatVEnd, Alpha);
+		Mat->SetVectorParameterValue(MatVName, Val);
 	}
 }
