@@ -13,6 +13,7 @@ Makefile
 *.code-workspace
 # backups
 *~
+*.user
 
 # Compiled Object files
 *.slo

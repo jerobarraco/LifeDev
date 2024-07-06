@@ -70,9 +70,9 @@ enum class EFeat: uint8 {
 
 // this class is for the settings that appears on the editor under project settings. The general system settings.
 // For the in game settings that change during gameplay (transient ones) see LSettings
-// Note the Config meta tag on the properties are critical or it might crash
+// Note: the Config meta tag on the properties is critical, or it might crash.
 // Settings for the game (to be built)
-// the config file is available after shipping at ~/.config/Epic/ or C:\Users\{UserName}\AppData\Local\{ProjectName}
+// the config file is available after shipping at ~/.config/Epic/{Project}/Saved/Config/{Linux|Windows} or C:\Users\{UserName}\AppData\Local\{ProjectName}\Saved\Config\{Linux|Windows}
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig, meta=(DisplayName="LifeDevSystemSettings"))
 class LIFEDEV_API ULSysSettings : public UDeveloperSettings {
 	GENERATED_BODY()
