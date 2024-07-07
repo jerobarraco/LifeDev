@@ -7,6 +7,9 @@ public class Sounds: ModuleRules
 {
 	public Sounds(ReadOnlyTargetRules Target) : base(Target)
 	{
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+		DefaultBuildSettings = BuildSettingsVersion.V5;
+
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
 		PublicIncludePaths.AddRange(new string[] {
