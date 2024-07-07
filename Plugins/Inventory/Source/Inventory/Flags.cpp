@@ -30,7 +30,8 @@ void UFlags::Rem(const FName& Name) {
 	if (Name.IsNone()) return;
 	
 	const float Val = Get(Name); 
-	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s old=%3.3f"), *Name.ToString(), Val);
+	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s old=%3.3f"),
+		__func__, *Name.ToString(), Val);
 	
 	Flags.Remove(Name);
 	OnMod.Broadcast(Name, -Val, 0);

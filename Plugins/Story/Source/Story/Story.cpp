@@ -52,7 +52,7 @@ bool UStory::StartNow(AStep* NewStep) {
 
 	Current = NewStep;
 	if (!IsValid(Current)) {
-		UE_LOG(LogStory, Log, TEXT("%hs -> Invalid step. Not starting."));
+		UE_LOG(LogStory, Log, TEXT("%hs -> Invalid step. Not starting."), __func__);
 		return false;
 	}
 
