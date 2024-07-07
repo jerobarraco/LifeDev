@@ -105,7 +105,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "EditorUIScaleCustomization",
+			"Name": "EditorUIScale",
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"

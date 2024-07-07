@@ -1,7 +1,6 @@
 // Copyright Jeronimo Barraco-Marmol
 
 using UnrealBuildTool;
-using System.Collections.Generic;
 
 public class LifeDevTarget : TargetRules
 {

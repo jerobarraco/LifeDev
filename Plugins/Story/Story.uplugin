@@ -1,6 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
+	"EngineVersion": "5.4",
 	"VersionName": "1.0",
 	"FriendlyName": "Story",
 	"Description": "Story tools. For story flow control.",
