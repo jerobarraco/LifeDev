@@ -3,7 +3,6 @@
 
 #include "InteractAnim.h"
 
-#include "CQuickMesh.h"
 #include "Interact/CInteract.h"
 #include "Animator/CAnimatorMix.h" // needed for Prim = Mesh. yes.
 
