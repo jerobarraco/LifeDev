@@ -22,14 +22,11 @@ void ULDialogUI::NativeDestruct() {
 void ULDialogUI::NativeConstruct() {
 	Super::NativeConstruct();
 	
-	if (IsValid(TextMPC)) {
+	if (IsValid(TextMPC))
 		TextMPCI = GetWorld()->GetParameterCollectionInstance(TextMPC); 
-	}
 }
 
 void ULDialogUI::SetTextMatProgress(float T) {
-	static FName PName("FadeProgress");
-	if (IsValid(TextMPCI)) {
-		TextMPCI->SetScalarParameterValue(PName, T);
-	}
+	static FName PName("TextProg");
+	if (IsValid(TextMPCI)) TextMPCI->SetScalarParameterValue(PName, T);
 }
