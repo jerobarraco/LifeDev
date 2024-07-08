@@ -77,3 +77,8 @@ au.Debug.AudioSoloSoundClass
 au.Debug.AudioSoloSoundCue
 au.Debug.AudioSoloSoundWave
 au.ClearMutesAndSolos
+
+
+# DefaultEngine.ini, in the [SystemSettings] section (which you can add if it’s not already there), you can add “
+# https://forums.unrealengine.com/t/seamless-travel-with-play-in-editor/394250/22
+net.AllowPIESeamlessTravel=1
