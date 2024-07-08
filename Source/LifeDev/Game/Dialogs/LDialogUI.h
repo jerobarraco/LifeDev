@@ -13,18 +13,4 @@ class LIFEDEV_API ULDialogUI: public UDialogUI {
 
 public:
 	ULDialogUI();
-
-	virtual void NativeDestruct() override;
-	virtual void NativeConstruct() override;
-	
-	UFUNCTION(BlueprintCallable)
-	void SetTextMatProgress(float T);
-
-protected:
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UMaterialParameterCollection* TextMPC = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly, Transient)
-	UMaterialParameterCollectionInstance* TextMPCI = nullptr;
 };
