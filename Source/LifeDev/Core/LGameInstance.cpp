@@ -4,6 +4,7 @@
 #include "LGameInstance.h"
 
 #include "MoviePlayer.h"
+#include "Interact/Animator/AnimMat.h"
 #include "JUtils/JMiscUtils.h"
 #include "Settings/LSettings.h"
 
@@ -21,8 +22,8 @@ void ULGameInstance::Init() {
 
 	// https://unrealcommunity.wiki/loading-screen-243mzpq1
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
-    FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
-    FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
+	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
+	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
 
 	// force disable debug flags
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
@@ -30,11 +31,9 @@ void ULGameInstance::Init() {
 		SysSettings->UseDebugFeats = false;
 		SysSettings->UseSaveGame = true;
 	}
-	
+
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
-	if (IsValid(Settings)) {
-		Settings->Init();
-	}
+	if (IsValid(Settings)) Settings->Init();
 }
 
 void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
@@ -43,13 +42,13 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
 	if (MoviePlayer) {
 		FLoadingScreenAttributes LoadingScreen;
-        LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
-        // use widget->takewidget() to get the swidget
-        // https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
-        LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+		LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
+		// use widget->takewidget() to get the swidget
+		// https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
+		LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
 		MoviePlayer->SetupLoadingScreen(LoadingScreen);
 	} else {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get movie player"));
+		UE_LOG(LogTemp, Warning, TEXT("%hs, Can't get movie player"), __func__);
 	}
 
 	UJMiscUtils::CameraFade(this, false);

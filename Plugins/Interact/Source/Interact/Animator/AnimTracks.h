@@ -9,7 +9,7 @@
 // This is just experimental and can be removed at any point
 
 // thanks to https://slowburn.dev/blog/polymorphic-serialization-in-unreal-engine/
-// unfortunately i wont import a plugin to have polymorphic structs, and uobjects need to be created by code
+// unfortunately i won`t import a plugin to have polymorphic structs, and uobjects need to be created by code
 // and i still need to assign the mats and trans by code. so it sucks.
 // uobjects sucks more than structs so i will remove them
 // nothing here should be used anyway.

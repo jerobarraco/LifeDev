@@ -1,0 +1,231 @@
+#pragma once
+
+#include "CoreMinimal.h"
+
+#include "AnimMat.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatItemDone, const FName, Name, int32, Index);
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FAMBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FName Name = NAME_None;
+	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	UMaterialParameterCollectionInstance* MPCI = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	UCurveFloat* Curve = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Duration = 1.0;
+	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Elapsed = 1.0;
+
+	FORCEINLINE bool IsDone() const {
+		return FMath::IsNearlyEqual(Elapsed, Duration)
+			|| Elapsed > Duration;
+	}
+
+	// needed or android won't package >_<! due to the virtual functions
+	// has to be public.
+	virtual ~FAMBase() = default;
+	// named this way to avoid name collision with IsValid
+	virtual bool FIsValid() const;
+	// adds dt to the elapsed, returns current progress
+	void AddDT(const float DT, float &Prog);
+	// returns true on done
+	bool Tick(const float DT);
+	// set value using Lerp progress. override and call SetValue yourself.
+	virtual bool SetLerp(const float Prog) {
+		UE_LOG(LogTemp, Warning, TEXT("Empty Base SetLerp"));
+		return false;
+	}
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FAMFloat: public FAMBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float From = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float To = 1.0;
+	
+	bool SetVal(const float Val = 1.0) const;
+	virtual bool SetLerp(const float Prog) override;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FMPFVector: public FAMBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FLinearColor From = FLinearColor::Black;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FLinearColor To = FLinearColor::White;
+
+	// more expensive but nicer on colors
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseHSV = false;
+	
+	bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
+	virtual bool SetLerp(const float Prog) override;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FMPFData: public FAMBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	UPrimitiveComponent* Comp = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	int32 Index = -1;
+	// yikes, names only work on material instance Dynamic
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool IsScalar = true;
+	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FLinearColor From = FLinearColor::Black;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FLinearColor To = FLinearColor::White;
+
+	// more expensive but nicer on colors
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseHSV = false;
+
+	// do not use. returns the index from the name but only works on dynamic materials which this system is not for.
+	const int32 GetDynamicIndex() const;
+	bool GetCurrent(FLinearColor& OCurrent) const;
+	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
+	virtual bool SetLerp(const float Prog) override;
+	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; };
+};
+
+// Base subsystem for MatParamFades
+UCLASS(Blueprintable, Category="Interact", DefaultConfig, Config=Interact)
+class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
+	GENERATED_BODY()
+
+public:
+	UAnimMat();
+
+	static UAnimMat* Instance(UObject* O);
+	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
+
+	// Fades in or out.
+	// By design, it will replace any previous fades with the same name.
+	// If it's fading it will continue from where it is, even if the direction changes.
+	// Name: name of the parameter
+	// To: value to fade to.
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	UFUNCTION(BlueprintCallable)
+	bool FloatFade(const UMaterialParameterCollection* const MPC,
+		const FName Name, const float To = 1.0, const float Duration = -1,
+		UCurveFloat* const Curve = nullptr);
+
+	// Fades a vector (or color).
+	// Name: the name of the parameter to fade
+	// To: is the target vector/color
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	UFUNCTION(BlueprintCallable)
+	bool VectorFade(const UMaterialParameterCollection* const MPC,
+		const FName Name, const FLinearColor& To = FLinearColor::White,
+		const float Duration = -1, const bool UseHSV = false,
+		UCurveFloat* const Curve = nullptr);
+
+	// Index: The index of the data. For a vector this is the start index.
+	// IsScalar: whether this is a scalar or a color.
+	//		When a scalar is used. only the R component of the color is used.
+	//		When not a scalar, Index+1, +2, and +3 will always be used.
+	// To: is the target vector/color.
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// UseHSV: uses HSV for lerp. it's more expensive, but looks better on colors.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	// Warning: there is no way to cancel a fade.
+	//		Triggering the same parameter twice will try to animate it twice at the same time. 
+	UFUNCTION(BlueprintCallable)
+	bool DataFade(UPrimitiveComponent* const Component,
+		const int32 Index, const bool IsScalar = true,
+		const FLinearColor& To = FLinearColor::White,
+		const float Duration = -1, const bool UseHSV = false,
+		UCurveFloat* const Curve = nullptr
+	);
+
+	// returns true while fading.
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFading() { return IsFading; }
+	
+#pragma region Base
+	virtual void Deinitialize() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Tick(const float DeltaTime) override;
+	virtual TStatId GetStatId() const override;
+	virtual bool IsTickable() const override { return IsFading; }
+#pragma endregion
+
+	// default fade duration. can be changed. and can be specified on the .ini config files.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
+	float DurationDefault = 1.f;
+
+	// when all the items have faded
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimMatDone OnDone;
+
+	// when a specific param (or data) is done.
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimMatItemDone OnItemDone;
+
+	// whether this subsystem will be created.
+	// when false, it will save some cycles, but might make the app crash.
+	// should be changed in the config file
+	UPROPERTY(BlueprintReadWrite, Config)
+	bool ShouldBeCreated = true;
+
+protected:
+	bool ParamInitBasic(FAMBase& OParam, const FName Name,
+		UCurveFloat* const Curve = nullptr,
+		const float Duration = -1) const;
+
+	bool ParamInitMPC(const UMaterialParameterCollection* const MPC,
+		const FName Name, FAMBase& OParam,
+		UCurveFloat* const Curve = nullptr,
+		const float Duration = -1.0) const;
+
+	bool DataTick(float DT);
+
+	template<typename Item>
+	bool ParamTick(const float DT, TMap<FName, Item>& IOArr);
+	template<typename Item>
+	void RemoveItem(const FName N, TMap<FName, Item>& IOArr);
+	template<typename Item>
+	void EmptyItems(TMap<FName, Item>& IOArr);
+
+	bool IsFading = false;
+
+	UPROPERTY(Transient)
+	TMap<FName, FAMFloat> FloatParams;
+	UPROPERTY(Transient)
+	TMap<FName, FMPFVector> VectorParams;
+	UPROPERTY(Transient)
+	TArray<FMPFData> DataParams;
+	// can't use the name/index since the same name is going to be used on multiple objects.
+	// same issue happens with the float and vector. but it's unlikely artists will use more than one mpc.
+};
