@@ -54,7 +54,7 @@ public:
 	// to be set by game manager depending on the flags
 	inline static bool Debug = false;
 	
-	// curve to use, if not set then codecurve will be used, if not set then it will be linear.
+	// curve to use, if not set then code-curve will be used, if not set then it will be linear.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	UCurveFloat* Curve = nullptr;
 	// a curve by code. only used if Curve is not set. if both not set it will be linear.
