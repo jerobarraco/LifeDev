@@ -9,7 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogUIDone);
 
-// Helps define an interaction volume
+// Base UI class for dialogs
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DIAGS_API UDialogUI: public UUserWidget {
 	GENERATED_BODY()
@@ -29,11 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ShowDlg(int Diff = 1);
 
-	// variable that indicates when the dialog is ready to progress.
-	// false when animating.
-	UPROPERTY(BlueprintReadWrite, meta=(DeprecatedProperty))
-	bool IsReady = false;
-
 	// triggers when the ui has done showing the current dialog
 	UPROPERTY(BlueprintAssignable, EditAnywhere)
 	FOnDialogUIDone OnDone;
@@ -47,9 +42,9 @@ protected:
 
 	// Call when the ui finished showing the current dialog sequence
 	UFUNCTION(BlueprintCallable)
-	void Done() { OnDone.Broadcast();}
+	void Done() { OnDone.Broadcast(); }
 
 	// TODO port
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 CurDlgI = -1;
 };

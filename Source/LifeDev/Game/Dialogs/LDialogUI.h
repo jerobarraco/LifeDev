@@ -5,7 +5,6 @@
 
 #include "LDialogUI.generated.h"
 
-
 // Helps define an interaction volume
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API ULDialogUI: public UDialogUI {
