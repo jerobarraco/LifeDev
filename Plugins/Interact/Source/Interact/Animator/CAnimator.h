@@ -34,7 +34,7 @@ public:
 	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just to get a button for debug
 	FORCEINLINE void Stop() { Deactivate(); }
 
-	// mostly for bps when you wanna set and play at the same time. will override all 3 variables.
+	// mostly for bps when you want to set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
 
@@ -47,7 +47,7 @@ public:
 
 	// sets/clear a parent that drives the update of this animator
 	UFUNCTION(BlueprintCallable)
-	void BindTo(UCAnimator* Parent = nullptr);
+	void BindTo(UCAnimator* NewParent = nullptr);
 	
 	// By default run at 30 fps; Optimization
 	inline static float IntervalDefault = 1.0f/30.f;
@@ -93,7 +93,8 @@ protected:
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha);
 
-	// Called when the animation ends. override me on child classes :) But call the parent. 
+	// Called when the animation ends. override me on child classes :)
+	// But call the parent.
 	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
 	void End();
 	virtual void End_Implementation();
@@ -107,10 +108,11 @@ protected:
 	UFUNCTION() // bound
 	void ChildUpdate(float T, float Alpha);
 
-	void DoTick(float DeltaSeconds);
 	// finishes, and tentatively restart if needed.
 	void Finish();
+	void DoTick(float DeltaSeconds);
 	virtual void DeInit();
+	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

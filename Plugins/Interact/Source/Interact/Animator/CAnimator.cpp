@@ -44,7 +44,7 @@ void UCAnimator::Finish() {
 	End(); // it technically ended (do here since stop will trigger end too)
 
 	/// start the new one
-		
+	
 	// important to reset the progress.
 	// this is ok, since if it's reversed then the end of one == the start of the reversed
 	// also if not bouncing we want to start over.
@@ -99,9 +99,7 @@ void UCAnimator::DeInit() {
 }
 
 void UCAnimator::BindTo(UCAnimator* NewParent) {
-	if (IsValid(Parent)) {
-		Parent->OnUpdate.RemoveAll(this);
-	}
+	if (IsValid(Parent)) Parent->OnUpdate.RemoveAll(this);
 	Parent = nullptr;
 
 	if (!IsValid(NewParent)) return;
@@ -153,9 +151,7 @@ void UCAnimator::Activate(bool bReset) {
 		DTAcum = 0;
 	}
 
-	if (!WasActive || bReset) {
-		Begin();
-	}
+	if (!WasActive || bReset) Begin();
 }
 
 void UCAnimator::Deactivate() {
@@ -163,7 +159,5 @@ void UCAnimator::Deactivate() {
 	Super::Deactivate();
 	DTAcum = 0;
 	
-	if (WasActive) {
-		End();
-	}
+	if (WasActive) End();
 }
