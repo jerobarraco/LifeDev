@@ -10,21 +10,15 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 		NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok")
 	};
 	
-	MsgBox->Init(Msg, Texts);
+	MsgBox->SetUp(Msg, Texts);
 	MsgBox->Show();
-}
-
-void UIntroUI::MsgDone() {
-	if (MsgBox) MsgBox->Hide();
+	MsgBox->OnDone.AddUniqueDynamic(MsgBox, &UMsgBox::Hide);
 }
 
 void UIntroUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	if (MsgBox)
-		MsgBox->OnDone.AddUniqueDynamic(this, &UIntroUI::MsgDone);
 }
 
 void UIntroUI::NativeDestruct() {
-	if (MsgBox) MsgBox->OnDone.RemoveAll(this);
 	Super::NativeDestruct();
 }

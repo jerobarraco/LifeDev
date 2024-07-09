@@ -32,7 +32,7 @@ void UMsgBox::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void UMsgBox::Init(const FText& Message, const TArray<FText>& Texts) {
+void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 	Msg->SetText(Message);
 
 	const TArray<UJButton*> UBtns = {Btn0, Btn1, Btn2};
@@ -65,6 +65,9 @@ void UMsgBox::HideAnimFinish() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	// this func is needed so that we can call the base version after the anim finishes.
 	// i could bind to super. but then i would need to make it ufunction and not.
+
+	OnDone.Clear();
+	OnDoneVal.Clear();
 
 	// important to unbind, otherwise it will be called on the next show. Y_Y
 	UnbindFromAnimationFinished(AnimShow, OnHideFinished);

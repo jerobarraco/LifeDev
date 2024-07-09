@@ -13,6 +13,9 @@ class UButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
 
+// Base message box.
+// Will trigger OnDoneVal(ButtonId) on button clicked.
+// will auto unbind from onDone and onDoneVal on hidden.
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UMsgBox: public UBaseUI {
 	GENERATED_BODY()
@@ -21,8 +24,8 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
-	UFUNCTION(BlueprintCallable)
-	void Init(const FText& Message, const TArray<FText>& Texts);
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	void SetUp(const FText& Message, const TArray<FText>& Texts);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;

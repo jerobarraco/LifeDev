@@ -25,8 +25,6 @@ public:
 	FIntroUIDone OnDone;
 
 protected:
-	UFUNCTION()
-	void MsgDone();
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
