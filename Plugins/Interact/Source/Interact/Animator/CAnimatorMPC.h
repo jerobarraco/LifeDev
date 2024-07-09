@@ -1,0 +1,50 @@
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
+
+#pragma once
+#include "CAnimatorTrans.h"
+
+#include "CAnimatorMPC.generated.h"
+
+class UCurveFloat;
+class USceneComponent;
+
+// A component to animate parameters on a material parameter collection
+UCLASS(Blueprintable, BlueprintType, Placeable,
+	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+class INTERACT_API UCAnimatorMPC: public UCAnimator {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	FName ParFName = NAME_None;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	float ParFStart = 0.0;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	float ParFEnd = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	FName ParVName = NAME_None;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	FLinearColor ParVStart = FLinearColor::Black;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	FLinearColor ParVEnd = FLinearColor::White;
+
+	// the (Material Parameter) Collection to animate
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	UMaterialParameterCollection* MPC = nullptr;
+
+protected:
+	virtual void Update_Implementation(float Alpha) override;
+	virtual void DeInit() override;
+	virtual void Begin_Implementation() override;
+	virtual void End_Implementation() override;
+	
+	// the component to be animated (hint, use the root component for "global" positioning)
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UMaterialParameterCollectionInstance* MPCI = nullptr;
+};
