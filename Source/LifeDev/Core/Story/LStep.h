@@ -30,8 +30,8 @@ public:
 	virtual void TryStart_Implementation() override;
 	
 	// Be careful! this will remove all delegates to Dialogs.OnDone and Inventory.OnMOd
-	// it will also remove from inventory the items on RemItems
-	// and it's possible this class will get unloaded by the next step.
+	// it will also remove from inventory the items on RemItems.
+	// And it's possible this class will get unloaded by the next step.
 	virtual void Stop_Implementation() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

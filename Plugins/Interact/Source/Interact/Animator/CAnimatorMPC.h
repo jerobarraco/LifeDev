@@ -34,6 +34,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor ParVEnd = FLinearColor::White;
 
+	// Slower but nicer on colors. Might be better to set to false on simple vector ParV*.
+	// only affects ParV*.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	bool UseHSV = true;
+
 	// the (Material Parameter) Collection to animate
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UMaterialParameterCollection* MPC = nullptr;

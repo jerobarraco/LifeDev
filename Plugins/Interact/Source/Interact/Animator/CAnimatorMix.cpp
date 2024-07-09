@@ -19,9 +19,11 @@ void UCAnimatorMix::Update_Implementation(float Alpha) {
 
 	if (!MatVName.IsNone()) {
 		// more expensive but more cool
-		const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-			MatVStart, MatVEnd, Alpha);
-		// const FLinearColor Val = FMath::Lerp(MatVStart, MatVEnd, Alpha);
+		const FLinearColor& Val =
+			UseHSV ?
+				FLinearColor::LerpUsingHSV(
+			MatVStart, MatVEnd, Alpha):
+				FMath::Lerp(MatVStart, MatVEnd, Alpha);
 		Mat->SetVectorParameterValue(MatVName, Val);
 	}
 }

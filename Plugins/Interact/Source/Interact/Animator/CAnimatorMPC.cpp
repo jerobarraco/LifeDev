@@ -40,12 +40,11 @@ void UCAnimatorMPC::Update_Implementation(float Alpha) {
 	}
 
 	if (!ParVName.IsNone()) {
-		// TODO HSV optional
-		// TODO backport to mix
-		// more expensive but more cool
-		const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-			ParVStart, ParVEnd, Alpha);
-		// const FLinearColor Val = FMath::Lerp(ParVStart, ParVEnd, Alpha);
+		const FLinearColor& Val =
+			UseHSV ?
+				FLinearColor::LerpUsingHSV(
+			ParVStart, ParVEnd, Alpha):
+				FMath::Lerp(ParVStart, ParVEnd, Alpha);
 		MPCI->SetVectorParameterValue(ParVName, Val);
 	}
 }

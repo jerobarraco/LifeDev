@@ -33,6 +33,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor MatVEnd = FLinearColor::White;
 
+	// Slower but nicer on colors. Might be better to set to false on simple vector MatV*.
+	// only affects MatV*.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	bool UseHSV = true;
+
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UMaterialInstanceDynamic* Mat = nullptr;
