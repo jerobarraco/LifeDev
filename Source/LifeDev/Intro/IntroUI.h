@@ -14,14 +14,13 @@ class LIFEDEV_API UIntroUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
 
-	UFUNCTION(BlueprintNativeEvent)
-	void ShowMsg(const FText& Msg);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ShowMsg(const FText& Msg); // unused
 
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
 
 protected:

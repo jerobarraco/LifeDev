@@ -12,6 +12,9 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	
 	MsgBox->SetUp(Msg, Texts);
 	MsgBox->Show();
+	// this is ok because Hide will unbind.
+	// but be careful since this msgbox object is reused for other things
+	// like save game erase warning
 	MsgBox->OnDone.AddUniqueDynamic(MsgBox, &UMsgBox::Hide);
 }
 
