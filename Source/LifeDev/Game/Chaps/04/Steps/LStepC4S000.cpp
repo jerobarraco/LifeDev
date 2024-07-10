@@ -54,7 +54,3 @@ void ALStepC4S000::TryStart_Implementation() {
 	FB->SetMin(.2); // this limits the fbs on the next steps too.
 	FB->SetVal(.2);
 }
-
-void ALStepC4S000::DoDebug_Implementation() {
-	Super::DoDebug_Implementation();
-}
