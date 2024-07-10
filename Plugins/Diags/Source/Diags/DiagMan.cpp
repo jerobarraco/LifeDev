@@ -117,10 +117,10 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	// TODO unbind input actions
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	DeInit();
 
-	// TODO unbind actions
 	Super::EndPlay(EndPlayReason);
 }
 

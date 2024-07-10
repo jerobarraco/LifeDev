@@ -237,12 +237,10 @@ bool UInventory::Use(const FName& Name) {
 	// item was the last one in the inventory. we have no more of it.
 	if (!Items.Contains(OldName)) return true;
 
-	// TODO verify this works setting the value on the reference
+	// this works setting the value on the reference
 	// at this point the item reference is ok, se keep it.
 	Item.ActiveCoolDown = Item.CoolDown;
-	if (Item.ActiveCoolDown>0) {
-		SetCoolTimerEnabled(true);
-	}
+	if (Item.ActiveCoolDown>0) SetCoolTimerEnabled(true);
 
 	OnUsed.Broadcast(OldName);
 	return true;

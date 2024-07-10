@@ -3,5 +3,5 @@
 #include "OutroUI.h"
 
 void UOutroUI::SetFlags_Implementation(const TMap<FName, float>& Flags) {
-	// TODO move here
+	// TODO port here
 }
