@@ -66,14 +66,9 @@ void UMsgBox::HideAnimFinish() {
 	// this func is needed so that we can call the base version after the anim finishes.
 	// i could bind to super. but then i would need to make it ufunction and not.
 
-	// TODO consider moving this to the base class.
-	// it will potentially break all the code
-	OnDone.Clear();
-	OnDoneVal.Clear();
-
 	// important to unbind, otherwise it will be called on the next show. Y_Y
 	UnbindFromAnimationFinished(AnimShow, OnHideFinished);
-	Super::Hide_Implementation(); // this will already collapse.
+	Super::Hide_Implementation(); // this will already collapse and unbind.
 	OnHidden.Broadcast();
 	OnHidden.Clear();
 }

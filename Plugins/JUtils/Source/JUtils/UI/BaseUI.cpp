@@ -17,6 +17,11 @@ void UBaseUI::Hide_Implementation() {
 	SetVisibility(ESlateVisibility::Collapsed);
 	if (ShowCursor) 
 		UJMiscUtils::ShowUI(this, false, nullptr, true);
+
+	if (AutoUnbind) {
+		OnDone.Clear();
+		OnDoneVal.Clear();
+	}
 }
 
 void UBaseUI::Done(int32 RetVal) {

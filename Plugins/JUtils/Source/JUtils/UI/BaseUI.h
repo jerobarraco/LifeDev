@@ -24,13 +24,16 @@ public:
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done(int32 RetVal = 0);
-	
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FBaseUIDone OnDone;
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
-	FBaseUIDoneVal OnDoneVal;
 
-protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool ShowCursor = false;
+
+	// will auto-unbind from done on hide
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	bool AutoUnbind = true;
+	
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	FBaseUIDone OnDone;
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	FBaseUIDoneVal OnDoneVal;
 };
