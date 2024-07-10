@@ -84,7 +84,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 AActor* UPool::Get() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
-	// TODO this is crashing somewhere maybe.
+	// TODO this is crashing somewhere maybe. crash on "ke * get set.audio.VolMusic"
 	
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
