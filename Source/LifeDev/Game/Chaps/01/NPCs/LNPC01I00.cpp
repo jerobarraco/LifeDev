@@ -8,8 +8,8 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
-// TODO i could move a bunch of these things to a step. including the animcam.
-// then use rewardstep and steps (see PotI00)
+// i've considered moving stuff from here to steps. but they would be a bunch of steps.
+// and naming them would be difficult. so no.
 
 ALNPC01I00::ALNPC01I00():Super() {
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
