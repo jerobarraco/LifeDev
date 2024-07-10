@@ -3,14 +3,13 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "BaseUI.h"
-
+#include "Runtime/Core/Public/Templates/Function.h"
 #include "MsgBox.generated.h"
 
 class UJButton;
 class UDelegateWrapper;
 class UTextBlock;
 class UButton;
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
 
 // Base message box.
@@ -23,6 +22,10 @@ class JUTILS_API UMsgBox: public UBaseUI {
 public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
+
+	
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	void SetShow(UFunction* const F);
 
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	void SetUp(const FText& Message, const TArray<FText>& Texts);

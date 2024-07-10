@@ -58,7 +58,7 @@ void UMsgBox::Show_Implementation() {
 
 	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
 	PlayAnimation(AnimShow, 0, 1,
-			EUMGSequencePlayMode::Forward, Speed);
+		EUMGSequencePlayMode::Forward, Speed);
 }
 
 void UMsgBox::HideAnimFinish() {
@@ -66,6 +66,8 @@ void UMsgBox::HideAnimFinish() {
 	// this func is needed so that we can call the base version after the anim finishes.
 	// i could bind to super. but then i would need to make it ufunction and not.
 
+	// TODO consider moving this to the base class.
+	// it will potentially break all the code
 	OnDone.Clear();
 	OnDoneVal.Clear();
 
@@ -73,6 +75,7 @@ void UMsgBox::HideAnimFinish() {
 	UnbindFromAnimationFinished(AnimShow, OnHideFinished);
 	Super::Hide_Implementation(); // this will already collapse.
 	OnHidden.Broadcast();
+	OnHidden.Clear();
 }
 
 void UMsgBox::Hide_Implementation() {
