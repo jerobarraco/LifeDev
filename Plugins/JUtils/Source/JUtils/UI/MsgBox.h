@@ -23,10 +23,6 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
-	
-	UFUNCTION(BlueprintCallable, Category=SetUp)
-	void SetShow(UFunction* const F);
-
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	void SetUp(const FText& Message, const TArray<FText>& Texts);
 
