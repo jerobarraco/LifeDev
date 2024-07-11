@@ -11,7 +11,7 @@ class USaveGame;
 class ULSave;
 class ULGUSettings;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, EFeat, Feat, bool, Enabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, const EFeat, Feat, const bool, Enabled);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveReady);
 
 // This class allows to interact with the in-game settings during gameplay.
