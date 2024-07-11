@@ -20,7 +20,7 @@ public:
 	ULFeatCheck(const FObjectInitializer& O);
 
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void SetUp(EFeat NFeat, const FText& NewText);
+	void SetUp(const EFeat NFeat, const FText& NewText);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Load();
@@ -28,12 +28,23 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Apply();
 
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Reset();
+
+	// if true it will call apply on change.
+	// you can call Reset to re-apply the value from the last Load (or SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool AutoApply = false;
+
 protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
+
+	UFUNCTION()
+	void CheckChanged(const bool bIsChecked);
 	
 	UFUNCTION() // bind
-	void FeatUpdate(EFeat Feat, bool bEnabled);
+	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	UCheckBox* Check = nullptr;
@@ -44,4 +55,7 @@ protected:
 	EFeat Feat = EFeat::NONE;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ULSettings* Settings = nullptr;
+
+private:
+	bool WasEnabled = false;
 };

@@ -7,12 +7,10 @@
 
 ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}
 
-void ULFeatCheck::SetUp(EFeat NFeat, const FText& NewText) {
+void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck SetUp feat =%i"), Feat);
-	if(Text) {
-		Text->SetText(NewText);
-	}
+	if(Text) Text->SetText(NewText);
 
 	Load();
 }
@@ -23,8 +21,8 @@ void ULFeatCheck::Load() {
 		return;
 	}
 
-	const bool Enabled = Settings->GetFeat(Feat);
-	FeatUpdate(Feat, Enabled);
+	WasEnabled = Settings->GetFeat(Feat);
+	FeatUpdate(Feat, WasEnabled);
 }
 
 void ULFeatCheck::Apply() {
@@ -40,10 +38,13 @@ void ULFeatCheck::Apply() {
 	Settings->SetFeat(Feat, Check->IsChecked());
 }
 
+void ULFeatCheck::Reset() {
+	FeatUpdate(Feat, WasEnabled); // update if needed.
+	Apply(); // resave
+}
+
 void ULFeatCheck::NativeDestruct() {
-	if (Settings) {
-		Settings->OnFeatUpdate.RemoveAll(this);
-	}
+	if (Settings) Settings->OnFeatUpdate.RemoveAll(this);
 	Settings = nullptr;
 
 	Super::NativeDestruct();
@@ -51,21 +52,31 @@ void ULFeatCheck::NativeDestruct() {
 
 void ULFeatCheck::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	Settings = GetWorld()->GetGameInstance()->GetSubsystem<ULSettings>();
+	Settings = ULSettings::Instance(this);
 	if (!Settings) return;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%i"), Feat);
 
 	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
+	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULFeatCheck::CheckChanged);
 }
 
-void ULFeatCheck::FeatUpdate(EFeat NFeat, bool bEnabled) {
+void ULFeatCheck::FeatUpdate(const EFeat NFeat, const bool bEnabled) {
 	if (!Check) return;
 	if (Feat != NFeat) return;
-	if (Check->IsChecked() == bEnabled ) return;
+	// avoid infinite loop and stack overflow with auto apply (it's also more efficient).
+	if (Check->IsChecked() == bEnabled) return;
 
 	UE_LOG(LogTemp, Log, TEXT("FeatUpdate %i : %i (%s)"),
 		Feat, bEnabled, *UEnum::GetValueAsString(Feat));
 	const ECheckBoxState NewState = bEnabled ?
 		ECheckBoxState::Checked: ECheckBoxState::Unchecked;
 	Check->SetCheckedState(NewState);
+	// don't update WasEnabled here. since it could be triggered by the set itself.
+}
+
+void ULFeatCheck::CheckChanged(const bool bEnabled) {
+	UE_LOG(LogTemp, Log, TEXT("%hs %i : %i (%s)"),
+		__func__, Feat, bEnabled, *UEnum::GetValueAsString(Feat));
+	// notice this could trigger an infinite loop. But the IsChecked == bEnabled protects us 
+	if (AutoApply) Apply();
 }
