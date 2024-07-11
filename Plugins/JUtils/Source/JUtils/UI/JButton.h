@@ -24,7 +24,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 Id=-1;
 
-	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FJButtonClick OnClick;
 
 protected:

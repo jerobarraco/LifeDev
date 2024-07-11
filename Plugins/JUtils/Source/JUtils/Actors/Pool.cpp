@@ -96,7 +96,7 @@ AActor* UPool::Get() {
 	}
 	
 	AActor* const A = Ready[0];
-	// don't shrink since it will get returned hopefully. Use Swap since it's faster and we don't need to keep the order.
+	// don't shrink since it will get returned, hopefully. Use Swap since it's faster and we don't need to keep the order.
 	Ready.RemoveAtSwap(0, 1, false);
 	A->SetActorHiddenInGame(false);
 	A->Reset();
