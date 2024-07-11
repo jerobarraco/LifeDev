@@ -7,8 +7,6 @@
 
 #include "LSoundSlider.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FJSoundSliderDone, float, Val);
-
 // class used to manipulate the sound volume
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSoundSlider: public USlider {
@@ -29,7 +27,12 @@ public:
 	USoundSubmix* Submix = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FName Key = NAME_None;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	bool UseAutoApply = false;
 
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient, Category=SetUp)
-	FJSoundSliderDone OnDone;
+	virtual void PostInitProperties() override;
+
+protected:
+	UFUNCTION()
+	void ValChanged(const float NVal) {Apply();};
 };

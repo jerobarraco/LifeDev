@@ -60,3 +60,11 @@ void ULSoundSlider::Load() {
 	// which is ok, and it's good if it's different from the savegame.
 	Apply();
 }
+
+void ULSoundSlider::PostInitProperties() {
+	Super::PostInitProperties();
+	if (UseAutoApply) {
+		OnValueChanged.AddUniqueDynamic(this, &ULSoundSlider::ValChanged);
+	}
+	else UE_LOG(LogTemp, Log, TEXT("Not AutoApply"));
+}
