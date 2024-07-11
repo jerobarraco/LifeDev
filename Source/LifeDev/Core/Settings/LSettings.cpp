@@ -46,12 +46,8 @@ void ULSettings::LoadGame(int32 NewSlotIndex) {
 	IsSaving = true;
 
 	// update target slot
-    if (NewSlotIndex>=0) {
-		SlotIndex = NewSlotIndex;
-	}
-	if (SlotIndex<0) {
-		SlotIndex = 0;
-	}
+    if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
+	if (SlotIndex<0) SlotIndex = 0;
 
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
@@ -80,18 +76,15 @@ void ULSettings::SaveGame(int32 NewSlotIndex) {
 	IsSaving = true;
 
 	// update slot index. If parameter is set use that.
-	if (NewSlotIndex>=0) {
-		SlotIndex = NewSlotIndex;	
-	}
+	if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
 
 	// if it's invalid force to 0
-	if (SlotIndex < 0) {
-		SlotIndex = 0;
-	}
+	if (SlotIndex < 0) SlotIndex = 0;
 
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
-	
+
+	// TODO add time here. how?
 	Save->ReadSubsystems(GetWorld());
 	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
@@ -164,29 +157,26 @@ bool ULSettings::GetFeatS(UObject* O, EFeat Feat) {
 void ULSettings::Init() {
 	ResetFeats();
 	IsSaving = false;
-	ULSysSettings* const Settings = ULSysSettings::Get();
-	if (Settings && Settings->UseSaveGame) {
-		LoadGame();
-	} else {
-		NewGame();
-	}
+
+	const ULSysSettings* const Settings = ULSysSettings::Get();
+	if (Settings && Settings->UseSaveGame) LoadGame();
+	else NewGame();
 }
 
 void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {
 	OnFeatUpdate.Broadcast(Feat, Enable);
 
-	if (Feat >= EFeat::C_00 && Feat <= EFeat::C_09) {
+	if (Feat >= EFeat::C_00 && Feat <= EFeat::C_09)
 		OnFeatUpdateChap.Broadcast(Feat, Enable);
-	} else if (Feat >= EFeat::D_ALL && Feat <= EFeat::D_TEXT) {
+	else if (Feat >= EFeat::D_ALL && Feat <= EFeat::D_TEXT)
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
-	} else if (Feat >= EFeat::S_MUSIC && Feat<= EFeat::S_ENV) {
+	else if (Feat >= EFeat::S_MUSIC && Feat<= EFeat::S_ENV)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
-	} else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR) {
+	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	} else if (Feat == EFeat::A_STROBE) {
+	else if (Feat == EFeat::A_STROBE)
 		OnFeatUpdateAccess.Broadcast(Feat, Enable);
-	} else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL) {
+	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
-	}
 }
 
