@@ -157,6 +157,8 @@ void ALChar::BeginPlay() {
 		if (SettingsUI) {
 			// important to add to the viewport otherwise the GC will delete our bindings :')
 			SettingsUI->AddToViewport(9999);
+			SettingsUI->AutoUnbind = false; // you only bind once.
+			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 			MenuDone(); // hide
 		}
 	}
@@ -367,7 +369,6 @@ void ALChar::ActMenu() { // no const
 		return;
 	}
 
-	SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 	SettingsUI->Show();
 	SettingsUI->SetVisibility(ESlateVisibility::Visible);
 }
