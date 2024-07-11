@@ -1,11 +1,16 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-#include "LSoundSlider.h"
+#include "LVolumeSlider.h"
 
 #include "Inventory/Flags.h"
 #include "Sound/SoundSubmix.h"
 
-void ULSoundSlider::Preview() {
+ULVolumeSlider::ULVolumeSlider() {
+	SetStepSize(.1);
+	SetValue(1.0);// default to 1
+}
+
+void ULVolumeSlider::Preview() {
 	const float Value = GetValue();
 	UE_LOG(LogTemp, Log, TEXT("%hs val=%.5f"),
 		__func__, Value);
@@ -19,7 +24,7 @@ void ULSoundSlider::Preview() {
 	Submix->SetSubmixOutputVolume(this, Value);
 }
 
-void ULSoundSlider::Apply() {
+void ULVolumeSlider::Apply() {
 	UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
@@ -39,7 +44,7 @@ void ULSoundSlider::Apply() {
 	Flags->Set(Key, Value);
 }
 
-void ULSoundSlider::Load() {
+void ULVolumeSlider::Load() {
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
@@ -61,10 +66,10 @@ void ULSoundSlider::Load() {
 	Preview();
 }
 
-void ULSoundSlider::PostInitProperties() {
+void ULVolumeSlider::PostInitProperties() {
 	Super::PostInitProperties();
 	if (UseAutoPreview)
-		OnValueChanged.AddUniqueDynamic(this, &ULSoundSlider::ValChanged);
+		OnValueChanged.AddUniqueDynamic(this, &ULVolumeSlider::ValChanged);
 	else
 		UE_LOG(LogTemp, Log, TEXT("Not AutoApply"));
 }

@@ -5,14 +5,16 @@
 
 #include "Components/Slider.h"
 
-#include "LSoundSlider.generated.h"
+#include "LVolumeSlider.generated.h"
 
 // class used to manipulate the sound volume
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSoundSlider: public USlider {
+class LIFEDEV_API ULVolumeSlider: public USlider {
 	GENERATED_BODY()
 
 public:
+	ULVolumeSlider();
+	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Preview();
 
