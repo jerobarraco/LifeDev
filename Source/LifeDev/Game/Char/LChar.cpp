@@ -157,7 +157,6 @@ void ALChar::BeginPlay() {
 		if (SettingsUI) {
 			// important to add to the viewport otherwise the GC will delete our bindings :')
 			SettingsUI->AddToViewport(9999);
-			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 			MenuDone(); // hide
 		}
 	}
@@ -349,7 +348,7 @@ void ALChar::ActItem() {
 	}
 
 	// mark the item as used, it won't trigger the manager.
-	// since we don't wanna trigger when is used with an interaction.
+	// since we don't want to trigger when is used with an interaction.
 	Inventory->Use(Selected);
 }
 
@@ -368,6 +367,7 @@ void ALChar::ActMenu() { // no const
 		return;
 	}
 
+	SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 	SettingsUI->Show();
 	SettingsUI->SetVisibility(ESlateVisibility::Visible);
 }
