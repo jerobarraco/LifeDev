@@ -14,10 +14,10 @@ class LIFEDEV_API ULSoundSlider: public USlider {
 
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Apply();
+	void Preview();
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Save();
+	void Apply();
 
 	// Loads and applies the value from the flags
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -28,11 +28,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FName Key = NAME_None;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	bool UseAutoApply = false;
+	bool UseAutoPreview = false;
 
 	virtual void PostInitProperties() override;
 
 protected:
 	UFUNCTION()
-	void ValChanged(const float NVal) {Apply();};
+	void ValChanged(const float NVal) {Preview();};
 };

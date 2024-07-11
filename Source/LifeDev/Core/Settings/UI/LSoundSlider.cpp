@@ -5,7 +5,7 @@
 #include "Inventory/Flags.h"
 #include "Sound/SoundSubmix.h"
 
-void ULSoundSlider::Apply() {
+void ULSoundSlider::Preview() {
 	const float Value = GetValue();
 	UE_LOG(LogTemp, Log, TEXT("%hs val=%.5f"),
 		__func__, Value);
@@ -19,7 +19,7 @@ void ULSoundSlider::Apply() {
 	Submix->SetSubmixOutputVolume(this, Value);
 }
 
-void ULSoundSlider::Save() {
+void ULSoundSlider::Apply() {
 	UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
@@ -28,7 +28,7 @@ void ULSoundSlider::Save() {
 	UE_LOG(LogTemp, Log, TEXT("%hs val=%.5f"),
 		__func__, Value);
 
-	Apply(); // unnecessary but just in case.
+	Preview(); // unnecessary but just in case.
 	
 	if (Key.IsNone()) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Key not set."),
@@ -58,13 +58,13 @@ void ULSoundSlider::Load() {
 	// notice this will get called when the dialog is shown.
 	// the 1st time it will re-set the values to their current value.
 	// which is ok, and it's good if it's different from the savegame.
-	Apply();
+	Preview();
 }
 
 void ULSoundSlider::PostInitProperties() {
 	Super::PostInitProperties();
-	if (UseAutoApply) {
+	if (UseAutoPreview)
 		OnValueChanged.AddUniqueDynamic(this, &ULSoundSlider::ValChanged);
-	}
-	else UE_LOG(LogTemp, Log, TEXT("Not AutoApply"));
+	else
+		UE_LOG(LogTemp, Log, TEXT("Not AutoApply"));
 }
