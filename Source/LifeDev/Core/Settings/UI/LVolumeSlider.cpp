@@ -68,8 +68,5 @@ void ULVolumeSlider::Load() {
 
 void ULVolumeSlider::PostInitProperties() {
 	Super::PostInitProperties();
-	if (UseAutoPreview)
-		OnValueChanged.AddUniqueDynamic(this, &ULVolumeSlider::ValChanged);
-	else
-		UE_LOG(LogTemp, Log, TEXT("Not AutoApply"));
+	OnValueChanged.AddUniqueDynamic(this, &ULVolumeSlider::ValChanged);
 }

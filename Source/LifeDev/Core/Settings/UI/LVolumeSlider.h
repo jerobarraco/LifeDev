@@ -30,11 +30,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FName Key = NAME_None;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	bool UseAutoPreview = false;
+	bool UseAutoPreview = true;
 
 	virtual void PostInitProperties() override;
 
 protected:
 	UFUNCTION()
-	void ValChanged(const float NVal) {Preview();};
+	void ValChanged(const float NVal) { if (UseAutoPreview) Preview(); };
 };
