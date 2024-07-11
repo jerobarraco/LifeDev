@@ -12,7 +12,7 @@ ULVolumeSlider::ULVolumeSlider() {
 
 void ULVolumeSlider::Preview() {
 	const float Value = GetValue();
-	UE_LOG(LogTemp, Log, TEXT("%hs val=%.5f"),
+	UE_LOG(LogTemp, Verbose, TEXT("%hs val=%.5f"),
 		__func__, Value);
 
 	if (!IsValid(Submix)) {
