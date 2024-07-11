@@ -1,48 +1,47 @@
 improve ticks
-    disable when possible 
-    use activate deactivate on components
-    increase interval if possible
-    disable based on distance? or lower interval?
-    significance manager https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
+	disable when possible 
+	use activate deactivate on components
+	increase interval if possible
+	disable based on distance? or lower interval?
+	JSIG significance manager https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
 
 
 automanage
-    on audio and niagara components
-    * add Activate/Deactivate on animator
+	on audio and niagara components
+	* add Activate/Deactivate on animator
 
 mesh: 
-    set to static or sttionary if possible
-    disable cast shadows if possible
-    enable 'use attach parent bounds' if posible 
-    disable ticks
-disable overlap events
-disable physics if not required
-disable query if not required
-move/rotate on one single call, only 1nce per frame (e.g. setTransform instead of setLocation + setRotation )
+	set to static or stationary if possible
+	disable cast shadows if possible
+	enable 'use attach parent bounds' if possible 
+	disable ticks
+	disable overlap events
+	disable physics if not required
+	disable query if not required
+	move/rotate on one single call, only 1nce per frame (e.g. setTransform instead of setLocation + setRotation )
 
 material 
-    Quality switch node
-    vertex interpolator
-    mask + dither if possible
-    no double sided 
-    increase opacity
-    saturate instead of clamp
-    lower num samples
-    DistanceCullFade to blend the cull
-    -  min max draw distance
-
+	Quality switch node
+	vertex interpolator
+	mask + dither if possible
+	no double sided 
+	increase opacity
+	saturate instead of clamp
+	lower num samples
+	DistanceCullFade to blend the cull
+	-  min max draw distance
 
 shadow maps
-    r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
-    r.Shadow.Virtual.UseFarShadowCulling 0
-    set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
-     r.Shadow.Virtual.MaxPhysicalPages (512),
-     r.Shadow.Virtual.MaxPhysicalPagesSceneCapture (512),
-     r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
-     r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
+	r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
+	r.Shadow.Virtual.UseFarShadowCulling 0
+	set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
+	r.Shadow.Virtual.MaxPhysicalPages (512),
+	r.Shadow.Virtual.MaxPhysicalPagesSceneCapture (512),
+	r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
+	r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
 
 culling
- * use distance cull volumes
+* use distance cull volumes
 * showflag.distanceculledprimitives 1
 * stat initviews
 * freezerendering to test culling
