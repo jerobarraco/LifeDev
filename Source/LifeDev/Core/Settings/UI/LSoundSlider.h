@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FJSoundSliderDone, float, Val);
 
+// class used to manipulate the sound volume
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSoundSlider: public USlider {
 	GENERATED_BODY()
@@ -16,15 +17,13 @@ class LIFEDEV_API ULSoundSlider: public USlider {
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Apply();
-	
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Save();
-	
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Reset(){};
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Load(){};
+	void Save();
+
+	// Loads and applies the value from the flags
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Load();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	USoundSubmix* Submix = nullptr;
