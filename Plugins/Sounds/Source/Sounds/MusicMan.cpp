@@ -34,11 +34,8 @@ void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
 	UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
 	
 	NextMusic = Snd;
-	if (FadeOut && Player->IsPlaying()) {
-		Fade(false);
-	} else {
-		SetNextMusic();
-	}
+	if (FadeOut && Player->IsPlaying()) Fade(false);
+	else SetNextMusic();
 }
 
 void AMusicMan::BeginPlay() {
