@@ -58,7 +58,6 @@ ALMusicMan::ALMusicMan():Super() {
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
 
-
 	AnimMusicFX = CreateDefaultSubobject<UCAnimator>("AnimMusicFX");
 
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
@@ -244,8 +243,9 @@ void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
 }
 
 void ALMusicMan::AnimFXEnd() {
-	const bool On = AnimMusicFX && AnimMusicFX->IsReversed;
-	if (!On && MusicFX)
+	// done this way, because i want it to remove it if there's no animmusic.
+	const bool Remove = !AnimMusicFX || AnimMusicFX->IsReversed;
+	if (Remove && MusicFX)
 		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
 			this, MusicSubmix, MusicFX);
 }

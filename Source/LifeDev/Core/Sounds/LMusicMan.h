@@ -51,11 +51,9 @@ public:
 	virtual void SetIntensity_Implementation(float V) override;
 
 protected:
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	
 	UFUNCTION() // bind
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	UFUNCTION() // bind
