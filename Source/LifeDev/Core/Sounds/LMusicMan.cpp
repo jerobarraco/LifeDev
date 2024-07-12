@@ -101,9 +101,8 @@ void ALMusicMan::Fade_Implementation(bool In) {
 	Super::Fade_Implementation(In);
 
 	// force fb to 0 on the Environ when there's no music playing 
-	if (!In) {
-		SetEnvironFB(0);
-	} else {
+	if (!In) SetEnvironFB(0);
+	else {
 		// reset the flashback when starting. to make sure it's at the right point.
 		// only done when fading in to avoid working extra.
 		const UFlashback* const Flashback = UFlashback::Instance(W);
@@ -176,17 +175,12 @@ void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
 		const bool IsPlaying = Player->IsPlaying();
 		// start/stop only if it was stopped/started. avoid double fade
 		if (bEnabled){
-			if (!IsPlaying) {
-				Fade(true);
-			}
+			if (!IsPlaying) Fade(true);
 		} else {
-			if (IsPlaying) {
-				Fade(false);
-			}
+			if (IsPlaying) Fade(false);
 		}
-	} else if (Feat == EFeat::S_ENV) {
+	} else if (Feat == EFeat::S_ENV)
 		SetEnviron(bEnabled);
-	}
 }
 
 void ALMusicMan::SetStep(AStep* Step) {
@@ -195,7 +189,8 @@ void ALMusicMan::SetStep(AStep* Step) {
 	
 	USoundBase* const Sound = Step->Music.LoadSynchronous();
 	if (!IsValid(Sound)) {
-		UE_LOG(LogTemp, Warning, TEXT("MusicMan.SetStep: Could not load music asset=%s"), *Step->Music.GetAssetName());
+		UE_LOG(LogTemp, Warning, TEXT("MusicMan.SetStep: Could not load music asset=%s"),
+		 *Step->Music.GetAssetName());
 		return;
 	}
 

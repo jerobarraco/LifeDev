@@ -6,11 +6,13 @@
 #include "Sounds/MusicMan.h"
 
 #include "LMusicMan.generated.h"
+
 class UCLSounder;
 class AStep;
 
 // Lifedev version of the music manager
-UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, Placeable,
+	ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API ALMusicMan: public AMusicMan {
 	GENERATED_BODY()
 
