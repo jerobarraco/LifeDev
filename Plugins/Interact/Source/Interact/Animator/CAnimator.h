@@ -12,7 +12,7 @@ class USceneComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnBegin);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, float, Progress, float, Alpha);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, const float, Progress, const float, Alpha);
 
 // An interactive actor that can have an animation
 // You can set the tick interval to control the performance of this component

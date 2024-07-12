@@ -2,6 +2,8 @@
 
 #include "LMusicMan.h"
 
+#include "AudioMixerBlueprintLibrary.h"
+#include "Interact/Animator/CAnimator.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundClass.h"
 
@@ -14,6 +16,7 @@
 #include "LifeDev/Game/Snd/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "Sound/SoundSubmix.h"
 
 ALMusicMan::ALMusicMan():Super() {
 	// set the class to the player
@@ -54,6 +57,17 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->AttenuationSettings = Rain->AttenuationSettings = CEnvAttn.Object; 
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
+
+
+	AnimMusicFX = CreateDefaultSubobject<UCAnimator>("AnimMusicFX");
+
+	static ConstructorHelpers::FObjectFinder<USoundSubmix>
+		CSmx (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDMusic.LDMusic"));
+	MusicSubmix = CSmx.Object;
+
+	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
+		CSFX(TEXT("/Game/LifeDev/Core/Audio/Effects/HPF_FX"));
+	MusicFX = CSFX.Object;
 }
 
 ALMusicMan* ALMusicMan::Instance(UWorld* W) {
@@ -87,6 +101,17 @@ void ALMusicMan::SetEnvironFB(float V) {
 	// calling setSafeParam is safe since it will check if the Environ itself is playing.
 	// that way i don't need to check for the S_ENV flag here either
 	Environ->SetSafeParamFloat(NFB, V);
+}
+
+void ALMusicMan::FadeFX(const bool On) {
+	if (!IsValid(AnimMusicFX)) return;
+	
+	AnimMusicFX->IsReversed = !On;
+	AnimMusicFX->Activate(true);
+
+	if (On && MusicFX)
+		UAudioMixerBlueprintLibrary::AddSubmixEffect(
+			this, MusicSubmix, MusicFX);
 }
 
 void ALMusicMan::Fade_Implementation(bool In) {
@@ -149,6 +174,15 @@ void ALMusicMan::BeginPlay() {
 	ULSettings* const S = ULSettings::Instance(W);
 	if (S)
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+
+	// important to not clip
+	if (MusicSubmix)
+		MusicSubmix->SetSubmixWetLevel(this, 0.0);
+
+	if (AnimMusicFX) {
+		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
+		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimFXEnd);
+	}
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -166,6 +200,11 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const S = ULSettings::Instance(W);
 	if (S)
 		S->OnFeatUpdateSound.RemoveAll(this);
+
+	if (AnimMusicFX) {
+		AnimMusicFX->OnUpdate.RemoveAll(this);
+		AnimMusicFX->OnEnd.RemoveAll(this);
+	}
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -195,4 +234,18 @@ void ALMusicMan::SetStep(AStep* Step) {
 	}
 
 	PlayMusic(Sound);
+}
+
+void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
+	if (!IsValid(MusicSubmix)) return;
+
+	MusicSubmix->SetSubmixWetLevel(this, Alpha);
+	MusicSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
+}
+
+void ALMusicMan::AnimFXEnd() {
+	const bool On = AnimMusicFX && AnimMusicFX->IsReversed;
+	if (!On && MusicFX)
+		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
+			this, MusicSubmix, MusicFX);
 }
