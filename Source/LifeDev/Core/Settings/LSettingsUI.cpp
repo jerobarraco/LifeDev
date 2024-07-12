@@ -40,20 +40,21 @@ ULSettingsUI::ULSettingsUI():Super() {
 void ULSettingsUI::Show_Implementation() {
 	// SetVisibility(ESlateVisibility::Visible);
 	Super::Show_Implementation();
-	Load();
 
 	ALMusicMan* const Man = Cast<ALMusicMan>(
 	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
-	if (Man) Man->FadeFX(true); 
+	if (Man) Man->FadeFX(true);
+
+	Load();
 }
 
 void ULSettingsUI::Hide_Implementation() {
-	Super::Hide_Implementation();
-	
 	ALMusicMan* const Man = Cast<ALMusicMan>(
 	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
 	if (Man) Man->FadeFX(false);
-
+	
+	Super::Hide_Implementation();
+	
 	// SetVisibility(ESlateVisibility::Collapsed);
 }
 

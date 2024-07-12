@@ -103,12 +103,13 @@ void ALMusicMan::SetEnvironFB(float V) {
 }
 
 void ALMusicMan::FadeFX(const bool On) {
-	if (!IsValid(AnimMusicFX)) return;
-	
+	if (!IsValid(AnimMusicFX) || !IsValid(MusicFX) || !IsValid(MusicSubmix)) return;
+
+	UE_LOG(LogTemp, Log, TEXT("%hs On=%i"), __func__, On);
 	AnimMusicFX->IsReversed = !On;
 	AnimMusicFX->Activate(true);
 
-	if (On && MusicFX)
+	if (On)
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
 }
@@ -243,9 +244,10 @@ void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
 }
 
 void ALMusicMan::AnimFXEnd() {
+	if (!MusicFX || !MusicSubmix) return;
 	// done this way, because i want it to remove it if there's no animmusic.
 	const bool Remove = !AnimMusicFX || AnimMusicFX->IsReversed;
-	if (Remove && MusicFX)
+	if (Remove)
 		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
 			this, MusicSubmix, MusicFX);
 }
