@@ -2,27 +2,24 @@
 
 using UnrealBuildTool;
 
-public class LifeDev : ModuleRules
-{
-	public LifeDev(ReadOnlyTargetRules Target) : base(Target)
-	{
+public class LifeDev : ModuleRules {
+	public LifeDev(ReadOnlyTargetRules Target) : base(Target) {
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[]
-		{
+		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
 			"UMG", "DeveloperSettings",
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[]
-		{
+		PrivateDependencyModuleNames.AddRange(new string[] {
 			// general
 			"ChaosNiagara", "Niagara", "GameplayCameras",
 			"MoviePlayer",  // loading screen yes.
 			"SlateCore", "Slate", // settings
 			// my stuff
-			"JUtils", "Interact",  "Diags", "Inventory", "Story",
+			"JUtils", "Interact", "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
-        });
+			"AudioMixer", // for musicman fx fade
+		});
 	}
 }
