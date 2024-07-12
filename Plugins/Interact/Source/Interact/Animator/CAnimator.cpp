@@ -77,21 +77,17 @@ void UCAnimator::DoTick(float DT) {
 		IsValid(Curve) ? Curve->GetFloatValue(NProg) :
 		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
 
-	if (Debug) {
+	if (Debug)
 		UE_LOG(LogTemp, Log, TEXT("UCAnimator::%hs p=%.5f a=%.5f np=%.5f n=%s"),
 			__func__, Progress, Alpha, NProg, *GetNameSafe(GetOwner()));
-	}
 
-	// update child objects
-	Update(Alpha);
+	
+	Update(Alpha); // update child objects
 
-	// Trigger delegate
 	OnUpdate.Broadcast(Progress, Alpha);
 
 	/// restart if needed
-	if (Finished) {
-		Finish();
-	}
+	if (Finished) Finish();
 }
 
 void UCAnimator::DeInit() {

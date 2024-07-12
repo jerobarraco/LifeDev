@@ -61,7 +61,7 @@ struct INTERACT_API FAnimTrackMatF {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FName Name;
+	FName Name = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float Start = 0.0;
@@ -81,7 +81,7 @@ struct INTERACT_API FAnimTrackMatV  {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FName Name;
+	FName Name = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FLinearColor Start = FLinearColor::Black;
@@ -101,7 +101,7 @@ struct INTERACT_API FAnimTrackTrans {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USceneComponent* Root;
+	USceneComponent* Root = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FTransform Start;
@@ -121,6 +121,7 @@ public:
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimTracks : public UCAnimator {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
 	TArray<FAnimTrackMatF> MatFs;
