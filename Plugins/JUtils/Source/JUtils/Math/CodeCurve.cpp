@@ -116,6 +116,12 @@ float UCodeCurveLib::OutCubic(float p) {
 	return 1.f - FMath::Pow(1.0f - p, 3.0f);
 }
 
+float UCodeCurveLib::InOutQuart(const float p) {
+	return p < 0.5 ?
+		2 * p * p :
+		1 - FMath::Pow((-2 * p) + 2, 2) / 2.0;
+}
+
 float UCodeCurveLib::InBack(float p) {
 	constexpr float c1 = 1.70158;
 	constexpr float c3 = c1 + 1;

@@ -3,10 +3,12 @@
 
 #pragma once
 #include "CoreMinimal.h"
+
 #include "Curves/CurveEvaluation.h"
+
 #include "CodeCurve.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCodeCurve, float, Progress);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FCodeCurve, const float, Progress);
 
 // 	UCodeCurveLib* const CurveLib = Cast<UCodeCurveLib>(UCodeCurveLib::StaticClass()->GetDefaultObject(true));
 // Anim->CodeCurve.BindDynamic(CurveLib, &UCodeCurveLib::OutBack);
@@ -73,7 +75,10 @@ public:
 	float InCubic(float p);
 	UFUNCTION(BlueprintCallable)
 	float OutCubic(float p);
-
+	
+	UFUNCTION(BlueprintCallable)
+	float InOutQuart(const float p);
+	
 	UFUNCTION(BlueprintCallable)
 	float InBack(float p);
 	UFUNCTION(BlueprintCallable)

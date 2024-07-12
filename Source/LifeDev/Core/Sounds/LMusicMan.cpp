@@ -59,6 +59,17 @@ ALMusicMan::ALMusicMan():Super() {
 	// and i've already paid a lot of attention trying to mix them.
 
 	AnimMusicFX = CreateDefaultSubobject<UCAnimator>("AnimMusicFX");
+	// important otherwise the pause via the settings menu won't work.
+	AnimMusicFX->SetTickableWhenPaused(true);
+	AnimMusicFX->SetComponentTickInterval(0); // it HAS to be 0, or it will NOT tick on paused.
+	AnimMusicFX->Duration = .5;
+	// SetTickableWhenPaused(true); // unneeded
+
+	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
+	// unnoticeable but....
+	AnimMusicFX->CodeCurve.BindDynamic(Lib,
+		&UCodeCurveLib::UCodeCurveLib::UCodeCurveLib::InOutQuart);
+	AnimMusicFX->Curve = nullptr;
 
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
 		CSmx (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDMusic.LDMusic"));
@@ -238,6 +249,7 @@ void ALMusicMan::SetStep(AStep* Step) {
 
 void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
 	if (!IsValid(MusicSubmix)) return;
+	UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
 
 	MusicSubmix->SetSubmixWetLevel(this, Alpha);
 	MusicSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
