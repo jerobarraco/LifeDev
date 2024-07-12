@@ -4,6 +4,8 @@
 
 #include "GameFramework/GameUserSettings.h"
 #include "JUtils/UI/GroupBox.h"
+#include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 
 // TODO there's a bug when the gc runs the groupbox stops working.
 // is it the wrapper being gcd?
@@ -36,14 +38,23 @@ ULSettingsUI::ULSettingsUI():Super() {
 }
 
 void ULSettingsUI::Show_Implementation() {
-	SetVisibility(ESlateVisibility::Visible);
+	// SetVisibility(ESlateVisibility::Visible);
 	Super::Show_Implementation();
 	Load();
+
+	ALMusicMan* const Man = Cast<ALMusicMan>(
+	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
+	if (Man) Man->FadeFX(true); 
 }
 
 void ULSettingsUI::Hide_Implementation() {
 	Super::Hide_Implementation();
-	SetVisibility(ESlateVisibility::Collapsed);
+	
+	ALMusicMan* const Man = Cast<ALMusicMan>(
+	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
+	if (Man) Man->FadeFX(false);
+
+	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void ULSettingsUI::NativeOnInitialized() {
@@ -73,6 +84,7 @@ void ULSettingsUI::NativeDestruct() {
 	for (EQualityType const Q: Keys) {
 		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
+
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
 
@@ -146,6 +158,7 @@ void ULSettingsUI::LoadQSwitch(EQualityType QSwitch) {
 void ULSettingsUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	UE_LOG(LogTemp, Log, TEXT("SettingsUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (Quality == EQualityType::NONE) return;
+
 	if (NewQ<0 || NewQ>4) {
 		UE_LOG(LogTemp, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
 		return;

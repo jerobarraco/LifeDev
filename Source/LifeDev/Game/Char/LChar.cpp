@@ -370,7 +370,6 @@ void ALChar::ActMenu() { // no const
 	}
 
 	SettingsUI->Show();
-	SettingsUI->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ALChar::MenuDone() {
