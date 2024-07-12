@@ -24,23 +24,18 @@ public:
 	UCAnimator();
 
 	// plays the animation. optionally reset.
-	virtual void Activate(bool bReset=false) override;
+	virtual void Activate(const bool bReset=false) override;
 	// stops the animation.
 	virtual void Deactivate() override;
-	
-	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
-	FORCEINLINE void Play() { Activate(true); }
-	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just to get a button for debug
-	FORCEINLINE void Stop() { Deactivate(); }
 
 	// mostly for bps when you want to set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
-
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	FORCEINLINE float GetProgress() const { return Progress; }
-	
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	FORCEINLINE void Flip() { IsReversed = !IsReversed; }
+
 	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DeltaSeconds);
@@ -48,7 +43,13 @@ public:
 	// sets/clear a parent that drives the update of this animator
 	UFUNCTION(BlueprintCallable)
 	void BindTo(UCAnimator* NewParent = nullptr);
-	
+
+	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
+	FORCEINLINE void Play() { Activate(true); }
+	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just to get a button for debug
+	FORCEINLINE void Stop() { Deactivate(); }
+
 	// By default run at 30 fps; Optimization
 	inline static float IntervalDefault = 1.0f/30.f;
 	// to be set by game manager depending on the flags

@@ -50,11 +50,9 @@ void UCAnimator::Finish() {
 	// also if not bouncing we want to start over.
 	Progress = 0.0;
 	if (IsBouncing) { // reverse the reversed
-		IsReversed = !IsReversed;
+		Flip(); // IsReversed = !IsReversed;
 		// bounce only once if not looping
-		if (!IsLooping) {
-			IsBouncing = false; 
-		}
+		if (!IsLooping) IsBouncing = false; 
 	}
 
 	Begin(); // it technically started
@@ -137,7 +135,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 	DoTick(DT);
 }
 
-void UCAnimator::Activate(bool bReset) {
+void UCAnimator::Activate(const bool bReset) {
 	// activate and deactivate will set/unset tick enabled.
 	const bool WasActive = IsActive();
 	Super::Activate(bReset);
