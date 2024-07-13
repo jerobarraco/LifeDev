@@ -7,7 +7,7 @@ namespace LDConsts {
 			inline static const FName LightsOn("Stats.Lights.On");
 			inline static const FName PuzzlesCube("Stats.Puzzles.Cube");
 			inline static const FName DiagShown("Stats.Diags.Shown");
-			inline static const FName TimeUsed("Stats.Global.Time"); // todo
+			inline static const FName TimeUsed("Stats.Global.Time");
 		}
 		namespace CH0 { // chap 0
 			inline static const FName Spot("CH0.SpotI02");
