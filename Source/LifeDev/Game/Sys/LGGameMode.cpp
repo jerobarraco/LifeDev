@@ -3,11 +3,10 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
-#include "CoreGlobals.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Consts/ConstSettings.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
+
 
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
@@ -23,6 +22,8 @@
 #include "JSig/CSignificance.h"
 #include "JUtils/JMiscUtils.h"
 
+#include "Consts/ConstFlags.h"
+#include "Consts/ConstSettings.h"
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
@@ -164,23 +165,22 @@ void ALGGameMode::Init_Implementation() {
 		InventoryMan->InputPrio = 9;
 		InventoryMan->ZOrder = 1; 
 		InventoryMan->Init();
-	} else {
+	} else
 		InventoryMan = nullptr;
-	}
 
 	/// Story
 	Story = World->GetSubsystem<UStory>();
-	Story->FadeTime = UJMiscUtils::IsEditor() ? 1: FadeTime;
-	Story->HoldTime = UJMiscUtils::IsEditor() ? 1: HoldTime;
+	const bool IsEditor = UJMiscUtils::IsEditor();
+	Story->FadeTime = IsEditor ? 1: FadeTime;
+	Story->HoldTime = IsEditor ? 1: HoldTime;
 	Story->Init();
 	
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
 	if (IsValid(StoryMan)) {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
-	} else {
+	} else
 		StoryMan = nullptr;
-	}
 
 	/// feats
 	// do at the end since it depends on other things.
@@ -199,15 +199,17 @@ void ALGGameMode::Init_Implementation() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
-	
+
+	FTimerManager& Timer = World->GetTimerManager();
 	// force the input disabled. even though the story manager will make this disable later.
 	// in case something goes wrong.
 	// disable input on next tick to avoid a crash otherwise....
-	World->GetTimerManager().SetTimerForNextTick(this, &ALGGameMode::SetInputDisable);
+	Timer.SetTimerForNextTick(this, &ALGGameMode::SetInputDisable);
 
 	FTimerHandle Handle;
 	// wait for loading. then start the story!
-	World->GetTimerManager().SetTimer(Handle, this, &ALGGameMode::StartChapter, .1);
+	Timer.SetTimer(Handle, this, &ALGGameMode::StartChapter, .1);
+	Timer.SetTimer(CounterHandle, this, &ALGGameMode::TickCounter, CounterTime, true);
 }
 
 void ALGGameMode::BeginPlay() {
@@ -245,8 +247,9 @@ void ALGGameMode::BeginPlay() {
 }
 
 void ALGGameMode::DeInit_Implementation() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
+	World->GetTimerManager().ClearAllTimersForObject(this);
 	
 	if (IsValid(Diags)) {
 		Diags->OnShow.RemoveAll(this);
@@ -255,29 +258,19 @@ void ALGGameMode::DeInit_Implementation() {
 	}
 	Diags = nullptr;
 
-	if (IsValid(Inventory)) {
-		Inventory->DeInit();
-	}
+	if (IsValid(Inventory)) Inventory->DeInit();
 	Inventory = nullptr;
 	
-	if (IsValid(Flags)) {
-		Flags->DeInit();
-	}
+	if (IsValid(Flags)) Flags->DeInit();
 	Flags = nullptr;
 	
-	if (IsValid(DiagMan)) {
-		DiagMan->DeInit();
-	}
+	if (IsValid(DiagMan)) DiagMan->DeInit();
 	DiagMan = nullptr;
 
-	if (IsValid(InventoryMan)) {
-		InventoryMan->DeInit();
-	}
+	if (IsValid(InventoryMan)) InventoryMan->DeInit();
 	InventoryMan = nullptr;
 
-	if (IsValid(StoryMan)) {
-		StoryMan->DeInit();
-	}
+	if (IsValid(StoryMan)) StoryMan->DeInit();
 	StoryMan = nullptr;
 
 	if (IsValid(Story)) {
@@ -286,15 +279,13 @@ void ALGGameMode::DeInit_Implementation() {
 	}
 	Story = nullptr;
 
-	if (IsValid(Char)) {
-		// Char->DeInit();
-	}
+	// if (IsValid(Char)) Char->DeInit();
 	Char = nullptr;
 
-	if (IsValid(MusicMan)) {
-		MusicMan->Fade(false); // probably won't get a chance to fade since the game mode is ending.
-	}
+	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
+	if (IsValid(MusicMan)) MusicMan->Fade(false);
 	MusicMan = nullptr;
+	
 	FlashbackMan = nullptr;
 	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
@@ -404,10 +395,15 @@ void ALGGameMode::Fade(bool bIn, const FText& Text) {
 	}
 
 	// fading in requires a timer.
-	FTimerHandle Handle2;
 	const float Wait = (Story->FadeTime)+Story->HoldTime;
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
+
 	FTimerManager& Time = World->GetTimerManager();
+	FTimerHandle Handle2;
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
+}
+
+void ALGGameMode::TickCounter() const {
+	if (Flags) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime);
 }

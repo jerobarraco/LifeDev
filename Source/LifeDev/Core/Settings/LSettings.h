@@ -47,7 +47,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
 
-	// Reset all features to factory default (depends if it's a shipping build)
+	// Reset all features to factory default (depends on if it's a shipping build)
 	UFUNCTION(BlueprintCallable)
 	void ResetFeats();
 

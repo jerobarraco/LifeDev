@@ -30,7 +30,7 @@ class UFlags;
 #define InteractTraceChannel ECC_GameTraceChannel1
 
 // Game mode class 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALGGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
@@ -118,9 +118,14 @@ protected:
 	UFUNCTION() // bound
 	void Fade(bool bIn, const FText& Text);
 
+	void TickCounter() const;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	float CounterTime=.5;
 
 	/// transients
 
 	bool CharInputEnabled = true;
 	bool IsFirstFade = true;
+	FTimerHandle CounterHandle;
 };
