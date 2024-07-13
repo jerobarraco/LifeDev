@@ -15,9 +15,7 @@ ALLight01::ALLight01():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
-	if (CCurve.Succeeded()) {
-		Anim->Curve = CCurve.Object;
-	}
+	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
 
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
 	RectLight->SetupAttachment(Mesh);

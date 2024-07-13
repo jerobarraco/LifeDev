@@ -23,20 +23,26 @@ ALLight::ALLight():Super() {
 	FlickrOnFB = .7;
 	StateNum = 2;
 	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) };
-	Anim->TRoot = nullptr; // by default don't animate meshes
-	Trans.Empty(); // force the simpler animation which will reverse the animation.
 	
 	// these would trash the materials.
 	UseRewardDestroy = false;
 	AnimFade->Meshes.Empty();
+
+	Trans.Empty(); // force the simpler animation which will reverse the animation.
+	Anim->TRoot = nullptr; // by default don't animate meshes
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
+	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object; // by default use noise ranmp
 
 	// this will trigger the flicker animation randomly
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->SetAutoActivate(false); // important since it's feature flagged.
 	Rnd->IsLooping = true;
 	Rnd->Anim = Anim;
-	Rnd->UseAnimRandReverse = false; // don´t want to change the state of the light
-	Rnd->ValueMin = .1;
+	Rnd->UseAnimRandReverse = false; // don't want to change the state of the light
+	Rnd->UseAnimValue = true;
+	Rnd->UseAnimMirror = true; // will not jump around. might make the anim longer.
+	Rnd->ValueMin = .3;
 	Rnd->ValueMax = 3;
 	Rnd->DelayMin = 3;
 	Rnd->DelayMax = 15;
@@ -118,7 +124,7 @@ void ALLight::BeginPlay() {
 	ULSettings* const Settings = ULSettings::Instance(World);
 	if (!Settings) return;
 	
-	// disable if the flag is disabled. but keep disabled if it was disabled by the parent. 
+	// disable if the flag is disabled. but keep disabled if it was disabled by the parent.
 	UseAnim = UseAnim && Settings->GetFeat(EFeat::A_STROBE);
 
 	// optimize the anim. do here since some lights can be toggled
@@ -152,7 +158,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Anim->OnUpdate.RemoveAll(this);
 		Anim->OnBegin.RemoveAll(this);
 		Anim->OnEnd.RemoveAll(this);
-		Anim->Deactivate();	
+		Anim->Deactivate();
 	}
 	
 	UWorld* const W = GetWorld();

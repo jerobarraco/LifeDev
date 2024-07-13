@@ -13,9 +13,6 @@ ALLight00::ALLight00():Super() {
 	Anim->Mat = nullptr;
 	// Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	// Anim->MatVName = "Emissive";
-	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
-	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
 
 	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
 	Light->SetupAttachment(Mesh);

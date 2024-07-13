@@ -249,7 +249,7 @@ void ALMusicMan::SetStep(AStep* Step) {
 
 void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
 	if (!IsValid(MusicSubmix)) return;
-	UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
+	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
 
 	MusicSubmix->SetSubmixWetLevel(this, Alpha);
 	MusicSubmix->SetSubmixDryLevel(this, 1.0-Alpha);

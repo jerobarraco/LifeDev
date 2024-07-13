@@ -9,12 +9,6 @@
 #include "LifeDev/Game/Sys/Consts/ConstColors.h"
 
 ALLight02::ALLight02():Super() {
-	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
-	if (CCurve.Succeeded()) {
-		Anim->Curve = CCurve.Object;
-	}
-
 	IntensityMax = 5;
 	Light = CreateDefaultSubobject<USpotLightComponent>(TEXT("Light"));
 	Light->SetupAttachment(Mesh);
