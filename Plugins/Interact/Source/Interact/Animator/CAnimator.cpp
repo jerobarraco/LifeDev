@@ -113,7 +113,7 @@ void UCAnimator::ChildUpdate(float T, float Alpha) {
 }
 
 void UCAnimator::Update_Implementation(float Alpha) {
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s alpha=%3.5f"),
+	UE_LOG(LogCAnimator, Verbose, TEXT("%hs o=%s alpha=%3.5f"),
 		__func__, *GetNameSafe(GetOwner()), Alpha);
 }
 
