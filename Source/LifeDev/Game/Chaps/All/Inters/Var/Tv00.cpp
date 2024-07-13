@@ -95,7 +95,7 @@ ATv00::ATv00():Super() {
 	RndCrt->ValueMin = .5;
 	RndCrt->ValueMax = 3;
 	RndCrt->IsLooping = true;
-	RndCrt->UseRandReverse = true;
+	RndCrt->UseAnimRandReverse = true;
 
 	Noise = CreateDefaultSubobject<UCLSounder>(TEXT("Noise"));
 	Noise->SetupAttachment(IRoot);

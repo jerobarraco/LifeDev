@@ -39,7 +39,7 @@ AStreetLight::AStreetLight():Super() {
 	Rnd->DelayMax = 50;
 	Rnd->ValueMin = 1;
 	Rnd->ValueMax = 5;
-	Rnd->UseRandReverse = true;
+	Rnd->UseAnimRandReverse = true;
 
 	FlickrOnFB = .2; // always flicker
 

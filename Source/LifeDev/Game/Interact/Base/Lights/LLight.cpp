@@ -35,7 +35,7 @@ ALLight::ALLight():Super() {
 	Rnd->SetAutoActivate(false); // important since it's feature flagged.
 	Rnd->IsLooping = true;
 	Rnd->Anim = Anim;
-	Rnd->UseRandReverse = false; // don´t want to change the state of the light
+	Rnd->UseAnimRandReverse = false; // don´t want to change the state of the light
 	Rnd->ValueMin = .1;
 	Rnd->ValueMax = 3;
 	Rnd->DelayMin = 3;

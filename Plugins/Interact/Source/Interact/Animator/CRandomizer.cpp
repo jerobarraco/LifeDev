@@ -49,9 +49,13 @@ void UCRandomizer::Trigger() {
 	const float Val = FMath::FRandRange(ValueMin, ValueMax);
 
 	if (IsValid(Anim)) {
-		Anim->Duration = Val;
-		if (UseRandReverse) Anim->IsReversed = FMath::RandBool();
-		Anim->Activate(true);
+		if (UseAnimValue) Anim->Duration = Val;
+		if (UseAnimRandReverse)
+			Anim->IsReversed = FMath::RandBool();
+		else if (UseAnimMirror)
+			Anim->Mirror();
+		const bool Reset = UseAnimRandReverse || !UseAnimMirror;
+		Anim->Activate(Reset);
 	}
 
 	OnTrigger.Broadcast();
