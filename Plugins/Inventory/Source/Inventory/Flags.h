@@ -27,7 +27,7 @@ public:
 	void Set(const FName& Name, float Val = 1);
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	void Mod(const FName& Name, float Diff);
+	void Mod(const FName& Name, const float Diff, const bool Log=true);
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Rem(const FName& Name);

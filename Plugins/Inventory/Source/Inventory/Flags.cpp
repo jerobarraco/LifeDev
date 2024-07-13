@@ -15,11 +15,11 @@ UFlags* UFlags::Instance(UObject* O) {
 	return IsValid(I) ? I : nullptr;
 }
 
-void UFlags::Mod(const FName& Name, float Diff) {
+void UFlags::Mod(const FName& Name, const float Diff, const bool Log) {
 	if (Name.IsNone()) return;
 	
 	const float Val = Get(Name) + Diff; 
-	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
+	if (Log) UE_LOG(LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
 		__func__, *Name.ToString(), Diff, Val);
 	
 	Flags.Add(Name, Val);

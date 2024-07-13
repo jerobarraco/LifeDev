@@ -116,11 +116,11 @@ protected:
 	UFUNCTION() // bind to delegate
 	void DiagDone();
 	UFUNCTION() // bound
-	void Fade(bool bIn, const FText& Text);
+	void Fade(const bool bIn, const FText& Text);
 
 	void TickCounter() const;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	float CounterTime=.5;
 
 	/// transients

@@ -382,7 +382,7 @@ void ALGGameMode::DiagDone() {
 	SetTempInputEnabled(true);
 }
 
-void ALGGameMode::Fade(bool bIn, const FText& Text) {
+void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	if (!bIn) {
 		SetInputDisable();
 		return;
@@ -405,5 +405,8 @@ void ALGGameMode::Fade(bool bIn, const FText& Text) {
 }
 
 void ALGGameMode::TickCounter() const {
-	if (Flags) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime);
+	// while these DO work. they now spam the console with 2 "exec commands"
+	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
+	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
+	if (Flags) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime, false);
 }
