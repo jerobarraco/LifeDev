@@ -37,7 +37,7 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 }
 
 void UCAnimator::Finish() {
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s isLooping=%i isBouncing=%i"),
+	UE_LOG(LogCAnimator, Verbose, TEXT("%hs o=%s isLooping=%i isBouncing=%i"),
 		__func__, *GetNameSafe(this), IsLooping, IsBouncing);
 	// check if we can continue at all
 	if (!IsLooping && !IsBouncing) {
@@ -144,7 +144,7 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 void UCAnimator::Activate(const bool bReset) {
 	// activate and deactivate will set/unset tick enabled.
 	const bool WasActive = IsActive();
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s Reset=%i WasActive=%i"),
+	UE_LOG(LogCAnimator, Verbose, TEXT("%hs o=%s Reset=%i WasActive=%i"),
 		__func__, *GetNameSafe(this), bReset, WasActive);
 	
 	Super::Activate(bReset);
@@ -159,7 +159,7 @@ void UCAnimator::Activate(const bool bReset) {
 
 void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s WasActive=%i"),
+	UE_LOG(LogCAnimator, Verbose, TEXT("%hs o=%s WasActive=%i"),
 		__func__, *GetNameSafe(this), WasActive);
 	Super::Deactivate();
 	DTAcum = 0;
