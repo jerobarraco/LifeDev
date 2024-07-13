@@ -3,6 +3,8 @@
 
 #include "CAnimator.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCAnimator, Log, Log)
+
 UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
@@ -35,6 +37,8 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 }
 
 void UCAnimator::Finish() {
+	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s isLooping=%i isBouncing=%i"),
+		__func__, *GetNameSafe(this), IsLooping, IsBouncing);
 	// check if we can continue at all
 	if (!IsLooping && !IsBouncing) {
 		Deactivate();
@@ -76,7 +80,7 @@ void UCAnimator::DoTick(float DT) {
 		(CodeCurve.IsBound() ? CodeCurve.Execute(NProg): NProg);
 
 	if (Debug)
-		UE_LOG(LogTemp, Log, TEXT("UCAnimator::%hs p=%.5f a=%.5f np=%.5f n=%s"),
+		UE_LOG(LogCAnimator, Log, TEXT("%hs p=%.5f a=%.5f np=%.5f n=%s"),
 			__func__, Progress, Alpha, NProg, *GetNameSafe(GetOwner()));
 
 	Update(Alpha); // update child objects
@@ -92,6 +96,8 @@ void UCAnimator::DeInit() {
 }
 
 void UCAnimator::BindTo(UCAnimator* NewParent) {
+	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s parent=%s"),
+		__func__, *GetNameSafe(this), *GetNameSafe(NewParent));
 	if (IsValid(Parent)) Parent->OnUpdate.RemoveAll(this);
 	Parent = nullptr;
 
@@ -107,7 +113,8 @@ void UCAnimator::ChildUpdate(float T, float Alpha) {
 }
 
 void UCAnimator::Update_Implementation(float Alpha) {
-	UE_LOG(LogTemp, Verbose, TEXT("%hs %3.5f Obj=%s"), __func__, Alpha, *GetNameSafe(GetOwner()));
+	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s alpha=%3.5f"),
+		__func__, *GetNameSafe(GetOwner()), Alpha);
 }
 
 void UCAnimator::End_Implementation() {
@@ -137,6 +144,9 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 void UCAnimator::Activate(const bool bReset) {
 	// activate and deactivate will set/unset tick enabled.
 	const bool WasActive = IsActive();
+	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s Reset=%i WasActive=%i"),
+		__func__, *GetNameSafe(this), bReset, WasActive);
+	
 	Super::Activate(bReset);
 
 	if (bReset) {
@@ -149,6 +159,8 @@ void UCAnimator::Activate(const bool bReset) {
 
 void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
+	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s WasActive=%i"),
+		__func__, *GetNameSafe(this), WasActive);
 	Super::Deactivate();
 	DTAcum = 0;
 
