@@ -79,7 +79,6 @@ void UCAnimator::DoTick(float DT) {
 		UE_LOG(LogTemp, Log, TEXT("UCAnimator::%hs p=%.5f a=%.5f np=%.5f n=%s"),
 			__func__, Progress, Alpha, NProg, *GetNameSafe(GetOwner()));
 
-	
 	Update(Alpha); // update child objects
 
 	OnUpdate.Broadcast(Progress, Alpha);
@@ -152,6 +151,7 @@ void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
 	Super::Deactivate();
 	DTAcum = 0;
-	
+
+	// note that progress is not cleared here. that's important for mirroring.
 	if (WasActive) End();
 }

@@ -31,11 +31,30 @@ public:
 	// mostly for bps when you want to set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
+	// mostly for bps and binds. when you want to flip and play.
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	FORCEINLINE float GetProgress() const { return Progress; }
+	FORCEINLINE void PlayMirror() {
+		Mirror();
+		Activate(false); // important not to reset on mirror.
+	}
+	// simply sets flips "IsReversed" to the opposite.
+	// the progress remains the same, unless calling Activate(true).
+	// mostly for binds
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	FORCEINLINE void Flip() { IsReversed = !IsReversed; }
+	// Inverts the direction while also inverting the progress.
+	// Good for flips during animations.
+	// Not warrantied to work after the animation finishes. but it might.
+	// Mostly for binds.
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Mirror() {
+		Flip();
+		Progress = FMath::Clamp(1-Progress, 0, 1);
+	}
 
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	FORCEINLINE float GetProgress() const { return Progress; }
+	
 	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DeltaSeconds);

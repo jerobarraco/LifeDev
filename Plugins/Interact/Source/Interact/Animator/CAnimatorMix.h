@@ -38,7 +38,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	bool UseHSV = true;
 
-	// the component to be animated (hint, use the root component for "global" positioning)
+	// the material to be animated. Has to be a dynamic material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UMaterialInstanceDynamic* Mat = nullptr;
 

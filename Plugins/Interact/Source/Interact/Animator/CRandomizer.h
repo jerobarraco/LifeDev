@@ -21,12 +21,12 @@ public:
 	virtual void Activate(bool bReset = false) override;
 	virtual void Deactivate() override;
 	
-	// use Activate and deactivate
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
+	// use Activate and deactivate. used for binding.
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	FORCEINLINE void Start() {Activate (true);};
 
 	// use Activate and deactivate
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction))
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() {Deactivate();};
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
@@ -45,11 +45,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsLooping = false;
 	// whether to randomize the reverse for the anim
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseRandReverse = false;
 
 	// optional animator, if set will be triggered, and have its duration randomizer via the "value" variables.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	UCAnimator* Anim = nullptr;
 
 	// triggers on each trigger
@@ -67,7 +67,6 @@ protected:
 
 	void Reset();
 
-	// the current timer if any. 
-	UPROPERTY(BlueprintReadOnly, Transient)
+	// the current timer if any.
 	FTimerHandle Timer;
 };
