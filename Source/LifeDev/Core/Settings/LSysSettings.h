@@ -92,19 +92,23 @@ public:
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.Item"))
-	TSoftObjectPtr<UDataTable> Inventory = nullptr;
+	TSoftObjectPtr<UDataTable> Inventory = TSoftObjectPtr<UDataTable>(
+		FSoftObjectPath("/Game/LifeDev/Game/Inventory/DT_Inventory"));
 
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RowType="/Script/Dialogs.DialogChar"))
-	TSoftObjectPtr<UDataTable> Characters = nullptr;
+	TSoftObjectPtr<UDataTable> Characters = TSoftObjectPtr<UDataTable>(
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/DT_DiagChars"));
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RowType="/Script/LifeDev.LChapter"))
-	TSoftObjectPtr<UDataTable> Chapters = TSoftObjectPtr<UDataTable>(FSoftObjectPath());
+	TSoftObjectPtr<UDataTable> Chapters =
+		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Sys/DT_Chapters"));
 
 	// the chapter to start with
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
+		meta=(ClampMax=4, ClampMin=0, UIMin=0, UIMax=4))
 	int32 StartChap = -1;
 
 	// whether to use the feats listed in debugfeats or in defaultfeats
