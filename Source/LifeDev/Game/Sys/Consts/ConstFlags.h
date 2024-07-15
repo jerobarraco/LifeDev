@@ -14,6 +14,9 @@ namespace LDConsts {
 			inline static const FName Basin("CH0.Basin");
 		}
 		namespace Settings {
+			namespace Global {
+				inline static const FName Foxy("Set.Global.Foxy");
+			}
 			namespace Audio {
 				inline static const FName VolMaster("Set.Audio.VolMaster");
 				inline static const FName VolMusic("Set.Audio.VolMusic");

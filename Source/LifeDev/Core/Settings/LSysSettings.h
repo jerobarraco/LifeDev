@@ -131,7 +131,8 @@ public:
 
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	TSet<EFeat> DebugFeats = {EFeat::DBG_STEPS, EFeat::DBG_ALL,
+	TSet<EFeat> DebugFeats = {
+		EFeat::DBG_STEPS, EFeat::DBG_ALL,
 		EFeat::D_ALL, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::A_STROBE, EFeat::V_LUMEN, EFeat::V_BLUR,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,

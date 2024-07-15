@@ -4,10 +4,13 @@
 
 #include "LSettings.h"
 #include "LSysSettings.h"
+
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
+
 ////////////
 ///// DO NOT CALL GET WORLD HERE. IT WON'T WORK!
 ///////////////
@@ -25,6 +28,7 @@ void ULSave::Reset(UWorld* const W) {
 	SFlags.Empty();
 	
 	SFeats.Empty();
+	// read the feats
 	if (SysSettings) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
 		const TSet<EFeat>& Feats = SysSettings->GetFeats();
@@ -38,6 +42,9 @@ void ULSave::Reset(UWorld* const W) {
 			SFeats.Add(F);
 		}
 	}
+
+	// foxyfy the game
+	SFlags.Add(LDConsts::Flags::Settings::Global::Foxy, FMath::FRand());
 
 	// TODO this is a bit risky. keep an eye on it
 	WriteSubsystems(W);
