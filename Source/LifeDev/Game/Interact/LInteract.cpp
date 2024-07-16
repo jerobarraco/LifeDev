@@ -129,13 +129,15 @@ void ALInteract::DoRewards() {
 	// do the actor
 	if (IsValid(RewardActor)) {
 		RewardActor->SetActorHiddenInGame(false);
-
-		// enabled separately since on begin play it checks only for AInteract and no ALInteract
-		AInteract* const Reward = Cast<AInteract>(RewardActor);
-		if (Reward) Reward->SetEnabled(true);
 		
 		ALInteract* const LReward = Cast<ALInteract>(RewardActor);
 		if (LReward) LReward->Fade(true);
+		else {
+			// enabled separately since on begin play it checks only for AInteract and no ALInteract
+			// do only if it's not an LInteract. since fade will set enable. and don't cast twice.
+			AInteract* const Reward = Cast<AInteract>(RewardActor);
+			if (Reward) Reward->SetEnabled(true);
+		}
 	}
 
 	if (RewardStep && IsValid(Story)) Story->StartNext();

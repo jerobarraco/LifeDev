@@ -48,7 +48,7 @@ void UCAnimatorFade::CreateMaterial() {
 	
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
 	if (!IsValid(Mat)) {
-		UE_LOG(LogTemp, Log, TEXT("%hs dynamic mat is invalid :("), __func__);
+		UE_LOG(LogTemp, Log, TEXT("%hs dynamic mat is invalid. stop."), __func__);
 		return;
 	}
 

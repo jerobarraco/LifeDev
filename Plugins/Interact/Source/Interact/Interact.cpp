@@ -50,12 +50,14 @@ bool AInteract::TryTrigger_Implementation() {
 }
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
-	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s Item=%s"), __func__, *GetNameSafe(this), *Name.ToString());
+	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
+		*Name.ToString(), *GetNameSafe(this));
 	return EItemUseResult::BAD_TARGET;
 }
 
 void AInteract::SetEnabled(bool Enabled) {
-	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"), __func__, Enabled, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
+		__func__, Enabled, *GetNameSafe(this));
 
 	if (!IsValid(Interact)) {
 		UE_LOG(LogInteract, Warning, TEXT("AInteract::SetEnabled Interact is invalid!!!!!!!"));
@@ -105,6 +107,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	PlaySFX(SFX_Locked);
 }
 
@@ -116,7 +119,7 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::DoTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs : %s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
