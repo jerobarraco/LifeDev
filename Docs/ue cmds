@@ -82,3 +82,22 @@ au.ClearMutesAndSolos
 # DefaultEngine.ini, in the [SystemSettings] section (which you can add if it’s not already there), you can add “
 # https://forums.unrealengine.com/t/seamless-travel-with-play-in-editor/394250/22
 net.AllowPIESeamlessTravel=1
+
+
+
+# https://forums.unrealengine.com/t/heavy-nanite-bug-mesh-disappears-at-distance/574116/10
+    [/Script/Engine.RendererSettings]
+    r.Nanite.CoarseMeshStreaming=True
+    r.Nanite.ProxyRenderMode=2
+
+    [SystemSettings]
+    r.Shadow.Virtual.NonNanite.IncludeInCoarsePages=0
+
+    ; Imposters are not necessary because of HLOD
+    r.Nanite.Streaming.Imposters=0
+
+    ; Set initial size to we prevent a resize to 6144 at the transition to chase
+    r.Nanite.Streaming.NumInitialRootPages=5120
+
+    ; Increase the number of Nanite nodes to prevent some visual issues.
+    r.Nanite.MaxNodes=2621440
