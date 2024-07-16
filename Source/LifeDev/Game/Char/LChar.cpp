@@ -16,13 +16,15 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/ItemLogic.h"
+#include "Inventory/Flags.h"
 #include "JUtils/JMiscUtils.h"
 
 #include "GameUI.h"
-#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
 #include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -37,7 +39,7 @@ ALChar::ALChar(): Super() {
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (Movement) {
 		Movement->MaxWalkSpeed = SpeedMax;
-		Movement->MaxWalkSpeedCrouched = 75;
+		Movement->MaxWalkSpeedCrouched = SpeedMax/2;
 	}
 
 	// Create a CameraComponent
@@ -133,7 +135,6 @@ void ALChar::InteractSetEnabled(bool Enabled) {
 }
 
 void ALChar::BeginPlay() {
-	// Call the base class  
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
@@ -163,16 +164,35 @@ void ALChar::BeginPlay() {
 		}
 	}
 
-	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
-	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
-	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (FB) FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
-	
+
 	if (IsValid(Noiser)) Noiser->Activate();
 	else UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
+
+	// i can do this because the class defaults are in code. and then can be changed via config.
+	// and they get reloaded on game start (travel to game_l).
+	// and also the save-game is loaded before a game travel. and doesn't change during game.
+	// with your powers combined, it's me! Captain cringy feat!
+	UFlags* const Flags = UFlags::Instance(this);
+	if (Flags) {
+		const float Foxify =
+			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
+		const float SpeedMod = SpeedFoxy * Foxify;
+		SpeedMin += SpeedMod;
+		SpeedMax += SpeedMod;
+		UE_LOG(LogLChar, Log,
+			TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+			__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
+	}
+	
+	SetFB(0); // update walk speed values.
+
+	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
+	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
+	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -381,4 +401,5 @@ void ALChar::SetFB(float Value) {
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (!Movement) return;
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
+	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
 }
