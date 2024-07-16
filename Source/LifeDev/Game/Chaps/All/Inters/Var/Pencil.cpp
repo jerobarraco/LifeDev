@@ -11,7 +11,6 @@ APencil::APencil():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
-	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Pencil_P"));
@@ -26,7 +25,9 @@ APencil::APencil():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
+	AnimFade->SetNewMat();
+	UseFade = true;
+
 	SetEnabled(false);
 	APencil::SetMobility(EComponentMobility::Static);
-	AnimFade->SetNewMat();
 }

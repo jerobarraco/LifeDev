@@ -10,6 +10,7 @@ ALNPC01::ALNPC01():Super() {
 	// TODO make a new instance for the chap01 and remove this text from here
 	Texts = { FText::FromString("He seems dangerous...") };
 
+	UseFade = true;
 	AnimFade->SetNewMat();
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
@@ -84,7 +85,6 @@ ALNPC01::ALNPC01():Super() {
 		CMesh13(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Foot.Foot"));
 	FootR->SetStaticMesh(CMesh13.Object);
 	FootR->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
-
 
 	PoseStand.InteractOrg = FVector(2.500000,5.000000,67.500000);
 	PoseStand.InteractExt = FVector(20.000000,30.000000,70.000000);

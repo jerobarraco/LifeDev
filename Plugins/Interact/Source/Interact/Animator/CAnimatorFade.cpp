@@ -5,6 +5,8 @@
 
 #include "Kismet/KismetMaterialLibrary.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogAnimFade, Log, Log);
+
 UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFName = "Fade";
 	MatFStart = 0;
@@ -20,7 +22,7 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 }
 
 void UCAnimatorFade::SetNewMat() {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogAnimFade, Log, TEXT("%hs"), __func__);
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
 	MatBase = CMatBaseNew.Object;
@@ -30,7 +32,7 @@ void UCAnimatorFade::SetNewMat() {
 }
 
 void UCAnimatorFade::CreateMaterial() {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogAnimFade, Log, TEXT("%hs"), __func__);
 	
 	if (Meshes.Num()<1) return;
 	

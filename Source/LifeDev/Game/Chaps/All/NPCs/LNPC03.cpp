@@ -8,7 +8,6 @@
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	Locked = true;
-	UseFade = true; // TODO to a child class
 	Texts = { FText::FromString("...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
@@ -88,6 +87,8 @@ ALNPC03::ALNPC03():Super() {
 	Interact->SetBoxExtent(FVector(25,20,65));
 
 	AnimFade->SetNewMat();
+	// TODO actually move this to the child instance (since this class itself doesn't need to fade).
+	UseFade = true;
 
 	PoseBase.InteractExt = FVector(25,25,55);
 	PoseBase.InteractOrg = FVector(0,-5,50);

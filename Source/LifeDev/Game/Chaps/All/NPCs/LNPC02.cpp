@@ -77,6 +77,7 @@ ALNPC02::ALNPC02():Super() {
 	Interact->SetBoxExtent(FVector(25,25,55));
 
 	AnimFade->SetNewMat();
+	UseFade = true;
 
 	PoseBase.InteractExt = FVector(25,25,55);
 	PoseBase.InteractOrg = FVector(0,-5,50);

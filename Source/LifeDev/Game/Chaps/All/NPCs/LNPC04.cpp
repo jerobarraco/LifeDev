@@ -8,7 +8,6 @@
 ALNPC04::ALNPC04():Super() {
 	UseAnim = false;
 	Locked = true;
-	UseFade = true; // actually move this to the child instance
 	Texts = { FText::FromString("...") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -80,6 +79,8 @@ ALNPC04::ALNPC04():Super() {
 	Interact->SetBoxExtent(FVector(25,20,75));
 
 	AnimFade->SetNewMat();
+	// TODO actually move this to the child instance (since this class itself doesn't need to fade).
+	UseFade = true;
 
 	PoseBase.InteractOrg = FVector(0,0,72.5);
 	PoseBase.InteractExt = FVector(25,20,75);
