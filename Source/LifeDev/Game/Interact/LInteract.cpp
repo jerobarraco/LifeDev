@@ -13,6 +13,8 @@
 #include "LifeDev/Game/Sys/Consts/ConstSettings.h"
 #include "Story/Story.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
+
 ALInteract::ALInteract():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(LDConsts::Audio::Attns::SFX);
@@ -27,6 +29,8 @@ ALInteract::ALInteract():Super() {
 }
 
 void ALInteract::Fade_Implementation(bool FadeIn) {
+	UE_LOG(LogLInteract, Log, TEXT("%hs in=%i o=%s"),
+		__func__, FadeIn, *GetNameSafe(this));
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
 		AnimFade->Activate(true);
@@ -86,6 +90,8 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"),
+		__func__, *GetNameSafe(this));
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
 	const UWorld* const World = GetWorld();
@@ -93,7 +99,11 @@ void ALInteract::DoRewards() {
 
 	/// Rewards
 	// just return. nothing to do. don't self destroy or anything.
-	if (IsRewardless()) return;
+	if (IsRewardless()) {
+		UE_LOG(LogLInteract, Log, TEXT("%hs Nothing to reward. Skip. o=%s"),
+			__func__, *GetNameSafe(this));
+		return;
+	}
 
 	// it's not necessary to call "disable while anim = false" here.
 	// since it's up to the client to allow re-triggerables.
@@ -147,15 +157,18 @@ void ALInteract::DoRewards() {
 		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
 		return;
 	}
+
 	RewardFaded();
 }
 
 void ALInteract::RewardFaded() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
 	Destroy();
 }
 
 bool ALInteract::TryTrigger_Implementation() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	// handle item req
 	if (!ULockItemReq.IsNone()) {
 		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
@@ -172,6 +185,7 @@ bool ALInteract::TryTrigger_Implementation() {
 }
 
 void ALInteract::DoTrigger_Implementation() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTrigger_Implementation();
 
 	// start fading right away to give the player the impression that they picked it up
@@ -190,6 +204,7 @@ void ALInteract::DoTrigger_Implementation() {
 }
 
 void ALInteract::DoTriggerLocked_Implementation() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTriggerLocked_Implementation();
 	
 	if (!Inventory || !Diags) return;
@@ -201,8 +216,10 @@ void ALInteract::DoTriggerLocked_Implementation() {
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	if (Item == NAME_None) {
-		UE_LOG(LogTemp, Warning, TEXT("TryUseItem with item none. cancelled."));
+		UE_LOG(LogLInteract, Warning, TEXT("%hs, TryUseItem with item none. Skip. o=%s"),
+			__func__, *GetNameSafe(this));
 		return EItemUseResult::BAD_TARGET;
 	}
 
@@ -237,7 +254,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
 		const bool Added = ValidDiags && Diags->AddId(ULockBadDlg);
-        return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	// now unlocked
