@@ -11,6 +11,7 @@ APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
+	UseFade = false;
 	Locked = false;
 	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it

@@ -11,6 +11,7 @@ ASpongeI00::ASpongeI00():Super() {
 	RewardStep = true;
 	Locked = false;
 	UseRewardDestroy = false;
+	UseFade = false;
 	IsOneShot = true;
 	UseAnim = true;
 	SetEnabled(false);

@@ -8,6 +8,7 @@ ATapeI01::ATapeI01():Super() {
 	StateNum = 1;
 	UseAnim = false;
 	UseFade = true;
+	UseRewardDestroy = true;
 	RewardFlash = .1;
 	RewardItem = "T00";
 	// needed to be able to attach to the drawer
