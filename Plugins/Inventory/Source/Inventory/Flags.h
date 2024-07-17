@@ -49,14 +49,16 @@ public:
 		return Flags.Contains(Name);
 	};
 
-	// Returns whether a flag is set to >=1. this might be a bit slower than calling Get, unless you are also checking if it's >=1
+	// Returns whether a flag is set to >=1.
+	// This might be a bit slower than calling Get, unless you are also checking if it's >=1.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE bool Has(const FName& Name) const {
 		const float V = Get(Name);
 		return FMath::IsNearlyEqual(V, 1) || V >= 1.0;
 	}
 
-	// returns a list of flags. Warning/KIKEN/Atchung. so be careful. mostly used for load and saving.
+	// returns a list of flags. Warning/KIKEN/Atchung. so be careful.
+	// mostly used for load and saving.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	const TMap<FName, float>& GetAll() const { return Flags; };
 	// can't forceinline due to const & tmap
