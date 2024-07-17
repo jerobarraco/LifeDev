@@ -34,6 +34,13 @@ ALLight::ALLight():Super() {
 		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
 	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object; // by default use noise ranmp
 
+	
+	// TODO when the randomizer changes the animation.
+	// there's a change the light ends up visually off, but logically on.
+	// and on the next chapter it starts looking off, and then have to trigger it twice.
+	// TODO test this
+	Anim->IsBouncing = true; // make sure the light ends up where it started.
+
 	// this will trigger the flicker animation randomly
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->SetAutoActivate(false); // important since it's feature flagged.
@@ -41,7 +48,8 @@ ALLight::ALLight():Super() {
 	Rnd->Anim = Anim;
 	Rnd->UseAnimRandReverse = false; // don't want to change the state of the light
 	Rnd->UseAnimValue = true;
-	Rnd->UseAnimMirror = true; // will not jump around. might make the anim longer.
+	// will not jump around. might make the anim longer.
+	Rnd->UseAnimMirror = true;
 	Rnd->ValueMin = .3;
 	Rnd->ValueMax = 3;
 	Rnd->DelayMin = 3;

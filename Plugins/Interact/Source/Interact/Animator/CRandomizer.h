@@ -44,13 +44,16 @@ public:
 	// whether the randomizer will loop 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsLooping = false;
-	// Whether to randomize the reverse for the anim. This takes precedence over UseAnimMirror.
+	// Whether to randomize the reverse for the anim.
+	// This takes precedence over UseAnimMirror.
 	// And will force reset the animation.
+	// If the randomizer triggers mid-animation, this will jump.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseAnimRandReverse = false;
 	// whether to mirror the anim on trigger.
 	// Won't reset the anim progress but will keep playing.
-	// UseAnimRandReverse takes precedence.
+	// UseAnimRandReverse takes precedence, they are exclusive.
+	// If the randomizer triggers mid-animation, this will make a smooth change of direction.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseAnimMirror = false;
 	// whether to set the anim duration to the random value on trigger. (ValueMin, ValueMax)

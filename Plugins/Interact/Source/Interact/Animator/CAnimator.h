@@ -43,8 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	FORCEINLINE void Flip() { IsReversed = !IsReversed; }
 	// Inverts the direction while also inverting the progress.
-	// Good for flips during animations.
-	// Not warrantied to work after the animation finishes. but it might.
+	// Good for direction change while animating.
+	// Not warrantied to work after the animation finishes. (but it does atm).
 	// Mostly for binds.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Mirror() {
