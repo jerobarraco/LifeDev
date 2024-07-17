@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "LifeDev/Core/Story/LStep.h"
 
 #include "LStepC3S002.generated.h"

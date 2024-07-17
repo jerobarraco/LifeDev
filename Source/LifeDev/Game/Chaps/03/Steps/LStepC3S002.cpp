@@ -12,7 +12,6 @@ ALStepC3S002::ALStepC3S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;
-
 	ItemsFinish = {
 		LDConsts::Items::Card3,
 		LDConsts::Items::Poem3,
@@ -25,6 +24,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 	RandFB->ValueMin = -.07;
 	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 	UseRandFB = true;
+	UseRain = true;
 }
 
 void ALStepC3S002::BeginPlay() {
@@ -40,7 +40,6 @@ void ALStepC3S002::BeginPlay() {
 
 void ALStepC3S002::Start_Implementation() {
 	Super::Start_Implementation();
-	ALMusicMan::SetRainS(GetWorld(), true);
 	FB->SetMin(0);
 }
 
@@ -48,7 +47,6 @@ void ALStepC3S002::Stop_Implementation() {
 	FB->SetMin(0);
 	FB->SetMax(1);
 	FB->SetVal(0);
-	ALMusicMan::SetRainS(GetWorld(), false);
 	Super::Stop_Implementation();
 }
 
