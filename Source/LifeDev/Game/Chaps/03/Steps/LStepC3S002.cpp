@@ -2,7 +2,7 @@
 
 #include "LStepC3S002.h"
 
-#include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
@@ -15,6 +15,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 	ItemsFinish = {
 		LDConsts::Items::Card3,
 		LDConsts::Items::Poem3,
+		LDConsts::Items::Tape3,
 	};
 	
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
@@ -47,6 +48,7 @@ void ALStepC3S002::Stop_Implementation() {
 	FB->SetMin(0);
 	FB->SetMax(1);
 	FB->SetVal(0);
+	Inventory->Mod(LDConsts::Items::Tape3, -1); // use it.
 	Super::Stop_Implementation();
 }
 

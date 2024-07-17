@@ -10,8 +10,7 @@ ATapeI03::ATapeI03():Super() {
 	UseAnim = false;
 	RewardFlash = -.1;
 	// TODO should just simply trigger the effect instead of adding an item?
-	// RewardItem = "T03";
-	RewardItem = NAME_None;
+	RewardItem = LDConsts::Items::Tape3;
 	UseRewardDestroy = true;
 	UseFade = true;
 	Locked = true;
