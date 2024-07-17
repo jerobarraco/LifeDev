@@ -5,6 +5,7 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
+
 #include "LifeDev/Game/Sys/Consts/ConstItems.h"
 
 ABatts::ABatts():Super() {
@@ -38,7 +39,7 @@ ABatts::ABatts():Super() {
 	/// Anims
 	AnimFade->Meshes.AddUnique(MeshB);
 	AnimFade->SetNewMat();
-	UseFade = true; // a bit lazy. (why?)
+	UseFade = true; // a bit lazy. ideally to be set on the children.
 
 	// set static by default
 	SetEnabled(false);

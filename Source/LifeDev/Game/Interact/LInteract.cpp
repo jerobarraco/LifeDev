@@ -8,10 +8,10 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstSettings.h"
-#include "Story/Story.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
 
@@ -59,9 +59,14 @@ void ALInteract::BeginPlay() {
 
 	// avoid getting the sound killed on self-destroy
 	// set here on purpose to allow the user to override it and self-hurt.
-	if (WillRewardDestroy()) UseAttachedSFX = false;
+	if (WillRewardDestroy()) {
+		UseAttachedSFX = false;
+		if (!UseFade)
+			UE_LOG(LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false."
+				"This is legal but unlikely. o=%s"), __func__, *GetNameSafe(this));
+	}
 
-	if (IsValid(RewardActor)) {
+	if (IsValid(RewardActor)) { // hide and disable reward actor if any.
 		RewardActor->SetActorHiddenInGame(true);
 		AInteract* const Reward = Cast<AInteract>(RewardActor);
 		if (IsValid(Reward)) Reward->SetEnabled(false);

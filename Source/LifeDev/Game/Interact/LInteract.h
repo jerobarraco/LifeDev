@@ -84,25 +84,25 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
 	TMap<FName, FName> UseItemDlgs;
 	
-	// setting this will reward the item on trigger. will self-destroy if UseRewardFade is set.
+	// setting this will reward the item on trigger. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
 
-	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if UseRewardFade is set.
+	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardFlag = NAME_None;
 
-	// the mod value for the flash system when it's triggered. will self-destroy if UseRewardFade is set.
+	// the mod value for the flash system when it's triggered. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
 
-	// An actor to reward. will self-destroy if UseRewardFade is set.
+	// An actor to reward. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	AActor* RewardActor = nullptr;
 	// actually editAnywhere since we want to modify the pointer
 
 	// Will start the next story step (finishing the current one).
-	// called reward so that the UseRewardFade affects it.
+	// called reward so that the UseRewardDestroy affects it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool RewardStep = false;
 	
@@ -111,12 +111,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardDestroy = true;
 
-	// whether to use fade at all. if set it will create a material.
+	// Whether to use fade at all. if set it will *create* a dynamic material instance.
 	// uses the AnimFade object and what's set there.
-	// remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
-	// By default, it's false. Since true is a performance cost and also destructive (will replace your material). 
+	// Remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
+	// By default, it's false. Other-wise it will cost performance.
+	// (will replace your material and incur in extra draw calls).
+	// Important to set it when using the Reward stuff and UseRewardDestroy.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseFade = false; // TODo set things to fade manually 
+	bool UseFade = false; 
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
@@ -130,9 +132,9 @@ protected:
 	void Rewarded();
 	virtual void Rewarded_Implementation() {}
 
-	// mostly internal. gives the rewards. if UseRewardFade it WILL self-destroy.
+	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.
-	// exposed in case you want to do multiple rewards, in which case don't set UseRewardFade
+	// exposed in case you want to do multiple rewards, in which case don't set UseRewardDestroy
 	UFUNCTION(BlueprintCallable)
 	void DoRewards();
 
