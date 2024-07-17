@@ -28,11 +28,11 @@ ALStepC2S003::ALStepC2S003():Super() {
 }
 
 void ALStepC2S003::TryStart_Implementation() {
-	// just remove the card since implementing the using of it is rather complex.
-    // the user interaction is not in place yet so it wont be a good exp
-    // we can't pick it up without the batteries, so story wise is safe.
+	// just remove the tape, since implementing the using of it is rather complex.
+	// the user interaction is not in place yet, so it won't be a good exp.
+	// we can't pick it up without the batteries, so story wise is safe.
 	// note apparently modding inventory while a dialog is shown could show the inventory below the dialog
-    Inventory->Mod("T02", -1);
+	Inventory->Mod("T02", -1);
 
 	// super will start the dialog and finish when done
 	Super::TryStart_Implementation();
