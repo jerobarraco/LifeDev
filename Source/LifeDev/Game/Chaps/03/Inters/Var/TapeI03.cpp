@@ -8,7 +8,7 @@ ATapeI03::ATapeI03():Super() {
 	Texts = { FText::FromString(TEXT("One more tape")) };
 	StateNum = 1;
 	UseAnim = false;
-	RewardFlash = .1;
+	RewardFlash = -.1;
 	// TODO should just simply trigger the effect instead of adding an item?
 	// RewardItem = "T03";
 	RewardItem = NAME_None;
