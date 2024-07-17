@@ -9,6 +9,7 @@
 APlant00::APlant00():Super() {
 	Texts = { FText::FromString(TEXT("Plant"))};
 	UseAnim = false;
+	DisableWhileAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
 

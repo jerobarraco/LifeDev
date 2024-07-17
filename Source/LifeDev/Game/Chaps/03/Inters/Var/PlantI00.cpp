@@ -2,10 +2,13 @@
 
 #include "PlantI00.h"
 
+// #include "Interact/CInteract.h"
+
 APlantI00::APlantI00():Super() {
 	Texts = { FText::FromString(TEXT("Plant"))};
-	UseAnim = false;
-	UseRewardDestroy = false;
-	StateNum = 1;
 	TriggerDlg = "PL00_T";
+	// the plant on c03 has some batteries. the box collides with the batts.
+	// but i've fixed that by setting the plant to oneShot.
+	// Interact->SetBoxExtent(FVector(37.500000,37.500000,27.500000));
+	// Interact->SetRelativeLocation(FVector(32.500000,-32.500000,30));
 }
