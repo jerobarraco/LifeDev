@@ -5,7 +5,7 @@
 
 #include "PlantI00.generated.h"
 
-// Base PlantI00
+// PlantI00 Instance on chap03
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APlantI00: public APlant00 {
 	GENERATED_BODY()
