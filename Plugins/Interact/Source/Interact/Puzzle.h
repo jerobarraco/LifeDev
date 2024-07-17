@@ -76,11 +76,11 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void ClearTimer();
 
-	// Interact to trigger on Done. It will force unlock.
+	// Interact to *trigger* on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	AInteract* DoneInter = nullptr;
 	
-	// actor to reward on done.
+	// Actor to reward on Done. Can be an interact, it will use fade, but won't trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	AActor* DoneActor = nullptr;
 

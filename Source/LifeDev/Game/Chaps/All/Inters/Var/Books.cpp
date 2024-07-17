@@ -38,6 +38,7 @@ void ABooks::CreateBooks() {
 		AnimFade->Meshes.Add(QM);
 
 		if (MatMax <= 0) continue;
+
 		const int32 MatI = RS.RandRange(0, MatMax);
 
 		TSoftObjectPtr<UMaterialInterface> Ptr = Materials[MatI];
@@ -45,7 +46,8 @@ void ABooks::CreateBooks() {
 		
 		UMaterialInterface* const Mat = Ptr.LoadSynchronous();
 		if (!IsValid(Mat)) {
-			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material=%s"), __func__, *Ptr.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material=%s"),
+				__func__, *Ptr.ToString());
 			continue;
 		}
 
@@ -76,7 +78,7 @@ void ABooks::Constructor() {
 
 // unreal made me do it.
 
-ABooks::ABooks():Super(){
+ABooks::ABooks():Super() {
 	Constructor();
 }
 
