@@ -5,7 +5,8 @@
 
 #include "Flashback.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, float, Value);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, const float, Value);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnTo, const float, To);
 
 class UCAnimator;
 
@@ -62,9 +63,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
 	float AnimSpeed = 20.f;
 
-	// triggered on each step change.
-	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
+	// triggered with each value update (updates per tick).
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FFBOnChange OnChange;
+	
+	// Triggered on a new target value. Only once.
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FFBOnTo OnTo;
 
 	inline static bool Debug = false;
 
@@ -77,11 +82,13 @@ protected:
 	virtual bool IsTickable() const override;
 #pragma endregion
 
+	// doesn't check the range.
+	void SetValToInternal(const float New);
 	// doesn't check the range
-	void SetValInternal(float New);
+	void SetValInternal(const float New);
 	UFUNCTION() // for binding
-	void AnimUpdate(float Progress, float Alpha);
-	
+	void AnimUpdate(const float Progress, const float Alpha);
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Animator = nullptr;
 
