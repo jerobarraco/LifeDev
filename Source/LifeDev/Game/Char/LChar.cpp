@@ -402,4 +402,7 @@ void ALChar::SetFB(float Value) {
 	if (!Movement) return;
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
+
+	if (Camera)
+		Camera->SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
 }
