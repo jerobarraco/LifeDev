@@ -397,7 +397,7 @@ void ALChar::MenuDone() {
 	SettingsUI->Hide();
 }
 
-void ALChar::SetFB(float Value) {
+void ALChar::SetFB(const float Value) {
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (!Movement) return;
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);

@@ -109,7 +109,7 @@ protected:
 	UFUNCTION()
 	void MenuDone();
 	UFUNCTION()
-	void SetFB(float Value);
+	void SetFB(const float Value);
 	
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
