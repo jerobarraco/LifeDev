@@ -171,11 +171,11 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateChap.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::D_ALL && Feat <= EFeat::D_TEXT)
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::S_MUSIC && Feat<= EFeat::S_ENV)
+	else if (Feat >= EFeat::S_MUSIC && Feat <= EFeat::S_ENV)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if (Feat == EFeat::A_STROBE && Feat <= EFeat::A_FOV)
+	else if (Feat >= EFeat::A_STROBE && Feat <= EFeat::A_FOV)
 		OnFeatUpdateAccess.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);

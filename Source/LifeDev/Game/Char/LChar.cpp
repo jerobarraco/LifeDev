@@ -422,6 +422,8 @@ void ALChar::SetFB(const float Value) {
 }
 
 void ALChar::FeatUpdateAccess(const EFeat Feat, const bool bEnabled) {
+	UE_LOG(LogLChar, Log, TEXT("%hs, Feat update f=%s on=%i"),
+		__func__, *UEnum::GetValueAsString(Feat), bEnabled);
 	if (Feat == EFeat::A_FOV) {
 		UseFeatFOV = bEnabled;
 		if (!UseFeatFOV && Camera)
