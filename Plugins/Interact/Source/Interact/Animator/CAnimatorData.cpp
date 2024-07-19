@@ -18,8 +18,9 @@ void UCAnimatorData::Update_Implementation(float Alpha) {
 	}
 
 	if (DataVIndex >= 0) {
-		const FLinearColor& Val = FLinearColor::LerpUsingHSV(
-			DataVStart, DataVEnd, Alpha);
+		const FLinearColor& Val = UseHSV ?
+				FLinearColor::LerpUsingHSV(DataVStart, DataVEnd, Alpha) :
+				FMath::LerpStable(DataVStart, DataVEnd, Alpha);
 		Prim->SetCustomPrimitiveDataVector4(DataVIndex, Val);
 		// this is the functions to call, the ones that use an FName are for dynamic materials
 	}

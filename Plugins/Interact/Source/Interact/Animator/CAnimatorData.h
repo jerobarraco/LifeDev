@@ -40,6 +40,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor DataVEnd = FLinearColor::White;
 
+	// Slower but nicer on colors. Might be better to set to false on simple vector ParV*.
+	// only affects DataV*.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
+	bool UseHSV = true;
+
 	// primitive component to be animated (only for data.)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	UPrimitiveComponent* Prim = nullptr;
