@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LSysSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+
+#include "LSysSettings.h"
+
 #include "LSettings.generated.h"
 
 class USaveGame;
@@ -71,7 +73,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnSaveReady OnSaveReady;
 	
-	// triggered when one of the feat is updated to be enabled or disabled
+	// triggered when one of the feat is updated to be enabled or disabled.
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdate;
 	UPROPERTY(BlueprintAssignable, Transient)
@@ -89,7 +91,7 @@ public:
 
 protected:
 	// broadcasts the corresponding delegates
-	void FeatUpdated(EFeat Feat, bool Enable) const;
+	void FeatUpdated(const EFeat Feat, const bool Enable) const;
 	void SaveGameDone(const FString& Slot, int32 Index, bool Success);
 	void LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame);
 

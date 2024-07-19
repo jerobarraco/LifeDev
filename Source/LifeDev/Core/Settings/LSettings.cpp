@@ -164,7 +164,7 @@ void ULSettings::Init() {
 	else NewGame();
 }
 
-void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {
+void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 	OnFeatUpdate.Broadcast(Feat, Enable);
 
 	if (Feat >= EFeat::C_00 && Feat <= EFeat::C_09)
@@ -175,7 +175,7 @@ void ULSettings::FeatUpdated(EFeat Feat, bool Enable) const {
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if (Feat == EFeat::A_STROBE)
+	else if (Feat == EFeat::A_STROBE && Feat <= EFeat::A_FOV)
 		OnFeatUpdateAccess.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
