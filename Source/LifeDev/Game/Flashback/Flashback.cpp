@@ -40,8 +40,8 @@ void UFlashback::SetValInternal(const float New) {
 }
 
 void UFlashback::AnimUpdate(const float Progress, const float Alpha) {
-	// using animFrom and To, keeps the animation stable and linear.
-	SetValInternal(FMath::Lerp<float, float>(ValFrom, ValTo, Alpha));
+	// using From and To, keeps the animation stable and linear.
+	SetValInternal(FMath::LerpStable(ValFrom, ValTo, Alpha));
 }
 
 void UFlashback::SetValToInternal(const float New) {
