@@ -41,7 +41,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UFUNCTION() // bind
-	void FeatUpdate(EFeat Feat, bool bEnabled);
+	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
 	void SetFB(float Value);
 };

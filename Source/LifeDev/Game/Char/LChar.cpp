@@ -20,6 +20,7 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "GameUI.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
@@ -201,17 +202,16 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	Inventory = nullptr;
 	Diags = nullptr;
-	if (IsValid(UI)) {
+	if (IsValid(UI))
 		UI->RemoveFromParent();
-	}
 	UI = nullptr;
 
-	if (IsValid(SettingsUI)) {
+	if (IsValid(SettingsUI))
 		SettingsUI->RemoveFromParent();
-	}
 	SettingsUI = nullptr;
 
-	if (IsValid(Noiser)) Noiser->Deactivate();
+	if (IsValid(Noiser))
+		Noiser->Deactivate();
 	Noiser = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
@@ -316,9 +316,7 @@ void ALChar::LookItem(const FName& Name) {
 	}
 
 	// trigger manager look
-	if (IsValid(Item.Logic)) {
-		Item.Logic->Look();
-	}
+	if (IsValid(Item.Logic)) Item.Logic->Look();
 }
 
 void ALChar::ActItem() {
@@ -328,9 +326,7 @@ void ALChar::ActItem() {
 
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
-	if (!Found) {
-		return;
-	}
+	if (!Found) return;
 
 	if (!Item.Usable) {
 		UE_LOG(LogLChar, Log, TEXT("Item not usable"));
@@ -356,9 +352,8 @@ void ALChar::ActItem() {
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
 		// (notice this if is separate from the one above)
 		UE_LOG(LogLChar, Log, TEXT("Item is self-usable. will attempt now. '%s'."), *Item.Title.ToString());
-		if (IsValid(Item.Logic)) {
+		if (IsValid(Item.Logic))
 			Item.Logic->Use();
-		}
 	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
 		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
 		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s' badTarget=%i"), Res, *Item.Title.ToString(), isBadTarget);
@@ -403,6 +398,8 @@ void ALChar::SetFB(const float Value) {
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
 
+	// TODO add onfeatchanged and toggle a member boolean flag for performance
+	if (!ULSettings::GetFeatS(this, EFeat::A_FOV)) return;
 	if (Camera)
 		Camera->SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
 }

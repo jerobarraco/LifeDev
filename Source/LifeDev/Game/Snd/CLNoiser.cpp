@@ -68,7 +68,7 @@ void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void UCLNoiser::FeatUpdate(EFeat Feat, bool bEnabled) {
+void UCLNoiser::FeatUpdate(const EFeat Feat, const bool bEnabled) {
 	if (Feat != EFeat::S_NOISE) return;
 	SetActive(bEnabled, false);
 }

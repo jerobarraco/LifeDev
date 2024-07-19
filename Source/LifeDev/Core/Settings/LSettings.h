@@ -23,7 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ULSettings* Instance(UObject* O);
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static bool GetFeatS(UObject* O, EFeat Feat);
+	static bool GetFeatS(UObject* const O, const EFeat Feat);
 
 	// overrides current save with a new game
 	// defaults to current slot
@@ -57,7 +57,7 @@ public:
 
 	// Returns true if a feature is enabled
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE	bool GetFeat(EFeat Feat) const { return Feats.Contains(Feat); }
+	FORCEINLINE	bool GetFeat(const EFeat Feat) const { return Feats.Contains(Feat); }
 	
 	// only call once by the gameinstance or smth
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
