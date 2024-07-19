@@ -213,6 +213,8 @@ void UPooler::RemPool(TSubclassOf<AActor> Class) {
 }
 
 UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
+	if (!IsValid(Class)) return nullptr; // possible crash
+
 	const FName Key = Class->GetFName();
 	UPool** const pPool = Pools.Find(Key);
 	if (!pPool) {
