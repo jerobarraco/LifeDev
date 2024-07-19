@@ -53,7 +53,7 @@ public:
 
 	// Enables or disables the interaction.
 	UFUNCTION(BlueprintCallable, Category="Interact")
-	virtual void SetEnabled(bool Enabled = true);
+	virtual void SetEnabled(const bool Enabled = true);
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
 	// and THIS function is called in the constructor everywhere.

@@ -55,7 +55,7 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::BAD_TARGET;
 }
 
-void AInteract::SetEnabled(bool Enabled) {
+void AInteract::SetEnabled(const bool Enabled) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
 		__func__, Enabled, *GetNameSafe(this));
 
@@ -84,7 +84,8 @@ void AInteract::Reset() {
 }
 
 void AInteract::SetState_Implementation(int32 NewState) {
-	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"), __func__, NewState, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
+		__func__, NewState, *GetNameSafe(this));
 	State = NewState;
 	SetText();
 }
