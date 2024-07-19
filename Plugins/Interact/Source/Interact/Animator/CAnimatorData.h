@@ -9,14 +9,16 @@
 class UCurveFloat;
 class USceneComponent;
 
-// while this is a cool idea, i'm not going to use it.
-// because of how i've already organized the assets.
-// Nanite seems to be grouping the assets on their material even though they are dynamic.
-
 // Allows to animate custom data on primitives (meshes)
 // only for the non-dynamic materials though.
-UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimatorData: public UCAnimatorTrans {
+// while this is a cool idea, i'm not going to use it.
+// because of how i've already organized the assets.
+// Also using custom primitive data on materials is a mayor pain. so it's not practical.
+// Though i love performance, i'm not into masochism.
+// And lastly and most importantly, Nanite seems to be grouping the assets on their material even though they are dynamic.
+UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact),
+	meta=(BlueprintSpawnableComponent))
+class INTERACT_API UCAnimatorData: public UCAnimator {
 	GENERATED_BODY()
 
 public:

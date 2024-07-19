@@ -16,6 +16,7 @@ void UCAnimatorData::Update_Implementation(float Alpha) {
 		const float Val = FMath::LerpStable(DataFStart, DataFEnd, Alpha);
 		Prim->SetCustomPrimitiveDataFloat(DataFIndex, Val);
 	}
+
 	if (DataVIndex >= 0) {
 		const FLinearColor& Val = FLinearColor::LerpUsingHSV(
 			DataVStart, DataVEnd, Alpha);
