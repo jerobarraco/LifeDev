@@ -34,9 +34,7 @@ bool UPool::RemoveOne() {
 	if (I < 0) return false;
 
 	AActor* const A = Ready[I];
-	if (IsValid(A)) {
-		A->Destroy();
-	}
+	if (IsValid(A)) A->Destroy();
 
 	// remove will shrink
 	Ready.RemoveAt(I, 1, true);
@@ -144,7 +142,7 @@ void UPool::BeginDestroy() {
 void UPool::SetTrimTimer() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
 
 	FTimerManager& Timer = World->GetTimerManager();
@@ -206,7 +204,7 @@ void UPooler::RemPool(TSubclassOf<AActor> Class) {
 		return;
 	}
 
-	UPool* const Pool = *PPool; 
+	UPool* const Pool = *PPool;
 	Pool->Empty();
 	
 	Pools.Remove(Key);
