@@ -109,7 +109,7 @@ void UCAnimator::BindTo(UCAnimator* NewParent) {
 	Parent->OnUpdate.AddUniqueDynamic(this, &UCAnimator::ChildUpdate);
 }
 
-void UCAnimator::ChildUpdate(float T, float Alpha) {
+void UCAnimator::ChildUpdate(const float T, const float Alpha) {
 	Progress = T;
 	Update(Alpha);
 }

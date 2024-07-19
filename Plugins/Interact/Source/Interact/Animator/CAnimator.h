@@ -126,7 +126,7 @@ protected:
 
 	// called by a parent component's update
 	UFUNCTION() // bound
-	void ChildUpdate(float T, float Alpha);
+	void ChildUpdate(const float T, const float Alpha);
 
 	// finishes, and tentatively restart if needed.
 	void Finish();
