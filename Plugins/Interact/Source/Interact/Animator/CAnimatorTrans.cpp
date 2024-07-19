@@ -14,10 +14,11 @@ void UCAnimatorTrans::Update_Implementation(float Alpha) {
 
 	FTransform TNew = TStart;
 	if (IsAdditive) {
-		TStart.BlendFromIdentityAndAccumulate(TNew, TEnd, (const ScalarRegister) Alpha);
+		TStart.BlendFromIdentityAndAccumulate(
+			TNew, TEnd, (const ScalarRegister) Alpha);
 		// TNew.Accumulate(TEnd, (const ScalarRegister) Alpha); // not what i want, does something different with the scale.
 	}else {
-		// Thanks Tim! this actually works very well!
+		// Thanks, Tim! this actually works very well!
 		TNew.BlendWith(TEnd, Alpha);
 	}
 	TRoot->SetRelativeTransform(TNew);
@@ -25,7 +26,6 @@ void UCAnimatorTrans::Update_Implementation(float Alpha) {
 
 void UCAnimatorTrans::BeginPlay() {
 	Super::BeginPlay();
-	if (IsValid(TRoot) && IsAdditive) {
+	if (IsValid(TRoot) && IsAdditive)
 		TStart = TRoot->GetRelativeTransform();
-	}
 }
