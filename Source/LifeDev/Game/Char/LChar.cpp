@@ -189,6 +189,20 @@ void ALChar::BeginPlay() {
 			__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 	}
 	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings) {
+		Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALChar::FeatUpdateAccess);
+		UseFeatFOV = Settings->GetFeat(EFeat::A_FOV);
+		const float Foxify =
+			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
+		const float SpeedMod = SpeedFoxy * Foxify;
+		FOVMin += SpeedMod;
+		FOVMax += SpeedMod;
+		UE_LOG(LogLChar, Log,
+			TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+			__func__, FOVMin, FOVMax, SpeedMod, Foxify);
+	}
+
 	SetFB(0); // update walk speed values.
 
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
@@ -216,6 +230,11 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (FB) FB->OnChange.RemoveAll(this);
+	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings) 
+		Settings->OnFeatUpdateAccess.RemoveAll(this);
+
 
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
@@ -357,7 +376,7 @@ void ALChar::ActItem() {
 	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
 		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
 		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s' badTarget=%i"), Res, *Item.Title.ToString(), isBadTarget);
-		const FName& DlgId = isBadTarget ? 
+		const FName& DlgId = isBadTarget ?
 			LDConsts::Dlgs::Sys::Item::BadTarget :
 			LDConsts::Dlgs::Sys::Item::NoTarget;
 		Say(DlgId);
@@ -398,8 +417,14 @@ void ALChar::SetFB(const float Value) {
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
 
-	// TODO add onfeatchanged and toggle a member boolean flag for performance
-	if (!ULSettings::GetFeatS(this, EFeat::A_FOV)) return;
-	if (Camera)
+	if (UseFeatFOV && Camera)
 		Camera->SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
+}
+
+void ALChar::FeatUpdateAccess(const EFeat Feat, const bool bEnabled) {
+	if (Feat == EFeat::A_FOV) {
+		UseFeatFOV = bEnabled;
+		if (!UseFeatFOV && Camera)
+			Camera->SetFieldOfView(FOVMin);
+	}
 }

@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "LChar.generated.h"
 
@@ -110,7 +112,9 @@ protected:
 	void MenuDone();
 	UFUNCTION()
 	void SetFB(const float Value);
-	
+	UFUNCTION()
+	void FeatUpdateAccess(const EFeat Feat, const bool bEnabled);
+
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
 	//* Called for looking input 
@@ -146,5 +150,7 @@ protected:
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Diags = nullptr;
+
+	bool UseFeatFOV = true;
 };
 
