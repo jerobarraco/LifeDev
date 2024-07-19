@@ -13,17 +13,17 @@ void UCAnimatorSound::Update_Implementation(float Alpha) {
 
 	// TODO test all this stuff
 	if (!IntName.IsNone())
-		Snd->SetIntParameter(IntName, FMath::Lerp(IntMin, IntMax, Alpha));
+		Snd->SetIntParameter(IntName, FMath::LerpStable(IntMin, IntMax, Alpha));
 
 	if (!FloatName.IsNone())
-		Snd->SetFloatParameter(FloatName, FMath::Lerp(FloatMin, FloatMax, Alpha));
+		Snd->SetFloatParameter(FloatName, FMath::LerpStable(FloatMin, FloatMax, Alpha));
 
 	if (!TriggerName.IsNone())
 		Snd->SetTriggerParameter(TriggerName);
 	
 	if (VolUse)
-		Snd->SetVolumeMultiplier(FMath::Lerp(VolMin, VolMax, Alpha));
+		Snd->SetVolumeMultiplier(FMath::LerpStable(VolMin, VolMax, Alpha));
 	
 	if (PitchUse)
-		Snd->SetPitchMultiplier(FMath::Lerp(PitchMin, PitchMax, Alpha));
+		Snd->SetPitchMultiplier(FMath::LerpStable(PitchMin, PitchMax, Alpha));
 }
