@@ -16,10 +16,11 @@ public:
 	
 protected:
 	virtual void Begin_Implementation() override;
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	APlayerController* Controller = nullptr;
+
 	FRotator CamRotEnd;
 	FRotator CamRotStart;
 };

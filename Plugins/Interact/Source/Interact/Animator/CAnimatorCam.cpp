@@ -14,10 +14,11 @@ void UCAnimatorCam::Begin_Implementation() {
 	CamRotEnd = UKismetMathLibrary::FindLookAtRotation(CamStart, Target);
 }
 
-void UCAnimatorCam::Update_Implementation(float Alpha) {
+void UCAnimatorCam::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 	if (!IsValid(Controller)) return;
 	// https://forums.unrealengine.com/t/how-to-use-lerp-rotator-in-c/547921/5?u=nande
-	const FRotator& Cur = FQuat::Slerp(CamRotStart.Quaternion(), CamRotEnd.Quaternion(), Alpha).Rotator();
+	const FRotator& Cur = FQuat::Slerp(
+		CamRotStart.Quaternion(), CamRotEnd.Quaternion(), Alpha).Rotator();
 	Controller->SetControlRotation(Cur);
 }
