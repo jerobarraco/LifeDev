@@ -39,8 +39,12 @@ ALLight::ALLight():Super() {
 	Rnd->SetAutoActivate(false); // important since it's feature flagged.
 	Rnd->IsLooping = true;
 	Rnd->Anim = Anim;
-	Rnd->UseAnimRandReverse = false; // don't want to change the state of the light
 	Rnd->UseAnimValue = true;
+
+	// IMPORTANT: don't want to change the state of the light. these two must be false.
+	Rnd->UseAnimRandReverse = false;
+	Rnd->UseAnimMirror = false;
+	
 	// will not jump around. might make the anim longer.
 	// Rnd->UseAnimMirror = true;
 	Rnd->ValueMin = .3;
