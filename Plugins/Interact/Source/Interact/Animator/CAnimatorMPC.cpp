@@ -44,7 +44,7 @@ void UCAnimatorMPC::Update_Implementation(float Alpha) {
 			UseHSV ?
 				FLinearColor::LerpUsingHSV(
 					ParVStart, ParVEnd, Alpha) :
-				FMath::Lerp(ParVStart, ParVEnd, Alpha);
+				FMath::LerpStable(ParVStart, ParVEnd, Alpha);
 		MPCI->SetVectorParameterValue(ParVName, Val);
 	}
 }
