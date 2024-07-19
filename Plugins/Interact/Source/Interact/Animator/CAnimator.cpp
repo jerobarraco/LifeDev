@@ -22,8 +22,9 @@ void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 	IsReversed = Reversed;
 	IsLooping = Loop;
 	IsBouncing = Bounce;
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s isReversed=%i isLooping=%i isBouncing=%i"),
-		__func__, *GetNameSafe(this), IsReversed, IsLooping, IsBouncing);
+	UE_LOG(LogCAnimator, Log,
+		TEXT("%hs o=%s isReversed=%i isLooping=%i isBouncing=%i"),
+		__func__, *GetNameSafe(GetOwner()), IsReversed, IsLooping, IsBouncing);
 	Activate(true);
 }
 
@@ -39,8 +40,9 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 }
 
 void UCAnimator::Finish() {
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s isLooping=%i isBouncing=%i"),
-		__func__, *GetNameSafe(this), IsLooping, IsBouncing);
+	UE_LOG(LogCAnimator, Log,
+		TEXT("%hs o=%s isReversed=%i isLooping=%i isBouncing=%i"),
+		__func__, *GetNameSafe(GetOwner()), IsReversed, IsLooping, IsBouncing);
 	// check if we can continue at all
 	if (!IsLooping && !IsBouncing) {
 		Deactivate();
@@ -99,7 +101,7 @@ void UCAnimator::DeInit() {
 
 void UCAnimator::BindTo(UCAnimator* NewParent) {
 	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s parent=%s"),
-		__func__, *GetNameSafe(this), *GetNameSafe(NewParent));
+		__func__, *GetNameSafe(GetOwner()), *GetNameSafe(NewParent));
 	if (IsValid(Parent)) Parent->OnUpdate.RemoveAll(this);
 	Parent = nullptr;
 
@@ -146,8 +148,11 @@ void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTic
 void UCAnimator::Activate(const bool bReset) {
 	// activate and deactivate will set/unset tick enabled.
 	const bool WasActive = IsActive();
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s Reset=%i WasActive=%i"),
-		__func__, *GetNameSafe(this), bReset, WasActive);
+	
+	UE_LOG(LogCAnimator, Log,
+		TEXT("%hs o=%s Reset=%i WasActive=%i isReversed=%i isLooping=%i isBouncing=%i"),
+		__func__, *GetNameSafe(GetOwner()), bReset, WasActive,
+		IsReversed, IsLooping, IsBouncing);
 	
 	Super::Activate(bReset);
 
@@ -161,8 +166,10 @@ void UCAnimator::Activate(const bool bReset) {
 
 void UCAnimator::Deactivate() {
 	const bool WasActive = IsActive();
-	UE_LOG(LogCAnimator, Log, TEXT("%hs o=%s WasActive=%i"),
-		__func__, *GetNameSafe(this), WasActive);
+	UE_LOG(LogCAnimator, Log,
+		TEXT("%hs o=%s WasActive=%i isReversed=%i isLooping=%i isBouncing=%i"),
+		__func__, *GetNameSafe(GetOwner()), WasActive,
+		IsReversed, IsLooping, IsBouncing);
 	Super::Deactivate();
 	DTAcum = 0;
 
