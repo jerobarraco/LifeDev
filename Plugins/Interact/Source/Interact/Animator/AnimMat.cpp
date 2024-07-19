@@ -36,7 +36,7 @@ bool FAMFloat::SetVal(const float Val) const {
 }
 
 bool FAMFloat::SetLerp(const float Prog) {
-	const float Val = FMath::Lerp(From, To, Prog);
+	const float Val = FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 
@@ -51,17 +51,16 @@ bool FMPFVector::SetVal(const FLinearColor& Val) const {
 bool FMPFVector::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
-		FMath::Lerp(From, To, Prog);
+		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 
 const int32 FMPFData::GetDynamicIndex() const {
 	if (!IsValid(Comp)) {
-	
-		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid component"),
-			__func__);
+		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid component"), __func__);
 		return INDEX_NONE;
 	}
+
 	return IsScalar ?
 		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name):
 		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name);
@@ -133,7 +132,7 @@ bool FMPFData::SetVal(const FLinearColor& V) const {
 bool FMPFData::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
-		FMath::Lerp(From, To, Prog);
+		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 

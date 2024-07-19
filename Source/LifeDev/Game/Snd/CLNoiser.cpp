@@ -38,8 +38,8 @@ void UCLNoiser::Activate(bool bReset) {
 
 void UCLNoiser::SetFB(float Value) {
 	// note that when the fb goes up, the times and dist goes down
-	DistMax = FMath::Lerp(DistFBMax, DistFBMin, Value);
-	TimeMax = FMath::Lerp(TimeFBMax, TimeFBMin, Value);
+	DistMax = FMath::LerpStable(DistFBMax, DistFBMin, Value);
+	TimeMax = FMath::LerpStable(TimeFBMax, TimeFBMin, Value);
 }
 
 void UCLNoiser::BeginPlay() {

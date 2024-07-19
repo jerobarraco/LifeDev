@@ -115,7 +115,8 @@ public:
 	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; };
 };
 
-// Base subsystem for MatParamFades
+// Subsystem that animates materials parameter collections' parameters.
+// And custom primitive data.
 UCLASS(Blueprintable, Category="Interact", DefaultConfig, Config=Interact)
 class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
 	GENERATED_BODY()

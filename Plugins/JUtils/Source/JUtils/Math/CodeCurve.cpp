@@ -200,7 +200,7 @@ float UCodeCurveLib::Bezier(float T, const TArray<float>& Ps) {
 	TArray<float> NPS = Ps;
 	for (uint8 i = 0; i<N-1; ++i) {
 		for (uint8 j = 0; j<N-1-i; ++j) {
-			NPS[j] = FMath::Lerp(NPS[j], NPS[j+1], T);
+			NPS[j] = FMath::LerpStable(NPS[j], NPS[j+1], T);
 		}
 	}
 	return NPS[0];
