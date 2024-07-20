@@ -429,7 +429,7 @@ void ALChar::FeatUpdateAccess(const EFeat Feat, const bool bEnabled) {
 		UseFeatFOV = bEnabled;
 		if (UseFeatFOV) {
 			// force re-set the fb value to set the correct fov
-			UFlashback* const Flashback = UFlashback::Instance(this);
+			const UFlashback* const Flashback = UFlashback::Instance(this);
 			if (Flashback) SetFB(Flashback->GetVal()); // be aware this also affects the walk speed
 		} else {
 			if (Camera) Camera->SetFieldOfView(FOVMin);
