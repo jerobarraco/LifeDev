@@ -24,7 +24,7 @@ class UInputMappingContext;
 class UGameUI;
 class UCLNoiser;
 
-// TODO consider moving the input stuff to another component
+// TODO consider moving the input stuff to another component (some to the player controller)
 // TODO consider moving the item interaction dialog stuff to another component
 // TODO consider moving the settings to another component
 // TODO consider moving the movement to another component
