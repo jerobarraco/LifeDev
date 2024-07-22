@@ -106,7 +106,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	FlickrOnFB = NewFBFlicker;
 
 	// Feature flag. important.
-	if (!ULSettings::GetFeatS(W, EFeat::A_STROBE)) {
+	if (!ULSettings::GetFeatS(W, EFeat::V_STROBE)) {
 		UE_LOG(LogTemp, Log,
 			TEXT("LLigth: %hs. Attempted to set fb-flicker, but A_STROBE flag is disabled. Cancelled."),
 			__func__);
@@ -130,7 +130,7 @@ void ALLight::BeginPlay() {
 	if (!Settings) return;
 	
 	// disable if the flag is disabled. but keep disabled if it was disabled by the parent.
-	UseAnim = UseAnim && Settings->GetFeat(EFeat::A_STROBE);
+	UseAnim = UseAnim && Settings->GetFeat(EFeat::V_STROBE);
 
 	// optimize the anim. do here since some lights can be toggled
 	Sig->BindAnim(Anim);
@@ -141,7 +141,7 @@ void ALLight::BeginPlay() {
 	Anim->OnBegin.AddUniqueDynamic(this, &ALLight::FlickerBegin);
 	Anim->OnEnd.AddUniqueDynamic(this, &ALLight::FlickerEnd);
 	// allow to change the feature flag during runtime
-	Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
+	Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 	
 	// reset the system
 	SetFBFlicker(FlickrOnFB);
@@ -173,7 +173,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (Fb) Fb->OnChange.RemoveAll(this);
 
 	ULSettings* const Settings = ULSettings::Instance(W);
-	if (Settings) Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALLight::FeatUpdated);
+	if (Settings) Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -212,7 +212,7 @@ void ALLight::SetFB(float Value) {
 }
 
 void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
-	if (Feat != EFeat::A_STROBE) return;
+	if (Feat != EFeat::V_STROBE) return;
 
 	UseAnim = bEnabled; // anim is bound to the strobe flag
 	if (bEnabled) SetFBFlicker(FlickrOnFB);

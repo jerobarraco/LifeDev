@@ -173,10 +173,10 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::S_MUSIC && Feat <= EFeat::S_ENV)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_BLUR)
+	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_FOV)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::A_STROBE && Feat <= EFeat::A_FOV)
-		OnFeatUpdateAccess.Broadcast(Feat, Enable);
+	// else if (Feat >= EFeat::V_STROBE && Feat <= EFeat::V_FOV) // accessibility yet.
+		// OnFeatUpdateAccess.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 }

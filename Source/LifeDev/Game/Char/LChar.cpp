@@ -191,8 +191,8 @@ void ALChar::BeginPlay() {
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (Settings) {
-		Settings->OnFeatUpdateAccess.AddUniqueDynamic(this, &ALChar::FeatUpdateAccess);
-		UseFeatFOV = Settings->GetFeat(EFeat::A_FOV);
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALChar::FeatUpdateVisual);
+		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
 		const float Foxify =
 			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
 		const float SpeedMod = SpeedFoxy * Foxify;
@@ -233,7 +233,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (Settings) 
-		Settings->OnFeatUpdateAccess.RemoveAll(this);
+		Settings->OnFeatUpdateVisual.RemoveAll(this);
 
 
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
@@ -421,11 +421,11 @@ void ALChar::SetFB(const float Value) {
 		Camera->SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
 }
 
-void ALChar::FeatUpdateAccess(const EFeat Feat, const bool bEnabled) {
+void ALChar::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
 	UE_LOG(LogLChar, Log, TEXT("%hs, Feat update f=%s on=%i"),
 		__func__, *UEnum::GetValueAsString(Feat), bEnabled);
 
-	if (Feat == EFeat::A_FOV) {
+	if (Feat == EFeat::V_FOV) {
 		UseFeatFOV = bEnabled;
 		if (UseFeatFOV) {
 			// force re-set the fb value to set the correct fov
@@ -436,3 +436,4 @@ void ALChar::FeatUpdateAccess(const EFeat Feat, const bool bEnabled) {
 		}
 	}
 }
+// TODO move the camera stuff to a new component.

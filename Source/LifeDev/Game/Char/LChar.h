@@ -113,7 +113,7 @@ protected:
 	UFUNCTION()
 	void SetFB(const float Value);
 	UFUNCTION()
-	void FeatUpdateAccess(const EFeat Feat, const bool bEnabled);
+	void FeatUpdateVisual(const EFeat Feat, const bool bEnabled);
 
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);

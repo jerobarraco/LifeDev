@@ -44,7 +44,7 @@ void AFlashbackMan::BeginPlay() {
 		return;
 	} 
 	
-	const int Strobe = ULSettings::GetFeatS(World, EFeat::A_STROBE)?1:0;
+	const int Strobe = ULSettings::GetFeatS(World, EFeat::V_STROBE)?1:0;
 	MPCInst->SetScalarParameterValue("Strobe", Strobe);
 	// TODO set the flashback feat as well.
 	// -- what was this?

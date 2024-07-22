@@ -140,7 +140,7 @@ void ATv00::SetState_Implementation(int32 NewState) {
 	const bool _IsOpen = !IsClosed();
 	Noise->Fade(_IsOpen);
 
-	if (!ULSettings::GetFeatS(GetWorld(), EFeat::A_STROBE)) {
+	if (!ULSettings::GetFeatS(GetWorld(), EFeat::V_STROBE)) {
 		if (IsValid(AnimCrt->Mat)) {
 			AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
 				_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);

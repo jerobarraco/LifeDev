@@ -40,15 +40,18 @@ enum class EFeat: uint8 {
 	// ambient sound
 	S_ENV,
 
-	/// Graphic
-	
+	/// Graphic (Visual)
+
+	// lumen gi
 	V_LUMEN,
+	// blur
 	V_BLUR,
+	// strobing lights
+	V_STROBE,
+	// field of view
+	V_FOV,
 
 	/// Access
-	// strobing lights
-	A_STROBE,
-	A_FOV,
 
 	// Gameplay (find another word)
 	// G_*,
@@ -126,7 +129,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DefaultFeats = {
 		EFeat::D_ALL, EFeat::D_TEXT, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::A_STROBE, EFeat::A_FOV, EFeat::V_LUMEN, EFeat::V_BLUR,
+		EFeat::V_STROBE, EFeat::V_FOV, EFeat::V_LUMEN, EFeat::V_BLUR,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
 
@@ -135,7 +138,7 @@ public:
 	TSet<EFeat> DebugFeats = {
 		EFeat::DBG_STEPS, EFeat::DBG_ALL,
 		EFeat::D_ALL, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::A_STROBE, EFeat::A_FOV, EFeat::V_LUMEN, EFeat::V_BLUR,
+		EFeat::V_STROBE, EFeat::V_FOV, EFeat::V_LUMEN, EFeat::V_BLUR,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
 };
