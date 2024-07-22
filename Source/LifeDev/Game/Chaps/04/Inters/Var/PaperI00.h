@@ -16,8 +16,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UFUNCTION()
-	void FadeUpdate(float Progress, float FadeV);
+	void FadeUpdate(const float Progress, const float FadeV);
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UTextRenderComponent* Text = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
+	UMaterialInstanceDynamic* TextMID = nullptr;
 };
