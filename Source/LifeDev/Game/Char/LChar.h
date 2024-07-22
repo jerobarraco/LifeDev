@@ -11,6 +11,7 @@
 
 #include "LChar.generated.h"
 
+class ULCharCam;
 class ULSettingsUI;
 class UDiags;
 class UCInteractor;
@@ -26,6 +27,7 @@ class UCLNoiser;
 // TODO consider moving the input stuff to another component
 // TODO consider moving the item interaction dialog stuff to another component
 // TODO consider moving the settings to another component
+// TODO consider moving the movement to another component
 
 // base class for the character
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
@@ -134,7 +136,7 @@ protected:
 
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
-	UCameraComponent* Camera = nullptr;
+	ULCharCam* Camera = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteractor* Interactor = nullptr;

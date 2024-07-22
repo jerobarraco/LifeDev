@@ -20,6 +20,7 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "GameUI.h"
+#include "LCharCam.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
@@ -44,7 +45,7 @@ ALChar::ALChar(): Super() {
 	}
 
 	// Create a CameraComponent
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera = CreateDefaultSubobject<ULCharCam>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
 	// 40 is a biiit below c18, 45 is almost the same.
 	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 47.f)); // Position the camera

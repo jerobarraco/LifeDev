@@ -10,8 +10,6 @@
 
 // LifeDev Game PlayerController
 UCLASS(Blueprintable)
-class LIFEDEV_API ALGPController : public APlayerController
-{
+class LIFEDEV_API ALGPController : public APlayerController {
 	GENERATED_BODY()
-	
 };
