@@ -13,6 +13,22 @@ UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ULCharCam : public UCameraComponent {
 	GENERATED_BODY()
 public:
-	
+	ULCharCam();
+
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UFUNCTION()
+	void SetFB(const float Value);
+	UFUNCTION()
+	void FeatUpdateVisual(const EFeat Feat, const bool bEnabled);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	float FOVFoxy = 10;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	float FOVMin = 90;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	float FOVMax = 140;
+
+	bool UseFeatFOV = true;
 };

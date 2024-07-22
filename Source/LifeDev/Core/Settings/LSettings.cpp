@@ -180,4 +180,3 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 }
-

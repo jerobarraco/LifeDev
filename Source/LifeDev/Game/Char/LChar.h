@@ -114,8 +114,6 @@ protected:
 	void MenuDone();
 	UFUNCTION()
 	void SetFB(const float Value);
-	UFUNCTION()
-	void FeatUpdateVisual(const EFeat Feat, const bool bEnabled);
 
 	//* Called for movement input 
 	void ActMove(const FInputActionValue& Value);
@@ -152,7 +150,5 @@ protected:
 	UInventory* Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Diags = nullptr;
-
-	bool UseFeatFOV = true;
 };
 

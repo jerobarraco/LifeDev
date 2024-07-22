@@ -3,6 +3,77 @@
 
 #include "LCharCam.h"
 
+#include "Inventory/Flags.h"
+#include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
+ULCharCam::ULCharCam():Super() {
+	bUsePawnControlRotation = true; // needed to be able to loop up
+}
 
+void ULCharCam::BeginPlay() {
+	Super::BeginPlay();
 
+	const UWorld* const World = GetWorld();
+	if (!World) return;
+
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings) {
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ULCharCam::FeatUpdateVisual);
+		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
+	}
+
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (Flags) {
+		const float Foxify =
+			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
+		const float FOVMod = FOVFoxy * Foxify;
+		FOVMin += FOVMod;
+		FOVMax += FOVMod;
+		UE_LOG(LogTemp, Log,
+			TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+			__func__, FOVMin, FOVMax, FOVMod, Foxify);
+	}
+	
+	SetFB(0); // update fov
+
+	UFlashback* const FB = World->GetSubsystem<UFlashback>();
+	if (FB) FB->OnChange.AddUniqueDynamic(this, &ULCharCam::SetFB);
+}
+
+void ULCharCam::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	const UWorld* const W = GetWorld();
+	if (!W) return;
+
+	UFlashback* const FB = W->GetSubsystem<UFlashback>();
+	if (FB) FB->OnChange.RemoveAll(this);
+	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings) 
+		Settings->OnFeatUpdateVisual.RemoveAll(this);
+
+	Super::EndPlay(EndPlayReason);
+}
+
+void ULCharCam::SetFB(const float Value) {
+	if (!UseFeatFOV) return;
+
+	SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
+}
+
+void ULCharCam::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
+	UE_LOG(LogTemp, Log, TEXT("%hs, Feat update f=%s on=%i"),
+		__func__, *UEnum::GetValueAsString(Feat), bEnabled);
+
+	if (Feat == EFeat::V_FOV) {
+		UseFeatFOV = bEnabled;
+		if (UseFeatFOV) {
+			// force re-set the fb value to set the correct fov
+			const UFlashback* const Flashback = UFlashback::Instance(this);
+			if (Flashback) SetFB(Flashback->GetVal()); // be aware this also affects the walk speed
+		} else {
+			SetFieldOfView(FOVMin);
+		}
+	}
+}

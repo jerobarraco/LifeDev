@@ -49,7 +49,6 @@ ALChar::ALChar(): Super() {
 	Camera->SetupAttachment(Capsule);
 	// 40 is a biiit below c18, 45 is almost the same.
 	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 47.f)); // Position the camera
-	Camera->bUsePawnControlRotation = true; // needed to be able to loop up
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh1P"));
@@ -140,6 +139,8 @@ void ALChar::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
+	if (!World) return;
+
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
@@ -178,7 +179,7 @@ void ALChar::BeginPlay() {
 	// and they get reloaded on game start (travel to game_l).
 	// and also the save-game is loaded before a game travel. and doesn't change during game.
 	// with your powers combined, it's me! Captain cringy feat!
-	UFlags* const Flags = UFlags::Instance(this);
+	const UFlags* const Flags = UFlags::Instance(this);
 	if (Flags) {
 		const float Foxify =
 			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
@@ -188,20 +189,6 @@ void ALChar::BeginPlay() {
 		UE_LOG(LogLChar, Log,
 			TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
 			__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
-	}
-	
-	ULSettings* const Settings = ULSettings::Instance(this);
-	if (Settings) {
-		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALChar::FeatUpdateVisual);
-		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
-		const float Foxify =
-			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
-		const float SpeedMod = SpeedFoxy * Foxify;
-		FOVMin += SpeedMod;
-		FOVMax += SpeedMod;
-		UE_LOG(LogLChar, Log,
-			TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
-			__func__, FOVMin, FOVMax, SpeedMod, Foxify);
 	}
 
 	SetFB(0); // update walk speed values.
@@ -231,11 +218,6 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (FB) FB->OnChange.RemoveAll(this);
-	
-	ULSettings* const Settings = ULSettings::Instance(this);
-	if (Settings) 
-		Settings->OnFeatUpdateVisual.RemoveAll(this);
-
 
 	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
@@ -327,12 +309,12 @@ void ALChar::LookItem(const FName& Name) {
 	if (!Say(DRName) && IsValid(Diags)) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
-        FDialog Diag;
-        Diag.Type = EDialogType::SYSTEM;
-        Diag.Text = Item.Description;
+		FDialog Diag;
+		Diag.Type = EDialogType::SYSTEM;
+		Diag.Text = Item.Description;
 		// TODO consider changing this to main
-        Diag.CharRow = "Sys";
-        Diags->AddDiag(Diag);
+		Diag.CharRow = "Sys";
+		Diags->AddDiag(Diag);
 	}
 
 	// trigger manager look
@@ -364,9 +346,9 @@ void ALChar::ActItem() {
 	// though maybe it would be nice to have something generic as well.
 	const EItemUseResult Res = Interactor->TryUseItem(Selected);
 	if (Res == EItemUseResult::BAD_HANDLED) {
-    	UE_LOG(LogLChar, Log, TEXT("Can't use item with that. But it was handled."));
-    	return;
-    }
+		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. But it was handled."));
+		return;
+	}
 
 	if (Item.SelfUsable) {
 		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
@@ -415,26 +397,7 @@ void ALChar::MenuDone() {
 void ALChar::SetFB(const float Value) {
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (!Movement) return;
+
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
-
-	if (UseFeatFOV && Camera)
-		Camera->SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
 }
-
-void ALChar::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
-	UE_LOG(LogLChar, Log, TEXT("%hs, Feat update f=%s on=%i"),
-		__func__, *UEnum::GetValueAsString(Feat), bEnabled);
-
-	if (Feat == EFeat::V_FOV) {
-		UseFeatFOV = bEnabled;
-		if (UseFeatFOV) {
-			// force re-set the fb value to set the correct fov
-			const UFlashback* const Flashback = UFlashback::Instance(this);
-			if (Flashback) SetFB(Flashback->GetVal()); // be aware this also affects the walk speed
-		} else {
-			if (Camera) Camera->SetFieldOfView(FOVMin);
-		}
-	}
-}
-// TODO move the camera stuff to a new component.
