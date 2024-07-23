@@ -23,8 +23,8 @@ void UCLCharItems::BeginPlay() {
 		nullptr;
 	if (!Interactor)
 		UE_LOG(LogCharItems, Warning,
-			TEXT("%hs Could not obtain the interactor component from the owner."), __func__);
-		
+			TEXT("%hs Could not obtain the interactor component from the owner."),
+			__func__);
 }
 
 void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -70,7 +70,6 @@ void UCLCharItems::Look(const FName& Name) const {
 		FDialog Diag;
 		Diag.Type = EDialogType::SYSTEM;
 		Diag.Text = Item.Description;
-		// TODO consider changing this to main
 		Diag.CharRow = "Sys";
 		Diags->AddDiag(Diag);
 	}
@@ -79,31 +78,31 @@ void UCLCharItems::Look(const FName& Name) const {
 	if (IsValid(Item.Logic)) Item.Logic->Look();
 }
 
-void UCLCharItems::Use(const FName& Name) const {
+EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 
-	if (!IsValid(Inventory)) return;
+	if (!IsValid(Inventory)) return	EItemUseResult::ERROR;
 	
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
-	if (!Found) return;
+	if (!Found) return EItemUseResult::ERROR;
 
 	if (!Item.Usable) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable"), __func__);
 		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
-		return; // always return if not usable
+		return EItemUseResult::ERROR; // always return if not usable
 	}
 
 	if (!Inventory->IsCold(Item)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready"), __func__);
 		Say(LDConsts::Dlgs::Sys::Item::NotReady);
-		return;
+		return EItemUseResult::ERROR;
 	}
 
 	if (!Interactor) {
 		UE_LOG(LogCharItems, Warning,
 			TEXT("%hs Could not obtain the interactor component from the owner."), __func__);
-		return;
+		return EItemUseResult::ERROR;
 	}
 	
 	// this will try trigger the item. i can show dialogs there if i need to.
@@ -112,7 +111,7 @@ void UCLCharItems::Use(const FName& Name) const {
 	if (Res == EItemUseResult::BAD_HANDLED) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. But it was handled."),
 			__func__);
-		return;
+		return Res;
 	}
 
 	if (Item.SelfUsable) {
@@ -122,24 +121,26 @@ void UCLCharItems::Use(const FName& Name) const {
 			__func__, *Item.Title.ToString());
 
 		if (IsValid(Item.Logic)) Item.Logic->Use();
-
-	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
+		// don't return here.
+	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns, and this is else.
 		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
-		UE_LOG(LogCharItems, Log, TEXT("Can't use item with that. %i '%s' badTarget=%i"), Res, *Item.Title.ToString(), isBadTarget);
+		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
+			__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), isBadTarget);
 		const FName& DlgId = isBadTarget ?
 			LDConsts::Dlgs::Sys::Item::BadTarget :
 			LDConsts::Dlgs::Sys::Item::NoTarget;
 		Say(DlgId);
-		return;
+		return Res;
 	}
 
 	// mark the item as used, it won't trigger the manager.
 	// since we don't want to trigger when is used with an interaction.
 	Inventory->Use(Name);
+	return EItemUseResult::SUCCESS;
 }
 
-void UCLCharItems::UseSelected() const {
-	if (IsValid(Inventory)) Use(Inventory->GetSelected());
+EItemUseResult UCLCharItems::UseSelected() const {
+	return IsValid(Inventory) ? Use(Inventory->GetSelected()) :  EItemUseResult::ERROR;
 }
 
 void UCLCharItems::LookSelected() const {

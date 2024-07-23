@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+#include "Interact/InteractTypes.h"
+
 #include "CLCharItems.generated.h"
 
 class UCInteractor;
@@ -22,9 +24,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Look(const FName& Name) const;
 	UFUNCTION(BlueprintCallable)
-	void Use(const FName& Name) const;
+	EItemUseResult Use(const FName& Name) const;
 	UFUNCTION(BlueprintCallable)
-	void UseSelected() const;
+	EItemUseResult UseSelected() const;
 	UFUNCTION(BlueprintCallable)
 	void LookSelected() const;
 
