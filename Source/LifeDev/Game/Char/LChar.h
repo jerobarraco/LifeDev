@@ -7,7 +7,6 @@
 #include "InputActionValue.h"
 
 #include "Inventory/Inventory.h"
-#include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "LChar.generated.h"
 
@@ -27,7 +26,8 @@ class UCLNoiser;
 // TODO consider moving the input stuff to another component (some to the player controller)
 // TODO consider moving the item interaction dialog stuff to another component
 // TODO consider moving the settings to another component
-// TODO consider moving the movement to another component
+
+// Can't move to the movement component as the class is hardcoded to UMovementComponent.
 
 // base class for the character
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
