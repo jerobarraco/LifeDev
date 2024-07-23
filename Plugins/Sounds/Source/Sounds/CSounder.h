@@ -19,7 +19,7 @@ public:
 	// main entry point. fades in or out with the given parameters
 	// you can still call the parent functions with less functionality
 	UFUNCTION(BlueprintCallable)
-	void Fade(bool In);
+	void Fade(const bool In);
 
 	UFUNCTION(BlueprintCallable)
 	void SetSafeParamFloat(const FName& Name, const float V);

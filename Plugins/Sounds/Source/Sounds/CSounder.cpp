@@ -13,7 +13,7 @@ UCSounder::UCSounder():Super() {
 	// SFX->SetSound(CSnd.Object);
 }
 
-void UCSounder::Fade(bool In) {
+void UCSounder::Fade(const bool In) {
 	// calling stopdelayed will actually bring problems when switching musics on the musicman.
 	// (presumably stopping the new one). Fadeout is good enough and seems to stop the audio,
 	// (i.e. trigger onAudioFinished at the end)
