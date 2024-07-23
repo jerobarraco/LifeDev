@@ -16,6 +16,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
 
 ALInteract::ALInteract():Super() {
+	// This attenuation has the occlusion disabled to avoid self-occlusion on play detached
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CAtt(LDConsts::Audio::Attns::SFX);
 	SFX->AttenuationSettings = CAtt.Object;
