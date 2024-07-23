@@ -6,7 +6,9 @@
 
 class UDataTable;
 
-// game feature
+// Make sure to update FeatUpdated() after changing the feats
+
+// game features
 UENUM(BlueprintType)
 enum class EFeat: uint8 {
 	NONE, // empty one to be able to add to the set.
