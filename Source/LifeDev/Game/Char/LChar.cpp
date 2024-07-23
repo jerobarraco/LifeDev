@@ -265,7 +265,7 @@ void ALChar::ActLook(const FInputActionValue& Value) {
 	AddControllerPitchInput(Vector.Y);
 }
 
-void ALChar::ActInteract() { // don´t make const. the input system does not like it
+void ALChar::ActInteract() { // don't make const. the input system does not like it
 	if (!Interactor) return;
 	// store before calling TryTrigger. since it might become null afterwards :shrug:
 	const UCInteract* const Comp = Interactor->GetInterComp();
@@ -273,8 +273,8 @@ void ALChar::ActInteract() { // don´t make const. the input system does not lik
 	Interactor->TryTrigger(); // this is synchronous
 	
 	if (IsValid(Comp) && IsValid(UI)) {
-		UI->SetPrompt(Comp->Text);
-		UE_LOG(LogTemp, Log, TEXT("ALChar ActInteract Text = %s"), *Comp->Text.ToString());
+		UI->SetPrompt(Comp->Text); // update the text
+		UE_LOG(LogLChar, Log, TEXT("%hs Text=%s"), __func__, *Comp->Text.ToString());
 	}
 }
 
