@@ -11,6 +11,7 @@
 #include "LChar.generated.h"
 
 class UCLCharCam;
+class UCLCharItems;
 class ULSettingsUI;
 class UDiags;
 class UCInteractor;
@@ -24,7 +25,6 @@ class UGameUI;
 class UCLNoiser;
 
 // TODO consider moving the input stuff to another component (some to the player controller)
-// TODO consider moving the item interaction dialog stuff to another component
 // TODO consider moving the settings to another component
 
 // Can't move to the movement component as the class is hardcoded to UMovementComponent.

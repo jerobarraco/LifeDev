@@ -9,6 +9,7 @@
 class UCInteractor;
 class UInventory;
 class UDiags;
+
 // LifeDev Game character items
 // handles some stuff regarding items... 
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)

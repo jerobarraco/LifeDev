@@ -39,13 +39,14 @@ bool UCLCharItems::Say(const FName& Name) const {
 }
 
 void UCLCharItems::Look(const FName& Name) const {
+	const FString& SName = *Name.ToString();
+	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *SName);
+
 	if (Name.IsNone()) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs tried to look at an NONE item."), __func__);
+		UE_LOG(LogCharItems, Log, TEXT("%hs tried to look at a NONE item."), __func__);
 		return;
 	}
 
-	const FString& SName = *Name.ToString();
-	
 	FItem Item;
 	if (!Inventory->Get(Name, Item)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can´t find the item name='%s'"), __func__, *SName);
