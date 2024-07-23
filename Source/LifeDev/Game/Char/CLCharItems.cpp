@@ -8,6 +8,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryTypes.h"
 #include "Inventory/ItemLogic.h"
+
 #include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCharItems, Log, Log);
@@ -114,29 +115,41 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return Res;
 	}
 
-	if (Item.SelfUsable) {
-		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
-		// (notice this if is separate from the one above)
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item is self-usable. will attempt now. '%s'."),
-			__func__, *Item.Title.ToString());
-
-		if (IsValid(Item.Logic)) Item.Logic->Use();
-		// don't return here.
-	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns, and this is else.
-		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
-		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
-			__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), isBadTarget);
-		const FName& DlgId = isBadTarget ?
-			LDConsts::Dlgs::Sys::Item::BadTarget :
-			LDConsts::Dlgs::Sys::Item::NoTarget;
-		Say(DlgId);
+	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
+		// mark the item as used, it won't trigger the manager.
+		// since we don't want to trigger when is used with an interaction.
+		Inventory->Use(Name);
 		return Res;
 	}
 
-	// mark the item as used, it won't trigger the manager.
-	// since we don't want to trigger when is used with an interaction.
-	Inventory->Use(Name);
-	return EItemUseResult::SUCCESS;
+	// if it wasn't success. try to self-use it.
+	if (Item.SelfUsable) {
+		// notice only checking auto-trigger here.
+		// so that i can use an auto trigger with an ANY interact too.
+		// which allows me to not have to configure the Interact, but instead configure the item.
+		// (notice this if is separate from the one above, and that BAD_HANDLED returns,
+		// since the dialog/side-effect would have been triggered)
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item is self-usable. will attempt now. '%s'."),
+			__func__, *Item.Title.ToString());
+
+		// manually forcing self-use to have an item logic. not necessary but cleaner.
+		const bool Ok = IsValid(Item.Logic) && Inventory->Use(Name); // cooldown could affect it
+		// if it fails to use it, fall through to the rest of the error
+		if (Ok) {
+			Item.Logic->Use();
+			return EItemUseResult::SUCCESS;
+		}
+	}
+
+	const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
+	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
+		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), isBadTarget);
+	const FName& DlgId = isBadTarget ?
+		LDConsts::Dlgs::Sys::Item::BadTarget :
+		LDConsts::Dlgs::Sys::Item::NoTarget;
+
+	Say(DlgId);
+	return Res;
 }
 
 EItemUseResult UCLCharItems::UseSelected() const {

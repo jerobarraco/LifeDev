@@ -87,9 +87,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 	// Set selected only after removing.
 	// there's something fishy going on. otherwise it will remove the wrong object!
 	// also triggering it at the end works better with the ui
-	if (SetSelect) {
-		SetSelected(NewSel);
-	}
+	if (SetSelect) SetSelected(NewSel);
 
 	return true;
 }
@@ -116,7 +114,7 @@ bool UInventory::Rem(const FName& Name) {
 	Items.Remove(Name);
 	OnMod.Broadcast(Name, -Item.Count, MoveTemp(Item));
 
-	SetSelected(NextKey);	
+	SetSelected(NextKey);
 	return true;
 }
 
@@ -220,10 +218,10 @@ bool UInventory::Has(const FName& Name) {
 bool UInventory::Use(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
-	if (!Found)	return false; 
+	if (!Found) return false; 
 
 	if (!IsUsable(Item)) {
-		UE_LOG(LogInventory, Error, TEXT("Item is unusable. '%s'"), *Name.ToString());
+		UE_LOG(LogInventory, Error, TEXT("%hs Item is unusable. '%s'"), __func__, *Name.ToString());
 		return false;
 	}
 
@@ -238,7 +236,7 @@ bool UInventory::Use(const FName& Name) {
 	if (!Items.Contains(OldName)) return true;
 
 	// this works setting the value on the reference
-	// at this point the item reference is ok, se keep it.
+	// at this point the item reference is ok, so keep it.
 	Item.ActiveCoolDown = Item.CoolDown;
 	if (Item.ActiveCoolDown>0) SetCoolTimerEnabled(true);
 

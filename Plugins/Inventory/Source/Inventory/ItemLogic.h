@@ -14,7 +14,7 @@ public:
 
 	// the world passed by parameter is trash. don't use.
 	// warning: this function can sometimes be called during editor time.
-	// set an appropriate outer when creating this object and use GetWorld() when needed. 
+	// set an appropriate outer when creating this object and use GetWorld() when needed.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void BeginPlay(UWorld* BrokenDontUse);
 	virtual void BeginPlay_Implementation(UWorld* BrokenDontUse) {}
@@ -25,7 +25,7 @@ public:
 		UE_LOG(LogTemp, Log, TEXT("ItemLogic.Look: %lu %s"), (int64)this, *Name.ToString());
 	}
 
-	// this will gets triggered only for self-use
+	// this will get triggered only for self-use
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
 	virtual void Use_Implementation() {
