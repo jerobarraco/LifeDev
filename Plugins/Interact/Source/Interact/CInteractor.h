@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract*, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract*, Comp);
 
 // Will be interacting with interact objects.
-// Subclass of scene component so you can attach it and aim from there
+// Subclass of scene component, so you can attach it and aim from there.
 UCLASS(Blueprintable, BlueprintType, Config="Interact", DefaultConfig,
 	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteractor: public USceneComponent {
@@ -35,7 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
 
-	// don't call directly the character will. doesn't deal with the inventory.
+	// don't call directly, the character will.
+	// doesn't deal with the inventory,
+	// just notifies the interacted object.
 	UFUNCTION(BlueprintCallable)
 	EItemUseResult TryUseItem(const FName& Name) const;
 

@@ -48,12 +48,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InteractSetEnabled(bool Enabled);
 
-	UFUNCTION(BlueprintCallable)
-	void LookItem(const FName& Name);
-
-	UFUNCTION(BlueprintCallable)
-	bool Say(const FName& Name);
-
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .5;
@@ -115,10 +109,8 @@ protected:
 	UFUNCTION()
 	void SetFB(const float Value);
 
-	//* Called for movement input 
-	void ActMove(const FInputActionValue& Value);
-	//* Called for looking input 
-	void ActLook(const FInputActionValue& Value);
+	void ActMove(const FInputActionValue& Value); // movement input
+	void ActLook(const FInputActionValue& Value); // camera look aim
 	void ActInteract();
 	void ActItem();
 	void ActItemLook();
@@ -138,6 +130,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteractor* Interactor = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	UCLCharItems* Items = nullptr;;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCLNoiser* Noiser = nullptr;
 

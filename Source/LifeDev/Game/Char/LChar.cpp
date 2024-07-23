@@ -3,7 +3,6 @@
 #include "LChar.h"
 
 #include "Animation/AnimInstance.h"
-#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h" // for the get object
@@ -15,18 +14,16 @@
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
-#include "Inventory/ItemLogic.h"
 #include "Inventory/Flags.h"
 #include "JUtils/JMiscUtils.h"
 
-#include "GameUI.h"
-#include "LCharCam.h"
-#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Snd/CLNoiser.h"
-#include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "GameUI.h"
+#include "LCharCam.h"
+#include "CLCharItems.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -61,6 +58,8 @@ ALChar::ALChar(): Super() {
 
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
+
+	Items = CreateDefaultSubobject<UCLCharItems>(TEXT("CharItems"));
 
 	Noiser = CreateDefaultSubobject<UCLNoiser>(TEXT("Noiser"));
 
@@ -112,7 +111,7 @@ void ALChar::SetUIVisible(bool Visible) {
 }
 
 void ALChar::InteractBegin(UCInteract* Comp) {
-	if (!IsValid(UI)) return;
+	if (!IsValid(UI) || !IsValid(Comp)) return;
 	UI->InteractShowPrompt(Comp->Text);
 }
 
@@ -130,7 +129,8 @@ void ALChar::SetInputEnabled(bool Enabled) {
 	Noiser->SetActive(Enabled, true);
 }
 
-// can't remember why i made this into its own function, probably to be able to call from the outside.
+// can't remember why i made this into its own function,
+// probably to be able to call from the outside.
 void ALChar::InteractSetEnabled(bool Enabled) {
 	Interactor->SetEnabled(Enabled);
 }
@@ -215,6 +215,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(Noiser))
 		Noiser->Deactivate();
 	Noiser = nullptr;
+	Items = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (FB) FB->OnChange.RemoveAll(this);
@@ -278,101 +279,12 @@ void ALChar::ActInteract() { // don't make const. the input system does not like
 	}
 }
 
-bool ALChar::Say(const FName& Name) {
-	if (!IsValid(Diags)) return false;
-	return Diags->AddId(Name);
-}
-
-void ALChar::LookItem(const FName& Name) {
-	if (Name.IsNone()) {
-		UE_LOG(LogLChar, Log, TEXT("LookItem tried to look at an NONE item."))
-		return;
-	}
-
-	const FString& SName = *Name.ToString();
-	
-	FItem Item;
-	if (!Inventory->Get(Name, Item)) {
-		UE_LOG(LogLChar, Log, TEXT("Can´t find the item name='%s'"), *SName);
-		return;
-	}
-	
-	UE_LOG(LogLChar, Log, TEXT("LookItem '%s'. Title='%s' Count=%i, description '%s'."),
-		*SName, *Item.Title.ToString(), Item.Count, *Item.Description.ToString());
-
-	// say look at stuff.
-	// don't even bother with the non-random.
-	// if you want to have a non-random sequence you'd have to add 2 keys.
-	// but it's cheaper than asking every time for random and not random.
-	const FName& DRName = FName(*(SName + "_Look*"));
-	// the isValid is for the add below
-	if (!Say(DRName) && IsValid(Diags)) {
-		// otherwise compose one
-		// show the dialog with the description. this is temporary until i make the ui
-		FDialog Diag;
-		Diag.Type = EDialogType::SYSTEM;
-		Diag.Text = Item.Description;
-		// TODO consider changing this to main
-		Diag.CharRow = "Sys";
-		Diags->AddDiag(Diag);
-	}
-
-	// trigger manager look
-	if (IsValid(Item.Logic)) Item.Logic->Look();
-}
-
 void ALChar::ActItem() {
-	if (!IsValid(Inventory)) return;
-	const FName& Selected = Inventory->GetSelected();
-	UE_LOG(LogLChar, Log, TEXT("ActItem=%s"), *Selected.ToString());
-
-	FItem Item;
-	const bool Found = Inventory->GetSelectedItem(Item);
-	if (!Found) return;
-
-	if (!Item.Usable) {
-		UE_LOG(LogLChar, Log, TEXT("Item not usable"));
-		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
-		return; // always return if not usable
-	}
-
-	if (!Inventory->IsCold(Item)) {
-		UE_LOG(LogLChar, Log, TEXT("Item not ready"));
-		Say(LDConsts::Dlgs::Sys::Item::NotReady);
-		return;
-	}
-
-	// this will try trigger the item. i can show dialogs there if i need to.
-	// though maybe it would be nice to have something generic as well.
-	const EItemUseResult Res = Interactor->TryUseItem(Selected);
-	if (Res == EItemUseResult::BAD_HANDLED) {
-		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. But it was handled."));
-		return;
-	}
-
-	if (Item.SelfUsable) {
-		// notice only checking auto-trigger here. so that i can use an auto trigger with an interact too.
-		// (notice this if is separate from the one above)
-		UE_LOG(LogLChar, Log, TEXT("Item is self-usable. will attempt now. '%s'."), *Item.Title.ToString());
-		if (IsValid(Item.Logic))
-			Item.Logic->Use();
-	} else if (Res != EItemUseResult::SUCCESS) { // notice bad handled above returns.
-		const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
-		UE_LOG(LogLChar, Log, TEXT("Can't use item with that. %i '%s' badTarget=%i"), Res, *Item.Title.ToString(), isBadTarget);
-		const FName& DlgId = isBadTarget ?
-			LDConsts::Dlgs::Sys::Item::BadTarget :
-			LDConsts::Dlgs::Sys::Item::NoTarget;
-		Say(DlgId);
-		return;
-	}
-
-	// mark the item as used, it won't trigger the manager.
-	// since we don't want to trigger when is used with an interaction.
-	Inventory->Use(Selected);
+	if (Items) Items->UseSelected();
 }
 
 void ALChar::ActItemLook() {
-	LookItem( Inventory->GetSelected());
+	if (Items) Items->LookSelected();
 }
 
 // i've added the settings here since the character already deals with the input.
