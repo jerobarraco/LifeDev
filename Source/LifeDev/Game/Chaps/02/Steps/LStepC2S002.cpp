@@ -21,7 +21,6 @@ ALStepC2S002::ALStepC2S002():Super() {
 void ALStepC2S002::BeginPlay() {
 	Super::BeginPlay();
 
-	// TODO test
 	// force fade the card
 	DoIntersFade(IntersFadeIn, false);
 }

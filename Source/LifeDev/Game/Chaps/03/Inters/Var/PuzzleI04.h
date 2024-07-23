@@ -37,5 +37,3 @@ protected:
 
 	bool WasOk = false;
 };
-
-// TODO refactor all the sound stuff

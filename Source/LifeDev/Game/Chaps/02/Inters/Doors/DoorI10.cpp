@@ -17,7 +17,7 @@ ADoorI10::ADoorI10():Super() {
 	// no unlock item nor trigger dlg. i want to keep this locked
 	Locked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CGun(TEXT("/Game/LifeDev/Game/Inters/Generic/Shotgun_Fire_Round_Eject_01.Shotgun_Fire_Round_Eject_01"));//Todo
+		CGun(TEXT("/Game/LifeDev/Game/Inters/Generic/Shotgun_Fire_Round_Eject_01.Shotgun_Fire_Round_Eject_01"));
 	SFX_Gun = CGun.Object;
 }
 

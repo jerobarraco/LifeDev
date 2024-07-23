@@ -82,15 +82,13 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 AActor* UPool::Get() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
-	// TODO this is crashing somewhere maybe. crash on "ke * get set.audio.VolMusic"
-	
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
 			UE_LOG(LogJPool, Warning, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
 			return nullptr;
 		}
-		// try to add a new one
-		if (!Spawn()) return nullptr;
+		
+		if (!Spawn()) return nullptr; // try to add a new one
 	}
 	
 	AActor* const A = Ready[0];

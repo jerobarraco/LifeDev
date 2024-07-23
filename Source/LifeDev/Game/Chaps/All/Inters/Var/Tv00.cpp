@@ -52,7 +52,6 @@ ATv00::ATv00():Super() {
 	Frame->SetCollisionProfileName("BlockAllDynamic");
 	Frame->SetCastAllShadows(true);
 	
-	// TODo fix glass occluding the crt
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
 	Glass->SetupAttachment(Frame);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

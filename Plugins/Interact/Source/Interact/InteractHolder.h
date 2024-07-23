@@ -6,7 +6,7 @@
 
 // TODO this class is broken. find a better way to achieve this.
 
-// An interactive actor that can have an animation and hold an item
+// An interactive actor that can have an animation and hold an item (as in attached to it)
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteractHolder: public AInteractAnim {
 public:

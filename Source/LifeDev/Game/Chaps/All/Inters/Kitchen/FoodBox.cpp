@@ -25,7 +25,7 @@ AFoodBox::AFoodBox():Super() {
 	Interact->SetBoxExtent(FVector(15,10,16));
 	SFX->SetRelativeLocation(FVector(10,-5,12.5));
 
-	// TODO find why it doesn't play
+	// TODO find why it doesn't play. Could it be self-occluding?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;

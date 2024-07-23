@@ -25,7 +25,6 @@ APianoLid::APianoLid():Super() {
 	Interact->SetBoxExtent(FVector(57.2,5,10));
 	SFX->SetRelativeLocation(FVector(72.5,-25,80));
 
-	// TODO change on sfx days
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04.Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04"));
 	SFX_Trigger = CSFX.Object;

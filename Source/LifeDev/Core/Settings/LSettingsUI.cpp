@@ -3,12 +3,11 @@
 #include "LSettingsUI.h"
 
 #include "GameFramework/GameUserSettings.h"
-#include "JUtils/UI/GroupBox.h"
 #include "Kismet/GameplayStatics.h"
-#include "LifeDev/Core/Sounds/LMusicMan.h"
 
-// TODO there's a bug when the gc runs the groupbox stops working.
-// is it the wrapper being gcd?
+#include "JUtils/UI/GroupBox.h"
+
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;

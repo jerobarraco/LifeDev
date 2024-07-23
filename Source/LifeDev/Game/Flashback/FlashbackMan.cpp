@@ -26,9 +26,8 @@ void AFlashbackMan::BeginPlay() {
 	if (!World) return;
 
 	UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
-	if (IsValid(Flashback)) {
+	if (IsValid(Flashback))
 		Flashback->OnChange.AddUniqueDynamic(this, &AFlashbackMan::ValChanged);
-	}
 	
 	if (!IsValid(MPC)) {
 		UE_LOG(LogTemp, Warning, TEXT("FlashbackMan::%hs Could not get the MPC. Stop"),
@@ -46,16 +45,13 @@ void AFlashbackMan::BeginPlay() {
 	
 	const int Strobe = ULSettings::GetFeatS(World, EFeat::V_STROBE)?1:0;
 	MPCInst->SetScalarParameterValue("Strobe", Strobe);
-	// TODO set the flashback feat as well.
-	// -- what was this?
 }
 
 void AFlashbackMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 	UFlashback* const Flashback = GetWorld()->GetSubsystem<UFlashback>();
-	if (IsValid(Flashback)) {
-		Flashback->OnChange.RemoveAll(this);
-	}
+	if (IsValid(Flashback))	Flashback->OnChange.RemoveAll(this);
+
 	MPCInst = nullptr;
 	MPC = nullptr;
 }

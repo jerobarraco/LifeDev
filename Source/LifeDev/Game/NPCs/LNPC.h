@@ -9,7 +9,6 @@
 
 class UMaterialInterface;
 
-// TODO do i even need this?
 // base npc class
 UCLASS(Blueprintable, BlueprintType)
 class ALNPC : public ALInteract {

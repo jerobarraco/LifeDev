@@ -7,8 +7,6 @@
 
 class UCQuickMesh;
 
-// TODO (at some point rename to Tape, i don´t think i'll have more tapes)
-
 // Base Tape00 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATape00: public ALInteract {

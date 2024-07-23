@@ -35,7 +35,7 @@ void ARange::BeginPlay() {
 
 void ARange::DoTrigger_Implementation() {
 	IRoot->SetRelativeScale3D(FVector(0));
-	Super::DoTrigger_Implementation(); // TODO should i call it or not?
+	Super::DoTrigger_Implementation();
 }
 
 void ARange::SetMaxSize(float Size) {

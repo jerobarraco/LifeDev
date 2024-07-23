@@ -11,7 +11,6 @@ APianoKey::APianoKey():Super() {
 	StateNum = 1;
 	UseAnim = true;
 	
-	// TODO change on sfx days
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/group_A.group_A"));
 	SFX_Trigger = CSFX.Object;
