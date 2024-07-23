@@ -22,6 +22,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Look(const FName& Name) const;
 	UFUNCTION(BlueprintCallable)
+	void Use(const FName& Name) const;
+	UFUNCTION(BlueprintCallable)
 	void UseSelected() const;
 	UFUNCTION(BlueprintCallable)
 	void LookSelected() const;
@@ -29,7 +31,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UDiags* Diags = nullptr;

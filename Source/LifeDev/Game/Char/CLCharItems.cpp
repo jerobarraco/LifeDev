@@ -42,6 +42,8 @@ void UCLCharItems::Look(const FName& Name) const {
 	const FString& SName = *Name.ToString();
 	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *SName);
 
+	if (!IsValid(Inventory)) return;
+
 	if (Name.IsNone()) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs tried to look at a NONE item."), __func__);
 		return;
@@ -77,11 +79,11 @@ void UCLCharItems::Look(const FName& Name) const {
 	if (IsValid(Item.Logic)) Item.Logic->Look();
 }
 
-void UCLCharItems::UseSelected() const {
-	if (!IsValid(Inventory)) return;
-	const FName& Selected = Inventory->GetSelected();
-	UE_LOG(LogCharItems, Log, TEXT("%hs Selected=%s"), __func__, *Selected.ToString());
+void UCLCharItems::Use(const FName& Name) const {
+	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 
+	if (!IsValid(Inventory)) return;
+	
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
 	if (!Found) return;
@@ -106,7 +108,7 @@ void UCLCharItems::UseSelected() const {
 	
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
-	const EItemUseResult Res = Interactor->TryUseItem(Selected);
+	const EItemUseResult Res = Interactor->TryUseItem(Name);
 	if (Res == EItemUseResult::BAD_HANDLED) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. But it was handled."),
 			__func__);
@@ -133,9 +135,13 @@ void UCLCharItems::UseSelected() const {
 
 	// mark the item as used, it won't trigger the manager.
 	// since we don't want to trigger when is used with an interaction.
-	Inventory->Use(Selected);
+	Inventory->Use(Name);
+}
+
+void UCLCharItems::UseSelected() const {
+	if (IsValid(Inventory)) Use(Inventory->GetSelected());
 }
 
 void UCLCharItems::LookSelected() const {
-	if (Inventory) Look(Inventory->GetSelected());
+	if (IsValid(Inventory)) Look(Inventory->GetSelected());
 }
