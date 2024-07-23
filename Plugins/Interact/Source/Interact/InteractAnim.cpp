@@ -46,7 +46,7 @@ void AInteractAnim::SetText_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
 }
 
-void AInteractAnim::SetState_Implementation(int32 NewState) {
+void AInteractAnim::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	// play the animation, since we want to make sure it ends where it needs to
 	AnimPlay();

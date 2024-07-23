@@ -37,12 +37,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void SetState_Implementation(int32 NewState) override;
+	virtual void SetState_Implementation(const int32 NewState) override;
 
 	// used to animate the light. in case of no A_Strobe this is called only once with the final value
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void AnimUpdate(float P, float A);
-	virtual void AnimUpdate_Implementation(float P, float A);
+	void AnimUpdate(const float P, const float A);
+	virtual void AnimUpdate_Implementation(const float P, const float A);
 
 	UFUNCTION() // bind
 	void TurnOn();

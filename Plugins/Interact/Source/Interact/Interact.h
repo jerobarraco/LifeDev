@@ -72,8 +72,8 @@ public:
 	// called when the state changes because it triggered.
 	// Starts at state 0 == closed == off
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
-	void SetState(int32 NewState);
-	virtual void SetState_Implementation(int32 NewState);
+	void SetState(const int32 NewState);
+	virtual void SetState_Implementation(const int32 NewState);
 
 	// this function has no documentation, oh noes, is so complicated i can't even
 	// begin to describe it. too bad.
@@ -175,7 +175,7 @@ protected:
 
 	/// CDO
 
-	// added here, so it can be changed in the editor. otherwise it wont show. :(
+	// added here, so it can be changed in the editor. otherwise it won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	// handles the interactions with this actor.

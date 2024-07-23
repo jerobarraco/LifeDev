@@ -191,7 +191,7 @@ void ALLight::SetState_Implementation(int32 NewState) {
 	if (Flags) Flags->Mod(LDConsts::Flags::Stats::LightsOn, bClosed ? -1 : 1);
 }
 
-void ALLight::AnimUpdate_Implementation(float P, float A) {
+void ALLight::AnimUpdate_Implementation(const float P, const float A) {
 	if (!SFX_Flicker) return;
 
 	const float v = 1.0-A;
