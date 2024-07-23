@@ -132,8 +132,13 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item is self-usable. will attempt now. '%s'."),
 			__func__, *Item.Title.ToString());
 
+		const bool ValidLogic = IsValid(Item.Logic);
+		if (!ValidLogic) // save myself some pain if i forget.
+			UE_LOG(LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
+				"It won't really be used. Skip."));
+		
 		// manually forcing self-use to have an item logic. not necessary but cleaner.
-		const bool Ok = IsValid(Item.Logic) && Inventory->Use(Name); // cooldown could affect it
+		const bool Ok = ValidLogic && Inventory->Use(Name); // cooldown could affect it
 		// if it fails to use it, fall through to the rest of the error
 		if (Ok) {
 			Item.Logic->Use();
