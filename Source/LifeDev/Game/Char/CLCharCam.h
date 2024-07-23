@@ -6,14 +6,14 @@
 
 #include "Camera/CameraComponent.h"
 
-#include "LCharCam.generated.h"
+#include "CLCharCam.generated.h"
 
 // LifeDev Game character camera
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
-class LIFEDEV_API ULCharCam : public UCameraComponent {
+class LIFEDEV_API UCLCharCam : public UCameraComponent {
 	GENERATED_BODY()
 public:
-	ULCharCam();
+	UCLCharCam();
 
 protected:
 	virtual void BeginPlay() override;

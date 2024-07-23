@@ -10,7 +10,7 @@
 
 #include "LChar.generated.h"
 
-class ULCharCam;
+class UCLCharCam;
 class ULSettingsUI;
 class UDiags;
 class UCInteractor;
@@ -126,7 +126,7 @@ protected:
 
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
-	ULCharCam* Camera = nullptr;
+	UCLCharCam* Camera = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteractor* Interactor = nullptr;

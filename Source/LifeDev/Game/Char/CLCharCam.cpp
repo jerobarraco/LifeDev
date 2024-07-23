@@ -1,18 +1,18 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
 
-#include "LCharCam.h"
+#include "CLCharCam.h"
 
 #include "Inventory/Flags.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 
-ULCharCam::ULCharCam():Super() {
+UCLCharCam::UCLCharCam():Super() {
 	bUsePawnControlRotation = true; // needed to be able to loop up
 }
 
-void ULCharCam::BeginPlay() {
+void UCLCharCam::BeginPlay() {
 	Super::BeginPlay();
 
 	const UWorld* const World = GetWorld();
@@ -20,7 +20,7 @@ void ULCharCam::BeginPlay() {
 
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (Settings) {
-		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ULCharCam::FeatUpdateVisual);
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &UCLCharCam::FeatUpdateVisual);
 		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
 	}
 
@@ -39,10 +39,10 @@ void ULCharCam::BeginPlay() {
 	SetFB(0); // update fov
 
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
-	if (FB) FB->OnChange.AddUniqueDynamic(this, &ULCharCam::SetFB);
+	if (FB) FB->OnChange.AddUniqueDynamic(this, &UCLCharCam::SetFB);
 }
 
-void ULCharCam::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void UCLCharCam::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
 	if (!W) return;
 
@@ -56,13 +56,13 @@ void ULCharCam::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ULCharCam::SetFB(const float Value) {
+void UCLCharCam::SetFB(const float Value) {
 	if (!UseFeatFOV) return;
 
 	SetFieldOfView(FMath::LerpStable(FOVMin, FOVMax, Value));
 }
 
-void ULCharCam::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
+void UCLCharCam::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
 	UE_LOG(LogTemp, Log, TEXT("%hs, Feat update f=%s on=%i"),
 		__func__, *UEnum::GetValueAsString(Feat), bEnabled);
 

@@ -22,7 +22,7 @@
 #include "LifeDev/Game/Snd/CLNoiser.h"
 #include "LifeDev/Game/Sys/Consts/ConstFlags.h"
 #include "GameUI.h"
-#include "LCharCam.h"
+#include "CLCharCam.h"
 #include "CLCharItems.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
@@ -42,7 +42,7 @@ ALChar::ALChar(): Super() {
 	}
 
 	// Create a CameraComponent
-	Camera = CreateDefaultSubobject<ULCharCam>(TEXT("Camera"));
+	Camera = CreateDefaultSubobject<UCLCharCam>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
 	// 40 is a biiit below c18, 45 is almost the same.
 	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 47.f)); // Position the camera
