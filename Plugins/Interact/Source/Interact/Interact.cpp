@@ -32,6 +32,8 @@ AInteract::AInteract():Super() {
 	Interact->SetupAttachment(Mesh);
 	Interact->HoverMesh = Mesh;
 
+	// i thought on making this a CSounder. but i don't really need it.
+	// and itś on a different plugin package and i don't want to depend on it.
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
