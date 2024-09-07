@@ -5,9 +5,7 @@
 #include "CAnimatorMix.h"
 #include "CAnimatorFade.generated.h"
 
-// Animator for the current camera
-// This only works with cameras that are not being moved while this is animating
-// it will take the current camera position at the begin of playing
+// Animator for materials. Deprecated. It's preferred to use AnimatorTrans
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact),
 	meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
