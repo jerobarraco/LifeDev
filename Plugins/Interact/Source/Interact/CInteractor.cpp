@@ -10,6 +10,8 @@
 #include "CInteract.h"
 #include "Interact.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCInteractor, Log, Log)
+
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 	constexpr static EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
@@ -60,33 +62,32 @@ void UCInteractor::TryTrigger() {
 bool UCInteractor::TryGrab(bool IsGrab) {
 	if (IsGrab) {
 		if (IsValid(GrabbedComp)) {
-			UE_LOG(LogTemp, Warning, TEXT(" Cant grab because im already grabbing"));
+			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. i'm already grabbing"));
 			return false;
 		}
 		if (!IsValid(InterComp)) {
-			UE_LOG(LogTemp, Warning, TEXT(" Cant grab because nothing to grab"));
+			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. nothing to grab."));
 			return false;
 		}
 
-		// Re-parenting is left to the Interact
+		// Re-parenting is left to the CInteract
 		const bool Ok = InterComp->TryGrab(IsGrab, this);
 		if (!Ok) {
-			UE_LOG(LogTemp, Warning, TEXT(" Can't grab because interact did not want to (probably not grabbable)."));
+			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. CInteract did not want to (probably not grabbable)."));
 			return false;
 		}
 
 		GrabbedComp = InterComp;
 		return true;
 	}
-		
-	
+
 	if (!IsValid(GrabbedComp)) {
-		UE_LOG(LogTemp, Warning, TEXT(" Can't ungrab because i have nothing grabbed"));
+		UE_LOG(LogCInteractor, Warning, TEXT(" Can't ungrab because i have nothing grabbed"));
 		return false;
 	}
 
 	UCInteract* const Old = GrabbedComp;
-	GrabbedComp = nullptr; // not my child anymore :'(
+	GrabbedComp = nullptr; // not my child anymore :'( (billie jean something ...)
 
 	// release of phys components is done here.
 	if (GrabHandler) GrabHandler->ReleaseComponent();
@@ -96,18 +97,18 @@ bool UCInteractor::TryGrab(bool IsGrab) {
 
 	return true;
 }
-	
+
 EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 	// i can't see the inventory from here!
 	if (!IsValid(InterComp)) {
-		UE_LOG(LogTemp, Warning, TEXT("Nothing to use the item with"));
+		UE_LOG(LogCInteractor, Warning, TEXT("Nothing to use the item with"));
 		return EItemUseResult::NO_TARGET;
 	}
 	
 	AActor* const Src = InterComp->GetOwner();
 	AInteract* const Actor = Cast<AInteract>(Src);
 	if (!IsValid(Actor)) {
-		UE_LOG(LogTemp, Warning, TEXT("Not a valid actor to use the item with."));
+		UE_LOG(LogCInteractor, Warning, TEXT("Not a valid actor to use the item with."));
 		return EItemUseResult::NO_TARGET;
 	}
 
@@ -116,7 +117,7 @@ EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	// UE_LOG(LogTemp, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
+	// UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
 				// __func__, *GetNameSafe(this),
 				// SU_IsServer, *UEnum::GetValueAsString(GetOwnerRole()));
 
@@ -164,7 +165,7 @@ void UCInteractor::BeginPlay() {
 	// this prevents rogue hover and sound effects.
 	if (!JU_IsStandalone && GetOwnerRole() != ROLE_AutonomousProxy) {
 			Deactivate(); // should disable tick, which is the core of the hover.
-		UE_LOG(LogTemp, Log, TEXT("%hs: %s: Disabling because it's not autonomous. Server=%i, Role=%s."),
+		UE_LOG(LogCInteractor, Log, TEXT("%hs: %s: Disabling because it's not autonomous. Server=%i, Role=%s."),
 			__func__, *GetNameSafe(this),
 			JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 	}
@@ -193,7 +194,7 @@ void UCInteractor::DoStart(UCInteract* Component) {
 	// skip retries
 	if (Component == InterComp) return;
 
-	UE_LOG(LogTemp, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
+	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
 		__func__, *GetNameSafe(this),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 

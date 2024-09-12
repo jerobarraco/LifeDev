@@ -139,7 +139,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	// TODO replicate the state variables (locked, oneshot, etc).
+	// TODO replicate the state variables (locked, state, oneshot, etc).
 }
 
 void AInteract::DoTriggerLocked_Implementation() {

@@ -73,7 +73,7 @@ void UCInteract::DeInit() {
 }
 
 bool UCInteract::TryGrab(bool IsGrab, UCInteractor* NewParent) {
-	UE_LOG(LogTemp, Log, TEXT("%hs. IsGrab=%i, IsGrabbable=%i, NewParent=%p"),
+	UE_LOG(LogCInteract, Log, TEXT("%hs. IsGrab=%i, IsGrabbable=%i, NewParent=%p"),
 		__func__, IsGrab, IsGrabbable, NewParent);
 	if (IsGrab) {
 		if (!IsGrabbable) return false;
@@ -116,7 +116,7 @@ void UCInteract::BeginPlay() {
 }
 
 void UCInteract::Reparent(bool IsGrab, UCInteractor* NewParent) {
-	UE_LOG(LogTemp, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
+	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
 
 	if (PhysComp)
 		ReparentPhys(IsGrab, NewParent);
@@ -128,7 +128,7 @@ void UCInteract::ReparentActor(bool IsGrab, UCInteractor* NewParent) {
 	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
 	AActor* const Actor = GetAttachParentActor();
 	if(!Actor) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs, Could not get attached parent actor"), __func__);
+		UE_LOG(LogCInteract, Warning, TEXT("%hs, Could not get attached parent actor"), __func__);
 		return;
 	}
 	
@@ -144,7 +144,7 @@ void UCInteract::ReparentActor(bool IsGrab, UCInteractor* NewParent) {
 
 void UCInteract::ReparentPhys(bool IsGrab, UCInteractor* NewParent) {
 	if (!PhysComp) {
-		UE_LOG(LogTemp, Warning, TEXT(" %hs Could not get the physcomp"), __func__);
+		UE_LOG(LogCInteract, Warning, TEXT(" %hs Could not get the physcomp"), __func__);
 		return;
 	}
 
@@ -154,7 +154,7 @@ void UCInteract::ReparentPhys(bool IsGrab, UCInteractor* NewParent) {
 		const UPrimitiveComponent* const PrimParent = NewParent->GrabRoot;
 		UPhysicsHandleComponent* const Handler = NewParent->GrabHandler;
 		if (!(PrimParent && Handler)) {
-			UE_LOG(LogTemp, Warning, TEXT(" Could not get the primparent, or constraint"));
+			UE_LOG(LogCInteract, Warning, TEXT(" Could not get the primparent, or constraint"));
 			return;
 		}
 
@@ -167,7 +167,7 @@ void UCInteract::ReparentPhys(bool IsGrab, UCInteractor* NewParent) {
 }
 
 void UCInteract::Deactivate() {
-	UE_LOG(LogTemp, Log, TEXT("%hs: %s: Server=%i Role=%s"),
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
 		__func__, *GetNameSafe(GetOwner()),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 	Super::Deactivate();
@@ -175,7 +175,7 @@ void UCInteract::Deactivate() {
 }
 
 void UCInteract::Activate(bool bReset) {
-	UE_LOG(LogTemp, Log, TEXT("%hs: %s: Server=%i Role=%s"),
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
 		__func__, *GetNameSafe(GetOwner()),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 	
@@ -187,7 +187,7 @@ void UCInteract::OnRep_IsActive() {
 	Super::OnRep_IsActive();
 
 	const bool NewActive = IsActive();
-	UE_LOG(LogTemp, Log, TEXT("%hs: %s: Server=%i Role=%s IsActive=%i"),
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s IsActive=%i"),
 		__func__, *GetNameSafe(GetOwner()),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()), NewActive);
 
