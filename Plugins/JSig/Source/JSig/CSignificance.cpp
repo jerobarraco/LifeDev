@@ -95,9 +95,8 @@ float UCSignificance::Calculate(
 		return GSigOverride;
 
 	const AActor* const Owner = GetOwner();
-	if (IsOffIfHidden && Owner && Owner->IsHidden()) {
+	if (IsOffIfHidden && Owner && Owner->IsHidden())
 		return static_cast<float>(ESigValue::Off);
-	}
 
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
@@ -121,17 +120,19 @@ float UCSignificance::Calculate(
 
 	// Use Actor implemented override if present.
 	// otherwise we will calculate it here
-	if (CalcSignificance.IsBound()) {
+	if (CalcSignificance.IsBound())
 		return static_cast<float>(CalcSignificance.Execute(Viewpoint));
-	}
 
 	// use overriden location if set. otherwise use the actor's one
 	FVector Origin;
-	if (CalcLocation.IsBound()) {
+	if (CalcLocation.IsBound())
 		Origin = CalcLocation.Execute();
-	} else if (Owner) {
+	else if (Owner)
 		Origin = Owner->GetActorLocation();
-	}
+	else
+		UE_LOG(LogJSigComp, Verbose, TEXT("Warning: Could not obtain the origin. No owner and no calcLocation."));
+		// TODO else get parent component location?
+
 
 	// calculate using distances
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
@@ -161,9 +162,8 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 
 		// check distance, and update
 		const float SigDistSqr = DistanceSqr[ISig];
-		if (DistSqr <= SigDistSqr) {
+		if (DistSqr <= SigDistSqr)
 			Sig = ISig;
-		}
 	}
 	
 	return static_cast<float>(Sig);
@@ -196,8 +196,8 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
 	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
-	
-	ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
+
+	const ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
 	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	const bool Equals = NewSig == Significance; 
@@ -213,9 +213,9 @@ void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, floa
 
 	/// Finish it!!
 	// Make sure to call ApplyUpdate on the game thread.
-	if (IsInGameThread()) { // thanks ue for these super helpful functions
+	if (IsInGameThread()) // thanks ue for these super helpful functions
 		ApplyUpdate();
-	} else {
+	else {
 		AsyncTask(ENamedThreads::GameThread, [this] {
 			ApplyUpdate();
 		});
@@ -224,7 +224,7 @@ void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, floa
 
 void UCSignificance::ApplyUpdate() {
 	/// updates.
-	/// This function is called on the game thread.
+	/// This function is called on the game thread (ensured by the caller).
 	/// Calling these Update* functions here would be less performant than in other threads.
 	/// But it's also more stable, it could crash on another thread.
 	UpdateTicks();
@@ -276,6 +276,7 @@ void UCSignificance::UpdateTicks() {
 void UCSignificance::UpdateActivate() {
 	const bool IsActive = Significance != ESigValue::Off;
 	for (UActorComponent* const C: CompsActivate) {
+		if (!IsValid(C)) continue;
 		C->SetActive(IsActive, false); // don't reset.
 	}
 }
@@ -288,6 +289,7 @@ void UCSignificance::UpdateHidden() {
 	// const bool IsActive = Significance != ESigValue::Off;
 	const bool IsHidden = Significance == ESigValue::Off;
 	for (USceneComponent* const C: CompsHide) {
+		if (!IsValid(C)) continue;
 		// C->SetVisibility(IsActive);
 		C->SetHiddenInGame(IsHidden);
 	}

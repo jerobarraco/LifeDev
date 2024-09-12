@@ -29,12 +29,24 @@ DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(ESigValue, FCalcSignificance, const FTr
 DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
 // Manages the significance of the owner actor
-// To use. just enable this plugin and add some CSignificance components to your actors
-// Set the tick interval if desired on this subsystem.
-// Also set the distance squared
-// you can also set the Comps if you want to manage their ticks too
-// you can also override the calculation, and bind to the significance change to implement your own tweaks.
-// Note: that this is one of the few objects that have autoActivate by default.
+// To use, just enable the plugin and a CSignificance component to your actors.
+// See properties in the SetUp category.
+// You can also override the calculation and/or location (CalcSignificance, CalcLocation),
+// and/or bind to the delegates (OnChange) to implement your own logic.
+// You can also read the current significance at any point.
+//
+// The possible significance values are:
+//		Off: The object "doesn't matter". Usually the object gets disabled or hidden.
+//		Low, Med: Intermediate values.
+//		High: Usually the object is at its maximum (quality, speed, etc.).
+//
+// Note: that this is one of the few objects that have AutoActivate by default.
+// You can set this component Active to true/false whenever you want.
+// When it's disabled, it won't be updated by the significance system, which saves resources.
+// But be careful not get the object stuck in a place where it can't enable back.
+// That could happen if you change active on the Actor Tick, but the significance component manages Tick enabled for the actor.
+// Also, it's recommended to not spam change this component's Active, as unreal tends to not like that.
+// It's ok to call Activate or Deactivate multiple times, just don't toggle it too frequently (once or more per frame).
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JSig), meta=(BlueprintSpawnableComponent))
 class JSIG_API UCSignificance: public UActorComponent {
 	GENERATED_BODY()
@@ -55,41 +67,55 @@ public:
 
 	static inline bool Debug = false;
 
-	// whether the update of this component is concurrent or sequential.
+	// Whether the update of this component is concurrent or sequential.
 	// Concurrent is more performant but if you override the CalcLocation or CalcSignificance it has to be thread safe.
+	// Also, it means that there could be many CSignificance components updated concurrently (at the same time),
+	// so beware of any inter-object communication or race conditions.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsConcurrent = true;
 
 	// if set, then when the actor is hidden, it will become insignificant (Off).
 	// See CompsHide and IsOffIfHidden.
+	// Priority = 10 (when set, this takes precedence over the rest)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffIfHidden = true;
 
-	// When set to true will test for occlusion *based on the Visibility channel*.
-	// Note this is probably not very cheap and has precedence over offscreen.
+	// When set to true, will test for occlusion *based on the Visibility channel*.
+	// Note this is probably not very cheap and has precedence over Offscreen.
 	// if IsOffIfOccluded will set to off, otherwise it will be low.
+	// Priority = 9
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool TestOcclusion = false;
 
 	// Only used if TestOcclusion is set.
-	// if IsOffIfOccluded is true, and the object is occluded, the significance will be off, otherwise it will be low.
+	// If the object is occluded: (does not affect if not occluded).
+	// If this is set, the significance will be Off; otherwise it will be Low.
+	// Priority = 9
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffIfOccluded = false;
 
 	// Works with OffscreenTimeMax.
-	// When offscreen, if this is set, it will be off, otherwise it will be low.
-	// (unless you've overriden the significance calculation)
+	// When offscreen: (Does not affect if on-screen).
+	// If this is set, the significance will be Off, otherwise it will be Low.
+	// See OffscreenTimeMax. This requires a mesh.
+	// Priority = 8
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool IsOffIfOffscreen = false;
 	
-	// >=0 The seconds since last render before becoming insignificant.
+	// >=0 The seconds since last render, after which, it will become insignificant (Off).
 	// <0 is disabled
 	// this requires the actor to have a mesh. (a light is not a mesh)
 	// if IsOffWhenOffscreen is true, the component will be off, otherwise it will be low.
+	// Priority = 8
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float OffscreenTimeMax = 0.5f;
 	
-	// Max distance per significance. Distances in square. increasing significance is expected to have decreasing distances.
+	// *Max* distance per significance.
+	// Distances are squared. Usually distance to the camera. (Unless calculation is overriden).
+	// By default, the significance is Off.
+	// So even if you don't specify it, after exceeding the biggest distance, it will become off. 
+	// Increasing significance is expected to have decreasing distances (in code).
+	// i.e. if you don't set it like that, it will behave oddly.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESigValue, float> DistanceSqr = {
 		{ESigValue::High, 500000},
@@ -98,10 +124,14 @@ public:
 		{ESigValue::Off, 10000000},
 	};
 
-	// Tick intervals per level. 0 means every frame. <0 means almost never (it will be replaced by a very high value)
-	// Higher means less frequent (slower) updates (more cpu saving)
-	// By default it will set the tick interval on the owner actor. unless this array is empty.
+	// Tick intervals per significance.
+	// 0 means every frame.
+	// <0 means almost never (it will be replaced by a very high value for technical reasons).
+	// Higher means less frequent (slower) updates (more cpu saving).
+	// It will set the tick interval on the owner actor.
 	// To manage more components set them in CompsTick.
+	// It won't change "TickEnabled" since that creates a lot of issues (It's recommended you don't change it either).
+	// Beware that objects with a TickInterval different from 0 will NOT tick during pause, even if the TickWhenPaused flag is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TMap<ESigValue, float> TickIntervals = {
 		{ESigValue::High, 0},
@@ -111,13 +141,16 @@ public:
 	};
 
 	// Components to manage ticks.
+	// Components set here, will have it's TickInterval managed by the 'TickIntervals' property.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsTicks;
-	// components to manage activate/deactivate. Not safe to use on Niagara (Use CompsHide instead)
+	// components to manage activate/deactivate.
+	// Not safe to use on Niagara (Use CompsHide instead)
+	// The components listed will be deactivated when the significance is Off, and reactivated when it's not Off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<UActorComponent*> CompsActivate;
 	
-	// components to manage hiddenInGame, ONLY when the significance is Off.
+	// components to manage HiddenInGame, ONLY when the significance is Off.
 	// When significance is Off it will set all the components to HiddenInGame
 	// otherwise it will unset HiddenInGame.
 	// This is affected by: DistanceSqr, IsOffIfOffscreen, IsOffIfHidden, and IsOffIfOccluded.
@@ -132,15 +165,18 @@ public:
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
 	
-	// Set this with a callback to a custom significance calculation.
+	// You con optionally set a callback to a custom significance calculation.
 	// When this is set, the CalcLocation is ignored.
-	// Can be called at a bg thread if the significance subsystem wants to.
+	// Can be called at a bg thread if unreal decides to (possibly affected by IsConcurrent and the subsystem::useBgThread).
+	// Could be called concurrently if IsConcurrent is set (beware race conditions on multiple objects).
 	// (on bp use the "Set" node) 
+	// Priority = 7
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcSignificance CalcSignificance;
-	// Set this with a callback to a custom Location calculation.
+	// You can optionally set a callback to a custom Location calculation.
 	// This location is then used for a location/based significance calculation.
-	// Can be called at a bg thread if the significance subsystem wants to.
+	// Can be called at a bg thread if unreal decides to (possibly affected by IsConcurrent and the subsystem::useBgThread).
+	// Could be called concurrently if IsConcurrent is set (beware race conditions on multiple objects).
 	// (on bp use the "Set" node) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;
