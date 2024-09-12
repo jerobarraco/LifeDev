@@ -134,7 +134,6 @@ void ALChar::SetInputEnabled(bool Enabled) {
 void ALChar::InteractSetEnabled(bool Enabled) {
 	Interactor->SetActive(Enabled);
 }
-// TODO set interactor active on beginplay
 
 void ALChar::BeginPlay() {
 	Super::BeginPlay();

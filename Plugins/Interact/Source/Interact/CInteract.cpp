@@ -3,10 +3,12 @@
 
 #include "CInteract.h"
 
-#include "CInteractor.h"
-#include "Components/BoxComponent.h"
-#include "JUtils/Net/JNetUtils.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Components/BoxComponent.h"
+
+#include "JUtils/Net/JNetUtils.h"
+
+#include "CInteractor.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCInteract, Log, Log);
 

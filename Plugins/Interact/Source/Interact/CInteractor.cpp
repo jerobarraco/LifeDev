@@ -10,8 +10,6 @@
 #include "CInteract.h"
 #include "Interact.h"
 
-// TODO activate on the pawn, it's not active by default.
-
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 	constexpr static EDrawDebugTrace::Type DrawType = EDrawDebugTrace::ForOneFrame;
