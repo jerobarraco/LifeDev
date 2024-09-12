@@ -19,6 +19,6 @@ AHeater00::AHeater00():Super() {
 	Interact->SetBoxExtent(FVector(40,15,47.5));
 
 	// disable by default
-	Interact->SetEnabled(false);
+	Interact->SetActive(false);
 	UseAnim = false;
 }

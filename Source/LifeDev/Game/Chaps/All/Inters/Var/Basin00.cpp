@@ -27,7 +27,7 @@ ABasin00::ABasin00():Super() {
 
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));
-	Interact->SetEnabled(false); // by default don't do anything.
+	Interact->SetActive(false); // by default don't do anything.
 	
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);

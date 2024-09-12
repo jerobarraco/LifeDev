@@ -6,6 +6,7 @@
 
 #include "Interact.generated.h"
 
+class UPhysicsConstraintComponent;
 class UCQuickMesh;
 class UCAnimatorTrans;
 class UCInteract;
@@ -15,10 +16,11 @@ class UAudioComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTryTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTriggerLocked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 
-// Don't use unless you really need it.
-// It's better to use AInteractAnim and disable the animations.
-// Base class for interact actors (actors to interact with)
+// Base class for interactable actors (actors to interact with)
+// Override DoTrigger and DoTriggerLocked, maybe OnHover.
+// And check the properties under "SetUp".
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API AInteract: public AActor {
 	GENERATED_BODY()
@@ -28,14 +30,17 @@ public:
 
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
 	// Call this to trigger the interaction. Returns the success (false if locked)
-	// this function has side effects (calls trigger/triggerLocked) so call at the end of your function.
+	// this function has side-effects (calls trigger/triggerLocked) so call at the end of your function.
+	// Usually this gets called automatically by the Interactor/CInteract
+	// overrideable in case you need to cancel a trigger
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	bool TryTrigger();
-	virtual bool TryTrigger_Implementation();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	void Hover(bool IsOn);
-	virtual void Hover_Implementation(bool IsOn){};
+	virtual void Hover_Implementation(bool IsOn) {
+		OnHover.Broadcast(IsOn);
+	};
 
 	// returns true if the item has been used (notice past tense)
 	//  this means when calling this function the item WILL trigger
@@ -45,11 +50,11 @@ public:
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
-	// Don't use if possible. use TryTrigger. used for binding only.
-	// since ue will complain about the return value. but i still want to keep it.
+	// Don't use if possible. use TryTrigger. This is used for binding only,
+	// since ue will complain about the return value.
 	// bindings don't work with forceinline
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
-	FORCEINLINE void TryTriggerWrap() {TryTrigger();}
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
+	void TryTriggerWrap() {TryTrigger();}
 
 	// Enables or disables the interaction.
 	UFUNCTION(BlueprintCallable, Category="Interact")
@@ -57,6 +62,9 @@ public:
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
 	// and THIS function is called in the constructor everywhere.
+	// mostly debug.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
+	bool GetEnabled() const;
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
 	UFUNCTION(BlueprintCallable)
@@ -80,11 +88,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
-	// When true will disable the Interact once triggered. Calling SetEnable(false).
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	// When true will disable the interact on trigger. Calling Deactivate.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
 	
-	// locks the interaction, calling tryTrigger will return false
+	// locks the interaction, calling tryTrigger will return false.
+	// But it will execute TriggerLocked and play the locked sound.
+	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
@@ -95,20 +105,38 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	USoundBase* SFX_Locked = nullptr;
 
-	// When this is triggered (not locked)
-	// Beware that this will trigger just before the children implementations of this class are finished processing.
-	// after long deliberation i think this is the best. either you override Trigger or you subscribe to this, but unlikely both.
-	// also Overriding Trigger is not the best, SetState is preferred.
+	// When this is triggered (not locked).
+	// Either you override DoTrigger or you subscribe to this, but unlikely both.
+	// also Overriding DoTrigger is not the best.
+	// If the CInteract is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTrigger;
 
-	// When this is triggered while locked
+	// When this is triggered while locked.
+	// Can also override DoTriggerLocked.
+	// If the CInteract is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTriggerLocked OnTriggerLocked;
+
+	// When this is being hovered on/off
+	// Always executes on the client that triggered this,
+	// The triggering CInteractor is always an AutonomousProxy not a SimulatedProxy.
+	// Though THIS Interact could be a SimulatedProxy. 
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FAInteractOnHover OnHover;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
+	// Returns the success (false if locked)
+	// this function has side-effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
+	// these are called by the CInteract which is called by the CInteractor.
+	// This is quite a complex interaction that' s why it' s protected.
+	UFUNCTION()
+	void Grab(bool IsGrab, UCInteractor* NewParent);
 
 	// sets the current text to show on this interact
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
@@ -152,7 +180,7 @@ protected:
 
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
-	UFUNCTION(BlueprintCallable, Category="Interact")
+	UFUNCTION(BlueprintCallable, Category="Interact", NetMulticast, Reliable)
 	void PlaySFX(USoundBase* Snd);
 	
 	// The state (index) of the Interact.
@@ -175,9 +203,10 @@ protected:
 
 	/// CDO
 
-	// added here, so it can be changed in the editor. otherwise it won't show. :(
+	// added here, so it can be changed in the editor. otherwise it, won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	USceneComponent* Root = nullptr;
+
 	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	UCInteract* Interact = nullptr;

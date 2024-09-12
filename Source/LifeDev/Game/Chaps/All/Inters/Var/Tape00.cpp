@@ -15,7 +15,7 @@ ATape00::ATape00():Super() {
 	Mesh->SetRelativeLocation(FVector(-5.725000,0,0));
 	Mesh->SetCastAllShadows(true);
 
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	Interact->SetRelativeLocation(FVector(5.725000,-2.500000,1.250000));
 	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
 

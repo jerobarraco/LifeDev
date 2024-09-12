@@ -3,10 +3,14 @@
 #include "CInteractor.h"
 
 #include "Kismet/KismetSystemLibrary.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+
+#include "JUtils/Net/JNetUtils.h"
 
 #include "CInteract.h"
 #include "Interact.h"
-#include "InteractTypes.h"
+
+// TODO activate on the pawn, it's not active by default.
 
 #if !(UE_BUILD_TEST || UE_BUILD_SHIPPING)
 	// EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
@@ -19,22 +23,82 @@ static ETraceTypeQuery TraceType = TraceTypeQuery1;
 
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
-	UActorComponent::SetComponentTickEnabled(true);
+	UActorComponent::SetComponentTickEnabled(false);
 	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
-	// the arrow doesn't parent correctly. so... beat it
+	Super::SetAutoActivate(false);
+	SetIsReplicated(false); // this one is independent on each client
 }
 
-void UCInteractor::SetEnabled(bool Enabled) {
-	SetComponentTickEnabled(Enabled);
+void UCInteractor::Deactivate() {
+	Super::Deactivate(); // disables tick. which will disable hover.
+	PrimaryComponentTick.SetTickFunctionEnable(false); // Believe it or not it WON'T disable tick without this.
 	DoEnd(); // force clearing currently selected
+}
+
+void UCInteractor::Activate(bool Reset) {
+	Super::Activate(Reset);
+	PrimaryComponentTick.SetTickFunctionEnable(true); // Believe it or not it WON'T disable tick without this.
+}
+
+void UCInteractor::SrvTrigger_Implementation(UCInteract* Comp) {
+	if (!IsValid(Comp)) return;
+	Comp->Trigger();
 }
 
 void UCInteractor::TryTrigger() {
 	if (!IsValid(InterComp)) return;
 
+	// decides HERE whether to trigger on the server or client (instead of the CInteract).
+	// because the CInteractor is owned by the player controller, hence can call RPCs.
+	// Also, the Interact is (should be) owned by the server.
+	if (InterComp->GetIsReplicated()) {
+		SrvTrigger(InterComp);
+		return;
+	}
+
 	InterComp->Trigger();
 }
 
+bool UCInteractor::TryGrab(bool IsGrab) {
+	if (IsGrab) {
+		if (IsValid(GrabbedComp)) {
+			UE_LOG(LogTemp, Warning, TEXT(" Cant grab because im already grabbing"));
+			return false;
+		}
+		if (!IsValid(InterComp)) {
+			UE_LOG(LogTemp, Warning, TEXT(" Cant grab because nothing to grab"));
+			return false;
+		}
+
+		// Re-parenting is left to the Interact
+		const bool Ok = InterComp->TryGrab(IsGrab, this);
+		if (!Ok) {
+			UE_LOG(LogTemp, Warning, TEXT(" Can't grab because interact did not want to (probably not grabbable)."));
+			return false;
+		}
+
+		GrabbedComp = InterComp;
+		return true;
+	}
+		
+	
+	if (!IsValid(GrabbedComp)) {
+		UE_LOG(LogTemp, Warning, TEXT(" Can't ungrab because i have nothing grabbed"));
+		return false;
+	}
+
+	UCInteract* const Old = GrabbedComp;
+	GrabbedComp = nullptr; // not my child anymore :'(
+
+	// release of phys components is done here.
+	if (GrabHandler) GrabHandler->ReleaseComponent();
+	
+	// make the Interact do its reparenting and signaling
+	Old->TryGrab(false, nullptr);// intentionally ignoring the return value
+
+	return true;
+}
+	
 EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 	// i can't see the inventory from here!
 	if (!IsValid(InterComp)) {
@@ -54,6 +118,10 @@ EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 }
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	// UE_LOG(LogTemp, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
+				// __func__, *GetNameSafe(this),
+				// SU_IsServer, *UEnum::GetValueAsString(GetOwnerRole()));
+
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FHitResult Hit;
@@ -80,9 +148,8 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 			TraceType,false, ArrEmpty, DrawType,
 			Hit, true
 		);
-	} else {
+	} else
 		World->LineTraceSingleByChannel(Hit, Start, End, InteractChannel, Params);
-	}
 	
 	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);
@@ -92,15 +159,29 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
 	TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
+
+	// replication makes everything more complex.
+	// Luckly the solution is simple. disable when not needed.
+	// allow it to work in standalone though.
+	// this prevents rogue hover and sound effects.
+	if (!JU_IsStandalone && GetOwnerRole() != ROLE_AutonomousProxy) {
+			Deactivate(); // should disable tick, which is the core of the hover.
+		UE_LOG(LogTemp, Log, TEXT("%hs: %s: Disabling because it's not autonomous. Server=%i, Role=%s."),
+			__func__, *GetNameSafe(this),
+			JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	}
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	DoEnd();
+	Deactivate();
 	Super::EndPlay(EndPlayReason);
 }
 
 void UCInteractor::DoEnd() {
+	// not checking for isvalid here in case the obj was destroyed.
+	// (Though i'm not certain whether UE will nullify this pointer, in case it will). 
 	if (!InterComp) return;
+
 	if (IsValid(InterComp)) InterComp->Hover(false);
 
 	OnToggle.Broadcast(false, InterComp);
@@ -110,13 +191,18 @@ void UCInteractor::DoEnd() {
 }
 
 void UCInteractor::DoStart(UCInteract* Component) {
+	// on every tick almost
 	// skip retries
 	if (Component == InterComp) return;
+
+	UE_LOG(LogTemp, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
+		__func__, *GetNameSafe(this),
+		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 
 	// notifies on changes
 	if (InterComp) {
 		DoEnd();
-		InterComp = nullptr; // clear after doend in case someone needs to access it 
+		InterComp = nullptr; // clear after doEnd in case someone needs to access it 
 	}
 
 	if (!IsValid(Component)) return;

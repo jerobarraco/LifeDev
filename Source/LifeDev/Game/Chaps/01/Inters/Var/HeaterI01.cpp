@@ -6,7 +6,7 @@
 AHeaterI01::AHeaterI01():Super() {
 	UseAnim = false;
 	Locked = true;
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	
 	LockedDlg = "HT01_L";
 	Texts = { FText::FromString(TEXT("Turn on")) };

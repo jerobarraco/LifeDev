@@ -165,6 +165,6 @@ void ALNPC01::SetPoseChair() {
 }
 
 void ALNPC01::SetVisible(bool Vis) {
-	Interact->SetEnabled(Vis);
+	Interact->SetActive(Vis);
 	SetActorHiddenInGame(!Vis);
 }

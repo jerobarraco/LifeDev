@@ -5,6 +5,8 @@
 
 #include "CInteractor.generated.h"
 
+class UPhysicsHandleComponent;
+class UPhysicsConstraintComponent;
 class UCInteract;
 class UInteractorUI;
 class UArrowComponent;
@@ -22,6 +24,8 @@ class INTERACT_API UCInteractor: public USceneComponent {
 
 public:
 	UCInteractor(const FObjectInitializer& ObjectInitializer);
+	virtual void Deactivate() override;
+	virtual void Activate(bool Reset) override;
 	
 	// you need to set this once. but only if you need to change the default.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
@@ -29,15 +33,9 @@ public:
 		InteractChannel = Channel;
 	}
 
-	UFUNCTION(BlueprintCallable)
-	void SetEnabled(bool Enabled);
-	
+	// Triggers the currently hovered component (if any)
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
-
-	// don't call directly, the character will.
-	// doesn't deal with the inventory,
-	// just notifies the interacted object.
 	UFUNCTION(BlueprintCallable)
 	EItemUseResult TryUseItem(const FName& Name) const;
 
@@ -45,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCInteract* GetInterComp() { return InterComp; }
 
+	UFUNCTION(BlueprintCallable)
+	bool TryGrab(bool IsGrab=true);
+	
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float TraceLen = 200.0;
@@ -52,13 +53,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float TraceSize = 2;
 	
-	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
+	UPrimitiveComponent* GrabRoot = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
+	UPhysicsConstraintComponent* GrabConstraint = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
+	UPhysicsHandleComponent* GrabHandler = nullptr;
+	
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractToggle OnToggle;
 	// triggered when it begins hovering an interact
-	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractBegin OnBegin;
 	// triggered when ends hovering an interact
-	UPROPERTY(BlueprintAssignable, Category=SetUp)
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractEnd OnEnd;
 
 protected:
@@ -66,6 +74,10 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	// Attempts to trigger on the server
+	UFUNCTION(Server, Reliable)
+	void SrvTrigger(UCInteract* Comp);
+	
 	// ends an interaction
 	void DoEnd();
 	// attempts to trigger a start
@@ -76,4 +88,6 @@ protected:
 	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	UCInteract* InterComp = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UCInteract* GrabbedComp = nullptr;
 };

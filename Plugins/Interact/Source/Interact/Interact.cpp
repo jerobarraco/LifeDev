@@ -9,6 +9,8 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "CInteract.h"
+#include "CInteractor.h"
+#include "JUtils/Net/JNetUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -31,9 +33,10 @@ AInteract::AInteract():Super() {
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
 	Interact->SetupAttachment(Mesh);
 	Interact->HoverMesh = Mesh;
+	// Interact->PhysComp = Cast<UPrimitiveComponent>(Mesh);
 
 	// i thought on making this a CSounder. but i don't really need it.
-	// and itś on a different plugin package and i don't want to depend on it.
+	// and it's on a different plugin package, and i don't want to depend on it.
 	SFX = CreateDefaultSubobject<UAudioComponent>(TEXT("SFX"));
 	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
@@ -51,6 +54,10 @@ bool AInteract::TryTrigger_Implementation() {
 	return true;
 }
 
+void AInteract::Grab(bool IsGrab, UCInteractor* NewParent) {
+	return;
+}
+
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
 		*Name.ToString(), *GetNameSafe(this));
@@ -66,7 +73,14 @@ void AInteract::SetEnabled(const bool Enabled) {
 		return;
 	}
 
-	Interact->SetEnabled(Enabled);
+	Interact->SetActive(Enabled);
+}
+
+bool AInteract::GetEnabled() const {
+	const bool Enabled = IsValid(Interact) && Interact->IsActive();
+	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Enabled=%i Server=%i"),
+		__func__, *GetNameSafe(this), Enabled, JU_IsServerSide);
+	return Enabled;
 }
 
 void AInteract::SetMobility(EComponentMobility::Type Mobility) {
@@ -95,18 +109,37 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
+
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
+	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
+
+	// Not using Interact->IsReplicated since it might not be set properly yet
+	if (Interact->WillReplicate()) {
+		SetReplicates(true);
+		SFX->SetIsReplicated(false); // implemented my own replication that i can control better.
+		// SFX->SetIsReplicated(true);
+	}
+
+	if (Mesh->IsSimulatingPhysics())
+		Interact->PhysComp = Mesh;
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (IsValid(Interact)) {
 		Interact->OnTrigger.RemoveAll(this);
 		Interact->OnHover.RemoveAll(this);
+		Interact->OnGrab.RemoveAll(this);
 		Interact->DeInit();
 	}
 	Interact = nullptr;
+
 	Super::EndPlay(EndPlayReason);
+}
+
+void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	// TODO replicate the state variables (locked, oneshot, etc).
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
@@ -122,7 +155,9 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::DoTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs : %s: Server=%i, Role=%s"),
+		__func__, *GetNameSafe(this), JU_IsServerSide,
+		*UEnum::GetValueAsString(GetLocalRole()));
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
@@ -135,10 +170,18 @@ void AInteract::DoTrigger_Implementation() {
 	if (IsOneShot) SetEnabled(false);
 }
 
-void AInteract::PlaySFX(USoundBase* Snd) {
+void AInteract::PlaySFX_Implementation(USoundBase* Snd) {
+	// When replicated this will play on server and all clients (when called by trigger or server)
+	// if called by a sim proxy it will be heard only on the sim proxy. which is good for now.
+	// we don't want to spam "hover" sounds anyway.
+	
 	if (!IsValid(Snd)) return;
-	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Playing sound. attached=%i, name='%s'."),
-		__func__, *GetNameSafe(this), UseAttachedSFX, *Snd->GetName());
+	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Playing sound."
+			" Attached=%i, Server=%i, Role=%s Snd='%s'."),
+		__func__, *GetNameSafe(this), UseAttachedSFX,
+		JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()), *Snd->GetName());
+
+	if (JU_IsServerOnly) return; // don't play sounds on the server (but do on standalone)
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);

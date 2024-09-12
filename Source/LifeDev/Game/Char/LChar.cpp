@@ -132,8 +132,9 @@ void ALChar::SetInputEnabled(bool Enabled) {
 // can't remember why i made this into its own function,
 // probably to be able to call from the outside.
 void ALChar::InteractSetEnabled(bool Enabled) {
-	Interactor->SetEnabled(Enabled);
+	Interactor->SetActive(Enabled);
 }
+// TODO set interactor active on beginplay
 
 void ALChar::BeginPlay() {
 	Super::BeginPlay();

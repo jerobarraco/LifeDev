@@ -8,7 +8,7 @@ AHeaterI02::AHeaterI02():Super() {
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
 	Locked = true;
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	
 	LockedDlg = "HT02_L";
 	Texts = {

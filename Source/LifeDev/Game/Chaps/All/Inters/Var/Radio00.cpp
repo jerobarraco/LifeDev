@@ -47,7 +47,7 @@ ARadio00::ARadio00():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
 	Anim->Curve = CCurve.Object;
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	UseAnim = true;
 	StateNum = 2;
 	UseRewardDestroy = false;

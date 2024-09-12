@@ -6,7 +6,7 @@
 
 AWalkmanI00::AWalkmanI00():Super() {
 	UseAnim = false;
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	
 	RewardFlash = .1f;
 	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?

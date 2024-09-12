@@ -13,7 +13,7 @@ ABedI00::ABedI00():Super() {
 	Locked = true;
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
-	Interact->SetEnabled(true);
+	Interact->SetActive(true);
 	Interact->SetRelativeLocation(FVector(102.5,-55,32.5));
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
 	
