@@ -127,6 +127,8 @@ void ALChar::SetInputEnabled(bool Enabled) {
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
 	Noiser->SetActive(Enabled, true);
+
+	// Note: by default the Interactor is deactivated. It's all good since the story will enable it.
 }
 
 // can't remember why i made this into its own function,
