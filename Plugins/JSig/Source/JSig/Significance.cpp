@@ -8,7 +8,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 
 USignificance::USignificance():Super() {}
 
-USignificance* USignificance::Instance(UObject* O) {
+USignificance* USignificance::Instance(const UObject* O) {
 	if (!IsValid(O)) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
@@ -93,10 +93,10 @@ void USignificance::Tick(float DeltaTime) {
 			this->DoTick();
 		};
 		// this thread works on android. "BackgroundThreadPriority" will NOT execute.
+		// i wonder what would happen if tick is run on every frame. could this possibly aggregate and run multiple times on a frame?
 		AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, MoveTemp(F));
-	} else {
+	} else
 		DoTick();
-	}
 }
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
