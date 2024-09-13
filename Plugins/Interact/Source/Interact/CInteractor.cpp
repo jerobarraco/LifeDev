@@ -119,7 +119,7 @@ EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	// UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
 				// __func__, *GetNameSafe(this),
-				// SU_IsServer, *UEnum::GetValueAsString(GetOwnerRole()));
+				// JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
