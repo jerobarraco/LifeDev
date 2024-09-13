@@ -87,7 +87,7 @@ bool UCInteractor::TryGrab(bool IsGrab) {
 	}
 
 	UCInteract* const Old = GrabbedComp;
-	GrabbedComp = nullptr; // not my child anymore :'( (billie jean something ...)
+	GrabbedComp = nullptr; // not my child anymore :'(
 
 	// release of phys components is done here.
 	if (GrabHandler) GrabHandler->ReleaseComponent();

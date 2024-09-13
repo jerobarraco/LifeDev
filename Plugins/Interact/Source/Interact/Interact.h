@@ -89,13 +89,15 @@ public:
 	FORCEINLINE int32 GetState() const { return State; }
 
 	// When true will disable the interact on trigger. Calling Deactivate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
+		Replicated, ReplicatedUsing=OnRep_IsOneShot)
 	bool IsOneShot = false;
 	
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock",
+		Replicated, ReplicatedUsing=OnRep_IsLocked)
 	bool Locked = false;
 
 	// SFX that will be played on trigger
@@ -183,6 +185,12 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Interact", NetMulticast, Reliable)
 	void PlaySFX(USoundBase* Snd);
 	
+	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
+	void OnRep_IsLocked();
+
+	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
+	void OnRep_IsOneShot();
+
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.

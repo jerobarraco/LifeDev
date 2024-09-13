@@ -95,8 +95,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void OnRep_IsActive() override;
 	void Reparent(bool bIsGrab, UCInteractor* NewParent);
 	void ReparentActor(bool IsGrab, UCInteractor* NewParent);
 	void ReparentPhys(bool IsGrab, UCInteractor* NewParent);
-	void OnRep_IsActive() override;
 };

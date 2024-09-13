@@ -5,12 +5,13 @@
 
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
+#include "JUtils/Net/JNetUtils.h"
 
 #include "CInteract.h"
 #include "CInteractor.h"
-#include "JUtils/Net/JNetUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -58,6 +59,22 @@ void AInteract::Grab(bool IsGrab, UCInteractor* NewParent) {
 	return;
 }
 
+void AInteract::OnRep_IsOneShot_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs: IsOneShot=%i Server=%i Obj=%s"),
+		__func__, IsOneShot, JU_IsServerSide, *GetNameSafe(this));
+	// probably clients only. not tested.
+	// this is mostly a nice to have since it's the locked variable is only tested on server.
+	// so it would help clients in case they need to check the value at a random time.
+}
+
+void AInteract::OnRep_IsLocked_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs: Locked=%i Server=%i Obj=%s"),
+		__func__, Locked, JU_IsServerSide, *GetNameSafe(this));
+	// probably clients only. not tested.
+	// this is mostly a nice to have since it's the locked variable is only tested on server.
+	// so it would help clients in case they need to check the value at a random time.
+}
+
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
 		*Name.ToString(), *GetNameSafe(this));
@@ -69,7 +86,7 @@ void AInteract::SetEnabled(const bool Enabled) {
 		__func__, Enabled, *GetNameSafe(this));
 
 	if (!IsValid(Interact)) {
-		UE_LOG(LogInteract, Warning, TEXT("AInteract::SetEnabled Interact is invalid!!!!!!!"));
+		UE_LOG(LogInteract, Warning, TEXT("%hs Interact is invalid!!!!!!!"), __func__);
 		return;
 	}
 
@@ -78,8 +95,8 @@ void AInteract::SetEnabled(const bool Enabled) {
 
 bool AInteract::GetEnabled() const {
 	const bool Enabled = IsValid(Interact) && Interact->IsActive();
-	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Enabled=%i Server=%i"),
-		__func__, *GetNameSafe(this), Enabled, JU_IsServerSide);
+	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Server=%i Obj=%s"),
+		__func__, Enabled, JU_IsServerSide, *GetNameSafe(this));
 	return Enabled;
 }
 
@@ -139,7 +156,11 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	// TODO replicate the state variables (locked, state, oneshot, etc).
+	FDoRepLifetimeParams SharedParams;
+	SharedParams.bIsPushBased = true;
+	DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, Locked, SharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, IsOneShot, SharedParams);
+	// Not sure what's ispushbased but seems nice.
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
@@ -155,9 +176,10 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::DoTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs : %s: Server=%i, Role=%s"),
-		__func__, *GetNameSafe(this), JU_IsServerSide,
-		*UEnum::GetValueAsString(GetLocalRole()));
+	UE_LOG(LogInteract, Log, TEXT("%hs: Server=%i, Role=%s, Obj=%s"),
+		__func__, JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()),
+		*GetNameSafe(this));
+
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
@@ -176,10 +198,9 @@ void AInteract::PlaySFX_Implementation(USoundBase* Snd) {
 	// we don't want to spam "hover" sounds anyway.
 	
 	if (!IsValid(Snd)) return;
-	UE_LOG(LogInteract, Log, TEXT("%hs: %s: Playing sound."
-			" Attached=%i, Server=%i, Role=%s Snd='%s'."),
-		__func__, *GetNameSafe(this), UseAttachedSFX,
-		JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()), *Snd->GetName());
+	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i, Server=%i, Role=%s Obj=%s Snd=%s."),
+		__func__, UseAttachedSFX, JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()),
+		*GetNameSafe(this), *Snd->GetName());
 
 	if (JU_IsServerOnly) return; // don't play sounds on the server (but do on standalone)
 
