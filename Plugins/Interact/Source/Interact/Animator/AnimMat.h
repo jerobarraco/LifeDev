@@ -116,7 +116,7 @@ public:
 };
 
 // Subsystem that animates materials parameter collections' parameters.
-// And custom primitive data.
+// And custom primitive data. It's a bit deprecated. The AnimatorMPC and AnimatorData is preferred.
 UCLASS(Blueprintable, Category="Interact", DefaultConfig, Config=Interact)
 class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
 	GENERATED_BODY()
@@ -160,8 +160,7 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// UseHSV: uses HSV for lerp. it's more expensive, but looks better on colors.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	// Warning: there is no way to cancel a fade.
-	//		Triggering the same parameter twice will try to animate it twice at the same time. 
+	// Triggering the same parameter with the same component will remove the first animation. 
 	UFUNCTION(BlueprintCallable)
 	bool DataFade(UPrimitiveComponent* const Component,
 		const int32 Index, const bool IsScalar = true,
@@ -186,6 +185,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float DurationDefault = 1.f;
 
+	// whether this subsystem will be created.
+	// when false, it will save some cycles, but might make the app crash.
+	// should be changed in the config file
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
+	bool ShouldBeCreated = true;
+
 	// when all the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatDone OnDone;
@@ -193,12 +198,6 @@ public:
 	// when a specific param (or data) is done.
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatItemDone OnItemDone;
-
-	// whether this subsystem will be created.
-	// when false, it will save some cycles, but might make the app crash.
-	// should be changed in the config file
-	UPROPERTY(BlueprintReadWrite, Config)
-	bool ShouldBeCreated = true;
 
 protected:
 	bool ParamInitBasic(FAMBase& OParam, const FName Name,
@@ -227,6 +226,7 @@ protected:
 	TMap<FName, FMPFVector> VectorParams;
 	UPROPERTY(Transient)
 	TArray<FMPFData> DataParams;
+	
 	// can't use the name/index since the same name is going to be used on multiple objects.
 	// same issue happens with the float and vector. but it's unlikely artists will use more than one mpc.
 };

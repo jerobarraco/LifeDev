@@ -109,7 +109,7 @@ bool FMPFData::GetCurrent(FLinearColor& OCurrent) const {
 
 bool FMPFData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
-			__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
+		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
 
 	if (!FIsValid()) {
 		UE_LOG(LogAnimMat, Log, TEXT("%hs Invalid component or index. Skip"),
@@ -209,9 +209,10 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		return false;
 	};
 	
-	if (FMath::IsNearlyZero(Duration)) {
-		if (FloatParams.Contains(Name)) FloatParams.Remove(Name); // ensure we remove it.
+	// Ensure to remove the old one.
+	if (FloatParams.Contains(Name)) FloatParams.Remove(Name);
 
+	if (FMath::IsNearlyZero(Duration)) {
 		const bool Ok = Param.SetVal(To);
 		OnItemDone.Broadcast(Name, INDEX_NONE); // notify AFTER change.
 		return Ok;
@@ -243,9 +244,10 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 		return false;
 	}
 
+	// Ensure we remove the old one.
+	if (VectorParams.Contains(Name)) VectorParams.Remove(Name);
+	
 	if (FMath::IsNearlyZero(Duration)) {
-		if (VectorParams.Contains(Name)) VectorParams.Remove(Name); // ensure we remove it
-		
 		const bool Ok = Param.SetVal(To);
 		OnItemDone.Broadcast(Name, INDEX_NONE); // notify AFTER change.
 		return Ok;
@@ -283,10 +285,15 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 		return false;
 	}
 
+	for (uint32 i = 0; i<DataParams.Num(); ++i) {
+		const FMPFData& P = DataParams[i];
+		if (P.Index != Param.Index || P.Comp != Param.Comp) continue;
+
+		DataParams.RemoveAt(i);
+		break;
+	}
+
 	if (FMath::IsNearlyZero(Duration)) {
-		// if (DataParams.Contains(Name)) DataParams.Remove(Name); // ensure we remove it
-		// TODO be able to remove a data param. i need a way to map it. by component and index. (hash?)
-		
 		const bool Ok = Param.SetVal(Param.To);
 		OnItemDone.Broadcast(Param.Name, Param.Index); // notify AFTER change.
 		return Ok;
@@ -395,12 +402,12 @@ void UAnimMat::Initialize(FSubsystemCollectionBase& Collection) {
 bool UAnimMat::ShouldCreateSubsystem(UObject* Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
-	UE_LOG(LogTemp, Log, TEXT("AnimMat::ShoulbBeCreated is=%i. the world subsystem will not be created."),
-		ShouldBeCreated);
+	UE_LOG(LogAnimMat, Log, TEXT("%hs is=%i. the world subsystem will not be created."),
+		__func__, ShouldBeCreated);
 
 	if (!ShouldBeCreated) {
-		UE_LOG(LogTemp, Log, TEXT("AnimMat::ShouldBeCreated is false,"
-			"the world subsystem will not be created. Can be changed on the config file Interact.ini"));
+		UE_LOG(LogAnimMat, Log, TEXT("%hs is false. The world subsystem will not be created."
+			"Can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}
 
