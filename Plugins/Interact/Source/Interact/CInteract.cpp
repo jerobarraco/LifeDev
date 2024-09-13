@@ -13,7 +13,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCInteract, Log, Log);
 
 UCInteract::UCInteract(): Super() {
-	// these two seem to work ok. but keep an eye on.
+	// These two seem to work ok. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	UBoxComponent::SetComponentTickEnabled(false);
