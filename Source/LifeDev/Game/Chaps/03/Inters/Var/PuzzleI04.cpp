@@ -6,9 +6,9 @@
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Kismet/GameplayStatics.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 constexpr float SndWait = 1.75;
 

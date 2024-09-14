@@ -3,8 +3,8 @@
 #include "PuzzleI01.h"
 
 #include "Interact/CPuzzle.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 APuzzleI01::APuzzleI01():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;

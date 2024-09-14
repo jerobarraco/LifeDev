@@ -6,7 +6,7 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ABatts::ABatts():Super() {
 	Texts = { FText::FromString(TEXT("Batteries")) } ;

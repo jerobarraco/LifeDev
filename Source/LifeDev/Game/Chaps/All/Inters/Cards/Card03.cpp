@@ -2,7 +2,7 @@
 
 #include "Card03.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ACard03::ACard03():Super() {
 	// overriden description for this chapter. will show on trigger.

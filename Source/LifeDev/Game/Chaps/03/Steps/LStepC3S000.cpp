@@ -3,7 +3,7 @@
 
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC3S000::ALStepC3S000():Super() {

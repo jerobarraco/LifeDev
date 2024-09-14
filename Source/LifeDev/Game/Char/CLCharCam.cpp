@@ -6,7 +6,7 @@
 #include "Inventory/Flags.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 UCLCharCam::UCLCharCam():Super() {
 	bUsePawnControlRotation = true; // needed to be able to loop up

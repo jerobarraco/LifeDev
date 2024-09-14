@@ -2,7 +2,7 @@
 
 #include "PoemI03.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 APoemI03::APoemI03():Super() {
 	RewardFlash = -.2f;

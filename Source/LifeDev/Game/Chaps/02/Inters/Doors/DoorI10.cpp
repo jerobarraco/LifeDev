@@ -4,7 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 ADoorI10::ADoorI10():Super() {

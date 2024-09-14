@@ -13,9 +13,9 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 #include "Sound/SoundSubmix.h"
 
 ALMusicMan::ALMusicMan():Super() {

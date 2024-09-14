@@ -9,7 +9,7 @@
 #include "Inventory/InventoryTypes.h"
 #include "Inventory/ItemLogic.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCharItems, Log, Log);
 

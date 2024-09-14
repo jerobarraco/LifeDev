@@ -4,8 +4,8 @@
 
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 ADoorI05::ADoorI05():Super() {

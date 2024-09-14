@@ -6,7 +6,7 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 UCLNoiser::UCLNoiser():Super() {
 	PrimaryComponentTick.bCanEverTick = false;

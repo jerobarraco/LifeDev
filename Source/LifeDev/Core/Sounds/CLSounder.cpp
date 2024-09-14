@@ -4,7 +4,7 @@
 
 #include "Sound/SoundClass.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 UCLSounder::UCLSounder():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundClass>

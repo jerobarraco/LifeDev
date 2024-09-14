@@ -5,7 +5,7 @@
 #include "Diags/Diags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ATvI01::ATvI01():Super() {
 	UseItemDlgs = {

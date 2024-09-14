@@ -2,7 +2,7 @@
 
 #include "CloutI06.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ACloutI06::ACloutI06():Super() {
 	TriggerDlg = "C06_T";

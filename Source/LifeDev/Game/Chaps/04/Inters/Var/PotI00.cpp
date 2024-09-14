@@ -4,7 +4,7 @@
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 APotI00::APotI00():Super() {

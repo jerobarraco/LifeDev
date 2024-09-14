@@ -6,7 +6,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
-#include "LifeDev/Game/Sys/Consts/ConstColors.h"
+#include "LifeDev/Core/Consts/ConstColors.h"
 
 ALLight02::ALLight02():Super() {
 	IntensityMax = 5;

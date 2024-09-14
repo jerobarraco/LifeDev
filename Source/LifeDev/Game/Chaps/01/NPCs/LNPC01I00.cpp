@@ -6,7 +6,7 @@
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 // i've considered moving stuff from here to steps. but they would be a bunch of steps.
 // and naming them would be difficult. so no.

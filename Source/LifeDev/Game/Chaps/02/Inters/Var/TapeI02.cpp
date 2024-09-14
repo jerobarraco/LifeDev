@@ -2,7 +2,7 @@
 
 #include "TapeI02.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI02::ATapeI02():Super() {
 	Texts = { FText::FromString(TEXT("Another of my tapes")) };

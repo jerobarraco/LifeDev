@@ -3,7 +3,7 @@
 #include "SpongeI00.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";

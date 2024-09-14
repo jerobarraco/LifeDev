@@ -4,7 +4,7 @@
 
 #include "Diags/DialogUI.h"
 #include "Inventory/Flags.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 ALDialogMan::ALDialogMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI>

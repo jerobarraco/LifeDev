@@ -7,7 +7,7 @@
 #include "JUtils/JMiscUtils.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
-#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 #include "IntroUI.h"
 
 AIntroMan::AIntroMan():Super() {

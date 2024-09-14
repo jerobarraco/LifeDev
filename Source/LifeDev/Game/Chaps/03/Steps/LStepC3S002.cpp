@@ -4,7 +4,7 @@
 
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC3S002::ALStepC3S002():Super() {
 	Name = FName("C3S2");

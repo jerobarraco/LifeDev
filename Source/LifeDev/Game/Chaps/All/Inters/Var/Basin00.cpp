@@ -8,7 +8,7 @@
 
 #include "Interact/CInteract.h"
 #include "JSig/CSignificance.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 #include "Sounds/CSounder.h"
 

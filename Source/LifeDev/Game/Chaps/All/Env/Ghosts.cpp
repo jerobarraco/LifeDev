@@ -4,8 +4,8 @@
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
 
-#include "LifeDev/Game/Snd/CLSounder.h"
-#include "LifeDev/Game/Sys/Consts/ConstSettings.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 AGhosts::AGhosts():Super() {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));

@@ -2,7 +2,7 @@
 
 #include "TapeI03.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI03::ATapeI03():Super() {
 	Texts = { FText::FromString(TEXT("One more tape")) };

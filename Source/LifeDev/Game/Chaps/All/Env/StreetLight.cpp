@@ -8,7 +8,7 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"
-#include "LifeDev/Game/Sys/Consts/ConstColors.h"
+#include "LifeDev/Core/Consts/ConstColors.h"
 
 AStreetLight::AStreetLight():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

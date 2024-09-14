@@ -2,7 +2,7 @@
 
 #include "Card02.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ACard02::ACard02():Super() {
 	RewardItem = LDConsts::Items::Card2;

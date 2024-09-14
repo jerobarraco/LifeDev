@@ -2,7 +2,7 @@
 
 #include "SpotI01.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI01::ASpotI01():Super() {
 	Texts = {

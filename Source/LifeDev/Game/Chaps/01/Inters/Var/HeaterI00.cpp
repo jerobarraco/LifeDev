@@ -5,7 +5,7 @@
 #include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
 	RewardFlash = .1f;

@@ -4,8 +4,8 @@
 
 #include "NiagaraComponent.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };

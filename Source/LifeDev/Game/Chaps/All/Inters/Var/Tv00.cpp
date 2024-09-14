@@ -14,7 +14,7 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ATv00::ATv00():Super() {
 	// can't set meshes to static or the button animation won't work :'(

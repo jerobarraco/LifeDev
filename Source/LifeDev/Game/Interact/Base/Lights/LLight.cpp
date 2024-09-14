@@ -15,8 +15,8 @@
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/CLSignificance.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 ALLight::ALLight():Super() {
 	UseAnim = true;

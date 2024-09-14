@@ -2,7 +2,7 @@
 
 #include "LInputSelector.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstColors.h"
+#include "LifeDev/Core/Consts/ConstColors.h"
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it

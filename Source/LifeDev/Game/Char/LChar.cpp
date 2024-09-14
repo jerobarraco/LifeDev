@@ -19,8 +19,8 @@
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
-#include "LifeDev/Game/Snd/CLNoiser.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "LifeDev/Core/Sounds/CLNoiser.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"

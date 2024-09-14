@@ -12,7 +12,7 @@
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ALPuzzle::ALPuzzle():Super() {
 	SND = CreateDefaultSubobject<UCLSounder>(TEXT("Sounder"));

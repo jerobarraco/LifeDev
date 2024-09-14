@@ -3,7 +3,7 @@
 
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC2S004::ALStepC2S004():Super() {
 	static const FName N("C2S4");

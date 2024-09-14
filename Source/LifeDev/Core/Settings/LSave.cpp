@@ -7,7 +7,7 @@
 
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
-#include "LifeDev/Game/Sys/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
 

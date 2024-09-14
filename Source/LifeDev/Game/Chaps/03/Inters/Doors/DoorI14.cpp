@@ -2,7 +2,7 @@
 
 #include "DoorI14.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ADoorI14::ADoorI14():Super() {
 	LockedDlg = "D14_L";

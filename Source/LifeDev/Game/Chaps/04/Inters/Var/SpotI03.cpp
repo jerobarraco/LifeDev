@@ -2,7 +2,7 @@
 
 #include "SpotI03.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI03::ASpotI03():Super() {
 	// DropDlg = TEXT("IS0_D*");

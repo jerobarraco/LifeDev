@@ -2,7 +2,7 @@
 
 #include "BattsI00.h"
 
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ABattsI00::ABattsI00():Super() {
 	Texts = { FText::FromString(TEXT("Pick up batteries")) };

@@ -5,7 +5,7 @@
 #include "Diags/Diags.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Snd/CLSounder.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ARadioI00::ARadioI00():Super() {
 	Locked = true;

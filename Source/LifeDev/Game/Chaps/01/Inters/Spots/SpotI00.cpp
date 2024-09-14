@@ -4,7 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "Interact/InteractTypes.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI00::ASpotI00():Super() {
 	DropDlg = TEXT("IS_C0D");

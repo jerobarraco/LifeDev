@@ -5,7 +5,7 @@
 
 #include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/Consts/ConstItems.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
