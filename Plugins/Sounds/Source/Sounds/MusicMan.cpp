@@ -26,12 +26,12 @@ void AMusicMan::Fade_Implementation(bool In) {
 }
 
 void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
-	if (!IsValid(Snd))  {
-		UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic. Sound not valid!"));
+	if (!IsValid(Snd)) {
+		UE_LOG(LogSounds, Log, TEXT("%hs. Sound not valid! Stop"), __func__);
 		return;
 	}
 
-	UE_LOG(LogSounds, Log, TEXT("MusicMan PlayMusic '%s'"), *Snd->GetName());
+	UE_LOG(LogSounds, Log, TEXT("%hs '%s'"), __func__, *Snd->GetName());
 	
 	NextMusic = Snd;
 	if (FadeOut && Player->IsPlaying()) Fade(false);
@@ -49,13 +49,13 @@ void AMusicMan::BeginPlay() {
 
 void AMusicMan::AudioFinished() {
 	if (!IsValid(NextMusic)) {
-		UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. No NextMusic."));
+		UE_LOG(LogSounds, Log, TEXT("%hs. No NextMusic. Stop."), __func__);
 		return;
 	}
-	UE_LOG(LogSounds, Log, TEXT("MusicMan AudioFinished. NextMusic='%s'"), *GetNameSafe(NextMusic));
+	UE_LOG(LogSounds, Log, TEXT("%hs. NextMusic='%s'"), __func__, *GetNameSafe(NextMusic));
 
 	// schedule a change in music in the next ms.
-	// in the hope that would fix the issue on the builds where it doesn't really wanna start.
+	// in the hope that would fix the issue on the builds where it doesn't really want to start.
 	FTimerHandle Handle;
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMusicMan::SetNextMusic, .05);
 }
@@ -68,11 +68,11 @@ void AMusicMan::SetIntensity_Implementation(float V) {
 
 void AMusicMan::SetNextMusic() {
 	if (!IsValid(NextMusic)) {
-		UE_LOG(LogSounds, Log, TEXT("MusicMan SetNextMusic. No NextMusic."));
+		UE_LOG(LogSounds, Log, TEXT("%hs. No NextMusic. Stop."), __func__);
 		return;
 	}
 	
-	UE_LOG(LogSounds, Log, TEXT("MusicMan SetNextMusic '%s'"), *NextMusic->GetName());
+	UE_LOG(LogSounds, Log, TEXT("%hs '%s'"), __func__, *NextMusic->GetName());
 
 	Player->SetSound(NextMusic);
 	Fade(true);
