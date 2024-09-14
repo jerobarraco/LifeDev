@@ -29,7 +29,7 @@ bool UPool::Spawn() {
 bool UPool::RemoveOne() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
-	// always remove at end. we could use RemoveAtSwap but it will probably do the same arithmetic.
+	// always remove at end. we could use RemoveAtSwap, but it will probably do the same arithmetic.
 	const int32 I = Ready.Num() -1;
 	if (I < 0) return false;
 
