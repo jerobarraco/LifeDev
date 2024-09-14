@@ -34,11 +34,15 @@ void UCAnimatorPID::SetVal(float NewVal) {
 	Activate(false);
 }
 
-void UCAnimatorPID::Reset() { // TODO call when activate and was not active
+void UCAnimatorPID::Reset() {
 	Integral = 0;
 	ErrorPrev = 0;
 	ValuePrev = 0;
 	HasDerivative = false;
+}
+
+float UCAnimatorPID::GetTarget_Implementation() {
+	return OnGetTarget.IsBound() ? OnGetTarget.Execute() : Target;
 }
 
 float UCAnimatorPID::GetVal_Implementation() {
@@ -47,6 +51,7 @@ float UCAnimatorPID::GetVal_Implementation() {
 
 void UCAnimatorPID::DoTick(float DT) {
 	Value = GetVal(); // update
+	Target = GetTarget(); // update
 
 	/// do calculations
 	float Error = 0;
@@ -64,9 +69,8 @@ void UCAnimatorPID::DoTick(float DT) {
 	
 	Proportional = Error;
 	Integral = Integral + (Error * DT);
-	if (IntegralMax>0) {
+	if (IntegralMax>0)
 		Integral = FMath::Clamp(Integral, -IntegralMax, IntegralMax);
-	}
 	
 	Output = (Kp * Proportional) + (Ki * Integral) + (Kd * Derivative);
 
@@ -81,26 +85,28 @@ void UCAnimatorPID::DoTick(float DT) {
 	ValuePrev = Value;
 	ErrorPrev = Error;
 	HasDerivative = true;
-	
-	// notify
-	OnUpdate.Broadcast(Output);
+
+	if (AutoUpdateValue)
+		Value += Output;
+
+	OnUpdate.Broadcast(Output, Value);// notify
 
 	// stop check. done after so that deactivate is triggered last
 	if (StopTime > 0 && FMath::IsNearlyZero(Error, StopTolerance)) {
 		CoolDown+=DT;
-		if (CoolDown>=StopTime) {
+		if (CoolDown>=StopTime)
 			Deactivate();
-		}
-	} else {
+	} else
 		CoolDown = 0;
-	}
 }
 
 void UCAnimatorPID::Activate(bool bReset) {
+	const bool WasActive = IsActive();
+	bReset = bReset || !WasActive; // force reset if wasn't active
+
 	Super::Activate(bReset);
-	if (bReset) {
-		Reset();
-	}
+	if (bReset) Reset();
+
 	OnStart.Broadcast();
 }
 
