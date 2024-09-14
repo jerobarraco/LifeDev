@@ -26,7 +26,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DT);
 
-	// the target to aim for. Set this when the target moves. (on tick or however often you need).
+	// The target value to aim for.
+	// Set this when the target moves. (on tick or however often you need).
 	// preferably using GetTarget.
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(float NewTgt);
@@ -41,20 +42,20 @@ public:
 	// the current output of the system
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetError() const { return ErrorPrev; };
-	//	start the controller
+	// start the controller
 	virtual void Activate(bool bReset) override;
-	// stops the controller
+	// stop the controller
 	virtual void Deactivate() override;
 
-	// the proportional gain. normalized.
+	// the proportional gain. it's a factor.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Kp = .1;
-	// the integral gain. normalized.
+	// the integral gain. it's a factor. Bigger values could lead to error (NaN overflow).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float Ki = .1;
-	// the derivative gain. normalized.
+	float Ki = .01;
+	// the derivative gain. it's a factor. Bigger values could lead to error (NaN overflow).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float Kd = .1;
+	float Kd = .01;
 	// Saturation value for the integral. Happens on [-Max, Max]. no saturation is performed is set if ==0
 	// this value is absolute, not normalized.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
