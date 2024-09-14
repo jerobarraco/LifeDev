@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "JScene.h"
 
+#include "JSceneView.h"
 #include "SceneViewExtension.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogJScene, Log, Log);
 
 void UJScene::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
-	// SceneView = FSceneViewExtensions::NewExtension<>()
+	SceneView = FSceneViewExtensions::NewExtension<FJSceneView>(this);
 }
 
 void UJScene::Deinitialize() {

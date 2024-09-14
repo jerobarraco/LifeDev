@@ -7,6 +7,8 @@
 
 #include "JScene.generated.h"
 
+class FJSceneView;
+
 UCLASS()
 class JSCENE_API UJScene : public UWorldSubsystem {
 	GENERATED_BODY()
@@ -14,4 +16,7 @@ class JSCENE_API UJScene : public UWorldSubsystem {
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+
+protected:
+	TSharedPtr<FJSceneView> SceneView;
 };

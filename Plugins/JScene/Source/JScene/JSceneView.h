@@ -6,7 +6,16 @@
 #include "CoreMinimal.h"
 #include "SceneViewExtension.h"
 
-class JSCENE_API FJSceneView : public FSceneViewExtensionBase {
+class UJScene;
 
+class JSCENE_API FJSceneView : public FSceneViewExtensionBase {
 public:
+	FJSceneView(const FAutoRegister& AutoRegister, UJScene* InSubsystem);
+
+	virtual void SetupView(FSceneViewFamily& InViewFamily, FSceneView& InView) override;
+	virtual void SetupViewFamily(FSceneViewFamily& InViewFamily) override;
+	virtual void BeginRenderViewFamily(FSceneViewFamily& InViewFamily) override;
+
+protected:
+	UJScene* Subsystem = nullptr;
 };

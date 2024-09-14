@@ -6,3 +6,17 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSceneView, Log, Log);
 
+FJSceneView::FJSceneView(const FAutoRegister& AutoRegister, UJScene* InSubsystem) :
+	FSceneViewExtensionBase(AutoRegister) {
+	Subsystem = InSubsystem;
+}
+
+void FJSceneView::SetupView(FSceneViewFamily& InViewFamily, FSceneView& InView) {
+	
+}
+
+void FJSceneView::SetupViewFamily(FSceneViewFamily& InViewFamily) {
+	
+}
+
+void FJSceneView::BeginRenderViewFamily(FSceneViewFamily& InViewFamily) {}
