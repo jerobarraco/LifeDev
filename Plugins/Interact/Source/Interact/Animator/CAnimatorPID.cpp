@@ -41,16 +41,16 @@ void UCAnimatorPID::Reset() {
 	HasDerivative = false;
 }
 
-float UCAnimatorPID::GetTarget_Implementation() {
+float UCAnimatorPID::GetTarget() const {
 	return OnGetTarget.IsBound() ? OnGetTarget.Execute() : Target;
 }
 
-float UCAnimatorPID::GetVal_Implementation() {
+float UCAnimatorPID::GetVal() const {
 	return OnGetVal.IsBound() ? OnGetVal.Execute() : Value;
 }
 
 void UCAnimatorPID::DoTick(float DT) {
-	Value = GetVal(); // update
+	if (!AutoUpdateValue) Value = GetVal(); // update
 	Target = GetTarget(); // update
 
 	/// do calculations

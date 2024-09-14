@@ -10,7 +10,11 @@ DECLARE_DYNAMIC_DELEGATE_RetVal(float, FAPIDGetTarget);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStop);
 
-// Animator for a pid controller. It will activate/deactivate automatically
+// Animator for a pid controller. It will activate/deactivate automatically.
+// This is useful for matching two values (Target and Value)
+// via a potentially undefined and indirect control variable/force (the output).
+// Potentially when the target or the owner is affected by external forces or constraints.
+// See note about Output on OnUpdate.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorPID: public UActorComponent { // UCAnimator {
 	GENERATED_BODY()
@@ -22,12 +26,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void TickManual(float DT);
 
-	// the target to aim for. Set this when the target moves.
-	// preferably using GetTarget
+	// the target to aim for. Set this when the target moves. (on tick or however often you need).
+	// preferably using GetTarget.
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(float NewTgt);
-	// the current value of the object. Set this when the current value moves from outside the PID.
-	// preferrably using GetVal
+	// the current value of the object.
+	// Set this when the current value moves from outside the PID (on tick or whenever you need).
+	// preferably using GetVal.
 	UFUNCTION(BlueprintCallable)
 	void SetVal(float NewVal);
 	// the current output of the system
@@ -76,9 +81,13 @@ public:
 	// when set the "value" and output is in degrees and does some angle wrapping (360==0) 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseAngles = false;
-	// will attempt to update the value automatically by integrating the output
+	// Will attempt to update the value automatically by integrating the output.
+	// Will skip calling GetValue on each update.
+	// This is only useful when the owner can't be affected by outside forces.
+	// Otherwise, the PID's value and the owner's value will differ.
+	// You can always call SetVal manually though.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	bool AutoUpdateValue = true;
+	bool AutoUpdateValue = false;
 
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDStart OnStart;
@@ -87,14 +96,16 @@ public:
 	// triggered every time it processes. Outputs the output.
 	// This is NOT the new value, but instead a different unit. a force, a delta.
 	// You NEED to integrate it into your value, after which, you need to call SetVal.
+	// otherwise you can set AutoUpdateValue.
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDUpdate OnUpdate;
-	/// This one gets called every time it needs to measure the value,
-	/// this is recommended since it will only be called when about to do the process. with tick interval it might be different. 
+	// This one gets called every time it needs to measure the value,
+	// this is recommended since it will only be called when about to do the process. with tick interval it might be different.
+	// It's skipped when using AutoUpdateValue.
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	FAPIDGetVal OnGetVal;
-	/// This one gets called every time it needs to measure the target.
-	/// this is recommended since it will only be called when about to do the process. with tick interval it might be different. 
+	// This one gets called every time it needs to measure the target.
+	// this is recommended since it will only be called when about to do the process. with tick interval it might be different. 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	FAPIDGetTarget OnGetTarget;
 
@@ -104,12 +115,10 @@ protected:
 	void Reset();
 
 	// must return the measured value of the system to control. override and get the appropriate value here.
-	UFUNCTION(BlueprintNativeEvent)
-	float GetVal();
+	float GetVal() const;
 
 	// must return the measured value of the system to control. override and get the appropriate value here.
-	UFUNCTION(BlueprintNativeEvent)
-	float GetTarget();
+	float GetTarget() const;
 	
 	/// internal values
 	float Target = 0.0;
