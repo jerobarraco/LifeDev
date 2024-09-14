@@ -22,15 +22,13 @@ void UCSounder::Fade(const bool In) {
 		const float Time = TimeStartMax <0 ? TimeStartMin :
 			FMath::RandRange(TimeStartMin, TimeStartMax);
 		FadeIn(TimeFadeIn, 1, Time);
-	} else {
-        FadeOut(TimeFadeOut, 0);
-	}
+	} else
+		FadeOut(TimeFadeOut, 0);
 }
 
 void UCSounder::SetSafeParamFloat(const FName& Name, const float V) {
 	const bool CanSet = !IsValid(this) || !IsPlaying(); // avoid crash
 	
-	// avoid crashing
-	if (CanSet) return;
+	if (CanSet) return;// avoid crashing
 	SetFloatParameter(Name, V);
 }

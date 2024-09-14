@@ -188,7 +188,7 @@ void ALMusicMan::BeginPlay() {
 
 	// important to not clip
 	if (MusicSubmix)
-		MusicSubmix->SetSubmixWetLevel(this, 0.0);
+		AnimFXUpdate(0, 0); //forces wetmix to 0 resets dry to 1
 
 	if (AnimMusicFX) {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
