@@ -16,7 +16,7 @@ bool UPool::Spawn() {
 	
 	AActor* const Actor = World->SpawnActor(ItemType, 0, 0, P);
 	if (!IsValid(Actor)) {
-		UE_LOG(LogJPool, Warning, TEXT("Could not spawn the actor."));
+		UE_LOG(LogJPool, Warning, TEXT("%hs Could not spawn the actor. Stop."), __func__);
 		return false;
 	}
 
@@ -84,7 +84,9 @@ AActor* UPool::Get() {
 
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
-			UE_LOG(LogJPool, Warning, TEXT("Pool is exhausted, and can't grow. so can't return an actor."));
+			UE_LOG(LogJPool, Warning,
+				TEXT("%hs Pool is exhausted, and can't grow. so can't return an actor. Stop"),
+				__func__);
 			return nullptr;
 		}
 		
@@ -92,13 +94,17 @@ AActor* UPool::Get() {
 	}
 	
 	AActor* const A = Ready[0];
+	if (!IsValid(A)) return nullptr; // avoid crash below. "shouldn't happen"(TM)
+	
 	// don't shrink since it will get returned, hopefully. Use Swap since it's faster and we don't need to keep the order.
 	Ready.RemoveAtSwap(0, 1, false);
 	A->SetActorHiddenInGame(false);
 	A->Reset();
+
 	if (SetTicks) A->SetActorTickEnabled(true);
 
-	UE_LOG(LogJPool, Verbose, TEXT("Pool gave an actor."));
+	UE_LOG(LogJPool, Verbose, TEXT("%hs. Pool gave an actor. obj=%s"),
+		__func__, *GetNameSafe(A));
 
 	return A;
 }
@@ -222,7 +228,6 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 }
 
 AActor* UPooler::Get(TSubclassOf<AActor> Class) {
-	// TODO might be crashing here?
 	UPool* const Pool = GetPool(Class); 
 	if (!Pool) return nullptr;
 
