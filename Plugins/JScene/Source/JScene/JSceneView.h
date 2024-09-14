@@ -16,6 +16,8 @@ public:
 	virtual void SetupViewFamily(FSceneViewFamily& InViewFamily) override;
 	virtual void BeginRenderViewFamily(FSceneViewFamily& InViewFamily) override;
 	virtual void PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, const FSceneView& View, const FPostProcessingInputs& Inputs) override;
+	// Called when owning subsystem needs to release this extension.
+	void Invalidate();
 protected:
 	UJScene* Subsystem = nullptr;
 };

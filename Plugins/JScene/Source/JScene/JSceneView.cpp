@@ -46,4 +46,20 @@ void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, con
 	if (!SceneColor.IsValid()) return;
 
 	FSceneViewExtensionBase::PrePostProcessPass_RenderThread(GraphBuilder, View, Inputs);
+	
+	// Reusing the same output description for our back buffer as SceneColor
+	FRDGTextureDesc OutputDesc = SceneColor.Texture->Desc;
+	OutputDesc.Format = PF_FloatRGBA;
+	constexpr FLinearColor ClearColor(0., 0.5, 0.5, 0.);
+	OutputDesc.ClearValue = FClearValueBinding(ClearColor);
+
+
+	FRDGTexture* const BackBufferRTT = GraphBuilder.CreateTexture(OutputDesc, TEXT("BackBufferRenderTargetTexture"));
+	FScreenPassRenderTarget BackBufferRT = FScreenPassRenderTarget(BackBufferRTT, SceneColor.ViewRect, ERenderTargetLoadAction::EClear);
+	FScreenPassRenderTarget SceneColorRT(SceneColor, ERenderTargetLoadAction::ELoad);
+
+}
+
+void FJSceneView::Invalidate() {
+	Subsystem = nullptr;
 }
