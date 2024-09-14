@@ -94,7 +94,7 @@
 		},
 		{
 			"Name": "JScene",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "Niagara",

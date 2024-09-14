@@ -65,9 +65,18 @@ void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, con
 	OutputDesc.ClearValue = FClearValueBinding(ClearColor);
 
 
-	FRDGTexture* const BackBufferRTT = GraphBuilder.CreateTexture(OutputDesc, TEXT("BackBufferRenderTargetTexture"));
-	FScreenPassRenderTarget BackBufferRT = FScreenPassRenderTarget(BackBufferRTT, SceneColor.ViewRect, ERenderTargetLoadAction::EClear);
+	FRDGTexture* const BackBufferRTT = GraphBuilder.CreateTexture(OutputDesc,
+		TEXT("BackBufferRenderTargetTexture"));
+	FScreenPassRenderTarget BackBufferRT = FScreenPassRenderTarget(BackBufferRTT,
+		SceneColor.ViewRect, ERenderTargetLoadAction::EClear);
 	FScreenPassRenderTarget SceneColorRT(SceneColor, ERenderTargetLoadAction::ELoad);
+	const FScreenPassTextureViewport TexViewport(SceneColor);
+	FRHIBlendState* DefaultBlendState = FScreenPassPipelineState::FDefaultBlendState::GetRHI();
+
+	RDG_EVENT_SCOPE(GraphBuilder, "Color Correct Regions %dx%d", TexViewport.Rect.Width(), TexViewport.Rect.Height());
+
+	// /home/nande/work/UE5.4/Engine/Plugins/Experimental/ColorCorrectRegions/Source/ColorCorrectRegions/Public/ColorCorrectRegionsSubsystem.h
+
 
 }
 
