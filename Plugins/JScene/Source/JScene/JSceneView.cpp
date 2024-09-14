@@ -7,28 +7,38 @@
 #include "JScene.h"
 #include "SceneViewExtension.h"
 #include "PostProcess/PostProcessInputs.h"
+#include "PostProcess/PostProcessMaterialInputs.h"
+
+namespace {
+	TAutoConsoleVariable<int32> CVarShaderOn(
+		TEXT("r.JSceneView"),
+		0,
+		TEXT("Enable Custom SceneViewExtension \n")
+		TEXT(" 0: OFF;")
+		TEXT(" 1: ON."),
+		ECVF_RenderThreadSafe);
+}
+
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSceneView, Log, Log);
 
 FJSceneView::FJSceneView(const FAutoRegister& AutoRegister, UJScene* InSubsystem) :
 	FSceneViewExtensionBase(AutoRegister) {
+	UE_LOG(LogJSceneView, Log, TEXT("%hs"), __func__);
 	Subsystem = InSubsystem;
 }
 
-void FJSceneView::SetupView(FSceneViewFamily& InViewFamily, FSceneView& InView) {
-	
-}
+void FJSceneView::SetupView(FSceneViewFamily& InViewFamily, FSceneView& InView) {}
 
-void FJSceneView::SetupViewFamily(FSceneViewFamily& InViewFamily) {
-	
-}
+void FJSceneView::SetupViewFamily(FSceneViewFamily& InViewFamily) {}
 
 void FJSceneView::BeginRenderViewFamily(FSceneViewFamily& InViewFamily) {}
 
-/*
 void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, const FSceneView& View,
 	const FPostProcessingInputs& Inputs) {
 	if (!IsValid(Subsystem)) return;
+	if (!CVarShaderOn.GetValueOnRenderThread()) return;
 	
 	const FSceneViewFamily& ViewFamily = *View.Family;
 
@@ -60,7 +70,6 @@ void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, con
 	FScreenPassRenderTarget SceneColorRT(SceneColor, ERenderTargetLoadAction::ELoad);
 
 }
-*/
 
 void FJSceneView::Invalidate() {
 	Subsystem = nullptr;
