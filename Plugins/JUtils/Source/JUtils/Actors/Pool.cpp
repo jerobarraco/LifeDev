@@ -180,6 +180,9 @@ void UPool::Trim() {
 }
 
 bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool CanGrow, int32 TrimTime) {
+	UE_LOG(LogJPool, Log, TEXT("%hs. Max=%i, Ticks=%i, CanGrow=%i, TrimTime=%i, Class=%s"),
+		__func__, Max, SetTicks, CanGrow, TrimTime, *GetNameSafe(Class));
+
 	const FName Key = Class->GetFName();
 	UPool** pPool = Pools.Find(Key);
 	UPool* Pool = nullptr;
@@ -191,7 +194,8 @@ bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool 
 	}
 
 	if (!IsValid(Pool)) {
-		UE_LOG(LogJPool, Warning, TEXT("Pooler.AddPool. Failed to add the pool for class=%s"), *Key.ToString());
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Failed to add the pool for class=%s. Stop"),
+			__func__, *Key.ToString());
 		return false;
 	}
 
@@ -201,11 +205,13 @@ bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool 
 }
 
 void UPooler::RemPool(TSubclassOf<AActor> Class) {
+	UE_LOG(LogJPool, Log, TEXT("%hs. Class=%s"), __func__, *GetNameSafe(Class));
+
 	const FName Key = Class->GetFName();
 	
 	UPool** const PPool = Pools.Find(Key);
 	if (!PPool) {
-		UE_LOG(LogJPool, Warning, TEXT("DelPool. Could not find the pool"));
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool. Stop"), __func__);
 		return;
 	}
 
