@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTriggerVal, float, Val);
 class UCAnimator;
 
 // Class that allows for timed randomization. OPTIONALLY works with an animator (or subclass)
+// Doesn't use tick (yay) (uses timers).
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCRandomizer: public UActorComponent {
 	GENERATED_BODY()

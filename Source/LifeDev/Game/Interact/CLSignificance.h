@@ -10,7 +10,9 @@
 
 class UCAnimator;
 
-// LD base class for significance component. to handle significance stuff.
+// LD base class for significance component.
+// To handle significance stuff.
+// Has support for animators.
 // Will auto activate by default
 UCLASS(ClassGroup=(LifeDev), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API UCLSignificance : public UCSignificance {

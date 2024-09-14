@@ -20,7 +20,6 @@ class INTERACT_API UCAnimatorPID: public UActorComponent { // UCAnimator {
 	GENERATED_BODY()
 
 public:
-
 	UCAnimatorPID();
 	// call manually if this component is instantiated independently
 	UFUNCTION(BlueprintCallable)
