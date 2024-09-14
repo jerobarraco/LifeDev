@@ -41,7 +41,7 @@ public:
 	// trims if possible, and schedule another timer if needed. (remove one and shrink up to the MAX)
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
 	void Trim();
-	// remove one item. it will shrink. regardless of max. when 0 reached if canGrow is false the pool will stop working.
+	// remove (destroy) one item. it will shrink. regardless of max. when 0 reached if canGrow is false the pool will stop working.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
 	bool RemoveOne();
 	// empties the pool. Destroys the objects that are NOT used.

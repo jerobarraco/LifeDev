@@ -7,6 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnChange, const float, Value);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnTo, const float, To);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFBOnEnd, const float, Value);
 
 class UCAnimator;
 
@@ -71,6 +72,10 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FFBOnTo OnTo;
 
+	// Triggered on done.
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FFBOnEnd OnEnd;
+
 	inline static bool Debug = false;
 
 protected:
@@ -88,6 +93,8 @@ protected:
 	void SetValInternal(const float New);
 	UFUNCTION() // for binding
 	void AnimUpdate(const float Progress, const float Alpha);
+	UFUNCTION() // bind
+	void AnimEnd();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Animator = nullptr;

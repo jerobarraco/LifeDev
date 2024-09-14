@@ -69,6 +69,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 	}
 
 	// only reduce the size NOW if the trim time is not set
+	// this makes sense when calling set on a used pool.
 	if (TrimTime > 0) {
 		SetTrimTimer(); // force set timer
 	} else {
@@ -129,7 +130,7 @@ void UPool::Return(AActor* Actor) {
 }
 
 void UPool::Empty() {
-	UE_LOG(LogJPool, Log, TEXT("Clearing pool"));
+	UE_LOG(LogJPool, Log, TEXT("%hs, Clearing pool"), __func__);
 	
 	TArray<AActor*> Old = Ready; // make a copy in case someone is doing something weird.
 	Ready.Empty(); // empty asap.
@@ -182,9 +183,9 @@ bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool 
 	const FName Key = Class->GetFName();
 	UPool** pPool = Pools.Find(Key);
 	UPool* Pool = nullptr;
-	if (pPool) {
+	if (pPool)
 		Pool = *pPool;
-	}else{
+	else {
 		Pool = NewObject<UPool>(this);
 		Pools.Add(Key, Pool);
 	}

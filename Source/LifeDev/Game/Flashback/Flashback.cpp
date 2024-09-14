@@ -44,6 +44,10 @@ void UFlashback::AnimUpdate(const float Progress, const float Alpha) {
 	SetValInternal(FMath::LerpStable(ValFrom, ValTo, Alpha));
 }
 
+void UFlashback::AnimEnd() {
+	OnEnd.Broadcast(Val);
+}
+
 void UFlashback::SetValToInternal(const float New) {
 	ValTo = New;
 	OnTo.Broadcast(ValTo);
@@ -68,6 +72,7 @@ void UFlashback::SetVal(float New, float Duration) {
 		// important to set so that the value is always up-to-date.
 		// since it's used for GetValTo and in turn by SetVal
 		SetValInternal(New);
+		AnimEnd(); // force notify even though it's instant.
 		return;
 	}
 
@@ -113,13 +118,17 @@ void UFlashback::SetMin(const float NewMin, const float Duration) {
 }
 
 void UFlashback::Deinitialize() {
-	if (Animator) Animator->OnUpdate.RemoveAll(this);
+	if (Animator) {
+		Animator->OnUpdate.RemoveAll(this);
+		Animator->OnEnd.RemoveAll(this);
+	}
 	Super::Deinitialize();
 }
 
 void UFlashback::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Animator->OnUpdate.AddUniqueDynamic(this, &UFlashback::AnimUpdate);
+	Animator->OnEnd.AddUniqueDynamic(this, &UFlashback::AnimEnd);
 
 	// this won't make the animator work,
 	// AND will make the uflashback get an EXTRA tick on a different interval (maybe the component's interval)
