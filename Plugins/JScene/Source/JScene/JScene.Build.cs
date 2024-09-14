@@ -24,9 +24,10 @@ public class JScene: ModuleRules {
 			"Core",
 		});
 		
-		// ... add private dependencies that you statically link with here ...	
+		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine",
+			"Renderer", "RHI", "RenderCore"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

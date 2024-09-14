@@ -25,6 +25,7 @@ void FJSceneView::SetupViewFamily(FSceneViewFamily& InViewFamily) {
 
 void FJSceneView::BeginRenderViewFamily(FSceneViewFamily& InViewFamily) {}
 
+/*
 void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, const FSceneView& View,
 	const FPostProcessingInputs& Inputs) {
 	if (!IsValid(Subsystem)) return;
@@ -59,6 +60,7 @@ void FJSceneView::PrePostProcessPass_RenderThread(FRDGBuilder& GraphBuilder, con
 	FScreenPassRenderTarget SceneColorRT(SceneColor, ERenderTargetLoadAction::ELoad);
 
 }
+*/
 
 void FJSceneView::Invalidate() {
 	Subsystem = nullptr;

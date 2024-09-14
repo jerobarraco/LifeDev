@@ -13,5 +13,19 @@ void UJScene::Initialize(FSubsystemCollectionBase& Collection) {
 }
 
 void UJScene::Deinitialize() {
+	if (SceneView) {
+		SceneView->IsActiveThisFrameFunctions.Empty();
+		FSceneViewExtensionIsActiveFunctor IsActiveFunctor;
+		IsActiveFunctor.IsActiveFunction = [](const ISceneViewExtension* SceneViewExtension,
+			const FSceneViewExtensionContext& Context){
+			return TOptional<bool>(false);
+		};
+		SceneView->IsActiveThisFrameFunctions.Add(IsActiveFunctor);
+
+		SceneView->Invalidate();
+		SceneView.Reset(); // resets the shared ptr
+	}
+	SceneView = nullptr;
+	
 	Super::Deinitialize();
 }
