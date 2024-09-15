@@ -28,9 +28,18 @@ APIGhost::APIGhost():Super() {
 	AnimBase->IsLooping = true;
 	AnimBase->Curve = nullptr;
 	AnimBase->SetComponentTickInterval(1/45);
-	
+	AnimBase->SetAutoActivate(false);
+
 	// TODO csig
 	// TODO animmat
+}
+
+void APIGhost::SetActive(const bool Act) {
+	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
+	for (UActorComponent* const C: Cmps) {
+		if (!C) continue;
+		C->SetActive(Act);
+	}
 }
 
 void APIGhost::BeginPlay() {
@@ -77,6 +86,9 @@ void APIGhost::Reset() {
 	// todo set timer
 	// todo set active
 	// todo playset animmat
+
+
+	SetActive(true);
 }
 
 void APIGhost::BaseUp(const float Progress, const float Alpha) {
@@ -88,7 +100,7 @@ void APIGhost::BaseUp(const float Progress, const float Alpha) {
 	TgtPos = Target->GetActorLocation();
 	AimPos = TgtPos + OffPos + OffRot.RotateVector(OffDist);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 
 	if (Debug) {
 		DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);

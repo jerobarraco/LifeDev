@@ -19,6 +19,9 @@ class APIGhost : public AActor {
 public:
 	APIGhost();
 
+	UFUNCTION(BlueprintCallable)
+	void SetActive(const bool Act);
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

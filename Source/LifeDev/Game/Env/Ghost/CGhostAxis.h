@@ -20,6 +20,7 @@ public:
 	UCGhostAxis();
 
 	void RenameComp(const FString& Postfix);
+	virtual void SetActive(bool bNewActive, bool bReset) override;
 	
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

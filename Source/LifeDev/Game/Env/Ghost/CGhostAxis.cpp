@@ -37,3 +37,9 @@ void UCGhostAxis::RenameComp(const FString& Postfix) {
 	static const FString AnimPre(TEXT("Anim_"));
 	if (Anim) Anim->Rename(*(AnimPre+Postfix));
 }
+
+void UCGhostAxis::SetActive(bool bNewActive, bool bReset) {
+	Super::SetActive(bNewActive, bReset);
+	Rand->SetActive(bNewActive, bReset);
+	Anim->SetActive(bNewActive, bReset);
+}
