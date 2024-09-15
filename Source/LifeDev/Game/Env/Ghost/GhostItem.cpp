@@ -1,5 +1,5 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-#include "PIGhost.h"
+#include "GhostItem.h"
 
 #include "CGhostAxis.h"
 #include "CQuickMesh.h"
@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-APIGhost::APIGhost():Super() {
+AGhostItem::AGhostItem():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
@@ -50,7 +50,7 @@ APIGhost::APIGhost():Super() {
 	Sig->TickIntervals[ESigValue::Low] = 1/20;
 }
 
-void APIGhost::SetActive(const bool Act) {
+void AGhostItem::SetActive(const bool Act) {
 	Sig->SetActive(Act);
 
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
@@ -60,32 +60,41 @@ void APIGhost::SetActive(const bool Act) {
 	}
 }
 
-void APIGhost::BeginPlay() {
+void AGhostItem::BeginPlay() {
 	Super::BeginPlay();
-	AxisX->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpX);
-	AxisY->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpY);
-	AxisZ->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpZ);
+	AxisX->Anim->OnUpdate.AddUniqueDynamic(this, &AGhostItem::RotUpX);
+	AxisY->Anim->OnUpdate.AddUniqueDynamic(this, &AGhostItem::RotUpY);
+	AxisZ->Anim->OnUpdate.AddUniqueDynamic(this, &AGhostItem::RotUpZ);
 
-	AxisX->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpX);
-	AxisY->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpY);
-	AxisZ->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpZ);
+	AxisX->OnUpdate.AddUniqueDynamic(this, &AGhostItem::PosUpX);
+	AxisY->OnUpdate.AddUniqueDynamic(this, &AGhostItem::PosUpY);
+	AxisZ->OnUpdate.AddUniqueDynamic(this, &AGhostItem::PosUpZ);
 
 	// Create instance, sets it to the mesh, AND store in the anim.
 	AnimFade->Mat = Mesh->CreateDynamicMaterialInstance(
 		0, Mesh->GetMaterial(0));
 
-	AnimBase->OnUpdate.AddUniqueDynamic(this, &APIGhost::BaseUp);
+	AnimBase->OnUpdate.AddUniqueDynamic(this, &AGhostItem::BaseUp);
 	Reset();
 }
 
-void APIGhost::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void AGhostItem::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	SetActive(false);
-	// TODO unbind
+	
+	AxisX->Anim->OnUpdate.RemoveAll(this);
+	AxisY->Anim->OnUpdate.RemoveAll(this);
+	AxisZ->Anim->OnUpdate.RemoveAll(this);
+
+	AxisX->OnUpdate.RemoveAll(this);
+	AxisY->OnUpdate.RemoveAll(this);
+	AxisZ->OnUpdate.RemoveAll(this);
+
+	AnimBase->OnUpdate.RemoveAll(this);
 	
 	Super::EndPlay(EndPlayReason);
 }
 
-void APIGhost::PostDuplicate(bool Pie) {
+void AGhostItem::PostDuplicate(bool Pie) {
 	Super::PostDuplicate(Pie);
 	// doesnt work. crashes on constructor
 	AxisX->RenameComp("X");
@@ -93,7 +102,7 @@ void APIGhost::PostDuplicate(bool Pie) {
 	AxisZ->RenameComp("Z");
 }
 
-void APIGhost::Reset() {
+void AGhostItem::Reset() {
 	Super::Reset();
 
 	ActPos = GetActorLocation();
@@ -110,21 +119,21 @@ void APIGhost::Reset() {
 	SetReturnTimer();
 }
 
-void APIGhost::SetReturnTimer() {
+void AGhostItem::SetReturnTimer() {
 	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	const float LifeTime = FMath::FRandRange(LifeTimeMin, LifeTimeMax);
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &APIGhost::FadeAndReturn, LifeTime);
+	World->GetTimerManager().SetTimer(H, this, &AGhostItem::FadeAndReturn, LifeTime);
 }
 
-void APIGhost::FadeAndReturn() {
-	AnimFade->OnEnd.AddUniqueDynamic(this, &APIGhost::Return);
+void AGhostItem::FadeAndReturn() {
+	AnimFade->OnEnd.AddUniqueDynamic(this, &AGhostItem::Return);
 	AnimFade->PlaySet(true, false, false);
 }
 
-void APIGhost::Return() {
+void AGhostItem::Return() {
 	AnimFade->OnEnd.RemoveAll(this);
 
 	UPooler* const Pooler = UPooler::Instance(this);
@@ -136,7 +145,7 @@ void APIGhost::Return() {
 	Pooler->Return(this);
 }
 
-void APIGhost::BaseUp(const float Progress, const float Alpha) {
+void AGhostItem::BaseUp(const float Progress, const float Alpha) {
 	if (!IsValid(Target)) {
 		Target = UGameplayStatics::GetActorOfClass(this, TargetClass);
 		if (!IsValid(Target)) return;
@@ -166,22 +175,22 @@ void APIGhost::BaseUp(const float Progress, const float Alpha) {
 	ActPosOld = ActPos;
 }
 
-void APIGhost::PosUpX(const float Output, const float NewValue) {
+void AGhostItem::PosUpX(const float Output, const float NewValue) {
 	ActPos.X = NewValue;
 }
-void APIGhost::PosUpY(const float Output, const float NewValue) {
+void AGhostItem::PosUpY(const float Output, const float NewValue) {
 	ActPos.Y = NewValue;
 }
-void APIGhost::PosUpZ(const float Output, const float NewValue) {
+void AGhostItem::PosUpZ(const float Output, const float NewValue) {
 	ActPos.Z = NewValue;
 }
 
-void APIGhost::RotUpX(const float Progress, const float Alpha) {
+void AGhostItem::RotUpX(const float Progress, const float Alpha) {
 	OffRot.Roll = 360*Alpha;
 }
-void APIGhost::RotUpY(const float Progress, const float Alpha) {
+void AGhostItem::RotUpY(const float Progress, const float Alpha) {
 	OffRot.Pitch = 360*Alpha;
 }
-void APIGhost::RotUpZ(const float Progress, const float Alpha) {
+void AGhostItem::RotUpZ(const float Progress, const float Alpha) {
 	OffRot.Yaw = 360*Alpha;
 }

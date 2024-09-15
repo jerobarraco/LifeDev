@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Interact/Animator/CAnimator.h"
 
-#include "PIGhost.generated.h"
+#include "GhostItem.generated.h"
 
 class UCSignificance;
 class UCAnimatorMix;
@@ -15,11 +15,11 @@ class UMaterialInterface;
 
 // PoolItemGhost
 UCLASS(Blueprintable, BlueprintType)
-class APIGhost : public AActor {
+class AGhostItem : public AActor {
 	GENERATED_BODY()
 
 public:
-	APIGhost();
+	AGhostItem();
 
 	UFUNCTION(BlueprintCallable)
 	void SetActive(const bool Act);
