@@ -37,14 +37,11 @@ void AFlashbackMan::BeginPlay() {
 	
 	MPCInst = World->GetParameterCollectionInstance(MPC);
 	
-	if (!IsValid(MPCInst)){
+	if (!IsValid(MPCInst)) {
 		UE_LOG(LogTemp, Warning, TEXT("FlashbackMan::%hs Could not get the MPCInst. Stop."),
 			__func__);
 		return;
 	} 
-	
-	const int Strobe = ULSettings::GetFeatS(World, EFeat::V_STROBE)?1:0;
-	MPCInst->SetScalarParameterValue("Strobe", Strobe);
 }
 
 void AFlashbackMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {

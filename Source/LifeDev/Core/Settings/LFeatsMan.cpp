@@ -5,8 +5,29 @@
 #include "LSettings.h"
 #include "Engine/PostProcessVolume.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+#include "Materials/MaterialParameterCollection.h"
+#include "Materials/MaterialParameterCollectionInstance.h"
 
-ALFeatsMan::ALFeatsMan() :Super(){}
+ALFeatsMan::ALFeatsMan() :Super() {
+	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
+		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
+	MPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
+}
+
+void ALFeatsMan::LoadMPC() {
+	UWorld* const W = GetWorld();
+	if (!W) return;
+	
+	if (!IsValid(MPC)) {
+		UE_LOG(LogTemp, Warning, TEXT("LFeatsMan::%hs Could not get the MPC. Skip"),
+				__func__);
+		return;
+	}
+	
+	MPCI = W->GetParameterCollectionInstance(MPC);
+	UE_CLOG(!IsValid(MPCI), LogTemp, Warning,
+		TEXT("LFeatsMan::%hs Could not get the MPCInst. Stop."), __func__);
+}
 
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
@@ -14,16 +35,21 @@ void ALFeatsMan::BeginPlay() {
 	if (!W) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
-    GM = Cast<ALGGameMode>(AGMB);
+	GM = Cast<ALGGameMode>(AGMB);
 	
 	ULSettings* const S = ULSettings::Instance(W);
 	if (S) {
 		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
 		// S->OnFeatUpdate.RemoveAll(this);
 		// force initialize
-		FeatVisualUpdate(EFeat::V_LUMEN, S->GetFeat(EFeat::V_LUMEN));
-		FeatVisualUpdate(EFeat::V_BLUR, S->GetFeat(EFeat::V_BLUR));
 	}
+
+	LoadMPC();
+	
+	FeatVisualUpdate(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
+	FeatVisualUpdate(EFeat::V_BLUR, S && S->GetFeat(EFeat::V_BLUR));
+	FeatVisualUpdate(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));
+	FeatVisualUpdate(EFeat::V_STROBE, S && S->GetFeat(EFeat::V_STROBE));
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -33,6 +59,8 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		S->OnFeatUpdate.RemoveAll(this);
 	}
 	GM = nullptr;
+	MPCI = nullptr;
+	MPC = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -49,13 +77,19 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 	APostProcessVolume* const Post = GM->PostProcess;
 	if (Feat == EFeat::V_LUMEN) {
 		Post->Settings.DynamicGlobalIlluminationMethod =
-        	bEnabled ?
-        	EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
+			bEnabled ?
+			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 		Post->Settings.ReflectionMethod =
-        	bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
+			bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
 	} else if (Feat == EFeat::V_BLUR) {
 		Post->Settings.MotionBlurAmount = bEnabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
 		Post->Settings.SceneFringeIntensity = bEnabled ? FringeIntensity: 0;
+	} else if (MPCI) {
+		const float v = bEnabled ? 1: 0;
+		if (Feat == EFeat::V_STROBE) 
+			MPCI->SetScalarParameterValue("Strobe", v);
+		else if (Feat == EFeat::V_SPEED) 
+			MPCI->SetScalarParameterValue("Speed", v);
 	}
 }
