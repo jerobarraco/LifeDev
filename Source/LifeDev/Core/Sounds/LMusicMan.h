@@ -48,6 +48,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FadeFX(const bool On);
 
+	// kills the ghosts.
+	// All: if set it will kill the ones inactive in the pool too.
+	UFUNCTION(BlueprintCallable)
+	void KillGhosts(const bool All=false);
+	
 	virtual void Fade_Implementation(bool In) override;
 	virtual void SetIntensity_Implementation(float V) override;
 

@@ -19,6 +19,11 @@ public:
 
 	void SetActive(bool Act);
 
+	// will deactivate and attempt to kill active ghosts
+	// All: when set will try to kill al the ghosts on the pool and empty it.
+	UFUNCTION(BlueprintCallable)
+	void Kill(const bool All=false);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

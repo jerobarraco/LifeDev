@@ -327,7 +327,7 @@ void ALGGameMode::StartChapter() {
 	const int32 ChapterId = Settings->CurrentChapter();
 
 	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
-	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance) || !IsValid(Story)) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
@@ -369,6 +369,10 @@ void ALGGameMode::StartNextChapter() {
 		return;
 	}
 
+	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
+	// clean the ghosts
+	MusicMan->KillGhosts();
+	
 	// Chapter done. go to the next one.
 	Settings->Save->ChapterID++;
 	StartChapter();

@@ -3,6 +3,8 @@
 
 #include "Pool.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Interact/Animator/CRandomizer.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "GhostItem.h"
@@ -24,6 +26,21 @@ AGhostPool::AGhostPool():Super() {
 
 void AGhostPool::SetActive(bool Act) {
 	Rnd->SetActive(Act);
+}
+
+void AGhostPool::Kill(const bool All) {
+	UE_LOG(LogTemp, Log, TEXT("GhostPool %hs All=%i"), __func__, All);
+
+	SetActive(false);
+	if (All && Pooler)
+		Pooler->AddPool(0, ItemClass); // set to 0 in the hope they get destroyed.
+
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(this, ItemClass, Actors);
+	for (AActor* const A: Actors) {
+		if (!IsValid(A) || A->IsHidden()) continue;
+		A->Destroy();
+	}
 }
 
 void AGhostPool::BeginPlay() {

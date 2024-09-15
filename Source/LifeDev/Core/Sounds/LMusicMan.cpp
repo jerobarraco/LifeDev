@@ -6,6 +6,7 @@
 #include "Interact/Animator/CAnimator.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundClass.h"
+#include "Sound/SoundSubmix.h"
 
 #include "Story/Step.h"
 #include "Story/Story.h"
@@ -16,9 +17,7 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
-#include "LifeDev/Game/Env/Ghost/GhostItem.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
-#include "Sound/SoundSubmix.h"
 
 ALMusicMan::ALMusicMan():Super() {
 	// set the class to the player
@@ -128,6 +127,10 @@ void ALMusicMan::FadeFX(const bool On) {
 	if (On)
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
+}
+
+void ALMusicMan::KillGhosts(const bool All) {
+	if (GhostPool) GhostPool->Kill(All);
 }
 
 void ALMusicMan::Fade_Implementation(bool In) {
