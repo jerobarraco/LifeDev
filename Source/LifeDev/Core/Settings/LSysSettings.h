@@ -51,6 +51,7 @@ enum class EFeat: uint8 {
 	V_STROBE,
 	// field of view
 	V_FOV,
+	// speed vfx
 	V_SPEED,
 #pragma endregion
 	

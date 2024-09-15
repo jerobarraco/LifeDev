@@ -173,7 +173,7 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::S_MUSIC && Feat <= EFeat::S_ENV)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_FOV)
+	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_SPEED)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
 	else if (Feat == EFeat::E_GHOSTPOOL)
 		OnFeatUpdateSound.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
