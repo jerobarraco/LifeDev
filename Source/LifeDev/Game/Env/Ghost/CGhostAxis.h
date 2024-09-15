@@ -20,6 +20,7 @@ public:
 	UCGhostAxis();
 
 	void RenameComp(const FString& Postfix);
+	
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* Rand = nullptr;

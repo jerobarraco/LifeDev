@@ -37,6 +37,7 @@ void APIGhost::BeginPlay() {
 
 	// TODO anim base
 	Mesh->CreateDynamicMaterialInstance(0, Mesh->GetMaterial(0));
+
 	Reset();
 }
 
@@ -55,6 +56,18 @@ void APIGhost::PostDuplicate(bool Pie) {
 
 void APIGhost::Reset() {
 	Super::Reset();
+
+	ActPos = GetActorLocation();
+	ActRot = GetActorRotation();
+
+	AxisX->SetVal(ActPos.X);
+	AxisY->SetVal(ActPos.Y);
+	AxisZ->SetVal(ActPos.Z);
+	
+	// TODO base upd 0
+	// todo set timer
+	// todo set active
+	// todo playset animmat
 }
 
 void APIGhost::PosUpX(const float Output, const float NewValue) {
