@@ -7,6 +7,7 @@
 
 #include "PIGhost.generated.h"
 
+class UCAnimatorMix;
 class UCQuickMesh;
 class UCGhostAxis;
 class UMaterialInterface;
@@ -28,6 +29,12 @@ protected:
 	virtual void PostDuplicate(bool Pie) override;
 	virtual void Reset() override;
 
+	void SetReturnTimer();
+	void FadeAndReturn();
+
+	UFUNCTION()
+	void Return();
+	
 	UFUNCTION()
 	void BaseUp(const float Progress, const float Alpha);
 
@@ -60,6 +67,10 @@ protected:
 	float ActRotSpeed = .3;
 	UPROPERTY(BlueprintReadWrite)
 	bool Debug = true;
+	UPROPERTY(BlueprintReadWrite)
+	float LifeTimeMin=20;
+	UPROPERTY(BlueprintReadWrite)
+	float LifeTimeMax=30;
 #pragma endregion
 
 #pragma region Transient
@@ -73,8 +84,9 @@ protected:
 
 	UPROPERTY(Transient)
 	AActor* Target = nullptr;
-#pragma endregion 
-	#pragma region CDO
+#pragma endregion
+
+#pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	
@@ -91,5 +103,7 @@ protected:
 	UCGhostAxis* AxisZ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* AnimBase = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCAnimatorMix* AnimFade = nullptr;
 #pragma endregion 
 };

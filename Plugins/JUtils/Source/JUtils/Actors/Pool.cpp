@@ -179,6 +179,15 @@ void UPool::Trim() {
 	SetTrimTimer();
 }
 
+UPooler* UPooler::Instance(UObject* Ctx) {
+	if (!Ctx) return nullptr;
+	
+	const UWorld* const World = Ctx->GetWorld();
+	if (!World) return nullptr;
+
+	return World->GetSubsystem<UPooler>();
+}
+
 bool UPooler::AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool CanGrow, int32 TrimTime) {
 	UE_LOG(LogJPool, Log, TEXT("%hs. Max=%i, Ticks=%i, CanGrow=%i, TrimTime=%i, Class=%s"),
 		__func__, Max, SetTicks, CanGrow, TrimTime, *GetNameSafe(Class));
@@ -243,13 +252,14 @@ AActor* UPooler::Get(TSubclassOf<AActor> Class) {
 
 void UPooler::Return(AActor* Actor) {
 	if (!IsValid(Actor)) { // checking here to avoid problems on Actor->GetClass
-		UE_LOG(LogJPool, Warning, TEXT("Pooler.Return. Actor was invalid, ignoring."));
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Actor was invalid. Skip"), __func__);
 		return;
 	}
 
 	UPool* const Pool = GetPool(Actor->GetClass());
 	if (!Pool) {
-		UE_LOG(LogJPool, Warning, TEXT("Pooler.Return. Could not find the pool. Destroying the actor."));
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool. Destroying the actor."),
+			__func__);
 		Actor->Destroy();
 		return;
 	}

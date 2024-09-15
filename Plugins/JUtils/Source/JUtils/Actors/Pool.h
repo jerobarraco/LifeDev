@@ -82,6 +82,8 @@ class JUTILS_API UPooler: public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
+	static UPooler* Instance(UObject* Ctx);
+	
 	// adds a new pool for a class. or modifies an already existing one.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
 	bool AddPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool CanGrow=false, int32 TrimTime = 5);

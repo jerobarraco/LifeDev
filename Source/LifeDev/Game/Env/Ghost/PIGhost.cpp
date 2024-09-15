@@ -3,7 +3,9 @@
 
 #include "CGhostAxis.h"
 #include "CQuickMesh.h"
+#include "Pool.h"
 #include "Interact/Animator/CAnimator.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -30,6 +32,11 @@ APIGhost::APIGhost():Super() {
 	AnimBase->SetComponentTickInterval(1/60);
 	AnimBase->SetAutoActivate(false);
 
+	AnimFade = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimFade"));
+	AnimFade->MatFEnd = .75; // don't want to reach 1
+	AnimFade->MatFStart = 0;
+	AnimFade->Duration = .6;
+	
 	// TODO csig
 	// TODO animmat
 }
@@ -40,6 +47,7 @@ void APIGhost::SetActive(const bool Act) {
 		if (!C) continue;
 		C->SetActive(Act);
 	}
+	// TODO csig
 }
 
 void APIGhost::BeginPlay() {
@@ -52,8 +60,9 @@ void APIGhost::BeginPlay() {
 	AxisY->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpY);
 	AxisZ->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpZ);
 
-	// TODO anim mat
-	Mesh->CreateDynamicMaterialInstance(0, Mesh->GetMaterial(0));
+	// Create instance, sets it to the mesh, AND store in the anim.
+	AnimFade->Mat = Mesh->CreateDynamicMaterialInstance(
+		0, Mesh->GetMaterial(0));
 
 	AnimBase->OnUpdate.AddUniqueDynamic(this, &APIGhost::BaseUp);
 	Reset();
@@ -83,12 +92,37 @@ void APIGhost::Reset() {
 	AxisZ->SetVal(ActPos.Z);
 
 	BaseUp(0,0);
-	// todo set timer
-	// todo set active
-	// todo playset animmat
+	// todo csig
 
 
 	SetActive(true);
+	AnimFade->PlaySet(false, false, false);
+	SetReturnTimer();
+}
+
+void APIGhost::SetReturnTimer() {
+	const UWorld* const World = GetWorld();
+	if (!World) return;
+	const float LifeTime = FMath::FRandRange(LifeTimeMin, LifeTimeMax);
+	FTimerHandle H;
+	World->GetTimerManager().SetTimer(H, this, &APIGhost::FadeAndReturn, LifeTime);
+}
+
+void APIGhost::FadeAndReturn() {
+	AnimFade->OnEnd.AddUniqueDynamic(this, &APIGhost::Return);
+	AnimFade->PlaySet(true, false, false);
+}
+
+void APIGhost::Return() {
+	AnimFade->OnEnd.RemoveAll(this);
+
+	UPooler* const Pooler = UPooler::Instance(this);
+	if (!Pooler) {
+		Destroy();
+		return;
+	}
+	
+	Pooler->Return(this);
 }
 
 void APIGhost::BaseUp(const float Progress, const float Alpha) {
