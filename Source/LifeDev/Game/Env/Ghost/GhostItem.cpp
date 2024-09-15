@@ -32,6 +32,7 @@ AGhostItem::AGhostItem():Super() {
 	AnimBase->Curve = nullptr;
 	AnimBase->SetComponentTickInterval(1/60);
 	AnimBase->SetAutoActivate(false);
+	AnimBase->UseLog = false;
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimFade"));
 	AnimFade->MatFEnd = .75; // don't want to reach 1

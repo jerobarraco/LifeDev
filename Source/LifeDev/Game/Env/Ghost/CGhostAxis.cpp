@@ -5,7 +5,7 @@
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CRandomizer.h"
 
-UCGhostAxis::UCGhostAxis() {
+UCGhostAxis::UCGhostAxis():Super() {
 	Kp = 0.005;
 	Ki = 0.005;
 	Kd = 0.005;
@@ -30,6 +30,8 @@ UCGhostAxis::UCGhostAxis() {
 	Rand->UseAnimMirror = true;
 	Rand->UseAnimValue = true;
 	Rand->Anim = Anim;
+
+	Anim->UseLog = false;
 }
 
 void UCGhostAxis::RenameComp(const FString& Postfix) {

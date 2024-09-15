@@ -40,7 +40,7 @@ void UCAnimator::TickManual(float DeltaSeconds) {
 }
 
 void UCAnimator::Finish() {
-	UE_LOG(LogCAnimator, Log,
+	UE_CLOG(UseLog, LogCAnimator, Log,
 		TEXT("%hs o=%s isReversed=%i isLooping=%i isBouncing=%i"),
 		__func__, *GetNameSafe(GetOwner()), IsReversed, IsLooping, IsBouncing);
 	// check if we can continue at all
