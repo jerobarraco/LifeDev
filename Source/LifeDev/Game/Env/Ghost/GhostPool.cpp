@@ -71,8 +71,10 @@ void AGhostPool::BeginPlay() {
 
 	Rnd->OnTrigger.AddUniqueDynamic(this, &AGhostPool::Spawn);
 	UFlashback* const Flashback = UFlashback::Instance(this);
-	if (Flashback)
+	if (Flashback) {
 		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
+		FBTo(Flashback->GetValTo());
+	}
 }
 
 void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
