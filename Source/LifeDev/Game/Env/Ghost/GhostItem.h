@@ -23,7 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetActive(const bool Act);
-	
+	UFUNCTION()
+	void Return();
+	void FadeAndReturn();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -31,10 +34,6 @@ protected:
 	virtual void Reset() override;
 
 	void SetReturnTimer();
-	void FadeAndReturn();
-
-	UFUNCTION()
-	void Return();
 	
 	UFUNCTION()
 	void BaseUp(const float Progress, const float Alpha);
