@@ -7,6 +7,8 @@
 #include "GhostPool.generated.h"
 
 
+class UPooler;
+class UCRandomizer;
 // Ghost Pooler
 UCLASS(Blueprintable, BlueprintType)
 class AGhostPool : public AActor {
@@ -15,4 +17,34 @@ class AGhostPool : public AActor {
 public:
 	AGhostPool();
 
+	void SetActive(bool Act);
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	UFUNCTION()
+	void FBTo(const float To);
+
+	UFUNCTION()
+	void Spawn();
+
+	UPROPERTY(BlueprintReadWrite)
+	TSubclassOf<AActor> ItemClass = AActor::StaticClass();
+	// avoid include on header.
+
+	UPROPERTY(BlueprintReadWrite)
+	float FBMin=.4;
+
+	UPROPERTY(BlueprintReadWrite)
+	float PoolMax=15;
+
+	UPROPERTY(BlueprintReadWrite)
+	float TrimTime=60;
+
+	UPROPERTY(BlueprintReadOnly)
+	UCRandomizer* Rnd = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UPooler* Pooler = nullptr;
 };
