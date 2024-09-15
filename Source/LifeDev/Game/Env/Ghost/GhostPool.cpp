@@ -9,6 +9,8 @@
 
 AGhostPool::AGhostPool():Super() {
 	ItemClass = AGhostItem::StaticClass();
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	bCollideWhenPlacing = false;
 	
 	USceneComponent* const Cmp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Cmp);

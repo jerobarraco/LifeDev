@@ -8,8 +8,8 @@
 
 #include "LGGameMode.generated.h"
 
-class ALStoryMan;
 struct FDialog;
+class ALStoryMan;
 class APostProcessVolume;
 class ULSettings;
 class UInputMappingContext;
@@ -31,8 +31,7 @@ class UFlags;
 
 // Game mode class 
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
-class LIFEDEV_API ALGGameMode : public AGameModeBase
-{
+class LIFEDEV_API ALGGameMode : public AGameModeBase {
 	GENERATED_BODY()
 
 public:

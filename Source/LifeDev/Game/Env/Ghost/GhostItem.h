@@ -66,8 +66,8 @@ protected:
 	FRotator ActRotOff = {-15, 0, 15};
 	UPROPERTY(BlueprintReadWrite)
 	float ActRotSpeed = 2.5;
-	UPROPERTY(BlueprintReadWrite)
-	bool Debug = true;
+	// UPROPERTY(BlueprintReadWrite)
+	// bool Debug = true;
 	UPROPERTY(BlueprintReadWrite)
 	float LifeTimeMin=20;
 	UPROPERTY(BlueprintReadWrite)

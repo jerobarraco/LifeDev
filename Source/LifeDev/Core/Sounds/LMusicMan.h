@@ -8,6 +8,7 @@
 
 #include "LMusicMan.generated.h"
 
+class AGhostPool;
 class UCLSounder;
 class AStep;
 
@@ -21,7 +22,7 @@ public:
 	ALMusicMan();
 
 	UFUNCTION(BlueprintCallable)
-	static ALMusicMan* Instance(UWorld* W);
+	static ALMusicMan* Instance(UObject* W);
 	// TODO use UObject* Context instead and use the meta tag
 
 	UFUNCTION(BlueprintCallable)
@@ -75,6 +76,10 @@ protected:
 	UCLSounder* Environ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
 	UCAnimator* AnimMusicFX = nullptr;
-	
+
+	// doesn't belong here but the game mode is bloated. to be moved later.
+	UPROPERTY(BlueprintReadOnly, Transient)
+	AGhostPool* GhostPool = nullptr;
+
 	bool EnvironOverride = true;
 };

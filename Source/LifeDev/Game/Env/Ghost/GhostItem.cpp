@@ -156,10 +156,10 @@ void AGhostItem::BaseUp(const float Progress, const float Alpha) {
 
 	const UWorld* const World = GetWorld();
 
-	if (Debug) {
-		DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);
-		DrawDebugLine(World, TgtPos, AimPos, FColor::Cyan, false, -1, 0, 2);
-	}
+	// if (Debug) {
+		// DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);
+		// DrawDebugLine(World, TgtPos, AimPos, FColor::Cyan, false, -1, 0, 2);
+	// }
 
 	AxisX->SetTarget(AimPos.X);
 	AxisY->SetTarget(AimPos.Y);

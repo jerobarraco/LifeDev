@@ -16,6 +16,8 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
+#include "LifeDev/Game/Env/Ghost/GhostItem.h"
+#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 #include "Sound/SoundSubmix.h"
 
 ALMusicMan::ALMusicMan():Super() {
@@ -80,7 +82,10 @@ ALMusicMan::ALMusicMan():Super() {
 	MusicFX = CSFX.Object;
 }
 
-ALMusicMan* ALMusicMan::Instance(UWorld* W) {
+ALMusicMan* ALMusicMan::Instance(UObject* O) {
+	if (!O) return nullptr;
+	const UWorld* W = O->GetWorld();
+
 	// Might be faster easier to get it from the gamemode
 	const ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
 	return GM ? GM->MusicMan : nullptr;
@@ -194,6 +199,8 @@ void ALMusicMan::BeginPlay() {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
 		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimFXEnd);
 	}
+
+	GhostPool = Cast<AGhostPool>(GetWorld()->SpawnActor(AGhostPool::StaticClass()));
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
