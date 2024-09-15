@@ -26,24 +26,23 @@ enum class EFeat: uint8 {
 	C_08,
 	C_09,
 
-	/// Dialogs
-	
+#pragma region Dialogs
 	// Shows the dialogs, otherwise they get muted
 	D_ALL,
 	// Show the text on the dialogs, otherwise they get censored
 	D_TEXT,
+#pragma endregion
 
-	/// Sound
-	
+#pragma region Sounds
 	// plays music
 	S_MUSIC,
 	// plays the noises
 	S_NOISE,
 	// ambient sound
 	S_ENV,
+#pragma endregion
 
-	/// Graphic (Visual)
-
+#pragma region Visuals
 	// lumen gi
 	V_LUMEN,
 	// blur
@@ -52,14 +51,17 @@ enum class EFeat: uint8 {
 	V_STROBE,
 	// field of view
 	V_FOV,
-
-	/// Access
-
+	V_SPEED,
+#pragma endregion
+	
+#pragma region Environ
+	E_GHOSTPOOL,
+#pragma endregion
 	// Gameplay (find another word)
 	// G_*,
 	
 	/// Debug
-	
+#pragma region Debug
 	// Debug steps (cheats)
 	DBG_STEPS,
 	// debug the animator
@@ -72,6 +74,7 @@ enum class EFeat: uint8 {
 	DBG_SIG,
 	// General debug, deprecated. don't use unless you are me.
 	DBG_ALL UMETA(Deprecated),
+#pragma endregion
 };
 
 // this class is for the settings that appears on the editor under project settings. The general system settings.

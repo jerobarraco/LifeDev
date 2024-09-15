@@ -76,6 +76,7 @@ void AGhostPool::BeginPlay() {
 }
 
 void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Kill(true); // ensure to kill all. if the GP dies we are killing the ghosts too.
 	Rnd->OnTrigger.Clear();
 	UFlashback* const Flashback = UFlashback::Instance(this);
 	if (Flashback)
@@ -83,6 +84,7 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	
 	Super::EndPlay(EndPlayReason);
 }
+
 void AGhostPool::FBTo(const float To) {
 	if (!Pooler) return;
 

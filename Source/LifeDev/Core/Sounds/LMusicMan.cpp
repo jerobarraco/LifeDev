@@ -202,8 +202,8 @@ void ALMusicMan::BeginPlay() {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
 		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimFXEnd);
 	}
-
-	GhostPool = Cast<AGhostPool>(GetWorld()->SpawnActor(AGhostPool::StaticClass()));
+	
+	SetGhosts(S->GetFeat(EFeat::E_GHOSTPOOL));
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -230,17 +230,34 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
+void ALMusicMan::SetGhosts(bool bEnabled) {
+	if (bEnabled) {
+		if (IsValid(GhostPool)) return;
+		const UWorld* const W = GetWorld();
+		if (!W) return;
+
+		GhostPool = Cast<AGhostPool>(GetWorld()->SpawnActor(AGhostPool::StaticClass()));
+		return;
+	}
+
+	if (!GhostPool) return;
+	GhostPool->Destroy();
+	GhostPool = nullptr;
+}
+
 void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
 	if (Feat == EFeat::S_MUSIC) {
 		const bool IsPlaying = Player->IsPlaying();
 		// start/stop only if it was stopped/started. avoid double fade
-		if (bEnabled){
+		if (bEnabled) {
 			if (!IsPlaying) Fade(true);
 		} else {
 			if (IsPlaying) Fade(false);
 		}
 	} else if (Feat == EFeat::S_ENV)
 		SetEnviron(bEnabled);
+	else if (Feat == EFeat::E_GHOSTPOOL)
+		SetGhosts(bEnabled);
 }
 
 void ALMusicMan::SetStep(AStep* Step) {

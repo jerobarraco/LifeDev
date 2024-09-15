@@ -60,6 +60,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	void SetGhosts(bool bEnabled);
 	UFUNCTION() // bind
 	void FeatUpdate(EFeat Feat, bool bEnabled);
 	UFUNCTION() // bind
