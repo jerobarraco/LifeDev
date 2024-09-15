@@ -110,11 +110,12 @@ void AGhostItem::Reset() {
 
 	// in case the ghost is too far away, or was deactivated before the player teleported, or smth.
 	// teleport closer to the pawn.
-	ActPos = AimPos;
+	ActPos = AimPos; // aimPos is calculated by BaseUp
 	AxisX->SetVal(ActPos.X);
 	AxisY->SetVal(ActPos.Y);
 	AxisZ->SetVal(ActPos.Z);
-
+	// baseUp calls SetActorLocation, but it's not the correct location. but we need BaseUp to calculate AimPos
+	SetActorLocation(ActPos);
 
 	SetActive(true);
 	AnimFade->PlaySet(false, false, false);

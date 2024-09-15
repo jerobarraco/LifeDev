@@ -20,13 +20,13 @@ public:
 	UCGhostAxis();
 
 	void RenameComp(const FString& Postfix);
-	virtual void SetActive(bool bNewActive, bool bReset) override;
-	
+	virtual void Activate(bool bReset) override;
+	virtual void Deactivate() override;
+
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* Rand = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Anim = nullptr;
-#pragma endregion 
-protected:
+#pragma endregion
 };
