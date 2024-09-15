@@ -92,7 +92,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
 	void RemPool(TSubclassOf<AActor> Class);
 
-	// gets a managed pool. don't call Set on that pool with another class or you'll have problems.
+	// gets a managed pool. don't call Set on that pool with a different class,
+	// or you'll have problems.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
 	UPool* GetPool(TSubclassOf<AActor> Class);
 
@@ -104,7 +105,7 @@ public:
 	// If the pool is removed, then the actor will get destroyed.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
 	void Return(AActor* Actor);
-	
+
 protected:
 	UPROPERTY(Transient) // gcd
 	TMap<FName, UPool*> Pools;
