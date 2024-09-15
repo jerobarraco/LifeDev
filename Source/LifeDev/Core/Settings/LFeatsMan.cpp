@@ -12,10 +12,14 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
 	MPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMat(TEXT("/Game/LifeDev/Game/Flashback/FlashbackVel_MI"));
+	SpeedMat = CMat.Object;
 }
 
 void ALFeatsMan::LoadMPC() {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 	
 	if (!IsValid(MPC)) {
@@ -89,7 +93,15 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 		const float v = bEnabled ? 1: 0;
 		if (Feat == EFeat::V_STROBE) 
 			MPCI->SetScalarParameterValue("Strobe", v);
-		else if (Feat == EFeat::V_SPEED) 
+		else if (Feat == EFeat::V_SPEED) {
+			if (!SpeedMat) return;
 			MPCI->SetScalarParameterValue("Speed", v);
+			// Post->AddOrUpdateBlendable(Mat, v);
+			if (bEnabled)
+				Post->Settings.AddBlendable(SpeedMat, 1);
+			else
+				Post->Settings.RemoveBlendable(SpeedMat);
+		}
+			// MPCI->SetScalarParameterValue("Speed", v);
 	}
 }

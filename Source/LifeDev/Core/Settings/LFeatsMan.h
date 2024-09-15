@@ -38,4 +38,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	UMaterialParameterCollectionInstance* MPCI = nullptr;
+
+	UPROPERTY(Transient)
+	UMaterialInterface* SpeedMat = nullptr;
 };
