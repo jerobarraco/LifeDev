@@ -27,7 +27,7 @@ APIGhost::APIGhost():Super() {
 	AnimBase->Duration = 1000;
 	AnimBase->IsLooping = true;
 	AnimBase->Curve = nullptr;
-	AnimBase->SetComponentTickInterval(1/45);
+	AnimBase->SetComponentTickInterval(1/60);
 	AnimBase->SetAutoActivate(false);
 
 	// TODO csig

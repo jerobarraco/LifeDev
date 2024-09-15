@@ -11,6 +11,7 @@ UCGhostAxis::UCGhostAxis() {
 	Kd = 0.01;
 	StopTime = -1;
 	AutoUpdateValue = true;
+	SetComponentTickInterval(1/60);
 	Super::SetAutoActivate(false);
 	
 	Anim = CreateDefaultSubobject<UCAnimator>(TEXT("Anim"));
