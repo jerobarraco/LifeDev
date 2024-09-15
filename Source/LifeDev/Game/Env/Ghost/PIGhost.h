@@ -7,6 +7,7 @@
 
 #include "PIGhost.generated.h"
 
+class UCSignificance;
 class UCAnimatorMix;
 class UCQuickMesh;
 class UCGhostAxis;
@@ -58,13 +59,13 @@ protected:
 	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
 	
 	UPROPERTY(BlueprintReadWrite)
-	FVector OffPos;
+	FVector OffPos = {0, 0, 75};
 	UPROPERTY(BlueprintReadWrite)
-	FVector OffDist;
+	FVector OffDist = {75.0, 75, 75};
 	UPROPERTY(BlueprintReadWrite)
-	FRotator ActRotOff;
+	FRotator ActRotOff = {-15, 0, 15};
 	UPROPERTY(BlueprintReadWrite)
-	float ActRotSpeed = .3;
+	float ActRotSpeed = 2.5;
 	UPROPERTY(BlueprintReadWrite)
 	bool Debug = true;
 	UPROPERTY(BlueprintReadWrite)
@@ -105,5 +106,7 @@ protected:
 	UCAnimator* AnimBase = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimatorMix* AnimFade = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCSignificance* Sig = nullptr;
 #pragma endregion 
 };

@@ -6,6 +6,7 @@
 #include "Pool.h"
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JSig/CSignificance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -36,18 +37,27 @@ APIGhost::APIGhost():Super() {
 	AnimFade->MatFEnd = .75; // don't want to reach 1
 	AnimFade->MatFStart = 0;
 	AnimFade->Duration = .6;
-	
-	// TODO csig
-	// TODO animmat
+
+	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	Sig->SetAutoActivate(false);
+	Sig->CompsTicks = {
+		AnimBase, AxisX, AxisY, AxisZ,
+		AxisX->Anim, AxisY->Anim, AxisZ->Anim,
+	};
+	Sig->OffscreenTimeMax = -1;
+	Sig->TickIntervals[ESigValue::High] = 1/60;
+	Sig->TickIntervals[ESigValue::Med] = 1/30;
+	Sig->TickIntervals[ESigValue::Low] = 1/20;
 }
 
 void APIGhost::SetActive(const bool Act) {
+	Sig->SetActive(Act);
+
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
 	for (UActorComponent* const C: Cmps) {
 		if (!C) continue;
 		C->SetActive(Act);
 	}
-	// TODO csig
 }
 
 void APIGhost::BeginPlay() {
@@ -69,8 +79,10 @@ void APIGhost::BeginPlay() {
 }
 
 void APIGhost::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
+	SetActive(false);
 	// TODO unbind
+	
+	Super::EndPlay(EndPlayReason);
 }
 
 void APIGhost::PostDuplicate(bool Pie) {
@@ -92,8 +104,6 @@ void APIGhost::Reset() {
 	AxisZ->SetVal(ActPos.Z);
 
 	BaseUp(0,0);
-	// todo csig
-
 
 	SetActive(true);
 	AnimFade->PlaySet(false, false, false);
@@ -103,6 +113,7 @@ void APIGhost::Reset() {
 void APIGhost::SetReturnTimer() {
 	const UWorld* const World = GetWorld();
 	if (!World) return;
+
 	const float LifeTime = FMath::FRandRange(LifeTimeMin, LifeTimeMax);
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &APIGhost::FadeAndReturn, LifeTime);

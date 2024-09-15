@@ -28,6 +28,7 @@ UCGhostAxis::UCGhostAxis() {
 	Rand->ValueMax = 8;
 	Rand->IsLooping = true;
 	Rand->UseAnimMirror = true;
+	Rand->UseAnimValue = true;
 	Rand->Anim = Anim;
 }
 
