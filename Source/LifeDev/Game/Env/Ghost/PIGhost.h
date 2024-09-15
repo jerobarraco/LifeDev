@@ -38,6 +38,12 @@ protected:
 	UFUNCTION()
 	void RotUpZ(const float Progress, const float Alpha);
 
+	UPROPERTY(BlueprintReadOnly, Transient)
+	FVector ActPos;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	FRotator OffRot;
+
 	#pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;

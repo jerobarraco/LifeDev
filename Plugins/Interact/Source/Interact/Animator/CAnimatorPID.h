@@ -4,7 +4,7 @@
 #pragma once
 #include "CAnimatorPID.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAPIDUpdate, const float, Output, const float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAPIDUpdate, const float, Output, const float, Value);
 DECLARE_DYNAMIC_DELEGATE_RetVal(float, FAPIDGetVal);
 DECLARE_DYNAMIC_DELEGATE_RetVal(float, FAPIDGetTarget);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStart);

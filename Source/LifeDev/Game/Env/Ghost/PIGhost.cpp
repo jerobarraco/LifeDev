@@ -57,10 +57,22 @@ void APIGhost::Reset() {
 	Super::Reset();
 }
 
-void APIGhost::PosUpX(const float Output, const float NewValue) {}
-void APIGhost::PosUpY(const float Output, const float NewValue) {}
-void APIGhost::PosUpZ(const float Output, const float NewValue) {}
+void APIGhost::PosUpX(const float Output, const float NewValue) {
+	ActPos.X = NewValue;
+}
+void APIGhost::PosUpY(const float Output, const float NewValue) {
+	ActPos.Y = NewValue;
+}
+void APIGhost::PosUpZ(const float Output, const float NewValue) {
+	ActPos.Z = NewValue;
+}
 
-void APIGhost::RotUpX(const float Progress, const float Alpha) {}
-void APIGhost::RotUpY(const float Progress, const float Alpha) {}
-void APIGhost::RotUpZ(const float Progress, const float Alpha) {}
+void APIGhost::RotUpX(const float Progress, const float Alpha) {
+	OffRot.Roll = 360*Alpha;
+}
+void APIGhost::RotUpY(const float Progress, const float Alpha) {
+	OffRot.Pitch = 360*Alpha;
+}
+void APIGhost::RotUpZ(const float Progress, const float Alpha) {
+	OffRot.Yaw = 360*Alpha;
+}
