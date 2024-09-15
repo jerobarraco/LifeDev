@@ -97,6 +97,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsReversed = false;
 
+	// control log output per instance
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	bool UseLog = false;
+
+	
 	// triggers when the animation ends. but not if it wasn't playing.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
