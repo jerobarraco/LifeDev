@@ -96,7 +96,7 @@ void AGhostItem::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AGhostItem::PostDuplicate(bool Pie) {
 	Super::PostDuplicate(Pie);
-	// doesnt work. crashes on constructor
+	// doesn't work. crashes on constructor
 	AxisX->RenameComp("X");
 	AxisY->RenameComp("Y");
 	AxisZ->RenameComp("Z");
@@ -105,14 +105,16 @@ void AGhostItem::PostDuplicate(bool Pie) {
 void AGhostItem::Reset() {
 	Super::Reset();
 
-	ActPos = GetActorLocation();
-	ActRot = GetActorRotation();
+	// force update will recalculate the actpos and actrot
+	BaseUp(0,0);
 
+	// in case the ghost is too far away, or was deactivated before the player teleported, or smth.
+	// teleport closer to the pawn.
+	ActPos = AimPos;
 	AxisX->SetVal(ActPos.X);
 	AxisY->SetVal(ActPos.Y);
 	AxisZ->SetVal(ActPos.Z);
 
-	BaseUp(0,0);
 
 	SetActive(true);
 	AnimFade->PlaySet(false, false, false);

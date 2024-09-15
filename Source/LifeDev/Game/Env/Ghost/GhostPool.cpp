@@ -33,8 +33,9 @@ void AGhostPool::Kill(const bool All) {
 
 	SetActive(false);
 	if (All && Pooler)
-		Pooler->AddPool(0, ItemClass); // set to 0 in the hope they get destroyed.
+		Pooler->SetPool(0, ItemClass); // set to 0 in the hope they get destroyed.
 
+	// i could return them to the pool. but honestly. it's not that big of a deal.
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(this, ItemClass, Actors);
 	for (AActor* const A: Actors) {
@@ -79,7 +80,7 @@ void AGhostPool::FBTo(const float To) {
 	const int32 Max = Active ? MaxPre :0;
 	// // i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this 
 	// const int32 Max = bitselect((int32) Active, MaxPre, 0);
-	Pooler->AddPool(Max, ItemClass, false, false, TrimTime);
+	Pooler->SetPool(Max, ItemClass, false, false, TrimTime);
 }
 
 void AGhostPool::Spawn() {
