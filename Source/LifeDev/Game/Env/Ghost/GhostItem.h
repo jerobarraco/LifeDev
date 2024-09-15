@@ -22,7 +22,7 @@ public:
 	AGhostItem();
 
 	UFUNCTION(BlueprintCallable)
-	void SetActive(const bool Act);
+	void SetActive(const bool Act, const bool Reset = false);
 	UFUNCTION()
 	void Return();
 	void FadeAndReturn();
@@ -58,7 +58,7 @@ protected:
 	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
 	
 	UPROPERTY(BlueprintReadWrite)
-	FVector OffPos = {0, 0, 75};
+	FVector OffPos = {0, 0, 30};
 	UPROPERTY(BlueprintReadWrite)
 	FVector OffDist = {75.0, 75, 75};
 	UPROPERTY(BlueprintReadWrite)

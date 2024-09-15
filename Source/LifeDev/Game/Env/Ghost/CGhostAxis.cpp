@@ -6,9 +6,9 @@
 #include "Interact/Animator/CRandomizer.h"
 
 UCGhostAxis::UCGhostAxis() {
-	Kp = 0.02;
-	Ki = 0.01;
-	Kd = 0.01;
+	Kp = 0.005;
+	Ki = 0.005;
+	Kd = 0.005;
 	StopTime = -1;
 	AutoUpdateValue = true;
 	SetComponentTickInterval(1/60);

@@ -50,13 +50,13 @@ AGhostItem::AGhostItem():Super() {
 	Sig->TickIntervals[ESigValue::Low] = 1/20;
 }
 
-void AGhostItem::SetActive(const bool Act) {
-	Sig->SetActive(Act);
+void AGhostItem::SetActive(const bool Act, const bool Reset) {
+	Sig->SetActive(Act, Reset);
 
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
 	for (UActorComponent* const C: Cmps) {
 		if (!C) continue;
-		C->SetActive(Act);
+		C->SetActive(Act, Reset);
 	}
 }
 
@@ -105,6 +105,8 @@ void AGhostItem::PostDuplicate(bool Pie) {
 void AGhostItem::Reset() {
 	Super::Reset();
 
+	// force reset, so that the PIDs won't make it jump around.
+	SetActive(true, true);
 	// force update will recalculate the actpos and actrot
 	BaseUp(0,0);
 
@@ -117,7 +119,6 @@ void AGhostItem::Reset() {
 	// baseUp calls SetActorLocation, but it's not the correct location. but we need BaseUp to calculate AimPos
 	SetActorLocation(ActPos);
 
-	SetActive(true);
 	AnimFade->PlaySet(false, false, false);
 	SetReturnTimer();
 }
