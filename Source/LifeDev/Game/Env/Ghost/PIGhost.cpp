@@ -3,6 +3,7 @@
 
 #include "CGhostAxis.h"
 #include "CQuickMesh.h"
+#include "Interact/Animator/CAnimator.h"
 
 APIGhost::APIGhost():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -19,11 +20,47 @@ APIGhost::APIGhost():Super() {
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
 	AxisZ = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisZ"));
+	// TODO csig
+	// TODO animmat
+	// TODO animbase
+}
+
+void APIGhost::BeginPlay() {
+	Super::BeginPlay();
+	AxisX->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpX);
+	AxisY->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpY);
+	AxisZ->Anim->OnUpdate.AddUniqueDynamic(this, &APIGhost::RotUpZ);
+
+	AxisX->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpX);
+	AxisY->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpY);
+	AxisZ->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpZ);
+
+	// TODO anim base
+	Mesh->CreateDynamicMaterialInstance(0, Mesh->GetMaterial(0));
+	Reset();
+}
+
+void APIGhost::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Super::EndPlay(EndPlayReason);
+	// TODO unbind
 }
 
 void APIGhost::PostDuplicate(bool Pie) {
 	Super::PostDuplicate(Pie);
+	// doesnt work. crashes on constructor
 	AxisX->RenameComp("X");
 	AxisY->RenameComp("Y");
 	AxisZ->RenameComp("Z");
 }
+
+void APIGhost::Reset() {
+	Super::Reset();
+}
+
+void APIGhost::PosUpX(const float Output, const float NewValue) {}
+void APIGhost::PosUpY(const float Output, const float NewValue) {}
+void APIGhost::PosUpZ(const float Output, const float NewValue) {}
+
+void APIGhost::RotUpX(const float Progress, const float Alpha) {}
+void APIGhost::RotUpY(const float Progress, const float Alpha) {}
+void APIGhost::RotUpZ(const float Progress, const float Alpha) {}

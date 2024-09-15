@@ -20,11 +20,11 @@ public:
 	UCGhostAxis();
 
 	void RenameComp(const FString& Postfix);
-protected:
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCRandomizer* Rand = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCAnimator* Anim = nullptr;
 #pragma endregion 
+protected:
 };

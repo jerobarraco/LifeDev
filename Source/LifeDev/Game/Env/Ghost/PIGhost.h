@@ -19,8 +19,26 @@ public:
 	APIGhost();
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostDuplicate(bool Pie) override;
-#pragma region CDO
+	virtual void Reset() override;
+	
+	UFUNCTION()
+	void PosUpX(const float Output, const float NewValue);
+	UFUNCTION()
+	void PosUpY(const float Output, const float NewValue);
+	UFUNCTION()
+	void PosUpZ(const float Output, const float NewValue);
+	
+	UFUNCTION()
+	void RotUpX(const float Progress, const float Alpha);
+	UFUNCTION()
+	void RotUpY(const float Progress, const float Alpha);
+	UFUNCTION()
+	void RotUpZ(const float Progress, const float Alpha);
+
+	#pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;
 	
