@@ -4,6 +4,8 @@
 #include "CGhostAxis.h"
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimator.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 APIGhost::APIGhost():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -20,9 +22,15 @@ APIGhost::APIGhost():Super() {
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
 	AxisZ = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisZ"));
+
+	AnimBase = CreateDefaultSubobject<UCAnimator>(TEXT("AnimBase"));
+	AnimBase->Duration = 1000;
+	AnimBase->IsLooping = true;
+	AnimBase->Curve = nullptr;
+	AnimBase->SetComponentTickInterval(1/45);
+	
 	// TODO csig
 	// TODO animmat
-	// TODO animbase
 }
 
 void APIGhost::BeginPlay() {
@@ -35,9 +43,10 @@ void APIGhost::BeginPlay() {
 	AxisY->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpY);
 	AxisZ->OnUpdate.AddUniqueDynamic(this, &APIGhost::PosUpZ);
 
-	// TODO anim base
+	// TODO anim mat
 	Mesh->CreateDynamicMaterialInstance(0, Mesh->GetMaterial(0));
 
+	AnimBase->OnUpdate.AddUniqueDynamic(this, &APIGhost::BaseUp);
 	Reset();
 }
 
@@ -63,11 +72,41 @@ void APIGhost::Reset() {
 	AxisX->SetVal(ActPos.X);
 	AxisY->SetVal(ActPos.Y);
 	AxisZ->SetVal(ActPos.Z);
-	
-	// TODO base upd 0
+
+	BaseUp(0,0);
 	// todo set timer
 	// todo set active
 	// todo playset animmat
+}
+
+void APIGhost::BaseUp(const float Progress, const float Alpha) {
+	if (!IsValid(Target)) {
+		Target = UGameplayStatics::GetActorOfClass(this, TargetClass);
+		if (!IsValid(Target)) return;
+	}
+
+	TgtPos = Target->GetActorLocation();
+	AimPos = TgtPos + OffPos + OffRot.RotateVector(OffDist);
+
+	UWorld* const World = GetWorld();
+
+	if (Debug) {
+		DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);
+		DrawDebugLine(World, TgtPos, AimPos, FColor::Cyan, false, -1, 0, 2);
+	}
+
+	AxisX->SetTarget(AimPos.X);
+	AxisY->SetTarget(AimPos.Y);
+	AxisZ->SetTarget(AimPos.Z);
+
+	const FRotator ActRotNew =
+		ActRotOff +
+		UKismetMathLibrary::FindLookAtRotation(ActPosOld, ActPos);
+	ActRot = FMath::RInterpTo(ActRot, ActRotNew,
+		World->GetDeltaSeconds(), ActRotSpeed);
+
+	SetActorLocationAndRotation(ActPos, ActRot, false, nullptr, ETeleportType::ResetPhysics);
+	ActPosOld = ActPos;
 }
 
 void APIGhost::PosUpX(const float Output, const float NewValue) {

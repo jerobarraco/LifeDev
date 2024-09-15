@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interact/Animator/CAnimator.h"
 
 #include "PIGhost.generated.h"
 
@@ -23,7 +24,10 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostDuplicate(bool Pie) override;
 	virtual void Reset() override;
-	
+
+	UFUNCTION()
+	void BaseUp(const float Progress, const float Alpha);
+
 	UFUNCTION()
 	void PosUpX(const float Output, const float NewValue);
 	UFUNCTION()
@@ -38,12 +42,35 @@ protected:
 	UFUNCTION()
 	void RotUpZ(const float Progress, const float Alpha);
 
-	/// transient
-	FVector ActPos;
-	FRotator OffRot;
-	FRotator ActRot;
-
 	// settings
+#pragma region Settings
+	UPROPERTY(BlueprintReadWrite)
+	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
+	
+	UPROPERTY(BlueprintReadWrite)
+	FVector OffPos;
+	UPROPERTY(BlueprintReadWrite)
+	FVector OffDist;
+	UPROPERTY(BlueprintReadWrite)
+	FRotator ActRotOff;
+	UPROPERTY(BlueprintReadWrite)
+	float ActRotSpeed = .3;
+	UPROPERTY(BlueprintReadWrite)
+	bool Debug = true;
+#pragma endregion
+
+#pragma region Transient
+	FVector ActPos;
+	FVector ActPosOld;
+	FRotator ActRot;
+	FRotator OffRot;
+
+	FVector TgtPos;
+	FVector AimPos;
+
+	UPROPERTY(Transient)
+	AActor* Target = nullptr;
+#pragma endregion 
 	#pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	USceneComponent* Root = nullptr;
@@ -59,5 +86,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	UCGhostAxis* AxisZ = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UCAnimator* AnimBase = nullptr;
 #pragma endregion 
 };
