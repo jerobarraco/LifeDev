@@ -137,6 +137,7 @@ void AGhostItem::FadeAndReturn() {
 }
 
 void AGhostItem::Return() {
+	SetActive(false);
 	AnimFade->OnEnd.RemoveAll(this);
 
 	UPooler* const Pooler = UPooler::Instance(this);
