@@ -171,7 +171,7 @@ void AOTNode::Return() {
 void AOTNode::DbgDraw() {
 	FVector C, E;
 	Box.GetCenterAndExtents(C, E);
-	DrawDebugBox(GetWorld(), C, E, FColor::Purple, false, 1, 0, 1);
+	DrawDebugBox(GetWorld(), C, E, FColor::Purple, false, 1, 0, 3);
 	for (const AActor* const A: Actors) {
 		if(!IsValid(A)) continue;
 		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 4, FColor::Orange, false, 1, 0);
