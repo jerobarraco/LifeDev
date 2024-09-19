@@ -13,10 +13,15 @@ class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 public:
 	AOTNode();
 	void AddActor(const AActor* const Actor);
+	void SetBounds(const FVector& InCornerA, const FVector& InCornerB);
+	
 	virtual void Reset() override;
+	void Empty();
 	void Return();
 
 protected:
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Subs; // children is already defined and has different meaning
 	UPROPERTY(Transient)
@@ -25,6 +30,8 @@ protected:
 	FVector CornerA;
 	UPROPERTY(Transient)
 	FVector CornerB;
+
+	friend class AOTNode;
 };
 
 // test. octree
@@ -36,10 +43,12 @@ public:
 	AOctTree();
 
 	void AddActor(const AActor* const Actor);
+	void SetBounds(const FVector& CornerA, const FVector& CornerB);
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UPROPERTY(Transient)
 	AOTNode* RootNode = nullptr;
 	UPROPERTY(Transient)
