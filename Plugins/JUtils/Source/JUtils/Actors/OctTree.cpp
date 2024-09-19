@@ -49,11 +49,23 @@ void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
 	// TODO implement reflow.
 }
 
+AOTNode* AOTNode::SubForActor(const AActor* const Actor) {
+	for (AOTNode* const S: Subs) {
+		if (!S) continue;
+		S->Contains(Actor);
+		return S;
+	}
+
+	UE_LOG(LogJOctTree, Warning, TEXT("%hs Could not find it"), __func__);
+	return nullptr;
+}
+
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
 	for (const AActor* A: Actors) {
 		// TODO get which sub
-		AOTNode* S =  nullptr; // crash ensured
+		AOTNode* const S = SubForActor(A);
+		if (!S) continue;
 		S->Add(A);
 	}
 	Actors.Empty();

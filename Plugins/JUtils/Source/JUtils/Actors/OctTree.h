@@ -15,6 +15,8 @@ public:
 	void Add(const AActor* const Actor);
 	void AddToSub(const AActor* const Actor);
 	void SetBounds(const FVector& InCornerA, const FVector& InCornerB);
+	void Contains(const AActor* Actor){};
+	AOTNode* SubForActor(const AActor* const Actor);
 	void PushToSubs();
 	void Split();
 	
