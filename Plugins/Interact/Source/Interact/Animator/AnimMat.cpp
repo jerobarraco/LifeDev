@@ -40,7 +40,7 @@ bool FAMFloat::SetLerp(const float Prog) {
 	return SetVal(Val);
 }
 
-bool FMPFVector::SetVal(const FLinearColor& Val) const {
+bool FAMVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (!FIsValid()) return false;
@@ -48,25 +48,14 @@ bool FMPFVector::SetVal(const FLinearColor& Val) const {
 	return MPCI->SetVectorParameterValue(Name, Val);
 }
 
-bool FMPFVector::SetLerp(const float Prog) {
+bool FAMVector::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 
-const int32 FMPFData::GetDynamicIndex() const {
-	if (!IsValid(Comp)) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid component"), __func__);
-		return INDEX_NONE;
-	}
-
-	return IsScalar ?
-		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name):
-		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name);
-}
-
-bool FMPFData::GetCurrent(FLinearColor& OCurrent) const {
+bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
 	if (!FIsValid()) {
@@ -107,7 +96,7 @@ bool FMPFData::GetCurrent(FLinearColor& OCurrent) const {
 	return true;
 }
 
-bool FMPFData::SetVal(const FLinearColor& V) const {
+bool FAMData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
 
@@ -129,7 +118,7 @@ bool FMPFData::SetVal(const FLinearColor& V) const {
 	return true;
 }
 
-bool FMPFData::SetLerp(const float Prog) {
+bool FAMData::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
@@ -138,7 +127,7 @@ bool FMPFData::SetLerp(const float Prog) {
 
 UAnimMat::UAnimMat():Super() {}
 
-UAnimMat* UAnimMat::Instance(UObject* O) {
+UAnimMat* UAnimMat::Instance(const UObject*const  O) {
 	if (!IsValid(O)) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
@@ -209,12 +198,16 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		return false;
 	};
 	
-	// Ensure to remove the old one.
-	if (FloatParams.Contains(Name)) FloatParams.Remove(Name);
+	// ensure we remove it the ones colliding
+	for (int32 i = FloatParams.Num()-1; i>=0; --i) {
+		const FAMFloat& O = FloatParams[i];
+		if (Param.MPCI != O.MPCI || Param.Name != O.Name) continue;
+		FloatParams.RemoveAtSwap(i);
+	}
 
-	if (FMath::IsNearlyZero(Duration)) {
+	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		OnItemDone.Broadcast(Name, INDEX_NONE); // notify AFTER change.
+		ItemDone(Param);
 		return Ok;
 	}
 	
@@ -224,7 +217,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		// we do it anyway.
 	}
 
-	FloatParams.Add(Name, MoveTemp(Param));
+	FloatParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
 }
@@ -235,7 +228,7 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
-	FMPFVector Param;
+	FAMVector Param;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	if (!ParamInitMPC(MPC, Name, Param, Curve, Duration)) {
@@ -244,12 +237,15 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 		return false;
 	}
 
-	// Ensure we remove the old one.
-	if (VectorParams.Contains(Name)) VectorParams.Remove(Name);
+	for (int32 i = VectorParams.Num()-1; i>=0; --i) {
+		const FAMVector& O = VectorParams[i];
+		if (Param.MPCI != O.MPCI || Param.Name != O.Name) continue;
+		VectorParams.RemoveAtSwap(i);
+	}
 	
-	if (FMath::IsNearlyZero(Duration)) {
+	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		OnItemDone.Broadcast(Name, INDEX_NONE); // notify AFTER change.
+		ItemDone(Param); // notify AFTER change.
 		return Ok;
 	}
 
@@ -259,7 +255,7 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 		// we do it anyway.
 	}
 
-	VectorParams.Add(Name, MoveTemp(Param));
+	VectorParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
 }
@@ -270,7 +266,7 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 	UE_LOG(LogAnimMat, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Component), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
-	FMPFData Param;
+	FAMData Param;
 	Param.Index = Index;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
@@ -285,17 +281,18 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 		return false;
 	}
 
-	for (uint32 i = 0; i<DataParams.Num(); ++i) {
-		const FMPFData& P = DataParams[i];
-		if (P.Index != Param.Index || P.Comp != Param.Comp) continue;
-
-		DataParams.RemoveAt(i);
-		break;
+	// Removing using a less performant linear search.
+	// Maybe in the future i use a map or smth, but not worthy atm.
+	for (int32 i = DataParams.Num()-1; i>=0; i--) {
+		const FAMData& D = DataParams[i];
+		if (D.Comp != Param.Comp || D.Index!=Param.Index) continue;
+		DataParams.RemoveAtSwap(i);
 	}
 
-	if (FMath::IsNearlyZero(Duration)) {
+	UE_LOG(LogTemp, Log, TEXT(" Param Fade count =%i"), DataParams.Num());
+	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(Param.To);
-		OnItemDone.Broadcast(Param.Name, Param.Index); // notify AFTER change.
+		OnItemDone.Broadcast(nullptr, Param.Name, Param.Comp, Param.Index); // notify AFTER change.
 		return Ok;
 	}
 
@@ -327,71 +324,95 @@ bool UAnimMat::DataTick(float DT) {
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
 	for (int32 i= DataParams.Num()-1; i>=0; --i) {
-		FMPFData& Par = DataParams[i];
+		FAMData& Par = DataParams[i];
 		const bool IsDone = Par.Tick(DT);
 		
 		// only at end, to ensure the val is set.
 		if (IsDone) {
 			// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-			const FName N = Par.Name;
-			const int32 I = Par.Index;
-			DataParams.RemoveAt(i);
-			OnItemDone.Broadcast(N, I); // Notify AFTER remove.
+			FAMData ParOld = Par;
+			DataParams.RemoveAtSwap(i);
+			ItemDoneData(ParOld);
 			// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
 			// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
 			// since new elements would be added at the end of the array, which would be the current index.
-		} else Cont = true;
+		} else
+			Cont = true;
 	}
 
 	return Cont;
 }
 
 template <typename Item>
-bool UAnimMat::ParamTick(const float DT, TMap<FName, Item>& IOArr) {
-	TArray<FName> ToRemove;
+bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
+	TArray<int32> ToRemove;
 	bool Cont = false;
-	// iterate using KV because it's a bit faster.
-	for (TTuple<FName, Item> &KV: IOArr) {
-		Item &Par = KV.Value;
-		FName Name = KV.Key;
-		
+	// traversing in reverse to remove on the spot
+	for (int32 i= IOArr.Num()-1; i>=0; --i) {
+		Item& Par = IOArr[i];
 		const bool IsDone = Par.Tick(DT);
 		
 		// only at end, to ensure the val is set.
-		if (IsDone) ToRemove.Add(Name);
-		else Cont = true;
+		if (!IsDone) {
+			Cont = true;
+			continue;
 	}
 
-	// removed separately to not affect the previous for iteration.
-	// This also notifies all at once after they are set, which is good.
-	for (const FName N: ToRemove) RemoveItem(N, IOArr);
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		Item ParOld = Par;
+		IOArr.RemoveAtSwap(i);
+		ItemDone(ParOld);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
+	}
 
 	return Cont;
 }
 
 template<typename Item>
-void UAnimMat::RemoveItem(const FName N, TMap<FName, Item> &IOArr) {
-	if (IOArr.Remove(N) <= 0) return; // avoid notifying if we didn't remove anything.
-	OnItemDone.Broadcast(N, INDEX_NONE); // notify AFTER change.
+void UAnimMat::EmptyItems(TArray<Item>& IOArr) {
+	TArray<Item> Copy = IOArr;
+	DataParams.Empty(); // empty before notifying.
+	for (const Item& D: Copy) {
+		ItemDone(D);
+	}
 }
 
-template <typename Item>
-void UAnimMat::EmptyItems(TMap<FName, Item>& IOArr) {
-	TArray<FName> Keys;
-	IOArr.GetKeys(Keys);
-	IOArr.Empty(); // empty before notifying in case, someone adds one as side effect. We already have the keys.
-	for (const FName N: Keys) OnItemDone.Broadcast(N, INDEX_NONE);
+void UAnimMat::EmptyItemsData(TArray<FAMData>& IOArr) {
+	TArray<FAMData> Copy = IOArr;
+	DataParams.Empty(); // empty before notifying.
+	for (const FAMData& D: Copy) {
+		ItemDoneData(D);
+	}
+}
+
+bool UAnimMat::GetIsFadingParam(const FName Name, 
+	const UMaterialParameterCollectionInstance* const MPCI,
+	const UPrimitiveComponent* Comp) {
+
+	const bool NOMPCI = MPCI == nullptr;
+	const bool NOComp = Comp == nullptr;
+	const bool NOBoth = NOMPCI && NOComp;
+	for (const FAMFloat& P: FloatParams) {
+		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
+	}
+	for (const FAMVector& P: VectorParams) {
+		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
+	}
+
+	for (const FAMData& P: DataParams) {
+		if (P.Name == Name && (NOBoth || Comp == P.Comp)) return true;
+	}
+	
+	return false;
 }
 
 void UAnimMat::Deinitialize() {
 	IsFading = false;
 	EmptyItems(FloatParams);
 	EmptyItems(VectorParams);
-
-	for (const FMPFData& D: DataParams) {
-		OnItemDone.Broadcast(D.Name, D.Index);
-	}
-	DataParams.Empty();
+	EmptyItemsData(DataParams);
 	Super::Deinitialize();
 }
 
@@ -426,3 +447,58 @@ TStatId UAnimMat::GetStatId() const {
 	return GetStatID();
 }
 
+
+/* from enhanced input system
+
+bool UEnhancedInputWorldSubsystem::DoesSupportWorldType(const EWorldType::Type WorldType) const
+{
+// The world subsystem shouldn't be used in the editor
+return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
+}
+
+*/
+
+
+// thought on using operator== for removing. which looks more "chic".
+// but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
+// and do nasty checks. besides "==" is confusing in case you expect that it would also check if the target value is the same, which it wont.
+// once again the classic 20 years old for loop is still the best option. remember that some things just get better with time.
+// bool FMPFBase::operator==(const FMPFBase& Other) const {
+// return Type == Other.Type && Name == Other.Name && MPCI == Other.MPCI;
+// }
+// needed for overloading operator== and casting.
+// FMPFBase is NOT redundant, is needed
+// UPROPERTY(BlueprintReadOnly, Transient)
+// UScriptStruct* Type = FMPFBase::StaticStruct();
+// FMPFData():Super() {
+// HAS to be inside here. define in the struct body and it won't work.
+// Type = FMPFData::StaticStruct();
+// }
+
+// bool FMPFData::operator==(const FMPFBase& Other) const {
+// Cast<> doesn't work on structs. we need to use C cast. but that can crash.
+// https://forums.unrealengine.com/t/is-there-an-equivalent-of-casting-for-structs-value-types/62984
+// if (Type != Other.Type) {
+// UE_LOG(LogTemp, Warning, TEXT(" Structs of different classes"));
+// return false; // crash aversion
+// }
+// const FMPFData* const D = (FMPFData*)(&Other);
+// comparing all the params (including mpc) in case we are comparing bogus data.
+// return FMPFBase::operator==(Other) && Index == D->Index && Comp == D->Comp;
+// }
+
+/*
+// do not use. returns the index from the name but only works on dynamic materials which this system is not for.
+// int32 GetDynamicIndex() const;
+
+const int32 FAMData::GetDynamicIndex() const {
+	if (!IsValid(Comp)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid component"), __func__);
+		return INDEX_NONE;
+	}
+
+	return IsScalar ?
+		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name):
+		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name);
+}
+*/

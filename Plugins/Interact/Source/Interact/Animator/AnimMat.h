@@ -5,7 +5,9 @@
 #include "AnimMat.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatItemDone, const FName, Name, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FAnimMatItemDone,
+	const UMaterialParameterCollectionInstance*, MPCI, const FName, Name,
+	const UPrimitiveComponent*, Cmp, int32, Index);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FAMBase {
@@ -64,7 +66,7 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FMPFVector: public FAMBase {
+struct FAMVector: public FAMBase {
 	GENERATED_BODY()
 
 public:
@@ -83,7 +85,7 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FMPFData: public FAMBase {
+struct FAMData: public FAMBase {
 	GENERATED_BODY()
 
 public:
@@ -97,18 +99,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool IsScalar = true;
 	
+	// more expensive but nicer on colors
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseHSV = false;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FLinearColor From = FLinearColor::Black;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FLinearColor To = FLinearColor::White;
 
-	// more expensive but nicer on colors
-	UPROPERTY(BlueprintReadWrite, Transient)
-	bool UseHSV = false;
-
-	// do not use. returns the index from the name but only works on dynamic materials which this system is not for.
-	const int32 GetDynamicIndex() const;
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
@@ -124,7 +124,7 @@ class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
 public:
 	UAnimMat();
 
-	static UAnimMat* Instance(UObject* O);
+	static UAnimMat* Instance(const UObject* const O);
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
 
@@ -152,15 +152,20 @@ public:
 		const float Duration = -1, const bool UseHSV = false,
 		UCurveFloat* const Curve = nullptr);
 
+	// Fades a custom primitive data.
 	// Index: The index of the data. For a vector this is the start index.
 	// IsScalar: whether this is a scalar or a color.
 	//		When a scalar is used. only the R component of the color is used.
-	//		When not a scalar, Index+1, +2, and +3 will always be used.
-	// To: is the target vector/color.
+	//		When not a scalar, Index (R), Index+1 (G), +2 (B), and +3(A) will always be used.
+	// To: is the target vector/color. For a scalar use the R field.
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
-	// UseHSV: uses HSV for lerp. it's more expensive, but looks better on colors.
-	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	// Triggering the same parameter with the same component will remove the first animation. 
+	// UseHSV: uses HSV for lerp. Only used for vectors.
+	//		It's more expensive, but looks better on colors.
+	//		Might not look good on abstract vectors (e.g. used for position).
+	// Curve. easing curve. has to be in the range 0-1 for both axis. "Y" overshooting is fine.
+	// Warning:
+	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
+	//		This is untested though.
 	UFUNCTION(BlueprintCallable)
 	bool DataFade(UPrimitiveComponent* const Component,
 		const int32 Index, const bool IsScalar = true,
@@ -173,6 +178,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFading() { return IsFading; }
 	
+	// returns true if a param with that name is fading (float, vector, or data)
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFadingParam(const FName Name,
+		const UMaterialParameterCollectionInstance* const MPCI = nullptr,
+		const UPrimitiveComponent* Comp = nullptr);
+	 
 #pragma region Base
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -212,20 +223,26 @@ protected:
 	bool DataTick(float DT);
 
 	template<typename Item>
-	bool ParamTick(const float DT, TMap<FName, Item>& IOArr);
+	bool ParamTick(const float DT, TArray<Item>& IOArr);
 	template<typename Item>
-	void RemoveItem(const FName N, TMap<FName, Item>& IOArr);
-	template<typename Item>
-	void EmptyItems(TMap<FName, Item>& IOArr);
+	void EmptyItems(TArray<Item>& IOArr);
+	void EmptyItemsData(TArray<FAMData>& IOArr);
+
+	FORCEINLINE void ItemDone(const FAMBase& Item) {
+		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
+	}
+	FORCEINLINE void ItemDoneData(const FAMData& Item) {
+		OnItemDone.Broadcast(nullptr, NAME_None, Item.Comp, Item.Index);
+	}
 
 	bool IsFading = false;
 
 	UPROPERTY(Transient)
-	TMap<FName, FAMFloat> FloatParams;
+	TArray<FAMFloat> FloatParams;
 	UPROPERTY(Transient)
-	TMap<FName, FMPFVector> VectorParams;
+	TArray<FAMVector> VectorParams;
 	UPROPERTY(Transient)
-	TArray<FMPFData> DataParams;
+	TArray<FAMData> DataParams;
 	
 	// can't use the name/index since the same name is going to be used on multiple objects.
 	// same issue happens with the float and vector. but it's unlikely artists will use more than one mpc.

@@ -102,6 +102,6 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 			else
 				Post->Settings.RemoveBlendable(SpeedMat);
 		}
-			// MPCI->SetScalarParameterValue("Speed", v);
+		// MPCI->SetScalarParameterValue("Speed", v);
 	}
 }
