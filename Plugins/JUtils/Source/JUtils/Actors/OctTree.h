@@ -12,23 +12,33 @@ class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 	GENERATED_BODY()
 public:
 	AOTNode();
+	UFUNCTION(BlueprintCallable)
 	void Add(const AActor* const Actor);
+	UFUNCTION(BlueprintCallable)
 	void AddToSub(const AActor* const Actor);
-	void SetBox(const FBox& InBox);
+	UFUNCTION(BlueprintCallable)
 	void PushToSubs();
+	UFUNCTION(BlueprintCallable)
 	void Split();
+	UFUNCTION(BlueprintCallable)
 	AOTNode* SubForActor(const AActor* const Actor);
+	UFUNCTION(BlueprintCallable)
 	bool Contains(const AActor* const Actor) const;
 	
 	virtual void Reset() override;
+	UFUNCTION(BlueprintCallable)
 	void Empty();
+	UFUNCTION(BlueprintCallable)
 	void Return();
+	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	void SetBox(const FBox& InBox);
+
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Subs; // children is already defined and has different meaning
 	UPROPERTY(Transient)
@@ -48,9 +58,13 @@ class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
 public:
 	AOctTree();
 
+	UFUNCTION(BlueprintCallable)
 	void AddActor(const AActor* const Actor);
+
+	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
+	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 
 protected:
