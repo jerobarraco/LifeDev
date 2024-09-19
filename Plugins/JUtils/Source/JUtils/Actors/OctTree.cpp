@@ -31,22 +31,19 @@ void AOTNode::Add(const AActor* const Actor) {
 }
 
 void AOTNode::AddToSub(const AActor* const Actor) {
-	// TODO cmp position with subs
+	AOTNode* const S = SubForActor(Actor);
+	if (!S) return; // already logged
+	S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
 
 void AOTNode::SetBox(const FBox& InBox) {
 	if (Actors.Num()>0)
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
+	// why bother. this is not meant to be optimal yet
 	Box = InBox;
 	// TODO error if it's already set
 	// TODO implement reflow.
-	// why bother. this is not meant to be optimal yet
 }
-
-// Center = (PointB-PointA)/2 + PointA
-// or Lerp(PointA, PointB, 0.5) ror 
-	// logic for adding to a subobject
-	// oh christ.. i will need teh center after all
 
 AOTNode* AOTNode::SubForActor(const AActor* const Actor) {
 	for (AOTNode* const S: Subs) {
@@ -66,10 +63,7 @@ bool AOTNode::Contains(const AActor* const Actor) const {
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
 	for (const AActor* A: Actors) {
-		// TODO get which sub
-		AOTNode* const S = SubForActor(A);
-		if (!S) continue;
-		S->Add(A);
+		AddToSub(A);
 	}
 	Actors.Empty();
 }
