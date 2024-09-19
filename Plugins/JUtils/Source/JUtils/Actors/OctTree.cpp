@@ -119,6 +119,21 @@ void AOTNode::Return() {
 	Pooler->Return(this);
 }
 
+void AOTNode::DbgDraw() {
+	FVector C, E;
+	Box.GetCenterAndExtents(C, E);
+	DrawDebugBox(GetWorld(), C, E, FColor::Purple, false, 1, 0, 1);
+	for (const AActor* const A: Actors) {
+		if(!IsValid(A)) continue;
+		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 4, FColor::Orange, false, 1, 0);
+	}
+
+	for (AOTNode* const S: Subs) {
+		if (!IsValid(S)) continue;
+		S->DbgDraw();
+	}
+}
+
 void AOTNode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Empty();
 	Super::EndPlay(EndPlayReason);
@@ -150,6 +165,11 @@ void AOctTree::SetBox(const FBox& InBox) {
 	RootNode->SetBox(InBox);
 }
 
+void AOctTree::DbgDraw() {
+	if (!RootNode) return;
+	RootNode->DbgDraw();
+}
+
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
@@ -172,3 +192,4 @@ void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
 }
+// thas it?

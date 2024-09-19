@@ -23,6 +23,7 @@ public:
 	virtual void Reset() override;
 	void Empty();
 	void Return();
+	void DbgDraw();
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
@@ -49,6 +50,8 @@ public:
 
 	void AddActor(const AActor* const Actor);
 	void SetBox(const FBox& InBox);
+
+	void DbgDraw();
 
 protected:
 	virtual void BeginPlay() override;
