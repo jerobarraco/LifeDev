@@ -9,6 +9,15 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
+// TODO query nodes based on position maybe distance?
+// TODO rebuild tree
+// TODO resize
+// TODO update tree based on actors changing.
+// // TODO start with a naive approach and update all of them
+// TODO add function to "iterate", with a callback or predicate
+// TODO remove actor
+// // TODO collapse "unsplit" nodes
+
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.SetTickFunctionEnable(false);
@@ -19,13 +28,15 @@ AOTNode::AOTNode() {
 
 void AOTNode::Add(const AActor* const Actor) {
 	// TODO test bounds and reject the rejected
+	// clog rulz, ok.
+	UE_CLOG(!Contains(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	// Dont store the actors in this instance if it's split already. wasting a tarray.
 	if (Subs.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
 			Actors.Add(Actor);
 			return;
-		} else
-			Split();
+		}
+		Split();
 	}
 	AddToSub(Actor);
 }
@@ -47,9 +58,8 @@ void AOTNode::SetBox(const FBox& InBox) {
 
 void AOTNode::SetSubsBox() {
 	const int32 Num = Subs.Num();
-	FVector C, E, Max, NE;
+	FVector C, E, Max, NE, Min;
 	Box.GetCenterAndExtents(C, E);
-	const FVector HE = E/2; // unless extents are already divided :smartmeme:
 	// surely ill need it to update the bounds if i ever do implement that
 	for (uint8 i=0; i<Num; ++i) {
 		AOTNode* const S = Subs[i];
@@ -58,7 +68,7 @@ void AOTNode::SetSubsBox() {
 		
 		// im gonna use min as C for all of them so what? i hope ue will normalize my lame-ness. whats min and max in 3d anyway?
 		// im sure itll bite me
-		NE = E;
+		NE = E; // extents are already half of the size
 		if (i==0) { // "let's start from the top"
 		} else if (i==1) {
 			NE.X = -NE.X;
@@ -80,13 +90,19 @@ void AOTNode::SetSubsBox() {
 			NE.Y = -NE.Y;
 			NE.Z = -NE.Z;
 		}
-		// without thinking it too much. it fits....
-		Max = C+NE; // i think this is not working
-		S->SetBox(FBox(C, Max));
-			// ez
-	}
-	// let's assume we have what we need
+		// without thinking it too much, it fits....
+		const FVector B = C+NE; // this basic math above might be throwing the contains out
+		// this sucks but it's incredibly important, or the "contains" function will fail.
+		// TODO En-better this.
+		Min.X = FMath::Min(C.X, B.X);
+		Min.Y = FMath::Min(C.Y, B.Y);
+		Min.Z = FMath::Min(C.Z, B.Z);
+		Max.X = FMath::Max(C.X, B.X);
+		Max.Y = FMath::Max(C.Y, B.Y);
+		Max.Z = FMath::Max(C.Z, B.Z);
 
+		S->SetBox(FBox(Min, Max));
+	}
 }
 
 AOTNode* AOTNode::SubForActor(const AActor* const Actor) {
@@ -106,7 +122,7 @@ bool AOTNode::Contains(const AActor* const Actor) const {
 
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
-	for (const AActor* A: Actors) {
+	for (const AActor* const A: Actors) {
 		AddToSub(A);
 	}
 	Actors.Empty();
@@ -120,24 +136,22 @@ void AOTNode::Split() {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
-	
-	if (Subs.Num() < SubsNum) {
-		// WTF DEGENERATE CASE! but meh
-		// 1st create subs
-		while (Subs.Num()<SubsNum) {
-			AOTNode* const S = Cast<AOTNode>(Pool->Get());
-			if (!S) {
-				UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
-				return;
-			}
-			S->ActorsMax = ActorsMax;
-			
-			
-			Subs.Add(S);
+
+	bool Moded = false;
+	// WTF DEGENERATE CASE! but meh
+	// 1st create subs
+	while (Subs.Num()<SubsNum) {
+		AOTNode* const S = Cast<AOTNode>(Pool->Get());
+		if (!S) {
+			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
+			return;
 		}
-		// what about the bounds buddy???????
-		SetSubsBox();
+		S->ActorsMax = ActorsMax;
+		Subs.Add(S);
+		Moded = true;
 	}
+	if (Moded)
+		SetSubsBox();
 
 	PushToSubs();
 }
@@ -173,12 +187,25 @@ void AOTNode::DbgDraw() {
 	DrawDebugBox(GetWorld(), C, E, FColor::Purple, false, 1, 0, 3);
 	for (const AActor* const A: Actors) {
 		if(!IsValid(A)) continue;
-		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 4, FColor::Orange, false, 1, 0);
+		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 5, FColor::Yellow, false, 1, 0);
 	}
 
 	for (AOTNode* const S: Subs) {
 		if (!IsValid(S)) continue;
 		S->DbgDraw();
+	}
+}
+
+void AOTNode::Iterate(const FJOTIterator& Iterator) const {
+
+	// TODO test
+	// TODO remove the const from actors
+	// probably users won´t like the const. maybe bp dont like it.
+	for (const AActor* const A: Actors) {
+		Iterator.ExecuteIfBound(A);
+	}
+	for (const AOTNode* const S: Subs ) {
+		S->Iterate(Iterator);
 	}
 }
 
@@ -216,6 +243,15 @@ void AOctTree::SetBox(const FBox& InBox) {
 void AOctTree::DbgDraw() {
 	if (!RootNode) return;
 	RootNode->DbgDraw();
+}
+
+void AOctTree::Iterate(const FJOTIterator& Iterator) const {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
+		return;
+	}
+
+	RootNode->Iterate(Iterator);
 }
 
 void AOctTree::BeginPlay() {

@@ -7,6 +7,8 @@
 
 class UPool;
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FJOTIterator, const AActor* const, Actor);
+
 UCLASS(Blueprintable)
 class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 	GENERATED_BODY()
@@ -35,6 +37,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 
+	UFUNCTION(BlueprintCallable)
+	void Iterate(const FJOTIterator& Iterator) const;
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -49,7 +53,7 @@ protected:
 	UPROPERTY(Transient)
 	FBox Box;
 
-	uint8 ActorsMax = 5; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
+	uint8 ActorsMax = 1; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
 	friend class AOctTree;
 };
 
@@ -70,6 +74,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 	
+	UFUNCTION(BlueprintCallable)
+	void Iterate(const FJOTIterator& Iterator) const;
+	
 	void operator+=(const AActor* const Actor) {Add(Actor);};// because i can
 
 protected:
@@ -82,5 +89,5 @@ protected:
 	UPool* Pool = nullptr;
 
 	FVector Center;
-	uint8 ActorsMax = 4;
+	uint8 ActorsMax = 2;
 };
