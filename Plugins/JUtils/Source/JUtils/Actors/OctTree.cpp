@@ -47,10 +47,9 @@ void AOTNode::SetBox(const FBox& InBox) {
 
 void AOTNode::SetSubsBox() {
 	const int32 Num = Subs.Num();
-
-	FVector C, E, HE, Max, HE2;
+	FVector C, E, Max, NE;
 	Box.GetCenterAndExtents(C, E);
-	HE = E/2;
+	const FVector HE = E/2; // unless extents are already divided :smartmeme:
 	// surely ill need it to update the bounds if i ever do implement that
 	for (uint8 i=0; i<Num; ++i) {
 		AOTNode* const S = Subs[i];
@@ -59,31 +58,31 @@ void AOTNode::SetSubsBox() {
 		
 		// im gonna use min as C for all of them so what? i hope ue will normalize my lame-ness. whats min and max in 3d anyway?
 		// im sure itll bite me
-		HE2 = HE;
-		if (i==0) {// will it blendL??
+		NE = E;
+		if (i==0) { // "let's start from the top"
 		} else if (i==1) {
-			HE2.X = -HE2.X;
+			NE.X = -NE.X;
 		} else if (i==2) {
-			HE2.Y = -HE2.Y;
+			NE.Y = -NE.Y;
 		} else if (i==3) {
-			HE2.Z = -HE2.Z;
+			NE.Z = -NE.Z;
 		} else if (i==4) {
-			HE2.X = -HE2.X; // this can be optimized but i dont feel like now. apollo-gies
-			HE2.Y = -HE2.Y; // this can be optimized but i dont feel like now. apollo-gies
+			NE.X = -NE.X; // this can be optimized but i dont feel like now. apollo-gies
+			NE.Y = -NE.Y; // this can be optimized but i dont feel like now. apollo-gies
 		} else if (i==5) {
-			HE2.X = -HE2.X;
-			HE2.Z = -HE2.Z;
+			NE.X = -NE.X;
+			NE.Z = -NE.Z;
 		} else if (i==6) {
-			HE2.Y = -HE2.Y;
-			HE2.Z = -HE2.Z;
+			NE.Y = -NE.Y;
+			NE.Z = -NE.Z;
 		} else if (i==7) {
-			HE2.X = -HE2.X;
-			HE2.Y = -HE2.Y;
-			HE2.Z = -HE2.Z;
+			NE.X = -NE.X;
+			NE.Y = -NE.Y;
+			NE.Z = -NE.Z;
 		}
 		// without thinking it too much. it fits....
-		Max = C+HE2;
-		S->SetBox(FBox(C, Max)); // "let's start from the top"
+		Max = C+NE; // i think this is not working
+		S->SetBox(FBox(C, Max));
 			// ez
 	}
 	// let's assume we have what we need
