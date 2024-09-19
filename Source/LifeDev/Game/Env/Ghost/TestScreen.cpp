@@ -19,6 +19,10 @@ void ATestScreen::Tick(float DeltaSeconds) {
 	// View->UnscaledViewRect;
 	// GetViewportScreenShot(ViewportClient, Bmp, ViewportClient->)
 	// https://github.com:EpicGames/UnrealEngine/blob/5.4/Engine/Plugins/AI/MLAdapter/Source/MLAdapter/Private/Sensors/MLAdapterSensor_Camera.cpp#L159-L159
+	// GetHighResScreenshotConfig().SetResolution(width, height, 200.f);
+	// GetHighResScreenshotConfig().FilenameOverride = fileFullpath = FPaths::ProjectDir() / TEXT(“Snapshots”) / fileName;
+	// FScreenshotRequest::RequestScreenshot(false);
+	// https://forums.unrealengine.com/t/how-to-take-high-res-screenshots-shipping-builds/441246/5?u=nande	
 	FScreenshotRequest::RequestScreenshot(false);
 }
 
