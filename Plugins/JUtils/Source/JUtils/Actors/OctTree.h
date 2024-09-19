@@ -1,0 +1,50 @@
+// Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
+
+#pragma once
+
+#include "OctTree.generated.h"
+
+class UPool;
+
+UCLASS(Blueprintable)
+class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
+	GENERATED_BODY()
+public:
+	AOTNode();
+	void AddActor(const AActor* const Actor);
+	virtual void Reset() override;
+	void Return();
+
+protected:
+	UPROPERTY(Transient)
+	TArray<AOTNode*> Subs; // children is already defined and has different meaning
+	UPROPERTY(Transient)
+	TArray<AActor*> Actors;
+	UPROPERTY(Transient)
+	FVector CornerA;
+	UPROPERTY(Transient)
+	FVector CornerB;
+};
+
+// test. octree
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils), meta=(BlueprintSpawnableComponent))
+class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
+	GENERATED_BODY()
+
+public:
+	AOctTree();
+
+	void AddActor(const AActor* const Actor);
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UPROPERTY(Transient)
+	AOTNode* RootNode = nullptr;
+	UPROPERTY(Transient)
+	UPool* Pool = nullptr;
+
+	FVector Center;
+	uint8 MaxActors = 4;
+};
