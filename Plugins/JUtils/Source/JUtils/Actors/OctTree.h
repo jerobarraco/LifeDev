@@ -14,11 +14,11 @@ public:
 	AOTNode();
 	void Add(const AActor* const Actor);
 	void AddToSub(const AActor* const Actor);
-	void SetBounds(const FVector& InCornerA, const FVector& InCornerB);
-	void Contains(const AActor* Actor){};
-	AOTNode* SubForActor(const AActor* const Actor);
+	void SetBox(const FBox& InBox);
 	void PushToSubs();
 	void Split();
+	AOTNode* SubForActor(const AActor* const Actor);
+	bool Contains(const AActor* const Actor) const;
 	
 	virtual void Reset() override;
 	void Empty();
@@ -33,9 +33,7 @@ protected:
 	UPROPERTY(Transient)
 	TArray<const AActor*> Actors;
 	UPROPERTY(Transient)
-	FVector CornerA;
-	UPROPERTY(Transient)
-	FVector CornerB;
+	FBox Box;
 
 	uint8 ActorsMax = 5; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
 	friend class AOctTree;
@@ -50,7 +48,7 @@ public:
 	AOctTree();
 
 	void AddActor(const AActor* const Actor);
-	void SetBounds(const FVector& CornerA, const FVector& CornerB);
+	void SetBox(const FBox& InBox);
 
 protected:
 	virtual void BeginPlay() override;

@@ -34,30 +34,33 @@ void AOTNode::AddToSub(const AActor* const Actor) {
 	// TODO cmp position with subs
 }
 
+void AOTNode::SetBox(const FBox& InBox) {
+	if (Actors.Num()>0)
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
+	Box = InBox;
+	// TODO error if it's already set
+	// TODO implement reflow.
+	// why bother. this is not meant to be optimal yet
+}
+
 // Center = (PointB-PointA)/2 + PointA
 // or Lerp(PointA, PointB, 0.5) ror 
 	// logic for adding to a subobject
 	// oh christ.. i will need teh center after all
 
-
-void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
-	// TODO error if it's already set
-	CornerA = InCornerA;
-	CornerB = InCornerB;
-	if (Actors.Num()>0)
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
-	// TODO implement reflow.
-}
-
 AOTNode* AOTNode::SubForActor(const AActor* const Actor) {
 	for (AOTNode* const S: Subs) {
-		if (!S) continue;
-		S->Contains(Actor);
-		return S;
+		if (IsValid(S) && S->Contains(Actor)) return S;
 	}
 
 	UE_LOG(LogJOctTree, Warning, TEXT("%hs Could not find it"), __func__);
 	return nullptr;
+}
+
+bool AOTNode::Contains(const AActor* const Actor) const {
+	if (!IsValid(Actor)) return false; // seems too little for a func, but im sure ill use it later on.
+	const FVector& AT = Actor->GetActorLocation();
+	return Box.IsInsideOrOn(AT);
 }
 
 void AOTNode::PushToSubs() {
@@ -144,13 +147,13 @@ void AOctTree::AddActor(const AActor* const Actor) {
 	RootNode->Add(Actor);
 }
 
-void AOctTree::SetBounds(const FVector& CornerA, const FVector& CornerB) {
+void AOctTree::SetBox(const FBox& InBox) {
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
 		return;
 	}
 
-	RootNode->SetBounds(CornerA, CornerB);
+	RootNode->SetBox(InBox);
 }
 
 void AOctTree::BeginPlay() {
