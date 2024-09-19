@@ -7,6 +7,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
+// im pulling the algo out of my ... hat.
+
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.SetTickFunctionEnable(false);
@@ -15,15 +17,23 @@ AOTNode::AOTNode() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOTNode::AddActor(const AActor* const Actor) {}
+void AOTNode::AddActor(const AActor* const Actor) {
+	// TODO test bounds and reject the rejected
+	if (Actors.Num()<ActorsMax) {
+		Actors.Add(Actor);
+		return;
+	}
+
+	
+}
 
 void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
 	// TODO error if it's already set
 	CornerA = InCornerA;
 	CornerB = InCornerB;
 	if (Actors.Num()>0)
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."));
-	// TODO implement reflow
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
+	// TODO implement reflow.
 }
 
 void AOTNode::Reset() {
@@ -38,6 +48,7 @@ void AOTNode::Empty() {
 	Subs.Empty();
 	Actors.Empty();
 }
+
 
 void AOTNode::Return() {
 	UPooler* const Pooler = UPooler::Instance(this);
@@ -92,6 +103,8 @@ void AOctTree::BeginPlay() {
 
 	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 10);
 	RootNode = Cast<AOTNode>(Pool->Get());
+	if (!RootNode) return;
+	RootNode->ActorsMax = ActorsMax;
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {

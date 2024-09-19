@@ -19,19 +19,21 @@ public:
 	void Empty();
 	void Return();
 
+	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Subs; // children is already defined and has different meaning
 	UPROPERTY(Transient)
-	TArray<AActor*> Actors;
+	TArray<const AActor*> Actors;
 	UPROPERTY(Transient)
 	FVector CornerA;
 	UPROPERTY(Transient)
 	FVector CornerB;
 
-	friend class AOTNode;
+	uint8 ActorsMax = 5; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
+	friend class AOctTree;
 };
 
 // test. octree
@@ -55,5 +57,5 @@ protected:
 	UPool* Pool = nullptr;
 
 	FVector Center;
-	uint8 MaxActors = 4;
+	uint8 ActorsMax = 4;
 };
