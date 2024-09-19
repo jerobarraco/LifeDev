@@ -64,6 +64,15 @@ void AOctTree::AddActor(const AActor* const Actor) {
 	RootNode->AddActor(Actor);
 }
 
+void AOctTree::SetBounds(const FVector& CornerA, const FVector& CornerB) {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
+		return;
+	}
+
+	RootNode->SetBounds(CornerA, CornerB);
+}
+
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
