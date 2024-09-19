@@ -16,7 +16,15 @@ AOTNode::AOTNode() {
 }
 
 void AOTNode::AddActor(const AActor* const Actor) {}
-void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {}
+
+void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
+	// TODO error if it's already set
+	CornerA = InCornerA;
+	CornerB = InCornerB;
+	if (Actors.Num()>0)
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."));
+	// TODO implement reflow
+}
 
 void AOTNode::Reset() {
 	Super::Reset();
