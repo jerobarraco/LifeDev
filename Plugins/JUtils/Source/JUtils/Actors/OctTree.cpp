@@ -147,7 +147,7 @@ AOctTree::AOctTree(): Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOctTree::AddActor(const AActor* const Actor) {
+void AOctTree::Add(const AActor* const Actor) {
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
 		return;

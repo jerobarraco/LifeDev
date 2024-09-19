@@ -14,6 +14,8 @@ public:
 	AOTNode();
 	UFUNCTION(BlueprintCallable)
 	void Add(const AActor* const Actor);
+	void operator+=(const AActor* const Actor) {Add(Actor);};// because i can
+
 	UFUNCTION(BlueprintCallable)
 	void AddToSub(const AActor* const Actor);
 	UFUNCTION(BlueprintCallable)
@@ -59,13 +61,15 @@ public:
 	AOctTree();
 
 	UFUNCTION(BlueprintCallable)
-	void AddActor(const AActor* const Actor);
+	void Add(const AActor* const Actor);
 
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
 	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
+	
+	void operator+=(const AActor* const Actor) {Add(Actor);};// because i can
 
 protected:
 	virtual void BeginPlay() override;
