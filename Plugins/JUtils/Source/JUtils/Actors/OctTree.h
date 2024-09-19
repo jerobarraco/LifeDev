@@ -40,6 +40,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	void SetBox(const FBox& InBox);
+	void SetSubsBox();
 
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Subs; // children is already defined and has different meaning
