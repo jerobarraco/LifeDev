@@ -12,8 +12,11 @@ class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 	GENERATED_BODY()
 public:
 	AOTNode();
-	void AddActor(const AActor* const Actor);
+	void Add(const AActor* const Actor);
+	void AddToSub(const AActor* const Actor);
 	void SetBounds(const FVector& InCornerA, const FVector& InCornerB);
+	void PushToSubs();
+	void Split();
 	
 	virtual void Reset() override;
 	void Empty();

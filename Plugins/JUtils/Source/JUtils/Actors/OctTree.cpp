@@ -17,15 +17,28 @@ AOTNode::AOTNode() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOTNode::AddActor(const AActor* const Actor) {
+void AOTNode::Add(const AActor* const Actor) {
 	// TODO test bounds and reject the rejected
-	if (Actors.Num()<ActorsMax) {
-		Actors.Add(Actor);
-		return;
+	// Dont store the actors in this instance if it's split already. wasting a tarray.
+	if (Subs.Num()==0) {
+		if (Actors.Num()<ActorsMax) {
+			Actors.Add(Actor);
+			return;
+		} else
+			Split();
 	}
-
-	
+	AddToSub(Actor);
 }
+
+void AOTNode::AddToSub(const AActor* const Actor) {
+	// TODO cmp position with subs
+}
+
+// Center = (PointB-PointA)/2 + PointA
+// or Lerp(PointA, PointB, 0.5) ror 
+	// logic for adding to a subobject
+	// oh christ.. i will need teh center after all
+
 
 void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
 	// TODO error if it's already set
@@ -36,8 +49,45 @@ void AOTNode::SetBounds(const FVector& InCornerA, const FVector& InCornerB) {
 	// TODO implement reflow.
 }
 
+void AOTNode::PushToSubs() {
+	// 2nd move the actors to subs
+	for (const AActor* A: Actors) {
+		// TODO get which sub
+		AOTNode* S =  nullptr; // crash ensured
+		S->Add(A);
+	}
+	Actors.Empty();
+}
+
+void AOTNode::Split() {
+	constexpr uint8 SubsNum = 8;
+	UPooler* const Pooler = UPooler::Instance(this);
+	UPool* const Pool = Pooler? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
+	if (!Pooler || !Pool) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
+		return;
+	}
+	
+	if (Subs.Num() < SubsNum) {
+		// WTF DEGENERATE CASE! but meh
+		// 1st create subs
+		while (Subs.Num()<SubsNum) {
+			AOTNode* const S = Cast<AOTNode>(Pool->Get());
+			if (!S) {
+				UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
+				return;
+			}
+			S->ActorsMax = ActorsMax;
+			Subs.Add(S);
+		}
+	}
+
+	PushToSubs();
+}
+
 void AOTNode::Reset() {
 	Super::Reset();
+	// Empty(); // should be empty from the return. 
 }
 
 void AOTNode::Empty() {
@@ -48,7 +98,6 @@ void AOTNode::Empty() {
 	Subs.Empty();
 	Actors.Empty();
 }
-
 
 void AOTNode::Return() {
 	UPooler* const Pooler = UPooler::Instance(this);
@@ -80,7 +129,7 @@ void AOctTree::AddActor(const AActor* const Actor) {
 		return;
 	}
 
-	RootNode->AddActor(Actor);
+	RootNode->Add(Actor);
 }
 
 void AOctTree::SetBounds(const FVector& CornerA, const FVector& CornerB) {
