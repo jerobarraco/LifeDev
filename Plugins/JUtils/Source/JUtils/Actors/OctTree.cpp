@@ -9,14 +9,17 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
+// TODO test function to "iterate", with a callback or predicate
+// // TODO change the delegate to return a bool for breaking the loop and pass the node .
+// TODO remove actor
+// // TODO collapse "unsplit" nodes
 // TODO query nodes based on position maybe distance?
+// // TODO Get all nodes in this box (use Box.Overlaps)
+// // TODO use a delegate like the iterator
 // TODO rebuild tree
 // TODO resize
 // TODO update tree based on actors changing.
 // // TODO start with a naive approach and update all of them
-// TODO add function to "iterate", with a callback or predicate
-// TODO remove actor
-// // TODO collapse "unsplit" nodes
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
