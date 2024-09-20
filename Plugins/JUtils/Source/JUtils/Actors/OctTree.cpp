@@ -25,7 +25,7 @@ bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	// clog rulz, ok.
 	const bool Inside = IsInside(Actor);
 	
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: a=%s notto=%s"), __func__, *GetNameSafe(Actor), *GetNameSafe(NotTo));
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s notto=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor), *GetNameSafe(NotTo));
 	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	/// ask dad for halp
 	if (!Inside) {
@@ -38,7 +38,7 @@ bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	if (Nodes.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
 			Actors.AddUnique(Actor);
-			return false;
+			return true;
 		}
 		Split();
 	}
@@ -386,8 +386,11 @@ bool AOctTree::Update(AActor* const Actor) {
 
 	if (N->IsInside(Actor)) return true;
 	if (!TryExtend(Actor)) return false;
+	
 	N->Actors.Remove(Actor);
-	const bool Updated3= RootNode->Add(Actor);
+	const bool Updated3 = RootNode->Add(Actor);
+	if (!Updated3)
+		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s %s"), __func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
 	// RootNode->Pack();
 	return Updated3;
 	
@@ -474,7 +477,7 @@ void AOctTree::BeginPlay() {
 		return;
 	}
 
-	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 10);
+	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 1);
 	RootNode = Cast<AOTNode>(Pool->Get());
 	if (!RootNode) return;
 	RootNode->SetUp(nullptr, ActorsMax);
@@ -536,6 +539,7 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Min.X = FMath::Min(PBox.Min.X, PBox.Max.X);
 		PBox.Min.Y = FMath::Min(PBox.Min.Y, PBox.Max.Y);
 		PBox.Min.Z = FMath::Min(PBox.Min.Z, PBox.Max.Z);
+		PBox.IsValid = 1;
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, *PBox.ToString());
 
 		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
