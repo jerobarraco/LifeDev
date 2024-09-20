@@ -16,9 +16,15 @@ class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 	GENERATED_BODY()
 public:
 	AOTNode();
+	
 	UFUNCTION(BlueprintCallable)
 	void Add(AActor* const Actor, AOTNode* NotTo=nullptr);
 	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
+
+	// not recursive. use contains to find the container
+	UFUNCTION(BlueprintCallable)
+	int32 Rem(AActor* const Actor);
+	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;

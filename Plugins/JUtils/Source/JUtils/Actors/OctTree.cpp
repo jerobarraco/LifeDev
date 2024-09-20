@@ -47,6 +47,10 @@ void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	AddToSub(Actor); //pass notto
 }
 
+int32 AOTNode::Rem(AActor* const Actor) {
+	return Actors.RemoveSwap(Actor, EAllowShrinking::No);
+}
+
 void AOTNode::AddToSub(AActor* const Actor) {
 	AOTNode* const S = NodeForActor(Actor);
 	if (!S) return; // already logged
