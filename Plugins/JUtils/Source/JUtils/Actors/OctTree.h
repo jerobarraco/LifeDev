@@ -85,6 +85,11 @@ public:
 	void Add(AActor* const Actor);
 	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
 
+	// removes from the tree. recursive
+	UFUNCTION(BlueprintCallable)
+	int32 Rem(AActor* const Actor);
+	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
+
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 

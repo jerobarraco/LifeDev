@@ -282,9 +282,24 @@ void AOctTree::Add(AActor* const Actor) {
 	RootNode->Add(Actor);
 }
 
+int32 AOctTree::Rem(AActor* const Actor) {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
+		return 0;
+	}
+
+	AOTNode* const N = RootNode->Contains(Actor);
+	if (!N) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. O=%s"), __func__, *GetNameSafe(Actor));
+		return 0;
+	}
+
+	return N->Rem(Actor);
+}
+
 void AOctTree::SetBox(const FBox& InBox) {
 	if (!RootNode) {
-		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
 
@@ -298,7 +313,7 @@ void AOctTree::DbgDraw() {
 
 void AOctTree::Iterate(const FJOTIterator& Iterator) const {
 	if (!RootNode) {
-		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
 
