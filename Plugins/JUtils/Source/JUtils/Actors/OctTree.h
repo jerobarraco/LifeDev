@@ -27,9 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
 
-	// returns true if it contains the actor
+	// returns the owning node if any
 	UFUNCTION(BlueprintCallable)
-	bool Contains(AActor* const Actor) const { return false;} // TODO
+	AOTNode* Find(AActor* const Actor) const;
 
 	// returns true when break
 	UFUNCTION(BlueprintCallable)

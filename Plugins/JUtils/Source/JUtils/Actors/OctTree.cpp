@@ -124,6 +124,15 @@ bool AOTNode::IsInside(AActor* const Actor) const {
 	return Box.IsInsideOrOn(AT);
 }
 
+AOTNode* AOTNode::Find(AActor* const Actor) const {
+	for (AActor* const A: Actors) {
+		// i think this is a valid case. the func itself is const.
+		if (A == Actor) return const_cast<AOTNode*>(this);
+	}
+
+	return nullptr;
+}
+
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
 	for (AActor* const A: Actors) {
