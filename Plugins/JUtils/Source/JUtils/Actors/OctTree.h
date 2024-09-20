@@ -23,7 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Split();
 	UFUNCTION(BlueprintCallable)
-	AOTNode* SubForActor(AActor* const Actor);
+	AOTNode* NodeForActor(AActor* const Actor);
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
 
@@ -53,7 +53,7 @@ protected:
 	void PushToSubs();
 	
 	UPROPERTY(Transient)
-	TArray<AOTNode*> Subs; // children is already defined and has different meaning
+	TArray<AOTNode*> Nodes; // children is already defined and has different meaning
 	UPROPERTY(Transient)
 	TArray<AActor*> Actors;
 	UPROPERTY(Transient)

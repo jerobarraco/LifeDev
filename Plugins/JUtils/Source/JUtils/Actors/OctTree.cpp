@@ -9,8 +9,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO test function to "iterate", with a callback or predicate
-// // TODO change the delegate to return a bool for breaking the loop and pass the node .
 // TODO remove actor
 // // TODO collapse "unsplit" nodes
 // TODO query nodes based on position maybe distance?
@@ -34,7 +32,7 @@ void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	// clog rulz, ok.
 	UE_CLOG(!IsInside(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	// Dont store the actors in this instance if it's split already. wasting a tarray.
-	if (Subs.Num()==0) {
+	if (Nodes.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
 			Actors.Add(Actor);
 			return;
@@ -46,7 +44,7 @@ void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 }
 
 void AOTNode::AddToSub(AActor* const Actor) {
-	AOTNode* const S = SubForActor(Actor);
+	AOTNode* const S = NodeForActor(Actor);
 	if (!S) return; // already logged
 	S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
@@ -61,12 +59,12 @@ void AOTNode::SetBox(const FBox& InBox) {
 }
 
 void AOTNode::SetSubsBox() {
-	const int32 Num = Subs.Num();
+	const int32 Num = Nodes.Num();
 	FVector C, E, Max, NE, Min;
 	Box.GetCenterAndExtents(C, E);
 	// surely ill need it to update the bounds if i ever do implement that
 	for (uint8 i=0; i<Num; ++i) {
-		AOTNode* const S = Subs[i];
+		AOTNode* const S = Nodes[i];
 		if (!IsValid(S)) continue;
 		// maybe there's an optimal way to do this. sorry
 		
@@ -93,9 +91,9 @@ void AOTNode::SetSubsBox() {
 			NE.X = -NE.X;
 			NE.Y = -NE.Y;
 			NE.Z = -NE.Z;
-		}
-		// without thinking it too much, it fits....
-		const FVector B = C+NE; // this basic math above might be throwing the contains out
+		}// without thinking it too much, it fits....
+		
+		const FVector B = C+NE;
 		// this sucks but it's incredibly important, or the "contains" function will fail.
 		// TODO En-better this.
 		Min.X = FMath::Min(C.X, B.X);
@@ -109,8 +107,8 @@ void AOTNode::SetSubsBox() {
 	}
 }
 
-AOTNode* AOTNode::SubForActor(AActor* const Actor) {
-	for (AOTNode* const S: Subs) {
+AOTNode* AOTNode::NodeForActor(AActor* const Actor) {
+	for (AOTNode* const S: Nodes) {
 		if (IsValid(S) && S->IsInside(Actor)) return S;
 	}
 
@@ -128,6 +126,13 @@ AOTNode* AOTNode::Find(AActor* const Actor) const {
 	for (AActor* const A: Actors) {
 		// i think this is a valid case. the func itself is const.
 		if (A == Actor) return const_cast<AOTNode*>(this);
+	}
+
+	for (AOTNode* const N: Nodes) {
+		if (!IsValid(N)) continue; // wtf?
+
+		AOTNode* const R = N->Find(Actor);
+		if (R) return R;
 	}
 
 	return nullptr;
@@ -153,14 +158,14 @@ void AOTNode::Split() {
 	bool Moded = false;
 	// WTF DEGENERATE CASE! but meh
 	// 1st create subs
-	while (Subs.Num()<SubsNum) {
+	while (Nodes.Num()<SubsNum) {
 		AOTNode* const S = Cast<AOTNode>(Pool->Get());
 		if (!S) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
 			return;
 		}
 		S->ActorsMax = ActorsMax;
-		Subs.Add(S);
+		Nodes.Add(S);
 		Moded = true;
 	}
 	if (Moded)
@@ -175,11 +180,11 @@ void AOTNode::Reset() {
 }
 
 void AOTNode::Empty() {
-	for (AOTNode* const S:Subs) {
+	for (AOTNode* const S:Nodes) {
 		if (!S) continue;
 		S->Return();
 	}
-	Subs.Empty();
+	Nodes.Empty();
 	Actors.Empty();
 }
 
@@ -203,7 +208,7 @@ void AOTNode::DbgDraw() {
 		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 5, FColor::Yellow, false, 1, 0);
 	}
 
-	for (AOTNode* const S: Subs) {
+	for (AOTNode* const S: Nodes) {
 		if (!IsValid(S)) continue;
 		S->DbgDraw();
 	}
@@ -215,7 +220,7 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 		if (!Iterator.IsBound() || Iterator.Execute(A, this)) return true;
 	}
 
-	for (AOTNode* const S: Subs) {
+	for (AOTNode* const S: Nodes) {
 		if (S->Iterate(Iterator)) return true;
 	}
 
