@@ -17,16 +17,13 @@ public:
 	AOTNode();
 	
 	UFUNCTION(BlueprintCallable)
-	bool Add(AActor* const Actor, AOTNode* NotTo=nullptr);
+	bool Add(AActor* const Actor);
 	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
 
 	// not recursive. use contains to find the container
 	UFUNCTION(BlueprintCallable)
 	int32 Rem(AActor* const Actor);
 	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
-
-	UFUNCTION(BlueprintCallable)
-	bool Update(AActor* Actor);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
@@ -38,7 +35,7 @@ public:
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
 	bool Iterate(const FJOTIterator& Iterator);
-	// returns true when break. iterate through actors inside a box.
+	// returns true when you want to break. iterate through actors inside a box.
 	UFUNCTION(BlueprintCallable)
 	bool IterateInside(const FJOTIterator& Iterator, const FBox& Box);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
@@ -51,9 +48,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;
 	
-	void SetUp(AOTNode* const InParent = nullptr, const int32 ActorsMax = 10);
+	void SetUp(const int32 ActorsMax = 10);
 	AOTNode* NodeForActor(AActor* const Actor, AOTNode* const NotOn=nullptr);
-	void AddToParent(AActor* const Actor);
 	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
@@ -69,8 +65,6 @@ protected:
 	
 	UPROPERTY(Transient)
 	FBox Box;
-	UPROPERTY(Transient)
-	AOTNode* Parent = nullptr;
 
 	uint8 ActorsMax = 1; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
 	friend class AOctTree;

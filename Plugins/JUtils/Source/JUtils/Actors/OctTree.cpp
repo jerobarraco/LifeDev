@@ -19,18 +19,18 @@ AOTNode::AOTNode() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
+bool AOTNode::Add(AActor* const Actor) {
 	// does not check for isvalid. that is checked by the tree. little, bit of ... optimization.
 	// the tree is justifying its existence...
 	// clog rulz, ok.
 	const bool Inside = IsInside(Actor);
 	
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s notto=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor), *GetNameSafe(NotTo));
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
 	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	/// ask dad for halp
 	if (!Inside) {
-		AddToParent(Actor);
-		return true; // assume handled. avoid loops.
+		Actors.Add(Actor); // patch?
+		return false;
 	}
 
 	/// add to self
@@ -44,7 +44,7 @@ bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	}
 
 	/// add to sub. This might loop. but add to sub checks for inside before calling add
-	return AddToSub(Actor, NotTo);
+	return AddToSub(Actor);
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
@@ -62,6 +62,7 @@ void AOTNode::SetBox(const FBox& InBox) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
 	// why bother. this is not meant to be optimal yet
 	Box = InBox;
+	Box.IsValid = true;
 }
 
 void AOTNode::SetSubsBox() {
@@ -122,33 +123,6 @@ AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
 	return nullptr;
 }
 
-void AOTNode::AddToParent(AActor* const Actor) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: a=%s"), __func__, *GetNameSafe(Actor));
-	
-	// ret void to avoid loops
-	if (!Parent) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
-				__func__, *GetNameSafe(this));
-		return;
-	}
-
-	Parent->Add(Actor, this);
-}
-
-bool AOTNode::Update(AActor* Actor) {
-	// can be called directly from bp, through contains
-	if (!IsValid(Actor)) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
-		return false;
-	}
-
-	// opt: not calling Add(Actor) to avoid removing and re-adding in vain 
-	if (IsInside(Actor)) return true; // nothing to do.
-	Actors.Remove(Actor); // disown
-	AddToParent(Actor);
-	return true; // assume handled. avoid loops.
-}
-
 bool AOTNode::IsInside(AActor* const Actor) const {
 	// seems too little for a func, but im sure ill use it later on.
 	if (!IsValid(Actor)) return false; // can be called from outside
@@ -198,7 +172,7 @@ void AOTNode::Split() {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
 			return; // no infinite loops plz
 		}
-		S->SetUp(this, ActorsMax);
+		S->SetUp(ActorsMax);
 		Nodes.Add(S);
 		Moded = true;
 	}
@@ -213,8 +187,7 @@ void AOTNode::Reset() {
 	// Empty(); // should be empty from the return. 
 }
 
-void AOTNode::SetUp(AOTNode* const InParent, const int32 Max) {
-	Parent = InParent;
+void AOTNode::SetUp(const int32 Max) {
 	ActorsMax = Max;
 	Actors.Reserve(Max);
 }
@@ -239,7 +212,6 @@ void AOTNode::Return(bool ReturnSubs) {
 	}
 
 	Empty(ReturnSubs);
-	Parent = nullptr;
 	Pooler->Return(this);
 }
 
@@ -388,14 +360,10 @@ bool AOctTree::Update(AActor* const Actor) {
 	if (!TryExtend(Actor)) return false;
 	
 	N->Actors.Remove(Actor);
-	const bool Updated3 = RootNode->Add(Actor);
-	if (!Updated3)
+	const bool Updated = RootNode->Add(Actor);
+	if (!Updated)
 		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s %s"), __func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
 	// RootNode->Pack();
-	return Updated3;
-	
-	const bool Updated = N->Update(Actor); // this checks for is valid
-	if (Updated) RootNode->Pack();
 	return Updated;
 }
 
@@ -480,7 +448,7 @@ void AOctTree::BeginPlay() {
 	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 1);
 	RootNode = Cast<AOTNode>(Pool->Get());
 	if (!RootNode) return;
-	RootNode->SetUp(nullptr, ActorsMax);
+	RootNode->SetUp(ActorsMax);
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -565,10 +533,6 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		// clone it // TODO move to node
 		NCloser->Actors = RootNode->Actors;
 		NCloser->Nodes = RootNode->Nodes;
-		for (AOTNode* const NN: NCloser->Nodes) {
-			if (!NN) continue;
-			NN->Parent = NCloser;
-		}
 		RootNode->Return(false); // we stole them
 		RootNode = NewRoot;
 	}
