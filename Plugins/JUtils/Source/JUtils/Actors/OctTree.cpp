@@ -16,8 +16,12 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 // // TODO use a delegate like the iterator
 // TODO rebuild tree
 // TODO resize
+// TODO pack
 // TODO update tree based on actors changing.
 // // TODO start with a naive approach and update all of them
+// TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
+// TODO pass parent to children
+// TODO can be optimized with a FRingBuffer
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -215,16 +219,41 @@ void AOTNode::DbgDraw() {
 }
 
 bool AOTNode::Iterate(const FJOTIterator& Iterator) {
-	// TODO test
-	for (AActor* const A: Actors) {
-		if (!Iterator.IsBound() || Iterator.Execute(A, this)) return true;
-	}
+	if (!Iterator.IsBound()) return true;
+	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
 
-	for (AOTNode* const S: Nodes) {
+	for (AActor* const A: Actors)
+		if (Iterator.Execute(A, this)) return true;
+
+	for (AOTNode* const S: Nodes)
 		if (S->Iterate(Iterator)) return true;
-	}
 
 	return false;
+}
+
+bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
+	if (!Iterator.IsBound()) return true;
+	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	const FBox Overlap = Box.Overlap(InBox);
+	if (Overlap.GetVolume()<=0) {
+		UE_LOG(LogJOctTree, Log, TEXT("%hs doesn't overlap Over=%s node=%s"),
+			__func__, *Overlap.ToString(), *GetNameSafe(this));
+		return false; // don´t break.
+	}
+
+	// i could reuse iterate with my own predicate but it will add overhead and itś not that much code.
+	// also the sub calling is different.
+	// TODO getactorlocation could be memoized
+	// // TODO make a memoizer??
+	for (AActor* const A: Actors) {
+		// if the actor is in it, will execute the iterator. and if the iterator breaks. then break.
+		if (IsValid(A) && InBox.IsInsideOrOn(A->GetActorLocation()) && Iterator.Execute(A, this)) return true;
+	}
+
+	for (AOTNode* const S: Nodes)
+		if (IsValid(S) && S->IterateInside(Iterator, InBox)) return true; // bubble break
+
+	return false; // continue the iteration
 }
 
 void AOTNode::EndPlay(const EEndPlayReason::Type EndPlayReason) {

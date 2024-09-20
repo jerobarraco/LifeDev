@@ -19,21 +19,20 @@ public:
 	void Add(AActor* const Actor, AOTNode* NotTo=nullptr);
 	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
 
-
-	UFUNCTION(BlueprintCallable)
-	void Split();
-	UFUNCTION(BlueprintCallable)
-	AOTNode* NodeForActor(AActor* const Actor);
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
 
-	// returns the owning node if any
+	// returns the owning node if any. also works as "contains"
 	UFUNCTION(BlueprintCallable)
 	AOTNode* Find(AActor* const Actor) const;
 
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
 	bool Iterate(const FJOTIterator& Iterator);
+	
+	// returns true when break
+	UFUNCTION(BlueprintCallable)
+	bool IterateInside(const FJOTIterator& Iterator, const FBox& Box);
 	
 	virtual void Reset() override;
 	UFUNCTION(BlueprintCallable)
@@ -47,6 +46,8 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	AOTNode* NodeForActor(AActor* const Actor);
+	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
 	void AddToSub(AActor* const Actor);
@@ -58,6 +59,8 @@ protected:
 	TArray<AActor*> Actors;
 	UPROPERTY(Transient)
 	FBox Box;
+	UPROPERTY(Transient)
+	class AOTNode* Parent = nullptr; // TODO
 
 	uint8 ActorsMax = 1; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
 	friend class AOctTree;
@@ -71,22 +74,26 @@ class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
 public:
 	AOctTree();
 
+	// TODO maybe remove this interface and just let them access the root.
+
 	UFUNCTION(BlueprintCallable)
 	void Add(AActor* const Actor);
+	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
 
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
-	UFUNCTION(BlueprintCallable, BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 	
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
-	UFUNCTION(BlueprintCallable, BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	void Print();
 
-	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -95,9 +102,9 @@ protected:
 	UFUNCTION()
 	bool PrintIter(AActor* const A, AOTNode* const Node);
 	
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
-	UPROPERTY(Transient)
+	UPROPERTY(Transient) // cache
 	UPool* Pool = nullptr;
 
 	uint8 ActorsMax = 2;
