@@ -221,7 +221,7 @@ void AOTNode::DbgDraw() {
 
 bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	if (!Iterator.IsBound()) return true;
-	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJOctTree, Log, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 
 	for (AActor* const A: Actors)
 		if (Iterator.Execute(A, this)) return true;
@@ -234,7 +234,7 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 
 bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 	if (!Iterator.IsBound()) return true;
-	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJOctTree, Log, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 	const FBox Overlap = Box.Overlap(InBox);
 	if (Overlap.GetVolume()<=0) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs doesn't overlap Over=%s node=%s"),
@@ -269,11 +269,15 @@ AOctTree::AOctTree(): Super() {
 }
 
 void AOctTree::Add(AActor* const Actor) {
+	UE_LOG(LogJOctTree, Warning, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
-	if (!IsValid(Actor)) return;
+	if (!IsValid(Actor)) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
+		return;
+	}
 
 	RootNode->Add(Actor);
 }
@@ -339,10 +343,15 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 
 	while (Nodes.Num()>0) {
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
+		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
 		if (!N) continue;
-		Nodes.Append(N->Nodes);
+		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 
 		for (AActor* const A: N->Actors) Add(A);
+		N->Actors.Empty();
+
+		Nodes.Append(N->Nodes);
+		N->Nodes.Empty(); // we stole them. return will return them otherwise
 		N->Return();
 	}
 }
