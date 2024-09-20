@@ -38,11 +38,12 @@ public:
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
 	bool Iterate(const FJOTIterator& Iterator);
-	
-	// returns true when break
+	// returns true when break. iterate through actors inside a box.
 	UFUNCTION(BlueprintCallable)
 	bool IterateInside(const FJOTIterator& Iterator, const FBox& Box);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
+	void Pack();
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
@@ -106,10 +107,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
+	void Pack();
 	
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, CallInEditor)
 	void Print();
 
 	UFUNCTION(BlueprintCallable)

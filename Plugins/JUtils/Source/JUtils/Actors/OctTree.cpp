@@ -9,11 +9,11 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO update tree based on actors changing.
-
-// TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
-// TODO resize
+// TODO fix update tree, tree based on actors changing.
 // TODO pack nodes
+// TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
+
+// TODO resize
 // // TODO collapse "unsplit" nodes
 
 AOTNode::AOTNode() {
@@ -289,6 +289,36 @@ bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 	return false; // continue the iteration
 }
 
+void AOTNode::Pack() {
+	bool Can = true;
+	for (int32 i = Nodes.Num()-1; i>=0;--i) {
+		AOTNode* const N = Nodes[i];
+		if (!N) {
+			Nodes.RemoveAt(i, EAllowShrinking::No);
+			continue;
+		}
+
+		N->Pack();
+		Can = N->Nodes.Num() ==0;
+	}
+
+	if (!Can) return;
+
+	int32 NumChilds=0;
+	for (AOTNode* const N: Nodes) {
+		NumChilds +=N->Actors.Num();
+	}
+
+	if (NumChilds>=ActorsMax) return;
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
+	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
+		Actors.Append(N->Actors);
+		N->Actors.Empty(N->ActorsMax); // for the next time
+		N->Return();
+	}
+	Nodes.Empty(8);
+}
+
 void AOTNode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Empty();
 	Super::EndPlay(EndPlayReason);
@@ -346,7 +376,9 @@ bool AOctTree::Update(AActor* const Actor) {
 		return false;
 	}
 
-	return N->Update(Actor); // this checks for is valid
+	const bool Updated = N->Update(Actor); // this checks for is valid
+	if (Updated) RootNode->Pack();
+	return Updated;
 }
 
 void AOctTree::SetBox(const FBox& InBox) {
@@ -361,6 +393,16 @@ void AOctTree::SetBox(const FBox& InBox) {
 void AOctTree::DbgDraw() {
 	if (!RootNode) return;
 	RootNode->DbgDraw();
+}
+
+void AOctTree::Pack() {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
+		return;
+	}
+
+	RootNode->Pack();
 }
 
 void AOctTree::Iterate(const FJOTIterator& Iterator) const {
@@ -385,6 +427,7 @@ void AOctTree::RebuildSameBox() {
 }
 
 void AOctTree::Rebuild(const FBox& NewBox) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs B=%s"), __func__, *NewBox.ToString());
 	if (!RootNode) return; // TODO error
 	if (!Pool) return;
 	
@@ -440,6 +483,7 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 }
 
 void AOctTree::TryExtend(AActor* Actor) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode || !Actor) return;
 	if (RootNode->IsInside(Actor)) return;
 
