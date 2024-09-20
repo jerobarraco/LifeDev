@@ -211,7 +211,8 @@ void AOTNode::Empty(const bool ReturnSubs) {
 	Actors.Empty(ActorsMax); // lol
 }
 
-void AOTNode::Return(bool ReturnSubs) {
+void AOTNode::Return(const bool ReturnSubs) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
 	UPooler* const Pooler = UPooler::Instance(this);
 	if (!Pooler) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
@@ -274,31 +275,25 @@ bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 }
 
 void AOTNode::Pack() {
+	if (Nodes.Num()==0) return;
+
 	bool Can = true;
-	for (int32 i = Nodes.Num()-1; i>=0;--i) {
-		AOTNode* const N = Nodes[i];
-		if (!N) {
-			Nodes.RemoveAt(i, EAllowShrinking::No);
-			continue;
-		}
-
-		N->Pack();
-		Can = N->Nodes.Num() ==0;
-	}
-
-	if (!Can) return;
-
 	int32 NumChilds=0;
-	for (AOTNode* const N: Nodes) {
-		NumChilds +=N->Actors.Num();
+	while(Nodes.Num()>0) {
+		AOTNode* const Node = Nodes.Pop(EAllowShrinking::No);
+		if (!Node) continue;
+		Node->Pack();
+		Can = Node->Nodes.Num() == 0;
+		NumChilds += Node->Actors.Num();
 	}
-
-	if (NumChilds>=ActorsMax) return;
+	
+	if (!Can || NumChilds>=ActorsMax) return;
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
 	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
 		Actors.Append(N->Actors);
-		N->Actors.Empty(N->ActorsMax); // for the next time
-		N->Return();
+		
+		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Log, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
+		N->Return(true);
 	}
 	Nodes.Empty(8);
 }
@@ -371,7 +366,7 @@ bool AOctTree::Update(AActor* const Actor) {
 	if (!Updated)
 		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt inser't the actor %s %s"),
 			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
-	// RootNode->Pack();
+	RootNode->Pack();
 	return Updated;
 }
 
