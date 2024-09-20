@@ -283,9 +283,11 @@ void AOTNode::Pack() {
 		AOTNode* const Node = Nodes.Pop(EAllowShrinking::No);
 		if (!Node) continue;
 		Node->Pack();
-		Can = Node->Nodes.Num() == 0;
+		Can = Can && Node->Nodes.Num() == 0;
 		NumChilds += Node->Actors.Num();
 	}
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
+		__func__, *GetNameSafe(this), Can, NumChilds);
 	
 	if (!Can || NumChilds>=ActorsMax) return;
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
