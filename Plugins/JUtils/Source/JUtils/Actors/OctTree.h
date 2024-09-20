@@ -15,7 +15,7 @@ class JUTILS_API AOTNode: public AInfo { // an actor so that it can be pooled.
 	GENERATED_BODY()
 public:
 	AOTNode();
-	
+
 	UFUNCTION(BlueprintCallable)
 	bool Add(AActor* const Actor);
 	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
@@ -49,13 +49,12 @@ protected:
 	virtual void Reset() override;
 	
 	void SetUp(const int32 ActorsMax = 10);
-	AOTNode* NodeForActor(AActor* const Actor);
-	AOTNode* ClosestNode(AActor* Actor);
-	void Split();
 	void SetBox(const FBox& InBox);
-	void SetSubsBox();
-	bool AddToSub(AActor* const Actor);
-	void PushToSubs();
+	void Split();
+	AOTNode* ClosestNode(const FVector& To);
+	void SetNodesBox();
+	bool AddToNodes(AActor* const Actor);
+	void PushToNodes();
 	void Empty(const bool ReturnSubs = true);
 	void Return(const bool ReturnSubs = true);
 

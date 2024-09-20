@@ -27,12 +27,10 @@ bool AOTNode::Add(AActor* const Actor) {
 	
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
 	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
-	/// ask dad for halp
-	if (!Inside) {
-		Actors.Add(Actor); // patch?
-		return false;
-	}
 
+	if (!IsValid(Actor)) return false;
+
+	// If it's not inside. we still proceed to insert it. why? because sometimes the box.isnside of a parent passes and the child misses.
 	/// add to self
 	// Don't store the actors in this instance if it's split already. wasting a tarray.
 	if (Nodes.Num()==0) {
@@ -44,16 +42,17 @@ bool AOTNode::Add(AActor* const Actor) {
 	}
 
 	/// add to sub. This might loop. but add to sub checks for inside before calling add
-	return AddToSub(Actor);
+	return AddToNodes(Actor);
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
 	return Actors.RemoveSwap(Actor, EAllowShrinking::No);
 }
 
-bool AOTNode::AddToSub(AActor* const Actor) {
+bool AOTNode::AddToNodes(AActor* const Actor) {
+	// using closest because sometimes the parent isinside passes but the sub doesnt.
 	// AOTNode* const S = NodeForActor(Actor); // this saves us the trouble of looping and crashing on Add
-	AOTNode* const S = ClosestNode(Actor); // this saves us the trouble of looping and crashing on Add
+	AOTNode* const S = ClosestNode(Actor->GetActorLocation()); // this saves us the trouble of looping and crashing on Add
 	if (!S) return false; // already logged
 	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
@@ -66,7 +65,7 @@ void AOTNode::SetBox(const FBox& InBox) {
 	Box.IsValid = true;
 }
 
-void AOTNode::SetSubsBox() {
+void AOTNode::SetNodesBox() {
 	const int32 Num = Nodes.Num();
 	FVector C, E, Max, NE, Min;
 	Box.GetCenterAndExtents(C, E);
@@ -115,29 +114,19 @@ void AOTNode::SetSubsBox() {
 	}
 }
 
-AOTNode* AOTNode::NodeForActor(AActor* const Actor) {
-	for (AOTNode* const N: Nodes) {
-		if (IsValid(N) && N->IsInside(Actor)) return N;
-	}
-
-	UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s Could not find it. a=%s "), __func__,
-		*GetNameSafe(this), *GetNameSafe(Actor));
-	return nullptr;
-}
-
-AOTNode* AOTNode::ClosestNode(AActor* const Actor) {
+AOTNode* AOTNode::ClosestNode(const FVector& To) {
 	AOTNode* Near = nullptr;
 	float MinDist = INFINITY;
 	for (AOTNode* const N: Nodes) {
 		if (!N) continue;
-		const float Dist = (Actor->GetActorLocation()-N->Box.GetCenter()).SizeSquared();
+		const float Dist = (To-N->Box.GetCenter()).SizeSquared();
 		if (MinDist>Dist) {
 			Near = N;
 			MinDist = Dist;
 		}
 	}
-	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. a=%s "), __func__,
-		*GetNameSafe(this), *GetNameSafe(Actor));
+	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. To=%s "), __func__,
+		*GetNameSafe(this), *To.ToString());
 	return Near;
 }
 
@@ -165,9 +154,9 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 	return nullptr;
 }
 
-void AOTNode::PushToSubs() {
+void AOTNode::PushToNodes() {
 	// 2nd move the actors to subs
-	for (AActor* const A: Actors) AddToSub(A); // this could trigger addtoParent though.
+	for (AActor* const A: Actors) AddToNodes(A); // this could trigger addtoParent though.
 	Actors.Empty(); // and these would get disowned.
 }
 
@@ -195,9 +184,9 @@ void AOTNode::Split() {
 		Moded = true;
 	}
 	if (Moded)
-		SetSubsBox();
+		SetNodesBox();
 
-	PushToSubs();
+	PushToNodes();
 }
 
 void AOTNode::Reset() {
@@ -380,7 +369,8 @@ bool AOctTree::Update(AActor* const Actor) {
 	N->Actors.Remove(Actor);
 	const bool Updated = RootNode->Add(Actor);
 	if (!Updated)
-		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s %s"), __func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
+		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt inser't the actor %s %s"),
+			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
 	// RootNode->Pack();
 	return Updated;
 }
@@ -525,28 +515,14 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Min.X = FMath::Min(PBox.Min.X, PBox.Max.X);
 		PBox.Min.Y = FMath::Min(PBox.Min.Y, PBox.Max.Y);
 		PBox.Min.Z = FMath::Min(PBox.Min.Z, PBox.Max.Z);
-		PBox.IsValid = 1;
+		PBox.IsValid = 1; // Because unreal, that's why.
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, *PBox.ToString());
 
 		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
 		
 		// this is a hack might not work well
-		AOTNode* NCloser = nullptr; // TODO move to node
-		float NDistMin = INFINITY;
-		for (AOTNode* N: NewRoot->Nodes) {
-			if (!N) continue;
-			const float Dist = (RCenter - N->Box.GetCenter()).SquaredLength();
-			if (NDistMin > Dist) {
-				NCloser = N;
-				NDistMin = Dist;
-			}
-		}
-
-		if (!NCloser) {
-			UE_LOG(LogJOctTree, Warning, TEXT("%hs loop=%i could not get the closest Node. stop."),
-				__func__, Loop);
-			return false;
-		}
+		AOTNode* const NCloser = NewRoot->ClosestNode(RCenter); 
+		if (!NCloser) return false;
 		
 		// clone it // TODO move to node
 		NCloser->Actors = RootNode->Actors;
