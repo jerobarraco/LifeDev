@@ -175,14 +175,14 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
-	for (AActor* const A: Actors) AddToSub(A);
-	Actors.Empty();
+	for (AActor* const A: Actors) AddToSub(A); // this could trigger addtoParent though.
+	Actors.Empty(); // and these would get disowned.
 }
 
 void AOTNode::Split() {
 	constexpr uint8 SubsNum = 8;
 	UPooler* const Pooler = UPooler::Instance(this);
-	UPool* const Pool = Pooler? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
+	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
 	if (!Pooler || !Pool) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
@@ -196,10 +196,9 @@ void AOTNode::Split() {
 		AOTNode* const S = Cast<AOTNode>(Pool->Get());
 		if (!S) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
-			return;
+			return; // no infinite loops plz
 		}
 		S->SetUp(this, ActorsMax);
-		S->ActorsMax = ActorsMax; // TODO create S->SetUp func,pass parent
 		Nodes.Add(S);
 		Moded = true;
 	}
@@ -508,15 +507,15 @@ bool AOctTree::TryExtend(AActor* Actor) {
 
 		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go
-		const FVector Center = RBox.GetCenter();
+		const FVector RCenter = RBox.GetCenter();
 		const FVector Ext = RBox.GetExtent();
 		const FVector APos = Actor->GetActorLocation();
-		const FVector Diff = APos - Center; // end-start
+		const FVector Diff = APos - RCenter; // end-start
 		const FVector Sign = Diff.GetSignVector();
 		// const bool BDir[] = {Dir.X>=0, Dir.Y>=0, Dir.Z>=0}; // i could optimize with bit manip
 		// this might work. or maybe is just nonsense
 		const FVector ExtS = Ext*Sign;
-		const FVector PCent = Center+ExtS;
+		const FVector PCent = RCenter+ExtS;
 		const FVector PExt = Ext*2;
 		const FVector PMax = PCent+PExt;
 		FBox& PBox = NewRoot->Box; // alias
@@ -529,25 +528,36 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Min.X = FMath::Min(PBox.Min.X, PBox.Max.X);
 		PBox.Min.Y = FMath::Min(PBox.Min.Y, PBox.Max.Y);
 		PBox.Min.Z = FMath::Min(PBox.Min.Z, PBox.Max.Z);
-		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, PBox.ToString());
+		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, *PBox.ToString());
 
 		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
 		
 		// this is a hack might not work well
-		for (AOTNode* N: NewRoot->Nodes) { // TODO this could be a function in the node
+		AOTNode* NCloser = nullptr; // TODO move to node
+		float NDistMin = INFINITY;
+		for (AOTNode* N: NewRoot->Nodes) {
 			if (!N) continue;
-			if (!N->Box.IsInside(RBox)) continue;
-			// the clone
-			N->Actors = RootNode->Actors;
-			N->Nodes = RootNode->Nodes;
-			for (AOTNode* NN: N->Nodes) {
-				if (!N) continue;
-				NN->Parent = N;
+			const float Dist = (RCenter - N->Box.GetCenter()).SquaredLength();
+			if (NDistMin > Dist) {
+				NCloser = N;
+				NDistMin = Dist;
 			}
-			RootNode->Return(false); // we stole them
-			break;
+		}
+
+		if (!NCloser) {
+			UE_LOG(LogJOctTree, Warning, TEXT("%hs loop=%i could not get the closest Node. stop."),
+				__func__, Loop);
+			return false;
 		}
 		
+		// clone it // TODO move to node
+		NCloser->Actors = RootNode->Actors;
+		NCloser->Nodes = RootNode->Nodes;
+		for (AOTNode* NN: NCloser->Nodes) {
+			if (!NN) continue;
+			NN->Parent = NCloser;
+		}
+		RootNode->Return(false); // we stole them
 		RootNode = NewRoot;
 	}
 
