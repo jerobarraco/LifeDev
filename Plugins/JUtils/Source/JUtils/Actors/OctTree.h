@@ -49,11 +49,12 @@ protected:
 	virtual void Reset() override;
 	
 	void SetUp(const int32 ActorsMax = 10);
-	AOTNode* NodeForActor(AActor* const Actor, AOTNode* const NotOn=nullptr);
+	AOTNode* NodeForActor(AActor* const Actor);
+	AOTNode* ClosestNode(AActor* Actor);
 	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
-	bool AddToSub(AActor* const Actor, AOTNode* const NotTo=nullptr);
+	bool AddToSub(AActor* const Actor);
 	void PushToSubs();
 	void Empty(const bool ReturnSubs = true);
 	void Return(const bool ReturnSubs = true);

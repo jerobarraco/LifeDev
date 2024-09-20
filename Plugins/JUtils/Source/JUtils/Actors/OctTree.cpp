@@ -51,8 +51,9 @@ int32 AOTNode::Rem(AActor* const Actor) {
 	return Actors.RemoveSwap(Actor, EAllowShrinking::No);
 }
 
-bool AOTNode::AddToSub(AActor* const Actor, AOTNode* const NotTo) {
-	AOTNode* const S = NodeForActor(Actor, NotTo); // this saves us the trouble of looping and crashing on Add
+bool AOTNode::AddToSub(AActor* const Actor) {
+	// AOTNode* const S = NodeForActor(Actor); // this saves us the trouble of looping and crashing on Add
+	AOTNode* const S = ClosestNode(Actor); // this saves us the trouble of looping and crashing on Add
 	if (!S) return false; // already logged
 	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
@@ -114,13 +115,30 @@ void AOTNode::SetSubsBox() {
 	}
 }
 
-AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
-	for (AOTNode* const S: Nodes) {
-		if (S != NotOn && IsValid(S) && S->IsInside(Actor)) return S;
+AOTNode* AOTNode::NodeForActor(AActor* const Actor) {
+	for (AOTNode* const N: Nodes) {
+		if (IsValid(N) && N->IsInside(Actor)) return N;
 	}
 
-	UE_LOG(LogJOctTree, Warning, TEXT("%hs Could not find it"), __func__);
+	UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s Could not find it. a=%s "), __func__,
+		*GetNameSafe(this), *GetNameSafe(Actor));
 	return nullptr;
+}
+
+AOTNode* AOTNode::ClosestNode(AActor* const Actor) {
+	AOTNode* Near = nullptr;
+	float MinDist = INFINITY;
+	for (AOTNode* const N: Nodes) {
+		if (!N) continue;
+		const float Dist = (Actor->GetActorLocation()-N->Box.GetCenter()).SizeSquared();
+		if (MinDist>Dist) {
+			Near = N;
+			MinDist = Dist;
+		}
+	}
+	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. a=%s "), __func__,
+		*GetNameSafe(this), *GetNameSafe(Actor));
+	return Near;
 }
 
 bool AOTNode::IsInside(AActor* const Actor) const {
