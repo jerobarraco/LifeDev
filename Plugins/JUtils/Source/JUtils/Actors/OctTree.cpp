@@ -220,7 +220,7 @@ void AOTNode::SetUp(AOTNode* const InParent, const int32 Max) {
 }
 
 void AOTNode::Empty(const bool ReturnSubs) {
-	if (!ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
+	if (ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
 		for (AOTNode* const S:Nodes) {
 			if (!S) continue;
 			S->Return(true);
@@ -553,7 +553,7 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		// clone it // TODO move to node
 		NCloser->Actors = RootNode->Actors;
 		NCloser->Nodes = RootNode->Nodes;
-		for (AOTNode* NN: NCloser->Nodes) {
+		for (AOTNode* const NN: NCloser->Nodes) {
 			if (!NN) continue;
 			NN->Parent = NCloser;
 		}
