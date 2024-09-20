@@ -323,6 +323,11 @@ void AOctTree::Print() {
 	Iterate(I);
 }
 
+void AOctTree::RebuildSameBox() {
+	if (!RootNode) return; // TODO error
+	Rebuild(RootNode->Box);
+}
+
 void AOctTree::Rebuild(const FBox& NewBox) {
 	if (!RootNode) return; // TODO error
 	if (!Pool) return;
@@ -330,6 +335,7 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 	TArray<AOTNode*> Nodes;
 	Nodes.Push(RootNode);
 	RootNode = Cast<AOTNode>(Pool->Get());
+	RootNode->SetBox(NewBox);
 
 	while (Nodes.Num()>0) {
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);

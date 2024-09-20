@@ -103,8 +103,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
 
-
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void RebuildSameBox(); // TODO rename
+	
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild(const FBox& NewBox);
 
 protected:
