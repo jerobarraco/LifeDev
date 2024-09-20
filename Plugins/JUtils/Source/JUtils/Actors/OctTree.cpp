@@ -212,23 +212,25 @@ void AOTNode::SetUp(AOTNode* const InParent, const int32 Max) {
 	Actors.Reserve(Max);
 }
 
-void AOTNode::Empty() {
-	for (AOTNode* const S:Nodes) {
-		if (!S) continue;
-		S->Return();
+void AOTNode::Empty(const bool ReturnSubs) {
+	if (!ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
+		for (AOTNode* const S:Nodes) {
+			if (!S) continue;
+			S->Return(true);
+		}
 	}
 	Nodes.Empty(8);
 	Actors.Empty(ActorsMax); // lol
 }
 
-void AOTNode::Return() {
+void AOTNode::Return(bool ReturnSubs) {
 	UPooler* const Pooler = UPooler::Instance(this);
 	if (!Pooler) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
 
-	Empty();
+	Empty(ReturnSubs);
 	Parent = nullptr;
 	Pooler->Return(this);
 }
@@ -315,7 +317,7 @@ void AOTNode::Pack() {
 }
 
 void AOTNode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Empty();
+	Empty(true);
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -441,8 +443,7 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 		N->Actors.Empty(ActorsMax);
 
 		Nodes.Append(N->Nodes);
-		N->Nodes.Empty(); // we stole them. return will return them otherwise
-		N->Return();
+		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
 
@@ -462,7 +463,7 @@ void AOctTree::BeginPlay() {
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (RootNode) RootNode->Return();
+	if (RootNode) RootNode->Return(true);
 	RootNode = nullptr;
 
 	if (Pool) Pool->Empty();
@@ -480,34 +481,49 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 void AOctTree::TryExtend(AActor* Actor) {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode || !Actor) return;
-	if (RootNode->IsInside(Actor)) return;
 
-	int32 max = 4;
-	while (max>0) {
-		--max;
+	int32 Loop = ReparentMax;
+	while (Loop>0) {
+		--Loop;
+		if (RootNode->IsInside(Actor)) return;
+		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
+		if (!NewRoot) return;
 
+		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go
-		const FVector Center = RootNode->Box.GetCenter();
-		const FVector Ext = RootNode->Box.GetExtent();
+		const FVector Center = RBox.GetCenter();
+		const FVector Ext = RBox.GetExtent();
 		const FVector APos = Actor->GetActorLocation();
 		const FVector Dir = APos - Center; // end-start
 		const FVector Sign = Dir.GetSignVector();
 		// const bool BDir[] = {Dir.X>=0, Dir.Y>=0, Dir.Z>=0}; // i could optimize with bit manip
-		FVector ExtS = Ext*Sign;
+		// this might work. or maybe is just nonsense
+		const FVector ExtS = Ext*Sign;
 		const FVector PCent = Center+ExtS;
 		const FVector PExt = ExtS*2;
 		const FVector PMax = PCent+PExt;
-		FBox ParBox;
-		ParBox.Min = PCent-PExt;
+		FBox& PBox = NewRoot->Box; // alias
+		PBox.Min = PCent-PExt;
 		// reusing parboxmin.
-		ParBox.Max.X = FMath::Max(ParBox.Min.X, PMax.X);
-		ParBox.Max.Y = FMath::Max(ParBox.Min.Y, PMax.Y);
-		ParBox.Max.Z = FMath::Max(ParBox.Min.Z, PMax.Z);
+		PBox.Max.X = FMath::Max(PBox.Min.X, PMax.X);
+		PBox.Max.Y = FMath::Max(PBox.Min.Y, PMax.Y);
+		PBox.Max.Z = FMath::Max(PBox.Min.Z, PMax.Z);
 		// reusing parboxmax
-		ParBox.Min.X = FMath::Max(ParBox.Min.X, ParBox.Max.X);
-		ParBox.Min.Y = FMath::Max(ParBox.Min.Y, ParBox.Max.Y);
-		ParBox.Min.Z = FMath::Max(ParBox.Min.Z, ParBox.Max.Z);
+		PBox.Min.X = FMath::Max(PBox.Min.X, PBox.Max.X);
+		PBox.Min.Y = FMath::Max(PBox.Min.Y, PBox.Max.Y);
+		PBox.Min.Z = FMath::Max(PBox.Min.Z, PBox.Max.Z);
 
+		NewRoot->Split(); // avoid having to calculate the extend for the children based on the above node.
+		// this is a hack might not work well
+		for (AOTNode* N: NewRoot->Nodes) {
+			if (!N) continue;
+			if (!N->Box.IsInside(RBox)) continue;
+			// the clone
+			N->Nodes = RootNode->Nodes;
+			N->Actors = RootNode->Actors;
+			RootNode->Return(false); // we stole them
+			break;
+		}
 		break;
 	}
 }

@@ -59,8 +59,8 @@ protected:
 	void SetSubsBox();
 	bool AddToSub(AActor* const Actor, AOTNode* const NotTo=nullptr);
 	void PushToSubs();
-	void Empty();
-	void Return();
+	void Empty(const bool ReturnSubs = true);
+	void Return(const bool ReturnSubs = true);
 
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Nodes; // children is already defined and has different meaning
@@ -132,6 +132,9 @@ protected:
 	bool PrintIter(AActor* const A, AOTNode* const Node);
 
 	void TryExtend(AActor* Actor);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 ReparentMax = 5;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
