@@ -9,7 +9,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO pass parent to children
 // TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
 // TODO resize
 // TODO pack nodes
@@ -285,7 +284,9 @@ void AOctTree::Add(AActor* const Actor) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
 		return;
 	}
-
+	
+	// If it doesnt fit, extend
+	TryExtend(Actor);
 	RootNode->Add(Actor);
 }
 
@@ -392,5 +393,20 @@ void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s N=%s"), __func__, *GetNameSafe(A), *GetNameSafe(Node));
 	return false;
+}
+
+void AOctTree::TryExtend(AActor* Actor) {
+	if (!RootNode || !Actor) return;
+	if (RootNode->IsInside(Actor)) return;
+
+	int32 max = 4;
+	while (max>0) {
+		--max;
+
+		// find out which way we need to go
+		const FVector Center = RootNode->Box.GetCenter();
+		const FVector APos = Actor->GetActorLocation();
+		const FVector Dir = APos - Center; // end-start
+	}
 }
 // thas it?
