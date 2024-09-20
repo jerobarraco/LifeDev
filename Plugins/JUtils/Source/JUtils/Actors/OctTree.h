@@ -19,12 +19,15 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void Add(AActor* const Actor, AOTNode* NotTo=nullptr);
-	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
+	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
 
 	// not recursive. use contains to find the container
 	UFUNCTION(BlueprintCallable)
 	int32 Rem(AActor* const Actor);
-	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
+	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
+
+	UFUNCTION(BlueprintCallable)
+	bool Update(AActor* Actor);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
@@ -89,6 +92,10 @@ public:
 	int32 Rem(AActor* const Actor);
 	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
 
+	// updates an actor, modifying the tree, this could be slower than just rebuilding depending on how many actors move.
+	UFUNCTION(BlueprintCallable)
+	bool Update(AActor* const Actor);
+
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
@@ -119,7 +126,6 @@ protected:
 
 	void TryExtend(AActor* Actor);
 
-	
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
 	UPROPERTY(Transient) // cache

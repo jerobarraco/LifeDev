@@ -9,11 +9,12 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
+// TODO update tree based on actors changing.
+
 // TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
 // TODO resize
 // TODO pack nodes
 // // TODO collapse "unsplit" nodes
-// TODO update tree based on actors changing.
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -118,6 +119,25 @@ AOTNode* AOTNode::NodeForActor(AActor* const Actor) {
 	return nullptr;
 }
 
+bool AOTNode::Update(AActor* Actor) {
+	if (!IsValid(Actor)) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
+		return false;
+	}
+	
+	// opt: actor valid is checked on the rtee
+	if (IsInside(Actor)) return true; // nothing to do.
+	if (!Parent) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
+			__func__, *GetNameSafe(this));
+		return false;
+	}
+
+	Actors.Remove(Actor); // disown
+	Parent->Add(Actor, this);
+	return true;
+}
+
 bool AOTNode::IsInside(AActor* const Actor) const {
 	if (!IsValid(Actor)) return false; // seems too little for a func, but im sure ill use it later on.
 	const FVector& AT = Actor->GetActorLocation();
@@ -125,6 +145,7 @@ bool AOTNode::IsInside(AActor* const Actor) const {
 }
 
 AOTNode* AOTNode::Contains(AActor* const Actor) const {
+	// don't care if actor is invalid (but be careful)
 	for (AActor* const A: Actors) {
 		// i think this is a valid case. the func itself is const.
 		if (A == Actor) return const_cast<AOTNode*>(this);
@@ -142,9 +163,7 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
-	for (AActor* const A: Actors) {
-		AddToSub(A);
-	}
+	for (AActor* const A: Actors) AddToSub(A);
 	Actors.Empty();
 }
 
@@ -296,13 +315,29 @@ int32 AOctTree::Rem(AActor* const Actor) {
 		return 0;
 	}
 
+	// don't care if the actor is valid in this case
 	AOTNode* const N = RootNode->Contains(Actor);
 	if (!N) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. O=%s"), __func__, *GetNameSafe(Actor));
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"), __func__, *GetNameSafe(Actor));
 		return 0;
 	}
 
 	return N->Rem(Actor);
+}
+
+bool AOctTree::Update(AActor* const Actor) {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
+		return false;
+	}
+
+	AOTNode* const N = RootNode->Contains(Actor);
+	if (!N) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"), __func__, *GetNameSafe(Actor));
+		return false;
+	}
+
+	return N->Update(Actor); // this checks for is valid
 }
 
 void AOctTree::SetBox(const FBox& InBox) {
