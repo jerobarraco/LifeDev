@@ -39,15 +39,15 @@ void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 		Split();
 	}
 
-	AddToSub(Actor); //pass notto
+	AddToSub(Actor, NotTo); //pass notto
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
 	return Actors.RemoveSwap(Actor, EAllowShrinking::No);
 }
 
-void AOTNode::AddToSub(AActor* const Actor) {
-	AOTNode* const S = NodeForActor(Actor);
+void AOTNode::AddToSub(AActor* const Actor, AOTNode* const NotTo) {
+	AOTNode* const S = NodeForActor(Actor, NotTo);
 	if (!S) return; // already logged
 	S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
@@ -110,9 +110,9 @@ void AOTNode::SetSubsBox() {
 	}
 }
 
-AOTNode* AOTNode::NodeForActor(AActor* const Actor) {
+AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
 	for (AOTNode* const S: Nodes) {
-		if (IsValid(S) && S->IsInside(Actor)) return S;
+		if (S != NotOn && IsValid(S) && S->IsInside(Actor)) return S;
 	}
 
 	UE_LOG(LogJOctTree, Warning, TEXT("%hs Could not find it"), __func__);

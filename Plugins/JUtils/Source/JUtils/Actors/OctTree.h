@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
-#include "Runtime/Core/Public/Containers/RingBuffer.h"
 
 #include "OctTree.generated.h"
 
@@ -52,11 +51,11 @@ protected:
 	virtual void Reset() override;
 	
 	void SetUp(AOTNode* const InParent = nullptr, const int32 ActorsMax = 10);
-	AOTNode* NodeForActor(AActor* const Actor);
+	AOTNode* NodeForActor(AActor* const Actor, AOTNode* const NotOn=nullptr);
 	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
-	void AddToSub(AActor* const Actor);
+	void AddToSub(AActor* const Actor, AOTNode* const NotTo=nullptr);
 	void PushToSubs();
 	void Empty();
 	void Return();
@@ -99,6 +98,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
+	// TODO setup calls rebuild if new box..
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
