@@ -20,11 +20,18 @@ AOTNode::AOTNode() {
 }
 
 bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
-	// does not check for isvalid. that is checked by the tree. little bit of ... optimization.
-	// the tree is justifying its existence..
-	// TODO test bounds and reject the rejected
+	// does not check for isvalid. that is checked by the tree. little, bit of ... optimization.
+	// the tree is justifying its existence...
 	// clog rulz, ok.
-	UE_CLOG(!IsInside(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
+	const bool Inside = IsInside(Actor);
+	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
+	/// ask dad for halp
+	if (!Inside) {
+		AddToParent(Actor);
+		return true; // assume handled. avoid loops.
+	}
+
+	/// add to self
 	// Don't store the actors in this instance if it's split already. wasting a tarray.
 	if (Nodes.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
@@ -34,9 +41,8 @@ bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 		Split();
 	}
 
-	const bool Added = AddToSub(Actor, NotTo); //pass notto
-	if (!Added) AddToParent(Actor);
-	return true; // assume handled. avoid loops.
+	/// add to sub. This might loop. but add to sub checks for inside before calling add
+	return AddToSub(Actor, NotTo);
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
@@ -44,7 +50,7 @@ int32 AOTNode::Rem(AActor* const Actor) {
 }
 
 bool AOTNode::AddToSub(AActor* const Actor, AOTNode* const NotTo) {
-	AOTNode* const S = NodeForActor(Actor, NotTo);
+	AOTNode* const S = NodeForActor(Actor, NotTo); // this saves us the trouble of looping and crashing on Add
 	if (!S) return false; // already logged
 	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
@@ -54,8 +60,6 @@ void AOTNode::SetBox(const FBox& InBox) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
 	// why bother. this is not meant to be optimal yet
 	Box = InBox;
-	// TODO error if it's already set
-	// TODO implement reflow.
 }
 
 void AOTNode::SetSubsBox() {
@@ -116,7 +120,7 @@ AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
 	return nullptr;
 }
 
-void AOTNode::AddToParent(AActor* Actor) {
+void AOTNode::AddToParent(AActor* const Actor) {
 	// ret void to avoid loops
 	if (!Parent) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
@@ -125,7 +129,6 @@ void AOTNode::AddToParent(AActor* Actor) {
 	}
 
 	Parent->Add(Actor, this);
-	return;
 }
 
 bool AOTNode::Update(AActor* Actor) {
@@ -340,8 +343,11 @@ void AOctTree::Add(AActor* const Actor) {
 		return;
 	}
 	
-	// If it doesnt fit, extend
-	TryExtend(Actor);
+	// If it doesn't fit, extend
+	if (!TryExtend(Actor)) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not extend. disowning."), __func__);
+		return; // otherwise rootnode will loop right?
+	}
 	RootNode->Add(Actor);
 }
 
@@ -478,16 +484,17 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 	return false;
 }
 
-void AOctTree::TryExtend(AActor* Actor) {
+bool AOctTree::TryExtend(AActor* Actor) {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
-	if (!RootNode || !Actor) return;
+	if (!RootNode || !Actor) return false;
 
-	int32 Loop = ReparentMax;
+	int32 Loop = ExtendMax;
 	while (Loop>0) {
+		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
-		if (RootNode->IsInside(Actor)) return;
+		if (RootNode->IsInside(Actor)) return true;
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
-		if (!NewRoot) return;
+		if (!NewRoot) return false;
 
 		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go
@@ -524,7 +531,8 @@ void AOctTree::TryExtend(AActor* Actor) {
 			RootNode->Return(false); // we stole them
 			break;
 		}
-		break;
 	}
+
+	return false;
 }
 // thas it?

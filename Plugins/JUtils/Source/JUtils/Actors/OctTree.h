@@ -53,7 +53,7 @@ protected:
 	
 	void SetUp(AOTNode* const InParent = nullptr, const int32 ActorsMax = 10);
 	AOTNode* NodeForActor(AActor* const Actor, AOTNode* const NotOn=nullptr);
-	void AddToParent(AActor* Actor);
+	void AddToParent(AActor* const Actor);
 	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
@@ -130,11 +130,11 @@ protected:
 
 	UFUNCTION() // bound
 	bool PrintIter(AActor* const A, AOTNode* const Node);
-
-	void TryExtend(AActor* Actor);
+	// true if succeeded or ok. false otherwise.
+	bool TryExtend(AActor* Actor);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 ReparentMax = 5;
+	int32 ExtendMax = 5;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
