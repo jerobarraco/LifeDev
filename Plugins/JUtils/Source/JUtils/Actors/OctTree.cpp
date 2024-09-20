@@ -126,7 +126,7 @@ bool AOTNode::IsInside(AActor* const Actor) const {
 	return Box.IsInsideOrOn(AT);
 }
 
-AOTNode* AOTNode::Find(AActor* const Actor) const {
+AOTNode* AOTNode::Contains(AActor* const Actor) const {
 	for (AActor* const A: Actors) {
 		// i think this is a valid case. the func itself is const.
 		if (A == Actor) return const_cast<AOTNode*>(this);
@@ -135,7 +135,7 @@ AOTNode* AOTNode::Find(AActor* const Actor) const {
 	for (AOTNode* const N: Nodes) {
 		if (!IsValid(N)) continue; // wtf?
 
-		AOTNode* const R = N->Find(Actor);
+		AOTNode* const R = N->Contains(Actor);
 		if (R) return R;
 	}
 

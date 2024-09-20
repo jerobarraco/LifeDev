@@ -24,7 +24,7 @@ public:
 
 	// returns the owning node if any. also works as "contains"
 	UFUNCTION(BlueprintCallable)
-	AOTNode* Find(AActor* const Actor) const;
+	AOTNode* Contains(AActor* const Actor) const;
 
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
