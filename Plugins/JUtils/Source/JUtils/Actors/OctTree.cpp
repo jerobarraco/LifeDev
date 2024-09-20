@@ -190,13 +190,13 @@ void AOTNode::Empty() {
 		S->Return();
 	}
 	Nodes.Empty();
-	Actors.Empty();
+	Actors.Empty(); // lol
 }
 
 void AOTNode::Return() {
 	UPooler* const Pooler = UPooler::Instance(this);
 	if (!Pooler) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs cant"), __func__);
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
 
@@ -364,7 +364,8 @@ void AOctTree::BeginPlay() {
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (RootNode) RootNode->Return();
-	
+	RootNode = nullptr;
+
 	if (Pool) Pool->Empty();
 	Pool = nullptr;
 	
