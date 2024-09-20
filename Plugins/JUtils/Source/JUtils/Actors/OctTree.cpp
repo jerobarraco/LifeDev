@@ -163,6 +163,7 @@ void AOTNode::Split() {
 	bool Moded = false;
 	// WTF DEGENERATE CASE! but meh
 	// 1st create subs
+	Nodes.Reserve(SubsNum);
 	while (Nodes.Num()<SubsNum) {
 		AOTNode* const S = Cast<AOTNode>(Pool->Get());
 		if (!S) {
@@ -189,8 +190,8 @@ void AOTNode::Empty() {
 		if (!S) continue;
 		S->Return();
 	}
-	Nodes.Empty();
-	Actors.Empty(); // lol
+	Nodes.Empty(8);
+	Actors.Empty(ActorsMax); // lol
 }
 
 void AOTNode::Return() {
@@ -348,7 +349,7 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 
 		for (AActor* const A: N->Actors) Add(A);
-		N->Actors.Empty();
+		N->Actors.Empty(ActorsMax);
 
 		Nodes.Append(N->Nodes);
 		N->Nodes.Empty(); // we stole them. return will return them otherwise
