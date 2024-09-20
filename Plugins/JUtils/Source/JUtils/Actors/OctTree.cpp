@@ -200,6 +200,7 @@ void AOTNode::SetUp(const int32 Max) {
 }
 
 void AOTNode::Empty(const bool ReturnSubs) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
 	if (ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
 		for (AOTNode* const S:Nodes) {
 			if (!S) continue;
@@ -212,13 +213,19 @@ void AOTNode::Empty(const bool ReturnSubs) {
 }
 
 void AOTNode::Return(const bool ReturnSubs) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i Actors=%i"),
+		__func__, *GetNameSafe(this), ReturnSubs, Actors.Num());
 	UPooler* const Pooler = UPooler::Instance(this);
 	if (!Pooler) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
 
+	// doesn't matter.
+	// const int32 ANum=Actors.Num();
+	// UE_CLOG(ANum>0, LogJOctTree, Warning, TEXT("%hs %s Returning with Actors! n=%i"),
+		// __func__, *GetNameSafe(this), ANum);
+	
 	Empty(ReturnSubs);
 	Pooler->Return(this);
 }
@@ -279,12 +286,12 @@ void AOTNode::Pack() {
 
 	bool Can = true;
 	int32 NumChilds=0;
-	while(Nodes.Num()>0) {
-		AOTNode* const Node = Nodes.Pop(EAllowShrinking::No);
-		if (!Node) continue;
-		Node->Pack();
-		Can = Can && Node->Nodes.Num() == 0;
-		NumChilds += Node->Actors.Num();
+	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
+		if (!N) continue;;
+		if (!N) continue;
+		N->Pack();
+		Can = Can && N->Nodes.Num() == 0;
+		NumChilds += N->Actors.Num();
 	}
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
 		__func__, *GetNameSafe(this), Can, NumChilds);
@@ -292,6 +299,7 @@ void AOTNode::Pack() {
 	if (!Can || NumChilds>=ActorsMax) return;
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
 	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
+		if (!N) continue;
 		Actors.Append(N->Actors);
 		
 		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Log, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
