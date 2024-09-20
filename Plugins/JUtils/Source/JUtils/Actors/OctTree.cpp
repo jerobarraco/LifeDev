@@ -24,6 +24,8 @@ bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	// the tree is justifying its existence...
 	// clog rulz, ok.
 	const bool Inside = IsInside(Actor);
+	
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: a=%s notto=%s"), __func__, *GetNameSafe(Actor), *GetNameSafe(NotTo));
 	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	/// ask dad for halp
 	if (!Inside) {
@@ -121,6 +123,8 @@ AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
 }
 
 void AOTNode::AddToParent(AActor* const Actor) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: a=%s"), __func__, *GetNameSafe(Actor));
+	
 	// ret void to avoid loops
 	if (!Parent) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
@@ -146,7 +150,8 @@ bool AOTNode::Update(AActor* Actor) {
 }
 
 bool AOTNode::IsInside(AActor* const Actor) const {
-	if (!IsValid(Actor)) return false; // seems too little for a func, but im sure ill use it later on.
+	// seems too little for a func, but im sure ill use it later on.
+	if (!IsValid(Actor)) return false; // can be called from outside
 	const FVector& AT = Actor->GetActorLocation();
 	return Box.IsInsideOrOn(AT);
 }
@@ -492,17 +497,22 @@ bool AOctTree::TryExtend(AActor* Actor) {
 	while (Loop>0) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
-		if (RootNode->IsInside(Actor)) return true;
+		if (RootNode->IsInside(Actor)) {
+			UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i its inside"), __func__, Loop);
+			return true;
+		}
+		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check A"), __func__, Loop);
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
 		if (!NewRoot) return false;
+		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check B"), __func__, Loop);
 
 		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go
 		const FVector Center = RBox.GetCenter();
 		const FVector Ext = RBox.GetExtent();
 		const FVector APos = Actor->GetActorLocation();
-		const FVector Dir = APos - Center; // end-start
-		const FVector Sign = Dir.GetSignVector();
+		const FVector Diff = APos - Center; // end-start
+		const FVector Sign = Diff.GetSignVector();
 		// const bool BDir[] = {Dir.X>=0, Dir.Y>=0, Dir.Z>=0}; // i could optimize with bit manip
 		// this might work. or maybe is just nonsense
 		const FVector ExtS = Ext*Sign;
@@ -520,17 +530,24 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Min.Y = FMath::Max(PBox.Min.Y, PBox.Max.Y);
 		PBox.Min.Z = FMath::Max(PBox.Min.Z, PBox.Max.Z);
 
-		NewRoot->Split(); // avoid having to calculate the extend for the children based on the above node.
+		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
+		
 		// this is a hack might not work well
-		for (AOTNode* N: NewRoot->Nodes) {
+		for (AOTNode* N: NewRoot->Nodes) { // TODO this could be a function in the node
 			if (!N) continue;
 			if (!N->Box.IsInside(RBox)) continue;
 			// the clone
-			N->Nodes = RootNode->Nodes;
 			N->Actors = RootNode->Actors;
+			N->Nodes = RootNode->Nodes;
+			for (AOTNode* NN: N->Nodes) {
+				if (!N) continue;
+				NN->Parent = N;
+			}
 			RootNode->Return(false); // we stole them
 			break;
 		}
+		
+		RootNode = NewRoot;
 	}
 
 	return false;
