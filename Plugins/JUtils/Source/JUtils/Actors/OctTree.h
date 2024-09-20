@@ -91,11 +91,15 @@ public:
 	// doesn't call pack, so you can update many objects before packing. or you might wanna pack not every update.
 	UFUNCTION(BlueprintCallable)
 	bool Update(AActor* const Actor);
+	// call after updating all the objects. you can also do it less often
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Pack();
 
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
-	// TODO setup calls rebuild and sets max
+	// TODO pass ExtendMax, and pool time
+	// will rebuild the tree
 	UFUNCTION(BlueprintCallable)
 	void SetUp(const FBox& InBox, const int32 Max);
 
@@ -104,10 +108,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Pack();
-	
-	UFUNCTION(BlueprintCallable, CallInEditor, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Print();
 
 	UFUNCTION(BlueprintCallable)
@@ -115,14 +116,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void RebuildSameBox(); // TODO rename
-	
+
+	// no need to pack. it will be optimal.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild(const FBox& NewBox);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ExtendMax = 5;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 ActorsMax = 5;
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -131,6 +131,8 @@ protected:
 	bool PrintIter(AActor* const A, AOTNode* const Node);
 	// true if succeeded or ok. false otherwise.
 	bool TryExtend(AActor* Actor);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 ActorsMax = 5;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
