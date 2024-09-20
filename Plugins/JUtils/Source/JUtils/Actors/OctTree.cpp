@@ -226,6 +226,7 @@ void AOTNode::Empty(const bool ReturnSubs) {
 			S->Return(true);
 		}
 	}
+
 	Nodes.Empty(8);
 	Actors.Empty(ActorsMax); // lol
 }
