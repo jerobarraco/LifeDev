@@ -79,8 +79,6 @@ class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
 public:
 	AOctTree();
 
-	// TODO maybe remove this interface and just let them access the root.
-
 	UFUNCTION(BlueprintCallable)
 	void Add(AActor* const Actor);
 	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
@@ -94,16 +92,20 @@ public:
 	void SetBox(const FBox& InBox);
 
 	UFUNCTION(BlueprintCallable)
-	void DbgDraw();
-	
-	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void DbgDraw();
+	
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Print();
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
+
+
+	UFUNCTION(BlueprintCallable)
+	void Rebuild(const FBox& NewBox);
 
 protected:
 	virtual void BeginPlay() override;

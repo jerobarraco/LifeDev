@@ -9,19 +9,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO remove actor
-// // TODO collapse "unsplit" nodes
-// TODO query nodes based on position maybe distance?
-// // TODO Get all nodes in this box (use Box.Overlaps)
-// // TODO use a delegate like the iterator
 // TODO rebuild tree
-// TODO resize
-// TODO pack
+// // TODO resize
+// TODO pack nodes
+// // TODO collapse "unsplit" nodes
 // TODO update tree based on actors changing.
 // // TODO start with a naive approach and update all of them
 // TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
 // TODO pass parent to children
-// TODO can be optimized with a TRingBuffer does not count ref for uobject pointer, they could become stale :(
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -32,6 +27,8 @@ AOTNode::AOTNode() {
 }
 
 void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
+	// does not check for isvalid. that is checked by the tree. little bit of ... optimization.
+	// the tree is justifying its existence..
 	// TODO test bounds and reject the rejected
 	// clog rulz, ok.
 	UE_CLOG(!IsInside(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
@@ -247,8 +244,6 @@ bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 
 	// i could reuse iterate with my own predicate but it will add overhead and itś not that much code.
 	// also the sub calling is different.
-	// TODO getactorlocation could be memoized
-	// // TODO make a memoizer??
 	for (AActor* const A: Actors) {
 		// if the actor is in it, will execute the iterator. and if the iterator breaks. then break.
 		if (IsValid(A) && InBox.IsInsideOrOn(A->GetActorLocation()) && Iterator.Execute(A, this)) return true;
@@ -275,9 +270,10 @@ AOctTree::AOctTree(): Super() {
 
 void AOctTree::Add(AActor* const Actor) {
 	if (!RootNode) {
-		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
+	if (!IsValid(Actor)) return;
 
 	RootNode->Add(Actor);
 }
@@ -327,6 +323,24 @@ void AOctTree::Print() {
 	Iterate(I);
 }
 
+void AOctTree::Rebuild(const FBox& NewBox) {
+	if (!RootNode) return; // TODO error
+	if (!Pool) return;
+	
+	TArray<AOTNode*> Nodes;
+	Nodes.Push(RootNode);
+	RootNode = Cast<AOTNode>(Pool->Get());
+
+	while (Nodes.Num()>0) {
+		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
+		if (!N) continue;
+		Nodes.Append(N->Nodes);
+
+		for (AActor* const A: N->Actors) Add(A);
+		N->Return();
+	}
+}
+
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
@@ -345,7 +359,9 @@ void AOctTree::BeginPlay() {
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (RootNode) RootNode->Return();
 	
-	Pool->Empty();
+	if (Pool) Pool->Empty();
+	Pool = nullptr;
+	
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
 }
