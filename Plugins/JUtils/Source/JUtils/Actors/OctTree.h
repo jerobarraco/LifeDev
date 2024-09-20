@@ -48,6 +48,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;
 	
+	void SetUp(AOTNode* const InParent = nullptr, const int32 ActorsMax = 10);
 	AOTNode* NodeForActor(AActor* const Actor);
 	void Split();
 	void SetBox(const FBox& InBox);
@@ -55,8 +56,8 @@ protected:
 	void AddToSub(AActor* const Actor);
 	void PushToSubs();
 	void Empty();
-	void Return(); 
-	
+	void Return();
+
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Nodes; // children is already defined and has different meaning
 	UPROPERTY(Transient)
@@ -65,7 +66,7 @@ protected:
 	UPROPERTY(Transient)
 	FBox Box;
 	UPROPERTY(Transient)
-	class AOTNode* Parent = nullptr; // TODO
+	AOTNode* Parent = nullptr;
 
 	uint8 ActorsMax = 1; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
 	friend class AOctTree;
@@ -121,5 +122,5 @@ protected:
 	UPROPERTY(Transient) // cache
 	UPool* Pool = nullptr;
 
-	uint8 ActorsMax = 2;
+	uint8 ActorsMax = 2; // needs to be elsewhere so thta i can set the max
 };
