@@ -88,6 +88,7 @@ public:
 	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
 
 	// updates an actor, modifying the tree, this could be slower than just rebuilding depending on how many actors move.
+	// doesn't call pack, so you can update many objects before packing. or you might wanna pack not every update.
 	UFUNCTION(BlueprintCallable)
 	bool Update(AActor* const Actor);
 
@@ -96,14 +97,14 @@ public:
 
 	// TODO setup calls rebuild and sets max
 	UFUNCTION(BlueprintCallable)
-	void SetUp(const FBox& InBox, const int32 Max) {};
+	void SetUp(const FBox& InBox, const int32 Max);
 
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Pack();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, CallInEditor)
@@ -118,6 +119,10 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild(const FBox& NewBox);
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 ExtendMax = 5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 ActorsMax = 5;
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -127,13 +132,8 @@ protected:
 	// true if succeeded or ok. false otherwise.
 	bool TryExtend(AActor* Actor);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 ExtendMax = 5;
-
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
 	UPROPERTY(Transient) // cache
 	UPool* Pool = nullptr;
-
-	uint8 ActorsMax = 2; // needs to be elsewhere so thta i can set the max
 };

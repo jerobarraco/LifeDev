@@ -370,13 +370,12 @@ bool AOctTree::Update(AActor* const Actor) {
 
 	if (N->IsInside(Actor)) return true;
 	if (!TryExtend(Actor)) return false;
-	
-	N->Actors.Remove(Actor);
+
+	N->Rem(Actor);
 	const bool Updated = RootNode->Add(Actor);
 	if (!Updated)
-		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt inser't the actor %s %s"),
+		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s loc=%s"),
 			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
-	RootNode->Pack();
 	return Updated;
 }
 
@@ -387,6 +386,15 @@ void AOctTree::SetBox(const FBox& InBox) {
 	}
 
 	RootNode->SetBox(InBox);
+}
+
+void AOctTree::SetUp(const FBox& InBox, const int32 Max) {
+	ActorsMax = Max;
+	
+	if (!RootNode) return;
+	
+	RootNode->ActorsMax = Max;
+	Rebuild(InBox); // TODO fix
 }
 
 void AOctTree::DbgDraw() {
@@ -427,24 +435,24 @@ void AOctTree::RebuildSameBox() {
 
 void AOctTree::Rebuild(const FBox& NewBox) {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs B=%s"), __func__, *NewBox.ToString());
-	if (!RootNode) return; // TODO error
 	if (!Pool) return;
 	
 	TArray<AOTNode*> Nodes;
 	Nodes.Push(RootNode);
 	RootNode = Cast<AOTNode>(Pool->Get());
+	RootNode->SetUp(ActorsMax);
 	RootNode->SetBox(NewBox);
 
 	while (Nodes.Num()>0) {
+		// if org rootNode is none, it will be skipped here. and above we create one.
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
 		if (!N) continue;
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 
-		for (AActor* const A: N->Actors) Add(A);
-		N->Actors.Empty(ActorsMax);
-
-		Nodes.Append(N->Nodes);
+		for (AActor* const A: N->Actors) Add(A); // steal actors
+		
+		Nodes.Append(N->Nodes); // steal nodes
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
