@@ -24,32 +24,34 @@ AOTNode::AOTNode() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
+bool AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	// does not check for isvalid. that is checked by the tree. little bit of ... optimization.
 	// the tree is justifying its existence..
 	// TODO test bounds and reject the rejected
 	// clog rulz, ok.
 	UE_CLOG(!IsInside(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
-	// Dont store the actors in this instance if it's split already. wasting a tarray.
+	// Don't store the actors in this instance if it's split already. wasting a tarray.
 	if (Nodes.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
-			Actors.Add(Actor);
-			return;
+			Actors.AddUnique(Actor);
+			return false;
 		}
 		Split();
 	}
 
-	AddToSub(Actor, NotTo); //pass notto
+	const bool Added = AddToSub(Actor, NotTo); //pass notto
+	if (!Added) AddToParent(Actor);
+	return true; // assume handled. avoid loops.
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
 	return Actors.RemoveSwap(Actor, EAllowShrinking::No);
 }
 
-void AOTNode::AddToSub(AActor* const Actor, AOTNode* const NotTo) {
+bool AOTNode::AddToSub(AActor* const Actor, AOTNode* const NotTo) {
 	AOTNode* const S = NodeForActor(Actor, NotTo);
-	if (!S) return; // already logged
-	S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
+	if (!S) return false; // already logged
+	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
 
 void AOTNode::SetBox(const FBox& InBox) {
@@ -119,23 +121,30 @@ AOTNode* AOTNode::NodeForActor(AActor* const Actor, AOTNode* const NotOn) {
 	return nullptr;
 }
 
+void AOTNode::AddToParent(AActor* Actor) {
+	// ret void to avoid loops
+	if (!Parent) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
+				__func__, *GetNameSafe(this));
+		return;
+	}
+
+	Parent->Add(Actor, this);
+	return;
+}
+
 bool AOTNode::Update(AActor* Actor) {
+	// can be called directly from bp, through contains
 	if (!IsValid(Actor)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
 		return false;
 	}
-	
-	// opt: actor valid is checked on the rtee
-	if (IsInside(Actor)) return true; // nothing to do.
-	if (!Parent) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs: %s: need a parent, but has none."),
-			__func__, *GetNameSafe(this));
-		return false;
-	}
 
+	// opt: not calling Add(Actor) to avoid removing and re-adding in vain 
+	if (IsInside(Actor)) return true; // nothing to do.
 	Actors.Remove(Actor); // disown
-	Parent->Add(Actor, this);
-	return true;
+	AddToParent(Actor);
+	return true; // assume handled. avoid loops.
 }
 
 bool AOTNode::IsInside(AActor* const Actor) const {
@@ -294,7 +303,7 @@ AOctTree::AOctTree(): Super() {
 }
 
 void AOctTree::Add(AActor* const Actor) {
-	UE_LOG(LogJOctTree, Warning, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
+	UE_LOG(LogJOctTree, Log, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;

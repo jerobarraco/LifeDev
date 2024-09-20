@@ -17,7 +17,7 @@ public:
 	AOTNode();
 	
 	UFUNCTION(BlueprintCallable)
-	void Add(AActor* const Actor, AOTNode* NotTo=nullptr);
+	bool Add(AActor* const Actor, AOTNode* NotTo=nullptr);
 	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
 
 	// not recursive. use contains to find the container
@@ -52,10 +52,11 @@ protected:
 	
 	void SetUp(AOTNode* const InParent = nullptr, const int32 ActorsMax = 10);
 	AOTNode* NodeForActor(AActor* const Actor, AOTNode* const NotOn=nullptr);
+	void AddToParent(AActor* Actor);
 	void Split();
 	void SetBox(const FBox& InBox);
 	void SetSubsBox();
-	void AddToSub(AActor* const Actor, AOTNode* const NotTo=nullptr);
+	bool AddToSub(AActor* const Actor, AOTNode* const NotTo=nullptr);
 	void PushToSubs();
 	void Empty();
 	void Return();
@@ -98,7 +99,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 
-	// TODO setup calls rebuild if new box..
+	// TODO setup calls rebuild and sets max
+	UFUNCTION(BlueprintCallable)
+	void SetUp(const FBox& InBox, const int32 Max) {};
+
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
