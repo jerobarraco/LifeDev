@@ -9,12 +9,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO fix update tree, tree based on actors changing.
-// TODO pack nodes
 // TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
-
-// TODO resize
-// // TODO collapse "unsplit" nodes
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -493,8 +488,27 @@ void AOctTree::TryExtend(AActor* Actor) {
 
 		// find out which way we need to go
 		const FVector Center = RootNode->Box.GetCenter();
+		const FVector Ext = RootNode->Box.GetExtent();
 		const FVector APos = Actor->GetActorLocation();
 		const FVector Dir = APos - Center; // end-start
+		const FVector Sign = Dir.GetSignVector();
+		// const bool BDir[] = {Dir.X>=0, Dir.Y>=0, Dir.Z>=0}; // i could optimize with bit manip
+		FVector ExtS = Ext*Sign;
+		const FVector PCent = Center+ExtS;
+		const FVector PExt = ExtS*2;
+		const FVector PMax = PCent+PExt;
+		FBox ParBox;
+		ParBox.Min = PCent-PExt;
+		// reusing parboxmin.
+		ParBox.Max.X = FMath::Max(ParBox.Min.X, PMax.X);
+		ParBox.Max.Y = FMath::Max(ParBox.Min.Y, PMax.Y);
+		ParBox.Max.Z = FMath::Max(ParBox.Min.Z, PMax.Z);
+		// reusing parboxmax
+		ParBox.Min.X = FMath::Max(ParBox.Min.X, ParBox.Max.X);
+		ParBox.Min.Y = FMath::Max(ParBox.Min.Y, ParBox.Max.Y);
+		ParBox.Min.Z = FMath::Max(ParBox.Min.Z, ParBox.Max.Z);
+
+		break;
 	}
 }
 // thas it?
