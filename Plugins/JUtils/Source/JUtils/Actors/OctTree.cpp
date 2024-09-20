@@ -384,6 +384,8 @@ bool AOctTree::Update(AActor* const Actor) {
 		return false;
 	}
 
+	if (!TryExtend(Actor)) return false;
+
 	const bool Updated = N->Update(Actor); // this checks for is valid
 	if (Updated) RootNode->Pack();
 	return Updated;
