@@ -498,7 +498,7 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
 		if (RootNode->IsInside(Actor)) {
-			UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i its inside"), __func__, Loop);
+			UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i it's inside"), __func__, Loop);
 			return true;
 		}
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check A"), __func__, Loop);
@@ -517,7 +517,7 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		// this might work. or maybe is just nonsense
 		const FVector ExtS = Ext*Sign;
 		const FVector PCent = Center+ExtS;
-		const FVector PExt = ExtS*2;
+		const FVector PExt = Ext*2;
 		const FVector PMax = PCent+PExt;
 		FBox& PBox = NewRoot->Box; // alias
 		PBox.Min = PCent-PExt;
@@ -526,9 +526,10 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Max.Y = FMath::Max(PBox.Min.Y, PMax.Y);
 		PBox.Max.Z = FMath::Max(PBox.Min.Z, PMax.Z);
 		// reusing parboxmax
-		PBox.Min.X = FMath::Max(PBox.Min.X, PBox.Max.X);
-		PBox.Min.Y = FMath::Max(PBox.Min.Y, PBox.Max.Y);
-		PBox.Min.Z = FMath::Max(PBox.Min.Z, PBox.Max.Z);
+		PBox.Min.X = FMath::Min(PBox.Min.X, PBox.Max.X);
+		PBox.Min.Y = FMath::Min(PBox.Min.Y, PBox.Max.Y);
+		PBox.Min.Z = FMath::Min(PBox.Min.Z, PBox.Max.Z);
+		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, PBox.ToString());
 
 		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
 		
