@@ -29,10 +29,10 @@ AOTNode::AOTNode() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOTNode::Add(const AActor* const Actor) {
+void AOTNode::Add(AActor* const Actor, AOTNode* NotTo) {
 	// TODO test bounds and reject the rejected
 	// clog rulz, ok.
-	UE_CLOG(!Contains(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
+	UE_CLOG(!IsInside(Actor), LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 	// Dont store the actors in this instance if it's split already. wasting a tarray.
 	if (Subs.Num()==0) {
 		if (Actors.Num()<ActorsMax) {
@@ -41,10 +41,11 @@ void AOTNode::Add(const AActor* const Actor) {
 		}
 		Split();
 	}
-	AddToSub(Actor);
+
+	AddToSub(Actor); //pass notto
 }
 
-void AOTNode::AddToSub(const AActor* const Actor) {
+void AOTNode::AddToSub(AActor* const Actor) {
 	AOTNode* const S = SubForActor(Actor);
 	if (!S) return; // already logged
 	S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
@@ -108,16 +109,16 @@ void AOTNode::SetSubsBox() {
 	}
 }
 
-AOTNode* AOTNode::SubForActor(const AActor* const Actor) {
+AOTNode* AOTNode::SubForActor(AActor* const Actor) {
 	for (AOTNode* const S: Subs) {
-		if (IsValid(S) && S->Contains(Actor)) return S;
+		if (IsValid(S) && S->IsInside(Actor)) return S;
 	}
 
 	UE_LOG(LogJOctTree, Warning, TEXT("%hs Could not find it"), __func__);
 	return nullptr;
 }
 
-bool AOTNode::Contains(const AActor* const Actor) const {
+bool AOTNode::IsInside(AActor* const Actor) const {
 	if (!IsValid(Actor)) return false; // seems too little for a func, but im sure ill use it later on.
 	const FVector& AT = Actor->GetActorLocation();
 	return Box.IsInsideOrOn(AT);
@@ -125,7 +126,7 @@ bool AOTNode::Contains(const AActor* const Actor) const {
 
 void AOTNode::PushToSubs() {
 	// 2nd move the actors to subs
-	for (const AActor* const A: Actors) {
+	for (AActor* const A: Actors) {
 		AddToSub(A);
 	}
 	Actors.Empty();
@@ -199,17 +200,17 @@ void AOTNode::DbgDraw() {
 	}
 }
 
-void AOTNode::Iterate(const FJOTIterator& Iterator) const {
-
+bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	// TODO test
-	// TODO remove the const from actors
-	// probably users won´t like the const. maybe bp dont like it.
-	for (const AActor* const A: Actors) {
-		Iterator.ExecuteIfBound(A);
+	for (AActor* const A: Actors) {
+		if (!Iterator.IsBound() || Iterator.Execute(A, this)) return true;
 	}
-	for (const AOTNode* const S: Subs ) {
-		S->Iterate(Iterator);
+
+	for (AOTNode* const S: Subs) {
+		if (S->Iterate(Iterator)) return true;
 	}
+
+	return false;
 }
 
 void AOTNode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -225,7 +226,7 @@ AOctTree::AOctTree(): Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void AOctTree::Add(const AActor* const Actor) {
+void AOctTree::Add(AActor* const Actor) {
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("could not get the root"));
 		return;
@@ -257,6 +258,13 @@ void AOctTree::Iterate(const FJOTIterator& Iterator) const {
 	RootNode->Iterate(Iterator);
 }
 
+void AOctTree::Print() {
+	if (!RootNode) return;
+	FJOTIterator I;
+	I.BindDynamic(this, &AOctTree::PrintIter);
+	Iterate(I);
+}
+
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
@@ -278,5 +286,10 @@ void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Pool->Empty();
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
+}
+
+bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s N=%s"), __func__, *GetNameSafe(A), *GetNameSafe(Node));
+	return false;
 }
 // thas it?
