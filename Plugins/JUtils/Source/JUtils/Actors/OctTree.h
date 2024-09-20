@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
+#include "Runtime/Core/Public/Containers/RingBuffer.h"
 
 #include "OctTree.generated.h"
 
@@ -33,18 +34,13 @@ public:
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
 	bool IterateInside(const FJOTIterator& Iterator, const FBox& Box);
-	
-	virtual void Reset() override;
-	UFUNCTION(BlueprintCallable)
-	void Empty();
-	UFUNCTION(BlueprintCallable)
-	void Return(); 
 	UFUNCTION(BlueprintCallable)
 	void DbgDraw();
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void Reset() override;
 	
 	AOTNode* NodeForActor(AActor* const Actor);
 	void Split();
@@ -52,11 +48,14 @@ protected:
 	void SetSubsBox();
 	void AddToSub(AActor* const Actor);
 	void PushToSubs();
+	void Empty();
+	void Return(); 
 	
 	UPROPERTY(Transient)
 	TArray<AOTNode*> Nodes; // children is already defined and has different meaning
 	UPROPERTY(Transient)
 	TArray<AActor*> Actors;
+	
 	UPROPERTY(Transient)
 	FBox Box;
 	UPROPERTY(Transient)

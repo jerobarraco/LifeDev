@@ -21,7 +21,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 // // TODO start with a naive approach and update all of them
 // TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
 // TODO pass parent to children
-// TODO can be optimized with a FRingBuffer
+// TODO can be optimized with a TRingBuffer does not count ref for uobject pointer, they could become stale :(
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -168,7 +168,7 @@ void AOTNode::Split() {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
 			return;
 		}
-		S->ActorsMax = ActorsMax;
+		S->ActorsMax = ActorsMax; // TODO create S->SetUp func,pass parent
 		Nodes.Add(S);
 		Moded = true;
 	}
