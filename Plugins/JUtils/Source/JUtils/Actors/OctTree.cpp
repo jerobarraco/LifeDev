@@ -384,8 +384,13 @@ bool AOctTree::Update(AActor* const Actor) {
 		return false;
 	}
 
+	if (N->IsInside(Actor)) return true;
 	if (!TryExtend(Actor)) return false;
-
+	N->Actors.Remove(Actor);
+	const bool Updated3= RootNode->Add(Actor);
+	// RootNode->Pack();
+	return Updated3;
+	
 	const bool Updated = N->Update(Actor); // this checks for is valid
 	if (Updated) RootNode->Pack();
 	return Updated;

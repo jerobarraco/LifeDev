@@ -31,7 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
 
-	// returns the owning node if any. also works as "contains"
+	// returns the owning node if any. also works as "find". does not check positions.
 	UFUNCTION(BlueprintCallable)
 	AOTNode* Contains(AActor* const Actor) const;
 
