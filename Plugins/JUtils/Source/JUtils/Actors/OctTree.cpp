@@ -48,6 +48,7 @@ int32 AOTNode::Rem(AActor* const Actor) {
 }
 
 bool AOTNode::AddToNodes(AActor* const Actor) {
+	if (!Actor) return false;
 	// using closest because sometimes the parent isInside passes but the sub doesn't.
 	// AOTNode* const S = NodeForActor(Actor); // this saves us the trouble of looping and crashing on Add
 	// this saves us the trouble of looping and crashing on Add.
@@ -153,14 +154,15 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 }
 
 void AOTNode::PushToNodes() {
-	for (AActor* const A: Actors) AddToNodes(A); // this could trigger addtoParent though.
+	for (AActor* const A: Actors) AddToNodes(A);
 	Actors.Empty(); // and these would get disowned.
 }
 
 void AOTNode::Split() {
 	constexpr uint8 SubsNum = 8;
 	UPooler* const Pooler = UPooler::Instance(this);
-	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr; // cache.
+	// cache because we use it often
+	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
 	if (!Pooler || !Pool) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
@@ -169,7 +171,7 @@ void AOTNode::Split() {
 	bool Moded = false;
 	// 1st create subs
 	Nodes.Reserve(SubsNum);
-	while (Nodes.Num()<SubsNum) {
+	while (Nodes.Num()<SubsNum) { // should be either 0 or 8. but well.
 		AOTNode* const S = Cast<AOTNode>(Pool->Get());
 		if (!S) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
