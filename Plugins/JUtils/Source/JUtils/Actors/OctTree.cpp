@@ -27,7 +27,6 @@ bool AOTNode::Add(AActor* const Actor) {
 	const bool Inside = IsInside(Actor);
 	UE_CLOG(!Inside, LogJOctTree, Verbose, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 
-
 	// If it's not inside. we still proceed to insert it. why? because sometimes the box.isnside of a parent passes and the child misses.
 	// if the parent decides it's ours. it's ours.
 
@@ -199,7 +198,8 @@ void AOTNode::SetActorsMax(const int32 InActorsMax) {
 
 void AOTNode::Empty(const bool ReturnSubs) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s RetSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
-	if (ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
+	// returning subs first, just in case they do something weird. or i do, in the future.
+	if (ReturnSubs) {
 		for (AOTNode* const S:Nodes) {
 			if (!S) continue;
 			S->Return(true);
@@ -213,6 +213,7 @@ void AOTNode::Empty(const bool ReturnSubs) {
 void AOTNode::Return(const bool ReturnSubs) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s RetSubs=%i Actors=%i"),
 		__func__, *GetNameSafe(this), ReturnSubs, Actors.Num());
+	// important to empty on return (instead of reset) to avoid issues with pointers.
 	Empty(ReturnSubs);
 
 	UPooler* const Pooler = UPooler::Instance(this);
@@ -289,7 +290,7 @@ void AOTNode::Pack() {
 		if (!N) continue;
 		if (!N) continue;
 		N->Pack();
-		Can = Can && N->Nodes.Num() == 0;
+		Can = Can && N->Nodes.Num() == 0; // important to filter the ones with sub nodes
 		NumChilds += N->Actors.Num();
 	}
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
@@ -300,7 +301,7 @@ void AOTNode::Pack() {
 	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
 		if (!N) continue;
 		Actors.Append(N->Actors);
-		
+		// shouldn't happen since the above loop filters that.
 		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Verbose, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
 		N->Return(true);
 	}

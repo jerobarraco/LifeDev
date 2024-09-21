@@ -139,7 +139,7 @@ public:
 	void Rebuild();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
-	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
+	void DbgDraw(const FColor& BoxColor = FColor::Blue, const FColor& ActorColor = FColor::Yellow);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Print();
 
