@@ -449,10 +449,10 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
 		if (!N) continue;
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
-
+		
+		Nodes.Append(N->Nodes); // steal nodes (first in case the add ends up using one of those nodes) (though it should not have actors if it has nodes)
 		for (AActor* const A: N->Actors) Add(A); // steal actors
 		
-		Nodes.Append(N->Nodes); // steal nodes
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
@@ -496,10 +496,12 @@ bool AOctTree::TryExtend(AActor* Actor) {
 	while (Loop>0) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
+		
 		if (RootNode->IsInside(Actor)) {
 			UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i it's inside"), __func__, Loop);
 			return true;
 		}
+
 		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check A"), __func__, Loop);
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
 		if (!NewRoot) return false;
