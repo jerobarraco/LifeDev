@@ -252,6 +252,29 @@ FString AOTNode::ToString() const{
 		*GetNameSafe(this), Actors.Num(), Nodes.Num());
 }
 
+bool AOTNode::HasLoops() const {
+	TArray<const AOTNode*> Stack;
+	Stack.Push(this);
+	bool Looping = false;
+	for (int32 i =0; i<Stack.Num() && !Looping; ++i) {
+		const AOTNode* const N = Stack[i];
+		if (!IsValid(N)) {
+			UE_LOG(LogJOctTree, Warning, TEXT("%hs Found invalid node"), __func__);
+			continue;
+		}
+		for (const AOTNode* const NN: N->Nodes) {
+			if (Stack.Contains(NN)) {
+				UE_LOG(LogJOctTree, Warning, TEXT("%hs Found loop with node=%s"), __func__, *GetNameSafe(NN));
+				Looping = true;
+				break;
+			}
+		}
+		Stack.Append(N->Nodes);
+	}
+
+	return Looping;
+}
+
 bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	if (!Iterator.IsBound()) return true;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
@@ -376,7 +399,8 @@ bool AOctTree::Update(AActor* const Actor) {
 		return false;
 	}
 
-	if (N->IsInside(Actor)) return true;
+	if (N->IsInside(Actor)) return true; // nothing to do. it's all good still.
+	if (RootNode->HasLoops()) return false; // TODO test. remove
 	if (!TryExtend(Actor)) return false;
 
 	N->Rem(Actor);
@@ -424,6 +448,7 @@ void AOctTree::SetPoolTrimTime(float const InTrimTime) {
 	if (!Pool) return;
 	Pool->Set(0, AOTNode::StaticClass(), false, true, InTrimTime);
 }
+
 void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, int32 const Size, float const Time) {
 	if (!RootNode) return;
 	RootNode->DbgDraw(BoxColor, ActorColor, Size, Time);
@@ -506,6 +531,10 @@ AOTNode* AOctTree::Contains(const AActor* const A) const {
 	return RootNode->Contains(A);
 }
 
+bool AOctTree::HasLoops() const {
+	return RootNode && RootNode->HasLoops();
+}
+
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
@@ -563,6 +592,7 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		if (!NewRoot) return false;
 
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check B"), __func__, Loop);
+		NewRoot->SetActorsMax(ActorsMax);
 
 		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go

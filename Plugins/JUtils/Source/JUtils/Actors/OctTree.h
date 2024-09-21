@@ -58,11 +58,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString ToString() const;
 
+	// slow
+	UFUNCTION(BlueprintCallable)
+	bool HasLoops() const;
+	
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;
 
 	/// all this functions can't be safely exposed to bp or something bad would happen
+
+	// not recursive
 	void SetActorsMax(const int32 InActorsMax = 10);
 	void SetBox(const FBox& InBox);
 	// biology is the only subject in which multiply and divide is the same. // smoke test
@@ -146,7 +152,8 @@ public:
 	// recursive.
 	UFUNCTION(BlueprintCallable)
 	AOTNode* Contains(const AActor* const A) const;
-	
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
+	bool HasLoops() const;
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
 	void DbgDraw(const FColor& BoxColor = FColor::Blue, const FColor& ActorColor = FColor::Yellow,
 		int32 const Size=3, float const Time=1);
