@@ -52,7 +52,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
 	void Empty();
 	/// ~advanced
-	
+
 	virtual void BeginDestroy() override;
 
 	// manage ticks on actors

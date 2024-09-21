@@ -52,7 +52,8 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Pack();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
-	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
+	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow,
+		int32 const Size=3, float const Time=1);
 
 	UFUNCTION(BlueprintCallable)
 	FString ToString() const;
@@ -142,7 +143,8 @@ public:
 	void Rebuild();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
-	void DbgDraw(const FColor& BoxColor = FColor::Blue, const FColor& ActorColor = FColor::Yellow);
+	void DbgDraw(const FColor& BoxColor = FColor::Blue, const FColor& ActorColor = FColor::Yellow,
+		int32 const Size=3, float const Time=1);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Print();
 

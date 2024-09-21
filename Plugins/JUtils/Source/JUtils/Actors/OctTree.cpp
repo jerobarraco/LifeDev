@@ -229,13 +229,13 @@ void AOTNode::Return(const bool ReturnSubs) {
 		// __func__, *GetNameSafe(this), ANum);
 }
 
-void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
+void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, const int32 Size, const float Time) {
 	FVector C, E;
 	Box.GetCenterAndExtents(C, E);
-	DrawDebugBox(GetWorld(), C, E, BoxColor, false, 1, 0, 3);
+	DrawDebugBox(GetWorld(), C, E, BoxColor, false, Time, 0, Size);
 	for (const AActor* const A: Actors) {
 		if(!IsValid(A)) continue;
-		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 5, ActorColor, false, 1, 0);
+		DrawDebugPoint(GetWorld(), A->GetActorLocation(), Size, ActorColor, false, Time, 0);
 	}
 
 	for (AOTNode* const S: Nodes) {
@@ -421,10 +421,9 @@ void AOctTree::SetPoolTrimTime(float const InTrimTime) {
 	if (!Pool) return;
 	Pool->Set(0, AOTNode::StaticClass(), false, true, InTrimTime);
 }
-
-void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
+void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, int32 const Size, float const Time) {
 	if (!RootNode) return;
-	RootNode->DbgDraw(BoxColor, ActorColor);
+	RootNode->DbgDraw(BoxColor, ActorColor, Size, Time);
 }
 
 void AOctTree::Pack() {
