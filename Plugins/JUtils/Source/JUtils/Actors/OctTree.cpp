@@ -501,10 +501,10 @@ void AOctTree::Rebuild() {
 
 	const FBox& Box = RootNode->Box; // cache instead of copy. beware we release the box later.
 	TArray<AOTNode*> Nodes;
-	Nodes.Push(RootNode);
+	Nodes.Push(RootNode); // store the old one.
 	
 	RootNode = Cast<AOTNode>(Pool->Get());
-	RootNode->SetActorsMax(ActorsMax);
+	RootNode->SetActorsMax(ActorsMax); // create a new one. read note below in the loop.
 	RootNode->SetBox(Box);
 
 	while (Nodes.Num()>0) {
@@ -518,7 +518,11 @@ void AOctTree::Rebuild() {
 		// (though it should not have actors if it has nodes)
 		Nodes.Append(N->Nodes); // note this is the stack not N
 
-		for (AActor* const A: N->Actors) Add(A); // steal actors
+		// steal actors
+		// notice we use this->Add. this will trigger TryExtend. which can and will change the RootActor
+		// at first glance you should be concerned that this will mess with the nodes in the list Nodes.
+		// but we create a NEW tree while keeping the old one in memory, and we navigate the old one, while the new one is in place.
+		for (AActor* const A: N->Actors) Add(A);
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
