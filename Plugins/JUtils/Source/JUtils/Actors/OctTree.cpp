@@ -342,9 +342,9 @@ void AOctTree::Add(AActor* const Actor) {
 	// If it doesn't fit, extend
 	if (!TryExtend(Actor)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not extend. disowning."), __func__);
-		return; // otherwise rootnode will loop
+		return; // otherwise rootnode cant handle it.
 	}
-	RootNode->Add(Actor);
+	RootNode->Add(Actor); // note rootnode and not this->add
 }
 
 int32 AOctTree::Rem(AActor* const Actor) {
@@ -588,10 +588,10 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		// and just re-do them all. suboptimal for the cpu. optimal for me.
 		NewRoot->Split();
 		
-		// well just find whichever node is the corresponding to the current one and clone it.
+		// we'll just find whichever node is the corresponding to the current one and clone it.
 		// this is the best way, and will 100% return the one corresponding.
 		// using overlap or isinside is more complex and not more accurate
-		AOTNode* const NCloser = NewRoot->ClosestNode(RCenter); 
+		AOTNode* const NCloser = NewRoot->ClosestNode(RCenter);
 		if (!NCloser) return false;
 		
 		// clone it // TODO move to node, maybe?
