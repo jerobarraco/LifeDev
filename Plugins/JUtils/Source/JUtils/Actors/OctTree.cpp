@@ -136,7 +136,7 @@ bool AOTNode::IsInside(AActor* const Actor) const {
 	return Box.IsInsideOrOn(AT);
 }
 
-AOTNode* AOTNode::Contains(AActor* const Actor) const {
+AOTNode* AOTNode::Contains(const AActor* const Actor) const {
 	// don't care if actor is invalid (but be careful)
 	for (AActor* const A: Actors) {
 		// i think this is a valid case. the func itself is const.
@@ -194,6 +194,7 @@ void AOTNode::Reset() {
 }
 
 void AOTNode::SetActorsMax(const int32 InActorsMax) {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs Max=%i"), __func__, InActorsMax);
 	ActorsMax = InActorsMax;
 	Actors.Reserve(InActorsMax);
 }
@@ -495,6 +496,14 @@ void AOctTree::Rebuild() {
 		for (AActor* const A: N->Actors) Add(A); // steal actors
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
+}
+
+AOTNode* AOctTree::Contains(const AActor* const A) const {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, No root node. Stop"), __func__);
+		return nullptr;
+	}
+	return RootNode->Contains(A);
 }
 
 void AOctTree::BeginPlay() {

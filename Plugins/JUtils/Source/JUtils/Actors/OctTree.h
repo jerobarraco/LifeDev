@@ -31,7 +31,7 @@ public:
 
 	// returns the owning node if any. also works as "find". does not check positions.
 	UFUNCTION(BlueprintCallable)
-	AOTNode* Contains(AActor* const Actor) const;
+	AOTNode* Contains(const AActor* const Actor) const;
 
 	// iterate through actors
 	// returns true when break
@@ -142,6 +142,11 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild();
 
+	// Returns the node that hosts the Actor. or nullptr if the actor is not on the tree, or there's no root set.
+	// recursive.
+	UFUNCTION(BlueprintCallable)
+	AOTNode* Contains(const AActor* const A) const;
+	
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
 	void DbgDraw(const FColor& BoxColor = FColor::Blue, const FColor& ActorColor = FColor::Yellow,
 		int32 const Size=3, float const Time=1);
@@ -150,6 +155,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
+	
 	// Be careful. this will destroy the pool for ALL oct trees. if there's one alive it might fail.
 	// but after destroying the pool you can just create a new oct tree, and it'll create a new pool.
 	UFUNCTION(BlueprintCallable, CallInEditor)
