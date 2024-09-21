@@ -97,6 +97,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Pack();
 
+	// call this at the very start. or the tree won't work.
 	// warning. will rebuild the tree
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
@@ -105,11 +106,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPoolTrimTime(float const InTrimTime);
 
+	// iterate through actors
+	// returns true when break
 	UFUNCTION(BlueprintCallable)
-	void Iterate(const FJOTIterator& Iterator) const;
+	void Iterate(const FJOTIterator& Iterator); // if i make it const. then ue makes it pure. :(
 
+	// iterate through actors
+	// returns true when break
 	UFUNCTION(BlueprintCallable)
-	void IterateIn(const FJOTIterator& Iterator, const FBox& Box) const;
+	void IterateIn(const FJOTIterator& Iterator, const FBox& Box);
+
+	// will rebuild the tree. slower than 1 update. but faster if many objects moved.
+	// no need to pack. it will be optimal.
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Rebuild();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
@@ -118,10 +128,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
-
-	// no need to pack. it will be optimal.
+	// Be careful. this will destroy the pool for ALL oct trees. if there's one alive it might fail.
+	// but after destroying the pool you can just create a new oct tree, and it'll create a new pool.
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Rebuild();
+	void DestroyPool();
 
 	// when trying to extend, what's the max levels it will try to go (each try)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

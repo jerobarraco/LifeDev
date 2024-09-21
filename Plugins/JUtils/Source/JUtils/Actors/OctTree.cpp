@@ -431,7 +431,7 @@ void AOctTree::Pack() {
 	RootNode->Pack();
 }
 
-void AOctTree::Iterate(const FJOTIterator& Iterator) const {
+void AOctTree::Iterate(const FJOTIterator& Iterator) {
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
@@ -440,7 +440,7 @@ void AOctTree::Iterate(const FJOTIterator& Iterator) const {
 	RootNode->Iterate(Iterator);
 }
 
-void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) const {
+void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) {
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
@@ -496,11 +496,15 @@ void AOctTree::BeginPlay() {
 	UE_CLOG(!Pool, LogJOctTree, Warning, TEXT("Could not obtain the Pool. this would crash later."));
 }
 
-void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Pool = nullptr;
+void AOctTree::DestroyPool() {
 	UPooler* const Pooler = UPooler::Instance(this);
 	// destroy the pool before returning the nodes. that way they'll get destroyed upon return. avoiding extra overhead.
 	if (Pooler) Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
+}
+
+void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Pool = nullptr;
+	// DestroyPool(); // actually no. because there might be other octtrees
 	if (RootNode) RootNode->Return(true); // will return all of them
 	
 	RootNode = nullptr;
