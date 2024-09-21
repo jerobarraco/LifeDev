@@ -372,11 +372,11 @@ bool AOctTree::Update(AActor* const Actor) {
 	if (!TryExtend(Actor)) return false;
 
 	N->Rem(Actor);
-	const bool Updated = RootNode->Add(Actor);
-	if (!Updated)
+	const bool Added = RootNode->Add(Actor);
+	if (!Added)
 		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s loc=%s"),
 			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
-	return Updated;
+	return Added;
 }
 
 void AOctTree::SetBox(const FBox& InBox) {
@@ -484,14 +484,14 @@ void AOctTree::BeginPlay() {
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (RootNode) RootNode->Return(true);
+	Pool = nullptr;
+	UPooler* const Pooler = UPooler::Instance(this);
+	// destroy the pool before returning the nodes. that way they'll get destroyed upon return. avoiding extra overhead.
+	if (Pooler) Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
+	if (RootNode) RootNode->Return(true); // will return all of them
+	
 	RootNode = nullptr;
 
-	if (Pool) Pool->Empty();
-	Pool = nullptr;
-
-	UPooler* const Pooler = UPooler::Instance(this);
-	if (Pooler) Pooler->RemPool(AOTNode::StaticClass());
 
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
