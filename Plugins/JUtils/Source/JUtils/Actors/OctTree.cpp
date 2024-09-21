@@ -25,7 +25,7 @@ bool AOTNode::Add(AActor* const Actor) {
 	if (!IsValid(Actor)) return false;
 
 	const bool Inside = IsInside(Actor);
-	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
+	UE_CLOG(!Inside, LogJOctTree, Verbose, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
 
 
 	// If it's not inside. we still proceed to insert it. why? because sometimes the box.isnside of a parent passes and the child misses.
