@@ -95,13 +95,13 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Pack();
 
+	// warning. will rebuild the tree
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
-
-	// TODO pass ExtendMax, and pool time
-	// will rebuild the tree
 	UFUNCTION(BlueprintCallable)
-	void SetUp(const FBox& InBox, const int32 Max);
+	void SetActorsMax(int32 InActorsMax);
+	UFUNCTION(BlueprintCallable)
+	void SetPoolTrimTime(float const InTrimTime);
 
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
@@ -114,13 +114,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AOTNode* GetRoot() const { return RootNode; }
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void RebuildSameBox(); // TODO rename
-
 	// no need to pack. it will be optimal.
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Rebuild(const FBox& NewBox);
+	void Rebuild();
 
+	// when trying to extend, what's the max levels it will try to go
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ExtendMax = 5;
 protected:

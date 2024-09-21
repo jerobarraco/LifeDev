@@ -62,7 +62,7 @@ void AOTNode::SetBox(const FBox& InBox) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
 	// why bother. this is not meant to be optimal yet
 	Box = InBox;
-	Box.IsValid = true;
+	Box.IsValid = true; // because unreal
 }
 
 void AOTNode::SetNodesBox() {
@@ -384,17 +384,29 @@ void AOctTree::SetBox(const FBox& InBox) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
-
 	RootNode->SetBox(InBox);
+	Rebuild();
 }
 
-void AOctTree::SetUp(const FBox& InBox, const int32 Max) {
-	ActorsMax = Max;
-	
+void AOctTree::SetActorsMax(const int32 InActorsMax) {
+	ActorsMax = InActorsMax;
 	if (!RootNode) return;
 	
-	RootNode->ActorsMax = Max;
-	Rebuild(InBox); // TODO fix
+	TArray<AOTNode*> Nodes;
+	Nodes.Push(RootNode);
+
+	while (Nodes.Num()>0) {
+		// if org rootNode is none, it will be skipped here. and above we create one.
+		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
+		if (!N) continue;
+		N->ActorsMax = InActorsMax;
+		Nodes.Append(N->Nodes);
+	}
+}
+
+void AOctTree::SetPoolTrimTime(float const InTrimTime) {
+	if (!Pool) return;
+	Pool->Set(0, AOTNode::StaticClass(), false, true, InTrimTime);
 }
 
 void AOctTree::DbgDraw() {
@@ -428,20 +440,17 @@ void AOctTree::Print() {
 	Iterate(I);
 }
 
-void AOctTree::RebuildSameBox() {
-	if (!RootNode) return; // TODO error
-	Rebuild(RootNode->Box);
-}
-
-void AOctTree::Rebuild(const FBox& NewBox) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs B=%s"), __func__, *NewBox.ToString());
+void AOctTree::Rebuild() {
+	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
 	if (!Pool) return;
-	
+
+	const FBox& Box = RootNode->Box;
 	TArray<AOTNode*> Nodes;
 	Nodes.Push(RootNode);
+	
 	RootNode = Cast<AOTNode>(Pool->Get());
 	RootNode->SetUp(ActorsMax);
-	RootNode->SetBox(NewBox);
+	RootNode->SetBox(Box);
 
 	while (Nodes.Num()>0) {
 		// if org rootNode is none, it will be skipped here. and above we create one.
@@ -450,9 +459,11 @@ void AOctTree::Rebuild(const FBox& NewBox) {
 		if (!N) continue;
 		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 		
-		Nodes.Append(N->Nodes); // steal nodes (first in case the add ends up using one of those nodes) (though it should not have actors if it has nodes)
+		// steal nodes (before 'add' case it ends up using one of those nodes)
+		// (though it should not have actors if it has nodes)
+		Nodes.Append(N->Nodes); // note this is the stack not N
+
 		for (AActor* const A: N->Actors) Add(A); // steal actors
-		
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
