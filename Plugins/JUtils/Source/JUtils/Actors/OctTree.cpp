@@ -21,7 +21,7 @@ bool AOTNode::Add(AActor* const Actor) {
 	// does not check for isvalid. that is checked by the tree. little, bit of ... optimization.
 	// the tree is justifying its existence...
 	// clog rulz, ok.
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
 	if (!IsValid(Actor)) return false;
 
 	const bool Inside = IsInside(Actor);
@@ -244,6 +244,11 @@ void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
 	}
 }
 
+FString AOTNode::ToString() const{
+	return FString::Printf(TEXT("%s : Actors=%i Nodes=%i"),
+		*GetNameSafe(this), Actors.Num(), Nodes.Num());
+}
+
 bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	if (!Iterator.IsBound()) return true;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
@@ -391,6 +396,7 @@ void AOctTree::SetBox(const FBox& InBox) {
 		RootNode->SetBox(InBox);
 		return; // no need to rebuild
 	}
+	RootNode->SetActorsMax(ActorsMax);
 	RootNode->SetBox(InBox); // tell rebuild which box to use
 	Rebuild();
 }
@@ -449,7 +455,11 @@ void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) {
 }
 
 void AOctTree::Print() {
-	if (!RootNode) return;
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs, could not get the root"), __func__);
+		return;
+	}
+
 	FJOTIterator I;
 	I.BindDynamic(this, &AOctTree::PrintIter);
 	Iterate(I);
@@ -457,7 +467,10 @@ void AOctTree::Print() {
 
 void AOctTree::Rebuild() {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
-	if (!Pool) return;
+	if (!Pool) {
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs Can't get the Pool. Stop."), __func__);
+		return;
+	}
 
 	const FBox& Box = RootNode->Box; // cache instead of copy. beware we release the box later.
 	TArray<AOTNode*> Nodes;
@@ -492,7 +505,7 @@ void AOctTree::BeginPlay() {
 		return;
 	}
 
-	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 1);
+	Pool = Pooler->SetPool(0, AOTNode::StaticClass(), false, true, 1);
 	UE_CLOG(!Pool, LogJOctTree, Warning, TEXT("Could not obtain the Pool. this would crash later."));
 }
 

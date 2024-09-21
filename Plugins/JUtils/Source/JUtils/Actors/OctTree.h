@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
 	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
 
+	UFUNCTION(BlueprintCallable)
+	FString ToString() const;
+
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;

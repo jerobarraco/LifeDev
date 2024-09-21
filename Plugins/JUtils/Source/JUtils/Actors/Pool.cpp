@@ -96,10 +96,15 @@ AActor* UPool::Get() {
 	}
 	
 	AActor* const A = Ready[0];
-	if (!IsValid(A)) return nullptr; // avoid crash below. "shouldn't happen"(TM)
-	
-	// don't shrink since it will get returned, hopefully. Use Swap since it's faster and we don't need to keep the order.
-	Ready.RemoveAtSwap(0, 1, false);
+	// don't shrink since it will get returned, hopefully. Use Swap since it's faster, and we don't need to keep the order.
+	Ready.RemoveAtSwap(0, 1, Ready.Num()>ItemMax); // remove before checking or we'll get stuck
+	if (!IsValid(A)) {
+		UE_LOG(LogJPool, Warning, TEXT("%hs. Pool gave an invalid actor."
+			" Did it died while in the pool (someone referenced it after return, bad). Try again. obj=%s"),
+			__func__, *GetNameSafe(A));
+		return nullptr; // avoid crash below. "shouldn't happen"(TM)
+	}
+
 	A->SetActorHiddenInGame(false);
 	A->Reset();
 
@@ -111,13 +116,13 @@ AActor* UPool::Get() {
 	return A;
 }
 
-void UPool::Return(AActor* Actor) {
+void UPool::Return(AActor* const Actor) {
 	if (!IsValid(Actor)) {
-		UE_LOG(LogJPool, Warning, TEXT("Return: Actor was invalid."));
+		UE_LOG(LogJPool, Warning, TEXT("%hs: Actor was invalid."), __func__);
 		return;
 	}
 
-	UE_LOG(LogJPool, Verbose, TEXT("Actor returned to pool."));
+	UE_LOG(LogJPool, Verbose, TEXT("%hs: Actor returned to pool. A=%s"), __func__, *GetNameSafe(Actor));
 	Actor->SetActorHiddenInGame(true);
 	if (SetTicks) Actor->SetActorTickEnabled(false);
 
@@ -157,12 +162,7 @@ void UPool::SetTrimTimer() {
 
 	// don't schedule if not needed. Spawn will schedule if needed.
 	if (TrimTime<=0) {
-		UE_LOG(LogJPool, Log, TEXT("%hs. Reached max. not trimming anymore."), __func__);
-		return;
-	}
-
-	if (Ready.Num() <= ItemMax)  {
-		UE_LOG(LogJPool, Log, TEXT("%hs. Reached max. not trimming anymore."), __func__);
+		UE_LOG(LogJPool, Log, TEXT("%hs. Trim time 0. Disabled."), __func__);
 		return;
 	}
 	

@@ -29,7 +29,7 @@ public:
 
 	// returns an actor to this pool.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")
-	void Return(AActor* Actor);
+	void Return(AActor* const Actor);
 
 	////advanced: these are not really necessary outside this class. but can be helpful to have.
 	
