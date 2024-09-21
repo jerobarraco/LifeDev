@@ -43,7 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Pack();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
-	void DbgDraw();
+	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor);
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
@@ -123,7 +123,7 @@ public:
 	void Rebuild();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
-	void DbgDraw();
+	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Print();
 

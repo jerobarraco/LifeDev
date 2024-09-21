@@ -198,7 +198,7 @@ void AOTNode::SetActorsMax(const int32 InActorsMax) {
 }
 
 void AOTNode::Empty(const bool ReturnSubs) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s RetSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
 	if (ReturnSubs) { // returning before, just in case the children do something weird. or i do in the future.
 		for (AOTNode* const S:Nodes) {
 			if (!S) continue;
@@ -211,7 +211,7 @@ void AOTNode::Empty(const bool ReturnSubs) {
 }
 
 void AOTNode::Return(const bool ReturnSubs) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i Actors=%i"),
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s RetSubs=%i Actors=%i"),
 		__func__, *GetNameSafe(this), ReturnSubs, Actors.Num());
 	Empty(ReturnSubs);
 
@@ -228,24 +228,24 @@ void AOTNode::Return(const bool ReturnSubs) {
 		// __func__, *GetNameSafe(this), ANum);
 }
 
-void AOTNode::DbgDraw() {
+void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
 	FVector C, E;
 	Box.GetCenterAndExtents(C, E);
-	DrawDebugBox(GetWorld(), C, E, FColor::Purple, false, 1, 0, 3);
+	DrawDebugBox(GetWorld(), C, E, BoxColor, false, 1, 0, 3);
 	for (const AActor* const A: Actors) {
 		if(!IsValid(A)) continue;
-		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 5, FColor::Yellow, false, 1, 0);
+		DrawDebugPoint(GetWorld(), A->GetActorLocation(), 5, ActorColor, false, 1, 0);
 	}
 
 	for (AOTNode* const S: Nodes) {
 		if (!IsValid(S)) continue;
-		S->DbgDraw();
+		S->DbgDraw(BoxColor, ActorColor);
 	}
 }
 
 bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	if (!Iterator.IsBound()) return true;
-	UE_LOG(LogJOctTree, Log, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 
 	for (AActor* const A: Actors)
 		if (Iterator.Execute(A, this)) return true;
@@ -258,10 +258,10 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 
 bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
 	if (!Iterator.IsBound()) return true;
-	UE_LOG(LogJOctTree, Log, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 	const FBox Overlap = Box.Overlap(InBox); // overlap instead of isinside. since we'll check even if close.
 	if (Overlap.GetVolume()<=0) {
-		UE_LOG(LogJOctTree, Log, TEXT("%hs doesn't overlap Over=%s node=%s"),
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs doesn't overlap Over=%s node=%s"),
 			__func__, *Overlap.ToString(), *GetNameSafe(this));
 		return false; // don't break. other nodes might overlap.
 	}
@@ -285,22 +285,22 @@ void AOTNode::Pack() {
 	bool Can = true;
 	int32 NumChilds=0;
 	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
-		if (!N) continue;;
+		if (!N) continue;
 		if (!N) continue;
 		N->Pack();
 		Can = Can && N->Nodes.Num() == 0;
 		NumChilds += N->Actors.Num();
 	}
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
 		__func__, *GetNameSafe(this), Can, NumChilds);
 	
 	if (!Can || NumChilds>=ActorsMax) return;
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
 	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
 		if (!N) continue;
 		Actors.Append(N->Actors);
 		
-		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Log, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
+		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Verbose, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
 		N->Return(true);
 	}
 	Nodes.Empty(8);
@@ -320,7 +320,7 @@ AOctTree::AOctTree(): Super() {
 }
 
 void AOctTree::Add(AActor* const Actor) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
@@ -333,7 +333,7 @@ void AOctTree::Add(AActor* const Actor) {
 	// If it doesn't fit, extend
 	if (!TryExtend(Actor)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not extend. disowning."), __func__);
-		return; // otherwise rootnode will loop right?
+		return; // otherwise rootnode will loop
 	}
 	RootNode->Add(Actor);
 }
@@ -372,7 +372,7 @@ bool AOctTree::Update(AActor* const Actor) {
 	N->Rem(Actor);
 	const bool Added = RootNode->Add(Actor);
 	if (!Added)
-		UE_LOG(LogJOctTree, Error, TEXT("%hs couldnt insert the actor %s loc=%s"),
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs couldn't insert the actor %s loc=%s"),
 			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
 	return Added;
 }
@@ -381,7 +381,7 @@ void AOctTree::SetBox(const FBox& InBox) {
 	if (!RootNode) {
 		RootNode = Cast<AOTNode>(Pool->Get());
 		if (!RootNode) {
-			UE_LOG(LogJOctTree, Error, TEXT("%hs, could not create the root. Stop"), __func__);
+			UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not create the root. Stop"), __func__);
 			return;
 		}
 
@@ -414,9 +414,9 @@ void AOctTree::SetPoolTrimTime(float const InTrimTime) {
 	Pool->Set(0, AOTNode::StaticClass(), false, true, InTrimTime);
 }
 
-void AOctTree::DbgDraw() {
+void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
 	if (!RootNode) return;
-	RootNode->DbgDraw();
+	RootNode->DbgDraw(BoxColor, ActorColor);
 }
 
 void AOctTree::Pack() {
@@ -454,7 +454,7 @@ void AOctTree::Print() {
 }
 
 void AOctTree::Rebuild() {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
 	if (!Pool) return;
 
 	const FBox& Box = RootNode->Box; // cache instead of copy. beware we release the box later.
@@ -517,7 +517,7 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 }
 
 bool AOctTree::TryExtend(AActor* Actor) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode || !Actor) return false;
 
 	int32 Loop = ExtendMax;
@@ -530,10 +530,11 @@ bool AOctTree::TryExtend(AActor* Actor) {
 			return true;
 		}
 
-		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check A"), __func__, Loop);
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check A"), __func__, Loop);
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
 		if (!NewRoot) return false;
-		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i Check B"), __func__, Loop);
+
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check B"), __func__, Loop);
 
 		const FBox& RBox = RootNode->Box;
 		// find out which way we need to go
@@ -543,11 +544,14 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		const FVector Diff = APos - RCenter; // end-start
 		const FVector Sign = Diff.GetSignVector();
 		// const bool BDir[] = {Dir.X>=0, Dir.Y>=0, Dir.Z>=0}; // i could optimize with bit manip
-		// this might work. or maybe is just nonsense
+
+		// calculate parents center and extent and others
 		const FVector ExtS = Ext*Sign;
 		const FVector PCent = RCenter+ExtS;
 		const FVector PExt = Ext*2;
 		const FVector PMax = PCent+PExt;
+
+		// set the new box
 		FBox& PBox = NewRoot->Box; // alias
 		PBox.Min = PCent-PExt;
 		// reusing parboxmin.
@@ -559,21 +563,26 @@ bool AOctTree::TryExtend(AActor* Actor) {
 		PBox.Min.Y = FMath::Min(PBox.Min.Y, PBox.Max.Y);
 		PBox.Min.Z = FMath::Min(PBox.Min.Z, PBox.Max.Z);
 		PBox.IsValid = 1; // Because unreal, that's why.
-		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, *PBox.ToString());
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i PBox=%s"), __func__, Loop, *PBox.ToString());
 
-		NewRoot->Split(); // avoid having to calculate the extent for the children based on the above node.
+		// avoid having to calculate the extent for the children based on the above node.
+		// and just re-do them all. suboptimal for the cpu. optimal for me.
+		NewRoot->Split();
 		
-		// this is a hack might not work well
+		// well just find whichever node is the corresponding to the current one and clone it.
+		// this is the best way, and will 100% return the one corresponding.
+		// using overlap or isinside is more complex and not more accurate
 		AOTNode* const NCloser = NewRoot->ClosestNode(RCenter); 
 		if (!NCloser) return false;
 		
-		// clone it // TODO move to node
+		// clone it // TODO move to node, maybe?
 		NCloser->Actors = RootNode->Actors;
 		NCloser->Nodes = RootNode->Nodes;
-		RootNode->Return(false); // we stole them
+		RootNode->Return(false); // false because we stole them
 		RootNode = NewRoot;
 	}
 
 	return false;
 }
-// thas it?
+
+// that's it?
