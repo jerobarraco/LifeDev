@@ -243,7 +243,7 @@ void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, const in
 
 	for (AOTNode* const S: Nodes) {
 		if (!IsValid(S)) continue;
-		S->DbgDraw(BoxColor, ActorColor);
+		S->DbgDraw(BoxColor, ActorColor, Size, Time);
 	}
 }
 
