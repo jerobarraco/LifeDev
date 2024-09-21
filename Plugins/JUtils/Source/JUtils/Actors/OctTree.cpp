@@ -194,7 +194,7 @@ void AOTNode::Reset() {
 }
 
 void AOTNode::SetActorsMax(const int32 InActorsMax) {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs Max=%i"), __func__, InActorsMax);
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs Max=%i"), __func__, InActorsMax);
 	ActorsMax = InActorsMax;
 	Actors.Reserve(InActorsMax);
 }
