@@ -20,7 +20,8 @@ class JUTILS_API UPool: public UObject {
 public:
 	// sets the configuration for this pool. changing the class on a pool handled by Pooler can cause issues.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay="SetTicks,CanGrow,TrimTime"))
-	void Set(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool bCanGrow=false, int32 InTrimTime=5);
+	void Set(int32 const Max, TSubclassOf<AActor> const Class, bool const InSetTicks=true,
+		bool const InCanGrow=false, int32 const InTrimTime=5);
 	
 	// gets an actor. returns null on exhausted or failure
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool")

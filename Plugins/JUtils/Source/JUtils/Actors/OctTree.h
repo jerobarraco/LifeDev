@@ -25,6 +25,7 @@ public:
 	int32 Rem(AActor* const Actor);
 	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
 
+	// returns true if the Actor is inside the bounds of this node. 
 	UFUNCTION(BlueprintCallable)
 	bool IsInside(AActor* const Actor) const;
 
@@ -39,19 +40,28 @@ public:
 	// iterate through actors inside a box.
 	// returns true when you want to break.
 	UFUNCTION(BlueprintCallable)
-	bool IterateIn(const FJOTIterator& Iterator, const FBox& Box);
+	bool IterateIn(const FJOTIterator& Iterator, const FBox& InBox);
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	TArray<AOTNode*> GetNodes() { return Nodes; }
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	TArray<AActor*> GetActors() { return Actors; }
+	
+	// recursive
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Pack();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
 	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
 
-	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;
-	
+
+	/// all this functions can't be safely exposed to bp or something bad would happen
 	void SetActorsMax(const int32 InActorsMax = 10);
 	void SetBox(const FBox& InBox);
+	// biology is the only subject in which multiply and divide is the same. // smoke test
 	void Split();
 	AOTNode* ClosestNode(const FVector& To);
 	void SetNodesBox();
@@ -62,14 +72,17 @@ protected:
 	void Return(const bool ReturnSubs = true);
 
 	UPROPERTY(Transient)
-	TArray<AOTNode*> Nodes; // children is already defined and has different meaning
+	TArray<AOTNode*> Nodes; // "children" is already defined, and has different meaning.
 	UPROPERTY(Transient)
 	TArray<AActor*> Actors;
 	
 	UPROPERTY(Transient)
 	FBox Box;
 
-	uint8 ActorsMax = 1; // not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature) 
+	uint8 ActorsMax = 1;
+	// not optimized. TODO optimize this obnoxiously redundant variable (but it might be a feature)
+	// can't make static since i want multiple trees with different maxes.
+
 	friend class AOctTree;
 };
 
@@ -83,18 +96,21 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Add(AActor* const Actor);
-	void operator+=(AActor* const Actor) {Add(Actor);};// because i can
+	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
 
 	// removes from the tree. recursive
 	UFUNCTION(BlueprintCallable)
 	int32 Rem(AActor* const Actor);
-	void operator-=(AActor* const Actor) {Rem(Actor);};// because i can
+	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
 
 	// updates an actor, modifying the tree, this could be slower than just rebuilding depending on how many actors move.
 	// doesn't call pack, so you can update many objects before packing. or you might wanna pack not every update.
 	UFUNCTION(BlueprintCallable)
 	bool Update(AActor* const Actor);
-	// call after updating all the objects. you can also do it less often
+
+	// will try to compact the tree and remove un-needed nodes. it won't change the max bounds (or root)
+	// Slow and delicate.
+	// call after updating all the objects. you can also do it less often.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Pack();
 

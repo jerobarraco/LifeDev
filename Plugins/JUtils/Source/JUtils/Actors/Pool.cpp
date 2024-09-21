@@ -41,7 +41,8 @@ bool UPool::RemoveOne() {
 	return true;
 }
 
-void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCanGrow, int32 InTrimTime) {
+void UPool::Set(int32 const Max, TSubclassOf<AActor> const Class, bool const InSetTicks,
+	bool const InCanGrow, int32 const InTrimTime) {
 	if (!IsValid(Class)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Invalid class, not setting anything."), __func__);
 		return;
@@ -51,7 +52,7 @@ void UPool::Set(int32 Max, TSubclassOf<AActor> Class, bool InSetTicks, bool InCa
 		__func__, Max, *Class->GetFName().ToString(), InSetTicks, InCanGrow, InTrimTime);
 
 	// Class changed. ready elements are invalid.
-	if (Class != ItemType) {
+	if (IsValid(ItemType) && Class != ItemType) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs: Class changed. Resetting"), __func__);
 		Empty();
 	}

@@ -21,7 +21,7 @@ bool AOTNode::Add(AActor* const Actor) {
 	// does not check for isvalid. that is checked by the tree. little, bit of ... optimization.
 	// the tree is justifying its existence...
 	// clog rulz, ok.
-	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
+	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
 	if (!IsValid(Actor)) return false;
 
 	const bool Inside = IsInside(Actor);
@@ -124,7 +124,7 @@ AOTNode* AOTNode::ClosestNode(const FVector& To) {
 			MinDist = Dist;
 		}
 	}
-	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. To=%s "), __func__,
+	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. To=%s"), __func__,
 		*GetNameSafe(this), *To.ToString());
 	return Near;
 }
@@ -259,10 +259,11 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
 	if (!Iterator.IsBound()) return true;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
-	const FBox Overlap = Box.Overlap(InBox); // overlap instead of isinside. since we'll check even if close.
-	if (Overlap.GetVolume()<=0) {
-		UE_LOG(LogJOctTree, Verbose, TEXT("%hs doesn't overlap Over=%s node=%s"),
-			__func__, *Overlap.ToString(), *GetNameSafe(this));
+	// const FBox Overlap = Box.Overlap(InBox); // overlap instead of isinside. since we'll check even if close.
+	// if (Overlap.GetVolume()<=0) {
+	if (!Box.Intersect(InBox)) { // faster than overlap
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs doesn't overlap node=%s"),
+			__func__, *GetNameSafe(this));
 		return false; // don't break. other nodes might overlap.
 	}
 
@@ -501,10 +502,13 @@ void AOctTree::DestroyPool() {
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Pool = nullptr;
 	// DestroyPool(); // actually no. because there might be other octtrees
 	if (RootNode) RootNode->Return(true); // will return all of them
-	
+
+	// empty after returning to also delete the ones returned.
+	if (Pool) Pool->Empty(); // might affect performance, but...
+	Pool = nullptr;
+
 	RootNode = nullptr;
 
 	// Return all nodes
