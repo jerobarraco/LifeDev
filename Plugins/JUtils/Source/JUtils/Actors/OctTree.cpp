@@ -215,19 +215,19 @@ void AOTNode::Empty(const bool ReturnSubs) {
 void AOTNode::Return(const bool ReturnSubs) {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s RSubs=%i Actors=%i"),
 		__func__, *GetNameSafe(this), ReturnSubs, Actors.Num());
+	Empty(ReturnSubs);
+
 	UPooler* const Pooler = UPooler::Instance(this);
 	if (!Pooler) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
+	Pooler->Return(this);
 
 	// doesn't matter.
 	// const int32 ANum=Actors.Num();
 	// UE_CLOG(ANum>0, LogJOctTree, Warning, TEXT("%hs %s Returning with Actors! n=%i"),
 		// __func__, *GetNameSafe(this), ANum);
-	
-	Empty(ReturnSubs);
-	Pooler->Return(this);
 }
 
 void AOTNode::DbgDraw() {
@@ -268,7 +268,7 @@ bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 		return false; // don´t break.
 	}
 
-	// i could reuse iterate with my own predicate but it will add overhead and itś not that much code.
+	// i could reuse iterate with my own predicate, but it will add overhead and itś not that much code.
 	// also the sub calling is different.
 	for (AActor* const A: Actors) {
 		// if the actor is in it, will execute the iterator. and if the iterator breaks. then break.
@@ -489,7 +489,10 @@ void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	if (Pool) Pool->Empty();
 	Pool = nullptr;
-	
+
+	UPooler* const Pooler = UPooler::Instance(this);
+	if (Pooler) Pooler->RemPool(AOTNode::StaticClass());
+
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
 }

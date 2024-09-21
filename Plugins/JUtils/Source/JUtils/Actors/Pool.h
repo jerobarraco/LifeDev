@@ -84,9 +84,10 @@ class JUTILS_API UPooler: public UWorldSubsystem {
 public:
 	static UPooler* Instance(UObject* Ctx);
 	
-	// adds a new pool for a class. or modifies an already existing one.
+	// adds a new pool for a class. or modifies an already existing one. returns it.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	UPool* SetPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks=true, bool CanGrow=false, int32 TrimTime = 5);
+	UPool* SetPool(int32 const Max, TSubclassOf<AActor> const Class,
+		bool const SetTicks=true, bool const CanGrow=false, int32 const TrimTime = 5);
 
 	// removes (deletes) a pool for a given class. objects that are unused will be destroyed. the rest will be destroyed on return. 
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
@@ -98,13 +99,14 @@ public:
 	UPool* GetPool(TSubclassOf<AActor> Class);
 
 	// gets an actor of a class from a pool. Returns null if exhausted or the pool has not been created.
+	// if you're going to use this often, is better to get the pool, and call get there.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	AActor* Get(TSubclassOf<AActor> Class);
+	AActor* Get(TSubclassOf<AActor> const Class);
 
 	// returns an actor to the corresponding pool.
 	// If the pool is removed, then the actor will get destroyed.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	void Return(AActor* Actor);
+	void Return(AActor* const Actor);
 
 protected:
 	UPROPERTY(Transient) // gcd

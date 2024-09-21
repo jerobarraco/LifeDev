@@ -188,7 +188,7 @@ UPooler* UPooler::Instance(UObject* Ctx) {
 	return World->GetSubsystem<UPooler>();
 }
 
-UPool* UPooler::SetPool(int32 Max, TSubclassOf<AActor> Class, bool SetTicks, bool CanGrow, int32 TrimTime) {
+UPool* UPooler::SetPool(int32 const Max, TSubclassOf<AActor> const Class, bool const SetTicks, bool const CanGrow, int32 const TrimTime) {
 	UE_LOG(LogJPool, Log, TEXT("%hs. Max=%i, Ticks=%i, CanGrow=%i, TrimTime=%i, Class=%s"),
 		__func__, Max, SetTicks, CanGrow, TrimTime, *GetNameSafe(Class));
 
@@ -245,14 +245,14 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 	return *pPool;
 }
 
-AActor* UPooler::Get(TSubclassOf<AActor> Class) {
+AActor* UPooler::Get(TSubclassOf<AActor> const Class) {
 	UPool* const Pool = GetPool(Class); 
 	if (!Pool) return nullptr;
 
 	return Pool->Get();
 }
 
-void UPooler::Return(AActor* Actor) {
+void UPooler::Return(AActor* const Actor) {
 	if (!IsValid(Actor)) { // checking here to avoid problems on Actor->GetClass
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Actor was invalid. Skip"), __func__);
 		return;
