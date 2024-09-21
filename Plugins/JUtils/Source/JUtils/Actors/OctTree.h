@@ -32,12 +32,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AOTNode* Contains(AActor* const Actor) const;
 
+	// iterate through actors
 	// returns true when break
 	UFUNCTION(BlueprintCallable)
 	bool Iterate(const FJOTIterator& Iterator);
-	// returns true when you want to break. iterate through actors inside a box.
+	// iterate through actors inside a box.
+	// returns true when you want to break.
 	UFUNCTION(BlueprintCallable)
-	bool IterateInside(const FJOTIterator& Iterator, const FBox& Box);
+	bool IterateIn(const FJOTIterator& Iterator, const FBox& Box);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Pack();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
@@ -70,7 +72,7 @@ protected:
 	friend class AOctTree;
 };
 
-// test. octree
+// octree. Call the Set* functions before calling the other functions.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils), meta=(BlueprintSpawnableComponent))
 class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
 	GENERATED_BODY()
@@ -106,6 +108,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Iterate(const FJOTIterator& Iterator) const;
 
+	UFUNCTION(BlueprintCallable)
+	void IterateIn(const FJOTIterator& Iterator, const FBox& Box) const;
+
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void DbgDraw();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
@@ -118,7 +123,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild();
 
-	// when trying to extend, what's the max levels it will try to go
+	// when trying to extend, what's the max levels it will try to go (each try)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ExtendMax = 5;
 protected:
@@ -129,11 +134,12 @@ protected:
 	bool PrintIter(AActor* const A, AOTNode* const Node);
 	// true if succeeded or ok. false otherwise.
 	bool TryExtend(AActor* Actor);
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+
+	UPROPERTY(BlueprintReadOnly)
 	int32 ActorsMax = 5;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
 	AOTNode* RootNode = nullptr;
-	UPROPERTY(Transient) // cache
+	UPROPERTY(Transient, BlueprintReadOnly) // cache
 	UPool* Pool = nullptr;
 };

@@ -258,14 +258,14 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	return false;
 }
 
-bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
+bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
 	if (!Iterator.IsBound()) return true;
 	UE_LOG(LogJOctTree, Log, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
-	const FBox Overlap = Box.Overlap(InBox);
+	const FBox Overlap = Box.Overlap(InBox); // overlap instead of isinside. since we'll check even if close.
 	if (Overlap.GetVolume()<=0) {
 		UE_LOG(LogJOctTree, Log, TEXT("%hs doesn't overlap Over=%s node=%s"),
 			__func__, *Overlap.ToString(), *GetNameSafe(this));
-		return false; // don´t break.
+		return false; // don't break. other nodes might overlap.
 	}
 
 	// i could reuse iterate with my own predicate, but it will add overhead and itś not that much code.
@@ -276,7 +276,7 @@ bool AOTNode::IterateInside(const FJOTIterator& Iterator, const FBox& InBox) {
 	}
 
 	for (AOTNode* const S: Nodes)
-		if (IsValid(S) && S->IterateInside(Iterator, InBox)) return true; // bubble break
+		if (IsValid(S) && S->IterateIn(Iterator, InBox)) return true; // bubble break
 
 	return false; // continue the iteration
 }
@@ -381,10 +381,17 @@ bool AOctTree::Update(AActor* const Actor) {
 
 void AOctTree::SetBox(const FBox& InBox) {
 	if (!RootNode) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
-		return;
+		RootNode = Cast<AOTNode>(Pool->Get());
+		if (!RootNode) {
+			UE_LOG(LogJOctTree, Error, TEXT("%hs, could not create the root. Stop"), __func__);
+			return;
+		}
+
+		RootNode->SetUp(ActorsMax);
+		RootNode->SetBox(InBox);
+		return; // no need to rebuild
 	}
-	RootNode->SetBox(InBox);
+	RootNode->SetBox(InBox); // tell rebuild which box to use
 	Rebuild();
 }
 
@@ -433,6 +440,14 @@ void AOctTree::Iterate(const FJOTIterator& Iterator) const {
 	RootNode->Iterate(Iterator);
 }
 
+void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) const {
+	if (!RootNode) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
+		return;
+	}
+	RootNode->IterateIn(Iterator, Box);
+}
+
 void AOctTree::Print() {
 	if (!RootNode) return;
 	FJOTIterator I;
@@ -444,7 +459,7 @@ void AOctTree::Rebuild() {
 	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
 	if (!Pool) return;
 
-	const FBox& Box = RootNode->Box;
+	const FBox& Box = RootNode->Box; // cache instead of copy. beware we release the box later.
 	TArray<AOTNode*> Nodes;
 	Nodes.Push(RootNode);
 	
@@ -478,9 +493,7 @@ void AOctTree::BeginPlay() {
 	}
 
 	Pool = Pooler->SetPool(1, AOTNode::StaticClass(), false, true, 1);
-	RootNode = Cast<AOTNode>(Pool->Get());
-	if (!RootNode) return;
-	RootNode->SetUp(ActorsMax);
+	UE_CLOG(!Pool, LogJOctTree, Warning, TEXT("Could not obtain the Pool. this would crash later."));
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -491,7 +504,6 @@ void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (RootNode) RootNode->Return(true); // will return all of them
 	
 	RootNode = nullptr;
-
 
 	// Return all nodes
 	Super::EndPlay(EndPlayReason);
