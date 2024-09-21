@@ -420,7 +420,7 @@ void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor) {
 }
 
 void AOctTree::Pack() {
-	UE_LOG(LogJOctTree, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
 	if (!RootNode) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
