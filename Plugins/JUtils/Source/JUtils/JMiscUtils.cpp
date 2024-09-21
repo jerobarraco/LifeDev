@@ -87,7 +87,7 @@ void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused)
 	if (SetPaused) UGameplayStatics::SetGamePaused(World, Show);
 }
 
-void UJMiscUtils::BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
+void UJMiscUtils::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
 	// don't use [&Task, &Done] since that will break on calling BPAsync multiple times
 	Async(static_cast<EAsyncExecution>(Exec), [Task, Done]{
 		Task.ExecuteIfBound();
@@ -130,7 +130,7 @@ void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const F
 	if(GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
 
-	APlayerController* const Controller = GI->GetPrimaryPlayerController();
+	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
 	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
 	if (!CamManager) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));

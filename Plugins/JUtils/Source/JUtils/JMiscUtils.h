@@ -87,10 +87,10 @@ public:
 	// What Not to Do:
 	//	* Do not try to modify, create, or delete UObjects from other threads!
 	//	* You can prepare all the data / do all the calculations, but only the game thread should be actually spawning / modifying / deleting UObjects / AActors.
-	//	* Don't try to use TimerManager outside of the game thread :)
-	//	* Don't try to draw debug lines/points etc, as it will likely crash, ie DrawDebugLine(etc...)
+	//	* Don't try to use TimerManager outside the game thread :)
+	//	* Don't try to draw debug lines/points etc., as it will likely crash, ie DrawDebugLine(etc...)
 	UFUNCTION(BlueprintCallable)
-	static void BPASync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec = EAsyncExec::ThreadPool);
+	static void BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec = EAsyncExec::ThreadPool);
 
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
