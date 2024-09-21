@@ -42,8 +42,8 @@ public:
 	bool IterateIn(const FJOTIterator& Iterator, const FBox& Box);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Pack();
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
-	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor);
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
+	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
 
 	// biology is the only subject in which multiply and divide is the same. // smoke test
 protected:
@@ -122,8 +122,8 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Rebuild();
 
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
-	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor);
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay, AutoCreateRefTerm="BoxColor, ActorColor"))
+	void DbgDraw(const FColor& BoxColor, const FColor& ActorColor = FColor::Yellow);
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	void Print();
 
