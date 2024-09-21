@@ -470,9 +470,9 @@ void AOctTree::Rebuild() {
 	while (Nodes.Num()>0) {
 		// if org rootNode is none, it will be skipped here. and above we create one.
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
-		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
 		if (!N) continue;
-		UE_LOG(LogJOctTree, Log, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 		
 		// steal nodes (before 'add' case it ends up using one of those nodes)
 		// (though it should not have actors if it has nodes)
