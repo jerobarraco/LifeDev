@@ -50,12 +50,13 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Reset() override;
 	
-	void SetUp(const int32 ActorsMax = 10);
+	void SetActorsMax(const int32 InActorsMax = 10);
 	void SetBox(const FBox& InBox);
 	void Split();
 	AOTNode* ClosestNode(const FVector& To);
 	void SetNodesBox();
 	bool AddToNodes(AActor* const Actor);
+	// move the actors to sub nodes
 	void PushToNodes();
 	void Empty(const bool ReturnSubs = true);
 	void Return(const bool ReturnSubs = true);

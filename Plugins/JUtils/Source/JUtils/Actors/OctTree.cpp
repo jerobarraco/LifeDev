@@ -9,8 +9,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
 // im pulling the algo out of my ... hat.
 
-// TODO when adding an actor, to the tree. if it doesn't overlap the root, create a new root with subs
-
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.SetTickFunctionEnable(false);
@@ -23,14 +21,16 @@ bool AOTNode::Add(AActor* const Actor) {
 	// does not check for isvalid. that is checked by the tree. little, bit of ... optimization.
 	// the tree is justifying its existence...
 	// clog rulz, ok.
-	const bool Inside = IsInside(Actor);
-	
-	UE_LOG(LogJOctTree, Log, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
-	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
-
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s a=%s"), __func__, *GetNameSafe(this), *GetNameSafe(Actor));
 	if (!IsValid(Actor)) return false;
 
+	const bool Inside = IsInside(Actor);
+	UE_CLOG(!Inside, LogJOctTree, Warning, TEXT("%hs Actor out of my bounds. but i'll take it anyway. lol"), __func__);
+
+
 	// If it's not inside. we still proceed to insert it. why? because sometimes the box.isnside of a parent passes and the child misses.
+	// if the parent decides it's ours. it's ours.
+
 	/// add to self
 	// Don't store the actors in this instance if it's split already. wasting a tarray.
 	if (Nodes.Num()==0) {
@@ -40,9 +40,8 @@ bool AOTNode::Add(AActor* const Actor) {
 		}
 		Split();
 	}
-
-	/// add to sub. This might loop. but add to sub checks for inside before calling add
-	return AddToNodes(Actor);
+	
+	return AddToNodes(Actor); /// add to sub.
 }
 
 int32 AOTNode::Rem(AActor* const Actor) {
@@ -50,16 +49,17 @@ int32 AOTNode::Rem(AActor* const Actor) {
 }
 
 bool AOTNode::AddToNodes(AActor* const Actor) {
-	// using closest because sometimes the parent isinside passes but the sub doesnt.
+	// using closest because sometimes the parent isInside passes but the sub doesn't.
 	// AOTNode* const S = NodeForActor(Actor); // this saves us the trouble of looping and crashing on Add
-	AOTNode* const S = ClosestNode(Actor->GetActorLocation()); // this saves us the trouble of looping and crashing on Add
+	// this saves us the trouble of looping and crashing on Add.
+	AOTNode* const S = ClosestNode(Actor->GetActorLocation());
 	if (!S) return false; // already logged
 	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
 
 void AOTNode::SetBox(const FBox& InBox) {
 	if (Actors.Num()>0)
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs Rebounding with actors. lol."), __func__);
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs ReBoxing with actors! lol."), __func__);
 	// why bother. this is not meant to be optimal yet
 	Box = InBox;
 	Box.IsValid = true; // because unreal
@@ -75,10 +75,9 @@ void AOTNode::SetNodesBox() {
 		if (!IsValid(S)) continue;
 		// maybe there's an optimal way to do this. sorry
 		
-		// im gonna use min as C for all of them so what? i hope ue will normalize my lame-ness. whats min and max in 3d anyway?
-		// im sure itll bite me
 		NE = E; // extents are already half of the size
 		if (i==0) { // "let's start from the top"
+			// ignore on i==0. you might think this does nothing. but it skips all the ifs below.
 		} else if (i==1) {
 			NE.X = -NE.X;
 		} else if (i==2) {
@@ -86,8 +85,8 @@ void AOTNode::SetNodesBox() {
 		} else if (i==3) {
 			NE.Z = -NE.Z;
 		} else if (i==4) {
-			NE.X = -NE.X; // this can be optimized but i dont feel like now. apollo-gies
-			NE.Y = -NE.Y; // this can be optimized but i dont feel like now. apollo-gies
+			NE.X = -NE.X;
+			NE.Y = -NE.Y;
 		} else if (i==5) {
 			NE.X = -NE.X;
 			NE.Z = -NE.Z;
@@ -101,8 +100,8 @@ void AOTNode::SetNodesBox() {
 		}// without thinking it too much, it fits....
 		
 		const FVector B = C+NE;
-		// this sucks but it's incredibly important, or the "contains" function will fail.
-		// TODO En-better this.
+		// this sucks but, it's incredibly important, or the "contains" function will fail.
+		// this is how ue does it in its code.
 		Min.X = FMath::Min(C.X, B.X);
 		Min.Y = FMath::Min(C.Y, B.Y);
 		Min.Z = FMath::Min(C.Z, B.Z);
@@ -131,7 +130,7 @@ AOTNode* AOTNode::ClosestNode(const FVector& To) {
 }
 
 bool AOTNode::IsInside(AActor* const Actor) const {
-	// seems too little for a func, but im sure ill use it later on.
+	// seems too little for a func, but im sure i'll use it later on.
 	if (!IsValid(Actor)) return false; // can be called from outside
 	const FVector& AT = Actor->GetActorLocation();
 	return Box.IsInsideOrOn(AT);
@@ -144,7 +143,7 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 		if (A == Actor) return const_cast<AOTNode*>(this);
 	}
 
-	for (AOTNode* const N: Nodes) {
+	for (const AOTNode* const N: Nodes) {
 		if (!IsValid(N)) continue; // wtf?
 
 		AOTNode* const R = N->Contains(Actor);
@@ -155,7 +154,6 @@ AOTNode* AOTNode::Contains(AActor* const Actor) const {
 }
 
 void AOTNode::PushToNodes() {
-	// 2nd move the actors to subs
 	for (AActor* const A: Actors) AddToNodes(A); // this could trigger addtoParent though.
 	Actors.Empty(); // and these would get disowned.
 }
@@ -163,14 +161,13 @@ void AOTNode::PushToNodes() {
 void AOTNode::Split() {
 	constexpr uint8 SubsNum = 8;
 	UPooler* const Pooler = UPooler::Instance(this);
-	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
+	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr; // cache.
 	if (!Pooler || !Pool) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
 
 	bool Moded = false;
-	// WTF DEGENERATE CASE! but meh
 	// 1st create subs
 	Nodes.Reserve(SubsNum);
 	while (Nodes.Num()<SubsNum) {
@@ -179,24 +176,25 @@ void AOTNode::Split() {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
 			return; // no infinite loops plz
 		}
-		S->SetUp(ActorsMax);
+		S->SetActorsMax(ActorsMax);
 		Nodes.Add(S);
 		Moded = true;
 	}
-	if (Moded)
-		SetNodesBox();
 
-	PushToNodes();
+	if (Moded) SetNodesBox(); // update the boxes
+
+	PushToNodes(); // then push to them
 }
 
 void AOTNode::Reset() {
 	Super::Reset();
-	// Empty(); // should be empty from the return. 
+	// should be empty from the return. most of the things to reset, need to be reset on return
+	// Empty(); // already on reset 
 }
 
-void AOTNode::SetUp(const int32 Max) {
-	ActorsMax = Max;
-	Actors.Reserve(Max);
+void AOTNode::SetActorsMax(const int32 InActorsMax) {
+	ActorsMax = InActorsMax;
+	Actors.Reserve(InActorsMax);
 }
 
 void AOTNode::Empty(const bool ReturnSubs) {
@@ -387,7 +385,7 @@ void AOctTree::SetBox(const FBox& InBox) {
 			return;
 		}
 
-		RootNode->SetUp(ActorsMax);
+		RootNode->SetActorsMax(ActorsMax);
 		RootNode->SetBox(InBox);
 		return; // no need to rebuild
 	}
@@ -406,7 +404,7 @@ void AOctTree::SetActorsMax(const int32 InActorsMax) {
 		// if org rootNode is none, it will be skipped here. and above we create one.
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
 		if (!N) continue;
-		N->ActorsMax = InActorsMax;
+		N->SetActorsMax(InActorsMax);
 		Nodes.Append(N->Nodes);
 	}
 }
@@ -464,7 +462,7 @@ void AOctTree::Rebuild() {
 	Nodes.Push(RootNode);
 	
 	RootNode = Cast<AOTNode>(Pool->Get());
-	RootNode->SetUp(ActorsMax);
+	RootNode->SetActorsMax(ActorsMax);
 	RootNode->SetBox(Box);
 
 	while (Nodes.Num()>0) {
@@ -524,11 +522,11 @@ bool AOctTree::TryExtend(AActor* Actor) {
 
 	int32 Loop = ExtendMax;
 	while (Loop>0) {
-		UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i"), __func__, Loop);
+		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
 		
 		if (RootNode->IsInside(Actor)) {
-			UE_LOG(LogJOctTree, Log, TEXT("%hs loop=%i it's inside"), __func__, Loop);
+			UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i it's inside"), __func__, Loop);
 			return true;
 		}
 
