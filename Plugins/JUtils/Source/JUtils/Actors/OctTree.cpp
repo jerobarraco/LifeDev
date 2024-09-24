@@ -450,13 +450,13 @@ void AOctTree::SetPoolTrimTime(float const InTrimTime) {
 }
 
 void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, int32 const Size, float const Time) {
-	if (!RootNode) return;
+	if (!RootNode) [[unlikely]] return;
 	RootNode->DbgDraw(BoxColor, ActorColor, Size, Time);
 }
 
 void AOctTree::Pack() {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
-	if (!RootNode) {
+	if (!RootNode) [[unlikely]] {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -465,7 +465,7 @@ void AOctTree::Pack() {
 }
 
 void AOctTree::Iterate(const FJOTIterator& Iterator) {
-	if (!RootNode) {
+	if (!RootNode) [[unlikely]] {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -474,7 +474,7 @@ void AOctTree::Iterate(const FJOTIterator& Iterator) {
 }
 
 void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) {
-	if (!RootNode) {
+	if (!RootNode) [[unlikely]] {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -482,7 +482,7 @@ void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) {
 }
 
 void AOctTree::Print() {
-	if (!RootNode) {
+	if (!RootNode) [[unlikely]] {
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -494,7 +494,7 @@ void AOctTree::Print() {
 
 void AOctTree::Rebuild() {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
-	if (!Pool) {
+	if (!Pool) [[unlikely]]{
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs Can't get the Pool. Stop."), __func__);
 		return;
 	}
@@ -528,7 +528,7 @@ void AOctTree::Rebuild() {
 }
 
 AOTNode* AOctTree::Contains(const AActor* const A) const {
-	if (!RootNode) {
+	if (!RootNode) { [[unlikely]]
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, No root node. Stop"), __func__);
 		return nullptr;
 	}
@@ -543,7 +543,7 @@ void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
 	UPooler* const Pooler = UPooler::Instance(this);
-	if (!Pooler) {
+	if (!Pooler) { [[unlikely]]
 		UE_LOG(LogJOctTree, Warning, TEXT("Could not obtain the Pooler. this would crash later."));
 		return;
 	}
@@ -555,15 +555,15 @@ void AOctTree::BeginPlay() {
 void AOctTree::DestroyPool() {
 	UPooler* const Pooler = UPooler::Instance(this);
 	// destroy the pool before returning the nodes. that way they'll get destroyed upon return. avoiding extra overhead.
-	if (Pooler) Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
+	if (Pooler) [[likely]] Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// DestroyPool(); // actually no. because there might be other octtrees
-	if (RootNode) RootNode->Return(true); // will return all of them
+	if (RootNode) [[likely]] RootNode->Return(true); // will return all of them
 
 	// empty after returning to also delete the ones returned.
-	if (Pool) Pool->Empty(); // might affect performance, but...
+	if (Pool) [[likely]] Pool->Empty(); // might affect performance, but...
 	Pool = nullptr;
 
 	RootNode = nullptr;
@@ -579,21 +579,21 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 
 bool AOctTree::TryExtend(AActor* Actor) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
-	if (!RootNode || !Actor) return false;
+	if (!RootNode || !Actor)  [[unlikely]] return false;
 
 	int32 Loop = ExtendMax;
 	while (Loop>0) {
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
 		
-		if (RootNode->IsInside(Actor)) {
+		if (RootNode->IsInside(Actor)) [[unlikely]] {
 			UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i it's inside"), __func__, Loop);
 			return true;
 		}
 
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check A"), __func__, Loop);
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
-		if (!NewRoot) return false;
+		if (!NewRoot) [[unlikely]] return false;
 
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check B"), __func__, Loop);
 		NewRoot->SetActorsMax(ActorsMax);
