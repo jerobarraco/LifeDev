@@ -32,8 +32,8 @@ class SDFPost: SDF {
 		torO.scale = 4;
 		torO.rotAxis = normalize(float3(.1, .1, 1.)); // not confusing at all
 		torO.angle = sin(tt)* 5;
-		torO.origin = float3( 0, -40, 0);
-		float tor = sh.Torus(torO, float2(4, 1));
+		torO.origin = float3(0, 10, 0);
+		const float tor = sh.Torus(torO, float2(4, 1));
 		oid = lerp(3, oid, step(last, tor)); // todo extract
 		last = min(last, tor); // maybe with this one
 		return last;
