@@ -1,7 +1,9 @@
 //  https://www.youtube.com/watch?v=khblXafu7iA&t=122s
 // https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 // requires setting the path on the project which is done in lifedev.cpp
+#include "sdf.usf"
 
+/*
 #define EPSILON 0.0001
 
 // it's a shame but i can't put defaults in structs.
@@ -197,3 +199,4 @@ float sdSphere(float3 p, float3 pos, float r) {
 
 
 
+*/
