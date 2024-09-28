@@ -20,6 +20,7 @@ public class LifeDev : ModuleRules {
 			"JUtils", "Interact", "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
 			"AudioMixer", // for musicman fx fade
+			"RenderCore", // to set the shaders' path
 		});
 	}
 }
