@@ -4,8 +4,6 @@
 #include "sdf.usf"
 
 class SDFPost: SDF {
-	
-
 	float scene(float3 p, out int oid) {
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
 		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
@@ -32,37 +30,26 @@ class SDFPost: SDF {
 		//return sdSphere(p, float3(2, 2*sin(tt)*2, 1), 100);
 	};
 
-	float3 estNormal(float3 pos) {
-		int oid;
-		return normalize( float3(
-			scene(float3( pos.x + EPSILON, pos.yz), oid )
-			- scene(float3( pos.x - EPSILON, pos.yz), oid ),
-
-				scene(float3( pos.x, pos.y + EPSILON, pos.z), oid )
-			- scene(float3( pos.x, pos.y - EPSILON, pos.z), oid ),
-
-				scene(float3( pos.xy, pos.z + EPSILON), oid )
-			- scene(float3( pos.xy, pos.z - EPSILON ), oid )
-		));
-	};
-	
-	float3 main(const float stepMax, const float distMax) {
-		float depth = 0.;
-		float dist = 0.0;
-		float3 p = 0.0;
-		int oid = 0;
-
-		for (int i =0; i<stepMax; ++i) {
-			p = ro + (rd*depth);
-			dist = scene(p, oid); // can add a displacement here
-			depth += dist;
-			if (abs(dist)<EPSILON || depth > distMax) break;
-		}
-
-		const float3 norm = estNormal(p);
-		const float3 col = sceneCol(depth, p, norm, oid);
-		return col;
-	}
+	DEF_ESTNORMAL()
+	DEF_MAIN()
+	//
+	// float3 main(const float stepMax, const float distMax) {
+	// 	float depth = 0.;
+	// 	float dist = 0.0;
+	// 	float3 p = 0.0;
+	// 	int oid = 0;
+	//
+	// 	for (int i =0; i<stepMax; ++i) {
+	// 		p = ro + (rd*depth);
+	// 		dist = scene(p, oid); // can add a displacement here
+	// 		depth += dist;
+	// 		if (abs(dist)<EPSILON || depth > distMax) break;
+	// 	}
+	//
+	// 	const float3 norm = estNormal(p);
+	// 	const float3 col = sceneCol(depth, p, norm, oid);
+	// 	return col;
+	// }
 };
 
 SDFPost f;
