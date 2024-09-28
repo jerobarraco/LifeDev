@@ -1,20 +1,38 @@
 #include "sdfOp.usf"
+
+
 struct SDFObj {
 	float3 p;
 	float3 pos;
 	float3 scale;
 	float3 rotAxis;
+	float3 origin;
 	float angle;
+	
+	SDFOp op;
+
+	float3 TransP() {
+		// remember to do result*o.scale before returning
+		float3 pp = p;
+		pp -= pos;
+		pp /= scale;
+		pp = op.Rot3(pp, rotAxis, angle);
+		pp += origin;
+		return pp;
+	}
 };
 
 struct SDFShape {
 	SDFOp op;
-	float Torus(const SDFObj o, const float2 tr) { // inigo
-		//  p = rot3(p, rot, angle);
-		float3 p = o.p;
-		p = op.Rot3(p, o.rotAxis, o.angle);
-		p -= o.pos;
+	float Torus(SDFObj o, const float2 tr) { // inigo
+		
+		// float3 p = o.p + o.origin; // TODO debug the origin
+		// p /= o.scale;
+		// p -= o.pos;
+		// p = op.Rot3(p, o.rotAxis, o.angle); // TODO debug rotation, is p the right place?
+		float3 p = o.TransP();
 		const float2 q = float2(length(p.xz)-tr.x, p.y);
-		return length(q)-tr.y;
+		const float r = length(q)-tr.y;
+		return r*o.scale;
 	}
 };

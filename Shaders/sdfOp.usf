@@ -4,15 +4,12 @@ struct SDFOp {
 		return prim - rad;
 	}
 	
-	float3 Rot3b(const float3 p, const float3 axis, const float angle){
-		//rodrigues' rot formula
-		return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
-	}
-	
 	float3 Rot3(const float3 p, const float3 axis, const float angle){
 		//rodrigues' rot formula
+		// from wikipedia
 		return (p*cos(angle))+(cross(axis,p)*sin(angle))+(axis*dot(axis, p)*(1-cos(angle)));
-		return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
+		// doesn't work
+		// return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
 	}
 	
 };
