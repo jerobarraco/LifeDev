@@ -59,6 +59,8 @@ f.ocols[0] = float3(1, 0, 0);
 f.ocols[1] = float3(.1, .9, .1);
 f.ocols[2] = float3(.2, .1, .9);
 f.ocols[3] = float3(.5, .2, .5);
+f.spec_pow = 15.0;
+f.spec_str = .5;
 
 
 /*
