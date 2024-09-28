@@ -30,8 +30,8 @@ class SDFPost: SDF {
 		torO.p = p;
 		torO.pos = float3(-50, 20, 90); // (30*sin(tt+90)));
 		torO.scale = float3(1, .5, .2);
-		torO.rotAxis = 0;
-		torO.angle = 0;
+		torO.rotAxis = normalize(float3(.3, .5, .8));
+		torO.angle = sin(tt);
 		float tor = sh.Torus(torO, float2(50,10));
 		oid = lerp(3, oid, step(last, tor)); // todo extract
 		last = min(last, tor); // maybe with this one

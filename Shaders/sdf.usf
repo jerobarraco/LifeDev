@@ -96,29 +96,6 @@ struct SDF {
 	float ndot( in float2 a, in float2 b ) { return a.x*b.x - a.y*b.y; }
 	//// ~inigo
 
-	float3 rot3(float3 p, float3 axis, float angle){
-		//rodrigues' rot formula
-		return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
-	};
-	float3 rot2x(float3 p, float a) {
-		p.yz= mul(p.yz, rot2(a));
-		return p;
-	};
-	float3 rot2y(float3 p, float a) {
-		p.xz= mul(p.xz, rot2(a));
-		return p;
-	};
-
-	float3 rot2z(float3 p, float a) {
-		p.xy = mul(p.xy, rot2(a));
-		return p;
-	};
-	float2x2 rot2(float angle) {
-		float s = sin(angle);
-		float c = cos(angle);
-		
-		return float2x2(c, -s, s, c);
-	};
 
 	float smin(float a, float b, float k){
 		float h = max( k-abs(a-b), 0.0)/k;
@@ -149,5 +126,28 @@ struct SDF {
 		float rlight = ldiff + lamb;
 		float3 rcol = (col * rlight) + lspec;
 		return rcol;
+	};
+
+
+	// todo move along with the shapes
+	
+	float3 rot2x(float3 p, float a) {
+		p.yz= mul(p.yz, rot2(a));
+		return p;
+	};
+	float3 rot2y(float3 p, float a) {
+		p.xz= mul(p.xz, rot2(a));
+		return p;
+	};
+
+	float3 rot2z(float3 p, float a) {
+		p.xy = mul(p.xy, rot2(a));
+		return p;
+	};
+	float2x2 rot2(float angle) {
+		float s = sin(angle);
+		float c = cos(angle);
+		
+		return float2x2(c, -s, s, c);
 	};
 };
