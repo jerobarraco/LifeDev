@@ -3,10 +3,11 @@
 // requires setting the path on the project which is done in lifedev.cpp
 #include "sdf.usf"
 #include "sdfOp.usf"
+#include "sdfShape.usf"
 
 class SDFPost: SDF {
 	SDFOp op;
-
+	SDFShape sh;
 	float scene(float3 p, out int oid) {
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
 		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
@@ -25,11 +26,16 @@ class SDFPost: SDF {
 		oid = lerp(2, oid, step(last, b2));
 		last = min(last, b2);
 
-		float tor = sdTorus(p, float2(50,10), float3(-50, 20, 70), float3(1, .5, .2), 30); //sdLink(p, 50, 20, 10);
-		oid = lerp(3, oid, step(last, tor));
-		last = min(last, tor);
+		SDFObj torO;
+		torO.p = p;
+		torO.pos = float3(-50, 20, 70);
+		torO.scale = float3(1, .5, .2);
+		torO.rotAxis = 0;
+		torO.angle = 0;
+		float tor = sh.Torus(torO, float2(50,10));
+		oid = lerp(3, oid, step(last, tor)); // todo extract
+		last = min(last, tor); // maybe with this one
 		return last;
-
 	};
 
 	DEF_ESTNORMAL()

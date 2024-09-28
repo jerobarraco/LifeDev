@@ -42,7 +42,7 @@ float3 main(const float stepMax, const float distMax) {\
 
 struct SDF {
 	float tt; // time
-	float2 uv; // guess
+	float2 uv; // viewport's uv
 	float3 ro; // ray origin
 	float3 rd; // ray direction
 
@@ -62,12 +62,6 @@ struct SDF {
 	float sdLink( float3 p, float le, float r1, float r2 ) {
 		float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
 		return length(float2(length(q.xy)-r1,q.z)) - r2;
-	}
-
-	float sdTorus(float3 p, float2 t, float3 pos, float3 rot, float angle) { // inigo
-	//  p = rot3(p, rot, angle);
-		float2 q = float2(length(p.xz)-t.x,p.y);
-		return length(q)-t.y;
 	}
 
 	float sdPlane(float3 p, float norm, float d) {
@@ -157,4 +151,3 @@ struct SDF {
 		return rcol;
 	};
 };
-

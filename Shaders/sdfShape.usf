@@ -1,0 +1,16 @@
+struct SDFObj {
+	float3 p;
+	float3 pos;
+	float3 scale;
+	float3 rotAxis;
+	float angle;
+};
+
+struct SDFShape {
+	float Torus(const SDFObj o, const float2 tr) { // inigo
+		//  p = rot3(p, rot, angle);
+		const float3 p = o.p; // todo -t.pos
+		const float2 q = float2(length(p.xz)-tr.x, p.y);
+		return length(q)-tr.y;
+	}
+};
