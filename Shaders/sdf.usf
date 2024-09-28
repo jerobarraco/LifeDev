@@ -19,27 +19,31 @@ struct SDF {
 	float3 enorm;
 	float3 evel;
 	float4 ecol;
-	float3 ocols[10];
 	float3 elpos;
+	float3 ocols[10]; // object's colors. 0 means error
 	
 //////////////
+	// you'll have to implement this for yourself copy-paste until i find out how to do virtual stuff on hlsl
+	/*
+	float3 temp_main(float stepMax, float distMax) {
+		float depth = 0.;
+		float dist = 0.0;
+		float3 p = 0.0;
+		int oid = -1;
 
-	float3 sceneCol(float3 depth, float3 p, int oid) {
-		float3 plight = float3(20, 20 + (sin(tt*2)*10), 10);
-		float3 norm = estNormal(p);
-	// float tn = 1.0-(depth/distMax);
-	//  float3 fnorm = norm*tn;
-		float3 ocol = ocols[oid];
-		float3 scol = light(elpos, p, norm, ocol, 0.1);
-		float3 col = lerp(ecol.xyz, scol, step(depth, edepth));
+		int i;
+		for (i =0; i<stepMax; ++i) {
+			p = ro + (rd*depth);
+			dist = scene(p, oid); // can add a displacement here
+			depth += dist;
+			if (abs(dist)<EPSILON || depth > distMax) break;
+		}
+
+		float3 col = sceneCol(depth, p, estNormal(p), oid);
 		return col;
 	}
-
-
-//////////////
-
-	float scene(float3 p, out int oid) {
-
+	
+	float temp_scene(float3 p, out int oid) {
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
 		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
 		//float s = sdSphere(p, float3(0, 0, 0), 10);
@@ -62,49 +66,63 @@ struct SDF {
 		last = min(last, tor);
 	//  return tor;
 		return last;
-
-
-
 		//return sdSphere(p, float3(2, 2*sin(tt)*2, 1), 100);
 	};
 
-/// shapes
-float sdLink( float3 p, float le, float r1, float r2 ) {
-	float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
-	return length(float2(length(q.xy)-r1,q.z)) - r2;
-}
+	// http://www.voidgoat.com/blogs/raymarching-unreal/
+	float3 temp_estNormal(float3 pos) {
+		int oid;
+		return normalize( float3(
+			temp_scene(float3( pos.x + EPSILON, pos.yz), oid )
+			- temp_scene(float3( pos.x - EPSILON, pos.yz), oid ),
 
-float sdTorus(float3 p, float2 t, float3 pos, float3 rot, float angle) { // inigo
-//  p = rot3(p, rot, angle);
-	float2 q = float2(length(p.xz)-t.x,p.y);
-	return length(q)-t.y;
-}
+				temp_scene(float3( pos.x, pos.y + EPSILON, pos.z), oid )
+			- temp_scene(float3( pos.x, pos.y - EPSILON, pos.z), oid ),
 
-float sdPlane(float3 p, float norm, float d) {
-	float3 pn = p*norm;
-	return abs(pn.x+pn.y+pn.z+d)/length(norm);
-};
+				temp_scene(float3( pos.xy, pos.z + EPSILON), oid )
+			- temp_scene(float3( pos.xy, pos.z - EPSILON ), oid )
+		));
+	};
+*/
+	//////////
+	
+	/// shapes
+	float sdLink( float3 p, float le, float r1, float r2 ) {
+		float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
+		return length(float2(length(q.xy)-r1,q.z)) - r2;
+	}
 
-float sdBox(float3 p, float3 pos, float rot, float3 size) {
-	float3 np = p;
+	float sdTorus(float3 p, float2 t, float3 pos, float3 rot, float angle) { // inigo
+	//  p = rot3(p, rot, angle);
+		float2 q = float2(length(p.xz)-t.x,p.y);
+		return length(q)-t.y;
+	}
 
-	np -=pos;
-	np = rot2y(np, rot);
+	float sdPlane(float3 p, float norm, float d) {
+		float3 pn = p*norm;
+		return abs(pn.x+pn.y+pn.z+d)/length(norm);
+	};
 
-	float3 q = abs(np)-size;
+	float sdBox(float3 p, float3 pos, float rot, float3 size) {
+		float3 np = p;
 
-	float dist = length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
-	return dist;
-};
-// scale: multiply p before using. then divide the result.
+		np -=pos;
+		np = rot2y(np, rot);
 
-float sdGround(float3 p, float dist) {
-	return p.z - dist;
-}
+		float3 q = abs(np)-size;
 
-float sdSphere(float3 p, float3 pos, float r) {
-	return length(pos-p)-r;
-};
+		float dist = length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+		return dist;
+	};
+	// scale: multiply p before using. then divide the result.
+
+	float sdGround(float3 p, float dist) {
+		return p.z - dist;
+	}
+
+	float sdSphere(float3 p, float3 pos, float r) {
+		return length(pos-p)-r;
+	};
 
 	// inigo
 	float dot2( in float2 v ) { return dot(v,v); }
@@ -120,22 +138,15 @@ float sdSphere(float3 p, float3 pos, float r) {
 	float3 repeat(float3 p, float by) {
 		return fmod(p, by)-.5;
 	};
-
-	// http://www.voidgoat.com/blogs/raymarching-unreal/
-	float3 estNormal(float3 pos) {
-		int oid;
-		return normalize( float3(
-			scene(float3( pos.x + EPSILON, pos.yz), oid )
-			- scene(float3( pos.x - EPSILON, pos.yz), oid ),
-
-				scene(float3( pos.x, pos.y + EPSILON, pos.z), oid )
-			- scene(float3( pos.x, pos.y - EPSILON, pos.z), oid ),
-
-				scene(float3( pos.xy, pos.z + EPSILON), oid )
-			- scene(float3( pos.xy, pos.z - EPSILON ), oid )
-		));
-	};
-
+	
+	float3 sceneCol(const float3 depth, const float3 p, const float3 norm, const int oid) {
+		// const float3 norm = estNormal(p);
+		const float3 ocol = ocols[oid];
+		const float3 scol = light(elpos, p, norm, ocol, 0.1);
+		const float3 col = lerp(ecol.xyz, scol, step(depth, edepth));
+		return col;
+	}
+	
 	float3 light(float3 lpos, float3 p, float3 norm, float3 col, float ambient, float specPow=10.0, float specStr=.7) { 
 		// https://michaelwalczyk.com/blog-ray-marching.html
 
@@ -174,25 +185,6 @@ float sdSphere(float3 p, float3 pos, float r) {
 		
 		return float2x2(c, -s, s, c);
 	};
-
-
-	float3 main(float stepMax, float distMax) {
-		float depth = 0.;
-		float dist = 0.0;
-		float3 p = 0.0;
-		int oid = -1;
-
-		int i;
-		for (i =0; i<stepMax; ++i) {
-			 p = ro + (rd*depth);
-			 dist = scene(p, oid); // can add a displacement here
-			 depth += dist;
-			 if (abs(dist)<EPSILON || depth > distMax) break;
-		}
-
-		float3 col = sceneCol(depth, p, oid);
-		return col;
-	}
 };
 
 
