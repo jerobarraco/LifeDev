@@ -2,7 +2,7 @@
 // https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 // requires setting the path on the project which is done in lifedev.cpp
 #include "sdf.usf"
-#include "sdfOp.usf"
+// #include "sdfOp.usf"
 #include "sdfShape.usf"
 
 class SDFPost: SDF {
@@ -26,9 +26,9 @@ class SDFPost: SDF {
 		oid = lerp(2, oid, step(last, b2));
 		last = min(last, b2);
 
-		SDFObj torO;
+		SDFObj torO; // no cigar
 		torO.p = p;
-		torO.pos = float3(-50, 20, 70);
+		torO.pos = float3(-50, 20, 90); // (30*sin(tt+90)));
 		torO.scale = float3(1, .5, .2);
 		torO.rotAxis = 0;
 		torO.angle = 0;

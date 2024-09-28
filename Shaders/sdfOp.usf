@@ -3,4 +3,9 @@ struct SDFOp {
 	float Round(const float prim, float rad ) {
 		return prim - rad;
 	}
+	
+	float3 Rot3(const float3 p, const float3 axis, const float angle){
+		//rodrigues' rot formula
+		return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
+	};
 };

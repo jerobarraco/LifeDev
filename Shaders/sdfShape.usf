@@ -1,3 +1,4 @@
+#include "sdfOp.usf"
 struct SDFObj {
 	float3 p;
 	float3 pos;
@@ -7,9 +8,12 @@ struct SDFObj {
 };
 
 struct SDFShape {
+	SDFOp op;
 	float Torus(const SDFObj o, const float2 tr) { // inigo
 		//  p = rot3(p, rot, angle);
-		const float3 p = o.p; // todo -t.pos
+		float3 p = o.p;
+		p = op.Rot3(p, o.rotAxis, o.angle);
+		p -= o.pos;
 		const float2 q = float2(length(p.xz)-tr.x, p.y);
 		return length(q)-tr.y;
 	}
