@@ -156,8 +156,5 @@ struct SDF {
 		float3 rcol = (col * rlight) + lspec;
 		return rcol;
 	};
-
 };
-
-
 

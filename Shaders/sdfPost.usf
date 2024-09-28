@@ -2,20 +2,23 @@
 // https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 // requires setting the path on the project which is done in lifedev.cpp
 #include "sdf.usf"
+#include "sdfOp.usf"
 
 class SDFPost: SDF {
+	SDFOp op;
+
 	float scene(float3 p, out int oid) {
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
 		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
 		//float s = sdSphere(p, float3(0, 0, 0), 10);
 		float b = sdBox(p, float3(-210, 0, 100+(10*sin(tt))), sin(tt)*3, float3(10., 10., 8.));
+		b = op.Round(b, 5);
 		float last = smin(s, b, 5.0);
 		oid = 0;
 
 		float g = sdGround(p, 0.0);
 		oid = lerp(1, oid, step(last, g)); // step returns 1 if the 2nd is bigger, 
 		last = min(g, last);
-
 
 		float3 bp = repeat(p, 25);
 		float b2 = sdBox(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
@@ -25,35 +28,15 @@ class SDFPost: SDF {
 		float tor = sdTorus(p, float2(50,10), float3(-50, 20, 70), float3(1, .5, .2), 30); //sdLink(p, 50, 20, 10);
 		oid = lerp(3, oid, step(last, tor));
 		last = min(last, tor);
-		//  return tor;
 		return last;
-		//return sdSphere(p, float3(2, 2*sin(tt)*2, 1), 100);
+
 	};
 
 	DEF_ESTNORMAL()
 	DEF_MAIN()
-	//
-	// float3 main(const float stepMax, const float distMax) {
-	// 	float depth = 0.;
-	// 	float dist = 0.0;
-	// 	float3 p = 0.0;
-	// 	int oid = 0;
-	//
-	// 	for (int i =0; i<stepMax; ++i) {
-	// 		p = ro + (rd*depth);
-	// 		dist = scene(p, oid); // can add a displacement here
-	// 		depth += dist;
-	// 		if (abs(dist)<EPSILON || depth > distMax) break;
-	// 	}
-	//
-	// 	const float3 norm = estNormal(p);
-	// 	const float3 col = sceneCol(depth, p, norm, oid);
-	// 	return col;
-	// }
 };
 
 SDFPost f;
-
 
 f.ocols[0] = float3(1, 0, 0);
 f.ocols[1] = float3(.1, .9, .1);

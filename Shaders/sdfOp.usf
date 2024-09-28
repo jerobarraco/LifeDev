@@ -1,0 +1,6 @@
+
+struct SDFOp {
+	float Round(const float prim, float rad ) {
+		return prim - rad;
+	}
+};
