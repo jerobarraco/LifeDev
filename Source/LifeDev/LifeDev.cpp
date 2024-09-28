@@ -11,11 +11,8 @@ void FLifeDevModule::StartupModule()
 	IModuleInterface::StartupModule();
 	
 	const FString& ShaderDirectory = FPaths::Combine(FPaths::ProjectDir(), TEXT("Shaders"));
-	UE_LOG(LogTemp, Warning, TEXT("LD Shaders dir %s"), *ShaderDirectory);
-	
-	// Construct the virtual path shorthand.
-	// FString VirtualShaderDirectory = FString::Printf(TEXT("/Project/LD"), *FMyShaderDevPluginModule::Name);
-	// Create a mapping to the virtual shader directory shorthand.
+	UE_LOG(LogTemp, Log, TEXT("LifeDev Shaders path '%s'"), *ShaderDirectory);
+	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	AddShaderSourceDirectoryMapping(TEXT("/Project/Shaders/LD"),
 		ShaderDirectory);
 }
