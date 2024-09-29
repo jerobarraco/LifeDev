@@ -39,8 +39,8 @@ float3 Main(const float stepMax, const float distMax) {\
 	const float endDepth = lerp(depth, eDepth, eIsUECloser);\
 	const float3 norm = EstNormal(p);\
 	const float3 col = SceneCol(p, norm, oid);\
-	return col;\
-	/* const float3 fog = Fog(endDepth, col);*/\
+	const float3 fog = Fog(endDepth, col);\
+	return fog;\
 };\
 
 struct SDF {
