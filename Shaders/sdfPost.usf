@@ -6,22 +6,22 @@
 #include "sdfShape.usf"
 
 class SDFPost: SDF {
-	float scene(float3 p, out int oid) {
+	float Scene(const float3 p, out int oid) {
 		float last = -1;
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
-		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
+		float s = Sh.Sphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
 		//float s = sdSphere(p, float3(0, 0, 0), 10);
-		float b = sdBox(p, float3(-210, 0, 100+(10*sin(tt))), sin(tt)*3, float3(10., 10., 8.));
-		b = op.Round(b, 5);
-		last = smin(s, b, 5.0);
+		float b = Sh.Box(p, float3(-210, 0, 100+(10*sin(tt))), sin(tt)*3, float3(10., 10., 8.));
+		b = Op.Round(b, 5);
+		last = Op.SMin(s, b, 5.0);
 		oid = 0;
 
-		float g = sdGround(p, 0.0);
+		float g = Sh.Ground(p, 0.0);
 		oid = lerp(1, oid, step(last, g)); // step returns 1 if the 2nd is bigger, 
 		last = min(g, last);
 
-		float3 bp = repeat(p, 25);
-		float b2 = sdBox(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
+		float3 bp = Op.Repeat(p, 25);
+		float b2 = Sh.Box(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
 		oid = lerp(2, oid, step(last, b2));
 		last = min(last, b2);
 
@@ -32,7 +32,7 @@ class SDFPost: SDF {
 		torO.rotAxis = normalize(float3(.1, .1, 1.)); // not confusing at all
 		torO.angle = sin(tt)* 5;
 		torO.origin = float3(0, 10, 0);
-		const float tor = sh.Torus(torO, float2(4, 1));
+		const float tor = Sh.Torus(torO, float2(4, 1));
 		oid = lerp(3, oid, step(last, tor)); // todo extract
 		last = min(last, tor); // maybe with this one
 		return last;
@@ -50,205 +50,6 @@ f.ocols[2] = float3(.2, .1, .9);
 f.ocols[3] = float3(.5, .2, .5);
 f.specPow = 15.0;
 f.specStr = .5;
-f.fogCol = float3(0.2, 0.5, 0.9);
+f.fogCol = float3(0.1, 0.3, 0.3);
 f.fogStr = 1;
-f.fogDist = 100;
-
-
-/*
-#define EPSILON 0.0001
-
-// it's a shame but i can't put defaults in structs.
-// you need to define an instance and set all these values.
-
-
-struct SDF {
-	float tt; // time
-	float2 uv; // guess
-	float3 ro; // ray origin
-	float3 rd; // ray direction
-
-	// unreal stuff
-	float edepth; // ue's depth buffer
-	float3 enorm;
-	float3 evel;
-	float4 ecol;
-	float3 ocols[10];
-	float3 elpos;
-	
-//////////////
-
-	float3 sceneCol(float3 depth, float3 p, int oid) {
-		float3 plight = float3(20, 20 + (sin(tt*2)*10), 10);
-		float3 norm = estNormal(p);
-	// float tn = 1.0-(depth/distMax);
-	//  float3 fnorm = norm*tn;
-		float3 ocol = ocols[oid];
-		float3 scol = light(elpos, p, norm, ocol, 0.1);
-		float3 col = lerp(ecol.xyz, scol, step(depth, edepth));
-		return col;
-	}
-
-
-//////////////
-
-	float scene(float3 p, out int oid) {
-
-		// float s = sdSphere(p, float3(10, 10, 50), 10);
-		float s = sdSphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
-		//float s = sdSphere(p, float3(0, 0, 0), 10);
-		float b = sdBox(p, float3(-210, 0, 100+(10*sin(tt))), sin(tt)*3, float3(10., 10., 8.));
-		float last = smin(s, b, 5.0);
-		oid = 0;
-
-		float g = sdGround(p, 0.0);
-		oid = lerp(1, oid, step(last, g)); // step returns 1 if the 2nd is bigger, 
-		last = min(g, last);
-
-
-		float3 bp = repeat(p, 25);
-		float b2 = sdBox(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
-		oid = lerp(2, oid, step(last, b2));
-		last = min(last, b2);
-
-		float tor = sdTorus(p, float2(50,10), float3(-50, 20, 70), float3(1, .5, .2), 30); //sdLink(p, 50, 20, 10);
-		oid = lerp(3, oid, step(last, tor));
-		last = min(last, tor);
-	//  return tor;
-		return last;
-
-
-
-		//return sdSphere(p, float3(2, 2*sin(tt)*2, 1), 100);
-	};
-
-/// shapes
-float sdLink( float3 p, float le, float r1, float r2 ) {
-	float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
-	return length(float2(length(q.xy)-r1,q.z)) - r2;
-}
-
-float sdTorus(float3 p, float2 t, float3 pos, float3 rot, float angle) { // inigo
-//  p = rot3(p, rot, angle);
-	float2 q = float2(length(p.xz)-t.x,p.y);
-	return length(q)-t.y;
-}
-
-float sdPlane(float3 p, float norm, float d) {
-	float3 pn = p*norm;
-	return abs(pn.x+pn.y+pn.z+d)/length(norm);
-};
-
-float sdBox(float3 p, float3 pos, float rot, float3 size) {
-	float3 np = p;
-
-	np -=pos;
-	np = rot2y(np, rot);
-
-	float3 q = abs(np)-size;
-
-	float dist = length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
-	return dist;
-};
-// scale: multiply p before using. then divide the result.
-
-float sdGround(float3 p, float dist) {
-	return p.z - dist;
-}
-
-float sdSphere(float3 p, float3 pos, float r) {
-	return length(pos-p)-r;
-};
-
-	// inigo
-	float dot2( in float2 v ) { return dot(v,v); }
-	float dot2( in float3 v ) { return dot(v,v); }
-	float ndot( in float2 a, in float2 b ) { return a.x*b.x - a.y*b.y; }
-	//// ~inigo
-
-
-	float smin(float a, float b, float k){
-		float h = max( k-abs(a-b), 0.0)/k;
-		return min(a,b)-pow(h, 3)*k*(1./6.0);
-	};
-	float3 repeat(float3 p, float by) {
-		return fmod(p, by)-.5;
-	};
-
-	// http://www.voidgoat.com/blogs/raymarching-unreal/
-	float3 estNormal(float3 pos) {
-		int oid;
-		return normalize( float3(
-			scene(float3( pos.x + EPSILON, pos.yz), oid )
-			- scene(float3( pos.x - EPSILON, pos.yz), oid ),
-
-				scene(float3( pos.x, pos.y + EPSILON, pos.z), oid )
-			- scene(float3( pos.x, pos.y - EPSILON, pos.z), oid ),
-
-				scene(float3( pos.xy, pos.z + EPSILON), oid )
-			- scene(float3( pos.xy, pos.z - EPSILON ), oid )
-		));
-	};
-
-	float3 light(float3 lpos, float3 p, float3 norm, float3 col, float ambient, float specPow=10.0, float specStr=.7) { 
-		// https://michaelwalczyk.com/blog-ray-marching.html
-
-		float3 ldir = normalize(p-lpos);
-		float ldiff = max(.0, dot(-ldir, norm));
-
-		float lamb = ambient;
-
-		float3 sdir = reflect(norm, ldir);
-		float lspec = pow( clamp(dot(sdir, ldir), 0.0, 1.0 ), specPow )* specStr; // .7;
-		float rlight = ldiff + lamb;
-		float3 rcol = (col * rlight) + lspec;
-		return rcol;
-	};
-
-	float3 rot3(float3 p, float3 axis, float angle){
-	//rodrigues' rot formula
-		return lerp(dot(axis, p)* axis, p, cos(angle) + cross(axis, p) * sin(angle));
-	};
-	float3 rot2x(float3 p, float a) {
-		p.yz= mul(p.yz, rot2(a));
-		return p;
-	};
-	float3 rot2y(float3 p, float a) {
-		p.xz= mul(p.xz, rot2(a));
-		return p;
-	};
-
-	float3 rot2z(float3 p, float a) {
-		p.xy = mul(p.xy, rot2(a));
-		return p;
-	};
-	float2x2 rot2(float angle) {
-		float s = sin(angle);
-		float c = cos(angle);
-		
-		return float2x2(c, -s, s, c);
-	};
-
-
-	float3 main(float stepMax, float distMax) {
-		float depth = 0.;
-		float dist = 0.0;
-		float3 p = 0.0;
-		int oid = -1;
-
-		int i;
-		for (i =0; i<stepMax; ++i) {
-			 p = ro + (rd*depth);
-			 dist = scene(p, oid); // can add a displacement here
-			 depth += dist;
-			 if (abs(dist)<EPSILON || depth > distMax) break;
-		}
-
-		float3 col = sceneCol(depth, p, oid);
-		return col;
-	}
-};
-
-
-
-*/
+f.fogDist = 1000;

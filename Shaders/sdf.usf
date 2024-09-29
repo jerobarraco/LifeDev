@@ -71,7 +71,7 @@ struct SDF {
 		return col;
 	}
 	
-	float3 Light(float3 lpos, float3 p, float3 norm, float3 col, float ambient) { 
+	float3 Light(const float3 lpos, const float3 p, const float3 norm, const float3 col, const float ambient) { 
 		// https://michaelwalczyk.com/blog-ray-marching.html
 
 		float3 ldir = normalize(p-lpos);

@@ -1,6 +1,5 @@
 #include "sdfOp.usf"
 
-
 struct SDFObj {
 	float3 p;
 	float3 pos;
@@ -9,30 +8,26 @@ struct SDFObj {
 	float3 origin;
 	float angle;
 	
-	SDFOp op;
-
 	float3 TransP() {
 		// remember to do result*o.scale before returning
 		float3 pp = p;
 		pp -= pos;
 		pp /= scale;
-		pp = op.Rot3(pp, rotAxis, angle);
+		pp = Op.Rot3(pp, rotAxis, angle);
 		pp += origin;
 		return pp;
 	}
 };
 
 struct SDFShape {
-	SDFOp op;
 	float Torus(SDFObj o, const float2 tr) { // inigo
 		float3 p = o.TransP();
 		const float2 q = float2(length(p.xz)-tr.x, p.y);
 		const float r = length(q)-tr.y;
-		return r*o.scale;
+		return r*length(o.scale);
 	}
 
 	// TODO fix. use SDFObj
-
 	
 	float Link(const float3 p, const float le, const float r1, const float r2 ) {
 		float3 q = float3( p.x, max(abs(p.y)-le,0.0), p.z );
