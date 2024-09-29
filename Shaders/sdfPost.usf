@@ -10,7 +10,6 @@ class SDFPost: SDF {
 		float last = -1;
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
 		float s = Sh.Sphere(p, float3(-200, (10*sin(tt+90)), 100), 10);
-		//float s = sdSphere(p, float3(0, 0, 0), 10);
 		float b = Sh.Box(p, float3(-210, 0, 100+(10*sin(tt))), sin(tt)*3, float3(10., 10., 8.));
 		b = Op.Round(b, 5);
 		last = Op.SMin(s, b, 5.0);
@@ -20,10 +19,10 @@ class SDFPost: SDF {
 		oid = lerp(1, oid, step(last, g)); // step returns 1 if the 2nd is bigger, 
 		last = min(g, last);
 
-		float3 bp = Op.Repeat(p, 25);
-		float b2 = Sh.Box(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
-		oid = lerp(2, oid, step(last, b2));
-		last = min(last, b2);
+		// float3 bp = Op.Repeat(p, 25);
+		// float b2 = Sh.Box(bp, float3(5, 5, 5), sin(tt*.1)*.5*p.y, float3(1., 1., 1.));
+		// oid = lerp(2, oid, step(last, b2));
+		// last = min(last, b2);
 
 		SDFObj torO; // no cigar // baby torus
 		torO.p = p;
@@ -50,6 +49,6 @@ f.ocols[2] = float3(.2, .1, .9);
 f.ocols[3] = float3(.5, .2, .5);
 f.specPow = 15.0;
 f.specStr = .5;
-f.fogCol = float3(0.1, 0.3, 0.3);
+f.fogCol = float3(0.01, 0.1, 0.03);
 f.fogStr = 1;
-f.fogDepth = 1000;
+f.fogDepth = 10000;

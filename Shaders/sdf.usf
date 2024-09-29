@@ -3,6 +3,10 @@
 // requires setting the path on the project which is done in lifedev.cpp
 
 #define EPSILON 0.0001
+#define FLT_MAX 3.402823466e+38
+#define FLT_MIN 1.175494351e-38
+#define DBL_MAX 1.7976931348623158e+308
+#define DBL_MIN 2.2250738585072014e-308
 
 // it's a shame but i can't put defaults in structs.
 // you need to define an instance and set all these values.
@@ -33,14 +37,15 @@ float3 Main(const float stepMax, const float distMax) {\
 		p = ro + (rd*depth);\
 		dist = Scene(p, oid);\
 		depth += dist;\
-		if (abs(dist)<EPSILON || depth > distMax) break;\
+		if (abs(dist)<EPSILON) break;\
+		else if (depth > distMax) {\
+			depth = FLT_MAX;\
+			break;\
+		}\
 	}\
-	eIsUECloser = step(eDepth, depth);\
-	const float endDepth = lerp(depth, eDepth, eIsUECloser);\
 	const float3 norm = EstNormal(p);\
-	const float3 col = SceneCol(p, norm, oid);\
-	const float3 fog = Fog(endDepth, col);\
-	return fog;\
+	float3 col = Color(p, depth, norm, oid);\
+	return col;\
 };\
 
 struct SDF {
@@ -64,6 +69,15 @@ struct SDF {
 	float3 fogCol; // color
 	float fogDepth; // absolute
 	float fogStr; // 0-1
+
+	float3 Color(const float3 p, const float depth, const float3 norm, const int oid) {
+		eIsUECloser = step(eDepth, depth);
+		const float endDepth = lerp(depth, eDepth, eIsUECloser);
+		const float3 scCol = SceneCol(p, norm, oid);
+		const float3 col = lerp(scCol, ecol.xyz, eIsUECloser);
+		const float3 fog = Fog(endDepth, col);
+		return fog;
+	}
 
 	float3 SceneCol(const float3 p, const float3 norm, const int oid) {
 		const float3 ocol = ocols[oid];
