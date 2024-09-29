@@ -26,17 +26,17 @@ struct SDFOp {
 	}
 
 	float3 Rot2X(float3 p, float a) {
-		p.yz= mul(p.yz, rot2(a));
+		p.yz= mul(p.yz, Rot2(a));
 		return p;
 	}
 	
 	float3 Rot2Y(float3 p, float a) {
-		p.xz= mul(p.xz, rot2(a));
+		p.xz= mul(p.xz, Rot2(a));
 		return p;
 	}
 
 	float3 Rot2Z(float3 p, float a) {
-		p.xy = mul(p.xy, rot2(a));
+		p.xy = mul(p.xy, Rot2(a));
 		return p;
 	}
 	
