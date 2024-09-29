@@ -24,7 +24,7 @@ struct SDFShape {
 		float3 p = o.TransP();
 		const float2 q = float2(length(p.xz)-tr.x, p.y);
 		const float r = length(q)-tr.y;
-		return r*length(o.scale);
+		return r;
 	}
 
 	// TODO fix. use SDFObj
