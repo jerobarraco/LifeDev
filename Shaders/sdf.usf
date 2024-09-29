@@ -35,10 +35,12 @@ float3 Main(const float stepMax, const float distMax) {\
 		depth += dist;\
 		if (abs(dist)<EPSILON || depth > distMax) break;\
 	}\
+	eIsUECloser = step(eDepth, depth);\
+	const float endDepth = lerp(depth, eDepth, eIsUECloser);\
 	const float3 norm = EstNormal(p);\
-	const float3 col = SceneCol(depth, p, norm, oid);\
-	const float3 fog = Fog(p, col);\
-	return fog;\
+	const float3 col = SceneCol(p, norm, oid);\
+	return col;\
+	/* const float3 fog = Fog(endDepth, col);*/\
 };\
 
 struct SDF {
@@ -48,34 +50,33 @@ struct SDF {
 	float3 rd; // ray direction
 
 	// unreal stuff
-	float edepth; // ue's depth buffer
+	float eDepth; // ue's depth buffer
 	float3 enorm;
 	float3 evel;
 	float4 ecol;
 	float3 elpos;
-	
+	float eIsUECloser;
 
 	// params, you need to set this because i can´t set defaults.
 	float3 ocols[10]; // object's colors. 0 means error
 	float specPow; // 10.
 	float specStr; // .7
 	float3 fogCol; // color
-	float fogDist; // absolute
+	float fogDepth; // absolute
 	float fogStr; // 0-1
 
-	float3 SceneCol(const float3 depth, const float3 p, const float3 norm, const int oid) {
-		// const float3 norm = estNormal(p);
+	float3 SceneCol(const float3 p, const float3 norm, const int oid) {
 		const float3 ocol = ocols[oid];
 		const float3 scol = Light(elpos, p, norm, ocol, 0.1);
-		const float3 col = lerp(ecol.xyz, scol, step(depth, edepth));
+		const float3 col = lerp(scol, ecol.xyz, eIsUECloser);
 		return col;
 	}
 	
 	float3 Light(const float3 lpos, const float3 p, const float3 norm, const float3 col, const float ambient) { 
 		// https://michaelwalczyk.com/blog-ray-marching.html
 
-		float3 ldir = normalize(p-lpos);
-		float ldiff = max(.0, dot(-ldir, norm));
+		const float3 ldir = normalize(p-lpos);
+		const float ldiff = max(.0, dot(-ldir, norm));
 
 		float lamb = ambient;
 
@@ -86,9 +87,8 @@ struct SDF {
 		return rcol;
 	}
 
-	float3 Fog(const float3 p, const float3 scCol) {
-		const float camdist = length(p-ro);
-		const float normdist = saturate(camdist / fogDist);
+	float3 Fog(const float depth, const float3 scCol) {
+		const float normdist = saturate(depth / fogDepth);
 		const float str = lerp(0, fogStr, normdist);
 		return lerp(scCol, fogCol, str);
 	}

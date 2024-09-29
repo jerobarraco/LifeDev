@@ -52,4 +52,4 @@ f.specPow = 15.0;
 f.specStr = .5;
 f.fogCol = float3(0.1, 0.3, 0.3);
 f.fogStr = 1;
-f.fogDist = 1000;
+f.fogDepth = 1000;
