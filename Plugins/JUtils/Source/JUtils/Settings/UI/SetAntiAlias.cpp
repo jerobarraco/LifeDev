@@ -36,6 +36,7 @@ void USetAntiAlias::Apply_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs antialias to %i"), __func__, Val);
 	Variable->Set(Val);
 	// from DrawPrimitiveDebuggerConfig
+	// TODO this is not working
 	GConfig->SetInt(TEXT("/Script/Engine.RendererSettings"), TEXT("r.AntialiasingMethod"), Val, GEngineIni);
 	GConfig->Flush(false);
 }
