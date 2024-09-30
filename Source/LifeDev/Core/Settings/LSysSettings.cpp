@@ -3,7 +3,7 @@
 #include "JUtils/JMiscUtils.h"
 
 ULSysSettings* ULSysSettings::Get() {
-	return Cast<ULSysSettings>(StaticClass()->GetDefaultObject());
+	return GetMutableDefault<ULSysSettings>(); // the same as the previous code.
 }
 
 FName ULSysSettings::GetCategoryName() const {

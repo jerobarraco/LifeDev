@@ -30,7 +30,7 @@ public class JUtils: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "EnhancedInput", "UMG",
+			"CoreUObject", "Engine", "EnhancedInput", "UMG", "Slate"
 			// "Core" // Octtree tringbuffer
 		});
 		
