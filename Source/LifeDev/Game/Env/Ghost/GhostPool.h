@@ -9,6 +9,7 @@
 
 class UPooler;
 class UCRandomizer;
+
 // Ghost Pooler
 UCLASS(Blueprintable, BlueprintType)
 class AGhostPool : public AActor {
