@@ -50,7 +50,6 @@ void ACharNRG::SetEnabled(bool Enabled) {
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
-	UE_LOG(LogTemp, Log, TEXT("%hs: State=%i"), __func__, State);
 	const static FName SSpawnRate("SpawnRate");
 	const float Rate = State == 0 ? SpawnRateMax : SpawnRateMin;
 	if (Parts) Parts->SetVariableFloat(SSpawnRate, Rate);
