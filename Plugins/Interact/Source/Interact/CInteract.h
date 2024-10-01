@@ -48,7 +48,7 @@ public:
 
 	// whether the parent actor can be grabbed.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
-	bool IsGrabbable = true;
+	bool IsGrabbable = false;
 
 	// whether this component (and hence the owner) should try to work in replicated mode.
 	// This depends on the feature flag IT_REPLICATED.
