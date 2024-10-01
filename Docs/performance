@@ -19,6 +19,8 @@ mesh:
 	disable physics if not required
 	disable query if not required
 	move/rotate on one single call, only 1nce per frame (e.g. setTransform instead of setLocation + setRotation )
+	WPO position writes velocity to false
+	WorldPositionOffsetDisableDistance (see quickmesh)
 
 material 
 	Quality switch node
