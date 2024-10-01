@@ -148,7 +148,7 @@ void ALGGameMode::Init_Implementation() {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
 		DiagMan->ZOrder = 3; 
-		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_ALL); // skip dialogs if no feature for it
+		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
 		DiagMan->Init();
 	} else
 		DiagMan = nullptr;

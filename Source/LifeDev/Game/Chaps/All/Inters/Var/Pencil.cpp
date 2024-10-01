@@ -25,7 +25,7 @@ APencil::APencil():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
-	AnimFade->SetNewMat();
+	// AnimFade->SetNewMat();
 	UseFade = true;
 
 	SetEnabled(false);
