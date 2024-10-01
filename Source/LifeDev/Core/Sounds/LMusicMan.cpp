@@ -191,8 +191,10 @@ void ALMusicMan::BeginPlay() {
 		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S)
+	if (S) {
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+	}
 
 	// important to not clip
 	if (MusicSubmix)
@@ -219,8 +221,10 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Story->OnStart.RemoveAll(this);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S)
+	if (S) {
 		S->OnFeatUpdateSound.RemoveAll(this);
+		S->OnFeatUpdateEnviron.RemoveAll(this);
+	}
 
 	if (AnimMusicFX) {
 		AnimMusicFX->OnUpdate.RemoveAll(this);

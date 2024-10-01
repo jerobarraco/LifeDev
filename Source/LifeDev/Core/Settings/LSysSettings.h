@@ -64,6 +64,7 @@ enum class EFeat: uint8 {
 	
 #pragma region Environ
 	E_GHOSTPOOL,
+	E_MAX UMETA(Hidden),
 #pragma endregion
 	// Gameplay (find another word)
 	// G_*,

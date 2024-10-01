@@ -175,11 +175,8 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::V_LUMEN && Feat < EFeat::V_MAX) // < since not including the max
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if (Feat == EFeat::E_GHOSTPOOL)
-		// TODO add feautupdateEnviron
-		OnFeatUpdateSound.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
-	// else if (Feat >= EFeat::V_STROBE && Feat <= EFeat::V_FOV) // accessibility yet.
-		// OnFeatUpdateAccess.Broadcast(Feat, Enable);
+	else if (Feat >= EFeat::E_GHOSTPOOL && Feat < EFeat::E_MAX)
+		OnFeatUpdateEnviron.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
 	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 	
