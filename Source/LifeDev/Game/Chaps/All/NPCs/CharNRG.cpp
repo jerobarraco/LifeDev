@@ -20,15 +20,12 @@
 ACharNRG::ACharNRG():Super() {
 	Texts = { FText::FromString("") };
 	StateNum = 2;
-	// IsOneShot = true; // nopes it will call SetEnable as soon as it triggers.
+	IsOneShot = false; // IsOneShot will call SetEnable as soon as it triggers.
 	
 	Anim->TRoot = Root; // nice try but... (read beginplay)
 	Anim->IsAdditive = false;
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
-	
-	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
-	Super::SetEnabled(false); // The step will SetEnabled(true) via IntersFadeIn
-	
+
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(Mesh);
 	Parts->bAutoManageAttachment = true;
@@ -36,6 +33,9 @@ ACharNRG::ACharNRG():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
 	Parts->SetAsset(CNiag.Object);
+	
+	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
+	Super::SetEnabled(false); // The step will SetEnabled(true) via IntersFadeIn
 }
 
 void ACharNRG::BeginPlay() {
@@ -45,13 +45,14 @@ void ACharNRG::BeginPlay() {
 
 void ACharNRG::SetEnabled(bool Enabled) {
 	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part
-	Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
+	if (Parts) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
 }
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
+	UE_LOG(LogTemp, Log, TEXT("%hs: State=%i"), __func__, State);
 	const static FName SSpawnRate("SpawnRate");
 	const float Rate = State == 0 ? SpawnRateMax : SpawnRateMin;
-	Parts->SetVariableFloat(SSpawnRate, Rate);
+	if (Parts) Parts->SetVariableFloat(SSpawnRate, Rate);
 	// SetEnabled(false); // leave the parts active as i still want them to keep spawning
 }
