@@ -25,12 +25,14 @@ enum class EFeat: uint8 {
 	C_07,
 	C_08,
 	C_09,
+	C_MAX UMETA(Hidden),
 
 #pragma region Dialogs
 	// Shows the dialogs, otherwise they get muted
 	D_ALL,
 	// Show the text on the dialogs, otherwise they get censored
 	D_TEXT,
+	D_MAX UMETA(Hidden),
 #pragma endregion
 
 #pragma region Sounds
@@ -40,6 +42,7 @@ enum class EFeat: uint8 {
 	S_NOISE,
 	// ambient sound
 	S_ENV,
+	S_MAX UMETA(Hidden),
 #pragma endregion
 
 #pragma region Visuals
@@ -51,8 +54,12 @@ enum class EFeat: uint8 {
 	V_STROBE,
 	// field of view
 	V_FOV,
+	// visual flashback post process
+	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
+
+	V_MAX UMETA(Hidden),
 #pragma endregion
 	
 #pragma region Environ
@@ -75,6 +82,7 @@ enum class EFeat: uint8 {
 	DBG_SIG,
 	// General debug, deprecated. don't use unless you are me.
 	DBG_ALL UMETA(Deprecated),
+	DBG_MAX UMETA(Hidden),
 #pragma endregion
 };
 

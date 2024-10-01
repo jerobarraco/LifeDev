@@ -167,19 +167,20 @@ void ULSettings::Init() {
 void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 	OnFeatUpdate.Broadcast(Feat, Enable);
 
-	if (Feat >= EFeat::C_00 && Feat <= EFeat::C_09)
+	if (Feat >= EFeat::C_00 && Feat < EFeat::C_MAX)
 		OnFeatUpdateChap.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::D_ALL && Feat <= EFeat::D_TEXT)
+	else if (Feat >= EFeat::D_ALL && Feat < EFeat::D_MAX)
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::S_MUSIC && Feat <= EFeat::S_ENV)
+	else if (Feat >= EFeat::S_MUSIC && Feat < EFeat::S_MAX)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::V_LUMEN && Feat <= EFeat::V_SPEED)
+	else if (Feat >= EFeat::V_LUMEN && Feat < EFeat::V_MAX) // < since not including the max
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
 	else if (Feat == EFeat::E_GHOSTPOOL)
+		// TODO add feautupdateEnviron
 		OnFeatUpdateSound.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
 	// else if (Feat >= EFeat::V_STROBE && Feat <= EFeat::V_FOV) // accessibility yet.
 		// OnFeatUpdateAccess.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::DBG_STEPS && Feat <= EFeat::DBG_ALL)
+	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_ALL)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 	
 }
