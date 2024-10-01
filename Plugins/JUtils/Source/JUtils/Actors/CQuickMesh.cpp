@@ -13,6 +13,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bEvaluateWorldPositionOffset = false;
 	bEvaluateWorldPositionOffsetInRayTracing = false;
 	WorldPositionOffsetDisableDistance = 1;
+	bWorldPositionOffsetWritesVelocity = false;
 
 	SetQuickCollisionEnabled(false);
 	SetCastAllShadows(false);
