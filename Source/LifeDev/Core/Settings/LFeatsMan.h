@@ -41,4 +41,6 @@ protected:
 
 	UPROPERTY(Transient)
 	UMaterialInterface* SpeedMat = nullptr;
+	UPROPERTY(Transient)
+	UMaterialInterface* FBMat = nullptr;
 };

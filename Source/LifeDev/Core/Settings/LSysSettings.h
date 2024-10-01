@@ -54,7 +54,7 @@ enum class EFeat: uint8 {
 	V_STROBE,
 	// field of view
 	V_FOV,
-	// visual flashback post process
+	// flashback post process
 	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
