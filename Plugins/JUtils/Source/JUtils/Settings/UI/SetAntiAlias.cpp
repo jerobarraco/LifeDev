@@ -29,7 +29,8 @@ void USetAntiAlias::Reset_Implementation() {
 }
 
 void USetAntiAlias::Apply_Implementation() {
-	IConsoleVariable* const Variable = IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"));
+	IConsoleVariable* const Variable =
+		IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"));
 	if (!Variable) [[unlikely]] return;
 
 	const int32 Val = FMath::Clamp<int32>(GetSelectedIndex(), 0, AAM_MAX);
@@ -37,6 +38,7 @@ void USetAntiAlias::Apply_Implementation() {
 	Variable->Set(Val);
 	// from DrawPrimitiveDebuggerConfig
 	// TODO this is not working
-	GConfig->SetInt(TEXT("/Script/Engine.RendererSettings"), TEXT("r.AntialiasingMethod"), Val, GEngineIni);
+	GConfig->SetInt(TEXT("/Script/Engine.RendererSettings"),
+		TEXT("r.AntialiasingMethod"), Val, GEngineIni);
 	GConfig->Flush(false);
 }
