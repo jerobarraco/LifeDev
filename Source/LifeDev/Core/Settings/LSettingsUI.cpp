@@ -21,7 +21,7 @@ ULSettingsUI::ULSettingsUI():Super() {
 	QSTexts.Add(EQualityType::POST_PROCESS,
 		FText::FromString(TEXT("Post Processing")));
 	QSTexts.Add(EQualityType::SHADOW,
-        FText::FromString(TEXT("Shadows")));
+		FText::FromString(TEXT("Shadows")));
 	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
 		FText::FromString(TEXT("Global Illumination")));
 	QSTexts.Add(EQualityType::REFLECTION,
