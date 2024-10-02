@@ -6,8 +6,6 @@
 
 #include "JUtils/UI/GroupBox.h"
 
-#include "LifeDev/Core/Settings/LSettingsUI.h"
-
 void ULSetVideoUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	
@@ -198,5 +196,4 @@ void ULSetVideoUI::QualityChanged(int32 ID, int32 NewQ) {
 	SetQuality(K, NewQ);
 }
 
-
-// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
+// lumen is disabled by the feat in the featsman

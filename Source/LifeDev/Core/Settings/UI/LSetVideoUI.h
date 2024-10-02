@@ -7,7 +7,7 @@
 #include "LSetVideoUI.generated.h"
 
 class UGroupBox;
-/* // todo move from LSettingsUI
+
 UENUM(Blueprintable)
 enum class EQualityType: uint8 {
 	NONE,
@@ -23,7 +23,7 @@ enum class EQualityType: uint8 {
 	FOLIAGE,
 	SHADING,
 	_MAX UMETA(Hidden)
-}; */
+};
 
 // WIP moving the video stuff from the settingsui
 UCLASS(Blueprintable, BlueprintType)

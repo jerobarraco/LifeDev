@@ -8,23 +8,6 @@
 
 class UGroupBox;
 
-UENUM(Blueprintable)
-enum class EQualityType: uint8 { // TODO move to LSetVideoUI
-	NONE,
-	OVERALL,
-	VIEW_DISTANCE,
-	ANTI_ALIAS,
-	POST_PROCESS,
-	SHADOW,
-	GLOBAL_ILLUMINATION,
-	REFLECTION,
-	TEXTURES,
-	EFFECTS,
-	FOLIAGE,
-	SHADING,
-	_MAX UMETA(Hidden)
-};
-
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSettingsUI : public UBaseUI {
 	GENERATED_BODY()
@@ -38,31 +21,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
 	void Apply();
-	virtual void Apply_Implementation(){};
+	virtual void Apply_Implementation(){}
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
 	void Load();
-	virtual void Load_Implementation(){};
+	virtual void Load_Implementation(){}
 
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
-	
-	UFUNCTION(BlueprintCallable)
-	void LoadQSwitches();
-	
-	UFUNCTION(BlueprintCallable)
-	void LoadQSwitch(EQualityType QSwitch);
-	
-	UFUNCTION(BlueprintCallable)
-	void SetQuality(EQualityType Quality, int32 NewQ);
-
-	UFUNCTION() // bound
-	void QualityChanged(int32 ID, int32 NewQ);
-	
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TMap<EQualityType, UGroupBox*> QSwitches;
-
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TMap<EQualityType, FText> QSTexts;
 };
