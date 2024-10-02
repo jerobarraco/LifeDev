@@ -82,7 +82,7 @@ enum class EFeat: uint8 {
 	// significance
 	DBG_SIG,
 	// General debug, deprecated. don't use unless you are me.
-	DBG_ALL UMETA(Deprecated),
+	DBG_BASE UMETA(Deprecated),
 	DBG_MAX UMETA(Hidden),
 #pragma endregion
 };
@@ -151,7 +151,7 @@ public:
 	// The debug features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DebugFeats = {
-		EFeat::DBG_STEPS, EFeat::DBG_ALL,
+		EFeat::DBG_STEPS, EFeat::DBG_BASE,
 		EFeat::D_SHOW, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_STROBE, EFeat::V_FOV, EFeat::V_LUMEN, EFeat::V_BLUR,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
