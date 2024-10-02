@@ -4,12 +4,12 @@
 #include "CoreMinimal.h"
 #include "JUtils/UI/BaseUI.h"
 
-#include "LSettingsUI.generated.h"
+#include "LSetVideoUI.generated.h"
 
 class UGroupBox;
-
+/* // todo move from LSettingsUI
 UENUM(Blueprintable)
-enum class EQualityType: uint8 { // TODO move to LSetVideoUI
+enum class EQualityType: uint8 {
 	NONE,
 	OVERALL,
 	VIEW_DISTANCE,
@@ -23,19 +23,14 @@ enum class EQualityType: uint8 { // TODO move to LSetVideoUI
 	FOLIAGE,
 	SHADING,
 	_MAX UMETA(Hidden)
-};
+}; */
 
+// WIP moving the video stuff from the settingsui
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSettingsUI : public UBaseUI {
+class LIFEDEV_API ULSetVideoUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	ULSettingsUI();
-
-	// will reload the settings
-	virtual void Show_Implementation() override;
-	virtual void Hide_Implementation() override;
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
 	void Apply();
 	virtual void Apply_Implementation(){};
