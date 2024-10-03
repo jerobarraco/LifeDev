@@ -23,11 +23,13 @@ void ULSetVideoUI::Load_Implementation() {
 	FeatsLoad();
 	FrameRateSet();
 	if (AntiAlias) AntiAlias->Load();
+	VSyncSet();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	
+	Settings = GEngine->GetGameUserSettings();
+
 	QSTexts.Add(EQualityType::OVERALL,
 		FText::FromString(TEXT("Overall")));
 	QSTexts.Add(EQualityType::VIEW_DISTANCE,
@@ -88,11 +90,17 @@ void ULSetVideoUI::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void ULSetVideoUI::FrameRateSet() {
+void ULSetVideoUI::VSyncSet() const {
+	if (!VSync) [[unlikely]] return;
+	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
+	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+	VSync->SetCheckedState(IsChecked);
+}
+
+void ULSetVideoUI::FrameRateSet() const{
 	if (!FrameRate) [[unlikely]] return;
 
-	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
-	const float Current = UserSettings? UserSettings->GetFrameRateLimit() : 0;
+	const float Current = Settings ? Settings->GetFrameRateLimit() : 0;
 
 	FrameRate->OnSelectionChanged.RemoveAll(this); // important or it will change the current
 	FrameRate->ClearOptions();
@@ -113,19 +121,19 @@ void ULSetVideoUI::FrameRateSet() {
 		__func__, CurrentI, Current);
 }
 
-void ULSetVideoUI::FrameRateChanged(FString const SelectedItem, ESelectInfo::Type const SelectionType) {
-	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
-	if (!UserSettings || !FrameRate) [[unlikely]] return;
+void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
+	ESelectInfo::Type const SelectionType) {
+	if (!Settings || !FrameRate) [[unlikely]] return;
 
 	const size_t LimitNum = FrameRateOpts.Num();
 	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, LimitNum-1);
-	UserSettings->SetFrameRateLimit(FrameRateOpts[Index]);
+	Settings->SetFrameRateLimit(FrameRateOpts[Index]);
 
 	UE_LOG(LogLSetVid, Log, TEXT("%hs LimitNum=%i Index=%i Limit=%f"),
 		__func__, LimitNum, Index, FrameRateOpts[Index]);
 }
 
-void ULSetVideoUI::LoadQSwitches() {
+void ULSetVideoUI::LoadQSwitches() const {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType const Q: Keys) {
@@ -133,18 +141,17 @@ void ULSetVideoUI::LoadQSwitches() {
 	}
 }
 
-void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) {
+void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) const {
 	if (QSwitch == EQualityType::NONE) return;
 	
-	TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
+	const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
 	if (!pSwitchUI || !*pSwitchUI) {
 		UE_LOG(LogLSetVid, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
 	}
 
-	const UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
 	if (!Settings) {
-		UE_LOG(LogLSetVid, Warning, TEXT("Can't get user settings"));
+		UE_LOG(LogLSetVid, Warning, TEXT("%hs Can't get user settings"), __func__);
 		return;
 	}
 

@@ -7,6 +7,7 @@
 
 #include "LSetVideoUI.generated.h"
 
+class UCheckBox;
 class USetAntiAlias;
 class UComboBoxString;
 class ULFeatCheck;
@@ -43,16 +44,15 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
-	void AntiAliasSet();
-	
-	void FrameRateSet();
+	void VSyncSet() const;
+	void FrameRateSet() const;
 	UFUNCTION() // bound
 	void FrameRateChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 	
 	UFUNCTION(BlueprintCallable)
-	void LoadQSwitches();
+	void LoadQSwitches() const;
 	UFUNCTION(BlueprintCallable)
-	void LoadQSwitch(const EQualityType QSwitch);
+	void LoadQSwitch(const EQualityType QSwitch) const;
 	UFUNCTION() // bound
 	void QualityChanged(const int32 ID, const int32 NewQ);
 	UFUNCTION(BlueprintCallable)
@@ -61,6 +61,9 @@ protected:
 	void FeatsLoad() const;
 	void FeatsApply() const;
 	void FeatsSet();
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UCheckBox> VSync;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USetAntiAlias> AntiAlias;
@@ -93,4 +96,6 @@ protected:
 	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
 	UPROPERTY(BlueprintReadOnly)
 	TMap<EFeat, FText> FeatTexts;
+	UPROPERTY(Transient, BlueprintReadOnly)
+	TObjectPtr<UGameUserSettings> Settings;
 };
