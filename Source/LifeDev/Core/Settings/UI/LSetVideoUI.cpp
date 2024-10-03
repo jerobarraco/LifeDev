@@ -84,15 +84,20 @@ void ULSetVideoUI::NativeDestruct() {
 
 void ULSetVideoUI::FrameRateSet() {
 	if (!FrameRate) [[unlikely]] return;
+
 	FrameRate->ClearOptions();
+
 	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
 	const float Current = UserSettings? UserSettings->GetFrameRateLimit() : 0;
 	int32 CurrentI = 0;
-	for (int32 i= 0; i< FrameRateOpts.Num(); ++i) {
-		const float& F= FrameRateOpts[i];
-		FrameRate->AddOption(FMath::IsNearlyZero(F) ? TEXT("!!UNLIMITED!!") : TEXT("30"));
+	for (int32 i = 0; i< FrameRateOpts.Num(); ++i) {
+		const float& F = FrameRateOpts[i];
+		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
+			TEXT("!+UNLIMITED+!") : FString::SanitizeFloat(F, 0));
+
 		if (FMath::IsNearlyEqual(Current, F)) CurrentI = i;
 	}
+
 	FrameRate->SetSelectedIndex(CurrentI);
 	FrameRate->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FrameRateChanged);
 }
