@@ -181,7 +181,7 @@ void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (Flashback)
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetIntensity);

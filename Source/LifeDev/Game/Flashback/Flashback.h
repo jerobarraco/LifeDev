@@ -20,7 +20,7 @@ public:
 	UFlashback();
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static UFlashback* Instance(UObject* O);
+	static UFlashback* Instance(const UObject* const O);
 
 	// returns the instant value (if it's animating this is the value right now).
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -23,7 +23,7 @@ class LIFEDEV_API ULSettings: public UGameInstanceSubsystem {
 
 public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static ULSettings* Instance(UObject* O);
+	static ULSettings* Instance(const UObject* const O);
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool GetFeatS(UObject* const O, const EFeat Feat);
 

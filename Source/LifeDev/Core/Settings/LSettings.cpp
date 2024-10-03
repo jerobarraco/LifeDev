@@ -12,7 +12,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
 static const FString SaveSlot("LifeDev_");
 
-ULSettings* ULSettings::Instance(UObject* O) {
+ULSettings* ULSettings::Instance(const UObject* const O) {
 	if (!IsValid(O)) return nullptr;
 
 	const UWorld* const World = O->GetWorld();

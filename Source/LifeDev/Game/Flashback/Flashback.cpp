@@ -16,7 +16,7 @@ UFlashback::UFlashback():Super() {
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
-UFlashback* UFlashback::Instance(UObject* O) {
+UFlashback* UFlashback::Instance(const UObject* const O) {
 	if (!IsValid(O)) return nullptr;
 
 	const UWorld* const W = O->GetWorld();

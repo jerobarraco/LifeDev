@@ -27,7 +27,7 @@ class STORY_API UStory : public UWorldSubsystem
 
 public:
 	UFUNCTION(BlueprintCallable)
-	static UStory* Instance(UWorld* W);
+	static UStory* Instance(const UWorld* const W);
 	
 	UFUNCTION(BlueprintCallable)
 	void Init();
