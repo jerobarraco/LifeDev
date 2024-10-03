@@ -9,6 +9,8 @@
 #include "JUtils/UI/GroupBox.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
+
 void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
@@ -46,7 +48,7 @@ void ULSetVideoUI::NativeOnInitialized() {
 	QSTexts.Add(EQualityType::SHADING,
 		FText::FromString(TEXT("Shading")));
 
-	UE_LOG(LogTemp, Log, TEXT("LSetVideoUI::%hs QTextsN=%i QSwitchesN=%i"),
+	UE_LOG(LogLSetVid, Log, TEXT("LSetVideoUI::%hs QTextsN=%i QSwitchesN=%i"),
 		__func__, QSTexts.Num(), QSwitches.Num());
 	TArray<EQualityType> Keys;
 	QSTexts.GetKeys(Keys);
@@ -90,7 +92,7 @@ void ULSetVideoUI::FrameRateSet() {
 
 	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
 	const float Current = UserSettings? UserSettings->GetFrameRateLimit() : 0;
-	int32 CurrentI = 0;
+	int32 CurrentI = 0; // defaults to unlimited
 	for (int32 i = 0; i< FrameRateOpts.Num(); ++i) {
 		const float& F = FrameRateOpts[i];
 		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
@@ -99,8 +101,11 @@ void ULSetVideoUI::FrameRateSet() {
 		if (FMath::IsNearlyEqual(Current, F)) CurrentI = i;
 	}
 
-	FrameRate->SetSelectedIndex(CurrentI);
+	FrameRate->SetSelectedIndex(CurrentI); // set before binding
 	FrameRate->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FrameRateChanged);
+	
+	UE_LOG(LogLSetVid, Log, TEXT("%hs Index=%i Limit=%f"),
+		__func__, CurrentI, Current);
 }
 
 void ULSetVideoUI::FrameRateChanged(FString const SelectedItem, ESelectInfo::Type const SelectionType) {
@@ -111,7 +116,7 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem, ESelectInfo::Typ
 	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, LimitNum-1);
 	UserSettings->SetFrameRateLimit(FrameRateOpts[Index]);
 
-	UE_LOG(LogTemp, Log, TEXT("%hs LimitNum=%i Index=%i Limit=%f"),
+	UE_LOG(LogLSetVid, Log, TEXT("%hs LimitNum=%i Index=%i Limit=%f"),
 		__func__, LimitNum, Index, FrameRateOpts[Index]);
 }
 
@@ -128,13 +133,13 @@ void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) {
 	
 	TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
 	if (!pSwitchUI || !*pSwitchUI) {
-		UE_LOG(LogTemp, Log, TEXT("Cant find quality switch for %i"), QSwitch);
+		UE_LOG(LogLSetVid, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
 	}
 
 	const UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
 	if (!Settings) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get user settings"));
+		UE_LOG(LogLSetVid, Warning, TEXT("Can't get user settings"));
 		return;
 	}
 
@@ -180,17 +185,17 @@ void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) {
 }
 
 void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
-	UE_LOG(LogTemp, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
+	UE_LOG(LogLSetVid, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (Quality == EQualityType::NONE) return;
 
 	if (NewQ<0 || NewQ>4) {
-		UE_LOG(LogTemp, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
+		UE_LOG(LogLSetVid, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
 		return;
 	}
 	
 	UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
 	if (!Settings) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get user settings"));
+		UE_LOG(LogLSetVid, Warning, TEXT("Can't get user settings"));
 		return;
 	}
 
@@ -229,7 +234,7 @@ void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 		Settings->SetShadingQuality(NewQ);
 		break;
 	default:
-		UE_LOG(LogTemp, Warning, TEXT("%hs Wrong quality type."), __func__);
+		UE_LOG(LogLSetVid, Warning, TEXT("%hs Wrong quality type."), __func__);
 		return;
 	}
 	
@@ -240,7 +245,7 @@ void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 
 void ULSetVideoUI::QualityChanged(const int32 ID, const int32 NewQ) {
 	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
+		UE_LOG(LogLSetVid, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
 	}
 	
