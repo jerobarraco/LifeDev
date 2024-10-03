@@ -7,6 +7,7 @@
 
 #include "LSetVideoUI.generated.h"
 
+class USetAntiAlias;
 class UComboBoxString;
 class ULFeatCheck;
 class UGroupBox;
@@ -41,6 +42,8 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
+
+	void AntiAliasSet();
 	
 	void FrameRateSet();
 	UFUNCTION() // bound
@@ -58,6 +61,9 @@ protected:
 	void FeatsLoad() const;
 	void FeatsApply() const;
 	void FeatsSet();
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USetAntiAlias> AntiAlias;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> FrameRate;

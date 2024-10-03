@@ -2,11 +2,9 @@
 
 #include "SetAntiAlias.h"
 
-#include "Engine/RendererSettings.h"
-
 ENUM_RANGE_BY_COUNT(EAntiAliasingMethod, EAntiAliasingMethod::AAM_MAX); // benui told me to do it
 
-void USetAntiAlias::Reset_Implementation() {
+void USetAntiAlias::Load_Implementation() {
 	ClearOptions(); // could be called multiple times during runtime.
 	for (const EAntiAliasingMethod& A: TEnumRange<EAntiAliasingMethod>()) {
 		// UEnum::GetValueAsString() works in shipped build, UEnum::GetDisplayValueAsText() does not.

@@ -5,6 +5,7 @@
 #include "LFeatCheck.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
+#include "JUtils/Settings/UI/SetAntiAlias.h"
 
 #include "JUtils/UI/GroupBox.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
@@ -14,12 +15,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
 void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
+	if (AntiAlias) AntiAlias->Apply();
 }
 
 void ULSetVideoUI::Load_Implementation() {
 	Super::Load_Implementation();
 	FeatsLoad();
 	FrameRateSet();
+	if (AntiAlias) AntiAlias->Load();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {

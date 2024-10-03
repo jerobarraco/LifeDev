@@ -13,8 +13,8 @@ class JUTILS_API USetAntiAlias: public UComboBoxString {
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Reset();
-	virtual void Reset_Implementation();
+	void Load();
+	virtual void Load_Implementation();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Apply();
