@@ -7,6 +7,8 @@
 
 #include "LSetVideoUI.generated.h"
 
+enum class EFeat : uint8;
+class ULFeatCheck;
 class UGroupBox;
 
 UENUM(Blueprintable)
@@ -32,9 +34,8 @@ class LIFEDEV_API ULSetVideoUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
-	virtual void Apply_Implementation(){};
-
-	virtual void Load_Implementation(){};
+	virtual void Apply_Implementation() override;
+	virtual void Load_Implementation() override;
 
 protected:
 	virtual void NativeOnInitialized() override;
@@ -51,10 +52,32 @@ protected:
 
 	UFUNCTION() // bound
 	void QualityChanged(const int32 ID, const int32 NewQ);
+
+	void FeatsLoad() const;
+	void FeatsApply() const;
+	void FeatsSet();
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, TObjectPtr<UGroupBox>> QSwitches;
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, FText> QSTexts;
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_Speed;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_Fov;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_Blur;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_Strobe;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_Lumen;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatCheck> Feat_FBPost;
+
+	UPROPERTY(BlueprintReadOnly)
+	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
+	UPROPERTY(BlueprintReadOnly)
+	TMap<EFeat, FText> FeatTexts;
 };

@@ -2,9 +2,21 @@
 
 #include "LSetVideoUI.h"
 
+#include "LFeatCheck.h"
 #include "GameFramework/GameUserSettings.h"
 
 #include "JUtils/UI/GroupBox.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
+
+void ULSetVideoUI::Apply_Implementation() {
+	Super::Apply_Implementation();
+	FeatsApply();
+}
+
+void ULSetVideoUI::Load_Implementation() {
+	Super::Load_Implementation();
+	FeatsLoad();
+}
 
 void ULSetVideoUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -48,6 +60,8 @@ void ULSetVideoUI::NativeOnInitialized() {
 		SwitchUI->ID = static_cast<int32>(Q);
 		SwitchUI->OnChange.AddUniqueDynamic(this, &ULSetVideoUI::QualityChanged);
 	}
+
+	FeatsSet();
 }
 
 void ULSetVideoUI::NativeDestruct() {
@@ -60,6 +74,8 @@ void ULSetVideoUI::NativeDestruct() {
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
 
+	Feats.Empty(0);
+	FeatTexts.Empty();
 	Super::NativeDestruct();
 }
 
@@ -177,7 +193,7 @@ void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 		Settings->SetShadingQuality(NewQ);
 		break;
 	default:
-		UE_LOG(LogTemp, Warning, TEXT("Wrong quality type."));
+		UE_LOG(LogTemp, Warning, TEXT("%hs Wrong quality type."), __func__);
 		return;
 	}
 	
@@ -194,6 +210,52 @@ void ULSetVideoUI::QualityChanged(const int32 ID, const int32 NewQ) {
 	
 	const EQualityType K = static_cast<EQualityType>(ID);
 	SetQuality(K, NewQ);
+}
+
+void ULSetVideoUI::FeatsLoad() const {
+	for (const auto& KV: Feats) {
+		const TObjectPtr<ULFeatCheck>& F = KV.Value;
+		if (!F) continue;
+
+		F->Load();
+	}
+}
+
+void ULSetVideoUI::FeatsApply() const {
+	for (const auto& KV: Feats) {
+		const TObjectPtr<ULFeatCheck>& F = KV.Value;
+		if (!F) continue;
+
+		F->Apply();
+	}
+}
+
+void ULSetVideoUI::FeatsSet() {
+	Feats.Empty(6);
+	FeatTexts.Empty(6);
+
+	Feats.Add(EFeat::V_BLUR, Feat_Blur);
+	Feats.Add(EFeat::V_SPEED, Feat_Speed);
+	Feats.Add(EFeat::V_LUMEN, Feat_Lumen);
+	Feats.Add(EFeat::V_FLASHBACK, Feat_FBPost);
+	Feats.Add(EFeat::V_STROBE, Feat_Strobe);
+	Feats.Add(EFeat::V_FOV, Feat_Fov);
+
+	FeatTexts.Add(EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post"));
+	FeatTexts.Add(EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed Post"));
+	FeatTexts.Add(EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View"));
+	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
+	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen GI"));
+	FeatTexts.Add(EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights"));
+	
+	for (const auto& KV: Feats) {
+		const EFeat K = KV.Key;
+		const TObjectPtr<ULFeatCheck>& F = KV.Value;
+		if (!F) continue;
+
+		const FText* const T = FeatTexts.Find(K);
+		if (T) F->SetUp(K, *T);
+	}
 }
 
 // lumen is disabled by the feat in the featsman
