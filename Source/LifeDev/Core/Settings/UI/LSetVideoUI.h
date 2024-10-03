@@ -2,7 +2,8 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "JUtils/UI/BaseUI.h"
+
+#include "LSetBaseUI.h"
 
 #include "LSetVideoUI.generated.h"
 
@@ -27,16 +28,12 @@ enum class EQualityType: uint8 {
 
 // WIP moving the video stuff from the settingsui
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSetVideoUI : public UUserWidget {
+class LIFEDEV_API ULSetVideoUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
-	void Apply();
 	virtual void Apply_Implementation(){};
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
-	void Load();
 	virtual void Load_Implementation(){};
 
 protected:
@@ -47,13 +44,13 @@ protected:
 	void LoadQSwitches();
 	
 	UFUNCTION(BlueprintCallable)
-	void LoadQSwitch(EQualityType QSwitch);
+	void LoadQSwitch(const EQualityType QSwitch);
 	
 	UFUNCTION(BlueprintCallable)
-	void SetQuality(EQualityType Quality, int32 NewQ);
+	void SetQuality(const EQualityType Quality, const int32 NewQ);
 
 	UFUNCTION() // bound
-	void QualityChanged(int32 ID, int32 NewQ);
+	void QualityChanged(const int32 ID, const int32 NewQ);
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, TObjectPtr<UGroupBox>> QSwitches;

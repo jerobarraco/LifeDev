@@ -26,7 +26,7 @@ public:
 	void Load();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	USoundSubmix* Submix = nullptr;
+	TObjectPtr<USoundSubmix> Submix = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FName Key = NAME_None;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)

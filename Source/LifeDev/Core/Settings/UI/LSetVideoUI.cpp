@@ -71,7 +71,7 @@ void ULSetVideoUI::LoadQSwitches() {
 	}
 }
 
-void ULSetVideoUI::LoadQSwitch(EQualityType QSwitch) {
+void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) {
 	if (QSwitch == EQualityType::NONE) return;
 	
 	TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
@@ -127,7 +127,7 @@ void ULSetVideoUI::LoadQSwitch(EQualityType QSwitch) {
 	(*pSwitchUI)->SetSelected(Q);
 }
 
-void ULSetVideoUI::SetQuality(EQualityType Quality, int32 NewQ) {
+void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 	UE_LOG(LogTemp, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (Quality == EQualityType::NONE) return;
 
@@ -186,7 +186,7 @@ void ULSetVideoUI::SetQuality(EQualityType Quality, int32 NewQ) {
 	LoadQSwitches();
 }
 
-void ULSetVideoUI::QualityChanged(int32 ID, int32 NewQ) {
+void ULSetVideoUI::QualityChanged(const int32 ID, const int32 NewQ) {
 	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
