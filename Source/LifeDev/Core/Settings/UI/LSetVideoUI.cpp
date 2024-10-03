@@ -1,4 +1,4 @@
-// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LSetVideoUI.h"
 
