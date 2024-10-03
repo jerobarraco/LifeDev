@@ -51,7 +51,11 @@
 ** Make your functions and variable accessible from bps. and callable.
 * Avoid using interfaces. use inheritance whenever possible.
 * callbacks are delegates
-* singletons are subsystems
+* use subsystems instead of singletons
+* * unless you need a replicated actor. then use manager actors. and try using AInfo.
+* use TObjectPtr for UPROPERTY member attributes and collections.
+* * Potentially other uses that exceeds the scope of the function where its used.
+* * https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-migration-guide
 
 
 
