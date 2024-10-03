@@ -7,9 +7,10 @@
 
 #include "LSetVideoUI.generated.h"
 
-enum class EFeat : uint8;
+class UComboBoxString;
 class ULFeatCheck;
 class UGroupBox;
+enum class EFeat : uint8;
 
 UENUM(Blueprintable)
 enum class EQualityType: uint8 {
@@ -41,21 +42,27 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
+	void FrameRateSet();
+	UFUNCTION() // bound
+	void FrameRateChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	
 	UFUNCTION(BlueprintCallable)
 	void LoadQSwitches();
-	
 	UFUNCTION(BlueprintCallable)
 	void LoadQSwitch(const EQualityType QSwitch);
-	
-	UFUNCTION(BlueprintCallable)
-	void SetQuality(const EQualityType Quality, const int32 NewQ);
-
 	UFUNCTION() // bound
 	void QualityChanged(const int32 ID, const int32 NewQ);
+	UFUNCTION(BlueprintCallable)
+	void SetQuality(const EQualityType Quality, const int32 NewQ);
 
 	void FeatsLoad() const;
 	void FeatsApply() const;
 	void FeatsSet();
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> FrameRate;
+	UPROPERTY(BlueprintReadWrite)
+	TArray<float> FrameRateOpts = {0, 30, 60, 90, 120, 144, 155};
 	
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, TObjectPtr<UGroupBox>> QSwitches;

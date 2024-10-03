@@ -3,6 +3,7 @@
 #include "LSetVideoUI.h"
 
 #include "LFeatCheck.h"
+#include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
 
 #include "JUtils/UI/GroupBox.h"
@@ -62,6 +63,7 @@ void ULSetVideoUI::NativeOnInitialized() {
 	}
 
 	FeatsSet();
+	FrameRateSet();
 }
 
 void ULSetVideoUI::NativeDestruct() {
@@ -76,7 +78,35 @@ void ULSetVideoUI::NativeDestruct() {
 
 	Feats.Empty(0);
 	FeatTexts.Empty();
+	if (FrameRate) FrameRate->ClearOptions();
 	Super::NativeDestruct();
+}
+
+void ULSetVideoUI::FrameRateSet() {
+	if (!FrameRate) [[unlikely]] return;
+	FrameRate->ClearOptions();
+	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
+	const float Current = UserSettings? UserSettings->GetFrameRateLimit() : 0;
+	int32 CurrentI = 0;
+	for (int32 i= 0; i< FrameRateOpts.Num(); ++i) {
+		const float& F= FrameRateOpts[i];
+		FrameRate->AddOption(FMath::IsNearlyZero(F) ? TEXT("!!UNLIMITED!!") : TEXT("30"));
+		if (FMath::IsNearlyEqual(Current, F)) CurrentI = i;
+	}
+	FrameRate->SetSelectedIndex(CurrentI);
+	FrameRate->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FrameRateChanged);
+}
+
+void ULSetVideoUI::FrameRateChanged(FString const SelectedItem, ESelectInfo::Type const SelectionType) {
+	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
+	if (!UserSettings || !FrameRate) [[unlikely]] return;
+
+	const size_t LimitNum = FrameRateOpts.Num();
+	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, LimitNum-1);
+	UserSettings->SetFrameRateLimit(FrameRateOpts[Index]);
+
+	UE_LOG(LogTemp, Log, TEXT("%hs LimitNum=%i Index=%i Limit=%f"),
+		__func__, LimitNum, Index, FrameRateOpts[Index]);
 }
 
 void ULSetVideoUI::LoadQSwitches() {
