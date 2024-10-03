@@ -88,10 +88,12 @@ void ULSetVideoUI::NativeDestruct() {
 void ULSetVideoUI::FrameRateSet() {
 	if (!FrameRate) [[unlikely]] return;
 
-	FrameRate->ClearOptions();
-
 	UGameUserSettings* const UserSettings = GEngine->GetGameUserSettings();
 	const float Current = UserSettings? UserSettings->GetFrameRateLimit() : 0;
+
+	FrameRate->OnSelectionChanged.RemoveAll(this); // important or it will change the current
+	FrameRate->ClearOptions();
+
 	int32 CurrentI = 0; // defaults to unlimited
 	for (int32 i = 0; i< FrameRateOpts.Num(); ++i) {
 		const float& F = FrameRateOpts[i];
