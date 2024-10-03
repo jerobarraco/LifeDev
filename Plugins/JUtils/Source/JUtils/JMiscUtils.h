@@ -107,4 +107,7 @@ public:
 	// can't be blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
+
+	template <typename T, std::size_t N> 
+	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
 };
