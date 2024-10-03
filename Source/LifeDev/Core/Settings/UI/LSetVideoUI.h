@@ -44,7 +44,10 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
+	void DResSet() const;
 	void VSyncSet() const;
+	UFUNCTION()
+	void VSyncChanged(const bool bIsChecked);
 	void FrameRateSet() const;
 	UFUNCTION() // bound
 	void FrameRateChanged(FString SelectedItem, ESelectInfo::Type SelectionType);

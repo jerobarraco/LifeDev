@@ -22,8 +22,8 @@ void ULSetVideoUI::Load_Implementation() {
 	Super::Load_Implementation();
 	FeatsLoad();
 	FrameRateSet();
-	if (AntiAlias) AntiAlias->Load();
 	VSyncSet();
+	if (AntiAlias) AntiAlias->Load();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {
@@ -90,11 +90,22 @@ void ULSetVideoUI::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
+void ULSetVideoUI::DResSet() const {
+	
+}
+
 void ULSetVideoUI::VSyncSet() const {
 	if (!VSync) [[unlikely]] return;
 	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+	VSync->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
 	VSync->SetCheckedState(IsChecked);
+	VSync->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::VSyncChanged); // important or it will change the current
+}
+
+void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
+	if (!Settings) return;
+	Settings->SetVSyncEnabled(VSync->IsChecked());
 }
 
 void ULSetVideoUI::FrameRateSet() const{
@@ -204,8 +215,7 @@ void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 		UE_LOG(LogLSetVid, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
 		return;
 	}
-	
-	UGameUserSettings* const Settings = GEngine->GetGameUserSettings();
+
 	if (!Settings) {
 		UE_LOG(LogLSetVid, Warning, TEXT("Can't get user settings"));
 		return;
