@@ -23,6 +23,7 @@ void ULSetVideoUI::Load_Implementation() {
 	FeatsLoad();
 	FrameRateSet();
 	VSyncSet();
+	DResSet();
 	if (AntiAlias) AntiAlias->Load();
 }
 
@@ -91,7 +92,17 @@ void ULSetVideoUI::NativeDestruct() {
 }
 
 void ULSetVideoUI::DResSet() const {
-	
+	if (!DRes) [[unlikely]] return;
+	const bool Enabled = Settings ? Settings->IsDynamicResolutionEnabled(): false;
+	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+	DRes->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
+	DRes->SetCheckedState(IsChecked);
+	DRes->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::DResChanged); // important or it will change the current
+}
+
+void ULSetVideoUI::DResChanged(bool bIsChecked) {
+	if (!Settings) return;
+	Settings->SetDynamicResolutionEnabled(bIsChecked);
 }
 
 void ULSetVideoUI::VSyncSet() const {
@@ -105,7 +116,7 @@ void ULSetVideoUI::VSyncSet() const {
 
 void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
 	if (!Settings) return;
-	Settings->SetVSyncEnabled(VSync->IsChecked());
+	Settings->SetVSyncEnabled(bIsChecked);
 }
 
 void ULSetVideoUI::FrameRateSet() const{

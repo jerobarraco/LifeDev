@@ -45,6 +45,8 @@ protected:
 	virtual void NativeDestruct() override;
 
 	void DResSet() const;
+	UFUNCTION()
+	void DResChanged(bool bIsChecked);
 	void VSyncSet() const;
 	UFUNCTION()
 	void VSyncChanged(const bool bIsChecked);
@@ -66,8 +68,9 @@ protected:
 	void FeatsSet();
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UCheckBox> DRes;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UCheckBox> VSync;
-
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USetAntiAlias> AntiAlias;
 
