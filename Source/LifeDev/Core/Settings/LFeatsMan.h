@@ -31,16 +31,16 @@ protected:
 	void FeatVisualUpdate(EFeat Feat, bool bEnabled);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ALGGameMode* GM = nullptr;
+	TObjectPtr<ALGGameMode> GM = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UMaterialParameterCollection* MPC = nullptr;
+	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UMaterialParameterCollectionInstance* MPCI = nullptr;
+	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 
 	UPROPERTY(Transient)
-	UMaterialInterface* SpeedMat = nullptr;
+	TObjectPtr<UMaterialInterface> SpeedMat = nullptr;
 	UPROPERTY(Transient)
-	UMaterialInterface* FBMat = nullptr;
+	TObjectPtr<UMaterialInterface> FBMat = nullptr;
 };

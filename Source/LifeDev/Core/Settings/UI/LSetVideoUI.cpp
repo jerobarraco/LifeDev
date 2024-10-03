@@ -40,10 +40,10 @@ void ULSetVideoUI::NativeOnInitialized() {
 		const FText* const T = QSTexts.Find(Q);
 		if (!T) continue;
 		
-		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
+		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 
-		UGroupBox* const SwitchUI = *pSwitchUI;
+		const TObjectPtr<UGroupBox>& SwitchUI = *pSwitchUI;
 		SwitchUI->SetLabel(*T);
 		SwitchUI->ID = static_cast<int32>(Q);
 		SwitchUI->OnChange.AddUniqueDynamic(this, &ULSetVideoUI::QualityChanged);
@@ -54,7 +54,7 @@ void ULSetVideoUI::NativeDestruct() {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType const Q: Keys) {
-		UGroupBox** const pSwitchUI = QSwitches.Find(Q);
+		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 
 		(*pSwitchUI)->OnChange.RemoveAll(this);
@@ -74,7 +74,7 @@ void ULSetVideoUI::LoadQSwitches() {
 void ULSetVideoUI::LoadQSwitch(EQualityType QSwitch) {
 	if (QSwitch == EQualityType::NONE) return;
 	
-	UGroupBox** const pSwitchUI = QSwitches.Find(QSwitch);
+	TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
 	if (!pSwitchUI || !*pSwitchUI) {
 		UE_LOG(LogTemp, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
