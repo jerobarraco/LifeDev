@@ -17,6 +17,7 @@ void ULSetVideoUI::Apply_Implementation() {
 void ULSetVideoUI::Load_Implementation() {
 	Super::Load_Implementation();
 	FeatsLoad();
+	FrameRateSet();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {
