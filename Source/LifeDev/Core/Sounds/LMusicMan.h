@@ -22,14 +22,14 @@ public:
 	ALMusicMan();
 
 	UFUNCTION(BlueprintCallable)
-	static ALMusicMan* Instance(UObject* W);
+	static ALMusicMan* Instance(const UObject* const W);
 	// TODO use UObject* Context instead and use the meta tag
 
 	UFUNCTION(BlueprintCallable)
-	static void SetRainS(UWorld* W, bool Play);
+	static void SetRainS(const UWorld* const W, const bool Play);
 
 	UFUNCTION(BlueprintCallable)
-	static void FadeS(UWorld* W, bool In=true);
+	static void FadeS(const UWorld* const W, const bool In=true);
 
 	UFUNCTION(BlueprintCallable)
 	void SetRain(bool Play);
@@ -71,21 +71,21 @@ protected:
 	void AnimFXEnd(); // bind
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	USoundSubmix* MusicSubmix = nullptr;
+	TObjectPtr<USoundSubmix> MusicSubmix = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	USoundEffectSubmixPreset* MusicFX = nullptr;
+	TObjectPtr<USoundEffectSubmixPreset> MusicFX = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|Sub")
-	UCLSounder* Rain = nullptr;
+	TObjectPtr<UCLSounder> Rain = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
-	UCLSounder* Environ = nullptr;
+	TObjectPtr<UCLSounder> Environ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
-	UCAnimator* AnimMusicFX = nullptr;
+	TObjectPtr<UCAnimator> AnimMusicFX = nullptr;
 
 	// doesn't belong here but the game mode is bloated. to be moved later.
 	UPROPERTY(BlueprintReadOnly, Transient)
-	AGhostPool* GhostPool = nullptr;
+	TObjectPtr<AGhostPool> GhostPool = nullptr;
 
 	bool EnvironOverride = true;
 };

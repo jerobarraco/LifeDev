@@ -81,7 +81,7 @@ ALMusicMan::ALMusicMan():Super() {
 	MusicFX = CSFX.Object;
 }
 
-ALMusicMan* ALMusicMan::Instance(UObject* O) {
+ALMusicMan* ALMusicMan::Instance(const UObject* const O) {
 	if (!O) return nullptr;
 	const UWorld* W = O->GetWorld();
 
@@ -164,14 +164,14 @@ void ALMusicMan::SetIntensity_Implementation(float V) {
 	SetEnvironFB(V);
 }
 
-void ALMusicMan::SetRainS(UWorld* W, bool Play) {
+void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
 	ALMusicMan* const MM = Instance(W);
 	if (!MM) return;
 	
 	MM->SetRain(Play);
 }
 
-void ALMusicMan::FadeS(UWorld* W, bool In) {
+void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 	ALMusicMan* const MM = Instance(W);
 	if (!MM) return;
 

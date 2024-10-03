@@ -4,11 +4,11 @@
 #include "CoreMinimal.h"
 #include "LSetBaseUI.h"
 
-#include "LSetAudioUI.generated.h"
+#include "LSetSoundUI.generated.h"
 
 // WIP moving the video stuff from the settingsui
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSetAudioUI : public ULSetBaseUI {
+class LIFEDEV_API ULSetSoundUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
