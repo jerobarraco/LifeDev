@@ -21,9 +21,8 @@ class LIFEDEV_API ALMusicMan: public AMusicMan {
 public:
 	ALMusicMan();
 
-	UFUNCTION(BlueprintCallable)
-	static ALMusicMan* Instance(const UObject* const W);
-	// TODO use UObject* Context instead and use the meta tag
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
+	static ALMusicMan* Instance(const UObject* const O);
 
 	UFUNCTION(BlueprintCallable)
 	static void SetRainS(const UWorld* const W, const bool Play);

@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab
 // Base component for interactions
 // Defines a volume where the interaction is triggered.
 // Set the relative position on the viewport, (but avoid changing the scale). Also set the box extent. 
-// By default it will start active, since there's a ue issue around that.
+// By default, it will start active, since there's a ue issue around that.
 // To change it you'll need to do it on BeginPlay.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {

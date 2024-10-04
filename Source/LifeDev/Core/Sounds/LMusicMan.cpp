@@ -83,7 +83,7 @@ ALMusicMan::ALMusicMan():Super() {
 
 ALMusicMan* ALMusicMan::Instance(const UObject* const O) {
 	if (!O) return nullptr;
-	const UWorld* W = O->GetWorld();
+	const UWorld* const W = O->GetWorld();
 
 	// Might be faster easier to get it from the gamemode
 	const ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
