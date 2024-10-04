@@ -136,9 +136,10 @@ void ULSetVideoUI::ResScaleSet() const {
 }
 
 void ULSetVideoUI::ResScaleChanged(const float Value) {
-	if (Settings) Settings->SetResolutionScaleNormalized(Value);
+	const int32 PVal = trunc(Value*100);
+	if (Settings) Settings->SetResolutionScaleNormalized(PVal / 100.0);
 	if (ResScaleText) ResScaleText->SetText(
-		FText::FromString( FString::SanitizeFloat(Value*100, 0) + "%" ));
+		FText::FromString( FString::FromInt(PVal) + "%" ));
 }
 
 void ULSetVideoUI::DResSet() const {
