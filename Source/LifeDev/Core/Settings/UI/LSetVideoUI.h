@@ -46,6 +46,12 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
+	void ResSet() const;
+	static FString ResToCombo(const FIntPoint& P);
+	UFUNCTION()
+	void ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	void ResOptsSet();
+	
 	void ResScaleSet() const;
 	UFUNCTION()
 	void ResScaleChanged(const float Value);
@@ -71,6 +77,10 @@ protected:
 	void FeatsLoad() const;
 	void FeatsApply() const;
 	void FeatsSet();
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> Resolution;
+	TArray<FIntPoint> ResOpts;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> ResScale;

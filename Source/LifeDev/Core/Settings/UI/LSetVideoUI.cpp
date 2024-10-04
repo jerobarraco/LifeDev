@@ -2,15 +2,17 @@
 
 #include "LSetVideoUI.h"
 
-#include "LFeatCheck.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "GameFramework/GameUserSettings.h"
+
 #include "JUtils/JMiscUtils.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
-
 #include "JUtils/UI/GroupBox.h"
+
+#include "LFeatCheck.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
@@ -28,6 +30,7 @@ void ULSetVideoUI::Load_Implementation() {
 	VSyncSet();
 	DResSet();
 	ResScaleSet();
+	ResSet();
 	if (AntiAlias) AntiAlias->Load();
 }
 
@@ -77,6 +80,7 @@ void ULSetVideoUI::NativeOnInitialized() {
 
 	FeatsSet();
 	FrameRateSet();
+	ResOptsSet();
 }
 
 void ULSetVideoUI::NativeDestruct() {
@@ -93,6 +97,34 @@ void ULSetVideoUI::NativeDestruct() {
 	FeatTexts.Empty();
 	if (FrameRate) FrameRate->ClearOptions();
 	Super::NativeDestruct();
+}
+
+void ULSetVideoUI::ResSet() const {
+	if (!Settings || !Resolution) return;
+
+	Resolution->ClearOptions();
+	for (const FIntPoint& P:ResOpts) {
+		Resolution->AddOption(ResToCombo(P));
+	}
+	Resolution->SetSelectedOption(ResToCombo(Settings->GetScreenResolution()));
+	Resolution->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResChanged);
+}
+
+FString ULSetVideoUI::ResToCombo(const FIntPoint& P) {
+	return FString::Printf(TEXT("%ix%i"), P.X, P.Y);
+}
+
+void ULSetVideoUI::ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType) {
+	if (!Settings || SelectionType == ESelectInfo::Type::Direct) return;
+
+	const int32 Index = Resolution->GetSelectedIndex();
+	if (Index <0 || Index > ResOpts.Num()) return;
+
+	Settings->SetScreenResolution(ResOpts[Index]);
+}
+
+void ULSetVideoUI::ResOptsSet() {
+	UKismetSystemLibrary::GetConvenientWindowedResolutions(ResOpts);
 }
 
 void ULSetVideoUI::ResScaleSet() const {
