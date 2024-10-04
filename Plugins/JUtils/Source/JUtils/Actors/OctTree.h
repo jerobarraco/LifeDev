@@ -82,9 +82,9 @@ protected:
 	void Return(const bool ReturnSubs = true);
 
 	UPROPERTY(Transient)
-	TArray<AOTNode*> Nodes; // "children" is already defined, and has different meaning.
+	TArray<TObjectPtr<AOTNode>> Nodes; // "children" is already defined, and has different meaning.
 	UPROPERTY(Transient)
-	TArray<AActor*> Actors;
+	TArray<TObjectPtr<AActor>> Actors;
 	
 	UPROPERTY(Transient)
 	FBox Box;
@@ -129,7 +129,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetBox(const FBox& InBox);
 	UFUNCTION(BlueprintCallable)
-	void SetActorsMax(int32 InActorsMax);
+	void SetActorsMax(const int32 InActorsMax);
 	UFUNCTION(BlueprintCallable)
 	void SetPoolTrimTime(float const InTrimTime);
 
@@ -171,6 +171,7 @@ public:
 	// when trying to extend, what's the max levels it will try to go (each try)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ExtendMax = 5;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -178,13 +179,13 @@ protected:
 	UFUNCTION() // bound
 	bool PrintIter(AActor* const A, AOTNode* const Node);
 	// true if succeeded or ok. false otherwise.
-	bool TryExtend(AActor* Actor);
+	bool TryExtend(AActor* const Actor);
 
 	UPROPERTY(BlueprintReadOnly)
 	int32 ActorsMax = 5;
 
 	UPROPERTY(Transient, BlueprintReadOnly)
-	AOTNode* RootNode = nullptr;
+	TObjectPtr<AOTNode> RootNode = nullptr;
 	UPROPERTY(Transient, BlueprintReadOnly) // cache
-	UPool* Pool = nullptr;
+	TObjectPtr<UPool> Pool = nullptr;
 };

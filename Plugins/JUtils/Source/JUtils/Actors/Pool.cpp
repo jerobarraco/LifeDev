@@ -138,10 +138,10 @@ void UPool::Return(AActor* const Actor) {
 void UPool::Empty() {
 	UE_LOG(LogJPool, Log, TEXT("%hs, Clearing pool"), __func__);
 	
-	TArray<AActor*> Old = Ready; // make a copy in case someone is doing something weird.
+	TArray<TObjectPtr<AActor>> Old = Ready; // make a copy in case someone is doing something weird.
 	Ready.Empty(); // empty asap.
-	for(AActor* const A: Old) {
-		A->Destroy();
+	for(TObjectPtr<AActor>& A: Old) {
+		if (IsValid(A)) A->Destroy();
 	}
 }
 
@@ -180,7 +180,7 @@ void UPool::Trim() {
 	SetTrimTimer();
 }
 
-UPooler* UPooler::Instance(UObject* Ctx) {
+UPooler* UPooler::Instance(UObject* const Ctx) {
 	if (!Ctx) return nullptr;
 	
 	const UWorld* const World = Ctx->GetWorld();
@@ -196,8 +196,8 @@ UPool* UPooler::SetPool(int32 const Max, TSubclassOf<AActor> const Class, bool c
 	// Not using GetPool because i don't save much and could spam a false negative log.
 	if (!IsValid(Class)) return nullptr; // fix possible crash
 	const FName Key = Class->GetFName();
-	UPool** pPool = Pools.Find(Key);
-	UPool* Pool = nullptr;
+	TObjectPtr<UPool>* pPool = Pools.Find(Key);
+	TObjectPtr<UPool> Pool = nullptr;
 	if (pPool)
 		Pool = *pPool;
 	else {
@@ -216,17 +216,17 @@ UPool* UPooler::SetPool(int32 const Max, TSubclassOf<AActor> const Class, bool c
 	return Pool;
 }
 
-void UPooler::RemPool(TSubclassOf<AActor> Class) {
+void UPooler::RemPool(TSubclassOf<AActor> const Class) {
 	UE_LOG(LogJPool, Log, TEXT("%hs. Class=%s"), __func__, *GetNameSafe(Class));
 
 	const FName Key = Class->GetFName();
-	UPool** const PPool = Pools.Find(Key);
+	const TObjectPtr<UPool>* const PPool = Pools.Find(Key);
 	if (!PPool) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool. Stop"), __func__);
 		return;
 	}
 
-	UPool* const Pool = *PPool;
+	TObjectPtr<UPool> const Pool = *PPool;
 	Pool->Empty();
 	
 	Pools.Remove(Key);
@@ -236,7 +236,7 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 	if (!IsValid(Class)) return nullptr; // fix possible crash
 
 	const FName Key = Class->GetFName();
-	UPool** const pPool = Pools.Find(Key);
+	TObjectPtr<UPool>* const pPool = Pools.Find(Key);
 	if (!pPool) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool for class=%s"),
 			__func__, *Key.ToString());
@@ -247,7 +247,7 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 }
 
 AActor* UPooler::Get(TSubclassOf<AActor> const Class) {
-	UPool* const Pool = GetPool(Class); 
+	UPool* const Pool = GetPool(Class);
 	if (!Pool) return nullptr;
 
 	return Pool->Get();

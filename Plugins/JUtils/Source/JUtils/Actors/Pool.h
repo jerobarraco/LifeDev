@@ -74,7 +74,7 @@ protected:
 	FTimerHandle TrimTimer;
 	
 	UPROPERTY(Transient) // gcd
-	TArray<AActor*> Ready;
+	TArray<TObjectPtr<AActor>> Ready;
 };
 
 // basic actor pooling. handles multiple pools based on the class to spawn
@@ -83,7 +83,7 @@ class JUTILS_API UPooler: public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UPooler* Instance(UObject* Ctx);
+	static UPooler* Instance(UObject* const Ctx);
 	
 	// adds a new pool for a class. or modifies an already existing one. returns it.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
@@ -92,7 +92,7 @@ public:
 
 	// removes (deletes) a pool for a given class. objects that are unused will be destroyed. the rest will be destroyed on return. 
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	void RemPool(TSubclassOf<AActor> Class);
+	void RemPool(TSubclassOf<AActor> const Class);
 
 	// gets a managed pool. don't call Set on that pool with a different class,
 	// or you'll have problems.
@@ -111,5 +111,5 @@ public:
 
 protected:
 	UPROPERTY(Transient) // gcd
-	TMap<FName, UPool*> Pools;
+	TMap<FName, TObjectPtr<UPool>> Pools;
 };

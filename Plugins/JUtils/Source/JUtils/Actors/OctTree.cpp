@@ -577,7 +577,7 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 	return false;
 }
 
-bool AOctTree::TryExtend(AActor* Actor) {
+bool AOctTree::TryExtend(AActor* const Actor) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
 	if (!RootNode || !Actor)  [[unlikely]] return false;
 
