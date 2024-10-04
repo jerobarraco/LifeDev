@@ -72,23 +72,15 @@ void UCInteract::DeInit() {
 	HoverMesh = nullptr; // free resources to get gcd
 }
 
-bool UCInteract::TryGrab(bool IsGrab, UCInteractor* NewParent) {
-	UE_LOG(LogCInteract, Log, TEXT("%hs. IsGrab=%i, IsGrabbable=%i, NewParent=%p"),
-		__func__, IsGrab, IsGrabbable, NewParent);
-	if (IsGrab) {
-		if (!IsGrabbable) return false;
-		// small patch to avoid stealing the grab
-		// might do something better later to allow to steal the grab, or might not.
-		IsGrabbable = false;
-	} else {
-		// i know this has the sideeffect that if you call trygrab(false) on something not grabbed.
-		// that also had isgrabbable to false, it will set it to true.
-		IsGrabbable = true;
-	}
+bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
+	UE_LOG(LogCInteract, Log, TEXT("%hs. IsGrab=%i, IsGrabbable=%i, IsGrabbed=%i, NewParent=%s"),
+		__func__, IsGrab, IsGrabbable, IsGrabbed, *GetNameSafe(NewParent));
+	// avoid stealing the grab
+	if (IsGrab && (!IsGrabbable || IsGrabbed)) return false;
+	IsGrabbed = IsGrab;
 
 	Reparent(IsGrab, NewParent); // note this happens after IsGrabbable return above
 	
-	// if (IsGrab && !IsGrabbable) return false;
 	OnGrab.Broadcast(IsGrab, NewParent);
 	return true;
 }
@@ -110,12 +102,13 @@ void UCInteract::BeginPlay() {
 	} else if (JU_IsServerSide)
 		SetIsReplicated(false);
 
-	// this is a patch. since by default it starts as disabled on the server, but enabled on the client (wtf)
+	// this is a patch. since by default it starts as disabled on the server,
+	// but enabled on the client (wtf)
 	Activate(true);
 	// TODO test on standalone and non-replicated
 }
 
-void UCInteract::Reparent(bool IsGrab, UCInteractor* NewParent) {
+void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) {
 	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
 
 	if (PhysComp)
@@ -124,7 +117,7 @@ void UCInteract::Reparent(bool IsGrab, UCInteractor* NewParent) {
 		ReparentActor(IsGrab, NewParent);
 }
 
-void UCInteract::ReparentActor(bool IsGrab, UCInteractor* NewParent) {
+void UCInteract::ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const {
 	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
 	AActor* const Actor = GetAttachParentActor();
 	if(!Actor) {
@@ -142,7 +135,7 @@ void UCInteract::ReparentActor(bool IsGrab, UCInteractor* NewParent) {
 		Actor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
 
-void UCInteract::ReparentPhys(bool IsGrab, UCInteractor* NewParent) {
+void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const {
 	if (!PhysComp) {
 		UE_LOG(LogCInteract, Warning, TEXT(" %hs Could not get the physcomp"), __func__);
 		return;
@@ -154,10 +147,11 @@ void UCInteract::ReparentPhys(bool IsGrab, UCInteractor* NewParent) {
 		const UPrimitiveComponent* const PrimParent = NewParent->GrabRoot;
 		UPhysicsHandleComponent* const Handler = NewParent->GrabHandler;
 		if (!(PrimParent && Handler)) {
-			UE_LOG(LogCInteract, Warning, TEXT(" Could not get the primparent, or constraint"));
+			UE_LOG(LogCInteract, Warning, TEXT("%hs: Could not get the primparent, or constraint"), __func__);
 			return;
 		}
 
+		Handler->Activate(true);
 		static FTransform F;
 		F = PhysComp->GetComponentTransform();
 		Handler->GrabComponentAtLocationWithRotation(PhysComp, NAME_None, F.GetLocation(), F.Rotator());
@@ -180,6 +174,8 @@ void UCInteract::Activate(bool bReset) {
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 	
 	Super::Activate(bReset);
+	// is ok to just disable the collision and not lock the trigger method,
+	// since there are cases where we want to trigger manually.
 	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
@@ -196,9 +192,4 @@ void UCInteract::OnRep_IsActive() {
 
 	// force the collision stuff. and anything else i add on the future.
 	SetActive(NewActive, false);
-
-	// IMNSHO variable replication is quite lame, specially the onrep.
-	// would be much better to have a 3rd function type that's reliable yet slow (like variables).
-	// e.g. Reliable, Unreliable, ReliableSlow
-	// the only reason to use var replication instead of rpcs is performance or for vars with no side-effects.
 }

@@ -8,12 +8,14 @@
 class UCInteractor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, bool, IsOn);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, bool, IsGrab, UCInteractor*, NewParent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, const bool, IsOn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab, UCInteractor* const, NewParent);
 
 // Base component for interactions
 // Defines a volume where the interaction is triggered.
 // Set the relative position on the viewport, (but avoid changing the scale). Also set the box extent. 
+// By default it will start active, since there's a ue issue around that.
+// To change it you'll need to do it on BeginPlay.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteract: public UBoxComponent {
 	GENERATED_BODY()
@@ -29,22 +31,6 @@ public:
 	static void SetCollisionProfile(const FName& Name) {
 		CollisionProfile = Name;
 	}
-
-#pragma region Interactor
-	/// interactor
-	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
-	void Trigger() const;
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
-	void Hover(bool IsHover) const;
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
-	void DeInit();
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
-	bool TryGrab(bool IsGrab, UCInteractor* NewParent);
-	// whether it will replicate. (not whether its replicating). Does some checks on top of ShouldReplicate.
-	bool WillReplicate() const; 
-	/// 
-	inline static FName CollisionProfile = "Interact";
-#pragma endregion 
 
 	// whether the parent actor can be grabbed.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
@@ -83,7 +69,7 @@ public:
 	// Mesh to automatically highlight, if any.
 	// will write a custom render stencil value 255.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	UStaticMeshComponent* HoverMesh = nullptr;
+	TObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
 
 	// Component to enable/disable physics on grabbing.
 	// When this is Grabbable, and the mesh is simulating physics, the mesh should be set here.
@@ -91,12 +77,33 @@ public:
 	// If you're using the Interact actor, and the mesh is set to "Simulate Physics",
 	// this variable will be set (and overriden) on begin play automatically.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
-	UPrimitiveComponent* PhysComp = nullptr;
+	TObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnRep_IsActive() override;
-	void Reparent(bool bIsGrab, UCInteractor* NewParent);
-	void ReparentActor(bool IsGrab, UCInteractor* NewParent);
-	void ReparentPhys(bool IsGrab, UCInteractor* NewParent);
+
+	void Reparent(const bool bIsGrab, UCInteractor* const NewParent);
+	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
+	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
+
+#pragma region Interactor
+	/// interactor
+	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
+	void Trigger() const;
+	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
+	void Hover(bool IsHover) const;
+	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
+	void DeInit();
+	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
+	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
+	// whether it will replicate. (not whether its replicating). Does some checks on top of ShouldReplicate.
+	bool WillReplicate() const; 
+	/// 
+	inline static FName CollisionProfile = "Interact";
+	friend class AInteract;
+	friend class UCInteractor;
+#pragma endregion 
+
+	bool IsGrabbed = false;
 };
