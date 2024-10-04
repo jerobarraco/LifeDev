@@ -4,6 +4,8 @@
 
 #include "LFeatCheck.h"
 #include "Components/ComboBoxString.h"
+#include "Components/Slider.h"
+#include "Components/TextBlock.h"
 #include "GameFramework/GameUserSettings.h"
 #include "JUtils/JMiscUtils.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
@@ -25,6 +27,7 @@ void ULSetVideoUI::Load_Implementation() {
 	FrameRateSet();
 	VSyncSet();
 	DResSet();
+	ResScaleSet();
 	if (AntiAlias) AntiAlias->Load();
 }
 
@@ -90,6 +93,20 @@ void ULSetVideoUI::NativeDestruct() {
 	FeatTexts.Empty();
 	if (FrameRate) FrameRate->ClearOptions();
 	Super::NativeDestruct();
+}
+
+void ULSetVideoUI::ResScaleSet() const {
+	if (!ResScale || !Settings) return;
+	// ResScale->OnValueChanged.RemoveAll(this);
+	ResScale->OnValueChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResScaleChanged);
+	// done this way to trigger the text change. will also re-set the scale but meh.
+	ResScale->SetValue(Settings->GetResolutionScaleNormalized());
+}
+
+void ULSetVideoUI::ResScaleChanged(const float Value) {
+	if (Settings) Settings->SetResolutionScaleNormalized(Value);
+	if (ResScaleText) ResScaleText->SetText(
+		FText::FromString( FString::SanitizeFloat(Value*100, 0) + "%" ));
 }
 
 void ULSetVideoUI::DResSet() const {

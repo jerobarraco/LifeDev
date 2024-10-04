@@ -7,6 +7,8 @@
 
 #include "LSetVideoUI.generated.h"
 
+class UTextBlock;
+class USlider;
 class UCheckBox;
 class USetAntiAlias;
 class UComboBoxString;
@@ -44,6 +46,9 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
+	void ResScaleSet() const;
+	UFUNCTION()
+	void ResScaleChanged(const float Value);
 	void DResSet() const;
 	UFUNCTION()
 	void DResChanged(bool bIsChecked);
@@ -66,6 +71,11 @@ protected:
 	void FeatsLoad() const;
 	void FeatsApply() const;
 	void FeatsSet();
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> ResScale;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> ResScaleText;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UCheckBox> DRes;
