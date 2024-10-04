@@ -76,9 +76,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> FrameRate;
-	UPROPERTY(BlueprintReadWrite)
-	TArray<float> FrameRateOpts = {0, 30, 60, 90, 120, 144, 155};
-	
+	static constexpr float FrameRateOpts[] = {0, 30, 60, 90, 120, 144, 150, 180, 210, 240};
+
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TMap<EQualityType, TObjectPtr<UGroupBox>> QSwitches;
 

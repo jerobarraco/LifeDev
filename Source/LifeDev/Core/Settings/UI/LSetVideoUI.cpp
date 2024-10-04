@@ -5,6 +5,7 @@
 #include "LFeatCheck.h"
 #include "Components/ComboBoxString.h"
 #include "GameFramework/GameUserSettings.h"
+#include "JUtils/JMiscUtils.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
 
 #include "JUtils/UI/GroupBox.h"
@@ -128,7 +129,8 @@ void ULSetVideoUI::FrameRateSet() const{
 	FrameRate->ClearOptions();
 
 	int32 CurrentI = 0; // defaults to unlimited
-	for (int32 i = 0; i< FrameRateOpts.Num(); ++i) {
+	constexpr size_t N = UJMiscUtils::ArraySize(FrameRateOpts);
+	for (int32 i = 0; i < N; ++i) {
 		const float& F = FrameRateOpts[i];
 		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
 			TEXT("!+UNLIMITED+!") : FString::SanitizeFloat(F, 0));
@@ -147,12 +149,14 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
 	ESelectInfo::Type const SelectionType) {
 	if (!Settings || !FrameRate) [[unlikely]] return;
 
-	const size_t LimitNum = FrameRateOpts.Num();
-	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, LimitNum-1);
+	// const size_t LimitNum = FrameRateOpts.Num();
+	constexpr size_t Num = UJMiscUtils::ArraySize(FrameRateOpts);
+
+	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, Num-1);
 	Settings->SetFrameRateLimit(FrameRateOpts[Index]);
 
-	UE_LOG(LogLSetVid, Log, TEXT("%hs LimitNum=%i Index=%i Limit=%f"),
-		__func__, LimitNum, Index, FrameRateOpts[Index]);
+	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i Index=%i Limit=%f"),
+		__func__, Num, Index, FrameRateOpts[Index]);
 }
 
 void ULSetVideoUI::LoadQSwitches() const {
