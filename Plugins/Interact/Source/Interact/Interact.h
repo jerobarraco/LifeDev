@@ -88,11 +88,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
-	// When true will disable the interact on trigger. Calling Deactivate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
-		Replicated, ReplicatedUsing=OnRep_IsOneShot)
-	bool IsOneShot = false;
-	
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
@@ -100,12 +95,22 @@ public:
 		Replicated, ReplicatedUsing=OnRep_IsLocked)
 	bool Locked = false;
 
+	// When true will disable the interact on trigger. Calling Deactivate.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
+		Replicated, ReplicatedUsing=OnRep_IsOneShot)
+	bool IsOneShot = false;
+	
+	// whether to use the attached SFX component or just spawn a "sound at location".
+	// A subclass changes this to allow for playing sounds when destroying.
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
+	bool UseAttachedSFX = true;
+
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	USoundBase* SFX_Trigger = nullptr;
+	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	USoundBase* SFX_Locked = nullptr;
+	TObjectPtr<USoundBase> SFX_Locked = nullptr;
 
 	// When this is triggered (not locked).
 	// Either you override DoTrigger or you subscribe to this, but unlikely both.
@@ -138,7 +143,7 @@ protected:
 	// these are called by the CInteract which is called by the CInteractor.
 	// This is quite a complex interaction that' s why it' s protected.
 	UFUNCTION()
-	void Grab(bool IsGrab, UCInteractor* NewParent);
+	void Grab(const bool IsGrab, UCInteractor* const NewParent);
 
 	// sets the current text to show on this interact
 	UFUNCTION(BlueprintNativeEvent, Category=Interact)
@@ -163,7 +168,7 @@ protected:
 		// at end, outside the overrideable function
 		// so that i'm sure that children are done.
 		OnTriggerLocked.Broadcast();
-	};
+	}
 	
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
@@ -182,8 +187,8 @@ protected:
 
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
-	UFUNCTION(BlueprintCallable, Category="Interact", NetMulticast, Reliable)
-	void PlaySFX(USoundBase* Snd);
+	UFUNCTION(BlueprintCallable, Category=Interact, NetMulticast, Reliable)
+	void PlaySFX(USoundBase* Snd) const ;
 	
 	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
 	void OnRep_IsLocked();
@@ -201,34 +206,29 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
 	
-	// whether to use the attached SFX component or just spawn a "sound at location".
-	// A subclass changes this to allow for playing sounds when destroying.
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
-	bool UseAttachedSFX = true;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<AInteract*> RewardInterEnable;
+	TArray<TObjectPtr<AInteract>> RewardInterEnable;
 
 	/// CDO
 
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	USceneComponent* Root = nullptr;
+	TObjectPtr<USceneComponent> Root = nullptr;
 
 	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCInteract* Interact = nullptr;
+	TObjectPtr<UCInteract> Interact = nullptr;
 	// the root for animations, and positioning the mesh.
 	// Don't change the transform of this guy. change the transform of the children.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	USceneComponent* IRoot = nullptr;
+	TObjectPtr<USceneComponent> IRoot = nullptr;
 	// default mesh
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* Mesh = nullptr;
+	TObjectPtr<UCQuickMesh> Mesh = nullptr;
 	// Defined as QuickMesh so that child objects can access their properties/functions
 	
 	// default sfx player. Use PlaySFX 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UAudioComponent* SFX = nullptr;
+	TObjectPtr<UAudioComponent> SFX = nullptr;
 	// cant be a clsounder since this is the plugin
 };

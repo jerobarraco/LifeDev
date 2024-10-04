@@ -26,26 +26,26 @@ class INTERACT_API UCInteractor: public USceneComponent {
 public:
 	UCInteractor(const FObjectInitializer& ObjectInitializer);
 	virtual void Deactivate() override;
-	virtual void Activate(bool Reset) override;
+	virtual void Activate(const bool Reset) override;
 	
 	// you need to set this once. but only if you need to change the default.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
-	static void SetCollisionChannel(ECollisionChannel Channel) {
-		InteractChannel = Channel;
+	static void SetCollisionChannel(const ECollisionChannel NewChannel) {
+		InteractChannel = NewChannel;
 	}
 
 	// Triggers the currently hovered component (if any)
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
 	UFUNCTION(BlueprintCallable)
-	EItemUseResult TryUseItem(const FName& Name) const;
+	EItemUseResult TryUseItem(const FName Name) const;
 
 	// the currently hovered component. can be null.
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCInteract* GetInterComp() { return InterComp; }
 
 	UFUNCTION(BlueprintCallable)
-	bool TryGrab(bool IsGrab=true);
+	bool TryGrab(const bool IsGrab=true);
 	
 	// The max length to trace for
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
@@ -55,11 +55,11 @@ public:
 	float TraceSize = 2;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	UPrimitiveComponent* GrabRoot = nullptr;
+	TObjectPtr<UPrimitiveComponent> GrabRoot = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	UPhysicsConstraintComponent* GrabConstraint = nullptr;
+	TObjectPtr<UPhysicsConstraintComponent> GrabConstraint = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	UPhysicsHandleComponent* GrabHandler = nullptr;
+	TObjectPtr<UPhysicsHandleComponent> GrabHandler = nullptr;
 	
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractToggle OnToggle;
@@ -77,18 +77,18 @@ protected:
 
 	// Attempts to trigger on the server
 	UFUNCTION(Server, Reliable)
-	void SrvTrigger(UCInteract* Comp);
+	void SrvTrigger(const UCInteract* const Comp) const;
 	
 	// ends an interaction
 	void DoEnd();
 	// attempts to trigger a start
-	void DoStart(UCInteract* Component);
+	void DoStart(UCInteract* const Component);
 
 	inline static ECollisionChannel InteractChannel = ECC_Visibility;
 	
 	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UCInteract* InterComp = nullptr;
+	TObjectPtr<UCInteract> InterComp = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UCInteract* GrabbedComp = nullptr;
+	TObjectPtr<UCInteract> GrabbedComp = nullptr;
 };

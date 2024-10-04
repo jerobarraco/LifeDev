@@ -35,12 +35,12 @@ void UCInteractor::Deactivate() {
 	DoEnd(); // force clearing currently selected
 }
 
-void UCInteractor::Activate(bool Reset) {
+void UCInteractor::Activate(const bool Reset) {
 	Super::Activate(Reset);
 	PrimaryComponentTick.SetTickFunctionEnable(true); // Believe it or not it WON'T disable tick without this.
 }
 
-void UCInteractor::SrvTrigger_Implementation(UCInteract* Comp) {
+void UCInteractor::SrvTrigger_Implementation(const UCInteract* const Comp) const {
 	if (!IsValid(Comp)) return;
 	Comp->Trigger();
 }
@@ -59,7 +59,7 @@ void UCInteractor::TryTrigger() {
 	InterComp->Trigger();
 }
 
-bool UCInteractor::TryGrab(bool IsGrab) {
+bool UCInteractor::TryGrab(const bool IsGrab) {
 	if (IsGrab) {
 		if (IsValid(GrabbedComp)) {
 			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. i'm already grabbing"));
@@ -90,7 +90,10 @@ bool UCInteractor::TryGrab(bool IsGrab) {
 	GrabbedComp = nullptr; // not my child anymore :'(
 
 	// release of phys components is done here.
-	if (GrabHandler) GrabHandler->ReleaseComponent();
+	if (GrabHandler) {
+		GrabHandler->ReleaseComponent();
+		GrabHandler->Deactivate();
+	}
 	
 	// make the Interact do its reparenting and signaling
 	Old->TryGrab(false, nullptr);// intentionally ignoring the return value
@@ -98,7 +101,7 @@ bool UCInteractor::TryGrab(bool IsGrab) {
 	return true;
 }
 
-EItemUseResult UCInteractor::TryUseItem(const FName& Name) const {
+EItemUseResult UCInteractor::TryUseItem(const FName Name) const {
 	// i can't see the inventory from here!
 	if (!IsValid(InterComp)) {
 		UE_LOG(LogCInteractor, Warning, TEXT("Nothing to use the item with"));
@@ -189,7 +192,7 @@ void UCInteractor::DoEnd() {
 	InterComp = nullptr;
 }
 
-void UCInteractor::DoStart(UCInteract* Component) {
+void UCInteractor::DoStart(UCInteract* const Component) {
 	// on every tick almost
 	// skip retries
 	if (Component == InterComp) return;

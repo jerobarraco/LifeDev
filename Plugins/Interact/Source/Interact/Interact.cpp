@@ -55,7 +55,7 @@ bool AInteract::TryTrigger_Implementation() {
 	return true;
 }
 
-void AInteract::Grab(bool IsGrab, UCInteractor* NewParent) {
+void AInteract::Grab(const bool IsGrab, UCInteractor* const NewParent) {
 	return;
 }
 
@@ -100,7 +100,7 @@ bool AInteract::GetEnabled() const {
 	return Enabled;
 }
 
-void AInteract::SetMobility(EComponentMobility::Type Mobility) {
+void AInteract::SetMobility(const EComponentMobility::Type Mobility) {
 	Mesh->SetMobility(Mobility);
 	Interact->SetMobility(Mobility);
 	RootComponent->SetMobility(Mobility);
@@ -156,11 +156,15 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	FDoRepLifetimeParams SharedParams;
-	SharedParams.bIsPushBased = true;
-	DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, Locked, SharedParams);
-	DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, IsOneShot, SharedParams);
-	// Not sure what's ispushbased but seems nice.
+	DOREPLIFETIME(AInteract, Locked);
+	DOREPLIFETIME(AInteract, IsOneShot);
+	// FDoRepLifetimeParams SharedParams;
+	// SharedParams.bIsPushBased = true;
+	// DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, Locked, SharedParams);
+	// DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, IsOneShot, SharedParams);
+	// TODO: read more of PushModel.h and see if it actually helps
+	// MARK_PROPERTY_DIRTY_FROM_NAME(AInteract, IsOneShot, this); // needs to add this on every change. which is hard with my design.
+	// MARK_PROPERTY_DIRTY(this, IsOneShot); // this one doesn't work like this.
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
@@ -185,14 +189,14 @@ void AInteract::DoTrigger_Implementation() {
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
 
-	for(AInteract* const I: RewardInterEnable) {
+	for(const TObjectPtr<AInteract>& I: RewardInterEnable) {
 		if (IsValid(I)) I->SetEnabled(true);
 	}
 	
-	if (IsOneShot) SetEnabled(false);
+	if (IsOneShot) SetEnabled(false); // set enabled is replicated
 }
 
-void AInteract::PlaySFX_Implementation(USoundBase* Snd) {
+void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {
 	// When replicated this will play on server and all clients (when called by trigger or server)
 	// if called by a sim proxy it will be heard only on the sim proxy. which is good for now.
 	// we don't want to spam "hover" sounds anyway.
