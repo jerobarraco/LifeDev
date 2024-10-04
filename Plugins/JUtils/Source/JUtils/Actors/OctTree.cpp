@@ -138,12 +138,12 @@ bool AOTNode::IsInside(AActor* const Actor) const {
 
 AOTNode* AOTNode::Contains(const AActor* const Actor) const {
 	// don't care if actor is invalid (but be careful)
-	for (AActor* const A: Actors) {
+	for (const TObjectPtr<AActor>& A: Actors) {
 		// i think this is a valid case. the func itself is const.
 		if (A == Actor) return const_cast<AOTNode*>(this);
 	}
 
-	for (const AOTNode* const N: Nodes) {
+	for (const TObjectPtr<AOTNode>& N: Nodes) {
 		if (!IsValid(N)) continue; // wtf?
 
 		AOTNode* const R = N->Contains(Actor);
@@ -154,7 +154,7 @@ AOTNode* AOTNode::Contains(const AActor* const Actor) const {
 }
 
 void AOTNode::PushToNodes() {
-	for (AActor* const A: Actors) AddToNodes(A);
+	for (const TObjectPtr<AActor>& A: Actors) AddToNodes(A);
 	Actors.Empty(); // and these would get disowned.
 }
 
@@ -203,7 +203,7 @@ void AOTNode::Empty(const bool ReturnSubs) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s RetSubs=%i"), __func__, *GetNameSafe(this), ReturnSubs);
 	// returning subs first, just in case they do something weird. or i do, in the future.
 	if (ReturnSubs) {
-		for (AOTNode* const S:Nodes) {
+		for (const TObjectPtr<AOTNode>& S:Nodes) {
 			if (!S) continue;
 			S->Return(true);
 		}
@@ -236,12 +236,12 @@ void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, const in
 	FVector C, E;
 	Box.GetCenterAndExtents(C, E);
 	DrawDebugBox(GetWorld(), C, E, BoxColor, false, Time, 0, Size);
-	for (const AActor* const A: Actors) {
+	for (const TObjectPtr<AActor>& A: Actors) {
 		if(!IsValid(A)) continue;
 		DrawDebugPoint(GetWorld(), A->GetActorLocation(), Size, ActorColor, false, Time, 0);
 	}
 
-	for (AOTNode* const S: Nodes) {
+	for (const TObjectPtr<AOTNode>& S: Nodes) {
 		if (!IsValid(S)) continue;
 		S->DbgDraw(BoxColor, ActorColor, Size, Time);
 	}
@@ -253,16 +253,19 @@ FString AOTNode::ToString() const{
 }
 
 bool AOTNode::HasLoops() const {
-	TArray<const AOTNode*> Stack;
+	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s Actors=%i"),
+		__func__, *GetNameSafe(this), Actors.Num());
+
+	TArray<TObjectPtr<const AOTNode>> Stack;
 	Stack.Push(this);
 	bool Looping = false;
 	for (int32 i =0; i<Stack.Num() && !Looping; ++i) {
-		const AOTNode* const N = Stack[i];
+		const TObjectPtr<const AOTNode> N = Stack[i];
 		if (!IsValid(N)) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs Found invalid node"), __func__);
 			continue;
 		}
-		for (const AOTNode* const NN: N->Nodes) {
+		for (const TObjectPtr<AOTNode>& NN: N->Nodes) {
 			if (Stack.Contains(NN)) {
 				UE_LOG(LogJOctTree, Warning, TEXT("%hs Found loop with node=%s"), __func__, *GetNameSafe(NN));
 				Looping = true;
@@ -279,10 +282,10 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	if (!Iterator.IsBound()) return true;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 
-	for (AActor* const A: Actors)
+	for (const TObjectPtr<AActor>& A: Actors)
 		if (Iterator.Execute(A, this)) return true;
 
-	for (AOTNode* const S: Nodes)
+	for (const TObjectPtr<AOTNode>& S: Nodes)
 		if (S->Iterate(Iterator)) return true;
 
 	return false;
@@ -301,12 +304,12 @@ bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
 
 	// i could reuse iterate with my own predicate, but it will add overhead and itś not that much code.
 	// also the sub calling is different.
-	for (AActor* const A: Actors) {
+	for (const TObjectPtr<AActor>& A: Actors) {
 		// if the actor is in it, will execute the iterator. and if the iterator breaks. then break.
 		if (IsValid(A) && InBox.IsInsideOrOn(A->GetActorLocation()) && Iterator.Execute(A, this)) return true;
 	}
 
-	for (AOTNode* const S: Nodes)
+	for (const TObjectPtr<AOTNode>& S: Nodes)
 		if (IsValid(S) && S->IterateIn(Iterator, InBox)) return true; // bubble break
 
 	return false; // continue the iteration
@@ -317,8 +320,7 @@ void AOTNode::Pack() {
 
 	bool Can = true;
 	int32 NumChilds=0;
-	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
-		if (!N) continue;
+	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
 		if (!N) continue;
 		N->Pack();
 		Can = Can && N->Nodes.Num() == 0; // important to filter the ones with sub nodes
@@ -329,7 +331,7 @@ void AOTNode::Pack() {
 	
 	if (!Can || NumChilds>=ActorsMax) return;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
-	for (AOTNode* const N: Nodes) { // this code is similar to tree::add but not quite
+	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
 		if (!N) continue;
 		Actors.Append(N->Actors);
 		// shouldn't happen since the above loop filters that.
@@ -380,7 +382,8 @@ int32 AOctTree::Rem(AActor* const Actor) {
 	// don't care if the actor is valid in this case
 	AOTNode* const N = RootNode->Contains(Actor);
 	if (!N) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"), __func__, *GetNameSafe(Actor));
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"),
+			__func__, *GetNameSafe(Actor));
 		return 0;
 	}
 
@@ -423,6 +426,7 @@ void AOctTree::SetBox(const FBox& InBox) {
 		RootNode->SetBox(InBox);
 		return; // no need to rebuild
 	}
+
 	RootNode->SetActorsMax(ActorsMax);
 	RootNode->SetBox(InBox); // tell rebuild which box to use
 	Rebuild();
@@ -432,12 +436,12 @@ void AOctTree::SetActorsMax(const int32 InActorsMax) {
 	ActorsMax = InActorsMax;
 	if (!RootNode) return;
 	
-	TArray<AOTNode*> Nodes;
+	TArray<TObjectPtr<AOTNode>> Nodes;
 	Nodes.Push(RootNode);
 
 	while (Nodes.Num()>0) {
 		// if org rootNode is none, it will be skipped here. and above we create one.
-		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
+		const TObjectPtr<AOTNode>& N = Nodes.Pop(EAllowShrinking::No);
 		if (!N) continue;
 		N->SetActorsMax(InActorsMax);
 		Nodes.Append(N->Nodes);
@@ -500,7 +504,7 @@ void AOctTree::Rebuild() {
 	}
 
 	const FBox& Box = RootNode->Box; // cache instead of copy. beware we release the box later.
-	TArray<AOTNode*> Nodes;
+	TArray<TObjectPtr<AOTNode>> Nodes;
 	Nodes.Push(RootNode); // store the old one.
 	
 	RootNode = Cast<AOTNode>(Pool->Get());
@@ -522,7 +526,7 @@ void AOctTree::Rebuild() {
 		// notice we use this->Add. this will trigger TryExtend. which can and will change the RootActor
 		// at first glance you should be concerned that this will mess with the nodes in the list Nodes.
 		// but we create a NEW tree while keeping the old one in memory, and we navigate the old one, while the new one is in place.
-		for (AActor* const A: N->Actors) Add(A);
+		for (const TObjectPtr<AActor>& A: N->Actors) Add(A);
 		N->Return(false); // we stole them. return will return them too, otherwise
 	}
 }
@@ -536,7 +540,7 @@ AOTNode* AOctTree::Contains(const AActor* const A) const {
 }
 
 bool AOctTree::HasLoops() const {
-	return RootNode && RootNode->HasLoops();
+	return !TestForLoops || (RootNode && RootNode->HasLoops());
 }
 
 void AOctTree::BeginPlay() {

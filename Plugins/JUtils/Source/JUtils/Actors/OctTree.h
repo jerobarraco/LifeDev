@@ -112,6 +112,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 Rem(AActor* const Actor);
 	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
+	// not const because ue will make it pure and won't be able to call it :')
 
 	// updates an actor, modifying the tree, this could be slower than just rebuilding depending on how many actors move.
 	// doesn't call pack, so you can update many objects before packing. or you might wanna pack not every update.
@@ -171,6 +172,8 @@ public:
 	// when trying to extend, what's the max levels it will try to go (each try)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 ExtendMax = 5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool TestForLoops = false;
 
 protected:
 	virtual void BeginPlay() override;
