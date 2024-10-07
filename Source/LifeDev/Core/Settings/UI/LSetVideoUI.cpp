@@ -31,6 +31,7 @@ void ULSetVideoUI::Load_Implementation() {
 	DResSet();
 	ResScaleSet();
 	ResSet();
+	FSModeSet();
 	if (AntiAlias) AntiAlias->Load();
 }
 
@@ -87,7 +88,7 @@ void ULSetVideoUI::NativeDestruct() {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
 	for (EQualityType const Q: Keys) {
-		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
+		const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
 		if (!pSwitchUI) continue;
 
 		(*pSwitchUI)->OnChange.RemoveAll(this);
@@ -97,6 +98,35 @@ void ULSetVideoUI::NativeDestruct() {
 	FeatTexts.Empty();
 	if (FrameRate) FrameRate->ClearOptions();
 	Super::NativeDestruct();
+}
+
+void ULSetVideoUI::FSModeSet() {
+	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
+	if (!Mode) return;
+
+	if (!FSMode) return;
+	FSMode->OnSelectionChanged.RemoveAll(this);
+	FSMode->ClearOptions();
+
+	// order matters
+	// static EWindowMode::Type Modes[] = {
+		// EWindowMode::Fullscreen, EWindowMode::WindowedFullscreen, EWindowMode::Windowed};
+	static FString Names[] {
+		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
+	};
+	constexpr size_t Size = UJMiscUtils::ArraySize(Names);
+	for (size_t i = 0; i < Size; ++i) {
+		FSMode->AddOption(Names[i]);
+	}
+
+	FSMode->SetSelectedIndex(Mode);
+	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
+}
+
+void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
+	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
+	if (SelectionType == ESelectInfo::Direct) return;
+	Settings->SetFullscreenMode(static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex()));
 }
 
 void ULSetVideoUI::ResSet() const {
@@ -143,7 +173,7 @@ void ULSetVideoUI::ResScaleChanged(const float Value) {
 }
 
 void ULSetVideoUI::DResSet() const {
-	if (!DRes) [[unlikely]] return;
+	if (!DRes) return;
 	const bool Enabled = Settings ? Settings->IsDynamicResolutionEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	DRes->OnCheckStateChanged.RemoveAll(this); // important or it will change the current

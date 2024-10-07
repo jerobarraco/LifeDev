@@ -46,7 +46,11 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
+	UFUNCTION()
+	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
+	void FSModeSet();
 	void ResSet() const;
+
 	static FString ResToCombo(const FIntPoint& P);
 	UFUNCTION()
 	void ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
@@ -87,6 +91,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> ResScaleText;
 
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> FSMode;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UCheckBox> DRes;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
