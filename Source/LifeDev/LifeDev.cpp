@@ -15,6 +15,8 @@ void FLifeDevModule::StartupModule()
 	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	AddShaderSourceDirectoryMapping(TEXT("/Project/Shaders/LD"),
 		ShaderDirectory);
+	
+	FSlateApplication::Get().SetApplicationScale(1.3);
 }
 
 void FLifeDevModule::ShutdownModule()

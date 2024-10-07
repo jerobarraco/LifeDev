@@ -2,14 +2,16 @@
 
 #pragma once
 #include "CoreMinimal.h"
+
 #include "BaseUI.h"
-#include "Runtime/Core/Public/Templates/Function.h"
+
 #include "MsgBox.generated.h"
 
 class UJButton;
 class UDelegateWrapper;
 class UTextBlock;
 class UButton;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
 
 // Base message box.
@@ -37,6 +39,9 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
+	void Bind();
+	void Unbind();
+
 	UFUNCTION()
 	void HideAnimFinish();
 	
@@ -44,23 +49,20 @@ protected:
 	void BtnClick(const int32 ID);
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	UTextBlock* Msg = nullptr;
+	TObjectPtr<UTextBlock> Msg = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UJButton* Btn0 = nullptr;
+	TObjectPtr<UJButton> Btn0 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UJButton* Btn1 = nullptr;
+	TObjectPtr<UJButton> Btn1 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UJButton* Btn2 = nullptr;
+	TObjectPtr<UJButton> Btn2 = nullptr;
 
 	// has to be transient, or it will not compile the bp
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
-	UWidgetAnimation* AnimShow = nullptr;
+	TObjectPtr<UWidgetAnimation> AnimShow = nullptr;
 
 private:
-	UPROPERTY(Transient)
-	TArray<UDelegateWrapper*> Wrappers;
-
 	// internal usage only.
 	UPROPERTY(Transient)
 	FWidgetAnimationDynamicEvent OnHideFinished;

@@ -5,39 +5,43 @@
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#include "JUtils/JMiscUtils.h"
 #include "JButton.h"
 
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 
 	SetVisibility(ESlateVisibility::Collapsed); // start collapsed
-
-	const TArray<UJButton*> UBtns = {Btn0, Btn1, Btn2};
-	const int32 Num = UBtns.Num();
-	for (int32 i=0; i<Num; ++i) {
-		UJButton* const B = UBtns[i];
-		if (!B) continue;
-		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
-	}
-
 	OnHideFinished.BindDynamic(this, &UMsgBox::HideAnimFinish);
 }
 
 void UMsgBox::NativeDestruct() {
-	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
-		if (!B) continue;
-		B->OnClick.RemoveAll(this);
-	}
+	Unbind();
 
 	Super::NativeDestruct();
 }
 
+void UMsgBox::Bind() {
+	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
+		if (!B) continue;
+		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
+	}
+}
+
+void UMsgBox::Unbind() {
+	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
+		if (!B) continue;
+		B->OnClick.RemoveAll(this);
+	}
+}
+
+
 void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 	Msg->SetText(Message);
 
-	const TArray<UJButton*> UBtns = {Btn0, Btn1, Btn2};
+	UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
 	const int32 Num = Texts.Num();
-	const int32 Num2 = UBtns.Num();
+	constexpr int32 Num2 = UJMiscUtils::ArraySize(UBtns);
 	
 	for (int32 i=0; i<Num2; ++i) {
 		UJButton* const B = UBtns[i];
@@ -59,6 +63,7 @@ void UMsgBox::Show_Implementation() {
 	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimDuration);
 	PlayAnimation(AnimShow, 0, 1,
 		EUMGSequencePlayMode::Forward, Speed);
+	Bind();
 }
 
 void UMsgBox::HideAnimFinish() {
@@ -91,5 +96,6 @@ void UMsgBox::Hide_Implementation() {
 
 void UMsgBox::BtnClick(const int32 ID) {
 	UE_LOG(LogTemp, Log, TEXT("Btn click id=%i"), ID);
+	Unbind(); // no double clicks here
 	Done(ID);
 }
