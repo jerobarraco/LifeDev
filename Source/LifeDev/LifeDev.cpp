@@ -17,7 +17,6 @@ void FLifeDevModule::StartupModule()
 		ShaderDirectory);
 }
 
-
 void FLifeDevModule::ShutdownModule()
 {
 	IModuleInterface::ShutdownModule();
