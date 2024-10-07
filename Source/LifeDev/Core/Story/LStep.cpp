@@ -38,7 +38,7 @@ void ALStep::Stop_Implementation() {
 	RemoveItems();
 
 	UWorld* const W = GetWorld();
-	if (W) {
+	if (W) { // call stop anyway
 		if (UseRain) ALMusicMan::SetRainS(W, false);
 
 		// ensure we don't double trigger.
@@ -271,13 +271,13 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 }
 
 void ALStep::SetIntersEnabled(const bool Enabled) {
-	for (AInteract* const I: IntersEnable) {
+	for (const TObjectPtr<AInteract>& I: IntersEnable) {
 		if (IsValid(I)) I->SetEnabled(Enabled);
 	}
 }
 
 void ALStep::DoIntersTrigger() const {
-	for (AInteract* const I: IntersTrigger) {
+	for (const TObjectPtr<ALInteract>& I: IntersTrigger) {
 		if (IsValid(I)) I->TryTrigger();
 	}
 }

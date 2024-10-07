@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Story/Step.h"
 #include "Inventory/InventoryTypes.h"
 #include "Diags/DiagTypes.h"
@@ -97,7 +98,7 @@ public:
 	// It will get destroyed on Stop. Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
-	TArray<AActor*> ActorsShow;
+	TArray<TObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
@@ -105,21 +106,21 @@ public:
 	// Interacts to enable on Start (after wait), and disable on Stop.
 	// Will be disabled on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<AInteract*> IntersEnable;
+	TArray<TObjectPtr<AInteract>> IntersEnable;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<ALInteract*> IntersTrigger;
+	TArray<TObjectPtr<ALInteract>> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
 	// Note Fade also calls SetEnabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<ALInteract*> IntersFadeIn;
+	TArray<TObjectPtr<ALInteract>> IntersFadeIn;
 
 	// Interacts to fade out during *Stop*. Won't change fade during beginPlay.
 	// Note Fade also calls SetEnabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<ALInteract*> IntersFadeOut;
+	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
 	// note: not fading the intersFade* on begin play because i could have multiple
 	// steps that collide with each other. not doing it on the intersEnable because i think
 	// it won't happen. but it likely will. and when it does. i'll change it.
@@ -170,18 +171,18 @@ protected:
 	void DoIntersTrigger() const;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCRandomizerFB* RandFB = nullptr;
+	TObjectPtr<UCRandomizerFB> RandFB = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlashback* FB = nullptr;
+	TObjectPtr<UFlashback> FB = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	AGhosts* Ghosts = nullptr;
+	TObjectPtr<AGhosts> Ghosts = nullptr;
 
 	FTimerHandle TimerDestroy;
 };
