@@ -105,12 +105,35 @@ protected:
 	TObjectPtr<UComboBoxString> FrameRate;
 	static constexpr float FrameRateOpts[] = {0, 30, 60, 90, 120, 144, 150, 180, 210, 240};
 
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly)
 	TMap<EQualityType, TObjectPtr<UGroupBox>> QSwitches;
-
-	UPROPERTY(BlueprintReadWrite, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly)
 	TMap<EQualityType, FText> QSTexts;
 
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Overall;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_ViewDistance;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_AntiAlias;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_PostProcess;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Shadow;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_GI;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Reflections;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Textures;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Effects;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Foliage;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> QS_Shading;
+
+	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatCheck> Feat_Speed;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))

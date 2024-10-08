@@ -203,6 +203,18 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
 
 
 void ULSetVideoUI::QSwitchesSet() {
+	QSwitches.Add(EQualityType::OVERALL, QS_Overall);
+	QSwitches.Add(EQualityType::VIEW_DISTANCE, QS_ViewDistance);
+	QSwitches.Add(EQualityType::ANTI_ALIAS, QS_AntiAlias);
+	QSwitches.Add(EQualityType::POST_PROCESS, QS_PostProcess);
+	QSwitches.Add(EQualityType::SHADOW, QS_Shadow);
+	QSwitches.Add(EQualityType::GLOBAL_ILLUMINATION, QS_GI);
+	QSwitches.Add(EQualityType::REFLECTION, QS_Reflections);
+	QSwitches.Add(EQualityType::TEXTURES, QS_Textures);
+	QSwitches.Add(EQualityType::EFFECTS, QS_Effects);
+	QSwitches.Add(EQualityType::FOLIAGE, QS_Foliage);
+	QSwitches.Add(EQualityType::SHADING, QS_Shading);
+
 	QSTexts.Add(EQualityType::OVERALL,
 				FText::FromString(TEXT("Overall")));
 	QSTexts.Add(EQualityType::VIEW_DISTANCE,
