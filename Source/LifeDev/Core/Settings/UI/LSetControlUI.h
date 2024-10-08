@@ -5,11 +5,11 @@
 
 #include "LSetBaseUI.h"
 
-#include "LSetSoundUI.generated.h"
+#include "LSetControlUI.generated.h"
 
-// base class for the sound settings
+// baseclass for the control settings
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSetSoundUI : public ULSetBaseUI {
+class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:

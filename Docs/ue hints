@@ -11,5 +11,5 @@ convert trace channel to trace query
  LogOnlineServices=Verbose
  
  can increase the shader compilation perf on engine dir BaseEngine.ini
- check PercentageUnusedShaderCompilingThreads=5 and WorkerProcessPriority=-1
+ check PercentageUnusedShaderCompilingThreads=5 and WorkerProcessPriority=0
  https://store.algosyntax.com/tutorials/unreal-engine/ue5-how-to-speed-up-compiling-shaders/

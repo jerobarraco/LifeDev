@@ -33,7 +33,7 @@ enum class EQualityType: uint8 {
 	_MAX UMETA(Hidden)
 };
 
-// WIP moving the video stuff from the settingsui
+// base class for the video settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetVideoUI : public ULSetBaseUI {
 	GENERATED_BODY()

@@ -27,5 +27,5 @@ protected:
 	virtual void EndLoadingScreen(UWorld* InLoadedWorld);
 
 	UPROPERTY(Transient)
-	UUserWidget* LoadScreen = nullptr;
+	TObjectPtr<UUserWidget> LoadScreen = nullptr;
 };
