@@ -17,6 +17,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 
 	SetQuickCollisionEnabled(false);
 	SetCastAllShadows(false);
+	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/ 
 }
 
 void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
