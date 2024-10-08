@@ -19,7 +19,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	SetCastAllShadows(false);
 }
 
-void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
+void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
 	Super::SetCanEverAffectNavigation(Enable);
 	bNavigationRelevant = Enable;
 	if (Enable) {
@@ -34,7 +34,7 @@ void UCQuickMesh::SetQuickCollisionEnabled(bool Enable) {
 }
 
 
-void UCQuickMesh::SetCastAllShadows(bool Cast) {
+void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
 	// by default this is false, i don't want to mess with it. so just don't.

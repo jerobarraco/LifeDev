@@ -14,8 +14,8 @@ public:
 	UCQuickMesh();
 	
 	UFUNCTION(BlueprintCallable)
-	void SetQuickCollisionEnabled(bool Enable);
+	void SetQuickCollisionEnabled(const bool Enable);
 
 	UFUNCTION(BlueprintCallable)
-	void SetCastAllShadows(bool Cast);
+	void SetCastAllShadows(const bool Cast);
 };
