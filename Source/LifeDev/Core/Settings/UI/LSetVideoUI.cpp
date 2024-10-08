@@ -32,6 +32,7 @@ void ULSetVideoUI::Load_Implementation() {
 	ResScaleSet();
 	ResSet();
 	FSModeSet();
+	QSwitchesLoad();
 	if (AntiAlias) AntiAlias->Load();
 }
 
@@ -162,7 +163,7 @@ void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
 }
 
 void ULSetVideoUI::FrameRateSet() const{
-	if (!FrameRate) [[unlikely]] return;
+	if (!FrameRate) return;
 
 	const float Current = Settings ? Settings->GetFrameRateLimit() : 0;
 
@@ -199,8 +200,6 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i Index=%i Limit=%f"),
 		__func__, Num, Index, FrameRateOpts[Index]);
 }
-
-
 
 void ULSetVideoUI::QSwitchesSet() {
 	QSwitches.Add(EQualityType::OVERALL, QS_Overall);
