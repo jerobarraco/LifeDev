@@ -133,7 +133,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UGroupBox> QS_Shading;
 
-	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatCheck> Feat_Speed;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
