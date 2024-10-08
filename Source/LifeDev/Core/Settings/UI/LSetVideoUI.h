@@ -68,15 +68,16 @@ protected:
 	void FrameRateSet() const;
 	UFUNCTION() // bound
 	void FrameRateChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
-	
+
+	void QSwitchesSet();
 	UFUNCTION(BlueprintCallable)
-	void LoadQSwitches() const;
+	void QSwitchesLoad() const;
 	UFUNCTION(BlueprintCallable)
-	void LoadQSwitch(const EQualityType QSwitch) const;
+	void QSwitchLoad(const EQualityType QSwitch) const;
 	UFUNCTION() // bound
-	void QualityChanged(const int32 ID, const int32 NewQ);
+	void QSwitchChanged(const int32 ID, const int32 NewQ);
 	UFUNCTION(BlueprintCallable)
-	void SetQuality(const EQualityType Quality, const int32 NewQ);
+	void QualitySet(const EQualityType Quality, const int32 NewQ);
 
 	void FeatsLoad() const;
 	void FeatsApply() const;

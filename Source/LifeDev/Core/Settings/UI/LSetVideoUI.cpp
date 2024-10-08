@@ -39,46 +39,7 @@ void ULSetVideoUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	Settings = GEngine->GetGameUserSettings();
 
-	QSTexts.Add(EQualityType::OVERALL,
-		FText::FromString(TEXT("Overall")));
-	QSTexts.Add(EQualityType::VIEW_DISTANCE,
-		FText::FromString(TEXT("View Distance")));
-	QSTexts.Add(EQualityType::ANTI_ALIAS,
-		FText::FromString(TEXT("Anti-Aliasing")));
-	QSTexts.Add(EQualityType::POST_PROCESS,
-		FText::FromString(TEXT("Post Processing")));
-	QSTexts.Add(EQualityType::SHADOW,
-		FText::FromString(TEXT("Shadows")));
-	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
-		FText::FromString(TEXT("Global Illumination")));
-	QSTexts.Add(EQualityType::REFLECTION,
-		FText::FromString(TEXT("Reflections")));
-	QSTexts.Add(EQualityType::TEXTURES,
-		FText::FromString(TEXT("Textures")));
-	QSTexts.Add(EQualityType::EFFECTS,
-		FText::FromString(TEXT("Effects")));
-	QSTexts.Add(EQualityType::FOLIAGE,
-		FText::FromString(TEXT("Foliage")));
-	QSTexts.Add(EQualityType::SHADING,
-		FText::FromString(TEXT("Shading")));
-
-	UE_LOG(LogLSetVid, Log, TEXT("LSetVideoUI::%hs QTextsN=%i QSwitchesN=%i"),
-		__func__, QSTexts.Num(), QSwitches.Num());
-	TArray<EQualityType> Keys;
-	QSTexts.GetKeys(Keys);
-	for (EQualityType Q: Keys) {
-		const FText* const T = QSTexts.Find(Q);
-		if (!T) continue;
-		
-		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
-		if (!pSwitchUI) continue;
-
-		const TObjectPtr<UGroupBox>& SwitchUI = *pSwitchUI;
-		SwitchUI->SetLabel(*T);
-		SwitchUI->ID = static_cast<int32>(Q);
-		SwitchUI->OnChange.AddUniqueDynamic(this, &ULSetVideoUI::QualityChanged);
-	}
-
+	QSwitchesSet();
 	FeatsSet();
 	FrameRateSet();
 	ResOptsSet();
@@ -239,15 +200,59 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
 		__func__, Num, Index, FrameRateOpts[Index]);
 }
 
-void ULSetVideoUI::LoadQSwitches() const {
+
+
+void ULSetVideoUI::QSwitchesSet() {
+	QSTexts.Add(EQualityType::OVERALL,
+				FText::FromString(TEXT("Overall")));
+	QSTexts.Add(EQualityType::VIEW_DISTANCE,
+				FText::FromString(TEXT("View Distance")));
+	QSTexts.Add(EQualityType::ANTI_ALIAS,
+				FText::FromString(TEXT("Anti-Aliasing")));
+	QSTexts.Add(EQualityType::POST_PROCESS,
+				FText::FromString(TEXT("Post Processing")));
+	QSTexts.Add(EQualityType::SHADOW,
+				FText::FromString(TEXT("Shadows")));
+	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
+				FText::FromString(TEXT("Global Illumination")));
+	QSTexts.Add(EQualityType::REFLECTION,
+				FText::FromString(TEXT("Reflections")));
+	QSTexts.Add(EQualityType::TEXTURES,
+				FText::FromString(TEXT("Textures")));
+	QSTexts.Add(EQualityType::EFFECTS,
+				FText::FromString(TEXT("Effects")));
+	QSTexts.Add(EQualityType::FOLIAGE,
+				FText::FromString(TEXT("Foliage")));
+	QSTexts.Add(EQualityType::SHADING,
+				FText::FromString(TEXT("Shading")));
+
+	UE_LOG(LogLSetVid, Log, TEXT("LSetVideoUI::%hs QTextsN=%i QSwitchesN=%i"),
+			__func__, QSTexts.Num(), QSwitches.Num());
 	TArray<EQualityType> Keys;
-	QSwitches.GetKeys(Keys);
-	for (EQualityType const Q: Keys) {
-		LoadQSwitch(Q);
+	QSTexts.GetKeys(Keys);
+	for (EQualityType Q: Keys) {
+		const FText* const T = QSTexts.Find(Q);
+		if (!T) continue;
+		
+		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
+		if (!pSwitchUI) continue;
+
+		const TObjectPtr<UGroupBox>& SwitchUI = *pSwitchUI;
+		SwitchUI->SetLabel(*T);
+		SwitchUI->ID = static_cast<int32>(Q);
+		SwitchUI->OnChange.AddUniqueDynamic(this, &ULSetVideoUI::QSwitchChanged);
 	}
 }
 
-void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) const {
+void ULSetVideoUI::QSwitchesLoad() const {
+	TArray<EQualityType> Keys;
+	QSwitches.GetKeys(Keys);
+	for (EQualityType const Q: Keys) {
+		QSwitchLoad(Q);
+	}
+}
+
+void ULSetVideoUI::QSwitchLoad(const EQualityType QSwitch) const {
 	if (QSwitch == EQualityType::NONE) return;
 	
 	const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
@@ -302,7 +307,7 @@ void ULSetVideoUI::LoadQSwitch(const EQualityType QSwitch) const {
 	(*pSwitchUI)->SetSelected(Q);
 }
 
-void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
+void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 	UE_LOG(LogLSetVid, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (Quality == EQualityType::NONE) return;
 
@@ -357,17 +362,17 @@ void ULSetVideoUI::SetQuality(const EQualityType Quality, const int32 NewQ) {
 	
 	// not optimal but if i set the overall i need to reload the rest and vice versa.
 	// so everytime it changes i need to reload. 
-	LoadQSwitches();
+	QSwitchesLoad();
 }
 
-void ULSetVideoUI::QualityChanged(const int32 ID, const int32 NewQ) {
+void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
 	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
 	}
 	
 	const EQualityType K = static_cast<EQualityType>(ID);
-	SetQuality(K, NewQ);
+	QualitySet(K, NewQ);
 }
 
 void ULSetVideoUI::FeatsLoad() const {
