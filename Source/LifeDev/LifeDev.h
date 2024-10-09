@@ -7,5 +7,6 @@
 class LIFEDEV_API FLifeDevModule : public IModuleInterface {
 public:
 	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;	
+	virtual void ShutdownModule() override;
+	virtual void PostLoadCallback() override;
 };

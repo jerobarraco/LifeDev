@@ -16,10 +16,14 @@ void FLifeDevModule::StartupModule()
 	AddShaderSourceDirectoryMapping(TEXT("/Project/Shaders/LD"),
 		ShaderDirectory);
 	
-	FSlateApplication::Get().SetApplicationScale(1.3);
 }
 
 void FLifeDevModule::ShutdownModule()
 {
 	IModuleInterface::ShutdownModule();
+}
+
+void FLifeDevModule::PostLoadCallback() {
+	IModuleInterface::PostLoadCallback();
+	FSlateApplication::Get().SetApplicationScale(1.3);
 }
