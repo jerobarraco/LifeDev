@@ -7,7 +7,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJOctTree, Log, Log);
 
-// im pulling the algo out of my ... hat.
+// im pulling the algo out of my ... hat. so it's surely not optimized to the max, and also my own copyright.
 
 AOTNode::AOTNode() {
 	Super::SetActorTickEnabled(false);
@@ -32,8 +32,8 @@ bool AOTNode::Add(AActor* const Actor) {
 
 	/// add to self
 	// Don't store the actors in this instance if it's split already. wasting a tarray.
-	if (Nodes.Num()==0) {
-		if (Actors.Num()<ActorsMax) {
+	if (UNLIKELY(Nodes.Num()==0)) {
+		if (UNLIKELY(Actors.Num()<ActorsMax)) {
 			Actors.AddUnique(Actor);
 			return true;
 		}
@@ -48,18 +48,17 @@ int32 AOTNode::Rem(AActor* const Actor) {
 }
 
 bool AOTNode::AddToNodes(AActor* const Actor) {
-	if (!Actor) return false;
+	if (UNLIKELY(!Actor)) return false;
 	// using closest because sometimes the parent isInside passes but the sub doesn't.
 	// AOTNode* const S = NodeForActor(Actor); // this saves us the trouble of looping and crashing on Add
 	// this saves us the trouble of looping and crashing on Add.
 	AOTNode* const S = ClosestNode(Actor->GetActorLocation());
-	if (!S) return false; // already logged
+	if (UNLIKELY(!S)) return false; // already logged
 	return S->Add(Actor); // will trickle down and split. "recursively" (though different objects)
 }
 
 void AOTNode::SetBox(const FBox& InBox) {
-	if (Actors.Num()>0)
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs ReBoxing with actors! lol."), __func__);
+	UE_CLOG(UNLIKELY(Actors.Num()>0), LogJOctTree, Warning, TEXT("%hs ReBoxing with actors! lol."), __func__);
 	// why bother. this is not meant to be optimal yet
 	Box = InBox;
 	Box.IsValid = true; // because unreal
@@ -72,7 +71,7 @@ void AOTNode::SetNodesBox() {
 	// surely ill need it to update the bounds if i ever do implement that
 	for (uint8 i=0; i<Num; ++i) {
 		AOTNode* const S = Nodes[i];
-		if (!IsValid(S)) continue;
+		if (UNLIKELY(!IsValid(S))) continue;
 		// maybe there's an optimal way to do this. sorry
 		
 		NE = E; // extents are already half of the size
@@ -117,21 +116,22 @@ AOTNode* AOTNode::ClosestNode(const FVector& To) {
 	AOTNode* Near = nullptr;
 	float MinDist = INFINITY;
 	for (AOTNode* const N: Nodes) {
-		if (!N) continue;
+		if (UNLIKELY(!N)) continue;
 		const float Dist = (To-N->Box.GetCenter()).SizeSquared();
 		if (MinDist>Dist) {
 			Near = N;
 			MinDist = Dist;
 		}
 	}
-	UE_CLOG(!Near, LogJOctTree, Warning, TEXT("%hs: %s Could not find it. To=%s"), __func__,
+
+	UE_CLOG(UNLIKELY(!Near), LogJOctTree, Warning, TEXT("%hs: %s Could not find it. To=%s"), __func__,
 		*GetNameSafe(this), *To.ToString());
 	return Near;
 }
 
 bool AOTNode::IsInside(AActor* const Actor) const {
 	// seems too little for a func, but im sure i'll use it later on.
-	if (!IsValid(Actor)) return false; // can be called from outside
+	if (UNLIKELY(!IsValid(Actor))) return false; // can be called from outside
 	const FVector& AT = Actor->GetActorLocation();
 	return Box.IsInsideOrOn(AT);
 }
@@ -140,14 +140,14 @@ AOTNode* AOTNode::Contains(const AActor* const Actor) const {
 	// don't care if actor is invalid (but be careful)
 	for (const TObjectPtr<AActor>& A: Actors) {
 		// i think this is a valid case. the func itself is const.
-		if (A == Actor) return const_cast<AOTNode*>(this);
+		if (UNLIKELY(A == Actor)) return const_cast<AOTNode*>(this);
 	}
 
 	for (const TObjectPtr<AOTNode>& N: Nodes) {
-		if (!IsValid(N)) continue; // wtf?
+		if (UNLIKELY(!IsValid(N))) continue; // wtf?
 
 		AOTNode* const R = N->Contains(Actor);
-		if (R) return R;
+		if (UNLIKELY(R)) return R;
 	}
 
 	return nullptr;
@@ -163,18 +163,18 @@ void AOTNode::Split() {
 	UPooler* const Pooler = UPooler::Instance(this);
 	// cache because we use it often
 	UPool* const Pool = Pooler ? Pooler->GetPool(AOTNode::StaticClass()) : nullptr;
-	if (!Pooler || !Pool) {
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
+	if (UNLIKELY(!Pooler || !Pool)) {
+		UE_LOG(LogJOctTree, Warning, TEXT("%hs No pooler or no pool. Stop."), __func__);
 		return;
 	}
 
 	bool Moded = false;
-	// 1st create subs
+	// 1st create subs if needed
 	Nodes.Reserve(SubsNum);
 	while (Nodes.Num()<SubsNum) { // should be either 0 or 8. but well.
 		AOTNode* const S = Cast<AOTNode>(Pool->Get());
-		if (!S) {
-			UE_LOG(LogJOctTree, Warning, TEXT("%hs can't 2 "), __func__);
+		if (UNLIKELY(!S)) {
+			UE_LOG(LogJOctTree, Warning, TEXT("%hs Pool did not return an object. Stop."), __func__);
 			return; // no infinite loops plz
 		}
 		S->SetActorsMax(ActorsMax);
@@ -182,7 +182,8 @@ void AOTNode::Split() {
 		Moded = true;
 	}
 
-	if (Moded) SetNodesBox(); // update the boxes
+	// this is meant to be called with no box, so it's should be true on the good path. but this is a protection.
+	if (LIKELY(Moded)) SetNodesBox(); // update the boxes
 
 	PushToNodes(); // then push to them
 }
@@ -204,7 +205,7 @@ void AOTNode::Empty(const bool ReturnSubs) {
 	// returning subs first, just in case they do something weird. or i do, in the future.
 	if (ReturnSubs) {
 		for (const TObjectPtr<AOTNode>& S:Nodes) {
-			if (!S) continue;
+			if (UNLIKELY(!S)) continue;
 			S->Return(true);
 		}
 	}
@@ -220,7 +221,7 @@ void AOTNode::Return(const bool ReturnSubs) {
 	Empty(ReturnSubs);
 
 	UPooler* const Pooler = UPooler::Instance(this);
-	if (!Pooler) {
+	if (UNLIKELY(!Pooler)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs can't"), __func__);
 		return;
 	}
@@ -237,12 +238,12 @@ void AOTNode::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, const in
 	Box.GetCenterAndExtents(C, E);
 	DrawDebugBox(GetWorld(), C, E, BoxColor, false, Time, 0, Size);
 	for (const TObjectPtr<AActor>& A: Actors) {
-		if(!IsValid(A)) continue;
+		if(UNLIKELY(!IsValid(A))) continue;
 		DrawDebugPoint(GetWorld(), A->GetActorLocation(), Size, ActorColor, false, Time, 0);
 	}
 
 	for (const TObjectPtr<AOTNode>& S: Nodes) {
-		if (!IsValid(S)) continue;
+		if (UNLIKELY(!IsValid(S))) continue;
 		S->DbgDraw(BoxColor, ActorColor, Size, Time);
 	}
 }
@@ -261,12 +262,12 @@ bool AOTNode::HasLoops() const {
 	bool Looping = false;
 	for (int32 i =0; i<Stack.Num() && !Looping; ++i) {
 		const TObjectPtr<const AOTNode> N = Stack[i];
-		if (!IsValid(N)) {
+		if (UNLIKELY(!IsValid(N))) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs Found invalid node"), __func__);
 			continue;
 		}
 		for (const TObjectPtr<AOTNode>& NN: N->Nodes) {
-			if (Stack.Contains(NN)) {
+			if (UNLIKELY(Stack.Contains(NN))) {
 				UE_LOG(LogJOctTree, Warning, TEXT("%hs Found loop with node=%s"), __func__, *GetNameSafe(NN));
 				Looping = true;
 				break;
@@ -283,20 +284,20 @@ bool AOTNode::Iterate(const FJOTIterator& Iterator) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 
 	for (const TObjectPtr<AActor>& A: Actors)
-		if (Iterator.Execute(A, this)) return true;
+		if (UNLIKELY(Iterator.Execute(A, this))) return true;
 
 	for (const TObjectPtr<AOTNode>& S: Nodes)
-		if (S->Iterate(Iterator)) return true;
+		if (UNLIKELY(S->Iterate(Iterator))) return true;
 
 	return false;
 }
 
 bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
-	if (!Iterator.IsBound()) return true;
+	if (UNLIKELY(!Iterator.IsBound())) return true;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs n=%s"), __func__, *GetNameSafe(this));
 	// const FBox Overlap = Box.Overlap(InBox); // overlap instead of isinside. since we'll check even if close.
 	// if (Overlap.GetVolume()<=0) {
-	if (!Box.Intersect(InBox)) { // faster than overlap
+	if (LIKELY(!Box.Intersect(InBox))) { // faster than overlap
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs doesn't overlap node=%s"),
 			__func__, *GetNameSafe(this));
 		return false; // don't break. other nodes might overlap.
@@ -306,22 +307,25 @@ bool AOTNode::IterateIn(const FJOTIterator& Iterator, const FBox& InBox) {
 	// also the sub calling is different.
 	for (const TObjectPtr<AActor>& A: Actors) {
 		// if the actor is in it, will execute the iterator. and if the iterator breaks. then break.
-		if (IsValid(A) && InBox.IsInsideOrOn(A->GetActorLocation()) && Iterator.Execute(A, this)) return true;
+		if (UNLIKELY(!IsValid(A))) continue; 
+		if (UNLIKELY(InBox.IsInsideOrOn(A->GetActorLocation()) && Iterator.Execute(A, this))) return true;
 	}
 
-	for (const TObjectPtr<AOTNode>& S: Nodes)
-		if (IsValid(S) && S->IterateIn(Iterator, InBox)) return true; // bubble break
+	for (const TObjectPtr<AOTNode>& S: Nodes) {
+		if (UNLIKELY(!IsValid(S))) continue;
+		if (UNLIKELY(S->IterateIn(Iterator, InBox))) return true; // bubble break
+	}
 
 	return false; // continue the iteration
 }
 
 void AOTNode::Pack() {
-	if (Nodes.Num()==0) return;
+	if (UNLIKELY(Nodes.Num()==0)) return;
 
 	bool Can = true;
 	int32 NumChilds=0;
 	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
-		if (!N) continue;
+		if (UNLIKELY(!N)) continue;
 		N->Pack();
 		Can = Can && N->Nodes.Num() == 0; // important to filter the ones with sub nodes
 		NumChilds += N->Actors.Num();
@@ -332,7 +336,7 @@ void AOTNode::Pack() {
 	if (!Can || NumChilds>=ActorsMax) return;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
 	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
-		if (!N) continue;
+		if (UNLIKELY(!N)) continue;
 		Actors.Append(N->Actors);
 		// shouldn't happen since the above loop filters that.
 		UE_CLOG(N->Nodes.Num()>0, LogJOctTree, Verbose, TEXT("%hs: %s: returning with subs!"), __func__, *GetNameSafe(this));
@@ -356,32 +360,33 @@ AOctTree::AOctTree(): Super() {
 
 void AOctTree::Add(AActor* const Actor) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs, a=%s"), __func__, *GetNameSafe(Actor));
-	if (!RootNode) {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
-	if (!IsValid(Actor)) {
+	if (UNLIKELY(!IsValid(Actor))) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, invalid actor"), __func__);
 		return;
 	}
 	
 	// If it doesn't fit, extend
-	if (!TryExtend(Actor)) {
+	if (UNLIKELY(!TryExtend(Actor))) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not extend. disowning."), __func__);
 		return; // otherwise rootnode cant handle it.
 	}
+
 	RootNode->Add(Actor); // note rootnode and not this->add
 }
 
 int32 AOctTree::Rem(AActor* const Actor) {
-	if (!RootNode) {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return 0;
 	}
 
 	// don't care if the actor is valid in this case
 	AOTNode* const N = RootNode->Contains(Actor);
-	if (!N) {
+	if (UNLIKELY(!N)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"),
 			__func__, *GetNameSafe(Actor));
 		return 0;
@@ -391,50 +396,47 @@ int32 AOctTree::Rem(AActor* const Actor) {
 }
 
 bool AOctTree::Update(AActor* const Actor) {
-	if (!RootNode) {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return false;
 	}
 
 	AOTNode* const N = RootNode->Contains(Actor);
-	if (!N) {
+	if (UNLIKELY(!N)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs Actor not found in tree. A=%s"), __func__, *GetNameSafe(Actor));
 		return false;
 	}
 
-	if (N->IsInside(Actor)) return true; // nothing to do. it's all good still.
-	if (RootNode->HasLoops()) return false; // TODO test. remove
-	if (!TryExtend(Actor)) return false;
+	if (UNLIKELY(N->IsInside(Actor))) return true; // nothing to do. it's all good still.
+	if (UNLIKELY(RootNode->HasLoops())) return false; // TODO test. remove
+	if (UNLIKELY(!TryExtend(Actor))) return false;
 
 	N->Rem(Actor);
 	const bool Added = RootNode->Add(Actor);
-	if (!Added)
-		UE_LOG(LogJOctTree, Warning, TEXT("%hs couldn't insert the actor %s loc=%s"),
+	UE_CLOG(UNLIKELY(!Added), LogJOctTree, Warning, TEXT("%hs couldn't insert the actor %s loc=%s"),
 			__func__, *GetNameSafe(Actor), *Actor->GetActorLocation().ToString());
 	return Added;
 }
 
 void AOctTree::SetBox(const FBox& InBox) {
-	if (!RootNode) {
+	bool DoRebuild = true;
+	if (UNLIKELY(!RootNode)) {
 		RootNode = Cast<AOTNode>(Pool->Get());
 		if (!RootNode) {
 			UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not create the root. Stop"), __func__);
 			return;
 		}
-
-		RootNode->SetActorsMax(ActorsMax);
-		RootNode->SetBox(InBox);
-		return; // no need to rebuild
+		DoRebuild = false; // no need to rebuild
 	}
 
 	RootNode->SetActorsMax(ActorsMax);
 	RootNode->SetBox(InBox); // tell rebuild which box to use
-	Rebuild();
+	if (UNLIKELY(DoRebuild)) Rebuild();
 }
 
 void AOctTree::SetActorsMax(const int32 InActorsMax) {
 	ActorsMax = InActorsMax;
-	if (!RootNode) return;
+	if (UNLIKELY(!RootNode)) return;
 	
 	TArray<TObjectPtr<AOTNode>> Nodes;
 	Nodes.Push(RootNode);
@@ -442,25 +444,25 @@ void AOctTree::SetActorsMax(const int32 InActorsMax) {
 	while (Nodes.Num()>0) {
 		// if org rootNode is none, it will be skipped here. and above we create one.
 		const TObjectPtr<AOTNode>& N = Nodes.Pop(EAllowShrinking::No);
-		if (!N) continue;
+		if (UNLIKELY(!N)) continue;
 		N->SetActorsMax(InActorsMax);
 		Nodes.Append(N->Nodes);
 	}
 }
 
 void AOctTree::SetPoolTrimTime(float const InTrimTime) {
-	if (!Pool) return;
+	if (UNLIKELY(!Pool)) return;
 	Pool->Set(0, AOTNode::StaticClass(), false, true, InTrimTime);
 }
 
 void AOctTree::DbgDraw(const FColor& BoxColor, const FColor& ActorColor, int32 const Size, float const Time) {
-	if (!RootNode) [[unlikely]] return;
+	if (UNLIKELY(!RootNode)) return;
 	RootNode->DbgDraw(BoxColor, ActorColor, Size, Time);
 }
 
 void AOctTree::Pack() {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
-	if (!RootNode) [[unlikely]] {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -469,7 +471,7 @@ void AOctTree::Pack() {
 }
 
 void AOctTree::Iterate(const FJOTIterator& Iterator) {
-	if (!RootNode) [[unlikely]] {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -478,15 +480,16 @@ void AOctTree::Iterate(const FJOTIterator& Iterator) {
 }
 
 void AOctTree::IterateIn(const FJOTIterator& Iterator, const FBox& Box) {
-	if (!RootNode) [[unlikely]] {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
+
 	RootNode->IterateIn(Iterator, Box);
 }
 
 void AOctTree::Print() {
-	if (!RootNode) [[unlikely]] {
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs, could not get the root"), __func__);
 		return;
 	}
@@ -498,7 +501,7 @@ void AOctTree::Print() {
 
 void AOctTree::Rebuild() {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs"), __func__);
-	if (!Pool) [[unlikely]]{
+	if (UNLIKELY(!Pool)) {
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs Can't get the Pool. Stop."), __func__);
 		return;
 	}
@@ -515,7 +518,7 @@ void AOctTree::Rebuild() {
 		// if org rootNode is none, it will be skipped here. and above we create one.
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
-		if (!N) continue;
+		if (UNLIKELY(!N)) continue;
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 		
 		// steal nodes (before 'add' case it ends up using one of those nodes)
@@ -532,42 +535,43 @@ void AOctTree::Rebuild() {
 }
 
 AOTNode* AOctTree::Contains(const AActor* const A) const {
-	if (!RootNode) { [[unlikely]]
+	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, No root node. Stop"), __func__);
 		return nullptr;
 	}
+
 	return RootNode->Contains(A);
 }
 
 bool AOctTree::HasLoops() const {
-	return !TestForLoops || (RootNode && RootNode->HasLoops());
+	return !TestForLoops || (RootNode && UNLIKELY(RootNode->HasLoops()));
 }
 
 void AOctTree::BeginPlay() {
 	Super::BeginPlay();
 
 	UPooler* const Pooler = UPooler::Instance(this);
-	if (!Pooler) { [[unlikely]]
+	if (UNLIKELY(!Pooler)){
 		UE_LOG(LogJOctTree, Warning, TEXT("Could not obtain the Pooler. this would crash later."));
 		return;
 	}
 
 	Pool = Pooler->SetPool(0, AOTNode::StaticClass(), false, true, 1);
-	UE_CLOG(!Pool, LogJOctTree, Warning, TEXT("Could not obtain the Pool. this would crash later."));
+	UE_CLOG(UNLIKELY(!Pool), LogJOctTree, Warning, TEXT("Could not obtain the Pool. this would crash later."));
 }
 
 void AOctTree::DestroyPool() {
 	UPooler* const Pooler = UPooler::Instance(this);
 	// destroy the pool before returning the nodes. that way they'll get destroyed upon return. avoiding extra overhead.
-	if (Pooler) [[likely]] Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
+	if (LIKELY(Pooler)) Pooler->RemPool(AOTNode::StaticClass()); // will empty the pool and destroy it.
 }
 
 void AOctTree::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// DestroyPool(); // actually no. because there might be other octtrees
-	if (RootNode) [[likely]] RootNode->Return(true); // will return all of them
+	if (LIKELY(RootNode)) RootNode->Return(true); // will return all of them
 
 	// empty after returning to also delete the ones returned.
-	if (Pool) [[likely]] Pool->Empty(); // might affect performance, but...
+	if (LIKELY(Pool)) Pool->Empty(); // might affect performance, but...
 	Pool = nullptr;
 
 	RootNode = nullptr;
@@ -583,21 +587,21 @@ bool AOctTree::PrintIter(AActor* const A, AOTNode* const Node) {
 
 bool AOctTree::TryExtend(AActor* const Actor) {
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs A=%s"), __func__, *GetNameSafe(Actor));
-	if (!RootNode || !Actor)  [[unlikely]] return false;
+	if (UNLIKELY(!RootNode || !Actor)) return false;
 
 	int32 Loop = ExtendMax;
 	while (Loop>0) {
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i"), __func__, Loop);
 		--Loop;
 		
-		if (RootNode->IsInside(Actor)) [[unlikely]] {
+		if (UNLIKELY(RootNode->IsInside(Actor))) {
 			UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i it's inside"), __func__, Loop);
 			return true;
 		}
 
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check A"), __func__, Loop);
 		AOTNode* const NewRoot = Cast<AOTNode>(Pool->Get());
-		if (!NewRoot) [[unlikely]] return false;
+		if (UNLIKELY(!NewRoot)) return false;
 
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs loop=%i Check B"), __func__, Loop);
 		NewRoot->SetActorsMax(ActorsMax);
@@ -639,7 +643,7 @@ bool AOctTree::TryExtend(AActor* const Actor) {
 		// this is the best way, and will 100% return the one corresponding.
 		// using overlap or isinside is more complex and not more accurate
 		AOTNode* const NCloser = NewRoot->ClosestNode(RCenter);
-		if (!NCloser) return false;
+		if (UNLIKELY(!NCloser)) return false;
 		
 		// clone it // TODO move to node, maybe?
 		NCloser->Actors = RootNode->Actors;

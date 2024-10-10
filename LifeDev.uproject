@@ -109,16 +109,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "EditorUIScaleCustomization",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			],
-			"TargetDenyList": [
-				"Game"
-			]
-		},
-		{
 			"Name": "DisasterRecoveryClient",
 			"Enabled": true
 		},
