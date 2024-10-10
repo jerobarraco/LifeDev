@@ -7,7 +7,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "DialogUI.h"
 #include "Diags.h"
@@ -71,7 +71,7 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, true);
 	UI->Show(Diag);
 }
 
@@ -82,7 +82,7 @@ void ADiagMan::Hide_Implementation() {
 
 	IsShowing = false;
 	UI->Hide();
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -118,7 +118,7 @@ void ADiagMan::BeginPlay() {
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// TODO unbind input actions
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
 	DeInit();
 
 	Super::EndPlay(EndPlayReason);

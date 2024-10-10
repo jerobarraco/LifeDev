@@ -5,7 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "JButton.h"
 
 void UMsgBox::NativeOnInitialized() {
@@ -41,7 +41,7 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 
 	UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
 	const int32 Num = Texts.Num();
-	constexpr int32 Num2 = UJMiscUtils::ArraySize(UBtns);
+	constexpr int32 Num2 = UJUtilsMisc::ArraySize(UBtns);
 	
 	for (int32 i=0; i<Num2; ++i) {
 		UJButton* const B = UBtns[i];

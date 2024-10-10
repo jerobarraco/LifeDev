@@ -8,17 +8,17 @@ class UInputMappingContext;
 class UWorld;
 class UWidget;
 
-#include "JMiscUtils.generated.h"
+#include "JUtilsMisc.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE(FOnJAsync);
 DECLARE_DYNAMIC_DELEGATE(FOnJAsyncDone);
 
 // Type of graph to use
 UENUM(BlueprintType)
-enum class EAsyncExec: uint8
+enum class EAsyncExec: uint8 {
 	// Engine\Source\Runtime\Core\Public\Async\Async.h:27
 	// the type used on AsyncTask is much more granular. but unfortunately it's not BlueprintType and is int32 so it cant be exposed
-{
+
 	/** Execute in Task Graph (for short running tasks). */
 	TaskGraph,
 
@@ -36,7 +36,7 @@ enum class EAsyncExec: uint8
 };
 
 UCLASS(Blueprintable)
-class JUTILS_API UJMiscUtils: public UBlueprintFunctionLibrary {
+class JUTILS_API UJUtilsMisc: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 public:
 	// TODO implement to be able to use this

@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "TestScreen.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 void ATestScreen::BeginPlay() {
 	Super::BeginPlay();

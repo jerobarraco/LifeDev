@@ -4,7 +4,7 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -28,7 +28,7 @@ void AIntroMan::AddUI() {
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 
-	UJMiscUtils::ShowUI(this, true, UI, false);
+	UJUtilsMisc::ShowUI(this, true, UI, false);
 }
 
 void AIntroMan::Done() {
@@ -51,7 +51,7 @@ void AIntroMan::Done() {
 		return;
 	}
 
-	UJMiscUtils::ShowUI(this, false);
+	UJUtilsMisc::ShowUI(this, false);
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced

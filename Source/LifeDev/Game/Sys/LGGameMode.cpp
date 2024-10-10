@@ -20,7 +20,7 @@
 #include "Diags/Diags.h"
 #include "Engine/PostProcessVolume.h"
 #include "JSig/CSignificance.h"
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -170,7 +170,7 @@ void ALGGameMode::Init_Implementation() {
 
 	/// Story
 	Story = World->GetSubsystem<UStory>();
-	const bool IsEditor = UJMiscUtils::IsEditor();
+	const bool IsEditor = UJUtilsMisc::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
 	Story->Init();
@@ -306,7 +306,7 @@ void ALGGameMode::SetTempInputEnabled(bool Enabled) {
 
 ALGGameMode* ALGGameMode::Instance(UWorld* World) {
 	// TODO this doesn't work properly on PIE, fix and use the version in JMiscUtils
-	World = UJMiscUtils::JGetWorld(World);
+	World = UJUtilsMisc::JGetWorld(World);
 	if (!IsValid(World)) return nullptr;
 
 	AGameModeBase* const AuthGameMode = World->GetAuthGameMode();

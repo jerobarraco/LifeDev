@@ -4,7 +4,7 @@
 
 #include "MoviePlayer.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "Settings/LSettings.h"
 
 ULGameInstance* ULGameInstance::Instance(UObject* O) {
@@ -26,7 +26,7 @@ void ULGameInstance::Init() {
 
 	// force disable debug flags
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
-	if (SysSettings && !UJMiscUtils::IsDebug()) {
+	if (SysSettings && !UJUtilsMisc::IsDebug()) {
 		SysSettings->UseDebugFeats = false;
 		SysSettings->UseSaveGame = true;
 	}
@@ -51,9 +51,9 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs, Can't get movie player"), __func__);
 	}
 
-	UJMiscUtils::CameraFade(this, false);
+	UJUtilsMisc::CameraFade(this, false);
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
-	UJMiscUtils::CameraFade(this, true);
+	UJUtilsMisc::CameraFade(this, true);
 }

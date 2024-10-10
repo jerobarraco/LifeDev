@@ -15,7 +15,7 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
@@ -122,7 +122,7 @@ void ALChar::InteractEnd(UCInteract* Comp) {
 
 void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, Enabled);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, Enabled);
 	InteractSetEnabled(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
@@ -143,7 +143,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -222,7 +222,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (FB) FB->OnChange.RemoveAll(this);
 
-	UJMiscUtils::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }

@@ -1,7 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
 
-#include "JMiscUtils.h"
+#include "JUtilsMisc.h"
 #include "CoreGlobals.h"
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -22,7 +22,7 @@
 	// return nullptr;
 // }
 
-UWorld* UJMiscUtils::GetEdWorld() {
+UWorld* UJUtilsMisc::GetEdWorld() {
 #if WITH_EDITOR
 	if (!GEditor) return nullptr;
 	// if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
@@ -35,7 +35,7 @@ UWorld* UJMiscUtils::GetEdWorld() {
 #endif
 }
 
-UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
+UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
 /*
 	*const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
@@ -57,7 +57,7 @@ UWorld* UJMiscUtils::JGetWorld(UWorld* World) {
 	return World;
 }
 
-void UJMiscUtils::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable) {
+void UJUtilsMisc::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable) {
 	APlayerController* const Controller = GetFirstLocalPlayerController(O);
 	if (!IsValid(Controller)) return;
 	
@@ -70,7 +70,7 @@ void UJMiscUtils::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Pri
 	else Subsystem->RemoveMappingContext(Ctx);
 }
 
-void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
+void UJUtilsMisc::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
 	UWorld* const World = O ? O->GetWorld(): nullptr;
 	if (!IsValid(World)) return;
 
@@ -87,7 +87,7 @@ void UJMiscUtils::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused)
 	if (SetPaused) UGameplayStatics::SetGamePaused(World, Show);
 }
 
-void UJMiscUtils::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
+void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
 	// don't use [&Task, &Done] since that will break on calling BPAsync multiple times
 	Async(static_cast<EAsyncExecution>(Exec), [Task, Done]{
 		Task.ExecuteIfBound();
@@ -99,7 +99,7 @@ void UJMiscUtils::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 }
 
 template <typename T>
-bool UJMiscUtils::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
+bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 	OutRows.Empty();
 	if (!IsValid(DT)) {
 		UE_LOG(LogTemp, Error, TEXT("Data Table is not valid or unassigned."));
@@ -116,12 +116,12 @@ bool UJMiscUtils::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 	return true;
 }
 
-bool UJMiscUtils::StringLooseEquals(const FString& A, const FString& B) {
+bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
 	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
 }
 
-void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const FLinearColor& Color) {
+void UJUtilsMisc::CameraFade(UGameInstance* GI, bool In, float Duration, const FLinearColor& Color) {
 	if (!GI) {
 		UE_LOG(LogTemp, Warning, TEXT("CameraFade: Invalid game instance. aborting"));
 		return;
@@ -142,7 +142,7 @@ void UJMiscUtils::CameraFade(UGameInstance* GI, bool In, float Duration, const F
 	CamManager->StartCameraFade(From, To, Duration, Color, true, true);
 }
 
-APlayerController* UJMiscUtils::GetFirstLocalPlayerController(UObject* O) {
+APlayerController* UJUtilsMisc::GetFirstLocalPlayerController(UObject* O) {
 	UWorld* const W = O?O->GetWorld():nullptr;
 	if (!W) return nullptr;
 
@@ -152,7 +152,7 @@ APlayerController* UJMiscUtils::GetFirstLocalPlayerController(UObject* O) {
 	return Instance->GetFirstLocalPlayerController(W);
 }
 
-UGameViewportClient* UJMiscUtils::GetAnyGameViewportClient() {
+UGameViewportClient* UJUtilsMisc::GetAnyGameViewportClient() {
 	if (GEngine && GEngine->GameViewport) return GEngine->GameViewport;
 	
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)

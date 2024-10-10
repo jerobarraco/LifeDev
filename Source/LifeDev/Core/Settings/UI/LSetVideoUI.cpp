@@ -8,7 +8,7 @@
 #include "Components/TextBlock.h"
 #include "GameFramework/GameUserSettings.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
 #include "JUtils/UI/GroupBox.h"
 
@@ -76,7 +76,7 @@ void ULSetVideoUI::FSModeSet() {
 	static FString Names[] {
 		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
 	};
-	constexpr size_t Size = UJMiscUtils::ArraySize(Names);
+	constexpr size_t Size = UJUtilsMisc::ArraySize(Names);
 	for (size_t i = 0; i < Size; ++i) {
 		FSMode->AddOption(Names[i]);
 	}
@@ -171,7 +171,7 @@ void ULSetVideoUI::FrameRateSet() const{
 	FrameRate->ClearOptions();
 
 	int32 CurrentI = 0; // defaults to unlimited
-	constexpr size_t N = UJMiscUtils::ArraySize(FrameRateOpts);
+	constexpr size_t N = UJUtilsMisc::ArraySize(FrameRateOpts);
 	for (int32 i = 0; i < N; ++i) {
 		const float& F = FrameRateOpts[i];
 		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
@@ -192,7 +192,7 @@ void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
 	if (!Settings || !FrameRate) [[unlikely]] return;
 
 	// const size_t LimitNum = FrameRateOpts.Num();
-	constexpr size_t Num = UJMiscUtils::ArraySize(FrameRateOpts);
+	constexpr size_t Num = UJUtilsMisc::ArraySize(FrameRateOpts);
 
 	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, Num-1);
 	Settings->SetFrameRateLimit(FrameRateOpts[Index]);

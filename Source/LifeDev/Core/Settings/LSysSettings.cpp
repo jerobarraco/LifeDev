@@ -1,6 +1,6 @@
 #include "LSysSettings.h"
 
-#include "JUtils/Misc/JMiscUtils.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 ULSysSettings* ULSysSettings::Get() {
 	return GetMutableDefault<ULSysSettings>(); // the same as the previous code.
@@ -12,6 +12,6 @@ FName ULSysSettings::GetCategoryName() const {
 }
 
 TSet<EFeat>& ULSysSettings::GetFeats() {
-	const bool UseDebug = UseDebugFeats && UJMiscUtils::IsDebug();
+	const bool UseDebug = UseDebugFeats && UJUtilsMisc::IsDebug();
 	return UseDebug ? DebugFeats : DefaultFeats;
 }
