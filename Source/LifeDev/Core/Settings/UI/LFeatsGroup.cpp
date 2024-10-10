@@ -28,6 +28,7 @@ void ULFeatsGroup::FeatsCreate() {
 		C->SetPadding(ChildPadding);
 		AddChild(C); // maybe this fixes the crash
 		C->SetUp(F.Key, F.Value);
+		Feats.Add(F.Key, C);
 	}
 }
 
@@ -40,9 +41,11 @@ void ULFeatsGroup::Load() {
 }
 
 void ULFeatsGroup::Apply() {
+	UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply num =%i"), __func__, Feats.Num());
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
-		if (!IsValid(Check)) continue;
+		if (!IsValid(Check.Get())) continue;
+		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply check=%s"), __func__, *GetNameSafe(Check));
 		Check->Apply();
 	}
 }

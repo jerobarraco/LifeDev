@@ -45,8 +45,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<ULFeatCheck> CheckClass = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
-	
+
 	TMap<EFeat, FText> Texts;
 };
