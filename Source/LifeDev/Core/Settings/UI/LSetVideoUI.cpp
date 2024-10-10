@@ -425,8 +425,8 @@ void ULSetVideoUI::FeatsSet() {
 	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
 	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen GI"));
 	FeatTexts.Add(EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights"));
-	
-	for (const auto& KV: Feats) {
+
+	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& KV: Feats) {
 		const EFeat K = KV.Key;
 		const TObjectPtr<ULFeatCheck>& F = KV.Value;
 		if (!F) continue;
@@ -436,4 +436,3 @@ void ULSetVideoUI::FeatsSet() {
 	}
 }
 
-// lumen is disabled by the feat in the featsman
