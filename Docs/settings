@@ -1,0 +1,3 @@
+
+bAllowHighDPIInGameMode=True
+* this one fixes the performance issue with vsm

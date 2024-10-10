@@ -15,15 +15,12 @@ void FLifeDevModule::StartupModule()
 	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	AddShaderSourceDirectoryMapping(TEXT("/Project/Shaders/LD"),
 		ShaderDirectory);
-	
+
+	// this won't work. probably is overriden by the engine. just go to Editor settings > Appearance > Application Scale
+	// FSlateApplication::Get().SetApplicationScale(1.3);
 }
 
 void FLifeDevModule::ShutdownModule()
 {
 	IModuleInterface::ShutdownModule();
-}
-
-void FLifeDevModule::PostLoadCallback() {
-	IModuleInterface::PostLoadCallback();
-	FSlateApplication::Get().SetApplicationScale(1.3);
 }
