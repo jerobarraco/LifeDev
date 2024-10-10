@@ -22,7 +22,7 @@ class JUTILS_API UDelegateWrapper : public UObject {
 public:
 	// bind this function to the other delegate
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void Dispatch() { OnDispatch.Broadcast(this, ID, Obj); }
+	FORCEINLINE void Dispatch() { OnDispatch.Broadcast(this, ID, Obj.Get()); }
 
 	// or bind this function to the other delegate (useful when the other delegate has a param)
 	UFUNCTION(BlueprintCallable)
@@ -34,7 +34,7 @@ public:
 
 	// Set this
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, Category=SetUp)
-	UObject* Obj = nullptr;
+	TObjectPtr<UObject> Obj = nullptr;
 	
 	// subscribe to this 
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient)

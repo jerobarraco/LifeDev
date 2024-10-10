@@ -7,6 +7,7 @@
 
 #include "LSetSoundUI.generated.h"
 
+class ULFeatCheck;
 // base class for the sound settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetSoundUI : public ULSetBaseUI {

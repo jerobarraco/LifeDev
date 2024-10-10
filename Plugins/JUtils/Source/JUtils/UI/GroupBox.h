@@ -7,6 +7,7 @@
 
 #include "GroupBox.generated.h"
 
+class UTextBlock;
 class UDelegateWrapper;
 class UCheckBox;
 
@@ -43,18 +44,18 @@ protected:
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION()
-	void CheckSelected(UDelegateWrapper* W, int32 CID, UObject* CB);
+	void CheckSelected(UDelegateWrapper* const W, int32 CID, UObject* const CB);
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
-	TArray<UCheckBox*> CheckBoxes;
+	TArray<TObjectPtr<UCheckBox>> CheckBoxes;
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional))
-	class UTextBlock* Label_T = nullptr;
+	TObjectPtr<UTextBlock> Label_T = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly)
 	int32 Selected = -1;
 
 private: // nobody needs to know about this
 	UPROPERTY(Transient)
-	TArray<UDelegateWrapper*> Wrappers;
+	TArray<TObjectPtr<UDelegateWrapper>> Wrappers;
 };

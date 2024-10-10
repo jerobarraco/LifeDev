@@ -31,12 +31,13 @@ void UGroupBox::SetLabel_Implementation(const FText& Text) {
 
 void UGroupBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	for (UCheckBox* const C: CheckBoxes) {
+	for (const TObjectPtr<UCheckBox>& C: CheckBoxes) {
 		if (!C) continue;
 		// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
 
 		// the outer hangs to keep us all awake~ (and not get gcd) (doesn't work actually)
-		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>(this, UDelegateWrapper::StaticClass());
+		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>(
+			this, UDelegateWrapper::StaticClass());
 		if (!IsValid(Wrapper)) continue;
 		Wrappers.AddUnique(Wrapper); // avoid getting gcd, actually needed
 		Wrapper->Obj = C;
@@ -47,7 +48,7 @@ void UGroupBox::NativeOnInitialized() {
 }
 
 void UGroupBox::NativeDestruct() {
-	for (UDelegateWrapper* const W: Wrappers) {
+	for (const TObjectPtr<UDelegateWrapper>& W: Wrappers) {
 		if (!IsValid(W)) continue;
 		W->OnDispatch.RemoveAll(this);
 	}
@@ -55,7 +56,7 @@ void UGroupBox::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void UGroupBox::CheckSelected(UDelegateWrapper* W, int32 CID, UObject* OCB) {
+void UGroupBox::CheckSelected(UDelegateWrapper* const W, int32 CID, UObject* const OCB) {
 	if (!IsValid(OCB)) return;
 	UCheckBox* const CB = static_cast<UCheckBox*>(OCB);
 	if (!CB) return;
