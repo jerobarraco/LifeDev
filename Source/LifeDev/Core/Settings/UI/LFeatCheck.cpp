@@ -54,7 +54,7 @@ void ULFeatCheck::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	Settings = ULSettings::Instance(this);
 	if (!Settings) return;
-	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%i"), Feat);
+	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%s"), *UEnum::GetValueAsString(Feat));
 
 	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
 	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULFeatCheck::CheckChanged);

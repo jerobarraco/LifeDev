@@ -7,7 +7,8 @@
 
 #include "LSetSoundUI.generated.h"
 
-class ULFeatCheck;
+class ULFeatGroup;
+
 // base class for the sound settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetSoundUI : public ULSetBaseUI {
@@ -22,9 +23,5 @@ protected:
 	void FeatsSet();
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Music;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Noise;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Env;
+	TObjectPtr<ULFeatGroup> FeatsGroup;
 };
