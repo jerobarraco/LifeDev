@@ -146,8 +146,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatCheck> Feat_FBPost;
 
+	// TODO replace with a featsgroup
 	UPROPERTY(BlueprintReadOnly)
 	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
+	
 	UPROPERTY(BlueprintReadOnly)
 	TMap<EFeat, FText> FeatTexts;
 	UPROPERTY(Transient, BlueprintReadOnly)
