@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Reset();
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FMargin ChildPadding;
+
 protected:
 	void FeatsClear();
 	void FeatsCreate();

@@ -25,6 +25,7 @@ void ULFeatsGroup::FeatsCreate() {
 	for (const TTuple<EFeat, FText>& F: Texts) {
 		ULFeatCheck* const C = CreateWidget<ULFeatCheck>(this, CheckClass);
 		if (!IsValid(C)) continue;
+		C->SetPadding(ChildPadding);
 		AddChild(C); // maybe this fixes the crash
 		C->SetUp(F.Key, F.Value);
 	}

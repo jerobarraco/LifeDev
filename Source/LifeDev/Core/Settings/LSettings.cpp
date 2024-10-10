@@ -177,7 +177,6 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::E_GHOSTPOOL && Feat < EFeat::E_MAX)
 		OnFeatUpdateEnviron.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
-	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_BASE)
+	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_MAX)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
-	
 }
