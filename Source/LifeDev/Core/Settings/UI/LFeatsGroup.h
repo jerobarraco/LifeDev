@@ -8,7 +8,7 @@
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
-#include "LFeatGroup.generated.h"
+#include "LFeatsGroup.generated.h"
 
 class ULFeatCheck;
 class UTextBlock;
@@ -16,14 +16,15 @@ class ULSettings;
 
 // a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULFeatGroup: public UHorizontalBox {
+class LIFEDEV_API ULFeatsGroup: public UHorizontalBox {
 	GENERATED_BODY()
 
 public:
-	ULFeatGroup(const FObjectInitializer& O);
+	ULFeatsGroup(const FObjectInitializer& O);
 
+	// don't call this on onInitialize of your widget. it will nastly crash.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void SetUp(const TMap<EFeat, FText>& InFeats);
+	void SetUp(const TMap<EFeat, FText>& InTexts);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Load();
@@ -35,11 +36,14 @@ public:
 	void Reset();
 
 protected:
-
-	void Clear();
+	void FeatsClear();
+	void FeatsCreate();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<ULFeatCheck> CheckClass = nullptr;
-	
+
+	UPROPERTY(BlueprintReadOnly)
 	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
+	
+	TMap<EFeat, FText> Texts;
 };

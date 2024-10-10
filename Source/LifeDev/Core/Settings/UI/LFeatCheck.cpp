@@ -17,7 +17,8 @@ void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 
 void ULFeatCheck::Load() {
 	if (!Settings) {
-		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Load Can't find settings."));
+		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Load Can't find settings. feat=%s"),
+			*UEnum::GetValueAsString(Feat));
 		return;
 	}
 
@@ -53,7 +54,7 @@ void ULFeatCheck::NativeDestruct() {
 void ULFeatCheck::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	Settings = ULSettings::Instance(this);
-	if (!Settings) return;
+	if (!Settings || !Check) return;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%s"), *UEnum::GetValueAsString(Feat));
 
 	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);

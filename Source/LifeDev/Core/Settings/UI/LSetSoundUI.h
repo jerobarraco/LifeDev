@@ -7,7 +7,8 @@
 
 #include "LSetSoundUI.generated.h"
 
-class ULFeatGroup;
+enum class EFeat : uint8;
+class ULFeatsGroup;
 
 // base class for the sound settings
 UCLASS(Blueprintable, BlueprintType)
@@ -19,9 +20,9 @@ public:
 	virtual void Load_Implementation() override;
 
 protected:
-
-	void FeatsSet();
+	virtual void NativeOnInitialized() override;
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatGroup> FeatsGroup;
+	TObjectPtr<ULFeatsGroup> FeatsGroup;
+	TMap<EFeat, FText> FeatTexts;
 };

@@ -1,29 +1,34 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-#include "LFeatGroup.h"
+#include "LFeatsGroup.h"
 
 #include "LFeatCheck.h"
-#include "LifeDev/Core/Settings/LSettings.h"
 
-ULFeatGroup::ULFeatGroup(const FObjectInitializer& O):Super(O) {
+ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 	CheckClass = ULFeatCheck::StaticClass();
 }
 
-void ULFeatGroup::SetUp(const TMap<EFeat, FText>& InFeats) {
-	UE_LOG(LogTemp, Log, TEXT("%hs feat =%i"), __func__, InFeats.Num());
-	Clear();
+void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
+	UE_LOG(LogTemp, Log, TEXT("%hs feat =%i"), __func__, InTexts.Num());
+	Texts = InTexts;
+	
+	// unfortunately this can't be called on SetUp, since that SetUp is called during onInitialize of the parent
+	// which makes the feats crash...
+	FeatsCreate();
+}
 
-	for (const TTuple<EFeat, FText>& F: InFeats) {
+void ULFeatsGroup::FeatsCreate() {
+	FeatsClear();
+
+	for (const TTuple<EFeat, FText>& F: Texts) {
 		ULFeatCheck* const C = NewObject<ULFeatCheck>(this, CheckClass);
 		if (!IsValid(C)) continue;
 		C->SetUp(F.Key, F.Value);
 		AddChild(C);
 	}
-	
-	Load();
 }
 
-void ULFeatGroup::Load() {
+void ULFeatsGroup::Load() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (!IsValid(Check)) continue;
@@ -31,7 +36,7 @@ void ULFeatGroup::Load() {
 	}
 }
 
-void ULFeatGroup::Apply() {
+void ULFeatsGroup::Apply() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (!IsValid(Check)) continue;
@@ -39,7 +44,7 @@ void ULFeatGroup::Apply() {
 	}
 }
 
-void ULFeatGroup::Reset() {
+void ULFeatsGroup::Reset() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (!IsValid(Check)) continue;
@@ -47,7 +52,7 @@ void ULFeatGroup::Reset() {
 	}
 }
 
-void ULFeatGroup::Clear() {
+void ULFeatsGroup::FeatsClear() {
 	ClearChildren();
 	Feats.Empty(); // widgets can't be manually destroyed. yikes
 }
