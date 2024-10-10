@@ -56,7 +56,7 @@ protected:
 	void ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 	void ResOptsSet();
 	
-	void ResScaleSet() const;
+	void ResScaleSet();
 	UFUNCTION()
 	void ResScaleChanged(const float Value);
 	void DResSet() const;

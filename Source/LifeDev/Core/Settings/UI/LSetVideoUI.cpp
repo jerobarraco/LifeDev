@@ -119,15 +119,19 @@ void ULSetVideoUI::ResOptsSet() {
 	UKismetSystemLibrary::GetConvenientWindowedResolutions(ResOpts);
 }
 
-void ULSetVideoUI::ResScaleSet() const {
+void ULSetVideoUI::ResScaleSet() {
 	if (!ResScale || !Settings) return;
-	// ResScale->OnValueChanged.RemoveAll(this);
-	ResScale->OnValueChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResScaleChanged);
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	ResScale->OnValueChanged.RemoveAll(this);
+	const float Value = Settings->GetResolutionScaleNormalized();
 	// done this way to trigger the text change. will also re-set the scale but meh.
-	ResScale->SetValue(Settings->GetResolutionScaleNormalized());
+	ResScale->SetValue(Value);
+	ResScaleChanged(Value); // for some extraneous reason it does not trigger the first time
+	ResScale->OnValueChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResScaleChanged);
 }
 
 void ULSetVideoUI::ResScaleChanged(const float Value) {
+	UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
 	const int32 PVal = trunc(Value*100);
 	if (Settings) Settings->SetResolutionScaleNormalized(PVal / 100.0);
 	if (ResScaleText) ResScaleText->SetText(
