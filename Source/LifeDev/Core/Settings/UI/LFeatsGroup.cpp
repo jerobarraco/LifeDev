@@ -5,7 +5,9 @@
 #include "LFeatCheck.h"
 
 ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
-	CheckClass = ULFeatCheck::StaticClass();
+	static ConstructorHelpers::FClassFinder<ULFeatCheck>
+		CCheck(TEXT("/Game/LifeDev/Core/Settings/Feats/FeatCheck_W"));
+	CheckClass = CCheck.Succeeded() ? CCheck.Class.Get() : ULFeatCheck::StaticClass();
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
@@ -21,7 +23,7 @@ void ULFeatsGroup::FeatsCreate() {
 	FeatsClear();
 
 	for (const TTuple<EFeat, FText>& F: Texts) {
-		ULFeatCheck* const C = NewObject<ULFeatCheck>(this, CheckClass);
+		ULFeatCheck* const C = CreateWidget<ULFeatCheck>(this, CheckClass);
 		if (!IsValid(C)) continue;
 		AddChild(C); // maybe this fixes the crash
 		C->SetUp(F.Key, F.Value);
