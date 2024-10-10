@@ -9,7 +9,7 @@ ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
-	UE_LOG(LogTemp, Log, TEXT("%hs feat =%i"), __func__, InTexts.Num());
+	UE_LOG(LogTemp, Log, TEXT("LFeatGroup::%hs feat n=%i"), __func__, InTexts.Num());
 	Texts = InTexts;
 	
 	// unfortunately this can't be called on SetUp, since that SetUp is called during onInitialize of the parent
@@ -23,8 +23,8 @@ void ULFeatsGroup::FeatsCreate() {
 	for (const TTuple<EFeat, FText>& F: Texts) {
 		ULFeatCheck* const C = NewObject<ULFeatCheck>(this, CheckClass);
 		if (!IsValid(C)) continue;
+		AddChild(C); // maybe this fixes the crash
 		C->SetUp(F.Key, F.Value);
-		AddChild(C);
 	}
 }
 

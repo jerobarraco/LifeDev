@@ -24,5 +24,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
+
 	TMap<EFeat, FText> FeatTexts;
 };

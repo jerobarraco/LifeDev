@@ -9,7 +9,7 @@ ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}
 
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
-	UE_LOG(LogTemp, Log, TEXT("LFeatCheck SetUp feat =%i"), Feat);
+	UE_LOG(LogTemp, Log, TEXT("LFeatCheck::Setup feat=%s"), *UEnum::GetValueAsString(Feat));
 	if(Text) Text->SetText(NewText);
 
 	Load();
@@ -53,9 +53,11 @@ void ULFeatCheck::NativeDestruct() {
 
 void ULFeatCheck::NativeOnInitialized() {
 	Super::NativeOnInitialized();
+	
 	Settings = ULSettings::Instance(this);
 	if (!Settings || !Check) return;
-	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat =%s"), *UEnum::GetValueAsString(Feat));
+	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat=%s"),
+		*UEnum::GetValueAsString(Feat));
 
 	Settings->OnFeatUpdate.AddUniqueDynamic(this, &ULFeatCheck::FeatUpdate);
 	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULFeatCheck::CheckChanged);
