@@ -47,14 +47,14 @@ protected:
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	UCheckBox* Check = nullptr;
+	TObjectPtr<UCheckBox> Check = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	UTextBlock* Text = nullptr;
+	TObjectPtr<UTextBlock> Text = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	EFeat Feat = EFeat::NONE;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ULSettings* Settings = nullptr;
+	TObjectPtr<ULSettings> Settings = nullptr;
 
 private:
 	bool WasEnabled = false;
