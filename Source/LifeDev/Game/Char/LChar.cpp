@@ -15,7 +15,7 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"

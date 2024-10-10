@@ -8,7 +8,7 @@
 #include "Components/TextBlock.h"
 #include "GameFramework/GameUserSettings.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
 #include "JUtils/UI/GroupBox.h"
 

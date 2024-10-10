@@ -4,7 +4,7 @@
 
 #include "MoviePlayer.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 #include "Settings/LSettings.h"
 
 ULGameInstance* ULGameInstance::Instance(UObject* O) {

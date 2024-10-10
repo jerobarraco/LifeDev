@@ -20,7 +20,7 @@
 #include "Diags/Diags.h"
 #include "Engine/PostProcessVolume.h"
 #include "JSig/CSignificance.h"
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"

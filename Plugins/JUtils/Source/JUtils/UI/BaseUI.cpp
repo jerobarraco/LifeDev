@@ -2,7 +2,7 @@
 
 #include "BaseUI.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 void UBaseUI::Show_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);

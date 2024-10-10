@@ -10,7 +10,7 @@
 #include "Inventory.h"
 
 #include "InventoryUI.h"
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;

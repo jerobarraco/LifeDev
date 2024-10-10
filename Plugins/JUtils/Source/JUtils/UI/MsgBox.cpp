@@ -5,7 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 #include "JButton.h"
 
 void UMsgBox::NativeOnInitialized() {

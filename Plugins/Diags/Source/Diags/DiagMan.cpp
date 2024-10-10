@@ -7,7 +7,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 #include "DialogUI.h"
 #include "Diags.h"

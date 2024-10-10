@@ -1,6 +1,6 @@
 #include "LSysSettings.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 ULSysSettings* ULSysSettings::Get() {
 	return GetMutableDefault<ULSysSettings>(); // the same as the previous code.

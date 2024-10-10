@@ -4,12 +4,10 @@
 #include "JUtilsModule.h"
 
 IMPLEMENT_MODULE(FJUtilsModule, JUtils)
-void FJUtilsModule::StartupModule()
-{
+void FJUtilsModule::StartupModule() {
 	IModuleInterface::StartupModule();
 }
 
-void FJUtilsModule::ShutdownModule()
-{
+void FJUtilsModule::ShutdownModule() {
 	IModuleInterface::ShutdownModule();
 }

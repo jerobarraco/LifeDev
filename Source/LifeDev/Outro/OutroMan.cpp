@@ -5,7 +5,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 

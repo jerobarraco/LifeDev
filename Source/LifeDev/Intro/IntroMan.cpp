@@ -4,7 +4,7 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/JMiscUtils.h"
+#include "JUtils/Misc/JMiscUtils.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
