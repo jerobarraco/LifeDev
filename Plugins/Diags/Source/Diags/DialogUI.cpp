@@ -15,20 +15,40 @@ void UDialogUI::Show_Implementation() {
 	// SetVisibility(ESlateVisibility::Visible);
 }
 
-UDialogUI::UDialogUI():Super() {
-	ShowCursor = false;
-	AutoUnbind = false;
+void UDialogUI::ShowCurDlg_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("DialogUI::%hs DlgI=%i"), __func__, CurDlgI);
+	// TODO port
 }
 
-void UDialogUI::Hide_Implementation() {}
+UDialogUI::UDialogUI():Super() {
+	ShowCursor = false;
+	AutoUnbind = false; // critical, since the manager calls hide at the start
+}
+
+void UDialogUI::Hide_Implementation() {
+	CurDlgI = 0;
+	Dlgs.Empty(); // important in case they call show again while it's animating.
+}
 
 void UDialogUI::Skip_Implementation() {}
 void UDialogUI::Back_Implementation() {
 	SkipBy(-1);
 }
 
-void UDialogUI::SkipBy_Implementation(int Diff) {
-	// TODO port here
+void UDialogUI::SkipBy_Implementation(const int32 Diff) {
+	const int32 NewDlgI = CurDlgI+Diff;
+	if (NewDlgI<0) {
+		UE_LOG(LogTemp, Log, TEXT("DialogUI::%hs Attempt to go to a dlg <0"), __func__);
+		return;
+	}
+	if (NewDlgI>=Dlgs.Num()) {
+		UE_LOG(LogTemp, Log, TEXT("DialogUI::%hs Reached end of Dlgs."), __func__);
+		Done();
+		return;
+	}
+	
+	CurDlgI = NewDlgI;
+	ShowCurDlg();
 }
 
 void UDialogUI::PostHide() {

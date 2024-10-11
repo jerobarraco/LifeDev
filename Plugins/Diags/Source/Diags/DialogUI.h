@@ -27,16 +27,20 @@ public:
 	void Back();
 	// Skips back and forth.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SkipBy(int Diff = 1);
+	void SkipBy(const int32 Diff = 1);
 
 protected:
 	virtual void Hide_Implementation() override;
 	virtual void Show_Implementation() override;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ShowCurDlg();
 
 	UFUNCTION(BlueprintCallable)
 	void PostHide();
 
-	// TODO port
 	UPROPERTY(BlueprintReadWrite, Transient)
-	int32 CurDlgI = -1;
+	int32 CurDlgI = 0;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	TArray<FDialog> Dlgs;
 };
