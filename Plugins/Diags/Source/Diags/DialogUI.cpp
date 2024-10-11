@@ -2,20 +2,32 @@
 
 #include "DialogUI.h"
 
-#include "Blueprint/WidgetBlueprintLibrary.h"
+void UDialogUI::ShowDlg_Implementation(const FDialog& Diag) {
+	Show();
+}
+
+void UDialogUI::Show_Implementation() {
+	Super::Show_Implementation();
+	
+	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	// Controller->bShowMouseCursor = true;
+	// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
+	// SetVisibility(ESlateVisibility::Visible);
+}
+
+UDialogUI::UDialogUI():Super() {
+	ShowCursor = false;
+	AutoUnbind = false;
+}
 
 void UDialogUI::Hide_Implementation() {}
 
-void UDialogUI::Show_Implementation(const FDialog& Diag) {
-	PreShow();
-}
-
 void UDialogUI::Skip_Implementation() {}
 void UDialogUI::Back_Implementation() {
-	ShowDlg(-1);
+	SkipBy(-1);
 }
 
-void UDialogUI::ShowDlg_Implementation(int Diff) {
+void UDialogUI::SkipBy_Implementation(int Diff) {
 	// TODO port here
 }
 
@@ -29,12 +41,6 @@ void UDialogUI::PostHide() {
 	// these are not needed since we are using the input actions
 	// Controller->bShowMouseCursor = false;
 	// UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-	SetVisibility(ESlateVisibility::Hidden);
-}
-
-void UDialogUI::PreShow() {
-	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	// Controller->bShowMouseCursor = true;
-	// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
-	SetVisibility(ESlateVisibility::Visible);
+	//SetVisibility(ESlateVisibility::Hidden);
+	Super::Hide_Implementation();
 }

@@ -72,7 +72,7 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
 	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, true);
-	UI->Show(Diag);
+	UI->ShowDlg(Diag);
 }
 
 void ADiagMan::Hide_Implementation() {
