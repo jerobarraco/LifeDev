@@ -6,13 +6,14 @@
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "Components/CheckBox.h"
 #include "GameFramework/GameUserSettings.h"
 
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Settings/UI/SetAntiAlias.h"
 #include "JUtils/UI/GroupBox.h"
 
-#include "LFeatCheck.h"
+#include "LFeatsGroup.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
@@ -56,8 +57,6 @@ void ULSetVideoUI::NativeDestruct() {
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
 
-	Feats.Empty(0);
-	FeatTexts.Empty();
 	if (FrameRate) FrameRate->ClearOptions();
 	Super::NativeDestruct();
 }
@@ -153,7 +152,7 @@ void ULSetVideoUI::DResChanged(bool bIsChecked) {
 }
 
 void ULSetVideoUI::VSyncSet() const {
-	if (!VSync) [[unlikely]] return;
+	if (!VSync) return;
 	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	VSync->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
@@ -391,48 +390,23 @@ void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
 }
 
 void ULSetVideoUI::FeatsLoad() const {
-	for (const auto& KV: Feats) {
-		const TObjectPtr<ULFeatCheck>& F = KV.Value;
-		if (!F) continue;
-
-		F->Load();
-	}
+	if (FeatsGroup) FeatsGroup->Load();
 }
 
 void ULSetVideoUI::FeatsApply() const {
-	for (const auto& KV: Feats) {
-		const TObjectPtr<ULFeatCheck>& F = KV.Value;
-		if (!F) continue;
-
-		F->Apply();
-	}
+	if (FeatsGroup) FeatsGroup->Apply();
 }
 
 void ULSetVideoUI::FeatsSet() {
-	Feats.Empty(6);
-	FeatTexts.Empty(6);
+	if (!FeatsGroup) return;
 
-	Feats.Add(EFeat::V_BLUR, Feat_Blur);
-	Feats.Add(EFeat::V_SPEED, Feat_Speed);
-	Feats.Add(EFeat::V_LUMEN, Feat_Lumen);
-	Feats.Add(EFeat::V_FLASHBACK, Feat_FBPost);
-	Feats.Add(EFeat::V_STROBE, Feat_Strobe);
-	Feats.Add(EFeat::V_FOV, Feat_Fov);
-
+	TMap<EFeat, FText> FeatTexts;
 	FeatTexts.Add(EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post"));
 	FeatTexts.Add(EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed Post"));
 	FeatTexts.Add(EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View"));
 	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
 	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen GI"));
 	FeatTexts.Add(EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights"));
-
-	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& KV: Feats) {
-		const EFeat K = KV.Key;
-		const TObjectPtr<ULFeatCheck>& F = KV.Value;
-		if (!F) continue;
-
-		const FText* const T = FeatTexts.Find(K);
-		if (T) F->SetUp(K, *T);
-	}
+	FeatsGroup->SetUp(FeatTexts);
 }
 

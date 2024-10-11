@@ -7,12 +7,12 @@
 
 #include "LSetVideoUI.generated.h"
 
+class ULFeatsGroup;
 class UTextBlock;
 class USlider;
 class UCheckBox;
 class USetAntiAlias;
 class UComboBoxString;
-class ULFeatCheck;
 class UGroupBox;
 enum class EFeat : uint8;
 
@@ -134,24 +134,8 @@ protected:
 	TObjectPtr<UGroupBox> QS_Shading;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Speed;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Fov;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Blur;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Strobe;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_Lumen;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatCheck> Feat_FBPost;
-
-	// TODO replace with a featsgroup
-	UPROPERTY(BlueprintReadOnly)
-	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;
+	TObjectPtr<ULFeatsGroup> FeatsGroup;
 	
-	UPROPERTY(BlueprintReadOnly)
-	TMap<EFeat, FText> FeatTexts;
-	UPROPERTY(Transient, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UGameUserSettings> Settings;
 };
