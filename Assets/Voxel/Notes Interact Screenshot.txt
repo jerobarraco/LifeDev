@@ -3,6 +3,11 @@ in goxel
 ** set "hide box"
 ** unset "unlit"
 
+position:
+* try to keep a sense of scale. but remember old items don't follow this rule. so don't over do it.
+* * i.e. fill the screen relatively to how big the object is.
+
+
 * go to >export<
 * set custom size : 512x512
 * no transparent
