@@ -12,6 +12,7 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFStart = 0;
 	MatFEnd = 1;
 	Duration = 1.f;
+	// TODO no-one seems to be using fade_DMI (old) attempt to remove
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
