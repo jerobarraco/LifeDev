@@ -1,0 +1,2 @@
+/home/nande/.config/goxel/palettes/
+https://github.com/guillaumechereau/goxel/issues/105
