@@ -32,8 +32,8 @@ ALChar::ALChar(): Super() {
 
 	UCapsuleComponent* const Capsule = GetCapsuleComponent();
 	// Set size for collision capsule
-	Capsule->InitCapsuleSize(35.f, 75.0f);
-	Capsule->SetCapsuleSize(35,75,true);
+	Capsule->InitCapsuleSize(20.f, 65.0f);
+	// Capsule->SetCapsuleSize(35,65,true);
 
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
 	if (Movement) {
@@ -45,7 +45,7 @@ ALChar::ALChar(): Super() {
 	Camera = CreateDefaultSubobject<UCLCharCam>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
 	// 40 is a biiit below c18, 45 is almost the same.
-	Camera->SetRelativeLocation(FVector(-10.f, 0.f, 47.f)); // Position the camera
+	Camera->SetRelativeLocation(FVector(-0.f, 0.f, 47.f)); // Position the camera
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh1P"));
