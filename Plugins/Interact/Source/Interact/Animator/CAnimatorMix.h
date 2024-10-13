@@ -16,7 +16,7 @@ class INTERACT_API UCAnimatorMix: public UCAnimatorTrans {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FName MatFName;
+	FName MatFName = NAME_None;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	float MatFStart = 0.0;
@@ -25,7 +25,7 @@ public:
 	float MatFEnd = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	FName MatVName;
+	FName MatVName = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor MatVStart = FLinearColor::Black;
@@ -40,7 +40,7 @@ public:
 
 	// the material to be animated. Has to be a dynamic material.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	UMaterialInstanceDynamic* Mat = nullptr;
+	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 
 protected:
 	virtual void Update_Implementation(float Alpha) override;
