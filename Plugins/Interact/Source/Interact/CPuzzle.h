@@ -120,7 +120,7 @@ protected:
 
 	// Set this before begin play to auto bind. Or call SetInteract otherwise. Can be set in the outliner (editor instance).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TArray<AInteract*> Interacts;
+	TArray<TObjectPtr<AInteract>> Interacts;
 
 	// this is recycled by both modes. and means different things :)
 	// on sequence : its a seq of the ids used
@@ -130,5 +130,5 @@ protected:
 
 	//important so they don't get GCd
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<UDelegateWrapper*> Wrappers;
+	TArray<TObjectPtr<UDelegateWrapper>> Wrappers;
 };

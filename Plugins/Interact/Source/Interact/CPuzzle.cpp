@@ -47,6 +47,7 @@ void UCPuzzle::Done(bool Ok) const {
 
 	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
+			if (!IsValid(I)) continue;
 			I->SetEnabled(false);
 		}
 	}
@@ -60,6 +61,7 @@ void UCPuzzle::ResetCurrents() {
 	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
 		for (AInteract* const I: Interacts) {
+			if (!IsValid(I)) continue;
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
 		if (CurrentIds.Num() != Solution.Num()) {
@@ -141,9 +143,8 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 
 	// seems silly on combination but.. maybe you want to have only one change for a combination.
 	// e.g. 2 state buttons where buttons matter but not the order in which they are pressed.
-	if (DisableOnInter) {
+	if (DisableOnInter) 
 		I->SetEnabled(false);
-	}
 
 	return IsCurrentSolution();
 }
@@ -157,9 +158,8 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 	}
 
 	CurrentIds.Add(ID); // Allow to add repeated ones.
-	if (DisableOnInter) {
+	if (DisableOnInter)
 		Interacts[ID]->SetEnabled(false);
-	}
 
 	return IsCurrentSolution();
 }
