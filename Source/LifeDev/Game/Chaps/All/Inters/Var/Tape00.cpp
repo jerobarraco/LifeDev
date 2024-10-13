@@ -9,6 +9,10 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ATape00::ATape00():Super() {
+	UseAnim = false;
+	StateNum = 1;
+	Texts = { FText::FromString(TEXT("Tape")) };
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -32,13 +36,10 @@ ATape00::ATape00():Super() {
 	Case->SetCastAllShadows(true);
 	Case->SetRelativeLocation(FVector(-5.725000,0,0));
 	AnimFade->Meshes.Add(Case);
-	
+	AnimFade->SetNewMat();
+
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
-	
-	UseAnim = false;
-	StateNum = 1;
-	Texts = { FText::FromString(TEXT("Tape")) };
 }
 
 void ATape00::SetMobility(EComponentMobility::Type Mobility) {
