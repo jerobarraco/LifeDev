@@ -7,10 +7,6 @@
 #include "Animator/CAnimatorMix.h" // needed for Prim = Mesh. yes.
 
 AInteractAnim::AInteractAnim():Super() {
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
-	Super::SetActorTickEnabled(false);
-	
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
 

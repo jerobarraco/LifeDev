@@ -55,14 +55,14 @@ public:
 
 	// triggered when anim starts. Closed, open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TArray<USoundBase*> SFX_Start;
+	TArray<TObjectPtr<USoundBase>> SFX_Start;
 	// triggered when anim ends. Closed, Open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TArray<USoundBase*> SFX_Stop;
+	TArray<TObjectPtr<USoundBase>> SFX_Stop;
 	
 	// The animator, by default set up for the mesh material and iroot
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCAnimatorMix* Anim = nullptr;
+	TObjectPtr<UCAnimatorMix> Anim = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
