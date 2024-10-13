@@ -25,7 +25,8 @@ UCInteract::UCInteract(): Super() {
 	SetGenerateOverlapEvents(false);
 	SetCanEverAffectNavigation(false);
 
-	Super::SetAutoActivate(true); // important to fix the issue with interact starting inactive.
+	// important to fix the issue with interact starting inactive.
+	Super::SetAutoActivate(false); // TODO fix properly
 	
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
