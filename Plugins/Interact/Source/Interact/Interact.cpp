@@ -158,13 +158,6 @@ void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AInteract, Locked);
 	DOREPLIFETIME(AInteract, IsOneShot);
-	// FDoRepLifetimeParams SharedParams;
-	// SharedParams.bIsPushBased = true;
-	// DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, Locked, SharedParams);
-	// DOREPLIFETIME_WITH_PARAMS_FAST(AInteract, IsOneShot, SharedParams);
-	// TODO: read more of PushModel.h and see if it actually helps
-	// MARK_PROPERTY_DIRTY_FROM_NAME(AInteract, IsOneShot, this); // needs to add this on every change. which is hard with my design.
-	// MARK_PROPERTY_DIRTY(this, IsOneShot); // this one doesn't work like this.
 }
 
 void AInteract::DoTriggerLocked_Implementation() {

@@ -104,7 +104,7 @@ void UCInteract::BeginPlay() {
 
 	// this is a patch. since by default it starts as disabled on the server,
 	// but enabled on the client (wtf)
-	Activate(true);
+	// Activate(true); // TODO fix properly
 	// TODO test on standalone and non-replicated
 }
 
@@ -168,7 +168,7 @@ void UCInteract::Deactivate() {
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void UCInteract::Activate(bool bReset) {
+void UCInteract::Activate(const bool bReset) {
 	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
 		__func__, *GetNameSafe(GetOwner()),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));

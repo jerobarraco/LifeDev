@@ -92,7 +92,8 @@ ABooks::ABooks(int32 nBookCount, int32 nRndSeed):Super() {
 
 void ABooks::SetMobility(EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
-	for (UCQuickMesh* const QM: Books) {
+	for (const TObjectPtr<UCQuickMesh>& QM: Books) {
+		if (!QM) continue;
 		QM->SetMobility(Mobility);
 	}
 }
