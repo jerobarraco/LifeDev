@@ -8,6 +8,7 @@
 
 #include "LGGameMode.generated.h"
 
+class AGhostPool;
 struct FDialog;
 class ALStoryMan;
 class APostProcessVolume;
@@ -88,18 +89,18 @@ public:
 	ALChar* Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	APostProcessVolume* PostProcess = nullptr;
-
+	
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UStory* Story = nullptr;
+	TObjectPtr<UStory> Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ULSettings* Settings = nullptr;
+	TObjectPtr<ULSettings> Settings = nullptr;
 
 protected:
 	virtual void BeginPlay() override;

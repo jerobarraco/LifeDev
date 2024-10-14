@@ -209,7 +209,7 @@ void ALMusicMan::BeginPlay() {
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	UFlashback* const Flashback = UFlashback::Instance(W);

@@ -56,7 +56,8 @@
 * use TObjectPtr for UPROPERTY member attributes and collections.
 * * Potentially other uses that exceeds the scope of the function where its used.
 * * https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-migration-guide
-
+* Spawn objects in GameMode::Init instead of having them on the editor when possible
+* * Objects that don't belong to a specific datalayer.
 
 
 Metas:

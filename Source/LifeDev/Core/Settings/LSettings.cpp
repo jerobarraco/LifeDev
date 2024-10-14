@@ -38,7 +38,7 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 	Save->Reset(GetWorld()); // does write subsystem
 }
 
-void ULSettings::LoadGame(int32 NewSlotIndex) {
+void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	// check before modifying internal state
 	if (IsSaving) {
 		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy."));

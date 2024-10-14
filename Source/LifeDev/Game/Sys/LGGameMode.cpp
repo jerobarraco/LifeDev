@@ -98,13 +98,7 @@ void ALGGameMode::Init_Implementation() {
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
-	
-	ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)){
-		UE_LOG(LogLGameMode, Warning, TEXT("Game Mode: No valid instance found"));
-		return;
-	}
-	
+		
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (!IsValid(SysSettings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
@@ -133,25 +127,9 @@ void ALGGameMode::Init_Implementation() {
 	if (IsValid(Char)) Char->InputPrio = 1; // Char->Init();
 	else Char = nullptr;
 
-	/// music
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-
-	/// flashback
-	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
-	
 	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
 	Diags->Init();
-
-	DiagMan = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
-	if (IsValid(DiagMan)) {
-		// Needs to be 10 so that it takes precedence over the character
-		DiagMan->InputPrio = 10;
-		DiagMan->ZOrder = 3; 
-		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
-		DiagMan->Init();
-	} else
-		DiagMan = nullptr;
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
@@ -181,12 +159,26 @@ void ALGGameMode::Init_Implementation() {
 		StoryMan->Init();
 	} else
 		StoryMan = nullptr;
-
-	/// feats
-	// do at the end since it depends on other things.
-	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	
 	///~ Subs-init finished.
+
+	/// Managers (done after the subs, since they might need it)
+	
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
+
+	DiagMan = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
+	if (IsValid(DiagMan)) {
+		// Needs to be 10 so that it takes precedence over the character
+		DiagMan->InputPrio = 10;
+		DiagMan->ZOrder = 3; 
+		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
+		DiagMan->Init();
+	} else
+		DiagMan = nullptr;
+
+	// do at the end since it depends on other things.
+	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 
 	/// GameMode init starts
 	// ensure the save-game loads the data into the subsystems.

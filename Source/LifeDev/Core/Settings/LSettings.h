@@ -34,7 +34,7 @@ public:
 	// loads a game, or creates a new one if not found.
 	// Defaults to current slot.
 	UFUNCTION(BlueprintCallable)
-	void LoadGame(int32 SlotIndex =-1);
+	void LoadGame(const int32 SlotIndex =-1);
 	// saves the current game if any
 	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
