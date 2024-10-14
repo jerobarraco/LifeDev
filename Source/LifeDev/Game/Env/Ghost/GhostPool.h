@@ -49,8 +49,8 @@ protected:
 	float TrimTime=60;
 
 	UPROPERTY(BlueprintReadOnly)
-	UCRandomizer* Rnd = nullptr;
+	TObjectPtr<UCRandomizer> Rnd = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UPooler* Pooler = nullptr;
+	TObjectPtr<UPooler> Pooler = nullptr;
 };

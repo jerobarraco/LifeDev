@@ -93,6 +93,8 @@ void AGhostPool::FBTo(const float To) {
 	const bool Active = To >= FBMin;
 	SetActive(Active);
 
+	// TODO Foxify the poolmax
+
 	// update pool
 	// the trim time will destroy items when not used.
 	const int32 MaxPre = FMath::TruncToInt(PoolMax* To);
