@@ -237,10 +237,10 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALMusicMan::SetGhosts(bool bEnabled) {
 	if (bEnabled) {
 		if (IsValid(GhostPool)) return;
-		const UWorld* const W = GetWorld();
+		UWorld* const W = GetWorld();
 		if (!W) return;
 
-		GhostPool = Cast<AGhostPool>(GetWorld()->SpawnActor(AGhostPool::StaticClass()));
+		GhostPool = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
 		return;
 	}
 
