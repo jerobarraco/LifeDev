@@ -19,7 +19,7 @@ void ULSave::Reset(UWorld* const W) {
 	UE_LOG(LogLSave, Log, TEXT("Savegame reset"));
 	
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
-	// not using above since i want to preserve the ability to skip chapters even on shipping builds
+	// not using the above, since i want to preserve the ability to skip chapters even on shipping builds
 	Time = FDateTime::Now().ToUnixTimestamp();
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
 	

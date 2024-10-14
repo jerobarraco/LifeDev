@@ -24,7 +24,7 @@ ULSettings* ULSettings::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<ULSettings>();
 }
 
-void ULSettings::NewGame(int32 NewSlotIndex) {
+void ULSettings::NewGame(const int32 NewSlotIndex) {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	if (!Save) {

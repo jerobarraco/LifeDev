@@ -30,7 +30,7 @@ public:
 	// overrides current save with a new game
 	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
-	void NewGame(int32 SlotIndex =-1);
+	void NewGame(const int32 SlotIndex =-1);
 	// loads a game, or creates a new one if not found.
 	// Defaults to current slot.
 	UFUNCTION(BlueprintCallable)
