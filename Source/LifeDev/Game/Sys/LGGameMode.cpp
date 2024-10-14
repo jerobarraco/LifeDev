@@ -228,14 +228,22 @@ void ALGGameMode::BeginPlay() {
 	// - Thank you so much Jero, that's really how i needed it.
 	// - dou itashimashite!
 	if (!IsValid(Settings->Save)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create"));
+		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create."));
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
 		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
 		return;
 	}
+	if (Settings->GetIsSaving()) {
+		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
+		UE_LOG(LogLGameMode, Warning, TEXT("Savegame currently loading. waiting for it."));
+		return;
+	}
+	
+	UE_LOG(LogLGameMode, Warning, TEXT("Savegame seems loaded."));
 
 	// manually go to init if it's already loaded.
-	Init();
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
 }
 
 void ALGGameMode::DeInit_Implementation() {

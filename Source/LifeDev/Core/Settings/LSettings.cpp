@@ -36,6 +36,7 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 	SlotIndex = NewSlotIndex;
 	UE_LOG(LogLSettings, Log, TEXT("%hs: Slot=%i."), __func__, SlotIndex);
 	Save->Reset(GetWorld()); // does write subsystem
+	OnSaveReady.Broadcast(); // broadcast anyway since the game mode will be waiting.
 }
 
 void ULSettings::LoadGame(const int32 NewSlotIndex) {
@@ -47,7 +48,7 @@ void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	IsSaving = true;
 
 	// update target slot
-    if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
+	if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
 	if (SlotIndex<0) SlotIndex = 0;
 
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
@@ -115,8 +116,7 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 		// should assign the slot index here.
 		// otherwise if a game load fails for a given slot. it will override slot 0.
 		// that'd be terrible!
-		NewGame(SlotIndex);
-		OnSaveReady.Broadcast(); // broadcast anyway since someone might be waiting on this.
+		NewGame(SlotIndex); // broadcasts. important.
 		return;
 	}
 
@@ -157,7 +157,7 @@ bool ULSettings::GetFeatS(UObject* const O, const EFeat Feat) {
 
 void ULSettings::Init() {
 	ResetFeats();
-	IsSaving = false;
+	IsSaving = false; // clear. and force for loadgame.
 
 	const ULSysSettings* const Settings = ULSysSettings::Get();
 	if (Settings && Settings->UseSaveGame) LoadGame();
