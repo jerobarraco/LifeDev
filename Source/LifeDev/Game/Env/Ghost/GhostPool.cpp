@@ -6,6 +6,9 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Interact/Animator/CRandomizer.h"
+#include "Inventory/Flags.h"
+
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "GhostItem.h"
 
@@ -75,6 +78,13 @@ void AGhostPool::BeginPlay() {
 		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 		FBTo(Flashback->GetValTo());
 	}
+
+	const UFlags* const Flags = UFlags::Instance(this);
+	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy) : .5;
+	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
+	UE_LOG(LogTemp, Log,
+		TEXT("%hs Ghost PoolSize foxified. Min=%.4f, Max=%.4f, Res=%.4f, Foxy=%.4f"),
+		__func__, PoolSizeMin, PoolSizeMax, PoolSize, Alpha);
 }
 
 void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -97,7 +107,7 @@ void AGhostPool::FBTo(const float To) {
 
 	// update pool
 	// the trim time will destroy items when not used.
-	const int32 MaxPre = FMath::TruncToInt(PoolMax* To);
+	const int32 MaxPre = FMath::TruncToInt(PoolSize* To);
 	const int32 Max = Active ? MaxPre :0;
 	// // i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this 
 	// const int32 Max = bitselect((int32) Active, MaxPre, 0);

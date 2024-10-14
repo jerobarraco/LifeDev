@@ -11,7 +11,7 @@ class UPooler;
 class UCRandomizer;
 
 // Ghost Pooler
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
 class AGhostPool : public AActor {
 	GENERATED_BODY()
 
@@ -39,14 +39,21 @@ protected:
 	TSubclassOf<AActor> ItemClass = AActor::StaticClass();
 	// avoid include on header.
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FBMin=.4;
 
-	UPROPERTY(BlueprintReadWrite)
-	float PoolMax=15;
-
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float TrimTime=60;
+
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
+	float PoolSizeMin=10;
+
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
+	float PoolSizeMax=20;
+
+	// foxified from sizeMax and min
+	UPROPERTY(BlueprintReadOnly, Transient)
+	float PoolSize=15;
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UCRandomizer> Rnd = nullptr;
