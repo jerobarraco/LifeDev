@@ -32,12 +32,12 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 	if (UseRandFB && IsValid(RandFB)) RandFB->Deactivate();
 	
-	SetActorsShowEnabled(false, true);
-	SetIntersEnabled(false);
+	SetActorsShowActive(false, true);
+	SetIntersActive(false);
 	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (W) { // call stop anyway
 		if (UseRain) ALMusicMan::SetRainS(W, false);
 
@@ -86,8 +86,8 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseRandFB && IsValid(RandFB)) RandFB->Activate(true);
 
-	SetActorsShowEnabled(true, true);
-	SetIntersEnabled(true);
+	SetActorsShowActive(true, true);
+	SetIntersActive(true);
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersTrigger();
 
@@ -204,8 +204,8 @@ void ALStep::BeginPlay() {
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = World->GetSubsystem<UFlags>();
 
-	SetActorsShowEnabled(false, false);
-	SetIntersEnabled(false);
+	SetActorsShowActive(false, false);
+	SetIntersActive(false);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -249,18 +249,18 @@ void ALStep::Finish_Implementation() {
 	Super::Finish_Implementation();
 }
 
-void ALStep::SetActorsShowEnabled(const bool Enabled, const bool WithFade) {
+void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	for (AActor* const A: ActorsShow) {
 		if (!IsValid(A)) continue;
 		
-		A->SetActorHiddenInGame(!Enabled);
+		A->SetActorHiddenInGame(!Active);
 		ALInteract* const Inter = Cast<ALInteract>(A);
 		if (!Inter) continue;
 
-		if (WithFade) Inter->Fade(Enabled);
+		if (WithFade) Inter->Fade(Active);
 		// fade will call set-enabled. otherwise have to call it manually.
 		// make sure to call it. Avoid calling twice just in case there are side effects.
-		else Inter->SetActive(Enabled);
+		else Inter->SetActive(Active);
 	}
 }
 
@@ -270,7 +270,8 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 	}
 }
 
-void ALStep::SetIntersEnabled(const bool Enabled) {
+void ALStep::SetIntersActive(const bool Enabled) {
+	// TODO rename. requires a redirector because i'm setting this on the editor. lol :')
 	for (const TObjectPtr<AInteract>& I: IntersEnable) {
 		if (IsValid(I)) I->SetActive(Enabled);
 	}

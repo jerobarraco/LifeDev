@@ -46,11 +46,11 @@ public:
 
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetActorsShowEnabled(const bool Enabled = true, const bool WithFade=true);
+	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
 	
 	// enables or disables the interacts on IntersEnable
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetIntersEnabled(const bool Enabled=true);
+	void SetIntersActive(const bool Enabled=true);
 
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
@@ -144,12 +144,12 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
-	void SetFBDiagAuto();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	virtual void Finish_Implementation() override;
 	
+	void SetFBDiagAuto();
 	// will start the dialogs
 	void StartDialogs();
 	// will finish once the dialogs are done, or immediately if not showing.
@@ -165,10 +165,10 @@ protected:
 	// called when items get mod. checks for itemsFinish
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
-	// fade an array of ALInteract
-	void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
+	// fade an array of ALInteract
+	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCRandomizerFB> RandFB = nullptr;
