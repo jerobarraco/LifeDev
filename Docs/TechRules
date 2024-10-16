@@ -59,7 +59,6 @@
 * Spawn objects in GameMode::Init instead of having them on the editor when possible
 * * Objects that don't belong to a specific datalayer.
 
-
 Metas:
 objects
 * use readonly if i don't want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
@@ -67,5 +66,9 @@ objects
 * use readwrite if i want to change the object
 ** use Edit* if i want to be able to re-assign the object (with readwrite)
 
-deleagets
+delegates
 * make transient to avoid issues when binding on constructor
+
+weird stuff:
+* BlueprintNativeEvents do not work on constructors.
+* BlueprintNativeEvents cant pass a "UObject* CONST var" as parameter. only UObject* var
