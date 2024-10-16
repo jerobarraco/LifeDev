@@ -75,8 +75,8 @@ void AGhostPool::BeginPlay() {
 	Rnd->OnTrigger.AddUniqueDynamic(this, &AGhostPool::Spawn);
 	UFlashback* const Flashback = UFlashback::Instance(this);
 	if (Flashback) {
-		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 		FBTo(Flashback->GetValTo());
+		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 	}
 
 	// TODO fix foxy returs 0 here. always. TODO try doing this on setactive
