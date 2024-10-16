@@ -11,8 +11,6 @@ APaperI00::APaperI00():Super() {
 	// just for looks
 	UseFade = true;
 
-	Super::SetMobility(EComponentMobility::Static);
-
 	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
 	Text->SetupAttachment(Mesh);
 	Text->SetRelativeLocation(FVector(0.400000,-19.500000,0.600000));
@@ -34,6 +32,8 @@ APaperI00::APaperI00():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CText(TEXT("/JUtils/Mats/Mask/FadeText_MD"));
 	Text->SetMaterial(0, CText.Object); // call SetMaterial to use Create... later.
+	
+	Super::SetMobility(EComponentMobility::Static);
 }
 
 void APaperI00::FadeUpdate(const float Progress, const float FadeV) {

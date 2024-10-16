@@ -35,7 +35,7 @@ ACharNRG::ACharNRG():Super() {
 	Parts->SetAsset(CNiag.Object);
 	
 	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
-	SetAutoActivate(false);// The step will SetEnabled(true) via IntersFadeIn
+	Super::SetAutoActivate(false);// The step will SetEnabled(true) via IntersFadeIn
 }
 
 void ACharNRG::BeginPlay() {
