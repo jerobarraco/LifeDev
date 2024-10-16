@@ -18,7 +18,8 @@ class AGhostPool : public AActor {
 public:
 	AGhostPool();
 
-	void SetActive(bool Act);
+	UFUNCTION(BlueprintCallable)
+	void SetActive(const bool Act) const;
 
 	// will deactivate and attempt to kill active ghosts
 	// All: when set will try to kill al the ghosts on the pool and empty it.

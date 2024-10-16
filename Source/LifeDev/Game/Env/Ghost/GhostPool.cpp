@@ -27,7 +27,7 @@ AGhostPool::AGhostPool():Super() {
 	Rnd->SetAutoActivate(false);
 }
 
-void AGhostPool::SetActive(bool Act) {
+void AGhostPool::SetActive(const bool Act) const {
 	Rnd->SetActive(Act);
 }
 
