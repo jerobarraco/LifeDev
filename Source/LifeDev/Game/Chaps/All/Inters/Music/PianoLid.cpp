@@ -13,7 +13,7 @@ APianoLid::APianoLid():Super() {
 	UseAnim = true;
 	UseFade = false;
 	DisableWhileAnim = false; // avoid re-enabling the Interact once triggered
-	SetActive(false); // not manually triggerable
+	Super::SetAutoActivate(false); // not manually triggerable
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Piano_Lid.Piano_Lid"));
@@ -37,7 +37,7 @@ APianoLid::APianoLid():Super() {
 
 void APianoLid::PostInitializeComponents() {
 	Super::PostInitializeComponents();
-	// return;
+
 	UCodeCurveLib* const CurveLib = UCodeCurveLib::Instance();
 	Anim->CodeCurve.BindDynamic(CurveLib, &UCodeCurveLib::InExpo);
 }
