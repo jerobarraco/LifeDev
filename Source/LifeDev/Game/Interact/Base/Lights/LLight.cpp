@@ -85,9 +85,9 @@ ALLight::ALLight():Super() {
 }
 
 void ALLight::StopFBFlicker() {
-	UFlashback* const Fb = UFlashback::Instance(GetWorld());
 	Rnd->Deactivate();
-	Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
+	UFlashback* const Fb = UFlashback::Instance(this);
+	if (Fb) Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
@@ -123,7 +123,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 void ALLight::BeginPlay() {
 	Super::BeginPlay();
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	ULSettings* const Settings = ULSettings::Instance(World);
@@ -166,7 +166,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Anim->Deactivate();
 	}
 	
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	UFlashback* const Fb = UFlashback::Instance(W);
