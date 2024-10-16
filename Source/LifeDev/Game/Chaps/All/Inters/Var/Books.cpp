@@ -72,8 +72,7 @@ void ABooks::Constructor() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
-	SetActive(false); // TODo remove
-	Interact->SetAutoActivate(false);
+	Super::SetAutoActivate(false);
 	ABooks::SetMobility(EComponentMobility::Static);
 }
 

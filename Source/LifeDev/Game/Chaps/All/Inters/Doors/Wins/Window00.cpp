@@ -16,7 +16,7 @@ AWindow00::AWindow00():Super() {
 	Interact->SetRelativeLocation(FVector(9,-35,60));
 	Interact->SetBoxExtent(FVector(5,30,55));
 	// disable the windows for now since they don't do anything except confusing
-	Interact->SetActive(false);
+	Super::SetAutoActivate(false);
 	
 	GlassA = CreateDefaultSubobject<UCQuickMesh>(TEXT("GlassA"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

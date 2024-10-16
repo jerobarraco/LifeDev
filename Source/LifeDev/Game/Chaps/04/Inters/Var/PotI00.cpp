@@ -15,8 +15,8 @@ APotI00::APotI00():Super() {
 	Locked = false;
 	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	APotI00::SetActive(false);
-	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
+	Super::SetAutoActivate(false);
+	// I'm using SetActive instead of Lock because these things will be changing during the chapter
 	// and i think that the player will find easier to tell when something became enabled, 
 	// rather than realizing something became unlocked.
 	// (without any extra cue/feedback which i'm not going to add now)

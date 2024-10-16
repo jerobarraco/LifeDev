@@ -2,8 +2,6 @@
 #include "LNPCI06.h"
 
 ALNPCI06::ALNPCI06():Super() {
-	SetActive(false); // disabled by default. does not matter. get enabled by c4s2.
-
 	Texts = {FText::FromString(FString("Talk"))};
 
 	TriggerDlg = "NPCI06_T";
@@ -13,6 +11,8 @@ ALNPCI06::ALNPCI06():Super() {
 	IsOneShot = true;
 	UseFade = true;
 	UseAnim = false;
+	
+	Super::SetAutoActivate(false); // disabled by default. does not matter. get enabled by c4s2.
 }
 
 // on editor. rewardinterenabled. enables the pot.

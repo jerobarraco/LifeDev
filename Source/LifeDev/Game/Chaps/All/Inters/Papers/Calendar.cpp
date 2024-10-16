@@ -29,6 +29,6 @@ ACalendar::ACalendar():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
-	SetActive(false);
+	Super::SetAutoActivate(false);
 	Super::SetMobility(EComponentMobility::Static);
 }

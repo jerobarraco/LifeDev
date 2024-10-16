@@ -27,7 +27,7 @@ ABasin00::ABasin00():Super() {
 
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));
-	Interact->SetActive(false); // by default don't do anything.
+	
 	
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);
@@ -53,6 +53,7 @@ ABasin00::ABasin00():Super() {
 	Sig->IsOffIfOffscreen = true;
 	Sig->IsOffIfOccluded = true;
 
+	Super::SetAutoActivate(false);// by default don't do anything.
 	Super::SetMobility(EComponentMobility::Static);// static since we won't animate it
 }
 
