@@ -81,16 +81,20 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::BAD_TARGET;
 }
 
-void AInteract::SetEnabled(const bool Enabled) {
+void AInteract::SetActive_Implementation(const bool Active) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
-		__func__, Enabled, *GetNameSafe(this));
+		__func__, Active, *GetNameSafe(this));
 
 	if (!IsValid(Interact)) {
 		UE_LOG(LogInteract, Warning, TEXT("%hs Interact is invalid!!!!!!!"), __func__);
 		return;
 	}
 
-	Interact->SetActive(Enabled);
+	Interact->SetActive(Active);
+}
+
+void AInteract::SetAutoActivate_Implementation(const bool AutoActive) {
+	if (Interact) Interact->SetAutoActivate(AutoActive);
 }
 
 bool AInteract::GetEnabled() const {
@@ -183,10 +187,10 @@ void AInteract::DoTrigger_Implementation() {
 	PlaySFX(SFX_Trigger);
 
 	for(const TObjectPtr<AInteract>& I: RewardInterEnable) {
-		if (IsValid(I)) I->SetEnabled(true);
+		if (IsValid(I)) I->SetActive(true);
 	}
 	
-	if (IsOneShot) SetEnabled(false); // set enabled is replicated
+	if (IsOneShot) SetActive(false); // set enabled is replicated
 }
 
 void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {

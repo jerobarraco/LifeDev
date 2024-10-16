@@ -14,6 +14,6 @@ ASpotI03::ASpotI03():Super() {
 	RewardStep = true; // moves to the next
 	Items = { LDConsts::Items::Plate02 }; // empty plate
 
-	SetEnabled(false); // the steps will enable it
+	SetActive(false); // the steps will enable it
 	// RewardActor set in editor
 }

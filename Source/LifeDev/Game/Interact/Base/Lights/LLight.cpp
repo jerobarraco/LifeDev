@@ -78,7 +78,7 @@ ALLight::ALLight():Super() {
 	
 	/// ~
 	// by default is just a static light. disable interaction
-	ALLight::SetEnabled(false);
+	ALLight::SetActive(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
 	Mesh->SetCastAllShadows(true);

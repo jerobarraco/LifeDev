@@ -19,7 +19,7 @@ void UCPuzzle::Reset_Implementation() {
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
 		I->Reset();
-		I->SetEnabled(true);
+		I->SetActive(true);
 	}
 
 	// reset the solution and the objects
@@ -48,7 +48,7 @@ void UCPuzzle::Done(bool Ok) const {
 	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
 			if (!IsValid(I)) continue;
-			I->SetEnabled(false);
+			I->SetActive(false);
 		}
 	}
 
@@ -144,7 +144,7 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	// seems silly on combination but.. maybe you want to have only one change for a combination.
 	// e.g. 2 state buttons where buttons matter but not the order in which they are pressed.
 	if (DisableOnInter) 
-		I->SetEnabled(false);
+		I->SetActive(false);
 
 	return IsCurrentSolution();
 }
@@ -159,7 +159,7 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 
 	CurrentIds.Add(ID); // Allow to add repeated ones.
 	if (DisableOnInter)
-		Interacts[ID]->SetEnabled(false);
+		Interacts[ID]->SetActive(false);
 
 	return IsCurrentSolution();
 }
@@ -209,7 +209,7 @@ void UCPuzzle::SetEnableds(bool NewEnabled) {
 
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
-		I->SetEnabled(NewEnabled);
+		I->SetActive(NewEnabled);
 	}
 }
 

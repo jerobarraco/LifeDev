@@ -14,7 +14,7 @@ ASpongeI00::ASpongeI00():Super() {
 	UseFade = false;
 	IsOneShot = true;
 	UseAnim = true;
-	SetEnabled(false);
+	SetActive(false);
 	// TODO if i have time, on trigger, fade out, then fade in and do reward
 	// might be easier to do with an extra step
 
@@ -47,6 +47,6 @@ void ASpongeI00::BeginPlay() {
 	for (ALInteract* const I: Plates) {
 		if (!IsValid(I)) continue;
 		I->Fade(true);
-		I->SetEnabled(false); // force them disabled.
+		I->SetActive(false); // force them disabled.
 	}
 }

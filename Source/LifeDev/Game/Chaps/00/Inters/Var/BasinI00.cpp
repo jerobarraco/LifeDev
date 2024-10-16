@@ -20,12 +20,12 @@ ABasinI00::ABasinI00():Super() {
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
 	
-	ABasinI00::SetEnabled(true); // this is necessary for some reason. TODO fix 
+	ABasinI00::SetActive(true); // this is necessary for some reason. TODO fix 
 }
 
 void ABasinI00::DoTrigger_Implementation() {
 	Water->Deactivate();
 	SND_Water->Fade(false);
 	Super::DoTrigger_Implementation();
-	SetEnabled(false); // trigger only once 
+	SetActive(false); // trigger only once 
 }

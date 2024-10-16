@@ -30,7 +30,7 @@ APlate::APlate():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03.Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
 
-	SetEnabled(false);
+	SetActive(false);
 	// clearing the base mat on the anim fade.
 	// not using SetNewMaterial since this mesh uses palettes, hence it will be overriden on the level outliner.
 	// still doesn't seem to work.

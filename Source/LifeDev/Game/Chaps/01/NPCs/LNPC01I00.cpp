@@ -33,7 +33,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	}
 
 	// disable the interact, so it can fade better, and player won't trigger again
-	SetEnabled(false);
+	SetActive(false);
 	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	Diags->AddId("N01.0");
 	Flashback->SetVal(1);

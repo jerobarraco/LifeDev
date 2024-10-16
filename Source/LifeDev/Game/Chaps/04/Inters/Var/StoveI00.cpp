@@ -6,5 +6,5 @@ AStoveI00::AStoveI00():Super() {
 	Locked = false;
 	// TriggerDlg = "Stove00_T";
 	// RewardStep = true; // last item in the interaction chain for this step.
-	AStoveI00::SetEnabled(false);
+	AStoveI00::SetActive(false);
 }

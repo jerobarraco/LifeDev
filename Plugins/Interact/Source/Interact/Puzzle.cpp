@@ -63,7 +63,7 @@ void APuzzle::Done_Implementation(bool IsOk) {
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);
 		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) Reward->SetEnabled(true);
+		if (IsValid(Reward)) Reward->SetActive(true);
 	}
 }
 
@@ -95,7 +95,7 @@ void APuzzle::BeginPlay() {
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(true);
 		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) Reward->SetEnabled(false);
+		if (IsValid(Reward)) Reward->SetActive(false);
 	}
 }
 

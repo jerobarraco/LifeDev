@@ -27,6 +27,6 @@ AKeys00::AKeys00():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
-	SetEnabled(false);
+	SetActive(false);
 	AKeys00::SetMobility(EComponentMobility::Static);
 }

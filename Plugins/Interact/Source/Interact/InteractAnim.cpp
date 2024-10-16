@@ -66,7 +66,7 @@ void AInteractAnim::DoTrigger_Implementation() {
 void AInteractAnim::AnimPlay() {
 	if (!UseAnim) return;
 	
-	if (DisableWhileAnim) SetEnabled(false);
+	if (DisableWhileAnim) SetActive(false);
 
 	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
@@ -97,7 +97,7 @@ void AInteractAnim::AnimBegin_Implementation() {
 
 void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
-	if (DisableWhileAnim) SetEnabled(true);
+	if (DisableWhileAnim) SetActive(true);
 	
 	if (State<0 || State >= SFX_Stop.Num()) return;
 	USoundBase* const Snd2 = SFX_Stop[State];

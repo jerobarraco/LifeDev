@@ -28,6 +28,6 @@ APencil::APencil():Super() {
 	// AnimFade->SetNewMat();
 	UseFade = true;
 
-	SetEnabled(false);
+	SetActive(false);
 	APencil::SetMobility(EComponentMobility::Static);
 }

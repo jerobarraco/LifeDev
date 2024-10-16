@@ -7,11 +7,11 @@ ACalendarI00::ACalendarI00():Super() {
 	UseRewardDestroy = false;
 	RewardFlash = .1;
 	TriggerDlg = "Cal00_T";
-	SetEnabled(true);
+	SetActive(true);
 }
 
 void ACalendarI00::Rewarded_Implementation() {
 	Super::Rewarded_Implementation();
 	RewardActor = nullptr;
-	SetEnabled(false);
+	SetActive(false);
 }

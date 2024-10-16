@@ -57,8 +57,11 @@ public:
 	void TryTriggerWrap() {TryTrigger();}
 
 	// Enables or disables the interaction.
-	UFUNCTION(BlueprintCallable, Category="Interact")
-	virtual void SetEnabled(const bool Enabled = true);
+	UFUNCTION(BlueprintNativeEvent, Category="Interact")
+	void SetActive(const bool Active = true);
+	UFUNCTION(BlueprintNativeEvent, Category="Interact")
+	void SetAutoActivate(const bool AutoActive = true);
+	
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
 	// and THIS function is called in the constructor everywhere.

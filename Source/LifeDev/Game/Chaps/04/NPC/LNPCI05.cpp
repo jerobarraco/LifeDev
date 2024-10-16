@@ -4,7 +4,7 @@
 ALNPCI05::ALNPCI05():Super() {
 	Texts = { FText::FromString("...") };
 
-	SetEnabled(false); // try to default to false. but the step will fade in and re-enable it :G
+	SetActive(false); // try to default to false. but the step will fade in and re-enable it :G
 	Locked = true;
 	UseFade = true;
 }

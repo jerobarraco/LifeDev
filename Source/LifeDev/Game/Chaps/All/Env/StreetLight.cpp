@@ -43,5 +43,5 @@ AStreetLight::AStreetLight():Super() {
 
 	FlickrOnFB = .2; // always flicker
 
-	SetEnabled(false); // by default you should not be able to turn a streetlight off
+	SetActive(false); // by default you should not be able to turn a streetlight off
 }

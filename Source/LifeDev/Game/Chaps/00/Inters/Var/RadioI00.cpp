@@ -46,7 +46,7 @@ void ARadioI00::DoTrigger_Implementation() {
 	World->GetTimerManager().SetTimer(DiagDoneHandle, this, &ARadioI00::DialogDone, 120);
 
 	Super::DoTrigger_Implementation(); // will trigger the dialog
-	SetEnabled(false); // disable once activated. this item is one use only.
+	SetActive(false); // disable once activated. this item is one use only.
 	SFX_Ghost->Fade(true);
 }
 

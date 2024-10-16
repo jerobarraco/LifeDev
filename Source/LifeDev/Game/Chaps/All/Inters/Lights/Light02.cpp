@@ -32,7 +32,7 @@ ALight02::ALight02():Super() {
 	SFX->SetRelativeLocation(FVector(15,-20,145));
 
 	ALight02::SetMobility(EComponentMobility::Static);
-	SetEnabled(true); // this one is ok to toggle
+	SetActive(true); // this one is ok to toggle
 }
 
 void ALight02::SetMobility(EComponentMobility::Type Mobility) {

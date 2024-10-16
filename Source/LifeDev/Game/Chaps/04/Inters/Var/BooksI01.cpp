@@ -3,7 +3,7 @@
 #include "BooksI01.h"
 
 ABooksI01::ABooksI01():Super(1, 0) {
-	SetEnabled(true);
+	SetActive(true);
 	Texts = { FText::FromString(TEXT("Book"))};
 	TriggerDlg = "BK01_T";
 	UseRewardDestroy = false;

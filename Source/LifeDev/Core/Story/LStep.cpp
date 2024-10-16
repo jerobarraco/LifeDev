@@ -260,7 +260,7 @@ void ALStep::SetActorsShowEnabled(const bool Enabled, const bool WithFade) {
 		if (WithFade) Inter->Fade(Enabled);
 		// fade will call set-enabled. otherwise have to call it manually.
 		// make sure to call it. Avoid calling twice just in case there are side effects.
-		else Inter->SetEnabled(Enabled);
+		else Inter->SetActive(Enabled);
 	}
 }
 
@@ -272,7 +272,7 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 
 void ALStep::SetIntersEnabled(const bool Enabled) {
 	for (const TObjectPtr<AInteract>& I: IntersEnable) {
-		if (IsValid(I)) I->SetEnabled(Enabled);
+		if (IsValid(I)) I->SetActive(Enabled);
 	}
 }
 

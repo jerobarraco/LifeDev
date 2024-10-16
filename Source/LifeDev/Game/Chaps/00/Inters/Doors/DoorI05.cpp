@@ -34,6 +34,6 @@ void ADoorI05::DoTrigger_Implementation() {
 
 	if (!IsValid(Story)) return;
 
-	SetEnabled(false); // avoid double triggering. done only if story is valid.
+	SetActive(false); // avoid double triggering. done only if story is valid.
 	Story->StartNext(Step);
 }

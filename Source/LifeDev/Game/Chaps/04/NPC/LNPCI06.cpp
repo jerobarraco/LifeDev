@@ -2,7 +2,7 @@
 #include "LNPCI06.h"
 
 ALNPCI06::ALNPCI06():Super() {
-	SetEnabled(false); // disabled by default. does not matter. get enabled by c4s2.
+	SetActive(false); // disabled by default. does not matter. get enabled by c4s2.
 
 	Texts = {FText::FromString(FString("Talk"))};
 

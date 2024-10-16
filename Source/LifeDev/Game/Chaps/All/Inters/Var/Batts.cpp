@@ -42,7 +42,7 @@ ABatts::ABatts():Super() {
 	UseFade = true; // a bit lazy. ideally to be set on the children.
 
 	// set static by default
-	SetEnabled(false);
+	SetActive(false);
 	ABatts::SetMobility(EComponentMobility::Static);
 }
 

@@ -34,7 +34,7 @@ void ALStepC4S001::Start_Implementation() {
 	for (uint8 i = 0; i< IntersFadeIn.Num(); ++i) {
 		AInteract* const I = IntersFadeIn[i];
 		if (!I) continue;
-		I->SetEnabled(i==0); // npci6 continues the flow next step
+		I->SetActive(i==0); // npci6 continues the flow next step
 	}
 }
 

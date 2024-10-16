@@ -41,7 +41,7 @@ void ALInteract::Fade_Implementation(bool FadeIn) {
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
 	// please me from the future, be careful. "ki o tsukete!"
-	SetEnabled(FadeIn);
+	SetActive(FadeIn);
 }
 
 void ALInteract::BeginPlay() {
@@ -70,7 +70,7 @@ void ALInteract::BeginPlay() {
 	if (IsValid(RewardActor)) { // hide and disable reward actor if any.
 		RewardActor->SetActorHiddenInGame(true);
 		AInteract* const Reward = Cast<AInteract>(RewardActor);
-		if (IsValid(Reward)) Reward->SetEnabled(false);
+		if (IsValid(Reward)) Reward->SetActive(false);
 	}
 
 	const UWorld* const World = GetWorld();
@@ -117,7 +117,7 @@ void ALInteract::DoRewards() {
 	// and it's easier and clearer this way than messing with DisableWhileAnim
 	// which would step on the client's intention.
 	// this is to avoid re-rewarding due to multi clicks.
-	SetEnabled(false);
+	SetActive(false);
 	
 	if (Flashback) Flashback->ModVal(RewardFlash);
 
@@ -142,7 +142,7 @@ void ALInteract::DoRewards() {
 			// enabled separately since on begin play it checks only for AInteract and no ALInteract
 			// do only if it's not an LInteract. since fade will set enable. and don't cast twice.
 			AInteract* const Reward = Cast<AInteract>(RewardActor);
-			if (Reward) Reward->SetEnabled(true);
+			if (Reward) Reward->SetActive(true);
 		}
 	}
 

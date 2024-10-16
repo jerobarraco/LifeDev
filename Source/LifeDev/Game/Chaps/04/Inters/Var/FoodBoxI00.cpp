@@ -20,5 +20,5 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	Mesh->SetMaterial(0, CMat.Object);
 	AnimFade->MatBase = CMat.Object;
 
-	SetEnabled(false);
+	SetActive(false);
 }

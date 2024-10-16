@@ -15,7 +15,7 @@ APotI00::APotI00():Super() {
 	Locked = false;
 	TriggerDlg = "Pot00.0_T";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	APotI00::SetEnabled(false);
+	APotI00::SetActive(false);
 	// I'm using SetEnabled instead of Lock because these things will be changing during the chapter
 	// and i think that the player will find easier to tell when something became enabled, 
 	// rather than realizing something became unlocked.
@@ -78,7 +78,7 @@ void APotI00::DoTrigger_Implementation() {
 		Story->StartNext();
 	} else if (State == 0) { // has looped over
 		SFX_Trigger = nullptr; // no sound after
-		SetEnabled(false); // no more interaction for you
+		SetActive(false); // no more interaction for you
 	}
 }
 

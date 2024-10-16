@@ -35,7 +35,7 @@ ACharNRG::ACharNRG():Super() {
 	Parts->SetAsset(CNiag.Object);
 	
 	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
-	Super::SetEnabled(false); // The step will SetEnabled(true) via IntersFadeIn
+	SetAutoActivate(false);// The step will SetEnabled(true) via IntersFadeIn
 }
 
 void ACharNRG::BeginPlay() {
@@ -43,7 +43,7 @@ void ACharNRG::BeginPlay() {
 	Anim->TRoot = Root; // needed or it won't actually use it
 }
 
-void ACharNRG::SetEnabled(bool Enabled) {
+void ACharNRG::SetActive_Implementation(const bool Enabled) {
 	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part
 	if (Parts) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
 }

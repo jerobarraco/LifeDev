@@ -25,7 +25,8 @@ public:
 
 	virtual void Deactivate() override;
 	virtual void Activate(const bool bReset) override;
-
+	virtual void SetAutoActivate(const bool bNewAutoActivate) override;
+	
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	static void SetCollisionProfile(const FName& Name) {
@@ -87,6 +88,7 @@ protected:
 	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
 
+	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
 #pragma region Interactor
 	/// interactor
 	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.

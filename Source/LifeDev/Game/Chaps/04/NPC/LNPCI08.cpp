@@ -2,6 +2,6 @@
 #include "LNPCI08.h"
 
 ALNPCI08::ALNPCI08():Super() {
-	SetEnabled(true);
+	SetActive(true);
 	UseFade=true;
 }

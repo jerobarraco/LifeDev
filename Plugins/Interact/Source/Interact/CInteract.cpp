@@ -28,7 +28,7 @@ UCInteract::UCInteract(): Super() {
 	// important to fix the issue with interact starting inactive.
 	Super::SetAutoActivate(true);
 	
-	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
+	// it's already on the collision profile yay
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
 }
 
@@ -160,12 +160,17 @@ void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewPa
 	// the un-grabbing is done by the interactor. (since it has and needs the handler)
 }
 
+void UCInteract::SetCollisionEnabledBool(const bool Enabled) {
+	// because this is ForceInline, maybe this can be compiled without the "if", when called with a constexpr?
+	SetCollisionEnabled(Enabled ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+}
+
 void UCInteract::Deactivate() {
 	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
 		__func__, *GetNameSafe(GetOwner()),
 		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 	Super::Deactivate();
-	SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetCollisionEnabledBool(false);
 }
 
 void UCInteract::Activate(const bool bReset) {
@@ -176,7 +181,12 @@ void UCInteract::Activate(const bool bReset) {
 	Super::Activate(bReset);
 	// is ok to just disable the collision and not lock the trigger method,
 	// since there are cases where we want to trigger manually.
-	SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SetCollisionEnabledBool(true);
+}
+
+void UCInteract::SetAutoActivate(const bool NewActive) {
+	Super::SetAutoActivate(NewActive);
+	SetCollisionEnabledBool(NewActive);
 }
 
 void UCInteract::OnRep_IsActive() {
