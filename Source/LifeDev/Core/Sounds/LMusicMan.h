@@ -41,7 +41,7 @@ public:
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)
-	void SetEnvironFB(float V);
+	void SetEnvironFB(const float V);
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)

@@ -34,7 +34,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	FORCEINLINE float Get(const FName& Name, const float Default=0) const {
-		if (Name.IsNone()) return 0;
+		if (Name.IsNone()) return 0.0;
 
 		const float* const PreFlag = Flags.Find(Name);
 		const float Val = PreFlag ? *PreFlag : Default;

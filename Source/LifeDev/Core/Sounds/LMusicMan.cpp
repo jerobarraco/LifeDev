@@ -110,7 +110,7 @@ void ALMusicMan::SetEnvironOverride(bool On) {
 	EnvironOverride = On;
 }
 
-void ALMusicMan::SetEnvironFB(float V) {
+void ALMusicMan::SetEnvironFB(const float V) {
 	static const FName NFB("FB");
 	// calling setSafeParam is safe since it will check if the Environ itself is playing.
 	// that way i don't need to check for the S_ENV flag here either
