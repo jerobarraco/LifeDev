@@ -189,6 +189,14 @@ void UCInteract::SetAutoActivate(const bool NewActive) {
 	SetCollisionEnabledBool(NewActive);
 }
 
+void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
+	// this is like trave
+	UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
+		TEXT("%hs Don't call during construction! Call SetAutoActivate. O=%s"),
+		__func__, *GetNameSafe(GetOwner()));
+	Super::SetActive(bNewActive, bReset);
+}
+
 void UCInteract::OnRep_IsActive() {
 	Super::OnRep_IsActive();
 

@@ -26,7 +26,7 @@ public:
 	virtual void Deactivate() override;
 	virtual void Activate(const bool bReset) override;
 	virtual void SetAutoActivate(const bool bNewAutoActivate) override;
-	
+	virtual void SetActive(const bool bNewActive, const bool bReset = false) override;
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	static void SetCollisionProfile(const FName& Name) {
