@@ -28,7 +28,6 @@ APlant00::APlant00():Super() {
 	// interact extent is a bit buffed to be easily triggerable
 	Interact->SetRelativeLocation(FVector(32.5,-32.5,50));
 	Interact->SetBoxExtent(FVector(37.5,37.5,50));
-	Interact->SetActive(true);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CSoil(TEXT("/Game/LifeDev/Game/Inters/Plants/Soil.Soil"));
@@ -46,6 +45,7 @@ APlant00::APlant00():Super() {
 	Plant->SetCastAllShadows(true);
 
 	Super::SetMobility(EComponentMobility::Static); // static since we won't animate it
+	Super::SetAutoActivate(true);
 }
 
 void APlant00::SetMobility(EComponentMobility::Type Mobility) {

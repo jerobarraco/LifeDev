@@ -47,7 +47,6 @@ ARadio00::ARadio00():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
 	Anim->Curve = CCurve.Object;
-	Interact->SetActive(true);
 	UseAnim = true;
 	StateNum = 2;
 	UseRewardDestroy = false;
@@ -55,6 +54,8 @@ ARadio00::ARadio00():Super() {
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
 	AnimFade->SetActive(false);
+
+	Super::SetAutoActivate(true);
 }
 
 void ARadio00::BeginPlay() {

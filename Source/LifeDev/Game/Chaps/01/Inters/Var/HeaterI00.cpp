@@ -29,7 +29,8 @@ AHeaterI00::AHeaterI00():Super() {
 	Anim->Duration = .75f;
 	Anim->IsAdditive = true;
 	UseAnim = true;
-	Interact->SetActive(true);
+
+	Super::SetAutoActivate(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));

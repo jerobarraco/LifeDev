@@ -12,8 +12,6 @@ ABedI00::ABedI00():Super() {
 	UseAnim = false;
 	Locked = true;
 	// static since we won't animate it
-	Super::SetMobility(EComponentMobility::Static);
-	Interact->SetActive(true);
 	Interact->SetRelativeLocation(FVector(102.5,-55,32.5));
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
 	
@@ -21,4 +19,7 @@ ABedI00::ABedI00():Super() {
 	Texts = { FText::FromString(TEXT("I really need to sleep...")) };
 	RewardFlash = .1;
 	UseRewardDestroy = false;
+	
+	Super::SetAutoActivate(true);
+	Super::SetMobility(EComponentMobility::Static);
 }

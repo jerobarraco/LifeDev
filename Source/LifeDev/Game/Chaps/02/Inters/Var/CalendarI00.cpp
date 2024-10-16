@@ -7,7 +7,7 @@ ACalendarI00::ACalendarI00():Super() {
 	UseRewardDestroy = false;
 	RewardFlash = .1;
 	TriggerDlg = "Cal00_T";
-	SetActive(true);
+	Super::SetAutoActivate(true);
 }
 
 void ACalendarI00::Rewarded_Implementation() {

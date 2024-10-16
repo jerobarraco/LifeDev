@@ -31,7 +31,6 @@ ATv00::ATv00():Super() {
 	// back, it will still be easily triggerable
 	Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
 	Interact->SetBoxExtent(FVector(35,35,25));
-	Interact->SetActive(true);
 
 	SFX->SetRelativeLocation(FVector(55,0,15));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -108,6 +107,8 @@ ATv00::ATv00():Super() {
 	Sig->IsOffIfOffscreen = false; // avoid deadlocking the significance
 	Sig->TestOcclusion = true;
 	Sig->IsOffIfOccluded = false;
+
+	Super::SetAutoActivate(true);
 }
 
 void ATv00::BeginPlay() {

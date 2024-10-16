@@ -2,6 +2,6 @@
 #include "LNPCI07.h"
 
 ALNPCI07::ALNPCI07():Super() {
-	SetActive(true);
 	UseFade=true;
+	Super::SetAutoActivate(true);
 }

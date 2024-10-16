@@ -9,5 +9,5 @@ AKeysI00::AKeysI00():Super() {
 	UseFade = true; // needed to fade on reward
 	UseAnim = false;
 	StateNum = 1;
-	SetActive(true);
+	Super::SetAutoActivate(true);
 }

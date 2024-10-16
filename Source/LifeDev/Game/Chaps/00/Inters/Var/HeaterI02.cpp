@@ -5,14 +5,15 @@
 
 AHeaterI02::AHeaterI02():Super() {
 	UseAnim = false;
-	// static since we won't animate it
-	Super::SetMobility(EComponentMobility::Static);
 	Locked = true;
-	Interact->SetActive(true);
 	
 	LockedDlg = "HT02_L";
 	Texts = {
 		FText::FromString(TEXT("Turn on")),
 	};
 	RewardFlash = .1;
+
+	// static since we won't animate it
+	Super::SetMobility(EComponentMobility::Static);
+	Super::SetAutoActivate(true);
 }
