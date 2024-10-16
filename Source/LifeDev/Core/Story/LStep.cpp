@@ -272,7 +272,7 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 
 void ALStep::SetIntersActive(const bool Enabled) {
 	// TODO rename. requires a redirector because i'm setting this on the editor. lol :')
-	for (const TObjectPtr<AInteract>& I: IntersEnable) {
+	for (const TObjectPtr<AInteract>& I: IntersActive) {
 		if (IsValid(I)) I->SetActive(Enabled);
 	}
 }

@@ -103,10 +103,10 @@ public:
 	// or maybe i could if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 	
-	// Interacts to enable on Start (after wait), and disable on Stop.
+	// Interacts to activate on Start (after wait), and disable on Stop.
 	// Will be disabled on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersEnable;
+	TArray<TObjectPtr<AInteract>> IntersActive;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
