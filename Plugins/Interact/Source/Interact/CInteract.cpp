@@ -26,7 +26,7 @@ UCInteract::UCInteract(): Super() {
 	SetCanEverAffectNavigation(false);
 
 	// important to fix the issue with interact starting inactive.
-	Super::SetAutoActivate(false); // TODO fix properly
+	Super::SetAutoActivate(true);
 	
 	UBoxComponent::SetCollisionEnabled(ECollisionEnabled::QueryOnly); // it's already on the collision profile yay
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
@@ -106,7 +106,6 @@ void UCInteract::BeginPlay() {
 	// this is a patch. since by default it starts as disabled on the server,
 	// but enabled on the client (wtf)
 	// Activate(true); // TODO fix properly
-	// TODO test on standalone and non-replicated
 }
 
 void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) {
