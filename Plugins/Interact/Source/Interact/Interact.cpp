@@ -93,7 +93,9 @@ void AInteract::SetActive_Implementation(const bool Active) {
 	Interact->SetActive(Active);
 }
 
-void AInteract::SetAutoActivate_Implementation(const bool AutoActive) {
+void AInteract::SetAutoActivate(const bool AutoActive) {
+	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Server=%i Obj=%s"),
+		__func__, AutoActive, JU_IsServerSide, *GetNameSafe(this));
 	if (Interact) Interact->SetAutoActivate(AutoActive);
 }
 

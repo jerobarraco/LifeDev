@@ -59,8 +59,8 @@ public:
 	// Enables or disables the interaction.
 	UFUNCTION(BlueprintNativeEvent, Category="Interact")
 	void SetActive(const bool Active = true);
-	UFUNCTION(BlueprintNativeEvent, Category="Interact")
-	void SetAutoActivate(const bool AutoActive = true);
+	UFUNCTION(BlueprintCallable, Category="Interact")
+	virtual void SetAutoActivate(const bool AutoActive = true);
 	
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
@@ -191,7 +191,7 @@ protected:
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
 	UFUNCTION(BlueprintCallable, Category=Interact, NetMulticast, Reliable)
-	void PlaySFX(USoundBase* Snd) const ;
+	void PlaySFX(USoundBase* Snd) const; // native events can't take Ptr* const
 	
 	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
 	void OnRep_IsLocked();

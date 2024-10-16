@@ -26,7 +26,7 @@ UCInteract::UCInteract(): Super() {
 	SetCanEverAffectNavigation(false);
 
 	// important to fix the issue with interact starting inactive.
-	Super::SetAutoActivate(true);
+	UCInteract::SetAutoActivate(true);// CInteract also sets the collision
 	
 	// it's already on the collision profile yay
 	UBoxComponent::SetCollisionProfileName(CollisionProfile);
