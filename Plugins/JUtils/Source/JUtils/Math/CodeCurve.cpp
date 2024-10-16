@@ -5,7 +5,7 @@
 #include "CodeCurve.h"
 
 UCodeCurveLib* UCodeCurveLib::Instance() {
-	return Cast<UCodeCurveLib>(UCodeCurveLib::StaticClass()->GetDefaultObject(true));
+	return GetMutableDefault<UCodeCurveLib>();
 }
 
 float UCodeCurveLib::LinCycle(float p){
