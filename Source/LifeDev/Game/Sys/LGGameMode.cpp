@@ -98,44 +98,51 @@ void ALGGameMode::Init_Implementation() {
 
 	UWorld* const World = GetWorld();
 	if (!IsValid(World)) return;
-		
+
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (!IsValid(SysSettings)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
 		return;
 	}
 
-	/// set flags
-	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
-	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
-	AStep::Debug = Settings->GetFeat(EFeat::DBG_STEPS);
-	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
-
-	/// post process (does this even works?)
-	PostProcess = Cast<APostProcessVolume>(
-		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
-
-	/// set input mode
-	// this is critical or the dialogs will break
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
-	// these are not needed since we are using the input actions
-	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-	Controller->bShowMouseCursor = false;
-
-	/// Character
-	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	if (IsValid(Char)) Char->InputPrio = 1; // Char->Init();
-	else Char = nullptr;
-
+	////  subsystems
+	// start by initializing the subsystems, since most other stuff needs it.
+	
 	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
+	if (!Diags) return; // TODO log 
 	Diags->Init();
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
+	if (!Flags) return; // TODO log 
 	Flags->Init();
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
+
+	Story = World->GetSubsystem<UStory>();
+	if (!Story) return; // TODO log 
+	const bool IsEditor = UJUtilsMisc::IsEditor();
+	Story->FadeTime = IsEditor ? 1: FadeTime;
+	Story->HoldTime = IsEditor ? 1: HoldTime;
+	Story->Init();
+
+	// now load the values from the save
+	// ensure the save-game loads the data into the subsystems.
+	// do only after subsystems have been initialized.
+	// do before StartChapter since that saves the gamefile (loading from subsystems)
+	Settings->Save->WriteSubsystems(World);
+
+	///~ Subs-init finished.
+
+	// set flags, the feats are dependent on the savegame and subsystems
+	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
+	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
+	AStep::Debug = Settings->GetFeat(EFeat::DBG_STEPS);
+	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
+	
+	/// Managers
+	// now the managers. which, as they are actors they tend to have side-effects, some of which requires the subsystems
 
 	InventoryMan = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
 	if (IsValid(InventoryMan)) {
@@ -146,26 +153,12 @@ void ALGGameMode::Init_Implementation() {
 	} else
 		InventoryMan = nullptr;
 
-	/// Story
-	Story = World->GetSubsystem<UStory>();
-	const bool IsEditor = UJUtilsMisc::IsEditor();
-	Story->FadeTime = IsEditor ? 1: FadeTime;
-	Story->HoldTime = IsEditor ? 1: HoldTime;
-	Story->Init();
-	
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
 	if (IsValid(StoryMan)) {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
 	} else
 		StoryMan = nullptr;
-	
-	///~ Subs-init finished.
-
-	/// Managers (done after the subs, since they might need it)
-	
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 
 	DiagMan = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
 	if (IsValid(DiagMan)) {
@@ -177,15 +170,31 @@ void ALGGameMode::Init_Implementation() {
 	} else
 		DiagMan = nullptr;
 
+	// TODO add an init to these. to avoid the race conditions i had with the ghosts
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	// do at the end since it depends on other things.
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	// will race-condition the ghosts
 
 	/// GameMode init starts
-	// ensure the save-game loads the data into the subsystems.
-	// do only after subsystems have been initialized.
-	// do before StartChapter since that saves the gamefile (loading from subsystems)
-	Settings->Save->WriteSubsystems(World);
+	
+	// post process (does this even works?)
+	PostProcess = Cast<APostProcessVolume>(
+		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 
+	/// set input mode
+	// this is critical or the dialogs will break
+	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
+	// these are not needed since we are using the input actions
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	Controller->bShowMouseCursor = false;
+
+	// Character
+	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
+	if (IsValid(Char)) Char->InputPrio = 1; // Char->Init(); // TODO add char init after the subs. so that the foxification works
+	else Char = nullptr;
+	
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
@@ -304,9 +313,8 @@ void ALGGameMode::SetTempInputEnabled(bool Enabled) {
 	if (IsValid(InventoryMan)) InventoryMan->SetVisible(Enabled);
 }
 
-ALGGameMode* ALGGameMode::Instance(UWorld* World) {
-	// TODO this doesn't work properly on PIE, fix and use the version in JMiscUtils
-	World = UJUtilsMisc::JGetWorld(World);
+ALGGameMode* ALGGameMode::Instance(const UObject* const O) {
+	const UWorld* const World = O? O->GetWorld(): nullptr;
 	if (!IsValid(World)) return nullptr;
 
 	AGameModeBase* const AuthGameMode = World->GetAuthGameMode();

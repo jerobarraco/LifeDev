@@ -33,13 +33,13 @@ public:
 	void Rem(const FName& Name);
 
 	UFUNCTION(BlueprintCallable, Category="Flags")
-	FORCEINLINE float Get(const FName& Name, const float Default=0) const {
+	FORCEINLINE float Get(const FName Name, const float Default=0) const {
 		if (Name.IsNone()) return 0.0;
 
 		const float* const PreFlag = Flags.Find(Name);
 		const float Val = PreFlag ? *PreFlag : Default;
 		return Val;
-	};
+	}
 	
 	// Returns whether a flag is set. regardless of the value. it can be 0.
 	UFUNCTION(BlueprintCallable, Category="Flags")
@@ -47,7 +47,7 @@ public:
 		if (Name.IsNone()) return false;
 		// this works because set doesn't remove on 0
 		return Flags.Contains(Name);
-	};
+	}
 
 	// Returns whether a flag is set to >=1.
 	// This might be a bit slower than calling Get, unless you are also checking if it's >=1.

@@ -4,5 +4,5 @@
 
 ADoorI11::ADoorI11():Super() {
 	Locked = true;
-	SetAutoActivate(false);
+	Super::SetAutoActivate(false);
 }

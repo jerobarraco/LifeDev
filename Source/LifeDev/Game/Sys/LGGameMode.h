@@ -39,8 +39,8 @@ public:
 	ALGGameMode();
 
 	// not working properly atm
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction, AdvancedDisplay))
-	static ALGGameMode* Instance(UWorld* World = nullptr);
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction, AdvancedDisplay, WorldContext="O"))
+	static ALGGameMode* Instance(const UObject* const O);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Init();
@@ -72,23 +72,23 @@ public:
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	/// only making public the ones that require a GetActorOfClass (not the subsystems)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALDialogMan* DiagMan = nullptr;
+	TObjectPtr<ALDialogMan> DiagMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALInventoryManager* InventoryMan = nullptr;
+	TObjectPtr<ALInventoryManager> InventoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALStoryMan* StoryMan = nullptr;
+	TObjectPtr<ALStoryMan> StoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALMusicMan* MusicMan = nullptr;
+	TObjectPtr<ALMusicMan> MusicMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AFlashbackMan* FlashbackMan = nullptr;
+	TObjectPtr<AFlashbackMan> FlashbackMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALFeatsMan* FeatsMan = nullptr;
+	TObjectPtr<ALFeatsMan> FeatsMan = nullptr;
 
 	/// others cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	ALChar* Char = nullptr;
+	TObjectPtr<ALChar> Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	APostProcessVolume* PostProcess = nullptr;
+	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)

@@ -81,7 +81,7 @@ void AGhostPool::BeginPlay() {
 
 	// TODO fix foxy returs 0 here. always. TODO try doing this on setactive
 	const UFlags* const Flags = UFlags::Instance(this);
-	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy) : .5;
+	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy, -1) : .5;
 	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
 	UE_LOG(LogTemp, Log,
 		TEXT("%hs Ghost PoolSize foxified. Min=%.4f, Max=%.4f, Res=%.4f, Foxy=%.4f"),
