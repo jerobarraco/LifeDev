@@ -11,9 +11,9 @@ ULVolumeSlider::ULVolumeSlider() {
 }
 
 void ULVolumeSlider::Preview() {
-	const float Value = GetValue();
+	const float Val = GetValue(); // "Value" is a private member
 	UE_LOG(LogTemp, Verbose, TEXT("%hs val=%.5f"),
-		__func__, Value);
+		__func__, Val);
 
 	if (!IsValid(Submix)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Submix not set. Key=%s"),
@@ -21,17 +21,17 @@ void ULVolumeSlider::Preview() {
 		return;
 	}
 
-	Submix->SetSubmixOutputVolume(this, Value);
+	Submix->SetSubmixOutputVolume(this, Val);
 }
 
 void ULVolumeSlider::Apply() {
 	UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
-	const float Value = GetValue();
+	const float Val = GetValue(); // "Value" is private
 	// logging before calling apply just so that logs are in order
 	UE_LOG(LogTemp, Log, TEXT("%hs val=%.5f"),
-		__func__, Value);
+		__func__, Val);
 
 	Preview(); // unnecessary but just in case.
 	
@@ -41,7 +41,7 @@ void ULVolumeSlider::Apply() {
 		return;
 	}
 
-	Flags->Set(Key, Value);
+	Flags->Set(Key, Val);
 }
 
 void ULVolumeSlider::Load() {
