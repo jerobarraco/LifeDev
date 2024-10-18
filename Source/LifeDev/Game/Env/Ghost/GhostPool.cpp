@@ -79,7 +79,6 @@ void AGhostPool::BeginPlay() {
 		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 	}
 
-	// TODO fix foxy returs 0 here. always. TODO try doing this on setactive
 	const UFlags* const Flags = UFlags::Instance(this);
 	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy, -1) : .5;
 	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
