@@ -130,7 +130,7 @@ void ULSetVideoUI::ResScaleSet() {
 }
 
 void ULSetVideoUI::ResScaleChanged(const float Value) {
-	UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
+	// UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
 	const int32 PVal = trunc(Value*100);
 	if (Settings) Settings->SetResolutionScaleNormalized(PVal / 100.0);
 	if (ResScaleText) ResScaleText->SetText(
