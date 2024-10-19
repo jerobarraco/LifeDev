@@ -13,7 +13,7 @@ APicture::APicture():Super() {
 	Texts = { FText::FromString(TEXT("A Picture")) } ;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Picture.Picture"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Picture/Picture.Picture"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-12.5,-1.25,0));
 	Mesh->SetRelativeRotation(FRotator(0,0,90).Quaternion());

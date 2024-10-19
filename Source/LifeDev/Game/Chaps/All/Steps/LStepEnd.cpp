@@ -24,24 +24,6 @@ ALStepEnd::ALStepEnd():Super() {
 	CamTarget = nullptr;
 }
 
-void(ALStep::*ALStepEnd::fp)(void) = &AStep::TryStart;
-
-void ALStepEnd::dont(int64 A) {
-    // TODO have a puzzle that calls this function
-	// ALStepEnd* const Actor = Cast<ALStepEnd>(UGameplayStatics::GetActorOfClass(this, ALStepEnd::StaticClass()));
-	// if (!Actor) return;
-	// if (!fp) {
-		// if (!fp) return;
-	// }
-	UE_LOG(LogTemp, Log, TEXT("%hs address =%p %i"), __func__, &fp, A);
-	(reinterpret_cast<ALStep*>(A)->*fp)();
-}
-
-void ALStepEnd::BeginPlay() {
-	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("ALStepEnd::%hs adress=%p"), __func__, this);
-}
-
 void ALStepEnd::OpenLevel() {
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }

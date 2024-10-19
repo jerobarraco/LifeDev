@@ -59,8 +59,8 @@ public:
 protected:
 	// called when the puzzle is done. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Done(bool IsOk);
-	virtual void Done_Implementation(bool IsOk);
+	void Done(const bool IsOk);
+	virtual void Done_Implementation(const bool IsOk);
 
 	// called when the puzzle is updated. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

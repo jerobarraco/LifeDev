@@ -42,7 +42,7 @@ void APuzzle::Reset() {
 	ClearTimer();
 }
 
-void APuzzle::Done_Implementation(bool IsOk) {
+void APuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
 	if (!IsOk) {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
@@ -105,6 +105,7 @@ void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		CPuzzle->OnUpdate.RemoveAll(this);
 		CPuzzle->OnReset.RemoveAll(this);
 	}
+	CPuzzle = nullptr;
 	ClearTimer();
 
 	Super::EndPlay(EndPlayReason);
