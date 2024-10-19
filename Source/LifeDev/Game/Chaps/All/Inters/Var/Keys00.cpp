@@ -12,18 +12,16 @@ AKeys00::AKeys00():Super() {
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Key00/Key00.Key00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Key00/Key00"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(-0.500000,-0.250000,0));
-	Mesh->SetRelativeRotation(FRotator(0,90,0));
-	// TODO fix this by reimporting correctly and setting the scale on import
-	Mesh->SetRelativeScale3D(FVector(0.005000));
+	Mesh->SetRelativeLocation(FVector(0,-0.50000,0));
+	Mesh->SetRelativeRotation(FRotator(0,0,0));
 	
-	Interact->SetRelativeLocation(FVector(50,-100,1350));
-	Interact->SetBoxExtent(FVector(650,200,1500));
+	Interact->SetRelativeLocation(FVector(0,0,7));
+	Interact->SetBoxExtent(FVector(5,5,10));
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19.Key19"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19"));
 	SFX_Trigger = CSnd.Object;
 
 	Super::SetAutoActivate(false);
