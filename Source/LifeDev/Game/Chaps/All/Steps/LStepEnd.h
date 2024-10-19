@@ -18,9 +18,13 @@ public:
 	FString NextLevel = "Outro_L";
 
 protected:
+	virtual void BeginPlay() override;
+	void OpenLevel();
 	virtual void TryStart_Implementation() override;
 	virtual void Start_Implementation() override;
 	
-	UFUNCTION()
-	void OpenLevel();
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void dont(int64 A);
+	static void (ALStep::*fp)(void);
 };
