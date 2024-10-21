@@ -73,28 +73,28 @@ public:
 	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UInputMappingContext* Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> Mapping = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UInputAction* ActionJump = nullptr;
+	TObjectPtr<UInputAction> ActionJump = nullptr;
 
 	//* Move Input Action 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UInputAction* ActionMove = nullptr;
+	TObjectPtr<UInputAction> ActionMove = nullptr;
 		
 	//* Look Input Action 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	UInputAction* ActionLook = nullptr;
+	TObjectPtr<UInputAction> ActionLook = nullptr;
 
 	//* Interact Input Action 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	UInputAction* ActionInteract = nullptr;
+	TObjectPtr<UInputAction> ActionInteract = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	UInputAction* ActionItem = nullptr;
+	TObjectPtr<UInputAction> ActionItem = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	UInputAction* ActionItemLook = nullptr;
+	TObjectPtr<UInputAction> ActionItemLook = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	UInputAction* ActionMenu = nullptr;
+	TObjectPtr<UInputAction> ActionMenu = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -122,7 +122,7 @@ protected:
 
 	//* Pawn mesh: 1st person view (arms; seen only by self) 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh)
-	USkeletalMeshComponent* Mesh1P;
+	TObjectPtr<USkeletalMeshComponent> Mesh1P = nullptr;
 
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
