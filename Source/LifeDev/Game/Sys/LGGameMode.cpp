@@ -187,7 +187,6 @@ void ALGGameMode::Init_Implementation() {
 	} else
 		DiagMan = nullptr;
 
-	// TODO add an init to these. to avoid the race conditions i had with the ghosts
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	if (MusicMan) MusicMan->Init();
 
