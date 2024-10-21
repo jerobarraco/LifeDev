@@ -22,7 +22,7 @@ void UCLCharCam::Init_Implementation() {
 	FOVMin += FOVMod;
 	FOVMax += FOVMod;
 	UE_LOG(LogTemp, Log,
-		TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+		TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxy=%.4f"),
 		__func__, FOVMin, FOVMax, FOVMod, Foxify);
 }
 

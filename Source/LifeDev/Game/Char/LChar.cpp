@@ -153,7 +153,7 @@ void ALChar::Init_Implementation() {
 	SpeedMin += SpeedMod;
 	SpeedMax += SpeedMod;
 	UE_LOG(LogLChar, Log,
-		TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+		TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxy=%.4f"),
 		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 
 	const UWorld* const World = GetWorld();
