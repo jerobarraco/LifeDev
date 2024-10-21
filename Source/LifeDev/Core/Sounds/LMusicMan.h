@@ -34,13 +34,13 @@ public:
 	void Init() {};
 	
 	UFUNCTION(BlueprintCallable)
-	void SetRain(bool Play);
+	void SetRain(const bool Play);
 
 	UFUNCTION(BlueprintCallable)
-	void SetEnviron(bool On);
+	void SetEnviron(const bool On);
 
 	UFUNCTION(BlueprintCallable)
-	void SetEnvironOverride(bool On);
+	void SetEnvironOverride(const bool On);
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)

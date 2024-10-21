@@ -90,13 +90,13 @@ ALMusicMan* ALMusicMan::Instance(const UObject* const O) {
 	return GM ? GM->MusicMan : nullptr;
 }
 
-void ALMusicMan::SetRain(bool Play) {
+void ALMusicMan::SetRain(const bool Play) {
 	if (!IsValid(Rain)) return;
 
 	Rain->Fade(Play);
 }
 
-void ALMusicMan::SetEnviron(bool On) {
+void ALMusicMan::SetEnviron(const bool On) {
 	if (!IsValid(Environ)) return;
 
 	const bool Enabled = ULSettings::GetFeatS(GetWorld(), EFeat::S_ENV) && EnvironOverride;
@@ -106,7 +106,7 @@ void ALMusicMan::SetEnviron(bool On) {
 	Environ->Fade(On);
 }
 
-void ALMusicMan::SetEnvironOverride(bool On) {
+void ALMusicMan::SetEnvironOverride(const bool On) {
 	EnvironOverride = On;
 }
 
