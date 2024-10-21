@@ -96,7 +96,7 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
 		Post->Settings.SceneFringeIntensity = bEnabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_FLASHBACK) {
-		if (!FBMat) [[unlikely]] return;
+		if (UNLIKELY(!FBMat)) return;
 		if (bEnabled)
 			Post->Settings.AddBlendable(FBMat, 1);
 		else
@@ -107,7 +107,7 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 			MPCI->SetScalarParameterValue("Strobe", v);
 		else if (Feat == EFeat::V_SPEED) {
 			MPCI->SetScalarParameterValue("Speed", v);
-			if (!SpeedMat) return;
+			if (UNLIKELY(!SpeedMat)) return;
 			if (bEnabled)
 				Post->Settings.AddBlendable(SpeedMat, 1);
 			else
