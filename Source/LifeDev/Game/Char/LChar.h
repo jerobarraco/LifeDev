@@ -46,8 +46,12 @@ public:
 
 	// disable the interact for the character.
 	UFUNCTION(BlueprintCallable)
-	void InteractSetEnabled(bool Enabled);
+	void InteractSetActive(const bool Enabled);
 
+	// Called for the internal init
+	UFUNCTION(Blueprintable, BlueprintNativeEvent)
+	void Init();
+	
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .5;

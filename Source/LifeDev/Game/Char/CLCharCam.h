@@ -14,7 +14,11 @@ class LIFEDEV_API UCLCharCam : public UCameraComponent {
 	GENERATED_BODY()
 public:
 	UCLCharCam();
-
+	
+	// Called for the internal init
+	UFUNCTION(Blueprintable, BlueprintNativeEvent)
+	void Init();
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

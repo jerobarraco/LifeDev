@@ -16,6 +16,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JMiscConsts.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
@@ -123,7 +124,7 @@ void ALChar::InteractEnd(UCInteract* Comp) {
 void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, Enabled);
-	InteractSetEnabled(Enabled);
+	InteractSetActive(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
 	Noiser->SetActive(Enabled, true);
@@ -133,8 +134,31 @@ void ALChar::SetInputEnabled(bool Enabled) {
 
 // can't remember why i made this into its own function,
 // probably to be able to call from the outside.
-void ALChar::InteractSetEnabled(bool Enabled) {
+void ALChar::InteractSetActive(const bool Enabled) {
 	Interactor->SetActive(Enabled);
+}
+
+void ALChar::Init_Implementation() {
+	IFL(Camera) Camera->Init();
+
+	// i can do this because the class defaults are in code. and then can be changed via config.
+	// and they get reloaded on game start (travel to game_l).
+	// and also the save-game is loaded before a game travel. and doesn't change during game.
+	// with your powers combined, it's me! Captain cringy feat!
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (!Flags) return;
+	const float Foxify =
+		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
+	const float SpeedMod = SpeedFoxy * Foxify;
+	SpeedMin += SpeedMod;
+	SpeedMax += SpeedMod;
+	UE_LOG(LogLChar, Log,
+		TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
+
+	const UWorld* const World = GetWorld();
+	UFlashback* const FB = World->GetSubsystem<UFlashback>();
+	if (FB) SetFB(FB->GetVal()); // update walk speed values.
 }
 
 void ALChar::BeginPlay() {
@@ -177,24 +201,6 @@ void ALChar::BeginPlay() {
 	if (IsValid(Noiser)) Noiser->Activate();
 	else UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
 
-	// i can do this because the class defaults are in code. and then can be changed via config.
-	// and they get reloaded on game start (travel to game_l).
-	// and also the save-game is loaded before a game travel. and doesn't change during game.
-	// with your powers combined, it's me! Captain cringy feat!
-	const UFlags* const Flags = UFlags::Instance(this);
-	if (Flags) {
-		const float Foxify =
-			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
-		const float SpeedMod = SpeedFoxy * Foxify;
-		SpeedMin += SpeedMod;
-		SpeedMax += SpeedMod;
-		UE_LOG(LogLChar, Log,
-			TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
-			__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
-	}
-
-	SetFB(0); // update walk speed values.
-
 	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
 	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
 	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
@@ -214,13 +220,14 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		SettingsUI->RemoveFromParent();
 	SettingsUI = nullptr;
 
-	if (IsValid(Noiser))
-		Noiser->Deactivate();
+	IFVC(Noiser, Deactivate())
+	// if (IsValid(Noiser)) Noiser->Deactivate();
 	Noiser = nullptr;
 	Items = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
-	if (FB) FB->OnChange.RemoveAll(this);
+	IFVC(FB, OnChange.RemoveAll(this))
+	// if (FB) FB->OnChange.RemoveAll(this);
 
 	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)

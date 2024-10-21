@@ -12,6 +12,19 @@ UCLCharCam::UCLCharCam():Super() {
 	bUsePawnControlRotation = true; // needed to be able to loop up
 }
 
+void UCLCharCam::Init_Implementation() {
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (!Flags) return;
+	const float Foxify =
+		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
+	const float FOVMod = FOVFoxy * Foxify;
+	FOVMin += FOVMod;
+	FOVMax += FOVMod;
+	UE_LOG(LogTemp, Log,
+		TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
+		__func__, FOVMin, FOVMax, FOVMod, Foxify);
+}
+
 void UCLCharCam::BeginPlay() {
 	Super::BeginPlay();
 
@@ -22,18 +35,6 @@ void UCLCharCam::BeginPlay() {
 	if (Settings) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &UCLCharCam::FeatUpdateVisual);
 		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
-	}
-
-	const UFlags* const Flags = UFlags::Instance(this);
-	if (Flags) {
-		const float Foxify =
-			-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
-		const float FOVMod = FOVFoxy * Foxify;
-		FOVMin += FOVMod;
-		FOVMax += FOVMod;
-		UE_LOG(LogTemp, Log,
-			TEXT("%hs FOV foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxify=%.4f"),
-			__func__, FOVMin, FOVMax, FOVMod, Foxify);
 	}
 	
 	SetFB(0); // update fov
