@@ -111,12 +111,12 @@ void ALChar::SetUIVisible(bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALChar::InteractBegin(UCInteract* Comp) {
+void ALChar::InteractBegin(UCInteract* const Comp) {
 	if (!IsValid(UI) || !IsValid(Comp)) return;
 	UI->InteractShowPrompt(Comp->Text);
 }
 
-void ALChar::InteractEnd(UCInteract* Comp) {
+void ALChar::InteractEnd(UCInteract* const Comp) {
 	if (!IsValid(UI)) return;
 	UI->InteractHidePrompt();
 }
@@ -139,7 +139,7 @@ void ALChar::InteractSetActive(const bool Enabled) {
 }
 
 void ALChar::Init_Implementation() {
-	IFL(Camera) Camera->Init();
+	if(Camera) Camera->Init();
 
 	// i can do this because the class defaults are in code. and then can be changed via config.
 	// and they get reloaded on game start (travel to game_l).

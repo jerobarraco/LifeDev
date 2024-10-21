@@ -15,6 +15,7 @@ UCLCharCam::UCLCharCam():Super() {
 void UCLCharCam::Init_Implementation() {
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (!Flags) return;
+
 	const float Foxify =
 		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
 	const float FOVMod = FOVFoxy * Foxify;

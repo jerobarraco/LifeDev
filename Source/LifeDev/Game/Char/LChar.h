@@ -105,9 +105,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION()
-	void InteractBegin(UCInteract* Comp);
+	void InteractBegin(UCInteract* const Comp);
 	UFUNCTION()
-	void InteractEnd(UCInteract* Comp);
+	void InteractEnd(UCInteract* const Comp);
 	UFUNCTION()
 	void MenuDone();
 	UFUNCTION()
