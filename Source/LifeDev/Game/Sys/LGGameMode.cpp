@@ -110,21 +110,38 @@ void ALGGameMode::Init_Implementation() {
 	
 	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
-	if (!Diags) return; // TODO log 
-	Diags->Init();
+	if (!Diags) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		return;
+	}
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
-	if (!Flags) return; // TODO log 
-	Flags->Init();
+	if (!Flags){
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		return;
+	}
+	
 	Inventory = World->GetSubsystem<UInventory>();
-	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
-
+	if (!Inventory) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		return;
+	}
+	
 	Story = World->GetSubsystem<UStory>();
-	if (!Story) return; // TODO log 
+	if (!Story) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		return;
+	}
+
 	const bool IsEditor = UJUtilsMisc::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
+
+	// init together. but before writing subsystems from save
+	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
+	Flags->Init();
+	Diags->Init();
 	Story->Init();
 
 	// now load the values from the save
@@ -192,8 +209,10 @@ void ALGGameMode::Init_Implementation() {
 
 	// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	if (IsValid(Char)) Char->InputPrio = 1; // Char->Init(); // TODO add char init after the subs. so that the foxification works
-	else Char = nullptr;
+	if (IsValid(Char)) {
+		Char->InputPrio = 1;
+		Char->Init();
+	} else Char = nullptr;
 	
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
