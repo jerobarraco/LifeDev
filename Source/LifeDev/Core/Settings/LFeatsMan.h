@@ -18,6 +18,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	// Called by LGGameMode
+	void Init() {};
+
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FringeIntensity = 1;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)

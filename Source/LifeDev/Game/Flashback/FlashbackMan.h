@@ -22,10 +22,13 @@ public:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	// Called by LGGameMode
+	void Init() {};
+
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UMaterialParameterCollection* MPC = nullptr;
+	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UMaterialParameterCollectionInstance* MPCInst = nullptr;
+	TObjectPtr<UMaterialParameterCollectionInstance> MPCInst = nullptr;
 };

@@ -189,10 +189,15 @@ void ALGGameMode::Init_Implementation() {
 
 	// TODO add an init to these. to avoid the race conditions i had with the ghosts
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+	if (MusicMan) MusicMan->Init();
+
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
+	if (FlashbackMan) FlashbackMan->Init();
+
 	// do at the end since it depends on other things.
-	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	// will race-condition the ghosts
+	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	if (FeatsMan) FeatsMan->Init();
 
 	/// GameMode init starts
 	

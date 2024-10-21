@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void FadeS(const UWorld* const W, const bool In=true);
 
+	// Called by LGGameMode
+	void Init() {};
+	
 	UFUNCTION(BlueprintCallable)
 	void SetRain(bool Play);
 

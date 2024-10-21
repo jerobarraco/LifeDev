@@ -40,19 +40,17 @@ void ALFeatsMan::LoadMPC() {
 
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
 	GM = Cast<ALGGameMode>(AGMB);
 	
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
-		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
-		// S->OnFeatUpdate.RemoveAll(this);
-		// force initialize
-	}
+	if (S) S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
+	// S->OnFeatUpdate.RemoveAll(this);
 
+	// force initialize
 	LoadMPC();
 	
 	FeatVisualUpdate(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
