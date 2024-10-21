@@ -126,23 +126,23 @@ protected:
 
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
-	UCLCharCam* Camera = nullptr;
+	TObjectPtr<UCLCharCam> Camera = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCInteractor* Interactor = nullptr;
+	TObjectPtr<UCInteractor> Interactor = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCLCharItems* Items = nullptr;;
+	TObjectPtr<UCLCharItems> Items = nullptr;;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCLNoiser* Noiser = nullptr;
+	TObjectPtr<UCLNoiser> Noiser = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	ULSettingsUI* SettingsUI = nullptr;
+	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UGameUI* UI = nullptr;
+	TObjectPtr<UGameUI> UI = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 };
 
