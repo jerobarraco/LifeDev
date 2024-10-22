@@ -75,7 +75,7 @@ void UJUtilsSys::CameraFade(const UObject* const O, bool In, float Duration, con
 
 
 UEnhancedInputComponent* UJUtilsSys::GetEInput(const UObject* const O) {
-	APlayerController* const Controller = GetFirstLocalPlayerController(O);
+	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
 	if (!Controller) return nullptr;
 
 	UEnhancedInputComponent* const Input =

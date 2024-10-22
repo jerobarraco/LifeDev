@@ -7,7 +7,6 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "DialogUI.h"
@@ -94,7 +93,7 @@ void ADiagMan::BeginPlay() {
 
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
-	UEnhancedInputComponent* const Input = World ? Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent) : nullptr;
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(World);
 	if (IsValid(Input)){
 		if (IsValid(ActionSkip))
 			Input->BindAction<ADiagMan>(
