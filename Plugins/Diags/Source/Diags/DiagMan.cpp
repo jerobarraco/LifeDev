@@ -117,8 +117,10 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	// TODO unbind input actions
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	if (Input) Input->ClearBindingsForObject(this);
+
 	DeInit();
 
 	Super::EndPlay(EndPlayReason);
