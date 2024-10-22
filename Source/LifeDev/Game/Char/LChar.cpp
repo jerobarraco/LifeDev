@@ -25,6 +25,7 @@
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -123,7 +124,7 @@ void ALChar::InteractEnd(UCInteract* const Comp) {
 
 void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, Enabled);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
@@ -167,7 +168,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (!World) return;
 
-	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (IsValid(Class)) {
@@ -229,7 +230,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	IFVC(FB, OnChange.RemoveAll(this))
 	// if (FB) FB->OnChange.RemoveAll(this);
 
-	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }

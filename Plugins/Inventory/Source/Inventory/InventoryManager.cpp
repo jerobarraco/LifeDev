@@ -10,7 +10,7 @@
 #include "Inventory.h"
 
 #include "InventoryUI.h"
-#include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 AInventoryManager::AInventoryManager():Super(){
 	PrimaryActorTick.bCanEverTick = false;
@@ -43,7 +43,7 @@ void AInventoryManager::DeInit() {
 		Inventory->OnCold.RemoveAll(this);
 	}
 	Inventory = nullptr;
-	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
 void AInventoryManager::ActOpen() {
@@ -128,7 +128,7 @@ void AInventoryManager::BeginPlay() {
 		}
 	}
 
-	UJUtilsMisc::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
 	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryManager::SetSelected);

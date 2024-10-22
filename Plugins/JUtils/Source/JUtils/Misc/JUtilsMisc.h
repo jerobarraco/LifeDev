@@ -78,9 +78,6 @@ public:
 	static UWorld* JGetWorld(UWorld* World);
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable);
-
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ShowUI(UObject* O, bool Show, UWidget* Focus = nullptr, bool SetPaused = false);
 
 	// Calls a Task (a Delegate) on another thread, when finishes calls OnDone on the game thread (if bound)
@@ -94,15 +91,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
-
-	UFUNCTION(BlueprintCallable)
-	static void CameraFade(UGameInstance* GI, bool In = false, float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
-
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static APlayerController* GetFirstLocalPlayerController(UObject* O);
-
-	UFUNCTION(BlueprintCallable)
-	static UGameViewportClient* GetAnyGameViewportClient();
 
 	// can't be blueprint callable since it's templatized
 	template <typename T>

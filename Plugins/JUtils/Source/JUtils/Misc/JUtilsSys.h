@@ -5,9 +5,24 @@
 
 #include "JUtilsSys.generated.h"
 
-
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
+
 public:
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void CameraFade(const UObject* const O, bool In = false, float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
+
+	UFUNCTION(BlueprintCallable)
+	static UGameViewportClient* GetAnyGameViewportClient();
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UEnhancedInputComponent* GetEInput(const UObject* const O);
 };

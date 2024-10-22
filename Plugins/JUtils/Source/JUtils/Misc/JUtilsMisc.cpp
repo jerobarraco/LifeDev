@@ -57,19 +57,6 @@ UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	return World;
 }
 
-void UJUtilsMisc::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable) {
-	APlayerController* const Controller = GetFirstLocalPlayerController(O);
-	if (!IsValid(Controller)) return;
-	
-	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
-		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
-			Controller->GetLocalPlayer());
-	if (!IsValid(Subsystem)) return;
-
-	if (Enable) Subsystem->AddMappingContext(Ctx, Prio);
-	else Subsystem->RemoveMappingContext(Ctx);
-}
-
 void UJUtilsMisc::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
 	UWorld* const World = O ? O->GetWorld(): nullptr;
 	if (!IsValid(World)) return;
@@ -119,51 +106,4 @@ bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
 	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
-}
-
-void UJUtilsMisc::CameraFade(UGameInstance* GI, bool In, float Duration, const FLinearColor& Color) {
-	if (!GI) {
-		UE_LOG(LogTemp, Warning, TEXT("CameraFade: Invalid game instance. aborting"));
-		return;
-	}
-
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
-
-	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
-	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
-	if (!CamManager) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
-		return;
-	}
-
-	const int32 From = In ? 1 : 0;
-	const int32 To = In ? 0 : 1;
-	CamManager->StartCameraFade(From, To, Duration, Color, true, true);
-}
-
-APlayerController* UJUtilsMisc::GetFirstLocalPlayerController(UObject* O) {
-	UWorld* const W = O?O->GetWorld():nullptr;
-	if (!W) return nullptr;
-
-	UGameInstance* const Instance = W->GetGameInstance();
-	if (!Instance) return nullptr;
-
-	return Instance->GetFirstLocalPlayerController(W);
-}
-
-UGameViewportClient* UJUtilsMisc::GetAnyGameViewportClient() {
-	if (GEngine && GEngine->GameViewport) return GEngine->GameViewport;
-	
-	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
-	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
-	for (const FWorldContext& Context : WorldContexts)
-	{
-		if ((Context.WorldType == EWorldType::PIE) && Context.World() && Context.GameViewport)
-		{
-			return Context.GameViewport;
-		}
-	}
-
-	return nullptr;
 }

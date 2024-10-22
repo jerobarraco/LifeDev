@@ -5,6 +5,7 @@
 #include "MoviePlayer.h"
 
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 #include "Settings/LSettings.h"
 
 ULGameInstance* ULGameInstance::Instance(UObject* O) {
@@ -51,9 +52,9 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs, Can't get movie player"), __func__);
 	}
 
-	UJUtilsMisc::CameraFade(this, false);
+	UJUtilsSys::CameraFade(this, false);
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
-	UJUtilsMisc::CameraFade(this, true);
+	UJUtilsSys::CameraFade(this, true);
 }
