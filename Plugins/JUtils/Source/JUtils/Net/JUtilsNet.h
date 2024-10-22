@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "JNetUtils.generated.h"
+#include "JUtilsNet.generated.h"
 
 
 // These macros are still function calls, cache them if possible.
@@ -28,7 +28,7 @@
 #define JU_IsServerOnly (!JU_IsClientSide) // SU_IsServer && !SU_IsStandalone)
 
 UCLASS(Blueprintable)
-class JUTILS_API UJNetUtils: public UBlueprintFunctionLibrary {
+class JUTILS_API UJUtilsNet: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 public:
 	

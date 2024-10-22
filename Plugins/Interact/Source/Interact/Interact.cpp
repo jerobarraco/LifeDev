@@ -8,7 +8,7 @@
 #include "Net/UnrealNetwork.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
-#include "JUtils/Net/JNetUtils.h"
+#include "JUtils/Net/JUtilsNet.h"
 
 #include "CInteract.h"
 #include "CInteractor.h"

@@ -6,7 +6,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/BoxComponent.h"
 
-#include "JUtils/Net/JNetUtils.h"
+#include "JUtils/Net/JUtilsNet.h"
 
 #include "CInteractor.h"
 

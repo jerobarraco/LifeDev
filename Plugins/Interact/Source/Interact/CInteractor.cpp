@@ -5,7 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 
-#include "JUtils/Net/JNetUtils.h"
+#include "JUtils/Net/JUtilsNet.h"
 
 #include "CInteract.h"
 #include "Interact.h"
