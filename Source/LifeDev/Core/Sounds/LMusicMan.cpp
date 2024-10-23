@@ -140,7 +140,10 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 	// only needs to be done in the fade call, so that the actual music is set in the player.
 	// in case someone activates the music after the chapter has started.
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
-	if (In && ! ULSettings::GetFeatS(this, EFeat::S_MUSIC)) return;
+	if (In && !ULSettings::GetFeatS(this, EFeat::S_MUSIC)) {
+		SetEnvironFB(0); // important otherwise the Environ will remain stuck ath the previous level
+		return;
+	}
 	Super::Fade_Implementation(In);
 
 	// force fb to 0 on the Environ when there's no music playing 
@@ -149,12 +152,12 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 		// reset the flashback when starting. to make sure it's at the right point.
 		// only done when fading in to avoid working extra.
 		const UFlashback* const Flashback = UFlashback::Instance(this);
-		if (Flashback) SetIntensity(Flashback->GetVal());
+		if (Flashback) SetFB(Flashback->GetVal());
 	}
 }
 
-void ALMusicMan::SetIntensity_Implementation(float V) {
-	Super::SetIntensity_Implementation(V);
+void ALMusicMan::SetFB_Implementation(float V) {
+	Super::SetFB_Implementation(V);
 
 	// force fb to 0 if the music is not playing.
 	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
@@ -183,7 +186,7 @@ void ALMusicMan::BeginPlay() {
 	const UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (Flashback)
-		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetIntensity);
+		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
 
 	UStory* const Story = UStory::Instance(W);
 	if (Story)
@@ -248,7 +251,7 @@ void ALMusicMan::SetGhosts(bool bEnabled) {
 	GhostPool = nullptr;
 }
 
-void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
+void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {
 	if (Feat == EFeat::S_MUSIC) {
 		const bool IsPlaying = Player->IsPlaying();
 		// start/stop only if it was stopped/started. avoid double fade
@@ -263,7 +266,7 @@ void ALMusicMan::FeatUpdate(EFeat Feat, bool bEnabled) {
 		SetGhosts(bEnabled);
 }
 
-void ALMusicMan::SetStep(AStep* Step) {
+void ALMusicMan::SetStep(AStep* const Step) {
 	if (!IsValid(Step)) return;
 	if (Step->Music.IsNull()) return;
 	

@@ -35,8 +35,8 @@ public:
 
 	// this is the intensity param for the music. not the volume.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetIntensity(float V);
-	virtual void SetIntensity_Implementation(float V);
+	void SetFB(float V);
+	virtual void SetFB_Implementation(float V);
 
 protected:
 	virtual void BeginPlay() override;

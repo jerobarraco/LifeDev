@@ -44,7 +44,7 @@ void AMusicMan::BeginPlay() {
 	// used for fade from one music to the next
 	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
 	Player->Activate(true); // attempt to start playing if set.
-	SetIntensity(0); // doesn't really work if it's not playing
+	SetFB(0); // doesn't really work if it's not playing
 }
 
 void AMusicMan::AudioFinished() {
@@ -60,7 +60,7 @@ void AMusicMan::AudioFinished() {
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMusicMan::SetNextMusic, .05);
 }
 
-void AMusicMan::SetIntensity_Implementation(float V) {
+void AMusicMan::SetFB_Implementation(float V) {
 	Intensity = V;
 	static FName NInt ="Intensity";
 	Player->SetSafeParamFloat(NInt, V);
@@ -77,7 +77,7 @@ void AMusicMan::SetNextMusic() {
 	Player->SetSound(NextMusic);
 	Fade(true);
 	// reset intensity so it's coherent. and also since we can't apply it before it's playing.
-	SetIntensity(Intensity);
+	SetFB(Intensity);
 
 	// buddhist say no to attachment (unnecessarily at least). This is important for the above check.
 	NextMusic = nullptr;

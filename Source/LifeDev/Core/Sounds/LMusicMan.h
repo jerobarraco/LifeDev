@@ -57,7 +57,7 @@ public:
 	void KillGhosts(const bool All=false);
 	
 	virtual void Fade_Implementation(const bool In) override;
-	virtual void SetIntensity_Implementation(float V) override;
+	virtual void SetFB_Implementation(float V) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -65,9 +65,9 @@ protected:
 
 	void SetGhosts(bool bEnabled);
 	UFUNCTION() // bind
-	void FeatUpdate(EFeat Feat, bool bEnabled);
+	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
-	void SetStep(AStep* Step);
+	void SetStep(AStep* const Step);
 	UFUNCTION() // bind
 	void AnimFXUpdate(const float Progress, const float Alpha);
 	UFUNCTION()
