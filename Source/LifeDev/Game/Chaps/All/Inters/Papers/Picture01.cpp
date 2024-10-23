@@ -12,6 +12,7 @@ APicture01::APicture01():Super() {
 	StateNum = 1;
 	Texts = { FText::FromString(TEXT("A Picture")) } ;
 
+	// TODO new mesh
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Picture/Picture.Picture"));
 	Mesh->SetStaticMesh(CMesh.Object);

@@ -8,7 +8,8 @@
 class URectLightComponent;
 class UCQuickMesh;
 
-// Base Fluorescent
+// Base Fluorescent, inherit from base rect light.
+// LLight are general lights. Light are not so general.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALight00: public ALLight01 {
 	GENERATED_BODY()
@@ -22,5 +23,5 @@ protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* Tube = nullptr;
+	TObjectPtr<UCQuickMesh> Tube = nullptr;
 };
