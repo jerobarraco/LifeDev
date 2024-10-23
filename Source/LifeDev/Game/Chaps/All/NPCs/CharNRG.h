@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Chaps/All/Inters/Papers/Calendar.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 
 #include "CharNRG.generated.h"
 
@@ -20,7 +20,7 @@ protected:
 	virtual void AnimEnd_Implementation() override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UNiagaraComponent* Parts = nullptr;
+	TObjectPtr<UNiagaraComponent> Parts = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|Nrg")
 	float SpawnRateMax = 30;
