@@ -99,7 +99,7 @@ void ALMusicMan::SetRain(const bool Play) {
 void ALMusicMan::SetEnviron(const bool On) {
 	if (!IsValid(Environ)) return;
 
-	const bool Enabled = ULSettings::GetFeatS(GetWorld(), EFeat::S_ENV) && EnvironOverride;
+	const bool Enabled = ULSettings::GetFeatS(this, EFeat::S_ENV) && EnvironOverride;
 	// don't enable if it's disabled
 	if (On && !Enabled) return;
 
@@ -133,15 +133,12 @@ void ALMusicMan::KillGhosts(const bool All) {
 	if (GhostPool) GhostPool->Kill(All);
 }
 
-void ALMusicMan::Fade_Implementation(bool In) {
-	UWorld* const W = GetWorld();
-	if (!W) return;
-
+void ALMusicMan::Fade_Implementation(const bool In) {
 	// don't fade in if the music is not enabled.
 	// only needs to be done in the fade call, so that the actual music is set in the player.
 	// in case someone activates the music after the chapter has started.
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
-	if (In && ! ULSettings::GetFeatS(W, EFeat::S_MUSIC)) return;
+	if (In && ! ULSettings::GetFeatS(this, EFeat::S_MUSIC)) return;
 	Super::Fade_Implementation(In);
 
 	// force fb to 0 on the Environ when there's no music playing 
@@ -149,7 +146,7 @@ void ALMusicMan::Fade_Implementation(bool In) {
 	else {
 		// reset the flashback when starting. to make sure it's at the right point.
 		// only done when fading in to avoid working extra.
-		const UFlashback* const Flashback = UFlashback::Instance(W);
+		const UFlashback* const Flashback = UFlashback::Instance(this);
 		if (Flashback) SetIntensity(Flashback->GetVal());
 	}
 }

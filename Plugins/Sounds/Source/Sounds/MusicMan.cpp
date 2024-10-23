@@ -21,7 +21,7 @@ AMusicMan::AMusicMan():Super() {
 	Player->TimeFadeIn = 1.0;
 }
 
-void AMusicMan::Fade_Implementation(bool In) {
+void AMusicMan::Fade_Implementation(const bool In) {
 	Player->Fade(In);
 }
 

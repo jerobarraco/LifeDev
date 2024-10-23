@@ -39,6 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(const bool On);
 
+	// used to force environ off on the intro map/level
 	UFUNCTION(BlueprintCallable)
 	void SetEnvironOverride(const bool On);
 
@@ -55,7 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void KillGhosts(const bool All=false);
 	
-	virtual void Fade_Implementation(bool In) override;
+	virtual void Fade_Implementation(const bool In) override;
 	virtual void SetIntensity_Implementation(float V) override;
 
 protected:

@@ -31,9 +31,7 @@ void AIntroGameMode::BeginPlay() {
 	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
-	if (FB) {
-		FB->SetVal(1);
-	}
+	if (FB) FB->SetVal(1);
 
 	// very important NOT to save the save-game here.
 	// since none of the subsystems are initialized and it will save garbage

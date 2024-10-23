@@ -17,8 +17,8 @@ public:
 	
 	// fades in or out. be careful since this creates issues when issues alongside PlayMusic
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Fade(bool In = true);
-	virtual void Fade_Implementation(bool In);
+	void Fade(const bool In = true);
+	virtual void Fade_Implementation(const bool In);
 
 	// for debug only
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
