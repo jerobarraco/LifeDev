@@ -150,7 +150,7 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 	FeatUpdated(Feat, Enable);
 }
 
-bool ULSettings::GetFeatS(UObject* const O, const EFeat Feat) {
+bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 	const ULSettings* const I = ULSettings::Instance(O);
 	return IsValid(I) ? I->GetFeat(Feat) : false;
 }

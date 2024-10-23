@@ -91,7 +91,7 @@ void ALLight::StopFBFlicker() {
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 	
 	// first deactivate if needed. ALWAYS deactivate (important since this is accessibility).
