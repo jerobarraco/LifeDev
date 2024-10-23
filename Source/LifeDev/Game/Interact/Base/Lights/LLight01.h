@@ -21,5 +21,5 @@ protected:
 	virtual void AnimUpdate_Implementation(float P, float A) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	URectLightComponent* RectLight = nullptr;
+	TObjectPtr<URectLightComponent> RectLight = nullptr;
 };

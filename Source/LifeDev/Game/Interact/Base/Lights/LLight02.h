@@ -20,5 +20,5 @@ protected:
 	virtual void AnimUpdate_Implementation(float P, float A) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	USpotLightComponent* Light = nullptr;
+	TObjectPtr<USpotLightComponent> Light = nullptr;
 };
