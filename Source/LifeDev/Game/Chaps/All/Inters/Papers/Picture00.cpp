@@ -1,12 +1,12 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Picture.h"
+#include "Picture00.h"
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-APicture::APicture():Super() {
+APicture00::APicture00():Super() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;

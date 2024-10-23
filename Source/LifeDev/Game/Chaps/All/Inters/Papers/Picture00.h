@@ -3,12 +3,12 @@
 #pragma once
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "Picture.generated.h"
+#include "Picture00.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API APicture: public ALInteract {
+class LIFEDEV_API APicture00: public ALInteract {
 	GENERATED_BODY()
 
 public:
-	APicture();
+	APicture00();
 };
