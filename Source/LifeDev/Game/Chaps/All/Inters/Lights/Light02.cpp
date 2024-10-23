@@ -7,6 +7,7 @@
 
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ALight02::ALight02():Super() {
 	UseAnim = true;
@@ -34,7 +35,9 @@ ALight02::ALight02():Super() {
 	Interact->SetRelativeLocation(FVector(20,-20,90));
 	Interact->SetBoxExtent(FVector(20,20,90));
 
-	SFX->SetRelativeLocation(FVector(15,-20,145));
+	const FVector SndLoc(15,-20,145);
+	SFX->SetRelativeLocation(SndLoc);
+	SFX_Flicker->SetRelativeLocation(SndLoc);
 
 	ALight02::SetMobility(EComponentMobility::Static);
 	Super::SetAutoActivate(true); // this one is ok to toggle
