@@ -71,7 +71,7 @@ public:
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
 	UFUNCTION(BlueprintCallable)
-	virtual void SetMobility(EComponentMobility::Type Mobility);
+	virtual void SetMobility(const EComponentMobility::Type Mobility);
 
 	// mostly to support the pooling system.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
