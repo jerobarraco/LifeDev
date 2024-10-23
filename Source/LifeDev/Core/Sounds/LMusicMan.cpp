@@ -51,11 +51,11 @@ ALMusicMan::ALMusicMan():Super() {
 	Environ->TimeFadeOut = 2;
 	Environ->TimeStartMin = 0;
 	Environ->TimeStartMax = 0;
-	// clear the attenuation from the clsounder which would make them not audible.
 	
+	// set correct attenuation so it's hearable.
 	static ConstructorHelpers::FObjectFinder<USoundAttenuation>
 		CEnvAttn(LDConsts::Audio::Attns::Env);
-	Environ->AttenuationSettings = Rain->AttenuationSettings = CEnvAttn.Object; 
+	Environ->AttenuationSettings = Rain->AttenuationSettings = CEnvAttn.Object;
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
 
@@ -100,7 +100,9 @@ void ALMusicMan::SetEnviron(const bool On) {
 	if (!IsValid(Environ)) return;
 
 	const bool Enabled = ULSettings::GetFeatS(this, EFeat::S_ENV) && EnvironOverride;
-	// don't enable if it's disabled
+	UE_LOG(LogTemp, Log, TEXT("LMusicMan::%hs On=%i Enabled=%i"), __func__, On, Enabled);
+
+	// don't enable if it's disabled. but allow disable
 	if (On && !Enabled) return;
 
 	Environ->Fade(On);
