@@ -100,12 +100,11 @@ void UCInteract::BeginPlay() {
 		if (IsGrabbable)
 			UE_LOG(LogCInteract, Warning, TEXT("%hs Component set to replicate and grababble. That's not supported. Owner=%s"),
 				__func__, *GetNameSafe(GetOwner()));
+		// this is a patch. since by default it starts as disabled on the server but enabled on the server. only for networked environs.
+		// check for autoactivate since some objects disable that on purpose
+		if (bAutoActivate) Activate(false);
 	} else if (JU_IsServerSide)
 		SetIsReplicated(false);
-
-	// this is a patch. since by default it starts as disabled on the server,
-	// but enabled on the client (wtf)
-	// Activate(true); // TODO fix properly
 }
 
 void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) {
