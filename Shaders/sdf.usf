@@ -105,4 +105,11 @@ struct SDF {
 		const float str = lerp(0, fogStr, normdist);
 		return lerp(scCol, fogCol, str);
 	}
+
+	float3 TestCam(const float stepMax) {
+		const float depth = 100;
+		float3 p = ro + (rd*depth);
+		p /= stepMax;
+		return p;
+	}
 };
