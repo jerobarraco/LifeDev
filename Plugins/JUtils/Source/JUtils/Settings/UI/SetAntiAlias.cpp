@@ -29,7 +29,7 @@ void USetAntiAlias::Load_Implementation() {
 void USetAntiAlias::Apply_Implementation() {
 	IConsoleVariable* const Variable =
 		IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"));
-	if (!Variable) [[unlikely]] return;
+	if (UNLIKELY(!Variable)) return;
 
 	const int32 Val = FMath::Clamp<int32>(GetSelectedIndex(), 0, AAM_MAX);
 	UE_LOG(LogTemp, Log, TEXT("%hs antialias to %i"), __func__, Val);

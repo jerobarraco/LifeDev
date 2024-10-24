@@ -23,5 +23,5 @@ public:
 	TSubclassOf<AActor> ItemClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UChildActorComponent* Item;
+	TObjectPtr<UChildActorComponent> Item = nullptr;
 };
