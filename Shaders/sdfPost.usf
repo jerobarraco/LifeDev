@@ -6,6 +6,11 @@
 #include "sdfShape.usf"
 
 class SDFPost: SDF {
+	float SceneTest(const float3 p, out int oid) {
+		oid = 1;
+		return length( float3(0, 0, 0)-p)-3;
+	}
+
 	float Scene(const float3 p, out int oid) {
 		float last = -1;
 		// float s = sdSphere(p, float3(10, 10, 50), 10);
