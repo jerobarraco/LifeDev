@@ -56,17 +56,17 @@ protected:
 	float DoneFB = 0;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp")
-	UCLSounder* SND = nullptr;
+	TObjectPtr<UCLSounder> SND = nullptr;
 
 	// caches
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlashback* FB = nullptr;
+	TObjectPtr<UFlashback> FB = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UStory* Story = nullptr;
+	TObjectPtr<UStory> Story = nullptr;
 };

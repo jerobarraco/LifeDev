@@ -27,7 +27,7 @@ public:
 	virtual void DoTrigger_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	UMaterialInterface* Mat = nullptr;
+	TObjectPtr<UMaterialInterface> Mat = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
