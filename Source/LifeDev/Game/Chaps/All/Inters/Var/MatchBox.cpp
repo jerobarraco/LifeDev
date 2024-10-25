@@ -1,18 +1,19 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Pencil.h"
+#include "MatchBox.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-APencil::APencil():Super() {
-	Texts = { FText::FromString(TEXT("Pencil")) };
+AMatchBox::AMatchBox():Super() {
+	Texts = { FText::FromString(TEXT("MatchBox")) };
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Pencil_P"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/MatchBox_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
 	
@@ -28,5 +29,5 @@ APencil::APencil():Super() {
 	UseFade = true;
 
 	Super::SetAutoActivate(false);
-	APencil::SetMobility(EComponentMobility::Static);
+	AMatchBox::SetMobility(EComponentMobility::Static);
 }
