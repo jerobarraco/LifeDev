@@ -56,5 +56,7 @@ protected:
 	inline static TSet<EFeat> WatchFeats = {
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_STROBE,
+		EFeat::V_FOV, EFeat::V_SPEED, EFeat::V_MLIGHTS,
+		EFeat::V_FLASHBACK
 	};
 };
