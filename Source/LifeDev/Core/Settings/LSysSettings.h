@@ -48,6 +48,8 @@ enum class EFeat: uint8 {
 #pragma region Visuals
 	// lumen gi
 	V_LUMEN,
+	// MegaLights
+	V_MLIGHTS,
 	// blur
 	V_BLUR,
 	// strobing lights
