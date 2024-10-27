@@ -60,6 +60,8 @@ enum class EFeat: uint8 {
 	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
+	// nanite
+	V_NANITE,
 
 	V_MAX UMETA(Hidden),
 #pragma endregion
@@ -147,7 +149,7 @@ public:
 	TSet<EFeat> DefaultFeats = {
 		EFeat::D_SHOW, EFeat::D_TEXT,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS,
+		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
@@ -158,7 +160,7 @@ public:
 		EFeat::DBG_STEPS, EFeat::DBG_BASE,
 		EFeat::D_SHOW,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS,
+		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};

@@ -31,7 +31,7 @@ public:
 protected:
 	void LoadMPC();
 	UFUNCTION()
-	void FeatVisualUpdate(EFeat Feat, bool bEnabled);
+	void FeatVisualUpdate(const EFeat Feat, const bool bEnabled);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ALGGameMode> GM = nullptr;

@@ -408,6 +408,7 @@ void ULSetVideoUI::FeatsSet() {
 	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
 	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen GI"));
 	FeatTexts.Add(EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights"));
+	FeatTexts.Add(EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite"));
 	FeatsGroup->SetUp(FeatTexts);
 }
 

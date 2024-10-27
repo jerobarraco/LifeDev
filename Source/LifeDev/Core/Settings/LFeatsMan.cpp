@@ -74,7 +74,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
+void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 	if (!IsValid(GM) || !IsValid(GM->PostProcess)) return;
 	
 	// Important:
@@ -105,7 +105,13 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 			Post->Settings.AddBlendable(FBMat, 1);
 		else
 			Post->Settings.RemoveBlendable(FBMat);
-	} else if (MPCI) {
+	} else if (Feat == EFeat::V_NANITE) {
+		UE_LOG(LogTemp, Log, TEXT("%hs NAnite=%i"), __func__, bEnabled);
+			IConsoleVariable* const Variable = IConsoleManager::Get().FindConsoleVariable(TEXT("r.Nanite"));
+			if (!Variable) return;
+			Variable->Set(bEnabled?1:0);
+	} else {
+		if (!MPCI) return; // on purpose like this, to not make a mistake myself.
 		const float v = bEnabled ? 1: 0;
 		if (Feat == EFeat::V_STROBE) 
 			MPCI->SetScalarParameterValue("Strobe", v);
@@ -117,5 +123,5 @@ void ALFeatsMan::FeatVisualUpdate(EFeat Feat, bool bEnabled) {
 			else
 				Post->Settings.RemoveBlendable(SpeedMat);
 		}
-	}
+	} 
 }
