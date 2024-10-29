@@ -3,22 +3,21 @@
 #include "MatchBox.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 AMatchBox::AMatchBox():Super() {
-	Texts = { FText::FromString(TEXT("MatchBox")) };
+	Texts = { FText::FromString(TEXT("Match box")) };
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/MatchBox_P"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Matchbox00"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
+	Mesh->SetRelativeLocation(FVector(-2.000000,2.750000,-0.500000));
 	
-	Interact->SetBoxExtent(FVector(7.5,1,1));
-	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));
+	Interact->SetRelativeLocation(FVector(2.000000,-2.750000,0.750000));
+	Interact->SetBoxExtent(FVector(4.000000,5.000000,1.500000));
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC"));
@@ -28,6 +27,6 @@ AMatchBox::AMatchBox():Super() {
 	// AnimFade->SetNewMat();
 	UseFade = true;
 
-	Super::SetAutoActivate(false);
+	Super::SetAutoActivate(true);
 	AMatchBox::SetMobility(EComponentMobility::Static);
 }
