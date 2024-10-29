@@ -3,11 +3,14 @@
 #include "Picture01.h"
 
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 APicture01::APicture01():Super() {
 	UseAnim = false;
+	UseFade = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
 	Texts = { FText::FromString(TEXT("A Picture")) } ;
@@ -27,5 +30,8 @@ APicture01::APicture01():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
+	// force using the material from the mesh. (though we don't use reward destroy)
+	AnimFade->MatBase = nullptr;
+	AnimFade->Mat = nullptr;
 	Super::SetMobility(EComponentMobility::Static);
 }

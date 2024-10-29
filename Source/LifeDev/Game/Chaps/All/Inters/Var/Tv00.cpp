@@ -115,6 +115,7 @@ void ATv00::BeginPlay() {
 	Super::BeginPlay();
 
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
+	// need to set the material for the animcrt manually.
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
 	if (IsValid(AnimCrt->Mat)) {
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
