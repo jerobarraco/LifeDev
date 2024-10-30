@@ -3,13 +3,15 @@
 #include "HeaterI00.h"
 
 #include "Diags/Diags.h"
-#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
+
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
 	RewardFlash = .1f;
 	// don't disappear
+	UseRewardDestroy = false;
+	UseFade = false;
 	UseRewardDestroy = false;
 
 	TriggerDlg = "HT00_T";

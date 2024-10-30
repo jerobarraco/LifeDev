@@ -1,10 +1,11 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #include "HeaterI01.h"
-#include "Interact/CInteract.h"
 
 AHeaterI01::AHeaterI01():Super() {
 	UseAnim = false;
+	UseFade = false;
+	UseRewardDestroy = false;
 	Locked = true;
 	
 	LockedDlg = "HT01_L";
