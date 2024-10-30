@@ -51,7 +51,6 @@ ALight00::ALight00():Super() {
 
 void ALight00::BeginPlay() {
 	Super::BeginPlay();
-	// TODO move the material loading to the CDO. see TV00
 	// DO NOT CREATE material instance on the constructor. or it will crash the editor at best.
 	// using metal instead of glass to avoid having to deal with transparency.
 	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
