@@ -6,8 +6,12 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
+#include "JUtils/Misc/JMiscConsts.h"
 
 ALight00::ALight00():Super() {
+	UseFade = false;
+	UseRewardDestroy = false;
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support.Support"));
 	Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
@@ -18,21 +22,19 @@ ALight00::ALight00():Super() {
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent.Fluorescent"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Tube->SetupAttachment(Mesh);
-	if (CTube.Succeeded()) {
-		Tube->SetStaticMesh(CTube.Object);
-	}
+	IFL(CTube.Succeeded()) Tube->SetStaticMesh(CTube.Object);
+
 	Tube->SetRelativeLocation(FVector(0.5,7.5,100));
 	Tube->SetCastAllShadows(false);
 
 	/// anim
 	UseAnim = true;
-	Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
+	Anim->MatVStart = FLinearColor::Black;
+	Anim->MatVEnd = FLinearColor::White;
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
-	if (CCurve.Succeeded()) {
-		Anim->Curve = CCurve.Object;
-	}
+	IFL (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
 	
 	RectLight->SetRelativeLocation(FVector(0.5,7.5,100));
 	RectLight->SetRelativeRotation(FRotator(90,90,0));
@@ -53,14 +55,9 @@ void ALight00::BeginPlay() {
 	// DO NOT CREATE material instance on the constructor. or it will crash the editor at best.
 	// using metal instead of glass to avoid having to deal with transparency.
 	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
-	static FSoftObjectPath Path(
-			TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelMetal_MI.VoxelMetal_MI"));
-	const TSoftObjectPtr<UMaterialInterface> MatP(Path);
-	UMaterialInterface* const M = MatP.LoadSynchronous(); // i know you'll love this.
-	if (IsValid(M)) {
-		UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, M);
-		Anim->Mat = MI;
-	}
+	// passing nullptr uses the current material. note this could return nullptr, in which case the animmat will skip.
+	UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, nullptr);
+	Anim->Mat = MI;
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
