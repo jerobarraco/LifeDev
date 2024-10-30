@@ -1,12 +1,12 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "CloutI04.h"
+#include "CloutI09.h"
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Misc/JMiscConsts.h"
 
-ACloutI04::ACloutI04():Super() {
+ACloutI09::ACloutI09():Super() {
 	RewardItem = "CloutI04";
 	LockedDlg = "CL04_L";
 	Locked = true;
