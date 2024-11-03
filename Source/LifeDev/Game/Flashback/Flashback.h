@@ -97,7 +97,7 @@ protected:
 	void AnimEnd();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimator* Animator = nullptr;
+	TObjectPtr<UCAnimator> Animator = nullptr;
 
 	// it's super important that the value starts from 0 upon initialization
 	float Val = 0;
