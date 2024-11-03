@@ -8,7 +8,7 @@
 class SDFPost: SDF {
 	float SceneTest(const float3 p, out int oid) {
 		oid = 1;
-		return length( float3(0, 0, 0)-p)-3;
+		return length( p-float3(0, 0, 0) ) -30.0;
 	}
 
 	float Scene(const float3 p, out int oid) {
