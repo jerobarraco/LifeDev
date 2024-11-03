@@ -14,6 +14,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bEvaluateWorldPositionOffsetInRayTracing = false;
 	WorldPositionOffsetDisableDistance = 1;
 	bWorldPositionOffsetWritesVelocity = false;
+	bCastDistanceFieldIndirectShadow = true; // TODO is this a perf improv or not?
 
 	SetQuickCollisionEnabled(false);
 	SetCastAllShadows(false);
