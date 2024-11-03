@@ -10,15 +10,15 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AWindow00: public AWindow {
 	GENERATED_BODY()
-public:
 
+public:
 	AWindow00();
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
-	UStaticMeshComponent* GlassA;
-	UPROPERTY(BlueprintReadOnly)
-	UStaticMeshComponent* GlassB;
-	UPROPERTY(BlueprintReadOnly)
-	UStaticMeshComponent* GlassC;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> GlassA = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> GlassB = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> GlassC = nullptr;
 };
