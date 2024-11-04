@@ -52,7 +52,7 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	WasOk = Ok;
 
 	// give time for audio to play
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (!W) return;
 
 	ALGGameMode* const Mode = ALGGameMode::Instance(W);
