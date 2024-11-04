@@ -17,16 +17,7 @@ public:
 
 protected:
 	virtual void PostLoad() override;
-	// virtual void BeginPlay() override;
-
-	virtual void Done_Implementation(bool IsOk) override;
-
-	UFUNCTION()
-	void PostDone();
-	UFUNCTION()
-	void PostDoneSnd();
-	UFUNCTION()
-	void LidDone();
+	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TObjectPtr<AInteractAnim> Lid = nullptr;
@@ -34,6 +25,4 @@ protected:
 	TObjectPtr<USoundBase> SND_Wrong = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TObjectPtr<USoundBase> SND_Right = nullptr;
-
-	bool WasOk = false;
 };
