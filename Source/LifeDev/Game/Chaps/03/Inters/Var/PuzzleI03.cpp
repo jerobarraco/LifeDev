@@ -36,5 +36,3 @@ void APuzzleI03::BeginPlay() {
 	static const TArray<int32> States = {0, 4, 0, 3, 2};
 	SetStates(States);
 }
-
-
