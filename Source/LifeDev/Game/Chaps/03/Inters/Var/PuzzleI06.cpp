@@ -32,9 +32,11 @@ void APuzzleI06::PostLoad() {
 
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
-	const bool Locked = ChapFeat != EFeat::C_03;
-	const TArray<bool> Locks = {Locked, Locked, Locked};
+	const bool Enabled = ChapFeat == EFeat::C_03;
+	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);
+	SetActives(Enabled);
+	
 }
 
 void APuzzleI06::BeginPlay() {

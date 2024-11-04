@@ -47,7 +47,7 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 	// notice not calling super::done here since that can reset
 
 	// disable until i play the solution
-	SetEnableds(false);
+	SetActives(false);
 
 	WasOk = Ok;
 

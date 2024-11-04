@@ -204,12 +204,12 @@ void UCPuzzle::SetDisableWhileAnims(bool NewDisable) {
 	}
 }
 
-void UCPuzzle::SetEnableds(bool NewEnabled) {
+void UCPuzzle::SetActives(const bool NewActive) {
 	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s"), __func__, *GetNameSafe(this));
 
 	for (AInteract* const I: Interacts) {
 		if (!IsValid(I)) continue;
-		I->SetActive(NewEnabled);
+		I->SetActive(NewActive);
 	}
 }
 

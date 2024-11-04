@@ -46,8 +46,8 @@ public:
 	
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
-	void SetEnableds(bool NewEnabled);
-		
+	void SetActives(const bool NewActive);
+
 	// sets the states on each registered interact.
 	// Call on or after begin play.
 	// Note that this will reset the cpuzzle (and interacts) 

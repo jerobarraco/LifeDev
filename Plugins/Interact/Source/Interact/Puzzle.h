@@ -32,15 +32,15 @@ public:
 
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetEnableds(bool NewEnabled) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetEnableds(NewEnabled); }
-	};
+	FORCEINLINE void SetActives(const bool NewEnabled) {
+		if (IsValid(CPuzzle)) { CPuzzle->SetActives(NewEnabled); }
+	}
 
 	// sets "DisableWhileAnims" on all the interacts.
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetDisableWhileAnims(bool NewDisabled) {
+	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) {
 		if (IsValid(CPuzzle)) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
-	};
+	}
 
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	UFUNCTION(BlueprintCallable)
