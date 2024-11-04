@@ -131,8 +131,7 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 }
 
 int32 ULSettings::CurrentChapter() const {
-	// is valid this is important to avoid segfaults that should not happen
-	return IsValid(this) && IsValid(Save) ? Save->ChapterID : -1;
+	return IsValid(Save) ? Save->ChapterID : -1;
 }
 
 EFeat ULSettings::CurrentChapterFeat() const {
