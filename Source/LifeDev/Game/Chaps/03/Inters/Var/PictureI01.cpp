@@ -6,7 +6,7 @@
 
 APictureI01::APictureI01():Super() {
 	Texts = { FText::FromString(TEXT("Picture"))};
-	TriggerDlg = "PIC00_T";
+	TriggerDlg = "PIC01_T";
 	IsOneShot = true;
 	RewardFlash = .09;
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
