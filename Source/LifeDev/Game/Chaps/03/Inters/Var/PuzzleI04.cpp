@@ -5,7 +5,7 @@
 #include "Interact/CPuzzle.h"
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "Kismet/GameplayStatics.h"
+
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
