@@ -50,7 +50,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
 
-	// returns the current chapter feature. or none if invalid.
+	// returns the current chapter feature.
+	// or none on chapid -1, or c_max if over the max.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EFeat CurrentChapterFeat() const;
 	

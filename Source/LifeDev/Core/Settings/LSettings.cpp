@@ -137,8 +137,8 @@ int32 ULSettings::CurrentChapter() const {
 EFeat ULSettings::CurrentChapterFeat() const {
 	const int32 ChId = CurrentChapter();
 	const int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
-	const bool Invalid = ChId < 0 || ChId >= Max;
-	if (!Invalid) return EFeat::NONE;
+	if (ChId < 0) return EFeat::NONE;
+	if (ChId >= Max) return EFeat::C_MAX;
 	return LDConsts::Feats::ChapFeats[ChId];
 }
 

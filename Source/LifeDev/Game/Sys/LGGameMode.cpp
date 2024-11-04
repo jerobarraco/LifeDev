@@ -23,7 +23,6 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
@@ -356,24 +355,29 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALGGameMode::StartChapter() {
 	const int32 ChapterId = Settings->CurrentChapter();
+	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
 
-	UE_LOG(LogLGameMode, Log, TEXT("Attempting to start chapter id=%i"), ChapterId);
+	UE_LOG(LogLGameMode, Log, TEXT("%hs Attempting to start chapter id=%i feat=%s"),
+		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance) || !IsValid(Story)) {
 		// Should this be here?
-		UE_LOG(LogLGameMode, Warning, TEXT("No game instance or story or story manager. Can't proceed."));
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs No game instance or story or story manager. Can't proceed."),
+			__func__);
 		return;
 	}
 
 	// stop here to avoid getting the engine stuck trying to load chapters
-	if (ChapterId >= LDConsts::Feats::ChapFeatN) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Went beyond available chapters. Stopping dry. id=%i."), ChapterId);
+	if (ChapFeat == EFeat::C_MAX) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
+			__func__, ChapterId);
 		return;
 	}
 	
-	// skip chapter if not enabled
-	if (ChapterId <0 || !Settings->GetFeat(LDConsts::Feats::ChapFeats[ChapterId])) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Skipping chapter. Not in game Feats. id=%i."), ChapterId);
+	// skip chapter if not enabled or just started
+	if (ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
+			__func__, ChapterId);
 		StartNextChapter(); // note this is recursive but there ain't that many chapters
 		return;
 	}

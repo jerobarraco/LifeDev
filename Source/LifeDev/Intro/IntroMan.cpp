@@ -35,12 +35,16 @@ void AIntroMan::Done() {
 	// GetWorld()->ServerTravel(NextLevel);
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 
-	ULSettings* const Settings = ULSettings::Instance(World);
+	const ULSettings* const Settings = ULSettings::Instance(World);
 	if (!Settings) return;
+
 	const int32 ChapterID = Settings->CurrentChapter();
-	if (ChapterID >= LDConsts::Feats::ChapFeatN -1) { // -1 because we never actually save that chapter.
+	// -1 because we never actually save that chapter.
+	constexpr int32 ChapMax = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats) -1;
+
+	if (ChapterID >= ChapMax) {
 		UE_LOG(LogTemp, Log, TEXT("Current save is beyond the max chapter."));
 		static const FText TheEnd(
 			NSLOCTEXT("Intro", "MaxChapterReached",
@@ -66,8 +70,8 @@ void AIntroMan::BeginPlay() {
 }
 
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (UI) {
+	if (UI)
 		UI->OnDone.RemoveAll(this);
-	}
+
 	Super::EndPlay(EndPlayReason);
 }
