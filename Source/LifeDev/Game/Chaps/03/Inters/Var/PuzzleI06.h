@@ -18,11 +18,4 @@ public:
 protected:
 	virtual void PostLoad() override;
 	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TObjectPtr<AInteractAnim> Lid = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TObjectPtr<USoundBase> SND_Wrong = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TObjectPtr<USoundBase> SND_Right = nullptr;
 };
