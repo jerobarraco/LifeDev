@@ -30,13 +30,8 @@ void APuzzleI06::PostLoad() {
 	};
 	SetUseItemDlgs(Dlgs);
 
-	const ULSettings* const Settings = ULSettings::Instance(this);
-	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
-	const bool Enabled = ChapFeat == EFeat::C_03;
 	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);
-	SetActives(Enabled);
-	
 }
 
 void APuzzleI06::BeginPlay() {
@@ -45,6 +40,13 @@ void APuzzleI06::BeginPlay() {
 	static const TArray<int32> States = {0, 4, 1};
 	SetStates(States);
 
+	// this is the only safe place to set active and get the settings
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
+	const bool Active = false && ChapFeat == EFeat::C_03; // disabled manually. still needs work.
+	SetActives(Active);
+	UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
+	
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
@@ -52,6 +54,5 @@ void APuzzleI06::BeginPlay() {
 	const float Diff = FMath::Lerp(-DiffAm, +DiffAm,
 		Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
 	DoneFB += Diff;
-	const FString& ClassName = StaticClass()->GetName();
-	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"), *ClassName, __func__, Diff);
+	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"), *GetNameSafe(this), __func__, Diff);
 }

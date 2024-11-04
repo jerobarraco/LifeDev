@@ -2,8 +2,6 @@
 
 #include "PictureI00.h"
 
-#include "CQuickMesh.h"
-
 APictureI00::APictureI00():Super() {
 	Texts = {
 		FText::FromString(TEXT("Picture A")),
@@ -15,6 +13,7 @@ APictureI00::APictureI00():Super() {
 	UseRewardDestroy = false;
 	UseFade = false;
 	// TODO state transforms
-	
-	// APictureI00::SetAutoActivate(true);
+
+	// important. the puzzle will activate them.
+	APictureI00::SetAutoActivate(false);
 }
