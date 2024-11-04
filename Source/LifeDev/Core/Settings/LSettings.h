@@ -46,9 +46,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetSlotIndex() { return SlotIndex; }
 
+	// returns the current chapter id. -1 if no valid save or chapter is loaded.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 CurrentChapter() const;
 
+	// returns the current chapter feature. or none if invalid.
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	EFeat CurrentChapterFeat() const;
+	
 	// Reset all features to factory default (depends on if it's a shipping build)
 	UFUNCTION(BlueprintCallable)
 	void ResetFeats();

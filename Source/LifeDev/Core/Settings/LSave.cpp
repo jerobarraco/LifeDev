@@ -22,12 +22,11 @@ void ULSave::Reset(UWorld* const W) {
 	// not using the above, since i want to preserve the ability to skip chapters even on shipping builds
 	Time = FDateTime::Now().ToUnixTimestamp();
 	ULSysSettings* const SysSettings = ULSysSettings::Get();
-	
 	ChapterID = SysSettings ? SysSettings->StartChap : 0;
 	SInventory.Empty();
 	SFlags.Empty();
-	
 	SFeats.Empty();
+
 	// read the feats
 	if (SysSettings) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);

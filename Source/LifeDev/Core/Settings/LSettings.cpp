@@ -5,8 +5,11 @@
 #include "GameFramework/SaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "JUtils/Misc/JUtilsMisc.h"
+
 #include "LSave.h"
 #include "LSysSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
@@ -129,6 +132,14 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 
 int32 ULSettings::CurrentChapter() const {
 	return IsValid(Save) ? Save->ChapterID : -1;
+}
+
+EFeat ULSettings::CurrentChapterFeat() const {
+	const int32 ChId = CurrentChapter();
+	const int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
+	const bool Invalid = ChId < 0 || ChId >= Max;
+	if (!Invalid) return EFeat::NONE;
+	return LDConsts::Feats::ChapFeats[ChId];
 }
 
 void ULSettings::ResetFeats() {
