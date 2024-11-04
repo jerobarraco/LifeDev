@@ -7,6 +7,7 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
@@ -29,7 +30,10 @@ void APuzzleI06::PostLoad() {
 	};
 	SetUseItemDlgs(Dlgs);
 
-	static const TArray<bool> Locks = {false, false, false};
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
+	const bool Locked = ChapFeat != EFeat::C_03;
+	const TArray<bool> Locks = {Locked, Locked, Locked};
 	SetLocks(Locks);
 }
 
@@ -39,7 +43,7 @@ void APuzzleI06::BeginPlay() {
 	static const TArray<int32> States = {0, 4, 1};
 	SetStates(States);
 
-	UFlags* const Flags = UFlags::Instance(this);
+	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
 	constexpr float DiffAm = .3;
