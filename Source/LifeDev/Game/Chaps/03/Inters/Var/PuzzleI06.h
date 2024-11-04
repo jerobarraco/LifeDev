@@ -1,0 +1,39 @@
+// Copyright Jerónimo Barraco-Mármol
+
+#pragma once
+#include "LifeDev/Game/Interact/Base/LPuzzle.h"
+
+#include "PuzzleI06.generated.h"
+
+class AInteractAnim;
+
+// Chap 03 Puzzle Instance 05 Picture puzzles 
+UCLASS(Blueprintable, BlueprintType)
+class LIFEDEV_API APuzzleI06: public ALPuzzle {
+	GENERATED_BODY()
+
+public:
+	APuzzleI06();
+
+protected:
+	virtual void PostLoad() override;
+	// virtual void BeginPlay() override;
+
+	virtual void Done_Implementation(bool IsOk) override;
+
+	UFUNCTION()
+	void PostDone();
+	UFUNCTION()
+	void PostDoneSnd();
+	UFUNCTION()
+	void LidDone();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TObjectPtr<AInteractAnim> Lid = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TObjectPtr<USoundBase> SND_Wrong = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TObjectPtr<USoundBase> SND_Right = nullptr;
+
+	bool WasOk = false;
+};
