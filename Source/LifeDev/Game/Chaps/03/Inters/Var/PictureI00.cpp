@@ -16,10 +16,5 @@ APictureI00::APictureI00():Super() {
 	UseFade = false;
 	// TODO state transforms
 	
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat (TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
-	if (CMat.Succeeded())
-		Mesh->SetMaterial(0, CMat.Object.Get());
-
-	APictureI00::SetAutoActivate(true);
+	// APictureI00::SetAutoActivate(true);
 }
