@@ -91,11 +91,11 @@ protected:
 	void Stop();
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDataTable* Diags = nullptr;
+	TObjectPtr<UDataTable> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDataTable* Chars = nullptr;
+	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDataTable* Seqs = nullptr;
+	TObjectPtr<UDataTable> Seqs = nullptr;
 	
 	TArray<FDialog> Pending;
 	bool IsShowing = false;
