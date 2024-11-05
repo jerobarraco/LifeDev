@@ -63,7 +63,7 @@ void ALInteract::BeginPlay() {
 	if (WillRewardDestroy()) {
 		UseAttachedSFX = false;
 		if (!UseFade)
-			UE_LOG(LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false."
+			UE_LOG(LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false. "
 				"This is legal but unlikely. o=%s"), __func__, *GetNameSafe(this));
 	}
 
