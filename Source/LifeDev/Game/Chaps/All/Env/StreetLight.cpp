@@ -17,9 +17,8 @@ AStreetLight::AStreetLight():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 			CCurve (TEXT("/JUtils/Curves/Noise_C.Noise_C"));
-	if (CCurve.Succeeded()) {
+	if (CCurve.Succeeded())
 		Anim->Curve = CCurve.Object;
-	}
 	
 	Interact->SetRelativeLocation(FVector(17.5,-17.5,75));
 	Interact->SetBoxExtent(FVector(17.5,17.5,75));
