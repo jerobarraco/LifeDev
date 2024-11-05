@@ -91,7 +91,8 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
 	Flashback = nullptr;
 	Story = nullptr;
-
+	RewardActor = nullptr; // free reference
+	
 	Super::EndPlay(EndPlayReason);
 }
 

@@ -124,7 +124,7 @@ public:
 	// remember to call SetNewMat on the constructor if you use the new material.
 	// remember to call CreateMaterial on BeginPlay if there are no rewards.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCAnimatorFade* AnimFade = nullptr;
+	TObjectPtr<UCAnimatorFade> AnimFade = nullptr;
 
 protected:
 	// triggered when something is rewarded. override to be notified.
@@ -153,15 +153,15 @@ protected:
 	/// cache
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlashback* Flashback = nullptr;
+	TObjectPtr<UFlashback> Flashback = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UStory* Story = nullptr;
+	TObjectPtr<UStory> Story = nullptr;
 };
 
 // TODO at some point *consider* moving the Reward functionality to its own child class
