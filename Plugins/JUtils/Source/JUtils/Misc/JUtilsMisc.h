@@ -98,4 +98,7 @@ public:
 
 	template <typename T, std::size_t N> 
 	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
+	
+	template <typename T>
+	static void ArrayShuffle(TArray<T>& Array);
 };
