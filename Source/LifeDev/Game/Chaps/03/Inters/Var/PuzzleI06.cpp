@@ -11,7 +11,7 @@
 
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {1, 2, 0}; // TODO
+	CPuzzle->Solution = {0, 1, 2};
 	ResetOnFail = false;
 
 	static FName DoneId = "PZ06_T";
@@ -36,7 +36,7 @@ void APuzzleI06::PostLoad() {
 void APuzzleI06::BeginPlay() {
 	Super::BeginPlay();
 
-	static const TArray<int32> States = {0, 4, 1};
+	static const TArray<int32> States = {1, 2, 0};
 	SetStates(States);
 
 	// this is the only safe place to set active and get the settings

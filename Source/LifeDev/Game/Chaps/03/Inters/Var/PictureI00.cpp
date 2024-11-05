@@ -8,22 +8,19 @@ APictureI00::APictureI00():Super() {
 	UseRewardDestroy = false;
 	UseFade = false;
 	UseAnim = true;
-	StateNum = 4;
+	StateNum = 3;
 	Texts = {
 		FText::FromString(TEXT("Move")),
 		FText::FromString(TEXT("Move again")),
-		FText::FromString(TEXT("Move again ...")),
 		FText::FromString(TEXT("Move once more"))
 	};
 	const FRotator State0Rot(0,35.,0);
 	const FRotator State1Rot(0,5,0);
-	const FRotator State2Rot(0,-40.,0);
-	const FRotator State3Rot(0,-55.,0);
+	const FRotator State2Rot(0,-35.,0);
 	Trans = {
 		FTransform(State0Rot),
 		FTransform(State1Rot),
 		FTransform(State2Rot),
-		FTransform(State3Rot),
 	};
 	IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
