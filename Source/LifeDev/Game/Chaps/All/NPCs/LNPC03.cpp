@@ -89,7 +89,7 @@ ALNPC03::ALNPC03():Super() {
 	AnimFade->SetNewMat();
 	// TODO actually move this to the child instance (since this class itself doesn't need to fade).
 	UseFade = true;
-
+	AnimFade->Duration = 3; // needs to be slower due to camera movement
 	PoseBase.InteractExt = FVector(25,25,55);
 	PoseBase.InteractOrg = FVector(0,-5,50);
 	PoseBase.Head.SetLocation(FVector(0,0,25));
