@@ -192,7 +192,7 @@ void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	// this is like traveling to the future backwards, i'm warning my future self of a past problem.
 	// TODO this sometimes logs when it shouldn't
 	// UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
-	UE_CLOG(!NeedsInitialization() && !OwnerNeedsInitialization(), LogCInteract, Warning,
+	UE_CLOG(NeedsInitialization() || OwnerNeedsInitialization(), LogCInteract, Warning,
 		TEXT("%hs Don't call during construction! Call SetAutoActivate. O=%s"),
 		__func__, *GetNameSafe(GetOwner()));
 	
