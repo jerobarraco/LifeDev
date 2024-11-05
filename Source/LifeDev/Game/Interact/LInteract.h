@@ -98,7 +98,7 @@ public:
 
 	// An actor to reward. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	AActor* RewardActor = nullptr;
+	TObjectPtr<AActor> RewardActor = nullptr;
 	// actually editAnywhere since we want to modify the pointer
 
 	// Will start the next story step (finishing the current one).
