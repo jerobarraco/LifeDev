@@ -78,19 +78,19 @@ protected:
 
 	// Interact to *trigger* on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	AInteract* DoneInter = nullptr;
+	TObjectPtr<AInteract> DoneInter = nullptr;
 	
 	// Actor to reward on Done. Can be an interact, it will use fade, but won't trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	AActor* DoneActor = nullptr;
+	TObjectPtr<AActor> DoneActor = nullptr;
 
 	/// subobjects
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCPuzzle* CPuzzle = nullptr;
+	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	USceneComponent* Root = nullptr;
+	TObjectPtr<USceneComponent> Root = nullptr;
 
 	/// transient
 

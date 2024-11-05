@@ -102,7 +102,7 @@ public:
 	// triggers when the puzzle is completed, with or without success.
 	UPROPERTY(BlueprintAssignable, Category="SetUp|Events")
 	FPuzzleOnDone OnDone;
-	
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
