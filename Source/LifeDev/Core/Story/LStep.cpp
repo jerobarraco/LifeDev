@@ -258,7 +258,7 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 		if (!Inter) continue;
 
 		if (WithFade) Inter->Fade(Active);
-		// fade will call set-enabled. otherwise have to call it manually.
+		// fade will call set-active. otherwise have to call it manually.
 		// make sure to call it. Avoid calling twice just in case there are side effects.
 		else Inter->SetActive(Active);
 	}

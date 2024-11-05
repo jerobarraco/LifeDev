@@ -29,19 +29,19 @@ ALInteract::ALInteract():Super() {
 	AnimFade->Meshes.Add(Mesh);
 }
 
-void ALInteract::Fade_Implementation(bool FadeIn) {
-	UE_LOG(LogLInteract, Log, TEXT("%hs in=%i o=%s"),
-		__func__, FadeIn, *GetNameSafe(this));
-	if (UseFade) {
-		AnimFade->IsReversed = FadeIn;
-		AnimFade->Activate(true);
-	}
-
+void ALInteract::Fade_Implementation(const bool FadeIn) {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i useFade=%i"),
+		__func__, *GetNameSafe(this), FadeIn, UseFade);
 	// i'm not super sure about this.
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
 	// please me from the future, be careful. "ki o tsukete!"
 	SetActive(FadeIn);
+
+	if (UseFade) {
+		AnimFade->IsReversed = FadeIn;
+		AnimFade->Activate(true);
+	}
 }
 
 void ALInteract::BeginPlay() {
