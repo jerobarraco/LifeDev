@@ -2,6 +2,7 @@
 #include "LStep.h"
 
 #include "Diags/Diags.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
@@ -235,7 +236,7 @@ void ALStep::PostLoad() {
 		const UStory* const Story = UStory::Instance(GetWorld());
 		WaitTime = Story ? Story->FadeTime : 1;
 	}
-	
+
 	// avoid finishing earlier if we have Diags
 	if (!DlgId.IsNone()) FinishPostWait = false;
 }
@@ -252,15 +253,20 @@ void ALStep::Finish_Implementation() {
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	for (AActor* const A: ActorsShow) {
 		if (!IsValid(A)) continue;
-		
-		A->SetActorHiddenInGame(!Active);
-		ALInteract* const Inter = Cast<ALInteract>(A);
-		if (!Inter) continue;
 
-		if (WithFade) Inter->Fade(Active);
-		// fade will call set-active. otherwise have to call it manually.
-		// make sure to call it. Avoid calling twice just in case there are side effects.
-		else Inter->SetActive(Active);
+		ALInteract* const Inter = Cast<ALInteract>(A);
+		if (!Inter || !WithFade) {
+			A->SetActorHiddenInGame(!Active);
+			// fade will call set-active. otherwise have to call it manually.
+			// make sure to call it. Avoid calling twice just in case there are side effects.
+			if (Inter) Inter->SetActive(Active);
+			continue;
+		}
+		// here WithFade is true and inter as well
+		Inter->Fade(Active);
+		if (Active) {
+			A->SetActorHiddenInGame(!Active);
+		} // TODO only set hidden in game false after fade is done
 	}
 }
 
@@ -271,7 +277,6 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 }
 
 void ALStep::SetIntersActive(const bool Enabled) {
-	// TODO rename. requires a redirector because i'm setting this on the editor. lol :')
 	for (const TObjectPtr<AInteract>& I: IntersActive) {
 		if (IsValid(I)) I->SetActive(Enabled);
 	}
