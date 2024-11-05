@@ -28,11 +28,11 @@ public:
 	bool AddId(const FName& Row);
 	// add many sequences or dialogs. can be recursive
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddManyIds(const TArray<FName>& Rows);
+	bool AddIdMany(const TArray<FName>& Rows);
 
 	// add a dialog by its id
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddDiagId(const FName& Row);
+	bool AddDiagId(const FName& Row, const bool Warn=true);
 	// add a dialog
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddDiag(const FDialog& Diag);
@@ -40,7 +40,7 @@ public:
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddSeqId(const FName& RowName);
+	bool AddSeqId(const FName& RowName, const bool Warn=true);
 	// Adds a sequence. Use this to AddManyById.
 	// Beware this doesn't protect you from recursive sequences.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
@@ -52,19 +52,20 @@ public:
 	bool AddRnd(const FDialogSequence& Seq);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const;
+	bool GetDiag(
+		const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetChar(const FName& RowName, FDialogChar& OutChar) const;
+	bool GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq) const;
+	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn=true) const;
 
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
-	// set the data to be used. call upon initialization. 
+	// set the data to be used. call upon initialization.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void SetData(UDataTable* Diags, UDataTable* Chars, UDataTable* Seqs);
+	void SetData(UDataTable* const Diags, UDataTable* const Chars, UDataTable* const Seqs);
 
 	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
@@ -75,7 +76,7 @@ public:
 	void DeInit();
 
 	// true when there's a dialog showing
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsShowing() { return IsShowing; }
 
 	// when a dialog needs to show

@@ -20,9 +20,9 @@ void UDiags::AddDiag(const FDialog& Diag) {
 	ShowNext();
 }
 
-bool UDiags::AddDiagId(const FName& Row) {
+bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	FDialog OutDialog; FDialogChar OutChar;
-	const bool Ok = GetDiag(Row, OutDialog, OutChar);
+	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (!Ok) return false;
 
 	AddDiag(OutDialog);
@@ -33,17 +33,17 @@ bool UDiags::AddId(const FName& Row) {
 	if (Row.IsNone()) return false;
 
 	// attempt to add a sequence (can be random)
-	if (AddSeqId(Row)) return true;
+	if (AddSeqId(Row, false)) return true;
 
 	// otherwise attempt a dialog
-	if (AddDiagId(Row)) return true;
+	if (AddDiagId(Row, false)) return true;
 
 	UE_LOG(LogDiags, Warning,
 		TEXT("%hs: Could not find dialog nor sequence with the id=%s"), __func__, *Row.ToString());
 	return false;
 }
 
-bool UDiags::AddManyIds(const TArray<FName>& Rows) {
+bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 	const int32 Num = Rows.Num();
 	bool Success = Num > 0; // return false if nothing was added
 	for (int32 i = 0; i < Num; ++i) {
@@ -53,9 +53,8 @@ bool UDiags::AddManyIds(const TArray<FName>& Rows) {
 		const FName& Row = Rows[i];
 		// notice this is recursive. that's on purpose but be careful.
 		const bool Ok = AddId(Row);
-		if (!Ok) {
-			Success = false;
-		}
+
+		Success = Success && Ok; // ok will set it to false (faster than branch)
 	}
 
 	return Success;
@@ -63,12 +62,12 @@ bool UDiags::AddManyIds(const TArray<FName>& Rows) {
 
 bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	const TArray<FName>& Rows = Seq.DiagRows;
-	return AddManyIds(Rows);
+	return AddIdMany(Rows);
 }
 
-bool UDiags::AddSeqId(const FName& RowName) {
+bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	FDialogSequence Seq;
-	const bool Ok = GetSeq(RowName, Seq);
+	const bool Ok = GetSeq(RowName, Seq, Warn);
 	if (!Ok) return false;
 
 	// prevent recursion. Notice this doesn't fix cyclic sequences. no simple way to tell either.
@@ -84,11 +83,9 @@ bool UDiags::AddSeqId(const FName& RowName) {
 	}
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
-	if (RowName.ToString().EndsWith("*")) {
+	if (RowName.ToString().EndsWith("*"))
 		return AddRnd(Seq);
-	}
 
-	// since rand is a seq too. if rand doesn't exists the seq doesn't exists.
 	return AddSeq(Seq);
 }
 
@@ -105,7 +102,8 @@ void UDiags::DiagDone() {
 	ShowNext();
 }
 
-void UDiags::SetData(UDataTable* AllDiags, UDataTable* AllChars, UDataTable* AllSeqs) {
+void UDiags::SetData(
+	UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllSeqs) {
 	Diags = IsValid(AllDiags)? AllDiags : nullptr;
 	Chars = IsValid(AllChars)? AllChars: nullptr;
 	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
@@ -119,11 +117,12 @@ void UDiags::DeInit() {
 	Seqs = nullptr;
 }
 
-bool UDiags::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar) const {
+bool UDiags::GetDiag(
+	const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Diags)) return false;
 
-	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""));
+	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""), Warn);
 	if (!Row) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
 		return false;
@@ -134,11 +133,11 @@ bool UDiags::GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar
 	return true;
 }
 
-bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar) const {
+bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Chars)) return false;
 
-	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""));
+	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""), Warn);
 	if (!Row)  {
 		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
@@ -148,11 +147,12 @@ bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar) const {
 	return true;
 }
 
-bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq) const {
+bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn) const {
 	if (RowName.IsNone()) return false;
 	if (!IsValid(Seqs)) return false;
 
-	const FDialogSequence* const Row = Seqs->FindRow<FDialogSequence>(RowName, TEXT(""));
+	const FDialogSequence* const Row =
+		Seqs->FindRow<FDialogSequence>(RowName, TEXT(""), Warn);
 	if (!Row) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
