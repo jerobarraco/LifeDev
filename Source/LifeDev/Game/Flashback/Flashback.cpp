@@ -140,9 +140,9 @@ void UFlashback::Initialize(FSubsystemCollectionBase& Collection) {
 void UFlashback::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	#if WITH_EDITOR
-		const FString& Msg = FString::Printf(TEXT("Flashback V=%.4f P=%.4f"), GetVal(), Animator->GetProgress());
-		GEngine->AddOnScreenDebugMessage(33, DeltaTime, FColor::Green,
-			Msg, true);
+		const FString& Msg = FString::Printf(
+			TEXT("Flashback V=%.4f P=%.4f"), GetVal(), Animator->GetProgress());
+		GEngine->AddOnScreenDebugMessage(33, DeltaTime, FColor::Green, Msg, true);
 	#endif
 
 	// have to manually do it, not optimizations here, they are inside tickmanual

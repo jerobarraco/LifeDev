@@ -38,13 +38,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool DisableWhileAnim = true;
 	
-	// mostly used for puzzles. i'm unsure i will keep this.
 	// the transforms for each state. if this is set it will override the anim values.
 	// the isAdditive flag will be respected, but probably won't work nicely.
 	// won't affect the reversed flag.
-	// if you need to set material values i'd recommend overriding SetState_Implementation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim", meta=(DeprecatedProperty))
+	// mostly used for puzzles.
+	// if you need to set material values, i'd recommend overriding SetState_Implementation instead.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	TArray<FTransform> Trans;
+	// might be good to rework this, texts, sfx_start and sfx_stop
 
 	// Text to be displayed on each state. Closed, Open
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
