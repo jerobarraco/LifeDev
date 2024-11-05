@@ -16,12 +16,11 @@ APuzzleI06::APuzzleI06():Super() {
 
 	static FName DoneId = "PZ06_T";
 	DoneDlg = DoneId;
-	DoneFB = .15;
+	DoneFB = .1;
 }
 
 void APuzzleI06::PostLoad() {
 	Super::PostLoad();
-	// TODO 
 	// common item dialogs
 	static const TMap<FName, FName> Dlgs = {
 		{LDConsts::Items::Card0, "PZ06xC00"},
@@ -43,7 +42,7 @@ void APuzzleI06::BeginPlay() {
 	// this is the only safe place to set active and get the settings
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
-	const bool Active = false && ChapFeat == EFeat::C_03; // disabled manually. still needs work.
+	const bool Active = ChapFeat == EFeat::C_03; // disabled manually. still needs work.
 	SetActives(Active);
 	UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
 	
