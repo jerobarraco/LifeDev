@@ -58,8 +58,6 @@ public:
 	void SetPose(const FNPCHPose& Pose);
 
 protected:
-	virtual void BeginPlay() override;
-
 	// prints the current pose to the console
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void PrintPose();
@@ -68,29 +66,29 @@ protected:
 	FNPCHPose PoseBase;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* Head = nullptr;
+	TObjectPtr<UStaticMeshComponent> Head = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* Torso = nullptr;
+	TObjectPtr<UStaticMeshComponent> Torso = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* Pelvis = nullptr;
+	TObjectPtr<UStaticMeshComponent> Pelvis = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* ArmL1 = nullptr;
+	TObjectPtr<UStaticMeshComponent> ArmL1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* ArmR1 = nullptr;
+	TObjectPtr<UStaticMeshComponent> ArmR1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* ArmL2 = nullptr;
+	TObjectPtr<UStaticMeshComponent> ArmL2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* ArmR2 = nullptr;
+	TObjectPtr<UStaticMeshComponent> ArmR2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* LegL1 = nullptr;
+	TObjectPtr<UStaticMeshComponent> LegL1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* LegR1 = nullptr;
+	TObjectPtr<UStaticMeshComponent> LegR1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* LegL2 = nullptr;
+	TObjectPtr<UStaticMeshComponent> LegL2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* LegR2 = nullptr;
+	TObjectPtr<UStaticMeshComponent> LegR2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* FootL = nullptr;
+	TObjectPtr<UStaticMeshComponent> FootL = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* FootR = nullptr;
+	TObjectPtr<UStaticMeshComponent> FootR = nullptr;
 };

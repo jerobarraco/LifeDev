@@ -13,6 +13,7 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFEnd = 1;
 	Duration = 1.f;
 	// TODO no-one seems to be using fade_DMI (old) attempt to remove
+	//  * actually the objects that are old, will use it implicitly if they are using fade
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>

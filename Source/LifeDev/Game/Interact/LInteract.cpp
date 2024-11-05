@@ -58,9 +58,9 @@ void ALInteract::BeginPlay() {
 	// do not deactivate nor clear the meshes since that could break objects that reuse the AnimFade
 	if (UseFade) AnimFade->CreateMaterial();
 
-	// avoid getting the sound killed on self-destroy
-	// set here on purpose to allow the user to override it and self-hurt.
 	if (WillRewardDestroy()) {
+		// avoid getting the sound killed on self-destroy
+		// set here on purpose to allow the user to override it and self-hurt.
 		UseAttachedSFX = false;
 		if (!UseFade)
 			UE_LOG(LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false. "

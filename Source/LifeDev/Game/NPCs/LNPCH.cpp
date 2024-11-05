@@ -78,11 +78,6 @@ void ALNPCH::SetPose(const FNPCHPose& Pose) {
 	Interact->SetBoxExtent(Pose.InteractExt);
 }
 
-void ALNPCH::BeginPlay() {
-	Super::BeginPlay();
-	AnimFade->CreateMaterial();
-}
-
 void PrintPose_Loc(const FString& Part, const FVector& V) {
 	UE_LOG(LogTemp, Log, TEXT("Pose.%s.SetLocation(FVector(%f, %f, %f));"),
 		*Part, V.X, V.Y, V.Z);
