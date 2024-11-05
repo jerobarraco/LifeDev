@@ -11,7 +11,7 @@ ACloutI09::ACloutI09():Super() {
 	LockedDlg = "CL04_L";
 	Locked = true;
 	UseAnim = false;
-	UseFade = false;
+	UseFade = true;
 
 	const ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
