@@ -65,7 +65,7 @@ void AInteractAnim::DoTrigger_Implementation() {
 
 void AInteractAnim::AnimPlay() {
 	if (!UseAnim) return;
-	
+
 	if (DisableWhileAnim) SetActive(false);
 
 	// both checks avoid an out of bound access

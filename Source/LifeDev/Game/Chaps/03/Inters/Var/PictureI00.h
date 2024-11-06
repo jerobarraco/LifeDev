@@ -12,4 +12,7 @@ class LIFEDEV_API APictureI00: public APicture00 {
 
 public:
 	APictureI00();
+
+protected:
+	virtual void BeginPlay() override;
 };

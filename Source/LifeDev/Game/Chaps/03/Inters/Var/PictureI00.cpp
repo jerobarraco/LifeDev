@@ -24,7 +24,19 @@ APictureI00::APictureI00():Super() {
 	};
 	IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
+	Anim->Duration = 0; // see beginplay
 	// important. the puzzle will activate them.
 	APictureI00::SetAutoActivate(false);
 	APictureI00::SetMobility(EComponentMobility::Type::Movable); // super important
+}
+
+void APictureI00::BeginPlay() {
+	Super::BeginPlay();
+	// small trick needed so that when the puzzle sets the state on begin play,
+	// the animation is not noticeable. A duration of 0 in the constructor makes it instant.
+	// (thanks to myself for supporting a duration of 0).
+	// happens only because the camera is pointing right at it.
+	// and we're using transform animations.
+	
+	Anim->Duration = 1;
 }
