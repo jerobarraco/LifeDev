@@ -66,14 +66,20 @@ void UCAnimator::Finish() {
 	Begin(); // it technically started
 }
 
-void UCAnimator::DoTick(float DT) {
-	// adjust for duration
-	const float ndt = DT/Duration;
-	Progress += ndt;
+void UCAnimator::DoTick(const float DT) {
+	// support duration of 0
+	if (FMath::IsNearlyZero(Duration)) {
+		Progress = 1.0;
+	} else {
+		// adjust for duration
+		const float ndt = DT/Duration;
+		Progress += ndt;
+	}
+
 	// check for finish before but allow to process
 	// that way we ensure we always trigger Progress =1.0 so animations finish where they need to
 	const bool Finished = Progress >= 1.0;
-	if (Finished) Progress = 1.0; // manual clamp important
+	if (UNLIKELY(Finished)) Progress = 1.0; // manual clamp important
 
 	/// process
 	// small trick to ensure we can reverse an animation.
@@ -91,7 +97,7 @@ void UCAnimator::DoTick(float DT) {
 	OnUpdate.Broadcast(Progress, Alpha);
 
 	/// restart if needed
-	if (Finished) Finish();
+	if (UNLIKELY(Finished)) Finish();
 }
 
 void UCAnimator::DeInit() {

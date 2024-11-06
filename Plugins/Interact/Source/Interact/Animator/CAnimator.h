@@ -24,6 +24,7 @@ public:
 	UCAnimator();
 
 	// plays the animation. optionally reset.
+	// it won't end the animation until next tick. even with duration 0.
 	virtual void Activate(const bool bReset=false) override;
 	// stops the animation.
 	virtual void Deactivate() override;
@@ -37,7 +38,7 @@ public:
 		Mirror();
 		Activate(false); // important not to reset on mirror.
 	}
-	// simply sets flips "IsReversed" to the opposite.
+	// simply flips "IsReversed" to the opposite.
 	// the progress remains the same, unless calling Activate(true).
 	// mostly for binds
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -135,7 +136,7 @@ protected:
 
 	// finishes, and tentatively restart if needed.
 	void Finish();
-	void DoTick(float DeltaSeconds);
+	void DoTick(const float DeltaSeconds);
 	virtual void DeInit();
 	
 	virtual void BeginPlay() override;
