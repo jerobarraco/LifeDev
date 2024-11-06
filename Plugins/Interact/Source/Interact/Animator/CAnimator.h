@@ -58,11 +58,11 @@ public:
 	
 	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
-	void TickManual(float DeltaSeconds);
+	void TickManual(const float DeltaSeconds);
 
 	// sets/clear a parent that drives the update of this animator
 	UFUNCTION(BlueprintCallable)
-	void BindTo(UCAnimator* NewParent = nullptr);
+	void BindTo(UCAnimator* const NewParent = nullptr);
 
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))

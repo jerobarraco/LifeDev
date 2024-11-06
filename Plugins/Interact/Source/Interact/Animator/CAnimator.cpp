@@ -28,7 +28,7 @@ void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
 	Activate(true);
 }
 
-void UCAnimator::TickManual(float DeltaSeconds) {
+void UCAnimator::TickManual(const float DeltaSeconds) {
 	if (!IsActive()) return; // very important since this will be spammed
 
 	// basic tick interval for manual ticks
@@ -104,7 +104,7 @@ void UCAnimator::DeInit() {
 	BindTo(nullptr);
 }
 
-void UCAnimator::BindTo(UCAnimator* NewParent) {
+void UCAnimator::BindTo(UCAnimator* const NewParent) {
 	UE_CLOG(UseLog, LogCAnimator, Log, TEXT("%hs o=%s parent=%s"),
 		__func__, *GetNameSafe(GetOwner()), *GetNameSafe(NewParent));
 
