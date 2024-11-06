@@ -4,11 +4,12 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
-// TODO create an instance class and use that in chapter 03 instead of this.
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("...") };
+	AnimFade->SetNewMat();
+	Super::SetAutoActivate(false);
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -85,11 +86,7 @@ ALNPC03::ALNPC03():Super() {
 
 	Interact->SetRelativeLocation(FVector(0,0,65));
 	Interact->SetBoxExtent(FVector(25,20,65));
-
-	AnimFade->SetNewMat();
-	// TODO actually move this to the child instance (since this class itself doesn't need to fade).
-	UseFade = true;
-	AnimFade->Duration = 3; // needs to be slower due to camera movement
+	
 	PoseBase.InteractExt = FVector(25,25,55);
 	PoseBase.InteractOrg = FVector(0,-5,50);
 	PoseBase.Head.SetLocation(FVector(0,0,25));
