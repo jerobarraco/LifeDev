@@ -53,4 +53,7 @@ public:
 	// the logic for this item. created by the inventory on creation.
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	TObjectPtr<UItemLogic> Logic = nullptr;
+	// note that this object is not manually destroyed. that's all good. it's GC'd.
+	// also someone might keep a ref to it :(. We don't say that to in the comments because that's bad anyway O_o
+	// anyway uobjects can't be manually destroyed easily.
 };

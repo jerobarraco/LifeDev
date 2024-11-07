@@ -227,18 +227,19 @@ bool UInventory::Use(const FName& Name) {
 
 	UE_LOG(LogInventory, Log, TEXT("%hs item=%s"), __func__, *Name.ToString());
 
-	// intentionally make a copy since when an object gets removed from the pool,
-	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
-	FName OldName = Name;
-	// intentionally calling mod so that onMod is triggered
-	Mod(Name, -1);
-	// item was the last one in the inventory. we have no more of it.
-	if (!Items.Contains(OldName)) return true;
-
+	
 	// this works setting the value on the reference
 	// at this point the item reference is ok, so keep it.
+	// set before calling Mod, since mod will dispatch OnMod
+	// if this is the last one, then it makes no difference. who cares.
 	Item.ActiveCoolDown = Item.CoolDown;
 	if (Item.ActiveCoolDown>0) SetCoolTimerEnabled(true);
+	
+	// intentionally make a copy since when an object gets removed from the pool,
+	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
+	const FName OldName = Name;
+	// intentionally calling mod so that onMod is triggered
+	Mod(Name, -1);
 
 	OnUsed.Broadcast(OldName);
 	return true;
