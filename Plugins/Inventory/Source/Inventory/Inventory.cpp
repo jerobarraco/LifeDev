@@ -150,7 +150,7 @@ bool UInventory::Get(const FName& Name, FItem& OutItem) const {
 	return true;
 }
 
-void UInventory::Init(UDataTable* DataTable) {
+void UInventory::Init(UDataTable* const DataTable) {
 	if (IsValid(DataTable)) DT = DataTable;
 }
 
@@ -181,7 +181,7 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 	return true;
 }
 
-FName UInventory::GetNextKey(bool Forward, FName From) const {
+FName UInventory::GetNextKey(const bool Forward, FName From) const {
 	if (From.IsNone()) {
 		if (Selected.IsNone()) return NAME_None;
 		From = Selected;
@@ -244,7 +244,7 @@ bool UInventory::Use(const FName& Name) {
 	return true;
 }
 
-bool UInventory::SetLocked(const FName& Name, bool NewBlocked) {
+bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
 	if (!Found)	return false;

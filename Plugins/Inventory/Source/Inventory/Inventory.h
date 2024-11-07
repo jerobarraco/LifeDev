@@ -48,7 +48,7 @@ public:
 	bool Use(const FName& Name);
 	
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool SetLocked(const FName& Name, bool NewBlocked);
+	bool SetLocked(const FName& Name, const bool NewBlocked);
 
 	// returns an item from the datatable if exists. Use this only if you know what you do.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
@@ -56,7 +56,7 @@ public:
 	// returns an item given the key name (in the loaded inventory, not the datatable)
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Get(const FName& Name, FItem& OutItem) const;
-	
+
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
 	const TMap<FName, FItem>& GetItems() const;
@@ -66,7 +66,7 @@ public:
 
 	// returns the selected item name
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	const FName& GetSelected() const { return Selected; }
+	FORCEINLINE FName GetSelected() const { return Selected; }
 	// returns a copy of the selected item
 	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
 	bool GetSelectedItem(FItem& Item) const;
@@ -87,7 +87,7 @@ public:
 	/// system
 
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	void Init(UDataTable* DataTable);
+	void Init(UDataTable* const DataTable);
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	void DeInit();
 	
@@ -95,7 +95,7 @@ public:
 	// from says which key from, if not specified it will from be the selected.
 	// if less than 2 items exists it will return none
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	FName GetNextKey(bool Forward = true, FName From = NAME_None) const;
+	FName GetNextKey(const bool Forward = true, FName From = NAME_None) const;
 
 	/// ~system
 
@@ -120,7 +120,7 @@ protected:
 	void CoolTimerTick();
 
 	// Creates a new instance of the item and adds it to the inventory
-	// returns the item or null if it doesn't exists.
+	// returns the item or null if it doesn't exist.
 	// utility function, can't be ufunction since it can't return a pointer.
 	FItem* AddNew(const FName& Name);
 
@@ -131,13 +131,13 @@ protected:
 	const FItem& GetRefC(const FName& Name, bool& OutFound) const;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	FName Selected;
+	FName Selected = NAME_None;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Transient)
 	TMap<FName, FItem> Items;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	UDataTable* DT = nullptr;
+	TObjectPtr<UDataTable> DT = nullptr;
 
 	FTimerHandle CoolTimer;
 };

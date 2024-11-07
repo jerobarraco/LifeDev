@@ -50,7 +50,7 @@ public:
 	// whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	bool IsLocked = false;
-	// the logic for this item. created by the inventory on creation
+	// the logic for this item. created by the inventory on creation.
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
-	UItemLogic* Logic = nullptr;
+	TObjectPtr<UItemLogic> Logic = nullptr;
 };
