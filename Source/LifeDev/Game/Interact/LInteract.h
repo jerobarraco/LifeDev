@@ -23,7 +23,6 @@ public:
 	// will fade in/out the object. also sets enabled by default.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction))
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
-	// TODO keep an eye on using this on the constructor when it's overriden and test if BlueprintNativeEvent creates issues
 
 	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
