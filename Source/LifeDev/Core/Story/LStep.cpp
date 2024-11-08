@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStep.h"
 
+#include "DelegateWrappers.h"
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
@@ -252,38 +253,34 @@ void ALStep::Finish_Implementation() {
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	for (AActor* const A: ActorsShow) {
-		if (!IsValid(A)) continue;
+		if (UNLIKELY(!IsValid(A))) continue;
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
-		if (!Inter || !WithFade) {
+		if (!Inter || !WithFade) { // hiding it with fades will be jarring
 			A->SetActorHiddenInGame(!Active);
 			// fade will call set-active. otherwise have to call it manually.
-			// make sure to call it. Avoid calling twice just in case there are side effects.
 			if (Inter) Inter->SetActive(Active);
+			// Avoid calling twice just in case there are side effects.
 			continue;
 		}
-		// here WithFade is true and inter as well
-		Inter->Fade(Active);
-		if (Active) {
-			A->SetActorHiddenInGame(!Active);
-		} // TODO only set hidden in game false after fade is done
+		Inter->Fade(Active, true);
 	}
 }
 
 void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 	for (ALInteract* const I: A) {
-		if (IsValid(I)) I->Fade(In);
+		if (LIKELY(IsValid(I))) I->Fade(In);
 	}
 }
 
 void ALStep::SetIntersActive(const bool Enabled) {
 	for (const TObjectPtr<AInteract>& I: IntersActive) {
-		if (IsValid(I)) I->SetActive(Enabled);
+		if (LIKELY(IsValid(I))) I->SetActive(Enabled);
 	}
 }
 
 void ALStep::DoIntersTrigger() const {
 	for (const TObjectPtr<ALInteract>& I: IntersTrigger) {
-		if (IsValid(I)) I->TryTrigger();
+		if (LIKELY(IsValid(I))) I->TryTrigger();
 	}
 }

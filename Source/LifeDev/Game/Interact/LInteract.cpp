@@ -29,15 +29,21 @@ ALInteract::ALInteract():Super() {
 	AnimFade->Meshes.Add(Mesh);
 }
 
-void ALInteract::Fade_Implementation(const bool FadeIn) {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i useFade=%i"),
-		__func__, *GetNameSafe(this), FadeIn, UseFade);
+void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
+		__func__, *GetNameSafe(this), FadeIn, SetHidden, UseFade);
 	// i'm not super sure about this.
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
 	// please me from the future, be careful. "ki o tsukete!"
 	SetActive(FadeIn);
 
+	// before the fade on purpose. for the hidden and the bind
+	if (SetHidden) {
+		if (FadeIn) SetActorHiddenInGame(false);
+		else AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
+	}
+	
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
 		AnimFade->Activate(true);
@@ -163,17 +169,23 @@ void ALInteract::DoRewards() {
 	// bind to destroy. or just destroy if the anim failed/finished.
 	if (AnimFade->IsActive()) {
 		// only bind here as we only want to destroy on reward
-		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::RewardFaded);
+		AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::DestroyAfterReward);
 		return;
 	}
 
-	RewardFaded();
+	DestroyAfterReward();
 }
 
-void ALInteract::RewardFaded() {
+void ALInteract::DestroyAfterReward() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
-	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::RewardFaded);
+	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::DestroyAfterReward);
 	Destroy();
+}
+
+void ALInteract::HideAfterFade() {
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::HideAfterFade);
+	SetActorHiddenInGame(true);
 }
 
 bool ALInteract::TryTrigger_Implementation() {
