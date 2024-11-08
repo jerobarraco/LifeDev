@@ -49,6 +49,7 @@ void UCAnimator::Finish() {
 		return;
 	}
 
+	/// loop
 	End(); // it technically ended (do here since stop will trigger end too)
 
 	/// start the new one
@@ -68,7 +69,7 @@ void UCAnimator::Finish() {
 
 void UCAnimator::DoTick(const float DT) {
 	// support duration of 0
-	if (FMath::IsNearlyZero(Duration)) {
+	if (UNLIKELY(FMath::IsNearlyZero(Duration))) {
 		Progress = 1.0;
 	} else {
 		// adjust for duration
@@ -111,7 +112,7 @@ void UCAnimator::BindTo(UCAnimator* const NewParent) {
 	if (IsValid(Parent)) Parent->OnUpdate.RemoveAll(this);
 	Parent = nullptr;
 
-	if (!IsValid(NewParent)) return;
+	if (UNLIKELY(!IsValid(NewParent))) return;
 	
 	Parent = NewParent;
 	Parent->OnUpdate.AddUniqueDynamic(this, &UCAnimator::ChildUpdate);
@@ -128,10 +129,14 @@ void UCAnimator::Update_Implementation(float Alpha) {
 }
 
 void UCAnimator::End_Implementation() {
+	UE_CLOG(Debug, LogCAnimator, Verbose, TEXT("%hs o=%s"),
+		__func__, *GetNameSafe(GetOwner()));
 	OnEnd.Broadcast();
 }
 
 void UCAnimator::Begin_Implementation() {
+	UE_CLOG(Debug, LogCAnimator, Verbose, TEXT("%hs o=%s"),
+		__func__, *GetNameSafe(GetOwner()));
 	OnBegin.Broadcast();
 }
 

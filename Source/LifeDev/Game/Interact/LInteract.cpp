@@ -40,8 +40,10 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
-		if (FadeIn) SetActorHiddenInGame(false);
-		else AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
+		if (FadeIn || !UseFade)
+			SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
+		else // !FadeIn && UseFade
+			AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
 	}
 	
 	if (UseFade) {
