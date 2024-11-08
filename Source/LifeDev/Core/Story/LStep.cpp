@@ -161,13 +161,14 @@ void ALStep::DestroyActors() {
 	if (!W) return;
 
 	W->GetTimerManager().ClearTimer(TimerDestroy);
-	
-	// this is a bit dangerous, we can't go back to chap 0 without reloading.
-	// but also more performant.
-	for (AActor* const A: ActorsShow) {
-		if (IsValid(A)) A->Destroy();
-	}
-	ActorsShow.Empty();
+
+	// this doesn't work, since it might destroy the actor while it's still fading.
+	// this is a bit dangerous, we can't go back without reloading (which is a stupidly risky feature anyway).
+	// also we are not the creators of such actors, so it kinda doesn't make sense
+	// for (AActor* const A: ActorsShow) {
+		// if (LIKELY(IsValid(A))) A->Destroy();
+	// }
+	ActorsShow.Empty(); // release the ref
 
 	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;
@@ -192,7 +193,7 @@ void ALStep::DlgShow_Implementation(const FDialog& Diag) {
 	// no need to check for IsNearlyZero. modval does it.
 	// ModVal is the best, since if i trigger several dialogs very fast
 	// it should still go to the correct value.
-	if (FB) FB->ModVal(FBDiagMod);
+	if (LIKELY(FB)) FB->ModVal(FBDiagMod);
 }
 
 void ALStep::BeginPlay() {
