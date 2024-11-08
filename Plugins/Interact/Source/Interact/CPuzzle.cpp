@@ -76,10 +76,10 @@ void UCPuzzle::Bind() {
 
 	int32 i = 0;
 	for (AInteract* const I: Interacts) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
-		if (!IsValid(Wrapper)) continue;
+		if (UNLIKELY(!IsValid(Wrapper))) continue;
 
 		Wrapper->Obj = I;
 		Wrapper->ID = i;
