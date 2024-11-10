@@ -14,11 +14,14 @@ ALight01::ALight01():Super() {
 	SFX->SetRelativeLocation(FVector(27.5,-27.5,0));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Light00/Light00-GlassB.Light00-GlassB"));
+		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Light00/Light00-GlassB"));
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Glass->SetupAttachment(Mesh);
 	Glass->SetStaticMesh(CTube.Object);
 	Glass->SetRelativeLocation(FVector(5.,-5.,5.));
+	// important since by default it uses the masked material (and nanite).
+	// the masked material doesn't work well with shadows so close to the light source
+	// and nanite does not support translucent.
 	Glass->SetCastAllShadows(false);
 
 	Interact->SetRelativeLocation(FVector(27.5,-27.5,15));

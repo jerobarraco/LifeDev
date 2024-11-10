@@ -22,6 +22,10 @@ ALight02::ALight02():Super() {
 	Cover->SetupAttachment(Mesh);
 	Cover->SetStaticMesh(CTube.Object);
 	Cover->SetRelativeLocation(FVector(0,0,0));
+	// important: in order for the shadows to work correctly at this short distance
+	// from the source. the mesh needs to use the translucent material.
+	// to use the translucent material, it needs to not be nanite.
+	Cover->bDisallowNanite = true;
 	Cover->SetCastAllShadows(true);
 	Cover->bCastDistanceFieldIndirectShadow = true;
 
