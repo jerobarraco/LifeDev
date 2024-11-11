@@ -9,6 +9,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogUIDone);
 
+// note, the porting of this from bp to cpp is still WIP
+
 // Base UI class for dialogs
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DIAGS_API UDialogUI: public UBaseUI {
@@ -16,7 +18,8 @@ class DIAGS_API UDialogUI: public UBaseUI {
 	
 public:
 	UDialogUI();
-	
+
+	// shows or queues a new dialog
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ShowDlg(const FDialog& Diag);
 	
@@ -38,6 +41,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PostHide();
 
+	// could be ==Dlgs.Num() when expecting a new dialog.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 CurDlgI = 0;
 

@@ -3,12 +3,15 @@
 #include "DialogUI.h"
 
 void UDialogUI::ShowDlg_Implementation(const FDialog& Diag) {
+	Dlgs.Add(Diag); // needs to be before show or it will fail
 	Show();
+	// bp has logic here. TODO port
 }
 
 void UDialogUI::Show_Implementation() {
 	Super::Show_Implementation();
-	
+
+	// TODO port
 	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	// Controller->bShowMouseCursor = true;
 	// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(Controller, this);
@@ -41,13 +44,17 @@ void UDialogUI::SkipBy_Implementation(const int32 Diff) {
 		UE_LOG(LogTemp, Log, TEXT("DialogUI::%hs Attempt to go to a dlg <0"), __func__);
 		return;
 	}
+	// notice the <=. important to be able to show new dialogs after skip
+	// im not super happy about this code, but it's ok.
+	// we can't expect that the done will add the dialog synchronously. that's bad design.
+	if (NewDlgI<=Dlgs.Num()) CurDlgI = NewDlgI;
+	
 	if (NewDlgI>=Dlgs.Num()) {
 		UE_LOG(LogTemp, Log, TEXT("DialogUI::%hs Reached end of Dlgs."), __func__);
 		Done();
 		return;
 	}
 	
-	CurDlgI = NewDlgI;
 	ShowCurDlg();
 }
 
