@@ -59,22 +59,6 @@ void AInteract::Grab(const bool IsGrab, UCInteractor* const NewParent) {
 	return;
 }
 
-void AInteract::OnRep_IsOneShot_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs: IsOneShot=%i Server=%i Obj=%s"),
-		__func__, IsOneShot, JU_IsServerSide, *GetNameSafe(this));
-	// probably clients only. not tested.
-	// this is mostly a nice to have since it's the locked variable is only tested on server.
-	// so it would help clients in case they need to check the value at a random time.
-}
-
-void AInteract::OnRep_IsLocked_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs: Locked=%i Server=%i Obj=%s"),
-		__func__, Locked, JU_IsServerSide, *GetNameSafe(this));
-	// probably clients only. not tested.
-	// this is mostly a nice to have since it's the locked variable is only tested on server.
-	// so it would help clients in case they need to check the value at a random time.
-}
-
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
 		*Name.ToString(), *GetNameSafe(this));
@@ -137,13 +121,6 @@ void AInteract::BeginPlay() {
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
 
-	// Not using Interact->IsReplicated since it might not be set properly yet
-	if (Interact->WillReplicate()) {
-		SetReplicates(true);
-		SFX->SetIsReplicated(false); // implemented my own replication that i can control better.
-		// SFX->SetIsReplicated(true);
-	}
-
 	if (Mesh->IsSimulatingPhysics())
 		Interact->PhysComp = Mesh;
 }
@@ -158,12 +135,6 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Interact = nullptr;
 
 	Super::EndPlay(EndPlayReason);
-}
-
-void AInteract::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AInteract, Locked);
-	DOREPLIFETIME(AInteract, IsOneShot);
 }
 
 void AInteract::DoTriggerLocked_Implementation() {

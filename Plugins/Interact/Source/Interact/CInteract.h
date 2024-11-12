@@ -37,13 +37,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
 	bool IsGrabbable = false;
 
-	// whether this component (and hence the owner) should try to work in replicated mode.
-	// This depends on the feature flag IT_REPLICATED.
-	// On trigger will execute on the Server. OnHover only/always on the client.
-	// This is NOT compatible with grabbing.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool ShouldReplicate = false;
-
 	// When this is triggered
 	// If this is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
@@ -81,14 +74,11 @@ public:
 	TObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 protected:
-	virtual void BeginPlay() override;
-	virtual void OnRep_IsActive() override;
-
 	void Reparent(const bool bIsGrab, UCInteractor* const NewParent);
 	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
-
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
+	
 #pragma region Interactor
 	/// interactor
 	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
@@ -99,9 +89,7 @@ protected:
 	void DeInit();
 	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
-	// whether it will replicate. (not whether its replicating). Does some checks on top of ShouldReplicate.
-	bool WillReplicate() const; 
-	/// 
+
 	inline static FName CollisionProfile = "Interact";
 	friend class AInteract;
 	friend class UCInteractor;

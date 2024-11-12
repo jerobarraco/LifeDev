@@ -6,8 +6,6 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Components/BoxComponent.h"
 
-#include "JUtils/Net/JUtilsNet.h"
-
 #include "CInteractor.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCInteract, Log, Log);
@@ -36,18 +34,16 @@ void UCInteract::Trigger() const {
 	// server or client. depends on ShouldReplicate, the IT_REPLICATED flag.
 	// And it's decided by the CInteractor (since it's owned by the controller and can call RPCs).
 	
-	UE_LOG(LogCInteract, Log, TEXT("%hs Interact triggered. IsServer=%i Role=%s Obj=%s"),
-		__func__, JU_IsServerSide,
-		*UEnum::GetValueAsString(GetOwnerRole()), *GetNameSafe(GetOwner()));
+	UE_LOG(LogCInteract, Log, TEXT("%hs Interact triggered. Obj=%s"),
+		__func__, *GetNameSafe(GetOwner()));
 	// this is synchronous. will call AInteract(Anim, Fade) tryTrigger. and SetText at some point before this function returns
 	OnTrigger.Broadcast();
 }
 
 void UCInteract::Hover(bool IsHover) const {
 	// Apply the hover to the hover mesh AND all its children
-	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: IsHover=%i Server=%i, Role=%s."),
-		__func__, *GetNameSafe(this), IsHover,
-		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: IsHover=%i"),
+		__func__, *GetNameSafe(this), IsHover);
 
 	// wrapped to always trigger the delegate
 	if (IsValid(HoverMesh)) {
@@ -84,27 +80,6 @@ bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
 	
 	OnGrab.Broadcast(IsGrab, NewParent);
 	return true;
-}
-
-bool UCInteract::WillReplicate() const {
-	return ShouldReplicate && JU_IsServerSide;
-}
-
-void UCInteract::BeginPlay() {
-	Super::BeginPlay();
-
-	// even though the SetReplicated function is called on server only and after BeginPlay,
-	// it seems that CInteractor is successfully able to call GetIsReplicated.
-	if (WillReplicate()) {
-		SetIsReplicated(true);
-		if (IsGrabbable)
-			UE_LOG(LogCInteract, Warning, TEXT("%hs Component set to replicate and grababble. That's not supported. Owner=%s"),
-				__func__, *GetNameSafe(GetOwner()));
-		// this is a patch. since by default it starts as disabled on the server but enabled on the server. only for networked environs.
-		// check for autoactivate since some objects disable that on purpose
-		if (bAutoActivate) Activate(false);
-	} else if (JU_IsServerSide)
-		SetIsReplicated(false);
 }
 
 void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) {
@@ -165,17 +140,15 @@ void UCInteract::SetCollisionEnabledBool(const bool Enabled) {
 }
 
 void UCInteract::Deactivate() {
-	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
-		__func__, *GetNameSafe(GetOwner()),
-		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s"),
+		__func__, *GetNameSafe(GetOwner()));
 	Super::Deactivate();
 	SetCollisionEnabledBool(false);
 }
 
 void UCInteract::Activate(const bool bReset) {
-	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s"),
-		__func__, *GetNameSafe(GetOwner()),
-		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s"),
+		__func__, *GetNameSafe(GetOwner()));
 	
 	Super::Activate(bReset);
 	// is ok to just disable the collision and not lock the trigger method,
@@ -190,26 +163,10 @@ void UCInteract::SetAutoActivate(const bool NewActive) {
 
 void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	// this is like traveling to the future backwards, i'm warning my future self of a past problem.
-	// TODO this sometimes logs when it shouldn't
 	// UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
 	UE_CLOG(NeedsInitialization() || OwnerNeedsInitialization(), LogCInteract, Warning,
 		TEXT("%hs Don't call during construction! Call SetAutoActivate. O=%s"),
 		__func__, *GetNameSafe(GetOwner()));
 	
 	Super::SetActive(bNewActive, bReset);
-}
-
-void UCInteract::OnRep_IsActive() {
-	Super::OnRep_IsActive();
-
-	const bool NewActive = IsActive();
-	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: Server=%i Role=%s IsActive=%i"),
-		__func__, *GetNameSafe(GetOwner()),
-		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()), NewActive);
-
-	// technically this only executes on the clients. but i rather be safe. or we can cause a loop and stack overflow.
-	if (JU_IsServerSide) return;
-
-	// force the collision stuff. and anything else i add on the future.
-	SetActive(NewActive, false);
 }

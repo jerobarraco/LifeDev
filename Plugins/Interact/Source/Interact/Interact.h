@@ -94,13 +94,11 @@ public:
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock",
-		Replicated, ReplicatedUsing=OnRep_IsLocked)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
 	// When true will disable the interact on trigger. Calling Deactivate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
-		Replicated, ReplicatedUsing=OnRep_IsOneShot)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
 	
 	// whether to use the attached SFX component or just spawn a "sound at location".
@@ -138,7 +136,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)
@@ -192,12 +189,6 @@ protected:
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
 	UFUNCTION(BlueprintCallable, Category=Interact, NetMulticast, Reliable)
 	void PlaySFX(USoundBase* Snd) const; // native events can't take Ptr* const
-	
-	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
-	void OnRep_IsLocked();
-
-	UFUNCTION(BlueprintNativeEvent, Category="Interact|Rep")
-	void OnRep_IsOneShot();
 
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
