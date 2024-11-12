@@ -9,6 +9,8 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 
+#define _myclass_ TEXT("APuzzleI06")
+
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 2};
@@ -54,5 +56,5 @@ void APuzzleI06::BeginPlay() {
 		Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
 	DoneFB += Diff;
 	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
-		*GetNameSafe(this), __func__, Diff);
+		_myclass_, __func__,  Diff);
 }
