@@ -12,10 +12,11 @@ DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnWrapperIDC, UDelegateWrapper* const, i
 // A simple wrapper for binding to delegates with extra parameters.
 // To use:
 // UDelegateWrapperID* const Wrapper = NewObject<UDelegateWrapperID>();
-// Wrapper->ID = WhateverIDGen();
+// Wrapper->ID = whatever your id (or don't set)
+// Wrapper->Obj = whatever object to associate (or null)
 // Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
 // C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::DispatchBool);
-// Also you NEED to keep a ref to the Wrapper, or it will be GCd
+// Also you NEED to keep a ref to the Wrapper, or it will get GarbageCollected.
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UDelegateWrapper : public UObject {
@@ -31,20 +32,20 @@ public:
 
 	// or bind this function to the other delegate (useful when the other delegate has a param)
 	UFUNCTION(BlueprintCallable)
-	void DispatchBool(bool IsChecked) { Dispatch(); };
+	void DispatchBool(bool IsChecked) { Dispatch(); }
 	
-	// Set this
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, Category=SetUp)
+	// the id for this wrapper. passed on OnDispatch
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 ID = -1;
 
-	// Set this
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient, Category=SetUp)
+	// the obj (if any) associated to this wrapper. passed on OnDispatch
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UObject> Obj = nullptr;
 	
 	// subscribe to this
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient)
 	FOnWrapperID OnDispatch;
 
-	// subscribe to this if you need a lamda
+	// subscribe to this if you need a lambda λ
 	FOnWrapperIDC OnDispatchCPP;
 };
