@@ -32,14 +32,16 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 bool UDiags::AddId(const FName& Row) {
 	if (Row.IsNone()) return false;
 
-	// attempt to add a sequence (can be random)
+	// attempt to add a sequence (can be random) (could trigger another call to AddId)
 	if (AddSeqId(Row, false)) return true;
 
 	// otherwise attempt a dialog
 	if (AddDiagId(Row, false)) return true;
 
+	// this also would capture a sequence that is empty or the ids are none.
 	UE_LOG(LogDiags, Warning,
-		TEXT("%hs: Could not find dialog nor sequence with the id=%s"), __func__, *Row.ToString());
+		TEXT("%hs: Could not find dialog nor sequence with the id=%s. "
+			"Or the sequence was empty or invalid."), __func__, *Row.ToString());
 	return false;
 }
 
