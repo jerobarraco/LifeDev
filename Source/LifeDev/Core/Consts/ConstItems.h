@@ -2,10 +2,15 @@
 namespace LDConsts {
 	// these are just for the sake of comparing easily instead of using a char* which might get converted each time in runtime. also for ease of refactoring and maybe compile time check.
 	namespace Items {
+		// intention
 		inline static const FName Card0("C0");
+		// whatever works
 		inline static const FName Card1("C1");
+		// yin/remove
 		inline static const FName Card2("C2");
+		// persevere
 		inline static const FName Card3("C3");
+		// acceptance
 		inline static const FName Card4("C4");
 		inline static const FName Card5("C5");
 		inline static const FName Card6("C6");
