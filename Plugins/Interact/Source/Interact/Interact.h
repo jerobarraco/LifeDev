@@ -30,17 +30,17 @@ public:
 
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
 	// Call this to trigger the interaction. Returns the success (false if locked)
-	// this function has side-effects (calls trigger/triggerLocked) so call at the end of your function.
+	// this function has side effects (calls trigger/triggerLocked) so call at the end of your function.
 	// Usually this gets called automatically by the Interactor/CInteract
 	// overrideable in case you need to cancel a trigger
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
 	bool TryTrigger();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
-	void Hover(bool IsOn);
-	virtual void Hover_Implementation(bool IsOn) {
+	void Hover(const bool IsOn);
+	virtual void Hover_Implementation(const bool IsOn) {
 		OnHover.Broadcast(IsOn);
-	};
+	}
 
 	// returns true if the item has been used (notice past tense)
 	//  this means when calling this function the item WILL trigger
@@ -139,7 +139,7 @@ protected:
 	
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)
-	// this function has side-effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
+	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
 	// these are called by the CInteract which is called by the CInteractor.
 	// This is quite a complex interaction that' s why it' s protected.
 	UFUNCTION()
@@ -152,7 +152,6 @@ protected:
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
-	UFUNCTION(BlueprintCallable, Category=Interact)
 	FORCEINLINE void Trigger() {
 		DoTrigger();
 		// at end, outside the overrideable function
@@ -162,7 +161,6 @@ protected:
 	
 	// called when the object actually gets triggered while locked. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
-	UFUNCTION(BlueprintCallable, Category=Interact)
 	FORCEINLINE void TriggerLocked() {
 		DoTriggerLocked();
 		// at end, outside the overrideable function
