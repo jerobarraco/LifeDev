@@ -27,7 +27,7 @@ APicture01::APicture01():Super() {
 
 	// TODO new
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/DrawerOpen_C"));
 	SFX_Trigger = CSnd.Object;
 
 	// force using the material from the mesh. (though we don't use reward destroy)
