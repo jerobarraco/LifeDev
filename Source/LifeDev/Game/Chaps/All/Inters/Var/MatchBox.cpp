@@ -20,7 +20,7 @@ AMatchBox::AMatchBox():Super() {
 	Interact->SetBoxExtent(FVector(4.000000,5.000000,1.500000));
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/Matches_Cue"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
 
 	/// Anims
