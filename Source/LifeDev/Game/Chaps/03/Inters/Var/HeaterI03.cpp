@@ -8,8 +8,9 @@ AHeaterI03::AHeaterI03():Super() {
 	UseRewardDestroy = false;
 	RewardFlash = .1;
 	IsOneShot = true;
-	Locked = true;
-	LockedDlg = "HT03_L";
+	Locked = false;
+	// LockedDlg = "HT03_L";
+	TriggerDlg = "HT03_L"; // TODO rename
 	Texts = { FText::FromString(TEXT("Turn on")) };
 
 	Super::SetAutoActivate(true);
