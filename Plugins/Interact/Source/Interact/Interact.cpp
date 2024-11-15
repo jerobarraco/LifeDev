@@ -160,10 +160,10 @@ void AInteract::DoTrigger_Implementation() {
 	PlaySFX(SFX_Trigger);
 
 	for(const TObjectPtr<AInteract>& I: RewardInterEnable) {
-		if (IsValid(I)) I->SetActive(true);
+		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 	
-	if (IsOneShot) SetActive(false); // set enabled is replicated
+	if (IsOneShot) SetActive(false);
 }
 
 void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {
@@ -175,8 +175,6 @@ void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i, Server=%i, Role=%s Obj=%s Snd=%s."),
 		__func__, UseAttachedSFX, JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()),
 		*GetNameSafe(this), *Snd->GetName());
-
-	if (JU_IsServerOnly) return; // don't play sounds on the server (but do on standalone)
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);
