@@ -3,6 +3,7 @@
 #include "PictureI01.h"
 
 #include "CQuickMesh.h"
+#include "Interact/Animator/CAnimatorMix.h"
 
 APictureI01::APictureI01():Super() {
 	Texts = { FText::FromString(TEXT("Picture"))};
@@ -13,7 +14,17 @@ APictureI01::APictureI01():Super() {
 		CMat (TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
 	if (CMat.Succeeded()) Mesh->SetMaterial(0, CMat.Object.Get());
 	APictureI01::SetAutoActivate(true);
-	// TODO add the transform
+
+	UseAnim = true;
+	StateNum = 2;
+	Anim->IsAdditive = false;
+	// sets scale. scale ==0 by default since additive is the usual
+	Anim->TStart = Anim->TEnd = FTransform::Identity;
+	const FRotator Rot(10.,0.000000,5.000000);
+	Anim->TStart.SetRotation(Rot.Quaternion());
+	Anim->TStart.SetLocation(FVector(5, 0,0));
+	IRoot->SetRelativeTransform(Anim->TStart);
 	
+	Super::SetMobility(EComponentMobility::Movable);
 	// TODO, maybe i could add some card interaction to this?
 }
