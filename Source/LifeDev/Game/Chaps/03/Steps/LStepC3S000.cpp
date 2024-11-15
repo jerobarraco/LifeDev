@@ -18,7 +18,8 @@ ALStepC3S000::ALStepC3S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music01/Music01_MS.Music01_MS");
+	// music needs the .Music08_MS postfix
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
