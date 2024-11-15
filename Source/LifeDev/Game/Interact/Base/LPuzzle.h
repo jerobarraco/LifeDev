@@ -55,7 +55,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	float DoneFB = 0;
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCLSounder> SND = nullptr;
 
 	// caches

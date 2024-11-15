@@ -20,7 +20,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetStates(const TArray<int32>& States) {
 		if (IsValid(CPuzzle)) { CPuzzle->SetStates(States); }
-	};
+	}
 	
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
