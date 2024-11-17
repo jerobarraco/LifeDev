@@ -11,5 +11,5 @@ AFridgeI00::AFridgeI00():Super() {
 	UseFade = false;
 	// RewardFlash = .1;
 
-	Super::SetAutoActivate(false);
+	Super::SetAutoActivate(true);
 }
