@@ -1,7 +1,8 @@
 :: @echo off
 :: warning pushd HATES "/" we MUST use "\"
 set UNREAL_ENGINE_ROOT=E:\ue\UE_5.4
-set WORKSPACE=E:/w/LifeDev
+:: improved compilation process by compiling directly into the network unit
+set WORKSPACE=F:/LifeDev
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
 :: set INSTALLED=
