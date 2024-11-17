@@ -19,6 +19,7 @@ APuzzleI06::APuzzleI06():Super() {
 	static FName DoneId = "PZ06_T";
 	DoneDlg = DoneId;
 	DoneFB = .1;
+	
 }
 
 void APuzzleI06::PostLoad() {
@@ -41,12 +42,14 @@ void APuzzleI06::BeginPlay() {
 	static const TArray<int32> States = {1, 2, 0};
 	SetStates(States);
 
+	// Enabled by the step c3s0 as it should, this logic sucks. as this could be spawned in a previous chapter.
+	
 	// this is the only safe place to set active and get the settings
-	const ULSettings* const Settings = ULSettings::Instance(this);
-	const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
-	const bool Active = ChapFeat == EFeat::C_03; // disabled manually. still needs work.
-	UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
-	SetActives(Active);
+	// const ULSettings* const Settings = ULSettings::Instance(this);
+	// const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
+	// const bool Active = ChapFeat == EFeat::C_03; // disabled manually. still needs work.
+	// UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
+	// SetActives(Active);
 	
 	if (UNLIKELY(!Flags)) return;
 
@@ -56,4 +59,9 @@ void APuzzleI06::BeginPlay() {
 	DoneFB += Diff;
 	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
 		_myclass_, __func__,  Diff);
+}
+
+void APuzzleI06::PostInitializeComponents() {
+	Super::PostInitializeComponents();
+	SetAutoActives(false);
 }

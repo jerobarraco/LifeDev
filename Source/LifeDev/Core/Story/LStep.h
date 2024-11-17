@@ -48,9 +48,16 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
 	
-	// enables or disables the interacts on IntersEnable
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetIntersActive(const bool Enabled=true);
+	// enables or disables the interacts on IntersActiveAuto
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
+	void SetIntersActiveAuto(const bool NewActive=true);
+
+	// activates the interacts on IntersActivate
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
+	void DoIntersActive();
+	// disables the interacts on IntersDeactivate
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
+	void DoIntersDeactive();
 
 	// whether to dis/enable the character input
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
@@ -100,25 +107,33 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy
-	// or maybe i could if i leave the "destroy" only for LStep
+	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 	
 	// Interacts to activate on Start (after wait), and disable on Stop.
-	// Will be disabled on begin play.
+	// Will be deactivated on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersActive;
+	TArray<TObjectPtr<AInteract>> IntersActivateAuto;
+
+	// Interacts to activate on Start (after wait)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
+	TArray<TObjectPtr<AInteract>> IntersActivate;
+
+	// Interacts to deactivate on Start (after wait)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
+	TArray<TObjectPtr<AInteract>> IntersDeactivate;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
-	// Note Fade also calls SetEnabled.
+	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeIn;
 
 	// Interacts to fade out during *Stop*. Won't change fade during beginPlay.
-	// Note Fade also calls SetEnabled.
+	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
 	// note: not fading the intersFade* on begin play because i could have multiple
@@ -169,6 +184,7 @@ protected:
 	void DoIntersTrigger() const;
 	// fade an array of ALInteract
 	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
+	static void DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive);
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCRandomizerFB> RandFB = nullptr;

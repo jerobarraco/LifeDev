@@ -33,9 +33,9 @@ void ALStep::Stop_Implementation() {
 	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
 	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
 	if (UseRandFB && IsValid(RandFB)) RandFB->Deactivate();
-	
+
 	SetActorsShowActive(false, true);
-	SetIntersActive(false);
+	SetIntersActiveAuto(false);
 	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
 
@@ -89,7 +89,7 @@ void ALStep::Start_Implementation() {
 	if (UseRandFB && IsValid(RandFB)) RandFB->Activate(true);
 
 	SetActorsShowActive(true, true);
-	SetIntersActive(true);
+	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersTrigger();
 
@@ -208,7 +208,7 @@ void ALStep::BeginPlay() {
 	Flags = World->GetSubsystem<UFlags>();
 
 	SetActorsShowActive(false, false);
-	SetIntersActive(false);
+	SetIntersActiveAuto(false);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -261,22 +261,34 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 			A->SetActorHiddenInGame(!Active);
 			// fade will call set-active. otherwise have to call it manually.
 			if (Inter) Inter->SetActive(Active);
-			// Avoid calling twice just in case there are side effects.
+			// Avoid calling 'Fade' twice, just in case there are side effects.
 			continue;
 		}
 		Inter->Fade(Active, true);
 	}
 }
 
-void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
-	for (ALInteract* const I: A) {
-		if (LIKELY(IsValid(I))) I->Fade(In);
+void ALStep::DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive) {
+	for (AInteract* const I: A) {
+		if (LIKELY(IsValid(I))) I->SetActive(NewActive);
 	}
 }
 
-void ALStep::SetIntersActive(const bool Enabled) {
-	for (const TObjectPtr<AInteract>& I: IntersActive) {
-		if (LIKELY(IsValid(I))) I->SetActive(Enabled);
+void ALStep::SetIntersActiveAuto(const bool NewActive) {
+	DoIntersActiveAny(IntersActivateAuto, NewActive);
+}
+
+void ALStep::DoIntersActive() {
+	DoIntersActiveAny(IntersActivate, true);
+}
+
+void ALStep::DoIntersDeactive() {
+	DoIntersActiveAny(IntersDeactivate, false);
+}
+
+void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
+	for (ALInteract* const I: A) {
+		if (LIKELY(IsValid(I))) I->Fade(In);
 	}
 }
 
