@@ -12,5 +12,9 @@ public class LifeDevTarget : TargetRules
 		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
 		// bUseExecCommnadInShipping
 		ExtraModuleNames.Add("LifeDev");
+		
+		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
+		BuildEnvironment = TargetBuildEnvironment.Unique;
+		bUseLoggingInShipping = true;
 	}
 }
