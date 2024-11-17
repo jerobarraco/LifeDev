@@ -48,7 +48,6 @@ void APuzzleI06::BeginPlay() {
 	UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
 	SetActives(Active);
 	
-	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
 	constexpr float DiffAm = .3;
