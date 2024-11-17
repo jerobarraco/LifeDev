@@ -42,7 +42,9 @@ void APuzzleI06::BeginPlay() {
 	static const TArray<int32> States = {1, 2, 0};
 	SetStates(States);
 
-	// Enabled by the step c3s0 as it should, this logic sucks. as this could be spawned in a previous chapter.
+	// TODO fix. this logic is not good. as it can be spawned in a previous chapter.
+	// ideally i would add it to the step, but since the stepc3s0 is always loaded (for skipping)
+	// i cant add this puzzle since it exists on other datalayers.
 	
 	// this is the only safe place to set active and get the settings
 	// const ULSettings* const Settings = ULSettings::Instance(this);
@@ -58,7 +60,7 @@ void APuzzleI06::BeginPlay() {
 		Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
 	DoneFB += Diff;
 	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
-		_myclass_, __func__,  Diff);
+		_myclass_, __func__, Diff);
 }
 
 void APuzzleI06::PostInitializeComponents() {
