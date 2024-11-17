@@ -46,12 +46,16 @@ public:
 	
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
+	void SetAutoActives(const bool NewActive);
+
+	// Set the interact pieces to enabled
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetActives(const bool NewActive);
 
 	// sets the states on each registered interact.
 	// Call on or after begin play.
 	// Note that this will reset the cpuzzle (and interacts) 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetStates(const TArray<int32>& States);
 	
 	// sets the states on each registered interact.

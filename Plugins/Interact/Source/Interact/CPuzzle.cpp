@@ -204,11 +204,22 @@ void UCPuzzle::SetDisableWhileAnims(bool NewDisable) {
 	}
 }
 
-void UCPuzzle::SetActives(const bool NewActive) {
-	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s"), __func__, *GetNameSafe(this));
+void UCPuzzle::SetAutoActives(const bool NewActive) {
+	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
+		__func__, *GetNameSafe(this), NewActive);
 
 	for (AInteract* const I: Interacts) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
+		I->SetAutoActivate(NewActive);
+	}
+}
+
+void UCPuzzle::SetActives(const bool NewActive) {
+	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
+		__func__, *GetNameSafe(this), NewActive);
+
+	for (AInteract* const I: Interacts) {
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->SetActive(NewActive);
 	}
 }
@@ -218,7 +229,7 @@ void UCPuzzle::SetStates(const TArray<int32>& States) {
 	const int32 Num2 = Interacts.Num();
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
 		AInteract* const I = Interacts[i];
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->SetState(States[i]);
 	}
 

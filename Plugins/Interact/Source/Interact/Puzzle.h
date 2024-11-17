@@ -6,7 +6,7 @@
 
 class AInteract;
 
-// Base class for Puzzles that can optionally trigger an interact
+// Base class for Puzzles that can optionally trigger a Interact
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API APuzzle: public AActor {
 	GENERATED_BODY()
@@ -30,7 +30,7 @@ public:
 		if (IsValid(CPuzzle)) { CPuzzle->SetLocks(Locks); }
 	}
 
-	// Set the interact pieces to enabled
+	// Set the interact pieces to active
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetActives(const bool NewEnabled) {
 		if (IsValid(CPuzzle)) { CPuzzle->SetActives(NewEnabled); }
