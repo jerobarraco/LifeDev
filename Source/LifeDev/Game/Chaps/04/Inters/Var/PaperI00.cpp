@@ -20,8 +20,7 @@ APaperI00::APaperI00():Super() {
 	Text->SetText(
 		NSLOCTEXT("[F55AC1309BFDF396EFA8FD363F894B68]", "C2C0842F189C448F84E75A511F80204F",
 			"Even if things around me\n don't change.\nI could change.\n"
-			"I still have today.\nIt's not finished yet."));
-			// "Text\nnthous\nnthaeonuthoa\nnthoune\nnthnthNTH\nnth\nnth\nnth\nmoeunmao\nntheou"));
+			"I still have today.\nIt's not over yet."));
 	Text->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
 	Text->SetTextRenderColor(FColor::Black);
 	Text->SetComponentTickEnabled(false);
