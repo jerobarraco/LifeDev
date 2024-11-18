@@ -5,14 +5,12 @@
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FLifeDevModule, LifeDev, "LifeDev" );
 
-// IMPLEMENT_MODULE(FLifeDevModule, LifeDev)
-void FLifeDevModule::StartupModule()
-{
+void FLifeDevModule::StartupModule() {
 	IModuleInterface::StartupModule();
 	
+	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	const FString& ShaderDirectory = FPaths::Combine(FPaths::ProjectDir(), TEXT("Shaders"));
 	UE_LOG(LogTemp, Log, TEXT("LifeDev Shaders path '%s'"), *ShaderDirectory);
-	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	AddShaderSourceDirectoryMapping(TEXT("/Project/Shaders/LD"),
 		ShaderDirectory);
 
@@ -20,7 +18,6 @@ void FLifeDevModule::StartupModule()
 	// FSlateApplication::Get().SetApplicationScale(1.3);
 }
 
-void FLifeDevModule::ShutdownModule()
-{
+void FLifeDevModule::ShutdownModule() {
 	IModuleInterface::ShutdownModule();
 }
