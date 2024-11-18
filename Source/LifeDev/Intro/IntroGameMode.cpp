@@ -29,7 +29,8 @@ void AIntroGameMode::BeginPlay() {
 		// fix so that the environment doesn't play during the intro level
 		MusicMan->SetEnvironOverride(false);
 		MusicMan->SetGhostOverride(false);
-		// MusicMan->SetGhosts(false);
+		// needed because musicman turns it on on begin play. which already happened after spawn.
+		MusicMan->SetGhosts(false);
 	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
