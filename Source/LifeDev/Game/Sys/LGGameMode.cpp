@@ -241,13 +241,13 @@ void ALGGameMode::BeginPlay() {
 	
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (!IsValid(Instance)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("No valid instance found"));
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
 		return;
 	}
 	
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (!IsValid(Settings)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Settings not valid. can't continue."));
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
 		return;
 	}
 
@@ -257,18 +257,19 @@ void ALGGameMode::BeginPlay() {
 	// - Thank you so much Jero, that's really how i needed it.
 	// - dou itashimashite!
 	if (!IsValid(Settings->Save)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Savegame not valid. Attempt to load or create."));
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
 		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
 		return;
 	}
+	
 	if (Settings->GetIsSaving()) {
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
-		UE_LOG(LogLGameMode, Warning, TEXT("Savegame currently loading. waiting for it."));
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
 		return;
 	}
 	
-	UE_LOG(LogLGameMode, Warning, TEXT("Savegame seems loaded."));
+	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
 
 	// manually go to init if it's already loaded.
 	FTimerManager& Timer = World->GetTimerManager();
@@ -386,7 +387,7 @@ void ALGGameMode::StartChapter() {
 
 	/// load new one
 	if (!LoadChapter()) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Chapter didn't load. Won't start any sequence."));
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
 		return;
 	}
 

@@ -45,7 +45,7 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	// check before modifying internal state
 	if (IsSaving) {
-		UE_LOG(LogLSettings, Warning, TEXT("Load game aborted, save system is busy."));
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Load game aborted, save system is busy. STOP"), __func__);
 		return;
 	}
 	IsSaving = true;
@@ -68,16 +68,17 @@ void ULSettings::SaveGame(int32 NewSlotIndex) {
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
 	if (!Save) {
-		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted. No savegame to save."));
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
 		OnSaveReady.Broadcast(); // technically done. important or objects might get stuck
 		return;
 	}
 	
 	if (IsSaving) {
-		UE_LOG(LogLSettings, Warning, TEXT("Save game aborted, save system is busy."));
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy."), __func__);
 		// not triggering onSaveReady here since there must be something else in queue.
 		return;
 	}
+
 	IsSaving = true;
 
 	// update slot index. If parameter is set use that.
@@ -101,9 +102,9 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 	IsSaving = false;
 	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
 	if (Success) {
-		UE_LOG(LogLSettings, Log, TEXT("Savegame saved"));
+		UE_LOG(LogLSettings, Log, TEXT("%hs Savegame saved"), __func__);
 	} else {
-		UE_LOG(LogLSettings, Warning, TEXT("Savegame save failed."));
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Savegame save failed."), __func__);
 	}
 
 	// trigger on both cases. important or objects might get stuck.
@@ -115,7 +116,8 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 	Save = Cast<ULSave>(LoadedGame);
 	if (!Save) {
 		// If file does not exist, try to create a new one
-		UE_LOG(LogLSettings, Log, TEXT("No savefile found, creating a new one. Slot=%i"), SlotIndex);
+		UE_LOG(LogLSettings, Log, TEXT("%hs No savefile found, creating a new one. Slot=%i"),
+			__func__, SlotIndex);
 		// should assign the slot index here.
 		// otherwise if a game load fails for a given slot. it will override slot 0.
 		// that'd be terrible!
@@ -126,7 +128,7 @@ void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* Loade
 	// TODO should i really do this here?
 	Save->WriteSubsystems(GetWorld());
 	
-	UE_LOG(LogLSettings, Log, TEXT("Load game succeeded."));
+	UE_LOG(LogLSettings, Log, TEXT("%hs Load game succeeded."), __func__);
 	OnSaveReady.Broadcast();
 }
 
