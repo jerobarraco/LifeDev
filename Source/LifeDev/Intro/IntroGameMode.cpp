@@ -29,7 +29,7 @@ void AIntroGameMode::BeginPlay() {
 		// fix so that the environment doesn't play during the intro level
 		MusicMan->SetEnvironOverride(false);
 		MusicMan->SetGhostOverride(false);
-		// needed because musicman turns it on on begin play. which already happened after spawn.
+		// needed because musicman "turns on", on begin play. which already happened after spawn.
 		MusicMan->SetGhosts(false);
 	}
 
