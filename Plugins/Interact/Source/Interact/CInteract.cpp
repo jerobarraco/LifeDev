@@ -23,11 +23,10 @@ UCInteract::UCInteract(): Super() {
 	SetGenerateOverlapEvents(false);
 	SetCanEverAffectNavigation(false);
 
+	// it's already on the collision profile yay
+	UBoxComponent::SetCollisionProfileName(ProfileNone); // Start disabled
 	// important to fix the issue with interact starting inactive.
 	UCInteract::SetAutoActivate(true);// CInteract also sets the collision
-	
-	// it's already on the collision profile yay
-	UBoxComponent::SetCollisionProfileName(CollisionProfile);
 }
 
 void UCInteract::Trigger() const {
@@ -136,7 +135,8 @@ void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewPa
 
 void UCInteract::SetCollisionEnabledBool(const bool Enabled) {
 	// because this is ForceInline, maybe this can be compiled without the "if", when called with a constexpr?
-	SetCollisionEnabled(Enabled ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+	// SetCollisionEnabled changes the whole profile, so don't use it!
+	SetCollisionProfileName(Enabled ? Profile : ProfileNone);
 }
 
 void UCInteract::Deactivate() {
@@ -156,11 +156,6 @@ void UCInteract::Activate(const bool bReset) {
 	SetCollisionEnabledBool(true);
 }
 
-void UCInteract::SetAutoActivate(const bool NewActive) {
-	Super::SetAutoActivate(NewActive);
-	SetCollisionEnabledBool(NewActive);
-}
-
 void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	// this is like traveling to the future backwards, i'm warning my future self of a past problem.
 	// UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
@@ -170,3 +165,10 @@ void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	
 	Super::SetActive(bNewActive, bReset);
 }
+
+// no need to call setcollisionEnabledBool here. since it Activate gets called somewhere upon normal gameplay
+// potentially by the engine
+// void UCInteract::SetAutoActivate(const bool NewActive) {
+	// Super::SetAutoActivate(NewActive);
+	// SetCollisionEnabledBool(NewActive);
+// }

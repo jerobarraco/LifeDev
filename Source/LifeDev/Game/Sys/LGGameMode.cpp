@@ -59,14 +59,12 @@ ALGGameMode::ALGGameMode():Super() {
 	// without having to set it up for every single mesh.
 	// Setting it to visibility has its downsides, like having to set up more complicated collisions
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
-	// UCInteract::CollisionProfile = "BlockAllDynamic";
-	UCInteract::SetCollisionProfile("Interact");
-	// UCInteract::CollisionProfile = "Interact";
+	UCInteract::SetDefaultCollisionProfile(UCInteract::ProfileInteract);
 }
 
 bool ALGGameMode::LoadChapter() {
-	ULSysSettings* const SysSettings = ULSysSettings::Get();
-	UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (!IsValid(DT_Chaps)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Chapter Datatable is not properly set in the settings."));
 		return false;

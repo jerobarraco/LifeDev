@@ -25,14 +25,14 @@ public:
 
 	virtual void Deactivate() override;
 	virtual void Activate(const bool bReset=false) override;
-	virtual void SetAutoActivate(const bool bNewAutoActivate) override;
 	virtual void SetActive(const bool bNewActive, const bool bReset = false) override;
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	static void SetCollisionProfile(const FName& Name) {
-		CollisionProfile = Name;
-	}
+	static void SetDefaultCollisionProfile(const FName& Name) { Profile = Name; }
 
+	inline static const FName ProfileInteract = "Interact";
+	inline static const FName ProfileNone = "NoCollision";
+	
 	// whether the parent actor can be grabbed.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
 	bool IsGrabbable = false;
@@ -78,7 +78,7 @@ protected:
 	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
-	
+
 #pragma region Interactor
 	/// interactor
 	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
@@ -90,7 +90,7 @@ protected:
 	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
 
-	inline static FName CollisionProfile = "Interact";
+	inline static FName Profile = ProfileInteract;
 	friend class AInteract;
 	friend class UCInteractor;
 #pragma endregion 
