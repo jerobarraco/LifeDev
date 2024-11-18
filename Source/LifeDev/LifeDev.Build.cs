@@ -16,11 +16,12 @@ public class LifeDev : ModuleRules {
 			"ChaosNiagara", "Niagara", "GameplayCameras",
 			"MoviePlayer",  // loading screen yes.
 			"SlateCore", "Slate", // settings
+			"AudioMixer", // for musicman fx fade
+			// "MetasoundEngine", // for the music
+			"RenderCore", // to set the shaders' path
 			// my stuff
 			"JUtils", "Interact", "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
-			"AudioMixer", // for musicman fx fade
-			"RenderCore", // to set the shaders' path
 		});
 	}
 }

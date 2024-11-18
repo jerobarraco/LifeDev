@@ -18,6 +18,12 @@ ALStepC3S000::ALStepC3S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
+	// TODO alternative way, this doesn't fix the packaging issue (see +DirectoriesToAlwaysCook=(Path="/Game/LifeDev") on DefaultGame)
+	// /Script/MetasoundEngine.MetaSoundSource'/Game/LifeDev/Game/Env/Music/Music07/Music07_MS.Music07_MS'
+	// static ConstructorHelpers::FObjectFinder<UMetaSoundSource>
+		// CMS(TEXT("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS"));
+	// Music = CMS.Object;
+	
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 
