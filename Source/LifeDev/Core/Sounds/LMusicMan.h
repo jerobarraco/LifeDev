@@ -31,31 +31,40 @@ public:
 	static void FadeS(const UWorld* const W, const bool In=true);
 
 	// Called by LGGameMode
-	void Init() {};
+	void Init() {}
 	
 	UFUNCTION(BlueprintCallable)
 	void SetRain(const bool Play);
-
-	UFUNCTION(BlueprintCallable)
-	void SetEnviron(const bool On);
-
-	// used to force environ off on the intro map/level
-	UFUNCTION(BlueprintCallable)
-	void SetEnvironOverride(const bool On);
-
-	// the flashback value for the Environ
-	UFUNCTION(BlueprintCallable)
-	void SetEnvironFB(const float V);
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)
 	void FadeFX(const bool On);
 
+	// the flashback value for the Environ. depends on feature flag and override.
+	UFUNCTION(BlueprintCallable)
+	void SetEnvironFB(const float V);
+
+	// turns the environ constant noise on/off
+	UFUNCTION(BlueprintCallable)
+	void SetEnviron(const bool On);
+
+	// turns the ghostpool on/off. depends on feature flag and override.
+	UFUNCTION(BlueprintCallable)
+	void SetGhosts(const bool On);
+
 	// kills the ghosts.
 	// All: if set it will kill the ones inactive in the pool too.
 	UFUNCTION(BlueprintCallable)
 	void KillGhosts(const bool All=false);
-	
+
+	// used to force environ off on the intro map/level
+	UFUNCTION(BlueprintCallable)
+	void SetEnvironOverride(const bool On);
+
+	// used to force ghost off on the intro map/level
+	UFUNCTION(BlueprintCallable)
+	void SetGhostOverride(const bool On);
+
 	virtual void Fade_Implementation(const bool In) override;
 	virtual void SetFB_Implementation(float V) override;
 
@@ -63,7 +72,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	void SetGhosts(bool bEnabled);
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
@@ -91,4 +99,5 @@ protected:
 	TObjectPtr<AGhostPool> GhostPool = nullptr;
 
 	bool EnvironOverride = true;
+	bool GhostOverride = true;
 };

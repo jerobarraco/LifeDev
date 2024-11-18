@@ -100,9 +100,10 @@ void ALMusicMan::SetEnviron(const bool On) {
 	if (!IsValid(Environ)) return;
 
 	const bool Enabled = ULSettings::GetFeatS(this, EFeat::S_ENV) && EnvironOverride;
-	UE_LOG(LogTemp, Log, TEXT("LMusicMan::%hs On=%i Enabled=%i"), __func__, On, Enabled);
+	UE_LOG(LogTemp, Log, TEXT("LMusicMan::%hs On=%i Enabled=%i Override=%i"),
+		__func__, On, Enabled, EnvironOverride);
 
-	// don't enable if it's disabled. but allow disable
+	// don't enable if it's disabled. but allow to disable it.
 	if (On && !Enabled) return;
 
 	Environ->Fade(On);
@@ -110,6 +111,26 @@ void ALMusicMan::SetEnviron(const bool On) {
 
 void ALMusicMan::SetEnvironOverride(const bool On) {
 	EnvironOverride = On;
+}
+
+void ALMusicMan::SetGhosts(const bool On) {
+	const bool Enabled = GhostOverride && ULSettings::GetFeatS(this, EFeat::E_GHOSTPOOL);
+	if (Enabled && On) {
+		if (IsValid(GhostPool)) return;
+		UWorld* const W = GetWorld();
+		if (!W) return;
+
+		GhostPool = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
+		return;
+	}
+
+	if (!IsValid(GhostPool)) return;
+	GhostPool->Destroy();
+	GhostPool = nullptr;
+}
+
+void ALMusicMan::SetGhostOverride(const bool On) {
+	GhostOverride = On;
 }
 
 void ALMusicMan::SetEnvironFB(const float V) {
@@ -234,21 +255,6 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	Super::EndPlay(EndPlayReason);
-}
-
-void ALMusicMan::SetGhosts(bool bEnabled) {
-	if (bEnabled) {
-		if (IsValid(GhostPool)) return;
-		UWorld* const W = GetWorld();
-		if (!W) return;
-
-		GhostPool = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
-		return;
-	}
-
-	if (!GhostPool) return;
-	GhostPool->Destroy();
-	GhostPool = nullptr;
 }
 
 void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {

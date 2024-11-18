@@ -94,7 +94,7 @@ void ULSetVideoUI::ResSet() const {
 	if (!Settings || !Resolution) return;
 
 	Resolution->ClearOptions();
-	for (const FIntPoint& P:ResOpts) {
+	for (const FIntPoint& P: ResOpts) {
 		Resolution->AddOption(ResToCombo(P));
 	}
 	Resolution->SetSelectedOption(ResToCombo(Settings->GetScreenResolution()));

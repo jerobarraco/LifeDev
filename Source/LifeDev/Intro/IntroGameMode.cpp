@@ -28,6 +28,8 @@ void AIntroGameMode::BeginPlay() {
 		MusicMan->PlayMusic(Music);
 		// fix so that the environment doesn't play during the intro level
 		MusicMan->SetEnvironOverride(false);
+		MusicMan->SetGhostOverride(false);
+		// MusicMan->SetGhosts(false);
 	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
