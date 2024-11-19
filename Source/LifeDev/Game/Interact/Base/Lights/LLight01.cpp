@@ -10,7 +10,7 @@ ALLight01::ALLight01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support.Support"));
 	Mesh->SetRelativeLocation(FVector(-2.5,2.5,0));
-	Mesh->SetRelativeScale3D(FVector(0.05,0.05,0.05));
+	Mesh->SetRelativeScale3D(FVector(1,1,1));
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
