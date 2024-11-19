@@ -17,3 +17,11 @@ GEngine->Exec(nullptr, TEXT("log LogFlags off"));
 can increase the shader compilation perf on engine dir BaseEngine.ini
 check PercentageUnusedShaderCompilingThreads=5 and WorkerProcessPriority=0
 https://store.algosyntax.com/tutorials/unreal-engine/ue5-how-to-speed-up-compiling-shaders/
+
+
+enable logs on shipping
+add these lines to project.target.cs
+		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
+		BuildEnvironment = TargetBuildEnvironment.Unique;
+		bUseLoggingInShipping = true;
+	

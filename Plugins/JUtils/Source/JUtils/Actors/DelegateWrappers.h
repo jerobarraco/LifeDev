@@ -8,6 +8,12 @@ class UDelegateWrapper;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnWrapperID, UDelegateWrapper* const, Wrapper, int32, ID, UObject* const, Obj);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnWrapperIDC, UDelegateWrapper* const, int32, UObject* const);
 
+// Note, take a look at FStreamableDelegate
+// Delegate with parameters we need once the asset had been loaded such as the Id we loaded and the location to spawn at. Will call function 'OnMonsterLoaded' once it's complete.
+// FStreamableDelegate Delegate = FStreamableDelegate::CreateUObject(this, &ASGameModeBase::OnMonsterLoaded, MonsterId, SpawnLocation);
+// The actual async load request
+// Manager->LoadPrimaryAsset(MonsterId, Bundles, Delegate);
+
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 // A simple wrapper for binding to delegates with extra parameters.
 // To use:
@@ -33,7 +39,7 @@ public:
 	// or bind this function to the other delegate (useful when the other delegate has a param)
 	UFUNCTION(BlueprintCallable)
 	void DispatchBool(bool IsChecked) { Dispatch(); }
-	
+
 	// the id for this wrapper. passed on OnDispatch
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 ID = -1;
@@ -41,7 +47,7 @@ public:
 	// the obj (if any) associated to this wrapper. passed on OnDispatch
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UObject> Obj = nullptr;
-	
+
 	// subscribe to this
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient)
 	FOnWrapperID OnDispatch;
