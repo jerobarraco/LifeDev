@@ -7,7 +7,7 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC3S000::ALStepC3S000():Super() {
-	Name = FName("C3S0");
+	Name = SName;
 	const static FText ST = FText::FromString("~ Perseverance ~");
 	Title = ST;
 	UseFade = true;

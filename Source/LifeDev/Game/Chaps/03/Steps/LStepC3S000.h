@@ -14,6 +14,8 @@ class ALStepC3S000 : public ALStep {
 public:
 	ALStepC3S000();
 
+	static inline FName SName = "C3S0";
+
 protected:
 	virtual void TryStart_Implementation() override;
 	virtual void DoDebug_Implementation() override;

@@ -26,8 +26,8 @@ class STORY_API UStory : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	static UStory* Instance(const UWorld* const W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UStory* Instance(const UObject* const O);
 	
 	UFUNCTION(BlueprintCallable)
 	void Init();

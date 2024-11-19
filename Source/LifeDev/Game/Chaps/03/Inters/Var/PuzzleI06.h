@@ -5,6 +5,7 @@
 
 #include "PuzzleI06.generated.h"
 
+class AStep;
 class AInteractAnim;
 
 // Chap 03 Puzzle Instance 05 Picture puzzles 
@@ -16,7 +17,11 @@ public:
 	APuzzleI06();
 
 protected:
-	virtual void PostLoad() override;
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PostLoad() override;
 	virtual void PostInitializeComponents() override;
+
+	UFUNCTION()
+	void StepStarted(AStep* const Step);
 };
