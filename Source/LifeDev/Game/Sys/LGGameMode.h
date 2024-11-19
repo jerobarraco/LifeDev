@@ -30,8 +30,8 @@ class UFlags;
 // to get the collision channel read https://gamedev.stackexchange.com/a/178812/44866
 #define InteractTraceChannel ECC_GameTraceChannel1
 
-// Game mode class 
-UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
+// Game mode class
+UCLASS(Blueprintable, Config=LifeDev)
 class LIFEDEV_API ALGGameMode : public AGameModeBase {
 	GENERATED_BODY()
 
@@ -120,6 +120,7 @@ protected:
 
 	void TickCounter() const;
 
+	// how often to increase the time counting flag
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	float CounterTime=.5;
 

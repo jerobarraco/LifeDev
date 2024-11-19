@@ -14,8 +14,8 @@ class UDiags;
 
 // LifeDev Game character items
 // handles some stuff regarding items... 
-UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
-class LIFEDEV_API UCLCharItems : public UActorComponent {
+UCLASS(Blueprintable)
+class LIFEDEV_API UCLCharItems: public UActorComponent {
 	GENERATED_BODY()
 
 public:
@@ -35,9 +35,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UCInteractor* Interactor = nullptr;
+	TObjectPtr<UCInteractor> Interactor = nullptr;
 };

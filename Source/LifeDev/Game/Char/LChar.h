@@ -63,10 +63,6 @@ public:
 	float SpeedMax = 150;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedFoxy = 10;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
-	float FOVMin = 90;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
-	float FOVMax = 140;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 1;
