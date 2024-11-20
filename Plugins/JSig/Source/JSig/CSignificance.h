@@ -5,24 +5,11 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-
 #include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this
 
-#include "CSignificance.generated.h"
+#include "SignificanceTypes.h"
 
-// Defines the different levels of significance.
-// Off means no significance at all.
-// some things should/could/would be disabled here 
-UENUM(BlueprintType, Blueprintable)
-enum class ESigValue : uint8 {
-	// Disable everything here
-	Off = 0,
-	Low,
-	Med,
-	// No stripping/culling
-	High,
-	MAX UMETA(Hidden)
-};
+#include "CSignificance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSignificanceChanged, const ESigValue, Significance, const ESigValue, SignificanceOld);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(ESigValue, FCalcSignificance, const FTransform& , Viewpoint);
