@@ -14,7 +14,13 @@ public class LifeDevTarget : TargetRules
 		ExtraModuleNames.Add("LifeDev");
 		
 		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
-		BuildEnvironment = TargetBuildEnvironment.Unique;
-		bUseLoggingInShipping = true;
+		if (Target.Platform == UnrealTargetPlatform.Linux) {
+			BuildEnvironment = TargetBuildEnvironment.UniqueIfNeeded;
+			bUseLoggingInShipping = true;
+		} else if (Target.Platform == UnrealTargetPlatform.Win64) {
+			// can't do on windows because i have a "Installed" build. which can only do shared.
+			// https://forums.unrealengine.com/t/targets-with-a-unique-build-environment-cannot-be-built-with-an-installed-engine/1353217/2
+			BuildEnvironment = TargetBuildEnvironment.Shared;
+		}
 	}
 }
