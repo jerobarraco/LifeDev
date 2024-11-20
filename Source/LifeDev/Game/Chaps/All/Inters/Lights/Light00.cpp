@@ -12,22 +12,6 @@ ALight00::ALight00():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support"));
-	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,0,0));
-	Mesh->SetRelativeRotation(FRotator(0,90,90));
-	Mesh->SetRelativeScale3D(FVector(1,1,1));
-
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
-	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
-	Tube->SetupAttachment(Mesh);
-	IFL(CTube.Succeeded()) Tube->SetStaticMesh(CTube.Object);
-	
-	Tube->SetRelativeLocation(FVector(0,0,-5));
-	Tube->SetCastAllShadows(false);
-
 	/// anim
 	UseAnim = true;
 	Anim->MatVStart = FLinearColor::Black;
@@ -36,16 +20,35 @@ ALight00::ALight00():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
 	IFL (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
+
+	// objects
+	// TODO adjust on the level
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support"));
+	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetRelativeLocation(FVector(0,0,0));
+	Mesh->SetRelativeRotation(FRotator(0,270,90));
+	Mesh->SetRelativeScale3D(FVector(1,1,1));
 	
-	RectLight->SetRelativeLocation(FVector(2.5,-2.5,-0.200000));
-	RectLight->SetRelativeRotation(FRotator(270.000000,194.036243,75.963757));
+	Interact->SetRelativeLocation(FVector(2.500000,-2.500000,0));
+	Interact->SetBoxExtent(FVector(42.500000,7.500000,5.000000));
+
+	RectLight->SetRelativeLocation(FVector(2.500000,-2.500000,-0.200000));
+	RectLight->SetRelativeRotation(FRotator(-90,-90,0));
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
 	RectLight->SetBarnDoorLength(7);
-
-	Interact->SetRelativeLocation(FVector(2.5,-2.500000,0.));
-	Interact->SetBoxExtent(FVector(42.5,7.5,5.));
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
+	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
+	Tube->SetupAttachment(Mesh);
+	IFL(CTube.Succeeded()) Tube->SetStaticMesh(CTube.Object);
+	
+	Tube->SetRelativeLocation(FVector(0,0,-5));
+	Tube->SetCastAllShadows(false);
 
 	ALight00::SetMobility(EComponentMobility::Static);
 }
