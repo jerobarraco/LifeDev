@@ -14,7 +14,7 @@ AWDoor01::AWDoor01():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Wardrobe00/Door1"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-95,55,0));
-	
+
 	Interact->SetRelativeLocation(FVector(72.513521,-55,107.5));
 	Interact->SetBoxExtent(FVector(22,5,97.5));
 
