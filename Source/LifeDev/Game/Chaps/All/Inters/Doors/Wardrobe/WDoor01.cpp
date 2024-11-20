@@ -9,14 +9,14 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWDoor01::AWDoor01():Super() {
-	SFX->SetRelativeLocation(FVector(-30.753022,5.302253,110));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Wardrobe00/Door1"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-95,55,0));
 
-	Interact->SetRelativeLocation(FVector(72.513521,-55,107.5));
+	Interact->SetRelativeLocation(FVector(72.5,-55,107.5));
 	Interact->SetBoxExtent(FVector(22,5,97.5));
+	SFX->SetRelativeLocation(FVector(-25,0,5));
 
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetLocation(FVector::ZeroVector);
