@@ -1,6 +1,6 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
-// based on code from Tom Looman https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
+// inspired by code from Tom Looman https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
 
 #pragma once
 #include "CoreMinimal.h"
@@ -17,14 +17,14 @@ UENUM(BlueprintType, Blueprintable)
 enum class ESigValue : uint8 {
 	// Disable everything here
 	Off = 0,
-	Low = 1,
-	Med = 2,
+	Low,
+	Med,
 	// No stripping/culling
-	High = 3,
-	MAX = 4 UMETA(Hidden)
+	High,
+	MAX UMETA(Hidden)
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSignificanceChanged, ESigValue, Significance);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSignificanceChanged, const ESigValue, Significance, const ESigValue, SignificanceOld);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(ESigValue, FCalcSignificance, const FTransform& , Viewpoint);
 DECLARE_DYNAMIC_DELEGATE_RetVal(FVector, FCalcLocation);
 
@@ -63,7 +63,7 @@ public:
 	
 	// returns the current sig
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE ESigValue GetSignificance() { return Significance; }
+	FORCEINLINE ESigValue GetSignificance() const { return Significance; }
 
 	static inline bool Debug = false;
 
@@ -143,12 +143,12 @@ public:
 	// Components to manage ticks.
 	// Components set here, will have it's TickInterval managed by the 'TickIntervals' property.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<UActorComponent*> CompsTicks;
+	TArray<TObjectPtr<UActorComponent>> CompsTicks;
 	// components to manage activate/deactivate.
 	// Not safe to use on Niagara (Use CompsHide instead)
 	// The components listed will be deactivated when the significance is Off, and reactivated when it's not Off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<UActorComponent*> CompsActivate;
+	TArray<TObjectPtr<UActorComponent>> CompsActivate;
 	
 	// components to manage HiddenInGame, ONLY when the significance is Off.
 	// When significance is Off it will set all the components to HiddenInGame
@@ -159,7 +159,7 @@ public:
 	// Probably the same will happen with the rest of IsOffIf* flags.
 	// That's by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<USceneComponent*> CompsHide;
+	TArray<TObjectPtr<USceneComponent>> CompsHide;
 
 	// triggered when the significance changes. Guaranteed to trigger in game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
@@ -208,4 +208,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	ESigValue Significance = ESigValue::High;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	ESigValue SignificanceOld = ESigValue::High;
 };

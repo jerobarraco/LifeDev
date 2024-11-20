@@ -53,7 +53,7 @@ void UCSignificance::Register() {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s"), __func__, *Name);
 
 	// don't register if it doesn't have an owner
-	if (!IsValid(Owner)) {
+	if (UNLIKELY(!IsValid(Owner))) {
 		UE_LOG(LogJSigComp, Warning, TEXT("Can't register, invalid owner"));
 		return;
 	}
@@ -170,7 +170,7 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 }
 
 bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint) const {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return true;
 	
 	const FVector& Start = Viewpoint.GetLocation();
@@ -202,14 +202,13 @@ void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, floa
 	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	const bool Equals = NewSig == Significance; 
 	if (Equals) return; // return if not changed.
-	
+
+	SignificanceOld = Significance;
 	Significance = NewSig;
 	const AActor* const Owner = GetOwner();
 
-	if (Debug) {
-		UE_LOG(LogJSigComp, Log, TEXT("UCSignificance.%hs threadId=%i sig=%i owner=%s"),
-			__func__, ThreadId, Significance, *GetNameSafe(Owner));
-	}
+	UE_CLOG(Debug, LogJSigComp, Log, TEXT("UCSignificance.%hs threadId=%i sig=%i sigOld=%i owner=%s"),
+		__func__, ThreadId, Significance, SignificanceOld, *GetNameSafe(Owner));
 
 	/// Finish it!!
 	// Make sure to call ApplyUpdate on the game thread.
@@ -234,9 +233,8 @@ void UCSignificance::ApplyUpdate() {
 	// finally notify (at the end, given the possible side effects on the bound delegate client)
 	// make sure to notify on the game thread.
 	// clients should not worry about the thread and probably assume it's the game thread.
-	OnChanged.Broadcast(Significance);
+	OnChanged.Broadcast(Significance, SignificanceOld);
 }
-
 
 void UCSignificance::UpdateTicks() {
 	if (!TickIntervals.Contains(Significance)) return;

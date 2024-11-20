@@ -74,9 +74,9 @@ protected:
 	void Reset();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	USignificanceManager* Man = nullptr;
+	TObjectPtr<USignificanceManager> Man = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<APlayerController*> PCs;
+	TArray<TObjectPtr<APlayerController>> PCs;
 
 	float DTAcum = 0;
 };
