@@ -11,7 +11,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
-	TEXT("SigMan.SigOverride"),
+	TEXT("JSigMan.SigOverride"),
 	GSigOverride,
 	TEXT("Force significance on all managed objects. -1 is default, 0-4 is hidden, lowest, medium, highest.\n"),
 	ECVF_Cheat
@@ -54,23 +54,24 @@ void UCSignificance::Register() {
 
 	// don't register if it doesn't have an owner
 	if (UNLIKELY(!IsValid(Owner))) {
-		UE_LOG(LogJSigComp, Warning, TEXT("Can't register, invalid owner"));
+		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register, invalid owner"), __func__);
 		return;
 	}
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
-	if (!IsValid(Man)) return;
+	if (UNLIKELY(!IsValid(Man))) return;
 
 	// this is lame, but it's how it works
-	auto lCalculate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) -> float
-	{
-		if (!IsValid(this)) return -1;
+	auto lCalculate = [&]
+		(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint)
+		-> float {
+		if (UNLIKELY(!IsValid(this))) return -1;
 		return Calculate(ObjectInfo, Viewpoint);
 	};
-	
-	auto lPostUpdate = [&](USignificanceManager::FManagedObjectInfo* ObjectInfo, float Old, float New, bool bFinal)
-	{
-		if (!IsValid(this)) return;
+
+	auto lPostUpdate = [&]
+		(USignificanceManager::FManagedObjectInfo* ObjectInfo, float Old, float New, bool bFinal) {
+		if (UNLIKELY(!IsValid(this))) return;
 		Update(ObjectInfo, Old, New, bFinal);
 	};
 
@@ -84,14 +85,14 @@ void UCSignificance::Register() {
 void UCSignificance::Unregister() {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, *GetNameSafe(GetOwner()));
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
-	if (!IsValid(Man)) return;
+	if (LIKELY(!IsValid(Man))) return;
 
 	Man->UnregisterObject(this);
 }
 
 float UCSignificance::Calculate(
 	USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
-	if (GSigOverride >= 0.0f)
+	if (UNLIKELY(GSigOverride >= 0.0f))
 		return GSigOverride;
 
 	const AActor* const Owner = GetOwner();
@@ -111,7 +112,7 @@ float UCSignificance::Calculate(
 	}
 	
 	// test offscreen
-	if (Owner && OffscreenTimeMax >= 0.0f && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
+	if (OffscreenTimeMax >= 0.0f && Owner && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor offscreen for too long. Now is off/low. name=%s"),
 			__func__, *GetNameSafe(Owner));
 		
@@ -130,7 +131,8 @@ float UCSignificance::Calculate(
 	else if (Owner)
 		Origin = Owner->GetActorLocation();
 	else
-		UE_LOG(LogJSigComp, Verbose, TEXT("Warning: Could not obtain the origin. No owner and no calcLocation."));
+		UE_LOG(LogJSigComp, Verbose, TEXT("%hs Warning: Could not obtain the origin. No owner and no calcLocation."),
+			__func__);
 		// TODO else get parent component location?
 
 
@@ -138,14 +140,16 @@ float UCSignificance::Calculate(
 	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
 
-	UE_LOG(LogJSigComp, Verbose, TEXT("Calculated significance. distsqr=%5.3f, sig=%5.3f"), DistSqr, Sig);
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Calculated significance. distsqr=%5.3f, sig=%5.3f"),
+		__func__, DistSqr, Sig);
 	return Sig;
 }
 
 float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	const int32 Num = DistanceSqr.Num();
-	if (Num == 0) {
-		UE_LOG(LogJSigComp, Warning, TEXT("CSignificance: No distance thresholds set in %s."), *GetNameSafe(GetOwner()));
+	if (UNLIKELY(Num == 0)) {
+		UE_LOG(LogJSigComp, Warning, TEXT("%hs No distance thresholds set in %s."),
+			__func__, *GetNameSafe(GetOwner()));
 		return static_cast<float>(ESigValue::High);
 	}
 
@@ -158,7 +162,7 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	for (int32 i = 0; i<SigNum; ++i) {
 		const ESigValue& ISig = Sigs[i];
 		// avoid going back. given the significances can be unordered
-		if (ISig < Sig) continue;
+		if (UNLIKELY(ISig < Sig)) continue;
 
 		// check distance, and update
 		const float SigDistSqr = DistanceSqr[ISig];
@@ -185,7 +189,7 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 	FHitResult Hit;
 	World->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 
-	AActor* const HitActor = Hit.GetActor();
+	const AActor* const HitActor = Hit.GetActor();
 	// no need to check if either is valid. if it's different it's different.
 	const bool Occluded = HitActor != Owner;
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Occluded=%i o=%s hit=%s"),
@@ -195,18 +199,16 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 }
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
-	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
-
 	const ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
 	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	const bool Equals = NewSig == Significance; 
-	if (Equals) return; // return if not changed.
+	if (LIKELY(Equals)) return; // return if not changed.
 
 	SignificanceOld = Significance;
 	Significance = NewSig;
 	const AActor* const Owner = GetOwner();
-
+	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
 	UE_CLOG(Debug, LogJSigComp, Log, TEXT("UCSignificance.%hs threadId=%i sig=%i sigOld=%i owner=%s"),
 		__func__, ThreadId, Significance, SignificanceOld, *GetNameSafe(Owner));
 
@@ -237,18 +239,18 @@ void UCSignificance::ApplyUpdate() {
 }
 
 void UCSignificance::UpdateTicks() {
-	if (!TickIntervals.Contains(Significance)) return;
+	if (UNLIKELY(!TickIntervals.Contains(Significance))) return;
 
 	AActor* const Owner = GetOwner();
-	if (!IsValid(Owner)) return;
+	if (UNLIKELY(!IsValid(Owner))) return;
 
 	const float PreInterval = TickIntervals[Significance];
 	const bool TickEnabled = PreInterval>=0;
 	// avoid setting it to -1 if it's going to be disabled.
 	const float Interval = TickEnabled ? PreInterval : 999999999;
 	
-	UE_LOG(LogJSigComp, Verbose, TEXT("Update ticks. Interval=%f Enabled=%i Obj=%s"),
-		Interval, TickEnabled, *GetNameSafe(Owner));
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Update ticks. Interval=%f Enabled=%i Obj=%s"),
+		__func__, Interval, TickEnabled, *GetNameSafe(Owner));
 
 	/// Ticks
 	// Don't mess with tick enabled
@@ -257,7 +259,7 @@ void UCSignificance::UpdateTicks() {
 
 	/// Components
 	for (UActorComponent* const C: CompsTicks) {
-		if (!IsValid(C)) continue;
+		if (UNLIKELY(!IsValid(C))) continue;
 
 		// necessary, not enough. when reactivating ticks, it doesn't really update the appropriate value.
 		C->SetComponentTickInterval(Interval);
@@ -274,7 +276,7 @@ void UCSignificance::UpdateTicks() {
 void UCSignificance::UpdateActivate() {
 	const bool IsActive = Significance != ESigValue::Off;
 	for (UActorComponent* const C: CompsActivate) {
-		if (!IsValid(C)) continue;
+		if (UNLIKELY(!IsValid(C))) continue;
 		C->SetActive(IsActive, false); // don't reset.
 	}
 }
@@ -287,8 +289,8 @@ void UCSignificance::UpdateHidden() {
 	// const bool IsActive = Significance != ESigValue::Off;
 	const bool IsHidden = Significance == ESigValue::Off;
 	for (USceneComponent* const C: CompsHide) {
-		if (!IsValid(C)) continue;
-		// C->SetVisibility(IsActive);
+		if (UNLIKELY(!IsValid(C))) continue;
+		// C->SetVisibility(IsActive); // this is for the editor only.
 		C->SetHiddenInGame(IsHidden);
 	}
 }
