@@ -44,18 +44,18 @@ void UCAnimatorFade::CreateMaterial() {
 	}
 
 	if (!IsValid(MatBase)) {
-		UE_LOG(LogTemp, Log, TEXT("%hs using mesh 0's material"), __func__);
+		UE_LOG(LogAnimFade, Log, TEXT("%hs using mesh 0's material"), __func__);
 		MatBase = Meshes[0]->GetMaterial(0);
 	}
 
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
 	if (!IsValid(Mat)) {
-		UE_LOG(LogTemp, Log, TEXT("%hs dynamic mat is invalid. stop."), __func__);
+		UE_LOG(LogAnimFade, Log, TEXT("%hs dynamic mat is invalid. stop."), __func__);
 		return;
 	}
 
 	// TODO find all the objects with voxelfade_dmi and reexport to _ndmi
-	UE_LOG(LogTemp, Log, TEXT("%hs o=%s mat=%s "),
+	UE_LOG(LogAnimFade, Log, TEXT("%hs o=%s mat=%s "),
 		__func__, *GetNameSafe(GetOwner()), *Mat->GetName());
 
 	for (UStaticMeshComponent* const C: Meshes) {
