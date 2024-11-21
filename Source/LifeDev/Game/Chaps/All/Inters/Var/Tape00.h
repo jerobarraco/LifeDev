@@ -7,7 +7,7 @@
 
 class UCQuickMesh;
 
-// Base Tape00 
+// Base Tape00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATape00: public ALInteract {
 	GENERATED_BODY()
@@ -19,5 +19,5 @@ protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Case = nullptr;
+	TObjectPtr<UCQuickMesh> Case = nullptr;
 };
