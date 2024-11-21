@@ -18,7 +18,7 @@ public class LifeDevTarget : TargetRules
 			bUseLoggingInShipping = true;
 			// bUseExecCommnadInShipping
 		} else if (Target.Platform == UnrealTargetPlatform.Win64) {
-			// can't do on windows because i have a "Installed" build. which can only do shared.
+			// can't do on windows because i have an "Installed" build. which can only do shared.
 			// https://forums.unrealengine.com/t/targets-with-a-unique-build-environment-cannot-be-built-with-an-installed-engine/1353217/2
 			BuildEnvironment = TargetBuildEnvironment.Shared;
 		}
