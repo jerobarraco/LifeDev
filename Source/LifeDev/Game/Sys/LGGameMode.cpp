@@ -108,26 +108,26 @@ void ALGGameMode::Init_Implementation() {
 	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
 	if (!Diags) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
 	if (!Flags){
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 	
 	Inventory = World->GetSubsystem<UInventory>();
 	if (!Inventory) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 	
 	Story = World->GetSubsystem<UStory>();
 	if (!Story) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Cant get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 
