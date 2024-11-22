@@ -193,8 +193,8 @@ protected:
 	void UpdateHidden();
 	///~
 
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
 	ESigValue Significance = ESigValue::High;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
 	ESigValue SignificanceOld = ESigValue::High;
 };
