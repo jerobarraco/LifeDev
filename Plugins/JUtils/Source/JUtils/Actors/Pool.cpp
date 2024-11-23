@@ -37,7 +37,7 @@ bool UPool::RemoveOne() {
 	if (IsValid(A)) A->Destroy();
 
 	// remove will shrink
-	Ready.RemoveAt(I, 1, true);
+	Ready.RemoveAt(I, 1, EAllowShrinking::Yes);
 	return true;
 }
 
@@ -97,8 +97,11 @@ AActor* UPool::Get() {
 	}
 	
 	AActor* const A = Ready[0];
-	// don't shrink since it will get returned, hopefully. Use Swap since it's faster, and we don't need to keep the order.
-	Ready.RemoveAtSwap(0, 1, Ready.Num()>ItemMax); // remove before checking or we'll get stuck
+	const bool CanShrink = Ready.Num()>ItemMax;
+	const EAllowShrinking Shrink = CanShrink ? EAllowShrinking::Yes : EAllowShrinking::No;
+	// Use Swap since it's faster, and we don't need to keep the order.
+	// remove before checking, or we'll get stuck.
+	Ready.RemoveAtSwap(0, 1, Shrink);
 	if (!IsValid(A)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Pool gave an invalid actor."
 			" Did it died while in the pool (someone referenced it after return, bad). Try again. obj=%s"),
