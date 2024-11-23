@@ -92,9 +92,7 @@ void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 		Post->Settings.ReflectionMethod =
 			bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
 	} else if (Feat == EFeat::V_MLIGHTS) {
-		UE_LOG(LogTemp, Warning, TEXT("ALFeatsMan::%hs MegaLights not implemented."), __func__);
-		// TODO enable on 5.5 and find the right way to set
-		// Post->Settings.MegaLights = Enabled ? x : y;
+		Post->Settings.bMegaLights = bEnabled;
 	} else if (Feat == EFeat::V_BLUR) {
 		Post->Settings.MotionBlurAmount = bEnabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
