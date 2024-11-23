@@ -7,7 +7,7 @@ public class Diags: ModuleRules
 {
 	public Diags(ReadOnlyTargetRules Target) : base(Target)
 	{
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;

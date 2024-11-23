@@ -2,13 +2,11 @@
 
 using UnrealBuildTool;
 
-public class LifeDevEditorTarget : TargetRules
-{
-	public LifeDevEditorTarget(TargetInfo Target) : base(Target)
-	{
+public class LifeDevEditorTarget : TargetRules {
+	public LifeDevEditorTarget(TargetInfo Target) : base(Target) {
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		ExtraModuleNames.Add("LifeDev");
 	}
 }
