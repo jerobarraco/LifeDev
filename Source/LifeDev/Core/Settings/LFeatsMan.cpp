@@ -9,6 +9,8 @@
 #include "LSettings.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
+
 ALFeatsMan::ALFeatsMan() :Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
@@ -28,13 +30,13 @@ void ALFeatsMan::LoadMPC() {
 	if (!W) return;
 	
 	if (!IsValid(MPC)) {
-		UE_LOG(LogTemp, Warning, TEXT("LFeatsMan::%hs Could not get the MPC. Skip"),
+		UE_LOG(LogLFeatsMan, Warning, TEXT("LFeatsMan::%hs Could not get the MPC. Skip"),
 				__func__);
 		return;
 	}
 	
 	MPCI = W->GetParameterCollectionInstance(MPC);
-	UE_CLOG(!IsValid(MPCI), LogTemp, Warning,
+	UE_CLOG(!IsValid(MPCI), LogLFeatsMan, Warning,
 		TEXT("LFeatsMan::%hs Could not get the MPCInst. Stop."), __func__);
 }
 
@@ -48,7 +50,6 @@ void ALFeatsMan::BeginPlay() {
 	
 	ULSettings* const S = ULSettings::Instance(W);
 	if (S) S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
-	// S->OnFeatUpdate.RemoveAll(this);
 
 	// force initialize
 	LoadMPC();
@@ -93,6 +94,7 @@ void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 			bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
 	} else if (Feat == EFeat::V_MLIGHTS) {
 		Post->Settings.bMegaLights = bEnabled;
+		Post->Settings.bOverride_bMegaLights = bEnabled;
 	} else if (Feat == EFeat::V_BLUR) {
 		Post->Settings.MotionBlurAmount = bEnabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
@@ -104,12 +106,16 @@ void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 		else
 			Post->Settings.RemoveBlendable(FBMat);
 	} else if (Feat == EFeat::V_NANITE) {
-		UE_LOG(LogTemp, Log, TEXT("%hs NAnite=%i"), __func__, bEnabled);
-			IConsoleVariable* const Variable = IConsoleManager::Get().FindConsoleVariable(TEXT("r.Nanite"));
-			if (!Variable) return;
-			Variable->Set(bEnabled?1:0);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Nanite=%i"), __func__, bEnabled);
+		IConsoleVariable* const Variable =
+			IConsoleManager::Get().FindConsoleVariable(TEXT("r.Nanite"));
+		if (UNLIKELY(!Variable)) {
+			UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Can't find r.Nanite var. Stop"), __func__);
+			return;
+		}
+		Variable->Set(bEnabled?1:0);
 	} else {
-		if (!MPCI) return; // on purpose like this, to not make a mistake myself.
+		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = bEnabled ? 1: 0;
 		if (Feat == EFeat::V_STROBE) 
 			MPCI->SetScalarParameterValue("Strobe", v);
