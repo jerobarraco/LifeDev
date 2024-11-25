@@ -132,11 +132,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeIn;
 
-	// Interacts to fade out during *Start*. Won't change fade during beginPlay.
+	// Interacts to fade out during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
-	// that requires fixing the design of StepC4S*** 
 	
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
