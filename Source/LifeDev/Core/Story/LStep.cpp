@@ -36,7 +36,6 @@ void ALStep::Stop_Implementation() {
 
 	SetActorsShowActive(false, true);
 	SetIntersActiveAuto(false);
-	DoIntersFade(IntersFadeOut, false);
 	RemoveItems();
 
 	const UWorld* const W = GetWorld();
@@ -91,6 +90,7 @@ void ALStep::Start_Implementation() {
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
+	DoIntersFade(IntersFadeOut, false);
 	DoIntersTrigger();
 
 	// show dialogs

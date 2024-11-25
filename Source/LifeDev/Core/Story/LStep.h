@@ -132,15 +132,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeIn;
 
-	// Interacts to fade out during *Stop*. Won't change fade during beginPlay.
+	// Interacts to fade out during *Start*. Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
-	// note: not fading the intersFade* on begin play because i could have multiple
-	// steps that collide with each other. not doing it on the intersEnable because i think
-	// it won't happen. but it likely will. and when it does. i'll change it.
-	// i hope i will remember.
-	// TODO: make the IntersFadeout fade on start and not end.
 	// that requires fixing the design of StepC4S*** 
 	
 	// if this is set. it will advance once ALL items are obtained.
