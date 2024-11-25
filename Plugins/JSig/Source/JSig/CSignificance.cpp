@@ -54,13 +54,21 @@ void UCSignificance::Register() {
 
 	// don't register if it doesn't have an owner
 	if (UNLIKELY(!IsValid(Owner))) {
-		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register, invalid owner"), __func__);
+		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register. invalid owner. Stop."), __func__);
 		return;
 	}
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
-	if (UNLIKELY(!IsValid(Man))) return;
+	if (UNLIKELY(!IsValid(Man))) {
+		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register."
+			" Can't obtain the significance manager. Stop. Name=%s"), __func__, *Name);
+		return;
+	}
 
+	if (!IsValid(Origin))
+		Origin = Owner->GetRootComponent();
+
+	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s origin=%s"), __func__, *Name, *GetNameSafe(Origin));
 	// this is lame, but it's how it works
 	auto lCalculate = [&]
 		(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint)
@@ -125,19 +133,21 @@ float UCSignificance::Calculate(
 		return static_cast<float>(CalcSignificance.Execute(Viewpoint));
 
 	// use overriden location if set. otherwise use the actor's one
-	FVector Origin;
+	FVector OrgLoc;
 	if (CalcLocation.IsBound())
-		Origin = CalcLocation.Execute();
-	else if (Owner)
-		Origin = Owner->GetActorLocation();
-	else
-		UE_LOG(LogJSigComp, Verbose, TEXT("%hs Warning: Could not obtain the origin. No owner and no calcLocation."),
-			__func__);
-		// TODO else get parent component location?
-
+		OrgLoc = CalcLocation.Execute();
+	else if (Origin)
+		OrgLoc = Origin->GetComponentLocation();
+	else {
+		UE_LOG(LogJSigComp, Warning, TEXT("%hs Warning: Could not obtain the origin location."
+			"No origin and no CalcLocation. Stop."), __func__);
+		return 0;
+	}
 
 	// calculate using distances
-	const float DistSqr = (Origin - Viewpoint.GetLocation()).SizeSquared();
+	const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
+	// might be a bit slower since it creates an intermediate fvector. but who knows.  
+	// const float DistSqr1 = (OrgLoc - Viewpoint.GetLocation()).SizeSquared();
 	const float Sig = GetDistanceSignificance(DistSqr);
 
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs Calculated significance. distsqr=%5.3f, sig=%5.3f"),
@@ -199,6 +209,7 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 }
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
+	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
 	const ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
 	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
@@ -207,10 +218,9 @@ void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, floa
 
 	SignificanceOld = Significance;
 	Significance = NewSig;
-	const AActor* const Owner = GetOwner();
-	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
-	UE_CLOG(Debug, LogJSigComp, Log, TEXT("UCSignificance.%hs threadId=%i sig=%i sigOld=%i owner=%s"),
-		__func__, ThreadId, Significance, SignificanceOld, *GetNameSafe(Owner));
+
+	UE_CLOG(Debug, LogJSigComp, Log, TEXT("%hs threadId=%i sig=%i owner=%s"),
+		__func__, ThreadId, Significance, *GetNameSafe(GetOwner()));
 
 	/// Finish it!!
 	// Make sure to call ApplyUpdate on the game thread.

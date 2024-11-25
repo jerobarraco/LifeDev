@@ -13,7 +13,6 @@ USignificance* USignificance::Instance(const UObject* O) {
 
 	const UWorld* const W = O->GetWorld();
 	if (!IsValid(W)) return nullptr;
-
 	USignificance* const Sig = W->GetSubsystem<USignificance>();
 	return IsValid(Sig) ? Sig : nullptr;
 }

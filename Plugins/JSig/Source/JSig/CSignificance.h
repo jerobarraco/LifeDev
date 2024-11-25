@@ -5,8 +5,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this
 
+#include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this
 #include "SignificanceTypes.h"
 
 #include "CSignificance.generated.h"
@@ -136,6 +136,12 @@ public:
 	// The components listed will be deactivated when the significance is Off, and reactivated when it's not Off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<TObjectPtr<UActorComponent>> CompsActivate;
+
+	// The component used to calculate the distance.
+	// If not set, it will use the owner's root.
+	// CalcLocation takes precedence.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USceneComponent> Origin;
 	
 	// components to manage HiddenInGame, ONLY when the significance is Off.
 	// When significance is Off it will set all the components to HiddenInGame
@@ -151,23 +157,27 @@ public:
 	// triggered when the significance changes. Guaranteed to trigger in game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
-	
+
 	// You con optionally set a callback to a custom significance calculation.
 	// When this is set, the CalcLocation is ignored.
 	// Can be called at a bg thread if unreal decides to (possibly affected by IsConcurrent and the subsystem::useBgThread).
 	// Could be called concurrently if IsConcurrent is set (beware race conditions on multiple objects).
-	// (on bp use the "Set" node) 
+	// (on bp use the "Set" node)
 	// Priority = 7
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcSignificance CalcSignificance;
 	// You can optionally set a callback to a custom Location calculation.
 	// This location is then used for a location/based significance calculation.
-	// Can be called at a bg thread if unreal decides to (possibly affected by IsConcurrent and the subsystem::useBgThread).
-	// Could be called concurrently if IsConcurrent is set (beware race conditions on multiple objects).
-	// (on bp use the "Set" node) 
+	// Could be called at a background thread if unreal decides it
+	//	(possibly affected by IsConcurrent and the subsystem::useBgThread).
+	// Could be called concurrently if IsConcurrent is set
+	//	(beware race conditions on multiple objects).
+	// This takes precedence over the "Origin" variable.
+	// If this is set, it will be used instead of origin.
+	// (on bp use the "Set" node, not bind) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;
-	
+
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	/// interface

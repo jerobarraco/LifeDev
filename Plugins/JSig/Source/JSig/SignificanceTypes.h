@@ -3,7 +3,6 @@
 
 #pragma once
 #include "CoreMinimal.h"
-
 #include "SignificanceTypes.generated.h"
 
 // Defines the different levels of significance.
