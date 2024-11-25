@@ -3,6 +3,8 @@
 #include "Light01.h"
 
 #include "Components/AudioComponent.h"
+#include "Components/PointLightComponent.h"
+
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -12,6 +14,7 @@ ALight01::ALight01():Super() {
 	Mesh->SetRelativeLocation(FVector(-27.500000,27.500000,0.000000));
 	Mesh->SetStaticMesh(CMesh.Object);
 	SFX->SetRelativeLocation(FVector(27.5,-27.5,0));
+	Light->SetRelativeLocation(FVector(27.500000,-27.5,50));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Light00/Light00-GlassB"));

@@ -21,5 +21,5 @@ protected:
 	virtual void SetMobility(EComponentMobility::Type Mobility) override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Glass = nullptr;
+	TObjectPtr<UCQuickMesh> Glass = nullptr;
 };

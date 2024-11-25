@@ -52,7 +52,7 @@ void ULSave::Reset(UWorld* const W) {
 void ULSave::WriteSubsystems(UWorld* const W) {
 	UE_LOG(LogLSave, Log, TEXT("%hs"), __func__);
 
-	if (!W) {
+	if (UNLIKELY(!W)) {
 		UE_LOG(LogLSave, Warning, TEXT("%hs. The world is fake! Can't continue."), __func__);
 		return;
 	}
@@ -124,10 +124,10 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 		}
 	}
 
-	ULSettings* const Settings = ULSettings::Instance(W);
-	if (Settings) {
+	const ULSettings* const Settings = ULSettings::Instance(W);
+	if (LIKELY(Settings)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
-		SFeats.Empty(); // not reserving. i don't know how many are set and we only store the set ones.
+		SFeats.Empty(); // not reserving. i don't know how many are set, and we only store the set ones.
 		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
 			const bool Val = Settings->GetFeat(F);
 			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
