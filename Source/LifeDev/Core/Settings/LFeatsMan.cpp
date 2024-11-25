@@ -77,7 +77,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 	if (!IsValid(GM) || !IsValid(GM->PostProcess)) return;
-	
+
 	// Important:
 	// these properties on the editor have a checkbox next to them.
 	// i DO need to check them for the engine to pay attention to them,
@@ -87,14 +87,18 @@ void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 
 	APostProcessVolume* const Post = GM->PostProcess;
 	if (Feat == EFeat::V_LUMEN) {
+		// needed to allow the flag to override project settings
+		Post->Settings.bOverride_DynamicGlobalIlluminationMethod = true;
+		Post->Settings.bOverride_ReflectionMethod = true;
 		Post->Settings.DynamicGlobalIlluminationMethod =
 			bEnabled ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 		Post->Settings.ReflectionMethod =
 			bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
 	} else if (Feat == EFeat::V_MLIGHTS) {
+		// needed to allow the flag to override project settings
+		Post->Settings.bOverride_bMegaLights = true;
 		Post->Settings.bMegaLights = bEnabled;
-		Post->Settings.bOverride_bMegaLights = bEnabled;
 	} else if (Feat == EFeat::V_BLUR) {
 		Post->Settings.MotionBlurAmount = bEnabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
