@@ -28,11 +28,11 @@ void ALStep::TryStart_Implementation() {
 }
 
 void ALStep::Stop_Implementation() {
-	if (IsValid(Diags)) Diags->OnDone.RemoveAll(this);
-	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
-	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
-	if (IsValid(Ghosts)) Ghosts->SetPlaying(false);
-	if (UseRandFB && IsValid(RandFB)) RandFB->Deactivate();
+	if (LIKELY(IsValid(Diags))) Diags->OnDone.RemoveAll(this);
+	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
+	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
+	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
+	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 
 	SetActorsShowActive(false, true);
 	SetIntersActiveAuto(false);
@@ -58,7 +58,7 @@ void ALStep::Stop_Implementation() {
 void ALStep::Start_Implementation() {
 	Super::Start_Implementation();
 	UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	// check items. do on postWait to avoid possibly finishing the step while it's starting.
 	if (!ItemsFinish.IsEmpty()) {
@@ -77,7 +77,7 @@ void ALStep::Start_Implementation() {
 
 	if (UseGhosts) {
 		Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
-		if (IsValid(Ghosts)) {
+		if (LIKELY(IsValid(Ghosts))) {
 			Ghosts->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 			Ghosts->SetActorRelativeLocation(GhostPos);
 			Ghosts->SetPlaying(true);
@@ -85,7 +85,7 @@ void ALStep::Start_Implementation() {
 	}
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
-	if (UseRandFB && IsValid(RandFB)) RandFB->Activate(true);
+	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
@@ -98,7 +98,7 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::StartDialogs() {
-	if (DlgId.IsNone()) return;
+	if (UNLIKELY(DlgId.IsNone())) return;
 
 	SetFBDiagAuto();
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
@@ -107,7 +107,7 @@ void ALStep::StartDialogs() {
 }
 
 void ALStep::SetFBDiagAuto() {
-	if (!UseFBDiagAuto) return;
+	if (UNLIKELY(!UseFBDiagAuto)) return;
 
 	FDialogSequence Seq;
 	int32 Len = 0;
@@ -122,7 +122,7 @@ void ALStep::SetFBDiagAuto() {
 	}
 	
 	// avoid division by 0, but also makes no sense otherwise.
-	if (Len <= 0 ) return;
+	if (Len <= 0) return;
 	// TODO there might be an issue here. check if GetValTo or GetVal is the correct.
 	const float FBCurrent = FB->GetValTo();
 	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;
