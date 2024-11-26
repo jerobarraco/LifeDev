@@ -49,10 +49,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	FName Name = NAME_None;
 
-	// the camera to switch to automatically. Set to null to not switch to.
-	// By default, is the own camera. or you can set UsePawnCam to use the pawn's camera 
+	// Actor holding the camera to blend to. Or null to not use it.
+	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
-	AActor* CamTarget = nullptr;
+	TObjectPtr<AActor> CamTarget = nullptr;
 
 	// will target pawn automatically, will override the camTarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")

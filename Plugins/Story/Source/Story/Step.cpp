@@ -87,7 +87,7 @@ void AStep::TryStart_Implementation() {
 		World->GetTimerManager().SetTimer(Handle, this, &AStep::Start, WaitTime);
 	} else {
 		// use next tick to avoid having post wait being called before start finishes on the children
-		// also to avoid the situation where a step might inadvertently finish the step while it's starting.  
+		// also to avoid the situation where a step might inadvertently finish the step while it's starting.
 		World->GetTimerManager().SetTimerForNextTick(this, &AStep::Start);
 	}
 }
@@ -133,10 +133,11 @@ void AStep::BeginPlay() {
 	if (UsePawnCam) {
 		AActor* const Actor = UGameplayStatics::GetActorOfClass(World, APawn::StaticClass());
 		APawn* const Pawn = Cast<APawn>(Actor);
-		if (!IsValid(Pawn)) {
-			UE_LOG(LogStoryStep, Warning, TEXT("UsePawnCam set but could not get cam. Won't work as expected."));
-		} else {
+		if (LIKELY(IsValid(Pawn))) {
 			CamTarget = Pawn;
+		} else {
+			UE_LOG(LogStoryStep, Warning, TEXT("%hs UsePawnCam set but could not get cam. Won't work as expected."),
+			__func__);
 		}
 	}
 }
