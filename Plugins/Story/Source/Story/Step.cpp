@@ -34,13 +34,13 @@ AStep::AStep():Super() {
 
 void AStep::DoTeleport() {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
-	if (!TeleportChar) return;
+	if (UNLIKELY(!World)) return;
+	if (UNLIKELY(!TeleportChar)) return;
 
 	ACharacter* const Char = Cast<ACharacter>(
 		UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
-	if (!IsValid(Char)) return;
-	
+	if (UNLIKELY(!IsValid(Char))) return;
+
 	const FTransform& T = GetActorTransform();
 	UE_LOG(LogStoryStep, Log, TEXT("Teleport to=%s"), *T.ToString());
 	// Char->TeleportTo(T.GetLocation(), T.Rotator());
@@ -52,13 +52,13 @@ void AStep::DoTeleport() {
 	Char->AddControllerYawInput(T.Rotator().Yaw-CurRot.Yaw);
 	
 	// vertical is handled by the camera
-	TArray<UCameraComponent*> Cams; 
+	TArray<UCameraComponent*> Cams;
 	Char->GetComponents<UCameraComponent>(Cams);
 	if (Cams.Num()<=0) return;
 
 	const UCameraComponent* const C = Cams[0];
 	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
-	if (!IsValid(C)) return;
+	if (UNLIKELY(!IsValid(C))) return;
 
 	Char->AddControllerPitchInput(T.Rotator().Pitch-C->GetRelativeRotation().Pitch);
 }
@@ -71,7 +71,7 @@ void AStep::TryStart_Implementation() {
 	DoTeleport();
 
 	// enable cam tick only if it's the current target and only when the step starts
-	if (CamTarget == this && IsValid(Cam)) Cam->SetComponentTickEnabled(true);
+	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
 	// blend before the wait to avoid weird issues.
 	// if you actually want to see the blend you may not want the fade anyway.
@@ -79,8 +79,8 @@ void AStep::TryStart_Implementation() {
 	BlendCam();
 
 	// do after the rest since doStart is another flow
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 	
 	if (WaitTime>0) {
 		FTimerHandle Handle;
@@ -97,10 +97,12 @@ void AStep::BlendCam() const {
 	if (!IsValid(CamTarget)) return;
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	APlayerController* const Controller = World->GetFirstPlayerController();
-	if (!Controller) return;
+	if (UNLIKELY(!Controller)) return;
+
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
 
@@ -115,16 +117,16 @@ void AStep::Start_Implementation() {
 void AStep::BeginPlay() {
 	Super::BeginPlay();
 
-	if (Name.IsNone()) {
+	if (UNLIKELY(Name.IsNone())) {
 		UE_LOG(LogStoryStep, Warning, TEXT("Step name is none! Step won't work properly, so not adding to the story."));
 		return;
 	}
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	UStory* const Story = World->GetSubsystem<UStory>();
-	if (!Story) return;
+	if (UNLIKELY(!Story)) return;
  
 	Story->Add(this);
 	
@@ -153,7 +155,7 @@ void AStep::PostLoad() {
 
 void AStep::UpdateCamEnabled() const {
 	const bool Enabled = CamTarget == this;
-	if (!IsValid(Cam)) return;
+	if (UNLIKELY(!IsValid(Cam))) return;
 	
 	Cam->SetActive(Enabled);
 	Cam->SetHiddenInGame(!Enabled);
@@ -164,16 +166,16 @@ void AStep::UpdateCamEnabled() const {
 void AStep::Stop_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("Stopping step '%s'"), *Name.ToString());
 	// force disable since it's not wise to trust what happened before
-	if (IsValid(Cam)) Cam->SetComponentTickEnabled(false);
+	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
 }
 
 void AStep::Finish_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("Finishing step '%s'"), *Name.ToString());
 
-	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
 
 	UStory* const Story = World->GetSubsystem<UStory>();
-	if (!IsValid(Story)) return;
+	if (UNLIKELY(!IsValid(Story))) return;
 	Story->StartNext(Name);
 }

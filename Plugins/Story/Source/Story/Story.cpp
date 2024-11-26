@@ -170,7 +170,7 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const {
 	if (!IsValid(DLA)) return false;
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return false;
 	
 	const EDataLayerRuntimeState State = (On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);

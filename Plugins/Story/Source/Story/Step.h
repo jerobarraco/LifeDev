@@ -93,10 +93,10 @@ public:
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
 	// also in the data layers panel, set the initial runtime state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<UDataLayerAsset*> DL_Load;
+	TArray<TObjectPtr<UDataLayerAsset>> DL_Load;
 	// Data layers to unload
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<UDataLayerAsset*> DL_Unload;
+	TArray<TObjectPtr<UDataLayerAsset>> DL_Unload;
 	
 	// set to true to use debug
 	inline static bool Debug = false;
@@ -122,7 +122,7 @@ protected:
 	void BlendCam() const;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	USceneComponent* Root = nullptr;
+	TObjectPtr<USceneComponent> Root = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
-	UCameraComponent* Cam = nullptr;
+	TObjectPtr<UCameraComponent> Cam = nullptr;
 };
