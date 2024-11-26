@@ -185,7 +185,7 @@ protected:
 
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
-	UFUNCTION(BlueprintCallable, Category=Interact, NetMulticast, Reliable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact)
 	void PlaySFX(USoundBase* Snd) const; // native events can't take Ptr* const
 
 	// The state (index) of the Interact.
