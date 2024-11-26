@@ -52,7 +52,7 @@ public:
 
 	// enables or disables char input. and stays like that even though of Diags.
 	UFUNCTION(BlueprintCallable)
-	void SetCharInputEnabled(bool Enabled);
+	void SetCharInputEnabled(const bool Enabled);
 
 	// wraps SetTempInputEnabled. used for delegates
 	UFUNCTION() // bind to delegate
@@ -64,8 +64,8 @@ public:
 	// disables input temporarily, enables only if char is enabled.
 	// used for Diags and temporary things.
 	UFUNCTION(BlueprintCallable)
-	void SetTempInputEnabled(bool Enabled);
-	
+	void SetTempInputEnabled(const bool Enabled) const;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
 

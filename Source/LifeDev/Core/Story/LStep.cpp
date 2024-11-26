@@ -73,7 +73,7 @@ void ALStep::Start_Implementation() {
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	
 	// do only on postwait. otherwise the input is reset before it faded out.
-	if (IsValid(LGGameMode)) LGGameMode->SetCharInputEnabled(InputEnabled);
+	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(InputEnabled);
 
 	if (UseGhosts) {
 		Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
@@ -118,7 +118,7 @@ void ALStep::SetFBDiagAuto() {
 		FDialog D;
 		FDialogChar C;
 		const bool Ok2 = Diags->GetDiag(DlgId, D, C);
-		if (Ok2) Len = 1;
+		if (LIKELY(Ok2)) Len = 1;
 	}
 	
 	// avoid division by 0, but also makes no sense otherwise.

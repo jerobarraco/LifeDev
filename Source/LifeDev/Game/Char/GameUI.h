@@ -24,5 +24,5 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	UTextBlock* T_Prompt = nullptr;
+	TObjectPtr<UTextBlock> T_Prompt = nullptr;
 };

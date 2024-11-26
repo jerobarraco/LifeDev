@@ -320,29 +320,29 @@ void ALGGameMode::DeInit_Implementation() {
 	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
 
-void ALGGameMode::SetCharInputEnabled(bool Enabled) {
+void ALGGameMode::SetCharInputEnabled(const bool Enabled) {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	CharInputEnabled = Enabled;
 	SetTempInputEnabled(Enabled);
 }
 
-void ALGGameMode::SetTempInputEnabled(bool Enabled) {
+void ALGGameMode::SetTempInputEnabled(const bool Enabled) const {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	if (Enabled && !CharInputEnabled) return;
-	
-	if(IsValid(Char)) Char->SetInputEnabled(Enabled);
-	if (IsValid(InventoryMan)) InventoryMan->SetVisible(Enabled);
+
+	if (LIKELY(IsValid(Char))) Char->SetInputEnabled(Enabled);
+	if (LIKELY(IsValid(InventoryMan))) InventoryMan->SetVisible(Enabled);
 }
 
 ALGGameMode* ALGGameMode::Instance(const UObject* const O) {
 	const UWorld* const World = O? O->GetWorld(): nullptr;
-	if (!IsValid(World)) return nullptr;
+	if (UNLIKELY(!IsValid(World))) return nullptr;
 
 	AGameModeBase* const AuthGameMode = World->GetAuthGameMode();
-	if (!IsValid(AuthGameMode)) return nullptr;
+	if (UNLIKELY(!IsValid(AuthGameMode))) return nullptr;
 	
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(AuthGameMode);
-	if (!IsValid(LGGameMode)) return nullptr;
+	if (UNLIKELY(!IsValid(LGGameMode))) return nullptr;
 
 	return LGGameMode;
 }
