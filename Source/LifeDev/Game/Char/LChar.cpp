@@ -126,6 +126,7 @@ void ALChar::SetInputEnabled(bool Enabled) {
 	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
+	// TODO improve, maybe add a param
 	// this is a stub behaviour to disable noises while the player is not actively playing.
 	// it just happens to make sense and require little code. to be improved.
 	Noiser->SetActive(Enabled, true);

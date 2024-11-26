@@ -119,7 +119,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	void UpdateCamEnabled() const;
-	void BlendCam() const;
+	void BlendCam();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;

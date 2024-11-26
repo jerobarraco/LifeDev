@@ -25,6 +25,14 @@ void ALStep::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 
 	EnsureItems(); // make sure items are awarded
+
+	// works on the premise that onStart it will force input again.
+	// disable the input during camblend
+	if (!CamTarget) return;
+	const UWorld* const W = GetWorld();
+	AGameModeBase* const GameModeBase = W ? W->GetAuthGameMode() : nullptr;
+	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
+	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
 }
 
 void ALStep::Stop_Implementation() {
@@ -73,6 +81,7 @@ void ALStep::Start_Implementation() {
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	
 	// do only on postwait. otherwise the input is reset before it faded out.
+	// read note on trystart. important to force.
 	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(InputEnabled);
 
 	if (UseGhosts) {

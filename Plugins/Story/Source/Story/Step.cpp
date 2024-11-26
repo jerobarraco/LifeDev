@@ -89,7 +89,7 @@ void AStep::TryStart_Implementation() {
 	}
 }
 
-void AStep::BlendCam() const {
+void AStep::BlendCam() {
 	// set camera if camtarget is set
 	if (!IsValid(CamTarget)) return;
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
@@ -104,6 +104,7 @@ void AStep::BlendCam() const {
 	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	WaitTime = FMath::Max(CamBlendTime, WaitTime);
 }
 
 void AStep::Start_Implementation() {

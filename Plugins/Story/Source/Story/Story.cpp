@@ -20,9 +20,9 @@ void UStory::DeInit() {
 }
 
 UStory* UStory::Instance(const UObject* const O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 	const UWorld* const W = O->GetWorld();
-	if (!IsValid(W)) return nullptr;
+	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	UStory* const Story = W->GetSubsystem<UStory>();
 	return IsValid(Story) ? Story : nullptr;
@@ -31,14 +31,14 @@ UStory* UStory::Instance(const UObject* const O) {
 
 AStep* UStory::GetStep(const FName& Name) {
 	TObjectPtr<AStep>* const pStep = Steps.Find(Name);
-	if (!pStep) {
-		UE_LOG(LogStory, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
+	if (UNLIKELY(!pStep)) {
+		UE_LOG(LogStory, Warning, TEXT("%hs Step could not be found. '%s'"), __func__, *Name.ToString());
 		return nullptr;
 	}
 
 	AStep* const Step = *pStep;
-	if (!IsValid(Step)) {
-		UE_LOG(LogStory, Warning, TEXT("Step was not valid. '%s'"), *Name.ToString());
+	if (UNLIKELY(!IsValid(Step))) {
+		UE_LOG(LogStory, Warning, TEXT("%hs Step was not valid. '%s'"), __func__, *Name.ToString());
 		return nullptr;
 	}
 
@@ -53,7 +53,7 @@ bool UStory::StartNow(AStep* const NewStep) {
 	Stop();
 
 	Current = NewStep;
-	if (!IsValid(Current)) {
+	if (UNLIKELY(!IsValid(Current))) {
 		UE_LOG(LogStory, Log, TEXT("%hs -> Invalid step. Not starting."), __func__);
 		return false;
 	}
@@ -75,13 +75,13 @@ bool UStory::Start(const FName& Name) {
 
 	// get the step
 	AStep* const Step = GetStep(Name);
-	if (!IsValid(Step)) return false; // getstep prints warning
+	if (UNLIKELY(!IsValid(Step))) return false; // getstep prints warning
 
 	if (!Step->UseFade)	return StartNow(Step);
 
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return false;
-	
+	if (UNLIKELY(!IsValid(World))) return false;
+
 	// do the fade
 	OnFade.Broadcast(false, Step->Title);
 
@@ -98,13 +98,13 @@ bool UStory::Start(const FName& Name) {
 			OnFade.Broadcast(true, FText::GetEmpty());
 		};
 
-		const UWorld* const World = GetWorld();
-		if (!World) {
+		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff. 
+		if (UNLIKELY(!World2)) {
 			UE_LOG(LogStory, Warning, TEXT("No world while attempted to fade out. i guess everything will be black."));
 			return;
 		}
 		FTimerHandle H2;
-		World->GetTimerManager().SetTimer(H2, l2, HoldTime, false);
+		World2->GetTimerManager().SetTimer(H2, l2, HoldTime, false);
 	};
 
 	FTimerHandle H;
@@ -114,7 +114,7 @@ bool UStory::Start(const FName& Name) {
 }
 
 void UStory::Stop() {
-	if (!IsValid(Current)) {
+	if (UNLIKELY(!IsValid(Current))) {
 		UE_LOG(LogStory, Log, TEXT("%hs -> Nothing to stop. Skip."), __func__);
 		return; // nothing to stop
 	}
@@ -131,7 +131,7 @@ void UStory::Stop() {
 }
 
 void UStory::Add(AStep* const Step) {
-	if (!IsValid(Step)) return;
+	if (UNLIKELY(!IsValid(Step))) return;
 	// i think this replaces something if it already exists. and that's exactly what i want.
 	Steps.Add(Step->Name, Step);
 }
@@ -143,11 +143,11 @@ void UStory::Rem(const FName& Name) {
 
 const FName& UStory::GetCurrent() const {
 	const static FName Empty; // not NAME_None since i am returning a ref
-	return IsValid(Current) ? Current->Name : Empty;
+	return LIKELY(IsValid(Current)) ? Current->Name : Empty;
 }
 
 bool UStory::ToggleStepLayers() const {
-	if (!IsValid(Current)) return false;
+	if (UNLIKELY(!IsValid(Current))) return false;
 
 	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
 
@@ -167,7 +167,7 @@ bool UStory::ToggleStepLayers() const {
 }
 
 bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
-	if (!IsValid(DLA)) return false;
+	if (UNLIKELY(!IsValid(DLA))) return false;
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
 	const UWorld* const World = GetWorld();
