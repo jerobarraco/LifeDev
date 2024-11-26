@@ -47,7 +47,7 @@ public:
 	
 	// force starts a step by the name (skips fading). stops the current one before that.
 	UFUNCTION(BlueprintCallable)
-	bool StartNow(AStep* NewStep);
+	bool StartNow(AStep* const NewStep);
 
 	// starts a step by the name. stops the current one before that
 	// Stop is preferred to allow changes in the sequence since itś better that each step doesn't need to know about the others,
@@ -61,7 +61,7 @@ public:
 
 	// adds a Astep to be tracked and managed.
 	UFUNCTION(BlueprintCallable)
-	void Add(AStep* Step);
+	void Add(AStep* const Step);
 
 	// Untracks/removes an AStep by name.
 	UFUNCTION(BlueprintCallable)
@@ -73,7 +73,7 @@ public:
 
 	// returns the name of the current step
 	UFUNCTION(BlueprintCallable)
-	const FName& GetCurrent();
+	const FName& GetCurrent() const;
 
 	// fades in/out with a text. nothing else.
 	UFUNCTION(BlueprintCallable)
@@ -106,18 +106,18 @@ public:
 	FStoryDLChange OnDlChange;
 
 protected:
-	bool ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const;
+	bool ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const;
 	bool ToggleStepLayers() const;
-	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TMap<FName, AStep*> Steps;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	AStep* Current = nullptr;
-	
+	TMap<FName, TObjectPtr<AStep>> Steps;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<AStep> Current = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TArray<FName> Sequence;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 SeqStep = -1;
 };

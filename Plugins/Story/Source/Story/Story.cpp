@@ -30,7 +30,7 @@ UStory* UStory::Instance(const UObject* const O) {
 
 
 AStep* UStory::GetStep(const FName& Name) {
-	AStep** const pStep = Steps.Find(Name);
+	TObjectPtr<AStep>* const pStep = Steps.Find(Name);
 	if (!pStep) {
 		UE_LOG(LogStory, Warning, TEXT("Step could not be found. '%s'"), *Name.ToString());
 		return nullptr;
@@ -45,7 +45,7 @@ AStep* UStory::GetStep(const FName& Name) {
 	return Step;
 }
 
-bool UStory::StartNow(AStep* NewStep) {
+bool UStory::StartNow(AStep* const NewStep) {
 	// notice we don't check here to allow stop to be called. this is by design.
 	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *NewStep->Name.ToString());
 
@@ -79,7 +79,7 @@ bool UStory::Start(const FName& Name) {
 
 	if (!Step->UseFade)	return StartNow(Step);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!IsValid(World)) return false;
 	
 	// do the fade
@@ -98,7 +98,7 @@ bool UStory::Start(const FName& Name) {
 			OnFade.Broadcast(true, FText::GetEmpty());
 		};
 
-		UWorld* const World = GetWorld();
+		const UWorld* const World = GetWorld();
 		if (!World) {
 			UE_LOG(LogStory, Warning, TEXT("No world while attempted to fade out. i guess everything will be black."));
 			return;
@@ -130,18 +130,18 @@ void UStory::Stop() {
 	OnStop.Broadcast(Step);
 }
 
-void UStory::Add(AStep* Step) {
+void UStory::Add(AStep* const Step) {
 	if (!IsValid(Step)) return;
 	// i think this replaces something if it already exists. and that's exactly what i want.
 	Steps.Add(Step->Name, Step);
 }
 
 void UStory::Rem(const FName& Name) {
-	// i think this doesn't crashes when it doesn't exists. if it does, change.
+	// i think this doesn't crash when it doesn't exist. if it does, change.
 	Steps.Remove(Name);
 }
 
-const FName& UStory::GetCurrent() {
+const FName& UStory::GetCurrent() const {
 	const static FName Empty; // not NAME_None since i am returning a ref
 	return IsValid(Current) ? Current->Name : Empty;
 }
@@ -166,7 +166,7 @@ bool UStory::ToggleStepLayers() const {
 	return Success;
 }
 
-bool UStory::ToggleDataLayer(const UDataLayerAsset* DLA, bool On) const {
+bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 	if (!IsValid(DLA)) return false;
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
@@ -241,11 +241,11 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 }
 
 void UStory::AutoFade(const FText& Title) {
-	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
 
 	OnFade.Broadcast(false, Title);
-	
+
 	auto l2 = [this]() {
 		// do fade out
 		OnFade.Broadcast(true, FText::GetEmpty());

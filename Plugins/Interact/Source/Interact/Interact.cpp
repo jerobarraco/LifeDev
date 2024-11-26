@@ -167,14 +167,9 @@ void AInteract::DoTrigger_Implementation() {
 }
 
 void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {
-	// When replicated this will play on server and all clients (when called by trigger or server)
-	// if called by a sim proxy it will be heard only on the sim proxy. which is good for now.
-	// we don't want to spam "hover" sounds anyway.
-	
-	if (!IsValid(Snd)) return;
-	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i, Server=%i, Role=%s Obj=%s Snd=%s."),
-		__func__, UseAttachedSFX, JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()),
-		*GetNameSafe(this), *Snd->GetName());
+	if (UNLIKELY(!IsValid(Snd))) return;
+	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
+		__func__, UseAttachedSFX, *GetNameSafe(this), *Snd->GetName());
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);
