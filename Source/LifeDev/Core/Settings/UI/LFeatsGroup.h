@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Components/HorizontalBox.h"
-
-#include "LifeDev/Core/Settings/LSysSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatsGroup.generated.h"
 

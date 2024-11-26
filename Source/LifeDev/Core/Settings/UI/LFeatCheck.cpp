@@ -3,6 +3,7 @@
 #include "LFeatCheck.h"
 
 #include "Components/TextBlock.h"
+
 #include "LifeDev/Core/Settings/LSettings.h"
 
 ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}

@@ -7,8 +7,9 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "Settings/LSettings.h"
+#include "Settings/LSysSettings.h"
 
-ULGameInstance* ULGameInstance::Instance(UObject* O) {
+ULGameInstance* ULGameInstance::Instance(UObject* const O) {
 	if (!IsValid(O)) return nullptr;
 	
 	const UWorld* const World = O->GetWorld();
@@ -31,7 +32,6 @@ void ULGameInstance::Init() {
 		SysSettings->UseDebugFeats = false;
 		SysSettings->UseSaveGame = true;
 	}
-	
 
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
 	if (IsValid(Settings)) Settings->Init();

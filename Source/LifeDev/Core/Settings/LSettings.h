@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 
-#include "LSysSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LSettings.generated.h"
 

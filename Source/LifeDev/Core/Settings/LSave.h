@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
-
-#include "LSysSettings.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LSave.generated.h"
 

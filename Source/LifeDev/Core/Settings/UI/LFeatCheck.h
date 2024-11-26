@@ -4,7 +4,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/CheckBox.h"
-#include "LifeDev/Core/Settings/LSysSettings.h"
+
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatCheck.generated.h"
 

@@ -6,12 +6,12 @@
 
 void ULSetSoundUI::Apply_Implementation() {
 	Super::Apply_Implementation();
-	if (FeatsGroup) FeatsGroup->Apply();
+	if (LIKELY(FeatsGroup)) FeatsGroup->Apply();
 }
 
 void ULSetSoundUI::Load_Implementation() {
 	Super::Load_Implementation();
-	if (FeatsGroup) FeatsGroup->Load();
+	if (LIKELY(FeatsGroup)) FeatsGroup->Load();
 }
 
 void ULSetSoundUI::NativeOnInitialized() {
