@@ -3,6 +3,7 @@
 #include "TrashLid.h"
 
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
@@ -30,8 +31,7 @@ ATrashLid::ATrashLid():Super() {
 		CSndOpen(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Crush_Rattle_Metal_Scrap_Debris_UC_04-03"));
 
 	SFX_Start = { CSndClose.Object, CSndOpen.Object };
-	// SFX_Trigger = CSnd.Object;
-	UseAttachedSFX =false;
+	SFX->SetRelativeLocation(FVector(-22.5,-0.5,12.5));
 	UseAnim = true;
 	Anim->Duration = .6;
 	Anim->TEnd.SetRotation(FRotator(-43.2,0,0).Quaternion());
