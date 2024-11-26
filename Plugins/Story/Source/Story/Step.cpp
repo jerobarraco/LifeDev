@@ -70,9 +70,6 @@ void AStep::TryStart_Implementation() {
 	// teleport before blending the camera. so they work well together.
 	DoTeleport();
 
-	// enable cam tick only if it's the current target and only when the step starts
-	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
-
 	// blend before the wait to avoid weird issues.
 	// if you actually want to see the blend you may not want the fade anyway.
 	// fade and wait are weird combination. i think.
@@ -102,6 +99,9 @@ void AStep::BlendCam() const {
 
 	APlayerController* const Controller = World->GetFirstPlayerController();
 	if (UNLIKELY(!Controller)) return;
+
+	// enable cam tick only if it's the current target and only when the step starts
+	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
 }
