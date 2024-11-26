@@ -20,7 +20,6 @@ APuzzleI06::APuzzleI06():Super() {
 	static FName DoneId = "PZ06_T";
 	DoneDlg = DoneId;
 	DoneFB = .1;
-	
 }
 
 void APuzzleI06::PostLoad() {
@@ -45,7 +44,7 @@ void APuzzleI06::BeginPlay() {
 
 	// TODO fix. this logic is not good. as it can be spawned in a previous chapter.
 	// ideally i would add it to the step, but since the stepc3s0 is always loaded (for skipping)
-	// i cant add this puzzle since it exists on other datalayers.
+	// i can't add this puzzle since it exists on other datalayers.
 
 	if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, &APuzzleI06::StepStarted);
 	// this is the only safe place to set active and get the settings

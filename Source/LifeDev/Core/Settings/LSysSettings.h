@@ -1,95 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LSysSettings.generated.h"
 
 class UDataTable;
 
 // Make sure to update FeatUpdated() after changing the feats
-
-// game features
-UENUM(BlueprintType)
-enum class EFeat: uint8 {
-	NONE, // empty one to be able to add to the set.
-	/// General
-
-	// Chaps
-	C_00,
-	C_01,
-	C_02,
-	C_03,
-	C_04,
-	C_05,
-	C_06,
-	C_07,
-	C_08,
-	C_09,
-	C_MAX UMETA(Hidden),
-
-#pragma region Dialogs
-	// Shows the dialogs, otherwise they get muted
-	D_SHOW,
-	// Show the text on the dialogs, otherwise they get censored
-	D_TEXT,
-	D_MAX UMETA(Hidden),
-#pragma endregion
-
-#pragma region Sounds
-	// plays music
-	S_MUSIC,
-	// plays the noises
-	S_NOISE,
-	// ambient sound
-	S_ENV,
-	S_MAX UMETA(Hidden),
-#pragma endregion
-
-#pragma region Visuals
-	// lumen gi
-	V_LUMEN,
-	// MegaLights
-	V_MLIGHTS,
-	// blur
-	V_BLUR,
-	// strobing lights
-	V_STROBE,
-	// field of view
-	V_FOV,
-	// flashback post process
-	V_FLASHBACK,
-	// speed vfx
-	V_SPEED,
-	// nanite
-	V_NANITE,
-
-	V_MAX UMETA(Hidden),
-#pragma endregion
-	
-#pragma region Environ
-	E_GHOSTPOOL,
-	E_MAX UMETA(Hidden),
-#pragma endregion
-	// Gameplay (find another word)
-	// G_*,
-	
-	/// Debug
-#pragma region Debug
-	// Debug steps (cheats)
-	DBG_STEPS,
-	// debug the animator
-	DBG_ANIMS,
-	// debug sounds
-	DBG_SOUND,
-	// debug for flashbacks
-	DBG_FB,
-	// significance
-	DBG_SIG,
-	// General debug, deprecated. don't use unless you are me.
-	DBG_BASE UMETA(Deprecated),
-	DBG_MAX UMETA(Hidden),
-#pragma endregion
-};
 
 // this class is for the settings that appears on the editor under project settings. The general system settings.
 // For the in game settings that change during gameplay (transient ones) see LSettings
