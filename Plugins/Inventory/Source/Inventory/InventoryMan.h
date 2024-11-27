@@ -29,7 +29,7 @@ public:
 	void DeInit();
 
 	UFUNCTION(BlueprintCallable)
-	void SetVisible(bool Vis);
+	void SetVisible(const bool Vis);
 
 	UFUNCTION(BlueprintCallable)
 	void Show();
@@ -40,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetSelected(const FName& Name);
 	UFUNCTION(BlueprintCallable)
-	void SetItemMod(const FName& Name, int32 Diff, const FItem& Item);
+	void SetItemMod(const FName& Name, const int32 Diff, const FItem& Item);
 	UFUNCTION(BlueprintCallable)
 	void SetItemCold(const FName& Name);
 	UFUNCTION(BlueprintCallable)

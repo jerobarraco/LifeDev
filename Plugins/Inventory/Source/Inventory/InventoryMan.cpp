@@ -31,18 +31,23 @@ void AInventoryMan::Init() {}
 
 void AInventoryMan::DeInit() {
 	Hide();
-	if (IsValid(UI)) {
+	if (LIKELY(IsValid(UI))) {
 		UI->RemoveFromParent();
 		UI->OnDone.RemoveAll(this);
 	}
 	UI = nullptr;
-	if (IsValid(Inventory)) {
+
+	if (LIKELY(IsValid(Inventory))) {
 		Inventory->OnMod.RemoveAll(this);
 		Inventory->OnSelected.RemoveAll(this);
 		Inventory->OnUsed.RemoveAll(this);
 		Inventory->OnCold.RemoveAll(this);
 	}
 	Inventory = nullptr;
+
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
+
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
@@ -58,7 +63,7 @@ void AInventoryMan::ActSelect(const FInputActionValue& InputActionValue) {
 	Inventory->SetSelected(NextKey);
 }
 
-void AInventoryMan::SetVisible(bool Vis) {
+void AInventoryMan::SetVisible(const bool Vis) {
 	if (Vis) Show();
 	else Hide();
 }
@@ -67,38 +72,28 @@ void AInventoryMan::Show() {
 	if (IsShowing) return;
 
 	IsShowing = true;
-	if (IsValid(UI)) UI->Show();
+	if (LIKELY(IsValid(UI))) UI->Show();
 }
 
 void AInventoryMan::Hide() {
-	if (IsValid(UI)) {
-		UI->Hide();
-	}
+	if (LIKELY(IsValid(UI))) UI->Hide();
 	IsShowing = false;
 }
 
 void AInventoryMan::SetSelected(const FName& Name) {
-	if (IsValid(UI)) {
-		UI->SetSelected(Name);
-	}
+	if (LIKELY(IsValid(UI))) UI->SetSelected(Name);
 }
 
-void AInventoryMan::SetItemMod(const FName& Name, int32 Diff, const FItem& Item) {
-	if (IsValid(UI)) {
-		UI->SetItemMod(Name, Diff, Item);
-	}
+void AInventoryMan::SetItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
+	if (LIKELY(IsValid(UI))) UI->SetItemMod(Name, Diff, Item);
 }
 
 void AInventoryMan::SetItemCold(const FName& Name) {
-	if (IsValid(UI)) {
-		UI->SetItemCold(Name);
-	}
+	if (LIKELY(IsValid(UI))) UI->SetItemCold(Name);
 }
 
 void AInventoryMan::SetItemUsed(const FName& Name) {
-	if (IsValid(UI)) {
-		UI->SetItemUsed(Name);
-	}
+	if (LIKELY(IsValid(UI))) UI->SetItemUsed(Name);
 }
 
 void AInventoryMan::BeginPlay() {
@@ -109,8 +104,8 @@ void AInventoryMan::BeginPlay() {
 	if (!IsValid(World)) return;
 	
 	if (ActionOpen) {
-		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
-		if (IsValid(Input)) {
+		UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+		if (LIKELY(IsValid(Input))) {
 			Input->BindAction<AInventoryMan>(
 				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);
 			Input->BindAction<AInventoryMan>(
@@ -119,9 +114,9 @@ void AInventoryMan::BeginPlay() {
 	}
 	
 	UClass* const Class = UIClass.Get();
-	if (IsValid(Class)) {
+	if (LIKELY(IsValid(Class))) {
 		UI = CreateWidget<UInventoryUI>(World, Class);
-		if (IsValid(UI)) {
+		if (LIKELY(IsValid(UI))) {
 			UI->AddToViewport(ZOrder);
 			Hide();
 			UI->OnDone.AddUniqueDynamic(this, &AInventoryMan::UIDone);
@@ -138,8 +133,9 @@ void AInventoryMan::BeginPlay() {
 }
 
 void AInventoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
 	DeInit();
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void AInventoryMan::UIDone() {

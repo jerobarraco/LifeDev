@@ -6,7 +6,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
-void UJUtilsSys::ToggleMapping(const UObject* const O, const UInputMappingContext* const Ctx, int32 Prio, bool Enable) {
+void UJUtilsSys::ToggleMapping(const UObject* const O,
+	const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable) {
 	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
 	if (UNLIKELY(!IsValid(Controller))) return;
 
@@ -18,7 +19,6 @@ void UJUtilsSys::ToggleMapping(const UObject* const O, const UInputMappingContex
 	if (Enable) Subsystem->AddMappingContext(Ctx, Prio);
 	else Subsystem->RemoveMappingContext(Ctx);
 }
-
 
 APlayerController* UJUtilsSys::GetFirstLocalPlayerController(const UObject* const O) {
 	const UWorld* const W = O ? O->GetWorld():nullptr;
@@ -44,23 +44,23 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 	return nullptr;
 }
 
-
-void UJUtilsSys::CameraFade(const UObject* const O, bool In, float Duration, const FLinearColor& Color) {
+void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float Duration,
+	const FLinearColor& Color) {
 	const UWorld* const W = O?O->GetWorld():nullptr;
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
-	UGameInstance* const GI = W->GetGameInstance();
-	if (!GI) {
+	const UGameInstance* const GI = W->GetGameInstance();
+	if (UNLIKELY(!GI)) {
 		UE_LOG(LogTemp, Warning, TEXT("CameraFade: Invalid game instance. aborting"));
 		return;
 	}
 
-	if(GEngine)
+	if(LIKELY(GEngine))
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
 
 	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
 	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
-	if (!CamManager) {
+	if (UNLIKELY(!CamManager)) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
 		return;
 	}
@@ -70,11 +70,9 @@ void UJUtilsSys::CameraFade(const UObject* const O, bool In, float Duration, con
 	CamManager->StartCameraFade(From, To, Duration, Color, true, true);
 }
 
-
-
 UEnhancedInputComponent* UJUtilsSys::GetEInput(const UObject* const O) {
 	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
-	if (!Controller) return nullptr;
+	if (UNLIKELY(!Controller)) return nullptr;
 
 	UEnhancedInputComponent* const Input =
 		Cast<UEnhancedInputComponent>(Controller->InputComponent);
