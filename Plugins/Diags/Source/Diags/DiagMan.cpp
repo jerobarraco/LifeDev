@@ -17,11 +17,14 @@ ADiagMan::ADiagMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
 	
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Diags/Input/IMC_Dialogs"));
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
+		DefaultMapping(TEXT("/Diags/Input/IMC_Dialogs"));
 	Mapping = DefaultMapping.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSkip(TEXT("/Diags/Input/IA_Skip"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> 
+		CActionSkip(TEXT("/Diags/Input/IA_Skip"));
 	ActionSkip = CActionSkip.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionBack(TEXT("/Diags/Input/IA_Back"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> 
+		CActionBack(TEXT("/Diags/Input/IA_Back"));
 	ActionBack = CActionBack.Object;
 	
 	UIClass = UDialogUI::StaticClass();

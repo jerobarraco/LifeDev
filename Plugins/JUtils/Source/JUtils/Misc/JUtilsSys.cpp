@@ -31,7 +31,8 @@ APlayerController* UJUtilsSys::GetFirstLocalPlayerController(const UObject* cons
 }
 
 UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
-	if (GEngine && GEngine->GameViewport) return GEngine->GameViewport;
+	if (UNLIKELY(!GEngine)) return nullptr;
+	if (LIKELY(GEngine->GameViewport)) return GEngine->GameViewport;
 	
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
@@ -59,7 +60,7 @@ void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float D
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
 
 	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
-	APlayerCameraManager* CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
+	APlayerCameraManager* const CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
 	if (UNLIKELY(!CamManager)) {
 		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
 		return;

@@ -25,3 +25,14 @@ add these lines to project.target.cs
 		BuildEnvironment = TargetBuildEnvironment.Unique;
 		bUseLoggingInShipping = true;
 	
+	
+	
+static load on runtime. probably will hitch. fsoftobjectptr seems better.
+https://forums.unrealengine.com/t/what-do-if-i-cant-use-constructorhelpers-fobjectfinder-will-the-cooker-ignore-this-later-on/142369/3
+won't cook
+	// This queries a data asset/json/file for what the mesh should be.
+	// For example, newMeshString = "/Game/Items/GoldCoin.GoldCoin"
+	FString newMeshString = ItemDB.GetMeshString(item);
+	
+	auto newMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT(newMeshString)));
+	m_meshComponent->SetStaticMesh(newMesh);
