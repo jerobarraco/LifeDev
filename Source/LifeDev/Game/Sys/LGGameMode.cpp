@@ -37,7 +37,7 @@
 #include "LifeDev/Game/Dialogs/LDialogMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
-#include "LifeDev/Game/Inventory/LInventoryManager.h"
+#include "LifeDev/Game/Inventory/LInventoryMan.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
@@ -158,7 +158,7 @@ void ALGGameMode::Init_Implementation() {
 	/// Managers
 	// now the managers. which, as they are actors they tend to have side-effects, some of which requires the subsystems
 
-	InventoryMan = Cast<ALInventoryManager>(World->SpawnActor(ALInventoryManager::StaticClass()));
+	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
 	if (IsValid(InventoryMan)) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;

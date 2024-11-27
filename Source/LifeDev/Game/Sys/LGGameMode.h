@@ -15,7 +15,7 @@ class APostProcessVolume;
 class ULSettings;
 class UInputMappingContext;
 class ALDialogMan;
-class ALInventoryManager;
+class ALInventoryMan;
 class ALFeatsMan;
 class ALMusicMan;
 class AFlashbackMan;
@@ -74,7 +74,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALDialogMan> DiagMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ALInventoryManager> InventoryMan = nullptr;
+	TObjectPtr<ALInventoryMan> InventoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALStoryMan> StoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

@@ -3,12 +3,12 @@
 #include "CoreMinimal.h"
 
 #include "Inventory/InventoryManager.h"
-#include "LInventoryManager.generated.h"
+#include "LInventoryMan.generated.h"
 
 UCLASS(Blueprintable)
-class LIFEDEV_API ALInventoryManager : public AInventoryManager {
+class LIFEDEV_API ALInventoryMan : public AInventoryManager {
 	GENERATED_BODY()
 
 public:
-	ALInventoryManager();
+	ALInventoryMan();
 };
