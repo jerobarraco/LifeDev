@@ -96,26 +96,26 @@ void ADiagMan::BeginPlay() {
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(World);
-	if (IsValid(Input)){
-		if (IsValid(ActionSkip))
+	if (LIKELY(IsValid(Input))) {
+		if (LIKELY(IsValid(ActionSkip)))
 			Input->BindAction<ADiagMan>(
 				ActionSkip, ETriggerEvent::Triggered, this, &ADiagMan::Skip);
-		if (IsValid(ActionBack))
+		if (LIKELY(IsValid(ActionBack)))
 			Input->BindAction<ADiagMan>(
 				ActionBack, ETriggerEvent::Triggered, this, &ADiagMan::Back);
 	}
 
 	// create ui 
 	UClass* const Class = UIClass.Get();
-	if (IsValid(Class)) {
-		UI = CreateWidget<UDialogUI>(World, Class);
-		if (IsValid(UI)) {
-			UI->AddToViewport(ZOrder);
-			UI->OnDone.AddUniqueDynamic(this, &ADiagMan::UIDiagDone);
-			IsShowing = true; // temporarily set, so that it hides.
-			Hide();
-		}
-	}
+	if (UNLIKELY(!IsValid(Class))) return;
+
+	UI = CreateWidget<UDialogUI>(World, Class);
+	if (UNLIKELY(!IsValid(UI))) return;
+
+	UI->AddToViewport(ZOrder);
+	UI->OnDone.AddUniqueDynamic(this, &ADiagMan::UIDiagDone);
+	IsShowing = true; // temporarily set, so that it hides.
+	Hide();
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -130,18 +130,18 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ADiagMan::UIDiagDone() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone"));
-	if (!IsValid(Diags)) return;
+	if (UNLIKELY(!IsValid(Diags))) return;
 	Diags->DiagDone();
 }
 
 void ADiagMan::Skip() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Skip"));
-	if(!IsValid(UI)) return;
+	if(UNLIKELY(!IsValid(UI))) return;
 	UI->Skip();
 }
 
 void ADiagMan::Back() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Back"));
-	if(!IsValid(UI)) return;
+	if(UNLIKELY(!IsValid(UI))) return;
 	UI->Back();
 }
