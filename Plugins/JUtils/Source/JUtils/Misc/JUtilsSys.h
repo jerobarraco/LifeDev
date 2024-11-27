@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 
-
 #include "JUtilsSys.generated.h"
+
+class UInputMappingContext;
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
@@ -18,7 +19,8 @@ public:
 	static UGameViewportClient* GetAnyGameViewportClient();
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable);
+	static void ToggleMapping(const UObject* const O,
+		const UInputMappingContext* const Ctx, int32 Prio, bool Enable);
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);

@@ -129,9 +129,9 @@ void ALStep::SetFBDiagAuto() {
 		const bool Ok2 = Diags->GetDiag(DlgId, D, C);
 		if (LIKELY(Ok2)) Len = 1;
 	}
-	
+
 	// avoid division by 0, but also makes no sense otherwise.
-	if (Len <= 0) return;
+	if (UNLIKELY(Len <= 0)) return;
 	// TODO there might be an issue here. check if GetValTo or GetVal is the correct.
 	const float FBCurrent = FB->GetValTo();
 	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;

@@ -35,7 +35,7 @@ public:
 	void Hide();
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsShowing() const { return IsShowing; };
+	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
 	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable)
@@ -51,17 +51,17 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 3;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UDialogUI> UIClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputMappingContext* Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> Mapping = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputAction* ActionSkip = nullptr;
+	TObjectPtr<UInputAction> ActionSkip = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	UInputAction* ActionBack = nullptr;
+	TObjectPtr<UInputAction> ActionBack = nullptr;
 
 	// when set it will skip showing the Diags but still mark them as read
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
@@ -69,10 +69,10 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDialogUI* UI = nullptr;
+	TObjectPtr<UDialogUI> UI = nullptr;
 	
 private:
 	// The ui is done with the current line

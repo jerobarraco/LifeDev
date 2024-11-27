@@ -17,8 +17,13 @@ void ALDialogMan::BeginPlay() {
 	Flags = UFlags::Instance(this);
 }
 
+void ALDialogMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Flags = nullptr;
+	Super::EndPlay(EndPlayReason);
+}
+
 void ALDialogMan::Show_Implementation(const FDialog& Diag) {
 	Super::Show_Implementation(Diag);
 	
-	if (Flags) Flags->Mod(LDConsts::Flags::Stats::DiagShown, 1);
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::DiagShown, 1);
 }

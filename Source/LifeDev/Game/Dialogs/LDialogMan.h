@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Diags/DiagMan.h"
-#include "Diags/DiagTypes.h"
 #include "Inventory/Flags.h"
 
 #include "LDialogMan.generated.h"
@@ -18,10 +18,11 @@ public:
 	ALDialogMan();
 
 protected:
-	void BeginPlay() override;
-
-	virtual void Show_Implementation(const FDialog& Diag) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	virtual void Show_Implementation(const FDialog& Diag) override;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 };

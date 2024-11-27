@@ -58,12 +58,14 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 
 	if (DebugSkip) {
 		UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DebugSkip is set. Skipping."));
+		const UWorld* const World = GetWorld();
 		// skip on the next frame to avoid having issues due to call stack
-		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
+		if (LIKELY(World))
+			World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
 		return;
 	}
 
-	if (!IsValid(UI)) {
+	if (UNLIKELY(!IsValid(UI))) {
 		UE_LOG(LogTextDialogs, Warning, TEXT("DiagMan: UI was not ready"));
 		return;
 	}

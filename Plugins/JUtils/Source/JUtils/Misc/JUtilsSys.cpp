@@ -6,14 +6,14 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
-void UJUtilsSys::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio, bool Enable) {
-	APlayerController* const Controller = GetFirstLocalPlayerController(O);
-	if (!IsValid(Controller)) return;
-	
+void UJUtilsSys::ToggleMapping(const UObject* const O, const UInputMappingContext* const Ctx, int32 Prio, bool Enable) {
+	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
+	if (UNLIKELY(!IsValid(Controller))) return;
+
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
 			Controller->GetLocalPlayer());
-	if (!IsValid(Subsystem)) return;
+	if (UNLIKELY(!IsValid(Subsystem))) return;
 
 	if (Enable) Subsystem->AddMappingContext(Ctx, Prio);
 	else Subsystem->RemoveMappingContext(Ctx);
@@ -21,11 +21,11 @@ void UJUtilsSys::ToggleMapping(UObject* O, UInputMappingContext* Ctx, int32 Prio
 
 
 APlayerController* UJUtilsSys::GetFirstLocalPlayerController(const UObject* const O) {
-	const UWorld* const W = O?O->GetWorld():nullptr;
-	if (!W) return nullptr;
+	const UWorld* const W = O ? O->GetWorld():nullptr;
+	if (UNLIKELY(!W)) return nullptr;
 
-	UGameInstance* const Instance = W->GetGameInstance();
-	if (!Instance) return nullptr;
+	const UGameInstance* const Instance = W->GetGameInstance();
+	if (UNLIKELY(!Instance)) return nullptr;
 
 	return Instance->GetFirstLocalPlayerController(W);
 }
@@ -35,10 +35,8 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 	
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
-	for (const FWorldContext& Context : WorldContexts)
-	{
-		if ((Context.WorldType == EWorldType::PIE) && Context.World() && Context.GameViewport)
-		{
+	for (const FWorldContext& Context : WorldContexts) {
+		if ((Context.WorldType == EWorldType::PIE) && Context.World() && Context.GameViewport) {
 			return Context.GameViewport;
 		}
 	}
