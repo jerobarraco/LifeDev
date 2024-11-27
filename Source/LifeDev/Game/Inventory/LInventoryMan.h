@@ -2,11 +2,11 @@
 #pragma once
 #include "CoreMinimal.h"
 
-#include "Inventory/InventoryManager.h"
+#include "Inventory/InventoryMan.h"
 #include "LInventoryMan.generated.h"
 
 UCLASS(Blueprintable)
-class LIFEDEV_API ALInventoryMan : public AInventoryManager {
+class LIFEDEV_API ALInventoryMan : public AInventoryMan {
 	GENERATED_BODY()
 
 public:

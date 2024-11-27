@@ -6,7 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "InventoryTypes.h"
 
-#include "InventoryManager.generated.h"
+#include "InventoryMan.generated.h"
 
 class UInventory;
 class UInputMappingContext;
@@ -16,11 +16,11 @@ class UCItemView;
 
 // base class for the character
 UCLASS(Blueprintable)
-class INVENTORY_API AInventoryManager : public AInfo {
+class INVENTORY_API AInventoryMan : public AInfo {
 	GENERATED_BODY()
 
 public:
-	AInventoryManager();
+	AInventoryMan();
 	
 	UFUNCTION(BlueprintCallable)
 	void Init();
@@ -65,17 +65,17 @@ public:
 	TSubclassOf<UInventoryUI> UIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	UInputMappingContext* Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> Mapping = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	UInputAction* ActionOpen = nullptr;
+	TObjectPtr<UInputAction> ActionOpen = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	UInputAction* ActionSelect = nullptr;
+	TObjectPtr<UInputAction> ActionSelect = nullptr;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCItemView* View = nullptr;
+	TObjectPtr<UCItemView> View = nullptr;
 
 private:
 	// stub. the manager will handle input. will it?
@@ -83,10 +83,10 @@ private:
 	void UIDone();
 
 	UPROPERTY(Transient)
-	UInventory* Inventory = nullptr;
+	TObjectPtr<UInventory> Inventory = nullptr;
 
 	UPROPERTY(Transient)
-	UInventoryUI* UI = nullptr;
+	TObjectPtr<UInventoryUI> UI = nullptr;
 
 	bool IsShowing = false;
 };

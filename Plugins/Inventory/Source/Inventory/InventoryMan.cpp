@@ -1,6 +1,6 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-#include "InventoryManager.h"
+#include "InventoryMan.h"
 
 // these two are needed anyway otherwise it wont compile
 #include "CItemView.h"
@@ -12,7 +12,7 @@
 #include "InventoryUI.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
-AInventoryManager::AInventoryManager():Super(){
+AInventoryMan::AInventoryMan():Super(){
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
 
@@ -27,9 +27,9 @@ AInventoryManager::AInventoryManager():Super(){
 	UIClass = UInventoryUI::StaticClass();
 }
 
-void AInventoryManager::Init() {}
+void AInventoryMan::Init() {}
 
-void AInventoryManager::DeInit() {
+void AInventoryMan::DeInit() {
 	Hide();
 	if (IsValid(UI)) {
 		UI->RemoveFromParent();
@@ -46,11 +46,11 @@ void AInventoryManager::DeInit() {
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 }
 
-void AInventoryManager::ActOpen() {
+void AInventoryMan::ActOpen() {
 	Show();
 }
 
-void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
+void AInventoryMan::ActSelect(const FInputActionValue& InputActionValue) {
 	const bool Next = InputActionValue.GetMagnitude() > 0;
 	const FName& NextKey = Inventory->GetNextKey(Next);
 	if (NextKey.IsNone()) return;
@@ -58,50 +58,50 @@ void AInventoryManager::ActSelect(const FInputActionValue& InputActionValue) {
 	Inventory->SetSelected(NextKey);
 }
 
-void AInventoryManager::SetVisible(bool Vis) {
+void AInventoryMan::SetVisible(bool Vis) {
 	if (Vis) Show();
 	else Hide();
 }
 
-void AInventoryManager::Show() {
+void AInventoryMan::Show() {
 	if (IsShowing) return;
 
 	IsShowing = true;
 	if (IsValid(UI)) UI->Show();
 }
 
-void AInventoryManager::Hide() {
+void AInventoryMan::Hide() {
 	if (IsValid(UI)) {
 		UI->Hide();
 	}
 	IsShowing = false;
 }
 
-void AInventoryManager::SetSelected(const FName& Name) {
+void AInventoryMan::SetSelected(const FName& Name) {
 	if (IsValid(UI)) {
 		UI->SetSelected(Name);
 	}
 }
 
-void AInventoryManager::SetItemMod(const FName& Name, int32 Diff, const FItem& Item) {
+void AInventoryMan::SetItemMod(const FName& Name, int32 Diff, const FItem& Item) {
 	if (IsValid(UI)) {
 		UI->SetItemMod(Name, Diff, Item);
 	}
 }
 
-void AInventoryManager::SetItemCold(const FName& Name) {
+void AInventoryMan::SetItemCold(const FName& Name) {
 	if (IsValid(UI)) {
 		UI->SetItemCold(Name);
 	}
 }
 
-void AInventoryManager::SetItemUsed(const FName& Name) {
+void AInventoryMan::SetItemUsed(const FName& Name) {
 	if (IsValid(UI)) {
 		UI->SetItemUsed(Name);
 	}
 }
 
-void AInventoryManager::BeginPlay() {
+void AInventoryMan::BeginPlay() {
 	Super::BeginPlay();
 
 	// bind the action
@@ -111,10 +111,10 @@ void AInventoryManager::BeginPlay() {
 	if (ActionOpen) {
 		UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(World->GetFirstPlayerController()->InputComponent);
 		if (IsValid(Input)) {
-			Input->BindAction<AInventoryManager>(
-				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryManager::ActOpen);
-			Input->BindAction<AInventoryManager>(
-				ActionSelect, ETriggerEvent::Triggered, this, &AInventoryManager::ActSelect);
+			Input->BindAction<AInventoryMan>(
+				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);
+			Input->BindAction<AInventoryMan>(
+				ActionSelect, ETriggerEvent::Triggered, this, &AInventoryMan::ActSelect);
 		}
 	}
 	
@@ -124,24 +124,24 @@ void AInventoryManager::BeginPlay() {
 		if (IsValid(UI)) {
 			UI->AddToViewport(ZOrder);
 			Hide();
-			UI->OnDone.AddUniqueDynamic(this, &AInventoryManager::UIDone);
+			UI->OnDone.AddUniqueDynamic(this, &AInventoryMan::UIDone);
 		}
 	}
 
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
-	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryManager::SetSelected);
-	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryManager::SetItemMod);
-	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryManager::SetItemCold);
-	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryManager::SetItemUsed);
+	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryMan::SetSelected);
+	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryMan::SetItemMod);
+	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryMan::SetItemCold);
+	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryMan::SetItemUsed);
 }
 
-void AInventoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void AInventoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 	DeInit();
 }
 
-void AInventoryManager::UIDone() {
+void AInventoryMan::UIDone() {
 	Hide();
 }
