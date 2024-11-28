@@ -73,7 +73,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDialogUI> UI = nullptr;
-	
+
 private:
 	// The ui is done with the current line
 	UFUNCTION()

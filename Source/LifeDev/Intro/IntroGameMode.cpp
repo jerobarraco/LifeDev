@@ -14,7 +14,6 @@ AIntroGameMode::AIntroGameMode():Super() {
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"));
-	// IsRunningCookCommandlet
 }
 
 void AIntroGameMode::BeginPlay() {

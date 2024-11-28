@@ -26,14 +26,15 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UsePawnCam = true;
 	UseRandFB = true;
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS");
-	// No need to load, it should be loaded by default?
-	
+	// this would fix the music not being packaged
+	// if (IsRunningCookCommandlet()) Music.LoadSynchronous();
+
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLOutA(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
-	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
-	if (CDLOutA.Succeeded()) DL_Load.Add(CDLOutA.Object);
+	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
+	if (LIKELY(CDLOutA.Succeeded())) DL_Load.Add(CDLOutA.Object);
 }
 
 void ALStepC0S000::TryStart_Implementation() {

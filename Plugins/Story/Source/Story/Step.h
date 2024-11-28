@@ -87,7 +87,7 @@ public:
 
 	// Music to play. Setting it to empty does not stop the music.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TSoftObjectPtr<USoundBase> Music;
+	TSoftObjectPtr<USoundBase> Music = nullptr;
 
 	// Data layers to load.
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
