@@ -64,7 +64,7 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 
 void APuzzleI04::PostDone() {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	SND->SetSound(WasOk ? SND_Right : SND_Wrong);
 	SND->Play();
@@ -87,7 +87,7 @@ void APuzzleI04::PostDoneSnd() {
 	// i could subscribe to the anim onEnd but this is safer.
 	FTimerHandle H;
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Lid->Anim->Duration);
 }
 
@@ -96,7 +96,7 @@ void APuzzleI04::LidDone() {
 	// actually the new step will disable the input, but better to do here in case
 	// i change that
 	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
-	if (Mode) Mode->SetCharInputEnabled(true);
+	if (LIKELY(Mode)) Mode->SetCharInputEnabled(true);
 	
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
