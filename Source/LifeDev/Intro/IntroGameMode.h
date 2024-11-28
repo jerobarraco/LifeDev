@@ -20,14 +20,14 @@ public:
 	AIntroGameMode();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	USoundBase* Music = nullptr;
+	TObjectPtr<USoundBase> Music = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	AIntroMan* Manager = nullptr;
+	TObjectPtr<AIntroMan> Manager = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	ALMusicMan* MusicMan = nullptr;
+	TObjectPtr<ALMusicMan> MusicMan = nullptr;
 };

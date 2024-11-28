@@ -50,7 +50,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 void ALStepC1S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 
-	if (!FB) return;
+	if (UNLIKELY(!FB)) return;
 	// important to set a short duration since this comes from another chapter
 	// that happened some time ago.
 	FB->SetMin(0, .1);

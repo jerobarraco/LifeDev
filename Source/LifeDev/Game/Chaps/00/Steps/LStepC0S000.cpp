@@ -39,7 +39,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 void ALStepC0S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 
-	if (!FB) {
+	if (UNLIKELY(!FB)) {
 		UE_LOG(LogTemp, Warning, TEXT("ALStepC0S000 Start: can't get the FB subsystem."));
 		return;
 	}

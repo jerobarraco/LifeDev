@@ -83,7 +83,7 @@ public:
 	
 	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
-	FText Title;
+	FText Title = FText::GetEmpty();
 
 	// Music to play. Setting it to empty does not stop the music.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")

@@ -23,7 +23,7 @@ void AIntroMan::AddUI() {
 	if (!World) return;
 
 	UI = CreateWidget<UIntroUI>(World, UIClass.Get());
-	if (!IsValid(UI)) return;
+	if (UNLIKELY(!IsValid(UI))) return;
 	
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
@@ -44,7 +44,7 @@ void AIntroMan::Done() {
 	// -1 because we never actually save that chapter.
 	constexpr int32 ChapMax = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats) -1;
 
-	if (ChapterID >= ChapMax) {
+	if (UNLIKELY(ChapterID >= ChapMax)) {
 		UE_LOG(LogTemp, Log, TEXT("Current save is beyond the max chapter."));
 		static const FText TheEnd(
 			NSLOCTEXT("Intro", "MaxChapterReached",
@@ -70,8 +70,7 @@ void AIntroMan::BeginPlay() {
 }
 
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (UI)
-		UI->OnDone.RemoveAll(this);
+	if (LIKELY(UI)) UI->OnDone.RemoveAll(this);
 
 	Super::EndPlay(EndPlayReason);
 }
