@@ -20,4 +20,6 @@ AHeater00::AHeater00():Super() {
 
 	Super::SetAutoActivate(false); // disabled by default
 	UseAnim = false;
+	UseRewardDestroy = false;
+	UseFade = false;
 }
