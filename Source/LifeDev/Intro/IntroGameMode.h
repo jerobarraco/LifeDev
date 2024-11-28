@@ -12,15 +12,14 @@ class ALMusicMan;
 
 // Game mode class for the intro 
 UCLASS(Blueprintable)
-class LIFEDEV_API AIntroGameMode : public AGameModeBase
-{
+class LIFEDEV_API AIntroGameMode : public AGameModeBase {
 	GENERATED_BODY()
 
 public:
 	AIntroGameMode();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	TObjectPtr<USoundBase> Music = nullptr;
+	TSoftObjectPtr<USoundBase> Music = nullptr;
 
 protected:
 	virtual void BeginPlay() override;

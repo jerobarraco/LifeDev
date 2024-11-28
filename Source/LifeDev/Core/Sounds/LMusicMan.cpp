@@ -275,7 +275,7 @@ void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {
 void ALMusicMan::SetStep(AStep* const Step) {
 	if (!IsValid(Step)) return;
 	if (Step->Music.IsNull()) return;
-	
+
 	USoundBase* const Sound = Step->Music.LoadSynchronous();
 	if (!IsValid(Sound)) {
 		UE_LOG(LogTemp, Warning, TEXT("MusicMan.SetStep: Could not load music asset=%s"),

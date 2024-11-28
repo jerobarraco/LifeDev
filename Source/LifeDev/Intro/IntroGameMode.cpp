@@ -13,9 +13,8 @@ AIntroGameMode::AIntroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CMusic (TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"));
-	Music = CMusic.Object;
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"));
+	// IsRunningCookCommandlet
 }
 
 void AIntroGameMode::BeginPlay() {
@@ -24,8 +23,8 @@ void AIntroGameMode::BeginPlay() {
 
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	if (MusicMan) {
-		MusicMan->PlayMusic(Music);
+	if (LIKELY(MusicMan)) {
+		MusicMan->PlayMusic(Music.LoadSynchronous());
 		// fix so that the environment doesn't play during the intro level
 		MusicMan->SetEnvironOverride(false);
 		MusicMan->SetGhostOverride(false);
@@ -34,17 +33,17 @@ void AIntroGameMode::BeginPlay() {
 	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
-	if (FB) FB->SetVal(1);
+	if (LIKELY(FB)) FB->SetVal(1);
 
 	// very important NOT to save the save-game here.
 	// since none of the subsystems are initialized and it will save garbage
 }
 
 void AIntroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-	if (IsValid(Manager)) {
-		Manager->Destroy();
-	}
-
+	if (LIKELY(IsValid(Manager))) Manager->Destroy();
 	Manager = nullptr;
+	if (LIKELY(IsValid(MusicMan))) MusicMan->Destroy();
+	MusicMan = nullptr;
+
+	Super::EndPlay(EndPlayReason);
 }
