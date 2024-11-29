@@ -21,7 +21,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UseFade = true;
 	FinishPostWait = false; // will be set by seqid anyway
 
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS"));
 	// this one, seems to be loaded well without the patch :/? HOW?!
 	if (IsRunningCookCommandlet()) Music.LoadSynchronous(); // left just in case
 	

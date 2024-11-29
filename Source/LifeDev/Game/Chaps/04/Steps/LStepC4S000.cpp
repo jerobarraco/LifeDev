@@ -19,7 +19,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
 	// needed
 	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 

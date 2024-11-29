@@ -23,7 +23,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	FinishPostWait = false;
 	UsePawnCam = true;
 	UseRandFB = true;
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
 	// this would fix the music not being packaged
 	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 

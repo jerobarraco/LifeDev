@@ -20,7 +20,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	TeleportChar = true;
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS"));
 	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 
 	ItemsEnsure = {

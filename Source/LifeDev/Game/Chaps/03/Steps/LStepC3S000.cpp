@@ -19,7 +19,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	TeleportChar = true;
 
 	// music needs the .Music08_MS postfix
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS");
+	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
 	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 	
