@@ -24,12 +24,10 @@ add these lines to project.target.cs
 		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
 		BuildEnvironment = TargetBuildEnvironment.Unique;
 		bUseLoggingInShipping = true;
-	
-	
-	
+
+
 static load on runtime. probably will hitch. fsoftobjectptr seems better.
 https://forums.unrealengine.com/t/what-do-if-i-cant-use-constructorhelpers-fobjectfinder-will-the-cooker-ignore-this-later-on/142369/3
-won't cook
 	// This queries a data asset/json/file for what the mesh should be.
 	// For example, newMeshString = "/Game/Items/GoldCoin.GoldCoin"
 	FString newMeshString = ItemDB.GetMeshString(item);

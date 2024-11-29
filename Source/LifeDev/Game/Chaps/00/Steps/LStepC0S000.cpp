@@ -3,11 +3,9 @@
 
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
-#include "Interact/Animator/CRandomizer.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 
-#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
@@ -25,9 +23,9 @@ ALStepC0S000::ALStepC0S000():Super() {
 	FinishPostWait = false;
 	UsePawnCam = true;
 	UseRandFB = true;
-	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS");
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS"));
 	// this would fix the music not being packaged
-	// if (IsRunningCookCommandlet()) Music.LoadSynchronous();
+	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
