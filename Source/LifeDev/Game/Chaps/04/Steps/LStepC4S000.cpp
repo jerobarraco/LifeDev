@@ -19,25 +19,26 @@ ALStepC4S000::ALStepC4S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 
-	Music = FSoftObjectPath(
-		"/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS");
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS"));
+	// needed
+	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));
-	if (CDL1.Succeeded()) DL_Load.Add(CDL1.Object);
+	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
-	if (CDL2.Succeeded()) DL_Unload.Add(CDL2.Object);
+	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
 
 	// unload unnecessary outside props
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
-	if (CDLO3.Succeeded()) DL_Unload.AddUnique(CDLO3.Object);
+	if (LIKELY(CDLO3.Succeeded())) DL_Unload.AddUnique(CDLO3.Object);
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLO4 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D"));
-	if (CDLO4.Succeeded()) DL_Unload.Add(CDLO4.Object);
+	if (LIKELY(CDLO4.Succeeded())) DL_Unload.Add(CDLO4.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,

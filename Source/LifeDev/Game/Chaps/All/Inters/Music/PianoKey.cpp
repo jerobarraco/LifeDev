@@ -12,7 +12,7 @@ APianoKey::APianoKey():Super() {
 	UseAnim = true;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSFX(TEXT("/Game/LifeDev/Game/Inters/Music/Piano/group_A.group_A"));
+		CSFX(TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_A"));
 	SFX_Trigger = CSFX.Object;
 
 	Mesh->SetCastAllShadows(true);
