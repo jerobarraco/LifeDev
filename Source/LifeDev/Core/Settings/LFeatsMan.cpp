@@ -30,14 +30,14 @@ void ALFeatsMan::LoadMPC() {
 	if (!W) return;
 	
 	if (!IsValid(MPC)) {
-		UE_LOG(LogLFeatsMan, Warning, TEXT("LFeatsMan::%hs Could not get the MPC. Skip"),
+		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Could not get the MPC. Skip"),
 				__func__);
 		return;
 	}
 	
 	MPCI = W->GetParameterCollectionInstance(MPC);
 	UE_CLOG(!IsValid(MPCI), LogLFeatsMan, Warning,
-		TEXT("LFeatsMan::%hs Could not get the MPCInst. Stop."), __func__);
+		TEXT("%hs Could not get the MPCInst. Stop."), __func__);
 }
 
 void ALFeatsMan::BeginPlay() {
