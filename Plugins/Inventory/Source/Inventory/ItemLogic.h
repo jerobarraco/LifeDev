@@ -33,7 +33,7 @@ public:
 	}
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
-	FName Name;
+	FName Name = NAME_None;
 
 protected:
 	// I can't save the world here since it will crash the editor on load for some weird reason

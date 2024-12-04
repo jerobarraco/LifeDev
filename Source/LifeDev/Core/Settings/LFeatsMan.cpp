@@ -21,7 +21,7 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	SpeedMat = CSpeedMat.Object;
 	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CFBMat(TEXT("/Game/LifeDev/Game/Flashback/Flashback2_MI"));
+		CFBMat(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MI"));
 	FBMat = CFBMat.Object;
 }
 
