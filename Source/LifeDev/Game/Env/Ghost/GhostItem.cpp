@@ -23,11 +23,12 @@ AGhostItem::AGhostItem():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
-		TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
+		TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
+		//TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
 		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
 	Mesh->SetMaterial(0, CMat.Object);
-	
+	// Mesh->SetCustomDepth(true, 1);
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
 	AxisZ = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisZ"));
