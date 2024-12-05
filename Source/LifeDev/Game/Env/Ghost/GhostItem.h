@@ -14,7 +14,7 @@ class UCGhostAxis;
 class UMaterialInterface;
 
 // PoolItemGhost
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
 class AGhostItem : public AActor {
 	GENERATED_BODY()
 
@@ -58,19 +58,19 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
 	
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	FVector OffPos = {0, 0, 30};
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	FVector OffDist = {75.0, 75, 75};
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	FRotator ActRotOff = {-15, 0, 15};
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	float ActRotSpeed = 2.5;
-	// UPROPERTY(BlueprintReadWrite)
+	// UPROPERTY(BlueprintReadWrite, Config)
 	// bool Debug = true;
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	float LifeTimeMin=20;
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Config)
 	float LifeTimeMax=30;
 #pragma endregion
 
@@ -83,30 +83,30 @@ protected:
 	FVector TgtPos;
 	FVector AimPos;
 
-	UPROPERTY(Transient)
-	AActor* Target = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<AActor> Target = nullptr;
 #pragma endregion
 
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	USceneComponent* Root = nullptr;
+	TObjectPtr<USceneComponent> Root = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Mesh = nullptr;
+	TObjectPtr<UCQuickMesh> Mesh = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCGhostAxis* AxisX = nullptr;
+	TObjectPtr<UCGhostAxis> AxisX = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCGhostAxis* AxisY = nullptr;
+	TObjectPtr<UCGhostAxis> AxisY = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCGhostAxis* AxisZ = nullptr;
+	TObjectPtr<UCGhostAxis> AxisZ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimator* AnimBase = nullptr;
+	TObjectPtr<UCAnimator> AnimBase = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimatorMix* AnimFade = nullptr;
+	TObjectPtr<UCAnimatorMix> AnimFade = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSignificance* Sig = nullptr;
+	TObjectPtr<UCSignificance> Sig = nullptr;
 #pragma endregion 
 };
