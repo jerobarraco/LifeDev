@@ -57,11 +57,12 @@ protected:
 #pragma region Settings
 	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
-	
+
+	// offset 
 	UPROPERTY(BlueprintReadWrite, Config)
 	FVector OffPos = {0, 0, 30};
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffDist = {75.0, 75, 75};
+	FVector OffDist = {200, 200, 75};
 	UPROPERTY(BlueprintReadWrite, Config)
 	FRotator ActRotOff = {-15, 0, 15};
 	UPROPERTY(BlueprintReadWrite, Config)
