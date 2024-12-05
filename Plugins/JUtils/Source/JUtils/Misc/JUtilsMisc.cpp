@@ -24,15 +24,29 @@
 
 UWorld* UJUtilsMisc::GetEdWorld() {
 #if WITH_EDITOR
-	if (!GEditor) return nullptr;
-	// if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
-		// FWorldContext* const PieContext = GEditor->GetPIEWorldContext(0);
-		// return PieContext ? PieContext->World() : nullptr;
-	// }
+	if (UNLIKELY(!GEditor)) return nullptr;
 	return GEditor->GetEditorWorldContext(false).World(); 
 #else
 	return nullptr;
 #endif
+}
+
+UWorld* UJUtilsMisc::GetPieWorld(const int32 Num) {
+#if WITH_EDITOR
+	if (UNLIKELY(!GEditor)) return nullptr;
+	const FWorldContext* const Context = GEditor->GetPIEWorldContext(Num);
+	return Context ? Context->World() : nullptr;
+	// if (EditorScriptingHelpers::CheckIfInEditorAndPIE()) { // TODO
+		// FWorldContext* const PieContext = GEditor->GetPIEWorldContext(0);
+		// return PieContext ? PieContext->World() : nullptr;
+	// }
+#else
+	return nullptr;
+#endif
+}
+
+bool UJUtilsMisc::IsPIE() {
+	return EditorScriptingHelpers::CheckIfInEditorAndPIE();
 }
 
 UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {

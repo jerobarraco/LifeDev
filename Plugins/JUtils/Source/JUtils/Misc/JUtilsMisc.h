@@ -45,6 +45,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static UWorld* GetEdWorld();
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static UWorld* GetPieWorld(const int32 Num = 0);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsPIE();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsEditor() {
@@ -53,7 +59,7 @@ public:
 		#else
 			return false;
 		#endif
-	};
+	}
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsDebug() {
