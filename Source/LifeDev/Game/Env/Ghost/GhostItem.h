@@ -58,9 +58,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
 
-	// offset 
+	// fixed origin from the target. is the origin of the random offset
 	UPROPERTY(BlueprintReadWrite, Config)
 	FVector OffPos = {0, 0, 30};
+	// offset that gets randomized. is a distance from offPos
 	UPROPERTY(BlueprintReadWrite, Config)
 	FVector OffDist = {200, 200, 75};
 	UPROPERTY(BlueprintReadWrite, Config)
