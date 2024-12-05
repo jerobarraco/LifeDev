@@ -1,7 +1,6 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
 
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -25,8 +24,8 @@ public:
 
 #pragma region CDO
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCRandomizer* Rand = nullptr;
+	TObjectPtr<UCRandomizer> Rand = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCAnimator* Anim = nullptr;
+	TObjectPtr<UCAnimator> Anim = nullptr;
 #pragma endregion
 };

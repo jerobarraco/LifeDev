@@ -1,14 +1,16 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "GhostItem.h"
 
-#include "CGhostAxis.h"
-#include "CQuickMesh.h"
-#include "Pool.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JSig/CSignificance.h"
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+
+#include "CGhostAxis.h"
+#include "CQuickMesh.h"
+#include "Pool.h"
 
 AGhostItem::AGhostItem():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -18,6 +20,7 @@ AGhostItem::AGhostItem():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CMesh(
 		TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost-03"));
 	Mesh->SetStaticMesh(CMesh.Object);
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
 		TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
 	Mesh->SetMaterial(0, CMat.Object);
@@ -56,7 +59,7 @@ void AGhostItem::SetActive(const bool Act, const bool Reset) {
 
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
 	for (UActorComponent* const C: Cmps) {
-		if (!C) continue;
+		if (UNLIKELY(!C)) continue;
 		C->SetActive(Act, Reset);
 	}
 }
@@ -126,11 +129,12 @@ void AGhostItem::Reset() {
 
 void AGhostItem::SetReturnTimer() {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	const float LifeTime = FMath::FRandRange(LifeTimeMin, LifeTimeMax);
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &AGhostItem::FadeAndReturn, LifeTime);
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimer(H, this, &AGhostItem::FadeAndReturn, LifeTime);
 }
 
 void AGhostItem::FadeAndReturn() {
@@ -143,7 +147,7 @@ void AGhostItem::Return() {
 	AnimFade->OnEnd.RemoveAll(this);
 
 	UPooler* const Pooler = UPooler::Instance(this);
-	if (!Pooler) {
+	if (UNLIKELY(!Pooler)) {
 		Destroy();
 		return;
 	}
@@ -152,9 +156,9 @@ void AGhostItem::Return() {
 }
 
 void AGhostItem::BaseUp(const float Progress, const float Alpha) {
-	if (!IsValid(Target)) {
+	if (UNLIKELY(!IsValid(Target))) {
 		Target = UGameplayStatics::GetActorOfClass(this, TargetClass);
-		if (!IsValid(Target)) return;
+		if (UNLIKELY(!IsValid(Target))) return;
 	}
 
 	TgtPos = Target->GetActorLocation();

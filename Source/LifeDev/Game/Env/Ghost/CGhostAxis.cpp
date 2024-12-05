@@ -36,10 +36,10 @@ UCGhostAxis::UCGhostAxis():Super() {
 
 void UCGhostAxis::RenameComp(const FString& Postfix) {
 	static const FString RandPre("Rand_");
-	if (Rand) Rand->Rename(*(RandPre+Postfix));
+	if (LIKELY(Rand)) Rand->Rename(*(RandPre+Postfix));
 
 	static const FString AnimPre(TEXT("Anim_"));
-	if (Anim) Anim->Rename(*(AnimPre+Postfix));
+	if (LIKELY(Anim)) Anim->Rename(*(AnimPre+Postfix));
 }
 
 void UCGhostAxis::Activate(bool bReset) {
