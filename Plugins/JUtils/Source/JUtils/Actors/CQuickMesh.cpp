@@ -42,3 +42,11 @@ void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	// by default this is false, i don't want to mess with it. so just don't.
 	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
+
+void UCQuickMesh::SetCustomDepth(const bool Enable, const int32 Val) {
+	// use alongside JUtils/Mats/Post/Hidden
+	CustomDepthStencilValue = Val;
+	bRenderCustomDepth = Enable;
+	SetRenderInDepthPass(!Enable);
+	SetRenderInMainPass(!Enable);
+}

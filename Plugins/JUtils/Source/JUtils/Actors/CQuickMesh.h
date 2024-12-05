@@ -18,4 +18,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCastAllShadows(const bool Cast);
+
+	UFUNCTION(BlueprintCallable)
+	void SetCustomDepth(const bool Enable, const int32 Val=0);
 };
