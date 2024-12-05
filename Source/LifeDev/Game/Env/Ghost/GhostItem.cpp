@@ -15,6 +15,7 @@
 AGhostItem::AGhostItem():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
+
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CMesh(
@@ -22,7 +23,9 @@ AGhostItem::AGhostItem():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
-		TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
+		TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
+		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
+		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));

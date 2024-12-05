@@ -23,6 +23,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetActive(const bool Act, const bool Reset = false);
+
 	UFUNCTION()
 	void Return();
 	void FadeAndReturn();
