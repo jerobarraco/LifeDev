@@ -32,7 +32,6 @@ protected:
 	
 	UFUNCTION()
 	void FBTo(const float To);
-
 	UFUNCTION()
 	void Spawn();
 

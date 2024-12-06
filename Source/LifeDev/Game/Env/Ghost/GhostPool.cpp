@@ -98,7 +98,7 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AGhostPool::FBTo(const float To) {
-	if (!Pooler) return;
+	if (UNLIKELY(!Pooler)) return;
 
 	const bool Active = To >= FBMin;
 	SetActive(Active);
@@ -109,13 +109,13 @@ void AGhostPool::FBTo(const float To) {
 	// the trim time will destroy items when not used.
 	const int32 MaxPre = FMath::TruncToInt(PoolSize* To);
 	const int32 Max = Active ? MaxPre :0;
-	// // i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this 
+	// // i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this
 	// const int32 Max = bitselect((int32) Active, MaxPre, 0);
 	Pooler->SetPool(Max, ItemClass, false, false, TrimTime);
 }
 
 void AGhostPool::Spawn() {
-	if (!Pooler) return;
+	if (UNLIKELY(!Pooler)) return;
 	// this could return null on many situations. beware.
 	Pooler->Get(ItemClass);
 }
