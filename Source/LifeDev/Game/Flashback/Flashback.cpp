@@ -26,31 +26,30 @@ UFlashback* UFlashback::Instance(const UObject* const O) {
 	return IsValid(Flashback) ? Flashback : nullptr;
 }
 
-void UFlashback::SetValInternal(const float New) {
+void UFlashback::AnimUpdate(const float Progress, const float Alpha) {
+	// using From and To, keeps the animation stable and linear.
+	SetValNow(FMath::LerpStable(ValFrom, ValTo, Alpha));
+}
+
+void UFlashback::SetValNow(const float New) {
 	// doesn't check the range since : it's internal, and can happen while we're animating.
 	// and we want to allow a smooth transition back to a lesser min
 	// don't bother if it's the same, specially since many things could be bound to onChange
 	if (FMath::IsNearlyEqual(New, Val)) return;
 	
-	if (Debug)
-		UE_LOG(LogFlashback, Log, TEXT("%hs Val = %.5f"), __func__, Val);
+	UE_CLOG(UNLIKELY(Debug), LogFlashback, Log, TEXT("%hs Val = %.5f"), __func__, Val);
 
 	Val = New;
 	OnChange.Broadcast(Val);
 }
 
-void UFlashback::AnimUpdate(const float Progress, const float Alpha) {
-	// using From and To, keeps the animation stable and linear.
-	SetValInternal(FMath::LerpStable(ValFrom, ValTo, Alpha));
+void UFlashback::SetValToNow(const float New) {
+	ValTo = New;
+	OnTo.Broadcast(ValTo);
 }
 
 void UFlashback::AnimEnd() {
 	OnEnd.Broadcast(Val);
-}
-
-void UFlashback::SetValToInternal(const float New) {
-	ValTo = New;
-	OnTo.Broadcast(ValTo);
 }
 
 void UFlashback::SetVal(float New, float Duration) {
@@ -68,11 +67,11 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (FMath::IsNearlyZero(Duration)) {
 		// reset animation if any
 		Animator->Deactivate();
-		SetValToInternal(New);
+		SetValToNow(New);
 		// important to set so that the value is always up-to-date.
 		// since it's used for GetValTo and in turn by SetVal
-		SetValInternal(New);
-		AnimEnd(); // force notify even though it's instant.
+		SetValNow(New);
+		AnimEnd(); // force notify even though it's instant. has to be after SetValNow.
 		return;
 	}
 
@@ -80,7 +79,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (Duration < 0) Duration = AnimSpeed;
 
 	// important, set the actual targets.
-	ValTo = New;
+	SetValToNow(New);
 
 	// set and play the animator
 	const float Time = Duration*Diff;
@@ -89,8 +88,6 @@ void UFlashback::SetVal(float New, float Duration) {
 	
 	UE_LOG(LogFlashback, Log, TEXT("%hs:Start Val=%.5f ValTo=%.5f Duration=%.5f Time=%.5f"),
 		__func__, Val, ValTo, Duration, Time);
-
-	OnTo.Broadcast(ValTo);
 }
 
 void UFlashback::SetMax(const float NewMax, const float Duration) {
@@ -101,7 +98,8 @@ void UFlashback::SetMax(const float NewMax, const float Duration) {
 	
 	// clamp the value if needed
 	const bool Ok = NewMax >= GetValTo();
-	if (Ok) return;
+	if (LIKELY(Ok)) return;
+
 	SetVal(NewMax, Duration);
 }
 
@@ -112,13 +110,13 @@ void UFlashback::SetMin(const float NewMin, const float Duration) {
 	
 	// clamp the value if needed
 	const bool Ok = NewMin <= GetValTo();
-	if (Ok) return;
+	if (LIKELY(Ok)) return;
 
 	SetVal(NewMin, Duration);
 }
 
 void UFlashback::Deinitialize() {
-	if (Animator) {
+	if (LIKELY(Animator)) {
 		Animator->OnUpdate.RemoveAll(this);
 		Animator->OnEnd.RemoveAll(this);
 	}
@@ -157,5 +155,5 @@ TStatId UFlashback::GetStatId() const {
 }
 
 bool UFlashback::IsTickable() const {
-	return Animator && Animator->IsActive(); // small optimization
+	return LIKELY(Animator) && Animator->IsActive(); // small optimization
 }

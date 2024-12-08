@@ -88,9 +88,9 @@ protected:
 #pragma endregion
 
 	// doesn't check the range.
-	void SetValToInternal(const float New);
+	void SetValToNow(const float New);
 	// doesn't check the range
-	void SetValInternal(const float New);
+	void SetValNow(const float New);
 	UFUNCTION() // for binding
 	void AnimUpdate(const float Progress, const float Alpha);
 	UFUNCTION() // bind
