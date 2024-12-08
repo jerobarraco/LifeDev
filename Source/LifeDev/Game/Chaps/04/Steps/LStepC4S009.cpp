@@ -11,9 +11,9 @@ ALStepC4S009::ALStepC4S009():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-	WaitTime = CamBlendTime = 2; // force dialog to start after blend
-	UseFBDiagAuto=true;
-	FBDiagAutoTo = -.1;
+	CamBlendTime = 2; // waittime will be forced to this
+	UseFBDiagAuto = true;
+	FBDiagAutoTo = -.05;
 }
 
 void ALStepC4S009::BeginPlay() {
@@ -24,5 +24,5 @@ void ALStepC4S009::BeginPlay() {
 void ALStepC4S009::Start_Implementation() {
 	Super::Start_Implementation();
 	// for this we want to really reach 0 since it's the very end (for dramatic purposes, not realism). 
-	if (FB) FB->SetMin(0);
+	if (LIKELY(FB)) FB->SetMin(0);
 }

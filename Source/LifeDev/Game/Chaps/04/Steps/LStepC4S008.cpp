@@ -16,7 +16,7 @@ ALStepC4S008::ALStepC4S008():Super() {
 	UseRandFB = true; // min is limited in c4s0
 	RandFB->DelayMin = .2;
 	RandFB->DelayMax = .75;
-	RandFB->ValueMin = -.015;
+	RandFB->ValueMin = -.010;
 	RandFB->ValueMax = .005;
 }
 
