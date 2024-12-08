@@ -56,7 +56,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 void ALStepC2S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 
-	if (!FB) return;
+	if (UNLIKELY(!FB)) return;
 	FB->SetMax(.6);
 	FB->SetMin(0);
 	FB->SetVal(.11, 10);

@@ -47,7 +47,7 @@ void ALStep::Stop_Implementation() {
 	RemoveItems();
 
 	const UWorld* const W = GetWorld();
-	if (W) { // call stop anyway
+	if (LIKELY(W)) { // call stop anyway
 		if (UseRain) ALMusicMan::SetRainS(W, false);
 
 		// ensure we don't double trigger.
@@ -132,7 +132,8 @@ void ALStep::SetFBDiagAuto() {
 
 	// avoid division by 0, but also makes no sense otherwise.
 	if (UNLIKELY(Len <= 0)) return;
-	// TODO there might be an issue here. check if GetValTo or GetVal is the correct.
+	// GetValTo is the correct as opposed to GetVal.
+	// Since we want to move the target, the current is going to follow.
 	const float FBCurrent = FB->GetValTo();
 	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;
 
@@ -167,7 +168,7 @@ void ALStep::DestroyActors() {
 	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	W->GetTimerManager().ClearTimer(TimerDestroy);
 
@@ -209,7 +210,7 @@ void ALStep::BeginPlay() {
 	Super::BeginPlay();
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	Diags = World->GetSubsystem<UDiags>();
 	Inventory = World->GetSubsystem<UInventory>();
@@ -221,16 +222,16 @@ void ALStep::BeginPlay() {
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Diags)) {
+	if (LIKELY(IsValid(Diags))) {
 		Diags->OnDone.RemoveAll(this);
 		Diags->OnShow.RemoveAll(this);
 	}
 	Diags = nullptr;
 
-	if (IsValid(Inventory)) Inventory->OnMod.RemoveAll(this);
+	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
 	Inventory = nullptr;
 	
-	if (IsValid(FB)) FB->OnChange.RemoveAll(this);
+	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 	FB = nullptr;
 
 	// Ensure we destroy the actors on destroying this actor.
@@ -253,7 +254,7 @@ void ALStep::PostLoad() {
 }
 
 void ALStep::Finish_Implementation() {
-	if (Diags) {
+	if (LIKELY(Diags)) {
 		// avoid possible double triggering. since finish is called from several origins
 		Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
 		Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
