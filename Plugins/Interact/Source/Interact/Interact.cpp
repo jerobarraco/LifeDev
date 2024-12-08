@@ -159,7 +159,7 @@ void AInteract::DoTrigger_Implementation() {
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
 
-	for(const TObjectPtr<AInteract>& I: RewardInterEnable) {
+	for(AInteract* const I: RewardInterEnable) {
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 	

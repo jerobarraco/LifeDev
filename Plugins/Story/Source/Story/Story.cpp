@@ -60,8 +60,8 @@ bool UStory::StartNow(AStep* const NewStep) {
 	}
 
 	const bool Success = ToggleStepLayers();
-	UE_LOG(LogStory, Log, TEXT("About to start step='%s' title='%s' DLLoadSuccess=%i"), 
-		*Current->Name.ToString(), *Current->Title.ToString(), Success);
+	UE_LOG(LogStory, Log, TEXT("%hs About to start step='%s' title='%s' DLLoadSuccess=%i"), 
+		__func__, *Current->Name.ToString(), *Current->Title.ToString(), Success);
 
 	// start before broadcasting start.
 	// important so that it's actually ready for whom-ever is subscribed to the delegate
@@ -171,7 +171,8 @@ bool UStory::ToggleStepLayers() const {
 bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 	if (UNLIKELY(!IsValid(DLA))) return false;
 	
-	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
+	UE_LOG(LogStory, Log, TEXT("%hs About to toggle data layer. load=%i name=%s"),
+		__func__, On, *DLA->GetName());
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return false;
 	
@@ -180,12 +181,13 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 
 	UDataLayerManager* const LayerManager = World->GetDataLayerManager();
 	if (UNLIKELY(!IsValid(LayerManager))) {
-		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer manager"));
+		UE_LOG(LogStory, Warning, TEXT("%hs Could not get the data layer manager"), __func__);
 		return false;
 	}
 
 	const bool Success = LayerManager->SetDataLayerRuntimeState(DLA, State, false);
-	UE_LOG(LogStory, Log, TEXT("Data layer toggle. Ok=%i, load=%i, name='%s'"), Success, On, *DLA->GetName());
+	UE_LOG(LogStory, Log, TEXT("%hs Data layer toggle. Ok=%i, load=%i, name='%s'"),
+		__func__, Success, On, *DLA->GetName());
 	// On loaded is usually better AFTER, on unloaded is usually better before. Which one is better? Time will tell.
 	OnDlChange.Broadcast(DLA->GetFName(), On, Success);
 
@@ -244,6 +246,8 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 }
 
 void UStory::AutoFade(const FText& Title) {
+	UE_LOG(LogStory, Log, TEXT("%hs: title=%i"), __func__, *Title.ToString());
+
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 
