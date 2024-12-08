@@ -8,7 +8,7 @@ ABooksI01::ABooksI01():Super(1, 0) {
 	UseRewardDestroy = false;
 	IsOneShot = true;
 	Locked = false;
-	RewardStep = true;
+	RewardStep = false; // rewards a card. set in the editor
 
 	Super::SetAutoActivate(true);
 }

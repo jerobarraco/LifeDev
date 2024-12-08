@@ -7,7 +7,7 @@
 
 #include "LStepC4S000.generated.h"
 
-// start of chapter. book ends this
+// start of chapter. card ends this
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC4S000 : public ALStep {
 	GENERATED_BODY()

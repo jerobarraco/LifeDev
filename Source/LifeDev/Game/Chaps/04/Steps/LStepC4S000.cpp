@@ -18,6 +18,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
+	ItemsFinish = {LDConsts::Items::Card4};
 
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
 	// needed
