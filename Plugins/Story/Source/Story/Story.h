@@ -21,8 +21,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
 // World subsystem to deal with Story flow progression
 UCLASS(Blueprintable, Category="Story")
-class STORY_API UStory : public UWorldSubsystem
-{
+class STORY_API UStory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
@@ -43,7 +42,7 @@ public:
 	// Stops the current step and starts the next one.
 	// the name is a protection mechanism mostly, used by the story steps.
 	UFUNCTION(BlueprintCallable)
-	bool StartNext(const FName& CurrentName = NAME_None);
+	bool StartNext(const FName CurrentName = NAME_None);
 	
 	// force starts a step by the name (skips fading). stops the current one before that.
 	UFUNCTION(BlueprintCallable)
@@ -53,7 +52,7 @@ public:
 	// Stop is preferred to allow changes in the sequence since itś better that each step doesn't need to know about the others,
 	// and when you change the story you'll be embedded in a step. So stop make more sense than start.
 	UFUNCTION(BlueprintCallable)
-	bool Start(const FName& Name);
+	bool Start(const FName Name);
 
 	// stops a step. if not specified it will stop the current one.
 	UFUNCTION(BlueprintCallable)
@@ -65,15 +64,15 @@ public:
 
 	// Untracks/removes an AStep by name.
 	UFUNCTION(BlueprintCallable)
-	void Rem(const FName& Name);
+	void Rem(const FName Name);
 
 	// returns the corresponding tracked AStep by name. or nullptr otherwise.
 	UFUNCTION(BlueprintCallable)
-	AStep* GetStep(const FName& Name);
+	AStep* GetStep(const FName Name);
 
 	// returns the name of the current step
 	UFUNCTION(BlueprintCallable)
-	const FName& GetCurrent() const;
+	FName GetCurrent() const;
 
 	// fades in/out with a text. nothing else.
 	UFUNCTION(BlueprintCallable)

@@ -21,6 +21,7 @@ void UStory::DeInit() {
 
 UStory* UStory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
+
 	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 
@@ -29,7 +30,7 @@ UStory* UStory::Instance(const UObject* const O) {
 }
 
 
-AStep* UStory::GetStep(const FName& Name) {
+AStep* UStory::GetStep(const FName Name) {
 	TObjectPtr<AStep>* const pStep = Steps.Find(Name);
 	if (UNLIKELY(!pStep)) {
 		UE_LOG(LogStory, Warning, TEXT("%hs Step could not be found. '%s'"), __func__, *Name.ToString());
@@ -70,7 +71,7 @@ bool UStory::StartNow(AStep* const NewStep) {
 	return true;
 }
 
-bool UStory::Start(const FName& Name) {
+bool UStory::Start(const FName Name) {
 	UE_LOG(LogStory, Log, TEXT("%hs: %s"), __func__, *Name.ToString());
 
 	// get the step
@@ -100,7 +101,8 @@ bool UStory::Start(const FName& Name) {
 
 		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff. 
 		if (UNLIKELY(!World2)) {
-			UE_LOG(LogStory, Warning, TEXT("No world while attempted to fade out. i guess everything will be black."));
+			UE_LOG(LogStory, Warning, TEXT("%hs No world while attempted to fade out."
+				" i guess everything will be black."), __func__);
 			return;
 		}
 		FTimerHandle H2;
@@ -136,13 +138,13 @@ void UStory::Add(AStep* const Step) {
 	Steps.Add(Step->Name, Step);
 }
 
-void UStory::Rem(const FName& Name) {
+void UStory::Rem(const FName Name) {
 	// i think this doesn't crash when it doesn't exist. if it does, change.
 	Steps.Remove(Name);
 }
 
-const FName& UStory::GetCurrent() const {
-	const static FName Empty; // not NAME_None since i am returning a ref
+FName UStory::GetCurrent() const {
+	const static FName Empty = NAME_None;
 	return LIKELY(IsValid(Current)) ? Current->Name : Empty;
 }
 
@@ -171,12 +173,13 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 	
 	UE_LOG(LogStory, Log, TEXT("About to toggle data layer. load=%i name=%s"), On, *DLA->GetName());
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return false;
+	if (UNLIKELY(!IsValid(World))) return false;
 	
-	const EDataLayerRuntimeState State = (On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
+	const EDataLayerRuntimeState State =
+		(On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
 
 	UDataLayerManager* const LayerManager = World->GetDataLayerManager();
-	if (!IsValid(LayerManager)) {
+	if (UNLIKELY(!IsValid(LayerManager))) {
 		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer manager"));
 		return false;
 	}
@@ -200,19 +203,19 @@ bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 	*/
 }
 
-bool UStory::StartNext(const FName& CurrentName) {
+bool UStory::StartNext(const FName CurrentName) {
 	UE_LOG(LogStory, Log, TEXT("%hs. CurrentName=%s"), __func__, *CurrentName.ToString());
 
 	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
-	if (!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName) {
-		UE_LOG(LogStory, Warning, TEXT("Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
-			*Current->Name.ToString(), *CurrentName.ToString());
+	if (UNLIKELY(!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName)) {
+		UE_LOG(LogStory, Warning, TEXT("%hs Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
+			__func__, *Current->Name.ToString(), *CurrentName.ToString());
 		return false;
 	}
 	
 	++SeqStep;
-	if (SeqStep >= Sequence.Num()) {
-		UE_LOG(LogStory, Log, TEXT("Reached end of sequence. Stopping"));
+	if (UNLIKELY(SeqStep >= Sequence.Num())) {
+		UE_LOG(LogStory, Log, TEXT("%hs Reached end of sequence. Stopping"), __func__);
 		// not stopping here to allow transitions between end of chapter to flow correctly (i.e. fade)
 		// OnSeqStop will tell the gamemode that the sequence (chapter) finished,
 		// the GM will load the next chapter, and call StartSequence.
