@@ -20,12 +20,13 @@ class LIFEDEV_API ALInteract: public AInteractAnim {
 public:
 	ALInteract();
 
-	// will fade in/out the object. also sets enabled by default.
+	// will fade in/out the object. also sets active by default.
+	// optionally will un/set the hidden flag.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction))
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
 
 #pragma region rewards
-	// returns true if this object is set to perform a reward with fade (and destroy)
+	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool WillRewardDestroy() const {
 		return UseRewardDestroy && !IsRewardless();
@@ -43,20 +44,20 @@ public:
 		return Rewardless;
 	}
 
-	// setting this will reward the item on trigger. will self-destroy if UseRewardDestroy is set.
+	// setting this will reward the item on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
-	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if UseRewardDestroy is set.
+	// setting this will reward a flag on trigger, adding 1 *each* time.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardFlag = NAME_None;
-	// the mod value for the flash system when it's triggered. will self-destroy if UseRewardDestroy is set.
+	// the mod value for the flash system when it's triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
 
-	// An actor to reward. will self-destroy if UseRewardDestroy is set.
+	// An actor to reward. Will be set hidden on begin play, and unhide on reward.
+	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TObjectPtr<AActor> RewardActor = nullptr;
-	// ^ actually editAnywhere since we want to modify the pointer
 
 	// Will start the next story step (finishing the current one).
 	// called reward so that the UseRewardDestroy affects it.

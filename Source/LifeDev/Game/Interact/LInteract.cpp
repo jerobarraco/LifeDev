@@ -243,7 +243,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
-	if (Item == NAME_None) {
+	if (UNLIKELY(Item.IsNone())) {
 		UE_LOG(LogLInteract, Warning, TEXT("%hs, TryUseItem with item none. Skip. o=%s"),
 			__func__, *GetNameSafe(this));
 		return EItemUseResult::BAD_TARGET;
@@ -256,19 +256,19 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	
 	// 1st check if it's a regular item. since we don't care about lock at that stage
 	// and only happens if it's specified on UseItemDlgs
-	// im pretty sure this will break something else. but this needs improving later
+	// i'm pretty sure this will break something else. but this needs improving later
 	{
-    	// check if we can say something about this
-    	const FName* const pDlg = UseItemDlgs.Find(Item);
+		// check if we can say something about this
+		const FName* const pDlg = UseItemDlgs.Find(Item);
 		if (pDlg) {
-    		const bool Added = pDlg && ValidDiags && Diags->AddId(*pDlg);
+			const bool Added = pDlg && ValidDiags && Diags->AddId(*pDlg);
 			// assume this is not ULockItem. if you added the same item to both places then that's wrong.
 			// Using bad_handled since we don't want to consume an item.
 			// this is only to say something about the item.
-			// if this item needs to be consumed, use ULockItem 
-    		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
+			// if this item needs to be consumed, use ULockItem
+			return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 		}
-    }
+	}
 
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
