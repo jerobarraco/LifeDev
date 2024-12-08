@@ -5,10 +5,8 @@
 
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Net/UnrealNetwork.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
-#include "JUtils/Net/JUtilsNet.h"
 
 #include "CInteract.h"
 #include "CInteractor.h"
@@ -78,15 +76,15 @@ void AInteract::SetActive_Implementation(const bool Active) {
 }
 
 void AInteract::SetAutoActivate(const bool AutoActive) {
-	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Server=%i Obj=%s"),
-		__func__, AutoActive, JU_IsServerSide, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s"),
+		__func__, AutoActive, *GetNameSafe(this));
 	if (Interact) Interact->SetAutoActivate(AutoActive);
 }
 
 bool AInteract::GetEnabled() const {
 	const bool Enabled = IsValid(Interact) && Interact->IsActive();
-	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Server=%i Obj=%s"),
-		__func__, Enabled, JU_IsServerSide, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
+		__func__, Enabled, *GetNameSafe(this));
 	return Enabled;
 }
 
@@ -150,16 +148,15 @@ void AInteract::SetInteractAutoBounds() {
 }
 
 void AInteract::DoTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs: Server=%i, Role=%s, Obj=%s"),
-		__func__, JU_IsServerSide, *UEnum::GetValueAsString(GetLocalRole()),
-		*GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"),
+		__func__, *GetNameSafe(this));
 
 	// set the state before, so that the sound triggers are consistent
 	const int32 NewState = (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
 
-	for(AInteract* const I: RewardInterEnable) {
+	for(AInteract* const I: RewardIntersActive) {
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 	

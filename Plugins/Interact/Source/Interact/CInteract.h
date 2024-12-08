@@ -36,6 +36,22 @@ public:
 	// whether the parent actor can be grabbed.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
 	bool IsGrabbable = false;
+	// Text to be displayed on interaction
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	FText Text = FText::GetEmpty();
+	
+	// Mesh to automatically highlight, if any.
+	// will write a custom render stencil value 255.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
+
+	// Component to enable/disable physics on grabbing.
+	// When this is Grabbable, and the mesh is simulating physics, the mesh should be set here.
+	// Potentially on construction (otherwise beginplay).
+	// If you're using the Interact actor, and the mesh is set to "Simulate Physics",
+	// this variable will be set (and overriden) on begin play automatically.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
+	TObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 	// When this is triggered
 	// If this is replicated, this will execute only on server.
@@ -55,23 +71,6 @@ public:
 	// Though THIS Cinteract could be a SimulatedProxy.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnGrab OnGrab;
-	
-	// Text to be displayed on interaction
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FText Text = FText::GetEmpty();
-	
-	// Mesh to automatically highlight, if any.
-	// will write a custom render stencil value 255.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
-
-	// Component to enable/disable physics on grabbing.
-	// When this is Grabbable, and the mesh is simulating physics, the mesh should be set here.
-	// Potentially on construction (otherwise beginplay).
-	// If you're using the Interact actor, and the mesh is set to "Simulate Physics",
-	// this variable will be set (and overriden) on begin play automatically.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
-	TObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 protected:
 	void Reparent(const bool bIsGrab, UCInteractor* const NewParent);

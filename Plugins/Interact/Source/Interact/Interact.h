@@ -197,9 +197,10 @@ protected:
 	// Number of states. It will wrap State around. around.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
-	
+
+	// interacts to activate when this interact is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TObjectPtr<AInteract>> RewardInterEnable;
+	TArray<TObjectPtr<AInteract>> RewardIntersActive;
 
 	/// CDO
 

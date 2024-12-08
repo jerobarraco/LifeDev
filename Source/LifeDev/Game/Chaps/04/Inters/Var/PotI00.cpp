@@ -61,7 +61,7 @@ void APotI00::DoTrigger_Implementation() {
 		// but they can still use the items on it.
 		Locked = true;
 		// forget about the stove. important for the next step
-		RewardInterEnable.Empty();
+		RewardIntersActive.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.0_L";
 
