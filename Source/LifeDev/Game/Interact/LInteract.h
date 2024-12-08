@@ -24,6 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction))
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
 
+#pragma region rewards
 	// returns true if this object is set to perform a reward with fade (and destroy)
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool WillRewardDestroy() const {
@@ -36,61 +37,18 @@ public:
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
 		const bool Rewardless = (!RewardStep && ZeroFlash &&
 			RewardActor == nullptr &&
-			RewardItem.IsNone() && RewardFlag.IsNone());
+			RewardItem.IsNone() && RewardFlag.IsNone() &&
+			// also taking this into account for animation and logic purposes
+			RewardIntersActive.Num() == 0);
 		return Rewardless;
 	}
 
-	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
-	FName ULockItemReq = NAME_None;
-		
-	// name of the flag that is needed to "have" to unlock this.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	FName ULockFlagReq = NAME_None;
-	
-	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
-	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	FName ULockItem = NAME_None;
-
-	// Dialog to show when unlocking, or none to not say anything.
-	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
-	// (e.g. useful for doors) 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	FName ULockDlg = NAME_None;
-
-	// dialog to trigger when tried to use the wrong item to unlock this
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	FName ULockBadDlg = NAME_None;
-
-	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	FName LockedItemDlg = NAME_None;
-
-	// dialog to show when the object is locked and we DON'T have the ULockItem
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	FName LockedDlg = NAME_None;
-
-	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	FName TriggerDlg = NAME_None;
-
-	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
-	// the key is the item name, the value is the dialog id.
-	// this happens before trying to unlock.
-	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
-	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
-	TMap<FName, FName> UseItemDlgs;
-	
 	// setting this will reward the item on trigger. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
-
 	// setting this will reward a flag on trigger, adding 1 *each* time. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardFlag = NAME_None;
-
 	// the mod value for the flash system when it's triggered. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
@@ -98,18 +56,16 @@ public:
 	// An actor to reward. will self-destroy if UseRewardDestroy is set.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TObjectPtr<AActor> RewardActor = nullptr;
-	// actually editAnywhere since we want to modify the pointer
+	// ^ actually editAnywhere since we want to modify the pointer
 
 	// Will start the next story step (finishing the current one).
 	// called reward so that the UseRewardDestroy affects it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool RewardStep = false;
-	
-	// whether to self-destroy when *rewarding*.
+	// whether to self-destroy when *rewarding* (only if rewards are set).
 	// if UseFade is true AND has something to reward, it will also fade.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseRewardDestroy = true;
-
 	// Whether to use fade at all. if set it will *create* a dynamic material instance.
 	// uses the AnimFade object and what's set there.
 	// Remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
@@ -118,6 +74,42 @@ public:
 	// Important to set it when using the Reward stuff and UseRewardDestroy.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseFade = false; 
+#pragma endregion
+
+	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
+	FName ULockItemReq = NAME_None;
+	// name of the flag that is needed to "have" to unlock this.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FName ULockFlagReq = NAME_None;
+	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
+	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FName ULockItem = NAME_None;
+	// Dialog to show when unlocking, or none to not say anything.
+	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
+	// (e.g. useful for doors) 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	FName ULockDlg = NAME_None;
+	// dialog to trigger when tried to use the wrong item to unlock this
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	FName ULockBadDlg = NAME_None;
+	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	FName LockedItemDlg = NAME_None;
+	// dialog to show when the object is locked and we DON'T have the ULockItem
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	FName LockedDlg = NAME_None;
+	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	FName TriggerDlg = NAME_None;
+	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
+	// the key is the item name, the value is the dialog id.
+	// this happens before trying to unlock.
+	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
+	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
+	TMap<FName, FName> UseItemDlgs;
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.

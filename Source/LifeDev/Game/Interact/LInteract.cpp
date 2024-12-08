@@ -82,8 +82,8 @@ void ALInteract::BeginPlay() {
 	}
 
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
-	
+	if (UNLIKELY(!IsValid(World))) return;
+
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
@@ -110,7 +110,7 @@ void ALInteract::DoRewards() {
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	/// Rewards
 	// just return. nothing to do. don't self destroy or anything.
@@ -126,20 +126,24 @@ void ALInteract::DoRewards() {
 	// and it's easier and clearer this way than messing with DisableWhileAnim
 	// which would step on the client's intention.
 	// this is to avoid re-rewarding due to multi clicks.
+	// notice willRewardDestroy will call fade before this. but maybe not.
+	// so better to be sure and call setactive manually. not calling fade since we don't want to fade if it's not UseRewardDestroy.
 	SetActive(false);
-	
-	if (Flashback) Flashback->ModVal(RewardFlash);
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
-	if (!RewardItem.IsNone() && IsValid(Inventory)) {
+	if (!RewardItem.IsNone() && LIKELY(IsValid(Inventory))) {
 		// return if we fail to reward
 		// for example on maxed-out (e.g. picked up consumables)
-		if (!Inventory->Mod(RewardItem, 1)) return;
-		// given this return will cancel the effect, do before the rest.
+		if (UNLIKELY(!Inventory->Mod(RewardItem, 1))) {
+			Fade(true); // faded before calling doRewards. fade will call setactive which is also needed.
+			return;
+			// given this return will cancel the effect, do before the rest.
+		}
 	}
 	
+	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
 	// do the flags which are more flexible.
-	if (IsValid(Flags)) Flags->Mod(RewardFlag, 1.0);
+	if (LIKELY(IsValid(Flags))) Flags->Mod(RewardFlag, 1.0);
 
 	// do the actor
 	if (IsValid(RewardActor)) {
@@ -160,7 +164,6 @@ void ALInteract::DoRewards() {
 	/// rewards virtually done
 
 	// trigger separately,
-	// since sometimes the item could be rewarded outside of trigger. (e.g. manually)
 	Rewarded();
 	
 	/// done: Process auto destroy. (do at the end.)
@@ -214,8 +217,8 @@ void ALInteract::DoTrigger_Implementation() {
 	// start fading right away to give the player the impression that they picked it up
 	if (WillRewardDestroy()) Fade(false);
 
-	bool DiagsShown = false;
-	if (IsValid(Diags)) {
+	bool DiagsShown = false; // using this instead of a return to capture TriggerDlg being none, AND being invalid.
+	if (LIKELY(IsValid(Diags))) {
 		// if there's a dialog. give rewards at the end of them.
 		// that way we can control the story better. it's easier to check for items than for dialogs.
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
@@ -230,7 +233,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTriggerLocked_Implementation();
 	
-	if (!Inventory || !Diags) return;
+	if (UNLIKELY(!Inventory || !Diags)) return;
 
 	const bool Has = Inventory->Has(ULockItem);
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;

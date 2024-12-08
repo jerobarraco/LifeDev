@@ -56,7 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
 	void TryTriggerWrap() {TryTrigger();}
 
-	// Enables or disables the interaction.
+	// Enables or disables the interaction. Will not fade.
 	UFUNCTION(BlueprintNativeEvent, Category="Interact")
 	void SetActive(const bool Active = true);
 	UFUNCTION(BlueprintCallable, Category="Interact")
@@ -198,7 +198,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
 
-	// interacts to activate when this interact is triggered.
+	// interacts to activate when this interact is triggered. will not fade.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersActive;
 
