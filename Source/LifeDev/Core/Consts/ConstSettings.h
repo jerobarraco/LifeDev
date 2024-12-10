@@ -66,8 +66,11 @@ enum class EFeat: uint8 {
 #pragma endregion
 	// Gameplay (find another word)
 	// G_*,
-	
-	/// Debug
+#pragma region Unreal
+	U_BATCH_TICK,
+	U_CON_TICK,
+	U_MAX UMETA(Hidden),
+#pragma endregion
 #pragma region Debug
 	// Debug steps (cheats)
 	DBG_STEPS,

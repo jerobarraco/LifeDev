@@ -49,7 +49,10 @@ void ALFeatsMan::BeginPlay() {
 	GM = Cast<ALGGameMode>(AGMB);
 	
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
+	if (S) {
+		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
+		
+	}
 
 	// force initialize
 	LoadMPC();

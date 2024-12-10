@@ -192,4 +192,6 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateEnviron.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
 	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_MAX)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
+	else if (Feat>=EFeat::U_BATCH_TICK && Feat < EFeat::U_MAX)
+		OnFeatUpdateUnreal.Broadcast(Feat, Enable);
 }

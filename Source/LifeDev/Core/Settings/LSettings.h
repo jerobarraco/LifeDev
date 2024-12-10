@@ -96,6 +96,8 @@ public:
 	FOnFeatUpdate OnFeatUpdateAccess;
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateDebug;
+	UPROPERTY(BlueprintAssignable, Transient)
+	FOnFeatUpdate OnFeatUpdateUnreal;
 
 protected:
 	// broadcasts the corresponding delegates
