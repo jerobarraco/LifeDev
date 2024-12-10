@@ -15,6 +15,7 @@ class LIFEDEV_API ALFeatsMan : public AInfo {
 public:
 	ALFeatsMan();
 
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -31,8 +32,10 @@ public:
 protected:
 	void LoadMPC();
 	UFUNCTION()
-	void FeatVisualUpdate(const EFeat Feat, const bool bEnabled);
-
+	void FeatUpVisual(const EFeat Feat, const bool bEnabled);
+	UFUNCTION()
+	void FeatUpUnreal(const EFeat Feat, const bool bEnabled);
+	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ALGGameMode> GM = nullptr;
 	

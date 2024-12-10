@@ -27,9 +27,9 @@ ALFeatsMan::ALFeatsMan() :Super() {
 
 void ALFeatsMan::LoadMPC() {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 	
-	if (!IsValid(MPC)) {
+	if (UNLIKELY(!IsValid(MPC))) {
 		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Could not get the MPC. Skip"),
 				__func__);
 		return;
@@ -43,25 +43,28 @@ void ALFeatsMan::LoadMPC() {
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
 	GM = Cast<ALGGameMode>(AGMB);
 	
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
-		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatVisualUpdate);
-		
+	if (LIKELY(S)) {
+		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
+		S->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
 	}
 
 	// force initialize
 	LoadMPC();
+
 	
-	FeatVisualUpdate(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
-	FeatVisualUpdate(EFeat::V_BLUR, S && S->GetFeat(EFeat::V_BLUR));
-	FeatVisualUpdate(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));
-	FeatVisualUpdate(EFeat::V_STROBE, S && S->GetFeat(EFeat::V_STROBE));
-	FeatVisualUpdate(EFeat::V_FLASHBACK, S && S->GetFeat(EFeat::V_FLASHBACK));
+	FeatUpVisual(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
+	FeatUpVisual(EFeat::V_BLUR, S && S->GetFeat(EFeat::V_BLUR));
+	FeatUpVisual(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));
+	FeatUpVisual(EFeat::V_STROBE, S && S->GetFeat(EFeat::V_STROBE));
+	FeatUpVisual(EFeat::V_FLASHBACK, S && S->GetFeat(EFeat::V_FLASHBACK));
+	FeatUpUnreal(EFeat::U_BATCH_TICK, S && S->GetFeat(EFeat::U_BATCH_TICK));
+	FeatUpUnreal(EFeat::U_CON_TICK, S && S->GetFeat(EFeat::U_CON_TICK));
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -69,6 +72,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (S) {
 		S->OnFeatUpdateVisual.RemoveAll(this);
 		S->OnFeatUpdate.RemoveAll(this);
+		S->OnFeatUpdateUnreal.RemoveAll(this);
 	}
 	GM = nullptr;
 	MPCI = nullptr;
@@ -78,7 +82,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
+void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 	if (!IsValid(GM) || !IsValid(GM->PostProcess)) return;
 
 	// Important:
@@ -135,4 +139,14 @@ void ALFeatsMan::FeatVisualUpdate(const EFeat Feat, const bool bEnabled) {
 				Post->Settings.RemoveBlendable(SpeedMat);
 		}
 	} 
+}
+
+void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool bEnabled) {
+	if (Feat == EFeat::U_BATCH_TICK) {
+		IConsoleVariable* CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowBatchedTicks"));
+		if (CVar) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
+	} else if (Feat == EFeat::U_CON_TICK) {
+		IConsoleVariable* CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
+		if (CVar) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
+	}
 }
