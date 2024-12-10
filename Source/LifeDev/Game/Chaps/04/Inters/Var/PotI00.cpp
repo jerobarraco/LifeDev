@@ -12,15 +12,12 @@ APotI00::APotI00():Super() {
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
 	UseFade = false;
-	Locked = false;
+	Locked = true;
+	ULockItem = LDConsts::Items::Matches00;
 	TriggerDlg = "Pot00.0_T";
+	LockedDlg = "Pot00_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	Super::SetAutoActivate(false);
-	// I'm using SetActive instead of Lock because these things will be changing during the chapter
-	// and i think that the player will find easier to tell when something became enabled, 
-	// rather than realizing something became unlocked.
-	// (without any extra cue/feedback which i'm not going to add now)
-	// Step = 0;
+	Super::SetAutoActivate(false); // enabled by the npc i06.
 
 	// Override the states and transforms
 	// 0: Empty pot, lid open.
@@ -97,7 +94,8 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	return Super::TryUseItem_Implementation(Name);
 }
 
-// disabled: on editor. rewardinterenabled. enables the stove.
+// disabled: on editor.
+// enabled by a step
 
 // 2 interactions
 // 1st enable the stove and lock itself

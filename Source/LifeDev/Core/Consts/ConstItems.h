@@ -35,5 +35,6 @@ namespace LDConsts {
 
 		inline static const FName Plate01("Plate01");
 		inline static const FName Plate02("Plate02");
+		inline static const FName Matches00("Matches00");
 	}
 }
