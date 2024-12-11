@@ -67,7 +67,7 @@ void AInteract::SetActive_Implementation(const bool Active) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
 		__func__, Active, *GetNameSafe(this));
 
-	if (!IsValid(Interact)) {
+	if (UNLIKELY(!IsValid(Interact))) {
 		UE_LOG(LogInteract, Warning, TEXT("%hs Interact is invalid!!!!!!!"), __func__);
 		return;
 	}
@@ -78,7 +78,7 @@ void AInteract::SetActive_Implementation(const bool Active) {
 void AInteract::SetAutoActivate(const bool AutoActive) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s"),
 		__func__, AutoActive, *GetNameSafe(this));
-	if (Interact) Interact->SetAutoActivate(AutoActive);
+	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
 }
 
 bool AInteract::GetEnabled() const {
@@ -124,7 +124,7 @@ void AInteract::BeginPlay() {
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Interact)) {
+	if (LIKELY(IsValid(Interact))) {
 		Interact->OnTrigger.RemoveAll(this);
 		Interact->OnHover.RemoveAll(this);
 		Interact->OnGrab.RemoveAll(this);
