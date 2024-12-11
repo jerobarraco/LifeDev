@@ -112,14 +112,13 @@ void ALChar::SetUIVisible(bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALChar::InteractBegin(UCInteract* const Comp) {
-	if (!IsValid(UI) || !IsValid(Comp)) return;
-	UI->InteractShowPrompt(Comp->Text);
-}
-
-void ALChar::InteractEnd(UCInteract* const Comp) {
+void ALChar::InteractHover(bool bOn, UCInteract* const Comp) {
 	if (!IsValid(UI)) return;
-	UI->InteractHidePrompt();
+	// will hide the prompt on invalid. which is a nice side-effect. 
+	if (bOn && IsValid(Comp))
+		UI->InteractShowPrompt(Comp->Text);
+	else
+		UI->InteractHidePrompt();
 }
 
 void ALChar::SetInputEnabled(bool Enabled) {
@@ -160,14 +159,14 @@ void ALChar::Init_Implementation() {
 
 	const UWorld* const World = GetWorld();
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
-	if (FB) SetFB(FB->GetVal()); // update walk speed values.
+	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
 }
 
 void ALChar::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 	
@@ -198,14 +197,12 @@ void ALChar::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
-	if (FB) FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
+	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
 
-	if (IsValid(Noiser)) Noiser->Activate();
-	else UE_LOG(LogTemp, Warning, TEXT("Could not spawn the noiser!"));
+	if (LIKELY(IsValid(Noiser))) Noiser->Activate();
+	else UE_LOG(LogLChar, Warning, TEXT("%hs: Could not spawn the noiser!"), __func__);
 
-	// Interactor->OnToggle.AddUniqueDynamic(this, &ALCharacter::InteractToggle);
-	Interactor->OnBegin.AddUniqueDynamic(this, &ALChar::InteractBegin);
-	Interactor->OnEnd.AddUniqueDynamic(this, &ALChar::InteractEnd);
+	Interactor->OnHover.AddUniqueDynamic(this, &ALChar::InteractHover);
 }
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -214,22 +211,20 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	Inventory = nullptr;
 	Diags = nullptr;
-	if (IsValid(UI))
-		UI->RemoveFromParent();
+	if (IsValid(UI)) UI->RemoveFromParent();
 	UI = nullptr;
 
-	if (IsValid(SettingsUI))
-		SettingsUI->RemoveFromParent();
+	if (IsValid(SettingsUI)) SettingsUI->RemoveFromParent();
 	SettingsUI = nullptr;
 
-	IFVC(Noiser, Deactivate())
-	// if (IsValid(Noiser)) Noiser->Deactivate();
+	if (LIKELY(IsValid(Noiser))) Noiser->Deactivate();
 	Noiser = nullptr;
 	Items = nullptr;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
-	IFVC(FB, OnChange.RemoveAll(this))
-	// if (FB) FB->OnChange.RemoveAll(this);
+	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
+
+	if (IsValid(Interactor)) Interactor->OnHover.RemoveAll(this);
 
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	// TODO unbind actions (have to find how to store them)
@@ -241,7 +236,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	// Set up action bindings
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	if (!Input) return;
+	if (UNLIKELY(!Input)) return;
 
 	// no jumping, i don't like. but leave in case i change my mind. also for docs
 	// Input->BindAction(ActionJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
@@ -255,7 +250,7 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 }
 
 void ALChar::ActMove(const FInputActionValue& Value) {
-	if (!Controller) return;
+	if (UNLIKELY(!Controller)) return;
 
 	// input is a Vector2D
 	const FVector2D& V2D = Value.Get<FVector2D>();
@@ -267,20 +262,20 @@ void ALChar::ActMove(const FInputActionValue& Value) {
 }
 
 void ALChar::ActLook(const FInputActionValue& Value) {
-	if (!Controller) return;
+	if (UNLIKELY(!Controller)) return;
 	// input is a Vector2D
 	// not cost. i multiply below.
 	FVector2D Vector = Value.Get<FVector2D>();
-	if (Interactor->GetInterComp()) Vector *= InteractDrag;
+	if (Interactor->GetHoverComp()) Vector *= InteractDrag;
 	// add yaw and pitch input to controller
 	AddControllerYawInput(Vector.X);
 	AddControllerPitchInput(Vector.Y);
 }
 
 void ALChar::ActInteract() { // don't make const. the input system does not like it
-	if (!Interactor) return;
+	if (UNLIKELY(!Interactor)) return;
 	// store before calling TryTrigger. since it might become null afterwards :shrug:
-	const UCInteract* const Comp = Interactor->GetInterComp();
+	const UCInteract* const Comp = Interactor->GetHoverComp();
 
 	Interactor->TryTrigger(); // this is synchronous
 	
@@ -291,17 +286,17 @@ void ALChar::ActInteract() { // don't make const. the input system does not like
 }
 
 void ALChar::ActItem() {
-	if (Items) Items->UseSelected();
+	if (LIKELY(IsValid(Items))) Items->UseSelected();
 }
 
 void ALChar::ActItemLook() {
-	if (Items) Items->LookSelected();
+	if (LIKELY(IsValid(Items))) Items->LookSelected();
 }
 
 // i've added the settings here since the character already deals with the input.
 // but honestly it'd be nice to have it somewhere else.
 void ALChar::ActMenu() { // no const
-	if (!IsValid(SettingsUI)) return;
+	if (UNLIKELY(!IsValid(SettingsUI))) return;
 
 	// toggle
 	if (SettingsUI->IsVisible()) {
@@ -313,13 +308,13 @@ void ALChar::ActMenu() { // no const
 }
 
 void ALChar::MenuDone() {
-	if (!IsValid(SettingsUI)) return;
+	if (UNLIKELY(!IsValid(SettingsUI))) return;
 	SettingsUI->Hide();
 }
 
 void ALChar::SetFB(const float Value) {
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
-	if (!Movement) return;
+	if (UNLIKELY(!Movement)) return;
 
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;

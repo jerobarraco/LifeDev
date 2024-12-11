@@ -26,6 +26,7 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 	UActorComponent::SetComponentTickEnabled(false);
 	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
 	Super::SetAutoActivate(false);
+	Super::SetAutoActivate(false);
 	SetIsReplicated(false); // this one is independent on each client
 }
 
@@ -46,53 +47,58 @@ void UCInteractor::SrvTrigger_Implementation(const UCInteract* const Comp) const
 }
 
 void UCInteractor::TryTrigger() {
-	if (!IsValid(InterComp)) return;
+	const UCInteract* const PHover = HoverComp.Get();
+	if (!IsValid(PHover)) return;
 
 	// decides HERE whether to trigger on the server or client (instead of the CInteract).
 	// because the CInteractor is owned by the player controller, hence can call RPCs.
 	// Also, the Interact is (should be) owned by the server.
-	if (InterComp->GetIsReplicated()) {
-		SrvTrigger(InterComp);
+	if (PHover->GetIsReplicated()) {
+		SrvTrigger(PHover);
 		return;
 	}
 
-	InterComp->Trigger();
+	PHover->Trigger();
 }
 
 bool UCInteractor::TryGrab(const bool IsGrab) {
+	UCInteract* const PGrabbed = GrabbedComp.Get();
+	UCInteract* const PHover = HoverComp.Get();
 	if (IsGrab) {
-		if (IsValid(GrabbedComp)) {
+		if (IsValid(PGrabbed)) {
 			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. i'm already grabbing"));
 			return false;
 		}
-		if (!IsValid(InterComp)) {
+		if (!IsValid(PHover)) {
 			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. nothing to grab."));
 			return false;
 		}
 
 		// Re-parenting is left to the CInteract
-		const bool Ok = InterComp->TryGrab(IsGrab, this);
+		const bool Ok = PHover->TryGrab(IsGrab, this);
 		if (!Ok) {
 			UE_LOG(LogCInteractor, Warning, TEXT("Can't grab. CInteract did not want to (probably not grabbable)."));
 			return false;
 		}
 
-		GrabbedComp = InterComp;
+		GrabbedComp = PHover;
 		return true;
 	}
+	/// ungrabbing
 
-	if (!IsValid(GrabbedComp)) {
-		UE_LOG(LogCInteractor, Warning, TEXT(" Can't ungrab because i have nothing grabbed"));
+	if (!IsValid(PGrabbed)) {
+		UE_LOG(LogCInteractor, Warning, TEXT("%hs: Can't ungrab because i have nothing grabbed"), __func__);
 		return false;
 	}
 
-	UCInteract* const Old = GrabbedComp;
+	UCInteract* const Old = PGrabbed;
 	GrabbedComp = nullptr; // not my child anymore :'(
 
+	UPhysicsHandleComponent* const PGrabber = GrabHandler.Get();
 	// release of phys components is done here.
-	if (GrabHandler) {
-		GrabHandler->ReleaseComponent();
-		GrabHandler->Deactivate();
+	if (PGrabber) {
+		PGrabber->ReleaseComponent();
+		PGrabber->Deactivate();
 	}
 	
 	// make the Interact do its reparenting and signaling
@@ -102,16 +108,18 @@ bool UCInteractor::TryGrab(const bool IsGrab) {
 }
 
 EItemUseResult UCInteractor::TryUseItem(const FName Name) const {
+	const UCInteract* const PHover = HoverComp.Get();
 	// i can't see the inventory from here!
-	if (!IsValid(InterComp)) {
-		UE_LOG(LogCInteractor, Warning, TEXT("Nothing to use the item with"));
+	if (!IsValid(PHover)) {
+		UE_LOG(LogCInteractor, Warning, TEXT("%hs Nothing to use the item with"), __func__);
 		return EItemUseResult::NO_TARGET;
 	}
 	
-	AActor* const Src = InterComp->GetOwner();
+	AActor* const Src = PHover->GetOwner();
 	AInteract* const Actor = Cast<AInteract>(Src);
-	if (!IsValid(Actor)) {
-		UE_LOG(LogCInteractor, Warning, TEXT("Not a valid actor to use the item with."));
+	if (UNLIKELY(!IsValid(Actor))) {
+		UE_LOG(LogCInteractor, Warning, TEXT("%hs: The hover actor is not an interact. Can't use the item."),
+			__func__);
 		return EItemUseResult::NO_TARGET;
 	}
 
@@ -121,8 +129,8 @@ EItemUseResult UCInteractor::TryUseItem(const FName Name) const {
 
 void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	// UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
-				// __func__, *GetNameSafe(this),
-				// JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	// __func__, *GetNameSafe(this),
+	// JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -140,8 +148,8 @@ void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	Params.bDebugQuery = true;
 	#endif
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 
 	if (TraceSize > 1.0) {
 		static const TArray<AActor*> ArrEmpty;
@@ -163,7 +171,7 @@ void UCInteractor::BeginPlay() {
 	TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
 
 	// replication makes everything more complex.
-	// Luckly the solution is simple. disable when not needed.
+	// Luckily the solution is simple. disable when not needed.
 	// allow it to work in standalone though.
 	// this prevents rogue hover and sound effects.
 	if (!JU_IsStandalone && GetOwnerRole() != ROLE_AutonomousProxy) {
@@ -180,38 +188,31 @@ void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCInteractor::DoEnd() {
+	UCInteract* const PHover = HoverComp.Get();
 	// not checking for isvalid here in case the obj was destroyed.
 	// (Though i'm not certain whether UE will nullify this pointer, in case it will). 
-	if (!InterComp) return;
+	if (!PHover) return;
 
-	if (IsValid(InterComp)) InterComp->Hover(false);
+	if (IsValid(PHover)) PHover->Hover(false, nullptr);
+	OnHover.Broadcast(false, PHover);
 
-	OnToggle.Broadcast(false, InterComp);
-	OnEnd.Broadcast(InterComp);
-
-	InterComp = nullptr;
+	HoverComp = nullptr;
 }
 
 void UCInteractor::DoStart(UCInteract* const Component) {
+	const UCInteract* const PHover = HoverComp.Get();
 	// on every tick almost
 	// skip retries
-	if (Component == InterComp) return;
+	if (Component == PHover) return;
 
-	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
-		__func__, *GetNameSafe(this),
-		JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
+	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
+		__func__, *GetNameSafe(this));
 
-	// notifies on changes
-	if (InterComp) {
-		DoEnd();
-		InterComp = nullptr; // clear after doEnd in case someone needs to access it 
-	}
+	DoEnd(); // does checks and nullifies
 
 	if (!IsValid(Component)) return;
 
-	InterComp = Component;
-	InterComp->Hover(true);
-
-	OnToggle.Broadcast(true, InterComp);
-	OnBegin.Broadcast(InterComp);
+	HoverComp = Component;
+	Component->Hover(true, Cast<APawn>(GetOwner()));
+	OnHover.Broadcast(true, Component);
 }

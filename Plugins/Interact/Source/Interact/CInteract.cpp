@@ -39,16 +39,17 @@ void UCInteract::Trigger() const {
 	OnTrigger.Broadcast();
 }
 
-void UCInteract::Hover(bool IsHover) const {
+void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 	// Apply the hover to the hover mesh AND all its children
 	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: IsHover=%i"),
 		__func__, *GetNameSafe(this), IsHover);
 
+	UStaticMeshComponent* const HMesh = HoverMesh.Get();
 	// wrapped to always trigger the delegate
-	if (IsValid(HoverMesh)) {
+	if (IsValid(HMesh)) {
 		TArray<USceneComponent*> Children;
-		HoverMesh->GetChildrenComponents(true, Children);
-		Children.Add(HoverMesh);
+		HMesh->GetChildrenComponents(true, Children);
+		Children.Add(HMesh);
 		const int32 Num = Children.Num();
 		for (int32 i = 0; i<Num; ++i) {
 			UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Children[i]);
@@ -61,7 +62,11 @@ void UCInteract::Hover(bool IsHover) const {
 		}
 	}
 
+	AActor* const Owner = GetOwner();
+	// this way kind of sucks. but it's the best. it's important to set before hover and clear after unhover.
+	if (IsHover && LIKELY(Owner)) Owner->SetInstigator(Inst); // aways before onHover if IsHover
 	OnHover.Broadcast(IsHover);
+	if (!IsHover && LIKELY(Owner)) Owner->SetInstigator(nullptr); // always null. always after onHover if !IsHover
 }
 
 void UCInteract::DeInit() {
@@ -81,10 +86,11 @@ bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
 	return true;
 }
 
-void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) {
-	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
+void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) const {
+	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"),
+		__func__, IsGrab, NewParent);
 
-	if (PhysComp)
+	if (PhysComp.Get())
 		ReparentPhys(IsGrab, NewParent);
 	else
 		ReparentActor(IsGrab, NewParent);
@@ -109,7 +115,8 @@ void UCInteract::ReparentActor(const bool IsGrab, UCInteractor* const NewParent)
 }
 
 void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const {
-	if (!PhysComp) {
+	UPrimitiveComponent* const PPhysComp = PhysComp.Get();
+	if (!PPhysComp) {
 		UE_LOG(LogCInteract, Warning, TEXT(" %hs Could not get the physcomp"), __func__);
 		return;
 	}
@@ -117,8 +124,8 @@ void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewPa
 	if (IsGrab) {
 		if (!IsValid(NewParent)) return;
 
-		const UPrimitiveComponent* const PrimParent = NewParent->GrabRoot;
-		UPhysicsHandleComponent* const Handler = NewParent->GrabHandler;
+		const UPrimitiveComponent* const PrimParent = NewParent->GrabRoot.Get();
+		UPhysicsHandleComponent* const Handler = NewParent->GrabHandler.Get();
 		if (!(PrimParent && Handler)) {
 			UE_LOG(LogCInteract, Warning, TEXT("%hs: Could not get the primparent, or constraint"), __func__);
 			return;
@@ -126,8 +133,8 @@ void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewPa
 
 		Handler->Activate(true);
 		static FTransform F;
-		F = PhysComp->GetComponentTransform();
-		Handler->GrabComponentAtLocationWithRotation(PhysComp, NAME_None, F.GetLocation(), F.Rotator());
+		F = PPhysComp->GetComponentTransform();
+		Handler->GrabComponentAtLocationWithRotation(PPhysComp, NAME_None, F.GetLocation(), F.Rotator());
 		// PhysComp->WakeAllRigidBodies();
 	}
 	// the un-grabbing is done by the interactor. (since it has and needs the handler)

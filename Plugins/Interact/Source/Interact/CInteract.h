@@ -43,7 +43,7 @@ public:
 	// Mesh to automatically highlight, if any.
 	// will write a custom render stencil value 255.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
+	TWeakObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
 
 	// Component to enable/disable physics on grabbing.
 	// When this is Grabbable, and the mesh is simulating physics, the mesh should be set here.
@@ -51,7 +51,7 @@ public:
 	// If you're using the Interact actor, and the mesh is set to "Simulate Physics",
 	// this variable will be set (and overriden) on begin play automatically.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Grab")
-	TObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
+	TWeakObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 	// When this is triggered
 	// If this is replicated, this will execute only on server.
@@ -73,7 +73,7 @@ public:
 	FInteractOnGrab OnGrab;
 
 protected:
-	void Reparent(const bool bIsGrab, UCInteractor* const NewParent);
+	void Reparent(const bool bIsGrab, UCInteractor* const NewParent) const;
 	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
@@ -82,8 +82,9 @@ protected:
 	/// interactor
 	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
 	void Trigger() const;
+	// un/hovers. Inst=the instigator, will always be set to null on unhover.
 	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
-	void Hover(bool IsHover) const;
+	void Hover(const bool IsHover, APawn* const Inst) const; // TODo set the optionals once compilation is fixed
 	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
 	void DeInit();
 	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.

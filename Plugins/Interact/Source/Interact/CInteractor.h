@@ -11,9 +11,7 @@ class UCInteract;
 class UInteractorUI;
 class UArrowComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractBegin, UCInteract* const, Comp);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractEnd, UCInteract* const, Comp);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractToggle, bool, On, UCInteract* const, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractHover, bool, On, UCInteract* const, Comp);
 
 // Will be interacting with interact objects.
 // Subclass of scene component, so you can attach it and aim from there.
@@ -41,8 +39,8 @@ public:
 	EItemUseResult TryUseItem(const FName Name) const;
 
 	// the currently hovered component. can be null.
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE UCInteract* GetInterComp() { return InterComp; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE UCInteract* GetHoverComp() const { return HoverComp.Get(); }
 
 	UFUNCTION(BlueprintCallable)
 	bool TryGrab(const bool IsGrab=true);
@@ -55,20 +53,14 @@ public:
 	float TraceSize = 2;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	TObjectPtr<UPrimitiveComponent> GrabRoot = nullptr;
+	TWeakObjectPtr<UPrimitiveComponent> GrabRoot = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	TObjectPtr<UPhysicsConstraintComponent> GrabConstraint = nullptr;
+	TWeakObjectPtr<UPhysicsConstraintComponent> GrabConstraint = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
-	TObjectPtr<UPhysicsHandleComponent> GrabHandler = nullptr;
-	
+	TWeakObjectPtr<UPhysicsHandleComponent> GrabHandler = nullptr;
+
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
-	FOnInteractToggle OnToggle;
-	// triggered when it begins hovering an interact
-	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
-	FOnInteractBegin OnBegin;
-	// triggered when ends hovering an interact
-	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
-	FOnInteractEnd OnEnd;
+	FOnInteractHover OnHover;
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -88,7 +80,7 @@ protected:
 	
 	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<UCInteract> InterComp = nullptr;
+	TWeakObjectPtr<UCInteract> HoverComp = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<UCInteract> GrabbedComp = nullptr;
+	TWeakObjectPtr<UCInteract> GrabbedComp = nullptr;
 };
