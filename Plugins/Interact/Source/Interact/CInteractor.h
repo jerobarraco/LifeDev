@@ -66,10 +66,6 @@ protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-	// Attempts to trigger on the server
-	UFUNCTION(Server, Reliable)
-	void SrvTrigger(const UCInteract* const Comp) const;
 	
 	// ends an interaction
 	void DoEnd();

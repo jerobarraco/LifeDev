@@ -30,9 +30,6 @@ UCInteract::UCInteract(): Super() {
 }
 
 void UCInteract::Trigger() const {
-	// server or client. depends on ShouldReplicate, the IT_REPLICATED flag.
-	// And it's decided by the CInteractor (since it's owned by the controller and can call RPCs).
-	
 	UE_LOG(LogCInteract, Log, TEXT("%hs Interact triggered. Obj=%s"),
 		__func__, *GetNameSafe(GetOwner()));
 	// this is synchronous. will call AInteract(Anim, Fade) tryTrigger. and SetText at some point before this function returns
@@ -70,7 +67,9 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 }
 
 void UCInteract::DeInit() {
-	HoverMesh = nullptr; // free resources to get gcd
+	// not very necessary, since they are weak. but will keep the rest clean.
+	HoverMesh = nullptr;
+	PhysComp = nullptr;
 }
 
 bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
@@ -99,13 +98,13 @@ void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) cons
 void UCInteract::ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const {
 	UE_LOG(LogCInteract, Log, TEXT("%hs, isGrab=%i parent=%p"), __func__, IsGrab, NewParent);
 	AActor* const Actor = GetAttachParentActor();
-	if(!Actor) {
+	if (UNLIKELY(!Actor)) {
 		UE_LOG(LogCInteract, Warning, TEXT("%hs, Could not get attached parent actor"), __func__);
 		return;
 	}
 	
 	if (IsGrab) {
-		if(!IsValid(NewParent)) {
+		if (UNLIKELY(!IsValid(NewParent))){
 			UE_LOG(LogCInteract, Warning, TEXT("%hs, Could not get attached parent actor"), __func__);
 			return;
 		}
@@ -116,25 +115,27 @@ void UCInteract::ReparentActor(const bool IsGrab, UCInteractor* const NewParent)
 
 void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const {
 	UPrimitiveComponent* const PPhysComp = PhysComp.Get();
-	if (!PPhysComp) {
-		UE_LOG(LogCInteract, Warning, TEXT(" %hs Could not get the physcomp"), __func__);
+	if (UNLIKELY(!PPhysComp)) {
+		UE_LOG(LogCInteract, Warning, TEXT("%hs: Could not get the physcomp"), __func__);
 		return;
 	}
 
 	if (IsGrab) {
-		if (!IsValid(NewParent)) return;
+		if (UNLIKELY(!IsValid(NewParent))) return;
 
 		const UPrimitiveComponent* const PrimParent = NewParent->GrabRoot.Get();
 		UPhysicsHandleComponent* const Handler = NewParent->GrabHandler.Get();
-		if (!(PrimParent && Handler)) {
-			UE_LOG(LogCInteract, Warning, TEXT("%hs: Could not get the primparent, or constraint"), __func__);
+		if (UNLIKELY(!(PrimParent && Handler))) {
+			UE_LOG(LogCInteract, Warning,
+				TEXT("%hs: Could not get the primparent, or constraint"), __func__);
 			return;
 		}
 
 		Handler->Activate(true);
 		static FTransform F;
 		F = PPhysComp->GetComponentTransform();
-		Handler->GrabComponentAtLocationWithRotation(PPhysComp, NAME_None, F.GetLocation(), F.Rotator());
+		Handler->GrabComponentAtLocationWithRotation(PPhysComp, NAME_None,
+			F.GetLocation(), F.Rotator());
 		// PhysComp->WakeAllRigidBodies();
 	}
 	// the un-grabbing is done by the interactor. (since it has and needs the handler)
