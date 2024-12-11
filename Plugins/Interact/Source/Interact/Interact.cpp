@@ -152,7 +152,7 @@ void AInteract::DoTrigger_Implementation() {
 		__func__, *GetNameSafe(this));
 
 	// set the state before, so that the sound triggers are consistent
-	const int32 NewState = (State +1) % StateNum;
+	const int32 NewState = StateNum <= 0 ? 0 : (State +1) % StateNum;
 	SetState(NewState);
 	PlaySFX(SFX_Trigger);
 
