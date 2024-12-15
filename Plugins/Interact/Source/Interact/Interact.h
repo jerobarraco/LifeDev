@@ -136,7 +136,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
+
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)
 	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.

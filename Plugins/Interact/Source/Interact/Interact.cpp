@@ -159,7 +159,7 @@ void AInteract::DoTrigger_Implementation() {
 	for(AInteract* const I: RewardIntersActive) {
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
-	
+
 	if (IsOneShot) SetActive(false);
 }
 
