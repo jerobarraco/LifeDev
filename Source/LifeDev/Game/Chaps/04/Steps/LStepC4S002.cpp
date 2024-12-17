@@ -20,4 +20,3 @@ ALStepC4S002::ALStepC4S002():Super() {
 	RandFB->ValueMax = .005;
 }
 
-// enables the pot

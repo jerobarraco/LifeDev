@@ -29,11 +29,11 @@ void ALStepC4S001::BeginPlay() {
 void ALStepC4S001::Start_Implementation() {
 	Super::Start_Implementation();
 	// talking actually makes it difficult because of the dialogs.
-	// this step finishes as the dialog finishes. so disable all but npci6
-	// Super::Start would have faded them, but fade will set enabled.
+	// this step finishes as the dialog finishes. so deactivate all but npci6
+	// Super::Start would have faded them, but fade will set active.
 	for (uint8 i = 0; i< IntersFadeIn.Num(); ++i) {
 		AInteract* const I = IntersFadeIn[i];
-		if (!I) continue;
+		if (UNLIKELY(!I)) continue;
 		I->SetActive(i==0); // npci6 continues the flow next step
 	}
 }
