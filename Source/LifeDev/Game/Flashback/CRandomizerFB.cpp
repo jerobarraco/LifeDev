@@ -24,7 +24,7 @@ void UCRandomizerFB::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCRandomizerFB::TriggerFB(float Val) {
-	if (!IsValid(Flashback)) return;
+	if (UNLIKELY(!IsValid(Flashback))) return;
 
 	Flashback->ModVal(Val);
 }

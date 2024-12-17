@@ -40,24 +40,24 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
-	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Deactivate();
+	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 
 	SetActorsShowActive(false, true);
 	SetIntersActiveAuto(false);
 	RemoveItems();
 
 	const UWorld* const W = GetWorld();
-	if (LIKELY(W)) { // call stop anyway
-		if (UseRain) ALMusicMan::SetRainS(W, false);
-
+	if (UseRain) ALMusicMan::SetRainS(W, false);
+	if (LIKELY(W)) { // call stop anyway (below)
+		FTimerManager& Timer = W->GetTimerManager();
 		// ensure we don't double trigger.
 		// this timer is stored in the class since clearAllTimers here could accidentally stop timers from child classes.
 		// anyway timers on or after Stop are really dangerous as the class could be unloaded.
 		// Proof of that is the patch i had to do with destroy actors.
-		W->GetTimerManager().ClearTimer(TimerDestroy);
+		Timer.ClearTimer(TimerDestroy);
 		// Destroy them during the fade
 		TimerDestroy.Invalidate();
-		W->GetTimerManager().SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
+		Timer.SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
 	}
 
 	Super::Stop_Implementation(); // do at end.

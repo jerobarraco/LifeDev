@@ -22,5 +22,5 @@ protected:
 	void TriggerFB(float Val);
 
 	UPROPERTY(Transient)
-	UFlashback* Flashback = nullptr;
+	TObjectPtr<UFlashback> Flashback = nullptr;
 };
