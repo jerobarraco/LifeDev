@@ -64,7 +64,7 @@ void AStep::DoTeleport() {
 }
 
 void AStep::TryStart_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("Starting step '%s'"), *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
 	
 	// teleport the character
 	// teleport before blending the camera. so they work well together.
@@ -111,15 +111,21 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (Debug) DoDebug();
-	
-	if (FinishPostWait) Finish();
+
+	/// finish post wait
+	// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
+	if (!FinishPostWait) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
 }
 
 void AStep::BeginPlay() {
 	Super::BeginPlay();
 
 	if (UNLIKELY(Name.IsNone())) {
-		UE_LOG(LogStoryStep, Warning, TEXT("Step name is none! Step won't work properly, so not adding to the story."));
+		UE_LOG(LogStoryStep, Warning, TEXT("%hs Step name is none!"
+			" Step won't work properly, so not adding to the story. Stop."), __func__);
 		return;
 	}
 
@@ -166,13 +172,13 @@ void AStep::UpdateCamEnabled() const {
 }
 
 void AStep::Stop_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("Stopping step '%s'"), *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Stopping step '%s'"), __func__, *Name.ToString());
 	// force disable since it's not wise to trust what happened before
 	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
 }
 
 void AStep::Finish_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("Finishing step '%s'"), *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Finishing step '%s'"), __func__, *Name.ToString());
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;

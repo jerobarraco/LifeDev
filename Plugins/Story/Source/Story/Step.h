@@ -15,7 +15,7 @@ class AActor;
 class USoundBase;
 
 // base class for story steps
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=Story, DefaultConfig)
 class STORY_API AStep : public AActor {
 	GENERATED_BODY()
 
@@ -58,20 +58,23 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
 
-	// time used to animate the change of cameras
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
+	// time used to animate the change of cameras. Only where CamTarget is valid
+	// blend and fade could have some issues when used together.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam", Config)
 	float CamBlendTime = 2.0;
 	
 	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool FinishPostWait = false;
 
-	// >0 will set the seconds to wait since the START of this step. will trigger PostWait (override it).
+	// >0 will set the seconds to wait since the TryStart of this step. will trigger Start (override it).
 	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
+	// if a cam blend needs to happen, the wait will be clamped to _at least_ CamBlendTime.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	float WaitTime = 0;
 
 	// When set to true, it will fade in/out using the game fade time on start.
+	// blend and fade could have some issues when used together.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool UseFade = false;
 
