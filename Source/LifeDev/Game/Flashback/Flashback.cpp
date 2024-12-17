@@ -11,8 +11,8 @@ UFlashback::UFlashback():Super() {
 	// will this package, yes it does
 	// this curve is applied to each section from->to of values. Take a look at AnimUpdate.
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		// CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/SmoothRampUp.SmoothRampUp"));
+		// CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
@@ -54,12 +54,15 @@ void UFlashback::AnimEnd() {
 
 void UFlashback::SetVal(float New, float Duration) {
 	New = FMath::Clamp(New, Min, Max);
+	// using Val instead of valTo to get an appropriate time for the animation.
+	// important to use abs for the time calculation below
+	const float Diff = FMath::Abs(Val - New);
+	UE_LOG(LogFlashback, Log, TEXT("%hs:Pre-start Min=%.5f Max=%.5f ValTo=%.5f Val=%.5f NewVal=%.5f Diff=%.5f"),
+		__func__, Min, Max, ValTo, Val, New, Diff);
+	
 	// critical to use ValTo and not Val here or the dialogs FBDiagMod fails on quick change.
 	// keep an eye on it in case it breaks other things.
-	const float Diff = FMath::Abs(ValTo - New);
-	UE_LOG(LogFlashback, Log, TEXT("%hs:Pre-start Min=%.5f Max=%.5f ValTo=%.5f NewVal=%.5f Diff=%.5f "),
-		__func__, Min, Max, ValTo, New, Diff);
-	if (FMath::IsNearlyZero(Diff)) return;
+	if (FMath::IsNearlyEqual(ValTo, New)) return;
 
 	// important to set, set here to keep it always up to date.
 	ValFrom = Val;
@@ -67,9 +70,9 @@ void UFlashback::SetVal(float New, float Duration) {
 	if (FMath::IsNearlyZero(Duration)) {
 		// reset animation if any
 		Animator->Deactivate();
-		SetValToNow(New);
-		// important to set so that the value is always up-to-date.
+		// important to set ValTo and Val so that the value is always up-to-date.
 		// since it's used for GetValTo and in turn by SetVal
+		SetValToNow(New);
 		SetValNow(New);
 		AnimEnd(); // force notify even though it's instant. has to be after SetValNow.
 		return;
