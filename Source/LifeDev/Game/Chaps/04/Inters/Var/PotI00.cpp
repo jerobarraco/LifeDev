@@ -15,7 +15,7 @@ APotI00::APotI00():Super() {
 	Locked = true;
 	ULockItem = LDConsts::Items::Matches00;
 	TriggerDlg = ""; // "Pot00.0_T"; makes it confusing with the story dialog
-	LockedDlg = "Pot00_L";
+	LockedDlg = "Pot00.0_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	Super::SetAutoActivate(false); // enabled by the npc i06.
 
@@ -60,7 +60,7 @@ void APotI00::DoTrigger_Implementation() {
 		// forget about the stove. important for the next step
 		RewardIntersActive.Empty();
 		TriggerDlg = ""; // clear the trigger dialog for next step
-		LockedDlg = "Pot00.0_L";
+		LockedDlg = "Pot00.1_L";
 
 		Story->StartNext(); // manually advance. stove is disabled
 	} else if (State == 2) {
@@ -68,12 +68,12 @@ void APotI00::DoTrigger_Implementation() {
 		// for next step (plates)
 		RewardItem = LDConsts::Items::Plate02;
 		// triggers once the empty plate is used and the full rewarded
-		TriggerDlg = "Pot00.1_T";
-		LockedDlg = "Pot00.1_L"; // "you'll need a plate"
+		TriggerDlg = "Pot00.2_T";
+		LockedDlg = "Pot00.2_L"; // "you'll need a plate"
 		SFX_Trigger = SND_Drops;
 
 		Story->StartNext();
-	} else if (State == 0) { // has looped over
+	} else if (State == 0) { // has looped over (notice the check is last)
 		SFX_Trigger = nullptr; // no sound after
 		SetActive(false); // no more interaction for you
 	}
