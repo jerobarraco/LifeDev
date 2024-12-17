@@ -14,7 +14,7 @@ APotI00::APotI00():Super() {
 	UseFade = false;
 	Locked = true;
 	ULockItem = LDConsts::Items::Matches00;
-	TriggerDlg = "Pot00.0_T";
+	TriggerDlg = ""; // "Pot00.0_T"; makes it confusing with the story dialog
 	LockedDlg = "Pot00_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	Super::SetAutoActivate(false); // enabled by the npc i06.
