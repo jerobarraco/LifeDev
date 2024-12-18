@@ -2,6 +2,7 @@
 
 #include "StoveI00.h"
 
+#include "PotI00.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AStoveI00::AStoveI00():Super() {
@@ -13,4 +14,5 @@ AStoveI00::AStoveI00():Super() {
 	RewardFlash = .11;
 	// RewardStep = true; // last item in the interaction chain for this step.
 	Super::SetAutoActivate(false);
+	RewardIntersActiveClass = {APotI00::StaticClass()};
 }
