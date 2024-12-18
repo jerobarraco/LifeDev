@@ -14,7 +14,4 @@ class LIFEDEV_API ALNPCI06: public ALNPC02 {
 
 public:
 	ALNPCI06();
-
-protected:
-	virtual void BeginPlay() override;
 };

@@ -10,6 +10,7 @@ AStoveI00::AStoveI00():Super() {
 	LockedDlg = "Stove00_L";
 	LockedItemDlg = "Stove00_LI";
 	ULockItem = LDConsts::Items::Matches00;
+	RewardFlash = .11;
 	// RewardStep = true; // last item in the interaction chain for this step.
 	Super::SetAutoActivate(false);
 }

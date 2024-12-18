@@ -115,12 +115,28 @@ void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();
 
+	if (Mesh->IsSimulatingPhysics())
+		Interact->PhysComp = Mesh;
+
+	// would be a bit wasteful on memory if the instance doesn't load, or if it's already on RewardsIntersActive
+	// but that is something the user should not do.
+	RewardIntersActive.Reserve(RewardIntersActive.Num()+RewardIntersActiveClass.Num());
+	for (const TSubclassOf<AInteract>& C: RewardIntersActiveClass) {
+		if (UNLIKELY(!IsValid(C))) continue;
+
+		AInteract* const I = Cast<AInteract>(UGameplayStatics::GetActorOfClass(this, C));
+		if (UNLIKELY(!IsValid(I))) {
+			UE_LOG(LogInteract, Log, TEXT("%hs: Can't find instance of class=%s. Stop."),
+				__func__, *C->GetName());
+			continue;
+		}
+
+		RewardIntersActive.AddUnique(I);
+	}
+
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
-
-	if (Mesh->IsSimulatingPhysics())
-		Interact->PhysComp = Mesh;
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -131,7 +147,8 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Interact->DeInit();
 	}
 	Interact = nullptr;
-
+	RewardIntersActive.Empty(0);
+	RewardIntersActiveClass.Empty(0);
 	Super::EndPlay(EndPlayReason);
 }
 

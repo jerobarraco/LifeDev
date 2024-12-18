@@ -202,6 +202,11 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersActive;
 
+	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
+	// this is useful to use by code. on Editor RewardsIntersActive would be preferred.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
+
 	/// CDO
 
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(
