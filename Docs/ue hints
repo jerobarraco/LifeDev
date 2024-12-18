@@ -34,3 +34,6 @@ https://forums.unrealengine.com/t/what-do-if-i-cant-use-constructorhelpers-fobje
 	
 	auto newMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT(newMeshString)));
 	m_meshComponent->SetStaticMesh(newMesh);
+	
+passing lambdas
+TUniqueFunction<void()> F = [this] {
