@@ -65,7 +65,7 @@ public:
 
 	// set the data to be used. call upon initialization.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void SetData(UDataTable* const Diags, UDataTable* const Chars, UDataTable* const Seqs);
+	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllSeqs);
 
 	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")

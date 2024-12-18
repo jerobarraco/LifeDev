@@ -32,7 +32,7 @@ ADiagMan::ADiagMan():Super() {
 
 void ADiagMan::Init_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Init"));
-	if (!IsValid(Diags)) return;
+	if (UNLIKELY(!IsValid(Diags))) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
 	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
@@ -41,13 +41,13 @@ void ADiagMan::Init_Implementation() {
 void ADiagMan::DeInit_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DeInit"));
 
-	if (IsValid(Diags)) {
+	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
 	}
 	Diags = nullptr;
 
-	if (IsValid(UI)) {
+	if (LIKELY(IsValid(UI))) {
 		UI->RemoveFromParent();
 		UI->OnDone.RemoveAll(this);
 	}
@@ -55,9 +55,10 @@ void ADiagMan::DeInit_Implementation() {
 }
 
 void ADiagMan::Show_Implementation(const FDialog& Diag) {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan.Show:"));
-	if (IsShowing)
-		UE_LOG(LogTextDialogs, Log, TEXT("Attempted to show text when i was already showing."));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs "), __func__);
+
+	UE_CLOG(IsShowing, LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),
+		__func__);
 
 	if (DebugSkip) {
 		UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DebugSkip is set. Skipping."));
@@ -82,8 +83,8 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 
 void ADiagMan::Hide_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone IsShowing=%i"), IsShowing);
-	if (!IsShowing) return;
-	if (!IsValid(UI)) return;
+	if (UNLIKELY(!IsShowing)) return;
+	if (UNLIKELY(!IsValid(UI))) return;
 
 	IsShowing = false;
 	UI->Hide();
@@ -94,7 +95,7 @@ void ADiagMan::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
@@ -124,7 +125,7 @@ void ADiagMan::BeginPlay() {
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
-	if (Input) Input->ClearBindingsForObject(this);
+	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
 	DeInit();
 

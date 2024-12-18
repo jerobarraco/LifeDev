@@ -6,13 +6,13 @@
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
 UDiags* UDiags::Instance(UObject* O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 	
 	const UWorld* const W = O->GetWorld();
-	if (!IsValid(W)) return nullptr;
+	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	UDiags* const D = W->GetSubsystem<UDiags>();
-	return IsValid(D) ? D : nullptr;
+	return UNLIKELY(IsValid(D)) ? D : nullptr;
 }
 
 void UDiags::AddDiag(const FDialog& Diag) {
@@ -21,22 +21,23 @@ void UDiags::AddDiag(const FDialog& Diag) {
 }
 
 bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
+	UE_LOG(LogDiags, Log, TEXT("%hs: row=%s, warn=%i"), __func__, *Row.ToString(), Warn);
 	FDialog OutDialog; FDialogChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
-	if (!Ok) return false;
+	if (UNLIKELY(!Ok)) return false;
 
 	AddDiag(OutDialog);
 	return true;
 }
 
 bool UDiags::AddId(const FName& Row) {
-	if (Row.IsNone()) return false;
+	if (UNLIKELY(Row.IsNone())) return false;
 
 	// attempt to add a sequence (can be random) (could trigger another call to AddId)
 	if (AddSeqId(Row, false)) return true;
 
 	// otherwise attempt a dialog
-	if (AddDiagId(Row, false)) return true;
+	if (LIKELY(AddDiagId(Row, false))) return true;
 
 	// this also would capture a sequence that is empty or the ids are none.
 	UE_LOG(LogDiags, Warning,
@@ -121,11 +122,11 @@ void UDiags::DeInit() {
 
 bool UDiags::GetDiag(
 	const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) const {
-	if (RowName.IsNone()) return false;
-	if (!IsValid(Diags)) return false;
+	if (UNLIKELY(RowName.IsNone())) return false;
+	if (UNLIKELY(!IsValid(Diags))) return false;
 
 	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""), Warn);
-	if (!Row) {
+	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
 		return false;
 	}
@@ -136,11 +137,11 @@ bool UDiags::GetDiag(
 }
 
 bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn) const {
-	if (RowName.IsNone()) return false;
-	if (!IsValid(Chars)) return false;
+	if (UNLIKELY(RowName.IsNone())) return false;
+	if (UNLIKELY(!IsValid(Chars))) return false;
 
 	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""), Warn);
-	if (!Row)  {
+	if (UNLIKELY(!Row))  {
 		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
 	}
@@ -150,12 +151,12 @@ bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn
 }
 
 bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn) const {
-	if (RowName.IsNone()) return false;
-	if (!IsValid(Seqs)) return false;
+	if (UNLIKELY(RowName.IsNone())) return false;
+	if (UNLIKELY(!IsValid(Seqs))) return false;
 
 	const FDialogSequence* const Row =
 		Seqs->FindRow<FDialogSequence>(RowName, TEXT(""), Warn);
-	if (!Row) {
+	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
 	}
@@ -165,11 +166,11 @@ bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Wa
 }
 
 void UDiags::ShowNext() {
-	if (IsShowing) return;
+	if (UNLIKELY(IsShowing)) return;
 	// this is important for stop to work correctly. and also in general
 	IsShowing = true;
 	
-	if (Pending.IsEmpty()) {
+	if (UNLIKELY(Pending.IsEmpty())) {
 		Stop();
 		return;
 	}
@@ -183,7 +184,7 @@ void UDiags::ShowNext() {
 }
 
 void UDiags::Stop() {
-	if (!IsShowing) return;
+	if (UNLIKELY(!IsShowing)) return;
 	IsShowing = false;
 
 	OnDone.Broadcast();
