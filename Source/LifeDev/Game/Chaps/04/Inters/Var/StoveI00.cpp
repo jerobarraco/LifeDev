@@ -13,7 +13,8 @@ AStoveI00::AStoveI00():Super() {
 	LockedItemDlg = "Stove00_LI";
 	ULockItem = LDConsts::Items::Matches00;
 	RewardFlash = .11;
-	// RewardStep = true; // last item in the interaction chain for this step.
-	Super::SetAutoActivate(false);
+	RewardStep = true; // advance the story
 	RewardIntersActiveClass = {APotI00::StaticClass()};
+
+	Super::SetAutoActivate(false); // activated by LNPCI06
 }
