@@ -2,9 +2,6 @@
 
 #include "TvI02.h"
 
-#include "Diags/Diags.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ATvI02::ATvI02():Super() {
@@ -13,9 +10,7 @@ ATvI02::ATvI02():Super() {
 		{LDConsts::Items::Card1, "TV02xC01"},
 		{LDConsts::Items::Card2, "TV02xC02"},
 		{LDConsts::Items::Card3, "TV02xC03"},
+		{LDConsts::Items::Card4, "TV02xC04"},
 	};
-}
-
-void ATvI02::DoTrigger_Implementation() {
-	Super::DoTrigger_Implementation();
+	TriggerDlg = "TV02_T";
 }
