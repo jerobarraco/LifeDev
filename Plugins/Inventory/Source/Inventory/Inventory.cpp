@@ -6,6 +6,8 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
+// TODo clean unlikely
+
 UInventory* UInventory::Instance(UWorld* const W) {
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 	UInventory* const I = W->GetSubsystem<UInventory>();

@@ -31,7 +31,7 @@ ADiagMan::ADiagMan():Super() {
 }
 
 void ADiagMan::Init_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Init"));
+	UE_LOG(LogTextDialogs, Log, TEXT("Init"));
 	if (UNLIKELY(!IsValid(Diags))) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
@@ -39,7 +39,7 @@ void ADiagMan::Init_Implementation() {
 }
 
 void ADiagMan::DeInit_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DeInit"));
+	UE_LOG(LogTextDialogs, Log, TEXT("DeInit"));
 
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
@@ -55,13 +55,13 @@ void ADiagMan::DeInit_Implementation() {
 }
 
 void ADiagMan::Show_Implementation(const FDialog& Diag) {
-	UE_LOG(LogTextDialogs, Log, TEXT("%hs "), __func__);
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 
 	UE_CLOG(IsShowing, LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),
 		__func__);
 
 	if (DebugSkip) {
-		UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: DebugSkip is set. Skipping."));
+		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
 		const UWorld* const World = GetWorld();
 		// skip on the next frame to avoid having issues due to call stack
 		if (LIKELY(World))
@@ -70,7 +70,7 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	}
 
 	if (UNLIKELY(!IsValid(UI))) {
-		UE_LOG(LogTextDialogs, Warning, TEXT("DiagMan: UI was not ready"));
+		UE_LOG(LogTextDialogs, Warning, TEXT("%hs: UI was not ready"), __func__);
 		return;
 	}
 	
@@ -133,19 +133,19 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ADiagMan::UIDiagDone() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone"));
+	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
 	if (UNLIKELY(!IsValid(Diags))) return;
 	Diags->DiagDone();
 }
 
 void ADiagMan::Skip() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Skip"));
+	UE_LOG(LogTextDialogs, Log, TEXT("Skip"));
 	if(UNLIKELY(!IsValid(UI))) return;
 	UI->Skip();
 }
 
 void ADiagMan::Back() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: Back"));
+	UE_LOG(LogTextDialogs, Log, TEXT("Back"));
 	if(UNLIKELY(!IsValid(UI))) return;
 	UI->Back();
 }

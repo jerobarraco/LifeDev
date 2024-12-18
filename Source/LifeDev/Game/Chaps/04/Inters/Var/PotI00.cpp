@@ -93,10 +93,3 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 
 	return Super::TryUseItem_Implementation(Name);
 }
-
-// disabled: on editor.
-// enabled by a step
-
-// 2 interactions
-// 1st enable the stove and lock itself
-// 2nd wait for items to be used and trigger dialog for plates?
