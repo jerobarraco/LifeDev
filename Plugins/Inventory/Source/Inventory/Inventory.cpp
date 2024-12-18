@@ -6,14 +6,14 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
-UInventory* UInventory::Instance(UWorld* W) {
-	if (!IsValid(W)) return nullptr;
+UInventory* UInventory::Instance(UWorld* const W) {
+	if (UNLIKELY(!IsValid(W))) return nullptr;
 	UInventory* const I = W->GetSubsystem<UInventory>();
 	return IsValid(I) ? I : nullptr;
 }
 
-bool UInventory::Mod(const FName& Name, int32 Diff) {
-	if (Name.IsNone()) return false;
+bool UInventory::Mod(const FName& Name, const int32 Diff) {
+	if (UNLIKELY(Name.IsNone())) return false;
 
 	UE_LOG(LogInventory, Log, TEXT("Mod item. name=%s, diff=%i"), *Name.ToString(), Diff);
 
@@ -93,7 +93,7 @@ bool UInventory::Mod(const FName& Name, int32 Diff) {
 }
 
 bool UInventory::Ensure(const FName& Name) {
-	if (Has(Name)) return true;
+	if (LIKELY(Has(Name))) return true;
 
 	UE_LOG(LogInventory, Log, TEXT("Ensured item. name=%s"), *Name.ToString());
 	return Mod(Name, 1);
@@ -105,11 +105,11 @@ bool UInventory::Rem(const FName& Name) {
 	// Important that Get returns a copy, since we need to return this on Mod
 	const bool Has = Get(Name, Item);
 	// No item with 0 or negative should be stored. but check anyway.
-	if (!Has) return false;
+	if (UNLIKELY(!Has)) return false;
 	
 	const FName NextKey = GetNextKey();
-	UE_LOG(LogInventory, Log, TEXT("Removing item. name=%s, nextSelect=%s"),
-		*Name.ToString(), *NextKey.ToString());
+	UE_LOG(LogInventory, Log, TEXT("%hs Removing item. name=%s, nextSelect=%s"),
+		__func__, *Name.ToString(), *NextKey.ToString());
 	
 	Items.Remove(Name);
 	OnMod.Broadcast(Name, -Item.Count, MoveTemp(Item));
@@ -182,15 +182,15 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 }
 
 FName UInventory::GetNextKey(const bool Forward, FName From) const {
-	if (From.IsNone()) {
-		if (Selected.IsNone()) return NAME_None;
+	if (UNLIKELY(From.IsNone())) {
+		if (UNLIKELY(Selected.IsNone())) return NAME_None;
 		From = Selected;
 	}
 	
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
 	// <2 because one will get removed. and we need to tell this situation apart to clear the selected
-	if (Keys.Num()<2) return NAME_None;
+	if (UNLIKELY(Keys.Num()<2)) return NAME_None;
 
 	const int32 Num = Keys.Num();
 	int32 Index = Keys.Find(From);
@@ -210,7 +210,7 @@ bool UInventory::SetSelected(const FName& Name) {
 }
 
 bool UInventory::Has(const FName& Name) {
-	if (Name.IsNone()) return false;
+	if (UNLIKELY(Name.IsNone())) return false;
 	// note that this depends on items being removed when quantity is <=0
 	return Items.Contains(Name);
 }
@@ -218,10 +218,10 @@ bool UInventory::Has(const FName& Name) {
 bool UInventory::Use(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
-	if (!Found) return false; 
+	if (UNLIKELY(!Found)) return false; 
 
-	if (!IsUsable(Item)) {
-		UE_LOG(LogInventory, Error, TEXT("%hs Item is unusable. '%s'"), __func__, *Name.ToString());
+	if (UNLIKELY(!IsUsable(Item))) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item is unusable. Stop. '%s'"), __func__, *Name.ToString());
 		return false;
 	}
 
@@ -233,7 +233,7 @@ bool UInventory::Use(const FName& Name) {
 	// if this is the last one, then it makes no difference. who cares.
 	Item.ActiveCoolDown = Item.CoolDown;
 	if (Item.ActiveCoolDown>0) SetCoolTimerEnabled(true);
-	
+
 	// intentionally make a copy since when an object gets removed from the pool,
 	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
 	const FName OldName = Name;
@@ -247,7 +247,7 @@ bool UInventory::Use(const FName& Name) {
 bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
-	if (!Found)	return false;
+	if (UNLIKELY(!Found)) return false;
 
 	Item.IsLocked = NewBlocked;
 	return true;

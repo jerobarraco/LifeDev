@@ -23,14 +23,14 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UInventory* Instance(UWorld* W);
+	static UInventory* Instance(UWorld* const W);
 
 	// regular ones ////////
 
 	// Used for Add, Rem, and Use. Returns false if not found.
 	// Note: It does check for maxCount but will return true even when capped.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Mod(const FName& Name, int32 Diff);
+	bool Mod(const FName& Name, const int32 Diff=1);
 	// ensure the item is owned, with a quantity of 1 at least.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Ensure(const FName& Name);

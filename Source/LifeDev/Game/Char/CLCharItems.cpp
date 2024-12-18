@@ -30,6 +30,7 @@ void UCLCharItems::BeginPlay() {
 void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Diags = nullptr;
 	Inventory = nullptr;
+	Interactor = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -142,8 +143,11 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		// save myself some pain if i forget. warn to myself.
 		UE_CLOG(!ValidLogic, LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
 			"It won't really be used. Skip."), __func__);
-		
-		const bool Ok = ValidLogic && Inventory->Use(Name); // cooldown could affect it
+
+		// TODO why am i not calling the logic use inside inventory use ???
+
+		// Calling inventory use first, since cooldown could affect it.
+		const bool Ok = ValidLogic && Inventory->Use(Name);
 		// if it fails to use it, fall through to the rest of the error
 		if (LIKELY(Ok)) {
 			Item.Logic->Use();
