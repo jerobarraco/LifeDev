@@ -5,6 +5,8 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
+// deactivated by default. activated by a step triggered by the pot.
+
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
 	RewardItem = LDConsts::Items::Plate01;
@@ -36,7 +38,7 @@ ASpongeI00::ASpongeI00():Super() {
 void ASpongeI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	for (ALInteract* const I: Plates) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->Fade(false);
 	}
 	Plates.Empty();
@@ -45,7 +47,7 @@ void ASpongeI00::DoTrigger_Implementation() {
 void ASpongeI00::BeginPlay() {
 	Super::BeginPlay();
 	for (ALInteract* const I: Plates) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->Fade(true);
 		I->SetActive(false); // force them disabled.
 	}

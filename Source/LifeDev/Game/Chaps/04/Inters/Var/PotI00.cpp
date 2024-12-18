@@ -7,29 +7,41 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
+// TODO cleanup
+// TODO fix not rewarding the plate
+
+// deactivated by default
+// stove activates it
+// two foods unlock and trigg
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
 	UseFade = false;
+	
+	// locked so that player can't trigger manually,
+	// but they can still use the items on it.
 	Locked = true;
-	ULockItem = LDConsts::Items::Matches00;
-	TriggerDlg = ""; // "Pot00.0_T"; makes it confusing with the story dialog
+	TriggerDlg = "Pot00.0_T";
 	LockedDlg = "Pot00.0_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	Super::SetAutoActivate(false); // enabled by the npc i06.
+	Super::SetAutoActivate(false); // enabled by the stove
 
 	// Override the states and transforms
+	// old
 	// 0: Empty pot, lid open.
 	// 1: Boiling pot, lid closed.
 	// 2: Rice and mayo added.
 	// intentionally letting it loop to empty after done.
 	// so that using the plates open the pot and reads 'empty'
-	StateNum = 3;
+	// 0: boiling?
+	// 1: rice and egg added
+	// 0: empty
+	StateNum = 2;
 	Texts = {
-		FText::FromString(TEXT("Empty pot")),
-		FText::FromString(TEXT("Hot pot")),
-		FText::FromString(TEXT("Done pot")),
+		FText::FromString(TEXT("Boiling ...")),
+		FText::FromString(TEXT("Cooking ...")),
+		// FText::FromString(TEXT("Done ...")),
 	};
 	const FRotator State0Rot(0, -10, 0);
 	Trans = {
@@ -52,41 +64,38 @@ void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	UE_LOG(LogTemp, Log, TEXT("%hs state=%i"), __func__, State);
 	
-	// state ought to be the new one after super::doTrigger
+	// state ought to be the new one after super::doTrigger (that means that the first time it's going to be 1)
 	if (State == 1) {
-		// locked so that player can't trigger manually,
-		// but they can still use the items on it.
-		Locked = true;
-		// forget about the stove. important for the next step
-		RewardIntersActive.Empty();
-		TriggerDlg = ""; // clear the trigger dialog for next step
+		// al/ this only affects the next trigger (using the plate) for next trigger (plates)
+		// triggered after adding food
+		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
-
-		Story->StartNext(); // manually advance. stove is disabled
-	} else if (State == 2) {
-		// triggered after adding food, by using the empty plate
-		// for next step (plates)
-		RewardItem = LDConsts::Items::Plate02;
-		// triggers once the empty plate is used and the full rewarded
-		TriggerDlg = "Pot00.2_T";
-		LockedDlg = "Pot00.2_L"; // "you'll need a plate"
 		SFX_Trigger = SND_Drops;
+		
+		Story->StartNext(); // manually advance.
+	// } else if (State == 2) {
+		// triggers once the empty plate is used and the full rewarded
+		// TriggerDlg = "Pot00.2_T";
+		// LockedDlg = "Pot00.2_L"; // "you'll need a plate"
 
-		Story->StartNext();
-	} else if (State == 0) { // has looped over (notice the check is last)
+		// Story->StartNext();
+	} else if (State == 0) { // has looped over (notice the check is last)\
+		// TODO fix this is not working
+		RewardItem = LDConsts::Items::Plate02; // this gets rewarded after this function call
 		SFX_Trigger = nullptr; // no sound after
 		SetActive(false); // no more interaction for you
+		// not advancing the story here. it will advance when the player uses the plate.
 	}
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// only observe these items
-	if (State == 1 && (Name == "Food00" || Name == "Food01")) {
+	if (State == 0 && (Name == "Food00" || Name == "Food01")) {
 		++Foods;
 		// to advance the state. Trigger skips the lock check (instead of TryTrigger)
-		if (Foods == 2) Trigger();
+		if (UNLIKELY(Foods == 2)) Trigger();
 		return EItemUseResult::SUCCESS;
-	} else if (State == 2 && (Name == LDConsts::Items::Plate01)) {
+	} else if (State == 1 && (Name == LDConsts::Items::Plate01)) {
 		Trigger();
 		return EItemUseResult::SUCCESS;
 	} 
