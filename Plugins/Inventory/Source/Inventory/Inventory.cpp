@@ -227,7 +227,6 @@ bool UInventory::Use(const FName& Name) {
 
 	UE_LOG(LogInventory, Log, TEXT("%hs item=%s"), __func__, *Name.ToString());
 
-	
 	// this works setting the value on the reference
 	// at this point the item reference is ok, so keep it.
 	// set before calling Mod, since mod will dispatch OnMod

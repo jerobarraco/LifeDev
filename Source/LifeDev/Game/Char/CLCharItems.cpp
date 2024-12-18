@@ -22,10 +22,9 @@ void UCLCharItems::BeginPlay() {
 	Interactor = Owner ?
 		Cast<UCInteractor>(Owner->GetComponentByClass(UCInteractor::StaticClass())) :
 		nullptr;
-	if (!Interactor)
-		UE_LOG(LogCharItems, Warning,
-			TEXT("%hs Could not obtain the interactor component from the owner."),
-			__func__);
+	UE_CLOG(UNLIKELY(!Interactor), LogCharItems, Warning,
+		TEXT("%hs Could not obtain the interactor component from the owner."),
+		__func__);
 }
 
 void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -35,7 +34,7 @@ void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 bool UCLCharItems::Say(const FName& Name) const {
-	if (!IsValid(Diags)) return false;
+	if (UNLIKELY(!IsValid(Diags))) return false;
 	return Diags->AddId(Name);
 }
 
@@ -43,15 +42,15 @@ void UCLCharItems::Look(const FName& Name) const {
 	const FString& SName = *Name.ToString();
 	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *SName);
 
-	if (!IsValid(Inventory)) return;
+	if (UNLIKELY(!IsValid(Inventory))) return;
 
-	if (Name.IsNone()) {
+	if (UNLIKELY(Name.IsNone())) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs tried to look at a NONE item."), __func__);
 		return;
 	}
 
 	FItem Item;
-	if (!Inventory->Get(Name, Item)) {
+	if (UNLIKELY(!Inventory->Get(Name, Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can´t find the item name='%s'"), __func__, *SName);
 		return;
 	}
@@ -65,7 +64,8 @@ void UCLCharItems::Look(const FName& Name) const {
 	// but it's cheaper than asking every time for random and not random.
 	const FName& DRName = FName(*(SName + "_Look*"));
 	// the isValid is for the add below
-	if (!Say(DRName) && IsValid(Diags)) { // notice it calls Says
+	const bool Said = Say(DRName); // notice it calls Say first
+	if (LIKELY(IsValid(Diags)) && !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
 		FDialog Diag;
@@ -82,25 +82,31 @@ void UCLCharItems::Look(const FName& Name) const {
 EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	UE_LOG(LogCharItems, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 
-	if (!IsValid(Inventory)) return	EItemUseResult::ERROR;
+	if (UNLIKELY(!IsValid(Inventory))) {
+		UE_LOG(LogCharItems, Warning, TEXT("%hs Inventory not found. Stop."), __func__);
+		return EItemUseResult::ERROR;
+	}
 	
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
-	if (!Found) return EItemUseResult::ERROR;
+	if (UNLIKELY(!Found)) {
+		UE_LOG(LogCharItems, Warning, TEXT("%hs Item not found '%s'. Stop."), __func__, *Name.ToString());
+		return EItemUseResult::ERROR;
+	}
 
 	if (!Item.Usable) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable"), __func__);
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
 		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable
 	}
 
-	if (!Inventory->IsCold(Item)) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready"), __func__);
+	if (UNLIKELY(!Inventory->IsCold(Item))) {
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
 		Say(LDConsts::Dlgs::Sys::Item::NotReady);
 		return EItemUseResult::ERROR;
 	}
 
-	if (!Interactor) {
+	if (UNLIKELY(!Interactor)) {
 		UE_LOG(LogCharItems, Warning,
 			TEXT("%hs Could not obtain the interactor component from the owner."), __func__);
 		return EItemUseResult::ERROR;
@@ -133,23 +139,22 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			__func__, *Item.Title.ToString());
 
 		const bool ValidLogic = IsValid(Item.Logic);
-		if (!ValidLogic) // save myself some pain if i forget.
-			UE_LOG(LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
-				"It won't really be used. Skip."), __func__);
+		// save myself some pain if i forget. warn to myself.
+		UE_CLOG(!ValidLogic, LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
+			"It won't really be used. Skip."), __func__);
 		
-		// manually forcing self-use to have an item logic. not necessary but cleaner.
 		const bool Ok = ValidLogic && Inventory->Use(Name); // cooldown could affect it
 		// if it fails to use it, fall through to the rest of the error
-		if (Ok) {
+		if (LIKELY(Ok)) {
 			Item.Logic->Use();
 			return EItemUseResult::SUCCESS;
 		}
 	}
 
-	const bool isBadTarget = Res == EItemUseResult::BAD_TARGET;
+	const bool IsBadTarget = Res == EItemUseResult::BAD_TARGET;
 	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
-		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), isBadTarget);
-	const FName& DlgId = isBadTarget ?
+		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), IsBadTarget);
+	const FName& DlgId = IsBadTarget ?
 		LDConsts::Dlgs::Sys::Item::BadTarget :
 		LDConsts::Dlgs::Sys::Item::NoTarget;
 
@@ -158,9 +163,9 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 }
 
 EItemUseResult UCLCharItems::UseSelected() const {
-	return IsValid(Inventory) ? Use(Inventory->GetSelected()) :  EItemUseResult::ERROR;
+	return LIKELY(IsValid(Inventory)) ? Use(Inventory->GetSelected()) :  EItemUseResult::ERROR;
 }
 
 void UCLCharItems::LookSelected() const {
-	if (IsValid(Inventory)) Look(Inventory->GetSelected());
+	if (LIKELY(IsValid(Inventory))) Look(Inventory->GetSelected());
 }
