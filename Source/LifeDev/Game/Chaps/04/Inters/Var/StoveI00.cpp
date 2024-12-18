@@ -7,6 +7,7 @@
 
 AStoveI00::AStoveI00():Super() {
 	Locked = true;
+	IsOneShot = true;
 	TriggerDlg = "Stove00_T";
 	LockedDlg = "Stove00_L";
 	LockedItemDlg = "Stove00_LI";
