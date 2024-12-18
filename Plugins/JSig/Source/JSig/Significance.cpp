@@ -9,10 +9,11 @@ DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 USignificance::USignificance():Super() {}
 
 USignificance* USignificance::Instance(const UObject* O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
-	if (!IsValid(W)) return nullptr;
+	if (UNLIKELY(!IsValid(W))) return nullptr;
+
 	USignificance* const Sig = W->GetSubsystem<USignificance>();
 	return IsValid(Sig) ? Sig : nullptr;
 }
@@ -31,16 +32,17 @@ void USignificance::Reset() {
 	PCs.Empty();
 
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	Man = USignificanceManager::Get(W);
 	int32 Num = NumPCs>0? NumPCs : W->GetNumPlayerControllers(); 
 	for(FConstPlayerControllerIterator Iterator = W->GetPlayerControllerIterator();
 		Iterator && Num > 0; ++Iterator ) {
 		--Num;
-		APlayerController* const PlayerController = Iterator->Get();
-		if(!PlayerController) continue;
-		PCs.Add(PlayerController);
+		APlayerController* const Controller = Iterator->Get();
+		if(UNLIKELY(!Controller)) continue;
+
+		PCs.AddUnique(Controller);
 	}
 
 	DTAcum = 0;
@@ -54,8 +56,9 @@ void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
 }
 
 void USignificance::DoTick() {
-	if (!Man || PCs.Num()==0) {
-		UE_LOG(LogJSigSub, Log, TEXT("%hs. Force Reset."), __func__);
+	if (UNLIKELY(!IsValid(Man) || PCs.Num()==0)) {
+		// Verbose since this could trigger a lot, or never stop.
+		UE_LOG(LogJSigSub, Verbose, TEXT("%hs. Force Reset."), __func__);
 		// The manager is slow to get created, so we keep querying.
 		Reset();
 		return; // return in case the above check still fails
@@ -65,6 +68,7 @@ void USignificance::DoTick() {
 
 	TArray<FTransform> TransformArray;
 	for (APlayerController* const PC: PCs) {
+		if (UNLIKELY(!IsValid(PC))) continue;
 		FVector ViewLocation;
 		FRotator ViewRotation;
 		PC->GetPlayerViewPoint(ViewLocation, ViewRotation);
@@ -81,7 +85,7 @@ void USignificance::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	DTAcum += DeltaTime;
-	if (DTAcum< TickInterval) return;
+	if (UNLIKELY(DTAcum< TickInterval)) return;
 	DTAcum = 0;
 
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__);
