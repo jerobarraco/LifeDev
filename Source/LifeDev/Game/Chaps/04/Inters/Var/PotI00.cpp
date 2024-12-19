@@ -75,7 +75,7 @@ void APotI00::DoTrigger_Implementation() {
 		// Could set the text here. but since it's deactivated it does not matter.
 		SFX_Trigger = nullptr; // no sound after
 		SetActive(false); // no more interaction for you
-		// not advancing the story here. it will advance when the player uses the plate on the chair (spot
+		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
 	}
 }
 
