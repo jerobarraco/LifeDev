@@ -9,13 +9,14 @@
 #include "Story/Story.h"
 
 // deactivated by default
-// stove activates it
-// two foods unlock and triggers
-// then goes to next step
-// the step enables the sponge
-// the sponge goes to next step and gives plate
-// the plate can be used again which rewards another plate
-// the other plate triggers the spot
+// stove activates it.
+// two foods unlock and triggers.
+// then goes to next step.
+// the step enables the sponge.
+// the sponge goes to next step and gives plate.
+// the plate can be used again which rewards another plate.
+// the other plate triggers the spot.
+
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
@@ -31,25 +32,19 @@ APotI00::APotI00():Super() {
 	Super::SetAutoActivate(false); // enabled by the stove
 
 	// Override the states and transforms
-	// old
-	// 0: Empty pot, lid open.
-	// 1: Boiling pot, lid closed.
-	// 2: Rice and mayo added.
 	// intentionally letting it loop to empty after done.
-	// so that using the plates open the pot and reads 'empty'
-	// 0: boiling?
+	// so that, using the plates, open the pot
+	// 0: boiling
 	// 1: rice and egg added
 	// 0: empty
 	StateNum = 2;
 	Texts = {
-		FText::FromString(TEXT("Boiling ...")),
-		FText::FromString(TEXT("Cooking ...")),
-		// FText::FromString(TEXT("Done ...")),
+		NSLOCTEXT("LifeDev", "PotI00", "Boiling ..."),
+		NSLOCTEXT("LifeDev", "PotI00", "Cooking ..."),
 	};
 	const FRotator State0Rot(0, -10, 0);
 	Trans = {
 		FTransform(State0Rot),
-		FTransform(),
 		FTransform(),
 	};
 	Lid->SetRelativeRotation(State0Rot); // init the correct transform
@@ -69,8 +64,8 @@ void APotI00::DoTrigger_Implementation() {
 	
 	// state ought to be the new one after super::doTrigger (that means that the first time it's going to be 1)
 	if (State == 1) {
-		// al/ this only affects the next trigger (using the plate) for next trigger (plates)
 		// triggered after adding food
+		// all this only affects the next trigger (using the plate) for next trigger (plates)
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
 		SFX_Trigger = SND_Drops;
@@ -78,7 +73,7 @@ void APotI00::DoTrigger_Implementation() {
 	} else if (State == 0) { // has looped over (notice the check is last)
 		// reward a plate. not using rewarditem or the parent's functionality since it's too cumbersome in this case.
 		Inventory->Mod(LDConsts::Items::Plate02, 1);
-		
+		// Could set the text here. but since it's deactivated it does not matter.
 		SFX_Trigger = nullptr; // no sound after
 		SetActive(false); // no more interaction for you
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot
@@ -87,6 +82,7 @@ void APotI00::DoTrigger_Implementation() {
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	// only observe these items
+	// returning success will "consume" the items. (good)
 	if (State == 0 && (Name == "Food00" || Name == "Food01")) {
 		++Foods;
 		// to advance the state. Trigger skips the lock check (instead of TryTrigger)
@@ -95,7 +91,8 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 	} else if (State == 1 && (Name == LDConsts::Items::Plate01)) {
 		Trigger();
 		return EItemUseResult::SUCCESS;
-	} 
+	}
 
+	// calling super to handle correctly
 	return Super::TryUseItem_Implementation(Name);
 }
