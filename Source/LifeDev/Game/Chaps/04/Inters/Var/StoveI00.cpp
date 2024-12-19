@@ -15,6 +15,8 @@ AStoveI00::AStoveI00():Super() {
 	RewardFlash = .11;
 	RewardStep = true; // advance the story
 	RewardIntersActiveClass = {APotI00::StaticClass()};
-
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
+	SFX_Trigger = CSnd.Object;
 	Super::SetAutoActivate(false); // activated by LNPCI06
 }

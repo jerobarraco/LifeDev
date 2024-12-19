@@ -50,9 +50,8 @@ APotI00::APotI00():Super() {
 	Lid->SetRelativeRotation(State0Rot); // init the correct transform
 	Anim->IsAdditive = false;
 
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
-	SFX_Trigger = CSnd.Object;
+	SFX_Trigger = nullptr;
+	// preload
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
 	SND_Drops = CSnd2.Object;
