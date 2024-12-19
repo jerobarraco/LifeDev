@@ -23,7 +23,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UInventory* Instance(UWorld* const W);
+	static UInventory* Instance(const UWorld* const W);
 
 	// regular ones ////////
 
@@ -39,7 +39,7 @@ public:
 	bool Rem(const FName& Name);
 	// removes all items. but does not trigger any onMod. used for savegame. be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
-	bool Clear(int32 NumReserve = 0);
+	bool Clear(const int32 NumReserve = 0);
 	
 	// "uses" an item (marks as used). removes it from the inventory if needed. returns success.
 	// it won't trigger the manager/item logic, you need to do it manually.
@@ -75,12 +75,12 @@ public:
 	bool SetSelected(const FName& Name);
 
 	// returns true if this item exists on the current inventory
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	bool Has(const FName& Name);
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Has(const FName& Name) const;
 	// returns true if the item is usable (implies cold)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsUsable(const FItem& Item);
-	// returns true if the item is cold (not waiting for cooldown)
+	// returns true if the item is cold (not waiting for cooldown) (regardless of whether it uses cooldown)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
 
@@ -116,7 +116,7 @@ public:
 	FInventoryOnItemCold OnCold;
 
 protected:
-	void SetCoolTimerEnabled(bool Enable);
+	void SetCoolTimerEnabled(const bool Enable);
 	void CoolTimerTick();
 
 	// Creates a new instance of the item and adds it to the inventory

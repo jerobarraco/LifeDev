@@ -8,8 +8,12 @@
 
 // TODo clean unlikely
 
-UInventory* UInventory::Instance(UWorld* const W) {
+#define _IsCold(I) I.ActiveCoolDown<=0
+#define _IsHot(I) I.ActiveCoolDown>0
+
+UInventory* UInventory::Instance(const UWorld* const W) {
 	if (UNLIKELY(!IsValid(W))) return nullptr;
+
 	UInventory* const I = W->GetSubsystem<UInventory>();
 	return IsValid(I) ? I : nullptr;
 }
@@ -17,27 +21,31 @@ UInventory* UInventory::Instance(UWorld* const W) {
 bool UInventory::Mod(const FName& Name, const int32 Diff) {
 	if (UNLIKELY(Name.IsNone())) return false;
 
-	UE_LOG(LogInventory, Log, TEXT("Mod item. name=%s, diff=%i"), *Name.ToString(), Diff);
+	UE_LOG(LogInventory, Log, TEXT("%hs name=%s, diff=%i"),
+		__func__, *Name.ToString(), Diff);
 
 	FName NewSel = NAME_None; // name for the new selection, none if not changed
-	bool SetSelect = false; // need another flag because we might wanna set the selected to none
+	// need another flag because we might want to set the selected to none
+	bool SetSelect = false;
 
 	// get or create the item
 	FItem* Item = Items.Find(Name);
 	if (!Item) {
-		if (Diff<=0) {
-			UE_LOG(LogInventory, Warning, TEXT("Attempt to substract from an item i don't have. Name=%s"), *Name.ToString());
+		if (UNLIKELY(Diff<=0)) {
+			UE_LOG(LogInventory, Warning, TEXT("%hs Attempt to substract from an item i don't have. Name=%s diff=%i"),
+				__func__, *Name.ToString(), Diff);
 			return false;
 		}
 
 		Item = AddNew(Name);
-		if (!Item) {
-			UE_LOG(LogInventory, Warning, TEXT("Failed to create item object for name=%s"), *Name.ToString());
+		if (UNLIKELY(!Item)) {
+			UE_LOG(LogInventory, Warning, TEXT("%hs Failed to create item object. Name=%s"),
+				__func__, *Name.ToString());
 			return false;
 		}
 		
 		// select the new one if nothing was selected
-		if (Selected.IsNone()) {
+		if (UNLIKELY(Selected.IsNone())) {
 			NewSel = Name;
 			SetSelect = true;
 		}
@@ -48,7 +56,7 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 	int32 Current = Item->Count;
 	// used to broadcast even on non-consumable
 	int32 CurDiff = Diff;
-	// clamp values
+	// clamp values.
 	// for consumables clamp at 0
 	if (Item->Consumable) {
 		// calculate the difference. are clamped to the produce (0, MaxCount)
@@ -63,9 +71,10 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 		Current = 1;
 	}
 
-	// notify the caller that we haven't changed anything. also avoid triggering an onMod 
-	if (CurDiff == 0) {
-		UE_LOG(LogInventory, Warning, TEXT("Item unchanged. Diff is 0. Maybe it has reached the maximum. Name=%s"), *Name.ToString());
+	// notify the caller that we haven't changed anything. also avoid triggering an onMod and selection
+	if (UNLIKELY(CurDiff == 0)) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item unchanged. Diff is 0. Maybe it has reached the maximum. Name=%s"),
+			__func__, *Name.ToString());
 		return false;
 	}
 	
@@ -74,22 +83,24 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 	// intentionally copying the item, to avoid issues. the item might have been removed, or might 
 	FItem ItemCopy = *Item;
 	// remove empty consumables
+	// important to remove items with quantity 0. used for "Has()"
 	if (Item->Consumable && Item->Count <= 0) {
-		// this code sucks i don't like it. todo improve.
+		// preemptively select the next one
+		// this code sucks, i don't like it. todo improve.
 		if (Name == Selected) {
 			NewSel = GetNextKey();
 			SetSelect = true;
 		}
-		// important to remove items with quantity 0. used for "Has()"
 		Items.Remove(Name);
 	}
 
+	// finally notify
 	OnMod.Broadcast(Name, CurDiff, MoveTemp(ItemCopy));
 
 	// Set selected only after removing.
 	// there's something fishy going on. otherwise it will remove the wrong object!
 	// also triggering it at the end works better with the ui
-	if (SetSelect) SetSelected(NewSel);
+	if (UNLIKELY(SetSelect)) SetSelected(NewSel);
 
 	return true;
 }
@@ -97,7 +108,8 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 bool UInventory::Ensure(const FName& Name) {
 	if (LIKELY(Has(Name))) return true;
 
-	UE_LOG(LogInventory, Log, TEXT("Ensured item. name=%s"), *Name.ToString());
+	UE_LOG(LogInventory, Log, TEXT("%hs Ensured item. name=%s"),
+		__func__, *Name.ToString());
 	return Mod(Name, 1);
 }
 
@@ -120,8 +132,8 @@ bool UInventory::Rem(const FName& Name) {
 	return true;
 }
 
-bool UInventory::Clear(int32 NumReserve) {
-	UE_LOG(LogInventory, Log, TEXT("Clearing all items. Reserve=%i"), NumReserve);
+bool UInventory::Clear(const int32 NumReserve) {
+	UE_LOG(LogInventory, Log, TEXT("%hs Clearing all items. Reserve=%i"), __func__, NumReserve);
 
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
@@ -134,10 +146,10 @@ bool UInventory::Clear(int32 NumReserve) {
 }
 
 bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
-	if (!IsValid(DT)) return false;
+	if (UNLIKELY(!IsValid(DT))) return false;
 
 	const FItem* const Item = DT->FindRow<FItem>(Name, TEXT(""));
-	if (!Item) return false;
+	if (UNLIKELY(!Item)) return false;
 
 	// set the item anyway even if not found
 	OutItem = *Item; // note this is a copy
@@ -146,14 +158,14 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 
 bool UInventory::Get(const FName& Name, FItem& OutItem) const {
 	const FItem* pItem = Items.Find(Name);
-	if (!pItem) return false;
+	if (UNLIKELY(!pItem)) return false;
 
 	OutItem = *pItem; // purposely return a copy
 	return true;
 }
 
 void UInventory::Init(UDataTable* const DataTable) {
-	if (IsValid(DataTable)) DT = DataTable;
+	if (LIKELY(IsValid(DataTable))) DT = DataTable;
 }
 
 void UInventory::DeInit() {
@@ -170,17 +182,16 @@ void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
 }
 
 bool UInventory::GetSelectedItem(FItem& Item) const {
-	if (Selected.IsNone()) {
-		UE_LOG(LogInventory, Warning, TEXT("No item is selected."));
+	if (UNLIKELY(Selected.IsNone())) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs No item is selected."), __func__);
 		return false;
 	}
 	
-	if (!Get(Selected, Item)) {
-		UE_LOG(LogInventory, Warning, TEXT("Item does not exists? but here? this should NOT happen!!!!"));
-		return false;
-	}
-
-	return true;
+	if (LIKELY(Get(Selected, Item))) return true;
+	
+	UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exists? But that shouldn't happen here."),
+		__func__);
+	return false;
 }
 
 FName UInventory::GetNextKey(const bool Forward, FName From) const {
@@ -188,7 +199,7 @@ FName UInventory::GetNextKey(const bool Forward, FName From) const {
 		if (UNLIKELY(Selected.IsNone())) return NAME_None;
 		From = Selected;
 	}
-	
+
 	TArray<FName> Keys;
 	Items.GetKeys(Keys);
 	// <2 because one will get removed. and we need to tell this situation apart to clear the selected
@@ -203,15 +214,15 @@ FName UInventory::GetNextKey(const bool Forward, FName From) const {
 }
 
 bool UInventory::SetSelected(const FName& Name) {
-	if (!Name.IsNone() && !Items.Contains(Name)) return false;
-	if (Name == Selected) return false;
+	if (UNLIKELY(!Name.IsNone() && !Items.Contains(Name))) return false;
+	if (UNLIKELY(Name == Selected)) return false;
 	
 	Selected = Name;
 	OnSelected.Broadcast(Selected);
 	return true;
 }
 
-bool UInventory::Has(const FName& Name) {
+bool UInventory::Has(const FName& Name) const {
 	if (UNLIKELY(Name.IsNone())) return false;
 	// note that this depends on items being removed when quantity is <=0
 	return Items.Contains(Name);
@@ -223,7 +234,8 @@ bool UInventory::Use(const FName& Name) {
 	if (UNLIKELY(!Found)) return false; 
 
 	if (UNLIKELY(!IsUsable(Item))) {
-		UE_LOG(LogInventory, Warning, TEXT("%hs Item is unusable. Stop. '%s'"), __func__, *Name.ToString());
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item is unusable. Stop. '%s'"),
+			__func__, *Name.ToString());
 		return false;
 	}
 
@@ -234,10 +246,11 @@ bool UInventory::Use(const FName& Name) {
 	// set before calling Mod, since mod will dispatch OnMod
 	// if this is the last one, then it makes no difference. who cares.
 	Item.ActiveCoolDown = Item.CoolDown;
-	if (Item.ActiveCoolDown>0) SetCoolTimerEnabled(true);
+	if (_IsHot(Item)) SetCoolTimerEnabled(true);
 
 	// intentionally make a copy since when an object gets removed from the pool,
-	// the fname automagically transforms to the next name. W T F (maybe the tarray copies instead of moving)
+	// the fname automagically transforms to the next name. W T F
+	// (maybe the tarray copies instead of moving)
 	const FName OldName = Name;
 	// intentionally calling mod so that onMod is triggered
 	Mod(Name, -1);
@@ -257,28 +270,32 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 
 bool UInventory::IsUsable(const FItem& Item) {
 	if (!Item.Usable) return false;
+
 	if (Item.IsLocked) {
-		UE_LOG(LogInventory, Log, TEXT("Item is blocked. title='%s'"), *Item.Title.ToString());
+		UE_LOG(LogInventory, Log, TEXT("%hs Item is blocked. title='%s'"),
+			__func__, *Item.Title.ToString());
 		return false;
 	}
-	if (!IsCold(Item)) {
-		UE_LOG(LogInventory, Log, TEXT("Item is not cold. title='%s' wait=%i"), *Item.Title.ToString(), Item.ActiveCoolDown);
+
+	if (_IsHot(Item)) {
+		UE_LOG(LogInventory, Log, TEXT("%hs Item is not cold. title='%s' wait=%i"),
+			__func__, *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
 	}
+
 	return true;
 }
 
-// do i need this?
-// returns cold if it doesn't need to cool down, whether it uses or not cooldowns
 bool UInventory::IsCold(const FItem& Item) {
-	const bool Cold = Item.ActiveCoolDown <= 0;
-	UE_LOG(LogInventory, Log, TEXT("Item Is cold?. cold=%i wait=%i title='%s'"), Cold, Item.ActiveCoolDown, *Item.Title.ToString());
+	const bool Cold = _IsCold(Item);
+	UE_LOG(LogInventory, Log, TEXT("%hs cold=%i wait=%i title='%s'"),
+		__func__, Cold, Item.ActiveCoolDown, *Item.Title.ToString());
 	return Cold;
 }
 
-void UInventory::SetCoolTimerEnabled(bool Enable) {
+void UInventory::SetCoolTimerEnabled(const bool Enable) {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (LIKELY(!World)) return;
 
 	// done this way since there could be many items hot at the same time.
 	
@@ -304,20 +321,21 @@ void UInventory::CoolTimerTick() {
 	for(int32 i=0; i<ItemsNum; ++i){
 		const FName& Name = Keys[i];
 		FItem& Item = Items[Name];
-		if (Item.ActiveCoolDown<=0) continue;
+		if (_IsCold(Item)) continue;
 		
-		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-1);
-		if (Item.ActiveCoolDown > 0) {
+		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-1); // update cooldown, make sure to clamp
+		if (_IsHot(Item)) {
 			AllCool = false;
 			continue;
 		}
+
 		ColdItems.Add(Name);
 	}
 
-	if (AllCool) {
-		SetCoolTimerEnabled(false);
-	}
+	if (UNLIKELY(AllCool))
+		SetCoolTimerEnabled(false); // schedule new timer if needed
 
+	/// notify
 	const int32 ColdNum = ColdItems.Num();
 	for (int32 i=0; i<ColdNum; ++i) {
 		OnCold.Broadcast(ColdItems[i]);
@@ -325,7 +343,7 @@ void UInventory::CoolTimerTick() {
 }
 
 FItem* UInventory::AddNew(const FName& Name) {
-	if (Items.Contains(Name)) return nullptr;
+	if (UNLIKELY(Items.Contains(Name))) return nullptr;
 
 	FItem OutItem;
 	const bool FoundRaw = GetRaw(Name, OutItem);
@@ -336,14 +354,14 @@ FItem* UInventory::AddNew(const FName& Name) {
 
 	// replace in case .Add changes it
 	FItem* const pOutItem = &Items.Add(Name, OutItem);
-	if (!pOutItem) return nullptr;
+	if (UNLIKELY(!pOutItem)) return nullptr;
 	
 	// reset transient variables to avoid issues with input.
 	pOutItem->Count = 0;
 	pOutItem->ActiveCoolDown = 0;
 	if (IsValid(pOutItem->LogicType)) { // creates the logic if possible
-		UClass* const ManType = pOutItem->LogicType.Get();
-		if (IsValid(ManType)) {
+		const UClass* const ManType = pOutItem->LogicType.Get();
+		if (LIKELY(IsValid(ManType))) {
 			pOutItem->Logic = NewObject<UItemLogic>(this, ManType);
 			pOutItem->Logic->Name = Name;
 		}
@@ -354,15 +372,15 @@ FItem* UInventory::AddNew(const FName& Name) {
 
 FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
 	static FItem FauxItem;
-	if (Name.IsNone()) {
+	if (UNLIKELY(Name.IsNone())) {
 		OutFound = false;
 		return FauxItem;
 	}
 
 	FItem* const pItem = Items.Find(Name);
 	OutFound = !!pItem;
-	if (!OutFound) {
-		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
+	if (UNLIKELY(!OutFound)) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exist. '%s'"), __func__, *Name.ToString());
 		return FauxItem;
 	}
 	
@@ -375,8 +393,8 @@ const FItem& UInventory::GetRefC(const FName& Name, bool& OutFound) const {
 	static FItem FauxItemConst;
 	const FItem* const pItem = Items.Find(Name);
 	OutFound = !!pItem;
-	if (!OutFound) {
-		UE_LOG(LogInventory, Error, TEXT("Can't get non existent item '%s'"), *Name.ToString());
+	if (UNLIKELY(!OutFound)) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exist. '%s'"), __func__, *Name.ToString());
 		return FauxItemConst;
 	}
 
