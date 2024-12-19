@@ -73,12 +73,6 @@ void APotI00::DoTrigger_Implementation() {
 		SFX_Trigger = SND_Drops;
 		
 		Story->StartNext(); // manually advance.
-	// } else if (State == 2) {
-		// triggers once the empty plate is used and the full rewarded
-		// TriggerDlg = "Pot00.2_T";
-		// LockedDlg = "Pot00.2_L"; // "you'll need a plate"
-
-		// Story->StartNext();
 	} else if (State == 0) { // has looped over (notice the check is last)\
 		// TODO fix this is not working
 		RewardItem = LDConsts::Items::Plate02; // this gets rewarded after this function call

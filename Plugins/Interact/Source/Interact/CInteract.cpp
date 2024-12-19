@@ -44,13 +44,13 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 	UStaticMeshComponent* const HMesh = HoverMesh.Get();
 	// wrapped to always trigger the delegate
 	if (IsValid(HMesh)) {
-		TArray<USceneComponent*> Children;
-		HMesh->GetChildrenComponents(true, Children);
-		Children.Add(HMesh);
-		const int32 Num = Children.Num();
+		TArray<USceneComponent*> Meshes;
+		HMesh->GetChildrenComponents(true, Meshes);
+		Meshes.Add(HMesh);
+		const int32 Num = Meshes.Num();
 		for (int32 i = 0; i<Num; ++i) {
-			UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Children[i]);
-			if (!IsValid(Child)) continue;
+			UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Meshes[i]);
+			if (UNLIKELY(!IsValid(Child))) continue;
 			
 			Child->SetRenderCustomDepth(IsHover);
 			// To have this working you need to enable the usage of custom stencils on the settings to
