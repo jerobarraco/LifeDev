@@ -4,15 +4,18 @@
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
-// TODO cleanup
-// TODO fix not rewarding the plate
-
 // deactivated by default
 // stove activates it
-// two foods unlock and trigg
+// two foods unlock and triggers
+// then goes to next step
+// the step enables the sponge
+// the sponge goes to next step and gives plate
+// the plate can be used again which rewards another plate
+// the other plate triggers the spot
 APotI00::APotI00():Super() {
 	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
@@ -71,14 +74,14 @@ void APotI00::DoTrigger_Implementation() {
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
 		SFX_Trigger = SND_Drops;
-		
 		Story->StartNext(); // manually advance.
-	} else if (State == 0) { // has looped over (notice the check is last)\
-		// TODO fix this is not working
-		RewardItem = LDConsts::Items::Plate02; // this gets rewarded after this function call
+	} else if (State == 0) { // has looped over (notice the check is last)
+		// reward a plate. not using rewarditem or the parent's functionality since it's too cumbersome in this case.
+		Inventory->Mod(LDConsts::Items::Plate02, 1);
+		
 		SFX_Trigger = nullptr; // no sound after
 		SetActive(false); // no more interaction for you
-		// not advancing the story here. it will advance when the player uses the plate.
+		// not advancing the story here. it will advance when the player uses the plate on the chair (spot
 	}
 }
 
