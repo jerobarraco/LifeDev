@@ -36,10 +36,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	EDialogType Type = EDialogType::NORMAL;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// EDialogType Type = EDialogType::NORMAL; // see clcharitems
 	// WIP TODO
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	// TMap<FName, FText> Options;

@@ -70,7 +70,7 @@ void UCLCharItems::Look(const FName& Name) const {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
 		FDialog Diag;
-		Diag.Type = EDialogType::SYSTEM;
+		// Diag.Type = EDialogType::SYSTEM;
 		Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
 		Diags->AddDiag(Diag);
