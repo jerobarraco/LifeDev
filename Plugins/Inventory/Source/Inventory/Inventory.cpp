@@ -6,10 +6,8 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
-// TODo clean unlikely
-
 #define _IsCold(I) I.ActiveCoolDown<=0
-#define _IsHot(I) I.ActiveCoolDown>0
+#define _IsNotCold(I) I.ActiveCoolDown>0
 
 UInventory* UInventory::Instance(const UWorld* const W) {
 	if (UNLIKELY(!IsValid(W))) return nullptr;
@@ -157,7 +155,7 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 }
 
 bool UInventory::Get(const FName& Name, FItem& OutItem) const {
-	const FItem* pItem = Items.Find(Name);
+	const FItem* const pItem = Items.Find(Name);
 	if (UNLIKELY(!pItem)) return false;
 
 	OutItem = *pItem; // purposely return a copy
@@ -246,7 +244,7 @@ bool UInventory::Use(const FName& Name) {
 	// set before calling Mod, since mod will dispatch OnMod
 	// if this is the last one, then it makes no difference. who cares.
 	Item.ActiveCoolDown = Item.CoolDown;
-	if (_IsHot(Item)) SetCoolTimerEnabled(true);
+	if (_IsNotCold(Item)) SetCoolTimerEnabled(true);
 
 	// intentionally make a copy since when an object gets removed from the pool,
 	// the fname automagically transforms to the next name. W T F
@@ -277,7 +275,7 @@ bool UInventory::IsUsable(const FItem& Item) {
 		return false;
 	}
 
-	if (_IsHot(Item)) {
+	if (_IsNotCold(Item)) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Item is not cold. title='%s' wait=%i"),
 			__func__, *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
@@ -324,7 +322,7 @@ void UInventory::CoolTimerTick() {
 		if (_IsCold(Item)) continue;
 		
 		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-1); // update cooldown, make sure to clamp
-		if (_IsHot(Item)) {
+		if (_IsNotCold(Item)) {
 			AllCool = false;
 			continue;
 		}
@@ -333,7 +331,7 @@ void UInventory::CoolTimerTick() {
 	}
 
 	if (UNLIKELY(AllCool))
-		SetCoolTimerEnabled(false); // schedule new timer if needed
+		SetCoolTimerEnabled(false); // remove timer
 
 	/// notify
 	const int32 ColdNum = ColdItems.Num();
@@ -347,8 +345,9 @@ FItem* UInventory::AddNew(const FName& Name) {
 
 	FItem OutItem;
 	const bool FoundRaw = GetRaw(Name, OutItem);
-	if (!FoundRaw) {
-		UE_LOG(LogInventory, Warning, TEXT("Attempted to add an item that doesn't exists. Name=%s"), *Name.ToString());
+	if (UNLIKELY(!FoundRaw)) {
+		UE_LOG(LogInventory, Warning,
+			TEXT("%hs Attempted to add an item that doesn't exists. Name=%s"), __func__, *Name.ToString());
 		return nullptr;
 	}
 
