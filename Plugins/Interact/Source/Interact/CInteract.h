@@ -16,7 +16,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab
 // Set the relative position on the viewport, (but avoid changing the scale). Also set the box extent. 
 // By default, it will start active, since there's a ue issue around that.
 // To change it you'll need to do it on BeginPlay.
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType,
+	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent),
+	Config=Interact, DefaultConfig)
 class INTERACT_API UCInteract: public UBoxComponent {
 	GENERATED_BODY()
 
@@ -26,6 +28,7 @@ public:
 	virtual void Deactivate() override;
 	virtual void Activate(const bool bReset=false) override;
 	virtual void SetActive(const bool bNewActive, const bool bReset = false) override;
+
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	static void SetDefaultCollisionProfile(const FName& Name) { Profile = Name; }
@@ -40,8 +43,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FText Text = FText::GetEmpty();
 	
+	// ID to use when writing to the custom depth stencil. Only if HoverMesh is set.
+	// Default can be changed on the configs.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
+		meta=(ClampMin=0, ClampMax=255), Config)
+	int32 HoverStencilID = 255;
+	
 	// Mesh to automatically highlight, if any.
-	// will write a custom render stencil value 255.
+	// will write a custom render stencil value HoverStencilID (255).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TWeakObjectPtr<UStaticMeshComponent> HoverMesh = nullptr;
 

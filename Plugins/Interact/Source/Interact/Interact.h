@@ -14,7 +14,6 @@ class USoundBase;
 class UAudioComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTryTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTriggerLocked);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 

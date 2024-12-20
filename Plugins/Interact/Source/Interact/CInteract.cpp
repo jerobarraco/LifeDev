@@ -55,7 +55,7 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 			Child->SetRenderCustomDepth(IsHover);
 			// To have this working you need to enable the usage of custom stencils on the settings to
 			// "Custom depth stencil pass : Enabled WITH STENCIL"
-			Child->SetCustomDepthStencilValue(IsHover?255:0);
+			Child->SetCustomDepthStencilValue(IsHover?HoverStencilID:0);
 		}
 	}
 
