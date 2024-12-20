@@ -39,6 +39,10 @@ public:
 	EDialogType Type = EDialogType::NORMAL;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
+
+	// WIP TODO
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, FText> Options;
 };
 
 // The base structure for dialog sequences
