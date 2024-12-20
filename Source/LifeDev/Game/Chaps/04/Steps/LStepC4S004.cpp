@@ -14,8 +14,8 @@ ALStepC4S004::ALStepC4S004():Super() {
 	TeleportChar = false;
 
 	UseRandFB = true; // min is limited in c4s0
-	RandFB->DelayMin = .2;
-	RandFB->DelayMax = .75;
+	RandFB->DelayMin = .5;
+	RandFB->DelayMax = .85;
 	RandFB->ValueMin = -.015;
 	RandFB->ValueMax = .005;
 }

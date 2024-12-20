@@ -19,5 +19,4 @@ ATapeI03::ATapeI03():Super() {
 	LockedDlg = FName("T03_L");
 	LockedItemDlg = FName("T03_LI"); // will hint to use the batts
 	TriggerDlg = FName("T03_Look*"); // will say what it is. triggered on pick up
-
 }

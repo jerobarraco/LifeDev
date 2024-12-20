@@ -60,7 +60,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedMin = 65;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
-	float SpeedMax = 150;
+	float SpeedMax = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedFoxy = 10;
 
