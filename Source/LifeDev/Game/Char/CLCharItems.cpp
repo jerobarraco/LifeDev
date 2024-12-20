@@ -95,7 +95,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
-	if (!Item.Usable) {
+	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
 		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable
@@ -123,7 +123,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	}
 
 	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
-		// mark the item as used, it won't trigger the manager.
+		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
 		Inventory->Use(Name);
 		return Res;
@@ -141,19 +141,21 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 
 		const bool ValidLogic = IsValid(Item.Logic);
 		// save myself some pain if i forget. warn to myself.
-		UE_CLOG(!ValidLogic, LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
+		UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
 			"It won't really be used. Skip."), __func__);
 
-		// TODO why am i not calling the logic use inside inventory use ???
-
-		// Calling inventory use first, since cooldown could affect it.
-		const bool Ok = ValidLogic && Inventory->Use(Name);
-		// if it fails to use it, fall through to the rest of the error
-		if (LIKELY(Ok)) {
-			Item.Logic->Use();
-			return EItemUseResult::SUCCESS;
+		if (LIKELY(ValidLogic)) {
+			// Calling inventory use first, since cooldown could affect it.
+			const bool Used = Inventory->Use(Name);
+			// if it fails to use it, fall through to the rest of the error
+			if (LIKELY(Used)) {
+				Item.Logic->Use();
+				return EItemUseResult::SUCCESS;
+			}
 		}
 	}
+
+	// At this point there was an error
 
 	const bool IsBadTarget = Res == EItemUseResult::BAD_TARGET;
 	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),

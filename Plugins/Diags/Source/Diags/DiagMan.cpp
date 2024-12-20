@@ -57,10 +57,10 @@ void ADiagMan::DeInit_Implementation() {
 void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 
-	UE_CLOG(IsShowing, LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),
+	UE_CLOG(UNLIKELY(IsShowing), LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),
 		__func__);
 
-	if (DebugSkip) {
+	if (UNLIKELY(DebugSkip)) {
 		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
 		const UWorld* const World = GetWorld();
 		// skip on the next frame to avoid having issues due to call stack
@@ -135,12 +135,14 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ADiagMan::UIDiagDone() {
 	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
 	if (UNLIKELY(!IsValid(Diags))) return;
+
 	Diags->DiagDone();
 }
 
 void ADiagMan::Skip() {
 	UE_LOG(LogTextDialogs, Log, TEXT("Skip"));
 	if(UNLIKELY(!IsValid(UI))) return;
+
 	UI->Skip();
 }
 

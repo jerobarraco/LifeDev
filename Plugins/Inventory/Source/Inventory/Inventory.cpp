@@ -255,6 +255,10 @@ bool UInventory::Use(const FName& Name) {
 
 	OnUsed.Broadcast(OldName);
 	return true;
+
+	// Not triggering the item->Logic here since that's only for self-usage.
+	// and we need to support using with other items.
+	// since a self-usable item can also be used with other items, only the caller really knows.
 }
 
 bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
