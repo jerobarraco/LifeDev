@@ -33,16 +33,16 @@ public:
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName CharRow;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	FText Text;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EDialogType Type = EDialogType::NORMAL;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
-	FText Text;
-
 	// WIP TODO
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<FName, FText> Options;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// TMap<FName, FText> Options;
 };
 
 // The base structure for dialog sequences
