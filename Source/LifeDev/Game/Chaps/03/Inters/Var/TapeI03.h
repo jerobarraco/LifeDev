@@ -5,7 +5,7 @@
 
 #include "TapeI03.generated.h"
 
-// Tape Instance 02. Chapter 02 has some song.
+// Tape Instance 03. Chapter 03 has some song.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATapeI03: public ATape00 {
 	GENERATED_BODY()
