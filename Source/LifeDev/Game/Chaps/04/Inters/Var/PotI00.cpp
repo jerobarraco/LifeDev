@@ -60,7 +60,8 @@ APotI00::APotI00():Super() {
 void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	UE_LOG(LogTemp, Log, TEXT("%hs state=%i"), __func__, State);
-	
+
+	// this could potentially be SetState instead of DoTrigger but it's possible that SetState(0) is called on beginplay
 	// state ought to be the new one after super::doTrigger (that means that the first time it's going to be 1)
 	if (State == 1) {
 		// triggered after adding food

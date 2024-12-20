@@ -4,6 +4,7 @@
 
 #include "LifeDev/Core/Consts/ConstItems.h"
 
+static const FName NTriggerDlg = "TV02_T";
 ATvI02::ATvI02():Super() {
 	UseItemDlgs = {
 		{LDConsts::Items::Card0, "TV02xC00"},
@@ -12,5 +13,12 @@ ATvI02::ATvI02():Super() {
 		{LDConsts::Items::Card3, "TV02xC03"},
 		{LDConsts::Items::Card4, "TV02xC04"},
 	};
-	TriggerDlg = "TV02_T";
+	TriggerDlg = NTriggerDlg;
+}
+
+void ATvI02::SetState_Implementation(const int32 NewState) {
+	Super::SetState_Implementation(NewState);
+	// ==1 because it's set for the next interaction
+	// only trigger when turning on
+	TriggerDlg = NewState == 1 ? NTriggerDlg : NAME_None;
 }
