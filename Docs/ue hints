@@ -36,4 +36,13 @@ https://forums.unrealengine.com/t/what-do-if-i-cant-use-constructorhelpers-fobje
 	m_meshComponent->SetStaticMesh(newMesh);
 	
 passing lambdas
-TUniqueFunction<void()> F = [this] {
+	TUniqueFunction<void()> F = [this] {
+
+can add a dynamic delegate to a dynamic multicast delegate. (not tested)
+	DECLARE_DYNAMIC_DELEGATE(DD)
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(DMD)
+	DD DDi;
+	DMD.Add(DDi);
+	
+	so a dynamic delegate can be used as a "const TScriptDelegate<ThreadSafetyMode>&"
+	Has not been tested. might not work. but compiles. 
