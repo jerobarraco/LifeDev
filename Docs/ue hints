@@ -45,4 +45,4 @@ can add a dynamic delegate to a dynamic multicast delegate. (not tested)
 	DMD.Add(DDi);
 	
 	so a dynamic delegate can be used as a "const TScriptDelegate<ThreadSafetyMode>&"
-	Has not been tested. might not work. but compiles. 
+	Has not been tested. might not work. but compiles.
