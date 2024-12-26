@@ -6,9 +6,9 @@
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 
 constexpr float SndWait = 1.75;
 
@@ -30,6 +30,7 @@ APuzzleI04::APuzzleI04():Super() {
 
 void APuzzleI04::PostLoad() {
 	Super::PostLoad();
+
 	// common item dialogs
 	static const TMap<FName, FName> Dlgs = {
 		{LDConsts::Items::Card0, "PZ04xC00"},
@@ -38,7 +39,7 @@ void APuzzleI04::PostLoad() {
 		// {LDConsts::Items::Card3, "PZ04xC03"} // is rewarded after this
 	};
 	SetUseItemDlgs(Dlgs);
-	
+
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
 }
@@ -102,3 +103,19 @@ void APuzzleI04::LidDone() {
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
 }
+
+// tried it and did not work (on postLoad) might be too early.
+// TArray<UClass*> Classes = {
+// 	APianoKeyI00::StaticClass(),
+// 	APianoKeyI01::StaticClass(),
+// 	APianoKeyI02::StaticClass(),
+// 	APianoKeyI03::StaticClass()
+// };
+//
+// TArray<AInteract*> Inters;
+// for (UClass* const Class : Classes) {
+// 	Inters.AddUnique(
+// 		Cast<AInteract>(
+// 			UGameplayStatics::GetActorOfClass(GetWorld(), Class)));
+// }
+// CPuzzle->SetInteracts(Inters);
