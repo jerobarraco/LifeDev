@@ -57,7 +57,6 @@ void ALFeatsMan::BeginPlay() {
 	// force initialize
 	LoadMPC();
 
-	
 	FeatUpVisual(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
 	FeatUpVisual(EFeat::V_BLUR, S && S->GetFeat(EFeat::V_BLUR));
 	FeatUpVisual(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));

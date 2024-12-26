@@ -16,13 +16,13 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 static const FString SaveSlot("LifeDev_");
 
 ULSettings* ULSettings::Instance(const UObject* const O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const World = O->GetWorld();
-	if (!IsValid(World)) return nullptr;
+	if (UNLIKELY(!IsValid(World))) return nullptr;
 
 	const UGameInstance* const Instance = World->GetGameInstance();
-	if (!IsValid(Instance)) return nullptr;
+	if (UNLIKELY(!IsValid(Instance))) return nullptr;
 	
 	return Instance->GetSubsystem<ULSettings>();
 }
