@@ -7,15 +7,15 @@
 #include "Diags/DiagMan.h"
 #include "Inventory/Flags.h"
 
-#include "LDialogMan.generated.h"
+#include "LDiagMan.generated.h"
 
 // Dialog manager. dynamically instanced on the level
 UCLASS(Blueprintable)
-class LIFEDEV_API ALDialogMan : public ADiagMan {
+class LIFEDEV_API ALDiagMan : public ADiagMan {
 	GENERATED_BODY()
 
 public:
-	ALDialogMan();
+	ALDiagMan();
 
 protected:
 	virtual void BeginPlay() override;

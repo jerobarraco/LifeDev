@@ -14,7 +14,7 @@ class ALStoryMan;
 class APostProcessVolume;
 class ULSettings;
 class UInputMappingContext;
-class ALDialogMan;
+class ALDiagMan;
 class ALInventoryMan;
 class ALFeatsMan;
 class ALMusicMan;
@@ -72,7 +72,7 @@ public:
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	/// only making public the ones that require a GetActorOfClass (not the subsystems)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ALDialogMan> DiagMan = nullptr;
+	TObjectPtr<ALDiagMan> DiagMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALInventoryMan> InventoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

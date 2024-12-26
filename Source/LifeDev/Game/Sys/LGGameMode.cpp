@@ -34,7 +34,7 @@
 #include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
-#include "LifeDev/Game/Dialogs/LDialogMan.h"
+#include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
@@ -174,7 +174,7 @@ void ALGGameMode::Init_Implementation() {
 	} else
 		StoryMan = nullptr;
 
-	DiagMan = Cast<ALDialogMan>(World->SpawnActor(ALDialogMan::StaticClass()));
+	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
 	if (IsValid(DiagMan)) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
