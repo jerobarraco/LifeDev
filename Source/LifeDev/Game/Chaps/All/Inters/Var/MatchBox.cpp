@@ -10,6 +10,8 @@ AMatchBox::AMatchBox():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	UseFade = false; // not setting newmat because it won't fade.
+	// if you need it to fade, you'll need a new mat.
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/Matchbox00"));
@@ -22,10 +24,6 @@ AMatchBox::AMatchBox():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
-
-	/// Anims
-	// AnimFade->SetNewMat();
-	UseFade = true;
 
 	Super::SetAutoActivate(true);
 	AMatchBox::SetMobility(EComponentMobility::Static);

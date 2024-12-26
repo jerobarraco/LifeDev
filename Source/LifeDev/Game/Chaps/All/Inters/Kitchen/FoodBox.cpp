@@ -22,10 +22,9 @@ AFoodBox::AFoodBox():Super() {
 	// would have to be set on child instances.
 	
 	Interact->SetRelativeLocation(FVector(10,-5,12.5));
-	Interact->SetBoxExtent(FVector(15,10,16));
+	Interact->SetBoxExtent(FVector(15,7.5,15));
 	SFX->SetRelativeLocation(FVector(10,-5,12.5));
 
-	// TODO find why it doesn't play. Could it be self-occluding?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
