@@ -65,7 +65,7 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 	if (UNLIKELY(DebugSkip)) {
 		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
 		// skip on the next frame to avoid having issues due to call stack
-		World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
+		World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::DiagDone);
 		return;
 	}
 

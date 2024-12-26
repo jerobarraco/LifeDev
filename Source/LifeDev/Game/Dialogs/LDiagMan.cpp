@@ -34,7 +34,7 @@ void ALDiagMan::Show_Implementation(const FDialog& Diag) {
 	if (!UseAuto) return;
 
 	AutoClear();
-	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime);
+	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime, AutoTime < 2);
 }
 
 void ALDiagMan::DiagDone_Implementation() {
