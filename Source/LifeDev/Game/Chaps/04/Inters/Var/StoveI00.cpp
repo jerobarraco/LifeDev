@@ -18,5 +18,19 @@ AStoveI00::AStoveI00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
 	SFX_Trigger = CSnd.Object;
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSndB(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/match_burn_meridian_-09"));
+	SFX_TriggerB = CSndB.Object;
+
 	Super::SetAutoActivate(false); // activated by LNPCI06
+}
+
+void AStoveI00::DoTrigger_Implementation() {
+	Super::DoTrigger_Implementation();
+
+	// small trick so that i can play 2 sfxs at once. the default one is shortlived.
+	UseAttachedSFX = false;
+	PlaySFX(SFX_TriggerB);
+	UseAttachedSFX = true;
 }

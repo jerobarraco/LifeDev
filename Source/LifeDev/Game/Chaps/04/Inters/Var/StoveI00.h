@@ -12,4 +12,11 @@ class LIFEDEV_API AStoveI00: public AStove {
 
 public:
 	AStoveI00();
+
+protected:
+	virtual void DoTrigger_Implementation() override;
+	
+	// matches snd
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TObjectPtr<USoundBase> SFX_TriggerB = nullptr;
 };
