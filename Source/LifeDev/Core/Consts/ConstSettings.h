@@ -26,6 +26,8 @@ enum class EFeat: uint8 {
 	D_SHOW,
 	// Show the text on the dialogs, otherwise they get censored
 	D_TEXT,
+	// Automatically advances dialogs
+	D_AUTO,
 	D_MAX UMETA(Hidden),
 #pragma endregion
 
