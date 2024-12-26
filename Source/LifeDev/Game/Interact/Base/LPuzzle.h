@@ -33,7 +33,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	virtual void Done_Implementation(bool IsOk) override;
+	virtual void Done_Implementation(const bool IsOk) override;
 
 	// Dialog to show on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")

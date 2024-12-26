@@ -20,21 +20,22 @@ ALPuzzle::ALPuzzle():Super() {
 }
 
 void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
-	if (!CPuzzle) return;
+	if (UNLIKELY(!CPuzzle)) return;
 
 	// set the dialogs on each registered interact
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	for (AInteract* const I: Inters) {
 		ALInteract* const LI = Cast<ALInteract>(I);
-		if (!IsValid(LI)) continue;
+		if (UNLIKELY(!IsValid(LI))) continue;
 		// better to override the whole array than having issues down the line.
 		// it also allows to remove stuff.
-		LI->UseItemDlgs = Dlgs;	
+		LI->UseItemDlgs = Dlgs;
 	}
 }
 
-void ALPuzzle::Done_Implementation(bool IsOk) {
-	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
+void ALPuzzle::Done_Implementation(const bool IsOk) {
+	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
+		IsOk, *GetNameSafe(this));
 
 	Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
 	
@@ -42,11 +43,11 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 
 	/// do all rewardy stuff
 	
-	if (Diags) Diags->AddId(DoneDlg);
-	if (FB) FB->ModVal(DoneFB);
-	if (Flags) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
-	if (Inventory) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
-	if (Story && !DoneStep.IsNone()) Story->StartNext(DoneStep);
+	if (LIKELY(Diags)) Diags->AddId(DoneDlg);
+	if (LIKELY(FB)) FB->ModVal(DoneFB);
+	if (LIKELY(Flags)) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
+	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
+	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
@@ -57,7 +58,7 @@ void ALPuzzle::Done_Implementation(bool IsOk) {
 void ALPuzzle::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 	
 	Story = UStory::Instance(W);
 	FB = UFlashback::Instance(W);
