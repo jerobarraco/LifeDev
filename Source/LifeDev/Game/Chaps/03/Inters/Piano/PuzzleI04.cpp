@@ -53,10 +53,10 @@ void APuzzleI04::Done_Implementation(bool Ok) {
 
 	// give time for audio to play
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	ALGGameMode* const Mode = ALGGameMode::Instance(W);
-	if (Mode) Mode->SetCharInputEnabled(false);
+	if (LIKELY(Mode)) Mode->SetCharInputEnabled(false);
 	
 	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::PostDone, SndWait);
@@ -75,7 +75,7 @@ void APuzzleI04::PostDone() {
 }
 
 void APuzzleI04::PostDoneSnd() {
-	if (!WasOk || !IsValid(Lid)) {
+	if (UNLIKELY(!WasOk || !IsValid(Lid))) {
 		// retry or skip animation
 		LidDone();
 		return;
@@ -88,6 +88,7 @@ void APuzzleI04::PostDoneSnd() {
 	FTimerHandle H;
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
+
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Lid->Anim->Duration);
 }
 
