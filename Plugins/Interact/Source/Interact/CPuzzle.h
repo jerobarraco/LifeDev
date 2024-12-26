@@ -75,9 +75,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void ResetCurrents();
 
+	// the puzzle type. controls the behavior.
+	// beware of changing this after BeginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	EPuzzleType Type = EPuzzleType::SEQUENCE;
-	
+
 	// The solution for this puzzle.
 	// For a Sequence this is a sequence of *Ids* of interactions. in the order you expect them to be triggered.
 	// the Id is the *index* in the list of interacts.
@@ -116,7 +118,7 @@ protected:
 	bool CheckCombination(const int32 ID);
 	bool IsCurrentSolution();
 	// internal. to be called when done
-	void Done(bool Ok = true) const;
+	void Done(const bool Ok = true) const;
 
 	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound

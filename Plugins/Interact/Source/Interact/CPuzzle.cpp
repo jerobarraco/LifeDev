@@ -9,7 +9,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 
 UCPuzzle::UCPuzzle(): Super() {
-	// these 2 seems to work ok. but keep an eye on.
+	// seems to work. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
@@ -17,7 +17,7 @@ void UCPuzzle::Reset_Implementation() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
 	for (AInteract* const I: Interacts) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->Reset();
 		I->SetActive(true);
 	}
@@ -34,20 +34,20 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 
 	Interacts.Empty(Inters.Num());
 	for (AInteract* const I: Inters) {
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		Interacts.Add(I);
 	}
 
 	Bind();
 }
 
-void UCPuzzle::Done(bool Ok) const {
+void UCPuzzle::Done(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
 		__func__, Ok, *GetNameSafe(this));
 
 	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
-			if (!IsValid(I)) continue;
+			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
 		}
 	}
@@ -61,7 +61,7 @@ void UCPuzzle::ResetCurrents() {
 	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
 		for (AInteract* const I: Interacts) {
-			if (!IsValid(I)) continue;
+			if (UNLIKELY(!IsValid(I))) continue;
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
 		if (CurrentIds.Num() != Solution.Num()) {
@@ -106,10 +106,10 @@ void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
 	for (UDelegateWrapper* const W: Wrappers){
-		if (!IsValid(W)) continue;
+		if (UNLIKELY(!IsValid(W))) continue;
 		
 		AInteract* const I = Cast<AInteract>(W->Obj);
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->OnTrigger.RemoveAll(W);
 	}
 
@@ -171,7 +171,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 
 	if (Type == EPuzzleType::SEQUENCE) {
 		const bool Ok = CheckSequence(ID);
-		// if the length matches return done anyways (means success false)
+		// if the length matches return "done" anyway (means success false)
 		if (Solution.Num() == CurrentIds.Num()) {
 			Done(Ok);
 			return;
