@@ -38,9 +38,9 @@ public:
 	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
 	// attempt to skip the current dialog
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Skip();
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Back();
 
 	virtual void BeginPlay() override;
@@ -68,6 +68,9 @@ public:
 	bool DebugSkip = false;
 
 protected:
+	UFUNCTION(BlueprintNativeEvent)
+	void DiagDone();
+	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
 

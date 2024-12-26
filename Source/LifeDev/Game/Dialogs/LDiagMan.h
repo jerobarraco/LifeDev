@@ -10,7 +10,7 @@
 #include "LDiagMan.generated.h"
 
 // Dialog manager. dynamically instanced on the level
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, DefaultConfig, Config=LifeDev)
 class LIFEDEV_API ALDiagMan : public ADiagMan {
 	GENERATED_BODY()
 
@@ -20,9 +20,16 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 	virtual void Show_Implementation(const FDialog& Diag) override;
+	virtual void DiagDone_Implementation() override;
+	virtual void Back_Implementation() override;
+	void AutoClear();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config)
+	float AutoTime = 1;
+
+	FTimerHandle AutoTimer;
 };
