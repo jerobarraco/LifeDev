@@ -59,13 +59,13 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 
 	UE_CLOG(UNLIKELY(IsShowing), LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),
 		__func__);
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 
 	if (UNLIKELY(DebugSkip)) {
 		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
-		const UWorld* const World = GetWorld();
 		// skip on the next frame to avoid having issues due to call stack
-		if (LIKELY(World))
-			World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
+		World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::UIDiagDone);
 		return;
 	}
 
@@ -73,7 +73,7 @@ void ADiagMan::Show_Implementation(const FDialog& Diag) {
 		UE_LOG(LogTextDialogs, Warning, TEXT("%hs: UI was not ready"), __func__);
 		return;
 	}
-	
+
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
