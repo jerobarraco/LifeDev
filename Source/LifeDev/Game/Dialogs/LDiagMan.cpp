@@ -33,13 +33,16 @@ void ALDiagMan::Show_Implementation(const FDialog& Diag) {
 	const bool UseAuto = ULSettings::GetFeatS(W, EFeat::D_AUTO);
 	if (!UseAuto) return;
 
-	AutoClear();
+	
+	AutoClear(); // for correctness.
+	// will set loop if time <2, that's to account for the sk
 	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime, AutoTime < 2);
 }
 
 void ALDiagMan::DiagDone_Implementation() {
 	// clear before super as it could trigger a new, call show, and maybe we clear something else.
-	// actually the dialog subsystem has a protection for that, but its better to be sure.
+	// actually the dialog subsystem has a protection for that, but it's better to be sure.
+	// this case it's important when the auto timer runs on a loop
 	AutoClear();
 	Super::DiagDone_Implementation();
 }
