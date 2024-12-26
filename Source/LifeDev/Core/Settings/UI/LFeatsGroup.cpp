@@ -24,7 +24,8 @@ void ULFeatsGroup::FeatsCreate() {
 
 	for (const TTuple<EFeat, FText>& F: Texts) {
 		ULFeatCheck* const C = CreateWidget<ULFeatCheck>(this, CheckClass);
-		if (!IsValid(C)) continue;
+		if (UNLIKELY(!IsValid(C))) continue;
+
 		C->SetPadding(ChildPadding);
 		AddChild(C); // maybe this fixes the crash
 		C->SetUp(F.Key, F.Value);
@@ -35,7 +36,7 @@ void ULFeatsGroup::FeatsCreate() {
 void ULFeatsGroup::Load() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
-		if (!IsValid(Check)) continue;
+		if (UNLIKELY(!IsValid(Check))) continue;
 		Check->Load();
 	}
 }
@@ -44,7 +45,7 @@ void ULFeatsGroup::Apply() {
 	UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply num =%i"), __func__, Feats.Num());
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
-		if (!IsValid(Check.Get())) continue;
+		if (UNLIKELY(!IsValid(Check.Get()))) continue;
 		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply check=%s"), __func__, *GetNameSafe(Check));
 		Check->Apply();
 	}
@@ -53,7 +54,7 @@ void ULFeatsGroup::Apply() {
 void ULFeatsGroup::Reset() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
-		if (!IsValid(Check)) continue;
+		if (UNLIKELY(!IsValid(Check))) continue;
 		Check->Reset();
 	}
 }
