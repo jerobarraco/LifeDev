@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "CPuzzle.h"
 #include "Puzzle.generated.h"
 
@@ -19,7 +20,7 @@ public:
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetStates(const TArray<int32>& States) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetStates(States); }
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
 	
 	// sets the states on each registered interact.
@@ -27,25 +28,25 @@ public:
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetLocks(const TArray<bool>& Locks) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetLocks(Locks); }
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetLocks(Locks); }
 	}
 
 	// Set the interact pieces to active. Don't call during construction.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	FORCEINLINE void SetActives(const bool NewEnabled) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetActives(NewEnabled); }
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
 	}
 
 	// Set the interact pieces to auto activate. Call only on constructor.
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetAutoActives(const bool NewEnabled) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetAutoActives(NewEnabled); }
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewEnabled); }
 	}
 
 	// sets "DisableWhileAnims" on all the interacts.
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) {
-		if (IsValid(CPuzzle)) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
 	// call to reset the puzzle. Override DoReset to do custom logic.

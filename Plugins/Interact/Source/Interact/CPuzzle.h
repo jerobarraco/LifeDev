@@ -9,7 +9,7 @@ class UDelegateWrapper;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnUpdate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPuzzleOnReset);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, bool, IsOk);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, const bool, IsOk);
 
 UENUM(BlueprintType, Category="Interact|Puzzle")
 enum class EPuzzleType: uint8 {
@@ -86,7 +86,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<int32> Solution;
 
-	// if true then the interact will disable once toggled.
+	// if true then the Interact will disable once toggled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")
 	bool DisableOnInter = false;
 
@@ -112,23 +112,23 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	//internal. will modify the sequence toggling the id
-	bool CheckSequence(int32 ID);
-	bool CheckCombination(int32 ID);
+	bool CheckSequence(const int32 ID);
+	bool CheckCombination(const int32 ID);
 	bool IsCurrentSolution();
 	// internal. to be called when done
 	void Done(bool Ok = true) const;
 
 	// Internal. Called when a interact gets triggered. 
 	UFUNCTION() //bound
-	void InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj);
+	void InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj);
 
 	// Set this before begin play to auto bind. Or call SetInteract otherwise. Can be set in the outliner (editor instance).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<TObjectPtr<AInteract>> Interacts;
 
 	// this is recycled by both modes. and means different things :)
-	// on sequence : its a seq of the ids used
-	// on combo: its a list of each interact's state
+	// on sequence : it's a seq of the ids used
+	// on combo: it's a list of each Interact's state
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<int32> CurrentIds;
 

@@ -131,8 +131,8 @@ bool UCPuzzle::IsCurrentSolution() {
 	return true;
 }
 
-bool UCPuzzle::CheckCombination(int32 ID) {
-	if (ID<0 || ID>= CurrentIds.Num()) {
+bool UCPuzzle::CheckCombination(const int32 ID) {
+	if (UNLIKELY(ID<0 || ID>= CurrentIds.Num())) {
 		UE_LOG(LogCPuzzle, Warning, TEXT("CheckCombination: ID out of bounds."));
 		return false;
 	}
@@ -149,10 +149,10 @@ bool UCPuzzle::CheckCombination(int32 ID) {
 	return IsCurrentSolution();
 }
 
-bool UCPuzzle::CheckSequence(int32 ID) {
+bool UCPuzzle::CheckSequence(const int32 ID) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
 
-	if (ID<0 || ID>=Interacts.Num()) {
+	if (UNLIKELY(ID<0 || ID>=Interacts.Num())) {
 		UE_LOG(LogCPuzzle, Log, TEXT("%hs. Invalid id=%i"), __func__, ID);
 		return false;
 	}
@@ -164,7 +164,7 @@ bool UCPuzzle::CheckSequence(int32 ID) {
 	return IsCurrentSolution();
 }
 
-void UCPuzzle::InterTrigger(UDelegateWrapper* Wrapper, int32 ID, UObject* Obj) {
+void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj) {
 	// trigger update now! before done.
 	// important for APuzzle timer and for logical order in the flow
 	OnUpdate.Broadcast();
@@ -242,7 +242,7 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	const int32 Num2 = Interacts.Num();
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
 		AInteract* const I = Interacts[i];
-		if (!IsValid(I)) continue;
+		if (UNLIKELY(!IsValid(I))) continue;
 		I->Locked = Locks[i];
 	}
 }
