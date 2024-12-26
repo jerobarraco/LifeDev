@@ -68,6 +68,7 @@ public:
 	bool DebugSkip = false;
 
 protected:
+	// The ui is done with the current line
 	UFUNCTION(BlueprintNativeEvent)
 	void DiagDone();
 	
@@ -78,9 +79,5 @@ protected:
 	TObjectPtr<UDialogUI> UI = nullptr;
 
 private:
-	// The ui is done with the current line
-	UFUNCTION()
-	void UIDiagDone();
-
 	bool IsShowing = false;
 };

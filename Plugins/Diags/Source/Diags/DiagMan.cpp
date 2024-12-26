@@ -140,13 +140,6 @@ void ADiagMan::DiagDone_Implementation() {
 	Diags->DiagDone();
 }
 
-void ADiagMan::UIDiagDone() {
-	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
-	if (UNLIKELY(!IsValid(Diags))) return;
-
-	Diags->DiagDone();
-}
-
 void ADiagMan::Skip_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("Skip"));
 	if(UNLIKELY(!IsValid(UI))) return;

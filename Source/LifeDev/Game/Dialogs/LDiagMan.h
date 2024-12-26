@@ -29,7 +29,7 @@ protected:
 	TObjectPtr<UFlags> Flags = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config)
-	float AutoTime = 1;
+	float AutoTime = 3;
 
 	FTimerHandle AutoTimer;
 };
