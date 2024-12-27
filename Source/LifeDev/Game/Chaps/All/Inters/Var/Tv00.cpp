@@ -126,7 +126,7 @@ void ATv00::BeginPlay() {
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (IsValid(Sig)) {
+	if (LIKELY(IsValid(Sig))) {
 		Sig->UnbindAnim();
 		Sig->Deactivate();
 	}
@@ -141,8 +141,9 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 	const bool _IsOpen = !IsClosed();
 	Noise->Fade(_IsOpen);
 
-	if (!ULSettings::GetFeatS(GetWorld(), EFeat::V_STROBE)) {
-		if (IsValid(AnimCrt->Mat)) {
+	// force instant change if no strobe
+	if (!ULSettings::GetFeatS(this, EFeat::V_STROBE)) {
+		if (LIKELY(IsValid(AnimCrt->Mat))) {
 			AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
 				_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);
 		}

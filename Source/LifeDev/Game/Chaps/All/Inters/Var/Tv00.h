@@ -10,8 +10,6 @@ class UCLSignificance;
 class UCRandomizer;
 class UCQuickMesh;
 
-// TODO TObjectPtr
-
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATv00: public ALInteract {
 	GENERATED_BODY()
@@ -23,19 +21,19 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetState_Implementation(const int32 NewState) override;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCLSounder* Noise = nullptr;
+	TObjectPtr<UCLSounder> Noise = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCRandomizer* RndCrt = nullptr;
+	TObjectPtr<UCRandomizer> RndCrt = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCAnimatorMix* AnimCrt = nullptr;
+	TObjectPtr<UCAnimatorMix> AnimCrt = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCQuickMesh* Frame = nullptr;
+	TObjectPtr<UCQuickMesh> Frame = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCQuickMesh* Glass = nullptr;
+	TObjectPtr<UCQuickMesh> Glass = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCQuickMesh* Crt = nullptr;
+	TObjectPtr<UCQuickMesh> Crt = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	UCLSignificance* Sig = nullptr;
+	TObjectPtr<UCLSignificance> Sig = nullptr;
 };
