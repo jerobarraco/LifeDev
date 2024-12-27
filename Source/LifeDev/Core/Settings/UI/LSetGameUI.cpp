@@ -15,7 +15,7 @@ void ULSetGameUI::Apply_Implementation() {
 
 void ULSetGameUI::Load_Implementation() {
 	Super::Load_Implementation();
-	const float AutoTime = ALDiagMan::CFGGetAutoTime();
+	const float AutoTime = ALDiagMan::CFGGetAutoTime(this);
 	if (LIKELY(SLDiagAutoTime))
 		SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically

@@ -17,7 +17,7 @@ class LIFEDEV_API ALDiagMan : public ADiagMan {
 public:
 	ALDiagMan();
 
-	static float CFGGetAutoTime();
+	static float CFGGetAutoTime(const UObject* const O);
 	static void CFGSetAutoTime(const UObject* const O, const float NewValue);
 
 protected:

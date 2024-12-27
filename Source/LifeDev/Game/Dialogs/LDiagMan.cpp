@@ -17,28 +17,41 @@ ALDiagMan::ALDiagMan():Super() {
 	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UDialogUI::StaticClass();
 }
 
-float ALDiagMan::CFGGetAutoTime() {
-	if(UNLIKELY(!GConfig)) return -INFINITY;
+float ALDiagMan::CFGGetAutoTime(const UObject* const O) {
+	if (UNLIKELY(!O)) return -INFINITY;
+	const ALDiagMan* const Man = Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
+	if (UNLIKELY(!Man)) return -INFINITY;
+	return Man->AutoTime;
 
-	float Value = 0;
+	// if(UNLIKELY(!GConfig)) return -INFINITY;
+
+	// float Value = 0;
 	// has to be gameIni or it won't load. TODO fix loading from DefaultLifeDev
-	GConfig->GetFloat(_Section, _KeyAutoTime, Value, GGameIni);
-	Value = FMath::Min(Value, .2);
-	return MoveTemp(Value);
+	// GConfig->GetFloat(_Section, _KeyAutoTime, Value, GGameIni);
+	// Value = FMath::Min(Value, .2);
+	// return MoveTemp(Value);
 }
 
 void ALDiagMan::CFGSetAutoTime(const UObject* const O, const float NewValue) {
-	if(UNLIKELY(!GConfig)) return;
-
-	// has to be gameIni or it won't save.
-	GConfig->SetFloat(_Section, _KeyAutoTime, NewValue, GGameIni);
-	GConfig->Flush(false, GGameIni);
-
 	if (UNLIKELY(!O)) return;
 	ALDiagMan* const Man = Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 	if (UNLIKELY(!Man)) return;
-
 	Man->AutoTime = NewValue;
+	Man->SaveConfig();
+	return;
+
+	
+	// if(UNLIKELY(!GConfig)) return;
+
+	// has to be gameIni or it won't save.
+	// GConfig->SetFloat(_Section, _KeyAutoTime, NewValue, GGameIni);
+	// GConfig->Flush(false, GGameIni);
+
+	// if (UNLIKELY(!O)) return;
+	// ALDiagMan* const Man = Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
+	// if (UNLIKELY(!Man)) return;
+
+	// Man->AutoTime = NewValue;
 }
 
 void ALDiagMan::BeginPlay() {
