@@ -107,8 +107,8 @@ ALChar::ALChar(): Super() {
 	ActionMenu = CActionMenu.Object;
 }
 
-void ALChar::SetUIVisible(bool Visible) {
-	if (!IsValid(UI)) return;
+void ALChar::SetUIVisible(const bool Visible) {
+	if (LIKELY(!IsValid(UI))) return;
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
