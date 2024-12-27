@@ -12,6 +12,7 @@
 #include "DialogUI.h"
 #include "Diags.h"
 #include "DiagTypes.h" // Log
+#include "Kismet/GameplayStatics.h"
 
 ADiagMan::ADiagMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -28,6 +29,11 @@ ADiagMan::ADiagMan():Super() {
 	ActionBack = CActionBack.Object;
 	
 	UIClass = UDialogUI::StaticClass();
+}
+
+ADiagMan* ADiagMan::Instance(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
+	return Cast<ADiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 }
 
 void ADiagMan::Init_Implementation() {

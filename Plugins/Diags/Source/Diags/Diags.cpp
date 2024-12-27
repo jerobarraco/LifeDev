@@ -5,7 +5,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
-UDiags* UDiags::Instance(UObject* O) {
+UDiags* UDiags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 	
 	const UWorld* const W = O->GetWorld();

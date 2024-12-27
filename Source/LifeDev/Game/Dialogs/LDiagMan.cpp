@@ -17,6 +17,11 @@ ALDiagMan::ALDiagMan():Super() {
 	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UDialogUI::StaticClass();
 }
 
+ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
+	return Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
+}
+
 float ALDiagMan::CFGGetAutoTime(const UObject* const O) {
 	if (UNLIKELY(!O)) return -INFINITY;
 	const ALDiagMan* const Man = Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));

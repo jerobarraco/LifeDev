@@ -17,6 +17,10 @@ class LIFEDEV_API ALDiagMan : public ADiagMan {
 public:
 	ALDiagMan();
 
+	// avoid using this. try to cache.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ALDiagMan* InstanceL(const UObject* const O);
+	
 	static float CFGGetAutoTime(const UObject* const O);
 	static void CFGSetAutoTime(const UObject* const O, const float NewValue);
 

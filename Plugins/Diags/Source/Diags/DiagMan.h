@@ -21,6 +21,10 @@ class DIAGS_API ADiagMan : public AInfo {
 public:
 	ADiagMan();
 
+	// avoid using this. try to cache.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ADiagMan* Instance(const UObject* const O);
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init();
 
