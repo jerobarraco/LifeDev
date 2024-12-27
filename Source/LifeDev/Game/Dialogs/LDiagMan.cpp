@@ -10,7 +10,6 @@
 
 static const TCHAR* const _Section = TEXT("/Script/LifeDev.ALDiagMan");
 static const TCHAR* const _KeyAutoTime = TEXT("AutoTime");
-static const TCHAR* const _FName = TEXT("LifeDev");
 
 ALDiagMan::ALDiagMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI>
@@ -22,16 +21,23 @@ float ALDiagMan::CFGGetAutoTime() {
 	if(UNLIKELY(!GConfig)) return -INFINITY;
 
 	float Value = 0;
-	GConfig->GetFloat(_Section, _KeyAutoTime, Value, _FName);
+	// has to be gameIni or it won't load. TODO fix loading from DefaultLifeDev
+	GConfig->GetFloat(_Section, _KeyAutoTime, Value, GGameIni);
+	Value = FMath::Min(Value, .2);
 	return MoveTemp(Value);
 }
 
 void ALDiagMan::CFGSetAutoTime(const UObject* const O, const float NewValue) {
 	if(UNLIKELY(!GConfig)) return;
-	GConfig->SetFloat(_Section, _KeyAutoTime, NewValue, _FName);
 
+	// has to be gameIni or it won't save.
+	GConfig->SetFloat(_Section, _KeyAutoTime, NewValue, GGameIni);
+	GConfig->Flush(false, GGameIni);
+
+	if (UNLIKELY(!O)) return;
 	ALDiagMan* const Man = Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 	if (UNLIKELY(!Man)) return;
+
 	Man->AutoTime = NewValue;
 }
 

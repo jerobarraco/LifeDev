@@ -19,6 +19,10 @@ public:
 	virtual void Load_Implementation() override;
 
 protected:
+	virtual void NativeOnInitialized() override;
+	UFUNCTION()
+	void DiagAutoTimeUpd(const float Value);
+	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
