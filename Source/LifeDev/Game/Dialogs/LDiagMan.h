@@ -17,6 +17,9 @@ class LIFEDEV_API ALDiagMan : public ADiagMan {
 public:
 	ALDiagMan();
 
+	static float CFGGetAutoTime();
+	static void CFGSetAutoTime(const UObject* const O, const float NewValue);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
