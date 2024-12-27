@@ -36,9 +36,6 @@ class LIFEDEV_API ALChar : public ACharacter {
 
 public:
 	ALChar();
-	
-	UFUNCTION(BlueprintCallable)
-	void SetUIVisible(bool bCond);
 
 	// fully disables the input of the character. use InteractSetEnabled instead unless you really need to.
 	UFUNCTION(BlueprintCallable)

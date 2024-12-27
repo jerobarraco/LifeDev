@@ -2,9 +2,11 @@
 
 #include "LDiagMan.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Diags/DialogUI.h"
 #include "Inventory/Flags.h"
-#include "Kismet/GameplayStatics.h"
+
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 
@@ -45,7 +47,7 @@ void ALDiagMan::Show_Implementation(const FDialog& Diag) {
 	if (!UseAuto) return;
 
 	AutoClear(); // for correctness.
-	// will set loop if time <2, that's to account for the sk
+	// will set loop if time <2, that's to account for the animation
 	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime, AutoTime < 2);
 }
 
