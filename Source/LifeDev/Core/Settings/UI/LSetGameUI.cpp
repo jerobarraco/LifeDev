@@ -29,7 +29,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (LIKELY(SLDiagAutoTime)) {
 		SLDiagAutoTime->SetMaxValue(1*60);
-		SLDiagAutoTime->SetMinValue(.2);
+		SLDiagAutoTime->SetMinValue(.1);
 		SLDiagAutoTime->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::DiagAutoTimeUpd);
 	}
 }

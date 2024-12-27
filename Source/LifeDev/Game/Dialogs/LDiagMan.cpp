@@ -20,7 +20,7 @@ ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 }
 
 void ALDiagMan::SetAutoTime(const float NewTime) {
-	AutoTime = FMath::Max(NewTime, .2);
+	AutoTime = FMath::Max(NewTime, .1);
 	SaveConfig();
 }
 
