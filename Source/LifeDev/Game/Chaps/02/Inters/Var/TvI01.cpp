@@ -3,6 +3,7 @@
 #include "TvI01.h"
 
 #include "Diags/Diags.h"
+
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
@@ -20,20 +21,18 @@ void ATvI01::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	Locked = true;
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 
-	AGameModeBase* const GameMode = World->GetAuthGameMode();
-	ALGGameMode* const GM = Cast<ALGGameMode>(GameMode);
-	if (!GM) return;
+	const AGameModeBase* const GameMode = World->GetAuthGameMode();
+	const ALGGameMode* const GM = Cast<ALGGameMode>(GameMode);
+	if (UNLIKELY(!GM)) return;
 
 	GM->SetTempInputEnabled(false);
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ATvI01::AfterOn, 5, false);
 	UFlashback* const FB = UFlashback::Instance(World);
-	if (FB) {
-		FB->ModVal(.15, 3*(1/.15)); // 3 secs
-	}
+	if (LIKELY(FB)) FB->ModVal(.15, 3*(1/.15)); // 3 secs
 }
 
 void ATvI01::AfterOn() {

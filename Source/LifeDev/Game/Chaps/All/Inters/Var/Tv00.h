@@ -10,6 +10,8 @@ class UCLSignificance;
 class UCRandomizer;
 class UCQuickMesh;
 
+// TODO TObjectPtr
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ATv00: public ALInteract {
 	GENERATED_BODY()
@@ -20,7 +22,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void SetState_Implementation(int32 NewState) override;
+	virtual void SetState_Implementation(const int32 NewState) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UCLSounder* Noise = nullptr;

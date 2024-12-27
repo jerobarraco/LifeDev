@@ -37,7 +37,7 @@ ATv00::ATv00():Super() {
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
 	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		SOpenEnd(TEXT("/Engine/EditorSounds/Notifications/CompileFailed_Cue.CompileFailed_Cue"));
+		SOpenEnd(TEXT("/Game/LifeDev/Game/Inters/Tv00/OldRadioTuningStaticNoise_001_Cue"));
 	SFX_Stop = {nullptr, SOpenEnd.Object};
 	
 	/// other meshes
@@ -117,7 +117,7 @@ void ATv00::BeginPlay() {
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	// need to set the material for the animcrt manually.
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	if (IsValid(AnimCrt->Mat)) {
+	if (LIKELY(IsValid(AnimCrt->Mat))) {
 		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
 		AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 	}
@@ -135,7 +135,7 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ATv00::SetState_Implementation(int32 NewState) {
+void ATv00::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 
 	const bool _IsOpen = !IsClosed();
