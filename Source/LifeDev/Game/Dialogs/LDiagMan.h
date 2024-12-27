@@ -20,9 +20,13 @@ public:
 	// avoid using this. try to cache.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALDiagMan* InstanceL(const UObject* const O);
-	
-	static float CFGGetAutoTime(const UObject* const O);
-	static void CFGSetAutoTime(const UObject* const O, const float NewValue);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetAutoTime() const { return AutoTime; }
+
+	// will also save the value to the settings
+	UFUNCTION(BlueprintCallable)
+	void SetAutoTime(const float NewTime);
 
 protected:
 	virtual void BeginPlay() override;

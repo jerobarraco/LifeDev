@@ -9,13 +9,17 @@
 void ULSetGameUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	if (LIKELY(SLDiagAutoTime)) {
-		ALDiagMan::CFGSetAutoTime(this, SLDiagAutoTime->GetValue());
+		ALDiagMan* const Man = ALDiagMan::InstanceL(this);
+		if (LIKELY(Man)) Man->SetAutoTime(SLDiagAutoTime->GetValue());
 	}
 }
 
 void ULSetGameUI::Load_Implementation() {
 	Super::Load_Implementation();
-	const float AutoTime = ALDiagMan::CFGGetAutoTime(this);
+	float AutoTime = 0;
+	const ALDiagMan* const Man = ALDiagMan::InstanceL(this);
+	if (LIKELY(Man)) AutoTime = Man->GetAutoTime();
+
 	if (LIKELY(SLDiagAutoTime))
 		SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
