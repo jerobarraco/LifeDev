@@ -27,4 +27,8 @@ protected:
 	TObjectPtr<USlider> SLDiagAutoTime;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TDiagAutoTime;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SLFBTime;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TFBTime;
 };
