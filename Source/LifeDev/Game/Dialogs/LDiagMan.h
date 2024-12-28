@@ -10,7 +10,7 @@
 #include "LDiagMan.generated.h"
 
 // Dialog manager. dynamically instanced on the level
-UCLASS(Blueprintable, DefaultConfig, Config=LifeDev)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALDiagMan : public ADiagMan {
 	GENERATED_BODY()
 
