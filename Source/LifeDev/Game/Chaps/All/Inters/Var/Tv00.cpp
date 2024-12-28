@@ -25,7 +25,6 @@ ATv00::ATv00():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-32.5,27.5,0));
-	Mesh->bUseAttachParentBound = true;
 
 	// the extent is overflowing towards the front so that when the mesh animates
 	// back, it will still be easily triggerable
