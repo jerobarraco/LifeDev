@@ -19,7 +19,8 @@ public class LifeDevTarget : TargetRules {
 		//bEnableAddressSanitizer
 		CppStandardEngine = CppStandardVersion.Cpp20;
 		CppStandard = CppStandardVersion.Cpp20;
-		/// speed iteration
+		
+		// ---- speed iteration
 		bUseIncrementalLinking = true; // speeds up iteration
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
 		bUseAdaptiveUnityBuild = true;
