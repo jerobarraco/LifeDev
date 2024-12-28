@@ -24,9 +24,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetAutoTime() const { return AutoTime; }
 
-	// will also save the value to the settings
-	UFUNCTION(BlueprintCallable)
-	void SetAutoTime(const float NewTime);
+	// how much to wait before trying to auto skip.
+	// Requires feature flag D_AUTO
+	// a very low value can break stuff.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config, meta=(ClampMin=.05))
+	float AutoTime = 2.5;
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,9 +40,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config)
-	float AutoTime = 2.5;
 
 	FTimerHandle AutoTimer;
 };

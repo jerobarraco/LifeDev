@@ -21,11 +21,6 @@ ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 	return Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 }
 
-void ALDiagMan::SetAutoTime(const float NewTime) {
-	AutoTime = FMath::Max(NewTime, .1);
-	SaveConfig();
-}
-
 void ALDiagMan::BeginPlay() {
 	Super::BeginPlay();
 	Flags = UFlags::Instance(this);

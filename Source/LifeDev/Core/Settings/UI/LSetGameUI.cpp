@@ -13,17 +13,26 @@ void ULSetGameUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	if (LIKELY(SLDiagAutoTime)) {
 		ALDiagMan* const Man = ALDiagMan::InstanceL(this);
-		if (LIKELY(Man)) Man->SetAutoTime(SLDiagAutoTime->GetValue());
+		if (LIKELY(Man)) {
+			Man->AutoTime = FMath::Max(.05, SLDiagAutoTime->GetValue());
+			Man->SaveConfig();
+		}
 	}
+
 	if (LIKELY(SLFBTime)) {
 		UFlashback* const Flash = UFlashback::Instance(this);
-		Flash->AnimTime = FMath::Max(.1, SLFBTime->GetValue());
-		Flash->SaveConfig();
+		if (LIKELY(Flash)) {
+			Flash->AnimTime = FMath::Max(.1, SLFBTime->GetValue());
+			Flash->SaveConfig();
+		}
 	}
+
 	if (LIKELY(SLInterDrag)) {
 		ALChar* const Char = ALChar::Instance(this);
-		Char->InteractDrag = FMath::Max(.1, SLInterDrag->GetValue());
-		Char->SaveConfig();
+		if (LIKELY(Char)) {
+			Char->InteractDrag = FMath::Max(.1, SLInterDrag->GetValue());
+			Char->SaveConfig();
+		}
 	}
 }
 
@@ -52,7 +61,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (LIKELY(SLDiagAutoTime)) {
 		SLDiagAutoTime->SetMaxValue(1*60);
-		SLDiagAutoTime->SetMinValue(.1);
+		SLDiagAutoTime->SetMinValue(.05);
 		SLDiagAutoTime->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::DiagAutoTimeUpd);
 	}
 
