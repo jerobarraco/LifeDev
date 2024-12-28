@@ -62,7 +62,7 @@ public:
 
 	// default flashback anim speed
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
-	float AnimSpeed = 20.f;
+	float AnimTime = 20.f;
 
 	// triggered with each value update (updates per tick).
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)

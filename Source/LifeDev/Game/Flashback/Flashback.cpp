@@ -79,7 +79,7 @@ void UFlashback::SetVal(float New, float Duration) {
 	}
 
 	// or use default anim speed
-	if (Duration < 0) Duration = AnimSpeed;
+	if (Duration < 0) Duration = AnimTime;
 
 	// important, set the actual targets.
 	SetValToNow(New);

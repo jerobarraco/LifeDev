@@ -22,6 +22,8 @@ protected:
 	virtual void NativeOnInitialized() override;
 	UFUNCTION()
 	void DiagAutoTimeUpd(const float Value);
+	UFUNCTION()
+	void FBTimeUpd(const float Value);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;
