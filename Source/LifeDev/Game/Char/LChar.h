@@ -37,6 +37,9 @@ class LIFEDEV_API ALChar : public ACharacter {
 public:
 	ALChar();
 
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ALChar* Instance(const UObject* const O);
+
 	UFUNCTION(BlueprintCallable)
 	void SetUIVisible(const bool Visible);
 
@@ -49,9 +52,10 @@ public:
 	void InteractSetActive(const bool Enabled);
 
 	// Called for the internal init
-	UFUNCTION(Blueprintable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
 	void Init();
 	
+
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .5;

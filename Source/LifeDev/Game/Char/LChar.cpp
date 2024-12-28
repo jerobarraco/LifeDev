@@ -15,17 +15,17 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
-#include "JUtils/Misc/JUtilsMisc.h"
-#include "JUtils/Misc/JMiscConsts.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Core/Sounds/CLNoiser.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
+
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"
-#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -105,6 +105,12 @@ ALChar::ALChar(): Super() {
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionMenu(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Menu"));
 	ActionMenu = CActionMenu.Object;
+}
+
+ALChar* ALChar::Instance(const UObject* const O) {
+	ALGGameMode* const Mode = ALGGameMode::Instance(O);
+	if (UNLIKELY(!IsValid(Mode))) return nullptr;
+	return Mode->Char;
 }
 
 void ALChar::SetUIVisible(const bool Visible) {
