@@ -4,6 +4,7 @@
 
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "LifeDev/Game/Char/LChar.h"
 
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -18,6 +19,11 @@ void ULSetGameUI::Apply_Implementation() {
 		UFlashback* const Flash = UFlashback::Instance(this);
 		Flash->AnimTime = FMath::Max(.1, SLFBTime->GetValue());
 		Flash->SaveConfig();
+	}
+	if (LIKELY(SLInterDrag)) {
+		ALChar* const Char = ALChar::Instance(this);
+		Char->InteractDrag = FMath::Max(.1, SLInterDrag->GetValue());
+		Char->SaveConfig();
 	}
 }
 
@@ -35,6 +41,11 @@ void ULSetGameUI::Load_Implementation() {
 	const float FBAnimTime = Flash ? Flash->AnimTime : 20;
 	if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
 	FBTimeUpd(FBAnimTime);
+
+	const ALChar* const Char = ALChar::Instance(this);
+	const float InterDrag = Char ? Char->InteractDrag : .5;
+	if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
+	InterDragUpd(InterDrag);
 }
 
 void ULSetGameUI::NativeOnInitialized() {
@@ -44,10 +55,17 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLDiagAutoTime->SetMinValue(.1);
 		SLDiagAutoTime->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::DiagAutoTimeUpd);
 	}
+
 	if (LIKELY(SLFBTime)) {
 		SLFBTime->SetMaxValue(60);
 		SLFBTime->SetMinValue(.1);
 		SLFBTime->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::FBTimeUpd);
+	}
+
+	if (LIKELY(SLInterDrag)) {
+		SLInterDrag->SetMaxValue(1.);
+		SLInterDrag->SetMinValue(.1);
+		SLInterDrag->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterDragUpd);
 	}
 }
 
@@ -70,5 +88,16 @@ void ULSetGameUI::FBTimeUpd(const float Value) {
 		NFOption.MinimumFractionalDigits = 4;
 		const FText Num = FText::AsNumber(Value, &NFOption);
 		TFBTime->SetText(FText::Format(Fmt, Num));
+	}
+}
+
+void ULSetGameUI::InterDragUpd(const float Value) {
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} multiplier");
+	if (LIKELY(TInterDrag)) {
+		static FNumberFormattingOptions NFOption;
+		NFOption.MaximumFractionalDigits = 4;
+		NFOption.MinimumFractionalDigits = 4;
+		const FText Num = FText::AsNumber(Value, &NFOption);
+		TInterDrag->SetText(FText::Format(Fmt, Num));
 	}
 }
