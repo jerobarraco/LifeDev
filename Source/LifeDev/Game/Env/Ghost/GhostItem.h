@@ -14,7 +14,7 @@ class UCGhostAxis;
 class UMaterialInterface;
 
 // PoolItemGhost
-UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class AGhostItem : public AActor {
 	GENERATED_BODY()
 

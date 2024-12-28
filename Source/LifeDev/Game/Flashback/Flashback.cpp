@@ -17,13 +17,13 @@ UFlashback::UFlashback():Super() {
 }
 
 UFlashback* UFlashback::Instance(const UObject* const O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
-	if (!W) return nullptr;
+	if (UNLIKELY(!W)) return nullptr;
 
 	UFlashback* const Flashback = W->GetSubsystem<UFlashback>();
-	return IsValid(Flashback) ? Flashback : nullptr;
+	return LIKELY(IsValid(Flashback)) ? Flashback : nullptr;
 }
 
 void UFlashback::AnimUpdate(const float Progress, const float Alpha) {

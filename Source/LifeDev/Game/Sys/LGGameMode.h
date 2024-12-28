@@ -31,7 +31,7 @@ class UFlags;
 #define InteractTraceChannel ECC_GameTraceChannel1
 
 // Game mode class
-UCLASS(Blueprintable, Config=LifeDev)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALGGameMode : public AGameModeBase {
 	GENERATED_BODY()
 
