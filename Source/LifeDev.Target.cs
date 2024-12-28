@@ -9,9 +9,24 @@ public class LifeDevTarget : TargetRules {
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
 		ExtraModuleNames.Add("LifeDev");
+
 		// https://forums.unrealengine.com/t/how-to-compile-in-non-unity-mode/94863/3?u=nande
+		// https://dev.epicgames.com/documentation/en-us/unreal-engine/build-configuration-for-unreal-engine
+		// bWarningsAsErrors = false;
+		// bAllCores = true;
+		// bUsePCHFiles = false;
+		bUsePDBFiles = false;
+		//bEnableAddressSanitizer
+		CppStandardEngine = CppStandardVersion.Cpp20;
+		CppStandard = CppStandardVersion.Cpp20;
+		/// speed iteration
+		bUseIncrementalLinking = true; // speeds up iteration
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
-		bUsePCHFiles = false;
+		bUseAdaptiveUnityBuild = true;
+		bAdaptiveUnityDisablesOptimizations = true;
+		bAdaptiveUnityCreatesDedicatedPCH = true;
+		// bAdaptiveUnityDisablesPCH = true;
+		bUseSharedPCHs = true; // speed up compilation
 
 		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
 		if (Target.Platform == UnrealTargetPlatform.Linux) {
