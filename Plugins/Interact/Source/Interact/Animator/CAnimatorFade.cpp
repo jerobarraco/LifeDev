@@ -39,7 +39,10 @@ void UCAnimatorFade::CreateMaterial() {
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
 		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
-		CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
+		if (LIKELY(Lib))
+			CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
+		else
+			UE_LOG(LogAnimFade, Warning, TEXT("%hs Could not create the CodeCurve. Skip."), __func__);
 	}
 
 	if (!IsValid(MatBase)) {
