@@ -6,11 +6,11 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AClout03::AClout03():Super() {
+	// TODO re-export
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Bra00.Bra00"));
-	if (ObjMesh.Succeeded()) {
-		Mesh->SetStaticMesh(ObjMesh.Object);
-	}
+	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
+
 	Mesh->SetRelativeLocation(FVector(67.500000,-37.500000,0.000000));
 	Interact->SetRelativeLocation(FVector(-67.500000,37.500000,2.500000));
 	Interact->SetBoxExtent(FVector(15.000000,45.000000,3.000000));
