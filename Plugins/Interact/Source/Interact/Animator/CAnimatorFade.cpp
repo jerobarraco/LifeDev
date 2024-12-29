@@ -12,13 +12,10 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFStart = 0;
 	MatFEnd = 1;
 	Duration = 1.f;
-	// TODO re-export all the old assets, then remove the voxelfade_dmi (tho old one)
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMatBase(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
 	
-	MatBase = CMatBase.Object;
+	MatBase = CMatBaseNew.Object;
 	Curve = nullptr; // remove the interact curve.
 }
 
