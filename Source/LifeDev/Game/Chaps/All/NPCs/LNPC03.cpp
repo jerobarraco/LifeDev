@@ -2,13 +2,11 @@
 #include "LNPC03.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("...") };
-	AnimFade->SetNewMat();
 	Super::SetAutoActivate(false);
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)

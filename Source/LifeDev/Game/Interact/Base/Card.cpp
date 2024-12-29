@@ -5,7 +5,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 ACard::ACard():Super() {
 	Interact->SetRelativeLocation(FVector(5.000000,-2.500000,0.000000));
@@ -26,5 +25,4 @@ ACard::ACard():Super() {
 	RewardFlash = -.1;
 	UseRewardDestroy = true;
 	UseFade = true;
-	AnimFade->SetNewMat();
 }

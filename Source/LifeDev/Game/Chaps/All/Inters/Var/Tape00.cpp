@@ -35,7 +35,6 @@ ATape00::ATape00():Super() {
 	Case->SetCastAllShadows(true);
 	Case->SetRelativeLocation(FVector(-5.725000,0,0));
 	AnimFade->Meshes.Add(Case);
-	AnimFade->SetNewMat();
 
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);

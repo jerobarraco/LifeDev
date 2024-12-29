@@ -38,7 +38,6 @@ ABatts::ABatts():Super() {
 
 	/// Anims
 	AnimFade->Meshes.AddUnique(MeshB);
-	AnimFade->SetNewMat();
 	UseFade = true; // a bit lazy. ideally to be set on the children.
 
 	// set static by default

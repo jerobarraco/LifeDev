@@ -2,7 +2,6 @@
 #include "LNPC04.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 // TODO make an instance class and use that instead in chap00
 ALNPC04::ALNPC04():Super() {
@@ -78,7 +77,6 @@ ALNPC04::ALNPC04():Super() {
 	Interact->SetRelativeLocation(FVector(0,0,72.5));
 	Interact->SetBoxExtent(FVector(25,20,75));
 
-	AnimFade->SetNewMat();
 	// TODO actually move this to the child instance (since this class itself doesn't need to fade).
 	UseFade = true;
 

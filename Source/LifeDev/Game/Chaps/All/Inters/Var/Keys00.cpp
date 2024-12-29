@@ -3,7 +3,6 @@
 #include "Keys00.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 AKeys00::AKeys00():Super() {
@@ -27,5 +26,4 @@ AKeys00::AKeys00():Super() {
 
 	Super::SetAutoActivate(false);
 	AKeys00::SetMobility(EComponentMobility::Static);
-	AnimFade->SetNewMat();
 }

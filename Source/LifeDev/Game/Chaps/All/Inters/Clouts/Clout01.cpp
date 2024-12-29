@@ -3,7 +3,6 @@
 #include "Clout01.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 AClout01::AClout01():Super() {
@@ -14,6 +13,4 @@ AClout01::AClout01():Super() {
 	Mesh->SetRelativeLocation(FVector(-17.500000,22.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(18.000000,23.000000,3.000000));
-
-	AnimFade->SetNewMat();
 }

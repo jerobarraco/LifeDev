@@ -5,7 +5,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 AClout03::AClout03():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -15,6 +14,4 @@ AClout03::AClout03():Super() {
 	Mesh->SetRelativeLocation(FVector(67.500000,-37.500000,0.000000));
 	Interact->SetRelativeLocation(FVector(-67.500000,37.500000,2.500000));
 	Interact->SetBoxExtent(FVector(15.000000,45.000000,3.000000));
-
-	AnimFade->SetNewMat();
 }

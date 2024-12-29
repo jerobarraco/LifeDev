@@ -1,8 +1,8 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #include "WalkmanI00.h"
+
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWalkmanI00::AWalkmanI00():Super() {
@@ -34,7 +34,6 @@ AWalkmanI00::AWalkmanI00():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSnd.Object;
 
-	AnimFade->SetNewMat();
 	Super::SetAutoActivate(true);
 }
 

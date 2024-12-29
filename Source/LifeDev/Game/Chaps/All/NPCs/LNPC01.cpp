@@ -2,7 +2,6 @@
 #include "LNPC01.h"
 
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 ALNPC01::ALNPC01():Super() {
 	UseAnim = false;
@@ -11,7 +10,6 @@ ALNPC01::ALNPC01():Super() {
 	Texts = { FText::FromString("He seems dangerous...") };
 
 	UseFade = true;
-	AnimFade->SetNewMat();
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
