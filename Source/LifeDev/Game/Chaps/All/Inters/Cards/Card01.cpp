@@ -2,9 +2,9 @@
 
 #include "Card01.h"
 
+#include "LifeDev/Core/Consts/ConstItems.h"
+
 ACard01::ACard01():Super() {
-	UseAnim = false;
-	RewardItem = "C1";
+	RewardItem =  LDConsts::Items::Card0;
 	TriggerDlg = "C1_PICK";
-	Texts = { FText::FromString(TEXT("Pick Up")), FText::FromString(TEXT("Pick Up")) } ;
 }

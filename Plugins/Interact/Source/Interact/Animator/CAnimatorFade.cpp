@@ -42,7 +42,8 @@ void UCAnimatorFade::CreateMaterial() {
 		if (LIKELY(Lib))
 			CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
 		else
-			UE_LOG(LogAnimFade, Warning, TEXT("%hs Could not create the CodeCurve. Skip."), __func__);
+			UE_LOG(LogAnimFade, Warning, TEXT("%hs Could not create the CodeCurve. Skip."),
+				__func__);
 	}
 
 	if (!IsValid(MatBase)) {
