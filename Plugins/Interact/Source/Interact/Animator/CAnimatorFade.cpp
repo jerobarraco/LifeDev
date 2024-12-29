@@ -19,16 +19,6 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	Curve = nullptr; // remove the interact curve.
 }
 
-void UCAnimatorFade::SetNewMat() {
-	UE_LOG(LogAnimFade, Log, TEXT("%hs"), __func__);
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
-	MatBase = CMatBaseNew.Object;
-	
-	// alternatively tsoftobjectptr
-	// StaticLoadObject()
-}
-
 void UCAnimatorFade::CreateMaterial() {
 	UE_LOG(LogAnimFade, Log, TEXT("%hs"), __func__);
 	

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
+
 #include "CAnimatorMix.h"
 #include "CAnimatorFade.generated.h"
 
@@ -14,10 +15,6 @@ class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
 
 public:
 	UCAnimatorFade();
-
-	// only call in the constructor please.
-	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade")
-	void SetNewMat();
 
 	// creates the dynamic material. using MatBase, or the material of the 1st mesh in Meshes.
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade", meta=(UnsafeDuringActorConstruction))
