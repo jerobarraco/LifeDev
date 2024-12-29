@@ -35,7 +35,7 @@ void UCAnimatorFade::SetNewMat() {
 void UCAnimatorFade::CreateMaterial() {
 	UE_LOG(LogAnimFade, Log, TEXT("%hs"), __func__);
 	
-	if (Meshes.Num()<1) return;
+	if (UNLIKELY(Meshes.Num()<1)) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
 		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
@@ -48,7 +48,7 @@ void UCAnimatorFade::CreateMaterial() {
 	}
 
 	Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), MatBase);
-	if (!IsValid(Mat)) {
+	if (UNLIKELY(!IsValid(Mat))) {
 		UE_LOG(LogAnimFade, Log, TEXT("%hs dynamic mat is invalid. stop."), __func__);
 		return;
 	}
@@ -58,7 +58,7 @@ void UCAnimatorFade::CreateMaterial() {
 		__func__, *GetNameSafe(GetOwner()), *Mat->GetName());
 
 	for (UStaticMeshComponent* const C: Meshes) {
-		if (!IsValid(C)) continue;
+		if (UNLIKELY(!IsValid(C))) continue;
 		C->SetMaterial(0, Mat);
 	}
 
