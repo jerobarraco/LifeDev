@@ -46,7 +46,11 @@ UWorld* UJUtilsMisc::GetPieWorld(const int32 Num) {
 }
 
 bool UJUtilsMisc::IsPIE() {
+#if WITH_EDITOR
 	return EditorScriptingHelpers::CheckIfInEditorAndPIE();
+#else
+	return false;
+#endif
 }
 
 UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {

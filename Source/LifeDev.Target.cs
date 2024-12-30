@@ -22,13 +22,14 @@ public class LifeDevTarget : TargetRules {
 		
 		// ---- speed iteration
 		bUseIncrementalLinking = true; // speeds up iteration
+		bUseSharedPCHs = true; // speed up compilation
+		/*
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
 		bUseAdaptiveUnityBuild = false;
 		bAdaptiveUnityDisablesOptimizations = true;
 		bAdaptiveUnityCreatesDedicatedPCH = true;
 		// bAdaptiveUnityDisablesPCH = true;
-		bUseSharedPCHs = true; // speed up compilation
-
+		*/
 		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
 		if (Target.Platform == UnrealTargetPlatform.Linux) {
 			BuildEnvironment = TargetBuildEnvironment.UniqueIfNeeded;
