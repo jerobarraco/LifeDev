@@ -50,7 +50,7 @@ public:
 	static UWorld* GetPieWorld(const int32 Num = 0);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FORCEINLINE bool IsPIE();
+	static bool IsPIE();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsEditor() {
