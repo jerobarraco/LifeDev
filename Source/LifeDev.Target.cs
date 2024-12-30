@@ -9,12 +9,13 @@ public class LifeDevTarget : TargetRules {
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
 		ExtraModuleNames.Add("LifeDev");
+		bAllowHotReload = true;
 
 		// https://forums.unrealengine.com/t/how-to-compile-in-non-unity-mode/94863/3?u=nande
 		// https://dev.epicgames.com/documentation/en-us/unreal-engine/build-configuration-for-unreal-engine
 		// bWarningsAsErrors = false;
+		bUseIris = false;
 		// bAllCores = true;
-		// bUsePCHFiles = false;
 		bUsePDBFiles = false;
 		//bEnableAddressSanitizer
 		CppStandardEngine = CppStandardVersion.Cpp20;
@@ -22,6 +23,7 @@ public class LifeDevTarget : TargetRules {
 		
 		// ---- speed iteration
 		bUseIncrementalLinking = true; // speeds up iteration
+		bUsePCHFiles = true;
 		bUseSharedPCHs = true; // speed up compilation
 		/*
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
@@ -30,8 +32,9 @@ public class LifeDevTarget : TargetRules {
 		bAdaptiveUnityCreatesDedicatedPCH = true;
 		// bAdaptiveUnityDisablesPCH = true;
 		*/
+
 		// to enable logs on shipping https://dev.epicgames.com/community/learning/knowledge-base/vzvZ/unreal-engine-enabling-logging-in-shipping-builds
-		if (Target.Platform == UnrealTargetPlatform.Linux) {
+/*		if (Target.Platform == UnrealTargetPlatform.Linux) {
 			BuildEnvironment = TargetBuildEnvironment.UniqueIfNeeded;
 			bUseLoggingInShipping = true;
 			// bUseExecCommnadInShipping
@@ -40,5 +43,6 @@ public class LifeDevTarget : TargetRules {
 			// https://forums.unrealengine.com/t/targets-with-a-unique-build-environment-cannot-be-built-with-an-installed-engine/1353217/2
 			BuildEnvironment = TargetBuildEnvironment.Shared;
 		}
+		*/
 	}
 }
