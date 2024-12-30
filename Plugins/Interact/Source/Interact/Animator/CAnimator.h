@@ -67,7 +67,7 @@ public:
 	// play as is. mostly for delegates and play as set in defaults or when you only need to change one of the variables.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	FORCEINLINE void Play() { Activate(true); }
-	UFUNCTION(CallInEditor, meta=(DeprecatedFunction)) // just to get a button for debug
+	UFUNCTION(CallInEditor, meta=(DeprecatedFunction, DevelopmentOnly)) // just to get a button for debug
 	FORCEINLINE void Stop() { Deactivate(); }
 
 	// By default run at 30 fps; Optimization
@@ -77,7 +77,7 @@ public:
 	
 	// curve to use, if not set then code-curve will be used, if not set then it will be linear.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	UCurveFloat* Curve = nullptr;
+	TObjectPtr<UCurveFloat> Curve = nullptr;
 	// a curve by code. only used if Curve is not set. if both not set it will be linear.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Common")
 	FCodeCurve CodeCurve;
@@ -102,7 +102,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool UseLog = false;
 
-	
 	// triggers when the animation ends. but not if it wasn't playing.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Signals")
 	FCAnimatorRawOnEnd OnEnd;
@@ -115,18 +114,18 @@ public:
 
 protected:
 	// override me on child classes :) But call the parent!! (Progress can be read directly)
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void Update(float Alpha);
 	virtual void Update_Implementation(float Alpha);
 
 	// Called when the animation ends. override me on child classes :)
 	// But call the parent.
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void End();
 	virtual void End_Implementation();
 
 	// override me on child classes :) But call the parent.
-	UFUNCTION(BlueprintNativeEvent, Category=SetUp)
+	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void Begin();
 	virtual void Begin_Implementation();
 
@@ -146,7 +145,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
 	float Progress = 0.0;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UCAnimator* Parent = nullptr;
+	TObjectPtr<UCAnimator> Parent = nullptr;
 	
 	float DTAcum = 0.0; // used for manual ticks 
 };

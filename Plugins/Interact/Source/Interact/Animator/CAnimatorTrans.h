@@ -30,7 +30,7 @@ public:
 
 	// the component to be animated (hint, use the root component for "global" positioning)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
-	USceneComponent* TRoot = nullptr;
+	TObjectPtr<USceneComponent> TRoot = nullptr;
 
 protected:
 	virtual void Update_Implementation(float Alpha) override;
