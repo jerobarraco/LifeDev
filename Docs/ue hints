@@ -50,7 +50,29 @@ can add a dynamic delegate to a dynamic multicast delegate. (not tested)
 
 meta tags
 	https://dev.epicgames.com/documentation/en-us/unreal-engine/metadata-specifiers-in-unreal-engine
-
+	function
+		ForceAsFunction
+		DevelopmentOnly
+		DeprecatedFunction
+		DefaultToSelf
+		BlueprintProtected
+		CommutativeAssociativeBinaryOperator
+		CallableWithoutWorldContext
+		WorldContext
+		UnsafeDuringActorConstruction
+		ToolTip="Hand-written tooltip
+		ShortToolTip="Short tooltip"
+		NotBlueprintThreadSafe
+		
+	props
+		HideAlphaChannel
+		GetByRef
+		ExposeOnSpawn="true"
+		clampmin/max
+		MakeEditWidget
+		NoGetter
+		HideViewOptions
+		
 resizeable bar
 	enable 4g access and resbar on bios
 		https://youtu.be/wCvLZ6XqRd4?si=mb_oFJNAQFvo7n4U&t=11
