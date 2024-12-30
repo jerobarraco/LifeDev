@@ -13,11 +13,11 @@ class LIFEDEV_API ULSetBaseUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Apply();
 	virtual void Apply_Implementation(){}
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();
 	virtual void Load_Implementation(){}
 };
