@@ -6,6 +6,7 @@
 
 #include "Interact.generated.h"
 
+class UCInteractor;
 class UPhysicsConstraintComponent;
 class UCQuickMesh;
 class UCAnimatorTrans;
@@ -31,11 +32,12 @@ public:
 	// Call this to trigger the interaction. Returns the success (false if locked)
 	// this function has side effects (calls trigger/triggerLocked) so call at the end of your function.
 	// Usually this gets called automatically by the Interactor/CInteract
-	// overrideable in case you need to cancel a trigger
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
+	// overrideable in case you need to cancel a trigger,
+	// but it's better to override DoTrigger and/or DoTriggerLocked.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	bool TryTrigger();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void Hover(const bool IsOn);
 	virtual void Hover_Implementation(const bool IsOn) {
 		OnHover.Broadcast(IsOn);
@@ -45,7 +47,7 @@ public:
 	//  this means when calling this function the item WILL trigger
 	// Override and activate the item here.
 	//  (but don't modify the inventory as part of this! (and you won't be able since this plugin can't see the inventory).
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
 
@@ -56,9 +58,10 @@ public:
 	void TryTriggerWrap() {TryTrigger();}
 
 	// Enables or disables the interaction. Will not fade.
-	UFUNCTION(BlueprintNativeEvent, Category="Interact")
+	UFUNCTION(BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetActive(const bool Active = true);
-	UFUNCTION(BlueprintCallable, Category="Interact")
+	// Sets the interaction to auto activate.
+	UFUNCTION(BlueprintCallable, Category="Interact", meta=(ForceAsFunction))
 	virtual void SetAutoActivate(const bool AutoActive = true);
 	
 	// this CAN NOT be BlueprintNativeEvent because
@@ -81,7 +84,7 @@ public:
 	// call it to change the state without triggering.
 	// called when the state changes because it triggered.
 	// Starts at state 0 == closed == off
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
 	virtual void SetState_Implementation(const int32 NewState);
 
@@ -145,7 +148,7 @@ protected:
 	void Grab(const bool IsGrab, UCInteractor* const NewParent);
 
 	// sets the current text to show on this interact
-	UFUNCTION(BlueprintNativeEvent, Category=Interact)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
 	virtual void SetText_Implementation(){}
 
@@ -170,12 +173,12 @@ protected:
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.
-	UFUNCTION(BlueprintNativeEvent, Category=Interact)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTrigger();
 	
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
-	UFUNCTION(BlueprintNativeEvent, Category=Interact)
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTriggerLocked();
 
 	// test function.

@@ -72,6 +72,8 @@ meta tags
 		MakeEditWidget
 		NoGetter
 		HideViewOptions
+		AllowPreserveRatio
+		ExposeOnSpawn
 		
 resizeable bar
 	enable 4g access and resbar on bios
