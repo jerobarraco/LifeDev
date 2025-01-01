@@ -63,6 +63,7 @@ meta tags
 		ToolTip="Hand-written tooltip
 		ShortToolTip="Short tooltip"
 		NotBlueprintThreadSafe
+		AssetRegistrySearchable (not under meta)
 		
 	props
 		HideAlphaChannel

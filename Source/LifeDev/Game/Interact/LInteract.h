@@ -120,7 +120,7 @@ public:
 
 protected:
 	// triggered when something is rewarded. override to be notified.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Rewarded();
 	virtual void Rewarded_Implementation() {}
 
