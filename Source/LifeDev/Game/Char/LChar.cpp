@@ -146,14 +146,15 @@ void ALChar::InteractSetActive(const bool Enabled) {
 }
 
 void ALChar::Init_Implementation() {
-	if(Camera) Camera->Init();
+	if (LIKELY(Camera)) Camera->Init();
 
 	// i can do this because the class defaults are in code. and then can be changed via config.
 	// and they get reloaded on game start (travel to game_l).
 	// and also the save-game is loaded before a game travel. and doesn't change during game.
 	// with your powers combined, it's me! Captain cringy feat!
 	const UFlags* const Flags = UFlags::Instance(this);
-	if (!Flags) return;
+	if (UNLIKELY(!Flags)) return;
+
 	const float Foxify =
 		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
 	const float SpeedMod = SpeedFoxy * Foxify;
@@ -164,7 +165,7 @@ void ALChar::Init_Implementation() {
 		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 
 	const UWorld* const World = GetWorld();
-	UFlashback* const FB = World->GetSubsystem<UFlashback>();
+	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
 }
 
@@ -213,14 +214,14 @@ void ALChar::BeginPlay() {
 
 void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	Inventory = nullptr;
 	Diags = nullptr;
-	if (IsValid(UI)) UI->RemoveFromParent();
+	if (LIKELY(IsValid(UI))) UI->RemoveFromParent();
 	UI = nullptr;
 
-	if (IsValid(SettingsUI)) SettingsUI->RemoveFromParent();
+	if (LIKELY(IsValid(SettingsUI))) SettingsUI->RemoveFromParent();
 	SettingsUI = nullptr;
 
 	if (LIKELY(IsValid(Noiser))) Noiser->Deactivate();
@@ -230,9 +231,12 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
 
-	if (IsValid(Interactor)) Interactor->OnHover.RemoveAll(this);
+	if (LIKELY(IsValid(Interactor))) Interactor->OnHover.RemoveAll(this);
 
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
+
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }

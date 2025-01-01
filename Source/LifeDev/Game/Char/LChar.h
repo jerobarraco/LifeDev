@@ -61,10 +61,16 @@ public:
 	float InteractDrag = .5;
 	// ^ .3 is too little and annoying.
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	// TODO fix speedMin and Max on config.
+	// Somehow unreal saves the values after a play.
+	// since foxy changes it. it saves a modified value. that later, gets foxified again.
+	// so it will drift on each playthrough. The possible solution is not to modify these vars.
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float SpeedMin = 65;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float SpeedMax = 100;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedFoxy = 10;
 
