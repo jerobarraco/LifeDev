@@ -198,7 +198,7 @@ void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void UCPuzzle::SetDisableWhileAnims(bool NewDisable) {
 	for (AInteract* const I: Interacts) {
 		AInteractAnim* const IA = Cast<AInteractAnim>(I);
-		if (!IsValid(IA)) continue;
+		if (UNLIKELY(!IsValid(IA))) continue;
 		// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim)
 		IA->DisableWhileAnim = NewDisable;
 	}

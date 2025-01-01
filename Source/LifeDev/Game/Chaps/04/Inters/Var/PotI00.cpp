@@ -61,7 +61,8 @@ void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	UE_LOG(LogTemp, Log, TEXT("%hs state=%i"), __func__, State);
 
-	// this could potentially be SetState instead of DoTrigger but it's possible that SetState(0) is called on beginplay
+	// this could potentially be SetState instead of DoTrigger, but it's possible that SetState(0) is called on beginplay
+
 	// state ought to be the new one after super::doTrigger (that means that the first time it's going to be 1)
 	if (State == 1) {
 		// triggered after adding food
@@ -75,7 +76,6 @@ void APotI00::DoTrigger_Implementation() {
 		Inventory->Mod(LDConsts::Items::Plate02, 1);
 		// Could set the text here. but since it's deactivated it does not matter.
 		SFX_Trigger = nullptr; // no sound after
-		SetActive(false); // no more interaction for you. doesn't work. i think is the activate after state change.
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
 	}
 }
@@ -89,6 +89,10 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 		if (UNLIKELY(Foods == 2)) Trigger();
 		return EItemUseResult::SUCCESS;
 	} else if (State == 1 && (Name == LDConsts::Items::Plate01)) {
+		// no more interaction for you.
+		// can't disable on DoTrigger since AInteractAnim will re-enable since the disablewhileanim.
+		// i mean, i could move this there, but i don't want to have 2 (confusing) if statements.
+		IsOneShot = true;
 		Trigger();
 		return EItemUseResult::SUCCESS;
 	}

@@ -131,10 +131,10 @@ void ALInteract::DoRewards() {
 	SetActive(false);
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
-	if (!RewardItem.IsNone() && LIKELY(IsValid(Inventory))) {
+	if (!RewardItem.IsNone()) {
 		// return if we fail to reward
 		// for example on maxed-out (e.g. picked up consumables)
-		if (UNLIKELY(!Inventory->Mod(RewardItem, 1))) {
+		if (UNLIKELY(!IsValid(Inventory) || !Inventory->Mod(RewardItem, 1))) {
 			Fade(true); // faded before calling doRewards. fade will call setactive which is also needed.
 			return;
 			// given this return will cancel the effect, do before the rest.
