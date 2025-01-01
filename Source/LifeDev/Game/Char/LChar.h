@@ -45,7 +45,7 @@ public:
 
 	// fully disables the input of the character. use InteractSetEnabled instead unless you really need to.
 	UFUNCTION(BlueprintCallable)
-	void SetInputEnabled(bool Enabled);
+	void SetInputEnabled(const bool Enabled);
 
 	// disable the interact for the character.
 	UFUNCTION(BlueprintCallable)

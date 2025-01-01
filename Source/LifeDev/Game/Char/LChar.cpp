@@ -34,11 +34,11 @@ ALChar::ALChar(): Super() {
 
 	UCapsuleComponent* const Capsule = GetCapsuleComponent();
 	// Set size for collision capsule
-	Capsule->InitCapsuleSize(20.f, 65.0f);
+	if (LIKELY(Capsule)) Capsule->InitCapsuleSize(20.f, 65.0f);
 	// Capsule->SetCapsuleSize(35,65,true);
 
 	UCharacterMovementComponent* const Movement = GetCharacterMovement();
-	if (Movement) {
+	if (LIKELY(Movement)) {
 		Movement->MaxWalkSpeed = SpeedMax;
 		Movement->MaxWalkSpeedCrouched = SpeedMax/2;
 	}
@@ -119,16 +119,16 @@ void ALChar::SetUIVisible(const bool Visible) {
 }
 
 void ALChar::InteractHover(bool bOn, UCInteract* const Comp) {
-	if (!IsValid(UI)) return;
-	// will hide the prompt on invalid. which is a nice side-effect. 
+	if (UNLIKELY(!IsValid(UI))) return;
+	// will hide the prompt on invalid. which is a nice side effect. 
 	if (bOn && IsValid(Comp))
 		UI->InteractShowPrompt(Comp->Text);
 	else
 		UI->InteractHidePrompt();
 }
 
-void ALChar::SetInputEnabled(bool Enabled) {
-	UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
+void ALChar::SetInputEnabled(const bool Enabled) {
+	if (LIKELY(IsValid(UI))) UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// TODO improve, maybe add a param
