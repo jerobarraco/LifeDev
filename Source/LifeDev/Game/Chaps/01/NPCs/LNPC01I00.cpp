@@ -62,7 +62,7 @@ void ALNPC01I00::StandUp() {
 void ALNPC01I00::DiagStandDone() {
 	Diags->OnDone.RemoveAll(this);
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	ALMusicMan::SetRainS(W, false);
 	Flashback->SetVal(.2);
 

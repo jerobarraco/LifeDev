@@ -5,6 +5,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ACard01::ACard01():Super() {
-	RewardItem =  LDConsts::Items::Card0;
+	RewardItem =  LDConsts::Items::Card1;
 	TriggerDlg = "C1_PICK";
 }
