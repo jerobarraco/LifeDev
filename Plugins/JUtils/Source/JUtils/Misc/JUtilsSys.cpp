@@ -79,3 +79,12 @@ UEnhancedInputComponent* UJUtilsSys::GetEInput(const UObject* const O) {
 		Cast<UEnhancedInputComponent>(Controller->InputComponent);
 	return Input;
 }
+
+FString UJUtilsSys::GetProjectVersion() {
+	// https://forums.unrealengine.com/t/how-to-get-the-project-version-in-a-blueprint/461882/2?u=nande
+	FString Version;
+	if (LIKELY(GConfig)) GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"),Version, GGameIni);
+	return MoveTemp(Version);
+}

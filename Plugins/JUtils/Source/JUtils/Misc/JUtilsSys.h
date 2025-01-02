@@ -28,4 +28,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);
+
+	// returns the project version, as stored in the project settings
+	UFUNCTION(BlueprintCallable)
+	static FString GetProjectVersion();
 };
