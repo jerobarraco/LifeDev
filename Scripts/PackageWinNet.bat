@@ -7,8 +7,8 @@ set INSTALLED=-installed
 :: set INSTALLED=
 set MAPS=allmaps
 :: cant use Test "targets cannot be built in test with this engine distribution" but "Development" will leave the debug messages on screen >_<
-::set CONFIG=Shipping
-set CONFIG=Development
+set CONFIG=Shipping
+::set CONFIG=Development
 ::set CLEAN=-clean
 set CLEAN=
 

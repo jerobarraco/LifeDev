@@ -14,7 +14,7 @@ public class LifeDevTarget : TargetRules {
 		// https://forums.unrealengine.com/t/how-to-compile-in-non-unity-mode/94863/3?u=nande
 		// https://dev.epicgames.com/documentation/en-us/unreal-engine/build-configuration-for-unreal-engine
 		// bWarningsAsErrors = false;
-		bUseIris = false;
+		// bUseIris = false; // can't be used, since windows will fail and request a "unique" build environment. which is not supported on binaries.
 		// bAllCores = true;
 		bUsePDBFiles = false;
 		//bEnableAddressSanitizer
