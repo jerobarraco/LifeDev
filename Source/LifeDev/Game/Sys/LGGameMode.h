@@ -30,7 +30,7 @@ class UFlags;
 // to get the collision channel read https://gamedev.stackexchange.com/a/178812/44866
 #define InteractTraceChannel ECC_GameTraceChannel1
 
-// Game mode class
+// Lifedev main game mode. (for the game stage)
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALGGameMode : public AGameModeBase {
 	GENERATED_BODY()

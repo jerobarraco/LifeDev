@@ -30,7 +30,7 @@ void ALStepEnd::OpenLevel() {
 
 void ALStepEnd::TryStart_Implementation() {
 	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	// constexpr float Wait = 2;
 	Super::TryStart_Implementation();
 
@@ -43,7 +43,7 @@ void ALStepEnd::TryStart_Implementation() {
 	FB->SetVal(0, WaitTime -.03);
 	
 	ALMusicMan* const MusicMan = ALMusicMan::Instance(World);
-	if (MusicMan) {
+	if (LIKELY(MusicMan)) {
 		MusicMan->Fade(false);
 		MusicMan->SetEnviron(false);
 		MusicMan->SetRain(false);
@@ -51,7 +51,7 @@ void ALStepEnd::TryStart_Implementation() {
 
 	// TODO need to fix the fade that hides it.
 	ALStoryMan* const StoryMan = ALStoryMan::Instance(World);
-	if (StoryMan) StoryMan->ShowBGSolid(true);
+	if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(true);
 }
 
 void ALStepEnd::Start_Implementation() {

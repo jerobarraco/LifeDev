@@ -34,7 +34,7 @@ public:
 	void Init() {}
 	
 	UFUNCTION(BlueprintCallable)
-	void SetRain(const bool Play);
+	void SetRain(const bool Play) const;
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)

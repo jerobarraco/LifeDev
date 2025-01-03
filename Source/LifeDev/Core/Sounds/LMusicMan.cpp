@@ -83,16 +83,20 @@ ALMusicMan::ALMusicMan():Super() {
 
 ALMusicMan* ALMusicMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
+
 	const UWorld* const W = O->GetWorld();
-	if (UNLIKELY(!W)) return nullptr;
+	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	// Might be faster easier to get it from the gamemode
-	const ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
-	return GM ? GM->MusicMan : nullptr;
+	const ALGGameMode* const GM = Cast<ALGGameMode>(W->GetAuthGameMode());
+	if (LIKELY(GM && GM->MusicMan)) return GM->MusicMan;
+
+	// the settings menu on intro level needs this. since the gamemode is not ALGGameMode
+	return Cast<ALMusicMan>(UGameplayStatics::GetActorOfClass(W, ALMusicMan::StaticClass()));
 }
 
-void ALMusicMan::SetRain(const bool Play) {
-	if (!IsValid(Rain)) return;
+void ALMusicMan::SetRain(const bool Play) const {
+	if (UNLIKELY(!IsValid(Rain))) return;
 
 	Rain->Fade(Play);
 }

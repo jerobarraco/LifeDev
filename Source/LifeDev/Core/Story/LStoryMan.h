@@ -12,6 +12,6 @@ class LIFEDEV_API ALStoryMan: public AStoryManager {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	static ALStoryMan* Instance(UWorld* World);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ALStoryMan* Instance(const UObject* const O);
 };
