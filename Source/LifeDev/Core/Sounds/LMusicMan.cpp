@@ -141,7 +141,8 @@ void ALMusicMan::SetEnvironFB(const float V) {
 }
 
 void ALMusicMan::FadeFX(const bool On) {
-	if (!IsValid(AnimMusicFX) || !IsValid(MusicFX) || !IsValid(MusicSubmix)) return;
+	if (UNLIKELY(!IsValid(AnimMusicFX) || !IsValid(MusicFX) || !IsValid(MusicSubmix)))
+		return;
 
 	UE_LOG(LogTemp, Log, TEXT("%hs On=%i"), __func__, On);
 	AnimMusicFX->IsReversed = !On;
@@ -153,7 +154,7 @@ void ALMusicMan::FadeFX(const bool On) {
 }
 
 void ALMusicMan::KillGhosts(const bool All) {
-	if (GhostPool) GhostPool->Kill(All);
+	if (LIKELY(GhostPool)) GhostPool->Kill(All);
 }
 
 void ALMusicMan::Fade_Implementation(const bool In) {
@@ -182,21 +183,21 @@ void ALMusicMan::SetFB_Implementation(float V) {
 
 	// force fb to 0 if the music is not playing.
 	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
-	if (!Player->IsPlaying()) V = 0;
+	if (UNLIKELY(!Player->IsPlaying())) V = 0;
 
 	SetEnvironFB(V);
 }
 
 void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
 	ALMusicMan* const MM = Instance(W);
-	if (!MM) return;
+	if (UNLIKELY(!MM)) return;
 	
 	MM->SetRain(Play);
 }
 
 void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 	ALMusicMan* const MM = Instance(W);
-	if (!MM) return;
+	if (UNLIKELY(!MM)) return;
 
 	MM->Fade(In);
 }
@@ -206,24 +207,24 @@ void ALMusicMan::BeginPlay() {
 
 	const UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Instance(W);
-	if (Flashback)
+	if (LIKELY(Flashback))
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
 
 	UStory* const Story = UStory::Instance(W);
-	if (Story)
+	if (LIKELY(Story))
 		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
+	if (LIKELY(S)) {
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 	}
 
 	// important to not clip
-	if (MusicSubmix)
+	if (LIKELY(MusicSubmix))
 		AnimFXUpdate(0, 0); //forces wetmix to 0 resets dry to 1
 
-	if (AnimMusicFX) {
+	if (LIKELY(AnimMusicFX)) {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
 		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimFXEnd);
 	}
@@ -233,23 +234,23 @@ void ALMusicMan::BeginPlay() {
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	UFlashback* const Flashback = UFlashback::Instance(W);
-	if (Flashback)
+	if (LIKELY(Flashback))
 		Flashback->OnChange.RemoveAll(this);
 
 	UStory* const Story = UStory::Instance(W);
-	if (Story)
+	if (LIKELY(Story))
 		Story->OnStart.RemoveAll(this);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
+	if (LIKELY(S)) {
 		S->OnFeatUpdateSound.RemoveAll(this);
 		S->OnFeatUpdateEnviron.RemoveAll(this);
 	}
 
-	if (AnimMusicFX) {
+	if (LIKELY(AnimMusicFX)) {
 		AnimMusicFX->OnUpdate.RemoveAll(this);
 		AnimMusicFX->OnEnd.RemoveAll(this);
 	}
@@ -287,7 +288,7 @@ void ALMusicMan::SetStep(AStep* const Step) {
 }
 
 void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
-	if (!IsValid(MusicSubmix)) return;
+	if (UNLIKELY(!IsValid(MusicSubmix))) return;
 	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
 
 	MusicSubmix->SetSubmixWetLevel(this, Alpha);
@@ -295,7 +296,8 @@ void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
 }
 
 void ALMusicMan::AnimFXEnd() {
-	if (!MusicFX || !MusicSubmix) return;
+	if (UNLIKELY(!MusicFX || !MusicSubmix)) return;
+
 	// done this way, because i want it to remove it if there's no animmusic.
 	const bool Remove = !AnimMusicFX || AnimMusicFX->IsReversed;
 	if (Remove)
