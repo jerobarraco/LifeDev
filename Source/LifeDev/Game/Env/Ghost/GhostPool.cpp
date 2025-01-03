@@ -44,7 +44,7 @@ void AGhostPool::Kill(const bool All) {
 			// Hidden so it doesn't break the pooler.
 			// IsValid to not stumble with the ones the pool might have killed.
 			AGhostItem* G = Cast<AGhostItem>(A);
-			if (!IsValid(G) || G->IsHidden()) continue;
+			if (UNLIKELY(!IsValid(G) || G->IsHidden())) continue;
 			G->Return();
 		}
 		return;
@@ -53,11 +53,11 @@ void AGhostPool::Kill(const bool All) {
 	if (Pooler)
 		// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
 		Pooler->SetPool(0, ItemClass, false, false, 0);
-	// kill the rest
-	for (AActor* const A: Actors) {
+
+	for (AActor* const A: Actors) { // kill the rest
 		// Hidden so it doesn't break the pooler.
 		// IsValid to not stumble with the ones the pool might have killed.
-		if (!IsValid(A) || A->IsHidden()) continue;
+		if (UNLIKELY(!IsValid(A) || A->IsHidden())) continue;
 		A->Destroy();
 	}
 }
@@ -66,7 +66,7 @@ void AGhostPool::BeginPlay() {
 	Super::BeginPlay();
 	
 	Pooler = UPooler::Instance(this);
-	if (!Pooler) {
+	if (UNLIKELY(!Pooler)) {
 		UE_LOG(LogTemp, Warning, TEXT("GhostPool:%hs Can't get the pooler. this won't work. Stop"),
 			__func__);
 		return;
@@ -74,7 +74,7 @@ void AGhostPool::BeginPlay() {
 
 	Rnd->OnTrigger.AddUniqueDynamic(this, &AGhostPool::Spawn);
 	UFlashback* const Flashback = UFlashback::Instance(this);
-	if (Flashback) {
+	if (LIKELY(Flashback)) {
 		FBTo(Flashback->GetValTo());
 		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 	}
@@ -91,7 +91,7 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Kill(true); // ensure to kill all. if the GP dies we are killing the ghosts too.
 	Rnd->OnTrigger.Clear();
 	UFlashback* const Flashback = UFlashback::Instance(this);
-	if (Flashback)
+	if (LIKELY(Flashback))
 		Flashback->OnTo.RemoveAll(this);
 	
 	Super::EndPlay(EndPlayReason);
