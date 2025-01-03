@@ -71,9 +71,15 @@ void UCLCharItems::Look(const FName& Name) const {
 		// show the dialog with the description. this is temporary until i make the ui
 		FDialog Diag;
 		// Diag.Type = EDialogType::SYSTEM;
-		Diag.Text = Item.Description;
+		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
-		Diags->AddDiag(Diag);
+		// allow item description to split on different pages.
+		TArray<FString> Blocks;
+		Item.Description.ToString().ParseIntoArray(Blocks, TEXT("@"));
+		for (const FString& Block : Blocks) {
+			Diag.Text = FText::FromString(Block);
+			Diags->AddDiag(Diag);
+		}
 	}
 
 	// trigger manager look
