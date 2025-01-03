@@ -97,15 +97,15 @@ void ALMusicMan::SetRain(const bool Play) {
 	Rain->Fade(Play);
 }
 
-void ALMusicMan::SetEnviron(const bool On) {
-	if (!IsValid(Environ)) return;
+void ALMusicMan::SetEnviron(const bool On) const {
+	if (UNLIKELY(!IsValid(Environ))) return;
 
 	const bool Enabled = ULSettings::GetFeatS(this, EFeat::S_ENV) && EnvironOverride;
 	UE_LOG(LogTemp, Log, TEXT("LMusicMan::%hs On=%i Enabled=%i Override=%i"),
 		__func__, On, Enabled, EnvironOverride);
 
 	// don't enable if it's disabled. but allow to disable it.
-	if (On && !Enabled) return;
+	if (UNLIKELY(On && !Enabled)) return;
 
 	Environ->Fade(On);
 }
@@ -135,7 +135,7 @@ void ALMusicMan::SetGhostOverride(const bool On) {
 	GhostOverride = On;
 }
 
-void ALMusicMan::SetEnvironFB(const float V) {
+void ALMusicMan::SetEnvironFB(const float V) const {
 	static const FName NFB("FB");
 	// calling setSafeParam is safe since it will check if the Environ itself is playing.
 	// that way i don't need to check for the S_ENV flag here either
@@ -150,7 +150,7 @@ void ALMusicMan::FadeFX(const bool On) const {
 	AnimMusicFX->IsReversed = !On;
 	AnimMusicFX->Activate(true);
 
-	if (On)
+	if (On) // don't add if it wasnt there and we don't need it.
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
 }

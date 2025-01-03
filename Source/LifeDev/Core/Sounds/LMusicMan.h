@@ -42,11 +42,11 @@ public:
 
 	// the flashback value for the Environ. depends on feature flag and override.
 	UFUNCTION(BlueprintCallable)
-	void SetEnvironFB(const float V);
+	void SetEnvironFB(const float V) const;
 
 	// turns the environ constant noise on/off
 	UFUNCTION(BlueprintCallable)
-	void SetEnviron(const bool On);
+	void SetEnviron(const bool On) const;
 
 	// turns the ghostpool on/off. depends on feature flag and override.
 	UFUNCTION(BlueprintCallable)
