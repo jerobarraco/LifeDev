@@ -145,24 +145,24 @@ ALNPC01::ALNPC01():Super() {
 	PoseChair.LegR1.SetRotation(FRotator(-55.000000, 0.000000, 0.000000).Quaternion());
 	PoseChair.FootL.SetLocation(FVector(0.000000, 0.000000, -15.000000));
 	PoseChair.FootR.SetLocation(FVector(0.000000, 0.000000, -15.000000));
-		
+
 	SetPose(PoseSit);
 }
 
-void ALNPC01::SetPoseStand() {
+void ALNPC01::SetPoseStand() const {
 	SetPose(PoseBase);
 }
 
-void ALNPC01::SetPoseSit() {
+void ALNPC01::SetPoseSit() const {
 	// do fades here
 	SetPose(PoseSit);
 }
 
-void ALNPC01::SetPoseChair() {
+void ALNPC01::SetPoseChair() const {
 	SetPose(PoseChair);
 }
 
-void ALNPC01::SetVisible(bool Vis) {
+void ALNPC01::SetVisible(const bool Vis) {
 	Interact->SetActive(Vis);
 	SetActorHiddenInGame(!Vis);
 }

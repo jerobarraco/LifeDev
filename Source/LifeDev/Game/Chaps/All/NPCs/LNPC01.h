@@ -16,17 +16,17 @@ class LIFEDEV_API ALNPC01 : public ALNPCH {
 public:
 	ALNPC01();
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetPoseStand();
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
+	void SetPoseStand() const;
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetPoseSit();
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
+	void SetPoseSit() const;
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetPoseChair();
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
+	void SetPoseChair() const;
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void SetVisible(bool Vis);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
+	void SetVisible(const bool Vis);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

@@ -58,7 +58,7 @@ ALNPCH::ALNPCH():Super() {
 	};
 }
 
-void ALNPCH::SetPose(const FNPCHPose& Pose) {
+void ALNPCH::SetPose(const FNPCHPose& Pose) const {
 	Mesh->SetRelativeTransform(Pose.Root);
 	Pelvis->SetRelativeTransform(Pose.Pelvis);
 	Torso->SetRelativeTransform(Pose.Torso);

@@ -54,8 +54,8 @@ class ALNPCH: public ALInteract {
 public:
 	ALNPCH();
 
-	UFUNCTION(BlueprintCallable)
-	void SetPose(const FNPCHPose& Pose);
+	UFUNCTION(BlueprintCallable, Category="NPC")
+	void SetPose(const FNPCHPose& Pose) const;
 
 protected:
 	// prints the current pose to the console

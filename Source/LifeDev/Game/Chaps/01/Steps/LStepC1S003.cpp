@@ -21,12 +21,12 @@ void ALStepC1S003::BeginPlay() {
 
 	DoIntersFade(IntersFadeIn, false); // force npc faded
 	
-	if (IntersFadeIn.Num()<=0) {
+	if (UNLIKELY(IntersFadeIn.Num()<=0)) {
 		UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 		return;
 	}
 
 	ALNPC01* const N = Cast<ALNPC01>(IntersFadeIn[0]);
-	if (N) N->SetPoseSit();
+	if (LIKELY(N)) N->SetPoseSit();
 	else UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 }
