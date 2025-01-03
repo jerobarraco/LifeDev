@@ -38,7 +38,7 @@ public:
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)
-	void FadeFX(const bool On);
+	void FadeFX(const bool On) const;
 
 	// the flashback value for the Environ. depends on feature flag and override.
 	UFUNCTION(BlueprintCallable)

@@ -82,8 +82,9 @@ ALMusicMan::ALMusicMan():Super() {
 }
 
 ALMusicMan* ALMusicMan::Instance(const UObject* const O) {
-	if (!O) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 	const UWorld* const W = O->GetWorld();
+	if (UNLIKELY(!W)) return nullptr;
 
 	// Might be faster easier to get it from the gamemode
 	const ALGGameMode* const GM = Cast<ALGGameMode>(UGameplayStatics::GetGameMode(W));
@@ -141,7 +142,7 @@ void ALMusicMan::SetEnvironFB(const float V) {
 	Environ->SetSafeParamFloat(NFB, V);
 }
 
-void ALMusicMan::FadeFX(const bool On) {
+void ALMusicMan::FadeFX(const bool On) const {
 	if (UNLIKELY(!IsValid(AnimMusicFX) || !IsValid(MusicFX) || !IsValid(MusicSubmix)))
 		return;
 

@@ -16,16 +16,14 @@ void ULSettingsUI::Show_Implementation() {
 	// SetVisibility(ESlateVisibility::Visible);
 	Super::Show_Implementation();
 
-	ALMusicMan* const Man = Cast<ALMusicMan>(
-	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
-	if (Man) Man->FadeFX(true);
+	const ALMusicMan* const Man = ALMusicMan::Instance(this);
+	if (LIKELY(Man)) Man->FadeFX(true);
 
 	Load();
 }
 
 void ULSettingsUI::Hide_Implementation() {
-	ALMusicMan* const Man = Cast<ALMusicMan>(
-	UGameplayStatics::GetActorOfClass(this, ALMusicMan::StaticClass()));
+	const ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (Man) Man->FadeFX(false);
 	
 	Super::Hide_Implementation();
