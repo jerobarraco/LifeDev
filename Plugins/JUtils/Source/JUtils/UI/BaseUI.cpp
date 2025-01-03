@@ -24,7 +24,7 @@ void UBaseUI::Hide_Implementation() {
 	}
 }
 
-void UBaseUI::Done(int32 RetVal) {
+void UBaseUI::Done(const int32 RetVal) {
 	OnDone.Broadcast();
 	OnDoneVal.Broadcast(RetVal);
 }

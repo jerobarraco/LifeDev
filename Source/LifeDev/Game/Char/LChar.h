@@ -49,7 +49,7 @@ public:
 
 	// disable the interact for the character.
 	UFUNCTION(BlueprintCallable)
-	void InteractSetActive(const bool Enabled);
+	void InteractSetActive(const bool Enabled) const;
 
 	// Called for the internal init
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))

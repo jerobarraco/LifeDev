@@ -7,23 +7,23 @@
 #include "BaseUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBaseUIDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBaseUIDoneVal, int32, RetVal);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBaseUIDoneVal, const int32, RetVal);
 
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UBaseUI: public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show();
 	virtual void Show_Implementation();
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
 	virtual void Hide_Implementation();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Done(int32 RetVal = 0);
+	void Done(const int32 RetVal = 0);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool ShowCursor = false;

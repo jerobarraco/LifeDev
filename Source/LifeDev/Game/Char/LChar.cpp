@@ -141,7 +141,7 @@ void ALChar::SetInputEnabled(const bool Enabled) {
 
 // can't remember why i made this into its own function,
 // probably to be able to call from the outside.
-void ALChar::InteractSetActive(const bool Enabled) {
+void ALChar::InteractSetActive(const bool Enabled) const {
 	Interactor->SetActive(Enabled);
 }
 
@@ -178,9 +178,9 @@ void ALChar::BeginPlay() {
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
-	if (IsValid(Class)) {
+	if (LIKELY(IsValid(Class))) {
 		UI = CreateWidget<UGameUI>(World, Class);
-		if (IsValid(UI)) {
+		if (LIKELY(IsValid(UI))) {
 			UI->AddToViewport();
 			UI->InteractHidePrompt();
 			// It is of utmost important that ANY canvas (and or root element) in the widget ui to be have its visibilty
@@ -190,12 +190,11 @@ void ALChar::BeginPlay() {
 	}
 
 	UClass* const SClass = SettingsUIClass.Get();
-	if (IsValid(SClass)) {
+	if (LIKELY(IsValid(SClass))) {
 		SettingsUI = CreateWidget<ULSettingsUI>(World, SClass);
-		if (SettingsUI) {
+		if (LIKELY(SettingsUI)) {
 			// important to add to the viewport otherwise the GC will delete our bindings :')
 			SettingsUI->AddToViewport(9999);
-			SettingsUI->AutoUnbind = false; // you only bind once.
 			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
 			MenuDone(); // hide
 		}

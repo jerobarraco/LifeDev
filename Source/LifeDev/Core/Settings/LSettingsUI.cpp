@@ -2,14 +2,13 @@
 
 #include "LSettingsUI.h"
 
-#include "Kismet/GameplayStatics.h"
-
 #include "JUtils/UI/GroupBox.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 
 ULSettingsUI::ULSettingsUI():Super() {
 	ShowCursor = true;
+	AutoUnbind = false; // you only bind once.
 }
 
 void ULSettingsUI::Show_Implementation() {
