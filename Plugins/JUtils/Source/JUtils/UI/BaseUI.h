@@ -31,7 +31,7 @@ public:
 	// will auto-unbind from done on hide
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool AutoUnbind = true;
-	
+
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FBaseUIDone OnDone;
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)

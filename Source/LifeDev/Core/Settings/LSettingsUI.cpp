@@ -7,6 +7,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 
 ULSettingsUI::ULSettingsUI():Super() {
+	// note: the intro level intro ui will set `ShowCursor` to false. to avoid having the mouse hidden.
 	ShowCursor = true;
 	AutoUnbind = false; // you only bind once.
 }

@@ -17,10 +17,10 @@ AIntroMan::AIntroMan():Super() {
 }
 
 void AIntroMan::AddUI() {
-	if (!UIClass || !UIClass.Get()) return;
+	if (UNLIKELY(!UIClass || !UIClass.Get())) return;
 
 	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	UI = CreateWidget<UIntroUI>(World, UIClass.Get());
 	if (UNLIKELY(!IsValid(UI))) return;
@@ -38,14 +38,14 @@ void AIntroMan::Done() {
 	const UWorld* const World = GetWorld();
 
 	const ULSettings* const Settings = ULSettings::Instance(World);
-	if (!Settings) return;
+	if (UNLIKELY(!Settings)) return;
 
 	const int32 ChapterID = Settings->CurrentChapter();
 	// -1 because we never actually save that chapter.
 	constexpr int32 ChapMax = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats) -1;
 
 	if (UNLIKELY(ChapterID >= ChapMax)) {
-		UE_LOG(LogTemp, Log, TEXT("Current save is beyond the max chapter."));
+		UE_LOG(LogTemp, Warning, TEXT("%hs Current save is beyond the max chapter."), __func__);
 		static const FText TheEnd(
 			NSLOCTEXT("Intro", "MaxChapterReached",
 				"This save is at the current max chapter.\n"

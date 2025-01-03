@@ -17,7 +17,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ShowMsg(const FText& Msg); // unused
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
