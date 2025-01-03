@@ -41,16 +41,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UItemLogic> LogicType = nullptr;
 
-	// used during runtime to keep track of the count
+	// Runtime only (transient). used during runtime to keep track of the count
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	int32 Count = 0;
-	// the current cool down being applied. used track how much remaining cool down there is.
+	// Runtime only (transient). the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	int32 ActiveCoolDown = 0;
-	// whether the item is temporarily blocked (used on runtime)
+	// Runtime only (transient). whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	bool IsLocked = false;
-	// the logic for this item. created by the inventory on creation.
+	// Runtime only (transient). the logic for this item. created by the inventory on creation.
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	TObjectPtr<UItemLogic> Logic = nullptr;
 	// note that this object is not manually destroyed. that's all good. it's GC'd.
