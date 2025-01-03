@@ -116,15 +116,16 @@ void ALMusicMan::SetEnvironOverride(const bool On) {
 void ALMusicMan::SetGhosts(const bool On) {
 	const bool Enabled = GhostOverride && ULSettings::GetFeatS(this, EFeat::E_GHOSTPOOL);
 	if (Enabled && On) {
-		if (IsValid(GhostPool)) return;
+		if (UNLIKELY(IsValid(GhostPool))) return;
+
 		UWorld* const W = GetWorld();
-		if (!W) return;
+		if (UNLIKELY(!W)) return;
 
 		GhostPool = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
 		return;
 	}
 
-	if (!IsValid(GhostPool)) return;
+	if (UNLIKELY(!IsValid(GhostPool))) return;
 	GhostPool->Destroy();
 	GhostPool = nullptr;
 }
