@@ -76,7 +76,9 @@ void UCLCharItems::Look(const FName& Name) const {
 		// allow item description to split on different pages.
 		TArray<FString> Blocks;
 		Item.Description.ToString().ParseIntoArray(Blocks, TEXT("@"));
-		for (const FString& Block : Blocks) {
+		for (FString& Block : Blocks) {
+			// remove the extra line at the start of new blocks. it only removes one instance. which is what i want.
+			Block.RemoveFromStart(LINE_TERMINATOR);
 			Diag.Text = FText::FromString(Block);
 			Diags->AddDiag(Diag);
 		}
