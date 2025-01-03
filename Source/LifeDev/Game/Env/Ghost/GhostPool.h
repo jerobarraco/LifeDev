@@ -12,7 +12,7 @@ class UCRandomizer;
 
 // Ghost Pooler
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
-class AGhostPool : public AActor {
+class AGhostPool : public AInfo {
 	GENERATED_BODY()
 
 public:

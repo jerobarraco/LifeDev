@@ -17,9 +17,6 @@ AGhostPool::AGhostPool():Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	bCollideWhenPlacing = false;
 	
-	USceneComponent* const Cmp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(Cmp);
-
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
 	Rnd->DelayMin=2;
 	Rnd->DelayMax=5;
