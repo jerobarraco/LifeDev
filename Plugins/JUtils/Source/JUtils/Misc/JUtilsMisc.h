@@ -83,8 +83,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UWorld* JGetWorld(UWorld* World);
 
+	// Shows/hides an ui. it will also show the mouse if needed.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ShowUI(UObject* O, bool Show, UWidget* Focus = nullptr, bool SetPaused = false);
+	static void ShowUI(const UObject* const O, const bool Show,
+		UWidget* const Focus = nullptr, const bool SetPaused = false);
 
 	// Calls a Task (a Delegate) on another thread, when finishes calls OnDone on the game thread (if bound)
 	// What Not to Do:

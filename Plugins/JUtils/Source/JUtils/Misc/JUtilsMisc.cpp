@@ -70,17 +70,19 @@ UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 
 	// TODO this is not working as expected.
 	World = GetEdWorld();
-	if (!World) World = GEngine->GetWorld();
+	if (UNLIKELY(!World)) World = GEngine->GetWorld();
 
 	return World;
 }
 
-void UJUtilsMisc::ShowUI(UObject* O, bool Show,  UWidget* Focus, bool SetPaused) {
-	UWorld* const World = O ? O->GetWorld(): nullptr;
-	if (!IsValid(World)) return;
+void UJUtilsMisc::ShowUI(const UObject* const O, const bool Show,  UWidget* const Focus, const bool SetPaused) {
+	if (UNLIKELY(!IsValid(O))) return;
+
+	const UWorld* const World = O->GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
 
 	APlayerController* const Controller = World->GetFirstPlayerController();
-	if (!IsValid(Controller)) return;
+	if (UNLIKELY(!IsValid(Controller))) return;
 
 	if (Show) {
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(
