@@ -24,10 +24,9 @@ void ULSettingsUI::Show_Implementation() {
 
 void ULSettingsUI::Hide_Implementation() {
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
-	if (Man) Man->FadeFX(false);
+	if (LIKELY(Man)) Man->FadeFX(false);
 	
 	Super::Hide_Implementation();
-	
 	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
