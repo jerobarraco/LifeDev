@@ -43,13 +43,13 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// static UJMiscUtils* Get();
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static UWorld* GetEdWorld();
+	UFUNCTION(BlueprintCallable)
+	static UWorld* GetEditorWorld();
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static UWorld* GetPieWorld(const int32 Num = 0);
+	UFUNCTION(BlueprintCallable)
+	static UWorld* GetPIEWorld(const int32 Num = 0);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable)
 	static bool IsPIE();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -22,7 +22,7 @@
 	// return nullptr;
 // }
 
-UWorld* UJUtilsMisc::GetEdWorld() {
+UWorld* UJUtilsMisc::GetEditorWorld() {
 #if WITH_EDITOR
 	if (UNLIKELY(!GEditor)) return nullptr;
 	return GEditor->GetEditorWorldContext(false).World(); 
@@ -31,7 +31,7 @@ UWorld* UJUtilsMisc::GetEdWorld() {
 #endif
 }
 
-UWorld* UJUtilsMisc::GetPieWorld(const int32 Num) {
+UWorld* UJUtilsMisc::GetPIEWorld(const int32 Num) {
 #if WITH_EDITOR
 	if (UNLIKELY(!GEditor)) return nullptr;
 	const FWorldContext* const Context = GEditor->GetPIEWorldContext(Num);
@@ -69,7 +69,7 @@ UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	// World = GetWorld(); // this is static cant call this
 
 	// TODO this is not working as expected.
-	World = GetEdWorld();
+	World = GetEditorWorld();
 	if (UNLIKELY(!World)) World = GEngine->GetWorld();
 
 	return World;
