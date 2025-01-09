@@ -25,7 +25,7 @@ ARadio00::ARadio00():Super() {
 	DoorRoot->SetRelativeLocation(FVector(15,0,10));
 	// DoorRoot->SetRelativeRotation(FRotator(-35,0,0));
 
-	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
+	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Door"));
 	Door->SetupAttachment(DoorRoot);
 	Door->SetStaticMesh(CDoor.Object);
 	Door->SetCastAllShadows(true);

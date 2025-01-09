@@ -38,7 +38,7 @@ ARadioI00::ARadioI00():Super() {
 
 void ARadioI00::DoTrigger_Implementation() {
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ARadioI00::DialogShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ARadioI00::DialogDone);
@@ -59,7 +59,7 @@ void ARadioI00::DialogDone() {
 	Diags->OnShow.RemoveAll(this);
 
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 
 	World->GetTimerManager().ClearTimer(DiagDoneHandle);
 	DiagDoneHandle.Invalidate();
