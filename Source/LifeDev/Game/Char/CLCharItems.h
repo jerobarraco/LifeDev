@@ -29,6 +29,8 @@ public:
 	EItemUseResult UseSelected() const;
 	UFUNCTION(BlueprintCallable)
 	void LookSelected() const;
+	UFUNCTION(BlueprintCallable)
+	bool PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const;
 
 protected:
 	virtual void BeginPlay() override;

@@ -375,6 +375,8 @@ FItem* UInventory::AddNew(const FName& Name) {
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/asynchronous-asset-loading-in-unreal-engine\https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nandehttps://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
 	// https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
 	if (UseSndAutoLoad && Snd.ToSoftObjectPath().IsValid() && !Snd.IsValid()) {
+		UE_LOG(LogInventory, Log, TEXT("%hs Loading sound. Name=%s Async=%i Snd=%s"),
+			__func__, *Name.ToString(), UseSndAsyncLoad, *Snd.ToString());
 		if (UseSndAsyncLoad) 
 			UAssetManager::GetStreamableManager().RequestSyncLoad(Snd.ToSoftObjectPath());
 		else

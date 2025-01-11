@@ -2,6 +2,8 @@
 
 #include "CLCharItems.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Interact/InteractTypes.h"
@@ -134,6 +136,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
 		Inventory->Use(Name);
+		PlaySound(Item.Snd);
 		return Res;
 	}
 
@@ -158,6 +161,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			// if it fails to use it, fall through to the rest of the error
 			if (LIKELY(Used)) {
 				Item.Logic->Use();
+				PlaySound(Item.Snd);
 				return EItemUseResult::SUCCESS;
 			}
 		}
@@ -177,9 +181,23 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 }
 
 EItemUseResult UCLCharItems::UseSelected() const {
-	return LIKELY(IsValid(Inventory)) ? Use(Inventory->GetSelected()) :  EItemUseResult::ERROR;
+	return Use(Inventory->GetSelected());
 }
 
 void UCLCharItems::LookSelected() const {
 	if (LIKELY(IsValid(Inventory))) Look(Inventory->GetSelected());
+}
+
+bool UCLCharItems::PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const {
+	if (!Snd.GetUniqueID().IsValid()) return false;
+	if (!Snd.IsValid()) return false;
+	const AActor* const Owner = GetOwner();
+	UE_LOG(LogCharItems, Log, TEXT("%hs Play sound '%s'."),
+		__func__, *Snd.ToString());
+	if (LIKELY(Owner)) {
+		const FVector& Location = Owner->GetActorLocation();
+		UGameplayStatics::PlaySoundAtLocation(this, Snd.Get(), Location);
+	} else
+		UGameplayStatics::PlaySound2D(this, Snd.Get());
+	return true;
 }
