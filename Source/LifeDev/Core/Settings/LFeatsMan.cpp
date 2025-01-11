@@ -68,11 +68,12 @@ void ALFeatsMan::BeginPlay() {
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const S = ULSettings::Instance(GetWorld());
-	if (S) {
+	if (LIKELY(S)) {
 		S->OnFeatUpdateVisual.RemoveAll(this);
 		S->OnFeatUpdate.RemoveAll(this);
 		S->OnFeatUpdateUnreal.RemoveAll(this);
 	}
+
 	GM = nullptr;
 	MPCI = nullptr;
 	MPC = nullptr;
