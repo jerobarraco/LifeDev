@@ -3,6 +3,7 @@
 #include "Inventory.h"
 
 #include "Engine/DataTable.h"
+#include "Engine/AssetManager.h"
 
 #include "ItemLogic.h" //needed for ManType.
 
@@ -368,6 +369,16 @@ FItem* UInventory::AddNew(const FName& Name) {
 			pOutItem->Logic = NewObject<UItemLogic>(this, ManType);
 			pOutItem->Logic->Name = Name;
 		}
+	}
+
+	TSoftObjectPtr<USoundBase>& Snd = pOutItem->Snd;
+	// https://dev.epicgames.com/documentation/en-us/unreal-engine/asynchronous-asset-loading-in-unreal-engine\https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nandehttps://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
+	// https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
+	if (UseSndAutoLoad && Snd.ToSoftObjectPath().IsValid() && !Snd.IsValid()) {
+		if (UseSndAsyncLoad) 
+			UAssetManager::GetStreamableManager().RequestSyncLoad(Snd.ToSoftObjectPath());
+		else
+			Snd.LoadSynchronous();
 	}
 
 	return pOutItem;

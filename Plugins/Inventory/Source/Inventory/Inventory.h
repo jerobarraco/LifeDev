@@ -18,7 +18,7 @@ DECLARE_LOG_CATEGORY_CLASS(LogInventory, Log, Log);
 class UDataTable;
 
 // World subsystem to deal with Inventory
-UCLASS(Blueprintable, BlueprintType, Category="Inventory")
+UCLASS(Blueprintable, BlueprintType, Category="Inventory", Config=Inventory, DefaultConfig)
 class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
@@ -84,8 +84,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
 
-	/// system
-
+#pragma region system
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	void Init(UDataTable* const DataTable);
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -97,8 +96,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	FName GetNextKey(const bool Forward = true, FName From = NAME_None) const;
 
-	/// ~system
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
+	bool UseSndAutoLoad = true;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
+	bool UseSndAsyncLoad = true;
+#pragma endregion
 
+#pragma region Delegates
 	// Triggered when an item is modified
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FInventoryOnMod OnMod;
@@ -114,6 +118,7 @@ public:
 	// Triggered when an item becomes cold
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FInventoryOnItemCold OnCold;
+#pragma endregion
 
 protected:
 	void SetCoolTimerEnabled(const bool Enable);

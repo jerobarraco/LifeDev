@@ -33,9 +33,14 @@ public:
 	FText Title;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Description;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	TArray<FText> Descriptions;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<USoundBase> Snd = nullptr;
 
 	// the class for the item manager
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
