@@ -76,13 +76,23 @@ void UCLCharItems::Look(const FName& Name) const {
 		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
 		// allow item description to split on different pages.
-		TArray<FString> Blocks;
-		Item.Description.ToString().ParseIntoArray(Blocks, TEXT("@"));
-		for (FString& Block : Blocks) {
-			// remove the extra line at the start of new blocks. it only removes one instance. which is what i want.
-			Block.RemoveFromStart(LINE_TERMINATOR);
-			Diag.Text = FText::FromString(Block);
-			Diags->AddDiag(Diag);
+		if (!Item.Description.IsEmptyOrWhitespace()) {
+			UE_LOG(LogCharItems, Warning, TEXT("%hs '%s'. deprecated usage of item.description."),
+			__func__, *SName);
+			// TODO move to the new one (below)
+			TArray<FString> Blocks;
+			Item.Description.ToString().ParseIntoArray(Blocks, TEXT("@"));
+			for (FString& Block : Blocks) {
+				// remove the extra line at the start of new blocks. it only removes one instance. which is what i want.
+				Block.RemoveFromStart(LINE_TERMINATOR);
+				Diag.Text = FText::FromString(Block);
+				Diags->AddDiag(Diag);
+			}
+		} else if (Item.Descriptions.Num()>0) {
+			for (const FText& Block : Item.Descriptions) {
+				Diag.Text = Block;
+				Diags->AddDiag(Diag);
+			}
 		}
 	}
 
