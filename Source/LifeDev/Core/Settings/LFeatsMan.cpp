@@ -82,7 +82,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
-	if (!IsValid(GM) || !IsValid(GM->PostProcess)) return;
+	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) return;
 
 	// Important:
 	// these properties on the editor have a checkbox next to them.
@@ -137,7 +137,12 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 			else
 				Post->Settings.RemoveBlendable(SpeedMat);
 		}
-	} 
+	}
+	
+	// } else if (Feat == EFeat::V_DOF) {
+	// // cant do this. it will break the fb post process since it does a blur pass before the fb
+	// and can't move the fb to before dof pass without breaking everything.
+	// Post->Settings.DepthOfFieldScale = bEnabled ? 1:0;
 }
 
 void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool bEnabled) {
