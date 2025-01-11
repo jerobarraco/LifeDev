@@ -191,13 +191,15 @@ void UCLCharItems::LookSelected() const {
 bool UCLCharItems::PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const {
 	if (!Snd.GetUniqueID().IsValid()) return false;
 	if (!Snd.IsValid()) return false;
+
 	const AActor* const Owner = GetOwner();
 	UE_LOG(LogCharItems, Log, TEXT("%hs Play sound '%s'."),
 		__func__, *Snd.ToString());
-	if (LIKELY(Owner)) {
+	if (UseSndAtLocation && LIKELY(Owner)) {
 		const FVector& Location = Owner->GetActorLocation();
 		UGameplayStatics::PlaySoundAtLocation(this, Snd.Get(), Location);
 	} else
 		UGameplayStatics::PlaySound2D(this, Snd.Get());
+
 	return true;
 }

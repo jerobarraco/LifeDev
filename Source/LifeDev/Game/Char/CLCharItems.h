@@ -14,7 +14,7 @@ class UDiags;
 
 // LifeDev Game character items
 // handles some stuff regarding items... 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API UCLCharItems: public UActorComponent {
 	GENERATED_BODY()
 
@@ -31,6 +31,9 @@ public:
 	void LookSelected() const;
 	UFUNCTION(BlueprintCallable)
 	bool PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	bool UseSndAtLocation = false;
 
 protected:
 	virtual void BeginPlay() override;

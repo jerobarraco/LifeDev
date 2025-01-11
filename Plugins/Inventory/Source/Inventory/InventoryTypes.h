@@ -34,7 +34,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Description;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
-	TArray<FText> Descriptions;
+	TArray<FText> Descriptions; // TODO move to this one
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
