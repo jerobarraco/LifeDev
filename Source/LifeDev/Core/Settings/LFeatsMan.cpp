@@ -148,10 +148,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 
 void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool bEnabled) {
 	if (Feat == EFeat::U_BATCH_TICK) {
-		IConsoleVariable* CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowBatchedTicks"));
+		IConsoleVariable* const CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowBatchedTicks"));
 		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
 	} else if (Feat == EFeat::U_CON_TICK) {
-		IConsoleVariable* CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
+		IConsoleVariable* const CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
 		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
 	}
 }
