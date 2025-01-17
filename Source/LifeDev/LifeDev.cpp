@@ -21,7 +21,8 @@ void FLifeDevModule::StartupModule() {
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("%hs LifeDev Shaders path '%s'"), __func__, *ShaderDirectory);
-	AddShaderSourceDirectoryMapping(VirtualShaderDirectory, ShaderDirectory);
+	// disabled manually so that i don't need to copy it for building.
+	// AddShaderSourceDirectoryMapping(VirtualShaderDirectory, ShaderDirectory);
 
 	// this won't work. probably is overriden by the engine. just go to Editor settings > Appearance > Application Scale
 	// FSlateApplication::Get().SetApplicationScale(1.3);
