@@ -21,8 +21,8 @@ ARange::ARange():Super() {
 	if (LIKELY(ObjMat.Succeeded())) Mat = ObjMat.Object;
 
 	Anim->IsAdditive = false;
-	Anim->Duration = 3;
-	Anim->TEnd.SetScale3D(FVector(10));
+	Anim->Duration = 5;
+	Anim->TEnd.SetScale3D(FVector(100));
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
@@ -30,11 +30,21 @@ ARange::ARange():Super() {
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
+	SetActorHiddenInGame(true);
+	
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0, Mat);
+	UCodeCurveLib* const Lib = UCodeCurveLib::Instance();
+	Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::OutCubic);
+}
+
+void ARange::AnimEnd_Implementation() {
+	Super::AnimEnd_Implementation();
+	SetActorHiddenInGame(true);
 }
 
 void ARange::DoTrigger_Implementation() {
 	IRoot->SetRelativeScale3D(FVector(0));
+	SetActorHiddenInGame(false);
 	Super::DoTrigger_Implementation();
 }
 

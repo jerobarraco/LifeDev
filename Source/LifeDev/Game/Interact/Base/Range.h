@@ -31,4 +31,5 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void AnimEnd_Implementation() override;
 };

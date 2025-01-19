@@ -19,4 +19,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<ARange> RangeClass = nullptr;
+
+
+protected:
+	virtual void BeginPlay_Implementation(UWorld* const BrokenDontUse) override;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ARange> Range = nullptr;
 };
