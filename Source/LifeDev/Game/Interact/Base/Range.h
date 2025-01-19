@@ -22,7 +22,7 @@ public:
 	void ETrigger() { Trigger(); }
 
 	UFUNCTION(BlueprintCallable)
-	void SetMaxSize(float Size);
+	void SetMaxSize(const float Size);
 
 	virtual void DoTrigger_Implementation() override;
 	

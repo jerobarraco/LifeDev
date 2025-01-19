@@ -14,11 +14,11 @@ ARange::ARange():Super() {
 	IRoot->SetRelativeScale3D(FVector(0));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
-	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
+	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		ObjMat(TEXT("/JUtils/Mats/Outline/OutlineDepth_MI.OutlineDepth_MI"));
-	if (ObjMat.Succeeded()) Mat = ObjMat.Object;
+	if (LIKELY(ObjMat.Succeeded())) Mat = ObjMat.Object;
 
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;
@@ -30,7 +30,7 @@ ARange::ARange():Super() {
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
-	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0, Mat); 
+	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0, Mat);
 }
 
 void ARange::DoTrigger_Implementation() {
@@ -38,6 +38,6 @@ void ARange::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 }
 
-void ARange::SetMaxSize(float Size) {
+void ARange::SetMaxSize(const float Size) {
 	Anim->TEnd.SetScale3D(FVector(Size));
 }
