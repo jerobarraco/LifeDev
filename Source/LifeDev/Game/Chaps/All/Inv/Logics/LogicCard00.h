@@ -6,6 +6,8 @@
 
 #include "LogicCard00.generated.h"
 
+class ARange;
+// item logic for card 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULogicCard00: public ULogicCard {
 	GENERATED_BODY()
@@ -14,4 +16,7 @@ public:
 	ULogicCard00();
 
 	virtual void Use_Implementation() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSubclassOf<ARange> RangeClass = nullptr;
 };
