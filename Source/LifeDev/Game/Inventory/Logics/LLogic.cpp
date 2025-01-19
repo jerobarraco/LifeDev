@@ -10,13 +10,13 @@
 
 ULLogic::ULLogic():Super() {}
 
-void ULLogic::BeginPlay_Implementation(UWorld* Trash) {
+void ULLogic::BeginPlay_Implementation(UWorld* const Trash) {
 	UE_LOG(LogTemp, Verbose, TEXT("LLogic:%hs"), __func__);
 
 	UWorld* const W = GetWorld();
 	Super::BeginPlay_Implementation(W);
 	
-	if (!IsValid(W)) {
+	if (UNLIKELY(!IsValid(W))) {
 		// this actually happens on editor. understandable since the begin play is fake.
 		// UE_LOG(LogTemp, Warning, TEXT("LLogic:%hs. can't find world"), __func__);
 		Diags = nullptr;
@@ -50,6 +50,6 @@ void ULLogic::Use_Implementation() {
 }
 
 bool ULLogic::Say(const FName& Id) {
-	if (!IsValid(Diags)) return false;
+	if (UNLIKELY(!IsValid(Diags))) return false;
 	return Diags->AddId(Id);
 }

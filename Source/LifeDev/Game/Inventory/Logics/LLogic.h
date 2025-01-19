@@ -26,7 +26,7 @@ public:
 	FName UseDlg = NAME_None;
 
 protected:
-	virtual void BeginPlay_Implementation(UWorld* NewWorld) override;
+	virtual void BeginPlay_Implementation(UWorld* const NewWorld) override;
 	virtual void BeginDestroy() override;
 	virtual void Use_Implementation() override;
 
@@ -35,13 +35,13 @@ protected:
 	bool Say(const FName& Id);
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UDiags* Diags = nullptr;
+	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlashback* FB = nullptr;
+	TObjectPtr<UFlashback> FB = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UStory* Story = nullptr;
+	TObjectPtr<UStory> Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Inv = nullptr;
+	TObjectPtr<UInventory> Inv = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UFlags* Flags = nullptr;
+	TObjectPtr<UFlags> Flags = nullptr;
 };
