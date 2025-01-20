@@ -15,17 +15,20 @@ ARange::ARange():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
-	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
+	if (LIKELY(ObjMesh.Succeeded()))
+		Mesh->SetStaticMesh(ObjMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		ObjMat(TEXT("/Game/LifeDev/Game/Inters/Cards/Card00Outline_MI.Card00Outline_MI"));
-	if (LIKELY(ObjMat.Succeeded())) Mesh->SetMaterial(0, ObjMat.Object);// Mat = ObjMat.Object;
+	if (LIKELY(ObjMat.Succeeded()))
+		Mesh->SetMaterial(0, ObjMat.Object);// Mat = ObjMat.Object;
 
+	Mesh->bReceiveMobileCSMShadows = false;
 	StateNum = 1;
 	Texts = {FText::GetEmpty()};
 	Anim->IsAdditive = false;
-	Anim->Duration = 5;
-	Anim->TStart.SetScale3D(FVector(.5));
+	Anim->Duration = 3;
+	Anim->TStart.SetScale3D(FVector(1));
 	Anim->TEnd.SetScale3D(FVector(15));
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
