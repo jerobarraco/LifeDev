@@ -11,7 +11,7 @@ ARange::ARange():Super() {
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	Super::SetActorTickEnabled(false); // ensure we don't animate on start
 
-	IRoot->SetRelativeScale3D(FVector(0));
+	IRoot->SetRelativeScale3D(FVector(SMALL_NUMBER));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
@@ -23,6 +23,7 @@ ARange::ARange():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 5;
 	Anim->TEnd.SetScale3D(FVector(100));
+	Anim->TStart.SetScale3D(FVector(KINDA_SMALL_NUMBER));
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
@@ -43,7 +44,7 @@ void ARange::AnimEnd_Implementation() {
 }
 
 void ARange::DoTrigger_Implementation() {
-	IRoot->SetRelativeScale3D(FVector(0));
+	// IRoot->SetRelativeScale3D(FVector(0));
 	SetActorHiddenInGame(false);
 	Super::DoTrigger_Implementation();
 }

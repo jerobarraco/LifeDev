@@ -23,7 +23,8 @@ public:
 
 protected:
 	virtual void BeginPlay_Implementation(UWorld* const BrokenDontUse) override;
-
+	virtual void BeginDestroy() override;
+	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ARange> Range = nullptr;
 };
