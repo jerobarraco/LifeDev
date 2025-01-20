@@ -27,6 +27,7 @@ ARange::ARange():Super() {
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
+	SetAutoActivate(false);
 }
 
 void ARange::BeginPlay() {

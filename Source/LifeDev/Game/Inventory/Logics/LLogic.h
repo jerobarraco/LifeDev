@@ -26,13 +26,13 @@ public:
 	FName UseDlg = NAME_None;
 
 protected:
-	virtual void BeginPlay_Implementation(UWorld* const NewWorld) override;
+	virtual void BeginPlay_Implementation() override;
 	virtual void BeginDestroy() override;
 	virtual void Use_Implementation() override;
 
 	// will add a dialog or sequence. returns success. checks isvalid diags
 	UFUNCTION(BlueprintCallable)
-	bool Say(const FName& Id);
+	bool Say(const FName& Id) const;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;

@@ -366,6 +366,7 @@ FItem* UInventory::AddNew(const FName& Name) {
 	if (IsValid(pOutItem->LogicType)) { // creates the logic if possible
 		const UClass* const ManType = pOutItem->LogicType.Get();
 		if (LIKELY(IsValid(ManType))) {
+			// outer is important so that it triggers BeginPlay on the itemLogic, and its GetWorld works. 
 			pOutItem->Logic = NewObject<UItemLogic>(this, ManType);
 			pOutItem->Logic->Name = Name;
 		}

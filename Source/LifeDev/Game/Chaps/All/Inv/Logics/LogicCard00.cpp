@@ -29,8 +29,8 @@ void ULogicCard00::Use_Implementation() {
 	Super::Use_Implementation();
 }
 
-void ULogicCard00::BeginPlay_Implementation(UWorld* const BrokenDontUse) {
-	Super::BeginPlay_Implementation(BrokenDontUse);
+void ULogicCard00::BeginPlay_Implementation() {
+	Super::BeginPlay_Implementation();
 	
 }
 

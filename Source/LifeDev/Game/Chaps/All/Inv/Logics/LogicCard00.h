@@ -22,7 +22,7 @@ public:
 
 
 protected:
-	virtual void BeginPlay_Implementation(UWorld* const BrokenDontUse) override;
+	virtual void BeginPlay_Implementation() override;
 	virtual void BeginDestroy() override;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)

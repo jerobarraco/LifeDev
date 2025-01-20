@@ -12,14 +12,13 @@ class INVENTORY_API UItemLogic: public UObject {
 public:
 	UItemLogic();
 
+	
 	// the world passed by parameter is trash. don't use.
 	// warning: this function can sometimes be called during editor time.
 	// set an appropriate outer when creating this object and use GetWorld() when needed.
-	// beware this seems to be called 18 times at the moment.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void BeginPlay(UWorld* const BrokenDontUse);
-	virtual void BeginPlay_Implementation(UWorld* const BrokenDontUse) {}
-	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void BeginPlay();
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Look();
 	virtual void Look_Implementation() {
@@ -37,5 +36,6 @@ public:
 	FName Name = NAME_None;
 
 protected:
+	virtual void PostInitProperties() override;
 	// I can't save the world here since it will crash the editor on load for some weird reason
 };
