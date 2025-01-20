@@ -66,6 +66,8 @@ public:
 
 	/// easings.net
 	UFUNCTION(BlueprintCallable)
+	float InSin(const float p);
+	UFUNCTION(BlueprintCallable)
 	float OutBounce(float p);
 	UFUNCTION(BlueprintCallable)
 	float InBounce(float p);

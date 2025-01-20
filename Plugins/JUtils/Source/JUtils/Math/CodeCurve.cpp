@@ -74,6 +74,11 @@ float UCodeCurveLib::UCircularInOut(float p) {
 	return FMath::InterpCircularInOut(0,1,p);
 }
 
+float UCodeCurveLib::InSin(const float p) {
+	// taken from InterpSinIn. similar to easings https://easings.net/#easeInSine
+	return -1.f * FMath::Cos(p * UE_HALF_PI) + 1.f;
+}
+
 float UCodeCurveLib::OutBounce(float p) {
 	// https://easings.net/#easeOutBounce
 	constexpr float n1 = 7.5625;

@@ -32,4 +32,5 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void AnimEnd_Implementation() override;
+	virtual bool TryTrigger_Implementation() override; 
 };
