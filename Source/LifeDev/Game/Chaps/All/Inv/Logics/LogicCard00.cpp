@@ -3,6 +3,7 @@
 #include "LogicCard00.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Interact/Base/Range.h"
 
@@ -17,6 +18,8 @@ ULogicCard00::ULogicCard00():Super() {
 }
 
 void ULogicCard00::Use_Implementation() {
+	if (UNLIKELY(!ULSettings::GetFeatS(this, EFeat::E_CARD_RANGE))) return;
+
 	const AActor* const Pawn = UGameplayStatics::GetActorOfClass(this, ALChar::StaticClass());
 	if (UNLIKELY(!Pawn)) return;
 	
@@ -29,7 +32,6 @@ void ULogicCard00::Use_Implementation() {
 		Range = Cast<ARange>(W->SpawnActor(RangeClass, 0,0));
 	Range->SetActorLocation(Location);
 	Range->TryTrigger();
-	// UseDlg = "TV00_T"; // test
 	Super::Use_Implementation();
 }
 

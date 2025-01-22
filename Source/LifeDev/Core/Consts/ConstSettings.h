@@ -7,7 +7,7 @@ UENUM(BlueprintType)
 enum class EFeat: uint8 {
 	NONE, // empty one to be able to add to the set.
 	/// General
-
+#pragma region Chapters
 	// Chaps
 	C_00,
 	C_01,
@@ -20,6 +20,7 @@ enum class EFeat: uint8 {
 	C_08,
 	C_09,
 	C_MAX UMETA(Hidden),
+#pragma endregion
 
 #pragma region Dialogs
 	// Shows the dialogs, otherwise they get muted
@@ -64,6 +65,7 @@ enum class EFeat: uint8 {
 	
 #pragma region Environ
 	E_GHOSTPOOL,
+	E_CARD_RANGE,
 	E_MAX UMETA(Hidden),
 #pragma endregion
 	// Gameplay (find another word)
