@@ -19,8 +19,7 @@ UCInteract::UCInteract(): Super() {
 	CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	bNavigationRelevant = false;
 	bCanEverAffectNavigation = false;
-	// nopes because it will create collision issues.
-	SetGenerateOverlapEvents(false);
+	SetGenerateOverlapEvents(false); // nopes because it will create collision issues. 
 	SetCanEverAffectNavigation(false);
 
 	// it's already on the collision profile yay
