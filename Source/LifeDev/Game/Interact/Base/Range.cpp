@@ -81,8 +81,9 @@ void ARange::BeginPlay() {
 	Anim->CodeCurve.Clear();
 	Anim->Curve = nullptr;
 	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
-	Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd);
+	// Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd); // nopes
 	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OnOverlap);
+
 	// UCodeCurveLib* const Lib = UCodeCurveLib::Instance();
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InSin);
 }
@@ -99,10 +100,12 @@ void ARange::AnimEnd() {
 }
 
 void ARange::AnimUpd(const float Progress, const float Alpha) {
+	// while this works, it will make stuff flash.
 	TArray<AActor*> OverlappingActors;
 	Collider->GetOverlappingActors(OverlappingActors);
-	for (const AActor* const OverlappingActor : OverlappingActors) {
-		UE_LOG(LogTemp, Log, TEXT("Got2 %s"), *GetNameSafe(OverlappingActor));
+	for (AActor* const OA : OverlappingActors) {
+		UE_LOG(LogTemp, Log, TEXT("Got2 %s"), *GetNameSafe(OA));
+		OA->SetActorHiddenInGame(!OA->IsHidden());
 	}
 
 	// TArray<UPrimitiveComponent*> OverComp;

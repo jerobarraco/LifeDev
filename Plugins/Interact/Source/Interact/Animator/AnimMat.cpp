@@ -275,7 +275,7 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 	static const FName PrimDataName("PrimData");
 	ParamInitBasic(Param, PrimDataName, Curve, Duration);// ignore the name issue (return)
 
-	if (!IsValid(Component)) {
+	if (UNLIKELY(!IsValid(Component))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Component is not valid. Stop."),
 			__func__);
 		return false;
