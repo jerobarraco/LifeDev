@@ -18,6 +18,10 @@ public:
 	// When "IsAdditive" it is going to set "TStart" automatically to the current transform of the AnimRoot on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	bool IsAdditive = true;
+
+	// whether to sweep on trans updates, causing collisions.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
+	bool UseSweep = false;
 	
 	// The animation transform. You don't necessarily need to set this up, but you can change it.
 	// When "IsAdditive" it is going to be automatically set to the current transform of the AnimRoot on begin play.

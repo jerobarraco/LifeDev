@@ -21,7 +21,7 @@ void UCAnimatorTrans::Update_Implementation(float Alpha) {
 		// Thanks, Tim! this actually works very well!
 		TNew.BlendWith(TEnd, Alpha);
 	}
-	TRoot->SetRelativeTransform(TNew);
+	TRoot->SetRelativeTransform(TNew, UseSweep);
 }
 
 void UCAnimatorTrans::BeginPlay() {
