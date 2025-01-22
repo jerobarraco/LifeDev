@@ -29,11 +29,18 @@ public:
 	TObjectPtr<UMaterialInterface> Mat = nullptr;
 
 protected:
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* const Cmp, AActor* OtherActor, UPrimitiveComponent* const OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	UFUNCTION()
 	void AnimEnd();
+	UFUNCTION()
+	void AnimUpd(const float Progress, const float Alpha);
 
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<USceneComponent> Root = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Mesh = nullptr;
 

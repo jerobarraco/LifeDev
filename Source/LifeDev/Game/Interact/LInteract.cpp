@@ -4,6 +4,7 @@
 #include "Sound/SoundClass.h"
 
 #include "Diags/Diags.h"
+#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
@@ -27,6 +28,9 @@ ALInteract::ALInteract():Super() {
 
 	AnimFade = CreateDefaultSubobject<UCAnimatorFade>(TEXT("AnimFade"));
 	AnimFade->Meshes.Add(Mesh);
+
+	// set to true, it's needed for the range. TODO if it creates issues rollback to false.
+	Interact->SetGenerateOverlapEvents(true);
 }
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
