@@ -31,7 +31,8 @@ void ULogicCard00::Use_Implementation() {
 	if (UNLIKELY(!IsValid(Range)))
 		Range = Cast<ARange>(W->SpawnActor(RangeClass, 0,0));
 	Range->SetActorLocation(Location);
-	Range->TryTrigger();
+	Range->Trigger();
+
 	Super::Use_Implementation();
 }
 

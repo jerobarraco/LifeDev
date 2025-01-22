@@ -2,8 +2,11 @@
 
 #include "Range.h"
 
-#include "Interact/Animator/CAnimatorMix.h"
+#include "Components/SphereComponent.h"
+
 #include "JUtils/Actors/CQuickMesh.h"
+
+#include "Interact/Animator/CAnimatorMix.h"
 
 ARange::ARange():Super() {
 	// super important or it will NOT work
@@ -11,8 +14,12 @@ ARange::ARange():Super() {
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	Super::SetActorTickEnabled(false); // ensure we don't animate on start
 
-	IRoot->SetRelativeScale3D(FVector(SMALL_NUMBER));
-	
+	USceneComponent* const Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(Root);
+
+	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
+	Mesh->SetupAttachment(Root);
+	Mesh->SetRelativeScale3D(FVector(UE_SMALL_NUMBER));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (LIKELY(ObjMesh.Succeeded()))
@@ -21,21 +28,22 @@ ARange::ARange():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		ObjMat(TEXT("/Game/LifeDev/Game/Inters/Cards/Card00Outline_MI.Card00Outline_MI"));
 	if (LIKELY(ObjMat.Succeeded()))
-		Mesh->SetMaterial(0, ObjMat.Object);// Mat = ObjMat.Object;
+		Mesh->SetMaterial(0, ObjMat.Object);
 
 	Mesh->bReceiveMobileCSMShadows = false;
-	StateNum = 1;
-	Texts = {FText::GetEmpty()};
+
+	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
+	Collider->SetupAttachment(Mesh);
+
+	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("Anim"));
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;
-	Anim->TStart.SetScale3D(FVector(1));
+	Anim->TStart.SetScale3D(FVector(1)); // this scale avoids flashing the player
 	Anim->TEnd.SetScale3D(FVector(15));
+	Anim->TRoot = Mesh; // using the mesh since the animator will mess with the location
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
-	DisableWhileAnim = false; // avoid getting reactivated
-	IsOneShot = false;
-	SetAutoActivate(false);
 }
 
 void ARange::BeginPlay() {
@@ -45,26 +53,26 @@ void ARange::BeginPlay() {
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0);
 	Anim->CodeCurve.Clear();
 	Anim->Curve = nullptr;
+	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
 	// UCodeCurveLib* const Lib = UCodeCurveLib::Instance();
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InSin);
 }
 
-void ARange::AnimEnd_Implementation() {
-	Super::AnimEnd_Implementation();
+void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (LIKELY(Anim)) Anim->OnEnd.RemoveAll(this);
+
+	Super::EndPlay(EndPlayReason);
+}
+
+void ARange::AnimEnd() {
 	SetActorHiddenInGame(true);
 }
 
-bool ARange::TryTrigger_Implementation() {
-	Anim->Deactivate(); // force the animation to stop so that it triggers again.
-	return Super::TryTrigger_Implementation();
-}
-
-void ARange::DoTrigger_Implementation() {
-	// IRoot->SetRelativeScale3D(FVector(0));
+void ARange::Trigger() {
 	SetActorHiddenInGame(false);
-	Super::DoTrigger_Implementation();
+	Anim->Activate(true); // force the animation to stop so that it triggers again.
 }
 
-void ARange::SetMaxSize(const float Size) {
-	Anim->TEnd.SetScale3D(FVector(Size));
+void ARange::SetMaxScale(const float Scale) const {
+	Anim->TEnd.SetScale3D(FVector(Scale));
 }

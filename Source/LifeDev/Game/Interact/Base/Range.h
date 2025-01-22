@@ -5,13 +5,14 @@
 
 #include "Range.generated.h"
 
+class USphereComponent;
 class UCInteract;
-class UCAnimatorTrans;
+class UCAnimatorMix;
 class UCRange;
 
 // Base class for Range actors
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ARange: public AInteractAnim {
+class LIFEDEV_API ARange: public AActor {
 public:
 	GENERATED_BODY()
 
@@ -19,18 +20,27 @@ public:
 
 	// lamest lame thing. to test in editor
 	UFUNCTION(BlueprintCallable)
-	void ETrigger() { Trigger(); }
+	void Trigger();
 
 	UFUNCTION(BlueprintCallable)
-	void SetMaxSize(const float Size);
+	void SetMaxScale(const float Scale) const;
 
-	virtual void DoTrigger_Implementation() override;
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UMaterialInterface> Mat = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void AnimEnd_Implementation() override;
-	virtual bool TryTrigger_Implementation() override; 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	UFUNCTION()
+	void AnimEnd();
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UCQuickMesh> Mesh = nullptr;
+
+	// The animator, by default set up for the mesh material and iroot
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UCAnimatorMix> Anim = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<USphereComponent> Collider = nullptr;
 };
