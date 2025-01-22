@@ -40,7 +40,7 @@ ARange::ARange():Super() {
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
-	// SetActorHiddenInGame(true);
+	SetActorHiddenInGame(true);
 	
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0);
 	Anim->CodeCurve.Clear();
@@ -51,7 +51,7 @@ void ARange::BeginPlay() {
 
 void ARange::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
-	// SetActorHiddenInGame(true);
+	SetActorHiddenInGame(true);
 }
 
 bool ARange::TryTrigger_Implementation() {
@@ -61,14 +61,10 @@ bool ARange::TryTrigger_Implementation() {
 
 void ARange::DoTrigger_Implementation() {
 	// IRoot->SetRelativeScale3D(FVector(0));
-	// SetActorHiddenInGame(false);
+	SetActorHiddenInGame(false);
 	Super::DoTrigger_Implementation();
 }
 
 void ARange::SetMaxSize(const float Size) {
 	Anim->TEnd.SetScale3D(FVector(Size));
 }
-
-// disable the hidden
-// use the new material
-// /Script/Engine.MaterialInstanceConstant'/Game/LifeDev/Game/Inters/Cards/Card00Outline_MI.Card00Outline_MI'
