@@ -114,8 +114,18 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 void AInteract::ShowHint_Implementation() {
 	if (!UseHint) return;
 
+	Interact->Hint(true);
 	// Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
 	PlaySFX(SFX_Hint);// checked inside
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	FTimerHandle H;
+	auto F = [this]() {
+		if (UNLIKELY(!IsValid(this) || !IsValid(Interact))) return;
+		Interact->Hint(false);
+	};
+	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
 }
 
 void AInteract::BeginPlay() {

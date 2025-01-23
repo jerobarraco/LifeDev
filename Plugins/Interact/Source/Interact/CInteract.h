@@ -48,6 +48,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
 		meta=(ClampMin=0, ClampMax=255), Config)
 	int32 HoverStencilID = 255;
+	// ID to use when writing to the custom depth stencil during hint time. Only if HoverMesh is set.
+	// Default can be changed on the configs.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
+		meta=(ClampMin=0, ClampMax=255), Config)
+	int32 HintStencilID = 255;
 	
 	// Mesh to automatically highlight, if any.
 	// will write a custom render stencil value HoverStencilID (255).
@@ -98,7 +103,10 @@ protected:
 	void DeInit();
 	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
-
+	void Hint(const bool Show) const;
+	// <0 will disable stencil
+	void SetStencil(int32 StencilID) const;
+	
 	inline static FName Profile = ProfileInteract;
 	friend class AInteract;
 	friend class UCInteractor;

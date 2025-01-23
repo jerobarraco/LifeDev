@@ -40,23 +40,7 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 	UE_LOG(LogCInteract, Log, TEXT("%hs: %s: IsHover=%i"),
 		__func__, *GetNameSafe(this), IsHover);
 
-	UStaticMeshComponent* const HMesh = HoverMesh.Get();
-	// wrapped to always trigger the delegate
-	if (IsValid(HMesh)) {
-		TArray<USceneComponent*> Meshes;
-		HMesh->GetChildrenComponents(true, Meshes);
-		Meshes.Add(HMesh);
-		const int32 Num = Meshes.Num();
-		for (int32 i = 0; i<Num; ++i) {
-			UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Meshes[i]);
-			if (UNLIKELY(!IsValid(Child))) continue;
-			
-			Child->SetRenderCustomDepth(IsHover);
-			// To have this working you need to enable the usage of custom stencils on the settings to
-			// "Custom depth stencil pass : Enabled WITH STENCIL"
-			Child->SetCustomDepthStencilValue(IsHover?HoverStencilID:0);
-		}
-	}
+	SetStencil(IsHover ? HoverStencilID : -1);
 
 	AActor* const Owner = GetOwner();
 	// this way kind of sucks. but it's the best. it's important to set before hover and clear after unhover.
@@ -82,6 +66,39 @@ bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
 	
 	OnGrab.Broadcast(IsGrab, NewParent);
 	return true;
+}
+
+void UCInteract::Hint(const bool Show) const {
+	const AActor* const Owner = GetOwner();
+	const APawn* const Instigator = Owner ? Owner->GetInstigator() : nullptr;
+	// override stencil if On, and try to restore hover if off
+	const int32 StencilID = Show ? HintStencilID :
+		(Instigator ? HoverStencilID : -1);
+	SetStencil(StencilID);
+}
+
+void UCInteract::SetStencil(int32 StencilID) const {
+	UStaticMeshComponent* const HMesh = HoverMesh.Get();
+	// wrapped to always trigger the delegate
+	if (UNLIKELY(!IsValid(HMesh))) return;
+
+	const bool Show = StencilID >=0;
+	if (!Show) StencilID = 0; // force at 0, save one branch*n 
+
+	TArray<USceneComponent*> Meshes;
+	HMesh->GetChildrenComponents(true, Meshes);
+	Meshes.Add(HMesh);
+
+	const int32 Num = Meshes.Num();
+	for (int32 i = 0; i<Num; ++i) {
+		UStaticMeshComponent* const Child = Cast<UStaticMeshComponent>(Meshes[i]);
+		if (UNLIKELY(!IsValid(Child))) continue;
+		
+		Child->SetRenderCustomDepth(Show);
+		// To have this working you need to enable the usage of custom stencils on the settings to
+		// "Custom depth stencil pass : Enabled WITH STENCIL"
+		Child->SetCustomDepthStencilValue(StencilID);
+	}
 }
 
 void UCInteract::Reparent(const bool IsGrab, UCInteractor* const NewParent) const {

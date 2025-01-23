@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "InteractTypes.h"
 
 #include "CInteractor.generated.h"
