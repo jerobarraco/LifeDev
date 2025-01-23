@@ -89,14 +89,14 @@ protected:
 
 #pragma region Interactor
 	/// interactor
-	// used by the interactor (hence public). don't call directly. subscribe to OnTrigger.
+	// used by the interactor. don't call directly. subscribe to OnTrigger.
 	void Trigger() const;
 	// un/hovers. Inst=the instigator, will always be set to null on unhover.
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
-	void Hover(const bool IsHover, APawn* const Inst) const; // TODo set the optionals once compilation is fixed
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
+	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
+	void Hover(const bool IsHover, APawn* const Inst) const;
+	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
 	void DeInit();
-	// used by the interactor (hence public). don't call directly. subscribe to the OnHover delegate.
+	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
 
 	inline static FName Profile = ProfileInteract;

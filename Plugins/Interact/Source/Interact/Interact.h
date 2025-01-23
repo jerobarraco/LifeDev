@@ -93,6 +93,23 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
+#pragma region Hint
+	// test function to hint the interact (call attention to it). atm it will trigger Hover.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	void ShowHint(const bool Show);
+
+	// whether to enable hints or not. (will enable ShowHint (both true and false!))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseHint = true; // test
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseHintHover = true; // test
+
+	// triggered on showhint(true)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TObjectPtr<USoundBase> SFX_Hint = nullptr;
+#pragma endregion
+
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.

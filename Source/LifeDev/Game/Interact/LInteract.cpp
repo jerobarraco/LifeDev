@@ -33,13 +33,6 @@ ALInteract::ALInteract():Super() {
 	Interact->SetGenerateOverlapEvents(true);
 }
 
-void ALInteract::ShowHint_Implementation(const bool Show) {
-	if (!UseHint) return;
-	Hover(Show);
-	USoundBase* const Sfx = SFX_Hint.Get();
-	if (Show && IsValid(Sfx)) PlaySFX(Sfx);
-}
-
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *GetNameSafe(this), FadeIn, SetHidden, UseFade);

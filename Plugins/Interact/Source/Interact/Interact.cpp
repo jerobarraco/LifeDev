@@ -111,6 +111,13 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	SetText();
 }
 
+void AInteract::ShowHint_Implementation(const bool Show) {
+	if (!UseHint) return;
+
+	Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
+	PlaySFX(SFX_Hint);// checked inside
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();

@@ -25,18 +25,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction) )
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
 
-#pragma region Hint
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
-	void ShowHint(const bool Show);
-
-	// whether to enable hints or not. (will enable ShowHint (both true and false!))
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	bool UseHint = true; // test
-
-	// triggered on showhint(true)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TObjectPtr<USoundBase> SFX_Hint = nullptr;
-#pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -116,6 +104,7 @@ public:
 	FName LockedDlg = NAME_None;
 #pragma endregion
 
+#pragma region dialogs
 	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName TriggerDlg = NAME_None;
@@ -126,6 +115,7 @@ public:
 	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
 	TMap<FName, FName> UseItemDlgs;
+#pragma endregion
 
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
@@ -134,6 +124,7 @@ public:
 	TObjectPtr<UCAnimatorFade> AnimFade = nullptr;
 
 protected:
+#pragma region Reward
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Rewarded();
@@ -148,6 +139,7 @@ protected:
 	// called when the item reward fade ends. it WILL destroy the object.
 	UFUNCTION() // bound
 	void DestroyAfterReward();
+#pragma endregion
 
 	// called when a fade ends that wants to set the object as hidden.
 	UFUNCTION() // bound
