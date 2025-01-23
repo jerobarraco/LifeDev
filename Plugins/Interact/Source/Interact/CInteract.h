@@ -52,7 +52,7 @@ public:
 	// Default can be changed on the configs.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp",
 		meta=(ClampMin=0, ClampMax=255), Config)
-	int32 HintStencilID = 255;
+	int32 HintStencilID = 254;
 	
 	// Mesh to automatically highlight, if any.
 	// will write a custom render stencil value HoverStencilID (255).

@@ -106,7 +106,7 @@ public:
 	bool UseHintHover = true; // test
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
-	float HintTime = 3; // TODO expose as slider
+	float HintTime = 1.5; // TODO expose as slider
 
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
