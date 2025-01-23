@@ -8,6 +8,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 // this requires to create an object channel "Range"
 // and edit the collision channel Interact to "overlap" range
 // then add another collision profile for OverlapInteract that overlaps interacs and has type range.
@@ -59,17 +60,38 @@ ARange::ARange():Super() {
 	Anim->MatFEnd = 0;
 }
 
-void ARange::OnOverlap(UPrimitiveComponent* const Cmp, AActor* OtherActor,
-	UPrimitiveComponent* const OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult) {
-	UE_LOG(LogTemp, Log, TEXT("ARange::OnOverlap got'em o=%s"), *GetNameSafe(OtherActor));
-	AInteractAnim* const Inter = Cast<AInteractAnim>(OtherActor);
+void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
+	UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex,
+	const bool bFromSweep, const FHitResult& SweepResult) {
+	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
+
+	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
 	if (!Inter) return;
-	Inter->SetActorHiddenInGame(Inter->IsHidden());
+
+	Inter->ShowHint(true);
 	UCQuickMesh* const Mesh = Cast<UCQuickMesh>(Inter->GetComponentByClass(UCQuickMesh::StaticClass()));
-	UAnimMat* AnimMat = UAnimMat::Instance(this);
+	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
-	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
+
+	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, .5, false, nullptr);
+	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
+	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, 2, false, nullptr);
+}
+
+void ARange::OverlapEnd(UPrimitiveComponent* const Cmp, AActor* const OtherActor, UPrimitiveComponent* const OtherComp,
+	const int32 OtherBodyIndex) {
+	
+	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
+
+	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
+	if (!Inter) return;
+
+	Inter->ShowHint(false);
+	UCQuickMesh* const Mesh = Cast<UCQuickMesh>(Inter->GetComponentByClass(UCQuickMesh::StaticClass()));
+	UAnimMat* const AnimMat = UAnimMat::Instance(this);
+	if (UNLIKELY(!AnimMat)) return;
+
+	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
 	AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, 2, false, nullptr);
 }
 
@@ -82,7 +104,8 @@ void ARange::BeginPlay() {
 	Anim->Curve = nullptr;
 	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
 	// Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd); // nopes
-	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OnOverlap);
+	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OverlapBegin);
+	Collider->OnComponentEndOverlap.AddUniqueDynamic(this, &ARange::OverlapEnd);
 
 	// UCodeCurveLib* const Lib = UCodeCurveLib::Instance();
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InSin);

@@ -1,14 +1,12 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "Interact/InteractAnim.h"
 
 #include "Range.generated.h"
 
+class UCQuickMesh;
 class USphereComponent;
-class UCInteract;
 class UCAnimatorMix;
-class UCRange;
 
 // Base class for Range actors
 UCLASS(Blueprintable, BlueprintType)
@@ -29,11 +27,17 @@ public:
 	TObjectPtr<UMaterialInterface> Mat = nullptr;
 
 protected:
-	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* const Cmp, AActor* OtherActor, UPrimitiveComponent* const OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION()
+	void OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
+		UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex, const bool bFromSweep,
+		const FHitResult& SweepResult);
+	UFUNCTION()
+	void OverlapEnd(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
+		UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex);
+
 	UFUNCTION()
 	void AnimEnd();
 	UFUNCTION()

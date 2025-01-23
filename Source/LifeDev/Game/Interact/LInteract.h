@@ -22,9 +22,21 @@ public:
 
 	// will fade in/out the object. also sets active by default.
 	// optionally will un/set the hidden flag.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction) )
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
 
+#pragma region Hint
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	void ShowHint(const bool Show);
+
+	// whether to enable hints or not. (will enable ShowHint (both true and false!))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseHint = true; // test
+
+	// triggered on showhint(true)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TObjectPtr<USoundBase> SFX_Hint = nullptr;
+#pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -77,6 +89,7 @@ public:
 	bool UseFade = false; 
 #pragma endregion
 
+#pragma region lock
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
@@ -101,6 +114,8 @@ public:
 	// dialog to show when the object is locked and we DON'T have the ULockItem
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName LockedDlg = NAME_None;
+#pragma endregion
+
 	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName TriggerDlg = NAME_None;
