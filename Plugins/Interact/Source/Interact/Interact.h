@@ -21,7 +21,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
 // And check the properties under "SetUp".
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=Interact, DefaultConfig)
 class INTERACT_API AInteract: public AActor {
 	GENERATED_BODY()
 
@@ -96,7 +96,7 @@ public:
 #pragma region Hint
 	// test function to hint the interact (call attention to it). atm it will trigger Hover.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
-	void ShowHint(const bool Show);
+	void ShowHint();
 
 	// whether to enable hints or not. (will enable ShowHint (both true and false!))
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
@@ -104,6 +104,9 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHintHover = true; // test
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
+	float HintTime = 3;
 
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
@@ -204,8 +207,8 @@ protected:
 
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact)
-	void PlaySFX(USoundBase* Snd) const; // native events can't take Ptr* const
+	UFUNCTION(BlueprintCallable, Category=Interact)
+	void PlaySFX(USoundBase* const Snd) const; // native events can't take Ptr* const
 
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum

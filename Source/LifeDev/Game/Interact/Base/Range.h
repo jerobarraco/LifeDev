@@ -34,9 +34,6 @@ protected:
 	void OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
 		UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex, const bool bFromSweep,
 		const FHitResult& SweepResult);
-	UFUNCTION()
-	void OverlapEnd(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
-		UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex);
 
 	UFUNCTION()
 	void AnimEnd();

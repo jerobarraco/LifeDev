@@ -68,30 +68,13 @@ void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherAct
 	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
 	if (!Inter) return;
 
-	Inter->ShowHint(true);
+	Inter->ShowHint();
 	UCQuickMesh* const Mesh = Cast<UCQuickMesh>(Inter->GetComponentByClass(UCQuickMesh::StaticClass()));
 	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
 
-	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, .5, false, nullptr);
-	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
-	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, 2, false, nullptr);
-}
-
-void ARange::OverlapEnd(UPrimitiveComponent* const Cmp, AActor* const OtherActor, UPrimitiveComponent* const OtherComp,
-	const int32 OtherBodyIndex) {
-	
-	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
-
-	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
-	if (!Inter) return;
-
-	Inter->ShowHint(false);
-	UCQuickMesh* const Mesh = Cast<UCQuickMesh>(Inter->GetComponentByClass(UCQuickMesh::StaticClass()));
-	UAnimMat* const AnimMat = UAnimMat::Instance(this);
-	if (UNLIKELY(!AnimMat)) return;
-
-	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
+	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, .5, false, nullptr);
+	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
 	AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, 2, false, nullptr);
 }
 
@@ -105,7 +88,6 @@ void ARange::BeginPlay() {
 	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
 	// Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd); // nopes
 	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OverlapBegin);
-	Collider->OnComponentEndOverlap.AddUniqueDynamic(this, &ARange::OverlapEnd);
 
 	// UCodeCurveLib* const Lib = UCodeCurveLib::Instance();
 	// Anim->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InSin);

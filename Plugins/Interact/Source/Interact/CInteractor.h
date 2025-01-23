@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractHover, bool, On, UCInter
 // Will be interacting with interact objects.
 // Subclass of scene component, so you can attach it and aim from there.
 // By default, is not active.
-UCLASS(Blueprintable, BlueprintType, Config="Interact", DefaultConfig,
+UCLASS(Blueprintable, BlueprintType, Config=Interact, DefaultConfig,
 	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCInteractor: public USceneComponent {
 	GENERATED_BODY()

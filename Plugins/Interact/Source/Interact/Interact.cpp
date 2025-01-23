@@ -111,10 +111,10 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	SetText();
 }
 
-void AInteract::ShowHint_Implementation(const bool Show) {
+void AInteract::ShowHint_Implementation() {
 	if (!UseHint) return;
 
-	Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
+	// Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
 	PlaySFX(SFX_Hint);// checked inside
 }
 
@@ -153,6 +153,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Interact->OnGrab.RemoveAll(this);
 		Interact->DeInit();
 	}
+
 	Interact = nullptr;
 	RewardIntersActive.Empty(0);
 	RewardIntersActiveClass.Empty(0);
@@ -187,7 +188,7 @@ void AInteract::DoTrigger_Implementation() {
 	if (IsOneShot) SetActive(false);
 }
 
-void AInteract::PlaySFX_Implementation(USoundBase* Snd) const {
+void AInteract::PlaySFX(USoundBase* const Snd) const {
 	if (UNLIKELY(!IsValid(Snd))) return;
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
 		__func__, UseAttachedSFX, *GetNameSafe(this), *Snd->GetName());

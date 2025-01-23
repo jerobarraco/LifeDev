@@ -117,7 +117,7 @@ public:
 
 // Subsystem that animates materials parameter collections' parameters.
 // And custom primitive data. It's a bit deprecated. The AnimatorMPC and AnimatorData is preferred.
-UCLASS(Blueprintable, Category="Interact", DefaultConfig, Config=Interact)
+UCLASS(Blueprintable, Category="Interact", Config=Interact, DefaultConfig)
 class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
