@@ -131,8 +131,8 @@ void AInteract::ShowHint_Implementation() {
 
 	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
-	AnimMat->DataFade(Interact->HoverMesh.Get(), 0, true, FLinearColor::White, 0);
-	AnimMat->DataFade(Interact->HoverMesh.Get(), 0, true, FLinearColor::Black, HintTime);
+	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0);
+	AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, HintTime);
 }
 
 void AInteract::BeginPlay() {
