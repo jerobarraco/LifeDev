@@ -37,8 +37,6 @@ protected:
 
 	UFUNCTION()
 	void AnimEnd();
-	UFUNCTION()
-	void AnimUpd(const float Progress, const float Alpha);
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;

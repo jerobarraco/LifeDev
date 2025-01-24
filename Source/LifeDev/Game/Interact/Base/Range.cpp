@@ -69,18 +69,11 @@ void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherAct
 	if (!Inter) return;
 
 	Inter->ShowHint();
-	UCQuickMesh* const Mesh = Cast<UCQuickMesh>(Inter->GetComponentByClass(UCQuickMesh::StaticClass()));
-	UAnimMat* const AnimMat = UAnimMat::Instance(this);
-	if (UNLIKELY(!AnimMat)) return;
-
-	// AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, .5, false, nullptr);
-	AnimMat->DataFade(Mesh, 0, true, FLinearColor::White, 0, false, nullptr);
-	AnimMat->DataFade(Mesh, 0, true, FLinearColor::Black, 2, false, nullptr);
 }
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
-	// SetActorHiddenInGame(true);
+	SetActorHiddenInGame(true);
 	
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0);
 	Anim->CodeCurve.Clear();
@@ -101,28 +94,11 @@ void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ARange::AnimEnd() {
-	// SetActorHiddenInGame(true);
-}
-
-void ARange::AnimUpd(const float Progress, const float Alpha) {
-	// while this works, it will make stuff flash.
-	TArray<AActor*> OverlappingActors;
-	Collider->GetOverlappingActors(OverlappingActors);
-	for (AActor* const OA : OverlappingActors) {
-		UE_LOG(LogTemp, Log, TEXT("Got2 %s"), *GetNameSafe(OA));
-		OA->SetActorHiddenInGame(!OA->IsHidden());
-	}
-
-	// TArray<UPrimitiveComponent*> OverComp;
-	// Collider->GetOverlappingComponents(OverComp);
-	// for (const UPrimitiveComponent* const OC: OverComp) {
-		// UE_LOG(LogTemp, Log, TEXT("Got3 %s"), *GetNameSafe(OC));
-		
-	// }
+	SetActorHiddenInGame(true);
 }
 
 void ARange::Trigger() {
-	// SetActorHiddenInGame(false);
+	SetActorHiddenInGame(false);
 	Anim->Activate(true); // force the animation to stop so that it triggers again.
 }
 
