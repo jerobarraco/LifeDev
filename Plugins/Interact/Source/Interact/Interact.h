@@ -108,6 +108,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	float HintTime = 1.5; // TODO expose as slider
 
+	// when >= 0 it will also animate the custom primitive data index=ID, from 0 to 1.
+	// requires the AnimMat to be created (ShouldBeCreated defaults to false on the config files)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
+	int32 HintPrimDataID = -1;
+
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
