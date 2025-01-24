@@ -10,6 +10,7 @@
 
 #include "CInteract.h"
 #include "CInteractor.h"
+#include "Animator/AnimMat.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -127,6 +128,11 @@ void AInteract::ShowHint_Implementation() {
 		Interact->Hint(false);
 	};
 	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
+
+	UAnimMat* const AnimMat = UAnimMat::Instance(this);
+	if (UNLIKELY(!AnimMat)) return;
+	AnimMat->DataFade(Interact->HoverMesh.Get(), 0, true, FLinearColor::White, 0);
+	AnimMat->DataFade(Interact->HoverMesh.Get(), 0, true, FLinearColor::Black, HintTime);
 }
 
 void AInteract::BeginPlay() {
