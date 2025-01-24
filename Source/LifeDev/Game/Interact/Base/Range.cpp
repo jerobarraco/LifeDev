@@ -50,7 +50,7 @@ ARange::ARange():Super() {
 	Anim->UseSweep = true;
 	Anim->IsAdditive = false;
 	Anim->Duration = 3;
-	Anim->TStart.SetScale3D(FVector(1)); // this scale avoids flashing the player
+	Anim->TStart.SetScale3D(FVector(.25)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
 	Anim->TEnd.SetScale3D(FVector(15));
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
 	
@@ -63,11 +63,11 @@ ARange::ARange():Super() {
 void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
 	UPrimitiveComponent* const OtherComp, const int32 OtherBodyIndex,
 	const bool bFromSweep, const FHitResult& SweepResult) {
-	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
 
 	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
 	if (!Inter) return;
 
+	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
 	Inter->ShowHint();
 }
 
