@@ -41,6 +41,10 @@ AInteract::AInteract():Super() {
 	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
+	
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
+	HintCurve = CCurve.Object;
 }
 
 bool AInteract::TryTrigger_Implementation() {
@@ -135,9 +139,12 @@ void AInteract::ShowHint_Implementation() {
 	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
 
-	// TODO this could be improved with a curve float.
-	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::White, 0);
-	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::Black, HintTime);
+	// ensure from 0
+	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::Black, 0);
+	// the curve helps with the animation. it could be done on the material as well. doushio?
+	// i think this makes it clearer for art people.
+	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::White, HintTime,
+		false, HintCurve.Get());
 }
 
 void AInteract::BeginPlay() {
@@ -166,6 +173,8 @@ void AInteract::BeginPlay() {
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
+
+	HintCurve.LoadSynchronous(); // ensure it's loaded.
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {

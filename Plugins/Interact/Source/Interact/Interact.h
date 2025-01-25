@@ -112,6 +112,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	int32 HintPrimDataID = 0;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
+	TSoftObjectPtr<UCurveFloat> HintCurve = nullptr;
+
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
