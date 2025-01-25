@@ -423,7 +423,7 @@ void UAnimMat::Initialize(FSubsystemCollectionBase& Collection) {
 bool UAnimMat::ShouldCreateSubsystem(UObject* Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
-	UE_LOG(LogAnimMat, Log, TEXT("%hs is=%i. the world subsystem will not be created."),
+	UE_LOG(LogAnimMat, Log, TEXT("%hs is=%i."),
 		__func__, ShouldBeCreated);
 
 	if (!ShouldBeCreated) {
