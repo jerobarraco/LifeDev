@@ -135,6 +135,7 @@ void AInteract::ShowHint_Implementation() {
 	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
 
+	// TODO this could be improved with a curve float.
 	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::White, 0);
 	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::Black, HintTime);
 }
