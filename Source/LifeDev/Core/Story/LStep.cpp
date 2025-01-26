@@ -101,6 +101,7 @@ void ALStep::Start_Implementation() {
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersFade(IntersFadeOut, false);
 	DoIntersTrigger();
+	DoIntersHint();
 
 	// show dialogs
 	StartDialogs();
@@ -305,5 +306,11 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 void ALStep::DoIntersTrigger() const {
 	for (const TObjectPtr<ALInteract>& I: IntersTrigger) {
 		if (LIKELY(IsValid(I))) I->TryTrigger();
+	}
+}
+
+void ALStep::DoIntersHint() const {
+	for (const TObjectPtr<AInteract>& I: IntersHint) {
+		if (LIKELY(IsValid(I))) I->UseHint = true;
 	}
 }

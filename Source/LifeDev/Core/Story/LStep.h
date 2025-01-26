@@ -101,6 +101,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	FVector GhostPos;
 
+#pragma region interacts
 	// Actors to show AND hide. If it's an interact, it will fade in and out.
 	// It will get destroyed on Stop. Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility
@@ -136,7 +137,13 @@ public:
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
-	
+
+	// Interacts to set UseHint at the Start (post wait).
+	// Will not stop being hinted automatically.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
+	TArray<TObjectPtr<AInteract>> IntersHint;
+#pragma endregion
+
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;
@@ -176,6 +183,7 @@ protected:
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
+	void DoIntersHint() const;
 	// fade an array of ALInteract
 	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
 	static void DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive);
