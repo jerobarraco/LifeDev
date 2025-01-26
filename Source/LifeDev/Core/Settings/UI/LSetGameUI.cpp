@@ -4,6 +4,7 @@
 
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "Interact/Interact.h"
 #include "LifeDev/Game/Char/LChar.h"
 
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -34,6 +35,14 @@ void ULSetGameUI::Apply_Implementation() {
 			Char->SaveConfig();
 		}
 	}
+
+	if (LIKELY(SLInterHint)) {
+		AInteract* const Inter = GetMutableDefault<AInteract>();
+		if (LIKELY(Inter)) {
+			Inter->HintTime = FMath::Max(.1, SLInterHint->GetValue());
+			Inter->SaveConfig();
+		}
+	}
 }
 
 void ULSetGameUI::Load_Implementation() {
@@ -55,6 +64,11 @@ void ULSetGameUI::Load_Implementation() {
 	const float InterDrag = Char ? Char->InteractDrag : .5;
 	if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
 	InterDragUpd(InterDrag);
+	
+	const AInteract* const Inter = GetMutableDefault<AInteract>();
+	const float InterHint = Inter ? Inter->HintTime : 1.5;
+	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
+	InterDragUpd(InterHint);
 }
 
 void ULSetGameUI::NativeOnInitialized() {
@@ -76,14 +90,20 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLInterDrag->SetMinValue(.1);
 		SLInterDrag->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterDragUpd);
 	}
+
+	if (LIKELY(SLInterHint)) {
+		SLInterHint->SetMaxValue(5.);
+		SLInterHint->SetMinValue(.1);
+		SLInterHint->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterHintUpd);
+	}
 }
 
 void ULSetGameUI::DiagAutoTimeUpd(const float Value) {
 	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TDiagAutoTime", "{0} secs.");
 	if (LIKELY(TDiagAutoTime)) {
 		static FNumberFormattingOptions NFOption;
-		NFOption.MaximumFractionalDigits = 4;
-		NFOption.MinimumFractionalDigits = 4;
+		NFOption.MaximumFractionalDigits = 3;
+		NFOption.MinimumFractionalDigits = 3;
 		const FText Num = FText::AsNumber(Value, &NFOption);
 		TDiagAutoTime->SetText(FText::Format(Fmt, Num));
 	}
@@ -93,8 +113,8 @@ void ULSetGameUI::FBTimeUpd(const float Value) {
 	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TFBTime", "{0} secs.");
 	if (LIKELY(TFBTime)) {
 		static FNumberFormattingOptions NFOption;
-		NFOption.MaximumFractionalDigits = 4;
-		NFOption.MinimumFractionalDigits = 4;
+		NFOption.MaximumFractionalDigits = 3;
+		NFOption.MinimumFractionalDigits = 3;
 		const FText Num = FText::AsNumber(Value, &NFOption);
 		TFBTime->SetText(FText::Format(Fmt, Num));
 	}
@@ -104,9 +124,20 @@ void ULSetGameUI::InterDragUpd(const float Value) {
 	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} multiplier");
 	if (LIKELY(TInterDrag)) {
 		static FNumberFormattingOptions NFOption;
-		NFOption.MaximumFractionalDigits = 4;
-		NFOption.MinimumFractionalDigits = 4;
+		NFOption.MaximumFractionalDigits = 3;
+		NFOption.MinimumFractionalDigits = 3;
 		const FText Num = FText::AsNumber(Value, &NFOption);
 		TInterDrag->SetText(FText::Format(Fmt, Num));
+	}
+}
+
+void ULSetGameUI::InterHintUpd(const float Value) {
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} secs");
+	if (LIKELY(TInterHint)) {
+		static FNumberFormattingOptions NFOption;
+		NFOption.MaximumFractionalDigits = 3;
+		NFOption.MinimumFractionalDigits = 3;
+		const FText Num = FText::AsNumber(Value, &NFOption);
+		TInterHint->SetText(FText::Format(Fmt, Num));
 	}
 }

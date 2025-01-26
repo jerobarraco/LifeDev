@@ -27,6 +27,8 @@ protected:
 	void FBTimeUpd(const float Value);
 	UFUNCTION()
 	void InterDragUpd(const float Value);
+	UFUNCTION()
+	void InterHintUpd(const float Value);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;
@@ -40,4 +42,8 @@ protected:
 	TObjectPtr<USlider> SLInterDrag;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TInterDrag;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SLInterHint;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TInterHint;
 };
