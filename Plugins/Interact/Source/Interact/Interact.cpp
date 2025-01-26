@@ -216,6 +216,10 @@ void AInteract::DoTrigger_Implementation() {
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 
+	for(AInteract* const I: RewardIntersHint) {
+		if (LIKELY(IsValid(I))) I->UseHint = true;
+	}
+
 	if (IsOneShot) SetActive(false);
 }
 

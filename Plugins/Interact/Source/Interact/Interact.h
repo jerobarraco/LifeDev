@@ -100,7 +100,7 @@ public:
 
 	// whether to enable hints or not. (will enable ShowHint (both true and false!))
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	bool UseHint = true; // test
+	bool UseHint = false;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	float HintTime = 1.5; // TODO expose as slider
@@ -120,6 +120,7 @@ public:
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
 #pragma endregion
 
+#pragma region Setup
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
@@ -135,13 +136,34 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
 
+	// Number of states. It will wrap State around. around.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	int32 StateNum = 2;
+
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
+#pragma endregion
 
+#pragma region Rewards
+	// Interacts to set UseHint when this is triggered.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TObjectPtr<AInteract>> RewardIntersHint;
+
+	// interacts to activate when this interact is triggered. will not fade.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TObjectPtr<AInteract>> RewardIntersActive;
+
+	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
+	// this is useful to use by code. on Editor RewardsIntersActive would be preferred.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
+#pragma endregion
+
+#pragma region Delegates
 	// When this is triggered (not locked).
 	// Either you override DoTrigger or you subscribe to this, but unlikely both.
 	// also Overriding DoTrigger is not the best.
@@ -161,6 +183,7 @@ public:
 	// Though THIS Interact could be a SimulatedProxy. 
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHover OnHover;
+#pragma endregion
 
 protected:
 	virtual void BeginPlay() override;
@@ -222,19 +245,6 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
-
-	// Number of states. It will wrap State around. around.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
-	int32 StateNum = 2;
-
-	// interacts to activate when this interact is triggered. will not fade.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TObjectPtr<AInteract>> RewardIntersActive;
-
-	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
-	// this is useful to use by code. on Editor RewardsIntersActive would be preferred.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
 
 	/// CDO
 
