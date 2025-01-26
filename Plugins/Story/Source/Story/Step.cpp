@@ -60,7 +60,7 @@ void AStep::DoTeleport() {
 	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
 	if (UNLIKELY(!IsValid(C))) return;
 
-	Char->AddControllerPitchInput(T.Rotator().Pitch-C->GetRelativeRotation().Pitch);
+	Char->AddControllerPitchInput(T.Rotator().Pitch - C->GetRelativeRotation().Pitch);
 }
 
 void AStep::TryStart_Implementation() {
