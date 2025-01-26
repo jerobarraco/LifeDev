@@ -30,15 +30,15 @@ public:
 	// overrides current save with a new game
 	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
-	void NewGame(const int32 SlotIndex =-1);
+	void NewGame(const int32 NewSlotIndex =-1);
 	// loads a game, or creates a new one if not found.
 	// Defaults to current slot.
 	UFUNCTION(BlueprintCallable)
-	void LoadGame(const int32 SlotIndex =-1);
+	void LoadGame(const int32 NewSlotIndex =-1);
 	// saves the current game if any
 	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
-	void SaveGame(int32 SlotIndex =-1);
+	void SaveGame(const int32 NewSlotIndex =-1);
 	// returns true if it's busy saving/loading
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsSaving() { return IsSaving; }
@@ -61,7 +61,7 @@ public:
 
 	// Sets a feature to be enabled or disabled
 	UFUNCTION(BlueprintCallable)
-	void SetFeat(EFeat Feat, bool Enable = true);
+	void SetFeat(const EFeat Feat, const bool Enable = true);
 
 	// Returns true if a feature is enabled
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -92,6 +92,8 @@ public:
 	FOnFeatUpdate OnFeatUpdateVisual;
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateEnviron;
+	UPROPERTY(BlueprintAssignable, Transient)
+	FOnFeatUpdate OnFeatUpdateGameplay;
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateAccess;
 	UPROPERTY(BlueprintAssignable, Transient)

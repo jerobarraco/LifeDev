@@ -65,11 +65,14 @@ enum class EFeat: uint8 {
 	
 #pragma region Environ
 	E_GHOSTPOOL,
-	E_CARD_RANGE,
 	E_MAX UMETA(Hidden),
 #pragma endregion
-	// Gameplay (find another word)
+
+#pragma region Gameplay
 	// G_*,
+	G_CARD0,
+	G_MAX UMETA(Hidden),
+#pragma endregion
 #pragma region Unreal
 	U_BATCH_TICK,
 	U_CON_TICK,

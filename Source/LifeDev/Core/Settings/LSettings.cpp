@@ -30,7 +30,7 @@ ULSettings* ULSettings::Instance(const UObject* const O) {
 void ULSettings::NewGame(const int32 NewSlotIndex) {
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
-	if (!Save) {
+	if (UNLIKELY(!Save)) {
 		UE_LOG(LogLSettings, Warning,
 			TEXT("%hs: Failed to create a new savegame. Can't progress."), __func__);
 		return;
@@ -44,10 +44,11 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 
 void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	// check before modifying internal state
-	if (IsSaving) {
+	if (UNLIKELY(IsSaving)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Load game aborted, save system is busy. STOP"), __func__);
 		return;
 	}
+
 	IsSaving = true;
 
 	// update target slot
@@ -63,17 +64,17 @@ void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, OnLoadGameDone);
 }
 
-void ULSettings::SaveGame(int32 NewSlotIndex) {
+void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
-	if (!Save) {
+	if (UNLIKELY(!Save)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
 		OnSaveReady.Broadcast(); // technically done. important or objects might get stuck
 		return;
 	}
 	
-	if (IsSaving) {
+	if (UNLIKELY(IsSaving)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy."), __func__);
 		// not triggering onSaveReady here since there must be something else in queue.
 		return;
@@ -101,7 +102,7 @@ void ULSettings::SaveGame(int32 NewSlotIndex) {
 void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 	IsSaving = false;
 	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
-	if (Success) {
+	if (LIKELY(Success)) {
 		UE_LOG(LogLSettings, Log, TEXT("%hs Savegame saved"), __func__);
 	} else {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Savegame save failed."), __func__);
@@ -114,7 +115,7 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame) {
 	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
-	if (!Save) {
+	if (UNLIKELY(!Save)) {
 		// If file does not exist, try to create a new one
 		UE_LOG(LogLSettings, Log, TEXT("%hs No savefile found, creating a new one. Slot=%i"),
 			__func__, SlotIndex);
@@ -150,7 +151,7 @@ void ULSettings::ResetFeats() {
 	Feats = Settings->GetFeats();
 }
 
-void ULSettings::SetFeat(EFeat Feat, bool Enable) {
+void ULSettings::SetFeat(const EFeat Feat, const bool Enable) {
 	const bool Has = Feats.Contains(Feat);
 	const bool Changed = Enable != Has;
 	if (Enable) {
@@ -159,13 +160,13 @@ void ULSettings::SetFeat(EFeat Feat, bool Enable) {
 		if (Has) Feats.Remove(Feat);
 	}
 
-	if (!Changed) return;
+	if (UNLIKELY(!Changed)) return;
 	FeatUpdated(Feat, Enable);
 }
 
 bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 	const ULSettings* const I = ULSettings::Instance(O);
-	return IsValid(I) ? I->GetFeat(Feat) : false;
+	return LIKELY(IsValid(I)) ? I->GetFeat(Feat) : false;
 }
 
 void ULSettings::Init() {
@@ -173,7 +174,7 @@ void ULSettings::Init() {
 	IsSaving = false; // clear. and force for loadgame.
 
 	const ULSysSettings* const Settings = ULSysSettings::Get();
-	if (Settings && Settings->UseSaveGame) LoadGame();
+	if (LIKELY(Settings && Settings->UseSaveGame)) LoadGame();
 	else NewGame();
 }
 
@@ -189,7 +190,9 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 	else if (Feat >= EFeat::V_LUMEN && Feat < EFeat::V_MAX) // < since not including the max
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::E_GHOSTPOOL && Feat < EFeat::E_MAX)
-		OnFeatUpdateEnviron.Broadcast(Feat, Enable); // this is just a patch for the lmusicman.
+		OnFeatUpdateEnviron.Broadcast(Feat, Enable);
+	else if (Feat >= EFeat::G_CARD0 && Feat < EFeat::G_MAX)
+		OnFeatUpdateGameplay.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_MAX)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
 	else if (Feat>=EFeat::U_BATCH_TICK && Feat < EFeat::U_MAX)
