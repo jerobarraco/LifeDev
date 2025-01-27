@@ -130,12 +130,12 @@ bool UCPuzzle::IsCurrentSolution() {
 
 	for (int32 i = 0; i< IdsNum; ++i ) {
 		if (CurrentIds[i] != Solution[i]) {
-			UE_LOG(LogCPuzzle, Log, TEXT("Solution is different"));
+			UE_LOG(LogCPuzzle, Log, TEXT("%hs Solution is different"), __func__);
 			return false;
 		}
 	}
 
-	UE_LOG(LogCPuzzle, Log, TEXT("Solution is correct"));
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs Solution is correct"), __func__);
 	return true;
 }
 
@@ -146,10 +146,15 @@ bool UCPuzzle::CheckCombination(const int32 ID) {
 	}
 
 	AInteract* const I = Interacts[ID];
+	if (UNLIKELY(!IsValid(I))) {
+		UE_LOG(LogCPuzzle, Warning, TEXT("%hs Interact is invalid. ID=%i"), __func__, ID);
+		return false;
+	}
+
 	const int32 State = CurrentIds[ID] = I->GetState();
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i state=%i"), __func__, ID, State);
 
-	// seems silly on combination but.. maybe you want to have only one change for a combination.
+	// seems silly on combination but... maybe you want to have only one change for a combination.
 	// e.g. 2 state buttons where buttons matter but not the order in which they are pressed.
 	if (DisableOnInter) 
 		I->SetActive(false);
