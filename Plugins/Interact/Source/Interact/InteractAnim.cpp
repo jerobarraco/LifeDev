@@ -61,6 +61,13 @@ void AInteractAnim::DoTrigger_Implementation() {
 	// also not doing during SetState since that can also be called by other means.
 	// done here and not on AnimEnd due to the same reason.
 	if (IsOneShot) DisableWhileAnim = false;
+
+	// OnTriggerDone is dispatched on AnimEnd. but if it's not being used. we force it.
+	if (!UseAnim || !Anim->IsActive()) DoTriggerAnim();
+}
+
+void AInteractAnim::DoTriggerAnim() {
+	OnTriggerAnim.Broadcast();
 }
 
 void AInteractAnim::AnimPlay() {
@@ -98,10 +105,13 @@ void AInteractAnim::AnimBegin_Implementation() {
 void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
 	if (DisableWhileAnim) SetActive(true);
-	
-	if (State<0 || State >= SFX_Stop.Num()) return;
-	USoundBase* const Snd2 = SFX_Stop[State];
-	PlaySFX(Snd2);
+
+	if (State >= 0 || State < SFX_Stop.Num()) {
+		USoundBase* const Snd2 = SFX_Stop[State];
+		PlaySFX(Snd2);
+	}
+
+	OnTriggerAnim.Broadcast();
 }
 
 

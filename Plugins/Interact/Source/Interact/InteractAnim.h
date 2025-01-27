@@ -63,7 +63,19 @@ public:
 	// triggered when anim ends. Closed, Open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<TObjectPtr<USoundBase>> SFX_Stop;
-	
+
+	// When this is triggered, not locked, after anim.
+	// Means after the animation is done (if it has any).
+	// OnTrigger is preferred if you don't use animations,
+	// or you don't REALLY need to wait for the end of the animation.
+	// I wouldn't expect this to be super reliable,
+	// specially if the user triggers this multiple times while it's animating.
+	// DisableWhileAnim will help.
+	// Make sure to call parent if you override AnimEnd, or TryTrigger.
+	// If the animation is looped, this will get triggered multiple times.
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FAInteractOnTrigger OnTriggerAnim;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -71,7 +83,8 @@ protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;
-	
+	void DoTriggerAnim();
+
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 

@@ -14,7 +14,6 @@ DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnWrapperIDC, UDelegateWrapper* const, i
 // The actual async load request
 // Manager->LoadPrimaryAsset(MonsterId, Bundles, Delegate);
 
-// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13
 // A simple wrapper for binding to delegates with extra parameters.
 // To use:
 // UDelegateWrapperID* const Wrapper = NewObject<UDelegateWrapperID>();
@@ -23,6 +22,7 @@ DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnWrapperIDC, UDelegateWrapper* const, i
 // Wrapper->OnDispatch.AddUniqueDynamic(this, &UGroupBox::ResetSelected);
 // C->OnCheckStateChanged.AddUniqueDynamic(Wrapper, &UCBChangeWrapper::DispatchBool);
 // Also you NEED to keep a ref to the Wrapper, or it will get GarbageCollected.
+// https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/13?u=nande
 // https://forums.unrealengine.com/t/dynamic-multicast-delegate-how-to-bind-lambda/140046/15?u=nande
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UDelegateWrapper : public UObject {

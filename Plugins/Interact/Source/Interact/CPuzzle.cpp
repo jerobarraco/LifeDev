@@ -2,8 +2,9 @@
 
 #include "CPuzzle.h"
 
-#include "Interact.h"
 #include "DelegateWrappers.h"
+
+#include "Interact.h"
 #include "InteractAnim.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
@@ -84,7 +85,14 @@ void UCPuzzle::Bind() {
 		Wrapper->Obj = I;
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
-		I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+
+		// bind to the Interact when triggered. if it's animated wait for it to end.
+		AInteractAnim* const IA = Cast<AInteractAnim>(I);
+		if (IsValid(IA))
+			IA->OnTriggerAnim.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		else
+			I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+
 		Wrappers.AddUnique(Wrapper);
 		++i;
 	}
