@@ -15,7 +15,7 @@ APuzzle::APuzzle():Super() {
 
 #if WITH_EDITORONLY_DATA // inspired by AInfo
 	UBillboardComponent* const SpriteComponent = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Sprite"));
-	if (!IsRunningCommandlet() && (SpriteComponent != nullptr)) {
+	if (LIKELY(!IsRunningCommandlet() && (SpriteComponent != nullptr))) {
 		// static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
 		// static ConstructorHelpers::FObjectFinder<UTexture2D> CSprText(TEXT("/Engine/EditorResources/S_Actor"));
 		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
@@ -37,7 +37,7 @@ APuzzle::APuzzle():Super() {
 }
 
 void APuzzle::Reset() {
-	if (CPuzzle) CPuzzle->Reset();
+	if (LIKELY(CPuzzle)) CPuzzle->Reset();
 
 	ClearTimer();
 }
@@ -50,13 +50,13 @@ void APuzzle::Done_Implementation(const bool IsOk) {
 		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
 		if (ResetOnFail) {
 			const UWorld* const W = GetWorld();
-			if (W) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
+			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
 		}
 		return;
 	}
 
 	if (IsValid(DoneInter)) {
-		DoneInter->Locked = false;// force unlock
+		DoneInter->Locked = false; // force unlock
 		DoneInter->TryTrigger();
 	}
 	
@@ -70,19 +70,18 @@ void APuzzle::Done_Implementation(const bool IsOk) {
 void APuzzle::Update_Implementation() {
 	// note update is called before done. so it's safe to re add the timer. done will clear it if needed.
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 	
 	ClearTimer();
 	// re-add the reset timer if needed. Notice all the types return when done
-	if (ResetTimeout >= 0) {
+	if (ResetTimeout >= 0)
 		W->GetTimerManager().SetTimer(ResetTimer, this, &APuzzle::Reset, ResetTimeout);
-	}
 }
 
 void APuzzle::BeginPlay() {
 	Super::BeginPlay();
 
-	if (IsValid(CPuzzle)) {
+	if (LIKELY(IsValid(CPuzzle))) {
 		CPuzzle->OnDone.AddUniqueDynamic(this, &APuzzle::Done);
 		CPuzzle->OnUpdate.AddUniqueDynamic(this, &APuzzle::Update);
 		CPuzzle->OnReset.AddUniqueDynamic(this, &APuzzle::DoReset);
@@ -100,7 +99,7 @@ void APuzzle::BeginPlay() {
 }
 
 void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (CPuzzle) {
+	if (LIKELY(CPuzzle)) {
 		CPuzzle->OnDone.RemoveAll(this);
 		CPuzzle->OnUpdate.RemoveAll(this);
 		CPuzzle->OnReset.RemoveAll(this);
@@ -113,7 +112,7 @@ void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void APuzzle::ClearTimer() {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 	
 	W->GetTimerManager().ClearTimer(ResetTimer);
 	ResetTimer.Invalidate();

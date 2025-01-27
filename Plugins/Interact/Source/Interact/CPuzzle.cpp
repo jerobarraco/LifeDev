@@ -195,7 +195,7 @@ void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void UCPuzzle::SetDisableWhileAnims(bool NewDisable) {
+void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) {
 	for (AInteract* const I: Interacts) {
 		AInteractAnim* const IA = Cast<AInteractAnim>(I);
 		if (UNLIKELY(!IsValid(IA))) continue;

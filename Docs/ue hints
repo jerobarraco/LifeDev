@@ -91,3 +91,6 @@ resizeable bar
 	ToString().ParseIntoArray(Blocks, TEXT("@"));
 # line terminator, and strip from start/end
 	Block.RemoveFromStart(LINE_TERMINATOR);
+	
+# detect when cooking or running a command
+	IsRunningCookCommandlet() IsRunningCommandlet()

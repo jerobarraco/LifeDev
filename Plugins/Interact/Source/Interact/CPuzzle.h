@@ -42,7 +42,7 @@ public:
 	FORCEINLINE TArray<AInteract*> GetInteracts() { return Interacts; }
 
 	UFUNCTION(BlueprintCallable)
-	void SetDisableWhileAnims(bool NewDisable);
+	void SetDisableWhileAnims(const bool NewDisable);
 	
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
