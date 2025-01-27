@@ -113,7 +113,7 @@ void UCPuzzle::BeginPlay() {
 void UCPuzzle::Unbind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
-	for (UDelegateWrapper* const W: Wrappers){
+	for (const UDelegateWrapper* const W: Wrappers){
 		if (UNLIKELY(!IsValid(W))) continue;
 		
 		AInteract* const I = Cast<AInteract>(W->Obj);
