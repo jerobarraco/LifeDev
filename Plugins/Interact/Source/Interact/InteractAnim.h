@@ -27,6 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsReversed() { return StateNum > 1 && IsClosed(); }
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE UCAnimatorMix* GetAnim() {return Anim;}
+
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
 	// when strobe is disabled on lights, on beginplay, and many, many more. :)
@@ -61,10 +64,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<TObjectPtr<USoundBase>> SFX_Stop;
 	
-	// The animator, by default set up for the mesh material and iroot
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UCAnimatorMix> Anim = nullptr;
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -88,4 +87,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimEnd();
 	virtual void AnimEnd_Implementation();
+	
+	// The animator, by default set up for the mesh material and iroot.
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UCAnimatorMix> Anim = nullptr;
 };
