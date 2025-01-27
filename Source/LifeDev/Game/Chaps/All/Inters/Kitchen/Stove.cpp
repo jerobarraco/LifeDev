@@ -20,8 +20,8 @@ AStove::AStove():Super() {
 	Mesh->SetQuickCollisionEnabled(true);
 	Mesh->SetCastAllShadows(true);
 
-	Interact->SetRelativeLocation(FVector(37.5,-42.5,42.5));
-	Interact->SetBoxExtent(FVector(37.5,42.5,42.5));
+	Interact->SetRelativeLocation(FVector(37.5,-42.5,55));
+	Interact->SetBoxExtent(FVector(37.5,42.5,55));
 	SFX->SetRelativeLocation(FVector(37.5,-42.5,42.5));
 
 	// TODO new one
