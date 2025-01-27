@@ -80,12 +80,12 @@ protected:
 	// so it's specified when needed.
 
 	// Called when the animation begins. It gets called each loop.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimBegin();
 	virtual void AnimBegin_Implementation();
 
 	// Called when the animation end. It gets called each loop.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable) // bound
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimEnd();
 	virtual void AnimEnd_Implementation();
 };

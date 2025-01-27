@@ -15,7 +15,6 @@ class USoundBase;
 class UAudioComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTriggerLocked);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 
 // Base class for interactable actors (actors to interact with)
@@ -167,21 +166,15 @@ public:
 #pragma region Delegates
 	// When this is triggered (not locked).
 	// Either you override DoTrigger or you subscribe to this, but unlikely both.
-	// also Overriding DoTrigger is not the best.
-	// If the CInteract is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTrigger;
 
 	// When this is triggered while locked.
 	// Can also override DoTriggerLocked.
-	// If the CInteract is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
-	FAInteractOnTriggerLocked OnTriggerLocked;
+	FAInteractOnTrigger OnTriggerLocked;
 
 	// When this is being hovered on/off
-	// Always executes on the client that triggered this,
-	// The triggering CInteractor is always an AutonomousProxy not a SimulatedProxy.
-	// Though THIS Interact could be a SimulatedProxy. 
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHover OnHover;
 #pragma endregion
