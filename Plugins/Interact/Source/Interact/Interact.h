@@ -150,6 +150,7 @@ public:
 
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
+	// Does not affects destroy by UseRewardDestroy (for now at least).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersHint;
 
