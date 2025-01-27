@@ -8,4 +8,12 @@ AWCube02::AWCube02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/WCube/WordCube02.WordCube02"));
 	Mesh->SetStaticMesh(CMesh.Object);
+	Texts = {
+		FText::FromString(TEXT("Word cube: 'G'")),
+		FText::FromString(TEXT("Word cube: 'H'")),
+		FText::FromString(TEXT("Word cube: 'I'")),
+		FText::FromString(TEXT("Word cube: 'J'")),
+		FText::FromString(TEXT("Word cube: 'K'")),
+		FText::FromString(TEXT("Word cube: 'L'")),
+	};
 }
