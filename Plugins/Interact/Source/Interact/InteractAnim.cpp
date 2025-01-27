@@ -106,7 +106,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
 	if (DisableWhileAnim) SetActive(true);
 
-	if (State >= 0 || State < SFX_Stop.Num()) {
+	if (State >= 0 && State < SFX_Stop.Num()) {
 		USoundBase* const Snd2 = SFX_Stop[State];
 		PlaySFX(Snd2);
 	}
