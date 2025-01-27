@@ -92,7 +92,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(SLInterHint)) {
-		SLInterHint->SetMaxValue(5.);
+		SLInterHint->SetMaxValue(10.);
 		SLInterHint->SetMinValue(.1);
 		SLInterHint->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterHintUpd);
 	}
