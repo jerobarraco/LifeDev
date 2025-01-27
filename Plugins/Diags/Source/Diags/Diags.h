@@ -20,10 +20,13 @@ class DIAGS_API UDiags : public UWorldSubsystem {
 public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UDiags* Instance(const UObject* const O);
-	
-	// Attempts to add a sequence id. otherwise it will attempt to add a dialog id.
-	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
-	// if and only if a name ends with '*' it will add a random one instead of a regular sequence.
+
+	// Main function. Use this.
+	// Attempts to add a sequence id. Otherwise, it will attempt to add a dialog id.
+	// Sequence ids can contain other sequences, so this could be recursive or cyclic (and might crash). Beware!
+	// If, and only if, a *Sequence* id ends with '*' it will add a random one instead of a regular sequence (all the dialogs in it).
+	// If a dialog ends with "*" it will simply add it.
+	// This is on purpose to support certain code that can either trigger a random dialog in a sequence, or a specific dialog.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddId(const FName& Row);
 	// add many sequences or dialogs. can be recursive

@@ -45,7 +45,8 @@ public:
 	// TMap<FName, FText> Options;
 };
 
-// The base structure for dialog sequences
+// The base structure for dialog sequences.
+// If the key ends with "*" a dialog row will be picked.
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDialogSequence: public FTableRowBase {
 	GENERATED_BODY()
