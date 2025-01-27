@@ -171,8 +171,9 @@ bool UCPuzzle::CheckSequence(const int32 ID) {
 	}
 
 	CurrentIds.Add(ID); // Allow to add repeated ones.
-	if (DisableOnInter)
-		Interacts[ID]->SetActive(false);
+	AInteract* const Interact = Interacts[ID];
+	if (DisableOnInter && IsValid(Interact))
+		Interact->SetActive(false);
 
 	return IsCurrentSolution();
 }
