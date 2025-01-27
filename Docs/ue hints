@@ -86,3 +86,8 @@ resizeable bar
 # beware of
 
 	On sfx, using Panning method other than omni will break on _some_ sounds for _windows only_
+
+# parse string to array splitting on a character
+	ToString().ParseIntoArray(Blocks, TEXT("@"));
+# line terminator, and strip from start/end
+	Block.RemoveFromStart(LINE_TERMINATOR);

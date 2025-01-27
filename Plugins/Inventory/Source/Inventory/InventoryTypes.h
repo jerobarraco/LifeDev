@@ -31,7 +31,7 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine, DeprecatedProperty))
 	FText Description;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	TArray<FText> Descriptions; // TODO move to this one
