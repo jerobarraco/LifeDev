@@ -2,6 +2,7 @@
 
 #include "PuzzleI04.h"
 
+#include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
@@ -77,6 +78,7 @@ void APuzzleI04::PostDone() {
 
 void APuzzleI04::PostDoneSnd() {
 	if (UNLIKELY(!WasOk || !IsValid(Lid))) {
+		UE_CLOG(!Lid, LogTemp, Warning, TEXT("APuzzleI04::%hs Lid is invalid. it can't be completed."), __func__);
 		// retry or skip animation
 		LidDone();
 		return;
@@ -96,12 +98,25 @@ void APuzzleI04::PostDoneSnd() {
 }
 
 void APuzzleI04::LidDone() {
-	// before calling done since that could trigger a new step or sequence
-	// actually the new step will disable the input, but better to do here in case
-	// i change that
+	// before calling Done since that could trigger a new step or sequence
+	// actually the new step will disable the input,
+	// but better to do here, in case it changes, and to avoid stepping on it.
 	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
 	if (LIKELY(Mode)) Mode->SetCharInputEnabled(true);
-	
+
+	// show a dialog if the user got it wrong.
+	// do it here to avoid issues with the above SetCharInputEnabled.
+	// and not on PostDoneSnd to leave the code clean.
+	if (!WasOk) {
+		const int32 Num = FailDiags.Num();
+		if (Diags && Num > 0) {
+			// this will still start from the correct dialog because i've adjusted the order.
+			// to avoid having to check for the length, and to avoid having to have a signed integer.
+			FailDiagIndex = (FailDiagIndex +1) % Num;
+			Diags->AddId(FailDiags[FailDiagIndex]);
+		}
+	}
+
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
 }
