@@ -7,12 +7,12 @@
 	"Description": "Sound Utilities",
 	"Category": "JTools",
 	"CreatedBy": "Jeronimo Barraco-Marmol",
-	"CreatedByURL": "https://github.com/jerobarraco",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
+	"CreatedByURL": "https://codeberg.org/jerobarraco",
+	"DocsURL": "https://codeberg.org/jerobarraco/Sounds",
+	"SupportURL": "https://codeberg.org/jerobarraco/Sounds",
+	"MarketplaceURL": "https://fab.com/",
 	"CanContainContent": true,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
@@ -23,6 +23,5 @@
 			"LoadingPhase": "Default"
 		}
 	],
-	"Plugins": [
-	]
+	"Plugins": []
 }
