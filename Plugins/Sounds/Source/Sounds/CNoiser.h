@@ -46,11 +46,11 @@ public:
 	float TimeMax = 10.0;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	USoundBase* SFX = nullptr;
+	TObjectPtr<USoundBase> SFX = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	USoundAttenuation* Attenuation = nullptr;
+	TObjectPtr<USoundAttenuation> Attenuation = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	USoundClass* SoundClass = nullptr;
+	TObjectPtr<USoundClass> SoundClass = nullptr;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Signals")
 	FCNoiserRawOnPlay OnPlay;

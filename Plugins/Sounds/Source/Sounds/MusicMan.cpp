@@ -25,7 +25,7 @@ void AMusicMan::Fade_Implementation(const bool In) {
 	Player->Fade(In);
 }
 
-void AMusicMan::PlayMusic(USoundBase* Snd, bool FadeOut) {
+void AMusicMan::PlayMusic(USoundBase* const Snd, const bool FadeOut) {
 	if (UNLIKELY(!IsValid(Snd))) {
 		UE_LOG(LogSounds, Log, TEXT("%hs. Sound not valid! Stop"), __func__);
 		return;
@@ -62,14 +62,15 @@ void AMusicMan::AudioFinished() {
 		Handle, this, &AMusicMan::SetNextMusic, .05);
 }
 
-void AMusicMan::SetFB_Implementation(float V) {
+void AMusicMan::SetFB_Implementation(const float V) {
+	// TODO move to ALMusicMan
 	Intensity = V;
-	static FName NInt ="Intensity";
+	static FName NInt = "Intensity";
 	Player->SetSafeParamFloat(NInt, V);
 }
 
 void AMusicMan::SetNextMusic() {
-	if (!IsValid(NextMusic)) {
+	if (UNLIKELY(!IsValid(NextMusic))) {
 		UE_LOG(LogSounds, Log, TEXT("%hs. No NextMusic. Stop."), __func__);
 		return;
 	}
@@ -79,7 +80,7 @@ void AMusicMan::SetNextMusic() {
 	Player->SetSound(NextMusic);
 	Fade(true);
 	// reset intensity so it's coherent. and also since we can't apply it before it's playing.
-	SetFB(Intensity);
+	SetFB(Intensity); // TODO move to ALMusicMan overriding Fade
 
 	// buddhist say no to attachment (unnecessarily at least). This is important for the above check.
 	NextMusic = nullptr;

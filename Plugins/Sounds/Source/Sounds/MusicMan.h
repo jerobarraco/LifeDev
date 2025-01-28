@@ -15,7 +15,7 @@ class SOUNDS_API AMusicMan: public AInfo {
 public:
 	AMusicMan();
 	
-	// fades in or out. be careful since this creates issues when issues alongside PlayMusic
+	// fades in or out. be careful since this creates issues when issues PlayMusic
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Fade(const bool In = true);
 	virtual void Fade_Implementation(const bool In);
@@ -31,12 +31,12 @@ public:
 	// plays a music with(out) fadeout of the previous if any
 	// if snd is invalid it will stop the previous one
 	UFUNCTION(BlueprintCallable)
-	void PlayMusic(USoundBase* Snd, bool FadeOut = true);
+	void PlayMusic(USoundBase* const Snd, const bool FadeOut = true);
 
 	// this is the intensity param for the music. not the volume.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetFB(float V);
-	virtual void SetFB_Implementation(float V);
+	void SetFB(const float V);
+	virtual void SetFB_Implementation(const float V);
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,10 +48,10 @@ protected:
 	void SetNextMusic();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCSounder* Player = nullptr;
+	TObjectPtr<UCSounder> Player = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	USoundBase* NextMusic = nullptr;
+	TObjectPtr<USoundBase> NextMusic = nullptr;
 
 	// cache the intensity to reapply on music change
 	float Intensity = 0;

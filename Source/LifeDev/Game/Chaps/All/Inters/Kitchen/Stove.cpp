@@ -32,4 +32,3 @@ AStove::AStove():Super() {
 	// set static by default
 	AStove::SetMobility(EComponentMobility::Static);
 }
-
