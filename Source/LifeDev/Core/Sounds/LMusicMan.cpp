@@ -169,9 +169,10 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 	// in case someone activates the music after the chapter has started.
 	// allow to fadeout always (specially since the feature flag toggle will call fadeout)
 	if (In && !ULSettings::GetFeatS(this, EFeat::S_MUSIC)) {
-		SetEnvironFB(0); // important otherwise the Environ will remain stuck ath the previous level
+		SetEnvironFB(0); // important otherwise the Environ will remain stuck at the previous level
 		return;
 	}
+
 	Super::Fade_Implementation(In);
 
 	// force fb to 0 on the Environ when there's no music playing 
@@ -180,22 +181,22 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 		// reset the flashback when starting. to make sure it's at the right point.
 		// only done when fading in to avoid working extra.
 		const UFlashback* const Flashback = UFlashback::Instance(this);
-		if (Flashback) SetFB(Flashback->GetVal());
+		SetFB(LIKELY(Flashback) ? Flashback->GetVal() : 0);
 	}
 }
 
-void ALMusicMan::SetFB_Implementation(float V) {
-	Super::SetFB_Implementation(V);
-
+void ALMusicMan::SetFB(float V) {
 	// force fb to 0 if the music is not playing.
 	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
 	if (UNLIKELY(!Player->IsPlaying())) V = 0;
 
+	static FName NInt = "Intensity";
+	Player->SetSafeParamFloat(NInt, V);
 	SetEnvironFB(V);
 }
 
 void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
-	ALMusicMan* const MM = Instance(W);
+	const ALMusicMan* const MM = Instance(W);
 	if (UNLIKELY(!MM)) return;
 	
 	MM->SetRain(Play);
@@ -213,8 +214,12 @@ void ALMusicMan::BeginPlay() {
 
 	const UWorld* const W = GetWorld();
 	UFlashback* const Flashback = UFlashback::Instance(W);
-	if (LIKELY(Flashback))
+	if (LIKELY(Flashback)) {
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
+		// important to reset the value.
+		SetFB(Flashback->GetVal()); // doesn't really work if it's not playing. Super::BeginPlay will try to play the music.
+	} else
+		SetFB(0);
 
 	UStory* const Story = UStory::Instance(W);
 	if (LIKELY(Story))

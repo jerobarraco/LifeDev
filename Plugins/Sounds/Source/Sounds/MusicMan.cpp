@@ -44,29 +44,6 @@ void AMusicMan::BeginPlay() {
 	// used for fade from one music to the next
 	Player->OnAudioFinished.AddUniqueDynamic(this, &AMusicMan::SetNextMusic);
 	Player->Activate(true); // attempt to start playing if set.
-	SetFB(0); // doesn't really work if it's not playing
-}
-
-void AMusicMan::AudioFinished() {
-	if (!IsValid(NextMusic)) {
-		UE_LOG(LogSounds, Log, TEXT("%hs. No NextMusic. Stop."), __func__);
-		return;
-	}
-	UE_LOG(LogSounds, Log, TEXT("%hs. NextMusic='%s'"), __func__, *GetNameSafe(NextMusic));
-
-	// schedule a change in music in the next ms.
-	// in the hope that would fix the issue on the builds where it doesn't really want to start.
-	FTimerHandle Handle;
-	const UWorld* const World = GetWorld();
-	if (LIKELY(World)) World->GetTimerManager().SetTimer(
-		Handle, this, &AMusicMan::SetNextMusic, .05);
-}
-
-void AMusicMan::SetFB_Implementation(const float V) {
-	// TODO move to ALMusicMan
-	Intensity = V;
-	static FName NInt = "Intensity";
-	Player->SetSafeParamFloat(NInt, V);
 }
 
 void AMusicMan::SetNextMusic() {
@@ -79,8 +56,6 @@ void AMusicMan::SetNextMusic() {
 
 	Player->SetSound(NextMusic);
 	Fade(true);
-	// reset intensity so it's coherent. and also since we can't apply it before it's playing.
-	SetFB(Intensity); // TODO move to ALMusicMan overriding Fade
 
 	// buddhist say no to attachment (unnecessarily at least). This is important for the above check.
 	NextMusic = nullptr;

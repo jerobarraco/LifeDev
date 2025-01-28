@@ -40,6 +40,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FadeFX(const bool On) const;
 
+	// set the flashback level. will also set the environ fb.
+	// this is the intensity param for the music. not the volume.
+	UFUNCTION(BlueprintCallable)
+	void SetFB(float V); // bind, can't const
+	
 	// the flashback value for the Environ. depends on feature flag and override.
 	UFUNCTION(BlueprintCallable)
 	void SetEnvironFB(const float V) const;
@@ -66,7 +71,6 @@ public:
 	void SetGhostOverride(const bool On);
 
 	virtual void Fade_Implementation(const bool In) override;
-	virtual void SetFB_Implementation(float V) override;
 
 protected:
 	virtual void BeginPlay() override;

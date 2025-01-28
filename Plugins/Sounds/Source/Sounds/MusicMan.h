@@ -33,16 +33,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlayMusic(USoundBase* const Snd, const bool FadeOut = true);
 
-	// this is the intensity param for the music. not the volume.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetFB(const float V);
-	virtual void SetFB_Implementation(const float V);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE UCSounder* GetPlayer() const { return Player; }
 
 protected:
 	virtual void BeginPlay() override;
-
-	UFUNCTION() // bind
-	void AudioFinished();
 
 	UFUNCTION() // bind
 	void SetNextMusic();
