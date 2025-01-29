@@ -190,16 +190,16 @@ bool UAnimMat::ParamInitMPC(const UMaterialParameterCollection* const MPC, const
 	if (!ParamInitBasic(OParam, Name, Curve, Duration)) return false;
 	
 	const UWorld* const World = GetWorld();
-	if (!World) return false;
+	if (UNLIKELY(!World)) return false;
 	
-	if (!IsValid(MPC)) {
+	if (UNLIKELY(!IsValid(MPC))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid mpc. Stop."),
 			__func__);
 		return false;
 	}
 
 	OParam.MPCI = World->GetParameterCollectionInstance(MPC);
-	if (!IsValid(OParam.MPCI)) {
+	if (UNLIKELY(!IsValid(OParam.MPCI))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
 			__func__);
 		return false;
