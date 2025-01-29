@@ -5,6 +5,8 @@
 #include "AnimMat.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDynDone, UMaterialInstanceDynamic* const, Mat, FName, Name);
+
 // TODO split
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FAnimMatItemDone,
 	const UMaterialParameterCollectionInstance*, MPCI, const FName, Name,
@@ -17,7 +19,7 @@ struct FAMBase {
 public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
-	
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 
@@ -75,7 +77,6 @@ struct FAMDFloat: public FAMFloat {
 
 public:
 	virtual bool SetVal(const float Val = 1.0) const override;
-	// virtual bool SetLerp(const float Prog) override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -252,7 +253,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	bool ShouldBeCreated = true;
 	
-	// when all the items have faded
+	// when ALL the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatDone OnDone;
 
@@ -281,7 +282,8 @@ protected:
 	template<typename Item>
 	bool ParamTick(const float DT, TArray<Item>& IOArr);
 	template<typename Item>
-	bool ItemTick(const float DT, TArray<Item>& IOArr, TFunction<void(const Item&)> Done);
+	bool ItemTick(const float DT, TArray<Item>& IOArr,
+		const TFunction<void(const Item&)>& Done);
 	template<typename Item>
 	void EmptyItems(TArray<Item>& IOArr);
 	void EmptyItemsData(TArray<FAMData>& IOArr);

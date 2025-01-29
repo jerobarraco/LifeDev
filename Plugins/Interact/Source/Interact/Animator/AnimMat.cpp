@@ -423,12 +423,17 @@ void UAnimMat::Tick(const float DeltaTime) {
 	Super::Tick(DeltaTime);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
+	// TODO use the ItemTick for the rest
 	const bool ContFloat = ParamTick(DeltaTime, FloatParams); //FloatTick(DeltaTime);
 	const bool ContVec = ParamTick(DeltaTime, VectorParams);
 	const bool ContData = DataTick(DeltaTime);
-	const TFunction<void(const FAMDFloat&)> Done = [&](const FAMDFloat& Value) {ItemDone(Value);};
-	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, Done);
-	const bool ContDynVector = ParamTick(DeltaTime, DynVectorParams);
+	const TFunction<void(const FAMDFloat&)> DynFDone = [&](const FAMDFloat& Value)
+		{ItemDone(Value);};
+	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, DynFDone);
+
+	const TFunction<void(const FAMDVector&)> DynVDone = [&](const FAMDVector& Value)
+		{ItemDone(Value);};
+	const bool ContDynVector = ItemTick(DeltaTime, DynVectorParams, DynVDone);
 	// done this way to avoid short-circuit to skip vec
 	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
 
@@ -492,7 +497,8 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 
 // TODO move the rest to use this
 template <typename Item>
-bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr, TFunction<void(const Item&)> Done) {
+bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
+	const TFunction<void(const Item&)>& Done) {
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
@@ -552,6 +558,8 @@ bool UAnimMat::GetIsFadingParam(const FName Name,
 	for (const FAMData& P: DataParams) {
 		if (P.Name == Name && (NOBoth || Comp == P.Comp)) return true;
 	}
+
+	// TODo split and also account for material
 	
 	return false;
 }
@@ -563,6 +571,7 @@ void UAnimMat::Deinitialize() {
 	EmptyItems(DynFloatParams);
 	EmptyItems(DynVectorParams);
 	EmptyItemsData(DataParams);
+	// TODO add a new one that uses a TFunction for the done
 	Super::Deinitialize();
 }
 
