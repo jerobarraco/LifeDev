@@ -117,8 +117,7 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 }
 
 void AInteract::ShowHint_Implementation() {
-	if (!UseHint) return;
-	if (!Interact->IsActive()) return;
+	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
 
 	Interact->Hint(true);
 	// Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
