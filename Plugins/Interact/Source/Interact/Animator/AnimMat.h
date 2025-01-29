@@ -54,6 +54,7 @@ public:
 	}
 };
 
+
 USTRUCT(Blueprintable, BlueprintType)
 struct FAMFloat: public FAMBase {
 	GENERATED_BODY()
@@ -65,8 +66,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float To = 1.0;
 	
-	bool SetVal(const float Val = 1.0) const;
+	virtual bool SetVal(const float Val = 1.0) const;
 	virtual bool SetLerp(const float Prog) override;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FAMDFloat: public FAMFloat {
+	GENERATED_BODY()
+
+public:
+	virtual bool SetVal(const float Val = 1.0) const override;
+	// virtual bool SetLerp(const float Prog) override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)

@@ -17,7 +17,7 @@ void FAMBase::AddDT(const float DT, float& Prog) {
 }
 
 bool FAMBase::Tick(const float DT) {
-	if (!FIsValid()) return true;
+	if (UNLIKELY(!FIsValid())) return true;
 
 	float Prog;
 	AddDT(DT, Prog);
@@ -30,7 +30,7 @@ bool FAMBase::FIsValid() const { return IsValid(MPCI); } // avoid including the 
 bool FAMFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (!FIsValid()) return false;
+	if (UNLIKELY(!FIsValid())) return false;
 
 	return MPCI->SetScalarParameterValue(Name, Val);
 }
@@ -39,6 +39,20 @@ bool FAMFloat::SetLerp(const float Prog) {
 	const float Val = FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
+
+bool FAMDFloat::SetVal(const float Val) const {
+	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+		__func__, *Name.ToString(), Val);
+	if (UNLIKELY(!FIsValid())) return false;
+
+	Mat->SetScalarParameterValue(Name, Val);
+	return true;
+}
+
+// bool FAMDFloat::SetLerp(const float Prog) {
+	// const float Val = FMath::LerpStable(From, To, Prog);
+	// return SetVal(Val);
+// }
 
 bool FAMVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
@@ -100,7 +114,7 @@ bool FAMData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
 
-	if (!FIsValid()) {
+	if (UNLIKELY(!FIsValid())) {
 		UE_LOG(LogAnimMat, Log, TEXT("%hs Invalid component or index. Skip"),
 		__func__);
 		return false;
@@ -128,13 +142,13 @@ bool FAMData::SetLerp(const float Prog) {
 UAnimMat::UAnimMat():Super() {}
 
 UAnimMat* UAnimMat::Instance(const UObject*const  O) {
-	if (!IsValid(O)) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
-	if (!W) return nullptr;
+	if (UNLIKELY(!W)) return nullptr;
 
 	UAnimMat* const AnimMat = W->GetSubsystem<UAnimMat>();
-	return IsValid(AnimMat) ? AnimMat : nullptr;
+	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
 bool UAnimMat::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const Curve,
