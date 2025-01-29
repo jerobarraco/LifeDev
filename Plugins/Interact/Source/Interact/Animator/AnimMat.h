@@ -144,11 +144,19 @@ class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	UAnimMat();
 
+#pragma region Base
 	static UAnimMat* Instance(const UObject* const O);
+
+	UAnimMat();
+	virtual void Deinitialize() override;
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Tick(const float DeltaTime) override;
+	virtual TStatId GetStatId() const override;
+	virtual bool IsTickable() const override { return IsFading; }
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
+#pragma endregion
 
 	// Fades in or out.
 	// By design, it will replace any previous fades with the same name.
@@ -197,8 +205,8 @@ public:
 	);
 
 	// returns true while fading.
-	UFUNCTION(BlueprintCallable)
-	bool GetIsFading() { return IsFading; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsFading() const { return IsFading; }
 	
 	// returns true if a param with that name is fading (float, vector, or data)
 	UFUNCTION(BlueprintCallable)
@@ -206,14 +214,6 @@ public:
 		const UMaterialParameterCollectionInstance* const MPCI = nullptr,
 		const UPrimitiveComponent* Comp = nullptr);
 	 
-#pragma region Base
-	virtual void Deinitialize() override;
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Tick(const float DeltaTime) override;
-	virtual TStatId GetStatId() const override;
-	virtual bool IsTickable() const override { return IsFading; }
-#pragma endregion
-
 	// default fade duration. can be changed. and can be specified on the .ini config files.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float DurationDefault = 1.f;
