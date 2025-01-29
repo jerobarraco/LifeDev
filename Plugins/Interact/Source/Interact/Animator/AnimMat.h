@@ -193,7 +193,7 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool FloatDynFade(const UMaterialInstanceDynamic* const Mat,
+	bool FloatDynFade(UMaterialInstanceDynamic* const Mat,
 		const FName Name, const float To = 1.0, const float Duration = -1,
 		UCurveFloat* const Curve = nullptr);
 
@@ -268,6 +268,11 @@ protected:
 		const float Duration = -1) const;
 
 	bool ParamInitMPC(const UMaterialParameterCollection* const MPC,
+		const FName Name, FAMBase& OParam,
+		UCurveFloat* const Curve = nullptr,
+		const float Duration = -1.0) const;
+
+	bool ParamInitDyn(UMaterialInstanceDynamic* const Mat,
 		const FName Name, FAMBase& OParam,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
