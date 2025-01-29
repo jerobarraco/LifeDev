@@ -22,11 +22,10 @@ public:
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
-	TObjectPtr<UCurveFloat> Curve = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	TObjectPtr<UCurveFloat> Curve = nullptr;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = 1.0;
 	

@@ -425,9 +425,12 @@ void UAnimMat::Tick(const float DeltaTime) {
 
 	const bool ContFloat = ParamTick(DeltaTime, FloatParams); //FloatTick(DeltaTime);
 	const bool ContVec = ParamTick(DeltaTime, VectorParams);
-	const bool ContTick = DataTick(DeltaTime);
-	// done this way to avoid lazy evaluation to skip vec
-	const bool Continue = ContFloat || ContVec || ContTick;
+	const bool ContData = DataTick(DeltaTime);
+	const bool ContDynFloat = ParamTick(DeltaTime, DynFloatParams);
+	const bool ContDynVector = ParamTick(DeltaTime, DynVectorParams);
+	// done this way to avoid short-circuit to skip vec
+	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
+
 	if (Continue) return;
 
 	UE_LOG(LogAnimMat, Log, TEXT("%hs Done"), __func__);
@@ -464,7 +467,7 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
-	for (int32 i= IOArr.Num()-1; i>=0; --i) {
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
 		Item& Par = IOArr[i];
 		const bool IsDone = Par.Tick(DT);
 		
@@ -503,7 +506,7 @@ void UAnimMat::EmptyItemsData(TArray<FAMData>& IOArr) {
 	}
 }
 
-bool UAnimMat::GetIsFadingParam(const FName Name, 
+bool UAnimMat::GetIsFadingParam(const FName Name,
 	const UMaterialParameterCollectionInstance* const MPCI,
 	const UPrimitiveComponent* Comp) {
 
@@ -528,6 +531,8 @@ void UAnimMat::Deinitialize() {
 	IsFading = false;
 	EmptyItems(FloatParams);
 	EmptyItems(VectorParams);
+	EmptyItems(DynFloatParams);
+	EmptyItems(DynVectorParams);
 	EmptyItemsData(DataParams);
 	Super::Deinitialize();
 }
