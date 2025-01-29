@@ -215,7 +215,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 
 	FAMFloat Param;
 	Param.To = To;
-	if (!ParamInitMPC(MPC, Name, Param, Curve, Duration)) {
+	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -224,7 +224,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 	// ensure we remove it the ones colliding
 	for (int32 i = FloatParams.Num()-1; i>=0; --i) {
 		const FAMFloat& O = FloatParams[i];
-		if (Param.MPCI != O.MPCI || Param.Name != O.Name) continue;
+		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
 		FloatParams.RemoveAtSwap(i);
 	}
 
@@ -234,7 +234,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		return Ok;
 	}
 	
-	if (!Param.MPCI->GetScalarParameterValue(Name, Param.From)) {
+	if (UNLIKELY(!Param.MPCI->GetScalarParameterValue(Name, Param.From))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
 			__func__);
 		// we do it anyway.
@@ -283,10 +283,13 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 }
 
 bool UAnimMat::FloatDynFade(const UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
-	const float Duration, UCurveFloat* const Curve) {}
+	const float Duration, UCurveFloat* const Curve) {
+}
 
 bool UAnimMat::VectorDynFade(const UMaterialInstanceDynamic* const MPC, const FName Name, const FLinearColor& To,
-	const float Duration, const bool UseHSV, UCurveFloat* const Curve) {}
+	const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
+	// TODO do me
+}
 
 bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
 	const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
