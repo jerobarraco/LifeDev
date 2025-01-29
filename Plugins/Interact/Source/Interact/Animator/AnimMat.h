@@ -281,6 +281,8 @@ protected:
 	template<typename Item>
 	bool ParamTick(const float DT, TArray<Item>& IOArr);
 	template<typename Item>
+	bool ItemTick(const float DT, TArray<Item>& IOArr, TFunction<void(const Item&)> Done);
+	template<typename Item>
 	void EmptyItems(TArray<Item>& IOArr);
 	void EmptyItemsData(TArray<FAMData>& IOArr);
 

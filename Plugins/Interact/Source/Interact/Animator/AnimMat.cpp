@@ -426,7 +426,8 @@ void UAnimMat::Tick(const float DeltaTime) {
 	const bool ContFloat = ParamTick(DeltaTime, FloatParams); //FloatTick(DeltaTime);
 	const bool ContVec = ParamTick(DeltaTime, VectorParams);
 	const bool ContData = DataTick(DeltaTime);
-	const bool ContDynFloat = ParamTick(DeltaTime, DynFloatParams);
+	const TFunction<void(const FAMDFloat&)> Done = [&](const FAMDFloat& Value) {ItemDone(Value);};
+	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, Done);
 	const bool ContDynVector = ParamTick(DeltaTime, DynVectorParams);
 	// done this way to avoid short-circuit to skip vec
 	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
@@ -481,6 +482,34 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 		Item ParOld = Par;
 		IOArr.RemoveAtSwap(i);
 		ItemDone(ParOld);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
+	}
+
+	return Cont;
+}
+
+// TODO move the rest to use this
+template <typename Item>
+bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr, TFunction<void(const Item&)> Done) {
+	TArray<int32> ToRemove;
+	bool Cont = false;
+	// traversing in reverse to remove on the spot
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
+		Item& Par = IOArr[i];
+		const bool IsDone = Par.Tick(DT);
+		
+		// only at end, to ensure the val is set.
+		if (!IsDone) {
+			Cont = true;
+			continue;
+		}
+
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		Item ParOld = Par;
+		IOArr.RemoveAtSwap(i);
+		Done(ParOld);
 		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
 		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
 		// since new elements would be added at the end of the array, which would be the current index.
