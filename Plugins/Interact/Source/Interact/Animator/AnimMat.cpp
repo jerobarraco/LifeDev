@@ -57,7 +57,7 @@ bool FAMDFloat::SetVal(const float Val) const {
 bool FAMVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
-	if (!FIsValid()) return false;
+	if (UNLIKELY(!FIsValid())) return false;
 
 	return MPCI->SetVectorParameterValue(Name, Val);
 }
@@ -67,6 +67,15 @@ bool FAMVector::SetLerp(const float Prog) {
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
+}
+
+bool FAMDVector::SetVal(const FLinearColor& Val) const {
+	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
+			__func__, *Name.ToString(), *Val.ToString());
+	if (UNLIKELY(!FIsValid())) return false;
+
+	Mat->SetVectorParameterValue(Name, Val);
+	return true;
 }
 
 bool FAMData::GetCurrent(FLinearColor& OCurrent) const {

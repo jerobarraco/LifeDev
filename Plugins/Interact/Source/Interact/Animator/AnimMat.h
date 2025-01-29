@@ -94,8 +94,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool UseHSV = false;
 	
-	bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
+	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FAMDVector: public FAMVector {
+	GENERATED_BODY()
+
+public:
+	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -256,8 +264,9 @@ protected:
 	UPROPERTY(Transient)
 	TArray<FAMVector> VectorParams;
 	UPROPERTY(Transient)
+	TArray<FAMDFloat> DynFloatParams;
+	UPROPERTY(Transient)
+	TArray<FAMDVector> DynVectorParams;
+	UPROPERTY(Transient)
 	TArray<FAMData> DataParams;
-	
-	// can't use the name/index since the same name is going to be used on multiple objects.
-	// same issue happens with the float and vector. but it's unlikely artists will use more than one mpc.
 };
