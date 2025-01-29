@@ -94,12 +94,21 @@ void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ARange::AnimEnd() {
+	UE_LOG(LogTemp, Log, TEXT("ARange::AnimEnd"));
+	// disable. so that it won't trigger hint on interacts that just become non-hidden/visible
 	SetActorHiddenInGame(true);
+	Collider->Deactivate();
+	Collider->SetGenerateOverlapEvents(false); // actually this is the one that fixes it. the rest are nice to haves.
 }
 
 void ARange::Trigger() {
 	SetActorHiddenInGame(false);
-	Anim->Activate(true); // force the animation to stop so that it triggers again.
+	// force the scale so that we don't have false positives
+	Collider->SetWorldScale3D(Anim->TStart.GetScale3D());
+	Collider->Activate(true); // doesn't really fix it. but it's nice anyway. i guess. until it breaks something.
+	Collider->SetGenerateOverlapEvents(true); // this is the important fix. 
+	// while this is the logical spot of the anim (at the end) it won't set the scale until next tick.
+	Anim->Activate(true); // force the animation to restart so that it triggers again.
 }
 
 void ARange::SetMaxScale(const float Scale) const {
