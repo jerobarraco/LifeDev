@@ -235,13 +235,13 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		__func__, *Name.ToString(), To, Duration);
 
 	FAMFloat Param;
-	Param.To = To;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
-	};
+	}
 	
+	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = FloatParams.Num()-1; i>=0; --i) {
 		const FAMFloat& O = FloatParams[i];
@@ -272,14 +272,14 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FAMVector Param;
-	Param.UseHSV = UseHSV;
-	Param.To = To;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
 
+	Param.UseHSV = UseHSV;
+	Param.To = To;
 	for (int32 i = VectorParams.Num()-1; i>=0; --i) {
 		const FAMVector& O = VectorParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
@@ -308,13 +308,13 @@ bool UAnimMat::FloatDynFade(UMaterialInstanceDynamic* const Mat, const FName Nam
 		__func__, *Name.ToString(), To, Duration);
 
 	FAMDFloat Param;
-	Param.To = To;
 	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
-	};
+	}
 	
+	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = DynFloatParams.Num()-1; i>=0; --i) {
 		const FAMDFloat& O = DynFloatParams[i];
@@ -339,10 +339,41 @@ bool UAnimMat::FloatDynFade(UMaterialInstanceDynamic* const Mat, const FName Nam
 	return true;
 }
 
-bool UAnimMat::VectorDynFade(const UMaterialInstanceDynamic* const MPC, const FName Name, const FLinearColor& To,
-	const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
-	// TODO do me
-	return false;
+bool UAnimMat::VectorDynFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
+const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
+	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
+		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
+
+	FAMDVector Param;
+	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
+		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
+			__func__);
+		return false;
+	}
+
+	Param.UseHSV = UseHSV;
+	Param.To = To;
+
+	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
+		const FAMVector& O = DynVectorParams[i];
+		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
+		DynVectorParams.RemoveAtSwap(i);
+	}
+	
+	if (FMath::IsNearlyZero(Param.Duration)) {
+		const bool Ok = Param.SetVal(To);
+		ItemDone(Param); // notify AFTER change.
+		return Ok;
+	}
+
+	// we do it anyway.
+	UE_CLOG(UNLIKELY(!Param.MPCI->GetVectorParameterValue(Name, Param.From)),
+		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+		__func__);
+
+	DynVectorParams.Add(MoveTemp(Param));
+	IsFading = true;
+	return true;
 }
 
 bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
@@ -441,7 +472,7 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 		if (!IsDone) {
 			Cont = true;
 			continue;
-	}
+		}
 
 		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
 		Item ParOld = Par;
@@ -521,7 +552,7 @@ bool UAnimMat::ShouldCreateSubsystem(UObject* Outer) const {
 }
 
 bool UAnimMat::DoesSupportWorldType(const EWorldType::Type WorldType) const {
-	// The world subsystem shouldn't be used in the editor
+	// The world subsystem shouldn't be used in the editor. from enhanced input system
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
 }
 
@@ -531,17 +562,6 @@ TStatId UAnimMat::GetStatId() const {
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	return GetStatID();
 }
-
-
-/* from enhanced input system
-
-bool UEnhancedInputWorldSubsystem::DoesSupportWorldType(const EWorldType::Type WorldType) const
-{
-// The world subsystem shouldn't be used in the editor
-return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
-}
-
-*/
 
 
 // thought on using operator== for removing. which looks more "chic".
