@@ -158,6 +158,7 @@ public:
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
 #pragma endregion
 
+#pragma region mpci
 	// Fades in or out.
 	// By design, it will replace any previous fades with the same name.
 	// If it's fading it will continue from where it is, even if the direction changes.
@@ -181,6 +182,33 @@ public:
 		const FName Name, const FLinearColor& To = FLinearColor::White,
 		const float Duration = -1, const bool UseHSV = false,
 		UCurveFloat* const Curve = nullptr);
+#pragma endregion
+
+#pragma region dynmat
+	// Fades in or out.
+	// By design, it will replace any previous fades with the same name.
+	// If it's fading it will continue from where it is, even if the direction changes.
+	// Name: name of the parameter
+	// To: value to fade to.
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	UFUNCTION(BlueprintCallable)
+	bool FloatDynFade(const UMaterialInstanceDynamic* const Mat,
+		const FName Name, const float To = 1.0, const float Duration = -1,
+		UCurveFloat* const Curve = nullptr);
+
+	// Fades a vector (or color).
+	// Name: the name of the parameter to fade
+	// To: is the target vector/color
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	UFUNCTION(BlueprintCallable)
+	bool VectorDynFade(const UMaterialInstanceDynamic* const MPC,
+		const FName Name, const FLinearColor& To = FLinearColor::White,
+		const float Duration = -1, const bool UseHSV = false,
+		UCurveFloat* const Curve = nullptr);
+#pragma endregion
 
 	// Fades a custom primitive data.
 	// Index: The index of the data. For a vector this is the start index.
@@ -207,7 +235,8 @@ public:
 	// returns true while fading.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsFading() const { return IsFading; }
-	
+
+	// TODO split
 	// returns true if a param with that name is fading (float, vector, or data)
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFadingParam(const FName Name,
@@ -223,7 +252,7 @@ public:
 	// should be changed in the config file
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	bool ShouldBeCreated = true;
-
+	
 	// when all the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatDone OnDone;
@@ -232,6 +261,7 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatItemDone OnItemDone;
 
+	
 protected:
 	bool ParamInitBasic(FAMBase& OParam, const FName Name,
 		UCurveFloat* const Curve = nullptr,
