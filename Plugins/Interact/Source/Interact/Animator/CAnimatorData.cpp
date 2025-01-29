@@ -8,10 +8,11 @@ void UCAnimatorData::DeInit() {
 	Super::DeInit();
 }
 
-void UCAnimatorData::Update_Implementation(float Alpha) {
+void UCAnimatorData::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 	
-	if (!IsValid(Prim)) return;
+	if (UNLIKELY(!IsValid(Prim))) return;
+
 	if (DataFIndex >= 0) {
 		const float Val = FMath::LerpStable(DataFStart, DataFEnd, Alpha);
 		Prim->SetCustomPrimitiveDataFloat(DataFIndex, Val);

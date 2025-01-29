@@ -9,13 +9,16 @@
 class UCurveFloat;
 class USceneComponent;
 
-// Allows to animate custom data on primitives (meshes)
-// only for the non-dynamic materials though.
 // while this is a cool idea, i'm not going to use it.
 // because of how i've already organized the assets.
 // Also using custom primitive data on materials is a mayor pain. so it's not practical.
 // Though i love performance, i'm not into masochism.
 // And lastly and most importantly, Nanite seems to be grouping the assets on their material even though they are dynamic.
+// Which means the performance gain is small. Unless i've got that wrong.
+
+// Allows to animate custom data on primitives (meshes)
+// mostly for materials that are not dynamic.
+// Could perform better than dynamic materials if you have many actors using the same material.
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact),
 	meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorData: public UCAnimator {
@@ -40,16 +43,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	FLinearColor DataVEnd = FLinearColor::White;
 
-	// Slower but nicer on colors. Might be better to set to false on simple vector ParV*.
+	// Slower but nicer on colors.
+	// Might be better to set to false on simple vector DataV*.
 	// only affects DataV*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
 	bool UseHSV = true;
 
 	// primitive component to be animated (only for data.)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	UPrimitiveComponent* Prim = nullptr;
+	TObjectPtr<UPrimitiveComponent> Prim = nullptr;
 
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 	virtual void DeInit() override;
 };

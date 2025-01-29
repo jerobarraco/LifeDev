@@ -5,6 +5,7 @@
 #include "AnimMat.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
+// TODO split
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FAnimMatItemDone,
 	const UMaterialParameterCollectionInstance*, MPCI, const FName, Name,
 	const UPrimitiveComponent*, Cmp, int32, Index);
@@ -18,10 +19,13 @@ public:
 	FName Name = NAME_None;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
-	UMaterialParameterCollectionInstance* MPCI = nullptr;
+	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
-	UCurveFloat* Curve = nullptr;
+	TObjectPtr<UCurveFloat> Curve = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = 1.0;
@@ -90,7 +94,7 @@ struct FAMData: public FAMBase {
 
 public:
 	UPROPERTY(BlueprintReadWrite, Transient)
-	UPrimitiveComponent* Comp = nullptr;
+	TObjectPtr<UPrimitiveComponent> Comp = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 Index = -1;
