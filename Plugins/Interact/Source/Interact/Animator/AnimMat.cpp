@@ -423,9 +423,8 @@ void UAnimMat::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
-	// TODO use the ItemTick for the rest
-	const bool ContFloat = ParamTick(DT, FloatParams); //FloatTick(DeltaTime);
-	const bool ContVec = ParamTick(DT, VectorParams);
+	const bool ContFloat = ItemTick(DT, FloatParams, &UAnimMat::ItemDoneF);
+	const bool ContVec = ItemTick(DT, VectorParams, &UAnimMat::ItemDoneV);
 	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
@@ -437,33 +436,6 @@ void UAnimMat::Tick(const float DT) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs Done"), __func__);
 	IsFading = false;
 	OnDone.Broadcast();
-}
-
-template <typename Item>
-bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
-	TArray<int32> ToRemove;
-	bool Cont = false;
-	// traversing in reverse to remove on the spot
-	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		Item& Par = IOArr[i];
-		const bool IsDone = Par.Tick(DT);
-		
-		// only at end, to ensure the val is set.
-		if (UNLIKELY(!IsDone)) {
-			Cont = true;
-			continue;
-		}
-
-		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		Item ParOld = Par;
-		IOArr.RemoveAtSwap(i);
-		ItemDone(ParOld);
-		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-		// since new elements would be added at the end of the array, which would be the current index.
-	}
-
-	return Cont;
 }
 
 // TODO move the rest to use this
@@ -581,6 +553,32 @@ TStatId UAnimMat::GetStatId() const {
 
 /*
  
+template <typename Item>
+bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
+	TArray<int32> ToRemove;
+	bool Cont = false;
+	// traversing in reverse to remove on the spot
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
+		Item& Par = IOArr[i];
+		const bool IsDone = Par.Tick(DT);
+		
+		// only at end, to ensure the val is set.
+		if (UNLIKELY(!IsDone)) {
+			Cont = true;
+			continue;
+		}
+
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		Item ParOld = Par;
+		IOArr.RemoveAtSwap(i);
+		ItemDone(ParOld);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
+	}
+
+	return Cont;
+}
 bool UAnimMat::DataTick(float DT) {
 	TArray<int32> ToRemove;
 	bool Cont = false;

@@ -278,8 +278,6 @@ protected:
 		const float Duration = -1.0) const;
 
 	template<typename Item>
-	bool ParamTick(const float DT, TArray<Item>& IOArr);
-	template<typename Item>
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
 		void(UAnimMat::* Done)(const Item&));
 	template<typename Item>
@@ -295,6 +293,14 @@ protected:
 	// TODO
 	}
 	
+	void ItemDoneF(const FAMFloat& Item) {
+		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
+		// todo new delegate
+	}
+	void ItemDoneV(const FAMVector& Item) {
+		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
+		// todo new delegate
+	}
 	FORCEINLINE void ItemDone(const FAMBase& Item) {
 		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
 		// todo new delegate
