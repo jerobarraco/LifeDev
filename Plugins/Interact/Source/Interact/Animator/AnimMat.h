@@ -102,7 +102,7 @@ struct FAMDVector: public FAMPVector {
 	GENERATED_BODY()
 
 public:
-	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
+	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const override;
 	virtual bool FIsValid() const override;
 };
 
