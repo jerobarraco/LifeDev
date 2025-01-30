@@ -243,10 +243,10 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 	
 	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
-	for (int32 i = FloatParams.Num()-1; i>=0; --i) {
-		const FAMFloat& O = FloatParams[i];
+	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
+		const FAMFloat& O = MPCFloatParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
-		FloatParams.RemoveAtSwap(i);
+		MPCFloatParams.RemoveAtSwap(i);
 	}
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
@@ -260,7 +260,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
-	FloatParams.Add(MoveTemp(Param));
+	MPCFloatParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
 }
@@ -280,10 +280,10 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	for (int32 i = VectorParams.Num()-1; i>=0; --i) {
-		const FAMVector& O = VectorParams[i];
+	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
+		const FAMVector& O = MPCVectorParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
-		VectorParams.RemoveAtSwap(i);
+		MPCVectorParams.RemoveAtSwap(i);
 	}
 	
 	if (FMath::IsNearlyZero(Param.Duration)) {
@@ -297,7 +297,7 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
-	VectorParams.Add(MoveTemp(Param));
+	MPCVectorParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
 }
@@ -423,8 +423,8 @@ void UAnimMat::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
-	const bool ContFloat = ItemTick(DT, FloatParams, &UAnimMat::ItemDoneF);
-	const bool ContVec = ItemTick(DT, VectorParams, &UAnimMat::ItemDoneV);
+	const bool ContFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneF);
+	const bool ContVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneV);
 	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
@@ -438,7 +438,6 @@ void UAnimMat::Tick(const float DT) {
 	OnDone.Broadcast();
 }
 
-// TODO move the rest to use this
 template <typename Item>
 bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 	void(UAnimMat::* Done)(const Item&)) {
@@ -468,21 +467,13 @@ bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 	return Cont;
 }
 
-// TODO make this to use a ItemDone as ptr
 template<typename Item>
-void UAnimMat::EmptyItems(TArray<Item>& IOArr) {
+void UAnimMat::ItemsEmpty(TArray<Item>& IOArr, void(UAnimMat::* Done)(const Item&)) {
 	TArray<Item> Copy = IOArr;
 	DataParams.Empty(); // empty before notifying.
+	if (UNLIKELY(!Done)) return;
 	for (const Item& D: Copy) {
-		ItemDone(D);
-	}
-}
-
-void UAnimMat::EmptyItemsData(TArray<FAMData>& IOArr) {
-	TArray<FAMData> Copy = IOArr;
-	DataParams.Empty(); // empty before notifying.
-	for (const FAMData& D: Copy) {
-		ItemDoneData(D);
+		(this->*Done)(D);
 	}
 }
 
@@ -493,10 +484,10 @@ bool UAnimMat::GetIsFadingParam(const FName Name,
 	const bool NOMPCI = MPCI == nullptr;
 	const bool NOComp = Comp == nullptr;
 	const bool NOBoth = NOMPCI && NOComp;
-	for (const FAMFloat& P: FloatParams) {
+	for (const FAMFloat& P: MPCFloatParams) {
 		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
 	}
-	for (const FAMVector& P: VectorParams) {
+	for (const FAMVector& P: MPCVectorParams) {
 		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
 	}
 
@@ -510,13 +501,12 @@ bool UAnimMat::GetIsFadingParam(const FName Name,
 }
 
 void UAnimMat::Deinitialize() {
+	ItemsEmpty(MPCFloatParams, &UAnimMat::ItemDoneF);
+	ItemsEmpty(MPCVectorParams, &UAnimMat::ItemDoneV);
+	ItemsEmpty(DataParams, &UAnimMat::ItemDoneData);
+	ItemsEmpty(DynFloatParams, &UAnimMat::ItemDoneDynF);
+	ItemsEmpty(DynVectorParams, &UAnimMat::ItemDoneDynV);
 	IsFading = false;
-	EmptyItems(FloatParams);
-	EmptyItems(VectorParams);
-	EmptyItems(DynFloatParams);
-	EmptyItems(DynVectorParams);
-	EmptyItemsData(DataParams);
-	// TODO add a new one that uses a funcition ptr for the done
 	Super::Deinitialize();
 }
 
@@ -553,6 +543,23 @@ TStatId UAnimMat::GetStatId() const {
 
 /*
  
+// TODO make this to use a ItemDone as ptr
+template<typename Item>
+void UAnimMat::EmptyItems(TArray<Item>& IOArr) {
+	TArray<Item> Copy = IOArr;
+	DataParams.Empty(); // empty before notifying.
+	for (const Item& D: Copy) {
+		ItemDone(D);
+	}
+}
+
+void UAnimMat::EmptyItemsData(TArray<FAMData>& IOArr) {
+	TArray<FAMData> Copy = IOArr;
+	DataParams.Empty(); // empty before notifying.
+	for (const FAMData& D: Copy) {
+		ItemDoneData(D);
+	}
+}
 template <typename Item>
 bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 	TArray<int32> ToRemove;

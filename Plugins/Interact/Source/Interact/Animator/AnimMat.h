@@ -281,8 +281,8 @@ protected:
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
 		void(UAnimMat::* Done)(const Item&));
 	template<typename Item>
-	void EmptyItems(TArray<Item>& IOArr);
-	void EmptyItemsData(TArray<FAMData>& IOArr);
+	void ItemsEmpty(TArray<Item>& IOArr,
+		void(UAnimMat::* Done)(const Item&));
 
 	void ItemDoneDynF(const FAMDFloat& It) {
 		UE_LOG(LogTemp, Display, TEXT("ItemDoneDynF"));
@@ -313,9 +313,9 @@ protected:
 	bool IsFading = false;
 
 	UPROPERTY(Transient)
-	TArray<FAMFloat> FloatParams;
+	TArray<FAMFloat> MPCFloatParams;
 	UPROPERTY(Transient)
-	TArray<FAMVector> VectorParams;
+	TArray<FAMVector> MPCVectorParams;
 	UPROPERTY(Transient)
 	TArray<FAMDFloat> DynFloatParams;
 	UPROPERTY(Transient)
