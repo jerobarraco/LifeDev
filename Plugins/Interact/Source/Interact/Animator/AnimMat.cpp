@@ -171,7 +171,7 @@ bool UAnimMat::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* co
 	OParam.Duration = Duration < 0 ? DurationDefault : Duration;
 
 	// at end to allow for data params
-	if (OParam.Name.IsNone()) {
+	if (UNLIKELY(OParam.Name.IsNone())) {
 		UE_LOG(LogAnimMat, Warning,
 			TEXT("%hs Name can't be none (Unless it's a custom primitive data fade). Stop."),
 			__func__);
@@ -215,12 +215,9 @@ bool UAnimMat::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Nam
 
 	// these are done at the beginning so that even after returning it's partially valid
 	if (UNLIKELY(!ParamInitBasic(OParam, Name, Curve, Duration))) return false;
-	
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return false;
-	
+
 	if (UNLIKELY(!IsValid(Mat))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid mpc. Stop."),
+		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid mat. Stop."),
 			__func__);
 		return false;
 	}
@@ -254,11 +251,10 @@ bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const
 		ItemDoneMPCF(Param);
 		return Ok;
 	}
-	
-	// we do it anyway.
-	UE_CLOG(UNLIKELY(!Param.MPCI->GetScalarParameterValue(Name, Param.From)),
-		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
-		__func__);
+
+	const bool Got = !Param.MPCI->GetScalarParameterValue(Name, Param.From);
+	UE_CLOG(UNLIKELY(Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway.
 
 	MPCFloatParams.Add(MoveTemp(Param));
 	IsFading = true;
@@ -266,7 +262,7 @@ bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const
 }
 
 bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
-	const FLinearColor& To, const float Duration, const bool UseHSV,
+const FLinearColor& To, const float Duration, const bool UseHSV,
 	UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
@@ -293,8 +289,8 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 	}
 
 	// we do it anyway.
-	UE_CLOG(UNLIKELY(!Param.MPCI->GetVectorParameterValue(Name, Param.From)),
-		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	const bool Got = Param.MPCI->GetVectorParameterValue(Name, Param.From);
+	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
 	MPCVectorParams.Add(MoveTemp(Param));
@@ -302,8 +298,8 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 	return true;
 }
 
-bool UAnimMat::FloatDynFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
-	const float Duration, UCurveFloat* const Curve) {
+bool UAnimMat::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
+const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
@@ -328,18 +324,16 @@ bool UAnimMat::FloatDynFade(UMaterialInstanceDynamic* const Mat, const FName Nam
 		return Ok;
 	}
 	
-	// we do it anyway.
-	UE_CLOG(
-		UNLIKELY(!Param.Mat->GetScalarParameterValue(Name, Param.From)),
-		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
-		__func__);
+	const bool Got = Param.Mat->GetScalarParameterValue(Name, Param.From);
+	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway.
 
 	DynFloatParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
 }
 
-bool UAnimMat::VectorDynFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
+bool UAnimMat::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
 const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
@@ -356,7 +350,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
 		const FAMVector& O = DynVectorParams[i];
-		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
+		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
 		DynVectorParams.RemoveAtSwap(i);
 	}
 	
@@ -366,11 +360,10 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 		return Ok;
 	}
 
-	// we do it anyway.
-	UE_CLOG(UNLIKELY(!Param.MPCI->GetVectorParameterValue(Name, Param.From)),
-		LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
-		__func__);
-
+	const bool Got = Param.Mat->GetVectorParameterValue(Name, Param.From); // get the initial value.
+	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway if not got
+	
 	DynVectorParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
@@ -412,7 +405,9 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 		return Ok;
 	}
 
-	Param.GetCurrent(Param.From); // ignore return, we'll do it anyway.
+	const bool Got = Param.GetCurrent(Param.From); // ignore return, we'll do it anyway.
+	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway if not got
 
 	DataParams.Add(MoveTemp(Param));
 	IsFading = true;

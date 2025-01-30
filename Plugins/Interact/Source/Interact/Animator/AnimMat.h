@@ -191,7 +191,7 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool FloatDynFade(UMaterialInstanceDynamic* const Mat,
+	bool DynFloatFade(UMaterialInstanceDynamic* const Mat,
 		const FName Name, const float To = 1.0, const float Duration = -1,
 		UCurveFloat* const Curve = nullptr);
 
@@ -202,7 +202,7 @@ public:
 	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool VectorDynFade(UMaterialInstanceDynamic* const Mat,
+	bool DynVectorFade(UMaterialInstanceDynamic* const Mat,
 		const FName Name, const FLinearColor& To = FLinearColor::White,
 		const float Duration = -1, const bool UseHSV = false,
 		UCurveFloat* const Curve = nullptr);
