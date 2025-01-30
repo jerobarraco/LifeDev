@@ -151,7 +151,7 @@ public:
 	UAnimMat();
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Tick(const float DeltaTime) override;
+	virtual void Tick(const float DT) override;
 	virtual TStatId GetStatId() const override;
 	virtual bool IsTickable() const override { return IsFading; }
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
@@ -299,9 +299,11 @@ protected:
 	
 	FORCEINLINE void ItemDone(const FAMBase& Item) {
 		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
+		// todo new delegate
 	}
 	FORCEINLINE void ItemDoneData(const FAMData& Item) {
 		OnItemDone.Broadcast(nullptr, NAME_None, Item.Comp, Item.Index);
+		// TODo new delegate
 	}
 
 	bool IsFading = false;

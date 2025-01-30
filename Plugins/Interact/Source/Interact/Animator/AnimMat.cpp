@@ -419,20 +419,20 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 	return true;
 }
 
-void UAnimMat::Tick(const float DeltaTime) {
-	Super::Tick(DeltaTime);
+void UAnimMat::Tick(const float DT) {
+	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
 	// TODO use the ItemTick for the rest
-	const bool ContFloat = ParamTick(DeltaTime, FloatParams); //FloatTick(DeltaTime);
-	const bool ContVec = ParamTick(DeltaTime, VectorParams);
-	const bool ContData = DataTick(DeltaTime);
-	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, &UAnimMat::ItemDoneDynF);
-	const bool ContDynVector = ItemTick(DeltaTime, DynVectorParams, &UAnimMat::ItemDoneDynV);
-	// done this way to avoid short-circuit to skip vec
+	const bool ContFloat = ParamTick(DT, FloatParams); //FloatTick(DeltaTime);
+	const bool ContVec = ParamTick(DT, VectorParams);
+	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData); //DataTick(DT);
+	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
+	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
+	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
 
-	if (Continue) return;
+	if (LIKELY(Continue)) return;
 
 	UE_LOG(LogAnimMat, Log, TEXT("%hs Done"), __func__);
 	IsFading = false;
@@ -448,16 +448,18 @@ bool UAnimMat::DataTick(float DT) {
 		const bool IsDone = Par.Tick(DT);
 		
 		// only at end, to ensure the val is set.
-		if (IsDone) {
-			// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-			FAMData ParOld = Par;
-			DataParams.RemoveAtSwap(i);
-			ItemDoneData(ParOld);
-			// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-			// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-			// since new elements would be added at the end of the array, which would be the current index.
-		} else
+		if (UNLIKELY(!IsDone)) {
 			Cont = true;
+			continue;
+		}
+
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		FAMData ParOld = Par;
+		DataParams.RemoveAtSwap(i);
+		ItemDoneData(ParOld);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
 	}
 
 	return Cont;
@@ -567,7 +569,7 @@ void UAnimMat::Deinitialize() {
 	EmptyItems(DynFloatParams);
 	EmptyItems(DynVectorParams);
 	EmptyItemsData(DataParams);
-	// TODO add a new one that uses a TFunction for the done
+	// TODO add a new one that uses a funcition ptr for the done
 	Super::Deinitialize();
 }
 
