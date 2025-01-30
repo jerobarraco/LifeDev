@@ -277,8 +277,6 @@ protected:
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
 
-	bool DataTick(float DT);
-
 	template<typename Item>
 	bool ParamTick(const float DT, TArray<Item>& IOArr);
 	template<typename Item>

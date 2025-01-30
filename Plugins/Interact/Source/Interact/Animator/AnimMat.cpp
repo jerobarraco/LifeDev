@@ -426,7 +426,7 @@ void UAnimMat::Tick(const float DT) {
 	// TODO use the ItemTick for the rest
 	const bool ContFloat = ParamTick(DT, FloatParams); //FloatTick(DeltaTime);
 	const bool ContVec = ParamTick(DT, VectorParams);
-	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData); //DataTick(DT);
+	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
@@ -439,32 +439,6 @@ void UAnimMat::Tick(const float DT) {
 	OnDone.Broadcast();
 }
 
-bool UAnimMat::DataTick(float DT) {
-	TArray<int32> ToRemove;
-	bool Cont = false;
-	// traversing in reverse to remove on the spot
-	for (int32 i= DataParams.Num()-1; i>=0; --i) {
-		FAMData& Par = DataParams[i];
-		const bool IsDone = Par.Tick(DT);
-		
-		// only at end, to ensure the val is set.
-		if (UNLIKELY(!IsDone)) {
-			Cont = true;
-			continue;
-		}
-
-		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		FAMData ParOld = Par;
-		DataParams.RemoveAtSwap(i);
-		ItemDoneData(ParOld);
-		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-		// since new elements would be added at the end of the array, which would be the current index.
-	}
-
-	return Cont;
-}
-
 template <typename Item>
 bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 	TArray<int32> ToRemove;
@@ -475,7 +449,7 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 		const bool IsDone = Par.Tick(DT);
 		
 		// only at end, to ensure the val is set.
-		if (!IsDone) {
+		if (UNLIKELY(!IsDone)) {
 			Cont = true;
 			continue;
 		}
@@ -504,7 +478,7 @@ bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 		const bool IsDone = Par.Tick(DT);
 		
 		// only at end, to ensure the val is set.
-		if (!IsDone) {
+		if (UNLIKELY(!IsDone)) {
 			Cont = true;
 			continue;
 		}
@@ -522,6 +496,7 @@ bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 	return Cont;
 }
 
+// TODO make this to use a ItemDone as ptr
 template<typename Item>
 void UAnimMat::EmptyItems(TArray<Item>& IOArr) {
 	TArray<Item> Copy = IOArr;
@@ -604,7 +579,34 @@ TStatId UAnimMat::GetStatId() const {
 	return GetStatID();
 }
 
+/*
+ 
+bool UAnimMat::DataTick(float DT) {
+	TArray<int32> ToRemove;
+	bool Cont = false;
+	// traversing in reverse to remove on the spot
+	for (int32 i= DataParams.Num()-1; i>=0; --i) {
+		FAMData& Par = DataParams[i];
+		const bool IsDone = Par.Tick(DT);
+		
+		// only at end, to ensure the val is set.
+		if (UNLIKELY(!IsDone)) {
+			Cont = true;
+			continue;
+		}
 
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		FAMData ParOld = Par;
+		DataParams.RemoveAtSwap(i);
+		ItemDoneData(ParOld);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
+	}
+
+	return Cont;
+}
+ */
 // thought on using operator== for removing. which looks more "chic".
 // but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
 // and do nasty checks. besides "==" is confusing in case you expect that it would also check if the target value is the same, which it wont.
