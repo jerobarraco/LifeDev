@@ -433,7 +433,6 @@ void UAnimMat::Tick(const float DT) {
 template <typename Item>
 bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 void(UAnimMat::* Done)(const Item&)) {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs Tick"), __func__);
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot

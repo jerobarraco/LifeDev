@@ -120,8 +120,7 @@ void AInteract::ShowHint_Implementation() {
 	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
 
 	Interact->Hint(true);
-	// Interact->Hover(Show, GetInstigator()); // uff it could break the instigator.
-	PlaySFX(SFX_Hint);// checked inside
+	PlaySFX(SFX_Hint);// sfx checked inside
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
