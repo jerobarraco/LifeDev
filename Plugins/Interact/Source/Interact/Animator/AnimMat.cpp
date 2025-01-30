@@ -25,9 +25,11 @@ bool FAMBase::Tick(const float DT) {
 	return IsDone();
 }
 
-bool FAMBase::FIsValid() const { return IsValid(MPCI); } // avoid including the type on header
+bool FAMBase::FIsValid() const { return IsValid(MPCI) && !Name.IsNone(); } // avoid including the type on header
+bool FAMDFloat::FIsValid() const  { return IsValid(Mat) && !Name.IsNone(); } // avoid including the type on header
+bool FAMDVector::FIsValid() const  { return IsValid(Mat) && !Name.IsNone(); } // avoid including the type on header
 
-bool FAMFloat::SetVal(const float Val) const {
+bool FAMPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
@@ -35,7 +37,7 @@ bool FAMFloat::SetVal(const float Val) const {
 	return MPCI->SetScalarParameterValue(Name, Val);
 }
 
-bool FAMFloat::SetLerp(const float Prog) {
+bool FAMPFloat::SetLerp(const float Prog) {
 	const float Val = FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
@@ -49,12 +51,8 @@ bool FAMDFloat::SetVal(const float Val) const {
 	return true;
 }
 
-// bool FAMDFloat::SetLerp(const float Prog) {
-	// const float Val = FMath::LerpStable(From, To, Prog);
-	// return SetVal(Val);
-// }
 
-bool FAMVector::SetVal(const FLinearColor& Val) const {
+bool FAMPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
@@ -62,7 +60,7 @@ bool FAMVector::SetVal(const FLinearColor& Val) const {
 	return MPCI->SetVectorParameterValue(Name, Val);
 }
 
-bool FAMVector::SetLerp(const float Prog) {
+bool FAMPVector::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
@@ -231,7 +229,7 @@ bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
-	FAMFloat Param;
+	FAMPFloat Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -241,7 +239,7 @@ bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const
 	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
-		const FAMFloat& O = MPCFloatParams[i];
+		const FAMPFloat& O = MPCFloatParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
 		MPCFloatParams.RemoveAtSwap(i);
 	}
@@ -267,7 +265,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
-	FAMVector Param;
+	FAMPVector Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -277,7 +275,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
-		const FAMVector& O = MPCVectorParams[i];
+		const FAMPVector& O = MPCVectorParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
 		MPCVectorParams.RemoveAtSwap(i);
 	}
@@ -349,7 +347,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	Param.To = To;
 
 	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
-		const FAMVector& O = DynVectorParams[i];
+		const FAMPVector& O = DynVectorParams[i];
 		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
 		DynVectorParams.RemoveAtSwap(i);
 	}
@@ -418,24 +416,24 @@ void UAnimMat::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
-	const bool ContFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneMPCF);
-	const bool ContVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneMPCV);
+	const bool ContMPCFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneMPCF);
+	const bool ContMPCVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneMPCV);
 	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
-	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
+	const bool Continue = ContMPCFloat || ContMPCVec || ContData || ContDynFloat || ContDynVector;
 
 	if (LIKELY(Continue)) return;
 
-	UE_LOG(LogAnimMat, Log, TEXT("%hs Done"), __func__);
 	IsFading = false;
 	OnDone.Broadcast();
 }
 
 template <typename Item>
 bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
-	void(UAnimMat::* Done)(const Item&)) {
+void(UAnimMat::* Done)(const Item&)) {
+	UE_LOG(LogAnimMat, Log, TEXT("%hs Tick"), __func__);
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
@@ -443,15 +441,15 @@ bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 		Item& Par = IOArr[i];
 		const bool IsDone = Par.Tick(DT);
 		
-		// only at end, to ensure the val is set.
 		if (UNLIKELY(!IsDone)) {
 			Cont = true;
-			continue;
+			continue; // continue instead of return because we need to process all items
 		}
 
 		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
 		Item ParOld = Par;
 		IOArr.RemoveAtSwap(i);
+		// only at end, to ensure the val is set.
 		if (LIKELY(Done))
 			(this->*Done)(ParOld);
 		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
@@ -477,9 +475,9 @@ bool UAnimMat::GetIsFadingMPC(
 	const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
-	for (const FAMFloat& P: MPCFloatParams)
+	for (const FAMPFloat& P: MPCFloatParams)
 		if (P.Name == Name && MPCI == P.MPCI) return true;
-	for (const FAMVector& P: MPCVectorParams)
+	for (const FAMPVector& P: MPCVectorParams)
 		if (P.Name == Name && MPCI == P.MPCI) return true;
 
 	return false;

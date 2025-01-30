@@ -55,7 +55,7 @@ public:
 
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMFloat: public FAMBase {
+struct FAMPFloat: public FAMBase {
 	GENERATED_BODY()
 
 public:
@@ -70,15 +70,16 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMDFloat: public FAMFloat {
+struct FAMDFloat: public FAMPFloat {
 	GENERATED_BODY()
 
 public:
 	virtual bool SetVal(const float Val = 1.0) const override;
+	virtual bool FIsValid() const override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMVector: public FAMBase {
+struct FAMPVector: public FAMBase {
 	GENERATED_BODY()
 
 public:
@@ -97,11 +98,12 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMDVector: public FAMVector {
+struct FAMDVector: public FAMPVector {
 	GENERATED_BODY()
 
 public:
 	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
+	virtual bool FIsValid() const override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -132,7 +134,7 @@ public:
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
-	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; };
+	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; }
 };
 
 // Subsystem that animates materials parameter collections' parameters.
@@ -296,10 +298,10 @@ protected:
 	void ItemDoneDynV(const FAMDVector& It) {
 		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
 	}
-	void ItemDoneMPCF(const FAMFloat& Item) {
+	void ItemDoneMPCF(const FAMPFloat& Item) {
 		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
-	void ItemDoneMPCV(const FAMVector& Item) {
+	void ItemDoneMPCV(const FAMPVector& Item) {
 		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
 	void ItemDoneData(const FAMData& Item) {
@@ -309,9 +311,9 @@ protected:
 	bool IsFading = false;
 
 	UPROPERTY(Transient)
-	TArray<FAMFloat> MPCFloatParams;
+	TArray<FAMPFloat> MPCFloatParams;
 	UPROPERTY(Transient)
-	TArray<FAMVector> MPCVectorParams;
+	TArray<FAMPVector> MPCVectorParams;
 	UPROPERTY(Transient)
 	TArray<FAMDFloat> DynFloatParams;
 	UPROPERTY(Transient)
