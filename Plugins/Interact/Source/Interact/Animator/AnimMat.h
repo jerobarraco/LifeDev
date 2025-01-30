@@ -283,11 +283,20 @@ protected:
 	bool ParamTick(const float DT, TArray<Item>& IOArr);
 	template<typename Item>
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
-		const TFunction<void(const Item&)>& Done);
+		void(UAnimMat::* Done)(const Item&));
 	template<typename Item>
 	void EmptyItems(TArray<Item>& IOArr);
 	void EmptyItemsData(TArray<FAMData>& IOArr);
 
+	void ItemDoneDynF(const FAMDFloat& It) {
+		UE_LOG(LogTemp, Display, TEXT("ItemDoneDynF"));
+	// TODO
+	}
+	void ItemDoneDynV(const FAMDVector& It) {
+		UE_LOG(LogTemp, Display, TEXT("ItemDoneDynV"));
+	// TODO
+	}
+	
 	FORCEINLINE void ItemDone(const FAMBase& Item) {
 		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
 	}

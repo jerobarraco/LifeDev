@@ -427,13 +427,8 @@ void UAnimMat::Tick(const float DeltaTime) {
 	const bool ContFloat = ParamTick(DeltaTime, FloatParams); //FloatTick(DeltaTime);
 	const bool ContVec = ParamTick(DeltaTime, VectorParams);
 	const bool ContData = DataTick(DeltaTime);
-	const TFunction<void(const FAMDFloat&)> DynFDone = [&](const FAMDFloat& Value)
-		{ItemDone(Value);};
-	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, DynFDone);
-
-	const TFunction<void(const FAMDVector&)> DynVDone = [&](const FAMDVector& Value)
-		{ItemDone(Value);};
-	const bool ContDynVector = ItemTick(DeltaTime, DynVectorParams, DynVDone);
+	const bool ContDynFloat = ItemTick(DeltaTime, DynFloatParams, &UAnimMat::ItemDoneDynF);
+	const bool ContDynVector = ItemTick(DeltaTime, DynVectorParams, &UAnimMat::ItemDoneDynV);
 	// done this way to avoid short-circuit to skip vec
 	const bool Continue = ContFloat || ContVec || ContData || ContDynFloat || ContDynVector;
 
@@ -498,7 +493,7 @@ bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
 // TODO move the rest to use this
 template <typename Item>
 bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
-	const TFunction<void(const Item&)>& Done) {
+	void(UAnimMat::* Done)(const Item&)) {
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
@@ -515,7 +510,8 @@ bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
 		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
 		Item ParOld = Par;
 		IOArr.RemoveAtSwap(i);
-		Done(ParOld);
+		if (LIKELY(Done))
+			(this->*Done)(ParOld);
 		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
 		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
 		// since new elements would be added at the end of the array, which would be the current index.
