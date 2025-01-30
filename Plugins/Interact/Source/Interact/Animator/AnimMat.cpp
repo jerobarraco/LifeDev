@@ -229,7 +229,7 @@ bool UAnimMat::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Nam
 	return true;
 }
 
-bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 	const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
@@ -251,7 +251,7 @@ bool UAnimMat::FloatFade(const UMaterialParameterCollection* const MPC, const FN
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		ItemDone(Param);
+		ItemDoneMPCF(Param);
 		return Ok;
 	}
 	
@@ -288,7 +288,7 @@ bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const F
 	
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		ItemDone(Param); // notify AFTER change.
+		ItemDoneMPCV(Param); // notify AFTER change.
 		return Ok;
 	}
 
@@ -324,7 +324,7 @@ bool UAnimMat::FloatDynFade(UMaterialInstanceDynamic* const Mat, const FName Nam
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		ItemDone(Param); // TODO replace
+		ItemDoneDynF(Param);
 		return Ok;
 	}
 	
@@ -362,7 +362,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
-		ItemDone(Param); // notify AFTER change.
+		ItemDoneDynV(Param); // notify AFTER change.
 		return Ok;
 	}
 
@@ -408,7 +408,7 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 	UE_LOG(LogTemp, Log, TEXT(" Param Fade count =%i"), DataParams.Num());
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(Param.To);
-		OnItemDone.Broadcast(nullptr, Param.Name, Param.Comp, Param.Index); // notify AFTER change.
+		ItemDoneData(Param);
 		return Ok;
 	}
 
@@ -423,8 +423,8 @@ void UAnimMat::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
-	const bool ContFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneF);
-	const bool ContVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneV);
+	const bool ContFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneMPCF);
+	const bool ContVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneMPCV);
 	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
@@ -472,37 +472,48 @@ void UAnimMat::ItemsEmpty(TArray<Item>& IOArr, void(UAnimMat::* Done)(const Item
 	TArray<Item> Copy = IOArr;
 	DataParams.Empty(); // empty before notifying.
 	if (UNLIKELY(!Done)) return;
-	for (const Item& D: Copy) {
+	
+	for (const Item& D: Copy)
 		(this->*Done)(D);
-	}
 }
 
-bool UAnimMat::GetIsFadingParam(const FName Name,
-	const UMaterialParameterCollectionInstance* const MPCI,
-	const UPrimitiveComponent* Comp) {
 
-	const bool NOMPCI = MPCI == nullptr;
-	const bool NOComp = Comp == nullptr;
-	const bool NOBoth = NOMPCI && NOComp;
-	for (const FAMFloat& P: MPCFloatParams) {
-		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
-	}
-	for (const FAMVector& P: MPCVectorParams) {
-		if (P.Name == Name && (NOBoth || MPCI == P.MPCI)) return true;
-	}
+bool UAnimMat::GetIsFadingMPC(
+	const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
+	if (UNLIKELY(!IsValid(MPCI))) return false;
+	
+	for (const FAMFloat& P: MPCFloatParams)
+		if (P.Name == Name && MPCI == P.MPCI) return true;
+	for (const FAMVector& P: MPCVectorParams)
+		if (P.Name == Name && MPCI == P.MPCI) return true;
+
+	return false;
+}
+
+bool UAnimMat::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
+	if (UNLIKELY(!IsValid(Mat))) return false;
+	
+	for (const FAMDFloat& P: DynFloatParams)
+		if (P.Name == Name && Mat == P.Mat) return true;
+	for (const FAMDVector& P: DynVectorParams)
+		if (P.Name == Name && Mat == P.Mat) return true;
+
+	return false;
+}
+
+bool UAnimMat::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
+	if (UNLIKELY(!IsValid(Comp))) return false;
 
 	for (const FAMData& P: DataParams) {
-		if (P.Name == Name && (NOBoth || Comp == P.Comp)) return true;
+		if (P.Index == Index && (Comp == P.Comp)) return true;
 	}
-
-	// TODo split and also account for material
 	
 	return false;
 }
 
 void UAnimMat::Deinitialize() {
-	ItemsEmpty(MPCFloatParams, &UAnimMat::ItemDoneF);
-	ItemsEmpty(MPCVectorParams, &UAnimMat::ItemDoneV);
+	ItemsEmpty(MPCFloatParams, &UAnimMat::ItemDoneMPCF);
+	ItemsEmpty(MPCVectorParams, &UAnimMat::ItemDoneMPCV);
 	ItemsEmpty(DataParams, &UAnimMat::ItemDoneData);
 	ItemsEmpty(DynFloatParams, &UAnimMat::ItemDoneDynF);
 	ItemsEmpty(DynVectorParams, &UAnimMat::ItemDoneDynV);

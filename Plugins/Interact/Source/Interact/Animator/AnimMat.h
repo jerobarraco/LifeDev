@@ -5,12 +5,9 @@
 #include "AnimMat.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDynDone, UMaterialInstanceDynamic* const, Mat, FName, Name);
-
-// TODO split
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FAnimMatItemDone,
-	const UMaterialParameterCollectionInstance*, MPCI, const FName, Name,
-	const UPrimitiveComponent*, Cmp, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneDyn, UMaterialInstanceDynamic* const, Mat, FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneMPC, UMaterialParameterCollectionInstance* const, Mat, FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneData, UPrimitiveComponent* const, Comp, int32, Index);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FAMBase {
@@ -25,6 +22,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
+	// it's lazy to put the material here too. but it does simplify the initBase
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
@@ -167,7 +165,7 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool FloatFade(const UMaterialParameterCollection* const MPC,
+	bool MPCFloatFade(const UMaterialParameterCollection* const MPC,
 		const FName Name, const float To = 1.0, const float Duration = -1,
 		UCurveFloat* const Curve = nullptr);
 
@@ -236,12 +234,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsFading() const { return IsFading; }
 
-	// TODO split
-	// returns true if a param with that name is fading (float, vector, or data)
+	// returns true if a param with that name is fading
 	UFUNCTION(BlueprintCallable)
-	bool GetIsFadingParam(const FName Name,
-		const UMaterialParameterCollectionInstance* const MPCI = nullptr,
-		const UPrimitiveComponent* Comp = nullptr);
+	bool GetIsFadingMPC(const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const;
+	// returns true if a param with that name is fading
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const;
+	// returns true if a param with that name is fading
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
 	 
 	// default fade duration. can be changed. and can be specified on the .ini config files.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
@@ -257,11 +258,16 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimMatDone OnDone;
 
-	// when a specific param (or data) is done.
+	// when a specific mpc param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimMatItemDone OnItemDone;
+	FAnimMatDoneMPC OnItemDoneMPC;
+	// when a specific dynamic material param is done
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimMatDoneDyn OnItemDoneDyn;
+	// when a specific custom primitive data param is done
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimMatDoneData OnItemDoneData;
 
-	
 protected:
 	bool ParamInitBasic(FAMBase& OParam, const FName Name,
 		UCurveFloat* const Curve = nullptr,
@@ -285,29 +291,19 @@ protected:
 		void(UAnimMat::* Done)(const Item&));
 
 	void ItemDoneDynF(const FAMDFloat& It) {
-		UE_LOG(LogTemp, Display, TEXT("ItemDoneDynF"));
-	// TODO
+		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
 	}
 	void ItemDoneDynV(const FAMDVector& It) {
-		UE_LOG(LogTemp, Display, TEXT("ItemDoneDynV"));
-	// TODO
+		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
 	}
-	
-	void ItemDoneF(const FAMFloat& Item) {
-		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
-		// todo new delegate
+	void ItemDoneMPCF(const FAMFloat& Item) {
+		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
-	void ItemDoneV(const FAMVector& Item) {
-		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
-		// todo new delegate
+	void ItemDoneMPCV(const FAMVector& Item) {
+		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
-	FORCEINLINE void ItemDone(const FAMBase& Item) {
-		OnItemDone.Broadcast(Item.MPCI, Item.Name, nullptr, INDEX_NONE);
-		// todo new delegate
-	}
-	FORCEINLINE void ItemDoneData(const FAMData& Item) {
-		OnItemDone.Broadcast(nullptr, NAME_None, Item.Comp, Item.Index);
-		// TODo new delegate
+	void ItemDoneData(const FAMData& Item) {
+		OnItemDoneData.Broadcast(Item.Comp, Item.Index);
 	}
 
 	bool IsFading = false;
