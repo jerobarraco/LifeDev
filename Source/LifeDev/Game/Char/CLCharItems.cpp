@@ -58,8 +58,8 @@ void UCLCharItems::Look(const FName& Name) const {
 		return;
 	}
 	
-	UE_LOG(LogCharItems, Log, TEXT("%hs '%s'. Title='%s' Count=%i, description '%s'."),
-		__func__, *SName, *Item.Title.ToString(), Item.Count, *Item.Description.ToString());
+	UE_LOG(LogCharItems, Log, TEXT("%hs '%s'. Title='%s' Count=%i, Descriptions=%i."),
+		__func__, *SName, *Item.Title.ToString(), Item.Count, Item.Descriptions.Num());
 
 	// say look at stuff.
 	// don't even bother with the non-random.
@@ -75,18 +75,10 @@ void UCLCharItems::Look(const FName& Name) const {
 		// Diag.Type = EDialogType::SYSTEM;
 		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
-		// allow item description to split on different pages.
-		if (!Item.Description.IsEmptyOrWhitespace()) {
-			UE_LOG(LogCharItems, Warning, TEXT("%hs '%s'. deprecated usage of item.description."),
-			__func__, *SName);
-			// TODO move items to the new one (below)
-			Diag.Text = Item.Description;
+		// allow item description to split on different dialog boxes/pages.
+		for (const FText& Block : Item.Descriptions) {
+			Diag.Text = Block;
 			Diags->AddDiag(Diag);
-		} else if (Item.Descriptions.Num()>0) {
-			for (const FText& Block : Item.Descriptions) {
-				Diag.Text = Block;
-				Diags->AddDiag(Diag);
-			}
 		}
 	}
 

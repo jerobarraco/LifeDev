@@ -28,21 +28,24 @@ public:
 	// 0 == no cooldown. used for cards.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 CoolDown = 0;
-	
+	// title of the item
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine, DeprecatedProperty))
-	FText Description;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
-	TArray<FText> Descriptions; // TODO move to this one
 
+	// the description. You can implement how you want to handle multiple ones.
+	// it's multiline. hold Shift+Enter for a new line.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	TArray<FText> Descriptions;
+
+	// image
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UTexture2D> Img = nullptr;
 
+	// sound
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<USoundBase> Snd = nullptr;
 
-	// the class for the item manager
+	// the class for the item manager (can be empty/null)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UItemLogic> LogicType = nullptr;
 
