@@ -20,9 +20,9 @@ void APuzzleI00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
 	static const TMap<FName, FName> Dlgs = {
-        {LDConsts::Items::Card0, "PZ00xC00"}
-    };
-    SetUseItemDlgs(Dlgs);
+		{LDConsts::Items::Card0, "PZ00xC00"}
+	};
+	SetUseItemDlgs(Dlgs);
 
 	static const TArray<bool> Locks = { true, false, true, false };
 	SetLocks(Locks);
