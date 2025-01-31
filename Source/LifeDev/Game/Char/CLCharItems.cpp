@@ -60,7 +60,7 @@ void UCLCharItems::Look(const FName& Name) const {
 	
 	UE_LOG(LogCharItems, Log, TEXT("%hs '%s'. Title='%s' Count=%i, Descriptions=%i."),
 		__func__, *SName, *Item.Title.ToString(), Item.Count, Item.Descriptions.Num());
-
+	
 	// say look at stuff.
 	// don't even bother with the non-random.
 	// if you want to have a non-random sequence you'd have to add 2 keys.
