@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 
 #include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this
-#include "SignificanceTypes.h"
+#include "JSigTypes.h"
 
 #include "CSignificance.generated.h"
 

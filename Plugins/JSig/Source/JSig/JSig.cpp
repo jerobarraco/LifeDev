@@ -1,31 +1,31 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: LGPL-3.0-only
-#include "Significance.h"
+#include "JSig.h"
 
 #include "SignificanceManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 
-USignificance::USignificance():Super() {}
+UJSig::UJSig():Super() {}
 
-USignificance* USignificance::Instance(const UObject* O) {
+UJSig* UJSig::Instance(const UObject* O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 
-	USignificance* const Sig = W->GetSubsystem<USignificance>();
+	UJSig* const Sig = W->GetSubsystem<UJSig>();
 	return IsValid(Sig) ? Sig : nullptr;
 }
 
-void USignificance::Deinitialize() {
+void UJSig::Deinitialize() {
 	UE_LOG(LogJSigSub, Log, TEXT("%hs"), __func__);
 	Man = nullptr;
 	PCs.Empty();
 	Super::Deinitialize();
 }
 
-void USignificance::Reset() {
+void UJSig::Reset() {
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs"), __func__); // verbose since it can be triggered every frame
 
 	Man = nullptr;
@@ -48,14 +48,14 @@ void USignificance::Reset() {
 	DTAcum = 0;
 }
 
-void USignificance::Initialize(FSubsystemCollectionBase& Collection) {
+void UJSig::Initialize(FSubsystemCollectionBase& Collection) {
 	UE_LOG(LogJSigSub, Log, TEXT("%hs useBgThread=%i numPCs=%i interval=%5.3f tickWhenPaused=%i"),
 		__func__, UseBGThread, NumPCs, TickInterval, TickWhenPaused);
 	Super::Initialize(Collection);
 	Reset();
 }
 
-void USignificance::DoTick() {
+void UJSig::DoTick() {
 	if (UNLIKELY(!IsValid(Man) || PCs.Num()==0)) {
 		// Verbose since this could trigger a lot, or never stop.
 		UE_LOG(LogJSigSub, Verbose, TEXT("%hs. Force Reset."), __func__);
@@ -81,7 +81,7 @@ void USignificance::DoTick() {
 	Man->Update(TArrayView<FTransform>(TransformArray));
 }
 
-void USignificance::Tick(float DeltaTime) {
+void UJSig::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	DTAcum += DeltaTime;
@@ -103,7 +103,7 @@ void USignificance::Tick(float DeltaTime) {
 }
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
-TStatId USignificance::GetStatId() const {
+TStatId UJSig::GetStatId() const {
 	// https://benui.ca/unreal/tickable-object/
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	// RETURN_QUICK_DECLARE_CYCLE_STAT(USignificance, STATGROUP_Tickables);

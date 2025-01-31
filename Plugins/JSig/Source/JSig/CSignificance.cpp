@@ -10,7 +10,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
 static float GSigOverride = -1;
 static FAutoConsoleVariableRef CVarSignificanceManager_SigOverride(
-	TEXT("JSigMan.SigOverride"),
+	TEXT("JSig.SigOverride"),
 	GSigOverride,
 	TEXT("Force significance on all managed objects. -1 is default, 0-4 is hidden, lowest, medium, highest.\n"),
 	ECVF_Cheat

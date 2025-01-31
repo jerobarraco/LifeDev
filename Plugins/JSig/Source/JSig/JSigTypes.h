@@ -3,7 +3,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "SignificanceTypes.generated.h"
+#include "JSigTypes.generated.h"
 
 // Defines the different levels of significance.
 // Off means no significance at all.

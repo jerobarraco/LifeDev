@@ -5,7 +5,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Significance.generated.h"
+#include "JSig.generated.h"
 
 class USignificanceManager;
 
@@ -23,14 +23,14 @@ class USignificanceManager;
 // UseBgThread=true
 // NumPCs=1
 // TickInterval=3.0
-UCLASS(Blueprintable, Category="JSig", Config=JSignificance, DefaultConfig)
-class JSIG_API USignificance : public UTickableWorldSubsystem {
+UCLASS(Blueprintable, Category="JSig", Config=JSig, DefaultConfig)
+class JSIG_API UJSig : public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	USignificance();
+	UJSig();
 
-	static USignificance* Instance(const UObject* O);
+	static UJSig* Instance(const UObject* O);
 
 	// seconds until next tick. 0 means every frame. discouraged.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
