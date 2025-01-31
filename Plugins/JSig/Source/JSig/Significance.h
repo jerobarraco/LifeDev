@@ -30,7 +30,6 @@ class JSIG_API USignificance : public UTickableWorldSubsystem {
 public:
 	USignificance();
 
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static USignificance* Instance(const UObject* O);
 
 	// seconds until next tick. 0 means every frame. discouraged.
@@ -73,9 +72,9 @@ protected:
 	// will re-set some of the objects and cache values
 	void Reset();
 
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient, Category="JSig")
 	TObjectPtr<USignificanceManager> Man = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient, Category="JSig")
 	TArray<TObjectPtr<APlayerController>> PCs;
 
 	float DTAcum = 0;

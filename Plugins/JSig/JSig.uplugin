@@ -10,6 +10,7 @@
 	"CreatedByURL": "https://codeberg.org/jerobarraco",
 	"DocsURL": "https://codeberg.org/jerobarraco/JSig",
 	"SupportURL": "https://codeberg.org/jerobarraco/JSig",
+	"FabURL":"com.epicgames.launcher://ue/Fab/product/b94b5c7e-f603-422b-81fe-e4b054b40a8d",
 	"MarketplaceURL": "",
 	"CanContainContent": true,
 	"IsBetaVersion": true,
@@ -20,8 +21,329 @@
 		{
 			"Name": "JSig",
 			"Type": "RuntimeAndProgram",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [ "Win64", "Mac", "IOS", "Android", "Linux"],
+			"PlatformDenyList":[]
 		}
 	],
-	"Plugins": [ {"Name": "SignificanceManager", "Enabled": true}]
+	"Plugins": [ 
+		{"Name": "SignificanceManager", "Enabled": true},
+		
+		{
+		"Name": "Niagara",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosNiagara",
+		"Enabled": false
+		},
+		{
+		"Name": "GameplayCameras",
+		"Enabled": true
+		},
+		{
+		"Name": "DisasterRecoveryClient",
+		"Enabled": true
+		},
+		{
+		"Name": "ModelingToolsEditorMode",
+		"Enabled": true
+		},
+		{
+		"Name": "AlembicImporter",
+		"Enabled": false
+		},
+		{
+		"Name": "CLionSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "ArchVisCharacter",
+		"Enabled": false
+		},
+		{
+		"Name": "PlasticSourceControl",
+		"Enabled": false
+		},
+		{
+		"Name": "SubversionSourceControl",
+		"Enabled": false
+		},
+		{
+		"Name": "AudioCapture",
+		"Enabled": false
+		},
+		{
+		"Name": "Paper2D",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidFetchBackgroundDownload",
+		"Enabled": false
+		},
+		{
+		"Name": "CommonUI",
+		"Enabled": true
+		},
+		{
+		"Name": "N10XSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidDeviceProfileSelector",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidMedia",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidMoviePlayer",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineSubsystemGooglePlay",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidPermission",
+		"Enabled": false
+		},
+		{
+		"Name": "AndroidFileServer",
+		"Enabled": false
+		},
+		{
+		"Name": "AppleImageUtils",
+		"Enabled": false
+		},
+		{
+		"Name": "AppleMoviePlayer",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosClothEditor",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosCloth",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosEditor",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosUserDataPT",
+		"Enabled": false
+		},
+		{
+		"Name": "ConsoleVariables",
+		"Enabled": true
+		},
+		{
+		"Name": "EnvironmentQueryEditor",
+		"Enabled": false
+		},
+		{
+		"Name": "GooglePAD",
+		"Enabled": false
+		},
+		{
+		"Name": "BlendSpaceMotionAnalysis",
+		"Enabled": false
+		},
+		{
+		"Name": "BlueprintFileUtils",
+		"Enabled": true
+		},
+		{
+		"Name": "BlueprintStats",
+		"Enabled": true
+		},
+		{
+		"Name": "OpenImageDenoise",
+		"Enabled": false
+		},
+		{
+		"Name": "IOSDeviceProfileSelector",
+		"Enabled": false
+		},
+		{
+		"Name": "Bridge",
+		"Enabled": false
+		},
+		{
+		"Name": "FacialAnimation",
+		"Enabled": false
+		},
+		{
+		"Name": "SkeletalReduction",
+		"Enabled": false
+		},
+		{
+		"Name": "UObjectPlugin",
+		"Enabled": false
+		},
+		{
+		"Name": "BackChannel",
+		"Enabled": false
+		},
+		{
+		"Name": "GLTFExporter",
+		"Enabled": false
+		},
+		{
+		"Name": "DatasmithContent",
+		"Enabled": false
+		},
+		{
+		"Name": "SpeedTreeImporter",
+		"Enabled": false
+		},
+		{
+		"Name": "AvfMedia",
+		"Enabled": false
+		},
+		{
+		"Name": "WmfMedia",
+		"Enabled": false
+		},
+		{
+		"Name": "WindowsMoviePlayer",
+		"Enabled": false
+		},
+		{
+		"Name": "LocalizableMessage",
+		"Enabled": false
+		},
+		{
+		"Name": "LocationServicesBPLibrary",
+		"Enabled": false
+		},
+		{
+		"Name": "MobilePatchingUtils",
+		"Enabled": false
+		},
+		{
+		"Name": "ChunkDownloader",
+		"Enabled": false
+		},
+		{
+		"Name": "GoogleCloudMessaging",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineSubsystemIOS",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineSubsystem",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineSubsystemUtils",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineSubsystemNull",
+		"Enabled": false
+		},
+		{
+		"Name": "OnlineBase",
+		"Enabled": false
+		},
+		{
+		"Name": "CodeLiteSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "VisualStudioCodeSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "VisualStudioSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "XCodeSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "PixWinPlugin",
+		"Enabled": false
+		},
+		{
+		"Name": "KDevelopSourceCodeAccess",
+		"Enabled": false
+		},
+		{
+		"Name": "MsQuic",
+		"Enabled": false
+		},
+		{
+		"Name": "IKRig",
+		"Enabled": false
+		},
+		{
+		"Name": "Fab",
+		"Enabled": false
+		},
+		{
+		"Name": "ChaosSolverPlugin",
+		"Enabled": false
+		},
+		{
+		"Name": "MediaPlate",
+		"Enabled": false
+		},
+		{
+		"Name": "MediaCompositing",
+		"Enabled": false
+		},
+		{
+		"Name": "StaticMeshEditorModeling",
+		"Enabled": true
+		},
+		{
+		"Name": "PerforceSourceControl",
+		"Enabled": false
+		},
+		{
+		"Name": "BlueprintHeaderView",
+		"Enabled": false
+		},
+		{
+		"Name": "AutomationUtils",
+		"Enabled": false
+		},
+		{
+		"Name": "ChangelistReview",
+		"Enabled": false
+		},
+		{
+		"Name": "GitSourceControl",
+		"Enabled": false
+		},
+		{
+		"Name": "MacGraphicsSwitching",
+		"Enabled": false
+		},
+		{
+		"Name": "ResonanceAudio",
+		"Enabled": false
+		},
+		{
+		"Name": "SoundFields",
+		"Enabled": false
+		},
+		{
+		"Name": "MobileLauncherProfileWizard",
+		"Enabled": false
+		},
+		{
+		"Name": "InterchangeTests",
+		"Enabled": false
+		}
+	]
 }

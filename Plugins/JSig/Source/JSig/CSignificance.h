@@ -42,14 +42,14 @@ public:
 	UCSignificance();
 
 	// only used to bind to
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="JSig")
 	FORCEINLINE void ActivateNow() { Activate(); }
 
 	virtual void Activate(bool bReset=false) override;
 	virtual void Deactivate() override;
 	
 	// returns the current sig
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="JSig")
 	FORCEINLINE ESigValue GetSignificance() const { return Significance; }
 
 	static inline bool Debug = false;
@@ -203,8 +203,8 @@ protected:
 	void UpdateHidden();
 	///~
 
-	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient, Category="JSig")
 	ESigValue Significance = ESigValue::High;
-	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient, Category="JSig")
 	ESigValue SignificanceOld = ESigValue::High;
 };
