@@ -106,7 +106,7 @@
 		},
 		{
 			"Name": "GameplayCameras",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "DisasterRecoveryClient",

@@ -14,40 +14,39 @@
 	"MarketplaceURL": "",
 	"CanContainContent": true,
 	"IsBetaVersion": true,
-	"IsExperimentalVersion": true,
-	"Installed": true,
-	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"SupportedTargetPlatforms": [ "Win64", "Mac", "Android", "Linux"],
 	"Modules": [
 		{
 			"Name": "JSig",
 			"Type": "RuntimeAndProgram",
 			"LoadingPhase": "PostEngineInit",
-			"PlatformAllowList": [ "Win64", "Mac", "IOS", "Android", "Linux"],
+			"PlatformAllowList": [ "Win64", "Mac", "Android", "Linux"],
 			"PlatformDenyList":[]
 		}
 	],
 	"Plugins": [ 
 		{"Name": "SignificanceManager", "Enabled": true},
-		
 		{
-		"Name": "Niagara",
-		"Enabled": false
+			"Name": "Niagara",
+			"Enabled": false
 		},
 		{
-		"Name": "ChaosNiagara",
-		"Enabled": false
+			"Name": "ChaosNiagara",
+			"Enabled": false
 		},
 		{
-		"Name": "GameplayCameras",
-		"Enabled": true
+			"Name": "GameplayCameras",
+			"Enabled": false
 		},
 		{
-		"Name": "DisasterRecoveryClient",
-		"Enabled": true
+			"Name": "DisasterRecoveryClient",
+			"Enabled": false
 		},
 		{
 		"Name": "ModelingToolsEditorMode",
-		"Enabled": true
+		"Enabled": false
 		},
 		{
 		"Name": "AlembicImporter",
@@ -83,7 +82,7 @@
 		},
 		{
 		"Name": "CommonUI",
-		"Enabled": true
+		"Enabled": false
 		},
 		{
 		"Name": "N10XSourceCodeAccess",
@@ -138,8 +137,8 @@
 		"Enabled": false
 		},
 		{
-		"Name": "ConsoleVariables",
-		"Enabled": true
+			"Name": "ConsoleVariables",
+			"Enabled": false
 		},
 		{
 		"Name": "EnvironmentQueryEditor",
@@ -155,11 +154,11 @@
 		},
 		{
 		"Name": "BlueprintFileUtils",
-		"Enabled": true
+		"Enabled": false
 		},
 		{
 		"Name": "BlueprintStats",
-		"Enabled": true
+		"Enabled": false
 		},
 		{
 		"Name": "OpenImageDenoise",
@@ -303,7 +302,7 @@
 		},
 		{
 		"Name": "StaticMeshEditorModeling",
-		"Enabled": true
+		"Enabled": false
 		},
 		{
 		"Name": "PerforceSourceControl",
@@ -342,8 +341,8 @@
 		"Enabled": false
 		},
 		{
-		"Name": "InterchangeTests",
-		"Enabled": false
+			"Name": "InterchangeTests",
+			"Enabled": false
 		}
 	]
 }
