@@ -9,9 +9,12 @@
 
 #include "Interact/Animator/CAnimatorMix.h"
 #include "LifeDev/Game/Interact/LInteract.h"
+#include "Materials/MaterialParameterCollection.h"
 // this requires to create an object channel "Range"
 // and edit the collision channel Interact to "overlap" range
 // then add another collision profile for OverlapInteract that overlaps interacs and has type range.
+
+static const FName HintMPCName = FName("Hint");
 
 ARange::ARange():Super() {
 	// super important or it will NOT work
@@ -49,7 +52,7 @@ ARange::ARange():Super() {
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("Anim"));
 	Anim->UseSweep = true;
 	Anim->IsAdditive = false;
-	Anim->Duration = 3;
+	Anim->Duration = 2;
 	Anim->TStart.SetScale3D(FVector(.25)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
 	Anim->TEnd.SetScale3D(FVector(15));
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
@@ -58,6 +61,10 @@ ARange::ARange():Super() {
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
+
+	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
+		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC.Flashback_MPC"));
+	MPC = CMPC.Object;
 }
 
 void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
@@ -99,6 +106,20 @@ void ARange::AnimEnd() {
 	SetActorHiddenInGame(true);
 	Collider->Deactivate();
 	Collider->SetGenerateOverlapEvents(false); // actually this is the one that fixes it. the rest are nice to haves.
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	
+	FTimerHandle H;
+	FTimerDelegate D;
+	constexpr float OutTime = .5;
+	D.BindLambda([this, OutTime] () {
+		UAnimMat* const AnimMat = UAnimMat::Instance(this);
+		if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 0, OutTime);
+	});
+	const AInteract* const Int = GetMutableDefault<AInteract>(); // changing the hinttime on the settings breaks this, :(((
+	const float Rate = LIKELY(Int) ? FMath::Max(.01, Int->HintTime - Anim->Duration - OutTime) : 3; // 0 won't trigger :(
+	World->GetTimerManager().SetTimer(H, D, Rate, false);
 }
 
 void ARange::Trigger() {
@@ -109,6 +130,9 @@ void ARange::Trigger() {
 	Collider->SetGenerateOverlapEvents(true); // this is the important fix. 
 	// while this is the logical spot of the anim (at the end) it won't set the scale until next tick.
 	Anim->Activate(true); // force the animation to restart so that it triggers again.
+
+	UAnimMat* const AnimMat = UAnimMat::Instance(this);
+	if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 1, .25);
 }
 
 void ARange::SetMaxScale(const float Scale) const {

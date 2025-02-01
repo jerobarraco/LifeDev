@@ -49,4 +49,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<USphereComponent> Collider = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
+	
 };
