@@ -117,7 +117,7 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 }
 
 void AInteract::ShowHint_Implementation() {
-	if ((!UseHint && !UseHintDbg) || IsHidden() || !Interact->IsActive()) return;
+	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
 
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint);// sfx checked inside

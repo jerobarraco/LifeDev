@@ -102,9 +102,6 @@ public:
 	bool UseHint = false;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
-	bool UseHintDbg = true;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	float HintTime = 5;
 
 	// when >= 0 it will also animate the custom primitive data index=ID, from 0 to 1.

@@ -39,7 +39,7 @@ void ULSetGameUI::Apply_Implementation() {
 	if (LIKELY(SLInterHint)) {
 		AInteract* const Inter = GetMutableDefault<AInteract>();
 		if (LIKELY(Inter)) {
-			Inter->HintTime = FMath::Max(.1, SLInterHint->GetValue());
+			Inter->HintTime = FMath::Max(2, SLInterHint->GetValue());
 			Inter->SaveConfig();
 		}
 	}
@@ -93,7 +93,7 @@ void ULSetGameUI::NativeOnInitialized() {
 
 	if (LIKELY(SLInterHint)) {
 		SLInterHint->SetMaxValue(10.);
-		SLInterHint->SetMinValue(.1);
+		SLInterHint->SetMinValue(2); // the range animation time
 		SLInterHint->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterHintUpd);
 	}
 }
