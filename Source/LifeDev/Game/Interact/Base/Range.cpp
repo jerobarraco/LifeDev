@@ -106,20 +106,6 @@ void ARange::AnimEnd() {
 	SetActorHiddenInGame(true);
 	Collider->Deactivate();
 	Collider->SetGenerateOverlapEvents(false); // actually this is the one that fixes it. the rest are nice to haves.
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	
-	FTimerHandle H;
-	FTimerDelegate D;
-	constexpr float OutTime = .5;
-	D.BindLambda([this, OutTime] () {
-		UAnimMat* const AnimMat = UAnimMat::Instance(this);
-		if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 0, OutTime);
-	});
-	const AInteract* const Int = GetMutableDefault<AInteract>(); // changing the hinttime on the settings breaks this, :(((
-	const float Rate = LIKELY(Int) ? FMath::Max(.01, Int->HintTime - Anim->Duration - OutTime) : 3; // 0 won't trigger :(
-	World->GetTimerManager().SetTimer(H, D, Rate, false);
 }
 
 void ARange::Trigger() {
@@ -131,8 +117,23 @@ void ARange::Trigger() {
 	// while this is the logical spot of the anim (at the end) it won't set the scale until next tick.
 	Anim->Activate(true); // force the animation to restart so that it triggers again.
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	
 	UAnimMat* const AnimMat = UAnimMat::Instance(this);
 	if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 1, .25);
+	
+	FTimerHandle H;
+	FTimerDelegate D;
+	constexpr float OutTime = .5;
+	D.BindLambda([AnimMat, OutTime, this] () {
+		if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 0, OutTime);
+	});
+	const AInteract* const Int = GetMutableDefault<AInteract>(); // changing the hinttime on the settings breaks this, :(((
+	const float Rate = LIKELY(Int) ?
+		FMath::Max(.01, Int->HintTime - OutTime) :  // Just before the Interact hides the hint. 0 won't trigger :(
+		Anim->Duration; // or just the duration in case interact fails.
+	World->GetTimerManager().SetTimer(H, D, Rate, false);
 }
 
 void ARange::SetMaxScale(const float Scale) const {

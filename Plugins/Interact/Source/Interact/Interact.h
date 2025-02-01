@@ -99,7 +99,7 @@ public:
 
 	// whether to enable hints or not. (will enable ShowHint (both true and false!))
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	bool UseHint = true;
+	bool UseHint = false;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	bool UseHintDbg = true;
