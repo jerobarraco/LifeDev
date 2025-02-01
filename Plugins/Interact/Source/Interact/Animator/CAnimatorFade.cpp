@@ -13,7 +13,7 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFEnd = 1;
 	Duration = 1.f;
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelFade_NDMI.VoxelFade_NDMI"));
+		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
 	
 	MatBase = CMatBaseNew.Object;
 	Curve = nullptr; // remove the interact curve.
@@ -44,7 +44,6 @@ void UCAnimatorFade::CreateMaterial() {
 		return;
 	}
 
-	// TODO find all the objects with voxelfade_dmi and reexport to _ndmi
 	UE_LOG(LogAnimFade, Log, TEXT("%hs o=%s mat=%s "),
 		__func__, *GetNameSafe(GetOwner()), *Mat->GetName());
 
