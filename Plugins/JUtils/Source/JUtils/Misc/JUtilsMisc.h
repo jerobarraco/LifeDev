@@ -100,13 +100,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
 
-	// can't be blueprint callable since it's templatized
+	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
 
-	template <typename T, std::size_t N> 
+	// returns the size of a static array in a static manner. (i.e int arr[10] = 10)
+	template <typename T, std::size_t N>
 	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
-	
+
+	// shuffles an array in place.
 	template <typename T>
 	static void ArrayShuffle(TArray<T>& Array);
 };

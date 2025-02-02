@@ -14,7 +14,7 @@
 #include "LifeDev/Game/Interact/LInteract.h"
 // this requires to create an object channel "Range"
 // and edit the collision channel Interact to "overlap" range
-// then add another collision profile for OverlapInteract that overlaps interacs and has type range.
+// then add another collision profile for OverlapInteract that overlaps Interacts and has type Range.
 
 static const FName HintMPCName = FName("Hint");
 

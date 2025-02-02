@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 
 #include "JUtilsMisc.h"
+
 #include "CoreGlobals.h"
-#include "EnhancedInputSubsystems.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
@@ -99,17 +99,18 @@ void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 	Async(static_cast<EAsyncExecution>(Exec), [Task, Done]{
 		Task.ExecuteIfBound();
 		// necessary or crash :C
-		if (Done.IsBound()) AsyncTask(ENamedThreads::GameThread, [Done]{
-			Done.ExecuteIfBound();
-		});
+		if (LIKELY(Done.IsBound()))
+			AsyncTask(ENamedThreads::GameThread, [Done]{
+				Done.ExecuteIfBound();
+			});
 	});
 }
 
 template <typename T>
 bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 	OutRows.Empty();
-	if (!IsValid(DT)) {
-		UE_LOG(LogTemp, Error, TEXT("Data Table is not valid or unassigned."));
+	if (UNLIKELY(!IsValid(DT))) {
+		UE_LOG(LogTemp, Error, TEXT("%hs Data Table is not valid or unassigned."), __func__);
 		return false;
 	}
 	
@@ -117,7 +118,7 @@ bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 	// Can't pass pointers to bps, and don't want null values either
 	DT->GetAllRows<T>(TEXT(""), RawRows);
 	for (const T* Row: RawRows) {
-		if (!Row) continue;
+		if (UNLIKELY(!Row)) continue;
 		OutRows.Add(*Row);
 	}
 	return true;
@@ -126,7 +127,7 @@ bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 template <typename T>
 void UJUtilsMisc::ArrayShuffle(TArray<T>& Array) {
 	const int32 ArraySize = Array.Num();
-	for (int32 i = ArraySize - 1; i > 0; --i) {
+	for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
 		const int32 RandomIndex = FMath::RandRange(0, i);
 		Array.Swap(i, RandomIndex);
 	}
