@@ -25,6 +25,6 @@ AMatchBox::AMatchBox():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
 
-	Super::SetAutoActivate(true);
+	Super::SetAutoActivate(false);
 	AMatchBox::SetMobility(EComponentMobility::Static);
 }

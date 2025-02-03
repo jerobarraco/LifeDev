@@ -8,6 +8,7 @@ AMatchBoxI00::AMatchBoxI00():Super() {
 	RewardItem = LDConsts::Items::Matches00;
 	UseRewardDestroy = true;
 	UseFade = true;
+	UseHint = true;
 	// Locked = true;
 	TriggerDlg = "Matches00_T";
 	// LockedDlg = "Matches00_L";

@@ -82,7 +82,7 @@ void UCInteract::SetStencil(int32 StencilID) const {
 	// wrapped to always trigger the delegate
 	if (UNLIKELY(!IsValid(HMesh))) return;
 
-	const bool Show = StencilID >=0;
+	const bool Show = StencilID >= 0;
 	if (!Show) StencilID = 0; // force at 0, save one branch*n 
 
 	TArray<USceneComponent*> Meshes;

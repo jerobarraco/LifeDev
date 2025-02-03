@@ -154,7 +154,7 @@ protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;
 
 	/// cache
-	
+#pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
@@ -165,6 +165,7 @@ protected:
 	TObjectPtr<UFlashback> Flashback = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStory> Story = nullptr;
+#pragma endregion
 };
 
 // TODO at some point *consider* moving the Reward functionality to its own child class
