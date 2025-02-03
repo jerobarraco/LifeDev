@@ -181,16 +181,17 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	/// interface
-	float Calculate(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint);
-	void Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final);
+	float Calculate(USignificanceManager::FManagedObjectInfo* const ObjectInfo, const FTransform& Viewpoint);
+	void Update(USignificanceManager::FManagedObjectInfo* const Info, const float OldSig, const float Sig, const bool Final);
 	/// ~
 	
 	/// utils
 	void Register();
+	// make sure this gets called only by Deactivate, to ensure a proper re-register.
 	void Unregister();
-	float GetDistanceSignificance(float DistSqr);
+	float GetDistanceSignificance(const float DistSqr);
 	// returns true when the actor is not visible (occluded or invalid)
-	bool IsOccluded(const AActor* Owner, const FTransform& Viewpoint) const;
+	bool IsOccluded(const AActor* const Owner, const FTransform& Viewpoint) const;
 	/// ~
 	
 	/// updates

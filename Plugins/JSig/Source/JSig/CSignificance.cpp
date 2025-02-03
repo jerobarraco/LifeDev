@@ -21,13 +21,14 @@ UCSignificance::UCSignificance():Super() {
 	Super::SetAutoActivate(true);
 }
 
-void UCSignificance::Activate(bool bReset) {
+void UCSignificance::Activate(const bool Reset) {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
-	// this is (ab)used by the lights. also ensures no-double registration.
-	if (!bReset && IsActive()) return;
+	const bool WasActive = IsActive();
+	// some objects use this.
+	if (!Reset && WasActive) return;
 
-	Super::Activate(bReset);
-	Register();
+	Super::Activate(Reset);
+	if (LIKELY(!WasActive)) Register(); // ensure no-double registration.
 }
 
 void UCSignificance::Deactivate() {
@@ -69,36 +70,38 @@ void UCSignificance::Register() {
 
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s origin=%s"), __func__, *Name, *GetNameSafe(Origin));
 	// this is lame, but it's how it works
-	auto lCalculate = [&]
-		(USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint)
-		-> float {
+	auto LamCalculate = [&] (USignificanceManager::FManagedObjectInfo* const ObjectInfo,
+	const FTransform& Viewpoint) -> float {
 		if (UNLIKELY(!IsValid(this))) return -1;
+
 		return Calculate(ObjectInfo, Viewpoint);
 	};
 
-	auto lPostUpdate = [&]
-		(USignificanceManager::FManagedObjectInfo* ObjectInfo, float Old, float New, bool bFinal) {
+	auto PostUpdate = [&] (USignificanceManager::FManagedObjectInfo* const ObjectInfo,
+	const float Old, const float New, const bool Final) {
 		if (UNLIKELY(!IsValid(this))) return;
-		Update(ObjectInfo, Old, New, bFinal);
+		Update(ObjectInfo, Old, New, Final);
 	};
 
 	// Register
 	const USignificanceManager::EPostSignificanceType Type =
 		IsConcurrent ? USignificanceManager::EPostSignificanceType::Concurrent
 			: USignificanceManager::EPostSignificanceType::Sequential;
-	Man->RegisterObject(this, Tag, lCalculate, Type, lPostUpdate);
+	Man->RegisterObject(this, Tag, LamCalculate, Type, PostUpdate);
 }
 
 void UCSignificance::Unregister() {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs %s"), __func__, *GetNameSafe(GetOwner()));
+
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (LIKELY(!IsValid(Man))) return;
 
+	Origin = nullptr; // free reference
 	Man->UnregisterObject(this);
 }
 
-float UCSignificance::Calculate(
-	USignificanceManager::FManagedObjectInfo* ObjectInfo, const FTransform& Viewpoint) {
+float UCSignificance::Calculate(USignificanceManager::FManagedObjectInfo* const ObjectInfo,
+const FTransform& Viewpoint) {
 	if (UNLIKELY(GSigOverride >= 0.0f))
 		return GSigOverride;
 
@@ -154,7 +157,7 @@ float UCSignificance::Calculate(
 	return Sig;
 }
 
-float UCSignificance::GetDistanceSignificance(float DistSqr) {
+float UCSignificance::GetDistanceSignificance(const float DistSqr) {
 	const int32 Num = DistanceSqr.Num();
 	if (UNLIKELY(Num == 0)) {
 		UE_LOG(LogJSigComp, Warning, TEXT("%hs No distance thresholds set in %s."),
@@ -182,9 +185,9 @@ float UCSignificance::GetDistanceSignificance(float DistSqr) {
 	return static_cast<float>(Sig);
 }
 
-bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint) const {
+bool UCSignificance::IsOccluded(const AActor* const Owner, const FTransform& Viewpoint) const {
 	const UWorld* const World = GetWorld();
-	if (!World) return true;
+	if (UNLIKELY(!World)) return true;
 	
 	const FVector& Start = Viewpoint.GetLocation();
 	const FVector& End = Owner->GetActorLocation();
@@ -207,7 +210,8 @@ bool UCSignificance::IsOccluded(const AActor* Owner, const FTransform& Viewpoint
 	return Occluded;
 }
 
-void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* Info, float OldSig, float Sig, bool Final) {
+void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* const Info,
+const float OldSig, const float Sig, const bool Final) {
 	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
 	const ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
