@@ -22,10 +22,9 @@ UCInteract::UCInteract(): Super() {
 	SetGenerateOverlapEvents(false); // nopes because it will create collision issues. 
 	SetCanEverAffectNavigation(false);
 
-	// it's already on the collision profile yay
-	UBoxComponent::SetCollisionProfileName(ProfileNone); // Start disabled
+	UBoxComponent::SetCollisionProfileName(ProfileNone); // Start disabled, in case someone calls setAutoActivate(false) at some point
 	// important to fix the issue with interact starting inactive.
-	UCInteract::SetAutoActivate(true);// CInteract also sets the collision
+	UCInteract::SetAutoActivate(true);
 }
 
 void UCInteract::Trigger() const {
@@ -190,8 +189,9 @@ void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	Super::SetActive(bNewActive, bReset);
 }
 
-// no need to call setcollisionEnabledBool here. since it Activate gets called somewhere upon normal gameplay
-// potentially by the engine
+// no need to call setcollisionEnabledBool here.
+// since it Activate gets called somewhere upon normal gameplay, and we set the collision to disabled on the constructor.
+// if the interact starts active, check if you haven't overriden the default value for the collision on the editor's outliner.
 // void UCInteract::SetAutoActivate(const bool NewActive) {
 	// Super::SetAutoActivate(NewActive);
 	// SetCollisionEnabledBool(NewActive);

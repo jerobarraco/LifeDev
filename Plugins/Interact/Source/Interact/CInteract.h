@@ -91,7 +91,6 @@ protected:
 	void ReparentActor(const bool IsGrab, UCInteractor* const NewParent) const;
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
-
 #pragma region Interactor
 	/// interactor
 	// used by the interactor. don't call directly. subscribe to OnTrigger.

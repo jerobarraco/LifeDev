@@ -10,7 +10,6 @@ ACard04::ACard04():Super() {
 	RewardItem = LDConsts::Items::Card4;
 	// the step will finish on this, set on the step.
 
-	Super::SetMobility(EComponentMobility::Static);
-	SetAutoActivate(false);
-	SetActive(false);
+	ACard04::SetMobility(EComponentMobility::Static);
+	ACard04::SetAutoActivate(false);
 }
