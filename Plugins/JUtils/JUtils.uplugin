@@ -14,7 +14,7 @@
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
-	"Installed": true,
+	"Installed": false,
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
 	"Modules": [
 		{

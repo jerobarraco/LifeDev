@@ -7,14 +7,14 @@
 	"Description": "Interacting objects",
 	"Category": "JTools",
 	"CreatedBy": "Jeronimo Barraco-Marmol",
-	"CreatedByURL": "https://github.com/jerobarraco",
+	"CreatedByURL": "https://codeberg.org/jerobarraco",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",
 	"CanContainContent": true,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
-	"Installed": true,
+	"Installed": false,
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
 	"Modules": [
 		{
