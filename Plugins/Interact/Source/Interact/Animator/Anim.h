@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
 
-	// wip polymorfic test
+	// polymorfic source object
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UObject> Obj = nullptr;
 	

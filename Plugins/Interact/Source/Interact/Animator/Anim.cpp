@@ -448,6 +448,7 @@ UCurveFloat* const Curve) {
 		if (LIKELY(P.ParamName != Param.Name)) continue;
 		Got = true;
 		Param.From = P.FloatParam;
+		break;
 	}
 
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
