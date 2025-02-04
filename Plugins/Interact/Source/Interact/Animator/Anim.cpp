@@ -1,4 +1,4 @@
-#include "AnimMat.h"
+#include "Anim.h"
 
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
@@ -146,19 +146,19 @@ bool FAMData::SetLerp(const float Prog) {
 	return SetVal(Val);
 }
 
-UAnimMat::UAnimMat():Super() {}
+UAnim::UAnim():Super() {}
 
-UAnimMat* UAnimMat::Instance(const UObject*const  O) {
+UAnim* UAnim::Instance(const UObject*const  O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!W)) return nullptr;
 
-	UAnimMat* const AnimMat = W->GetSubsystem<UAnimMat>();
+	UAnim* const AnimMat = W->GetSubsystem<UAnim>();
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnimMat::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const Curve,
+bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const Curve,
 	const float Duration) const {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
@@ -179,7 +179,7 @@ bool UAnimMat::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* co
 	return true;
 }
 
-bool UAnimMat::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
 	FAMBase& OParam, UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
@@ -206,7 +206,7 @@ bool UAnimMat::ParamInitMPC(const UMaterialParameterCollection* const MPC, const
 	return true;
 }
 
-bool UAnimMat::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FAMBase& OParam,
+bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FAMBase& OParam,
 	UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
@@ -224,7 +224,7 @@ bool UAnimMat::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Nam
 	return true;
 }
 
-bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 	const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
@@ -259,7 +259,7 @@ bool UAnimMat::MPCFloatFade(const UMaterialParameterCollection* const MPC, const
 	return true;
 }
 
-bool UAnimMat::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnim::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const FLinearColor& To, const float Duration, const bool UseHSV,
 	UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
@@ -296,7 +296,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	return true;
 }
 
-bool UAnimMat::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
+bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
 const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
@@ -331,7 +331,7 @@ const float Duration, UCurveFloat* const Curve) {
 	return true;
 }
 
-bool UAnimMat::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
+bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
 const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
@@ -367,7 +367,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	return true;
 }
 
-bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
+bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
 	const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	UE_LOG(LogAnimMat, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
@@ -412,15 +412,15 @@ bool UAnimMat::DataFade(UPrimitiveComponent* const Component, const int32 Index,
 	return true;
 }
 
-void UAnimMat::Tick(const float DT) {
+void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
 
-	const bool ContMPCFloat = ItemTick(DT, MPCFloatParams, &UAnimMat::ItemDoneMPCF);
-	const bool ContMPCVec = ItemTick(DT, MPCVectorParams, &UAnimMat::ItemDoneMPCV);
-	const bool ContData = ItemTick(DT, DataParams, &UAnimMat::ItemDoneData);
-	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnimMat::ItemDoneDynF);
-	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnimMat::ItemDoneDynV);
+	const bool ContMPCFloat = ItemTick(DT, MPCFloatParams, &UAnim::ItemDoneMPCF);
+	const bool ContMPCVec = ItemTick(DT, MPCVectorParams, &UAnim::ItemDoneMPCV);
+	const bool ContData = ItemTick(DT, DataParams, &UAnim::ItemDoneData);
+	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnim::ItemDoneDynF);
+	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnim::ItemDoneDynV);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData || ContDynFloat || ContDynVector;
 
@@ -431,8 +431,8 @@ void UAnimMat::Tick(const float DT) {
 }
 
 template <typename Item>
-bool UAnimMat::ItemTick(const float DT, TArray<Item>& IOArr,
-void(UAnimMat::* Done)(const Item&)) {
+bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr,
+void(UAnim::* Done)(const Item&)) {
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
@@ -460,7 +460,7 @@ void(UAnimMat::* Done)(const Item&)) {
 }
 
 template<typename Item>
-void UAnimMat::ItemsEmpty(TArray<Item>& IOArr, void(UAnimMat::* Done)(const Item&)) {
+void UAnim::ItemsEmpty(TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
 	TArray<Item> Copy = IOArr;
 	DataParams.Empty(); // empty before notifying.
 	if (UNLIKELY(!Done)) return;
@@ -470,7 +470,7 @@ void UAnimMat::ItemsEmpty(TArray<Item>& IOArr, void(UAnimMat::* Done)(const Item
 }
 
 
-bool UAnimMat::GetIsFadingMPC(
+bool UAnim::GetIsFadingMPC(
 	const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
@@ -482,7 +482,7 @@ bool UAnimMat::GetIsFadingMPC(
 	return false;
 }
 
-bool UAnimMat::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
+bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
 	if (UNLIKELY(!IsValid(Mat))) return false;
 	
 	for (const FAMDFloat& P: DynFloatParams)
@@ -493,7 +493,7 @@ bool UAnimMat::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const F
 	return false;
 }
 
-bool UAnimMat::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
+bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
 	for (const FAMData& P: DataParams) {
@@ -503,21 +503,21 @@ bool UAnimMat::GetIsFadingData(const UPrimitiveComponent* const Comp, const int3
 	return false;
 }
 
-void UAnimMat::Deinitialize() {
-	ItemsEmpty(MPCFloatParams, &UAnimMat::ItemDoneMPCF);
-	ItemsEmpty(MPCVectorParams, &UAnimMat::ItemDoneMPCV);
-	ItemsEmpty(DataParams, &UAnimMat::ItemDoneData);
-	ItemsEmpty(DynFloatParams, &UAnimMat::ItemDoneDynF);
-	ItemsEmpty(DynVectorParams, &UAnimMat::ItemDoneDynV);
+void UAnim::Deinitialize() {
+	ItemsEmpty(MPCFloatParams, &UAnim::ItemDoneMPCF);
+	ItemsEmpty(MPCVectorParams, &UAnim::ItemDoneMPCV);
+	ItemsEmpty(DataParams, &UAnim::ItemDoneData);
+	ItemsEmpty(DynFloatParams, &UAnim::ItemDoneDynF);
+	ItemsEmpty(DynVectorParams, &UAnim::ItemDoneDynV);
 	IsFading = false;
 	Super::Deinitialize();
 }
 
-void UAnimMat::Initialize(FSubsystemCollectionBase& Collection) {
+void UAnim::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 }
 
-bool UAnimMat::ShouldCreateSubsystem(UObject* Outer) const {
+bool UAnim::ShouldCreateSubsystem(UObject* Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
 	UE_LOG(LogAnimMat, Log, TEXT("%hs is=%i."),
@@ -532,14 +532,14 @@ bool UAnimMat::ShouldCreateSubsystem(UObject* Outer) const {
 	return Super::ShouldCreateSubsystem(Outer);
 }
 
-bool UAnimMat::DoesSupportWorldType(const EWorldType::Type WorldType) const {
+bool UAnim::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	// The world subsystem shouldn't be used in the editor. from enhanced input system
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
 }
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
 // https://benui.ca/unreal/tickable-object/
-TStatId UAnimMat::GetStatId() const {
+TStatId UAnim::GetStatId() const {
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	return GetStatID();
 }

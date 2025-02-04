@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 
-#include "AnimMat.generated.h"
+#include "Anim.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneDyn, UMaterialInstanceDynamic* const, Mat, FName, Name);
@@ -23,6 +23,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 	// it's lazy to put the material here too. but it does simplify the initBase
+
+	// wip polymorfic test
+	UPROPERTY(BlueprintReadWrite, Transient)
+	TObjectPtr<UObject> Obj = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
@@ -140,15 +144,15 @@ public:
 // Subsystem that animates materials parameter collections' parameters.
 // And custom primitive data. It's a bit deprecated. The AnimatorMPC and AnimatorData is preferred.
 UCLASS(Blueprintable, Category="Interact", Config=Interact, DefaultConfig)
-class INTERACT_API UAnimMat: public UTickableWorldSubsystem {
+class INTERACT_API UAnim: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
 public:
 
 #pragma region Base
-	static UAnimMat* Instance(const UObject* const O);
+	static UAnim* Instance(const UObject* const O);
 
-	UAnimMat();
+	UAnim();
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Tick(const float DT) override;
@@ -287,10 +291,10 @@ protected:
 
 	template<typename Item>
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
-		void(UAnimMat::* Done)(const Item&));
+		void(UAnim::* Done)(const Item&));
 	template<typename Item>
 	void ItemsEmpty(TArray<Item>& IOArr,
-		void(UAnimMat::* Done)(const Item&));
+		void(UAnim::* Done)(const Item&));
 
 	void ItemDoneDynF(const FAMDFloat& It) {
 		OnItemDoneDyn.Broadcast(It.Mat, It.Name);

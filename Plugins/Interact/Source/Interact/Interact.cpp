@@ -10,7 +10,7 @@
 
 #include "CInteract.h"
 #include "CInteractor.h"
-#include "Animator/AnimMat.h"
+#include "Animator/Anim.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -134,7 +134,7 @@ void AInteract::ShowHint_Implementation() {
 	// also animate a custom primitive data.
 	if (HintPrimDataID<0) return;
 
-	UAnimMat* const AnimMat = UAnimMat::Instance(this);
+	UAnim* const AnimMat = UAnim::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
 
 	// ensure from 0

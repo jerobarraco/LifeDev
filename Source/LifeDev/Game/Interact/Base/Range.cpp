@@ -5,7 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Materials/MaterialParameterCollection.h"
 
-#include "Interact/Animator/AnimMat.h"
+#include "Interact/Animator/Anim.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
@@ -122,7 +122,7 @@ void ARange::Trigger() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	
-	UAnimMat* const AnimMat = UAnimMat::Instance(this);
+	UAnim* const AnimMat = UAnim::Instance(this);
 	if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 1, .25);
 	
 	FTimerHandle H;
