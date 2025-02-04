@@ -281,15 +281,16 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
 		const FAPFloat& O = MPCFloatParams[i];
-		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		if (LIKELY(!Param.IsEqual(O))) continue;
+		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		MPCFloatParams.RemoveAtSwap(i);
-	}
+	} // TODO can be generalized. should use forceinline?
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
 		ItemDoneMPCF(Param);
 		return Ok;
-	}
+	} // TODO can be generalized. can forceinline?
 	
 	UMaterialParameterCollectionInstance* const MPCI =
 		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
@@ -297,6 +298,7 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_CLOG(UNLIKELY(Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
+	// TODO last 3 lines can be generalized
 	MPCFloatParams.Add(MoveTemp(Param));
 	IsFading = true;
 	return true;
@@ -319,7 +321,8 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	Param.To = To;
 	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
 		const FAPVector& O = MPCVectorParams[i];
-		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		if (LIKELY(!Param.IsEqual(O))) continue;
+		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		MPCVectorParams.RemoveAtSwap(i);
 	}
 	
@@ -357,7 +360,8 @@ const float Duration, UCurveFloat* const Curve) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = DynFloatParams.Num()-1; i>=0; --i) {
 		const FADFloat& O = DynFloatParams[i];
-		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		if (LIKELY(!Param.IsEqual(O))) continue;
+		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		DynFloatParams.RemoveAtSwap(i);
 	}
 
@@ -393,7 +397,8 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
 		const FAPVector& O = DynVectorParams[i];
-		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		if (LIKELY(!Param.IsEqual(O))) continue;
+		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		DynVectorParams.RemoveAtSwap(i);
 	}
 	
@@ -432,7 +437,8 @@ UCurveFloat* const Curve) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = SndFloatParams.Num()-1; i>=0; --i) {
 		const FASFloat& O = SndFloatParams[i];
-		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		if (LIKELY(!Param.IsEqual(O))) continue;
+		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		SndFloatParams.RemoveAtSwap(i);
 	}
 
@@ -484,7 +490,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	// Maybe in the future i use a map or smth, but not worthy atm.
 	for (int32 i = DataParams.Num()-1; i>=0; i--) {
 		const FAData& D = DataParams[i];
-		if (D.Comp != Param.Comp || D.Index!=Param.Index) continue;
+		if (D.Comp != Param.Comp || D.Index != Param.Index) continue;
 		DataParams.RemoveAtSwap(i);
 	}
 
@@ -556,22 +562,24 @@ void(UAnim::* Done)(const Item&)) {
 template<typename Item>
 void UAnim::ItemsEmpty(TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
 	TArray<Item> Copy = IOArr;
-	DataParams.Empty(); // empty before notifying.
+	IOArr.Empty(); // empty before notifying.
 	if (UNLIKELY(!Done)) return;
-	
+
 	for (const Item& D: Copy)
 		(this->*Done)(D);
 }
 
 
 bool UAnim::GetIsFadingMPC(
-	const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
+const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
-	for (const FAPFloat& P: MPCFloatParams)
-		if (P.Name == Name && MPCI == P.Obj) return true;
+	for (const FAPFloat& P: MPCFloatParams) // TODO can generalize this for loop into a function "Contains(MPCI, NAme)" or smth
+		if (P.IsEqual(MPCI, Name)) return true;
+		// if (P.Name == Name && MPCI == P.Obj) return true;
 	for (const FAPVector& P: MPCVectorParams)
-		if (P.Name == Name && MPCI == P.Obj) return true;
+		if (P.IsEqual(MPCI, Name)) return true;
+		// if (P.Name == Name && MPCI == P.Obj) return true;
 
 	return false;
 }
@@ -580,9 +588,11 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 	if (UNLIKELY(!IsValid(Mat))) return false;
 	
 	for (const FADFloat& P: DynFloatParams)
-		if (P.Name == Name && Mat == P.Obj) return true;
+		if (P.IsEqual(Mat, Name)) return true;
+		// if (P.Name == Name && Mat == P.Obj) return true;
 	for (const FADVector& P: DynVectorParams)
-		if (P.Name == Name && Mat == P.Obj) return true;
+		if (P.IsEqual(Mat, Name)) return true;
+		// if (P.Name == Name && Mat == P.Obj) return true;
 
 	return false;
 }
@@ -590,9 +600,8 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	for (const FAData& P: DataParams) {
+	for (const FAData& P: DataParams)
 		if (P.Index == Index && (Comp == P.Comp)) return true;
-	}
 	
 	return false;
 }
@@ -600,9 +609,9 @@ bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 I
 bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	for (const FASFloat& P: SndFloatParams) {
-		if (P.Name == Name && (Comp == P.Obj)) return true;
-	}
+	for (const FASFloat& P: SndFloatParams)
+		if (P.IsEqual(Comp, Name)) return true;
+		// if (P.Name == Name && (Comp == P.Obj)) return true;
 
 	return false;
 }
@@ -613,6 +622,7 @@ void UAnim::Deinitialize() {
 	ItemsEmpty(DataParams, &UAnim::ItemDoneData);
 	ItemsEmpty(DynFloatParams, &UAnim::ItemDoneDynF);
 	ItemsEmpty(DynVectorParams, &UAnim::ItemDoneDynV);
+	ItemsEmpty(SndFloatParams, &UAnim::ItemDoneSndF);
 	IsFading = false;
 	Super::Deinitialize();
 }
@@ -649,77 +659,10 @@ TStatId UAnim::GetStatId() const {
 }
 
 // TODO polimorfise data as well
-/*
- 
-// TODO make this to use a ItemDone as ptr
-template<typename Item>
-void UAnimMat::EmptyItems(TArray<Item>& IOArr) {
-	TArray<Item> Copy = IOArr;
-	DataParams.Empty(); // empty before notifying.
-	for (const Item& D: Copy) {
-		ItemDone(D);
-	}
-}
+// should i move "Index" to the base class?
+// // if i do so, i need to modify IsEqual to also account for Index, both. And have a default Index and Name param that matches the defaults on the struct.
+// TODO generalize a bit more
 
-void UAnimMat::EmptyItemsData(TArray<FAMData>& IOArr) {
-	TArray<FAMData> Copy = IOArr;
-	DataParams.Empty(); // empty before notifying.
-	for (const FAMData& D: Copy) {
-		ItemDoneData(D);
-	}
-}
-template <typename Item>
-bool UAnimMat::ParamTick(const float DT, TArray<Item>& IOArr) {
-	TArray<int32> ToRemove;
-	bool Cont = false;
-	// traversing in reverse to remove on the spot
-	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		Item& Par = IOArr[i];
-		const bool IsDone = Par.Tick(DT);
-		
-		// only at end, to ensure the val is set.
-		if (UNLIKELY(!IsDone)) {
-			Cont = true;
-			continue;
-		}
-
-		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		Item ParOld = Par;
-		IOArr.RemoveAtSwap(i);
-		ItemDone(ParOld);
-		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-		// since new elements would be added at the end of the array, which would be the current index.
-	}
-
-	return Cont;
-}
-bool UAnimMat::DataTick(float DT) {
-	TArray<int32> ToRemove;
-	bool Cont = false;
-	// traversing in reverse to remove on the spot
-	for (int32 i= DataParams.Num()-1; i>=0; --i) {
-		FAMData& Par = DataParams[i];
-		const bool IsDone = Par.Tick(DT);
-		
-		// only at end, to ensure the val is set.
-		if (UNLIKELY(!IsDone)) {
-			Cont = true;
-			continue;
-		}
-
-		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		FAMData ParOld = Par;
-		DataParams.RemoveAtSwap(i);
-		ItemDoneData(ParOld);
-		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-		// since new elements would be added at the end of the array, which would be the current index.
-	}
-
-	return Cont;
-}
- */
 // thought on using operator== for removing. which looks more "chic".
 // but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
 // and do nasty checks. besides "==" is confusing in case you expect that it would also check if the target value is the same, which it wont.

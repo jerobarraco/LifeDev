@@ -49,6 +49,12 @@ public:
 		UE_LOG(LogTemp, Warning, TEXT("Empty Base SetLerp"));
 		return false;
 	}
+	virtual bool IsEqual(const FABase& Other) const {
+		return Name == Other.Name && Obj == Other.Obj;
+	}
+	virtual bool IsEqual(const UObject* const OtherObj, const FName OtherName) const {
+		return Name == OtherName && Obj == OtherObj;
+	}
 };
 
 // parameter float
@@ -62,7 +68,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float To = 1.0;
-	
+
 	virtual bool SetVal(const float Val = 1.0) const;
 	virtual bool SetLerp(const float Prog) override;
 };
