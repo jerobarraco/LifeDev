@@ -546,6 +546,16 @@ bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 I
 	return false;
 }
 
+bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
+	if (UNLIKELY(!IsValid(Comp))) return false;
+
+	for (const FASFloat& P: SoundFloatParams) {
+		if (P.Name == Name && (Comp == P.Obj)) return true;
+	}
+
+	return false;
+}
+
 void UAnim::Deinitialize() {
 	ItemsEmpty(MPCFloatParams, &UAnim::ItemDoneMPCF);
 	ItemsEmpty(MPCVectorParams, &UAnim::ItemDoneMPCV);

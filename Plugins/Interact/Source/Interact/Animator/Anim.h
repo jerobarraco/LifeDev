@@ -226,6 +226,7 @@ public:
 		UCurveFloat* const Curve = nullptr);
 #pragma endregion
 
+#pragma region data
 	// Fades a custom primitive data.
 	// Index: The index of the data. For a vector this is the start index.
 	// IsScalar: whether this is a scalar or a color.
@@ -247,7 +248,9 @@ public:
 		const float Duration = -1, const bool UseHSV = false,
 		UCurveFloat* const Curve = nullptr
 	);
+#pragma endregion
 
+#pragma region isfading
 	// returns true while fading.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsFading() const { return IsFading; }
@@ -263,6 +266,7 @@ public:
 	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const;
+#pragma endregion
 
 	// default fade duration. can be changed. and can be specified on the .ini config files.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
