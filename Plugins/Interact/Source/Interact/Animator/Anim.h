@@ -18,13 +18,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
 
-	UPROPERTY(BlueprintReadWrite, Transient)
-	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, Transient, meta=(DeprecatedProperty))
-	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
-	// it's lazy to put the material here too. but it does simplify the initBase
-
 	// wip polymorfic test
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UObject> Obj = nullptr;

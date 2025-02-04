@@ -226,9 +226,8 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 		return false;
 	}
 
-	OParam.MPCI = World->GetParameterCollectionInstance(MPC);
-	OParam.Obj = OParam.MPCI;
-	if (UNLIKELY(!IsValid(OParam.MPCI))) {
+	OParam.Obj = World->GetParameterCollectionInstance(MPC);
+	if (UNLIKELY(!IsValid(OParam.Obj))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
 			__func__);
 		return false;
@@ -251,7 +250,6 @@ bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, 
 		return false;
 	}
 	OParam.Obj = Mat;
-	OParam.Mat = Mat;
 	return true;
 }
 
@@ -268,7 +266,7 @@ void UAnim::ItemDoneSndF(const FASFloat& Item) {
 }
 
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
-						const float To, const float Duration, UCurveFloat* const Curve) {
+const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
@@ -283,7 +281,7 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
 		const FAPFloat& O = MPCFloatParams[i];
-		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
+		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		MPCFloatParams.RemoveAtSwap(i);
 	}
 
@@ -292,8 +290,10 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 		ItemDoneMPCF(Param);
 		return Ok;
 	}
-
-	const bool Got = !Param.MPCI->GetScalarParameterValue(Name, Param.From);
+	
+	UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
+	const bool Got = LIKELY(MPCI && MPCI->GetScalarParameterValue(Name, Param.From));
 	UE_CLOG(UNLIKELY(Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
@@ -319,7 +319,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	Param.To = To;
 	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
 		const FAPVector& O = MPCVectorParams[i];
-		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
+		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		MPCVectorParams.RemoveAtSwap(i);
 	}
 	
@@ -330,7 +330,9 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	}
 
 	// we do it anyway.
-	const bool Got = Param.MPCI->GetVectorParameterValue(Name, Param.From);
+	UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
+	const bool Got = LIKELY(MPCI && MPCI->GetVectorParameterValue(Name, Param.From));
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
@@ -355,7 +357,7 @@ const float Duration, UCurveFloat* const Curve) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = DynFloatParams.Num()-1; i>=0; --i) {
 		const FADFloat& O = DynFloatParams[i];
-		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
+		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		DynFloatParams.RemoveAtSwap(i);
 	}
 
@@ -364,8 +366,8 @@ const float Duration, UCurveFloat* const Curve) {
 		ItemDoneDynF(Param);
 		return Ok;
 	}
-	
-	const bool Got = Param.Mat->GetScalarParameterValue(Name, Param.From);
+
+	const bool Got = Mat->GetScalarParameterValue(Name, Param.From); // isvalid is checked somewhere
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
@@ -391,7 +393,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
 		const FAPVector& O = DynVectorParams[i];
-		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
+		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
 		DynVectorParams.RemoveAtSwap(i);
 	}
 	
@@ -401,7 +403,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 		return Ok;
 	}
 
-	const bool Got = Param.Mat->GetVectorParameterValue(Name, Param.From); // get the initial value.
+	const bool Got = Mat->GetVectorParameterValue(Name, Param.From); // get the initial value. // is valid is checked somewhere
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway if not got
 	
@@ -564,9 +566,9 @@ bool UAnim::GetIsFadingMPC(
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
 	for (const FAPFloat& P: MPCFloatParams)
-		if (P.Name == Name && MPCI == P.MPCI) return true;
+		if (P.Name == Name && MPCI == P.Obj) return true;
 	for (const FAPVector& P: MPCVectorParams)
-		if (P.Name == Name && MPCI == P.MPCI) return true;
+		if (P.Name == Name && MPCI == P.Obj) return true;
 
 	return false;
 }
@@ -575,9 +577,9 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 	if (UNLIKELY(!IsValid(Mat))) return false;
 	
 	for (const FADFloat& P: DynFloatParams)
-		if (P.Name == Name && Mat == P.Mat) return true;
+		if (P.Name == Name && Mat == P.Obj) return true;
 	for (const FADVector& P: DynVectorParams)
-		if (P.Name == Name && Mat == P.Mat) return true;
+		if (P.Name == Name && Mat == P.Obj) return true;
 
 	return false;
 }
