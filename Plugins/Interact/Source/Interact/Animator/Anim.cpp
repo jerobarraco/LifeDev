@@ -439,8 +439,15 @@ UCurveFloat* const Curve) {
 		ItemDoneSndF(Param);
 		return Ok;
 	}
-	
-	const bool Got = Param.Mat->GetScalarParameterValue(Name, Param.From);
+
+	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
+	bool Got = false;
+	for (const FAudioParameter& P : Params) {
+		if (LIKELY(P.ParamName != Param.Name)) continue;
+		Got = true;
+		Param.From = P.FloatParam;
+	}
+
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
