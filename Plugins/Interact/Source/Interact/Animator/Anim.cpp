@@ -513,8 +513,10 @@ void UAnim::Tick(const float DT) {
 	const bool ContData = ItemTick(DT, DataParams, &UAnim::ItemDoneData);
 	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnim::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnim::ItemDoneDynV);
+	const bool ContSndFloat = ItemTick(DT, SndFloatParams, &UAnim::ItemDoneSndF);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
-	const bool Continue = ContMPCFloat || ContMPCVec || ContData || ContDynFloat || ContDynVector;
+	const bool Continue = ContMPCFloat || ContMPCVec || ContData
+		|| ContDynFloat || ContDynVector || ContSndFloat;
 
 	if (LIKELY(Continue)) return;
 
@@ -646,6 +648,7 @@ TStatId UAnim::GetStatId() const {
 	return GetStatID();
 }
 
+// TODO polimorfise data as well
 /*
  
 // TODO make this to use a ItemDone as ptr
