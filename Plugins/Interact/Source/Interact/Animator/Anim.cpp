@@ -1,5 +1,6 @@
 #include "Anim.h"
 
+#include "Components/AudioComponent.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -58,6 +59,19 @@ bool FADFloat::SetVal(const float Val) const {
 	if (UNLIKELY(!MM)) return false;
 	MM->SetScalarParameterValue(Name, Val);
 	return true;
+}
+
+bool FASFloat::SetVal(const float Val) const {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+		__func__, *Name.ToString(), Val);
+	if (UNLIKELY(!FIsValid())) return false;
+
+	UAudioComponent* const MM = Cast<UAudioComponent>(Obj);
+	if (UNLIKELY(!MM || !MM->IsPlaying())) return false;
+
+	MM->SetFloatParameter(Name, Val);
+	return true;
+	// return FAPFloat::SetVal(Val);
 }
 
 bool FADVector::SetVal(const FLinearColor& Val) const {
@@ -241,8 +255,20 @@ bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, 
 	return true;
 }
 
+void UAnim::ItemDoneMPCF(const FAPFloat& Item) {
+	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+}
+
+void UAnim::ItemDoneMPCV(const FAPVector& Item) {
+	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+}
+
+void UAnim::ItemDoneSound(const FAData& Item) {
+	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
+}
+
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
-	const float To, const float Duration, UCurveFloat* const Curve) {
+						const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 

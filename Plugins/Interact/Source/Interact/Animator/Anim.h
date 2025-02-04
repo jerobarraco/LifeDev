@@ -4,10 +4,11 @@
 
 #include "Anim.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimMatDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneDyn, UMaterialInstanceDynamic* const, Mat, FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneMPC, UMaterialParameterCollectionInstance* const, Mat, FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneData, UPrimitiveComponent* const, Comp, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneDyn, UMaterialInstanceDynamic* const, Mat, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneMPC, UMaterialParameterCollectionInstance* const, Mat, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneSnd, UAudioComponent* const, Cmp, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneData, UPrimitiveComponent* const, Comp, const int32, Index);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
@@ -260,7 +261,9 @@ public:
 	// returns true if a param with that name is fading
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
-	 
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const;
+
 	// default fade duration. can be changed. and can be specified on the .ini config files.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float DurationDefault = 1.f;
@@ -273,17 +276,19 @@ public:
 	
 	// when ALL the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimMatDone OnDone;
-
+	FAnimDone OnDone;
+	
 	// when a specific mpc param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimMatDoneMPC OnItemDoneMPC;
+	FAnimDoneMPC OnItemDoneMPC;
 	// when a specific dynamic material param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimMatDoneDyn OnItemDoneDyn;
+	FAnimDoneDyn OnItemDoneDyn;
 	// when a specific custom primitive data param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimMatDoneData OnItemDoneData;
+	FAnimDoneData OnItemDoneData;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimDoneSnd OnItemDoneSnd;
 
 protected:
 	bool ParamInitBasic(FABase& OParam, const FName Name,
@@ -308,20 +313,18 @@ protected:
 		void(UAnim::* Done)(const Item&));
 
 	void ItemDoneDynF(const FADFloat& It) {
-		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
+		OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 	}
 	void ItemDoneDynV(const FADVector& It) {
-		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
+		OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 	}
-	void ItemDoneMPCF(const FAPFloat& Item) {
-		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
-	}
-	void ItemDoneMPCV(const FAPVector& Item) {
-		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
-	}
+
+	void ItemDoneMPCF(const FAPFloat& Item) ;
+	void ItemDoneMPCV(const FAPVector& Item);
 	void ItemDoneData(const FAData& Item) {
 		OnItemDoneData.Broadcast(Item.Comp, Item.Index);
 	}
+	void ItemDoneSound(const FAData& Item);
 
 	bool IsFading = false;
 
@@ -335,4 +338,6 @@ protected:
 	TArray<FADVector> DynVectorParams;
 	UPROPERTY(Transient)
 	TArray<FAData> DataParams;
+	UPROPERTY(Transient)
+	TArray<FASFloat> SoundFloatParams;
 };
