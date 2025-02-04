@@ -36,7 +36,12 @@ bool FAPFloat::SetVal(const float Val) const {
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
 
-	return MPCI->SetScalarParameterValue(Name, Val);
+	UMaterialParameterCollectionInstance* const MM =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	if (UNLIKELY(!MM)) return false;
+
+	return MM->SetScalarParameterValue(Name, Val);
+	// return MPCI->SetScalarParameterValue(Name, Val);
 }
 
 bool FAPFloat::SetLerp(const float Prog) {
@@ -72,7 +77,12 @@ bool FAPVector::SetVal(const FLinearColor& Val) const {
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
 
-	return MPCI->SetVectorParameterValue(Name, Val);
+	UMaterialParameterCollectionInstance* const MM =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	if (UNLIKELY(!MM)) return false;
+
+	return MM->SetVectorParameterValue(Name, Val);
+	// return MPCI->SetVectorParameterValue(Name, Val);
 }
 
 bool FAPVector::SetLerp(const float Prog) {
