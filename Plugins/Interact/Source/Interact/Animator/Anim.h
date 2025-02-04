@@ -10,7 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneMPC, UMaterialParameter
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMatDoneData, UPrimitiveComponent* const, Comp, int32, Index);
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMBase {
+struct FABase {
 	GENERATED_BODY()
 
 public:
@@ -43,7 +43,7 @@ public:
 
 	// needed or android won't package >_<! due to the virtual functions
 	// has to be public.
-	virtual ~FAMBase() = default;
+	virtual ~FABase() = default;
 	// named this way to avoid name collision with IsValid
 	virtual bool FIsValid() const;
 	// adds dt to the elapsed, returns current progress
@@ -57,9 +57,9 @@ public:
 	}
 };
 
-
+// parameter float
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMPFloat: public FAMBase {
+struct FAPFloat: public FABase {
 	GENERATED_BODY()
 
 public:
@@ -73,17 +73,28 @@ public:
 	virtual bool SetLerp(const float Prog) override;
 };
 
+// dynamic float
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMDFloat: public FAMPFloat {
+struct FADFloat: public FAPFloat {
 	GENERATED_BODY()
 
 public:
 	virtual bool SetVal(const float Val = 1.0) const override;
-	virtual bool FIsValid() const override;
+	// virtual bool FIsValid() const override;
+};
+
+// sound float
+USTRUCT(Blueprintable, BlueprintType)
+struct FASFloat: public FAPFloat {
+	GENERATED_BODY()
+
+public:
+	virtual bool SetVal(const float Val = 1.0) const override;
+	// virtual bool FIsValid() const override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMPVector: public FAMBase {
+struct FAPVector: public FABase {
 	GENERATED_BODY()
 
 public:
@@ -102,16 +113,16 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMDVector: public FAMPVector {
+struct FADVector: public FAPVector {
 	GENERATED_BODY()
 
 public:
 	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const override;
-	virtual bool FIsValid() const override;
+	// virtual bool FIsValid() const override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAMData: public FAMBase {
+struct FAData: public FABase {
 	GENERATED_BODY()
 
 public:
@@ -275,17 +286,17 @@ public:
 	FAnimMatDoneData OnItemDoneData;
 
 protected:
-	bool ParamInitBasic(FAMBase& OParam, const FName Name,
+	bool ParamInitBasic(FABase& OParam, const FName Name,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1) const;
 
 	bool ParamInitMPC(const UMaterialParameterCollection* const MPC,
-		const FName Name, FAMBase& OParam,
+		const FName Name, FABase& OParam,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
 
 	bool ParamInitDyn(UMaterialInstanceDynamic* const Mat,
-		const FName Name, FAMBase& OParam,
+		const FName Name, FABase& OParam,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
 
@@ -296,32 +307,32 @@ protected:
 	void ItemsEmpty(TArray<Item>& IOArr,
 		void(UAnim::* Done)(const Item&));
 
-	void ItemDoneDynF(const FAMDFloat& It) {
+	void ItemDoneDynF(const FADFloat& It) {
 		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
 	}
-	void ItemDoneDynV(const FAMDVector& It) {
+	void ItemDoneDynV(const FADVector& It) {
 		OnItemDoneDyn.Broadcast(It.Mat, It.Name);
 	}
-	void ItemDoneMPCF(const FAMPFloat& Item) {
+	void ItemDoneMPCF(const FAPFloat& Item) {
 		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
-	void ItemDoneMPCV(const FAMPVector& Item) {
+	void ItemDoneMPCV(const FAPVector& Item) {
 		OnItemDoneMPC.Broadcast(Item.MPCI, Item.Name);
 	}
-	void ItemDoneData(const FAMData& Item) {
+	void ItemDoneData(const FAData& Item) {
 		OnItemDoneData.Broadcast(Item.Comp, Item.Index);
 	}
 
 	bool IsFading = false;
 
 	UPROPERTY(Transient)
-	TArray<FAMPFloat> MPCFloatParams;
+	TArray<FAPFloat> MPCFloatParams;
 	UPROPERTY(Transient)
-	TArray<FAMPVector> MPCVectorParams;
+	TArray<FAPVector> MPCVectorParams;
 	UPROPERTY(Transient)
-	TArray<FAMDFloat> DynFloatParams;
+	TArray<FADFloat> DynFloatParams;
 	UPROPERTY(Transient)
-	TArray<FAMDVector> DynVectorParams;
+	TArray<FADVector> DynVectorParams;
 	UPROPERTY(Transient)
-	TArray<FAMData> DataParams;
+	TArray<FAData> DataParams;
 };

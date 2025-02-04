@@ -7,7 +7,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
-void FAMBase::AddDT(const float DT, float& Prog) {
+void FABase::AddDT(const float DT, float& Prog) {
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Duration);
 	if (Duration == 0) return; // not nearly zero needed. is just for the division below.
@@ -16,7 +16,7 @@ void FAMBase::AddDT(const float DT, float& Prog) {
 	Prog = IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
 }
 
-bool FAMBase::Tick(const float DT) {
+bool FABase::Tick(const float DT) {
 	if (UNLIKELY(!FIsValid())) return true;
 
 	float Prog;
@@ -25,11 +25,13 @@ bool FAMBase::Tick(const float DT) {
 	return IsDone();
 }
 
-bool FAMBase::FIsValid() const { return IsValid(MPCI) && !Name.IsNone(); } // avoid including the type on header
-bool FAMDFloat::FIsValid() const { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
-bool FAMDVector::FIsValid() const { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
+// define here to avoid including the type on header
+bool FABase::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
+// bool FADFloat::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
+// bool FASFloat::FIsValid() const {}
+// bool FADVector::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
 
-bool FAMPFloat::SetVal(const float Val) const {
+bool FAPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
@@ -37,12 +39,12 @@ bool FAMPFloat::SetVal(const float Val) const {
 	return MPCI->SetScalarParameterValue(Name, Val);
 }
 
-bool FAMPFloat::SetLerp(const float Prog) {
+bool FAPFloat::SetLerp(const float Prog) {
 	const float Val = FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 
-bool FAMDFloat::SetVal(const float Val) const {
+bool FADFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
@@ -53,7 +55,7 @@ bool FAMDFloat::SetVal(const float Val) const {
 	return true;
 }
 
-bool FAMDVector::SetVal(const FLinearColor& Val) const {
+bool FADVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
@@ -65,7 +67,7 @@ bool FAMDVector::SetVal(const FLinearColor& Val) const {
 	return true;
 }
 
-bool FAMPVector::SetVal(const FLinearColor& Val) const {
+bool FAPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
@@ -73,14 +75,14 @@ bool FAMPVector::SetVal(const FLinearColor& Val) const {
 	return MPCI->SetVectorParameterValue(Name, Val);
 }
 
-bool FAMPVector::SetLerp(const float Prog) {
+bool FAPVector::SetLerp(const float Prog) {
 	const FLinearColor& Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
 
-bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
+bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
 	if (!FIsValid()) {
@@ -121,7 +123,7 @@ bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
 	return true;
 }
 
-bool FAMData::SetVal(const FLinearColor& V) const {
+bool FAData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
 
@@ -143,7 +145,7 @@ bool FAMData::SetVal(const FLinearColor& V) const {
 	return true;
 }
 
-bool FAMData::SetLerp(const float Prog) {
+bool FAData::SetLerp(const float Prog) {
 	const FLinearColor Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
@@ -162,7 +164,7 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const Curve,
+bool UAnim::ParamInitBasic(FABase& OParam, const FName Name, UCurveFloat* const Curve,
 	const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
@@ -184,7 +186,7 @@ bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const
 }
 
 bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
-	FAMBase& OParam, UCurveFloat* const Curve, const float Duration) const {
+	FABase& OParam, UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
@@ -211,7 +213,7 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 	return true;
 }
 
-bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FAMBase& OParam,
+bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FABase& OParam,
 	UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
@@ -234,7 +236,7 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
-	FAMPFloat Param;
+	FAPFloat Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -244,7 +246,7 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
-		const FAMPFloat& O = MPCFloatParams[i];
+		const FAPFloat& O = MPCFloatParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
 		MPCFloatParams.RemoveAtSwap(i);
 	}
@@ -270,7 +272,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
-	FAMPVector Param;
+	FAPVector Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -280,7 +282,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
-		const FAMPVector& O = MPCVectorParams[i];
+		const FAPVector& O = MPCVectorParams[i];
 		if (LIKELY(Param.MPCI != O.MPCI || Param.Name != O.Name)) continue;
 		MPCVectorParams.RemoveAtSwap(i);
 	}
@@ -306,7 +308,7 @@ const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
-	FAMDFloat Param;
+	FADFloat Param;
 	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -316,7 +318,7 @@ const float Duration, UCurveFloat* const Curve) {
 	Param.To = To;
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = DynFloatParams.Num()-1; i>=0; --i) {
-		const FAMDFloat& O = DynFloatParams[i];
+		const FADFloat& O = DynFloatParams[i];
 		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
 		DynFloatParams.RemoveAtSwap(i);
 	}
@@ -341,7 +343,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
-	FAMDVector Param;
+	FADVector Param;
 	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
@@ -352,7 +354,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	Param.To = To;
 
 	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
-		const FAMPVector& O = DynVectorParams[i];
+		const FAPVector& O = DynVectorParams[i];
 		if (LIKELY(Param.Mat != O.Mat || Param.Name != O.Name)) continue;
 		DynVectorParams.RemoveAtSwap(i);
 	}
@@ -378,7 +380,7 @@ bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, co
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Component), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
-	FAMData Param;
+	FAData Param;
 	Param.Index = Index;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
@@ -396,7 +398,7 @@ bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, co
 	// Removing using a less performant linear search.
 	// Maybe in the future i use a map or smth, but not worthy atm.
 	for (int32 i = DataParams.Num()-1; i>=0; i--) {
-		const FAMData& D = DataParams[i];
+		const FAData& D = DataParams[i];
 		if (D.Comp != Param.Comp || D.Index!=Param.Index) continue;
 		DataParams.RemoveAtSwap(i);
 	}
@@ -479,9 +481,9 @@ bool UAnim::GetIsFadingMPC(
 	const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
-	for (const FAMPFloat& P: MPCFloatParams)
+	for (const FAPFloat& P: MPCFloatParams)
 		if (P.Name == Name && MPCI == P.MPCI) return true;
-	for (const FAMPVector& P: MPCVectorParams)
+	for (const FAPVector& P: MPCVectorParams)
 		if (P.Name == Name && MPCI == P.MPCI) return true;
 
 	return false;
@@ -490,9 +492,9 @@ bool UAnim::GetIsFadingMPC(
 bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
 	if (UNLIKELY(!IsValid(Mat))) return false;
 	
-	for (const FAMDFloat& P: DynFloatParams)
+	for (const FADFloat& P: DynFloatParams)
 		if (P.Name == Name && Mat == P.Mat) return true;
-	for (const FAMDVector& P: DynVectorParams)
+	for (const FADVector& P: DynVectorParams)
 		if (P.Name == Name && Mat == P.Mat) return true;
 
 	return false;
@@ -501,7 +503,7 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	for (const FAMData& P: DataParams) {
+	for (const FAData& P: DataParams) {
 		if (P.Index == Index && (Comp == P.Comp)) return true;
 	}
 	
