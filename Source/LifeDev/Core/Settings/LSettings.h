@@ -104,8 +104,8 @@ public:
 protected:
 	// broadcasts the corresponding delegates
 	void FeatUpdated(const EFeat Feat, const bool Enable) const;
-	void SaveGameDone(const FString& Slot, int32 Index, bool Success);
-	void LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame);
+	void SaveGameDone(const FString& Slot, const int32 Index, const bool Success);
+	void LoadGameDone(const FString& Slot, const int32 Index, USaveGame* const LoadedGame);
 
 	// the current feats enabled in the game
 	UPROPERTY(BlueprintReadOnly, Transient)

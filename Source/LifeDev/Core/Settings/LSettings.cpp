@@ -99,7 +99,7 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	UGameplayStatics::AsyncSaveGameToSlot(Save, SlotName, 0, OnSaveGameDone);
 }
 
-void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
+void ULSettings::SaveGameDone(const FString& Slot, const int32 Index, const bool Success) {
 	IsSaving = false;
 	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
 	if (LIKELY(Success)) {
@@ -112,7 +112,7 @@ void ULSettings::SaveGameDone(const FString& Slot, int32 Index, bool Success) {
 	OnSaveReady.Broadcast();
 }
 
-void ULSettings::LoadGameDone(const FString& Slot, int32 Index, USaveGame* LoadedGame) {
+void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame* const LoadedGame) {
 	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
 	if (UNLIKELY(!Save)) {

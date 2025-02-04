@@ -7,8 +7,6 @@
 
 #include "LGameInstance.generated.h"
 
-class ULSave;
-
 // LifeDev GameInstance
 UCLASS(Blueprintable)
 class LIFEDEV_API ULGameInstance : public UGameInstance {
