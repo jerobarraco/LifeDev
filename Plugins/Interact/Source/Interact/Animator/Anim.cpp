@@ -3,7 +3,7 @@
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogAnimMat, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
@@ -26,11 +26,11 @@ bool FAMBase::Tick(const float DT) {
 }
 
 bool FAMBase::FIsValid() const { return IsValid(MPCI) && !Name.IsNone(); } // avoid including the type on header
-bool FAMDFloat::FIsValid() const  { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
-bool FAMDVector::FIsValid() const  { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
+bool FAMDFloat::FIsValid() const { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
+bool FAMDVector::FIsValid() const { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
 
 bool FAMPFloat::SetVal(const float Val) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
 
@@ -43,7 +43,7 @@ bool FAMPFloat::SetLerp(const float Prog) {
 }
 
 bool FAMDFloat::SetVal(const float Val) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
 
@@ -54,7 +54,7 @@ bool FAMDFloat::SetVal(const float Val) const {
 }
 
 bool FAMDVector::SetVal(const FLinearColor& Val) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
 
@@ -66,7 +66,7 @@ bool FAMDVector::SetVal(const FLinearColor& Val) const {
 }
 
 bool FAMPVector::SetVal(const FLinearColor& Val) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
 	if (UNLIKELY(!FIsValid())) return false;
 
@@ -84,7 +84,7 @@ bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
 	if (!FIsValid()) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid component or index. Stop"),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid component or index. Stop"),
 			__func__);
 		return false;
 	}
@@ -115,18 +115,18 @@ bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
 	}
 	if (It<Num) OCurrent.A = Prim.Data[It];
 
-	UE_LOG(LogAnimMat, Log, TEXT("%hs Name=%s Current=%s Index=%i Scalar=%i"),
+	UE_LOG(LogAnim, Log, TEXT("%hs Name=%s Current=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Comp), *OCurrent.ToString(), Index, IsScalar);
 
 	return true;
 }
 
 bool FAMData::SetVal(const FLinearColor& V) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
 
 	if (UNLIKELY(!FIsValid())) {
-		UE_LOG(LogAnimMat, Log, TEXT("%hs Invalid component or index. Skip"),
+		UE_LOG(LogAnim, Log, TEXT("%hs Invalid component or index. Skip"),
 		__func__);
 		return false;
 	}
@@ -164,7 +164,7 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 
 bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const Curve,
 	const float Duration) const {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
 	OParam.Name = Name;
@@ -174,7 +174,7 @@ bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const
 
 	// at end to allow for data params
 	if (UNLIKELY(OParam.Name.IsNone())) {
-		UE_LOG(LogAnimMat, Warning,
+		UE_LOG(LogAnim, Warning,
 			TEXT("%hs Name can't be none (Unless it's a custom primitive data fade). Stop."),
 			__func__);
 		return false;
@@ -185,7 +185,7 @@ bool UAnim::ParamInitBasic(FAMBase& OParam, const FName Name, UCurveFloat* const
 
 bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
 	FAMBase& OParam, UCurveFloat* const Curve, const float Duration) const {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
 	// these are done at the beginning so that even after returning it's partially valid
@@ -195,7 +195,7 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 	if (UNLIKELY(!World)) return false;
 	
 	if (UNLIKELY(!IsValid(MPC))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid mpc. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mpc. Stop."),
 			__func__);
 		return false;
 	}
@@ -203,7 +203,7 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 	OParam.MPCI = World->GetParameterCollectionInstance(MPC);
 	OParam.Obj = OParam.MPCI;
 	if (UNLIKELY(!IsValid(OParam.MPCI))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
 			__func__);
 		return false;
 	}
@@ -213,14 +213,14 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 
 bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FAMBase& OParam,
 	UCurveFloat* const Curve, const float Duration) const {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, duration=%.3f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
 	// these are done at the beginning so that even after returning it's partially valid
 	if (UNLIKELY(!ParamInitBasic(OParam, Name, Curve, Duration))) return false;
 
 	if (UNLIKELY(!IsValid(Mat))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Invalid mat. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mat. Stop."),
 			__func__);
 		return false;
 	}
@@ -231,12 +231,12 @@ bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, 
 
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 	const float To, const float Duration, UCurveFloat* const Curve) {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
 	FAMPFloat Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
@@ -256,7 +256,7 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 	}
 
 	const bool Got = !Param.MPCI->GetScalarParameterValue(Name, Param.From);
-	UE_CLOG(UNLIKELY(Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	UE_CLOG(UNLIKELY(Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
 	MPCFloatParams.Add(MoveTemp(Param));
@@ -267,12 +267,12 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 bool UAnim::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const FLinearColor& To, const float Duration, const bool UseHSV,
 	UCurveFloat* const Curve) {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FAMPVector Param;
 	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
@@ -293,7 +293,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 
 	// we do it anyway.
 	const bool Got = Param.MPCI->GetVectorParameterValue(Name, Param.From);
-	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
 	MPCVectorParams.Add(MoveTemp(Param));
@@ -303,12 +303,12 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 
 bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
 const float Duration, UCurveFloat* const Curve) {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
 	FAMDFloat Param;
 	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
@@ -328,7 +328,7 @@ const float Duration, UCurveFloat* const Curve) {
 	}
 	
 	const bool Got = Param.Mat->GetScalarParameterValue(Name, Param.From);
-	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
 	DynFloatParams.Add(MoveTemp(Param));
@@ -338,12 +338,12 @@ const float Duration, UCurveFloat* const Curve) {
 
 bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
 const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
-	UE_LOG(LogAnimMat, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FAMDVector Param;
 	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Failed to init param. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
@@ -364,7 +364,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	}
 
 	const bool Got = Param.Mat->GetVectorParameterValue(Name, Param.From); // get the initial value.
-	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway if not got
 	
 	DynVectorParams.Add(MoveTemp(Param));
@@ -375,7 +375,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
 	const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
-	UE_LOG(LogAnimMat, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
+	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Component), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
 	FAMData Param;
@@ -388,7 +388,7 @@ bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, co
 	ParamInitBasic(Param, PrimDataName, Curve, Duration);// ignore the name issue (return)
 
 	if (UNLIKELY(!IsValid(Component))) {
-		UE_LOG(LogAnimMat, Warning, TEXT("%hs Component is not valid. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Component is not valid. Stop."),
 			__func__);
 		return false;
 	}
@@ -409,7 +409,7 @@ bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, co
 	}
 
 	const bool Got = Param.GetCurrent(Param.From); // ignore return, we'll do it anyway.
-	UE_CLOG(UNLIKELY(!Got), LogAnimMat, Warning, TEXT("%hs Can't get the current value."),
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway if not got
 
 	DataParams.Add(MoveTemp(Param));
@@ -419,7 +419,7 @@ bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, co
 
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs"), __func__);
+	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
 
 	const bool ContMPCFloat = ItemTick(DT, MPCFloatParams, &UAnim::ItemDoneMPCF);
 	const bool ContMPCVec = ItemTick(DT, MPCVectorParams, &UAnim::ItemDoneMPCV);
@@ -525,11 +525,11 @@ void UAnim::Initialize(FSubsystemCollectionBase& Collection) {
 bool UAnim::ShouldCreateSubsystem(UObject* Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
-	UE_LOG(LogAnimMat, Log, TEXT("%hs is=%i."),
+	UE_LOG(LogAnim, Log, TEXT("%hs is=%i."),
 		__func__, ShouldBeCreated);
 
 	if (!ShouldBeCreated) {
-		UE_LOG(LogAnimMat, Log, TEXT("%hs is false. The world subsystem will not be created."
+		UE_LOG(LogAnim, Log, TEXT("%hs is false. The world subsystem will not be created."
 			"Can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}
