@@ -263,7 +263,7 @@ void UAnim::ItemDoneMPCV(const FAPVector& Item) {
 	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
 }
 
-void UAnim::ItemDoneSound(const FAData& Item) {
+void UAnim::ItemDoneSndF(const FASFloat& Item) {
 	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
 }
 
@@ -410,8 +410,47 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	return true;
 }
 
+bool UAnim::SndFloatFade(UAudioComponent* const Cmp, const FName Name, const float To, const float Duration,
+UCurveFloat* const Curve) {
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
+		__func__, *Name.ToString(), To, Duration);
+
+	FASFloat Param;
+
+	if (UNLIKELY(!IsValid(Cmp))) return false;
+	if (UNLIKELY(!ParamInitBasic(Param, Name, Curve, Duration))) {
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
+			__func__);
+		return false;
+	}
+
+	Param.Obj = Cmp;
+	Param.To = To;
+
+	// ensure we remove it the ones colliding. allow to remove more than 1.
+	for (int32 i = SndFloatParams.Num()-1; i>=0; --i) {
+		const FASFloat& O = SndFloatParams[i];
+		if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
+		SndFloatParams.RemoveAtSwap(i);
+	}
+
+	if (FMath::IsNearlyZero(Param.Duration)) {
+		const bool Ok = Param.SetVal(To);
+		ItemDoneSndF(Param);
+		return Ok;
+	}
+	
+	const bool Got = Param.Mat->GetScalarParameterValue(Name, Param.From);
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway.
+
+	SndFloatParams.Add(MoveTemp(Param));
+	IsFading = true;
+	return true;
+}
+
 bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
-	const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
+const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Component), Index, IsScalar, *To.ToString(), Duration, UseHSV);
@@ -549,7 +588,7 @@ bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 I
 bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	for (const FASFloat& P: SoundFloatParams) {
+	for (const FASFloat& P: SndFloatParams) {
 		if (P.Name == Name && (Comp == P.Obj)) return true;
 	}
 

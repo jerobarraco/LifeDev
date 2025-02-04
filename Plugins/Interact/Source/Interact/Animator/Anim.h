@@ -226,6 +226,19 @@ public:
 		UCurveFloat* const Curve = nullptr);
 #pragma endregion
 
+#pragma region sound
+	// Fades in or out.
+	// By design, it will replace any previous fades with the same name.
+	// If it's fading it will continue from where it is, even if the direction changes.
+	// Name: name of the parameter
+	// To: value to fade to.
+	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
+	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
+	UFUNCTION(BlueprintCallable)
+	bool SndFloatFade(UAudioComponent* const Cmp,
+		const FName Name, const float To = 1.0, const float Duration = -1,
+		UCurveFloat* const Curve = nullptr);
+#pragma endregion
 #pragma region data
 	// Fades a custom primitive data.
 	// Index: The index of the data. For a vector this is the start index.
@@ -277,7 +290,8 @@ public:
 	// should be changed in the config file
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	bool ShouldBeCreated = true;
-	
+
+#pragma region delegates
 	// when ALL the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDone OnDone;
@@ -293,6 +307,7 @@ public:
 	FAnimDoneData OnItemDoneData;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDoneSnd OnItemDoneSnd;
+#pragma endregion
 
 protected:
 	bool ParamInitBasic(FABase& OParam, const FName Name,
@@ -328,7 +343,7 @@ protected:
 	void ItemDoneData(const FAData& Item) {
 		OnItemDoneData.Broadcast(Item.Comp, Item.Index);
 	}
-	void ItemDoneSound(const FAData& Item);
+	void ItemDoneSndF(const FASFloat& Item);
 
 	bool IsFading = false;
 
@@ -343,5 +358,5 @@ protected:
 	UPROPERTY(Transient)
 	TArray<FAData> DataParams;
 	UPROPERTY(Transient)
-	TArray<FASFloat> SoundFloatParams;
+	TArray<FASFloat> SndFloatParams;
 };
