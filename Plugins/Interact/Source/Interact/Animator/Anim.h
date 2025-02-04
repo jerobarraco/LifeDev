@@ -20,7 +20,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, Transient, meta=(DeprecatedProperty))
 	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 	// it's lazy to put the material here too. but it does simplify the initBase
 

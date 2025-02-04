@@ -26,8 +26,8 @@ bool FAMBase::Tick(const float DT) {
 }
 
 bool FAMBase::FIsValid() const { return IsValid(MPCI) && !Name.IsNone(); } // avoid including the type on header
-bool FAMDFloat::FIsValid() const  { return IsValid(Mat) && !Name.IsNone(); } // avoid including the type on header
-bool FAMDVector::FIsValid() const  { return IsValid(Mat) && !Name.IsNone(); } // avoid including the type on header
+bool FAMDFloat::FIsValid() const  { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
+bool FAMDVector::FIsValid() const  { return  !Name.IsNone() && IsValid(Obj); } // avoid including the type on header
 
 bool FAMPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%.4f"),
@@ -47,10 +47,23 @@ bool FAMDFloat::SetVal(const float Val) const {
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(!FIsValid())) return false;
 
-	Mat->SetScalarParameterValue(Name, Val);
+	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
+	if (UNLIKELY(!MM)) return false;
+	MM->SetScalarParameterValue(Name, Val);
 	return true;
 }
 
+bool FAMDVector::SetVal(const FLinearColor& Val) const {
+	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
+			__func__, *Name.ToString(), *Val.ToString());
+	if (UNLIKELY(!FIsValid())) return false;
+
+	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
+	if (UNLIKELY(!MM)) return false;
+	MM->SetVectorParameterValue(Name, Val);
+	// Mat->SetVectorParameterValue(Name, Val);
+	return true;
+}
 
 bool FAMPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
@@ -61,19 +74,10 @@ bool FAMPVector::SetVal(const FLinearColor& Val) const {
 }
 
 bool FAMPVector::SetLerp(const float Prog) {
-	const FLinearColor Val = UseHSV ?
+	const FLinearColor& Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
-}
-
-bool FAMDVector::SetVal(const FLinearColor& Val) const {
-	UE_LOG(LogAnimMat, Verbose, TEXT("%hs Name=%s Val=%s"),
-			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(!FIsValid())) return false;
-
-	Mat->SetVectorParameterValue(Name, Val);
-	return true;
 }
 
 bool FAMData::GetCurrent(FLinearColor& OCurrent) const {
@@ -197,6 +201,7 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 	}
 
 	OParam.MPCI = World->GetParameterCollectionInstance(MPC);
+	OParam.Obj = OParam.MPCI;
 	if (UNLIKELY(!IsValid(OParam.MPCI))) {
 		UE_LOG(LogAnimMat, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
 			__func__);
@@ -219,7 +224,7 @@ bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, 
 			__func__);
 		return false;
 	}
-
+	OParam.Obj = Mat;
 	OParam.Mat = Mat;
 	return true;
 }
