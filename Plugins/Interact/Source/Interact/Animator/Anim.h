@@ -346,8 +346,11 @@ protected:
 	template<typename Item>
 	bool ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
-		void(UAnim::* Done)(const Item&)
-		);
+		void(UAnim::* Done)(const Item&));
+	template<typename Item>
+	FORCEINLINE bool ItemIsIn(const UObject* const Obj, const FName Name,
+		const TArray<Item>& IArr) const;
+
 	// can't make const due to the declaration of the pointer
 #pragma region done
 	void ItemDoneDynF(const FADFloat& It);

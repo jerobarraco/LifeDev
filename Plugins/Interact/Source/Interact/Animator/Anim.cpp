@@ -1,6 +1,7 @@
 #include "Anim.h"
 
 #include "Components/AudioComponent.h"
+#include "GeometryCollection/GeometryCollectionParticlesData.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -94,7 +95,7 @@ bool FASFloat::SetVal(const float Val) const {
 }
 
 bool FASFloat::LoadFrom() {
-	UAudioComponent* Cmp = Cast<UAudioComponent>(Obj);
+	UAudioComponent* const Cmp = Cast<UAudioComponent>(Obj);
 	if (UNLIKELY(!Cmp)) return false;
 
 	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
@@ -395,7 +396,6 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	FADVector Param;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	
 	return ItemSetup(Param, Mat, Name, Curve, Duration, DynVectorParams, &UAnim::ItemDoneDynV);
 }
 
@@ -419,7 +419,6 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	Param.Index = Index;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	Param.Comp = Cmp;
 	Param.IsScalar = IsScalar;
 	const FName Name = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
 	return ItemSetup(Param, Cmp, Name, Curve, Duration, DataParams, &UAnim::ItemDoneData);
@@ -503,26 +502,25 @@ bool UAnim::ItemsSetNow(const Item& Param, void(UAnim::* Done)(const Item&)) {
 	return true;
 }
 
+template <typename Item>
+bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<Item>& IArr) const {
+	for (const Item& P: IArr)
+		if (P.IsSame(Obj, Name)) return true;
+	return false;
+}
+
 bool UAnim::GetIsFadingMPC(
 const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
-	
-	for (const FAPFloat& P: MPCFloatParams) // TODO can generalize this for loop into a function "Contains(MPCI, NAme)" or smth
-		if (P.IsSame(MPCI, Name)) return true;
-	for (const FAPVector& P: MPCVectorParams)
-		if (P.IsSame(MPCI, Name)) return true;
-
+	if (ItemIsIn(MPCI, Name, MPCFloatParams)) return true;
+	if (ItemIsIn(MPCI, Name, MPCVectorParams)) return true;
 	return false;
 }
 
 bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
 	if (UNLIKELY(!IsValid(Mat))) return false;
-	
-	for (const FADFloat& P: DynFloatParams)
-		if (P.IsSame(Mat, Name)) return true;
-	for (const FADVector& P: DynVectorParams)
-		if (P.IsSame(Mat, Name)) return true;
-
+	if (ItemIsIn(Mat, Name, DynFloatParams)) return true;
+	if (ItemIsIn(Mat, Name, DynVectorParams)) return true;
 	return false;
 }
 
@@ -530,19 +528,13 @@ bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Cmp, const int32 In
 	if (UNLIKELY(!IsValid(Cmp))) return false;
 
 	const FName Name(FString::Printf(TEXT("%i"), Index));
-	for (const FAData& P: DataParams)
-		if (P.IsSame(Cmp, Name)) return true;
-	
+	if (ItemIsIn(Cmp, Name, DataParams)) return true;
 	return false;
 }
 
 bool UAnim::GetIsFadingSound(const UAudioComponent* const Cmp, const FName Name) const {
 	if (UNLIKELY(!IsValid(Cmp))) return false;
-
-	for (const FASFloat& P: SndFloatParams)
-		if (P.IsSame(Cmp, Name)) return true;
-		// if (P.Name == Name && (Comp == P.Obj)) return true;
-
+	if (ItemIsIn(Cmp, Name, SndFloatParams)) return true;
 	return false;
 }
 
