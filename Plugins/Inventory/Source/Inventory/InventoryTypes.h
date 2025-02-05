@@ -45,7 +45,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<USoundBase> Snd = nullptr;
 
-	// the class for the item manager (can be empty/null)
+	// the class for the item logic manager (can be empty/null)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UItemLogic> LogicType = nullptr;
 

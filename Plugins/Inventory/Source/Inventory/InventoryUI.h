@@ -9,7 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryUIDone);
 
-// Helps define an interaction volume
+// Base class for the inventory ui
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INVENTORY_API UInventoryUI: public UUserWidget {
 public:
