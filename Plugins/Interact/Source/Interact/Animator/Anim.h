@@ -317,10 +317,10 @@ public:
 #pragma endregion
 
 protected:
+#pragma region Items
 	bool ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1) const;
-
 	template<typename Item>
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
 		void(UAnim::* Done)(const Item&));
@@ -340,6 +340,7 @@ protected:
 	template<typename Item>
 	FORCEINLINE bool ItemIsIn(const UObject* const Obj, const FName Name,
 		const TArray<Item>& IArr) const;
+#pragma endregion
 
 	// can't make const due to the declaration of the pointer
 #pragma region done
@@ -350,10 +351,10 @@ protected:
 	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
 #pragma endregion
-	
+
+#pragma region Vars
 	bool IsFading = false;
 
-#pragma region Items
 	// TODO rename Params > Items
 
 	UPROPERTY(Transient)

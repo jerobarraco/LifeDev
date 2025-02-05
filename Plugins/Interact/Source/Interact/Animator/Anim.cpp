@@ -224,8 +224,8 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name, UCurveFloat* const Curve,
-	const float Duration) const {
+bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name,
+UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
@@ -236,16 +236,14 @@ bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name, 
 	OParam.Duration = Duration < 0 ? DurationDefault : Duration;
 
 	if (UNLIKELY(!IsValid(Obj))) {
-		UE_LOG(LogAnim, Warning,
-			TEXT("%hs Root object is invalid. Name=%s. Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
 			__func__, *Name.ToString());
 		return false;
 	}
 
 	// at end to allow for data params
 	if (UNLIKELY(OParam.Name.IsNone())) {
-		UE_LOG(LogAnim, Warning,
-			TEXT("%hs Name can't be none (Unless it's a custom primitive data fade). Stop."),
+		UE_LOG(LogAnim, Warning, TEXT("%hs Name can't be none. Stop."),
 			__func__);
 		return false;
 	}
@@ -294,7 +292,7 @@ void(UAnim::* Done)(const Item&) ) {
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
-	IOItems.Add(MoveTemp(OParam));
+	IOItems.Add(OParam);
 	IsFading = true;
 	return true;
 }
@@ -329,7 +327,6 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	if (UNLIKELY(!World)) return false;
 	
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	
 	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCVectorParams, &UAnim::ItemDoneMPCV);
 }
 
@@ -535,11 +532,7 @@ TStatId UAnim::GetStatId() const {
 	return GetStatID();
 }
 
-// TODO test changes
-// TODO polimorfise data as well
-// should i move "Index" to the base class?
-// // if i do so, i need to modify IsEqual to also account for Index, both. And have a default Index and Name param that matches the defaults on the struct.
-// TODO generalize a bit more
+// TODO fix
 
 // thought on using operator== for removing. which looks more "chic".
 // but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
