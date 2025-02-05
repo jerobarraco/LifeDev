@@ -262,7 +262,7 @@ public:
 	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
 	//		This is untested though.
 	UFUNCTION(BlueprintCallable)
-	bool DataFade(UPrimitiveComponent* const Component,
+	bool DataFade(UPrimitiveComponent* const Cmp,
 		const int32 Index, const bool IsScalar = true,
 		const FLinearColor& To = FLinearColor::White,
 		const float Duration = -1, const bool UseHSV = false,
@@ -283,9 +283,9 @@ public:
 	bool GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const;
 	// returns true if a param with that name is fading
 	UFUNCTION(BlueprintCallable)
-	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
+	bool GetIsFadingData(const UPrimitiveComponent* const Cmp, const int32 Index) const;
 	UFUNCTION(BlueprintCallable)
-	bool GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const;
+	bool GetIsFadingSound(const UAudioComponent* const Cmp, const FName Name) const;
 #pragma endregion
 
 	// default fade duration. can be changed. and can be specified on the .ini config files.

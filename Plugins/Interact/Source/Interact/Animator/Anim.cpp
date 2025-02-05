@@ -347,16 +347,14 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FN
 const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
-
-	FAPFloat Param;
-	Param.To = To;
 	
 	if (UNLIKELY(!IsValid(MPC))) return false;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
-	
+
+	FAPFloat Param;
+	Param.To = To;
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	
 	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCFloatParams, &UAnim::ItemDoneMPCF);
 }
 
@@ -367,25 +365,16 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FAPVector Param;
-	if (UNLIKELY(!ItemInitMPC(MPC, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
-			__func__);
-		return false;
-	}
-
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	ItemsRemoveSame(Param, MPCVectorParams);
-	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCV)) return true;
 
-	// we do it anyway.
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__);
-
-	MPCVectorParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	if (UNLIKELY(!IsValid(MPC))) return false;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return false;
+	
+	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
+	
+	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCVectorParams, &UAnim::ItemDoneMPCV);
 }
 
 bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
@@ -394,23 +383,8 @@ const float Duration, UCurveFloat* const Curve) {
 		__func__, *Name.ToString(), To, Duration);
 
 	FADFloat Param;
-	if (UNLIKELY(!ItemInitDyn(Mat, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
-			__func__);
-		return false;
-	}
-	
 	Param.To = To;
-	ItemsRemoveSame(Param, DynFloatParams);
-	if (ItemsSetNow(Param, &UAnim::ItemDoneDynF)) return true;
-
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__); // we do it anyway.
-
-	DynFloatParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	return ItemSetup(Param, Mat, Name, Curve, Duration, DynFloatParams, &UAnim::ItemDoneDynF);
 }
 
 bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
@@ -419,24 +393,10 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FADVector Param;
-	if (UNLIKELY(!ItemInitDyn(Mat, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
-			__func__);
-		return false;
-	}
-
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	ItemsRemoveSame(Param, DynVectorParams);
-	if (ItemsSetNow(Param, &UAnim::ItemDoneDynV)) return true;
-
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__); // we do it anyway if not got
 	
-	DynVectorParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	return ItemSetup(Param, Mat, Name, Curve, Duration, DynVectorParams, &UAnim::ItemDoneDynV);
 }
 
 bool UAnim::SndFloatFade(UAudioComponent* const Cmp, const FName Name, const float To, const float Duration,
@@ -445,68 +405,24 @@ UCurveFloat* const Curve) {
 		__func__, *Name.ToString(), To, Duration);
 
 	FASFloat Param;
-
-	if (UNLIKELY(!IsValid(Cmp))) return false;
-	if (UNLIKELY(!ItemInitBasic(Param, Cmp, Name, Curve, Duration))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
-			__func__);
-		return false;
-	}
-
-	Param.Obj = Cmp;
 	Param.To = To;
-
-	ItemsRemoveSame(Param, SndFloatParams);
-	if (ItemsSetNow(Param, &UAnim::ItemDoneSndF)) return true;
-
-
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__); // we do it anyway.
-
-	SndFloatParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	return ItemSetup(Param, Cmp, Name, Curve, Duration, SndFloatParams, &UAnim::ItemDoneSndF);
 }
 
-bool UAnim::DataFade(UPrimitiveComponent* const Component, const int32 Index, const bool IsScalar,
+bool UAnim::DataFade(UPrimitiveComponent* const Cmp, const int32 Index, const bool IsScalar,
 const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
-		__func__, *GetNameSafe(Component), Index, IsScalar, *To.ToString(), Duration, UseHSV);
+		__func__, *GetNameSafe(Cmp), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
 	FAData Param;
 	Param.Index = Index;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	Param.Comp = Component;
+	Param.Comp = Cmp;
 	Param.IsScalar = IsScalar;
-	const FName PrimDataName = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
-	ItemInitBasic(Param, Component, PrimDataName, Curve, Duration);// ignore the name issue (return)
-
-	if (UNLIKELY(!IsValid(Component))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Component is not valid. Stop."),
-			__func__);
-		return false;
-	}
-
-	// ItemsRemoveSame(Param, DataParams); // doesn't work because of the index :( 
-	// Removing using a less performant linear search.
-	// Maybe in the future i use a map or smth, but not worthy atm.
-	// for (int32 i = DataParams.Num()-1; i>=0; i--) {
-		// const FAData& D = DataParams[i];
-		// if (D.Comp != Param.Comp || D.Index != Param.Index) continue;
-		// DataParams.RemoveAtSwap(i);
-	// }
-	ItemsRemoveSame(Param, DataParams); // TODO test
-	if (ItemsSetNow(Param, &UAnim::ItemDoneData)) return true;
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__); // we do it anyway if not got
-
-	DataParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	const FName Name = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
+	return ItemSetup(Param, Cmp, Name, Curve, Duration, DataParams, &UAnim::ItemDoneData);
 }
 
 void UAnim::Tick(const float DT) {
@@ -610,20 +526,21 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 	return false;
 }
 
-bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
-	if (UNLIKELY(!IsValid(Comp))) return false;
+bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Cmp, const int32 Index) const {
+	if (UNLIKELY(!IsValid(Cmp))) return false;
 
+	const FName Name(FString::Printf(TEXT("%i"), Index));
 	for (const FAData& P: DataParams)
-		if (P.Index == Index && (Comp == P.Comp)) return true;
+		if (P.IsSame(Cmp, Name)) return true;
 	
 	return false;
 }
 
-bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
-	if (UNLIKELY(!IsValid(Comp))) return false;
+bool UAnim::GetIsFadingSound(const UAudioComponent* const Cmp, const FName Name) const {
+	if (UNLIKELY(!IsValid(Cmp))) return false;
 
 	for (const FASFloat& P: SndFloatParams)
-		if (P.IsSame(Comp, Name)) return true;
+		if (P.IsSame(Cmp, Name)) return true;
 		// if (P.Name == Name && (Comp == P.Obj)) return true;
 
 	return false;
