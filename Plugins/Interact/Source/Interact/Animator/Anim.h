@@ -321,16 +321,6 @@ protected:
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1) const;
 
-	bool ItemInitMPC(const UMaterialParameterCollection* const MPC,
-		const FName Name, FABase& OParam,
-		UCurveFloat* const Curve = nullptr,
-		const float Duration = -1.0) const;
-
-	bool ItemInitDyn(UMaterialInstanceDynamic* const Mat,
-		const FName Name, FABase& OParam,
-		UCurveFloat* const Curve = nullptr,
-		const float Duration = -1.0) const;
-
 	template<typename Item>
 	bool ItemTick(const float DT, TArray<Item>& IOArr,
 		void(UAnim::* Done)(const Item&));
@@ -360,7 +350,11 @@ protected:
 	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
 #pragma endregion
+	
 	bool IsFading = false;
+
+#pragma region Items
+	// TODO rename Params > Items
 
 	UPROPERTY(Transient)
 	TArray<FAPFloat> MPCFloatParams;
@@ -374,4 +368,5 @@ protected:
 	TArray<FAData> DataParams;
 	UPROPERTY(Transient)
 	TArray<FASFloat> SndFloatParams;
+#pragma endregion
 };

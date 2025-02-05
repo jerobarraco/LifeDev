@@ -254,50 +254,6 @@ bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name, 
 	return true;
 }
 
-bool UAnim::ItemInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
-	FABase& OParam, UCurveFloat* const Curve, const float Duration) const {
-	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
-		__func__, *Name.ToString(), Duration);
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return false;
-	
-	// these are done at the beginning so that even after returning it's partially valid
-	if (UNLIKELY(!ItemInitBasic(OParam, World->GetParameterCollectionInstance(MPC), Name, Curve, Duration))) return false;
-	
-	if (UNLIKELY(!IsValid(MPC))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mpc. Stop."),
-			__func__);
-		return false;
-	}
-
-	OParam.Obj = World->GetParameterCollectionInstance(MPC);
-	if (UNLIKELY(!IsValid(OParam.Obj))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Can't get MPC Instance. Stop."),
-			__func__);
-		return false;
-	}
-
-	return true;
-}
-
-bool UAnim::ItemInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FABase& OParam,
-	UCurveFloat* const Curve, const float Duration) const {
-	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
-		__func__, *Name.ToString(), Duration);
-
-	// these are done at the beginning so that even after returning it's partially valid
-	if (UNLIKELY(!ItemInitBasic(OParam, Mat, Name, Curve, Duration))) return false;
-
-	if (UNLIKELY(!IsValid(Mat))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mat. Stop."),
-			__func__);
-		return false;
-	}
-	OParam.Obj = Mat;
-	return true;
-}
-
 void UAnim::ItemDoneDynF(const FADFloat& It) {
 	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 }
