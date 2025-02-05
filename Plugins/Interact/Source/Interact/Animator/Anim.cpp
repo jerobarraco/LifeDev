@@ -658,6 +658,7 @@ TStatId UAnim::GetStatId() const {
 	return GetStatID();
 }
 
+// TODO test changes
 // TODO polimorfise data as well
 // should i move "Index" to the base class?
 // // if i do so, i need to modify IsEqual to also account for Index, both. And have a default Index and Name param that matches the defaults on the struct.
