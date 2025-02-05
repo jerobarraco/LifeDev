@@ -159,23 +159,22 @@ void ALGGameMode::Init_Implementation() {
 	// now the managers. which, as they are actors they tend to have side-effects, some of which requires the subsystems
 
 	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
-	if (IsValid(InventoryMan)) {
+	if (LIKELY(IsValid(InventoryMan))) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;
 		InventoryMan->ZOrder = 1; 
-		InventoryMan->Init();
 	} else
 		InventoryMan = nullptr;
 
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
-	if (IsValid(StoryMan)) {
+	if (LIKELY(IsValid(StoryMan))) {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
 	} else
 		StoryMan = nullptr;
 
 	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
-	if (IsValid(DiagMan)) {
+	if (LIKELY(IsValid(DiagMan))) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
 		DiagMan->ZOrder = 3;
@@ -185,15 +184,15 @@ void ALGGameMode::Init_Implementation() {
 		DiagMan = nullptr;
 
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	if (MusicMan) MusicMan->Init();
+	if (LIKELY(MusicMan)) MusicMan->Init();
 
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
-	if (FlashbackMan) FlashbackMan->Init();
+	if (LIKELY(FlashbackMan)) FlashbackMan->Init();
 
 	// do at the end since it depends on other things.
 	// will race-condition the ghosts
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
-	if (FeatsMan) FeatsMan->Init();
+	if (LIKELY(FeatsMan)) FeatsMan->Init();
 
 	/// GameMode init starts
 	
@@ -210,7 +209,7 @@ void ALGGameMode::Init_Implementation() {
 
 	// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	if (IsValid(Char)) {
+	if (LIKELY(IsValid(Char))) {
 		Char->InputPrio = 1;
 		Char->Init();
 	} else Char = nullptr;
@@ -237,16 +236,16 @@ void ALGGameMode::BeginPlay() {
 	Super::BeginPlay();
 	
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 	
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance)) {
+	if (UNLIKELY(!IsValid(Instance))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
 		return;
 	}
 	
 	Settings = Instance->GetSubsystem<ULSettings>();
-	if (!IsValid(Settings)) {
+	if (UNLIKELY(!IsValid(Settings))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
 		return;
 	}
@@ -256,14 +255,14 @@ void ALGGameMode::BeginPlay() {
 	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
 	// - Thank you so much Jero, that's really how i needed it.
 	// - dou itashimashite!
-	if (!IsValid(Settings->Save)) {
+	if (UNLIKELY(!IsValid(Settings->Save))) {
 		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
 		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
 		return;
 	}
 	
-	if (Settings->GetIsSaving()) {
+	if (UNLIKELY(Settings->GetIsSaving())) {
 		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
 		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
 		return;
@@ -278,7 +277,7 @@ void ALGGameMode::BeginPlay() {
 
 void ALGGameMode::DeInit_Implementation() {
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 	World->GetTimerManager().ClearAllTimersForObject(this);
 	
 	if (IsValid(Diags)) {
