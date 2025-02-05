@@ -94,3 +94,7 @@ resizeable bar
 	
 # detect when cooking or running a command
 	IsRunningCookCommandlet() IsRunningCommandlet()
+	
+# disable ghost nodes on ue
+	https://forums.unrealengine.com/t/blueprint-default-events-on-graph/381497/6
+

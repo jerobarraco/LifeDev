@@ -28,21 +28,17 @@ bool FABase::Tick(const float DT) {
 
 // define here to avoid including the type on header
 bool FABase::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
-// bool FADFloat::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
-// bool FASFloat::FIsValid() const {}
-// bool FADVector::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
 
 bool FAPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!FIsValid())) return false;
+	if (UNLIKELY(!Name.IsNone())) return false;
 
 	UMaterialParameterCollectionInstance* const MM =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
 	if (UNLIKELY(!MM)) return false;
 
 	return MM->SetScalarParameterValue(Name, Val);
-	// return MPCI->SetScalarParameterValue(Name, Val);
 }
 
 bool FAPFloat::SetLerp(const float Prog) {
@@ -53,7 +49,7 @@ bool FAPFloat::SetLerp(const float Prog) {
 bool FADFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!FIsValid())) return false;
+	if (UNLIKELY(!Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
@@ -64,39 +60,36 @@ bool FADFloat::SetVal(const float Val) const {
 bool FASFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!FIsValid())) return false;
+	if (UNLIKELY(!Name.IsNone())) return false;
 
 	UAudioComponent* const MM = Cast<UAudioComponent>(Obj);
 	if (UNLIKELY(!MM || !MM->IsPlaying())) return false;
 
 	MM->SetFloatParameter(Name, Val);
 	return true;
-	// return FAPFloat::SetVal(Val);
 }
 
 bool FADVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(!FIsValid())) return false;
+	if (UNLIKELY(!Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
 	MM->SetVectorParameterValue(Name, Val);
-	// Mat->SetVectorParameterValue(Name, Val);
 	return true;
 }
 
 bool FAPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(!FIsValid())) return false;
+	if (UNLIKELY(!Name.IsNone())) return false;
 
 	UMaterialParameterCollectionInstance* const MM =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
 	if (UNLIKELY(!MM)) return false;
 
 	return MM->SetVectorParameterValue(Name, Val);
-	// return MPCI->SetVectorParameterValue(Name, Val);
 }
 
 bool FAPVector::SetLerp(const float Prog) {
@@ -253,12 +246,24 @@ bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, 
 	return true;
 }
 
+void UAnim::ItemDoneDynF(const FADFloat& It) {
+	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+}
+
+void UAnim::ItemDoneDynV(const FADVector& It) {
+	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+}
+
 void UAnim::ItemDoneMPCF(const FAPFloat& Item) {
 	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
 }
 
 void UAnim::ItemDoneMPCV(const FAPVector& Item) {
 	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+}
+
+void UAnim::ItemDoneData(const FAData& Item) {
+	OnItemDoneData.Broadcast(Item.Comp, Item.Index);
 }
 
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
@@ -509,6 +514,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	IsFading = true;
 	return true;
 }
+
 
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);

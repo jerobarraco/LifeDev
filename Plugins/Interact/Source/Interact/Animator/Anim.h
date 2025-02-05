@@ -330,18 +330,13 @@ protected:
 	void ItemsEmpty(TArray<Item>& IOArr,
 		void(UAnim::* Done)(const Item&));
 
-	void ItemDoneDynF(const FADFloat& It) {
-		OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
-	}
-	void ItemDoneDynV(const FADVector& It) {
-		OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
-	}
+	// can't make const due to the declaration of the pointer
 
+	void ItemDoneDynF(const FADFloat& It);
+	void ItemDoneDynV(const FADVector& It);
 	void ItemDoneMPCF(const FAPFloat& Item) ;
 	void ItemDoneMPCV(const FAPVector& Item);
-	void ItemDoneData(const FAData& Item) {
-		OnItemDoneData.Broadcast(Item.Comp, Item.Index);
-	}
+	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
 
 	bool IsFading = false;
