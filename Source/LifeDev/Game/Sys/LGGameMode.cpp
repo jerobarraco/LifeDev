@@ -162,7 +162,8 @@ void ALGGameMode::Init_Implementation() {
 	if (LIKELY(IsValid(InventoryMan))) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;
-		InventoryMan->ZOrder = 1; 
+		InventoryMan->ZOrder = 1;
+		InventoryMan->Init();
 	} else
 		InventoryMan = nullptr;
 

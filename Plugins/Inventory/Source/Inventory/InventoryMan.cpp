@@ -3,14 +3,15 @@
 
 #include "InventoryMan.h"
 
-// these two are needed anyway otherwise it wont compile
+// these two are needed anyway otherwise it won't compile
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
-#include "Inventory.h"
+
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "InventoryUI.h"
-#include "JUtils/Misc/JUtilsSys.h"
+#include "Inventory.h"
 
 AInventoryMan::AInventoryMan():Super(){
 	PrimaryActorTick.bCanEverTick = false;
@@ -56,7 +57,7 @@ void AInventoryMan::ActOpen() {
 void AInventoryMan::ActSelect(const FInputActionValue& InputActionValue) {
 	const bool Next = InputActionValue.GetMagnitude() > 0;
 	const FName& NextKey = Inventory->GetNextKey(Next);
-	if (NextKey.IsNone()) return;
+	if (UNLIKELY(NextKey.IsNone())) return;
 
 	Inventory->SetSelected(NextKey);
 }
@@ -67,7 +68,7 @@ void AInventoryMan::SetVisible(const bool Vis) {
 }
 
 void AInventoryMan::Show() {
-	if (IsShowing) return;
+	if (UNLIKELY(IsShowing)) return;
 
 	IsShowing = true;
 	if (LIKELY(IsValid(UI))) UI->Show();

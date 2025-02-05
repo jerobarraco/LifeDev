@@ -22,10 +22,12 @@ class INVENTORY_API AInventoryMan : public AInfo {
 
 public:
 	AInventoryMan();
-	
+
+	// call to initialize
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
+	// call to deinitialize. will be called at endplay automatically.
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
 
@@ -52,7 +54,6 @@ public:
 	UFUNCTION()
 	void ActSelect(const FInputActionValue& InputActionValue);
 
-	// void HideUI() const;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -75,7 +76,6 @@ public:
 	TObjectPtr<UInputAction> ActionSelect = nullptr;
 
 private:
-	// stub. the manager will handle input. will it?
 	UFUNCTION()
 	void UIDone();
 
