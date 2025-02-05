@@ -4,18 +4,18 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogFlags, Log, Log);
 
-UFlags* UFlags::Instance(UObject* O) {
-	if (!IsValid(O)) return nullptr;
+UFlags* UFlags::Instance(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 	
 	const UWorld* const W = O->GetWorld();
-	if (!IsValid(W)) return nullptr;
+	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	UFlags* const I = W->GetSubsystem<UFlags>();
-	return IsValid(I) ? I : nullptr;
+	return LIKELY(IsValid(I)) ? I : nullptr;
 }
 
 void UFlags::Mod(const FName& Name, const float Diff, const bool Log) {
-	if (Name.IsNone()) return;
+	if (UNLIKELY(Name.IsNone())) return;
 	
 	const float Val = Get(Name) + Diff; 
 	if (Log) UE_LOG(LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
@@ -26,7 +26,7 @@ void UFlags::Mod(const FName& Name, const float Diff, const bool Log) {
 }
 
 void UFlags::Rem(const FName& Name) {
-	if (Name.IsNone()) return;
+	if (UNLIKELY(Name.IsNone())) return;
 	
 	const float Val = Get(Name); 
 	UE_LOG(LogFlags, Log, TEXT("%hs: name=%s old=%3.3f"),
@@ -36,10 +36,29 @@ void UFlags::Rem(const FName& Name) {
 	OnMod.Broadcast(Name, -Val, 0);
 }
 
-void UFlags::Set(const FName& Name, float Val) {
+float UFlags::Get(const FName Name, const float Default) const {
+	if (UNLIKELY(Name.IsNone())) return 0.0;
+
+	const float* const PreFlag = Flags.Find(Name);
+	const float Val = PreFlag ? *PreFlag : Default;
+	return Val;
+}
+
+bool UFlags::IsSet(const FName& Name) const {
+	if (UNLIKELY(Name.IsNone())) return false;
+	// this works because set doesn't remove on 0
+	return Flags.Contains(Name);
+}
+
+bool UFlags::Has(const FName& Name) const {
+	const float V = Get(Name);
+	return FMath::IsNearlyEqual(V, 1) || V >= 1.0;
+}
+
+void UFlags::Set(const FName& Name, const float Val) {
 	// this is basically duplicated code with mod...
 	// But it will be faster than getting and mod'ing (for about one call to Get)
-	if (Name.IsNone()) return;
+	if (UNLIKELY(Name.IsNone())) return;
 
 	const float Old = Get(Name); // broadcasting the diff is what adds complexity here
 	UE_LOG(LogFlags, Log, TEXT("Set: name=%s old=%3.3f new=%3.3f"), *Name.ToString(), Old, Val);
@@ -56,23 +75,23 @@ void UFlags::SetAll(const TMap<FName, float>& NewFlags) {
 	NewFlags.GetKeys(Keys);
 
 	for (const FName& K: Keys) {
-		const float* pV = NewFlags.Find(K);
-		if (!pV) continue;
+		const float* const pV = NewFlags.Find(K);
+		if (UNLIKELY(!pV)) continue;
 		
 		Set(K, *pV);
 	}
 }
 
-void UFlags::Clear(int32 Reserve) {
+void UFlags::Clear(const int32 Reserve) {
 	// probably faster than calling Rem. since it removes all at once.
 	UE_LOG(LogFlags, Log, TEXT("Clear: Reserve=%i"), Reserve);
 	TArray<FName> Keys;
 	Flags.GetKeys(Keys);
 	for (const FName& K: Keys) {
-		float* pV = Flags.Find(K);
-		if (!pV) continue;
+		const float* const pV = Flags.Find(K);
+		if (UNLIKELY(!pV)) continue;
 
-		// important but forgot why.
+		// important but forgot why. (notice "-")
 		OnMod.Broadcast(K, -*pV, 0.0);
 	}
 

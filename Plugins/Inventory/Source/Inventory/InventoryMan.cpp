@@ -4,7 +4,6 @@
 #include "InventoryMan.h"
 
 // these two are needed anyway otherwise it wont compile
-#include "CItemView.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
@@ -16,8 +15,6 @@
 AInventoryMan::AInventoryMan():Super(){
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
-
-	View = CreateDefaultSubobject<UCItemView>(TEXT("View"));
 
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Inventory/Input/IMC_Inventory"));
 	Mapping = DefaultMapping.Object;
@@ -102,7 +99,7 @@ void AInventoryMan::BeginPlay() {
 
 	// bind the action
 	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 	
 	if (ActionOpen) {
 		UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);

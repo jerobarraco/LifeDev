@@ -15,7 +15,7 @@ class UInputAction;
 class UInventoryUI;
 class UCItemView;
 
-// base class for the character
+// base class for the inventory manager. you can extend or use as is.
 UCLASS(Blueprintable)
 class INVENTORY_API AInventoryMan : public AInfo {
 	GENERATED_BODY()
@@ -73,10 +73,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UInputAction> ActionSelect = nullptr;
-
-protected:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCItemView> View = nullptr;
 
 private:
 	// stub. the manager will handle input. will it?
