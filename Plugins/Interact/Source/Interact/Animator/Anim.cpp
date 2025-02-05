@@ -224,15 +224,23 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ParamInitBasic(FABase& OParam, const FName Name, UCurveFloat* const Curve,
+bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name, UCurveFloat* const Curve,
 	const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
+	OParam.Obj = Obj;
 	OParam.Name = Name;
 	OParam.Curve = IsValid(Curve) ? Curve : nullptr;
 	OParam.Elapsed = 0.0; // reset in case it was running
 	OParam.Duration = Duration < 0 ? DurationDefault : Duration;
+
+	if (UNLIKELY(!IsValid(Obj))) {
+		UE_LOG(LogAnim, Warning,
+			TEXT("%hs Root object is invalid. Name=%s. Stop."),
+			__func__, *Name.ToString());
+		return false;
+	}
 
 	// at end to allow for data params
 	if (UNLIKELY(OParam.Name.IsNone())) {
@@ -245,16 +253,16 @@ bool UAnim::ParamInitBasic(FABase& OParam, const FName Name, UCurveFloat* const 
 	return true;
 }
 
-bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnim::ItemInitMPC(const UMaterialParameterCollection* const MPC, const FName Name,
 	FABase& OParam, UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
-	// these are done at the beginning so that even after returning it's partially valid
-	if (UNLIKELY(!ParamInitBasic(OParam, Name, Curve, Duration))) return false;
-	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
+	
+	// these are done at the beginning so that even after returning it's partially valid
+	if (UNLIKELY(!ItemInitBasic(OParam, World->GetParameterCollectionInstance(MPC), Name, Curve, Duration))) return false;
 	
 	if (UNLIKELY(!IsValid(MPC))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mpc. Stop."),
@@ -272,13 +280,13 @@ bool UAnim::ParamInitMPC(const UMaterialParameterCollection* const MPC, const FN
 	return true;
 }
 
-bool UAnim::ParamInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FABase& OParam,
+bool UAnim::ItemInitDyn(UMaterialInstanceDynamic* const Mat, const FName Name, FABase& OParam,
 	UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
 	// these are done at the beginning so that even after returning it's partially valid
-	if (UNLIKELY(!ParamInitBasic(OParam, Name, Curve, Duration))) return false;
+	if (UNLIKELY(!ItemInitBasic(OParam, Mat, Name, Curve, Duration))) return false;
 
 	if (UNLIKELY(!IsValid(Mat))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid mat. Stop."),
@@ -313,30 +321,43 @@ void UAnim::ItemDoneSndF(const FASFloat& Item) {
 	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
 }
 
+template <typename Item>
+bool UAnim::ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
+UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
+void(UAnim::* Done)(const Item&) ) {
+	if (UNLIKELY(!ItemInitBasic(OParam, Obj, Name, Curve, Duration))) {
+		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
+			__func__);
+		return false;
+	}
+
+	ItemsRemoveSame(OParam, IOItems);
+	if (ItemsSetNow(OParam, Done)) return true;
+
+	const bool Got = OParam.LoadFrom();
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
+		__func__); // we do it anyway.
+
+	IOItems.Add(MoveTemp(OParam));
+	IsFading = true;
+	return true;
+}
+
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
 	FAPFloat Param;
-	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
-			__func__);
-		return false;
-	}
-	
 	Param.To = To;
-	ItemsRemoveSame(Param, MPCFloatParams);
-	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCF)) return true;
-
-	const bool Got = Param.LoadFrom();
-	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
-		__func__); // we do it anyway.
-
-	// TODO last 3 lines can be generalized
-	MPCFloatParams.Add(MoveTemp(Param));
-	IsFading = true;
-	return true;
+	
+	if (UNLIKELY(!IsValid(MPC))) return false;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return false;
+	
+	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
+	
+	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCFloatParams, &UAnim::ItemDoneMPCF);
 }
 
 bool UAnim::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
@@ -346,7 +367,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FAPVector Param;
-	if (UNLIKELY(!ParamInitMPC(MPC, Name, Param, Curve, Duration))) {
+	if (UNLIKELY(!ItemInitMPC(MPC, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -373,7 +394,7 @@ const float Duration, UCurveFloat* const Curve) {
 		__func__, *Name.ToString(), To, Duration);
 
 	FADFloat Param;
-	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
+	if (UNLIKELY(!ItemInitDyn(Mat, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -398,7 +419,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
 
 	FADVector Param;
-	if (UNLIKELY(!ParamInitDyn(Mat, Name, Param, Curve, Duration))) {
+	if (UNLIKELY(!ItemInitDyn(Mat, Name, Param, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -426,7 +447,7 @@ UCurveFloat* const Curve) {
 	FASFloat Param;
 
 	if (UNLIKELY(!IsValid(Cmp))) return false;
-	if (UNLIKELY(!ParamInitBasic(Param, Name, Curve, Duration))) {
+	if (UNLIKELY(!ItemInitBasic(Param, Cmp, Name, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -461,7 +482,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	Param.Comp = Component;
 	Param.IsScalar = IsScalar;
 	const FName PrimDataName = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
-	ParamInitBasic(Param, PrimDataName, Curve, Duration);// ignore the name issue (return)
+	ItemInitBasic(Param, Component, PrimDataName, Curve, Duration);// ignore the name issue (return)
 
 	if (UNLIKELY(!IsValid(Component))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Component is not valid. Stop."),

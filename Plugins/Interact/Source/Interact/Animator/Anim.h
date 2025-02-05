@@ -317,16 +317,16 @@ public:
 #pragma endregion
 
 protected:
-	bool ParamInitBasic(FABase& OParam, const FName Name,
+	bool ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1) const;
 
-	bool ParamInitMPC(const UMaterialParameterCollection* const MPC,
+	bool ItemInitMPC(const UMaterialParameterCollection* const MPC,
 		const FName Name, FABase& OParam,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
 
-	bool ParamInitDyn(UMaterialInstanceDynamic* const Mat,
+	bool ItemInitDyn(UMaterialInstanceDynamic* const Mat,
 		const FName Name, FABase& OParam,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1.0) const;
@@ -343,7 +343,11 @@ protected:
 	template<typename Item>
 	bool ItemsSetNow(const Item& Param,
 		void(UAnim::* Done)(const Item&));
-	
+	template<typename Item>
+	bool ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
+		UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
+		void(UAnim::* Done)(const Item&)
+		);
 	// can't make const due to the declaration of the pointer
 #pragma region done
 	void ItemDoneDynF(const FADFloat& It);
