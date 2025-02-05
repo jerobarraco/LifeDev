@@ -49,10 +49,10 @@ public:
 		UE_LOG(LogTemp, Warning, TEXT("Empty Base SetLerp"));
 		return false;
 	}
-	virtual bool IsEqual(const FABase& Other) const {
+	virtual bool IsSame(const FABase& Other) const {
 		return Name == Other.Name && Obj == Other.Obj;
 	}
-	virtual bool IsEqual(const UObject* const OtherObj, const FName OtherName) const {
+	virtual bool IsSame(const UObject* const OtherObj, const FName OtherName) const {
 		return Name == OtherName && Obj == OtherObj;
 	}
 };
@@ -329,16 +329,19 @@ protected:
 	template<typename Item>
 	void ItemsEmpty(TArray<Item>& IOArr,
 		void(UAnim::* Done)(const Item&));
-
+	template<typename Item>
+	void ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr);
+	
+	
 	// can't make const due to the declaration of the pointer
-
+#pragma region done
 	void ItemDoneDynF(const FADFloat& It);
 	void ItemDoneDynV(const FADVector& It);
 	void ItemDoneMPCF(const FAPFloat& Item) ;
 	void ItemDoneMPCV(const FAPVector& Item);
 	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
-
+#pragma endregion
 	bool IsFading = false;
 
 	UPROPERTY(Transient)

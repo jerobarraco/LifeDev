@@ -283,13 +283,7 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	}
 	
 	Param.To = To;
-	// ensure we remove it the ones colliding. allow to remove more than 1.
-	for (int32 i = MPCFloatParams.Num()-1; i>=0; --i) {
-		const FAPFloat& O = MPCFloatParams[i];
-		if (LIKELY(!Param.IsEqual(O))) continue;
-		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
-		MPCFloatParams.RemoveAtSwap(i);
-	} // TODO can be generalized. should use forceinline?
+	ItemsRemoveSame(Param, MPCFloatParams);
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
@@ -324,12 +318,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	for (int32 i = MPCVectorParams.Num()-1; i>=0; --i) {
-		const FAPVector& O = MPCVectorParams[i];
-		if (LIKELY(!Param.IsEqual(O))) continue;
-		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
-		MPCVectorParams.RemoveAtSwap(i);
-	}
+	ItemsRemoveSame(Param, MPCVectorParams);
 	
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
@@ -362,13 +351,7 @@ const float Duration, UCurveFloat* const Curve) {
 	}
 	
 	Param.To = To;
-	// ensure we remove it the ones colliding. allow to remove more than 1.
-	for (int32 i = DynFloatParams.Num()-1; i>=0; --i) {
-		const FADFloat& O = DynFloatParams[i];
-		if (LIKELY(!Param.IsEqual(O))) continue;
-		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
-		DynFloatParams.RemoveAtSwap(i);
-	}
+	ItemsRemoveSame(Param, DynFloatParams);
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
@@ -399,14 +382,8 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	Param.UseHSV = UseHSV;
 	Param.To = To;
+	ItemsRemoveSame(Param, DynVectorParams);
 
-	for (int32 i = DynVectorParams.Num()-1; i>=0; --i) {
-		const FAPVector& O = DynVectorParams[i];
-		if (LIKELY(!Param.IsEqual(O))) continue;
-		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
-		DynVectorParams.RemoveAtSwap(i);
-	}
-	
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
 		ItemDoneDynV(Param); // notify AFTER change.
@@ -439,13 +416,7 @@ UCurveFloat* const Curve) {
 	Param.Obj = Cmp;
 	Param.To = To;
 
-	// ensure we remove it the ones colliding. allow to remove more than 1.
-	for (int32 i = SndFloatParams.Num()-1; i>=0; --i) {
-		const FASFloat& O = SndFloatParams[i];
-		if (LIKELY(!Param.IsEqual(O))) continue;
-		// if (LIKELY(Param.Obj != O.Obj || Param.Name != O.Name)) continue;
-		SndFloatParams.RemoveAtSwap(i);
-	}
+	ItemsRemoveSame(Param, SndFloatParams);
 
 	if (FMath::IsNearlyZero(Param.Duration)) {
 		const bool Ok = Param.SetVal(To);
@@ -478,6 +449,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 
 	FAData Param;
 	Param.Index = Index;
+	Param.Name = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	Param.Comp = Component;
@@ -491,6 +463,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 		return false;
 	}
 
+	// ItemsRemoveSame(Param, DataParams); // doesn't work because of the index :( 
 	// Removing using a less performant linear search.
 	// Maybe in the future i use a map or smth, but not worthy atm.
 	for (int32 i = DataParams.Num()-1; i>=0; i--) {
@@ -575,17 +548,24 @@ void UAnim::ItemsEmpty(TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
 		(this->*Done)(D);
 }
 
+template<typename Item>
+void UAnim::ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr) {
+	// ensure we remove it the ones colliding. allow to remove more than 1.
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
+		const Item& O = IOArr[i];
+		if (LIKELY(!Param.IsSame(O))) continue;
+		IOArr.RemoveAtSwap(i);
+	}
+}
 
 bool UAnim::GetIsFadingMPC(
 const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
 	
 	for (const FAPFloat& P: MPCFloatParams) // TODO can generalize this for loop into a function "Contains(MPCI, NAme)" or smth
-		if (P.IsEqual(MPCI, Name)) return true;
-		// if (P.Name == Name && MPCI == P.Obj) return true;
+		if (P.IsSame(MPCI, Name)) return true;
 	for (const FAPVector& P: MPCVectorParams)
-		if (P.IsEqual(MPCI, Name)) return true;
-		// if (P.Name == Name && MPCI == P.Obj) return true;
+		if (P.IsSame(MPCI, Name)) return true;
 
 	return false;
 }
@@ -594,11 +574,9 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 	if (UNLIKELY(!IsValid(Mat))) return false;
 	
 	for (const FADFloat& P: DynFloatParams)
-		if (P.IsEqual(Mat, Name)) return true;
-		// if (P.Name == Name && Mat == P.Obj) return true;
+		if (P.IsSame(Mat, Name)) return true;
 	for (const FADVector& P: DynVectorParams)
-		if (P.IsEqual(Mat, Name)) return true;
-		// if (P.Name == Name && Mat == P.Obj) return true;
+		if (P.IsSame(Mat, Name)) return true;
 
 	return false;
 }
@@ -616,7 +594,7 @@ bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
 	for (const FASFloat& P: SndFloatParams)
-		if (P.IsEqual(Comp, Name)) return true;
+		if (P.IsSame(Comp, Name)) return true;
 		// if (P.Name == Name && (Comp == P.Obj)) return true;
 
 	return false;
