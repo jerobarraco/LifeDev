@@ -284,13 +284,8 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	
 	Param.To = To;
 	ItemsRemoveSame(Param, MPCFloatParams);
+	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCF)) return true;
 
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(To);
-		ItemDoneMPCF(Param);
-		return Ok;
-	} // TODO can be generalized. can forceinline?
-	
 	UMaterialParameterCollectionInstance* const MPCI =
 		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
 	const bool Got = LIKELY(MPCI && MPCI->GetScalarParameterValue(Name, Param.From));
@@ -319,12 +314,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	ItemsRemoveSame(Param, MPCVectorParams);
-	
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(To);
-		ItemDoneMPCV(Param); // notify AFTER change.
-		return Ok;
-	}
+	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCV)) return true;
 
 	// we do it anyway.
 	UMaterialParameterCollectionInstance* const MPCI =
@@ -352,12 +342,7 @@ const float Duration, UCurveFloat* const Curve) {
 	
 	Param.To = To;
 	ItemsRemoveSame(Param, DynFloatParams);
-
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(To);
-		ItemDoneDynF(Param);
-		return Ok;
-	}
+	if (ItemsSetNow(Param, &UAnim::ItemDoneDynF)) return true;
 
 	const bool Got = Mat->GetScalarParameterValue(Name, Param.From); // isvalid is checked somewhere
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
@@ -383,12 +368,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	ItemsRemoveSame(Param, DynVectorParams);
-
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(To);
-		ItemDoneDynV(Param); // notify AFTER change.
-		return Ok;
-	}
+	if (ItemsSetNow(Param, &UAnim::ItemDoneDynV)) return true;
 
 	const bool Got = Mat->GetVectorParameterValue(Name, Param.From); // get the initial value. // is valid is checked somewhere
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
@@ -417,12 +397,7 @@ UCurveFloat* const Curve) {
 	Param.To = To;
 
 	ItemsRemoveSame(Param, SndFloatParams);
-
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(To);
-		ItemDoneSndF(Param);
-		return Ok;
-	}
+	if (ItemsSetNow(Param, &UAnim::ItemDoneSndF)) return true;
 
 	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
 	bool Got = false;
@@ -466,18 +441,14 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	// ItemsRemoveSame(Param, DataParams); // doesn't work because of the index :( 
 	// Removing using a less performant linear search.
 	// Maybe in the future i use a map or smth, but not worthy atm.
-	for (int32 i = DataParams.Num()-1; i>=0; i--) {
-		const FAData& D = DataParams[i];
-		if (D.Comp != Param.Comp || D.Index != Param.Index) continue;
-		DataParams.RemoveAtSwap(i);
-	}
+	// for (int32 i = DataParams.Num()-1; i>=0; i--) {
+		// const FAData& D = DataParams[i];
+		// if (D.Comp != Param.Comp || D.Index != Param.Index) continue;
+		// DataParams.RemoveAtSwap(i);
+	// }
+	ItemsRemoveSame(Param, DataParams); // TODO test
 
-	UE_LOG(LogTemp, Log, TEXT(" Param Fade count =%i"), DataParams.Num());
-	if (FMath::IsNearlyZero(Param.Duration)) {
-		const bool Ok = Param.SetVal(Param.To);
-		ItemDoneData(Param);
-		return Ok;
-	}
+	if (ItemsSetNow(Param, &UAnim::ItemDoneData)) return true;
 
 	const bool Got = Param.GetCurrent(Param.From); // ignore return, we'll do it anyway.
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
@@ -556,6 +527,15 @@ void UAnim::ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr) {
 		if (LIKELY(!Param.IsSame(O))) continue;
 		IOArr.RemoveAtSwap(i);
 	}
+}
+
+template <typename Item>
+bool UAnim::ItemsSetNow(const Item& Param, void(UAnim::* Done)(const Item&)) {
+	if (!FMath::IsNearlyZero(Param.Duration)) return false;
+
+	Param.SetVal(Param.To);
+	(this->*Done)(Param);
+	return true;
 }
 
 bool UAnim::GetIsFadingMPC(

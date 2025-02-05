@@ -331,7 +331,10 @@ protected:
 		void(UAnim::* Done)(const Item&));
 	template<typename Item>
 	void ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr);
-	
+	// ensure te set To and Duration first
+	template<typename Item>
+	bool ItemsSetNow(const Item& Param,
+		void(UAnim::* Done)(const Item&));
 	
 	// can't make const due to the declaration of the pointer
 #pragma region done
