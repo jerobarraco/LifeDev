@@ -55,6 +55,11 @@ public:
 	virtual bool IsSame(const UObject* const OtherObj, const FName OtherName) const {
 		return Name == OtherName && Obj == OtherObj;
 	}
+	// loads the "From" value
+	virtual bool LoadFrom() {
+		UE_LOG(LogTemp, Warning, TEXT("Empty Base LoadFrom"));
+		return false;
+	}
 };
 
 // parameter float
@@ -71,6 +76,7 @@ public:
 
 	virtual bool SetVal(const float Val = 1.0) const;
 	virtual bool SetLerp(const float Prog) override;
+	virtual bool LoadFrom() override;
 };
 
 // dynamic float
@@ -80,7 +86,7 @@ struct FADFloat: public FAPFloat {
 
 public:
 	virtual bool SetVal(const float Val = 1.0) const override;
-	// virtual bool FIsValid() const override;
+	virtual bool LoadFrom() override;
 };
 
 // sound float
@@ -90,7 +96,7 @@ struct FASFloat: public FAPFloat {
 
 public:
 	virtual bool SetVal(const float Val = 1.0) const override;
-	// virtual bool FIsValid() const override;
+	virtual bool LoadFrom() override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -110,6 +116,7 @@ public:
 	
 	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
+	virtual bool LoadFrom() override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -118,7 +125,7 @@ struct FADVector: public FAPVector {
 
 public:
 	virtual bool SetVal(const FLinearColor& Val = FLinearColor::White) const override;
-	// virtual bool FIsValid() const override;
+	virtual bool LoadFrom() override;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -150,6 +157,7 @@ public:
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
 	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; }
+	virtual bool LoadFrom() override;
 };
 
 // Subsystem that animates materials parameter collections' parameters.

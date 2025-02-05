@@ -46,6 +46,30 @@ bool FAPFloat::SetLerp(const float Prog) {
 	return SetVal(Val);
 }
 
+bool FAPFloat::LoadFrom() {
+	const UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	return MPCI && MPCI->GetScalarParameterValue(Name, From);
+}
+
+bool FAPVector::LoadFrom() {
+	const UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	return MPCI && MPCI->GetVectorParameterValue(Name, From);
+}
+
+bool FADFloat::LoadFrom() {
+	const UMaterialInstanceDynamic* const Mat =
+		Cast<UMaterialInstanceDynamic>(Obj);
+	return Mat && Mat->GetScalarParameterValue(Name, From); 
+}
+
+bool FADVector::LoadFrom() {
+	const UMaterialInstanceDynamic* const Mat =
+		Cast<UMaterialInstanceDynamic>(Obj);
+	return Mat && Mat->GetVectorParameterValue(Name, From); 
+}
+
 bool FADFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
@@ -67,6 +91,24 @@ bool FASFloat::SetVal(const float Val) const {
 
 	MM->SetFloatParameter(Name, Val);
 	return true;
+}
+
+bool FASFloat::LoadFrom() {
+	UAudioComponent* Cmp = Cast<UAudioComponent>(Obj);
+	if (UNLIKELY(!Cmp)) return false;
+
+	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
+	for (const FAudioParameter& P : Params) {
+		if (LIKELY(P.ParamName != Name)) continue;
+		From = P.FloatParam;
+		return true;
+	}
+
+	return false;
+}
+
+bool FAData::LoadFrom() {
+	return GetCurrent(From);
 }
 
 bool FADVector::SetVal(const FLinearColor& Val) const {
@@ -98,6 +140,7 @@ bool FAPVector::SetLerp(const float Prog) {
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
+
 
 bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
@@ -286,10 +329,8 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	ItemsRemoveSame(Param, MPCFloatParams);
 	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCF)) return true;
 
-	UMaterialParameterCollectionInstance* const MPCI =
-		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
-	const bool Got = LIKELY(MPCI && MPCI->GetScalarParameterValue(Name, Param.From));
-	UE_CLOG(UNLIKELY(Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
+	const bool Got = Param.LoadFrom();
+	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
 	// TODO last 3 lines can be generalized
@@ -317,9 +358,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	if (ItemsSetNow(Param, &UAnim::ItemDoneMPCV)) return true;
 
 	// we do it anyway.
-	UMaterialParameterCollectionInstance* const MPCI =
-		Cast<UMaterialParameterCollectionInstance>(Param.Obj);
-	const bool Got = LIKELY(MPCI && MPCI->GetVectorParameterValue(Name, Param.From));
+	const bool Got = Param.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__);
 
@@ -344,7 +383,7 @@ const float Duration, UCurveFloat* const Curve) {
 	ItemsRemoveSame(Param, DynFloatParams);
 	if (ItemsSetNow(Param, &UAnim::ItemDoneDynF)) return true;
 
-	const bool Got = Mat->GetScalarParameterValue(Name, Param.From); // isvalid is checked somewhere
+	const bool Got = Param.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
@@ -370,7 +409,7 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	ItemsRemoveSame(Param, DynVectorParams);
 	if (ItemsSetNow(Param, &UAnim::ItemDoneDynV)) return true;
 
-	const bool Got = Mat->GetVectorParameterValue(Name, Param.From); // get the initial value. // is valid is checked somewhere
+	const bool Got = Param.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway if not got
 	
@@ -399,15 +438,8 @@ UCurveFloat* const Curve) {
 	ItemsRemoveSame(Param, SndFloatParams);
 	if (ItemsSetNow(Param, &UAnim::ItemDoneSndF)) return true;
 
-	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
-	bool Got = false;
-	for (const FAudioParameter& P : Params) {
-		if (LIKELY(P.ParamName != Param.Name)) continue;
-		Got = true;
-		Param.From = P.FloatParam;
-		break;
-	}
 
+	const bool Got = Param.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
@@ -424,12 +456,11 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 
 	FAData Param;
 	Param.Index = Index;
-	Param.Name = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	Param.Comp = Component;
 	Param.IsScalar = IsScalar;
-	static const FName PrimDataName("PrimData");
+	const FName PrimDataName = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
 	ParamInitBasic(Param, PrimDataName, Curve, Duration);// ignore the name issue (return)
 
 	if (UNLIKELY(!IsValid(Component))) {
@@ -447,10 +478,8 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 		// DataParams.RemoveAtSwap(i);
 	// }
 	ItemsRemoveSame(Param, DataParams); // TODO test
-
 	if (ItemsSetNow(Param, &UAnim::ItemDoneData)) return true;
-
-	const bool Got = Param.GetCurrent(Param.From); // ignore return, we'll do it anyway.
+	const bool Got = Param.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway if not got
 
@@ -458,7 +487,6 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	IsFading = true;
 	return true;
 }
-
 
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
