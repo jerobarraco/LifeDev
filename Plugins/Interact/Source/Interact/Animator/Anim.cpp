@@ -1,7 +1,6 @@
 #include "Anim.h"
 
 #include "Components/AudioComponent.h"
-#include "GeometryCollection/GeometryCollectionParticlesData.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
