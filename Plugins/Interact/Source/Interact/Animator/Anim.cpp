@@ -8,17 +8,20 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
+#pragma optimize("", off)
+#pragma region structs
 void FABase::AddDT(const float DT, float& Prog) {
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Duration);
-	if (Duration == 0) return; // not nearly zero needed. is just for the division below.
+	if (Duration == 0) return; // don't need nearly zero. it's just for the division below.
 
 	const float RProg = Elapsed / Duration;
 	Prog = IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
 }
 
 bool FABase::Tick(const float DT) {
-	if (UNLIKELY(!FIsValid())) return true;
+	// no need to do this. while it would be an optimization. it's not required.
+	// if (UNLIKELY(!FIsValid())) return true;
 
 	float Prog;
 	AddDT(DT, Prog);
@@ -141,7 +144,6 @@ bool FAPVector::SetLerp(const float Prog) {
 	return SetVal(Val);
 }
 
-
 bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
@@ -211,6 +213,7 @@ bool FAData::SetLerp(const float Prog) {
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
+#pragma endregion
 
 UAnim::UAnim():Super() {}
 
@@ -251,6 +254,7 @@ UCurveFloat* const Curve, const float Duration) const {
 	return true;
 }
 
+#pragma region dones
 void UAnim::ItemDoneDynF(const FADFloat& It) {
 	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 }
@@ -274,6 +278,7 @@ void UAnim::ItemDoneData(const FAData& Item) {
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
 	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
 }
+#pragma endregion
 
 template <typename Item>
 bool UAnim::ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
@@ -397,8 +402,8 @@ void UAnim::Tick(const float DT) {
 }
 
 template <typename Item>
-bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr,
-void(UAnim::* Done)(const Item&)) {
+bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
+	UE_LOG(LogAnim, Log, TEXT("%hs Tick"), __func__);
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
@@ -412,11 +417,11 @@ void(UAnim::* Done)(const Item&)) {
 		}
 
 		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		Item ParOld = Par;
+		Item Old = Par;
 		IOArr.RemoveAtSwap(i);
 		// only at end, to ensure the val is set.
 		if (LIKELY(Done))
-			(this->*Done)(ParOld);
+			(this->*Done)(Old);
 		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
 		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
 		// since new elements would be added at the end of the array, which would be the current index.
@@ -577,3 +582,4 @@ const int32 FAMData::GetDynamicIndex() const {
 		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name);
 }
 */
+#pragma optimize("", on)

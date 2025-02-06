@@ -24,9 +24,11 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
+
+	// the duration
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = 1.0;
-	
+	// how much it has elapsed already
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Elapsed = 1.0;
 
