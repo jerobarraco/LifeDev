@@ -136,9 +136,6 @@ struct FAData: public FABase {
 
 public:
 	UPROPERTY(BlueprintReadWrite, Transient)
-	TObjectPtr<UPrimitiveComponent> Comp = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 Index = -1;
 	// yikes, names only work on material instance Dynamic
 
@@ -158,7 +155,7 @@ public:
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
-	virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; }
+	// virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; }
 	virtual bool LoadFrom() override;
 };
 

@@ -74,9 +74,9 @@ bool FADVector::LoadFrom() {
 }
 
 bool FADFloat::SetVal(const float Val) const {
-	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+	UE_LOG(LogAnim, Log, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!Name.IsNone())) return false;
+	if (UNLIKELY(Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
@@ -87,10 +87,10 @@ bool FADFloat::SetVal(const float Val) const {
 bool FASFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!Name.IsNone())) return false;
+	if (UNLIKELY(Name.IsNone())) return false;
 
 	UAudioComponent* const MM = Cast<UAudioComponent>(Obj);
-	if (UNLIKELY(!MM || !MM->IsPlaying())) return false;
+	if (UNLIKELY(!MM || !MM->IsPlaying())) return false; // isplaying is critical to avoid crash. yes crash.
 
 	MM->SetFloatParameter(Name, Val);
 	return true;
@@ -117,7 +117,7 @@ bool FAData::LoadFrom() {
 bool FADVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(!Name.IsNone())) return false;
+	if (UNLIKELY(Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
@@ -128,7 +128,7 @@ bool FADVector::SetVal(const FLinearColor& Val) const {
 bool FAPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(!Name.IsNone())) return false;
+	if (UNLIKELY(Name.IsNone())) return false;
 
 	UMaterialParameterCollectionInstance* const MM =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
@@ -147,11 +147,11 @@ bool FAPVector::SetLerp(const float Prog) {
 bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
-	if (!FIsValid()) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Invalid component or index. Stop"),
-			__func__);
-		return false;
-	}
+	if (UNLIKELY(Name.IsNone())) return false;
+
+	const UPrimitiveComponent* const Comp =
+		Cast<UPrimitiveComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
 
 	const FCustomPrimitiveData& Prim = Comp->GetCustomPrimitiveData();
 	const int32 Num = Prim.Data.Num();
@@ -187,13 +187,12 @@ bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 
 bool FAData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
-		__func__, *GetNameSafe(Comp), *V.ToString(), Index, IsScalar);
+		__func__, *GetNameSafe(Obj), *V.ToString(), Index, IsScalar);
+	if (UNLIKELY(Name.IsNone())) return false;
 
-	if (UNLIKELY(!FIsValid())) {
-		UE_LOG(LogAnim, Log, TEXT("%hs Invalid component or index. Skip"),
-		__func__);
-		return false;
-	}
+	UPrimitiveComponent* const Comp =
+		Cast<UPrimitiveComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
 	
 	if (IsScalar)
 		Comp->SetCustomPrimitiveDataFloat(Index, V.R);
@@ -272,7 +271,7 @@ void UAnim::ItemDoneMPCV(const FAPVector& Item) {
 }
 
 void UAnim::ItemDoneData(const FAData& Item) {
-	OnItemDoneData.Broadcast(Item.Comp, Item.Index);
+	OnItemDoneData.Broadcast(Cast<UPrimitiveComponent>(Item.Obj), Item.Index);
 }
 
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
@@ -310,7 +309,7 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	if (UNLIKELY(!IsValid(MPC))) return false;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
-
+	
 	FAPFloat Param;
 	Param.To = To;
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
@@ -399,11 +398,12 @@ void UAnim::Tick(const float DT) {
 
 	IsFading = false;
 	OnDone.Broadcast();
+	UE_LOG(LogAnim, Log, TEXT("%hs Tick Done"), __func__);
 }
 
 template <typename Item>
 bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
-	UE_LOG(LogAnim, Log, TEXT("%hs Tick"), __func__);
+	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
