@@ -31,6 +31,7 @@ bool FABase::Tick(const float DT) {
 // define here to avoid including the type on header
 bool FABase::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
 
+#pragma region setval
 bool FAPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
@@ -41,35 +42,6 @@ bool FAPFloat::SetVal(const float Val) const {
 	if (UNLIKELY(!MM)) return false;
 
 	return MM->SetScalarParameterValue(Name, Val);
-}
-
-bool FAPFloat::SetLerp(const float Prog) {
-	const float Val = FMath::LerpStable(From, To, Prog);
-	return SetVal(Val);
-}
-
-bool FAPFloat::LoadFrom() {
-	const UMaterialParameterCollectionInstance* const MPCI =
-		Cast<UMaterialParameterCollectionInstance>(Obj);
-	return MPCI && MPCI->GetScalarParameterValue(Name, From);
-}
-
-bool FAPVector::LoadFrom() {
-	const UMaterialParameterCollectionInstance* const MPCI =
-		Cast<UMaterialParameterCollectionInstance>(Obj);
-	return MPCI && MPCI->GetVectorParameterValue(Name, From);
-}
-
-bool FADFloat::LoadFrom() {
-	const UMaterialInstanceDynamic* const Mat =
-		Cast<UMaterialInstanceDynamic>(Obj);
-	return Mat && Mat->GetScalarParameterValue(Name, From); 
-}
-
-bool FADVector::LoadFrom() {
-	const UMaterialInstanceDynamic* const Mat =
-		Cast<UMaterialInstanceDynamic>(Obj);
-	return Mat && Mat->GetVectorParameterValue(Name, From); 
 }
 
 bool FADFloat::SetVal(const float Val) const {
@@ -96,24 +68,6 @@ bool FASFloat::SetVal(const float Val) const {
 	return true;
 }
 
-bool FASFloat::LoadFrom() {
-	UAudioComponent* const Cmp = Cast<UAudioComponent>(Obj);
-	if (UNLIKELY(!Cmp)) return false;
-
-	const TArray<FAudioParameter>& Params = Cmp->GetInstanceParameters(); // notice is valid at the top
-	for (const FAudioParameter& P : Params) {
-		if (LIKELY(P.ParamName != Name)) continue;
-		From = P.FloatParam;
-		return true;
-	}
-
-	return false;
-}
-
-bool FAData::LoadFrom() {
-	return GetCurrent(From);
-}
-
 bool FADVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
 			__func__, *Name.ToString(), *Val.ToString());
@@ -137,12 +91,136 @@ bool FAPVector::SetVal(const FLinearColor& Val) const {
 	return MM->SetVectorParameterValue(Name, Val);
 }
 
+bool FAData::SetVal(const FLinearColor& V) const {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
+		__func__, *GetNameSafe(Obj), *V.ToString(), Index, IsScalar);
+	if (UNLIKELY(Name.IsNone())) return false;
+
+	UPrimitiveComponent* const Comp =
+		Cast<UPrimitiveComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
+	
+	if (IsScalar)
+		Comp->SetCustomPrimitiveDataFloat(Index, V.R);
+	else
+		Comp->SetCustomPrimitiveDataVector4(Index, V);
+
+	// ONLY works on dynamic material which is what we are trying to avoid
+	// Comp->SetScalarParameterForCustomPrimitiveData(Name, V.R);
+	// Comp->SetVectorParameterForCustomPrimitiveData(Name, V);
+
+	return true;
+}
+
+bool FACTrans::SetVal(const FTransform& Val) const {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
+			__func__, *Name.ToString(), *Val.ToString());
+	if (UNLIKELY(Name.IsNone())) return false;
+
+	USceneComponent* const Comp =
+		Cast<USceneComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
+
+	if (IsWorld)
+		Comp->SetWorldTransform(Val, UseSweep);
+	else
+		Comp->SetRelativeTransform(Val, UseSweep);
+	return true;
+}
+
+#pragma endregion
+#pragma region LoadFrom
+bool FAPFloat::LoadFrom() {
+	const UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	return MPCI && MPCI->GetScalarParameterValue(Name, From);
+}
+
+bool FAPVector::LoadFrom() {
+	const UMaterialParameterCollectionInstance* const MPCI =
+		Cast<UMaterialParameterCollectionInstance>(Obj);
+	return MPCI && MPCI->GetVectorParameterValue(Name, From);
+}
+
+bool FADFloat::LoadFrom() {
+	const UMaterialInstanceDynamic* const Mat =
+		Cast<UMaterialInstanceDynamic>(Obj);
+	return Mat && Mat->GetScalarParameterValue(Name, From); 
+}
+
+bool FADVector::LoadFrom() {
+	const UMaterialInstanceDynamic* const Mat =
+		Cast<UMaterialInstanceDynamic>(Obj);
+	return Mat && Mat->GetVectorParameterValue(Name, From); 
+}
+
+bool FASFloat::LoadFrom() {
+	UAudioComponent* const Comp = Cast<UAudioComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
+
+	const TArray<FAudioParameter>& Params = Comp->GetInstanceParameters(); // notice is valid at the top
+	for (const FAudioParameter& P : Params) {
+		if (LIKELY(P.ParamName != Name)) continue;
+		From = P.FloatParam;
+		return true;
+	}
+
+	return false;
+}
+
+bool FAData::LoadFrom() {
+	return GetCurrent(From);
+}
+
+bool FACTrans::LoadFrom() {
+	const USceneComponent* const Comp = Cast<USceneComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
+
+	From = IsWorld ? Comp->GetComponentTransform() : From = Comp->GetRelativeTransform();
+	return true;
+}
+
+#pragma endregion
+
+#pragma region SetLerp
+bool FAPFloat::SetLerp(const float Prog) {
+	const float Val = FMath::LerpStable(From, To, Prog);
+	return SetVal(Val);
+}
+
 bool FAPVector::SetLerp(const float Prog) {
 	const FLinearColor& Val = UseHSV ?
 		FLinearColor::LerpUsingHSV(From, To, Prog) :
 		FMath::LerpStable(From, To, Prog);
 	return SetVal(Val);
 }
+//
+// bool FAData::SetLerp(const float Prog) {
+// 	const FLinearColor Val = UseHSV ?
+// 		FLinearColor::LerpUsingHSV(From, To, Prog) :
+// 		FMath::LerpStable(From, To, Prog);
+// 	return SetVal(Val);
+// }
+
+bool FACTrans::SetLerp(const float Prog) {
+	USceneComponent* const Comp = Cast<USceneComponent>(Obj);
+	if (UNLIKELY(!Comp)) return false;
+	
+	FTransform TNew = From;
+	if (IsAdditive) {
+		From.BlendFromIdentityAndAccumulate(
+			TNew, To, (const ScalarRegister) Prog);
+	}else {
+		// Thanks, Tim! this actually works very well!
+		TNew.BlendWith(To, Prog);
+	}
+	if (IsWorld)
+		Comp->SetWorldTransform(TNew, UseSweep);
+	else 
+		Comp->SetRelativeTransform(TNew, UseSweep);
+	return true;
+}
+#pragma endregion
 
 bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
@@ -185,33 +263,7 @@ bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	return true;
 }
 
-bool FAData::SetVal(const FLinearColor& V) const {
-	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
-		__func__, *GetNameSafe(Obj), *V.ToString(), Index, IsScalar);
-	if (UNLIKELY(Name.IsNone())) return false;
 
-	UPrimitiveComponent* const Comp =
-		Cast<UPrimitiveComponent>(Obj);
-	if (UNLIKELY(!Comp)) return false;
-	
-	if (IsScalar)
-		Comp->SetCustomPrimitiveDataFloat(Index, V.R);
-	else
-		Comp->SetCustomPrimitiveDataVector4(Index, V);
-
-	// ONLY works on dynamic material which is what we are trying to avoid
-	// Comp->SetScalarParameterForCustomPrimitiveData(Name, V.R);
-	// Comp->SetVectorParameterForCustomPrimitiveData(Name, V);
-
-	return true;
-}
-
-bool FAData::SetLerp(const float Prog) {
-	const FLinearColor Val = UseHSV ?
-		FLinearColor::LerpUsingHSV(From, To, Prog) :
-		FMath::LerpStable(From, To, Prog);
-	return SetVal(Val);
-}
 #pragma endregion
 
 UAnim::UAnim():Super() {}

@@ -131,7 +131,7 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FAData: public FABase {
+struct FAData: public FAPVector {
 	GENERATED_BODY()
 
 public:
@@ -142,17 +142,42 @@ public:
 	bool IsScalar = true;
 	
 	// more expensive but nicer on colors
-	UPROPERTY(BlueprintReadWrite, Transient)
-	bool UseHSV = false;
-
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FLinearColor From = FLinearColor::Black;
-
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FLinearColor To = FLinearColor::White;
+	// UPROPERTY(BlueprintReadWrite, Transient)
+	// bool UseHSV = false;
+	//
+	// UPROPERTY(BlueprintReadWrite, Transient)
+	// FLinearColor From = FLinearColor::Black;
+	//
+	// UPROPERTY(BlueprintReadWrite, Transient)
+	// FLinearColor To = FLinearColor::White;
 
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
+	// virtual bool SetLerp(const float Prog) override;
+	virtual bool LoadFrom() override;
+};
+
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FACTrans: public FABase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FTransform From = FTransform::Identity;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FTransform To = FTransform::Identity;
+
+	// world or relative
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool IsWorld = true;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool IsAdditive = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseSweep = false;
+
+	virtual bool SetVal(const FTransform& Val) const;
 	virtual bool SetLerp(const float Prog) override;
 	virtual bool LoadFrom() override;
 };
