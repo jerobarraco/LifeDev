@@ -143,7 +143,7 @@ public:
 	bool IsScalar = true;
 
 	bool GetCurrent(FLinearColor& OCurrent) const;
-	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
+	virtual bool SetVal(const FLinearColor& V = FLinearColor::White) const override;
 	virtual bool LoadFrom() override;
 };
 
