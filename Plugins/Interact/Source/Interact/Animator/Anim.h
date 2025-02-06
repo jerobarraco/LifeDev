@@ -9,6 +9,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneDyn, UMaterialInstanceDyna
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneMPC, UMaterialParameterCollectionInstance* const, Mat, const FName, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneSnd, UAudioComponent* const, Cmp, const FName, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneData, UPrimitiveComponent* const, Comp, const int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneComp, USceneComponent* const, Comp, const FName, Name);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
@@ -140,20 +141,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool IsScalar = true;
-	
-	// more expensive but nicer on colors
-	// UPROPERTY(BlueprintReadWrite, Transient)
-	// bool UseHSV = false;
-	//
-	// UPROPERTY(BlueprintReadWrite, Transient)
-	// FLinearColor From = FLinearColor::Black;
-	//
-	// UPROPERTY(BlueprintReadWrite, Transient)
-	// FLinearColor To = FLinearColor::White;
 
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
-	// virtual bool SetLerp(const float Prog) override;
 	virtual bool LoadFrom() override;
 };
 
@@ -290,6 +280,15 @@ public:
 		const float Duration = -1, const bool UseHSV = false,
 		UCurveFloat* const Curve = nullptr
 	);
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="To"))
+	bool CompTransFade(USceneComponent* const Comp,
+		const FTransform& To,
+		const float Duration = -1,
+		const bool IsWorld = false,
+		const bool IsAdditive = false,
+		const bool UseSweep = false,
+		UCurveFloat* const Curve = nullptr
+	);
 #pragma endregion
 
 #pragma region isfading
@@ -307,6 +306,8 @@ public:
 	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const;
+	UFUNCTION(BlueprintCallable)
+	bool GetIsFadingComp(const USceneComponent* const Comp) const;
 #pragma endregion
 
 	// default fade duration. can be changed. and can be specified on the .ini config files.
@@ -334,6 +335,8 @@ public:
 	FAnimDoneData OnItemDoneData;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDoneSnd OnItemDoneSnd;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimDoneComp OnItemDoneComp;
 #pragma endregion
 
 protected:
@@ -370,6 +373,7 @@ protected:
 	void ItemDoneMPCV(const FAPVector& Item);
 	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
+	void ItemDoneComp(const FACTrans& Item);
 #pragma endregion
 
 #pragma region Vars
@@ -387,5 +391,7 @@ protected:
 	TArray<FAData> ItemsData;
 	UPROPERTY(Transient)
 	TArray<FASFloat> ItemsSndF;
+	UPROPERTY(Transient)
+	TArray<FACTrans> ItemsCompT;
 #pragma endregion
 };

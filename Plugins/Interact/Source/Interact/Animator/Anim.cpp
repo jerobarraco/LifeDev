@@ -329,6 +329,10 @@ void UAnim::ItemDoneData(const FAData& Item) {
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
 	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
 }
+
+void UAnim::ItemDoneComp(const FACTrans& Item) {
+	OnItemDoneComp.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
+}
 #pragma endregion
 
 template <typename Item>
@@ -423,14 +427,29 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Comp), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
-	FAData Param;
-	Param.Index = Index; // still need the index for getCurrent and SetVal
-	Param.UseHSV = UseHSV;
-	Param.To = To;
-	Param.IsScalar = IsScalar;
+	FAData Item;
+	Item.Index = Index; // still need the index for getCurrent and SetVal
+	Item.UseHSV = UseHSV;
+	Item.To = To;
+	Item.IsScalar = IsScalar;
 	// necessary for polymorphic behavior
 	const FName Name = FName(FString::Printf(TEXT("%i"), Index));
-	return ItemSetup(Param, Comp, Name, Curve, Duration, ItemsData, &UAnim::ItemDoneData);
+	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsData, &UAnim::ItemDoneData);
+}
+
+bool UAnim::CompTransFade(USceneComponent* const Comp, const FTransform& To, const float Duration, const bool IsWorld,
+const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
+	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, to=%s, duration=%.3f"),
+		__func__, *GetNameSafe(Comp), *To.ToString(), Duration);
+
+	FACTrans Item;
+	Item.To = To;
+	Item.UseSweep = UseSweep;
+	Item.IsAdditive = IsAdditive;
+	Item.IsWorld = IsWorld;
+	// necessary for polymorphic behavior
+	static const FName Name = NAME_Transform;
+	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
 void UAnim::Tick(const float DT) {
@@ -443,9 +462,10 @@ void UAnim::Tick(const float DT) {
 	const bool ContDynFloat = ItemTick(DT, ItemsDynF, &UAnim::ItemDoneDynF);
 	const bool ContDynVector = ItemTick(DT, ItemsDynV, &UAnim::ItemDoneDynV);
 	const bool ContSndFloat = ItemTick(DT, ItemsSndF, &UAnim::ItemDoneSndF);
+	const bool ContComp = ItemTick(DT, ItemsCompT, &UAnim::ItemDoneComp);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData
-		|| ContDynFloat || ContDynVector || ContSndFloat;
+		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp;
 
 	if (LIKELY(Continue)) return;
 
@@ -545,6 +565,13 @@ bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 I
 bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 	if (ItemIsIn(Comp, Name, ItemsSndF)) return true;
+	return false;
+}
+
+bool UAnim::GetIsFadingComp(const USceneComponent* const Comp) const {
+	if (UNLIKELY(!IsValid(Comp))) return false;
+	static const FName Name = NAME_Transform;
+	if (ItemIsIn(Comp, Name, ItemsCompT)) return true;
 	return false;
 }
 
