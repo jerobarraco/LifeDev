@@ -74,12 +74,13 @@ bool FADVector::LoadFrom() {
 }
 
 bool FADFloat::SetVal(const float Val) const {
-	UE_LOG(LogAnim, Log, TEXT("%hs Name=%s Val=%.4f"),
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Name.ToString(), Val);
 	if (UNLIKELY(Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
+
 	MM->SetScalarParameterValue(Name, Val);
 	return true;
 }
@@ -398,7 +399,7 @@ void UAnim::Tick(const float DT) {
 
 	IsFading = false;
 	OnDone.Broadcast();
-	UE_LOG(LogAnim, Log, TEXT("%hs Tick Done"), __func__);
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
 }
 
 template <typename Item>
