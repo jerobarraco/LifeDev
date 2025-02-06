@@ -582,6 +582,7 @@ void UAnim::Deinitialize() {
 	ItemsEmpty(ItemsDynF, &UAnim::ItemDoneDynF);
 	ItemsEmpty(ItemsDynV, &UAnim::ItemDoneDynV);
 	ItemsEmpty(ItemsSndF, &UAnim::ItemDoneSndF);
+	ItemsEmpty(ItemsCompT, &UAnim::ItemDoneComp);
 	IsFading = false;
 	Super::Deinitialize();
 }
