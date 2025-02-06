@@ -8,7 +8,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
-#pragma optimize("", off)
 #pragma region structs
 void FABase::AddDT(const float DT, float& Prog) {
 	// clamp to perfect duration, to avoid overshooting.
@@ -314,7 +313,7 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	FAPFloat Param;
 	Param.To = To;
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCFloatParams, &UAnim::ItemDoneMPCF);
+	return ItemSetup(Param, Obj, Name, Curve, Duration, ItemsMPCF, &UAnim::ItemDoneMPCF);
 }
 
 bool UAnim::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
@@ -332,7 +331,7 @@ const FLinearColor& To, const float Duration, const bool UseHSV,
 	if (UNLIKELY(!World)) return false;
 	
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	return ItemSetup(Param, Obj, Name, Curve, Duration, MPCVectorParams, &UAnim::ItemDoneMPCV);
+	return ItemSetup(Param, Obj, Name, Curve, Duration, ItemsMPCV, &UAnim::ItemDoneMPCV);
 }
 
 bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
@@ -342,7 +341,7 @@ const float Duration, UCurveFloat* const Curve) {
 
 	FADFloat Param;
 	Param.To = To;
-	return ItemSetup(Param, Mat, Name, Curve, Duration, DynFloatParams, &UAnim::ItemDoneDynF);
+	return ItemSetup(Param, Mat, Name, Curve, Duration, ItemsDynF, &UAnim::ItemDoneDynF);
 }
 
 bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
@@ -353,44 +352,45 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	FADVector Param;
 	Param.UseHSV = UseHSV;
 	Param.To = To;
-	return ItemSetup(Param, Mat, Name, Curve, Duration, DynVectorParams, &UAnim::ItemDoneDynV);
+	return ItemSetup(Param, Mat, Name, Curve, Duration, ItemsDynV, &UAnim::ItemDoneDynV);
 }
 
-bool UAnim::SndFloatFade(UAudioComponent* const Cmp, const FName Name, const float To, const float Duration,
+bool UAnim::SndFloatFade(UAudioComponent* const Comp, const FName Name, const float To, const float Duration,
 UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 
 	FASFloat Param;
 	Param.To = To;
-	return ItemSetup(Param, Cmp, Name, Curve, Duration, SndFloatParams, &UAnim::ItemDoneSndF);
+	return ItemSetup(Param, Comp, Name, Curve, Duration, ItemsSndF, &UAnim::ItemDoneSndF);
 }
 
-bool UAnim::DataFade(UPrimitiveComponent* const Cmp, const int32 Index, const bool IsScalar,
+bool UAnim::DataFade(UPrimitiveComponent* const Comp, const int32 Index, const bool IsScalar,
 const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
-		__func__, *GetNameSafe(Cmp), Index, IsScalar, *To.ToString(), Duration, UseHSV);
+		__func__, *GetNameSafe(Comp), Index, IsScalar, *To.ToString(), Duration, UseHSV);
 
 	FAData Param;
-	Param.Index = Index;
+	Param.Index = Index; // still need the index for getCurrent and SetVal
 	Param.UseHSV = UseHSV;
 	Param.To = To;
 	Param.IsScalar = IsScalar;
-	const FName Name = FName(FString::Printf(TEXT("%i"), Index)); // TODO test, then i can generalize even more.;
-	return ItemSetup(Param, Cmp, Name, Curve, Duration, DataParams, &UAnim::ItemDoneData);
+	// necessary for polymorphic behavior
+	const FName Name = FName(FString::Printf(TEXT("%i"), Index));
+	return ItemSetup(Param, Comp, Name, Curve, Duration, ItemsData, &UAnim::ItemDoneData);
 }
 
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
 
-	const bool ContMPCFloat = ItemTick(DT, MPCFloatParams, &UAnim::ItemDoneMPCF);
-	const bool ContMPCVec = ItemTick(DT, MPCVectorParams, &UAnim::ItemDoneMPCV);
-	const bool ContData = ItemTick(DT, DataParams, &UAnim::ItemDoneData);
-	const bool ContDynFloat = ItemTick(DT, DynFloatParams, &UAnim::ItemDoneDynF);
-	const bool ContDynVector = ItemTick(DT, DynVectorParams, &UAnim::ItemDoneDynV);
-	const bool ContSndFloat = ItemTick(DT, SndFloatParams, &UAnim::ItemDoneSndF);
+	const bool ContMPCFloat = ItemTick(DT, ItemsMPCF, &UAnim::ItemDoneMPCF);
+	const bool ContMPCVec = ItemTick(DT, ItemsMPCV, &UAnim::ItemDoneMPCV);
+	const bool ContData = ItemTick(DT, ItemsData, &UAnim::ItemDoneData);
+	const bool ContDynFloat = ItemTick(DT, ItemsDynF, &UAnim::ItemDoneDynF);
+	const bool ContDynVector = ItemTick(DT, ItemsDynV, &UAnim::ItemDoneDynV);
+	const bool ContSndFloat = ItemTick(DT, ItemsSndF, &UAnim::ItemDoneSndF);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData
 		|| ContDynFloat || ContDynVector || ContSndFloat;
@@ -470,39 +470,39 @@ bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<It
 bool UAnim::GetIsFadingMPC(
 const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
-	if (ItemIsIn(MPCI, Name, MPCFloatParams)) return true;
-	if (ItemIsIn(MPCI, Name, MPCVectorParams)) return true;
+	if (ItemIsIn(MPCI, Name, ItemsMPCF)) return true;
+	if (ItemIsIn(MPCI, Name, ItemsMPCV)) return true;
 	return false;
 }
 
 bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const {
 	if (UNLIKELY(!IsValid(Mat))) return false;
-	if (ItemIsIn(Mat, Name, DynFloatParams)) return true;
-	if (ItemIsIn(Mat, Name, DynVectorParams)) return true;
+	if (ItemIsIn(Mat, Name, ItemsDynF)) return true;
+	if (ItemIsIn(Mat, Name, ItemsDynV)) return true;
 	return false;
 }
 
-bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Cmp, const int32 Index) const {
-	if (UNLIKELY(!IsValid(Cmp))) return false;
+bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
+	if (UNLIKELY(!IsValid(Comp))) return false;
 
 	const FName Name(FString::Printf(TEXT("%i"), Index));
-	if (ItemIsIn(Cmp, Name, DataParams)) return true;
+	if (ItemIsIn(Comp, Name, ItemsData)) return true;
 	return false;
 }
 
-bool UAnim::GetIsFadingSound(const UAudioComponent* const Cmp, const FName Name) const {
-	if (UNLIKELY(!IsValid(Cmp))) return false;
-	if (ItemIsIn(Cmp, Name, SndFloatParams)) return true;
+bool UAnim::GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const {
+	if (UNLIKELY(!IsValid(Comp))) return false;
+	if (ItemIsIn(Comp, Name, ItemsSndF)) return true;
 	return false;
 }
 
 void UAnim::Deinitialize() {
-	ItemsEmpty(MPCFloatParams, &UAnim::ItemDoneMPCF);
-	ItemsEmpty(MPCVectorParams, &UAnim::ItemDoneMPCV);
-	ItemsEmpty(DataParams, &UAnim::ItemDoneData);
-	ItemsEmpty(DynFloatParams, &UAnim::ItemDoneDynF);
-	ItemsEmpty(DynVectorParams, &UAnim::ItemDoneDynV);
-	ItemsEmpty(SndFloatParams, &UAnim::ItemDoneSndF);
+	ItemsEmpty(ItemsMPCF, &UAnim::ItemDoneMPCF);
+	ItemsEmpty(ItemsMPCV, &UAnim::ItemDoneMPCV);
+	ItemsEmpty(ItemsData, &UAnim::ItemDoneData);
+	ItemsEmpty(ItemsDynF, &UAnim::ItemDoneDynF);
+	ItemsEmpty(ItemsDynV, &UAnim::ItemDoneDynV);
+	ItemsEmpty(ItemsSndF, &UAnim::ItemDoneSndF);
 	IsFading = false;
 	Super::Deinitialize();
 }
@@ -537,8 +537,6 @@ TStatId UAnim::GetStatId() const {
 	// another way RETURN_QUICK_DECLARE_CYCLE_STAT( FMyTickableThing, STATGROUP_Tickables );
 	return GetStatID();
 }
-
-// TODO fix
 
 // thought on using operator== for removing. which looks more "chic".
 // but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
@@ -583,4 +581,3 @@ const int32 FAMData::GetDynamicIndex() const {
 		Comp->GetCustomPrimitiveDataIndexForScalarParameter(Name);
 }
 */
-#pragma optimize("", on)

@@ -137,7 +137,6 @@ struct FAData: public FABase {
 public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 Index = -1;
-	// yikes, names only work on material instance Dynamic
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool IsScalar = true;
@@ -155,7 +154,6 @@ public:
 	bool GetCurrent(FLinearColor& OCurrent) const;
 	bool SetVal(const FLinearColor& V = FLinearColor::White) const;
 	virtual bool SetLerp(const float Prog) override;
-	// virtual bool FIsValid() const override { return IsValid(Comp) && Index >=0; }
 	virtual bool LoadFrom() override;
 };
 
@@ -241,7 +239,7 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool SndFloatFade(UAudioComponent* const Cmp,
+	bool SndFloatFade(UAudioComponent* const Comp,
 		const FName Name, const float To = 1.0, const float Duration = -1,
 		UCurveFloat* const Curve = nullptr);
 #pragma endregion
@@ -261,7 +259,7 @@ public:
 	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
 	//		This is untested though.
 	UFUNCTION(BlueprintCallable)
-	bool DataFade(UPrimitiveComponent* const Cmp,
+	bool DataFade(UPrimitiveComponent* const Comp,
 		const int32 Index, const bool IsScalar = true,
 		const FLinearColor& To = FLinearColor::White,
 		const float Duration = -1, const bool UseHSV = false,
@@ -280,11 +278,10 @@ public:
 	// returns true if a param with that name is fading
 	UFUNCTION(BlueprintCallable)
 	bool GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FName Name) const;
-	// returns true if a param with that name is fading
 	UFUNCTION(BlueprintCallable)
-	bool GetIsFadingData(const UPrimitiveComponent* const Cmp, const int32 Index) const;
+	bool GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const;
 	UFUNCTION(BlueprintCallable)
-	bool GetIsFadingSound(const UAudioComponent* const Cmp, const FName Name) const;
+	bool GetIsFadingSound(const UAudioComponent* const Comp, const FName Name) const;
 #pragma endregion
 
 	// default fade duration. can be changed. and can be specified on the .ini config files.
@@ -301,7 +298,6 @@ public:
 	// when ALL the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDone OnDone;
-	
 	// when a specific mpc param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDoneMPC OnItemDoneMPC;
@@ -342,7 +338,7 @@ protected:
 #pragma endregion
 
 	// can't make const due to the declaration of the pointer
-#pragma region done
+#pragma region Done
 	void ItemDoneDynF(const FADFloat& It);
 	void ItemDoneDynV(const FADVector& It);
 	void ItemDoneMPCF(const FAPFloat& Item) ;
@@ -354,19 +350,17 @@ protected:
 #pragma region Vars
 	bool IsFading = false;
 
-	// TODO rename Params > Items
-
 	UPROPERTY(Transient)
-	TArray<FAPFloat> MPCFloatParams;
+	TArray<FAPFloat> ItemsMPCF;
 	UPROPERTY(Transient)
-	TArray<FAPVector> MPCVectorParams;
+	TArray<FAPVector> ItemsMPCV;
 	UPROPERTY(Transient)
-	TArray<FADFloat> DynFloatParams;
+	TArray<FADFloat> ItemsDynF;
 	UPROPERTY(Transient)
-	TArray<FADVector> DynVectorParams;
+	TArray<FADVector> ItemsDynV;
 	UPROPERTY(Transient)
-	TArray<FAData> DataParams;
+	TArray<FAData> ItemsData;
 	UPROPERTY(Transient)
-	TArray<FASFloat> SndFloatParams;
+	TArray<FASFloat> ItemsSndF;
 #pragma endregion
 };
