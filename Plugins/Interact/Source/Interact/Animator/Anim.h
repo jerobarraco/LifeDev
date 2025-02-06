@@ -313,32 +313,32 @@ public:
 
 protected:
 #pragma region Items
-	bool ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name,
+	template<typename Type>
+	bool ItemSetup(Type& OItem, UObject* const Obj, const FName Name,
+		UCurveFloat* const Curve, const float Duration, TArray<Type>& IOItems,
+		void(UAnim::* Done)(const Type&));
+	bool ItemInitBasic(FABase& OItem, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve = nullptr,
 		const float Duration = -1) const;
-	template<typename Item>
-	bool ItemTick(const float DT, TArray<Item>& IOArr,
-		void(UAnim::* Done)(const Item&));
-	template<typename Item>
-	void ItemsEmpty(TArray<Item>& IOArr,
-		void(UAnim::* Done)(const Item&));
-	template<typename Item>
-	void ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr);
-	// ensure te set To and Duration first
-	template<typename Item>
-	bool ItemsSetNow(const Item& Param,
-		void(UAnim::* Done)(const Item&));
-	template<typename Item>
-	bool ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
-		UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
-		void(UAnim::* Done)(const Item&));
-	template<typename Item>
+	template<typename Type>
+	void ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr);
+	// ensure te set To and Duration before calling.
+	template<typename Type>
+	bool ItemsSetNow(const Type& Item,
+		void(UAnim::* Done)(const Type&));
+	template<typename Type>
+	bool ItemTick(const float DT, TArray<Type>& IOArr,
+		void(UAnim::* Done)(const Type&));
+	template<typename Type>
+	void ItemsEmpty(TArray<Type>& IOArr,
+		void(UAnim::* Done)(const Type&));
+	template<typename Type>
 	FORCEINLINE bool ItemIsIn(const UObject* const Obj, const FName Name,
-		const TArray<Item>& IArr) const;
+		const TArray<Type>& IArr) const;
 #pragma endregion
 
-	// can't make const due to the declaration of the pointer
 #pragma region Done
+	// can't make const due to the declaration of the pointer
 	void ItemDoneDynF(const FADFloat& It);
 	void ItemDoneDynV(const FADVector& It);
 	void ItemDoneMPCF(const FAPFloat& Item) ;

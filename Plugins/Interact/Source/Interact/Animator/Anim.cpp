@@ -226,16 +226,16 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ItemInitBasic(FABase& OParam, UObject* const Obj, const FName Name,
+bool UAnim::ItemInitBasic(FABase& OItem, UObject* const Obj, const FName Name,
 UCurveFloat* const Curve, const float Duration) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
 		__func__, *Name.ToString(), Duration);
 
-	OParam.Obj = Obj;
-	OParam.Name = Name;
-	OParam.Curve = IsValid(Curve) ? Curve : nullptr;
-	OParam.Elapsed = 0.0; // reset in case it was running
-	OParam.Duration = Duration < 0 ? DurationDefault : Duration;
+	OItem.Obj = Obj;
+	OItem.Name = Name;
+	OItem.Curve = IsValid(Curve) ? Curve : nullptr;
+	OItem.Elapsed = 0.0; // reset in case it was running
+	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
 
 	if (UNLIKELY(!IsValid(Obj))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
@@ -244,7 +244,7 @@ UCurveFloat* const Curve, const float Duration) const {
 	}
 
 	// at end to allow for data params
-	if (UNLIKELY(OParam.Name.IsNone())) {
+	if (UNLIKELY(OItem.Name.IsNone())) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Name can't be none. Stop."),
 			__func__);
 		return false;
@@ -280,23 +280,23 @@ void UAnim::ItemDoneSndF(const FASFloat& Item) {
 #pragma endregion
 
 template <typename Item>
-bool UAnim::ItemSetup(Item& OParam, UObject* const Obj, const FName Name,
+bool UAnim::ItemSetup(Item& OItem, UObject* const Obj, const FName Name,
 UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
 void(UAnim::* Done)(const Item&) ) {
-	if (UNLIKELY(!ItemInitBasic(OParam, Obj, Name, Curve, Duration))) {
+	if (UNLIKELY(!ItemInitBasic(OItem, Obj, Name, Curve, Duration))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
 
-	ItemsRemoveSame(OParam, IOItems);
-	if (ItemsSetNow(OParam, Done)) return true;
+	ItemsRemoveSame(OItem, IOItems);
+	if (ItemsSetNow(OItem, Done)) return true;
 
-	const bool Got = OParam.LoadFrom();
+	const bool Got = OItem.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
-	IOItems.Add(OParam);
+	IOItems.Add(OItem);
 	IsFading = true;
 	return true;
 }
@@ -402,14 +402,14 @@ void UAnim::Tick(const float DT) {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
 }
 
-template <typename Item>
-bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
+template <typename Type>
+bool UAnim::ItemTick(const float DT, TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
 	TArray<int32> ToRemove;
 	bool Cont = false;
 	// traversing in reverse to remove on the spot
 	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		Item& Par = IOArr[i];
+		Type& Par = IOArr[i];
 		const bool IsDone = Par.Tick(DT);
 		
 		if (UNLIKELY(!IsDone)) {
@@ -418,7 +418,7 @@ bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr, void(UAnim::* Done)(co
 		}
 
 		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		Item Old = Par;
+		Type Old = Par;
 		IOArr.RemoveAtSwap(i);
 		// only at end, to ensure the val is set.
 		if (LIKELY(Done))
@@ -431,39 +431,39 @@ bool UAnim::ItemTick(const float DT, TArray<Item>& IOArr, void(UAnim::* Done)(co
 	return Cont;
 }
 
-template<typename Item>
-void UAnim::ItemsEmpty(TArray<Item>& IOArr, void(UAnim::* Done)(const Item&)) {
-	TArray<Item> Copy = IOArr;
+template<typename Type>
+void UAnim::ItemsEmpty(TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
+	TArray<Type> Copy = IOArr;
 	IOArr.Empty(); // empty before notifying.
 	if (UNLIKELY(!Done)) return;
 
-	for (const Item& D: Copy)
+	for (const Type& D: Copy)
 		(this->*Done)(D);
 }
 
-template<typename Item>
-void UAnim::ItemsRemoveSame(const Item& Param, TArray<Item>& IOArr) {
+template<typename Type>
+void UAnim::ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		const Item& O = IOArr[i];
-		if (LIKELY(!Param.IsSame(O))) continue;
+		const Type& O = IOArr[i];
+		if (LIKELY(!Item.IsSame(O))) continue;
 		IOArr.RemoveAtSwap(i);
 	}
 }
 
-template <typename Item>
-bool UAnim::ItemsSetNow(const Item& Param, void(UAnim::* Done)(const Item&)) {
-	if (!FMath::IsNearlyZero(Param.Duration)) return false;
+template <typename Type>
+bool UAnim::ItemsSetNow(const Type& Item, void(UAnim::* Done)(const Type&)) {
+	if (!FMath::IsNearlyZero(Item.Duration)) return false;
 
-	Param.SetVal(Param.To);
-	(this->*Done)(Param);
+	Item.SetVal(Item.To);
+	(this->*Done)(Item);
 	return true;
 }
 
 template <typename Item>
 bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<Item>& IArr) const {
-	for (const Item& P: IArr)
-		if (P.IsSame(Obj, Name)) return true;
+	for (const Item& I: IArr)
+		if (I.IsSame(Obj, Name)) return true;
 	return false;
 }
 
