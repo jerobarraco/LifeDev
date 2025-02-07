@@ -42,6 +42,7 @@ public:
 
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
+	// Sequences ending with "*" will only add one *random* dialog from that sequence.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddSeqId(const FName& RowName, const bool Warn=true);
 	// Adds a sequence. Use this to AddManyById.
@@ -55,8 +56,8 @@ public:
 	bool AddRnd(const FDialogSequence& Seq);
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetDiag(
-		const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn=true) const;
+	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar,
+		const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")

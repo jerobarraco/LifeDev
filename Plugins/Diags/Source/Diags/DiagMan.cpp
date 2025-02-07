@@ -157,5 +157,6 @@ void ADiagMan::Skip_Implementation() {
 void ADiagMan::Back_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("Back"));
 	if(UNLIKELY(!IsValid(UI))) return;
+
 	UI->Back();
 }

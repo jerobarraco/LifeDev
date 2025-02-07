@@ -53,7 +53,7 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 		// it will get "expanded" as a parenthesis.
 		// AddId is safe to call many times since ShowNext has a flag
 		const FName& Row = Rows[i];
-		// notice this is recursive. that's on purpose but be careful.
+		// notice this is recursive. that's on purpose, but be careful.
 		const bool Ok = AddId(Row);
 
 		Success = Success && Ok; // ok will set it to false (faster than branch)

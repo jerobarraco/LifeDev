@@ -41,7 +41,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PostHide();
 
-	// could be ==Dlgs.Num() when expecting a new dialog.
+	// could be ==Dlgs.Num() when expecting (waiting for) a new dialog.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	int32 CurDlgI = 0;
 

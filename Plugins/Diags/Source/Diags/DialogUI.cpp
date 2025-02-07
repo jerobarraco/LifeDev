@@ -45,7 +45,7 @@ void UDialogUI::SkipBy_Implementation(const int32 Diff) {
 		return;
 	}
 	// notice the <=. important to be able to show new dialogs after skip
-	// im not super happy about this code, but it's ok.
+	// i'm not super happy about this code, but it's ok.
 	// we can't expect that the done will add the dialog synchronously. that's bad design.
 	if (NewDlgI<=Dlgs.Num()) CurDlgI = NewDlgI;
 	
