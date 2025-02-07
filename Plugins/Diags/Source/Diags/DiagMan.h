@@ -1,6 +1,5 @@
-// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: GPL-2.0
-
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,7 +12,7 @@ class UDialogUI;
 class UInputMappingContext;
 class UInputAction;
 
-// base class for the character
+// The in game manager for dialogs. can be subclassed/extended.
 UCLASS(Blueprintable)
 class DIAGS_API ADiagMan : public AInfo {
 	GENERATED_BODY()
@@ -21,7 +20,6 @@ class DIAGS_API ADiagMan : public AInfo {
 public:
 	ADiagMan();
 
-	// avoid using this. try to cache.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ADiagMan* Instance(const UObject* const O);
 	

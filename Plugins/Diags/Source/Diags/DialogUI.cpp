@@ -1,5 +1,5 @@
-// Copyright (C) 2023 - Jerónimo Barraco-Mármol
-
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 #include "DialogUI.h"
 
 void UDialogUI::ShowDlg_Implementation(const FDialog& Diag) {
