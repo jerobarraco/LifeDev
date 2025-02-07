@@ -25,6 +25,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (UNLIKELY(!Ok)) return false;
 
+	OnAdd.Broadcast(Row, OutDialog); // before addDiag since it will trigger all sorts of other stuff.
 	AddDiag(OutDialog);
 	return true;
 }
