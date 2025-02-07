@@ -13,7 +13,7 @@
 	"FabURL":"com.epicgames.launcher://ue/Fab/product/b94b5c7e-f603-422b-81fe-e4b054b40a8d",
 	"MarketplaceURL": "",
 	"CanContainContent": true,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "Android", "Linux"],
