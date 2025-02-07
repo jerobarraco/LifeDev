@@ -84,7 +84,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsShowing() { return IsShowing; }
 
-	// when a dialog needs to show
+	// When a dialog is added. Beware, this is called before OnShow.
+	// Please don't call Add directly from this, wait a frame.
+	// Otherwise, you might break OnShow or cause stack overflows.
+	UPROPERTY(BlueprintAssignable, Category="Dialogs")
+	FDiagOnAdd OnAdd;
+
+	// when a dialog needs to show. Avoid calling Add directly from this, wait a frame.
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnShow OnShow;
 
@@ -92,8 +98,6 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnDone OnDone;
 
-	UPROPERTY(BlueprintAssignable, Category="Dialogs")
-	FDiagOnAdd OnAdd;
 
 protected:
 	void ShowNext();
