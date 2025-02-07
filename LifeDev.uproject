@@ -156,7 +156,7 @@
 		},
 		{
 			"Name": "CommonUI",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "N10XSourceCodeAccess",
