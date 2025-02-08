@@ -12,6 +12,9 @@ class AStep;
 class UStoryUI;
 class UStory;
 
+// TODO rename to AStoryMan
+// TODO subclass to ALStoryMan and use a new widget ui
+
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStoryManager: public AActor {
 	GENERATED_BODY()
@@ -19,11 +22,11 @@ class STORY_API AStoryManager: public AActor {
 public:
 	AStoryManager();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init();
 	virtual void Init_Implementation();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 	virtual void DeInit_Implementation();
 
@@ -36,8 +39,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FadeOut(const FText& Title = FText::GetEmpty(), const FText& Text = FText::GetEmpty());
 
+	// shows a solid bg. used as a way to fade the whole screen during level loading.
 	UFUNCTION(BlueprintCallable)
-	void ShowBGSolid(bool Show);
+	void ShowBGSolid(const bool Show) const;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 5;
@@ -58,8 +62,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UStoryUI* UI = nullptr;
+	TObjectPtr<UStoryUI> UI = nullptr;
 
 	UPROPERTY(Transient)
-	UStory* Story = nullptr;
+	TObjectPtr<UStory> Story = nullptr;
 };

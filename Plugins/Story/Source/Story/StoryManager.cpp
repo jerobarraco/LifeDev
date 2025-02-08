@@ -13,18 +13,16 @@ AStoryManager::AStoryManager():Super() {
 void AStoryManager::Init_Implementation() {}
 
 void AStoryManager::DeInit_Implementation() {
-	if (IsValid(Story)) {
+	if (LIKELY(IsValid(Story)))
 		Story->OnFade.RemoveAll(this);
-	}
 	Story = nullptr;
 
-	if (UI) {
+	if (LIKELY(UI))
 		UI->RemoveFromParent();
-	}
 	UI = nullptr;
 }
 
-void AStoryManager::Fade(bool In, const FText& Title) {
+void AStoryManager::Fade(const bool In, const FText& Title) {
 	UE_LOG(LogTemp, Log, TEXT("Fading in=%i title='%s'"), In, *Title.ToString());
 	if (In) {
 		FadeIn();
@@ -34,21 +32,21 @@ void AStoryManager::Fade(bool In, const FText& Title) {
 }
 
 void AStoryManager::FadeIn() {
-	if (!IsValid(UI)) return;
+	if (UNLIKELY(!IsValid(UI))) return;
 	// important to re-set the fade time
 	UI->AnimDuration = Story->FadeTime;
 	UI->FadeIn();
 }
 
 void AStoryManager::FadeOut(const FText& Title, const FText& Text) {
-	if (!IsValid(UI)) return;
+	if (UNLIKELY(!IsValid(UI))) return;
 	// important to re-set the fade time
 	UI->AnimDuration = Story->FadeTime;
 	UI->FadeOut(Title, Text);
 }
 
-void AStoryManager::ShowBGSolid(bool Show) {
-	if (!IsValid(UI)) return;
+void AStoryManager::ShowBGSolid(const bool Show) const {
+	if (LIKELY(!IsValid(UI))) return;
 	UI->ShowBGSolid(Show);
 }
 
@@ -60,14 +58,14 @@ void AStoryManager::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	
 	Story = World->GetSubsystem<UStory>();
-	if (Story) Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
+	if (LIKELY(Story)) Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
 	
-	if (IsValid(UIClass.Get())) {
+	if (LIKELY(IsValid(UIClass.Get()))) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));
-		if (IsValid(UI)) {
+		if (LIKELY(IsValid(UI))) {
 			UI->AddToViewport(ZOrder);
 			UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
 		}
