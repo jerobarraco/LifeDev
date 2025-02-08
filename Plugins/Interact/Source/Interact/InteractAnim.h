@@ -25,10 +25,10 @@ public:
 	// Whether it should reverse the animation.
 	// By default, it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool IsReversed() { return StateNum > 1 && IsClosed(); }
+	FORCEINLINE bool IsReversed() const { return StateNum > 1 && IsClosed(); }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE UCAnimatorMix* GetAnim() {return Anim;}
+	FORCEINLINE UCAnimatorMix* GetAnim() const {return Anim;}
 
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,

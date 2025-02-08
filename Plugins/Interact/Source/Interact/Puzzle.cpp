@@ -4,7 +4,9 @@
 #include "Puzzle.h"
 
 #include "Interact.h"
+
 #include "Components/BillboardComponent.h"
+
 #include "Interact/CPuzzle.h"
 
 APuzzle::APuzzle():Super() {

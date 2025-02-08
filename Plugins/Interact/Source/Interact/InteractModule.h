@@ -16,8 +16,8 @@
 // to get the collision channel read https://gamedev.stackexchange.com/a/178812/44866
 // at runtime set it on CInteractor::SetCollissionChannel
 // https://www.youtube.com/watch?v=QQvHZLB4CTU
-class INTERACT_API FInteractModule : public IModuleInterface
-{
+
+class INTERACT_API FInteractModule : public IModuleInterface {
 public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;

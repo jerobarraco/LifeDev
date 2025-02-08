@@ -8,7 +8,7 @@
 
 class AInteract;
 
-// Base class for Puzzles that can optionally trigger a Interact
+// Base class for Puzzles that can optionally trigger an Interact
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API APuzzle: public AActor {
 	GENERATED_BODY()
@@ -20,7 +20,7 @@ public:
 	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetStates(const TArray<int32>& States) {
+	FORCEINLINE void SetStates(const TArray<int32>& States) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
 	
@@ -65,24 +65,25 @@ public:
 	float ResetTimeout = 0;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void ClearTimer();
+	
 	// called when the puzzle is done. override if needed
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Done(const bool IsOk);
 	virtual void Done_Implementation(const bool IsOk);
 
 	// called when the puzzle is updated. override if needed
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Update();
 	virtual void Update_Implementation();
 	
 	// called when the puzzle is reset. override if needed
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DoReset();
 	virtual void DoReset_Implementation() {};
 
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	void ClearTimer();
 
 	// Interact to *trigger* on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")

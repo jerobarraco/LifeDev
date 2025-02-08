@@ -28,12 +28,12 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AInteractAnim::SetText_Implementation() {
 	Super::SetText_Implementation(); // useless
 
-	if (Texts.Num()<1) {
+	if (UNLIKELY(Texts.Num() < 1)) {
 		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
 	}
 
-	if (State < 0) {
+	if (UNLIKELY(State < 0)) {
 		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: Can't set text with invalid state=%i"), State);
 		return;
 	}
@@ -97,7 +97,7 @@ void AInteractAnim::AnimPlay() {
 void AInteractAnim::AnimBegin_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
 	
-	if (State < 0 || State >= SFX_Start.Num()) return;
+	if (UNLIKELY(State < 0 || State >= SFX_Start.Num())) return;
 	USoundBase* const Snd2 = SFX_Start[State];
 	PlaySFX(Snd2);
 }
