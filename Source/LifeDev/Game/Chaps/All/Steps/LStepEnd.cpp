@@ -29,7 +29,7 @@ void ALStepEnd::OpenLevel() {
 }
 
 void ALStepEnd::TryStart_Implementation() {
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	// constexpr float Wait = 2;
 	Super::TryStart_Implementation();
@@ -50,7 +50,7 @@ void ALStepEnd::TryStart_Implementation() {
 	}
 
 	// TODO need to fix the fade that hides it.
-	ALStoryMan* const StoryMan = ALStoryMan::Instance(World);
+	const ALStoryMan* const StoryMan = ALStoryMan::Instance(World);
 	if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(true);
 }
 

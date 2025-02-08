@@ -13,7 +13,6 @@ class UStoryUI;
 class UStory;
 
 // TODO rename to AStoryMan
-// TODO subclass to ALStoryMan and use a new widget ui
 
 UCLASS(Blueprintable, BlueprintType)
 class STORY_API AStoryManager: public AActor {
