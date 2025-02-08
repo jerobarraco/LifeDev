@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
-
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Interact/CInteractor.h"
