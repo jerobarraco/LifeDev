@@ -1,4 +1,5 @@
-// Copyright Jerónimo Barraco-Mármol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #include "InteractHolder.h"
 
@@ -9,7 +10,7 @@ AInteractHolder::AInteractHolder():Super() {
 	Item->SetupAttachment(IRoot);
 }
 
-// TODO figure out why this does not works.
+// TODO figure out why this does not work.
 // void AInteractHolder::PostInitProperties() {
 	// Super::PostInitProperties();
 	// Item->SetChildActorClass(ItemClass);

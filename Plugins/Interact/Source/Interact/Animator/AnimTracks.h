@@ -6,42 +6,13 @@
 
 #include "AnimTracks.generated.h"
 
-// This is just experimental and can be removed at any point
+// This is just experimental and can be removed at any point.
+// kind of like a mixture between the Anim subsystem and the CAnimator*
 
 // thanks to https://slowburn.dev/blog/polymorphic-serialization-in-unreal-engine/
 // unfortunately i won`t import a plugin to have polymorphic structs, and uobjects need to be created by code
-// and i still need to assign the mats and trans by code. so it sucks.
-// uobjects sucks more than structs so i will remove them
-// nothing here should be used anyway.
-//
-// UCLASS(Blueprintable, BlueprintType, EditInlineNew, DefaultToInstanced)
-// class UAnimTrackBase : public UObject {
-// 	GENERATED_BODY()
-//
-// public:
-// 	virtual void Update(float Progress, float Alpha) {};
-// };
-//
-//
-// UCLASS(Blueprintable, BlueprintType, EditInlineNew, DefaultToInstanced)
-// class UOAnimTrackF : public UAnimTrackBase {
-// 	GENERATED_BODY()
-//
-// public:
-// 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-// 	FName Name;
-//
-// 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-// 	float Start = 0.0;
-// 	
-// 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-// 	float End = 1;
-//
-// 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-// 	UMaterialInstanceDynamic* Mat = nullptr;
-//
-// 	virtual void Update(float Progress, float Alpha) override {};
-// };
+// and i still need to assign the mats and trans by code, so it's bad.
+// look at Anim sub for polymorphic structs
 
 // USTRUCT(Blueprintable, BlueprintType)
 // struct INTERACT_API FFAnimTrackBase {
@@ -131,9 +102,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Tracks")
 	TArray<FAnimTrackTrans> Transfs;
-
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Instanced, Category="SetUp|Tracks")
-	// TArray<UAnimTrackBase*> Track;
 	
 protected:
 	virtual void BeginPlay() override;
