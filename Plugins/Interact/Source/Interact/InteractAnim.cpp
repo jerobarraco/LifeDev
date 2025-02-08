@@ -28,13 +28,15 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AInteractAnim::SetText_Implementation() {
 	Super::SetText_Implementation(); // useless
 
-	if (UNLIKELY(Texts.Num() < 1)) {
+	const int32 Num = Texts.Num();
+	if (UNLIKELY(Num < 1)) {
 		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
 	}
 
-	if (UNLIKELY(State < 0)) {
-		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: Can't set text with invalid state=%i"), State);
+	if (UNLIKELY(State < 0 || State >= Num)) {
+		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
+			__func__, State, Num);
 		return;
 	}
 
