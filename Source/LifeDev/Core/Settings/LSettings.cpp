@@ -33,7 +33,8 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 		// not triggering OnSaving here since we're just aborting, and something else must be in the works.
 		return;
 	}
-	
+
+	SetIsSaving(true);
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	if (UNLIKELY(!Save)) {
