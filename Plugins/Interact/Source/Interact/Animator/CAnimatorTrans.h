@@ -38,7 +38,7 @@ public:
 	TObjectPtr<USceneComponent> TRoot = nullptr;
 
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 	virtual void DeInit() override;
 	virtual void BeginPlay() override;
 };

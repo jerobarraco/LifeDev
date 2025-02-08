@@ -43,6 +43,6 @@ public:
 	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 	virtual void DeInit() override;
 };

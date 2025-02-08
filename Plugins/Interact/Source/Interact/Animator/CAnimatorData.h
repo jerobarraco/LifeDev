@@ -9,7 +9,7 @@
 class UCurveFloat;
 class USceneComponent;
 
-// while this is a cool idea, i'm not going to use it.
+// while this is a cool idea, i'm not going to use it in my game.
 // because of how i've already organized the assets.
 // Also using custom primitive data on materials is a mayor pain. so it's not practical.
 // Though i love performance, i'm not into masochism.

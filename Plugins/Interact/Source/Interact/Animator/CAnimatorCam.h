@@ -6,7 +6,7 @@
 
 // Animator for the current camera
 // This only works with cameras that are not being moved while this is animating
-// it will take the current camera position at the begin of playing
+// it will take the current camera position at the beginning of playing
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimatorCam: public UCAnimator {
 	GENERATED_BODY()
@@ -21,7 +21,7 @@ protected:
 	virtual void Update_Implementation(const float Alpha) override;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	APlayerController* Controller = nullptr;
+	TObjectPtr<APlayerController> Controller = nullptr;
 
 	FRotator CamRotEnd;
 	FRotator CamRotStart;

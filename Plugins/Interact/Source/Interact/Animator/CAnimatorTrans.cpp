@@ -8,10 +8,10 @@ void UCAnimatorTrans::DeInit() {
 	Super::DeInit();
 }
 
-void UCAnimatorTrans::Update_Implementation(float Alpha) {
+void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 
-	if (!IsValid(TRoot)) return;
+	if (!IsValid(TRoot)) return; // not unlikely since i use the animator mix, usually never the animator trans by itself.
 
 	FTransform TNew = TStart;
 	if (IsAdditive) {

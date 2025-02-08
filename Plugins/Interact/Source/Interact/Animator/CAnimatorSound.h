@@ -13,7 +13,7 @@ class INTERACT_API UCAnimatorSound: public UCAnimator {
 public:
 	// the sound component to animate
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	UAudioComponent* Snd = nullptr;
+	TObjectPtr<UAudioComponent> Snd = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	FName IntName = NAME_None;
@@ -48,5 +48,5 @@ public:
 	FName TriggerName = NAME_None;
 
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 };

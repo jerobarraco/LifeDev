@@ -593,7 +593,7 @@ void UAnim::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 }
 
-bool UAnim::ShouldCreateSubsystem(UObject* Outer) const {
+bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
 	UE_LOG(LogAnim, Log, TEXT("%hs is=%i."),

@@ -260,6 +260,7 @@ public:
 		const FName Name, const float To = 1.0, const float Duration = -1,
 		UCurveFloat* const Curve = nullptr);
 #pragma endregion
+
 #pragma region data
 	// Fades a custom primitive data.
 	// Index: The index of the data. For a vector this is the start index.

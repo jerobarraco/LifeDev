@@ -13,7 +13,7 @@ UCAnimatorPID::UCAnimatorPID():Super() {
 	Super::Deactivate();
 }
 
-void UCAnimatorPID::TickManual(float DT) {
+void UCAnimatorPID::TickManual(const float DT) {
 	if (!IsActive()) return;
 	// basic tick interval for manual ticks
 	DTAcum += DT;
@@ -24,12 +24,12 @@ void UCAnimatorPID::TickManual(float DT) {
 	DTAcum = 0.0;
 }
 
-void UCAnimatorPID::SetTarget(float NewTgt) {
+void UCAnimatorPID::SetTarget(const float NewTgt) {
 	Target = NewTgt;
 	Activate(false);
 }
 
-void UCAnimatorPID::SetVal(float NewVal) {
+void UCAnimatorPID::SetVal(const float NewVal) {
 	Value = NewVal;
 	Activate(false);
 }
@@ -49,7 +49,7 @@ float UCAnimatorPID::GetVal() const {
 	return OnGetVal.IsBound() ? OnGetVal.Execute() : Value;
 }
 
-void UCAnimatorPID::DoTick(float DT) {
+void UCAnimatorPID::DoTick(const float DT) {
 	if (!AutoUpdateValue) Value = GetVal(); // update
 	Target = GetTarget(); // update
 
@@ -91,7 +91,7 @@ void UCAnimatorPID::DoTick(float DT) {
 
 	OnUpdate.Broadcast(Output, Value);// notify
 
-	// stop check. done after so that deactivate is triggered last
+	// stop check. done after, so that deactivate is triggered last.
 	if (StopTime > 0 && FMath::IsNearlyZero(Error, StopTolerance)) {
 		CoolDown+=DT;
 		if (CoolDown>=StopTime)
@@ -116,7 +116,8 @@ void UCAnimatorPID::Deactivate() {
 	OnStop.Broadcast();
 }
 
-void UCAnimatorPID::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void UCAnimatorPID::TickComponent(const float DeltaTime, const ELevelTick TickType,
+	FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	DoTick(DeltaTime);
 }

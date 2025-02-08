@@ -13,7 +13,7 @@ void UCAnimatorMPC::DeInit() {
 
 void UCAnimatorMPC::Begin_Implementation() {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	MPCI = World->GetParameterCollectionInstance(MPC);
 	
@@ -25,11 +25,11 @@ void UCAnimatorMPC::End_Implementation() {
 	MPCI = nullptr;
 }
 
-void UCAnimatorMPC::Update_Implementation(float Alpha) {
+void UCAnimatorMPC::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 
-	if (!IsValid(MPCI)) {
-		UE_LOG(LogTemp, Warning, TEXT("UCAnimatorMPC::%hs MPC not found. Stop."), __func__);
+	if (UNLIKELY(!IsValid(MPCI))) {
+		UE_LOG(LogTemp, Warning, TEXT("UCAnimatorMPC::%hs MPCI not found. Stop."), __func__);
 		Deactivate();
 		return;
 	}

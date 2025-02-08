@@ -5,13 +5,12 @@
 
 #include "Components/AudioComponent.h"
 
-void UCAnimatorSound::Update_Implementation(float Alpha) {
+void UCAnimatorSound::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 
-	if (!IsValid(Snd)) return;
-	if (!Snd->IsPlaying()) return; // this could lead to a crash
+	if (UNLIKELY(!IsValid(Snd))) return;
+	if (UNLIKELY(!Snd->IsPlaying())) return; // this could lead to a crash
 
-	// TODO test all this stuff
 	if (!IntName.IsNone())
 		Snd->SetIntParameter(IntName, FMath::LerpStable(IntMin, IntMax, Alpha));
 

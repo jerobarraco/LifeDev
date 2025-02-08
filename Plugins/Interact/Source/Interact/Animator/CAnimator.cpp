@@ -73,8 +73,8 @@ void UCAnimator::DoTick(const float DT) {
 		Progress = 1.0;
 	} else {
 		// adjust for duration
-		const float ndt = DT/Duration;
-		Progress += ndt;
+		const float NDT = DT/Duration;
+		Progress += NDT;
 	}
 
 	// check for finish before but allow to process

@@ -8,6 +8,11 @@
 
 // This is just experimental and can be removed at any point.
 // kind of like a mixture between the Anim subsystem and the CAnimator*
+// One thing that is not attractive for this one is that you can't control each track separately.
+// If you want to link several animations you can also do CAnimator::BindTo
+// And if you could, that'd be the Anim subsystem.
+// the other not attractive thing is that it's harder to set-up than using a regular CAnimator*
+// (and slightly less efficient, memory and cpu wise (arrays and ifs))
 
 // thanks to https://slowburn.dev/blog/polymorphic-serialization-in-unreal-engine/
 // unfortunately i won`t import a plugin to have polymorphic structs, and uobjects need to be created by code
@@ -41,9 +46,9 @@ public:
 	float End = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	UMaterialInstanceDynamic* Mat = nullptr;
+	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 
-	void Update(float Alpha);
+	void Update(const float Alpha) const;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -61,9 +66,9 @@ public:
 	FLinearColor End = FLinearColor::White;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	UMaterialInstanceDynamic* Mat = nullptr;
+	TObjectPtr<UMaterialInstanceDynamic> Mat = nullptr;
 
-	void Update(float Alpha);
+	void Update(const float Alpha) const;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -72,7 +77,7 @@ struct INTERACT_API FAnimTrackTrans {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	USceneComponent* Root = nullptr;
+	TObjectPtr<USceneComponent> Root = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FTransform Start;
@@ -83,7 +88,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsAdditive = true;
 	
-	void Update(float Alpha);
+	void Update(const float Alpha) const;
 	void Init();
 };
 
@@ -105,5 +110,5 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 };

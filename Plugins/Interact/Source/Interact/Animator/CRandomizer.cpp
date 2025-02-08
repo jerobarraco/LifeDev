@@ -13,9 +13,9 @@ UCRandomizer::UCRandomizer(): Super() {
 	UCRandomizer::SetActive(false); // not sure if this does much. but...
 }
 
-void UCRandomizer::Activate(bool bReset) {
+void UCRandomizer::Activate(const bool bReset) {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	
 	if (bReset)
 		Reset();
@@ -32,7 +32,7 @@ void UCRandomizer::Activate(bool bReset) {
 
 void UCRandomizer::Reset() {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	
 	FTimerManager& Manager = World->GetTimerManager();
 	Manager.ClearTimer(Timer);

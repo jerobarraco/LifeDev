@@ -11,7 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTriggerVal, float, Val);
 class UCAnimator;
 
 // Class that allows for timed randomization. OPTIONALLY works with an animator (or subclass)
-// Doesn't use tick (yay) (uses timers).
+// Doesn't use tick, uses timers.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCRandomizer: public UActorComponent {
 	GENERATED_BODY()
@@ -19,14 +19,14 @@ class INTERACT_API UCRandomizer: public UActorComponent {
 public:
 	UCRandomizer();
 
-	virtual void Activate(bool bReset = false) override;
+	virtual void Activate(const bool bReset = false) override;
 	virtual void Deactivate() override;
 	
-	// use Activate and deactivate. used for binding.
+	// Test only. use Activate and deactivate. used for binding.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
 	FORCEINLINE void Start() {Activate (true);};
 
-	// use Activate and deactivate
+	// Test only. use Activate and deactivate.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
 	FORCEINLINE void Stop() {Deactivate();};
 
@@ -63,7 +63,7 @@ public:
 
 	// optional animator, if set will be triggered. It will be reset if UseAnimreversed || !UseAnimMirror
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
-	UCAnimator* Anim = nullptr;
+	TObjectPtr<UCAnimator> Anim = nullptr;
 
 	// triggers on each trigger
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Transient, Category="SetUp")

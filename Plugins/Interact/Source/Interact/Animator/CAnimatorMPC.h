@@ -41,15 +41,15 @@ public:
 
 	// the (Material Parameter) Collection to animate
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Material")
-	UMaterialParameterCollection* MPC = nullptr;
+	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 
 protected:
-	virtual void Update_Implementation(float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override;
 	virtual void DeInit() override;
 	virtual void Begin_Implementation() override;
 	virtual void End_Implementation() override;
 	
-	// the component to be animated (hint, use the root component for "global" positioning)
+	// the instance to animate
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UMaterialParameterCollectionInstance* MPCI = nullptr;
+	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 };

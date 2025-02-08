@@ -8,10 +8,11 @@ void UCAnimatorMix::DeInit() {
 	Super::DeInit();
 }
 
-void UCAnimatorMix::Update_Implementation(float Alpha) {
+void UCAnimatorMix::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 
 	if (!IsValid(Mat)) return;
+
 	if (!MatFName.IsNone()) {
 		const float Val = FMath::LerpStable(MatFStart, MatFEnd, Alpha);
 		Mat->SetScalarParameterValue(MatFName, Val);

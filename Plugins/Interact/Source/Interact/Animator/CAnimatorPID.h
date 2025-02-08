@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAPIDStop);
 // Potentially when the target or the owner is affected by external forces or constraints.
 // See note about Output on OnUpdate.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
-class INTERACT_API UCAnimatorPID: public UActorComponent { // UCAnimator {
+class INTERACT_API UCAnimatorPID: public UActorComponent {
 	GENERATED_BODY()
 
 public:
@@ -59,11 +59,11 @@ public:
 	// this value is absolute, not normalized.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float IntegralMax = 0;
-	// Clamps the output. no clamping happens if output min and max are equals. or min>=max.
+	// Clamps the output. no clamping happens if OutputMin and OutputMax are equals. or min>=max.
 	// Not normalized. See OnUpdate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float OutputMin = 0;
-	// Clamps the output. no clamping happens if output min and max are equals. or min>=max.
+	// Clamps the output. no clamping happens if OutputMin and OutputMax are equals. or min>=max.
 	// Not normalized. See OnUpdate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float OutputMax = 0;
@@ -100,12 +100,14 @@ public:
 	UPROPERTY(BlueprintAssignable, Category=SetUp)
 	FAPIDUpdate OnUpdate;
 	// This one gets called every time it needs to measure the value,
-	// this is recommended since it will only be called when about to do the process. with tick interval it might be different.
+	// this is recommended since it will only be called when about to do the process.
+	// with tick interval it might more efficient than uptading it every frame.
 	// It's skipped when using AutoUpdateValue.
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	FAPIDGetVal OnGetVal;
 	// This one gets called every time it needs to measure the target.
-	// this is recommended since it will only be called when about to do the process. with tick interval it might be different. 
+	// this is recommended since it will only be called when about to do the process.
+	// with tick interval it might more efficient than uptading it every frame. 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	FAPIDGetTarget OnGetTarget;
 
