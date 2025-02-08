@@ -41,8 +41,8 @@ AWindow00::AWindow00():Super() {
 	GlassC->SetCastAllShadows(true);
 	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CGlassMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/New/VoxelGlass_NDMI"));
-	if (CGlassMat.Succeeded()) {
+		CGlassMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelGlass_DMI"));
+	if (LIKELY(CGlassMat.Succeeded())) {
 		GlassA->SetMaterial(0, CGlassMat.Object);
 		GlassB->SetMaterial(0, CGlassMat.Object);
 		GlassC->SetMaterial(0, CGlassMat.Object);
