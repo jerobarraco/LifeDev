@@ -8,6 +8,9 @@
 
 class AInteract;
 
+// Note: not setting the Set* functions as Const or bps will show them as pure and won't be able to be executed (facepalm).
+// if they were, they shouldn't be pure anyway.
+
 // Base class for Puzzles that can optionally trigger an Interact
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API APuzzle: public AActor {
@@ -20,7 +23,7 @@ public:
 	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetStates(const TArray<int32>& States) const {
+	FORCEINLINE void SetStates(const TArray<int32>& States) {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
 	
