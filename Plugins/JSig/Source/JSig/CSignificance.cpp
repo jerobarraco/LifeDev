@@ -52,6 +52,7 @@ void UCSignificance::Register() {
 	const FName Tag(Name);
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s"), __func__, *Name);
 
+
 	// don't register if it doesn't have an owner
 	if (UNLIKELY(!IsValid(Owner))) {
 		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register. invalid owner. Stop."), __func__);
@@ -60,7 +61,8 @@ void UCSignificance::Register() {
 
 	USignificanceManager* const Man = USignificanceManager::Get(GetWorld());
 	if (UNLIKELY(!IsValid(Man))) {
-		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register."
+		// note this way of checking for runningcommandlet will not add running cost on shipping builds. and almost none when not cooking.
+		UE_CLOG(LIKELY(!IsRunningCookCommandlet()), LogJSigComp, Warning, TEXT("%hs Can't register."
 			" Can't obtain the significance manager. Stop. Name=%s"), __func__, *Name);
 		return;
 	}

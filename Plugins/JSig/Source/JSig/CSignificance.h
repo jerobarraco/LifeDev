@@ -41,11 +41,11 @@ class JSIG_API UCSignificance: public UActorComponent {
 public:
 	UCSignificance();
 
-	// only used to bind to
+	// only used to bind to.
 	UFUNCTION(BlueprintCallable, Category="JSig")
 	FORCEINLINE void ActivateNow() { Activate(); }
 
-	virtual void Activate(bool bReset=false) override;
+	virtual void Activate(const bool bReset=false) override;
 	virtual void Deactivate() override;
 	
 	// returns the current sig
