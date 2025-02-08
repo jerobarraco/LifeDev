@@ -26,7 +26,7 @@ public:
 	// beware of the IsOffIf* flags, since the animator might not re-activate,
 	// and so this component might never reactivate, hence never becoming on again.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void BindAnim(UCAnimator* Animator);
+	void BindAnim(UCAnimator* const Animator);
 
 	// will bind to one animator
 	UFUNCTION(BlueprintCallable)
@@ -37,5 +37,5 @@ protected:
 	
 	// cache of the bound anim
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UCAnimator* BoundAnim = nullptr;
+	TObjectPtr<UCAnimator> BoundAnim = nullptr;
 };

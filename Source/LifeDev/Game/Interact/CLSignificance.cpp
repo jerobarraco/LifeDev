@@ -6,14 +6,14 @@
 
 UCLSignificance::UCLSignificance() :Super(){ }
 
-void UCLSignificance::BindAnim(UCAnimator* Animator) {
+void UCLSignificance::BindAnim(UCAnimator* const Animator) {
 	UnbindAnim();
-	if (!IsValid(Animator)) return;
+	if (UNLIKELY(!IsValid(Animator))) return;
 
 	BoundAnim = Animator;
 	CompsTicks.AddUnique(BoundAnim);
 	BoundAnim->OnBegin.AddUniqueDynamic(this, &UCLSignificance::ActivateNow);
-	// can't mark this as ufunction, is virtual, the parent is ufunction. it works.
+	// can't mark this as ufunction, it's virtual, the parent is ufunction. it works.
 	// TODO test if it actually does work.
 	BoundAnim->OnEnd.AddUniqueDynamic(this, &UCLSignificance::Deactivate);
 }
