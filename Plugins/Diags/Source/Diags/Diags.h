@@ -82,7 +82,7 @@ public:
 
 	// true when there's a dialog showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsShowing() { return IsShowing; }
+	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
 	// When a dialog is added. Beware, this is called before OnShow.
 	// Please don't call Add directly from this, wait a frame.
