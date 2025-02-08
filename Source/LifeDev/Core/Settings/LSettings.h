@@ -14,7 +14,7 @@ class ULSave;
 class ULGUSettings;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFeatUpdate, const EFeat, Feat, const bool, Enabled);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveReady);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSaving, const bool, IsSaving);
 
 // This class allows to interact with the in-game settings during gameplay.
 UCLASS(Blueprintable, BlueprintType)
@@ -31,6 +31,7 @@ public:
 	// defaults to current slot
 	UFUNCTION(BlueprintCallable)
 	void NewGame(const int32 NewSlotIndex =-1);
+	
 	// loads a game, or creates a new one if not found.
 	// Defaults to current slot.
 	UFUNCTION(BlueprintCallable)
@@ -41,10 +42,10 @@ public:
 	void SaveGame(const int32 NewSlotIndex =-1);
 	// returns true if it's busy saving/loading
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsSaving() { return IsSaving; }
+	FORCEINLINE bool GetIsSaving() const { return IsSaving; }
 	// returns the current slot
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE int32 GetSlotIndex() { return SlotIndex; }
+	FORCEINLINE int32 GetSlotIndex() const { return SlotIndex; }
 
 	// returns the current chapter id. -1 if no valid save or chapter is loaded.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -77,7 +78,7 @@ public:
 
 	// triggered after save or load. even on error.
 	UPROPERTY(BlueprintAssignable, Transient)
-	FOnSaveReady OnSaveReady;
+	FOnSaving OnSaving;
 	
 	// triggered when one of the feat is updated to be enabled or disabled.
 	UPROPERTY(BlueprintAssignable, Transient)
@@ -106,6 +107,7 @@ protected:
 	void FeatUpdated(const EFeat Feat, const bool Enable) const;
 	void SaveGameDone(const FString& Slot, const int32 Index, const bool Success);
 	void LoadGameDone(const FString& Slot, const int32 Index, USaveGame* const LoadedGame);
+	void SetIsSaving(bool NewIsSaving);
 
 	// the current feats enabled in the game
 	UPROPERTY(BlueprintReadOnly, Transient)

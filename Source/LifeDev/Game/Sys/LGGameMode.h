@@ -42,14 +42,6 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction, AdvancedDisplay, WorldContext="O"))
 	static ALGGameMode* Instance(const UObject* const O);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Init();
-	virtual void Init_Implementation();
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DeInit();
-	virtual void DeInit_Implementation();
-
 	// enables or disables char input. and stays like that even though of Diags.
 	UFUNCTION(BlueprintCallable)
 	void SetCharInputEnabled(const bool Enabled);
@@ -106,6 +98,11 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	void Init();
+	void DeInit();
+	UFUNCTION()
+	void InitOnSave(const bool IsBusy);
+	
 	bool LoadChapter();
 	void StartChapter();
 

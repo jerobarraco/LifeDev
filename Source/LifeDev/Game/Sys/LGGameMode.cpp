@@ -88,16 +88,63 @@ bool ALGGameMode::LoadChapter() {
 	return true;
 }
 
-void ALGGameMode::Init_Implementation() {
+void ALGGameMode::BeginPlay() {
+	Super::BeginPlay();
+	
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
+	
+	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (UNLIKELY(!IsValid(Instance))) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
+		return;
+	}
+	
+	Settings = Instance->GetSubsystem<ULSettings>();
+	if (UNLIKELY(!IsValid(Settings))) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
+		return;
+	}
+
+	// load the save and init. note: the init is blocked until the save is available since we really
+	// need that beforehand. and can't work reliably without it.
+	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
+	// - Thank you so much Jero, that's really how i needed it.
+	// - dou itashimashite!
+	if (UNLIKELY(!IsValid(Settings->Save))) {
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
+		Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
+		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
+		return;
+	}
+	
+	if (UNLIKELY(Settings->GetIsSaving())) {
+		Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
+		return;
+	}
+	
+	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
+
+	// manually go to init if it's already loaded.
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
+}
+
+void ALGGameMode::InitOnSave(const bool IsBusy) {
+	if (LIKELY(!IsBusy)) Init();
+}
+
+void ALGGameMode::Init() {
 	// this is the place were we are going to be initializing everything.
 	// the savegame should be already loaded.
-	Settings->OnSaveReady.RemoveAll(this);
+	Settings->OnSaving.RemoveAll(this);
 
 	UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
-	if (!IsValid(SysSettings)) {
+	if (UNLIKELY(!IsValid(SysSettings))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
 		return;
 	}
@@ -107,26 +154,26 @@ void ALGGameMode::Init_Implementation() {
 	
 	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
-	if (!Diags) {
+	if (UNLIKELY(!Diags)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
-	if (!Flags){
+	if (UNLIKELY(!Flags)){
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 	
 	Inventory = World->GetSubsystem<UInventory>();
-	if (!Inventory) {
+	if (UNLIKELY(!Inventory)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
 	
 	Story = World->GetSubsystem<UStory>();
-	if (!Story) {
+	if (UNLIKELY(!Story)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
 		return;
 	}
@@ -233,77 +280,34 @@ void ALGGameMode::Init_Implementation() {
 	Timer.SetTimer(CounterHandle, this, &ALGGameMode::TickCounter, CounterTime, true);
 }
 
-void ALGGameMode::BeginPlay() {
-	Super::BeginPlay();
-	
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!IsValid(World))) return;
-	
-	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (UNLIKELY(!IsValid(Instance))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
-		return;
-	}
-	
-	Settings = Instance->GetSubsystem<ULSettings>();
-	if (UNLIKELY(!IsValid(Settings))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
-		return;
-	}
-
-	// load the save and init. note: the init is blocked until the save is available since we really
-	// need that beforehand. and can't work reliably without it.
-	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
-	// - Thank you so much Jero, that's really how i needed it.
-	// - dou itashimashite!
-	if (UNLIKELY(!IsValid(Settings->Save))) {
-		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
-		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
-		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
-		return;
-	}
-	
-	if (UNLIKELY(Settings->GetIsSaving())) {
-		Settings->OnSaveReady.AddUniqueDynamic(this, &ALGGameMode::Init);
-		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
-		return;
-	}
-	
-	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
-
-	// manually go to init if it's already loaded.
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
-}
-
-void ALGGameMode::DeInit_Implementation() {
+void ALGGameMode::DeInit() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	World->GetTimerManager().ClearAllTimersForObject(this);
 	
-	if (IsValid(Diags)) {
+	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
 		Diags->DeInit();
 	}
 	Diags = nullptr;
 
-	if (IsValid(Inventory)) Inventory->DeInit();
+	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
 	Inventory = nullptr;
 	
-	if (IsValid(Flags)) Flags->DeInit();
+	if (LIKELY(IsValid(Flags))) Flags->DeInit();
 	Flags = nullptr;
 	
-	if (IsValid(DiagMan)) DiagMan->DeInit();
+	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
 	DiagMan = nullptr;
 
 	if (IsValid(InventoryMan)) InventoryMan->DeInit();
 	InventoryMan = nullptr;
 
-	if (IsValid(StoryMan)) StoryMan->DeInit();
+	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
 	StoryMan = nullptr;
 
-	if (IsValid(Story)) {
+	if (LIKELY(IsValid(Story))) {
 		Story->OnSeqStop.RemoveAll(this);
 		Story->OnFade.RemoveAll(this);
 	}
@@ -313,7 +317,7 @@ void ALGGameMode::DeInit_Implementation() {
 	Char = nullptr;
 
 	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
-	if (IsValid(MusicMan)) MusicMan->Fade(false);
+	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
 	MusicMan = nullptr;
 	
 	FlashbackMan = nullptr;
@@ -359,7 +363,7 @@ void ALGGameMode::StartChapter() {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Attempting to start chapter id=%i feat=%s"),
 		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (!IsValid(Instance) || !IsValid(Story)) {
+	if (UNLIKELY(!IsValid(Instance) || !IsValid(Story))) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs No game instance or story or story manager. Can't proceed."),
 			__func__);
@@ -367,14 +371,14 @@ void ALGGameMode::StartChapter() {
 	}
 
 	// stop here to avoid getting the engine stuck trying to load chapters
-	if (ChapFeat == EFeat::C_MAX) {
+	if (UNLIKELY(ChapFeat == EFeat::C_MAX)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
 			__func__, ChapterId);
 		return;
 	}
 	
 	// skip chapter if not enabled or just started
-	if (ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat)) {
+	if (UNLIKELY(ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
 			__func__, ChapterId);
 		StartNextChapter(); // note this is recursive but there ain't that many chapters
@@ -386,7 +390,7 @@ void ALGGameMode::StartChapter() {
 	Settings->SaveGame();
 
 	/// load new one
-	if (!LoadChapter()) {
+	if (UNLIKELY(!LoadChapter())) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
 		return;
 	}
@@ -398,7 +402,7 @@ void ALGGameMode::StartChapter() {
 }
 
 void ALGGameMode::StartNextChapter() {
-	if (!IsValid(Settings->Save)) {
+	if (UNLIKELY(!IsValid(Settings->Save))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
 		return;
 	}
@@ -427,15 +431,15 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	}
 
 	// remove the blinds if it's the 1st time.
-	if (IsFirstFade) {
+	if (UNLIKELY(IsFirstFade)) {
 		IsFirstFade = false;
-		if (StoryMan) StoryMan->ShowBGSolid(false);
+		if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(false);
 	}
 
 	// fading in requires a timer.
 	const float Wait = (Story->FadeTime)+Story->HoldTime;
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	FTimerManager& Time = World->GetTimerManager();
 	FTimerHandle Handle2;
@@ -446,5 +450,5 @@ void ALGGameMode::TickCounter() const {
 	// while these DO work. they now spam the console with 2 "exec commands"
 	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
 	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
-	if (Flags) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime, false);
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime, false);
 }

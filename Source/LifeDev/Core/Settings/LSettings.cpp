@@ -28,6 +28,12 @@ ULSettings* ULSettings::Instance(const UObject* const O) {
 }
 
 void ULSettings::NewGame(const int32 NewSlotIndex) {
+	if (UNLIKELY(IsSaving)) {
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Aborted. Save system is busy. Stop."), __func__);
+		// not triggering OnSaving here since we're just aborting, and something else must be in the works.
+		return;
+	}
+	
 	// Instantiate a new SaveGame object
 	Save = Cast<ULSave>(UGameplayStatics::CreateSaveGameObject(ULSave::StaticClass()));
 	if (UNLIKELY(!Save)) {
@@ -39,17 +45,23 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 	SlotIndex = NewSlotIndex;
 	UE_LOG(LogLSettings, Log, TEXT("%hs: Slot=%i."), __func__, SlotIndex);
 	Save->Reset(GetWorld()); // does write subsystem
-	OnSaveReady.Broadcast(); // broadcast anyway since the game mode will be waiting.
+	SetIsSaving(false);  // broadcast anyway since the game mode will be waiting.
+}
+
+void ULSettings::SetIsSaving(const bool NewIsSaving) {
+	IsSaving = NewIsSaving;
+	OnSaving.Broadcast(NewIsSaving);
 }
 
 void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	// check before modifying internal state
 	if (UNLIKELY(IsSaving)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Load game aborted, save system is busy. STOP"), __func__);
+		// not broadcasting here, since something else is working.
 		return;
 	}
 
-	IsSaving = true;
+	SetIsSaving(true);
 
 	// update target slot
 	if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
@@ -68,19 +80,19 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
 	// -- prolly not. since i still need to test the savegame functionality during gameplay
 	
-	if (UNLIKELY(!Save)) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
-		OnSaveReady.Broadcast(); // technically done. important or objects might get stuck
-		return;
-	}
-	
 	if (UNLIKELY(IsSaving)) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy."), __func__);
-		// not triggering onSaveReady here since there must be something else in queue.
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy. Stop."), __func__);
+		// not triggering OnSaving here since we're just aborting, and something else must be in the works.
 		return;
 	}
 
-	IsSaving = true;
+	if (UNLIKELY(!Save)) {
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
+		SetIsSaving(false); // technically done. important or objects might get stuck (gamemode)
+		return;
+	}
+
+	SetIsSaving(true);
 
 	// update slot index. If parameter is set use that.
 	if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
@@ -100,7 +112,6 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 }
 
 void ULSettings::SaveGameDone(const FString& Slot, const int32 Index, const bool Success) {
-	IsSaving = false;
 	// Call SaveGameToSlot to serialize and save our SaveGameObject with name: <SaveGameSlotName>.sav
 	if (LIKELY(Success)) {
 		UE_LOG(LogLSettings, Log, TEXT("%hs Savegame saved"), __func__);
@@ -109,11 +120,10 @@ void ULSettings::SaveGameDone(const FString& Slot, const int32 Index, const bool
 	}
 
 	// trigger on both cases. important or objects might get stuck.
-	OnSaveReady.Broadcast();
+	SetIsSaving(false);
 }
 
 void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame* const LoadedGame) {
-	IsSaving = false;
 	Save = Cast<ULSave>(LoadedGame);
 	if (UNLIKELY(!Save)) {
 		// If file does not exist, try to create a new one
@@ -122,7 +132,8 @@ void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame*
 		// should assign the slot index here.
 		// otherwise if a game load fails for a given slot. it will override slot 0.
 		// that'd be terrible!
-		NewGame(SlotIndex); // broadcasts. important.
+		IsSaving = false;// clear only for call to new game. internal. no broadcast.
+		NewGame(SlotIndex); // broadcasts inside. important.
 		return;
 	}
 
@@ -130,7 +141,7 @@ void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame*
 	Save->WriteSubsystems(GetWorld());
 	
 	UE_LOG(LogLSettings, Log, TEXT("%hs Load game succeeded."), __func__);
-	OnSaveReady.Broadcast();
+	SetIsSaving(false);
 }
 
 int32 ULSettings::CurrentChapter() const {
@@ -139,15 +150,16 @@ int32 ULSettings::CurrentChapter() const {
 
 EFeat ULSettings::CurrentChapterFeat() const {
 	const int32 ChId = CurrentChapter();
-	const int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
-	if (ChId < 0) return EFeat::NONE;
-	if (ChId >= Max) return EFeat::C_MAX;
+	constexpr int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
+	if (UNLIKELY(ChId < 0)) return EFeat::NONE;
+	if (UNLIKELY(ChId >= Max)) return EFeat::C_MAX;
 	return LDConsts::Feats::ChapFeats[ChId];
 }
 
 void ULSettings::ResetFeats() {
 	ULSysSettings* const Settings = ULSysSettings::Get();
-	if (!Settings) return;
+	if (UNLIKELY(!Settings)) return;
+
 	Feats = Settings->GetFeats();
 }
 
@@ -171,8 +183,11 @@ bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 
 void ULSettings::Init() {
 	ResetFeats();
-	IsSaving = false; // clear. and force for loadgame.
+	
+	// clear. and force for loadgame. not broadcasting here since it will confuse the caller, this is internal only.
+	IsSaving = false;
 
+	// very important that all paths broadcasts
 	const ULSysSettings* const Settings = ULSysSettings::Get();
 	if (LIKELY(Settings && Settings->UseSaveGame)) LoadGame();
 	else NewGame();
