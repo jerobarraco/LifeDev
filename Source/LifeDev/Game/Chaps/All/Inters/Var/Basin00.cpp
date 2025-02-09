@@ -28,7 +28,6 @@ ABasin00::ABasin00():Super() {
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));
 	
-	
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
@@ -46,7 +45,6 @@ ABasin00::ABasin00():Super() {
 	SND_Water->SetSound(CWaterSnd.Object);
 	SND_Water->SetAutoActivate(false);
 	SND_Water->bAutoManageAttachment = true;
-	
 	
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
