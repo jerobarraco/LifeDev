@@ -17,8 +17,8 @@ UFlags* UFlags::Instance(const UObject* const O) {
 void UFlags::Mod(const FName& Name, const float Diff, const bool Log) {
 	if (UNLIKELY(Name.IsNone())) return;
 	
-	const float Val = Get(Name) + Diff; 
-	if (Log) UE_LOG(LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
+	const float Val = Get(Name) + Diff;
+	UE_CLOG(Log, LogFlags, Log, TEXT("%hs: name=%s diff=%3.3f new=%3.3f"),
 		__func__, *Name.ToString(), Diff, Val);
 	
 	Flags.Add(Name, Val);
