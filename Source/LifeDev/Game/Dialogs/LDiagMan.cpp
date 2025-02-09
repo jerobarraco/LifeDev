@@ -12,8 +12,8 @@
 
 ALDiagMan::ALDiagMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI>
-		CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_DialogUI"));
-	UIClass = CUI.Succeeded() ? CUI.Class.Get() : UDialogUI::StaticClass();
+		CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_LDialogUI"));
+	UIClass = LIKELY(CUI.Succeeded()) ? CUI.Class.Get() : UDialogUI::StaticClass();
 }
 
 ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
