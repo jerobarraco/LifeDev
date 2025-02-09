@@ -2,6 +2,7 @@
 
 #include "LStoryMan.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 ALStoryMan* ALStoryMan::Instance(const UObject* const O) {
@@ -11,5 +12,7 @@ ALStoryMan* ALStoryMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 	
 	ALGGameMode* const GM = Cast<ALGGameMode>(World->GetAuthGameMode());
-	return GM ? GM->StoryMan: nullptr;
+	return LIKELY(GM) ?
+		GM->StoryMan:
+		Cast<ALStoryMan>(UGameplayStatics::GetActorOfClass(O, ALStoryMan::StaticClass()));
 }
