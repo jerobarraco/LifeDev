@@ -275,7 +275,7 @@ bool UInventory::IsUsable(const FItem& Item) {
 	if (!Item.Usable) return false;
 
 	if (Item.IsLocked) {
-		UE_LOG(LogInventory, Log, TEXT("%hs Item is blocked. title='%s'"),
+		UE_LOG(LogInventory, Log, TEXT("%hs Item is locked. title='%s'"),
 			__func__, *Item.Title.ToString());
 		return false;
 	}

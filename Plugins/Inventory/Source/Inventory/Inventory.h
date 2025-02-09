@@ -46,7 +46,8 @@ public:
 	// returns whether it was successfully used.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Use(const FName& Name);
-	
+
+	// un/marks an item as locked. (can't be used when locked).
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetLocked(const FName& Name, const bool NewBlocked);
 
