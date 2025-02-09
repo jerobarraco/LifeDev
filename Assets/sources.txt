@@ -1,7 +1,7 @@
- 
+assets that i've used at some point (might not be used anymore)
+
 * pixel art ui borders
 https://gx310.itch.io/pxiel-art-ui-borders
-
 
 * rpg items
 https://gentlecatstudio.itch.io/rpg-items
@@ -21,3 +21,7 @@ Credit would be nice but not necessary.
 https://beamedeighth.itch.io/simplekeys-animated-pixel-keyboard-keys
     You can use these assets in any kind of project you want, personal or commercial. Giving credits is not necessary but appreciated.
     You can't sell these assets.
+
+* diskette
+    https://opengameart.org/content/floppy-diskettes
+    I release this into the public domain - CC0. If you appreciate this work, please feel free to attribute it with a link to this page, but this is optional.

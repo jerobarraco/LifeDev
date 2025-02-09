@@ -3,6 +3,9 @@
 #include "LStoryMan.h"
 
 #include "Kismet/GameplayStatics.h"
+
+#include "Story/StoryUI.h"
+
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 ALStoryMan* ALStoryMan::Instance(const UObject* const O) {
@@ -11,8 +14,16 @@ ALStoryMan* ALStoryMan::Instance(const UObject* const O) {
 	const UWorld* const World = O->GetWorld(); 
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 	
-	ALGGameMode* const GM = Cast<ALGGameMode>(World->GetAuthGameMode());
+	const ALGGameMode* const GM = Cast<ALGGameMode>(World->GetAuthGameMode());
 	return LIKELY(GM) ?
-		GM->StoryMan:
+		GM->StoryMan.Get() :
 		Cast<ALStoryMan>(UGameplayStatics::GetActorOfClass(O, ALStoryMan::StaticClass()));
+}
+
+ALStoryMan::ALStoryMan():Super() {
+	static ConstructorHelpers::FClassFinder<UStoryUI>
+		CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_LStoryUI"));
+	UIClass = LIKELY(CUI.Succeeded()) ? CUI.Class.Get() : UStoryUI::StaticClass();
+	// this contains a save icon animation that will only be seen during the transition between chapters
+	// but since i've intentionally only save at that point, it works.
 }

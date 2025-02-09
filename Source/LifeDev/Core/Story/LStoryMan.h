@@ -14,4 +14,6 @@ class LIFEDEV_API ALStoryMan: public AStoryManager {
 public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALStoryMan* Instance(const UObject* const O);
+
+	ALStoryMan();
 };
