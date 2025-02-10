@@ -2,6 +2,7 @@
 
 #include "LBLogW.h"
 
+#include "Components/ScrollBox.h"
 #include "Diags/Diags.h"
 
 void ULBLogW::NativeOnInitialized() {
@@ -24,8 +25,21 @@ void ULBLogW::NativeDestruct() {
 }
 
 void ULBLogW::AddDiag(const FName Name, const FDialog& Diag) {
-	// TODO
 	Seen.Add(Name);
+
+	if (UNLIKELY(!Scroller)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Need a scrollbox named Scroller."), __func__);
+		return;
+	}
+	
+	ULBLogItemW* const Widget = Cast<ULBLogItemW>(
+		CreateWidget(this, ItemClass.Get()));
+	if (UNLIKELY(!Widget)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Failed to create widget"), __func__);
+		return;
+	}
+	// Widget->SetUp(Diag); // TODO
+	Scroller->AddChild(Widget);
 }
 
 void ULBLogW::AddSpace() {

@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LBLogItemW.h"
 #include "Diags/DiagTypes.h"
 
 #include "LifeDev/Core/Settings/UI/LSetBaseUI.h"
@@ -10,6 +11,8 @@
 
 // currently shown on the settings menu, but later will be moved somewhere else maybe.
 
+class UScrollBox;
+class ULBLogItemW;
 // a stub to show the backlog of dialogs.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULBLogW: public ULSetBaseUI {
@@ -28,4 +31,13 @@ protected:
 	void AddSpace();
 
 	TArray<FName> Seen;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	TSubclassOf<ULBLogItemW> ItemClass = ULBLogItemW::StaticClass();
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	// TSubclassOf<ULBLogSpacer> SpacerClass = ULBLogItemW::StaticClass();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
+	TObjectPtr<UScrollBox> Scroller = nullptr;
+	
 };
