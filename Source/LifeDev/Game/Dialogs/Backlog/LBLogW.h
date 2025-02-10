@@ -24,6 +24,8 @@ public:
 protected:
 	UFUNCTION()
 	void AddDiag(const FName Name, const FDialog& Diag);
+	UFUNCTION()
+	void AddSpace();
 
 	TArray<FName> Seen;
 };
