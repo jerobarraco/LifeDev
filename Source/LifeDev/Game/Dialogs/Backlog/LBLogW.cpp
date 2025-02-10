@@ -6,6 +6,9 @@
 
 #include "Diags/Diags.h"
 
+#include "LBLogItemW.h"
+#include "LBLogSpacerW.h"
+
 ULBLogW::ULBLogW():Super() {
 	static ConstructorHelpers::FClassFinder<ULBLogItemW>
 		CW(TEXT("/Game/LifeDev/Game/Dialogs/BLog/BLogItem_W.BLogItem_W_C"));

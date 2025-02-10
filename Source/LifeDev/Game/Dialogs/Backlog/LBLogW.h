@@ -6,8 +6,6 @@
 #include "Diags/DiagTypes.h"
 
 #include "LifeDev/Core/Settings/UI/LSetBaseUI.h"
-#include "LBLogItemW.h"
-#include "LBLogSpacerW.h"
 
 #include "LBLogW.generated.h"
 
