@@ -6,13 +6,13 @@
 
 #include "LifeDev/Core/Settings/UI/LSetBaseUI.h"
 
-#include "LBacklogUI.generated.h"
+#include "LBLogW.generated.h"
 
 // currently shown on the settings menu, but later will be moved somewhere else maybe.
 
 // a stub to show the backlog of dialogs.
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULBacklogUI : public ULSetBaseUI {
+class LIFEDEV_API ULBLogW: public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
