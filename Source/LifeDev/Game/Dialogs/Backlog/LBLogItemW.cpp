@@ -9,7 +9,7 @@
 
 void ULBLogItemW::SetUp(const FDialog& Diag) {
 	if (UNLIKELY(!T_Name || !R_Diag)) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Need a T_Name and R_Diag widgets"));
+		UE_LOG(LogTemp, Warning, TEXT("BLogItemW %hs Need a T_Name and R_Diag widgets"), __func__);
 		return;
 	}
 

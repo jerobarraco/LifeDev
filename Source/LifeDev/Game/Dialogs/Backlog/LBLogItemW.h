@@ -19,6 +19,7 @@ class LIFEDEV_API ULBLogItemW : public UUserWidget {
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetUp(const FDialog& Diag);
+	// don't const or ue will make it pure. wtf
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))

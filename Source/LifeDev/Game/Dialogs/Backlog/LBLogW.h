@@ -23,6 +23,7 @@ class LIFEDEV_API ULBLogW: public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
+	ULBLogW();
 	virtual void Apply_Implementation() override {};
 	virtual void Load_Implementation() override {};
 	virtual void NativeOnInitialized() override;
@@ -37,10 +38,10 @@ protected:
 	TArray<FName> Seen;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	TSubclassOf<ULBLogItemW> ItemClass = ULBLogItemW::StaticClass();
+	TSubclassOf<ULBLogItemW> ItemClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	TSubclassOf<ULBLogSpacerW> SpacerClass = ULBLogSpacerW::StaticClass();
+	TSubclassOf<ULBLogSpacerW> SpacerClass = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> Scroller = nullptr;

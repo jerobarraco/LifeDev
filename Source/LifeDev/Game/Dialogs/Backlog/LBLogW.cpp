@@ -6,10 +6,21 @@
 
 #include "Diags/Diags.h"
 
+ULBLogW::ULBLogW():Super() {
+	static ConstructorHelpers::FClassFinder<ULBLogItemW>
+		CW(TEXT("/Game/LifeDev/Game/Dialogs/BLog/BLogItem_W.BLogItem_W_C"));
+	ItemClass = CW.Succeeded() ? CW.Class.Get() : ULBLogItemW::StaticClass();
+	static ConstructorHelpers::FClassFinder<ULBLogSpacerW>
+		CSp(TEXT("/Game/LifeDev/Game/Dialogs/BLog/BLogSpacer_W.BLogSpacer_W_C"));
+	SpacerClass = CSp.Succeeded() ? CSp.Class.Get() : ULBLogSpacerW::StaticClass();
+}
+
 void ULBLogW::NativeOnInitialized() {
 	Super::NativeOnInitialized();
+
 	UDiags* const Diags = UDiags::Instance(this);
 	if (UNLIKELY(!Diags)) return;
+
 	Diags->OnAdd.AddUniqueDynamic(this, &ULBLogW::DiagAdd);
 	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::DiagSpace);
 	// bind to the diags
