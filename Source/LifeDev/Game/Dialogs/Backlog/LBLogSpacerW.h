@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 
-#include "LBLogItemW.generated.h"
+#include "LBLogSpacerW.generated.h"
 
 // currently shown on the settings menu, but later will be moved somewhere else maybe.
 

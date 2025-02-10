@@ -16,6 +16,7 @@
 class ULBLogSpacerW;
 class UScrollBox;
 class ULBLogItemW;
+
 // a stub to show the backlog of dialogs.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULBLogW: public ULSetBaseUI {

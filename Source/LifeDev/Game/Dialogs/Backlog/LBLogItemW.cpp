@@ -2,7 +2,25 @@
 
 #include "LBLogItemW.h"
 
+#include "Components/RichTextBlock.h"
+#include "Components/TextBlock.h"
+
+#include "Diags/Diags.h"
 
 void ULBLogItemW::SetUp(const FDialog& Diag) {
+	if (UNLIKELY(!T_Name || !R_Diag)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Need a T_Name and R_Diag widgets"));
+		return;
+	}
+
+	R_Diag->SetText(Diag.Text);
 	
+	const UDiags* const Diags = UDiags::Instance(this);
+	if (UNLIKELY(!Diags)) return;
+
+	FDialogChar Char;
+	if (UNLIKELY(!Diags->GetChar(Diag.CharRow, Char, true))) return;
+
+	T_Name->SetText(Char.Name);
+	T_Name->SetColorAndOpacity(FSlateColor(Char.Color));
 }

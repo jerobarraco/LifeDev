@@ -9,6 +9,8 @@
 
 // currently shown on the settings menu, but later will be moved somewhere else maybe.
 
+class UTextBlock;
+class URichTextBlock;
 // a stub to show the backlog of dialogs.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULBLogItemW : public UUserWidget {
@@ -19,6 +21,9 @@ public:
 	void SetUp(const FDialog& Diag);
 
 protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> T_Name = nullptr;
 
-	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
+	TObjectPtr<URichTextBlock> R_Diag = nullptr;
 };
