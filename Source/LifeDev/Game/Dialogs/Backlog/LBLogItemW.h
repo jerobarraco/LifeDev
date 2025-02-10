@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "LifeDev/Game/Dialogs/LDialogUI.h"
 
 #include "LBLogItemW.generated.h"
 
@@ -14,5 +15,8 @@ class LIFEDEV_API ULBLogItemW : public UUserWidget {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void SetUp(const FDialog& Diag);
+
 protected:
 };

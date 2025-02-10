@@ -44,7 +44,7 @@ void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 		return;
 	}
 
-	// Widget->SetUp(Diag); // TODO
+	Widget->SetUp(Diag);
 	Scroller->AddChild(Widget);
 }
 
@@ -54,7 +54,6 @@ void ULBLogW::DiagSpace() {
 		return;
 	}
 
-	// TODO class
 	ULBLogSpacerW* const Widget = Cast<ULBLogSpacerW>(
 		CreateWidget(this, SpacerClass.Get()));
 	if (UNLIKELY(!Widget)) {
@@ -62,6 +61,5 @@ void ULBLogW::DiagSpace() {
 		return;
 	}
 
-	// Widget->SetUp(Diag); // TODO
 	Scroller->AddChild(Widget);
 }

@@ -3,3 +3,6 @@
 #include "LBLogItemW.h"
 
 
+void ULBLogItemW::SetUp(const FDialog& Diag) {
+	
+}
