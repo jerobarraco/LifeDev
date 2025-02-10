@@ -20,4 +20,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();
 	virtual void Load_Implementation(){}
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
+	void Show();
+	virtual void Show_Implementation(){}
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
+	void Hide();
+	virtual void Hide_Implementation(){}
 };

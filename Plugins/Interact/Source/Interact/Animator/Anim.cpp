@@ -374,7 +374,7 @@ const float To, const float Duration, UCurveFloat* const Curve) {
 	return ItemSetup(Param, Obj, Name, Curve, Duration, ItemsMPCF, &UAnim::ItemDoneMPCF);
 }
 
-bool UAnim::VectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
+bool UAnim::MPCVectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const FLinearColor& To, const float Duration, const bool UseHSV,
 	UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),

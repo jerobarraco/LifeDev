@@ -20,11 +20,11 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Apply();
 	virtual void Apply_Implementation(){}
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();
 	virtual void Load_Implementation(){}
 

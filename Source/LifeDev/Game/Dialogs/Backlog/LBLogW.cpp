@@ -25,7 +25,7 @@ void ULBLogW::NativeOnInitialized() {
 	if (UNLIKELY(!Diags)) return;
 
 	Diags->OnAdd.AddUniqueDynamic(this, &ULBLogW::DiagAdd);
-	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::DiagSpace);
+	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::DiagDone);
 	// bind to the diags
 }
 
@@ -42,12 +42,14 @@ void ULBLogW::NativeDestruct() {
 void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 	if (UNLIKELY(Seen.Contains(Name))) return;
 	Seen.Add(Name);
-
+	
 	if (UNLIKELY(!Scroller)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Need a scrollbox named Scroller."), __func__);
 		return;
 	}
-	
+
+	DiagSpace();
+
 	ULBLogItemW* const Widget = Cast<ULBLogItemW>(
 		CreateWidget(this, ItemClass.Get()));
 	if (UNLIKELY(!Widget)) {
@@ -59,7 +61,13 @@ void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 	Scroller->AddChild(Widget);
 }
 
+void ULBLogW::DiagDone() {
+	NeedsSpacer = true; 
+}
+
 void ULBLogW::DiagSpace() {
+	if (!NeedsSpacer) return;
+
 	if (UNLIKELY(!Scroller)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Need a scrollbox named Scroller."), __func__);
 		return;
@@ -73,4 +81,5 @@ void ULBLogW::DiagSpace() {
 	}
 
 	Scroller->AddChild(Widget);
+	NeedsSpacer = false;
 }

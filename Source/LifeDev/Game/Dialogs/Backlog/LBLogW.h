@@ -32,8 +32,8 @@ protected:
 	void DiagAdd(const FName Name, const FDialog& Diag);
 	UFUNCTION()
 	void DiagSpace();
-
-	TArray<FName> Seen;
+	UFUNCTION()
+	void DiagDone();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	TSubclassOf<ULBLogItemW> ItemClass = nullptr;
@@ -43,4 +43,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> Scroller = nullptr;
+
+	TArray<FName> Seen;
+	bool NeedsSpacer = false;
 };
