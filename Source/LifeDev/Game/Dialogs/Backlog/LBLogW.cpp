@@ -45,5 +45,19 @@ void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 }
 
 void ULBLogW::DiagSpace() {
-	// TODO
+	if (UNLIKELY(!Scroller)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Need a scrollbox named Scroller."), __func__);
+		return;
+	}
+
+	// TODO class
+	ULBLogItemW* const Widget = Cast<ULBLogItemW>(
+		CreateWidget(this, SpacerClass.Get()));
+	if (UNLIKELY(!Widget)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Failed to create widget"), __func__);
+		return;
+	}
+
+	// Widget->SetUp(Diag); // TODO
+	Scroller->AddChild(Widget);
 }

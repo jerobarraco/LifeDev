@@ -34,10 +34,11 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	TSubclassOf<ULBLogItemW> ItemClass = ULBLogItemW::StaticClass();
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	// TSubclassOf<ULBLogSpacer> SpacerClass = ULBLogItemW::StaticClass();
+
+	// TODO real class
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	TSubclassOf<UUserWidget> SpacerClass = ULBLogItemW::StaticClass();
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> Scroller = nullptr;
-	
 };
