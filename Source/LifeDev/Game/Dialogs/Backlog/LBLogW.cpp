@@ -3,6 +3,10 @@
 #include "LBLogW.h"
 
 #include "Components/ScrollBox.h"
+
+#include "LBLogSpacerW.h"
+#include "LBLogItemW.h"
+
 #include "Diags/Diags.h"
 
 void ULBLogW::NativeOnInitialized() {
@@ -51,7 +55,7 @@ void ULBLogW::DiagSpace() {
 	}
 
 	// TODO class
-	ULBLogItemW* const Widget = Cast<ULBLogItemW>(
+	ULBLogSpacerW* const Widget = Cast<ULBLogSpacerW>(
 		CreateWidget(this, SpacerClass.Get()));
 	if (UNLIKELY(!Widget)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Failed to create widget"), __func__);
