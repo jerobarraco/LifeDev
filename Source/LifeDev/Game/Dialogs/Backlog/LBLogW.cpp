@@ -9,8 +9,8 @@ void ULBLogW::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	UDiags* const Diags = UDiags::Instance(this);
 	if (UNLIKELY(!Diags)) return;
-	Diags->OnAdd.AddUniqueDynamic(this, &ULBLogW::AddDiag);
-	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::AddSpace);
+	Diags->OnAdd.AddUniqueDynamic(this, &ULBLogW::DiagAdd);
+	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::DiagSpace);
 	// bind to the diags
 }
 
@@ -24,7 +24,8 @@ void ULBLogW::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void ULBLogW::AddDiag(const FName Name, const FDialog& Diag) {
+void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
+	if (UNLIKELY(Seen.Contains(Name))) return;
 	Seen.Add(Name);
 
 	if (UNLIKELY(!Scroller)) {
@@ -38,10 +39,11 @@ void ULBLogW::AddDiag(const FName Name, const FDialog& Diag) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Failed to create widget"), __func__);
 		return;
 	}
+
 	// Widget->SetUp(Diag); // TODO
 	Scroller->AddChild(Widget);
 }
 
-void ULBLogW::AddSpace() {
+void ULBLogW::DiagSpace() {
 	// TODO
 }
