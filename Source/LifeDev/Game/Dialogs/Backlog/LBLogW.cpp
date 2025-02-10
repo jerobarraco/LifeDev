@@ -4,9 +4,6 @@
 
 #include "Components/ScrollBox.h"
 
-#include "LBLogSpacerW.h"
-#include "LBLogItemW.h"
-
 #include "Diags/Diags.h"
 
 void ULBLogW::NativeOnInitialized() {

@@ -19,4 +19,6 @@ public:
 	void SetUp(const FDialog& Diag);
 
 protected:
+
+	
 };

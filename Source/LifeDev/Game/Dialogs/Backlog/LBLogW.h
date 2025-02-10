@@ -6,6 +6,8 @@
 #include "Diags/DiagTypes.h"
 
 #include "LifeDev/Core/Settings/UI/LSetBaseUI.h"
+#include "LBLogItemW.h"
+#include "LBLogSpacerW.h"
 
 #include "LBLogW.generated.h"
 
@@ -37,7 +39,7 @@ protected:
 	TSubclassOf<ULBLogItemW> ItemClass = ULBLogItemW::StaticClass();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
-	TSubclassOf<ULBLogSpacerW> SpacerClass = ULBLogItemW::StaticClass();
+	TSubclassOf<ULBLogSpacerW> SpacerClass = ULBLogSpacerW::StaticClass();
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> Scroller = nullptr;
