@@ -26,7 +26,6 @@ void ULBLogW::NativeOnInitialized() {
 
 	Diags->OnAdd.AddUniqueDynamic(this, &ULBLogW::DiagAdd);
 	Diags->OnDone.AddUniqueDynamic(this, &ULBLogW::DiagDone);
-	// bind to the diags
 }
 
 void ULBLogW::NativeDestruct() {
@@ -83,3 +82,6 @@ void ULBLogW::DiagSpace() {
 	Scroller->AddChild(Widget);
 	NeedsSpacer = false;
 }
+
+
+// todo override to show and set the mpc textprogress to 1 with animation
