@@ -2,6 +2,7 @@
 
 #include "Clout.h"
 
+#include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
 AClout::AClout():Super() {
@@ -16,4 +17,5 @@ AClout::AClout():Super() {
 	// a bit lazy, ideally should be set to true on each child instance.
 	// Assumes all children will fade. will create a new material.
 	UseFade = true;
+	Mesh->SetCastAllShadows(true);
 }
