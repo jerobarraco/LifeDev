@@ -27,25 +27,26 @@ void ABooks::CreateBooks() {
 	for (int32 i =0; i<BookCount; ++i) {
 		const FString SName = TEXT("Book_") + FString::FromInt(i);
 		UCQuickMesh* const QM = CreateDefaultSubobject<UCQuickMesh>(FName(*SName));
-		if (!QM) continue;
+		if (UNLIKELY(!QM)) continue;
 
 		QM->SetupAttachment(Mesh);
 		QM->SetStaticMesh(CMesh.Object);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
 		QM->SetRelativeLocation(FVector(0, OffY, Spacing*i));
-		
+		QM->SetCastAllShadows(true);
+
 		Books.Add(QM);
 		AnimFade->Meshes.Add(QM);
 
-		if (MatMax <= 0) continue;
+		if (UNLIKELY(MatMax <= 0)) continue;
 
 		const int32 MatI = RS.RandRange(0, MatMax);
 
 		TSoftObjectPtr<UMaterialInterface> Ptr = Materials[MatI];
-		if (!Ptr.IsValid()) continue;
+		if (UNLIKELY(!Ptr.IsValid())) continue;
 		
 		UMaterialInterface* const Mat = Ptr.LoadSynchronous();
-		if (!IsValid(Mat)) {
+		if (UNLIKELY(!IsValid(Mat))) {
 			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material=%s"),
 				__func__, *Ptr.ToString());
 			continue;
