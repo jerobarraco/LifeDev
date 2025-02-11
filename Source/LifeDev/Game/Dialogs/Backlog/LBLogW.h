@@ -26,7 +26,8 @@ public:
 	virtual void Load_Implementation() override {};
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
-
+	virtual void Show_Implementation() override;
+	
 protected:
 	UFUNCTION()
 	void DiagAdd(const FName Name, const FDialog& Diag);
@@ -41,8 +42,15 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
 	TSubclassOf<ULBLogSpacerW> SpacerClass = nullptr;
 	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Setup")
+	float AnimTime = .5;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> Scroller = nullptr;
+
+	//HAS to be transient, or it will not compile the bp
+	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
+	TObjectPtr<UWidgetAnimation> AText = nullptr;
 
 	TArray<FName> Seen;
 	bool NeedsSpacer = false;

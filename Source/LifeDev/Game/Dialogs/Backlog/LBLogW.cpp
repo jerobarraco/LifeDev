@@ -8,6 +8,7 @@
 
 #include "LBLogItemW.h"
 #include "LBLogSpacerW.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ULBLogW::ULBLogW():Super() {
 	static ConstructorHelpers::FClassFinder<ULBLogItemW>
@@ -38,6 +39,19 @@ void ULBLogW::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
+void ULBLogW::Show_Implementation() {
+	Super::Show_Implementation();
+
+	if (UNLIKELY(!AText)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid AText."), __func__);
+		return;
+	}
+
+	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimTime);
+	PlayAnimation(AText, 0, 1,
+		EUMGSequencePlayMode::Forward, Speed);
+}
+
 void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 	if (UNLIKELY(Seen.Contains(Name))) return;
 	Seen.Add(Name);
@@ -61,7 +75,7 @@ void ULBLogW::DiagAdd(const FName Name, const FDialog& Diag) {
 }
 
 void ULBLogW::DiagDone() {
-	NeedsSpacer = true; 
+	NeedsSpacer = true;
 }
 
 void ULBLogW::DiagSpace() {
@@ -84,4 +98,3 @@ void ULBLogW::DiagSpace() {
 }
 
 
-// todo override to show and set the mpc textprogress to 1 with animation
