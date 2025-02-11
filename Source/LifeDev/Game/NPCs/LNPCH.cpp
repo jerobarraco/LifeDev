@@ -10,44 +10,57 @@ ALNPCH::ALNPCH():Super() {
 	Locked = true;
 	Texts = { FText::FromString("Talk") };
 
-	Pelvis = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pelvis"));
+	Pelvis = CreateDefaultSubobject<UCQuickMesh>(TEXT("Pelvis"));
 	Pelvis->SetupAttachment(Mesh);
+	Pelvis->SetCastAllShadows(true);
 
-	Torso = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torso"));
+	Torso = CreateDefaultSubobject<UCQuickMesh>(TEXT("Torso"));
 	Torso->SetupAttachment(Pelvis);
+	Torso->SetCastAllShadows(true);
 
-	Head = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Head"));
+	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Head"));
 	Head->SetupAttachment(Torso);
+	Head->SetCastAllShadows(true);
 
-	ArmL1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmL1"));
+	ArmL1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmL1"));
 	ArmL1->SetupAttachment(Torso);
+	ArmL1->SetCastAllShadows(true);
 		
-	ArmR1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmR1"));
+	ArmR1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmR1"));
 	ArmR1->SetupAttachment(Torso);
+	ArmR1->SetCastAllShadows(true);
 
-	ArmL2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmL2"));
+	ArmL2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmL2"));
 	ArmL2->SetupAttachment(ArmL1);
+	ArmL2->SetCastAllShadows(true);
 
-	ArmR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmR2"));
+	ArmR2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmR2"));
 	ArmR2->SetupAttachment(ArmR1);
+	ArmR2->SetCastAllShadows(true);
 	
-	LegL1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LegL1"));
+	LegL1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegL1"));
 	LegL1->SetupAttachment(Pelvis);
+	LegL1->SetCastAllShadows(true);
 	
-	LegR1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LegR1"));
+	LegR1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegR1"));
 	LegR1->SetupAttachment(Pelvis);
+	LegR1->SetCastAllShadows(true);
 
-	LegL2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LegL2"));
+	LegL2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegL2"));
 	LegL2->SetupAttachment(LegL1);
+	LegL2->SetCastAllShadows(true);
 
-	LegR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LegR2"));
+	LegR2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegR2"));
 	LegR2->SetupAttachment(LegR1);
+	LegR2->SetCastAllShadows(true);
 
-	FootL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FootL"));
+	FootL = CreateDefaultSubobject<UCQuickMesh>(TEXT("FootL"));
 	FootL->SetupAttachment(LegL2);
+	FootL->SetCastAllShadows(true);
 	
-	FootR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FootR"));
+	FootR = CreateDefaultSubobject<UCQuickMesh>(TEXT("FootR"));
 	FootR->SetupAttachment(LegR2);
+	FootR->SetCastAllShadows(true);
 
 	/// anim fade
 	AnimFade->Meshes = {

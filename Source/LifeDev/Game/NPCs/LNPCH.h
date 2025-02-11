@@ -66,29 +66,29 @@ protected:
 	FNPCHPose PoseBase;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Head = nullptr;
+	TObjectPtr<UCQuickMesh> Head = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Torso = nullptr;
+	TObjectPtr<UCQuickMesh> Torso = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Pelvis = nullptr;
+	TObjectPtr<UCQuickMesh> Pelvis = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> ArmL1 = nullptr;
+	TObjectPtr<UCQuickMesh> ArmL1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> ArmR1 = nullptr;
+	TObjectPtr<UCQuickMesh> ArmR1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> ArmL2 = nullptr;
+	TObjectPtr<UCQuickMesh> ArmL2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> ArmR2 = nullptr;
+	TObjectPtr<UCQuickMesh> ArmR2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> LegL1 = nullptr;
+	TObjectPtr<UCQuickMesh> LegL1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> LegR1 = nullptr;
+	TObjectPtr<UCQuickMesh> LegR1 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> LegL2 = nullptr;
+	TObjectPtr<UCQuickMesh> LegL2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> LegR2 = nullptr;
+	TObjectPtr<UCQuickMesh> LegR2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> FootL = nullptr;
+	TObjectPtr<UCQuickMesh> FootL = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> FootR = nullptr;
+	TObjectPtr<UCQuickMesh> FootR = nullptr;
 };
