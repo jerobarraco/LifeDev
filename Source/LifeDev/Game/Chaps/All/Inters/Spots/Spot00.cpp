@@ -21,6 +21,7 @@ ASpot00::ASpot00():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
+	Mesh->SetCastAllShadows(true);
 	// DropDlg = TEXT("IS_C0D");
 	// TriggerDlg = "IS_C0T*";
 	// LockedDlg = "IS_C0TB";
