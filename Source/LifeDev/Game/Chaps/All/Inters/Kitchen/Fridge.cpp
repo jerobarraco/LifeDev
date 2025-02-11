@@ -17,7 +17,7 @@ AFridge::AFridge():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/Fridge.Fridge"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(60.5,17,0));
-	
+
 	Interact->SetRelativeLocation(FVector(-90,-12.5,90));
 	Interact->SetBoxExtent(FVector(35,7.5,85));
 	SFX->SetRelativeLocation(FVector(-90,-15,95));
@@ -40,7 +40,7 @@ AFridge::AFridge():Super() {
 
 	// set static by default
 	AFridge::SetMobility(EComponentMobility::Static);
-	Mesh->SetQuickCollisionEnabled(true);
+	Mesh->SetQuickCollisionEnabled(true); // too big.
 	// too big to not cast shadows. will look weird.
 	Mesh->SetCastAllShadows(true);
 }

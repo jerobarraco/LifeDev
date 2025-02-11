@@ -83,7 +83,7 @@ ABooks::ABooks():Super() {
 	Constructor();
 }
 
-ABooks::ABooks(int32 nBookCount, int32 nRndSeed):Super() {
+ABooks::ABooks(const int32 nBookCount, const int32 nRndSeed):Super() {
 	// check to avoid issues 
 	if (nBookCount>=0) BookCount = nBookCount;
 	RndSeed = nRndSeed; 
@@ -91,10 +91,10 @@ ABooks::ABooks(int32 nBookCount, int32 nRndSeed):Super() {
 	Constructor();
 }
 
-void ABooks::SetMobility(EComponentMobility::Type Mobility) {
+void ABooks::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	for (const TObjectPtr<UCQuickMesh>& QM: Books) {
-		if (!QM) continue;
+		if (UNLIKELY(!QM)) continue;
 		QM->SetMobility(Mobility);
 	}
 }

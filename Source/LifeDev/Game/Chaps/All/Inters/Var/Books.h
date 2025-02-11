@@ -11,10 +11,10 @@ class LIFEDEV_API ABooks: public ALInteract {
 
 public:
 	ABooks();
-	ABooks(int32 nBookCount, int32 nRndSeed =0);
+	ABooks(const int32 nBookCount, const int32 nRndSeed =0);
 	
 protected:
-	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<TObjectPtr<UCQuickMesh>> Books;
