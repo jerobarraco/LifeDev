@@ -43,7 +43,7 @@ void APaperI00::FadeUpdate(const float Progress, const float FadeV) {
 	// Text->SetHiddenInGame(FadeV>.2);
 	
 	// https://forums.unrealengine.com/t/text-render-alpha-not-working/87895/3?u=nande
-	if (TextMID) TextMID->SetScalarParameterValue("Fade", 1-FadeV);
+	if (LIKELY(TextMID)) TextMID->SetScalarParameterValue("Fade", 1-FadeV);
 
 	// Text->TextRenderColor.A = 255*Alpha;
 	// avoid calling Text->SetTextRenderColor() which copies the value 2 times.
@@ -53,7 +53,8 @@ void APaperI00::FadeUpdate(const float Progress, const float FadeV) {
 
 void APaperI00::BeginPlay() {
 	Super::BeginPlay();
-	if (AnimFade) AnimFade->OnUpdate.AddUniqueDynamic(this, &APaperI00::FadeUpdate);
+	if (LIKELY(AnimFade))
+		AnimFade->OnUpdate.AddUniqueDynamic(this, &APaperI00::FadeUpdate);
 
 	// create the mid. nullptr means to use the material set with SetMaterial on constructor.
 	TextMID = Text->CreateDynamicMaterialInstance(0, nullptr);
@@ -61,7 +62,8 @@ void APaperI00::BeginPlay() {
 }
 
 void APaperI00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (AnimFade) AnimFade->OnUpdate.RemoveAll(this);
+	if (LIKELY(AnimFade))
+		AnimFade->OnUpdate.RemoveAll(this);
 	TextMID = nullptr;
 	Super::EndPlay(EndPlayReason);
 }

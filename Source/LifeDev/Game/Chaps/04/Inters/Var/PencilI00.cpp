@@ -6,7 +6,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 APencilI00::APencilI00():Super() {
-	Texts = { FText::FromString(TEXT("Rice box"))};
 	UseRewardDestroy = false;
 	UseFade = true;
 
