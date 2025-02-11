@@ -1,7 +1,9 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "Components/TextRenderComponent.h"
+
 #include "LifeDev/Game/Chaps/All/Inters/Papers/Paper00.h"
 
 #include "PaperI00.generated.h"
@@ -21,8 +23,8 @@ protected:
 	void FadeUpdate(const float Progress, const float FadeV);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UTextRenderComponent* Text = nullptr;
+	TObjectPtr<UTextRenderComponent> Text = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient)
-	UMaterialInstanceDynamic* TextMID = nullptr;
+	TObjectPtr<UMaterialInstanceDynamic> TextMID = nullptr;
 };
