@@ -50,7 +50,7 @@ protected:
 
 	//HAS to be transient, or it will not compile the bp
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
-	TObjectPtr<UWidgetAnimation> AText = nullptr;
+	TObjectPtr<UWidgetAnimation> AnimText = nullptr;
 
 	TArray<FName> Seen;
 	bool NeedsSpacer = false;

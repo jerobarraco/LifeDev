@@ -3,12 +3,12 @@
 #include "LBLogW.h"
 
 #include "Components/ScrollBox.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "Diags/Diags.h"
 
 #include "LBLogItemW.h"
 #include "LBLogSpacerW.h"
-#include "Kismet/KismetMathLibrary.h"
 
 ULBLogW::ULBLogW():Super() {
 	static ConstructorHelpers::FClassFinder<ULBLogItemW>
@@ -42,13 +42,13 @@ void ULBLogW::NativeDestruct() {
 void ULBLogW::Show_Implementation() {
 	Super::Show_Implementation();
 
-	if (UNLIKELY(!AText)) {
+	if (UNLIKELY(!AnimText)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid AText."), __func__);
 		return;
 	}
 
 	const float Speed = UKismetMathLibrary::SafeDivide(1.0, AnimTime);
-	PlayAnimation(AText, 0, 1,
+	PlayAnimation(AnimText, 0, 1,
 		EUMGSequencePlayMode::Forward, Speed);
 }
 
