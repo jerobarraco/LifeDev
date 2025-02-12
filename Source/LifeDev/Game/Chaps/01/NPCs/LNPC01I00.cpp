@@ -3,6 +3,7 @@
 
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorCam.h"
+#include "CQuickMesh.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"

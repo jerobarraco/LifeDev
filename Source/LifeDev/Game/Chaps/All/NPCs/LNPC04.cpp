@@ -3,6 +3,8 @@
 
 #include "Interact/CInteract.h"
 
+#include "CQuickMesh.h"
+
 // TODO make an instance class and use that instead in chap00
 ALNPC04::ALNPC04():Super() {
 	UseAnim = false;
