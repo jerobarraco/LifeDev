@@ -3,6 +3,8 @@
 
 #include "Interact/CInteract.h"
 
+#include "CQuickMesh.h"
+
 ALNPC01::ALNPC01():Super() {
 	UseAnim = false;
 	Locked = true;
