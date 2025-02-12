@@ -13,10 +13,10 @@
 ULBLogW::ULBLogW():Super() {
 	static ConstructorHelpers::FClassFinder<ULBLogItemW>
 		CW(TEXT("/Game/LifeDev/Game/Dialogs/BLog/BLogItem_W.BLogItem_W_C"));
-	ItemClass = CW.Succeeded() ? CW.Class.Get() : ULBLogItemW::StaticClass();
+	ItemClass = LIKELY(CW.Succeeded()) ? CW.Class.Get() : ULBLogItemW::StaticClass();
 	static ConstructorHelpers::FClassFinder<ULBLogSpacerW>
 		CSp(TEXT("/Game/LifeDev/Game/Dialogs/BLog/BLogSpacer_W.BLogSpacer_W_C"));
-	SpacerClass = CSp.Succeeded() ? CSp.Class.Get() : ULBLogSpacerW::StaticClass();
+	SpacerClass = LIKELY(CSp.Succeeded()) ? CSp.Class.Get() : ULBLogSpacerW::StaticClass();
 }
 
 void ULBLogW::NativeOnInitialized() {
