@@ -104,7 +104,7 @@ void ULSave::ReadSubsystems(UWorld* const W) {
 	// this is a bit lame, but it's the cheapest and safest at the moment
 	Time = FDateTime::Now().ToUnixTimestamp();
 	
-	UFlags* const Flags = UFlags::Instance(W);
+	const UFlags* const Flags = UFlags::Instance(W);
 	if (LIKELY(Flags)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);
 		SFlags = Flags->GetAll();
