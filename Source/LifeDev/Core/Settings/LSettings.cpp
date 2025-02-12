@@ -183,14 +183,15 @@ bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 }
 
 void ULSettings::Init() {
-	ResetFeats();
+	ResetFeats(); // important to do before checking for savegame
 	
 	// clear. and force for loadgame. not broadcasting here since it will confuse the caller, this is internal only.
 	IsSaving = false;
 
-	// very important that all paths broadcasts
-	const ULSysSettings* const Settings = ULSysSettings::Get();
-	if (LIKELY(Settings && Settings->UseSaveGame)) LoadGame();
+	// very important that all paths broadcasts. since the game mode will wait for it.
+	// notice call to ResetFeats above, we can simply query here.
+	// likely since we favor shipping, and it SHOULD(TM) be enabled on shipping.
+	if (LIKELY(GetFeat(EFeat::G_SAVE))) LoadGame();
 	else NewGame();
 }
 

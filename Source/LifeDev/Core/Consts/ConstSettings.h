@@ -62,7 +62,7 @@ enum class EFeat: uint8 {
 
 	V_MAX UMETA(Hidden),
 #pragma endregion
-	
+
 #pragma region Environ
 	E_GHOSTPOOL,
 	E_MAX UMETA(Hidden),
@@ -71,13 +71,18 @@ enum class EFeat: uint8 {
 #pragma region Gameplay
 	// G_*,
 	G_CARD0,
+	// use save games. if this disabled (not present) it will always create a new savefile and ignore the saved one.
+	// this should be always enabled on default flags, so it's always used on release builds.
+	G_SAVE,
 	G_MAX UMETA(Hidden),
 #pragma endregion
+
 #pragma region Unreal
 	U_BATCH_TICK,
 	U_CON_TICK,
 	U_MAX UMETA(Hidden),
 #pragma endregion
+
 #pragma region Debug
 	// Debug steps (cheats)
 	DBG_STEPS,

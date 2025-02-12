@@ -29,7 +29,10 @@ public:
 	// for the *actual current instance* feats, get them from LSettings
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSet<EFeat>& GetFeats();
-	
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool GetUseDebugFeats() const;
+
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.Item"))
@@ -52,15 +55,6 @@ public:
 		meta=(ClampMax=4, ClampMin=0, UIMin=0, UIMax=4))
 	int32 StartChap = -1;
 
-	// whether to use the feats listed in debugfeats or in defaultfeats
-	// this is set to false on release builds
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	bool UseDebugFeats = false;
-
-	// if this is false it will always create a new savefile and ignore the saved one.
-	// this is set to true on release builds
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
-	bool UseSaveGame = true;
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
@@ -82,4 +76,10 @@ public:
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
 	};
+protected:
+	// whether to use the feats listed in debugfeats or in defaultfeats
+	// this is set to false on release builds.
+	// only toggle this on the editor preferences, but during runtime call GetUseDebugFeatsS
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
+	bool UseDebugFeats = false;
 };

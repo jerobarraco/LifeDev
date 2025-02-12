@@ -27,18 +27,13 @@ void ULGameInstance::Init() {
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
 
 	// force disable debug flags
-	ULSysSettings* const SysSettings = ULSysSettings::Get();
-	if (SysSettings && !UJUtilsMisc::IsDebug()) {
-		SysSettings->UseDebugFeats = false;
-		SysSettings->UseSaveGame = true;
-	}
-
+	// ULSysSettings* const SysSettings = ULSysSettings::Get();
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
-	if (IsValid(Settings)) Settings->Init();
+	if (LIKELY(IsValid(Settings))) Settings->Init();
 }
 
 void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
-	if (IsRunningDedicatedServer()) return;
+	if (UNLIKELY(IsRunningDedicatedServer())) return;
 
 	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
 	if (MoviePlayer) {

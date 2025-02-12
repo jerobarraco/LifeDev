@@ -12,6 +12,10 @@ FName ULSysSettings::GetCategoryName() const {
 }
 
 TSet<EFeat>& ULSysSettings::GetFeats() {
-	const bool UseDebug = UseDebugFeats && UJUtilsMisc::IsDebug();
+	const bool UseDebug = GetUseDebugFeats();
 	return UseDebug ? DebugFeats : DefaultFeats;
+}
+
+bool ULSysSettings::GetUseDebugFeats() const {
+	return UseDebugFeats && UJUtilsMisc::IsDebug();
 }
