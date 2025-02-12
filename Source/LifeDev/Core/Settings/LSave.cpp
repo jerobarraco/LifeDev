@@ -21,25 +21,27 @@ void ULSave::Reset(UWorld* const W) {
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
 	// not using the above, since i want to preserve the ability to skip chapters even on shipping builds
 	Time = FDateTime::Now().ToUnixTimestamp();
-	ULSysSettings* const SysSettings = ULSysSettings::Get();
-	ChapterID = SysSettings ? SysSettings->StartChap : 0;
 	SInventory.Empty();
 	SFlags.Empty();
 	SFeats.Empty();
 
+	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (UNLIKELY(!SysSettings)) {
+		UE_LOG(LogLSave, Warning, TEXT("%hs Can't get the ULSysSettings. Stop"), __func__);
+		return;
+	}
+	ChapterID = LIKELY(SysSettings) ? SysSettings->GetStartChap() : 0;
 	// read the feats
-	if (SysSettings) {
-		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
-		const TSet<EFeat>& Feats = SysSettings->GetFeats();
-		for (const EFeat F: WatchFeats) { // only affect the ones we watch.
-			const bool Val = Feats.Contains(F);
-			UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
-				*UEnum::GetValueAsString(F), Val);
+	UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
+	const TSet<EFeat>& Feats = SysSettings->GetFeats();
+	for (const EFeat F: WatchFeats) { // only affect the ones we watch.
+		const bool Val = Feats.Contains(F);
+		UE_LOG(LogLSave, Log, TEXT("%hs.Feats: Feat=%s Enabled=%i"), __func__,
+			*UEnum::GetValueAsString(F), Val);
 
-			if (!Val) continue; // only store if set.
+		if (!Val) continue; // only store if set.
 
-			SFeats.Add(F);
-		}
+		SFeats.Add(F);
 	}
 
 	// foxyfy the game
@@ -58,13 +60,13 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 	}
 
 	UFlags* const Flags = UFlags::Instance(W);
-	if (Flags) {
+	if (LIKELY(Flags)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Writing flags"), __func__);
 		Flags->SetAll(SFlags);
 	}
 
 	UInventory* const Inventory = UInventory::Instance(W);
-	if (Inventory) {
+	if (LIKELY(Inventory)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Writing Inventory"), __func__);
 		Inventory->Clear(SInventory.Num());
 
@@ -81,7 +83,7 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 	}
 
 	ULSettings* const Settings = ULSettings::Instance(W);
-	if (Settings) {
+	if (LIKELY(Settings)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
 		// only affect the ones we watch. important or this will remove all the other flags.
 		for (const EFeat F: WatchFeats) {
@@ -94,19 +96,19 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 }
 
 void ULSave::ReadSubsystems(UWorld* const W) {
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	// this is a bit lame, but it's the cheapest and safest at the moment
 	Time = FDateTime::Now().ToUnixTimestamp();
 	
 	UFlags* const Flags = UFlags::Instance(W);
-	if (Flags) {
+	if (LIKELY(Flags)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);
 		SFlags = Flags->GetAll();
 	}
 
-	UInventory* const Inventory = UInventory::Instance(W);
-	if (Inventory) {
+	const UInventory* const Inventory = UInventory::Instance(W);
+	if (LIKELY(Inventory)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory"), __func__);
 		const TMap<FName, FItem>& Items = Inventory->GetItems();
 		SInventory.Empty(Items.Num());

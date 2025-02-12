@@ -33,6 +33,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool GetUseDebugFeats() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 GetStartChap() const;
+
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.Item"))
@@ -79,7 +82,7 @@ public:
 protected:
 	// whether to use the feats listed in debugfeats or in defaultfeats
 	// this is set to false on release builds.
-	// only toggle this on the editor preferences, but during runtime call GetUseDebugFeatsS
+	// only toggle this on the editor preferences, but during runtime call GetUseDebugFeats
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	bool UseDebugFeats = false;
 };
