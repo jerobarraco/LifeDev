@@ -24,8 +24,8 @@ AHeaterI00::AHeaterI00():Super() {
 	// animation
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/BounceOut_C.BounceOut_C"));
-	if (CCurve.Succeeded())
-		Anim->Curve = CCurve.Object;
+	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
+
 	Anim->SetComponentTickInterval(1/60.f);
 	Anim->TEnd.SetRotation(FRotator(-10,0,0).Quaternion());
 	Anim->Duration = .75f;
