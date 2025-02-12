@@ -30,7 +30,10 @@ void ULSave::Reset(UWorld* const W) {
 		UE_LOG(LogLSave, Warning, TEXT("%hs Can't get the ULSysSettings. Stop"), __func__);
 		return;
 	}
-	ChapterID = LIKELY(SysSettings) ? SysSettings->GetStartChap() : 0;
+
+	// actually using StartChap and not GetStartChap to allow changing the start chap on shipping builds
+	ChapterID = LIKELY(SysSettings) ? SysSettings->StartChap : 0;
+
 	// read the feats
 	UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
 	const TSet<EFeat>& Feats = SysSettings->GetFeats();

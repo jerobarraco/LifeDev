@@ -53,11 +53,11 @@ public:
 	TSoftObjectPtr<UDataTable> Chapters =
 		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Sys/DT_Chapters"));
 
-	// the chapter to start with
+	// the chapter to start with.
+	// during runtime use GetStartChap unless you're me and know what you're doing.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(ClampMax=4, ClampMin=0, UIMin=0, UIMax=4))
 	int32 StartChap = -1;
-
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
