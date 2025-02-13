@@ -1,7 +1,11 @@
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
+
 #pragma once
 
 // This is called misc utils because is the misc group
 // later i plan on having more groups
+
 #include "CoreMinimal.h"
 
 class UInputMappingContext;

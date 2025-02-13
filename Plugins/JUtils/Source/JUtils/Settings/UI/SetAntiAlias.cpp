@@ -1,4 +1,5 @@
-// Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #include "SetAntiAlias.h"
 
@@ -19,8 +20,8 @@ void USetAntiAlias::Load_Implementation() {
 		// SetSelectedIndex(Settings->DefaultFeatureAntiAliasing);
 	// }
 	
-	TConsoleVariableData<int32>* const Variable = IConsoleManager::Get().FindTConsoleVariableDataInt(TEXT("r.AntiAliasingMethod"));
-	if (Variable) {
+	const TConsoleVariableData<int32>* const Variable = IConsoleManager::Get().FindTConsoleVariableDataInt(TEXT("r.AntiAliasingMethod"));
+	if (LIKELY(Variable)) {
 		const int32 Val = FMath::Clamp<int32>(Variable->GetValueOnAnyThread(), 0, AAM_MAX);
 		SetSelectedIndex(Val); // the enum maps perfectly
 	}
