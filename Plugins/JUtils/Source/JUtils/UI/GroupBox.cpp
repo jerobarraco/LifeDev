@@ -14,7 +14,7 @@ UGroupBox::UGroupBox(const FObjectInitializer& ObjectInitializer)
 void UGroupBox::SetSelected_Implementation(const int32 NewSelected, const bool Broadcast) {
 	const int32 N = CheckBoxes.Num();
 
-	for (uint32 i = 0; i<N; ++i) {
+	for (int32 i = 0; i<N; ++i) {
 		UCheckBox* const C = CheckBoxes[i];
 		if (UNLIKELY(!IsValid(C))) continue;
 		C->SetIsChecked(i==NewSelected);
