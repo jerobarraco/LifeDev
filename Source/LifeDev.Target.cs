@@ -25,6 +25,8 @@ public class LifeDevTarget : TargetRules {
 		bUseIncrementalLinking = true; // speeds up iteration
 		bUsePCHFiles = true;
 		bUseSharedPCHs = true; // speed up compilation
+		bUseUnityBuild = true;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
+		bUseAdaptiveUnityBuild = true;
 		/*
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
 		bUseAdaptiveUnityBuild = false;
