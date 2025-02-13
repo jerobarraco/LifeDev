@@ -1,4 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #include "JButton.h"
 
@@ -10,16 +11,16 @@ void UJButton::DoClick() {
 }
 
 void UJButton::SetUp(const FText& NewText, const int32 NewId) {
-	if (Text) Text->SetText(NewText);
+	if (LIKELY(Text)) Text->SetText(NewText);
 	Id = NewId;
 }
 
 void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	if (Btn) Btn->OnClicked.AddUniqueDynamic(this, &UJButton::DoClick);
+	if (LIKELY(Btn)) Btn->OnClicked.AddUniqueDynamic(this, &UJButton::DoClick);
 }
 
 void UJButton::NativeDestruct() {
-	if (Btn) Btn->OnClicked.RemoveAll(this);
+	if (LIKELY(Btn)) Btn->OnClicked.RemoveAll(this);
 	Super::NativeDestruct();
 }
