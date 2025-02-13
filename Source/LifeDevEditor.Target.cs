@@ -10,5 +10,6 @@ public class LifeDevEditorTarget : TargetRules {
 		ExtraModuleNames.Add("LifeDev");
 		
 		CppStandardEngine = CppStandardVersion.Cpp20;
+		CppStandard = CppStandardVersion.Cpp20;
 	}
 }
