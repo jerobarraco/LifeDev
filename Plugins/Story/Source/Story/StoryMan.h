@@ -1,10 +1,10 @@
-// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: GPL-2.0
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
 
 #pragma once
 #include "CoreMinimal.h"
 
-#include "StoryManager.generated.h"
+#include "StoryMan.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStoryManagerOnFaded);
 
@@ -12,14 +12,12 @@ class AStep;
 class UStoryUI;
 class UStory;
 
-// TODO rename to AStoryMan
-
 UCLASS(Blueprintable, BlueprintType)
-class STORY_API AStoryManager: public AActor {
+class STORY_API AStoryMan: public AActor {
 	GENERATED_BODY()
 
 public:
-	AStoryManager();
+	AStoryMan();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init();

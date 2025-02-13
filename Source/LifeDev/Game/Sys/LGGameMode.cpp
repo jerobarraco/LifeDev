@@ -13,7 +13,7 @@
 #include "Interact/Animator/CAnimator.h"
 #include "Inventory/Flags.h"
 #include "Inventory/InventoryMan.h"
-#include "Story/StoryManager.h"
+#include "Story/StoryMan.h"
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"

@@ -5,7 +5,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "Story/StoryManager.h"
+#include "Story/StoryMan.h"
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");

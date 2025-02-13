@@ -19,7 +19,7 @@ class ALInventoryMan;
 class ALFeatsMan;
 class ALMusicMan;
 class AFlashbackMan;
-class AStoryManager;
+class AStoryMan;
 class ULSysSettings;
 class ALChar;
 class UStory;

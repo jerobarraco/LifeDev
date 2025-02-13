@@ -1,18 +1,19 @@
-// Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: GPL-2.0
-#include "StoryManager.h"
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: LGPL-3.0-only
+
+#include "StoryMan.h"
 
 #include "Story.h"
 #include "StoryUI.h"
 
-AStoryManager::AStoryManager():Super() {
+AStoryMan::AStoryMan():Super() {
 	static ConstructorHelpers::FClassFinder<UStoryUI> CUIClass(TEXT("/Story/UI/W_StoryUI"));
 	UIClass = CUIClass.Succeeded() ? CUIClass.Class.Get() : UStoryUI::StaticClass();
 }
 
-void AStoryManager::Init_Implementation() {}
+void AStoryMan::Init_Implementation() {}
 
-void AStoryManager::DeInit_Implementation() {
+void AStoryMan::DeInit_Implementation() {
 	if (LIKELY(IsValid(Story)))
 		Story->OnFade.RemoveAll(this);
 	Story = nullptr;
@@ -22,7 +23,7 @@ void AStoryManager::DeInit_Implementation() {
 	UI = nullptr;
 }
 
-void AStoryManager::Fade(const bool In, const FText& Title) {
+void AStoryMan::Fade(const bool In, const FText& Title) {
 	UE_LOG(LogTemp, Log, TEXT("Fading in=%i title='%s'"), In, *Title.ToString());
 	if (In) {
 		FadeIn();
@@ -31,48 +32,48 @@ void AStoryManager::Fade(const bool In, const FText& Title) {
 	}
 }
 
-void AStoryManager::FadeIn() {
+void AStoryMan::FadeIn() {
 	if (UNLIKELY(!IsValid(UI))) return;
 	// important to re-set the fade time
 	UI->AnimDuration = Story->FadeTime;
 	UI->FadeIn();
 }
 
-void AStoryManager::FadeOut(const FText& Title, const FText& Text) {
+void AStoryMan::FadeOut(const FText& Title, const FText& Text) {
 	if (UNLIKELY(!IsValid(UI))) return;
 	// important to re-set the fade time
 	UI->AnimDuration = Story->FadeTime;
 	UI->FadeOut(Title, Text);
 }
 
-void AStoryManager::ShowBGSolid(const bool Show) const {
+void AStoryMan::ShowBGSolid(const bool Show) const {
 	if (LIKELY(!IsValid(UI))) return;
 	UI->ShowBGSolid(Show);
 }
 
-void AStoryManager::UIFaded() {
+void AStoryMan::UIFaded() {
 	OnFaded.Broadcast();
 }
 
-void AStoryManager::BeginPlay() {
+void AStoryMan::BeginPlay() {
 	Super::BeginPlay();
 
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	
 	Story = World->GetSubsystem<UStory>();
-	if (LIKELY(Story)) Story->OnFade.AddUniqueDynamic(this, &AStoryManager::Fade);
+	if (LIKELY(Story)) Story->OnFade.AddUniqueDynamic(this, &AStoryMan::Fade);
 	
 	if (LIKELY(IsValid(UIClass.Get()))) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));
 		if (LIKELY(IsValid(UI))) {
 			UI->AddToViewport(ZOrder);
-			UI->OnDone.AddUniqueDynamic(this, &AStoryManager::UIFaded);
+			UI->OnDone.AddUniqueDynamic(this, &AStoryMan::UIFaded);
 		}
 	}
 }
 
-void AStoryManager::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void AStoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 	Super::EndPlay(EndPlayReason);
 }
