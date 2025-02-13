@@ -10,4 +10,6 @@ ARadioI01::ARadioI01():Super() {
 	Texts = {
 		FText::FromString(TEXT("Noisy radio"))
 	};
+
+	ARadioI01::SetAutoActivate(true); //start active
 }

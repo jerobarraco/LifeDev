@@ -34,6 +34,8 @@ ARadioI00::ARadioI00():Super() {
 	SFX_Ghost->TimeFadeOut = 2.0;
 	SFX_Ghost->TimeStartMin = 0;
 	SFX_Ghost->TimeStartMax = 120;
+
+	ARadioI00::SetAutoActivate(true);//start active
 }
 
 void ARadioI00::DoTrigger_Implementation() {
@@ -48,6 +50,11 @@ void ARadioI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation(); // will trigger the dialog
 	SetActive(false); // disable once activated. this item is one use only.
 	SFX_Ghost->Fade(true);
+}
+
+void ARadioI00::BeginPlay() {
+	Super::BeginPlay();
+	SetState(1); // start opened. i shouldn't really do this.
 }
 
 void ARadioI00::DialogShown(const FDialog& Diag) {

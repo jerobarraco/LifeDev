@@ -9,7 +9,7 @@
 class UCLSounder;
 class UCSounder;
 
-// Radio00 Instance 00. Room 03
+// Radio00 Instance 00. Room 03. ch00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ARadioI00: public ARadio00 {
 	GENERATED_BODY()
@@ -19,14 +19,15 @@ public:
 
 protected:
 	virtual void DoTrigger_Implementation() override;
-
+	virtual void BeginPlay() override;
+	
 	UFUNCTION()
 	void DialogDone();
 	UFUNCTION()
 	void DialogShown(const FDialog& Diag);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCLSounder* SFX_Ghost = nullptr;
+	TObjectPtr<UCLSounder> SFX_Ghost = nullptr;
 
 	FTimerHandle DiagDoneHandle;
 };

@@ -1,11 +1,12 @@
-// Copyright Jerónimo Barraco-Mármol
+// Copyright 2023 Jerónimo Barraco-Mármol
 
 #pragma once
+
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "Radio00.generated.h"
 
-// Base Radio00
+// Base Radio00. not active by default. starts closed.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ARadio00: public ALInteract {
 	GENERATED_BODY()
@@ -14,10 +15,8 @@ public:
 	ARadio00();
 
 protected:
-	virtual void BeginPlay() override;
-	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Door = nullptr;
+	TObjectPtr<UCQuickMesh> Door = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	USceneComponent* DoorRoot = nullptr;
+	TObjectPtr<USceneComponent> DoorRoot = nullptr;
 };

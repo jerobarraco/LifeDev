@@ -9,6 +9,10 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ARadio00::ARadio00():Super() {
+	UseAnim = true;
+	StateNum = 2;
+	UseRewardDestroy = false;
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CDoor(TEXT("/Game/LifeDev/Game/Inters/Radio00/Radio00_Door.Radio00_Door"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -47,18 +51,9 @@ ARadio00::ARadio00():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
 	Anim->Curve = CCurve.Object;
-	UseAnim = true;
-	StateNum = 2;
-	UseRewardDestroy = false;
-	// AnimFade->SetNewMat();
+
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
-	AnimFade->SetActive(false);
 
-	Super::SetAutoActivate(true);
-}
-
-void ARadio00::BeginPlay() {
-	Super::BeginPlay();
-	SetState(1); // start opened
+	Super::SetAutoActivate(false);
 }
