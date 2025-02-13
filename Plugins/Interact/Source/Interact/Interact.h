@@ -16,6 +16,7 @@ class UAudioComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
 
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
@@ -94,6 +95,7 @@ public:
 
 #pragma region Hint
 	// test function to hint the interact (call attention to it). atm it will trigger Hover.
+	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	void ShowHint();
 
@@ -177,6 +179,8 @@ public:
 	// When this is being hovered on/off
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHover OnHover;
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FAInteractOnHint OnHint;
 #pragma endregion
 
 protected:

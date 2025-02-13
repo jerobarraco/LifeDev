@@ -134,6 +134,8 @@ void AInteract::ShowHint_Implementation() {
 	// also animate a custom primitive data.
 	if (HintPrimDataID<0) return;
 
+	OnHint.Broadcast();
+
 	UAnim* const AnimMat = UAnim::Instance(this);
 	if (UNLIKELY(!AnimMat)) return;
 
