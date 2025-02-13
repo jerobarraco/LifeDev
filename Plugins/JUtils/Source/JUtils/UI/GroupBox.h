@@ -22,11 +22,11 @@ class JUTILS_API UGroupBox : public UUserWidget {
 public:
 	UGroupBox(const FObjectInitializer& ObjectInitializer);
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetSelected(int32 NewSelected = -1, bool Broadcast = false);
-	virtual void SetSelected_Implementation(int32 NewSelected = -1, bool Broadcast = false);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void SetSelected(const int32 NewSelected = -1, const bool Broadcast = false);
+	virtual void SetSelected_Implementation(const int32 NewSelected = -1, const bool Broadcast = false);
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetLabel(const FText& Text);
 	virtual void SetLabel_Implementation(const FText& Text);
 
@@ -44,7 +44,7 @@ protected:
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION()
-	void CheckSelected(UDelegateWrapper* const W, int32 CID, UObject* const CB);
+	void CheckSelected(UDelegateWrapper* const W, const int32 CID, UObject* const CB);
 
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	TArray<TObjectPtr<UCheckBox>> CheckBoxes;
