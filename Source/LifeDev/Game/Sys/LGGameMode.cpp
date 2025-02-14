@@ -449,5 +449,5 @@ void ALGGameMode::TickCounter() const {
 	// while these DO work. they now spam the console with 2 "exec commands"
 	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
 	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
-	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::TimeUsed, CounterTime, false);
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Global::Time, CounterTime, false);
 }

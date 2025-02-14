@@ -4,10 +4,21 @@
 namespace LDConsts {
 	namespace Flags {
 		namespace Stats {
-			inline static const FName LightsOn("Stats.Lights.On");
-			inline static const FName PuzzlesCube("Stats.Puzzles.Cube");
-			inline static const FName DiagShown("Stats.Diags.Shown");
-			inline static const FName TimeUsed("Stats.Global.Time");
+			namespace Lights {
+				inline static const FName On("Stats.Lights.On");
+			}
+			namespace Puzzles {
+				inline static const FName Cube("Stats.Puzzles.Cube");
+			}
+			namespace Inter {
+				inline static const FName Trigger("Stats.Inters.Trigger");
+			}
+			namespace Diags {
+				inline static const FName Shown("Stats.Diags.Shown");
+			}
+			namespace Global {
+				inline static const FName Time("Stats.Global.Time");
+			}
 		}
 		namespace Settings {
 			namespace Global {

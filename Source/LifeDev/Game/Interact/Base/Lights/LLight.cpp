@@ -188,7 +188,7 @@ void ALLight::SetState_Implementation(int32 NewState) {
 	}
 
 	// count the times you turn off a light. closed == off
-	if (Flags) Flags->Mod(LDConsts::Flags::Stats::LightsOn, bClosed ? -1 : 1);
+	if (Flags) Flags->Mod(LDConsts::Flags::Stats::Lights::On, bClosed ? -1 : 1);
 }
 
 void ALLight::AnimUpdate_Implementation(const float P, const float A) {

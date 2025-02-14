@@ -8,11 +8,11 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
-#include "JUtils/Actors/CQuickMesh.h"
 #include "Story/Story.h"
 
-#include "LifeDev/Game/Flashback/Flashback.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
 
@@ -201,13 +201,13 @@ bool ALInteract::TryTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	// handle item req
 	if (!ULockItemReq.IsNone()) {
-		const bool Ok = IsValid(Inventory) && Inventory->Has(ULockItemReq);
+		const bool Ok = LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
 		if (Ok) Locked = false;
 	}
 
 	// handle flag req
 	if (!ULockFlagReq.IsNone()) {
-		const bool Ok = IsValid(Flags) && Flags->Has(ULockFlagReq);
+		const bool Ok = LIKELY(IsValid(Flags)) && Flags->Has(ULockFlagReq);
 		if (Ok) Locked = false;
 	}
 	
@@ -217,6 +217,8 @@ bool ALInteract::TryTrigger_Implementation() {
 void ALInteract::DoTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTrigger_Implementation();
+
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
 
 	// start fading right away to give the player the impression that they picked it up
 	if (WillRewardDestroy()) Fade(false);
