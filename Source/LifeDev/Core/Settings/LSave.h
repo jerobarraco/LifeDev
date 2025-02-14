@@ -16,16 +16,16 @@ class LIFEDEV_API ULSave : public USaveGame {
 
 public:
 	// resets the savestate. it will write to subsystems.
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
-	void Reset(UWorld* const W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	void Reset(const UObject* const O);
 
 	// sets the subsystem data to what's on the savestate.
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
-	void WriteSubsystems(UWorld* const W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	void WriteSubsystems(const UObject* const O);
 
 	// sets the savestate data to what's on the subsystems.
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="W"))
-	void ReadSubsystems(UWorld* const W);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	void ReadSubsystems(const UObject* const O);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
@@ -56,6 +56,8 @@ protected:
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_STROBE,
 		EFeat::V_FOV, EFeat::V_SPEED, EFeat::V_MLIGHTS,
-		EFeat::V_FLASHBACK, EFeat::V_NANITE, EFeat::E_GHOSTPOOL
+		EFeat::V_FLASHBACK, EFeat::V_NANITE, EFeat::E_GHOSTPOOL,
+		EFeat::D_AUTO, EFeat::D_TEXT,
+		EFeat::G_CARD0,
 	};
 };

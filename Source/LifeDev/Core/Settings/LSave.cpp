@@ -2,12 +2,13 @@
 
 #include "LifeDev/Core/Settings/LSave.h"
 
-#include "LSettings.h"
-#include "LSysSettings.h"
-
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+
 #include "LifeDev/Core/Consts/ConstFlags.h"
+
+#include "LSettings.h"
+#include "LSysSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
 
@@ -15,7 +16,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSave, Log, Log);
 ///// DO NOT CALL GET WORLD HERE. IT WON'T WORK!
 ///////////////
 
-void ULSave::Reset(UWorld* const W) {
+void ULSave::Reset(const UObject* const O) {
 	UE_LOG(LogLSave, Log, TEXT("Savegame reset"));
 	
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
@@ -51,12 +52,13 @@ void ULSave::Reset(UWorld* const W) {
 	SFlags.Add(LDConsts::Flags::Settings::Global::Foxy, FMath::FRand());
 
 	// TODO this is a bit risky. keep an eye on it
-	WriteSubsystems(W);
+	WriteSubsystems(O);
 }
 
-void ULSave::WriteSubsystems(UWorld* const W) {
+void ULSave::WriteSubsystems(const UObject* const O) {
 	UE_LOG(LogLSave, Log, TEXT("%hs"), __func__);
 
+	const UWorld* const W = LIKELY(O) ? O->GetWorld(): nullptr;
 	if (UNLIKELY(!W)) {
 		UE_LOG(LogLSave, Warning, TEXT("%hs. The world is fake! Can't continue."), __func__);
 		return;
@@ -98,8 +100,12 @@ void ULSave::WriteSubsystems(UWorld* const W) {
 	}
 }
 
-void ULSave::ReadSubsystems(UWorld* const W) {
-	if (UNLIKELY(!W)) return;
+void ULSave::ReadSubsystems(const UObject* const O) {
+	const UWorld* const W = LIKELY(O) ? O->GetWorld(): nullptr;
+	if (UNLIKELY(!W)) {
+		UE_LOG(LogLSave, Warning, TEXT("%hs. The world is fake! Can't continue."), __func__);
+		return;
+	}
 
 	// this is a bit lame, but it's the cheapest and safest at the moment
 	Time = FDateTime::Now().ToUnixTimestamp();
