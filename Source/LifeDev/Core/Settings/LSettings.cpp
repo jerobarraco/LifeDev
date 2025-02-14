@@ -87,6 +87,12 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 		return;
 	}
 
+	if (UNLIKELY(!GetFeat(EFeat::G_SAVE))) {
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. Savegame feature flag is unset. Stop."), __func__);
+		SetIsSaving(false); // technically done. important or objects might get stuck (gamemode)
+		return;
+	}
+
 	if (UNLIKELY(!Save)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
 		SetIsSaving(false); // technically done. important or objects might get stuck (gamemode)
