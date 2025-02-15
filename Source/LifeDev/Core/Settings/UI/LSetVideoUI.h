@@ -53,7 +53,7 @@ protected:
 
 	static FString ResToCombo(const FIntPoint& P);
 	UFUNCTION()
-	void ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	void ResChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	void ResOptsSet();
 	
 	void ResScaleSet();
@@ -67,7 +67,7 @@ protected:
 	void VSyncChanged(const bool bIsChecked);
 	void FrameRateSet() const;
 	UFUNCTION() // bound
-	void FrameRateChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+	void FrameRateChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 
 	void QSwitchesSet();
 	UFUNCTION(BlueprintCallable)

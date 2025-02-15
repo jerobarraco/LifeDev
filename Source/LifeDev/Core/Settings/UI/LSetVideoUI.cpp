@@ -21,7 +21,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
 void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
-	if (AntiAlias) AntiAlias->Apply();
+	if (LIKELY(AntiAlias)) AntiAlias->Apply();
 }
 
 void ULSetVideoUI::Load_Implementation() {
@@ -34,7 +34,7 @@ void ULSetVideoUI::Load_Implementation() {
 	ResSet();
 	FSModeSet();
 	QSwitchesLoad();
-	if (AntiAlias) AntiAlias->Load();
+	if (LIKELY(AntiAlias)) AntiAlias->Load();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {
@@ -52,20 +52,20 @@ void ULSetVideoUI::NativeDestruct() {
 	QSwitches.GetKeys(Keys);
 	for (EQualityType const Q: Keys) {
 		const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
-		if (!pSwitchUI) continue;
+		if (UNLIKELY(!pSwitchUI)) continue;
 
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
 
-	if (FrameRate) FrameRate->ClearOptions();
+	if (LIKELY(FrameRate)) FrameRate->ClearOptions();
 	Super::NativeDestruct();
 }
 
 void ULSetVideoUI::FSModeSet() {
 	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
-	if (!Mode) return;
+	if (UNLIKELY(!Mode)) return;
 
-	if (!FSMode) return;
+	if (UNLIKELY(!FSMode)) return;
 	FSMode->OnSelectionChanged.RemoveAll(this);
 	FSMode->ClearOptions();
 
@@ -76,9 +76,8 @@ void ULSetVideoUI::FSModeSet() {
 		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
 	};
 	constexpr size_t Size = UJUtilsMisc::ArraySize(Names);
-	for (size_t i = 0; i < Size; ++i) {
+	for (size_t i = 0; i < Size; ++i)
 		FSMode->AddOption(Names[i]);
-	}
 
 	FSMode->SetSelectedIndex(Mode);
 	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
@@ -86,17 +85,16 @@ void ULSetVideoUI::FSModeSet() {
 
 void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
 	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
-	if (SelectionType == ESelectInfo::Direct) return;
+	if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
 	Settings->SetFullscreenMode(static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex()));
 }
 
 void ULSetVideoUI::ResSet() const {
-	if (!Settings || !Resolution) return;
+	if (UNLIKELY(!Settings || !Resolution)) return;
 
 	Resolution->ClearOptions();
-	for (const FIntPoint& P: ResOpts) {
+	for (const FIntPoint& P: ResOpts)
 		Resolution->AddOption(ResToCombo(P));
-	}
 	Resolution->SetSelectedOption(ResToCombo(Settings->GetScreenResolution()));
 	Resolution->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResChanged);
 }
@@ -105,11 +103,11 @@ FString ULSetVideoUI::ResToCombo(const FIntPoint& P) {
 	return FString::Printf(TEXT("%ix%i"), P.X, P.Y);
 }
 
-void ULSetVideoUI::ResChanged(FString SelectedItem, ESelectInfo::Type SelectionType) {
-	if (!Settings || SelectionType == ESelectInfo::Type::Direct) return;
+void ULSetVideoUI::ResChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
+	if (UNLIKELY(!Settings || SelectionType == ESelectInfo::Type::Direct)) return;
 
 	const int32 Index = Resolution->GetSelectedIndex();
-	if (Index <0 || Index > ResOpts.Num()) return;
+	if (UNLIKELY(Index <0 || Index > ResOpts.Num())) return;
 
 	Settings->SetScreenResolution(ResOpts[Index]);
 }
@@ -119,7 +117,7 @@ void ULSetVideoUI::ResOptsSet() {
 }
 
 void ULSetVideoUI::ResScaleSet() {
-	if (!ResScale || !Settings) return;
+	if (UNLIKELY(!ResScale || !Settings)) return;
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	ResScale->OnValueChanged.RemoveAll(this);
 	const float Value = Settings->GetResolutionScaleNormalized();
@@ -132,13 +130,13 @@ void ULSetVideoUI::ResScaleSet() {
 void ULSetVideoUI::ResScaleChanged(const float Value) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
 	const int32 PVal = trunc(Value*100);
-	if (Settings) Settings->SetResolutionScaleNormalized(PVal / 100.0);
-	if (ResScaleText) ResScaleText->SetText(
+	if (LIKELY(Settings)) Settings->SetResolutionScaleNormalized(PVal / 100.0);
+	if (LIKELY(ResScaleText)) ResScaleText->SetText(
 		FText::FromString( FString::FromInt(PVal) + "%" ));
 }
 
 void ULSetVideoUI::DResSet() const {
-	if (!DRes) return;
+	if (UNLIKELY(!DRes)) return;
 	const bool Enabled = Settings ? Settings->IsDynamicResolutionEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	DRes->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
@@ -147,12 +145,12 @@ void ULSetVideoUI::DResSet() const {
 }
 
 void ULSetVideoUI::DResChanged(const bool bIsChecked) {
-	if (!Settings) return;
+	if (UNLIKELY(!Settings)) return;
 	Settings->SetDynamicResolutionEnabled(bIsChecked);
 }
 
 void ULSetVideoUI::VSyncSet() const {
-	if (!VSync) return;
+	if (UNLIKELY(!VSync)) return;
 	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	VSync->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
@@ -161,12 +159,12 @@ void ULSetVideoUI::VSyncSet() const {
 }
 
 void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
-	if (!Settings) return;
+	if (UNLIKELY(!Settings)) return;
 	Settings->SetVSyncEnabled(bIsChecked);
 }
 
 void ULSetVideoUI::FrameRateSet() const{
-	if (!FrameRate) return;
+	if (UNLIKELY(!FrameRate)) return;
 
 	const float Current = Settings ? Settings->GetFrameRateLimit() : 0;
 
@@ -180,7 +178,7 @@ void ULSetVideoUI::FrameRateSet() const{
 		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
 			TEXT("!+UNLIMITED+!") : FString::SanitizeFloat(F, 0));
 
-		if (FMath::IsNearlyEqual(Current, F)) CurrentI = i;
+		if (UNLIKELY(FMath::IsNearlyEqual(Current, F))) CurrentI = i;
 	}
 
 	FrameRate->SetSelectedIndex(CurrentI); // set before binding
@@ -190,9 +188,9 @@ void ULSetVideoUI::FrameRateSet() const{
 		__func__, CurrentI, Current);
 }
 
-void ULSetVideoUI::FrameRateChanged(FString const SelectedItem,
-	ESelectInfo::Type const SelectionType) {
-	if (!Settings || !FrameRate) [[unlikely]] return;
+void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
+	const ESelectInfo::Type SelectionType) {
+	if (UNLIKELY(!Settings || !FrameRate)) return;
 
 	// const size_t LimitNum = FrameRateOpts.Num();
 	constexpr size_t Num = UJUtilsMisc::ArraySize(FrameRateOpts);
@@ -244,12 +242,12 @@ void ULSetVideoUI::QSwitchesSet() {
 			__func__, QSTexts.Num(), QSwitches.Num());
 	TArray<EQualityType> Keys;
 	QSTexts.GetKeys(Keys);
-	for (EQualityType Q: Keys) {
+	for (const EQualityType& Q: Keys) {
 		const FText* const T = QSTexts.Find(Q);
-		if (!T) continue;
+		if (UNLIKELY(!T)) continue;
 		
 		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
-		if (!pSwitchUI) continue;
+		if (UNLIKELY(!pSwitchUI)) continue;
 
 		const TObjectPtr<UGroupBox>& SwitchUI = *pSwitchUI;
 		SwitchUI->SetLabel(*T);
@@ -261,21 +259,20 @@ void ULSetVideoUI::QSwitchesSet() {
 void ULSetVideoUI::QSwitchesLoad() const {
 	TArray<EQualityType> Keys;
 	QSwitches.GetKeys(Keys);
-	for (EQualityType const Q: Keys) {
+	for (const EQualityType& Q: Keys)
 		QSwitchLoad(Q);
-	}
 }
 
 void ULSetVideoUI::QSwitchLoad(const EQualityType QSwitch) const {
-	if (QSwitch == EQualityType::NONE) return;
+	if (UNLIKELY(QSwitch == EQualityType::NONE)) return;
 	
 	const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
-	if (!pSwitchUI || !*pSwitchUI) {
+	if (UNLIKELY(!pSwitchUI || !*pSwitchUI)) {
 		UE_LOG(LogLSetVid, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
 	}
 
-	if (!Settings) {
+	if (UNLIKELY(!Settings)) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs Can't get user settings"), __func__);
 		return;
 	}
@@ -323,15 +320,16 @@ void ULSetVideoUI::QSwitchLoad(const EQualityType QSwitch) const {
 
 void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 	UE_LOG(LogLSetVid, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
-	if (Quality == EQualityType::NONE) return;
+	if (UNLIKELY(Quality == EQualityType::NONE)) return;
 
-	if (NewQ<0 || NewQ>4) {
-		UE_LOG(LogLSetVid, Warning, TEXT("New Quality out of bounds quality=%i newq=%i"), Quality, NewQ);
+	if (UNLIKELY(NewQ<0 || NewQ>4)) {
+		UE_LOG(LogLSetVid, Warning, TEXT("%hs: New Quality out of bounds quality=%i newq=%i"),
+			__func__, Quality, NewQ);
 		return;
 	}
 
-	if (!Settings) {
-		UE_LOG(LogLSetVid, Warning, TEXT("Can't get user settings"));
+	if (UNLIKELY(!Settings)) {
+		UE_LOG(LogLSetVid, Warning, TEXT("%hs: Can't get user settings"), __func__);
 		return;
 	}
 
@@ -380,7 +378,9 @@ void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 }
 
 void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
-	if (ID <= static_cast<uint8>(EQualityType::NONE) || ID >= static_cast<uint8>(EQualityType::_MAX)) {
+	if (UNLIKELY(
+		ID <= static_cast<uint8>(EQualityType::NONE) ||
+		ID >= static_cast<uint8>(EQualityType::_MAX))) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
 	}
@@ -390,15 +390,15 @@ void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
 }
 
 void ULSetVideoUI::FeatsLoad() const {
-	if (FeatsGroup) FeatsGroup->Load();
+	if (LIKELY(FeatsGroup)) FeatsGroup->Load();
 }
 
 void ULSetVideoUI::FeatsApply() const {
-	if (FeatsGroup) FeatsGroup->Apply();
+	if (LIKELY(FeatsGroup)) FeatsGroup->Apply();
 }
 
 void ULSetVideoUI::FeatsSet() {
-	if (!FeatsGroup) return;
+	if (UNLIKELY(!FeatsGroup)) return;
 
 	TMap<EFeat, FText> FeatTexts;
 	FeatTexts.Add(EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post"));
