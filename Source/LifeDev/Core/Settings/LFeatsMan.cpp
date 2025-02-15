@@ -46,12 +46,6 @@ void ALFeatsMan::BeginPlay() {
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
 	GM = Cast<ALGGameMode>(AGMB);
-	
-	ULSettings* const S = ULSettings::Instance(W);
-	if (LIKELY(S)) {
-		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
-		S->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
-	}
 
 	// force initialize
 	LoadMPC();
@@ -74,6 +68,12 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALFeatsMan::Init() {
+	ULSettings* const S = ULSettings::Instance(this);
+	if (LIKELY(S)) {
+		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
+		S->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
+	}
+
 	LoadFeats();
 }
 
