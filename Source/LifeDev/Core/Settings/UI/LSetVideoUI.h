@@ -61,7 +61,7 @@ protected:
 	void ResScaleChanged(const float Value);
 	void DResSet() const;
 	UFUNCTION()
-	void DResChanged(bool bIsChecked);
+	void DResChanged(const bool bIsChecked);
 	void VSyncSet() const;
 	UFUNCTION()
 	void VSyncChanged(const bool bIsChecked);

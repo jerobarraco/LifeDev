@@ -20,7 +20,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<ARange> RangeClass = nullptr;
 
-
 protected:
 	virtual void BeginPlay_Implementation() override;
 	virtual void BeginDestroy() override;

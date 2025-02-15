@@ -47,9 +47,9 @@ protected:
 	UFUNCTION() // bind
 	void TurnOn();
 	UFUNCTION() // bind
-	void SetFB(float Value);
+	void SetFB(const float Value);
 	UFUNCTION() // bind
-	void FeatUpdated(EFeat Feat, bool bEnabled);
+	void FeatUpdated(const EFeat Feat, const bool bEnabled);
 	UFUNCTION()
 	void FlickerBegin();
 	UFUNCTION()

@@ -32,7 +32,7 @@ ALLight::ALLight():Super() {
 	Anim->TRoot = nullptr; // by default don't animate meshes
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
-	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object; // by default use noise ranmp
+	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object; // by default use noise ranmp
 
 	// this will trigger the flicker animation randomly
 	Rnd = CreateDefaultSubobject<UCRandomizer>(TEXT("Rnd"));
@@ -87,12 +87,12 @@ ALLight::ALLight():Super() {
 void ALLight::StopFBFlicker() {
 	Rnd->Deactivate();
 	UFlashback* const Fb = UFlashback::Instance(this);
-	if (Fb) Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
+	if (LIKELY(Fb)) Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
 }
 
 void ALLight::SetFBFlicker(float NewFBFlicker) {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (LIKELY(!W)) return;
 	
 	// first deactivate if needed. ALWAYS deactivate (important since this is accessibility).
 	if (NewFBFlicker < 0) {
@@ -114,7 +114,7 @@ void ALLight::SetFBFlicker(float NewFBFlicker) {
 	}
 
 	UFlashback* const Fb = UFlashback::Instance(W);
-	if (!Fb) return;
+	if (LIKELY(!Fb)) return;
 	Fb->OnChange.AddUniqueDynamic(this, &ALLight::SetFB);
 	// manually update it in case the flag was toggled or the fb was already high
 	SetFB(Fb->GetVal());
@@ -124,10 +124,10 @@ void ALLight::BeginPlay() {
 	Super::BeginPlay();
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (LIKELY(!World)) return;
 
 	ULSettings* const Settings = ULSettings::Instance(World);
-	if (!Settings) return;
+	if (LIKELY(!Settings)) return;
 	
 	// disable if the flag is disabled. but keep disabled if it was disabled by the parent.
 	UseAnim = UseAnim && Settings->GetFeat(EFeat::V_STROBE);
@@ -152,14 +152,14 @@ void ALLight::BeginPlay() {
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// deactivate the rnd first as it could trigger the rest
-	if (IsValid(Rnd)) Rnd->Deactivate();
+	if (LIKELY(IsValid(Rnd))) Rnd->Deactivate();
 
-	if (IsValid(Sig)) {
+	if (LIKELY(IsValid(Sig))) {
 		Sig->UnbindAnim();
 		Sig->Deactivate();
 	}
 
-	if (IsValid(Anim)) {
+	if (LIKELY(IsValid(Anim))) {
 		Anim->OnUpdate.RemoveAll(this);
 		Anim->OnBegin.RemoveAll(this);
 		Anim->OnEnd.RemoveAll(this);
@@ -167,13 +167,13 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (LIKELY(!W)) return;
 
 	UFlashback* const Fb = UFlashback::Instance(W);
-	if (Fb) Fb->OnChange.RemoveAll(this);
+	if (LIKELY(Fb)) Fb->OnChange.RemoveAll(this);
 
 	ULSettings* const Settings = ULSettings::Instance(W);
-	if (Settings) Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALLight::FeatUpdated);
+	if (LIKELY(Settings)) Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -188,7 +188,7 @@ void ALLight::SetState_Implementation(int32 NewState) {
 	}
 
 	// count the times you turn off a light. closed == off
-	if (Flags) Flags->Mod(LDConsts::Flags::Stats::Lights::On, bClosed ? -1 : 1);
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Lights::On, bClosed ? -1 : 1);
 }
 
 void ALLight::AnimUpdate_Implementation(const float P, const float A) {
@@ -203,7 +203,7 @@ void ALLight::TurnOn() {
 	SetState(1);
 }
 
-void ALLight::SetFB(float Value) {
+void ALLight::SetFB(const float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
 	// activate and deactivate. only run if needed.
 	Rnd->SetActive(ShouldFlicker, false);
@@ -211,7 +211,7 @@ void ALLight::SetFB(float Value) {
 	// and the sig is bound to the anim, hence the anim manages it.
 }
 
-void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
+void ALLight::FeatUpdated(const EFeat Feat, const bool bEnabled) {
 	if (Feat != EFeat::V_STROBE) return;
 
 	UseAnim = bEnabled; // anim is bound to the strobe flag
@@ -220,7 +220,7 @@ void ALLight::FeatUpdated(EFeat Feat, bool bEnabled) {
 }
 
 void ALLight::FlickerBegin() {
-	if (!IsValid(SFX_Flicker)) return;
+	if (UNLIKELY(!IsValid(SFX_Flicker))) return;
 	SFX_Flicker->Fade(true);
 
 	// using animOnEnd instead of setting the duration.
@@ -230,6 +230,6 @@ void ALLight::FlickerBegin() {
 }
 
 void ALLight::FlickerEnd() {
-	if (!IsValid(SFX_Flicker)) return;
+	if (UNLIKELY(!IsValid(SFX_Flicker))) return;
 	SFX_Flicker->Fade(false);
 }

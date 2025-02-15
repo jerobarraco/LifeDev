@@ -47,7 +47,4 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<USoundBase> NextMusic = nullptr;
-
-	// cache the intensity to reapply on music change
-	float Intensity = 0;
 };

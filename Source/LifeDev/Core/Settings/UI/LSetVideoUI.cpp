@@ -146,7 +146,7 @@ void ULSetVideoUI::DResSet() const {
 	DRes->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::DResChanged); // important or it will change the current
 }
 
-void ULSetVideoUI::DResChanged(bool bIsChecked) {
+void ULSetVideoUI::DResChanged(const bool bIsChecked) {
 	if (!Settings) return;
 	Settings->SetDynamicResolutionEnabled(bIsChecked);
 }
