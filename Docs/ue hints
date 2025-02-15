@@ -98,3 +98,5 @@ resizeable bar
 # disable ghost nodes on ue
 	https://forums.unrealengine.com/t/blueprint-default-events-on-graph/381497/6
 
+# support baked lights 
+	https://dev.epicgames.com/community/learning/knowledge-base/nzMO/unreal-engine-enabling-baked-lighting-in-ue5
