@@ -220,6 +220,8 @@ void ALGGameMode::Init() {
 	// now the managers. which, as they are actors they tend to have side effects,
 	// some of which requires the subsystems.
 	// some of these tries to use the subsystems on begin play. TODO change that.
+	// it's better to spawn these objects before the savegame loads the subsystems or the delegates could confuse them
+	// the real solution is to bind to the delegates on init and not beginplay.
 	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
 	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));

@@ -23,17 +23,17 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ADiagMan* Instance(const UObject* const O);
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 
 	// show a dialog
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show(const FDialog& Diag);
 	// stop showing Diags (no more Diags)
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)

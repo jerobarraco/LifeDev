@@ -16,14 +16,14 @@ ALDiagMan::ALDiagMan():Super() {
 	UIClass = LIKELY(CUI.Succeeded()) ? CUI.Class.Get() : UDialogUI::StaticClass();
 }
 
+void ALDiagMan::Init_Implementation() {
+	Super::Init_Implementation();
+	Flags = UFlags::Instance(this);
+}
+
 ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 	return Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
-}
-
-void ALDiagMan::BeginPlay() {
-	Super::BeginPlay();
-	Flags = UFlags::Instance(this);
 }
 
 void ALDiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {

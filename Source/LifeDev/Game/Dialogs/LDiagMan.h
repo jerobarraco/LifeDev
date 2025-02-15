@@ -17,6 +17,8 @@ class LIFEDEV_API ALDiagMan : public ADiagMan {
 public:
 	ALDiagMan();
 
+	virtual void Init_Implementation() override;
+
 	// avoid using this. try to cache.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALDiagMan* InstanceL(const UObject* const O);
@@ -31,7 +33,6 @@ public:
 	float AutoTime = 2.5;
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Show_Implementation(const FDialog& Diag) override;
 	virtual void DiagDone_Implementation() override;
