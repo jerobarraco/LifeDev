@@ -10,45 +10,46 @@
 AFlashbackMan::AFlashbackMan():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
-	MPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
+	MPC = CMPC.Object;
 }
 
-void AFlashbackMan::ValChanged(float Value) {
+void AFlashbackMan::ValChanged(const float Value) {
 	// UE_LOG(LogTemp, Log, TEXT("Flashback value changed to %3.3f"), Value);
-	if (!IsValid(MPCInst)) return;
+	if (UNLIKELY(!IsValid(MPCInst))) return;
 	MPCInst->SetScalarParameterValue("Intensity", Value);
 }
 
 void AFlashbackMan::BeginPlay() {
 	Super::BeginPlay();
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 
-	UFlashback* const Flashback = World->GetSubsystem<UFlashback>();
-	if (IsValid(Flashback))
-		Flashback->OnChange.AddUniqueDynamic(this, &AFlashbackMan::ValChanged);
-	
-	if (!IsValid(MPC)) {
+	if (UNLIKELY(!IsValid(MPC))) {
 		UE_LOG(LogTemp, Warning, TEXT("FlashbackMan::%hs Could not get the MPC. Stop"),
 			__func__);
 		return;
 	}
 	
 	MPCInst = World->GetParameterCollectionInstance(MPC);
-	
-	if (!IsValid(MPCInst)) {
-		UE_LOG(LogTemp, Warning, TEXT("FlashbackMan::%hs Could not get the MPCInst. Stop."),
-			__func__);
-		return;
-	} 
+	UE_CLOG(UNLIKELY(!IsValid(MPCInst)), LogTemp, Warning, TEXT("FlashbackMan::%hs Could not get the MPCInst. Stop."),
+		__func__);
 }
 
 void AFlashbackMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-	UFlashback* const Flashback = GetWorld()->GetSubsystem<UFlashback>();
-	if (IsValid(Flashback))	Flashback->OnChange.RemoveAll(this);
+	UFlashback* const Flashback = UFlashback::Instance(this);
+	if (LIKELY(IsValid(Flashback)))	Flashback->OnChange.RemoveAll(this);
 
 	MPCInst = nullptr;
 	MPC = nullptr;
+
+	Super::EndPlay(EndPlayReason);
+}
+
+void AFlashbackMan::Init() {
+	UFlashback* const Flashback = UFlashback::Instance(this);
+	if (UNLIKELY(!IsValid(Flashback))) return;
+
+	ValChanged(Flashback->GetVal());
+	Flashback->OnChange.AddUniqueDynamic(this, &AFlashbackMan::ValChanged);
 }

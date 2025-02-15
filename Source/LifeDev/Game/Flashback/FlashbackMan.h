@@ -17,13 +17,13 @@ public:
 	AFlashbackMan();
 
 	UFUNCTION()
-	void ValChanged(float Value);
+	void ValChanged(const float Value);
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	// Called by LGGameMode
-	void Init() {};
+	virtual void Init();
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
@@ -32,3 +32,4 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCInst = nullptr;
 };
+
