@@ -33,11 +33,11 @@ public:
 	void NewGame(const int32 NewSlotIndex =-1);
 	
 	// loads a game, or creates a new one if not found.
-	// Defaults to current slot.
+	// Defaults to current slot (-1).
 	UFUNCTION(BlueprintCallable)
 	void LoadGame(const int32 NewSlotIndex =-1);
 	// saves the current game if any
-	// defaults to current slot
+	// defaults to current slot (-1)
 	UFUNCTION(BlueprintCallable)
 	void SaveGame(const int32 NewSlotIndex =-1);
 	// returns true if it's busy saving/loading

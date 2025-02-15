@@ -66,7 +66,7 @@ void ULSettings::LoadGame(const int32 NewSlotIndex) {
 
 	// update target slot
 	if (NewSlotIndex>=0) SlotIndex = NewSlotIndex;
-	if (SlotIndex<0) SlotIndex = 0;
+	if (UNLIKELY(SlotIndex<0)) SlotIndex = 0; // ensure a valid slot index
 
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
@@ -218,6 +218,6 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateGameplay.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_MAX)
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
-	else if (Feat>=EFeat::U_BATCH_TICK && Feat < EFeat::U_MAX)
+	else if (Feat>=EFeat::U_TICK_BATCH && Feat < EFeat::U_MAX)
 		OnFeatUpdateUnreal.Broadcast(Feat, Enable);
 }

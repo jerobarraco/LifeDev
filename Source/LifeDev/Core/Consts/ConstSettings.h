@@ -78,8 +78,10 @@ enum class EFeat: uint8 {
 #pragma endregion
 
 #pragma region Unreal
-	U_BATCH_TICK,
-	U_CON_TICK,
+	// batched ticks
+	U_TICK_BATCH,
+	// concurrent ticks
+	U_TICK_CON,
 	U_MAX UMETA(Hidden),
 #pragma endregion
 

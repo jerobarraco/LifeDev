@@ -62,8 +62,8 @@ void ALFeatsMan::BeginPlay() {
 	FeatUpVisual(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));
 	FeatUpVisual(EFeat::V_STROBE, S && S->GetFeat(EFeat::V_STROBE));
 	FeatUpVisual(EFeat::V_FLASHBACK, S && S->GetFeat(EFeat::V_FLASHBACK));
-	FeatUpUnreal(EFeat::U_BATCH_TICK, S && S->GetFeat(EFeat::U_BATCH_TICK));
-	FeatUpUnreal(EFeat::U_CON_TICK, S && S->GetFeat(EFeat::U_CON_TICK));
+	FeatUpUnreal(EFeat::U_TICK_BATCH, S && S->GetFeat(EFeat::U_TICK_BATCH));
+	FeatUpUnreal(EFeat::U_TICK_CON, S && S->GetFeat(EFeat::U_TICK_CON));
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -147,10 +147,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 }
 
 void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool bEnabled) {
-	if (Feat == EFeat::U_BATCH_TICK) {
+	if (Feat == EFeat::U_TICK_BATCH) {
 		IConsoleVariable* const CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowBatchedTicks"));
 		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
-	} else if (Feat == EFeat::U_CON_TICK) {
+	} else if (Feat == EFeat::U_TICK_CON) {
 		IConsoleVariable* const CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
 		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
 	}
