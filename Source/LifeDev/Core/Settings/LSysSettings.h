@@ -64,9 +64,9 @@ public:
 	TSet<EFeat> DefaultFeats = {
 		EFeat::D_SHOW, EFeat::D_TEXT,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
+		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
-		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
+		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
 	};
 
 	// The debug features
@@ -77,7 +77,7 @@ public:
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
-		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03,
+		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
 	};
 protected:
 	// whether to use the feats listed in debugfeats or in defaultfeats

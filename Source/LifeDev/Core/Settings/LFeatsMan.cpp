@@ -14,7 +14,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 ALFeatsMan::ALFeatsMan() :Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
-	MPC = CMPC.Succeeded() ? CMPC.Object : nullptr;
+	MPC = CMPC.Object;
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CSpeedMat(TEXT("/Game/LifeDev/Game/Flashback/FlashbackVel_MI"));
@@ -36,8 +36,8 @@ void ALFeatsMan::LoadMPC() {
 	}
 	
 	MPCI = W->GetParameterCollectionInstance(MPC);
-	UE_CLOG(!IsValid(MPCI), LogLFeatsMan, Warning,
-		TEXT("%hs Could not get the MPCInst. Stop."), __func__);
+	UE_CLOG(UNLIKELY(!IsValid(MPCI)), LogLFeatsMan, Warning,
+		TEXT("%hs Could not get the MPCInst."), __func__);
 }
 
 void ALFeatsMan::BeginPlay() {
