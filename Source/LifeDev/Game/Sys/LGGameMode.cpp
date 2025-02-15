@@ -153,6 +153,8 @@ void ALGGameMode::Init() {
 	// post process (does this even works?) // the featsman needs it
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
+	Char = Cast<ALChar>(
+		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 
 	/// set input mode
 	// this is critical or the dialogs will break
@@ -215,7 +217,9 @@ void ALGGameMode::Init() {
 	UCSignificance::Debug = Settings->GetFeat(EFeat::DBG_SIG);
 	
 	/// Managers
-	// now the managers. which, as they are actors they tend to have side-effects, some of which requires the subsystems
+	// now the managers. which, as they are actors they tend to have side effects,
+	// some of which requires the subsystems.
+	// some of these tries to use the subsystems on begin play. TODO change that.
 	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
 	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
 	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
@@ -223,6 +227,7 @@ void ALGGameMode::Init() {
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 
+	// init together.
 	if (LIKELY(IsValid(InventoryMan))) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;
@@ -233,7 +238,6 @@ void ALGGameMode::Init() {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
 	}
-
 	if (LIKELY(IsValid(DiagMan))) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
@@ -241,11 +245,8 @@ void ALGGameMode::Init() {
 		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
 		DiagMan->Init();
 	}
-
 	if (LIKELY(MusicMan)) MusicMan->Init();
-
 	if (LIKELY(FlashbackMan)) FlashbackMan->Init();
-
 	// do at the end since it depends on other things.
 	// will race-condition the ghosts
 	if (LIKELY(FeatsMan)) FeatsMan->Init();
@@ -253,11 +254,10 @@ void ALGGameMode::Init() {
 	/// GameMode init starts
 
 	// Character
-	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	if (LIKELY(IsValid(Char))) {
 		Char->InputPrio = 1;
 		Char->Init();
-	} else Char = nullptr;
+	}
 	
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
