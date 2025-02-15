@@ -78,9 +78,6 @@ void ULSettings::LoadGame(const int32 NewSlotIndex) {
 }
 
 void ULSettings::SaveGame(const int32 NewSlotIndex) {
-	// TODO should i skip saving a game if UseSaveGame is false in LSysSettings????
-	// -- prolly not. since i still need to test the savegame functionality during gameplay
-	
 	if (UNLIKELY(IsSaving)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy. Stop."), __func__);
 		// not triggering OnSaving here since we're just aborting, and something else must be in the works.

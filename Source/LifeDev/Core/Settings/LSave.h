@@ -57,6 +57,7 @@ protected:
 		EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_STROBE,
 		EFeat::V_FOV, EFeat::V_SPEED, EFeat::V_MLIGHTS,
 		EFeat::V_FLASHBACK, EFeat::V_NANITE, EFeat::E_GHOSTPOOL,
+		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
 		EFeat::D_AUTO, EFeat::D_TEXT,
 		EFeat::G_CARD0,
 	};

@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
 #include "CoreMinimal.h"
+#include "LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatsMan.generated.h"
@@ -20,7 +21,7 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	// Called by LGGameMode
-	void Init() {};
+	virtual void Init();
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FringeIntensity = 1;
@@ -31,6 +32,7 @@ public:
 
 protected:
 	void LoadMPC();
+	void LoadFeats();
 	UFUNCTION()
 	void FeatUpVisual(const EFeat Feat, const bool bEnabled);
 	UFUNCTION()
@@ -50,3 +52,4 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInterface> FBMat = nullptr;
 };
+

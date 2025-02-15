@@ -148,6 +148,19 @@ void ALGGameMode::Init() {
 		return;
 	}
 
+	/// unrelated (done first since other things can depend on this)
+	
+	// post process (does this even works?) // the featsman needs it
+	PostProcess = Cast<APostProcessVolume>(
+		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
+
+	/// set input mode
+	// this is critical or the dialogs will break
+	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
+	// these are not needed since we are using the input actions
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
+	Controller->bShowMouseCursor = false;
+
 	////  subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 	
@@ -203,56 +216,41 @@ void ALGGameMode::Init() {
 	
 	/// Managers
 	// now the managers. which, as they are actors they tend to have side-effects, some of which requires the subsystems
-
 	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
+	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
+	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
+	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+
 	if (LIKELY(IsValid(InventoryMan))) {
 		// goes below the dialogs. because some items will trigger a dialog.
 		InventoryMan->InputPrio = 9;
 		InventoryMan->ZOrder = 1;
 		InventoryMan->Init();
-	} else
-		InventoryMan = nullptr;
-
-	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
+	}
 	if (LIKELY(IsValid(StoryMan))) {
 		StoryMan->ZOrder = 5;
 		StoryMan->Init();
-	} else
-		StoryMan = nullptr;
+	}
 
-	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
 	if (LIKELY(IsValid(DiagMan))) {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
 		DiagMan->ZOrder = 3;
 		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
 		DiagMan->Init();
-	} else
-		DiagMan = nullptr;
+	}
 
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	if (LIKELY(MusicMan)) MusicMan->Init();
 
-	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	if (LIKELY(FlashbackMan)) FlashbackMan->Init();
 
 	// do at the end since it depends on other things.
 	// will race-condition the ghosts
-	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	if (LIKELY(FeatsMan)) FeatsMan->Init();
 
 	/// GameMode init starts
-	
-	// post process (does this even works?)
-	PostProcess = Cast<APostProcessVolume>(
-		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
-
-	/// set input mode
-	// this is critical or the dialogs will break
-	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
-	// these are not needed since we are using the input actions
-	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-	Controller->bShowMouseCursor = false;
 
 	// Character
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));

@@ -212,25 +212,6 @@ void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
-	const UWorld* const W = GetWorld();
-	UFlashback* const Flashback = UFlashback::Instance(W);
-	if (LIKELY(Flashback)) {
-		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
-		// important to reset the value.
-		SetFB(Flashback->GetVal()); // doesn't really work if it's not playing. Super::BeginPlay will try to play the music.
-	} else
-		SetFB(0);
-
-	UStory* const Story = UStory::Instance(W);
-	if (LIKELY(Story))
-		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
-
-	ULSettings* const S = ULSettings::Instance(W);
-	if (LIKELY(S)) {
-		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
-		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
-	}
-
 	// important to not clip
 	if (LIKELY(MusicSubmix))
 		AnimFXUpdate(0, 0); //forces wetmix to 0 resets dry to 1
@@ -239,8 +220,6 @@ void ALMusicMan::BeginPlay() {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimFXUpdate);
 		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimFXEnd);
 	}
-	
-	SetGhosts(S->GetFeat(EFeat::E_GHOSTPOOL));
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -267,6 +246,28 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALMusicMan::Init() {
+	const UWorld* const W = GetWorld();
+	UFlashback* const Flashback = UFlashback::Instance(W);
+	if (LIKELY(Flashback)) {
+		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
+		// important to reset the value.
+		SetFB(Flashback->GetVal()); // doesn't really work if it's not playing. Super::BeginPlay will try to play the music.
+	} else
+		SetFB(0);
+
+	UStory* const Story = UStory::Instance(W);
+	if (LIKELY(Story))
+		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
+
+	ULSettings* const S = ULSettings::Instance(W);
+	if (LIKELY(S)) {
+		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
+		FeatUpdate(EFeat::E_GHOSTPOOL, S->GetFeat(EFeat::E_GHOSTPOOL));
+	}
 }
 
 void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {
