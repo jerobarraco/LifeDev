@@ -27,7 +27,7 @@ public:
 	// It does checks for A_STROBE flag and will not set it otherwise.
 	// It will subscribe to many delegates.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void SetFBFlicker(float NewFBFlicker);
+	void SetFBFlicker(const float NewFBFlicker);
 
 	// Unbinds from all the flicker delegates. Disables UseAnim as well.
 	// it doesn't clear the FlickerOnFB value.

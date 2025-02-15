@@ -90,7 +90,7 @@ void ALLight::StopFBFlicker() {
 	if (LIKELY(Fb)) Fb->OnChange.RemoveDynamic(this, &ALLight::SetFB);
 }
 
-void ALLight::SetFBFlicker(float NewFBFlicker) {
+void ALLight::SetFBFlicker(const float NewFBFlicker) {
 	const UWorld* const W = GetWorld();
 	if (LIKELY(!W)) return;
 	
