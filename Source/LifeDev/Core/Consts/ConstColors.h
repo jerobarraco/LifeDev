@@ -3,7 +3,7 @@ namespace LDConsts {
 	namespace Colors {
 		// #Palette Name: Atari 8-Bit Series - GTIA
 		static inline constexpr uint8 Grey(0);
-		static inline constexpr uint8 Yellow(1);
+		static inline constexpr uint8 Green(1);
 		static inline constexpr uint8 Orange(2);
 		static inline constexpr uint8 Brown(3);
 		static inline constexpr uint8 Red(4);
@@ -14,9 +14,9 @@ namespace LDConsts {
 		static inline constexpr uint8 Cyan(9);
 		static inline constexpr uint8 BlueGreen(10);
 		static inline constexpr uint8 Greenish(11);
-		static inline constexpr uint8 Green(12);
+		static inline constexpr uint8 Green2(12);
 		static inline constexpr uint8 GreenYellow(13);
-		static inline constexpr uint8 Yellow2(14);
+		static inline constexpr uint8 Yellow(14);
 		static inline constexpr uint8 Orange2(15);
 		
 		static inline constexpr uint32 Palette[16][16] = {
@@ -37,8 +37,7 @@ namespace LDConsts {
 				0xFFdddddd,
 				0xFFeeeeee,
 				0xFFffffff,
-			},
-			{
+			},{ // green
 				0xFF091900,
 				0xFF192806,
 				0xFF29370d,
@@ -72,40 +71,40 @@ namespace LDConsts {
 				0xFFe3dd6e,
 				0xFFf1ee77,
 				0xFFffff80,
-				},{
-					0xFF4b0000,
-					0xFF570f0c,
-					0xFF631e18,
-					0xFF6f2e24,
-					0xFF7a3d30,
-					0xFF874d3c,
-					0xFF935c49,
-					0xFF9f6b55,
-					0xFFab7b61,
-					0xFFb68a6d,
-					0xFFc39a79,
-					0xFFcfa986,
-					0xFFdbb892,
-					0xFFe6c89e,
-					0xFFf3d7aa,
-					0xFFffe7b7,
-		},{
+			},{
+				0xFF4b0000,
+				0xFF570f0c,
+				0xFF631e18,
+				0xFF6f2e24,
+				0xFF7a3d30,
+				0xFF874d3c,
+				0xFF935c49,
+				0xFF9f6b55,
+				0xFFab7b61,
+				0xFFb68a6d,
+				0xFFc39a79,
+				0xFFcfa986,
+				0xFFdbb892,
+				0xFFe6c89e,
+				0xFFf3d7aa,
+				0xFFffe7b7,
+		},{ // red (linear, ignore first 2 digits)
 			0xFF550000,
-		0xFF600e10,
-		0xFF6b1c21,
-		0xFF772a32,
-		0xFF823843,
-		0xFF8d4654,
-		0xFF995465,
-		0xFFa46276,
-		0xFFaf7187,
-		0xFFbb7f98,
-		0xFFc68da9,
-		0xFFd19bba,
-		0xFFdda9cb,
-		0xFFe8b7dc,
-		0xFFf3c5ed,
-		0xFFffd4fe,
+			0xFF600e10,
+			0xFF6b1c21,
+			0xFF772a32,
+			0xFF823843,
+			0xFF8d4654,
+			0xFF995465,
+			0xFFa46276,
+			0xFFaf7187,
+			0xFFbb7f98,
+			0xFFc68da9,
+			0xFFd19bba,
+			0xFFdda9cb,
+			0xFFe8b7dc,
+			0xFFf3c5ed,
+			0xFFffd4fe,
 		},{
 			0xFF4c0047,
 		0xFF570d53,
@@ -142,21 +141,21 @@ namespace LDConsts {
 		0xFFfccbfd,
 		},{
 			0xFF0a0097,
-		0xFF1a0e9d,
-		0xFF2a1da4,
-		0xFF3b2cab,
-		0xFF4b3ab2,
-		0xFF5b49b9,
-		0xFF6c58c0,
-		0xFF7c67c7,
-		0xFF8c75ce,
-		0xFF9c84d5,
-		0xFFad93dc,
-		0xFFbda2e3,
-		0xFFceb0ea,
-		0xFFdebff1,
-		0xFFeecef8,
-		0xFFffddff,
+			0xFF1a0e9d,
+			0xFF2a1da4,
+			0xFF3b2cab,
+			0xFF4b3ab2,
+			0xFF5b49b9,
+			0xFF6c58c0,
+			0xFF7c67c7,
+			0xFF8c75ce,
+			0xFF9c84d5,
+			0xFFad93dc,
+			0xFFbda2e3,
+			0xFFceb0ea,
+			0xFFdebff1,
+			0xFFeecef8,
+			0xFFffddff,
 		},{
 			0xFF00008e,
 		0xFF0c0d94,
@@ -259,23 +258,23 @@ namespace LDConsts {
 		0xFFc4e260,
 		0xFFd3f067,
 		0xFFe3ff6f,
-		},{
+		},{ // yellow
 			0xFF0d1700,
-		0xFF1d2606,
-		0xFF2d350d,
-		0xFF3d4514,
-		0xFF4d541b,
-		0xFF5d6422,
-		0xFF6d7329,
-		0xFF7d8330,
-		0xFF8e9237,
-		0xFF9ea23e,
-		0xFFaeb145,
-		0xFFbec14c,
-		0xFFced053,
-		0xFFdee05a,
-		0xFFeeef61,
-		0xFFffff68,
+			0xFF1d2606,
+			0xFF2d350d,
+			0xFF3d4514,
+			0xFF4d541b,
+			0xFF5d6422,
+			0xFF6d7329,
+			0xFF7d8330,
+			0xFF8e9237,
+			0xFF9ea23e,
+			0xFFaeb145,
+			0xFFbec14c,
+			0xFFced053,
+			0xFFdee05a,
+			0xFFeeef61,
+			0xFFffff68,
 		},{
 			0xFF330000,
 			0xFF401008,
