@@ -128,7 +128,7 @@ namespace LDConsts {
 	namespace Feats {
 		// used to map chapter id with feats. also contains only the allowed chapters (aka the ones that do work)
 		static constexpr EFeat ChapFeats[] = {
-			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
+			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04,
 		}; // 05 included to allow to finish (is the EndStep stuff), notice not adding C_DONE
 		// EFeat::C_06, EFeat::C_07, EFeat::C_08, EFeat::C_09};
 	}
