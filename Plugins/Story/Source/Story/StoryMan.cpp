@@ -8,7 +8,7 @@
 
 AStoryMan::AStoryMan():Super() {
 	static ConstructorHelpers::FClassFinder<UStoryUI> CUIClass(TEXT("/Story/UI/W_StoryUI"));
-	UIClass = CUIClass.Succeeded() ? CUIClass.Class.Get() : UStoryUI::StaticClass();
+	UIClass = LIKELY(CUIClass.Succeeded()) ? CUIClass.Class.Get() : UStoryUI::StaticClass();
 }
 
 void AStoryMan::Init_Implementation() {}

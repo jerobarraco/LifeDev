@@ -3,13 +3,6 @@
 #include "IntroUI.h"
 
 #include "MsgBox.h"
-#include "LifeDev/Core/Sounds/LMusicMan.h"
-
-UIntroUI::UIntroUI(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CNewMusic(TEXT("/Game/LifeDev/Game/Env/Music/Music09/Music09_MS.Music09_MS"));
-	MusicNew = CNewMusic.Object;
-}
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	if (UNLIKELY(!MsgBox)) return;
@@ -34,8 +27,5 @@ void UIntroUI::NativeDestruct() {
 }
 
 void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
-	// TODo move this to the gamemode or smth
-	ALMusicMan* const Man = ALMusicMan::Instance(this);
-	if (UNLIKELY(!Man)) return;
-	Man->PlayMusic(MusicNew, true);
+	OnSlotsDone.Broadcast(HasDoneSave);
 }

@@ -15,8 +15,6 @@ class LIFEDEV_API UIntroUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	UIntroUI(const FObjectInitializer& ObjectInitialize);
-	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
 
@@ -37,7 +35,4 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UMsgBox> MsgBox = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	TObjectPtr<USoundBase> MusicNew = nullptr;
 };

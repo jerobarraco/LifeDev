@@ -9,11 +9,14 @@
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 #include "IntroUI.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
 		CUI(TEXT("/Game/LifeDev/Intro/UI/IntroUI_W"));
 	UIClass = CUI.Class;
+	
+	if (IsRunningCookCommandlet()) MusicNew.LoadSynchronous(); // ensure it gets packaged
 }
 
 void AIntroMan::AddUI() {
@@ -27,6 +30,7 @@ void AIntroMan::AddUI() {
 	
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
+	UI->OnSlotsDone.AddDynamic(this, &AIntroMan::SlotsDone);
 
 	UJUtilsMisc::ShowUI(this, true, UI, false);
 }
@@ -69,7 +73,19 @@ void AIntroMan::BeginPlay() {
 }
 
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (LIKELY(UI)) UI->OnDone.RemoveAll(this);
+	if (LIKELY(UI)) {
+		UI->OnDone.RemoveAll(this);
+		UI->OnSlotsDone.RemoveAll(this);
+	}
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void AIntroMan::SlotsDone(const bool HasDoneSave) {
+	if (!HasDoneSave) return;
+
+	ALMusicMan* const Man = ALMusicMan::Instance(this);
+	if (UNLIKELY(!Man)) return;
+	
+	Man->PlayMusic(MusicNew.LoadSynchronous(), true);
 }

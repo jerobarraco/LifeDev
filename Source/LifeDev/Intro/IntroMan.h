@@ -21,12 +21,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
+
+	UFUNCTION()
+	void SlotsDone(const bool HasDoneSave);
 	void AddUI();
 	
 	UFUNCTION()
 	void Done();
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UIntroUI* UI = nullptr;
+	TObjectPtr<UIntroUI> UI = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<USoundBase> MusicNew = TSoftObjectPtr<USoundBase>(
+		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music09/Music09_MS.Music09_MS"))
+	);
 };
