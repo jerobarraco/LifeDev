@@ -19,6 +19,8 @@ enum class EFeat: uint8 {
 	C_07,
 	C_08,
 	C_09,
+	// used only by Settings->CurrentChapFeat to signal a save that has finished.
+	C_DONE,
 	C_MAX UMETA(Hidden),
 #pragma endregion
 
@@ -127,7 +129,7 @@ namespace LDConsts {
 		// used to map chapter id with feats. also contains only the allowed chapters (aka the ones that do work)
 		static constexpr EFeat ChapFeats[] = {
 			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
-		}; // 05 included to allow to finish (is the end stuff)
+		}; // 05 included to allow to finish (is the EndStep stuff), notice not adding C_DONE
 		// EFeat::C_06, EFeat::C_07, EFeat::C_08, EFeat::C_09};
 	}
 
