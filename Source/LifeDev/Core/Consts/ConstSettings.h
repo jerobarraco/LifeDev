@@ -69,8 +69,16 @@ enum class EFeat: uint8 {
 #pragma endregion
 
 #pragma region Gameplay
-	// G_*,
+	// Intention
 	G_CARD0,
+	// TODO What works
+	G_CARD1,
+	// TODO Yin
+	G_CARD2,
+	// TODO Accept
+	G_CARD3,
+	// TODO
+	G_CARD4,
 	// use save games. if this disabled (not present) it will always create a new savefile and ignore the saved one.
 	// this should be always enabled on default flags, so it's always used on release builds.
 	G_SAVE,
@@ -78,7 +86,7 @@ enum class EFeat: uint8 {
 	// (e.g. avoid quit, disable (some) settings, maybe savegame?, reduce playtime?,
 	// simplified intro level, shows a video when in the intro for too long (with CTA))
 	G_KIOSK,
-	// reduce amount of chapters available, maybe some settings too.
+	// TODO reduce amount of chapters available, maybe some settings too.
 	G_DEMO,
 	G_MAX UMETA(Hidden),
 #pragma endregion
