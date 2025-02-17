@@ -36,7 +36,7 @@ void ULSave::Reset(const UObject* const O) {
 	// actually using StartChap and not GetStartChap to allow changing the start chap on shipping builds
 	ChapterID = LIKELY(SysSettings) ? SysSettings->StartChap : 0;
 
-	// read the feats
+	// read the feats. load with default ones.
 	UE_LOG(LogLSave, Log, TEXT("%hs.Feats"), __func__);
 	const TSet<EFeat>& Feats = SysSettings->GetFeats();
 	for (const EFeat F: WatchFeats) { // only affect the ones we watch.
@@ -49,7 +49,7 @@ void ULSave::Reset(const UObject* const O) {
 		SFeats.Add(F);
 	}
 
-	// foxyfy the game
+	// foxify the game
 	SFlags.Add(LDConsts::Flags::Settings::Global::Foxy, FMath::FRand());
 
 	// TODO this is a bit risky. keep an eye on it
