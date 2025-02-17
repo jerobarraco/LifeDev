@@ -88,4 +88,5 @@ void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	if (UNLIKELY(!Man)) return;
 	
 	Man->PlayMusic(MusicNew.LoadSynchronous(), true);
+	// Man->SetFB(1); // TODO fix // dosent 
 }
