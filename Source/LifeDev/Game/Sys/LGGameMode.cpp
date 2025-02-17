@@ -153,8 +153,13 @@ void ALGGameMode::Init() {
 	// post process (does this even works?) // the featsman needs it
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
+	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Warning, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
 	Char = Cast<ALChar>(
 		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
+	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Warning, TEXT("%hs Could not obtain the LCharacter!."), __func__);
+	StepEnd = Cast<ALStepEnd>(
+		UGameplayStatics::GetActorOfClass(World, ALStepEnd::StaticClass()));
+	UE_CLOG(UNLIKELY(!StepEnd), LogLGameMode, Warning, TEXT("%hs Could not obtain the StepEnd!."), __func__);
 
 	/// set input mode
 	// this is critical or the dialogs will break

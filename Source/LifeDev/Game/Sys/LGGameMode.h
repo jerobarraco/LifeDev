@@ -8,8 +8,9 @@
 
 #include "LGGameMode.generated.h"
 
-class AGhostPool;
+class ALStepEnd;
 struct FDialog;
+class AGhostPool;
 class ALStoryMan;
 class APostProcessVolume;
 class ULSettings;
@@ -81,6 +82,8 @@ public:
 	TObjectPtr<ALChar> Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ALStepEnd> StepEnd = nullptr;
 	
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)
