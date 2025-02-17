@@ -31,7 +31,6 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
-#include "LifeDev/Game/Chaps/All/Steps/LStepEnd.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -132,9 +131,6 @@ void ALGGameMode::Init() {
 	Char = Cast<ALChar>(
 		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Warning, TEXT("%hs Could not obtain the LCharacter!."), __func__);
-	StepEnd = Cast<ALStepEnd>(
-		UGameplayStatics::GetActorOfClass(World, ALStepEnd::StaticClass()));
-	UE_CLOG(UNLIKELY(!StepEnd), LogLGameMode, Warning, TEXT("%hs Could not obtain the StepEnd!."), __func__);
 
 	/// set input mode
 	// this is critical or the dialogs will break
@@ -422,16 +418,12 @@ bool ALGGameMode::ChapLoad() {
 }
 
 void ALGGameMode::ChapStartEnd() const {
-	if (UNLIKELY(!StepEnd)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Step End not found! Stop."), __func__);
-		// this is just a stub because i do not like soft-locks.
-		UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
-		return;
-	}
-
-	// done this way to have also transitions.
-	Story->Add(StepEnd);
-	Story->Start(StepEnd->Name);
+	const bool Started = Story->Start(StepEndName);	// done this way to have also transitions.
+	if (LIKELY(Started)) return;
+	
+	UE_LOG(LogLGameMode, Warning, TEXT("%hs Could not start End step. Verify the name is correct and is added to the level! Skip."), __func__);
+	// this is just a safety net because i do not like soft-locks.
+	UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
 }
 
 void ALGGameMode::DiagShown(const FDialog& Diag) {

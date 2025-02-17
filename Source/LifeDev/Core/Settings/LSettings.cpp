@@ -162,8 +162,10 @@ EFeat ULSettings::CurrentChapterFeat() const {
 	const int32 ChId = CurrentChapter();
 	constexpr int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
 	if (UNLIKELY(ChId < 0)) return EFeat::NONE;
+
 	// note that this feat is not saved in the savegame. since i want to support adding more chapters later.
 	if (UNLIKELY(ChId >= Max)) return EFeat::C_DONE;
+
 	return LDConsts::Feats::ChapFeats[ChId];
 }
 
@@ -184,6 +186,7 @@ void ULSettings::SetFeat(const EFeat Feat, const bool Enable) {
 	}
 
 	if (UNLIKELY(!Changed)) return;
+
 	FeatUpdated(Feat, Enable);
 }
 

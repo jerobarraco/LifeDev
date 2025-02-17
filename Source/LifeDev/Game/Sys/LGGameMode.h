@@ -8,7 +8,6 @@
 
 #include "LGGameMode.generated.h"
 
-class ALStepEnd;
 struct FDialog;
 class AGhostPool;
 class ALStoryMan;
@@ -82,8 +81,6 @@ public:
 	TObjectPtr<ALChar> Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ALStepEnd> StepEnd = nullptr;
 	
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)
@@ -124,6 +121,9 @@ protected:
 	// how often to increase the time counting flag
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	float CounterTime=.5;
+	// how often to increase the time counting flag
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
+	FName StepEndName="End";
 
 	/// transients
 

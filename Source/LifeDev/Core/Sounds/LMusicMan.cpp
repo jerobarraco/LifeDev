@@ -175,13 +175,14 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 
 	Super::Fade_Implementation(In);
 
-	// force fb to 0 on the Environ when there's no music playing 
+	// force fb to 0 on the Environ when there's no music playing
 	if (!In) SetEnvironFB(0);
 	else {
 		// reset the flashback when starting. to make sure it's at the right point.
 		// only done when fading in to avoid working extra.
 		const UFlashback* const Flashback = UFlashback::Instance(this);
-		SetFB(LIKELY(Flashback) ? Flashback->GetVal() : 0);
+		const float Val = LIKELY(Flashback) ? Flashback->GetVal() : 0;
+		SetFB(Val);
 	}
 }
 
