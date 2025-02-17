@@ -45,6 +45,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int64 Time = 0;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Version = -1;
+
+	static const inline int32 VersionLast = 1;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TMap<FName, float> SFlags;

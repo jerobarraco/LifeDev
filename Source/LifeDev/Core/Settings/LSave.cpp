@@ -22,6 +22,7 @@ void ULSave::Reset(const UObject* const O) {
 	// ChapterID = ULSysSettings::IsDebugBuild() ? ULSysSettings::Get()->StartChap : 0;
 	// not using the above, since i want to preserve the ability to skip chapters even on shipping builds
 	Time = FDateTime::Now().ToUnixTimestamp();
+	Version = VersionLast;
 	SInventory.Empty();
 	SFlags.Empty();
 	SFeats.Empty();

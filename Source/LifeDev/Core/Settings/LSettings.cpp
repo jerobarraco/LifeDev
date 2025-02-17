@@ -141,6 +141,12 @@ void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame*
 		return;
 	}
 
+	if (UNLIKELY(Save->Version != Save->VersionLast)) {
+		UE_LOG(LogLSettings, Log, TEXT("%hs Version does not match!. Slot=%i VersionLast=%i Version=%i"),
+			__func__, SlotIndex, Save->VersionLast, Save->Version);
+		// TODO "do something!"
+	}
+
 	// TODO should i really do this here?
 	Save->WriteSubsystems(GetWorld());
 	
