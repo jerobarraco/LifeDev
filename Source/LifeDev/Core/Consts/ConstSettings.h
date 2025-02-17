@@ -127,6 +127,7 @@ namespace LDConsts {
 	// these are just for the sake of comparing easily instead of using a char* which might get converted each time in runtime. also for ease of refactoring and maybe compile time check.
 	namespace Feats {
 		// used to map chapter id with feats. also contains only the allowed chapters (aka the ones that do work)
+		// TODO should this be on the settings?
 		static constexpr EFeat ChapFeats[] = {
 			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04,
 		}; // 05 included to allow to finish (is the EndStep stuff), notice not adding C_DONE

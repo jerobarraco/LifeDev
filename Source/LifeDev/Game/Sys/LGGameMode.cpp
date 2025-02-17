@@ -382,18 +382,16 @@ void ALGGameMode::ChapStartNext() {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
 		return;
 	}
+	
+	// Chapter done. go to the next one. important before savegame. read note on chatpreId
+	Settings->Save->ChapterID++;
 
-	/// finishing previous one
-	// save the last played chapter. this won't trigger at the start and that's good.
-	// it will also not save an invalid chapter.
+	// this won't trigger at the first start. read note on chapterId.
 	Settings->SaveGame();
 	
 	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
 	// clean the ghosts
 	MusicMan->KillGhosts();
-	
-	// Chapter done. go to the next one.
-	Settings->Save->ChapterID++;
 	ChapStart();
 }
 
