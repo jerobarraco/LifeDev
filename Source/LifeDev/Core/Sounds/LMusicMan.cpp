@@ -267,8 +267,8 @@ void ALMusicMan::Init() {
 	if (LIKELY(S)) {
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
-		FeatUpdate(EFeat::E_GHOSTPOOL, S->GetFeat(EFeat::E_GHOSTPOOL));
 	}
+	FeatUpdate(EFeat::E_GHOSTPOOL, S && S->GetFeat(EFeat::E_GHOSTPOOL));
 }
 
 void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {

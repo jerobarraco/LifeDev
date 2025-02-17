@@ -9,7 +9,7 @@
 
 // make a baseclass for sound stuff?
 // use CLSounder on LifeDev
-UCLASS(Blueprintable, BlueprintType, meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, Config=Sounds, DefaultConfig, meta=(BlueprintSpawnableComponent))
 class SOUNDS_API UCSounder : public UAudioComponent {
 	GENERATED_BODY()
 
@@ -25,18 +25,18 @@ public:
 	void SetSafeParamFloat(const FName& Name, const float V);
 	
 	// fade in time or 0 for none
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float TimeFadeIn = 2.0;
 
 	// fade out time or 0 for none
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float TimeFadeOut = 2.0;
 
-	// time when to start the sound. See TimeStartMax
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	// time when to start the sound. See TimeStartMax.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float TimeStartMin = 0;
 
 	// if >= 0 will randomize between min and max. otherwise it will use min.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float TimeStartMax = -1;
 };

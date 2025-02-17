@@ -91,6 +91,5 @@ void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	// TODO fix
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
 	Man->PlayMusic(M, false);
-	// TODO play old music if it's not loaded
-	// Man->SetFB(1); // TODO fix // dosent 
+	// LMusicMan already handles fb and such
 }
