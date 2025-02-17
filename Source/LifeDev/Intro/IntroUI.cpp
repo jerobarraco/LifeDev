@@ -3,6 +3,7 @@
 #include "IntroUI.h"
 
 #include "MsgBox.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	if (!MsgBox) return;
@@ -24,4 +25,10 @@ void UIntroUI::NativeOnInitialized() {
 
 void UIntroUI::NativeDestruct() {
 	Super::NativeDestruct();
+}
+
+void UIntroUI::SlotLoadDone(const bool HasDoneSave) {
+	ALMusicMan* const Man = ALMusicMan::Instance(this);
+	if (UNLIKELY(!Man)) return;
+	// Man->PlayMusic()
 }

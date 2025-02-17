@@ -26,7 +26,10 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
-	
+
+	UFUNCTION(BlueprintCallable)
+	void SlotLoadDone(const bool HasDoneSave);
+
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UMsgBox* MsgBox = nullptr;
+	TObjectPtr<UMsgBox> MsgBox = nullptr;
 };
