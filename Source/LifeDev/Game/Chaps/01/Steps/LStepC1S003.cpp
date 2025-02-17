@@ -26,7 +26,7 @@ void ALStepC1S003::BeginPlay() {
 		return;
 	}
 
-	ALNPC01* const N = Cast<ALNPC01>(IntersFadeIn[0]);
+	const ALNPC01* const N = Cast<ALNPC01>(IntersFadeIn[0]);
 	if (LIKELY(N)) N->SetPoseSit();
 	else UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 }

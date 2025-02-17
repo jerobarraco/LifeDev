@@ -22,22 +22,8 @@ class STORY_API AStep : public AActor {
 public:
 	AStep();
 
-	// don't call directly. called by system.
-	// called when the step just starts. can be in the middle of a fade.
-	// You should override Start instead, unless you know what you're doing.
-	// one reason would be to do something just when the fade is on (like loading or fading something).
-	// be sure not to do anything that would finish the step here, use DoStart for that.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay))
-	void TryStart() ;
-	virtual void TryStart_Implementation();
-	
-	// don't call this one directly. called by the system. Override to perform whatever the step needs to do at the end.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Stop();
-	virtual void Stop_Implementation();
-
 	// Call this one to stop the step from outside the system, or from the step itself.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void Finish();
 	virtual void Finish_Implementation();
 
@@ -106,6 +92,27 @@ public:
 	inline static bool Debug = false;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PostLoad() override;
+	void UpdateCamEnabled() const;
+	void BlendCam();
+
+	// don't call directly. called by system.
+	// called when the step just starts. can be in the middle of a fade.
+	// You should override Start instead, unless you know what you're doing.
+	// one reason would be to do something just when the fade is on (like loading or fading something).
+	// be sure not to do anything that would finish the step here, use Start for that (and even then use a timer for next tick).
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
+	void TryStart() ;
+	virtual void TryStart_Implementation();
+	
+	// don't call this one directly. called by the system.
+	// Override to perform whatever the step needs to do at the end.
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
+	void Stop();
+	virtual void Stop_Implementation();
+
 	// Will be triggered when the wait time ends.
 	// if the WaitTime is <=0 it will be called next frame after parent start.
 	// If FinishPostWait is set, it will finish the step.
@@ -118,15 +125,11 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DoDebug();
 	virtual void DoDebug_Implementation() {};
-	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void PostLoad() override;
-	void UpdateCamEnabled() const;
-	void BlendCam();
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UCameraComponent> Cam = nullptr;
+
+	friend class UStory;
 };
