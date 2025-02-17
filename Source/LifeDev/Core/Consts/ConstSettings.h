@@ -75,7 +75,7 @@ enum class EFeat: uint8 {
 	G_CARD1,
 	// TODO Yin
 	G_CARD2,
-	// TODO Accept
+	// TODO Accept ?
 	G_CARD3,
 	// TODO
 	G_CARD4,
