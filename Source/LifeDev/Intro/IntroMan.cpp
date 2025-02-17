@@ -88,8 +88,9 @@ void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (UNLIKELY(!Man)) return;
 
+	// TODO fix
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
-	Man->PlayMusic(M, true);
+	Man->PlayMusic(M, false);
 	// TODO play old music if it's not loaded
 	// Man->SetFB(1); // TODO fix // dosent 
 }

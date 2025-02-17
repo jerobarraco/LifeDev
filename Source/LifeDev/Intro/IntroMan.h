@@ -41,5 +41,4 @@ protected:
 	TSoftObjectPtr<USoundBase> Music = TSoftObjectPtr<USoundBase>(
 		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"))
 	);
-
 };
