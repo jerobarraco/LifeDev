@@ -2,14 +2,16 @@
 #include "LStepEnd.h"
 
 #include "Kismet/GameplayStatics.h"
+
+#include "Story/StoryMan.h"
+
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "Story/StoryMan.h"
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
-	static FText ST = FText::FromString("~ The End & The Beginning ~");
+	static const FText ST = FText::FromString("~ The End & The Beginning ~");
 	Title = ST;
 	InputEnabled = false;
 	UseFadeTime = false; // don't override wait time
@@ -24,7 +26,7 @@ ALStepEnd::ALStepEnd():Super() {
 	CamTarget = nullptr;
 }
 
-void ALStepEnd::OpenLevel() {
+void ALStepEnd::OpenLevel() const {
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }
 

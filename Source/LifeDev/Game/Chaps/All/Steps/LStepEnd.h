@@ -18,7 +18,7 @@ public:
 	FString NextLevel = "Outro_L";
 
 protected:
-	void OpenLevel();
+	void OpenLevel() const;
 	virtual void TryStart_Implementation() override;
 	virtual void Start_Implementation() override;
 };
