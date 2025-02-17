@@ -16,7 +16,10 @@ AIntroMan::AIntroMan():Super() {
 		CUI(TEXT("/Game/LifeDev/Intro/UI/IntroUI_W"));
 	UIClass = CUI.Class;
 	
-	if (IsRunningCookCommandlet()) MusicNew.LoadSynchronous(); // ensure it gets packaged
+	if (IsRunningCookCommandlet()) {
+		MusicNew.LoadSynchronous(); // ensure it gets packaged
+		Music.LoadSynchronous();
+	}
 }
 
 void AIntroMan::AddUI() {
@@ -82,11 +85,11 @@ void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AIntroMan::SlotsDone(const bool HasDoneSave) {
-	if (!HasDoneSave) return;
-
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (UNLIKELY(!Man)) return;
-	
-	Man->PlayMusic(MusicNew.LoadSynchronous(), true);
+
+	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
+	Man->PlayMusic(M, true);
+	// TODO play old music if it's not loaded
 	// Man->SetFB(1); // TODO fix // dosent 
 }

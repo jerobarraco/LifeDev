@@ -13,7 +13,6 @@ AIntroGameMode::AIntroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
 	DefaultPawnClass = ASpectatorPawn::StaticClass();
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"));
 }
 
 void AIntroGameMode::BeginPlay() {
@@ -23,7 +22,6 @@ void AIntroGameMode::BeginPlay() {
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	if (LIKELY(MusicMan)) {
-		MusicMan->PlayMusic(Music.LoadSynchronous());
 		// fix so that the environment doesn't play during the intro level
 		MusicMan->SetEnvironOverride(false);
 		MusicMan->SetGhostOverride(false);

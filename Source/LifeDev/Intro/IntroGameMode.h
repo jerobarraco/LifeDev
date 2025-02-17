@@ -18,9 +18,6 @@ class LIFEDEV_API AIntroGameMode : public AGameModeBase {
 public:
 	AIntroGameMode();
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	TSoftObjectPtr<USoundBase> Music = nullptr;
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

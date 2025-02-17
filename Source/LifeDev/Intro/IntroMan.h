@@ -32,8 +32,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UIntroUI> UI = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TSoftObjectPtr<USoundBase> MusicNew = TSoftObjectPtr<USoundBase>(
 		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music09/Music09_MS.Music09_MS"))
 	);
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	TSoftObjectPtr<USoundBase> Music = TSoftObjectPtr<USoundBase>(
+		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"))
+	);
+
 };
