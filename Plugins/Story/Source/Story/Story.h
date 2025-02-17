@@ -46,6 +46,7 @@ public:
 	bool StartNext(const FName CurrentName = NAME_None);
 	
 	// force starts a step by the name (skips fading). stops the current one before that.
+	// to use fading call Add(Step) then Start(Step.Name)
 	UFUNCTION(BlueprintCallable)
 	bool StartNow(AStep* const NewStep);
 
@@ -59,7 +60,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Stop();
 
-	// adds a Astep to be tracked and managed.
+	// adds an AStep to be tracked and managed.
 	UFUNCTION(BlueprintCallable)
 	void Add(AStep* const Step);
 

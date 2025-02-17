@@ -105,12 +105,13 @@ protected:
 	void DeInit();
 	UFUNCTION()
 	void InitOnSave(const bool IsBusy);
-	
-	bool LoadChapter();
-	void StartChapter();
 
+	bool ChapLoad();
+	void ChapStartEnd() const;
+	void ChapStart();
 	UFUNCTION() // bind to delegate
-	void StartNextChapter();
+	void ChapStartNext();
+	
 	UFUNCTION() // bind to delegate
 	void DiagShown(const FDialog& Diag);
 	UFUNCTION() // bind to delegate

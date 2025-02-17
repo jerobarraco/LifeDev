@@ -31,6 +31,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
+#include "LifeDev/Game/Chaps/All/Steps/LStepEnd.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -59,32 +60,6 @@ ALGGameMode::ALGGameMode():Super() {
 	// Setting it to visibility has its downsides, like having to set up more complicated collisions
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
 	UCInteract::SetDefaultCollisionProfile(UCInteract::ProfileInteract);
-}
-
-bool ALGGameMode::LoadChapter() {
-	const ULSysSettings* const SysSettings = ULSysSettings::Get();
-	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
-	if (!IsValid(DT_Chaps)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Chapter Datatable is not properly set in the settings."));
-		return false;
-	}
-
-	// load a chapter based on the rowname. which is just an int to string of the chapter id.
-	// todo find a betterest way
-	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
-	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
-	if (!pChap) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
-		return false;
-	}
-
-	Chapter = *pChap; // Make a copy
-	// set them on the dialog subsystem
-	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Diags->SetData(DiagData, Chars, Seqs);
-	return true;
 }
 
 void ALGGameMode::BeginPlay() {
@@ -269,7 +244,7 @@ void ALGGameMode::Init() {
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
-	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::StartNextChapter);
+	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
 
 	FTimerManager& Timer = World->GetTimerManager();
@@ -280,7 +255,7 @@ void ALGGameMode::Init() {
 
 	FTimerHandle Handle;
 	// wait for loading. then start the story!
-	Timer.SetTimer(Handle, this, &ALGGameMode::StartChapter, .1);
+	Timer.SetTimer(Handle, this, &ALGGameMode::ChapStart, .1);
 	Timer.SetTimer(CounterHandle, this, &ALGGameMode::TickCounter, CounterTime, true);
 }
 
@@ -360,7 +335,7 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALGGameMode::StartChapter() {
+void ALGGameMode::ChapStart() {
 	const int32 ChapterId = Settings->CurrentChapter();
 	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
 
@@ -378,6 +353,7 @@ void ALGGameMode::StartChapter() {
 	if (UNLIKELY(ChapFeat >= EFeat::C_DONE)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
 			__func__, ChapterId);
+		ChapStartEnd();
 		return;
 	}
 	
@@ -385,12 +361,12 @@ void ALGGameMode::StartChapter() {
 	if (UNLIKELY(ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
 			__func__, ChapterId);
-		StartNextChapter(); // note this is recursive but there ain't that many chapters
+		ChapStartNext(); // note this is recursive but there ain't that many chapters
 		return;
 	}
 
 	/// load new one
-	if (UNLIKELY(!LoadChapter())) {
+	if (UNLIKELY(!ChapLoad())) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
 		return;
 	}
@@ -401,7 +377,7 @@ void ALGGameMode::StartChapter() {
 	MusicMan->SetEnviron(true);
 }
 
-void ALGGameMode::StartNextChapter() {
+void ALGGameMode::ChapStartNext() {
 	if (UNLIKELY(!IsValid(Settings->Save))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
 		return;
@@ -418,7 +394,46 @@ void ALGGameMode::StartNextChapter() {
 	
 	// Chapter done. go to the next one.
 	Settings->Save->ChapterID++;
-	StartChapter();
+	ChapStart();
+}
+
+bool ALGGameMode::ChapLoad() {
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
+	if (UNLIKELY(!IsValid(DT_Chaps))) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
+		return false;
+	}
+
+	// load a chapter based on the rowname. which is just an int to string of the chapter id.
+	// todo find a betterest way
+	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
+	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
+	if (!pChap) {
+		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
+		return false;
+	}
+
+	Chapter = *pChap; // Make a copy
+	// set them on the dialog subsystem
+	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
+	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
+	Diags->SetData(DiagData, Chars, Seqs);
+	return true;
+}
+
+void ALGGameMode::ChapStartEnd() const {
+	if (UNLIKELY(!StepEnd)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Step End not found! Stop."), __func__);
+		// this is just a stub because i do not like soft-locks.
+		UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
+		return;
+	}
+
+	// done this way to have also transitions.
+	Story->Add(StepEnd);
+	Story->Start(StepEnd->Name);
 }
 
 void ALGGameMode::DiagShown(const FDialog& Diag) {
