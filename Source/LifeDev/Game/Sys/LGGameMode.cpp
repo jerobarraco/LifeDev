@@ -370,7 +370,7 @@ void ALGGameMode::StartChapter() {
 	}
 
 	// stop here to avoid getting the engine stuck trying to load chapters
-	if (UNLIKELY(ChapFeat == EFeat::C_MAX)) {
+	if (UNLIKELY(ChapFeat >= EFeat::C_DONE)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
 			__func__, ChapterId);
 		return;

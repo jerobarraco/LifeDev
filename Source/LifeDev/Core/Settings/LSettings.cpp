@@ -149,14 +149,14 @@ void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame*
 }
 
 int32 ULSettings::CurrentChapter() const {
-	return IsValid(Save) ? Save->ChapterID : -1;
+	return LIKELY(IsValid(Save)) ? Save->ChapterID : -1;
 }
 
 EFeat ULSettings::CurrentChapterFeat() const {
 	const int32 ChId = CurrentChapter();
 	constexpr int32 Max = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats);
 	if (UNLIKELY(ChId < 0)) return EFeat::NONE;
-	if (UNLIKELY(ChId >= Max)) return EFeat::C_MAX;
+	if (UNLIKELY(ChId >= Max)) return EFeat::C_DONE;
 	return LDConsts::Feats::ChapFeats[ChId];
 }
 
