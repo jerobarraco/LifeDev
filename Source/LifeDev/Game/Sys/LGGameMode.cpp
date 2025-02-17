@@ -384,10 +384,6 @@ void ALGGameMode::StartChapter() {
 		return;
 	}
 
-	/// finishing previous one
-	// save the last played chapter
-	Settings->SaveGame();
-
 	/// load new one
 	if (UNLIKELY(!LoadChapter())) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
@@ -406,6 +402,11 @@ void ALGGameMode::StartNextChapter() {
 		return;
 	}
 
+	/// finishing previous one
+	// save the last played chapter. this won't trigger at the start and that's good.
+	// it will also not save an invalid chapter.
+	Settings->SaveGame();
+	
 	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
 	// clean the ghosts
 	MusicMan->KillGhosts();
