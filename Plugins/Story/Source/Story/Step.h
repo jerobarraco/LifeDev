@@ -117,12 +117,12 @@ protected:
 	// if the WaitTime is <=0 it will be called next frame after parent start.
 	// If FinishPostWait is set, it will finish the step.
 	// this is a good place to do checks that might finish the step.
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void Start();
 	virtual void Start_Implementation();
 
 	// gets called when UseDebug is set. happens on postwait
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void DoDebug();
 	virtual void DoDebug_Implementation() {};
 
