@@ -40,17 +40,16 @@ void AIntroMan::Done() {
 	const ULSettings* const Settings = ULSettings::Instance(World);
 	if (UNLIKELY(!Settings)) return;
 
-	const int32 ChapterID = Settings->CurrentChapter();
-	// -1 because we never actually save that chapter.
-	constexpr int32 ChapMax = UJUtilsMisc::ArraySize(LDConsts::Feats::ChapFeats) -1;
+	// savestate actually saves past the last chapter.
+	const EFeat ChapterFeat = Settings->CurrentChapterFeat();
 
-	if (UNLIKELY(ChapterID >= ChapMax)) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Current save is beyond the max chapter."), __func__);
+	if (UNLIKELY(ChapterFeat >= EFeat::C_DONE)) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs: Current save is beyond the max chapter."), __func__);
 		static const FText TheEnd(
 			NSLOCTEXT("Intro", "MaxChapterReached",
-				"This save is at the current max chapter.\n"
-					"Maybe in a next release i'll add more.\n"
-					"But for now you can't go further."));
+				"This save is at the end.\n"
+				"Maybe in a distant future i'll add more.\n"
+				"But for now you can't go further."));
 		UI->ShowMsg(TheEnd);
 		return;
 	}

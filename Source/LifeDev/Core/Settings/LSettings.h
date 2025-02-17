@@ -52,7 +52,7 @@ public:
 	int32 CurrentChapter() const;
 
 	// returns the current chapter feature.
-	// or none on chapid -1, or c_max if over the max.
+	// or C_NONE on chapid <0, or C_DONE if over the max.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EFeat CurrentChapterFeat() const;
 	
