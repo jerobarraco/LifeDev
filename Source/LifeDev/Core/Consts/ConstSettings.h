@@ -82,6 +82,10 @@ enum class EFeat: uint8 {
 	// use save games. if this disabled (not present) it will always create a new savefile and ignore the saved one.
 	// this should be always enabled on default flags, so it's always used on release builds.
 	G_SAVE,
+	// allow to save during gameplay. very risky. this is not a priority so it might work.
+	// it surely can be abused to duplicate items or smth like that.
+	// for debug only.
+	G_SAVE_HOT,
 	// TODO locks the game in the game
 	// (e.g. avoid quit, disable (some) settings, maybe savegame?, reduce playtime?,
 	// simplified intro level, shows a video when in the intro for too long (with CTA))
