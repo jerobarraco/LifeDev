@@ -8,12 +8,15 @@
 
 class UMsgBox;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIntroUIDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIntroUISlotsDone, const bool, HasDoneSave);
 
 UCLASS(Blueprintable)
 class LIFEDEV_API UIntroUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
+	UIntroUI(const FObjectInitializer& ObjectInitialize);
+	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done() {OnDone.Broadcast();}
 
@@ -22,14 +25,19 @@ public:
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	FIntroUISlotsDone OnSlotsDone;
 
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
 	UFUNCTION(BlueprintCallable)
-	void SlotLoadDone(const bool HasDoneSave);
+	void SlotsLoadDone(const bool HasDoneSave);
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UMsgBox> MsgBox = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	TObjectPtr<USoundBase> MusicNew = nullptr;
 };
