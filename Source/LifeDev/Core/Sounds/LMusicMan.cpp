@@ -154,7 +154,7 @@ void ALMusicMan::FadeFX(const bool On) const {
 	AnimMusicFX->IsReversed = !On;
 	AnimMusicFX->Activate(true);
 
-	if (On) // don't add if it wasnt there and we don't need it.
+	if (On) // don't add if it wasn't there and we don't need it.
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
 }

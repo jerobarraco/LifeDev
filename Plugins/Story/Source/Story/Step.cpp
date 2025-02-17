@@ -136,7 +136,7 @@ void AStep::BeginPlay() {
 	if (UNLIKELY(!Story)) return;
  
 	Story->Add(this);
-	
+
 	if (UsePawnCam) {
 		AActor* const Actor = UGameplayStatics::GetActorOfClass(World, APawn::StaticClass());
 		APawn* const Pawn = Cast<APawn>(Actor);
@@ -151,7 +151,8 @@ void AStep::BeginPlay() {
 
 void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
-	Story->Rem(Name);
+	if (LIKELY(IsValid(Story)))
+		Story->Rem(Name);
 
 	Super::EndPlay(EndPlayReason);
 }

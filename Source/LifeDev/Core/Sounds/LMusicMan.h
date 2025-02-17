@@ -79,7 +79,7 @@ protected:
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
-	void SetStep(AStep* const Step);
+	void SetStep(AStep* const Step); // can't be const AStep
 	UFUNCTION() // bind
 	void AnimFXUpdate(const float Progress, const float Alpha);
 	UFUNCTION()
