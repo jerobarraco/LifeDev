@@ -69,6 +69,8 @@ public:
 	void Rem(const FName Name);
 
 	// returns the corresponding tracked AStep by name. or nullptr otherwise.
+	// if you want to check if a step exists, just call this function and check for isValid or non null.
+	// a Has(Name) function is redundant and hides information.
 	UFUNCTION(BlueprintCallable)
 	AStep* GetStep(const FName Name);
 

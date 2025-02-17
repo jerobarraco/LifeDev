@@ -112,7 +112,7 @@ bool UStory::Start(const FName Name) {
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, l, FadeTime, false);
 
-	return false;
+	return true;
 }
 
 void UStory::Stop() {

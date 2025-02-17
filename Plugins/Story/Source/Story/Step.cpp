@@ -151,8 +151,7 @@ void AStep::BeginPlay() {
 
 void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
-	if (LIKELY(IsValid(Story)))
-		Story->Rem(Name);
+	if (LIKELY(IsValid(Story))) Story->Rem(Name);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -186,5 +185,6 @@ void AStep::Finish_Implementation() {
 
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!IsValid(Story))) return;
+
 	Story->StartNext(Name);
 }
