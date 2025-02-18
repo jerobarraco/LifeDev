@@ -62,6 +62,23 @@ void AInteract::Grab(const bool IsGrab, UCInteractor* const NewParent) {
 	return;
 }
 
+void AInteract::SetText_Implementation() {
+	const int32 Num = Texts.Num();
+	if (UNLIKELY(Num < 1)) {
+		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
+		return;
+	}
+
+	if (UNLIKELY(State < 0 || State >= Num)) {
+		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
+			__func__, State, Num);
+		return;
+	}
+
+	Interact->Text = Texts[State];
+	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
+}
+
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
 		*Name.ToString(), *GetNameSafe(this));
@@ -112,7 +129,7 @@ void AInteract::Reset() {
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *GetNameSafe(this));
-	if (State <0 || State >= StateNum) return;
+	if (UNLIKELY(State <0 || State >= StateNum)) return;
 	State = NewState;
 	SetText();
 }

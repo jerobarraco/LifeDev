@@ -50,13 +50,6 @@ public:
 	TArray<FTransform> Trans;
 	// might be good to rework this, texts, sfx_start and sfx_stop
 
-	// Text to be displayed on each state. Closed, Open
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
-	TArray<FText> Texts = {
-		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
-		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
-	};
-
 	// triggered when anim starts. Closed, open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<TObjectPtr<USoundBase>> SFX_Start;
@@ -79,7 +72,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void SetText_Implementation() override;
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;

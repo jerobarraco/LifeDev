@@ -25,25 +25,6 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AInteractAnim::SetText_Implementation() {
-	Super::SetText_Implementation(); // useless
-
-	const int32 Num = Texts.Num();
-	if (UNLIKELY(Num < 1)) {
-		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
-		return;
-	}
-
-	if (UNLIKELY(State < 0 || State >= Num)) {
-		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
-			__func__, State, Num);
-		return;
-	}
-
-	Interact->Text = Texts[State];
-	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
-}
-
 void AInteractAnim::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	// play the animation, since we want to make sure it ends where it needs to
@@ -52,7 +33,7 @@ void AInteractAnim::SetState_Implementation(const int32 NewState) {
 
 bool AInteractAnim::TryTrigger_Implementation() {
 	// cancel re-trigger if it's busy.
-	if (UseAnim && Anim->IsActive()) return false;
+	if (UNLIKELY(UseAnim && Anim->IsActive())) return false;
 	return Super::TryTrigger_Implementation();
 }
 
@@ -64,7 +45,7 @@ void AInteractAnim::DoTrigger_Implementation() {
 	// done here and not on AnimEnd due to the same reason.
 	if (IsOneShot) DisableWhileAnim = false;
 
-	// OnTriggerDone is dispatched on AnimEnd. but if it's not being used. we force it.
+	// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
 	if (!UseAnim || !Anim->IsActive()) DoTriggerAnim();
 }
 

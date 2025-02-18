@@ -84,7 +84,7 @@ public:
 	// call it to change the state without triggering.
 	// called when the state changes because it triggered.
 	// Starts at state 0 == closed == off
-	// does not check for out of bounds.
+	// skips if out of bounds.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
 	virtual void SetState_Implementation(const int32 NewState);
@@ -145,6 +145,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	bool UseStateLoop = true;
 
+	// Text to be displayed on each state. Closed, Open
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TArray<FText> Texts = {
+		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
+		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
+	};
+
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
@@ -202,9 +209,7 @@ protected:
 	// Set the current text on the CInteract. Called on SetState.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
-	virtual void SetText_Implementation(){}
-	// defined as empty in the weird case someone needs an interact that's not animated and also wants to change the texts.
-	
+	virtual void SetText_Implementation();
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
