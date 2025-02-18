@@ -34,6 +34,7 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
+#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
@@ -259,7 +260,30 @@ void ALGGameMode::DeInit() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	World->GetTimerManager().ClearAllTimersForObject(this);
+
+	// destruction is reverse order than construction. actors > managers > subsystems
+
+	// if (IsValid(Char)) Char->DeInit();
+	Char = nullptr;
+
+	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
+	Ghosts = nullptr;
+
+	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
+	DiagMan = nullptr;
+
+	if (IsValid(InventoryMan)) InventoryMan->DeInit();
+	InventoryMan = nullptr;
+
+	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
+	StoryMan = nullptr;
+
+	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
+	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
+	MusicMan = nullptr;
 	
+	FlashbackMan = nullptr;
+
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
@@ -273,29 +297,12 @@ void ALGGameMode::DeInit() {
 	if (LIKELY(IsValid(Flags))) Flags->DeInit();
 	Flags = nullptr;
 	
-	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
-	DiagMan = nullptr;
-
-	if (IsValid(InventoryMan)) InventoryMan->DeInit();
-	InventoryMan = nullptr;
-
-	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
-	StoryMan = nullptr;
-
 	if (LIKELY(IsValid(Story))) {
 		Story->OnSeqStop.RemoveAll(this);
 		Story->OnFade.RemoveAll(this);
 	}
 	Story = nullptr;
 
-	// if (IsValid(Char)) Char->DeInit();
-	Char = nullptr;
-
-	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
-	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
-	MusicMan = nullptr;
-	
-	FlashbackMan = nullptr;
 	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
 
