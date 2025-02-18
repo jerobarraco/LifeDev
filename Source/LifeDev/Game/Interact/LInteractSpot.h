@@ -24,6 +24,9 @@ public:
 	// When a drop is not correct
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DropBadDlg = NAME_None;
+	// When a drop order is not correct
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FName DropBadOrderDlg = NAME_None;
 
 	// When you TRY to drop but it's full
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -43,5 +46,5 @@ public:
 
 protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
-	virtual void SetText_Implementation() override;
+	// virtual void SetText_Implementation() override;
 };

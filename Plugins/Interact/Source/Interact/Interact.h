@@ -138,9 +138,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
 
-	// Number of states. It will wrap State around. around.
+	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
+	// Loops the states (and the texts). Means when it reaches the last one. it goes back to the first.
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
+	bool UseStateLoop = true;
 
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
@@ -192,14 +195,16 @@ protected:
 	// Returns the success (false if locked)
 	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
 	// these are called by the CInteract which is called by the CInteractor.
-	// This is quite a complex interaction that' s why it' s protected.
+	// This is quite a complex interaction that's why it's protected.
 	UFUNCTION()
 	void Grab(const bool IsGrab, UCInteractor* const NewParent);
 
-	// sets the current text to show on this interact
+	// Set the current text on the CInteract. Called on SetState.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
-	virtual void SetText_Implementation(){} // TODO move to LInteract
+	virtual void SetText_Implementation(){}
+	// defined as empty in the weird case someone needs an interact that's not animated and also wants to change the texts.
+	
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
@@ -244,9 +249,6 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
-	// Loops the states (and the texts). Means when it reaches the last one. it goes back to the first.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
-	bool UseStateLoop = true;
 
 	/// CDO
 

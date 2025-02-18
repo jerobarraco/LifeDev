@@ -18,11 +18,6 @@ ALInteractSpot::ALInteractSpot():Super() {
 	};
 }
 
-// bool ALInteractSpot::TryTrigger_Implementation() {
-	// if (!Items.IsEmpty()) return false; // don't trigger if we don't have all the items.
-	// return Super::TryTrigger_Implementation();
-// }
-
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	if (UNLIKELY(Items.IsEmpty())) {
@@ -38,9 +33,8 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
-	if (UseOrder && Id !=0) {
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadDlg);
-		// TODO another dialog
+	if (UseOrder && Id !=0) { // TODO test
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadOrderDlg);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
@@ -57,12 +51,14 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::SUCCESS;
 }
 
-void ALInteractSpot::SetText_Implementation() {
-	// Super::SetText_Implementation(); // unnecessary
-	// TODO consider changing this to use the texts and states.
-	const int32 Num = Texts.Num();
-	const int32 I = Num == 0 ? -1 : (Num == 1 ? 0 : (Items.IsEmpty()? 1: 0));
-	if (I<0) return;
-
-	Interact->Text = Texts[I];
-}
+// TODO fix implemented spots
+//
+// void ALInteractSpot::SetText_Implementation() {
+// 	// Super::SetText_Implementation(); // unnecessary
+// 	// TODO consider changing this to use the texts and states.
+// 	const int32 Num = Texts.Num();
+// 	const int32 I = Num == 0 ? -1 : (Num == 1 ? 0 : (Items.IsEmpty()? 1: 0));
+// 	if (I<0) return;
+//
+// 	Interact->Text = Texts[I];
+// }
