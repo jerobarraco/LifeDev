@@ -267,14 +267,14 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	FItem& Item = GetRef(Name, Found);
 	if (UNLIKELY(!Found)) return false;
 
-	Item.IsLocked = NewBlocked;
+	Item.Locked = NewBlocked;
 	return true;
 }
 
 bool UInventory::IsUsable(const FItem& Item) {
 	if (!Item.Usable) return false;
 
-	if (Item.IsLocked) {
+	if (Item.Locked) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Item is locked. title='%s'"),
 			__func__, *Item.Title.ToString());
 		return false;
