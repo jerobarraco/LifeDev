@@ -415,7 +415,7 @@ bool ALGGameMode::ChapLoad() {
 	// todo find a betterest way
 	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
 	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
-	if (!pChap) {
+	if (UNLIKELY(!pChap)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
 		return false;
 	}
