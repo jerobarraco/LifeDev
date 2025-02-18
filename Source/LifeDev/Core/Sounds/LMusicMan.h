@@ -2,13 +2,10 @@
 
 #pragma once
 
-#include "Interact/Animator/CAnimator.h"
-#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "Sounds/MusicMan.h"
 
 #include "LMusicMan.generated.h"
 
-class AGhostPool;
 class UCLSounder;
 class AStep;
 
@@ -85,10 +82,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
 	TObjectPtr<UCAnimator> AnimMusicFX = nullptr;
 
-	// doesn't belong here but the game mode is bloated. to be moved later.
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<AGhostPool> GhostPool = nullptr;
-
 	bool EnvironOverride = true;
-	bool GhostOverride = true;
 };

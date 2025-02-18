@@ -17,7 +17,6 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
-#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
 ALMusicMan::ALMusicMan():Super() {
 	// set the class to the player
