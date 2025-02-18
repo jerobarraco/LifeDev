@@ -28,7 +28,7 @@ bool UPool::Spawn() {
 	return true;
 }
 
-bool UPool::RemoveOne() {
+bool UPool::Remove() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
 	// always remove at end. we could use RemoveAtSwap, but it will probably do the same arithmetic.
@@ -44,7 +44,7 @@ bool UPool::RemoveOne() {
 }
 
 void UPool::Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InSetTicks,
-	bool const InCanGrow, int32 const InTrimTime) {
+bool const InCanGrow, int32 const InTrimTime) {
 	if (UNLIKELY(!IsValid(Class))) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Invalid class, not setting anything."), __func__);
 		return;
@@ -54,7 +54,7 @@ void UPool::Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InS
 		__func__, Max, *Class->GetFName().ToString(), InSetTicks, InCanGrow, InTrimTime);
 
 	// Class changed. ready elements are invalid.
-	if (IsValid(ItemType) && Class != ItemType) {
+	if (UNLIKELY(IsValid(ItemType) && Class != ItemType)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs: Class changed. Resetting"), __func__);
 		Empty();
 	}
@@ -67,8 +67,8 @@ void UPool::Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InS
 
 	// add new ones if needed
 	Ready.Reserve(ItemMax);
-	while (Ready.Num() < ItemMax) {
-		if (!Spawn()) break; // avoid infinite loops
+	while (UNLIKELY(Ready.Num() < ItemMax)) {
+		if (UNLIKELY(!Spawn())) break; // avoid infinite loops
 	}
 
 	// only reduce the size NOW if the trim time is not set
@@ -77,8 +77,8 @@ void UPool::Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InS
 		SetTrimTimer(); // force set timer
 	} else {
 		// reduce size if Set was called with a smaller value
-		while (Ready.Num() > ItemMax) {
-			if (RemoveOne()) break; // avoid infinite loops 
+		while (UNLIKELY(Ready.Num() > ItemMax)) {
+			if (UNLIKELY(!Remove())) break; // avoid infinite loops 
 		}
 	}
 }
@@ -182,7 +182,7 @@ void UPool::Trim() {
 		return;
 	}
 
-	RemoveOne();
+	Remove();
 	SetTrimTimer();
 }
 
@@ -200,18 +200,18 @@ UPool* UPooler::SetPool(int32 const Max, TSubclassOf<AActor> const Class, bool c
 		__func__, Max, SetTicks, CanGrow, TrimTime, *GetNameSafe(Class));
 
 	// Not using GetPool because i don't save much and could spam a false negative log.
-	if (!IsValid(Class)) return nullptr; // fix possible crash
+	if (UNLIKELY(!IsValid(Class))) return nullptr; // fix possible crash
 	const FName Key = Class->GetFName();
 	TObjectPtr<UPool>* pPool = Pools.Find(Key);
 	TObjectPtr<UPool> Pool = nullptr;
-	if (pPool)
+	if (LIKELY(pPool))
 		Pool = *pPool;
 	else {
 		Pool = NewObject<UPool>(this);
 		Pools.Add(Key, Pool);
 	}
 
-	if (!IsValid(Pool)) {
+	if (UNLIKELY(!IsValid(Pool))) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Failed to add the pool for class=%s. Stop."),
 			__func__, *Key.ToString());
 		return nullptr;

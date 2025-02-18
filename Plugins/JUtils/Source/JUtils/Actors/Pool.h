@@ -44,7 +44,7 @@ public:
 	void Trim();
 	// remove (destroy) one item. it will shrink. regardless of max. when 0 reached if canGrow is false the pool will stop working.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay))
-	bool RemoveOne();
+	bool Remove();
 	// empties the pool. Destroys the objects that are NOT used.
 	// when those objects are returned to the Pooler they will get destroyed if this pool doesn't exist anymore.
 	// if canGrow is false, then this pool won't work anymore unless calling Set.
