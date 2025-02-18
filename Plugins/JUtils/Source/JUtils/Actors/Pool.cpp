@@ -4,8 +4,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
 
-// TODO LIkelies
-
 bool UPool::Spawn() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
@@ -95,16 +93,16 @@ AActor* UPool::Get() {
 			return nullptr;
 		}
 		
-		if (!Spawn()) return nullptr; // try to add a new one
+		if (UNLIKELY(!Spawn())) return nullptr; // try to add a new one
 	}
-	
+
 	AActor* const A = Ready[0];
 	const bool CanShrink = Ready.Num()>ItemMax;
 	const EAllowShrinking Shrink = CanShrink ? EAllowShrinking::Yes : EAllowShrinking::No;
 	// Use Swap since it's faster, and we don't need to keep the order.
 	// remove before checking, or we'll get stuck.
 	Ready.RemoveAtSwap(0, 1, Shrink);
-	if (!IsValid(A)) {
+	if (UNLIKELY(!IsValid(A))) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Pool gave an invalid actor."
 			" Did it died while in the pool (someone referenced it after return, bad). Try again. obj=%s"),
 			__func__, *GetNameSafe(A));
@@ -123,8 +121,8 @@ AActor* UPool::Get() {
 }
 
 void UPool::Return(AActor* const Actor) {
-	if (!IsValid(Actor)) {
-		UE_LOG(LogJPool, Warning, TEXT("%hs: Actor was invalid."), __func__);
+	if (UNLIKELY(!IsValid(Actor))) {
+		UE_LOG(LogJPool, Warning, TEXT("%hs: Actor was invalid. Skip"), __func__);
 		return;
 	}
 
@@ -177,7 +175,7 @@ void UPool::SetTrimTimer() {
 
 void UPool::Trim() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
-	if (Ready.Num() <= ItemMax) {
+	if (UNLIKELY(Ready.Num() <= ItemMax)) {
 		UE_LOG(LogJPool, Log, TEXT("%hs. Reached max. not trimming anymore."), __func__);
 		return;
 	}
@@ -187,10 +185,10 @@ void UPool::Trim() {
 }
 
 UPooler* UPooler::Instance(UObject* const Ctx) {
-	if (!Ctx) return nullptr;
+	if (UNLIKELY(!Ctx)) return nullptr;
 	
 	const UWorld* const World = Ctx->GetWorld();
-	if (!World) return nullptr;
+	if (UNLIKELY(!World)) return nullptr;
 
 	return World->GetSubsystem<UPooler>();
 }
@@ -260,13 +258,13 @@ AActor* UPooler::Get(const TSubclassOf<AActor> Class) {
 }
 
 void UPooler::Return(AActor* const Actor) {
-	if (!IsValid(Actor)) { // checking here to avoid problems on Actor->GetClass
+	if (UNLIKELY(!IsValid(Actor))) { // checking here to avoid problems on Actor->GetClass
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Actor was invalid. Skip"), __func__);
 		return;
 	}
 
 	UPool* const Pool = GetPool(Actor->GetClass());
-	if (!Pool) {
+	if (UNLIKELY(!Pool)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool. Destroying the actor."),
 			__func__);
 		Actor->Destroy();
