@@ -17,7 +17,7 @@ AMusicMan::AMusicMan():Super() {
 
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
 	Player->SetAutoActivate(false);
-	Player->bAutoManageAttachment = true;
+	Player->bAutoManageAttachment = false;
 	Player->TimeFadeIn = 1.0;
 }
 
@@ -34,7 +34,7 @@ void AMusicMan::PlayMusic(USoundBase* const Snd, const bool FadeOut) {
 	UE_LOG(LogSounds, Log, TEXT("%hs '%s'"), __func__, *Snd->GetName());
 	
 	NextMusic = Snd;
-	if (FadeOut && Player->IsPlaying()) Fade(false);
+	if (FadeOut && Player->IsPlaying()) Fade(false); // will trigger SetNextMusic on finish
 	else SetNextMusic();
 }
 

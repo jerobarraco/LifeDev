@@ -15,7 +15,7 @@ AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
 		CUI(TEXT("/Game/LifeDev/Intro/UI/IntroUI_W"));
 	UIClass = CUI.Class;
-	
+
 	if (IsRunningCookCommandlet()) {
 		MusicNew.LoadSynchronous(); // ensure it gets packaged
 		Music.LoadSynchronous();
@@ -90,6 +90,12 @@ void AIntroMan::SlotsDone(const bool HasDoneSave) {
 
 	// TODO fix
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
-	Man->PlayMusic(M, false);
+	Man->PlayMusic(M, true);
+	FTimerHandle H;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	// this is a patch. needed. why? not sure. a race condition of sorts.
+	World->GetTimerManager().SetTimer(H, Man, &ALMusicMan::FadeIn, 2);
+
 	// LMusicMan already handles fb and such
 }
