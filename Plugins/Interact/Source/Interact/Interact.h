@@ -84,6 +84,7 @@ public:
 	// call it to change the state without triggering.
 	// called when the state changes because it triggered.
 	// Starts at state 0 == closed == off
+	// does not check for out of bounds.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
 	virtual void SetState_Implementation(const int32 NewState);
@@ -198,7 +199,7 @@ protected:
 	// sets the current text to show on this interact
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
-	virtual void SetText_Implementation(){}
+	virtual void SetText_Implementation(){} // TODO move to LInteract
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
@@ -243,9 +244,9 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
-	// rotate the states (and the texts). Means when it reaches the last one. it goes back to the first.
+	// Loops the states (and the texts). Means when it reaches the last one. it goes back to the first.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
-	bool UseStateRot = true;
+	bool UseStateLoop = true;
 
 	/// CDO
 

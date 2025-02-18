@@ -112,6 +112,7 @@ void AInteract::Reset() {
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *GetNameSafe(this));
+	if (State <0 || State >= StateNum) return;
 	State = NewState;
 	SetText();
 }
@@ -120,7 +121,7 @@ void AInteract::ShowHint_Implementation() {
 	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
 
 	Interact->Hint(true);
-	PlaySFX(SFX_Hint);// sfx checked inside
+	PlaySFX(SFX_Hint); // sfx checked inside
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
@@ -208,9 +209,14 @@ void AInteract::DoTrigger_Implementation() {
 		__func__, *GetNameSafe(this));
 
 	// set the state before, so that the sound triggers are consistent
-	const int32 NewState = StateNum <= 0 ? 0 : (State +1) % StateNum;
-	// TODo rotate
-	SetState(NewState);
+	if (StateNum > 0) {
+		int32 NewState = State;
+		++NewState;
+		if (NewState >= StateNum)
+			NewState = UseStateLoop ? NewState % StateNum : StateNum-1;
+		SetState(NewState); 
+	}
+
 	PlaySFX(SFX_Trigger);
 
 	for(AInteract* const I: RewardIntersActive) {
