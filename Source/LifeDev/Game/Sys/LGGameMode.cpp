@@ -205,6 +205,7 @@ void ALGGameMode::Init() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass()));
 
 	// init together.
 	if (LIKELY(IsValid(InventoryMan))) {
@@ -230,13 +231,15 @@ void ALGGameMode::Init() {
 	// will race-condition the ghosts
 	if (LIKELY(FeatsMan)) FeatsMan->Init();
 
-	/// GameMode init starts
-
 	// Character
 	if (LIKELY(IsValid(Char))) {
 		Char->InputPrio = 1;
 		Char->Init();
 	}
+
+	if (LIKELY(Ghosts)) Ghosts->Init();
+
+	/// binding
 	
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
@@ -250,6 +253,7 @@ void ALGGameMode::Init() {
 	// disable input on next tick to avoid a crash otherwise....
 	Timer.SetTimerForNextTick(this, &ALGGameMode::SetInputDisable);
 
+	// finally start
 	FTimerHandle Handle;
 	// wait for loading. then start the story!
 	Timer.SetTimer(Handle, this, &ALGGameMode::ChapStart, .1);
