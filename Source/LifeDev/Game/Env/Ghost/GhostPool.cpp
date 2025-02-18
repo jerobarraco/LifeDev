@@ -38,26 +38,12 @@ void AGhostPool::Kill(const bool All) {
 	// return active to the pool
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(this, ItemClass, Actors);
-	if (!All) {
-		for (AActor* const A: Actors) {
-			// Hidden so it doesn't break the pooler.
-			// IsValid to not stumble with the ones the pool might have killed.
-			AGhostItem* G = Cast<AGhostItem>(A);
-			if (UNLIKELY(!IsValid(G) || G->IsHidden())) continue;
-			G->Return();
-		}
-		return;
-	}
-
-	if (Pooler)
-		// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
-		Pooler->SetPool(0, ItemClass, false, false, 0);
-
-	for (AActor* const A: Actors) { // kill the rest
+	for (AActor* const A: Actors) {
 		// Hidden so it doesn't break the pooler.
 		// IsValid to not stumble with the ones the pool might have killed.
-		if (UNLIKELY(!IsValid(A) || A->IsHidden())) continue;
-		A->Destroy();
+		AGhostItem* G = Cast<AGhostItem>(A);
+		if (UNLIKELY(!IsValid(G) || G->IsHidden())) continue;
+		G->Return();
 	}
 }
 
@@ -104,6 +90,11 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const S = ULSettings::Instance(this);
 	if (LIKELY(S)) S->OnFeatUpdateEnviron.RemoveAll(this);
 
+	if (Pooler)
+		// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
+			Pooler->SetPool(0, ItemClass, false, false, 0);
+	Pooler = nullptr;
+	
 	Super::EndPlay(EndPlayReason);
 }
 

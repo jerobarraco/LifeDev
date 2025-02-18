@@ -4,6 +4,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
 
+// TODO LIkelies
+
 bool UPool::Spawn() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 	
@@ -12,10 +14,10 @@ bool UPool::Spawn() {
 	P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	UWorld* const World = GetWorld();
-	if (!World) return false;
+	if (UNLIKELY(!World)) return false;
 	
 	AActor* const Actor = World->SpawnActor(ItemType, 0, 0, P);
-	if (!IsValid(Actor)) {
+	if (UNLIKELY(!IsValid(Actor))) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs Could not spawn the actor. Stop."), __func__);
 		return false;
 	}
@@ -31,19 +33,19 @@ bool UPool::RemoveOne() {
 	
 	// always remove at end. we could use RemoveAtSwap, but it will probably do the same arithmetic.
 	const int32 I = Ready.Num() -1;
-	if (I < 0) return false;
+	if (UNLIKELY(I < 0)) return false;
 
 	AActor* const A = Ready[I];
-	if (IsValid(A)) A->Destroy();
+	if (LIKELY(IsValid(A))) A->Destroy();
 
 	// remove will shrink
 	Ready.RemoveAt(I, 1, EAllowShrinking::Yes);
 	return true;
 }
 
-void UPool::Set(int32 const Max, TSubclassOf<AActor> const Class, bool const InSetTicks,
+void UPool::Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InSetTicks,
 	bool const InCanGrow, int32 const InTrimTime) {
-	if (!IsValid(Class)) {
+	if (UNLIKELY(!IsValid(Class))) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Invalid class, not setting anything."), __func__);
 		return;
 	}
@@ -145,7 +147,7 @@ void UPool::Empty() {
 	TArray<TObjectPtr<AActor>> Old = Ready; // make a copy in case someone is doing something weird.
 	Ready.Empty(); // empty asap.
 	for(TObjectPtr<AActor>& A: Old) {
-		if (IsValid(A)) A->Destroy();
+		if (LIKELY(IsValid(A))) A->Destroy();
 	}
 }
 
@@ -158,7 +160,7 @@ void UPool::SetTrimTimer() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);
 
 	const UWorld* const World = GetWorld();
-	if (!IsValid(World)) return;
+	if (UNLIKELY(!IsValid(World))) return;
 
 	FTimerManager& Timer = World->GetTimerManager();
 	Timer.ClearTimer(TrimTimer);
@@ -225,23 +227,23 @@ void UPooler::RemPool(TSubclassOf<AActor> const Class) {
 
 	const FName Key = Class->GetFName();
 	const TObjectPtr<UPool>* const PPool = Pools.Find(Key);
-	if (!PPool) {
+	if (UNLIKELY(!PPool)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool. Stop"), __func__);
 		return;
 	}
 
 	TObjectPtr<UPool> const Pool = *PPool;
 	Pool->Empty();
-	
+
 	Pools.Remove(Key);
 }
 
-UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
-	if (!IsValid(Class)) return nullptr; // fix possible crash
+UPool* UPooler::GetPool(const TSubclassOf<AActor> Class) {
+	if (UNLIKELY(!IsValid(Class))) return nullptr; // fix possible crash
 
 	const FName Key = Class->GetFName();
 	TObjectPtr<UPool>* const pPool = Pools.Find(Key);
-	if (!pPool) {
+	if (UNLIKELY(!pPool)) {
 		UE_LOG(LogJPool, Warning, TEXT("%hs. Could not find the pool for class=%s"),
 			__func__, *Key.ToString());
 		return nullptr;
@@ -250,9 +252,9 @@ UPool* UPooler::GetPool(TSubclassOf<AActor> Class) {
 	return *pPool;
 }
 
-AActor* UPooler::Get(TSubclassOf<AActor> const Class) {
+AActor* UPooler::Get(const TSubclassOf<AActor> Class) {
 	UPool* const Pool = GetPool(Class);
-	if (!Pool) return nullptr;
+	if (UNLIKELY(!Pool)) return nullptr;
 
 	return Pool->Get();
 }

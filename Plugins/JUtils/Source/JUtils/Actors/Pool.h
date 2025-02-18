@@ -20,7 +20,7 @@ class JUTILS_API UPool: public UObject {
 public:
 	// sets the configuration for this pool. changing the class on a pool handled by Pooler can cause issues.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler|Pool", meta=(AdvancedDisplay="SetTicks,CanGrow,TrimTime"))
-	void Set(int32 const Max, TSubclassOf<AActor> const Class, bool const InSetTicks=true,
+	void Set(int32 const Max, const TSubclassOf<AActor> Class, bool const InSetTicks=true,
 		bool const InCanGrow=false, int32 const InTrimTime=5);
 	
 	// gets an actor. returns null on exhausted or failure
@@ -97,12 +97,12 @@ public:
 	// gets a managed pool. don't call Set on that pool with a different class,
 	// or you'll have problems.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	UPool* GetPool(TSubclassOf<AActor> Class);
+	UPool* GetPool(const TSubclassOf<AActor> Class);
 
 	// gets an actor of a class from a pool. Returns null if exhausted or the pool has not been created.
 	// if you're going to use this often, is better to get the pool, and call get there.
 	UFUNCTION(BlueprintCallable, Category="JUtils|Pooler")
-	AActor* Get(TSubclassOf<AActor> const Class);
+	AActor* Get(const TSubclassOf<AActor> Class);
 
 	// returns an actor to the corresponding pool.
 	// If the pool is removed, then the actor will get destroyed.
