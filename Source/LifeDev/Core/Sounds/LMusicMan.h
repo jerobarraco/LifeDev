@@ -6,6 +6,7 @@
 
 #include "LMusicMan.generated.h"
 
+class UCAnimator;
 class UCLSounder;
 class AStep;
 

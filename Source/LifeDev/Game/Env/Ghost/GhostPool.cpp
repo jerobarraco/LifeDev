@@ -27,7 +27,7 @@ AGhostPool::AGhostPool():Super() {
 }
 
 void AGhostPool::SetActive(const bool Act) const {
-	Rnd->SetActive(Act);
+	if (LIKELY(Rnd)) Rnd->SetActive(Act, false);
 }
 
 void AGhostPool::Kill(const bool All) {
@@ -48,6 +48,13 @@ void AGhostPool::Kill(const bool All) {
 }
 
 void AGhostPool::Init() {
+	const UFlags* const Flags = UFlags::Instance(this);
+	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy, -1) : .5;
+	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
+	UE_LOG(LogTemp, Log,
+		TEXT("%hs Ghost PoolSize foxified. Min=%.4f, Max=%.4f, Res=%.4f, Foxy=%.4f"),
+		__func__, PoolSizeMin, PoolSizeMax, PoolSize, Alpha);
+
 	UFlashback* const Flashback = UFlashback::Instance(this);
 	if (LIKELY(Flashback)) {
 		FBTo(Flashback->GetValTo());
@@ -71,18 +78,12 @@ void AGhostPool::BeginPlay() {
 	}
 
 	Rnd->OnTrigger.AddUniqueDynamic(this, &AGhostPool::Spawn);
-	
-	const UFlags* const Flags = UFlags::Instance(this);
-	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy, -1) : .5;
-	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
-	UE_LOG(LogTemp, Log,
-		TEXT("%hs Ghost PoolSize foxified. Min=%.4f, Max=%.4f, Res=%.4f, Foxy=%.4f"),
-		__func__, PoolSizeMin, PoolSizeMax, PoolSize, Alpha);
 }
 
 void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Kill(true); // ensure to kill all. if the GP dies we are killing the ghosts too.
-	Rnd->OnTrigger.Clear();
+
+	if (LIKELY(Rnd)) Rnd->OnTrigger.RemoveAll(this);
 
 	UFlashback* const Flashback = UFlashback::Instance(this);
 	if (LIKELY(Flashback)) Flashback->OnTo.RemoveAll(this);
@@ -90,9 +91,9 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const S = ULSettings::Instance(this);
 	if (LIKELY(S)) S->OnFeatUpdateEnviron.RemoveAll(this);
 
+	// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
 	if (Pooler)
-		// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
-			Pooler->SetPool(0, ItemClass, false, false, 0);
+		Pooler->SetPool(0, ItemClass, false, false, 0);
 	Pooler = nullptr;
 	
 	Super::EndPlay(EndPlayReason);
@@ -110,10 +111,10 @@ void AGhostPool::FBTo(const float To) {
 	SetActive(Active);
 
 	// TODO Foxify the poolmax
-
-	// TODO move to Activate. TODO check for IsActive
-	// update pool
+	
+	// update pool. depends on flashback, so done here.
 	// the trim time will destroy items when not used.
+	// controlling the Max will control the potential max amount of ghosts in screen.
 	const int32 MaxPre = FMath::TruncToInt(PoolSize*To);
 	const int32 Max = Active ? MaxPre :0;
 	// i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this
