@@ -89,7 +89,7 @@ void UCPuzzle::Bind() {
 		// bind to the Interact when triggered. if it's animated wait for it to end.
 		AInteractAnim* const IA = Cast<AInteractAnim>(I);
 		if (IsValid(IA))
-			IA->OnTriggerAnim.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+			IA->OnAnimEnd.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 		else
 			I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 

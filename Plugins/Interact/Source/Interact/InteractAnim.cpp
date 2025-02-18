@@ -3,7 +3,6 @@
 
 #include "InteractAnim.h"
 
-#include "Interact/CInteract.h"
 #include "Animator/CAnimatorMix.h" // needed for Prim = Mesh. yes.
 
 AInteractAnim::AInteractAnim():Super() {
@@ -44,17 +43,19 @@ void AInteractAnim::DoTrigger_Implementation() {
 	// done here and not on AnimEnd due to the same reason.
 	if (IsOneShot) DisableWhileAnim = false;
 	Super::DoTrigger_Implementation();
-
-	// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
-	if (!UseAnim || !Anim->IsActive()) DoTriggerAnim();
 }
 
-void AInteractAnim::DoTriggerAnim() {
-	OnTriggerAnim.Broadcast();
+void AInteractAnim::DoAnimEnd() {
+	OnAnimEnd.Broadcast();
 }
 
 void AInteractAnim::AnimPlay() {
-	if (!UseAnim) return;
+	if (!UseAnim) {
+		// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
+		// the anim is triggered by setstate.
+		DoAnimEnd();
+		return;
+	}
 
 	if (DisableWhileAnim) SetActive(false);
 
@@ -94,7 +95,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 		PlaySFX(Snd2);
 	}
 
-	OnTriggerAnim.Broadcast();
+	OnAnimEnd.Broadcast();
 }
 
 // void AInteractAnim::SetMobility(EComponentMobility::Type Mobility) {
