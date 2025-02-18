@@ -12,7 +12,7 @@
 class UPooler;
 class UCRandomizer;
 
-// Ghost Pooler
+// Ghost Pooler. Controlled by EFeat::E_Ghost
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class AGhostPool : public AInfo {
 	GENERATED_BODY()
@@ -23,6 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetActive(const bool Act) const;
 
+	
 	// will deactivate and attempt to kill active ghosts
 	// All: when set will try to kill al the ghosts on the pool and empty it.
 	UFUNCTION(BlueprintCallable)

@@ -34,8 +34,8 @@ void AGhostPool::Kill(const bool All) {
 	UE_LOG(LogTemp, Log, TEXT("GhostPool %hs All=%i"), __func__, All);
 
 	SetActive(false);
-	
-	// i could return them to the pool. but honestly. it's not that big of a deal.
+
+	// return active to the pool
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(this, ItemClass, Actors);
 	if (!All) {
@@ -108,7 +108,8 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AGhostPool::FeatUpdate(const EFeat Feat, const bool bEnabled) {
-	
+	if (Feat != EFeat::E_GHOSTPOOL) return;
+	SetActive(bEnabled);
 }
 
 void AGhostPool::FBTo(const float To) {
@@ -119,11 +120,12 @@ void AGhostPool::FBTo(const float To) {
 
 	// TODO Foxify the poolmax
 
+	// TODO move to Activate. TODO check for IsActive
 	// update pool
 	// the trim time will destroy items when not used.
-	const int32 MaxPre = FMath::TruncToInt(PoolSize* To);
+	const int32 MaxPre = FMath::TruncToInt(PoolSize*To);
 	const int32 Max = Active ? MaxPre :0;
-	// // i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this
+	// i wanted to have fun with branchless. but it's POSSIBLE the compiler would optimize this
 	// const int32 Max = bitselect((int32) Active, MaxPre, 0);
 	Pooler->SetPool(Max, ItemClass, false, false, TrimTime);
 }

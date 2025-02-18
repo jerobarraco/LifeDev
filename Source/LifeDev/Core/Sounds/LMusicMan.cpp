@@ -118,27 +118,6 @@ void ALMusicMan::SetEnvironOverride(const bool On) {
 	EnvironOverride = On;
 }
 
-void ALMusicMan::SetGhosts(const bool On) {
-	const bool Enabled = GhostOverride && ULSettings::GetFeatS(this, EFeat::E_GHOSTPOOL);
-	if (Enabled && On) {
-		if (UNLIKELY(IsValid(GhostPool))) return;
-
-		UWorld* const W = GetWorld();
-		if (UNLIKELY(!W)) return;
-
-		GhostPool = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
-		return;
-	}
-
-	if (UNLIKELY(!IsValid(GhostPool))) return;
-	GhostPool->Destroy();
-	GhostPool = nullptr;
-}
-
-void ALMusicMan::SetGhostOverride(const bool On) {
-	GhostOverride = On;
-}
-
 void ALMusicMan::SetEnvironFB(const float V) const {
 	static const FName NFB("FB");
 	// calling setSafeParam is safe since it will check if the Environ itself is playing.
@@ -157,10 +136,6 @@ void ALMusicMan::FadeFX(const bool On) const {
 	if (On) // don't add if it wasn't there and we don't need it.
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
-}
-
-void ALMusicMan::KillGhosts(const bool All) {
-	if (LIKELY(GhostPool)) GhostPool->Kill(All);
 }
 
 void ALMusicMan::Fade_Implementation(const bool In) {
@@ -228,18 +203,13 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (UNLIKELY(!W)) return;
 
 	UFlashback* const Flashback = UFlashback::Instance(W);
-	if (LIKELY(Flashback))
-		Flashback->OnChange.RemoveAll(this);
+	if (LIKELY(Flashback)) Flashback->OnChange.RemoveAll(this);
 
 	UStory* const Story = UStory::Instance(W);
-	if (LIKELY(Story))
-		Story->OnStart.RemoveAll(this);
+	if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (LIKELY(S)) {
-		S->OnFeatUpdateSound.RemoveAll(this);
-		S->OnFeatUpdateEnviron.RemoveAll(this);
-	}
+	if (LIKELY(S)) S->OnFeatUpdateSound.RemoveAll(this);
 
 	if (LIKELY(AnimMusicFX)) {
 		AnimMusicFX->OnUpdate.RemoveAll(this);
@@ -260,14 +230,10 @@ void ALMusicMan::Init() {
 		SetFB(0);
 
 	UStory* const Story = UStory::Instance(W);
-	if (LIKELY(Story))
-		Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
+	if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, &ALMusicMan::SetStep);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (LIKELY(S)) {
-		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
-		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
-	}
+	if (LIKELY(S)) S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 }
 
 void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {
@@ -281,8 +247,6 @@ void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {
 		}
 	} else if (Feat == EFeat::S_ENV)
 		SetEnviron(bEnabled);
-	else if (Feat == EFeat::E_GHOSTPOOL)
-		SetGhosts(bEnabled);
 }
 
 void ALMusicMan::SetStep(AStep* const Step) {

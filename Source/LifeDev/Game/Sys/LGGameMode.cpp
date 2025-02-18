@@ -398,7 +398,8 @@ void ALGGameMode::ChapStartNext() {
 	
 	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
 	// clean the ghosts
-	MusicMan->KillGhosts();
+	if (LIKELY(Ghosts)) Ghosts->Kill(true);
+
 	ChapStart();
 }
 

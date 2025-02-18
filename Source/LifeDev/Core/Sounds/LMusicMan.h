@@ -53,22 +53,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetEnviron(const bool On) const;
 
-	// turns the ghostpool on/off. depends on feature flag and override.
-	UFUNCTION(BlueprintCallable)
-	void SetGhosts(const bool On);
-
-	// kills the ghosts.
-	// All: if set it will kill the ones inactive in the pool too.
-	UFUNCTION(BlueprintCallable)
-	void KillGhosts(const bool All=false);
-
 	// used to force environ off on the intro map/level
 	UFUNCTION(BlueprintCallable)
 	void SetEnvironOverride(const bool On);
-
-	// used to force ghost off on the intro map/level
-	UFUNCTION(BlueprintCallable)
-	void SetGhostOverride(const bool On);
 
 	virtual void Fade_Implementation(const bool In) override;
 
