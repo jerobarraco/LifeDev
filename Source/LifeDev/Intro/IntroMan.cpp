@@ -87,15 +87,7 @@ void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (UNLIKELY(!Man)) return;
-
-	// TODO fix
+	// the whole issue was i was not initializing this instance on intro game mode. :')
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
 	Man->PlayMusic(M, true);
-	FTimerHandle H;
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	// this is a patch. needed. why? not sure. a race condition of sorts.
-	World->GetTimerManager().SetTimer(H, Man, &ALMusicMan::FadeIn, 2);
-
-	// LMusicMan already handles fb and such
 }
