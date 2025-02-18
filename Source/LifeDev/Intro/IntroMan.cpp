@@ -44,7 +44,7 @@ void AIntroMan::Done() {
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 	const UWorld* const World = GetWorld();
 
-	const ULSettings* const Settings = ULSettings::Instance(World);
+	ULSettings* const Settings = ULSettings::Instance(World);
 	if (UNLIKELY(!Settings)) return;
 
 	// savestate actually saves past the last chapter.
@@ -63,6 +63,9 @@ void AIntroMan::Done() {
 
 	UJUtilsMisc::ShowUI(this, false);
 
+	// this is a patch to ensure the settings are respected when going to the game.
+	if (LIKELY(Settings)) Settings->SaveGame();
+	
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
 	// FString Options = "Game="+ NextLevelMode;
