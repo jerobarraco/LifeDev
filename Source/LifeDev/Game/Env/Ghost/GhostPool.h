@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+#include "LifeDev/Core/Consts/ConstSettings.h"
+
 #include "GhostPool.generated.h"
 
 
@@ -26,6 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Kill(const bool All=false);
 
+
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
@@ -33,6 +36,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
+	UFUNCTION() // bind
+	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION()
 	void FBTo(const float To);
 	UFUNCTION()

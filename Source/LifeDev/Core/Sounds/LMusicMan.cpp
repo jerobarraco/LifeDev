@@ -268,7 +268,6 @@ void ALMusicMan::Init() {
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALMusicMan::FeatUpdate);
 	}
-	FeatUpdate(EFeat::E_GHOSTPOOL, S && S->GetFeat(EFeat::E_GHOSTPOOL));
 }
 
 void ALMusicMan::FeatUpdate(const EFeat Feat, const bool bEnabled) {

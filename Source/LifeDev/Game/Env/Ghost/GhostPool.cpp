@@ -9,7 +9,9 @@
 #include "Inventory/Flags.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+
 #include "GhostItem.h"
 
 AGhostPool::AGhostPool():Super() {
@@ -59,11 +61,22 @@ void AGhostPool::Kill(const bool All) {
 	}
 }
 
-void AGhostPool::Init() {}
+void AGhostPool::Init() {
+	UFlashback* const Flashback = UFlashback::Instance(this);
+	if (LIKELY(Flashback)) {
+		FBTo(Flashback->GetValTo());
+		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
+	}
+
+	ULSettings* const S = ULSettings::Instance(this);
+	if (LIKELY(S))
+		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &AGhostPool::FeatUpdate);
+	FeatUpdate(EFeat::E_GHOSTPOOL, S && S->GetFeat(EFeat::E_GHOSTPOOL));
+}
 
 void AGhostPool::BeginPlay() {
 	Super::BeginPlay();
-	
+
 	Pooler = UPooler::Instance(this);
 	if (UNLIKELY(!Pooler)) {
 		UE_LOG(LogTemp, Warning, TEXT("GhostPool:%hs Can't get the pooler. this won't work. Stop"),
@@ -72,12 +85,7 @@ void AGhostPool::BeginPlay() {
 	}
 
 	Rnd->OnTrigger.AddUniqueDynamic(this, &AGhostPool::Spawn);
-	UFlashback* const Flashback = UFlashback::Instance(this);
-	if (LIKELY(Flashback)) {
-		FBTo(Flashback->GetValTo());
-		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
-	}
-
+	
 	const UFlags* const Flags = UFlags::Instance(this);
 	const float Alpha = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy, -1) : .5;
 	PoolSize = FMath::LerpStable(PoolSizeMin, PoolSizeMax, Alpha);
@@ -89,11 +97,18 @@ void AGhostPool::BeginPlay() {
 void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Kill(true); // ensure to kill all. if the GP dies we are killing the ghosts too.
 	Rnd->OnTrigger.Clear();
+
 	UFlashback* const Flashback = UFlashback::Instance(this);
-	if (LIKELY(Flashback))
-		Flashback->OnTo.RemoveAll(this);
+	if (LIKELY(Flashback)) Flashback->OnTo.RemoveAll(this);
 	
+	ULSettings* const S = ULSettings::Instance(this);
+	if (LIKELY(S)) S->OnFeatUpdateEnviron.RemoveAll(this);
+
 	Super::EndPlay(EndPlayReason);
+}
+
+void AGhostPool::FeatUpdate(const EFeat Feat, const bool bEnabled) {
+	
 }
 
 void AGhostPool::FBTo(const float To) {
