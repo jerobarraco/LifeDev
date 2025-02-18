@@ -58,6 +58,8 @@ void AGhostPool::Init() {
 	UFlashback* const Flashback = UFlashback::Instance(this);
 	if (LIKELY(Flashback)) {
 		FBTo(Flashback->GetValTo());
+		// note this function is bound to OnTo and not OnChange.
+		// it's more performant. does not choke the pooler system with requests and does not spams the log.
 		Flashback->OnTo.AddUniqueDynamic(this, &AGhostPool::FBTo);
 	}
 
