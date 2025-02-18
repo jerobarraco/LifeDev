@@ -4,6 +4,8 @@
 
 #include "Inventory/InventoryTypes.h"
 
+#include "LifeDev/Core/Consts/ConstColors.h"
+
 void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
 FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	if (Item.Consumable)
@@ -23,12 +25,13 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 
 FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
 	if (Item.Locked || Item.ActiveCoolDown>0)
-		return FColor::Red; // TODO
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][4]);
 	if (Item.SelfUsable)
-		return FColor::Green; // TODO
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][4]);
 	if (Item.Usable)
-		return FColor::Cyan;
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][4]);
 	if (Item.Consumable)
-		return FColor::Yellow; // TODO
-	return FColor::Black; // TODO maybe add some field for the colors so that it can be changed in bps
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][4]);
+	return  FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][4]);
+	// TODO maybe add some field for the colors so that it can be changed in bps
 }

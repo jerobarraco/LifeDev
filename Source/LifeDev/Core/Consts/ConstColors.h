@@ -3,24 +3,24 @@ namespace LDConsts {
 	namespace Colors {
 		// #Palette Name: Atari 8-Bit Series - GTIA
 		static inline constexpr uint8 Grey(0);
-		static inline constexpr uint8 Green(1);
-		static inline constexpr uint8 Orange(2);
+		static inline constexpr uint8 Yellow(1); // yellow/green
+		static inline constexpr uint8 Orange(2); // yellow/brown
 		static inline constexpr uint8 Brown(3);
 		static inline constexpr uint8 Red(4);
 		static inline constexpr uint8 Pink(5);
 		static inline constexpr uint8 Purple(6);
-		static inline constexpr uint8 Blueish(7);
+		static inline constexpr uint8 Violet(7);
 		static inline constexpr uint8 Blue(8);
-		static inline constexpr uint8 Cyan(9);
-		static inline constexpr uint8 BlueGreen(10);
-		static inline constexpr uint8 Greenish(11);
-		static inline constexpr uint8 Green2(12);
-		static inline constexpr uint8 GreenYellow(13);
-		static inline constexpr uint8 Yellow(14);
-		static inline constexpr uint8 Orange2(15);
+		static inline constexpr uint8 BlueLight(9);
+		static inline constexpr uint8 Cyan(10);
+		static inline constexpr uint8 Emerald(11);
+		static inline constexpr uint8 Green(12);
+		static inline constexpr uint8 Lime(13);
+		static inline constexpr uint8 Yellow2(14); // almost identical to 1 but a bit different. unnoticeable
+		static inline constexpr uint8 Orange2(15); // almost identical to 2 but a bit different. unnoticeable
 		
 		static inline constexpr uint32 Palette[16][16] = {
-			{
+			{ // grey
 				0xFF000000,
 				0xFF111111,
 				0xFF222222,
@@ -37,7 +37,7 @@ namespace LDConsts {
 				0xFFdddddd,
 				0xFFeeeeee,
 				0xFFffffff,
-			},{ // green
+			},{ // yellow
 				0xFF091900,
 				0xFF192806,
 				0xFF29370d,
@@ -258,7 +258,7 @@ namespace LDConsts {
 		0xFFc4e260,
 		0xFFd3f067,
 		0xFFe3ff6f,
-		},{ // yellow
+		},{ // yellow 2
 			0xFF0d1700,
 			0xFF1d2606,
 			0xFF2d350d,
@@ -275,7 +275,7 @@ namespace LDConsts {
 			0xFFdee05a,
 			0xFFeeef61,
 			0xFFffff68,
-		},{
+		},{ //orange2
 			0xFF330000,
 			0xFF401008,
 			0xFF4e2111,

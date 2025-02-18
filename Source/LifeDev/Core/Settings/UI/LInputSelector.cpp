@@ -9,9 +9,9 @@ ULInputSelector::ULInputSelector():Super() {
 	// Super::SetIsEnabled(false);
 
 	FTextBlockStyle S = GetTextStyle();
-	// TODO set proper colors (maybe wait after common ui)
+	// TODO set proper colors
 	S.Font.Size = 20;
-	S.ColorAndOpacity = FSlateColor (FColor(LDConsts::Colors::Palette[8][3]));
+	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[8][3]));
 	SetTextStyle(S);
 	
 	FButtonStyle BS = GetButtonStyle();
