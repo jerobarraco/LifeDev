@@ -5,7 +5,7 @@
 #include "Inventory/InventoryTypes.h"
 
 void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
-FText UInventoryItemUI::ItemCountText(const FItem& Item) {
+FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	if (Item.Consumable)
 		return FText::FromString(FString::FromInt(Item.Count));
 

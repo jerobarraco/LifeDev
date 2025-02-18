@@ -17,5 +17,8 @@ public:
 	void SetItem(const FName& Name, const FItem& Item);
 	
 	UFUNCTION(BlueprintCallable)
-	FText ItemCountText(const FItem& Item);
+	FText GetItemCountText(const FItem& Item);
+	// UFUNCTION(BlueprintCallable)
+	// FSlateColor GetItemColor(const FItem& Item);
+	
 };
