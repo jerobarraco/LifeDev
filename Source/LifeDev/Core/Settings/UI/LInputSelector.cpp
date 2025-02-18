@@ -11,11 +11,11 @@ ULInputSelector::ULInputSelector():Super() {
 	FTextBlockStyle S = GetTextStyle();
 	// TODO set proper colors
 	S.Font.Size = 20;
-	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[8][3]));
+	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Blue][3]));
 	SetTextStyle(S);
 	
 	FButtonStyle BS = GetButtonStyle();
-	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[3][3]));
+	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Brown][3]));
 	SetButtonStyle(BS);
 
 	SetNoKeySpecifiedText(FText::FromString(TEXT("[None]")));
