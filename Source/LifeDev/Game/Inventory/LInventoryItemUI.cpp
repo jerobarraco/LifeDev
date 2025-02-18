@@ -20,3 +20,15 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 
 	return FText::FromString(TEXT("∞"));
 }
+
+FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
+	if (Item.Locked || Item.ActiveCoolDown>0)
+		return FColor::Red; // TODO
+	if (Item.SelfUsable)
+		return FColor::Green; // TODO
+	if (Item.Usable)
+		return FColor::Cyan;
+	if (Item.Consumable)
+		return FColor::Yellow; // TODO
+	return FColor::Black; // TODO maybe add some field for the colors so that it can be changed in bps
+}

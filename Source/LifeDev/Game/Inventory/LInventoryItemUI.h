@@ -18,7 +18,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	FText GetItemCountText(const FItem& Item);
-	// UFUNCTION(BlueprintCallable)
-	// FSlateColor GetItemColor(const FItem& Item);
-	
+	UFUNCTION(BlueprintCallable)
+	FSlateColor GetItemColor(const FItem& Item);
 };
