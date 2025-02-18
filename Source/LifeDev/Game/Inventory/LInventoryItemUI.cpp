@@ -14,13 +14,14 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	if (!Item.SelfUsable || !Item.Usable)
 		return FText();
 
+	// TEXT is necessary for utf
 	if (Item.ActiveCoolDown > 0)
-		return FText::FromString("...");
+		return FText::FromString(TEXT("..."));
 
 	if (Item.Locked)
-		return FText::FromString("X");
+		return FText::FromString(TEXT("X"));
 
-	return FText::FromString(TEXT("∞"));
+	return FText::FromString(TEXT("∞")); // the font has this one, but nothing more. ⛔ 🚫 ⏱ ⏲🔒
 }
 
 FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
