@@ -38,12 +38,12 @@ bool AInteractAnim::TryTrigger_Implementation() {
 }
 
 void AInteractAnim::DoTrigger_Implementation() {
-	Super::DoTrigger_Implementation();
 	// disable disableWhileAnim if this is one shot. otherwise it will try to re-enable
 	// do after Trigger, so it actually disable during the animation
 	// also not doing during SetState since that can also be called by other means.
 	// done here and not on AnimEnd due to the same reason.
 	if (IsOneShot) DisableWhileAnim = false;
+	Super::DoTrigger_Implementation();
 
 	// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
 	if (!UseAnim || !Anim->IsActive()) DoTriggerAnim();

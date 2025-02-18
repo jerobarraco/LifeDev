@@ -9,7 +9,7 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
-#include "CQuickMesh.h" // this is necessary for the .add(Mesh) below
+#include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
