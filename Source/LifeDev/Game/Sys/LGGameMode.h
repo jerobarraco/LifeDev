@@ -81,6 +81,8 @@ public:
 	TObjectPtr<ALChar> Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<AGhostPool> Ghosts = nullptr;
 	
 	/// subsystems cache
 	UPROPERTY(BlueprintReadOnly, Transient)

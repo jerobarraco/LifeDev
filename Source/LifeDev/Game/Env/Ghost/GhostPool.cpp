@@ -59,6 +59,8 @@ void AGhostPool::Kill(const bool All) {
 	}
 }
 
+void AGhostPool::Init() {}
+
 void AGhostPool::BeginPlay() {
 	Super::BeginPlay();
 	
