@@ -6,11 +6,16 @@
 
 #include "LInventoryItemUI.generated.h"
 
+struct FItem;
+
 UCLASS(Blueprintable)
 class LIFEDEV_API UInventoryItemUI : public UUserWidget {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetItem(const FName& Name, const FItem& Item);
+	
+	UFUNCTION(BlueprintCallable)
+	FText ItemCountText(const FItem& Item);
 };
