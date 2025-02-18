@@ -28,6 +28,8 @@ void AIntroGameMode::BeginPlay() {
 
 	UFlashback* const FB = UFlashback::Instance(World);
 	if (LIKELY(FB)) FB->SetVal(1);
+	
+	if (LIKELY(MusicMan)) MusicMan->Init(); // very important
 
 	// very important NOT to save the save-game here.
 	// since none of the subsystems are initialized and it will save garbage
