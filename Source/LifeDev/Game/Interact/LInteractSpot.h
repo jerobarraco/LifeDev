@@ -10,7 +10,6 @@
 // It only allows for triggering once it's done.
 // It will trigger LockedDlg (when already done) and TriggerDlg (once upon done) accordingly.
 // if attempt to use an item once it's done it will trigger FullDlg
-
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteractSpot: public ALInteract {
 	GENERATED_BODY()
@@ -26,11 +25,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DropBadDlg = NAME_None;
 
-	// When i TRY to drop but it's full
+	// When you TRY to drop but it's full
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DropFullDlg = NAME_None;
 
-	// When i TRY to trigger but it's full.
+	// When you TRY to trigger but it's full.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName LockedFullDlg = NAME_None;
 
@@ -38,8 +37,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> Items;
 
+	// when true, the items can only be dropped in order.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseOrder = false;
+
 protected:
-	// virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	virtual void SetText_Implementation() override;
 };

@@ -16,4 +16,5 @@ enum class EItemUseResult: uint8 {
 	BAD_TARGET,
 	// the target rejected the item AND handled it (e.g. showed a dialog)
 	BAD_HANDLED,
+	MAX UMETA(HIDDEN),
 };

@@ -243,6 +243,9 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
+	// rotate the states (and the texts). Means when it reaches the last one. it goes back to the first.
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
+	bool UseStateRot = true;
 
 	/// CDO
 
