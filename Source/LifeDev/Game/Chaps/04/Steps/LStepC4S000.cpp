@@ -22,7 +22,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
 	// needed
-	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
+	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));
@@ -52,7 +52,8 @@ ALStepC4S000::ALStepC4S000():Super() {
 
 void ALStepC4S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
+
 	FB->SetMax(1);
 	FB->SetMin(.2); // this limits the fbs on the next steps too.
-	FB->SetVal(.2);
+	FB->SetVal(.2, .15);
 }
