@@ -8,9 +8,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
-
-// i've considered moving stuff from here to steps. but they would be a bunch of steps.
-// and naming them would be difficult. so no.
+#include "Story/Story.h"
 
 ALNPC01I00::ALNPC01I00():Super() {
 	LockedDlg = "N01.L";
@@ -37,12 +35,9 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 
 	// disable the interact, so it can fade better, and player won't trigger again
 	SetActive(false);
-	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
-	Diags->AddId("N01.0");
-	
-	Flashback->SetVal(1);
-	ALMusicMan::SetRainS(GetWorld(), true);
-	
+	Story->StartNext(); // trigger next step
+
+	// TODO  Story->OnStop.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	return EItemUseResult::SUCCESS;
 }
 
