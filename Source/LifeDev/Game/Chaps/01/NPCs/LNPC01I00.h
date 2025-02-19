@@ -19,7 +19,6 @@ public:
 	ALNPC01I00();
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
@@ -27,6 +26,4 @@ protected:
 	
 	UFUNCTION()
 	void DoStepStart(AStep* const Step);
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UCAnimatorCam> AnimCam = nullptr;
 };

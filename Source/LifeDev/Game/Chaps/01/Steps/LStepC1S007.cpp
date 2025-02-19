@@ -3,14 +3,15 @@
 #include "LStepC1S007.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Game/Chaps/01/NPCs/LNPC01I00.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S007::ALStepC1S007():Super() {
 	Name = FName("C1S7");
 	InputEnabled = true;
 	// uses pawn camera
-	CamTarget = nullptr;
-	UsePawnCam = true;
+	CamTarget = this;
+	UsePawnCam = false;
 	UseFadeTime = false;
 	UseRain = false; // turn off rain
 	// wait for the player to talk with the npc and get the card
