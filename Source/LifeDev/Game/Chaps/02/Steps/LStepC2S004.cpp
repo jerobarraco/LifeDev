@@ -40,10 +40,3 @@ void ALStepC2S004::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	FB->SetMin(0);
 }
-
-void ALStepC2S004::Stop_Implementation() {
-	FB->SetMin(0);
-	FB->SetMax(1);
-	FB->SetVal(0);
-	Super::Stop_Implementation();
-}

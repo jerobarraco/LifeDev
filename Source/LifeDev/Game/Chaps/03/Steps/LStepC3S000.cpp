@@ -21,7 +21,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
-	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
+	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
@@ -51,11 +51,13 @@ ALStepC3S000::ALStepC3S000():Super() {
 
 void ALStepC3S000::TryStart_Implementation() {
 	Super::TryStart_Implementation();
+	
+	FB->SetMin(0);
 	FB->SetMax(.4);
-	FB->SetVal(.01);
+	FB->SetVal(.01, .15);
 }
 
 void ALStepC3S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
-	if (Inventory) Inventory->Ensure(LDConsts::Items::Card3);
+	if (LIKELY(Inventory)) Inventory->Ensure(LDConsts::Items::Card3);
 }

@@ -59,7 +59,7 @@ void ALStepC2S000::TryStart_Implementation() {
 	if (UNLIKELY(!FB)) return;
 	FB->SetMax(.6);
 	FB->SetMin(0);
-	FB->SetVal(.11, 10);
+	FB->SetVal(.11, .15);
 }
 
 void ALStepC2S000::DoDebug_Implementation() {

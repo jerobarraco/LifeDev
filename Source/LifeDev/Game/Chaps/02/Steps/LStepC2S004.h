@@ -17,5 +17,4 @@ public:
 	ALStepC2S004();
 
 	virtual void TryStart_Implementation() override;
-	virtual void Stop_Implementation() override;
 };
