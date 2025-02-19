@@ -2,7 +2,6 @@
 
 #include "LStepC1S004.h"
 
-#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC1S004::ALStepC1S004():Super() {
