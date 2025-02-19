@@ -5,8 +5,6 @@
 #include "Interact/Animator/CAnimatorCam.h"
 #include "CQuickMesh.h"
 
-#include "LifeDev/Core/Sounds/LMusicMan.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
@@ -43,6 +41,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	SetActive(false);
 	Story->OnStart.AddUniqueDynamic(this, &ALNPC01I00::DoStepStart);
 	Story->StartNext(); // trigger next step
+	StandUp();
 	return EItemUseResult::SUCCESS;
 }
 
@@ -61,6 +60,7 @@ void ALNPC01I00::DoStepStart(AStep* const Step) {
 	} else if (Step->Name == "C1S7") {
 		Fade(false); // fade out manually. doRewards won't.
 		DoRewards(); // give the card and disappear
+		if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
 	}
 }
 

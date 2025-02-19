@@ -190,7 +190,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCRandomizerFB> RandFB = nullptr;
-
+#pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
@@ -201,6 +201,8 @@ protected:
 	TObjectPtr<UFlags> Flags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<AGhosts> Ghosts = nullptr;
-
+#pragma endregion 
 	FTimerHandle TimerDestroy;
 };
+
+// it would be nice to have a AnimatorCam but i don't need it atm. otherwise look at ALNPC01I00
