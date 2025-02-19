@@ -11,22 +11,23 @@ ASpotI00::ASpotI00():Super() {
 	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T* (note the random)
 	LockedDlg = "IS_C0L";
 	LockedFullDlg = "IS_C0TB";
-	StateNum = 5;
+	StateNum = 2; // enabled, done
+	Texts = {
+		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
+		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
+	};
 	Items = {
 		// two shirts and a boxer, and a sock
 		FName("C1C00"), FName("C1C01"), FName("C1C02"), FName("C1C04")
 	};
-	const FText Base = FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")); 
-	Texts = {
-		Base, Base, Base, Base, // TODO test
-		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
-	};
 }
 
 EItemUseResult ASpotI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Bra) {
-		Diags->AddId("IS_C0_C03");
-		return EItemUseResult::BAD_HANDLED;
+	if (Name == LDConsts::Items::Bra) { // custom dialog for the bra
+		bool Handled = false;
+		if (LIKELY(Diags)) Handled = Diags->AddId("IS_C0_C03");
+		return Handled ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
+
 	return Super::TryUseItem_Implementation(Name);
 }

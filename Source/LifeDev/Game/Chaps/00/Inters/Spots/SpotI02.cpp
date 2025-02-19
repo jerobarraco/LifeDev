@@ -13,15 +13,14 @@ ASpotI02::ASpotI02():Super() {
 	DropFullDlg = ""; // when full
 	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
 	
-	StateNum = 5; // 4 items + done
+	StateNum = 2; // enabled, finished
+	Texts = {
+		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
+		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
+	};
 	Items = {
 		// a bra and a shirt a boxer and a sock
 		FName("C1C01"), FName("C1C02"), LDConsts::Items::Bra, FName("C1C04")
-	};
-	const FText Base = FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")); 
-	Texts = {
-		Base, Base, Base, Base, // TODO test
-		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
 	};
 	
 	// RewardActor set in editor
