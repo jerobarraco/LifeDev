@@ -8,8 +8,6 @@
 
 ASpot02::ASpot02():Super() {
 	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
-	StateNum = 1;
-	UseOrder = false;
 
 	// TODO sound
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -19,7 +17,6 @@ ASpot02::ASpot02():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Arch/Chairs/Chair00"));
 	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
-
 
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
 	SFX->SetRelativeLocation(FVector(17.5,-17.5,40));

@@ -6,10 +6,11 @@
 #include "LInteractSpot.generated.h"
 
 // A Place to drop other interacts.
-// It's always locked, and unlocks only once when all the items are dropped (used with).
-// It only allows for triggering once it's done.
+// It's always locked, and triggers only once when all the items are dropped (used with).
 // It will trigger LockedDlg (when already done) and TriggerDlg (once upon done) accordingly.
 // if attempt to use an item once it's done it will trigger FullDlg
+// always has two states: enabled, done.
+// by default is disabled after completed.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteractSpot: public ALInteract {
 	GENERATED_BODY()

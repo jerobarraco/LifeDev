@@ -13,7 +13,6 @@ ASpotI02::ASpotI02():Super() {
 	DropFullDlg = ""; // when full
 	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
 	
-	StateNum = 2; // enabled, finished
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),

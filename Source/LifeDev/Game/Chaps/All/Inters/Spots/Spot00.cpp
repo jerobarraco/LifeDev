@@ -6,8 +6,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASpot00::ASpot00():Super() {
-	UseOrder = false;
-	StateNum = 2;
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),

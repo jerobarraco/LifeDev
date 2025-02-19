@@ -11,7 +11,6 @@ ASpotI00::ASpotI00():Super() {
 	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T* (note the random)
 	LockedDlg = "IS_C0L";
 	LockedFullDlg = "IS_C0TB";
-	StateNum = 2; // enabled, done
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),

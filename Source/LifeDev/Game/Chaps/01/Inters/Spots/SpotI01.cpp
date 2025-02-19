@@ -10,7 +10,6 @@ ASpotI01::ASpotI01():Super() {
 	LockedFullDlg = "IS_C1TB";
 	DropDlg = "IS_C1D";
 	Items = {LDConsts::Items::Bra};
-	StateNum = 2;
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop her clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
