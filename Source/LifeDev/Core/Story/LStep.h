@@ -79,14 +79,14 @@ public:
 	FName DlgId = NAME_None;
 	// how much to mod the fb by on each dialog.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	float FBDiagMod = 0.0;
+	float FBDlgMod = 0.0;
 	// when true, it will calculate the FBDiagMod on Start, to reach FBDiagAutoTo
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	bool UseFBDiagAuto = false;
+	bool UseFBDlgAuto = false;
 	// When UseFBDiagAuto is set, this is the target FB value used to calculate FBDiagMod.
 	// calculated on Start
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	float FBDiagAutoTo = 1.0;
+	float FBDlgAutoTo = 1.0;
 
 	// whether to manage the RandFB. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
@@ -165,7 +165,7 @@ protected:
 	virtual void PostLoad() override;
 	virtual void Finish_Implementation() override;
 	
-	void SetFBDiagAuto();
+	void SetFBDlgAuto();
 	// will start the dialogs
 	void StartDialogs();
 	// will finish once the dialogs are done, or immediately if not showing.

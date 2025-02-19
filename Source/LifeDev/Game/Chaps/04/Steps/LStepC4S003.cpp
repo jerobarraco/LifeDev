@@ -10,8 +10,8 @@ ALStepC4S003::ALStepC4S003():Super() {
 	FinishPostWait = false;
 	TeleportChar = false;
 	// go a bit above to ensure we end up at 1 a couple of dialogs before
-	FBDiagAutoTo = 1.2;
-	UseFBDiagAuto = true;
+	FBDlgAutoTo = 1.2;
+	UseFBDlgAuto = true;
 }
 
 // interfadeout in editor

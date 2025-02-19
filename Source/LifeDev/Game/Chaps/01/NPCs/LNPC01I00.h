@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Diags/DiagTypes.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 #include "LNPC01I00.generated.h"

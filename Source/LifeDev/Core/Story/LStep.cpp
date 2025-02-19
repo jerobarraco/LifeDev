@@ -110,14 +110,14 @@ void ALStep::Start_Implementation() {
 void ALStep::StartDialogs() {
 	if (UNLIKELY(DlgId.IsNone())) return;
 
-	SetFBDiagAuto();
+	SetFBDlgAuto();
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 	Diags->AddId(DlgId);
 	FinishAfterDlgs();
 }
 
-void ALStep::SetFBDiagAuto() {
-	if (UNLIKELY(!UseFBDiagAuto)) return;
+void ALStep::SetFBDlgAuto() {
+	if (UNLIKELY(!UseFBDlgAuto)) return;
 
 	FDialogSequence Seq;
 	int32 Len = 0;
@@ -136,10 +136,10 @@ void ALStep::SetFBDiagAuto() {
 	// GetValTo is the correct as opposed to GetVal.
 	// Since we want to move the target, the current is going to follow.
 	const float FBCurrent = FB->GetValTo();
-	FBDiagMod = (FBDiagAutoTo - FBCurrent) / Len;
+	FBDlgMod = (FBDlgAutoTo - FBCurrent) / Len;
 
 	UE_LOG(LogLStoryStep, Log, TEXT("%hs DiagMod=%f, DiagAutoTo=%f, Current=%f, Len=%i"),
-		__func__, FBDiagMod, FBDiagAutoTo, FBCurrent, Len);
+		__func__, FBDlgMod, FBDlgAutoTo, FBCurrent, Len);
 }
 
 void ALStep::FinishAfterDlgs() {
@@ -204,7 +204,7 @@ void ALStep::DlgShow_Implementation(const FDialog& Diag) {
 	// no need to check for IsNearlyZero. modval does it.
 	// ModVal is the best, since if i trigger several dialogs very fast
 	// it should still go to the correct value.
-	if (LIKELY(FB)) FB->ModVal(FBDiagMod);
+	if (LIKELY(FB)) FB->ModVal(FBDlgMod);
 }
 
 void ALStep::BeginPlay() {

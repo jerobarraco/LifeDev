@@ -12,8 +12,8 @@ ALStepC4S005::ALStepC4S005():Super() {
 	FinishPostWait = false;
 	TeleportChar = false;
 	
-	UseFBDiagAuto = true;
-	FBDiagAutoTo = 1.2;
+	UseFBDlgAuto = true;
+	FBDlgAutoTo = 1.2;
 }
 
 // interfadeout on editor

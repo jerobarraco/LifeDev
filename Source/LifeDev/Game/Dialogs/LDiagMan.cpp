@@ -62,7 +62,7 @@ void ALDiagMan::Back_Implementation() {
 void ALDiagMan::AutoClear() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
-	
+
 	W->GetTimerManager().ClearTimer(AutoTimer);
 	AutoTimer.Invalidate();
 }

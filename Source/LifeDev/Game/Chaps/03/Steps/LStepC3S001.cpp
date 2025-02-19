@@ -20,8 +20,8 @@ ALStepC3S001::ALStepC3S001():Super() {
 
 	GhostPos = FVector(200,-42,65);
 	UseGhosts = true;
-	UseFBDiagAuto = true;
-	FBDiagAutoTo = 1.2;
+	UseFBDlgAuto = true;
+	FBDlgAutoTo = 1.2;
 }
 
 void ALStepC3S001::TryStart_Implementation() {

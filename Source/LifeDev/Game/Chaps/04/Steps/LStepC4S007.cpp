@@ -9,8 +9,8 @@ ALStepC4S007::ALStepC4S007():Super() {
 	UsePawnCam = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-	UseFBDiagAuto = true;
-	FBDiagAutoTo = 1.2;
+	UseFBDlgAuto = true;
+	FBDlgAutoTo = 1.2;
 }
 
 // interfadeout on editor

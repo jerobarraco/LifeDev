@@ -13,12 +13,14 @@
 // and naming them would be difficult. so no.
 
 ALNPC01I00::ALNPC01I00():Super() {
+	LockedDlg = "N01.L";
+	Texts = { FText::FromString("Looks dangerous...") };
+	UseFade = true;
+	UseStateLoop = false;
+
 	AnimCam = CreateDefaultSubobject<UCAnimatorCam>(TEXT("AnimCam"));
 	AnimCam->Duration = 2;
 	AnimCam->SetComponentTickInterval(1/60.f);
-	LockedDlg = "N01.L";
-	Texts = { FText::FromString("He seems dangerous...") };
-	UseFade = true;
 }
 
 void ALNPC01I00::BeginPlay() {
@@ -37,6 +39,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	SetActive(false);
 	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
 	Diags->AddId("N01.0");
+	
 	Flashback->SetVal(1);
 	ALMusicMan::SetRainS(GetWorld(), true);
 	
@@ -62,6 +65,7 @@ void ALNPC01I00::StandUp() {
 
 void ALNPC01I00::DiagStandDone() {
 	Diags->OnDone.RemoveAll(this);
+	Diags->OnShow.RemoveAll(this);
 
 	const UWorld* const W = GetWorld();
 	ALMusicMan::SetRainS(W, false);
@@ -70,3 +74,5 @@ void ALNPC01I00::DiagStandDone() {
 	Fade(false); // fade out manually. doRewards won't.
 	DoRewards(); // give the card and disappear
 }
+
+// TODO need to rejig this to work with states instead. so that it can use fbdiagauto.

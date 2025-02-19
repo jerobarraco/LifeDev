@@ -13,8 +13,8 @@ ALStepC4S009::ALStepC4S009():Super() {
 	FinishPostWait = false;
 	TeleportChar = false;
 	CamBlendTime = 2; // waittime will be forced to this
-	UseFBDiagAuto = true;
-	FBDiagAutoTo = -.05;
+	UseFBDlgAuto = true;
+	FBDlgAutoTo = -.05;
 }
 
 void ALStepC4S009::BeginPlay() {
