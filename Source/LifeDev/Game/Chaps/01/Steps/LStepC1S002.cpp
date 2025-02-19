@@ -51,11 +51,11 @@ void ALStepC1S002::StartShake() {
 	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
 	
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	const APlayerController* const Controller = World->GetFirstPlayerController();
 	const TObjectPtr<APlayerCameraManager> CameraManager =
 		Controller ? Controller->PlayerCameraManager : nullptr;
-	if (CameraManager) CameraManager->StartCameraShake(ShakeClass);
+	if (LIKELY(CameraManager)) CameraManager->StartCameraShake(ShakeClass);
 
 	// FB->SetVal(1); // bump to max
 
@@ -72,12 +72,12 @@ void ALStepC1S002::StopShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StopShake);
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 	const APlayerController* const Controller = World->GetFirstPlayerController();
 	const TObjectPtr<APlayerCameraManager> CameraManager =
 		Controller ? Controller->PlayerCameraManager : nullptr;
 	// immediate needed since the shake has no end (gimme shake - Max.avi)
-	if (CameraManager) CameraManager->StopAllCameraShakes(true);
+	if (LIKELY(CameraManager)) CameraManager->StopAllCameraShakes(true);
 
 	FB->SetVal(.85);
 

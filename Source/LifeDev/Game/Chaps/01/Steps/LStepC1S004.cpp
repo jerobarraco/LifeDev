@@ -22,8 +22,3 @@ ALStepC1S004::ALStepC1S004():Super() {
 	// the rest of the items are going to be used or required
 	ItemsRem = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"}; 
 }
-
-void ALStepC1S004::Stop_Implementation() {
-	FB->SetVal(0);
-	Super::Stop_Implementation();
-}
