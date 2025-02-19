@@ -10,8 +10,7 @@ ALStepC1S007::ALStepC1S007():Super() {
 	Name = FName("C1S7");
 	InputEnabled = true;
 	// uses pawn camera
-	CamTarget = this;
-	UsePawnCam = false;
+	UsePawnCam = true;
 	UseFadeTime = false;
 	UseRain = false; // turn off rain
 	// wait for the player to talk with the npc and get the card
