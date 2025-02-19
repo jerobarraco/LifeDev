@@ -43,8 +43,9 @@ void ALStepC0S000::TryStart_Implementation() {
 		return;
 	}
 
-	FB->SetVal(.1);
 	FB->SetMax(.75);
+	FB->SetMin(0);
+	FB->SetVal(.1, .15);
 }
 
 void ALStepC0S000::DoDebug_Implementation() {
