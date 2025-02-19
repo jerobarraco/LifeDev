@@ -252,7 +252,7 @@ void ALStep::PostLoad() {
 
 	if (UseFadeTime) {
 		const UStory* const Story = UStory::Instance(GetWorld());
-		WaitTime = Story ? Story->FadeTime : 1;
+		WaitTime = LIKELY(Story) ? Story->FadeTime : 1;
 	}
 
 	// avoid finishing earlier if we have Diags
