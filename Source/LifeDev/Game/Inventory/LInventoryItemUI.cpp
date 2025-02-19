@@ -25,14 +25,14 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 }
 
 FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
+	constexpr uint8 Shade = 6;
 	if (Item.Locked || Item.ActiveCoolDown>0)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][4]);
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][Shade]);
 	if (Item.SelfUsable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][4]);
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][Shade]);
 	if (Item.Usable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][4]);
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][Shade]);
 	if (Item.Consumable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][4]);
-	return  FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][4]);
-	// TODO maybe add some field for the colors so that it can be changed in bps
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][Shade]);
+	return  FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][Shade]);
 }
