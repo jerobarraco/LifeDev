@@ -14,10 +14,11 @@ ASpot02::ASpot02():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Arch/Chairs/Chair00"));
-	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
+	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
 
-	StateNum = 1;
 	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
+	StateNum = 1;
+
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
 	SFX->SetRelativeLocation(FVector(17.5,-17.5,40));
 	Interact->SetRelativeLocation(FVector(17.5,-17.5,40));

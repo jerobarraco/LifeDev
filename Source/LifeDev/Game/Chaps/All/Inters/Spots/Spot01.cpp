@@ -12,7 +12,7 @@ ASpot01::ASpot01():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt00.Shirt00"));
-	if (ObjMesh.Succeeded()) Mesh->SetStaticMesh(ObjMesh.Object);
+	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
 
 	Mesh->SetRelativeLocation(FVector(-17.500000,17.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,5.0));
@@ -21,6 +21,7 @@ ASpot01::ASpot01():Super() {
 		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
 	};
+	StateNum = 2;
 	Mesh->SetCastAllShadows(true);
 	// TriggerDlg = "IS_C1T";
 	// LockedDlg = "IS_C1L"; // TODO

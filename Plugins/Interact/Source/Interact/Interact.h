@@ -145,7 +145,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	bool UseStateLoop = true;
 
-	// Text to be displayed on each state. Closed, Open
+	// Text to be displayed on each state. Closed, Open.
+	// Make sure it matches StateNum.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<FText> Texts = {
 		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text

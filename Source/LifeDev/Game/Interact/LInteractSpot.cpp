@@ -13,9 +13,10 @@ ALInteractSpot::ALInteractSpot():Super() {
 	UseFade = false;
 	UseStateLoop = false;
 	Texts = {
-		FText::FromString(TEXT("Drop here")),
+		// FText::FromString(TEXT("Drop here")),
 		FText::FromString(TEXT("Full"))
 	};
+	StateNum = 1;
 }
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
