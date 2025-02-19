@@ -6,17 +6,17 @@
 ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.
 	// it will trigger automatically
-	Super::SetMobility(EComponentMobility::Static);
 	UseAnim = false;
 	Locked = true;
 	UseRewardDestroy = false;
 	UseFade = false;
 	UseStateLoop = false;
+	StateNum = 1;
 	Texts = {
 		// FText::FromString(TEXT("Drop here")),
 		FText::FromString(TEXT("Full"))
 	};
-	StateNum = 1;
+	Super::SetMobility(EComponentMobility::Static);
 }
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
@@ -51,15 +51,3 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	return EItemUseResult::SUCCESS;
 }
-
-// TODO fix implemented spots
-//
-// void ALInteractSpot::SetText_Implementation() {
-// 	// Super::SetText_Implementation(); // unnecessary
-// 	// TODO consider changing this to use the texts and states.
-// 	const int32 Num = Texts.Num();
-// 	const int32 I = Num == 0 ? -1 : (Num == 1 ? 0 : (Items.IsEmpty()? 1: 0));
-// 	if (I<0) return;
-//
-// 	Interact->Text = Texts[I];
-// }

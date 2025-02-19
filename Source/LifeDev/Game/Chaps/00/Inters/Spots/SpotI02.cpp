@@ -12,7 +12,7 @@ ASpotI02::ASpotI02():Super() {
 	LockedFullDlg = "IS0_LF"; // when full
 	DropFullDlg = ""; // when full
 	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
-
+	
 	StateNum = 5; // 4 items + done
 	Items = {
 		// a bra and a shirt a boxer and a sock
