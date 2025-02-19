@@ -28,5 +28,5 @@ protected:
 	void DiagSitDone();
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCAnimatorCam* AnimCam = nullptr;
+	TObjectPtr<UCAnimatorCam> AnimCam = nullptr;
 };

@@ -29,8 +29,8 @@ void ALNPC01I00::BeginPlay() {
 
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	if (Name != LDConsts::Items::Card0) {
-		Diags->AddId("N01.IB");
-		return EItemUseResult::BAD_HANDLED;
+		const bool Handled = Diags->AddId("N01.IB");
+		return Handled ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	// disable the interact, so it can fade better, and player won't trigger again
