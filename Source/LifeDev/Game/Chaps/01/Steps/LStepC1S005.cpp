@@ -12,5 +12,5 @@ ALStepC1S005::ALStepC1S005():Super() {
 	DlgId = "N01.0";
 	FBDlgAutoTo = 1;
 	UseFBDlgAuto = true;
-	UseRain = true;
+	UseRain = false;
 }

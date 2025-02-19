@@ -29,8 +29,7 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	// disable the interact, so it can fade better, and player won't trigger again
 	SetActive(false);
 	Story->OnStart.AddUniqueDynamic(this, &ALNPC01I00::DoStepStart);
-	Story->StartNext(); // trigger next step
-	StandUp();
+	Story->StartNext(); // trigger next step (C1S5) (which has a dialog)
 	return EItemUseResult::SUCCESS;
 }
 
