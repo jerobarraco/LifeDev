@@ -1,19 +1,20 @@
 #include "LInteractSpot.h"
 
 #include "Diags/Diags.h"
-#include "Interact/CInteract.h"
 
 ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.
 	// it will trigger automatically
-	UseAnim = false;
 	Locked = true;
+	IsOneShot = true; // disable after use
+	UseAnim = false;
 	UseRewardDestroy = false;
 	UseFade = false;
 	UseStateLoop = false;
-	StateNum = 1;
+	UseOrder = false;
+	StateNum = 2; // open and done
 	Texts = {
-		// FText::FromString(TEXT("Drop here")),
+		FText::FromString(TEXT("Drop here")),
 		FText::FromString(TEXT("Full"))
 	};
 	Super::SetMobility(EComponentMobility::Static);
