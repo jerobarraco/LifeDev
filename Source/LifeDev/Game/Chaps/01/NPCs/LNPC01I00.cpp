@@ -33,7 +33,6 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	return EItemUseResult::SUCCESS;
 }
 
-
 void ALNPC01I00::StandUp() {
 	SetPoseStand();
 	AddActorLocalRotation(FRotator(0, -120, 0)); // turn around
