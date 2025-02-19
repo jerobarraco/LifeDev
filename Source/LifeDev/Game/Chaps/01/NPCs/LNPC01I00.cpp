@@ -27,6 +27,12 @@ void ALNPC01I00::BeginPlay() {
 	AnimCam->CodeCurve.BindDynamic(Lib, &UCodeCurveLib::InOutCubic);
 }
 
+void ALNPC01I00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
+
+	Super::EndPlay(EndPlayReason);
+}
+
 EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	if (Name != LDConsts::Items::Card0) {
 		const bool Handled = Diags->AddId("N01.IB");
@@ -35,8 +41,8 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 
 	// disable the interact, so it can fade better, and player won't trigger again
 	SetActive(false);
-	Story->StartNext(); // trigger next step
 	Story->OnStart.AddUniqueDynamic(this, &ALNPC01I00::DoStepStart);
+	Story->StartNext(); // trigger next step
 	return EItemUseResult::SUCCESS;
 }
 
@@ -52,19 +58,11 @@ void ALNPC01I00::DoStepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	if (Step->Name == "C1S6") {
 		StandUp();
+	} else if (Step->Name == "C1S7") {
+		Fade(false); // fade out manually. doRewards won't.
+		DoRewards(); // give the card and disappear
 	}
 }
 
-void ALNPC01I00::DiagStandDone() {
-	Diags->OnDone.RemoveAll(this);
-	Diags->OnShow.RemoveAll(this);
-
-	const UWorld* const W = GetWorld();
-	ALMusicMan::SetRainS(W, false);
-	Flashback->SetVal(.2);
-
-	Fade(false); // fade out manually. doRewards won't.
-	DoRewards(); // give the card and disappear
-}
-
-// TODO need to rejig this to work with states instead. so that it can use fbdiagauto.
+// TODO unbind from story
+// TODO camera

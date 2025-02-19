@@ -13,6 +13,7 @@ ALStepC1S006::ALStepC1S006():Super() {
 	UseFadeTime = false;
 	DlgId = "N01.1";
 	FBDlgAutoTo = .5;
+	UseFBDlgAuto = true;
 	UseRain = true;
 
 	// wait for the player to talk with the npc and get the card

@@ -20,16 +20,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	void StandUp();
-
+	
 	UFUNCTION()
 	void DoStepStart(AStep* const Step);
-	UFUNCTION()
-	void DiagStandDone();
-	UFUNCTION()
-	void DiagSitDone();
-
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCAnimatorCam> AnimCam = nullptr;
 };

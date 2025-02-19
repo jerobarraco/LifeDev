@@ -3,26 +3,25 @@
 #include "LStepC1S007.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S007::ALStepC1S007():Super() {
 	Name = FName("C1S7");
-	InputEnabled = true; // does it matters? it will show dialogs
+	InputEnabled = true;
 	// uses pawn camera
 	CamTarget = nullptr;
 	UsePawnCam = true;
 	UseFadeTime = false;
-	DlgId = "N01.1";
-	FBDlgAutoTo = .5;
-	UseRain = false;
-
+	UseRain = false; // turn off rain
 	// wait for the player to talk with the npc and get the card
-	ItemsFinish = {
-		LDConsts::Items::Card1,
-				LDConsts::Items::Poem1,
-}
-;
+	ItemsFinish = {LDConsts::Items::Card1, LDConsts::Items::Poem1};
 
 	// the clothes are transient items that don't need to be carried
 	// the rest of the items are going to be used or required
-	ItemsRem = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"}; 
+	ItemsRem = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"};
+}
+
+void ALStepC1S007::Start_Implementation() {
+	Super::Start_Implementation();
+	FB->SetVal(.2);
 }
