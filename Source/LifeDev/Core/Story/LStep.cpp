@@ -1,9 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStep.h"
 
-#include "DelegateWrappers.h"
 #include "Diags/Diags.h"
-#include "Interact/Animator/CAnimatorFade.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
@@ -19,6 +17,13 @@ DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
 
 ALStep::ALStep():Super() {
 	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFB"));
+	
+	// classes doesn't work with the ".CamShake_B" ending. (i think they need the _B_C at end) 
+	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
+		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B"));
+	CamShakeClass = CShake.Class;
+	// disappeared from ue5.4 without warning
+	// UDefaultCameraShakeBase::StaticClass();
 }
 
 void ALStep::TryStart_Implementation() {
@@ -30,7 +35,7 @@ void ALStep::TryStart_Implementation() {
 	// disable the input during camblend
 	if (!CamTarget) return;
 	const UWorld* const W = GetWorld();
-	AGameModeBase* const GameModeBase = W ? W->GetAuthGameMode() : nullptr;
+	AGameModeBase* const GameModeBase = LIKELY(W) ? W->GetAuthGameMode() : nullptr;
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
 }

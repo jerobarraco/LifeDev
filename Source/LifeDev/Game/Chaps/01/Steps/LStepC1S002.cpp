@@ -19,13 +19,6 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
 
-	// classes doesn't work with the ".CamShake_B" ending 
-	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
-		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B"));
-	ShakeClass = CShake.Succeeded() ? CShake.Class.Get() : ShakeClass;
-	// disappeared from ue5.4 without warning
-	// UDefaultCameraShakeBase::StaticClass();
-
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
@@ -52,11 +45,7 @@ void ALStepC1S002::StartShake() {
 	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-	const APlayerController* const Controller = World->GetFirstPlayerController();
-	const TObjectPtr<APlayerCameraManager> CameraManager =
-		Controller ? Controller->PlayerCameraManager : nullptr;
-	if (LIKELY(CameraManager)) CameraManager->StartCameraShake(ShakeClass);
-
+	CamShakeStart();
 	// FB->SetVal(1); // bump to max
 
 	FTimerHandle H;
@@ -70,16 +59,10 @@ void ALStepC1S002::ShakeStarted() {
 
 void ALStepC1S002::StopShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StopShake);
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	const APlayerController* const Controller = World->GetFirstPlayerController();
-	const TObjectPtr<APlayerCameraManager> CameraManager =
-		Controller ? Controller->PlayerCameraManager : nullptr;
-	// immediate needed since the shake has no end (gimme shake - Max.avi)
-	if (LIKELY(CameraManager)) CameraManager->StopAllCameraShakes(true);
-
+	CamShakeStop();
 	FB->SetVal(.85);
 
 	Finish();
 }
+
+// TODO this would work better if i split this into two steps. so i can use fbdiag auto and cam shake easily.

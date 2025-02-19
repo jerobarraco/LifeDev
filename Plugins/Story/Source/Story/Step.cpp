@@ -32,94 +32,6 @@ AStep::AStep():Super() {
 	CamTarget = this;
 }
 
-void AStep::DoTeleport() {
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	if (UNLIKELY(!TeleportChar)) return;
-
-	ACharacter* const Char = Cast<ACharacter>(
-		UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
-	if (UNLIKELY(!IsValid(Char))) return;
-
-	const FTransform& T = GetActorTransform();
-	UE_LOG(LogStoryStep, Log, TEXT("Teleport to=%s"), *T.ToString());
-	// Char->TeleportTo(T.GetLocation(), T.Rotator());
-	Char->SetActorLocation(T.GetLocation());
-
-	const FRotator CurRot = Char->GetActorRotation();
-	// In order for this to work the legacy input scale must be disabled on the project settings.
-	// "EnableLegacyInputScales"
-	Char->AddControllerYawInput(T.Rotator().Yaw-CurRot.Yaw);
-	
-	// vertical is handled by the camera
-	TArray<UCameraComponent*> Cams;
-	Char->GetComponents<UCameraComponent>(Cams);
-	if (Cams.Num()<=0) return;
-
-	const UCameraComponent* const C = Cams[0];
-	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
-	if (UNLIKELY(!IsValid(C))) return;
-
-	Char->AddControllerPitchInput(T.Rotator().Pitch - C->GetRelativeRotation().Pitch);
-}
-
-void AStep::TryStart_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
-	
-	// teleport the character
-	// teleport before blending the camera. so they work well together.
-	DoTeleport();
-
-	// blend before the wait to avoid weird issues.
-	// if you actually want to see the blend you may not want the fade anyway.
-	// fade and wait are weird combination. i think.
-	BlendCam();
-
-	// do after the rest since doStart is another flow
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	
-	if (WaitTime>0) {
-		FTimerHandle Handle;
-		World->GetTimerManager().SetTimer(Handle, this, &AStep::Start, WaitTime);
-	} else {
-		// use next tick to avoid having post wait being called before start finishes on the children
-		// also to avoid the situation where a step might inadvertently finish the step while it's starting.
-		World->GetTimerManager().SetTimerForNextTick(this, &AStep::Start);
-	}
-}
-
-void AStep::BlendCam() {
-	// set camera if camtarget is set
-	if (!IsValid(CamTarget)) return;
-	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-
-	APlayerController* const Controller = World->GetFirstPlayerController();
-	if (UNLIKELY(!Controller)) return;
-
-	// enable cam tick only if it's the current target and only when the step starts
-	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
-
-	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
-	WaitTime = FMath::Max(CamBlendTime, WaitTime);
-}
-
-void AStep::Start_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
-
-	if (Debug) DoDebug();
-
-	/// finish post wait
-	// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
-	if (!FinishPostWait) return;
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
-}
-
 void AStep::BeginPlay() {
 	Super::BeginPlay();
 
@@ -161,20 +73,52 @@ void AStep::PostLoad() {
 	UpdateCamEnabled();
 }
 
-void AStep::UpdateCamEnabled() const {
-	const bool Enabled = CamTarget == this;
-	if (UNLIKELY(!IsValid(Cam))) return;
+void AStep::TryStart_Implementation() {
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
 	
-	Cam->SetActive(Enabled);
-	Cam->SetHiddenInGame(!Enabled);
-	Cam->SetVisibility(Enabled);
-	// the tick is enabled on start. only if needed
+	// teleport the character
+	// teleport before blending the camera. so they work well together.
+	DoTeleport();
+
+	// blend before the wait to avoid weird issues.
+	// if you actually want to see the blend you may not want the fade anyway.
+	// fade and wait are weird combination. i think.
+	CamBlend();
+
+	// do after the rest since doStart is another flow
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	
+	if (WaitTime>0) {
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, this, &AStep::Start, WaitTime);
+	} else {
+		// use next tick to avoid having post wait being called before start finishes on the children
+		// also to avoid the situation where a step might inadvertently finish the step while it's starting.
+		World->GetTimerManager().SetTimerForNextTick(this, &AStep::Start);
+	}
+}
+
+void AStep::Start_Implementation() {
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
+
+	if (UNLIKELY(Debug)) DoDebug();
+	// check UseCamShake outside of CamShakeStart to allow children to call it.
+	if (UseCamShake) CamShakeStart();
+
+	/// finish post wait
+	// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
+	if (!FinishPostWait) return;
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
 }
 
 void AStep::Stop_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs Stopping step '%s'"), __func__, *Name.ToString());
 	// force disable since it's not wise to trust what happened before
 	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
+	if (UseCamShake) CamShakeStop();
 }
 
 void AStep::Finish_Implementation() {
@@ -187,4 +131,92 @@ void AStep::Finish_Implementation() {
 	if (UNLIKELY(!IsValid(Story))) return;
 
 	Story->StartNext(Name);
+}
+
+void AStep::DoTeleport() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	if (UNLIKELY(!TeleportChar)) return;
+
+	ACharacter* const Char = Cast<ACharacter>(
+		UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
+	if (UNLIKELY(!IsValid(Char))) return;
+
+	const FTransform& T = GetActorTransform();
+	UE_LOG(LogStoryStep, Log, TEXT("Teleport to=%s"), *T.ToString());
+	// Char->TeleportTo(T.GetLocation(), T.Rotator());
+	Char->SetActorLocation(T.GetLocation());
+
+	const FRotator CurRot = Char->GetActorRotation();
+	// In order for this to work the legacy input scale must be disabled on the project settings.
+	// "EnableLegacyInputScales"
+	Char->AddControllerYawInput(T.Rotator().Yaw-CurRot.Yaw);
+	
+	// vertical is handled by the camera
+	TArray<UCameraComponent*> Cams;
+	Char->GetComponents<UCameraComponent>(Cams);
+	if (Cams.Num()<=0) return;
+
+	const UCameraComponent* const C = Cams[0];
+	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;
+	if (UNLIKELY(!IsValid(C))) return;
+
+	Char->AddControllerPitchInput(T.Rotator().Pitch - C->GetRelativeRotation().Pitch);
+}
+
+void AStep::CamBlend() {
+	// set camera if camtarget is set
+	if (!IsValid(CamTarget)) return;
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	APlayerController* const Controller = World->GetFirstPlayerController();
+	if (UNLIKELY(!Controller)) return;
+
+	// enable cam tick only if it's the current target and only when the step starts
+	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
+
+	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	WaitTime = FMath::Max(CamBlendTime, WaitTime);
+}
+
+void AStep::UpdateCamEnabled() const {
+	const bool Enabled = CamTarget == this;
+	if (UNLIKELY(!IsValid(Cam))) return;
+	
+	Cam->SetActive(Enabled);
+	Cam->SetHiddenInGame(!Enabled);
+	Cam->SetVisibility(Enabled);
+	// the tick is enabled on start. only if needed
+}
+
+void AStep::CamShakeStart() {
+	if (!IsValid(CamShakeClass)) return;
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	const APlayerController* const Controller = World->GetFirstPlayerController();
+	if (UNLIKELY(!Controller)) return;
+
+	const TObjectPtr<APlayerCameraManager> CameraManager =  Controller->PlayerCameraManager;
+	// immediate needed since the shake has no end (gimme shake - Max.avi)
+	if (LIKELY(CameraManager)) CameraManager->StartCameraShake(CamShakeClass);
+}
+
+void AStep::CamShakeStop() {
+	if (!IsValid(CamShakeClass)) return;
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	const APlayerController* const Controller = World->GetFirstPlayerController();
+	if (UNLIKELY(!Controller)) return;
+
+	const TObjectPtr<APlayerCameraManager> CameraManager =  Controller->PlayerCameraManager;
+	// immediate needed since the shake has no end (gimme shake - Max.avi)
+	if (LIKELY(CameraManager))
+		CameraManager->StopAllInstancesOfCameraShake(CamShakeClass, true);
 }

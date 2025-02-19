@@ -43,6 +43,12 @@ public:
 	// will target pawn automatically, will override the camTarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
+	// shake the camera on start. stops on stop.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool UseCamShake = false;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
 
 	// time used to animate the change of cameras. Only where CamTarget is valid
 	// blend and fade could have some issues when used together.
@@ -69,7 +75,7 @@ public:
 	// teleports before blending. teleports on start of step. Rotation is broken.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
-	
+
 	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	FText Title = FText::GetEmpty();
@@ -96,7 +102,16 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	void UpdateCamEnabled() const;
-	void BlendCam();
+	void CamBlend();
+
+	// these are callable so that can be reused by children.
+	// they don't check for UseCamShake
+	UFUNCTION(BlueprintCallable)
+	void CamShakeStart();
+	// these are callable so that can be reused by children.
+	// they don't check for UseCamShake
+	UFUNCTION(BlueprintCallable)
+	void CamShakeStop();
 
 	// don't call directly. called by system.
 	// called when the step just starts. can be in the middle of a fade.

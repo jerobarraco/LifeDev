@@ -26,9 +26,6 @@ protected:
 	void StopShake();
 	UFUNCTION()
 	void ShakeStarted();
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	UClass* ShakeClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	FTransform CharT = FTransform(
