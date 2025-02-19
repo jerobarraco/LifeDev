@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Core/Story/LStep.h"
 
-#include "LStepC1S005.generated.h"
+#include "LStepC1S006.generated.h"
 
-// npc first dialog
+// npc second dialog
 UCLASS(Blueprintable, BlueprintType)
-class ALStepC1S005 : public ALStep {
+class ALStepC1S006 : public ALStep {
 	GENERATED_BODY()
 
 public:
-	ALStepC1S005();
+	ALStepC1S006();
 };

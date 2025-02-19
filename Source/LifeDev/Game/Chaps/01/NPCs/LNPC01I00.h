@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Diags/DiagTypes.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
+#include "Story/Step.h"
 
 #include "LNPC01I00.generated.h"
 
@@ -23,6 +23,8 @@ protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	void StandUp();
 
+	UFUNCTION()
+	void DoStepStart(AStep* const Step);
 	UFUNCTION()
 	void DiagStandDone();
 	UFUNCTION()

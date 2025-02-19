@@ -36,26 +36,23 @@ EItemUseResult ALNPC01I00::TryUseItem_Implementation(const FName& Name) {
 	// disable the interact, so it can fade better, and player won't trigger again
 	SetActive(false);
 	Story->StartNext(); // trigger next step
-
-	// TODO  Story->OnStop.AddUniqueDynamic(this, &ALNPC01I00::DiagSitDone);
+	Story->OnStart.AddUniqueDynamic(this, &ALNPC01I00::DoStepStart);
 	return EItemUseResult::SUCCESS;
 }
 
-void ALNPC01I00::DiagSitDone() {
-	Diags->OnDone.RemoveAll(this);
-	
-	Flashback->SetVal(.5);
-	Diags->OnDone.AddUniqueDynamic(this, &ALNPC01I00::DiagStandDone);
-	Diags->AddId("N01.1");
-
-	StandUp();
-}
 
 void ALNPC01I00::StandUp() {
 	SetPoseStand();
 	AddActorLocalRotation(FRotator(0, -120, 0)); // turn around
 	AnimCam->Target = Head->GetComponentLocation(); // look at character
 	AnimCam->Play();
+}
+
+void ALNPC01I00::DoStepStart(AStep* const Step) {
+	if (UNLIKELY(!Step)) return;
+	if (Step->Name == "C1S6") {
+		StandUp();
+	}
 }
 
 void ALNPC01I00::DiagStandDone() {
