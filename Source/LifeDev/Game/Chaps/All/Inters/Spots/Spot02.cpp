@@ -7,6 +7,10 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASpot02::ASpot02():Super() {
+	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
+	StateNum = 1;
+	UseOrder = false;
+
 	// TODO sound
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts"));
@@ -16,8 +20,6 @@ ASpot02::ASpot02():Super() {
 		ObjMesh(TEXT("/Game/LifeDev/Game/Arch/Chairs/Chair00"));
 	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
 
-	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
-	StateNum = 1;
 
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
 	SFX->SetRelativeLocation(FVector(17.5,-17.5,40));

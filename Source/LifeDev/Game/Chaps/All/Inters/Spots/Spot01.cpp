@@ -6,6 +6,13 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASpot01::ASpot01():Super() {
+	UseOrder = false;
+	StateNum = 2;
+	Texts = {
+		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop clothes here")),
+		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
+	};
+
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFX_Trigger = CSnd.Object;
@@ -17,11 +24,6 @@ ASpot01::ASpot01():Super() {
 	Mesh->SetRelativeLocation(FVector(-17.500000,17.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,5.0));
 	Interact->SetBoxExtent(FVector(20.000000,20.000000,9.000000));
-	Texts = {
-		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop clothes here")),
-		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
-	};
-	StateNum = 2;
 	Mesh->SetCastAllShadows(true);
 	// TriggerDlg = "IS_C1T";
 	// LockedDlg = "IS_C1L"; // TODO

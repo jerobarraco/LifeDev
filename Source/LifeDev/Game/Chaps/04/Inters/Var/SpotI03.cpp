@@ -12,7 +12,10 @@ ASpotI03::ASpotI03():Super() {
 	DropDlg = "";
 	DropFullDlg = ""; // when full
 	RewardStep = true; // moves to the next
+
+	StateNum = 1;
 	Items = { LDConsts::Items::Plate02 }; // empty plate
+	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
 
 	Super::SetAutoActivate(false); // the steps will enable it
 	// RewardActor set in editor
