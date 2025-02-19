@@ -17,6 +17,5 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
+	virtual void TryStart_Implementation() override;
 };

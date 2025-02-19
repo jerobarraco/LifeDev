@@ -4,7 +4,6 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Game/Chaps/All/Inters/Cards/Card03.h"
@@ -20,7 +19,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 		LDConsts::Items::Poem3,
 		LDConsts::Items::Tape3,
 	};
-	
+	ItemsRem = {LDConsts::Items::Tape3}; // consume
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;
@@ -44,17 +43,9 @@ void ALStepC3S002::BeginPlay() {
 	DoIntersFade(IntersFadeIn, false);
 }
 
-void ALStepC3S002::Start_Implementation() {
-	Super::Start_Implementation();
+void ALStepC3S002::TryStart_Implementation() {
+	Super::TryStart_Implementation();
 	FB->SetMin(0);
-}
-
-void ALStepC3S002::Stop_Implementation() {
-	FB->SetMin(0);
-	FB->SetMax(1);
-	FB->SetVal(0);
-	Inventory->Mod(LDConsts::Items::Tape3, -1); // use it.
-	Super::Stop_Implementation();
 }
 
 // IntersFade is set to the card

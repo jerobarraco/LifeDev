@@ -21,7 +21,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	UsePawnCam = true;
 	TeleportChar = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS"));
-	if (IsRunningCookCommandlet()) Music.LoadSynchronous();
+	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 
 	ItemsEnsure = {
 		LDConsts::Items::Walkman,
