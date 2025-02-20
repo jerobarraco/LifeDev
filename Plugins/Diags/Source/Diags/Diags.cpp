@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "Diags.h"
 
+#include "JUtils/Misc/JUtilsMisc.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
+#pragma optimize("",off)
 
 UDiags* UDiags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -26,7 +29,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	if (UNLIKELY(!Ok)) return false;
 
 
-	if (!CheckCodition(OutDialog.Condition)) {
+	if (!CheckCondition(OutDialog.Condition)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *OutDialog.Condition);
 		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
 	}
@@ -79,7 +82,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	const bool Ok = GetSeq(RowName, Seq, Warn);
 	if (!Ok) return false;
 
-	if (!CheckCodition(Seq.Condition)) {
+	if (!CheckCondition(Seq.Condition)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
 		return false; // would allow to add a dialog with the same id, by design, but don't rely.
 	}
@@ -152,7 +155,7 @@ bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn
 	if (UNLIKELY(!IsValid(Chars))) return false;
 
 	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""), Warn);
-	if (UNLIKELY(!Row))  {
+	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
 	}
@@ -201,12 +204,52 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCodition(const FString& String) {
-	const FString Trimmed = String.TrimStartAndEnd();
-	if (LIKELY(Trimmed.IsEmpty())) return true;
-	return true;
+bool UDiags::CheckCondition(const FString& String) {
+	FString Exp = String.TrimStartAndEnd();
+	if (LIKELY(Exp.IsEmpty())) return true;
+
+	int32 PStart = 0;
+	int32 PEnd = 0;
+	int32 Len = 0;
+	FString Sub;
+	FString VarName;
+	float VarVal = 0;
+	while ( true) {
+		// start
+		PStart = Exp.Find("{");
+		if (PStart<0) break;
+
+		PEnd = Exp.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
+		if (PEnd < PStart) {
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}' %s"), __func__, *Exp);
+			break;
+		}
+
+		Len = PStart - PEnd -2;
+		if (Len<=0) {
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression: Variable len is <=0. need something more inside {}."), __func__, *Exp);
+			break;
+		}
+
+		Sub = Exp.Mid(PStart, Len+2);
+		VarName = Sub.Mid(1, Len);
+		// VarName = Trimmed.Mid(PStart+1, Len);
+		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
+		if (LIKELY(OnGetFlag.IsBound())) { // NEEEDS to check for isbound or risk a crash :')
+			VarVal = OnGetFlag.Execute(FName(VarName));
+		} else {
+			UE_LOG(LogDiags, Warning, TEXT("%hs: OnGetFlag is not bound! All flags are going to be 0. LOL."), __func__);
+			VarVal = 0;
+		}
+
+		Exp.ReplaceInline(*Sub, *FString::SanitizeFloat(VarVal,0), ESearchCase::IgnoreCase );
+	}
+	const float Res = UJUtilsMisc::MathEvaluate(Exp);
+	return Res > 0;
 	// Trimmed.MatchesWildcard("{*}");
 	// get the flags
 	// Trimmed.ReplaceQuotesWithEscapedQuotes();
 	// replace the flags
 }
+
+#pragma optimize("",on)

@@ -24,7 +24,7 @@ public class Diags: ModuleRules
 			"Core",
 		});
 		
-		// ... add private dependencies that you statically link with here ...	
+		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "UMG", "EnhancedInput", "JUtils"
 		});
