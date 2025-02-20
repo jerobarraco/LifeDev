@@ -24,6 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UDiags* Instance(const UObject* const O);
 
+#pragma region Add
 	// Main function. Use this.
 	// Attempts to add a sequence id. Otherwise, it will attempt to add a dialog id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic (and might crash). Beware!
@@ -42,7 +43,7 @@ public:
 	// add a dialog
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void AddDiag(const FDialog& Diag);
-
+	
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	// Sequences ending with "*" will only add one *random* dialog from that sequence.
@@ -57,7 +58,8 @@ public:
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddRnd(const FDialogSequence& Seq);
-
+#pragma endregion
+#pragma region Get
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar,
 		const bool Warn=true) const;
@@ -66,10 +68,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn=true) const;
 
+	// true when there's a dialog showing
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
+#pragma endregion
+
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
+	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	bool CheckCodition(const FString& String);
+	
+#pragma region Init
 	// set the data to be used. call upon initialization.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllSeqs);
@@ -81,11 +92,9 @@ public:
 	// de-initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DeInit();
+#pragma endregion
 
-	// true when there's a dialog showing
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
-
+#pragma region Delegates
 	// When a dialog is added. Beware, this is called before OnShow.
 	// Please don't call Add directly from this, wait a frame.
 	// Otherwise, you might break OnShow or cause stack overflows.
@@ -102,6 +111,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category="Dialogs")
 	FDiagOnGetFlag OnGetFlag;
+#pragma endregion
 
 protected:
 	void ShowNext();

@@ -25,6 +25,12 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (UNLIKELY(!Ok)) return false;
 
+
+	if (!CheckCodition(OutDialog.Condition)) {
+		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *OutDialog.Condition);
+		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
+	}
+
 	OnAdd.Broadcast(Row, OutDialog); // before addDiag since it will trigger all sorts of other stuff.
 	AddDiag(OutDialog);
 	return true;
@@ -72,6 +78,11 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	FDialogSequence Seq;
 	const bool Ok = GetSeq(RowName, Seq, Warn);
 	if (!Ok) return false;
+
+	if (!CheckCodition(Seq.Condition)) {
+		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
+		return false; // would allow to add a dialog with the same id, by design, but don't rely.
+	}
 
 	// prevent recursion. Notice this doesn't fix cyclic sequences. no simple way to tell either.
 	// not a priority either.
@@ -188,4 +199,14 @@ void UDiags::Stop() {
 	IsShowing = false;
 
 	OnDone.Broadcast();
+}
+
+bool UDiags::CheckCodition(const FString& String) {
+	const FString Trimmed = String.TrimStartAndEnd();
+	if (LIKELY(Trimmed.IsEmpty())) return true;
+	return true;
+	// Trimmed.MatchesWildcard("{*}");
+	// get the flags
+	// Trimmed.ReplaceQuotesWithEscapedQuotes();
+	// replace the flags
 }
