@@ -246,10 +246,11 @@ bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
 	FString Sub;
 	FString VarName;
 	float VarVal = 0;
-	while (true) {
-		// start
+	// i know some ppl don't like goto-s, but they are fine if you know what you do.
+	// a while will incur in an extra unnecessary condition check, which the compiler might or might not optimize.
+	replace_next:
 		PStart = Eval.Find("{");
-		if (PStart<0) break; // done
+		if (PStart<0) goto replace_done; //break; // done
 
 		PEnd = Eval.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
 		if (UNLIKELY(PEnd <= PStart)) { // this is redundant with below, but i want to have good logs.
@@ -260,26 +261,23 @@ bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
 		Len = PEnd - PStart -1; // PEnd is at BEFORE the character. so it does not contain it! (hence -1)
 		Sub = Eval.Mid(PStart, Len+2);
 		VarName = Sub.Mid(1, Len);
-		// VarName = Trimmed.Mid(PStart+1, Len);
 		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
 		if (UNLIKELY(VarName.IsEmpty())) {
 			UE_LOG(LogDiags, Warning,
 				TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Eval);
-			return false; //break;
+			return false;
 		}
 
-		if (LIKELY(OnGetFlag.IsBound())) { // NEEEDS to check for isbound or risk a crash :')
-			VarVal = OnGetFlag.Execute(FName(VarName));
-		} else {
-			UE_LOG(LogDiags, Warning, TEXT("%hs: OnGetFlag is not bound! All flags are going to be 0. LOL."), __func__);
-			VarVal = 0;
-		}
+		const bool Bound = OnGetFlag.IsBound();
+		VarVal = LIKELY(Bound) ? OnGetFlag.Execute(FName(VarName)) : 0; // NEEEDS to check for isbound or risk a crash :')
+		UE_CLOG(!Bound, LogDiags, Warning, TEXT("%hs: OnGetFlag is not bound! All flags are going to be 0. LOL."), __func__);
 
 		Eval.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
-	}
-
+		goto replace_next;
+	replace_done:
+	
 	Res = UJUtilsMisc::MathEvaluate(Eval);
-	const bool Ok = Res>0;
+	const bool Ok = Res>0 && !FMath::IsNearlyZero(Res);
 
 	UE_LOG(LogDiags, Log,
 		TEXT("%hs: Result=%.4f Ok=%i Eval=%s Exp=%s"),
