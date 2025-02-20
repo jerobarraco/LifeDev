@@ -81,7 +81,20 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	const bool Ok = GetSeq(RowName, Seq, Warn);
 	if (!Ok) return false;
 
-	if (!CheckCondition(Seq.Condition)) {
+	float CondRes = 0;
+	const bool CondOk = CheckCondition(Seq.Condition, CondRes);
+	const FString RowNameStr = RowName.ToString();
+	if (RowNameStr.EndsWith("?")) {
+		if (Seq.DiagRows.Num() > 1) {
+			UE_CLOG(Seq.DiagRows.Num()>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest. row=%s condition=%s"),
+				__func__, *RowName.ToString(), *Seq.Condition);
+			return AddId(Seq.DiagRows[CondOk ? 0: 1]);
+		} else
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Can't choose. less than 2 options. row=%s condition=%s"),
+				__func__, *RowName.ToString(), *Seq.Condition);
+	}
+
+	if (!CondOk) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
 		return false; // would allow to add a dialog with the same id, by design, but don't rely.
 	}
@@ -94,12 +107,12 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		if (DiagName != RowName) continue;
 
 		UE_LOG(LogDiags, Warning, TEXT("Attempted to add a recursive sequence. Seq=%s diag=%s"),
-			*RowName.ToString(), *DiagName.ToString());
+			*RowNameStr, *DiagName.ToString());
 		Seq.DiagRows.RemoveAt(i);
 	}
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
-	if (RowName.ToString().EndsWith("*"))
+	if (RowNameStr.EndsWith("*"))
 		return AddRnd(Seq);
 
 	return AddSeq(Seq);
@@ -203,7 +216,8 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& Expression) const {
+bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
+	Res = 0;
 	FString Eval = Expression.TrimStartAndEnd();
 	if (LIKELY(Eval.IsEmpty())) return true;
 
@@ -248,7 +262,7 @@ bool UDiags::CheckCondition(const FString& Expression) const {
 		Eval.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
 	}
 
-	const float Res = UJUtilsMisc::MathEvaluate(Eval);
+	Res = UJUtilsMisc::MathEvaluate(Eval);
 	const bool Ok = Res>0;
 
 	UE_LOG(LogDiags, Log,

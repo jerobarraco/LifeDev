@@ -91,8 +91,9 @@ public:
 	//	"{myflag}*(1-{myotherflag})" one and not the other
 	//	"{myflag}+{myotherflag}" one OR the other (this requires the flags to not be negative)
 	//	"sqrt({myflag}^2)" absolute value of myflag (root of a squared number)
+	// Res is the result of the evaluation (a number)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
-	bool CheckCondition(const FString& Expression) const;
+	bool CheckCondition(const FString& Expression, float& Res) const;
 
 #pragma region Init
 	// set the data to be used. call upon initialization.
