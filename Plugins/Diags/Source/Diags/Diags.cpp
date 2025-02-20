@@ -246,11 +246,9 @@ bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
 	FString Sub;
 	FString VarName;
 	float VarVal = 0;
-	// i know some ppl don't like goto-s, but they are fine if you know what you do.
-	// a while will incur in an extra unnecessary condition check, which the compiler might or might not optimize.
-	replace_next:
+	while (true) {
 		PStart = Eval.Find("{");
-		if (PStart<0) goto replace_done; //break; // done
+		if (PStart<0) break; // done
 
 		PEnd = Eval.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
 		if (UNLIKELY(PEnd <= PStart)) { // this is redundant with below, but i want to have good logs.
@@ -273,8 +271,7 @@ bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
 		UE_CLOG(!Bound, LogDiags, Warning, TEXT("%hs: OnGetFlag is not bound! All flags are going to be 0. LOL."), __func__);
 
 		Eval.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
-		goto replace_next;
-	replace_done:
+	}
 	
 	Res = UJUtilsMisc::MathEvaluate(Eval);
 	const bool Ok = Res>0 && !FMath::IsNearlyZero(Res);
