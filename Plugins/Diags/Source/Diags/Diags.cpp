@@ -27,10 +27,11 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (UNLIKELY(!Ok)) return false;
 
-
-	if (!CheckCondition(OutDialog.Condition)) {
-		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *OutDialog.Condition);
-		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
+	float Res = 0;
+	if (UNLIKELY(!CheckCondition(OutDialog.Condition, Res))) {
+		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
+			__func__, *Row.ToString(), *OutDialog.Condition);
+		return false;
 	}
 
 	OnAdd.Broadcast(Row, OutDialog); // before addDiag since it will trigger all sorts of other stuff.
@@ -81,34 +82,49 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	const bool Ok = GetSeq(RowName, Seq, Warn);
 	if (!Ok) return false;
 
-	float CondRes = 0;
-	const bool CondOk = CheckCondition(Seq.Condition, CondRes);
+	const int32 DiagNum = Seq.DiagRows.Num();
 	const FString RowNameStr = RowName.ToString();
-	if (RowNameStr.EndsWith("?")) {
-		if (Seq.DiagRows.Num() > 1) {
-			UE_CLOG(Seq.DiagRows.Num()>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest. row=%s condition=%s"),
-				__func__, *RowName.ToString(), *Seq.Condition);
-			return AddId(Seq.DiagRows[CondOk ? 0: 1]);
-		} else
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Can't choose. less than 2 options. row=%s condition=%s"),
-				__func__, *RowName.ToString(), *Seq.Condition);
-	}
-
-	if (!CondOk) {
-		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
-		return false; // would allow to add a dialog with the same id, by design, but don't rely.
-	}
-
 	// prevent recursion. Notice this doesn't fix cyclic sequences. no simple way to tell either.
 	// not a priority either.
 	// int because num-1 can be negative. iterating backwards to be able to remove easily.
-	for (int32 i = Seq.DiagRows.Num() -1; i>=0; --i) {
+	for (int32 i = DiagNum -1; i>=0; --i) {
 		const FName& DiagName = Seq.DiagRows[i];
 		if (DiagName != RowName) continue;
 
 		UE_LOG(LogDiags, Warning, TEXT("Attempted to add a recursive sequence. Seq=%s diag=%s"),
 			*RowNameStr, *DiagName.ToString());
-		Seq.DiagRows.RemoveAt(i);
+		Seq.DiagRows.RemoveAt(i); // this is safe only because GetSeq returns a copy. :)
+	}
+
+	if (DiagNum < 1) {
+		UE_LOG(LogDiags, Warning, TEXT("%hs: Sequence is empty! (after removing loops). Skip."
+			" row=%s"), __func__, *RowName.ToString());
+		return false;
+	}
+
+	float CondRes = 0;
+	const bool CondOk = UNLIKELY(CheckCondition(Seq.Condition, CondRes));
+	if (RowNameStr.EndsWith("!")) {
+		UE_CLOG(DiagNum>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest."
+			" Row=%s Condition=%s"), __func__, *RowName.ToString(), *Seq.Condition);
+		UE_CLOG(DiagNum<2, LogDiags, Warning, TEXT("%hs: Less than 2 options. Will clamp."
+			" Row=%s Condition=%s"), __func__, *RowName.ToString(), *Seq.Condition);
+		
+		const FName DiagRow = Seq.DiagRows[CondOk || DiagNum <2 ? 0: 1];
+		return AddId(DiagRow);
+	}
+
+	if (RowNameStr.EndsWith("?")) {
+		const int32 Idx = FMath::Clamp(FMath::RoundToInt32(CondRes), 0, DiagNum-1); // don't overcomplicate, just clamp.
+		const FName DiagRow = Seq.DiagRows[Idx]; // this is safe because of the DiagNum<1 above and the above clamp
+		UE_LOG(LogDiags, Log, TEXT("%hs: Chosen. Dlg=%i DlgRow=%s Row=%s Condition=%s"),
+			__func__, Idx, *DiagRow.ToString(), *RowName.ToString(), *Seq.Condition);
+		return AddId(DiagRow);
+	}
+
+	if (!CondOk) {
+		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
+		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
 	}
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
