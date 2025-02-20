@@ -103,6 +103,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
+	UFUNCTION(BlueprintCallable)
+	static float MathEvaluate(const FString& Expression);
+	
 
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
@@ -115,4 +118,6 @@ public:
 	// shuffles an array in place.
 	template <typename T>
 	static void ArrayShuffle(TArray<T>& Array);
+
+	
 };

@@ -137,3 +137,15 @@ bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
 	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
 }
+
+float UJUtilsMisc::MathEvaluate(const FString& Expression) {
+	const FBasicMathExpressionEvaluator Parser;
+
+	TValueOrError<double, FExpressionError> Result = Parser.Evaluate(*Expression);
+	if (!Result.IsValid()) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
+		return NAN;
+	}
+
+	return Result.GetValue();
+}
