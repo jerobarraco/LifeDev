@@ -5,7 +5,6 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
-#pragma optimize("",off)
 
 UDiags* UDiags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -204,9 +203,12 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& String) {
+bool UDiags::CheckCondition(const FString& String) const {
 	FString Exp = String.TrimStartAndEnd();
 	if (LIKELY(Exp.IsEmpty())) return true;
+
+	// "{xx}"	start=0, end=3, len=2, sub={xx}, name =xx
+	// "{}"		start=0, end=1, len=0, sub={}, name=""
 
 	int32 PStart = 0;
 	int32 PEnd = 0;
@@ -217,24 +219,24 @@ bool UDiags::CheckCondition(const FString& String) {
 	while (true) {
 		// start
 		PStart = Exp.Find("{");
-		if (PStart<0) break;
+		if (PStart<0) break; // done
 
 		PEnd = Exp.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
-		if (PEnd <= PStart) { // this is redundant with below, but i want to have good logs.
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}' %s"), __func__, *Exp);
-			break;
+		if (UNLIKELY(PEnd <= PStart)) { // this is redundant with below, but i want to have good logs.
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}'. Exp='%s'"), __func__, *Exp);
+			return false;
 		}
 
-		Len = PEnd - PStart -2;
-		if (Len<=0) {
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression: Variable len is <=0. need something more inside {}."), __func__, *Exp);
-			break;
-		}
-
+		Len = PEnd - PStart -1; // PEnd is at BEFORE the character. so it does not contain it! (hence -1)
 		Sub = Exp.Mid(PStart, Len+2);
 		VarName = Sub.Mid(1, Len);
 		// VarName = Trimmed.Mid(PStart+1, Len);
 		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
+		if (UNLIKELY(VarName.IsEmpty())) {
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Exp);
+			return false; //break;
+		}
+
 		if (LIKELY(OnGetFlag.IsBound())) { // NEEEDS to check for isbound or risk a crash :')
 			VarVal = OnGetFlag.Execute(FName(VarName));
 		} else {
@@ -242,14 +244,13 @@ bool UDiags::CheckCondition(const FString& String) {
 			VarVal = 0;
 		}
 
-		Exp.ReplaceInline(*Sub, *FString::SanitizeFloat(VarVal,0), ESearchCase::IgnoreCase );
+		Exp.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
 	}
-	const float Res = UJUtilsMisc::MathEvaluate(Exp);
-	return Res > 0;
-	// Trimmed.MatchesWildcard("{*}");
-	// get the flags
-	// Trimmed.ReplaceQuotesWithEscapedQuotes();
-	// replace the flags
-}
 
-#pragma optimize("",on)
+	const float Res = UJUtilsMisc::MathEvaluate(Exp);
+	const bool Ok = Res>0;
+
+	UE_LOG(LogDiags, Log, TEXT("%hs: Result=%.4f Ok=%i Eval=%s"), __func__, Res, Ok, *Exp);
+
+	return Ok;
+}
