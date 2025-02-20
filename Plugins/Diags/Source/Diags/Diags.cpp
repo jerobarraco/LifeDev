@@ -121,7 +121,7 @@ void UDiags::DeInit() {
 }
 
 bool UDiags::GetDiag(
-	const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) const {
+const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Diags))) return false;
 

@@ -2,6 +2,7 @@
 
 #include "LDiagMan.h"
 
+#include "Diags/Diags.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "Diags/DialogUI.h"
@@ -19,6 +20,7 @@ ALDiagMan::ALDiagMan():Super() {
 void ALDiagMan::Init_Implementation() {
 	Super::Init_Implementation();
 	Flags = UFlags::Instance(this);
+	Diags->OnGetFlag.BindDynamic(this, &ALDiagMan::FlagGet);
 }
 
 ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
@@ -65,4 +67,10 @@ void ALDiagMan::AutoClear() {
 
 	W->GetTimerManager().ClearTimer(AutoTimer);
 	AutoTimer.Invalidate();
+}
+
+float ALDiagMan::FlagGet(const FName Name) {
+	if (UNLIKELY(!Flags)) return 0;
+	// can't bind directly to this because of const. also can't make this const.
+	return Flags->Get(Name);
 }

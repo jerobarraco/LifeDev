@@ -39,6 +39,9 @@ protected:
 	virtual void Back_Implementation() override;
 	void AutoClear();
 
+	UFUNCTION()
+	float FlagGet(const FName Name);
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
 

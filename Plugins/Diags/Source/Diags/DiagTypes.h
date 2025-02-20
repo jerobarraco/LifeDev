@@ -38,6 +38,18 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 
+	// EXPERIMENTAL
+	// mathematical expression, that, when evaluated, if >0, it will add the dialog.
+	// flags can be added like "{myflag}" then have operators like "/+-*"
+	// a flag that is not set equals to 0
+	// to be used you need to hook to the delegate in the diags subsystem to get the flags
+	// e.g.:
+	//	"{myflag}" triggers if the flag is set
+	//	"{myflag-1}" flag is greater than 1
+	//	"{-myflag}" flag is not set or negative
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString Condition = "";
+	
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	// EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -57,6 +69,18 @@ public:
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> DiagRows;
+
+	// EXPERIMENTAL
+	// mathematical expression, that, when evaluated, if >0, it will add the dialog.
+	// flags can be added like "{myflag}" then have operators like "/+-*"
+	// a flag that is not set equals to 0
+	// to be used you need to hook to the delegate in the diags subsystem to get the flags
+	// e.g.:
+	//	"{myflag}" triggers if the flag is set
+	//	"{myflag-1}" flag is greater than 1
+	//	"{-myflag}" flag is not set or negative
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString Condition = "";
 };
 
 // chars

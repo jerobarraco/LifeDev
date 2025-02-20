@@ -12,6 +12,8 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName, Name, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FDiagOnGetFlag, const FName, Name);
+
 
 // World subsystem to deal with dialogs
 UCLASS(Blueprintable, Category="Dialogs")
@@ -98,6 +100,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Dialogs")
 	FDiagOnDone OnDone;
 
+	UPROPERTY(BlueprintReadWrite, Category="Dialogs")
+	FDiagOnGetFlag OnGetFlag;
 
 protected:
 	void ShowNext();

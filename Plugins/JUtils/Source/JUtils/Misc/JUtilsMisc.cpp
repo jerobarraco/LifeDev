@@ -139,10 +139,11 @@ bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 }
 
 float UJUtilsMisc::MathEvaluate(const FString& Expression) {
+	// TODO find better name. TODO move to JUtilsMath once i have more about math.
 	const FBasicMathExpressionEvaluator Parser;
 
 	TValueOrError<double, FExpressionError> Result = Parser.Evaluate(*Expression);
-	if (!Result.IsValid()) {
+	if (UNLIKELY(!Result.IsValid())) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
 		return NAN;
 	}
