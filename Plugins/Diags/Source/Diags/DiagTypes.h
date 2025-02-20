@@ -54,6 +54,8 @@ public:
 
 // The base structure for dialog sequences.
 // If the key ends with "*" a _random_ dialog row will be picked.
+// If it ends with a "!" it will choose the first dialog if the condition is true, the 2nd if false.
+// If it ends with a "?" it will evaluate the condition and choose the corresponding dialog. Clamped to bounds (0, max).  
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDialogSequence: public FTableRowBase {
 	GENERATED_BODY()
