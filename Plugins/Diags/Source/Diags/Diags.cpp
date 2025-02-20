@@ -203,7 +203,7 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& String) {
+bool UDiags::CheckCondition(const FString& String) const {
 	FString Exp = String.TrimStartAndEnd();
 	if (LIKELY(Exp.IsEmpty())) return true;
 
@@ -233,7 +233,8 @@ bool UDiags::CheckCondition(const FString& String) {
 		// VarName = Trimmed.Mid(PStart+1, Len);
 		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
 		if (UNLIKELY(VarName.IsEmpty())) {
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Exp);
+			UE_LOG(LogDiags, Warning,
+				TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Exp);
 			return false; //break;
 		}
 

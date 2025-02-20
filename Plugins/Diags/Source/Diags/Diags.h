@@ -77,8 +77,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool CheckCondition(const FString& String); // const makes it pure :(
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
+	bool CheckCondition(const FString& String) const;
 
 #pragma region Init
 	// set the data to be used. call upon initialization.
