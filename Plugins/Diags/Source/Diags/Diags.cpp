@@ -251,7 +251,9 @@ bool UDiags::CheckCondition(const FString& Expression) const {
 	const float Res = UJUtilsMisc::MathEvaluate(Eval);
 	const bool Ok = Res>0;
 
-	UE_LOG(LogDiags, Log, TEXT("%hs: Result=%.4f Ok=%i Eval=%s Exp=%s"), __func__, Res, Ok, *Eval, Expression);
+	UE_LOG(LogDiags, Log,
+		TEXT("%hs: Result=%.4f Ok=%i Eval=%s Exp=%s"),
+		__func__, Res, Ok, *Eval, *Expression);
 
 	return Ok;
 }

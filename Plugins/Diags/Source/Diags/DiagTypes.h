@@ -26,7 +26,8 @@ enum class EDialogType : uint8 {
 	MISTERY,
 };
 
-// The base structure for dialogs
+// The base structure for dialogs.
+// if the row ends with "*" it makes no difference (see what happens on sequences though). (this is a feature)
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDialog: public FTableRowBase {
 	GENERATED_BODY()
@@ -38,15 +39,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 
-	// EXPERIMENTAL
-	// mathematical expression, that, when evaluated, if >0, it will add the dialog.
-	// flags can be added like "{myflag}" then have operators like "/+-*"
-	// a flag that is not set equals to 0
-	// to be used you need to hook to the delegate in the diags subsystem to get the flags
-	// e.g.:
-	//	"{myflag}" triggers if the flag is set
-	//	"{myflag-1}" flag is greater than 1
-	//	"{-myflag}" flag is not set or negative
+	// Experimental. The dialog will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
 	
@@ -60,7 +53,7 @@ public:
 };
 
 // The base structure for dialog sequences.
-// If the key ends with "*" a dialog row will be picked.
+// If the key ends with "*" a _random_ dialog row will be picked.
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDialogSequence: public FTableRowBase {
 	GENERATED_BODY()
@@ -70,15 +63,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> DiagRows;
 
-	// EXPERIMENTAL
-	// mathematical expression, that, when evaluated, if >0, it will add the dialog.
-	// flags can be added like "{myflag}" then have operators like "/+-*"
-	// a flag that is not set equals to 0
-	// to be used you need to hook to the delegate in the diags subsystem to get the flags
-	// e.g.:
-	//	"{myflag}" triggers if the flag is set
-	//	"{myflag-1}" flag is greater than 1
-	//	"{-myflag}" flag is not set or negative
+	// Experimental. The sequence will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
 };

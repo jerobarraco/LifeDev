@@ -77,6 +77,20 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	void DiagDone();
 
+	// EXPERIMENTAL
+	// Tests a "simple" mathematical expression. Returns true if >0.
+	// Operators: +,-,/,*,^,sqrt(),()
+	// Flags can be added like "{myflag}".
+	// To use flags you need to hook to the delegate in the diags subsystem (OnGetFlag)
+	// A flag that is not set equals to 0. If the delegate is not bound, it will return 0 too.
+	// e.g.:
+	//	"{myflag}" triggers if the flag is set
+	//	"{myflag}-1" flag is greater than 1
+	//	"-{myflag}" flag is not set or negative
+	//	"{myflag}*{myotherflag}" both flags are set.
+	//	"{myflag}*(1-{myotherflag})" one and not the other
+	//	"{myflag}+{myotherflag}" one OR the other (this requires the flags to not be negative)
+	//	"sqrt({myflag}^2)" absolute value of myflag (root of a squared number)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
 	bool CheckCondition(const FString& Expression) const;
 

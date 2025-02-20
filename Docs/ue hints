@@ -100,3 +100,8 @@ resizeable bar
 
 # support baked lights 
 	https://dev.epicgames.com/community/learning/knowledge-base/nzMO/unreal-engine-enabling-baked-lighting-in-ue5
+	
+	
+# not purifying const methods
+	UFUNCTION(BlueprintPure=False)
+	https://forums.unrealengine.com/t/why-are-blueprintpure-and-const-incompatible/287271/2?u=nande
