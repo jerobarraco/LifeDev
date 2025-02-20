@@ -203,7 +203,7 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& String) const {
+bool UDiags::CheckCondition(const FString& String) {
 	FString Exp = String.TrimStartAndEnd();
 	if (LIKELY(Exp.IsEmpty())) return true;
 
