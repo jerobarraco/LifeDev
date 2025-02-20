@@ -78,7 +78,7 @@ public:
 	void DiagDone();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
-	bool CheckCondition(const FString& String) const;
+	bool CheckCondition(const FString& Expression) const;
 
 #pragma region Init
 	// set the data to be used. call upon initialization.

@@ -203,9 +203,9 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& String) const {
-	FString Exp = String.TrimStartAndEnd();
-	if (LIKELY(Exp.IsEmpty())) return true;
+bool UDiags::CheckCondition(const FString& Expression) const {
+	FString Eval = Expression.TrimStartAndEnd();
+	if (LIKELY(Eval.IsEmpty())) return true;
 
 	// "{xx}"	start=0, end=3, len=2, sub={xx}, name =xx
 	// "{}"		start=0, end=1, len=0, sub={}, name=""
@@ -218,23 +218,23 @@ bool UDiags::CheckCondition(const FString& String) const {
 	float VarVal = 0;
 	while (true) {
 		// start
-		PStart = Exp.Find("{");
+		PStart = Eval.Find("{");
 		if (PStart<0) break; // done
 
-		PEnd = Exp.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
+		PEnd = Eval.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
 		if (UNLIKELY(PEnd <= PStart)) { // this is redundant with below, but i want to have good logs.
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}'. Exp='%s'"), __func__, *Exp);
+			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}'. Exp='%s'"), __func__, *Eval);
 			return false;
 		}
 
 		Len = PEnd - PStart -1; // PEnd is at BEFORE the character. so it does not contain it! (hence -1)
-		Sub = Exp.Mid(PStart, Len+2);
+		Sub = Eval.Mid(PStart, Len+2);
 		VarName = Sub.Mid(1, Len);
 		// VarName = Trimmed.Mid(PStart+1, Len);
 		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
 		if (UNLIKELY(VarName.IsEmpty())) {
 			UE_LOG(LogDiags, Warning,
-				TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Exp);
+				TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Eval);
 			return false; //break;
 		}
 
@@ -245,13 +245,13 @@ bool UDiags::CheckCondition(const FString& String) const {
 			VarVal = 0;
 		}
 
-		Exp.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
+		Eval.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
 	}
 
-	const float Res = UJUtilsMisc::MathEvaluate(Exp);
+	const float Res = UJUtilsMisc::MathEvaluate(Eval);
 	const bool Ok = Res>0;
 
-	UE_LOG(LogDiags, Log, TEXT("%hs: Result=%.4f Ok=%i Eval=%s"), __func__, Res, Ok, *Exp);
+	UE_LOG(LogDiags, Log, TEXT("%hs: Result=%.4f Ok=%i Eval=%s Exp=%s"), __func__, Res, Ok, *Eval, Expression);
 
 	return Ok;
 }
