@@ -79,7 +79,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool CheckCondition(const FString& String);
-	
+
 #pragma region Init
 	// set the data to be used. call upon initialization.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")

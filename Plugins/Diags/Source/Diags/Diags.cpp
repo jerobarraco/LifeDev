@@ -214,18 +214,18 @@ bool UDiags::CheckCondition(const FString& String) {
 	FString Sub;
 	FString VarName;
 	float VarVal = 0;
-	while ( true) {
+	while (true) {
 		// start
 		PStart = Exp.Find("{");
 		if (PStart<0) break;
 
 		PEnd = Exp.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
-		if (PEnd < PStart) {
+		if (PEnd <= PStart) { // this is redundant with below, but i want to have good logs.
 			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}' %s"), __func__, *Exp);
 			break;
 		}
 
-		Len = PStart - PEnd -2;
+		Len = PEnd - PStart -2;
 		if (Len<=0) {
 			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression: Variable len is <=0. need something more inside {}."), __func__, *Exp);
 			break;
