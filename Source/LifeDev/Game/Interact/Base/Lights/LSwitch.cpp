@@ -13,7 +13,7 @@ ALSwitch::ALSwitch():Super() {
 	// TODO adjust on the level
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("Game/LifeDev/Game/Inters/Tv00/Tv00-Btn"));
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	
 	// Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
