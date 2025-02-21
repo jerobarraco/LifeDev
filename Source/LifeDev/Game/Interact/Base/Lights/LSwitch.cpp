@@ -15,9 +15,9 @@ ALSwitch::ALSwitch():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	
-	// Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
-	Interact->SetBoxExtent(FVector(35,35,25));
+	Mesh->SetRelativeLocation(FVector(-57.500000,2.500000,-12.500000));
+	Interact->SetRelativeLocation(FVector(57.500000,-2.500000,12.500000));
+	Interact->SetBoxExtent(FVector(5));
 
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;
