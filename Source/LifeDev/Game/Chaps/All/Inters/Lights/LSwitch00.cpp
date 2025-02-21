@@ -16,7 +16,6 @@ ALSwitch00::ALSwitch00(): Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/Btn2"));
 	Base->SetStaticMesh(CMesh.Object);
-	Base->SetRelativeScale3D(FVector(5.000000,1.000000,7.000000));
-	Base->SetRelativeLocation(FVector(-37.500000,27.500000,-542.500000));
-	// SFX_Trigger = nullptr // TODO
+	Base->SetRelativeScale3D(FVector(4.000000,1.000000,6.000000));
+	Base->SetRelativeLocation(FVector(-30.,27.500000,-465));
 }
