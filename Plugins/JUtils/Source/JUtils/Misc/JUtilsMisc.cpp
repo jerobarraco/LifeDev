@@ -8,6 +8,8 @@
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "WorldPartition/DataLayer/DataLayerInstance.h"
+#include "WorldPartition/DataLayer/DataLayerManager.h"
 
 // TODO fix packaging fails with this one
 // https://www.reddit.com/r/unrealengine/comments/sbqb5k/comment/hu4c6ze/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -149,4 +151,30 @@ float UJUtilsMisc::MathEvaluate(const FString& Expression) {
 	}
 
 	return Result.GetValue();
+}
+
+
+bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled) {
+	if (UNLIKELY(!O)) return false;
+
+	const UWorld* const World = O->GetWorld();
+	if (UNLIKELY(!World)) return false;
+
+	if (UNLIKELY(!IsValid(DataLayer))) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid data layer."), __func__);
+		return false;
+	}
+
+	UDataLayerManager* const Manager = World->GetDataLayerManager();
+	if (UNLIKELY(!IsValid(Manager))) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the data layer manager"), __func__);
+		return false;
+	}
+
+	const EDataLayerRuntimeState State =
+		(Enabled ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
+	const bool Success = Manager->SetDataLayerRuntimeState(DataLayer, State, false);
+	UE_LOG(LogTemp, Log, TEXT("%hs Data layer toggle. Ok=%i, Enable=%i, Name='%s'"),
+		__func__, Success, Enabled, *DataLayer->GetName());
+	return Success;
 }

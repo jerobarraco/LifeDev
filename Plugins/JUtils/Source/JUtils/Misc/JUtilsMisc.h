@@ -101,12 +101,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec = EAsyncExec::ThreadPool);
 
+	// returns true when two strings are similar, ignoring case and whitespace.
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
+
 	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" sqare root.
 	UFUNCTION(BlueprintCallable)
 	static float MathEvaluate(const FString& Expression);
 
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
+	
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);

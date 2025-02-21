@@ -34,9 +34,11 @@ protected:
 	void LoadMPC();
 	void LoadFeats();
 	UFUNCTION()
-	void FeatUpVisual(const EFeat Feat, const bool bEnabled);
+	void FeatUpVisual(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
-	void FeatUpUnreal(const EFeat Feat, const bool bEnabled);
+	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
+	void FeatUpDbg(const EFeat Feat, const bool Enabled);
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ALGGameMode> GM = nullptr;
@@ -51,5 +53,8 @@ protected:
 	TObjectPtr<UMaterialInterface> SpeedMat = nullptr;
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInterface> FBMat = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test_DL.Test_DL"));
 };
 

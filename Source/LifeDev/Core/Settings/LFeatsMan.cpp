@@ -7,6 +7,7 @@
 #include "Materials/MaterialParameterCollectionInstance.h"
 
 #include "LSettings.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
@@ -89,10 +90,11 @@ void ALFeatsMan::LoadFeats() {
 
 	FeatUpUnreal(EFeat::U_TICK_BATCH, S && S->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, S && S->GetFeat(EFeat::U_TICK_CON));
+	FeatUpDbg(EFeat::DBG_TESTDL, S && S->GetFeat(EFeat::DBG_TESTDL));
 }
 
 
-void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
+void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) return;
 
 	// Important:
@@ -108,42 +110,42 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 		Post->Settings.bOverride_DynamicGlobalIlluminationMethod = true;
 		Post->Settings.bOverride_ReflectionMethod = true;
 		Post->Settings.DynamicGlobalIlluminationMethod =
-			bEnabled ?
+			Enabled ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 		Post->Settings.ReflectionMethod =
-			bEnabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
+			Enabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
 	} else if (Feat == EFeat::V_MLIGHTS) {
 		// needed to allow the flag to override project settings
 		Post->Settings.bOverride_bMegaLights = true;
-		Post->Settings.bMegaLights = bEnabled;
+		Post->Settings.bMegaLights = Enabled;
 	} else if (Feat == EFeat::V_BLUR) {
-		Post->Settings.MotionBlurAmount = bEnabled ? MotionBlurAmount: 0;
-		Post->Settings.MotionBlurMax = bEnabled ? MotionBlurMax: 0;
-		Post->Settings.SceneFringeIntensity = bEnabled ? FringeIntensity: 0;
+		Post->Settings.MotionBlurAmount = Enabled ? MotionBlurAmount: 0;
+		Post->Settings.MotionBlurMax = Enabled ? MotionBlurMax: 0;
+		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_FLASHBACK) {
 		if (UNLIKELY(!FBMat)) return;
-		if (bEnabled)
+		if (Enabled)
 			Post->Settings.AddBlendable(FBMat, 1);
 		else
 			Post->Settings.RemoveBlendable(FBMat);
 	} else if (Feat == EFeat::V_NANITE) {
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Nanite=%i"), __func__, bEnabled);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Nanite=%i"), __func__, Enabled);
 		IConsoleVariable* const Variable =
 			IConsoleManager::Get().FindConsoleVariable(TEXT("r.Nanite"));
 		if (UNLIKELY(!Variable)) {
 			UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Can't find r.Nanite var. Stop"), __func__);
 			return;
 		}
-		Variable->Set(bEnabled?1:0);
+		Variable->Set(Enabled?1:0);
 	} else {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
-		const float v = bEnabled ? 1: 0;
+		const float v = Enabled ? 1: 0;
 		if (Feat == EFeat::V_STROBE) 
 			MPCI->SetScalarParameterValue("Strobe", v);
 		else if (Feat == EFeat::V_SPEED) {
 			MPCI->SetScalarParameterValue("Speed", v);
 			if (UNLIKELY(!SpeedMat)) return;
-			if (bEnabled)
+			if (Enabled)
 				Post->Settings.AddBlendable(SpeedMat, 1);
 			else
 				Post->Settings.RemoveBlendable(SpeedMat);
@@ -156,14 +158,20 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool bEnabled) {
 	// Post->Settings.DepthOfFieldScale = bEnabled ? 1:0;
 }
 
-void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool bEnabled) {
+void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::U_TICK_BATCH) {
 		IConsoleVariable* const CVar =
 			IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowBatchedTicks"));
-		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
+		if (LIKELY(CVar)) CVar->Set(Enabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
 	} else if (Feat == EFeat::U_TICK_CON) {
 		IConsoleVariable* const CVar =
 			IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
-		if (LIKELY(CVar)) CVar->Set(bEnabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
+		if (LIKELY(CVar)) CVar->Set(Enabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
 	}
+}
+
+void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
+	if (Feat != EFeat::DBG_TESTDL) return;
+
+	UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
 }
