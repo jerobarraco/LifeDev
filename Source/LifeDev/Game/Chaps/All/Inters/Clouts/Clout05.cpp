@@ -10,7 +10,7 @@
 AClout05::AClout05():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Sock_P"));
-	IFL(ObjMesh.Succeeded())
+	if(LIKELY(ObjMesh.Succeeded()))
 		Mesh->SetStaticMesh(ObjMesh.Object);
 	
 	Mesh->SetRelativeLocation(FVector(-10.000000,10.000000,-2.500000));

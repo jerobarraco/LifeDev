@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Chaps/All/Inters/Var/MatchBox.h"
+#include "LifeDev/Game/Chaps/All/Inters/Kitchen/MatchBox.h"
 
 #include "MatchBoxI00.generated.h"
 

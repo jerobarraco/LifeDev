@@ -4,7 +4,6 @@
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorFade.h"
-#include "JUtils/Misc/JMiscConsts.h"
 
 ACloutI09::ACloutI09():Super() {
 	RewardItem = "CloutI04";
@@ -15,6 +14,6 @@ ACloutI09::ACloutI09():Super() {
 
 	const ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
-	IFL(CMat.Succeeded()) Mesh->SetMaterial(0, CMat.Object.Get());
+	if(LIKELY(CMat.Succeeded())) Mesh->SetMaterial(0, CMat.Object.Get());
 	AnimFade->MatBase = nullptr;
 }

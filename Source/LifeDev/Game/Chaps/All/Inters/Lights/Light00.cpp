@@ -19,7 +19,7 @@ ALight00::ALight00():Super() {
 	Anim->MatVName = "Emissive";
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
-	IFL (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
+	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
 
 	// objects
 	// TODO adjust on the level
@@ -45,7 +45,7 @@ ALight00::ALight00():Super() {
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Tube->SetupAttachment(Mesh);
-	IFL(CTube.Succeeded()) Tube->SetStaticMesh(CTube.Object);
+	if(LIKELY(CTube.Succeeded())) Tube->SetStaticMesh(CTube.Object);
 	
 	Tube->SetRelativeLocation(FVector(0,0,-5));
 	Tube->SetCastAllShadows(false);
