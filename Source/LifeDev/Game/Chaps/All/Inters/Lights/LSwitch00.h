@@ -10,8 +10,11 @@
 UCLASS(Blueprintable, BlueprintType)
 class ALSwitch00 : public ALSwitch {
 	GENERATED_BODY()
-	
+
 public:
+	ALSwitch00();
 
 protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> Base = nullptr;
 };
