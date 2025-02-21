@@ -12,7 +12,6 @@ class ALSwitch00 : public ALSwitch {
 	GENERATED_BODY()
 	
 public:
-	ALSwitch00();
 
 protected:
 };

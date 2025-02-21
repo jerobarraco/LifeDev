@@ -172,6 +172,7 @@ void AInteract::BeginPlay() {
 	if (Mesh->IsSimulatingPhysics())
 		Interact->PhysComp = Mesh;
 
+	// TODO maybe generalize these chunks
 	// would be a bit wasteful on memory if the instance doesn't load, or if it's already on RewardsIntersActive
 	// but that is something the user should not do.
 	RewardIntersActive.Reserve(RewardIntersActive.Num()+RewardIntersActiveClass.Num());
@@ -186,6 +187,20 @@ void AInteract::BeginPlay() {
 		}
 
 		RewardIntersActive.AddUnique(I);
+	}
+
+	RewardIntersTrigger.Reserve(RewardIntersTrigger.Num()+RewardIntersTriggerClass.Num());
+	for (const TSubclassOf<AInteract>& C: RewardIntersTriggerClass) {
+		if (UNLIKELY(!IsValid(C))) continue;
+
+		AInteract* const I = Cast<AInteract>(UGameplayStatics::GetActorOfClass(this, C));
+		if (UNLIKELY(!IsValid(I))) {
+			UE_LOG(LogInteract, Log, TEXT("%hs: Can't find instance of class=%s. Stop."),
+				__func__, *C->GetName());
+			continue;
+		}
+
+		RewardIntersTrigger.AddUnique(I);
 	}
 
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
@@ -242,6 +257,10 @@ void AInteract::DoTrigger_Implementation() {
 
 	for(AInteract* const I: RewardIntersHint) {
 		if (LIKELY(IsValid(I))) I->UseHint = true;
+	}
+
+	for(AInteract* const I: RewardIntersTrigger) {
+		if (LIKELY(IsValid(I))) I->TryTrigger();
 	}
 
 	if (IsOneShot) SetActive(false);

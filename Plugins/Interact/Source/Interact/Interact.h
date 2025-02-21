@@ -163,16 +163,24 @@ public:
 
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
-	// Does not affects destroy by UseRewardDestroy (for now at least).
+	// Does not affect destroy by UseRewardDestroy (for now at least).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersHint;
 
-	// interacts to activate when this interact is triggered. will not fade.
+	// interacts to trigger when this interact is triggered. will not fade or destroy.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TObjectPtr<AInteract>> RewardIntersTrigger;
+
+	// Classes to add to the reward inters trigger. by using GetActorOfClass on begin play.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TArray<TSubclassOf<AInteract>> RewardIntersTriggerClass;
+	
+	// interacts to activate when this interact is triggered. will not fade or destory.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersActive;
 
 	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
-	// this is useful to use by code. on Editor RewardsIntersActive would be preferred.
+	// this is useful to use by code.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
 #pragma endregion
