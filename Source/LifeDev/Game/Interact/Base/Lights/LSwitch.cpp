@@ -10,7 +10,6 @@ ALSwitch::ALSwitch():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
 	UseAnim = true;
-	// TODO adjust on the level
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn"));

@@ -168,6 +168,10 @@ public:
 	TArray<TObjectPtr<AInteract>> RewardIntersHint;
 
 	// interacts to trigger when this interact is triggered. will not fade or destroy.
+	// you can still trigger an interact that is not "Active".
+	// Note that this only calls trigger. If the other one is locked it will call TriggerLocked.
+	// And if the other one has different number of states they might get out of "sync" which is not bad but keep it in mind.
+	// The upside is that you can have two switches controlling the same light with this behavior.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersTrigger;
 
