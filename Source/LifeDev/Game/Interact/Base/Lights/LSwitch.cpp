@@ -25,4 +25,8 @@ ALSwitch::ALSwitch():Super() {
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetLocation(FVector(0.0,-2.5,0));
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
+	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 }

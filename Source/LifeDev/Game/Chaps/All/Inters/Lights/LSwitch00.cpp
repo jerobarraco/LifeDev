@@ -4,6 +4,7 @@
 #include "CQuickMesh.h"
 
 ALSwitch00::ALSwitch00(): Super() {
+	// interacts start "off/closed"
 	Texts = {
 		NSLOCTEXT("Switch00", "TurnOn", "Turn On"),
 		NSLOCTEXT("Switch00", "TurnOff", "Turn Off"),
