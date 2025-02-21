@@ -86,6 +86,7 @@ public:
 	// e.g.:
 	//	"{myflag}" triggers if the flag is set
 	//	"{myflag}-1" flag is greater than 1
+	//	"1-{myflag}" flag is less than 1
 	//	"-{myflag}" flag is not set or negative
 	//	"{myflag}*{myotherflag}" both flags are set.
 	//	"{myflag}*(1-{myotherflag})" one and not the other
