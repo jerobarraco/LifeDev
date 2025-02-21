@@ -170,7 +170,11 @@ bool UStory::ToggleStepLayers() const {
 
 bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
 	if (UNLIKELY(!IsValid(DLA))) return false;
-	
+
+	// This code is duplicated with JUtilsMisc::ToggleDataLayer.
+	// but i don't want to make this plugin depend on jutils only for that.
+	// even though it makes no difference for me, it might for another person.
+	// you're welcome.
 	UE_LOG(LogStory, Log, TEXT("%hs About to toggle data layer. load=%i name=%s"),
 		__func__, On, *DLA->GetName());
 	const UWorld* const World = GetWorld();

@@ -177,4 +177,15 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 	UE_LOG(LogTemp, Log, TEXT("%hs Data layer toggle. Ok=%i, Enable=%i, Name='%s'"),
 		__func__, Success, Enabled, *DataLayer->GetName());
 	return Success;
+	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
+	
+	/*  the subsystem  all is deprecated
+	UDataLayerSubsystem* const Layers = World->GetSubsystem<UDataLayerSubsystem>();
+	UDataLayerInstance* Instance = Layers->GetDataLayerInstanceFromAsset(DLA);
+	Layers->SetDataLayerRuntimeState(Instance, State, true);
+	if (!IsValid(Layers)) {
+		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer subsystem"), On, *DLA->GetName());
+		return;
+	}
+	*/
 }
