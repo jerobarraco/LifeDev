@@ -86,6 +86,7 @@ AActor* UPool::Get() {
 
 	if (Ready.Num()<=0) {
 		if (!CanGrow) {
+			// verbose, as it's usual to spam Get in order to ensure the max.
 			UE_LOG(LogJPool, Verbose,
 				TEXT("%hs: Pool is exhausted, and can't grow. so can't return an actor. Stop."
 					" ItemType=%s"),
