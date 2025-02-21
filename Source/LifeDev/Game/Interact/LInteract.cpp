@@ -31,6 +31,7 @@ ALInteract::ALInteract():Super() {
 	AnimFade->Meshes.Add(Mesh);
 
 	// set to true, it's needed for the range. TODO if it creates issues rollback to false.
+	// added here to not clutter the CInteract base.
 	Interact->SetGenerateOverlapEvents(true);
 }
 

@@ -15,12 +15,9 @@ ALSwitch::ALSwitch():Super() {
 	// TODO adjust on the level
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support"));
+		CMesh (TEXT("Game/LifeDev/Game/Inters/Tv00/Tv00-Btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,0,0));
-	Mesh->SetRelativeRotation(FRotator(0,270,90));
-	Mesh->SetRelativeScale3D(FVector(1,1,1));
 	
-	Interact->SetRelativeLocation(FVector(2.500000,-2.500000,0));
-	Interact->SetBoxExtent(FVector(42.500000,7.500000,5.000000));
+	// Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
+	Interact->SetBoxExtent(FVector(35,35,25));
 }
