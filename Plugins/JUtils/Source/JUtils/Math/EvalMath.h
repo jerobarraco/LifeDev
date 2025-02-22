@@ -10,7 +10,7 @@
 
 
 class FMathExpEvaluator;
-DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(float, FJEVGetVar, const FName, Name);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 
 // Subsystem that evaluates math expressions
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
