@@ -247,6 +247,8 @@ void UDiags::Stop() {
 bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 	Res = 0;
 	if (UNLIKELY(!Eval)) return false;
+	// empty expressions passes
+	if (Expression.TrimStartAndEnd().IsEmpty()) return true;
 
 	bool Ok = false; 
 	Res = Eval->Eval(Expression, Ok);

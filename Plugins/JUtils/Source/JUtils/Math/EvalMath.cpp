@@ -50,9 +50,11 @@ bool UEvalMath::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 
 double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
 	Ok = false;
-	// TOOD use nan or use bool+default?
 	if (UNLIKELY(!Evaluator.IsValid())) return 0;
-	if (UNLIKELY(Exp.IsEmpty())) return 0;
+	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) {
+		Ok = true;
+		return 0;
+	}
 
 	// replace variables
 	FString Eval;

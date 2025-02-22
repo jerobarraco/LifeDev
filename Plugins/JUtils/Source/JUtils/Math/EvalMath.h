@@ -32,6 +32,7 @@ public:
 	bool UseSubsystem = true;
 #pragma endregion
 
+	// empty evaluates to (ok, 0)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	double Eval(const FString& Exp, bool& Ok) const;
 
