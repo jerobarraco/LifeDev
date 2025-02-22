@@ -159,6 +159,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
+	Grammar.DefineGrouping<FVarExpStart, FVarExprEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
 	Grammar.DefinePreUnaryOperator<FSquareRoot>();
@@ -171,48 +172,36 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPower>(3);
 
-	JumpTable.MapPreUnary<FPlus>([](double N)			{ return N; });
-	JumpTable.MapPreUnary<FMinus>([](double N)			{ return -N; });
-	JumpTable.MapPreUnary<FSquareRoot>([](double A)		{ return double(FMath::Sqrt(A)); });
+	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
+	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
+	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
 
-	JumpTable.MapBinary<FPlus>([](double A, double B)	{ return A + B; });
-	JumpTable.MapBinary<FMinus>([](double A, double B)	{ return A - B; });
-	JumpTable.MapBinary<FStar>([](double A, double B)	{ return A * B; });
-	JumpTable.MapBinary<FPower>([](double A, double B)	{ return double(FMath::Pow(A, B)); });
+	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
+	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
+	JumpTable.MapBinary<FStar>([](const double A, const double B)	{ return A * B; });
+	JumpTable.MapBinary<FPower>([](const double A, const double B)	{ return double(FMath::Pow(A, B)); });
 
-	JumpTable.MapBinary<FForwardSlash>([](double A, double B) -> FExpressionResult {
-		if (B == 0)
-		{
-			return MakeError(LOCTEXT("DivisionByZero", "Division by zero"));
-		}
-
+	JumpTable.MapBinary<FForwardSlash>([](const double A, const double B) -> FExpressionResult {
+		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("DivisionByZero", "Division by zero"));
 		return MakeValue(A / B);
 	});
-	JumpTable.MapBinary<FPercent>([](double A, double B) -> FExpressionResult {
-		if (B == 0)
-		{
-			return MakeError(LOCTEXT("ModZero", "Modulo zero"));
-		}
-
+	JumpTable.MapBinary<FPercent>([](const double A, const double B) -> FExpressionResult {
+		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("ModZero", "Modulo zero"));
 		return MakeValue(double(FMath::Fmod(A, B))); // todo fix this on the epic's repo
 	});
 }
 
-TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR* InExpression, double InExistingValue) const
-{
+TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR* InExpression, double InExistingValue) const {
 	using namespace ExpressionParser;
 
 	// TODO ExpressionParser or JMathExp?
 	TValueOrError<TArray<FExpressionToken>, FExpressionError> LexResult = ExpressionParser::Lex(InExpression, TokenDefinitions);
-	if (!LexResult.IsValid())
-	{
+	if (UNLIKELY(!LexResult.IsValid()))
 		return MakeError(LexResult.StealError());
-	}
 
 	// Handle the += and -= tokens.
 	TArray<FExpressionToken> Tokens = LexResult.StealValue();
-	if (Tokens.Num())
-	{
+	if (Tokens.Num()) {
 		FStringToken Context = Tokens[0].Context;
 		const FExpressionNode& FirstNode = Tokens[0].Node;
 		bool WasOpAssign = true;
@@ -238,32 +227,22 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 			WasOpAssign = false;
 		}
 
-		if (WasOpAssign)
-		{
+		if (WasOpAssign) {
 			Tokens.Insert(FExpressionToken(Context, InExistingValue), 0);
 			Tokens.RemoveAt(2, EAllowShrinking::No);
 		}
 	}
 
 	TValueOrError<TArray<FCompiledToken>, FExpressionError> CompilationResult = ExpressionParser::Compile(MoveTemp(Tokens), Grammar);
-	if (!CompilationResult.IsValid())
-	{
-		return MakeError(CompilationResult.StealError());
-	}
+	if (UNLIKELY(!CompilationResult.IsValid())) return MakeError(CompilationResult.StealError());
 
 	TOperatorEvaluationEnvironment<> Env(JumpTable, nullptr);
 	TValueOrError<FExpressionNode, FExpressionError> Result = ExpressionParser::Evaluate(CompilationResult.GetValue(), Env);
-	if (!Result.IsValid())
-	{
-		return MakeError(Result.GetError());
-	}
+	if (UNLIKELY(!Result.IsValid())) return MakeError(Result.GetError());
 
 	auto& Node = Result.GetValue();
 
-	if (const auto* Numeric = Node.Cast<double>())
-	{
-		return MakeValue(*Numeric);
-	}
+	if (const double* Numeric = Node.Cast<double>()) return MakeValue(*Numeric);
 
 	return MakeError(LOCTEXT("UnrecognizedResult", "Unrecognized result returned from expression"));
 }
