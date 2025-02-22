@@ -61,22 +61,23 @@ double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
 	}
 
 	// replace variables
-	FString Eval;
-	if (UNLIKELY(!SetVars(Exp, Eval))) return 0;
+	// FString Eval;
+	// if (UNLIKELY(!SetVars(Exp, Eval))) return 0;
 
-	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Eval);
+	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
 	if (UNLIKELY(!Result.IsValid())) {
-		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s exp=%s eval=%s"),
-			__func__, *Result.GetError().Text.ToString(), *Exp, *Eval);
+		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s exp=%s"),
+			__func__, *Result.GetError().Text.ToString(), *Exp);
 		return 0;
 	}
 
-	UE_LOG(LogEvalMath, Warning, TEXT("%hs: Ok exp=%s eval=%s res=%.3f"),
-			__func__, *Exp, *Eval, Result.GetValue());
+	UE_LOG(LogEvalMath, Log, TEXT("%hs: Ok exp=%s res=%.3f"),
+			__func__, *Exp, Result.GetValue());
 	Ok = true;
 	return Result.GetValue();
 }
 
+// so nice. but will be nuked.
 bool UEvalMath::SetVars(const FString& Exp, FString& OExp) const {
 	OExp = Exp.TrimStartAndEnd();
 	if (LIKELY(OExp.IsEmpty())) return true;

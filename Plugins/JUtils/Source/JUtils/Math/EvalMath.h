@@ -46,7 +46,7 @@ public:
 
 private:
 	UFUNCTION()
-	double GetVar(const FName Name) {
+	double GetVar(const FName Name) { // just forward
 		return LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(Name) : 0; 
 	}
 
