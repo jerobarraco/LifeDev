@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "Diags.h"
 
+#include "EvalMath.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
@@ -172,12 +173,15 @@ void UDiags::SetData(
 	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
 }
 
-void UDiags::Init() {}
+void UDiags::Init() {
+	Eval = UEvalMath::Instance(this);
+}
 
 void UDiags::DeInit() {
 	Diags = nullptr;
 	Chars = nullptr;
 	Seqs = nullptr;
+	Eval = nullptr;
 }
 
 bool UDiags::GetDiag(

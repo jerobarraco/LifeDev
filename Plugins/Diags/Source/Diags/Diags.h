@@ -9,6 +9,7 @@
 
 #include "Diags.generated.h"
 
+class UEvalMath;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName, Name, const FDialog&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
@@ -134,6 +135,9 @@ protected:
 	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Seqs = nullptr;
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UEvalMath> Eval = nullptr;
 	
 	TArray<FDialog> Pending;
 	bool IsShowing = false;
