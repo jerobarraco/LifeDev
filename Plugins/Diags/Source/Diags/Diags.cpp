@@ -28,7 +28,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (UNLIKELY(!Ok)) return false;
 
-	float Res = 0;
+	double Res = 0;
 	if (UNLIKELY(!CheckCondition(OutDialog.Condition, Res))) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
 			__func__, *Row.ToString(), *OutDialog.Condition);
@@ -79,7 +79,7 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 
 	const TArray<FName>& Rows = Seq.DiagRows;
 	if (Seq.Modifier == ESeqMod::NORMAL) {
-		float Res;
+		double Res;
 		if (!CheckCondition(Seq.Condition, Res)) return false;
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num -1);
@@ -118,7 +118,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		return false;
 	}
 
-	float CondRes = 0;
+	double CondRes = 0;
 	const bool CondOk = UNLIKELY(CheckCondition(Seq.Condition, CondRes));
 	if (RowNameStr.EndsWith("!")) {
 		UE_CLOG(DiagNum>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest."
@@ -131,6 +131,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	}
 
 	if (RowNameStr.EndsWith("?")) {
+		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select modifier."), __func__);
 		const int32 Idx = FMath::Clamp(FMath::RoundToInt32(CondRes), 0, DiagNum-1); // don't overcomplicate, just clamp.
 		const FName DiagRow = Seq.DiagRows[Idx]; // this is safe because of the DiagNum<1 above and the above clamp
 		UE_LOG(LogDiags, Log, TEXT("%hs: Chosen. Dlg=%i DlgRow=%s Row=%s Condition=%s"),
@@ -254,8 +255,11 @@ void UDiags::Stop() {
 	OnDone.Broadcast();
 }
 
-bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
-	// TODO make private
-	// TODO use another system
-	return true;
+bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
+	Res = 0;
+	if (UNLIKELY(!Eval)) return false;
+
+	bool Ok = false; 
+	Res = Eval->Eval(Expression, Ok);
+	return Ok;
 }

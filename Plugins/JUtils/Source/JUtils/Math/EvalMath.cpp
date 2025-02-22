@@ -48,20 +48,23 @@ bool UEvalMath::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE || WorldType == EWorldType::Editor;
 }
 
-double UEvalMath::Eval(const FString& Exp) const {
+double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
+	Ok = false;
 	// TOOD use nan or use bool+default?
-	if (UNLIKELY(!Evaluator.IsValid())) return NAN;
-	if (UNLIKELY(Exp.IsEmpty())) return NAN;
-	FString Eval;
-	if (UNLIKELY(!SetVars(Exp, Eval))) return NAN;
+	if (UNLIKELY(!Evaluator.IsValid())) return 0;
+	if (UNLIKELY(Exp.IsEmpty())) return 0;
 
-	// TODO replace variables
+	// replace variables
+	FString Eval;
+	if (UNLIKELY(!SetVars(Exp, Eval))) return 0;
+
 	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
 	if (UNLIKELY(!Result.IsValid())) {
 		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
-		return NAN;
+		return 0;
 	}
 
+	Ok = true;
 	return Result.GetValue();
 }
 

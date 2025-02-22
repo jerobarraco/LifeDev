@@ -33,7 +33,7 @@ public:
 #pragma endregion
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	double Eval(const FString& Exp) const;
+	double Eval(const FString& Exp, bool& Ok) const;
 
 	// replaces variables with values.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
