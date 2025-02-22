@@ -7,24 +7,40 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogTextDialogs, Log, Log)
 
-UENUM(BlueprintType)
-enum class EDialogEmotion : uint8 {
-	NEUTRAL,
-	SAD,
-	AFRAID,
-	ANGRY,
-	HAPPY,
-	DISGUST,
-};
+namespace Diags {
+	
+	UENUM(BlueprintType)
+	enum class EDialogEmotion : uint8 {
+		NEUTRAL,
+		SAD,
+		AFRAID,
+		ANGRY,
+		HAPPY,
+		DISGUST,
+	};
 
-UENUM(BlueprintType)
-enum class EDialogType : uint8 {
-	NORMAL,
-	SYSTEM,
-	WHISPER,
-	GROUP,
-	MISTERY,
-};
+	UENUM(BlueprintType)
+	enum class EDialogType : uint8 {
+		NORMAL,
+		SYSTEM,
+		WHISPER,
+		GROUP,
+		MISTERY,
+	};
+
+	// Modifiers for a sequence
+	UENUM(BlueprintType)
+	enum class ESeqMod : uint8 {
+		// Normal sequence
+		NORMAL,
+		// Choose one dialog at random
+		RANDOM,
+		// Select one dialog depending on the condition, but clamp.
+		SELECT_CLAMP,
+		// Select one dialog depending on the condition, but loop.
+		SELECT_LOOP,
+	};
+}
 
 // The base structure for dialogs.
 // if the row ends with "*" it makes no difference (see what happens on sequences though). (this is a feature)

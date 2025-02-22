@@ -44,6 +44,11 @@ namespace LDConsts {
 				inline static const FName Shame("Game.Emotion.Shame");
 				inline static const FName Sadness("Game.Emotion.Sadness");
 			}
+			
+			inline static const FName Events("Game.Ev.");
+		}
+		namespace FB {
+			inline static const FName Val("FB.Val");
 		}
 	}
 }
