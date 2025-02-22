@@ -12,12 +12,12 @@ void UEvalMath::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Evaluator = MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>();
 	if (UNLIKELY(!Evaluator.IsValid())) return; // TODO warning
-	Evaluator->OnGetVar.BindDynamic(this, UEvalMath::GetVar);
+	Evaluator->OnGetVar.BindUObject(this, &UEvalMath::GetVar);
 }
 
 void UEvalMath::Deinitialize() {
 	if (LIKELY(Evaluator.IsValid()))
-		Evaluator->OnGetVar.Clear();
+		Evaluator->OnGetVar.Unbind();
 	Evaluator.Reset();
 	Super::Deinitialize();
 }
