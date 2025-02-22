@@ -21,16 +21,18 @@ public:
 
 #pragma region Base
 	static UEvalMath* Instance(const UObject* const O);
-
 	UEvalMath();
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
-#pragma endregion
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=EvalMath)
 	bool UseSubsystem = true;
+#pragma endregion
+
+	UFUNCTION(BlueprintCallable)
+	const double Eval(const FString& Exp);
 
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
@@ -39,3 +41,7 @@ public:
 private:
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;
 };
+
+inline const double UEvalMath::Eval(const FString& Exp) {
+	return NAN;
+}

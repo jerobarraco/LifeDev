@@ -10,7 +10,7 @@ UEvalMath::UEvalMath():Super() {}
 
 void UEvalMath::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
-	Evaluator = MoveTemp(MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>());
+	Evaluator = MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>();
 }
 
 void UEvalMath::Deinitialize() {
