@@ -7,18 +7,9 @@
 #include "Misc/Optional.h"
 #include "Templates/ValueOrError.h"
 
-// #include "MathExpEvaluator.generated.h"
-
-// DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName, Name);
-
 // this way it doesn't need the .generated. which needs a uclass. which we don't have.
 DECLARE_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName);
 
-// so the delegate can work
-// UCLASS()
-// class ULol: public UObject {
-	// GENERATED_BODY()
-// };
 struct FDecimalNumberFormattingRules;
 
 // #define DEFINE_EXPRESSION_OPERATOR_NODE(EXPORTAPI, TYPE, ...) \
