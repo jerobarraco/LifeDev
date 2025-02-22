@@ -313,25 +313,15 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 		bool WasOpAssign = true;
 
 		if (FirstNode.Cast<FPlusEquals>())
-		{
 			Tokens.Insert(FExpressionToken(Context, FPlus()), 0);
-		}
 		else if (FirstNode.Cast<FMinusEquals>())
-		{
 			Tokens.Insert(FExpressionToken(Context, FMinus()), 0);
-		}
 		else if (FirstNode.Cast<FStarEquals>())
-		{
 			Tokens.Insert(FExpressionToken(Context, FStar()), 0);
-		}
 		else if (FirstNode.Cast<FForwardSlashEquals>())
-		{
 			Tokens.Insert(FExpressionToken(Context, FForwardSlash()), 0);
-		}
 		else
-		{
 			WasOpAssign = false;
-		}
 
 		if (WasOpAssign) {
 			Tokens.Insert(FExpressionToken(Context, InExistingValue), 0);
@@ -351,6 +341,10 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 	if (const double* Numeric = Node.Cast<double>()) return MakeValue(*Numeric);
 
 	return MakeError(LOCTEXT("UnrecognizedResult", "Unrecognized result returned from expression"));
+}
+
+TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) {
+	
 }
 
 

@@ -37,40 +37,40 @@ struct FDecimalNumberFormattingRules;
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FPower, 0x93388F8D, 0x1D9B4DFE, 0xBD4D6CC4, 0x12D1DE99)
 
 namespace JMathExp {
-	struct FPropertyToken 
-	{
-		FPropertyToken(FString&& InProperty) :
-			PropertyName(InProperty) {}
-
-		FPropertyToken(const FPropertyToken& Other) :
-			PropertyName(Other.PropertyName) {}
-
-		FPropertyToken& operator=(const FPropertyToken& Other)
-		{
-			PropertyName = Other.PropertyName;
-			return *this;
-		}
-
-		FString PropertyName;
-	};
-
-	struct FEnumToken {
-		FEnumToken(FString&& InType, FString&& InValue) :
-			Type(InType), Value(InValue) {}
-
-		FEnumToken(const FEnumToken& Other) :
-			Type(Other.Type), Value(Other.Value) {}
-
-		FEnumToken& operator=(const FEnumToken& Other)
-		{
-			Type = Other.Type;
-			Value = Other.Value;
-			return *this;
-		}
-
-		FString Type;
-		FString Value;
-	};
+	// struct FPropertyToken 
+	// {
+	// 	FPropertyToken(FString&& InProperty) :
+	// 		PropertyName(InProperty) {}
+	//
+	// 	FPropertyToken(const FPropertyToken& Other) :
+	// 		PropertyName(Other.PropertyName) {}
+	//
+	// 	FPropertyToken& operator=(const FPropertyToken& Other)
+	// 	{
+	// 		PropertyName = Other.PropertyName;
+	// 		return *this;
+	// 	}
+	//
+	// 	FString PropertyName;
+	// };
+	//
+	// struct FEnumToken {
+	// 	FEnumToken(FString&& InType, FString&& InValue) :
+	// 		Type(InType), Value(InValue) {}
+	//
+	// 	FEnumToken(const FEnumToken& Other) :
+	// 		Type(Other.Type), Value(Other.Value) {}
+	//
+	// 	FEnumToken& operator=(const FEnumToken& Other)
+	// 	{
+	// 		Type = Other.Type;
+	// 		Value = Other.Value;
+	// 		return *this;
+	// 	}
+	//
+	// 	FString Type;
+	// 	FString Value;
+	// };
 	
 	// TODO do i even need this? or can i use the ones in basicmath....
 	/** Get the default set number formatting rules based on the current locale and user settings */
@@ -128,6 +128,8 @@ public:
 	TValueOrError<double, FExpressionError> Evaluate(const TCHAR* InExpression, double InExistingValue = 0) const;
 
 private:
+	TOptional<FExpressionError> ConsumePropertyName(FExpressionTokenConsumer& Consumer);
+
 	FTokenDefinitions TokenDefinitions;
 	FExpressionGrammar Grammar;
 	FOperatorJumpTable JumpTable;
