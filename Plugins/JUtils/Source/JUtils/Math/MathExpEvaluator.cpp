@@ -35,8 +35,7 @@ namespace JMathExp {
 			: FastDecimalFormat::GetCultureAgnosticFormattingRules();
 	}
 
-	TOptional<FStringToken> ParseNumberWithFallback(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InPrimaryFormattingRules, const FDecimalNumberFormattingRules& InFallbackFormattingRules, FStringToken* Accumulate, double* OutValue)
-	{
+	TOptional<FStringToken> ParseNumberWithFallback(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InPrimaryFormattingRules, const FDecimalNumberFormattingRules& InFallbackFormattingRules, FStringToken* Accumulate, double* OutValue){
 		// Attempt to parse a number from the string
 		// This call will return false if there is some other data after the number, which is why we check the parsed length instead
 		double PrimaryValue = 0.0;
