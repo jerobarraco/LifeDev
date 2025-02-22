@@ -9,16 +9,16 @@
 
 struct FDecimalNumberFormattingRules;
 
-#define DEFINE_EXPRESSION_OPERATOR_NODE(EXPORTAPI, TYPE, ...) \
-namespace JMathExp {\
-	struct EXPORTAPI TYPE { static const TCHAR* const Moniker; }; \
-}\
-DEFINE_EXPRESSION_NODE_TYPE(ExpressionParser::TYPE, __VA_ARGS__)
+// #define DEFINE_EXPRESSION_OPERATOR_NODE(EXPORTAPI, TYPE, ...) \
+//namespace JMathExp {\
+//	struct EXPORTAPI TYPE { static const TCHAR* const Moniker; }; \
+//}\
+//DEFINE_EXPRESSION_NODE_TYPE(ExpressionParser::TYPE, __VA_ARGS__)
 // DEFINE_EXPRESSION_NODE_TYPE(ExpressionParser::TYPE)
 
 
-DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FVarExpStart, FString("FVarExpStart"))
-DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FVarExprEnd, FString("FVarExpEnd"))
+// DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FVarExpStart, FString("FVarExpStart"))
+// DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FVarExprEnd, FString("FVarExpEnd"))
 
 /** Define some expression types for basic arithmetic */
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FSubExpressionStart, 0xCC40A083, 0xADBF46E2, 0xA93D12BB, 0x525D7417)
@@ -37,6 +37,41 @@ DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FVarExprEnd, FString("FVarExpEnd"))
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FPower, 0x93388F8D, 0x1D9B4DFE, 0xBD4D6CC4, 0x12D1DE99)
 
 namespace JMathExp {
+	struct FPropertyToken 
+	{
+		FPropertyToken(FString&& InProperty) :
+			PropertyName(InProperty) {}
+
+		FPropertyToken(const FPropertyToken& Other) :
+			PropertyName(Other.PropertyName) {}
+
+		FPropertyToken& operator=(const FPropertyToken& Other)
+		{
+			PropertyName = Other.PropertyName;
+			return *this;
+		}
+
+		FString PropertyName;
+	};
+
+	struct FEnumToken {
+		FEnumToken(FString&& InType, FString&& InValue) :
+			Type(InType), Value(InValue) {}
+
+		FEnumToken(const FEnumToken& Other) :
+			Type(Other.Type), Value(Other.Value) {}
+
+		FEnumToken& operator=(const FEnumToken& Other)
+		{
+			Type = Other.Type;
+			Value = Other.Value;
+			return *this;
+		}
+
+		FString Type;
+		FString Value;
+	};
+	
 	// TODO do i even need this? or can i use the ones in basicmath....
 	/** Get the default set number formatting rules based on the current locale and user settings */
 	JUTILS_API const FDecimalNumberFormattingRules& GetLocalizedNumberFormattingRules();
@@ -70,7 +105,7 @@ namespace JMathExp {
 
 	/** Consume a symbol from the specified consumer's stream, if one exists at the current read position */
 	template<typename TSymbol>
-	TOptional<FExpressionError> ConsumeSymbol(FExpressionTokenConsumer& Consumer)
+	JUTILS_API TOptional<FExpressionError> ConsumeSymbol(FExpressionTokenConsumer& Consumer)
 	{
 		TOptional<FStringToken> Token = Consumer.GetStream().ParseToken(TSymbol::Moniker);
 		if (Token.IsSet())
@@ -80,6 +115,7 @@ namespace JMathExp {
 
 		return TOptional<FExpressionError>();
 	}
+
 }
 
 /** A basic math expression evaluator */

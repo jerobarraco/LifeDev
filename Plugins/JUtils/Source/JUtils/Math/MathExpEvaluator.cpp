@@ -13,8 +13,8 @@
 #define LOCTEXT_NAMESPACE "JMathExpEvaluator"
 
 namespace JMathExp {
-	const TCHAR* const FVarExpStart::Moniker = TEXT("[");
-	const TCHAR* const FVarExprEnd::Moniker = TEXT("]");
+	// const TCHAR* const FVarExpStart::Moniker = TEXT("[");
+	// const TCHAR* const FVarExprEnd::Moniker = TEXT("]");
 	// const TCHAR* const FSubExpressionStart::Moniker = TEXT("(");
 	// const TCHAR* const FSubExpressionEnd::Moniker = TEXT(")");
 	// const TCHAR* const FPlus::Moniker = TEXT("+");
@@ -67,10 +67,7 @@ namespace JMathExp {
 		int32 ParsedLen = 0;
 		FastDecimalFormat::StringToNumber(InStream.GetRead(), UE_PTRDIFF_TO_INT32(InStream.GetEnd() - InStream.GetRead()), InFormattingRules, FNumberParsingOptions::DefaultNoGrouping(), Value, &ParsedLen);
 
-		if (OutValue)
-		{
-			*OutValue = Value;
-		}
+		if (OutValue) *OutValue = Value;
 
 		return ParsedLen > 0 ? InStream.GenerateToken(ParsedLen) : TOptional<FStringToken>();
 	}
@@ -120,14 +117,130 @@ namespace JMathExp {
 		return TOptional<FExpressionError>();
 	}
 
-	TOptional<FExpressionError> ConsumeLocalizedNumber(FExpressionTokenConsumer& Consumer)
-	{
+	TOptional<FExpressionError> ConsumeLocalizedNumber(FExpressionTokenConsumer& Consumer) {
 		return ConsumeNumberWithRules(Consumer, GetLocalizedNumberFormattingRules());
 	}
 
-	TOptional<FExpressionError> ConsumeNumber(FExpressionTokenConsumer& Consumer)
-	{
+	TOptional<FExpressionError> ConsumeNumber(FExpressionTokenConsumer& Consumer) {
 		return ConsumeNumberWithRules(Consumer, FastDecimalFormat::GetCultureAgnosticFormattingRules());
+	}
+
+	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', ' ', '\t', '(', ')' };
+
+	static TOptional<FExpressionError> ConsumePropertyName(FExpressionTokenConsumer& Consumer) {
+		enum class EParsedStringType : uint8
+		{
+			Unknown,
+			Unquoted,
+			Quoted,
+		};
+
+		FString PropertyName;
+		bool bShouldBeEnum = false;
+		EParsedStringType ParsedStringType = EParsedStringType::Unknown;
+
+		TCHAR OpeningQuoteChar = TEXT('\0');
+		int32 NumConsecutiveSlashes = 0;
+
+		TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken([&PropertyName, &bShouldBeEnum, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes](TCHAR InC)
+		{
+			if (ParsedStringType == EParsedStringType::Unknown)
+			{
+				if (InC == '"' || InC == '\'')
+				{
+					ParsedStringType = EParsedStringType::Quoted;
+
+					OpeningQuoteChar = InC;
+					NumConsecutiveSlashes = 0;
+					return EParseState::Continue;
+				}
+				
+				ParsedStringType = EParsedStringType::Unquoted;
+			}
+
+			check(ParsedStringType != EParsedStringType::Unknown);
+
+			if (InC == ':')
+			{
+				bShouldBeEnum = true;
+			}
+
+			if (ParsedStringType == EParsedStringType::Unquoted)
+			{
+				for (const TCHAR BreakingChar : PropertyBreakingChars)
+				{
+					if (InC == BreakingChar)
+					{
+						return EParseState::StopBefore;
+					}
+				}
+
+				PropertyName.AppendChar(InC);
+			}
+			else
+			{
+				check(ParsedStringType == EParsedStringType::Quoted);
+
+				if (InC == OpeningQuoteChar && NumConsecutiveSlashes % 2 == 0)
+				{
+					return EParseState::StopAfter;
+				}
+
+				PropertyName.AppendChar(InC);
+
+				if (InC == '\\')
+				{
+					NumConsecutiveSlashes++;
+				}
+				else
+				{
+					NumConsecutiveSlashes = 0;
+				}
+			}
+
+			return EParseState::Continue;
+		});
+
+		if (ParsedStringType == EParsedStringType::Quoted)
+		{
+			PropertyName.ReplaceEscapedCharWithCharInline();
+		}
+
+		if (StringToken.IsSet())
+		{
+			if (bShouldBeEnum) // TODO remove
+			{
+				int32 DoubleColonIndex = PropertyName.Find("::");
+				if (DoubleColonIndex == INDEX_NONE)
+				{
+					return FExpressionError(FText::Format(LOCTEXT("PropertyContainsSingleColon", "EditCondition contains single colon in property name \"{0}\", expected double colons."), FText::FromString(PropertyName)));
+				}
+
+				if (DoubleColonIndex == 0)
+				{
+					return FExpressionError(FText::Format(LOCTEXT("PropertyDoubleColonAtStart", "EditCondition contained double colon at start of property name \"{0}\", expected enum type."), FText::FromString(PropertyName)));
+				}
+
+				FString EnumType = PropertyName.Left(DoubleColonIndex);
+				FString EnumValue = PropertyName.RightChop(DoubleColonIndex + 2);
+				
+				if (EnumValue.Len() == 0)
+				{
+					return FExpressionError(FText::Format(LOCTEXT("PropertyDoubleColonAtEnd", "EditCondition contained double colon at end of property name \"{0}\", expected enum value."), FText::FromString(PropertyName)));
+				}
+// TODO
+				// Consumer.Add(StringToken.GetValue(),
+					// JMathExp::FEnumToken(MoveTemp(EnumType), MoveTemp(EnumValue)));
+			}
+			else
+			{
+				// TODO get the value here.
+				
+				// Consumer.Add(StringToken.GetValue(), JMathExp::FPropertyToken(MoveTemp(PropertyName)));
+			}
+		}
+
+		return TOptional<FExpressionError>();
 	}
 }
 
@@ -149,9 +262,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
-
+	TokenDefinitions.DefineToken(&JMathExp::ConsumePropertyName);
+	
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
-	Grammar.DefineGrouping<JMathExp::FVarExpStart, JMathExp::FVarExprEnd>();
+	// Grammar.DefineGrouping<FVarExpStart, FVarExprEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
 	Grammar.DefinePreUnaryOperator<FSquareRoot>();
@@ -163,7 +277,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FForwardSlash>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPower>(3);
-
+	
 	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
 	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
