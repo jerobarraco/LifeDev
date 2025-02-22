@@ -26,6 +26,7 @@ public:
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
+	void Init() {}; // by gamemode
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=EvalMath)
 	bool UseSubsystem = true;
