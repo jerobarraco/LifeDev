@@ -174,12 +174,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 
 	JumpTable.MapPreUnary<FPlus>([](double N)			{ return N; });
 	JumpTable.MapPreUnary<FMinus>([](double N)			{ return -N; });
-	JumpTable.MapPreUnary<FSquareRoot>([](double A)		{ return double(FMath::Sqrt((float)A)); }); //@TODO: FLOATPRECISION: Needs a double version of Sqrt
+	JumpTable.MapPreUnary<FSquareRoot>([](double A)		{ return double(FMath::Sqrt(A)); });
 
 	JumpTable.MapBinary<FPlus>([](double A, double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](double A, double B)	{ return A - B; });
 	JumpTable.MapBinary<FStar>([](double A, double B)	{ return A * B; });
-	JumpTable.MapBinary<FPower>([](double A, double B)	{ return double(FMath::Pow((float)A, (float)B)); }); //@TODO: FLOATPRECISION: Needs a double version of Pow
+	JumpTable.MapBinary<FPower>([](double A, double B)	{ return double(FMath::Pow(A, B)); });
 
 	JumpTable.MapBinary<FForwardSlash>([](double A, double B) -> FExpressionResult {
 		if (B == 0)
@@ -195,7 +195,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 			return MakeError(LOCTEXT("ModZero", "Modulo zero"));
 		}
 
-		return MakeValue(double(FMath::Fmod(A, B)));
+		return MakeValue(double(FMath::Fmod(A, B))); // todo fix this on the epic's repo
 	});
 }
 
