@@ -2,9 +2,21 @@
 // SPDX-License-Identifier: MIT
 #include "EvalMath.h"
 
+#include "MathExpEvaluator.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogEvalMath, Log, Log);
 
 UEvalMath::UEvalMath():Super() {}
+
+void UEvalMath::Initialize(FSubsystemCollectionBase& Collection) {
+	Super::Initialize(Collection);
+	Evaluator = MoveTemp(MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>());
+}
+
+void UEvalMath::Deinitialize() {
+	Super::Deinitialize();
+	Evaluator.Reset();
+}
 
 UEvalMath* UEvalMath::Instance(const UObject*const  O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;

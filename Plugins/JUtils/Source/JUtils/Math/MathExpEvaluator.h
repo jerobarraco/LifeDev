@@ -77,14 +77,14 @@ namespace JMathExp {
 }
 
 /** A basic math expression evaluator */
-class FMathExpEvaluator {
+class JUTILS_API FMathExpEvaluator {
 public:
 	/** Constructor that sets up the parser's lexer and compiler */
-	CORE_API FMathExpEvaluator();
+	FMathExpEvaluator();
 
 	/** Evaluate the given expression, resulting in either a double value, or an error */
-	CORE_API TValueOrError<double, FExpressionError> Evaluate(const TCHAR* InExpression, double InExistingValue = 0) const;
-	
+	TValueOrError<double, FExpressionError> Evaluate(const TCHAR* InExpression, double InExistingValue = 0) const;
+
 private:
 	FTokenDefinitions TokenDefinitions;
 	FExpressionGrammar Grammar;
