@@ -80,7 +80,7 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	const TArray<FName>& Rows = Seq.DiagRows;
 	if (Seq.Modifier == ESeqMod::NORMAL) {
 		double Res;
-		if (!CheckCondition(Seq.Condition, Res)) return false;
+		if (UNLIKELY(!CheckCondition(Seq.Condition, Res))) return false;
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num -1);
 		return AddId(Rows[i]);
@@ -119,8 +119,9 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	}
 
 	double CondRes = 0;
-	const bool CondOk = UNLIKELY(CheckCondition(Seq.Condition, CondRes));
+	const bool CondOk = CheckCondition(Seq.Condition, CondRes);
 	if (RowNameStr.EndsWith("!")) {
+		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp."), __func__);
 		UE_CLOG(DiagNum>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest."
 			" Row=%s Condition=%s"), __func__, *RowName.ToString(), *Seq.Condition);
 		UE_CLOG(DiagNum<2, LogDiags, Warning, TEXT("%hs: Less than 2 options. Will clamp."
@@ -131,7 +132,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	}
 
 	if (RowNameStr.EndsWith("?")) {
-		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select modifier."), __func__);
+		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp or loop modifier."), __func__);
 		const int32 Idx = FMath::Clamp(FMath::RoundToInt32(CondRes), 0, DiagNum-1); // don't overcomplicate, just clamp.
 		const FName DiagRow = Seq.DiagRows[Idx]; // this is safe because of the DiagNum<1 above and the above clamp
 		UE_LOG(LogDiags, Log, TEXT("%hs: Chosen. Dlg=%i DlgRow=%s Row=%s Condition=%s"),
@@ -139,7 +140,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		return AddId(DiagRow);
 	}
 
-	if (!CondOk) {
+	if (UNLIKELY(!CondOk)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
 		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
 	}

@@ -58,9 +58,10 @@ double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
 	FString Eval;
 	if (UNLIKELY(!SetVars(Exp, Eval))) return 0;
 
-	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
+	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Eval);
 	if (UNLIKELY(!Result.IsValid())) {
-		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
+		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s exp=%s eval=%s"),
+			__func__, *Result.GetError().Text.ToString(), *Exp, *Eval);
 		return 0;
 	}
 
