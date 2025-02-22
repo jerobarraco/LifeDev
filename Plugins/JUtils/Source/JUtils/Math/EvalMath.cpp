@@ -47,3 +47,16 @@ bool UEvalMath::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	// i think it works on editor
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE || WorldType == EWorldType::Editor;
 }
+
+double UEvalMath::Eval(const FString& Exp) const {
+	if (UNLIKELY(!Evaluator.IsValid())) return NAN;
+	if (UNLIKELY(Exp.IsEmpty())) return NAN;
+	// TODO replace variables
+	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
+	if (UNLIKELY(!Result.IsValid())) {
+		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
+		return NAN;
+	}
+
+	return Result.GetValue();
+}

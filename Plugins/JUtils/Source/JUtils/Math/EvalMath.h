@@ -31,8 +31,8 @@ public:
 	bool UseSubsystem = true;
 #pragma endregion
 
-	UFUNCTION(BlueprintCallable)
-	const double Eval(const FString& Exp);
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	double Eval(const FString& Exp) const;
 
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
@@ -41,7 +41,3 @@ public:
 private:
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;
 };
-
-inline const double UEvalMath::Eval(const FString& Exp) {
-	return NAN;
-}
