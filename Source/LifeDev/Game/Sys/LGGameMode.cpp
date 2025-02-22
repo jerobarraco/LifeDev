@@ -265,59 +265,6 @@ void ALGGameMode::Init() {
 	Timer.SetTimer(CounterHandle, this, &ALGGameMode::TickCounter, CounterTime, true);
 }
 
-void ALGGameMode::DeInit() {
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!IsValid(World))) return;
-	World->GetTimerManager().ClearAllTimersForObject(this);
-
-	// destruction is reverse order than construction. actors > managers > subsystems
-
-	// if (IsValid(Char)) Char->DeInit();
-	Char = nullptr;
-
-	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
-	Ghosts = nullptr;
-
-	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
-	DiagMan = nullptr;
-
-	if (IsValid(InventoryMan)) InventoryMan->DeInit();
-	InventoryMan = nullptr;
-
-	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
-	StoryMan = nullptr;
-
-	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
-	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
-	MusicMan = nullptr;
-	
-	FlashbackMan = nullptr;
-
-	if (LIKELY(EvalMath)) EvalMath->OnGetVar.Clear();
-	EvalMath = nullptr;
-
-	if (LIKELY(IsValid(Diags))) {
-		Diags->OnShow.RemoveAll(this);
-		Diags->OnDone.RemoveAll(this);
-		Diags->DeInit();
-	}
-	Diags = nullptr;
-
-	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
-	Inventory = nullptr;
-	
-	if (LIKELY(IsValid(Flags))) Flags->DeInit();
-	Flags = nullptr;
-	
-	if (LIKELY(IsValid(Story))) {
-		Story->OnSeqStop.RemoveAll(this);
-		Story->OnFade.RemoveAll(this);
-	}
-	Story = nullptr;
-
-	Settings = nullptr; // no deinit. it's a gameinstance subystem
-}
-
 void ALGGameMode::SetCharInputEnabled(const bool Enabled) {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
 	CharInputEnabled = Enabled;
@@ -343,6 +290,61 @@ ALGGameMode* ALGGameMode::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(LGGameMode))) return nullptr;
 
 	return LGGameMode;
+}
+
+void ALGGameMode::DeInit() {
+	// i should probably start by unbinding everything, then nullifying at the very end
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
+	World->GetTimerManager().ClearAllTimersForObject(this);
+
+	// destruction is reverse order than construction. actors > managers > subsystems
+
+	// if (IsValid(Char)) Char->DeInit();
+
+	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
+
+	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
+
+	if (IsValid(InventoryMan)) InventoryMan->DeInit();
+
+	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
+
+	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
+	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
+
+	if (LIKELY(EvalMath)) EvalMath->OnGetVar.Clear();
+
+	if (LIKELY(IsValid(Diags))) {
+		Diags->OnShow.RemoveAll(this);
+		Diags->OnDone.RemoveAll(this);
+		Diags->DeInit();
+	}
+	
+
+	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
+	
+	if (LIKELY(IsValid(Flags))) Flags->DeInit();
+	
+	if (LIKELY(IsValid(Story))) {
+		Story->OnSeqStop.RemoveAll(this);
+		Story->OnFade.RemoveAll(this);
+	}
+
+	// nullify at end in case someone tries to reference them
+	EvalMath = nullptr;
+	Char = nullptr;
+	Ghosts = nullptr;
+	DiagMan = nullptr;
+	InventoryMan = nullptr;
+	StoryMan = nullptr;
+	MusicMan = nullptr;
+	FlashbackMan = nullptr;
+	Diags = nullptr;
+	Inventory = nullptr;
+	Flags = nullptr;
+	Story = nullptr;
+	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
