@@ -488,11 +488,12 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 double ALGGameMode::EvalVar(const FName Name) {
 	const FString NameS = Name.ToString();
 	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const
-		// TNODO size use std::char_traits<char>::length("str")
+		// TODO size use std::char_traits<char>::length("str")
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
 	}
 
-	constexpr FName NAME_FBVal("FB.Val"); // TODO Move to a ldconst stuff.
+	static const FName NAME_FBVal("FB.Val"); // TODO Move to a ldconst stuff.
+	// TODO ValTo
 	if (Name == NAME_FBVal)
 		return LIKELY(Flashback) ? Flashback->GetVal() : 0;
 
