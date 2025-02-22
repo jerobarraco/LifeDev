@@ -3,7 +3,6 @@
 #include "Diags.h"
 
 #include "EvalMath.h"
-#include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
@@ -78,17 +77,23 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	if (Num <= 0) return false;
 
 	const TArray<FName>& Rows = Seq.DiagRows;
+	const int32 DiagNum = Rows.Num();
+	double Res;
+	const bool CondOk = CheckCondition(Seq.Condition, Res));
 	if (Seq.Modifier == ESeqMod::NORMAL) {
-		double Res;
-		if (UNLIKELY(!CheckCondition(Seq.Condition, Res))) return false;
+		if (UNLIKELY(!CondOk)) return false;
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num -1);
 		return AddId(Rows[i]);
-	} else {
-		// TODO
-	}
-
-	// TODO implement modifiers here
+	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
+		const int32 i = FMath::RoundToInt32(FMath::Modulo(Res, DiagNum));
+		const FName DiagRow = Rows[i];
+		return AddId(DiagRow);
+	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
+		const int32 i = FMath::Clamp(Res, 0, DiagNum);
+		const FName DiagRow = Rows[i];
+		return AddId(DiagRow);
+	} // else wtf
 
 	return AddIdMany(Rows);
 }
@@ -118,39 +123,23 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		return false;
 	}
 
-	double CondRes = 0;
-	const bool CondOk = CheckCondition(Seq.Condition, CondRes);
+	// double CondRes = 0;
+	// const bool CondOk = CheckCondition(Seq.Condition, CondRes);
 	if (RowNameStr.EndsWith("!")) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp."), __func__);
-		UE_CLOG(DiagNum>2, LogDiags, Warning, TEXT("%hs: More than 2 options. Will ignore the rest."
-			" Row=%s Condition=%s"), __func__, *RowName.ToString(), *Seq.Condition);
-		UE_CLOG(DiagNum<2, LogDiags, Warning, TEXT("%hs: Less than 2 options. Will clamp."
-			" Row=%s Condition=%s"), __func__, *RowName.ToString(), *Seq.Condition);
-		
-		const FName DiagRow = Seq.DiagRows[CondOk || DiagNum <2 ? 0: 1];
-		return AddId(DiagRow);
+		Seq.Modifier = ESeqMod::SELECT_CLAMP;
 	}
 
 	if (RowNameStr.EndsWith("?")) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp or loop modifier."), __func__);
-		const int32 Idx = FMath::Clamp(FMath::RoundToInt32(CondRes), 0, DiagNum-1); // don't overcomplicate, just clamp.
-		const FName DiagRow = Seq.DiagRows[Idx]; // this is safe because of the DiagNum<1 above and the above clamp
-		UE_LOG(LogDiags, Log, TEXT("%hs: Chosen. Dlg=%i DlgRow=%s Row=%s Condition=%s"),
-			__func__, Idx, *DiagRow.ToString(), *RowName.ToString(), *Seq.Condition);
-		return AddId(DiagRow);
+		Seq.Modifier = ESeqMod::SELECT_LOOP;
 	}
 
-	if (UNLIKELY(!CondOk)) {
-		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
-		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
-	}
-	
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
 	if (RowNameStr.EndsWith("*")){
 		UE_LOG(LogDiags, Warning, TEXT("%hs Using * suffix. please use modifier. this is going to get removed soon."), __func__);
 		Seq.Modifier= ESeqMod::RANDOM;
 	}
-	// return AddRnd(Seq);
 
 	return AddSeq(Seq);
 }

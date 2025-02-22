@@ -55,7 +55,8 @@ public:
 	// From a sequence adds one random. This will call AddId.
 	// so it can contain other sequences, and other random ones.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	// deprecated, use Modifier = Random then AddId or AddSeqId or AddSeq
+	UFUNCTION(BlueprintCallable, Category="Dialogs", meta=(DeprecatedFunction))
 	bool AddRnd(const FDialogSequence& Seq);
 #pragma endregion
 #pragma region Get
