@@ -251,52 +251,7 @@ void UDiags::Stop() {
 }
 
 bool UDiags::CheckCondition(const FString& Expression, float& Res) const {
-	Res = 0;
-	FString Eval = Expression.TrimStartAndEnd();
-	if (LIKELY(Eval.IsEmpty())) return true;
-
-	// "{xx}"	start=0, end=3, len=2, sub={xx}, name =xx
-	// "{}"		start=0, end=1, len=0, sub={}, name=""
-
-	int32 PStart = 0;
-	int32 PEnd = 0;
-	int32 Len = 0;
-	FString Sub;
-	FString VarName;
-	float VarVal = 0;
-	while (true) {
-		PStart = Eval.Find("{");
-		if (PStart<0) break; // done
-
-		PEnd = Eval.Find("}", ESearchCase::IgnoreCase, ESearchDir::FromStart, PStart);
-		if (UNLIKELY(PEnd <= PStart)) { // this is redundant with below, but i want to have good logs.
-			UE_LOG(LogDiags, Warning, TEXT("%hs: Erroneous expression. Missing '}'. Exp='%s'"), __func__, *Eval);
-			return false;
-		}
-
-		Len = PEnd - PStart -1; // PEnd is at BEFORE the character. so it does not contain it! (hence -1)
-		Sub = Eval.Mid(PStart, Len+2);
-		VarName = Sub.Mid(1, Len);
-		VarName.TrimStartAndEndInline(); // in case the user enters { myvarnamelol }
-		if (UNLIKELY(VarName.IsEmpty())) {
-			UE_LOG(LogDiags, Warning,
-				TEXT("%hs: Erroneous expression: Variable name is empty. need something inside {}."), __func__, *Eval);
-			return false;
-		}
-
-		const bool Bound = OnGetFlag.IsBound();
-		VarVal = LIKELY(Bound) ? OnGetFlag.Execute(FName(VarName)) : 0; // NEEEDS to check for isbound or risk a crash :')
-		UE_CLOG(!Bound, LogDiags, Warning, TEXT("%hs: OnGetFlag is not bound! All flags are going to be 0. LOL."), __func__);
-
-		Eval.ReplaceInline(*Sub,*FString::SanitizeFloat(VarVal,0));
-	}
-	
-	Res = UJUtilsMisc::MathEvaluate(Eval);
-	const bool Ok = Res>0 && !FMath::IsNearlyZero(Res);
-
-	UE_LOG(LogDiags, Log,
-		TEXT("%hs: Result=%.4f Ok=%i Eval=%s Exp=%s"),
-		__func__, Res, Ok, *Eval, *Expression);
-
-	return Ok;
+	// TODO make private
+	// TODO use another system
+	return true;
 }
