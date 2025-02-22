@@ -476,14 +476,14 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }
 
-float ALGGameMode::EvalVar(const FName Name) {
-	// TODO if Name.startswith("Items.Count") use the inventory
+double ALGGameMode::EvalVar(const FName Name) {
 	const FString NameS = Name.ToString();
-	if (NameS.StartsWith("Items.Count.")) {
+	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const
+		// TNODO size use std::char_traits<char>::length("str")
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
 	}
 
-	return 
+	return Flags->Get(Name);
 }
 
 void ALGGameMode::TickCounter() const {

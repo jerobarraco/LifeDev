@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EvalMath.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 
@@ -95,6 +96,8 @@ public:
 	TObjectPtr<UStory> Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UEvalMath> EvalMath = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -117,6 +120,8 @@ protected:
 	void DiagDone();
 	UFUNCTION() // bound
 	void Fade(const bool bIn, const FText& Text);
+	UFUNCTION()
+	double EvalVar(const FName Name);
 
 	void TickCounter() const;
 
