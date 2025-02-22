@@ -79,7 +79,7 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	const TArray<FName>& Rows = Seq.DiagRows;
 	const int32 DiagNum = Rows.Num();
 	double Res;
-	const bool CondOk = CheckCondition(Seq.Condition, Res));
+	const bool CondOk = CheckCondition(Seq.Condition, Res);
 	if (Seq.Modifier == ESeqMod::NORMAL) {
 		if (UNLIKELY(!CondOk)) return false;
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {

@@ -485,6 +485,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
 	}
 
+	// TODO 
 	return Flags->Get(Name);
 }
 
