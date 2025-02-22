@@ -3,6 +3,7 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
+#include "EvalMath.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
@@ -169,11 +170,14 @@ void ALGGameMode::Init() {
 		return;
 	}
 
+	EvalMath = World->GetSubsystem<UEvalMath>();
+
 	const bool IsEditor = UJUtilsMisc::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
 
 	// init together. but before writing subsystems from save
+	EvalMath->Init();
 	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
 	Flags->Init();
 	Diags->Init();
@@ -242,11 +246,12 @@ void ALGGameMode::Init() {
 	/// binding
 	
 	// start listening only here. in case the previous init might trigger a false one
+	EvalMath->OnGetVar.BindDynamic(this, &ALGGameMode::EvalVar);
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
-
+	
 	FTimerManager& Timer = World->GetTimerManager();
 	// force the input disabled. even though the story manager will make this disable later.
 	// in case something goes wrong.
@@ -287,6 +292,9 @@ void ALGGameMode::DeInit() {
 	MusicMan = nullptr;
 	
 	FlashbackMan = nullptr;
+
+	if (LIKELY(EvalMath)) EvalMath->OnGetVar.Clear();
+	EvalMath = nullptr;
 
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
@@ -466,6 +474,16 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	FTimerManager& Time = World->GetTimerManager();
 	FTimerHandle Handle2;
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
+}
+
+float ALGGameMode::EvalVar(const FName Name) {
+	// TODO if Name.startswith("Items.Count") use the inventory
+	const FString NameS = Name.ToString();
+	if (NameS.StartsWith("Items.Count.")) {
+		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
+	}
+
+	return 
 }
 
 void ALGGameMode::TickCounter() const {
