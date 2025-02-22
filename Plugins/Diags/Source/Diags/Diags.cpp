@@ -73,7 +73,20 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 }
 
 bool UDiags::AddSeq(const FDialogSequence& Seq) {
+	const int32 Num = Seq.DiagRows.Num();
+	if (Num <= 0) return false;
+
 	const TArray<FName>& Rows = Seq.DiagRows;
+	if (Seq.Modifier == ESeqMod::NORMAL) {
+		float Res;
+		if (!CheckCondition(Seq.Condition, Res)) return false;
+	} else if (Seq.Modifier == ESeqMod::RANDOM) {
+		const int32 i = FMath::RandRange(0, Num -1);
+		return AddId(Rows[i]);
+	}
+
+	// TODO implement modifiers here
+
 	return AddIdMany(Rows);
 }
 
@@ -126,10 +139,13 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. condition=%s"), __func__, *Seq.Condition);
 		return false; // would allow to add a dialog with the same id, by design, but don't rely on it.
 	}
-
+	
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
-	if (RowNameStr.EndsWith("*"))
-		return AddRnd(Seq);
+	if (RowNameStr.EndsWith("*")){
+		UE_LOG(LogDiags, Warning, TEXT("%hs Using * suffix. please use modifier. this is going to get removed soon."), __func__);
+		Seq.Modifier= ESeqMod::RANDOM;
+	}
+	// return AddRnd(Seq);
 
 	return AddSeq(Seq);
 }
