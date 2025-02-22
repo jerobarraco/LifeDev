@@ -30,7 +30,7 @@ enum class EDialogType : uint8 {
 UENUM(BlueprintType)
 enum class ESeqMod : uint8 {
 	// Normal sequence
-	NORMAL,
+	SEQUENCE,
 	// Choose one dialog at random
 	RANDOM,
 	// Select one dialog depending on the condition, but clamp.
@@ -83,7 +83,7 @@ public:
 	FString Condition = "";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ESeqMod Modifier = ESeqMod::NORMAL;
+	ESeqMod Modifier = ESeqMod::SEQUENCE;
 };
 
 // chars

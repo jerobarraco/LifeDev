@@ -73,24 +73,23 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 }
 
 bool UDiags::AddSeq(const FDialogSequence& Seq) {
-	const int32 Num = Seq.DiagRows.Num();
+	const TArray<FName>& Rows = Seq.DiagRows;
+	const int32 Num = Rows.Num();
 	if (Num <= 0) return false;
 
-	const TArray<FName>& Rows = Seq.DiagRows;
-	const int32 DiagNum = Rows.Num();
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
-	if (Seq.Modifier == ESeqMod::NORMAL) {
+	if (Seq.Modifier == ESeqMod::SEQUENCE) {
 		if (UNLIKELY(!CondOk)) return false;
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {
-		const int32 i = FMath::RandRange(0, Num -1);
+		const int32 i = FMath::RandRange(0, Num-1);
 		return AddId(Rows[i]);
 	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
-		const int32 i = FMath::RoundToInt32(FMath::Modulo(Res, DiagNum));
+		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
 	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
-		const int32 i = FMath::Clamp(Res, 0, DiagNum);
+		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
 	} // else wtf
