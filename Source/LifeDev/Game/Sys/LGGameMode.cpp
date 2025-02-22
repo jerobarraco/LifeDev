@@ -143,8 +143,13 @@ void ALGGameMode::Init() {
 
 	////  subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
+
+	Flashback = World->GetSubsystem<UFlashback>();
+	if (UNLIKELY(!Flashback)) {
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem."), __func__);
+		return;
+	}
 	
-	/// Dialogs
 	Diags = World->GetSubsystem<UDiags>();
 	if (UNLIKELY(!Diags)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
@@ -182,6 +187,7 @@ void ALGGameMode::Init() {
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
+	// Flashback->Init(); // TODO add init
 
 	// now load the values from the save
 	// ensure the save-game loads the data into the subsystems.
@@ -344,6 +350,7 @@ void ALGGameMode::DeInit() {
 	Inventory = nullptr;
 	Flags = nullptr;
 	Story = nullptr;
+	Flashback = nullptr;
 	Settings = nullptr; // no deinit. it's a gameinstance subystem
 }
 
@@ -485,7 +492,10 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
 	}
 
-	// TODO 
+	constexpr FName NAME_FBVal("FB.Val"); // TODO Move to a ldconst stuff.
+	if (Name == NAME_FBVal)
+		return LIKELY(Flashback) ? Flashback->GetVal() : 0;
+
 	return Flags->Get(Name);
 }
 

@@ -9,6 +9,7 @@
 
 #include "LGGameMode.generated.h"
 
+class UFlashback;
 struct FDialog;
 class AGhostPool;
 class ALStoryMan;
@@ -95,9 +96,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStory> Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<ULSettings> Settings = nullptr;
+	TObjectPtr<UFlashback> Flashback = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEvalMath> EvalMath = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettings> Settings = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
