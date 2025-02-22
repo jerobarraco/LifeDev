@@ -10,7 +10,7 @@
 struct FDecimalNumberFormattingRules;
 
 #define DEFINE_EXPRESSION_OPERATOR_NODE(EXPORTAPI, TYPE, ...) \
-namespace ExpressionParser {\
+namespace JMathExp {\
 	struct EXPORTAPI TYPE { static const TCHAR* const Moniker; }; \
 }\
 DEFINE_EXPRESSION_NODE_TYPE(ExpressionParser::TYPE, __VA_ARGS__)

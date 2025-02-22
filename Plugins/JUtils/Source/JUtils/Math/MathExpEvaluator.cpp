@@ -13,6 +13,8 @@
 #define LOCTEXT_NAMESPACE "JMathExpEvaluator"
 
 namespace JMathExp {
+	const TCHAR* const FVarExpStart::Moniker = TEXT("[");
+	const TCHAR* const FVarExprEnd::Moniker = TEXT("]");
 	// const TCHAR* const FSubExpressionStart::Moniker = TEXT("(");
 	// const TCHAR* const FSubExpressionEnd::Moniker = TEXT(")");
 	// const TCHAR* const FPlus::Moniker = TEXT("+");
@@ -47,24 +49,14 @@ namespace JMathExp {
 		FastDecimalFormat::StringToNumber(InStream.GetRead(), UE_PTRDIFF_TO_INT32(InStream.GetEnd() - InStream.GetRead()), InFallbackFormattingRules, FNumberParsingOptions::DefaultNoGrouping(), FallbackValue, &FallbackParsedLen);
 
 		// We take whichever value parsed the most text from the string
-		if (FallbackParsedLen <= PrimaryParsedLen)
-		{
-			if (OutValue)
-			{
-				*OutValue = PrimaryValue;
-			}
-
-			return PrimaryParsedLen > 0 ? InStream.GenerateToken(PrimaryParsedLen) : TOptional<FStringToken>();
+		if (FallbackParsedLen <= PrimaryParsedLen)		{
+			if (OutValue) *OutValue = PrimaryValue;
+			return LIKELY(PrimaryParsedLen > 0) ?
+				InStream.GenerateToken(PrimaryParsedLen) : TOptional<FStringToken>();
 		}
-		else
-		{
-			if (OutValue)
-			{
-				*OutValue = FallbackValue;
-			}
-
-			return FallbackParsedLen > 0 ? InStream.GenerateToken(FallbackParsedLen) : TOptional<FStringToken>();
-		}
+		if (OutValue) *OutValue = FallbackValue;
+		return LIKELY(FallbackParsedLen > 0) ?
+			InStream.GenerateToken(FallbackParsedLen) : TOptional<FStringToken>();
 	}
 
 	TOptional<FStringToken> ParseNumberWithRules(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InFormattingRules, FStringToken* Accumulate, double* OutValue)
@@ -159,7 +151,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
-	Grammar.DefineGrouping<FVarExpStart, FVarExprEnd>();
+	Grammar.DefineGrouping<JMathExp::FVarExpStart, JMathExp::FVarExprEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
 	Grammar.DefinePreUnaryOperator<FSquareRoot>();
