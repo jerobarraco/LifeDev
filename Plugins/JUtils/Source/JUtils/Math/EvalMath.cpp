@@ -67,6 +67,8 @@ double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
 		return 0;
 	}
 
+	UE_LOG(LogEvalMath, Warning, TEXT("%hs: Ok exp=%s eval=%s res=%.3f"),
+			__func__, *Exp, *Eval, Result.GetValue());
 	Ok = true;
 	return Result.GetValue();
 }
