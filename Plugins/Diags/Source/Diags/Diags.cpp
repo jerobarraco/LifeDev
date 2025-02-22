@@ -83,6 +83,8 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	} else if (Seq.Modifier == ESeqMod::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num -1);
 		return AddId(Rows[i]);
+	} else {
+		// TODO
 	}
 
 	// TODO implement modifiers here
