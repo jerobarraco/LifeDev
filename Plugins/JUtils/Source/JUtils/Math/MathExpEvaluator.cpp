@@ -271,3 +271,5 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 
 
 #undef LOCTEXT_NAMESPACE
+
+// see also basicmathexpressionevaluator. thanks tim team.

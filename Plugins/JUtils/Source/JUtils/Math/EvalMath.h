@@ -34,6 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	double Eval(const FString& Exp) const;
 
+	// replaces variables with values.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	bool SetVars(const FString& Exp, FString& OExp) const;
+	
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
 	FJEVGetVar OnGetVar;
