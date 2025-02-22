@@ -497,6 +497,8 @@ double ALGGameMode::EvalVar(const FName Name) {
 	if (Name == NAME_FBVal)
 		return LIKELY(Flashback) ? Flashback->GetVal() : 0;
 
+	if (Name == "Rand") return FMath::Rand();
+
 	return Flags->Get(Name);
 }
 

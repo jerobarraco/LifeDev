@@ -18,6 +18,8 @@
 namespace ExpressionParser {
 	const TCHAR* const FSaturate::Moniker = TEXT("sat");
 	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
+	const TCHAR* const FRand::Moniker = TEXT("?");
+	const TCHAR* const FNot::Moniker = TEXT("!");
 }
 namespace JMathExp {
 	// const TCHAR* const FVarExpStart::Moniker = TEXT("[");
@@ -155,6 +157,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -176,12 +180,16 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FForwardSlash>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPower>(3);
-	
+	Grammar.DefineBinaryOperator<FRand>(3);
+
 	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
 	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
 	JumpTable.MapPreUnary<FSaturate>([](const double A)		{ return double(FMath::Clamp(A, 0, 1)); });
 	JumpTable.MapPreUnary<FAbsolute>([](const double A)		{ return double(FMath::Abs(A)); });
+	JumpTable.MapPreUnary<FNot>([](const double A) {
+		return double(A<=0 || FMath::IsNearlyZero(A) ? 1 : 0);
+	});
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
@@ -195,6 +203,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapBinary<FPercent>([](const double A, const double B) -> FExpressionResult {
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("ModZero", "Modulo zero"));
 		return MakeValue(double(FMath::Fmod(A, B))); // todo fix this on the epic's repo
+	});
+	JumpTable.MapBinary<FRand>([](const double A, const double B) -> FExpressionResult {
+		return MakeValue(double(FMath::FRandRange(A, B)));
 	});
 }
 
