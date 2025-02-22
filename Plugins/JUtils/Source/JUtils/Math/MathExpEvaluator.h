@@ -36,8 +36,9 @@ struct FDecimalNumberFormattingRules;
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FForwardSlash, 0xF99670F8, 0x74794256, 0xBB0CAE6D, 0xC67CD5B6)
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FForwardSlashEquals, 0x4AFE0CF8, 0xF9054360, 0xBE5DCE80, 0xDC2E22F6)
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FPercent, 0x936E4434, 0x0A014F2D, 0xBEEC90D3, 0x4D3ECEA2)
-// DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FSquareRoot, 0xE7C03E11, 0x9DE84B4B, 0xBA4C2B76, 0x69BF028E)
 // DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FPower, 0x93388F8D, 0x1D9B4DFE, 0xBD4D6CC4, 0x12D1DE99)
+DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FSaturate, "JMathSaturate")
+DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FAbsolute, 0x93388F8D, 0x1D9B4DFE, 0xBD4D6CC4, 0x12D1DE98)
 
 namespace JMathExp {
 	// struct FPropertyToken 
@@ -77,47 +78,47 @@ namespace JMathExp {
 	
 	// TODO do i even need this? or can i use the ones in basicmath....
 	/** Get the default set number formatting rules based on the current locale and user settings */
-	JUTILS_API const FDecimalNumberFormattingRules& GetLocalizedNumberFormattingRules();
+	// JUTILS_API const FDecimalNumberFormattingRules& GetLocalizedNumberFormattingRules();
 
 	/** Parse a number formatted using the given rules from the given stream, optionally from a specific read position */
-	JUTILS_API TOptional<FStringToken> ParseNumberWithFallback(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InPrimaryFormattingRules, const FDecimalNumberFormattingRules& InFallbackFormattingRules, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
+	// JUTILS_API TOptional<FStringToken> ParseNumberWithFallback(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InPrimaryFormattingRules, const FDecimalNumberFormattingRules& InFallbackFormattingRules, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
 
 	/** Parse a number formatted using the given rules from the given stream, optionally from a specific read position */
-	JUTILS_API TOptional<FStringToken> ParseNumberWithRules(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InFormattingRules, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
+	// JUTILS_API TOptional<FStringToken> ParseNumberWithRules(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InFormattingRules, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
 
 	/** Parse a localized number from the given stream, optionally from a specific read position */
-	JUTILS_API TOptional<FStringToken> ParseLocalizedNumberWithAgnosticFallback(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
+	// JUTILS_API TOptional<FStringToken> ParseLocalizedNumberWithAgnosticFallback(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
 
 	/** Parse a localized number from the given stream, optionally from a specific read position */
-	JUTILS_API TOptional<FStringToken> ParseLocalizedNumber(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
+	// JUTILS_API TOptional<FStringToken> ParseLocalizedNumber(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
 
 	/** Parse a number from the given stream, optionally from a specific read position */
-	JUTILS_API TOptional<FStringToken> ParseNumber(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
+	// JUTILS_API TOptional<FStringToken> ParseNumber(const FTokenStream& InStream, FStringToken* Accumulate = nullptr, double* OutValue = nullptr);
 
 	/** Consume a number formatted using the given rules from the specified consumer's stream, if one exists at the current read position */
-	JUTILS_API TOptional<FExpressionError> ConsumeNumberWithRules(FExpressionTokenConsumer& Consumer, const FDecimalNumberFormattingRules& InFormattingRules);
+	// JUTILS_API TOptional<FExpressionError> ConsumeNumberWithRules(FExpressionTokenConsumer& Consumer, const FDecimalNumberFormattingRules& InFormattingRules);
 
 	/** Consume a localized number from the specified consumer's stream, if one exists at the current read position */
-	JUTILS_API TOptional<FExpressionError> ConsumeLocalizedNumberWithAgnosticFallback(FExpressionTokenConsumer& Consumer);
+	// JUTILS_API TOptional<FExpressionError> ConsumeLocalizedNumberWithAgnosticFallback(FExpressionTokenConsumer& Consumer);
 
 	/** Consume a localized number from the specified consumer's stream, if one exists at the current read position */
-	JUTILS_API TOptional<FExpressionError> ConsumeLocalizedNumber(FExpressionTokenConsumer& Consumer);
+	// JUTILS_API TOptional<FExpressionError> ConsumeLocalizedNumber(FExpressionTokenConsumer& Consumer);
 
 	/** Consume a number from the specified consumer's stream, if one exists at the current read position */
-	JUTILS_API TOptional<FExpressionError> ConsumeNumber(FExpressionTokenConsumer& Consumer);
+	// JUTILS_API TOptional<FExpressionError> ConsumeNumber(FExpressionTokenConsumer& Consumer);
 
 	/** Consume a symbol from the specified consumer's stream, if one exists at the current read position */
-	template<typename TSymbol>
-	JUTILS_API TOptional<FExpressionError> ConsumeSymbol(FExpressionTokenConsumer& Consumer)
-	{
-		TOptional<FStringToken> Token = Consumer.GetStream().ParseToken(TSymbol::Moniker);
-		if (Token.IsSet())
-		{
-			Consumer.Add(Token.GetValue(), TSymbol());
-		}
+	// template<typename TSymbol>
+	// JUTILS_API TOptional<FExpressionError> ConsumeSymbol(FExpressionTokenConsumer& Consumer)
+	// {
+		// TOptional<FStringToken> Token = Consumer.GetStream().ParseToken(TSymbol::Moniker);
+		// if (Token.IsSet())
+		// {
+			// Consumer.Add(Token.GetValue(), TSymbol());
+		// }
 
-		return TOptional<FExpressionError>();
-	}
+		// return TOptional<FExpressionError>();
+	// }
 
 }
 

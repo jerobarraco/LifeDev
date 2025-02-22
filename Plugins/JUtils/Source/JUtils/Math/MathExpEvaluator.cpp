@@ -15,6 +15,10 @@
 // TODO make the functions below be static
 // TODO see if i can reuse the functions in BasicMathExpression...
 
+namespace ExpressionParser {
+	const TCHAR* const FSaturate::Moniker = TEXT("sat");
+	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
+}
 namespace JMathExp {
 	// const TCHAR* const FVarExpStart::Moniker = TEXT("[");
 	// const TCHAR* const FVarExprEnd::Moniker = TEXT("]");
@@ -134,6 +138,7 @@ namespace JMathExp {
 FMathExpEvaluator::FMathExpEvaluator() {
 	using namespace ExpressionParser;
 
+	// resuing a bunch from basicmath...
 	TokenDefinitions.IgnoreWhitespace();
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSubExpressionStart>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSubExpressionEnd>);
@@ -147,6 +152,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FForwardSlash>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPercent>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
@@ -159,6 +166,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
 	Grammar.DefinePreUnaryOperator<FSquareRoot>();
+	Grammar.DefinePreUnaryOperator<FSaturate>();
+	Grammar.DefinePreUnaryOperator<FAbsolute>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
@@ -171,6 +180,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
 	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
+	JumpTable.MapPreUnary<FSaturate>([](const double A)		{ return double(FMath::Clamp(A, 0, 1)); });
+	JumpTable.MapPreUnary<FAbsolute>([](const double A)		{ return double(FMath::Abs(A)); });
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
@@ -198,7 +209,7 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 	// Handle the += and -= tokens.
 	TArray<FExpressionToken> Tokens = LexResult.StealValue();
 	if (Tokens.Num()) {
-		FStringToken Context = Tokens[0].Context;
+		const FStringToken Context = Tokens[0].Context;
 		const FExpressionNode& FirstNode = Tokens[0].Node;
 		bool WasOpAssign = true;
 
@@ -219,11 +230,13 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 		}
 	}
 
-	TValueOrError<TArray<FCompiledToken>, FExpressionError> CompilationResult = ExpressionParser::Compile(MoveTemp(Tokens), Grammar);
+	TValueOrError<TArray<FCompiledToken>, FExpressionError> CompilationResult =
+		ExpressionParser::Compile(MoveTemp(Tokens), Grammar);
 	if (UNLIKELY(!CompilationResult.IsValid())) return MakeError(CompilationResult.StealError());
 
-	TOperatorEvaluationEnvironment<> Env(JumpTable, nullptr);
-	TValueOrError<FExpressionNode, FExpressionError> Result = ExpressionParser::Evaluate(CompilationResult.GetValue(), Env);
+	const TOperatorEvaluationEnvironment<> Env(JumpTable, nullptr);
+	TValueOrError<FExpressionNode, FExpressionError> Result =
+		ExpressionParser::Evaluate(CompilationResult.GetValue(), Env);
 	if (UNLIKELY(!Result.IsValid())) return MakeError(Result.GetError());
 
 	auto& Node = Result.GetValue();
