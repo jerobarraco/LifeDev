@@ -45,5 +45,10 @@ public:
 	FJEVGetVar OnGetVar;
 
 private:
+	UFUNCTION()
+	double GetVar(const FName Name) {
+		return LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(Name) : 0; 
+	}
+
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;
 };

@@ -11,11 +11,15 @@ UEvalMath::UEvalMath():Super() {}
 void UEvalMath::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Evaluator = MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>();
+	if (UNLIKELY(!Evaluator.IsValid())) return; // TODO warning
+	Evaluator->OnGetVar.BindDynamic(this, UEvalMath::GetVar);
 }
 
 void UEvalMath::Deinitialize() {
-	Super::Deinitialize();
+	if (LIKELY(Evaluator.IsValid()))
+		Evaluator->OnGetVar.Clear();
 	Evaluator.Reset();
+	Super::Deinitialize();
 }
 
 UEvalMath* UEvalMath::Instance(const UObject*const  O) {

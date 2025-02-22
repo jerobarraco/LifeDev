@@ -262,8 +262,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
-	TokenDefinitions.DefineToken(&JMathExp::ConsumePropertyName);
+	// TokenDefinitions.DefineToken(&JMathExp::ConsumePropertyName);
 	
+	TokenDefinitions.DefineToken([this](FExpressionTokenConsumer& Consumer) -> TOptional<FExpressionError> {
+		return this->ConsumePropertyName(Consumer);
+	});
+
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
 	// Grammar.DefineGrouping<FVarExpStart, FVarExprEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
@@ -344,7 +348,67 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 }
 
 TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) {
-	
+	enum class EParsedStringType : uint8 {
+		Unknown,
+		Unquoted,
+		Quoted,
+	};
+
+	FString PropertyName;
+	// bool bShouldBeEnum = false;
+	EParsedStringType ParsedStringType = EParsedStringType::Unknown;
+
+	TCHAR OpeningQuoteChar = TEXT('\0');
+	int32 NumConsecutiveSlashes = 0;
+
+	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
+		[&PropertyName, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes](TCHAR InC){
+		if (ParsedStringType == EParsedStringType::Unknown) {
+			if (InC == '"' || InC == '\'') {
+				ParsedStringType = EParsedStringType::Quoted;
+				OpeningQuoteChar = InC;
+				NumConsecutiveSlashes = 0;
+				return EParseState::Continue;
+			}
+			ParsedStringType = EParsedStringType::Unquoted;
+		}
+
+		// check(ParsedStringType != EParsedStringType::Unknown);
+
+		// if (InC == ':') bShouldBeEnum = true;
+
+		if (ParsedStringType == EParsedStringType::Unquoted) {
+			for (const TCHAR BreakingChar : JMathExp::PropertyBreakingChars) {
+				if (InC == BreakingChar) return EParseState::StopBefore;
+			}
+			PropertyName.AppendChar(InC);
+		} else {
+			check(ParsedStringType == EParsedStringType::Quoted);
+			if (InC == OpeningQuoteChar && NumConsecutiveSlashes % 2 == 0) {
+				return EParseState::StopAfter;
+			}
+
+			PropertyName.AppendChar(InC);
+
+			if (InC == '\\')
+				NumConsecutiveSlashes++;
+			else
+				NumConsecutiveSlashes = 0;
+		}
+
+		return EParseState::Continue;
+	});
+
+	if (ParsedStringType == EParsedStringType::Quoted) {
+		PropertyName.ReplaceEscapedCharWithCharInline();
+	}
+
+	if (LIKELY(StringToken.IsSet())) {
+		const double Val = LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute( FName(PropertyName)): 0;
+		Consumer.Add(StringToken.GetValue(), FExpressionNode(Val)); // Debug
+	}
+
+	return TOptional<FExpressionError>();
 }
 
 

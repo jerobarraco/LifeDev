@@ -7,6 +7,9 @@
 #include "Misc/Optional.h"
 #include "Templates/ValueOrError.h"
 
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName, Name);
+
+
 struct FDecimalNumberFormattingRules;
 
 // #define DEFINE_EXPRESSION_OPERATOR_NODE(EXPORTAPI, TYPE, ...) \
@@ -126,6 +129,8 @@ public:
 
 	/** Evaluate the given expression, resulting in either a double value, or an error */
 	TValueOrError<double, FExpressionError> Evaluate(const TCHAR* InExpression, double InExistingValue = 0) const;
+
+	FJEXVGetVar OnGetVar;
 
 private:
 	TOptional<FExpressionError> ConsumePropertyName(FExpressionTokenConsumer& Consumer);
