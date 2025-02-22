@@ -172,6 +172,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FSquareRoot>();
 	Grammar.DefinePreUnaryOperator<FSaturate>();
 	Grammar.DefinePreUnaryOperator<FAbsolute>();
+	Grammar.DefinePreUnaryOperator<FNot>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
