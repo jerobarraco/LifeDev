@@ -13,6 +13,14 @@ class FMathExpEvaluator;
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 
 // Subsystem that evaluates math expressions
+// if you want to compare strings. please use the variables with some way to detect the conversion.
+// then on getVar convert to FName and then .toUnstableInt. and use int value instead.
+// e.g. "Var" returs teh variable. "@MyId" returns the numeric value of the FName MyId.
+// e.g. "V.Story.Step.Cur"="@C3S0"
+// Operators: +, -,/,*,%
+// a?b: random between a and b
+// !a: not a
+// 
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
 class JUTILS_API UEvalMath: public UWorldSubsystem {
 	GENERATED_BODY()
