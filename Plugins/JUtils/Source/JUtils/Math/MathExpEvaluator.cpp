@@ -49,7 +49,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPercent>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
-	// TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
@@ -72,7 +72,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
 	Grammar.DefinePreUnaryOperator<FNot>();
 	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	// Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
+	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
@@ -106,13 +106,14 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
 		return B;
 	});
-	//
-	// JumpTable.MapPreUnary<FAbsolute>([](const double A) {
-	// 	const double B = FMath::Abs(A); 
-	// 	UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
-	// 	return double(B);
-	// });
+	
+	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
+		const double B = FMath::Abs(A); 
+		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
+		return double(B);
+	});
 	JumpTable.MapPreUnary<FNot>([](const double A) {
+		UE_LOG(LogTemp, Warning, TEXT("Not A=%.5f"), A);
 		return double(JMathExp::_IsFalse(A) ? 1 : 0);
 	});
 
