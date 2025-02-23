@@ -54,7 +54,7 @@ void UCLCharItems::Look(const FName& Name) const {
 
 	FItem Item;
 	if (UNLIKELY(!Inventory->Get(Name, Item))) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Can´t find the item name='%s'"), __func__, *SName);
+		UE_LOG(LogCharItems, Log, TEXT("%hs Can't find the item name='%s'"), __func__, *SName);
 		return;
 	}
 	
@@ -65,9 +65,11 @@ void UCLCharItems::Look(const FName& Name) const {
 	// don't even bother with the non-random.
 	// if you want to have a non-random sequence you'd have to add 2 keys.
 	// but it's cheaper than asking every time for random and not random.
-	const FName& DRName = FName(*(SName + "_Look*"));
+	const FName& DRName = FName((SName + "_Look*"));
+	const FName& DRNameNew = FName("Item.Look."+SName);
 	// the isValid is for the add below
-	const bool Said = Say(DRName); // notice it calls Say first
+	bool Said = Say(DRNameNew); // notice it calls Say first. // TODO don't warn.
+	if (!Said) Said = Say(DRName);
 	if (LIKELY(IsValid(Diags)) && !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
@@ -103,13 +105,17 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
-		Say(LDConsts::Dlgs::Sys::Item::NotUsable);
+		const bool Said =
+			Say (LDConsts::Dlgs::Sys::Item::NotUsable2) ||
+			Say(LDConsts::Dlgs::Sys::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable
 	}
 
 	if (UNLIKELY(!Inventory->IsCold(Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
-		Say(LDConsts::Dlgs::Sys::Item::NotReady);
+		const bool Said =
+			Say (LDConsts::Dlgs::Sys::Item::NotReady2) ||
+			Say(LDConsts::Dlgs::Sys::Item::NotReady);
 		return EItemUseResult::ERROR;
 	}
 
@@ -132,7 +138,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
 		Inventory->Use(Name);
-		PlaySound(Item.Snd);
+		const bool Ok = PlaySound(Item.Snd);
 		return Res;
 	}
 
@@ -172,7 +178,8 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		LDConsts::Dlgs::Sys::Item::BadTarget :
 		LDConsts::Dlgs::Sys::Item::NoTarget;
 
-	Say(DlgId);
+	Say(DlgId); // TODO fix badtarget and notarget
+	// TODO remove old ones
 	return Res;
 }
 
