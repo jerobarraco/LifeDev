@@ -53,8 +53,9 @@ namespace LDConsts {
 		
 		namespace Inter{
 			// expects the actor label at the end
-			inline static const FName Trigger("Game.Inter.Trigger.");
-			inline static const FName TriggerL("Game.Inter.TriggerL.");
+			inline static const FName Trigger("Inter.Trigger.");
+			inline static const FName TriggerL("Inter.TriggerL.");
+			inline static const FString Unlock("Inter.Unlock.");
 		}
 		namespace Item {
 			inline static const FName Use("Item.Use.");

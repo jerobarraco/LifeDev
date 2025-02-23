@@ -330,7 +330,10 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	}
 
 	// now unlocked
-	if (ValidDiags) Diags->AddId(ULockDlg);
+	if (ValidDiags)
+		Diags->AddId(ULockDlg) ||
+		Diags->AddId(FName(
+			LDConsts::Flags::Inter::Unlock+GetOwner()->GetActorLabel(false))); // TODO move to constflags
 
 	Locked = false; // force unlock or trigger won't work
 	Trigger(); // force trigger
