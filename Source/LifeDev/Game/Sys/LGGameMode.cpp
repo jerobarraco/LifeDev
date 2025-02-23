@@ -496,8 +496,10 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return Actual.ToUnstableInt();
 	}
 
-	if (!NameS.StartsWith("V.")) 
+	if (!NameS.StartsWith("V.")) {
+		UE_CLOG(!Flags->IsSet(Name), LogLGameMode, Warning, TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
 		return Flags->Get(Name);
+	}
 
 	if (NameS.StartsWith("V.Item.Count.")) {
 		// TODo make this string a const
@@ -548,8 +550,6 @@ double ALGGameMode::EvalVar(const FName Name) {
 		}
 		return -1;
 	}
-	// deprecated
-	if (Name == "V.Rand") return FMath::Rand();
 
 	return -1;
 }

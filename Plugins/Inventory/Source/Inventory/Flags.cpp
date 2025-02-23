@@ -46,7 +46,7 @@ float UFlags::Get(const FName Name, const float Default) const {
 
 bool UFlags::IsSet(const FName& Name) const {
 	if (UNLIKELY(Name.IsNone())) return false;
-	// this works because set doesn't remove on 0
+	// Set does not remove on 0
 	return Flags.Contains(Name);
 }
 
