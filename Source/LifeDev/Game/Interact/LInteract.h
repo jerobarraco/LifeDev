@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction) )
 	void Fade(const bool FadeIn = false, const bool SetHidden=false);
 
+	virtual void SetActive_Implementation(const bool Active = true) override;
+	virtual void SetState_Implementation(const int32 NewState) override;
+	
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -40,6 +40,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 }
 
 bool UDiags::AddId(const FName& Row, const bool Warn) {
+	UE_CLOG(Warn, LogDiags, Log, TEXT("%hs: id=%s."), __func__, *Row.ToString());
 	if (UNLIKELY(Row.IsNone())) return false;
 
 	// attempt to add a sequence (can be random) (could trigger another call to AddId)

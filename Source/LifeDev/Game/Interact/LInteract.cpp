@@ -36,6 +36,27 @@ ALInteract::ALInteract():Super() {
 	Interact->SetGenerateOverlapEvents(true);
 }
 
+void ALInteract::SetActive_Implementation(const bool Active) {
+	Super::SetActive_Implementation(Active);
+
+	if (LIKELY(IsValid(Diags))) { // TODO test
+		const FName BName =	Active ?
+				LDConsts::Dlgs::Sys::Inter::Activate:
+				LDConsts::Dlgs::Sys::Inter::Deactivate;
+		const FName DName(BName.ToString()+GetActorLabel(false));
+		Diags->AddId(DName);
+	}
+}
+
+void ALInteract::SetState_Implementation(const int32 NewState) {
+	Super::SetState_Implementation(NewState);
+	if (LIKELY(IsValid(Diags))) { // TODO test
+		const FName BName = LDConsts::Dlgs::Sys::Inter::State;
+		const FName DName(BName.ToString()+GetActorLabel(false)+"."+FString::FromInt(NewState));
+		Diags->AddId(DName);
+	}
+}
+
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *GetNameSafe(this), FadeIn, SetHidden, UseFade);
