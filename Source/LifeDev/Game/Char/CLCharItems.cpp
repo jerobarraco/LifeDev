@@ -41,6 +41,7 @@ void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 bool UCLCharItems::Say(const FName& Name) const {
 	if (UNLIKELY(!IsValid(Diags))) return false;
+	// TODO don't warn. (once all is done correctly. also only on the cases i need)
 	return Diags->AddId(Name);
 }
 
@@ -69,10 +70,9 @@ void UCLCharItems::Look(const FName& Name) const {
 	// if you want to have a non-random sequence you'd have to add 2 keys.
 	// but it's cheaper than asking every time for random and not random.
 	const FName& DRName = FName((SName + "_Look*")); // TODO deprecated
-	const FName& DRNameNew = FName("Item.Look."+SName);
+	const FName& DRNameNew = FName(LDConsts::Dlgs::Item::LookPre+SName);
 	// the isValid is for the add below
-	bool Said = Say(DRNameNew); // notice it calls Say first. // TODO don't warn.
-	if (!Said) Said = Say(DRName);
+	const bool Said = Say(DRNameNew) || Say(DRName) ; // notice it calls Say first.
 	if (LIKELY(IsValid(Diags)) && !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
@@ -108,17 +108,13 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
-		const bool Said =
-			Say (LDConsts::Dlgs::Item::NotUsable2) ||
-			Say(LDConsts::Dlgs::Item::NotUsable);
+		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable
 	}
 
 	if (UNLIKELY(!Inventory->IsCold(Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
-		const bool Said =
-			Say (LDConsts::Dlgs::Item::NotReady2) ||
-			Say(LDConsts::Dlgs::Item::NotReady);
+		const bool Said = Say(LDConsts::Dlgs::Item::NotReady);
 		return EItemUseResult::ERROR;
 	}
 
@@ -191,7 +187,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		LDConsts::Dlgs::Item::NoTarget;
 	// TODO fix badtarget and notarget with new ones (must be done on data)
 
-	const bool Said = Say(DlgId) || Say(LDConsts::Dlgs::Item::BadTarget2);
+	const bool Said = Say(DlgId);
 	// TODO remove old ones
 	return Res;
 }
