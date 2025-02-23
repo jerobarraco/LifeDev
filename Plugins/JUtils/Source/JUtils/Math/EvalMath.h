@@ -36,10 +36,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	double Eval(const FString& Exp, bool& Ok) const;
 
-	// replaces variables with values.
-	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	bool SetVars(const FString& Exp, FString& OExp) const;
-	
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
 	FJEVGetVar OnGetVar;
@@ -47,7 +43,10 @@ public:
 private:
 	UFUNCTION()
 	double GetVar(const FName Name) { // just forward
-		return LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(Name) : 0; 
+		if (LIKELY(OnGetVar.IsBound()))
+			return OnGetVar.Execute(Name);
+		UE_LOG(LogTemp, Warning, TEXT("%hs, OnGetVar not bound!"), __func__);
+		return 0;
 	}
 
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;
