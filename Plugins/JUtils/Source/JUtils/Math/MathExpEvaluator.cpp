@@ -16,14 +16,13 @@
 // TODO see if i can reuse the functions in BasicMathExpression...
 
 namespace ExpressionParser {
-	const TCHAR* const FSaturate::Moniker = TEXT("sat");
-	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
+	const TCHAR* const FSaturate::Moniker = TEXT(":");
+	const TCHAR* const FAbsolute::Moniker = TEXT(";");
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
 	const TCHAR* const FAnd::Moniker = TEXT("&");
 	const TCHAR* const FOr::Moniker = TEXT("|");
 	const TCHAR* const FXor::Moniker = TEXT("$");
-	
 }
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',

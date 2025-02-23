@@ -100,7 +100,7 @@ enum class EFeat: uint8 {
 #pragma region Unreal
 	// batched ticks
 	U_TICK_BATCH,
-	// concurrent ticks
+	// concurrent ticks. not compatible with batched ticks.
 	U_TICK_CON,
 	U_MAX UMETA(Hidden),
 #pragma endregion
