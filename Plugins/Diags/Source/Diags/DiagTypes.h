@@ -34,9 +34,11 @@ enum class ESeqType : uint8 {
 	// Choose one dialog at random
 	RANDOM,
 	// Select one dialog depending on the condition, but clamp.
-	SELECT_CLAMP,
+	PICK_CLAMP,
 	// Select one dialog depending on the condition, but loop.
-	SELECT_LOOP,
+	PICK_LOOP,
+	// Selects the first dialog that gets added successfully (implies passing its condition)
+	PICK_MATCH,
 };
 
 // The base structure for dialogs.
