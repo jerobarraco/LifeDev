@@ -23,19 +23,19 @@ namespace ExpressionParser {
 }
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
+	
+	static inline bool _IsFalse(const double A) {
+		return A<=0 || FMath::IsNearlyZero(A);
+	} 
 }
 
 FMathExpEvaluator::FMathExpEvaluator() {
 	using namespace ExpressionParser;
 
-	// resuing a bunch from basicmath...
+	// reusing a bunch from basicmath...
 	TokenDefinitions.IgnoreWhitespace();
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSubExpressionStart>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSubExpressionEnd>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FPlusEquals>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FMinusEquals>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FStarEquals>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FForwardSlashEquals>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPlus>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FMinus>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FStar>);
@@ -57,9 +57,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
-	Grammar.DefinePreUnaryOperator<FSquareRoot>();
-	Grammar.DefinePreUnaryOperator<FSaturate>();
-	Grammar.DefinePreUnaryOperator<FAbsolute>();
+	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // werxs
+	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
+	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not 
 	Grammar.DefinePreUnaryOperator<FNot>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
@@ -77,7 +77,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapPreUnary<FSaturate>([](const double A)		{ return double(FMath::Clamp(A, 0, 1)); });
 	JumpTable.MapPreUnary<FAbsolute>([](const double A)		{ return double(FMath::Abs(A)); });
 	JumpTable.MapPreUnary<FNot>([](const double A) {
-		return double(A<=0 || FMath::IsNearlyZero(A) ? 1 : 0);
+		return double(JMathExp::_IsFalse(A) ? 1 : 0);
 	});
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
@@ -106,30 +106,7 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 	if (UNLIKELY(!LexResult.IsValid()))
 		return MakeError(LexResult.StealError());
 
-	// Handle the += and -= tokens.
 	TArray<FExpressionToken> Tokens = LexResult.StealValue();
-	if (Tokens.Num()) {
-		const FStringToken Context = Tokens[0].Context;
-		const FExpressionNode& FirstNode = Tokens[0].Node;
-		bool WasOpAssign = true;
-
-		if (FirstNode.Cast<FPlusEquals>())
-			Tokens.Insert(FExpressionToken(Context, FPlus()), 0);
-		else if (FirstNode.Cast<FMinusEquals>())
-			Tokens.Insert(FExpressionToken(Context, FMinus()), 0);
-		else if (FirstNode.Cast<FStarEquals>())
-			Tokens.Insert(FExpressionToken(Context, FStar()), 0);
-		else if (FirstNode.Cast<FForwardSlashEquals>())
-			Tokens.Insert(FExpressionToken(Context, FForwardSlash()), 0);
-		else
-			WasOpAssign = false;
-
-		if (WasOpAssign) {
-			Tokens.Insert(FExpressionToken(Context, InExistingValue), 0);
-			Tokens.RemoveAt(2, EAllowShrinking::No);
-		}
-	}
-
 	TValueOrError<TArray<FCompiledToken>, FExpressionError> CompilationResult =
 		ExpressionParser::Compile(MoveTemp(Tokens), Grammar);
 	if (UNLIKELY(!CompilationResult.IsValid())) return MakeError(CompilationResult.StealError());
@@ -139,7 +116,7 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 		ExpressionParser::Evaluate(CompilationResult.GetValue(), Env);
 	if (UNLIKELY(!Result.IsValid())) return MakeError(Result.GetError());
 
-	auto& Node = Result.GetValue();
+	const auto& Node = Result.GetValue();
 
 	if (const double* Numeric = Node.Cast<double>()) return MakeValue(*Numeric);
 
@@ -147,70 +124,31 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 }
 
 TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) const {
-	enum class EParsedStringType : uint8 {
-		Unknown,
-		Unquoted,
-		Quoted,
-	};
-
-	FString PropertyName;
-	// bool bShouldBeEnum = false;
-	EParsedStringType ParsedStringType = EParsedStringType::Unknown;
-	bool Start = true;
-	TCHAR OpeningQuoteChar = TEXT('\0');
-	int32 NumConsecutiveSlashes = 0;
+	FString VarName;
+	bool IsAtStart = true;
 
 	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
-	[&PropertyName, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes, &Start](TCHAR InC){
-			if (Start) {
-				Start = false;
-				if (InC == '"')
-					return EParseState::Continue;
-				return EParseState::Cancel; // not quoted, we don't want.
-			}
-		
-		// if (ParsedStringType == EParsedStringType::Unknown) {
-			// if (InC == '"' || InC == '\'') {
-				// ParsedStringType = EParsedStringType::Quoted;
-				// OpeningQuoteChar = InC;
-				// return EParseState::Continue;
-			// }
-			// ParsedStringType = EParsedStringType::Unquoted;
-		// }
+	[&VarName, &IsAtStart](const TCHAR InC){
+		if (UNLIKELY(IsAtStart)) {
+			IsAtStart = false;
+			
+			return InC == '"' ? EParseState::Continue : EParseState::Cancel; // not quoted, we don't want.
+		}
+	
+		if (InC == '"')
+			return EParseState::StopAfter;
 
-		// check(ParsedStringType != EParsedStringType::Unknown);
-
-		// if (InC == ':') bShouldBeEnum = true;
-
-		// if (ParsedStringType == EParsedStringType::Unquoted) {
-		// 	for (const TCHAR BreakingChar : JMathExp::PropertyBreakingChars) {
-		// 		if (InC == BreakingChar) return EParseState::StopBefore;
-		// 	}
-		// 	PropertyName.AppendChar(InC);
-		// } else {
-			// check(ParsedStringType == EParsedStringType::Quoted);
-			if (InC == '"')// && NumConsecutiveSlashes % 2 == 0) {
-				return EParseState::StopAfter;
-			// }
-
-			PropertyName.AppendChar(InC);
-
-			// if (InC == '\\')
-				// NumConsecutiveSlashes++;
-			// else
-				// NumConsecutiveSlashes = 0;
-		// }
+		VarName.AppendChar(InC);
 		return EParseState::Continue;
 	});
 
-	// if (ParsedStringType == EParsedStringType::Quoted) {
-		PropertyName.ReplaceEscapedCharWithCharInline();
-	// }
+	// Do i need this?
+	VarName.ReplaceEscapedCharWithCharInline();
 
+	// so basically i consume the string and turn it into a number, and then pretend it's that value.
+	// which it actually is.
 	if (LIKELY(StringToken.IsSet())) {
-		const double Val = LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(FName(PropertyName)): 0;
-
-		// so basically i consume the string and turn it into a number, and then pretend it's that value. which it actually is.
+		const double Val = LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(FName(VarName)): 0;
 		Consumer.Add(StringToken.GetValue(), FExpressionNode(Val));
 	}
 
