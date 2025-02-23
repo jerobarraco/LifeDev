@@ -27,11 +27,12 @@ namespace ExpressionParser {
 	const TCHAR* const FLessThan::Moniker = TEXT("<");
 	const TCHAR* const FEquals::Moniker = TEXT("=");
 }
+
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
 	
 	static inline bool _IsFalse(const double A) {
-		return A<=0 || FMath::IsNearlyZero(A);
+		return A <= 0 || FMath::IsNearlyZero(A);
 	}
 }
 
@@ -67,6 +68,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
+	
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
 	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
@@ -106,7 +108,6 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
 		return B;
 	});
-	
 	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
 		const double B = FMath::Abs(A); 
 		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
@@ -114,7 +115,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 	JumpTable.MapPreUnary<FNot>([](const double A) {
 		UE_LOG(LogTemp, Warning, TEXT("Not A=%.5f"), A);
-		return double(JMathExp::_IsFalse(A) ? 1 : 0);
+		return double(JMathExp::_IsFalse(A) ? 1.0 : 0.0);
 	});
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
