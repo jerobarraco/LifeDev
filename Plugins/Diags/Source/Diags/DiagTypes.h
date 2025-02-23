@@ -47,6 +47,9 @@ public:
 	// Experimental. The dialog will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString Comment = "";
 };
 
 // The base structure for dialog group. For sequences, randoms, selections, etc.
@@ -66,6 +69,9 @@ public:
 	// Experimental. The sequence will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString Comment = "";
 };
 
 // chars
