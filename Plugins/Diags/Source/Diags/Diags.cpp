@@ -28,7 +28,9 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	if (UNLIKELY(!Ok)) return false;
 
 	double Res = 0;
-	if (UNLIKELY(!CheckCondition(OutDialog.Condition, Res))) {
+	const bool Cond = CheckCondition(OutDialog.Condition, Res);
+	const bool Passed = Cond && Res>0;
+	if (UNLIKELY(!Passed)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
 			__func__, *Row.ToString(), *OutDialog.Condition);
 		return false;
@@ -80,8 +82,11 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
-	if (Seq.Type == ESeqType::SEQUENCE) {
-		if (UNLIKELY(!CondOk)) return false;
+	const bool Passed = CondOk && Res >0;
+	if (UNLIKELY(!Passed)) return false;
+
+	if (Seq.Type == ESeqType::SEQUENCE) { 
+		return AddIdMany(Rows);
 	} else if (Seq.Type == ESeqType::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num-1);
 		return AddId(Rows[i]);
@@ -99,8 +104,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 		}
 		return false;
 	}
-
-	return AddIdMany(Rows);
+	return false;
 }
 
 bool UDiags::AddGroupId(const FName& RowName, const bool Warn) {
