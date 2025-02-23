@@ -29,7 +29,7 @@ namespace JMathExp {
 	
 	static inline bool _IsFalse(const double A) {
 		return A<=0 || FMath::IsNearlyZero(A);
-	} 
+	}
 }
 
 FMathExpEvaluator::FMathExpEvaluator() {
@@ -53,6 +53,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FAnd>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FOr>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FXor>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FGreatThan>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FLessThan>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FEquals>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -66,7 +69,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
 	Grammar.DefinePreUnaryOperator<FNot>();
 	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not 
+	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
@@ -76,16 +79,31 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPower>(3);
 	Grammar.DefineBinaryOperator<FRand>(3);
-	Grammar.DefineBinaryOperator<FAnd>(6, EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FOr>(6,  EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FXor>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FAnd>(7, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FOr>(7,  EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FXor>(7, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FGreatThan>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FLessThan>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FEquals>(6, EAssociativity::LeftToRight);
 
-	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
-	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
-	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
-	JumpTable.MapPreUnary<FSaturate>([](const double A) {
-		return double(FMath::Clamp(A, 0, 1));
+	JumpTable.MapPreUnary<FPlus>([](const double N) {
+		UE_LOG(LogTemp, Warning, TEXT("Plus A=%.5f"), N);
+		return N;
 	});
+	JumpTable.MapPreUnary<FMinus>([](const double N) {
+		UE_LOG(LogTemp, Warning, TEXT("minus A=%.5f"), N);
+		return -N;
+	});
+	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ 
+		UE_LOG(LogTemp, Warning, TEXT("sqr A=%.5f"), A);
+		return double(FMath::Sqrt(A));
+	});
+	JumpTable.MapPreUnary<FSaturate>([](const double A){
+		const double B = FMath::Clamp(A, double(0), double(1));
+		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
+		return B;
+	});
+
 	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
 		const double B = FMath::Abs(A); 
 		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
@@ -107,20 +125,20 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("ModZero", "Modulo zero"));
 		return MakeValue(double(FMath::Fmod(A, B))); // todo fix this on the epic's repo
 	});
-	JumpTable.MapBinary<FRand>([](const double A, const double B) -> FExpressionResult {
-		return MakeValue(double(FMath::FRandRange(A, B)));
+	JumpTable.MapBinary<FRand>([](const double A, const double B) -> double {
+		return FMath::FRandRange(A, B);
 	});
 	JumpTable.MapBinary<FAnd>([](const double A, const double B) -> double {
-		return double(JMathExp::_IsFalse(A) ? 0 : B);
+		return JMathExp::_IsFalse(A) ? 0.0 : B;
 	});
 	JumpTable.MapBinary<FOr>([](const double A, const double B) -> double {
-		return double(JMathExp::_IsFalse(A) ? B : A);
+		return JMathExp::_IsFalse(A) ? B : A;
 	});
 	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
 		const bool FalseA = JMathExp::_IsFalse(A);
 		const bool FalseB = JMathExp::_IsFalse(B);
 		const bool Same = FalseA == FalseB;
-		return double(Same ? 0: 1);
+		return Same ? 0.0: 1.0;
 	});
 	
 }
