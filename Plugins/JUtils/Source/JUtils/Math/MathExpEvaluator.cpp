@@ -138,30 +138,25 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return JMathExp::_IsFalse(A) ? B : A;
 	});
 	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
+		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
+
 		const bool FalseA = JMathExp::_IsFalse(A);
 		const bool FalseB = JMathExp::_IsFalse(B);
 		const bool Same = FalseA == FalseB;
 		return Same ? 0.0: 1.0;
 	});
 	JumpTable.MapBinary<FGreatThan>([](const double A, const double B) -> double {
-		const bool FalseA = JMathExp::_IsFalse(A);
-		const bool FalseB = JMathExp::_IsFalse(B);
-		const bool Same = FalseA == FalseB;
-		return Same ? 0.0: 1.0;
+		const bool True = A>B;
+		return True ? 1.0: 0.0;
 	});
-	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
-		const bool FalseA = JMathExp::_IsFalse(A);
-		const bool FalseB = JMathExp::_IsFalse(B);
-		const bool Same = FalseA == FalseB;
-		return Same ? 0.0: 1.0;
+	JumpTable.MapBinary<FLessThan>([](const double A, const double B) -> double {
+		const bool True = A<B;
+		return True ? 1.0: 0.0;
 	});
-	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
-		const bool FalseA = JMathExp::_IsFalse(A);
-		const bool FalseB = JMathExp::_IsFalse(B);
-		const bool Same = FalseA == FalseB;
-		return Same ? 0.0: 1.0;
+	JumpTable.MapBinary<FEquals>([](const double A, const double B) -> double {
+		const bool True = FMath::IsNearlyEqual(A, B);
+		return True ? 1.0: 0.0;
 	});
-	
 }
 
 TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR* InExpression, double InExistingValue) const {
