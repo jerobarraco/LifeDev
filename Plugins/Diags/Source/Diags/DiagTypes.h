@@ -8,17 +8,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogTextDialogs, Log, Log)
 
 UENUM(BlueprintType)
-enum class EDialogEmotion : uint8 {
-	NEUTRAL,
-	SAD,
-	AFRAID,
-	ANGRY,
-	HAPPY,
-	DISGUST,
-};
-
-UENUM(BlueprintType)
-enum class EDialogType : uint8 {
+enum class EDiagType : uint8 {
 	NORMAL,
 	SYSTEM,
 	WHISPER,
@@ -44,7 +34,7 @@ enum class ESeqType : uint8 {
 // The base structure for dialogs.
 // if the row ends with "*" it makes no difference (see what happens on sequences though). (this is a feature)
 USTRUCT(Blueprintable, BlueprintType)
-struct DIAGS_API FDialog: public FTableRowBase {
+struct DIAGS_API FDiag: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
@@ -59,14 +49,16 @@ public:
 	FString Condition = "";
 };
 
-// TODO rename Sequence to Group. Also rename everywhere.
-
 // The base structure for dialog group. For sequences, randoms, selections, etc.
 USTRUCT(Blueprintable, BlueprintType)
-struct DIAGS_API FDialogSequence: public FTableRowBase {
+struct DIAGS_API FDiagGroup: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
+	// Behavior of the group
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	ESeqType Type = ESeqType::SEQUENCE;
+
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> DiagRows;
@@ -74,15 +66,12 @@ public:
 	// Experimental. The sequence will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ESeqType Type = ESeqType::SEQUENCE;
 };
 
 // chars
 // structure to define a character
 USTRUCT(Blueprintable, BlueprintType)
-struct DIAGS_API FDialogChar: public FTableRowBase {
+struct DIAGS_API FDiagChar: public FTableRowBase {
 	GENERATED_BODY()
 
 public:

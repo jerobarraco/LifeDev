@@ -57,7 +57,7 @@ void ARadioI00::BeginPlay() {
 	SetState(1); // start opened. i shouldn't really do this.
 }
 
-void ARadioI00::DialogShown(const FDialog& Diag) {
+void ARadioI00::DialogShown(const FDiag& Diag) {
 	Flashback->ModVal(.07);
 }
 

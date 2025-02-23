@@ -16,14 +16,14 @@ UDiags* UDiags::Instance(const UObject* const O) {
 	return UNLIKELY(IsValid(D)) ? D : nullptr;
 }
 
-void UDiags::AddDiag(const FDialog& Diag) {
+void UDiags::AddDiag(const FDiag& Diag) {
 	Pending.Add(Diag);
 	ShowNext();
 }
 
 bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	UE_LOG(LogDiags, Log, TEXT("%hs: row=%s, warn=%i"), __func__, *Row.ToString(), Warn);
-	FDialog OutDialog; FDialogChar OutChar;
+	FDiag OutDialog; FDiagChar OutChar;
 	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
 	if (UNLIKELY(!Ok)) return false;
 
@@ -39,19 +39,19 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	return true;
 }
 
-bool UDiags::AddId(const FName& Row) {
+bool UDiags::AddId(const FName& Row, const bool Warn) {
 	if (UNLIKELY(Row.IsNone())) return false;
 
 	// attempt to add a sequence (can be random) (could trigger another call to AddId)
-	if (AddSeqId(Row, false)) return true;
+	if (AddGroupId(Row, false)) return true;
 
 	// otherwise attempt a dialog
 	if (LIKELY(AddDiagId(Row, false))) return true;
 
 	// this also would capture a sequence that is empty or the ids are none.
-	UE_LOG(LogDiags, Warning,
-		TEXT("%hs: Could not find dialog nor sequence with the id=%s. "
-			"Or the sequence was empty or invalid."), __func__, *Row.ToString());
+	UE_CLOG(Warn, LogDiags, Warning,
+		TEXT("%hs: Could not find dialog nor group with the id=%s. "
+			"Or the group was empty or invalid."), __func__, *Row.ToString());
 	return false;
 }
 
@@ -72,7 +72,7 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 	return Success;
 }
 
-bool UDiags::AddSeq(const FDialogSequence& Seq) {
+bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	const TArray<FName>& Rows = Seq.DiagRows;
 	const int32 Num = Rows.Num();
 	if (Num <= 0) return false;
@@ -102,9 +102,9 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 	return AddIdMany(Rows);
 }
 
-bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
-	FDialogSequence Seq;
-	const bool Ok = GetSeq(RowName, Seq, Warn);
+bool UDiags::AddGroupId(const FName& RowName, const bool Warn) {
+	FDiagGroup Seq;
+	const bool Ok = GetGroup(RowName, Seq, Warn);
 	if (!Ok) return false;
 
 	const int32 DiagNum = Seq.DiagRows.Num();
@@ -145,15 +145,7 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 		Seq.Type= ESeqType::RANDOM;
 	}
 
-	return AddSeq(Seq);
-}
-
-bool UDiags::AddRnd(const FDialogSequence& Seq) {
-	const int32 Num = Seq.DiagRows.Num();
-	if (Num <= 0) return false;
-
-	const int32 i = FMath::RandRange(0, Num -1);
-	return AddId(Seq.DiagRows[i]);
+	return AddGroup(Seq);
 }
 
 void UDiags::DiagDone() {
@@ -180,11 +172,11 @@ void UDiags::DeInit() {
 }
 
 bool UDiags::GetDiag(
-const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) const {
+const FName& RowName, FDiag& OutRow, FDiagChar& OutChar, const bool Warn) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Diags))) return false;
 
-	const FDialog* const Row = Diags->FindRow<FDialog>(RowName, TEXT(""), Warn);
+	const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), Warn);
 	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
 		return false;
@@ -195,11 +187,11 @@ const FName& RowName, FDialog& OutRow, FDialogChar& OutChar, const bool Warn) co
 	return true;
 }
 
-bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn) const {
+bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Chars))) return false;
 
-	const FDialogChar* const Row = Chars->FindRow<FDialogChar>(RowName, TEXT(""), Warn);
+	const FDiagChar* const Row = Chars->FindRow<FDiagChar>(RowName, TEXT(""), Warn);
 	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
@@ -209,12 +201,12 @@ bool UDiags::GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn
 	return true;
 }
 
-bool UDiags::GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn) const {
+bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutSeq, const bool Warn) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Seqs))) return false;
 
-	const FDialogSequence* const Row =
-		Seqs->FindRow<FDialogSequence>(RowName, TEXT(""), Warn);
+	const FDiagGroup* const Row =
+		Seqs->FindRow<FDiagGroup>(RowName, TEXT(""), Warn);
 	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
@@ -236,7 +228,7 @@ void UDiags::ShowNext() {
 
 	// Do NOT get a reference here,
 	// since we will remove later, it will actually return weird data.
-	FDialog Diag = Pending[0];
+	FDiag Diag = Pending[0];
 	Pending.RemoveAt(0);
 
 	OnShow.Broadcast(Diag);

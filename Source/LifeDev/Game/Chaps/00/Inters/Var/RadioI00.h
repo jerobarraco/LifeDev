@@ -24,7 +24,7 @@ protected:
 	UFUNCTION()
 	void DialogDone();
 	UFUNCTION()
-	void DialogShown(const FDialog& Diag);
+	void DialogShown(const FDiag& Diag);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCLSounder> SFX_Ghost = nullptr;

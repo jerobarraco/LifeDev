@@ -21,7 +21,7 @@ public:
 
 	// shows or queues a new dialog
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void ShowDlg(const FDialog& Diag);
+	void ShowDlg(const FDiag& Diag);
 	
 	// skips animation or the current dialog. will trigger an onDone if already ready.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -46,5 +46,5 @@ protected:
 	int32 CurDlgI = 0;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
-	TArray<FDialog> Dlgs;
+	TArray<FDiag> Dlgs;
 };

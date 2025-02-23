@@ -61,7 +61,7 @@ void ADiagMan::DeInit_Implementation() {
 	UI = nullptr;
 }
 
-void ADiagMan::Show_Implementation(const FDialog& Diag) {
+void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 
 	UE_CLOG(UNLIKELY(IsShowing), LogTextDialogs, Log, TEXT("%hs Attempted to show text when i was already showing."),

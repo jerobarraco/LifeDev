@@ -71,7 +71,7 @@ void UCLCharItems::Look(const FName& Name) const {
 	if (LIKELY(IsValid(Diags)) && !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
-		FDialog Diag;
+		FDiag Diag;
 		// Diag.Type = EDialogType::SYSTEM;
 		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";

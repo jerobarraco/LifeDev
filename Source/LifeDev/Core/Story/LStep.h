@@ -36,8 +36,8 @@ public:
 	virtual void Stop_Implementation() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DlgShow(const FDialog& Diag);
-	virtual void DlgShow_Implementation(const FDialog& Diag);
+	void DlgShow(const FDiag& Diag);
+	virtual void DlgShow_Implementation(const FDiag& Diag);
 
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.

@@ -32,7 +32,7 @@ void ALDiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALDiagMan::Show_Implementation(const FDialog& Diag) {
+void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	const UWorld* const W = GetWorld();
 	if (LIKELY(!W)) return;
 

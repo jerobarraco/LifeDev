@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "DialogUI.h"
 
-void UDialogUI::ShowDlg_Implementation(const FDialog& Diag) {
+void UDialogUI::ShowDlg_Implementation(const FDiag& Diag) {
 	Dlgs.Add(Diag); // needs to be before show or it will fail
 	Show();
 	// bp has logic here. TODO port

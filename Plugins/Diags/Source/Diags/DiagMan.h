@@ -31,7 +31,7 @@ public:
 
 	// show a dialog
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Show(const FDialog& Diag);
+	void Show(const FDiag& Diag);
 	// stop showing Diags (no more Diags)
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();

@@ -34,7 +34,7 @@ public:
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void Show_Implementation(const FDialog& Diag) override;
+	virtual void Show_Implementation(const FDiag& Diag) override;
 	virtual void DiagDone_Implementation() override;
 	virtual void Back_Implementation() override;
 	void AutoClear();

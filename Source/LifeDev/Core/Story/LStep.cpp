@@ -124,14 +124,14 @@ void ALStep::StartDialogs() {
 void ALStep::SetFBDlgAuto() {
 	if (UNLIKELY(!UseFBDlgAuto)) return;
 
-	FDialogSequence Seq;
+	FDiagGroup Seq;
 	int32 Len = 0;
-	const bool Ok = Diags->GetSeq(DlgId, Seq);
+	const bool Ok = Diags->GetGroup(DlgId, Seq);
 	if (Ok) {
 		Len = Seq.DiagRows.Num();
 	} else {
-		FDialog D;
-		FDialogChar C;
+		FDiag D;
+		FDiagChar C;
 		const bool Ok2 = Diags->GetDiag(DlgId, D, C);
 		if (LIKELY(Ok2)) Len = 1;
 	}
@@ -205,7 +205,7 @@ void ALStep::CheckItemsFinish() {
 	FinishAfterDlgs();
 }
 
-void ALStep::DlgShow_Implementation(const FDialog& Diag) {
+void ALStep::DlgShow_Implementation(const FDiag& Diag) {
 	// no need to check for IsNearlyZero. modval does it.
 	// ModVal is the best, since if i trigger several dialogs very fast
 	// it should still go to the correct value.

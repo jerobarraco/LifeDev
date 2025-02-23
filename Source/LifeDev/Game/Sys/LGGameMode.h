@@ -10,7 +10,7 @@
 #include "LGGameMode.generated.h"
 
 class UFlashback;
-struct FDialog;
+struct FDiag;
 class AGhostPool;
 class ALStoryMan;
 class APostProcessVolume;
@@ -118,7 +118,7 @@ protected:
 	void ChapStartNext();
 	
 	UFUNCTION() // bind to delegate
-	void DiagShown(const FDialog& Diag);
+	void DiagShown(const FDiag& Diag);
 	UFUNCTION() // bind to delegate
 	void DiagDone();
 	UFUNCTION() // bound

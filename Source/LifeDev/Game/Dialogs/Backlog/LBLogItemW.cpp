@@ -7,7 +7,7 @@
 
 #include "Diags/Diags.h"
 
-void ULBLogItemW::SetUp(const FDialog& Diag) {
+void ULBLogItemW::SetUp(const FDiag& Diag) {
 	if (UNLIKELY(!T_Name || !R_Diag)) {
 		UE_LOG(LogTemp, Warning, TEXT("BLogItemW %hs Need a T_Name and R_Diag widgets"), __func__);
 		return;
@@ -18,7 +18,7 @@ void ULBLogItemW::SetUp(const FDialog& Diag) {
 	const UDiags* const Diags = UDiags::Instance(this);
 	if (UNLIKELY(!Diags)) return;
 
-	FDialogChar Char;
+	FDiagChar Char;
 	if (UNLIKELY(!Diags->GetChar(Diag.CharRow, Char, true))) return;
 
 	T_Name->SetText(Char.Name);

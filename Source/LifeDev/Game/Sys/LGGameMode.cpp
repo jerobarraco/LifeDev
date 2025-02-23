@@ -456,7 +456,7 @@ void ALGGameMode::ChapStartEnd() const {
 	UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
 }
 
-void ALGGameMode::DiagShown(const FDialog& Diag) {
+void ALGGameMode::DiagShown(const FDiag& Diag) {
 	SetTempInputEnabled(false);
 }
 

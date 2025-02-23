@@ -10,8 +10,8 @@
 #include "Diags.generated.h"
 
 class UEval;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDialog&, Diag);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName, Name, const FDialog&, Diag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDiag&, Diag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName, Name, const FDiag&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
 
 // World subsystem to deal with dialogs
@@ -25,13 +25,13 @@ public:
 
 #pragma region Add
 	// Main function. Use this.
-	// Attempts to add a sequence id. Otherwise, it will attempt to add a dialog id.
-	// Sequence ids can contain other sequences, so this could be recursive or cyclic (and might crash). Beware!
+	// Attempts to add a group id. Otherwise, it will attempt to add a dialog id.
+	// Groups can contain other groups, so this could be recursive or cyclic (and might crash). Beware!
 	// If, and only if, a *Sequence* id ends with '*' it will add a random one instead of a regular sequence (all the dialogs in it).
 	// If a dialog ends with "*" it will simply add it.
 	// This is on purpose to support certain code that can either trigger a random dialog in a sequence, or a specific dialog.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddId(const FName& Row);
+	bool AddId(const FName& Row, const bool Warn=true);
 	// add many sequences or dialogs. can be recursive
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool AddIdMany(const TArray<FName>& Rows);
@@ -41,32 +41,26 @@ public:
 	bool AddDiagId(const FName& Row, const bool Warn=true);
 	// add a dialog
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void AddDiag(const FDialog& Diag);
+	void AddDiag(const FDiag& Diag);
 	
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	// Sequences ending with "*" will only add one *random* dialog from that sequence.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddSeqId(const FName& RowName, const bool Warn=true);
+	bool AddGroupId(const FName& RowName, const bool Warn=true);
 	// Adds a sequence. Use this to AddManyById.
 	// Beware this doesn't protect you from recursive sequences.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool AddSeq(const FDialogSequence& Seq);
-	// From a sequence adds one random. This will call AddId.
-	// so it can contain other sequences, and other random ones.
-	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
-	// deprecated, use Modifier = Random then AddId or AddSeqId or AddSeq
-	UFUNCTION(BlueprintCallable, Category="Dialogs", meta=(DeprecatedFunction))
-	bool AddRnd(const FDialogSequence& Seq);
+	bool AddGroup(const FDiagGroup& Seq);
 #pragma endregion
 #pragma region Get
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetDiag(const FName& RowName, FDialog& OutRow, FDialogChar& OutChar,
+	bool GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar,
 		const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetChar(const FName& RowName, FDialogChar& OutChar, const bool Warn=true) const;
+	bool GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetSeq(const FName& RowName, FDialogSequence& OutSeq, const bool Warn=true) const;
+	bool GetGroup(const FName& RowName, FDiagGroup& OutSeq, const bool Warn=true) const;
 
 	// true when there's a dialog showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -78,23 +72,12 @@ public:
 	void DiagDone();
 
 	// EXPERIMENTAL
-	// Tests a "simple" mathematical expression. Returns true if >0.
-	// Operators: +,-,/,*,^,sqrt(),()
-	// Flags can be added like "{myflag}".
-	// To use flags you need to hook to the delegate in the diags subsystem (OnGetFlag)
-	// A flag that is not set equals to 0. If the delegate is not bound, it will return 0 too.
-	// e.g.:
-	//	"{myflag}" triggers if the flag is set
-	//	"{myflag}-1" flag is greater than 1
-	//	"1-{myflag}" flag is less than 1
-	//	"-{myflag}" flag is not set or negative
-	//	"{myflag}*{myotherflag}" both flags are set.
-	//	"{myflag}*(1-{myotherflag})" one and not the other
-	//	"{myflag}+{myotherflag}" one OR the other (this requires the flags to not be negative)
-	//	"sqrt({myflag}^2)" absolute value of myflag (root of a squared number)
-	// Res is the result of the evaluation (a number)
+	// Tests a Group's condition. Returns true if >0.
+	// See the Eval subsystem for docs.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
 	bool CheckCondition(const FString& Expression, double& Res) const;
+	// left here in case someone needs to check the condition of a group for some weird reason.
+	
 
 #pragma region Init
 	// set the data to be used. call upon initialization.
@@ -140,6 +123,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
 	
-	TArray<FDialog> Pending;
+	TArray<FDiag> Pending;
 	bool IsShowing = false;
 };

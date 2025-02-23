@@ -18,7 +18,7 @@ class LIFEDEV_API ULBLogItemW : public UUserWidget {
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetUp(const FDialog& Diag);
+	void SetUp(const FDiag& Diag);
 	// don't const or ue will make it pure. wtf
 
 protected:

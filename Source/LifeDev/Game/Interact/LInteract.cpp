@@ -245,7 +245,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 	const bool Has = Inventory->Has(ULockItem);
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
-	FDialog D; FDialogChar C;
+	FDiag D; FDiagChar C;
 	Diags->AddId(Dlg);
 }
 
