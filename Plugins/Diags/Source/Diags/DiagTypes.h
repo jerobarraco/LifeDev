@@ -28,7 +28,7 @@ enum class EDialogType : uint8 {
 
 // Modifiers for a sequence
 UENUM(BlueprintType)
-enum class ESeqMod : uint8 {
+enum class ESeqType : uint8 {
 	// Normal sequence
 	SEQUENCE,
 	// Choose one dialog at random
@@ -55,20 +55,11 @@ public:
 	// Experimental. The dialog will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
-	
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// EDialogEmotion Emotion = EDialogEmotion::NEUTRAL;
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// EDialogType Type = EDialogType::NORMAL; // see clcharitems
-	// WIP TODO
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// TMap<FName, FText> Options;
 };
 
-// The base structure for dialog sequences.
-// If the key ends with "*" a _random_ dialog row will be picked.
-// If it ends with a "!" it will choose the first dialog if the condition is true, the 2nd if false.
-// If it ends with a "?" it will evaluate the condition and choose the corresponding dialog. Clamped to bounds (0, max).  
+// TODO rename Sequence to Group. Also rename everywhere.
+
+// The base structure for dialog group. For sequences, randoms, selections, etc.
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDialogSequence: public FTableRowBase {
 	GENERATED_BODY()
@@ -83,7 +74,7 @@ public:
 	FString Condition = "";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ESeqMod Modifier = ESeqMod::SEQUENCE;
+	ESeqType Type = ESeqType::SEQUENCE;
 };
 
 // chars

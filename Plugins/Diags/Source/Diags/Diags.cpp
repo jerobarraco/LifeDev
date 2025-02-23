@@ -79,16 +79,16 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
-	if (Seq.Modifier == ESeqMod::SEQUENCE) {
+	if (Seq.Type == ESeqType::SEQUENCE) {
 		if (UNLIKELY(!CondOk)) return false;
-	} else if (Seq.Modifier == ESeqMod::RANDOM) {
+	} else if (Seq.Type == ESeqType::RANDOM) {
 		const int32 i = FMath::RandRange(0, Num-1);
 		return AddId(Rows[i]);
-	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
+	} else if (Seq.Type == ESeqType::SELECT_LOOP) {
 		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
-	} else if (Seq.Modifier == ESeqMod::SELECT_LOOP) {
+	} else if (Seq.Type == ESeqType::SELECT_LOOP) {
 		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
@@ -126,18 +126,18 @@ bool UDiags::AddSeqId(const FName& RowName, const bool Warn) {
 	// const bool CondOk = CheckCondition(Seq.Condition, CondRes);
 	if (RowNameStr.EndsWith("!")) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp."), __func__);
-		Seq.Modifier = ESeqMod::SELECT_CLAMP;
+		Seq.Type = ESeqType::SELECT_CLAMP;
 	}
 
 	if (RowNameStr.EndsWith("?")) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp or loop modifier."), __func__);
-		Seq.Modifier = ESeqMod::SELECT_LOOP;
+		Seq.Type = ESeqType::SELECT_LOOP;
 	}
 
 	// add random or regular accordingly. if it ends with * it's ALWAYS random
 	if (RowNameStr.EndsWith("*")){
 		UE_LOG(LogDiags, Warning, TEXT("%hs Using * suffix. please use modifier. this is going to get removed soon."), __func__);
-		Seq.Modifier= ESeqMod::RANDOM;
+		Seq.Type= ESeqType::RANDOM;
 	}
 
 	return AddSeq(Seq);
