@@ -145,11 +145,11 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			const FName NameUse("Item.Use."+Name.ToString()); // TODO to consts
 			const bool Said = Say(NameUse);
 			const bool Ok = PlaySound(Item.Snd);
-			const FName NameFlag(LDConsts::Flags::Game::Item::Use.ToString()+Name.ToString());
+			const FName NameFlag(LDConsts::Flags::Game::Item::Use.ToString()+Name.ToString()); // TODO to consts
 			Flags->Mod(NameFlag, 1);
 			return Res;
 		}
-	} else if (Item.SelfUsable) { 	// if it wasn't success. try to self-use it.
+	} else if (Item.SelfUsable) { // if it wasn't success. try to self-use it.
 		// notice only checking auto-trigger here.
 		// so that i can use an auto trigger with an ANY interact too.
 		// which allows me to not have to configure the Interact, but instead configure the item.
@@ -189,8 +189,9 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	const FName& DlgId = IsBadTarget ?
 		LDConsts::Dlgs::Sys::Item::BadTarget :
 		LDConsts::Dlgs::Sys::Item::NoTarget;
+	// TODO fix badtarget and notarget with new ones (must be done on data)
 
-	Say(DlgId); // TODO fix badtarget and notarget
+	const bool Said = Say(DlgId) || Say(LDConsts::Dlgs::Sys::Item::BadTarget2);
 	// TODO remove old ones
 	return Res;
 }
