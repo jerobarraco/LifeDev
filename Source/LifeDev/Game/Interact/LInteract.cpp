@@ -318,8 +318,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const AActor* const Owner = GetOwner();
 	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
 
-	// generic say something when using an item
-	const bool Added = ValidDiags && Diags->AddId(
+	// generic say something when using an item. deprecated UseItemDlgs
+	const bool SaidUse = ValidDiags && Diags->AddId(
 		FName(LDConsts::Dlgs::Inter::UseItemPre+Label+"."+Item.ToString()));
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
@@ -330,15 +330,18 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	// Checks if it needs an item to unlock it. and unlock if needed.
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
-		const bool Added = ValidDiags && Diags->AddId(ULockBadDlg);
+		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
+		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
+	
 	// now unlocked
 	if (ValidDiags)
 		Diags->AddId(ULockDlg) ||
 		Diags->AddId(FName(
-			LDConsts::Flags::Inter::Unlock+Label)); // TODO move to constflags
+			LDConsts::Dlgs::Inter::UnlockPre+Label));
+	// no need to flag since trigger already flags and implies unlock
 
 	Locked = false; // force unlock or trigger won't work
 	Trigger(); // force trigger

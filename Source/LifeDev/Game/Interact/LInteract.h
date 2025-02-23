@@ -93,11 +93,13 @@ public:
 	FName ULockItem = NAME_None;
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
-	// (e.g. useful for doors) 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	// (e.g. useful for doors)
+	// use Inter.Unlock.ObjName
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockDlg = NAME_None;
 	// dialog to trigger when tried to use the wrong item to unlock this
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	// use Inter.Unlock.Bad.ObjName
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockBadDlg = NAME_None;
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
@@ -116,6 +118,7 @@ public:
 	// this happens before trying to unlock.
 	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
 	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
+	// use Inter.UseItem.ObjName.ItemName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	TMap<FName, FName> UseItemDlgs;
 #pragma endregion
