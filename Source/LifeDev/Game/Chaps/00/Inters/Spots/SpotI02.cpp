@@ -6,7 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI02::ASpotI02():Super() {
-	DropDlg = TEXT("IS0_D*");
+	DropDlg = TEXT("IS0_D");
 	TriggerDlg = "IS0_T"; // when completed
 	LockedDlg = "IS0_L"; // when not full
 	LockedFullDlg = "IS0_LF"; // when full
