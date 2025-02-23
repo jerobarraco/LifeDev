@@ -53,7 +53,10 @@ public:
 	void SetAll(const TMap<FName, float>& NewFlags);
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Clear(const int32 Reserve=0);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags")
+	void Dump();
 
+	
 	/// system
 
 	UFUNCTION(BlueprintCallable, Category="Flags")

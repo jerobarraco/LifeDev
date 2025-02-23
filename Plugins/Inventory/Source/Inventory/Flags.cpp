@@ -51,7 +51,7 @@ bool UFlags::IsSet(const FName& Name) const {
 }
 
 bool UFlags::Has(const FName& Name) const {
-	const float V = Get(Name);
+	const float V = Get(Name, 0);
 	return FMath::IsNearlyEqual(V, 1) || V >= 1.0;
 }
 
@@ -96,4 +96,14 @@ void UFlags::Clear(const int32 Reserve) {
 	}
 
 	Flags.Empty(Reserve);
+}
+
+void UFlags::Dump() {
+	TArray<FName> Keys;
+	Flags.GetKeys(Keys);
+	for (const FName& K: Keys) {
+		const float* const pV = Flags.Find(K);
+		if (UNLIKELY(!pV)) continue;
+		UE_LOG(LogFlags, Log, TEXT("%hs name=%s\t\t val=%.5f"), __func__, K.ToString(), *pV);
+	}
 }
