@@ -486,6 +486,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 }
 
 double ALGGameMode::EvalVar(const FName Name) {
+	// TODO move elsewhere. Featsman?
 	const FString NameS = Name.ToString();
 	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const
 		// TODO size use std::char_traits<char>::length("str")

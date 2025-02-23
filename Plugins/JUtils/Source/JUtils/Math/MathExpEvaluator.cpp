@@ -22,119 +22,7 @@ namespace ExpressionParser {
 	const TCHAR* const FNot::Moniker = TEXT("!");
 }
 namespace JMathExp {
-	// const TCHAR* const FVarExpStart::Moniker = TEXT("[");
-	// const TCHAR* const FVarExprEnd::Moniker = TEXT("]");
-	// const TCHAR* const FSubExpressionStart::Moniker = TEXT("(");
-	// const TCHAR* const FSubExpressionEnd::Moniker = TEXT(")");
-	// const TCHAR* const FPlus::Moniker = TEXT("+");
-	// const TCHAR* const FPlusEquals::Moniker = TEXT("+=");
-	// const TCHAR* const FMinus::Moniker = TEXT("-");
-	// const TCHAR* const FMinusEquals::Moniker = TEXT("-=");
-	// const TCHAR* const FStar::Moniker = TEXT("*");
-	// const TCHAR* const FStarEquals::Moniker = TEXT("*=");
-	// const TCHAR* const FForwardSlash::Moniker = TEXT("/");
-	// const TCHAR* const FForwardSlashEquals::Moniker = TEXT("/=");
-	// const TCHAR* const FPercent::Moniker = TEXT("%");
-	// const TCHAR* const FSquareRoot::Moniker = TEXT("sqrt");
-	// const TCHAR* const FPower::Moniker = TEXT("^");
-
-	// const FDecimalNumberFormattingRules& GetLocalizedNumberFormattingRules() {
-	// 	bool bShouldUseLocalizedNumericInput = false;
-	// 	GConfig->GetBool(TEXT("Internationalization"), TEXT("ShouldUseLocalizedNumericInput"), bShouldUseLocalizedNumericInput, GIsEditor ? GEditorSettingsIni : GGameUserSettingsIni);
-	// 	return bShouldUseLocalizedNumericInput 
-	// 		? FInternationalization::Get().GetCurrentLocale()->GetDecimalNumberFormattingRules() 
-	// 		: FastDecimalFormat::GetCultureAgnosticFormattingRules();
-	// }
-
-	// TOptional<FStringToken> ParseNumberWithFallback(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InPrimaryFormattingRules, const FDecimalNumberFormattingRules& InFallbackFormattingRules, FStringToken* Accumulate, double* OutValue){
-	// 	// Attempt to parse a number from the string
-	// 	// This call will return false if there is some other data after the number, which is why we check the parsed length instead
-	// 	double PrimaryValue = 0.0;
-	// 	int32 PrimaryParsedLen = 0;
-	// 	FastDecimalFormat::StringToNumber(InStream.GetRead(), UE_PTRDIFF_TO_INT32(InStream.GetEnd() - InStream.GetRead()), InPrimaryFormattingRules, FNumberParsingOptions::DefaultNoGrouping(), PrimaryValue, &PrimaryParsedLen);
-	//
-	// 	double FallbackValue = 0.0;
-	// 	int32 FallbackParsedLen = 0;
-	// 	FastDecimalFormat::StringToNumber(InStream.GetRead(), UE_PTRDIFF_TO_INT32(InStream.GetEnd() - InStream.GetRead()), InFallbackFormattingRules, FNumberParsingOptions::DefaultNoGrouping(), FallbackValue, &FallbackParsedLen);
-	//
-	// 	// We take whichever value parsed the most text from the string
-	// 	if (FallbackParsedLen <= PrimaryParsedLen)		{
-	// 		if (OutValue) *OutValue = PrimaryValue;
-	// 		return LIKELY(PrimaryParsedLen > 0) ?
-	// 			InStream.GenerateToken(PrimaryParsedLen) : TOptional<FStringToken>();
-	// 	}
-	// 	if (OutValue) *OutValue = FallbackValue;
-	// 	return LIKELY(FallbackParsedLen > 0) ?
-	// 		InStream.GenerateToken(FallbackParsedLen) : TOptional<FStringToken>();
-	// }
-	//
-	// TOptional<FStringToken> ParseNumberWithRules(const FTokenStream& InStream, const FDecimalNumberFormattingRules& InFormattingRules, FStringToken* Accumulate, double* OutValue)
-	// {
-	// 	// Attempt to parse a number from the string
-	// 	// This call will return false if there is some other data after the number, which is why we check the parsed length instead
-	// 	double Value = 0.0;
-	// 	int32 ParsedLen = 0;
-	// 	FastDecimalFormat::StringToNumber(InStream.GetRead(), UE_PTRDIFF_TO_INT32(InStream.GetEnd() - InStream.GetRead()), InFormattingRules, FNumberParsingOptions::DefaultNoGrouping(), Value, &ParsedLen);
-	//
-	// 	if (OutValue) *OutValue = Value;
-	//
-	// 	return ParsedLen > 0 ? InStream.GenerateToken(ParsedLen) : TOptional<FStringToken>();
-	// }
-	//
-	// TOptional<FStringToken> ParseLocalizedNumberWithAgnosticFallback(const FTokenStream& InStream, FStringToken* Accumulate, double* OutValue)
-	// {
-	// 	return ParseNumberWithFallback(InStream, GetLocalizedNumberFormattingRules(), FastDecimalFormat::GetCultureAgnosticFormattingRules(), Accumulate, OutValue);
-	// }
-	//
-	// TOptional<FStringToken> ParseLocalizedNumber(const FTokenStream& InStream, FStringToken* Accumulate, double* OutValue)
-	// {
-	// 	return ParseNumberWithRules(InStream, GetLocalizedNumberFormattingRules(), Accumulate, OutValue);
-	// }
-	//
-	// TOptional<FStringToken> ParseNumber(const FTokenStream& InStream, FStringToken* Accumulate, double* OutValue)
-	// {
-	// 	return ParseNumberWithRules(InStream, FastDecimalFormat::GetCultureAgnosticFormattingRules(), Accumulate, OutValue);
-	// }
-	//
-	// TOptional<FExpressionError> ConsumeNumberWithRules(FExpressionTokenConsumer& Consumer, const FDecimalNumberFormattingRules& InFormattingRules)
-	// {
-	// 	auto& Stream = Consumer.GetStream();
-	//
-	// 	double Value = 0.0;
-	// 	TOptional<FStringToken> Token = ParseNumberWithRules(Stream, InFormattingRules, nullptr, &Value);
-	//
-	// 	if (Token.IsSet())
-	// 	{
-	// 		Consumer.Add(Token.GetValue(), FExpressionNode(Value));
-	// 	}
-	//
-	// 	return TOptional<FExpressionError>();
-	// }
-	//
-	// TOptional<FExpressionError> ConsumeLocalizedNumberWithAgnosticFallback(FExpressionTokenConsumer& Consumer)
-	// {
-	// 	auto& Stream = Consumer.GetStream();
-	//
-	// 	double Value = 0.0;
-	// 	TOptional<FStringToken> Token = ParseLocalizedNumberWithAgnosticFallback(Stream, nullptr, &Value);
-	//
-	// 	if (Token.IsSet())
-	// 	{
-	// 		Consumer.Add(Token.GetValue(), FExpressionNode(Value));
-	// 	}
-	//
-	// 	return TOptional<FExpressionError>();
-	// }
-	//
-	// TOptional<FExpressionError> ConsumeLocalizedNumber(FExpressionTokenConsumer& Consumer) {
-	// 	return ConsumeNumberWithRules(Consumer, GetLocalizedNumberFormattingRules());
-	// }
-	//
-	// TOptional<FExpressionError> ConsumeNumber(FExpressionTokenConsumer& Consumer) {
-	// 	return ConsumeNumberWithRules(Consumer, FastDecimalFormat::GetCultureAgnosticFormattingRules());
-	// }
-
-	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', ' ', '\t', '(', ')' };
+	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
 }
 
 FMathExpEvaluator::FMathExpEvaluator() {
@@ -258,7 +146,7 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR*
 	return MakeError(LOCTEXT("UnrecognizedResult", "Unrecognized result returned from expression"));
 }
 
-TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) {
+TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) const {
 	enum class EParsedStringType : uint8 {
 		Unknown,
 		Unquoted,
@@ -268,51 +156,55 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTo
 	FString PropertyName;
 	// bool bShouldBeEnum = false;
 	EParsedStringType ParsedStringType = EParsedStringType::Unknown;
-
+	bool Start = true;
 	TCHAR OpeningQuoteChar = TEXT('\0');
 	int32 NumConsecutiveSlashes = 0;
 
 	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
-		[&PropertyName, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes](TCHAR InC){
-		if (ParsedStringType == EParsedStringType::Unknown) {
-			if (InC == '"' || InC == '\'') {
-				ParsedStringType = EParsedStringType::Quoted;
-				OpeningQuoteChar = InC;
-				NumConsecutiveSlashes = 0;
-				return EParseState::Continue;
+	[&PropertyName, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes, &Start](TCHAR InC){
+			if (Start) {
+				if (InC == '"')
+					return EParseState::Continue;
+				else return EParseState::Cancel; // not quoted, we don't want.
 			}
-			ParsedStringType = EParsedStringType::Unquoted;
-		}
+		
+		// if (ParsedStringType == EParsedStringType::Unknown) {
+			// if (InC == '"' || InC == '\'') {
+				// ParsedStringType = EParsedStringType::Quoted;
+				// OpeningQuoteChar = InC;
+				// return EParseState::Continue;
+			// }
+			// ParsedStringType = EParsedStringType::Unquoted;
+		// }
 
 		// check(ParsedStringType != EParsedStringType::Unknown);
 
 		// if (InC == ':') bShouldBeEnum = true;
 
-		if (ParsedStringType == EParsedStringType::Unquoted) {
-			for (const TCHAR BreakingChar : JMathExp::PropertyBreakingChars) {
-				if (InC == BreakingChar) return EParseState::StopBefore;
-			}
-			PropertyName.AppendChar(InC);
-		} else {
-			check(ParsedStringType == EParsedStringType::Quoted);
-			if (InC == OpeningQuoteChar && NumConsecutiveSlashes % 2 == 0) {
+		// if (ParsedStringType == EParsedStringType::Unquoted) {
+		// 	for (const TCHAR BreakingChar : JMathExp::PropertyBreakingChars) {
+		// 		if (InC == BreakingChar) return EParseState::StopBefore;
+		// 	}
+		// 	PropertyName.AppendChar(InC);
+		// } else {
+			// check(ParsedStringType == EParsedStringType::Quoted);
+			if (InC == OpeningQuoteChar)// && NumConsecutiveSlashes % 2 == 0) {
 				return EParseState::StopAfter;
-			}
+			// }
 
 			PropertyName.AppendChar(InC);
 
-			if (InC == '\\')
-				NumConsecutiveSlashes++;
-			else
-				NumConsecutiveSlashes = 0;
-		}
-
+			// if (InC == '\\')
+				// NumConsecutiveSlashes++;
+			// else
+				// NumConsecutiveSlashes = 0;
+		// }
 		return EParseState::Continue;
 	});
 
-	if (ParsedStringType == EParsedStringType::Quoted) {
+	// if (ParsedStringType == EParsedStringType::Quoted) {
 		PropertyName.ReplaceEscapedCharWithCharInline();
-	}
+	// }
 
 	if (LIKELY(StringToken.IsSet())) {
 		const double Val = LIKELY(OnGetVar.IsBound()) ? OnGetVar.Execute(FName(PropertyName)): 0;
