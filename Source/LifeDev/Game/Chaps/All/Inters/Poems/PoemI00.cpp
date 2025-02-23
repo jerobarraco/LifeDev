@@ -4,7 +4,7 @@
 
 APoemI00::APoemI00():Super() {
 	RewardItem = "P00";
-	TriggerDlg = "P00_Look";
+	TriggerDlg = "Item.Look.P00";
 	RewardFlash = -.1f;
 	// a lazy dog is a sheet of paper
 	// a sheet of paper is an ink lined plane
