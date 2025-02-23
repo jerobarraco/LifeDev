@@ -60,7 +60,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
 	bool GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	bool GetGroup(const FName& RowName, FDiagGroup& OutSeq, const bool Warn=true) const;
+	bool GetGroup(const FName& RowName, FDiagGroup& OutGroup, const bool Warn=true) const;
 
 	// true when there's a dialog showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -77,12 +77,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
 	bool CheckCondition(const FString& Expression, double& Res) const;
 	// left here in case someone needs to check the condition of a group for some weird reason.
-	
 
 #pragma region Init
 	// set the data to be used. call upon initialization.
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
-	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllSeqs);
+	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups);
 
 	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Dialogs")
@@ -118,7 +117,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UDataTable> Seqs = nullptr;
+	TObjectPtr<UDataTable> Groups = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;

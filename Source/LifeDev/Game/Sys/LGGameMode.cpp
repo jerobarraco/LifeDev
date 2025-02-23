@@ -521,7 +521,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 		const UCInteractor* const Int = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 		if (UNLIKELY(!Int)) return -1;
 		const UCInteract* const Comp = Int->GetHoverComp();
-		if (UNLIKELY(!Comp)) return 0; // not an error, just nothing there.
+		if (UNLIKELY(!Comp)) return -1;
 
 		if (Name == "V.Inter.Cur.Name") {
 			const AActor* const Owner = Comp->GetOwner();
@@ -546,7 +546,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 			const AInteract* I = Cast<AInteract>(A);
 			return LIKELY(I) ? I->GetState(): -1;
 		}
-		return 0;
+		return -1;
 	}
 	// deprecated
 	if (Name == "V.Rand") return FMath::Rand();

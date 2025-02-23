@@ -154,10 +154,10 @@ void UDiags::DiagDone() {
 }
 
 void UDiags::SetData(
-	UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllSeqs) {
+	UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups) {
 	Diags = IsValid(AllDiags)? AllDiags : nullptr;
 	Chars = IsValid(AllChars)? AllChars: nullptr;
-	Seqs = IsValid(AllSeqs)? AllSeqs: nullptr;
+	Groups = IsValid(AllGroups)? AllGroups: nullptr;
 }
 
 void UDiags::Init() {
@@ -167,7 +167,7 @@ void UDiags::Init() {
 void UDiags::DeInit() {
 	Diags = nullptr;
 	Chars = nullptr;
-	Seqs = nullptr;
+	Groups = nullptr;
 	Eval = nullptr;
 }
 
@@ -201,18 +201,18 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn) 
 	return true;
 }
 
-bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutSeq, const bool Warn) const {
+bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup, const bool Warn) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
-	if (UNLIKELY(!IsValid(Seqs))) return false;
+	if (UNLIKELY(!IsValid(Groups))) return false;
 
 	const FDiagGroup* const Row =
-		Seqs->FindRow<FDiagGroup>(RowName, TEXT(""), Warn);
+		Groups->FindRow<FDiagGroup>(RowName, TEXT(""), Warn);
 	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
 		return false;
 	}
 
-	OutSeq = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
+	OutGroup = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
 	return true;
 }
 
