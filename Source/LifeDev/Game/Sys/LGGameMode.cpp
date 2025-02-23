@@ -486,11 +486,13 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 }
 
 double ALGGameMode::EvalVar(const FName Name) {
+	// TODO move elsewhere. Featsman?
+	
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Name=%s i=%i"), __func__, *NameS, Name.ToUnstableInt());
 	if (NameS.StartsWith("@"))
 		return Name.ToUnstableInt();
-	// TODO move elsewhere. Featsman?
+
 	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const
 		// TODO size use std::char_traits<char>::length("str")
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
