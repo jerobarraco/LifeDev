@@ -109,16 +109,16 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
 		const bool Said =
-			Say (LDConsts::Dlgs::Sys::Item::NotUsable2) ||
-			Say(LDConsts::Dlgs::Sys::Item::NotUsable);
+			Say (LDConsts::Dlgs::Item::NotUsable2) ||
+			Say(LDConsts::Dlgs::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable
 	}
 
 	if (UNLIKELY(!Inventory->IsCold(Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
 		const bool Said =
-			Say (LDConsts::Dlgs::Sys::Item::NotReady2) ||
-			Say(LDConsts::Dlgs::Sys::Item::NotReady);
+			Say (LDConsts::Dlgs::Item::NotReady2) ||
+			Say(LDConsts::Dlgs::Item::NotReady);
 		return EItemUseResult::ERROR;
 	}
 
@@ -187,11 +187,11 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
 		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), IsBadTarget);
 	const FName& DlgId = IsBadTarget ?
-		LDConsts::Dlgs::Sys::Item::BadTarget :
-		LDConsts::Dlgs::Sys::Item::NoTarget;
+		LDConsts::Dlgs::Item::BadTarget :
+		LDConsts::Dlgs::Item::NoTarget;
 	// TODO fix badtarget and notarget with new ones (must be done on data)
 
-	const bool Said = Say(DlgId) || Say(LDConsts::Dlgs::Sys::Item::BadTarget2);
+	const bool Said = Say(DlgId) || Say(LDConsts::Dlgs::Item::BadTarget2);
 	// TODO remove old ones
 	return Res;
 }

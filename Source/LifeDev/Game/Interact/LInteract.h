@@ -116,7 +116,7 @@ public:
 	// this happens before trying to unlock.
 	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
 	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	TMap<FName, FName> UseItemDlgs;
 #pragma endregion
 
