@@ -57,10 +57,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
-	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // werxs
-	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not 
 	Grammar.DefinePreUnaryOperator<FNot>();
+	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
+	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // werxs
+	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not 
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
@@ -84,8 +84,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
 	JumpTable.MapBinary<FStar>([](const double A, const double B)	{ return A * B; });
 	JumpTable.MapBinary<FPower>([](const double A, const double B)	{ return double(FMath::Pow(A, B)); });
-
-	JumpTable.MapBinary<FForwardSlash>([](const double A, const double B) -> FExpressionResult {
+	JumpTable.MapBinary<FForwardSlash>([](const double A, const double B) -> FExpressionResult  {
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("DivisionByZero", "Division by zero"));
 		return MakeValue(A / B);
 	});
@@ -131,11 +130,10 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTo
 	[&VarName, &IsAtStart](const TCHAR InC){
 		if (UNLIKELY(IsAtStart)) {
 			IsAtStart = false;
-			
 			return InC == '"' ? EParseState::Continue : EParseState::Cancel; // not quoted, we don't want.
 		}
 	
-		if (InC == '"')
+		if (UNLIKELY(InC == '"'))
 			return EParseState::StopAfter;
 
 		VarName.AppendChar(InC);
