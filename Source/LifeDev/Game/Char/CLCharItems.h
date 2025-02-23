@@ -8,6 +8,7 @@
 
 #include "CLCharItems.generated.h"
 
+class UFlags;
 class UCInteractor;
 class UInventory;
 class UDiags;
