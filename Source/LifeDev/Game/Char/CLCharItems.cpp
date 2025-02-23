@@ -65,7 +65,7 @@ void UCLCharItems::Look(const FName& Name) const {
 	// don't even bother with the non-random.
 	// if you want to have a non-random sequence you'd have to add 2 keys.
 	// but it's cheaper than asking every time for random and not random.
-	const FName& DRName = FName((SName + "_Look*"));
+	const FName& DRName = FName((SName + "_Look*")); // TODO deprecated
 	const FName& DRNameNew = FName("Item.Look."+SName);
 	// the isValid is for the add below
 	bool Said = Say(DRNameNew); // notice it calls Say first. // TODO don't warn.
@@ -137,13 +137,14 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
-		Inventory->Use(Name);
-		const bool Ok = PlaySound(Item.Snd);
-		return Res;
-	}
-
-	// if it wasn't success. try to self-use it.
-	if (Item.SelfUsable) {
+		const bool Used = Inventory->Use(Name);
+		if (LIKELY(Used)) {
+			const FName NameUse("Item.Use."+Name.ToString());
+			const bool Said = Say(NameUse);
+			const bool Ok = PlaySound(Item.Snd);
+			return Res;
+		}
+	} else if (Item.SelfUsable) { 	// if it wasn't success. try to self-use it.
 		// notice only checking auto-trigger here.
 		// so that i can use an auto trigger with an ANY interact too.
 		// which allows me to not have to configure the Interact, but instead configure the item.
@@ -163,6 +164,9 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			// if it fails to use it, fall through to the rest of the error
 			if (LIKELY(Used)) {
 				Item.Logic->Use();
+				
+				const FName NameUse("Item.Use."+Name.ToString());
+				const bool Said = Say(NameUse);
 				PlaySound(Item.Snd);
 				return EItemUseResult::SUCCESS;
 			}
