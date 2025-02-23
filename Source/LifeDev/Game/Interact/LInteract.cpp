@@ -10,6 +10,7 @@
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -231,6 +232,8 @@ void ALInteract::DoTrigger_Implementation() {
 		// that way we can control the story better. it's easier to check for items than for dialogs.
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
 		DiagsShown = Diags->AddId(TriggerDlg);
+		if (!DiagsShown) Diags->AddId(// TODO test, todo don't warn
+			FName(LDConsts::Dlgs::Sys::Inter::Trigger.ToString()+GetActorLabel(false)));
 	}
 
 	// ensure we reward or the player could get locked
@@ -246,7 +249,9 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	const bool Has = Inventory->Has(ULockItem);
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
 	FDiag D; FDiagChar C;
-	Diags->AddId(Dlg);
+	const bool Shown = Diags->AddId(Dlg);
+	if (!Shown) Diags->AddId(// TODO test, todo don't warn
+			FName(LDConsts::Dlgs::Sys::Inter::TriggerL.ToString()+GetActorLabel(false)));
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
