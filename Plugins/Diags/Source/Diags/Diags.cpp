@@ -92,7 +92,12 @@ bool UDiags::AddSeq(const FDialogSequence& Seq) {
 		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
-	} // else wtf
+	} else if (Seq.Type == ESeqType::PICK_MATCH) {
+		for (const FName& N: Rows) { // TODO test
+			if (AddId(N)) return true;
+		}
+		return false;
+	}
 
 	return AddIdMany(Rows);
 }
