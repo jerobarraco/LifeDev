@@ -12,6 +12,8 @@ DECLARE_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName);
 
 struct FDecimalNumberFormattingRules;
 
+// it HAS to be a guid. and i have NO idea how to get one.
+// otherwise. if i use string constants, even though they are different. they WILL map to one of them. breaking everyting.
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FSaturate, 0x6F88756B, 0xF9234263, 0x9B13614F, 0x27060734)
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FAbsolute,  0x6F88756B, 0xF9234263, 0x9B13614F, 0x21060726)
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FRand, "JMathRand")

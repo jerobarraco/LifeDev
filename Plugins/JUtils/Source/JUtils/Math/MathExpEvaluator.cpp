@@ -92,29 +92,29 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FEquals>(6, EAssociativity::LeftToRight);
 
 	JumpTable.MapPreUnary<FPlus>([](const double N) {
-		UE_LOG(LogTemp, Warning, TEXT("Plus A=%.5f"), N);
+		UE_LOG(LogTemp, Log, TEXT("Plus A=%.5f"), N);
 		return N;
 	});
 	JumpTable.MapPreUnary<FMinus>([](const double N) {
-		UE_LOG(LogTemp, Warning, TEXT("minus A=%.5f"), N);
+		UE_LOG(LogTemp, Log, TEXT("minus A=%.5f"), N);
 		return -N;
 	});
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ 
-		UE_LOG(LogTemp, Warning, TEXT("sqr A=%.5f"), A);
+		UE_LOG(LogTemp, Log, TEXT("sqr A=%.5f"), A);
 		return double(FMath::Sqrt(A));
 	});
 	JumpTable.MapPreUnary<FSaturate>([](const double A){
 		const double B = FMath::Clamp(A, double(0), double(1));
-		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
+		UE_LOG(LogTemp, Log, TEXT("Saturate A=%.5f B=%.5f"), A, B);
 		return B;
 	});
 	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
 		const double B = FMath::Abs(A); 
-		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
+		UE_LOG(LogTemp, Log, TEXT("Absolute A=%.5f B=%.5f"), A, B);
 		return double(B);
 	});
 	JumpTable.MapPreUnary<FNot>([](const double A) {
-		UE_LOG(LogTemp, Warning, TEXT("Not A=%.5f"), A);
+		UE_LOG(LogTemp, Log, TEXT("Not A=%.5f"), A);
 		return double(JMathExp::_IsFalse(A) ? 1.0 : 0.0);
 	});
 
@@ -140,8 +140,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return JMathExp::_IsFalse(A) ? B : A;
 	});
 	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
-		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
-
+		UE_LOG(LogTemp, Log, TEXT("Xor A=%.5f B=%.5f"), A, B);
 		const bool FalseA = JMathExp::_IsFalse(A);
 		const bool FalseB = JMathExp::_IsFalse(B);
 		const bool Same = FalseA == FalseB;
