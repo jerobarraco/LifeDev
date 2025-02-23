@@ -279,6 +279,12 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	const bool Shown = Diags->AddId(Dlg);
 	if (!Shown) Diags->AddId(// TODO test, todo don't warn
 			FName(LDConsts::Dlgs::Sys::Inter::TriggerL.ToString()+GetActorLabel(false)));
+	
+	if (LIKELY(Flags)) {
+		const FName TName = FName(
+			LDConsts::Flags::Game::Inter::TriggerL.ToString()+GetActorLabel(false));
+		Flags->Mod(TName, 1);
+	}
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {

@@ -47,7 +47,8 @@ namespace LDConsts {
 
 			namespace Inter{
 				// expects the actor label at the end
-				inline static const FName Trigger("Game.Inter.Trigger.");
+				inline static const FName TriggerL("Game.Inter.Trigger.");
+				inline static const FName TriggerL("Game.Inter.TriggerL.");
 			}
 
 			namespace Item {
