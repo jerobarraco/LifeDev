@@ -16,13 +16,16 @@
 // TODO see if i can reuse the functions in BasicMathExpression...
 
 namespace ExpressionParser {
-	const TCHAR* const FSaturate::Moniker = TEXT(":");
-	const TCHAR* const FAbsolute::Moniker = TEXT(";");
+	const TCHAR* const FSaturate::Moniker = TEXT("sat");
+	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
 	const TCHAR* const FAnd::Moniker = TEXT("&");
 	const TCHAR* const FOr::Moniker = TEXT("|");
 	const TCHAR* const FXor::Moniker = TEXT("$");
+	const TCHAR* const FGreatThan::Moniker = TEXT(">");
+	const TCHAR* const FLessThan::Moniker = TEXT("<");
+	const TCHAR* const FEquals::Moniker = TEXT("=");
 }
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
@@ -46,7 +49,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPercent>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
+	// TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
@@ -69,7 +72,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
 	Grammar.DefinePreUnaryOperator<FNot>();
 	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
+	// Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
@@ -103,12 +106,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogTemp, Warning, TEXT("Saturate A=%.5f B=%.5f"), A, B);
 		return B;
 	});
-
-	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
-		const double B = FMath::Abs(A); 
-		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
-		return double(B);
-	});
+	//
+	// JumpTable.MapPreUnary<FAbsolute>([](const double A) {
+	// 	const double B = FMath::Abs(A); 
+	// 	UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
+	// 	return double(B);
+	// });
 	JumpTable.MapPreUnary<FNot>([](const double A) {
 		return double(JMathExp::_IsFalse(A) ? 1 : 0);
 	});
@@ -133,6 +136,24 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 	JumpTable.MapBinary<FOr>([](const double A, const double B) -> double {
 		return JMathExp::_IsFalse(A) ? B : A;
+	});
+	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
+		const bool FalseA = JMathExp::_IsFalse(A);
+		const bool FalseB = JMathExp::_IsFalse(B);
+		const bool Same = FalseA == FalseB;
+		return Same ? 0.0: 1.0;
+	});
+	JumpTable.MapBinary<FGreatThan>([](const double A, const double B) -> double {
+		const bool FalseA = JMathExp::_IsFalse(A);
+		const bool FalseB = JMathExp::_IsFalse(B);
+		const bool Same = FalseA == FalseB;
+		return Same ? 0.0: 1.0;
+	});
+	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
+		const bool FalseA = JMathExp::_IsFalse(A);
+		const bool FalseB = JMathExp::_IsFalse(B);
+		const bool Same = FalseA == FalseB;
+		return Same ? 0.0: 1.0;
 	});
 	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
 		const bool FalseA = JMathExp::_IsFalse(A);
