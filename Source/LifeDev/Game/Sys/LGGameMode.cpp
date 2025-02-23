@@ -493,7 +493,8 @@ double ALGGameMode::EvalVar(const FName Name) {
 	if (NameS.StartsWith("@"))
 		return Name.ToUnstableInt();
 
-	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const
+	if (NameS.StartsWith("Items.Count.")) {
+		// TODo make this string a const
 		// TODO size use std::char_traits<char>::length("str")
 		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
 	}
@@ -504,6 +505,8 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return LIKELY(Flashback) ? Flashback->GetVal() : 0;
 
 	if (Name == "Rand") return FMath::Rand();
+	if (Name == "Story.Step.Cur")
+		return Story->GetCurrent().ToUnstableInt();
 
 	return Flags->Get(Name);
 }

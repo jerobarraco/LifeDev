@@ -144,8 +144,8 @@ void UStory::Rem(const FName Name) {
 }
 
 FName UStory::GetCurrent() const {
-	const static FName Empty = NAME_None;
-	return LIKELY(IsValid(Current)) ? Current->Name : Empty;
+	// const static FName Empty = NAME_None;
+	return LIKELY(IsValid(Current)) ? Current->Name : NAME_None;
 }
 
 bool UStory::ToggleStepLayers() const {
