@@ -242,5 +242,6 @@ bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 		return false;
 	}
 
-	return Eval->Eval(Expression, Res) > 0;
+	const bool Ok = Eval->Eval(Expression, Res);
+	return Ok && Res > 0;
 }
