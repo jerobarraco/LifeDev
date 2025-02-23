@@ -132,24 +132,6 @@ bool UDiags::AddGroupId(const FName& RowName, const bool Warn) {
 		return false;
 	}
 
-	// double CondRes = 0;
-	// const bool CondOk = CheckCondition(Seq.Condition, CondRes);
-	if (RowNameStr.EndsWith("!")) {
-		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp."), __func__);
-		Seq.Type = ESeqType::PICK_CLAMP;
-	}
-
-	if (RowNameStr.EndsWith("?")) {
-		UE_LOG(LogDiags, Warning, TEXT("%hs, ? is deprecated. use select clamp or loop modifier."), __func__);
-		Seq.Type = ESeqType::PICK_LOOP;
-	}
-
-	// add random or regular accordingly. if it ends with * it's ALWAYS random
-	if (RowNameStr.EndsWith("*")){
-		UE_LOG(LogDiags, Warning, TEXT("%hs Using * suffix. please use modifier. this is going to get removed soon."), __func__);
-		Seq.Type= ESeqType::RANDOM;
-	}
-
 	return AddGroup(Seq);
 }
 
