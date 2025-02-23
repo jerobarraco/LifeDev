@@ -29,8 +29,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 
 	double Res = 0;
 	const bool Cond = CheckCondition(OutDialog.Condition, Res);
-	const bool Passed = Cond && Res>0;
-	if (UNLIKELY(!Passed)) {
+	if (UNLIKELY(!Cond)) { 
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
 			__func__, *Row.ToString(), *OutDialog.Condition);
 		return false;
@@ -84,8 +83,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
-	const bool Passed = CondOk && Res >0;
-	if (UNLIKELY(!Passed)) return false;
+	if (UNLIKELY(!CondOk)) return false;
 
 	if (Seq.Type == ESeqType::SEQUENCE) { 
 		return AddIdMany(Rows);
@@ -252,11 +250,15 @@ bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 	Res = 0;
 	// empty expressions passes (true)
 	// not unlikely because i don't know how many dialogs have an empty condition
-	if (Expression.TrimStartAndEnd().IsEmpty()) return true;
+	if (Expression.TrimStartAndEnd().IsEmpty()) {
+		Res = 1; // avoid issues down the road
+		return true;
+	}
 
 	if (UNLIKELY(!Eval)) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs Could not obtain Eval subsystem. Make sure it's enabled in config."), __func__);
 		return false;
 	}
-	return Eval->Eval(Expression, Res); 
+
+	return Eval->Eval(Expression, Res) > 0;
 }
