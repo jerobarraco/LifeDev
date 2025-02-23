@@ -242,7 +242,12 @@ void ALInteract::DoTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTrigger_Implementation();
 
-	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
+	if (LIKELY(Flags)) {
+		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
+		const FName TName = FName(
+			LDConsts::Flags::Game::Inter::Trigger.ToString()+GetActorLabel(false));
+		Flags->Mod(TName, 1);
+	}
 
 	// start fading right away to give the player the impression that they picked it up
 	if (WillRewardDestroy()) Fade(false);
@@ -252,6 +257,7 @@ void ALInteract::DoTrigger_Implementation() {
 		// if there's a dialog. give rewards at the end of them.
 		// that way we can control the story better. it's easier to check for items than for dialogs.
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
+		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
 		DiagsShown = Diags->AddId(TriggerDlg);
 		if (!DiagsShown) Diags->AddId(// TODO test, todo don't warn
 			FName(LDConsts::Dlgs::Sys::Inter::Trigger.ToString()+GetActorLabel(false)));
