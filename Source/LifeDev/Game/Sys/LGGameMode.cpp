@@ -512,24 +512,25 @@ double ALGGameMode::EvalVar(const FName Name) {
 	if (Name == NAME_FBValTo)
 		return LIKELY(Flashback) ? Flashback->GetValTo() : -1;
 
-	if (Name == "V.Rand") return FMath::Rand();
 	if (Name == "V.Story.Step.Cur")
 		return Story->GetCurrent().ToUnstableInt();
-	if (NameS.StartsWith("V.Inter.Hover")) { // this is a hack
+
+	// TODO use fnames instead, chop teh NameS. otherwise it's a string comparison. and also is case sensitive.
+	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
 		// TODO find better way
 		const UCInteractor* const Int = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 		if (UNLIKELY(!Int)) return -1;
 		const UCInteract* const Comp = Int->GetHoverComp();
 		if (UNLIKELY(!Comp)) return 0; // not an error, just nothing there.
 
-		if (Name == "V.Inter.Hover.Name") {
+		if (Name == "V.Inter.Cur.Name") {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
 			const FName OwnerName = Owner->GetFName();
 			UE_LOG(LogLGameMode, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			return OwnerName.ToUnstableInt();
 		}
-		if (Name=="V.Inter.Hover.State") {
+		if (Name=="V.Inter.Cur.State") {
 			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
 			if (UNLIKELY(!Owner)) return -1;
 			return Owner->GetState();
@@ -547,6 +548,8 @@ double ALGGameMode::EvalVar(const FName Name) {
 		}
 		return 0;
 	}
+	// deprecated
+	if (Name == "V.Rand") return FMath::Rand();
 
 	return -1;
 }
