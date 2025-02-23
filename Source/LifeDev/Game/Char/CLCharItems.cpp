@@ -7,19 +7,21 @@
 #include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Interact/InteractTypes.h"
+#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryTypes.h"
 #include "Inventory/ItemLogic.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCharItems, Log, Log);
 
 void UCLCharItems::BeginPlay() {
 	Super::BeginPlay();
 	Diags = UDiags::Instance(this);
-	Inventory = UInventory::Instance(GetWorld());
-
+	Inventory = UInventory::Instance(this);
+	Flags = UFlags::Instance(this);
 	const AActor* const Owner = GetOwner();
 	Interactor = Owner ?
 		Cast<UCInteractor>(Owner->GetComponentByClass(UCInteractor::StaticClass())) :
@@ -33,6 +35,7 @@ void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Diags = nullptr;
 	Inventory = nullptr;
 	Interactor = nullptr;
+	Flags = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -139,9 +142,11 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		// since we don't want to trigger when is used with an interaction.
 		const bool Used = Inventory->Use(Name);
 		if (LIKELY(Used)) {
-			const FName NameUse("Item.Use."+Name.ToString());
+			const FName NameUse("Item.Use."+Name.ToString()); // TODO to consts
 			const bool Said = Say(NameUse);
 			const bool Ok = PlaySound(Item.Snd);
+			const FName NameFlag(LDConsts::Flags::Game::Item::Use.ToString()+Name.ToString());
+			Flags->Mod(NameFlag, 1);
 			return Res;
 		}
 	} else if (Item.SelfUsable) { 	// if it wasn't success. try to self-use it.
@@ -167,7 +172,10 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 				
 				const FName NameUse("Item.Use."+Name.ToString());
 				const bool Said = Say(NameUse);
-				PlaySound(Item.Snd);
+				const bool Played = PlaySound(Item.Snd);
+				// TODO improve
+				const FName NameFlag(LDConsts::Flags::Game::Item::Use.ToString()+Name.ToString());
+				Flags->Mod(NameFlag, 1);
 				return EItemUseResult::SUCCESS;
 			}
 		}

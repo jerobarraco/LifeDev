@@ -45,4 +45,6 @@ protected:
 	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UCInteractor> Interactor = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UFlags> Flags=nullptr;
 };
