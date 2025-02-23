@@ -252,10 +252,9 @@ void UDiags::Stop() {
 bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 	Res = 0;
 	if (UNLIKELY(!Eval)) return false;
-	// empty expressions passes
+	// empty expressions passes (true)
+	// not unlikely because i don't know how many dialogs have an empty condition
 	if (Expression.TrimStartAndEnd().IsEmpty()) return true;
 
-	bool Ok = false; 
-	Res = Eval->Eval(Expression, Ok);
-	return Ok;
+	return Eval->Eval(Expression, Res); 
 }

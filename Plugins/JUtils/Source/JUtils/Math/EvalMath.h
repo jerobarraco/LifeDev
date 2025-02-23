@@ -34,7 +34,7 @@ public:
 
 	// empty evaluates to (ok, 0)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	double Eval(const FString& Exp, bool& Ok) const;
+	bool Eval(const FString& Exp, double& Res) const;
 
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)

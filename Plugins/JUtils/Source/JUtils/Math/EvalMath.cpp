@@ -52,23 +52,20 @@ bool UEvalMath::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE || WorldType == EWorldType::Editor;
 }
 
-double UEvalMath::Eval(const FString& Exp, bool& Ok) const {
-	Ok = false;
-	if (UNLIKELY(!Evaluator.IsValid())) return 0;
-	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) {
-		Ok = true;
-		return 0;
-	}
+bool UEvalMath::Eval(const FString& Exp, double & Res) const {
+	Res = 0;
+	if (UNLIKELY(!Evaluator.IsValid())) return false;
+	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) return true;
 
 	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
 	if (UNLIKELY(!Result.IsValid())) {
 		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s exp=%s"),
 			__func__, *Result.GetError().Text.ToString(), *Exp);
-		return 0;
+		return false;
 	}
 
 	UE_LOG(LogEvalMath, Log, TEXT("%hs: Ok exp=%s res=%.3f"),
 			__func__, *Exp, Result.GetValue());
-	Ok = true;
-	return Result.GetValue();
+	Res = Result.GetValue();
+	return true;
 }
