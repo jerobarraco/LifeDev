@@ -17,10 +17,14 @@ DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 // then on getVar convert to FName and then .toUnstableInt. and use int value instead.
 // e.g. "Var" returs teh variable. "@MyId" returns the numeric value of the FName MyId.
 // e.g. "V.Story.Step.Cur"="@C3S0"
-// Operators: +, -,/,*,%
+// for boolean stuff anything > 0 is true. else is false.
+// for some operators 0 and 1 will be returned. for others the actual value of the variable.
+// Operators: +,-,/,*,%
+// sqrt, abs, sat (clamps between 0 and 1)
 // a?b: random between a and b
-// !a: not a
-// 
+// !a: not a 
+// a&b a|b a$b: and or (returns the value) xor (returns 0,1) 
+// a<b a>b a=b: < > =
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
 class JUTILS_API UEvalMath: public UWorldSubsystem {
 	GENERATED_BODY()
