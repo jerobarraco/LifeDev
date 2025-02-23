@@ -520,6 +520,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 	// TODO use fnames instead, chop teh NameS. otherwise it's a string comparison. and also is case sensitive.
 	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
 		// TODO find better way
+		if (UNLIKELY(!Char)) return -1;
 		const UCInteractor* const Int = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 		if (UNLIKELY(!Int)) return -1;
 		const UCInteract* const Comp = Int->GetHoverComp();
