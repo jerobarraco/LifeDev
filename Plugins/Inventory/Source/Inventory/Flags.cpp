@@ -104,6 +104,6 @@ void UFlags::Dump() {
 	for (const FName& K: Keys) {
 		const float* const pV = Flags.Find(K);
 		if (UNLIKELY(!pV)) continue;
-		UE_LOG(LogFlags, Log, TEXT("%hs name=%s\t\t val=%.5f"), __func__, K.ToString(), *pV);
+		UE_LOG(LogFlags, Log, TEXT("%hs name=%s\t\t val=%.5f"), __func__, *K.ToString(), *pV);
 	}
 }

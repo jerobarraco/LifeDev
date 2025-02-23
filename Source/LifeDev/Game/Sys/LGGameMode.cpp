@@ -3,7 +3,7 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
-#include "EvalMath.h"
+#include "Eval.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
@@ -176,7 +176,7 @@ void ALGGameMode::Init() {
 		return;
 	}
 
-	EvalMath = World->GetSubsystem<UEvalMath>();
+	EvalMath = World->GetSubsystem<UEval>();
 
 	const bool IsEditor = UJUtilsMisc::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EvalMath.h"
+#include "Eval.h"
 #include "GameFramework/GameModeBase.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 
@@ -98,7 +98,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlashback> Flashback = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UEvalMath> EvalMath = nullptr;
+	TObjectPtr<UEval> EvalMath = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 

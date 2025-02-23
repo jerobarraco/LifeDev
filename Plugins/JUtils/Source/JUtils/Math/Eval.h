@@ -6,7 +6,7 @@
 
 #include "Templates/SharedPointer.h"
 
-#include "EvalMath.generated.h"
+#include "Eval.generated.h"
 
 
 class FMathExpEvaluator;
@@ -26,14 +26,14 @@ DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1) 
 // a<b a>b a=b: < > =
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
-class JUTILS_API UEvalMath: public UWorldSubsystem {
+class JUTILS_API UEval: public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
 
 #pragma region Base
-	static UEvalMath* Instance(const UObject* const O);
-	UEvalMath();
+	static UEval* Instance(const UObject* const O);
+	UEval();
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;

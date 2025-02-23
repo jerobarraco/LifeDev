@@ -1,38 +1,38 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: MIT
-#include "EvalMath.h"
+#include "Eval.h"
 
 #include "MathExpEvaluator.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogEvalMath, Log, Log);
 
-UEvalMath::UEvalMath():Super() {}
+UEval::UEval():Super() {}
 
-void UEvalMath::Initialize(FSubsystemCollectionBase& Collection) {
+void UEval::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Evaluator = MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>();
 	if (UNLIKELY(!Evaluator.IsValid())) return; // TODO warning
-	Evaluator->OnGetVar.BindUObject(this, &UEvalMath::GetVar);
+	Evaluator->OnGetVar.BindUObject(this, &UEval::GetVar);
 }
 
-void UEvalMath::Deinitialize() {
+void UEval::Deinitialize() {
 	if (LIKELY(Evaluator.IsValid()))
 		Evaluator->OnGetVar.Unbind();
 	Evaluator.Reset();
 	Super::Deinitialize();
 }
 
-UEvalMath* UEvalMath::Instance(const UObject*const  O) {
+UEval* UEval::Instance(const UObject*const  O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!W)) return nullptr;
 
-	UEvalMath* const EvalMathMat = W->GetSubsystem<UEvalMath>();
+	UEval* const EvalMathMat = W->GetSubsystem<UEval>();
 	return LIKELY(IsValid(EvalMathMat)) ? EvalMathMat : nullptr;
 }
 
-bool UEvalMath::ShouldCreateSubsystem(UObject* const Outer) const {
+bool UEval::ShouldCreateSubsystem(UObject* const Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
 	UE_LOG(LogEvalMath, Log, TEXT("%hs is=%i."),
@@ -47,12 +47,12 @@ bool UEvalMath::ShouldCreateSubsystem(UObject* const Outer) const {
 	return Super::ShouldCreateSubsystem(Outer);
 }
 
-bool UEvalMath::DoesSupportWorldType(const EWorldType::Type WorldType) const {
+bool UEval::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	// i think it works on editor
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE || WorldType == EWorldType::Editor;
 }
 
-bool UEvalMath::Eval(const FString& Exp, double & Res) const {
+bool UEval::Eval(const FString& Exp, double & Res) const {
 	Res = 0;
 	if (UNLIKELY(!Evaluator.IsValid())) return false;
 	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) return true;
