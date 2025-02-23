@@ -490,7 +490,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 	// TODO move elsewhere. Featsman?
 	// TODO make these "" const into static const FName othrwis it might convrt each time
 	const FString NameS = Name.ToString();
-	UE_LOG(LogLGameMode, Log, TEXT("%hs Name=%s i=%i"), __func__, *NameS, Name.ToUnstableInt());
+	UE_LOG(LogLGameMode, Log, TEXT("%hs Name=%s"), __func__, *NameS);
 	if (NameS.StartsWith("@")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
 		return Actual.ToUnstableInt();
