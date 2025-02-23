@@ -526,7 +526,7 @@ double ALGGameMode::EvalVar(const FName Name) {
 		if (Name == "V.Inter.Cur.Name") {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
-			const FName OwnerName = Owner->GetFName();
+			const FName OwnerName = FName(Owner->GetActorLabel(false));
 			UE_LOG(LogLGameMode, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			return OwnerName.ToUnstableInt();
 		}
