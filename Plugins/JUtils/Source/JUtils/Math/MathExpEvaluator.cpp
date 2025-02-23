@@ -20,6 +20,10 @@ namespace ExpressionParser {
 	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
+	const TCHAR* const FAnd::Moniker = TEXT("&");
+	const TCHAR* const FOr::Moniker = TEXT("|");
+	const TCHAR* const FXor::Moniker = TEXT("$");
+	
 }
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
@@ -47,6 +51,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FAnd>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FOr>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FXor>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -57,9 +64,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
+	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
 	Grammar.DefinePreUnaryOperator<FNot>();
 	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // werxs
 	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not 
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
@@ -70,12 +77,21 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPower>(3);
 	Grammar.DefineBinaryOperator<FRand>(3);
+	Grammar.DefineBinaryOperator<FAnd>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FOr>(6,  EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FXor>(6, EAssociativity::LeftToRight);
 
 	JumpTable.MapPreUnary<FPlus>([](const double N)			{ return N; });
 	JumpTable.MapPreUnary<FMinus>([](const double N)			{ return -N; });
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ return double(FMath::Sqrt(A)); });
-	JumpTable.MapPreUnary<FSaturate>([](const double A)		{ return double(FMath::Clamp(A, 0, 1)); });
-	JumpTable.MapPreUnary<FAbsolute>([](const double A)		{ return double(FMath::Abs(A)); });
+	JumpTable.MapPreUnary<FSaturate>([](const double A) {
+		return double(FMath::Clamp(A, 0, 1));
+	});
+	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
+		const double B = FMath::Abs(A); 
+		UE_LOG(LogTemp, Warning, TEXT("Absolute A=%.5f B=%.5f"), A, B);
+		return double(B);
+	});
 	JumpTable.MapPreUnary<FNot>([](const double A) {
 		return double(JMathExp::_IsFalse(A) ? 1 : 0);
 	});
@@ -95,6 +111,19 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapBinary<FRand>([](const double A, const double B) -> FExpressionResult {
 		return MakeValue(double(FMath::FRandRange(A, B)));
 	});
+	JumpTable.MapBinary<FAnd>([](const double A, const double B) -> double {
+		return double(JMathExp::_IsFalse(A) ? 0 : B);
+	});
+	JumpTable.MapBinary<FOr>([](const double A, const double B) -> double {
+		return double(JMathExp::_IsFalse(A) ? B : A);
+	});
+	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
+		const bool FalseA = JMathExp::_IsFalse(A);
+		const bool FalseB = JMathExp::_IsFalse(B);
+		const bool Same = FalseA == FalseB;
+		return double(Same ? 0: 1);
+	});
+	
 }
 
 TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR* InExpression, double InExistingValue) const {
