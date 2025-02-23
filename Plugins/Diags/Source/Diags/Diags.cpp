@@ -60,7 +60,7 @@ bool UDiags::AddId(const FName& Row, const bool Warn) {
 
 bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 	const int32 Num = Rows.Num();
-	bool Success = Num > 0; // return false if nothing was added
+	bool Success = false; // return false if nothing was added
 	for (int32 i = 0; i < Num; ++i) {
 		// done this way on purpose, so if a sequence adds another sequence
 		// it will get "expanded" as a parenthesis.
@@ -69,7 +69,9 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 		// notice this is recursive. that's on purpose, but be careful.
 		const bool Ok = AddId(Row);
 
-		Success = Success && Ok; // ok will set it to false (faster than branch)
+		// Success = Success && Ok; // ok will set it to false (faster than branch)
+		// now that we have conditions, some dialogs might fail and we'll be fine with that.
+		Success = Success || Ok;
 	}
 
 	return Success;
@@ -159,7 +161,7 @@ void UDiags::DiagDone() {
 }
 
 void UDiags::SetData(
-	UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups) {
+UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups) {
 	Diags = IsValid(AllDiags)? AllDiags : nullptr;
 	Chars = IsValid(AllChars)? AllChars: nullptr;
 	Groups = IsValid(AllGroups)? AllGroups: nullptr;
