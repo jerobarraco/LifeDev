@@ -23,7 +23,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UInventory* Instance(const UWorld* const W);
+	static UInventory* Instance(const UObject* const W);
 
 	// regular ones ////////
 

@@ -10,7 +10,9 @@
 #define _IsCold(I) I.ActiveCoolDown<=0
 #define _IsNotCold(I) I.ActiveCoolDown>0
 
-UInventory* UInventory::Instance(const UWorld* const W) {
+UInventory* UInventory::Instance(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
+	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	UInventory* const I = W->GetSubsystem<UInventory>();
