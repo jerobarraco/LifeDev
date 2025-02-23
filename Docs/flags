@@ -1,6 +1,3 @@
-TODO
-
-
 # Virtual : for EvalMath only
 * starts with @, it returns the Fname int value. eg @C3S1 > 1230192. useful for comparing values that returns a fname int.
 
@@ -14,3 +11,9 @@ TODO
 * v.Feat.Get > returns the feat by it's int id (you'll have to find it)
 * v.Sys.IsDebug > 1 if debug, 0 otherwise.
 * v.Sys.IsEditor > 1 if editor, 0 otherwise.
+
+# Events
+See LDConsts::Dlgs
+
+# Flags
+see LDConsts::Flags

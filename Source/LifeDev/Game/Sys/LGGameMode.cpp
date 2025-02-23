@@ -488,7 +488,8 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 
 double ALGGameMode::EvalVar(const FName Name) {
 	// TODO move elsewhere. Featsman?
-	// TODO make these "" const into static const FName othrwis it might convrt each time
+	// TODO make these "" const into static const FName othrwise it might convrt each time
+	// TODO fix case sensitive comparison (unless that's the default? apparently it is)
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Name=%s"), __func__, *NameS);
 	if (NameS.StartsWith("@")) {

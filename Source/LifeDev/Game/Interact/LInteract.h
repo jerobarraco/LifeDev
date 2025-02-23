@@ -104,14 +104,16 @@ public:
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName LockedItemDlg = NAME_None;
-	// dialog to show when the object is locked and we DON'T have the ULockItem
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	// dialog to show when the object is locked, and we DON'T have the ULockItem
+	// use Inter.TriggerL.ObjName
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedDlg = NAME_None;
 #pragma endregion
 
 #pragma region dialogs
 	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	// use Inter.Trigger.ObjName
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName TriggerDlg = NAME_None;
 	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
 	// the key is the item name, the value is the dialog id.
