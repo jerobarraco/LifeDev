@@ -19,6 +19,7 @@
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
 #include "Engine/PostProcessVolume.h"
+#include "Interact/Interact.h"
 #include "JSig/CSignificance.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
@@ -509,7 +510,25 @@ double ALGGameMode::EvalVar(const FName Name) {
 	if (Name == "V.Rand") return FMath::Rand();
 	if (Name == "V.Story.Step.Cur")
 		return Story->GetCurrent().ToUnstableInt();
-	if (Name == "V.Inter.Hover") {}
+	if (NameS.StartsWith("V.Inter.Hover")) { // this is a hack
+		// TODO find better way
+		const UCInteractor* const Int = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
+		if (UNLIKELY(!Int)) return -1;
+		const UCInteract* const Comp = Int->GetHoverComp();
+		if (UNLIKELY(!Comp)) return 0; // not an error, just nothing there.
+
+		if (Name == "V.Inter.Hover.Name") {
+			const AActor* const Owner = Comp->GetOwner();
+			if (UNLIKELY(!Owner)) return -1;
+			return Owner->GetFName().ToUnstableInt();
+		}
+		if (Name=="V.Inter.Hover.State") {
+			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
+			if (UNLIKELY(!Owner)) return -1;
+			return Owner->GetState();
+		}
+	}
+		
 	return Flags->Get(Name);
 }
 
