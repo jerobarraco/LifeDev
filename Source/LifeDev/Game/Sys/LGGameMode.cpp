@@ -486,6 +486,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 }
 
 double ALGGameMode::EvalVar(const FName Name) {
+	UE_LOG(LogLGameMode, Log, TEXT("%hs Name="), *Name.ToString());
 	// TODO move elsewhere. Featsman?
 	const FString NameS = Name.ToString();
 	if (NameS.StartsWith("Items.Count.")) { // TODo make this string a const

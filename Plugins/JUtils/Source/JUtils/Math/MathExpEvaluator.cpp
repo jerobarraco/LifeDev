@@ -163,9 +163,10 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTo
 	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
 	[&PropertyName, &ParsedStringType, &OpeningQuoteChar, &NumConsecutiveSlashes, &Start](TCHAR InC){
 			if (Start) {
+				Start = false;
 				if (InC == '"')
 					return EParseState::Continue;
-				else return EParseState::Cancel; // not quoted, we don't want.
+				return EParseState::Cancel; // not quoted, we don't want.
 			}
 		
 		// if (ParsedStringType == EParsedStringType::Unknown) {
@@ -188,7 +189,7 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTo
 		// 	PropertyName.AppendChar(InC);
 		// } else {
 			// check(ParsedStringType == EParsedStringType::Quoted);
-			if (InC == OpeningQuoteChar)// && NumConsecutiveSlashes % 2 == 0) {
+			if (InC == '"')// && NumConsecutiveSlashes % 2 == 0) {
 				return EParseState::StopAfter;
 			// }
 
