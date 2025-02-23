@@ -45,20 +45,19 @@ namespace LDConsts {
 				inline static const FName Sadness("Game.Emotion.Sadness");
 			}
 
-			namespace Inter{
-				// expects the actor label at the end
-				inline static const FName Trigger("Game.Inter.Trigger.");
-				inline static const FName TriggerL("Game.Inter.TriggerL.");
-			}
-
-			namespace Item {
-				inline static const FName Use("Game.Item.Use.");
-				
-			}
 
 			namespace Story {
 				
 			}
+		}
+		
+		namespace Inter{
+			// expects the actor label at the end
+			inline static const FName Trigger("Game.Inter.Trigger.");
+			inline static const FName TriggerL("Game.Inter.TriggerL.");
+		}
+		namespace Item {
+			inline static const FName Use("Item.Use.");
 		}
 	}
 }

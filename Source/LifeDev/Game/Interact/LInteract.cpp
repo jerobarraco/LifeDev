@@ -245,7 +245,7 @@ void ALInteract::DoTrigger_Implementation() {
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
 		const FName TName = FName(
-			LDConsts::Flags::Game::Inter::Trigger.ToString()+GetActorLabel(false));
+			LDConsts::Flags::Inter::Trigger.ToString()+GetActorLabel(false));
 		Flags->Mod(TName, 1);
 	}
 
@@ -282,7 +282,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	
 	if (LIKELY(Flags)) {
 		const FName TName = FName(
-			LDConsts::Flags::Game::Inter::TriggerL.ToString()+GetActorLabel(false));
+			LDConsts::Flags::Inter::TriggerL.ToString()+GetActorLabel(false));
 		Flags->Mod(TName, 1);
 	}
 }
