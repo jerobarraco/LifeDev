@@ -496,16 +496,21 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return Actual.ToUnstableInt();
 	}
 
+	if (!NameS.StartsWith("V.")) 
+		return Flags->Get(Name);
+
 	if (NameS.StartsWith("V.Item.Count.")) {
 		// TODo make this string a const
 		// TODO size use std::char_traits<char>::length("str")
-		return Inventory->Count(FName(NameS.Right(NameS.Len()-12))); // TODO debug . TODO constize the 12. get from the string
+		return Inventory->Count(FName(NameS.LeftChop(NameS.Len()-13))); // TODO debug . TODO constize the 12. get from the string
 	}
 
 	static const FName NAME_FBVal("V.FB.Val"); // TODO Move to a ldconst stuff.
-	// TODO ValTo
+	static const FName NAME_FBValTo("V.FB.ValTo"); // TODO Move to a ldconst stuff.
 	if (Name == NAME_FBVal)
-		return LIKELY(Flashback) ? Flashback->GetVal() : 0;
+		return LIKELY(Flashback) ? Flashback->GetVal() : -1;
+	if (Name == NAME_FBValTo)
+		return LIKELY(Flashback) ? Flashback->GetValTo() : -1;
 
 	if (Name == "V.Rand") return FMath::Rand();
 	if (Name == "V.Story.Step.Cur")
@@ -520,7 +525,9 @@ double ALGGameMode::EvalVar(const FName Name) {
 		if (Name == "V.Inter.Hover.Name") {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
-			return Owner->GetFName().ToUnstableInt();
+			const FName OwnerName = Owner->GetFName();
+			UE_LOG(LogLGameMode, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
+			return OwnerName.ToUnstableInt();
 		}
 		if (Name=="V.Inter.Hover.State") {
 			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
@@ -528,8 +535,20 @@ double ALGGameMode::EvalVar(const FName Name) {
 			return Owner->GetState();
 		}
 	}
-		
-	return Flags->Get(Name);
+	if (Name == "V.Inter.Of.State.") {
+		const FName ActorName = FName(NameS.LeftChop(NameS.Len()-17));
+		TArray<AActor*> Actors;
+		UGameplayStatics::GetAllActorsOfClass(this, AInteract::StaticClass(), Actors);
+		for (const AActor* A: Actors) {
+			if (UNLIKELY(!A)) continue;
+			if (A->GetFName() != ActorName) continue;
+			const AInteract* I = Cast<AInteract>(A);
+			return LIKELY(I) ? I->GetState(): -1;
+		}
+		return 0;
+	}
+
+	return -1;
 }
 
 void ALGGameMode::TickCounter() const {
