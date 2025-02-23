@@ -105,3 +105,7 @@ resizeable bar
 # not purifying const methods
 	UFUNCTION(BlueprintPure=False)
 	https://forums.unrealengine.com/t/why-are-blueprintpure-and-const-incompatible/287271/2?u=nande
+	
+	
+# fstring to int
+FCString::Atoi()

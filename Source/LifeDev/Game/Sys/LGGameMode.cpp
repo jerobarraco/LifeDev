@@ -501,21 +501,37 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return Flags->Get(Name);
 	}
 
-	if (NameS.StartsWith("V.Item.Count.")) {
-		// TODo make this string a const
-		// TODO size use std::char_traits<char>::length("str")
-		return Inventory->Count(FName(NameS.LeftChop(NameS.Len()-13))); // TODO debug . TODO constize the 12. get from the string
-	}
-
+	// checking against names first, intentionally for performance
 	static const FName NAME_FBVal("V.FB.Val"); // TODO Move to a ldconst stuff.
 	static const FName NAME_FBValTo("V.FB.ValTo"); // TODO Move to a ldconst stuff.
+	static const FName NAME_StoryStepCur("V.Story.Step.Cur");
 	if (Name == NAME_FBVal)
 		return LIKELY(Flashback) ? Flashback->GetVal() : -1;
 	if (Name == NAME_FBValTo)
 		return LIKELY(Flashback) ? Flashback->GetValTo() : -1;
 
-	if (Name == "V.Story.Step.Cur")
+	if (Name == NAME_StoryStepCur)
 		return Story->GetCurrent().ToUnstableInt();
+	if (Name == "V.Sys.IsDebug")
+		return UJUtilsMisc::IsDebug() ? 1:0;
+	if (Name == "V.Sys.IsEditor")
+		return UJUtilsMisc::IsEditor() ? 1:0;
+
+	/// parsing
+	
+	if (NameS.StartsWith("V.Feat.Get.")) {
+		const FString& FeatS = NameS.LeftChop(NameS.Len()-11);
+		if (!FeatS.IsNumeric()) return -1;
+
+		const int32 I = FCString::Atoi(*FeatS);
+		return Settings->GetFeat(EFeat(I)) ? 1: 0;
+	}
+
+	if (NameS.StartsWith("V.Item.Count.")) {
+		// TODo make this string a const
+		// TODO size use std::char_traits<char>::length("str")
+		return Inventory->Count(FName(NameS.LeftChop(NameS.Len()-13))); // TODO debug . TODO constize the 12. get from the string
+	}
 
 	// TODO use fnames instead, chop teh NameS. otherwise it's a string comparison. and also is case sensitive.
 	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
@@ -539,16 +555,20 @@ double ALGGameMode::EvalVar(const FName Name) {
 			return Owner->GetState();
 		}
 	}
-	if (Name == "V.Inter.Of.State.") {
-		const FName ActorName = FName(NameS.LeftChop(NameS.Len()-17));
+
+	if (NameS.StartsWith("V.Inter.State.")) {
+		const FName ActorName = FName(NameS.LeftChop(NameS.Len()-14));
 		TArray<AActor*> Actors;
 		UGameplayStatics::GetAllActorsOfClass(this, AInteract::StaticClass(), Actors);
 		for (const AActor* A: Actors) {
 			if (UNLIKELY(!A)) continue;
-			if (A->GetFName() != ActorName) continue;
+
+			if (LIKELY(A->GetActorLabel(false) != ActorName)) continue;
+
 			const AInteract* I = Cast<AInteract>(A);
 			return LIKELY(I) ? I->GetState(): -1;
 		}
+
 		return -1;
 	}
 
