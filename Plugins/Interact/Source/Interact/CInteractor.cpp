@@ -177,7 +177,7 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	const UCInteract* const PHover = HoverComp.Get();
 	// on every tick almost
 	// skip retries
-	if (Component == PHover) return;
+	if (LIKELY(Component == PHover)) return; // pretty likely it's the same from the previous frame
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
 		__func__, *GetNameSafe(this));
