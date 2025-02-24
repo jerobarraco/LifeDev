@@ -164,7 +164,6 @@ TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(
 const TCHAR* const InExpression) const {
 	using namespace ExpressionParser;
 
-	// TODO ExpressionParser or JMathExp?
 	TValueOrError<TArray<FExpressionToken>, FExpressionError> LexResult = ExpressionParser::Lex(InExpression, TokenDefinitions);
 	if (UNLIKELY(!LexResult.IsValid()))
 		return MakeError(LexResult.StealError());
@@ -189,15 +188,17 @@ const TCHAR* const InExpression) const {
 TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) const {
 	FString VarName;
 	bool IsAtStart = true;
-
+	static constexpr TCHAR OpenC = '{';
+	static constexpr TCHAR CloseC = '}';
+	
 	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
 	[&VarName, &IsAtStart](const TCHAR InC){
 		if (UNLIKELY(IsAtStart)) {
 			IsAtStart = false;
-			return InC == '"' ? EParseState::Continue : EParseState::Cancel; // not quoted, we don't want.
+			return InC == OpenC ? EParseState::Continue : EParseState::Cancel; // not quoted, we don't want.
 		}
 	
-		if (UNLIKELY(InC == '"'))
+		if (UNLIKELY(InC == CloseC))
 			return EParseState::StopAfter;
 
 		VarName.AppendChar(InC);
