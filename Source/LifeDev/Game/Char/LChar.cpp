@@ -118,13 +118,14 @@ void ALChar::SetUIVisible(const bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALChar::InteractHover(bool bOn, UCInteract* const Comp) {
+void ALChar::InteractHover(const bool bOn, const UCInteract* const Comp) {
 	if (UNLIKELY(!IsValid(UI))) return;
 	// will hide the prompt on invalid. which is a nice side effect. 
 	if (bOn && IsValid(Comp))
 		UI->InteractShowPrompt(Comp->Text);
 	else
 		UI->InteractHidePrompt();
+	
 }
 
 void ALChar::SetInputEnabled(const bool Enabled) {
