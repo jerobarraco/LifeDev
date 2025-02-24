@@ -29,6 +29,8 @@ enum class ESeqType : uint8 {
 	PICK_LOOP,
 	// Selects the first dialog that gets added successfully (implies passing its condition)
 	PICK_MATCH,
+	// Selects the one random dialog that gets added successfully (implies passing its condition)
+	PICK_MATCH_RND,
 };
 
 // The base structure for dialogs.

@@ -3,6 +3,7 @@
 #include "Diags.h"
 
 #include "Eval.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
@@ -103,7 +104,15 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 			if (AddId(N)) return true;
 		}
 		return false;
+	} else if (Seq.Type == ESeqType::PICK_MATCH_RND) {
+		TArray<FName> Shuffled = Rows; // make a copy
+		UJUtilsMisc::ArrayShuffle(Shuffled);
+		for (const FName& N: Shuffled) { // TODO test
+			if (AddId(N)) return true;
+		}
+		return false;
 	}
+	
 	return false;
 }
 
