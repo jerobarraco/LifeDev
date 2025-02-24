@@ -112,8 +112,8 @@ protected:
 	UFUNCTION()
 	void InteractHover(const bool bOn, UCInteract* const Comp);
 	UFUNCTION()
-	void HoverTimer();
-	void HoverTimerClear();
+	void HoverDiag();
+	void HoverDiagClear();
 	UFUNCTION()
 	void MenuDone();
 	UFUNCTION()
@@ -130,9 +130,12 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
 
-	//* Pawn mesh: 1st person view (arms; seen only by self) 
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh, Config)
+	float HoverDiagTime = 2;
+
+	// Pawn mesh: 1st person view (arms; seen only by self) 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh)
-	TObjectPtr<USkeletalMeshComponent> Mesh1P = nullptr;
+	TObjectPtr<USkeletalMeshComponent> Mesh1P = nullptr; // TODo remove
 
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
@@ -157,6 +160,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
 
-	FTimerHandle HoverTimerHandle;
+	FTimerHandle HoverDiagHandle;
 };
 

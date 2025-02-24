@@ -131,12 +131,13 @@ void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
 	if (UNLIKELY(!World)) return;
 	FTimerManager& Timer = World->GetTimerManager();
 	if (bOn)
-		Timer.SetTimer(HoverTimerHandle, this, &ALChar::HoverTimer, 1);
+		Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
 	else
-		HoverTimerClear();
+		HoverDiagClear();
 }
 
-void ALChar::HoverTimer() {
+void ALChar::HoverDiag() {
+	// TODO move elsewhere. i could get the char. then the component. and bind to OnHover.
 	// would be nice to move this elsewhere, but i can't put it on the cInteractor and i'm not going to make a LCInteractor for this 
 	const UCInteract* const Comp = Interactor->GetHoverComp();
 	if (UNLIKELY(!Comp)) return;
@@ -150,13 +151,13 @@ void ALChar::HoverTimer() {
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }
 
-void ALChar::HoverTimerClear() {
+void ALChar::HoverDiagClear() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
 	FTimerManager& Timer = World->GetTimerManager();
-	Timer.ClearTimer(HoverTimerHandle);
-	HoverTimerHandle.Invalidate();
+	Timer.ClearTimer(HoverDiagHandle);
+	HoverDiagHandle.Invalidate();
 }
 
 void ALChar::SetInputEnabled(const bool Enabled) {
@@ -312,7 +313,7 @@ void ALChar::ActLook(const FInputActionValue& Value) {
 
 void ALChar::ActInteract() { // don't make const. the input system does not like it
 	if (UNLIKELY(!Interactor)) return;
-	HoverTimerClear(); // important, we don't want a silly dialog after or before a trigger dialog
+	HoverDiagClear(); // important, we don't want a silly dialog after or before a trigger dialog
 
 	// store before calling TryTrigger. since it might become null afterward :shrug:
 	const UCInteract* const Comp = Interactor->GetHoverComp();
