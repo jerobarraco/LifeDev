@@ -106,7 +106,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 		return false;
 	} else if (Seq.Type == ESeqType::PICK_MATCH_RND) {
 		TArray<FName> Shuffled = Rows; // make a copy
-		UJUtilsMisc::ArrayShuffle(Shuffled);
+		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
 		for (const FName& N: Shuffled) { // TODO test
 			if (AddId(N)) return true;
 		}

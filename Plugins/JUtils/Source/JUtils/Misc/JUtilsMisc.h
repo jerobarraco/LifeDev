@@ -116,6 +116,17 @@ public:
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
 
+	// shuffles an array in place.
+	// has to be inlined or the compiler won't find the definition
+	template <typename T>
+	static inline void ArrayShuffle(TArray<T>& Array) {
+		const int32 ArraySize = Array.Num();
+		for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
+			const int32 RandomIndex = FMath::RandRange(0, i);
+			Array.Swap(i, RandomIndex);
+		}
+	};
+
 	// returns the size of a static array in a static manner. (i.e int arr[10] = 10)
 	template <typename T, std::size_t N>
 	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
@@ -123,7 +134,4 @@ public:
 	static inline constexpr std::size_t TextLen(const TCHAR* const T) noexcept {
 		return std::char_traits<TCHAR>::length(T);
 	} 
-	// shuffles an array in place.
-	template <typename T>
-	static void ArrayShuffle(TArray<T>& Array);
 };

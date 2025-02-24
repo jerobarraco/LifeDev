@@ -126,14 +126,14 @@ bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
 	return true;
 }
 
-template <typename T>
-void UJUtilsMisc::ArrayShuffle(TArray<T>& Array) {
-	const int32 ArraySize = Array.Num();
-	for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
-		const int32 RandomIndex = FMath::RandRange(0, i);
-		Array.Swap(i, RandomIndex);
-	}
-}
+// template <typename T>
+// void UJUtilsMisc::ArrayShuffle(TArray<T>& Array) {
+	// const int32 ArraySize = Array.Num();
+	// for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
+		// const int32 RandomIndex = FMath::RandRange(0, i);
+		// Array.Swap(i, RandomIndex);
+	// }
+// }
 
 bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
