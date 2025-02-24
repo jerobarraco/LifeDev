@@ -242,10 +242,11 @@ void ALInteract::DoTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Super::DoTrigger_Implementation();
 
+	const FString& Label = GetActorLabel(false);
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
 		const FName TName = FName(
-			LDConsts::Flags::Inter::TriggerPre.ToString()+GetActorLabel(false));
+			LDConsts::Flags::Inter::TriggerPre+Label);
 		Flags->Mod(TName, 1);
 	}
 
@@ -259,8 +260,9 @@ void ALInteract::DoTrigger_Implementation() {
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
 		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
 		DiagsShown = Diags->AddId(TriggerDlg);
-		if (!DiagsShown) Diags->AddId(// TODO test, todo don't warn
-			FName(LDConsts::Dlgs::Inter::Trigger.ToString()+GetActorLabel(false)));
+		if (!DiagsShown)
+			// TODO test, todo don't warn
+			Diags->AddId(FName(LDConsts::Dlgs::Inter::Trigger.ToString()+Label));
 	}
 
 	// ensure we reward or the player could get locked
@@ -274,17 +276,16 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	if (UNLIKELY(!Inventory || !Diags)) return;
 
 	const bool Has = Inventory->Has(ULockItem);
+
 	const FName& Dlg = Has && (!LockedItemDlg.IsNone())? LockedItemDlg : LockedDlg;
-	FDiag D; FDiagChar C;
-	const bool Shown = Diags->AddId(Dlg);
-	if (!Shown) Diags->AddId(// TODO test, todo don't warn
-			FName(LDConsts::Dlgs::Inter::TriggerL.ToString()+GetActorLabel(false)));
+	Diags->AddId(Dlg);
+
+	// Also add the auto ones
+	const FString& Label = GetActorLabel(false);
+	const FName TName = FName(LDConsts::Flags::Inter::TriggerLPre+Label);
+	Diags->AddId(FName(LDConsts::Flags::Inter::TriggerLPre+Label));
 	
-	if (LIKELY(Flags)) {
-		const FName TName = FName(
-			LDConsts::Flags::Inter::TriggerLPre.ToString()+GetActorLabel(false));
-		Flags->Mod(TName, 1);
-	}
+	if (LIKELY(Flags)) Flags->Mod(TName, 1);
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {

@@ -50,13 +50,12 @@ namespace LDConsts {
 		
 		namespace Inter{
 			// expects the actor label at the end
-			// TODO make string.
-			inline static const FName TriggerPre("Inter.Trigger.");
-			inline static const FName TriggerLPre("Inter.TriggerL.");
+			inline static const FString TriggerPre("Inter.Trigger.");
+			inline static const FString TriggerLPre("Inter.TriggerL.");
 			inline static const FString UnlockPre("Inter.Unlock.");
 		}
 		namespace Item {
-			inline static const FName UsePre("Item.Use.");
+			inline static const FString UsePre("Item.Use.");
 		}
 		namespace Diags {
 			inline static const FString AddedPre(TEXT("Diags.Added."));

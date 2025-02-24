@@ -11,12 +11,12 @@ namespace LDConsts {
 			inline static FString LookPre(TEXT("Item.Look."));
 		}
 		namespace Inter {
-			// TODO make these into strings. TODO maybe set on flags and reuse
-			inline static FName Trigger = FName("Inter.Trigger.");
-			inline static FName TriggerL = FName("Inter.TriggerL.");
-			inline static FName Activate = FName("Inter.Activate.");
-			inline static FName Deactivate = FName("Inter.Deactivate.");
-			inline static FName State = FName("Inter.State.");
+			// TODO rename to pre. should i use the flags?
+			inline static FString Trigger("Inter.Trigger.");
+			inline static FString TriggerL("Inter.TriggerL.");
+			inline static FString Activate("Inter.Activate.");
+			inline static FString Deactivate("Inter.Deactivate.");
+			inline static FString State("Inter.State.");
 
 			inline static FString UnlockPre(TEXT("Inter.Unlock."));
 			inline static FString UnlockBadPre(TEXT("Inter.Unlock.Bad."));
