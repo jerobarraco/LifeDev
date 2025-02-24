@@ -18,7 +18,7 @@ enum class EDiagType : uint8 {
 
 // Modifiers for a sequence
 UENUM(BlueprintType)
-enum class ESeqType : uint8 {
+enum class EGroupType : uint8 {
 	// Normal sequential sequence.
 	// The group needs to pass its condition.
 	SEQUENCE,
@@ -65,7 +65,7 @@ struct DIAGS_API FDiagGroup: public FTableRowBase {
 public:
 	// Behavior of the group
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ESeqType Type = ESeqType::SEQUENCE;
+	EGroupType Type = EGroupType::SEQUENCE;
 
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

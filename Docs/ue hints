@@ -109,3 +109,7 @@ resizeable bar
 	
 # fstring to int
 FCString::Atoi()
+
+# rowtype on pointers to datatables
+ RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
+ needs to be that. rowtype does not work /Script/Package.StructnamewithnoF
