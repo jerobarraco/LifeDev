@@ -58,7 +58,7 @@ void ALFeatsMan::BeginPlay() {
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
 	GM = Cast<ALGGameMode>(AGMB);
 	Eval = W->GetSubsystem<UEval>();
-	Settings = W->GetSubsystem<ULSettings>();
+	Settings = ULSettings::Instance(this);
 	// force initialize
 	LoadMPC();
 }
