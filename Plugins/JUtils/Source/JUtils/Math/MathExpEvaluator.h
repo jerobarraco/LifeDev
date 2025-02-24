@@ -29,12 +29,13 @@ DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FEquals, 0x6F88756B, 0xF9234263, 0x9
 // A basic math expression evaluator. with variables. and logic. and not gambling.
 class JUTILS_API FMathExpEvaluator {
 public:
-	// Constructor that sets up the parser's lexer and compiler */
+	// Constructor that sets up the parser's lexer and compiler
 	FMathExpEvaluator();
 
-	// Evaluate the given expression, resulting in either a double value, or an error */
-	TValueOrError<double, FExpressionError> Evaluate(const TCHAR* InExpression, double InExistingValue = 0) const;
+	// Evaluate the given expression, resulting in either a double value, or an error
+	TValueOrError<double, FExpressionError> Evaluate(const TCHAR* const InExpression) const;
 
+	// bind to this to be able to use variables
 	FJEXVGetVar OnGetVar;
 
 private:

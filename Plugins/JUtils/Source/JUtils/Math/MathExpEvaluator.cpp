@@ -160,7 +160,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 }
 
-TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(const TCHAR* InExpression, double InExistingValue) const {
+TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(
+const TCHAR* const InExpression) const {
 	using namespace ExpressionParser;
 
 	// TODO ExpressionParser or JMathExp?
