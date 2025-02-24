@@ -20,7 +20,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+	
 	// Called by LGGameMode
 	virtual void Init();
 
@@ -40,6 +40,8 @@ protected:
 	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
+	double GetVar(const FName Name);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;

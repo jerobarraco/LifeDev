@@ -54,12 +54,13 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	ULSettings* const S = ULSettings::Instance(GetWorld());
-	if (LIKELY(S)) {
-		S->OnFeatUpdateVisual.RemoveAll(this);
-		S->OnFeatUpdate.RemoveAll(this);
-		S->OnFeatUpdateUnreal.RemoveAll(this);
+	if (LIKELY(Settings)) {
+		Settings->OnFeatUpdateVisual.RemoveAll(this);
+		Settings->OnFeatUpdate.RemoveAll(this);
+		Settings->OnFeatUpdateUnreal.RemoveAll(this);
 	}
+
+	if (LIKELY(Eval)) Eval->OnGetVar.Clear();
 
 	GM = nullptr;
 	MPCI = nullptr;
@@ -77,6 +78,8 @@ void ALFeatsMan::Init() {
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
 	}
 
+	if (LIKELY(Eval))
+		Eval->OnGetVar.BindDynamic(this, &ALFeatsMan::GetVar);
 	LoadFeats();
 }
 
@@ -173,4 +176,8 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	if (Feat != EFeat::DBG_TESTDL) return;
 
 	UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
+}
+
+double ALFeatsMan::GetVar(const FName Name) {
+	return 0;
 }

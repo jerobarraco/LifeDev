@@ -22,6 +22,7 @@ void UEval::Deinitialize() {
 	if (LIKELY(Evaluator.IsValid()))
 		Evaluator->OnGetVar.Unbind();
 	Evaluator.Reset();
+	OnGetVar.Clear();
 	Super::Deinitialize();
 }
 
