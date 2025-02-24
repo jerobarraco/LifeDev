@@ -21,11 +21,15 @@ public class LifeDevTarget : TargetRules {
 		CppStandardEngine = CppStandardVersion.Cpp20;
 		CppStandard = CppStandardVersion.Cpp20;
 		
+		// https://forums.unrealengine.com/t/ue-5-5-source-linux-compilation-errors/2148769/2?u=nande
+		// Disable Intel Implicit SPMD Program Compiler forced by UE 5.5 on Linux.
+		// bCompileISPC = true; // setting to false could fix some errors on linux, but disabling uba fixes it too. and also disabling this will require an engine recompilation.
+		
 		// ---- speed iteration
 		bUseIncrementalLinking = true; // speeds up iteration
 		bUsePCHFiles = true;
 		bUseSharedPCHs = true; // speed up compilation
-		bUseUnityBuild = true;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
+		bUseUnityBuild = true;
 		bUseAdaptiveUnityBuild = true;
 		/*
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
