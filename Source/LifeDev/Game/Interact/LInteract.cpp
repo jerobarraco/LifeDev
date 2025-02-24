@@ -334,8 +334,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
+	// TODO think about a variable ULockCondition  that can be used with the Eval system.
 
-	
 	// now unlocked
 	if (ValidDiags)
 		Diags->AddId(ULockDlg) ||
