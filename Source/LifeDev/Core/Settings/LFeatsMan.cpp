@@ -72,28 +72,24 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALFeatsMan::Init() {
-	ULSettings* const S = ULSettings::Instance(this);
-	if (LIKELY(S)) {
-		S->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
-		S->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
+	if (LIKELY(Settings)) {
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
+		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
 	}
 
 	LoadFeats();
 }
 
 void ALFeatsMan::LoadFeats() {
-	const ULSettings* const S = ULSettings::Instance(this);
-	if (UNLIKELY(!S)) return;
+	FeatUpVisual(EFeat::V_LUMEN, Settings && Settings->GetFeat(EFeat::V_LUMEN));
+	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
+	FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
+	FeatUpVisual(EFeat::V_STROBE, Settings && Settings->GetFeat(EFeat::V_STROBE));
+	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 
-	FeatUpVisual(EFeat::V_LUMEN, S && S->GetFeat(EFeat::V_LUMEN));
-	FeatUpVisual(EFeat::V_BLUR, S && S->GetFeat(EFeat::V_BLUR));
-	FeatUpVisual(EFeat::V_SPEED, S && S->GetFeat(EFeat::V_SPEED));
-	FeatUpVisual(EFeat::V_STROBE, S && S->GetFeat(EFeat::V_STROBE));
-	FeatUpVisual(EFeat::V_FLASHBACK, S && S->GetFeat(EFeat::V_FLASHBACK));
-
-	FeatUpUnreal(EFeat::U_TICK_BATCH, S && S->GetFeat(EFeat::U_TICK_BATCH));
-	FeatUpUnreal(EFeat::U_TICK_CON, S && S->GetFeat(EFeat::U_TICK_CON));
-	FeatUpDbg(EFeat::DBG_TESTDL, S && S->GetFeat(EFeat::DBG_TESTDL));
+	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
+	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
+	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
 }
 
 
