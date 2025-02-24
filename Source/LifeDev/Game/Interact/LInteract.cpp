@@ -58,6 +58,7 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 	}
 }
 
+
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *GetNameSafe(this), FadeIn, SetHidden, UseFade);
@@ -225,17 +226,26 @@ void ALInteract::HideAfterFade() {
 bool ALInteract::TryTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	// handle item req
-	if (!ULockItemReq.IsNone()) {
-		const bool Ok = LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
-		if (Ok) Locked = false;
-	}
+	bool TryUnlock = false;
+	if (!ULockItemReq.IsNone())
+		TryUnlock = LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
 
 	// handle flag req
-	if (!ULockFlagReq.IsNone()) {
-		const bool Ok = LIKELY(IsValid(Flags)) && Flags->Has(ULockFlagReq);
-		if (Ok) Locked = false;
-	}
+	if (!TryUnlock && !ULockFlagReq.IsNone())
+		 TryUnlock = LIKELY(IsValid(Flags)) && Flags->Has(ULockFlagReq);
 	
+	if (!TryUnlock && !ULockCondition.IsEmpty()) {
+		const UEval* const Eval = UEval::Instance(this);
+		double Res;
+		const bool Passed = LIKELY(Eval) && Eval->Eval(ULockCondition, Res) && Res > 0;
+		UE_LOG(LogLInteract, Log,
+			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
+			__func__, *ULockCondition, Res, Passed);
+		if (Passed) Locked = false;
+	}
+
+	if (TryUnlock) Unlocked();
+
 	return Super::TryTrigger_Implementation();
 }
 
@@ -314,6 +324,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 			return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 		}
 	}
+
 	const AActor* const Owner = GetOwner();
 	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
 
@@ -327,17 +338,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	/// Unlock with item - at this point is locked
 	
 	// Checks if it needs an item to unlock it. and unlock if needed.
-	bool LockBad = Item != ULockItem;
-	if (LockBad && !ULockCondition.IsEmpty()) {
-		const UEval* const Eval = UEval::Instance(this);
-		double Res;
-		const bool Passed = LIKELY(Eval) && Eval->Eval(ULockCondition, Res) && Res > 0;
-		LockBad = !Passed;
-		UE_LOG(LogLInteract, Log,
-			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
-			__func__, *ULockCondition, Res, Passed);
-	}
-
+	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
 		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
 		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
@@ -345,13 +346,22 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
-	// now unlocked
-	if (ValidDiags)
-		Diags->AddId(ULockDlg) ||
-		Diags->AddId(FName(LDConsts::Dlgs::Inter::UnlockPre+Label));
-	// no need to flag since trigger already flags and implies unlock
-
-	Locked = false; // force unlock or trigger won't work
+	Unlocked();
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
+}
+
+
+void ALInteract::Unlocked_Implementation() {
+	Locked = false; // force unlock or trigger won't work
+	
+	const AActor* const Owner = GetOwner();
+	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
+	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+Label);
+	// now unlocked
+	if (LIKELY(IsValid(Diags)))
+		Diags->AddId(ULockDlg) ||
+		Diags->AddId(Dlg);
+	// also flags since sometimes the diag might not exist
+	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
 }

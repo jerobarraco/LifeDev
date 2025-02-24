@@ -81,18 +81,21 @@ public:
 #pragma endregion
 
 #pragma region lock
+	// Called when it's unlocked. You can also call to unlock. 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Unlocked();
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
 	// name of the flag that is needed to "have" to unlock this.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockFlagReq = NAME_None;
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItem = NAME_None;
 	// experimental. an eval condition that will unlock this.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FString ULockCondition = "";
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
