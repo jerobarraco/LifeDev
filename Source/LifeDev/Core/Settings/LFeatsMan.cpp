@@ -7,8 +7,17 @@
 #include "Materials/MaterialParameterCollectionInstance.h"
 
 #include "LSettings.h"
+#include "Interact/CInteract.h"
+#include "Interact/CInteractor.h"
+#include "Interact/Interact.h"
+#include "Inventory/Flags.h"
+#include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "Kismet/GameplayStatics.h"
+#include "LifeDev/Game/Char/LChar.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+#include "Story/Story.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -179,5 +188,108 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 }
 
 double ALFeatsMan::GetVar(const FName Name) {
-	return 0;
+	// TODO move elsewhere. Featsman? (Sure? it does needs to access EVERYTHING)
+	const FString NameS = Name.ToString();
+	UE_LOG(LogLFeatsMan, Log, TEXT("%hs Name=%s"), __func__, *NameS);
+
+	if (NameS.StartsWith("@")) {
+		const FName Actual = FName(NameS.RightChop(1)); // remove the @
+		return Actual.ToUnstableInt();
+	}
+
+	if (!NameS.StartsWith("V.")) {
+		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning, TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
+		return GM->Flags->Get(Name);
+	}
+
+	// checking against names first, intentionally for performance
+	static const FName NAME_FBVal("V.FB.Val");
+	static const FName NAME_FBValTo("V.FB.ValTo");
+	static const FName NAME_StoryStepCur("V.Story.Step.Cur");
+	static const FName NAME_SysDebug("V.Sys.IsDebug");
+	static const FName NAME_SysEditor("V.Sys.IsEditor");
+	if (Name == NAME_FBVal)
+		return LIKELY(GM->Flashback) ? GM->Flashback->GetVal() : -1;
+	if (Name == NAME_FBValTo)
+		return LIKELY(GM->Flashback) ? GM->Flashback->GetValTo() : -1;
+	if (Name == NAME_StoryStepCur)
+		return LIKELY(GM->Story) ? GM->Story->GetCurrent().ToUnstableInt() : -1;
+	if (Name == NAME_SysDebug)
+		return UJUtilsMisc::IsDebug() ? 1:0;
+	if (Name == NAME_SysEditor)
+		return UJUtilsMisc::IsEditor() ? 1:0;
+
+	/// parsing
+
+	static const TCHAR* const TFeatGet = TEXT("V.Feat.Get.");
+	if (NameS.StartsWith(TFeatGet)) {
+		if (UNLIKELY(!Settings)) return -1;
+
+		static const size_t L = UJUtilsMisc::TextLen(TFeatGet);
+		const FString& FeatS = NameS.RightChop(L);
+		for (const EFeat F: TEnumRange<EFeat>()) {
+			const FString& CurFeatS = UEnum::GetValueAsString(F);
+			// UE_LOG(LogLGameMode, Log, TEXT("%hs search feat tgt=%s cur=%s"), __func__, *FeatS, *CurFeatS);
+			// const bool Same = CurFeatS.Equals(FeatS, ESearchCase::IgnoreCase);
+			// EndsWith is a cheat. i know. otherwise i need to use the full name like EFEAT::D_AUTO.
+			const bool Same = CurFeatS.EndsWith(FeatS);
+			if (LIKELY(!Same)) continue;
+
+			return Settings->GetFeat(F) ? 1: 0; 
+		}
+	}
+
+	static const TCHAR* const TItemCount = TEXT("V.Item.Count.");
+	if (NameS.StartsWith(TItemCount)) {
+		if (UNLIKELY(!GM->Inventory)) return -1;
+
+		const size_t L = UJUtilsMisc::TextLen(TItemCount);
+		const FName N(NameS.RightChop(L));
+		return GM->Inventory->Count(N);
+	}
+
+	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
+		// TODO find better way
+		if (UNLIKELY(!GM->Char)) return -1;
+		const UCInteractor* const Int = Cast<UCInteractor>(GM->Char->GetComponentByClass(UCInteractor::StaticClass()));
+		if (UNLIKELY(!Int)) return -1;
+		const UCInteract* const Comp = Int->GetHoverComp();
+		if (UNLIKELY(!Comp)) return -1;
+
+		if (Name == "V.Inter.Cur.Name") {
+			const AActor* const Owner = Comp->GetOwner();
+			if (UNLIKELY(!Owner)) return -1;
+			const FName OwnerName = FName(Owner->GetActorLabel(false));
+			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
+			return OwnerName.ToUnstableInt();
+		}
+		if (Name=="V.Inter.Cur.State") {
+			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
+			if (UNLIKELY(!Owner)) return -1;
+			return Owner->GetState();
+		}
+	}
+
+	static const TCHAR* const TInterState = TEXT("V.Inter.State.");
+	if (NameS.StartsWith(TInterState)) {
+		const size_t L = UJUtilsMisc::TextLen(TInterState);
+		const FString& ActorName = NameS.RightChop(L);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Inter State for=%s"), __func__, *ActorName);
+		TArray<AActor*> Actors;
+		UGameplayStatics::GetAllActorsOfClass(this, AInteract::StaticClass(), Actors);
+		for (const AActor* A: Actors) {
+			if (UNLIKELY(!A)) continue;
+
+			const bool Same = A->GetActorLabel(false).
+				Equals(ActorName, ESearchCase::IgnoreCase);
+			if (LIKELY(!Same)) continue;
+
+			const AInteract* I = Cast<AInteract>(A);
+			return LIKELY(I) ? I->GetState(): -1;
+		}
+
+		return -1; // not found
+	}
+
+	return -1;
 }
