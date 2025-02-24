@@ -69,10 +69,10 @@ void UCLCharItems::Look(const FName& Name) const {
 	// don't even bother with the non-random.
 	// if you want to have a non-random sequence you'd have to add 2 keys.
 	// but it's cheaper than asking every time for random and not random.
-	const FName& DRName = FName((SName + "_Look*")); // TODO deprecated
-	const FName& DRNameNew = FName(LDConsts::Dlgs::Item::LookPre+SName);
+	// const FName& DRName = FName((SName + "_Look*")); // TODO deprecated
+	const FName& DiagName = FName(LDConsts::Dlgs::Item::LookPre+SName);
 	// the isValid is for the add below
-	const bool Said = Say(DRNameNew) || Say(DRName) ; // notice it calls Say first.
+	const bool Said = Say(DiagName); // || Say(DRName) ; // notice it calls Say first.
 	if (LIKELY(IsValid(Diags)) && !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
@@ -81,7 +81,7 @@ void UCLCharItems::Look(const FName& Name) const {
 		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
 		// allow item description to split on different dialog boxes/pages.
-		for (const FText& Block : Item.Descriptions) {
+		for (const FText& Block: Item.Descriptions) {
 			Diag.Text = Block;
 			Diags->AddDiag(Diag);
 		}
