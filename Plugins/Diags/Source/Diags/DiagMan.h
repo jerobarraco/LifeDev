@@ -29,12 +29,16 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 
-	// show a dialog
+	// show a dialog. Called automatically from the Diag subsystem.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show(const FDiag& Diag);
-	// stop showing Diags (no more Diags)
+	// When a dialog is added (before it's shown). Called automatically from the Diag subsystem.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Add(const FName Name, const FDiag& Diag);
+	// stop showing Diags (no more Diags). Called automatically from the Diag subsystem.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
+
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
@@ -42,6 +46,7 @@ public:
 	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Skip();
+	// Attempts to go back
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Back();
 

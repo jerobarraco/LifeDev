@@ -42,6 +42,7 @@ void ADiagMan::Init_Implementation() {
 	if (UNLIKELY(!IsValid(Diags))) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
+	Diags->OnAdd.AddUniqueDynamic(this, &ADiagMan::Add);
 	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
 }
 
@@ -60,6 +61,8 @@ void ADiagMan::DeInit_Implementation() {
 	}
 	UI = nullptr;
 }
+
+void ADiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {} // Pass: for being overriden
 
 void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
@@ -97,7 +100,6 @@ void ADiagMan::Hide_Implementation() {
 	UI->Hide();
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 }
-
 
 void ADiagMan::BeginPlay() {
 	Super::BeginPlay();
