@@ -70,7 +70,7 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 		const bool Ok = AddId(Row);
 
 		// Success = Success && Ok; // ok will set it to false (faster than branch)
-		// now that we have conditions, some dialogs might fail and we'll be fine with that.
+		// now that we have conditions, some dialogs might fail, and we'll be fine with that.
 		Success = Success || Ok;
 	}
 
@@ -88,23 +88,31 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 
 	if (Seq.Type == ESeqType::SEQUENCE) { 
 		return AddIdMany(Rows);
-	} else if (Seq.Type == ESeqType::MATCH) {
+	}
+	
+	if (Seq.Type == ESeqType::MATCH) {
 		for (const FName& N: Rows) { // TODO test
 			if (AddId(N)) return true;
 		}
 		return false;
-	} else if (Seq.Type == ESeqType::RANDOM) {
+	}
+	
+	if (Seq.Type == ESeqType::RANDOM) {
 		TArray<FName> Shuffled = Rows; // make a copy
 		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
 		for (const FName& N: Shuffled) { // TODO test
 			if (AddId(N)) return true;
 		}
 		return false;
-	} else if (Seq.Type == ESeqType::PICK_LOOP) { // TODO test
+	}
+	
+	if (Seq.Type == ESeqType::PICK_LOOP) { // TODO test
 		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
-	} else if (Seq.Type == ESeqType::PICK_CLAMP) { // TODO test
+	}
+	
+	if (Seq.Type == ESeqType::PICK_CLAMP) { // TODO test
 		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
