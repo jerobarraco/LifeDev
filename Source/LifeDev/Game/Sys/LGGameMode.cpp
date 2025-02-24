@@ -487,11 +487,10 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 }
 
 double ALGGameMode::EvalVar(const FName Name) {
-	// TODO move elsewhere. Featsman?
-	// TODO make these "" const into static const FName othrwise it might convrt each time
-	// TODO fix case sensitive comparison (unless that's the default? apparently it is)
+	// TODO move elsewhere. Featsman? (Sure? it does needs to access EVERYTHING)
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Name=%s"), __func__, *NameS);
+
 	if (NameS.StartsWith("@")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
 		return Actual.ToUnstableInt();
@@ -512,26 +511,38 @@ double ALGGameMode::EvalVar(const FName Name) {
 		return LIKELY(Flashback) ? Flashback->GetValTo() : -1;
 
 	if (Name == NAME_StoryStepCur)
-		return Story->GetCurrent().ToUnstableInt();
+		return LIKELY(Story) ? Story->GetCurrent().ToUnstableInt() : -1;
 	if (Name == "V.Sys.IsDebug")
 		return UJUtilsMisc::IsDebug() ? 1:0;
 	if (Name == "V.Sys.IsEditor")
 		return UJUtilsMisc::IsEditor() ? 1:0;
 
 	/// parsing
-	
-	if (NameS.StartsWith("V.Feat.Get.")) {
-		const FString& FeatS = NameS.LeftChop(NameS.Len()-11);
+
+	static const TCHAR* const TFeatGet = TEXT("V.Feat.Get.");
+	if (NameS.StartsWith(TFeatGet)) {
+		if (UNLIKELY(!Settings)) return -1;
+		const size_t L = UJUtilsMisc::TextLen(TFeatGet);
+		const FString& FeatS = NameS.RightChop(L);
+		for (const EFeat F: TEnumRange<EFeat>()) {
+			const bool Same = UEnum::GetValueAsString(F).Equals(FeatS, ESearchCase::IgnoreCase);
+			if (LIKELY(!Same)) continue;
+
+			return Settings->GetFeat(F) ? 1: 0; 
+		}
+		return -1;
 		if (!FeatS.IsNumeric()) return -1;
 
 		const int32 I = FCString::Atoi(*FeatS);
 		return Settings->GetFeat(EFeat(I)) ? 1: 0;
 	}
 
-	if (NameS.StartsWith("V.Item.Count.")) {
-		// TODo make this string a const
-		// TODO size use std::char_traits<char>::length("str")
-		return Inventory->Count(FName(NameS.LeftChop(NameS.Len()-13))); // TODO debug . TODO constize the 12. get from the string
+	static const TCHAR* const TItemCount = TEXT("V.Item.Count.");
+	if (NameS.StartsWith(TItemCount)) {
+		const size_t L = UJUtilsMisc::TextLen(TItemCount);
+		// const int32 LSub = NameS.Len()-L;
+		const FName N(NameS.RightChop(L));
+		return Inventory->Count(N);
 	}
 
 	// TODO use fnames instead, chop teh NameS. otherwise it's a string comparison. and also is case sensitive.
@@ -557,20 +568,25 @@ double ALGGameMode::EvalVar(const FName Name) {
 		}
 	}
 
-	if (NameS.StartsWith("V.Inter.State.")) {
-		const FName ActorName = FName(NameS.LeftChop(NameS.Len()-14));
+	static const TCHAR* const TInterState = TEXT("V.Inter.State.");
+	if (NameS.StartsWith(TInterState)) {
+		const size_t L = UJUtilsMisc::TextLen(TInterState);
+		const FString& ActorName = NameS.RightChop(L);
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Inter State for=%s"), __func__, *ActorName);
 		TArray<AActor*> Actors;
 		UGameplayStatics::GetAllActorsOfClass(this, AInteract::StaticClass(), Actors);
 		for (const AActor* A: Actors) {
 			if (UNLIKELY(!A)) continue;
 
-			if (LIKELY(A->GetActorLabel(false) != ActorName)) continue;
+			const bool Same = A->GetActorLabel(false).
+				Equals(ActorName, ESearchCase::IgnoreCase);
+			if (LIKELY(!Same)) continue;
 
 			const AInteract* I = Cast<AInteract>(A);
 			return LIKELY(I) ? I->GetState(): -1;
 		}
 
-		return -1;
+		return -1; // not found
 	}
 
 	return -1;

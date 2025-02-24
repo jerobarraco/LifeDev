@@ -123,6 +123,8 @@ enum class EFeat: uint8 {
 	DBG_MAX UMETA(Hidden),
 #pragma endregion
 };
+ENUM_RANGE_BY_COUNT(EFeat, EFeat::DBG_MAX);
+// 	for (EFeat F : TEnumRange<EFeat>()) { https://benui.ca/unreal/iterate-over-enum-tenumrange/
 
 
 namespace LDConsts {
