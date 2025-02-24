@@ -215,26 +215,22 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
-	Inventory = nullptr;
-	Diags = nullptr;
-	if (LIKELY(IsValid(UI))) UI->RemoveFromParent();
-	UI = nullptr;
-
-	if (LIKELY(IsValid(SettingsUI))) SettingsUI->RemoveFromParent();
-	SettingsUI = nullptr;
-
-	if (LIKELY(IsValid(Noiser))) Noiser->Deactivate();
-	Noiser = nullptr;
-	Items = nullptr;
-
-	UFlashback* const FB = W->GetSubsystem<UFlashback>();
-	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
-
-	if (LIKELY(IsValid(Interactor))) Interactor->OnHover.RemoveAll(this);
-
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
+	UFlashback* const FB = W->GetSubsystem<UFlashback>();
+	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
+	if (LIKELY(IsValid(UI))) UI->RemoveFromParent();
+	if (LIKELY(IsValid(SettingsUI))) SettingsUI->RemoveFromParent();
+	if (LIKELY(IsValid(Noiser))) Noiser->Deactivate();
+	if (LIKELY(IsValid(Interactor))) Interactor->OnHover.RemoveAll(this);
+
+	Inventory = nullptr;
+	Diags = nullptr;
+	UI = nullptr;
+	SettingsUI = nullptr;
+	Noiser = nullptr;
+	Items = nullptr;
 
 	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
