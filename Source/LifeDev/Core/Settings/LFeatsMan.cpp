@@ -201,7 +201,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 	}
 
 	if (!NameS.StartsWith("V.")) {
-		if (UNLIKELY(GM->Flags)) return -1;
+		if (UNLIKELY(!GM->Flags)) return -1;
 
 		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning,
 			TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
