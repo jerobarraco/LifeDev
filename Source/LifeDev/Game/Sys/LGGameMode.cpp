@@ -486,6 +486,13 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }
 
+void ALGGameMode::TickCounter() const {
+	// while these DO work. they now spam the console with 2 "exec commands"
+	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
+	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
+	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Global::Time, CounterTime, false);
+}
+
 double ALGGameMode::EvalVar(const FName Name) {
 	// TODO move elsewhere. Featsman? (Sure? it does needs to access EVERYTHING)
 	const FString NameS = Name.ToString();
@@ -502,19 +509,20 @@ double ALGGameMode::EvalVar(const FName Name) {
 	}
 
 	// checking against names first, intentionally for performance
-	static const FName NAME_FBVal("V.FB.Val"); // TODO Move to a ldconst stuff.
-	static const FName NAME_FBValTo("V.FB.ValTo"); // TODO Move to a ldconst stuff.
+	static const FName NAME_FBVal("V.FB.Val");
+	static const FName NAME_FBValTo("V.FB.ValTo");
 	static const FName NAME_StoryStepCur("V.Story.Step.Cur");
+	static const FName NAME_SysDebug("V.Sys.IsDebug");
+	static const FName NAME_SysEditor("V.Sys.IsEditor");
 	if (Name == NAME_FBVal)
 		return LIKELY(Flashback) ? Flashback->GetVal() : -1;
 	if (Name == NAME_FBValTo)
 		return LIKELY(Flashback) ? Flashback->GetValTo() : -1;
-
 	if (Name == NAME_StoryStepCur)
 		return LIKELY(Story) ? Story->GetCurrent().ToUnstableInt() : -1;
-	if (Name == "V.Sys.IsDebug")
+	if (Name == NAME_SysDebug)
 		return UJUtilsMisc::IsDebug() ? 1:0;
-	if (Name == "V.Sys.IsEditor")
+	if (Name == NAME_SysEditor)
 		return UJUtilsMisc::IsEditor() ? 1:0;
 
 	/// parsing
@@ -589,11 +597,4 @@ double ALGGameMode::EvalVar(const FName Name) {
 	}
 
 	return -1;
-}
-
-void ALGGameMode::TickCounter() const {
-	// while these DO work. they now spam the console with 2 "exec commands"
-	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
-	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
-	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Global::Time, CounterTime, false);
 }
