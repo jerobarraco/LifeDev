@@ -171,7 +171,7 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 		// save myself some pain if i forget. warn to myself.
 		UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
 			"It won't really be used. Skip."), __func__);
-		// can't quit now. we've used the item. (yes i could change the code to accomodate for that, but no.
+		// can't quit now. we've used the item. (yes, i could change the code to accomodate for that, but no.
 		if (LIKELY(ValidLogic)) Item.Logic->Use();
 	}
 
