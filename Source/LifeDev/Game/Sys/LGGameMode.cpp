@@ -7,6 +7,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Engine/PostProcessVolume.h"
 
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
@@ -18,8 +19,6 @@
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
-#include "Engine/PostProcessVolume.h"
-#include "Interact/Interact.h"
 #include "JSig/CSignificance.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
@@ -176,14 +175,14 @@ void ALGGameMode::Init() {
 		return;
 	}
 
-	EvalMath = World->GetSubsystem<UEval>();
+	Eval = World->GetSubsystem<UEval>();
 
 	const bool IsEditor = UJUtilsMisc::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
 
 	// init together. but before writing subsystems from save
-	EvalMath->Init();
+	Eval->Init();
 	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
 	Flags->Init();
 	Diags->Init();
@@ -253,7 +252,6 @@ void ALGGameMode::Init() {
 	/// binding
 	
 	// start listening only here. in case the previous init might trigger a false one
-	EvalMath->OnGetVar.BindDynamic(this, &ALGGameMode::EvalVar);
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
@@ -313,21 +311,18 @@ void ALGGameMode::DeInit() {
 
 	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
 
-	if (IsValid(InventoryMan)) InventoryMan->DeInit();
+	if (LIKELY(IsValid(InventoryMan))) InventoryMan->DeInit();
 
 	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
 
 	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
 	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
 
-	if (LIKELY(EvalMath)) EvalMath->OnGetVar.Clear();
-
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
 		Diags->DeInit();
 	}
-	
 
 	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
 	
@@ -339,7 +334,7 @@ void ALGGameMode::DeInit() {
 	}
 
 	// nullify at end in case someone tries to reference them
-	EvalMath = nullptr;
+	Eval = nullptr;
 	Char = nullptr;
 	Ghosts = nullptr;
 	DiagMan = nullptr;
@@ -491,8 +486,4 @@ void ALGGameMode::TickCounter() const {
 	// GEngine->Exec(nullptr, TEXT("log LogFlags off"));
 	// GEngine->Exec(nullptr, TEXT("log LogFlags on"));
 	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Global::Time, CounterTime, false);
-}
-
-double ALGGameMode::EvalVar(const FName Name) {
-	
 }

@@ -98,7 +98,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlashback> Flashback = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UEval> EvalMath = nullptr;
+	TObjectPtr<UEval> Eval = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 
@@ -123,8 +123,6 @@ protected:
 	void DiagDone();
 	UFUNCTION() // bound
 	void Fade(const bool bIn, const FText& Text);
-	UFUNCTION()
-	double EvalVar(const FName Name);
 
 	void TickCounter() const;
 
