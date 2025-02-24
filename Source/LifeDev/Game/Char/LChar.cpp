@@ -146,15 +146,14 @@ void ALChar::HoverTimer() {
 
 	const FString& Label = Owner->GetActorLabel();
 	const FName N(LDConsts::Dlgs::Inter::HoverPre+Label);
-	Diags->AddId(N);
-	
-	UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Diags)) Diags->AddId(N);
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }
 
 void ALChar::HoverTimerClear() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	FTimerManager& Timer = World->GetTimerManager();
 	Timer.ClearTimer(HoverTimerHandle);
 	HoverTimerHandle.Invalidate();
@@ -185,7 +184,6 @@ void ALChar::Init_Implementation() {
 	// and they get reloaded on game start (travel to game_l).
 	// and also the save-game is loaded before a game travel. and doesn't change during game.
 	// with your powers combined, it's me! Captain cringy feat!
-	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
 	const float Foxify =
@@ -235,6 +233,7 @@ void ALChar::BeginPlay() {
 
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
+	Flags = World->GetSubsystem<UFlags>();
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &ALChar::SetFB);
 
@@ -260,6 +259,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	Inventory = nullptr;
 	Diags = nullptr;
+	Flags = nullptr;
 	UI = nullptr;
 	SettingsUI = nullptr;
 	Noiser = nullptr;

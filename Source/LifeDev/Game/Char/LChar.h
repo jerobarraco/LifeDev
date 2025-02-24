@@ -8,6 +8,7 @@
 
 #include "LChar.generated.h"
 
+class UFlags;
 class UInventory;
 class UCLCharCam;
 class UCLCharItems;
@@ -153,6 +154,8 @@ protected:
 	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UFlags> Flags = nullptr;
 
 	FTimerHandle HoverTimerHandle;
 };
