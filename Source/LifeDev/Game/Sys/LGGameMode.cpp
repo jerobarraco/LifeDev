@@ -537,7 +537,8 @@ double ALGGameMode::EvalVar(const FName Name) {
 			const FString& CurFeatS = UEnum::GetValueAsString(F);
 			// UE_LOG(LogLGameMode, Log, TEXT("%hs search feat tgt=%s cur=%s"), __func__, *FeatS, *CurFeatS);
 			// const bool Same = CurFeatS.Equals(FeatS, ESearchCase::IgnoreCase);
-			const bool Same = CurFeatS.EndsWith(FeatS); // cheat. i know. otherwise i need to use the full name like EFEAT::D_AUTO
+			// EndsWith is a cheat. i know. otherwise i need to use the full name like EFEAT::D_AUTO.
+			const bool Same = CurFeatS.EndsWith(FeatS);
 			if (LIKELY(!Same)) continue;
 
 			return Settings->GetFeat(F) ? 1: 0; 
