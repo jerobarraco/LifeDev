@@ -21,6 +21,7 @@
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Core/Sounds/CLNoiser.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 #include "GameUI.h"
@@ -118,14 +119,39 @@ void ALChar::SetUIVisible(const bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALChar::InteractHover(const bool bOn, const UCInteract* const Comp) {
+void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
 	if (UNLIKELY(!IsValid(UI))) return;
 	// will hide the prompt on invalid. which is a nice side effect. 
-	if (bOn && IsValid(Comp))
+	if (bOn && LIKELY(IsValid(Comp)))
 		UI->InteractShowPrompt(Comp->Text);
 	else
 		UI->InteractHidePrompt();
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerManager& Timer = World->GetTimerManager();
+	if (bOn) {
+		Timer.SetTimer(HoverTimerHandle, this, &ALChar::HoverTimer, 1);
+	} else {
+		Timer.ClearTimer(HoverTimerHandle);
+		HoverTimerHandle.Invalidate();
+	}
+}
+
+void ALChar::HoverTimer() {
+	// would be nice to move this elsewhere, but i can't put it on the cInteractor and i'm not going to make a LCInteractor for this 
+	const UCInteract* const Comp = Interactor->GetHoverComp();
+	if (UNLIKELY(!Comp)) return;
+
+	const AActor* const Owner = Comp->GetOwner();
+	if (UNLIKELY(!Owner)) return;
+
+	const FString& Label = Owner->GetActorLabel();
+	const FName N(LDConsts::Dlgs::Inter::HoverPre+Label);
+	Diags->AddId(N);
 	
+	UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }
 
 void ALChar::SetInputEnabled(const bool Enabled) {

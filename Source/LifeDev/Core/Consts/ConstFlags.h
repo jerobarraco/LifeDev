@@ -47,6 +47,8 @@ namespace LDConsts {
 			namespace Story {
 			}
 		}
+		// some flags are reused from dlgs
+		// todo move to dlgs
 		namespace Inter{
 			// expects the actor label at the end
 			inline static const FString TriggerPre("Inter.Trigger.");

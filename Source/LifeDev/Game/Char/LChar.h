@@ -6,10 +6,9 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 
-#include "Inventory/Inventory.h"
-
 #include "LChar.generated.h"
 
+class UInventory;
 class UCLCharCam;
 class UCLCharItems;
 class ULSettingsUI;
@@ -54,7 +53,6 @@ public:
 	// Called for the internal init
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
 	void Init();
-	
 
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
@@ -111,7 +109,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION()
-	void InteractHover(const bool bOn, const UCInteract* const Comp);
+	void InteractHover(const bool bOn, UCInteract* const Comp);
+	UFUNCTION()
+	void HoverTimer();
 	UFUNCTION()
 	void MenuDone();
 	UFUNCTION()
@@ -152,5 +152,7 @@ protected:
 	TObjectPtr<UInventory> Inventory = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
+
+	FTimerHandle HoverTimerHandle;
 };
 

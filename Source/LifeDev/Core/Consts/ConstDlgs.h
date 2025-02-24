@@ -17,6 +17,7 @@ namespace LDConsts {
 			inline static const FString DeactivatePre("Inter.Deactivate.");
 			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
 			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
+			inline static const FString HoverPre("Inter.Hover.");
 		}
 	}
 }
