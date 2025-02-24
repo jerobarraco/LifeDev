@@ -120,6 +120,9 @@ public:
 	template <typename T, std::size_t N>
 	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
 
+	static inline constexpr std::size_t TextLen(const TCHAR* const T) noexcept {
+		return std::char_traits<TCHAR>::length(T);
+	} 
 	// shuffles an array in place.
 	template <typename T>
 	static void ArrayShuffle(TArray<T>& Array);
