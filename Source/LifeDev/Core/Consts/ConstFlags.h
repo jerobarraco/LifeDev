@@ -48,16 +48,6 @@ namespace LDConsts {
 			}
 		}
 		// some flags are reused from dlgs
-		// todo move to dlgs
-		namespace Inter{
-			// expects the actor label at the end
-			inline static const FString TriggerPre("Inter.Trigger.");
-			inline static const FString TriggerLPre("Inter.TriggerL.");
-			inline static const FString UnlockBadPre(TEXT("Inter.Unlock.Bad."));
-		}
-		namespace Item {
-			inline static const FString UsePre("Item.Use.");
-		}
 		namespace Diags {
 			inline static const FString AddedPre(TEXT("Diags.Added."));
 		}

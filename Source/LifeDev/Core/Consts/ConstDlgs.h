@@ -11,13 +11,16 @@ namespace LDConsts {
 			inline static const FString LookPre(TEXT("Item.Look."));
 		}
 		namespace Inter {
-			// Some of these uses LDConsts::Flags to keep them the same. the ones here i'm not interested to save them on the flag system.
-			inline static const FString StatePre("Inter.State.");
+			// the PRE expects the actor label at the end
 			inline static const FString ActivatePre("Inter.Activate.");
 			inline static const FString DeactivatePre("Inter.Deactivate.");
-			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
-			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
 			inline static const FString HoverPre("Inter.Hover.");
+			inline static const FString StatePre("Inter.State.");
+			inline static const FString TriggerPre("Inter.Trigger.");
+			inline static const FString TriggerLPre("Inter.TriggerL.");
+			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
+			inline static const FString UnlockBadPre(TEXT("Inter.Unlock.Bad."));
+			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
 		}
 	}
 }

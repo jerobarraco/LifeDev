@@ -178,10 +178,10 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 	if (UNLIKELY(!Used)) return false;
 
 	const FString& NameS = Name.ToString();
-	const FName NameUse(LDConsts::Flags::Item::UsePre+NameS);
-	const bool Said = Say(NameUse);
+	const FName Dlg(LDConsts::Dlgs::Item::UsePre+NameS);
+	const bool Said = Say(Dlg);
 	const bool Played = PlaySound(Item.Snd);
-	Flags->Mod(NameUse, 1);
+	Flags->Mod(Dlg, 1);
 
 	return true;
 }

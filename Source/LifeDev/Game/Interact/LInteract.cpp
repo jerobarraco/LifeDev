@@ -243,7 +243,7 @@ void ALInteract::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 
 	const FString& Label = GetActorLabel(false);
-	const FName TName = FName(LDConsts::Flags::Inter::TriggerPre+Label);
+	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerPre+Label);
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
 		Flags->Mod(TName, 1);
@@ -280,8 +280,8 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 	// Also add the auto ones
 	const FString& Label = GetActorLabel(false);
-	const FName TName = FName(LDConsts::Flags::Inter::TriggerLPre+Label);
-	Diags->AddId(FName(LDConsts::Flags::Inter::TriggerLPre+Label));
+	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerLPre+Label);
+	Diags->AddId(TName);
 	if (LIKELY(Flags)) Flags->Mod(TName, 1);
 }
 
@@ -326,10 +326,11 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	/// Unlock with item - at this point is locked
 	
 	// Checks if it needs an item to unlock it. and unlock if needed.
-	const bool LockBad = Item != ULockItem;
+	bool LockBad = Item != ULockItem;
+	// if (LockBad)
 	if (LockBad) {
-		const FName Dlg(LDConsts::Flags::Inter::UnlockBadPre + Label);
-		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // log
+		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
+		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
 		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}

@@ -91,6 +91,9 @@ public:
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	FName ULockItem = NAME_None;
+	// experimental. an eval condition that will unlock this.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	FString ULockCondition = "";
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
 	// (e.g. useful for doors)
