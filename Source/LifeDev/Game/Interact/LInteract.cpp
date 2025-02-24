@@ -342,7 +342,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	if (LockBad) {
 		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
 		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
-		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
+
+		const bool Added = LIKELY(ValidDiags) && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
@@ -350,7 +351,6 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
 }
-
 
 void ALInteract::Unlocked_Implementation() {
 	Locked = false; // force unlock or trigger won't work
