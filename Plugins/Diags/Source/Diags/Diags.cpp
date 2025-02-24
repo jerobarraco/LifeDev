@@ -88,29 +88,26 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 
 	if (Seq.Type == ESeqType::SEQUENCE) { 
 		return AddIdMany(Rows);
-	} else if (Seq.Type == ESeqType::RANDOM) {
-		const int32 i = FMath::RandRange(0, Num-1);
-		return AddId(Rows[i]);
-	} else if (Seq.Type == ESeqType::PICK_LOOP) {
-		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
-		const FName DiagRow = Rows[i];
-		return AddId(DiagRow);
-	} else if (Seq.Type == ESeqType::PICK_LOOP) {
-		const int32 i = FMath::Clamp(Res, 0, Num-1);
-		const FName DiagRow = Rows[i];
-		return AddId(DiagRow);
-	} else if (Seq.Type == ESeqType::PICK_MATCH) {
+	} else if (Seq.Type == ESeqType::MATCH) {
 		for (const FName& N: Rows) { // TODO test
 			if (AddId(N)) return true;
 		}
 		return false;
-	} else if (Seq.Type == ESeqType::PICK_MATCH_RND) {
+	} else if (Seq.Type == ESeqType::RANDOM) {
 		TArray<FName> Shuffled = Rows; // make a copy
 		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
 		for (const FName& N: Shuffled) { // TODO test
 			if (AddId(N)) return true;
 		}
 		return false;
+	} else if (Seq.Type == ESeqType::PICK_LOOP) { // TODO test
+		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
+		const FName DiagRow = Rows[i];
+		return AddId(DiagRow);
+	} else if (Seq.Type == ESeqType::PICK_CLAMP) { // TODO test
+		const int32 i = FMath::Clamp(Res, 0, Num-1);
+		const FName DiagRow = Rows[i];
+		return AddId(DiagRow);
 	}
 	
 	return false;

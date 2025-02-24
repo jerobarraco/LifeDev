@@ -21,16 +21,16 @@ UENUM(BlueprintType)
 enum class ESeqType : uint8 {
 	// Normal sequence
 	SEQUENCE,
-	// Choose one dialog at random
-	RANDOM,
-	// Select one dialog depending on the condition, but clamp.
-	PICK_CLAMP,
-	// Select one dialog depending on the condition, but loop.
-	PICK_LOOP,
 	// Selects the first dialog that gets added successfully (implies passing its condition)
-	PICK_MATCH,
-	// Selects the one random dialog that gets added successfully (implies passing its condition)
-	PICK_MATCH_RND,
+	// It will try all the dialogs in sequential order until the first one passes the condition.
+	MATCH,
+	// Selects one random dialog that gets added successfully (implies passing its condition)
+	// It will try all the dialogs in random order until the first one passes the condition.
+	RANDOM,
+	// Select one dialog depending on the condition's result value, but clamp.
+	PICK_CLAMP,
+	// Select one dialog depending on the condition's result value, but loop.
+	PICK_LOOP,
 };
 
 // The base structure for dialogs.
