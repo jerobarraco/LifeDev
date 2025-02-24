@@ -17,7 +17,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Diag"))
 	TSoftObjectPtr<UDataTable> Dialogs;
 	// dialog groups
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags/DiagGroup"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.DiagGroup"))
 	TSoftObjectPtr<UDataTable> Groups;
 	
 	// story steps belonging to this chapter
