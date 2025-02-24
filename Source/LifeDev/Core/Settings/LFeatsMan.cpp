@@ -6,6 +6,7 @@
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h" // needed to load testdl
 
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
