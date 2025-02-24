@@ -47,7 +47,7 @@ void ALFeatsMan::BeginPlay() {
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
 	GM = Cast<ALGGameMode>(AGMB);
-
+	Eval = W->GetSubsystem<UEval>();
 	// force initialize
 	LoadMPC();
 }
@@ -65,6 +65,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	MPC = nullptr;
 	SpeedMat = nullptr; // free as a bird
 	FBMat = nullptr;
+	Eval = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
 

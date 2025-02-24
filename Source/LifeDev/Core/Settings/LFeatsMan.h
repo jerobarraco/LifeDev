@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
 #include "CoreMinimal.h"
+#include "Eval.h"
 #include "LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
@@ -40,21 +41,22 @@ protected:
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
 	
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<ALGGameMode> GM = nullptr;
-	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test_DL.Test_DL"));
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInterface> SpeedMat = nullptr;
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInterface> FBMat = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test_DL.Test_DL"));
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ALGGameMode> GM = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UEval> Eval = nullptr;
+
 };
 
