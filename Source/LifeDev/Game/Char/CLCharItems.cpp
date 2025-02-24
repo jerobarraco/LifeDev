@@ -141,7 +141,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			const FName NameUse("Item.Use."+Name.ToString()); // TODO to consts
 			const bool Said = Say(NameUse);
 			const bool Ok = PlaySound(Item.Snd);
-			const FName NameFlag(LDConsts::Flags::Item::UsePre.ToString()+Name.ToString()); // TODO to consts
+			const FName NameFlag(LDConsts::Flags::Item::UsePre+Name.ToString()); // TODO to consts
 			Flags->Mod(NameFlag, 1);
 			return Res;
 		}

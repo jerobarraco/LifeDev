@@ -47,12 +47,11 @@ namespace LDConsts {
 			namespace Story {
 			}
 		}
-		
 		namespace Inter{
 			// expects the actor label at the end
 			inline static const FString TriggerPre("Inter.Trigger.");
 			inline static const FString TriggerLPre("Inter.TriggerL.");
-			inline static const FString UnlockBadPre(TEXT("Inter.Unlock.Bad."));
+			inline static const FString UnlockBadPre(TEXT("Inter.Unlock.Bad.")); // not interesting as flag too noisy
 		}
 		namespace Item {
 			inline static const FString UsePre("Item.Use.");

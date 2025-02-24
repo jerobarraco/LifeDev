@@ -329,10 +329,11 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
 		const FName Dlg(LDConsts::Flags::Inter::UnlockBadPre + Label);
+		Flags->Mod(Dlg, 1); // log
 		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
-	// TODO think about a variable ULockCondition  that can be used with the Eval system.
+	// TODO think about a variable ULockCondition that can be used with the Eval system.
 
 	// now unlocked
 	if (ValidDiags)
