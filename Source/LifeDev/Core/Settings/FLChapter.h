@@ -14,11 +14,11 @@ struct LIFEDEV_API FLChapter: public FTableRowBase {
 public:
 	// dialog Diags
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog"))
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Dialog"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Diag"))
 	TSoftObjectPtr<UDataTable> Dialogs;
-	// dialog sequences
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags/DialogSequence"))
-	TSoftObjectPtr<UDataTable> Sequences;
+	// dialog groups
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags/DiagGroup"))
+	TSoftObjectPtr<UDataTable> Groups;
 	
 	// story steps belonging to this chapter
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

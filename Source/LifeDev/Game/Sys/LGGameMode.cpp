@@ -437,8 +437,8 @@ bool ALGGameMode::ChapLoad() {
 	// set them on the dialog subsystem
 	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
 	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* const Seqs = Chapter.Sequences.LoadSynchronous();
-	Diags->SetData(DiagData, Chars, Seqs);
+	UDataTable* const Groups = Chapter.Groups.LoadSynchronous();
+	Diags->SetData(DiagData, Chars, Groups);
 	return true;
 }
 
