@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Interact/InteractTypes.h"
+#include "Inventory/InventoryTypes.h"
 
 #include "CLCharItems.generated.h"
 
@@ -39,7 +40,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+	bool DoUse(const FName Name, const FItem& Item, const bool UseLogic) const;
+	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

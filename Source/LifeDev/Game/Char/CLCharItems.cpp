@@ -136,45 +136,15 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
-		const bool Used = Inventory->Use(Name);
-		if (LIKELY(Used)) {
-			const FName NameUse("Item.Use."+Name.ToString()); // TODO to consts
-			const bool Said = Say(NameUse);
-			const bool Ok = PlaySound(Item.Snd);
-			const FName NameFlag(LDConsts::Flags::Item::UsePre+Name.ToString()); // TODO to consts
-			Flags->Mod(NameFlag, 1);
-			return Res;
-		}
-	} else if (Item.SelfUsable) { // if it wasn't success. try to self-use it.
+		// i know the if already says success. but i rather be sure.
+		if (LIKELY(DoUse(Name, Item, false))) return EItemUseResult::SUCCESS;
+	} else if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
 		// notice only checking auto-trigger here.
 		// so that i can use an auto trigger with an ANY interact too.
 		// which allows me to not have to configure the Interact, but instead configure the item.
 		// (notice this if is separate from the one above, and that BAD_HANDLED returns,
 		// since the dialog/side-effect would have been triggered)
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item is self-usable. will attempt now. '%s'."),
-			__func__, *Item.Title.ToString());
-
-		const bool ValidLogic = IsValid(Item.Logic);
-		// save myself some pain if i forget. warn to myself.
-		UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
-			"It won't really be used. Skip."), __func__);
-
-		if (LIKELY(ValidLogic)) {
-			// Calling inventory use first, since cooldown could affect it.
-			const bool Used = Inventory->Use(Name);
-			// if it fails to use it, fall through to the rest of the error
-			if (LIKELY(Used)) {
-				Item.Logic->Use();
-				const FString& NameS = Name.ToString();
-				const FName NameUse("Item.Use."+NameS);
-				const bool Said = Say(NameUse);
-				const bool Played = PlaySound(Item.Snd);
-				// TODO improve
-				const FName NameFlag(LDConsts::Flags::Item::UsePre+NameS);
-				Flags->Mod(NameFlag, 1);
-				return EItemUseResult::SUCCESS;
-			}
-		}
+		if (LIKELY(DoUse(Name, Item, true))) return EItemUseResult::SUCCESS;
 	}
 
 	// At this point there was an error
@@ -182,14 +152,38 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	const bool IsBadTarget = Res == EItemUseResult::BAD_TARGET;
 	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
 		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), IsBadTarget);
-	const FName& DlgId = IsBadTarget ?
-		LDConsts::Dlgs::Item::BadTarget :
-		LDConsts::Dlgs::Item::NoTarget;
-	// TODO fix badtarget and notarget with new ones (must be done on data)
 
+	const FName& DlgId = IsBadTarget ?
+		LDConsts::Dlgs::Item::BadTarget:
+		LDConsts::Dlgs::Item::NoTarget;
 	const bool Said = Say(DlgId);
-	// TODO remove old ones
+
 	return Res;
+}
+
+bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogic) const {
+	UE_LOG(LogCharItems, Log, TEXT("%hs: Name=%s, Item=%s, UseLogic=%i."),
+		__func__, *Name.ToString(), *Item.Title.ToString(), UseLogic);
+
+	const bool Used = Inventory->Use(Name); //important
+	if (UseLogic) {
+		const bool ValidLogic = IsValid(Item.Logic);
+		// save myself some pain if i forget. warn to myself.
+		UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
+			"It won't really be used. Skip."), __func__);
+		// can't quit now. we've used the item. (yes i could change the code to accomodate for that, but no.
+		if (LIKELY(ValidLogic)) Item.Logic->Use();
+	}
+
+	if (UNLIKELY(!Used)) return false;
+
+	const FString& NameS = Name.ToString();
+	const FName NameUse(LDConsts::Flags::Item::UsePre+NameS);
+	const bool Said = Say(NameUse);
+	const bool Played = PlaySound(Item.Snd);
+	Flags->Mod(NameUse, 1);
+
+	return true;
 }
 
 EItemUseResult UCLCharItems::UseSelected() const {
