@@ -4,14 +4,17 @@
 
 #include "MathExpEvaluator.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogEvalMath, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogEval, Log, Log);
 
 UEval::UEval():Super() {}
 
 void UEval::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	Evaluator = MakeShared<FMathExpEvaluator, ESPMode::NotThreadSafe>();
-	if (UNLIKELY(!Evaluator.IsValid())) return; // TODO warning
+	if (UNLIKELY(!Evaluator.IsValid())) {
+		UE_LOG(LogEval, Warning, TEXT("%hs Could not create evaluator! This won't work."), __func__);
+		return;
+	}
 	Evaluator->OnGetVar.BindUObject(this, &UEval::GetVar);
 }
 
@@ -35,11 +38,11 @@ UEval* UEval::Instance(const UObject*const  O) {
 bool UEval::ShouldCreateSubsystem(UObject* const Outer) const {
 	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
 
-	UE_LOG(LogEvalMath, Log, TEXT("%hs is=%i."),
+	UE_LOG(LogEval, Log, TEXT("%hs is=%i."),
 		__func__, UseSubsystem);
 
 	if (!UseSubsystem) {
-		UE_LOG(LogEvalMath, Log, TEXT("%hs is false. The world subsystem will not be created."
+		UE_LOG(LogEval, Log, TEXT("%hs is false. The world subsystem will not be created."
 			"Can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}
@@ -59,12 +62,12 @@ bool UEval::Eval(const FString& Exp, double & Res) const {
 
 	TValueOrError<double, FExpressionError> Result = Evaluator.Get()->Evaluate(*Exp);
 	if (UNLIKELY(!Result.IsValid())) {
-		UE_LOG(LogEvalMath, Warning, TEXT("%hs: error=%s exp=%s"),
+		UE_LOG(LogEval, Warning, TEXT("%hs: error=%s exp=%s"),
 			__func__, *Result.GetError().Text.ToString(), *Exp);
 		return false;
 	}
 
-	UE_LOG(LogEvalMath, Log, TEXT("%hs: Ok exp=%s res=%.3f"),
+	UE_LOG(LogEval, Log, TEXT("%hs: Ok exp=%s res=%.3f"),
 			__func__, *Exp, Result.GetValue());
 	Res = Result.GetValue();
 	return true;
