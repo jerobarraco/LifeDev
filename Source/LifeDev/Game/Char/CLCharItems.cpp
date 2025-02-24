@@ -165,12 +165,12 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 			// if it fails to use it, fall through to the rest of the error
 			if (LIKELY(Used)) {
 				Item.Logic->Use();
-				
-				const FName NameUse("Item.Use."+Name.ToString());
+				const FString& NameS = Name.ToString();
+				const FName NameUse("Item.Use."+NameS);
 				const bool Said = Say(NameUse);
 				const bool Played = PlaySound(Item.Snd);
 				// TODO improve
-				const FName NameFlag(LDConsts::Flags::Item::UsePre.ToString()+Name.ToString());
+				const FName NameFlag(LDConsts::Flags::Item::UsePre+NameS);
 				Flags->Mod(NameFlag, 1);
 				return EItemUseResult::SUCCESS;
 			}
