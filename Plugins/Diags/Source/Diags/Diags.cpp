@@ -169,7 +169,7 @@ const FName& RowName, FDiag& OutRow, FDiagChar& OutChar, const bool Warn) const 
 		return false;
 	}
 
-	OutRow = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
+	OutRow = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer.
 	GetChar(OutRow.CharRow, OutChar); // ignore if the char is not found for the result, we only care about Diags
 	return true;
 }

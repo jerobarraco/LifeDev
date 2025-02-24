@@ -44,10 +44,10 @@ public:
 	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
 	// attempt to skip the current dialog
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Skip();
 	// Attempts to go back
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Back();
 
 	virtual void BeginPlay() override;
