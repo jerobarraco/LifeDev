@@ -39,14 +39,6 @@ void ALDiagMan::Init_Implementation() {
 	Flags = UFlags::Instance(this);
 }
 
-void ALDiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {
-	Super::Add_Implementation(Name, Diag);
-	if (UNLIKELY(!Flags)) return;
-
-	const FName N(LDConsts::Flags::Diags::AddedPre + Name.ToString());
-	Flags->Mod(N,1);
-}
-
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	const UWorld* const W = GetWorld();
 	if (LIKELY(!W)) return;
@@ -82,3 +74,16 @@ void ALDiagMan::AutoClear() {
 	W->GetTimerManager().ClearTimer(AutoTimer);
 	AutoTimer.Invalidate();
 }
+
+
+// deprecated it's very redundant. no need to know which dialog got trigged.
+// i only need to know which interacts got triggered (and they have the same name (which is good))
+// (or item use)
+// not necessary. at least until i have other sources of dialog events that arent interacts or items.
+// void ALDiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {
+// Super::Add_Implementation(Name, Diag);
+// if (UNLIKELY(!Flags)) return;
+
+// const FName N(LDConsts::Flags::Diags::AddedPre + Name.ToString());
+// Flags->Mod(N,1);
+// }

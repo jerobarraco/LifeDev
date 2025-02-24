@@ -36,7 +36,7 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Show_Implementation(const FDiag& Diag) override;
-	virtual void Add_Implementation(const FName Name, const FDiag& Diag) override;
+	// virtual void Add_Implementation(const FName Name, const FDiag& Diag) override;
 	virtual void Hidden_Implementation() override;
 	virtual void Back_Implementation() override;
 	void AutoClear();
