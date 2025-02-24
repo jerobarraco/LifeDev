@@ -1,12 +1,12 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
 #include "CoreMinimal.h"
-#include "Eval.h"
-#include "LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatsMan.generated.h"
 
+class ULSettings;
+class UEval;
 class ALGGameMode;
 
 // Handles feat changes and init for things that can't do it themselves ONLY
@@ -57,6 +57,7 @@ protected:
 	TObjectPtr<ALGGameMode> GM = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
-
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettings> Settings = nullptr;
 };
 
