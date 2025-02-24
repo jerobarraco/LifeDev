@@ -84,28 +84,8 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
-	if (UNLIKELY(!CondOk)) return false;
 
-	if (Seq.Type == ESeqType::SEQUENCE) { 
-		return AddIdMany(Rows);
-	}
-	
-	if (Seq.Type == ESeqType::MATCH) {
-		for (const FName& N: Rows) { // TODO test
-			if (AddId(N)) return true;
-		}
-		return false;
-	}
-	
-	if (Seq.Type == ESeqType::RANDOM) {
-		TArray<FName> Shuffled = Rows; // make a copy
-		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
-		for (const FName& N: Shuffled) { // TODO test
-			if (AddId(N)) return true;
-		}
-		return false;
-	}
-	
+	// these two use teh condition to select the dialog
 	if (Seq.Type == ESeqType::PICK_LOOP) { // TODO test
 		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
@@ -116,6 +96,30 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
+	}
+
+	// the rest use the condition to pass
+	if (UNLIKELY(!CondOk)) return false;
+	
+	if (Seq.Type == ESeqType::SEQUENCE) { 
+		return AddIdMany(Rows);
+	}
+	
+	if (Seq.Type == ESeqType::MATCH) {
+		if (UNLIKELY(!CondOk)) return false;
+		for (const FName& N: Rows) { // TODO test
+			if (AddId(N)) return true;
+		}
+		return false;
+	}
+
+	if (Seq.Type == ESeqType::RANDOM) {
+		TArray<FName> Shuffled = Rows; // make a copy
+		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
+		for (const FName& N: Shuffled) { // TODO test
+			if (AddId(N)) return true;
+		}
+		return false;
 	}
 	
 	return false;

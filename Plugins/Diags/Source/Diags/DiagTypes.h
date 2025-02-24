@@ -19,17 +19,20 @@ enum class EDiagType : uint8 {
 // Modifiers for a sequence
 UENUM(BlueprintType)
 enum class ESeqType : uint8 {
-	// Normal sequence
+	// Normal sequential sequence.
+	// The group needs to pass its condition.
 	SEQUENCE,
-	// Selects the first dialog that gets added successfully (implies passing its condition)
-	// It will try all the dialogs in sequential order until the first one passes the condition.
+	// Selects the first dialog that gets added successfully.
+	// The group needs to pass its condition.
+	// It will try all the dialogs in sequential order until the first one passes its own dialog condition.
 	MATCH,
-	// Selects one random dialog that gets added successfully (implies passing its condition)
-	// It will try all the dialogs in random order until the first one passes the condition.
+	// Selects one random dialog that gets added successfully.
+	// The group needs to pass its condition.
+	// It will try all the dialogs in random order until the first one passes its own dialog condition.
 	RANDOM,
-	// Select one dialog depending on the condition's result value, but clamp.
+	// Select one dialog depending on the condition's result value, but clamp. (Note this always passes)
 	PICK_CLAMP,
-	// Select one dialog depending on the condition's result value, but loop.
+	// Select one dialog depending on the condition's result value, but loop. (Note this always passes)
 	PICK_LOOP,
 };
 
