@@ -41,6 +41,10 @@ void ALDiagMan::Init_Implementation() {
 
 void ALDiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {
 	Super::Add_Implementation(Name, Diag);
+	if (UNLIKELY(!Flags)) return;
+
+	const FName N(LDConsts::Flags::Diags::AddedPre + Name.ToString());
+	Flags->Mod(N,1);
 }
 
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {

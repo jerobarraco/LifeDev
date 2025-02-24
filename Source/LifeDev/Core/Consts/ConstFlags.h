@@ -58,5 +58,9 @@ namespace LDConsts {
 		namespace Item {
 			inline static const FName UsePre("Item.Use.");
 		}
+		namespace Diags {
+			inline static const FString AddedPre(TEXT("Diags.Added."));
+		}
+		
 	}
 }
