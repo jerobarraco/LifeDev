@@ -522,19 +522,18 @@ double ALGGameMode::EvalVar(const FName Name) {
 	static const TCHAR* const TFeatGet = TEXT("V.Feat.Get.");
 	if (NameS.StartsWith(TFeatGet)) {
 		if (UNLIKELY(!Settings)) return -1;
-		const size_t L = UJUtilsMisc::TextLen(TFeatGet);
+
+		static const size_t L = UJUtilsMisc::TextLen(TFeatGet);
 		const FString& FeatS = NameS.RightChop(L);
 		for (const EFeat F: TEnumRange<EFeat>()) {
-			const bool Same = UEnum::GetValueAsString(F).Equals(FeatS, ESearchCase::IgnoreCase);
+			const FString& CurFeatS = UEnum::GetValueAsString(F);
+			// UE_LOG(LogLGameMode, Log, TEXT("%hs search feat tgt=%s cur=%s"), __func__, *FeatS, *CurFeatS);
+			// const bool Same = CurFeatS.Equals(FeatS, ESearchCase::IgnoreCase);
+			const bool Same = CurFeatS.EndsWith(FeatS); // cheat. i know. otherwise i need to use the full name like EFEAT::D_AUTO
 			if (LIKELY(!Same)) continue;
 
 			return Settings->GetFeat(F) ? 1: 0; 
 		}
-		return -1;
-		if (!FeatS.IsNumeric()) return -1;
-
-		const int32 I = FCString::Atoi(*FeatS);
-		return Settings->GetFeat(EFeat(I)) ? 1: 0;
 	}
 
 	static const TCHAR* const TItemCount = TEXT("V.Item.Count.");

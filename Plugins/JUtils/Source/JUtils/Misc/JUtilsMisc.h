@@ -105,7 +105,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
 
-	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" sqare root.
+	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" square root.
 	UFUNCTION(BlueprintCallable)
 	static float MathEvaluate(const FString& Expression);
 
