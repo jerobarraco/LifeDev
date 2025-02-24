@@ -189,7 +189,8 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 }
 
 double ALFeatsMan::GetVar(const FName Name) {
-	// TODO move elsewhere. Featsman? (Sure? it does needs to access EVERYTHING)
+	// unfortunately this needs to access _everything_. good thing we can access the gm here that has most of the stuff.
+	// but still it will put a load on this class (the includes at least)
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLFeatsMan, Log, TEXT("%hs Name=%s"), __func__, *NameS);
 
@@ -199,7 +200,10 @@ double ALFeatsMan::GetVar(const FName Name) {
 	}
 
 	if (!NameS.StartsWith("V.")) {
-		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning, TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
+		if (UNLIKELY(GM->Flags)) return -1;
+
+		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning,
+			TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
 		return GM->Flags->Get(Name);
 	}
 
@@ -252,8 +256,10 @@ double ALFeatsMan::GetVar(const FName Name) {
 	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
 		// TODO find better way
 		if (UNLIKELY(!GM->Char)) return -1;
+
 		const UCInteractor* const Int = Cast<UCInteractor>(GM->Char->GetComponentByClass(UCInteractor::StaticClass()));
 		if (UNLIKELY(!Int)) return -1;
+
 		const UCInteract* const Comp = Int->GetHoverComp();
 		if (UNLIKELY(!Comp)) return -1;
 
@@ -264,6 +270,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			return OwnerName.ToUnstableInt();
 		}
+
 		if (Name=="V.Inter.Cur.State") {
 			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
 			if (UNLIKELY(!Owner)) return -1;
