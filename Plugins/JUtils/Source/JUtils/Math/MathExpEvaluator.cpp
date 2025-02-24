@@ -64,7 +64,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 
 	// replace strings with values
 	TokenDefinitions.DefineToken([this](FExpressionTokenConsumer& Consumer) -> TOptional<FExpressionError> {
-		return this->ConsumePropertyName(Consumer);
+		return this->ConsumeVarName(Consumer);
 	});
 
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
@@ -185,7 +185,7 @@ const TCHAR* const InExpression) const {
 	return MakeError(LOCTEXT("UnrecognizedResult", "Unrecognized result returned from expression"));
 }
 
-TOptional<FExpressionError> FMathExpEvaluator::ConsumePropertyName(FExpressionTokenConsumer& Consumer) const {
+TOptional<FExpressionError> FMathExpEvaluator::ConsumeVarName(FExpressionTokenConsumer& Consumer) const {
 	FString VarName;
 	bool IsAtStart = true;
 	static constexpr TCHAR OpenC = '{';

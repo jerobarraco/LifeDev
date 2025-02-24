@@ -39,7 +39,7 @@ public:
 	FJEXVGetVar OnGetVar;
 
 private:
-	TOptional<FExpressionError> ConsumePropertyName(FExpressionTokenConsumer& Consumer) const;
+	TOptional<FExpressionError> ConsumeVarName(FExpressionTokenConsumer& Consumer) const;
 
 	FTokenDefinitions TokenDefinitions;
 	FExpressionGrammar Grammar;
