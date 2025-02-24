@@ -40,20 +40,20 @@ void ALInteract::SetActive_Implementation(const bool Active) {
 	Super::SetActive_Implementation(Active);
 
 	if (LIKELY(IsValid(Diags))) { // TODO test
-		const FName BName =	Active ?
-				LDConsts::Dlgs::Inter::Activate:
-				LDConsts::Dlgs::Inter::Deactivate;
-		const FName DName(BName.ToString()+GetActorLabel(false));
-		Diags->AddId(DName);
+		const FString& DlgPre = Active ?
+				LDConsts::Dlgs::Inter::ActivatePre:
+				LDConsts::Dlgs::Inter::DeactivatePre;
+		const FName DName(DlgPre+GetActorLabel(false));
+		Diags->AddId(DName);  // todo don't warn?
 	}
 }
 
 void ALInteract::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	if (LIKELY(IsValid(Diags))) { // TODO test
-		const FName BName = LDConsts::Dlgs::Inter::State;
-		const FName DName(BName.ToString()+GetActorLabel(false)+"."+FString::FromInt(NewState));
-		Diags->AddId(DName);
+		const FString& BName = LDConsts::Dlgs::Inter::StatePre;
+		const FName DName(BName+GetActorLabel(false)+"."+FString::FromInt(NewState));
+		Diags->AddId(DName); // todo don't warn?
 	}
 }
 
@@ -243,10 +243,9 @@ void ALInteract::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 
 	const FString& Label = GetActorLabel(false);
+	const FName TName = FName(LDConsts::Flags::Inter::TriggerPre+Label);
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
-		const FName TName = FName(
-			LDConsts::Flags::Inter::TriggerPre+Label);
 		Flags->Mod(TName, 1);
 	}
 
@@ -260,9 +259,8 @@ void ALInteract::DoTrigger_Implementation() {
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
 		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
 		DiagsShown = Diags->AddId(TriggerDlg);
-		if (!DiagsShown)
-			// TODO test, todo don't warn
-			Diags->AddId(FName(LDConsts::Dlgs::Inter::Trigger.ToString()+Label));
+		// TODO test, todo don't warn
+		if (!DiagsShown) Diags->AddId(TName);
 	}
 
 	// ensure we reward or the player could get locked
@@ -284,7 +282,6 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	const FString& Label = GetActorLabel(false);
 	const FName TName = FName(LDConsts::Flags::Inter::TriggerLPre+Label);
 	Diags->AddId(FName(LDConsts::Flags::Inter::TriggerLPre+Label));
-	
 	if (LIKELY(Flags)) Flags->Mod(TName, 1);
 }
 
@@ -320,8 +317,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
 
 	// generic say something when using an item. deprecated UseItemDlgs
-	const bool SaidUse = ValidDiags && Diags->AddId(
-		FName(LDConsts::Dlgs::Inter::UseItemPre+Label+"."+Item.ToString()));
+	if (LIKELY(ValidDiags))
+		Diags->AddId(FName(LDConsts::Dlgs::Inter::UseItemPre+Label+"."+Item.ToString()));
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
 	if(!Locked) return EItemUseResult::BAD_TARGET;
@@ -331,7 +328,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	// Checks if it needs an item to unlock it. and unlock if needed.
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
-		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
+		const FName Dlg(LDConsts::Flags::Inter::UnlockBadPre + Label);
 		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
@@ -340,8 +337,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	// now unlocked
 	if (ValidDiags)
 		Diags->AddId(ULockDlg) ||
-		Diags->AddId(FName(
-			LDConsts::Dlgs::Inter::UnlockPre+Label));
+		Diags->AddId(FName(LDConsts::Dlgs::Inter::UnlockPre+Label));
 	// no need to flag since trigger already flags and implies unlock
 
 	Locked = false; // force unlock or trigger won't work
