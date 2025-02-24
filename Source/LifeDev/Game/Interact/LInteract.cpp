@@ -10,6 +10,7 @@
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
+#include "Eval.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -327,14 +328,22 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	
 	// Checks if it needs an item to unlock it. and unlock if needed.
 	bool LockBad = Item != ULockItem;
-	// if (LockBad)
+	if (LockBad && !ULockCondition.IsEmpty()) {
+		const UEval* const Eval = UEval::Instance(this);
+		double Res;
+		const bool Passed = LIKELY(Eval) && Eval->Eval(ULockCondition, Res) && Res > 0;
+		LockBad = !Passed;
+		UE_LOG(LogLInteract, Log,
+			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
+			__func__, *ULockCondition, Res, Passed);
+	}
+
 	if (LockBad) {
 		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
 		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
 		const bool Added = ValidDiags && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
-	// TODO think about a variable ULockCondition that can be used with the Eval system.
 
 	// now unlocked
 	if (ValidDiags)

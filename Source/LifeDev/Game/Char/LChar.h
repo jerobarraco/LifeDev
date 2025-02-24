@@ -112,6 +112,7 @@ protected:
 	void InteractHover(const bool bOn, UCInteract* const Comp);
 	UFUNCTION()
 	void HoverTimer();
+	void HoverTimerClear();
 	UFUNCTION()
 	void MenuDone();
 	UFUNCTION()

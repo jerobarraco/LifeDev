@@ -130,12 +130,10 @@ void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerManager& Timer = World->GetTimerManager();
-	if (bOn) {
+	if (bOn)
 		Timer.SetTimer(HoverTimerHandle, this, &ALChar::HoverTimer, 1);
-	} else {
-		Timer.ClearTimer(HoverTimerHandle);
-		HoverTimerHandle.Invalidate();
-	}
+	else
+		HoverTimerClear();
 }
 
 void ALChar::HoverTimer() {
@@ -152,6 +150,14 @@ void ALChar::HoverTimer() {
 	
 	UFlags* const Flags = UFlags::Instance(this);
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
+}
+
+void ALChar::HoverTimerClear() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.ClearTimer(HoverTimerHandle);
+	HoverTimerHandle.Invalidate();
 }
 
 void ALChar::SetInputEnabled(const bool Enabled) {
@@ -306,12 +312,13 @@ void ALChar::ActLook(const FInputActionValue& Value) {
 
 void ALChar::ActInteract() { // don't make const. the input system does not like it
 	if (UNLIKELY(!Interactor)) return;
-	// store before calling TryTrigger. since it might become null afterwards :shrug:
-	const UCInteract* const Comp = Interactor->GetHoverComp();
+	HoverTimerClear(); // important, we don't want a silly dialog after or before a trigger dialog
 
+	// store before calling TryTrigger. since it might become null afterward :shrug:
+	const UCInteract* const Comp = Interactor->GetHoverComp();
 	Interactor->TryTrigger(); // this is synchronous
-	
-	if (IsValid(Comp) && IsValid(UI)) {
+
+	if (IsValid(Comp) && LIKELY(IsValid(UI))) {
 		UI->SetPrompt(Comp->Text); // update the text
 		UE_LOG(LogLChar, Log, TEXT("%hs Text=%s"), __func__, *Comp->Text.ToString());
 	}
