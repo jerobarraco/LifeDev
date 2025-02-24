@@ -112,4 +112,6 @@ FCString::Atoi()
 
 # rowtype on pointers to datatables
  RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
- needs to be that. rowtype does not work /Script/Package.StructnamewithnoF
+ needs to be that. /Script/Package.StructnamewithnoF
+ 
+ rowtype is for datatable handles https://forums.unrealengine.com/t/udatatable-pointer-of-specific-type/479992/2?u=nande
