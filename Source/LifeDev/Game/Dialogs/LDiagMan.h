@@ -17,11 +17,12 @@ class LIFEDEV_API ALDiagMan : public ADiagMan {
 public:
 	ALDiagMan();
 
-	virtual void Init_Implementation() override;
-
 	// avoid using this. try to cache.
+	// Not very fast.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALDiagMan* InstanceL(const UObject* const O);
+
+	virtual void Init_Implementation() override;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetAutoTime() const { return AutoTime; }
@@ -35,7 +36,8 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Show_Implementation(const FDiag& Diag) override;
-	virtual void DiagDone_Implementation() override;
+	virtual void Add_Implementation(const FName Name, const FDiag& Diag) override;
+	virtual void Hidden_Implementation() override;
 	virtual void Back_Implementation() override;
 	void AutoClear();
 

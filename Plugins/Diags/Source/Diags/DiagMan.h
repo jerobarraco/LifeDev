@@ -22,10 +22,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ADiagMan* Instance(const UObject* const O);
-	
+
+	// Called by the gamemode or god class
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init();
-
+	// Called by the gamemode or god class. (or endplay)
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 
@@ -35,13 +36,9 @@ public:
 	// When a dialog is added (before it's shown). Called automatically from the Diag subsystem.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Add(const FName Name, const FDiag& Diag);
-	// stop showing Diags (no more Diags). Called automatically from the Diag subsystem.
+	// Diags are done showing Diags (no more Diags). Called automatically from the Diag subsystem.// note that there's an animation after this before the ui is hidden. Override "Hidden" for that.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Hide();
-
-	// whether the ui is showing
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
+	void DiagDone();
 
 	// attempt to skip the current dialog
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
@@ -50,8 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Back();
 
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	// whether the ui is showing
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 10;
@@ -75,9 +73,12 @@ public:
 	bool DebugSkip = false;
 
 protected:
-	// The ui is done with the current line
-	UFUNCTION(BlueprintNativeEvent)
-	void DiagDone();
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	// The ui is done with the text and hidden.
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Hidden();
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;

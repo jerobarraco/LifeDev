@@ -43,7 +43,7 @@ void ADiagMan::Init_Implementation() {
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
 	Diags->OnAdd.AddUniqueDynamic(this, &ADiagMan::Add);
-	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::Hide);
+	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::DiagDone);
 }
 
 void ADiagMan::DeInit_Implementation() {
@@ -51,6 +51,7 @@ void ADiagMan::DeInit_Implementation() {
 
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
+		Diags->OnAdd.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
 	}
 	Diags = nullptr;
@@ -75,7 +76,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	if (UNLIKELY(DebugSkip)) {
 		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
 		// skip on the next frame to avoid having issues due to call stack
-		World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::DiagDone);
+		World->GetTimerManager().SetTimerForNextTick(this, &ADiagMan::Hidden);
 		return;
 	}
 
@@ -91,7 +92,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	UI->ShowDlg(Diag);
 }
 
-void ADiagMan::Hide_Implementation() {
+void ADiagMan::DiagDone_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone IsShowing=%i"), IsShowing);
 	if (UNLIKELY(!IsShowing)) return;
 	if (UNLIKELY(!IsValid(UI))) return;
@@ -127,9 +128,9 @@ void ADiagMan::BeginPlay() {
 	if (UNLIKELY(!IsValid(UI))) return;
 
 	UI->AddToViewport(ZOrder);
-	UI->OnDone.AddUniqueDynamic(this, &ADiagMan::DiagDone);
+	UI->OnDone.AddUniqueDynamic(this, &ADiagMan::Hidden);
 	IsShowing = true; // temporarily set, so that it hides.
-	Hide();
+	DiagDone();
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -142,7 +143,7 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ADiagMan::DiagDone_Implementation() {
+void ADiagMan::Hidden_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
 	if (UNLIKELY(!IsValid(Diags))) return;
 

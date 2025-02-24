@@ -10,6 +10,7 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
 
 ALDiagMan::ALDiagMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI>
@@ -17,19 +18,29 @@ ALDiagMan::ALDiagMan():Super() {
 	UIClass = LIKELY(CUI.Succeeded()) ? CUI.Class.Get() : UDialogUI::StaticClass();
 }
 
-void ALDiagMan::Init_Implementation() {
-	Super::Init_Implementation();
-	Flags = UFlags::Instance(this);
-}
-
 ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
+	const UWorld* const W = O->GetWorld();
+	const ALGGameMode* const Mode = LIKELY(W)
+		? Cast<ALGGameMode>(W->GetAuthGameMode()) : nullptr;
+	if (LIKELY(Mode)) return Mode->DiagMan;
+
+	// probably not necessary but for completion.
 	return Cast<ALDiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 }
 
 void ALDiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALDiagMan::Init_Implementation() {
+	Super::Init_Implementation();
+	Flags = UFlags::Instance(this);
+}
+
+void ALDiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {
+	Super::Add_Implementation(Name, Diag);
 }
 
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
@@ -47,12 +58,12 @@ void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime, AutoTime < 2);
 }
 
-void ALDiagMan::DiagDone_Implementation() {
+void ALDiagMan::Hidden_Implementation() {
 	// clear before super as it could trigger a new, call show, and maybe we clear something else.
 	// actually the dialog subsystem has a protection for that, but it's better to be sure.
 	// this case it's important when the auto timer runs on a loop
 	AutoClear();
-	Super::DiagDone_Implementation();
+	Super::Hidden_Implementation();
 }
 
 void ALDiagMan::Back_Implementation() {
