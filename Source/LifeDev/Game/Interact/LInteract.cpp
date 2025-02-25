@@ -241,7 +241,7 @@ bool ALInteract::TryTrigger_Implementation() {
 		UE_LOG(LogLInteract, Log,
 			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
 			__func__, *ULockCondition, Res, Passed);
-		if (Passed) Locked = false;
+		TryUnlock = Passed;
 	}
 
 	if (TryUnlock) Unlocked();
