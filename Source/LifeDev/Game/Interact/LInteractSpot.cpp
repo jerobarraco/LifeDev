@@ -27,22 +27,22 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	const FString& Label = GetActorLabel(false);
 	if (UNLIKELY(Items.IsEmpty())) {
 		Locked = true; // unnecessary but complete, jic
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropFullDlg)
-		|| Diags->AddId(FName("Inter.Spot.Use.Full."+Label));
+		const bool Added = LIKELY(IsValid(Diags)) &&
+			Diags->AddId(FName("Inter.Spot.Use.Full."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	int32 Id;
 	const bool Ok = Items.Find(Name, Id);
 	if (!Ok) {
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadDlg)
-		|| Diags->AddId(FName("Inter.Spot.Use.Bad."+Label));
+		const bool Added = LIKELY(IsValid(Diags)) &&
+			Diags->AddId(FName("Inter.Spot.Use.Bad."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (UseOrder && Id !=0) { // TODO test
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadOrderDlg)
-		|| Diags->AddId(FName("Inter.Spot.Use.BadOrder."+Label));
+		const bool Added = LIKELY(IsValid(Diags)) &&
+			Diags->AddId(FName("Inter.Spot.Use.BadOrder."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 

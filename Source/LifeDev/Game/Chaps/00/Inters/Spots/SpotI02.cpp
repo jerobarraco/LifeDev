@@ -10,7 +10,6 @@ ASpotI02::ASpotI02():Super() {
 	TriggerDlg = "IS0_T"; // when completed
 	LockedDlg = "IS0_L"; // when not full
 	LockedFullDlg = "IS0_LF"; // when full
-	DropFullDlg = ""; // when full
 	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
 	
 	Texts = {

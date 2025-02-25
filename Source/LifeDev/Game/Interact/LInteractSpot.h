@@ -22,17 +22,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName DropDlg = NAME_None;
 
-	// When a drop is not correct
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName DropBadDlg = NAME_None;
-	// When a drop order is not correct
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName DropBadOrderDlg = NAME_None;
-
-	// When you TRY to drop but it's full
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FName DropFullDlg = NAME_None;
-
 	// When you TRY to trigger but it's full.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FName LockedFullDlg = NAME_None;
