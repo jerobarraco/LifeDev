@@ -26,6 +26,7 @@ namespace ExpressionParser {
 	const TCHAR* const FEquals::Moniker = TEXT("=");
 	const TCHAR* const FSet::Moniker = TEXT(":");
 }
+DEFINE_EXPRESSION_NODE_TYPE(FString, 0x8444A8A3, 0x19AE4E13, 0xBCFA75EE, 0x39982B99)
 
 namespace JMathExp {
 	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' };// ' ',
@@ -65,6 +66,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	// replace strings with values
 	TokenDefinitions.DefineToken([this](FExpressionTokenConsumer& Consumer) -> TOptional<FExpressionError> {
 		return this->ConsumeVarName(Consumer);
+	});
+	// replace strings with fstrings
+	TokenDefinitions.DefineToken([this](FExpressionTokenConsumer& Consumer) -> TOptional<FExpressionError> {
+		return this->ConsumeStr(Consumer);
 	});
 
 	Grammar.DefineGrouping<FSubExpressionStart, FSubExpressionEnd>();
@@ -161,7 +166,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
 		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
 		const uint64 Id = A; // yikes
-		SetVar(Id, B);
+		SetVarId(Id, B);
+		return B;
+	});
+	JumpTable.MapBinary<FSet>([this](const FString& A, const double B) -> double {
+		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%s B%.5f"), __func__, *A, B);
+		SetVar(A, B);
 		return B;
 	});
 }
@@ -224,7 +234,43 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumeVarName(FExpressionTokenCo
 	return TOptional<FExpressionError>();
 }
 
-void FMathExpEvaluator::SetVar(const uint64 NameId, const double Val) const {
+TOptional<FExpressionError> FMathExpEvaluator::ConsumeStr(FExpressionTokenConsumer& Consumer) const {
+	FString VarName;
+	bool IsAtStart = true;
+	static constexpr TCHAR OpenC = '"';
+	static constexpr TCHAR CloseC = '"';
+	
+	TOptional<FStringToken> StringToken = Consumer.GetStream().ParseToken(
+	[&VarName, &IsAtStart](const TCHAR InC){
+		if (UNLIKELY(IsAtStart)) {
+			IsAtStart = false;
+			return InC == OpenC ? EParseState::Continue : EParseState::Cancel; // not quoted, we don't want.
+		}
+	
+		if (UNLIKELY(InC == CloseC))
+			return EParseState::StopAfter;
+
+		VarName.AppendChar(InC);
+		return EParseState::Continue;
+	});
+
+	// Do i need this?
+	VarName.ReplaceEscapedCharWithCharInline();
+
+	// so basically i consume the string and turn it into a number, and then pretend it's that value.
+	// which it actually is.
+	if (LIKELY(StringToken.IsSet()))
+		Consumer.Add(StringToken.GetValue(), FExpressionNode(VarName));
+
+	return TOptional<FExpressionError>();
+}
+
+void FMathExpEvaluator::SetVarId(const uint64 NameId, const double Val) const {
+	if (UNLIKELY(!OnSetVarId.IsBound())) return;
+	OnSetVarId.Execute(NameId, Val);
+}
+
+void FMathExpEvaluator::SetVar(const FString& NameId, const double Val) const {
 	if (UNLIKELY(!OnSetVar.IsBound())) return;
 	OnSetVar.Execute(NameId, Val);
 }

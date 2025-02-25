@@ -323,7 +323,20 @@ double ALFeatsMan::GetVar(const FName Name) {
 	return -1;
 }
 
-void ALFeatsMan::SetVar(const uint64 NameID, const double Val) {
+void ALFeatsMan::SetVar(const FString& Name, const double Val) {
+	const FString& Trimmed = Name.TrimStartAndEnd();
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVar Name=%s Val=%.5f"),
+		__func__, *Name, Val);
+	
+	if (UNLIKELY(Trimmed.IsEmpty())) return;
+	const FName N(Trimmed);
+
+	if (UNLIKELY(!GM || !GM->Flags)) return;
+	GM->Flags->Set(N, Val);
+}
+
+void ALFeatsMan::SetVarId(const uint64 NameID, const double Val) {
+	// TODO make this work
 	struct T {
 		uint32 ID;
 		uint32 Number;
@@ -339,7 +352,7 @@ void ALFeatsMan::SetVar(const uint64 NameID, const double Val) {
 	// // this is reversing what fromunstableid does. of course, it does not work.
 	// FMemory::Memcpy(&N, &NameID, sizeof(uint64));
 	// notice how abhorrently hacky this is. i love it.
-	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs StVar Id=%lli Val=%lf EId=%i Nid=%i Name=%s"),
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVar Id=%lli Val=%lf EId=%i Nid=%i Name=%s"),
 		__func__, NameID, Val, TId.ID, TId.Number, *N.ToString());
 	if (N == FName("C3S0"))
 		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs same as c3s0"),

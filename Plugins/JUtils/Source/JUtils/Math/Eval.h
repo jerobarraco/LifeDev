@@ -11,7 +11,8 @@
 
 class FMathExpEvaluator;
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const uint64, NameID, const double, Val);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const FString&, Name, const double, Val);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const uint64, Id, const double, Val);
 
 // Subsystem that evaluates math expressions
 // if you want to compare strings. please use the variables with some way to detect the conversion.
@@ -55,6 +56,8 @@ public:
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
 	FJEVSetVar OnSetVar;
+	UPROPERTY(BlueprintReadWrite, Category=EvalMath)
+	FJEVSetVarId OnSetVarId;
 
 private:
 	UFUNCTION()
@@ -67,13 +70,23 @@ private:
 	}
 
 	UFUNCTION()
-	void SetVar(const uint64 NameID, const double Val) { // just forward
+	void SetVar(const FString& Name, const double Val) { // just forward
 		if (LIKELY(OnSetVar.IsBound())) {
-			OnSetVar.Execute(NameID, Val);
+			OnSetVar.Execute(Name, Val);
 			return;
 		}
 
 		UE_LOG(LogTemp, Warning, TEXT("%hs, OnSetVar not bound!"), __func__);
+	}
+	
+	UFUNCTION()
+	void SetVarId(const uint64 NameID, const double Val) const { // just forward
+		if (LIKELY(OnSetVarId.IsBound())) {
+			OnSetVarId.Execute(NameID, Val);
+			return;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("%hs, OnSetVarId not bound!"), __func__);
 	}
 
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;

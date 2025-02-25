@@ -43,7 +43,8 @@ protected:
 	UFUNCTION()
 	double GetVar(const FName Name);
 	UFUNCTION()
-	void SetVar(const uint64 NameID, const double Val);
+	void SetVar(const FString& Name, const double Val);
+	void SetVarId(const uint64 NameID, const double Val);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
