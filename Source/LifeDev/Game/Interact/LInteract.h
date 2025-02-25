@@ -87,11 +87,12 @@ public:
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
-	
+#pragma region deprec
 	// name of the flag that is needed to "have" to unlock this.
 	// deprecated use an ULockCondition = {flag}
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockFlagReq = NAME_None;
+#pragma endregion
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
@@ -107,6 +108,7 @@ public:
 	FName ULockDlg = NAME_None;
 	// dialog to trigger when tried to use the wrong item to unlock this
 	// use Inter.Unlock.Bad.ObjName
+	// TODO  remove this one. as it's only used once.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockBadDlg = NAME_None;
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
