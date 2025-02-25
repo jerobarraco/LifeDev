@@ -52,6 +52,8 @@ public:
 	// Experimental: condition needed to be used or self-used. or empty. 0 is false >0 is true.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString UseCondition;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	FString Comment;
 
 	// Runtime only (transient). used during runtime to keep track of the count
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
