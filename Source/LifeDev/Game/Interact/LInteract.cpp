@@ -325,9 +325,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		}
 	}
 
-	const AActor* const Owner = GetOwner();
-	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
-
+	const FString& Label = GetActorLabel(false);
+	
 	// generic say something when using an item. deprecated UseItemDlgs
 	if (LIKELY(ValidDiags))
 		Diags->AddId(FName(LDConsts::Dlgs::Inter::UseItemPre+Label+"."+Item.ToString()));
@@ -355,8 +354,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 void ALInteract::Unlocked_Implementation() {
 	Locked = false; // force unlock or trigger won't work
 	
-	const AActor* const Owner = GetOwner();
-	const FString& Label = Owner ? Owner->GetActorLabel(false) : "X";
+	const FString& Label = Owner->GetActorLabel(false);
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+Label);
 	// now unlocked
 	if (LIKELY(IsValid(Diags)))

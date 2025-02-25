@@ -19,7 +19,7 @@ namespace LDConsts {
 			inline static const FString TriggerPre("Inter.Trigger.");
 			inline static const FString TriggerLPre("Inter.TriggerL.");
 			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
-			inline static const FString UnlockBadPre(TEXT("Inter.Unlock.Bad."));
+			inline static const FString UnlockBadPre(TEXT("Inter.UnlockBad."));
 			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
 		}
 	}
