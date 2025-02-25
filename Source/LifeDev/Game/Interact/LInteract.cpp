@@ -230,10 +230,6 @@ bool ALInteract::TryTrigger_Implementation() {
 	if (!ULockItemReq.IsNone())
 		TryUnlock = LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
 
-	// handle flag req
-	if (!TryUnlock && !ULockFlagReq.IsNone())
-		 TryUnlock = LIKELY(IsValid(Flags)) && Flags->Has(ULockFlagReq);
-	
 	if (!TryUnlock && !ULockCondition.IsEmpty()) {
 		const UEval* const Eval = UEval::Instance(this);
 		double Res;
@@ -342,7 +338,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + Label);
 		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
 
-		const bool Added = LIKELY(ValidDiags) && (Diags->AddId(ULockBadDlg) || Diags->AddId(Dlg));
+		const bool Added = LIKELY(ValidDiags) && Diags->AddId(Dlg);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 

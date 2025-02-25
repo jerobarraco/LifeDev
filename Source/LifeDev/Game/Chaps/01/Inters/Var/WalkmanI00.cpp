@@ -12,7 +12,6 @@ AWalkmanI00::AWalkmanI00():Super() {
 	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?
 	LockedDlg = "WM_L";
 	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
-	ULockBadDlg = "WM_ULB"; // TODo rename the dialog to the auto one instead. and remove this.
 	ULockItem = "Batts";
 	RewardItem = "WM";
 	UseRewardDestroy = true;
@@ -20,7 +19,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	Locked = true;
 
 	Texts = {
-		FText::FromString(TEXT("My walkman, with no batteries")),
+		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
 	};
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

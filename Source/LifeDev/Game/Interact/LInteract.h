@@ -13,6 +13,9 @@ class UInventory;
 class UFlashback;
 
 // An interactive actor that can have an animation
+// Dialogs/Flags added:
+//		* Bad Unlock: Inter.Unlock.Bad.ObjName
+//		TODO
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
 	GENERATED_BODY()
@@ -87,17 +90,14 @@ public:
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
-#pragma region deprec
-	// name of the flag that is needed to "have" to unlock this.
-	// deprecated use an ULockCondition = {flag}
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
-	FName ULockFlagReq = NAME_None;
-#pragma endregion
+
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItem = NAME_None;
 	// experimental. an eval condition that will unlock this.
+	//	E.g.
+	//		On a flag: {flag}
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FString ULockCondition = "";
 	// Dialog to show when unlocking, or none to not say anything.
@@ -106,11 +106,6 @@ public:
 	// use Inter.Unlock.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockDlg = NAME_None;
-	// dialog to trigger when tried to use the wrong item to unlock this
-	// use Inter.Unlock.Bad.ObjName
-	// TODO  remove this one. as it's only used once.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
-	FName ULockBadDlg = NAME_None;
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	FName LockedItemDlg = NAME_None;
