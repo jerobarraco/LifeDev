@@ -75,7 +75,6 @@ void ALDiagMan::AutoClear() {
 	AutoTimer.Invalidate();
 }
 
-
 // deprecated it's very redundant. no need to know which dialog got trigged.
 // i only need to know which interacts got triggered (and they have the same name (which is good))
 // (or item use)
