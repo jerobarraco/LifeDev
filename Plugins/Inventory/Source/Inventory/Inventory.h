@@ -82,8 +82,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Has(const FName& Name) const;
 	// returns true if the item is usable (implies cold)
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	static bool IsUsable(const FItem& Item);
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Inventory")
+	bool IsUsable(const FItem& Item) const;
 	// returns true if the item is cold (not waiting for cooldown) (regardless of whether it uses cooldown)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);

@@ -61,7 +61,7 @@ bool UEval::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 }
 
 bool UEval::Eval(const FString& Exp, double & Res) const {
-	Res = 0;
+	Res = -2.0;
 	if (UNLIKELY(!Evaluator.IsValid())) return false;
 	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) return true;
 

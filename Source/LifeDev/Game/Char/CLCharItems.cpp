@@ -99,6 +99,12 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 	
+	if (UNLIKELY(!Interactor)) {
+		UE_LOG(LogCharItems, Warning,
+			TEXT("%hs Could not obtain the interactor component from the owner."), __func__);
+		return EItemUseResult::ERROR;
+	}
+
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
 	if (UNLIKELY(!Found)) {
@@ -118,12 +124,6 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
-	if (UNLIKELY(!Interactor)) {
-		UE_LOG(LogCharItems, Warning,
-			TEXT("%hs Could not obtain the interactor component from the owner."), __func__);
-		return EItemUseResult::ERROR;
-	}
-	
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
 	const EItemUseResult Res = Interactor->TryUseItem(Name);

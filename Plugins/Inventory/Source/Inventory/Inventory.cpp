@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 #include "Inventory.h"
 
+#include "Eval.h"
 #include "Engine/DataTable.h"
 #include "Engine/AssetManager.h"
 
@@ -279,7 +280,7 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	return true;
 }
 
-bool UInventory::IsUsable(const FItem& Item) {
+bool UInventory::IsUsable(const FItem& Item) const {
 	if (!Item.Usable) return false;
 
 	if (Item.Locked) {
@@ -292,6 +293,14 @@ bool UInventory::IsUsable(const FItem& Item) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Item is not cold. title='%s' wait=%i"),
 			__func__, *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
+	}
+
+	// TODO make static if unused
+	if (!Item.UseCondition.IsEmpty()) {
+		const UEval* const Eval = UEval::Instance(this);
+		double Res = 0;
+		if (Eval) Eval->Eval(Item.UseCondition, Res);
+		return Res > 0;
 	}
 
 	return true;
