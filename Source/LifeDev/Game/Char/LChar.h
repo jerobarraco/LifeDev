@@ -133,10 +133,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh, Config)
 	float HoverDiagTime = 2;
 
-	// Pawn mesh: 1st person view (arms; seen only by self) 
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh)
-	TObjectPtr<USkeletalMeshComponent> Mesh1P = nullptr; // TODo remove
-
 	// First person camera
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
 	TObjectPtr<UCLCharCam> Camera = nullptr;

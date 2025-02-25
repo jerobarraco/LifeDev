@@ -11,7 +11,7 @@ class AInteract;
 // Note: not setting the Set* functions as Const or bps will show them as pure and won't be able to be executed (facepalm).
 // if they were, they shouldn't be pure anyway.
 
-// Base class for Puzzles that can optionally trigger an Interact
+// Base class for Puzzles that can optionally trigger an Interact. but they aren't an interact.
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API APuzzle: public AActor {
 	GENERATED_BODY()

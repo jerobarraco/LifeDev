@@ -50,15 +50,6 @@ ALChar::ALChar(): Super() {
 	// 40 is a biiit below c18, 45 is almost the same.
 	Camera->SetRelativeLocation(FVector(-0.f, 0.f, 47.f)); // Position the camera
 
-	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
-	Mesh1P->SetupAttachment(Camera);
-	Mesh1P->bCastDynamicShadow = false;
-	Mesh1P->CastShadow = false;
-	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
 

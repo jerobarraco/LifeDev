@@ -274,7 +274,6 @@ double ALFeatsMan::GetVar(const FName Name) {
 		}
 	}
 
-
 	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
 		// TODO find better way
 		if (UNLIKELY(!GM->Char)) return -1;

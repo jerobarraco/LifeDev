@@ -62,7 +62,7 @@ void APuzzle::Done_Implementation(const bool IsOk) {
 		DoneInter->Locked = false; // force unlock
 		DoneInter->TryTrigger();
 	}
-	
+
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);
 		AInteract* const Reward = Cast<AInteract>(DoneActor);
@@ -108,6 +108,7 @@ void APuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		CPuzzle->OnReset.RemoveAll(this);
 	}
 	CPuzzle = nullptr;
+
 	ClearTimer();
 
 	Super::EndPlay(EndPlayReason);
