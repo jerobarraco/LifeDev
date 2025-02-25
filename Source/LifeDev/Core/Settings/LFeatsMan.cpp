@@ -204,7 +204,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 	if (NameS.StartsWith("#")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
 		const uint64 Int = Actual.ToUnstableInt();
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%ul"), __func__, *NameS, Int);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%llu"), __func__, *NameS, Int);
 		return Int;
 	}
 
@@ -321,9 +321,23 @@ double ALFeatsMan::GetVar(const FName Name) {
 }
 
 void ALFeatsMan::SetVar(const uint64 NameID, const double Val) {
+	struct T {
+		uint32 ID;
+		uint32 Number;
+	};
+	T TId;
+	FMemory::Memcpy(&TId, &NameID, sizeof(uint64));
+
 	FNameEntryId Id;
-	Id.FromUnstableInt(NameID);
+	Id.FromUnstableInt(TId.ID);
 	
-	const FName N(Id, FNameEntryId(), 0);
-	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs StVar Id=%lli Val=%lf N=%s"), __func__, NameID, Val, *N.ToString());
+	FName N(Id, Id, TId.Number);//(Id, Id, 0);
+	// FName N2 = FName::CreateFromDisplayId(Id, TId.Number); // neither works
+	// // this is reversing what fromunstableid does. of course, it does not work.
+	// FMemory::Memcpy(&N, &NameID, sizeof(uint64));
+	// notice how abhorrently hacky this is. i love it.
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs StVar Id=%lli Val=%lf EId=%i Nid=%i Name=%s"),
+		__func__, NameID, Val, TId.ID, TId.Number, *N.ToString());
+	if (UNLIKELY(N.IsNone())) return;
+	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); 
 }
