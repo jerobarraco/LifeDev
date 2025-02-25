@@ -195,9 +195,11 @@ double ALFeatsMan::GetVar(const FName Name) {
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLFeatsMan, Log, TEXT("%hs Name=%s"), __func__, *NameS);
 
-	if (NameS.StartsWith("@")) {
+	if (NameS.StartsWith("#")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
-		return Actual.ToUnstableInt();
+		const uint64 Int = Actual.ToUnstableInt();
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%ul"), __func__, *NameS, Int);
+		return Int;
 	}
 
 	if (!NameS.StartsWith("V.")) {
