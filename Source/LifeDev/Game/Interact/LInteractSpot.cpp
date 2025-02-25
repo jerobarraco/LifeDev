@@ -10,8 +10,8 @@ ALInteractSpot::ALInteractSpot():Super() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	UseFade = false;
-	UseStateLoop = false;
 	UseOrder = false;
+	UseStateLoop = false; // lock on the last state, since it might trigger more time than the num of states.
 	StateNum = 2; // open and done
 	Texts = {
 		FText::FromString(TEXT("Drop here")),
@@ -22,25 +22,33 @@ ALInteractSpot::ALInteractSpot():Super() {
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
+	// TODO move auto dialogs to the consts
+
+	const FString& Label = GetActorLabel(false);
 	if (UNLIKELY(Items.IsEmpty())) {
 		Locked = true; // unnecessary but complete, jic
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropFullDlg);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropFullDlg)
+		|| Diags->AddId(FName("Inter.Spot.Use.Full."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	int32 Id;
 	const bool Ok = Items.Find(Name, Id);
 	if (!Ok) {
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadDlg);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadDlg)
+		|| Diags->AddId(FName("Inter.Spot.Use.Bad."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (UseOrder && Id !=0) { // TODO test
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadOrderDlg);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(DropBadOrderDlg)
+		|| Diags->AddId(FName("Inter.Spot.Use.BadOrder."+Label));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
-	if (LIKELY(IsValid(Diags))) Diags->AddId(DropDlg);
+	if (LIKELY(IsValid(Diags)))
+		Diags->AddId(DropDlg) ||
+		Diags->AddId(FName("Inter.Spot.Use."+Label));
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {

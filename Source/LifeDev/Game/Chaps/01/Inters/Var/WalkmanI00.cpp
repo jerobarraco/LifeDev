@@ -10,13 +10,15 @@ AWalkmanI00::AWalkmanI00():Super() {
 	
 	RewardFlash = .1f;
 	// TriggerDlg = "WM00_T"; // TODO maybe add a dialog when picked?
-	LockedDlg = "WM_L";
-	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
-	ULockItem = "Batts";
 	RewardItem = "WM";
 	UseRewardDestroy = true;
 	UseFade = true;
+
+	// TODO allow to pick without the batteries
 	Locked = true;
+	LockedDlg = "WM_L";
+	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
+	ULockItem = "Batts";
 
 	Texts = {
 		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
