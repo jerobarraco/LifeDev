@@ -2,6 +2,7 @@
 * starts with @, it returns the Fname int value. eg @C3S1 > 1230192. useful for comparing values that returns a fname int.
 
 * V.Item.Count.XXX returns the count of the item XXX on inventory
+* V.Item.Cur > returns fname int for current selected item
 * V.FB.Val fb val
 * V.FB.ValTo fb val to
 * V.Story.Step.Cur > fname int value for the current step

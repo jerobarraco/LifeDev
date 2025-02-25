@@ -227,6 +227,15 @@ double ALFeatsMan::GetVar(const FName Name) {
 	if (Name == NAME_SysEditor)
 		return UJUtilsMisc::IsEditor() ? 1:0;
 
+	// Maybe .Cur.Name
+	static const FName NAME_ItemCur("V.Item.Cur");
+	if (Name == NAME_ItemCur) {
+		if (UNLIKELY(!GM->Inventory)) return -1;
+
+		return GM->Inventory->GetSelected().ToUnstableInt();
+	}
+
+	// maybe .cur.count
 	/// parsing
 
 	static const TCHAR* const TFeatGet = TEXT("V.Feat.Get.");
