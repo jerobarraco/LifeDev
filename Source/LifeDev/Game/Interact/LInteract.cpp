@@ -349,8 +349,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 
 void ALInteract::Unlocked_Implementation() {
 	Locked = false; // force unlock or trigger won't work
-	
-	const FString& Label = Owner->GetActorLabel(false);
+
+	const FString& Label = GetActorLabel(false);
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+Label);
 	// now unlocked
 	if (LIKELY(IsValid(Diags)))
