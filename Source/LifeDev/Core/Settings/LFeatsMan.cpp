@@ -211,9 +211,12 @@ double ALFeatsMan::GetVar(const FName Name) {
 	if (!NameS.StartsWith("V.")) {
 		if (UNLIKELY(!GM->Flags)) return -1;
 
+		const float Val = GM->Flags->Get(Name);
+		UE_LOG(LogLFeatsMan, Log,
+			TEXT("%hs: Flag: Name=%s Val=%.5f"), __func__, *Name.ToString(), Val);
 		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning,
 			TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
-		return GM->Flags->Get(Name);
+		return Val;
 	}
 
 	// checking against names first, intentionally for performance
