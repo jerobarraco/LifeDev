@@ -341,6 +341,10 @@ void ALFeatsMan::SetVar(const uint64 NameID, const double Val) {
 	// notice how abhorrently hacky this is. i love it.
 	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs StVar Id=%lli Val=%lf EId=%i Nid=%i Name=%s"),
 		__func__, NameID, Val, TId.ID, TId.Number, *N.ToString());
+	if (N == FName("C3S0"))
+		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs same as c3s0"),
+		__func__, NameID, Val, TId.ID, TId.Number, *N.ToString());
+
 	if (UNLIKELY(N.IsNone())) return;
 	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); 
 }
