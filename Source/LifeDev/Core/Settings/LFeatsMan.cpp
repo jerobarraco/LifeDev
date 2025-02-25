@@ -244,6 +244,15 @@ double ALFeatsMan::GetVar(const FName Name) {
 	// maybe .cur.count
 	/// parsing
 
+	static const TCHAR* const TItemCount = TEXT("V.Item.Count.");
+	if (NameS.StartsWith(TItemCount)) {
+		if (UNLIKELY(!GM->Inventory)) return -1;
+
+		const size_t L = UJUtilsMisc::TextLen(TItemCount);
+		const FName N(NameS.RightChop(L));
+		return GM->Inventory->Count(N);
+	}
+
 	static const TCHAR* const TFeatGet = TEXT("V.Feat.Get.");
 	if (NameS.StartsWith(TFeatGet)) {
 		if (UNLIKELY(!Settings)) return -1;
@@ -262,14 +271,6 @@ double ALFeatsMan::GetVar(const FName Name) {
 		}
 	}
 
-	static const TCHAR* const TItemCount = TEXT("V.Item.Count.");
-	if (NameS.StartsWith(TItemCount)) {
-		if (UNLIKELY(!GM->Inventory)) return -1;
-
-		const size_t L = UJUtilsMisc::TextLen(TItemCount);
-		const FName N(NameS.RightChop(L));
-		return GM->Inventory->Count(N);
-	}
 
 	if (NameS.StartsWith("V.Inter.Cur")) { // this is a hack
 		// TODO find better way

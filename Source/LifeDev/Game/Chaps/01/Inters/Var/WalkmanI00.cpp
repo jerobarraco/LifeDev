@@ -19,7 +19,6 @@ AWalkmanI00::AWalkmanI00():Super() {
 	LockedDlg = "WM_L";
 	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	ULockItem = "Batts";
-
 	Texts = {
 		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
 	};
