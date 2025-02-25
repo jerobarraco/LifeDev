@@ -13,9 +13,7 @@ class UInventory;
 class UFlashback;
 
 // An interactive actor that can have an animation
-// Dialogs/Flags added:
-//		* Bad Unlock: Inter.Unlock.Bad.ObjName
-//		TODO
+// Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALInteract: public AInteractAnim {
 	GENERATED_BODY()
