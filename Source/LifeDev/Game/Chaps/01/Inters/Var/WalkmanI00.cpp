@@ -14,7 +14,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 
-	// TODO allow to pick without the batteries
+	// TODO allow to pick without the batteries. needs to change the door and stuff.
 	Locked = true;
 	LockedDlg = "WM_L";
 	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
