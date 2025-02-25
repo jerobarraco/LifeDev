@@ -9,6 +9,7 @@
 
 // this way it doesn't need the .generated. which needs a uclass. which we don't have.
 DECLARE_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName);
+DECLARE_DELEGATE_TwoParams(FJEXVSetVar, const uint64, const double);
 
 struct FDecimalNumberFormattingRules;
 
@@ -25,6 +26,7 @@ DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FXor, 0x6F88756B, 0xF9234263, 0x9B13
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FGreatThan, 0x6F88756B, 0xF9234263, 0x9B13614F, 0x21060766)
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FLessThan, 0x6F88756B, 0xF9234263, 0x9B13614F, 0x2106077)
 DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FEquals, 0x6F88756B, 0xF9234263, 0x9B13614F, 0x21060728)
+DEFINE_EXPRESSION_OPERATOR_NODE(JUTILS_API, FSet, 0x6F88756B, 0xF9234263, 0x9B13614F, 0x21060729)
 
 // A basic math expression evaluator. with variables. and logic. and not gambling.
 class JUTILS_API FMathExpEvaluator {
@@ -37,10 +39,12 @@ public:
 
 	// bind to this to be able to use variables
 	FJEXVGetVar OnGetVar;
+	FJEXVSetVar OnSetVar;
 
 private:
 	TOptional<FExpressionError> ConsumeVarName(FExpressionTokenConsumer& Consumer) const;
-
+	void SetVar(const uint64 NameId, const double Val) const;
+	
 	FTokenDefinitions TokenDefinitions;
 	FExpressionGrammar Grammar;
 	FOperatorJumpTable JumpTable;

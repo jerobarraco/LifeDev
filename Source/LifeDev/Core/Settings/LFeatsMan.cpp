@@ -51,6 +51,7 @@ void ALFeatsMan::LoadMPC() {
 	UE_CLOG(UNLIKELY(!IsValid(MPCI)), LogLFeatsMan, Warning,
 		TEXT("%hs Could not get the MPCInst."), __func__);
 }
+
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
 	const UWorld* const W = GetWorld();
@@ -71,7 +72,10 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Settings->OnFeatUpdateUnreal.RemoveAll(this);
 	}
 
-	if (LIKELY(Eval)) Eval->OnGetVar.Clear();
+	if (LIKELY(Eval)) {
+		Eval->OnGetVar.Clear();
+		Eval->OnSetVar.Clear();
+	}
 
 	GM = nullptr;
 	MPCI = nullptr;
@@ -89,8 +93,10 @@ void ALFeatsMan::Init() {
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
 	}
 
-	if (LIKELY(Eval))
+	if (LIKELY(Eval)) {
 		Eval->OnGetVar.BindDynamic(this, &ALFeatsMan::GetVar);
+		Eval->OnSetVar.BindDynamic(this, &ALFeatsMan::SetVar);
+	}
 	LoadFeats();
 }
 
@@ -312,4 +318,12 @@ double ALFeatsMan::GetVar(const FName Name) {
 	}
 
 	return -1;
+}
+
+void ALFeatsMan::SetVar(const uint64 NameID, const double Val) {
+	FNameEntryId Id;
+	Id.FromUnstableInt(NameID);
+	
+	const FName N(Id, FNameEntryId(), 0);
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs StVar Id=%lli Val=%lf N=%s"), __func__, NameID, Val, *N.ToString());
 }

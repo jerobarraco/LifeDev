@@ -16,11 +16,15 @@ void UEval::Initialize(FSubsystemCollectionBase& Collection) {
 		return;
 	}
 	Evaluator->OnGetVar.BindUObject(this, &UEval::GetVar);
+	Evaluator->OnSetVar.BindUObject(this, &UEval::SetVar);
 }
 
 void UEval::Deinitialize() {
-	if (LIKELY(Evaluator.IsValid()))
+	if (LIKELY(Evaluator.IsValid())) {
 		Evaluator->OnGetVar.Unbind();
+		Evaluator->OnSetVar.Unbind();
+	}
+
 	Evaluator.Reset();
 	OnGetVar.Clear();
 	Super::Deinitialize();

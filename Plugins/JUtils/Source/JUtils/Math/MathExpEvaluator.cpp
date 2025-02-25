@@ -12,8 +12,6 @@
 #define LOCTEXT_NAMESPACE "JMathExpEvaluator"
 
 // TODO cleanup names
-// TODO make the functions below be static
-// TODO see if i can reuse the functions in BasicMathExpression...
 
 namespace ExpressionParser {
 	const TCHAR* const FSaturate::Moniker = TEXT("sat");
@@ -26,10 +24,11 @@ namespace ExpressionParser {
 	const TCHAR* const FGreatThan::Moniker = TEXT(">");
 	const TCHAR* const FLessThan::Moniker = TEXT("<");
 	const TCHAR* const FEquals::Moniker = TEXT("=");
+	const TCHAR* const FSet::Moniker = TEXT(":");
 }
 
 namespace JMathExp {
-	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' }; // ' ',
+	static const TCHAR PropertyBreakingChars[] = { '|', '=', '&', '>', '<', '!', '+', '-', '*', '/', '\t', '(', ')' };// ' ',
 	
 	static inline bool _IsFalse(const double A) {
 		return A <= 0 || FMath::IsNearlyZero(A);
@@ -60,6 +59,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FGreatThan>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FLessThan>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FEquals>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FSet>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -90,6 +90,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FGreatThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FLessThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FEquals>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FSet>(11, EAssociativity::LeftToRight);
 
 	JumpTable.MapPreUnary<FPlus>([](const double N) {
 		UE_LOG(LogTemp, Log, TEXT("Plus A=%.5f"), N);
@@ -140,7 +141,6 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return JMathExp::_IsFalse(A) ? B : A;
 	});
 	JumpTable.MapBinary<FXor>([](const double A, const double B) -> double {
-		UE_LOG(LogTemp, Log, TEXT("Xor A=%.5f B=%.5f"), A, B);
 		const bool FalseA = JMathExp::_IsFalse(A);
 		const bool FalseB = JMathExp::_IsFalse(B);
 		const bool Same = FalseA == FalseB;
@@ -157,6 +157,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapBinary<FEquals>([](const double A, const double B) -> double {
 		const bool True = FMath::IsNearlyEqual(A, B);
 		return True ? 1.0: 0.0;
+	});
+	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
+		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
+		const uint64 Id = A; // yikes
+		SetVar(Id, B);
+		return B;
 	});
 }
 
@@ -218,6 +224,10 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumeVarName(FExpressionTokenCo
 	return TOptional<FExpressionError>();
 }
 
+void FMathExpEvaluator::SetVar(const uint64 NameId, const double Val) const {
+	if (UNLIKELY(!OnSetVar.IsBound())) return;
+	OnSetVar.Execute(NameId, Val);
+}
 
 #undef LOCTEXT_NAMESPACE
 
