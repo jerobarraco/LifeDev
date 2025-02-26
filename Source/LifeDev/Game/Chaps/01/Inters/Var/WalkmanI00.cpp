@@ -15,10 +15,12 @@ AWalkmanI00::AWalkmanI00():Super() {
 	UseFade = true;
 
 	// TODO allow to pick without the batteries. needs to change the door and stuff.
+	// Locked = false;
 	Locked = true;
 	LockedDlg = "WM_L";
-	LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
-	ULockItem = "Batts";
+	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
+	// ULockItem = "Batts";
+	ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 	Texts = {
 		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
 	};

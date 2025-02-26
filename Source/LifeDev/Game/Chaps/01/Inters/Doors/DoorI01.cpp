@@ -7,7 +7,7 @@ ADoorI01::ADoorI01():Super() {
 	ULockDlg = "D01_ULCK";
 	LockedDlg = "D01_LCK";
 	// for the future
-	ULockItemReq = "WM";
+	ULockItemReq = "WM"; // the wm depends on the batts so no need to go so hard on this
 	// ULockCondition = "{V.Item.Count.Batts} & {V.Item.Count.WM}";
 
 	RootComponent->SetWorldLocation(FVector(-290,316,0));
