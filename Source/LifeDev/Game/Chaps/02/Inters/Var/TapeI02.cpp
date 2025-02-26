@@ -14,7 +14,7 @@ ATapeI02::ATapeI02():Super() {
 	UseFade = true;
 	Locked = true;
 	// important to require batteries since im going to use it directly on c2s3
-	ULockItem = LDConsts::Items::Batts;
+	ULockItemReq = LDConsts::Items::Batts;
 	LockedDlg = FName("T02_L");
 	LockedItemDlg = FName("T02_LI"); // will hint to use the batts
 	// TriggerDlg = FName("T02_Look*"); // will say what it is. triggered on pick up
