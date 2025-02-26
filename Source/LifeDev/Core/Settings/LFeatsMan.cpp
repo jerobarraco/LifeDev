@@ -214,7 +214,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 		// const double Val = *reinterpret_cast<const double*>(&Int);
 		const double Val = I64ToD(Int);
 		// FMemory::Memcpy(&Val, &Int, sizeof(uint64));
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Val=%f"), __func__, *NameS, Val);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Val=%lf"), __func__, *NameS, Val);
 		return Val;
 	}
 
@@ -350,6 +350,7 @@ void ALFeatsMan::SetVar(const FString& Name, const double Val) {
 
 void ALFeatsMan::SetVarId(const double NameID, const double Val) {
 	FName Name;
+
 	// this will work. can be stored. and compared. the problem is that calling to .ToString will always return "None"
 	FMemory::Memcpy(&Name, &NameID, sizeof(double));
 	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVarId Id=%lf Val=%lf Name=%s"),
