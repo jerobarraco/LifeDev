@@ -12,7 +12,7 @@
 class FMathExpEvaluator;
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const FString&, Name, const double, Val);
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const uint64, Id, const double, Val);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double, Val);
 
 // Subsystem that evaluates math expressions
 // if you want to compare strings. please use the variables with some way to detect the conversion.
@@ -80,7 +80,7 @@ private:
 	}
 	
 	UFUNCTION()
-	void SetVarId(const uint64 NameID, const double Val) const { // just forward
+	void SetVarId(const double NameID, const double Val) const { // just forward
 		if (LIKELY(OnSetVarId.IsBound())) {
 			OnSetVarId.Execute(NameID, Val);
 			return;

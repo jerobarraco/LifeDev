@@ -165,8 +165,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
 		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
-		const uint64 Id = A; // yikes
-		SetVarId(Id, B);
+		// const uint64 Id = A; // yikes
+		// SetVarId(Id, B);
+		SetVarId(A, B);
 		return B;
 	});
 	JumpTable.MapBinary<FSet>([this](const FString& A, const double B) -> double {
@@ -265,7 +266,7 @@ TOptional<FExpressionError> FMathExpEvaluator::ConsumeStr(FExpressionTokenConsum
 	return TOptional<FExpressionError>();
 }
 
-void FMathExpEvaluator::SetVarId(const uint64 NameId, const double Val) const {
+void FMathExpEvaluator::SetVarId(const double NameId, const double Val) const {
 	if (UNLIKELY(!OnSetVarId.IsBound())) return;
 	OnSetVarId.Execute(NameId, Val);
 }

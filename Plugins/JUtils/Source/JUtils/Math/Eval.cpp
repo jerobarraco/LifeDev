@@ -17,6 +17,7 @@ void UEval::Initialize(FSubsystemCollectionBase& Collection) {
 	}
 	Evaluator->OnGetVar.BindUObject(this, &UEval::GetVar);
 	Evaluator->OnSetVar.BindUObject(this, &UEval::SetVar);
+	Evaluator->OnSetVarId.BindUObject(this, &UEval::SetVarId);
 }
 
 void UEval::Deinitialize() {

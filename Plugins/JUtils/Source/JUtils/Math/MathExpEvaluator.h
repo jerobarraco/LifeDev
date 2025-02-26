@@ -9,7 +9,7 @@
 
 // this way it doesn't need the .generated. which needs a uclass. which we don't have.
 DECLARE_DELEGATE_RetVal_OneParam(double, FJEXVGetVar, const FName);
-DECLARE_DELEGATE_TwoParams(FJEXVSetVarId, const uint64, const double);
+DECLARE_DELEGATE_TwoParams(FJEXVSetVarId, const double, const double);
 DECLARE_DELEGATE_TwoParams(FJEXVSetVar, const FString&, const double);
 
 struct FDecimalNumberFormattingRules;
@@ -46,7 +46,7 @@ public:
 private:
 	TOptional<FExpressionError> ConsumeVarName(FExpressionTokenConsumer& Consumer) const;
 	TOptional<FExpressionError> ConsumeStr(FExpressionTokenConsumer& Consumer) const;
-	void SetVarId(const uint64 NameId, const double Val) const;
+	void SetVarId(const double NameId, const double Val) const;
 	void SetVar(const FString& NameId, const double Val) const;
 
 	FTokenDefinitions TokenDefinitions;

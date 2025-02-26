@@ -96,6 +96,7 @@ void ALFeatsMan::Init() {
 	if (LIKELY(Eval)) {
 		Eval->OnGetVar.BindDynamic(this, &ALFeatsMan::GetVar);
 		Eval->OnSetVar.BindDynamic(this, &ALFeatsMan::SetVar);
+		Eval->OnSetVarId.BindDynamic(this, &ALFeatsMan::SetVarId);
 	}
 	LoadFeats();
 }
@@ -203,9 +204,12 @@ double ALFeatsMan::GetVar(const FName Name) {
 
 	if (NameS.StartsWith("#")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
-		const uint64 Int = Actual.ToUnstableInt();
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%llu"), __func__, *NameS, Int);
-		return Int;
+		double Test;
+		
+		FMemory::Memcpy(&Test, &Actual, sizeof(uint64));
+		// const uint64 Int = Actual.ToUnstableInt();
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%lf"), __func__, *NameS, Test);
+		return Test;
 	}
 
 	if (!NameS.StartsWith("V.")) {
@@ -335,7 +339,18 @@ void ALFeatsMan::SetVar(const FString& Name, const double Val) {
 	GM->Flags->Set(N, Val);
 }
 
-void ALFeatsMan::SetVarId(const uint64 NameID, const double Val) {
+void ALFeatsMan::SetVarId(const double NameID, const double Val) {
+
+	FName B;
+	FMemory::Memcpy(&B, &NameID, sizeof(uint64));
+	
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVar Id=%lf Val=%lf Name=%s"),
+		__func__, NameID, Val, *B.ToString());
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs same as c3s0 =%i"),
+		__func__, B==FName("C3S0"));
+	if (LIKELY(GM->Flags)) GM->Flags->Set(B, Val);
+	return;
+/*
 	// TODO make this work
 	struct T {
 		uint32 ID;
@@ -347,7 +362,7 @@ void ALFeatsMan::SetVarId(const uint64 NameID, const double Val) {
 	FNameEntryId Id;
 	Id.FromUnstableInt(TId.ID);
 	
-	FName N(Id, Id, TId.Number);//(Id, Id, 0);
+	FName N(Id, Id, TId.Number);//(Id, Id, 0);S
 	// FName N2 = FName::CreateFromDisplayId(Id, TId.Number); // neither works
 	// // this is reversing what fromunstableid does. of course, it does not work.
 	// FMemory::Memcpy(&N, &NameID, sizeof(uint64));
@@ -359,5 +374,5 @@ void ALFeatsMan::SetVarId(const uint64 NameID, const double Val) {
 		__func__, NameID, Val, TId.ID, TId.Number, *N.ToString());
 
 	if (UNLIKELY(N.IsNone())) return;
-	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); 
+	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); */
 }
