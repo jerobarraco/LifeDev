@@ -214,7 +214,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 		// const double Val = *reinterpret_cast<const double*>(&Int);
 		const double Val = I64ToD(Int);
 		// FMemory::Memcpy(&Val, &Int, sizeof(uint64));
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%lf"), __func__, *NameS, Val);
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Val=%f"), __func__, *NameS, Val);
 		return Val;
 	}
 

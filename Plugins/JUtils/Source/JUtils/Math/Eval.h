@@ -33,13 +33,13 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 //		When doing this. use reintepret_cast<double> instead of simply converting from int, or you'll lose precision.
 // "XXX" a string variable name. Used ONLY for setting a variable. incompatible with the rest.
 // ":" (without quotes). sets a value.
+//		Can be used with the numeric representation of a variable from GetVar.
+//			This requires to bind to SetVarId. returns the value being set.
+//			E.g.: {#XXXX}:3
 //		Can be used with a string like: "XXX":3
 //			This requires to bind to SetVar. Will return the value being set.
 //			E.g.: "XXX":({YYY}*2)
 //			E.g.: !("XXX":({ZZZ}+2))
-//		Or can also be used with the numeric representation of a variable from GetVar.
-//			This requires to bind to SetVarId. returns the value being set.
-//			E.g.: {#XXXX}:3 
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
 class JUTILS_API UEval: public UWorldSubsystem {
 	GENERATED_BODY()
