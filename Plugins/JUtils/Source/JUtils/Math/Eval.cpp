@@ -15,6 +15,7 @@ void UEval::Initialize(FSubsystemCollectionBase& Collection) {
 		UE_LOG(LogEval, Warning, TEXT("%hs Could not create evaluator! This won't work."), __func__);
 		return;
 	}
+
 	Evaluator->OnGetVar.BindUObject(this, &UEval::GetVar);
 	Evaluator->OnSetVar.BindUObject(this, &UEval::SetVar);
 	Evaluator->OnSetVarId.BindUObject(this, &UEval::SetVarId);
@@ -24,6 +25,7 @@ void UEval::Deinitialize() {
 	if (LIKELY(Evaluator.IsValid())) {
 		Evaluator->OnGetVar.Unbind();
 		Evaluator->OnSetVar.Unbind();
+		Evaluator->OnSetVarId.Unbind();
 	}
 
 	Evaluator.Reset();

@@ -75,6 +75,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Eval)) {
 		Eval->OnGetVar.Clear();
 		Eval->OnSetVar.Clear();
+		Eval->OnSetVarId.Clear();
 	}
 
 	GM = nullptr;
@@ -204,12 +205,14 @@ double ALFeatsMan::GetVar(const FName Name) {
 
 	if (NameS.StartsWith("#")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
-		double Test;
-		
-		FMemory::Memcpy(&Test, &Actual, sizeof(uint64));
-		// const uint64 Int = Actual.ToUnstableInt();
-		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%lf"), __func__, *NameS, Test);
-		return Test;
+		// FMemory::Memcpy(&Test, &Actual, sizeof(uint64));
+		const uint64 Int = Actual.ToUnstableInt();
+		// https://stackoverflow.com/a/61661893/260242
+		// have to actually return a double or loose precision. int uses 64 bit. double uses 57.
+		const double Val = *reinterpret_cast<const double*>(&Int);
+		// FMemory::Memcpy(&Val, &Int, sizeof(uint64));
+		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%lf"), __func__, *NameS, Val);
+		return Val;
 	}
 
 	if (!NameS.StartsWith("V.")) {
@@ -340,15 +343,14 @@ void ALFeatsMan::SetVar(const FString& Name, const double Val) {
 }
 
 void ALFeatsMan::SetVarId(const double NameID, const double Val) {
-
-	FName B;
-	FMemory::Memcpy(&B, &NameID, sizeof(uint64));
-	
-	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVar Id=%lf Val=%lf Name=%s"),
-		__func__, NameID, Val, *B.ToString());
-	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs same as c3s0 =%i"),
-		__func__, B==FName("C3S0"));
-	if (LIKELY(GM->Flags)) GM->Flags->Set(B, Val);
+	FName Name;
+	// this will work. can be stored. and compared. the problem is that calling to .ToString will always return "None"
+	FMemory::Memcpy(&Name, &NameID, sizeof(double));
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs SetVarId Id=%lf Val=%lf Name=%s"),
+		__func__, NameID, Val, *Name.ToString());
+	UE_LOG(LogLFeatsMan, Warning, TEXT("%hs same as c3s0=%i"),
+		__func__, Name==FName("C3S0"));
+	if (LIKELY(GM->Flags)) GM->Flags->Set(Name, Val);
 	return;
 /*
 	// TODO make this work

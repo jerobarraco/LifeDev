@@ -165,8 +165,6 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	});
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
 		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
-		// const uint64 Id = A; // yikes
-		// SetVarId(Id, B);
 		SetVarId(A, B);
 		return B;
 	});
