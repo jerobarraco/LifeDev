@@ -6,8 +6,8 @@
 
 ATapeI00::ATapeI00():Super() {
 	Texts = { FText::FromString(TEXT("Pick up tape")) };
-	TriggerDlg = "T01_T"; // will say what it is. triggered on pick up
-	RewardItem = LDConsts::Items::Tape1; // "T01";
+	TriggerDlg = "T00_T"; // will say what it is. triggered on pick up
+	RewardItem = LDConsts::Items::Tape0; // "T01";
 	UseFade = true;
 	UseRewardDestroy = true;
 	// needed to be able to attach to the drawer

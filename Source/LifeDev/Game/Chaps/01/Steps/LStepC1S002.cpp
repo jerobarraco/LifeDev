@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 
 #include "Diags/Diags.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -23,7 +24,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
-	ItemsRem = { "T00" }; // use up the item
+	ItemsRem = {LDConsts::Items::Tape1 }; // use up the item
 }
 
 void ALStepC1S002::Start_Implementation() {

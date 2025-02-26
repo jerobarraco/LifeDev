@@ -2,10 +2,8 @@
 #include "LStepC0S001.h"
 
 #include "Camera/CameraComponent.h"
-#include "Kismet/GameplayStatics.h"
 
-#include "LifeDev/Core/Sounds/LMusicMan.h"
-#include "LifeDev/Game/Char/LChar.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC0S001::ALStepC0S001():Super() {
@@ -16,7 +14,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFade = true; // important since the door, also due to the load
 	FinishPostWait = false;
 	TeleportChar = true;
-	ItemsRem = {"T01"};
+	ItemsRem = {LDConsts::Items::Tape0}; // ensure you don't carry it.
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
 	CamBlendTime = 0; // doesn't get along with fade
