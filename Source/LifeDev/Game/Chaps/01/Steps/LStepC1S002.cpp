@@ -36,13 +36,14 @@ void ALStepC1S002::Start_Implementation() {
 	FBDlgMod = (1.0 - FB->GetValTo()) / 4.0;
 
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
-	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow); // to fbincrease
 	Diags->AddId("C1S2.0"); // "i'll use the tape"
 }
 
 void ALStepC1S002::StartShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StartShake);
-	Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
+	// don't affect further.
+	UseFBDlgAuto = false;
+	FBDlgMod = 0;
 	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
@@ -56,7 +57,7 @@ void ALStepC1S002::StartShake() {
 
 void ALStepC1S002::ShakeStarted() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StopShake);
-	Diags->AddId("C1S2.1"); // it got worse
+	Diags->AddId("C1S2.1"); // "it got worse"
 }
 
 void ALStepC1S002::StopShake() {

@@ -41,7 +41,11 @@ void ALStep::TryStart_Implementation() {
 }
 
 void ALStep::Stop_Implementation() {
-	if (LIKELY(IsValid(Diags))) Diags->OnDone.RemoveAll(this);
+	if (LIKELY(IsValid(Diags))) {
+		Diags->OnDone.RemoveAll(this);
+		Diags->OnAdd.RemoveAll(this);
+		Diags->OnShow.RemoveAll(this);
+	}
 	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
@@ -198,7 +202,7 @@ void ALStep::DestroyActors() {
 	Ghosts = nullptr;
 }
 
-void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
+void ALStep::ItemMod_Implementation(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
 }
 

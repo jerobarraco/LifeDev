@@ -35,17 +35,6 @@ public:
 	// And it's possible this class will get unloaded by the next step.
 	virtual void Stop_Implementation() override;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DlgShow(const FDiag& Diag);
-	virtual void DlgShow_Implementation(const FDiag& Diag);
-
-	// checks if we have the itemsFinish and finish (after a dialog if any)
-	// no need to call this as this class will watch the inventory. but just in case.
-	UFUNCTION()
-	void CheckItemsFinish();
-	UFUNCTION()
-	void CheckFlagsFinish();
-
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
@@ -187,11 +176,21 @@ protected:
 	// will destroy some transient actors
 	UFUNCTION()
 	void DestroyActors();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void DlgShow(const FDiag& Diag);
 	// called when items get mod. checks for itemsFinish
-	UFUNCTION()// bound
+	UFUNCTION(BlueprintNativeEvent)// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 	UFUNCTION(BlueprintNativeEvent)
 	void FlagMod(const FName& FlagName, const float Diff, const float Total);
+	// checks if we have the itemsFinish and finish (after a dialog if any)
+	// no need to call this as this class will watch the inventory. but just in case.
+	UFUNCTION()
+	void CheckItemsFinish();
+	UFUNCTION()
+	void CheckFlagsFinish();
+	
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
 	void DoIntersHint() const;
