@@ -148,9 +148,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;
 
-	// items to remove when the step *finishes*.
+	// items to remove (completely) when the step *finishes*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsRem;
+	TArray<FName> ItemsRem; // TODO would it be better if it just Mod(-1)?
 
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")

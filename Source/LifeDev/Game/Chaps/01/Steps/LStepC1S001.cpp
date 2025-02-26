@@ -3,6 +3,8 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#include "LifeDev/Core/Consts/ConstItems.h"
+
 ALStepC1S001::ALStepC1S001():Super() {
 	Name = FName("C1S1");
 	InputEnabled = true;
@@ -12,12 +14,16 @@ ALStepC1S001::ALStepC1S001():Super() {
 	UsePawnCam = false;
 
 	// finish on obtaining these.
-	ItemsFinish = { "T00", "WM" };
+	ItemsFinish = {
+		LDConsts::Items::Tape0, LDConsts::Items::Walkman
+	};
+	// consume the batteries. there's only one of them, so ItemsRem is ok.
+	ItemsRem = { LDConsts::Items::Batts };
 }
 
 void ALStepC1S001::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 	AActor* const Pawn = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
-	if (Pawn) Pawn->SetActorLocation(FVector(-57.163605,815.932276,79.606879));
+	if (LIKELY(Pawn)) Pawn->SetActorLocation(FVector(-57.163605,815.932276,79.606879));
 }
 
