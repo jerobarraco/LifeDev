@@ -24,7 +24,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
-	ItemsRem = {LDConsts::Items::Tape1 }; // use up the item
+	ItemsRem = { LDConsts::Items::Tape1 }; // use up the item
 }
 
 void ALStepC1S002::Start_Implementation() {
@@ -46,6 +46,7 @@ void ALStepC1S002::StartShake() {
 	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	CamShakeStart();
 	// FB->SetVal(1); // bump to max
 

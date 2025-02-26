@@ -12,7 +12,7 @@ ATapeI01::ATapeI01():Super() {
 	UseFade = true;
 	UseRewardDestroy = true;
 	RewardFlash = .1;
-	RewardItem = LDConsts::Items::Tape1;// "T00";
+	RewardItem = LDConsts::Items::Tape1;
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }
