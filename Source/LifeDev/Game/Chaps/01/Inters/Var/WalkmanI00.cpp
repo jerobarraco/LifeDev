@@ -5,6 +5,8 @@
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
+#include "LifeDev/Core/Consts/ConstItems.h"
+
 AWalkmanI00::AWalkmanI00():Super() {
 	UseAnim = false;
 	
@@ -19,8 +21,8 @@ AWalkmanI00::AWalkmanI00():Super() {
 	Locked = true;
 	LockedDlg = "WM_L";
 	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
-	// ULockItem = "Batts";
-	ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
+	ULockItemReq = LDConsts::Items::Batts;
+	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 	Texts = {
 		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
 	};
