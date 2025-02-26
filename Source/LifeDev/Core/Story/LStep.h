@@ -59,19 +59,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
 	void DoIntersDeactive();
 
-	// whether to dis/enable the character input
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	bool InputEnabled = false;
+	inline static bool UseDebug = false;
 
-	// when set to true, the game mode will set the wait time to the fade time.
-	// See WaitTime and FinishPostWait
-	// this is used to start something AFTER it faded
-	// don't use for fade out, since waitTime doesn't work with that, Stop is called just when the story faded out.
-	// TODO make sure i don't need it and remove
-	// TODO need to fix the steps that do use doStart
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition", meta=(DeprecatedProperty))
-	bool UseFadeTime = false;
-
+#pragma region dlgs
 	// dialog or sequence to trigger on start.
 	// This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait.
@@ -87,6 +77,19 @@ public:
 	// calculated on Start
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FBDlgAutoTo = 1.0;
+#pragma endregion
+
+	// whether to dis/enable the character input
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool InputEnabled = false;
+	// when set to true, the game mode will set the wait time to the fade time.
+	// See WaitTime and FinishPostWait
+	// this is used to start something AFTER it faded
+	// don't use for fade out, since waitTime doesn't work with that, Stop is called just when the story faded out.
+	// TODO make sure i don't need it and remove
+	// TODO need to fix the steps that do use doStart
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition", meta=(DeprecatedProperty))
+	bool UseFadeTime = false;
 
 	// whether to manage the RandFB. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
@@ -144,6 +147,7 @@ public:
 	TArray<TObjectPtr<AInteract>> IntersHint;
 #pragma endregion
 
+#pragma region items
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;
@@ -155,8 +159,7 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsEnsure;
-
-	inline static bool UseDebug = false;
+#pragma endregion
 
 protected:
 	virtual void Start_Implementation() override;
