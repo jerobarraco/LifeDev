@@ -5,7 +5,9 @@
 
 #include "Inventory/Inventory.h"
 
-// this step is only to show a dialog on picking up the card and starting the rain + playing a sound
+#include "LifeDev/Core/Consts/ConstItems.h"
+
+// this step is only to show a dialog on picking up the tape and starting the rain + playing a sound
 // it could be inside the tape ... but this is ok also.
 
 ALStepC2S003::ALStepC2S003():Super() {
@@ -32,11 +34,11 @@ void ALStepC2S003::TryStart_Implementation() {
 	// the user interaction is not in place yet, so it won't be a good exp.
 	// we can't pick it up without the batteries, so story wise is safe.
 	// note apparently modding inventory while a dialog is shown could show the inventory below the dialog
-	Inventory->Mod("T02", -1);
+	Inventory->Mod(LDConsts::Items::Tape2, -1);
 
 	// super will start the dialog and finish when done
 	Super::TryStart_Implementation();
 
 	const UWorld* const W = GetWorld();
-	if (W && IsValid(SFX_Analog)) UGameplayStatics::PlaySound2D(W, SFX_Analog);
+	if (LIKELY(W) && IsValid(SFX_Analog)) UGameplayStatics::PlaySound2D(W, SFX_Analog);
 }

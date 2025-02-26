@@ -32,7 +32,7 @@ ALStepC2S001::ALStepC2S001():Super() {
 
 void ALStepC2S001::TryStart_Implementation() {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);
@@ -41,7 +41,7 @@ void ALStepC2S001::TryStart_Implementation() {
 }
 
 void ALStepC2S001::Stop_Implementation() {
-	if (FB) {
+	if (LIKELY(FB)) {
 		// FB->SetVal(.05, 10);
 		
 		// clamp till the end of the story, important for the randomizer in c2s4

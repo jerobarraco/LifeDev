@@ -9,7 +9,9 @@ ATapeI02::ATapeI02():Super() {
 	StateNum = 1;
 	UseAnim = false;
 	RewardFlash = .1;
-	RewardItem = "T02";
+	// TODO find a way to not have to reward the tape. it's confusing.
+	// but i need it because that's how the step is advanced. happen at different times.
+	RewardItem = LDConsts::Items::Tape2;
 	UseRewardDestroy = true;
 	UseFade = true;
 	Locked = true;
