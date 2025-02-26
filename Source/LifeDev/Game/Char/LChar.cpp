@@ -137,7 +137,7 @@ void ALChar::HoverDiag() {
 	if (UNLIKELY(!Owner)) return;
 
 	const FString& Label = Owner->GetActorLabel();
-	const FName N(LDConsts::Dlgs::Inter::HoverPre+Label);
+	const FName N(LDConsts::Dlgs::Inter::LookPre+Label);
 	if (LIKELY(Diags)) Diags->AddId(N);
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }

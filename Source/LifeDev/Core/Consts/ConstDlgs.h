@@ -14,7 +14,7 @@ namespace LDConsts {
 			// the PRE expects the actor label at the end
 			inline static const FString ActivatePre("Inter.Activate.");
 			inline static const FString DeactivatePre("Inter.Deactivate.");
-			inline static const FString HoverPre("Inter.Hover.");
+			inline static const FString LookPre("Inter.Look.");
 			inline static const FString StatePre("Inter.State.");
 			inline static const FString TriggerPre("Inter.Trigger.");
 			inline static const FString TriggerLPre("Inter.TriggerL.");
