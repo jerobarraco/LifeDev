@@ -31,8 +31,8 @@ FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
 	if (Item.SelfUsable)
 		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][Shade]);
 	if (Item.Usable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][Shade]);
-	if (Item.Consumable)
 		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][Shade]);
+	if (Item.Consumable)
+		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][Shade]);
 	return  FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][Shade]);
 }
