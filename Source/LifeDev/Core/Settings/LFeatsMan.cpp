@@ -203,13 +203,16 @@ double ALFeatsMan::GetVar(const FName Name) {
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLFeatsMan, Log, TEXT("%hs Name=%s"), __func__, *NameS);
 
+	#define I64ToD(X) *reinterpret_cast<const double*>(&X)
+
 	if (NameS.StartsWith("#")) {
 		const FName Actual = FName(NameS.RightChop(1)); // remove the @
 		// FMemory::Memcpy(&Test, &Actual, sizeof(uint64));
 		const uint64 Int = Actual.ToUnstableInt();
 		// https://stackoverflow.com/a/61661893/260242
 		// have to actually return a double or loose precision. int uses 64 bit. double uses 57.
-		const double Val = *reinterpret_cast<const double*>(&Int);
+		// const double Val = *reinterpret_cast<const double*>(&Int);
+		const double Val = I64ToD(Int);
 		// FMemory::Memcpy(&Val, &Int, sizeof(uint64));
 		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Fname Val Name=%s Int=%lf"), __func__, *NameS, Val);
 		return Val;
@@ -236,8 +239,10 @@ double ALFeatsMan::GetVar(const FName Name) {
 		return LIKELY(GM->Flashback) ? GM->Flashback->GetVal() : -1;
 	if (Name == NAME_FBValTo)
 		return LIKELY(GM->Flashback) ? GM->Flashback->GetValTo() : -1;
-	if (Name == NAME_StoryStepCur)
-		return LIKELY(GM->Story) ? GM->Story->GetCurrent().ToUnstableInt() : -1;
+	if (Name == NAME_StoryStepCur) {
+		const uint64 I = LIKELY(GM->Story) ?GM->Story->GetCurrent().ToUnstableInt() : -1;
+		return I64ToD(I);
+	}
 	if (Name == NAME_SysDebug)
 		return UJUtilsMisc::IsDebug() ? 1:0;
 	if (Name == NAME_SysEditor)
@@ -247,8 +252,8 @@ double ALFeatsMan::GetVar(const FName Name) {
 	static const FName NAME_ItemCur("V.Item.Cur");
 	if (Name == NAME_ItemCur) {
 		if (UNLIKELY(!GM->Inventory)) return -1;
-
-		return GM->Inventory->GetSelected().ToUnstableInt();
+		const uint64 I = GM->Inventory->GetSelected().ToUnstableInt();
+		return I64ToD(I);
 	}
 
 	// maybe .cur.count
@@ -296,7 +301,8 @@ double ALFeatsMan::GetVar(const FName Name) {
 			if (UNLIKELY(!Owner)) return -1;
 			const FName OwnerName = FName(Owner->GetActorLabel(false));
 			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
-			return OwnerName.ToUnstableInt();
+			const uint64 I = OwnerName.ToUnstableInt();
+			return I64ToD(I);
 		}
 
 		if (Name=="V.Inter.Cur.State") {

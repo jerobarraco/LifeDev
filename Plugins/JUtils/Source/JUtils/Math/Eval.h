@@ -27,6 +27,19 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 // !a: not a 
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1) 
 // a<b a>b a=b: < > =
+// {XXX} obtains the double value for a variable named "XXX" is up to the client to bind to GetVar and provide that value
+//		{#XXX} (suggested) return the double value for an FName, or pointer to a variable. (See FName.ToUnstableInt)
+//		This is good when trying to compare fname values. like {YYYY}={#Variable}. YYYY represents an FName returned as an unstable int.
+//		When doing this. use reintepret_cast<double> instead of simply converting from int, or you'll lose precision.
+// "XXX" a string variable name. Used ONLY for setting a variable. incompatible with the rest.
+// ":" (without quotes). sets a value.
+//		Can be used with a string like: "XXX":3
+//			This requires to bind to SetVar. Will return the value being set.
+//			E.g.: "XXX":({YYY}*2)
+//			E.g.: !("XXX":({ZZZ}+2))
+//		Or can also be used with the numeric representation of a variable from GetVar.
+//			This requires to bind to SetVarId. returns the value being set.
+//			E.g.: {#XXXX}:3 
 UCLASS(Blueprintable, Category="JUtils", Config=JUtils, DefaultConfig)
 class JUTILS_API UEval: public UWorldSubsystem {
 	GENERATED_BODY()
