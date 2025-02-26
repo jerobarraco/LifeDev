@@ -15,8 +15,8 @@ ATapeI03::ATapeI03():Super() {
 	UseFade = true;
 	Locked = true;
 
-	ULockItem = LDConsts::Items::Batts;
+	ULockItemReq = LDConsts::Items::Batts;
 	LockedDlg = FName("T03_L");
 	LockedItemDlg = FName("T03_LI"); // will hint to use the batts
-	TriggerDlg = FName("T03_Look*"); // will say what it is. triggered on pick up
+	// TriggerDlg = FName("T03_Look"); // will say what it is. triggered on pick up
 }
