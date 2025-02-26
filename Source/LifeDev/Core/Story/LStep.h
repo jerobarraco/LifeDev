@@ -41,8 +41,10 @@ public:
 
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	UFUNCTION()
 	void CheckItemsFinish();
+	UFUNCTION()
+	void CheckFlagsFinish();
 
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
@@ -148,6 +150,10 @@ public:
 #pragma endregion
 
 #pragma region items
+	//Experimental: if this is set. it will advance once ALL items are obtained.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
+	TArray<FName> FlagsFinish;
+
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> ItemsFinish;
@@ -184,6 +190,8 @@ protected:
 	// called when items get mod. checks for itemsFinish
 	UFUNCTION()// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
+	UFUNCTION(BlueprintNativeEvent)
+	void FlagMod(const FName& FlagName, const float Diff, const float Total);
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
 	void DoIntersHint() const;

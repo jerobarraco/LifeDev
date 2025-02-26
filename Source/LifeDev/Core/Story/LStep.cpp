@@ -46,6 +46,7 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
+	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 
 	SetActorsShowActive(false, true);
 	SetIntersActiveAuto(false);
@@ -73,12 +74,19 @@ void ALStep::Start_Implementation() {
 	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
-	// check items. do on postWait to avoid possibly finishing the step while it's starting.
+	// check items. do on Start to avoid possibly finishing the step while it's starting.
 	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 		
 		// ensure to check if we already have the item. but not now to not affect the flow of child classes
 		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
+	}
+	// check flags. do on Start to avoid possibly finishing the step while it's starting.
+	if (!FlagsFinish.IsEmpty()) {
+		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
+		
+		// ensure to check if we already have the item. but not now to not affect the flow of child classes
+		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFlagsFinish);
 	}
 
 	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
@@ -194,12 +202,27 @@ void ALStep::ItemMod(const FName& ItemName, int32 Diff, const FItem& Item) {
 	CheckItemsFinish();
 }
 
+void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, const float Total) {
+	CheckFlagsFinish();
+}
+
 void ALStep::CheckItemsFinish() {
 	const int32 NumItems = ItemsFinish.Num();
 	if (NumItems<=0) return;
 
 	for (int32 i=0; i<NumItems; ++i) {
 		if (!Inventory->Has(ItemsFinish[i])) return;
+	}
+
+	FinishAfterDlgs();
+}
+
+void ALStep::CheckFlagsFinish() {
+	const int32 NumItems = FlagsFinish.Num();
+	if (NumItems<=0) return;
+
+	for (int32 i=0; i<NumItems; ++i) {
+		if (!Flags->Has(ItemsFinish[i])) return;
 	}
 
 	FinishAfterDlgs();
