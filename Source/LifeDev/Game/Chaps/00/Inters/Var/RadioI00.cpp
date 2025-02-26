@@ -3,6 +3,7 @@
 #include "RadioI00.h"
 
 #include "Diags/Diags.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -19,11 +20,11 @@ ARadioI00::ARadioI00():Super() {
 	// when the user activates. though this happens automatically after ULockDlg.
 	//  it's all ok though, it's according to keikaku (keikaku means plan).
 	TriggerDlg = "RD00_T";
-	ULockItemReq = LDConsts::Items::Tape0; //"T01"; // Tape
+	ULockItemReq = LDConsts::Items::Tape0;
 	RewardFlash = 0; // the dialog will add 
 	UseRewardDestroy = false; // don't self-destroy
 	DisableWhileAnim = false; // to allow to disable once activated
-	Texts = { FText::FromString(TEXT("Play")) };
+	Texts = { FText::FromString(TEXT("Play Tape")) };
 
 	// use a sounder and not the ghost object since i want to only use the sound.
 	SFX_Ghost = CreateDefaultSubobject<UCLSounder>(TEXT("SFX_Ghost"));
@@ -42,6 +43,8 @@ ARadioI00::ARadioI00():Super() {
 void ARadioI00::DoTrigger_Implementation() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
+
+	Inventory->Rem(LDConsts::Items::Tape0); // consume
 
 	Diags->OnShow.AddUniqueDynamic(this, &ARadioI00::DialogShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ARadioI00::DialogDone);

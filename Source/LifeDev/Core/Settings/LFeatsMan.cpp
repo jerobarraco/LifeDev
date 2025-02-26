@@ -300,7 +300,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
 			const FName OwnerName = FName(Owner->GetActorLabel(false));
-			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.hover.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
+			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.cur.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			const uint64 I = OwnerName.ToUnstableInt();
 			return I64ToD(I);
 		}
