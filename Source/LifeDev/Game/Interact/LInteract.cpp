@@ -37,18 +37,6 @@ ALInteract::ALInteract():Super() {
 	Interact->SetGenerateOverlapEvents(true);
 }
 
-void ALInteract::SetActive_Implementation(const bool Active) {
-	Super::SetActive_Implementation(Active);
-
-	if (LIKELY(IsValid(Diags))) { // TODO test
-		const FString& DlgPre = Active ?
-				LDConsts::Dlgs::Inter::ActivatePre:
-				LDConsts::Dlgs::Inter::DeactivatePre;
-		const FName DName(DlgPre+GetActorLabel(false));
-		Diags->AddId(DName);  // todo don't warn?
-	}
-}
-
 void ALInteract::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	if (LIKELY(IsValid(Diags))) { // TODO test
@@ -57,7 +45,6 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 		Diags->AddId(DName); // todo don't warn?
 	}
 }
-
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
@@ -359,3 +346,16 @@ void ALInteract::Unlocked_Implementation() {
 	// also flags since sometimes the diag might not exist
 	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
 }
+
+// too much spam. not needed atm. iranai. muda da.
+// void ALInteract::SetActive_Implementation(const bool Active) {
+// 	Super::SetActive_Implementation(Active);
+//
+// 	if (LIKELY(IsValid(Diags))) { // TODO test
+// 		const FString& DlgPre = Active ?
+// 				LDConsts::Dlgs::Inter::ActivatePre:
+// 				LDConsts::Dlgs::Inter::DeactivatePre;
+// 		const FName DName(DlgPre+GetActorLabel(false));
+// 		Diags->AddId(DName);  // todo don't warn?
+// 	}
+// }
