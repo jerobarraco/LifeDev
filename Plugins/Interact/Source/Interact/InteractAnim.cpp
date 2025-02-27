@@ -41,7 +41,7 @@ void AInteractAnim::DoTrigger_Implementation() {
 	// do after Trigger, so it actually disable during the animation
 	// also not doing during SetState since that can also be called by other means.
 	// done here and not on AnimEnd due to the same reason.
-	if (IsOneShot) DisableWhileAnim = false;
+	// if (IsOneShot) DisableWhileAnim = false; // done on AnimEnd. it actually amkes more sense to me.
 	Super::DoTrigger_Implementation();
 }
 
@@ -88,7 +88,7 @@ void AInteractAnim::AnimBegin_Implementation() {
 
 void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
-	if (DisableWhileAnim) SetActive(true);
+	if (DisableWhileAnim && !IsOneShot) SetActive(true);
 
 	if (State >= 0 && State < SFX_Stop.Num()) {
 		USoundBase* const Snd2 = SFX_Stop[State];
