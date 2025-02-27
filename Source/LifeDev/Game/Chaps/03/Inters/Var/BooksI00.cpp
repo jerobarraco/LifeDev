@@ -6,5 +6,6 @@ ABooksI00::ABooksI00():Super(3, 93) {
 	Texts = { FText::FromString(TEXT("Check"))};
 	TriggerDlg = "BK00_T";
 	UseRewardDestroy = false;
+	IsOneShot = true;
 	Super::SetAutoActivate(true);
 }
