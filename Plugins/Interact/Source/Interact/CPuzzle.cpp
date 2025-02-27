@@ -178,14 +178,14 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 		const bool Ok = CheckSequence(ID);
 		// if the length matches return "done" anyway (means success false)
 		if (Solution.Num() == CurrentIds.Num()) {
-			Done(Ok);
+			PreDone(Ok);
 			return;
 		}
 	} else if (Type == EPuzzleType::COMBINATION) {
 		const bool Ok = CheckCombination(ID);
 		if (Ok) {
 			// only trigger when complete. combination can only be completed with ok.
-			Done(Ok);
+			PreDone(Ok);
 			return;
 		}
 		// no way to reset here
@@ -196,20 +196,23 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 }
 
 void UCPuzzle::PreDone(const bool Ok) const {
-	
-}
-
-void UCPuzzle::Done(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
 		__func__, Ok, *GetNameSafe(this));
-
+	// the important part of this code is to disable interactions to fix the issue with the user toggling another piece
+	// when the puzzle has already been solved. hence, this is not necessary to be exposed to children or clients.
 	if (DisableOnDone && Ok) {
-		for(AInteract* const I: Interacts) {
+	for(AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
 		}
 	}
 
+	Done(Ok);
+}
+
+void UCPuzzle::Done(const bool Ok) const {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
+		__func__, Ok, *GetNameSafe(this));
 	OnDone.Broadcast(Ok);
 }
 
