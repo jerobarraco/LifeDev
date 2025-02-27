@@ -137,16 +137,6 @@ void ALInteract::DoRewards() {
 		return;
 	}
 
-	// it's not necessary to call "disable while anim = false" here.
-	// since it's up to the client to allow re-triggerables.
-	// and we're only concerned with SetEnabled(false) here.
-	// and it's easier and clearer this way than messing with DisableWhileAnim
-	// which would step on the client's intention.
-	// this is to avoid re-rewarding due to multi clicks.
-	// notice willRewardDestroy will call fade before this. but maybe not.
-	// so better to be sure and call setactive manually. not calling fade since we don't want to fade if it's not UseRewardDestroy.
-	SetActive(false); // TODO InteractAnim already messes with SetActive so maybe this shouldn't be here.
-
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
 	if (!RewardItem.IsNone()) {
 		// return if we fail to reward
@@ -234,6 +224,13 @@ bool ALInteract::TryTrigger_Implementation() {
 
 void ALInteract::DoTrigger_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	// force disablewhileAnim when there's a reward. so it deactivates.
+	// in the hope of that avoiding issues of quick clicks triggering multiple times.
+	// before Super since super will do the setactive stuff.
+	// this way it won't call SetActive multiple times either (a plus)
+	// also DoRewards might be called with a delay from the dialog anyway, which is undesireable.
+	if (!IsRewardless()) DisableWhileAnim = true;
+
 	Super::DoTrigger_Implementation();
 
 	const FString& Label = GetActorLabel(false);
@@ -252,9 +249,9 @@ void ALInteract::DoTrigger_Implementation() {
 		// that way we can control the story better. it's easier to check for items than for dialogs.
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
 		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
-		DiagsShown = Diags->AddId(TriggerDlg);
-		// TODO test, todo don't warn
-		if (!DiagsShown) Diags->AddId(TName);
+		// still call it if the stock one fails.
+		// TODO test, todo don't warn for the 2nd one
+		DiagsShown = Diags->AddId(TriggerDlg) || Diags->AddId(TName);
 	}
 
 	// ensure we reward or the player could get locked
