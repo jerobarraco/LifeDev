@@ -202,9 +202,14 @@ void UCPuzzle::PreDone(const bool Ok) const {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
+	if (!Ok) {
+		Done(Ok);
+		return;
+	}
+
 	// the important part of this code is to disable interactions to fix the issue with the user toggling another piece
 	// when the puzzle has already been solved. hence, this is not necessary to be exposed to children or clients.
-	if (DisableOnDone && Ok) {
+	if (DisableOnDone) {
 		for(AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
