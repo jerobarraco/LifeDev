@@ -46,7 +46,7 @@ void UCPuzzle::Done(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
 		__func__, Ok, *GetNameSafe(this));
 
-	if (DisableOnDone) {
+	if (DisableOnDone && Ok) {
 		for(AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
