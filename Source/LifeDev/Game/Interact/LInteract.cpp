@@ -145,7 +145,7 @@ void ALInteract::DoRewards() {
 	// this is to avoid re-rewarding due to multi clicks.
 	// notice willRewardDestroy will call fade before this. but maybe not.
 	// so better to be sure and call setactive manually. not calling fade since we don't want to fade if it's not UseRewardDestroy.
-	SetActive(false);
+	SetActive(false); // TODO InteractAnim already messes with SetActive so maybe this shouldn't be here.
 
 	// reward an item if possible ( the check for IsNone is to avoid return when none)
 	if (!RewardItem.IsNone()) {
