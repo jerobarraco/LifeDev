@@ -61,7 +61,7 @@ void UCPuzzle::ResetCurrents() {
 	
 	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
-		for (AInteract* const I: Interacts) {
+		for (const AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
@@ -87,11 +87,11 @@ void UCPuzzle::Bind() {
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
 
 		// bind to the Interact when triggered. if it's animated wait for it to end.
-		AInteractAnim* const IA = Cast<AInteractAnim>(I);
-		if (IsValid(IA))
-			IA->OnAnimEnd.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
-		else
-			I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		// AInteractAnim* const IA = Cast<AInteractAnim>(I);
+		// if (IsValid(IA))
+			// IA->OnAnimEnd.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
+		// else
+		I->OnTrigger.AddUniqueDynamic(Wrapper, &UDelegateWrapper::Dispatch);
 
 		Wrappers.AddUnique(Wrapper);
 		++i;

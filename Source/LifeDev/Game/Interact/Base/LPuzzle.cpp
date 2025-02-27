@@ -57,7 +57,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 
 void ALPuzzle::BeginPlay() {
 	Super::BeginPlay();
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 	
 	Story = UStory::Instance(W);
@@ -68,11 +68,11 @@ void ALPuzzle::BeginPlay() {
 }
 
 void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Super::EndPlay(EndPlayReason);
-
 	Flags = nullptr;
 	FB = nullptr;
 	Diags = nullptr;
 	Inventory = nullptr;
 	Story = nullptr;
+
+	Super::EndPlay(EndPlayReason);
 }
