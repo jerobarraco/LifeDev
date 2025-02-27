@@ -4,6 +4,7 @@
 
 #include "DelegateWrappers.h"
 
+#include "Animator/CAnimatorMix.h"
 #include "Interact.h"
 #include "InteractAnim.h"
 
@@ -194,20 +195,46 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 		return;
 	}
 }
-
 void UCPuzzle::PreDone(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
 		__func__, Ok, *GetNameSafe(this));
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	// the important part of this code is to disable interactions to fix the issue with the user toggling another piece
 	// when the puzzle has already been solved. hence, this is not necessary to be exposed to children or clients.
 	if (DisableOnDone && Ok) {
-	for(AInteract* const I: Interacts) {
+		for(AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
 		}
 	}
 
-	Done(Ok);
+	// call Done now or delayed if it's animating.
+	bool Animating = false;
+	float Time = 0;
+	for(AInteract* const I: Interacts) {
+		const AInteractAnim* const IA = Cast<AInteractAnim>(I);
+		if (UNLIKELY(!IsValid(IA))) continue;
+		
+		const UCAnimatorMix* const Anim = IA->GetAnim();
+		if (UNLIKELY(!Anim)) continue;
+
+		if (LIKELY(!Anim->IsActive())) continue;
+
+		Animating = true;
+		// It's ok to grab the duration because PreDone is called as a direct side-effect of the trigger.
+		// Hence, Elapsed ~= 0
+		Time = FMath::Max(Time, IA->GetAnim()->Duration);
+	}
+	
+	if (Animating) {
+		FTimerHandle H;
+		auto C = [this, Ok] { Done(Ok); };
+		World->GetTimerManager().SetTimer(H, C, Time, false);
+	} else
+		Done(Ok);
 }
 
 void UCPuzzle::Done(const bool Ok) const {
