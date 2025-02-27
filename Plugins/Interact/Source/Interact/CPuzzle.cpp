@@ -14,6 +14,16 @@ UCPuzzle::UCPuzzle(): Super() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UCPuzzle::BeginPlay() {
+	Super::BeginPlay();
+	Bind();
+}
+
+void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Unbind();
+	Super::EndPlay(EndPlayReason);
+}
+
 void UCPuzzle::Reset_Implementation() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
@@ -40,20 +50,6 @@ void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
 	}
 
 	Bind();
-}
-
-void UCPuzzle::Done(const bool Ok) const {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
-		__func__, Ok, *GetNameSafe(this));
-
-	if (DisableOnDone && Ok) {
-		for(AInteract* const I: Interacts) {
-			if (UNLIKELY(!IsValid(I))) continue;
-			I->SetActive(false);
-		}
-	}
-
-	OnDone.Broadcast(Ok);
 }
 
 void UCPuzzle::ResetCurrents() {
@@ -103,11 +99,6 @@ void UCPuzzle::Bind() {
 	// Disable anim.
 	// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after done).
 	SetDisableWhileAnims(false);
-}
-
-void UCPuzzle::BeginPlay() {
-	Super::BeginPlay();
-	Bind();
 }
 
 void UCPuzzle::Unbind() {
@@ -204,9 +195,22 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 	}
 }
 
-void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Unbind();
-	Super::EndPlay(EndPlayReason);
+void UCPuzzle::PreDone(const bool Ok) const {
+	
+}
+
+void UCPuzzle::Done(const bool Ok) const {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
+		__func__, Ok, *GetNameSafe(this));
+
+	if (DisableOnDone && Ok) {
+		for(AInteract* const I: Interacts) {
+			if (UNLIKELY(!IsValid(I))) continue;
+			I->SetActive(false);
+		}
+	}
+
+	OnDone.Broadcast(Ok);
 }
 
 void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) {

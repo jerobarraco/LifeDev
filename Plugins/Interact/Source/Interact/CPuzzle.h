@@ -118,6 +118,7 @@ protected:
 	bool CheckSequence(const int32 ID);
 	bool CheckCombination(const int32 ID);
 	bool IsCurrentSolution();
+	void PreDone(const bool Ok=true) const;
 	// internal. to be called when done
 	void Done(const bool Ok = true) const;
 
