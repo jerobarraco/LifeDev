@@ -10,6 +10,8 @@ APlantI00::APlantI00():Super() {
 	// the plant on c03 has some batteries. the box collides with the batts.
 	// but i've fixed that by setting the plant to oneShot.
 	IsOneShot = true;
+	UseAnim = false;
+	DisableWhileAnim = false;
 	// Interact->SetBoxExtent(FVector(37.500000,37.500000,27.500000));
 	// Interact->SetRelativeLocation(FVector(32.500000,-32.500000,30));
 }
