@@ -75,7 +75,6 @@ protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;
-	void DoAnimEnd();
 
 	// triggers the animation. checks some flags first.
 	void AnimPlay();

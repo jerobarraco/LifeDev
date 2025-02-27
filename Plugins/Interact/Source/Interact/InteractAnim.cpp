@@ -24,7 +24,7 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AInteractAnim::SetState_Implementation(const int32 NewState) {
+void AInteractAnim::SetState_Implementation(const int32 NewState) { // called by dotrigger
 	Super::SetState_Implementation(NewState);
 	// play the animation, since we want to make sure it ends where it needs to
 	AnimPlay();
@@ -36,28 +36,24 @@ bool AInteractAnim::TryTrigger_Implementation() {
 	return Super::TryTrigger_Implementation();
 }
 
-void AInteractAnim::DoTrigger_Implementation() {
+void AInteractAnim::DoTrigger_Implementation() { // called by trytrigger
 	// disable disableWhileAnim if this is one shot. otherwise it will try to re-enable
 	// do after Trigger, so it actually disable during the animation
 	// also not doing during SetState since that can also be called by other means.
 	// done here and not on AnimEnd due to the same reason.
 	// if (IsOneShot) DisableWhileAnim = false; // done on AnimEnd. it actually amkes more sense to me.
+	if (DisableWhileAnim || IsOneShot) SetActive(false);
 	Super::DoTrigger_Implementation();
 }
 
-void AInteractAnim::DoAnimEnd() {
-	OnAnimEnd.Broadcast();
-}
-
-void AInteractAnim::AnimPlay() {
+void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 	if (!UseAnim) {
 		// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
 		// the anim is triggered by setstate.
-		DoAnimEnd();
+		// Calling AnimEnd has some other side effects. like playing sounds. which, while odd, i think it's benign side effect.
+		AnimEnd();
 		return;
 	}
-
-	if (DisableWhileAnim) SetActive(false);
 
 	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
@@ -81,7 +77,7 @@ void AInteractAnim::AnimPlay() {
 void AInteractAnim::AnimBegin_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
 	
-	if (UNLIKELY(State < 0 || State >= SFX_Start.Num())) return;
+	if (UNLIKELY(State < 0) || State >= SFX_Start.Num()) return;
 	USoundBase* const Snd2 = SFX_Start[State];
 	PlaySFX(Snd2);
 }
@@ -90,7 +86,7 @@ void AInteractAnim::AnimEnd_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
 	if (DisableWhileAnim && !IsOneShot) SetActive(true);
 
-	if (State >= 0 && State < SFX_Stop.Num()) {
+	if (LIKELY(State >= 0) && State < SFX_Stop.Num()) {
 		USoundBase* const Snd2 = SFX_Stop[State];
 		PlaySFX(Snd2);
 	}
