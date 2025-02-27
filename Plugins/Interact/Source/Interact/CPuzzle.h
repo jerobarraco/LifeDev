@@ -106,6 +106,7 @@ public:
 	FPuzzleOnReset OnReset;
 
 	// triggers when the puzzle is completed, with or without success.
+	// after anim.
 	UPROPERTY(BlueprintAssignable, Category="SetUp|Events")
 	FPuzzleOnDone OnDone;
 

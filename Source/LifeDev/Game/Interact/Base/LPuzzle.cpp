@@ -43,11 +43,12 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 
 	/// do all rewardy stuff
 	
-	if (LIKELY(Diags)) Diags->AddId(DoneDlg);
 	if (LIKELY(FB)) FB->ModVal(DoneFB);
 	if (LIKELY(Flags)) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
 	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
-	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep);
+	// doing dialog after the flags, since now the dialog system can read the flags and items on the condition
+	if (LIKELY(Diags)) Diags->AddId(DoneDlg);
+	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep); // story step at end to not break other stuff much.
 
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
