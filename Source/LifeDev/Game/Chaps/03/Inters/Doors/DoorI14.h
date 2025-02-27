@@ -5,7 +5,7 @@
 
 #include "DoorI14.generated.h"
 
-// Door from hall00 to piano
+// Door from hall00 to piano. ch03
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoorI14: public ADoor02 {
 	GENERATED_BODY()

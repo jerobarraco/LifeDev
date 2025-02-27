@@ -5,7 +5,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ADoorI14::ADoorI14():Super() {
-	LockedDlg = "D14_L"; // unnecessary since it uses the card1. but in case i re organize the chapter.
+	LockedDlg = "D14_L"; // unnecessary since it uses the card1. but in case i re-organize the chapter.
 	LockedItemDlg = "D14_LI";
 	Locked = true;
 	ULockDlg = "D14_U";
@@ -17,4 +17,8 @@ ADoorI14::ADoorI14():Super() {
 		// {LDConsts::Items::Card1, "D14xC01"}, // done with the ULockDlg
 		{LDConsts::Items::Card2, "D14xC02"},
 	};
+	// this door is quite confusing. and while it seems interesting it rather make it better for the player.
+	SetState(1);
+	ADoorI14::SetAutoActivate(false);
+	DisableWhileAnim = false; // avoid getting re-enabled due to state change
 }
