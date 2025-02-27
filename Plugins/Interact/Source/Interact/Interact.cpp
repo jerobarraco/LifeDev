@@ -89,12 +89,7 @@ void AInteract::SetActive_Implementation(const bool Active) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
 		__func__, Active, *GetNameSafe(this));
 
-	if (UNLIKELY(!IsValid(Interact))) {
-		UE_LOG(LogInteract, Warning, TEXT("%hs Interact is invalid!!!!!!!"), __func__);
-		return;
-	}
-
-	Interact->SetActive(Active);
+	if (LIKELY(!IsValid(Interact))) Interact->SetActive(Active);
 }
 
 void AInteract::SetAutoActivate(const bool AutoActive) {
@@ -244,7 +239,7 @@ void AInteract::DoTrigger_Implementation() {
 	if (StateNum > 0) {
 		int32 NewState = State;
 		++NewState;
-		if (NewState >= StateNum)
+		if (UNLIKELY(NewState >= StateNum))
 			NewState = UseStateLoop ? NewState % StateNum : StateNum-1;
 		SetState(NewState); 
 	}

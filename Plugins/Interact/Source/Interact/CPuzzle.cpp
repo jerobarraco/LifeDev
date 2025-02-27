@@ -229,7 +229,7 @@ void UCPuzzle::PreDone(const bool Ok) const {
 		if (LIKELY(!Anim->IsActive())) continue;
 
 		Animating = true;
-		// It's ok to grab the duration because PreDone is called as a direct side-effect of the trigger.
+		// It's ok to grab the duration because PreDone is called as a direct side effect of the trigger.
 		// Hence, Elapsed ~= 0
 		Time = FMath::Max(Time, IA->GetAnim()->Duration);
 	}
