@@ -86,10 +86,10 @@ EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 }
 
 void AInteract::SetActive_Implementation(const bool Active) {
-	UE_LOG(LogInteract, Log, TEXT("%hs Enabled=%i Obj=%s"),
+	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
 		__func__, Active, *GetNameSafe(this));
 
-	if (LIKELY(!IsValid(Interact))) Interact->SetActive(Active);
+	if (LIKELY(IsValid(Interact))) Interact->SetActive(Active);
 }
 
 void AInteract::SetAutoActivate(const bool AutoActive) {
