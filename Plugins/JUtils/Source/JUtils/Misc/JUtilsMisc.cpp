@@ -48,14 +48,6 @@ UWorld* UJUtilsMisc::GetPIEWorld(const int32 Num) {
 #endif
 }
 
-bool UJUtilsMisc::IsPIE() {
-#if WITH_EDITOR
-	return EditorScriptingHelpers::CheckIfInEditorAndPIE();
-#else
-	return false;
-#endif
-}
-
 UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	if (IsValid(World)) return World;
 /*
@@ -192,6 +184,7 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 }
 
 void UJUtilsMisc::SetUIScale(const float UIScale) {
+	// inspired on https://benui.ca/unreal/ui-scale/
 	UUserInterfaceSettings* UISettings =
 		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
 

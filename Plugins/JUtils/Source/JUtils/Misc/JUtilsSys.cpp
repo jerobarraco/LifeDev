@@ -3,8 +3,21 @@
 
 #include "JUtilsSys.h"
 
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+
+#if WITH_EDITOR
+#include "EditorScriptingHelpers.h"
+#endif
+
+bool UJUtilsSys::IsPIE() {
+#if WITH_EDITOR
+	return EditorScriptingHelpers::CheckIfInEditorAndPIE();
+#else
+	return false;
+#endif
+}
 
 void UJUtilsSys::ToggleMapping(const UObject* const O,
 	const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable) {

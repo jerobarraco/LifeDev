@@ -20,7 +20,7 @@
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
 #include "JSig/CSignificance.h"
-#include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
@@ -177,7 +177,7 @@ void ALGGameMode::Init() {
 
 	Eval = World->GetSubsystem<UEval>();
 
-	const bool IsEditor = UJUtilsMisc::IsEditor();
+	const bool IsEditor = UJUtilsSys::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
 

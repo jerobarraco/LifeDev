@@ -54,43 +54,19 @@ public:
 	static UWorld* GetPIEWorld(const int32 Num = 0);
 
 	UFUNCTION(BlueprintCallable)
-	static bool IsPIE();
+	static UWorld* JGetWorld(UWorld* const World);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FORCEINLINE bool IsEditor() {
-		#if WITH_EDITOR
-			return true;
-		#else
-			return false;
-		#endif
-	}
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FORCEINLINE bool IsDebug() {
-		#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-			return false;
-		#else
-			return true;
-		#endif
-	};
-	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FORCEINLINE bool IsAndroid() {
-		// return UGameplayStatics::GetPlatformName() == "Android";
-		#if PLATFORM_ANDROID
-				return true;
-		#else
-				return false;
-		#endif
-	}
-	
-	UFUNCTION(BlueprintCallable)
-	static UWorld* JGetWorld(UWorld* World);
-
+#pragma region UI
 	// Shows/hides an ui. it will also show the mouse if needed.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ShowUI(const UObject* const O, const bool Show,
 		UWidget* const Focus = nullptr, const bool SetPaused = false);
+
+	// this will set the ui scale and it will be saved on a config file
+	// you can change it back on the editor under "Project Settings > Engine > User Interface > Application Scale"
+	UFUNCTION(BlueprintCallable)
+	static void SetUIScale(float UIScale);
+#pragma endregion // move to UtilsUI someday
 
 	// Calls a Task (a Delegate) on another thread, when finishes calls OnDone on the game thread (if bound)
 	// What Not to Do:
@@ -111,9 +87,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
-
-	UFUNCTION(BlueprintCallable)
-	static void SetUIScale(float UIScale);
 
 	// can't be a blueprint callable since it's templatized
 	template <typename T>

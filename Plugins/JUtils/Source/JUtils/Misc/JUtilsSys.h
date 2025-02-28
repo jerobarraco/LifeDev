@@ -14,6 +14,40 @@ class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	static bool IsPIE();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsEditor() {
+		#if WITH_EDITOR
+				return true;
+		#else
+				return false;
+		#endif
+	}
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsDebug() {
+		#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
+				return false;
+		#else
+				return true;
+		#endif
+	};
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsAndroid() {
+		// return UGameplayStatics::GetPlatformName() == "Android";
+		#if PLATFORM_ANDROID
+				return true;
+		#else
+				return false;
+		#endif
+	}
+	
+	// returns the project version, as stored in the project settings
+	UFUNCTION(BlueprintCallable)
+	static FString GetProjectVersion();
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
@@ -22,6 +56,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UGameViewportClient* GetAnyGameViewportClient();
 
+#pragma region input
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ToggleMapping(const UObject* const O,
 		const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable);
@@ -31,8 +66,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);
-
-	// returns the project version, as stored in the project settings
-	UFUNCTION(BlueprintCallable)
-	static FString GetProjectVersion();
+#pragma endregion // TODO maybe move to UtilsInput one day
+	
 };

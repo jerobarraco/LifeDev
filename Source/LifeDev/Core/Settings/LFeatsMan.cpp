@@ -14,6 +14,7 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 #include "Story/Story.h"
 
 #include "LSettings.h"
@@ -244,9 +245,9 @@ double ALFeatsMan::GetVar(const FName Name) {
 		return I64ToD(I);
 	}
 	if (Name == NAME_SysDebug)
-		return UJUtilsMisc::IsDebug() ? 1:0;
+		return UJUtilsSys::IsDebug() ? 1:0;
 	if (Name == NAME_SysEditor)
-		return UJUtilsMisc::IsEditor() ? 1:0;
+		return UJUtilsSys::IsEditor() ? 1:0;
 
 	// Maybe .Cur.Name
 	static const FName NAME_ItemCur("V.Item.Cur");
