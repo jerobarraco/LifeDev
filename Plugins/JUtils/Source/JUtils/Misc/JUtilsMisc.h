@@ -90,6 +90,7 @@ public:
 	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" square root.
 	UFUNCTION(BlueprintCallable)
 	static float MathEvaluate(const FString& Expression);
+	// maybe later: To JUtilsMath
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
