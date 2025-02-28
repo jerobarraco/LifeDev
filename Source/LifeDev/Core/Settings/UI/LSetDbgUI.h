@@ -7,6 +7,7 @@
 
 #include "LSetDbgUI.generated.h"
 
+class UScrollBox;
 // baseclass debug stuff
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetDbgUI : public ULSetBaseUI {
@@ -15,4 +16,8 @@ class LIFEDEV_API ULSetDbgUI : public ULSetBaseUI {
 public:
 	virtual void Apply_Implementation() override {};
 	virtual void Load_Implementation() override;
+
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UScrollBox> SBFlags;
 };
