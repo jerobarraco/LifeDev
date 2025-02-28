@@ -9,9 +9,17 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 // this ui is a waste of time. TODO rethink life choices.
+// most of the time i would want to:
+// * use the console
+// * print logs
+// so in the need to debug stuff i just need to make a debug build.
+// thought there would be cases where i'd want to be able to debug certain stuff on a build, not on the editor, on an expo, on a maybe shipping build (for performance)
+// though maybe i just use a debug build.
 
 void ULSetDbgUI::Load_Implementation() {
 	Super::Load_Implementation();
+	// this is temporarily unhooked from lsettingsui for being useless.
+	
 	const bool Dbg = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 	if (LIKELY(!Dbg)) return;
 
