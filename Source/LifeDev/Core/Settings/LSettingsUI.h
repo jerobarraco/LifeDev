@@ -7,6 +7,8 @@
 
 #include "LSettingsUI.generated.h"
 
+class UWidgetSwitcher;
+class UButton;
 class UComboBoxString;
 class UGroupBox;
 
@@ -35,7 +37,13 @@ protected:
 
 	UFUNCTION()
 	void ScaleUpd(const FString SelectedItem, const ESelectInfo::Type SelectionType);
+	UFUNCTION()
+	void ShowDbg();
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> CBScale;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UButton> BtnOptDbg;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UWidgetSwitcher> SWOptions;
 };

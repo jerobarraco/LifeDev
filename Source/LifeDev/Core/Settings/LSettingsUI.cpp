@@ -2,7 +2,10 @@
 
 #include "LSettingsUI.h"
 
+#include "LSettings.h"
+#include "Components/Button.h"
 #include "Components/ComboBoxString.h"
+#include "Components/WidgetSwitcher.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
 
@@ -55,10 +58,16 @@ void ULSettingsUI::NativeOnInitialized() {
 		CBScale->SetSelectedIndex(SelectedI);
 		CBScale->OnSelectionChanged.AddUniqueDynamic(this, &ULSettingsUI::ScaleUpd);
 	}
+
+	const bool Dbg = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
+	if (LIKELY(BtnOptDbg)) {
+		BtnOptDbg->SetVisibility(Dbg ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+		if (Dbg) BtnOptDbg->OnClicked.AddUniqueDynamic(this, &ULSettingsUI::ShowDbg);
+	}
 }
 
 void ULSettingsUI::NativeDestruct() {
-	if (CBScale) CBScale->OnSelectionChanged.RemoveAll(this);
+	if (LIKELY(CBScale)) CBScale->OnSelectionChanged.RemoveAll(this);
 
 	Super::NativeDestruct();
 }
@@ -69,4 +78,8 @@ void ULSettingsUI::ScaleUpd(const FString SelectedItem, const ESelectInfo::Type 
 	const int32 I = CBScale->GetSelectedIndex();
 	if (UNLIKELY(I<1 || I>=LSetUI::ScalesLen)) return; // actually ignore 0
 	UJUtilsMisc::SetUIScale(LSetUI::Scales[I]);
+}
+
+void ULSettingsUI::ShowDbg() {
+	if (LIKELY(SWOptions)) SWOptions->SetActiveWidgetIndex(5);
 }

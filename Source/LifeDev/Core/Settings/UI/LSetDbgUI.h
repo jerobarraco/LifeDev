@@ -7,7 +7,7 @@
 
 #include "LSetDbgUI.generated.h"
 
-// baseclass for the control settings
+// baseclass debug stuff
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetDbgUI : public ULSetBaseUI {
 	GENERATED_BODY()
