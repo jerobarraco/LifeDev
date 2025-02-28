@@ -14,5 +14,5 @@ class LIFEDEV_API ULSetDbgUI : public ULSetBaseUI {
 
 public:
 	virtual void Apply_Implementation() override {};
-	virtual void Load_Implementation() override {};
+	virtual void Load_Implementation() override;
 };

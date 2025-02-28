@@ -62,7 +62,7 @@ void ULSettingsUI::NativeOnInitialized() {
 	const bool Dbg = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 	if (LIKELY(BtnOptDbg)) {
 		BtnOptDbg->SetVisibility(Dbg ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
-		if (Dbg) BtnOptDbg->OnClicked.AddUniqueDynamic(this, &ULSettingsUI::ShowDbg);
+		if (UNLIKELY(Dbg)) BtnOptDbg->OnClicked.AddUniqueDynamic(this, &ULSettingsUI::ShowDbg);
 	}
 }
 
