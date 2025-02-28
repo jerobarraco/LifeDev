@@ -8,6 +8,7 @@
 #include "Inventory/Flags.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
+// this ui is a waste of time. TODO rethink life choices.
 
 void ULSetDbgUI::Load_Implementation() {
 	Super::Load_Implementation();
@@ -24,7 +25,9 @@ void ULSetDbgUI::Load_Implementation() {
 	TMap<FName, float> Map;
 	Map = Flags->GetAll();
 	for (const TTuple<FName, float> KV : Map) {
-		UTextBlock* const Text = Cast<UTextBlock>(CreateWidget(this, UTextBlock::StaticClass()));
+		// ue says : CreateWidget called with a null class...
+		UTextBlock* const Text = Cast<UTextBlock>(
+			CreateWidget(this, UTextBlock::StaticClass()));
 		if (!Text) continue;
 		SBFlags->AddChild(Text);
 		Text->SetText(FText::FromString(
