@@ -62,10 +62,13 @@ public:
 	static void ShowUI(const UObject* const O, const bool Show,
 		UWidget* const Focus = nullptr, const bool SetPaused = false);
 
-	// this will set the ui scale and it will be saved on a config file
+	// this will set the ui scale factor. It will be saved on a config file.
 	// you can change it back on the editor under "Project Settings > Engine > User Interface > Application Scale"
 	UFUNCTION(BlueprintCallable)
-	static void SetUIScale(float UIScale);
+	static void SetUIScale(const float UIScale);
+	// current ui scale factor
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static float GetUIScale();
 #pragma endregion // move to UtilsUI someday
 
 	// Calls a Task (a Delegate) on another thread, when finishes calls OnDone on the game thread (if bound)

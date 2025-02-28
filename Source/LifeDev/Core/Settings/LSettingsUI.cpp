@@ -8,6 +8,12 @@
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 
+namespace LSetUI {
+	// first one should be skippable. needs to be in ascending order.
+	constexpr float Scales[] = {1, .25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 3, 4};
+	constexpr uint8 ScalesLen = UJUtilsMisc::ArraySize(Scales);
+}
+
 ULSettingsUI::ULSettingsUI():Super() {
 	// note: the intro level intro ui will set `ShowCursor` to false. to avoid having the mouse hidden.
 	ShowCursor = true;
@@ -37,16 +43,16 @@ void ULSettingsUI::NativeOnInitialized() {
 	if (LIKELY(CBScale)) {
 		CBScale->ClearOptions();
 		CBScale->AddOption("UI Scale");
-		CBScale->AddOption("x .25 Scale");
-		CBScale->AddOption("x .5 Scale");
-		CBScale->AddOption("x .75 Scale");
-		CBScale->AddOption("x 1 Scale");
-		CBScale->AddOption("x 1.25 Scale");
-		CBScale->AddOption("x 1.5 Scale");
-		CBScale->AddOption("x 1.75 Scale");
-		CBScale->AddOption("x 2 Scale");
-		CBScale->AddOption("x 3 Scale");
-		CBScale->AddOption("x 4 Scale");
+		const float ScaleCur = UJUtilsMisc::GetUIScale();
+		int32 SelectedI = 0;
+		for (uint8 i = 1; i<LSetUI::ScalesLen; ++i) {//skip initial
+			const float S = LSetUI::Scales[i];
+			CBScale->AddOption(FString::Printf(TEXT("%.2fx Scale"), S));
+			// selects the last one that's smaller than the current one.
+			// will pick the largest one that is not larger than the value.
+			if (S<=ScaleCur) SelectedI = i;
+		}
+		CBScale->SetSelectedIndex(SelectedI);
 		CBScale->OnSelectionChanged.AddUniqueDynamic(this, &ULSettingsUI::ScaleUpd);
 	}
 }
@@ -58,11 +64,9 @@ void ULSettingsUI::NativeDestruct() {
 }
 
 void ULSettingsUI::ScaleUpd(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
-	constexpr float Scales[] = {1, .25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 3, 4};
-	constexpr uint8 Len = UJUtilsMisc::ArraySize(Scales);
 	if (UNLIKELY(!CBScale)) return;
 
 	const int32 I = CBScale->GetSelectedIndex();
-	if (UNLIKELY(I<1 || I>=Len)) return; // actually ignore 0
-	UJUtilsMisc::SetUIScale(Scales[I]);
+	if (UNLIKELY(I<1 || I>=LSetUI::ScalesLen)) return; // actually ignore 0
+	UJUtilsMisc::SetUIScale(LSetUI::Scales[I]);
 }

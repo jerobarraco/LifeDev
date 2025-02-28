@@ -185,9 +185,17 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 
 void UJUtilsMisc::SetUIScale(const float UIScale) {
 	// inspired on https://benui.ca/unreal/ui-scale/
-	UUserInterfaceSettings* UISettings =
+	UUserInterfaceSettings* const UISettings =
 		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
 
 	if (UNLIKELY(!UISettings)) return;
 	UISettings->ApplicationScale = UIScale;
+}
+
+float UJUtilsMisc::GetUIScale() {
+	const UUserInterfaceSettings* const UISettings =
+		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
+
+	if (UNLIKELY(!UISettings)) return 1;
+	return UISettings->ApplicationScale;
 }
