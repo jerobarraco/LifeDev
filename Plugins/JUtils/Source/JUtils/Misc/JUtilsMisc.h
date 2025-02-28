@@ -64,6 +64,9 @@ public:
 
 	// this will set the ui scale factor. It will be saved on a config file.
 	// you can change it back on the editor under "Project Settings > Engine > User Interface > Application Scale"
+	// this, alongside the window scale, defined with a setting on the project,
+	// will in turn adjust the DPI for the widgets and text dynamically.
+	// you can obtain such DPI with UWidgetLayoutLibrary::GetViewportScale (it's exposed to bps)
 	UFUNCTION(BlueprintCallable)
 	static void SetUIScale(const float UIScale);
 	// current ui scale factor
