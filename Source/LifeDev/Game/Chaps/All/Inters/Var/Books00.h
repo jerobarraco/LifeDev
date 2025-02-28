@@ -3,13 +3,10 @@
 #pragma once
 #include "LifeDev/Game/Interact/Base/Var/Books.h"
 
-#include "BooksI00.generated.h"
+#include "Books00.generated.h"
 
-//ch03 book that gives the poem
+// base class for interactable books. 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ABooksI00: public ABooks {
+class LIFEDEV_API ABooks00: public ABooks {
 	GENERATED_BODY()
-
-public:
-	ABooksI00();
 };
