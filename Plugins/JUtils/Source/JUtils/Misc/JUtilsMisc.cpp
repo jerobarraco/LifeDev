@@ -6,6 +6,7 @@
 #include "CoreGlobals.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/LocalPlayer.h"
+#include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
@@ -188,4 +189,12 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 		return;
 	}
 	*/
+}
+
+void UJUtilsMisc::SetUIScale(const float UIScale) {
+	UUserInterfaceSettings* UISettings =
+		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
+
+	if (UNLIKELY(!UISettings)) return;
+	UISettings->ApplicationScale = UIScale;
 }

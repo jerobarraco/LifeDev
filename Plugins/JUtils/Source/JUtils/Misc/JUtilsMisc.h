@@ -111,7 +111,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
-	
+
+	UFUNCTION(BlueprintCallable)
+	static void SetUIScale(float UIScale);
+
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
