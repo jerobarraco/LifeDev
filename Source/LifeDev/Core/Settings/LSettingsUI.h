@@ -7,6 +7,7 @@
 
 #include "LSettingsUI.generated.h"
 
+class UComboBoxString;
 class UGroupBox;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -31,4 +32,10 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
+
+	UFUNCTION()
+	void ScaleUpd(const FString SelectedItem, const ESelectInfo::Type SelectionType);
+	
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> CBScale;
 };
