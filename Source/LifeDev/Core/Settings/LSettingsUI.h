@@ -7,6 +7,7 @@
 
 #include "LSettingsUI.generated.h"
 
+class ULSetDbgUI;
 class UWidgetSwitcher;
 class UButton;
 class UComboBoxString;
@@ -29,7 +30,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();
-	virtual void Load_Implementation(){}
 
 protected:
 	virtual void NativeOnInitialized() override;
@@ -46,4 +46,6 @@ protected:
 	TObjectPtr<UButton> BtnOptDbg;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidgetSwitcher> SWOptions;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULSetDbgUI> Settings_Dbg;
 };

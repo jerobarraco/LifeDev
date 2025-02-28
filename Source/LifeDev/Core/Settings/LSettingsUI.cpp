@@ -10,6 +10,7 @@
 #include "JUtils/UI/GroupBox.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "UI/LSetDbgUI.h"
 
 namespace LSetUI {
 	// first one should be skippable. needs to be in ascending order.
@@ -39,6 +40,10 @@ void ULSettingsUI::Hide_Implementation() {
 	
 	Super::Hide_Implementation();
 	// SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void ULSettingsUI::Load_Implementation() {
+	if (LIKELY(Settings_Dbg)) Settings_Dbg->Load(); 
 }
 
 void ULSettingsUI::NativeOnInitialized() {
