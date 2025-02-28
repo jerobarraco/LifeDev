@@ -48,6 +48,7 @@ void ULSettingsUI::Load_Implementation() {
 
 void ULSettingsUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
+
 	if (LIKELY(CBScale)) {
 		CBScale->ClearOptions();
 		CBScale->AddOption("UI Scale");
