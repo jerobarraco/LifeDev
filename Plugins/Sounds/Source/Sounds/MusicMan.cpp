@@ -17,6 +17,7 @@ AMusicMan::AMusicMan():Super() {
 
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
 	Player->SetAutoActivate(false);
+	Player->bAutoManageAttachment = true;
 	Player->TimeFadeIn = 1.0;
 }
 
