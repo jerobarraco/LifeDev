@@ -11,7 +11,8 @@ ALWorldText::ALWorldText():Super() {
 
 	Root = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXT"));
 	SetRootComponent(Root);
-	Root->SetWorldSize(55); // minimum size that can be read, very close.
+	// minimum size that can be read, at medium distance
+	Root->SetWorldSize(80);
 	Root->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextCenter);
 	Root->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
 	Root->TextRenderColor = FColor::Black; // contrast
@@ -21,8 +22,4 @@ ALWorldText::ALWorldText():Super() {
 	static ConstructorHelpers::FObjectFinder<UFont>
 		CFont(TEXT("/Game/LifeDev/Game/Dialogs/UI/Text/Fonts/Offline/Rosemary_Roman"));
 	Root->SetFont(CFont.Object);
-	
-	// Root->SetFont() // TODO
 }
-
-// TODO do smth with the fb?
