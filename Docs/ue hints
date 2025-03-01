@@ -115,3 +115,13 @@ FCString::Atoi()
  needs to be that. /Script/Package.StructnamewithnoF
  
  rowtype is for datatable handles https://forums.unrealengine.com/t/udatatable-pointer-of-specific-type/479992/2?u=nande
+ 
+# use font with materials
+* has to be a cached font with distance field
+
+* import a font by dropping it on the content.
+* also install the font on the system.
+* change the type to offline. 
+* set the settings to enable distance fields
+* go to content browser and right click> reimport
+https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/368876/3?u=nande
