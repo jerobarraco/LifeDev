@@ -11,3 +11,5 @@ ALWorldText::ALWorldText():Super() {
 	// Root->SetMaterial // TODO
 	// Root->SetWorldSize() // TODO
 }
+
+// TODO do smth with the fb?
