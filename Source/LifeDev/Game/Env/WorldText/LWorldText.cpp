@@ -2,6 +2,7 @@
 
 #include "LWorldText.h"
 
+#include "Engine/Font.h"
 #include "Components/TextRenderComponent.h"
 
 ALWorldText::ALWorldText():Super() {
@@ -10,12 +11,15 @@ ALWorldText::ALWorldText():Super() {
 
 	Root = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXT"));
 	SetRootComponent(Root);
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat(TEXT("/Game/LifeDev/Game/Env/WorldText/WorldText_M"));
-	Root->SetMaterial(0, CMat.Object);
 	Root->SetWorldSize(25);
 	Root->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextCenter);
 	Root->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMat(TEXT("/Game/LifeDev/Game/Env/WorldText/WorldText_M"));
+	Root->SetMaterial(0, CMat.Object);
+	static ConstructorHelpers::FObjectFinder<UFont>
+		CFont(TEXT("/Game/LifeDev/Game/Dialogs/UI/Text/Fonts/Offline/Rosemary_Roman"));
+	Root->SetFont(CFont.Object);
 	
 	// Root->SetFont() // TODO
 }
