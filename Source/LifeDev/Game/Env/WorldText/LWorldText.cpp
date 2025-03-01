@@ -11,11 +11,12 @@ ALWorldText::ALWorldText():Super() {
 
 	Root = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXT"));
 	SetRootComponent(Root);
-	Root->SetWorldSize(25);
+	Root->SetWorldSize(55); // minimum size that can be read, very close.
 	Root->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextCenter);
 	Root->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+	Root->TextRenderColor = FColor::Black; // contrast
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat(TEXT("/Game/LifeDev/Game/Env/WorldText/WorldText_M"));
+		CMat(TEXT("/Game/LifeDev/Game/Env/WorldText/WorldFBText_M"));
 	Root->SetMaterial(0, CMat.Object);
 	static ConstructorHelpers::FObjectFinder<UFont>
 		CFont(TEXT("/Game/LifeDev/Game/Dialogs/UI/Text/Fonts/Offline/Rosemary_Roman"));
