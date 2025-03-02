@@ -2,7 +2,9 @@
 
 #include "IntroUI.h"
 
+#include "JButton.h"
 #include "MsgBox.h"
+#include "Components/WidgetSwitcher.h"
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	if (UNLIKELY(!MsgBox)) return;
@@ -18,8 +20,28 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	MsgBox->OnDone.AddUniqueDynamic(MsgBox, &UMsgBox::Hide);
 }
 
+void UIntroUI::ShowSettings_Implementation(const int32 Id) {}
+
+void UIntroUI::PostLoad() {
+	Super::PostLoad();
+	if (LIKELY(BtnNext))
+		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Continue"), 1);
+	if (LIKELY(BtnNext2))
+		BtnNext2->SetUp(NSLOCTEXT("Intro", "BtnNext2", "Ok"), 2);
+	if (LIKELY(BtnSettings))
+		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), 3);
+	if (LIKELY(BtnDone))
+		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
+	
+}
+
 void UIntroUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
+	if (UNLIKELY(!Switcher)) return;
+	if (LIKELY(BtnNext)) BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
+	if (LIKELY(BtnNext2)) BtnNext2->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
+	if (LIKELY(BtnSettings)) BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::ShowSettings);
+	if (LIKELY(BtnDone)) BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
 }
 
 void UIntroUI::NativeDestruct() {
