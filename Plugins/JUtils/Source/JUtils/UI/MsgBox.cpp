@@ -99,4 +99,5 @@ void UMsgBox::BtnClick(const int32 ID) {
 	UE_LOG(LogTemp, Log, TEXT("Btn click id=%i"), ID);
 	Unbind(); // no double clicks here
 	Done(ID);
+	Hide(); // hide after done because of autounbind
 }
