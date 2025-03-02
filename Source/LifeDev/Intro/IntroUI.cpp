@@ -20,6 +20,7 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	MsgBox->OnDone.AddUniqueDynamic(MsgBox, &UMsgBox::Hide);
 }
 
+// implemented on cpp
 void UIntroUI::ShowSettings_Implementation(const int32 Id) {}
 
 // post init, and postLoad doesn't work to setup the buttons :(
