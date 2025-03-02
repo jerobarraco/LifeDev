@@ -48,11 +48,6 @@ protected:
 	TObjectPtr<UJButton> BtnNext2 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnSettings = nullptr;
-	
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnDone = nullptr;
-	// UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	// TObjectPtr<UJButton> BtnNext = nullptr;
-	// UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	// TObjectPtr<UJButton> BtnNext = nullptr;
 };

@@ -14,6 +14,8 @@ class LIFEDEV_API UOutroUI : public UBaseUI {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetFlags(const TMap<FName, float>& Flags);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void SetPage(const int32 Page=0);
 };
