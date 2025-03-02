@@ -20,19 +20,20 @@ public:
 	void SetFlags(const TMap<FName, float>& Flags);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetPage(const int32 Page=0);
-	
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidgetSwitcher> Switcher = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnRetry = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnCredits = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnStats = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnQuit = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnBack = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnBack2 = nullptr;
 };

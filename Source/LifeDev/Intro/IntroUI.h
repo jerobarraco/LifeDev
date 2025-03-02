@@ -38,16 +38,16 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SlotsLoadDone(const bool HasDoneSave);
 
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UMsgBox> MsgBox = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidgetSwitcher> Switcher = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnNext = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnNext2 = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnSettings = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnDone = nullptr;
 };
