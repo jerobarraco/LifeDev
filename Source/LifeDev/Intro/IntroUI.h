@@ -32,7 +32,6 @@ public:
 	FIntroUISlotsDone OnSlotsDone;
 
 protected:
-	virtual void PostLoad() override;
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 

@@ -22,8 +22,11 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 
 void UIntroUI::ShowSettings_Implementation(const int32 Id) {}
 
-void UIntroUI::PostLoad() {
-	Super::PostLoad();
+// post init, and postLoad doesn't work to setup the buttons :(
+// constructor might be too early.
+void UIntroUI::NativeOnInitialized() {
+	Super::NativeOnInitialized();
+	if (UNLIKELY(!Switcher)) return;
 	if (LIKELY(BtnNext))
 		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Continue"), 1);
 	if (LIKELY(BtnNext2))
@@ -31,13 +34,7 @@ void UIntroUI::PostLoad() {
 	if (LIKELY(BtnSettings))
 		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), 3);
 	if (LIKELY(BtnDone))
-		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
-	
-}
-
-void UIntroUI::NativeOnInitialized() {
-	Super::NativeOnInitialized();
-	if (UNLIKELY(!Switcher)) return;
+		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
 	if (LIKELY(BtnNext)) BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
 	if (LIKELY(BtnNext2)) BtnNext2->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
 	if (LIKELY(BtnSettings)) BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::ShowSettings);
