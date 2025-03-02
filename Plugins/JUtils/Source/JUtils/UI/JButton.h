@@ -8,6 +8,7 @@
 
 #include "JButton.generated.h"
 
+class USlateBrushAsset;
 class UButton;
 class UTextBlock;
 
@@ -33,7 +34,7 @@ public:
 	UButton* GetBtn() const { return Btn;}
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	int32 Id=-1;
+	int32 Id = -1;
 
 	// bind to this, not the regular button click.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
