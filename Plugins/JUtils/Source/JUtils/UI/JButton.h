@@ -1,5 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-License-Identifier: MIT
 
 #pragma once
 
@@ -12,6 +12,8 @@ class UButton;
 class UTextBlock;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FJButtonClick, const int32, Id);
+
+// done this way (with a composed button and not inheriting it, since inheriting from UserWidget is the only way to be able to access the designer and style it)
 
 // basic button with also an id. very helpful.
 // create your own custom class in blueprint, and inherit from this, to give it some style.
@@ -26,6 +28,9 @@ public:
 	// will be called automatically. it's also exposed for testing.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void DoClick();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UButton* GetBtn() const { return Btn;}
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 Id=-1;
