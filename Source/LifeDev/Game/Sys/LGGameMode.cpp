@@ -187,7 +187,7 @@ void ALGGameMode::Init() {
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
-	// Flashback->Init(); // TODO add init
+	Flashback->Init();
 
 	// now load the values from the save
 	// ensure the save-game loads the data into the subsystems.

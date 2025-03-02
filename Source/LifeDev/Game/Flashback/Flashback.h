@@ -19,9 +19,11 @@ class LIFEDEV_API UFlashback: public UTickableWorldSubsystem {
 public:
 	UFlashback();
 
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UFlashback* Instance(const UObject* const O);
 
+	UFUNCTION()
+	void Init() {}; // for the game mode
+	
 	// returns the instant value (if it's animating this is the value right now).
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetVal() const { return Val; }
@@ -59,7 +61,7 @@ public:
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
 	void SetMin(const float NewMin, const float Duration=-1.f);
-
+	
 	// default flashback anim speed
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
 	float AnimTime = 20.f;

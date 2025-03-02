@@ -27,8 +27,11 @@ void AIntroGameMode::BeginPlay() {
 	}
 
 	UFlashback* const FB = UFlashback::Instance(World);
-	if (LIKELY(FB)) FB->SetVal(1, .15);
-	
+	if (LIKELY(FB)) {
+		FB->Init();
+		FB->SetVal(1, .15);
+	}
+
 	if (LIKELY(MusicMan)) MusicMan->Init(); // very important
 
 	// very important NOT to save the save-game here.

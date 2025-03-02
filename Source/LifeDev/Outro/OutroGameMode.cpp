@@ -11,6 +11,7 @@
 
 AOutroGameMode::AOutroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
+
 	DefaultPawnClass = ASpectatorPawn::StaticClass(); // no need for a pawn
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CMusic (TEXT("/Game/LifeDev/Game/Env/Music/Music03/Music03_MS.Music03_MS"));
@@ -20,31 +21,33 @@ AOutroGameMode::AOutroGameMode():Super() {
 void AOutroGameMode::BeginPlay() {
 	Super::BeginPlay();
 
-	Manager = Cast<AOutroMan>(GetWorld()->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
-
 	UWorld* const World = GetWorld();
-	if (!World) return;
-
+	if (UNLIKELY(!World)) return;
+	
+	Manager = Cast<AOutroMan>(World->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	MusicMan->PlayMusic(Music, true);
 
 	UFlashback* const FB = UFlashback::Instance(World);
-	if (FB) {
-		FB->SetVal(1, 30);
+	if (LIKELY(FB)) {
+		FB->Init();
+		FB->SetVal(1, 5);
+	}
+	
+	if (LIKELY(MusicMan)) {
+		MusicMan->Init(); // very important
+		MusicMan->PlayMusic(Music, false);
 	}
 }
 
 void AOutroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 
-	if (IsValid(Manager)) {
+	if (LIKELY(IsValid(Manager)))
 		Manager->Destroy();
-	}
 	Manager = nullptr;
 
-	if (IsValid(MusicMan)) {
+	if (LIKELY(IsValid(MusicMan)))
 		MusicMan->Destroy();
-	}
 	MusicMan = nullptr;
 }
 
