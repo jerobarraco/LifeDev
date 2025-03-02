@@ -44,8 +44,8 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> Text = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UButton> Btn = nullptr;
 };
