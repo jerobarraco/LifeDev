@@ -22,6 +22,8 @@ public:
 	void SetPage(const int32 Page=0);
 
 protected:
+	virtual void NativeOnInitialized() override;
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidgetSwitcher> Switcher = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
