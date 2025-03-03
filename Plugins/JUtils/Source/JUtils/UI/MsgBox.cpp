@@ -8,6 +8,7 @@
 
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JButton.h"
+#include "Components/HorizontalBox.h"
 
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -17,7 +18,6 @@ void UMsgBox::NativeOnInitialized() {
 }
 
 void UMsgBox::NativeDestruct() {
-	Unbind();
 	BtnsClear();
 	Super::NativeDestruct();
 }
@@ -45,7 +45,8 @@ void UMsgBox::Unbind() {
 }
 
 void UMsgBox::BtnsClear(const uint32 Reserve) {
-	// todo destroy the buttons
+	Unbind();
+	BtnBox->ClearChildren();
 	Btns.Empty(Reserve);
 }
 
@@ -57,20 +58,30 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 
 	if (UNLIKELY(!BtnBox)) return;
 
-	UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
-	constexpr int32 Num2 = UJUtilsMisc::ArraySize(UBtns);
-	
-	for (int32 i=0; i<Num2; ++i) {
-		UJButton* const B = UBtns[i];
+	// UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
+	// constexpr int32 Num2 = UJUtilsMisc::ArraySize(UBtns);
+	//
+	// for (int32 i=0; i<Num2; ++i) {
+	// 	UJButton* const B = UBtns[i];
+	// 	if (UNLIKELY(!B)) continue;
+	//
+	// 	const FText& T = i < Num ? Texts[i] : FText();
+	// 	const bool Show = i<Num && !T.IsEmpty();
+	// 	B->SetVisibility( Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	// 	if (!Show) continue;
+	// 	B->SetUp(Texts[i], i);
+	// }
+
+	for (int32 i=0; i<Num; ++i) {
+		UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+		UJButton* const B = Cast<UJButton>(CreateWidget(this, BtnClass));
 		if (UNLIKELY(!B)) continue;
 
-		const FText& T = i < Num ? Texts[i] : FText();
-		const bool Show = i<Num && !T.IsEmpty();
-		B->SetVisibility( Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
-		if (!Show) continue;
 		B->SetUp(Texts[i], i);
+		Btns.AddUnique(B);
+		BtnBox->AddChild(B);
+		// TODO padding
 	}
-	// Btns.AddUnique(B);
 }
 
 void UMsgBox::Show_Implementation() {
