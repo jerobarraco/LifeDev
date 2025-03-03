@@ -1,3 +1,10 @@
 // Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LMsgBox.h"
+
+ULMsgBox::ULMsgBox():Super() {
+	static ConstructorHelpers::FClassFinder<UJButton>
+		CBtn(TEXT("/Game/LifeDev/Core/UI/LButtonSmall.LButtonSmall_C"));
+	if (CBtn.Succeeded())
+		BtnClass = CBtn.Class;
+}

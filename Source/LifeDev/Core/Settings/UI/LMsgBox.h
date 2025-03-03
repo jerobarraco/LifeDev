@@ -13,5 +13,5 @@ class LIFEDEV_API ULMsgBox : public UMsgBox {
 	GENERATED_BODY()
 
 public:
-	
+	ULMsgBox();
 };
