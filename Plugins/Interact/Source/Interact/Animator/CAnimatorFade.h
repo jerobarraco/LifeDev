@@ -24,5 +24,5 @@ public:
 	TArray<TObjectPtr<UStaticMeshComponent>> Meshes;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Material")
-	TObjectPtr<UMaterialInterface> MatBase = nullptr; 
+	TObjectPtr<UMaterialInterface> MatBase = nullptr;
 };

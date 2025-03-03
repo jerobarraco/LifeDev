@@ -29,4 +29,5 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 
 		B->SetRelativeTransform(BookTrans[(i+State)%N]);
 	}
+	// TODO animation. Can't use fade since it will force the same material on all
 }

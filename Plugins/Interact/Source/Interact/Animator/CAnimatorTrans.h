@@ -38,6 +38,7 @@ public:
 	TObjectPtr<USceneComponent> TRoot = nullptr;
 
 protected:
+	// TODO also the progress?
 	virtual void Update_Implementation(const float Alpha) override;
 	virtual void DeInit() override;
 	virtual void BeginPlay() override;

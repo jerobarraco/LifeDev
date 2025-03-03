@@ -15,7 +15,7 @@ public:
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
-	
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<TObjectPtr<UCQuickMesh>> Books;
 	// metas are there to be able to view them on the editor
