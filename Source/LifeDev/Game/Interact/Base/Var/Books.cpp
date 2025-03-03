@@ -57,16 +57,14 @@ void ABooks::CreateBooks() {
 }
 
 void ABooks::Constructor() {
-	// mesh
+	// mesh (what's this for again?)
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
+	CreateBooks();
+	SetUpInteract();
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
 	SFX_Trigger = CSnd.Object;
-	
-	SetUpInteract();
-
-	CreateBooks();
 
 	/// end create
 	// make them static for now
