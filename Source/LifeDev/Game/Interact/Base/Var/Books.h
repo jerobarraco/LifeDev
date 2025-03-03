@@ -42,5 +42,5 @@ protected:
 private:
 	void SetUpInteract() const;
 	void CreateBooks();
-	void Constructor();
+	virtual void Constructor();
 };
