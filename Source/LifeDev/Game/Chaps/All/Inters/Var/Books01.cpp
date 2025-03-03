@@ -28,4 +28,7 @@ void ABooks01::Constructor() {
 	Super::Constructor();
 	// automatic statenum
 	StateNum = Books.Num();
+	IsOneShot = false;
+	SetAutoActivate(true);
+	SetMobility(EComponentMobility::Type::Movable);
 }

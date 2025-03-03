@@ -73,8 +73,8 @@ void ABooks::Constructor() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
-	Super::SetAutoActivate(false);
-	ABooks::SetMobility(EComponentMobility::Static);
+	SetAutoActivate(false);
+	SetMobility(EComponentMobility::Static);
 }
 
 // unreal made me do it.
