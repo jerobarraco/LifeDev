@@ -15,7 +15,6 @@ public:
 	ABooks01();
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
-	virtual void Constructor() override;
 
 	// cache the transforms to simplify the code
 	TArray<FTransform> BookTrans;

@@ -4,7 +4,18 @@
 
 #include "CQuickMesh.h"
 
-ABooks01::ABooks01():Super(3, 0) {}
+ABooks01::ABooks01():Super(3, 0) {
+	for (const UCQuickMesh* const B: Books) {
+		if (UNLIKELY(!B)) continue;
+		BookTrans.Add(B->GetRelativeTransform());
+	}
+
+	// automatic statenum
+	StateNum = Books.Num();
+	IsOneShot = false;
+	SetAutoActivate(true);
+	SetMobility(EComponentMobility::Type::Movable);
+}
 
 void ABooks01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
@@ -18,18 +29,4 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 
 		B->SetRelativeTransform(BookTrans[(i+State)%N]);
 	}
-}
-
-void ABooks01::Constructor() {
-	Super::Constructor(); // important first
-	for (const UCQuickMesh* const B: Books) {
-		if (UNLIKELY(!B)) continue;
-		BookTrans.Add(B->GetRelativeTransform());
-	}
-
-	// automatic statenum
-	StateNum = Books.Num();
-	IsOneShot = false;
-	SetAutoActivate(true);
-	SetMobility(EComponentMobility::Type::Movable);
 }
