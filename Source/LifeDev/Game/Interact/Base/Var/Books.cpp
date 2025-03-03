@@ -80,7 +80,7 @@ void ABooks::Constructor() {
 // unreal made me do it.
 
 ABooks::ABooks():Super() {
-	Constructor();
+	Constructor(); // call the child constructor
 }
 
 ABooks::ABooks(const int32 nBookCount, const int32 nRndSeed):Super() {
@@ -88,7 +88,7 @@ ABooks::ABooks(const int32 nBookCount, const int32 nRndSeed):Super() {
 	if (nBookCount>=0) BookCount = nBookCount;
 	RndSeed = nRndSeed;
 
-	Constructor();
+	Constructor(); // call the child constructor
 }
 
 void ABooks::SetMobility(const EComponentMobility::Type Mobility) {
