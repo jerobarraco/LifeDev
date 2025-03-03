@@ -4,6 +4,9 @@
 
 #include "CQuickMesh.h"
 
+ABooks01::ABooks01():Super(3, 0) {}
+
+
 void ABooks01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const int32 N = Books.Num();
