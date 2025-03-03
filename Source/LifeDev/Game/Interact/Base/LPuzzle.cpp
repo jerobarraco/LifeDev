@@ -47,6 +47,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	if (LIKELY(Flags)) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
 	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
 	// doing dialog after the flags, since now the dialog system can read the flags and items on the condition
+	// TODO add automatic dialog for this
 	if (LIKELY(Diags)) Diags->AddId(DoneDlg);
 	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep); // story step at end to not break other stuff much.
 
