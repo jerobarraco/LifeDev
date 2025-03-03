@@ -1,10 +1,11 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-License-Identifier: MIT
 
 #pragma once
 #include "CoreMinimal.h"
 
 #include "BaseUI.h"
+#include "JButton.h"
 
 #include "MsgBox.generated.h"
 
@@ -48,6 +49,9 @@ protected:
 	
 	UFUNCTION()
 	void BtnClick(const int32 ID);
+
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<UJButton> BtnClass = UJButton::StaticClass();
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> Msg = nullptr;

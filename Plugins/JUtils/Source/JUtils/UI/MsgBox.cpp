@@ -1,5 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-License-Identifier: MIT
 
 #include "MsgBox.h"
 
@@ -35,7 +35,6 @@ void UMsgBox::Unbind() {
 		B->OnClick.RemoveAll(this);
 	}
 }
-
 
 void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 	Msg->SetText(Message);
