@@ -18,11 +18,12 @@ void UMsgBox::NativeOnInitialized() {
 
 void UMsgBox::NativeDestruct() {
 	Unbind();
-
+	BtnsClear();
 	Super::NativeDestruct();
 }
 
 void UMsgBox::Bind() {
+// todo iterate new array
 	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
 		if (UNLIKELY(!B)) continue;
 		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
@@ -30,17 +31,26 @@ void UMsgBox::Bind() {
 }
 
 void UMsgBox::Unbind() {
+// todo iterate new array
 	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
 		if (UNLIKELY(!B)) continue;
 		B->OnClick.RemoveAll(this);
 	}
 }
 
+void UMsgBox::BtnsClear(const uint32 Reserve) {
+	// todo destroy the buttons
+	Btns.Empty(Reserve);
+}
+
 void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 	Msg->SetText(Message);
 
-	UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
+	// todo clear buttons.
 	const int32 Num = Texts.Num();
+	BtnsClear(Num);
+
+	UJButton* const UBtns[] = {Btn0, Btn1, Btn2};
 	constexpr int32 Num2 = UJUtilsMisc::ArraySize(UBtns);
 	
 	for (int32 i=0; i<Num2; ++i) {
@@ -52,6 +62,7 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 		B->SetVisibility( Show ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		if (!Show) continue;
 		B->SetUp(Texts[i], i);
+		Btns.AddUnique(B);
 	}
 }
 

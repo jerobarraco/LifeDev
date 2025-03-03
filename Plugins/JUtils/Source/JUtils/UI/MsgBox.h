@@ -9,6 +9,7 @@
 
 #include "MsgBox.generated.h"
 
+class UHorizontalBox;
 class UJButton;
 class UDelegateWrapper;
 class UTextBlock;
@@ -43,6 +44,7 @@ protected:
 	
 	void Bind();
 	void Unbind();
+	void BtnsClear(const uint32 Reserve = 0);
 
 	UFUNCTION()
 	void HideAnimFinish();
@@ -56,6 +58,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> Msg = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	TObjectPtr<UHorizontalBox> BtnBox = nullptr;
+
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> Btn0 = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
@@ -66,6 +71,9 @@ protected:
 	// has to be transient, or it will not compile the bp
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> AnimShow = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UJButton>> Btns;
 
 private:
 	// internal usage only.
