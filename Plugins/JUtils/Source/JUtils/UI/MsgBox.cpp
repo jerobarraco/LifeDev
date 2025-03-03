@@ -9,8 +9,7 @@
 #include "JButton.h"
 #include "Components/HorizontalBox.h"
 
-void UMsgBox::NativeConstruct() {
-	Super::NativeConstruct();
+UMsgBox::UMsgBox():Super() {
 	static ConstructorHelpers::FClassFinder<UJButton>
 		CBtn(TEXT("/JUtils/UI/JButton_W.JButton_W_C"));
 	BtnClass = CBtn.Class;

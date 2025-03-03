@@ -25,6 +25,8 @@ class JUTILS_API UMsgBox: public UBaseUI {
 	GENERATED_BODY()
 
 public:
+	UMsgBox();
+	
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
@@ -39,7 +41,6 @@ public:
 	FMsgBoxHidden OnHidden;
 
 protected:
-	virtual void NativeConstruct() override;
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
