@@ -7,6 +7,7 @@
 #include "Interact/Interact.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "Story/Story.h"
 
@@ -42,14 +43,22 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	if (!IsOk) return; // ok to skip super on not ok, since super doesn't care
 
 	/// do all rewardy stuff
-	
+
+	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + GetActorLabel(false));
+
 	if (LIKELY(FB)) FB->ModVal(DoneFB);
-	if (LIKELY(Flags)) Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
-	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1); // intentionally ADDING one (not setting to one)
+	if (LIKELY(Flags)) {
+		Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
+		Flags->Mod(DoneId, 1); // intentionally ADDING one (not setting to one)
+	}
+	// intentionally ADDING one (not setting to one)
+	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1);
+
 	// doing dialog after the flags, since now the dialog system can read the flags and items on the condition
-	// TODO add automatic dialog for this
-	if (LIKELY(Diags)) Diags->AddId(DoneDlg);
-	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep); // story step at end to not break other stuff much.
+	if (LIKELY(Diags)) Diags->AddId(DoneDlg) || Diags->AddId(DoneId);
+
+	// story step at end to not break other stuff much.
+	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
