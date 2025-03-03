@@ -3,6 +3,7 @@
 #include "CPuzzle.h"
 
 #include "DelegateWrappers.h"
+#include "Eval.h"
 
 #include "Animator/CAnimatorMix.h"
 #include "Interact.h"
@@ -154,6 +155,16 @@ bool UCPuzzle::CheckCombination(const int32 ID) {
 	return IsCurrentSolution();
 }
 
+bool UCPuzzle::CheckCondition() const {
+	const UEval* const Eval = UEval::Instance(this);
+	if (UNLIKELY(!Eval)) return false;
+
+	double Res;
+	if (!Eval->Eval(Condition, Res)) return false;
+
+	return Res > 0;
+}
+
 bool UCPuzzle::CheckSequence(const int32 ID) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
 
@@ -190,6 +201,10 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 			return;
 		}
 		// no way to reset here
+	} else if (Type == EPuzzleType::COMBINATION) {
+		const bool Ok = CheckCondition();
+		PreDone(Ok);
+		return;
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
 		return;

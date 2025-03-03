@@ -14,8 +14,15 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleOnDone, const bool, IsOk);
 UENUM(BlueprintType, Category="Interact|Puzzle")
 enum class EPuzzleType: uint8 {
 	NONE,
+	// Solution describes the order in which the interactions need to be interacted
+	// Index 0 is first interact. Solution[0] == the interact that need to be interacted first
+	// TODo corroborate that is correct
 	SEQUENCE,
+	// Solution describes the state in which the interactions needs to be
+	// Index 0 is interact 0, Solution[0] == state for interact 0
 	COMBINATION,
+	// Experimental. Uses a condition
+	CONDITION,
 	COUNT UMETA(hidden)
 };
 
@@ -87,6 +94,9 @@ public:
 	// This array must have the same length as the Interacts
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<int32> Solution;
+	// Used only for Type=Condition. experimental.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, AdvancedDisplay)
+	FString Condition;
 
 	// if true then the Interact will disable once toggled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")
@@ -117,6 +127,7 @@ protected:
 	//internal. will modify the sequence toggling the id
 	bool CheckSequence(const int32 ID);
 	bool CheckCombination(const int32 ID);
+	bool CheckCondition() const;
 	bool IsCurrentSolution();
 	void PreDone(const bool Ok=true) const;
 	// internal. to be called when done
