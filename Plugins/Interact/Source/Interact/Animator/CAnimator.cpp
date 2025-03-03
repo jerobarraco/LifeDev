@@ -93,7 +93,6 @@ void UCAnimator::DoTick(const float DT) {
 	UE_CLOG(Debug, LogCAnimator, Log, TEXT("%hs p=%.5f a=%.5f np=%.5f n=%s"),
 		__func__, Progress, Alpha, NProg, *GetNameSafe(GetOwner()));
 
-	// TODO also pass the progress
 	Update(Alpha); // update child objects
 
 	OnUpdate.Broadcast(Progress, Alpha);

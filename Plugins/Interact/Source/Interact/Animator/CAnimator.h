@@ -113,7 +113,11 @@ public:
 	FCAnimatorRawOnUpdate OnUpdate;
 
 protected:
-	// override me on child classes :) But call the parent!! (Progress can be read directly)
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	// override me on child classes :) But call the parent!! (Progress can be read directly. it's a member.)
 	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void Update(const float Alpha);
 	virtual void Update_Implementation(const float Alpha);
@@ -137,10 +141,6 @@ protected:
 	void Finish();
 	void DoTick(const float DeltaSeconds);
 	virtual void DeInit();
-	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)
 	float Progress = 0.0;
