@@ -9,6 +9,13 @@
 #include "JButton.h"
 #include "Components/HorizontalBox.h"
 
+void UMsgBox::NativeConstruct() {
+	Super::NativeConstruct();
+	static ConstructorHelpers::FClassFinder<UJButton>
+		CBtn(TEXT("/JUtils/UI/JButton_W.JButton_W_C"));
+	BtnClass = CBtn.Class;
+}
+
 void UMsgBox::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 
@@ -59,7 +66,6 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 		B->SetPadding(FMargin(Pad, 0,0,0));
 		Btns.AddUnique(B);
 		BtnBox->AddChild(B);
-		// TODO padding
 	}
 }
 
