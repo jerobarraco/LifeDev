@@ -32,14 +32,14 @@ void ULSetDbgUI::Load_Implementation() {
 
 	TMap<FName, float> Map;
 	Map = Flags->GetAll();
+	
 	for (const TTuple<FName, float> KV : Map) {
 		// ue says : CreateWidget called with a null class...
 		UTextBlock* const Text = Cast<UTextBlock>(
 			CreateWidget(this, UTextBlock::StaticClass()));
-		if (!Text) continue;
+		if (UNLIKELY(!Text)) continue;
 		SBFlags->AddChild(Text);
 		Text->SetText(FText::FromString(
-			FString::Printf(TEXT("%s: %.4f"), *KV.Key.ToString(), KV.Value)
-			));
+			FString::Printf(TEXT("%s: %.4f"), *KV.Key.ToString(), KV.Value)));
 	}
 }
