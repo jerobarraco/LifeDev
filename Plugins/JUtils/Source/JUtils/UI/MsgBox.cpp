@@ -23,10 +23,10 @@ void UMsgBox::NativeDestruct() {
 }
 
 void UMsgBox::Bind() {
-	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
-		if (UNLIKELY(!B)) continue;
-		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
-	}
+	// for (UJButton* const B: {Btn0, Btn1, Btn2}) {
+	// 	if (UNLIKELY(!B)) continue;
+	// 	B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
+	// }
 	for (UJButton* const B: Btns) {
 		if (UNLIKELY(!B)) continue;
 		B->OnClick.AddUniqueDynamic(this, &UMsgBox::BtnClick);
@@ -34,10 +34,10 @@ void UMsgBox::Bind() {
 }
 
 void UMsgBox::Unbind() {
-	for (UJButton* const B: {Btn0, Btn1, Btn2}) {
-		if (UNLIKELY(!B)) continue;
-		B->OnClick.RemoveAll(this);
-	}
+	// for (UJButton* const B: {Btn0, Btn1, Btn2}) {
+	// 	if (UNLIKELY(!B)) continue;
+	// 	B->OnClick.RemoveAll(this);
+	// }
 	for (UJButton* const B: Btns) {
 		if (UNLIKELY(!B)) continue;
 		B->OnClick.RemoveAll(this);
@@ -74,9 +74,10 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 
 	for (int32 i=0; i<Num; ++i) {
 		UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
-		UJButton* const B = Cast<UJButton>(CreateWidget(this, BtnClass));
+		UJButton* const B = Cast<UJButton>(CreateWidget(this, BtnClass.Get()));
 		if (UNLIKELY(!B)) continue;
 
+		UE_LOG(LogTemp, Log, TEXT("%hs 2"), __func__);
 		B->SetUp(Texts[i], i);
 		Btns.AddUnique(B);
 		BtnBox->AddChild(B);

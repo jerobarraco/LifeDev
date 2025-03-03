@@ -60,13 +60,13 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UHorizontalBox> BtnBox = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> Btn0 = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> Btn1 = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> Btn2 = nullptr;
+	//
+	// UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	// TObjectPtr<UJButton> Btn0 = nullptr;
+	// UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	// TObjectPtr<UJButton> Btn1 = nullptr;
+	// UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	// TObjectPtr<UJButton> Btn2 = nullptr;
 
 	// has to be transient, or it will not compile the bp
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
