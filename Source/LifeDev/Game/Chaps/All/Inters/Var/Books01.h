@@ -10,4 +10,8 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABooks01: public ABooks {
 	GENERATED_BODY()
+
+protected:
+	virtual void SetState_Implementation(const int32 NewState) override;
+	
 };
