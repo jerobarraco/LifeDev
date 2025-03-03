@@ -79,6 +79,7 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 
 		UE_LOG(LogTemp, Log, TEXT("%hs 2"), __func__);
 		B->SetUp(Texts[i], i);
+		B->SetPadding(FMargin(Pad, 0,0,0));
 		Btns.AddUnique(B);
 		BtnBox->AddChild(B);
 		// TODO padding

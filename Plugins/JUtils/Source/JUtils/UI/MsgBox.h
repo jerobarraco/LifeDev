@@ -55,6 +55,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UJButton> BtnClass = UJButton::StaticClass();
 
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly, Category=SetUp)
+	int32 Pad = 15;
+
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> Msg = nullptr;
 
