@@ -6,29 +6,27 @@
 
 ABooks01::ABooks01():Super(3, 0) {}
 
-
 void ABooks01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const int32 N = Books.Num();
 	if (N<2) return; // at least 2 to swap
 
 	// cache 1st one. since we're going to overwrite
-	const FTransform T0 = Books[0]->GetRelativeTransform();
-
-	for (int32 i = 0; i<(N-1); ++i) {
+	for (int32 i = 0; i<N; ++i) {
 		UCQuickMesh* const B = Books[i];
-		const UCQuickMesh* const B2 = Books[i+1];
 		if (UNLIKELY(!IsValid(B))) continue;
-		if (UNLIKELY(!IsValid(B2))) continue;
 
-		B->SetRelativeTransform(B2->GetRelativeTransform());
+		B->SetRelativeTransform(BookTrans[(i+State)%N]);
 	}
-	// note n<2 above
-	Books[N-1]->SetRelativeTransform(T0);
 }
 
 void ABooks01::Constructor() {
-	Super::Constructor();
+	Super::Constructor(); // important first
+	for (const UCQuickMesh* const B: Books) {
+		if (UNLIKELY(!B)) continue;
+		BookTrans.Add(B->GetRelativeTransform());
+	}
+
 	// automatic statenum
 	StateNum = Books.Num();
 	IsOneShot = false;
