@@ -12,7 +12,7 @@ class LIFEDEV_API ABooks: public ALInteract {
 public:
 	ABooks();
 	ABooks(const int32 nBookCount, const int32 nRndSeed =0);
-	
+
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 	
