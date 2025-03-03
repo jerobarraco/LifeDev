@@ -13,5 +13,5 @@ class LIFEDEV_API ABooks01: public ABooks {
 
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
-	
+	virtual void Constructor() override;
 };

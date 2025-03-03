@@ -23,3 +23,9 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 	// note n<2 above
 	Books[N-1]->SetRelativeTransform(T0);
 }
+
+void ABooks01::Constructor() {
+	Super::Constructor();
+	// automatic statenum
+	StateNum = Books.Num();
+}
