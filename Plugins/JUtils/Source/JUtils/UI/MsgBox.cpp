@@ -48,6 +48,7 @@ void UMsgBox::BtnsClear(const uint32 Reserve) {
 }
 
 void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	Msg->SetText(Message);
 	
 	const int32 Num = Texts.Num();
@@ -56,11 +57,9 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 	if (UNLIKELY(!BtnBox)) return;
 
 	for (int32 i=0; i<Num; ++i) {
-		UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 		UJButton* const B = Cast<UJButton>(CreateWidget(this, BtnClass.Get()));
 		if (UNLIKELY(!B)) continue;
 
-		UE_LOG(LogTemp, Log, TEXT("%hs 2"), __func__);
 		B->SetUp(Texts[i], i);
 		B->SetPadding(FMargin(Pad, 0,0,0));
 		Btns.AddUnique(B);

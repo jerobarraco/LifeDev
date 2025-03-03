@@ -2,9 +2,10 @@
 
 #include "IntroUI.h"
 
+#include "Components/WidgetSwitcher.h"
+
 #include "JButton.h"
 #include "MsgBox.h"
-#include "Components/WidgetSwitcher.h"
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	if (UNLIKELY(!MsgBox)) return;
