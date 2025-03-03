@@ -10,6 +10,7 @@
 
 #include "CInteract.h"
 #include "CInteractor.h"
+#include "Eval.h"
 #include "Animator/Anim.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
@@ -131,6 +132,15 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 
 void AInteract::ShowHint_Implementation() {
 	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
+
+	if (!HintCondition.IsEmpty()) {
+		const UEval* const Eval = UEval::Instance(this);
+		if (UNLIKELY(!Eval)) return; // nopes
+		
+		double Res;
+		if (!Eval->Eval(HintCondition, Res)) return; // nopes
+		if (Res <= 0) return; // nopess
+	}
 
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint); // sfx checked inside
