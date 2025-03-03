@@ -93,7 +93,10 @@ void UMsgBox::HideAnimFinish() {
 void UMsgBox::Hide_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	if (!AnimShow || FMath::IsNearlyZero(AnimDuration)) {
-		HideAnimFinish();
+		const UWorld* const World = GetWorld();
+		if (!World) return;
+		// avoid issue of someone binding on Done. since Done now also hides. though in theory it shouldn't happen.
+		World->GetTimerManager().SetTimerForNextTick(this, &UMsgBox::HideAnimFinish);
 		return;
 	}
 
@@ -110,5 +113,6 @@ void UMsgBox::BtnClick(const int32 ID) {
 	UE_LOG(LogTemp, Log, TEXT("Btn click id=%i"), ID);
 	Unbind(); // no double clicks here
 	Done(ID);
-	Hide(); // hide after done because of autounbind
+	// hide after done because of autounbind. also someone might bind to OnHide.
+	Hide();
 }
