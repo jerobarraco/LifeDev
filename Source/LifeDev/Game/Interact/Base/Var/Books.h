@@ -15,6 +15,7 @@ public:
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
+	virtual void Constructor();
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<TObjectPtr<UCQuickMesh>> Books;
@@ -42,5 +43,4 @@ protected:
 private:
 	void SetUpInteract() const;
 	void CreateBooks();
-	virtual void Constructor();
 };
