@@ -119,7 +119,10 @@ void UCPuzzle::Unbind() {
 
 bool UCPuzzle::IsCurrentSolution() {
 	const int32 IdsNum = CurrentIds.Num();
-	if (IdsNum != Solution.Num()) return false;
+	if (UNLIKELY(IdsNum != Solution.Num())) {
+		UE_LOG(LogCPuzzle, Warning, TEXT("%hs Lenght of Solution is different from lenght of Interacts. Stop."), __func__);
+		return false;
+	}
 
 	for (int32 i = 0; i< IdsNum; ++i ) {
 		if (CurrentIds[i] != Solution[i]) {
