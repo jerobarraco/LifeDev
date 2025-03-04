@@ -234,6 +234,7 @@ void UCPuzzle::PreDone(const bool Ok) const {
 	// the important part of this code is to disable interactions to fix the issue with the user toggling another piece
 	// when the puzzle has already been solved. hence, this is not necessary to be exposed to children or clients.
 	if (DisableOnDone) {
+		SetDisableWhileAnims(false); // force to avoid issues.
 		for(AInteract* const I: Interacts) {
 			if (UNLIKELY(!IsValid(I))) continue;
 			I->SetActive(false);
@@ -272,7 +273,7 @@ void UCPuzzle::Done(const bool Ok) const {
 	OnDone.Broadcast(Ok);
 }
 
-void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) {
+void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) const {
 	for (AInteract* const I: Interacts) {
 		AInteractAnim* const IA = Cast<AInteractAnim>(I);
 		if (UNLIKELY(!IsValid(IA))) continue;

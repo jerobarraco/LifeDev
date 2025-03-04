@@ -35,7 +35,8 @@ class INTERACT_API UCPuzzle: public UActorComponent {
 public:
 	UCPuzzle();
 
-	// will call Reset on the interacts, and reset the current state here
+	// will call Reset on the interacts, and reset the current state here.
+	// will set ALL interacts as active.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, CallInEditor, Category="Interact|Puzzle")
 	void Reset();
 	virtual void Reset_Implementation();
@@ -49,7 +50,7 @@ public:
 	FORCEINLINE TArray<AInteract*> GetInteracts() { return Interacts; }
 
 	UFUNCTION(BlueprintCallable)
-	void SetDisableWhileAnims(const bool NewDisable);
+	void SetDisableWhileAnims(const bool NewDisable) const;
 	
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable)
