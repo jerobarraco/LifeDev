@@ -156,6 +156,12 @@ bool UCPuzzle::CheckCombination(const int32 ID) {
 }
 
 bool UCPuzzle::CheckCondition() const {
+	// eval is going to check anyway. and Res>0 will be false. this way this condition is not compiled on shipping
+	UE_CLOG(UNLIKELY(Condition.IsEmpty()), LogCPuzzle, Warning,
+		TEXT("%hs CPuzzle is set to condition, but condition is empty."
+		" This won't work. Stop."),
+		__func__);
+
 	const UEval* const Eval = UEval::Instance(this);
 	if (UNLIKELY(!Eval)) return false;
 
@@ -201,7 +207,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 			return;
 		}
 		// no way to reset here
-	} else if (Type == EPuzzleType::COMBINATION) {
+	} else if (Type == EPuzzleType::CONDITION) {
 		const bool Ok = CheckCondition();
 		PreDone(Ok);
 		return;
@@ -212,7 +218,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 }
 void UCPuzzle::PreDone(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
-		__func__, Ok, *GetNameSafe(this));
+		__func__, Ok, *GetNameSafe(this->GetOwner()));
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
@@ -259,7 +265,7 @@ void UCPuzzle::PreDone(const bool Ok) const {
 
 void UCPuzzle::Done(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
-		__func__, Ok, *GetNameSafe(this));
+		__func__, Ok, *GetNameSafe(this->GetOwner()));
 	OnDone.Broadcast(Ok);
 }
 
