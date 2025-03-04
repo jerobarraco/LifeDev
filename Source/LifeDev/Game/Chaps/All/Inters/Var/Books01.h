@@ -13,6 +13,7 @@ class LIFEDEV_API ABooks01: public ABooks {
 
 public:
 	ABooks01();
+	ABooks01(const int32 BookCount, const int32 Seed = 0);
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
 

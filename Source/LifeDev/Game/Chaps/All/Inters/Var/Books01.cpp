@@ -17,6 +17,21 @@ ABooks01::ABooks01():Super(3, 0) {
 	SetMobility(EComponentMobility::Type::Movable);
 }
 
+ABooks01::ABooks01(const int32 BookCount, const int32 Seed):Super(BookCount, Seed) {
+	for (const UCQuickMesh* const B: Books) {
+		if (UNLIKELY(!B)) continue;
+		BookTrans.Add(B->GetRelativeTransform());
+	}
+
+	// for some reason this can't be done in the constructor. though it'd really help
+	// TODO try moving some stuff and see what breaks
+	// automatic statenum
+	StateNum = Books.Num();
+	IsOneShot = false;
+	SetAutoActivate(true);
+	SetMobility(EComponentMobility::Type::Movable);
+}
+
 void ABooks01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const int32 N = Books.Num();
