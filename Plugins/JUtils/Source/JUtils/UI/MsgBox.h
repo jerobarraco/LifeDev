@@ -30,7 +30,7 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
-	UFUNCTION(BlueprintCallable, Category=SetUp)
+	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AutoCreateRefTerm=Message))
 	void SetUp(const FText& Message, const TArray<FText>& Texts);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
