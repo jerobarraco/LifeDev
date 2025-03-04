@@ -26,9 +26,10 @@ void APuzzleI07::PostLoad() {
 	// SetLocks(Locks);
 }
 
-void APuzzleI07::BeginPlay() {
-	Super::BeginPlay();
-	// TODO
-	static const TArray<int32> States = { 5,0,0,0 };
-	SetStates(States);
-}
+// no need to change the state. since to the users' eyes is relative.
+// in any case i rather change the solution and the seed for the books.
+// void APuzzleI07::BeginPlay() {
+	// Super::BeginPlay();
+	// static const TArray<int32> States = { 0,0,0,0 };
+	// SetStates(States);
+// }
