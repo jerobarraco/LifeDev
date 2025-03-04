@@ -11,5 +11,5 @@ class LIFEDEV_API APZBooksI00: public ABooks01 {
 	GENERATED_BODY()
 
 public:
-	APZBooksI00():Super(3, 1235){};
+	APZBooksI00():Super(3, 432){};
 };
