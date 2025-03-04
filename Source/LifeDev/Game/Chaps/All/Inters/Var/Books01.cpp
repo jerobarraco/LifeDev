@@ -17,7 +17,7 @@ ABooks01::ABooks01():Super(3, 0) {
 	SetMobility(EComponentMobility::Type::Movable);
 }
 
-ABooks01::ABooks01(const int32 BookCount, const int32 Seed):Super(BookCount, Seed) {
+ABooks01::ABooks01(const int32 Seed):Super(3, Seed) {
 	for (const UCQuickMesh* const B: Books) {
 		if (UNLIKELY(!B)) continue;
 		BookTrans.Add(B->GetRelativeTransform());
