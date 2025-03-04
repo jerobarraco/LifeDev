@@ -125,7 +125,8 @@ void AInteract::Reset() {
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *GetNameSafe(this));
-	if (UNLIKELY(State <0 || State >= StateNum)) return;
+	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
+
 	State = NewState;
 	SetText();
 }
