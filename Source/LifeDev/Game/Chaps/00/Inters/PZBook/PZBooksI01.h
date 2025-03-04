@@ -3,13 +3,14 @@
 #pragma once
 #include "LifeDev/Game/Chaps/All/Inters/Var/Books01.h"
 
-#include "PZBooksI00.generated.h"
+#include "PZBooksI01.generated.h"
 
-// ch00 book puzzle i 00
+
+// ch00 book puzzle i 01
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API APZBooksI00: public ABooks01 {
+class LIFEDEV_API APZBooksI01: public ABooks01 {
 	GENERATED_BODY()
 
 public:
-	APZBooksI00():Super(3, 1235){};
+	APZBooksI01():Super(3, 11) {};
 };

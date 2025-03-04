@@ -6,7 +6,7 @@
 
 APuzzleI07::APuzzleI07():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {5,4,0,5}; // TODO
+	CPuzzle->Solution = {2, 1, 1}; // TODO
 
 	static FName DoneId = "PZ00_T";
 	DoneDlg = DoneId;
