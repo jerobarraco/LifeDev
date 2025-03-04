@@ -26,7 +26,7 @@ public:
 	void SetSelected(const int32 NewSelected = -1, const bool Broadcast = false);
 	virtual void SetSelected_Implementation(const int32 NewSelected = -1, const bool Broadcast = false);
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void SetLabel(const FText& Text);
 	virtual void SetLabel_Implementation(const FText& Text);
 

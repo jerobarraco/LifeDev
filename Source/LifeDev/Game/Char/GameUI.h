@@ -13,13 +13,13 @@ class LIFEDEV_API UGameUI: public UUserWidget {
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void SetPrompt(const FText& Text);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void InteractShowPrompt(const FText& Text);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void InteractHidePrompt();
 
 protected:
