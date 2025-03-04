@@ -12,5 +12,5 @@ class LIFEDEV_API APZBooksI02: public ABooks01 {
 	GENERATED_BODY()
 
 public:
-	APZBooksI02():Super(435) {};
+	APZBooksI02():Super(441) {}; // todo find better seed
 };
