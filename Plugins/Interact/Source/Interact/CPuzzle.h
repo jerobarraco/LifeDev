@@ -99,10 +99,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, AdvancedDisplay)
 	FString Condition;
 
-	// if true then the Interact will disable once toggled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")
-	bool DisableOnInter = false;
-
 	// will disable the interacts when the puzzle is done.
 	// Beware of unchecking "DisableWhileAnim" on the interacts or this won't work well.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Disable")

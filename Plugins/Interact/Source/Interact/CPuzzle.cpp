@@ -150,10 +150,18 @@ bool UCPuzzle::CheckCombination(const int32 ID) {
 	const int32 State = CurrentIds[ID] = I->GetState();
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i state=%i"), __func__, ID, State);
 
-	// seems silly on combination but... maybe you want to have only one change for a combination.
-	// e.g. 2 state buttons where buttons matter but not the order in which they are pressed.
-	if (DisableOnInter) 
-		I->SetActive(false);
+	return IsCurrentSolution();
+}
+
+bool UCPuzzle::CheckSequence(const int32 ID) {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
+
+	if (UNLIKELY(ID<0 || ID>=Interacts.Num())) {
+		UE_LOG(LogCPuzzle, Log, TEXT("%hs. Invalid id=%i"), __func__, ID);
+		return false;
+	}
+
+	CurrentIds.Add(ID); // Allow to add repeated ones.
 
 	return IsCurrentSolution();
 }
@@ -172,22 +180,6 @@ bool UCPuzzle::CheckCondition() const {
 	if (!Eval->Eval(Condition, Res)) return false;
 
 	return Res > 0;
-}
-
-bool UCPuzzle::CheckSequence(const int32 ID) {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs id=%i"), __func__, ID);
-
-	if (UNLIKELY(ID<0 || ID>=Interacts.Num())) {
-		UE_LOG(LogCPuzzle, Log, TEXT("%hs. Invalid id=%i"), __func__, ID);
-		return false;
-	}
-
-	CurrentIds.Add(ID); // Allow to add repeated ones.
-	AInteract* const Interact = Interacts[ID];
-	if (DisableOnInter && IsValid(Interact))
-		Interact->SetActive(false);
-
-	return IsCurrentSolution();
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj) {

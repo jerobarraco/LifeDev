@@ -10,7 +10,7 @@ APianoKey::APianoKey():Super() {
 	Texts = {FText::FromString("Play")};
 	StateNum = 1;
 	UseAnim = true;
-	
+	IsOneShot = true; // will disable the keys on trigger. will be re-enabled on puzzle reset.
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_A"));
 	SFX_Trigger = CSFX.Object;
