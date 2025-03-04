@@ -125,3 +125,7 @@ FCString::Atoi()
 * set the settings to enable distance fields
 * go to content browser and right click> reimport
 https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/368876/3?u=nande
+
+
+# make some const& have a default value on bp node
+	meta=(AutoCreateRefTerm=ParamName))
