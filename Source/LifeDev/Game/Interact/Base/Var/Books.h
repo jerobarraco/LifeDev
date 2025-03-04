@@ -42,5 +42,5 @@ protected:
 private:
 	void SetUpInteract() const;
 	void CreateBooks();
-	void Constructor();
+	void Constructor(); // can't make this virtual as it won't call the child one from the constructor of the super.
 };

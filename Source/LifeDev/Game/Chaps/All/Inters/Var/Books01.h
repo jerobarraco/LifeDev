@@ -14,9 +14,13 @@ class LIFEDEV_API ABooks01: public ABooks {
 public:
 	ABooks01();
 	ABooks01(const int32 Seed);
+
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
 
 	// cache the transforms to simplify the code
 	TArray<FTransform> BookTrans;
+
+private:
+	void ConstructB01();
 };
