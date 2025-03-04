@@ -3,6 +3,7 @@
 #include "Books01.h"
 
 #include "CQuickMesh.h"
+#include "Interact/Animator/Anim.h"
 
 ABooks01::ABooks01():Super(3, 0) {
 	ConstructB01();
@@ -18,14 +19,33 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 	// at least 2 to swap. and need the book trans
 	if (N<2 || BookTrans.Num() < N) return;
 
+	UAnim* const Anim = UAnim::Instance(this);
+	
 	// cache 1st one. since we're going to overwrite
 	for (int32 i = 0; i<N; ++i) {
 		UCQuickMesh* const B = Books[i];
 		if (UNLIKELY(!IsValid(B))) continue;
 
 		B->SetRelativeTransform(BookTrans[(i+State)%N]);
+		// a very basic animation so it does not look aweful
+		if (LIKELY(Anim)) {
+			UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
+			if (LIKELY(Mat)) {
+				Anim->DynFloatFade(Mat, "Fade", 1, 0);
+				Anim->DynFloatFade(Mat, "Fade", 0,  .5, FadeCurve);
+			}
+		}
 	}
-	// TODO animation. Can't use fade since it will force the same material on all
+	// TODO improve animation
+}
+
+void ABooks01::BeginPlay() {
+	Super::BeginPlay();
+	
+	for (UCQuickMesh* const B: Books) {
+		if (UNLIKELY(!B)) continue;
+		B->CreateDynamicMaterialInstance(0);
+	}
 }
 
 void ABooks01::ConstructB01() {
@@ -43,4 +63,8 @@ void ABooks01::ConstructB01() {
 	};
 	SetAutoActivate(true);
 	SetMobility(EComponentMobility::Type::Movable);
+
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/JUtils/Curves/InCubic_C.InCubic_C"));
+	FadeCurve = CCurve.Object;
 }

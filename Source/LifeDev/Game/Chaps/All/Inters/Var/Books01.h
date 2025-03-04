@@ -17,9 +17,13 @@ public:
 
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;
-
+	virtual void BeginPlay() override;
+	
 	// cache the transforms to simplify the code
 	TArray<FTransform> BookTrans;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UCurveFloat> FadeCurve = nullptr;
 
 private:
 	void ConstructB01();
