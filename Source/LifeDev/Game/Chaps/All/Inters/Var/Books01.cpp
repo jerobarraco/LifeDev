@@ -34,10 +34,7 @@ void ABooks01::ConstructB01() {
 		BookTrans.Add(B->GetRelativeTransform());
 	}
 
-	// for some reason this can't be done in the constructor. though it'd really help
-	// TODO try moving some stuff and see what breaks
-	// automatic statenum
-	StateNum = Books.Num();
+	StateNum = Books.Num(); // automatic statenum
 	IsOneShot = false;
 	Texts = {
 		NSLOCTEXT("Books01", "Text.0", "Rearrange"),
