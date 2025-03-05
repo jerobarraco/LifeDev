@@ -19,6 +19,8 @@ public:
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
+
+	virtual void BeginPlay() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;

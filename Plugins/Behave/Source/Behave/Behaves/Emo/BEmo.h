@@ -24,4 +24,6 @@ public:
 	TArray<FName> Tokens = {
 		T_Anger, T_Sad, T_Fear, T_Shame, T_Bore
 	};
+
+protected:
 };

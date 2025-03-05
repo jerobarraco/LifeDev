@@ -22,3 +22,13 @@ FActorComponentTickFunction* const ThisTickFunction) {
 		B->Tick(DeltaTime);
 	}
 }
+
+void UCBehave::BeginPlay() {
+	Super::BeginPlay();
+	
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue; 
+		B->Init();
+	}
+}
