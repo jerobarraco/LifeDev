@@ -43,7 +43,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 
 	// do
-	Do();
+	Do(DeltaTime);
 }
 
 void UCBehave::BeginPlay() {
@@ -81,8 +81,8 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCBehave::Dump() {
-	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
-		__func__, *GetNameSafe(this), *Want.ToString());
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s DoRes=%s"),
+		__func__, *GetNameSafe(this), *Want.ToString(), *UEnum::GetValueAsString(DoRes));
 	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
@@ -120,10 +120,10 @@ void UCBehave::Do(const float DT) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		const EBDoRes Res = B->Do(DT, Want); // passing want as out. don't care atm
+		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
 		// if one is doing. that's it. TODO enable multiple actions
-		if (Res == EBDoRes::DO) return;
-		if (Res == EBDoRes::NEW) {
+		if (DoRes == EBDoRes::DO) return;
+		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
 			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
 				__func__, *Want.ToString(), Plan.Num());
@@ -132,7 +132,7 @@ void UCBehave::Do(const float DT) {
 
 		// don't assume Finish, that would be problematic. (by comparing with ignore)
 		// it's ok to assume ignore
-		if (Res != EBDoRes::FINISH) continue;
+		if (DoRes != EBDoRes::FINISH) continue;
 
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
 		const int32 Num = Plan.Num();

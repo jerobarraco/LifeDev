@@ -26,7 +26,8 @@ protected:
 	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
 	virtual float Want_Implementation(const FName& Token) override;
 	virtual EBDoRes Do_Implementation(const float DT, FName& IOToken) override;
-
-	// simulate moving to a place by adding a delay
-	float MoveTime = 0;
+	
+	float MoveTime = 0; // simulate moving to a place by adding a delay. at this stage the actual position and stuff matters not.
+	bool Moved = false;
+	float EatTime = 0; // simulate eating with a delay
 };

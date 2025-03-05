@@ -8,6 +8,7 @@
 
 #include "CBehave.generated.h"
 
+enum class EBDoRes : uint8;
 class UBBase;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
@@ -34,6 +35,8 @@ protected:
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Want;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	EBDoRes DoRes;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TArray<FName> Plan; // TODO try using an ringbuffer

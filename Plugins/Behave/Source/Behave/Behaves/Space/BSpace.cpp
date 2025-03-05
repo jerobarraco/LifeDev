@@ -41,12 +41,22 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		// TODO check surroundings to see if there's something edible.
 		// stub: assume there isn't
 		// TODO how to add a want?
-		MoveTime = FMath::RandRange(1, 2);
-		IOToken = T_Move;
-		return EBDoRes::NEW; // will continue.
+
+		if (Moved) {
+			Moved = false;
+			EatTime -= DT;
+			return EatTime<0 ? EBDoRes::FINISH: EBDoRes::DO;
+		} else {
+			MoveTime = FMath::RandRange(1, 2);
+			IOToken = T_Move;
+			Moved = true; // micro opt, no need to set on each tick of TMOVE
+			EatTime = FMath::RandRange(.5, 1.); // micro opt again
+			return EBDoRes::NEW; // will continue.
+		}
+	} else if (IOToken == T_Move) {
+		MoveTime -= DT;
+		return MoveTime <=0 ? EBDoRes::FINISH : EBDoRes::DO;
 	}
-	if (IOToken == T_Move) {
-		
-	}
+
 	return EBDoRes::IGNORE;
 }
