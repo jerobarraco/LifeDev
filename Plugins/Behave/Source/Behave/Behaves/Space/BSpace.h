@@ -22,5 +22,8 @@ protected:
 	virtual void Tick_Implementation(const float DT) override;
 	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
 	virtual float Want_Implementation(const FName& Token) override;
+	virtual EBDoRes Do_Implementation(const FName& Token) override;
 
+	// simulate moving to a place by adding a delay
+	float MoveTime = 0;
 };

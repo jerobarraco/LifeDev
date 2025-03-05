@@ -3,7 +3,8 @@
 
 #include "BSpace.h"
 
-#include "Behave/Behaves/Emo/BEmo.h"
+#include "Behave/Behaves/BConsts.h"
+#include "Behave/Behaves/Bio/BBio.h"
 
 UBSpace::UBSpace():Super() {
 	Tokens = {
@@ -27,10 +28,22 @@ void UBSpace::React_Implementation(const float DT, const FName& Token, const flo
 	// if (UNLIKELY(Token == UBEmo::T_Sad)) {
 		// const float Affect = Val > .8 ? BioDampE*-1 : 0;
 		// Mod(T_Energy, DT*Affect);
-	// } 
+	// }
 }
 
 float UBSpace::Want_Implementation(const FName& Token) {
 	return Super::Want_Implementation(Token);
 	// return 1-Super::Want_Implementation(Token); // we want to max these vars
+}
+
+EBDoRes UBSpace::Do_Implementation(const FName& Token) {
+	if (Token == UBBio::T_Hungry) {
+		// TODO check surroundings to see if there's something edible.
+		// stub: assume there isn't
+		// TODO how to add a want?
+		MoveTime = FMath::RandRange(1, 2);
+		return EBDoRes::DO;
+	}
+	
+	return EBDoRes::IGNORE;
 }
