@@ -9,4 +9,3 @@ void UBBio::Tick_Implementation(const float DT) {
 	Values[T_Energy] -= BioDampE*DT;
 	Values[T_Full] -= BioDampF*DT;
 }
-
