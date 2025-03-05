@@ -3,16 +3,14 @@
 
 #pragma once
 
-#include "BBase.generated.h"
+#include "Behave/Behaves/BBase.h"
+#include "BEmo.generated.h"
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBBase: public UPrimaryDataAsset {
+class BEHAVE_API UBEmo: public UBBase {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Tick(double DT);
-
 	
 	// has (knows)
 	// want
