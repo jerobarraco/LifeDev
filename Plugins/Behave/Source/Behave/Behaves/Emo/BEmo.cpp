@@ -11,7 +11,7 @@ UBEmo::UBEmo():Super() {
 	};
 
 	Values = {
-		{T_Anger, 100},
+		{T_Anger, 0},
 		{T_Sad, 0},
 		{T_Fear, 0},
 		{T_Shame, 0},
@@ -43,10 +43,10 @@ void UBEmo::React_Implementation(const float DT, const FName& Token, const float
 		const float Affect = Val < .2 ? FMath::Lerp(0.01, 0.001, Val *5) : 0;
 		Mod(T_Anger, Affect*DT);
 	} else if (UNLIKELY(Token == T_Anger)) {
-		const float Affect = Val > .95 ? .0001:0;
+		const float Affect = Val > .95 ? .01:0;
 		Mod(T_Sad, Affect*DT);
 	} else if (UNLIKELY(Token == T_Sad)) {
-		const float Affect = Val > .95 ? .0001 : 0;
+		const float Affect = Val > .95 ? .01 : 0;
 		// trigger a want to die?
 	} 
 }
