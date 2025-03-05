@@ -23,9 +23,12 @@ void UBEmo::React_Implementation(const float DT, const FName& Token, const float
 	Super::React_Implementation(DT, Token, Val);
 	if (UNLIKELY(Token == UBBio::T_Energy)) {
 		const float Affect = Val < .2 ? FMath::Lerp(0.0001, 0.00001, Val *5) : 0;
-		Values[T_Anger] += Affect * DT;
+		Mod(T_Anger, Affect*DT);
 	} else if (UNLIKELY(Token == T_Anger)) {
-		const float Affect = Val < .2 ? FMath::Lerp(0.0001, 0.00001, Val *5) : 0;
-		Values[T_Sad] += Affect * DT;
+		const float Affect = Val > .95 ? .0001:0;
+		Mod(T_Sad, Affect*DT);
+	} else if (UNLIKELY(Token == T_Sad)) {
+		const float Affect = Val > .95 ? .0001 : 0;
+		// trigger a want to die?
 	}
 }

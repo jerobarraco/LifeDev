@@ -19,9 +19,10 @@ public:
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION()
 	void Dump();
 
 	// leave the object null pls

@@ -50,6 +50,10 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Dump() const;
 
+	// will clamp
+	UFUNCTION(BlueprintCallable, meta=(ForceAsFunction))
+	void Mod(const FName& Token, const float Dif);
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
 
