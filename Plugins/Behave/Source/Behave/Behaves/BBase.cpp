@@ -8,3 +8,15 @@ float UBBase::Has_Implementation(const FName& Token) { return 0; }
 float UBBase::Want_Implementation(const FName& Token) { return 0; }
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
 void UBBase::Do_Implementation(const FName& Token) {}
+
+float UBBase::TopWant(FName& OToken) {
+	float VMax = -1;
+	for (const FName& T: Tokens) {
+		const float VWant = Want(T);
+		if (VWant <= VMax) continue;
+		OToken = T;
+		VMax = VWant;
+	}
+
+	return VMax;
+}

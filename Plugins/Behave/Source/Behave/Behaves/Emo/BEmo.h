@@ -6,6 +6,10 @@
 #include "Behave/Behaves/BBase.h"
 #include "BEmo.generated.h"
 
+// TODo since this is a proto. this class encompases ALL emotions
+
+// later on, i could split each emotion into its own thing
+
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBEmo: public UBBase {
 	GENERATED_BODY()

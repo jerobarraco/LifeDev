@@ -2,5 +2,3 @@
 // SPDX-License-Identifier: MIT
 
 #include "BEmo.h"
-
-void UBEmo::Tick_Implementation(double DT) {}
