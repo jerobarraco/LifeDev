@@ -17,6 +17,19 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	float Has(const FName& Token);
 
+	// returns what it wants the most. with a normalized value of how much it wants it.
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	float Want(const FName& Token);
+
+	// returns what it needs the most. with a normalized value of how much it wants it.
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	float Need(const FName& Token);
+
+	// attempt to do something.
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Do(const FName& Token);
+
+	
 	// has (knows)
 	// want
 	// need
