@@ -160,12 +160,14 @@ void UCBehave::Do(const float DT) {
 		}
 	} else if (DoRes == EBDoRes::FINISH) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
+		// TODO fix this part is not working
 		Want = NAME_None;
 		while (Plan.Num()>0) {
-			Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
-			if (Plan.Num()<=0) break;
+			const int32 Num = Plan.Num();
+			Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
+			if (Num<2) break;
 
-			Want = Plan[Plan.Num()]; // uops
+			Want = Plan[Num-2]; // uops 2
 			float WantVal = -1;
 			// check if still want it
 			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
