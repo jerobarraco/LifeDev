@@ -27,14 +27,15 @@ public:
 	};
 
 	TMap<FName, float> Values = {
-		{T_Anger, 0},
+		{T_Anger, 100},
 		{T_Sad, 0},
 		{T_Fear, 0},
 		{T_Shame, 0},
 		{T_Bore, 0}
 	};
+
 protected:
 	virtual void Tick_Implementation(const float DT) override;
-	
+
 	static inline float EmoDamp = .001;
 };
