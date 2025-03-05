@@ -29,6 +29,16 @@ void UCBehave::BeginPlay() {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue; 
-		B->Init();
+		B->Begin();
 	}
+}
+
+void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue; 
+		B->End();
+	}
+	Behaves.Empty();
+	Super::EndPlay(EndPlayReason);
 }

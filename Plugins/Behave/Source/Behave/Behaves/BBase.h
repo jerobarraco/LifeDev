@@ -11,7 +11,9 @@ class BEHAVE_API UBBase: public UPrimaryDataAsset {
 
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Init();
+	void Begin();
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void End();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Tick(const float DT);
@@ -37,6 +39,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float TopNeed(FName& OToken);
+	
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
