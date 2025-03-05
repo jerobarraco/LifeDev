@@ -33,7 +33,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
 				UBBase* const B2 = KV2.Value.Get();
 				if (UNLIKELY(!IsValid(B2))) continue; 
-				B2->React(T, B->Values[T]);
+				B2->React(DeltaTime, T, B->Values[T]);
 			}
 		}
 	}
@@ -52,6 +52,11 @@ void UCBehave::BeginPlay() {
 
 		Behaves[KV.Key] = B;
 	}
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerHandle H;
+	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 3, true);
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -63,4 +68,12 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	Behaves.Empty();
 	Super::EndPlay(EndPlayReason);
+}
+
+void UCBehave::Dump() {
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		const UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+		B->Dump();
+	}
 }

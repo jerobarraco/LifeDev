@@ -18,7 +18,7 @@ void UBBase::Do_Implementation(const FName& Token) {}
 	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
 // }
 
-void UBBase::React_Implementation(const FName& Token, const float Val) {}
+void UBBase::React_Implementation(const float DT, const FName& Token, const float Val) {}
 
 
 #define BError .01
@@ -53,6 +53,13 @@ float UBBase::TopNeed(FName& OToken) {
 			__func__, *OToken.ToString(), VMax);
 
 	return VMax;
+}
+
+void UBBase::Dump_Implementation() const {
+	for (const TTuple<FName, float>& KV: Values) { // iterating tokens instead of values on purpose
+		UE_LOG(LogTemp, Log, TEXT("%hs %s K=%s V=.5f"),
+			__func__, *GetNameSafe(this), *KV.Key.ToString(), KV.Value);
+	}
 }
 
 // https://www.tomlooman.com/unreal-engine-asset-manager-async-loading/

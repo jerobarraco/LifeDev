@@ -39,13 +39,16 @@ public:
 	void Do(const FName& Token);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void React(const FName& Token, const float Val=0);
+	void React(const float DT, const FName& Token, const float Val=0);
 
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
 
 	UFUNCTION(BlueprintCallable)
 	float TopNeed(FName& OToken);
+	
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Dump() const;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
