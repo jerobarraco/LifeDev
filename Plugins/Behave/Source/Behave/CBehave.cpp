@@ -12,14 +12,30 @@ UCBehave::UCBehave():Super() {
 	SetComponentTickEnabled(true);
 }
 
-void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
+void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
 FActorComponentTickFunction* const ThisTickFunction) {
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// update
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue; 
 		B->Tick(DeltaTime);
+	}
+
+	// react
+	
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+		for (const FName& T: B->Tokens) { // iterating tokens instead of values on purpose
+			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
+				UBBase* const B2 = KV2.Value.Get();
+				if (UNLIKELY(!IsValid(B2))) continue; 
+				B2->React(T, B->Values[T]);
+			}
+		}
 	}
 }
 
@@ -44,6 +60,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		if (UNLIKELY(!IsValid(B))) continue; 
 		B->End();
 	}
+
 	Behaves.Empty();
 	Super::EndPlay(EndPlayReason);
 }

@@ -49,9 +49,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float TopNeed(FName& OToken);
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, float> Values;
 
