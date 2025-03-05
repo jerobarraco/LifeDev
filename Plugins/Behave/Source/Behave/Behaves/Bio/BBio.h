@@ -16,15 +16,14 @@ class BEHAVE_API UBBio: public UBBase {
 public:
 	UBBio();
 	
-	static const inline FName T_Energy = "Bio.Energy";
-	static const inline FName T_Warm = "Bio.Warm";
-	static const inline FName T_Full = "Bio.Full";
+	static const inline FName T_Tired = "Bio.Tired";
+	static const inline FName T_Cold = "Bio.Cold";
+	static const inline FName T_Hungry = "Bio.Hungry";
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
 	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
-	virtual float Want_Implementation(const FName& Token) override;
-
+	
 	static inline float BioDampE = .01;
 	static inline float BioDampF = .03;
 	// static inline float BioDampW = .001;
