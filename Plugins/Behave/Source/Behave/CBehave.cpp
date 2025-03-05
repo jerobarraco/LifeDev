@@ -5,6 +5,9 @@
 
 #include "Behaves/BBase.h"
 #include "Behaves/BConsts.h"
+#include "Behaves/Bio/BBio.h"
+#include "Behaves/Emo/BEmo.h"
+#include "Behaves/Space/BSpace.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);
 
@@ -13,6 +16,11 @@ UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bStartWithTickEnabled = true;
 	SetTickableWhenPaused(false);
 	SetComponentTickEnabled(true);
+	Behaves = {
+		{ UBBio::StaticClass(), nullptr },
+		{ UBEmo::StaticClass(), nullptr },
+		{ UBSpace::StaticClass(), nullptr },
+	};
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
@@ -31,6 +39,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
+
 		for (const FName& T: B->Tokens) { // iterating tokens instead of values on purpose
 			float* const pVal = B->Values.Find(T);
 			if (UNLIKELY(!pVal)) continue;
@@ -40,6 +49,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 				B2->React(DeltaTime, T, *pVal);
 			}
 		}
+		// TODO react to Want not now because it's surely broken
 	}
 
 	// do
@@ -121,8 +131,9 @@ void UCBehave::Do(const float DT) {
 		if (UNLIKELY(!IsValid(B))) continue;
 
 		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
-		// if one is doing. that's it. TODO enable multiple actions
-		if (DoRes == EBDoRes::DO) return;
+		// if one is doing. that's it. TODO enable concurrent actions
+		if (DoRes == EBDoRes::DO) break;
+
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
 			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
@@ -143,7 +154,7 @@ void UCBehave::Do(const float DT) {
 		}
 
 		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
-		Want = Plan[Num-1];
+		Want = Plan[Num-2]; // uops
 		return; // need to start all over
 	}
 }

@@ -43,7 +43,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		// TODO how to add a want?
 
 		if (Moved) {
-			Moved = false;
+			Moved = false; // restart for next time
 			EatTime -= DT;
 			return EatTime<0 ? EBDoRes::FINISH: EBDoRes::DO;
 		} else {
