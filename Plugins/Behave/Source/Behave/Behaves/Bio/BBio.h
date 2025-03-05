@@ -31,7 +31,8 @@ public:
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
-
+	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
+	
 	static inline float BioDampE = .00001;
 	static inline float BioDampF = .00003;
 	// static inline float BioDampW = .001;

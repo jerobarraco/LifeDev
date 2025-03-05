@@ -72,7 +72,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCBehave::Dump() {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		const UBBase* const B = KV.Value.Get();
+		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 		B->Dump();
 	}

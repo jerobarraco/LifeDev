@@ -48,7 +48,7 @@ public:
 	float TopNeed(FName& OToken);
 	
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Dump() const;
+	void Dump();
 
 	// will clamp
 	UFUNCTION(BlueprintCallable, meta=(ForceAsFunction))
