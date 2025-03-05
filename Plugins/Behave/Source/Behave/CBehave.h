@@ -8,8 +8,14 @@
 
 #include "CBehave.generated.h"
 
+class UBBase;
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
+	UCBehave();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 };
