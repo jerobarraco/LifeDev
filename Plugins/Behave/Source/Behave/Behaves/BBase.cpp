@@ -18,7 +18,7 @@ float UBBase::Want_Implementation(const FName& Token) {
 }
 
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
-EBDoRes UBBase::Do_Implementation(const FName& Token) { return EBDoRes::IGNORE; }
+EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
 // void UBBase::Affect_Implementation(const FName& Token, const float Val) {
 	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
 // }
@@ -26,6 +26,7 @@ EBDoRes UBBase::Do_Implementation(const FName& Token) { return EBDoRes::IGNORE; 
 void UBBase::React_Implementation(const float DT, const FName& Token, const float Val) {}
 
 #define BError .01
+
 
 float UBBase::TopWant(FName& OToken) {
 	// TODO at some point randomize, or have a range.

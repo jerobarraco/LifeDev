@@ -36,14 +36,17 @@ float UBSpace::Want_Implementation(const FName& Token) {
 	// return 1-Super::Want_Implementation(Token); // we want to max these vars
 }
 
-EBDoRes UBSpace::Do_Implementation(const FName& Token) {
-	if (Token == UBBio::T_Hungry) {
+EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
+	if (IOToken == UBBio::T_Hungry) {
 		// TODO check surroundings to see if there's something edible.
 		// stub: assume there isn't
 		// TODO how to add a want?
 		MoveTime = FMath::RandRange(1, 2);
-		return EBDoRes::DO;
+		IOToken = T_Move;
+		return EBDoRes::NEW; // will continue.
 	}
-	
+	if (IOToken == T_Move) {
+		
+	}
 	return EBDoRes::IGNORE;
 }

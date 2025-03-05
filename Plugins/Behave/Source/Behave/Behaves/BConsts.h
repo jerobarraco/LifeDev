@@ -7,6 +7,7 @@ UENUM(Blueprintable, BlueprintType)
 enum class EBDoRes : uint8 {
 	IGNORE,
 	DO,
+	NEW,
 	FINISH,
 	MAX UMETA(HIDDEN)
 }; 

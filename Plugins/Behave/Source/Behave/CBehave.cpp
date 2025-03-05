@@ -115,14 +115,20 @@ void UCBehave::WhatWant() {
 		__func__, *GetNameSafe(this), *Want.ToString());
 }
 
-void UCBehave::Do() {
+void UCBehave::Do(const float DT) {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		const EBDoRes Res = B->Do(Want);
+		const EBDoRes Res = B->Do(DT, Want); // passing want as out. don't care atm
 		// if one is doing. that's it. TODO enable multiple actions
 		if (Res == EBDoRes::DO) return;
+		if (Res == EBDoRes::NEW) {
+			Plan.Push(Want);
+			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
+				__func__, *Want.ToString(), Plan.Num());
+			return; // have to check in again for all behaves
+		}
 
 		// don't assume Finish, that would be problematic. (by comparing with ignore)
 		// it's ok to assume ignore
@@ -136,7 +142,7 @@ void UCBehave::Do() {
 			return;
 		}
 
-		Plan.RemoveAtSwap(Num-1);
+		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
 		Want = Plan[Num-1];
 		return; // need to start all over
 	}

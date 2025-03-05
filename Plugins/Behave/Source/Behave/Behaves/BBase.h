@@ -37,7 +37,7 @@ public:
 
 	// attempt to do something.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	EBDoRes Do(const FName& Token);
+	EBDoRes Do(const float DT, FName& IOToken);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void React(const float DT, const FName& Token, const float Val=0);
