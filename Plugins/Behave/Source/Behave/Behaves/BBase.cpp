@@ -3,4 +3,6 @@
 
 #include "BBase.h"
 
-void UBBase::Tick_Implementation(double DT) {}
+void UBBase::Tick_Implementation(float DT) {}
+
+float UBBase::Has_Implementation(const FName& Token) { return 0; }

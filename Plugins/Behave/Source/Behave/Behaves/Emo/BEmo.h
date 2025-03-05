@@ -11,7 +11,11 @@ class BEHAVE_API UBEmo: public UBBase {
 	GENERATED_BODY()
 
 public:
-	
+	static const inline FName T_Anger = "Emo.Anger";
+	static const inline FName T_Sad = "Emo.Sad";
+	static const inline FName T_Fear = "Emo.Fear";
+	static const inline FName T_Shame = "Emo.Shame";
+
 	// has (knows)
 	// want
 	// need

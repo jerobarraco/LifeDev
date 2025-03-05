@@ -11,9 +11,12 @@ class BEHAVE_API UBBase: public UPrimaryDataAsset {
 
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Tick(double DT);
+	void Tick(const float DT);
 
-	
+	// returns the value it has for a token. if it's boolean then it's 0: false, 1:true
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	float Has(const FName& Token);
+
 	// has (knows)
 	// want
 	// need
