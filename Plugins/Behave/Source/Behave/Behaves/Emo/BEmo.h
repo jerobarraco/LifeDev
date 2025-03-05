@@ -19,9 +19,9 @@ public:
 	static const inline FName T_Sad = "Emo.Sad";
 	static const inline FName T_Fear = "Emo.Fear";
 	static const inline FName T_Shame = "Emo.Shame";
+	static const inline FName T_Bore = "Emo.Bore";
 
-	// has (knows)
-	// want
-	// need
-	// do
+	TArray<FName> Tokens = {
+		T_Anger, T_Sad, T_Fear, T_Shame, T_Bore
+	};
 };
