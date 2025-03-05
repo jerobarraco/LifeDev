@@ -30,3 +30,7 @@ void UBBio::React_Implementation(const float DT, const FName& Token, const float
 		Mod(T_Energy, DT*Affect);
 	} 
 }
+
+float UBBio::Want_Implementation(const FName& Token) {
+	return 1-Super::Want_Implementation(Token); // we want to max these vars
+}
