@@ -39,9 +39,6 @@ public:
 	void Do(const FName& Token);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Affect(const FName& Token, const float Val=0);
-
-	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void React(const FName& Token, const float Val=0);
 
 	UFUNCTION(BlueprintCallable)
@@ -55,10 +52,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, float> Values;
-
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
-	FBOnGives OnGives;
 	// TODO at some point tokens and values can be merged
+
+	// UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	// FBOnGives OnGives;
 };
 
 // TODO æfectors

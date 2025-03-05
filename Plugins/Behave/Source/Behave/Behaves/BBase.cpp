@@ -14,9 +14,9 @@ float UBBase::Has_Implementation(const FName& Token) {
 float UBBase::Want_Implementation(const FName& Token) { return 0; }
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
 void UBBase::Do_Implementation(const FName& Token) {}
-void UBBase::Affect_Implementation(const FName& Token, const float Val) {
-	Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
-}
+// void UBBase::Affect_Implementation(const FName& Token, const float Val) {
+	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
+// }
 
 void UBBase::React_Implementation(const FName& Token, const float Val) {}
 

@@ -8,7 +8,7 @@
 
 // TODo since this is a proto. this class encompasses ALL emotions
 
-// later on, i could split each emotion into its own thing
+// later on, I could split each emotion into its own thing
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBEmo: public UBBase {
@@ -36,6 +36,7 @@ public:
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
-
+	virtual void React_Implementation(const FName& Token, const float Val = 0) override;
+	
 	static inline float EmoDamp = .001;
 };

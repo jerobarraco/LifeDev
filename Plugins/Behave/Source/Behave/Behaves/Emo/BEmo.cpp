@@ -18,3 +18,8 @@ void UBEmo::Tick_Implementation(const float DT) {
 	UE_LOG(LogTemp, Log, TEXT("%hs emo bore=%.4f anger=%.5f"),
 		__func__, Values[T_Bore], Values[T_Anger]);
 }
+
+void UBEmo::React_Implementation(const FName& Token, const float Val) {
+	Super::React_Implementation(Token, Val);
+	// if (Token == 
+}
