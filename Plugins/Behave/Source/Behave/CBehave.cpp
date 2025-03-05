@@ -159,4 +159,13 @@ void UCBehave::Do(const float DT) {
 		Want = Plan[Num-2]; // uops
 		return; // need to start all over
 	}
+	
+	if (DoRes != EBDoRes::DO) return; // redundant since it's the only case in which it will get here. 
+		
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
+	}
 }
