@@ -11,7 +11,10 @@ float UBBase::Has_Implementation(const FName& Token) {
 	return pVal ? *pVal : 0;
 }
 
-float UBBase::Want_Implementation(const FName& Token) { return 0; }
+float UBBase::Want_Implementation(const FName& Token) { 
+	return Has(Token);
+}
+
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
 void UBBase::Do_Implementation(const FName& Token) {}
 // void UBBase::Affect_Implementation(const FName& Token, const float Val) {
@@ -19,7 +22,6 @@ void UBBase::Do_Implementation(const FName& Token) {}
 // }
 
 void UBBase::React_Implementation(const float DT, const FName& Token, const float Val) {}
-
 
 #define BError .01
 
@@ -58,14 +60,16 @@ float UBBase::TopNeed(FName& OToken) {
 void UBBase::Mod(const FName& Token, const float Dif) {
 	float* const pVal = Values.Find(Token);
 	if (UNLIKELY(!pVal)) return;
-	Values[Token] = FMath::Clamp((*pVal) + Dif, 0, 1);
+
+	//Values[Token] =
+	*pVal = FMath::Clamp((*pVal) + Dif, 0, 1);
 }
 
 void UBBase::Dump_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs %s"),
 			__func__, *GetNameSafe(this));
 	for(TTuple<FName, float> KV: Values) { // iterating tokens instead of values on purpose
-		UE_LOG(LogTemp, Log, TEXT("%hs %s K=%s V=.5f"),
+		UE_LOG(LogTemp, Log, TEXT("%hs %s K=%s V=%.5f"),
 			__func__, *GetNameSafe(this), *KV.Key.ToString(), KV.Value);
 	}
 }
