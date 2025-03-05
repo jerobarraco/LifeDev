@@ -20,3 +20,15 @@ float UBBase::TopWant(FName& OToken) {
 
 	return VMax;
 }
+
+float UBBase::TopNeed(FName& OToken) {
+	float VMax = -1;
+	for (const FName& T: Tokens) {
+		const float VWant = Need(T);
+		if (VWant <= VMax) continue;
+		OToken = T;
+		VMax = VWant;
+	}
+
+	return VMax;
+}

@@ -29,14 +29,12 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Do(const FName& Token);
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> Tokens;
-
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
-	
-	// has (knows)
-	// want
-	// need
-	// do
+
+	UFUNCTION(BlueprintCallable)
+	float TopNeed(FName& OToken);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> Tokens;
 };
