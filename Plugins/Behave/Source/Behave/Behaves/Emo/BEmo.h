@@ -26,4 +26,5 @@ public:
 	};
 
 protected:
+	float EmoDamp = .001;
 };

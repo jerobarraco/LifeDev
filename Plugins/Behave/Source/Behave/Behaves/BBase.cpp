@@ -14,7 +14,6 @@ void UBBase::Affect_Implementation(const FName& Token, float Val) {}
 
 #define BError .01
 
-
 float UBBase::TopWant(FName& OToken) {
 	// TODO at some point randomize, or have a range.
 	// maybe add a random
@@ -46,3 +45,5 @@ float UBBase::TopNeed(FName& OToken) {
 
 	return VMax;
 }
+
+// https://www.tomlooman.com/unreal-engine-asset-manager-async-loading/
