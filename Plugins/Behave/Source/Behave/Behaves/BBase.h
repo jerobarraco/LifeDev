@@ -6,6 +6,8 @@
 
 #include "BBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnGives, const FName&, Token, const float, Val);
+
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()
@@ -39,18 +41,23 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Affect(const FName& Token, const float Val=0);
 
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void React(const FName& Token, const float Val=0);
+
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
 
 	UFUNCTION(BlueprintCallable)
 	float TopNeed(FName& OToken);
-
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, float> Values;
+
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	FBOnGives OnGives;
 	// TODO at some point tokens and values can be merged
 };
-
 
 // TODO æfectors
