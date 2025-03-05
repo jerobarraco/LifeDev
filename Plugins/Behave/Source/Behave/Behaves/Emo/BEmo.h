@@ -18,11 +18,12 @@ public:
 	static const inline FName T_Anger = "Emo.Anger";
 	static const inline FName T_Sad = "Emo.Sad";
 	static const inline FName T_Fear = "Emo.Fear";
-	static const inline FName T_Shame = "Emo.Shame";
+	static const inline FName T_Shame = "Emo.Shame"; // not same as guilt, but we can fake one with the other
+	static const inline FName T_Joy = "Emo.Joy";
 	static const inline FName T_Bore = "Emo.Bore";
 
 	TArray<FName> Tokens = {
-		T_Anger, T_Sad, T_Fear, T_Shame, T_Bore
+		T_Anger, T_Sad, T_Fear, T_Shame, T_Joy, T_Bore
 	};
 
 	TMap<FName, float> Values = {
@@ -33,5 +34,7 @@ public:
 		{T_Bore, 0}
 	};
 protected:
-	float EmoDamp = .001;
+	virtual void Tick_Implementation(const float DT) override;
+	
+	static inline float EmoDamp = .001;
 };
