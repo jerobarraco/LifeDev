@@ -14,20 +14,11 @@ class BEHAVE_API UBBio: public UBBase {
 	GENERATED_BODY()
 
 public:
-
+	UBBio();
+	
 	static const inline FName T_Energy = "Bio.Energy";
 	static const inline FName T_Warm = "Bio.Warm";
 	static const inline FName T_Full = "Bio.Full";
-
-	TArray<FName> Tokens = {
-		T_Energy, T_Warm, T_Full
-	};
-
-	TMap<FName, float> Values = {
-		{T_Energy, 1},
-		{T_Full, 1},
-		{T_Warm, 1},
-	};
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;

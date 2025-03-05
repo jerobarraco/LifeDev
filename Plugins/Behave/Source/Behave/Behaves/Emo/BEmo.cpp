@@ -5,6 +5,20 @@
 
 #include "Behave/Behaves/Bio/BBio.h"
 
+UBEmo::UBEmo():Super() {
+	Tokens = {
+		T_Anger, T_Sad, T_Fear, T_Shame, T_Joy, T_Bore
+	};
+
+	Values = {
+		{T_Anger, 100},
+		{T_Sad, 0},
+		{T_Fear, 0},
+		{T_Shame, 0},
+		{T_Bore, 0}
+	};
+}
+
 void UBEmo::Tick_Implementation(const float DT) {
 	Super::Tick_Implementation(DT);
 	const float Damp = EmoDamp * DT;
