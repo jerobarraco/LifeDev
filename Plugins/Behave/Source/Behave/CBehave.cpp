@@ -137,6 +137,10 @@ void UCBehave::Do(const float DT) {
 		// if one is doing. that's it. TODO enable concurrent actions
 		if (DoRes == EBDoRes::DO) break;
 
+		// don't assume Finish, that would be problematic. (by comparing with ignore)
+		// it's ok to assume ignore
+		if (DoRes == EBDoRes::FINISH) break;
+
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
 			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
@@ -144,28 +148,32 @@ void UCBehave::Do(const float DT) {
 			return; // have to check in again for all behaves
 		}
 
-		// don't assume Finish, that would be problematic. (by comparing with ignore)
-		// it's ok to assume ignore
-		if (DoRes != EBDoRes::FINISH) continue;
-
-		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
-		const int32 Num = Plan.Num();
-		if (Num < 2) { // one of them is going to be popped, and we need one more.
-			Plan.Empty(1);
-			return;
-		}
-
-		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
-		Want = Plan[Num-2]; // uops // TODO need to re-check if i still want it 
-		return; // need to start all over
+		// return; // need to start all over
 	}
-	
-	if (DoRes != EBDoRes::DO) return; // redundant since it's the only case in which it will get here. 
-		
-	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue;
-		
-		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
+	 
+	if (DoRes == EBDoRes::DO) {
+		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+			UBBase* const B = KV.Value.Get();
+			if (UNLIKELY(!IsValid(B))) continue;
+			
+			B->ReactDo(DT, Want); // passing want as out. don't care atm
+		}
+	} else if (DoRes == EBDoRes::FINISH) {
+		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
+		Want = NAME_None;
+		while (Plan.Num()>0) {
+			Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+			if (Plan.Num()<=0) break;
+
+			Want = Plan[Plan.Num()]; // uops
+			float WantVal = -1;
+			// check if still want it
+			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+				UBBase* const B = KV.Value.Get();
+				if (UNLIKELY(!IsValid(B))) continue;
+				WantVal = FMath::Max(WantVal, B->Want(Want));
+			}
+			if (WantVal > .15) break; // still wants it.
+		}
 	}
 }
