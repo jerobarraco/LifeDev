@@ -25,7 +25,8 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 // sqrt, abs, sat (clamps between 0 and 1)
 // a?b: random between a and b
 // !a: not a 
-// a&b a|b a$b: and or (returns the value) xor (returns 0,1) 
+// a&b a|b a$b: and or (returns the value) xor (returns 0,1)
+// a>b & c | d : ternary if: a>b?c:d (untested) 
 // a<b a>b a=b: < > =
 // {XXX} obtains the double value for a variable named "XXX" is up to the client to bind to GetVar and provide that value
 //		{#XXX} (suggested) return the double value for an FName, or pointer to a variable. (See FName.ToUnstableInt)

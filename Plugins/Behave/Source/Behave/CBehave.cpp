@@ -115,7 +115,7 @@ void UCBehave::WhatWant() {
 		}
 	}
 
-	if (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])
+	if (Want == UBBio::T_Hungry && (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])) // forcing hungry to test
 		Plan.Push(Want);
 
 	// TODO if the want is too strong. delay getting a new one.
