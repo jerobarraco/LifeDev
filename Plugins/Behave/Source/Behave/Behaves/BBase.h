@@ -12,6 +12,7 @@ class BEHAVE_API UBBase: public UPrimaryDataAsset {
 public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Begin();
+
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void End();
 
@@ -34,13 +35,18 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Do(const FName& Token);
 
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Affect(const FName& Token, float Val=0);
+
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
 
 	UFUNCTION(BlueprintCallable)
 	float TopNeed(FName& OToken);
-	
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
 };
+
+
+// TODO æfectors

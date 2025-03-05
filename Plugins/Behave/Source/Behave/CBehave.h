@@ -22,6 +22,7 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 };
