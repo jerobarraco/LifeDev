@@ -47,6 +47,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Tokens;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, float> Values;
+	// TODO at some point tokens and values can be merged
 };
 
 

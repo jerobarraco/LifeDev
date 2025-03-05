@@ -6,7 +6,7 @@
 #include "Behave/Behaves/BBase.h"
 #include "BEmo.generated.h"
 
-// TODo since this is a proto. this class encompases ALL emotions
+// TODo since this is a proto. this class encompasses ALL emotions
 
 // later on, i could split each emotion into its own thing
 
