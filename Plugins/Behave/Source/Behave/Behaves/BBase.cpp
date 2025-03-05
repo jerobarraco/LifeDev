@@ -2,3 +2,5 @@
 // SPDX-License-Identifier: MIT
 
 #include "BBase.h"
+
+void UBBase::Tick_Implementation(double DT) {}

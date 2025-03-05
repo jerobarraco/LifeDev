@@ -15,6 +15,10 @@ class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
 	UCBehave();
+
+protected:
+	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
+		FActorComponentTickFunction* const ThisTickFunction) override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;

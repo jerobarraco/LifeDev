@@ -8,6 +8,8 @@
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBBase: public UPrimaryDataAsset {
 	GENERATED_BODY()
+
 public:
-	
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Tick(double DT);
 };
