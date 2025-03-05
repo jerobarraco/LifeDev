@@ -24,8 +24,8 @@ void UBSpace::Tick_Implementation(const float DT) {
 	// Mod(T_Full, -BioDampF*DT);
 }
 
-void UBSpace::React_Implementation(const float DT, const FName& Token, const float Val) {
-	Super::React_Implementation(DT, Token, Val);
+void UBSpace::ReactState_Implementation(const float DT, const FName& Token, const float Val) {
+	Super::ReactState_Implementation(DT, Token, Val);
 	// if (UNLIKELY(Token == UBEmo::T_Sad)) {
 		// const float Affect = Val > .8 ? BioDampE*-1 : 0;
 		// Mod(T_Energy, DT*Affect);

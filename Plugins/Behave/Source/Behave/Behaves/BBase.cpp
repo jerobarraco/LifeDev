@@ -23,9 +23,11 @@ EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoR
 	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
 // }
 
-void UBBase::React_Implementation(const float DT, const FName& Token, const float Val) {}
+void UBBase::ReactState_Implementation(const float DT, const FName& Token, const float Val) {}
+void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
 
 #define BError .01
+
 
 
 float UBBase::TopWant(FName& OToken) {

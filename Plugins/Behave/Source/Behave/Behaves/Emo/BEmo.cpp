@@ -34,8 +34,8 @@ void UBEmo::Tick_Implementation(const float DT) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs bore=%f"), __func__, Values[T_Bore]);
 }
 
-void UBEmo::React_Implementation(const float DT, const FName& Token, const float Val) {
-	Super::React_Implementation(DT, Token, Val);
+void UBEmo::ReactState_Implementation(const float DT, const FName& Token, const float Val) {
+	Super::ReactState_Implementation(DT, Token, Val);
 	if (UNLIKELY(Token == UBBio::T_Tired)) {
 		const float Affect = Val < .2 ? FMath::Lerp(0.01, 0.001, Val *5) : 0;
 		Mod(T_Anger, Affect*DT);

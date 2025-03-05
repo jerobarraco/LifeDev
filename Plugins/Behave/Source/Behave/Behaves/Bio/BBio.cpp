@@ -23,8 +23,8 @@ void UBBio::Tick_Implementation(const float DT) {
 	Mod(T_Hungry, BioDampF*DT);
 }
 
-void UBBio::React_Implementation(const float DT, const FName& Token, const float Val) {
-	Super::React_Implementation(DT, Token, Val);
+void UBBio::ReactState_Implementation(const float DT, const FName& Token, const float Val) {
+	Super::ReactState_Implementation(DT, Token, Val);
 	if (UNLIKELY(Token == UBEmo::T_Sad)) {
 		const float Affect = Val > .8 ? BioDampE*-1 : 0;
 		Mod(T_Tired, DT*Affect);

@@ -46,7 +46,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
 				UBBase* const B2 = KV2.Value.Get();
 				if (UNLIKELY(!IsValid(B2))) continue; 
-				B2->React(DeltaTime, T, *pVal);
+				B2->ReactState(DeltaTime, T, *pVal);
 			}
 		}
 		// TODO react to Want not now because it's surely broken
@@ -156,7 +156,7 @@ void UCBehave::Do(const float DT) {
 		}
 
 		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
-		Want = Plan[Num-2]; // uops
+		Want = Plan[Num-2]; // uops // TODO need to re-check if i still want it 
 		return; // need to start all over
 	}
 	
@@ -165,7 +165,7 @@ void UCBehave::Do(const float DT) {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
-
+		
 		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
 	}
 }

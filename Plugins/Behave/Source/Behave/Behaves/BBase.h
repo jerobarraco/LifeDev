@@ -39,8 +39,13 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	EBDoRes Do(const float DT, FName& IOToken);
 
+	// react to a state
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void React(const float DT, const FName& Token, const float Val=0);
+	void ReactState(const float DT, const FName& Token, const float Val=0);
+
+	// action is being acted on
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void ReactDo(const float DT, const FName& Token);
 
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
