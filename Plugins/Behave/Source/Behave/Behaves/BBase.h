@@ -37,7 +37,7 @@ public:
 	void Do(const FName& Token);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Affect(const FName& Token, float Val=0);
+	void Affect(const FName& Token, const float Val=0);
 
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);

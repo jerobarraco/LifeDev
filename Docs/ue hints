@@ -133,3 +133,4 @@ https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/36
 # new object with a tsubclassof
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 	NewObject<UBBase>(this, Key.Get()); // key is tsubclassof<UBBase>
+	https://forums.unrealengine.com/t/newobject-create-from-tsubclassof/465120/5?u=nande
