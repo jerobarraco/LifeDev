@@ -23,6 +23,17 @@
 	],
 	"Plugins": [
 		{
+			"Name": "Behave",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
+		},
+		{
 			"Name": "Story",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
