@@ -6,6 +6,8 @@
 #include "Behaves/BBase.h"
 #include "Behaves/BConsts.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);
+
 UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = true;
@@ -50,7 +52,7 @@ void UCBehave::BeginPlay() {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = NewObject<UBBase>(this, KV.Key.Get());
 		if (UNLIKELY(!IsValid(B))) {
-			UE_LOG(LogTemp, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
+			UE_LOG(LogCBehave, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
 				__func__, *KV.Key.Get()->GetName());
 			continue;
 		}
@@ -60,6 +62,7 @@ void UCBehave::BeginPlay() {
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 2, true);
 	FTimerHandle H2;
@@ -78,7 +81,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCBehave::Dump() {
-	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
 		__func__, *GetNameSafe(this), *Want.ToString());
 	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
@@ -108,7 +111,7 @@ void UCBehave::WhatWant() {
 		Plan.Push(Want);
 
 	// TODO if the want is too strong. delay getting a new one.
-	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
 		__func__, *GetNameSafe(this), *Want.ToString());
 }
 
@@ -125,7 +128,7 @@ void UCBehave::Do() {
 		// it's ok to assume ignore
 		if (Res != EBDoRes::FINISH) continue;
 
-		UE_LOG(LogTemp, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
+		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
 		const int32 Num = Plan.Num();
 		if (Num < 2) { // one of them is going to be popped, and we need one more.
 			Plan.Empty(1);
