@@ -6,6 +6,7 @@
 
 #include "BBase.generated.h"
 
+enum class EBDoRes : uint8;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnGives, const FName&, Token, const float, Val);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
@@ -36,7 +37,7 @@ public:
 
 	// attempt to do something.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Do(const FName& Token);
+	EBDoRes Do(const FName& Token);
 
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void React(const float DT, const FName& Token, const float Val=0);

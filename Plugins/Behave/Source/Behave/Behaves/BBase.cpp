@@ -3,6 +3,8 @@
 
 #include "BBase.h"
 
+#include "BConsts.h"
+
 void UBBase::Begin_Implementation() {}
 void UBBase::End_Implementation() {}
 void UBBase::Tick_Implementation(float DT) {}
@@ -16,7 +18,7 @@ float UBBase::Want_Implementation(const FName& Token) {
 }
 
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
-void UBBase::Do_Implementation(const FName& Token) {}
+EBDoRes UBBase::Do_Implementation(const FName& Token) { return EBDoRes::IGNORE; }
 // void UBBase::Affect_Implementation(const FName& Token, const float Val) {
 	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
 // }

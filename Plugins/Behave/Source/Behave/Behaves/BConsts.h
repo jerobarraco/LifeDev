@@ -3,6 +3,10 @@
 
 #pragma once
 
-namespace Behave {
-	
-}
+UENUM(Blueprintable, BlueprintType)
+enum class EBDoRes : uint8 {
+	IGNORE,
+	DO,
+	FINISH,
+	MAX UMETA(HIDDEN)
+}; 

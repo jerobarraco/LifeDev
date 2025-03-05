@@ -18,7 +18,7 @@ public:
 
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
-		FActorComponentTickFunction* const ThisTickFunction) override;
+								FActorComponentTickFunction* const ThisTickFunction) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -26,10 +26,14 @@ protected:
 	void Dump();
 	UFUNCTION()
 	void WhatWant();
+	UFUNCTION()
+	void Do();
 
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	FName TopWant;
+	FName Want;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TArray<FName> Plan;
 };

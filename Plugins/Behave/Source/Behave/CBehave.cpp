@@ -4,6 +4,7 @@
 #include "CBehave.h"
 
 #include "Behaves/BBase.h"
+#include "Behaves/BConsts.h"
 
 UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -38,11 +39,14 @@ FActorComponentTickFunction* const ThisTickFunction) {
 			}
 		}
 	}
+
+	// do
+	Do();
 }
 
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
-	
+
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = NewObject<UBBase>(this, KV.Key.Get());
 		if (UNLIKELY(!IsValid(B))) {
@@ -75,7 +79,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCBehave::Dump() {
 	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
-		__func__, *GetNameSafe(this), *TopWant.ToString());
+		__func__, *GetNameSafe(this), *Want.ToString());
 	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
@@ -86,21 +90,51 @@ void UCBehave::Dump() {
 
 void UCBehave::WhatWant() {
 	// want
-	TopWant = NAME_None;
+	Want = NAME_None;
 	float VMax = -1;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		FName Want;
-		const float Val = B->TopWant(Want);
-		if (UNLIKELY(!Want.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
-			TopWant = Want;
+		FName CurWant;
+		const float Val = B->TopWant(CurWant);
+		if (UNLIKELY(!CurWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			Want = CurWant;
 			VMax = Val;
 		}
 	}
 
+	if (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])
+		Plan.Push(Want);
+
 	// TODO if the want is too strong. delay getting a new one.
 	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
-		__func__, *GetNameSafe(this), *TopWant.ToString());
+		__func__, *GetNameSafe(this), *Want.ToString());
+}
+
+void UCBehave::Do() {
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		const EBDoRes Res = B->Do(Want);
+		// if one is doing. that's it. TODO enable multiple actions
+		if (Res == EBDoRes::DO) return;
+
+		// don't assume Finish, that would be problematic. (by comparing with ignore)
+		// it's ok to assume ignore
+		if (Res != EBDoRes::FINISH) continue;
+
+		UE_LOG(LogTemp, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
+		const int32 Num = Plan.Num();
+		if (Num < 2) { // one of them is going to be popped, and we need one more.
+			Plan.Empty(1);
+			WhatWant(); // schedule a new want. or should i wait? // TODO wait and let want arise normally. have a period of satisfaction.
+			return;
+		}
+
+		Plan.RemoveAtSwap(Num-1);
+		Want = Plan[Num-1];
+		return; // need to start all over
+	}
 }
