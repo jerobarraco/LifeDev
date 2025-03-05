@@ -19,9 +19,8 @@ UBBio::UBBio():Super() {
 
 void UBBio::Tick_Implementation(const float DT) {
 	Super::Tick_Implementation(DT);
-
-	Values[T_Energy] -= BioDampE*DT;
-	Values[T_Full] -= BioDampF*DT;
+	Mod(T_Energy, -BioDampE*DT);
+	Mod(T_Full, -BioDampF*DT);
 }
 
 void UBBio::React_Implementation(const float DT, const FName& Token, const float Val) {
