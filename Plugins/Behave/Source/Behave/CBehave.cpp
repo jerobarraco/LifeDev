@@ -25,7 +25,6 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 
 	// react
-	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
@@ -37,6 +36,21 @@ FActorComponentTickFunction* const ThisTickFunction) {
 				if (UNLIKELY(!IsValid(B2))) continue; 
 				B2->React(DeltaTime, T, *pVal);
 			}
+		}
+	}
+
+	// want
+	TopWant = NAME_None;
+	float VMax = -1;
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		FName Want;
+		const float Val = B->TopWant(Want);
+		if (UNLIKELY(!Want.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			TopWant = Want;
+			VMax = Val;
 		}
 	}
 }
@@ -73,6 +87,9 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCBehave::Dump() {
+	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
+		__func__, *GetNameSafe(this), *TopWant.ToString());
+	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;

@@ -28,5 +28,6 @@ protected:
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
-
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FName TopWant;
 };

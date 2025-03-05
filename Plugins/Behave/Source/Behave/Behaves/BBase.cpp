@@ -68,7 +68,7 @@ void UBBase::Mod(const FName& Token, const float Dif) {
 void UBBase::Dump_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs %s"),
 			__func__, *GetNameSafe(this));
-	for(TTuple<FName, float> KV: Values) { // iterating tokens instead of values on purpose
+	for(TTuple<FName, float> KV: Values) {
 		UE_LOG(LogTemp, Log, TEXT("%hs %s K=%s V=%.5f"),
 			__func__, *GetNameSafe(this), *KV.Key.ToString(), KV.Value);
 	}
