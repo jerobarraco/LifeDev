@@ -5,16 +5,18 @@
 
 #include "BConsts.h"
 
+#define BError .01
+
 void UBBase::Begin_Implementation() {}
 void UBBase::End_Implementation() {}
 void UBBase::Tick_Implementation(float DT) {}
-float UBBase::Has_Implementation(const FName& Token) { 
+float UBBase::Val_Implementation(const FName& Token) { 
 	float* const pVal = Values.Find(Token);
 	return pVal ? *pVal : 0;
 }
 
 float UBBase::Want_Implementation(const FName& Token) { 
-	return Has(Token);
+	return Val(Token);
 }
 
 float UBBase::Need_Implementation(const FName& Token) { return 0; }
@@ -25,10 +27,6 @@ EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoR
 
 void UBBase::ReactState_Implementation(const float DT, const FName& Token, const float Val) {}
 void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
-
-#define BError .01
-
-
 
 float UBBase::TopWant(FName& OToken) {
 	// TODO at some point randomize, or have a range.

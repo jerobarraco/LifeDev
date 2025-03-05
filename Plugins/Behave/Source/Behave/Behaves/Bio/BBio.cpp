@@ -3,6 +3,7 @@
 
 #include "BBio.h"
 
+#include "Behave/Behaves/BConsts.h"
 #include "Behave/Behaves/Emo/BEmo.h"
 
 UBBio::UBBio():Super() {
@@ -29,4 +30,14 @@ void UBBio::ReactState_Implementation(const float DT, const FName& Token, const 
 		const float Affect = Val > .8 ? BioDampE*-1 : 0;
 		Mod(T_Tired, DT*Affect);
 	} 
+}
+
+void UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
+	if (Token != T_Hungry) return;
+	Mod(T_Hungry, -BioDampE*5*DT);
+}
+
+EBDoRes UBBio::Do_Implementation(const float DT, FName& IOToken) {
+	if (IOToken == T_Hungry && Val(T_Hungry) < .15) return EBDoRes::FINISH; // race condition with space
+	return EBDoRes::IGNORE;
 }
