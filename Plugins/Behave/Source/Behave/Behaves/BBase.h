@@ -7,7 +7,7 @@
 #include "BBase.generated.h"
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBBase: public UPrimaryDataAsset {
+class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()
 
 public:

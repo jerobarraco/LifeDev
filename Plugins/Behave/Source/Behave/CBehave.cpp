@@ -27,9 +27,14 @@ void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue; 
-		B->Begin();
+		UBBase* const B = NewObject<UBBase>(this, KV.Key.Get());
+		if (UNLIKELY(!IsValid(B))) {
+			UE_LOG(LogTemp, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
+				__func__, *KV.Key.Get()->GetName());
+			continue;
+		}
+
+		Behaves[KV.Key] = B;
 	}
 }
 

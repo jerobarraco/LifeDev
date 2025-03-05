@@ -106,7 +106,7 @@ resizeable bar
 	UFUNCTION(BlueprintPure=False)
 	https://forums.unrealengine.com/t/why-are-blueprintpure-and-const-incompatible/287271/2?u=nande
 	
-	
+
 # fstring to int
 FCString::Atoi()
 
@@ -129,3 +129,7 @@ https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/36
 
 # make some const& have a default value on bp node
 	meta=(AutoCreateRefTerm=ParamName))
+	
+# new object with a tsubclassof
+	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
+	NewObject<UBBase>(this, Key.Get()); // key is tsubclassof<UBBase>
