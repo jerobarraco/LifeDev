@@ -75,8 +75,6 @@ void UCBehave::BeginPlay() {
 
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 2, true);
-	FTimerHandle H2;
-	World->GetTimerManager().SetTimer(H2, this, &UCBehave::WhatWant, 5, true);
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -126,6 +124,11 @@ void UCBehave::WhatWant() {
 }
 
 void UCBehave::Do(const float DT) {
+	if (Plan.IsEmpty()) {
+		WhatWant(); // schedule a new want. or should i wait? // TODO wait and let want arise normally. have a period of satisfaction.
+		return; // what want can fail to add a new one.
+	}
+
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
@@ -149,7 +152,6 @@ void UCBehave::Do(const float DT) {
 		const int32 Num = Plan.Num();
 		if (Num < 2) { // one of them is going to be popped, and we need one more.
 			Plan.Empty(1);
-			WhatWant(); // schedule a new want. or should i wait? // TODO wait and let want arise normally. have a period of satisfaction.
 			return;
 		}
 
