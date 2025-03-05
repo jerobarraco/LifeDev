@@ -4,28 +4,23 @@
 #pragma once
 
 #include "Behave/Behaves/BBase.h"
-#include "BBio.generated.h"
 
-// TODo since this is a proto. this class encompasses ALL Bio
-// later on, i could split each Bio into its own thing
+#include "BSpace.generated.h"
+
+// TODo since this is a proto. this class encompasses ALL aspects
+// later on, i could split each aspect into its own thing
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBBio: public UBBase {
+class BEHAVE_API UBSpace: public UBBase {
 	GENERATED_BODY()
 
 public:
-	UBBio();
+	UBSpace();
 	
-	static const inline FName T_Energy = "Bio.Energy";
-	static const inline FName T_Warm = "Bio.Warm";
-	static const inline FName T_Full = "Bio.Full";
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
 	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
 	virtual float Want_Implementation(const FName& Token) override;
 
-	static inline float BioDampE = .01;
-	static inline float BioDampF = .03;
-	// static inline float BioDampW = .001;
 };
