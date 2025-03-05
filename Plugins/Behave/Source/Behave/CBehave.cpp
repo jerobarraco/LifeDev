@@ -38,21 +38,6 @@ FActorComponentTickFunction* const ThisTickFunction) {
 			}
 		}
 	}
-
-	// want
-	TopWant = NAME_None;
-	float VMax = -1;
-	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue;
-
-		FName Want;
-		const float Val = B->TopWant(Want);
-		if (UNLIKELY(!Want.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
-			TopWant = Want;
-			VMax = Val;
-		}
-	}
 }
 
 void UCBehave::BeginPlay() {
@@ -72,7 +57,9 @@ void UCBehave::BeginPlay() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 3, true);
+	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 2, true);
+	FTimerHandle H2;
+	World->GetTimerManager().SetTimer(H2, this, &UCBehave::WhatWant, 5, true);
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -95,4 +82,25 @@ void UCBehave::Dump() {
 		if (UNLIKELY(!IsValid(B))) continue;
 		B->Dump();
 	}
+}
+
+void UCBehave::WhatWant() {
+	// want
+	TopWant = NAME_None;
+	float VMax = -1;
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		FName Want;
+		const float Val = B->TopWant(Want);
+		if (UNLIKELY(!Want.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			TopWant = Want;
+			VMax = Val;
+		}
+	}
+
+	// TODO if the want is too strong. delay getting a new one.
+	UE_LOG(LogTemp, Log, TEXT("%hs %s TopWant=%s"),
+		__func__, *GetNameSafe(this), *TopWant.ToString());
 }

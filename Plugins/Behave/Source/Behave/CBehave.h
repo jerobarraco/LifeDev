@@ -24,6 +24,8 @@ protected:
 
 	UFUNCTION()
 	void Dump();
+	UFUNCTION()
+	void WhatWant();
 
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

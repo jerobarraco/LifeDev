@@ -25,7 +25,7 @@ protected:
 	virtual void React_Implementation(const float DT, const FName& Token, const float Val = 0) override;
 	virtual float Want_Implementation(const FName& Token) override;
 	
-	static inline float BioDampE = .1;
-	static inline float BioDampF = .3;
+	static inline float BioDampE = .01;
+	static inline float BioDampF = .03;
 	// static inline float BioDampW = .001;
 };
