@@ -6,6 +6,7 @@
 #include "CQuickMesh.h"
 #include "Behave/CBehave.h"
 #include "Behave/Behaves/Bio/BBio.h"
+#include "Behave/Behaves/Emo/BEmo.h"
 
 ABFish::ABFish():Super() {
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
@@ -37,6 +38,10 @@ void ABFish::BeginPlay() {
 	if (Bio) {
 		Bio->OnUpd.AddUniqueDynamic(this, &ABFish::UpdBio);
 	}
+	UBBase* const Emo = Behave->GetBehave(UBBio::StaticClass());
+	if (Emo) {
+		Emo->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
+	}
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
@@ -46,4 +51,11 @@ void ABFish::UpdBio(UBBase* const Behave) {
 	S_Hungry->SetRelativeScale3D(FVector(.1, SCHungry, .1));
 	const float SCTired = Bio->Val(UBBio::T_Tired);
 	S_Tired->SetRelativeScale3D(FVector(.1, SCTired, .1));
+}
+
+void ABFish::UpdEmo(UBBase* const Behave) {
+	UBEmo* const Emo = Cast<UBEmo>( Behave); // cast on every tick :( 
+	if (UNLIKELY(!Emo)) return;
+	const float SCBore = Emo->Val(UBEmo::T_Bore);
+	S_Bore->SetRelativeScale3D(FVector(.1, SCBore, .1));
 }

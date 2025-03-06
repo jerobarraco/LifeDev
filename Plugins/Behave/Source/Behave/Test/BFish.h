@@ -18,6 +18,8 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION()
 	void UpdBio(UBBase* const Behave);
+	UFUNCTION()
+	void UpdEmo(UBBase* const Behave);
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root;
