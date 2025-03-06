@@ -8,8 +8,11 @@
 #define BError .01
 
 void UBBase::Begin_Implementation() {}
+
 void UBBase::End_Implementation() {}
+
 void UBBase::Tick_Implementation(float DT) {}
+
 float UBBase::Val_Implementation(const FName& Token) { 
 	float* const pVal = Values.Find(Token);
 	return pVal ? *pVal : 0;
@@ -21,10 +24,6 @@ float UBBase::Want_Implementation(const FName& Token) {
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
-// void UBBase::Affect_Implementation(const FName& Token, const float Val) {
-	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
-// }
-
 void UBBase::ReactState_Implementation(const float DT, const FName& Token, const float Val) {}
 void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
 
