@@ -54,6 +54,7 @@ void UCBehave::BeginPlay() {
 			continue;
 		}
 
+		B->OnTrait.AddUniqueDynamic(this, &UCBehave::TraitMod);
 		Behaves[KV.Key] = B;
 	}
 
