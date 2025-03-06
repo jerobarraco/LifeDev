@@ -35,4 +35,7 @@ public:
 	// max value to map to. val(Thresh->1) = 0->Target.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Target = 0;
+	
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Error = .05;
 };

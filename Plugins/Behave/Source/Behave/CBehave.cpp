@@ -165,7 +165,7 @@ void UCBehave::Do(const float DT) {
 
 void UCBehave::RePlan() {
 	const bool PlanEmpty = Plan.IsEmpty();
-	FName Want = PlanEmpty ? NAME_None : Plan.Last();
+	FName Want = PlanEmpty ? NAME_None : Plan[0];
 	float VMax = PlanEmpty ? 0 : PlanVal;
 	FName NewWant;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
@@ -173,7 +173,7 @@ void UCBehave::RePlan() {
 		if (UNLIKELY(!IsValid(B))) continue;
 
 		const float Val = B->TopWant(NewWant);
-		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+		if (UNLIKELY(!NewWant.IsNone() && Val>VMax)) {
 			Want = NewWant;
 			VMax = Val;
 		}
@@ -181,6 +181,7 @@ void UCBehave::RePlan() {
 
 	Plan.Empty(1);
 	if (Want.IsNone()) return;
+
 	Plan.Push(Want);
 	PlanVal = VMax;
 
