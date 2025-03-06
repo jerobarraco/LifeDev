@@ -133,11 +133,11 @@ void UCBehave::Do(const float DT) {
 
 		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
 		// if one is doing. that's it.
-		if (DoRes == EBDoRes::DO) break;
-
 		// don't assume Finish, that would be problematic. (by comparing with ignore)
 		// it's ok to assume ignore
-		if (DoRes == EBDoRes::FINISH) break;
+		if (DoRes == EBDoRes::DO || DoRes==EBDoRes::FINISH)
+			break;
+			// Acted = true;
 
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
@@ -145,10 +145,16 @@ void UCBehave::Do(const float DT) {
 				__func__, *Want.ToString(), Plan.Num());
 			return; // have to check in again for all behaves
 		}
-
+		
 		// return; // need to start all over
 	}
-	 
+
+	if (DoRes == EBDoRes::IGNORE) {
+		if (Plan.Num()>0)
+			Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+		return;
+	}
+
 	if (DoRes == EBDoRes::DO) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
