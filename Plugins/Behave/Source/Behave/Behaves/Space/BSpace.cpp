@@ -5,6 +5,7 @@
 
 #include "Behave/Behaves/BConsts.h"
 #include "Behave/Behaves/Bio/BBio.h"
+#include "Behave/Behaves/Emo/BEmo.h"
 
 UBSpace::UBSpace():Super() {
 	Wants = {};
@@ -77,6 +78,24 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 
 		Moved = true; // micro opt, no need to set on each tick of TMOVE
 		SleepTime = FMath::RandRange(5, 10); // micro opt again
+		MoveTime = FMath::RandRange(3, 5);
+		IOToken = T_Move; // issue a new want
+		return EBDoRes::NEW; // will continue.
+	} else if (IOToken == UBEmo::T_Bore) {
+		IOToken = T_Play;
+		return EBDoRes::NEW;
+	} else if (IOToken == T_Play) {
+		if (Moved) {
+			PlayTime -= DT;
+			if (UNLIKELY(PlayTime<=0)) {
+				Moved = false;
+				return EBDoRes::FINISH;
+			}
+			return EBDoRes::DO;
+		}
+
+		Moved = true; // micro opt, no need to set on each tick of TMOVE
+		PlayTime = FMath::RandRange(5, 10); // micro opt again
 		MoveTime = FMath::RandRange(3, 5);
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.

@@ -3,7 +3,9 @@
 
 #include "BEmo.h"
 
+#include "Behave/Behaves/BConsts.h"
 #include "Behave/Behaves/Bio/BBio.h"
+#include "Behave/Behaves/Space/BSpace.h"
 
 UBEmo::UBEmo():Super() {
 	Wants = {
@@ -29,8 +31,8 @@ void UBEmo::Tick_Implementation(const float DT) {
 			AllZ = false;
 	}
 
-	if (AllZ)
-		Values[T_Bore] += Damp*3; // increase bore by emo_damp if no emotion is present
+	// if (AllZ)
+	Values[T_Bore] += Damp*3; // increase bore by emo_damp if no emotion is present
 	// UE_LOG(LogTemp, Log, TEXT("%hs bore=%f"), __func__, Values[T_Bore]);
 }
 
@@ -49,5 +51,14 @@ void UBEmo::ReactState_Implementation(const float DT, const FName& Token, const 
 		const float Affect = Val > .95 ? .01 : 0;
 		// trigger a want to die?
 	} 
+}
+
+EBDoRes UBEmo::ReactDo_Implementation(const float DT, FName& IOToken) {
+	if (IOToken == UBSpace::T_Play) {
+		Mod(T_Bore, -EmoDamp*6*DT);
+		return Val(T_Bore) <= .1 ? EBDoRes::FINISH: EBDoRes::IGNORE;
+	}
+
+	return EBDoRes::IGNORE;
 }
 
