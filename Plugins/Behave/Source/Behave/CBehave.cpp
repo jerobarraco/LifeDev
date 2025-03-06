@@ -102,6 +102,7 @@ UBBase* UCBehave::GetBehave(const TSubclassOf<UBBase> Class) {
 }
 
 void UCBehave::Do(const float DT) {
+	
 	if (Plan.IsEmpty()) {
 		RePlan(); // schedule a new want. or should i wait? 
 		return; // what want can fail to add a new one.
@@ -123,7 +124,7 @@ void UCBehave::Do(const float DT) {
 
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
-			OnDo.Broadcast(Want);
+			OnDoPre.Broadcast(Want);
 			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
 				__func__, *Want.ToString(), Plan.Num());
 			return; // have to check in again for all behaves
@@ -133,6 +134,7 @@ void UCBehave::Do(const float DT) {
 	if (DoRes == EBDoRes::IGNORE) { // if completely ignored. remove.
 		if (Plan.Num()>0)
 			Plan.Pop(EAllowShrinking::No);
+		// OnDo.Broadcast(NAME_None, DT);
 		return;
 	}
 
@@ -145,6 +147,7 @@ void UCBehave::Do(const float DT) {
 	}
 
 	if (DoRes == EBDoRes::DO) {
+		OnDo.Broadcast(Want, DT);
 		// UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		FName NewWant = Want;
 		bool Break = false;
@@ -176,6 +179,10 @@ float UCBehave::TraitWantMod(const FName& Token, float V) {
 }
 
 void UCBehave::RePlan() {
+	// suboptimal. but whatever i was doing consider it not doing anymore.
+	// likely will trigger issues with animation
+	OnDo.Broadcast(NAME_None, 0);
+	
 	// just forget the old plan.
 	// that could cause issues with going to the kitchen and not wanting to eat anymore
 	// but getting the replan to work well requires much more work and tweak and is prone to errors and feedbacks
@@ -199,7 +206,7 @@ void UCBehave::RePlan() {
 
 	Plan.Push(Want);
 	PlanVal = VMax;
-	OnDo.Broadcast(Want);
+	OnDoPre.Broadcast(Want);
 	
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s Val=%.5f"),
 		__func__, *GetNameSafe(this), *Want.ToString(), PlanVal);

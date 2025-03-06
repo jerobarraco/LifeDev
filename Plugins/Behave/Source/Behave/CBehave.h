@@ -12,7 +12,8 @@ struct FBTrait;
 enum class EBDoRes: uint8;
 class UBBase;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDo, const FName&, Token);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDoPre, const FName&, Token); // for lack of better word. WIP
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCBehaveDo, const FName&, Token, const float, DT);
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
@@ -41,6 +42,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Transient)
 	FCBehaveDo OnDo;
+	
+	UPROPERTY(BlueprintAssignable, Transient)
+	FCBehaveDoPre OnDoPre;
 	
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,

@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(const float DeltaSeconds) override;
 	UFUNCTION()
-	void Do(const FName& Token);
+	void Do(const FName& Token, const float DT);
 	UFUNCTION()
 	void UpdBio(UBBase* const Behave);
 	UFUNCTION()

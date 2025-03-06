@@ -70,24 +70,26 @@ void ABFish::BeginPlay() {
 void ABFish::Tick(const float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-	if (Doing == UBSpace::T_Play) {
-		AddActorLocalRotation(FRotator(50*DeltaSeconds,0,0));
-	} else if (Doing == UBSpace::T_Move) {
-		const FVector2D& Point = FMath::RandPointInCircle(50*DeltaSeconds);
-		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
-	}
+
 }
 
-void ABFish::Do(const FName& Token) {
+void ABFish::Do(const FName& Token, const float DT) {
 	if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
 		SetActorRotation(FRotator(0,0,90));
 
 	Doing = Token;
+	if (Doing == UBSpace::T_Play) {
+		AddActorLocalRotation(FRotator(50*DT,0,0));
+	} else if (Doing == UBSpace::T_Move) {
+		const FVector2D& Point = FMath::RandPointInCircle(50*DT);
+		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
+	}
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
-	UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
-	if (!Bio) return;
+	const UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
+	if (UNLIKELY(!Bio)) return;
+
 	const float SCHungry = Bio->Val(UBBio::T_Hungry);
 	S_Hungry->SetRelativeScale3D(FVector(BarScale, SCHungry, BarScale));
 	const float SCTired = Bio->Val(UBBio::T_Tired);
@@ -95,8 +97,9 @@ void ABFish::UpdBio(UBBase* const Behave) {
 }
 
 void ABFish::UpdEmo(UBBase* const Behave) {
-	UBEmo* const Emo = Cast<UBEmo>(Behave); // cast on every tick :( 
+	const UBEmo* const Emo = Cast<UBEmo>(Behave); // cast on every tick :( 
 	if (UNLIKELY(!Emo)) return;
+
 	const float SCBore = Emo->Val(UBEmo::T_Bore);
 	S_Bore->SetRelativeScale3D(FVector(BarScale, SCBore, BarScale));
 }
