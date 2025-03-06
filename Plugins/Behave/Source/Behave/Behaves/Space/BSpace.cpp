@@ -60,7 +60,6 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.
 	} else if (IOToken == T_Move) {
-		MovedSleep = false;
 		return Moved ? EBDoRes::FINISH : EBDoRes::DO;
 	} else if (IOToken == UBBio::T_Tired) {
 		IOToken = T_Sleep;
@@ -68,6 +67,8 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 	} else if (IOToken == T_Sleep) {
 		if (!MovedSleep) {
 			MovedSleep = true; // todo sleepclose
+			MovedPlay = false;
+			
 			Moved = false;
 			OnMoveToSleep.ExecuteIfBound();
 			IOToken = T_Move; // issue a new want
@@ -80,6 +81,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 	} else if (IOToken == T_Play) {
 		if (!MovedPlay) {
 			MovedPlay = true;
+			MovedSleep = false;
 			Moved = false;
 			OnMoveToPlay.ExecuteIfBound();
 			IOToken = T_Move; // issue a new want

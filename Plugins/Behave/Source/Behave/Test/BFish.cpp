@@ -57,7 +57,6 @@ bool ABFish::CanEat() {
 
 void ABFish::MoveToFood() {
 	MoveTgt = FoodPos;
-	// Moving = true;
 }
 
 void ABFish::MoveToSleep() {
