@@ -11,7 +11,8 @@
 // later on, i could split each aspect into its own thing
 
 // by space I mean "physical" mostly. but that's ambiguous. (moving, doing certain actions, maybe just moving maybe other behavs can do physical actions too, dunno)
-// DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam()
+
+DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FBSpaceCanEat);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSpace: public UBBase {
@@ -24,6 +25,10 @@ public:
 	static inline FName T_Eat = "Space.Eat";
 	static inline FName T_Sleep = "Space.Sleep";
 	static inline FName T_Play = "Space.Play";
+
+	// called when trying to eat. return true if it can.
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FBSpaceCanEat OnCanEat;
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
