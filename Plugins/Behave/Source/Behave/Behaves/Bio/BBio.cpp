@@ -3,7 +3,6 @@
 
 #include "BBio.h"
 
-#include "Behave/Behaves/BConsts.h"
 #include "Behave/Behaves/Emo/BEmo.h"
 #include "Behave/Behaves/Space/BSpace.h"
 

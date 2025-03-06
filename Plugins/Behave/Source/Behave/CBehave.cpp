@@ -161,8 +161,6 @@ void UCBehave::Do(const float DT) {
 				__func__, *Want.ToString(), Plan.Num());
 			return; // have to check in again for all behaves
 		}
-		
-		// return; // need to start all over
 	}
 
 	if (DoRes == EBDoRes::IGNORE) { // if completely ignored. remove.
@@ -234,6 +232,7 @@ void UCBehave::RePlan() {
 	}
 
 	Plan.Empty(1);
+	if (Want.IsNone()) return;
 	Plan.Push(Want);
 	PlanVal = VMax;
 

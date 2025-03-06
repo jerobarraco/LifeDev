@@ -32,7 +32,8 @@ void UBSpace::ReactState_Implementation(const float DT, const FName& Token, cons
 }
 
 float UBSpace::Want_Implementation(const FName& Token) {
-	return Super::Want_Implementation(Token);
+	return -1; // wants nothing
+	// return Super::Want_Implementation(Token);
 	// return 1-Super::Want_Implementation(Token); // we want to max these vars
 }
 

@@ -27,6 +27,7 @@ public:
 	float Val(const FName& Token);
 
 	// returns what it wants the most. with a normalized value of how much it wants it.
+	// try return -1 if nothing to want.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	float Want(const FName& Token);
 
