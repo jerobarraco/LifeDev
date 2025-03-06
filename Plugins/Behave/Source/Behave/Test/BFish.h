@@ -15,6 +15,9 @@ public:
 	ABFish();
 
 protected:
+	UFUNCTION()
+	bool CanEat();
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(const float DeltaSeconds) override;
 	UFUNCTION()

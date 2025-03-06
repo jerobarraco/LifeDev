@@ -42,6 +42,11 @@ ABFish::ABFish():Super() {
 	S_Tired->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
 }
 
+static const FVector FoodPos(50); 
+bool ABFish::CanEat() {
+	return FVector::DistSquared(FoodPos, GetActorLocation()) < 5; 
+}
+
 void ABFish::BeginPlay() {
 	Super::BeginPlay();
 	UBBase* const Bio = Behave->GetBehave(UBBio::StaticClass());
@@ -55,7 +60,8 @@ void ABFish::BeginPlay() {
 
 	UBSpace* const Space = Cast<UBSpace>(Behave->GetBehave(UBSpace::StaticClass()));
 	if (Space) {
-		Space->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
+		Space->OnCanEat.BindDynamic(this, &ABFish::CanEat);
+		// Space->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}
 
 	Behave->OnDo.AddUniqueDynamic(this, &ABFish::Do);
