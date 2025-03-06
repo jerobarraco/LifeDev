@@ -8,7 +8,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBBaseTrait, const FBTrait&, Trait, const bool, Add);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBBaseUpd, const class UBBase*, Behave);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBBaseUpd, UBBase* const, Behave);
 
 // base for behaviors. the idea is that you make your own and each one handles what it needs
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)

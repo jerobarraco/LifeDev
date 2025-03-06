@@ -15,12 +15,26 @@ public:
 	ABFish();
 
 protected:
+	virtual void BeginPlay() override;
+	UFUNCTION()
+	void UpdBio(UBBase* const Behave);
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Body;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Tail;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<USceneComponent> Stats;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> S_Tired;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> S_Hungry;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> S_Bore;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
 };
