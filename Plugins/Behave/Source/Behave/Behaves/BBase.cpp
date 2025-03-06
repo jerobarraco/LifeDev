@@ -15,8 +15,9 @@ float UBBase::Val_Implementation(const FName& Token) {
 	return pVal ? *pVal : 0;
 }
 
-float UBBase::Want_Implementation(const FName& Token) { 
-	return Val(Token);
+float UBBase::Want_Implementation(const FName& Token) {
+	const float V = Val(Token);
+	return V>.1 ? V: -1;
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
@@ -30,7 +31,7 @@ void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
 float UBBase::TopWant(FName& OToken) {
 	// TODO at some point randomize, or have a range.
 	// maybe add a random
-	float VMax = -1;
+	float VMax = 0;
 	for (const FName& T: Wants) {
 		// rand make it imperfect
 		const float VWant = Want(T) + FMath::RandRange(-BError, BError);

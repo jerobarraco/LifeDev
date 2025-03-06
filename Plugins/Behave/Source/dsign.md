@@ -35,3 +35,7 @@ Once the plan is empty. wait a bit before choosing a new want
 need a way to override lower prio wants while they are working
 
 react: can be optimized by being called less often
+
+want: store how much i want it. for new checks.
+
+drop: when i want something for too long and it's ignored for too long, drop it.

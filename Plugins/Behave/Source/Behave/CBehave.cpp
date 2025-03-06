@@ -101,15 +101,15 @@ void UCBehave::Dump() {
 void UCBehave::WhatWant() {
 	// want
 	Want = NAME_None;
-	float VMax = -1;
+	float VMax = 0;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		FName CurWant;
-		const float Val = B->TopWant(CurWant);
-		if (UNLIKELY(!CurWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
-			Want = CurWant;
+		FName NewWant;
+		const float Val = B->TopWant(NewWant);
+		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			Want = NewWant;
 			VMax = Val;
 		}
 	}
@@ -117,7 +117,6 @@ void UCBehave::WhatWant() {
 	if (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])
 		Plan.Push(Want);
 
-	// TODO if the want is too strong. delay getting a new one.
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
 		__func__, *GetNameSafe(this), *Want.ToString());
 }

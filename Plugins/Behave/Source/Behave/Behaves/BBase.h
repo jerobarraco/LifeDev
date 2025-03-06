@@ -60,6 +60,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Wants;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float WantMin = .1;
 	// UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	// FBOnGives OnGives;
 };
