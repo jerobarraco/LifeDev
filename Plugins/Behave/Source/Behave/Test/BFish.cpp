@@ -52,7 +52,7 @@ static const FVector SleepPos(10, 10, 10);
 static const FVector PlayPos(10, -50, 30);
 
 bool ABFish::CanEat() {
-	return FVector::DistSquared(FoodPos, GetActorLocation()) < 5; 
+	return FVector::DistSquared(FoodPos, GetActorLocation()) < 10; 
 }
 
 void ABFish::MoveToFood() {
@@ -107,14 +107,14 @@ void ABFish::Do(const FName& Token, const float DT) {
 		AddActorLocalRotation(FRotator(-50*DT,0,0));
 	} else if (Doing == UBSpace::T_Move) {
 		const FVector& Current = GetActorLocation();
-		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, 10);
-		const float Dist = FVector::DistSquared(New, Current);
+		const float Dist = FVector::DistSquared(Current, MoveTgt);
 		if (Dist < 1) {
 			UBSpace* const Space = Cast<UBSpace>(Behave->GetBehave(UBSpace::StaticClass()));
 			if (Space) Space->MoveStop();
-		} else {
-			SetActorLocation(New, false);
-		} 
+			return;
+		}
+		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, 10);
+		SetActorLocation(New, false);
 		// const FVector2D& Point = FMath::RandPointInCircle(50*DT);
 		// AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
 	}
