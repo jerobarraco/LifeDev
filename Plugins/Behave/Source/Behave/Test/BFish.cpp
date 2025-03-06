@@ -43,5 +43,7 @@ void ABFish::UpdBio(UBBase* const Behave) {
 	UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
 	if (!Bio) return;
 	const float SCHungry = Bio->Val(UBBio::T_Hungry);
-	S_Hungry->SetRelativeScale3D(FVector(1, SCHungry, 1));
+	S_Hungry->SetRelativeScale3D(FVector(.1, SCHungry, .1));
+	const float SCTired = Bio->Val(UBBio::T_Tired);
+	S_Tired->SetRelativeScale3D(FVector(.1, SCTired, .1));
 }
