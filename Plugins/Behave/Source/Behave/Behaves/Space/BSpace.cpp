@@ -15,6 +15,11 @@ UBSpace::UBSpace():Super() {
 	};
 }
 
+void UBSpace::End_Implementation() {
+	OnCanEat.Clear();
+	Super::End_Implementation();
+}
+
 void UBSpace::Tick_Implementation(const float DT) {
 	Super::Tick_Implementation(DT);
 	// Mod(T_Energy, -BioDampE*DT);
@@ -42,6 +47,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		IOToken = T_Eat;
 		return EBDoRes::NEW;
 	} else if (IOToken == T_Eat) {
+		const bool Can = OnCanEat.IsBound() ? OnCanEat.Execute() : false; // todo do something
 		// not sure about this. it seems using the tokens for wants and actions is making it very hard to track. TODO reconsider
 		if (Moved) {
 			EatTime -= DT;

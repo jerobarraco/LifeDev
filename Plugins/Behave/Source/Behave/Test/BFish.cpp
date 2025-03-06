@@ -71,7 +71,7 @@ void ABFish::Tick(const float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
 	if (Doing == UBSpace::T_Play) {
-		AddActorLocalRotation(FRotator(0, 50*DeltaSeconds,0));
+		AddActorLocalRotation(FRotator(50*DeltaSeconds,0,0));
 	} else if (Doing == UBSpace::T_Move) {
 		const FVector2D& Point = FMath::RandPointInCircle(50*DeltaSeconds);
 		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
