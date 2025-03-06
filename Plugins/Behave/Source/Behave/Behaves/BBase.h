@@ -6,6 +6,7 @@
 
 #include "BBase.generated.h"
 
+// base for behaviors. the idea is that you make your own and each one handles what it needs
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()

@@ -6,8 +6,6 @@
 #include "BConsts.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
-#define BError .01
-
 void UBBase::Begin_Implementation() {}
 
 void UBBase::End_Implementation() {}

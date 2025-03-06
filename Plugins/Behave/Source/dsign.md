@@ -23,6 +23,12 @@ Time			 ???
 * * some behaves can add/remove traits (e.g. sadness adds "slow" and "tiresome")
 * * traits can also be queried to inform the representation (visual/audio/etc)
 
+* actually have the components do stuff
+* * move an actor, change an animation, set a color, display a dialog.
+
+* have a way to influence the cbehavior from the evironment. or maybe other components.
+* * e.g. via events that trigger a token.
+
 * component that chooses goal based on token
 * * maybe have tree
 

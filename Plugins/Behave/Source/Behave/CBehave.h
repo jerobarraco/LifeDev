@@ -1,14 +1,13 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: MIT
-
-
 #pragma once
+
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 
 #include "CBehave.generated.h"
 
-enum class EBDoRes : uint8;
+enum class EBDoRes: uint8;
 class UBBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDo, const FName&, Token);
@@ -18,8 +17,9 @@ class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
 	UCBehave();
-	void ReactState(float DeltaTime);
 
+	UFUNCTION(BlueprintCallable)
+	void ReactState(const float DT, const FName& Name, const float V=0);
 	UPROPERTY(BlueprintAssignable, Transient)
 	FCBehaveDo OnDo;
 
@@ -37,6 +37,7 @@ protected:
 	void Do(const float DT);
 	void PlanCheck();
 	void RePlan();
+	void ReactAllStates(float DeltaTime);
 	
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

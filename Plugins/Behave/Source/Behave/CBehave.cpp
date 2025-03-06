@@ -23,9 +23,8 @@ UCBehave::UCBehave():Super() {
 	};
 }
 
-
 void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
-FActorComponentTickFunction* const ThisTickFunction) {
+							FActorComponentTickFunction* const ThisTickFunction) {
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -38,7 +37,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 
 	// react
-	ReactState(DeltaTime);
+	ReactAllStates(DeltaTime);
 
 	// do
 	Do(DeltaTime);
@@ -182,18 +181,22 @@ void UCBehave::RePlan() {
 		__func__, *GetNameSafe(this), *Want.ToString(), PlanVal);
 }
 
-void UCBehave::ReactState(const float DeltaTime) {
+void UCBehave::ReactAllStates(const float DeltaTime) {
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 	
 		for (const TTuple<FName, float>& KV2: B->Values) { // iterating tokens instead of values on purpose
-			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV3: Behaves) {
-				UBBase* const B2 = KV3.Value.Get();
-				if (UNLIKELY(!IsValid(B2))) continue; 
-				B2->ReactState(DeltaTime, KV2.Key, KV2.Value);
-			}
+			ReactState(DeltaTime, KV2.Key, KV2.Value);
 		}
+	}
+}
+
+void UCBehave::ReactState(const float DT, const FName& Name, const float V) {
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV3: Behaves) {
+		UBBase* const B2 = KV3.Value.Get();
+		if (UNLIKELY(!IsValid(B2))) continue; 
+		B2->ReactState(DT, Name, V);
 	}
 }
 
