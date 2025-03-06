@@ -36,6 +36,7 @@ void UBBio::ReactState_Implementation(const float DT, const FName& Token, const 
 EBDoRes UBBio::ReactDo_Implementation(const float DT, FName& IOToken) {
 	if (IOToken == UBSpace::T_Eat) {
 		Mod(T_Hungry, -BioDampF*5*DT);
+		Mod(T_Tired, BioDampE*DT);
 		return Val(T_Hungry) <= .01 ? EBDoRes::FINISH: EBDoRes::IGNORE;
 	}
 	
@@ -44,7 +45,7 @@ EBDoRes UBBio::ReactDo_Implementation(const float DT, FName& IOToken) {
 		return Val(T_Tired) <= .01 ? EBDoRes::FINISH: EBDoRes::IGNORE;
 	}
 	
-	if (IOToken == UBSpace::T_Move) {
+	if (IOToken == UBSpace::T_Move || IOToken == UBSpace::T_Play) {
 		Mod(T_Tired, BioDampE*2*DT);
 		return EBDoRes::IGNORE;
 	}
