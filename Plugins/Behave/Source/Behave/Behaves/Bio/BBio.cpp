@@ -52,12 +52,8 @@ bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
 
 	if (Token == UBSpace::T_Play) {
 		Mod(T_Tired, BioDampE*3*DT);
-		return Val(T_Tired) > .6;
+		return Want(T_Tired) > .8; // break if i'm really tired
 	}
 
 	return false;
-}
-
-float UBBio::Want_Implementation(const FName& Token) {
-	return Super::Want_Implementation(Token);
 }
