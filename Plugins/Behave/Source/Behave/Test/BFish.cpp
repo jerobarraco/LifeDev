@@ -64,7 +64,8 @@ void ABFish::MoveToSleep() {
 }
 
 void ABFish::MoveToPlay() {
-	MoveTgt = PlayPos;
+	MoveTgt = FMath::RandPointInBox(FBox3d(FVector(-50, -50, 0), FVector(50,50,100) ));
+	// PlayPos
 }
 
 void ABFish::BeginPlay() {
@@ -112,10 +113,12 @@ void ABFish::Do(const FName& Token, const float DT) {
 			if (Space) Space->MoveStop();
 			return;
 		}
-		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, 10);
+		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, MoveSpeed);
 		SetActorLocation(New, false);
 		// const FVector2D& Point = FMath::RandPointInCircle(50*DT);
 		// AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
+	} else if (Doing == UBEmo::T_Cry) {
+		AddActorLocalRotation(FRotator(0,0,50*DT));
 	}
 }
 

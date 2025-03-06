@@ -52,14 +52,17 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> S_Bore;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UTextRenderComponent> Text = nullptr;;
+	TObjectPtr<UTextRenderComponent> Text = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Doing;
-	
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	float MoveSpeed = 30;
+
 	FVector MoveTgt;
 	bool Moving = false;
 };
