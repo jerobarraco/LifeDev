@@ -45,7 +45,6 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 	} else if (IOToken == T_Eat) {
 		// not sure about this. it seems using the tokens for wants and actions is making it very hard to track. TODO reconsider
 		if (Moved) {
-			Moved = false; // restart for next time
 			EatTime -= DT;
 			if (UNLIKELY(EatTime<=0)) {
 				Moved = false;
@@ -57,8 +56,8 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		// stub: assume there isn't
 
 		Moved = true; // micro opt, no need to set on each tick of TMOVE
-		MoveTime = FMath::RandRange(2, 4);
-		EatTime = FMath::RandRange(2, 4); // micro opt again
+		MoveTime = FMath::RandRange(2, 5);
+		EatTime = FMath::RandRange(5, 10); // micro opt again
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.
 	} else if (IOToken == T_Move) {
