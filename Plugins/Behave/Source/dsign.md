@@ -33,3 +33,5 @@ Once the plan is empty. wait a bit before choosing a new want
 // TODO wait and let want arise normally. have a period of satisfaction.
 
 need a way to override lower prio wants while they are working
+
+react: can be optimized by being called less often

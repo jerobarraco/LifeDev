@@ -6,7 +6,7 @@
 #include "Behave/Behaves/Bio/BBio.h"
 
 UBEmo::UBEmo():Super() {
-	Tokens = {
+	Wants = {
 		T_Anger, T_Sad, T_Fear, T_Shame, T_Joy, T_Bore
 	};
 

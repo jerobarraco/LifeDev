@@ -19,7 +19,6 @@ float UBBase::Want_Implementation(const FName& Token) {
 	return Val(Token);
 }
 
-float UBBase::Need_Implementation(const FName& Token) { return 0; }
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
 // void UBBase::Affect_Implementation(const FName& Token, const float Val) {
 	// Values[Token] = FMath::Clamp(Values[Token]+Val, 0, 1);
@@ -32,7 +31,7 @@ float UBBase::TopWant(FName& OToken) {
 	// TODO at some point randomize, or have a range.
 	// maybe add a random
 	float VMax = -1;
-	for (const FName& T: Tokens) {
+	for (const FName& T: Wants) {
 		// rand make it imperfect
 		const float VWant = Want(T) + FMath::RandRange(-BError, BError);
 		
@@ -42,21 +41,6 @@ float UBBase::TopWant(FName& OToken) {
 	}
 	UE_LOG(LogTemp, Log, TEXT("BBase:%hs Want=%s V=%.5f"),
 		__func__, *OToken.ToString(), VMax);
-	return VMax;
-}
-
-float UBBase::TopNeed(FName& OToken) {
-	float VMax = -1;
-	for (const FName& T: Tokens) {
-		const float VWant = Need(T) + FMath::RandRange(-BError, BError);;
-		if (VWant <= VMax) continue;
-		OToken = T;
-		VMax = VWant;
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("BBase:%hs Want=%s V=%.5f"),
-			__func__, *OToken.ToString(), VMax);
-
 	return VMax;
 }
 

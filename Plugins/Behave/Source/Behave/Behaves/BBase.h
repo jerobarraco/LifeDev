@@ -32,10 +32,6 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	float Want(const FName& Token);
 
-	// returns what it needs the most. with a normalized value of how much it wants it.
-	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	float Need(const FName& Token);
-
 	// attempt to do something.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	EBDoRes Do(const float DT, FName& IOToken);
@@ -51,22 +47,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);
 
-	UFUNCTION(BlueprintCallable)
-	float TopNeed(FName& OToken);
-	
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Dump();
 
 	// will clamp
 	UFUNCTION(BlueprintCallable, meta=(ForceAsFunction))
 	void Mod(const FName& Token, const float Dif);
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> Tokens;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, float> Values;
-	// TODO at some point tokens and values can be merged
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> Wants;
 
 	// UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	// FBOnGives OnGives;

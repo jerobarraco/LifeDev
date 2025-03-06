@@ -7,8 +7,7 @@
 #include "Behave/Behaves/Bio/BBio.h"
 
 UBSpace::UBSpace():Super() {
-	Tokens = {
-	};
+	Wants = {};
 
 	Values = {
 		// {T_Energy, 1},

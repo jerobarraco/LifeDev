@@ -7,7 +7,7 @@
 #include "Behave/Behaves/Space/BSpace.h"
 
 UBBio::UBBio():Super() {
-	Tokens = {
+	Wants = {
 		T_Tired, T_Cold, T_Hungry
 	};
 

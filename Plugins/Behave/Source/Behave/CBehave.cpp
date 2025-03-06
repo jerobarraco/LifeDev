@@ -36,20 +36,20 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 
 	// react
-	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue;
-
-		for (const FName& T: B->Tokens) { // iterating tokens instead of values on purpose
-			float* const pVal = B->Values.Find(T);
-			if (UNLIKELY(!pVal)) continue;
-			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
-				UBBase* const B2 = KV2.Value.Get();
-				if (UNLIKELY(!IsValid(B2))) continue; 
-				B2->ReactState(DeltaTime, T, *pVal);
-			}
-		}
-	}
+	// for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+	// 	UBBase* const B = KV.Value.Get();
+	// 	if (UNLIKELY(!IsValid(B))) continue;
+	//
+	// 	for (const FName& T: B->Tokens) { // iterating tokens instead of values on purpose
+	// 		float* const pVal = B->Values.Find(T);
+	// 		if (UNLIKELY(!pVal)) continue;
+	// 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
+	// 			UBBase* const B2 = KV2.Value.Get();
+	// 			if (UNLIKELY(!IsValid(B2))) continue; 
+	// 			B2->ReactState(DeltaTime, T, *pVal);
+	// 		}
+	// 	}
+	// }
 
 	// do
 	Do(DeltaTime);
@@ -114,7 +114,7 @@ void UCBehave::WhatWant() {
 		}
 	}
 
-	if (Want == UBBio::T_Hungry && (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])) // forcing hungry to test
+	if (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])
 		Plan.Push(Want);
 
 	// TODO if the want is too strong. delay getting a new one.
@@ -162,6 +162,8 @@ void UCBehave::Do(const float DT) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
 		// TODO fix this part is not working
 		Want = NAME_None;
+		DoRes = EBDoRes::IGNORE;
+
 		while (true) {
 			const int32 Num = Plan.Num();
 			if (Num<1) break;
@@ -176,7 +178,7 @@ void UCBehave::Do(const float DT) {
 				if (UNLIKELY(!IsValid(B))) continue;
 				WantVal = FMath::Max(WantVal, B->Want(Want));
 			}
-			
+
 			if (WantVal > .15) break; // still wants it.
 		}
 	}
