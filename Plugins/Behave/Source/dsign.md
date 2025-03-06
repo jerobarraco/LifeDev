@@ -40,3 +40,7 @@ want: store how much i want it. for new checks.
 way to interrupt actions, 
 
 todo remove "Want" variable just use plan
+
+todo refactor so that an action triggers an effect and the effect is applied.
+e.g calling Do(Move) will trigger the event Tired*3 calling Do(Play) triggers Tired*2
+think about it actually.

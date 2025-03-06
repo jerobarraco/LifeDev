@@ -36,9 +36,6 @@ protected:
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	FName Want;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	EBDoRes DoRes;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)

@@ -89,8 +89,12 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCBehave::Dump() {
-	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s DoRes=%s"),
-		__func__, *GetNameSafe(this), *Want.ToString(), *UEnum::GetValueAsString(DoRes));
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s DoRes=%s"),
+		__func__, *GetNameSafe(this), *UEnum::GetValueAsString(DoRes));
+	for (const FName& N: Plan) {
+		UE_LOG(LogCBehave, Log, TEXT("%hs %s Plan=%s"),
+		__func__, *GetNameSafe(this), *N.ToString());
+	}
 	
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
@@ -100,7 +104,6 @@ void UCBehave::Dump() {
 }
 
 void UCBehave::WhatWant() {
-	Want = NAME_None;
 
 	// i can do this once i store the want val
 	// if (Plan.Num()>0) {
@@ -108,12 +111,13 @@ void UCBehave::WhatWant() {
 	// 	Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
 	// }
 	
+	FName Want = NAME_None;
+	FName NewWant;
 	float VMax = 0;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		FName NewWant;
 		const float Val = B->TopWant(NewWant);
 		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
 			Want = NewWant;
@@ -121,7 +125,7 @@ void UCBehave::WhatWant() {
 		}
 	}
 
-	if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan[Plan.Num()-1]))
+	if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan.Last()))
 		Plan.Push(Want);
 
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
@@ -134,6 +138,7 @@ void UCBehave::Do(const float DT) {
 		return; // what want can fail to add a new one.
 	}
 
+	FName Want = Plan.Last();
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
@@ -191,16 +196,15 @@ void UCBehave::Do(const float DT) {
 }
 
 void UCBehave::RePlan() {
-	Want = NAME_None;
+	FName Want = NAME_None;
 	DoRes = EBDoRes::IGNORE;
-
 	while (true) {
 		const int32 Num = Plan.Num();
 		if (Num<1) break;
-		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
+		Plan.Pop(EAllowShrinking::No);
 		if (Num<2) break;
 
-		Want = Plan[Num-2]; // uops 2
+		Want = Plan.Last();
 		float WantVal = -1;
 		// check if still want it
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
