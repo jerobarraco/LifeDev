@@ -15,27 +15,17 @@ enum class EBDoRes : uint8 {
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FBWant {
-	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FName Want = NAME_None;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	float Val =0;
-};
-
-USTRUCT(Blueprintable, BlueprintType)
 struct FBWantNorm {
 	GENERATED_BODY()
 public:
 	// min to start wanting
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Thresh = 0;
 
 	// max value to map to. val(Thresh->1) = 0->Target.
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Target = 0;
 	
-	UPROPERTY(BlueprintReadWrite, Transient)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Error = .05;
 };

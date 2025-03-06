@@ -37,12 +37,12 @@ bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
 	if (Token == UBSpace::T_Eat) {
 		Mod(T_Hungry, -BioDampF*5*DT);
 		Mod(T_Tired, BioDampE*DT);
-		return Val(T_Hungry) <= .01;
+		return Val(T_Hungry) <= .01 || Want(T_Tired) > .8;
 	}
 
 	if (Token == UBSpace::T_Sleep) {
-		Mod(T_Tired, -BioDampE*5*DT);
-		return Val(T_Tired) <= .01;
+		Mod(T_Tired, -BioDampE*10*DT);
+		return Val(T_Tired) <= .1;
 	}
 	
 	if (Token == UBSpace::T_Move){

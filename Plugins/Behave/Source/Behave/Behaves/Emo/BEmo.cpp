@@ -10,7 +10,9 @@
 UBEmo::UBEmo():Super() {
 	WantNorms = {
 		{T_Bore, FBWantNorm{ .Thresh = .6, .Target = .3}},
+		{T_Sad, FBWantNorm{ .Thresh = .7, .Target = .5}},
 	};
+
 	Values = {
 		{T_Anger, 0},
 		{T_Sad, 0},
@@ -59,5 +61,18 @@ bool UBEmo::ReactDo_Implementation(const float DT, const FName& Token) {
 	}
 
 	return false;
+}
+
+EBDoRes UBEmo::Do_Implementation(const float DT, FName& IOToken) {
+	if (IOToken == T_Sad) {
+		ActTime = FMath::RandRange(3, 5);
+		IOToken = T_Cry; // issue a new want
+		return EBDoRes::NEW;
+	}
+	if (IOToken == T_Cry) {
+		ActTime -= DT;
+		return ActTime <=0 ? EBDoRes::FINISH : EBDoRes::DO;
+	}
+	return EBDoRes::IGNORE;
 }
 
