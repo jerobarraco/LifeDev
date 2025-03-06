@@ -8,7 +8,9 @@
 
 void UBBase::Begin_Implementation() {}
 
-void UBBase::End_Implementation() {}
+void UBBase::End_Implementation() {
+	OnTrait.Clear();
+}
 
 void UBBase::Tick_Implementation(float DT) {}
 

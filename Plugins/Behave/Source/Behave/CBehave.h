@@ -33,11 +33,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FBTrait TraitGet(const FName& Name);
 
+	// experimental/stub
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, FBTrait> Traits;
+
 	UPROPERTY(BlueprintAssignable, Transient)
 	FCBehaveDo OnDo;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	TMap<FName, FBTrait> Traits;
 	
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
