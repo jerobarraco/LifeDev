@@ -30,7 +30,8 @@ protected:
 	UFUNCTION()
 	void Do(const float DT);
 	void PlanCheck();
-
+	void RePlan();
+	
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;

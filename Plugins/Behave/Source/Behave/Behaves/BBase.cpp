@@ -24,7 +24,7 @@ float UBBase::Want_Implementation(const FName& Token) {
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
-EBDoRes UBBase::ReactDo_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
+bool UBBase::ReactDo_Implementation(const float DT, const FName& Token) { return false; }
 void UBBase::ReactState_Implementation(const float DT, const FName& Token, const float Val) {}
 
 float UBBase::TopWant(FName& OToken) {
@@ -45,8 +45,8 @@ float UBBase::TopWant(FName& OToken) {
 void UBBase::Mod(const FName& Token, const float Dif) {
 	float* const pVal = Values.Find(Token);
 	if (UNLIKELY(!pVal)) return;
-	
-	*pVal = FMath::Clamp((*pVal) + Dif, 0, 1); 	//Values[Token] =
+
+	*pVal = FMath::Clamp((*pVal) + Dif, 0, 1); //Values[Token] =
 }
 
 void UBBase::Dump_Implementation() {

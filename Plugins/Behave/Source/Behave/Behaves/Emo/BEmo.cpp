@@ -53,12 +53,12 @@ void UBEmo::ReactState_Implementation(const float DT, const FName& Token, const 
 	} 
 }
 
-EBDoRes UBEmo::ReactDo_Implementation(const float DT, FName& IOToken) {
-	if (IOToken == UBSpace::T_Play) {
+bool UBEmo::ReactDo_Implementation(const float DT, const FName& Token) {
+	if (Token == UBSpace::T_Play) {
 		Mod(T_Bore, -EmoDamp*6*DT);
-		return Val(T_Bore) <= .1 ? EBDoRes::FINISH: EBDoRes::IGNORE;
+		return Val(T_Bore) <= .1;
 	}
 
-	return EBDoRes::IGNORE;
+	return false;
 }
 

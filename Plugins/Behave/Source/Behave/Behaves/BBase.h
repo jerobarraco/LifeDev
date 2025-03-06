@@ -38,9 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ReactState(const float DT, const FName& Token, const float Val=0);
 
-	// react to action being acted on
+	// react to action being acted on. returns true on need to replan.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	EBDoRes ReactDo(const float DT, FName& IOToken);
+	bool ReactDo(const float DT, const FName& Token);
 
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);

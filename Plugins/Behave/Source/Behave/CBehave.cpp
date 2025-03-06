@@ -174,28 +174,23 @@ void UCBehave::Do(const float DT) {
 	if (DoRes == EBDoRes::DO) {
 		// UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		FName NewWant = Want;
-		EBDoRes NewRes = EBDoRes::IGNORE;
+		bool Break = false;
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
 			
-			NewRes = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
-			if (NewRes == EBDoRes::NEW && !NewWant.IsNone()) {
-				UE_LOG(LogCBehave, Log, TEXT("%hs ReactDo New Want=%s"),
-					__func__, *NewWant.ToString());
-				Want = NewWant;
-				Plan.Push(NewWant);
-				return;
-			}
-			if (NewRes == EBDoRes::FINISH) { // force finish
-				if (Plan.Num()>0)
-					Plan.Pop(EAllowShrinking::No);
+			Break = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
+			if (Break) { // force finish
+				UE_LOG(LogCBehave, Log, TEXT("%hs ForceBreak"), __func__);
+				// this is fine. because it won't replace the current want if it's lower prio
+				RePlan();
 				return;
 			}
 		}
 	} else if (DoRes == EBDoRes::FINISH) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
-		PlanCheck();
+		//PlanCheck();
+		RePlan();
 	}
 }
 
@@ -220,6 +215,30 @@ void UCBehave::PlanCheck() {
 
 		if (WantVal > 0) break; // still wants it.
 	}
+}
+
+void UCBehave::RePlan() {
+	const bool PlanEmpty = Plan.IsEmpty();
+	FName Want = PlanEmpty ? NAME_None : Plan.Last();
+	float VMax = PlanEmpty ? 0 : PlanVal;
+	FName NewWant;
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		const float Val = B->TopWant(NewWant);
+		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			Want = NewWant;
+			VMax = Val;
+		}
+	}
+
+	Plan.Empty(1);
+	Plan.Push(Want);
+	PlanVal = VMax;
+
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s Val=%.5f"),
+		__func__, *GetNameSafe(this), *Want.ToString(), PlanVal);
 }
 
 #pragma optimize("", on)
