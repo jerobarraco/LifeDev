@@ -24,8 +24,8 @@ float UBBase::Want_Implementation(const FName& Token) {
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
+EBDoRes UBBase::ReactDo_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
 void UBBase::ReactState_Implementation(const float DT, const FName& Token, const float Val) {}
-void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
 
 float UBBase::TopWant(FName& OToken) {
 	float VMax = 0;

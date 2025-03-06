@@ -23,7 +23,7 @@ public:
 protected:
 	virtual void Tick_Implementation(const float DT) override;
 	virtual void ReactState_Implementation(const float DT, const FName& Token, const float Val = 0) override;
-	virtual void ReactDo_Implementation(const float DT, const FName& Token) override;
+	virtual EBDoRes ReactDo_Implementation(const float DT, FName& IOToken) override;
 
 	static inline float BioDampE = .01;
 	static inline float BioDampF = .03;

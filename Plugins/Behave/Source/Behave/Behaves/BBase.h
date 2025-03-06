@@ -40,7 +40,7 @@ public:
 
 	// action is being acted on
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void ReactDo(const float DT, const FName& Token);
+	EBDoRes ReactDo(const float DT, FName& IOToken);
 
 	UFUNCTION(BlueprintCallable)
 	float TopWant(FName& OToken);

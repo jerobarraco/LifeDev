@@ -164,11 +164,23 @@ void UCBehave::Do(const float DT) {
 
 	if (DoRes == EBDoRes::DO) {
 		// UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
+		FName NewWant = Want;
+		EBDoRes NewRes = EBDoRes::IGNORE;
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
 			
-			B->ReactDo(DT, Want); // passing want as out. don't care atm
+			NewRes = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
+			if (NewRes == EBDoRes::NEW && !NewWant.IsNone()) {
+				Want = NewWant;
+				Plan.Push(NewWant);
+				return;
+			}
+			if (NewRes == EBDoRes::FINISH) { // force finish
+				if (Plan.Num()>0)
+					Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+				return;
+			}
 		}
 	} else if (DoRes == EBDoRes::FINISH) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
