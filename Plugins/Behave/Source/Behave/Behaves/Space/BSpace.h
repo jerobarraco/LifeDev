@@ -13,7 +13,7 @@
 // by space I mean "physical" mostly. but that's ambiguous. (moving, doing certain actions, maybe just moving maybe other behavs can do physical actions too, dunno)
 
 DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FBSpaceFoodClose);
-DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FBSpaceMoveTo, const FVector&, Point);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FBSpaceMoveTo, const FName&, Token);
 DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToFood);
 DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToSleep);
 DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToPlay);
@@ -38,10 +38,14 @@ public:
 	FBSpaceFoodClose OnFoodClose;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
+	FBSpaceMoveTo OnMoveTo;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
 	FBSpaceMoveToFood OnMoveToFood;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBSpaceMoveToSleep OnMoveToSleep;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBSpaceMoveToPlay OnMoveToPlay;
 

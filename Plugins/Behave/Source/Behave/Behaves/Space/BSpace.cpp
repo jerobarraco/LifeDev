@@ -57,6 +57,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 
 		Moved = false;
 		OnMoveToFood.ExecuteIfBound();
+		OnMoveTo.ExecuteIfBound(T_Eat);
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.
 	} else if (IOToken == T_Move) {
@@ -71,6 +72,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 			
 			Moved = false;
 			OnMoveToSleep.ExecuteIfBound();
+			OnMoveTo.ExecuteIfBound(T_Sleep);
 			IOToken = T_Move; // issue a new want
 			return EBDoRes::NEW; // will continue.
 		}
@@ -84,6 +86,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 			MovedSleep = false;
 			Moved = false;
 			OnMoveToPlay.ExecuteIfBound();
+			OnMoveTo.ExecuteIfBound(T_Play);
 			IOToken = T_Move; // issue a new want
 			return EBDoRes::NEW; // will continue
 		}
