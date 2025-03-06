@@ -163,7 +163,7 @@ void UCBehave::Do(const float DT) {
 	}
 
 	if (DoRes == EBDoRes::DO) {
-		UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
+		// UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
