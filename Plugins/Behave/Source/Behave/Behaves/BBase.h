@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ReactState(const float DT, const FName& Token, const float Val=0);
 
-	// action is being acted on
+	// react to action being acted on
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	EBDoRes ReactDo(const float DT, FName& IOToken);
 

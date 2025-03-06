@@ -109,6 +109,9 @@ void UCBehave::WhatWant() {
 	// 	Want = Plan[Plan.Num()-1];
 	// 	Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
 	// }
+
+	// assume a plan is for ONE want. we can still want many things at once. handled by each behave
+	if (!Plan.IsEmpty()) return;
 	
 	FName Want = NAME_None;
 	FName NewWant;
@@ -124,8 +127,11 @@ void UCBehave::WhatWant() {
 		}
 	}
 
-	if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan.Last()))
+	// if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan.Last()))
+	if (!Want.IsNone()) {
 		Plan.Push(Want);
+		PlanVal = VMax;
+	}
 
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
 		__func__, *GetNameSafe(this), *Want.ToString());
@@ -215,4 +221,5 @@ void UCBehave::RePlan() {
 		if (WantVal > 0) break; // still wants it.
 	}
 }
+
 #pragma optimize("", on)

@@ -40,4 +40,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TArray<FName> Plan; // TODO try using an ringbuffer
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	float PlanVal = 0;
 };
