@@ -114,7 +114,7 @@ void UCBehave::WhatWant() {
 		}
 	}
 
-	if (Plan.IsEmpty() || Want != Plan[Plan.Num()-1])
+	if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan[Plan.Num()-1]))
 		Plan.Push(Want);
 
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
