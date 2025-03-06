@@ -14,8 +14,8 @@ void UBBase::End_Implementation() {}
 
 void UBBase::Tick_Implementation(float DT) {}
 
-float UBBase::Val_Implementation(const FName& Token) { 
-	float* const pVal = Values.Find(Token);
+float UBBase::Val_Implementation(const FName& Token) const {
+	const float* const pVal = Values.Find(Token);
 	return pVal ? *pVal : 0;
 }
 
@@ -27,8 +27,7 @@ float UBBase::Want_Implementation(const FName& Token) {
 		return V>WantMin ? V: -1;
 
 	const float VN = FMath::Clamp(UJUtilsMisc::MathRemapNorm(V, pNorm->Thresh, 1), 0, 1);
-	return V>pNorm->Thresh ? VN * pNorm->Target : -1; 
-
+	return V>pNorm->Thresh ? VN * pNorm->Target : -1;
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }

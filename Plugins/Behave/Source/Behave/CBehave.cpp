@@ -135,6 +135,14 @@ void UCBehave::Do(const float DT) {
 		return;
 	}
 
+	if (DoRes == EBDoRes::FINISH) {
+		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
+		if (Plan.Num()>0)
+			Plan.Pop(EAllowShrinking::No);
+		RePlan();
+		return;
+	}
+
 	if (DoRes == EBDoRes::DO) {
 		// UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		FName NewWant = Want;
@@ -142,19 +150,16 @@ void UCBehave::Do(const float DT) {
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
-			
+
 			Break = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
-			if (Break) { // force finish
-				UE_LOG(LogCBehave, Log, TEXT("%hs ForceBreak"), __func__);
-				// this is fine. because it won't replace the current want if it's lower prio
-				RePlan();
-				return;
-			}
 		}
-	} else if (DoRes == EBDoRes::FINISH) {
-		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
-		//PlanCheck();
-		RePlan();
+
+		if (Break) { // force finish. outside for to let all components update
+			UE_LOG(LogCBehave, Log, TEXT("%hs ForceBreak"), __func__);
+			// this is fine. because it won't replace the current want if it's lower prio
+			RePlan();
+			return;
+		}
 	}
 }
 
