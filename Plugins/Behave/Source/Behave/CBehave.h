@@ -47,7 +47,7 @@ protected:
 
 	// a plan is always for ONE want, a very very simple plan
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	TArray<FName> Plan; // TODO try using an ringbuffer
+	TArray<FName> Plan;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	float PlanVal = 0;
+	float PlanVal = 0; // TODO is this even useful? at least for debug on outliner
 };
