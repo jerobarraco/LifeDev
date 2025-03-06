@@ -60,45 +60,32 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.
 	} else if (IOToken == T_Move) {
+		MovedSleep = false;
 		return Moved ? EBDoRes::FINISH : EBDoRes::DO;
-		// MoveTime -= DT;
-		return MoveTime <=0 ? EBDoRes::FINISH : EBDoRes::DO;
 	} else if (IOToken == UBBio::T_Tired) {
 		IOToken = T_Sleep;
 		return EBDoRes::NEW;
 	} else if (IOToken == T_Sleep) {
-		if (Moved) {
-			SleepTime -= DT;
-			if (UNLIKELY(SleepTime<=0)) {
-				Moved = false;
-				return EBDoRes::FINISH;
-			}
-			return EBDoRes::DO;
+		if (!MovedSleep) {
+			MovedSleep = true; // todo sleepclose
+			Moved = false;
+			OnMoveToSleep.ExecuteIfBound();
+			IOToken = T_Move; // issue a new want
+			return EBDoRes::NEW; // will continue.
 		}
-
-		Moved = true; // micro opt, no need to set on each tick of TMOVE
-		SleepTime = FMath::RandRange(5, 10); // micro opt again
-		MoveTime = FMath::RandRange(3, 5);
-		IOToken = T_Move; // issue a new want
-		return EBDoRes::NEW; // will continue.
+		return EBDoRes::DO;
 	} else if (IOToken == UBEmo::T_Bore) {
 		IOToken = T_Play;
 		return EBDoRes::NEW;
 	} else if (IOToken == T_Play) {
-		if (Moved) {
-			PlayTime -= DT;
-			if (UNLIKELY(PlayTime<=0)) {
-				Moved = false;
-				return EBDoRes::FINISH;
-			}
-			return EBDoRes::DO;
+		if (!MovedPlay) {
+			MovedPlay = true;
+			Moved = false;
+			OnMoveToPlay.ExecuteIfBound();
+			IOToken = T_Move; // issue a new want
+			return EBDoRes::NEW; // will continue
 		}
-
-		Moved = true; // micro opt, no need to set on each tick of TMOVE
-		PlayTime = FMath::RandRange(5, 10); // micro opt again
-		MoveTime = FMath::RandRange(3, 5);
-		IOToken = T_Move; // issue a new want
-		return EBDoRes::NEW; // will continue.
+		return EBDoRes::DO;
 	}
 
 	return EBDoRes::IGNORE;

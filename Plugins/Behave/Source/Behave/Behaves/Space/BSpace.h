@@ -54,6 +54,8 @@ protected:
 	
 	float MoveTime = 0; // simulate moving to a place by adding a delay. at this stage the actual position and stuff matters not.
 	bool Moved = false;
+	bool MovedSleep = false;
+	bool MovedPlay = false;
 	float EatTime = 0; // simulate eating with a delay
 	float SleepTime = 0; // simulate with a delay
 	float PlayTime = 0; // simulate with a delay
