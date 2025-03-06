@@ -10,6 +10,7 @@ void UBBase::Begin_Implementation() {}
 
 void UBBase::End_Implementation() {
 	OnTrait.Clear();
+	OnUpd.Clear();
 }
 
 void UBBase::Tick_Implementation(const float DT) {
