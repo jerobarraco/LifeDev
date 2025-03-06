@@ -12,6 +12,7 @@ struct FBTrait;
 enum class EBDoRes: uint8;
 class UBBase;
 
+// TODO improve the doing so it only triggers once.. like predo.
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDoPre, const FName&, Token); // for lack of better word. WIP
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCBehaveDo, const FName&, Token, const float, DT);
 

@@ -8,6 +8,7 @@
 #include "Behave/Behaves/Bio/BBio.h"
 #include "Behave/Behaves/Emo/BEmo.h"
 #include "Behave/Behaves/Space/BSpace.h"
+#include "Components/TextRenderComponent.h"
 
 #define BarScale .05
 
@@ -40,6 +41,10 @@ ABFish::ABFish():Super() {
 	S_Bore->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
 	S_Hungry->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
 	S_Tired->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
+
+	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
+	Text->SetupAttachment(Root);
+	Text->SetRelativeLocation(FVector(0,0,15));
 }
 
 static const FVector FoodPos(50); 
@@ -69,8 +74,6 @@ void ABFish::BeginPlay() {
 
 void ABFish::Tick(const float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-
-
 }
 
 void ABFish::Do(const FName& Token, const float DT) {
@@ -78,6 +81,8 @@ void ABFish::Do(const FName& Token, const float DT) {
 		SetActorRotation(FRotator(0,90,0));
 
 	Doing = Token;
+	Text->SetText(FText::FromString(Token.ToString() + "..."));
+
 	if (Doing == UBSpace::T_Play) {
 		AddActorLocalRotation(FRotator(-50*DT,0,0));
 	} else if (Doing == UBSpace::T_Move) {

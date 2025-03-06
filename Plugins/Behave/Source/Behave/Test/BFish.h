@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Behave/CBehave.h"
+
 #include "BFish.generated.h"
 
+class UBBase;
+class UCBehave;
+class UTextRenderComponent;
 class UCQuickMesh;
 // this is just a test. warning
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
@@ -42,6 +45,8 @@ protected:
 	TObjectPtr<UCQuickMesh> S_Hungry;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> S_Bore;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UTextRenderComponent> Text = nullptr;;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
