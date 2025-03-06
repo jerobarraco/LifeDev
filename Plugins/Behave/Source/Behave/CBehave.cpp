@@ -155,7 +155,7 @@ void UCBehave::Do(const float DT) {
 }
 
 float UCBehave::TraitWantMod(const FName& Token, float V) {
-	for (const TTuple<FName, FBTrait>T: Traits) {
+	for (const TTuple<FName, FBTrait>& T: Traits) {
 		for (const FBTraitMod& M: T.Value.Mods ) {
 			if (M.Attr != Token) continue;
 			V = (V+M.Offset)*M.Factor;

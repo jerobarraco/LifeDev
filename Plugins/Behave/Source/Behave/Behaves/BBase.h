@@ -7,6 +7,7 @@
 #include "BBase.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBBaseTrait, const FBTrait&, Trait, const bool, Add);
 
 // base for behaviors. the idea is that you make your own and each one handles what it needs
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
@@ -62,4 +63,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float WantMin = .5;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	FBBaseTrait OnTrait;
 };
