@@ -20,7 +20,7 @@ float UBBase::Val_Implementation(const FName& Token) {
 
 float UBBase::Want_Implementation(const FName& Token) {
 	const float V = Val(Token);
-	return V>.1 ? V: -1;
+	return V>WantMin ? V: -1;
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
