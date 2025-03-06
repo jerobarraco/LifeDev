@@ -32,7 +32,9 @@ public:
 	void TraitRem(const FName& Name);
 	UFUNCTION(BlueprintCallable)
 	FBTrait TraitGet(const FName& Name);
-
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	UBBase* GetBehave(const TSubclassOf<UBBase> Class);
+	
 	// experimental/stub
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, FBTrait> Traits;
@@ -45,7 +47,7 @@ protected:
 		FActorComponentTickFunction* const ThisTickFunction) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+	
 	UFUNCTION()
 	void Dump();
 	UFUNCTION()
@@ -56,7 +58,7 @@ protected:
 	void PlanCheck();
 	void RePlan();
 	void ReactAllStates(float DeltaTime);
-	
+
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;

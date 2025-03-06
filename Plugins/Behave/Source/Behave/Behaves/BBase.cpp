@@ -12,7 +12,9 @@ void UBBase::End_Implementation() {
 	OnTrait.Clear();
 }
 
-void UBBase::Tick_Implementation(float DT) {}
+void UBBase::Tick_Implementation(const float DT) {
+	OnUpd.Broadcast(this);
+}
 
 float UBBase::Val_Implementation(const FName& Token) const {
 	const float* const pVal = Values.Find(Token);

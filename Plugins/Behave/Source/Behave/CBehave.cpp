@@ -46,6 +46,12 @@ void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	
+	// pray the lord this does not create a race condition with the owner's begin play
+	// poistinit breaks saving the uobject
+	// https://ikrima.dev/ue4guide/gameplay-programming/actor-tick-lifecycle-flow/actor-tick-lifecycle-flow/
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = NewObject<UBBase>(this, KV.Key.Get());
 		if (UNLIKELY(!IsValid(B))) {
@@ -57,10 +63,7 @@ void UCBehave::BeginPlay() {
 		B->OnTrait.AddUniqueDynamic(this, &UCBehave::TraitMod);
 		Behaves[KV.Key] = B;
 	}
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-
+	
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 1, true);
 }
@@ -89,6 +92,13 @@ void UCBehave::Dump() {
 		if (UNLIKELY(!IsValid(B))) continue;
 		B->Dump();
 	}
+}
+
+
+UBBase* UCBehave::GetBehave(const TSubclassOf<UBBase> Class) {
+	TObjectPtr<UBBase>* const pB = Behaves.Find(Class);
+	if (UNLIKELY(!pB)) return nullptr;
+	return *pB;
 }
 
 void UCBehave::Do(const float DT) {
