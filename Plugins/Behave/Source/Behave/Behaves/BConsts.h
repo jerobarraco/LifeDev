@@ -29,3 +29,31 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Error = .05;
 };
+
+// this sucks a bit. i'm not sure if a trait should modify the want or should modify the behavior
+USTRUCT(Blueprintable, BlueprintType)
+struct FBTraitMod {
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName Attr;
+
+	// added to the want
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float Offset;
+
+	// multiplies the want. offset goes first
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float Factor;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FBTrait {
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName Name;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FBTraitMod> Mods;
+};

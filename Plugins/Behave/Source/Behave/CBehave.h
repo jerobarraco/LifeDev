@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Behaves/BConsts.h"
 #include "Components/ActorComponent.h"
 
 #include "CBehave.generated.h"
 
+struct FBTrait;
 enum class EBDoRes: uint8;
 class UBBase;
 
@@ -20,9 +22,23 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReactState(const float DT, const FName& Name, const float V=0);
+
+	UFUNCTION(BlueprintCallable)
+	void TraitMod(const FBTrait& Trait, const bool Add);
+	
+	UFUNCTION(BlueprintCallable)
+	void TraitAdd(const FBTrait& Trait);
+	UFUNCTION(BlueprintCallable)
+	void TraitRem(const FName& Name);
+	UFUNCTION(BlueprintCallable)
+	FBTrait TraitGet(const FName& Name);
+
 	UPROPERTY(BlueprintAssignable, Transient)
 	FCBehaveDo OnDo;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TMap<FName, FBTrait> Traits;
+	
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
@@ -35,6 +51,7 @@ protected:
 	void WhatWant();
 	UFUNCTION()
 	void Do(const float DT);
+	float TraitWantMod(const FName& Token, float V);
 	void PlanCheck();
 	void RePlan();
 	void ReactAllStates(float DeltaTime);
@@ -50,5 +67,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TArray<FName> Plan;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	float PlanVal = 0; // TODO is this even useful? at least for debug on outliner
+	float PlanVal = 0; // TODO is this even useful? at least for debug on outliner. there's a case when to use it, what was it?
+
 };

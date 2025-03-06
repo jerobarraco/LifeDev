@@ -24,7 +24,7 @@ UCBehave::UCBehave():Super() {
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
-							FActorComponentTickFunction* const ThisTickFunction) {
+	FActorComponentTickFunction* const ThisTickFunction) {
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -101,6 +101,8 @@ void UCBehave::Do(const float DT) {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
+		// TODO can be optimizing by storing the current doing in case of Do.
+		// New, finish, ignore should not store the current.
 		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
 		// if one is doing. that's it.
 		// don't assume Finish, that would be problematic. (by comparing with ignore)
@@ -152,6 +154,16 @@ void UCBehave::Do(const float DT) {
 	}
 }
 
+float UCBehave::TraitWantMod(const FName& Token, float V) {
+	for (const TTuple<FName, FBTrait>T: Traits) {
+		for (const FBTraitMod& M: T.Value.Mods ) {
+			if (M.Attr != Token) continue;
+			V = (V+M.Offset)*M.Factor;
+		}
+	}
+	return V;
+}
+
 void UCBehave::RePlan() {
 	// just forget the old plan.
 	// that could cause issues with going to the kitchen and not wanting to eat anymore
@@ -163,7 +175,8 @@ void UCBehave::RePlan() {
 		UBBase* const B = KV.Value.Get();
 		if (UNLIKELY(!IsValid(B))) continue;
 
-		const float Val = B->TopWant(NewWant);
+		float Val = B->TopWant(NewWant);
+		Val = TraitWantMod(NewWant, Val);
 		if (UNLIKELY(!NewWant.IsNone() && Val>VMax)) {
 			Want = NewWant;
 			VMax = Val;
@@ -198,6 +211,28 @@ void UCBehave::ReactState(const float DT, const FName& Name, const float V) {
 		if (UNLIKELY(!IsValid(B2))) continue; 
 		B2->ReactState(DT, Name, V);
 	}
+}
+
+void UCBehave::TraitMod(const FBTrait& Trait, const bool Add) {
+	if (UNLIKELY(Trait.Name.IsNone())) return;
+	if (Add)
+		Traits.Add(Trait.Name, Trait);
+	else
+		Traits.Remove(Trait.Name);
+}
+
+void UCBehave::TraitAdd(const FBTrait& Trait) {
+	if (UNLIKELY(Trait.Name.IsNone())) return;
+	Traits.Add(Trait.Name, Trait); // Gonna copy it anyway
+}
+
+void UCBehave::TraitRem(const FName& Name) {
+	Traits.Remove(Name);
+}
+
+FBTrait UCBehave::TraitGet(const FName& Name) {
+	if (Traits.Contains(Name)) return Traits[Name];
+	return FBTrait();
 }
 
 #pragma optimize("", on)
