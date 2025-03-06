@@ -28,9 +28,13 @@ void UBBio::Tick_Implementation(const float DT) {
 void UBBio::ReactState_Implementation(const float DT, const FName& Token, const float Val) {
 	Super::ReactState_Implementation(DT, Token, Val);
 	if (UNLIKELY(Token == UBEmo::T_Sad)) {
-		const float Affect = Val > .8 ? BioDampE*-1 : 0;
+		const float Affect = Val > .8 ? BioDampE*-.5 : 0;
 		Mod(T_Tired, DT*Affect);
-	} 
+	}
+	if (UNLIKELY(Token == UBEmo::T_Joy)) {
+		const float Affect = Val > .5 ? BioDampE*1 : 0;
+		Mod(T_Tired, DT*Affect);
+	}
 }
 
 bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
@@ -53,6 +57,11 @@ bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
 	if (Token == UBSpace::T_Play) {
 		Mod(T_Tired, BioDampE*3*DT);
 		return Want(T_Tired) > .8; // break if i'm really tired
+	}
+
+	if (Token == UBEmo::T_Cry) {
+		Mod(T_Tired, BioDampE*3*DT);
+		return Want(T_Tired) > .8 || Want(T_Hungry) > .8; // break if i'm really tired
 	}
 
 	return false;

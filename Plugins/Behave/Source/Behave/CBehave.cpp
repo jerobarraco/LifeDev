@@ -154,9 +154,11 @@ void UCBehave::Do(const float DT) {
 }
 
 void UCBehave::RePlan() {
-	const bool PlanEmpty = Plan.IsEmpty();
-	FName Want = PlanEmpty ? NAME_None : Plan[0];
-	float VMax = PlanEmpty ? 0 : PlanVal;
+	// just forget the old plan.
+	// that could cause issues with going to the kitchen and not wanting to eat anymore
+	// but getting the replan to work well requires much more work and tweak and is prone to errors and feedbacks
+	FName Want = NAME_None;
+	float VMax = 0 ;
 	FName NewWant;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();

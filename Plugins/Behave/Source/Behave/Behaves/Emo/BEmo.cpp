@@ -72,6 +72,8 @@ EBDoRes UBEmo::Do_Implementation(const float DT, FName& IOToken) {
 	}
 	if (IOToken == T_Cry) {
 		ActTime -= DT;
+		Mod(T_Sad, -EmoDamp*10*DT);
+		Mod(T_Bore, -EmoDamp*3*DT);
 		return ActTime <=0 ? EBDoRes::FINISH : EBDoRes::DO;
 	}
 	return EBDoRes::IGNORE;
