@@ -16,6 +16,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(const float DeltaSeconds) override;
+	UFUNCTION()
+	void Do(const FName& Token);
 	UFUNCTION()
 	void UpdBio(UBBase* const Behave);
 	UFUNCTION()
@@ -39,4 +42,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
+
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FName Doing;
 };

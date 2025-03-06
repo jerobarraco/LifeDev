@@ -7,8 +7,14 @@
 #include "Behave/CBehave.h"
 #include "Behave/Behaves/Bio/BBio.h"
 #include "Behave/Behaves/Emo/BEmo.h"
+#include "Behave/Behaves/Space/BSpace.h"
+
+#define BarScale .05
 
 ABFish::ABFish():Super() {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	SetActorTickEnabled(true);
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -30,6 +36,9 @@ ABFish::ABFish():Super() {
 	S_Tired->SetupAttachment(Stats);
 	S_Bore = CreateDefaultSubobject<UCQuickMesh>(TEXT("S_Bore"));
 	S_Bore->SetupAttachment(Stats);
+	S_Bore->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
+	S_Hungry->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
+	S_Tired->SetRelativeScale3D(FVector(BarScale, BarScale, BarScale));
 }
 
 void ABFish::BeginPlay() {
@@ -42,20 +51,35 @@ void ABFish::BeginPlay() {
 	if (Emo) {
 		Emo->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}
+
+	Behave->OnDo.AddUniqueDynamic(this, &ABFish::Do);
+}
+
+void ABFish::Tick(const float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
+
+	if (Doing == UBSpace::T_Play) {
+		AddActorLocalRotation(FRotator(1*DeltaSeconds, 0,0));
+	}
+}
+
+void ABFish::Do(const FName& Token) {
+	if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
+		SetActorRotation(FRotator(0));
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
 	UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
 	if (!Bio) return;
 	const float SCHungry = Bio->Val(UBBio::T_Hungry);
-	S_Hungry->SetRelativeScale3D(FVector(.1, SCHungry, .1));
+	S_Hungry->SetRelativeScale3D(FVector(BarScale, SCHungry, BarScale));
 	const float SCTired = Bio->Val(UBBio::T_Tired);
-	S_Tired->SetRelativeScale3D(FVector(.1, SCTired, .1));
+	S_Tired->SetRelativeScale3D(FVector(BarScale, SCTired, BarScale));
 }
 
 void ABFish::UpdEmo(UBBase* const Behave) {
 	UBEmo* const Emo = Cast<UBEmo>( Behave); // cast on every tick :( 
 	if (UNLIKELY(!Emo)) return;
 	const float SCBore = Emo->Val(UBEmo::T_Bore);
-	S_Bore->SetRelativeScale3D(FVector(.1, SCBore, .1));
+	S_Bore->SetRelativeScale3D(FVector(BarScale, SCBore, BarScale));
 }
