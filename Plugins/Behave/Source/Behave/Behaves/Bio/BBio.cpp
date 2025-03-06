@@ -41,7 +41,7 @@ bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
 	}
 
 	if (Token == UBSpace::T_Sleep) {
-		Mod(T_Tired, -BioDampE*10*DT);
+		Mod(T_Tired, -BioDampE*20*DT);
 		return Val(T_Tired) <= .1;
 	}
 	

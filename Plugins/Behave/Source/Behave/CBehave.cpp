@@ -111,6 +111,7 @@ void UCBehave::Do(const float DT) {
 
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
+			OnDo.Broadcast(Want);
 			UE_LOG(LogCBehave, Log, TEXT("%hs NewWant want=%s total=%i"),
 				__func__, *Want.ToString(), Plan.Num());
 			return; // have to check in again for all behaves
@@ -173,7 +174,8 @@ void UCBehave::RePlan() {
 
 	Plan.Push(Want);
 	PlanVal = VMax;
-
+	OnDo.Broadcast(Want);
+	
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s Val=%.5f"),
 		__func__, *GetNameSafe(this), *Want.ToString(), PlanVal);
 }
