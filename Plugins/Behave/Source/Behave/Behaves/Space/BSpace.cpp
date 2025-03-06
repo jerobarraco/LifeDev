@@ -56,6 +56,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		if (Can) return EBDoRes::DO;
 
 		Moved = false;
+		// this might be triggering movetofood on call to Do, which is inefficient // TODO
 		OnMoveToFood.ExecuteIfBound();
 		OnMoveTo.ExecuteIfBound(T_Eat);
 		IOToken = T_Move; // issue a new want
