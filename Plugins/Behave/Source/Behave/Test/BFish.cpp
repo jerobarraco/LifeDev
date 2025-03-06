@@ -53,6 +53,11 @@ void ABFish::BeginPlay() {
 		Emo->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}
 
+	UBSpace* const Space = Cast<UBSpace>(Behave->GetBehave(UBSpace::StaticClass()));
+	if (Space) {
+		Space->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
+	}
+
 	Behave->OnDo.AddUniqueDynamic(this, &ABFish::Do);
 }
 
@@ -60,16 +65,16 @@ void ABFish::Tick(const float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
 	if (Doing == UBSpace::T_Play) {
-		AddActorLocalRotation(FRotator(0, 1*DeltaSeconds,0));
+		AddActorLocalRotation(FRotator(0, 50*DeltaSeconds,0));
 	} else if (Doing == UBSpace::T_Move) {
-		const FVector2D& Point = FMath::RandPointInCircle(DeltaSeconds);
+		const FVector2D& Point = FMath::RandPointInCircle(50*DeltaSeconds);
 		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
 	}
 }
 
 void ABFish::Do(const FName& Token) {
 	if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
-		SetActorRotation(FRotator(0));
+		SetActorRotation(FRotator(0,0,90));
 
 	Doing = Token;
 }
