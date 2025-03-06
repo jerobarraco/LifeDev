@@ -75,11 +75,11 @@ void ABFish::Tick(const float DeltaSeconds) {
 
 void ABFish::Do(const FName& Token, const float DT) {
 	if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
-		SetActorRotation(FRotator(0,0,90));
+		SetActorRotation(FRotator(0,90,0));
 
 	Doing = Token;
 	if (Doing == UBSpace::T_Play) {
-		AddActorLocalRotation(FRotator(50*DT,0,0));
+		AddActorLocalRotation(FRotator(-50*DT,0,0));
 	} else if (Doing == UBSpace::T_Move) {
 		const FVector2D& Point = FMath::RandPointInCircle(50*DT);
 		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
