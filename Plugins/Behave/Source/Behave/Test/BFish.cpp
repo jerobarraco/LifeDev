@@ -60,13 +60,18 @@ void ABFish::Tick(const float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
 	if (Doing == UBSpace::T_Play) {
-		AddActorLocalRotation(FRotator(1*DeltaSeconds, 0,0));
+		AddActorLocalRotation(FRotator(0, 1*DeltaSeconds,0));
+	} else if (Doing == UBSpace::T_Move) {
+		const FVector2D& Point = FMath::RandPointInCircle(DeltaSeconds);
+		AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
 	}
 }
 
 void ABFish::Do(const FName& Token) {
 	if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
 		SetActorRotation(FRotator(0));
+
+	Doing = Token;
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
