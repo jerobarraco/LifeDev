@@ -8,7 +8,6 @@
 
 UBSpace::UBSpace():Super() {
 	Tokens = {
-		
 	};
 
 	Values = {
@@ -39,11 +38,20 @@ float UBSpace::Want_Implementation(const FName& Token) {
 
 EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 	if (IOToken == UBBio::T_Hungry) {
+		// add a new token. i'm unsure about this. it will decouple the "want hungry" from the "action/want eat"
+		// with the idea that there are many ways to do something.
+		IOToken = T_Eat;
+		return EBDoRes::NEW;
+	} else if (IOToken == T_Eat) {
 		// not sure about this. it seems using the tokens for wants and actions is making it very hard to track. TODO reconsider
 		if (Moved) {
 			Moved = false; // restart for next time
 			EatTime -= DT;
-			return EatTime <= 0 ? EBDoRes::FINISH: EBDoRes::DO;
+			if (UNLIKELY(EatTime<=0)) {
+				Moved = false;
+				return EBDoRes::FINISH;
+			}
+			return EBDoRes::DO;
 		}
 		// TODO check surroundings to see if there's something edible.
 		// stub: assume there isn't

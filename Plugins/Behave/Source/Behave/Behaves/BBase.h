@@ -7,6 +7,7 @@
 #include "BBase.generated.h"
 
 enum class EBDoRes : uint8;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnGives, const FName&, Token, const float, Val);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)

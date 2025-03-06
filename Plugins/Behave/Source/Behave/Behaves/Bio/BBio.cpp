@@ -33,6 +33,6 @@ void UBBio::ReactState_Implementation(const float DT, const FName& Token, const 
 }
 
 void UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
-	if (Token == T_Hungry) Mod(T_Hungry, -BioDampF*5*DT);
+	if (Token == UBSpace::T_Eat) Mod(T_Hungry, -BioDampF*5*DT);
 	if (Token == UBSpace::T_Move) Mod(T_Tired, -BioDampE*DT);
 }

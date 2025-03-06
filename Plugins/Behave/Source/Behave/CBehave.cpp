@@ -10,7 +10,7 @@
 #include "Behaves/Space/BSpace.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);
-
+#pragma optimize("", off)
 UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = true;
@@ -49,7 +49,6 @@ FActorComponentTickFunction* const ThisTickFunction) {
 				B2->ReactState(DeltaTime, T, *pVal);
 			}
 		}
-		// TODO react to Want not now because it's surely broken
 	}
 
 	// do
@@ -125,7 +124,7 @@ void UCBehave::WhatWant() {
 
 void UCBehave::Do(const float DT) {
 	if (Plan.IsEmpty()) {
-		WhatWant(); // schedule a new want. or should i wait? // TODO wait and let want arise normally. have a period of satisfaction.
+		WhatWant(); // schedule a new want. or should i wait? 
 		return; // what want can fail to add a new one.
 	}
 
@@ -134,7 +133,7 @@ void UCBehave::Do(const float DT) {
 		if (UNLIKELY(!IsValid(B))) continue;
 
 		DoRes = B->Do(DT, Want); // passing want as out. don't care atm
-		// if one is doing. that's it. TODO enable concurrent actions
+		// if one is doing. that's it.
 		if (DoRes == EBDoRes::DO) break;
 
 		// don't assume Finish, that would be problematic. (by comparing with ignore)
@@ -152,6 +151,7 @@ void UCBehave::Do(const float DT) {
 	}
 	 
 	if (DoRes == EBDoRes::DO) {
+		UE_LOG(LogCBehave, Log, TEXT("%hs Do want=%s"), __func__, *Want.ToString());
 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
@@ -162,8 +162,9 @@ void UCBehave::Do(const float DT) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
 		// TODO fix this part is not working
 		Want = NAME_None;
-		while (Plan.Num()>0) {
+		while (true) {
 			const int32 Num = Plan.Num();
+			if (Num<1) break;
 			Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
 			if (Num<2) break;
 
@@ -175,7 +176,9 @@ void UCBehave::Do(const float DT) {
 				if (UNLIKELY(!IsValid(B))) continue;
 				WantVal = FMath::Max(WantVal, B->Want(Want));
 			}
+			
 			if (WantVal > .15) break; // still wants it.
 		}
 	}
 }
+#pragma optimize("", on)

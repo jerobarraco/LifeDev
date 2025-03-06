@@ -20,6 +20,7 @@ public:
 	UBSpace();
 
 	static inline FName T_Move = "Space.Move";
+	static inline FName T_Eat = "Space.Eat";
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
