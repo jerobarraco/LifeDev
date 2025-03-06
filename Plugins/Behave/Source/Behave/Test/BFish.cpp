@@ -15,6 +15,7 @@ ABFish::ABFish():Super() {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	SetActorTickEnabled(true);
+
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -47,7 +48,7 @@ void ABFish::BeginPlay() {
 	if (Bio) {
 		Bio->OnUpd.AddUniqueDynamic(this, &ABFish::UpdBio);
 	}
-	UBBase* const Emo = Behave->GetBehave(UBBio::StaticClass());
+	UBBase* const Emo = Behave->GetBehave(UBEmo::StaticClass());
 	if (Emo) {
 		Emo->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}
@@ -78,7 +79,7 @@ void ABFish::UpdBio(UBBase* const Behave) {
 }
 
 void ABFish::UpdEmo(UBBase* const Behave) {
-	UBEmo* const Emo = Cast<UBEmo>( Behave); // cast on every tick :( 
+	UBEmo* const Emo = Cast<UBEmo>(Behave); // cast on every tick :( 
 	if (UNLIKELY(!Emo)) return;
 	const float SCBore = Emo->Val(UBEmo::T_Bore);
 	S_Bore->SetRelativeScale3D(FVector(BarScale, SCBore, BarScale));

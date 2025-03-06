@@ -11,6 +11,7 @@
 // later on, i could split each aspect into its own thing
 
 // by space I mean "physical" mostly. but that's ambiguous. (moving, doing certain actions, maybe just moving maybe other behavs can do physical actions too, dunno)
+// DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam()
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSpace: public UBBase {
