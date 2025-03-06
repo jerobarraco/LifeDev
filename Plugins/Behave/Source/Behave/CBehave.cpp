@@ -104,7 +104,6 @@ void UCBehave::Dump() {
 }
 
 void UCBehave::WhatWant() {
-
 	// i can do this once i store the want val
 	// if (Plan.Num()>0) {
 	// 	Want = Plan[Plan.Num()-1];
@@ -149,7 +148,6 @@ void UCBehave::Do(const float DT) {
 		// it's ok to assume ignore
 		if (DoRes == EBDoRes::DO || DoRes==EBDoRes::FINISH)
 			break;
-			// Acted = true;
 
 		if (DoRes == EBDoRes::NEW) {
 			Plan.Push(Want);
@@ -163,7 +161,7 @@ void UCBehave::Do(const float DT) {
 
 	if (DoRes == EBDoRes::IGNORE) { // if completely ignored. remove.
 		if (Plan.Num()>0)
-			Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+			Plan.Pop(EAllowShrinking::No);
 		return;
 	}
 
@@ -185,7 +183,7 @@ void UCBehave::Do(const float DT) {
 			}
 			if (NewRes == EBDoRes::FINISH) { // force finish
 				if (Plan.Num()>0)
-					Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+					Plan.Pop(EAllowShrinking::No);
 				return;
 			}
 		}
