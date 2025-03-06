@@ -57,11 +57,24 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		Moved = true; // micro opt, no need to set on each tick of TMOVE
 		MoveTime = FMath::RandRange(2, 5);
 		EatTime = FMath::RandRange(5, 10); // micro opt again
+		SleepTime = FMath::RandRange(5, 10); // micro opt again
 		IOToken = T_Move; // issue a new want
 		return EBDoRes::NEW; // will continue.
 	} else if (IOToken == T_Move) {
 		MoveTime -= DT;
 		return MoveTime <=0 ? EBDoRes::FINISH : EBDoRes::DO;
+	} else if (IOToken == UBBio::T_Tired) {
+		IOToken = T_Sleep;
+		return EBDoRes::NEW;
+	} else if (IOToken == T_Sleep) {
+		if (Moved) {
+			SleepTime -= DT;
+			if (UNLIKELY(SleepTime<=0)) {
+				Moved = false;
+				return EBDoRes::FINISH;
+			}
+			return EBDoRes::DO;
+		}
 	}
 
 	return EBDoRes::IGNORE;

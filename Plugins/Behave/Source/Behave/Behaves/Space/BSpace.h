@@ -21,6 +21,7 @@ public:
 
 	static inline FName T_Move = "Space.Move";
 	static inline FName T_Eat = "Space.Eat";
+	static inline FName T_Sleep = "Space.Sleep";
 
 protected:
 	virtual void Tick_Implementation(const float DT) override;
@@ -31,4 +32,5 @@ protected:
 	float MoveTime = 0; // simulate moving to a place by adding a delay. at this stage the actual position and stuff matters not.
 	bool Moved = false;
 	float EatTime = 0; // simulate eating with a delay
+	float SleepTime = 0; // simulate with a delay
 };

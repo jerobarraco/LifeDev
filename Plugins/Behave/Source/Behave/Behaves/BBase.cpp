@@ -47,9 +47,8 @@ float UBBase::TopWant(FName& OToken) {
 void UBBase::Mod(const FName& Token, const float Dif) {
 	float* const pVal = Values.Find(Token);
 	if (UNLIKELY(!pVal)) return;
-
-	//Values[Token] =
-	*pVal = FMath::Clamp((*pVal) + Dif, 0, 1);
+	
+	*pVal = FMath::Clamp((*pVal) + Dif, 0, 1); 	//Values[Token] =
 }
 
 void UBBase::Dump_Implementation() {

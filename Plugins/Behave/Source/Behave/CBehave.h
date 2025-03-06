@@ -34,11 +34,13 @@ protected:
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Want;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	EBDoRes DoRes;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TArray<FName> Plan; // TODO try using an ringbuffer
 };
