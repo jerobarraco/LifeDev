@@ -23,6 +23,7 @@ UCBehave::UCBehave():Super() {
 	};
 }
 
+
 void UCBehave::TickComponent(const float DeltaTime, const ELevelTick TickType,
 FActorComponentTickFunction* const ThisTickFunction) {
 
@@ -37,20 +38,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 
 	// react
-	// for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-	// 	UBBase* const B = KV.Value.Get();
-	// 	if (UNLIKELY(!IsValid(B))) continue;
-	//
-	// 	for (const FName& T: B->Tokens) { // iterating tokens instead of values on purpose
-	// 		float* const pVal = B->Values.Find(T);
-	// 		if (UNLIKELY(!pVal)) continue;
-	// 		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV2: Behaves) {
-	// 			UBBase* const B2 = KV2.Value.Get();
-	// 			if (UNLIKELY(!IsValid(B2))) continue; 
-	// 			B2->ReactState(DeltaTime, T, *pVal);
-	// 		}
-	// 	}
-	// }
+	ReactState(DeltaTime);
 
 	// do
 	Do(DeltaTime);
@@ -151,7 +139,8 @@ void UCBehave::Do(const float DT) {
 			UBBase* const B = KV.Value.Get();
 			if (UNLIKELY(!IsValid(B))) continue;
 
-			Break = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
+			// the order ensures the execution of ReacTDo
+			Break = B->ReactDo(DT, NewWant) || Break; // passing want as out. don't care atm
 		}
 
 		if (Break) { // force finish. outside for to let all components update
@@ -187,6 +176,21 @@ void UCBehave::RePlan() {
 
 	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s Val=%.5f"),
 		__func__, *GetNameSafe(this), *Want.ToString(), PlanVal);
+}
+
+void UCBehave::ReactState(const float DeltaTime) {
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+	
+		for (const TTuple<FName, float>& KV2: B->Values) { // iterating tokens instead of values on purpose
+			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV3: Behaves) {
+				UBBase* const B2 = KV3.Value.Get();
+				if (UNLIKELY(!IsValid(B2))) continue; 
+				B2->ReactState(DeltaTime, KV2.Key, KV2.Value);
+			}
+		}
+	}
 }
 
 #pragma optimize("", on)

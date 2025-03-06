@@ -10,6 +10,7 @@
 
 enum class EBDoRes : uint8;
 class UBBase;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDo, const FName&, Token);
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
@@ -17,6 +18,10 @@ class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
 	UCBehave();
+	void ReactState(float DeltaTime);
+
+	UPROPERTY(BlueprintAssignable, Transient)
+	FCBehaveDo OnDo;
 
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
