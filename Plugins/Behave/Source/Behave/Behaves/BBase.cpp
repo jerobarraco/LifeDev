@@ -28,8 +28,6 @@ void UBBase::ReactState_Implementation(const float DT, const FName& Token, const
 void UBBase::ReactDo_Implementation(const float DT, const FName& Token) { }
 
 float UBBase::TopWant(FName& OToken) {
-	// TODO at some point randomize, or have a range.
-	// maybe add a random
 	float VMax = 0;
 	for (const FName& T: Wants) {
 		// rand make it imperfect

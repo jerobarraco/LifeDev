@@ -28,5 +28,5 @@ protected:
 	virtual void Tick_Implementation(const float DT) override;
 	virtual void ReactState_Implementation(const float DT, const FName& Token, const float Val = 0) override;
 
-	static inline float EmoDamp = .001;
+	static inline float EmoDamp = .01;
 };

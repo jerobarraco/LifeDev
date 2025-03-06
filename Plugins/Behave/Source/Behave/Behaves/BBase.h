@@ -1,7 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: MIT
-
-
 #pragma once
 
 #include "BBase.generated.h"
@@ -61,9 +59,5 @@ public:
 	TArray<FName> Wants;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float WantMin = .1;
-	// UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
-	// FBOnGives OnGives;
+	float WantMin = .5;
 };
-
-// TODO æfectors

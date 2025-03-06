@@ -25,7 +25,6 @@ want
 need
 react : maps an effect to an outcome
 
-
 Have concurrent actions.
 * Maybe have a map with the current Behave and want. When a behave Do returns Doing
 
@@ -38,3 +37,4 @@ react: can be optimized by being called less often
 
 want: store how much i want it. for new checks.
 
+way to interrupt actions, 

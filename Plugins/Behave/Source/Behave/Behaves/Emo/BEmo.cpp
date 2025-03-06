@@ -30,7 +30,7 @@ void UBEmo::Tick_Implementation(const float DT) {
 	}
 
 	if (AllZ)
-		Values[T_Bore] += Damp*2; // increase bore by emo_damp if no emotion is present
+		Values[T_Bore] += Damp*5; // increase bore by emo_damp if no emotion is present
 	// UE_LOG(LogTemp, Log, TEXT("%hs bore=%f"), __func__, Values[T_Bore]);
 }
 
