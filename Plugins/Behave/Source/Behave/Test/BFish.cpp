@@ -9,6 +9,7 @@
 #include "Behave/Behaves/Emo/BEmo.h"
 #include "Behave/Behaves/Space/BSpace.h"
 #include "Components/TextRenderComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #define BarScale .05
 
@@ -115,6 +116,7 @@ void ABFish::Do(const FName& Token, const float DT) {
 		}
 		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, MoveSpeed);
 		SetActorLocation(New, false);
+		SetActorRotation(UKismetMathLibrary::FindLookAtRotation(Current, New));
 		// const FVector2D& Point = FMath::RandPointInCircle(50*DT);
 		// AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
 	} else if (Doing == UBEmo::T_Cry) {
