@@ -47,7 +47,10 @@ ABFish::ABFish():Super() {
 	Text->SetRelativeLocation(FVector(0,0,15));
 }
 
-static const FVector FoodPos(50); 
+static const FVector FoodPos(50, 50, 50);
+static const FVector SleepPos(10, 10, 10);
+static const FVector PlayPos(10, -50, 30);
+
 bool ABFish::CanEat() {
 	return FVector::DistSquared(FoodPos, GetActorLocation()) < 5; 
 }
@@ -70,8 +73,9 @@ void ABFish::BeginPlay() {
 
 	UBSpace* const Space = Cast<UBSpace>(Behave->GetBehave(UBSpace::StaticClass()));
 	if (Space) {
-		Space->OnCanEat.BindDynamic(this, &ABFish::CanEat);
+		Space->OnFoodClose.BindDynamic(this, &ABFish::CanEat);
 		Space->OnMoveToFood.BindDynamic(this, &ABFish::MoveToFood);
+		// Space->OnMoveToFood.BindDynamic(this, &ABFish::MoveToFood);
 		// Space->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}
 
@@ -92,15 +96,22 @@ void ABFish::Do(const FName& Token, const float DT) {
 	if (Doing == UBSpace::T_Play) {
 		AddActorLocalRotation(FRotator(-50*DT,0,0));
 	} else if (Doing == UBSpace::T_Move) {
-		const FVector& VMove = FMath::VInterpConstantTo(GetActorLocation(), MoveTgt, DT, 10);
-		SetActorLocation(VMove, false);
+		const FVector& Current = GetActorLocation();
+		const FVector& New = FMath::VInterpConstantTo(Current, MoveTgt, DT, 10);
+		const float Dist = FVector::DistSquared(New, Current);
+		if (Dist < 1) {
+			UBSpace* const Space = Cast<UBSpace>(Behave->GetBehave(UBSpace::StaticClass()));
+			if (Space) Space->MoveStop();
+		} else {
+			SetActorLocation(New, false);
+		} 
 		// const FVector2D& Point = FMath::RandPointInCircle(50*DT);
 		// AddActorLocalOffset(FVector(Point.X, Point.Y, 0));
 	}
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
-	const UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
+	const UBBio* const Bio = Cast<UBBio>(Behave); // cast on every tick :( 
 	if (UNLIKELY(!Bio)) return;
 
 	const float SCHungry = Bio->Val(UBBio::T_Hungry);

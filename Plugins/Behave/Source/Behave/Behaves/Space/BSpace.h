@@ -12,9 +12,11 @@
 
 // by space I mean "physical" mostly. but that's ambiguous. (moving, doing certain actions, maybe just moving maybe other behavs can do physical actions too, dunno)
 
-DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FBSpaceCanEat);
+DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FBSpaceFoodClose);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FBSpaceMoveTo, const FVector&, Point);
 DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToFood);
+DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToSleep);
+DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToPlay);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSpace: public UBBase {
@@ -28,9 +30,12 @@ public:
 	static inline FName T_Sleep = "Space.Sleep";
 	static inline FName T_Play = "Space.Play";
 
+	UFUNCTION(CallInEditor)
+	void MoveStop();
+	
 	// called when trying to eat. return true if it can.
 	UPROPERTY(BlueprintReadWrite, Transient)
-	FBSpaceCanEat OnCanEat;
+	FBSpaceFoodClose OnFoodClose;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBSpaceMoveToFood OnMoveToFood;
