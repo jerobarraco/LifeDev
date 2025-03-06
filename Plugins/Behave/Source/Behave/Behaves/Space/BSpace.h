@@ -40,6 +40,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBSpaceMoveToFood OnMoveToFood;
 
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FBSpaceMoveToSleep OnMoveToSleep;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FBSpaceMoveToPlay OnMoveToPlay;
+
 protected:
 	virtual void End_Implementation() override;
 	virtual void Tick_Implementation(const float DT) override;

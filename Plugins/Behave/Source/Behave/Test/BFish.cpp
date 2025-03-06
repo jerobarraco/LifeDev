@@ -60,6 +60,14 @@ void ABFish::MoveToFood() {
 	// Moving = true;
 }
 
+void ABFish::MoveToSleep() {
+	MoveTgt = SleepPos;
+}
+
+void ABFish::MoveToPlay() {
+	MoveTgt = PlayPos;
+}
+
 void ABFish::BeginPlay() {
 	Super::BeginPlay();
 	UBBase* const Bio = Behave->GetBehave(UBBio::StaticClass());
@@ -75,6 +83,8 @@ void ABFish::BeginPlay() {
 	if (Space) {
 		Space->OnFoodClose.BindDynamic(this, &ABFish::CanEat);
 		Space->OnMoveToFood.BindDynamic(this, &ABFish::MoveToFood);
+		Space->OnMoveToSleep.BindDynamic(this, &ABFish::MoveToSleep);
+		Space->OnMoveToPlay.BindDynamic(this, &ABFish::MoveToPlay);
 		// Space->OnMoveToFood.BindDynamic(this, &ABFish::MoveToFood);
 		// Space->OnUpd.AddUniqueDynamic(this, &ABFish::UpdEmo);
 	}

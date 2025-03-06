@@ -23,6 +23,10 @@ protected:
 	UFUNCTION()
 	void MoveToFood();
 
+	UFUNCTION()
+	void MoveToSleep();
+	UFUNCTION()
+	void MoveToPlay();
 	virtual void BeginPlay() override;
 	virtual void Tick(const float DeltaSeconds) override;
 	UFUNCTION()
