@@ -23,3 +23,15 @@ struct FBWant {
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Val =0;
 };
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FBWantNorm {
+	GENERATED_BODY()
+	// min to start wanting
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Thresh = 0;
+
+	// max value to map to. val(Thresh->1) = 0->Target.
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Target = 0;
+};

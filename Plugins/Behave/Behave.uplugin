@@ -24,5 +24,6 @@
 		}
 	],
 	"Plugins": [
+		{"Name": "JUtils", "Enabled": true}
 	]
 }

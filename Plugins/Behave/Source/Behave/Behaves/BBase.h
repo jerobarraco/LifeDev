@@ -4,6 +4,7 @@
 
 #include "BBase.generated.h"
 
+struct FBWantNorm;
 enum class EBDoRes : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnGives, const FName&, Token, const float, Val);
@@ -58,6 +59,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Wants;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, FBWantNorm> WantNorms;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float WantMin = .5;

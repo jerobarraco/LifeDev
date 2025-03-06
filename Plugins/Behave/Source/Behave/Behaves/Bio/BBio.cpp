@@ -56,3 +56,7 @@ bool UBBio::ReactDo_Implementation(const float DT, const FName& Token) {
 
 	return false;
 }
+
+float UBBio::Want_Implementation(const FName& Token) {
+	return Super::Want_Implementation(Token);
+}

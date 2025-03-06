@@ -4,6 +4,7 @@
 #include "BBase.h"
 
 #include "BConsts.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #define BError .01
 
@@ -20,7 +21,14 @@ float UBBase::Val_Implementation(const FName& Token) {
 
 float UBBase::Want_Implementation(const FName& Token) {
 	const float V = Val(Token);
-	return V>WantMin ? V: -1;
+	const FBWantNorm* const pNorm = WantNorms.Find(Token);
+	
+	if (!pNorm)
+		return V>WantMin ? V: -1;
+
+	const float VN = FMath::Clamp(UJUtilsMisc::MathRemapNorm(V, pNorm->Thresh, 1), 0, 1);
+	return V>pNorm->Thresh ? VN * pNorm->Target : -1; 
+
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT, FName& IOToken) { return EBDoRes::IGNORE; }
