@@ -12,9 +12,6 @@ ABFish::ABFish():Super() {
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-
-	Body = CreateDefaultSubobject<UCQuickMesh>(TEXT("Body"));
-	Body->SetupAttachment(Root);
 	Body = CreateDefaultSubobject<UCQuickMesh>(TEXT("Body"));
 	Body->SetupAttachment(Root);
 
@@ -22,7 +19,6 @@ ABFish::ABFish():Super() {
 	Tail->SetupAttachment(Body);
 	Tail->SetRelativeScale3D(FVector(0.050000,0.015750,0.026250));
 
-	
 	Stats = CreateDefaultSubobject<USceneComponent>(TEXT("Stats"));
 	Stats->SetupAttachment(Root);
 	Stats->SetRelativeLocation(FVector(0,0,5));
@@ -44,6 +40,8 @@ void ABFish::BeginPlay() {
 }
 
 void ABFish::UpdBio(UBBase* const Behave) {
-	if (!Behave) return;
-	
+	UBBio* const Bio = Cast<UBBio>( Behave); // cast on every tick :( 
+	if (!Bio) return;
+	const float SCHungry = Bio->Val(UBBio::T_Hungry);
+	S_Hungry->SetRelativeScale3D(FVector(1, SCHungry, 1));
 }
