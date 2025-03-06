@@ -37,6 +37,8 @@ void UBBase::ReactState_Implementation(const float DT, const FName& Token, const
 
 float UBBase::TopWant(FName& OToken) {
 	float VMax = 0;
+	TArray<FName> Wants;
+	WantNorms.GetKeys(Wants);
 	for (const FName& T: Wants) {
 		// rand make it imperfect
 		const float VWant = Want(T) + FMath::RandRange(-BError, BError);

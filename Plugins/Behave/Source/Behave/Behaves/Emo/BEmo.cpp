@@ -3,14 +3,14 @@
 
 #include "BEmo.h"
 
+#include "Behave/Behaves/BConsts.h"
 #include "Behave/Behaves/Bio/BBio.h"
 #include "Behave/Behaves/Space/BSpace.h"
 
 UBEmo::UBEmo():Super() {
-	Wants = {
-		T_Anger, T_Sad, T_Fear, T_Shame, T_Joy, T_Bore
+	WantNorms = {
+		{T_Bore, FBWantNorm{ .Thresh = .6, .Target = .3}},
 	};
-
 	Values = {
 		{T_Anger, 0},
 		{T_Sad, 0},

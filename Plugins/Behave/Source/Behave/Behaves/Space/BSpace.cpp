@@ -8,8 +8,6 @@
 #include "Behave/Behaves/Emo/BEmo.h"
 
 UBSpace::UBSpace():Super() {
-	Wants = {};
-
 	Values = {
 		// {T_Energy, 1},
 		// {T_Full, 1},

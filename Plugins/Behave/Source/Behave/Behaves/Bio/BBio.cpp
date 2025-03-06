@@ -7,8 +7,9 @@
 #include "Behave/Behaves/Space/BSpace.h"
 
 UBBio::UBBio():Super() {
-	Wants = {
-		T_Tired, T_Cold, T_Hungry
+	WantNorms = {
+		{T_Tired, FBWantNorm{ .Thresh = .7, .Target = 1}},
+		{T_Hungry, FBWantNorm{ .Thresh = .5, .Target = .6}},
 	};
 
 	Values = {

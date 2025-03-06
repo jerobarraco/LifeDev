@@ -2,12 +2,9 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include "BConsts.h"
+
 #include "BBase.generated.h"
-
-struct FBWantNorm;
-enum class EBDoRes : uint8;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnGives, const FName&, Token, const float, Val);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBBase: public UObject {
@@ -56,9 +53,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, float> Values;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> Wants;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, FBWantNorm> WantNorms;

@@ -27,6 +27,7 @@ struct FBWant {
 USTRUCT(Blueprintable, BlueprintType)
 struct FBWantNorm {
 	GENERATED_BODY()
+public:
 	// min to start wanting
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Thresh = 0;
