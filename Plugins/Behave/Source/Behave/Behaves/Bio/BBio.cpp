@@ -45,7 +45,7 @@ EBDoRes UBBio::ReactDo_Implementation(const float DT, FName& IOToken) {
 	}
 	
 	if (IOToken == UBSpace::T_Move) {
-		Mod(T_Tired, -BioDampE*DT);
+		Mod(T_Tired, BioDampE*2*DT);
 		return EBDoRes::IGNORE;
 	}
 
