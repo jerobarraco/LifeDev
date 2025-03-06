@@ -172,6 +172,8 @@ void UCBehave::Do(const float DT) {
 			
 			NewRes = B->ReactDo(DT, NewWant); // passing want as out. don't care atm
 			if (NewRes == EBDoRes::NEW && !NewWant.IsNone()) {
+				UE_LOG(LogCBehave, Log, TEXT("%hs ReactDo New Want=%s"),
+					__func__, *NewWant.ToString());
 				Want = NewWant;
 				Plan.Push(NewWant);
 				return;

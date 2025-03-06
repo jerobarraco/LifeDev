@@ -38,3 +38,5 @@ react: can be optimized by being called less often
 want: store how much i want it. for new checks.
 
 way to interrupt actions, 
+
+todo remove "Want" variable just use plan
