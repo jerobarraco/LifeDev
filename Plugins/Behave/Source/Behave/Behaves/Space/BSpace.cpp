@@ -17,6 +17,7 @@ UBSpace::UBSpace():Super() {
 
 void UBSpace::End_Implementation() {
 	OnCanEat.Clear();
+	OnMoveToFood.Clear();
 	Super::End_Implementation();
 }
 
@@ -59,6 +60,7 @@ EBDoRes UBSpace::Do_Implementation(const float DT, FName& IOToken) {
 		}
 		// TODO check surroundings to see if there's something edible.
 		// stub: assume there isn't
+		OnMoveToFood.ExecuteIfBound();
 
 		Moved = true; // micro opt, no need to set on each tick of TMOVE
 		MoveTime = FMath::RandRange(3, 5);

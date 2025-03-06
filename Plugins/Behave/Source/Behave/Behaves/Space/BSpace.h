@@ -14,6 +14,7 @@
 
 DECLARE_DYNAMIC_DELEGATE_RetVal(bool, FBSpaceCanEat);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FBSpaceMoveTo, const FVector&, Point);
+DECLARE_DYNAMIC_DELEGATE(FBSpaceMoveToFood);
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSpace: public UBBase {
@@ -32,7 +33,7 @@ public:
 	FBSpaceCanEat OnCanEat;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
-	FBSpaceMoveTo OnMoveTo;
+	FBSpaceMoveToFood OnMoveToFood;
 
 protected:
 	virtual void End_Implementation() override;

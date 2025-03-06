@@ -20,7 +20,9 @@ public:
 protected:
 	UFUNCTION()
 	bool CanEat();
-	
+	UFUNCTION()
+	void MoveToFood();
+
 	virtual void BeginPlay() override;
 	virtual void Tick(const float DeltaSeconds) override;
 	UFUNCTION()
@@ -53,4 +55,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Doing;
+	
+	FVector MoveTgt;
+	bool Moving = false;
 };

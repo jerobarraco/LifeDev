@@ -36,7 +36,7 @@ public:
 	FBTrait TraitGet(const FName& Name);
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	UBBase* GetBehave(const TSubclassOf<UBBase> Class);
-	
+
 	// experimental/stub
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FName, FBTrait> Traits;
