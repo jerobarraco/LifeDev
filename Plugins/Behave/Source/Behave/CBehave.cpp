@@ -139,7 +139,7 @@ void UCBehave::WhatWant() {
 
 void UCBehave::Do(const float DT) {
 	if (Plan.IsEmpty()) {
-		WhatWant(); // schedule a new want. or should i wait? 
+		RePlan(); // schedule a new want. or should i wait? 
 		return; // what want can fail to add a new one.
 	}
 

@@ -10,6 +10,7 @@
 
 enum class EBDoRes : uint8;
 class UBBase;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCBehaveDo, const FName&, Token);
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
@@ -39,6 +40,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	EBDoRes DoRes;
 
+	// a plan is always for ONE want, a very very simple plan
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TArray<FName> Plan; // TODO try using an ringbuffer
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
