@@ -43,7 +43,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
 
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Doing;
 };
