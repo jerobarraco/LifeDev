@@ -195,11 +195,11 @@ void UCBehave::Do(const float DT) {
 		}
 	} else if (DoRes == EBDoRes::FINISH) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
-		RePlan();
+		PlanCheck();
 	}
 }
 
-void UCBehave::RePlan() {
+void UCBehave::PlanCheck() {
 	FName Want = NAME_None;
 	DoRes = EBDoRes::IGNORE;
 	while (true) {

@@ -29,7 +29,7 @@ protected:
 	void WhatWant();
 	UFUNCTION()
 	void Do(const float DT);
-	void RePlan();
+	void PlanCheck();
 
 	// leave the object null pls
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
