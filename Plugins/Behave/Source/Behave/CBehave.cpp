@@ -103,40 +103,6 @@ void UCBehave::Dump() {
 	}
 }
 
-void UCBehave::WhatWant() {
-	// i can do this once i store the want val
-	// if (Plan.Num()>0) {
-	// 	Want = Plan[Plan.Num()-1];
-	// 	Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
-	// }
-
-	// assume a plan is for ONE want. we can still want many things at once. handled by each behave
-	if (!Plan.IsEmpty()) return;
-	
-	FName Want = NAME_None;
-	FName NewWant;
-	float VMax = 0;
-	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue;
-
-		const float Val = B->TopWant(NewWant);
-		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
-			Want = NewWant;
-			VMax = Val;
-		}
-	}
-
-	// if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan.Last()))
-	if (!Want.IsNone()) {
-		Plan.Push(Want);
-		PlanVal = VMax;
-	}
-
-	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
-		__func__, *GetNameSafe(this), *Want.ToString());
-}
-
 void UCBehave::Do(const float DT) {
 	if (Plan.IsEmpty()) {
 		RePlan(); // schedule a new want. or should i wait? 
@@ -192,29 +158,6 @@ void UCBehave::Do(const float DT) {
 	}
 }
 
-void UCBehave::PlanCheck() {
-	FName Want = NAME_None;
-	DoRes = EBDoRes::IGNORE;
-	while (true) {
-		const int32 Num = Plan.Num();
-		if (Num<1) break;
-		Plan.Pop(EAllowShrinking::No);
-		if (Num<2) break;
-
-		Want = Plan.Last();
-		float WantVal = -1;
-		// check if still want it
-		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-			UBBase* const B = KV.Value.Get();
-			if (UNLIKELY(!IsValid(B))) continue;
-
-			WantVal = FMath::Max(WantVal, B->Want(Want));
-		}
-
-		if (WantVal > 0) break; // still wants it.
-	}
-}
-
 void UCBehave::RePlan() {
 	const bool PlanEmpty = Plan.IsEmpty();
 	FName Want = PlanEmpty ? NAME_None : Plan.Last();
@@ -241,3 +184,60 @@ void UCBehave::RePlan() {
 }
 
 #pragma optimize("", on)
+
+void UCBehave::WhatWant() {
+	// i can do this once i store the want val
+	// if (Plan.Num()>0) {
+	// 	Want = Plan[Plan.Num()-1];
+	// 	Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+	// }
+
+	// assume a plan is for ONE want. we can still want many things at once. handled by each behave
+	if (!Plan.IsEmpty()) return;
+	
+	FName Want = NAME_None;
+	FName NewWant;
+	float VMax = 0;
+	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+		UBBase* const B = KV.Value.Get();
+		if (UNLIKELY(!IsValid(B))) continue;
+
+		const float Val = B->TopWant(NewWant);
+		if (UNLIKELY(!NewWant.IsNone() && Val>VMax+FMath::RandRange(-0.01, 0.01))) {
+			Want = NewWant;
+			VMax = Val;
+		}
+	}
+
+	// if ((!Want.IsNone()) && (Plan.IsEmpty() || Want != Plan.Last()))
+	if (!Want.IsNone()) {
+		Plan.Push(Want);
+		PlanVal = VMax;
+	}
+
+	UE_LOG(LogCBehave, Log, TEXT("%hs %s TopWant=%s"),
+		__func__, *GetNameSafe(this), *Want.ToString());
+}
+
+void UCBehave::PlanCheck() {
+	FName Want = NAME_None;
+	DoRes = EBDoRes::IGNORE;
+	while (true) {
+		const int32 Num = Plan.Num();
+		if (Num<1) break;
+		Plan.Pop(EAllowShrinking::No);
+		if (Num<2) break;
+
+		Want = Plan.Last();
+		float WantVal = -1;
+		// check if still want it
+		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+			UBBase* const B = KV.Value.Get();
+			if (UNLIKELY(!IsValid(B))) continue;
+
+			WantVal = FMath::Max(WantVal, B->Want(Want));
+		}
+
+		if (WantVal > 0) break; // still wants it.
+	}
+}
