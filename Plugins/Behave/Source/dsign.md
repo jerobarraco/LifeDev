@@ -38,4 +38,3 @@ react: can be optimized by being called less often
 
 want: store how much i want it. for new checks.
 
-drop: when i want something for too long and it's ignored for too long, drop it.

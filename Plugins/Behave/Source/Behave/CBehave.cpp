@@ -31,7 +31,8 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	// update
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
-		if (UNLIKELY(!IsValid(B))) continue; 
+		if (UNLIKELY(!IsValid(B))) continue;
+
 		B->Tick(DeltaTime);
 	}
 
@@ -73,7 +74,7 @@ void UCBehave::BeginPlay() {
 	if (UNLIKELY(!World)) return;
 
 	FTimerHandle H;
-	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 2, true);
+	World->GetTimerManager().SetTimer(H, this, &UCBehave::Dump, 1, true);
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -99,8 +100,14 @@ void UCBehave::Dump() {
 }
 
 void UCBehave::WhatWant() {
-	// want
 	Want = NAME_None;
+
+	// i can do this once i store the want val
+	// if (Plan.Num()>0) {
+	// 	Want = Plan[Plan.Num()-1];
+	// 	Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
+	// }
+	
 	float VMax = 0;
 	for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
 		UBBase* const B = KV.Value.Get();
@@ -149,7 +156,7 @@ void UCBehave::Do(const float DT) {
 		// return; // need to start all over
 	}
 
-	if (DoRes == EBDoRes::IGNORE) {
+	if (DoRes == EBDoRes::IGNORE) { // if completely ignored. remove.
 		if (Plan.Num()>0)
 			Plan.RemoveAtSwap(Plan.Num()-1, EAllowShrinking::No);
 		return;
@@ -165,27 +172,31 @@ void UCBehave::Do(const float DT) {
 		}
 	} else if (DoRes == EBDoRes::FINISH) {
 		UE_LOG(LogCBehave, Log, TEXT("%hs Finish want=%s"), __func__, *Want.ToString());
-		// TODO fix this part is not working
-		Want = NAME_None;
-		DoRes = EBDoRes::IGNORE;
+		RePlan();
+	}
+}
 
-		while (true) {
-			const int32 Num = Plan.Num();
-			if (Num<1) break;
-			Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
-			if (Num<2) break;
+void UCBehave::RePlan() {
+	Want = NAME_None;
+	DoRes = EBDoRes::IGNORE;
 
-			Want = Plan[Num-2]; // uops 2
-			float WantVal = -1;
-			// check if still want it
-			for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
-				UBBase* const B = KV.Value.Get();
-				if (UNLIKELY(!IsValid(B))) continue;
-				WantVal = FMath::Max(WantVal, B->Want(Want));
-			}
+	while (true) {
+		const int32 Num = Plan.Num();
+		if (Num<1) break;
+		Plan.RemoveAtSwap(Num-1, EAllowShrinking::No);
+		if (Num<2) break;
 
-			if (WantVal > .15) break; // still wants it.
+		Want = Plan[Num-2]; // uops 2
+		float WantVal = -1;
+		// check if still want it
+		for (TTuple<TSubclassOf<UBBase>, TObjectPtr<UBBase>>KV: Behaves) {
+			UBBase* const B = KV.Value.Get();
+			if (UNLIKELY(!IsValid(B))) continue;
+
+			WantVal = FMath::Max(WantVal, B->Want(Want));
 		}
+
+		if (WantVal > 0) break; // still wants it.
 	}
 }
 #pragma optimize("", on)
