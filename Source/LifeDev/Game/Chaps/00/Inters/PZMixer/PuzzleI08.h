@@ -12,5 +12,6 @@ class LIFEDEV_API APuzzleI08: public ALPuzzle {
 	GENERATED_BODY()
 
 public:
+	APuzzleI08();
 protected:
 };
