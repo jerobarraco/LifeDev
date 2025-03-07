@@ -33,8 +33,8 @@ public:
 		#else
 				return true;
 		#endif
-	};
-	
+	}
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsAndroid() {
 		// return UGameplayStatics::GetPlatformName() == "Android";
@@ -44,7 +44,7 @@ public:
 				return false;
 		#endif
 	}
-	
+
 	// returns the project version, as stored in the project settings
 	UFUNCTION(BlueprintCallable)
 	static FString GetProjectVersion();
