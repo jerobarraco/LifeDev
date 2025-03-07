@@ -5,6 +5,7 @@
 
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -54,4 +55,8 @@ void ALStepC0S000::DoDebug_Implementation() {
 	Inventory->Ensure(LDConsts::Items::Card0);
 	Flags->Set(LDConsts::Flags::Game::CH0::Basin);
 	Flags->Set(LDConsts::Flags::Game::CH0::Spot);
+	
+
+	AActor* const Pawn = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
+	if (LIKELY(Pawn)) Pawn->SetActorLocation(FVector(-683.152746,-20.003613,67.150001));
 }

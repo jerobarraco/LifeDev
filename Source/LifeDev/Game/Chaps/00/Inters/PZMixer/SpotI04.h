@@ -14,4 +14,6 @@ class LIFEDEV_API ASpotI04: public ASpot00 {
 
 public:
 	ASpotI04();
+
+protected:
 };
