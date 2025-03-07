@@ -9,7 +9,7 @@
 
 class UMaterialInterface;
 
-// base npc class
+// base npc class. this is not being used. remove?
 UCLASS(Blueprintable, BlueprintType)
 class ALNPC : public ALInteract {
 	GENERATED_BODY()

@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
 
@@ -31,5 +32,6 @@ APaper00::APaper00():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	UseFade = true;
+	AnimFade->SetDefaultMat();
 	Super::SetMobility(EComponentMobility::Static);
 }
