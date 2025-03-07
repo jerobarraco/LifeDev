@@ -12,11 +12,14 @@ UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFStart = 0;
 	MatFEnd = 1;
 	Duration = 1.f;
+	Curve = nullptr; // remove the interact curve.
+}
+
+void UCAnimatorFade::SetDefaultMat() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
-	
-	MatBase = CMatBaseNew.Object;
-	Curve = nullptr; // remove the interact curve.
+	if (LIKELY(CMatBaseNew.Succeeded()))
+		MatBase = CMatBaseNew.Object;
 }
 
 void UCAnimatorFade::CreateMaterial() {

@@ -16,6 +16,10 @@ class INTERACT_API UCAnimatorFade: public UCAnimatorMix {
 public:
 	UCAnimatorFade();
 
+	// only call during construction. sets to the voxelfade mat.
+	UFUNCTION(BlueprintCallable)
+	void SetDefaultMat();
+	
 	// creates the dynamic material. using MatBase, or the material of the 1st mesh in Meshes.
 	UFUNCTION(BlueprintCallable, Category="Interact|AnimFade", meta=(UnsafeDuringActorConstruction))
 	void CreateMaterial();
