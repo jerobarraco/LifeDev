@@ -376,7 +376,7 @@ void ALGGameMode::ChapStart() {
 		ChapStartEnd();
 		return;
 	}
-	
+
 	// skip chapter if not enabled or just started
 	if (UNLIKELY(ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
