@@ -9,6 +9,7 @@ ABottle00::ABottle00() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/Bottle01_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	StateNum = 1;
+	// TODO set position
 	Texts = {
 		NSLOCTEXT("Bottle00", "Text0", "Shampoo bottle")
 	};
