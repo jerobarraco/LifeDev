@@ -38,6 +38,19 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	FBMat = CFBMat.Object;
 }
 
+ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
+
+	const UWorld* const World = O->GetWorld();
+	if (UNLIKELY(!IsValid(World))) return nullptr;
+
+	const ALGGameMode* Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
+	if (UNLIKELY(!IsValid(Mode)))
+		return Cast<ALFeatsMan>(UGameplayStatics::GetActorOfClass(World, ALFeatsMan::StaticClass()));
+
+	return Mode->FeatsMan;
+}
+
 void ALFeatsMan::LoadMPC() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;

@@ -29,6 +29,8 @@ protected:
 	void InterDragUpd(const float Value);
 	UFUNCTION()
 	void InterHintUpd(const float Value);
+	UFUNCTION()
+	void BlurSizeUpd(const float Value);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;
@@ -46,4 +48,8 @@ protected:
 	TObjectPtr<USlider> SLInterHint;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TInterHint;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SLBlurSize;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TBlurSize;
 };

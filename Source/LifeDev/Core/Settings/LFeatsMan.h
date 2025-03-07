@@ -16,8 +16,9 @@ class LIFEDEV_API ALFeatsMan : public AInfo {
 
 public:
 	ALFeatsMan();
-
-
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	ALFeatsMan* Instance(const UObject* const O);
+	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
