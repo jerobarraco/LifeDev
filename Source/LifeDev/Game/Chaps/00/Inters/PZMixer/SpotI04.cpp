@@ -5,4 +5,5 @@
 ASpotI04::ASpotI04() {
 	UseOrder = false;
 	UseStateInc = false;
+	Items = {"Bottle00", "Bottle01"};
 }
