@@ -16,14 +16,20 @@ class LIFEDEV_API ALFeatsMan : public AInfo {
 
 public:
 	ALFeatsMan();
+
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	ALFeatsMan* Instance(const UObject* const O);
+	static ALFeatsMan* Instance(const UObject* const O);
+
+	// Called by LGGameMode
+	UFUNCTION(meta=(AdvancedDisplay))
+	virtual void Init();
 	
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	// Called by LGGameMode
-	virtual void Init();
+	// reapplies the blur
+	UFUNCTION(BlueprintCallable)
+	void BlurReset();
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FringeIntensity = 1;
@@ -67,4 +73,3 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 };
-

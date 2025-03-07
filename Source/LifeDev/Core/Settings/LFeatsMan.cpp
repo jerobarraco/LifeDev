@@ -118,16 +118,15 @@ void ALFeatsMan::Init() {
 
 void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_LUMEN, Settings && Settings->GetFeat(EFeat::V_LUMEN));
-	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
 	FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
 	FeatUpVisual(EFeat::V_STROBE, Settings && Settings->GetFeat(EFeat::V_STROBE));
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
-
+	BlurReset();
+	
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
 	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
 }
-
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) return;
@@ -211,6 +210,12 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
 }
 
+inline void ALFeatsMan::BlurReset() {
+	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
+}
+
+
+#pragma region Eval
 double ALFeatsMan::GetVar(const FName Name) {
 	// unfortunately this needs to access _everything_. good thing we can access the gm here that has most of the stuff.
 	// but still it will put a load on this class (the includes at least)
@@ -399,3 +404,4 @@ void ALFeatsMan::SetVarId(const double NameID, const double Val) {
 	if (UNLIKELY(N.IsNone())) return;
 	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); */
 }
+#pragma endregion

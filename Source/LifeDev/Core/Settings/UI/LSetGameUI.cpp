@@ -53,14 +53,9 @@ void ULSetGameUI::Apply_Implementation() {
 			Man->SaveConfig();
 		}
 		
-		// cheap nasty way to re-apply.
-		// TODO implement ALFeatsMan::Instance. and ResetBlur that calls featsupdblur
-		ULSettings* const Settings = ULSettings::Instance(this);
-		if (Settings) {
-			const bool BlurWas = Settings->GetFeat(EFeat::V_BLUR);
-			Settings->SetFeat(EFeat::V_BLUR, !BlurWas);
-			Settings->SetFeat(EFeat::V_BLUR, BlurWas);
-		}
+		Man = ALFeatsMan::Instance(this);
+		if (LIKELY(Man)) // only happens on game and not intro
+			Man->BlurReset();
 	}
 }
 
