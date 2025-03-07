@@ -1,7 +1,8 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Chaps/All/Inters/Var/Basin00.h"
+
+#include "LifeDev/Game/Chaps/All/Inters/Bath/Basin00.h"
 
 #include "BasinI00.generated.h"
 
