@@ -13,4 +13,7 @@ ABottle00::ABottle00() {
 	Texts = {
 		NSLOCTEXT("Bottle00", "Text0", "Shampoo bottle")
 	};
+	UseFade = false;
+	UseAnim = false;
+	UseRewardDestroy = false;
 }
