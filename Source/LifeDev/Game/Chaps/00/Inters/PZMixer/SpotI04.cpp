@@ -3,11 +3,14 @@
 #include "SpotI04.h"
 
 ASpotI04::ASpotI04() {
-	UseOrder = false;
+	UseOrder = true;
 	UseStateInc = false;
 	Items = {"Bottle00", "Bottle01"};
 	Texts = {
 		NSLOCTEXT("SpotI04", "Text0", "Drop bottle")
 	};
+
 	// todo show items on trigger
 }
+
+// rewards actor is set on editor
