@@ -32,6 +32,5 @@ APaper00::APaper00():Super() {
 	SFX_Trigger = CSnd.Object;
 
 	UseFade = true;
-	AnimFade->SetDefaultMat();
 	Super::SetMobility(EComponentMobility::Static);
 }

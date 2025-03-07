@@ -69,7 +69,6 @@ ALNPCH::ALNPCH():Super() {
 		LegL1, LegL2, LegR1, LegR2,
 		FootL, FootR, Mesh
 	};
-	AnimFade->SetDefaultMat();
 }
 
 void ALNPCH::SetPose(const FNPCHPose& Pose) const {
