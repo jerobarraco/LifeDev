@@ -3,7 +3,6 @@
 #include "LSetDbgUI.h"
 
 #include "Components/ScrollBox.h"
-#include "Components/TextBlock.h"
 
 #include "Inventory/Flags.h"
 

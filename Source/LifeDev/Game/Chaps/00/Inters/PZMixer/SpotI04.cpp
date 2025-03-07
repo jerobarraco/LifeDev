@@ -9,8 +9,6 @@ ASpotI04::ASpotI04() {
 	Texts = {
 		NSLOCTEXT("SpotI04", "Text0", "Drop bottle")
 	};
-
-	// todo show items on trigger
 }
 
 // rewards actor is set on editor
