@@ -117,7 +117,7 @@ public:
 		}
 	};
 
-	// returns the size of a static array in a static manner. (i.e int arr[10] = 10)
+	// returns the size of a static array in a static manner. (i.e. int arr[10] = 10)
 	template <typename T, std::size_t N>
 	static inline constexpr std::size_t ArraySize( const T(&)[N] ) noexcept { return N; }
 

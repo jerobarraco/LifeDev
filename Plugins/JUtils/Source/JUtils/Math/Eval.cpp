@@ -80,7 +80,7 @@ bool UEval::Eval(const FString& Exp, double & Res) const {
 	}
 
 	UE_LOG(LogEval, Log, TEXT("%hs: Ok exp=%s res=%.3f"),
-			__func__, *Exp, Result.GetValue());
+		__func__, *Exp, Result.GetValue());
 	Res = Result.GetValue();
 	return true;
 }
