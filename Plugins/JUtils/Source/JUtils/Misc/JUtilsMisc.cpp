@@ -133,20 +133,6 @@ bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
 }
 
-float UJUtilsMisc::MathEvaluate(const FString& Expression) {
-	// TODO find better name. TODO move to JUtilsMath once i have more about math.
-	const FBasicMathExpressionEvaluator Parser;
-
-	TValueOrError<double, FExpressionError> Result = Parser.Evaluate(*Expression);
-	if (UNLIKELY(!Result.IsValid())) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs: error=%s"), __func__, *Result.GetError().Text.ToString());
-		return NAN;
-	}
-
-	return Result.GetValue();
-}
-
-
 bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled) {
 	if (UNLIKELY(!O)) return false;
 

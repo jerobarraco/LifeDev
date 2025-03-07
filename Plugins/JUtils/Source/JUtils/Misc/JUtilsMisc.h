@@ -87,18 +87,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
 
-	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" square root.
-	UFUNCTION(BlueprintCallable)
-	static float MathEvaluate(const FString& Expression);
-	UFUNCTION(BlueprintCallable)
-	static inline float MathRemapNorm(const float X, const float Min, const float Max) {
-		// https://guillermoalgora.com/normalizing-remapping-values.html
-		// x normalized = (x - min) / (max - min)
-		return (X-Min) / (Max-Min);
-	}
-
-	// maybe later: To JUtilsMath
-
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
 

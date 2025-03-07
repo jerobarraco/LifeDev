@@ -29,7 +29,7 @@ float UBBase::Want_Implementation(const FName& Token) {
 	if (!pNorm)
 		return V>WantMin ? V: -1;
 
-	const float VN = FMath::Clamp(UJUtilsMisc::MathRemapNorm(V, pNorm->Thresh, 1), 0, 1);
+	const float VN = FMath::Clamp(UJUtilsMath::RemapNorm(V, pNorm->Thresh, 1), 0, 1);
 	const float VV = V>pNorm->Thresh ? VN * pNorm->Target : -1;
 	const float Error = FMath::RandRange(-pNorm->Error, pNorm->Error);
 	const float VE = VV + Error;

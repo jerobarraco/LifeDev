@@ -23,17 +23,6 @@
 	],
 	"Plugins": [
 		{
-			"Name": "Behave",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
-		},
-		{
 			"Name": "Story",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
@@ -102,6 +91,17 @@
 		{
 			"Name": "JSig",
 			"Enabled": true
+		},
+		{
+			"Name": "Behave",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"IOS",
+				"Android",
+				"Linux"
+			]
 		},
 		{
 			"Name": "JScene",

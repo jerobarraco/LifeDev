@@ -12,5 +12,20 @@ class JUTILS_API UJUtilsMath: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
 public:
+	// evaluates a math expression, with simple logic. "+-*/" "^"(exponent) "Sqrt(x)" square root.
+	UFUNCTION(BlueprintCallable)
+	static float MathEval(const FString& Expression);
 
+	// remaps a value to a normalized value
+	UFUNCTION(BlueprintCallable)
+	static FORCEINLINE_DEBUGGABLE float RemapNorm(const float X, const float Min, const float Max) {
+		// https://guillermoalgora.com/normalizing-remapping-values.html
+		// x normalized = (x - min) / (max - min)
+		return (X-Min) / (Max-Min);
+	}
+
+	template<class T>
+	static constexpr FORCEINLINE_DEBUGGABLE T RemapNormT(const T& X, const T& Min, const T& Max) {
+		return (X-Min) / (Max-Min);
+	} 
 };
