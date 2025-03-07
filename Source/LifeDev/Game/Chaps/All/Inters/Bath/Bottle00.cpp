@@ -7,9 +7,8 @@
 
 ABottle00::ABottle00() {
 	StateNum = 1;
-	// TODO set position
 	Texts = {
-		NSLOCTEXT("Bottle00", "Text0", "Shampoo bottle")
+		NSLOCTEXT("Bottle00", "Text0", "Shampoo")
 	};
 	UseFade = false;
 	UseAnim = false;
