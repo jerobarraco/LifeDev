@@ -56,6 +56,8 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 		Trigger(); // force trigger on all items restored
 		Locked = true; // avoid further triggering
 		LockedDlg = LockedFullDlg; // from now on use the new dialog
+	} else if (UseStateInc) { // on the else since Trigger always increases state
+		SetState(State+1);
 	}
 
 	return EItemUseResult::SUCCESS;

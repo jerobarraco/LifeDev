@@ -34,7 +34,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	bool UseOrder = false;
 
+	// when true it will increase the state on each usage
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseStateInc = false;
+
 protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
-	// virtual void SetText_Implementation() override;
 };
