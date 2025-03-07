@@ -33,13 +33,14 @@ void ULSetDbgUI::Load_Implementation() {
 	TMap<FName, float> Map;
 	Map = Flags->GetAll();
 	
-	for (const TTuple<FName, float> KV : Map) {
+	// for (const TTuple<FName, float> KV : Map) {
 		// ue says : CreateWidget called with a null class...
-		UTextBlock* const Text = Cast<UTextBlock>(
-			CreateWidget(this, UTextBlock::StaticClass()));
-		if (UNLIKELY(!Text)) continue;
-		SBFlags->AddChild(Text);
-		Text->SetText(FText::FromString(
-			FString::Printf(TEXT("%s: %.4f"), *KV.Key.ToString(), KV.Value)));
-	}
+		// can't call CreateWidget with UTextBlock, it's not a UUSerWidget, but a UWidget :'(
+		// UTextBlock* const Text = Cast<UTextBlock>(
+			// CreateWidget(this, UTextBlock::StaticClass()));
+		// if (UNLIKELY(!Text)) continue;
+		// SBFlags->AddChild(Text);
+		// Text->SetText(FText::FromString(
+			// FString::Printf(TEXT("%s: %.4f"), *KV.Key.ToString(), KV.Value)));
+	// }
 }
