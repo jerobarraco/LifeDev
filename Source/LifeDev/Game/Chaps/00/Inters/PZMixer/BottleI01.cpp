@@ -2,7 +2,7 @@
 
 #include "BottleI01.h"
 
-ABottleI01::ABottleI01() {
+ABottleI01::ABottleI01():Super() {
 	RewardItem = "Bottle01";
 	UseRewardDestroy = true;
 	UseFade = true;
