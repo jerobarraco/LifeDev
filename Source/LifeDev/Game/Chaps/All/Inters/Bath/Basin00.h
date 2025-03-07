@@ -9,7 +9,7 @@ class UCLSounder;
 class UNiagaraComponent;
 class UCSignificance;
 
-// Ch00 basin00
+// basin00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABasin00: public ALInteract {
 	GENERATED_BODY()
@@ -22,9 +22,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UNiagaraComponent* Water = nullptr;
+	TObjectPtr<UNiagaraComponent> Water = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCLSounder* SND_Water = nullptr;
+	TObjectPtr<UCLSounder> SND_Water = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCSignificance* Sig = nullptr;
+	TObjectPtr<UCSignificance> Sig = nullptr;
 };
