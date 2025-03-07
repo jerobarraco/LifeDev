@@ -1,5 +1,5 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
-// SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-License-Identifier: MIT
 #include "Flags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFlags, Log, Log);

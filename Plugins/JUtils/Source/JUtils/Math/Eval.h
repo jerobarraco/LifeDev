@@ -8,8 +8,8 @@
 
 #include "Eval.generated.h"
 
-
 class FMathExpEvaluator;
+
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const FString&, Name, const double, Val);
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double, Val);
