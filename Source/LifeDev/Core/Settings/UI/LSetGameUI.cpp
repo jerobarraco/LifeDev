@@ -6,7 +6,6 @@
 #include "Components/TextBlock.h"
 #include "Interact/Interact.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
-#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
 
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -47,22 +46,20 @@ void ULSetGameUI::Apply_Implementation() {
 	}
 	
 	if (LIKELY(SLBlurSize)) {
-		ALFeatsMan* Man = GetMutableDefault<ALFeatsMan>();
+		// use the in-level if possible
+		ALFeatsMan* Man =ALFeatsMan::Instance(this);
+		if (UNLIKELY(!Man)) Man = GetMutableDefault<ALFeatsMan>();
 		if (LIKELY(Man)) {
 			Man->MotionBlurAmount = SLBlurSize->GetValue();
 			Man->SaveConfig();
+			Man->BlurReset(); // i can do this because i check nullptrs
 		}
-		
-		Man = ALFeatsMan::Instance(this);
-		if (LIKELY(Man)) // only happens on game and not intro
-			Man->BlurReset();
 	}
 }
 
 void ULSetGameUI::Load_Implementation() {
 	Super::Load_Implementation();
 
-	
 	float AutoTime = 0;
 	const ALDiagMan* const Man = ALDiagMan::InstanceL(this); // this probably will only be changeable during gameplay and not intro
 	if (LIKELY(Man)) AutoTime = Man->GetAutoTime();
@@ -85,7 +82,6 @@ void ULSetGameUI::Load_Implementation() {
 	const float InterHint = Inter ? Inter->HintTime : 1.5;
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
 	InterDragUpd(InterHint);
-
 
 	const ALFeatsMan* const FMan = GetMutableDefault<ALFeatsMan>();
 	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : 1;
@@ -118,8 +114,9 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLInterHint->SetMinValue(2); // the range animation time
 		SLInterHint->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::InterHintUpd);
 	}
+
 	if (LIKELY(SLBlurSize)) {
-		SLBlurSize->SetMaxValue(10.);
+		SLBlurSize->SetMaxValue(5.);
 		SLBlurSize->SetMinValue(0);
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
 	}
@@ -159,7 +156,7 @@ void ULSetGameUI::InterDragUpd(const float Value) {
 }
 
 void ULSetGameUI::InterHintUpd(const float Value) {
-	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} secs");
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterHint", "{0} secs");
 	if (LIKELY(TInterHint)) {
 		static FNumberFormattingOptions NFOption;
 		NFOption.MaximumFractionalDigits = 3;
@@ -172,7 +169,7 @@ void ULSetGameUI::InterHintUpd(const float Value) {
 void ULSetGameUI::BlurSizeUpd(const float Value) {
 	if (UNLIKELY(!TBlurSize)) return;
 
-	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0}");
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TBlurSize", "{0}");
 	static FNumberFormattingOptions NFOption;
 	NFOption.MaximumFractionalDigits = 3;
 	NFOption.MinimumFractionalDigits = 3;

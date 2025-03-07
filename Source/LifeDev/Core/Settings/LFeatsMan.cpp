@@ -45,10 +45,10 @@ ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 
 	const ALGGameMode* Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
-	if (UNLIKELY(!IsValid(Mode)))
-		return Cast<ALFeatsMan>(UGameplayStatics::GetActorOfClass(World, ALFeatsMan::StaticClass()));
+	if (LIKELY(IsValid(Mode)))
+		return Mode->FeatsMan;
 
-	return Mode->FeatsMan;
+	return Cast<ALFeatsMan>(UGameplayStatics::GetActorOfClass(World, ALFeatsMan::StaticClass()));
 }
 
 void ALFeatsMan::LoadMPC() {
@@ -210,10 +210,9 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
 }
 
-inline void ALFeatsMan::BlurReset() {
+void ALFeatsMan::BlurReset() {
 	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
 }
-
 
 #pragma region Eval
 double ALFeatsMan::GetVar(const FName Name) {
