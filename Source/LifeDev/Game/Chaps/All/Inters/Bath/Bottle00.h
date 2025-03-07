@@ -11,6 +11,7 @@ class LIFEDEV_API ABottle00: public ALInteract {
 	GENERATED_BODY()
 
 public:
+	ABottle00();
 
 protected:
 };
