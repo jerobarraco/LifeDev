@@ -123,16 +123,10 @@ void ULSave::ReadSubsystems(const UObject* const O) {
 		const TMap<FName, FItem>& Items = Inventory->GetItems();
 		SInventory.Empty(Items.Num());
 
-		TArray<FName> Keys;
-		Items.GetKeys(Keys);
-		for (const FName& N: Keys) {
-			const FItem* const pI = Items.Find(N);
-			if (!pI) continue;
-
-			const FItem I = *pI;
-			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *N.ToString(), I.Count);
+		for (const TTuple<FName, FItem>& I: Items) {
+			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *I.Key.ToString(), I.Value.Count);
 			// only saving the count. this is lame. but it's enough for now. good enough > good > perfect.
-			SInventory.Add(N, I.Count);
+			SInventory.Add(I.Key, I.Value.Count);
 		}
 	}
 
