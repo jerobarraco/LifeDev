@@ -9,6 +9,7 @@
 
 #include "LGGameMode.generated.h"
 
+class ULOverlayUI;
 class UFlashback;
 struct FDiag;
 class AGhostPool;
@@ -60,9 +61,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(const bool Enabled) const;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
 
+#pragma region Managers
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	/// only making public the ones that require a GetActorOfClass (not the subsystems)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -77,16 +82,19 @@ public:
 	TObjectPtr<AFlashbackMan> FlashbackMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALFeatsMan> FeatsMan = nullptr;
-
-	/// others cache
+#pragma endregion
+#pragma region Cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALChar> Char = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ULOverlayUI> OverlayUI = nullptr;
 	
-	/// subsystems cache
+#pragma endregion
+#pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
@@ -101,6 +109,7 @@ public:
 	TObjectPtr<UEval> Eval = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
+#pragma endregion
 
 protected:
 	virtual void BeginPlay() override;
