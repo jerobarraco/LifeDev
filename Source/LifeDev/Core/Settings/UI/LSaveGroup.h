@@ -18,6 +18,11 @@ public:
 	void LoadDoneAll();
 
 protected:
+	virtual void NativeOnInitialized() override;
+
+	UFUNCTION()
+	void FoxyUpd(const float Value);
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<USlider> SL_Foxy = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
