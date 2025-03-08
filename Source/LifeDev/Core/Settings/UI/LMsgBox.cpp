@@ -7,5 +7,4 @@ ULMsgBox::ULMsgBox():Super() {
 		CBtn(TEXT("/Game/LifeDev/Core/UI/LButtonSmall.LButtonSmall_C"));
 	if (CBtn.Succeeded())
 		BtnClass = CBtn.Class;
-
 }
