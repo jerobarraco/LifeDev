@@ -25,8 +25,10 @@ protected:
 
 	UFUNCTION()
 	void SlotsDone(const bool HasDoneSave);
+	UFUNCTION()
+	void Saving(const bool IsSaving);
 	void AddUI();
-	
+
 	UFUNCTION()
 	void Done();
 	

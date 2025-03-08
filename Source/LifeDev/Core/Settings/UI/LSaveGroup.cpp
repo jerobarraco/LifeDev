@@ -32,7 +32,6 @@ void ULSaveGroup::FoxyUpd(const float Value) {
 		FText::FromString(FString::Printf(TEXT("Foxify: %.3f"), Value)));
 	UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
-	
+
 	Flags->Set(LDConsts::Flags::Settings::Global::Foxy, Value);
-	// TODO save foxy value before starting the game
 }

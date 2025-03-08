@@ -43,7 +43,6 @@ void AIntroMan::Done() {
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 	const UWorld* const World = GetWorld();
-
 	ULSettings* const Settings = ULSettings::Instance(World);
 	if (UNLIKELY(!Settings)) return;
 
@@ -64,14 +63,24 @@ void AIntroMan::Done() {
 	UJUtilsMisc::ShowUI(this, false);
 
 	// this is a patch to ensure the settings are respected when going to the game.
-	if (LIKELY(Settings)) Settings->SaveGame();
+	// as well as the foxify value.
+	// should i wait for settings to be saved though?
+	Settings->OnSaving.AddUniqueDynamic(this, &AIntroMan::Saving);
+	Settings->SaveGame();
+}
+
+void AIntroMan::Saving(const bool IsSaving) {
+	if (IsSaving) return;
+
+	// once it finished saving, load the world
 	
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
 	// FString Options = "Game="+ NextLevelMode;
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
-	UGameplayStatics::OpenLevel(World, FName(*NextLevel), true);
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }
+
 
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
@@ -90,6 +99,7 @@ void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (UNLIKELY(!Man)) return;
+
 	// the whole issue was i was not initializing this instance on intro game mode. :')
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
 	Man->PlayMusic(M, true);
