@@ -1,3 +1,7 @@
 // Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LSaveGroup.h"
+
+void ULSaveGroup::LoadDoneAll_Implementation() {
+	
+}
