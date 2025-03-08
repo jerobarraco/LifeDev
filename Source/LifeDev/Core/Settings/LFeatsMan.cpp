@@ -21,6 +21,7 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+#include "LifeDev/Game/Sys/LOverlayUI.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -36,6 +37,8 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CFBMat(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MI"));
 	FBMat = CFBMat.Object;
+
+	OverlayUIClass = ULOverlayUI::StaticClass();
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {

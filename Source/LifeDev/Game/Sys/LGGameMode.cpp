@@ -53,7 +53,7 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = CChar.Succeeded() ? CChar.Class.Get(): ALChar::StaticClass();
 
 	PlayerControllerClass = ALGPController::StaticClass();
-	
+
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	// not using the interact trace channel
 	// since i want things like walls to block it,
@@ -74,7 +74,7 @@ void ALGGameMode::BeginPlay() {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
 		return;
 	}
-	
+
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (UNLIKELY(!IsValid(Settings))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
@@ -239,7 +239,10 @@ void ALGGameMode::Init() {
 	if (LIKELY(FlashbackMan)) FlashbackMan->Init();
 	// do at the end since it depends on other things.
 	// will race-condition the ghosts
-	if (LIKELY(FeatsMan)) FeatsMan->Init();
+	if (LIKELY(FeatsMan)) {
+		FeatsMan->ZOrder = 111;
+		FeatsMan->Init();
+	}
 
 	// Character
 	if (LIKELY(IsValid(Char))) {

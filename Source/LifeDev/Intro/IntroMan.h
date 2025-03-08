@@ -18,7 +18,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,  Category=SetUp)
 	FString NextLevel = "Game_L";
 
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

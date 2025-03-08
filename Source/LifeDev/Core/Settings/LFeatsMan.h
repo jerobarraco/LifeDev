@@ -5,6 +5,7 @@
 
 #include "LFeatsMan.generated.h"
 
+class ULOverlayUI;
 class ULSettings;
 class UEval;
 class ALGGameMode;
@@ -37,6 +38,9 @@ public:
 	float MotionBlurMax = 5;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float MotionBlurAmount = .5;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 ZOrder = 111;
 
 protected:
 	void LoadMPC();
@@ -56,12 +60,18 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test_DL.Test_DL"));
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ULOverlayUI> OverlayUI = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInterface> SpeedMat = nullptr;
 	UPROPERTY(Transient)

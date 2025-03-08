@@ -9,7 +9,6 @@
 
 #include "LGGameMode.generated.h"
 
-class ULOverlayUI;
 class UFlashback;
 struct FDiag;
 class AGhostPool;
@@ -61,9 +60,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(const bool Enabled) const;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
-	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
 
@@ -90,9 +86,6 @@ public:
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ULOverlayUI> OverlayUI = nullptr;
-	
 #pragma endregion
 #pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)
