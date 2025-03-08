@@ -8,6 +8,8 @@
 
 class USlider;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSave);
+
 // LD basic savefile group box
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSaveGroup : public UGroupBox {
@@ -16,6 +18,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void LoadDoneAll();
+
+	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
+	FSGOnLoadDone OnLoadDone;
 
 protected:
 	virtual void NativeOnInitialized() override;

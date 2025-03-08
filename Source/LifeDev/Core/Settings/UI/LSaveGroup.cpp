@@ -8,7 +8,12 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 void ULSaveGroup::LoadDoneAll_Implementation() {
+	LoadAllSlots = false; // finished
+	OnLoadDone.Broadcast(HasDoneSave);
 	
+	if (!HasDoneSave) return;
+	if (LIKELY(SL_Foxy)) SL_Foxy->SetVisibility(ESlateVisibility::Visible);
+	if (LIKELY(T_Foxy)) T_Foxy->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ULSaveGroup::NativeOnInitialized() {
@@ -21,9 +26,10 @@ void ULSaveGroup::FoxyUpd(const float Value) {
 	if (UNLIKELY(!SL_Foxy || !T_Foxy)) return;
 
 	T_Foxy->SetText(
-		FText::FromString(FString::Printf(TEXT("%.3f"), Value)));
+		FText::FromString(FString::Printf(TEXT("Foxify: %.3f"), Value)));
 	UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 	
 	Flags->Set(LDConsts::Flags::Settings::Global::Foxy, Value);
+	// TODO save foxy value before starting the game
 }
