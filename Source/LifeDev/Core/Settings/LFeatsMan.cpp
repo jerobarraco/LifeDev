@@ -71,7 +71,8 @@ void ALFeatsMan::LoadMPC() {
 
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
-	const UWorld* const W = GetWorld();
+
+	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
@@ -80,6 +81,15 @@ void ALFeatsMan::BeginPlay() {
 	Settings = ULSettings::Instance(this);
 	// force initialize
 	LoadMPC();
+	
+	UClass* const Class = OverlayUIClass.Get();
+	if (UNLIKELY(!IsValid(Class))) return;
+
+	OverlayUI = CreateWidget<ULOverlayUI>(W, Class);
+	if (UNLIKELY(!IsValid(OverlayUI))) return;
+
+	OverlayUI->AddToViewport(ZOrder);
+	// OverlayUI->OnDone.AddUniqueDynamic(this, &ADiagMan::Hidden);
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {

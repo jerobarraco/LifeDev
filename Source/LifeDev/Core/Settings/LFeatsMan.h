@@ -25,9 +25,6 @@ public:
 	UFUNCTION(meta=(AdvancedDisplay))
 	virtual void Init();
 	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
 	// reapplies the blur
 	UFUNCTION(BlueprintCallable)
 	void BlurReset();
@@ -43,6 +40,9 @@ public:
 	int32 ZOrder = 111;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	void LoadMPC();
 	void LoadFeats();
 	UFUNCTION()
