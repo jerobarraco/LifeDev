@@ -6,14 +6,17 @@
 #include "Components/TextBlock.h"
 #include "Inventory/Flags.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 void ULSaveGroup::LoadDoneAll_Implementation() {
 	LoadAllSlots = false; // finished
-	OnLoadDone.Broadcast(HasDoneSave);
+
+	const bool ShowFoxy = HasDoneSave && ULSettings::GetFeatS(this, EFeat::G_NGP_FOXY);
+	const ESlateVisibility Vis = ShowFoxy ? ESlateVisibility::Visible: ESlateVisibility::Collapsed;
+	if (LIKELY(SL_Foxy)) SL_Foxy->SetVisibility(Vis);
+	if (LIKELY(T_Foxy)) T_Foxy->SetVisibility(Vis);
 	
-	if (!HasDoneSave) return;
-	if (LIKELY(SL_Foxy)) SL_Foxy->SetVisibility(ESlateVisibility::Visible);
-	if (LIKELY(T_Foxy)) T_Foxy->SetVisibility(ESlateVisibility::Visible);
+	OnLoadDone.Broadcast(HasDoneSave);
 }
 
 void ULSaveGroup::NativeOnInitialized() {

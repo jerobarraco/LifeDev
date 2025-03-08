@@ -88,12 +88,15 @@ enum class EFeat: uint8 {
 	// it surely can be abused to duplicate items or smth like that.
 	// for debug only.
 	G_SAVE_HOT,
+	// For use in expos and stuff like that.
 	// TODO locks the game in the game
 	// (e.g. avoid quit, disable (some) settings, maybe savegame?, reduce playtime?,
 	// simplified intro level, shows a video when in the intro for too long (with CTA))
 	G_KIOSK,
-	// TODO reduce amount of chapters available, maybe some settings too.
+	// TODO reduce capabilities
 	G_DEMO,
+	// Ability to tweak foxify value on new game +
+	G_NGP_FOXY,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 
