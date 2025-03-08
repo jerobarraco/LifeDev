@@ -6,10 +6,17 @@
 
 #include "LSaveGroup.generated.h"
 
+class USlider;
 // LD basic savefile box
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSaveGroup : public UGroupBox {
 	GENERATED_BODY()
 
 public:
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<USlider> SL_Foxy = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UTextBlock> T_Foxy = nullptr;
 };
