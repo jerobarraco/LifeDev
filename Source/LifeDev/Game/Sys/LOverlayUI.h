@@ -23,8 +23,18 @@ protected:
 	UFUNCTION()
 	void SaveUpd(const bool NewIsSaving);
 	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UMaterialInstance> SaveMat = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCurveFloat> SaveCurve = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> ISaving;
+	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UMaterialInstanceDynamic> SaveMatDyn = nullptr;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	float SaveTime = 1;
+	
 	bool IsSaving = false;
 };
