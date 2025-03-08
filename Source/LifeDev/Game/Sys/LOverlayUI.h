@@ -6,10 +6,25 @@
 #include "LOverlayUI.generated.h"
 
 
+class UImage;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API ULOverlayUI: public UBaseUI {
 	GENERATED_BODY()
 
 public:
 	ULOverlayUI();
+
+protected:
+	virtual void NativeOnInitialized() override;
+
+	UFUNCTION()
+	void SaveTimer();
+	UFUNCTION()
+	void SaveUpd(const bool NewIsSaving);
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UImage> ISaving;
+
+	bool IsSaving = false;
 };

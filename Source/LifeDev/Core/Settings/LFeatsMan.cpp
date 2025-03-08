@@ -38,7 +38,9 @@ ALFeatsMan::ALFeatsMan() :Super() {
 		CFBMat(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MI"));
 	FBMat = CFBMat.Object;
 
-	OverlayUIClass = ULOverlayUI::StaticClass();
+	static ConstructorHelpers::FClassFinder<ULOverlayUI>
+		COver(TEXT("/Game/LifeDev/Core/Settings/Feats/LOverlayUI_W.LOverlayUI_W_C"));
+	OverlayUIClass = COver.Succeeded() ? COver.Class.Get() : ULOverlayUI::StaticClass();
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
