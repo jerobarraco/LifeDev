@@ -1,15 +1,15 @@
 // Copyright (C) 2023 - Jerónimo Barraco-Mármol
 
 #pragma once
-#include "Diags/DialogUI.h"
+#include "BaseUI.h"
 
-#include "LDialogUI.generated.h"
+#include "LOverlayUI.generated.h"
 
-// LD class for the dialogs ui
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LIFEDEV_API ULDialogUI: public UDialogUI {
+class LIFEDEV_API ULOverlayUI: public UBaseUI {
 	GENERATED_BODY()
 
 public:
-	ULDialogUI();
+	ULOverlayUI();
 };
