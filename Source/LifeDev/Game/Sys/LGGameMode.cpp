@@ -193,7 +193,8 @@ void ALGGameMode::Init() {
 	// ensure the save-game loads the data into the subsystems.
 	// do only after subsystems have been initialized.
 	// do before StartChapter since that saves the gamefile (loading from subsystems)
-	// needs to be forced since sometimes the savegame already is loaded (from the intro level)
+	// needs to be forced since sometimes the savegame is already loaded (from the intro level)
+	// can be done before the managers since they should load the values anyway. (it's also safer if the values are already there)
 	Settings->Save->WriteSubsystems(World);
 
 #pragma region managers

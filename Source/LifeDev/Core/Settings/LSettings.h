@@ -29,6 +29,7 @@ public:
 
 	// overrides current save with a new game
 	// defaults to current slot
+	// the object is ready after the call, but it won't be saved just yet.
 	UFUNCTION(BlueprintCallable)
 	void NewGame(const int32 NewSlotIndex =-1);
 	

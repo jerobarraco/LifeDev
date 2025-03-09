@@ -45,7 +45,7 @@ void ULSettings::NewGame(const int32 NewSlotIndex) {
 
 	SlotIndex = NewSlotIndex;
 	UE_LOG(LogLSettings, Log, TEXT("%hs: Slot=%i."), __func__, SlotIndex);
-	Save->Reset(GetWorld()); // does write subsystem
+	Save->Reset(this); // does write subsystem
 	SetIsSaving(false);  // broadcast anyway since the game mode will be waiting.
 }
 
