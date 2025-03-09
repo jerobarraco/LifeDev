@@ -28,7 +28,6 @@ ALSwitch01::ALSwitch01(): Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.000000,7.500000,-12.500000));
 
-	// TODO
-	Interact->SetRelativeLocation(FVector(7.500000,-12.500000,17.500000));
-	Interact->SetBoxExtent(FVector(5));
+	Interact->SetRelativeLocation(FVector(7.500000,-10.000000,12.500000));
+	Interact->SetBoxExtent(FVector(5)); // left like this to avoid issues due to overflow
 }
