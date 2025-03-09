@@ -6,10 +6,12 @@
 
 #include "JUtils/Misc/JUtilsMisc.h"
 
-#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
-#include "IntroUI.h"
+#include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
+
+#include "IntroUI.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
@@ -45,7 +47,21 @@ void AIntroMan::Done() {
 	const UWorld* const World = GetWorld();
 	ULSettings* const Settings = ULSettings::Instance(World);
 	if (UNLIKELY(!Settings)) return;
-
+	if (UNLIKELY(!Settings->Save)) {
+		Settings->NewGame();
+		if (UNLIKELY(!Settings->Save)) {
+			UE_LOG(LogTemp, Warning, TEXT("%hs: Current Save is not set! Can't work under these conditions!."),
+				__func__);
+			static const FText TheEnd(
+			NSLOCTEXT("Intro", "Can't save",
+				"Savegame was erroneous and a new one could not be created.\n"
+				"No idea what went wrong, check the logs if any.\n"
+				"Sorry."));
+			UI->ShowMsg(TheEnd);
+			return;
+		}
+	}
+	
 	// savestate actually saves past the last chapter.
 	const EFeat ChapterFeat = Settings->CurrentChapterFeat();
 
@@ -59,12 +75,16 @@ void AIntroMan::Done() {
 		UI->ShowMsg(TheEnd);
 		return;
 	}
-
+	/// all ok, continue.
+	
 	UJUtilsMisc::ShowUI(this, false);
+	
 
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.
-	// should i wait for settings to be saved though?
+	// the false is important since the inventory does not work on the intro.
+	// reading subsystems is important since the settings and flags could change.
+	Settings->Save->ReadSubsystems(this, false);
 	Settings->OnSaving.AddUniqueDynamic(this, &AIntroMan::Saving);
 	Settings->SaveGame();
 }
@@ -80,7 +100,6 @@ void AIntroMan::Saving(const bool IsSaving) {
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
 }
-
 
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
