@@ -7,12 +7,14 @@
 
 #include "LSettingsUI.generated.h"
 
+class UTextBlock;
 class ULSetDbgUI;
 class UWidgetSwitcher;
 class UButton;
 class UComboBoxString;
 class UGroupBox;
 
+// the ui for the ingame settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSettingsUI : public UBaseUI {
 	GENERATED_BODY()
@@ -48,4 +50,6 @@ protected:
 	TObjectPtr<UWidgetSwitcher> SWOptions;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULSetDbgUI> Settings_Dbg;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TFoxy;
 };

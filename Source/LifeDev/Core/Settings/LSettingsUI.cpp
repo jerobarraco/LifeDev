@@ -5,9 +5,12 @@
 #include "LSettings.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
+#include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 
@@ -43,7 +46,15 @@ void ULSettingsUI::Hide_Implementation() {
 
 void ULSettingsUI::Load_Implementation() {
 	// doesn't work as expected and prints errors
-	// if (LIKELY(Settings_Dbg)) Settings_Dbg->Load(); 
+	// if (LIKELY(Settings_Dbg)) Settings_Dbg->Load();
+
+	// on load since this could also be on the intro level. so it could change on each show.
+	if (LIKELY(TFoxy)) {
+		const UFlags* const Flags = UFlags::Instance(this);
+		const float Foxy = Flags ? Flags->Get(LDConsts::Flags::Settings::Global::Foxy) : 0;
+		TFoxy->SetText(FText::FromString(FString::Printf(TEXT("Foxy: %.4f"), Foxy)));
+		TFoxy->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 void ULSettingsUI::NativeOnInitialized() {
