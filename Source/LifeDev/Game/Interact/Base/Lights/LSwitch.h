@@ -14,4 +14,5 @@ public:
 	ALSwitch();
 
 protected:
+	virtual void BeginPlay() override;
 };
