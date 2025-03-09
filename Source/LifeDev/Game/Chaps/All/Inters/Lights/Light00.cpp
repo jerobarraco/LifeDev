@@ -6,7 +6,6 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
-#include "JUtils/Misc/JMiscConsts.h"
 
 ALight00::ALight00():Super() {
 	UseFade = false;
