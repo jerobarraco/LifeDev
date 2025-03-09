@@ -16,7 +16,7 @@ void ULSetGameUI::Apply_Implementation() {
 	if (LIKELY(SLDiagAutoTime)) {
 		ALDiagMan* const Man = ALDiagMan::InstanceL(this);
 		if (LIKELY(Man)) {
-			Man->AutoTime = FMath::Max(.05, SLDiagAutoTime->GetValue());
+			Man->AutoTime = SLDiagAutoTime->GetValue();
 			Man->SaveConfig();
 		}
 	}
@@ -93,7 +93,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (LIKELY(SLDiagAutoTime)) {
 		SLDiagAutoTime->SetMaxValue(1*60);
-		SLDiagAutoTime->SetMinValue(.05);
+		SLDiagAutoTime->SetMinValue(.025);
 		SLDiagAutoTime->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::DiagAutoTimeUpd);
 	}
 
