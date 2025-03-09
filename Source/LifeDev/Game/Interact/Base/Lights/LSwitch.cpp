@@ -29,7 +29,7 @@ ALSwitch::ALSwitch():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
 
-	Interact->SetRelativeLocation(FVector(7.500000,-12.500000,17.500000));
+	Interact->SetRelativeLocation(FVector(7.500000,-7.500000,12.500000));
 	Interact->SetBoxExtent(FVector(5));
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>

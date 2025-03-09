@@ -11,7 +11,7 @@ ALSwitch01::ALSwitch01(): Super() {
 	Anim->TEnd.SetLocation(FVector(-2.5,0,0));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn"));
+		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn3"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
 
