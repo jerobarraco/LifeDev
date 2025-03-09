@@ -13,23 +13,22 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 
 	const bool ShowFoxy = HasDoneSave && ULSettings::GetFeatS(this, EFeat::G_NGP_FOXY);
 	const ESlateVisibility Vis = ShowFoxy ? ESlateVisibility::Visible: ESlateVisibility::Collapsed;
-	if (LIKELY(SL_Foxy)) SL_Foxy->SetVisibility(Vis);
-	if (LIKELY(T_Foxy)) T_Foxy->SetVisibility(Vis);
+	if (LIKELY(SLFoxy)) SLFoxy->SetVisibility(Vis);
+	if (LIKELY(TFoxy)) TFoxy->SetVisibility(Vis);
 	
 	OnLoadDone.Broadcast(HasDoneSave);
 }
 
 void ULSaveGroup::NativeOnInitialized() {
 	Super::NativeOnInitialized();
-	if (LIKELY(SL_Foxy))
-		SL_Foxy->OnValueChanged.AddUniqueDynamic(this, &ULSaveGroup::FoxyUpd);
+	if (LIKELY(SLFoxy))
+		SLFoxy->OnValueChanged.AddUniqueDynamic(this, &ULSaveGroup::FoxyUpd);
 }
 
 void ULSaveGroup::FoxyUpd(const float Value) {
-	if (UNLIKELY(!SL_Foxy || !T_Foxy)) return;
+	if (UNLIKELY(!SLFoxy || !TFoxy)) return;
 
-	T_Foxy->SetText(
-		FText::FromString(FString::Printf(TEXT("Foxify: %.3f"), Value)));
+	TFoxy->SetText(FText::FromString(FString::Printf(TEXT("Foxy: %.3f"), Value)));
 	UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 

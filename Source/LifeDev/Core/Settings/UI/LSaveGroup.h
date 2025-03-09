@@ -29,9 +29,9 @@ protected:
 	void FoxyUpd(const float Value);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<USlider> SL_Foxy = nullptr;
+	TObjectPtr<USlider> SLFoxy = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> T_Foxy = nullptr;
+	TObjectPtr<UTextBlock> TFoxy = nullptr;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool HasDoneSave = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
