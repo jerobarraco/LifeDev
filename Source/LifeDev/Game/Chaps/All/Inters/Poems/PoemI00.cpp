@@ -11,6 +11,6 @@ APoemI00::APoemI00():Super() {
 	// an inclined plane is a slope up
 	// a slow pup is a lazy dog
 
-	// Can't be static since it will be inside of a drawer for example
+	// Can't be static since it will be inside a drawer, for example
 	Super::SetMobility(EComponentMobility::Movable);
 }

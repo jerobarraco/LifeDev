@@ -4,6 +4,6 @@
 
 APoemI01::APoemI01():Super() {
 	RewardItem = "P01";
-	TriggerDlg = "P01_Look";
+	// TriggerDlg = "P01_Look"; // using the autodialog
 	RewardFlash = -.1f;
 }
