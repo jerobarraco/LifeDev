@@ -95,7 +95,7 @@ void ULSave::WriteSubsystems(const UObject* const O) {
 	}
 }
 
-void ULSave::ReadSubsystems(const UObject* const O) {
+void ULSave::ReadSubsystems(const UObject* const O, const bool WithInventory) {
 	const UWorld* const W = LIKELY(O) ? O->GetWorld(): nullptr;
 	if (UNLIKELY(!W)) {
 		UE_LOG(LogLSave, Warning, TEXT("%hs. The world is fake! Can't continue."), __func__);
@@ -104,15 +104,16 @@ void ULSave::ReadSubsystems(const UObject* const O) {
 
 	// this is a bit lame, but it's the cheapest and safest at the moment
 	Time = FDateTime::Now().ToUnixTimestamp();
-	
+
 	const UFlags* const Flags = UFlags::Instance(W);
 	if (LIKELY(Flags)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs: Reading Flags"), __func__);
 		SFlags = Flags->GetAll();
 	}
 
+	
 	const UInventory* const Inventory = UInventory::Instance(W);
-	if (LIKELY(Inventory)) {
+	if (LIKELY(Inventory && WithInventory)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory"), __func__);
 		const TMap<FName, FItem>& Items = Inventory->GetItems();
 		SInventory.Empty(Items.Num());

@@ -25,7 +25,7 @@ public:
 
 	// sets the savestate data to what's on the subsystems.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	void ReadSubsystems(const UObject* const O);
+	void ReadSubsystems(const UObject* O, const bool WithInventory = true);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
