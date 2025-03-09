@@ -20,9 +20,8 @@ ALSwitch02::ALSwitch02(): Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn2"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(-7.5,7.500000,-12.5));
+	Mesh->SetRelativeLocation(FVector(-7.5,7.500000,-15));
 
-	Interact->SetRelativeLocation(FVector(7.500000,-7.5,12.5));
-	// a bit in doubt of the Z. it could protrude. but people's instinct might be to reach for the extreme.
-	Interact->SetBoxExtent(FVector(5,5,7.5));
+	Interact->SetRelativeLocation(FVector(7.500000,-7.5,15));
+	Interact->SetBoxExtent(FVector(5)); // luckly with this button size it doesn't protrude that much
 }
