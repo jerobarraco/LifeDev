@@ -8,7 +8,12 @@
 ALSwitch01::ALSwitch01(): Super() {
 	
 	StateNum = 4; // 4 is the max. could be clamped on children
-
+	Texts = {
+		NSLOCTEXT("Switch01", "Turn0", "Turn"),
+		NSLOCTEXT("Switch01", "Turn1", "Turn again"),
+		NSLOCTEXT("Switch01", "Turn2", "Turn once more"),
+		NSLOCTEXT("Switch01", "Turn3", "Turn yet again"),
+	};
 	const FVector Loc(0.000000,-7.500000,12.500000);
 	const FRotator State0Rot(0,0.,0);
 	const FRotator State1Rot(0,0, -90);
