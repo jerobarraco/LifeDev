@@ -98,7 +98,7 @@ void ALGGameMode::BeginPlay() {
 		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
 		return;
 	}
-	
+
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
 
 	// manually go to init if it's already loaded.
@@ -106,8 +106,8 @@ void ALGGameMode::BeginPlay() {
 	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
 }
 
-void ALGGameMode::InitOnSave(const bool IsBusy) {
-	if (LIKELY(!IsBusy)) Init();
+void ALGGameMode::InitOnSave(const bool IsSaving) {
+	if (LIKELY(!IsSaving)) Init();
 }
 
 void ALGGameMode::Init() {
@@ -141,7 +141,7 @@ void ALGGameMode::Init() {
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 
-	////  subsystems
+#pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 
 	Flashback = World->GetSubsystem<UFlashback>();
@@ -188,15 +188,15 @@ void ALGGameMode::Init() {
 	Diags->Init();
 	Story->Init();
 	Flashback->Init();
-
+#pragma endregion
 	// now load the values from the save
 	// ensure the save-game loads the data into the subsystems.
 	// do only after subsystems have been initialized.
 	// do before StartChapter since that saves the gamefile (loading from subsystems)
+	// needs to be forced since sometimes the savegame already is loaded (from the intro level)
 	Settings->Save->WriteSubsystems(World);
 
-	///~ Subs-init finished.
-
+#pragma region managers
 	// set flags, the feats are dependent on the savegame and subsystems
 	UCAnimator::Debug = Settings->GetFeat(EFeat::DBG_ANIMS);
 	UFlashback::Debug = Settings->GetFeat(EFeat::DBG_FB);
@@ -251,9 +251,8 @@ void ALGGameMode::Init() {
 	}
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
+#pragma endregion
 
-	/// binding
-	
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);

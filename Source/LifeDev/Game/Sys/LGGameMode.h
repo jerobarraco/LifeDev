@@ -111,7 +111,7 @@ protected:
 	void Init();
 	void DeInit();
 	UFUNCTION()
-	void InitOnSave(const bool IsBusy);
+	void InitOnSave(const bool IsSaving);
 
 	bool ChapLoad();
 	void ChapStartEnd() const;
