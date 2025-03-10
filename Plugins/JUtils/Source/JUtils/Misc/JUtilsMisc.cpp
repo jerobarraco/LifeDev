@@ -169,6 +169,18 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 	*/
 }
 
+FString UJUtilsMisc::ObjectLabel(const UObject* const Actor) {
+	if (UNLIKELY(!IsValid(Actor) )) return FString();
+
+	const UClass* const Class = Actor->GetClass();
+	FString Label = Class->GetName();
+	// Strip off the ugly ò_ó "_C" suffix for Blueprint class actor instances
+	if (Cast<UBlueprint>(Class->ClassGeneratedBy))
+		Label.RemoveFromEnd(TEXT("_C"), ESearchCase::CaseSensitive);
+
+	return Label;
+}
+
 void UJUtilsMisc::SetUIScale(const float UIScale) {
 	// inspired on https://benui.ca/unreal/ui-scale/
 	UUserInterfaceSettings* const UISettings =
