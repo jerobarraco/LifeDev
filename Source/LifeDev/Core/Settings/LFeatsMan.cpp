@@ -332,7 +332,9 @@ double ALFeatsMan::GetVar(const FName Name) {
 		if (Name == "V.Inter.Cur.Name") {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
-			const FName OwnerName = FName(Owner->GetActorLabel(false));
+			FString Label;
+			UJUtilsMisc::ObjectLabel(Owner, Label);
+			const FName OwnerName(Label);
 			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.cur.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			const uint64 I = OwnerName.ToUnstableInt();
 			return I64ToD(I);
@@ -352,11 +354,13 @@ double ALFeatsMan::GetVar(const FName Name) {
 		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Inter State for=%s"), __func__, *ActorName);
 		TArray<AActor*> Actors;
 		UGameplayStatics::GetAllActorsOfClass(this, AInteract::StaticClass(), Actors);
-		for (const AActor* A: Actors) {
+		for (const AActor* const A: Actors) {
 			if (UNLIKELY(!A)) continue;
 
-			const bool Same = A->GetActorLabel(false).
-				Equals(ActorName, ESearchCase::IgnoreCase);
+			FString Label;
+			UJUtilsMisc::ObjectLabel(A, Label);
+
+			const bool Same = Label.Equals(ActorName, ESearchCase::IgnoreCase);
 			if (LIKELY(!Same)) continue;
 
 			const AInteract* I = Cast<AInteract>(A);

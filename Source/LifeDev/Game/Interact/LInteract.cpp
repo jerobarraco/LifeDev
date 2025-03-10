@@ -11,6 +11,7 @@
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
 #include "Eval.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -41,7 +42,9 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	if (LIKELY(IsValid(Diags))) { // TODO test
 		const FString& BName = LDConsts::Dlgs::Inter::StatePre;
-		const FName DName(BName+GetActorLabel(false)+"."+FString::FromInt(NewState));
+		FString Label;
+		UJUtilsMisc::ObjectLabel(this, Label);
+		const FName DName(BName+Label+"."+FString::FromInt(NewState));
 		Diags->AddId(DName); // todo don't warn?
 	}
 }
@@ -232,8 +235,8 @@ void ALInteract::DoTrigger_Implementation() {
 	if (!IsRewardless()) DisableWhileAnim = true;
 
 	Super::DoTrigger_Implementation();
-
-	const FString& Label = GetActorLabel(false);
+	FString Label;
+	UJUtilsMisc::ObjectLabel(this, Label);
 	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerPre+Label);
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
@@ -305,11 +308,12 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		}
 	}
 
-	const FString& Label = GetActorLabel(false);
-	
+	FString Label;
+	UJUtilsMisc::ObjectLabel(this, Label);
 	// generic say something when using an item. deprecated UseItemDlgs
 	if (LIKELY(ValidDiags))
 		Diags->AddId(FName(LDConsts::Dlgs::Inter::UseItemPre+Label+"."+Item.ToString()));
+
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
 	if(!Locked) return EItemUseResult::BAD_TARGET;
@@ -334,7 +338,8 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 void ALInteract::Unlocked_Implementation() {
 	Locked = false; // force unlock or trigger won't work
 
-	const FString& Label = GetActorLabel(false);
+	FString Label;
+	UJUtilsMisc::ObjectLabel(this, Label);
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+Label);
 	// now unlocked
 	if (LIKELY(IsValid(Diags)))

@@ -16,6 +16,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
@@ -136,7 +137,8 @@ void ALChar::HoverDiag() {
 	const AActor* const Owner = Comp->GetOwner();
 	if (UNLIKELY(!Owner)) return;
 
-	const FString& Label = Owner->GetActorLabel();
+	FString Label;
+	UJUtilsMisc::ObjectLabel(Owner, Label);
 	const FName N(LDConsts::Dlgs::Inter::LookPre+Label);
 	if (LIKELY(Diags)) Diags->AddId(N);
 	if (LIKELY(Flags)) Flags->Mod(N, 1);

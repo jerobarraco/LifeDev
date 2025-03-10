@@ -7,6 +7,7 @@
 #include "Interact/Interact.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "Story/Story.h"
@@ -44,7 +45,9 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 
 	/// do all rewardy stuff
 
-	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + GetActorLabel(false));
+	FString Label;
+	UJUtilsMisc::ObjectLabel(this, Label);
+	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label);
 
 	if (LIKELY(FB)) FB->ModVal(DoneFB);
 	if (LIKELY(Flags)) {
