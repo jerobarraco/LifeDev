@@ -12,8 +12,8 @@
 	"SupportURL": "https://codeberg.org/jerobarraco/Behave",
 	"MarketplaceURL": "",
 	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"IsExperimentalVersion": false,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": true,
 	"Installed": false,
 	"SupportedTargetPlatforms": [ "Win64", "Mac", "IOS", "Android", "Linux"],
 	"Modules": [
