@@ -17,11 +17,11 @@
 #include "JUtils/Misc/JUtilsSys.h"
 #include "Story/Story.h"
 
-#include "LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Game/Sys/LOverlayUI.h"
+#include "UI/LOverlayUI.h"
+#include "LSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -332,9 +332,9 @@ double ALFeatsMan::GetVar(const FName Name) {
 		if (Name == "V.Inter.Cur.Name") {
 			const AActor* const Owner = Comp->GetOwner();
 			if (UNLIKELY(!Owner)) return -1;
-			FString Label;
-			UJUtilsMisc::ObjectLabel(Owner, Label);
-			const FName OwnerName(Label);
+			// FString Label;
+			// UJUtilsMisc::ObjectLabel(Owner, Label);
+			const FName OwnerName = Settings->GetObjectLabel(Owner);
 			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.cur.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			const uint64 I = OwnerName.ToUnstableInt();
 			return I64ToD(I);
@@ -357,10 +357,11 @@ double ALFeatsMan::GetVar(const FName Name) {
 		for (const AActor* const A: Actors) {
 			if (UNLIKELY(!A)) continue;
 
-			FString Label;
-			UJUtilsMisc::ObjectLabel(A, Label);
+			FName Label = Settings->GetObjectLabel(A);
+			// FString Label;
+			// UJUtilsMisc::ObjectLabel(A, Label);
 
-			const bool Same = Label.Equals(ActorName, ESearchCase::IgnoreCase);
+			const bool Same = Label.ToString().Equals(ActorName, ESearchCase::IgnoreCase);
 			if (LIKELY(!Same)) continue;
 
 			const AInteract* I = Cast<AInteract>(A);
