@@ -207,7 +207,7 @@ void ALLight::SetFB(const float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
 	// activate and deactivate. only run if needed.
 	Rnd->SetActive(ShouldFlicker, false);
-	// don't deactivate the sig here. since there are lights that are can be toggled
+	// don't deactivate the sig here. since there are lights that can be toggled
 	// and the sig is bound to the anim, hence the anim manages it.
 }
 
