@@ -16,6 +16,7 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
@@ -235,8 +236,9 @@ void ALInteract::DoTrigger_Implementation() {
 	if (!IsRewardless()) DisableWhileAnim = true;
 
 	Super::DoTrigger_Implementation();
-	FString Label;
-	UJUtilsMisc::ObjectLabel(this, Label);
+	// FString Label;
+	// UJUtilsMisc::ObjectLabel(this, Label);
+	const FString& Label = ULSettings::GetObjectLabel(this).ToString();
 	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerPre+Label);
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);

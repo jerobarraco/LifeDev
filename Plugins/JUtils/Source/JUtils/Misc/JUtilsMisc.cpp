@@ -177,7 +177,7 @@ bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
 	// if (Cast<UBlueprint>(Class->ClassGeneratedBy)) // classGeneratedBy doesn't exist on runtime
 		// OLabel.RemoveFromEnd(TEXT("_C"), ESearchCase::CaseSensitive);
 
-	// MAYBE if it's an interact i could add an extra field. BUT jutils can't/shouldn't depend on interacts :(
+	// I've added an extra field to the interacts, BUT jutils can't/shouldn't depend on interacts :(
 	return true;
 }
 
