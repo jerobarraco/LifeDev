@@ -94,6 +94,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 GetState() const { return State; }
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE FName GetLabel() const { return Label; }
+ 
 #pragma region Hint
 	// test function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
@@ -214,7 +217,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+	virtual void PostLoad() override;
+	virtual void PostActorCreated() override;
+	
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)
 	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
@@ -274,8 +279,8 @@ protected:
 	// An interact id used for auto dialogs and such.
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
 	// It will default to the actor label
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp")
-	FName ID; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
 	// Only do it if name is not set.
 
 	/// CDO
