@@ -230,12 +230,20 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
+#if WITH_EDITORONLY_DATA
+void AInteract::EditorLabelUpd(AActor* const Actor) {
+	if (Actor!= this) return;
+	Label = FName(GetActorLabel());
+}
+#endif
+
 void AInteract::PostLoad() {
 	Super::PostLoad();
 	// this function is only called on objects on the level so ActorLabel should be correct
 #if WITH_EDITORONLY_DATA
-	if (Label.IsNone())
-		Label = FName(GetActorLabel());
+	if (Label.IsNone()) // allow to be overriden
+		EditorLabelUpd(this);
+	FCoreDelegates::OnActorLabelChanged.AddUObject(this, &AInteract::EditorLabelUpd);
 #endif
 }
 
@@ -243,12 +251,12 @@ void AInteract::PostActorCreated() {
 	Super::PostActorCreated();
 	// Only called on spawning actors
 	// this function is mutually exclusive with PostLoad according to the docs
-	if (Label.IsNone())
-		Label = GetFName();
+	UE_LOG(LogInteract, Log, TEXT("%hs o=%s n=%s"), __func__, *Label.ToString(), *GetFName().ToString());
+	if (Label.IsNone()) Label = GetFName();
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	PlaySFX(SFX_Locked);
 }
 

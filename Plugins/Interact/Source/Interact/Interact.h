@@ -233,6 +233,10 @@ protected:
 	void SetText();
 	virtual void SetText_Implementation();
 
+#if WITH_EDITORONLY_DATA
+	void EditorLabelUpd(AActor* const Actor);
+#endif
+
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
 	FORCEINLINE void Trigger() {
@@ -279,7 +283,7 @@ protected:
 	// An interact id used for auto dialogs and such.
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
 	// It will default to the actor label
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
 	// Only do it if name is not set.
 
