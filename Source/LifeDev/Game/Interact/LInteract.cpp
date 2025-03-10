@@ -273,7 +273,8 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	Diags->AddId(Dlg);
 
 	// Also add the auto ones
-	const FString& Label = GetActorLabel(false);
+	FString Label;
+	UJUtilsMisc::ObjectLabel(this, Label);
 	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerLPre+Label);
 	Diags->AddId(TName);
 	if (LIKELY(Flags)) Flags->Mod(TName, 1);

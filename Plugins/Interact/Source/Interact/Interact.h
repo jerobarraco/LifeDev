@@ -271,6 +271,12 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
+	// An interact id used for auto dialogs and such.
+	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
+	// It will default to the actor label
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp")
+	FName ID; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
+	// Only do it if name is not set.
 
 	/// CDO
 
