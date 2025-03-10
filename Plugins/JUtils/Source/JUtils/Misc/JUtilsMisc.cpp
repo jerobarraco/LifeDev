@@ -169,10 +169,10 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 	*/
 }
 
-FString UJUtilsMisc::ObjectLabel(const UObject* const Actor) {
-	if (UNLIKELY(!IsValid(Actor) )) return FString();
+FString UJUtilsMisc::ObjectLabel(const UObject* const Object) {
+	if (UNLIKELY(!IsValid(Object))) return FString();
 
-	const UClass* const Class = Actor->GetClass();
+	const UClass* const Class = Object->GetClass();
 	FString Label = Class->GetName();
 	// Strip off the ugly ò_ó "_C" suffix for Blueprint class actor instances
 	if (Cast<UBlueprint>(Class->ClassGeneratedBy))

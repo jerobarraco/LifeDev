@@ -93,7 +93,7 @@ public:
 	// returns the "default" actor label for an actor. Not the REAL actor label (that does not exist on runtime builds)
 	// copied from AActor::GetDefaultActorLabel
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static FString ObjectLabel(const UObject* const Actor);
+	static FString ObjectLabel(const UObject* const Object);
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
