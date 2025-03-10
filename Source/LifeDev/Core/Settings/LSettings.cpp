@@ -9,6 +9,7 @@
 
 #include "LSave.h"
 #include "LSysSettings.h"
+#include "Interact/Interact.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
@@ -198,6 +199,14 @@ void ULSettings::SetFeat(const EFeat Feat, const bool Enable) {
 bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 	const ULSettings* const I = ULSettings::Instance(O);
 	return LIKELY(IsValid(I)) ? I->GetFeat(Feat) : false;
+}
+
+FName ULSettings::GetObjectLabel(const UObject* const Object) {
+	const AInteract* const Inter = Cast<AInteract>(Object);
+	if (Inter)
+		return Inter->GetLabel();
+
+	return Inter->GetFName();
 }
 
 void ULSettings::Init() {

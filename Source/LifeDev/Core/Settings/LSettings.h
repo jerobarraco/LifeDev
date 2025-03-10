@@ -26,6 +26,8 @@ public:
 	static ULSettings* Instance(const UObject* const O);
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool GetFeatS(const UObject* const O, const EFeat Feat);
+	UFUNCTION(BlueprintCallable)
+	static FName GetObjectLabel(const UObject* const Object);
 
 	// overrides current save with a new game
 	// defaults to current slot
