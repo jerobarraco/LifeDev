@@ -5,38 +5,13 @@
 
 #include "Interact.h"
 
-#include "Components/BillboardComponent.h"
-
 #include "Interact/CPuzzle.h"
 
 APuzzle::APuzzle():Super() {
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(Root);
-	
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
-
-#if WITH_EDITORONLY_DATA // inspired by AInfo
-	UBillboardComponent* const SpriteComponent = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Sprite"));
-	if (LIKELY(!IsRunningCommandlet() && (SpriteComponent != nullptr))) {
-		// static ConstructorHelpers::FObjectFinderOptional<UTexture2D> SpriteTexture(TEXT("/Engine/EditorResources/S_Actor"));
-		// static ConstructorHelpers::FObjectFinder<UTexture2D> CSprText(TEXT("/Engine/EditorResources/S_Actor"));
-		static ConstructorHelpers::FObjectFinderOptional<UTexture2D>
-			CSprTexture(TEXT("/Engine/EditorResources/S_Actor")); // S_Solver
-		static const FName ID_Info = TEXT("Puzzle");
-		static const FText ID_Name = NSLOCTEXT("SpriteCategory", "Puzzle", "Puzzle");
-
-		SpriteComponent->SetupAttachment(Root);
-		SpriteComponent->Sprite = CSprTexture.Get();
-		// SpriteComponent->Sprite = CSprText.Object;
-		SpriteComponent->SpriteInfo.Category = ID_Info;
-		SpriteComponent->SpriteInfo.DisplayName = ID_Name;
-		SpriteComponent->bIsScreenSizeScaled = true;
-	}
-	// setting spatially loaded to false could break datalayer usage which is critical
-#endif // WITH_EDITORONLY_DATA
-
-	Root->SetMobility(EComponentMobility::Static);
+	UseAnim = false;
+	SetAutoActivate(false); // by default i'm not using this puzzle as directly.
 }
 
 void APuzzle::Reset() {
@@ -46,6 +21,7 @@ void APuzzle::Reset() {
 }
 
 void APuzzle::Done_Implementation(const bool IsOk) {
+	// TODO move to trigger
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
 	if (!IsOk) {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders

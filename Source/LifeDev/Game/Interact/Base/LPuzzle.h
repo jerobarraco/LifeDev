@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Interact/Puzzle.h"
+#include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LPuzzle.generated.h"
 
@@ -15,6 +16,8 @@ class UFlags;
 class UDiags;
 class UFlashback;
 
+// unfortunately unreal does not allow to have multiple inheritance
+// and 
 // Base class for LPuzzles
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALPuzzle: public APuzzle {
