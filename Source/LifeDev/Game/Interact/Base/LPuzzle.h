@@ -65,7 +65,21 @@ public:
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
-	
+
+	// TODO
+	// call to reset the puzzle. Override DoReset to do custom logic.
+	virtual void Reset() override {Super::Reset();};
+
+	// Automatically reset the puzzle on failure.
+	// works only on SEQUENCE since combination can't fail.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")
+	bool ResetOnFail = false;
+
+	// Will reset when reaching this time without interacting with it
+	// Disabled if <=0 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")
+	float ResetTimeout = 0;
+
 protected:
 	void ClearTimer(){};
 	

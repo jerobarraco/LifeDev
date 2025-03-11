@@ -70,8 +70,7 @@ void APuzzleI04::PostDone() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
-	SND->SetSound(WasOk ? SND_Right : SND_Wrong);
-	SND->Play();
+	PlaySFX(WasOk ? SND_Right : SND_Wrong);
 
 	// give time for audio to play
 	FTimerHandle H;
