@@ -222,7 +222,7 @@ bool ALInteract::TryTrigger_Implementation() {
 		TryUnlock = Passed;
 	}
 
-	if (TryUnlock) Unlocked();
+	if (TryUnlock) Unlock();
 
 	return Super::TryTrigger_Implementation();
 }
@@ -332,12 +332,14 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
-	Unlocked();
+	Unlock();
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
 }
 
-void ALInteract::Unlocked_Implementation() {
+void ALInteract::Unlock_Implementation() {
+	if (UNLIKELY(Locked)) return; // these are not the locks i'm looking for
+
 	Locked = false; // force unlock or trigger won't work
 	const FString& SLabel = Label.ToString();
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);

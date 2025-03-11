@@ -81,9 +81,9 @@ public:
 #pragma endregion
 
 #pragma region lock
-	// Called when it's unlocked. You can also call to unlock. 
+	// Called to unlock, or when unlocked. triggers a delegate and dialogs and flags and sparks and whistles. 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Unlocked();
+	void Unlock();
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
