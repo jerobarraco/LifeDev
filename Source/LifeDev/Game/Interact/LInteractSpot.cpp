@@ -25,13 +25,11 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
 	// TODO move auto dialogs to the consts
 
-	
-	FString Label;
-	UJUtilsMisc::ObjectLabel(this, Label);
+	const FString& SLabel = Label.ToString();
 	if (UNLIKELY(Items.IsEmpty())) {
 		Locked = true; // unnecessary but complete, jic
 		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.Full."+Label));
+			Diags->AddId(FName("Inter.Spot.Use.Full."+SLabel));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
@@ -39,19 +37,19 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	const bool Ok = Items.Find(Name, Id);
 	if (!Ok) {
 		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.Bad."+Label));
+			Diags->AddId(FName("Inter.Spot.Use.Bad."+SLabel));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (UseOrder && Id !=0) { // TODO test
 		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.BadOrder."+Label));
+			Diags->AddId(FName("Inter.Spot.Use.BadOrder."+SLabel));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (LIKELY(IsValid(Diags)))
 		Diags->AddId(DropDlg) ||
-		Diags->AddId(FName("Inter.Spot.Use."+Label));
+		Diags->AddId(FName("Inter.Spot.Use."+SLabel));
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {

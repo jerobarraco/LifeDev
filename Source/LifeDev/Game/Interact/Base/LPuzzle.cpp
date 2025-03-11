@@ -47,6 +47,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 
 	FString Label;
 	UJUtilsMisc::ObjectLabel(this, Label);
+	
 	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label);
 
 	if (LIKELY(FB)) FB->ModVal(DoneFB);
