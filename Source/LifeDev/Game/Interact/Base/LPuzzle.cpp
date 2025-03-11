@@ -7,7 +7,6 @@
 #include "Interact/Interact.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
-#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "Story/Story.h"
 
@@ -127,10 +126,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 		if (IsValid(Reward)) Reward->SetActive(true);
 	}
 	
-	FString Label;
-	UJUtilsMisc::ObjectLabel(this, Label);
-	
-	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label);
+	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label.ToString());
 
 	if (LIKELY(Flashback)) Flashback->ModVal(DoneFB);
 	if (LIKELY(Flags)) {
