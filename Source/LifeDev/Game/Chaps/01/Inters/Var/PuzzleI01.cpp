@@ -12,13 +12,14 @@ APuzzleI01::APuzzleI01():Super() {
 	CPuzzle->DisableOnDone = true;
 
 	static FName DoneId = "PZ01_T";
-	DoneDlg = DoneId;
-	DoneFB = .2;
-	DoneFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	RewardFlash = .2;
+	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
+	TriggerDlg = DoneId;
 }
 
 void APuzzleI01::PostLoad() {
 	Super::PostLoad();
+	
 	static const TMap<FName, FName> Dlgs = {
 		{LDConsts::Items::Card0, "PZ01xC00"},
 		{LDConsts::Items::Card1, "PZ01xC01"},
