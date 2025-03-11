@@ -144,9 +144,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	// doing dialog after the flags, since now the dialog system can read the flags and items on the condition
 	if (LIKELY(Diags)) Diags->AddId(DoneDlg) || Diags->AddId(DoneId);
 
-	// story step at end to not break other stuff much.
-	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep);
-
 	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.

@@ -119,10 +119,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneItem = NAME_None;
 
-	// Step to finish on done. If none it won't stop anything.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	FName DoneStep = NAME_None;
-
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
 	

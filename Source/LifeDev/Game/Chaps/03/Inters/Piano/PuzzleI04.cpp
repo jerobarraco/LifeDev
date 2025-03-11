@@ -19,8 +19,7 @@ APuzzleI04::APuzzleI04():Super() {
 	 // will make it easier. non-repeated keys. and make the waiting explicit.
 	// Allow for reset. this is handled with a careful setup of Super::Done
 	ResetOnFail = true;
-
-	DoneStep = "C3S0";
+	RewardStep = true;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
