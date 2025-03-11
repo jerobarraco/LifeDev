@@ -2,7 +2,6 @@
 
 #include "PuzzleI04.h"
 
-#include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"

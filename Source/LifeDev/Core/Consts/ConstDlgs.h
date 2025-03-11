@@ -21,7 +21,6 @@ namespace LDConsts {
 			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
 			inline static const FString UnlockBadPre(TEXT("Inter.UnlockBad."));
 			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
-			inline static const FString PuzzleDonePre(TEXT("Inter.Puzzle.Done.")); // TODO remove
 		}
 	}
 }
