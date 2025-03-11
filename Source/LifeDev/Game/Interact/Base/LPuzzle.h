@@ -80,7 +80,7 @@ public:
 	float ResetTimeout = 0;
 
 protected:
-	void ClearTimer(){};
+	void ClearTimer();
 	
 	// TODO use trigger instead
 	virtual void Done_Implementation(const bool IsOk);
@@ -124,3 +124,5 @@ protected:
 
 	FTimerHandle ResetTimer;
 };
+
+

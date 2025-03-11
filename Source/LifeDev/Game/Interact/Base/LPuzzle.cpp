@@ -46,6 +46,14 @@ void ALPuzzle::Reset() {
 	if (LIKELY(CPuzzle)) CPuzzle->Reset(); // triggers a delegate
 }
 
+void ALPuzzle::ClearTimer() {
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
+	
+	W->GetTimerManager().ClearTimer(ResetTimer);
+	ResetTimer.Invalidate();
+}
+
 void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *GetNameSafe(this));
