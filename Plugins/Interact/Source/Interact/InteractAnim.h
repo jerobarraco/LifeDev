@@ -36,8 +36,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool UseAnim = true;
 
-	// will disable while playing and re-enable after.
-	// be careful if you need to disable on trigger or smth (for example Puzzle::DisableOnDone) 
+	// will deactivate while playing and re-enable after.
+	// be careful if you need to disable on trigger or smth
+	// SHOULD be ignored if UseAnim == false. but beware of bugs.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool DisableWhileAnim = true;
 	

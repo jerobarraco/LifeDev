@@ -2,6 +2,7 @@
 
 #include "LPuzzle.h"
 
+#include "Interact/CInteract.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/Interact.h"
 
@@ -12,9 +13,13 @@ ALPuzzle::ALPuzzle():Super() {
 	UseAnim = false;
 	UseFade = false;
 	UseRewardDestroy = false;
+	DisableWhileAnim = false; // ignored if !UseAnim. better safe than sorry
+	IsOneShot = true;
 
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
+	// rarely used by default.
+	if (LIKELY(Interact)) Interact->SetBoxExtent(FVector(1));
 
 	SetAutoActivate(false); // by default i'm not using this puzzle as directly.
 	SetMobility(EComponentMobility::Type::Static);
