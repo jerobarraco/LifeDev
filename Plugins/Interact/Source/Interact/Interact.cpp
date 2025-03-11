@@ -7,11 +7,11 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
+#include "Animator/Anim.h"
 
 #include "CInteract.h"
 #include "CInteractor.h"
 #include "Eval.h"
-#include "Animator/Anim.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 

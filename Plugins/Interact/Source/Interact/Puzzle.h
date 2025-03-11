@@ -11,7 +11,7 @@ class AInteract;
 // Note: not setting the Set* functions as Const or bps will show them as pure and won't be able to be executed (facepalm).
 // if they were, they shouldn't be pure anyway.
 
-// Base class for Puzzles that can optionally trigger an Interact. but they aren't an interact.
+// Base class for Puzzles.
 UCLASS(Blueprintable, BlueprintType)
 class INTERACT_API APuzzle: public AActor {
 	GENERATED_BODY()
@@ -22,34 +22,34 @@ public:
 	// sets the states on each registered interact.
 	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetStates(const TArray<int32>& States) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetStates(const TArray<int32>& States) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
 	
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetLocks(const TArray<bool>& Locks) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetLocks(const TArray<bool>& Locks) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetLocks(Locks); }
 	}
 
 	// Set the interact pieces to active. Don't call during construction.
-	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	FORCEINLINE void SetActives(const bool NewEnabled) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
+	FORCEINLINE void SetActives(const bool NewEnabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
 	}
 
 	// Set the interact pieces to auto activate. Call only on constructor.
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetAutoActives(const bool NewEnabled) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetAutoActives(const bool NewEnabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewEnabled); }
 	}
 
 	// sets "DisableWhileAnims" on all the interacts.
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
