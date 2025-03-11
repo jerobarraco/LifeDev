@@ -123,10 +123,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneStep = NAME_None;
 
-	// FB to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	float DoneFB = 0;
-
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
 	

@@ -7,7 +7,7 @@
 APuzzleI07::APuzzleI07():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {2, 1, 1};
-	DoneFB = .2;
+	RewardFlash = .2;
 }
 
 // void APuzzleI07::PostLoad() {

@@ -50,7 +50,7 @@ void APuzzleI06::BeginPlay() {
 		constexpr float DiffAm = .3;
 		const float Diff = FMath::Lerp(-DiffAm, +DiffAm,
 			Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
-		DoneFB += Diff;
+		RewardFlash += Diff;
 		UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
 			_myclass_, __func__, Diff);
 	}
