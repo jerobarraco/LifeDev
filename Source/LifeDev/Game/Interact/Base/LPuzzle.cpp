@@ -2,16 +2,9 @@
 
 #include "LPuzzle.h"
 
-#include "Diags/Diags.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/Interact.h"
-#include "Inventory/Flags.h"
-#include "Inventory/Inventory.h"
 
-#include "Story/Story.h"
-
-#include "LifeDev/Core/Consts/ConstDlgs.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALPuzzle::ALPuzzle():Super() {

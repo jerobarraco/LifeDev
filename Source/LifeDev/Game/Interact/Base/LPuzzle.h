@@ -2,23 +2,14 @@
 
 #pragma once
 
-#include "Interact/Puzzle.h"
+#include "Interact/CPuzzle.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LPuzzle.generated.h"
 
-class UCLSounder;
-class AInteract;
-class UCPuzzle;
-class UStory;
-class UInventory;
-class UFlags;
-class UDiags;
-class UFlashback;
-
 // Base class for LPuzzles
 // unfortunately unreal does not allow to have multiple inheritance
-// so this reimplements APuzzle and does not inherits it.
+// so this reimplements APuzzle and does not inherit it.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
