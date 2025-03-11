@@ -8,7 +8,6 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
-#include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 constexpr float SndWait = 1.75;
@@ -47,7 +46,7 @@ void APuzzleI04::PostLoad() {
 	SetLocks(Locks);
 }
 
-void APuzzleI04::Done_Implementation(bool Ok) {
+void APuzzleI04::Done_Implementation(const bool Ok) {
 	// notice not calling super::done here since that can reset
 
 	// disable until i play the solution
@@ -114,7 +113,7 @@ void APuzzleI04::LidDone() {
 			// this will still start from the correct dialog because i've adjusted the order.
 			// to avoid having to check for the length, and to avoid having to have a signed integer.
 			FailDiagIndex = (FailDiagIndex +1) % Num;
-			Diags->AddId(FailDiags[FailDiagIndex]);
+			Diags->AddId(FailDiags[FailDiagIndex]); // i could do this with a condition now
 		}
 	}
 

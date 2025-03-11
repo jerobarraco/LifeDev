@@ -17,6 +17,7 @@
 ALPuzzle::ALPuzzle():Super() {
 	UseAnim = false;
 	Locked = false;
+
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
 
