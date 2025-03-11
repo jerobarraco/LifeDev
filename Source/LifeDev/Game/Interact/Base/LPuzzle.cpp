@@ -8,8 +8,10 @@
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALPuzzle::ALPuzzle():Super() {
+	Locked = true; // locked means unsolved
 	UseAnim = false;
-	Locked = false;
+	UseFade = false;
+	UseRewardDestroy = false;
 
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
@@ -100,7 +102,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 			const UWorld* const W = GetWorld();
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
 		}
-		Locked = true; // force so it calls triggerLOcked
+		Locked = true; // force so it calls triggerLocked
 	} else {
 		Unlock(); // force unlock. so that i can trigger.
 	}
