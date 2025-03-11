@@ -37,12 +37,6 @@ void ALPuzzle::BeginPlay() {
 			TEXT("CPuzzle in Puzzle is not valid!! Huge problem. o=%s"),
 			*GetNameSafe(this));
 	}
-	
-	if (IsValid(DoneActor)) { // TODO nuke
-		DoneActor->SetActorHiddenInGame(true);
-		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) Reward->SetActive(false);
-	}
 }
 
 void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -119,23 +113,5 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	Unlock(); // force unlock. so that i can trigger.
 	TryTrigger(); //calling this to be generous in case someone REALLY wants to override that.
 	// even though i'm the only person who will be working on this codebase. and i really don't think i'd want to override it.
-	
-	/// do all rewardy stuff
-
-	/// TODO remove
-
-	if (IsValid(DoneActor)) {
-		DoneActor->SetActorHiddenInGame(false);
-		AInteract* const Reward = Cast<AInteract>(DoneActor);
-		if (IsValid(Reward)) Reward->SetActive(true);
-	}
-	
-	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label.ToString());
-
-	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
-	// fade if it's an L interact (those can fade)
-	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
-	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
-	if (IsValid(Reward)) Reward->Fade(true);
 }
 

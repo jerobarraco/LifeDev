@@ -97,12 +97,6 @@ protected:
 	void DoReset();
 	virtual void DoReset_Implementation() {};
 
-	// TODO have to move all these to their new counterparts
-	
-	// Actor to reward on Done. Can be an interact, it will use fade, but won't trigger.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
-	TObjectPtr<AActor> DoneActor = nullptr;
-	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
 	
