@@ -14,7 +14,9 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFade = true; // important since the door, also due to the load
 	FinishPostWait = false;
 	TeleportChar = true;
-	ItemsRem = {LDConsts::Items::Tape0}; // ensure you don't carry it.
+	ItemsRem = {
+		LDConsts::Items::Tape0, "Bottle00", "Bottle01"
+	}; // ensure you don't carry it.
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
 	CamBlendTime = 0; // doesn't get along with fade
