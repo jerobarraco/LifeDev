@@ -166,6 +166,15 @@ public:
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
+
+	// An interact id used for auto dialogs and such.
+	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
+	// It will default to the actor label. It will get updated when changed on the editor.
+	// if this is an instance that it's spawned, it will default to the Name.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
+	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
+	// Only do it if name is not set.
+
 #pragma endregion
 
 #pragma region Rewards
@@ -280,12 +289,6 @@ protected:
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
-	// An interact id used for auto dialogs and such.
-	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
-	// It will default to the actor label
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
-	// Only do it if name is not set.
 
 	/// CDO
 

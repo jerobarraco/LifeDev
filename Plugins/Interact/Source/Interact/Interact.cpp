@@ -232,7 +232,8 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 #if WITH_EDITORONLY_DATA
 void AInteract::EditorLabelUpd(AActor* const Actor) {
-	if (Actor!= this) return;
+	if (LIKELY(Actor != this)) return;
+	// always rewrite (not checking empty)
 	Label = FName(GetActorLabel());
 }
 #endif
