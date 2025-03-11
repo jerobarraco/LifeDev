@@ -55,7 +55,6 @@ void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 	CPuzzle = nullptr;
 
-
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -101,15 +100,35 @@ void ALPuzzle::Update_Implementation() {
 
 void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
-		IsOk, *GetNameSafe(this));
+		IsOk, *Label.ToString());
 
 	// TODO
 	// Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
+	if (!IsOk) {
+		// reset if needed. but not inside done. Since done is overrideable and can change orders
+		// it will mess with the logical flow anyway.
+		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
+		if (ResetOnFail) {
+			ClearTimer(); // avoid having a timer for the reset too.
+			const UWorld* const W = GetWorld();
+			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
+		}
+		return;
+	}
 	
-	if (!IsOk) return; // ok to skip super on not ok, since super doesn't care
-
 	/// do all rewardy stuff
 
+	if (IsValid(DoneInter)) {
+		DoneInter->Locked = false; // force unlock
+		DoneInter->TryTrigger();
+	}
+
+	if (IsValid(DoneActor)) {
+		DoneActor->SetActorHiddenInGame(false);
+		AInteract* const Reward = Cast<AInteract>(DoneActor);
+		if (IsValid(Reward)) Reward->SetActive(true);
+	}
+	
 	FString Label;
 	UJUtilsMisc::ObjectLabel(this, Label);
 	

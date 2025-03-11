@@ -28,6 +28,7 @@ void APuzzle::Done_Implementation(const bool IsOk) {
 		// it will mess with the logical flow anyway.
 		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
 		if (ResetOnFail) {
+			ClearTimer();
 			const UWorld* const W = GetWorld();
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &APuzzle::Reset);
 		}
