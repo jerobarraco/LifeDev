@@ -1,7 +1,6 @@
 #include "LInteractSpot.h"
 
 #include "Diags/Diags.h"
-#include "JUtils/Misc/JUtilsMisc.h"
 
 ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.

@@ -171,6 +171,7 @@ public:
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
 	// It will default to the actor label. It will get updated when changed on the editor.
 	// if this is an instance that it's spawned, it will default to the Name.
+	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
 	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
 	// Only do it if name is not set.

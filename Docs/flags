@@ -9,7 +9,7 @@
 * V.inter.Cur.name > the fname int value for the current hovered interact actor
 * v.inter.cur.state > the int state for the curren thovered interact actor
 * V.Inter.State.XXX > the state of the inter with that outliner name
-* v.Feat.Get > returns the feat by it's int id (you'll have to find it)
+* v.Feat.Get > returns the feat by its int id (you'll have to find it)
 * v.Sys.IsDebug > 1 if debug, 0 otherwise.
 * v.Sys.IsEditor > 1 if editor, 0 otherwise.
 
