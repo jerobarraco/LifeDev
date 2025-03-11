@@ -99,6 +99,8 @@ void ALPuzzle::Update_Implementation() {
 }
 
 void ALPuzzle::Done_Implementation(const bool IsOk) {
+	// TODO make this protected, non native
+	// set Locked according to Ok, and call TryTrigger.
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *Label.ToString());
 
@@ -121,11 +123,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	/// do all rewardy stuff
 
 	/// TODO remove
-	
-	if (IsValid(DoneInter)) {
-		DoneInter->Locked = false; // force unlock
-		DoneInter->TryTrigger();
-	}
 
 	if (IsValid(DoneActor)) {
 		DoneActor->SetActorHiddenInGame(false);
@@ -134,7 +131,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	}
 	
 	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label.ToString());
-
 
 	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
 	// fade if it's an L interact (those can fade)

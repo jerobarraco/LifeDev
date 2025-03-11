@@ -99,10 +99,6 @@ protected:
 
 	// TODO have to move all these to their new counterparts
 	
-	// Interact to *trigger* on Done. It will force unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
-	TObjectPtr<AInteract> DoneInter = nullptr;
-	
 	// Actor to reward on Done. Can be an interact, it will use fade, but won't trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
 	TObjectPtr<AActor> DoneActor = nullptr;
