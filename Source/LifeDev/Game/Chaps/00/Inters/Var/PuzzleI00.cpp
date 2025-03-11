@@ -14,6 +14,11 @@ APuzzleI00::APuzzleI00():Super() {
 	DoneDlg = DoneId;
 	DoneFB = .2;
 	DoneFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	
+	RewardFlag = DoneId;
+	RewardFlash = .2;
+	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	TriggerDlg = DoneId;
 }
 
 void APuzzleI00::PostLoad() {

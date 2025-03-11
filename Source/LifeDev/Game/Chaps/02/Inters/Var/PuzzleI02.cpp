@@ -8,12 +8,17 @@
 
 APuzzleI02::APuzzleI02():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0, 0, 3}; // S.A.D
+	CPuzzle->Solution = {0, 0, 3}; // S.A.D.
 
 	static FName DoneId = "PZ02_T";
-	DoneDlg = DoneId;
-	DoneFB = .15;
-	DoneFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	// DoneDlg = DoneId;
+	// DoneFB = .15;
+	// DoneFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	
+	RewardFlag = DoneId;
+	RewardFlash = .15;
+	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	TriggerDlg = DoneId;
 }
 
 void APuzzleI02::PostLoad() {
