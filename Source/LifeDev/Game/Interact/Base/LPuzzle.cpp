@@ -25,6 +25,40 @@ ALPuzzle::ALPuzzle():Super() {
 	SetMobility(EComponentMobility::Type::Static);
 }
 
+void ALPuzzle::BeginPlay() {
+	Super::BeginPlay();
+
+	if (LIKELY(IsValid(CPuzzle))) {
+		CPuzzle->OnDone.AddUniqueDynamic(this, &ALPuzzle::Done);
+		CPuzzle->OnUpdate.AddUniqueDynamic(this, &ALPuzzle::Update);
+		CPuzzle->OnReset.AddUniqueDynamic(this, &ALPuzzle::DoReset);
+	} else {
+		UE_LOG(LogTemp, Warning,
+			TEXT("CPuzzle in Puzzle is not valid!! Huge problem. o=%s"),
+			*GetNameSafe(this));
+	}
+	
+	if (IsValid(DoneActor)) { // TODO nuke
+		DoneActor->SetActorHiddenInGame(true);
+		AInteract* const Reward = Cast<AInteract>(DoneActor);
+		if (IsValid(Reward)) Reward->SetActive(false);
+	}
+}
+
+void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	ClearTimer(); // uses cpuzzle. do first.
+
+	if (LIKELY(CPuzzle)) {
+		CPuzzle->OnDone.RemoveAll(this);
+		CPuzzle->OnUpdate.RemoveAll(this);
+		CPuzzle->OnReset.RemoveAll(this);
+	}
+	CPuzzle = nullptr;
+
+
+	Super::EndPlay(EndPlayReason);
+}
+
 void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
 	if (UNLIKELY(!CPuzzle)) return;
 
@@ -87,6 +121,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
-	// ALInteract* const Reward = Cast<ALInteract>(DoneActor);
-	// if (IsValid(Reward)) Reward->Fade(true);
+	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
+	if (IsValid(Reward)) Reward->Fade(true);
 }
+

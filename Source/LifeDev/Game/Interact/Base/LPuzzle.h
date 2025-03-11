@@ -80,10 +80,14 @@ public:
 	float ResetTimeout = 0;
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void ClearTimer();
 	
 	// TODO use trigger instead
 	virtual void Done_Implementation(const bool IsOk);
+	UFUNCTION()
+	void Done(const bool Ok) {}; // TODo
 
 	// called when the puzzle is updated. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
@@ -96,6 +100,15 @@ protected:
 	virtual void DoReset_Implementation() {};
 
 	// TODO have to move all these to their new counterparts
+	
+
+	// Interact to *trigger* on Done. It will force unlock.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
+	TObjectPtr<AInteract> DoneInter = nullptr;
+	
+	// Actor to reward on Done. Can be an interact, it will use fade, but won't trigger.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
+	TObjectPtr<AActor> DoneActor = nullptr;
 	
 	// Dialog to show on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
