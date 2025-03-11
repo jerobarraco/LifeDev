@@ -39,6 +39,13 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
 	}
 }
 
+void ALPuzzle::Reset() {
+	Super::Reset();
+	ClearTimer();
+
+	if (LIKELY(CPuzzle)) CPuzzle->Reset(); // triggers a delegate
+}
+
 void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *GetNameSafe(this));

@@ -66,9 +66,8 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
-	// TODO
 	// call to reset the puzzle. Override DoReset to do custom logic.
-	virtual void Reset() override {Super::Reset();};
+	virtual void Reset() override;
 
 	// Automatically reset the puzzle on failure.
 	// works only on SEQUENCE since combination can't fail.
