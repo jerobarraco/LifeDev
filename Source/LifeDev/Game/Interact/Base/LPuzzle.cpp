@@ -91,7 +91,9 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *Label.ToString());
 
-	if (!IsOk) {
+	if (IsOk) {
+		Unlock(); // force unlock. so that i can trigger.
+	} else {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
 		// it will mess with the logical flow anyway.
 		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
@@ -101,8 +103,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
 		}
 		Locked = true; // force so it calls triggerLocked
-	} else {
-		Unlock(); // force unlock. so that i can trigger.
 	}
 
 	TryTrigger();

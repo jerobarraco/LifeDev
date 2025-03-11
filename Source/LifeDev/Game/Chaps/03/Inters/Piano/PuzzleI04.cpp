@@ -87,39 +87,55 @@ void APuzzleI04::PostDoneSnd() {
 	Lid->TryTrigger();
 	
 	// i could subscribe to the anim onEnd but this is safer.
-	FTimerHandle H;
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
 	const UCAnimatorMix* const Anim = Lid->GetAnim();
 	const float Duration = Anim ? Anim->Duration : 1;
+	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Duration);
 }
 
 void APuzzleI04::LidDone() {
-	UE_LOG(LogTemp, Warning, TEXT("%hs"));
+	UE_LOG(LogTemp, Warning, TEXT("%hs"), __func__);
 	// before calling Done since that could trigger a new step or sequence
 	// actually the new step will disable the input,
 	// but better to do here, in case it changes, and to avoid stepping on it.
 	ALGGameMode* const Mode = ALGGameMode::Instance(GetWorld());
 	if (LIKELY(Mode)) Mode->SetCharInputEnabled(true);
 
-	// show a dialog if the user got it wrong.
-	// do it here to avoid issues with the above SetCharInputEnabled.
-	// and not on PostDoneSnd to leave the code clean.
-	if (!WasOk) {
-		const int32 Num = FailDiags.Num();
-		if (Diags && Num > 0) {
-			// this will still start from the correct dialog because i've adjusted the order.
-			// to avoid having to check for the length, and to avoid having to have a signed integer.
-			FailDiagIndex = (FailDiagIndex +1) % Num;
-			Diags->AddId(FailDiags[FailDiagIndex]); // i could do this with a condition now
-		}
-	}
 
 	// finally mark the puzzle as done for good. if !WasOk it will retry
 	Super::Done_Implementation(WasOk);
 }
+// Lid is set on the editor. and dialogs set on the datatable
+
+/* rubbish bin
+* 
+// show a dialog if the user got it wrong.
+// do it here to avoid issues with the above SetCharInputEnabled.
+// and not on PostDoneSnd to leave the code clean.
+if (!WasOk) {
+const int32 Num = FailDiags.Num();
+if (Diags && Num > 0) {
+// this will still start from the correct dialog because i've adjusted the order.
+// to avoid having to check for the length, and to avoid having to have a signed integer.
+FailDiagIndex = (FailDiagIndex +1) % Num;
+Diags->AddId(FailDiags[FailDiagIndex]); // i could do this with a condition now
+}
+
+uint8 FailDiagIndex = 0;
+	TArray<FName> FailDiags = {
+		// notice this is the last one. so that the code can be a bit lazier but still correct.
+		"PZ04xC02",
+		"PZ04xC00",
+		"PZ04xC01",
+	};
+	// reusing the dialogs from the card is fine atm.
+	// the whole reason of this feature is JUST IN CASE the player
+	// didn't figure out that it needed to use the cards
+	// (because it's an obscure mechanic that is not used elsewhere atm).
+}*/
 
 // tried it and did not work (on postLoad) might be too early.
 // TArray<UClass*> Classes = {

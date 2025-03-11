@@ -337,7 +337,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 }
 
 void ALInteract::Unlock_Implementation() {
-	if (UNLIKELY(Locked)) return; // these are not the locks i'm looking for
+	if (UNLIKELY(!Locked)) return; // these are not the locks i'm looking for
 
 	Locked = false; // force unlock or trigger won't work
 	const FString& SLabel = Label.ToString();

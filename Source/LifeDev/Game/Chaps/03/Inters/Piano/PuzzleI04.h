@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual void PostLoad() override;
-	virtual void Done_Implementation(bool IsOk) override;
+	virtual void Done_Implementation(const bool Ok) override;
 
 	UFUNCTION()
 	void PostDone();
@@ -34,15 +34,4 @@ protected:
 	TObjectPtr<USoundBase> SND_Right = nullptr;
 
 	bool WasOk = false;
-	uint8 FailDiagIndex = 0;
-	TArray<FName> FailDiags = {
-		// notice this is the last one. so that the code can be a bit lazier but still correct.
-		"PZ04xC02",
-		"PZ04xC00",
-		"PZ04xC01",
-	};
-	// reusing the dialogs from the card is fine atm.
-	// the whole reason of this feature is JUST IN CASE the player
-	// didn't figure out that it needed to use the cards
-	// (because it's an obscure mechanic that is not used elsewhere atm).
 };
