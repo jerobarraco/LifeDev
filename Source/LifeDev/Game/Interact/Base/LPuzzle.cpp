@@ -100,11 +100,11 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 			const UWorld* const W = GetWorld();
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
 		}
-		return;
+		Locked = true; // force so it calls triggerLOcked
+	} else {
+		Unlock(); // force unlock. so that i can trigger.
 	}
 
-	Unlock(); // force unlock. so that i can trigger.
-	TryTrigger(); //calling this to be generous in case someone REALLY wants to override that.
-	// even though i'm the only person who will be working on this codebase. and i really don't think i'd want to override it.
+	TryTrigger();
 }
 
