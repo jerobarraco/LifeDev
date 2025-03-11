@@ -16,11 +16,11 @@ class UFlags;
 class UDiags;
 class UFlashback;
 
-// unfortunately unreal does not allow to have multiple inheritance
-// and 
 // Base class for LPuzzles
+// unfortunately unreal does not allow to have multiple inheritance
+// so this reimplements APuzzle and does not inherits it.
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALPuzzle: public APuzzle {
+class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
 
 public:
@@ -29,15 +29,61 @@ public:
 	// sets the UseItemDlg map on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
-	UFUNCTION(BlueprintCallable)
-	void SetUseItemDlgs(const TMap<FName, FName>& Map);
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	void SetUseItemDlgs(const TMap<FName, FName>& Map) const;
 
+	// sets the states on each registered interact.
+	// Call on, or after, begin play (but not before).
+	// Note that this will reset the cpuzzle (and interacts) 
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetStates(const TArray<int32>& States) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
+	}
+	
+	// sets the states on each registered interact.
+	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
+	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetLocks(const TArray<bool>& Locks) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetLocks(Locks); }
+	}
+
+	// Set the interact pieces to active. Don't call during construction.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
+	FORCEINLINE void SetActives(const bool NewEnabled) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
+	}
+
+	// Set the interact pieces to auto activate. Call only on constructor.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetAutoActives(const bool NewEnabled) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewEnabled); }
+	}
+
+	// sets "DisableWhileAnims" on all the interacts.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
+	}
+	
 protected:
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void ClearTimer(){};
+	
+	// TODO use trigger instead
+	virtual void Done_Implementation(const bool IsOk);
 
-	virtual void Done_Implementation(const bool IsOk) override;
+	// called when the puzzle is updated. override if needed
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Update();
+	virtual void Update_Implementation(){};
+	
+	// called when the puzzle is reset. override if needed
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void DoReset();
+	virtual void DoReset_Implementation() {};
 
+	// TODO have to move all these to their new counterparts
+	
 	// Dialog to show on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneDlg = NAME_None;
@@ -57,19 +103,11 @@ protected:
 	// FB to reward on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	float DoneFB = 0;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCLSounder> SND = nullptr;
 
-	// caches
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UFlashback> FB = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UDiags> Diags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UFlags> Flags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UInventory> Inventory = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UStory> Story = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
+	
+	/// transient
+
+	FTimerHandle ResetTimer;
 };

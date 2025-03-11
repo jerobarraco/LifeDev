@@ -8,20 +8,24 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
-#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "Story/Story.h"
 
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Interact/LInteract.h"
-#include "LifeDev/Core/Sounds/CLSounder.h"
 
 ALPuzzle::ALPuzzle():Super() {
-	SND = CreateDefaultSubobject<UCLSounder>(TEXT("Sounder"));
-	SND->SetupAttachment(Root);
+	UseAnim = false;
+
+	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
+	CPuzzle->DisableOnDone = true;
+
+	SetAutoActivate(false); // by default i'm not using this puzzle as directly.
+	SetMobility(EComponentMobility::Type::Static);
 }
 
-void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) {
+void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
 	if (UNLIKELY(!CPuzzle)) return;
 
 	// set the dialogs on each registered interact
@@ -39,7 +43,8 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *GetNameSafe(this));
 
-	Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
+	// TODO
+	// Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
 	
 	if (!IsOk) return; // ok to skip super on not ok, since super doesn't care
 
@@ -68,26 +73,4 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
 	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
 	if (IsValid(Reward)) Reward->Fade(true);
-}
-
-void ALPuzzle::BeginPlay() {
-	Super::BeginPlay();
-	const UWorld* const W = GetWorld();
-	if (UNLIKELY(!W)) return;
-	
-	Story = UStory::Instance(W);
-	FB = UFlashback::Instance(W);
-	Flags = UFlags::Instance(W);
-	Diags = UDiags::Instance(W);
-	Inventory = UInventory::Instance(W);
-}
-
-void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Flags = nullptr;
-	FB = nullptr;
-	Diags = nullptr;
-	Inventory = nullptr;
-	Story = nullptr;
-
-	Super::EndPlay(EndPlayReason);
 }
