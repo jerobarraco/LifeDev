@@ -16,7 +16,7 @@ APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; /// piano sequence
 	// Keys have "OneShot"
-	 // will make it easier. non-repeated keys. and make the waiting explicit.
+	// will make it easier. non-repeated keys. and make the waiting explicit.
 	// Allow for reset. this is handled with a careful setup of Super::Done
 	ResetOnFail = true;
 	RewardStep = true;
@@ -97,6 +97,7 @@ void APuzzleI04::PostDoneSnd() {
 }
 
 void APuzzleI04::LidDone() {
+	UE_LOG(LogTemp, Warning, TEXT("%hs"));
 	// before calling Done since that could trigger a new step or sequence
 	// actually the new step will disable the input,
 	// but better to do here, in case it changes, and to avoid stepping on it.

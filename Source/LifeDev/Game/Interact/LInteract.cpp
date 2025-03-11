@@ -92,9 +92,8 @@ void ALInteract::BeginPlay() {
 		// avoid getting the sound killed on self-destroy
 		// set here on purpose to allow the user to override it and self-hurt.
 		UseAttachedSFX = false;
-		if (!UseFade)
-			UE_LOG(LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false. "
-				"This is legal but unlikely. o=%s"), __func__, *GetNameSafe(this));
+		UE_CLOG(!UseFade, LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false. "
+			"This is legal but unlikely. o=%s"), __func__, *GetNameSafe(this));
 	}
 
 	if (IsValid(RewardActor)) { // hide and disable reward actor if any.

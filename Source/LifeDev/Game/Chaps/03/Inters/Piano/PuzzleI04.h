@@ -17,8 +17,6 @@ public:
 
 protected:
 	virtual void PostLoad() override;
-	// virtual void BeginPlay() override;
-
 	virtual void Done_Implementation(bool IsOk) override;
 
 	UFUNCTION()

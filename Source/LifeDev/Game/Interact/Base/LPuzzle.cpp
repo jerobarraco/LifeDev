@@ -88,8 +88,6 @@ void ALPuzzle::Update_Implementation() {
 }
 
 void ALPuzzle::Done_Implementation(const bool IsOk) {
-	// TODO make this protected, non native
-	// set Locked according to Ok, and call TryTrigger.
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *Label.ToString());
 

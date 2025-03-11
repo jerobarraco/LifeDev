@@ -75,7 +75,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void ClearTimer();
-	
+
+	// called when the puzzle is done. either on fail or success.
+	// override Trigger and TriggerLocked is preferred
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Done(const bool Ok);
 
