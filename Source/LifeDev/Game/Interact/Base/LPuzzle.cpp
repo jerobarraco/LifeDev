@@ -112,9 +112,15 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 		}
 		return;
 	}
+
+	Unlock(); // force unlock. so that i can trigger.
+	TryTrigger(); //calling this to be generous in case someone REALLY wants to override that.
+	// even though i'm the only person who will be working on this codebase. and i really don't think i'd want to override it.
 	
 	/// do all rewardy stuff
 
+	/// TODO remove
+	
 	if (IsValid(DoneInter)) {
 		DoneInter->Locked = false; // force unlock
 		DoneInter->TryTrigger();
