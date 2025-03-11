@@ -102,8 +102,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *Label.ToString());
 
-	// TODO
-	// Super::Done_Implementation(IsOk); // triggers the interact AND RESETS (next frame)
 	if (!IsOk) {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
 		// it will mess with the logical flow anyway.
