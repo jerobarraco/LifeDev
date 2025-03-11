@@ -11,8 +11,6 @@ APuzzleI02::APuzzleI02():Super() {
 	CPuzzle->Solution = {0, 0, 3}; // S.A.D.
 
 	static FName DoneId = "PZ02_T";
-	
-	RewardFlag = DoneId;
 	RewardFlash = .15;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
 	TriggerDlg = DoneId;
