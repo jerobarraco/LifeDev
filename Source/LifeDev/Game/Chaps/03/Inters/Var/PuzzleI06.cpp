@@ -18,8 +18,8 @@ APuzzleI06::APuzzleI06():Super() {
 	ResetOnFail = false;
 
 	static FName DoneId = "PZ06_T";
-	DoneDlg = DoneId;
-	DoneFB = .1;
+	TriggerDlg = DoneId;
+	RewardFlash = .1;
 }
 
 void APuzzleI06::PostLoad() {
@@ -46,21 +46,25 @@ void APuzzleI06::BeginPlay() {
 	// ideally i would add it to the step, but since the stepc3s0 is always loaded (for skipping)
 	// i can't add this puzzle since it exists on other datalayers.
 
-	if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, &APuzzleI06::StepStarted);
+	if (LIKELY(Flags)) {
+		constexpr float DiffAm = .3;
+		const float Diff = FMath::Lerp(-DiffAm, +DiffAm,
+			Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
+		DoneFB += Diff;
+		UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
+			_myclass_, __func__, Diff);
+	}
+	
+	if (LIKELY(Story)) {
+		Story->OnStart.AddUniqueDynamic(this, &APuzzleI06::StepStarted);
+		StepStarted(Story->GetStep(Story->GetCurrent())); // attempt to fix not usable when launching directly
+	}
 	// this is the only safe place to set active and get the settings
 	// const ULSettings* const Settings = ULSettings::Instance(this);
 	// const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
 	// const bool Active = ChapFeat == EFeat::C_03; // disabled manually. still needs work.
 	// UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
 	// SetActives(Active);
-	if (UNLIKELY(!Flags)) return;
-
-	constexpr float DiffAm = .3;
-	const float Diff = FMath::Lerp(-DiffAm, +DiffAm,
-		Flags->Get(LDConsts::Flags::Settings::Global::Foxy));
-	DoneFB += Diff;
-	UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
-		_myclass_, __func__, Diff);
 }
 
 void APuzzleI06::EndPlay(const EEndPlayReason::Type EndPlayReason) {
