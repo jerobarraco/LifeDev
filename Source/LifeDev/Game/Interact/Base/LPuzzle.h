@@ -111,10 +111,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneDlg = NAME_None;
 
-	// Flag to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	FName DoneFlag = NAME_None;
-
 	// Item to reward on done.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
 	FName DoneItem = NAME_None;

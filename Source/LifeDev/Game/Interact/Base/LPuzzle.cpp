@@ -134,10 +134,6 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	}
 	
 	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label.ToString());
-	if (LIKELY(Flags)) {
-		Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
-		Flags->Mod(DoneId, 1); // intentionally ADDING one (not setting to one)
-	}
 	// intentionally ADDING one (not setting to one)
 	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1);
 
