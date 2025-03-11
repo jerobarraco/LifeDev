@@ -134,11 +134,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	}
 	
 	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label.ToString());
-	// intentionally ADDING one (not setting to one)
-	if (LIKELY(Inventory)) Inventory->Mod(DoneItem, 1);
 
-	// doing dialog after the flags, since now the dialog system can read the flags and items on the condition
-	if (LIKELY(Diags)) Diags->AddId(DoneDlg) || Diags->AddId(DoneId);
 
 	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
 	// fade if it's an L interact (those can fade)

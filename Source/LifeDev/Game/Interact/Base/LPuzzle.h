@@ -107,14 +107,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone", meta=(DeprecatedProperty))
 	TObjectPtr<AActor> DoneActor = nullptr;
 	
-	// Dialog to show on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	FName DoneDlg = NAME_None;
-
-	// Item to reward on done.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")
-	FName DoneItem = NAME_None;
-
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCPuzzle> CPuzzle = nullptr;
 	
