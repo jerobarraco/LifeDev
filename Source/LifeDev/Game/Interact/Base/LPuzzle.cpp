@@ -55,7 +55,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	
 	const FName DoneId(LDConsts::Dlgs::Inter::PuzzleDonePre + Label);
 
-	if (LIKELY(FB)) FB->ModVal(DoneFB);
+	if (LIKELY(Flashback)) Flashback->ModVal(DoneFB);
 	if (LIKELY(Flags)) {
 		Flags->Mod(DoneFlag, 1); // intentionally ADDING one (not setting to one)
 		Flags->Mod(DoneId, 1); // intentionally ADDING one (not setting to one)
@@ -69,8 +69,9 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 	// story step at end to not break other stuff much.
 	if (LIKELY(Story) && !DoneStep.IsNone()) Story->StartNext(DoneStep);
 
+	// TODO This should be implemented on the LInteract on trigger. need to make sure all children are set up correctly.
 	// fade if it's an L interact (those can fade)
 	// a bit yucky but better than subclassing cpuzzle. it's actually quite the best option.
-	ALInteract* const Reward = Cast<ALInteract>(DoneActor);
-	if (IsValid(Reward)) Reward->Fade(true);
+	// ALInteract* const Reward = Cast<ALInteract>(DoneActor);
+	// if (IsValid(Reward)) Reward->Fade(true);
 }
