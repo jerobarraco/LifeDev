@@ -88,6 +88,17 @@ void ALPuzzle::ClearTimer() {
 	ResetTimer.Invalidate();
 }
 
+void ALPuzzle::Update_Implementation() {
+	// note update is called before done. so it's safe to re add the timer. done will clear it if needed.
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
+	
+	ClearTimer();
+	// re-add the reset timer if needed. Notice all the types return when done
+	if (ResetTimeout >= 0)
+		W->GetTimerManager().SetTimer(ResetTimer, this, &ALPuzzle::Reset, ResetTimeout);
+}
+
 void ALPuzzle::Done_Implementation(const bool IsOk) {
 	UE_LOG(LogTemp, Log, TEXT("ALPuzzle::Done ok=%i o=%s"),
 		IsOk, *GetNameSafe(this));

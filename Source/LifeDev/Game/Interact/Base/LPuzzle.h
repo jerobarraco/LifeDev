@@ -92,7 +92,6 @@ protected:
 	// called when the puzzle is updated. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Update();
-	virtual void Update_Implementation(){};
 	
 	// called when the puzzle is reset. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
@@ -137,5 +136,3 @@ protected:
 
 	FTimerHandle ResetTimer;
 };
-
-
