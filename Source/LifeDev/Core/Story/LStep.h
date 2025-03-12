@@ -177,12 +177,12 @@ protected:
 	UFUNCTION()
 	void DestroyActors();
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DlgShow(const FDiag& Diag);
 	// called when items get mod. checks for itemsFinish
-	UFUNCTION(BlueprintNativeEvent)// bound
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))// bound
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void FlagMod(const FName& FlagName, const float Diff, const float Total);
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.
