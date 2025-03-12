@@ -16,13 +16,13 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsSys.h"
-#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Core/Sounds/CLNoiser.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 #include "GameUI.h"
@@ -134,12 +134,11 @@ void ALChar::HoverDiag() {
 	const UCInteract* const Comp = Interactor->GetHoverComp();
 	if (UNLIKELY(!Comp)) return;
 
-	const AActor* const Owner = Comp->GetOwner();
-	if (UNLIKELY(!Owner)) return;
+	const AActor* const CmpOwner = Comp->GetOwner();
+	if (UNLIKELY(!CmpOwner)) return;
 
-	FString Label;
-	UJUtilsMisc::ObjectLabel(Owner, Label);
-	const FName N(LDConsts::Dlgs::Inter::LookPre+Label);
+	const FName Label = ULSettings::GetObjectLabel(CmpOwner);
+	const FName N(LDConsts::Dlgs::Inter::LookPre+Label.ToString());
 	if (LIKELY(Diags)) Diags->AddId(N);
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }
