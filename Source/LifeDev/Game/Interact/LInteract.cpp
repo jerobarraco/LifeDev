@@ -11,9 +11,8 @@
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
 #include "Eval.h"
-#include "JUtils/Misc/JUtilsMisc.h"
-#include "LifeDev/Core/Consts/ConstDlgs.h"
 
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LifeDev/Core/Settings/LSettings.h"

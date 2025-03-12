@@ -59,7 +59,7 @@ public:
 	bool Get(const FName& Name, FItem& OutItem) const;
 	// returns how many of an item there are.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Count(const FName& Name) const;
+	int32 Count(const FName& Name) const;
 
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))

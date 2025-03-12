@@ -166,7 +166,7 @@ bool UInventory::Get(const FName& Name, FItem& OutItem) const {
 	return true;
 }
 
-bool UInventory::Count(const FName& Name) const {
+int32 UInventory::Count(const FName& Name) const {
 	FItem Item;
 	const bool Ok = Get(Name, Item);
 	return LIKELY(Ok) ? Item.Count : 0;
