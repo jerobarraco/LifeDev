@@ -6,5 +6,4 @@
 
 ACard02::ACard02():Super() {
 	RewardItem = LDConsts::Items::Card2;
-	// TriggerDlg = "C2_Look*";
 }
