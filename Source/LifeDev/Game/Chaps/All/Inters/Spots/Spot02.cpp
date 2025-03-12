@@ -23,7 +23,6 @@ ASpot02::ASpot02():Super() {
 	Interact->SetRelativeLocation(FVector(17.5,-17.5,40));
 	Interact->SetBoxExtent(FVector(17.5, 17.5, 40));
 	// DropDlg = TEXT("IS_C0D");
-	// TriggerDlg = "IS_C0T*";
 	// LockedDlg = "IS_C0TB";
 	// Items = {};
 }

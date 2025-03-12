@@ -23,7 +23,6 @@ ASpot00::ASpot00():Super() {
 	Interact->SetBoxExtent(FVector(18,23,10));
 	Mesh->SetCastAllShadows(true);
 	// DropDlg = TEXT("IS_C0D");
-	// TriggerDlg = "IS_C0T*";
 	// LockedDlg = "IS_C0TB";
 	// LockedFullDlg = "IS_C0TBF";
 	// Items = { };

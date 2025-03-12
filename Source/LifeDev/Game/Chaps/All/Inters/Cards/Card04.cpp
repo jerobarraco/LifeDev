@@ -6,7 +6,6 @@
 
 ACard04::ACard04():Super() {
 	// overriden description for this chapter. will show on trigger.
-	TriggerDlg = "C4_Look*"; // TODO
 	RewardItem = LDConsts::Items::Card4;
 	// the step will finish on this, set on the step.
 
