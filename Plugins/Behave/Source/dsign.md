@@ -43,3 +43,13 @@ Once the plan is empty. wait a bit before choosing a new want
 // TODO wait and let want arise normally. have a period of satisfaction.
 
 react: can be optimized by being called less often
+
+
+might wanna check this talk and refactor how it works
+https://www.youtube.com/watch?v=IvK0ZlNoxjw
+
+specially the 2nd speaker.
+* divide decision and actions
+* have curve modifiers
+* have veto
+* 
