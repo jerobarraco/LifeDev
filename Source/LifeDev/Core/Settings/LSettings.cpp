@@ -109,7 +109,7 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 
 	// TODO add time here. how?
-	Save->ReadSubsystems(GetWorld());
+	Save->ReadSubsystems(this);
 	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);

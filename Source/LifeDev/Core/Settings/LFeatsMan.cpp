@@ -358,8 +358,6 @@ double ALFeatsMan::GetVar(const FName Name) {
 			if (UNLIKELY(!A)) continue;
 
 			FName Label = Settings->GetObjectLabel(A);
-			// FString Label;
-			// UJUtilsMisc::ObjectLabel(A, Label);
 
 			const bool Same = Label.ToString().Equals(ActorName, ESearchCase::IgnoreCase);
 			if (LIKELY(!Same)) continue;
