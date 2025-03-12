@@ -17,9 +17,9 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const int32 N = Books.Num();
 	// at least 2 to swap. and need the book trans
-	if (N<2 || BookTrans.Num() < N) return;
+	if (UNLIKELY(N<2 || BookTrans.Num() < N)) return;
 
-	UAnim* const Anim = UAnim::Instance(this);
+	UAnim* const AnimSub = UAnim::Instance(this);
 	
 	// cache 1st one. since we're going to overwrite
 	for (int32 i = 0; i<N; ++i) {
@@ -28,11 +28,11 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 
 		B->SetRelativeTransform(BookTrans[(i+State)%N]);
 		// a very basic animation so it does not look aweful
-		if (LIKELY(Anim)) {
-			UMaterialInstanceDynamic* Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
+		if (LIKELY(AnimSub)) {
+			UMaterialInstanceDynamic* const Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
 			if (LIKELY(Mat)) {
-				Anim->DynFloatFade(Mat, "Fade", 1, 0);
-				Anim->DynFloatFade(Mat, "Fade", 0,  .5, FadeCurve);
+				AnimSub->DynFloatFade(Mat, "Fade", 1, 0);
+				AnimSub->DynFloatFade(Mat, "Fade", 0,  .5, FadeCurve);
 			}
 		}
 	}

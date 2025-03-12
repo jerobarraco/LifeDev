@@ -285,6 +285,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 	static const FName NAME_ItemCur("V.Item.Cur");
 	if (Name == NAME_ItemCur) {
 		if (UNLIKELY(!GM->Inventory)) return -1;
+
 		const uint64 I = GM->Inventory->GetSelected().ToUnstableInt();
 		return I64ToD(I);
 	}
@@ -330,20 +331,20 @@ double ALFeatsMan::GetVar(const FName Name) {
 		if (UNLIKELY(!Comp)) return -1;
 
 		if (Name == "V.Inter.Cur.Name") {
-			const AActor* const Owner = Comp->GetOwner();
-			if (UNLIKELY(!Owner)) return -1;
-			// FString Label;
-			// UJUtilsMisc::ObjectLabel(Owner, Label);
-			const FName OwnerName = Settings->GetObjectLabel(Owner);
+			const AActor* const CmpOwner = Comp->GetOwner(); // this is a different owner than this->GetOwner. Owner is a private var also, will break windoz.
+			if (UNLIKELY(!CmpOwner)) return -1;
+
+			const FName OwnerName = Settings->GetObjectLabel(CmpOwner);
 			UE_LOG(LogLFeatsMan, Log, TEXT("%hs v.inter.cur.name Name=%s i=%i"), __func__, *OwnerName.ToString(), OwnerName.ToUnstableInt());
 			const uint64 I = OwnerName.ToUnstableInt();
 			return I64ToD(I);
 		}
 
 		if (Name=="V.Inter.Cur.State") {
-			const AInteract* const Owner = Cast<AInteract>(Comp->GetOwner());
-			if (UNLIKELY(!Owner)) return -1;
-			return Owner->GetState();
+			const AInteract* const CmpOwner = Cast<AInteract>(Comp->GetOwner());
+			if (UNLIKELY(!CmpOwner)) return -1;
+
+			return CmpOwner->GetState();
 		}
 	}
 
@@ -357,12 +358,11 @@ double ALFeatsMan::GetVar(const FName Name) {
 		for (const AActor* const A: Actors) {
 			if (UNLIKELY(!A)) continue;
 
-			FName Label = Settings->GetObjectLabel(A);
-
+			const FName Label = Settings->GetObjectLabel(A);
 			const bool Same = Label.ToString().Equals(ActorName, ESearchCase::IgnoreCase);
 			if (LIKELY(!Same)) continue;
 
-			const AInteract* I = Cast<AInteract>(A);
+			const AInteract* const I = Cast<AInteract>(A);
 			return LIKELY(I) ? I->GetState(): -1;
 		}
 

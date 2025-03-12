@@ -237,10 +237,7 @@ void ALInteract::DoTrigger_Implementation() {
 	if (!IsRewardless()) DisableWhileAnim = true;
 
 	Super::DoTrigger_Implementation();
-	// FString Label;
-	// UJUtilsMisc::ObjectLabel(this, Label);
-	const FString& Label = ULSettings::GetObjectLabel(this).ToString();
-	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerPre+Label);
+	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
 	if (LIKELY(Flags)) {
 		Flags->Mod(LDConsts::Flags::Stats::Inter::Trigger, 1);
 		Flags->Mod(TName, 1);
