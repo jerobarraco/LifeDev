@@ -89,8 +89,8 @@ void APuzzleI04::PostDoneSnd() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
-	const UCAnimatorMix* const Anim = Lid->GetAnim();
-	const float Duration = Anim ? Anim->Duration : 1;
+	const UCAnimatorMix* const LidAnim = Lid->GetAnim();
+	const float Duration = LidAnim ? LidAnim->Duration : 1;
 	FTimerHandle H;
 	W->GetTimerManager().SetTimer(H, this, &APuzzleI04::LidDone, Duration);
 }
