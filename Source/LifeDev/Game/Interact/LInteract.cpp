@@ -214,8 +214,9 @@ bool ALInteract::TryTrigger_Implementation() {
 
 	if (!TryUnlock && !ULockCondition.IsEmpty()) {
 		const UEval* const Eval = UEval::Instance(this);
-		double Res;
-		const bool Passed = LIKELY(Eval) && Eval->Eval(ULockCondition, Res) && Res > 0;
+		double Res = -1;
+		if (LIKELY(Eval)) Eval->Eval(ULockCondition, Res);
+		const bool Passed = Res > 0;
 		UE_LOG(LogLInteract, Log,
 			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
 			__func__, *ULockCondition, Res, Passed);
