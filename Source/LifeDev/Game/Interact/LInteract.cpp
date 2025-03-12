@@ -255,8 +255,10 @@ void ALInteract::DoTrigger_Implementation() {
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
 		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
 		// still call it if the stock one fails.
-		// TODO test, todo don't warn for the 2nd one
-		DiagsShown = Diags->AddId(TriggerDlg) || Diags->AddId(TName);
+		DiagsShown = Diags->AddId(TriggerDlg);
+		// done this way to force the autodialog even if the class one is defined 
+		const bool AutoShown = Diags->AddId(TName);
+		DiagsShown = DiagsShown || AutoShown;
 	}
 
 	// ensure we reward or the player could get locked

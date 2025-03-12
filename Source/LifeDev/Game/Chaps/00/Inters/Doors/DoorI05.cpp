@@ -25,7 +25,7 @@ bool ADoorI05::TryTrigger_Implementation() {
 	} else {
 		Unlock();
 	}
-	
+
 	return Super::TryTrigger_Implementation();
 }
 
