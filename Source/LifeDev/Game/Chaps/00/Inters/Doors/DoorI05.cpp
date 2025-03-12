@@ -14,6 +14,7 @@ ADoorI05::ADoorI05():Super() {
 }
 
 bool ADoorI05::TryTrigger_Implementation() {
+	// TODO i can use autodialogs for this one.
 	// verify the state. (pull not push, just like agile).
 	if (!Flags->Has(LDConsts::Flags::Game::CH0::Basin)) {
 		LockedDlg = "D05_L.Basin";
@@ -22,7 +23,7 @@ bool ADoorI05::TryTrigger_Implementation() {
 	} else if (!Inventory->Has(LDConsts::Items::Card0)) {
 		LockedDlg = "D05_L.C0";
 	} else {
-		Locked = false;
+		Unlock();
 	}
 	
 	return Super::TryTrigger_Implementation();
