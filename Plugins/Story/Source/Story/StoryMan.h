@@ -59,9 +59,10 @@ protected:
 	void UIFaded();
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void StepStart(AStep* const Step);
+	void StepStart(AStep* Step);
+
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void StepStop(AStep* const Step);
+	void StepStop(AStep* Step);
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStoryUI> UI = nullptr;

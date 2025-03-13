@@ -12,11 +12,11 @@
 
 class AStep;
 class UDataTable;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep*, Step);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep*, Step);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, bool, In, const FText&, Text);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FStoryDLChange, const FName&, Name, bool, On, bool, Success);
+// can't use *Const as it breaks AStoryMan due to ue bug
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep *, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep *, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStoryFade, const bool, In, const FText&, Text);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FStoryDLChange, const FName&, Name, const bool, On, const bool, Success);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
@@ -112,6 +112,7 @@ protected:
 	bool ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const;
 	bool ToggleStepLayers() const;
 
+	// these are ALL the steps registered (i think)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TMap<FName, TObjectPtr<AStep>> Steps;
 

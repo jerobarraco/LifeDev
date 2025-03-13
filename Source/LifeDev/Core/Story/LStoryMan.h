@@ -16,4 +16,7 @@ public:
 	static ALStoryMan* Instance(const UObject* const O);
 
 	ALStoryMan();
+
+protected:
+	virtual void StepSart_Implementation(AStep* const Step);
 };

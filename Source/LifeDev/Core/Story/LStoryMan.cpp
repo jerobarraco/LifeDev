@@ -4,8 +4,11 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#include "Inventory/Flags.h"
 #include "Story/StoryUI.h"
+#include "Story/Step.h"
 
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 ALStoryMan* ALStoryMan::Instance(const UObject* const O) {
@@ -27,3 +30,14 @@ ALStoryMan::ALStoryMan():Super() {
 	// this contains a save icon animation that will only be seen during the transition between chapters
 	// but since i've intentionally only save at that point, it works.
 }
+
+void ALStoryMan::StepSart_Implementation(AStep* const Step) {
+	if (UNLIKELY(!IsValid(Step))) return;
+
+	UFlags* const Flags = UFlags::Instance(this);
+	if (UNLIKELY(!Flags)) return;
+
+	const FName Name(LDConsts::Flags::Game::Story::StepStartPre + Step->Name.ToString());
+	Flags->Mod(Name, 1);
+}
+
