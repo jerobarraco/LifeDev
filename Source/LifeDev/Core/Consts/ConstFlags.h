@@ -44,13 +44,6 @@ namespace LDConsts {
 				inline static const FName Shame("Game.Emotion.Shame");
 				inline static const FName Sadness("Game.Emotion.Sadness");
 			}
-			namespace Story {
-			}
 		}
-		// some flags are reused from dlgs
-		namespace Diags {
-			inline static const FString AddedPre(TEXT("Diags.Added."));
-		}
-		
 	}
 }

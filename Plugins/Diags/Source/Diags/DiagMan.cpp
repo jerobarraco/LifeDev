@@ -73,6 +73,13 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
+	// Idea
+	// if (Diag.Type == EDiagType::SYSTEM) {
+	// maybe even add a delegate here. for events. some events might need to control WHEN to call Diags->DiagDone (e.g. wait)
+	// 	Diags->DiagDone();
+	// 	return;
+	// }
+
 	if (UNLIKELY(DebugSkip)) {
 		UE_LOG(LogTextDialogs, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);
 		// skip on the next frame to avoid having issues due to call stack

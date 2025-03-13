@@ -44,6 +44,9 @@ void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	if (LIKELY(!W)) return;
 
 	Super::Show_Implementation(Diag);
+
+	// if (Diag.Type == EDiagType::SYSTEM) return; 
+	
 	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Diags::Shown, 1);
 
 	const bool UseAuto = ULSettings::GetFeatS(W, EFeat::D_AUTO);

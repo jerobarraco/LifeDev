@@ -10,10 +10,12 @@ DEFINE_LOG_CATEGORY_STATIC(LogTextDialogs, Log, Log)
 UENUM(BlueprintType)
 enum class EDiagType : uint8 {
 	NORMAL,
-	SYSTEM,
 	WHISPER,
 	GROUP,
 	MISTERY,
+	// TODO idea: you can use this one to trigger events. if you ignore them on the ui.
+	SYSTEM,
+	MAX UMETA(Hidden)
 };
 
 // Modifiers for a sequence
@@ -46,8 +48,12 @@ public:
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName CharRow;
+	// the text to show
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
+
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// EDiagType Type = EDiagType::NORMAL; // idea: use system to trigger events.
 
 	// Experimental. The dialog will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

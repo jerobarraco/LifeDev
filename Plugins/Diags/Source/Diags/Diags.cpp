@@ -86,13 +86,13 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
 
 	// these two use teh condition to select the dialog
-	if (Seq.Type == EGroupType::PICK_LOOP) { // TODO test
+	if (Seq.Type == EGroupType::PICK_LOOP) {
 		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
 	}
 	
-	if (Seq.Type == EGroupType::PICK_CLAMP) { // TODO test
+	if (Seq.Type == EGroupType::PICK_CLAMP) {
 		const int32 i = FMath::Clamp(Res, 0, Num-1);
 		const FName DiagRow = Rows[i];
 		return AddId(DiagRow);
@@ -107,7 +107,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	
 	if (Seq.Type == EGroupType::MATCH) {
 		if (UNLIKELY(!CondOk)) return false;
-		for (const FName& N: Rows) { // TODO test
+		for (const FName& N: Rows) {
 			if (AddId(N)) return true;
 		}
 		return false;
@@ -116,7 +116,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	if (Seq.Type == EGroupType::RANDOM) {
 		TArray<FName> Shuffled = Rows; // make a copy
 		UJUtilsMisc::ArrayShuffle<FName>(Shuffled);
-		for (const FName& N: Shuffled) { // TODO test
+		for (const FName& N: Shuffled) {
 			if (AddId(N)) return true;
 		}
 		return false;
