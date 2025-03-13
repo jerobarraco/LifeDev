@@ -11,7 +11,13 @@ AStoryMan::AStoryMan():Super() {
 	UIClass = LIKELY(CUIClass.Succeeded()) ? CUIClass.Class.Get() : UStoryUI::StaticClass();
 }
 
-void AStoryMan::Init_Implementation() {}
+void AStoryMan::Init_Implementation() {
+	if (LIKELY(Story)) {
+		Story->OnFade.AddUniqueDynamic(this, &AStoryMan::Fade);
+		Story->OnStart.AddUniqueDynamic(this, &AStoryMan::StepStart);
+		Story->OnStop.AddUniqueDynamic(this, &AStoryMan::StepStop);
+	}
+}
 
 void AStoryMan::DeInit_Implementation() {
 	if (LIKELY(IsValid(Story))) {
@@ -65,12 +71,7 @@ void AStoryMan::BeginPlay() {
 	if (UNLIKELY(!World)) return;
 	
 	Story = World->GetSubsystem<UStory>();
-	if (LIKELY(Story)) {
-		Story->OnFade.AddUniqueDynamic(this, &AStoryMan::Fade);
-		Story->OnStart.AddUniqueDynamic(this, &AStoryMan::StepStart);
-		Story->OnStop.AddUniqueDynamic(this, &AStoryMan::StepStop);
-	}
-	
+
 	if (LIKELY(IsValid(UIClass.Get()))) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));
 		if (LIKELY(IsValid(UI))) {
@@ -85,5 +86,5 @@ void AStoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AStoryMan::StepStart_Implementation(AStep* const Step) {}
-void AStoryMan::StepStop_Implementation(AStep* const Step) {}
+void AStoryMan::StepStart_Implementation(AStep* Step) {}
+void AStoryMan::StepStop_Implementation(AStep* Step) {}

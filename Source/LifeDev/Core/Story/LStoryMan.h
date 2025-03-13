@@ -18,5 +18,5 @@ public:
 	ALStoryMan();
 
 protected:
-	virtual void StepSart_Implementation(AStep* const Step);
+	virtual void StepStart_Implementation(AStep* Step) override;
 };

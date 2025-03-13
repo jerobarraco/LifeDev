@@ -31,8 +31,10 @@ ALStoryMan::ALStoryMan():Super() {
 	// but since i've intentionally only save at that point, it works.
 }
 
-void ALStoryMan::StepSart_Implementation(AStep* const Step) {
+void ALStoryMan::StepStart_Implementation(AStep* Step) {
 	if (UNLIKELY(!IsValid(Step))) return;
+
+	Super::StepStart_Implementation(Step);
 
 	UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;

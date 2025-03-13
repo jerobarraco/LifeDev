@@ -62,7 +62,7 @@ protected:
 	void StepStart(AStep* Step);
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void StepStop(AStep* Step);
+	void StepStop(AStep* Step); // can't use const due to native event
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStoryUI> UI = nullptr;
