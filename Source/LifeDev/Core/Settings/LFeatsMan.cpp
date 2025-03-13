@@ -273,7 +273,7 @@ double ALFeatsMan::GetVar(const FName Name) {
 	if (Name == NAME_FBValTo)
 		return LIKELY(GM->Flashback) ? GM->Flashback->GetValTo() : -1;
 	if (Name == NAME_StoryStepCur) {
-		const uint64 I = LIKELY(GM->Story) ?GM->Story->GetCurrent().ToUnstableInt() : -1;
+		const uint64 I = LIKELY(GM->Story) ? GM->Story->GetCurrent().ToUnstableInt() : -1;
 		return I64ToD(I);
 	}
 	if (Name == NAME_SysDebug)

@@ -39,7 +39,7 @@ void ALStoryMan::StepStart_Implementation(AStep* Step) {
 	UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
-	const FName Name(LDConsts::Flags::Game::Story::StepStartPre + Step->Name.ToString());
+	const FName Name(LDConsts::Flags::Story::StepStartPre + Step->Name.ToString());
 	Flags->Mod(Name, 1);
 }
 

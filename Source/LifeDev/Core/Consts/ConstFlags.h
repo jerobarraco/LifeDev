@@ -44,9 +44,9 @@ namespace LDConsts {
 				inline static const FName Shame("Game.Emotion.Shame");
 				inline static const FName Sadness("Game.Emotion.Sadness");
 			}
-			namespace Story {
-				inline static const FString StepStartPre("Game.Story.Step.Start.");
-			}
+		}
+		namespace Story {
+			inline static const FString StepStartPre("Story.Step.Start.");
 		}
 	}
 }
