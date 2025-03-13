@@ -51,12 +51,17 @@ public:
 	FStoryManagerOnFaded OnFaded;
 	
 protected:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	// called when the ui is done fading
 	UFUNCTION()
 	void UIFaded();
-	
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void StepStart(AStep* const Step);
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void StepStop(AStep* const Step);
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStoryUI> UI = nullptr;

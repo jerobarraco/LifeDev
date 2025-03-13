@@ -14,8 +14,11 @@ AStoryMan::AStoryMan():Super() {
 void AStoryMan::Init_Implementation() {}
 
 void AStoryMan::DeInit_Implementation() {
-	if (LIKELY(IsValid(Story)))
+	if (LIKELY(IsValid(Story))) {
 		Story->OnFade.RemoveAll(this);
+		Story->OnStart.RemoveAll(this);
+		Story->OnStop.RemoveAll(this);
+	}
 	Story = nullptr;
 
 	if (LIKELY(UI))
@@ -62,7 +65,11 @@ void AStoryMan::BeginPlay() {
 	if (UNLIKELY(!World)) return;
 	
 	Story = World->GetSubsystem<UStory>();
-	if (LIKELY(Story)) Story->OnFade.AddUniqueDynamic(this, &AStoryMan::Fade);
+	if (LIKELY(Story)) {
+		Story->OnFade.AddUniqueDynamic(this, &AStoryMan::Fade);
+		Story->OnStart.AddUniqueDynamic(this, &AStoryMan::StepStart);
+		Story->OnStop.AddUniqueDynamic(this, &AStoryMan::StepStop);
+	}
 	
 	if (LIKELY(IsValid(UIClass.Get()))) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));
@@ -78,3 +85,5 @@ void AStoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
+void AStoryMan::StepStart_Implementation(AStep* const Step) {}
+void AStoryMan::StepStop_Implementation(AStep* const Step) {}
