@@ -45,6 +45,9 @@ struct DIAGS_API FDiag: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// EDiagType Type = EDiagType::NORMAL; // idea: use system to trigger events.
+
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName CharRow;
@@ -52,8 +55,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// EDiagType Type = EDiagType::NORMAL; // idea: use system to trigger events.
+	// Emotion. was not a bad idea. i won't use it but other people might. maybe i can use tags. like yarn.
 
 	// Experimental. The dialog will be added if it's "true", or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

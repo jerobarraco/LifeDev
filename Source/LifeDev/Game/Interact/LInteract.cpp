@@ -15,7 +15,6 @@
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
-#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
