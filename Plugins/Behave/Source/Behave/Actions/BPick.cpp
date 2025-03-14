@@ -19,7 +19,7 @@ bool UBPick::Plan_Implementation() {
 	if (UNLIKELY(Children.Num()<1)) return false;
 
 	CurChildI = -1;
-	float Min = FLT_MAX;
+	CostPlanned = FLT_MAX;
 	
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
@@ -28,19 +28,11 @@ bool UBPick::Plan_Implementation() {
 		if (!C) continue;
 		if (!C->Plan()) continue;
 		const float Cost = C->CostPlan();
-		if (Cost < Min) {
-			Min = Cost;
+		if (Cost < CostPlanned) {
+			CostPlanned = Cost;
 			CurChildI = i;
 		}
 	}
 
 	return IsValid(GetCurChild());
-}
-
-float UBPick::CostPlan_Implementation() const {
-	// This is a bit of a problem. since the cost is only known after planning
-	const UBBase* const C = GetCurChild();
-	if (UNLIKELY(!C)) return 0; // anomaly
-
-	return C->CostPlan();
 }

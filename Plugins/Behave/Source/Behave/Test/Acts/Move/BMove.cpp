@@ -36,3 +36,9 @@ EBDoRes UBMove::Do_Implementation(const float DT) {
 	Fish->MoveTo(Target, DT);
 	return EBDoRes::CONTINUE;
 }
+
+float UBMove::CostSelf_Implementation() const {
+	if (!Fish) return 2;
+	return Fish->Data.Tired + (Fish->GetActorLocation()-Target).Length()*.1;
+	// return Super::CostSelf_Implementation();
+}

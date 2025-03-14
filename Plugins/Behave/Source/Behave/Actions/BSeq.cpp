@@ -30,15 +30,11 @@ bool UBSeq::Plan_Implementation() {
 		if (!C) continue;
 		if (!C->Plan()) return false;
 	}
-	CurChildI = 0;
-	return true;
-}
-
-float UBSeq::CostPlan_Implementation() const {
-	float S=0;
+	CostPlanned = 0;
 	for (const UBBase* const C: Children) {
-		S+= C->CostPlan();
+		CostPlanned += C->CostPlan();
 	}
 
-	return S;
+	CurChildI = 0;
+	return true;
 }

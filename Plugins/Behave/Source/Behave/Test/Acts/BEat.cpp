@@ -31,3 +31,7 @@ EBDoRes UBEat::Do_Implementation(const float DT) {
 	Fish->Eat(DT);
 	return EBDoRes::CONTINUE;
 }
+float UBEat::CostSelf_Implementation() const {
+	return Super::CostSelf_Implementation();
+}
+

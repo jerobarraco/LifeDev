@@ -6,6 +6,7 @@
 #include "Behave/CBehave.h"
 
 bool UBBase::Plan_Implementation() {
+	CostPlanned = CostSelf(); // by default is the self cost
 	return true;
 }
 
