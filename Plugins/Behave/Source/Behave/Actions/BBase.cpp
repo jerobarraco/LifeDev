@@ -29,7 +29,14 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(State);
 }
 
-float UBBase::PlanCost_Implementation() const { return CostPlanned; }
+float UBBase::PlanCost_Implementation() const {
+	// i could have returned the cost as outparam on Plan.
+	// but i trust that people using this library is smart enough to read the documentation.
+	// and also i plan to refactor this, so that instead of calling plan directly. it will perform an A*Search of sorts.
+	// It might end up doing the same thing. as how can i give a cost without a plan???
+	// i might change my mind later. or not. who knows. i'm a mystery.
+	return CostPlanned;
+}
 
 float UBBase::CostSelf_Implementation() const { return 0; }
 
