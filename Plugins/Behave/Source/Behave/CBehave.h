@@ -34,8 +34,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UBBase> ActionCur;
 	// this is faulty. our plan is a tree, so we only need access to the root.
+	// only READ this from Game thread. only write from plan.
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UBBase>> Plan;
+	TObjectPtr<UBBase> Planned;
 
 	bool IsPlanning = false;
 };

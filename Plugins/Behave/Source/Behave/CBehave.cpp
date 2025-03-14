@@ -28,6 +28,17 @@ void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickTy
 }
 
 void UCBehave::PlanDo() {
+	Planned = nullptr;
+	// run through actions. ask if possible.
+	// they are sorted by priority.
+	// we don't care about cost at this point. the action itself cares.
+	for (UBBase* const A: Actions) {
+		if (UNLIKELY(!A)) continue;
+		if (!A->CanDo()) continue;
+		Planned = A;
+		break;
+	}
+
 	AsyncTask(ENamedThreads::GameThread, [this]{
 		PlanDone();
 	});
@@ -42,15 +53,13 @@ void UCBehave::PlanStart() {
 }
 
 void UCBehave::PlanDone() {
-	// TODO Stop current action
-	if (LIKELY(ActionCur)) {
+	if (LIKELY(ActionCur))
 		ActionCur->SetState(0);
-		ActionCur = nullptr;
-	}
-	if (Plan.Num()>0) {
-		ActionCur = Plan[0];
-	}
-	ActionCur->SetState(1);
+
+	ActionCur = Planned; // could be null. in that case it remains clear.
+	if (LIKELY(ActionCur))
+		ActionCur->SetState(1);
+
 	IsPlanning = false;
 }
 

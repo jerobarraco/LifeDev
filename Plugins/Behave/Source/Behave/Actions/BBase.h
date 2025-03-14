@@ -16,7 +16,7 @@ public:
 	int32 GetState(){return -1;};
 	float Cost(){return 0;};
 	float CostSelf(){return 0;};
-	bool CanDo(){return false;};
+	bool CanDo() const { return false; };
 	bool CanDoSelf(){return false; };
 	int32 Do(const float DT){return -1;};
 
@@ -27,4 +27,5 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
+
 };
