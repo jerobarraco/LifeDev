@@ -5,6 +5,7 @@
 
 #include "CQuickMesh.h"
 #include "Behave/CBehave.h"
+#include "Behave/Actions/BPick.h"
 #include "Components/TextRenderComponent.h"
 
 #define BarScale .05
@@ -14,7 +15,6 @@ ABFish::ABFish():Super() {
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	SetActorTickEnabled(true);
 
-	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
@@ -42,6 +42,8 @@ ABFish::ABFish():Super() {
 	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
 	Text->SetupAttachment(Root);
 	Text->SetRelativeLocation(FVector(0,0,15));
+	
+	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 }
 
 static const FVector FoodPos(50, 50, 50);

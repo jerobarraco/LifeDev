@@ -18,10 +18,8 @@ class BEHAVE_API UCBehave: public UActorComponent {
 public:
 	UCBehave();
 	void CurStop();
-
-	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadWrite)
-	TArray<TObjectPtr<UBBase>> Actions;
+	TArray<TSubclassOf<UBBase>> ActionClasses;
 
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
@@ -32,12 +30,15 @@ protected:
 	void PlanDo();
 	void PlanStart();
 	void PlanDone();
-
+	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UBBase>> Actions;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> ActionCur;
 	// this is faulty. our plan is a tree, so we only need access to the root.
 	// only READ this from Game thread. only write from plan.
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> Planned;
 
 	bool IsPlanning = false;
