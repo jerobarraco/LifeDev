@@ -10,3 +10,7 @@ bool UBBase::CanDoSelf_Implementation() const {
 bool UBBase::CanDo_Implementation() const {
 	return CanDoSelf();
 }
+
+EBDoRes UBBase::Do_Implementation(const float DT) {
+	return EBDoRes::STOP;
+}

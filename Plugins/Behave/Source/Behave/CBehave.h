@@ -17,6 +17,7 @@ class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
 	UCBehave();
+	void CurStop();
 
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,

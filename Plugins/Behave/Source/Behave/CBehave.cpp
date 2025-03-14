@@ -16,7 +16,7 @@ UCBehave::UCBehave():Super() {
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
-	FActorComponentTickFunction* const ThisTickFunction) {
+							FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (UNLIKELY(!ActionCur)) {
 		PlanStart();
@@ -24,7 +24,18 @@ void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickTy
 		return;
 	}
 
-	ActionCur->Do(DeltaTime);
+	const EBDoRes Res = ActionCur->Do(DeltaTime);
+	if (LIKELY(Res == EBDoRes::CONTINUE)) return;
+	
+	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) {
+		CurStop();  // will plan next tick
+	}
+}
+
+void UCBehave::CurStop() {
+	if (UNLIKELY(!ActionCur)) return;
+	ActionCur->SetState(0);
+	ActionCur = nullptr;
 }
 
 void UCBehave::PlanDo() {
@@ -57,8 +68,7 @@ void UCBehave::PlanStart() {
 }
 
 void UCBehave::PlanDone() {
-	if (LIKELY(ActionCur))
-		ActionCur->SetState(0);
+	CurStop();
 
 	ActionCur = Planned; // could be null. in that case it remains clear.
 	if (LIKELY(ActionCur))

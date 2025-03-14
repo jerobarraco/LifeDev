@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include "../BTypes.h"
 
 #include "BBase.generated.h"
 
@@ -30,7 +31,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool CanDoSelf() const;
 
-	int32 Do(const float DT){return -1;};
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	EBDoRes Do(const float DT);
 
 	void* OnState;
 
