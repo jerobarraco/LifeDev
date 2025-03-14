@@ -10,6 +10,8 @@
 // https://www.youtube.com/watch?v=gm7K68663rA#
 // it's loosely based on the first person And the comment about Layered GOAP. 
 
+class UBBase;
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
@@ -17,8 +19,15 @@ public:
 	UCBehave();
 
 protected:
-	// virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
-		// FActorComponentTickFunction* const ThisTickFunction) override;
+	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
+		FActorComponentTickFunction* const ThisTickFunction) override;
 	// virtual void BeginPlay() override;
 	// virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void Plan() {};
+
+	// this is a list of all the goals, main level actions, sorted by priority.
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UBBase>> Actions;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UBBase> ActionCur;
 };
