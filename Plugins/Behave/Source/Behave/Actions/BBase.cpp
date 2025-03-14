@@ -46,8 +46,6 @@ float UBBase::CostPlan_Implementation() const {
 float UBBase::CostSelf_Implementation() const { return 0; }
 
 UBBase* UBBase::GetCurChild() const {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
-
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return nullptr;
 	return Children[CurChildI];
@@ -56,6 +54,7 @@ UBBase* UBBase::GetCurChild() const {
 void UBBase::StopCurChild() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	SetCurChildSate(EBState::STOPPED);
+	CurChildI = -1;
 }
 
 void UBBase::SetCurChildSate(const EBState New) {
@@ -68,20 +67,19 @@ void UBBase::SetCurChildSate(const EBState New) {
 }
 
 void UBBase::StartChild(const int32 I) {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("%hs i=%i"), __func__, I);
 
 	StopCurChild();
 
-	if (I<0 || I>= Children.Num()) {
-		CurChildI = -1;
+	if (I<0 || I>= Children.Num())
 		return;
-	}
 
 	CurChildI = I;
 	SetCurChildSate(EBState::STARTED);
 }
 
 void UBBase::Register_Implementation(UCBehave* const B) {
+	UE_LOG(LogTemp, Log, TEXT("UBBase:%hs O=%s"), __func__, *GetNameSafe(this));
 	if (!B) {
 		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
 		return;

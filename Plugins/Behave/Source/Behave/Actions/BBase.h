@@ -58,6 +58,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName ID = NAME_None;
 
+	// beware if you change it during runtime
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TObjectPtr<UBBase>> Children;
+
+	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
 
@@ -72,9 +77,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void Register(UCBehave* B);
 
-	UPROPERTY(BlueprintReadOnly)
-	TArray<TObjectPtr<UBBase>> Children;
-
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 

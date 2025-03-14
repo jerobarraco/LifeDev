@@ -30,7 +30,7 @@ bool UBSeq::Plan_Implementation() {
 		if (!C) continue;
 		if (!C->Plan()) return false;
 	}
-
+	CurChildI = 0;
 	return true;
 }
 

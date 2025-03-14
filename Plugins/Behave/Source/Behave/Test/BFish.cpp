@@ -9,7 +9,9 @@
 #include "Acts/BEat.h"
 #include "Acts/BSleep.h"
 #include "Acts/Move/BMove.h"
+#include "Acts/Move/BMoveEat.h"
 #include "Behave/CBehave.h"
+#include "Behave/Actions/BSeq.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #define BarScale .05
@@ -48,7 +50,7 @@ ABFish::ABFish():Super() {
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	Behave->ActionClasses.Add(UBSleep::StaticClass());
-	Behave->ActionClasses.Add(UBEat::StaticClass());
+	// Behave->ActionClasses.Add(UBEat::StaticClass());
 	Behave->ActionClasses.Add(UBMove::StaticClass());
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 }
@@ -78,7 +80,14 @@ void ABFish::Eat(const float DT) {
 
 void ABFish::BeginPlay() {
 	Super::BeginPlay();
-	Behave->Action
+	// TODO find a way to data drive this.
+	UBBase* const Eat = Behave->NewAction(UBEat::StaticClass());
+	UBBase* const MoveEat = Behave->NewAction(UBMoveEat::StaticClass());
+	UBSeq* const SeqEat = Cast<UBSeq>(Behave->NewAction(UBSeq::StaticClass()));
+	SeqEat->ID = "SeqEat";
+	SeqEat->Children.Add(MoveEat);
+	SeqEat->Children.Add(Eat);
+	Behave->Actions.Insert(SeqEat, 1);
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
