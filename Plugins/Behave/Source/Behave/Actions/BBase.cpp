@@ -21,11 +21,18 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(State);
 }
 
+UBBase* UBBase::GetCurChild() {
+	const int32 Num = Children.Num();
+	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return nullptr;
+	return Children[CurChildI];
+}
+
 void UBBase::StopCurChild() {
 	SetCurChildSate(EBState::STOPPED);
 }
 
 void UBBase::SetCurChildSate(const EBState New) {
+	// i could call GetCurChild here. but it's one more if. NOOooooooooouuuu!
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return;
 	Children[CurChildI]->SetState(State);

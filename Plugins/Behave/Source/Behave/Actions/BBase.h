@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	EBDoRes Do(const float DT);
 
+	UFUNCTION(BlueprintCallable)
+	UBBase* GetCurChild();
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
 
@@ -52,7 +55,7 @@ protected:
 	void SetCurChildSate(const EBState New);
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
-
+	
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
 
