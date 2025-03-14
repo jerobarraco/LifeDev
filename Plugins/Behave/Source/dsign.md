@@ -16,6 +16,12 @@ https://www.youtube.com/watch?v=gm7K68663rA#
 it's loosely based on the first person.
 And the comment about Layered GOAP
 
+# TODO challenges
+* A* plan search
+* Random Pick UBBase
+* Randomize costs
+
+
 # TODO
 
 * preferences/traits
