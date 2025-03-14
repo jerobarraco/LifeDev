@@ -29,6 +29,10 @@ void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickTy
 
 void UCBehave::PlanDo() {
 	Planned = nullptr;
+
+	// If this looks simple is because it is. a lot of the planning is offloaded to the actions themselves.
+	// Unfortunately this does not allow to perform a A* search. but i'd refactor that (very) later on.
+
 	// run through actions. ask if possible.
 	// they are sorted by priority.
 	// we don't care about cost at this point. the action itself cares.

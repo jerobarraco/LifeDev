@@ -14,8 +14,9 @@ class BEHAVE_API UBBase: public UObject {
 public:
 	void SetState(int32 TODO) {};
 	int32 GetState(){return -1;};
-	float Cost(){return 0;};
-	float CostSelf(){return 0;};
+	
+	float Cost() {return 0;};
+	float CostSelf() {return 0;};
 
 	// called from a bg thread.
 	// needs to be as fast as possible but don't worry if it's a bit slow.
