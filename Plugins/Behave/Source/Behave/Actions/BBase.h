@@ -16,8 +16,16 @@ public:
 	int32 GetState(){return -1;};
 	float Cost(){return 0;};
 	float CostSelf(){return 0;};
+	
+	// UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool CanDo() const { return false; };
-	bool CanDoSelf(){return false; };
+
+	// called from a bg thread.
+	// this should only consider itself. and not the children.
+	// needs to be as fast as possible but don't worry if it's a bit slow.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool CanDoSelf() const;
+
 	int32 Do(const float DT){return -1;};
 
 	void* OnState;
@@ -27,5 +35,4 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
-
 };
