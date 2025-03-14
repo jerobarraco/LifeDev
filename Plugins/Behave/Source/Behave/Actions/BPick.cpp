@@ -46,5 +46,6 @@ bool UBPick::CanDoSelf_Implementation() const {
 
 float UBPick::CostPlan_Implementation() const {
 	// This is a bit of a problem. since the cost is only known after planning
-	return Super::CostPlan_Implementation();
+	if (!Chosen) return 0;
+	return Chosen->CostPlan();
 }
