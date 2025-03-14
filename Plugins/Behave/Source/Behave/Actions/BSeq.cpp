@@ -15,4 +15,6 @@ EBDoRes UBSeq::Do_Implementation(const float DT) {
 		if (CurChildI<0)
 			return EBDoRes::STOP;
 	}
+
+	return EBDoRes::CONTINUE; // should be == Res but meh.
 }
