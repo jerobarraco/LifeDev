@@ -30,8 +30,11 @@ public:
 	// called from a bg thread.
 	// needs to be as fast as possible but don't worry if it's a bit slow.
 	// this considers itself first, THEN the children.
+	// Returns true if the action can/should be done.
+	// You are allowed to do some planning here (like choosing which child is your favorite)
+	// note in case of actions that have a child like "MoveTo" the MoveTo needs to return true even if it's close to the target (e.g. when performing the action it will be "skipped")
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool CanDo() const;
+	bool Plan();
 
 	// called from a bg thread.
 	// this should only consider itself. and not the children.

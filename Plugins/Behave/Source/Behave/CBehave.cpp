@@ -49,7 +49,7 @@ void UCBehave::PlanDo() {
 	// we don't care about cost at this point. the action itself cares.
 	for (UBBase* const A: Actions) {
 		if (UNLIKELY(!A)) continue;
-		if (!A->CanDo()) continue;
+		if (!A->Plan()) continue;
 		Planned = A;
 		break;
 	}

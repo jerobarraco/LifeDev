@@ -7,7 +7,7 @@ bool UBBase::CanDoSelf_Implementation() const {
 	return true;
 }
 
-bool UBBase::CanDo_Implementation() const {
+bool UBBase::Plan_Implementation() {
 	return CanDoSelf();
 }
 
