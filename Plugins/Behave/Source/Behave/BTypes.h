@@ -25,3 +25,13 @@ enum class EBState : uint8 {
 	MAX UMETA(HIDDEN)
 };
 
+UCLASS(Blueprintable, BlueprintType)
+class UBDef: public UObject {
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite)
+	TSubclassOf<UBBase> Class;
+
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TObjectPtr<UBDef>> Children;
+};

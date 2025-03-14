@@ -38,6 +38,7 @@ public:
 	void Eat(const float DT);
 
 protected:
+	virtual void BeginPlay() override;
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
 	

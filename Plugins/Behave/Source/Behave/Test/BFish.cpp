@@ -76,6 +76,11 @@ void ABFish::Eat(const float DT) {
 	Data.Hungry = FMath::Clamp(Data.Hungry - (.2*DT), 0.01, 1);
 }
 
+void ABFish::BeginPlay() {
+	Super::BeginPlay();
+	Behave->Action
+}
+
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	if (State != EBState::STARTED || !Act) {
 		Doing = NAME_None;

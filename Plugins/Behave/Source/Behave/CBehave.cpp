@@ -36,14 +36,13 @@ void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 
 	for (const TSubclassOf<UBBase>& C: ActionClasses){
-		UBBase* const B = NewObject<UBBase>(this, C.Get());
+		UBBase* const B = NewAction(C);
 		if (UNLIKELY(!IsValid(B))) {
 			UE_LOG(LogCBehave, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
 				__func__, *C.Get()->GetName());
 			continue;
 		}
 		Actions.Add(B);
-		B->Register(this);
 	}
 }
 
@@ -61,6 +60,12 @@ void UCBehave::CurStop() {
 
 void UCBehave::Register(UBBase* const Action) {
 	Action->OnState.AddUniqueDynamic(this, &UCBehave::ActStateUp);
+}
+
+UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
+	UBBase* const B= NewObject<UBBase>(this, Class.Get());
+	if (B) B->Register(this);
+	return B;
 }
 
 void UCBehave::PlanDo() {

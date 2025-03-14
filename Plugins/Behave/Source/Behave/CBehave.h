@@ -28,7 +28,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCur() { return ActionChildCur; };
+	UFUNCTION(BlueprintCallable)
+	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
 
+	// this is a list of all the goals, main level actions, sorted by priority.
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TArray<TObjectPtr<UBBase>> Actions;
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TSubclassOf<UBBase>> ActionClasses;
 
@@ -47,10 +53,6 @@ protected:
 	
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
-
-	// this is a list of all the goals, main level actions, sorted by priority.
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TArray<TObjectPtr<UBBase>> Actions;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> ActionCur;
