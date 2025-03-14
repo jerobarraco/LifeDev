@@ -12,7 +12,7 @@ UBEat::UBEat():Super() {
 
 bool UBEat::Plan_Implementation() {
 	if (!Fish) return false;
-	if (Fish->Data.Hunger > .7) return false;
+	if (Fish->Data.Hungry > .7) return false;
 
 	return true;
 }
@@ -27,6 +27,6 @@ EBDoRes UBEat::Do_Implementation(const float DT) {
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	if (!Fish) return EBDoRes::ABORT;
 	
-	// Fish->Eat(DT);
+	Fish->Eat(DT);
 	return EBDoRes::CONTINUE;
 }

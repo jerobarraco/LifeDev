@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BFish.h"
+#include "BFisher.h"
 #include "Behave/Actions/BBase.h"
 
 #include "BSleep.generated.h"
@@ -10,7 +10,7 @@
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBSleep: public UBFish {
+class BEHAVE_API UBSleep: public UBFisher {
 	GENERATED_BODY()
 public:
 	UBSleep();

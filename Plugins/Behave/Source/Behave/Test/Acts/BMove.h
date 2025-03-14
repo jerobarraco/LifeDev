@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BFish.h"
+#include "BFisher.h"
 
 #include "BMove.generated.h"
 
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBMove: public UBFish {
+class BEHAVE_API UBMove: public UBFisher {
 	GENERATED_BODY()
 public:
 	UBMove();

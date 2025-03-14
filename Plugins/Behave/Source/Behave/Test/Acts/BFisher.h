@@ -4,12 +4,12 @@
 
 #include "Behave/Actions/BBase.h"
 
-#include "BFish.generated.h"
+#include "BFisher.generated.h"
 
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBFish: public UBBase {
+class BEHAVE_API UBFisher: public UBBase {
 	GENERATED_BODY()
 protected:
 	virtual void Register_Implementation(UCBehave* const B) override;

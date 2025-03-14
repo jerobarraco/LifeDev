@@ -20,7 +20,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	float Tired = 0;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	float Hunger = 0;
+	float Hungry = 0;
 };
 
 // this is just a test. warning
@@ -35,6 +35,7 @@ public:
 
 	void Sleep(const float DT);
 	void MoveTo(const FVector& Tgt, const float DT);
+	void Eat(const float DT);
 
 protected:
 	UFUNCTION()

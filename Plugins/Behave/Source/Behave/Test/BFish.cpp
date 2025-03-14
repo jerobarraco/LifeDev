@@ -69,7 +69,11 @@ void ABFish::MoveTo(const FVector& Tgt, const float DT) {
 	SetActorLocation(New, false);
 	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(Current, New));
 	Data.Tired = FMath::Clamp(Data.Tired + (.1*DT), 0.01, 1);
-	Data.Hunger = FMath::Clamp(Data.Hunger + (.05*DT), 0.01, 1);
+	Data.Hungry = FMath::Clamp(Data.Hungry + (.05*DT), 0.01, 1);
+}
+
+void ABFish::Eat(const float DT) {
+	Data.Hungry = FMath::Clamp(Data.Hungry - (.2*DT), 0.01, 1);
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
@@ -90,9 +94,9 @@ void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
 	Data.Tired = FMath::Clamp(Data.Tired + (.01*DT), 0.01, 1);
-	Data.Hunger = FMath::Clamp(Data.Hunger + (.025*DT), 0.01, 1);
+	Data.Hungry = FMath::Clamp(Data.Hungry + (.025*DT), 0.01, 1);
 	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
-	S_Hungry->SetRelativeScale3D(FVector(BarScale, Data.Hunger, BarScale));
+	S_Hungry->SetRelativeScale3D(FVector(BarScale, Data.Hungry, BarScale));
 }
 
 // if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)

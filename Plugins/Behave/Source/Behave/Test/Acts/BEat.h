@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BFish.h"
+#include "BFisher.h"
 
 #include "BEat.generated.h"
 
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBEat: public UBFish {
+class BEHAVE_API UBEat: public UBFisher {
 	GENERATED_BODY()
 public:
 	UBEat();
