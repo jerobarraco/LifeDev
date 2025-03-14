@@ -19,6 +19,10 @@ void UBBase::SetState_Implementation(const EBState New) {
 	State = New;
 }
 
+void UBBase::StopCurChild() {
+	SetCurChildSate(EBState::STOPPED);
+}
+
 void UBBase::SetCurChildSate(const EBState New) {
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return;
@@ -26,7 +30,7 @@ void UBBase::SetCurChildSate(const EBState New) {
 }
 
 void UBBase::StartChild(const int32 I) {
-	SetCurChildSate(EBState::STOPPED);
+	StopCurChild();
 
 	if (I<0 || I>= Children.Num()) {
 		CurChildI = -1;

@@ -44,6 +44,8 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable)
+	void StopCurChild();
+	UFUNCTION(BlueprintCallable)
 	void SetCurChildSate(const EBState New);
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
