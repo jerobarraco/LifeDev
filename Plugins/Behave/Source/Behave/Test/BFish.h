@@ -20,7 +20,7 @@ public:
 
 protected:
 	UFUNCTION()
-	void ActStateUp(UBBase* const Act, EBState State);
+	void ActStateUp(UBBase* const Act, const EBState State);
 	
 	UFUNCTION()
 	bool CanEat();

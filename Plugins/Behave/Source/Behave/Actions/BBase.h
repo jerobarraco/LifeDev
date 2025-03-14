@@ -7,7 +7,7 @@
 #include "BBase.generated.h"
 
 class UCBehave;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnState, UBBase* const, Act, EBState, State);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnState, UBBase* const, Act, const EBState, State);
 
 // base for action behaviors. the idea is that you make your own and each one handles what it needs.
 // a top level action, is considered a goal.
@@ -47,6 +47,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCurChild() const;
+
+	// for you to use however you want.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FName ID = NAME_None;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;

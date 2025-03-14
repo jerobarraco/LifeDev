@@ -6,6 +6,7 @@
 #include "Components/TextRenderComponent.h"
 
 #include "CQuickMesh.h"
+#include "Acts/BSleep.h"
 #include "Behave/CBehave.h"
 #include "Behave/Actions/BPick.h"
 
@@ -44,12 +45,15 @@ ABFish::ABFish():Super() {
 	Text->SetRelativeLocation(FVector(0,0,15));
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
-	Behave->ActionClasses.Add(UBPick::StaticClass());
+	Behave->ActionClasses.Add(UBSleep::StaticClass());
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 }
 
-void ABFish::ActStateUp(UBBase* const Act, EBState State) {
-	if (1==2) return;
+void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
+	if (State != EBState::STARTED || !Act) return;
+	if (Act->ID == UBSleep::SID) {
+		// start sleeping
+	}
 	// TODO
 }
 
@@ -58,7 +62,7 @@ static const FVector SleepPos(10, 10, 10);
 static const FVector PlayPos(10, -50, 30);
 
 bool ABFish::CanEat() {
-	return FVector::DistSquared(FoodPos, GetActorLocation()) < 10; 
+	return FVector::DistSquared(FoodPos, GetActorLocation()) < 10;
 }
 
 void ABFish::MoveToFood() {
