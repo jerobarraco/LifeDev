@@ -19,6 +19,10 @@ public:
 	UCBehave();
 	void CurStop();
 
+	// this is a list of all the goals, main level actions, sorted by priority.
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TObjectPtr<UBBase>> Actions;
+
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
@@ -29,9 +33,6 @@ protected:
 	void PlanStart();
 	void PlanDone();
 
-	// this is a list of all the goals, main level actions, sorted by priority.
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UBBase>> Actions;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UBBase> ActionCur;
 	// this is faulty. our plan is a tree, so we only need access to the root.

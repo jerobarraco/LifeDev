@@ -5,6 +5,8 @@
 
 #include "BTypes.generated.h"
 
+class UBBase;
+
 UENUM(Blueprintable, BlueprintType)
 enum class EBDoRes : uint8 {
 	CONTINUE,
@@ -19,3 +21,4 @@ enum class EBState : uint8 {
 	STARTED,
 	MAX UMETA(HIDDEN)
 };
+
