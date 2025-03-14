@@ -91,7 +91,7 @@ void ABFish::Tick(const float DT) {
 		Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0, 1);
 		S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
 	} else {
-		Data.Tired =  FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
+		Data.Tired = FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
 	}
 }
 

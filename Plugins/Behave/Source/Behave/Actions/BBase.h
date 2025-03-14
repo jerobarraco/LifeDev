@@ -63,8 +63,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
 
-	void Register(UCBehave* const Behave);
-	
+	void Register(UCBehave* const B);
+
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
 
@@ -77,5 +77,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float CostPlanned = 0;
 
+	UPROPERTY(Transient)
+	TObjectPtr<UCBehave> Behave = nullptr;
+	
 	friend class UCBehave;
 };

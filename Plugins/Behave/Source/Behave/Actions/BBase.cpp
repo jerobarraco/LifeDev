@@ -78,9 +78,13 @@ void UBBase::StartChild(const int32 I) {
 	SetCurChildSate(EBState::STARTED);
 }
 
-void UBBase::Register(UCBehave* const Behave) {
-	if (!Behave) return;
+void UBBase::Register(UCBehave* const B) {
+	if (!B) {
+		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
+		return;
+	}
 
+	Behave = B;
 	Behave->Register(this);
 	for (UBBase* const C: Children) {
 		if (!C) return;
