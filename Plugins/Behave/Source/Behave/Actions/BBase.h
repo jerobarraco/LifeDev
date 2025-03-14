@@ -52,7 +52,7 @@ public:
 	EBDoRes Do(const float DT);
 
 	UFUNCTION(BlueprintCallable)
-	UBBase* GetCurChild();
+	UBBase* GetCurChild() const;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;

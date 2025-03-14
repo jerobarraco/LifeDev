@@ -10,11 +10,13 @@
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBPick: public UBBase {
 	GENERATED_BODY()
+
 public:
 	virtual EBDoRes Do_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
 	virtual bool CanDoSelf_Implementation() const override;
 	virtual float CostPlan_Implementation() const override;
+
 protected:
 	UPROPERTY(Transient)
 	TObjectPtr<UBBase> Chosen = nullptr;

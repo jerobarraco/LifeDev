@@ -24,6 +24,7 @@ EBDoRes UBBase::Do_Implementation(const float DT) {
 }
 
 void UBBase::SetState_Implementation(const EBState New) {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	State = New;
 	if (State == EBState::STOPPED) StopCurChild();
 	OnState.Broadcast(State);
@@ -40,24 +41,31 @@ float UBBase::CostPlan_Implementation() const {
 
 float UBBase::CostSelf_Implementation() const { return 0; }
 
-UBBase* UBBase::GetCurChild() {
+UBBase* UBBase::GetCurChild() const {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return nullptr;
 	return Children[CurChildI];
 }
 
 void UBBase::StopCurChild() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	SetCurChildSate(EBState::STOPPED);
 }
 
 void UBBase::SetCurChildSate(const EBState New) {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+
 	// i could call GetCurChild here. but it's one more if. NOOooooooooouuuu!
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return;
-	Children[CurChildI]->SetState(State);
+	Children[CurChildI]->SetState(New);
 }
 
 void UBBase::StartChild(const int32 I) {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+
 	StopCurChild();
 
 	if (I<0 || I>= Children.Num()) {

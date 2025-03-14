@@ -9,35 +9,30 @@ EBDoRes UBPick::Do_Implementation(const float DT) {
 
 	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
-
-	if (R == EBDoRes::STOP) {
-		StartChild(CurChildI+1);
-		if (CurChildI<0)
-			return EBDoRes::STOP;
-	}
-
+	if (R == EBDoRes::STOP) return EBDoRes::STOP;
 	return EBDoRes::CONTINUE; // should be == Res but meh.
 }
 
 bool UBPick::Plan_Implementation() {
 	if (!CanDoSelf()) return false;
 
-	Chosen = nullptr;
+	CurChildI = -1;
 	float Min = FLT_MAX;
 	
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
-	for (UBBase* const C: Children) {
+	for (int32 i=0; i<Children.Num(); ++i){
+		UBBase* const C= Children[i];
 		if (!C) continue;
 		if (!C->Plan()) continue;
 		const float Cost = C->CostPlan();
 		if (Cost < Min) {
 			Min = Cost;
-			Chosen = C;
+			CurChildI = i;
 		}
 	}
 
-	return IsValid(Chosen);
+	return IsValid(GetCurChild());
 }
 
 bool UBPick::CanDoSelf_Implementation() const {
@@ -46,6 +41,7 @@ bool UBPick::CanDoSelf_Implementation() const {
 
 float UBPick::CostPlan_Implementation() const {
 	// This is a bit of a problem. since the cost is only known after planning
-	if (!Chosen) return 0;
-	return Chosen->CostPlan();
+	const UBBase* const C = GetCurChild();
+	if (UNLIKELY(!C)) return 0; // anomaly
+	return C->CostPlan();
 }
