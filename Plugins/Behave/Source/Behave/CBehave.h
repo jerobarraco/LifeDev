@@ -39,7 +39,7 @@ protected:
 	void PlanDone();
 	
 	UFUNCTION()
-	void ActStateUp(UBBase* const Act, EBState State);
+	void ActStateUp(UBBase* const Act, const EBState State);
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -47,6 +47,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> ActionCur;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<UBBase> ActionChildCur;
 	// this is faulty. our plan is a tree, so we only need access to the root.
 	// only READ this from Game thread. only write from plan.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

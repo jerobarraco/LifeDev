@@ -104,8 +104,15 @@ void UCBehave::PlanDone() {
 	IsPlanning = false;
 }
 
-void UCBehave::ActStateUp(UBBase* const Act, EBState State) {
+void UCBehave::ActStateUp(UBBase* const Act, const EBState State) {
+	UE_LOG(LogCBehave, Log, TEXT("%hs State=%i Act=%s"), *UEnum::GetValueAsString(State), *GetNameSafe(Act));
+
 	OnState.Broadcast(Act, State);
+	if (State == EBState::STOPPED) {
+		ActionChildCur = nullptr;
+	} else if (State == EBState::STARTED && Act) {
+		ActionChildCur = Act;
+	}
 }
 
 #pragma optimize("", on)
