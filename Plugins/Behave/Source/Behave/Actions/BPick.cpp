@@ -37,3 +37,8 @@ bool UBPick::Plan_Implementation() {
 bool UBPick::CanDoSelf_Implementation() const {
 	return Children.Num()>0;
 }
+
+float UBPick::Cost_Implementation() const {
+	// This is a bit of a problem. since the cost is only known after planning
+	return Super::Cost_Implementation();
+}
