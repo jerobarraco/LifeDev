@@ -44,11 +44,17 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	void StartChild(const int32 I){};
+	void SetCurChildSate(const EBState New);
+	UFUNCTION(BlueprintCallable)
+	void StartChild(const int32 I);
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
+
+	// opt
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	int32 CurChildI = -1;
 };
