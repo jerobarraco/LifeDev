@@ -70,7 +70,7 @@ protected:
 	void StartChild(const int32 I);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void Register(UCBehave* const B);
+	void Register(UCBehave* B);
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
