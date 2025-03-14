@@ -26,6 +26,7 @@ EBDoRes UBEat::Do_Implementation(const float DT) {
 	if (State == EBState::STOPPING) return EBDoRes::STOP;
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	if (!Fish) return EBDoRes::ABORT;
+	if (Fish->Data.Hungry < .3) return EBDoRes::STOP;
 	
 	Fish->Eat(DT);
 	return EBDoRes::CONTINUE;

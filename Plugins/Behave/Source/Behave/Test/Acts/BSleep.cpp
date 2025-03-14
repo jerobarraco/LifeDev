@@ -18,6 +18,7 @@ bool UBSleep::Plan_Implementation() {
 EBDoRes UBSleep::Do_Implementation(const float DT) {
 	if (State == EBState::STOPPING) return EBDoRes::STOP;
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
+	if (!Fish) return EBDoRes::ABORT;
 	if (Fish->Data.Tired<.2) return EBDoRes::STOP;
 	Fish->Sleep(DT);
 	return EBDoRes::CONTINUE;
