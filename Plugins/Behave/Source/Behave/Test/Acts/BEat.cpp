@@ -12,15 +12,13 @@ UBEat::UBEat():Super() {
 
 bool UBEat::Plan_Implementation() {
 	if (!Fish) return false;
-	if (Fish->Data.Tired > .7) return false;
-
-	Target = FMath::RandPointInBox(FBox(FVector(0), FVector(100)));
+	if (Fish->Data.Hunger > .7) return false;
 
 	return true;
 }
 
 void UBEat::SetState_Implementation(const EBState New) {
-	UE_LOG(LogTemp, Log, TEXT("Move::%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("Eat::%hs"), __func__);
 	Super::SetState_Implementation(New);
 }
 
@@ -29,18 +27,6 @@ EBDoRes UBEat::Do_Implementation(const float DT) {
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	if (!Fish) return EBDoRes::ABORT;
 	
-	const FVector& Current = Fish->GetActorLocation();
-	const float Dist = FVector::DistSquared(Current, Target);
-	if (Dist < 1) return EBDoRes::STOP;
-
-	Fish->MoveTo(Target, DT);
+	// Fish->Eat(DT);
 	return EBDoRes::CONTINUE;
-}
-
-void UBEat::Register_Implementation(UCBehave* const B) {
-	// TODo i can move this to a base one
-	Super::Register_Implementation(B);
-	if (UNLIKELY(!B)) return;
-
-	Fish = Cast<ABFish>(B->GetOwner());
 }

@@ -16,8 +16,11 @@ USTRUCT(Blueprintable, BlueprintType)
 struct FTFishData {
 	GENERATED_BODY()
 public:
+	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	float Tired = 0;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	float Hunger = 0;
 };
 
 // this is just a test. warning
