@@ -12,9 +12,11 @@ UBMove::UBMove():Super() {
 
 bool UBMove::Plan_Implementation() {
 	if (!Fish) return false;
-	
-	// TODO get target. calculate cost.
-	return true; // TODO a way to read/write from globals
+	if (Fish->Data.Tired > .7) return false;
+
+	Target = FMath::RandPointInBox(FBox(FVector(0), FVector(100)));
+
+	return true;
 }
 
 void UBMove::SetState_Implementation(const EBState New) {

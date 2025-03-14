@@ -19,8 +19,8 @@ void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickTy
 FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (UNLIKELY(!ActionCur)) {
-		PlanStart();
 		SetComponentTickEnabled(false);
+		PlanStart();
 		return;
 	}
 
@@ -99,6 +99,12 @@ void UCBehave::PlanDone() {
 	if (LIKELY(ActionCur)) {
 		ActionCur->SetState(EBState::STARTED);
 		SetComponentTickEnabled(true);
+	} else {
+		// retry later
+		FTimerHandle H;
+		const UWorld* const World = GetWorld();
+		if (World)
+			World->GetTimerManager().SetTimer(H, this, &UCBehave::PlanStart, 1);
 	}
 
 	IsPlanning = false;

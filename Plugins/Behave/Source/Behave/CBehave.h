@@ -41,6 +41,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	// Warning. this will run on a bg thread.
 	void PlanDo();
+	UFUNCTION()
 	void PlanStart();
 	void PlanDone();
 	

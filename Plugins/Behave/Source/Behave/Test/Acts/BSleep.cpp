@@ -11,6 +11,7 @@ UBSleep::UBSleep():Super() {
 }
 
 bool UBSleep::Plan_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("Sleep::%hs"), __func__);
 	return Fish && Fish->Data.Tired > .7;
 }
 
