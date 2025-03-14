@@ -12,7 +12,15 @@ bool UBBase::CanDo_Implementation() const {
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT) {
-	return EBDoRes::STOP;
+	UBBase* const C = GetCurChild();
+	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
+
+	const EBDoRes R = C->Do(DT);
+	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
+
+	// This base object is more abstract than anything else. so i will just return the child.
+	// which is kind of the best thing, specially for classes that inherit from this
+	return R;
 }
 
 void UBBase::SetState_Implementation(const EBState New) {
