@@ -55,8 +55,8 @@ void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 		Text->SetText(FText::FromString("..."));
 		return;
 	}
-	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 	Doing = Act->ID;
+	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 }
 
 static const FVector FoodPos(50, 50, 50);
