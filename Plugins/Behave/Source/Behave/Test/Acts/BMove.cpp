@@ -23,8 +23,10 @@ void UBMove::SetState_Implementation(const EBState New) {
 }
 
 EBDoRes UBMove::Do_Implementation(const float DT) {
+	if (State == EBState::STOPPING) return EBDoRes::STOP;
+	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	if (!Fish) return EBDoRes::ABORT;
-
+	
 	const FVector& Current = Fish->GetActorLocation();
 	const float Dist = FVector::DistSquared(Current, Target);
 	if (Dist < 1) return EBDoRes::STOP;
@@ -36,5 +38,6 @@ EBDoRes UBMove::Do_Implementation(const float DT) {
 void UBMove::Register_Implementation(UCBehave* const B) {
 	Super::Register_Implementation(B);
 	if (UNLIKELY(!B)) return;
+
 	Fish = Cast<ABFish>(B->GetOwner());
 }
