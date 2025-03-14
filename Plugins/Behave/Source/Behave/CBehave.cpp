@@ -32,6 +32,24 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	}
 }
 
+void UCBehave::BeginPlay() {
+	Super::BeginPlay();
+	for (const TSubclassOf<UBBase>& C: ActionClasses){
+		UBBase* const B = NewObject<UBBase>(this, C.Get());
+		if (UNLIKELY(!IsValid(B))) {
+			UE_LOG(LogCBehave, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
+				__func__, *C.Get()->GetName());
+			continue;
+		}
+		Actions.Add(B);
+	}
+}
+
+void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Super::EndPlay(EndPlayReason);
+	Actions.Empty(); // uobjects can't be directly destroyed.
+}
+
 void UCBehave::CurStop() {
 	if (UNLIKELY(!ActionCur)) return;
 	ActionCur->SetState(EBState::STOPPED);

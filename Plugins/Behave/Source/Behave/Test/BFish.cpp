@@ -3,10 +3,10 @@
  
 #include "BFish.h"
 
+#include "Components/TextRenderComponent.h"
+
 #include "CQuickMesh.h"
 #include "Behave/CBehave.h"
-#include "Behave/Actions/BPick.h"
-#include "Components/TextRenderComponent.h"
 
 #define BarScale .05
 
@@ -14,7 +14,6 @@ ABFish::ABFish():Super() {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	SetActorTickEnabled(true);
-
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 

@@ -24,8 +24,8 @@ public:
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
-	// virtual void BeginPlay() override;
-	// virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	// Warning. this will run on a bg thread.
 	void PlanDo();
 	void PlanStart();
