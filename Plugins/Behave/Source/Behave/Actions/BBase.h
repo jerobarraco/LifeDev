@@ -6,6 +6,8 @@
 
 #include "BBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBOnState, const EBState, State);
+
 // base for action behaviors. the idea is that you make your own and each one handles what it needs.
 // a top level action, is considered a goal.
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
@@ -40,7 +42,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	EBDoRes Do(const float DT);
 
-	void* OnState;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FBOnState OnState;
 
 protected:
 	UFUNCTION(BlueprintCallable)

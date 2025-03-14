@@ -17,6 +17,8 @@ EBDoRes UBBase::Do_Implementation(const float DT) {
 
 void UBBase::SetState_Implementation(const EBState New) {
 	State = New;
+	if (State == EBState::STOPPED) StopCurChild();
+	OnState.Broadcast(State);
 }
 
 void UBBase::StopCurChild() {
