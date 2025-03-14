@@ -20,7 +20,7 @@ EBDoRes UBSeq::Do_Implementation(const float DT) {
 }
 
 bool UBSeq::Plan_Implementation() {
-	if (!CanDoSelf()) return false;
+	if (Children.Num() <1) return false;
 
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
@@ -32,8 +32,8 @@ bool UBSeq::Plan_Implementation() {
 	return true;
 }
 
-bool UBSeq::CanDoSelf_Implementation() const {
-	return Children.Num() > 0;
+bool UBSeq::CanDo_Implementation() const {
+	return !!GetCurChild();
 }
 
 float UBSeq::CostPlan_Implementation() const {

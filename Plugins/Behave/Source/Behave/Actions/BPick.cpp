@@ -14,7 +14,7 @@ EBDoRes UBPick::Do_Implementation(const float DT) {
 }
 
 bool UBPick::Plan_Implementation() {
-	if (!CanDoSelf()) return false;
+	if (UNLIKELY(Children.Num()<1)) return false;
 
 	CurChildI = -1;
 	float Min = FLT_MAX;
@@ -35,13 +35,14 @@ bool UBPick::Plan_Implementation() {
 	return IsValid(GetCurChild());
 }
 
-bool UBPick::CanDoSelf_Implementation() const {
-	return Children.Num()>0;
+bool UBPick::CanDo_Implementation() const {
+	return !!GetCurChild();
 }
 
 float UBPick::CostPlan_Implementation() const {
 	// This is a bit of a problem. since the cost is only known after planning
 	const UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return 0; // anomaly
+
 	return C->CostPlan();
 }

@@ -3,12 +3,12 @@
 
 #include "BBase.h"
 
-bool UBBase::CanDoSelf_Implementation() const {
-	return true;
+bool UBBase::CanDo_Implementation() const {
+	return !!GetCurChild();
 }
 
 bool UBBase::Plan_Implementation() {
-	return CanDoSelf();
+	return true;
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT) {

@@ -14,7 +14,7 @@ class BEHAVE_API UBPick: public UBBase {
 public:
 	virtual EBDoRes Do_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
-	virtual bool CanDoSelf_Implementation() const override;
+	virtual bool CanDo_Implementation() const override;
 	virtual float CostPlan_Implementation() const override;
 
 protected:
