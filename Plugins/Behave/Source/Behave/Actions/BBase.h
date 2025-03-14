@@ -12,5 +12,19 @@ class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()
 
 public:
+	void SetState(int32 TODO) {};
+	int32 GetState(){return -1;};
+	float Cost(){return 0;};
+	float CostSelf(){return 0;};
+	bool CanDo(){return false;};
+	bool CanDoSelf(){return false; };
+	int32 Do(const float DT){return -1;};
 
+	void* OnState;
+
+protected:
+	void StartChild(const int32 I){};
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<TObjectPtr<UBBase>> Children;
 };
