@@ -25,12 +25,12 @@ public:
 	// called from a bg thread.
 	// total cost including children
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float Cost();
+	float Cost() const;
 	
 	// called from a bg thread.
 	// self cost
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float CostSelf();
+	float CostSelf() const;
 
 	// called from a bg thread.
 	// needs to be as fast as possible but don't worry if it's a bit slow.
