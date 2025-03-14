@@ -3,11 +3,16 @@
 
 #include "BMove.h"
 
+#include "Behave/CBehave.h"
+#include "Behave/Test/BFish.h"
+
 UBMove::UBMove():Super() {
 	ID = SID;
 }
 
 bool UBMove::Plan_Implementation() {
+	if (!Fish) return false;
+	
 	// TODO get target. calculate cost.
 	return true; // TODO a way to read/write from globals
 }
@@ -19,4 +24,10 @@ void UBMove::SetState_Implementation(const EBState New) {
 
 EBDoRes UBMove::Do_Implementation(const float DT) {
 	return EBDoRes::CONTINUE;
+}
+
+void UBMove::Register_Implementation(UCBehave* const B) {
+	Super::Register_Implementation(B);
+	if (UNLIKELY(!B)) return;
+	Fish = Cast<ABFish>(B->GetOwner());
 }

@@ -11,8 +11,7 @@ UBSleep::UBSleep():Super() {
 }
 
 bool UBSleep::Plan_Implementation() {
-	return !!Fish;
-	return true; // TODO a way to read/write from globals
+	return Fish && Fish->Data.Tired > .7;
 }
 
 void UBSleep::SetState_Implementation(const EBState New) {

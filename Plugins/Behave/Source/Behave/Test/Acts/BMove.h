@@ -6,6 +6,8 @@
 
 #include "BMove.generated.h"
 
+class ABFish;
+
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBMove: public UBBase {
 	GENERATED_BODY()
@@ -22,4 +24,8 @@ public:
 
 	inline static FName SID = "Move";
 protected:
+	virtual void Register_Implementation(UCBehave* const B) override;
+
+	UPROPERTY(Transient)
+	TObjectPtr<ABFish> Fish = nullptr;
 };
