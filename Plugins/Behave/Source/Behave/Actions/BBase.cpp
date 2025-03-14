@@ -14,3 +14,7 @@ bool UBBase::CanDo_Implementation() const {
 EBDoRes UBBase::Do_Implementation(const float DT) {
 	return EBDoRes::STOP;
 }
+
+void UBBase::SetState_Implementation(const EBState New) {
+	State = New;
+}

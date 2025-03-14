@@ -13,10 +13,16 @@ class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()
 
 public:
-	void SetState(int32 TODO) {};
-	int32 GetState(){return -1;};
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetState(const EBState New);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	EBState GetState() const {return State;};
 	
+	// called from a bg thread.
 	float Cost() {return 0;};
+	// called from a bg thread.
 	float CostSelf() {return 0;};
 
 	// called from a bg thread.
@@ -37,8 +43,12 @@ public:
 	void* OnState;
 
 protected:
+	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I){};
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	EBState State = EBState::STOPPED;
 };
