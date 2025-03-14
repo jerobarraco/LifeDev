@@ -7,6 +7,7 @@
 
 #include "CQuickMesh.h"
 #include "Behave/CBehave.h"
+#include "Behave/Actions/BPick.h"
 
 #define BarScale .05
 
@@ -43,6 +44,7 @@ ABFish::ABFish():Super() {
 	Text->SetRelativeLocation(FVector(0,0,15));
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
+	Behave->ActionClasses.Add(UBPick::StaticClass());
 }
 
 static const FVector FoodPos(50, 50, 50);

@@ -18,7 +18,8 @@ class BEHAVE_API UCBehave: public UActorComponent {
 public:
 	UCBehave();
 	void CurStop();
-	UPROPERTY(BlueprintReadWrite)
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TSubclassOf<UBBase>> ActionClasses;
 
 protected:
@@ -31,7 +32,7 @@ protected:
 	void PlanStart();
 	void PlanDone();
 	// this is a list of all the goals, main level actions, sorted by priority.
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TArray<TObjectPtr<UBBase>> Actions;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
