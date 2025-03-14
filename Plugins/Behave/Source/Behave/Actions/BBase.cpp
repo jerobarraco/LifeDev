@@ -3,10 +3,6 @@
 
 #include "BBase.h"
 
-bool UBBase::CanDo_Implementation() const {
-	return !!GetCurChild();
-}
-
 bool UBBase::Plan_Implementation() {
 	return true;
 }

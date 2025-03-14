@@ -35,10 +35,6 @@ bool UBPick::Plan_Implementation() {
 	return IsValid(GetCurChild());
 }
 
-bool UBPick::CanDo_Implementation() const {
-	return !!GetCurChild();
-}
-
 float UBPick::CostPlan_Implementation() const {
 	// This is a bit of a problem. since the cost is only known after planning
 	const UBBase* const C = GetCurChild();

@@ -42,12 +42,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool Plan();
 
-	// called from do.
-	// this should only consider itself. and not the children.
-	// needs to be as fast as possible.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool CanDo() const;
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	EBDoRes Do(const float DT);
 

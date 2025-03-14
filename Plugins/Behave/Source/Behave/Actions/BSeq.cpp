@@ -32,10 +32,6 @@ bool UBSeq::Plan_Implementation() {
 	return true;
 }
 
-bool UBSeq::CanDo_Implementation() const {
-	return !!GetCurChild();
-}
-
 float UBSeq::CostPlan_Implementation() const {
 	float S=0;
 	for (const UBBase* const C: Children) {

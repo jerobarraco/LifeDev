@@ -13,7 +13,6 @@ class BEHAVE_API UBSeq: public UBBase {
 public:
 	virtual EBDoRes Do_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
-	virtual bool CanDo_Implementation() const override;
 	virtual float CostPlan_Implementation() const override;
 protected:
 };
