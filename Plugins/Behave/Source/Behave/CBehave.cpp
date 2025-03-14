@@ -16,7 +16,7 @@ UCBehave::UCBehave():Super() {
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
-							FActorComponentTickFunction* const ThisTickFunction) {
+FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (UNLIKELY(!ActionCur)) {
 		PlanStart();
