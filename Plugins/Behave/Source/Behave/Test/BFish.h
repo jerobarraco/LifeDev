@@ -40,23 +40,7 @@ protected:
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
 	
-	UFUNCTION()
-	bool CanEat();
-	UFUNCTION()
-	void MoveToFood();
-
-	UFUNCTION()
-	void MoveToSleep();
-	UFUNCTION()
-	void MoveToPlay();
-	virtual void BeginPlay() override;
 	virtual void Tick(const float DT) override;
-
-	UFUNCTION()
-	void UpdBio(UBBase* const Behave);
-	UFUNCTION()
-	void UpdEmo(UBBase* const Behave);
-
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root;
