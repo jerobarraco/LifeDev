@@ -11,6 +11,10 @@ Biological		 Energy/Hunger/Temp
 
 Time			 ???
 
+See this one
+https://www.youtube.com/watch?v=gm7K68663rA#
+it's loosely based on the first person.
+And the comment about Layered GOAP
 
 # TODO
 
