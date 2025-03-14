@@ -19,8 +19,11 @@ class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
 	UCBehave();
+	
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void CurStop();
 
+	UFUNCTION(BlueprintCallable)
 	void Register(UBBase* const Action);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
