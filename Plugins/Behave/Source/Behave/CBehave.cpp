@@ -34,7 +34,7 @@ void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickTy
 
 void UCBehave::CurStop() {
 	if (UNLIKELY(!ActionCur)) return;
-	ActionCur->SetState(0);
+	ActionCur->SetState(EBState::STOPPED);
 	ActionCur = nullptr;
 }
 
@@ -72,7 +72,7 @@ void UCBehave::PlanDone() {
 
 	ActionCur = Planned; // could be null. in that case it remains clear.
 	if (LIKELY(ActionCur))
-		ActionCur->SetState(1);
+		ActionCur->SetState(EBState::STARTED);
 
 	IsPlanning = false;
 }
