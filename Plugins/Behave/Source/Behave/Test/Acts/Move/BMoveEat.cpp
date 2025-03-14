@@ -3,36 +3,14 @@
 
 #include "BMoveEat.h"
 
-#include "Behave/CBehave.h"
-#include "Behave/Test/BFish.h"
-
-UBMoveEat::UBMoveEat():Super() {
-	ID = SID;
-}
+static const FVector FoodPos(50, 50, 50);
 
 bool UBMoveEat::Plan_Implementation() {
-	if (!Fish) return false;
-	if (Fish->Data.Tired > .7) return false;
+	const bool Res = Super::Plan_Implementation();
+	if (!Res) return false;
 
-	Target = FMath::RandPointInBox(FBox(FVector(0), FVector(100)));
+	// i know this is lame. this is stub. in a real case you'd want to find the food pos.
+	Target = FoodPos;
 
 	return true;
-}
-
-void UBMoveEat::SetState_Implementation(const EBState New) {
-	UE_LOG(LogTemp, Log, TEXT("MoveEat::%hs"), __func__);
-	Super::SetState_Implementation(New);
-}
-
-EBDoRes UBMoveEat::Do_Implementation(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
-	if (!Fish) return EBDoRes::ABORT;
-	
-	const FVector& Current = Fish->GetActorLocation();
-	const float Dist = FVector::DistSquared(Current, Target);
-	if (Dist < 1) return EBDoRes::STOP;
-
-	Fish->MoveTo(Target, DT);
-	return EBDoRes::CONTINUE;
 }
