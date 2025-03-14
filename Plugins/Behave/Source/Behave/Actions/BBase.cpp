@@ -3,6 +3,8 @@
 
 #include "BBase.h"
 
+#include "Behave/CBehave.h"
+
 bool UBBase::Plan_Implementation() {
 	return true;
 }
@@ -74,4 +76,14 @@ void UBBase::StartChild(const int32 I) {
 
 	CurChildI = I;
 	SetCurChildSate(EBState::STARTED);
+}
+
+void UBBase::Register(UCBehave* const Behave) {
+	if (!Behave) return;
+
+	Behave->Register(this);
+	for (UBBase* const C: Children) {
+		if (!C) return;
+		C->Register(Behave);
+	}
 }

@@ -6,6 +6,7 @@
 
 #include "BBase.generated.h"
 
+class UCBehave;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnState, UBBase* const, Act, EBState, State);
 
 // base for action behaviors. the idea is that you make your own and each one handles what it needs.
@@ -57,6 +58,8 @@ protected:
 	void SetCurChildSate(const EBState New);
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
+
+	void Register(UCBehave* const Behave);
 	
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UBBase>> Children;
@@ -69,4 +72,6 @@ protected:
 	int32 CurChildI = -1;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float CostPlanned = 0;
+
+	friend class UCBehave;
 };

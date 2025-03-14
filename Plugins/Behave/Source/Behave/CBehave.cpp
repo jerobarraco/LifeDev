@@ -42,7 +42,7 @@ void UCBehave::BeginPlay() {
 				__func__, *C.Get()->GetName());
 			continue;
 		}
-
+		B->Register(this);
 		Actions.Add(B);
 	}
 }
