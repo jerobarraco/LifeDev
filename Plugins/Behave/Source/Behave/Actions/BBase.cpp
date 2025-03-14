@@ -10,6 +10,9 @@ bool UBBase::Plan_Implementation() {
 }
 
 EBDoRes UBBase::Do_Implementation(const float DT) {
+	if (State == EBState::STOPPING) return EBDoRes::STOP;
+	if (State == EBState::ABORTING) return EBDoRes::ABORT;
+
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
@@ -78,7 +81,7 @@ void UBBase::StartChild(const int32 I) {
 	SetCurChildSate(EBState::STARTED);
 }
 
-void UBBase::Register(UCBehave* const B) {
+void UBBase::Register_Implementation(UCBehave* const B) {
 	if (!B) {
 		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
 		return;

@@ -22,6 +22,11 @@ And the comment about Layered GOAP
 * Randomize costs
 
 
+# note
+currently i have the actions do the actual logic and controlling the pawn.
+a more general way would be to have the pawn listen to the current action and act accordingly. stopping the action if necessary. but i think that adds complexity and can make things more difficult.
+you can do it that way if you prefer.
+
 # TODO
 
 * preferences/traits

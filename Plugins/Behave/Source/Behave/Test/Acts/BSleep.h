@@ -6,6 +6,8 @@
 
 #include "BSleep.generated.h"
 
+class ABFish;
+
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSleep: public UBBase {
 	GENERATED_BODY()
@@ -19,8 +21,11 @@ public:
 
 	inline static FName SID = "Sleep";
 protected:
+	virtual void Register_Implementation(UCBehave* const B) override;
 	UPROPERTY(VisibleAnywhere, Transient)
 	float TimeCur = 0;
 	UPROPERTY(VisibleAnywhere, Transient)
 	float TimeSleep = 2;
+	UPROPERTY(Transient)
+	TObjectPtr<ABFish> Fish;
 };

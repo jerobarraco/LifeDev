@@ -27,6 +27,11 @@ class BEHAVE_API ABFish: public AActor {
 public:
 	ABFish();
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FTFishData Data;
+
+	void Sleep(const float DT);
+
 protected:
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
@@ -47,7 +52,8 @@ protected:
 	void UpdBio(UBBase* const Behave);
 	UFUNCTION()
 	void UpdEmo(UBBase* const Behave);
-	
+
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
@@ -69,8 +75,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	FTFishData Data;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Doing;

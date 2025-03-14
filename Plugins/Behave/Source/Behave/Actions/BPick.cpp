@@ -4,6 +4,8 @@
 #include "BPick.h"
 
 EBDoRes UBPick::Do_Implementation(const float DT) {
+	if (State == EBState::STOPPING) return EBDoRes::STOP;
+	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 

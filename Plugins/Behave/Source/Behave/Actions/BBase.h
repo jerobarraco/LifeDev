@@ -63,6 +63,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
 
+	UFUNCTION(BlueprintNativeEvent)
 	void Register(UCBehave* const B);
 
 	UPROPERTY(BlueprintReadOnly)

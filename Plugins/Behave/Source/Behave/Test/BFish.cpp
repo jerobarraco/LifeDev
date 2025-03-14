@@ -49,6 +49,8 @@ ABFish::ABFish():Super() {
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 }
 
+void ABFish::Sleep(const float DT) {}
+
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	if (State != EBState::STARTED || !Act) {
 		Doing = NAME_None;
