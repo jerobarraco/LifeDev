@@ -19,9 +19,8 @@ void UBSleep::SetState_Implementation(const EBState New) {
 }
 
 EBDoRes UBSleep::Do_Implementation(const float DT) {
-	UE_LOG(LogTemp, Log, TEXT("Sleep::%hs"), __func__);
 	if (TimeCur >= TimeSleep) return EBDoRes::STOP;
 
-	TimeCur += TimeCur;
+	TimeCur += DT;
 	return EBDoRes::CONTINUE;
 }

@@ -52,8 +52,10 @@ ABFish::ABFish():Super() {
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	if (State != EBState::STARTED || !Act) {
 		Doing = NAME_None;
+		Text->SetText(FText::FromString("..."));
 		return;
 	}
+	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 	Doing = Act->ID;
 }
 
