@@ -9,7 +9,6 @@
 #include "Acts/BMove.h"
 #include "Acts/BSleep.h"
 #include "Behave/CBehave.h"
-#include "Behave/Actions/BPick.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #define BarScale .05

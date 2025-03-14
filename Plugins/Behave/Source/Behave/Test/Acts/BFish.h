@@ -2,22 +2,18 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BFish.h"
 #include "Behave/Actions/BBase.h"
 
-#include "BSleep.generated.h"
+#include "BFish.generated.h"
 
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBSleep: public UBFish {
+class BEHAVE_API UBFish: public UBBase {
 	GENERATED_BODY()
-public:
-	UBSleep();
-
-	virtual bool Plan_Implementation() override;
-	virtual EBDoRes Do_Implementation(const float DT) override;
-
-	inline static FName SID = "Sleep";
 protected:
+	virtual void Register_Implementation(UCBehave* const B) override;
+
+	UPROPERTY(Transient)
+	TObjectPtr<ABFish> Fish = nullptr;
 };
