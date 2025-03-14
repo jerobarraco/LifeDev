@@ -12,7 +12,7 @@ UBEat::UBEat():Super() {
 
 bool UBEat::Plan_Implementation() {
 	if (!Fish) return false;
-	if (Fish->Data.Hungry > .7) return false;
+	if (Fish->Data.Hungry < .7) return false;
 
 	return true;
 }
