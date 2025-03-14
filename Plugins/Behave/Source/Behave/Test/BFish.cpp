@@ -49,7 +49,11 @@ ABFish::ABFish():Super() {
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 }
 
-void ABFish::Sleep(const float DT) {}
+void ABFish::Sleep(const float DT) {
+	Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0.01, 1);
+	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
+	// Behave->GetCur()->Abort(); // read notes
+}
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	if (State != EBState::STARTED || !Act) {
@@ -90,8 +94,7 @@ void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
 	if (Doing == UBSleep::SID) {
-		Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0, 1);
-		S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
+		
 	} else {
 		Data.Tired = FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
 	}
