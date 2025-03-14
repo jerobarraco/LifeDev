@@ -34,6 +34,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
+
 	for (const TSubclassOf<UBBase>& C: ActionClasses){
 		UBBase* const B = NewObject<UBBase>(this, C.Get());
 		if (UNLIKELY(!IsValid(B))) {
@@ -41,6 +42,7 @@ void UCBehave::BeginPlay() {
 				__func__, *C.Get()->GetName());
 			continue;
 		}
+
 		Actions.Add(B);
 	}
 }
@@ -52,6 +54,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void UCBehave::CurStop() {
 	if (UNLIKELY(!ActionCur)) return;
+
 	ActionCur->SetState(EBState::STOPPED);
 	ActionCur = nullptr;
 }
