@@ -93,7 +93,7 @@ void ABFish::BeginPlay() {
 void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
-	Data.Tired = FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
+	Data.Tired = FMath::Clamp(Data.Tired + (.03*DT), 0, 1);
 }
 
 	// if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)

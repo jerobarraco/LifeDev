@@ -18,7 +18,7 @@ public:
 	virtual EBDoRes Do_Implementation(const float DT) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FVector Target;
+	FVector Target = FVector::ZeroVector;
 
 	inline static FName SID = "Move";
 protected:

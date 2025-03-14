@@ -6,7 +6,7 @@
 #include "Behave/CBehave.h"
 #include "Behave/Test/BFish.h"
 
-UBSleep::UBSleep() {
+UBSleep::UBSleep():Super() {
 	ID = SID;
 }
 

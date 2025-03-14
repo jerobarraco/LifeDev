@@ -3,7 +3,7 @@
 
 #include "BMove.h"
 
-UBMove::UBMove() {
+UBMove::UBMove():Super() {
 	ID = SID;
 }
 
