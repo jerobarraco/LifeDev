@@ -93,6 +93,7 @@ void ABFish::BeginPlay() {
 
 	UBBase* const Picker = Behave->NewAction(UBPick::StaticClass());
 	UBBase* const Move = Behave->NewAction(UBMove::StaticClass());
+	Picker->ID = "PickMoveEat";
 	Picker->Children.Add(SeqEat);
 	Picker->Children.Add(Move);
 	Behave->Actions.Insert(Picker, 1);
