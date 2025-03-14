@@ -6,6 +6,7 @@
 #include "Components/TextRenderComponent.h"
 
 #include "CQuickMesh.h"
+#include "Acts/BMove.h"
 #include "Acts/BSleep.h"
 #include "Behave/CBehave.h"
 #include "Behave/Actions/BPick.h"
@@ -47,6 +48,7 @@ ABFish::ABFish():Super() {
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	Behave->ActionClasses.Add(UBSleep::StaticClass());
+	Behave->ActionClasses.Add(UBMove::StaticClass());
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 }
 
@@ -65,6 +67,7 @@ void ABFish::MoveTo(const FVector& Tgt, const float DT) {
 	const FVector& New = FMath::VInterpConstantTo(Current, Tgt, DT, MoveSpeed);
 	SetActorLocation(New, false);
 	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(Current, New));
+	Data.Tired = FMath::Clamp(Data.Tired + (.1*DT), 0.01, 1);
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
@@ -105,7 +108,7 @@ void ABFish::BeginPlay() {
 void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
-	Data.Tired = FMath::Clamp(Data.Tired + (.1*DT), 0.01, 1);
+	Data.Tired = FMath::Clamp(Data.Tired + (.01*DT), 0.01, 1);
 	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
 }
 
