@@ -18,3 +18,15 @@ EBDoRes UBSeq::Do_Implementation(const float DT) {
 
 	return EBDoRes::CONTINUE; // should be == Res but meh.
 }
+
+bool UBSeq::Plan_Implementation() {
+	if (!CanDoSelf()) return false;
+	// a sequence is valid only of all children are valid.
+	// even the ones that will become skipped.
+	for (UBBase* const C: Children) {
+		if (!C) continue;
+		if (!C->Plan()) return false;
+	}
+
+	return true;
+}
