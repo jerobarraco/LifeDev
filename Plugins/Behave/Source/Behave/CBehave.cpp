@@ -89,8 +89,10 @@ void UCBehave::PlanDone() {
 	CurStop();
 
 	ActionCur = Planned; // could be null. in that case it remains clear.
-	if (LIKELY(ActionCur))
+	if (LIKELY(ActionCur)) {
 		ActionCur->SetState(EBState::STARTED);
+		SetComponentTickEnabled(true);
+	}
 
 	IsPlanning = false;
 }
