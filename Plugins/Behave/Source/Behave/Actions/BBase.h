@@ -26,7 +26,7 @@ public:
 	// total cost including children
 	// Important. before calling this, ensure you've called plan.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float PlanCost() const;
+	float CostPlan() const;
 	
 	// called from a bg thread.
 	// self cost

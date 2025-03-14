@@ -22,23 +22,29 @@ EBDoRes UBPick::Do_Implementation(const float DT) {
 bool UBPick::Plan_Implementation() {
 	if (!CanDoSelf()) return false;
 
-	float Min = Children[0]->PlanCost();
-	int32 Smaller = 0;
+	Chosen = nullptr;
+	float Min = FLT_MAX;
+	
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
 	for (UBBase* const C: Children) {
 		if (!C) continue;
-		if (!C->Plan()) return false;
+		if (!C->Plan()) continue;
+		const float Cost = C->CostPlan();
+		if (Cost < Min) {
+			Min = Cost;
+			Chosen = C;
+		}
 	}
 
-	return true;
+	return IsValid(Chosen);
 }
 
 bool UBPick::CanDoSelf_Implementation() const {
 	return Children.Num()>0;
 }
 
-float UBPick::PlanCost_Implementation() const {
+float UBPick::CostPlan_Implementation() const {
 	// This is a bit of a problem. since the cost is only known after planning
-	return Super::PlanCost_Implementation();
+	return Super::CostPlan_Implementation();
 }
