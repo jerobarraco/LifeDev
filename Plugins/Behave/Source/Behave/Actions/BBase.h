@@ -24,8 +24,9 @@ public:
 	
 	// called from a bg thread.
 	// total cost including children
+	// Important. before calling this, ensure you've called plan.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float Cost() const;
+	float PlanCost() const;
 	
 	// called from a bg thread.
 	// self cost
@@ -73,4 +74,6 @@ protected:
 	// opt
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 CurChildI = -1;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	float CostPlanned = 0;
 };

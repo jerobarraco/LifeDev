@@ -36,10 +36,10 @@ bool UBSeq::CanDoSelf_Implementation() const {
 	return Children.Num() > 0;
 }
 
-float UBSeq::Cost_Implementation() const {
+float UBSeq::PlanCost_Implementation() const {
 	float S=0;
 	for (const UBBase* const C: Children) {
-		S+= C->Cost();
+		S+= C->PlanCost();
 	}
 
 	return S;

@@ -29,7 +29,7 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(State);
 }
 
-float UBBase::Cost_Implementation() const { return 0; }
+float UBBase::PlanCost_Implementation() const { return CostPlanned; }
 
 float UBBase::CostSelf_Implementation() const { return 0; }
 
