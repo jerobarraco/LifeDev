@@ -22,8 +22,8 @@ EBDoRes UBPick::Do_Implementation(const float DT) {
 bool UBPick::Plan_Implementation() {
 	if (!CanDoSelf()) return false;
 
-	// float Min = MAX_FLT;
-	// int32 Smaller = Children[0];
+	float Min = Children[0]->Cost();
+	int32 Smaller = 0;
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
 	for (UBBase* const C: Children) {

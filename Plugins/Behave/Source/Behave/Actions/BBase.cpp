@@ -29,6 +29,10 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(State);
 }
 
+float UBBase::Cost_Implementation() { return 0; }
+
+float UBBase::CostSelf_Implementation() { return 0; }
+
 UBBase* UBBase::GetCurChild() {
 	const int32 Num = Children.Num();
 	if (UNLIKELY(CurChildI<0 || CurChildI>=Num)) return nullptr;

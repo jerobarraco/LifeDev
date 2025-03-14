@@ -23,9 +23,14 @@ public:
 	EBState GetState() const {return State;};
 	
 	// called from a bg thread.
-	float Cost() {return 0;};
+	// total cost including children
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	float Cost();
+	
 	// called from a bg thread.
-	float CostSelf() {return 0;};
+	// self cost
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	float CostSelf();
 
 	// called from a bg thread.
 	// needs to be as fast as possible but don't worry if it's a bit slow.
