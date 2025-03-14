@@ -9,6 +9,10 @@ EBDoRes UBPick::Do_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
+	if (UNLIKELY(C->GetState() == EBState::STOPPED)) { // to allow to abort the child
+		C->SetState(EBState::STARTED);
+	}
+
 	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 	if (R == EBDoRes::STOP) return EBDoRes::STOP;

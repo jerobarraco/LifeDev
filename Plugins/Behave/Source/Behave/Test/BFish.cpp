@@ -108,7 +108,6 @@ void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 }
 
-static const FVector FoodPos(50, 50, 50);
 static const FVector SleepPos(10, 10, 10);
 static const FVector PlayPos(10, -50, 30);
 

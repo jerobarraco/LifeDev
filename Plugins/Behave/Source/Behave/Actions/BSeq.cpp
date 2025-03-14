@@ -9,6 +9,11 @@ EBDoRes UBSeq::Do_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
+	// TODO could be optimized
+	if (UNLIKELY(C->GetState() == EBState::STOPPED)) { // to allow to abort the child
+		C->SetState(EBState::STARTED);
+	}
+
 	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 
@@ -30,6 +35,7 @@ bool UBSeq::Plan_Implementation() {
 		if (!C) continue;
 		if (!C->Plan()) return false;
 	}
+
 	CostPlanned = 0;
 	for (const UBBase* const C: Children) {
 		CostPlanned += C->CostPlan();
