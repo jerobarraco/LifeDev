@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Register(UBBase* const Action);
 
+	UFUNCTION(BlueprintCallable)
+	UBBase* GetCur() { return ActionChildCur; };
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TSubclassOf<UBBase>> ActionClasses;
 

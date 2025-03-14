@@ -105,7 +105,8 @@ void UCBehave::PlanDone() {
 }
 
 void UCBehave::ActStateUp(UBBase* const Act, const EBState State) {
-	UE_LOG(LogCBehave, Log, TEXT("%hs State=%i Act=%s"), *UEnum::GetValueAsString(State), *GetNameSafe(Act));
+	UE_LOG(LogCBehave, Log, TEXT("%hs State=%s Act=%s"),
+		__func__, *UEnum::GetValueAsString(State), *GetNameSafe(Act));
 
 	OnState.Broadcast(Act, State);
 	if (State == EBState::STOPPED) {

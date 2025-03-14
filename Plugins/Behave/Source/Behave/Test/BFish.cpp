@@ -50,11 +50,11 @@ ABFish::ABFish():Super() {
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
-	if (State != EBState::STARTED || !Act) return;
-	if (Act->ID == UBSleep::SID) {
-		// start sleeping
+	if (State != EBState::STARTED || !Act) {
+		Doing = NAME_None;
+		return;
 	}
-	// TODO
+	Doing = Act->ID;
 }
 
 static const FVector FoodPos(50, 50, 50);
@@ -82,11 +82,17 @@ void ABFish::BeginPlay() {
 	Super::BeginPlay();
 }
 
-void ABFish::Tick(const float DeltaSeconds) {
-	Super::Tick(DeltaSeconds);
+void ABFish::Tick(const float DT) {
+	Super::Tick(DT);
+
+	if (Doing == UBSleep::SID) {
+		Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0, 1);
+		S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
+	} else {
+		Data.Tired =  FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
+	}
 }
 
-void ABFish::Do(const FName& Token, const float DT) {
 	// if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
 	// 	SetActorRotation(FRotator(0,90,0));
 	//
@@ -111,7 +117,6 @@ void ABFish::Do(const FName& Token, const float DT) {
 	// } else if (Doing == UBEmo::T_Cry) {
 	// 	AddActorLocalRotation(FRotator(0,0,50*DT));
 	// }
-}
 
 void ABFish::UpdBio(UBBase* const Behave) {
 	// const UBBio* const Bio = Cast<UBBio>(Behave); // cast on every tick :( 

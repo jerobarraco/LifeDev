@@ -11,6 +11,15 @@ class UBBase;
 class UCBehave;
 class UTextRenderComponent;
 class UCQuickMesh;
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FTFishData {
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	float Tired = 0;
+};
+
 // this is just a test. warning
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
 class BEHAVE_API ABFish: public AActor {
@@ -32,9 +41,8 @@ protected:
 	UFUNCTION()
 	void MoveToPlay();
 	virtual void BeginPlay() override;
-	virtual void Tick(const float DeltaSeconds) override;
-	UFUNCTION()
-	void Do(const FName& Token, const float DT);
+	virtual void Tick(const float DT) override;
+
 	UFUNCTION()
 	void UpdBio(UBBase* const Behave);
 	UFUNCTION()
@@ -60,6 +68,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCBehave> Behave;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FTFishData Data;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	FName Doing;
