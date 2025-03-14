@@ -82,6 +82,8 @@ void ABFish::Eat(const float DT) {
 void ABFish::BeginPlay() {
 	Super::BeginPlay();
 	// TODO find a way to data drive this. Structs can't be recursive with TArray:'(
+	// i can do it with a DataTable and a factory. like i did with the Dialogs, that i have ids that can be referenced.
+	// and i can reuse and recurse them.
 	UBBase* const Eat = Behave->NewAction(UBEat::StaticClass());
 	UBBase* const MoveEat = Behave->NewAction(UBMoveEat::StaticClass());
 	UBSeq* const SeqEat = Cast<UBSeq>(Behave->NewAction(UBSeq::StaticClass()));
@@ -89,7 +91,6 @@ void ABFish::BeginPlay() {
 	SeqEat->Children.Add(MoveEat);
 	SeqEat->Children.Add(Eat);
 	// Behave->Actions.Insert(SeqEat, 1);
-
 
 	UBBase* const Picker = Behave->NewAction(UBPick::StaticClass());
 	UBBase* const Move = Behave->NewAction(UBMove::StaticClass());
