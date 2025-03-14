@@ -2,17 +2,16 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BFisher.h"
+#include "Behave/Test/Acts/BFisher.h"
 
-#include "BMove.generated.h"
+#include "BMoveEat.generated.h"
 
-class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBMove: public UBFisher {
+class BEHAVE_API UBMoveEat: public UBFisher {
 	GENERATED_BODY()
 public:
-	UBMove();
+	UBMoveEat();
 
 	virtual bool Plan_Implementation() override;
 	
@@ -22,6 +21,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector Target = FVector::ZeroVector;
 
-	inline static FName SID = "Move";
+	inline static FName SID = "MoveEat";
 protected:
 };

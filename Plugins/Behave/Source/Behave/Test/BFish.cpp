@@ -7,8 +7,8 @@
 
 #include "CQuickMesh.h"
 #include "Acts/BEat.h"
-#include "Acts/BMove.h"
 #include "Acts/BSleep.h"
+#include "Acts/Move/BMove.h"
 #include "Behave/CBehave.h"
 #include "Kismet/KismetMathLibrary.h"
 
