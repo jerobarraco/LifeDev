@@ -23,11 +23,19 @@ protected:
 		FActorComponentTickFunction* const ThisTickFunction) override;
 	// virtual void BeginPlay() override;
 	// virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	void Plan() {};
+	// Warning. this will run on a bg thread.
+	void PlanDo();
+	void PlanStart();
+	void PlanDone();
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<TObjectPtr<UBBase>> Actions;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UBBase> ActionCur;
+	// this is faulty. our plan is a tree, so we only need access to the root.
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UBBase>> Plan;
+
+	bool IsPlanning = false;
 };
