@@ -16,9 +16,12 @@ public:
 	int32 GetState(){return -1;};
 	float Cost(){return 0;};
 	float CostSelf(){return 0;};
-	
-	// UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool CanDo() const { return false; };
+
+	// called from a bg thread.
+	// needs to be as fast as possible but don't worry if it's a bit slow.
+	// this considers itself first, THEN the children.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool CanDo() const;
 
 	// called from a bg thread.
 	// this should only consider itself. and not the children.

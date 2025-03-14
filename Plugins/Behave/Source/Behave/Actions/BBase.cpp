@@ -6,3 +6,7 @@
 bool UBBase::CanDoSelf_Implementation() const {
 	return true;
 }
+
+bool UBBase::CanDo_Implementation() const {
+	return CanDoSelf();
+}
