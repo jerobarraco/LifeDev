@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BTypes.h"
+#include "Actions/BBase.h"
 #include "Components/ActorComponent.h"
 
 #include "CBehave.generated.h"
@@ -18,10 +20,14 @@ class BEHAVE_API UCBehave: public UActorComponent {
 public:
 	UCBehave();
 	void CurStop();
-	
+
+	void Register(UBBase* const Action);
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TSubclassOf<UBBase>> ActionClasses;
 
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FBOnState OnState;
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
@@ -31,6 +37,10 @@ protected:
 	void PlanDo();
 	void PlanStart();
 	void PlanDone();
+	
+	UFUNCTION()
+	void ActStateUp(UBBase* const Act, EBState State);
+
 	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TArray<TObjectPtr<UBBase>> Actions;

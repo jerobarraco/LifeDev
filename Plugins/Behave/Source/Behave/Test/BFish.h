@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Behave/BTypes.h"
 
 #include "BFish.generated.h"
 
@@ -18,6 +19,9 @@ public:
 	ABFish();
 
 protected:
+	UFUNCTION()
+	void ActStateUp(UBBase* const Act, EBState State);
+	
 	UFUNCTION()
 	bool CanEat();
 	UFUNCTION()

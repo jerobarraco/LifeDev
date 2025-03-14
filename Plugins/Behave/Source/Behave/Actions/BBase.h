@@ -6,7 +6,7 @@
 
 #include "BBase.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBOnState, const EBState, State);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBOnState, UBBase* const, Act, EBState, State);
 
 // base for action behaviors. the idea is that you make your own and each one handles what it needs.
 // a top level action, is considered a goal.
@@ -15,7 +15,6 @@ class BEHAVE_API UBBase: public UObject {
 	GENERATED_BODY()
 
 public:
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetState(const EBState New);
 

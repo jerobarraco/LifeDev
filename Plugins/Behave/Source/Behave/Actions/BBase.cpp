@@ -20,10 +20,13 @@ EBDoRes UBBase::Do_Implementation(const float DT) {
 }
 
 void UBBase::SetState_Implementation(const EBState New) {
-	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("%hs State=%s New=%s"),
+		__func__, *UEnum::GetValueAsString(State), *UEnum::GetValueAsString(New));
 	State = New;
+
 	if (State == EBState::STOPPED) StopCurChild();
-	OnState.Broadcast(State);
+	
+	OnState.Broadcast(this, State);
 }
 
 float UBBase::CostPlan_Implementation() const {

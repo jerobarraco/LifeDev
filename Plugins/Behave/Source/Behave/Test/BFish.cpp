@@ -45,6 +45,12 @@ ABFish::ABFish():Super() {
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	Behave->ActionClasses.Add(UBPick::StaticClass());
+	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
+}
+
+void ABFish::ActStateUp(UBBase* const Act, EBState State) {
+	if (1==2) return;
+	// TODO
 }
 
 static const FVector FoodPos(50, 50, 50);

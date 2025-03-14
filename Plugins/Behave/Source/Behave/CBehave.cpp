@@ -59,6 +59,10 @@ void UCBehave::CurStop() {
 	ActionCur = nullptr;
 }
 
+void UCBehave::Register(UBBase* const Action) {
+	Action->OnState.AddUniqueDynamic(this, &UCBehave::ActStateUp);
+}
+
 void UCBehave::PlanDo() {
 	Planned = nullptr;
 
@@ -98,6 +102,10 @@ void UCBehave::PlanDone() {
 	}
 
 	IsPlanning = false;
+}
+
+void UCBehave::ActStateUp(UBBase* const Act, EBState State) {
+	OnState.Broadcast(Act, State);
 }
 
 #pragma optimize("", on)
