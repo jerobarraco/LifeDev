@@ -23,6 +23,13 @@ void UBMove::SetState_Implementation(const EBState New) {
 }
 
 EBDoRes UBMove::Do_Implementation(const float DT) {
+	if (!Fish) return EBDoRes::ABORT;
+
+	const FVector& Current = Fish->GetActorLocation();
+	const float Dist = FVector::DistSquared(Current, Target);
+	if (Dist < 1) return EBDoRes::STOP;
+
+	Fish->MoveTo(Target, DT);
 	return EBDoRes::CONTINUE;
 }
 

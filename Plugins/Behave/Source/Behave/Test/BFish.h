@@ -31,6 +31,7 @@ public:
 	FTFishData Data;
 
 	void Sleep(const float DT);
+	void MoveTo(const FVector& Tgt, const float DT);
 
 protected:
 	UFUNCTION()

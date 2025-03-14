@@ -9,6 +9,7 @@
 #include "Acts/BSleep.h"
 #include "Behave/CBehave.h"
 #include "Behave/Actions/BPick.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #define BarScale .05
 
@@ -50,9 +51,20 @@ ABFish::ABFish():Super() {
 }
 
 void ABFish::Sleep(const float DT) {
-	Data.Tired = FMath::Clamp(Data.Tired - (.1*DT), 0.01, 1);
-	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
+	Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0.01, 1);
 	// Behave->GetCur()->Abort(); // read notes
+}
+
+void ABFish::MoveTo(const FVector& Tgt, const float DT) {
+	const FVector& Current = GetActorLocation();
+	// const float Dist = FVector::DistSquared(Current, Tgt);
+	// if (Dist < 1) {
+	// 	// Behave->GetCur()->Stop();
+	// 	return;
+	// }
+	const FVector& New = FMath::VInterpConstantTo(Current, Tgt, DT, MoveSpeed);
+	SetActorLocation(New, false);
+	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(Current, New));
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
@@ -93,7 +105,8 @@ void ABFish::BeginPlay() {
 void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
-	Data.Tired = FMath::Clamp(Data.Tired + (.03*DT), 0, 1);
+	Data.Tired = FMath::Clamp(Data.Tired + (.1*DT), 0.01, 1);
+	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
 }
 
 	// if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)
