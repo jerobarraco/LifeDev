@@ -50,7 +50,7 @@ ABFish::ABFish():Super() {
 }
 
 void ABFish::Sleep(const float DT) {
-	Data.Tired = FMath::Clamp(Data.Tired - (.5*DT), 0.01, 1);
+	Data.Tired = FMath::Clamp(Data.Tired - (.1*DT), 0.01, 1);
 	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
 	// Behave->GetCur()->Abort(); // read notes
 }
@@ -93,11 +93,7 @@ void ABFish::BeginPlay() {
 void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
 
-	if (Doing == UBSleep::SID) {
-		
-	} else {
-		Data.Tired = FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
-	}
+	Data.Tired = FMath::Clamp(Data.Tired + (.3*DT), 0, 1);
 }
 
 	// if (Token != UBSpace::T_Play && Doing == UBSpace::T_Play)

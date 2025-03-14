@@ -17,6 +17,9 @@ public:
 	virtual void SetState_Implementation(const EBState New) override;
 	virtual EBDoRes Do_Implementation(const float DT) override;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FVector Target;
+
 	inline static FName SID = "Move";
 protected:
 };
