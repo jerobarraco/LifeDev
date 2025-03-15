@@ -73,6 +73,8 @@ UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
 }
 
 UBBase* UCBehave::LoadAction(const FName Row) {
+	UE_LOG(LogCBehave, Log, TEXT("%hs Row=%s"), __func__, *Row.ToString());
+	
 	if (UNLIKELY(!ActionsDT)) {
 		UE_LOG(LogCBehave, Warning, TEXT("%hs datatable not loaded"), __func__);
 		return nullptr;
