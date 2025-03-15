@@ -23,7 +23,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (UNLIKELY(!ActionCur)) {
 		SetComponentTickEnabled(false);
-		PlanStart();
+		Plan();
 		return;
 	}
 
@@ -118,7 +118,7 @@ void UCBehave::PlanDo() {
 	});
 }
 
-void UCBehave::PlanStart() {
+void UCBehave::Plan() {
 	if (UNLIKELY(IsPlanning)) return;
 	IsPlanning = true;
 	Async(EAsyncExecution::Thread, [this]{
@@ -138,7 +138,7 @@ void UCBehave::PlanDone() {
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
 		if (World)
-			World->GetTimerManager().SetTimer(H, this, &UCBehave::PlanStart, PlanWaitTime);
+			World->GetTimerManager().SetTimer(H, this, &UCBehave::Plan, PlanWaitTime);
 	}
 
 	IsPlanning = false;

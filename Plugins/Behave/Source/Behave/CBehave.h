@@ -25,13 +25,19 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void CurStop();
 
+	// will try to plan again (in the bg). will interrupt current action.
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Plan();
+	
 	UFUNCTION(BlueprintCallable)
-	void Register(UBBase* const Action);
+	void Register(UBBase* const Action); // TODO make protected
 
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCur() { return ActionChildCur; };
+
 	UFUNCTION(BlueprintCallable)
 	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
+
 	// loads an action from the dt
 	UFUNCTION(BlueprintCallable)
 	UBBase* LoadAction(const FName Row);
@@ -58,8 +64,6 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	// Warning. this will run on a bg thread.
 	void PlanDo();
-	UFUNCTION()
-	void PlanStart();
 	void PlanDone();
 	
 	UFUNCTION()
