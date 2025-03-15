@@ -4,8 +4,6 @@
 #include "BSeq.h"
 
 EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
@@ -14,7 +12,7 @@ EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
 		C->SetState(EBState::STARTED);
 	}
 
-	const EBDoRes R = C->DoSelf(DT);
+	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 
 	if (R == EBDoRes::STOP) {
