@@ -1,9 +1,9 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: MIT
 
-#include "BPick.h"
+#include "BFirst.h"
 
-EBDoRes UBPick::DoSelf_Implementation(const float DT) {
+EBDoRes UBFirst::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
@@ -14,36 +14,31 @@ EBDoRes UBPick::DoSelf_Implementation(const float DT) {
 	// return EBDoRes::CONTINUE; // should be == Res but meh.
 }
 
-bool UBPick::Plan_Implementation() {
+bool UBFirst::Plan_Implementation() {
 	if (UNLIKELY(Children.Num()<1)) return false;
 
 	CurChildI = -1;
 	CostPlanned = FLT_MAX;
-	
-	// a sequence is valid only of all children are valid.
-	// even the ones that will become skipped.
+
+	// pick the first
 	for (int32 i=0; i<Children.Num(); ++i){
 		UBBase* const C= Children[i];
 		if (UNLIKELY(!C)) continue;
 
 		if (!C->Plan()) continue;
-
-		const float Cost = C->CostPlan();
-		if (Cost < CostPlanned) {
-			CostPlanned = Cost;
-			CurChildI = i;
-		}
+		CostPlanned = C->CostPlan();
+		CurChildI = i;
 	}
 
 	return IsValid(GetCurChild());
 }
 
-void UBPick::SetState_Implementation(const EBState New) {
+void UBFirst::SetState_Implementation(const EBState New) {
 	// const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
 
-	SetCurChildSate(New);
 	// unplanned will have childI <0. StartChild can handle that.
 	// if (New == EBState::STARTED && WasStopped)
 		// StartChild(CurChildI);
+	SetCurChildSate(New);
 }

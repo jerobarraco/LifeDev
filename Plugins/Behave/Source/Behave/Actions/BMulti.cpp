@@ -52,12 +52,14 @@ bool UBMulti::Plan_Implementation() {
 }
 
 void UBMulti::SetState_Implementation(const EBState New) {
-	const bool WasStopped = State == EBState::STOPPED;
+	// const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
 
-	if (New == EBState::STARTED && WasStopped) {
-		const int32 Num = Children.Num();
-		for (int32 i=0; i<Num; ++i)
-			StartChild(i);
-	}
+	for (UBBase* C: Children)
+		if (LIKELY(C)) C->SetState(New);
+	// if (New == EBState::STARTED && WasStopped) {
+		// const int32 Num = Children.Num();
+		// for (int32 i=0; i<Num; ++i)
+			// StartChild(i);
+	// }
 }

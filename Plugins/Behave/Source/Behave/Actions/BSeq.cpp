@@ -43,5 +43,8 @@ void UBSeq::SetState_Implementation(const EBState New) {
 	if (New == EBState::STARTED && WasStopped) {
 		CurChildI = 0;
 		StartChild(CurChildI);
+	} else if (New == EBState::STOPPED) {
+		for (UBBase* C: Children)
+			if (LIKELY(C)) C->SetState(EBState::STOPPED);
 	}
 }

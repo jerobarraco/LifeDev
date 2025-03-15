@@ -4,11 +4,11 @@
 
 #include "BBase.h"
 
-#include "BPick.generated.h"
+#include "BFirst.generated.h"
 
 // base action for a choosing actions. It will perform the least costly of its children.
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBPick: public UBBase {
+class BEHAVE_API UBFirst: public UBBase {
 	GENERATED_BODY()
 
 public:
