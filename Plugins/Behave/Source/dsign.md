@@ -11,6 +11,10 @@ Biological		 Energy/Hunger/Temp
 
 Time			 ???
 
+* Add UBParallel.
+* * decide what to do when one finishesaoeu
+* 
+
 See this one
 https://www.youtube.com/watch?v=gm7K68663rA#
 it's loosely based on the first person.

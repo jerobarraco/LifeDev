@@ -14,6 +14,7 @@ class BEHAVE_API UBPick: public UBBase {
 public:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
+	virtual void SetState_Implementation(EBState New) override;
 
 protected:
 	UPROPERTY(Transient)

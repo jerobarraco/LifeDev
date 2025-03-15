@@ -7,11 +7,6 @@ EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
-	// TODO move to set state. also fix on bpick
-	if (UNLIKELY(C->GetState() == EBState::STOPPED)) { // to allow to abort the child
-		C->SetState(EBState::STARTED);
-	}
-
 	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 
@@ -41,4 +36,14 @@ bool UBSeq::Plan_Implementation() {
 
 	CurChildI = 0;
 	return true;
+}
+
+void UBSeq::SetState_Implementation(const EBState New) {
+	const bool WasStopped = State == EBState::STOPPED;
+	Super::SetState_Implementation(New);
+
+	if (New == EBState::STARTED && WasStopped) {
+		CurChildI = 0;
+		StartChild(CurChildI);
+	}
 }

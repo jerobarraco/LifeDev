@@ -34,3 +34,12 @@ bool UBPick::Plan_Implementation() {
 
 	return IsValid(GetCurChild());
 }
+
+void UBPick::SetState_Implementation(const EBState New) {
+	const bool WasStopped = State == EBState::STOPPED;
+	Super::SetState_Implementation(New);
+
+	// unplanned will have childI <0. StartChild can handle that.
+	if (New == EBState::STARTED && WasStopped)
+		StartChild(CurChildI);
+}
