@@ -7,7 +7,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);
 
-#pragma optimize("", off)
 UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = true;
@@ -156,5 +155,3 @@ void UCBehave::ActStateUp(UBBase* const Act, const EBState State) {
 		ActionChildCur = Act;
 	}
 }
-
-#pragma optimize("", on)
