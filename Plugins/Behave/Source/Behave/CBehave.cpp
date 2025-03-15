@@ -138,7 +138,7 @@ void UCBehave::PlanDone() {
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
 		if (World)
-			World->GetTimerManager().SetTimer(H, this, &UCBehave::PlanStart, 1);
+			World->GetTimerManager().SetTimer(H, this, &UCBehave::PlanStart, PlanWaitTime);
 	}
 
 	IsPlanning = false;

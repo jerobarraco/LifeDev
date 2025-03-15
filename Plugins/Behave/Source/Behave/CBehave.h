@@ -15,7 +15,8 @@
 
 class UBBase;
 
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent),
+Config=Behave, DefaultConfig)
 class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
@@ -44,8 +45,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<FName> ActionsToLoad;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
+	float PlanWaitTime = 1;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
+
 protected:
 	virtual void TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
