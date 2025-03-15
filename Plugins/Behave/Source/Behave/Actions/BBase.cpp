@@ -16,7 +16,7 @@ EBDoRes UBBase::Do(const float DT) {
 
 	const EBDoRes R = DoSelf(DT);
 	if (R != EBDoRes::STOP || !IsLooped) return R;
-
+	// here is stopped and looping
 	// restart
 	SetState(EBState::STOPPED);
 	SetState(EBState::STARTED);
@@ -99,8 +99,6 @@ void UBBase::Register_Implementation(UCBehave* const B) {
 
 	Behave = B;
 	Behave->Register(this);
-	for (UBBase* const C: Children) {
-		if (!C) return;
-		C->Register(Behave);
-	}
+	for (UBBase* const C: Children)
+		if (LIKELY(C)) C->Register(Behave);
 }

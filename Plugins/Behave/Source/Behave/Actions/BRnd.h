@@ -2,17 +2,15 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BBase.h"
+#include "BFirst.h"
 
-#include "BFirst.generated.h"
+#include "BRnd.generated.h"
 
-// picks the first action that passes.
+// picks one. at random. like first but random.
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBFirst: public UBBase {
+class BEHAVE_API UBRnd: public UBFirst {
 	GENERATED_BODY()
 
 public:
-	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
-	virtual void SetState_Implementation(EBState New) override;
 };

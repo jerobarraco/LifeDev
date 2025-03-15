@@ -9,9 +9,6 @@ EBDoRes UBPick::DoSelf_Implementation(const float DT) {
 
 	const EBDoRes R = C->Do(DT);
 	return R;
-	// if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
-	// if (R == EBDoRes::STOP) return EBDoRes::STOP;
-	// return EBDoRes::CONTINUE; // should be == Res but meh.
 }
 
 bool UBPick::Plan_Implementation() {
