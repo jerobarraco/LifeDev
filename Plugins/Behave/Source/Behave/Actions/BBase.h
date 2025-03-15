@@ -34,6 +34,7 @@ public:
 	// Returns true if the action can/should be done.
 	// You are allowed to do some planning here (like choosing which child is your favorite)
 	// note in case of actions that have a child like "MoveTo" the MoveTo needs to return true even if it's close to the target (e.g. when performing the action it will be "skipped")
+	// ensure you need to set CostPlanned inside this.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	bool Plan();
 
@@ -75,16 +76,16 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Register(UCBehave* B);
 
-	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 
 	// opt
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 CurChildI = -1;
+	// You need to set this when called Plan (or before if it's static)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float CostPlanned = 0;
 

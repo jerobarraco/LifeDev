@@ -16,7 +16,6 @@ public:
 	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(const EBState New) override;
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
-	virtual float CostSelf_Implementation() const override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector Target = FVector::ZeroVector;
