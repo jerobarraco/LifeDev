@@ -55,6 +55,10 @@ protected:
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<UDataTable> ActionsDT = 
+		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Behave/TestActions_DT"));
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> ActionCur;
 	

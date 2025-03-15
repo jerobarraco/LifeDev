@@ -63,7 +63,7 @@ void UCBehave::Register(UBBase* const Action) {
 }
 
 UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
-	UBBase* const B= NewObject<UBBase>(this, Class.Get());
+	UBBase* const B = NewObject<UBBase>(this, Class.Get());
 	if (B) B->Register(this);
 	return B;
 }
