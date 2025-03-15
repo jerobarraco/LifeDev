@@ -24,3 +24,22 @@ enum class EBState : uint8 {
 	ABORTING,
 	MAX UMETA(HIDDEN)
 };
+
+USTRUCT(Blueprintable, BlueprintType)
+struct BEHAVE_API FBehaveAction: public FTableRowBase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSubclassOf<UBBase> Class;
+
+	// these are Rows IDs
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> Children;
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	FString Params;
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	FString Comment;
+};

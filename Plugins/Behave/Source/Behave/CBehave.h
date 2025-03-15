@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+
 #include "BTypes.h"
 #include "Actions/BBase.h"
-#include "Components/ActorComponent.h"
 
 #include "CBehave.generated.h"
 

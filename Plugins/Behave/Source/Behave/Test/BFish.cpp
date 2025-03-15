@@ -4,8 +4,10 @@
 #include "BFish.h"
 
 #include "Components/TextRenderComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "CQuickMesh.h"
+
 #include "Acts/BEat.h"
 #include "Acts/BSleep.h"
 #include "Acts/Move/BMove.h"
@@ -13,7 +15,6 @@
 #include "Behave/CBehave.h"
 #include "Behave/Actions/BPick.h"
 #include "Behave/Actions/BSeq.h"
-#include "Kismet/KismetMathLibrary.h"
 
 #define BarScale .05
 
