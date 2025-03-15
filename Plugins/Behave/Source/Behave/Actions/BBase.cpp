@@ -6,7 +6,7 @@
 #include "Behave/CBehave.h"
 
 bool UBBase::Plan_Implementation() {
-	CostPlanned = CostSelf(); // by default is the self cost
+	CostPlanned = .5;
 	return true;
 }
 
@@ -56,8 +56,6 @@ float UBBase::CostPlan_Implementation() const {
 	// i might change my mind later. or not. who knows. i'm a mystery.
 	return CostPlanned;
 }
-
-float UBBase::CostSelf_Implementation() const { return 0; }
 
 UBBase* UBBase::GetCurChild() const {
 	const int32 Num = Children.Num();
