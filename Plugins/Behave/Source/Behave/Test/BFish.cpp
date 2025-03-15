@@ -76,6 +76,13 @@ void ABFish::Eat(const float DT) {
 	Data.Hungry = FMath::Clamp(Data.Hungry - (.2*DT), 0.01, 1);
 }
 
+void ABFish::Play(const float DT) {
+	Data.Bored = FMath::Clamp(Data.Bored - (.15*DT), 0.01, 1);
+	Data.Tired = FMath::Clamp(Data.Tired + (.14*DT), 0.01, 1);
+	Data.Hungry = FMath::Clamp(Data.Hungry + (.07*DT), 0.01, 1);
+	AddActorLocalRotation(FRotator(0,0,50*DT));
+}
+
 void ABFish::BeginPlay() {
 	Super::BeginPlay();
 }
@@ -90,7 +97,6 @@ void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 }
 
-static const FVector SleepPos(10, 10, 10);
 static const FVector PlayPos(10, -50, 30);
 
 void ABFish::Tick(const float DT) {

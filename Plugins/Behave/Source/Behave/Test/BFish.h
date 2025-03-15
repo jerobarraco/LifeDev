@@ -21,6 +21,8 @@ public:
 	float Tired = 0;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	float Hungry = 0;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	float Bored = 0;
 };
 
 // this is just a test. warning
@@ -36,6 +38,7 @@ public:
 	void Sleep(const float DT);
 	void MoveTo(const FVector& Tgt, const float DT);
 	void Eat(const float DT);
+	void Play(float DT);
 
 protected:
 	virtual void BeginPlay() override;

@@ -12,7 +12,7 @@ UBSleep::UBSleep():Super() {
 
 bool UBSleep::Plan_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Sleep::%hs"), __func__);
-	return Fish && Fish->Data.Tired > .7;
+	return LIKELY(Fish) && Fish->Data.Tired > .7;
 }
 
 EBDoRes UBSleep::DoSelf_Implementation(const float DT) {

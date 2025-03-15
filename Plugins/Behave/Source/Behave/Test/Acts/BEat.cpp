@@ -11,7 +11,8 @@ UBEat::UBEat():Super() {
 }
 
 bool UBEat::Plan_Implementation() {
-	if (!Fish) return false;
+	UE_LOG(LogTemp, Log, TEXT("Eat::%hs"), __func__);
+	if (UNLIKELY(!Fish)) return false;
 	if (Fish->Data.Hungry < .7) return false;
 
 	return true;
