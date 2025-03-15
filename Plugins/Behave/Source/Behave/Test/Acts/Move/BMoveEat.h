@@ -15,5 +15,7 @@ class BEHAVE_API UBMoveEat: public UBMove {
 public:
 
 	virtual bool Plan_Implementation() override;
+
 protected:
+	virtual void SetTarget_Implementation() override;
 };

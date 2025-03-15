@@ -12,7 +12,8 @@ UBMove::UBMove():Super() {
 
 bool UBMove::Plan_Implementation() {
 	const bool Ok = LIKELY(Fish) && (Fish->Data.Tired < .7);
-	Target = FMath::RandPointInBox(FBox(FVector(0), FVector(50)));
+
+	SetTarget();
 	const float Dist = FVector::DistSquared(Fish->GetActorLocation(), Target);
 	CostPlanned = Fish->Data.Tired + (Dist*.01);
 
@@ -33,4 +34,11 @@ EBDoRes UBMove::DoSelf_Implementation(const float DT) {
 
 	Fish->MoveTo(Target, DT);
 	return EBDoRes::CONTINUE;
+}
+
+void UBMove::SetTarget_Implementation() {
+	// this sucks. but it's just a stub test
+	Target = FMath::RandPointInBox(FBox(FVector(0), FVector(50)));
+	
+	// mostly to avoid replacing the target and cost on children
 }

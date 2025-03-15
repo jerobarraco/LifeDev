@@ -6,7 +6,6 @@
 
 #include "BMovePlay.generated.h"
 
-
 // this is stub until i make this a bit more data driven
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
@@ -15,5 +14,7 @@ class BEHAVE_API UBMovePlay: public UBMove {
 public:
 
 	virtual bool Plan_Implementation() override;
+
 protected:
+	virtual void SetTarget_Implementation() override;
 };
