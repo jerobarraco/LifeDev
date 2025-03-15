@@ -12,7 +12,9 @@ UBPlay::UBPlay():Super() {
 
 bool UBPlay::Plan_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Play::%hs"), __func__);
-	return LIKELY(Fish) && Fish->Data.Tired < .3 && Fish->Data.Bored > .4;
+	const bool Ok = LIKELY(Fish) && Fish->Data.Tired < .3 && Fish->Data.Bored > .4;
+	CostPlanned = Ok ? 1-Fish->Data.Bored: FLT_MAX;
+	return Ok;
 }
 
 EBDoRes UBPlay::DoSelf_Implementation(const float DT) {

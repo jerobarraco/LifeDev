@@ -23,8 +23,10 @@ bool UBPick::Plan_Implementation() {
 	// even the ones that will become skipped.
 	for (int32 i=0; i<Children.Num(); ++i){
 		UBBase* const C= Children[i];
-		if (!C) continue;
+		if (UNLIKELY(!C)) continue;
+
 		if (!C->Plan()) continue;
+
 		const float Cost = C->CostPlan();
 		if (Cost < CostPlanned) {
 			CostPlanned = Cost;

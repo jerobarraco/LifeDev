@@ -24,13 +24,11 @@ bool UBSeq::Plan_Implementation() {
 
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
-	for (UBBase* const C: Children) {
-		if (!C) continue;
-		if (!C->Plan()) return false;
-	}
-
 	CostPlanned = 0;
-	for (const UBBase* const C: Children) {
+	for (UBBase* const C: Children) {
+		if (UNLIKELY(!C)) continue;
+
+		if (!C->Plan()) return false;
 		CostPlanned += C->CostPlan();
 	}
 

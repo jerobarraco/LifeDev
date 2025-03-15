@@ -48,9 +48,9 @@ ABFish::ABFish():Super() {
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 	Behave->ActionsToLoad = {
-		"Sleep",
 		"PickMain",
-		"PlaySeq"
+		"PlaySeq",
+		"Move",
 	};
 }
 
@@ -98,7 +98,6 @@ void ABFish::ActStateUp(UBBase* const Act, const EBState State) {
 	Text->SetText(FText::FromString(Doing.ToString() + "..."));
 }
 
-static const FVector PlayPos(10, -50, 30);
 
 void ABFish::Tick(const float DT) {
 	Super::Tick(DT);
