@@ -46,8 +46,11 @@ void UCBehave::BeginPlay() {
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	for (UBBase* const C: Actions) {
+		if (LIKELY(C)) C->DeInit();
+	}
+	Actions.Empty(0); // uobjects can't be directly destroyed.
 	Super::EndPlay(EndPlayReason);
-	Actions.Empty(); // uobjects can't be directly destroyed.
 }
 
 void UCBehave::CurStop() {
