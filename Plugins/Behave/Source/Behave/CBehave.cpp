@@ -90,9 +90,13 @@ UBBase* UCBehave::LoadAction(const FName Row) {
 			__func__, *Row.ToString(), *ActDef->Class.Get()->GetName());
 		return nullptr;
 	}
-
-	// todo load children
-	// todo set id
+	
+	Action->ID = Row;
+	for (const FName& C: ActDef->Children) {
+		UBBase* const Child = LoadAction(C);
+		if (UNLIKELY(!Child)) continue; // load already warns
+		Action->Children.Add(Child);
+	}
 	return Action;
 }
 
