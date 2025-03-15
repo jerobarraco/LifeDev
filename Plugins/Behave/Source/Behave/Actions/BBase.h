@@ -30,7 +30,7 @@ public:
 	
 	// called from a bg thread.
 	// self cost
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	float CostSelf() const;
 
 	// called from a bg thread.
@@ -39,12 +39,12 @@ public:
 	// Returns true if the action can/should be done.
 	// You are allowed to do some planning here (like choosing which child is your favorite)
 	// note in case of actions that have a child like "MoveTo" the MoveTo needs to return true even if it's close to the target (e.g. when performing the action it will be "skipped")
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	bool Plan();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	EBDoRes Do(const float DT);
-
+	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Stop() {SetState(EBState::STOPPING);};
 
@@ -60,13 +60,19 @@ public:
 
 	// beware if you change it during runtime
 	UPROPERTY(BlueprintReadWrite)
-	TArray<TObjectPtr<UBBase>> Children;
+	TArray<TObjectPtr<UBBase>> Children; // TODO make protected and friendly
 
-	
+	UPROPERTY(BlueprintReadWrite)
+	bool IsLooped = false;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
 
 protected:
+	// override this to do your job
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	EBDoRes DoSelf(const float DT);
+
 	UFUNCTION(BlueprintCallable)
 	void StopCurChild();
 	UFUNCTION(BlueprintCallable)

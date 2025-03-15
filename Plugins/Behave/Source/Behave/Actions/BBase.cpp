@@ -10,15 +10,25 @@ bool UBBase::Plan_Implementation() {
 	return true;
 }
 
-EBDoRes UBBase::Do_Implementation(const float DT) {
+EBDoRes UBBase::Do(const float DT) {
 	if (State == EBState::STOPPING) return EBDoRes::STOP;
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 
+	const EBDoRes R = DoSelf(DT);
+	if (R != EBDoRes::STOP || !IsLooped) return R;
+
+	// restart
+	SetState(EBState::STOPPED);
+	SetState(EBState::STARTED);
+	return EBDoRes::CONTINUE;
+}
+
+EBDoRes UBBase::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
-	const EBDoRes R = C->Do(DT);
-	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
+	const EBDoRes R = C->DoSelf(DT);
+	if (UNLIKELY(R == EBDoRes::ABORT)) return EBDoRes::ABORT; // bubble up (redundant with below, but this way i make sure that i don't refactor it out by mistake)
 
 	// This base object is more abstract than anything else. so i will just return the child.
 	// which is kind of the best thing, specially for classes that inherit from this
@@ -28,11 +38,14 @@ EBDoRes UBBase::Do_Implementation(const float DT) {
 void UBBase::SetState_Implementation(const EBState New) {
 	UE_LOG(LogTemp, Log, TEXT("%hs State=%s New=%s"),
 		__func__, *UEnum::GetValueAsString(State), *UEnum::GetValueAsString(New));
+	// const bool Stopping = New == EBState::STOPPED;
+	// const bool DoLoop = Stopping && IsLooped; // try to loop only if we're stopping
+	// State = DoLoop ? EBState::STARTED : New; // reset to start if we're looping. otherwise
 	State = New;
+	if (State == EBState::STOPPED)
+		StopCurChild();
 
-	if (State == EBState::STOPPED) StopCurChild();
-	
-	OnState.Broadcast(this, State);
+	OnState.Broadcast(this, State); // will broadcast stop of the parent after stop of children. which is good.
 }
 
 float UBBase::CostPlan_Implementation() const {

@@ -15,11 +15,9 @@ bool UBSleep::Plan_Implementation() {
 	return Fish && Fish->Data.Tired > .7;
 }
 
-EBDoRes UBSleep::Do_Implementation(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
-	if (!Fish) return EBDoRes::ABORT;
-	if (Fish->Data.Tired<.2) return EBDoRes::STOP;
+EBDoRes UBSleep::DoSelf_Implementation(const float DT) {
+	if (UNLIKELY(!Fish)) return EBDoRes::ABORT;
+	if (UNLIKELY(Fish->Data.Tired<.2)) return EBDoRes::STOP;
 	Fish->Sleep(DT);
 	return EBDoRes::CONTINUE;
 }

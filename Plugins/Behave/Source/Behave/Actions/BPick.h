@@ -12,7 +12,7 @@ class BEHAVE_API UBPick: public UBBase {
 	GENERATED_BODY()
 
 public:
-	virtual EBDoRes Do_Implementation(const float DT) override;
+	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
 
 protected:

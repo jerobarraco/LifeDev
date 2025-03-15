@@ -13,6 +13,10 @@ UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bStartWithTickEnabled = true;
 	SetTickableWhenPaused(false);
 	SetComponentTickEnabled(true);
+
+	static ConstructorHelpers::FObjectFinder<UDataTable>
+		CADT(TEXT("/Behave/TestActions_DT"));
+	ActionsDT = CADT.Object;
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
@@ -24,7 +28,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 		return;
 	}
 
-	const EBDoRes Res = ActionCur->Do(DeltaTime);
+	const EBDoRes Res = ActionCur->DoSelf(DeltaTime);
 	if (LIKELY(Res == EBDoRes::CONTINUE)) return;
 	
 	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) {

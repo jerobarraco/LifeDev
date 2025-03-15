@@ -24,7 +24,7 @@ void UBMove::SetState_Implementation(const EBState New) {
 	Super::SetState_Implementation(New);
 }
 
-EBDoRes UBMove::Do_Implementation(const float DT) {
+EBDoRes UBMove::DoSelf_Implementation(const float DT) {
 	if (State == EBState::STOPPING) return EBDoRes::STOP;
 	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	if (!Fish) return EBDoRes::ABORT;

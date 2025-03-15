@@ -22,11 +22,9 @@ void UBEat::SetState_Implementation(const EBState New) {
 	Super::SetState_Implementation(New);
 }
 
-EBDoRes UBEat::Do_Implementation(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
-	if (!Fish) return EBDoRes::ABORT;
-	if (Fish->Data.Hungry < .3) return EBDoRes::STOP;
+EBDoRes UBEat::DoSelf_Implementation(const float DT) {
+	if (UNLIKELY(!Fish)) return EBDoRes::ABORT;
+	if (UNLIKELY(Fish->Data.Hungry < .3)) return EBDoRes::STOP;
 	
 	Fish->Eat(DT);
 	return EBDoRes::CONTINUE;
