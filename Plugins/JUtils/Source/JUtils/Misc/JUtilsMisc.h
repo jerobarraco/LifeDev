@@ -105,9 +105,10 @@ public:
 	template <typename T>
 	static inline void ArrayShuffle(TArray<T>& Array) {
 		const int32 ArraySize = Array.Num();
-		for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
+		for (int32 i = ArraySize - 1; LIKELY(i >= 0); --i) {
 			const int32 RandomIndex = FMath::RandRange(0, i);
-			Array.Swap(i, RandomIndex);
+			if (LIKELY(i!=RandomIndex))
+				Array.Swap(i, RandomIndex);
 		}
 	};
 
