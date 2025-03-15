@@ -15,8 +15,8 @@
 
 class UBBase;
 
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave), meta=(BlueprintSpawnableComponent),
-Config=Behave, DefaultConfig)
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave),
+	Config=Behave, DefaultConfig, meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
 	GENERATED_BODY()
 public:
