@@ -50,6 +50,7 @@ ABFish::ABFish():Super() {
 	Behave->ActionsToLoad = {
 		"Sleep",
 		"PickMain",
+		"PlaySeq"
 	};
 }
 
@@ -104,6 +105,7 @@ void ABFish::Tick(const float DT) {
 
 	Data.Tired = FMath::Clamp(Data.Tired + (.01*DT), 0.01, 1);
 	Data.Hungry = FMath::Clamp(Data.Hungry + (.025*DT), 0.01, 1);
+	Data.Bored = FMath::Clamp(Data.Bored + (.02*DT), 0.01, 1);
 	S_Tired->SetRelativeScale3D(FVector(BarScale, Data.Tired, BarScale));
 	S_Hungry->SetRelativeScale3D(FVector(BarScale, Data.Hungry, BarScale));
 }

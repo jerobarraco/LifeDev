@@ -41,11 +41,8 @@ public:
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	// to be loaded on beginplay
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<FName> ActionsToLoad;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(DeprecatedProperty))
-	TArray<TSubclassOf<UBBase>> ActionClasses;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
