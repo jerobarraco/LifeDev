@@ -26,7 +26,7 @@ enum class EBState : uint8 {
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct BEHAVE_API FBehaveAction: public FTableRowBase {
+struct BEHAVE_API FBAction: public FTableRowBase {
 	GENERATED_BODY()
 
 public:

@@ -72,6 +72,30 @@ UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
 	return B;
 }
 
+UBBase* UCBehave::LoadAction(const FName Row) {
+	if (UNLIKELY(!ActionsDT)) {
+		UE_LOG(LogCBehave, Warning, TEXT("%hs datatable not loaded"), __func__);
+		return nullptr;
+	}
+
+	FBAction* const ActDef = ActionsDT->FindRow<FBAction>(Row, "");
+	if (UNLIKELY(!ActDef)) {
+		UE_LOG(LogCBehave, Warning, TEXT("%hs could not find action id=%s"), __func__, *Row.ToString());
+		return nullptr;
+	}
+
+	UBBase* const Action = NewAction(ActDef->Class);
+	if (UNLIKELY(!Action)) {
+		UE_LOG(LogCBehave, Warning, TEXT("%hs could not create action id=%s class=%s"),
+			__func__, *Row.ToString(), *ActDef->Class.Get()->GetName());
+		return nullptr;
+	}
+
+	// todo load children
+	// todo set id
+	return Action;
+}
+
 void UCBehave::PlanDo() {
 	Planned = nullptr;
 

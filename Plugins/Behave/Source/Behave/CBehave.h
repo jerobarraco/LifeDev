@@ -31,12 +31,20 @@ public:
 	UBBase* GetCur() { return ActionChildCur; };
 	UFUNCTION(BlueprintCallable)
 	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
+	// loads an action from the dt
+	UFUNCTION(BlueprintCallable)
+	UBBase* LoadAction(const FName Row);
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TArray<TObjectPtr<UBBase>> Actions;
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+
+	// this is a list of all the goals, main level actions, sorted by priority.
+	// to be loaded on beginplay
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TArray<FName> ActionsToLoad;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(DeprecatedProperty))
 	TArray<TSubclassOf<UBBase>> ActionClasses;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -55,7 +63,7 @@ protected:
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UDataTable> ActionsDT = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
