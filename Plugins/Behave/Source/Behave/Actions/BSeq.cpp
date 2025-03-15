@@ -7,7 +7,7 @@ EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
-	// TODO could be optimized
+	// TODO move to set state. also fix on bpick
 	if (UNLIKELY(C->GetState() == EBState::STOPPED)) { // to allow to abort the child
 		C->SetState(EBState::STARTED);
 	}

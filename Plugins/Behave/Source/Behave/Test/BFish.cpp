@@ -51,10 +51,14 @@ ABFish::ABFish():Super() {
 	Text->SetRelativeLocation(FVector(0,0,15));
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
-	Behave->ActionClasses.Add(UBSleep::StaticClass());
+	// Behave->ActionClasses.Add(UBSleep::StaticClass());
 	// Behave->ActionClasses.Add(UBEat::StaticClass());
 	// Behave->ActionClasses.Add(UBMove::StaticClass());
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
+	Behave->ActionsToLoad = {
+		"Sleep"
+		"PickMain",
+	};
 }
 
 void ABFish::Sleep(const float DT) {
@@ -85,6 +89,7 @@ void ABFish::BeginPlay() {
 	// TODO find a way to data drive this. Structs can't be recursive with TArray:'(
 	// i can do it with a DataTable and a factory. like i did with the Dialogs, that i have ids that can be referenced.
 	// and i can reuse and recurse them.
+	/*
 	UBBase* const Eat = Behave->NewAction(UBEat::StaticClass());
 	UBBase* const MoveEat = Behave->NewAction(UBMoveEat::StaticClass());
 	UBSeq* const SeqEat = Cast<UBSeq>(Behave->NewAction(UBSeq::StaticClass()));
@@ -98,7 +103,7 @@ void ABFish::BeginPlay() {
 	Picker->ID = "PickMoveEat";
 	Picker->Children.Add(SeqEat);
 	Picker->Children.Add(Move);
-	Behave->Actions.Insert(Picker, 1);
+	Behave->Actions.Insert(Picker, 1);*/
 }
 
 void ABFish::ActStateUp(UBBase* const Act, const EBState State) {

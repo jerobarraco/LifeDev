@@ -4,16 +4,10 @@
 #include "BPick.h"
 
 EBDoRes UBPick::DoSelf_Implementation(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
-	if (UNLIKELY(C->GetState() == EBState::STOPPED)) { // to allow to abort the child
-		C->SetState(EBState::STARTED);
-	}
-
-	const EBDoRes R = C->DoSelf(DT);
+	const EBDoRes R = C->Do(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 	if (R == EBDoRes::STOP) return EBDoRes::STOP;
 	return EBDoRes::CONTINUE; // should be == Res but meh.

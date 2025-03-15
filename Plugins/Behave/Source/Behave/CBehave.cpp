@@ -39,13 +39,19 @@ FActorComponentTickFunction* const ThisTickFunction) {
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 
-	for (const TSubclassOf<UBBase>& C: ActionClasses){
+	for (const TSubclassOf<UBBase>& C: ActionClasses) {
 		UBBase* const B = NewAction(C);
 		if (UNLIKELY(!IsValid(B))) {
 			UE_LOG(LogCBehave, Warning, TEXT("Behave:%hs falied to create obj for class=%s"),
 				__func__, *C.Get()->GetName());
 			continue;
 		}
+		Actions.Add(B);
+	}
+
+	for (const FName& N: ActionsToLoad) {
+		UBBase* const B = LoadAction(N);
+		if (UNLIKELY(!IsValid(B))) continue;
 		Actions.Add(B);
 	}
 }
