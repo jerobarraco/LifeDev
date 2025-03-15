@@ -90,7 +90,16 @@ void UBBase::StartChild(const int32 I) {
 	SetCurChildSate(EBState::STARTED);
 }
 
-void UBBase::Register_Implementation(UCBehave* const B) {
+void UBBase::DeInit_Implementation() {
+	OnState.Clear();
+	Behave = nullptr;
+}
+
+void UBBase::Init_Implementation(UCBehave* const B) {
+	// done like this for these:
+	// * allow to run actions upon registering (init)
+	// * recurse into children
+	// * keep a ref to ucbehave
 	UE_LOG(LogTemp, Log, TEXT("UBBase:%hs O=%s"), __func__, *GetNameSafe(this));
 	if (!B) {
 		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
@@ -98,7 +107,7 @@ void UBBase::Register_Implementation(UCBehave* const B) {
 	}
 
 	Behave = B;
-	Behave->Register(this);
+	Behave->ActRegister(this);
 	for (UBBase* const C: Children)
-		if (LIKELY(C)) C->Register(Behave);
+		if (LIKELY(C)) C->Init(Behave);
 }

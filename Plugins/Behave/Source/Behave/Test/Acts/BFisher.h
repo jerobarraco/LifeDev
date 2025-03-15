@@ -12,7 +12,7 @@ UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBFisher: public UBBase {
 	GENERATED_BODY()
 protected:
-	virtual void Register_Implementation(UCBehave* const B) override;
+	virtual void Init_Implementation(UCBehave* const B) override;
 
 	UPROPERTY(Transient)
 	TObjectPtr<ABFish> Fish = nullptr;

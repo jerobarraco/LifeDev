@@ -77,8 +77,9 @@ protected:
 	void StartChild(const int32 I);
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Register(UCBehave* B);
-
+	void Init(UCBehave* B); // Native can't use const
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void DeInit();
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 

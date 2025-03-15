@@ -30,9 +30,6 @@ public:
 	void Plan();
 	
 	UFUNCTION(BlueprintCallable)
-	void Register(UBBase* const Action); // TODO make protected
-
-	UFUNCTION(BlueprintCallable)
 	UBBase* GetCur() { return ActionChildCur; };
 
 	UFUNCTION(BlueprintCallable)
@@ -65,7 +62,11 @@ protected:
 	// Warning. this will run on a bg thread.
 	void PlanDo();
 	void PlanDone();
-	
+
+	friend void UBBase::Init(UCBehave*); // doesn't work as expected.
+	friend class UBBase;
+	void ActRegister(UBBase* const Action);
+
 	UFUNCTION()
 	void ActStateUp(UBBase* const Act, const EBState State);
 

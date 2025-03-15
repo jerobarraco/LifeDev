@@ -8,8 +8,8 @@
 #include "Behave/Test/BFish.h"
 
 
-void UBFisher::Register_Implementation(UCBehave* const B) {
-	Super::Register_Implementation(B);
+void UBFisher::Init_Implementation(UCBehave* const B) {
+	Super::Init_Implementation(B);
 	if (UNLIKELY(!B)) return;
 
 	Fish = Cast<ABFish>(B->GetOwner());

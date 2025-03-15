@@ -57,13 +57,15 @@ void UCBehave::CurStop() {
 	ActionCur = nullptr;
 }
 
-void UCBehave::Register(UBBase* const Action) {
+void UCBehave::ActRegister(UBBase* const Action) {
+	// add "unique" is important
 	Action->OnState.AddUniqueDynamic(this, &UCBehave::ActStateUp);
 }
 
 UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
 	UBBase* const B = NewObject<UBBase>(this, Class.Get());
-	if (B) B->Register(this);
+	if (B) B->Init(this); // force register on any new class
+	// notes on why register is like this on b->register
 	return B;
 }
 
