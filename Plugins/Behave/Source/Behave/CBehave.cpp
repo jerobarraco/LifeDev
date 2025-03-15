@@ -15,7 +15,7 @@ UCBehave::UCBehave():Super() {
 	SetComponentTickEnabled(true);
 
 	static ConstructorHelpers::FObjectFinder<UDataTable>
-		CADT(TEXT("/Behave/TestActions_DT"));
+		CADT(TEXT("/Behave/Test/TestActions_DT.TestActions_DT"));
 	ActionsDT = CADT.Object;
 }
 
