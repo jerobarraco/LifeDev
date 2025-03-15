@@ -56,7 +56,7 @@ ABFish::ABFish():Super() {
 	// Behave->ActionClasses.Add(UBMove::StaticClass());
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
 	Behave->ActionsToLoad = {
-		"Sleep"
+		"Sleep",
 		"PickMain",
 	};
 }
