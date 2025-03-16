@@ -18,7 +18,7 @@ public:
 
 	// remaps a value to a normalized value
 	UFUNCTION(BlueprintCallable)
-	static FORCEINLINE_DEBUGGABLE float RemapNorm(const float X, const float Min, const float Max) {
+	static FORCEINLINE_DEBUGGABLE double RemapNorm(const double X, const double Min, const double Max) {
 		// https://guillermoalgora.com/normalizing-remapping-values.html
 		// x normalized = (x - min) / (max - min)
 		return (X-Min) / (Max-Min);
