@@ -36,11 +36,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TSoftObjectPtr<USoundBase> MusicNew = TSoftObjectPtr<USoundBase>(
-		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music09/Music09_MS.Music09_MS"))
-	);
+		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS")));
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TSoftObjectPtr<USoundBase> Music = TSoftObjectPtr<USoundBase>(
-		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music00/Music00_MS.Music00_MS"))
-	);
+		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music09/Music09_MS.Music09_MS")));
 };
