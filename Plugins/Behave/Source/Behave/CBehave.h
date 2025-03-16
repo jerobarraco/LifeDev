@@ -35,6 +35,8 @@ public:
 	// priority, by default is the last priority (-1)
 	UFUNCTION(BlueprintCallable)
 	void AddAction(UBBase* const Action, const int32 Priority = -1);
+	UFUNCTION(BlueprintCallable)
+	int32 RemAction(const FName Row);
 
 	UFUNCTION(BlueprintCallable)
 	UBBase* NewAction(const TSubclassOf<UBBase>& Class);

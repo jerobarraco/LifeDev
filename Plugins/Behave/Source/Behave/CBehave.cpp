@@ -115,6 +115,22 @@ void UCBehave::AddAction(UBBase* const Action, const int32 Priority) {
 	Actions.Insert(Action, Index);
 }
 
+int32 UCBehave::RemAction(const FName Row) {
+	const int32 Num = Actions.Num();
+	for (int32 i =0; i<Num; ++i) {
+		UBBase* const A = Actions[i];
+		if (UNLIKELY(!IsValid(A))) continue;
+		
+		if (LIKELY(A->ID != Row)) continue;
+		
+		A->DeInit();
+		Actions.RemoveAt(i);
+		return i;
+	}
+
+	return -1;
+}
+
 
 void UCBehave::PlanDo() {
 	Planned = nullptr;
