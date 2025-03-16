@@ -4,6 +4,7 @@
 #include "CBehave.h"
 
 #include "Actions/BBase.h"
+#include "UObject/GCObjectScopeGuard.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);
 
@@ -134,7 +135,8 @@ int32 UCBehave::RemAction(const FName Row) {
 
 void UCBehave::PlanDo() {
 	Planned = nullptr;
-
+	// FCriticalSection this is not what i want here.
+	
 	// If this looks simple is because it is. a lot of the planning is offloaded to the actions themselves.
 	// Unfortunately this does not allow to perform a A* search. but i'd refactor that (very) later on.
 
@@ -142,8 +144,12 @@ void UCBehave::PlanDo() {
 	// they are sorted by priority.
 	// we don't care about cost at this point. the action itself cares.
 	for (UBBase* const A: Actions) {
+		// might make it slower but maybe safer
+		FGCObjectScopeGuard CreatedObjectGuard(A); // TODO add this to the BBase using children
 		if (UNLIKELY(!A)) continue;
+
 		if (!A->Plan()) continue;
+
 		Planned = A;
 		break;
 	}
