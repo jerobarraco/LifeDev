@@ -38,10 +38,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 RemAction(const FName Row);
 
+	// creates a new action from a class. does not add it. you need to call AddAction.
 	UFUNCTION(BlueprintCallable)
 	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
 
-	// loads an action from the dt
+	// loads an action from the dt. does not add it. you need to call AddAction
 	UFUNCTION(BlueprintCallable)
 	UBBase* LoadAction(const FName Row);
 
