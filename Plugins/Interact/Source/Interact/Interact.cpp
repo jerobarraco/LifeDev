@@ -139,7 +139,7 @@ void AInteract::ShowHint_Implementation() {
 		if (UNLIKELY(!Eval)) return; // nopes
 		
 		double Res;
-		if (!Eval->Eval(HintCondition, Res)) return; // nopes
+		if (UNLIKELY(!Eval->Eval(HintCondition, Res))) return; // nopes
 		if (Res <= 0) return; // nopess
 	}
 

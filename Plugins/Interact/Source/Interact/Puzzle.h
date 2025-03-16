@@ -5,6 +5,7 @@
 
 #include "CPuzzle.h"
 #include "InteractAnim.h"
+
 #include "Puzzle.generated.h"
 
 class AInteract;
