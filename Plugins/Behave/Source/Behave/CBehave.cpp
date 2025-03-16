@@ -39,9 +39,7 @@ void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 
 	for (const FName& N: ActionsToLoad) {
-		UBBase* const B = LoadAction(N);
-		if (UNLIKELY(!IsValid(B))) continue;
-		Actions.Add(B);
+		AddAction(LoadAction(N));
 	}
 }
 
@@ -49,6 +47,10 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	for (UBBase* const C: Actions) {
 		if (LIKELY(C)) C->DeInit();
 	}
+
+	// TODO should have deinit on removing an action.
+	// but i'd need to make actions protected.
+	// and i'd need to have a bunch of extra functions for that
 	Actions.Empty(0); // uobjects can't be directly destroyed.
 	Super::EndPlay(EndPlayReason);
 }
@@ -99,8 +101,20 @@ UBBase* UCBehave::LoadAction(const FName Row) {
 		if (UNLIKELY(!Child)) continue; // load already warns
 		Action->Children.Add(Child);
 	}
+
 	return Action;
 }
+
+void UCBehave::AddAction(UBBase* const Action, const int32 Priority) {
+	if (UNLIKELY(!IsValid(Action))) return;
+
+	// it's a side effect but the way the code is set. init is only called after the action and all its children are loaded. which is nice.
+	Action->Init(this);
+	// the code suggest it will crash if Priority is <0 or >Num
+	const int32 Index = Priority <0 ? Actions.Num() : FMath::Min(Priority, Actions.Num());
+	Actions.Insert(Action, Index);
+}
+
 
 void UCBehave::PlanDo() {
 	Planned = nullptr;

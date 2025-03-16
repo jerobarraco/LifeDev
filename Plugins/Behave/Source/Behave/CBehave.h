@@ -32,16 +32,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCur() { return ActionChildCur; };
 
+	// priority, by default is the last priority (-1)
+	UFUNCTION(BlueprintCallable)
+	void AddAction(UBBase* const Action, const int32 Priority = -1);
+
 	UFUNCTION(BlueprintCallable)
 	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
 
 	// loads an action from the dt
 	UFUNCTION(BlueprintCallable)
 	UBBase* LoadAction(const FName Row);
-
-	// this is a list of all the goals, main level actions, sorted by priority.
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TArray<TObjectPtr<UBBase>> Actions;
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	// to be loaded on beginplay
@@ -73,6 +73,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UDataTable> ActionsDT = nullptr;
 
+	// this is a list of all the goals, main level actions, sorted by priority.
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TArray<TObjectPtr<UBBase>> Actions;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> ActionCur;
 	
@@ -85,3 +89,4 @@ protected:
 
 	bool IsPlanning = false;
 };
+

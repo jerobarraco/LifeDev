@@ -105,7 +105,9 @@ void UBBase::Init_Implementation(UCBehave* const B) {
 		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
 		return;
 	}
-
+	// this is for ONLY on the bg thread. and we do need it on the game thread
+	// also unsetting this is kind of hard. as this might be called but deinit not called if the user is doing something weird.
+	// SetInternalFlags(EInternalObjectFlags::Async)
 	Behave = B;
 	Behave->ActRegister(this);
 	for (UBBase* const C: Children)
