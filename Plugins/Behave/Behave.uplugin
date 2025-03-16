@@ -4,7 +4,7 @@
 	"EngineVersion": "5.5.0",
 	"VersionName": "1.0",
 	"FriendlyName": "Behave",
-	"Description": "Behavior and emergent narrative.",
+	"Description": "Behavior and emergent narrative. GOAP/State trees",
 	"Category": "JTools",
 	"CreatedBy": "Jeronimo Barraco-Marmol",
 	"CreatedByURL": "https://codeberg.org/jerobarraco",
