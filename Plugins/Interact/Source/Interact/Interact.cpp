@@ -49,7 +49,11 @@ AInteract::AInteract():Super() {
 }
 
 bool AInteract::TryTrigger_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
+	
+	if (UNLIKELY(Locked && ShouldUnlock()))
+		Unlock();
+
 	if (Locked) {
 		TriggerLocked();
 		return false;
@@ -82,27 +86,27 @@ void AInteract::SetText_Implementation() {
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
 	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
-		*Name.ToString(), *GetNameSafe(this));
+		*Name.ToString(), *Label.ToString());
 	return EItemUseResult::BAD_TARGET;
 }
 
 void AInteract::SetActive_Implementation(const bool Active) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
-		__func__, Active, *GetNameSafe(this));
+		__func__, Active, *Label.ToString());
 
 	if (LIKELY(IsValid(Interact))) Interact->SetActive(Active);
 }
 
 void AInteract::SetAutoActivate(const bool AutoActive) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s"),
-		__func__, AutoActive, *GetNameSafe(this));
+		__func__, AutoActive, *Label.ToString());
 	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
 }
 
 bool AInteract::GetEnabled() const {
 	const bool Enabled = IsValid(Interact) && Interact->IsActive();
 	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
-		__func__, Enabled, *GetNameSafe(this));
+		__func__, Enabled, *Label.ToString());
 	return Enabled;
 }
 
@@ -115,7 +119,7 @@ void AInteract::SetMobility(const EComponentMobility::Type Mobility) {
 }
 
 void AInteract::Reset() {
-	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"), __func__, *Label.ToString());
 	Super::Reset();
 	// don't set state here. since it can break some stuff
 	// unfortunately i don't remember what.
@@ -124,14 +128,32 @@ void AInteract::Reset() {
 
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
-		__func__, NewState, *GetNameSafe(this));
+		__func__, NewState, *Label.ToString());
 	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
 
 	State = NewState;
 	SetText();
 }
 
+bool AInteract::ShouldUnlock_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
+
+	if (ULockCondition.IsEmpty()) return false; // only thing to check here.
+
+	const UEval* const Eval = UEval::Instance(this);
+	double Res = -1;
+	if (LIKELY(Eval)) Eval->Eval(ULockCondition, Res);
+	
+	const bool Passed = Res > 0;
+	UE_LOG(LogInteract, Log,
+		TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
+		__func__, *ULockCondition, Res, Passed);
+
+	return Passed;
+}
+
 void AInteract::Unlock_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 	if (UNLIKELY(!Locked)) return; // avoid re-triggering stuff
 	Locked = false; // force unlock
 }
@@ -275,7 +297,7 @@ void AInteract::SetInteractAutoBounds() {
 
 void AInteract::DoTrigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"),
-		__func__, *GetNameSafe(this));
+		__func__, *Label.ToString());
 
 	// set the state before, so that the sound triggers are consistent
 	if (StateNum > 0) {
@@ -306,7 +328,7 @@ void AInteract::DoTrigger_Implementation() {
 void AInteract::PlaySFX(USoundBase* const Snd) const {
 	if (UNLIKELY(!IsValid(Snd))) return;
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
-		__func__, UseAttachedSFX, *GetNameSafe(this), *Snd->GetName());
+		__func__, UseAttachedSFX, *Label.ToString(), *Snd->GetName());
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);

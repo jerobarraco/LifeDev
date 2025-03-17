@@ -81,8 +81,8 @@ public:
 #pragma endregion
 
 #pragma region lock
+	virtual bool ShouldUnlock_Implementation() override;
 	virtual void Unlock_Implementation() override;
-
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
@@ -153,7 +153,6 @@ protected:
 
 	virtual void DoTrigger_Implementation() override;
 	virtual void DoTriggerLocked_Implementation() override;
-	virtual bool TryTrigger_Implementation() override;
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;
 
 	/// cache
@@ -171,6 +170,6 @@ protected:
 #pragma endregion
 };
 
-// TODO at some point *consider* moving the Reward functionality to its own child class
+// not moving the reward stuff to another component.
+//No:  is not that much code. is almost always used. it will have overhead. it couples tightly with timings and such.
 // e.g. animfade, RewardItem, useanimfade(redundant), autodestroy, RewardItemed,  flagrewarded
-//No:  is not that much code. is almost always used. it will have overhead

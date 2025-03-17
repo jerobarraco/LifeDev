@@ -133,13 +133,19 @@ public:
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
 #pragma endregion
 #pragma region Lock
+	// Will CHECK if it needs to unlock (due to a condition, or whatever)
+	// Called automatically on TryTrigger (and maybe other places in the future, like in the puzzle)
+	// return true if it should unlock. it does not unlock. but trytrigger will call unlock if necessary.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	bool ShouldUnlock();
 	// Called to unlock, or when unlocked. triggers a delegate and dialogs and flags and sparks and whistles.
 	// if you override this, make sure to check for Locked before, to avoid double triggering.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Unlock();
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
-	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
+	// You can change this during runtime whenever you want, but calling Unlock() is preferred.
+	// Also check 'IsOneShot'.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 

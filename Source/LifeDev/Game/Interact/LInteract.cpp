@@ -10,7 +10,6 @@
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
-#include "Eval.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -53,7 +52,7 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
-		__func__, *GetNameSafe(this), FadeIn, SetHidden, UseFade);
+		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
 	// i'm not super sure about this.
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
@@ -93,7 +92,7 @@ void ALInteract::BeginPlay() {
 		// set here on purpose to allow the user to override it and self-hurt.
 		UseAttachedSFX = false;
 		UE_CLOG(!UseFade, LogLInteract, Warning, TEXT("%hs Will RewardDestroy but UseFade is false. "
-			"This is legal but unlikely. o=%s"), __func__, *GetNameSafe(this));
+			"This is legal but unlikely. o=%s"), __func__, *Label.ToString());
 	}
 
 	if (IsValid(RewardActor)) { // hide and disable reward actor if any.
@@ -127,7 +126,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALInteract::DoRewards() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"),
-		__func__, *GetNameSafe(this));
+		__func__, *Label.ToString());
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
 	const UWorld* const World = GetWorld();
@@ -137,7 +136,7 @@ void ALInteract::DoRewards() {
 	// just return. nothing to do. don't self destroy or anything.
 	if (IsRewardless()) {
 		UE_LOG(LogLInteract, Log, TEXT("%hs Nothing to reward. Skip. o=%s"),
-			__func__, *GetNameSafe(this));
+			__func__, *Label.ToString());
 		return;
 	}
 
@@ -193,42 +192,43 @@ void ALInteract::DoRewards() {
 }
 
 void ALInteract::DestroyAfterReward() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::DestroyAfterReward);
 	Destroy();
 }
 
 void ALInteract::HideAfterFade() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::HideAfterFade);
 	SetActorHiddenInGame(true);
 }
 
-bool ALInteract::TryTrigger_Implementation() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+bool ALInteract::ShouldUnlock_Implementation() {
+	if (Super::ShouldUnlock_Implementation()) return true; // why bother if it already unlocked
+	
 	// handle item req
-	bool TryUnlock = false;
-	if (!ULockItemReq.IsNone())
-		TryUnlock = LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
+	if (ULockItemReq.IsNone()) return false;
 
-	if (!TryUnlock && !ULockCondition.IsEmpty()) {
-		const UEval* const Eval = UEval::Instance(this);
-		double Res = -1;
-		if (LIKELY(Eval)) Eval->Eval(ULockCondition, Res);
-		const bool Passed = Res > 0;
-		UE_LOG(LogLInteract, Log,
-			TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
-			__func__, *ULockCondition, Res, Passed);
-		TryUnlock = Passed;
-	}
+	return LIKELY(IsValid(Inventory)) && Inventory->Has(ULockItemReq);
+}
 
-	if (TryUnlock) Unlock();
+void ALInteract::Unlock_Implementation() {
+	if (UNLIKELY(Locked)) return;
 
-	return Super::TryTrigger_Implementation();
+	Super::Unlock_Implementation();
+	const FString& SLabel = Label.ToString();
+	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
+	// now unlocked
+	if (LIKELY(IsValid(Diags)))
+		Diags->AddId(ULockDlg) ||
+		Diags->AddId(Dlg);
+
+	// also flags since sometimes the diag might not exist
+	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
 }
 
 void ALInteract::DoTrigger_Implementation() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	// force disablewhileAnim when there's a reward. so it deactivates.
 	// in the hope of that avoiding issues of quick clicks triggering multiple times.
 	// before Super since super will do the setactive stuff.
@@ -264,7 +264,7 @@ void ALInteract::DoTrigger_Implementation() {
 }
 
 void ALInteract::DoTriggerLocked_Implementation() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Super::DoTriggerLocked_Implementation();
 	
 	if (UNLIKELY(!Inventory || !Diags)) return;
@@ -282,10 +282,10 @@ void ALInteract::DoTriggerLocked_Implementation() {
 }
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	if (UNLIKELY(Item.IsNone())) {
 		UE_LOG(LogLInteract, Warning, TEXT("%hs, TryUseItem with item none. Skip. o=%s"),
-			__func__, *GetNameSafe(this));
+			__func__, *Label.ToString());
 		return EItemUseResult::BAD_TARGET;
 	}
 
@@ -334,20 +334,6 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	Unlock();
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
-}
-
-void ALInteract::Unlock_Implementation() {
-	if (UNLIKELY(Locked)) return;
-
-	Super::Unlock_Implementation();
-	const FString& SLabel = Label.ToString();
-	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
-	// now unlocked
-	if (LIKELY(IsValid(Diags)))
-		Diags->AddId(ULockDlg) ||
-		Diags->AddId(Dlg);
-	// also flags since sometimes the diag might not exist
-	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
 }
 
 // too much spam. not needed atm. iranai. muda da.
