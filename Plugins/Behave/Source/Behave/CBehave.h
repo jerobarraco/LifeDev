@@ -50,23 +50,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UBBase* TaskLoad(const FName Row);
 
+	// delay between plans
+	// when true it will keep planning in the bg. interrupting old goals if needed.
+	// this doesn't work. todo fix
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	bool UsePlanLoop = false;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	float PlanWaitTime = 1;
+
 	// this is a list of all the goals (main level tasks), sorted by priority,
 	// to be loaded on beginplay.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<FName> TasksToLoad;
 
 	// The datatable that defines the tasks to load.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) // TODO change to TSoftObjectPtr to be able to use config
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	TSoftObjectPtr<UDataTable> TasksDT = TSoftObjectPtr<UDataTable>(FSoftObjectPath(
 		TEXT("/Behave/Test/TestActions_DT.TestActions_DT")));
-
-	// delay between plans
-	// when >0 it will keep planning in the bg. interrupting old goals if needed.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
-	bool UsePlanLoop = false;
-	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
-	float PlanWaitTime = 1;
 
 	// triggered when a task changes state
 	UPROPERTY(BlueprintReadWrite, Transient)
