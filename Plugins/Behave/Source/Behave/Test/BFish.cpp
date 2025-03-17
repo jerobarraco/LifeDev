@@ -51,6 +51,7 @@ ABFish::ABFish():Super() {
 		"PickMain",
 		"PlaySeq",
 		"Move",
+		"Wait"
 	};
 }
 

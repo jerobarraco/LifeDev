@@ -61,12 +61,12 @@ public:
 		TEXT("/Behave/Test/TestActions_DT.TestActions_DT")));
 
 	// delay between plans
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
-	float PlanWaitTime = 1;
-
-	// when true. it will keep planning in the bg. interrupting old goals if needed.
+	// when >0 it will keep planning in the bg. interrupting old goals if needed.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
 	bool UsePlanLoop = false;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
+	float PlanWaitTime = 1;
 
 	// triggered when a task changes state
 	UPROPERTY(BlueprintReadWrite, Transient)

@@ -169,13 +169,17 @@ void UCBehave::Plan() {
 }
 
 void UCBehave::PlanDone() {
-	CurStop();
-
 	const bool TaskChanged = TaskCur != TaskPlan;
-	const bool HasTask = LIKELY(!!TaskPlan);
+	const bool HasTask = !!TaskPlan;
+	// avoid stopping old if unnecessary. (it might be the same as before)
+	if (UNLIKELY(TaskChanged))
+		CurStop();
+	
+	// do this after stop. since curstop will clean taskCur.
 	TaskCur = TaskPlan; // could be null. in that case it's fine, it clears the taskCur.
 	TaskPlan = nullptr;
 
+	// start new task.
 	if (LIKELY(TaskChanged && HasTask)) {
 		TaskCur->SetState(EBState::STARTED);
 		SetComponentTickEnabled(true);
