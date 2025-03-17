@@ -11,8 +11,7 @@ bool UBBase::Plan_Implementation() {
 }
 
 EBDoRes UBBase::Do(const float DT) {
-	if (UNLIKELY(State == EBState::STOPPING)) return EBDoRes::STOP;
-	if (UNLIKELY(State == EBState::ABORTING)) return EBDoRes::ABORT;
+	if (UNLIKELY(State == EBState::STOPPED)) return EBDoRes::STOP;
 
 	const EBDoRes R = DoSelf(DT);
 	if (R != EBDoRes::STOP || !IsLooped) return R;

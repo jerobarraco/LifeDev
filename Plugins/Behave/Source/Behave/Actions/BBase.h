@@ -42,10 +42,8 @@ public:
 	EBDoRes Do(const float DT);
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Stop() {SetState(EBState::STOPPING);};
-
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Abort() {SetState(EBState::ABORTING);};
+	void Start() {SetState(EBState::STARTED);};
+	void Stop() {SetState(EBState::STOPPED);};
 
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCurChild() const;

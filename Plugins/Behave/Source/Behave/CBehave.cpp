@@ -28,7 +28,7 @@ FActorComponentTickFunction* const ThisTickFunction) {
 		return;
 	}
 
-	const EBDoRes Res = TaskCur->DoSelf(DeltaTime);
+	const EBDoRes Res = TaskCur->Do(DeltaTime);
 	if (LIKELY(Res == EBDoRes::CONTINUE)) return;
 	
 	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) {
@@ -49,9 +49,6 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		if (LIKELY(C)) C->DeInit();
 	}
 
-	// TODO should have deinit on removing an action.
-	// but i'd need to make actions protected.
-	// and i'd need to have a bunch of extra functions for that
 	Tasks.Empty(0); // uobjects can't be directly destroyed.
 	Super::EndPlay(EndPlayReason);
 }
@@ -146,7 +143,7 @@ void UCBehave::PlanDo() {
 	// we don't care about cost at this point. the action itself cares.
 	for (UBBase* const A: Tasks) {
 		// might make it slower but maybe safer
-		FGCObjectScopeGuard CreatedObjectGuard(A); // TODO add this to the BBase using children
+		FGCObjectScopeGuard CreatedObjectGuard(A);
 		if (UNLIKELY(!A)) continue;
 
 		if (!A->Plan()) continue;
@@ -169,18 +166,16 @@ void UCBehave::Plan() {
 }
 
 void UCBehave::PlanDone() {
-	const bool TaskChanged = TaskCur != TaskPlan;
-	const bool HasTask = !!TaskPlan;
-	// avoid stopping old if unnecessary. (it might be the same as before)
-	if (UNLIKELY(TaskChanged))
-		CurStop();
-	
-	// do this after stop. since curstop will clean taskCur.
-	TaskCur = TaskPlan; // could be null. in that case it's fine, it clears the taskCur.
-	TaskPlan = nullptr;
+	const bool TaskChanged = TaskCur.Get() != TaskPlan.Get();
+	const bool HasTask = !!TaskPlan.Get();
 
 	// start new task.
 	if (LIKELY(TaskChanged && HasTask)) {
+		UE_LOG(LogCBehave, Log, TEXT("%hs Task changed and has task. Cur=%llu P=%llu"),
+			__func__, TaskCur.Get(), TaskPlan.Get());
+		// avoid stopping old if unnecessary. (it might be the same as before)
+		CurStop();
+		TaskCur = TaskPlan; //curstop will clean taskcur
 		TaskCur->SetState(EBState::STARTED);
 		SetComponentTickEnabled(true);
 	}
@@ -194,6 +189,7 @@ void UCBehave::PlanDone() {
 	}
 
 	IsPlanning = false;
+	// TaskPlan = nullptr;
 }
 
 void UCBehave::TaskStateUp(UBBase* const Act, const EBState State) {

@@ -21,9 +21,6 @@ UENUM(Blueprintable, BlueprintType)
 enum class EBState : uint8 {
 	STOPPED,
 	STARTED,
-
-	STOPPING,
-	ABORTING,
 	MAX UMETA(HIDDEN)
 };
 
