@@ -147,32 +147,32 @@ void ALGGameMode::Init() {
 
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);
 		return;
 	}
 	
 	Diags = World->GetSubsystem<UDiags>();
 	if (UNLIKELY(!Diags)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem. Stop."), __func__);
 		return;
 	}
 
 	/// Inventory
 	Flags = World->GetSubsystem<UFlags>();
 	if (UNLIKELY(!Flags)){
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flags subsystem. Stop."), __func__);
 		return;
 	}
 	
 	Inventory = World->GetSubsystem<UInventory>();
 	if (UNLIKELY(!Inventory)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Inventory subsystem. Stop."), __func__);
 		return;
 	}
 	
 	Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!Story)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Diags subsystem."), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Story subsystem. Stop."), __func__);
 		return;
 	}
 
@@ -184,7 +184,7 @@ void ALGGameMode::Init() {
 
 	// init together. but before writing subsystems from save
 	Eval->Init();
-	Inventory->Init(SysSettings->Items.LoadSynchronous());
+	Inventory->Init(SysSettings->Items.LoadSynchronous()); // TODo load from disk like with the dialogs
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
@@ -443,7 +443,7 @@ bool ALGGameMode::ChapLoad() {
 	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
 
-	if (Settings->GetFeat(EFeat::D_EXTERNAL)) {
+	if (Settings->GetFeat(EFeat::D_EXTERNAL)) { // TODO i'll probably need to do the same with the inventory items
 		const FString& Base = FPaths::ProjectConfigDir();
 		const FString& NameGroup = Chapter.Groups.ToSoftObjectPath().GetAssetName();
 		const FString& PathGroup = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameGroup+".csv"));
