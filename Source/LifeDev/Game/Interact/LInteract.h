@@ -12,8 +12,6 @@ class UDiags;
 class UInventory;
 class UFlashback;
 
-#define INTERACT_WITH_LABEL 1
-
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
@@ -83,18 +81,22 @@ public:
 #pragma endregion
 
 #pragma region lock
-	// Called to unlock, or when unlocked. triggers a delegate and dialogs and flags and sparks and whistles. 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Unlock();
+	virtual void Unlock_Implementation() override;
+
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItemReq = NAME_None;
-
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItem = NAME_None;
-	
+#pragma endregion
+
+#pragma region dialogs
+	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
+	// use Inter.Trigger.ObjName
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
+	FName TriggerDlg = NAME_None;
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
 	// (e.g. useful for doors)
@@ -108,14 +110,6 @@ public:
 	// use Inter.TriggerL.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedDlg = NAME_None;
-#pragma endregion
-
-#pragma region dialogs
-	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
-	// use Inter.Trigger.ObjName
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
-	FName TriggerDlg = NAME_None;
-
 	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
 	// the key is the item name, the value is the dialog id.
 	// this happens before trying to unlock.

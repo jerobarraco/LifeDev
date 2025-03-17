@@ -131,6 +131,11 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	SetText();
 }
 
+void AInteract::Unlock_Implementation() {
+	if (UNLIKELY(!Locked)) return; // avoid re-triggering stuff
+	Locked = false; // force unlock
+}
+
 void AInteract::ShowHint_Implementation() {
 	if (!UseHint || IsHidden() || !Interact->IsActive()) return;
 
@@ -231,7 +236,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 #if WITH_EDITORONLY_DATA
-void AInteract::EditorLabelUpd(AActor* const Actor) {
+void AInteract::EditorLabelUpd(AActor* const Actor) { // can't be const. it's a binding.
 	if (LIKELY(Actor != this)) return;
 	// always rewrite (not checking empty)
 	Label = FName(GetActorLabel());

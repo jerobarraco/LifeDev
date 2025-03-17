@@ -7,7 +7,7 @@
 #include "Interact.generated.h"
 
 #ifndef INTERACT_WITH_LABEL
-#define INTERACT_WITH_LABEL 0
+#define INTERACT_WITH_LABEL 1
 #endif
 
 class UCInteractor;
@@ -133,6 +133,10 @@ public:
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
 #pragma endregion
 #pragma region Lock
+	// Called to unlock, or when unlocked. triggers a delegate and dialogs and flags and sparks and whistles.
+	// if you override this, make sure to check for Locked before, to avoid double triggering.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Unlock();
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
