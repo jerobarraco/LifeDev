@@ -176,7 +176,7 @@ void UCBehave::PlanDone() {
 	TaskCur = TaskPlan; // could be null. in that case it's fine, it clears the taskCur.
 	TaskPlan = nullptr;
 
-	if (TaskChanged && HasTask) {
+	if (LIKELY(TaskChanged && HasTask)) {
 		TaskCur->SetState(EBState::STARTED);
 		SetComponentTickEnabled(true);
 	}
@@ -185,7 +185,7 @@ void UCBehave::PlanDone() {
 		// retry later
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
-		if (World)
+		if (LIKELY(World))
 			World->GetTimerManager().SetTimer(H, this, &UCBehave::Plan, PlanWaitTime);
 	}
 
