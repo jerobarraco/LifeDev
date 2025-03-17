@@ -21,6 +21,7 @@
 #include "Diags/Diags.h"
 #include "JSig/CSignificance.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "Kismet/DataTableFunctionLibrary.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
@@ -438,9 +439,37 @@ bool ALGGameMode::ChapLoad() {
 
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
-	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* const Groups = Chapter.Groups.LoadSynchronous();
+	UDataTable* Chars = SysSettings->Characters.LoadSynchronous();
+	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
+
+	if (Settings->GetFeat(EFeat::D_EXTERNAL)) {
+		const FString& Base = FPaths::ProjectConfigDir();
+		const FString& NameGroup = Chapter.Groups.ToSoftObjectPath().GetAssetName();
+		const FString& PathGroup = FPaths::Combine(Base, NameGroup+".csv");
+		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathGroup);
+		if (FPaths::FileExists(PathGroup)) {
+			Groups = NewObject<UDataTable>(this, UDataTable::StaticClass());
+			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Groups, PathGroup, FDiagGroup::StaticStruct());
+		}
+
+		const FString& NameDiag = Chapter.Dialogs.ToSoftObjectPath().GetAssetName();
+		const FString& PathDiag = FPaths::Combine(Base, NameDiag+".csv");
+		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathDiag);
+		if (FPaths::FileExists(PathDiag)) {
+			DiagData = NewObject<UDataTable>(this, UDataTable::StaticClass());
+			UDataTableFunctionLibrary::FillDataTableFromCSVFile(DiagData, PathDiag, FDiag::StaticStruct());
+		}
+
+		const FString& NameChar = Chapter.Dialogs.ToSoftObjectPath().GetAssetName();
+		const FString& PathChar = FPaths::Combine(Base, NameChar+".csv");
+		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathChar);
+		if (FPaths::FileExists(PathChar)) {
+			Chars = NewObject<UDataTable>(this, UDataTable::StaticClass());
+			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Chars, PathChar, FDiagChar::StaticStruct());
+		}
+	}
+
 	Diags->SetData(DiagData, Chars, Groups);
 	return true;
 }

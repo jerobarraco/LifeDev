@@ -31,6 +31,8 @@ enum class EFeat: uint8 {
 	D_TEXT,
 	// Automatically advances dialogs
 	D_AUTO,
+	// try to load dialogs from a csv file
+	D_EXTERNAL,
 	D_MAX UMETA(Hidden),
 #pragma endregion
 
