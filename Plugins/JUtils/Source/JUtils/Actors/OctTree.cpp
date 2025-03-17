@@ -519,6 +519,7 @@ void AOctTree::Rebuild() {
 		AOTNode* const N = Nodes.Pop(EAllowShrinking::No);
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s"), __func__, *GetNameSafe(N));
 		if (UNLIKELY(!N)) continue;
+
 		UE_LOG(LogJOctTree, Verbose, TEXT("%hs N=%s An=%i"), __func__, *GetNameSafe(N), N->Actors.Num());
 		
 		// steal nodes (before 'add' case it ends up using one of those nodes)
