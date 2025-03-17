@@ -70,7 +70,7 @@ void UCBehave::TaskRegister(UBBase* const Action) {
 
 UBBase* UCBehave::TaskNew(const TSubclassOf<UBBase>& Class) {
 	UBBase* const B = NewObject<UBBase>(this, Class.Get());
-	if (B) B->Init(this); // force register on any new class
+	if (LIKELY(B)) B->Init(this); // force register on any new class
 	// notes on why register is like this on b->register
 	return B;
 }
