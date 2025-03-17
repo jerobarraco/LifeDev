@@ -39,19 +39,19 @@ public:
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.Item"))
-	TSoftObjectPtr<UDataTable> Inventory = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Inventory/DT_Inventory"));
+	TSoftObjectPtr<UDataTable> Items = TSoftObjectPtr<UDataTable>(
+		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Items"));
 
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RowType="/Script/Dialogs.DialogChar"))
 	TSoftObjectPtr<UDataTable> Characters = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/DT_DiagChars"));
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/DiagChars"));
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RowType="/Script/LifeDev.LChapter"))
 	TSoftObjectPtr<UDataTable> Chapters =
-		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Sys/DT_Chapters"));
+		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Dialogs/Chapters"));
 
 	// the chapter to start with.
 	// during runtime use GetStartChap unless you're me and know what you're doing.

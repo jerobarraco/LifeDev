@@ -184,7 +184,7 @@ void ALGGameMode::Init() {
 
 	// init together. but before writing subsystems from save
 	Eval->Init();
-	Inventory->Init(SysSettings->Inventory.LoadSynchronous());
+	Inventory->Init(SysSettings->Items.LoadSynchronous());
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
@@ -446,23 +446,24 @@ bool ALGGameMode::ChapLoad() {
 	if (Settings->GetFeat(EFeat::D_EXTERNAL)) {
 		const FString& Base = FPaths::ProjectConfigDir();
 		const FString& NameGroup = Chapter.Groups.ToSoftObjectPath().GetAssetName();
-		const FString& PathGroup = FPaths::Combine(Base, NameGroup+".csv");
+		const FString& PathGroup = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameGroup+".csv"));
 		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathGroup);
+		// TODO make these paths absolute
 		if (FPaths::FileExists(PathGroup)) {
 			Groups = NewObject<UDataTable>(this, UDataTable::StaticClass());
 			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Groups, PathGroup, FDiagGroup::StaticStruct());
 		}
 
 		const FString& NameDiag = Chapter.Dialogs.ToSoftObjectPath().GetAssetName();
-		const FString& PathDiag = FPaths::Combine(Base, NameDiag+".csv");
+		const FString& PathDiag = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameDiag+".csv"));
 		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathDiag);
 		if (FPaths::FileExists(PathDiag)) {
 			DiagData = NewObject<UDataTable>(this, UDataTable::StaticClass());
 			UDataTableFunctionLibrary::FillDataTableFromCSVFile(DiagData, PathDiag, FDiag::StaticStruct());
 		}
 
-		const FString& NameChar = Chapter.Dialogs.ToSoftObjectPath().GetAssetName();
-		const FString& PathChar = FPaths::Combine(Base, NameChar+".csv");
+		const FString& NameChar = SysSettings->Characters.ToSoftObjectPath().GetAssetName();
+		const FString& PathChar = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameChar+".csv"));
 		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathChar);
 		if (FPaths::FileExists(PathChar)) {
 			Chars = NewObject<UDataTable>(this, UDataTable::StaticClass());
