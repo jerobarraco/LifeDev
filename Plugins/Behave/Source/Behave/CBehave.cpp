@@ -31,9 +31,8 @@ FActorComponentTickFunction* const ThisTickFunction) {
 	const EBDoRes Res = TaskCur->Do(DeltaTime);
 	if (LIKELY(Res == EBDoRes::CONTINUE)) return;
 	
-	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) {
+	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) // in case i modify the res someday
 		CurStop();  // will plan next tick
-	}
 }
 
 void UCBehave::BeginPlay() {
@@ -56,7 +55,7 @@ void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void UCBehave::CurStop() {
 	if (UNLIKELY(!TaskCur)) return;
 
-	TaskCur->SetState(EBState::STOPPED);
+	TaskCur->Stop();
 	TaskCur = nullptr;
 }
 
@@ -166,22 +165,21 @@ void UCBehave::Plan() {
 }
 
 void UCBehave::PlanDone() {
-	const bool TaskChanged = TaskCur.Get() != TaskPlan.Get();
-	const bool HasTask = !!TaskPlan.Get();
+	const bool TaskChanged = TaskCur != TaskPlan;
+	const bool HasTask = !!TaskPlan;
 
 	// start new task.
 	if (LIKELY(TaskChanged && HasTask)) {
-		UE_LOG(LogCBehave, Log, TEXT("%hs Task changed and has task. Cur=%llu P=%llu"),
+		UE_LOG(LogCBehave, Log, TEXT("%hs Task changed and has task. Cur=%llu Plan=%llu"),
 			__func__, TaskCur.Get(), TaskPlan.Get());
 		// avoid stopping old if unnecessary. (it might be the same as before)
 		CurStop();
 		TaskCur = TaskPlan; //curstop will clean taskcur
-		TaskCur->SetState(EBState::STARTED);
+		TaskCur->Start();
 		SetComponentTickEnabled(true);
 	}
 
-	if (!HasTask || UsePlanLoop) {
-		// retry later
+	if (!HasTask) { // || UNLIKELY(UsePlanLoop)) { // retry later
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
 		if (LIKELY(World))

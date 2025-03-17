@@ -6,10 +6,7 @@
 #include <UObject/GCObjectScopeGuard.h>
 
 EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
-	UBBase* const C = GetCurChild();
-	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
-
-	const EBDoRes R = C->Do(DT);
+	const EBDoRes R = Super::DoSelf_Implementation(DT);
 	if (R == EBDoRes::ABORT) return EBDoRes::ABORT; // bubble up
 
 	if (R == EBDoRes::STOP) {

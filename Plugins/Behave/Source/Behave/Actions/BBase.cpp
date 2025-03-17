@@ -26,7 +26,7 @@ EBDoRes UBBase::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
 
-	const EBDoRes R = C->DoSelf(DT);
+	const EBDoRes R = C->Do(DT);
 	if (UNLIKELY(R == EBDoRes::ABORT)) return EBDoRes::ABORT; // bubble up (redundant with below, but this way i make sure that i don't refactor it out by mistake)
 
 	// This base object is more abstract than anything else. so i will just return the child.

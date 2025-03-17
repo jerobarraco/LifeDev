@@ -50,12 +50,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UBBase* TaskLoad(const FName Row);
 
-	// delay between plans
-	// when true it will keep planning in the bg. interrupting old goals if needed.
-	// this doesn't work. todo fix
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	bool UsePlanLoop = false;
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	float PlanWaitTime = 1;
 
@@ -104,6 +98,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<UBBase> TaskPlan = nullptr;
 
+	// when true it will keep planning in the bg. interrupting old goals if needed.
+	// this doesn't work. there's a race condition when calling plan on some objects. it breaks their current state.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	bool UsePlanLoop = false;
+	
 	bool IsPlanning = false;
 };
 

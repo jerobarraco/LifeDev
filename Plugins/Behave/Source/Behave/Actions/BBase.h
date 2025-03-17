@@ -43,6 +43,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Start() {SetState(EBState::STARTED);};
+	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Stop() {SetState(EBState::STOPPED);};
 
 	UFUNCTION(BlueprintCallable)
