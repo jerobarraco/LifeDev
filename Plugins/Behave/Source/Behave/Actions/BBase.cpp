@@ -11,8 +11,8 @@ bool UBBase::Plan_Implementation() {
 }
 
 EBDoRes UBBase::Do(const float DT) {
-	if (State == EBState::STOPPING) return EBDoRes::STOP;
-	if (State == EBState::ABORTING) return EBDoRes::ABORT;
+	if (UNLIKELY(State == EBState::STOPPING)) return EBDoRes::STOP;
+	if (UNLIKELY(State == EBState::ABORTING)) return EBDoRes::ABORT;
 
 	const EBDoRes R = DoSelf(DT);
 	if (R != EBDoRes::STOP || !IsLooped) return R;
@@ -83,8 +83,7 @@ void UBBase::StartChild(const int32 I) {
 
 	StopCurChild();
 
-	if (I<0 || I>= Children.Num())
-		return;
+	if (UNLIKELY(I<0 || I>= Children.Num())) return;
 
 	CurChildI = I;
 	SetCurChildSate(EBState::STARTED);
@@ -101,15 +100,15 @@ void UBBase::Init_Implementation(UCBehave* const B) {
 	// * recurse into children
 	// * keep a ref to ucbehave
 	UE_LOG(LogTemp, Log, TEXT("UBBase:%hs O=%s"), __func__, *GetNameSafe(this));
-	if (!B) {
-		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs cant get the behave outer"), __func__);
+	if (UNLIKELY(!B)) {
+		UE_LOG(LogTemp, Warning, TEXT("UBBase:%hs Invalid Behave"), __func__);
 		return;
 	}
 	// this is for ONLY on the bg thread. and we do need it on the game thread
 	// also unsetting this is kind of hard. as this might be called but deinit not called if the user is doing something weird.
 	// SetInternalFlags(EInternalObjectFlags::Async)
 	Behave = B;
-	Behave->ActRegister(this);
+	Behave->TaskRegister(this);
 	for (UBBase* const C: Children)
 		if (LIKELY(C)) C->Init(Behave);
 }

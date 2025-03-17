@@ -47,7 +47,7 @@ ABFish::ABFish():Super() {
 	
 	Behave = CreateDefaultSubobject<UCBehave>(TEXT("Behave"));
 	Behave->OnState.AddUniqueDynamic(this, &ABFish::ActStateUp);
-	Behave->ActionsToLoad = {
+	Behave->TasksToLoad = {
 		"PickMain",
 		"PlaySeq",
 		"Move",

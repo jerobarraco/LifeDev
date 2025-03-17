@@ -30,30 +30,45 @@ public:
 	void Plan();
 	
 	UFUNCTION(BlueprintCallable)
-	UBBase* GetCur() { return ActionChildCur; };
+	UBBase* GetCur() { return TaskLeafCur; };
 
-	// priority, by default is the last priority (-1)
+	// Adds a task to the root tasks. These tasks have a global priority.
+	// A Task is only init'ed after adding it here.
+	// priority: by default is the last priority (-1). it's the index on the task list.
 	UFUNCTION(BlueprintCallable)
-	void AddAction(UBBase* const Action, const int32 Priority = -1);
+	void TaskAdd(UBBase* const Task, const int32 Priority = -1);
+	// removes a task. de-init it.
 	UFUNCTION(BlueprintCallable)
-	int32 RemAction(const FName Row);
+	int32 TaskRem(const FName Row);
 
-	// creates a new action from a class. does not add it. you need to call AddAction.
+	// creates a new task from a class. does not add it. you need to call TaskAdd.
 	UFUNCTION(BlueprintCallable)
-	UBBase* NewAction(const TSubclassOf<UBBase>& Class);
+	UBBase* TaskNew(const TSubclassOf<UBBase>& Class);
 
-	// loads an action from the dt. does not add it. you need to call AddAction
+	// loads a task from the dt. does not add it. you need to call TaskAdd.
+	// you also need to specify the correct data table
 	UFUNCTION(BlueprintCallable)
-	UBBase* LoadAction(const FName Row);
+	UBBase* TaskLoad(const FName Row);
 
-	// this is a list of all the goals, main level actions, sorted by priority.
-	// to be loaded on beginplay
+	// this is a list of all the goals (main level tasks), sorted by priority,
+	// to be loaded on beginplay.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TArray<FName> ActionsToLoad;
+	TArray<FName> TasksToLoad;
 
+	// The datatable that defines the tasks to load.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) // TODO change to TSoftObjectPtr to be able to use config
+	TSoftObjectPtr<UDataTable> TasksDT = TSoftObjectPtr<UDataTable>(FSoftObjectPath(
+		TEXT("/Behave/Test/TestActions_DT.TestActions_DT")));
+
+	// delay between plans
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
 	float PlanWaitTime = 1;
 
+	// when true. it will keep planning in the bg. interrupting old goals if needed.
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Config)
+	bool UsePlanLoop = false;
+
+	// triggered when a task changes state
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
 
@@ -68,27 +83,25 @@ protected:
 
 	friend void UBBase::Init(UCBehave*); // doesn't work as expected.
 	friend class UBBase;
-	void ActRegister(UBBase* const Action);
+	void TaskRegister(UBBase* const Action);
 
 	UFUNCTION()
-	void ActStateUp(UBBase* const Act, const EBState State);
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<UDataTable> ActionsDT = nullptr;
+	void TaskStateUp(UBBase* const Act, const EBState State);
 
 	// this is a list of all the goals, main level actions, sorted by priority.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TArray<TObjectPtr<UBBase>> Actions;
-	
+	TArray<TObjectPtr<UBBase>> Tasks;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<UBBase> ActionCur;
-	
+	TObjectPtr<UBBase> TaskCur = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<UBBase> ActionChildCur;
-	// this is faulty. our plan is a tree, so we only need access to the root.
+	TObjectPtr<UBBase> TaskLeafCur = nullptr;
+
+	// this is the chosen goal. (main level task). the root of the plan.
 	// only READ this from Game thread. only write from plan.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<UBBase> Planned;
+	TObjectPtr<UBBase> TaskPlan = nullptr;
 
 	bool IsPlanning = false;
 };

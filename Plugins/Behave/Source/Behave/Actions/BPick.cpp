@@ -3,6 +3,8 @@
 
 #include "BPick.h"
 
+#include <UObject/GCObjectScopeGuard.h>
+
 EBDoRes UBPick::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
@@ -23,6 +25,7 @@ bool UBPick::Plan_Implementation() {
 		UBBase* const C= Children[i];
 		if (UNLIKELY(!C)) continue;
 
+		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) continue;
 
 		const float Cost = C->CostPlan();

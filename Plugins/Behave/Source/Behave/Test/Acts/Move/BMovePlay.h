@@ -11,8 +11,8 @@
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBMovePlay: public UBMove {
 	GENERATED_BODY()
-public:
 
+public:
 	virtual bool Plan_Implementation() override;
 
 protected:

@@ -14,21 +14,21 @@ UCBehave::UCBehave():Super() {
 	SetTickableWhenPaused(false);
 	SetComponentTickEnabled(true);
 
-	static ConstructorHelpers::FObjectFinder<UDataTable>
-		CADT(TEXT("/Behave/Test/TestActions_DT.TestActions_DT"));
-	ActionsDT = CADT.Object;
+	// static ConstructorHelpers::FObjectFinder<UDataTable>
+		// CADT(TEXT("/Behave/Test/TestActions_DT.TestActions_DT"));
+	// TasksDT = CADT.Object;
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
 FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (UNLIKELY(!ActionCur)) {
+	if (UNLIKELY(!TaskCur)) {
 		SetComponentTickEnabled(false);
 		Plan();
 		return;
 	}
 
-	const EBDoRes Res = ActionCur->DoSelf(DeltaTime);
+	const EBDoRes Res = TaskCur->DoSelf(DeltaTime);
 	if (LIKELY(Res == EBDoRes::CONTINUE)) return;
 	
 	if (Res == EBDoRes::STOP || Res == EBDoRes::ABORT) {
@@ -38,58 +38,59 @@ FActorComponentTickFunction* const ThisTickFunction) {
 
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
-
-	for (const FName& N: ActionsToLoad) {
-		AddAction(LoadAction(N));
+	TasksDT.LoadSynchronous();
+	for (const FName& N: TasksToLoad) {
+		TaskAdd(TaskLoad(N));
 	}
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	for (UBBase* const C: Actions) {
+	for (UBBase* const C: Tasks) {
 		if (LIKELY(C)) C->DeInit();
 	}
 
 	// TODO should have deinit on removing an action.
 	// but i'd need to make actions protected.
 	// and i'd need to have a bunch of extra functions for that
-	Actions.Empty(0); // uobjects can't be directly destroyed.
+	Tasks.Empty(0); // uobjects can't be directly destroyed.
 	Super::EndPlay(EndPlayReason);
 }
 
 void UCBehave::CurStop() {
-	if (UNLIKELY(!ActionCur)) return;
+	if (UNLIKELY(!TaskCur)) return;
 
-	ActionCur->SetState(EBState::STOPPED);
-	ActionCur = nullptr;
+	TaskCur->SetState(EBState::STOPPED);
+	TaskCur = nullptr;
 }
 
-void UCBehave::ActRegister(UBBase* const Action) {
+void UCBehave::TaskRegister(UBBase* const Action) {
 	// add "unique" is important
-	Action->OnState.AddUniqueDynamic(this, &UCBehave::ActStateUp);
+	Action->OnState.AddUniqueDynamic(this, &UCBehave::TaskStateUp);
 }
 
-UBBase* UCBehave::NewAction(const TSubclassOf<UBBase>& Class) {
+UBBase* UCBehave::TaskNew(const TSubclassOf<UBBase>& Class) {
 	UBBase* const B = NewObject<UBBase>(this, Class.Get());
 	if (B) B->Init(this); // force register on any new class
 	// notes on why register is like this on b->register
 	return B;
 }
 
-UBBase* UCBehave::LoadAction(const FName Row) {
+UBBase* UCBehave::TaskLoad(const FName Row) {
 	UE_LOG(LogCBehave, Log, TEXT("%hs Row=%s"), __func__, *Row.ToString());
-	
-	if (UNLIKELY(!ActionsDT)) {
-		UE_LOG(LogCBehave, Warning, TEXT("%hs datatable not loaded"), __func__);
+
+	const UDataTable* const DT = TasksDT.Get();
+	if (UNLIKELY(!DT)) {
+		UE_LOG(LogCBehave, Warning, TEXT("%hs datatable not loaded. Stop."), __func__);
 		return nullptr;
 	}
 
-	FBAction* const ActDef = ActionsDT->FindRow<FBAction>(Row, "");
+	FBAction* const ActDef = DT->FindRow<FBAction>(Row, "");
 	if (UNLIKELY(!ActDef)) {
 		UE_LOG(LogCBehave, Warning, TEXT("%hs could not find action id=%s"), __func__, *Row.ToString());
 		return nullptr;
 	}
 
-	UBBase* const Action = NewAction(ActDef->Class);
+	UBBase* const Action = TaskNew(ActDef->Class);
 	if (UNLIKELY(!Action)) {
 		UE_LOG(LogCBehave, Warning, TEXT("%hs could not create action id=%s class=%s"),
 			__func__, *Row.ToString(), *ActDef->Class.Get()->GetName());
@@ -98,7 +99,7 @@ UBBase* UCBehave::LoadAction(const FName Row) {
 	
 	Action->ID = Row;
 	for (const FName& C: ActDef->Children) {
-		UBBase* const Child = LoadAction(C);
+		UBBase* const Child = TaskLoad(C);
 		if (UNLIKELY(!Child)) continue; // load already warns
 		Action->Children.Add(Child);
 	}
@@ -106,26 +107,26 @@ UBBase* UCBehave::LoadAction(const FName Row) {
 	return Action;
 }
 
-void UCBehave::AddAction(UBBase* const Action, const int32 Priority) {
-	if (UNLIKELY(!IsValid(Action))) return;
+void UCBehave::TaskAdd(UBBase* const Task, const int32 Priority) {
+	if (UNLIKELY(!IsValid(Task))) return;
 
 	// it's a side effect but the way the code is set. init is only called after the action and all its children are loaded. which is nice.
-	Action->Init(this);
+	Task->Init(this);
 	// the code suggest it will crash if Priority is <0 or >Num
-	const int32 Index = Priority <0 ? Actions.Num() : FMath::Min(Priority, Actions.Num());
-	Actions.Insert(Action, Index);
+	const int32 Index = Priority <0 ? Tasks.Num() : FMath::Min(Priority, Tasks.Num());
+	Tasks.Insert(Task, Index);
 }
 
-int32 UCBehave::RemAction(const FName Row) {
-	const int32 Num = Actions.Num();
+int32 UCBehave::TaskRem(const FName Row) {
+	const int32 Num = Tasks.Num();
 	for (int32 i =0; i<Num; ++i) {
-		UBBase* const A = Actions[i];
+		UBBase* const A = Tasks[i];
 		if (UNLIKELY(!IsValid(A))) continue;
 		
 		if (LIKELY(A->ID != Row)) continue;
 		
 		A->DeInit();
-		Actions.RemoveAt(i);
+		Tasks.RemoveAt(i);
 		return i;
 	}
 
@@ -134,7 +135,7 @@ int32 UCBehave::RemAction(const FName Row) {
 
 
 void UCBehave::PlanDo() {
-	Planned = nullptr;
+	TaskPlan = nullptr;
 	// FCriticalSection this is not what i want here.
 	
 	// If this looks simple is because it is. a lot of the planning is offloaded to the actions themselves.
@@ -143,14 +144,14 @@ void UCBehave::PlanDo() {
 	// run through actions. ask if possible.
 	// they are sorted by priority.
 	// we don't care about cost at this point. the action itself cares.
-	for (UBBase* const A: Actions) {
+	for (UBBase* const A: Tasks) {
 		// might make it slower but maybe safer
 		FGCObjectScopeGuard CreatedObjectGuard(A); // TODO add this to the BBase using children
 		if (UNLIKELY(!A)) continue;
 
 		if (!A->Plan()) continue;
 
-		Planned = A;
+		TaskPlan = A;
 		break;
 	}
 
@@ -170,11 +171,17 @@ void UCBehave::Plan() {
 void UCBehave::PlanDone() {
 	CurStop();
 
-	ActionCur = Planned; // could be null. in that case it remains clear.
-	if (LIKELY(ActionCur)) {
-		ActionCur->SetState(EBState::STARTED);
+	const bool TaskChanged = TaskCur != TaskPlan;
+	const bool HasTask = LIKELY(!!TaskPlan);
+	TaskCur = TaskPlan; // could be null. in that case it's fine, it clears the taskCur.
+	TaskPlan = nullptr;
+
+	if (TaskChanged && HasTask) {
+		TaskCur->SetState(EBState::STARTED);
 		SetComponentTickEnabled(true);
-	} else {
+	}
+
+	if (!HasTask || UsePlanLoop) {
 		// retry later
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
@@ -185,14 +192,14 @@ void UCBehave::PlanDone() {
 	IsPlanning = false;
 }
 
-void UCBehave::ActStateUp(UBBase* const Act, const EBState State) {
+void UCBehave::TaskStateUp(UBBase* const Act, const EBState State) {
 	UE_LOG(LogCBehave, Log, TEXT("%hs State=%s Act=%s"),
 		__func__, *UEnum::GetValueAsString(State), *GetNameSafe(Act));
 
 	OnState.Broadcast(Act, State);
 	if (State == EBState::STOPPED) {
-		ActionChildCur = nullptr;
-	} else if (State == EBState::STARTED && Act) {
-		ActionChildCur = Act;
+		TaskLeafCur = nullptr;
+	} else if (State == EBState::STARTED && LIKELY(IsValid(Act))) {
+		TaskLeafCur = Act;
 	}
 }

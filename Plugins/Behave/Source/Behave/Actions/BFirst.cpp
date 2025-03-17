@@ -3,6 +3,8 @@
 
 #include "BFirst.h"
 
+#include <UObject/GCObjectScopeGuard.h>
+
 EBDoRes UBFirst::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
@@ -20,8 +22,8 @@ bool UBFirst::Plan_Implementation() {
 	// pick the first
 	for (int32 i=0; i<Children.Num(); ++i){
 		UBBase* const C= Children[i];
+		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (UNLIKELY(!C)) continue;
-
 		if (!C->Plan()) continue;
 		CostPlanned = C->CostPlan();
 		CurChildI = i;

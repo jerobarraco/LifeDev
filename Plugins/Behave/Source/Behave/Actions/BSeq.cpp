@@ -3,6 +3,8 @@
 
 #include "BSeq.h"
 
+#include <UObject/GCObjectScopeGuard.h>
+
 EBDoRes UBSeq::DoSelf_Implementation(const float DT) {
 	UBBase* const C = GetCurChild();
 	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
@@ -28,6 +30,7 @@ bool UBSeq::Plan_Implementation() {
 	for (UBBase* const C: Children) {
 		if (UNLIKELY(!C)) continue;
 
+		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) return false;
 		CostPlanned += C->CostPlan();
 	}

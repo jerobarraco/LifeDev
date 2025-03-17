@@ -3,6 +3,8 @@
 
 #include "BMulti.h"
 
+#include <UObject/GCObjectScopeGuard.h>
+
 EBDoRes UBMulti::DoSelf_Implementation(const float DT) {
 	bool IsAborting = false;
 	bool AllDone = true;
@@ -35,6 +37,7 @@ bool UBMulti::Plan_Implementation() {
 	// even the ones that will become skipped.
 	for (UBBase* const C: Children) {
 		if (UNLIKELY(!C)) continue;
+		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) return false;
 	}
 
