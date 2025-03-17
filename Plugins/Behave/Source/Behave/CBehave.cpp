@@ -12,10 +12,6 @@ UCBehave::UCBehave():Super() {
 	PrimaryComponentTick.bStartWithTickEnabled = true;
 	SetTickableWhenPaused(false);
 	SetComponentTickEnabled(true);
-
-	// static ConstructorHelpers::FObjectFinder<UDataTable>
-		// CADT(TEXT("/Behave/Test/TestActions_DT.TestActions_DT"));
-	// TasksDT = CADT.Object;
 }
 
 void UCBehave::TickComponent(const float DeltaTime, const enum ELevelTick TickType,
