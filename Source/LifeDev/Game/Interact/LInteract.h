@@ -12,6 +12,8 @@ class UDiags;
 class UInventory;
 class UFlashback;
 
+#define INTERACT_WITH_LABEL 1
+
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
@@ -92,11 +94,7 @@ public:
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FName ULockItem = NAME_None;
-	// experimental. an eval condition that will unlock this.
-	//	E.g.
-	//		On a flag: {flag}
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
-	FString ULockCondition = "";
+	
 	// Dialog to show when unlocking, or none to not say anything.
 	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
 	// (e.g. useful for doors)

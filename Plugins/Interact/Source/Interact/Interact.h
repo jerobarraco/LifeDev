@@ -6,6 +6,10 @@
 
 #include "Interact.generated.h"
 
+#ifndef INTERACT_WITH_LABEL
+#define INTERACT_WITH_LABEL 0
+#endif
+
 class UCInteractor;
 class UPhysicsConstraintComponent;
 class UCQuickMesh;
@@ -128,14 +132,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
 #pragma endregion
-
-#pragma region Setup
+#pragma region Lock
 	// locks the interaction, calling tryTrigger will return false.
 	// But it will execute TriggerLocked and play the locked sound.
 	// You can change this during runtime whenever you want. Also check 'IsOneShot'.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool Locked = false;
 
+	// experimental. an eval condition that will unlock this.
+	//	E.g.
+	//		On a flag: {flag}
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
+	FString ULockCondition = "";
+#pragma endregion
+#pragma region Setup
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
@@ -173,8 +183,8 @@ public:
 	// if this is an instance that it's spawned, it will default to the Name.
 	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
-	FName Label; // todo copy getactorlabel on postload. copy from actorlabel on actorlabel change. use getName on OnConstruction (only happens on spawned)
-	// Only do it if name is not set.
+	FName Label;
+	// TODO add a compile time feature flag
 
 #pragma endregion
 
