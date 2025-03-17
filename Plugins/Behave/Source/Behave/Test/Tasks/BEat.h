@@ -2,17 +2,18 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "BBase.h"
+#include "BFisher.h"
 
-#include "BSeq.generated.h"
+#include "BEat.generated.h"
 
-// base action for a sequence action. it will perform it's children in sequence.
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBSeq: public UBBase {
+class BEHAVE_API UBEat: public UBFisher {
 	GENERATED_BODY()
 public:
-	virtual EBDoRes DoSelf_Implementation(const float DT) override;
+	UBEat();
+
 	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(const EBState New) override;
-protected:
+	virtual EBDoRes DoSelf_Implementation(const float DT) override;
+	inline static FName SID = "Eat";
 };

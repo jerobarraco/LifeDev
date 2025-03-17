@@ -3,21 +3,20 @@
 #pragma once
 
 #include "BFisher.h"
-#include "Behave/Actions/BBase.h"
 
-#include "BPlay.generated.h"
+#include "BSleep.generated.h"
 
 class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBPlay: public UBFisher {
+class BEHAVE_API UBSleep: public UBFisher {
 	GENERATED_BODY()
 public:
-	UBPlay();
+	UBSleep();
 
 	virtual bool Plan_Implementation() override;
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 
-	inline static FName SID = "Play";
+	inline static FName SID = "Sleep";
 protected:
 };

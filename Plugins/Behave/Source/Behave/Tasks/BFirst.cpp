@@ -5,14 +5,6 @@
 
 #include <UObject/GCObjectScopeGuard.h>
 
-EBDoRes UBFirst::DoSelf_Implementation(const float DT) {
-	UBBase* const C = GetCurChild();
-	if (UNLIKELY(!C)) return EBDoRes::ABORT; // anomaly
-
-	const EBDoRes R = C->Do(DT);
-	return R;
-}
-
 bool UBFirst::Plan_Implementation() {
 	if (UNLIKELY(Children.Num()<1)) return false;
 
@@ -24,20 +16,18 @@ bool UBFirst::Plan_Implementation() {
 		UBBase* const C= Children[i];
 		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (UNLIKELY(!C)) continue;
+		
 		if (!C->Plan()) continue;
+
 		CostPlanned = C->CostPlan();
 		CurChildI = i;
+		break;
 	}
 
 	return IsValid(GetCurChild());
 }
 
 void UBFirst::SetState_Implementation(const EBState New) {
-	// const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
-
-	// unplanned will have childI <0. StartChild can handle that.
-	// if (New == EBState::STARTED && WasStopped)
-		// StartChild(CurChildI);
 	SetCurChildSate(New);
 }

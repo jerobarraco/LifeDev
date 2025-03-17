@@ -12,7 +12,6 @@ class BEHAVE_API UBFirst: public UBBase {
 	GENERATED_BODY()
 
 public:
-	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(EBState New) override;
 };

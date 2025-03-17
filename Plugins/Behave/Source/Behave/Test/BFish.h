@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Behave/BTypes.h"
 
 #include "BFish.generated.h"
 

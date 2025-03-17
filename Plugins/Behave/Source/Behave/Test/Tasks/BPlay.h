@@ -4,17 +4,19 @@
 
 #include "BFisher.h"
 
-#include "BEat.generated.h"
+#include "BPlay.generated.h"
+
+class ABFish;
 
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBEat: public UBFisher {
+class BEHAVE_API UBPlay: public UBFisher {
 	GENERATED_BODY()
 public:
-	UBEat();
+	UBPlay();
 
 	virtual bool Plan_Implementation() override;
-	virtual void SetState_Implementation(const EBState New) override;
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
-	inline static FName SID = "Eat";
+
+	inline static FName SID = "Play";
 protected:
 };

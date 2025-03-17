@@ -3,7 +3,6 @@
  
 #include "CBehave.h"
 
-#include "Actions/BBase.h"
 #include "UObject/GCObjectScopeGuard.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCBehave, Log, Log);

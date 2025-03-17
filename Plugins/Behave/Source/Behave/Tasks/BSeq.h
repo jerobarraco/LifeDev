@@ -4,24 +4,14 @@
 
 #include "BBase.h"
 
-#include "BWait.generated.h"
+#include "BSeq.generated.h"
 
-
-// Base task for a delay
+// base action for a sequence action. it will perform it's children in sequence.
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
-class BEHAVE_API UBWait: public UBBase {
+class BEHAVE_API UBSeq: public UBBase {
 	GENERATED_BODY()
-
 public:
-	virtual bool Plan_Implementation() override;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float TimeWait = 1;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	float CostPerSecond = 1;
-
-protected:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
+	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(const EBState New) override;
-	float TimeRem = 0;
 };

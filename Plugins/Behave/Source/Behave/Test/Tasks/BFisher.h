@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "Behave/Actions/BBase.h"
+#include "Behave/Tasks/BBase.h"
 
 #include "BFisher.generated.h"
 
@@ -11,6 +11,7 @@ class ABFish;
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBFisher: public UBBase {
 	GENERATED_BODY()
+
 protected:
 	virtual void Init_Implementation(UCBehave* const B) override;
 

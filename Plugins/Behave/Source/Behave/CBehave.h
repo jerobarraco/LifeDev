@@ -5,16 +5,14 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 
-#include "BTypes.h"
-#include "Actions/BBase.h"
+#include "Tasks/BBase.h"
 
 #include "CBehave.generated.h"
 
-// https://www.youtube.com/watch?v=gm7K68663rA#
-// it's loosely based on the first person And the comment about Layered GOAP. 
-
 class UBBase;
 
+// add this component to your actor
+// set TasksToLoad and TaskDT 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Behave),
 	Config=Behave, DefaultConfig, meta=(BlueprintSpawnableComponent))
 class BEHAVE_API UCBehave: public UActorComponent {
