@@ -46,9 +46,13 @@ public:
 	}
 
 	// returns the project version, as stored in the project settings
+	// for the engine version there's a bp node from the engine already (engine version)
 	UFUNCTION(BlueprintCallable)
 	static FString GetProjectVersion();
 
+	UFUNCTION(BlueprintCallable)
+	static FString GetUsername();
+	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
 		const float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);

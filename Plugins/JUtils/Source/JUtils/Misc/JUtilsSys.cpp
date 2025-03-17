@@ -3,7 +3,6 @@
 
 #include "JUtilsSys.h"
 
-
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -100,4 +99,8 @@ FString UJUtilsSys::GetProjectVersion() {
 		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
 		TEXT("ProjectVersion"),Version, GGameIni);
 	return MoveTemp(Version);
+}
+
+FString UJUtilsSys::GetUsername() {
+	return FPlatformProcess::UserName(false);
 }
