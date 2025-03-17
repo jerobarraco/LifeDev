@@ -5,6 +5,7 @@
 
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
+#include <UObject/ConstructorHelpers.h>
 
 #include "JButton.h"
 #include "Components/HorizontalBox.h"

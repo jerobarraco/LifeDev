@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <Engine/DataTable.h>
+
 #include "BTypes.generated.h"
 
 class UBBase;

@@ -3,12 +3,13 @@
 
 #include "JUtilsMisc.h"
 
+#include <Async/Async.h>
 #include "CoreGlobals.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Engine/LocalPlayer.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
 

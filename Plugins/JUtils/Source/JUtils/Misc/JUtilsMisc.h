@@ -6,6 +6,7 @@
 // This is called misc utils because is the misc group
 // later i plan on having more groups
 
+#include <string>
 #include "CoreMinimal.h"
 
 class UInputMappingContext;
@@ -118,5 +119,5 @@ public:
 
 	static inline constexpr std::size_t TextLen(const TCHAR* const T) noexcept {
 		return std::char_traits<TCHAR>::length(T);
-	} 
+	}
 };

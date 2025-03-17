@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include <GameFramework/Info.h>
 
 #include "OctTree.generated.h"
 
