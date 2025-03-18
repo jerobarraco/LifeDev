@@ -16,8 +16,17 @@ void ALInventoryMan::Init_Implementation() {
 
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (UNLIKELY(!Settings)) return;
+
 	Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInventoryMan::FeatUp);
-	IsShowEnabled = ULSettings::GetFeatS(this, EFeat::G_SHOW_UI);
+	FeatUp(EFeat::G_SHOW_UI, Settings->GetFeat(EFeat::G_SHOW_UI));
+}
+
+void ALInventoryMan::DeInit_Implementation() {
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings))
+		Settings->OnFeatUpdateGameplay.RemoveAll(this);
+
+	Super::DeInit_Implementation();
 }
 
 void ALInventoryMan::FeatUp(const EFeat Feat, const bool Enabled) {

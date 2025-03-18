@@ -12,8 +12,8 @@ class LIFEDEV_API ALInventoryMan : public AInventoryMan {
 
 public:
 	ALInventoryMan();
-	UFUNCTION()
 	virtual void Init_Implementation() override;
+	virtual void DeInit_Implementation() override;
 
 protected:
 	UFUNCTION()

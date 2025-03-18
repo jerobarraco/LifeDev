@@ -191,6 +191,12 @@ void ALChar::Init_Implementation() {
 	const UWorld* const World = GetWorld();
 	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
+
+	ULSettings* Settings = ULSettings::Instance(this);
+	if (Settings) {
+		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALChar::FeatUp);
+		FeatUp(EFeat::G_SHOW_UI, Settings->GetFeat(EFeat::G_SHOW_UI));
+	}
 }
 
 void ALChar::BeginPlay() {
@@ -240,9 +246,14 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings)
+		Settings->OnFeatUpdateGameplay.RemoveAll(this);
+	
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
+	
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
 	if (LIKELY(IsValid(UI))) UI->RemoveFromParent();
@@ -350,4 +361,9 @@ void ALChar::SetFB(const float Value) {
 
 	Movement->MaxWalkSpeed = FMath::LerpStable(SpeedMax, SpeedMin, Value);
 	Movement->MaxWalkSpeedCrouched = Movement->MaxWalkSpeed/2.0;
+}
+
+void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
+	if (Feat != EFeat::G_SHOW_UI) return;
+	SetUIVisible(Enabled);
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LChar.generated.h"
 
@@ -52,7 +53,7 @@ public:
 	void InteractSetActive(const bool Enabled) const;
 
 	// Called for the internal init
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay, ForceAsFunction))
 	void Init();
 
 	// factor to apply to look when hovering an Interact
@@ -69,7 +70,7 @@ public:
 	float SpeedMin = 65;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float SpeedMax = 100;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float SpeedFoxy = 10;
 
@@ -87,11 +88,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionJump = nullptr;
 
-	//* Move Input Action 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionMove = nullptr;
-		
-	//* Look Input Action 
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionLook = nullptr;
 
@@ -118,7 +117,9 @@ protected:
 	void MenuDone();
 	UFUNCTION()
 	void SetFB(const float Value);
-
+	UFUNCTION()
+	void FeatUp(const EFeat Feat, const bool Enabled);
+	
 	void ActMove(const FInputActionValue& Value); // movement input
 	void ActLook(const FInputActionValue& Value); // camera look aim
 	void ActInteract();
