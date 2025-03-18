@@ -145,6 +145,7 @@ void ALGGameMode::Init() {
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 
+	// TODO can define a macro for this
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);

@@ -124,7 +124,6 @@ int32 UCBehave::TaskRem(const FName Row) {
 	return -1;
 }
 
-
 void UCBehave::PlanDo() {
 	TaskPlan = nullptr;
 	// FCriticalSection this is not what i want here.
@@ -139,8 +138,11 @@ void UCBehave::PlanDo() {
 		// might make it slower but maybe safer
 		FGCObjectScopeGuard CreatedObjectGuard(A);
 		if (UNLIKELY(!A)) continue;
-
-		if (!A->Plan()) continue;
+		
+		const bool Started = A->GetState() == EBState::STARTED;
+		// like this to make it very clear that started short circuits plan.
+		// this allows to keep planning on the bg without breaking stuff.
+		if (!Started) if (!A->Plan()) continue;
 
 		TaskPlan = A;
 		break;
@@ -174,7 +176,7 @@ void UCBehave::PlanDone() {
 		SetComponentTickEnabled(true);
 	}
 
-	if (!HasTask) { // || UNLIKELY(UsePlanLoop)) { // retry later
+	if (!HasTask || UNLIKELY(UsePlanLoop)) { // retry later
 		FTimerHandle H;
 		const UWorld* const World = GetWorld();
 		if (LIKELY(World))

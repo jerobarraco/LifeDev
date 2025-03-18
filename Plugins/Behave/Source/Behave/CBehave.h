@@ -99,7 +99,7 @@ protected:
 	// when true it will keep planning in the bg. interrupting old goals if needed.
 	// this doesn't work. there's a race condition when calling plan on some objects. it breaks their current state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	bool UsePlanLoop = false;
+	bool UsePlanLoop = true;
 	
 	bool IsPlanning = false;
 };
