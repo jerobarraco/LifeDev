@@ -23,20 +23,15 @@ UENUM(BlueprintType)
 enum class EAsyncExec: uint8 {
 	// Engine\Source\Runtime\Core\Public\Async\Async.h:27
 	// the type used on AsyncTask is much more granular. but unfortunately it's not BlueprintType and is int32 so it cant be exposed
-
-	/** Execute in Task Graph (for short running tasks). */
+	// Execute in Task Graph (for short running tasks).
 	TaskGraph,
-
-	/** Execute in Task Graph on the main thread (for short running tasks). */
+	// Execute in Task Graph on the main thread (for short running tasks).
 	TaskGraphMainThread,
-
-	/** Execute in separate thread if supported (for long running tasks). */
+	//Execute in separate thread if supported (for long-running tasks).
 	Thread,
-
-	/** Execute in separate thread if supported or supported post fork (see FForkProcessHelper::CreateThreadIfForkSafe) (for long running tasks). */
+	// Execute in separate thread if supported or supported post fork (see FForkProcessHelper::CreateThreadIfForkSafe) (for long running tasks).
 	ThreadIfForkSafe,
-
-	/** Execute in global queued thread pool. */
+	// Execute in global queued thread pool.
 	ThreadPool,
 };
 
@@ -101,6 +96,7 @@ public:
 	template <typename T>
 	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows);
 
+	// Only works on editor :'(
 	UFUNCTION(BlueprintCallable, meta=(WorldContext=Outer))
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const Struct, UObject* const Outer = nullptr);

@@ -22,7 +22,6 @@
 #include "JSig/CSignificance.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
-#include "Kismet/DataTableFunctionLibrary.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
@@ -185,7 +184,7 @@ void ALGGameMode::Init() {
 
 	// init together. but before writing subsystems from save
 	Eval->Init();
-	Inventory->Init(SysSettings->Items.LoadSynchronous()); // TODo load from disk like with the dialogs
+	Inventory->Init(SysSettings->Items.LoadSynchronous());
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
@@ -440,21 +439,9 @@ bool ALGGameMode::ChapLoad() {
 
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
-	UDataTable* Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
-
-	// SysSettings->Characters.ToSoftObjectPath().GetAssetName(); // todo test difference
-	
-	// TODO i'll probably need to do the same with the inventory items
-	const bool Ext = LIKELY(Settings) && Settings->GetFeat(EFeat::G_EXT_DATA);
-	// i know this basically loads the assets twice. but i rather this clearly-ness
-	if (Ext) {
-		const FString& BasePath = FPaths::Combine(FPaths::ProjectConfigDir(), "Loc");
-		Chars = UJUtilsMisc::LoadCSVTable(BasePath, SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct());
-		Groups = UJUtilsMisc::LoadCSVTable(BasePath, Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct());
-		DiagData = UJUtilsMisc::LoadCSVTable(BasePath, Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct());
-	}
+	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
+	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* const Groups = Chapter.Groups.LoadSynchronous();
 
 	Diags->SetData(DiagData, Chars, Groups);
 	return true;
