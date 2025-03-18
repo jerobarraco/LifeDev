@@ -1,0 +1,7 @@
+requires flag G_EXT_DATA
+then the files here
+[2025.03.18-19.24.17:330][975]LogTemp: LoadCSVTable Try to load '/home/nande/work/repos/LifeDev/Config/Loc/DiagChars.csv'
+[2025.03.18-19.24.17:331][975]LogTemp: LoadCSVTable Try to load '/home/nande/work/repos/LifeDev/Config/Loc/DiagGroups00.csv'
+[2025.03.18-19.24.17:331][975]LogTemp: LoadCSVTable Try to load '/home/nande/work/repos/LifeDev/Config/Loc/Diags00.csv'
+
+see flags to know what flags to use

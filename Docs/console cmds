@@ -1,0 +1,13 @@
+# start next story step
+ke * startnext 
+
+# flashback
+ke * setmax X
+setmin X
+setval X
+
+# inventory
+ke * mod name x
+
+# flags
+ke * dumpflags
