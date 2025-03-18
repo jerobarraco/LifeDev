@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Internationalization/Culture.h"
 
 #if WITH_EDITOR
 #include "EditorScriptingHelpers.h"
@@ -105,6 +106,15 @@ FString UJUtilsSys::GetUsername() {
 	return FPlatformProcess::UserName(false);
 }
 
-void UJUtilsSys::SetLocale(const FString& Locale) {
-	FInternationalization::Get().SetCurrentCulture(Locale);
+void UJUtilsSys::SetCulture(const FString& Culture) {
+	FInternationalization::Get().SetCurrentCulture(Culture);
+}
+
+const FString& UJUtilsSys::GetCulture() {
+	const FCultureRef Culture = FInternationalization::Get().GetCurrentCulture();
+	return Culture->GetName();
+}
+
+void UJUtilsSys::GetCultures(TArray<FString>& Names) {
+	FInternationalization::Get().GetCultureNames(Names);
 }

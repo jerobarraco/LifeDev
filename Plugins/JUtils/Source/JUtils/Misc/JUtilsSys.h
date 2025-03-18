@@ -54,7 +54,12 @@ public:
 	static FString GetUsername();
 	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void SetLocale(const FString& Locale);
+	static void SetCulture(const FString& Culture);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static const FString& GetCulture();
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void GetCultures(TArray<FString>& Names);
 	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
