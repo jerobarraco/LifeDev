@@ -31,8 +31,6 @@ enum class EFeat: uint8 {
 	D_TEXT,
 	// Automatically advances dialogs
 	D_AUTO,
-	// try to load dialogs from a csv file
-	D_EXTERNAL,
 	D_MAX UMETA(Hidden),
 #pragma endregion
 
@@ -99,6 +97,8 @@ enum class EFeat: uint8 {
 	G_DEMO,
 	// Ability to tweak foxify value on new game +
 	G_NGP_FOXY,
+	// try to load data tables from a csv file
+	G_EXT_DATA,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 

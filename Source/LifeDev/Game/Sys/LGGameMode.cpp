@@ -20,6 +20,7 @@
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
 #include "JSig/CSignificance.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "Kismet/DataTableFunctionLibrary.h"
 
@@ -145,7 +146,6 @@ void ALGGameMode::Init() {
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 
-	// TODO can define a macro for this
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);
@@ -444,12 +444,16 @@ bool ALGGameMode::ChapLoad() {
 	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
 
-	if (Settings->GetFeat(EFeat::D_EXTERNAL)) { // TODO i'll probably need to do the same with the inventory items
+	// TODO use this method. cleanup
+	const FString& BasePath = FPaths::Combine(FPaths::ProjectConfigDir(), "Loc");
+	// SysSettings->Characters.ToSoftObjectPath().GetAssetName(); // todo test difference   
+	Chars = UJUtilsMisc::LoadCSVTable(BasePath, SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct());
+	
+	if (Settings->GetFeat(EFeat::G_EXT_DATA)) { // TODO i'll probably need to do the same with the inventory items
 		const FString& Base = FPaths::ProjectConfigDir();
 		const FString& NameGroup = Chapter.Groups.ToSoftObjectPath().GetAssetName();
 		const FString& PathGroup = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameGroup+".csv"));
 		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathGroup);
-		// TODO make these paths absolute
 		if (FPaths::FileExists(PathGroup)) {
 			Groups = NewObject<UDataTable>(this, UDataTable::StaticClass());
 			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Groups, PathGroup, FDiagGroup::StaticStruct());
