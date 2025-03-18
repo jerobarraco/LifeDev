@@ -115,6 +115,6 @@ const FString& UJUtilsSys::GetCulture() {
 	return Culture->GetName();
 }
 
-void UJUtilsSys::GetCultures(TArray<FString>& Names) {
+void UJUtilsSys::GetAllCultures(TArray<FString>& Names) {
 	FInternationalization::Get().GetCultureNames(Names);
 }

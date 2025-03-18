@@ -53,13 +53,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static FString GetUsername();
 	
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	UFUNCTION(BlueprintCallable)
 	static void SetCulture(const FString& Culture);
-
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	// current culture
+	UFUNCTION(BlueprintCallable)
 	static const FString& GetCulture();
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void GetCultures(TArray<FString>& Names);
+	// this one list all POSSIBLE not all supported :(
+	UFUNCTION(BlueprintCallable)
+	static void GetAllCultures(TArray<FString>& Names);
 	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,

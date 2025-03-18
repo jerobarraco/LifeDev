@@ -2,17 +2,17 @@
 
 #include "LSetGameUI.h"
 
-#include "EditorModeTools.h"
-#include "LFeatsGroup.h"
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+
 #include "Interact/Interact.h"
 #include "JUtils/Misc/JUtilsSys.h"
+
+#include "LFeatsGroup.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
-
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -152,14 +152,14 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(Langs)) {
-		TArray<FString> Cultures;
-		UJUtilsSys::GetCultures(Cultures);
-		const FString& Cur = UJUtilsSys::GetCulture();
+		// TArray<FString> Cultures;
+		// UJUtilsSys::GetAllCultures(Cultures); // this one list all POSSIBLE not all supported :(
+		TArray<FString> Cultures = {"en", "es"};
 		for (const FString& C: Cultures) {
 			Langs->AddOption(C);
 		}
+		const FString& Cur = UJUtilsSys::GetCulture();
 		Langs->SetSelectedOption(Cur);
-		Langs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetGameUI::LangUp);
 	}
 }
 
@@ -217,8 +217,3 @@ void ULSetGameUI::BlurSizeUpd(const float Value) {
 	const FText Num = FText::AsNumber(Value, &NFOption);
 	TBlurSize->SetText(FText::Format(Fmt, Num));
 }
-
-void ULSetGameUI::LangUp(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
-	
-}
-
