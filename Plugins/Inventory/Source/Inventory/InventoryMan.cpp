@@ -26,9 +26,9 @@ AInventoryMan::AInventoryMan():Super(){
 	UIClass = UInventoryUI::StaticClass();
 }
 
-void AInventoryMan::Init() {}
+void AInventoryMan::Init_Implementation() {}
 
-void AInventoryMan::DeInit() {
+void AInventoryMan::DeInit_Implementation() {
 	Hide();
 	if (LIKELY(IsValid(UI))) {
 		UI->RemoveFromParent();
@@ -68,7 +68,7 @@ void AInventoryMan::SetVisible(const bool Vis) {
 }
 
 void AInventoryMan::Show() {
-	if (UNLIKELY(IsShowing)) return;
+	if (UNLIKELY(IsShowing || !IsShowEnabled)) return;
 
 	IsShowing = true;
 	if (LIKELY(IsValid(UI))) UI->Show();

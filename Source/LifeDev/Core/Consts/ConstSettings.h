@@ -97,6 +97,8 @@ enum class EFeat: uint8 {
 	G_DEMO,
 	// Ability to tweak foxify value on new game +
 	G_NGP_FOXY,
+	// for captures
+	G_SHOW_UI,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 

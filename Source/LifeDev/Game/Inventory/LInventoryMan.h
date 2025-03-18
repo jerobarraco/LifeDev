@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 
 #include "Inventory/InventoryMan.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LInventoryMan.generated.h"
 
 UCLASS(Blueprintable)
@@ -11,4 +12,9 @@ class LIFEDEV_API ALInventoryMan : public AInventoryMan {
 
 public:
 	ALInventoryMan();
+	UFUNCTION()
+	virtual void Init_Implementation() override;
+protected:
+	UFUNCTION()
+	void FeatUp(const EFeat Feat, const bool Enabled);
 };

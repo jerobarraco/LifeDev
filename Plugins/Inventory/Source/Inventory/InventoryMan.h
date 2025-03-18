@@ -24,11 +24,11 @@ public:
 	AInventoryMan();
 
 	// call to initialize
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init();
 
 	// call to deinitialize. will be called at endplay automatically.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 
 	UFUNCTION(BlueprintCallable)
@@ -62,6 +62,9 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 1;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool IsShowEnabled = true;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UInventoryUI> UIClass = nullptr;
