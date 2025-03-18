@@ -99,7 +99,11 @@ public:
 
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
-	static bool ReadTable(const UDataTable* DT, TArray<T>& OutRows);
+	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows);
+
+	UFUNCTION(BlueprintCallable, meta=(WorldContext=Outer))
+	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
+		UScriptStruct* const Struct, UObject* const Outer = nullptr);
 
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition

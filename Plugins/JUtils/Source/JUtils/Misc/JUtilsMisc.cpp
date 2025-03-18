@@ -8,6 +8,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/DataTableFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
@@ -103,7 +104,7 @@ void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 }
 
 template <typename T>
-bool UJUtilsMisc::ReadTable(const UDataTable* DT, TArray<T>& OutRows) {
+bool UJUtilsMisc::ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {
 	OutRows.Empty();
 	if (UNLIKELY(!IsValid(DT))) {
 		UE_LOG(LogTemp, Error, TEXT("%hs Data Table is not valid or unassigned."), __func__);
@@ -180,6 +181,17 @@ bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
 
 	// I've added an extra field to the interacts, BUT jutils can't/shouldn't depend on interacts :(
 	return true;
+}
+
+UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name,
+	UScriptStruct* const Struct, UObject* const Outer) {
+	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
+	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"),__func__, *Path);
+	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
+
+	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
+	UDataTableFunctionLibrary::FillDataTableFromCSVFile(Table, Path, Struct);
+	return Table;
 }
 
 void UJUtilsMisc::SetUIScale(const float UIScale) {
