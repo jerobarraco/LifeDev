@@ -104,3 +104,7 @@ FString UJUtilsSys::GetProjectVersion() {
 FString UJUtilsSys::GetUsername() {
 	return FPlatformProcess::UserName(false);
 }
+
+void UJUtilsSys::SetLocale(const FString& Locale) {
+	FInternationalization::Get().SetCurrentCulture(Locale);
+}

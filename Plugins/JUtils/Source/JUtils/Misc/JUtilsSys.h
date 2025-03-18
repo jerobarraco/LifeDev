@@ -54,6 +54,9 @@ public:
 	static FString GetUsername();
 	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void SetLocale(const FString& Locale);
+	
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
 		const float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
 
