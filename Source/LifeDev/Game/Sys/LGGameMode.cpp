@@ -444,36 +444,16 @@ bool ALGGameMode::ChapLoad() {
 	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
 	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
 
-	// TODO use this method. cleanup
-	const FString& BasePath = FPaths::Combine(FPaths::ProjectConfigDir(), "Loc");
-	// SysSettings->Characters.ToSoftObjectPath().GetAssetName(); // todo test difference   
-	Chars = UJUtilsMisc::LoadCSVTable(BasePath, SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct());
+	// SysSettings->Characters.ToSoftObjectPath().GetAssetName(); // todo test difference
 	
-	if (Settings->GetFeat(EFeat::G_EXT_DATA)) { // TODO i'll probably need to do the same with the inventory items
-		const FString& Base = FPaths::ProjectConfigDir();
-		const FString& NameGroup = Chapter.Groups.ToSoftObjectPath().GetAssetName();
-		const FString& PathGroup = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameGroup+".csv"));
-		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathGroup);
-		if (FPaths::FileExists(PathGroup)) {
-			Groups = NewObject<UDataTable>(this, UDataTable::StaticClass());
-			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Groups, PathGroup, FDiagGroup::StaticStruct());
-		}
-
-		const FString& NameDiag = Chapter.Dialogs.ToSoftObjectPath().GetAssetName();
-		const FString& PathDiag = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameDiag+".csv"));
-		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathDiag);
-		if (FPaths::FileExists(PathDiag)) {
-			DiagData = NewObject<UDataTable>(this, UDataTable::StaticClass());
-			UDataTableFunctionLibrary::FillDataTableFromCSVFile(DiagData, PathDiag, FDiag::StaticStruct());
-		}
-
-		const FString& NameChar = SysSettings->Characters.ToSoftObjectPath().GetAssetName();
-		const FString& PathChar = FPaths::ConvertRelativePathToFull(FPaths::Combine(Base, "Diags", NameChar+".csv"));
-		UE_LOG(LogGameMode, Warning, TEXT("%hs Try to load '%s'"),__func__, *PathChar);
-		if (FPaths::FileExists(PathChar)) {
-			Chars = NewObject<UDataTable>(this, UDataTable::StaticClass());
-			UDataTableFunctionLibrary::FillDataTableFromCSVFile(Chars, PathChar, FDiagChar::StaticStruct());
-		}
+	// TODO i'll probably need to do the same with the inventory items
+	const bool Ext = LIKELY(Settings) && Settings->GetFeat(EFeat::G_EXT_DATA);
+	// i know this basically loads the assets twice. but i rather this clearly-ness
+	if (Ext) {
+		const FString& BasePath = FPaths::Combine(FPaths::ProjectConfigDir(), "Loc");
+		Chars = UJUtilsMisc::LoadCSVTable(BasePath, SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct());
+		Groups = UJUtilsMisc::LoadCSVTable(BasePath, Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct());
+		DiagData = UJUtilsMisc::LoadCSVTable(BasePath, Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct());
 	}
 
 	Diags->SetData(DiagData, Chars, Groups);

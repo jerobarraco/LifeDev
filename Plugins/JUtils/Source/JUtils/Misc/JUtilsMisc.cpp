@@ -186,7 +186,7 @@ bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
 UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name,
 	UScriptStruct* const Struct, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
-	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"),__func__, *Path);
+	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
