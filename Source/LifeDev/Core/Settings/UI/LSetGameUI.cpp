@@ -8,6 +8,7 @@
 #include "Interact/Interact.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
 
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -57,6 +58,8 @@ void ULSetGameUI::Apply_Implementation() {
 			Man->BlurReset(); // i can do this because i check nullptrs
 		}
 	}
+
+	if (LIKELY(FeatsDbg)) FeatsDbg->Apply();
 }
 
 void ULSetGameUI::Load_Implementation() {
@@ -89,6 +92,8 @@ void ULSetGameUI::Load_Implementation() {
 	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : 1;
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
+
+	if (LIKELY(FeatsDbg)) FeatsDbg->Load();
 }
 
 void ULSetGameUI::NativeOnInitialized() {
@@ -124,7 +129,11 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(FeatsDbg)) {
-		FeatsDbg->SetVisibility(UJUtilsSys::IsDebug() ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
+		FeatsDbg->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		FeatsDbg->SetUp({
+			{EFeat::G_SHOW_UI, FText::FromString("Show UI")}
+		});
 	}
 }
 

@@ -23,5 +23,6 @@ void ALInventoryMan::Init_Implementation() {
 void ALInventoryMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Feat != EFeat::G_SHOW_UI) return;
 	IsShowEnabled = Enabled;
-	if (!Enabled) Hide();
+	// this could break it if the feat changes while a dialog is showing. but ... i don't care.
+	if (Enabled) Show(); else Hide();
 }
