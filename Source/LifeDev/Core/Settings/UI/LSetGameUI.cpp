@@ -132,7 +132,14 @@ void ULSetGameUI::NativeOnInitialized() {
 		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 		FeatsDbg->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 		FeatsDbg->SetUp({
-			{EFeat::G_SHOW_UI, FText::FromString("Show UI")}
+			{EFeat::G_SHOW_UI, FText::FromString("G_SHOW_UI")},
+			{EFeat::D_SHOW, FText::FromString("D_SHOW")},
+			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},
+			{EFeat::DBG_ANIMS, FText::FromString("DBG_ANIMS")},
+			{EFeat::DBG_SOUND, FText::FromString("DBG_SOUND")},
+			{EFeat::DBG_FB, FText::FromString("DBG_FB")},
+			{EFeat::DBG_SIG, FText::FromString("DBG_SIG")},
+			{EFeat::DBG_TESTDL, FText::FromString("DBG_TESTDL")}
 		});
 	}
 }

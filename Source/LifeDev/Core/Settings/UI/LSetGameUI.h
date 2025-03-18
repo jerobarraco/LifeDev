@@ -7,6 +7,7 @@
 
 #include "LSetGameUI.generated.h"
 
+class UComboBoxString;
 class ULFeatsGroup;
 class UTextBlock;
 class USlider;
@@ -56,4 +57,6 @@ protected:
 	TObjectPtr<USlider> SLBlurSize;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TBlurSize;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> Langs;
 };
