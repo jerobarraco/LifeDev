@@ -14,6 +14,7 @@ public:
 	ALInventoryMan();
 	UFUNCTION()
 	virtual void Init_Implementation() override;
+
 protected:
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);

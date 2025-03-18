@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: MIT
 using UnrealBuildTool;
 
-public class Inventory: ModuleRules
-{
-	public Inventory(ReadOnlyTargetRules Target) : base(Target)
-	{
+public class Inventory: ModuleRules {
+	public Inventory(ReadOnlyTargetRules Target) : base(Target) {
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
@@ -24,7 +22,7 @@ public class Inventory: ModuleRules
 			"Core",
 		});
 		
-		// ... add private dependencies that you statically link with here ...	
+		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "EnhancedInput", "UMG", "JUtils"
 		});

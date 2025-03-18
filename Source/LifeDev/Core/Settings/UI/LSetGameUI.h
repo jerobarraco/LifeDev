@@ -7,6 +7,7 @@
 
 #include "LSetGameUI.generated.h"
 
+class ULFeatsGroup;
 class UTextBlock;
 class USlider;
 
@@ -32,6 +33,9 @@ protected:
 	UFUNCTION()
 	void BlurSizeUpd(const float Value);
 	
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatsGroup> FeatsDbg;
+
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))

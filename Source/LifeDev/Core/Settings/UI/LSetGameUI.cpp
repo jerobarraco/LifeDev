@@ -2,9 +2,11 @@
 
 #include "LSetGameUI.h"
 
+#include "LFeatsGroup.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "Interact/Interact.h"
+#include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Game/Char/LChar.h"
 
@@ -119,6 +121,10 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLBlurSize->SetMaxValue(5.);
 		SLBlurSize->SetMinValue(0);
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
+	}
+
+	if (LIKELY(FeatsDbg)) {
+		FeatsDbg->SetVisibility(UJUtilsSys::IsDebug() ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	}
 }
 
