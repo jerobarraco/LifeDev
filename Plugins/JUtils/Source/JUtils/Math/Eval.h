@@ -26,8 +26,8 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 // a?b: random between a and b
 // !a: not a 
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1)
+//		a>b & c | d : ternary if: a>b?c:d (you can have any expression instead of A>B, <=0 is false, >0 is true) 
 // a<b a>b a=b: < > = (returns 1: true, 0: false)
-// a>b & c | d : ternary if: a>b?c:d (untested) 
 // {XXX} obtains the (double) value for a variable named "XXX" is up to the client to bind to GetVar and provide that value
 //		{#XXX} (suggested) return the double value for an FName, or pointer to a variable. (See FName.ToUnstableInt)
 //		This is good when trying to compare fname values. like {YYYY}={#Variable}. YYYY represents an FName returned as an unstable int.
