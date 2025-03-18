@@ -33,6 +33,8 @@ protected:
 	void InterHintUpd(const float Value);
 	UFUNCTION()
 	void BlurSizeUpd(const float Value);
+	UFUNCTION()
+	void LangUp(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsDbg;

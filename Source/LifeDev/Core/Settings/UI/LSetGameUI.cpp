@@ -2,7 +2,9 @@
 
 #include "LSetGameUI.h"
 
+#include "EditorModeTools.h"
 #include "LFeatsGroup.h"
+#include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "Interact/Interact.h"
@@ -60,6 +62,12 @@ void ULSetGameUI::Apply_Implementation() {
 	}
 
 	if (LIKELY(FeatsDbg)) FeatsDbg->Apply();
+
+	if (LIKELY(Langs)) {
+		const FString& New = Langs->GetSelectedOption();
+		if (New != UJUtilsSys::GetCulture()) 
+			UJUtilsSys::SetCulture(New);
+	}
 }
 
 void ULSetGameUI::Load_Implementation() {
@@ -142,6 +150,17 @@ void ULSetGameUI::NativeOnInitialized() {
 			{EFeat::DBG_TESTDL, FText::FromString("DBG_TESTDL")}
 		});
 	}
+
+	if (LIKELY(Langs)) {
+		TArray<FString> Cultures;
+		UJUtilsSys::GetCultures(Cultures);
+		const FString& Cur = UJUtilsSys::GetCulture();
+		for (const FString& C: Cultures) {
+			Langs->AddOption(C);
+		}
+		Langs->SetSelectedOption(Cur);
+		Langs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetGameUI::LangUp);
+	}
 }
 
 void ULSetGameUI::DiagAutoTimeUpd(const float Value) {
@@ -198,3 +217,8 @@ void ULSetGameUI::BlurSizeUpd(const float Value) {
 	const FText Num = FText::AsNumber(Value, &NFOption);
 	TBlurSize->SetText(FText::Format(Fmt, Num));
 }
+
+void ULSetGameUI::LangUp(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
+	
+}
+
