@@ -37,32 +37,30 @@ bool UBSeq::Plan_Implementation() {
 }
 
 void UBSeq::SetState_Implementation(const EBState New) {
-	const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
 
-	if (New == EBState::STARTED && WasStopped) {
-		CurChildI = 0;
-		StartChild(CurChildI);
-	} else if (New == EBState::STOPPED) {
+	if (State == EBState::STOPPED) {
 		for (UBBase* C: Children)
 			if (LIKELY(C)) C->SetState(EBState::STOPPED);
+	} else if (State == EBState::STARTED) {
+		StartChild(CurChildI);
 	}
 }
 
 void UBSeq::CostCalc_Implementation() {
-	if (Children.Num() <1) return false;
+	if (State != EBState::STARTED) return; // no need to recalculate anything.
 
-	// a sequence is valid only of all children are valid.
-	// even the ones that will become skipped.
-	CostCur = 0;
-	for (UBBase* const C: Children) {
-		if (UNLIKELY(!C)) continue;
-
-		FGCObjectScopeGuard CreatedObjectGuard(C);
-		if (!C->Plan()) return false;
-		CostCur += C->Cost();
+	if (Children.Num()<1 || CurChildI <0) {
+		CostCur = FLT_MAX;
+		return;
 	}
 
-	Super::CostCalc_Implementation();
-	
+	CostCur = 0;
+	for (int32 i=CurChildI; i<Children.Num(); ++i) {
+		UBBase* const C = Children[i];
+		FGCObjectScopeGuard CreatedObjectGuard(C);
+		if (UNLIKELY(!C)) continue;
+		
+		CostCur += C->Cost();
+	}
 }
