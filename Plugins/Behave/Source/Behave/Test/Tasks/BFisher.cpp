@@ -7,7 +7,6 @@
 
 #include "Behave/Test/BFish.h"
 
-
 void UBFisher::Init_Implementation(UCBehave* const B) {
 	Super::Init_Implementation(B);
 	if (UNLIKELY(!B)) return;

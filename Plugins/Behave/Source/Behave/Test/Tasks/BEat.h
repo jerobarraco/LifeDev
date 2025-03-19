@@ -9,6 +9,7 @@
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBEat: public UBFisher {
 	GENERATED_BODY()
+
 public:
 	UBEat();
 
@@ -16,4 +17,7 @@ public:
 	virtual void SetState_Implementation(const EBState New) override;
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	inline static FName SID = "Eat";
+
+protected:
+	void CostCalc_Implementation() override;
 };
