@@ -48,3 +48,21 @@ void UBSeq::SetState_Implementation(const EBState New) {
 			if (LIKELY(C)) C->SetState(EBState::STOPPED);
 	}
 }
+
+void UBSeq::CostCalc_Implementation() {
+	if (Children.Num() <1) return false;
+
+	// a sequence is valid only of all children are valid.
+	// even the ones that will become skipped.
+	CostCur = 0;
+	for (UBBase* const C: Children) {
+		if (UNLIKELY(!C)) continue;
+
+		FGCObjectScopeGuard CreatedObjectGuard(C);
+		if (!C->Plan()) return false;
+		CostCur += C->Cost();
+	}
+
+	Super::CostCalc_Implementation();
+	
+}

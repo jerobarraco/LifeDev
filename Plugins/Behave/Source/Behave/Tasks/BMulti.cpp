@@ -59,8 +59,11 @@ void UBMulti::SetState_Implementation(const EBState New) {
 }
 
 void UBMulti::CostCalc_Implementation() {
+	if (State != EBState::STARTED) return; // no need to recalculate anything.
+
 	CostCur = 0;
 	// not entirely sure if i should add them or get the bigger...
+	// whether we are running or not, it's good to recalculate all cost.
 	for (UBBase* const C: Children) {
 		if (UNLIKELY(!C)) continue;
 		const float CostChild = C->Cost();
