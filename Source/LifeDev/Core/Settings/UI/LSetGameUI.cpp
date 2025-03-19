@@ -142,6 +142,7 @@ void ULSetGameUI::NativeOnInitialized() {
 		FeatsDbg->SetUp({
 			{EFeat::D_SHOW, FText::FromString("D_SHOW")},
 			{EFeat::G_SHOW_UI, FText::FromString("G_SHOW_UI")},
+			{EFeat::G_SHOW_INV, FText::FromString("G_SHOW_INV")},
 			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},
 			{EFeat::DBG_ANIMS, FText::FromString("DBG_ANIMS")},
 			{EFeat::DBG_SOUND, FText::FromString("DBG_SOUND")},
