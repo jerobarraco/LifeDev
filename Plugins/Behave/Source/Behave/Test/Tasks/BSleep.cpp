@@ -13,7 +13,7 @@ UBSleep::UBSleep():Super() {
 bool UBSleep::Plan_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Sleep::%hs"), __func__);
 	const bool Ok = LIKELY(Fish) && Fish->Data.Tired > .7;
-	CostCur = Ok ? 1-Fish->Data.Tired: FLT_MAX;
+	CostCalc();
 	return Ok;
 }
 
@@ -23,4 +23,9 @@ EBDoRes UBSleep::DoSelf_Implementation(const float DT) {
 
 	Fish->Sleep(DT);
 	return EBDoRes::CONTINUE;
+}
+
+void UBSleep::CostCalc_Implementation() {
+	const bool Ok = LIKELY(Fish);
+	CostCur = Ok ? 1-Fish->Data.Tired: FLT_MAX;
 }

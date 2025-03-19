@@ -11,6 +11,7 @@ class ABFish;
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBSleep: public UBFisher {
 	GENERATED_BODY()
+
 public:
 	UBSleep();
 
@@ -19,4 +20,6 @@ public:
 
 	inline static FName SID = "Sleep";
 protected:
+	virtual void CostCalc_Implementation() override;
+
 };

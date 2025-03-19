@@ -11,6 +11,7 @@ class ABFish;
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBPlay: public UBFisher {
 	GENERATED_BODY()
+
 public:
 	UBPlay();
 
@@ -18,5 +19,7 @@ public:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 
 	inline static FName SID = "Play";
+
 protected:
+	virtual void CostCalc_Implementation() override;
 };
