@@ -164,6 +164,7 @@ void UCBehave::PlanDo() {
 
 void UCBehave::Plan() {
 	if (UNLIKELY(IsPlanning)) return;
+
 	IsPlanning = true;
 	Async(EAsyncExecution::Thread, [this]{
 		PlanDo();

@@ -47,7 +47,7 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(this, State); // will broadcast stop of the parent after stop of children. which is good.
 }
 
-float UBBase::CostPlan_Implementation() const {
+float UBBase::CostPlan_Implementation() {
 	// i could have returned the cost as outparam on Plan.
 	// but i trust that people using this library is smart enough to read the documentation.
 	// and also i plan to refactor this, so that instead of calling plan directly. it will perform an A*Search of sorts.

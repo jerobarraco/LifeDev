@@ -41,14 +41,7 @@ bool UBMulti::Plan_Implementation() {
 		if (!C->Plan()) return false;
 	}
 
-	
-	CostPlanned = 0;
-	// not entirely sure if i should add them or get the bigger...
-	for (const UBBase* const C: Children) {
-		const float CostChild = C->CostPlan();
-		if (CostChild > CostPlanned)
-			CostPlanned = CostChild; 
-	}
+	CostPlanCalc();
 
 	CurChildI = 0;
 	return true;
@@ -58,11 +51,26 @@ void UBMulti::SetState_Implementation(const EBState New) {
 	// const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
 
-	for (UBBase* C: Children)
+	for (UBBase* const C: Children)
 		if (LIKELY(C)) C->SetState(New);
 	// if (New == EBState::STARTED && WasStopped) {
 		// const int32 Num = Children.Num();
 		// for (int32 i=0; i<Num; ++i)
 			// StartChild(i);
 	// }
+}
+
+void UBMulti::CostPlanCalc() {
+	CostPlanned = 0;
+	// not entirely sure if i should add them or get the bigger...
+	for (UBBase* const C: Children) {
+		const float CostChild = C->CostPlan();
+		if (CostChild > CostPlanned)
+			CostPlanned = CostChild; 
+	}
+}
+
+float UBMulti::CostPlan_Implementation() {
+	if (State == EBState::STARTED) CostPlanCalc();
+	return CostPlanned;
 }
