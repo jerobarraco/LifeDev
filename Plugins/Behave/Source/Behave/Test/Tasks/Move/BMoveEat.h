@@ -12,9 +12,6 @@
 UCLASS(Blueprintable, BlueprintType, Config=Behave, DefaultConfig)
 class BEHAVE_API UBMoveEat: public UBMove {
 	GENERATED_BODY()
-public:
-
-	virtual bool Plan_Implementation() override;
 
 protected:
 	virtual void SetTarget_Implementation() override;
