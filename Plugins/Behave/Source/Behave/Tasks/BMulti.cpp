@@ -49,8 +49,11 @@ void UBMulti::SetState_Implementation(const EBState New) {
 	// const bool WasStopped = State == EBState::STOPPED;
 	Super::SetState_Implementation(New);
 
-	for (UBBase* const C: Children)
-		if (LIKELY(C)) C->SetState(New);
+	for (UBBase* const C: Children) {
+		if (LIKELY(!C)) continue;
+		FGCObjectScopeGuard CreatedObjectGuard(C);
+		C->SetState(New);
+	}
 	// if (New == EBState::STARTED && WasStopped) {
 		// const int32 Num = Children.Num();
 		// for (int32 i=0; i<Num; ++i)
@@ -66,6 +69,7 @@ void UBMulti::CostCalc_Implementation() {
 	// whether we are running or not, it's good to recalculate all cost.
 	for (UBBase* const C: Children) {
 		if (UNLIKELY(!C)) continue;
+		FGCObjectScopeGuard CreatedObjectGuard(C);
 		const float CostChild = C->Cost();
 		if (CostChild > CostCur)
 			CostCur = CostChild;
