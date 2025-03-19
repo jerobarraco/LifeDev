@@ -140,8 +140,8 @@ void ULSetGameUI::NativeOnInitialized() {
 		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 		FeatsDbg->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 		FeatsDbg->SetUp({
-			{EFeat::G_SHOW_UI, FText::FromString("G_SHOW_UI")},
 			{EFeat::D_SHOW, FText::FromString("D_SHOW")},
+			{EFeat::G_SHOW_UI, FText::FromString("G_SHOW_UI")},
 			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},
 			{EFeat::DBG_ANIMS, FText::FromString("DBG_ANIMS")},
 			{EFeat::DBG_SOUND, FText::FromString("DBG_SOUND")},
@@ -154,7 +154,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	if (LIKELY(Langs)) {
 		const bool IsDebug = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 		Langs->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-		if (Langs->IsVisible()) {
+		if (IsDebug) {
 			// TArray<FString> Cultures;
 			// UJUtilsSys::GetAllCultures(Cultures); // this one list all POSSIBLE not all supported :(
 			TArray<FString> Cultures = {"en", "es"};
