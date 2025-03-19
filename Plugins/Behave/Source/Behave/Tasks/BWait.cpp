@@ -4,7 +4,7 @@
 #include "BWait.h"
 
 bool UBWait::Plan_Implementation() {
-	CostPlanned = TimeWait * CostPerSecond;
+	CostCur = TimeWait * CostPerSecond;
 	TimeRem = TimeWait;
 	return true;
 }

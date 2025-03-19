@@ -13,7 +13,7 @@ UBEat::UBEat():Super() {
 bool UBEat::Plan_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Eat::%hs"), __func__);
 	const bool Ok = LIKELY(Fish) && (Fish->Data.Hungry > .7);
-	CostPlanned = Ok ? 1-Fish->Data.Hungry: FLT_MAX;
+	CostCur = Ok ? 1-Fish->Data.Hungry: FLT_MAX;
 
 	return Ok;
 }

@@ -9,7 +9,7 @@ bool UBFirst::Plan_Implementation() {
 	if (UNLIKELY(Children.Num()<1)) return false;
 
 	CurChildI = -1;
-	CostPlanned = FLT_MAX;
+	CostCur = FLT_MAX;
 
 	// pick the first
 	for (int32 i=0; i<Children.Num(); ++i){
@@ -19,7 +19,7 @@ bool UBFirst::Plan_Implementation() {
 		
 		if (!C->Plan()) continue;
 
-		CostPlanned = C->CostPlan();
+		CostCur = C->Cost();
 		CurChildI = i;
 		break;
 	}
@@ -32,10 +32,10 @@ void UBFirst::SetState_Implementation(const EBState New) {
 	SetCurChildSate(New);
 }
 
-float UBFirst::CostPlan_Implementation() {
+float UBFirst::Cost_Implementation() {
 	if (State == EBState::STARTED) {
 		CostPlanFromCurChild();
 	}
 
-	return CostPlanned;
+	return CostCur;
 }

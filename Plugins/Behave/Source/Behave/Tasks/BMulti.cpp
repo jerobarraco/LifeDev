@@ -61,16 +61,16 @@ void UBMulti::SetState_Implementation(const EBState New) {
 }
 
 void UBMulti::CostPlanCalc() {
-	CostPlanned = 0;
+	CostCur = 0;
 	// not entirely sure if i should add them or get the bigger...
 	for (UBBase* const C: Children) {
-		const float CostChild = C->CostPlan();
-		if (CostChild > CostPlanned)
-			CostPlanned = CostChild; 
+		const float CostChild = C->Cost();
+		if (CostChild > CostCur)
+			CostCur = CostChild; 
 	}
 }
 
-float UBMulti::CostPlan_Implementation() {
+float UBMulti::Cost_Implementation() {
 	if (State == EBState::STARTED) CostPlanCalc();
-	return CostPlanned;
+	return CostCur;
 }

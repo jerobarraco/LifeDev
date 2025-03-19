@@ -23,13 +23,13 @@ bool UBSeq::Plan_Implementation() {
 
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
-	CostPlanned = 0;
+	CostCur = 0;
 	for (UBBase* const C: Children) {
 		if (UNLIKELY(!C)) continue;
 
 		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) return false;
-		CostPlanned += C->CostPlan();
+		CostCur += C->Cost();
 	}
 
 	CurChildI = 0;

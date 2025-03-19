@@ -147,7 +147,7 @@ void UCBehave::PlanDo() {
 		// this allows to keep planning on the bg without breaking stuff.
 		if (!Started) if (!A->Plan()) continue;
 
-		Cost = A->CostPlan() + FMath::RandRange(0.0f, PlanCostFuzz);
+		Cost = A->Cost() + FMath::RandRange(0.0f, PlanCostFuzz);
 		if (Cost >= MinCost) continue;
 
 		MinCost = Cost;

@@ -13,7 +13,7 @@ UBSleep::UBSleep():Super() {
 bool UBSleep::Plan_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("Sleep::%hs"), __func__);
 	const bool Ok = LIKELY(Fish) && Fish->Data.Tired > .7;
-	CostPlanned = Ok ? 1-Fish->Data.Tired: FLT_MAX;
+	CostCur = Ok ? 1-Fish->Data.Tired: FLT_MAX;
 	return Ok;
 }
 

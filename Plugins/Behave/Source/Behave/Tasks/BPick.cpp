@@ -9,7 +9,7 @@ bool UBPick::Plan_Implementation() {
 	if (UNLIKELY(Children.Num()<1)) return false;
 
 	CurChildI = -1;
-	CostPlanned = FLT_MAX;
+	CostCur = FLT_MAX;
 	
 	// a sequence is valid only of all children are valid.
 	// even the ones that will become skipped.
@@ -20,9 +20,9 @@ bool UBPick::Plan_Implementation() {
 		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) continue;
 
-		const float Cost = C->CostPlan();
-		if (Cost < CostPlanned) {
-			CostPlanned = Cost;
+		const float Cost = C->Cost();
+		if (Cost < CostCur) {
+			CostCur = Cost;
 			CurChildI = i;
 		}
 	}
@@ -41,10 +41,10 @@ void UBPick::SetState_Implementation(const EBState New) {
 		// StartChild(CurChildI);
 }
 
-float UBPick::CostPlan_Implementation() {
+float UBPick::Cost_Implementation() {
 	if (State == EBState::STARTED) {
 		CostPlanFromCurChild();
 	}
 
-	return CostPlanned;// Allow for replan
+	return CostCur;// Allow for replan
 }

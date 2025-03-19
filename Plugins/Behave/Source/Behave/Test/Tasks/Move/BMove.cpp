@@ -15,7 +15,7 @@ bool UBMove::Plan_Implementation() {
 
 	SetTarget();
 	const float Dist = FVector::DistSquared(Fish->GetActorLocation(), Target);
-	CostPlanned = Fish->Data.Tired + (Dist*.01);
+	CostCur = Fish->Data.Tired + (Dist*.01);
 
 	return Ok;
 }

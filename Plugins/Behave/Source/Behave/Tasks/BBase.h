@@ -25,7 +25,7 @@ public:
 	// total cost including children
 	// Important. before calling this, ensure you've called plan.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float CostPlan();
+	float Cost();
 
 	// called from a bg thread.
 	// needs to be as fast as possible but don't worry if it's a bit slow.
@@ -79,7 +79,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 
-	void CostPlanFromCurChild();
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void CostCalc();
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
@@ -87,9 +88,12 @@ protected:
 	// opt
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 CurChildI = -1;
-	// You need to set this when called Plan (or before if it's static)
+	
+	// You need to set this inside CostCalc.
+	// And probably call CostCalc inside Plan, or set it directly on plan.
+	// Or before if the cost is constant.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	float CostPlanned = 0;
+	float CostCur = 0;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UCBehave> Behave = nullptr;

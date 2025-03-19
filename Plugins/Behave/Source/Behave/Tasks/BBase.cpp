@@ -6,7 +6,7 @@
 #include "Behave/CBehave.h"
 
 bool UBBase::Plan_Implementation() {
-	CostPlanned = .5;
+	CostCalc();
 	return true;
 }
 
@@ -47,13 +47,13 @@ void UBBase::SetState_Implementation(const EBState New) {
 	OnState.Broadcast(this, State); // will broadcast stop of the parent after stop of children. which is good.
 }
 
-float UBBase::CostPlan_Implementation() {
+float UBBase::Cost_Implementation() {
 	// i could have returned the cost as outparam on Plan.
 	// but i trust that people using this library is smart enough to read the documentation.
 	// and also i plan to refactor this, so that instead of calling plan directly. it will perform an A*Search of sorts.
 	// It might end up doing the same thing. as how can i give a cost without a plan???
 	// i might change my mind later. or not. who knows. i'm a mystery.
-	return CostPlanned;
+	return CostCur;
 }
 
 UBBase* UBBase::GetCurChild() const {
@@ -88,9 +88,10 @@ void UBBase::StartChild(const int32 I) {
 	SetCurChildSate(EBState::STARTED);
 }
 
-void UBBase::CostPlanFromCurChild() {
+void UBBase::CostCalc_Implementation() {
+	// by default, it will use the curchild. because otherwise you should implement your own. i guess.
 	UBBase* const Child = GetCurChild();
-	CostPlanned = Child ? Child->CostPlan(): FLT_MAX;
+	CostCur = Child ? Child->Cost(): FLT_MAX;
 }
 
 void UBBase::DeInit_Implementation() {
