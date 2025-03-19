@@ -17,7 +17,7 @@ public:
 	float TimeWait = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	float CostPerSecond = 1;
+	float CostPerSecond = 2;
 
 protected:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;

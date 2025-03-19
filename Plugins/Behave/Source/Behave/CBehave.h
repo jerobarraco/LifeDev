@@ -54,7 +54,7 @@ public:
 	// how many tasks to consider for choosing a plan.
 	// only tasks that return true on plan will be considered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	int32 PlanSpread = 2;
+	int32 PlanSpread = 1;
 
 	// random value to add to plan's costs in the range of 0->PlanCostFuzz
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
