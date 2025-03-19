@@ -63,7 +63,7 @@ void ULSetGameUI::Apply_Implementation() {
 
 	if (LIKELY(FeatsDbg)) FeatsDbg->Apply();
 
-	if (LIKELY(Langs)) {
+	if (LIKELY(Langs) && Langs->IsVisible()) { // is visible because it's feature flagged
 		const FString& New = Langs->GetSelectedOption();
 		if (New != UJUtilsSys::GetCulture()) 
 			UJUtilsSys::SetCulture(New);
@@ -152,14 +152,18 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(Langs)) {
-		// TArray<FString> Cultures;
-		// UJUtilsSys::GetAllCultures(Cultures); // this one list all POSSIBLE not all supported :(
-		TArray<FString> Cultures = {"en", "es"};
-		for (const FString& C: Cultures) {
-			Langs->AddOption(C);
+		const bool IsDebug = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
+		Langs->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		if (Langs->IsVisible()) {
+			// TArray<FString> Cultures;
+			// UJUtilsSys::GetAllCultures(Cultures); // this one list all POSSIBLE not all supported :(
+			TArray<FString> Cultures = {"en", "es"};
+			for (const FString& C: Cultures) {
+				Langs->AddOption(C);
+			}
+			const FString& Cur = UJUtilsSys::GetCulture();
+			Langs->SetSelectedOption(Cur);
 		}
-		const FString& Cur = UJUtilsSys::GetCulture();
-		Langs->SetSelectedOption(Cur);
 	}
 }
 
