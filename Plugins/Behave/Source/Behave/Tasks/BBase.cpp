@@ -88,6 +88,11 @@ void UBBase::StartChild(const int32 I) {
 	SetCurChildSate(EBState::STARTED);
 }
 
+void UBBase::CostPlanFromCurChild() {
+	UBBase* const Child = GetCurChild();
+	CostPlanned = Child ? Child->CostPlan(): FLT_MAX;
+}
+
 void UBBase::DeInit_Implementation() {
 	OnState.Clear();
 	Behave = nullptr;

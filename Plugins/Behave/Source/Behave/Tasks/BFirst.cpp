@@ -31,3 +31,11 @@ void UBFirst::SetState_Implementation(const EBState New) {
 	Super::SetState_Implementation(New);
 	SetCurChildSate(New);
 }
+
+float UBFirst::CostPlan_Implementation() {
+	if (State == EBState::STARTED) {
+		CostPlanFromCurChild();
+	}
+
+	return CostPlanned;
+}

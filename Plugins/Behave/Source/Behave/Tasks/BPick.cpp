@@ -43,8 +43,7 @@ void UBPick::SetState_Implementation(const EBState New) {
 
 float UBPick::CostPlan_Implementation() {
 	if (State == EBState::STARTED) {
-		UBBase* const Child = GetCurChild();
-		CostPlanned = Child ? Child->CostPlan(): FLT_MAX;
+		CostPlanFromCurChild();
 	}
 
 	return CostPlanned;// Allow for replan

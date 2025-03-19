@@ -78,6 +78,9 @@ protected:
 	void Init(UCBehave* B); // Native can't use const
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
+
+	void CostPlanFromCurChild();
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 
