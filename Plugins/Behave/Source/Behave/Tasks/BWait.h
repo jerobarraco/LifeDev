@@ -13,11 +13,15 @@ class BEHAVE_API UBWait: public UBBase {
 
 public:
 	virtual bool Plan_Implementation() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TimeWaitMax = 5;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TimeWait = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	float CostPerSecond = 10;
+	float CostPerSecond = 30;
 
 protected:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;

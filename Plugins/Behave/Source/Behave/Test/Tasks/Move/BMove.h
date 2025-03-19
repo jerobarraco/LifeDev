@@ -27,7 +27,7 @@ protected:
 	void SetTarget();
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
-	float CostPerDist = .001;
+	float CostPerDist = .1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector Target = FVector::ZeroVector;
 };

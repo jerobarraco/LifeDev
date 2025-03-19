@@ -33,6 +33,6 @@ EBDoRes UBEat::DoSelf_Implementation(const float DT) {
 
 void UBEat::CostCalc_Implementation() {
 	const bool Ok = LIKELY(Fish);
-	CostCur = Ok ? 1-(Fish->Data.Hungry*2): FLT_MAX;
+	CostCur = Ok ? 1-(Fish->Data.Hungry*50): FLT_MAX;
 }
 

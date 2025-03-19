@@ -28,5 +28,5 @@ EBDoRes UBPlay::DoSelf_Implementation(const float DT) {
 
 void UBPlay::CostCalc_Implementation() {
 	const bool Ok = LIKELY(Fish);
-	CostCur = Ok ? 1-(Fish->Data.Bored*2): FLT_MAX;
+	CostCur = Ok ? 1-(Fish->Data.Bored*5): FLT_MAX;
 }

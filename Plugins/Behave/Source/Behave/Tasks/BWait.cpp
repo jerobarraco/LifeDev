@@ -4,6 +4,7 @@
 #include "BWait.h"
 
 bool UBWait::Plan_Implementation() {
+	TimeWait = FMath::RandRange(.5f, TimeWaitMax);
 	TimeRem = TimeWait;
 	CostCalc();
 	return true;

@@ -27,5 +27,5 @@ EBDoRes UBSleep::DoSelf_Implementation(const float DT) {
 
 void UBSleep::CostCalc_Implementation() {
 	const bool Ok = LIKELY(Fish);
-	CostCur = Ok ? 1-Fish->Data.Tired: FLT_MAX;
+	CostCur = Ok ? 1-(Fish->Data.Tired*50): FLT_MAX;
 }

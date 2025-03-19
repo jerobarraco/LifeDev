@@ -62,7 +62,7 @@ public:
 
 	// this is a list of all the goals (main level tasks), sorted by priority,
 	// to be loaded on beginplay.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TArray<FName> TasksToLoad;
 
 	// The datatable that defines the tasks to load.
