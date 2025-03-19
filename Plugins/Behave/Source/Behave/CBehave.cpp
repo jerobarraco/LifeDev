@@ -138,8 +138,8 @@ void UCBehave::PlanDo() {
 	float MinCost = FLT_MAX;
 	for (UBBase* const A: Tasks) {
 		// might make it slower but maybe safer
-		FGCObjectScopeGuard CreatedObjectGuard(A);
 		if (UNLIKELY(!A)) continue;
+		FGCObjectScopeGuard CreatedObjectGuard(A);
 		
 		const bool Started = A->GetState() == EBState::STARTED;
 		// like this to make it very clear that started short circuits plan.
