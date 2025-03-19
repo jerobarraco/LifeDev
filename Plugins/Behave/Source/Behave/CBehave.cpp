@@ -146,12 +146,14 @@ void UCBehave::PlanDo() {
 		// like this to make it very clear that started short circuits plan.
 		// this allows to keep planning on the bg without breaking stuff.
 		if (!Started) if (!A->Plan()) continue;
-		Cost = A->CostPlan();
+
+		Cost = A->CostPlan() + FMath::RandRange(0.0f, PlanCostFuzz);
 		if (Cost >= MinCost) continue;
 
-		TaskPlan = A;
 		MinCost = Cost;
-		--Spread;
+		TaskPlan = A;
+
+		--Spread; // notice it only decrements when a plan succeeds
 		if (Spread<0) break;
 	}
 
