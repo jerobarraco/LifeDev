@@ -66,6 +66,11 @@ protected:
 	// override this to do your job
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	EBDoRes DoSelf(const float DT);
+	// override this one if needed. will/should/could be called during plan AND replan.
+	// always in a bg thread.
+	// you have to make sure to handle the case where the task is stopped or running.
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void CostCalc();
 
 	UFUNCTION(BlueprintCallable)
 	void StopCurChild();
@@ -78,9 +83,6 @@ protected:
 	void Init(UCBehave* B); // Native can't use const
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
-
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void CostCalc();
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;

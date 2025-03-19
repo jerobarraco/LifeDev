@@ -40,11 +40,3 @@ void UBPick::SetState_Implementation(const EBState New) {
 	// if (New == EBState::STARTED && WasStopped)
 		// StartChild(CurChildI);
 }
-
-float UBPick::Cost_Implementation() {
-	if (State == EBState::STARTED) {
-		CostPlanFromCurChild();
-	}
-
-	return CostCur;// Allow for replan
-}

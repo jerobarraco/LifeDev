@@ -14,5 +14,4 @@ class BEHAVE_API UBPick: public UBBase {
 public:
 	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(EBState New) override;
-	virtual float Cost_Implementation() override;
 };

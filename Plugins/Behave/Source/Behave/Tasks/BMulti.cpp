@@ -32,18 +32,16 @@ bool UBMulti::Plan_Implementation() {
 			__func__, *ID.ToString());
 		return false;
 	}
-	
-	// a Multiuence is valid only of all children are valid.
-	// even the ones that will become skipped.
+
+	// multi is valid only of all children are valid
 	for (UBBase* const C: Children) {
-		if (UNLIKELY(!C)) continue;
+		if (UNLIKELY(!C)) return false;
 		FGCObjectScopeGuard CreatedObjectGuard(C);
 		if (!C->Plan()) return false;
 	}
 
-	CostPlanCalc();
-
 	CurChildI = 0;
+	CostCalc(); // will iterate twice but, oh well.
 	return true;
 }
 
@@ -60,12 +58,13 @@ void UBMulti::SetState_Implementation(const EBState New) {
 	// }
 }
 
-void UBMulti::CostPlanCalc() {
+void UBMulti::CostCalc_Implementation() {
 	CostCur = 0;
 	// not entirely sure if i should add them or get the bigger...
 	for (UBBase* const C: Children) {
+		if (UNLIKELY(!C)) continue;
 		const float CostChild = C->Cost();
 		if (CostChild > CostCur)
-			CostCur = CostChild; 
+			CostCur = CostChild;
 	}
 }

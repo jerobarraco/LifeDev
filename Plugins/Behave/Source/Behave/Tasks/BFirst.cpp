@@ -19,23 +19,15 @@ bool UBFirst::Plan_Implementation() {
 		
 		if (!C->Plan()) continue;
 
-		CostCur = C->Cost();
 		CurChildI = i;
 		break;
 	}
 
+	CostCalc(); // done outside of loop to ensure it rewrites the previous one in case all children fail.
 	return IsValid(GetCurChild());
 }
 
 void UBFirst::SetState_Implementation(const EBState New) {
 	Super::SetState_Implementation(New);
 	SetCurChildSate(New);
-}
-
-float UBFirst::Cost_Implementation() {
-	if (State == EBState::STARTED) {
-		CostPlanFromCurChild();
-	}
-
-	return CostCur;
 }

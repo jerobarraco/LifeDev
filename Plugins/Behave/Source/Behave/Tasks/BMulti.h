@@ -15,6 +15,5 @@ public:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual bool Plan_Implementation() override;
 	virtual void SetState_Implementation(const EBState New) override;
-	virtual float Cost_Implementation() override;
-	void CostPlanCalc();
+	virtual void CostCalc_Implementation() override;
 };
