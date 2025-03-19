@@ -19,6 +19,7 @@ public:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 
 	inline static FName SID = "Sleep";
+
 protected:
 	virtual void CostCalc_Implementation() override;
 

@@ -136,7 +136,6 @@ void UCBehave::PlanDo() {
 	// we don't care about cost at this point. the action itself cares.
 	int32 Spread = PlanSpread;
 	float MinCost = FLT_MAX;
-	float Cost = MinCost;
 	for (UBBase* const A: Tasks) {
 		// might make it slower but maybe safer
 		FGCObjectScopeGuard CreatedObjectGuard(A);
@@ -147,7 +146,7 @@ void UCBehave::PlanDo() {
 		// this allows to keep planning on the bg without breaking stuff.
 		if (!Started) if (!A->Plan()) continue;
 
-		Cost = A->Cost() + FMath::RandRange(0.0f, PlanCostFuzz);
+		const float Cost = A->Cost() + FMath::RandRange(0.0f, PlanCostFuzz);
 		if (Cost >= MinCost) continue;
 
 		MinCost = Cost;

@@ -19,5 +19,5 @@ public:
 	inline static FName SID = "Eat";
 
 protected:
-	void CostCalc_Implementation() override;
+	virtual void CostCalc_Implementation() override;
 };
