@@ -48,9 +48,13 @@ void UBBase::SetState_Implementation(const EBState New) {
 }
 
 float UBBase::Cost_Implementation() {
+	// recalculate if it's running.
+	if (State == EBState::STARTED) CostCalc();
+
 	// i could have returned the cost as outparam on Plan.
 	// but i trust that people using this library is smart enough to read the documentation.
 	// and also i plan to refactor this, so that instead of calling plan directly. it will perform an A*Search of sorts.
+	// also recalculating the cost on a running task requires this. as calling plan again will make it fall apart.
 	// It might end up doing the same thing. as how can i give a cost without a plan???
 	// i might change my mind later. or not. who knows. i'm a mystery.
 	return CostCur;

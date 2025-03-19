@@ -69,8 +69,3 @@ void UBMulti::CostPlanCalc() {
 			CostCur = CostChild; 
 	}
 }
-
-float UBMulti::Cost_Implementation() {
-	if (State == EBState::STARTED) CostPlanCalc();
-	return CostCur;
-}
