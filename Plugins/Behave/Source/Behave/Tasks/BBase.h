@@ -52,10 +52,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName ID = NAME_None;
 
-	// beware if you change it during runtime
-	UPROPERTY(BlueprintReadWrite)
-	TArray<TObjectPtr<UBBase>> Children; // TODO make protected and friendly
-
 	UPROPERTY(BlueprintReadWrite)
 	bool IsLooped = false;
 
@@ -84,6 +80,10 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 	
+	// beware if you change it during runtime
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TObjectPtr<UBBase>> Children; // TODO make protected and friendly
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 

@@ -42,6 +42,7 @@ void UBSeq::SetState_Implementation(const EBState New) {
 	if (State == EBState::STOPPED) {
 		for (UBBase* C: Children)
 			if (LIKELY(C)) C->SetState(EBState::STOPPED);
+		CurChildI = 0; // restart. or should i set to -1 to force a re-plan?
 	} else if (State == EBState::STARTED) {
 		StartChild(CurChildI);
 	}

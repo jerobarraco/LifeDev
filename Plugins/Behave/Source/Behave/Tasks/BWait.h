@@ -22,6 +22,6 @@ public:
 protected:
 	virtual EBDoRes DoSelf_Implementation(const float DT) override;
 	virtual void SetState_Implementation(const EBState New) override;
-
+	virtual void CostCalc_Implementation() override;
 	float TimeRem = 0;
 };
