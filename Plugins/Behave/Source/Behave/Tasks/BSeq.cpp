@@ -49,7 +49,8 @@ void UBSeq::SetState_Implementation(const EBState New) {
 }
 
 void UBSeq::CostCalc_Implementation() {
-	if (State != EBState::STARTED) return; // no need to recalculate anything.
+	// no need to recalculate anything.. make sure to calculate on plan
+	if (State != EBState::STARTED) return;
 
 	if (Children.Num()<1 || CurChildI <0) {
 		CostCur = FLT_MAX;

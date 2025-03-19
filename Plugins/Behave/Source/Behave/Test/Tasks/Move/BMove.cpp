@@ -14,9 +14,7 @@ bool UBMove::Plan_Implementation() {
 	const bool Ok = LIKELY(Fish) && (Fish->Data.Tired < .7);
 
 	SetTarget();
-	const float Dist = FVector::DistSquared(Fish->GetActorLocation(), Target);
-	CostCur = Fish->Data.Tired + (Dist*.01);
-
+	CostCalc();
 	return Ok;
 }
 
@@ -34,6 +32,16 @@ EBDoRes UBMove::DoSelf_Implementation(const float DT) {
 
 	Fish->MoveTo(Target, DT);
 	return EBDoRes::CONTINUE;
+}
+
+void UBMove::CostCalc_Implementation() {
+	if (UNLIKELY(!Fish)) {
+		CostCur = FLT_MAX;
+		return;
+	}
+
+	const float Dist = FVector::DistSquared(Fish->GetActorLocation(), Target);
+	CostCur = Fish->Data.Tired + (Dist*CostPerDist);
 }
 
 void UBMove::SetTarget_Implementation() {

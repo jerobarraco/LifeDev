@@ -93,7 +93,8 @@ protected:
 	
 	// You need to set this inside CostCalc.
 	// And probably call CostCalc inside Plan, or set it directly on plan.
-	// Or before if the cost is constant.
+	// Or before, if the cost is constant.
+	// Make sure to set to FLT_MAX in case of error.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	float CostCur = 0;
 

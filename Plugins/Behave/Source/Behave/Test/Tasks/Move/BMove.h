@@ -21,9 +21,13 @@ public:
 	inline static FName SID = "Move";
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FVector Target = FVector::ZeroVector;
+	virtual void CostCalc_Implementation() override;
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetTarget();
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	float CostPerDist = .01;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FVector Target = FVector::ZeroVector;
 };
