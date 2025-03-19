@@ -165,6 +165,7 @@ void UCBehave::Plan() {
 	if (UNLIKELY(IsPlanning)) return;
 
 	IsPlanning = true;
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 	Async(EAsyncExecution::Thread, [this]{
 		PlanDo();
 	});
