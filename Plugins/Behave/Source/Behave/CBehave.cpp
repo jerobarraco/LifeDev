@@ -134,6 +134,9 @@ void UCBehave::PlanDo() {
 	// run through actions. ask if possible.
 	// they are sorted by priority.
 	// we don't care about cost at this point. the action itself cares.
+	int32 Spread = PlanSpread;
+	float MinCost = FLT_MAX;
+	float Cost = MinCost;
 	for (UBBase* const A: Tasks) {
 		// might make it slower but maybe safer
 		FGCObjectScopeGuard CreatedObjectGuard(A);
@@ -143,9 +146,13 @@ void UCBehave::PlanDo() {
 		// like this to make it very clear that started short circuits plan.
 		// this allows to keep planning on the bg without breaking stuff.
 		if (!Started) if (!A->Plan()) continue;
+		Cost = A->CostPlan();
+		if (Cost >= MinCost) continue;
 
 		TaskPlan = A;
-		break;
+		MinCost = Cost;
+		--Spread;
+		if (Spread<0) break;
 	}
 
 	AsyncTask(ENamedThreads::GameThread, [this]{

@@ -90,6 +90,6 @@ protected:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UCBehave> Behave = nullptr;
-	
+
 	friend class UCBehave;
 };

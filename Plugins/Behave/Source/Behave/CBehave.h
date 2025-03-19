@@ -51,6 +51,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	float PlanWaitTime = 1;
 
+	// how many tasks to consider for choosing a plan.
+	// only tasks that return true on plan will be considered.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	int32 PlanSpread = 3;
+	
 	// this is a list of all the goals (main level tasks), sorted by priority,
 	// to be loaded on beginplay.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
