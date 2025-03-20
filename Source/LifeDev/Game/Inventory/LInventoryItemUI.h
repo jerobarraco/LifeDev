@@ -9,7 +9,7 @@
 
 struct FItem;
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULInventoryItemUI : public UInventoryItemUI {
 	GENERATED_BODY()
 
