@@ -9,7 +9,7 @@ void UInventoryItemUI::SetItem_Implementation(const FName& IName, const FItem& I
 
 void UInventoryItemUI::Use_Implementation() {
 	if (UNLIKELY(!AUse)) return;
-	PlayAnimation(AUse, 0);
+	PlayAnimation(AUse, 0, 1, EUMGSequencePlayMode::Forward, AnimUseSpeed);
 }
 
 void UInventoryItemUI::SetSelected_Implementation(const bool Selected) {

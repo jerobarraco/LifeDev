@@ -12,8 +12,9 @@ struct FItem;
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULInventoryItemUI : public UInventoryItemUI {
 	GENERATED_BODY()
-
 public:
+	ULInventoryItemUI();
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FText GetItemCountText(const FItem& Item);
 

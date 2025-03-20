@@ -6,6 +6,10 @@
 
 #include "LifeDev/Core/Consts/ConstColors.h"
 
+ULInventoryItemUI::ULInventoryItemUI() {
+	AnimUseSpeed = 2;
+}
+
 FText ULInventoryItemUI::GetItemCountText(const FItem& Item) {
 	static FText TNone;
 	static FText TCooling = FText::FromString(TEXT("..."));

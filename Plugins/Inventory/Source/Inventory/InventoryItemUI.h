@@ -28,6 +28,9 @@ public:
 	FName Name;
 
 protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float AnimUseSpeed = 1;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool IsSelected = false;
 
