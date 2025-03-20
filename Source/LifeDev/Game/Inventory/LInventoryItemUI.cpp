@@ -30,15 +30,21 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	return TUnlimited;
 }
 
-FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
+const FSlateColor& UInventoryItemUI::GetItemColor(const FItem& Item) {
 	constexpr uint8 Shade = 6;
+	static const FSlateColor CLocked = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][Shade]);
+	static const FSlateColor CUseSelf = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][Shade]);
+	static const FSlateColor CUse = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][Shade]);
+	static const FSlateColor CConsume = FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][Shade]);
+	static const FSlateColor CDefault = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][Shade]);
+	
 	if (Item.Locked || Item.ActiveCoolDown>0)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][Shade]);
+		return CLocked;
 	if (Item.SelfUsable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][Shade]);
+		return CUseSelf;
 	if (Item.Usable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::Cyan][Shade]);
+		return CUse;
 	if (Item.Consumable)
-		return FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][Shade]);
-	return  FColor(LDConsts::Colors::Palette[LDConsts::Colors::Orange][Shade]);
+		return CConsume;
+	return  CDefault;
 }

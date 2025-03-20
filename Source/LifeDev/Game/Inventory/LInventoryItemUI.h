@@ -16,9 +16,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetItem(const FName& Name, const FItem& Item);
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FText GetItemCountText(const FItem& Item);
 
-	UFUNCTION(BlueprintCallable)
-	FSlateColor GetItemColor(const FItem& Item);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	const FSlateColor& GetItemColor(const FItem& Item);
 };
