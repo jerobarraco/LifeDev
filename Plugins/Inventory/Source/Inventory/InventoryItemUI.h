@@ -15,7 +15,7 @@ class INVENTORY_API UInventoryItemUI : public UUserWidget {
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void SetItem(const FName& Name, const FItem& Item);
+	void SetItem(const FName& IName, const FItem& Item);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetSelected(const bool Selected);
