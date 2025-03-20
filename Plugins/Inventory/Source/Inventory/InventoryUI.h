@@ -15,22 +15,22 @@ class INVENTORY_API UInventoryUI: public UUserWidget {
 public:
 	GENERATED_BODY()
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetSelected(const FName& Name);
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemCold(const FName& Name);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemMod(const FName& Name, int32 Diff, const FItem& Item);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemUsed(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
@@ -39,7 +39,7 @@ public:
 	bool IsReady = false;
 	
 	// the manager will handle this.
-	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Transient)
 	FInventoryUIDone OnDone;
 	
 protected:
