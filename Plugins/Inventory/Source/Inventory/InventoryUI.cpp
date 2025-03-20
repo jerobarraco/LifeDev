@@ -14,7 +14,9 @@ void UInventoryUI::SetItemMod_Implementation(const FName& Name, int32 Diff, cons
 
 void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 
-void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {}
+void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {
+	// TODO anim
+}
 
 void UInventoryUI::PostHide() {
 	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);

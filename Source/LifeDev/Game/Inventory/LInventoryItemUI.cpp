@@ -1,4 +1,4 @@
- // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #include "LInventoryItemUI.h"
 
@@ -6,14 +6,7 @@
 
 #include "LifeDev/Core/Consts/ConstColors.h"
 
-void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
-
-void UInventoryItemUI::Use() {
-	if (UNLIKELY(!AUse)) return;
-	PlayAnimation(AUse, 0);
-}
-
-FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
+FText ULInventoryItemUI::GetItemCountText(const FItem& Item) {
 	static FText TNone;
 	static FText TCooling = FText::FromString(TEXT("..."));
 	static FText TLocked = FText::FromString(TEXT("X"));
@@ -35,7 +28,7 @@ FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	return TUnlimited;
 }
 
-const FSlateColor& UInventoryItemUI::GetItemColor(const FItem& Item) {
+const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 	constexpr uint8 Shade = 6;
 	static const FSlateColor CLocked = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Red][Shade]);
 	static const FSlateColor CUseSelf = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Green][Shade]);
@@ -51,5 +44,5 @@ const FSlateColor& UInventoryItemUI::GetItemColor(const FItem& Item) {
 		return CUse;
 	if (Item.Consumable)
 		return CConsume;
-	return  CDefault;
+	return CDefault;
 }

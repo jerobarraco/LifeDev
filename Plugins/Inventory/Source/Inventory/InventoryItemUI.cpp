@@ -1,0 +1,11 @@
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: MIT
+
+#include "InventoryItemUI.h"
+
+void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
+
+void UInventoryItemUI::Use_Implementation() {
+	if (UNLIKELY(!AUse)) return;
+	PlayAnimation(AUse, 0);
+}

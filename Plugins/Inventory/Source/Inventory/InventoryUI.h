@@ -14,7 +14,7 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INVENTORY_API UInventoryUI: public UUserWidget {
 public:
 	GENERATED_BODY()
-	
+
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show();
 
