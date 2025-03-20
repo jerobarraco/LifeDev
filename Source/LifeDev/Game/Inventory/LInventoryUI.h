@@ -9,7 +9,4 @@
 UCLASS(Blueprintable)
 class LIFEDEV_API ULInventoryUI : public UInventoryUI {
 	GENERATED_BODY()
-
-public:
-	
 };

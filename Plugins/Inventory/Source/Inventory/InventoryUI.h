@@ -7,6 +7,7 @@
 
 #include "InventoryUI.generated.h"
 
+class UInventoryItemUI;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventoryUIDone);
 
 // Base class for the inventory ui
@@ -32,6 +33,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemUsed(const FName& Name);
+	
+	UFUNCTION(BlueprintCallable)
+	UInventoryItemUI* GetItem(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
 	// false when animating.
@@ -48,4 +52,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void PreShow();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
+	TArray<TObjectPtr<UInventoryItemUI>> WItems;
 };

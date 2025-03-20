@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #include "InventoryUI.h"
 
+#include "InventoryItemUI.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UInventoryUI::Hide_Implementation() {}
@@ -16,6 +17,17 @@ void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 
 void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {
 	// TODO anim
+}
+
+UInventoryItemUI* UInventoryUI::GetItem(const FName& Name) {
+	if (Name.IsNone()) return nullptr;
+
+	for (UInventoryItemUI* const I: WItems) {
+		if (UNLIKELY(!I)) continue;
+		if (I->Name == Name) return I;
+	}
+
+	return nullptr;
 }
 
 void UInventoryUI::PostHide() {
