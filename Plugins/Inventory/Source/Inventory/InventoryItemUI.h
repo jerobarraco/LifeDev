@@ -17,6 +17,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItem(const FName& Name, const FItem& Item);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void SetSelected(const bool Selected);
+	
 	// Called when the item is used
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Use();
@@ -25,6 +28,9 @@ public:
 	FName Name;
 
 protected:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool IsSelected = false;
+
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> AUse = nullptr; // has te be transient or it won't compile.
 };

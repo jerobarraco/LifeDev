@@ -9,3 +9,7 @@ void UInventoryItemUI::Use_Implementation() {
 	if (UNLIKELY(!AUse)) return;
 	PlayAnimation(AUse, 0);
 }
+
+void UInventoryItemUI::SetSelected_Implementation(const bool Selected) {
+	IsSelected = Selected;
+}
