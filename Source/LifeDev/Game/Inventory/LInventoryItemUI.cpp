@@ -7,21 +7,27 @@
 #include "LifeDev/Core/Consts/ConstColors.h"
 
 void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
+
 FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
+	static FText TNone;
+	static FText TCooling = FText::FromString(TEXT("..."));
+	static FText TLocked = FText::FromString(TEXT("X"));
+	static FText TUnlimited = FText::FromString(TEXT("∞"));  // the font has this one, but nothing more. ⛔ 🚫 ⏱ ⏲🔒
+
 	if (Item.Consumable)
-		return FText::FromString(FString::FromInt(Item.Count));
+		return FText::FromString(FString::FromInt(Item.Count)); // can't return a ref due to this
 
 	if (!Item.SelfUsable || !Item.Usable)
-		return FText();
+		return TNone;
 
 	// TEXT is necessary for utf
 	if (Item.ActiveCoolDown > 0)
-		return FText::FromString(TEXT("..."));
+		return TCooling;
 
 	if (Item.Locked)
-		return FText::FromString(TEXT("X"));
+		return TLocked;
 
-	return FText::FromString(TEXT("∞")); // the font has this one, but nothing more. ⛔ 🚫 ⏱ ⏲🔒
+	return TUnlimited;
 }
 
 FSlateColor UInventoryItemUI::GetItemColor(const FItem& Item) {
