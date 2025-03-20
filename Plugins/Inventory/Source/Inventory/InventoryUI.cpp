@@ -16,7 +16,8 @@ void UInventoryUI::SetItemMod_Implementation(const FName& Name, int32 Diff, cons
 void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 
 void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {
-	// TODO anim
+	UInventoryItemUI* const Item = GetItem(Name);
+	if (LIKELY(Item)) Item->Use();
 }
 
 UInventoryItemUI* UInventoryUI::GetItem(const FName& Name) {
