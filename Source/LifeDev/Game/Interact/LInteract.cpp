@@ -213,7 +213,7 @@ bool ALInteract::ShouldUnlock_Implementation() {
 }
 
 void ALInteract::Unlock_Implementation() {
-	if (UNLIKELY(Locked)) return;
+	if (UNLIKELY(!Locked)) return; // avoid triggering the dialogs again
 
 	Super::Unlock_Implementation();
 	const FString& SLabel = Label.ToString();
