@@ -8,6 +8,11 @@
 
 void UInventoryItemUI::SetItem_Implementation(const FName& Name, const FItem& Item) {}
 
+void UInventoryItemUI::Use() {
+	if (UNLIKELY(!AUse)) return;
+	PlayAnimation(AUse, 0);
+}
+
 FText UInventoryItemUI::GetItemCountText(const FItem& Item) {
 	static FText TNone;
 	static FText TCooling = FText::FromString(TEXT("..."));
