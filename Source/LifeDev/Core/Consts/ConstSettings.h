@@ -97,10 +97,10 @@ enum class EFeat: uint8 {
 	G_DEMO,
 	// Ability to tweak foxify value on new game +
 	G_NGP_FOXY,
-	// for captures. shows the base ui
-	G_SHOW_UI,
+	// for captures. hides the "mouse" pointer in the center.
+	G_HIDE_POINTER,
 	// for captures. shows the inventory.
-	G_SHOW_INV,
+	G_HIDE_INV,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 
