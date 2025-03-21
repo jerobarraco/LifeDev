@@ -19,8 +19,8 @@
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
+#include "GameFramework/SpectatorPawn.h"
 #include "JSig/CSignificance.h"
-#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -54,6 +54,7 @@ ALGGameMode::ALGGameMode():Super() {
 	DefaultPawnClass = CChar.Succeeded() ? CChar.Class.Get(): ALChar::StaticClass();
 
 	PlayerControllerClass = ALGPController::StaticClass();
+	SpectatorClass = ASpectatorPawn::StaticClass();
 
 	// UCInteractor::SetCollisionChannel(InteractTraceChannel);
 	// not using the interact trace channel

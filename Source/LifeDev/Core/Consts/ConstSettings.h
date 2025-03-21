@@ -59,7 +59,6 @@ enum class EFeat: uint8 {
 	V_SPEED,
 	// nanite
 	V_NANITE,
-
 	V_MAX UMETA(Hidden),
 #pragma endregion
 
@@ -101,6 +100,8 @@ enum class EFeat: uint8 {
 	G_SHOW_POINT,
 	// for captures. shows the inventory.
 	G_SHOW_INV,
+	// for captures. 
+	G_FLY_CAM,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 

@@ -28,6 +28,7 @@
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"
+#include "GameFramework/SpectatorPawn.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -364,7 +365,15 @@ void ALChar::SetFB(const float Value) {
 }
 
 void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
-	if (Feat != EFeat::G_SHOW_POINT) return;
-	if (LIKELY(!IsValid(UI))) return;
-	UI->SetPointerShow(Enabled); // flag hides
+	if (Feat == EFeat::G_SHOW_POINT) {
+		if (LIKELY(!IsValid(UI))) return;
+		UI->SetPointerShow(Enabled); // flag hides
+	} else if (Feat == EFeat::G_FLY_CAM) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (UNLIKELY(!Controller)) return;
+		Controller->ChangeState(Enabled ? NAME_Spectating : NAME_Playing);
+		if (!Enabled) Controller->Possess(this); // important since this is not implemented on the controller :/
+		// still i need a way to access the settings from the spectator.
+		// when i go into spectator mode i loose input.
+	}
 }
