@@ -31,4 +31,6 @@ protected:
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UImage> Pointer = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	TObjectPtr<UWidget> PromptBG = nullptr;
 };
