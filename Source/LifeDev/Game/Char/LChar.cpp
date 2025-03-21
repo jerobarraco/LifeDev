@@ -195,7 +195,7 @@ void ALChar::Init_Implementation() {
 	ULSettings* Settings = ULSettings::Instance(this);
 	if (Settings) {
 		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALChar::FeatUp);
-		FeatUp(EFeat::G_HIDE_POINT, Settings->GetFeat(EFeat::G_HIDE_POINT));
+		FeatUp(EFeat::G_SHOW_POINT, Settings->GetFeat(EFeat::G_SHOW_POINT));
 	}
 }
 
@@ -364,7 +364,7 @@ void ALChar::SetFB(const float Value) {
 }
 
 void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
-	if (Feat != EFeat::G_HIDE_POINT) return;
+	if (Feat != EFeat::G_SHOW_POINT) return;
 	if (LIKELY(!IsValid(UI))) return;
-	UI->SetPointerShow(!Enabled); // flag hides
+	UI->SetPointerShow(Enabled); // flag hides
 }

@@ -226,7 +226,7 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 
 	if (Feat >= EFeat::C_00 && Feat < EFeat::C_MAX)
 		OnFeatUpdateChap.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::D_SHOW && Feat < EFeat::D_MAX)
+	else if (Feat >= EFeat::D_TEXT && Feat < EFeat::D_MAX)
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
 	else if (Feat >= EFeat::S_MUSIC && Feat < EFeat::S_MAX)
 		OnFeatUpdateSound.Broadcast(Feat, Enable);

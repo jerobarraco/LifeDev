@@ -62,7 +62,7 @@ public:
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DefaultFeats = {
-		EFeat::D_SHOW, EFeat::D_TEXT,
+		EFeat::G_SHOW_DIAG, EFeat::D_TEXT,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
@@ -73,7 +73,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
 	TSet<EFeat> DebugFeats = {
 		EFeat::DBG_STEPS, EFeat::DBG_BASE,
-		EFeat::D_SHOW,
+		EFeat::G_SHOW_DIAG,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,

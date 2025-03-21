@@ -18,7 +18,7 @@ void ALInventoryMan::Init_Implementation() {
 	if (UNLIKELY(!Settings)) return;
 
 	Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInventoryMan::FeatUp);
-	FeatUp(EFeat::G_HIDE_INV, Settings->GetFeat(EFeat::G_HIDE_INV));
+	FeatUp(EFeat::G_SHOW_INV, Settings->GetFeat(EFeat::G_SHOW_INV));
 }
 
 void ALInventoryMan::DeInit_Implementation() {
@@ -30,8 +30,8 @@ void ALInventoryMan::DeInit_Implementation() {
 }
 
 void ALInventoryMan::FeatUp(const EFeat Feat, const bool Enabled) {
-	if (Feat != EFeat::G_HIDE_INV) return;
-	IsShowEnabled = !Enabled; // flag is to hide.
+	if (Feat != EFeat::G_SHOW_INV) return;
+	IsShowEnabled = Enabled; // flag is to hide.
 
 	// this could break it if the feat changes while a dialog is showing. but ... i don't care.
 	if (IsShowEnabled) Show(); else Hide();
