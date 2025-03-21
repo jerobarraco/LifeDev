@@ -9,8 +9,7 @@ ALStepC1S005::ALStepC1S005():Super() {
 	FBDlgAutoTo = 1;
 	UseFBDlgAuto = true;
 	UseRain = false;
-	// uses pawn camera
-	UsePawnCam = true;
+	UsePawnCam = true; // uses pawn camera
 	UseFadeTime = false;
-	WaitTime = CamBlendTime = 0;
+	WaitTime = CamBlendTime = 0; // avoid extra wait
 }

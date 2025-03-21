@@ -179,6 +179,7 @@ void AStep::CamBlend() {
 	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
 	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	// ensure the step does not start before the camera ends the blending
 	WaitTime = FMath::Max(CamBlendTime, WaitTime);
 }
 
