@@ -53,7 +53,7 @@ public:
 	// time used to animate the change of cameras. Only where CamTarget is valid
 	// blend and fade could have some issues when used together.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam", Config)
-	float CamBlendTime = 0;
+	float CamBlendTime = 2;
 	
 	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
