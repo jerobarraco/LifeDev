@@ -115,9 +115,9 @@ void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
 	if (UNLIKELY(!IsValid(UI))) return;
 	// will hide the prompt on invalid. which is a nice side effect. 
 	if (bOn && LIKELY(IsValid(Comp)))
-		UI->InteractShowPrompt(Comp->Text);
+		UI->PromptShow(Comp->Text);
 	else
-		UI->InteractHidePrompt();
+		UI->PromptHide();
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
@@ -195,7 +195,7 @@ void ALChar::Init_Implementation() {
 	ULSettings* Settings = ULSettings::Instance(this);
 	if (Settings) {
 		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALChar::FeatUp);
-		FeatUp(EFeat::G_HIDE_POINTER, Settings->GetFeat(EFeat::G_HIDE_POINTER));
+		FeatUp(EFeat::G_HIDE_POINT, Settings->GetFeat(EFeat::G_HIDE_POINT));
 	}
 }
 
@@ -212,7 +212,7 @@ void ALChar::BeginPlay() {
 		UI = CreateWidget<UGameUI>(World, Class);
 		if (LIKELY(IsValid(UI))) {
 			UI->AddToViewport();
-			UI->InteractHidePrompt();
+			UI->PromptHide();
 			// It is of utmost important that ANY canvas (and or root element) in the widget ui to be have its visibilty
 			// set to HitTestInvisible or not hit testable. or it will "eat" the cursor
 			// UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController); // doesn't do much. but neat to remember 
@@ -364,6 +364,7 @@ void ALChar::SetFB(const float Value) {
 }
 
 void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
-	if (Feat != EFeat::G_HIDE_POINTER) return;
-	SetUIVisible(Enabled);
+	if (Feat != EFeat::G_HIDE_POINT) return;
+	if (LIKELY(!IsValid(UI))) return;
+	UI->SetPointerVisible(!Enabled); // flag hides
 }

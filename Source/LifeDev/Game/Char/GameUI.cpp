@@ -9,5 +9,6 @@ void UGameUI::SetPrompt_Implementation(const FText& Text) {
 	T_Prompt->SetText(Text);
 }
 
-void UGameUI::InteractShowPrompt_Implementation(const FText& Text) {}
-void UGameUI::InteractHidePrompt_Implementation() {}
+void UGameUI::PromptShow_Implementation(const FText& Text) {}
+void UGameUI::PromptHide_Implementation() {}
+void UGameUI::SetPointerVisible_Implementation(const bool Vis) {}

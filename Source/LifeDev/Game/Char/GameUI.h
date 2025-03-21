@@ -13,16 +13,21 @@ class LIFEDEV_API UGameUI: public UUserWidget {
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void SetPrompt(const FText& Text);
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
+	void PromptShow(const FText& Text);
 
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
-	void InteractShowPrompt(const FText& Text);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void PromptHide();
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void InteractHidePrompt();
+	void SetPointerVisible(const bool Vis);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
+	// TODo pointer
+	// todo rename class
 };
