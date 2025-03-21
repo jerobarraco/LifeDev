@@ -5,6 +5,7 @@
 
 #include "GameUI.generated.h"
 
+class UImage;
 class UTextBlock;
 
 // The main ui for in-game
@@ -23,11 +24,11 @@ public:
 	void PromptHide();
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void SetPointerVisible(const bool Vis);
+	void SetPointerShow(const bool Vis);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
-	// TODo pointer
-	// todo rename class
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	TObjectPtr<UImage> Pointer = nullptr;
 };

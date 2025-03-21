@@ -2,6 +2,7 @@
 
 #include "GameUI.h"
 
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 
 void UGameUI::SetPrompt_Implementation(const FText& Text) {
@@ -11,4 +12,6 @@ void UGameUI::SetPrompt_Implementation(const FText& Text) {
 
 void UGameUI::PromptShow_Implementation(const FText& Text) {}
 void UGameUI::PromptHide_Implementation() {}
-void UGameUI::SetPointerVisible_Implementation(const bool Vis) {}
+void UGameUI::SetPointerShow_Implementation(const bool Vis) {
+	if (LIKELY(Pointer)) Pointer->SetVisibility(Vis ? ESlateVisibility::Visible: ESlateVisibility::Hidden);
+}

@@ -366,5 +366,5 @@ void ALChar::SetFB(const float Value) {
 void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Feat != EFeat::G_HIDE_POINT) return;
 	if (LIKELY(!IsValid(UI))) return;
-	UI->SetPointerVisible(!Enabled); // flag hides
+	UI->SetPointerShow(!Enabled); // flag hides
 }
