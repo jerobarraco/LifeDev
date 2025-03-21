@@ -4,14 +4,13 @@
 
 ALStepC1S005::ALStepC1S005():Super() {
 	Name = FName("C1S5");
-	InputEnabled = true; // does it matters? it will show dialogs
-	// uses pawn camera
-	UsePawnCam = true;
-	UseFadeTime = false;
+	InputEnabled = true; // does it matter? it will show dialogs.
 	DlgId = "N01.0";
 	FBDlgAutoTo = 1;
 	UseFBDlgAuto = true;
 	UseRain = false;
+	// uses pawn camera
+	UsePawnCam = true;
+	UseFadeTime = false;
+	WaitTime = CamBlendTime = 0;
 }
-
-// TODO this one seems to take two seconds to start. not sure why.

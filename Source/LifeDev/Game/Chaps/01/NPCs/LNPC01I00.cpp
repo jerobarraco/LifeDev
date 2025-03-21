@@ -2,14 +2,15 @@
 #include "LNPC01I00.h"
 
 #include "Diags/Diags.h"
-#include "CQuickMesh.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 ALNPC01I00::ALNPC01I00():Super() {
 	LockedDlg = "N01.L";
-	Texts = { FText::FromString("Looks dangerous...") };
+	Texts = {
+		NSLOCTEXT("CH01", "NPC01I00", "Looks dangerous..."),
+	};
 	UseFade = true;
 	UseStateLoop = false;
 }
@@ -40,7 +41,7 @@ void ALNPC01I00::StandUp() {
 
 void ALNPC01I00::DoStepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
-	if (Step->Name == "C1S6") {
+	if (Step->Name == "C1S6") { // after the dialog
 		StandUp();
 	} else if (Step->Name == "C1S7") {
 		Fade(false); // fade out manually. doRewards won't.
