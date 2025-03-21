@@ -373,6 +373,8 @@ void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 		if (UNLIKELY(!Controller)) return;
 		Controller->ChangeState(Enabled ? NAME_Spectating : NAME_Playing);
 		if (!Enabled) Controller->Possess(this); // important since this is not implemented on the controller :/
+		// this could be fixed by inheriting from controller and overriding ShouldKeepCurrentPawnUponSpectating
+		
 		// still i need a way to access the settings from the spectator.
 		// when i go into spectator mode i loose input.
 	}
