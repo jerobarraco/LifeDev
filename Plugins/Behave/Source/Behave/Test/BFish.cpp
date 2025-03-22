@@ -10,7 +10,7 @@
 
 #include "Behave/CBehave.h"
 
-#define BarScale .05
+#define BarScale .025
 
 ABFish::ABFish():Super() {
 	PrimaryActorTick.bCanEverTick = true;
