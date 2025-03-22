@@ -369,12 +369,13 @@ void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 		if (LIKELY(!IsValid(UI))) return;
 		UI->SetPointerShow(Enabled); // flag hides
 	} else if (Feat == EFeat::G_FLY_CAM) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		if (UNLIKELY(!Controller)) return;
-		Controller->ChangeState(Enabled ? NAME_Spectating : NAME_Playing);
-		if (!Enabled) Controller->Possess(this); // important since this is not implemented on the controller :/
+		APlayerController* const Cont = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (UNLIKELY(!Cont)) return;
+
+		Cont->ChangeState(Enabled ? NAME_Spectating : NAME_Playing);
+		if (!Enabled) Cont->Possess(this); // important since this is not implemented on the controller :/
 		// this could be fixed by inheriting from controller and overriding ShouldKeepCurrentPawnUponSpectating
-		
+
 		// still i need a way to access the settings from the spectator.
 		// when i go into spectator mode i loose input.
 	}
