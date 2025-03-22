@@ -83,7 +83,7 @@ void ABFish::Play(const float DT) {
 	Data.Bored = FMath::Clamp(Data.Bored - (.15*DT), 0.01, 1);
 	Data.Tired = FMath::Clamp(Data.Tired + (.14*DT), 0.01, 1);
 	Data.Hungry = FMath::Clamp(Data.Hungry + (.07*DT), 0.01, 1);
-	AddActorLocalRotation(FRotator(0,0,50*DT));
+	AddActorLocalRotation(FRotator(-50*DT,0,0));
 }
 
 void ABFish::BeginPlay() {
