@@ -33,15 +33,13 @@ FActorComponentTickFunction* const ThisTickFunction) {
 void UCBehave::BeginPlay() {
 	Super::BeginPlay();
 	TasksDT.LoadSynchronous();
-	for (const FName& N: TasksToLoad) {
+	for (const FName& N: TasksToLoad)
 		TaskAdd(TaskLoad(N));
-	}
 }
 
 void UCBehave::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	for (UBBase* const C: Tasks) {
+	for (UBBase* const C: Tasks)
 		if (LIKELY(C)) C->DeInit();
-	}
 
 	Tasks.Empty(0); // uobjects can't be directly destroyed.
 	Super::EndPlay(EndPlayReason);
@@ -124,6 +122,16 @@ int32 UCBehave::TaskRem(const FName Row) {
 	return -1;
 }
 
+void UCBehave::Plan() {
+	if (UNLIKELY(IsPlanning)) return;
+
+	UE_LOG(LogCBehave, Log, TEXT("%hs"), __func__);
+	IsPlanning = true; // i think there's a bug here. this seems to keep increasing speed.
+	AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this]{
+		PlanDo();
+	});
+}
+
 void UCBehave::PlanDo() {
 	TaskPlan = nullptr;
 	// FCriticalSection this is not what i want here.
@@ -158,15 +166,6 @@ void UCBehave::PlanDo() {
 
 	AsyncTask(ENamedThreads::GameThread, [this]{
 		PlanDone();
-	});
-}
-
-void UCBehave::Plan() {
-	if (UNLIKELY(IsPlanning)) return;
-
-	IsPlanning = true;
-	Async(EAsyncExecution::Thread, [this]{
-		PlanDo();
 	});
 }
 

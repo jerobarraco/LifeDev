@@ -10,22 +10,44 @@ bool UBPick::Plan_Implementation() {
 
 	CurChildI = -1;
 	CostCur = FLT_MAX;
-	
-	// a sequence is valid only of all children are valid.
-	// even the ones that will become skipped.
-	for (int32 i=0; i<Children.Num(); ++i){
+
+	// TAtomic is deprecated
+	std::atomic<int32> AChild = -1;
+	std::atomic<int32> ACost = FLT_MAX;
+
+	FCriticalSection Mutex;
+
+	// start by planning all branches
+	// specifying & to capture mutex, the atomics, and this.
+	ParallelFor(Children.Num(), [&](const int32 i) {
 		UBBase* const C= Children[i];
-		if (UNLIKELY(!C)) continue;
+		if (UNLIKELY(!C)) return;
 
 		FGCObjectScopeGuard CreatedObjectGuard(C);
-		if (!C->Plan()) continue;
-
+		if (!C->Plan()) return;
 		const float Cost = C->Cost();
-		if (Cost < CostCur) {
-			CostCur = Cost;
-			CurChildI = i;
+		if (Cost < ACost.load()) {
+			FScopeLock Lock(&Mutex);// lock because we're going to change 2 vars
+			ACost = Cost;
+			AChild = i;
 		}
-	}
+	});
+
+	CurChildI = AChild.load();
+	CostCur = ACost.load();
+	
+	// now gather the cost. can't do this on the parallel for due to race conditions.
+	// for (int32 i=0; i<Children.Num(); ++i){
+		// UBBase* const C= Children[i];
+		// if (UNLIKELY(!C)) continue;
+
+		// FGCObjectScopeGuard CreatedObjectGuard(C);
+		// const float Cost = C->Cost();
+		// if (Cost < CostCur) {
+			// CostCur = Cost;
+			// CurChildI = i;
+		// }
+	// }
 
 	return IsValid(GetCurChild());
 }
@@ -40,3 +62,6 @@ void UBPick::SetState_Implementation(const EBState New) {
 	// if (New == EBState::STARTED && WasStopped)
 		// StartChild(CurChildI);
 }
+
+// https://georgy.dev/posts/parallel-for-loop/
+// https://m.youtube.com/watch?v=XJMyNM8xmS0
