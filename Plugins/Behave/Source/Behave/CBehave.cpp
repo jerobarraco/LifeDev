@@ -123,9 +123,10 @@ int32 UCBehave::TaskRem(const FName Row) {
 }
 
 void UCBehave::Plan() {
+	UE_LOG(LogCBehave, Log, TEXT("%hs Planning=%i"), __func__, IsPlanning);
 	if (UNLIKELY(IsPlanning)) return;
+	UE_LOG(LogCBehave, Log, TEXT("%hs Planning ok"), __func__);
 
-	UE_LOG(LogCBehave, Log, TEXT("%hs"), __func__);
 	IsPlanning = true; // i think there's a bug here. this seems to keep increasing speed.
 	AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this]{
 		PlanDo();
@@ -185,10 +186,14 @@ void UCBehave::PlanDone() {
 	}
 
 	if (!HasTask || UNLIKELY(UsePlanLoop)) { // retry later
-		FTimerHandle H;
 		const UWorld* const World = GetWorld();
-		if (LIKELY(World))
-			World->GetTimerManager().SetTimer(H, this, &UCBehave::Plan, PlanWaitTime);
+		if (LIKELY(World)) {
+			FTimerManager& Manager = World->GetTimerManager();
+			// very important to clear the timer or we'll get trouble.
+			Manager.ClearTimer(PlanTHandle);
+			PlanTHandle.Invalidate();
+			Manager.SetTimer(PlanTHandle, this, &UCBehave::Plan, PlanWaitTime, false);
+		}
 	}
 
 	IsPlanning = false;

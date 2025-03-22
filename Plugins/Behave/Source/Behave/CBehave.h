@@ -109,7 +109,8 @@ protected:
 	// this doesn't work. there's a race condition when calling plan on some objects. it breaks their current state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	bool UsePlanLoop = true;
-	
+
+	FTimerHandle PlanTHandle;
 	bool IsPlanning = false;
 };
 
