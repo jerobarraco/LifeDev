@@ -26,7 +26,8 @@ ARadio00::ARadio00():Super() {
 
 	DoorRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DoorRoot"));
 	DoorRoot->SetupAttachment(IRoot);
-	DoorRoot->SetRelativeLocation(FVector(15,0,10));
+	//  added x+0.125 to fix an annoying zfight that ONLY happens on windoz.
+	DoorRoot->SetRelativeLocation(FVector(15.125,0,10));
 	// DoorRoot->SetRelativeRotation(FRotator(-35,0,0));
 
 	Door = CreateDefaultSubobject<UCQuickMesh>(TEXT("Door"));
