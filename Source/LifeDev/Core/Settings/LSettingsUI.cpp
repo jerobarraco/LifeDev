@@ -55,6 +55,15 @@ void ULSettingsUI::Load_Implementation() {
 		TFoxy->SetText(FText::FromString(FString::Printf(TEXT("Foxy: %.4f"), Foxy)));
 		TFoxy->SetVisibility(ESlateVisibility::Visible);
 	}
+
+	if (LIKELY(TTime)) {
+		const UFlags* const Flags = UFlags::Instance(this);
+		const float Time = Flags ? Flags->Get(LDConsts::Flags::Stats::Global::Time) : 0;
+		const FTimespan Ts(0,0,Time);
+		static const FText Fmt = NSLOCTEXT("LSettingsUI", "Time", "Time: {0}");
+		const FText TimeText = FText::FormatOrdered(Fmt, FText::AsTimespan(Ts));
+		TTime->SetText(TimeText);
+	}
 }
 
 void ULSettingsUI::NativeOnInitialized() {

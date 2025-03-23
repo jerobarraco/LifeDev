@@ -52,4 +52,6 @@ protected:
 	TObjectPtr<ULSetDbgUI> Settings_Dbg;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TFoxy;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TTime;
 };
