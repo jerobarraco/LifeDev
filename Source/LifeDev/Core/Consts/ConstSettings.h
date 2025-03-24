@@ -102,6 +102,7 @@ enum class EFeat: uint8 {
 	G_SHOW_INV,
 	// for captures.
 	G_FLY_CAM,
+	// allow to attempt to load stuff from outside
 	G_DATA_EXT,
 	G_MAX UMETA(Hidden),
 #pragma endregion
