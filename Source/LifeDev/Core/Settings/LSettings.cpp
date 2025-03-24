@@ -15,6 +15,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
 static const FString SaveSlot("LifeDev_");
+static constexpr uint8 DEMO_CHAP_MAX = 2;
 
 ULSettings* ULSettings::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -167,8 +168,8 @@ EFeat ULSettings::CurrentChapterFeat() const {
 	// note that this feat is not saved in the savegame. since i want to support adding more chapters later.
 	if (UNLIKELY(ChId >= Max)) return EFeat::C_DONE;
 
-	if (UNLIKELY(GetFeat(EFeat::G_DEMO) && ChId>0)) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs Demo build and reached chapter >0. End"), __func__);
+	if (UNLIKELY(GetFeat(EFeat::G_DEMO) && ChId >= DEMO_CHAP_MAX)) {
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Demo build and reached chapter %i. End"), __func__, DEMO_CHAP_MAX);
 		return EFeat::C_DONE;
 	}
 
