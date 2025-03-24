@@ -2,9 +2,11 @@
 
 #include "LPuzzle.h"
 
+#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/CPuzzle.h"
 #include "Interact/Interact.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 #include "LifeDev/Game/Interact/LInteract.h"
 
@@ -70,7 +72,13 @@ void ALPuzzle::Reset() {
 	Super::Reset();
 	ClearTimer();
 
-	if (LIKELY(CPuzzle)) CPuzzle->Reset(); // triggers a delegate
+	if (LIKELY(CPuzzle))
+		CPuzzle->Reset(); // triggers a delegate
+
+	if (LIKELY(Diags)) {
+		const FName N(LDConsts::Dlgs::Inter::Puzzle::ResetPre + Label.ToString());
+		Diags->AddId(N);
+	}
 }
 
 void ALPuzzle::ClearTimer() {
