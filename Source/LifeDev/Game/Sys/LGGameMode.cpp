@@ -428,7 +428,10 @@ bool ALGGameMode::ChapLoad() {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
 		return false;
 	}
-
+	
+	// DT_Chaps = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(), "test",
+		// FLChapter::StaticStruct(), this); // cant find the symbol
+	
 	// load a chapter based on the rowname. which is just an int to string of the chapter id.
 	// todo find a betterest way
 	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());

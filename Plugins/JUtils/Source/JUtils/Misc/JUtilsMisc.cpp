@@ -189,15 +189,16 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".json"));
 	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
+
 	FString S;
 	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
 		UE_LOG(LogTemp, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
 		return nullptr;
 	}
+
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
-	// does this work?
-	Table->RowStruct = RowType;
-	const TArray<FString>& Problems = Table->CreateTableFromJSONString(Path);
+	Table->RowStruct = RowType; // important
+	const TArray<FString>& Problems = Table->CreateTableFromJSONString(S);
 	for (const FString& P: Problems) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
