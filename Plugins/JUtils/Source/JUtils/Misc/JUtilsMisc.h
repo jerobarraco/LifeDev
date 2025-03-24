@@ -101,7 +101,8 @@ public:
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const Struct, UObject* const Outer = nullptr);
 
-	template<typename SType>
+	
+	template <typename SType>
 	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& FName,
 		UObject* const Outer = nullptr);
 

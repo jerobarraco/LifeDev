@@ -202,8 +202,10 @@ return nullptr;
 template <typename SType>
 UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& FName, UObject* const Outer) {
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
+	// does this work?
+	Table->RowStruct = SType::StaticClass();
 
-	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".csv"));
+	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".json"));
 	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 	FString S;
@@ -217,7 +219,7 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 
 	if (!FJsonSerializer::Deserialize(Reader, JsonObject)) return nullptr;
 	TArray<TSharedPtr<FJsonValue>> Texts = JsonObject->GetArrayField(TEXT("Texts"));
-	for (TSharedPtr<FJsonValue> V: Texts) {
+	for (const TSharedPtr<FJsonValue>& V: Texts) {
 		const TSharedPtr<FJsonObject>* JO = nullptr;
 		
 		if (V->TryGetObject(JO) || !JO) continue;
@@ -227,6 +229,9 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 		const FString Name = JO->Get()->GetStringField(TEXT("Name"));
 		Table->AddRow(Name, Struct);
 	}
+
+	// not working. complains of undefined symbol
+	// DT_Chaps = UJUtilsMisc::LoadJSONTable<FLChapter>(FPaths::ProjectConfigDir(), "test", this); // cant find the symbol
 
 	return Table;
 }
