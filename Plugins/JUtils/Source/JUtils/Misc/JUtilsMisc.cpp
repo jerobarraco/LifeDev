@@ -205,7 +205,10 @@ template <typename SType>
 UDataTable* UJUtilsMisc::LoadJSONTable2(const FString& BasePath, const FString& FName, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".json"));
 	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
-	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
+	if (UNLIKELY(!FPaths::FileExists(Path))) {
+		UE_LOG(LogTemp, Log, TEXT("%hs path doesn't exist '%s'"), __func__, *Path);
+		return nullptr;
+	}
 	FString S;
 	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
 		UE_LOG(LogTemp, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
