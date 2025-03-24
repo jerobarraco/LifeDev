@@ -100,8 +100,9 @@ enum class EFeat: uint8 {
 	G_SHOW_POINT,
 	// for captures. shows the inventory.
 	G_SHOW_INV,
-	// for captures. 
+	// for captures.
 	G_FLY_CAM,
+	G_DATA_EXT,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 

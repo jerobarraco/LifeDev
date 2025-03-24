@@ -21,6 +21,7 @@
 #include "Diags/Diags.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "JSig/CSignificance.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -443,10 +444,23 @@ bool ALGGameMode::ChapLoad() {
 
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
-	UDataTable* const Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* const DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* const Groups = Chapter.Groups.LoadSynchronous();
+	UDataTable* Chars = SysSettings->Characters.LoadSynchronous();
+	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
+	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
 
+	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
+		static const FString& Base = FPaths::Combine( FPaths::ProjectConfigDir(), "L10N");
+		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), this);
+		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), this);
+		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), this);
+		if (CharsExt) Chars = CharsExt;
+		if (DiagExt) DiagData = DiagExt;
+		if (GroupsExt) Groups = GroupsExt;
+	}
+	
 	Diags->SetData(DiagData, Chars, Groups);
 	return true;
 }
