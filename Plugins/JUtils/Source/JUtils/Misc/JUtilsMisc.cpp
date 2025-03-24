@@ -8,7 +8,6 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
-#include "Kismet/DataTableFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
@@ -19,6 +18,7 @@
 #if WITH_EDITOR
 	#include "Editor.h"
 	#include "EditorScriptingHelpers.h"
+	#include "Kismet/DataTableFunctionLibrary.h"
 #else
 	#include "Engine/Engine.h"
 #endif
@@ -193,9 +193,13 @@ UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Na
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
 	UDataTableFunctionLibrary::FillDataTableFromCSVFile(Table, Path, Struct);
 	return Table;
+#else
+	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
+	// TODO load from json
+	FTableRowBase Row;// TODO set correct type
+	Table->AddRow(NAME_None, Row); // TODO read manually from csv
+	return Table;
 #endif
-
-	return nullptr;
 }
 
 void UJUtilsMisc::SetUIScale(const float UIScale) {
