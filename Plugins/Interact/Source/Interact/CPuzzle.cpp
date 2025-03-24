@@ -196,12 +196,11 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 		}
 	} else if (Type == EPuzzleType::COMBINATION) {
 		const bool Ok = CheckCombination(ID);
-		if (Ok) {
+		// if (Ok) {
 			// only trigger when complete. combination can only be completed with ok.
 			PreDone(Ok);
 			return;
-		}
-		// no way to reset here
+		// }
 	} else if (Type == EPuzzleType::CONDITION) {
 		const bool Ok = CheckCondition();
 		PreDone(Ok);
