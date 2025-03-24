@@ -96,7 +96,7 @@ void APuzzleI04::PostDoneSnd() {
 }
 
 void APuzzleI04::LidDone() {
-	UE_LOG(LogTemp, Warning, TEXT("%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	// before calling Done since that could trigger a new step or sequence
 	// actually the new step will disable the input,
 	// but better to do here, in case it changes, and to avoid stepping on it.
