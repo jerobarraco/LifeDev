@@ -100,8 +100,14 @@ void ALPuzzle::Update_Implementation() {
 		W->GetTimerManager().SetTimer(ResetTimer, this, &ALPuzzle::Reset, ResetTimeout);
 
 	if (LIKELY(Diags)) {
-		FString Base = LDConsts::Dlgs::Inter::Puzzle::UpdatePre + Label.ToString() + ".";
-		Base += FString::Join(CPuzzle->Solution, TEXT("_"));
+		TArray<FString> Sol;
+		for (const int32& S: CPuzzle->Solution) {
+			Sol.Add(FString::FromInt(S));
+		}
+		const FString& SSol = FString::Join(Sol, TEXT("_"));
+		// in the hope it will copy less strings
+		const FString& Base = FString::Printf(TEXT("%s%s.%s"),
+			*LDConsts::Dlgs::Inter::Puzzle::UpdatePre, *Label.ToString(), *SSol);
 		const FName N(Base);
 		Diags->AddId(N);
 	}
