@@ -102,8 +102,11 @@ public:
 		UScriptStruct* const Struct, UObject* const Outer = nullptr);
 
 	
-	template <typename SType>
 	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& FName,
+		UScriptStruct* const  RowType, UObject* const Outer = nullptr);
+
+	template <typename SType>
+	static UDataTable* LoadJSONTable2(const FString& BasePath, const FString& FName,
 		UObject* const Outer = nullptr);
 
 	// shuffles an array in place.
