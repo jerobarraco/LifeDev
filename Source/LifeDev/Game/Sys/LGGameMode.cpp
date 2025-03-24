@@ -11,10 +11,10 @@
 
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
-#include "Interact/CInteractor.h"
-#include "Interact/Animator/CAnimator.h"
 #include "Inventory/Flags.h"
 #include "Inventory/InventoryMan.h"
+#include "Interact/CInteractor.h"
+#include "Interact/Animator/CAnimator.h"
 #include "Story/StoryMan.h"
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
@@ -186,7 +186,15 @@ void ALGGameMode::Init() {
 
 	// init together. but before writing subsystems from save
 	Eval->Init();
-	Inventory->Init(SysSettings->Items.LoadSynchronous());
+	UDataTable* InvData = SysSettings->Items.LoadSynchronous();
+	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
+		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
+		UDataTable* const InvExt = UJUtilsMisc::LoadJSONTable(
+			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), this);
+		if (InvExt) InvData = InvExt;
+	}
+
+	Inventory->Init(InvData);
 	Flags->Init();
 	Diags->Init();
 	Story->Init();
@@ -450,11 +458,11 @@ bool ALGGameMode::ChapLoad() {
 
 	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
 		static const FString& Base = FPaths::Combine( FPaths::ProjectConfigDir(), "L10N");
-		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(Base,
 			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), this);
-		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(Base,
 			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), this);
-		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(),
+		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
 			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), this);
 		if (CharsExt) Chars = CharsExt;
 		if (DiagExt) DiagData = DiagExt;
