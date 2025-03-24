@@ -1,0 +1,3 @@
+ 
+
+palette: in ue the color should be in the srgb thing. and preview in srgb should be enabled. when using the png palette.
