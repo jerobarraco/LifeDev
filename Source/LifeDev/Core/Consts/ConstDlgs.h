@@ -23,6 +23,7 @@ namespace LDConsts {
 			inline static const FString UseItemPre(TEXT("Inter.UseItem."));
 			namespace Puzzle {
 				inline static const FString ResetPre(TEXT("Inter.Puzzle.Reset."));
+				inline static const FString UpdatePre(TEXT("Inter.Puzzle.Update."));
 			}
 		}
 	}

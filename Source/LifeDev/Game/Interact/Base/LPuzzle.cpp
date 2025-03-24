@@ -98,6 +98,13 @@ void ALPuzzle::Update_Implementation() {
 	// re-add the reset timer if needed. Notice all the types return when done
 	if (ResetTimeout >= 0)
 		W->GetTimerManager().SetTimer(ResetTimer, this, &ALPuzzle::Reset, ResetTimeout);
+
+	if (LIKELY(Diags)) {
+		FString Base = LDConsts::Dlgs::Inter::Puzzle::UpdatePre + Label.ToString() + ".";
+		Base += FString::Join(CPuzzle->Solution, TEXT("_"));
+		const FName N(Base);
+		Diags->AddId(N);
+	}
 }
 
 void ALPuzzle::Done_Implementation(const bool IsOk) {
