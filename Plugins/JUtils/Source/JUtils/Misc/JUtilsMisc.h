@@ -101,6 +101,10 @@ public:
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const Struct, UObject* const Outer = nullptr);
 
+	template<typename SType>
+	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& FName,
+		UObject* const Outer = nullptr);
+
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
 	template <typename T>

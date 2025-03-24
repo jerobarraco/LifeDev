@@ -31,6 +31,7 @@ public class JUtils: ModuleRules
 		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "EnhancedInput", "UMG", "Slate",
+			"JsonUtilities"
 			// "Core" // Octtree tringbuffer
 		});
 		
@@ -38,8 +39,7 @@ public class JUtils: ModuleRules
 			// ... add any modules that your module loads dynamically here ...
 		});
 		
-		if (Target.bBuildEditor)
-		{
+		if (Target.bBuildEditor) {
 			PrivateDependencyModuleNames.AddRange(new string[]{ "UnrealEd"});
 		}
 	}
