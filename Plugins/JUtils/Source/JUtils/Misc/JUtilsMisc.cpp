@@ -197,7 +197,11 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
 	// does this work?
 	Table->RowStruct = RowType;
-	Table->CreateTableFromJSONString(Path);
+	const TArray<FString>& Problems = Table->CreateTableFromJSONString(Path);
+	for (const FString& P: Problems) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
+	}
+
 	return Table;
 }
 
@@ -218,7 +222,6 @@ UDataTable* UJUtilsMisc::LoadJSONTable2(const FString& BasePath, const FString& 
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
 	// does this work?
 	Table->RowStruct = SType::StaticClass();
-	Table->CreateTableFromJSONString(S);
 	/*
 		TSharedPtr<FJsonObject> JsonObject;
 		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(S);
