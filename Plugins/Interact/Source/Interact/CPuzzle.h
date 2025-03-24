@@ -82,6 +82,9 @@ public:
 	// reset the current values. called on reset and begin play. used internally.
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void ResetCurrents();
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Interact|Puzzle", meta=(AdvancedDisplay))
+	const TArray<int32>& GetCurrents() const { return CurrentIds; }
 
 	// the puzzle type. controls the behavior.
 	// beware of changing this after BeginPlay.
