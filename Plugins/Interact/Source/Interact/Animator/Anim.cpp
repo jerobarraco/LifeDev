@@ -269,7 +269,6 @@ bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 
 	return true;
 }
-
 #pragma endregion
 
 UAnim::UAnim():Super() {}
@@ -466,8 +465,8 @@ bool UAnim::GenFade(const FName& Name, UObject* Owner, const FAnimGenUpd& OnUpd,
 const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
 	FAGen Item;
-	const bool Ok = ItemSetup(Item, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
 	Item.OnUpdate = OnUpd;
+	const bool Ok = ItemSetup(Item, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
 }
 

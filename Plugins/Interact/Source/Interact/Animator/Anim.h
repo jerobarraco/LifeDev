@@ -181,12 +181,11 @@ struct FAGen: public FABase {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FAnimGenUpd OnUpdate;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	FAnimGenUpd OnUpdate; // CAN'T be transient, or it will "forget" the values.
 
 	bool To:1 = true; // just to be able to compile
-	virtual bool SetVal(const bool Val=false) const { return true; };
-
+	virtual bool SetVal(const bool Val=false) const { return true; }; // just to compile
 	virtual bool SetLerp(const float Prog) override;
 };
 
@@ -315,7 +314,6 @@ public:
 		const float Duration = -1,
 		UCurveFloat* const Curve = nullptr
 	);
-
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.
