@@ -364,8 +364,10 @@ void AInteract::PlayParts(UParticleSystem* const Part) const {
 	if (UNLIKELY(!IsValid(Part))) return;
 
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
-		__func__, UseAttachedSFX, *Label.ToString(), *Part->GetName());
-	if (Emitter->Template != Part) {
+		__func__, *Label.ToString(), *Part->GetName());
+
+	if (LIKELY(Emitter->Template != Part)) {
+		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
 		Emitter->Deactivate();
 		Emitter->ResetParticles(true);
 	}

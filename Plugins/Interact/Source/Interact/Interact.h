@@ -309,7 +309,7 @@ protected:
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient, Category="SetUp|State")
 	int32 State = 0;
 
 #pragma region cdo
