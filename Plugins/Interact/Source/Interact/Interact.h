@@ -178,7 +178,7 @@ public:
 
 	// particles to emit on state change. index matches state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
-	TArray<TSoftObjectPtr<UParticleSystem>> Parts;
+	TArray<TSoftObjectPtr<UParticleSystem>> Particles;
 
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
@@ -333,6 +333,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UAudioComponent> SFX = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UParticleSystemComponent> Particles = nullptr;
+	TObjectPtr<UParticleSystemComponent> Emitter = nullptr;
 #pragma endregion
 };

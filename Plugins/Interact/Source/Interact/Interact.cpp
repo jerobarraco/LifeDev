@@ -44,9 +44,9 @@ AInteract::AInteract():Super() {
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
 
-	Particles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particles"));
-	Particles->SetUseAutoManageAttachment(true); // true
-	Particles->SetAutoActivate(false);
+	Emitter = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particles"));
+	Emitter->SetUseAutoManageAttachment(true); // true
+	Emitter->SetAutoActivate(false);
 
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
@@ -365,11 +365,11 @@ void AInteract::PlayParts(UParticleSystem* const Part) const {
 
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
 		__func__, UseAttachedSFX, *Label.ToString(), *Part->GetName());
-	if (Particles->Template != Part) {
-		Particles->Deactivate();
-		Particles->ResetParticles(true);
+	if (Emitter->Template != Part) {
+		Emitter->Deactivate();
+		Emitter->ResetParticles(true);
 	}
 
-	Particles->Template = Part;
-	Particles->Activate();
+	Emitter->Template = Part;
+	Emitter->Activate();
 }
