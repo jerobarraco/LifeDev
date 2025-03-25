@@ -106,15 +106,20 @@ void UCBehave::TaskAdd(UBBase* const Task) {
 
 	const int32 Num = Tasks.Num();
 	int32 Index = 0;
-	for (int32 i = 0; i<Num; ++i) {
-		const UBBase* const OT = Tasks[i];
-		if (UNLIKELY(!OT)) continue;
-		if (UNLIKELY(OT->Priority > Task->Priority)) {
-			Index = i;
-			break;
+	if (Task->Priority<0)
+		Index = FMath::Max(0, Num-1); // avoid crash. send to end
+	else {
+		for (int32 i = 0; i<Num; ++i) {
+			const UBBase* const OT = Tasks[i];
+			if (UNLIKELY(!OT)) continue;
+			if (UNLIKELY(OT->Priority > Task->Priority)) {
+				Index = i;
+				break;
+			}
 		}
 	}
 
+	// TODO make sure the index is putting items in the correct spot (that is, before or after the index?)
 	// the code suggest it will crash if Priority is <0 or >Num
 	Tasks.Insert(Task, Index);
 }
