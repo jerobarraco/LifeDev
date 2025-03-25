@@ -335,7 +335,7 @@ void UAnim::ItemDoneComp(const FACTrans& Item) {
 	OnItemCompDone.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
 }
 
-void UAnim::ItemDoneGen(const FABase& Item) {
+void UAnim::ItemDoneGen(const FAGen& Item) {
 	OnItemGenDone.Broadcast(Item.Obj, Item.Name);
 }
 #pragma endregion
@@ -460,8 +460,9 @@ const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
 bool UAnim::GenFade(const FName& Name, UObject* Owner, const FAnimGenUpd& OnUpd,
 const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
-	FABase B;
-	const bool Ok = ItemSetup(B, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+	FAGen Item;
+	const bool Ok = ItemSetup(Item, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+	Item.OnUpdate = OnUpd;
 	return Ok;
 }
 
