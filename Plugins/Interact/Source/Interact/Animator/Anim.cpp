@@ -309,35 +309,35 @@ UCurveFloat* const Curve, const float Duration) const {
 
 #pragma region dones
 void UAnim::ItemDoneDynF(const FADFloat& It) {
-	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 }
 
 void UAnim::ItemDoneDynV(const FADVector& It) {
-	OnItemDoneDyn.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
 }
 
 void UAnim::ItemDoneMPCF(const FAPFloat& Item) {
-	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
 }
 
 void UAnim::ItemDoneMPCV(const FAPVector& Item) {
-	OnItemDoneMPC.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
 }
 
 void UAnim::ItemDoneData(const FAData& Item) {
-	OnItemDoneData.Broadcast(Cast<UPrimitiveComponent>(Item.Obj), Item.Index);
+	OnItemDataDone.Broadcast(Cast<UPrimitiveComponent>(Item.Obj), Item.Index);
 }
 
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
-	OnItemDoneSnd.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
+	OnItemSndDone.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
 }
 
 void UAnim::ItemDoneComp(const FACTrans& Item) {
-	OnItemDoneComp.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
+	OnItemCompDone.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
 }
 
 void UAnim::ItemDoneGen(const FABase& Item) {
-	OnItemDoneGen.Broadcast(Item.Obj, Item.Name);
+	OnItemGenDone.Broadcast(Item.Obj, Item.Name);
 }
 #pragma endregion
 

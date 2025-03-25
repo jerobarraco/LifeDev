@@ -7,12 +7,13 @@
 #include "Anim.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAnimDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneDyn, UMaterialInstanceDynamic* const, Mat, const FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneMPC, UMaterialParameterCollectionInstance* const, Mat, const FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneSnd, UAudioComponent* const, Cmp, const FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneData, UPrimitiveComponent* const, Comp, const int32, Index);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneComp, USceneComponent* const, Comp, const FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneGen, UObject* const, Obj, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDynDone, UMaterialInstanceDynamic* const, Mat, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimMPCDone, UMaterialParameterCollectionInstance* const, Mat, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimSndDone, UAudioComponent* const, Cmp, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDataDone, UPrimitiveComponent* const, Comp, const int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimCompDone, USceneComponent* const, Comp, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Progress);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
@@ -169,6 +170,19 @@ public:
 	bool IsAdditive = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool UseSweep = false;
+
+	virtual bool SetVal(const FTransform& Val) const;
+	virtual bool SetLerp(const float Prog) override;
+	virtual bool LoadFrom() override;
+};
+
+USTRUCT(Blueprintable, BlueprintType)
+struct FAGen: public FABase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FAnimGenUpd OnUpdate;
 
 	virtual bool SetVal(const FTransform& Val) const;
 	virtual bool SetLerp(const float Prog) override;
@@ -337,19 +351,19 @@ public:
 	FAnimDone OnDone;
 	// when a specific mpc param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneMPC OnItemDoneMPC;
+	FAnimMPCDone OnItemMPCDone;
 	// when a specific dynamic material param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneDyn OnItemDoneDyn;
+	FAnimDynDone OnItemDynDone;
 	// when a specific custom primitive data param is done
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneData OnItemDoneData;
+	FAnimDataDone OnItemDataDone;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneSnd OnItemDoneSnd;
+	FAnimSndDone OnItemSndDone;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneComp OnItemDoneComp;
+	FAnimCompDone OnItemCompDone;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
-	FAnimDoneGen OnItemDoneGen;
+	FAnimGenDone OnItemGenDone;
 #pragma endregion
 
 protected:
