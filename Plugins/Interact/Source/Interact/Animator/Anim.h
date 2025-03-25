@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimSndDone, UAudioComponent* cons
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDataDone, UPrimitiveComponent* const, Comp, const int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimCompDone, USceneComponent* const, Comp, const FName, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, const FName, Name);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Progress);
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Progress);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
@@ -310,11 +310,11 @@ public:
 
 #pragma region gen
 	UFUNCTION(BlueprintCallable)
-	bool GenFade(const FName& Name, UObject* const Owner,
+	bool GenFade(const FName& Name, UObject* const Owner, const FAnimGenUpd& OnUpd, 
 		const float Duration = -1,
 		UCurveFloat* const Curve = nullptr
 	);
-	
+
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.

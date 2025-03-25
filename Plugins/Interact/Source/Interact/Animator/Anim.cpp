@@ -265,7 +265,6 @@ bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	return true;
 }
 
-
 #pragma endregion
 
 UAnim::UAnim():Super() {}
@@ -458,10 +457,12 @@ const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
 	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
-bool UAnim::GenFade(const FName& Name, UObject* Owner, const float Duration, UCurveFloat* const Curve) {
+bool UAnim::GenFade(const FName& Name, UObject* Owner, const FAnimGenUpd& OnUpd,
+const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
 	FABase B;
-	return ItemSetup(B, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+	const bool Ok = ItemSetup(B, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+	return Ok;
 }
 
 void UAnim::Tick(const float DT) {
