@@ -310,7 +310,7 @@ public:
 #pragma endregion
 
 #pragma region gen
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
 	bool GenFade(const FName& Name, UObject* const Owner, const FAnimGenUpd& OnUpd, 
 		const float Duration = -1,
 		UCurveFloat* const Curve = nullptr

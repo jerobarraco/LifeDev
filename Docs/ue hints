@@ -75,7 +75,8 @@ meta tags
 		HideViewOptions
 		AllowPreserveRatio
 		ExposeOnSpawn
-		
+		meta=(AutoCreateRefTerm=ParamName))
+
 resizeable bar
 	enable 4g access and resbar on bios
 		https://youtu.be/wCvLZ6XqRd4?si=mb_oFJNAQFvo7n4U&t=11
