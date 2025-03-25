@@ -184,9 +184,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FAnimGenUpd OnUpdate;
 
-	virtual bool SetVal(const FTransform& Val) const;
+	bool To:1 = true; // just to be able to compile
+	virtual bool SetVal(const bool Val=false) const { return true; };
+
 	virtual bool SetLerp(const float Prog) override;
-	virtual bool LoadFrom() override;
 };
 
 // Subsystem that animates materials parameter collections' parameters.

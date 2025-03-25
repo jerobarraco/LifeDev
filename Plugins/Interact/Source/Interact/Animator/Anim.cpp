@@ -181,7 +181,6 @@ bool FACTrans::LoadFrom() {
 	From = IsWorld ? Comp->GetComponentTransform() : From = Comp->GetRelativeTransform();
 	return true;
 }
-
 #pragma endregion
 
 #pragma region SetLerp
@@ -212,14 +211,21 @@ bool FACTrans::SetLerp(const float Prog) {
 	if (IsAdditive) {
 		From.BlendFromIdentityAndAccumulate(
 			TNew, To, (const ScalarRegister) Prog);
-	}else {
+	} else {
 		// Thanks, Tim! this actually works very well!
 		TNew.BlendWith(To, Prog);
 	}
+
 	if (IsWorld)
 		Comp->SetWorldTransform(TNew, UseSweep);
 	else 
 		Comp->SetRelativeTransform(TNew, UseSweep);
+	return true;
+}
+
+bool FAGen::SetLerp(const float Prog) {
+	if (UNLIKELY(!OnUpdate.IsBound())) return false;
+	OnUpdate.Execute(Obj, Name, Prog);
 	return true;
 }
 #pragma endregion
