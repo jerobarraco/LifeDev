@@ -263,10 +263,6 @@ protected:
 	void SetText();
 	virtual void SetText_Implementation();
 
-#if WITH_EDITORONLY_DATA
-	void EditorLabelUpd(AActor* const Actor);
-#endif
-
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
 	FORCEINLINE void Trigger() {
@@ -305,14 +301,17 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlaySFX(USoundBase* const Snd) const; // native events can't take Ptr* const
 
+#if WITH_EDITORONLY_DATA
+	void EditorLabelUpd(AActor* const Actor);
+#endif
+
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|State")
 	int32 State = 0;
 
-	/// CDO
-
+#pragma region cdo
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;
@@ -333,4 +332,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UAudioComponent> SFX = nullptr;
 	// cant be a clsounder since this is the plugin
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UParticleSystemComponent> Particles = nullptr;
+#pragma endregion
 };

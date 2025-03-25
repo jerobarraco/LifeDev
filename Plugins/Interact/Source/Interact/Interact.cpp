@@ -12,6 +12,7 @@
 #include "CInteract.h"
 #include "CInteractor.h"
 #include "Eval.h"
+#include "Particles/ParticleSystemComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -42,7 +43,11 @@ AInteract::AInteract():Super() {
 	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
-	
+
+	Particles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particles"));
+	Particles->SetUseAutoManageAttachment(true); // true
+	Particles->SetAutoActivate(false);
+
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
 	HintCurve = CCurve.Object;
