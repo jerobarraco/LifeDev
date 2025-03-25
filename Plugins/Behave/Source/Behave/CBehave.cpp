@@ -87,6 +87,8 @@ UBBase* UCBehave::TaskLoad(const FName Row) {
 	}
 	
 	Action->ID = Row;
+	Action->Priority = ActDef->Priority;
+
 	for (const FName& C: ActDef->Children) {
 		UBBase* const Child = TaskLoad(C);
 		if (UNLIKELY(!Child)) continue; // load already warns
@@ -96,13 +98,24 @@ UBBase* UCBehave::TaskLoad(const FName Row) {
 	return Action;
 }
 
-void UCBehave::TaskAdd(UBBase* const Task, const int32 Priority) {
+void UCBehave::TaskAdd(UBBase* const Task) {
 	if (UNLIKELY(!IsValid(Task))) return;
 
 	// it's a side effect but the way the code is set. init is only called after the action and all its children are loaded. which is nice.
 	Task->Init(this);
+
+	const int32 Num = Tasks.Num();
+	int32 Index = 0;
+	for (int32 i = 0; i<Num; ++i) {
+		const UBBase* const OT = Tasks[i];
+		if (UNLIKELY(!OT)) continue;
+		if (UNLIKELY(OT->Priority > Task->Priority)) {
+			Index = i;
+			break;
+		}
+	}
+
 	// the code suggest it will crash if Priority is <0 or >Num
-	const int32 Index = Priority <0 ? Tasks.Num() : FMath::Min(Priority, Tasks.Num());
 	Tasks.Insert(Task, Index);
 }
 

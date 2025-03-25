@@ -39,7 +39,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	EBDoRes Do(const float DT);
-	
+
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Start() {SetState(EBState::STARTED);};
 	UFUNCTION(BlueprintCallable, CallInEditor)
@@ -54,6 +54,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsLooped = false;
+
+	// experimental. used only on the top level tasks.
+	// <0 means no priority (goes to the end)
+	UPROPERTY(BlueprintReadWrite)
+	float Priority = -1;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FBOnState OnState;
@@ -75,18 +80,16 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void StartChild(const int32 I);
 
+	// a task can be init/deinit multiple times
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Init(UCBehave* B); // Native can't use const
+	// a task can be init/deinit multiple times
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DeInit();
 	
 	// beware if you change it during runtime
 	UPROPERTY(BlueprintReadWrite)
 	TArray<TObjectPtr<UBBase>> Children; // TODO make protected and friendly
-
-	// experimental. used only on the top level tasks.
-	UPROPERTY(BlueprintReadWrite)
-	float Property = NAN;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;

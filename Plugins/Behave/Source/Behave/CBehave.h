@@ -31,10 +31,10 @@ public:
 	UBBase* GetCur() { return TaskLeafCur; };
 
 	// Adds a task to the root tasks. These tasks have a global priority.
+	// (they compete with each other and may interrupt each other)
 	// A Task is only init'ed after adding it here.
-	// priority: by default is the last priority (-1). it's the index on the task list.
 	UFUNCTION(BlueprintCallable)
-	void TaskAdd(UBBase* const Task, const int32 Priority = -1);
+	void TaskAdd(UBBase* const Task);
 	// removes a task. de-init it.
 	UFUNCTION(BlueprintCallable)
 	int32 TaskRem(const FName Row);
