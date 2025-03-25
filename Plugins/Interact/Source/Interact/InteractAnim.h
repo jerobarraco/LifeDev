@@ -52,10 +52,10 @@ public:
 	// might be good to rework this, texts, sfx_start and sfx_stop
 
 	// triggered when anim starts. Closed, open. Try to use 'SFXs' instead.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	TArray<TObjectPtr<USoundBase>> SFX_Start;
 	// triggered when anim ends. Closed, Open.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	TArray<TObjectPtr<USoundBase>> SFX_Stop;
 
 	// When this is triggered, not locked, after anim.
