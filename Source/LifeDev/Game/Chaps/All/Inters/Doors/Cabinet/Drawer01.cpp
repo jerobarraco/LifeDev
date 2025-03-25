@@ -4,6 +4,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer01::ADrawer01():Super() {
@@ -15,4 +16,5 @@ ADrawer01::ADrawer01():Super() {
 	Interact->SetRelativeLocation(FVector(-20.000000,62.5,5.000000));
 	Interact->SetBoxExtent(FVector(5,18,5.5));
 	SFX->SetRelativeLocation(FVector(0,0,0));
+	Anim->TEnd.SetLocation(FVector(0, -40, 0));
 }

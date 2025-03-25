@@ -11,6 +11,7 @@ ADrawer::ADrawer():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CDrawer (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Drawer_C.Drawer_C"));
-	SFX_Start = {CDrawer.Object, CDrawer.Object};
+	// SFX_Start = {CDrawer.Object, CDrawer.Object};
+	SFXs = {CDrawer.Object, CDrawer.Object};
 	SFX_Stop.Empty();
 }
