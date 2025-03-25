@@ -454,6 +454,12 @@ const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
 	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
+bool UAnim::GenFade(const FName& Name, UObject* Owner, const float Duration, UCurveFloat* const Curve) {
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
+	FABase B;
+	return ItemSetup(B, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+}
+
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);

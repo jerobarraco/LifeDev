@@ -294,6 +294,15 @@ public:
 	);
 #pragma endregion
 
+#pragma region gen
+	UFUNCTION(BlueprintCallable)
+	bool GenFade(const FName& Name, UObject* const Owner,
+		const float Duration = -1,
+		UCurveFloat* const Curve = nullptr
+	);
+	
+	void ItemDoneGen(const FABase& FaBase) {}; // TODo
+#pragma endregion
 #pragma region isfading
 	// returns true while fading.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -396,5 +405,7 @@ protected:
 	TArray<FASFloat> ItemsSndF;
 	UPROPERTY(Transient)
 	TArray<FACTrans> ItemsCompT;
+	UPROPERTY(Transient)
+	TArray<FABase> ItemsGen;
 #pragma endregion
 };
