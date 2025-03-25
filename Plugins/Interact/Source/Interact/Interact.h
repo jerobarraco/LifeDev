@@ -176,13 +176,17 @@ public:
 		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
 	};
 
+	// particles to emit on state change. index matches state.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TArray<TSoftObjectPtr<UParticleSystem>> Parts;
+
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
-	// SFX that will play on state change.
+	// SFX that will play on state change. Index matches the state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TArray<TObjectPtr<USoundBase>> SFXs;
 
@@ -294,7 +298,9 @@ protected:
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
 	UFUNCTION(BlueprintCallable, Category=Interact)
-	void PlaySFX(USoundBase* const Snd) const; // native events can't take Ptr* const
+	void PlaySFX(USoundBase* const Snd) const;
+	UFUNCTION(BlueprintCallable, Category=Interact)
+	void PlayParts(UParticleSystem* const Part) const;
 
 #if WITH_EDITORONLY_DATA
 	void EditorLabelUpd(AActor* const Actor);
@@ -326,7 +332,6 @@ protected:
 	// default sfx player. Use PlaySFX 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UAudioComponent> SFX = nullptr;
-	// cant be a clsounder since this is the plugin
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UParticleSystemComponent> Particles = nullptr;
 #pragma endregion

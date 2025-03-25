@@ -358,3 +358,18 @@ void AInteract::PlaySFX(USoundBase* const Snd) const {
 		// ,1, 1, 0, SFX->AttenuationSettings
 		// // I could add the attenuation but since it's not attached with the object it occludes with it!
 }
+
+void AInteract::PlayParts(UParticleSystem* const Part) const {
+	// very important because it's triggered from multiple places. and some places need to have a nullptr for space (like SFXs).
+	if (UNLIKELY(!IsValid(Part))) return;
+
+	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
+		__func__, UseAttachedSFX, *Label.ToString(), *Part->GetName());
+	if (Particles->Template != Part) {
+		Particles->Deactivate();
+		Particles->ResetParticles(true);
+	}
+
+	Particles->Template = Part;
+	Particles->Activate();
+}
