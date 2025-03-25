@@ -135,3 +135,8 @@ https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/36
 	TMap<TSubclassOf<UBBase>, TObjectPtr<UBBase>> Behaves;
 	NewObject<UBBase>(this, Key.Get()); // key is tsubclassof<UBBase>
 	https://forums.unrealengine.com/t/newobject-create-from-tsubclassof/465120/5?u=nande
+
+# passing a delegate as param on bps: 
+	* const & is ok, then Delegate = ParDelegate is fine.
+	* beware on a struct if it's "Transient" it might forget the values (see Anim::FAGen) 
+	* Has to be DynamicDelegate NOT MULTICAST
