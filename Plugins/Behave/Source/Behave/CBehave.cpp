@@ -135,6 +135,15 @@ int32 UCBehave::TaskRem(const FName Row) {
 	return -1;
 }
 
+UBBase* UCBehave::TaskGet(const FName Row) const {
+	for (UBBase* const T: Tasks) {
+		if (UNLIKELY(!T)) continue;
+		if (T->ID == Row) return T;
+	}
+
+	return nullptr;
+}
+
 void UCBehave::Plan() {
 	UE_LOG(LogCBehave, Log, TEXT("%hs Planning=%i"), __func__, IsPlanning);
 	if (UNLIKELY(IsPlanning)) return;

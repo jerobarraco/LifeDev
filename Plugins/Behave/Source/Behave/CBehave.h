@@ -38,7 +38,9 @@ public:
 	// removes a task. de-init it.
 	UFUNCTION(BlueprintCallable)
 	int32 TaskRem(const FName Row);
-
+	UFUNCTION(BlueprintCallable)
+	UBBase* TaskGet(const FName Row) const;
+	
 	// creates a new task from a class. does not add it. you need to call TaskAdd.
 	UFUNCTION(BlueprintCallable)
 	UBBase* TaskNew(const TSubclassOf<UBBase>& Class);
@@ -113,4 +115,5 @@ protected:
 	FTimerHandle PlanTHandle;
 	bool IsPlanning = false;
 };
+
 
