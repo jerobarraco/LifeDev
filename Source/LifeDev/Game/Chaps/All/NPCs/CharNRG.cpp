@@ -45,13 +45,13 @@ void ACharNRG::BeginPlay() {
 
 void ACharNRG::SetActive_Implementation(const bool Enabled) {
 	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part
-	if (Parts) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
+	if (LIKELY(Parts)) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
 }
 
 void ACharNRG::AnimEnd_Implementation() {
 	Super::AnimEnd_Implementation();
 	const static FName SSpawnRate("SpawnRate");
 	const float Rate = State == 0 ? SpawnRateMax : SpawnRateMin;
-	if (Parts) Parts->SetVariableFloat(SSpawnRate, Rate);
+	if (LIKELY(Parts)) Parts->SetVariableFloat(SSpawnRate, Rate);
 	// SetEnabled(false); // leave the parts active as i still want them to keep spawning
 }
