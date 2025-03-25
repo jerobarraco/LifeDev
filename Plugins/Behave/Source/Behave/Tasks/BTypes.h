@@ -29,6 +29,10 @@ struct BEHAVE_API FBAction: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
+	// defaults to the last one
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float Priority = -1;
+
 	// these are Rows IDs
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Children;
@@ -36,9 +40,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UBBase> Class;
 
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Params;
 
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Comment;
 };
