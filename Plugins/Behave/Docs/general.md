@@ -7,12 +7,12 @@ the design goal is to be clean, simple, and then flexible,
 this is based on my own design, which is similar to  lgoap and state trees
 truth is you can implement either with this plugin, just depending on how you choose to code it.
 
-at first i wanted to make a strong distinctian between plan and action. then i realized
-* you dont need to
+at first i wanted to make a strong distinction between plan and action. then i realized
+* you don't need to
 * some planning requires actions
 * there are some grey areas it can be a gamut
-* dividng it will block me from being able to do certain things,
-* itll complicate the architecture.
+* diving it will block me from being able to do certain things,
+* it'll complicate the architecture.
 
 so this way you can
 * have the flexibility to use it as lgoap or state trees
@@ -97,13 +97,20 @@ And the comment about Layered GOAP.
 
 Also look at state tree
 it can do very similar stuff. and it's much cooler.
+
 https://www.youtube.com/watch?v=YEmq4kcblj4
+
 https://www.youtube.com/watch?v=zovPQnq7ndE
 
-https://m.youtube.com/watch?v=Qq_xX1JCreI#
+https://www.youtube.com/watch?v=U8CkmOJg93M
+
+
 good video in bt, with good ideas for decorators
-https://m.youtube.com/watch?v=uyYdOBYt6g4
+https://m.youtube.com/watch?v=Qq_xX1JCreI
+
+
 non combat ai
+https://m.youtube.com/watch?v=uyYdOBYt6g4
 
 # TODO challenges/later
 * Modifier curves
