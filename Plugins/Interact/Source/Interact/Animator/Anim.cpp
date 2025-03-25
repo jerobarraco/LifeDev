@@ -471,9 +471,10 @@ void UAnim::Tick(const float DT) {
 	const bool ContDynVector = ItemTick(DT, ItemsDynV, &UAnim::ItemDoneDynV);
 	const bool ContSndFloat = ItemTick(DT, ItemsSndF, &UAnim::ItemDoneSndF);
 	const bool ContComp = ItemTick(DT, ItemsCompT, &UAnim::ItemDoneComp);
+	const bool ContGen = ItemTick(DT, ItemsGen, &UAnim::ItemDoneGen);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData
-		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp;
+		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen;
 
 	if (LIKELY(Continue)) return;
 
