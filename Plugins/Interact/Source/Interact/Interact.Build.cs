@@ -28,7 +28,8 @@ public class Interact: ModuleRules
 		// ... add private dependencies that you statically link with here ...	
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "JUtils",
-			"Slate",// for AnimMat should be created
+			"Slate", // for AnimMat should be created
+			"Niagara",
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

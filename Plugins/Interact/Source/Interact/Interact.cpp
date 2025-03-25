@@ -12,6 +12,9 @@
 #include "CInteract.h"
 #include "CInteractor.h"
 #include "Eval.h"
+#include "NiagaraComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
@@ -46,10 +49,11 @@ AInteract::AInteract():Super() {
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
 
-	Emitter = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particles"));
+	Emitter = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Particles"));
 	Emitter->SetupAttachment(Interact);
 	Emitter->SetUseAutoManageAttachment(true);
 	Emitter->SetAutoActivate(false);
+
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
 	HintCurve = CCurve.Object;
@@ -278,8 +282,9 @@ void AInteract::PostLoad() {
 	Super::PostLoad();
 	// this function is only called on objects on the level so ActorLabel should be correct
 #if WITH_EDITORONLY_DATA
-	if (Label.IsNone()) // allow to be overriden
+	if (UNLIKELY(Label.IsNone())) // allow to be overriden. otherwise load from editor
 		EditorLabelUpd(this);
+	// automatic update
 	FCoreDelegates::OnActorLabelChanged.AddUObject(this, &AInteract::EditorLabelUpd);
 #endif
 }
@@ -361,19 +366,21 @@ void AInteract::PlaySFX(USoundBase* const Snd) const {
 		// // I could add the attenuation but since it's not attached with the object it occludes with it!
 }
 
-void AInteract::PlayParts(UParticleSystem* const Part) const {
+void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 	// very important because it's triggered from multiple places. and some places need to have a nullptr for space (like SFXs).
 	if (UNLIKELY(!IsValid(Part))) return;
 
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
 		__func__, *Label.ToString(), *Part->GetName());
 
-	if (LIKELY(Emitter->Template != Part)) {
+	if (LIKELY(Emitter->GetAsset() != Part)) {
 		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
 		Emitter->Deactivate();
-		Emitter->ResetParticles(true);
-	}
+		Emitter->ResetSystem();
+		Emitter->SetAsset(Part);
+	} else
+		UE_LOG(LogInteract, Log, TEXT("%hs: Reactivating old one"), __func__);
 
-	Emitter->Template = Part;
+	// done like this to allow to re-activate emitters with limited lifetime. (non-loop)
 	Emitter->Activate();
 }

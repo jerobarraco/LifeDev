@@ -6,6 +6,8 @@
 
 #include "Interact.generated.h"
 
+class UNiagaraSystem;
+class UNiagaraComponent;
 class UCInteractor;
 class UPhysicsConstraintComponent;
 class UCQuickMesh;
@@ -300,7 +302,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlaySFX(USoundBase* const Snd) const;
 	UFUNCTION(BlueprintCallable, Category=Interact)
-	void PlayParts(UParticleSystem* const Part) const;
+	void PlayParts(UNiagaraSystem* const Part) const;
 
 #if WITH_EDITORONLY_DATA
 	void EditorLabelUpd(AActor* const Actor);
@@ -333,6 +335,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UAudioComponent> SFX = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UParticleSystemComponent> Emitter = nullptr;
+	TObjectPtr<UNiagaraComponent> Emitter = nullptr;
 #pragma endregion
 };
