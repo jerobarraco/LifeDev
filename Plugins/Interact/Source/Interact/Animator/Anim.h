@@ -12,6 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneMPC, UMaterialParameterCol
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneSnd, UAudioComponent* const, Cmp, const FName, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneData, UPrimitiveComponent* const, Comp, const int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneComp, USceneComponent* const, Comp, const FName, Name);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDoneGen, UObject* const, Obj, const FName, Name);
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
@@ -181,7 +182,6 @@ class INTERACT_API UAnim: public UTickableWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-
 #pragma region Base
 	static UAnim* Instance(const UObject* const O);
 
@@ -301,7 +301,6 @@ public:
 		UCurveFloat* const Curve = nullptr
 	);
 	
-	void ItemDoneGen(const FABase& FaBase) {}; // TODo
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.
@@ -349,6 +348,8 @@ public:
 	FAnimDoneSnd OnItemDoneSnd;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimDoneComp OnItemDoneComp;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimDoneGen OnItemDoneGen;
 #pragma endregion
 
 protected:
@@ -386,6 +387,7 @@ protected:
 	void ItemDoneData(const FAData& Item);
 	void ItemDoneSndF(const FASFloat& Item);
 	void ItemDoneComp(const FACTrans& Item);
+	void ItemDoneGen(const FABase& Item);
 #pragma endregion
 
 #pragma region Vars

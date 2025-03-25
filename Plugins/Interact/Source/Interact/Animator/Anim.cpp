@@ -335,6 +335,10 @@ void UAnim::ItemDoneSndF(const FASFloat& Item) {
 void UAnim::ItemDoneComp(const FACTrans& Item) {
 	OnItemDoneComp.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
 }
+
+void UAnim::ItemDoneGen(const FABase& Item) {
+	OnItemDoneGen.Broadcast(Item.Obj, Item.Name);
+}
 #pragma endregion
 
 template <typename Item>
@@ -534,7 +538,7 @@ void UAnim::ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr) {
 
 template <typename Type>
 bool UAnim::ItemsSetNow(const Type& Item, void(UAnim::* Done)(const Type&)) {
-	if (!FMath::IsNearlyZero(Item.Duration)) return false;
+	if (UNLIKELY(!FMath::IsNearlyZero(Item.Duration))) return false;
 
 	Item.SetVal(Item.To);
 	(this->*Done)(Item);
