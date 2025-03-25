@@ -124,7 +124,7 @@ public:
 	int32 HintPrimDataID = 0;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
-	TSoftObjectPtr<UCurveFloat> HintCurve = nullptr;
+	TSoftObjectPtr<UCurveFloat> HintCurve = nullptr; // needs to be a soft ptr due to config
 
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
@@ -177,20 +177,19 @@ public:
 		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
 		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
 	};
-
 	// particles to emit on state change. index matches state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<UNiagaraSystem>> Particles;
+	// SFX that will play on state change. Index matches the state.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TArray<TObjectPtr<USoundBase>> SFXs;
 
-	// SFX that will be played on trigger
+	// SFX that will be played on trigger. SFXs is preferred.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
-	// SFX that will play on state change. Index matches the state.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TArray<TObjectPtr<USoundBase>> SFXs;
 
 	// An interact id used for auto dialogs and such.
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó

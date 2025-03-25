@@ -49,8 +49,8 @@ AInteract::AInteract():Super() {
 
 	Emitter = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Particles"));
 	Emitter->SetupAttachment(Interact);
-	Emitter->SetUseAutoManageAttachment(true);
 	Emitter->SetAutoActivate(false);
+	Emitter->SetUseAutoManageAttachment(true);
 
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
@@ -218,7 +218,8 @@ void AInteract::BeginPlay() {
 	if (Mesh->IsSimulatingPhysics())
 		Interact->PhysComp = Mesh;
 
-	// TODO maybe generalize these chunks
+	if (LIKELY(Emitter)) Emitter->SetUseAutoManageAttachment(true); // optimization. don't do on cdo so that i can position it on the editor.
+
 	// would be a bit wasteful on memory if the instance doesn't load, or if it's already on RewardsIntersActive
 	// but that is something the user should not do.
 	RewardIntersActive.Reserve(RewardIntersActive.Num()+RewardIntersActiveClass.Num());
