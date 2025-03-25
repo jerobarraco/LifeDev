@@ -180,7 +180,7 @@ public:
 
 	// particles to emit on state change. index matches state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
-	TArray<TSoftObjectPtr<UParticleSystem>> Particles;
+	TArray<TObjectPtr<UNiagaraSystem>> Particles;
 
 	// SFX that will be played on trigger
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")

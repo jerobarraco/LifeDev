@@ -5,6 +5,8 @@
 
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
 #include "Animator/Anim.h"
@@ -12,10 +14,6 @@
 #include "CInteract.h"
 #include "CInteractor.h"
 #include "Eval.h"
-#include "NiagaraComponent.h"
-#include "NiagaraComponent.h"
-#include "NiagaraSystem.h"
-#include "Particles/ParticleSystemComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -146,6 +144,8 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	SetText();
 	if (State >=0 && State < SFXs.Num())
 		PlaySFX(SFXs[State]);
+	if (State >=0 && State < Particles.Num())
+		PlayParts(Particles[State]);
 }
 
 bool AInteract::ShouldUnlock_Implementation() {
