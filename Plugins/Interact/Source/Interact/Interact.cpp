@@ -28,11 +28,13 @@ AInteract::AInteract():Super() {
 
 	IRoot = CreateDefaultSubobject<USceneComponent>(TEXT("IRoot"));
 	IRoot->SetupAttachment(RootComponent);
-	
+
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(IRoot);
 
 	Interact = CreateDefaultSubobject<UCInteract>(TEXT("Interact"));
+	// parented to the mesh to make it easier to move stuff around when the mesh changes.
+	// or when i subclass and put another mesh, or things like that.
 	Interact->SetupAttachment(Mesh);
 	Interact->HoverMesh = Mesh;
 	// Interact->PhysComp = Cast<UPrimitiveComponent>(Mesh);
@@ -45,9 +47,9 @@ AInteract::AInteract():Super() {
 	SFX->bAutoManageAttachment = true;
 
 	Emitter = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particles"));
-	Emitter->SetUseAutoManageAttachment(true); // true
+	Emitter->SetupAttachment(Interact);
+	Emitter->SetUseAutoManageAttachment(true);
 	Emitter->SetAutoActivate(false);
-
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/JUtils/Curves/PulseOut.PulseOut"));
 	HintCurve = CCurve.Object;
