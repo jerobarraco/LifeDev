@@ -11,21 +11,20 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
 #pragma region structs
-void FABase::AddDT(const float DT, float& Prog) {
+float FABase::AddDT(const float DT) {
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Duration);
-	if (Duration == 0) return; // don't need nearly zero. it's just for the division below.
+	if (Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
 
 	const float RProg = Elapsed / Duration;
-	Prog = IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
+	return IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
 }
 
 bool FABase::Tick(const float DT) {
 	// no need to do this. while it would be an optimization. it's not required.
 	// if (UNLIKELY(!FIsValid())) return true;
 
-	float Prog;
-	AddDT(DT, Prog);
+	const float Prog = AddDT(DT);
 	SetLerp(Prog);
 	return IsDone();
 }
