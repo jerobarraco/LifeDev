@@ -84,6 +84,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<TObjectPtr<UBBase>> Children; // TODO make protected and friendly
 
+	// experimental. used only on the top level tasks.
+	UPROPERTY(BlueprintReadWrite)
+	float Property = NAN;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	EBState State = EBState::STOPPED;
 
