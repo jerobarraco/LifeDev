@@ -138,6 +138,8 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 
 	State = NewState;
 	SetText();
+	if (State >=0 && State < SFXs.Num())
+		PlaySFX(SFXs[State]);
 }
 
 bool AInteract::ShouldUnlock_Implementation() {
@@ -331,7 +333,9 @@ void AInteract::DoTrigger_Implementation() {
 }
 
 void AInteract::PlaySFX(USoundBase* const Snd) const {
+	// very important because it's triggered from multiple places. and some places need to have a nullptr for space (like SFXs).
 	if (UNLIKELY(!IsValid(Snd))) return;
+
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
 		__func__, UseAttachedSFX, *Label.ToString(), *Snd->GetName());
 

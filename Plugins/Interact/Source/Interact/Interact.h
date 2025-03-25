@@ -6,10 +6,6 @@
 
 #include "Interact.generated.h"
 
-#ifndef INTERACT_WITH_LABEL
-#define INTERACT_WITH_LABEL 1
-#endif
-
 class UCInteractor;
 class UPhysicsConstraintComponent;
 class UCQuickMesh;
@@ -186,6 +182,9 @@ public:
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
+	// SFX that will play on state change.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TArray<TObjectPtr<USoundBase>> SFXs;
 
 	// An interact id used for auto dialogs and such.
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
@@ -194,10 +193,7 @@ public:
 	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
 	FName Label;
-	// TODO add a compile time feature flag
-
 #pragma endregion
-
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
 	// Does not affect destroy by UseRewardDestroy (for now at least).
@@ -225,7 +221,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
 #pragma endregion
-
 #pragma region Delegates
 	// When this is triggered (not locked).
 	// Either you override DoTrigger or you subscribe to this, but unlikely both.
