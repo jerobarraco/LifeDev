@@ -30,25 +30,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UBBase* GetCur() { return TaskLeafCur; };
 
-	// Adds a task to the root tasks. These tasks have a global priority.
-	// (they compete with each other and may interrupt each other)
-	// A Task is only init'ed after adding it here.
-	UFUNCTION(BlueprintCallable)
-	void TaskAdd(UBBase* const Task);
-	// removes a task. de-init it.
-	UFUNCTION(BlueprintCallable)
-	int32 TaskRem(const FName Row);
-	UFUNCTION(BlueprintCallable)
-	UBBase* TaskGet(const FName Row) const;
-	
-	// creates a new task from a class. does not add it. you need to call TaskAdd.
-	UFUNCTION(BlueprintCallable)
-	UBBase* TaskNew(const TSubclassOf<UBBase>& Class);
 
 	// loads a task from the dt. does not add it. you need to call TaskAdd.
 	// you also need to specify the correct data table
 	UFUNCTION(BlueprintCallable)
 	UBBase* TaskLoad(const FName Row);
+	// creates a new task from a class. does not add it. you need to call TaskAdd.
+	UFUNCTION(BlueprintCallable)
+	UBBase* TaskNew(const TSubclassOf<UBBase>& Class);
+	// Adds a task to the root tasks. These tasks have a global priority.
+	// (they compete with each other and may interrupt each other)
+	// A Task is only init'ed after adding it here.
+	UFUNCTION(BlueprintCallable)
+	void TaskAdd(UBBase* const Task);
+	// removes a task. de-init it. can be re-added later
+	UFUNCTION(BlueprintCallable)
+	int32 TaskRem(UBBase* const Task);
+	UFUNCTION(BlueprintCallable)
+	UBBase* TaskGet(const FName Row) const;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	float PlanWaitTime = 1;

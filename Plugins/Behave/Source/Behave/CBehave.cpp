@@ -119,20 +119,10 @@ void UCBehave::TaskAdd(UBBase* const Task) {
 	Tasks.Insert(Task, Index);
 }
 
-int32 UCBehave::TaskRem(const FName Row) {
-	const int32 Num = Tasks.Num();
-	for (int32 i =0; i<Num; ++i) {
-		UBBase* const A = Tasks[i];
-		if (UNLIKELY(!IsValid(A))) continue;
-		
-		if (LIKELY(A->ID != Row)) continue;
-		
-		A->DeInit();
-		Tasks.RemoveAt(i);
-		return i;
-	}
-
-	return -1;
+int32 UCBehave::TaskRem(UBBase* const Task) {
+	if (LIKELY(IsValid(Task)))
+		Task->DeInit();
+	return Tasks.Remove(Task);
 }
 
 UBBase* UCBehave::TaskGet(const FName Row) const {
