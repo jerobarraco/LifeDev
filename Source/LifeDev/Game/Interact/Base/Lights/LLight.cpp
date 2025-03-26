@@ -190,7 +190,7 @@ void ALLight::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const bool bClosed = IsClosed();
 	// force light change when strobe is disabled
-	if (!UseAnim) {
+	if (!UseAnim) { // otherwise super will trigger the anim
 		const float P = bClosed ? 0 : 1;
 		AnimUpdate(P, P);
 	}

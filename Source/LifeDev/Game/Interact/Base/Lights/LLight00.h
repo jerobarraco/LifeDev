@@ -18,7 +18,7 @@ public:
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
-	virtual void AnimUpdate_Implementation(const float P, const float A) override;
+	virtual void AnimUpdate_Implementation(const float Progress, const float Alpha) override;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UPointLightComponent> Light = nullptr;

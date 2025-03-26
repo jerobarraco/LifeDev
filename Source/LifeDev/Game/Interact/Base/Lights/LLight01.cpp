@@ -38,12 +38,12 @@ ALLight01::ALLight01():Super() {
 	ALLight01::SetMobility(EComponentMobility::Static);
 }
 
-void ALLight01::SetMobility(EComponentMobility::Type Mobility) {
+void ALLight01::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	RectLight->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
 }
 
-void ALLight01::AnimUpdate_Implementation(float P, float A) {
+void ALLight01::AnimUpdate_Implementation(const float P, const float A) {
 	Super::AnimUpdate_Implementation(P, A);
 	RectLight->SetHiddenInGame(A<.5);
 }

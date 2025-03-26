@@ -25,15 +25,16 @@ ALLight02::ALLight02():Super() {
 	UseAnim = true; // restore anim set by Super::SetMobility
 }
 
-void ALLight02::SetMobility(EComponentMobility::Type Mobility) {
+void ALLight02::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	Light->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
 }
 
-void ALLight02::AnimUpdate_Implementation(float P, float A) {
+void ALLight02::AnimUpdate_Implementation(const float P, const float A) {
 	Super::AnimUpdate_Implementation(P, A);
 	const bool IsOn = A >= .05;
-	Light->SetVisibility(IsOn); // optimization
+	// Light->SetVisibility(IsOn); // optimization
+	Light->SetHiddenInGame(!IsOn); // optimization
 	Light->SetIntensity(IntensityMax*A);
 }
 
