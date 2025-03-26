@@ -49,6 +49,9 @@ ALStepC1S000::ALStepC1S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
 	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CRoom2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
+	if (LIKELY(CRoom2.Succeeded())) DL_Unload.Add(CDL2.Object);
 }
 
 void ALStepC1S000::TryStart_Implementation() {
