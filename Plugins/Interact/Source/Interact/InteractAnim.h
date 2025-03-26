@@ -49,15 +49,12 @@ public:
 	// won't affect the reversed flag.
 	// mostly used for puzzles.
 	// if you need to set material values, i'd recommend overriding SetState_Implementation instead.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<FTransform> Trans;
 	// might be good to rework this, texts, sfx_start and sfx_stop
 
-	// triggered when anim starts. Closed, open. Try to use 'SFXs' instead.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim", meta=(DeprecatedProperty))
-	TArray<TObjectPtr<USoundBase>> SFX_Start;
-	// triggered when anim ends. Closed, Open.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
+	// triggered when anim ends. Closed, Open. (for trigger on start see SFXs)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFX_Stop;
 
 	// When this is triggered, not locked, after anim.

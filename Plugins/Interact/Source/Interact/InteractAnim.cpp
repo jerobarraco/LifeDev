@@ -97,10 +97,6 @@ void AInteractAnim::AnimSet() {
 
 void AInteractAnim::AnimBegin_Implementation() {
 	// at this point the state ( isOpen ) flag is toggled
-	
-	if (UNLIKELY(State < 0) || State >= SFX_Start.Num()) return;
-	USoundBase* const Snd2 = SFX_Start[State];
-	PlaySFX(Snd2);
 }
 
 void AInteractAnim::AnimEnd_Implementation() {

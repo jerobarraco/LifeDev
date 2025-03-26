@@ -34,7 +34,7 @@ ATv00::ATv00():Super() {
 	SFX->SetRelativeLocation(FVector(55,0,15));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
-	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
+	SFXs = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpenEnd(TEXT("/Game/LifeDev/Game/Inters/Tv00/OldRadioTuningStaticNoise_001_Cue"));
 	SFX_Stop = {nullptr, SOpenEnd.Object};

@@ -35,6 +35,6 @@ ALSwitch::ALSwitch():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
-	SFX_Start = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
+	SFXs = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
 	SetStateNow(1); // start on. most lights start on.
 }

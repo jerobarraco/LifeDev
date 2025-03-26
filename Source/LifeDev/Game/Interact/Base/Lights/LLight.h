@@ -34,6 +34,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void StopFBFlicker();
 	virtual void SetStateNow_Implementation(const int32 NewState, const bool UseSFX = false, const bool UseParts = false) override;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
