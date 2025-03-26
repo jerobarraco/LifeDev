@@ -38,8 +38,6 @@ ALInteract::ALInteract():Super() {
 
 void ALInteract::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
-	// TODO fix issue of this triggering when the actor first spawns
-	// (e.g. lights and puzzles)
 	if (LIKELY(IsValid(Diags))) {
 		const FString& BName = LDConsts::Dlgs::Inter::StatePre;
 		// FString Label;
