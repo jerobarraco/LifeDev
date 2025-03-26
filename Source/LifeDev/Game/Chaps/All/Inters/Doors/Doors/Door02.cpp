@@ -37,7 +37,6 @@ ADoor02::ADoor02():Super() {
 
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
-	Anim->TEnd.SetScale3D(FVector(1));
 	ADoor02::SetMobility(EComponentMobility::Movable);
 }
 

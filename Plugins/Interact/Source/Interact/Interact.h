@@ -187,7 +187,7 @@ public:
 	// particles to emit on state change. index matches state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<UNiagaraSystem>> Particles;
-	// SFX that will play on state change. Index matches the state.
+	// SFX that will play on state change (regardless of trigger/trigger locked/manual). Index matches the state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
 

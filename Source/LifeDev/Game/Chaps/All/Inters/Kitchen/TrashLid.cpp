@@ -36,6 +36,5 @@ ATrashLid::ATrashLid():Super() {
 	UseAnim = true;
 	Anim->Duration = .6;
 	Anim->TEnd.SetRotation(FRotator(-43.2,0,0).Quaternion());
-	Anim->TEnd.SetScale3D(FVector(1));
 }
 
