@@ -29,7 +29,7 @@ ALLight00::ALLight00():Super() {
 	// careful that the A_STROBE will disable later maybe
 }
 
-void ALLight00::AnimUpdate_Implementation(float Progress, float Alpha) {
+void ALLight00::AnimUpdate_Implementation(const float Progress, const float Alpha) {
 	Super::AnimUpdate_Implementation(Progress, Alpha);
 	Light->SetIntensity(IntensityMax*Alpha);
 	// .05 since i modulate the intensity, not on this one since it's a tungsten light
@@ -37,7 +37,7 @@ void ALLight00::AnimUpdate_Implementation(float Progress, float Alpha) {
 	Light->SetVisibility(IsOn); // optimization
 }
 
-void ALLight00::SetMobility(EComponentMobility::Type Mobility) {
+void ALLight00::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	Light->SetMobility(Mobility == EComponentMobility::Movable ? Mobility : EComponentMobility::Stationary);
 }
