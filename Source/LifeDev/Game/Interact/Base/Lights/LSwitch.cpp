@@ -23,6 +23,7 @@ ALSwitch::ALSwitch():Super() {
 	UseAnim = true;
 	Anim->Duration = .5;
 	Anim->IsAdditive = true;
+	Trans.Empty();
 	Anim->TEnd.SetLocation(FVector(-2.5,0,0));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
