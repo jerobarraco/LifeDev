@@ -48,11 +48,6 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 	}
 }
 
-void ALInteract::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
-	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
-	
-}
-
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
