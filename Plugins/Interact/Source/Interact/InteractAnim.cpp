@@ -27,14 +27,14 @@ void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool 
 	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
 
 	// important to initialize this or IsAdditive will set the scale to 0. done here for the same reason as comment below.
-	if (Trans.Num() == 0 || State == 0)
+	if ((UseAnim && LIKELY(Anim) && Anim->TRoot) && (Trans.Num() == 0 || State == 0))
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();
 
 	AnimSet();
 	// "Is this too much voodoo?" -- Terry Davis
 	// usually i would put this inside the previous func, but since AnimPlay also calls it,
 	// i'd need to add an if, that's going to fail some of the times.
-	// since it's only 1 LOC, and it's a private funciton, and only called here,
+	// since it's only 1 LOC, and it's a private function, and only called here,
 	// this is a better place for it. (it's also the same pattern in AnimPlay)
 	if (LIKELY(Anim)) Anim->Update(1); // force to perform the thing.
 }
