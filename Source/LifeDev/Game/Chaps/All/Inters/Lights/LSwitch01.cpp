@@ -6,7 +6,6 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 ALSwitch01::ALSwitch01(): Super() {
-	
 	StateNum = 4; // 4 is the max. could be clamped on children
 	Texts = {
 		NSLOCTEXT("Switch01", "Turn0", "Turn"),

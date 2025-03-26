@@ -23,5 +23,5 @@ ALSwitch02::ALSwitch02(): Super() {
 	Mesh->SetRelativeLocation(FVector(-7.5,7.500000,-15));
 
 	Interact->SetRelativeLocation(FVector(7.500000,-7.5,15));
-	Interact->SetBoxExtent(FVector(5)); // luckly with this button size it doesn't protrude that much
+	Interact->SetBoxExtent(FVector(5)); // luckily with this button size it doesn't protrude that much
 }

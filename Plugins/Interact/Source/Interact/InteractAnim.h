@@ -22,11 +22,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
 
-	// Whether it should reverse the animation.
-	// By default, it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool IsReversed() const { return StateNum > 1 && IsClosed(); }
-
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE UCAnimatorMix* GetAnim() const {return Anim;}
 
@@ -95,3 +90,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCAnimatorMix> Anim = nullptr;
 };
+
+
+// Whether it should reverse the animation.
+// By default, it will not reverse if StateNum <=1. otherwise it depends on IsClosed.
+// UFUNCTION(BlueprintCallable, BlueprintPure)
+// FORCEINLINE bool IsReversed() const { return StateNum > 1 && IsClosed(); }
