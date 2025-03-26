@@ -316,14 +316,14 @@ protected:
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Transient, Category="SetUp|State")
+	// I recommend to use SetState and SetStateNow.
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="SetUp|State")
 	int32 State = 0;
 
 #pragma region cdo
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;
-
 	// handles the interactions with this actor.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCInteract> Interact = nullptr;
