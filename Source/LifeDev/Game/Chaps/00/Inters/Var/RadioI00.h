@@ -19,7 +19,6 @@ public:
 
 protected:
 	virtual void DoTrigger_Implementation() override;
-	virtual void BeginPlay() override;
 	
 	UFUNCTION()
 	void DialogDone();

@@ -12,7 +12,4 @@ class LIFEDEV_API ALSwitch: public ALInteract {
 
 public:
 	ALSwitch();
-
-protected:
-	virtual void BeginPlay() override;
 };

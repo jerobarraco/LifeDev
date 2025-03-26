@@ -82,6 +82,7 @@ ALLight::ALLight():Super() {
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
 	Mesh->SetCastAllShadows(true);
+	SetStateNow(1); // start on
 }
 
 void ALLight::StopFBFlicker() {
@@ -178,7 +179,7 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALLight::SetState_Implementation(int32 NewState) {
+void ALLight::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	const bool bClosed = IsClosed();
 	// force light change when strobe is disabled
@@ -192,7 +193,7 @@ void ALLight::SetState_Implementation(int32 NewState) {
 }
 
 void ALLight::AnimUpdate_Implementation(const float P, const float A) {
-	if (!SFX_Flicker) return;
+	if (UNLIKELY(!SFX_Flicker)) return;
 
 	const float v = 1.0-A;
 	SFX_Flicker->SetSafeParamFloat("Volume", v);

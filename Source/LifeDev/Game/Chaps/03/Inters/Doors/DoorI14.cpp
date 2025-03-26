@@ -18,7 +18,7 @@ ADoorI14::ADoorI14():Super() {
 		{LDConsts::Items::Card2, "D14xC02"},
 	};
 	// this door is quite confusing. and while it seems interesting it rather make it better for the player.
-	SetState(1);
+	SetStateNow(1);
 	ADoorI14::SetAutoActivate(false);
 	DisableWhileAnim = false; // avoid getting re-enabled due to state change
 }
