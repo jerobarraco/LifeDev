@@ -37,10 +37,11 @@ ADoor02::ADoor02():Super() {
 
 	Anim->IsAdditive = true;
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
+	Anim->TEnd.SetScale3D(FVector(1));
 	ADoor02::SetMobility(EComponentMobility::Movable);
 }
 
-void ADoor02::SetMobility(EComponentMobility::Type Mobility) {
+void ADoor02::SetMobility(const EComponentMobility::Type Mobility) {
 	WinA->SetMobility(Mobility);
 	WinB->SetMobility(Mobility);
 	Super::SetMobility(Mobility);

@@ -17,10 +17,10 @@ public:
 	ADoor02();
 
 protected:
-	virtual void SetMobility(EComponentMobility::Type Mobility) override;
+	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* WinA = nullptr;
+	TObjectPtr<UCQuickMesh> WinA = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UCQuickMesh* WinB = nullptr;
+	TObjectPtr<UCQuickMesh> WinB = nullptr;
 };
