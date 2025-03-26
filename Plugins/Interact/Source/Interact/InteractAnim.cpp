@@ -8,7 +8,7 @@
 AInteractAnim::AInteractAnim():Super() {
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
-
+	if (Anim->IsAdditive) Anim->CopyTStart();
 	// can't do this, the order of constructors fails. Anim->Mat = Mesh->GetMaterial(0);
 }
 
@@ -29,7 +29,7 @@ void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool 
 
 	// important to initialize this or IsAdditive will set the scale to 0. done here for the same reason as comment below.
 	if ((UseAnim && LIKELY(Anim) && Anim->TRoot) && (Trans.Num() == 0 || State < 0))
-		Anim->TStart = Anim->TRoot->GetRelativeTransform();
+		Anim->CopyTStart();
 
 	AnimSet();
 	// "Is this too much voodoo?" -- Terry Davis
@@ -93,7 +93,8 @@ void AInteractAnim::AnimSet() {
 		Anim->IsReversed = IsClosed(); // IsReversed();
 	} else {
 		// using troot since it could be changed in any child or parent
-		Anim->TStart = Anim->TRoot ? Anim->TRoot->GetRelativeTransform() : Anim->TStart;
+		Anim->CopyTStart(); // this will reset to the current place. so that the transition is always from Current to New
+		// Anim->TStart = Anim->TRoot ? Anim->TRoot->GetRelativeTransform() : Anim->TStart;
 		Anim->TEnd = Trans[State%Trans.Num()];
 	}
 }

@@ -8,6 +8,11 @@ void UCAnimatorTrans::DeInit() {
 	Super::DeInit();
 }
 
+void UCAnimatorTrans::CopyTStart() {
+	if (UNLIKELY(!TRoot)) return;
+	TStart = TRoot->GetRelativeTransform();
+}
+
 void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 
@@ -27,6 +32,7 @@ void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 
 void UCAnimatorTrans::BeginPlay() {
 	Super::BeginPlay();
-	if (IsValid(TRoot) && IsAdditive)
-		TStart = TRoot->GetRelativeTransform(); // is this necessary? the InteractAnim takes care of this.
+	// TODO this breaks the switches, but removing it breaks everything else.
+	// if (IsValid(TRoot) && IsAdditive)
+		// TStart = TRoot->GetRelativeTransform(); // is this necessary? the InteractAnim takes care of this.
 }

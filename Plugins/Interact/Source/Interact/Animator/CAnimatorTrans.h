@@ -15,6 +15,9 @@ class INTERACT_API UCAnimatorTrans: public UCAnimator {
 	GENERATED_BODY()
 
 public:
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void CopyTStart();
 	// uses accumulated (relative to start) version, or not.
 	// When "IsAdditive" it is going to set "TStart" automatically to the current transform of the AnimRoot on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
