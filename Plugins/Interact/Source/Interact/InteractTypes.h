@@ -18,3 +18,4 @@ enum class EItemUseResult: uint8 {
 	BAD_HANDLED,
 	MAX UMETA(HIDDEN),
 };
+ENUM_RANGE_BY_COUNT(EItemUseResult, EItemUseResult::MAX);
