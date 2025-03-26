@@ -87,6 +87,7 @@ public:
 	// called when the state changes because it triggered.
 	// Starts at state 0 == closed == off
 	// skips if out of bounds.
+	// If StateNum ==1 this will might get called with the same state as current (might change, but probably not)
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
 	virtual void SetState_Implementation(const int32 NewState);

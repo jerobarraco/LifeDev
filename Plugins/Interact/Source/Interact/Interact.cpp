@@ -313,7 +313,8 @@ void AInteract::DoTrigger_Implementation() {
 		__func__, *Label.ToString());
 
 	// set the state before, so that the sound triggers are consistent
-	if (StateNum > 0) {
+	if (LIKELY(StateNum > 0)) { // mostly a fix.
+		// If StateNum ==1 NewState will be == State. i do not care. trigger SetState anyway, it's on purpose.
 		int32 NewState = State;
 		++NewState;
 		if (UNLIKELY(NewState >= StateNum))
