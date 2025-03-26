@@ -26,13 +26,17 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
 	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
 
+	// important to initialize this or IsAdditive will set the scale to 0. done here for the same reason as comment below.
+	if (Trans.Num() == 0 || State == 0)
+		Anim->TStart = Anim->TRoot->GetRelativeTransform();
+
 	AnimSet();
 	// "Is this too much voodoo?" -- Terry Davis
 	// usually i would put this inside the previous func, but since AnimPlay also calls it,
 	// i'd need to add an if, that's going to fail some of the times.
 	// since it's only 1 LOC, and it's a private funciton, and only called here,
 	// this is a better place for it. (it's also the same pattern in AnimPlay)
-	Anim->Update(1); // force to perform the thing.
+	if (LIKELY(Anim)) Anim->Update(1); // force to perform the thing.
 }
 
 
@@ -58,7 +62,7 @@ void AInteractAnim::DoTrigger_Implementation() { // called by trytrigger
 }
 
 void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
-	if (!UseAnim) {
+	if (!UseAnim || UNLIKELY(!Anim)) {
 		// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
 		// the anim is triggered by setstate.
 		// Calling AnimEnd has some other side effects. like playing sounds. which, while odd, i think it's benign side effect.
@@ -74,7 +78,7 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 }
 
 void AInteractAnim::AnimSet() {
-	if (!UseAnim || !Anim || !Anim->TRoot) return;
+	if (!UseAnim || UNLIKELY(!Anim) || !Anim->TRoot) return;
 	
 	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {

@@ -28,5 +28,5 @@ void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 void UCAnimatorTrans::BeginPlay() {
 	Super::BeginPlay();
 	if (IsValid(TRoot) && IsAdditive)
-		TStart = TRoot->GetRelativeTransform();
+		TStart = TRoot->GetRelativeTransform(); // is this necessary? the InteractAnim takes care of this.
 }
