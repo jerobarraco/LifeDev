@@ -26,13 +26,13 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
 	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
 
-	if (UseAnim && Anim && Anim->TRoot) {
-		AnimSet();
-		if (Trans.Num()<1) {
-			Anim->TRoot->SetRelativeTransform()
-			
-		}
-	}
+	AnimSet();
+	// "Is this too much voodoo?" -- Terry Davis
+	// usually i would put this inside the previous func, but since AnimPlay also calls it,
+	// i'd need to add an if, that's going to fail some of the times.
+	// since it's only 1 LOC, and it's a private funciton, and only called here,
+	// this is a better place for it. (it's also the same pattern in AnimPlay)
+	Anim->Update(1); // force to perform the thing.
 }
 
 
@@ -66,27 +66,14 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 		return;
 	}
 
-	AnimSet(false);
-	// both checks avoid an out of bound access
-	if (Trans.Num() == 0 || State < 0) {
-		// this creates so many issues. notice how it's set.
-		// this plays AFTER the state has changed.
-		// which means: if it's open, it was closed, so it needs to play from Closed to Open
-		// closed means Alpha 0, open is Alpha 1 (0= left 1= right on the curve)
-		// Not reversed is 0 to 1 (close->Open), reversed is 1 to 0 (open->Close)
-		Anim->IsReversed = IsReversed();
-	} else {
-		// using troot since it could be changed in any child or parent
-		Anim->TStart = Anim->TRoot->GetRelativeTransform();
-		Anim->TEnd = Trans[State%Trans.Num()];
-	}
+	AnimSet();
 
 	// not calling PlaySet on purpose. since that could break things like the light.
 	// or if a child wants to do something weird.
 	Anim->Activate(true);
 }
 
-void AInteractAnim::AnimSet(const bool SetToMesh) {
+void AInteractAnim::AnimSet() {
 	if (!UseAnim || !Anim || !Anim->TRoot) return;
 	
 	// both checks avoid an out of bound access
@@ -102,7 +89,6 @@ void AInteractAnim::AnimSet(const bool SetToMesh) {
 		Anim->TStart = Anim->TRoot->GetRelativeTransform();
 		Anim->TEnd = Trans[State%Trans.Num()];
 	}
-	if (!SetToMesh) return;
 }
 
 void AInteractAnim::AnimBegin_Implementation() {

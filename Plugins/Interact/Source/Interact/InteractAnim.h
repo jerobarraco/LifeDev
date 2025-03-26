@@ -54,7 +54,7 @@ public:
 	// might be good to rework this, texts, sfx_start and sfx_stop
 
 	// triggered when anim starts. Closed, open. Try to use 'SFXs' instead.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim", meta=(DeprecatedProperty))
 	TArray<TObjectPtr<USoundBase>> SFX_Start;
 	// triggered when anim ends. Closed, Open.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
@@ -81,7 +81,7 @@ protected:
 
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
-	void AnimSet(const bool SetToMesh = true);
+	void AnimSet();
 
 	// note there's no animUpdate. because it's quite costly and almost never needed.
 	// so it's specified when needed.
@@ -89,12 +89,10 @@ protected:
 	// Called when the animation begins. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimBegin();
-	virtual void AnimBegin_Implementation();
 
 	// Called when the animation end. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimEnd();
-	virtual void AnimEnd_Implementation();
 	
 	// The animator, by default set up for the mesh material and iroot.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
