@@ -14,5 +14,5 @@ public:
 	ATvI00();
 
 protected:
-	virtual void SetState_Implementation(int32 NewState) override;
+	virtual void SetState_Implementation(const int32 NewState) override;
 };

@@ -135,9 +135,31 @@ void AInteract::Reset() {
 	// SetState(0);
 }
 
+void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
+	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
+		__func__, NewState, *Label.ToString());
+	// this duplicates SetState. make sure to modify that one too.
+	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
+
+	State = NewState;
+	SetText();
+
+	if (UseSFX && UseAttachedSFX && SFX && State >=0 && State < SFXs.Num() && SFXs[State]) {
+		SFX->SetSound(SFXs[State]);
+		SFX->SetAutoActivate(true);
+	}
+	
+	if (UseParts && Emitter && State >=0 && State < Particles.Num() && Particles[State]) {
+		Emitter->SetAsset(Particles[State]);
+		Emitter->SetAutoActivate(true);
+	}
+}
+
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *Label.ToString());
+	// this duplicates SetStateNow. make sure to modify that one too.
+
 	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
 
 	State = NewState;

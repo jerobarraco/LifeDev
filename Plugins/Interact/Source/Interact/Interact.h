@@ -90,7 +90,12 @@ public:
 	// If StateNum ==1 this will might get called with the same state as current (might change, but probably not)
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
-	virtual void SetState_Implementation(const int32 NewState);
+
+	// this is _similar_ to SetState. it's meant to be called from the constructor, or when a state needs to be set instantly, or skipping aspects.
+	// but mostly constructor, the rest is side effect, and not a priority.
+	// TODO im pretty sure nativeevents and constructor are not compatible.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
+	void SetStateNow(const int32 NewState, const bool UseSFX = false, const bool UseParts = false);
 
 	// this function has no documentation, oh noes, is so complicated i can't even
 	// begin to describe it. too bad.
@@ -259,10 +264,9 @@ protected:
 	UFUNCTION()
 	void Grab(const bool IsGrab, UCInteractor* const NewParent);
 
-	// Set the current text on the CInteract. Called on SetState.
-	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
+	// Set the current text on the CInteract. Called on SetState, BeginPlay and by SetStateNow.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
-	virtual void SetText_Implementation();
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.

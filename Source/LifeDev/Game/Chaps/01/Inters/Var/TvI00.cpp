@@ -6,7 +6,7 @@ ATvI00::ATvI00():Super() {
 	UseItemDlgs = {{"Batts", "TV00xBatts"}};
 }
 
-void ATvI00::SetState_Implementation(int32 NewState) {
+void ATvI00::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	TriggerDlg = IsClosed() ? "": "TV00_T";
 }
