@@ -24,6 +24,7 @@
 		}
 	],
 	"Plugins": [
-		{"Name": "JUtils", "Enabled": true}
+		{"Name": "JUtils", "Enabled": true},
+		{"Name": "Niagara", "Enabled": true}
 	]
 }
