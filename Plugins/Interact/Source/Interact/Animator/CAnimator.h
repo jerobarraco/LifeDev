@@ -55,6 +55,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	FORCEINLINE float GetProgress() const { return Progress; }
+
+	// Override this to actually set the effect that you implement.
+	// Be careful as this can be called in the constructor of the owner. (see InteractAnim::SetNow)
+	// override me on child classes :) But call the parent!! (Progress can be read directly. it's a member.)
+	// does not trigger OnUpdate when called directly, only when triggered by Tick.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction, AdvancedDisplay))
+	void Update(const float Alpha);
 	
 	// a tick function for when you need to use this class somewhere else.
 	UFUNCTION(BlueprintCallable)
@@ -117,20 +124,14 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	// override me on child classes :) But call the parent!! (Progress can be read directly. it's a member.)
-	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
-	void Update(const float Alpha);
-
 	// Called when the animation ends. override me on child classes :)
 	// But call the parent.
 	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void End();
-	virtual void End_Implementation();
 
 	// override me on child classes :) But call the parent.
 	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void Begin();
-	virtual void Begin_Implementation();
 
 	// called by a parent component's update
 	UFUNCTION() // bound

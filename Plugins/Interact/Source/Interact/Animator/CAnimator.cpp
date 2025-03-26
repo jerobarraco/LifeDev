@@ -95,6 +95,8 @@ void UCAnimator::DoTick(const float DT) {
 
 	Update(Alpha); // update child objects
 
+	// call from outside so it's triggered once all the overwritten functions are finished.
+	// has the nice side effect that i can call update on constructor.
 	OnUpdate.Broadcast(Progress, Alpha);
 
 	/// restart if needed
