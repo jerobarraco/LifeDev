@@ -14,10 +14,10 @@ ALSwitch::ALSwitch():Super() {
 	StateNum = 2;
 
 	// interacts start "off/closed"
-	// using toggle since sometimes it desyncs from the lights
+	// using "toggle" since sometimes it desyncs from the lights
 	Texts = {
-		NSLOCTEXT("Switch00", "TurnOn", "Toggle"),
-		NSLOCTEXT("Switch00", "TurnOff", "Toggle"),
+		NSLOCTEXT("Switch00", "TurnOn", "Turn On"),
+		NSLOCTEXT("Switch00", "TurnOff", "Turn Off"),
 	};
 	
 	UseAnim = true;

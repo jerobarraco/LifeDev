@@ -80,7 +80,8 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 }
 
 void AInteractAnim::AnimSet() {
-	if (!UseAnim || UNLIKELY(!Anim) || !Anim->TRoot) return;
+	if (!UseAnim || UNLIKELY(!Anim)) return;
+	// important not to check for troot here for things like lights
 	
 	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
@@ -92,7 +93,7 @@ void AInteractAnim::AnimSet() {
 		Anim->IsReversed = IsClosed(); // IsReversed();
 	} else {
 		// using troot since it could be changed in any child or parent
-		Anim->TStart = Anim->TRoot->GetRelativeTransform();
+		Anim->TStart = Anim->TRoot ? Anim->TRoot->GetRelativeTransform() : Anim->TStart;
 		Anim->TEnd = Trans[State%Trans.Num()];
 	}
 }
