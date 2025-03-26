@@ -23,6 +23,18 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Anim->OnEnd.RemoveAll(this);
 	Super::EndPlay(EndPlayReason);
 }
+void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
+	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
+
+	if (UseAnim && Anim && Anim->TRoot) {
+		AnimSet();
+		if (Trans.Num()<1) {
+			Anim->TRoot->SetRelativeTransform()
+			
+		}
+	}
+}
+
 
 void AInteractAnim::SetState_Implementation(const int32 NewState) { // called by dotrigger
 	Super::SetState_Implementation(NewState);
@@ -54,6 +66,7 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 		return;
 	}
 
+	AnimSet(false);
 	// both checks avoid an out of bound access
 	if (Trans.Num() == 0 || State < 0) {
 		// this creates so many issues. notice how it's set.
@@ -71,6 +84,25 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 	// not calling PlaySet on purpose. since that could break things like the light.
 	// or if a child wants to do something weird.
 	Anim->Activate(true);
+}
+
+void AInteractAnim::AnimSet(const bool SetToMesh) {
+	if (!UseAnim || !Anim || !Anim->TRoot) return;
+	
+	// both checks avoid an out of bound access
+	if (Trans.Num() == 0 || State < 0) {
+		// this creates so many issues. notice how it's set.
+		// this plays AFTER the state has changed.
+		// which means: if it's open, it was closed, so it needs to play from Closed to Open
+		// closed means Alpha 0, open is Alpha 1 (0= left 1= right on the curve)
+		// Not reversed is 0 to 1 (close->Open), reversed is 1 to 0 (open->Close)
+		Anim->IsReversed = IsReversed();
+	} else {
+		// using troot since it could be changed in any child or parent
+		Anim->TStart = Anim->TRoot->GetRelativeTransform();
+		Anim->TEnd = Trans[State%Trans.Num()];
+	}
+	if (!SetToMesh) return;
 }
 
 void AInteractAnim::AnimBegin_Implementation() {

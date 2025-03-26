@@ -30,6 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE UCAnimatorMix* GetAnim() const {return Anim;}
 
+	virtual void SetStateNow_Implementation(const int32 NewState, const bool UseSFX = false, const bool UseParts = false) override;
+	
 	// whether it will trigger animations using the Anim component.
 	// this gets abused in several situations. like when changing the mobility,
 	// when strobe is disabled on lights, on beginplay, and many, many more. :)
@@ -79,6 +81,7 @@ protected:
 
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
+	void AnimSet(const bool SetToMesh = true);
 
 	// note there's no animUpdate. because it's quite costly and almost never needed.
 	// so it's specified when needed.

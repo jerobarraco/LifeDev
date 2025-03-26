@@ -120,7 +120,6 @@ protected:
 	// override me on child classes :) But call the parent!! (Progress can be read directly. it's a member.)
 	UFUNCTION(BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction))
 	void Update(const float Alpha);
-	virtual void Update_Implementation(const float Alpha);
 
 	// Called when the animation ends. override me on child classes :)
 	// But call the parent.
