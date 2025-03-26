@@ -32,11 +32,8 @@ ALStepC0S000::ALStepC0S000():Super() {
 		CDL1(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLOutA(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CRoom2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
 	if (LIKELY(CDLOutA.Succeeded())) DL_Load.Add(CDLOutA.Object);
-	if (LIKELY(CRoom2.Succeeded())) DL_Load.Add(CRoom2.Object);
 }
 
 void ALStepC0S000::TryStart_Implementation() {
