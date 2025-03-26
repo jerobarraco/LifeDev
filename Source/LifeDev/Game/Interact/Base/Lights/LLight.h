@@ -45,8 +45,6 @@ protected:
 	void AnimUpdate(const float P, const float A);
 
 	UFUNCTION() // bind
-	void TurnOn();
-	UFUNCTION() // bind
 	void SetFB(const float Value);
 	UFUNCTION() // bind
 	void FeatUpdated(const EFeat Feat, const bool bEnabled);

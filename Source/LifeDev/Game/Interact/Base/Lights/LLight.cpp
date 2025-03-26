@@ -207,10 +207,6 @@ void ALLight::AnimUpdate_Implementation(const float P, const float A) {
 	// SFX_Flicker->SetVolumeMultiplier(v); // this one doesn't work well every second trigger
 }
 
-void ALLight::TurnOn() {
-	SetState(1);
-}
-
 void ALLight::SetFB(const float Value) {
 	const bool ShouldFlicker = Value > FlickrOnFB;
 	// activate and deactivate. only run if needed.
