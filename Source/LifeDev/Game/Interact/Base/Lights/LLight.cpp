@@ -148,7 +148,7 @@ void ALLight::BeginPlay() {
 	SetFBFlicker(FlickrOnFB);
 
 	// don't set the state here. it will break the child. we should not need it
-	World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
+	// World->GetTimerManager().SetTimerForNextTick(this, &ALLight::TurnOn);
 }
 
 void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -177,6 +177,13 @@ void ALLight::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Settings)) Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALLight::FeatUpdated);
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALLight::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
+	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
+	const bool bClosed = IsClosed();
+	const float P = bClosed ? 0 : 1;
+	AnimUpdate(P, P);
 }
 
 void ALLight::SetState_Implementation(const int32 NewState) {

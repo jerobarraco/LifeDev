@@ -33,16 +33,15 @@ public:
 	// it doesn't clear the FlickerOnFB value.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void StopFBFlicker();
-
+	virtual void SetStateNow_Implementation(const int32 NewState, const bool UseSFX = false, const bool UseParts = false) override;
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetState_Implementation(const int32 NewState) override;
 
 	// used to animate the light. in case of no A_Strobe this is called only once with the final value
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void AnimUpdate(const float P, const float A);
-	virtual void AnimUpdate_Implementation(const float P, const float A);
 
 	UFUNCTION() // bind
 	void TurnOn();
