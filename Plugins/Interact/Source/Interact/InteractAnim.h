@@ -20,7 +20,7 @@ public:
 	// this also controls the "reversed" flag of the anim.
 	// If you need to _not_ use the reversed animation then use the "Trans" property.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool IsClosed() const { return State % 2 == 0; }
+	FORCEINLINE bool IsEven() const { return State % 2 == 0; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE UCAnimatorMix* GetAnim() const {return Anim;}

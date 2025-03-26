@@ -90,7 +90,7 @@ void AInteractAnim::AnimSet() {
 		// which means: if it's open, it was closed, so it needs to play from Closed to Open
 		// closed means Alpha 0, open is Alpha 1 (0= left 1= right on the curve)
 		// Not reversed is 0 to 1 (close->Open), reversed is 1 to 0 (open->Close)
-		Anim->IsReversed = IsClosed(); // IsReversed();
+		Anim->IsReversed = IsEven(); // IsReversed();
 	} else {
 		// using troot since it could be changed in any child or parent
 		Anim->CopyTStart(); // this will reset to the current place. so that the transition is always from Current to New

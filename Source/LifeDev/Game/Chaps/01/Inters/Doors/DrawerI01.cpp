@@ -8,5 +8,5 @@
 
 void ADrawerI01::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
-	TriggerDlg = IsClosed() ? "": "DR01_T";
+	TriggerDlg = IsEven() ? "": "DR01_T";
 }

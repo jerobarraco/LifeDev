@@ -137,7 +137,7 @@ void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ATv00::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 
-	const bool _IsOpen = !IsClosed();
+	const bool _IsOpen = !IsEven();
 	Noise->Fade(_IsOpen);
 
 	// force instant change if no strobe
