@@ -93,8 +93,9 @@ void AInteractAnim::AnimSet() {
 		Anim->IsReversed = IsEven(); // IsReversed();
 	} else {
 		// using troot since it could be changed in any child or parent
-		Anim->CopyTStart(); // this will reset to the current place. so that the transition is always from Current to New
-		// Anim->TStart = Anim->TRoot ? Anim->TRoot->GetRelativeTransform() : Anim->TStart;
+		// this will reset to the current place. so that the transition is always from Current to New
+		// this is always IsReversed = false so it's always animating towards the new transform
+		Anim->CopyTStart();
 		Anim->TEnd = Trans[State%Trans.Num()];
 	}
 }

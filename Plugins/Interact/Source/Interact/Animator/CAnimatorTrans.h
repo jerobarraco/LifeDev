@@ -18,8 +18,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void CopyTStart();
+
 	// uses accumulated (relative to start) version, or not.
-	// When "IsAdditive" it is going to set "TStart" automatically to the current transform of the AnimRoot on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	bool IsAdditive = true;
 
@@ -27,12 +27,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	bool UseSweep = false;
 	
-	// The animation transform. You don't necessarily need to set this up, but you can change it.
-	// When "IsAdditive" it is going to be automatically set to the current transform of the AnimRoot on begin play.
+	// The start transform. You need to set this.
+	// This is the RelativeTransform for the TRoot.
+	// On IsAdditive, this is the base of the transform (the origin).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::ZeroVector);
 	
-	// The animation transform
+	// The target transform. If IsAdditive, this is added onto TStart.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
 	FTransform TEnd = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::ZeroVector);
 
