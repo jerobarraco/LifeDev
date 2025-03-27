@@ -4,8 +4,6 @@
 
 #include "CQuickMesh.h"
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
-#include "Interact/Animator/CAnimatorMix.h"
 
 ALSwitch::ALSwitch():Super() {
 	UseFade = false;
@@ -20,9 +18,6 @@ ALSwitch::ALSwitch():Super() {
 		NSLOCTEXT("Switch00", "TurnOn", "Toggle"),
 		NSLOCTEXT("Switch00", "TurnOff", "Toggle"),
 	};
-	
-	UseAnim = true;
-	Anim->Duration = .25;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn"));
@@ -31,19 +26,8 @@ ALSwitch::ALSwitch():Super() {
 
 	Interact->SetRelativeLocation(FVector(7.500000,-7.500000,12.500000));
 	Interact->SetBoxExtent(FVector(5));
-	
-	Base = CreateDefaultSubobject<UCQuickMesh>(TEXT("Base"));
-	Base->SetupAttachment(Root);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CBase(TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/base"));
-	Base->SetStaticMesh(CBase.Object);
-	Base->SetRelativeLocation(FVector(0,0,0));
-	AnimFade->Meshes.Add(Base); // unused but...
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
 	SFXs = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
-
-	Anim->IsAdditive = true;
-	SetStateNow(1); // start on. most lights start on.
 }

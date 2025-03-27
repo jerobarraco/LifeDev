@@ -24,7 +24,7 @@ ALSwitch01::ALSwitch01(): Super() {
 		FTransform(State2Rot, Loc),
 		FTransform(State3Rot, Loc),
 	};
-	IRoot->SetRelativeTransform(Trans[0]);
+	// IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -34,4 +34,5 @@ ALSwitch01::ALSwitch01(): Super() {
 
 	Interact->SetRelativeLocation(FVector(7.500000,-10.000000,12.500000));
 	Interact->SetBoxExtent(FVector(5)); // left like this to avoid issues due to overflow
+	SetStateNow(1);
 }

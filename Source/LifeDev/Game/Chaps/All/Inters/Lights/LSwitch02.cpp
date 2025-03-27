@@ -17,9 +17,8 @@ ALSwitch02::ALSwitch02(): Super() {
 	Anim->IsAdditive = false;
 	Anim->TStart = FTransform(State0Rot, Loc, FVector(1));
 	Anim->TEnd = FTransform(State1Rot, Loc, FVector(1));
-	IRoot->SetRelativeTransform(Anim->TStart); // I could just use TStart and TEnd for this
+	// IRoot->SetRelativeTransform(Anim->TStart); // I could just use TStart and TEnd for this
 	// IRoot->SetRelativeTransform(Trans[0]); // I could just use TStart and TEnd for this
-	
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn2"));
@@ -28,4 +27,6 @@ ALSwitch02::ALSwitch02(): Super() {
 
 	Interact->SetRelativeLocation(FVector(7.500000,-7.5,15));
 	Interact->SetBoxExtent(FVector(5)); // luckily with this button size it doesn't protrude that much
+
+	SetStateNow(1);
 }
