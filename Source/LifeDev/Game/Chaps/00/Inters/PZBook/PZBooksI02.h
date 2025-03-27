@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Chaps/All/Inters/Var/Books01.h"
+#include "LifeDev/Game/Chaps/All/Inters/Books/Books01.h"
 
 #include "PZBooksI02.generated.h"
 
