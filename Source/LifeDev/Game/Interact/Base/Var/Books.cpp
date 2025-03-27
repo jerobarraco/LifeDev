@@ -71,7 +71,7 @@ void ABooks::Constructor() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
-	SetAutoActivate(false);
+	SetAutoActivate(false); // important since i use these as decoration a lot
 	SetMobility(EComponentMobility::Static);
 }
 
