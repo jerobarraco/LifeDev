@@ -65,7 +65,9 @@ bool UStory::StartNow(AStep* const NewStep) {
 
 	// start before broadcasting start.
 	// important so that it's actually ready for whom-ever is subscribed to the delegate
+	// specially since some objects that want to react to this, might be on one of the loaded data layers.
 	Current->TryStart();
+
 	OnStart.Broadcast(Current);
 
 	return true;

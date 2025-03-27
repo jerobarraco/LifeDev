@@ -120,13 +120,11 @@ protected:
 	// be sure not to do anything that would finish the step here, use Start for that (and even then use a timer for next tick).
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
 	void TryStart() ;
-	virtual void TryStart_Implementation();
 	
 	// don't call this one directly. called by the system.
 	// Override to perform whatever the step needs to do at the end.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void Stop();
-	virtual void Stop_Implementation();
 
 	// Will be triggered when the wait time ends.
 	// if the WaitTime is <=0 it will be called next frame after parent start.
@@ -134,7 +132,6 @@ protected:
 	// this is a good place to do checks that might finish the step.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void Start();
-	virtual void Start_Implementation();
 
 	// gets called when UseDebug is set. happens on postwait
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
