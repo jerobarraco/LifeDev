@@ -13,8 +13,4 @@ class ALSwitch00 : public ALSwitch {
 
 public:
 	ALSwitch00();
-
-protected:
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCQuickMesh> Base = nullptr;
 };

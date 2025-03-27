@@ -23,7 +23,7 @@ void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 		TStart.BlendFromIdentityAndAccumulate(
 			TNew, TEnd, (const ScalarRegister) Alpha);
 		// TNew.Accumulate(TEnd, (const ScalarRegister) Alpha); // not what i want, does something different with the scale.
-	}else {
+	} else {
 		// Thanks, Tim! this actually works very well!
 		TNew.BlendWith(TEnd, Alpha);
 	}

@@ -31,7 +31,7 @@ public:
 	// This is the RelativeTransform for the TRoot.
 	// On IsAdditive, this is the base of the transform (the origin).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")
-	FTransform TStart = FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
+	FTransform TStart = FTransform::Identity;
 	
 	// The target transform. If IsAdditive, this is added onto TStart.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transform")

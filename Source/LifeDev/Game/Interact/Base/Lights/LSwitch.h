@@ -12,4 +12,8 @@ class LIFEDEV_API ALSwitch: public ALInteract {
 
 public:
 	ALSwitch();
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> Base = nullptr;
 };
