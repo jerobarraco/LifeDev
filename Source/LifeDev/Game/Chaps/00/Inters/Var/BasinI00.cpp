@@ -16,6 +16,9 @@ ABasinI00::ABasinI00():Super() {
 	RewardFlag = LDConsts::Flags::Game::CH0::Basin;
 	DisableWhileAnim = false; // we will disable manually
 	UseRewardDestroy = false; // one shot but won't disappear nor it will fade
+
+	UseHint = true;
+	HintCondition = "{Inter.TriggerL.DoorI05}";
 	
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
