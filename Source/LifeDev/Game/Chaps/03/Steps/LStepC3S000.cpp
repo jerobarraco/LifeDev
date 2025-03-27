@@ -40,6 +40,10 @@ ALStepC3S000::ALStepC3S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
 	if (LIKELY(CDL3.Succeeded())) DL_Unload.Add(CDL3.Object);
+	
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLR2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
+	if (LIKELY(CDLR2.Succeeded())) DL_Unload.Add(CDLR2.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,
