@@ -26,10 +26,6 @@ void AInteractAnim::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
 	Super::SetStateNow_Implementation(NewState, UseSFX, UseParts);
 
-	// important to initialize this or IsAdditive will set the scale to 0. done here for the same reason as comment below.
-	if ((UseAnim && LIKELY(Anim) && Anim->TRoot) && (Trans.Num() == 0 || State < 0))
-		Anim->CopyTStart();
-
 	AnimSet();
 	// "Is this too much voodoo?" -- Terry Davis
 	// usually i would put this inside the previous func, but since AnimPlay also calls it,
