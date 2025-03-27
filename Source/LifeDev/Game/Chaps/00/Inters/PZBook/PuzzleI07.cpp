@@ -27,6 +27,6 @@ void APuzzleI07::BeginPlay() {
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 	const bool WasDone = Flags->Has(FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString()));
-	SetActives(!WasDone);
+	SetActives(!WasDone); // TODO generalize this to LInteract
 }
 
