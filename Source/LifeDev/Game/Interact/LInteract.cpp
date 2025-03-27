@@ -107,6 +107,12 @@ void ALInteract::BeginPlay() {
 	Flags = World->GetSubsystem<UFlags>();
 	Flashback = World->GetSubsystem<UFlashback>();
 	Story = World->GetSubsystem<UStory>();
+
+	if (UNLIKELY(UseActiveOnce)) {
+		// intentionally not enabling, to not step to other custom code
+		if (Flags->Has(FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString())))
+			SetActive(false);
+	}
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {

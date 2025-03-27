@@ -76,7 +76,10 @@ public:
 	// (will replace your material and incur in extra draw calls).
 	// Important to set it when using the Reward stuff and UseRewardDestroy.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseFade = false; 
+	bool UseFade = false;
+	// will deactivate if already triggered. by checking the flags, on begin play.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool UseActiveOnce = false;
 #pragma endregion
 
 #pragma region lock
