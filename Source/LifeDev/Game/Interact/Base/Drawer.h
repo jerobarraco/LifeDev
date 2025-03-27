@@ -11,4 +11,5 @@ class LIFEDEV_API ADrawer: public ADoorish {
 
 public:
 	ADrawer();
+	virtual void BeginPlay() override;
 };
