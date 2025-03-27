@@ -8,7 +8,6 @@
 AInteractAnim::AInteractAnim():Super() {
 	Anim = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimatorMix"));
 	Anim->TRoot = IRoot;
-	if (Anim->IsAdditive) Anim->CopyTStart();
 	// can't do this, the order of constructors fails. Anim->Mat = Mesh->GetMaterial(0);
 }
 
