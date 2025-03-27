@@ -117,7 +117,7 @@ public:
 	bool UseHint = false;
 	
 	// experimental, will set UseHint to true when the condition is true & >0
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=Setup, AdvancedDisplay)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint")
 	FString HintCondition;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
