@@ -108,9 +108,10 @@ void ALInteract::BeginPlay() {
 	Flashback = World->GetSubsystem<UFlashback>();
 	Story = World->GetSubsystem<UStory>();
 
-	if (UNLIKELY(UseActiveOnce)) {
+	if (UNLIKELY(UseActiveOnce)) { // todo change if its used more
 		// intentionally not enabling, to not step to other custom code
-		if (Flags->Has(FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString())))
+		const FName NTrigger = FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
+		if (UNLIKELY(Flags->Has(NTrigger)))
 			SetActive(false);
 	}
 }
