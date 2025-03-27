@@ -37,7 +37,7 @@ void UFlags::Rem(const FName& Name) {
 }
 
 float UFlags::Get(const FName Name, const float Default) const {
-	if (UNLIKELY(Name.IsNone())) return 0.0;
+	if (UNLIKELY(Name.IsNone())) return 0.0; // important so that Has return false
 
 	const float* const PreFlag = Flags.Find(Name);
 	const float Val = PreFlag ? *PreFlag : Default;

@@ -30,15 +30,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Rem(const FName& Name);
 
-	// returns the current value of a flag, or the default.
+	// returns the current value of a flag, or the default. None always returns 0.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	float Get(const FName Name, const float Default=0) const;
-	// Returns whether a flag is set. regardless of the value. it can be 0.
+	// Returns whether a flag is set. regardless of the value. it can be 0. None always returns false.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	bool IsSet(const FName& Name) const;
 
 	// Returns whether a flag is set to >=1.
-	// This might be a bit slower than calling Get, unless you are also checking if it's >=1.
+	// This might be a bit slower than calling Get, unless you are also checking if it's >=1. None always returs false.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	bool Has(const FName& Name) const;
 

@@ -130,7 +130,7 @@ protected:
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Rewarded();
-	virtual void Rewarded_Implementation() {}
+	virtual void Rewarded_Implementation() {};
 
 	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.
