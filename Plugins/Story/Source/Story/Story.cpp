@@ -53,6 +53,8 @@ bool UStory::StartNow(AStep* const NewStep) {
 	// stop the current step before starting a new one.
 	Stop();
 
+	// important to set before TryStart and ToggleStepLayers, so spawned objects can check for current step
+	// allow to set nullptr
 	Current = NewStep;
 	if (UNLIKELY(!IsValid(Current))) {
 		UE_LOG(LogStory, Log, TEXT("%hs -> Invalid step. Not starting."), __func__);
