@@ -105,6 +105,7 @@ void ULSetGameUI::Load_Implementation() {
 }
 
 void ULSetGameUI::ClearConfig() {
+	const FString& Dir = FPaths::ProjectUserDir();
 	
 }
 
