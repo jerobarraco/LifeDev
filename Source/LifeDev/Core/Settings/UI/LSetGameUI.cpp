@@ -104,6 +104,10 @@ void ULSetGameUI::Load_Implementation() {
 	if (LIKELY(FeatsDbg)) FeatsDbg->Load();
 }
 
+void ULSetGameUI::ClearConfig() {
+	
+}
+
 void ULSetGameUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (LIKELY(SLDiagAutoTime)) {

@@ -21,6 +21,9 @@ public:
 	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override;
 
+	UFUNCTION(BlueprintCallable)
+	void ClearConfig();
+
 protected:
 	virtual void NativeOnInitialized() override;
 	UFUNCTION()
