@@ -5,7 +5,7 @@
 
 #include "Books01.generated.h"
 
-// base class for interactable books. used for puzzles.
+// base class for interactable books. used for puzzles. defaults to 3 books.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ABooks01: public ABooks {
 	GENERATED_BODY()
