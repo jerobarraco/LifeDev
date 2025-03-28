@@ -5,6 +5,7 @@
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "HAL/FileManagerGeneric.h"
 
 #include "Interact/Interact.h"
 #include "JUtils/Misc/JUtilsSys.h"
@@ -105,8 +106,16 @@ void ULSetGameUI::Load_Implementation() {
 }
 
 void ULSetGameUI::ClearConfig() {
-	const FString& Dir = FPaths::ProjectUserDir();
-	
+	if (UNLIKELY(UJUtilsSys::IsEditor())) {
+		UE_LOG(LogTemp, Log, TEXT("%hs What? i just saved you. i can't let you do that dave."), __func__);
+		return;
+	}
+
+	const FString& Dir = FPaths::Combine(FPaths::ProjectUserDir(), "Saved", "Config");
+	IPlatformFile& File = FPlatformFileManager::Get().GetPlatformFile();
+	UE_LOG(LogTemp, Log, TEXT("%hs Nuking %s"), __func__, *Dir);
+	if (File.DirectoryExists(*Dir))
+		FFileManagerGeneric::Get().DeleteDirectory(*Dir, false, true);
 }
 
 void ULSetGameUI::NativeOnInitialized() {
