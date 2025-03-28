@@ -2,13 +2,10 @@
 
 #include "Drawer02.h"
 
-#include "Components/AudioComponent.h"
-
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer02::ADrawer02():Super() {
-	SFX->SetRelativeLocation(FVector(60.000000,0.000000,20.000000));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet00-drawer1.Cabinet00-drawer1"));
 	Mesh->SetStaticMesh(CMesh.Object);

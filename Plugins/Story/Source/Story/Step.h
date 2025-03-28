@@ -93,7 +93,7 @@ public:
 	// Data layers to unload
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TObjectPtr<UDataLayerAsset>> DL_Unload;
-	
+
 	// set to true to use debug
 	inline static bool Debug = false;
 
