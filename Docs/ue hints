@@ -150,3 +150,4 @@ https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/36
 # set where the game stores the config and savegame files
 	https://forums.unrealengine.com/t/how-to-change-the-saved-folder-location/293846/34
 	add parameter -UserDir=xxx
+	also by defining UE_SAVED_DIR_OVERRIDE
