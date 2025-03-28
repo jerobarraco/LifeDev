@@ -4,18 +4,20 @@
 #pragma once
 #include "CoreMinimal.h"
 
-#include "Components/HorizontalBox.h"
+#include "Components/ScrollBox.h"
+
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatsGroup.generated.h"
 
+class UScrollBox;
 class ULFeatCheck;
 class UTextBlock;
 class ULSettings;
 
 // a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULFeatsGroup: public UHorizontalBox {
+class LIFEDEV_API ULFeatsGroup: public UScrollBox {
 	GENERATED_BODY()
 
 public:

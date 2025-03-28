@@ -2,12 +2,15 @@
 
 #include "LFeatsGroup.h"
 
+#include "Components/ScrollBox.h"
+
 #include "LFeatCheck.h"
 
 ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 	static ConstructorHelpers::FClassFinder<ULFeatCheck>
 		CCheck(TEXT("/Game/LifeDev/Core/Settings/Feats/FeatCheck_W"));
 	CheckClass = CCheck.Succeeded() ? CCheck.Class.Get() : ULFeatCheck::StaticClass();
+	SetOrientation(Orient_Horizontal);
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
@@ -26,8 +29,8 @@ void ULFeatsGroup::FeatsCreate() {
 		ULFeatCheck* const C = CreateWidget<ULFeatCheck>(this, CheckClass);
 		if (UNLIKELY(!IsValid(C))) continue;
 
-		C->SetPadding(ChildPadding);
 		AddChild(C); // maybe this fixes the crash
+		C->SetPadding(ChildPadding);
 		C->SetUp(F.Key, F.Value);
 		Feats.Add(F.Key, C);
 	}
