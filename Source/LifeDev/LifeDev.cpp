@@ -2,8 +2,6 @@
 
 #include "LifeDev.h"
 
-#define UE_SAVED_DIR_OVERRIDE "MyData"
-
 #include "Modules/ModuleManager.h"
 #include "ShaderCore.h"
 

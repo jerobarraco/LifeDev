@@ -23,5 +23,10 @@ public class LifeDev : ModuleRules {
 			"JUtils", "Interact", "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
 		});
+		// force user dir. this saves headaches when managing demo/playtest/release builds through steam.
+		// it also saves a lot of heaches to me when developing multiple versions
+		// itchio users might have issues with this though :/
+		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/2?u=nande
+		PublicDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 	}
 }
