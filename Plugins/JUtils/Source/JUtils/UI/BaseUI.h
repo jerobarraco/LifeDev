@@ -17,11 +17,9 @@ class JUTILS_API UBaseUI: public UUserWidget {
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show();
-	virtual void Show_Implementation();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
-	virtual void Hide_Implementation();
 	
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done(const int32 RetVal = 0);
@@ -32,6 +30,10 @@ public:
 	// will auto-unbind from done on hide
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool AutoUnbind = true;
+
+	// when true. it will un/pause on hide/show.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	bool UsePause = false;
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FBaseUIDone OnDone;
