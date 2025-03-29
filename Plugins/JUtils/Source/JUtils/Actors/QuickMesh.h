@@ -6,7 +6,8 @@
 #include "QuickMesh.generated.h"
 
 class UCQuickMesh;
-// base class for an optimized mesh. by default it well have EVERYTHING disabled, mostly.
+
+// base class for an optimized mesh. by default, it will have EVERYTHING disabled, mostly.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils), meta=(BlueprintSpawnableComponent))
 class JUTILS_API AQuickMesh: public AActor {
 	GENERATED_BODY()
@@ -14,6 +15,6 @@ class JUTILS_API AQuickMesh: public AActor {
 public:
 	AQuickMesh();
 
-	UPROPERTY(BlueprintReadWrite)
-	UCQuickMesh* Mesh = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TObjectPtr<UCQuickMesh> Mesh = nullptr;
 };
