@@ -8,7 +8,7 @@
 class UCQuickMesh;
 
 // base class for an optimized mesh. by default, it will have EVERYTHING disabled, mostly.
-UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils))
 class JUTILS_API AQuickMesh: public AActor {
 	GENERATED_BODY()
 
