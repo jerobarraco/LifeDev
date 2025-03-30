@@ -73,7 +73,7 @@ UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	return World;
 }
 
-void UJUtilsMisc::ShowUI(const UObject* const O, const bool Show,  UWidget* const Focus, const bool SetPaused) {
+void UJUtilsMisc::ShowUI(const UObject* const O, const bool Show,  UWidget* const Focus) {
 	if (UNLIKELY(!IsValid(O))) return;
 
 	const UWorld* const World = O->GetWorld();
@@ -88,8 +88,6 @@ void UJUtilsMisc::ShowUI(const UObject* const O, const bool Show,  UWidget* cons
 	} else UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 
 	Controller->SetShowMouseCursor(Show);
-
-	if (SetPaused) UGameplayStatics::SetGamePaused(World, Show);
 }
 
 void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {

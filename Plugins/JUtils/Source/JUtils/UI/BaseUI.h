@@ -31,10 +31,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool AutoUnbind = true;
 
-	// when true. it will un/pause on hide/show.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	bool UsePause = false;
-
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FBaseUIDone OnDone;
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)

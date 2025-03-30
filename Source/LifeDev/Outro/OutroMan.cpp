@@ -33,7 +33,7 @@ void AOutroMan::AddUI() {
 	if (Settings && Settings->Save)
 		UI->SetFlags(Settings->Save->GetFlags());
 
-	UJUtilsMisc::ShowUI(this, true, UI, false);
+	UJUtilsMisc::ShowUI(this, true, UI);
 }
 
 void AOutroMan::Quit() {

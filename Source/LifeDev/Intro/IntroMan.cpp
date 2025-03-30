@@ -37,7 +37,7 @@ void AIntroMan::AddUI() {
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 	UI->OnSlotsDone.AddDynamic(this, &AIntroMan::SlotsDone);
 
-	UJUtilsMisc::ShowUI(this, true, UI, false);
+	UJUtilsMisc::ShowUI(this, true, UI);
 }
 
 void AIntroMan::Done() {

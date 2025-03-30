@@ -55,8 +55,7 @@ public:
 #pragma region UI
 	// Shows/hides an ui. it will also show the mouse if needed.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ShowUI(const UObject* const O, const bool Show,
-		UWidget* const Focus = nullptr, const bool SetPaused = false);
+	static void ShowUI(const UObject* O, bool Show, UWidget* const Focus = nullptr);
 
 	// this will set the ui scale factor. It will be saved on a config file.
 	// you can change it back on the editor under "Project Settings > Engine > User Interface > Application Scale"
