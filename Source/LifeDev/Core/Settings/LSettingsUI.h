@@ -43,6 +43,8 @@ protected:
 	void ShowDbg();
 	UFUNCTION()
 	void SetPause();
+	UFUNCTION()
+	void TimeUpd(UObject* const Obj, const FName Name, const float Alpha);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> CBScale;
@@ -58,4 +60,5 @@ protected:
 	TObjectPtr<UTextBlock> TTime;
 
 	FTimerHandle PauseTimer;
+	float PauseTime = .5;
 };

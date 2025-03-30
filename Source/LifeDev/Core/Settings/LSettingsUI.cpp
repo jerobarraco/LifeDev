@@ -7,6 +7,7 @@
 #include "Components/ComboBoxString.h"
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include "Interact/Animator/Anim.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
@@ -27,32 +28,55 @@ ULSettingsUI::ULSettingsUI():Super() {
 	AutoUnbind = false; // you only bind once.
 }
 
+namespace LDConsts { namespace Static {
+		static const FName TimeFade = "TimeFade";
+}}
+
 void ULSettingsUI::Show_Implementation() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	// SetVisibility(ESlateVisibility::Visible);
-	Super::Show_Implementation();
+	// the order matters.
+
+	Super::Show_Implementation(); // basically show
+
+	// start fading
 
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (LIKELY(Man)) Man->FadeFX(true);
-	
+
+	UAnim* const Anim = UAnim::Instance(this);
+	FAnimGenUpd U;
+	U.BindDynamic(this, &ULSettingsUI::TimeUpd);
+	if (LIKELY(Anim))
+		Anim->GenFade(LDConsts::Static::TimeFade, this, U, PauseTime); // read note inside TimeUpd
+
+	// then load
 	Load();
 
+	// finally set timer.
 	PauseTimer.Invalidate();
-	World->GetTimerManager().SetTimer(PauseTimer, this, &ULSettingsUI::SetPause, .5);
+	World->GetTimerManager().SetTimer(PauseTimer, this, &ULSettingsUI::SetPause, PauseTime);
 }
 
 
 void ULSettingsUI::Hide_Implementation() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-
+	// order matters
 	World->GetTimerManager().ClearTimer(PauseTimer);
 	PauseTimer.Invalidate();
 
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (LIKELY(Man)) Man->FadeFX(false);
+
+	UAnim* const Anim = UAnim::Instance(this);
+	if (LIKELY(Anim)) {
+		// clear previous
+		const FAnimGenUpd U;
+		Anim->GenFade(LDConsts::Static::TimeFade, this, U, 0);
+	}
+	TimeUpd(this, LDConsts::Static::TimeFade, 0);
 
 	Super::Hide_Implementation();
 
@@ -128,4 +152,11 @@ void ULSettingsUI::ShowDbg() {
 
 void ULSettingsUI::SetPause() {
 	UGameplayStatics::SetGamePaused(this, true);
+}
+
+void ULSettingsUI::TimeUpd(UObject* const Obj, const FName Name, const float Alpha) {
+	// because this animation is affected by the time dilation. the time is an exponential curve.
+	// in other words, it's going to slow down logarithmically. if the min dilation is too small, it could take forever.
+	// since the timer and the anim both use the same duration, this animation won't really reach the end. so we cancel it on hide.
+	UGameplayStatics::SetGlobalTimeDilation(this, FMath::Lerp(1, 0.2, Alpha));
 }
