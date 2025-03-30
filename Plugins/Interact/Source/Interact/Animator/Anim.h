@@ -16,11 +16,14 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, 
 DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Alpha);
 
 // TODO use this as param to call the functions
+// common stuff to be passed as parameter to all function
 USTRUCT(Blueprintable, BlueprintType)
 struct FAParams {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FName Name = NAME_None;
 	// the duration
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = -1;
@@ -30,9 +33,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Reversed = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Loop = false;
+	bool Loop = false; // TODO implement
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Bounce = false;
+	bool Bounce = false; // TODO implement
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -50,8 +53,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
 	
-	// UPROPERTY(BlueprintReadWrite, Transient)
-	// FAParams Params; // TODO
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FAParams Pars;
 
 	// the duration
 	UPROPERTY(BlueprintReadWrite, Transient)
