@@ -53,8 +53,6 @@ public:
 	// how much it has elapsed already
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Elapsed = 1.0;
-	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Reversed = false;
 
 	FORCEINLINE bool IsDone() const {
 		return FMath::IsNearlyEqual(Elapsed, Pars.Duration)
@@ -334,10 +332,7 @@ public:
 
 #pragma region gen
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
-	bool GenFade(const FName& Name, UObject* const Owner, const FAnimGenUpd& OnUpd, 
-		const float Duration = -1,
-		UCurveFloat* const Curve = nullptr, const bool Reversed = false
-	);
+	bool GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAParams& Pars);
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.

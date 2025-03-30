@@ -382,8 +382,9 @@ void(UAnim::* Done)(const Item&) ) {
 	return true;
 }
 
+
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
-const float To, const float Duration, UCurveFloat* const Curve) {
+						const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 	
@@ -477,13 +478,12 @@ const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
 	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
-bool UAnim::GenFade(const FName& Name, UObject* Owner, const FAnimGenUpd& OnUpd,
-const float Duration, UCurveFloat* const Curve, const bool Reversed) {
-	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
+bool UAnim::GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAParams& Pars) {
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Pars.Name.ToString(), Pars.Duration);
 	FAGen Item;
 	Item.OnUpdate = OnUpd;
-	Item.Reversed = Reversed; // TODO move this to the base stuff
-	const bool Ok = ItemSetup(Item, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
+	Item.Pars = Pars;
+	const bool Ok = ItemSetup(Item, Owner, Pars.Name, Pars.Curve, Pars.Duration, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
 }
 
@@ -561,7 +561,7 @@ void UAnim::ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr) {
 
 template <typename Type>
 bool UAnim::ItemsSetNow(const Type& Item, void(UAnim::* Done)(const Type&)) {
-	if (UNLIKELY(!FMath::IsNearlyZero(Item.Duration))) return false;
+	if (UNLIKELY(!FMath::IsNearlyZero(Item.Pars.Duration))) return false;
 
 	Item.SetVal(Item.To);
 	(this->*Done)(Item);

@@ -49,7 +49,8 @@ void ULSettingsUI::Show_Implementation() {
 	if (LIKELY(Anim)) {
 		FAnimGenUpd U;
 		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		Anim->GenFade(LDConsts::Static::TimeFade, this, U, PauseTime); // read note inside TimeUpd
+		static const FAParams P { .Name = LDConsts::Static::TimeFade, .Duration = PauseTime};
+		Anim->GenFade(this, U, P); // read note inside TimeUpd
 	}
 
 	// then load
@@ -75,7 +76,8 @@ void ULSettingsUI::Hide_Implementation() {
 	if (LIKELY(Anim)) {
 		FAnimGenUpd U;
 		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		Anim->GenFade(LDConsts::Static::TimeFade, this, U, PauseTime, nullptr, true);
+		static const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime, .Reversed = true};
+		Anim->GenFade(this, U, P);
 		// clear previous
 	}
 
