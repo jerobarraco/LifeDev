@@ -386,13 +386,13 @@ public:
 
 protected:
 #pragma region Items
+	// TODO refactor these to use Pars
+	
 	template<typename Type>
 	bool ItemSetup(Type& OItem, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve, const float Duration, TArray<Type>& IOItems,
 		void(UAnim::* Done)(const Type&));
-	bool ItemInitBasic(FABase& OItem, UObject* const Obj, const FName Name,
-		UCurveFloat* const Curve = nullptr,
-		const float Duration = -1) const;
+	bool ItemInitBasic(FABase& OItem, UObject* const Obj, const FAParams& Pars) const;
 	template<typename Type>
 	void ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr);
 	// ensure te set To and Duration before calling.

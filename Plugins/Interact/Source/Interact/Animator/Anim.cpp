@@ -298,21 +298,17 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ItemInitBasic(FABase& OItem, UObject* const Obj, const FName Name,
-UCurveFloat* const Curve, const float Duration) const {
+bool UAnim::ItemInitBasic(FABase& OItem, UObject* const Obj, const FAParams& Pars) const {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
-		__func__, *Name.ToString(), Duration);
+		__func__, *Pars.Name.ToString(), Pars.Duration);
 
 	OItem.Obj = Obj;
 	OItem.Elapsed = 0.0; // reset in case it was running
-	OItem.Pars.Name = Name;
-	// transitional, to modify base functions first. then callers.
-	OItem.Pars.Curve = IsValid(Curve) ? Curve : nullptr;
-	OItem.Pars.Duration = Duration < 0 ? DurationDefault : Duration; // for future done this way. // TODO modify to Pars.Duration <0
+	if (OItem.Pars.Duration <0) OItem.Pars.Duration = DurationDefault;
 	
-	if (UNLIKELY(!IsValid(Obj))) {
+	if (UNLIKELY(!IsValid(OItem.Obj))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
-			__func__, *Name.ToString());
+			__func__, *OItem.Pars.Name.ToString());
 		return false;
 	}
 
@@ -364,7 +360,8 @@ template <typename Item>
 bool UAnim::ItemSetup(Item& OItem, UObject* const Obj, const FName Name,
 UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
 void(UAnim::* Done)(const Item&) ) {
-	if (UNLIKELY(!ItemInitBasic(OItem, Obj, Name, Curve, Duration))) {
+	FAParams P { Name, Curve, Duration };
+	if (UNLIKELY(!ItemInitBasic(OItem, Obj, MoveTemp(P)))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -384,7 +381,7 @@ void(UAnim::* Done)(const Item&) ) {
 
 
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
-						const float To, const float Duration, UCurveFloat* const Curve) {
+const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Name.ToString(), To, Duration);
 	
