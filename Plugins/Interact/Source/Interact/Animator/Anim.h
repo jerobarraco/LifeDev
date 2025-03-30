@@ -24,12 +24,11 @@ struct FAParams {
 public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	TObjectPtr<UCurveFloat> Curve = nullptr;
 	// the duration
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = -1;
-	// how much it has elapsed already
-	UPROPERTY(BlueprintReadWrite, Transient)
-	float Elapsed = 1.0;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Reversed = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -43,12 +42,12 @@ struct FABase {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FName Name = NAME_None;
-
 	// polymorfic source object
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UObject> Obj = nullptr;
+	// name. some do not use the name directly (the ones using index. the name gets generated)
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FName Name = NAME_None;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;

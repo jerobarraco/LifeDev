@@ -295,7 +295,11 @@ UCurveFloat* const Curve, const float Duration) const {
 	OItem.Curve = IsValid(Curve) ? Curve : nullptr;
 	OItem.Elapsed = 0.0; // reset in case it was running
 	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
-
+	// transientonal, to modify base functions first. then callers.
+	OItem.Pars.Name = Name;
+	OItem.Pars.Curve = OItem.Curve;
+	OItem.Pars.Duration = Duration < 0 ? DurationDefault : Duration; // for future done this way. // TODO modify to Pars.Duration <0
+	
 	if (UNLIKELY(!IsValid(Obj))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
 			__func__, *Name.ToString());
@@ -303,7 +307,7 @@ UCurveFloat* const Curve, const float Duration) const {
 	}
 
 	// at end to allow for data params
-	if (UNLIKELY(OItem.Name.IsNone())) {
+	if (UNLIKELY(OItem.Pars.Name.IsNone())) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Name can't be none. Stop."),
 			__func__);
 		return false;
