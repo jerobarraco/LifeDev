@@ -48,9 +48,6 @@ public:
 	TObjectPtr<UObject> Obj = nullptr;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
-	TObjectPtr<UCurveFloat> Curve = nullptr;
-	
-	UPROPERTY(BlueprintReadWrite, Transient)
 	FAParams Pars;
 
 	// the duration
@@ -65,8 +62,6 @@ public:
 	FORCEINLINE bool IsDone() const {
 		return FMath::IsNearlyEqual(Elapsed, Pars.Duration)
 			|| Elapsed > Pars.Duration;
-		// return FMath::IsNearlyEqual(Elapsed, Duration)
-			// || Elapsed > Duration;
 	}
 
 	// needed or android won't package >_<! due to the virtual functions
@@ -84,12 +79,10 @@ public:
 		return false;
 	}
 	virtual bool IsSame(const FABase& Other) const {
-		// return Name == Other.Name && Obj == Other.Obj;
 		return Pars.Name == Other.Pars.Name && Obj == Other.Obj;
 	}
 	virtual bool IsSame(const UObject* const OtherObj, const FName OtherName) const {
 		return Pars.Name == OtherName && Obj == OtherObj;
-		// return Name == OtherName && Obj == OtherObj;
 	}
 	// loads the "From" value
 	virtual bool LoadFrom() {

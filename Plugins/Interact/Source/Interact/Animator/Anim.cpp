@@ -19,7 +19,7 @@ float FABase::AddDT(const float DT) {
 	float RProg = Elapsed / Duration;
 	if (Pars.Reversed) RProg = 1 - RProg;
 
-	return IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
+	return IsValid(Pars.Curve) ? Pars.Curve->GetFloatValue(RProg) : RProg;
 }
 
 bool FABase::Tick(const float DT) {
@@ -304,12 +304,11 @@ UCurveFloat* const Curve, const float Duration) const {
 		__func__, *Name.ToString(), Duration);
 
 	OItem.Obj = Obj;
-	OItem.Curve = IsValid(Curve) ? Curve : nullptr;
 	OItem.Elapsed = 0.0; // reset in case it was running
 	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
 	OItem.Pars.Name = Name;
 	// transitional, to modify base functions first. then callers.
-	OItem.Pars.Curve = OItem.Curve;
+	OItem.Pars.Curve = IsValid(Curve) ? Curve : nullptr;
 	OItem.Pars.Duration = Duration < 0 ? DurationDefault : Duration; // for future done this way. // TODO modify to Pars.Duration <0
 	
 	if (UNLIKELY(!IsValid(Obj))) {
