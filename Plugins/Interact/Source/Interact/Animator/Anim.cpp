@@ -13,11 +13,11 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 #pragma region structs
 float FABase::AddDT(const float DT) {
 	// clamp to perfect duration, to avoid overshooting.
-	Elapsed = FMath::Min(Elapsed + DT,Duration);
+	Elapsed = FMath::Min(Elapsed + DT,Pars.Duration);
 	if (Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
 
 	float RProg = Elapsed / Duration;
-	if (Reversed) RProg = 1 - RProg;
+	if (Pars.Reversed) RProg = 1 - RProg;
 
 	return IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
 }
@@ -28,7 +28,20 @@ bool FABase::Tick(const float DT) {
 
 	const float Prog = AddDT(DT);
 	SetLerp(Prog);
-	return IsDone();
+	const bool Done = IsDone(); // TODO implement bounce
+	if (!Done) return false;
+
+	// done is true here
+	if (Pars.Bounce) {
+		Pars.Reversed = !Pars.Reversed;
+		Pars.Bounce = Pars.Loop; // if it's looped, keep bouncing, otherwise stop bouncing
+		Elapsed = 0;
+		return false;
+	} else if (Pars.Loop) { // loop but not bounce
+		Elapsed = 0; // restart
+	}
+
+	return true;
 }
 
 // define here to avoid including the type on header
