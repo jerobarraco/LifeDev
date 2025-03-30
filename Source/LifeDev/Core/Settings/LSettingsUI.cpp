@@ -46,10 +46,11 @@ void ULSettingsUI::Show_Implementation() {
 	if (LIKELY(Man)) Man->FadeFX(true);
 
 	UAnim* const Anim = UAnim::Instance(this);
-	FAnimGenUpd U;
-	U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-	if (LIKELY(Anim))
+	if (LIKELY(Anim)) {
+		FAnimGenUpd U;
+		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
 		Anim->GenFade(LDConsts::Static::TimeFade, this, U, PauseTime); // read note inside TimeUpd
+	}
 
 	// then load
 	Load();
@@ -72,11 +73,11 @@ void ULSettingsUI::Hide_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
+		FAnimGenUpd U;
+		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
+		Anim->GenFade(LDConsts::Static::TimeFade, this, U, PauseTime, nullptr, true);
 		// clear previous
-		const FAnimGenUpd U;
-		Anim->GenFade(LDConsts::Static::TimeFade, this, U, 0);
 	}
-	TimeUpd(this, LDConsts::Static::TimeFade, 0);
 
 	Super::Hide_Implementation();
 

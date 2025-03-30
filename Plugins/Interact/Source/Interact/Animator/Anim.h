@@ -15,6 +15,26 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimCompDone, USceneComponent* con
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, const FName, Name);
 DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Alpha);
 
+// TODO use this as param to call the functions
+USTRUCT(Blueprintable, BlueprintType)
+struct FAParams {
+	GENERATED_BODY()
+
+public:
+	// the duration
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Duration = -1;
+	// how much it has elapsed already
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float Elapsed = 1.0;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool Reversed = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool Loop = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool Bounce = false;
+};
+
 USTRUCT(Blueprintable, BlueprintType)
 struct FABase {
 	GENERATED_BODY()
@@ -29,6 +49,9 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
+	
+	// UPROPERTY(BlueprintReadWrite, Transient)
+	// FAParams Params; // TODO
 
 	// the duration
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -36,6 +59,8 @@ public:
 	// how much it has elapsed already
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Elapsed = 1.0;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool Reversed = false;
 
 	FORCEINLINE bool IsDone() const {
 		return FMath::IsNearlyEqual(Elapsed, Duration)
@@ -150,7 +175,6 @@ public:
 	virtual bool SetVal(const FLinearColor& V = FLinearColor::White) const override;
 	virtual bool LoadFrom() override;
 };
-
 
 USTRUCT(Blueprintable, BlueprintType)
 struct FACTrans: public FABase {
@@ -312,7 +336,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
 	bool GenFade(const FName& Name, UObject* const Owner, const FAnimGenUpd& OnUpd, 
 		const float Duration = -1,
-		UCurveFloat* const Curve = nullptr
+		UCurveFloat* const Curve = nullptr, const bool Reversed = false
 	);
 #pragma endregion
 #pragma region isfading
@@ -335,7 +359,7 @@ public:
 #pragma endregion
 
 	// default fade duration. can be changed. and can be specified on the .ini config files.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, Config)
 	float DurationDefault = 1.f;
 
 	// whether this subsystem will be created.

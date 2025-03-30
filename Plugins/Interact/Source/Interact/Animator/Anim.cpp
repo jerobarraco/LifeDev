@@ -16,7 +16,9 @@ float FABase::AddDT(const float DT) {
 	Elapsed = FMath::Min(Elapsed + DT,Duration);
 	if (Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
 
-	const float RProg = Elapsed / Duration;
+	float RProg = Elapsed / Duration;
+	if (Reversed) RProg = 1 - RProg;
+
 	return IsValid(Curve) ? Curve->GetFloatValue(RProg) : RProg;
 }
 
@@ -462,10 +464,11 @@ const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
 }
 
 bool UAnim::GenFade(const FName& Name, UObject* Owner, const FAnimGenUpd& OnUpd,
-const float Duration, UCurveFloat* const Curve) {
+const float Duration, UCurveFloat* const Curve, const bool Reversed) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Name.ToString(), Duration);
 	FAGen Item;
 	Item.OnUpdate = OnUpd;
+	Item.Reversed = Reversed; // TODO move this to the base stuff
 	const bool Ok = ItemSetup(Item, Owner, Name, Curve, Duration, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
 }
