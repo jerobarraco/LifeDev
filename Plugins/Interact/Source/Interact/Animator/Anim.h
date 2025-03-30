@@ -27,7 +27,7 @@ public:
 	FName Name = NAME_None;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;
-	// the duration
+	// the duration. -1 for using the default in the anim subsystem or config.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Duration = -1;
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -50,9 +50,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FAParams Pars;
 
-	// the duration
-	UPROPERTY(BlueprintReadWrite, Transient)
-	float Duration = 1.0;
 	// how much it has elapsed already
 	UPROPERTY(BlueprintReadWrite, Transient)
 	float Elapsed = 1.0;

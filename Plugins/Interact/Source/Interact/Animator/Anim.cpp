@@ -14,9 +14,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 float FABase::AddDT(const float DT) {
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Pars.Duration);
-	if (Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
+	if (Pars.Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
 
-	float RProg = Elapsed / Duration;
+	float RProg = Elapsed / Pars.Duration;
 	if (Pars.Reversed) RProg = 1 - RProg;
 
 	return IsValid(Pars.Curve) ? Pars.Curve->GetFloatValue(RProg) : RProg;
@@ -305,7 +305,6 @@ UCurveFloat* const Curve, const float Duration) const {
 
 	OItem.Obj = Obj;
 	OItem.Elapsed = 0.0; // reset in case it was running
-	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
 	OItem.Pars.Name = Name;
 	// transitional, to modify base functions first. then callers.
 	OItem.Pars.Curve = IsValid(Curve) ? Curve : nullptr;
