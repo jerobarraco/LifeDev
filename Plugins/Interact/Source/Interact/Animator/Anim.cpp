@@ -28,8 +28,8 @@ bool FABase::Tick(const float DT) {
 
 	const float Prog = AddDT(DT);
 	SetLerp(Prog);
-	const bool Done = IsDone(); // TODO implement bounce
-	if (!Done) return false;
+	const bool Done = IsDone();
+	if (LIKELY(!Done)) return false;
 
 	// done is true here
 	if (Pars.Bounce) {

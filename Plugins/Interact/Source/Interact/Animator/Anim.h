@@ -32,9 +32,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Reversed = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Loop = false; // TODO implement
+	bool Loop = false; // TODO pass via param
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Bounce = false; // TODO implement
+	bool Bounce = false; // TODO pass via param
 };
 
 USTRUCT(Blueprintable, BlueprintType)
