@@ -22,6 +22,7 @@ struct FAParams {
 	GENERATED_BODY()
 
 public:
+	// name. some do not use the name directly (the ones using index. the name gets generated)
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -45,9 +46,6 @@ public:
 	// polymorfic source object
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UObject> Obj = nullptr;
-	// name. some do not use the name directly (the ones using index. the name gets generated)
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FName Name = NAME_None;
 	
 	UPROPERTY(BlueprintReadWrite, Transient)
 	TObjectPtr<UCurveFloat> Curve = nullptr;

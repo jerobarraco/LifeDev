@@ -45,72 +45,72 @@ bool FABase::Tick(const float DT) {
 }
 
 // define here to avoid including the type on header
-bool FABase::FIsValid() const { return !Name.IsNone() && IsValid(Obj); }
+bool FABase::FIsValid() const { return !Pars.Name.IsNone() && IsValid(Obj); }
 
 #pragma region setval
 bool FAPFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
-		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(!Name.IsNone())) return false;
+		__func__, *Pars.Name.ToString(), Val);
+	if (UNLIKELY(!Pars.Name.IsNone())) return false;
 
 	UMaterialParameterCollectionInstance* const MM =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
 	if (UNLIKELY(!MM)) return false;
 
-	return MM->SetScalarParameterValue(Name, Val);
+	return MM->SetScalarParameterValue(Pars.Name, Val);
 }
 
 bool FADFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
-		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(Name.IsNone())) return false;
+		__func__, *Pars.Name.ToString(), Val);
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
 
-	MM->SetScalarParameterValue(Name, Val);
+	MM->SetScalarParameterValue(Pars.Name, Val);
 	return true;
 }
 
 bool FASFloat::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
-		__func__, *Name.ToString(), Val);
-	if (UNLIKELY(Name.IsNone())) return false;
+		__func__, *Pars.Name.ToString(), Val);
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	UAudioComponent* const MM = Cast<UAudioComponent>(Obj);
 	if (UNLIKELY(!MM || !MM->IsPlaying())) return false; // isplaying is critical to avoid crash. yes crash.
 
-	MM->SetFloatParameter(Name, Val);
+	MM->SetFloatParameter(Pars.Name, Val);
 	return true;
 }
 
 bool FADVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
-			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(Name.IsNone())) return false;
+			__func__, *Pars.Name.ToString(), *Val.ToString());
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	UMaterialInstanceDynamic* const MM = Cast<UMaterialInstanceDynamic>(Obj);
 	if (UNLIKELY(!MM)) return false;
-	MM->SetVectorParameterValue(Name, Val);
+	MM->SetVectorParameterValue(Pars.Name, Val);
 	return true;
 }
 
 bool FAPVector::SetVal(const FLinearColor& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
-			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(Name.IsNone())) return false;
+			__func__, *Pars.Name.ToString(), *Val.ToString());
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	UMaterialParameterCollectionInstance* const MM =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
 	if (UNLIKELY(!MM)) return false;
 
-	return MM->SetVectorParameterValue(Name, Val);
+	return MM->SetVectorParameterValue(Pars.Name, Val);
 }
 
 bool FAData::SetVal(const FLinearColor& V) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s Index=%i Scalar=%i"),
 		__func__, *GetNameSafe(Obj), *V.ToString(), Index, IsScalar);
-	if (UNLIKELY(Name.IsNone())) return false;
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	UPrimitiveComponent* const Comp =
 		Cast<UPrimitiveComponent>(Obj);
@@ -130,8 +130,8 @@ bool FAData::SetVal(const FLinearColor& V) const {
 
 bool FACTrans::SetVal(const FTransform& Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%s"),
-			__func__, *Name.ToString(), *Val.ToString());
-	if (UNLIKELY(Name.IsNone())) return false;
+			__func__, *Pars.Name.ToString(), *Val.ToString());
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	USceneComponent* const Comp =
 		Cast<USceneComponent>(Obj);
@@ -149,25 +149,25 @@ bool FACTrans::SetVal(const FTransform& Val) const {
 bool FAPFloat::LoadFrom() {
 	const UMaterialParameterCollectionInstance* const MPCI =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
-	return MPCI && MPCI->GetScalarParameterValue(Name, From);
+	return MPCI && MPCI->GetScalarParameterValue(Pars.Name, From);
 }
 
 bool FAPVector::LoadFrom() {
 	const UMaterialParameterCollectionInstance* const MPCI =
 		Cast<UMaterialParameterCollectionInstance>(Obj);
-	return MPCI && MPCI->GetVectorParameterValue(Name, From);
+	return MPCI && MPCI->GetVectorParameterValue(Pars.Name, From);
 }
 
 bool FADFloat::LoadFrom() {
 	const UMaterialInstanceDynamic* const Mat =
 		Cast<UMaterialInstanceDynamic>(Obj);
-	return Mat && Mat->GetScalarParameterValue(Name, From); 
+	return Mat && Mat->GetScalarParameterValue(Pars.Name, From); 
 }
 
 bool FADVector::LoadFrom() {
 	const UMaterialInstanceDynamic* const Mat =
 		Cast<UMaterialInstanceDynamic>(Obj);
-	return Mat && Mat->GetVectorParameterValue(Name, From); 
+	return Mat && Mat->GetVectorParameterValue(Pars.Name, From); 
 }
 
 bool FASFloat::LoadFrom() {
@@ -176,7 +176,7 @@ bool FASFloat::LoadFrom() {
 
 	const TArray<FAudioParameter>& Params = Comp->GetInstanceParameters(); // notice is valid at the top
 	for (const FAudioParameter& P : Params) {
-		if (LIKELY(P.ParamName != Name)) continue;
+		if (LIKELY(P.ParamName != Pars.Name)) continue;
 		From = P.FloatParam;
 		return true;
 	}
@@ -239,7 +239,7 @@ bool FACTrans::SetLerp(const float Prog) {
 
 bool FAGen::SetLerp(const float Prog) {
 	if (UNLIKELY(!OnUpdate.IsBound())) return false;
-	OnUpdate.Execute(Obj, Name, Prog);
+	OnUpdate.Execute(Obj, Pars.Name, Prog);
 	return true;
 }
 #pragma endregion
@@ -247,7 +247,7 @@ bool FAGen::SetLerp(const float Prog) {
 bool FAData::GetCurrent(FLinearColor& OCurrent) const {
 	OCurrent = FLinearColor::Black; // initialize to a sane value
 
-	if (UNLIKELY(Name.IsNone())) return false;
+	if (UNLIKELY(Pars.Name.IsNone())) return false;
 
 	const UPrimitiveComponent* const Comp =
 		Cast<UPrimitiveComponent>(Obj);
@@ -304,12 +304,11 @@ UCurveFloat* const Curve, const float Duration) const {
 		__func__, *Name.ToString(), Duration);
 
 	OItem.Obj = Obj;
-	OItem.Name = Name;
 	OItem.Curve = IsValid(Curve) ? Curve : nullptr;
 	OItem.Elapsed = 0.0; // reset in case it was running
 	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
-	// transitional, to modify base functions first. then callers.
 	OItem.Pars.Name = Name;
+	// transitional, to modify base functions first. then callers.
 	OItem.Pars.Curve = OItem.Curve;
 	OItem.Pars.Duration = Duration < 0 ? DurationDefault : Duration; // for future done this way. // TODO modify to Pars.Duration <0
 	
@@ -331,19 +330,19 @@ UCurveFloat* const Curve, const float Duration) const {
 
 #pragma region dones
 void UAnim::ItemDoneDynF(const FADFloat& It) {
-	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Pars.Name);
 }
 
 void UAnim::ItemDoneDynV(const FADVector& It) {
-	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Name);
+	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Pars.Name);
 }
 
 void UAnim::ItemDoneMPCF(const FAPFloat& Item) {
-	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Pars.Name);
 }
 
 void UAnim::ItemDoneMPCV(const FAPVector& Item) {
-	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Name);
+	OnItemMPCDone.Broadcast(Cast<UMaterialParameterCollectionInstance>(Item.Obj), Item.Pars.Name);
 }
 
 void UAnim::ItemDoneData(const FAData& Item) {
@@ -351,15 +350,15 @@ void UAnim::ItemDoneData(const FAData& Item) {
 }
 
 void UAnim::ItemDoneSndF(const FASFloat& Item) {
-	OnItemSndDone.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Name);
+	OnItemSndDone.Broadcast(Cast<UAudioComponent>(Item.Obj), Item.Pars.Name);
 }
 
 void UAnim::ItemDoneComp(const FACTrans& Item) {
-	OnItemCompDone.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Name);
+	OnItemCompDone.Broadcast(Cast<USceneComponent>(Item.Obj), Item.Pars.Name);
 }
 
 void UAnim::ItemDoneGen(const FAGen& Item) {
-	OnItemGenDone.Broadcast(Item.Obj, Item.Name);
+	OnItemGenDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
 #pragma endregion
 
