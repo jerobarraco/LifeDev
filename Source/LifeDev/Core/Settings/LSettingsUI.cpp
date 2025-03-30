@@ -10,6 +10,7 @@
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
+#include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
@@ -27,20 +28,35 @@ ULSettingsUI::ULSettingsUI():Super() {
 }
 
 void ULSettingsUI::Show_Implementation() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	// SetVisibility(ESlateVisibility::Visible);
 	Super::Show_Implementation();
 
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (LIKELY(Man)) Man->FadeFX(true);
-
+	
 	Load();
+
+	PauseTimer.Invalidate();
+	World->GetTimerManager().SetTimer(PauseTimer, this, &ULSettingsUI::SetPause, .5);
 }
 
+
 void ULSettingsUI::Hide_Implementation() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	World->GetTimerManager().ClearTimer(PauseTimer);
+	PauseTimer.Invalidate();
+
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (LIKELY(Man)) Man->FadeFX(false);
-	
+
 	Super::Hide_Implementation();
+
+	UGameplayStatics::SetGamePaused(this, false);
 	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
@@ -108,4 +124,8 @@ void ULSettingsUI::ScaleUpd(const FString SelectedItem, const ESelectInfo::Type 
 
 void ULSettingsUI::ShowDbg() {
 	if (LIKELY(SWOptions)) SWOptions->SetActiveWidgetIndex(5);
+}
+
+void ULSettingsUI::SetPause() {
+	UGameplayStatics::SetGamePaused(this, true);
 }

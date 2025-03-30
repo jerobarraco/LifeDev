@@ -41,6 +41,8 @@ protected:
 	void ScaleUpd(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	UFUNCTION()
 	void ShowDbg();
+	UFUNCTION()
+	void SetPause();
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> CBScale;
@@ -54,4 +56,6 @@ protected:
 	TObjectPtr<UTextBlock> TFoxy;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TTime;
+
+	FTimerHandle PauseTimer;
 };

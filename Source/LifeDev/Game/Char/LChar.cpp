@@ -28,7 +28,6 @@
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"
-#include "GameFramework/SpectatorPawn.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -250,7 +249,8 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (Settings)
 		Settings->OnFeatUpdateGameplay.RemoveAll(this);
-	
+
+	// unbind input
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
@@ -270,7 +270,6 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Noiser = nullptr;
 	Items = nullptr;
 
-	// TODO unbind actions (have to find how to store them)
 	Super::EndPlay(EndPlayReason);
 }
 
