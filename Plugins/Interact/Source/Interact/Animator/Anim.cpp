@@ -295,7 +295,7 @@ UCurveFloat* const Curve, const float Duration) const {
 	OItem.Curve = IsValid(Curve) ? Curve : nullptr;
 	OItem.Elapsed = 0.0; // reset in case it was running
 	OItem.Duration = Duration < 0 ? DurationDefault : Duration;
-	// transientonal, to modify base functions first. then callers.
+	// transitional, to modify base functions first. then callers.
 	OItem.Pars.Name = Name;
 	OItem.Pars.Curve = OItem.Curve;
 	OItem.Pars.Duration = Duration < 0 ? DurationDefault : Duration; // for future done this way. // TODO modify to Pars.Duration <0

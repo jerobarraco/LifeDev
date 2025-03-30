@@ -233,6 +233,12 @@ public:
 	virtual bool IsTickable() const override { return IsFading; }
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
+
+	// TODO
+	UFUNCTION(BlueprintCallable)
+	bool Stop(const UObject* const Obj, const FName N) {
+		return false;
+	};
 #pragma endregion
 
 #pragma region mpci
