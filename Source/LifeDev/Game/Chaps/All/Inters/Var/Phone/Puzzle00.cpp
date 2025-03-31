@@ -20,6 +20,7 @@ APuzzle00::APuzzle00():Super() {
 void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
+	// TODO add another row, and add * and #
 	// sets names in a simplified way
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Inters.Num();
@@ -27,7 +28,7 @@ void APuzzle00::PostLoad() {
 		AInteract* I = Inters[i];
 		if (UNLIKELY(!I)) continue;
 
-		const FString& SI = FString::Printf(TEXT("%i"), i+1); // only 9 btns lol
+		const FString& SI = FString::FromInt(i+1); // only 9 btns lol
 		const FText& TI = FText::FromString(SI);
 		I->Texts = {
 			TI, TI
