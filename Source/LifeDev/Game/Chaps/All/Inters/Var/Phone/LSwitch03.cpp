@@ -14,7 +14,7 @@ ALSwitch03::ALSwitch03(): Super() {
 	// Anim->IsBouncing = true; //uses the curve
 	Anim->IsAdditive = true;
 	Anim->Duration = .4;
-	Anim->IsReversed = true; // curve is reversed
+	Anim->IsReversed = false; // curve is reversed
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCF(TEXT("/JUtils/Curves/PulseOut"));
 	Anim->Curve = CCF.Object;
