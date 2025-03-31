@@ -477,14 +477,15 @@ bool UAnim::MPCVectorFade(const UMaterialParameterCollection* const MPC, const F
 }
 
 bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const float To,
-const float Duration, UCurveFloat* const Curve) {
+const float Duration) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Params.Name.ToString(), To, Duration);
 
 	FADFloat Item;
+	Item.Obj = Mat;
 	Item.To = To;
 	Item.Pars = Params;
-	return ItemSetup(Item, Mat, Name, Curve, Duration, ItemsDynF, &UAnim::ItemDoneDynF);
+	return ItemSetup(Item, ItemsDynF, &UAnim::ItemDoneDynF);
 }
 
 bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const FLinearColor& To,

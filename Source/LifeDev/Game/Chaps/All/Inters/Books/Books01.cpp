@@ -31,8 +31,8 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 		if (LIKELY(AnimSub)) {
 			UMaterialInstanceDynamic* const Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
 			if (LIKELY(Mat)) {
-				AnimSub->DynFloatFade(Mat, "Fade", 1, 0);
-				AnimSub->DynFloatFade(Mat, "Fade", 0,  .5, FadeCurve);
+				AnimSub->DynFloatFade(Mat, TODO, 1, 0);
+				AnimSub->DynFloatFade(Mat, TODO, 0,  .5);
 			}
 		}
 	}

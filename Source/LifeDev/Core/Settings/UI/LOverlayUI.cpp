@@ -55,8 +55,8 @@ void ULOverlayUI::SaveTimer() {
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
 		constexpr const TCHAR* const PName = TEXT("Progress");
-		Anim->DynFloatFade(SaveMatDyn, PName, 0, 0);
-		Anim->DynFloatFade(SaveMatDyn, PName, 1,  SaveTime, SaveCurve);
+		Anim->DynFloatFade(SaveMatDyn, TODO, 0, 0);
+		Anim->DynFloatFade(SaveMatDyn, TODO, 1,  SaveTime);
 	}
 	UE_CLOG(!SaveMatDyn, LogTemp, Warning, TEXT("%hs SaveMatDyn null!"), __func__);
 
