@@ -33,9 +33,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Reversed = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Loop = false; // TODO pass via param
+	bool Loop = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
-	bool Bounce = false; // TODO pass via param
+	bool Bounce = false;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -224,6 +224,9 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
 
+	// tries to stop all instances of this animation.
+	// Index is only used for custom primitive data.
+	// Obj is the owner object (the mpc, component, prim data, etc.)
 	UFUNCTION(BlueprintCallable)
 	void Stop(UObject* const Obj, const FName N, const int32 Index=-1);
 #pragma endregion
@@ -383,12 +386,11 @@ public:
 
 protected:
 #pragma region Items
-	// TODO refactor these to use Pars
+	bool ItemInit(FABase& IOItem) const;
 	template<typename Type>
 	bool ItemSetup(Type& OItem, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve, const float Duration, TArray<Type>& IOItems,
 		void(UAnim::* Done)(const Type&));
-	bool ItemInitBasic(FABase& OItem, UObject* const Obj, const FAParams& Pars) const;
 	template<typename Type>
 	void ItemsRem(const Type& Item, TArray<Type>& IOArr);
 	// ensure te set To and Duration before calling.
@@ -396,11 +398,9 @@ protected:
 	bool ItemsSetNow(const Type& Item,
 		void(UAnim::* Done)(const Type&));
 	template<typename Type>
-	bool ItemTick(const float DT, TArray<Type>& IOArr,
-		void(UAnim::* Done)(const Type&));
+	bool ItemTick(const float DT, TArray<Type>& IOArr, void(UAnim::* Done)(const Type&));
 	template<typename Type>
-	void ItemsEmpty(TArray<Type>& IOArr,
-		void(UAnim::* Done)(const Type&));
+	void ItemsEmpty(TArray<Type>& IOArr, void(UAnim::* Done)(const Type&));
 	template<typename Type>
 	FORCEINLINE bool ItemIsIn(const UObject* const Obj, const FName Name,
 		const TArray<Type>& IArr) const;

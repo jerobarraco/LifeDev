@@ -298,30 +298,6 @@ UAnim* UAnim::Instance(const UObject*const  O) {
 	return LIKELY(IsValid(AnimMat)) ? AnimMat : nullptr;
 }
 
-bool UAnim::ItemInitBasic(FABase& OItem, UObject* const Obj, const FAParams& Pars) const {
-	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
-		__func__, *Pars.Name.ToString(), Pars.Duration);
-
-	OItem.Obj = Obj;
-	OItem.Elapsed = 0.0; // reset in case it was running
-	if (OItem.Pars.Duration <0) OItem.Pars.Duration = DurationDefault;
-	
-	if (UNLIKELY(!IsValid(OItem.Obj))) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
-			__func__, *OItem.Pars.Name.ToString());
-		return false;
-	}
-
-	// at end to allow for data params
-	if (UNLIKELY(OItem.Pars.Name.IsNone())) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs Name can't be none. Stop."),
-			__func__);
-		return false;
-	}
-
-	return true;
-}
-
 #pragma region dones
 void UAnim::ItemDoneDynF(const FADFloat& It) {
 	OnItemDynDone.Broadcast(Cast<UMaterialInstanceDynamic>(It.Obj), It.Pars.Name);
@@ -356,29 +332,50 @@ void UAnim::ItemDoneGen(const FAGen& Item) {
 }
 #pragma endregion
 
+#pragma region item
+bool UAnim::ItemInit(FABase& IOItem) const {
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, duration=%.3f"),
+		__func__, *IOItem.Pars.Name.ToString(), IOItem.Pars.Duration);
+
+	IOItem.Elapsed = 0.0; // reset in case it was running
+	if (IOItem.Pars.Duration <0) IOItem.Pars.Duration = DurationDefault;
+	
+	if (UNLIKELY(!IsValid(IOItem.Obj))) {
+		UE_LOG(LogAnim, Warning, TEXT("%hs Root object is invalid. Name=%s. Stop."),
+			__func__, *IOItem.Pars.Name.ToString());
+		return false;
+	}
+
+	// at end to allow for data params
+	if (UNLIKELY(IOItem.Pars.Name.IsNone())) {
+		UE_LOG(LogAnim, Warning, TEXT("%hs Name can't be none. Stop."),
+			__func__);
+		return false;
+	}
+
+	return true;
+}
+
 template <typename Item>
-bool UAnim::ItemSetup(Item& OItem, UObject* const Obj, const FName Name,
-UCurveFloat* const Curve, const float Duration, TArray<Item>& IOItems,
-void(UAnim::* Done)(const Item&) ) {
-	FAParams P { Name, Curve, Duration };
-	if (UNLIKELY(!ItemInitBasic(OItem, Obj, MoveTemp(P)))) {
+bool UAnim::ItemSetup(Item& IOItem, TArray<Item>& IOItems, void(UAnim::* Done)(const Item&) ) {
+	if (UNLIKELY(!ItemInitBasic(IOItem))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
 	}
 
-	ItemsRem(OItem, IOItems);
-	if (ItemsSetNow(OItem, Done)) return true;
+	ItemsRem(IOItem, IOItems);
+	if (ItemsSetNow(IOItem, Done)) return true;
 
-	const bool Got = OItem.LoadFrom();
+	const bool Got = IOItem.LoadFrom();
 	UE_CLOG(UNLIKELY(!Got), LogAnim, Warning, TEXT("%hs Can't get the current value."),
 		__func__); // we do it anyway.
 
-	IOItems.Add(OItem);
+	IOItems.Add(IOItem);
 	IsFading = true;
 	return true;
 }
-
+#pragma endregion
 
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const float To, const float Duration, UCurveFloat* const Curve) {
