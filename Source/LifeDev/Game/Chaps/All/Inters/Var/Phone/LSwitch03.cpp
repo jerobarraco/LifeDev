@@ -16,7 +16,7 @@ ALSwitch03::ALSwitch03(): Super() {
 	Anim->Duration = .4;
 	Anim->IsReversed = false; // curve is reversed
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCF(TEXT("/JUtils/Curves/PulseOut"));
+		CCF(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown"));
 	Anim->Curve = CCF.Object;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

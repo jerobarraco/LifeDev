@@ -20,8 +20,7 @@ APuzzle00::APuzzle00():Super() {
 void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
-	// TODO set the texts for all buttons in a simplified way
-
+	// sets names in a simplified way
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Inters.Num();
 	for (int32 i= 0; UNLIKELY(i<Num); ++i) {
