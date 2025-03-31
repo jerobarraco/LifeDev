@@ -227,8 +227,8 @@ public:
 	// tries to stop all instances of this animation.
 	// Index is only used for custom primitive data.
 	// Obj is the owner object (the mpc, component, prim data, etc.)
-	UFUNCTION(BlueprintCallable)
-	void Stop(UObject* const Obj, const FName N, const int32 Index=-1);
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Name"))
+	void Stop(UObject* const Obj, const FName& Name, const int32 Index=-1);
 #pragma endregion
 
 #pragma region mpci
@@ -239,7 +239,7 @@ public:
 	// To: value to fade to.
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool MPCFloatFade(const UMaterialParameterCollection* const MPC,
 		const FAParams& Params, const float To = 1.0);
 
@@ -249,9 +249,9 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool MPCVectorFade(const UMaterialParameterCollection* const MPC, const FAParams& Params,
-		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
+		const FLinearColor& To = FLinearColor::White, const bool UseHSV = false);
 #pragma endregion
 
 #pragma region dynmat
@@ -262,7 +262,7 @@ public:
 	// To: value to fade to.
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params,
 		const float To = 1.0);
 
@@ -272,9 +272,9 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool DynVectorFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params,
-		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
+		const FLinearColor& To = FLinearColor::White, const bool UseHSV = false);
 #pragma endregion
 
 #pragma region sound
@@ -285,7 +285,7 @@ public:
 	// To: value to fade to.
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool SndFloatFade(UAudioComponent* const Comp,
 		const FAParams& Params, const float To = 1.0);
 #pragma endregion
@@ -305,19 +305,19 @@ public:
 	// Warning:
 	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
 	//		This is untested though.
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool DataFade(UPrimitiveComponent* const Comp, const FAParams& Params,
 		const int32 Index, bool IsScalar = true,
 		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
-	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="To"))
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
 		const FTransform& To, const bool IsWorld = false, const bool IsAdditive = false,
 		const bool UseSweep = false);
 #pragma endregion
 
 #pragma region gen
-	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
-	bool GenFade(UObject* const Owner, const FAParams& Pars, const FAnimGenUpd& OnUpd);
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
+	bool GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd);
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.

@@ -552,11 +552,11 @@ const bool IsAdditive, const bool UseSweep) {
 	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
-bool UAnim::GenFade(UObject* const Owner, const FAParams& Pars, const FAnimGenUpd& OnUpd) {
-	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Pars.Name.ToString(), Pars.Duration);
+bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd) {
+	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Params.Name.ToString(), Params.Duration);
 	FAGen Item;
 	Item.OnUpdate = OnUpd;
-	Item.Pars = Pars;
+	Item.Pars = Params;
 	Item.Obj = Owner;
 	const bool Ok = ItemSetup(Item, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
@@ -623,11 +623,11 @@ bool UAnim::GetIsFadingComp(const USceneComponent* const Comp) const {
 	return false;
 }
 
-void UAnim::Stop(UObject* const Obj, const FName N, const int32 Index) {
+void UAnim::Stop(UObject* const Obj, const FName& Name, const int32 Index) {
 	FABase I;
 	I.Obj = Obj;
-	I.Pars.Name = N;
-	if (N.IsNone() && Index >=0)
+	I.Pars.Name = Name;
+	if (Name.IsNone() && Index >=0)
 		I.Pars.Name = FName(FString::Printf(TEXT("%i"), Index));
 
 	// have to create these variables because otherwise the template can't deal with it.
