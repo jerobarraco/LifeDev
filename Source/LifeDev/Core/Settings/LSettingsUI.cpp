@@ -29,7 +29,7 @@ ULSettingsUI::ULSettingsUI():Super() {
 }
 
 namespace LDConsts { namespace Static {
-		static const FName TimeFade = "TimeFade";
+	static const FName TimeFade = "TimeFade";
 }}
 
 void ULSettingsUI::Show_Implementation() {
@@ -49,8 +49,8 @@ void ULSettingsUI::Show_Implementation() {
 	if (LIKELY(Anim)) {
 		FAnimGenUpd U;
 		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		static const FAParams P { .Name = LDConsts::Static::TimeFade, .Duration = PauseTime};
-		Anim->GenFade(this, U, P); // read note inside TimeUpd
+		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime};
+		Anim->GenFade(this, P, U); // read note inside TimeUpd
 	}
 
 	// then load
@@ -76,8 +76,8 @@ void ULSettingsUI::Hide_Implementation() {
 	if (LIKELY(Anim)) {
 		FAnimGenUpd U;
 		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		static const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime, .Reversed = true};
-		Anim->GenFade(this, U, P);
+		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime, .Reversed = true};
+		Anim->GenFade(this, P, U);
 		// clear previous
 	}
 
