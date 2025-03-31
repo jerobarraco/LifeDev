@@ -367,7 +367,7 @@ void(UAnim::* Done)(const Item&) ) {
 		return false;
 	}
 
-	ItemsRemoveSame(OItem, IOItems);
+	ItemsRem(OItem, IOItems);
 	if (ItemsSetNow(OItem, Done)) return true;
 
 	const bool Got = OItem.LoadFrom();
@@ -547,7 +547,7 @@ void UAnim::ItemsEmpty(TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
 }
 
 template<typename Type>
-void UAnim::ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr) {
+void UAnim::ItemsRem(const Type& Item, TArray<Type>& IOArr) {
 	// ensure we remove it the ones colliding. allow to remove more than 1.
 	for (int32 i = IOArr.Num()-1; i>=0; --i) {
 		const Type& O = IOArr[i];
@@ -608,6 +608,51 @@ bool UAnim::GetIsFadingComp(const USceneComponent* const Comp) const {
 	return false;
 }
 
+void UAnim::Stop(UObject* const Obj, const FName N, const int32 Index) {
+	FABase I;
+	I.Obj = Obj;
+	I.Pars.Name = N;
+	if (N.IsNone() && Index >=0)
+		I.Pars.Name = FName(FString::Printf(TEXT("%i"), Index));
+
+	// have to create these variables because otherwise the template can't deal with it.
+	FAPFloat PF;
+	PF.Obj = Obj;
+	PF.Pars.Name = I.Pars.Name;
+	ItemsRem(PF, ItemsMPCF);
+
+	FAPVector PV;
+	PV.Obj = Obj;
+	PV.Pars.Name = I.Pars.Name;
+	ItemsRem(PV, ItemsMPCV);
+
+	FAData D;
+	D.Obj = Obj;
+	D.Pars.Name = I.Pars.Name;
+	D.Index = Index;
+	ItemsRem(D, ItemsData);
+
+	FADFloat DF;
+	DF.Obj = Obj;
+	DF.Pars.Name = I.Pars.Name;
+	ItemsRem(DF, ItemsDynF);
+
+	FADVector DV;
+	DV.Obj = Obj;
+	DV.Pars.Name = I.Pars.Name;
+	ItemsRem(DV, ItemsDynV);
+
+	FASFloat SF;
+	SF.Obj = Obj;
+	SF.Pars.Name = I.Pars.Name;
+	ItemsRem(SF, ItemsSndF);
+
+	FACTrans CT;
+	CT.Obj = Obj;
+	CT.Pars.Name = I.Pars.Name;
+	ItemsRem(CT,ItemsCompT);
+}
+
 void UAnim::Deinitialize() {
 	ItemsEmpty(ItemsMPCF, &UAnim::ItemDoneMPCF);
 	ItemsEmpty(ItemsMPCV, &UAnim::ItemDoneMPCV);
@@ -643,6 +688,7 @@ bool UAnim::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	// The world subsystem shouldn't be used in the editor. from enhanced input system
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
 }
+
 
 // without this it will crash. yes. it will crash. https://forums.unrealengine.com/t/how-can-i-tick-a-tickableworldsubsystem/489697/3
 // https://benui.ca/unreal/tickable-object/

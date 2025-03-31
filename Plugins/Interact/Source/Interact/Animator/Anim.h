@@ -224,11 +224,8 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual bool DoesSupportWorldType(EWorldType::Type WorldType) const override;
 
-	// TODO
 	UFUNCTION(BlueprintCallable)
-	bool Stop(const UObject* const Obj, const FName N) {
-		return false;
-	};
+	void Stop(UObject* const Obj, const FName N, const int32 Index=-1);
 #pragma endregion
 
 #pragma region mpci
@@ -387,14 +384,13 @@ public:
 protected:
 #pragma region Items
 	// TODO refactor these to use Pars
-	
 	template<typename Type>
 	bool ItemSetup(Type& OItem, UObject* const Obj, const FName Name,
 		UCurveFloat* const Curve, const float Duration, TArray<Type>& IOItems,
 		void(UAnim::* Done)(const Type&));
 	bool ItemInitBasic(FABase& OItem, UObject* const Obj, const FAParams& Pars) const;
 	template<typename Type>
-	void ItemsRemoveSame(const Type& Item, TArray<Type>& IOArr);
+	void ItemsRem(const Type& Item, TArray<Type>& IOArr);
 	// ensure te set To and Duration before calling.
 	template<typename Type>
 	bool ItemsSetNow(const Type& Item,
