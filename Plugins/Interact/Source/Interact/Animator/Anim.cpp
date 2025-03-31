@@ -440,9 +440,9 @@ bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<It
 		if (I.IsSame(Obj, Name)) return true;
 	return false;
 }
-
 #pragma endregion
 
+#pragma region fade
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
 const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
@@ -543,7 +543,8 @@ bool UAnim::GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAPara
 	FAGen Item;
 	Item.OnUpdate = OnUpd;
 	Item.Pars = Pars;
-	const bool Ok = ItemSetup(Item, Owner, Pars.Name, Pars.Curve, Pars.Duration, ItemsGen, &UAnim::ItemDoneGen);
+	Item.Obj = Owner;
+	const bool Ok = ItemSetup(Item, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
 }
 
@@ -569,7 +570,9 @@ void UAnim::Tick(const float DT) {
 	OnDone.Broadcast();
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
 }
+#pragma endregion
 
+#pragma region gets
 bool UAnim::GetIsFadingMPC(
 const UMaterialParameterCollectionInstance* const MPCI, const FName Name) const {
 	if (UNLIKELY(!IsValid(MPCI))) return false;
@@ -650,6 +653,7 @@ void UAnim::Stop(UObject* const Obj, const FName N, const int32 Index) {
 	CT.Pars.Name = I.Pars.Name;
 	ItemsRem(CT,ItemsCompT);
 }
+#pragma endregion
 
 void UAnim::Deinitialize() {
 	ItemsEmpty(ItemsMPCF, &UAnim::ItemDoneMPCF);
