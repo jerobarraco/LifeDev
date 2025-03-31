@@ -240,9 +240,8 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool MPCFloatFade(const UMaterialParameterCollection* const MPC,
-		const FName Name, const float To = 1.0, const float Duration = -1,
-		UCurveFloat* const Curve = nullptr);
+	bool MPCFloatFade(const UMaterialParameterCollection* MPC,
+					const FAParams& Params, float To = 1.0);
 
 	// Fades a vector (or color).
 	// Name: the name of the parameter to fade

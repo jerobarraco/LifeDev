@@ -123,13 +123,13 @@ void ARange::Trigger() {
 	if (UNLIKELY(!World)) return;
 	
 	UAnim* const AnimMat = UAnim::Instance(this);
-	if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 1, .25);
+	if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, TODO, 1);
 	
 	FTimerHandle H;
 	FTimerDelegate D;
 	constexpr float OutTime = .5;
 	D.BindLambda([AnimMat, OutTime, this] () {
-		if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, HintMPCName, 0, OutTime);
+		if (LIKELY(AnimMat)) AnimMat->MPCFloatFade(MPC, TODO, 0);
 	});
 	const AInteract* const Int = GetMutableDefault<AInteract>(); // changing the hinttime on the settings breaks this, :(((
 	const float Rate = LIKELY(Int) ?

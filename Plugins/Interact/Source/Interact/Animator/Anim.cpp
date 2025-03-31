@@ -443,7 +443,7 @@ bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<It
 #pragma endregion
 
 #pragma region fade
-bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FAParams& Params, const float To, const float Duration, UCurveFloat* const Curve) {
+bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FAParams& Params, const float To) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Params.Name.ToString(), To, Params.Duration);
 	
@@ -456,7 +456,7 @@ bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FA
 	Item.Pars = Params;
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
 	Item.Obj = Obj;
-	return ItemSetup(Item, Obj, Name, Curve, Duration, ItemsMPCF, &UAnim::ItemDoneMPCF);
+	return ItemSetup(Item, ItemsMPCF, &UAnim::ItemDoneMPCF);
 }
 
 bool UAnim::MPCVectorFade(const UMaterialParameterCollection* const MPC, const FAParams& Params,
