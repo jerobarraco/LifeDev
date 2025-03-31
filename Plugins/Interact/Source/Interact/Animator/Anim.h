@@ -313,12 +313,9 @@ public:
 	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
 	//		This is untested though.
 	UFUNCTION(BlueprintCallable)
-	bool DataFade(UPrimitiveComponent* const Comp,
-		const int32 Index, const bool IsScalar = true,
-		const FLinearColor& To = FLinearColor::White,
-		const float Duration = -1, const bool UseHSV = false,
-		UCurveFloat* const Curve = nullptr
-	);
+	bool DataFade(UPrimitiveComponent* Comp,
+		const FAParams& Params, int32 Index, bool IsScalar = true,
+		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
 		const FTransform& To, bool IsWorld = false, bool IsAdditive = false,

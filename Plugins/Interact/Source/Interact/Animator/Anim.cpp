@@ -507,20 +507,24 @@ UCurveFloat* const Curve) {
 	return ItemSetup(Param, Comp, Name, Curve, Duration, ItemsSndF, &UAnim::ItemDoneSndF);
 }
 
-bool UAnim::DataFade(UPrimitiveComponent* const Comp, const int32 Index, const bool IsScalar,
-const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
+bool UAnim::DataFade(UPrimitiveComponent* const Comp, const FAParams& Params, const int32 Index, const bool IsScalar,
+const FLinearColor& To, const bool UseHSV) {
 
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
-		__func__, *GetNameSafe(Comp), Index, IsScalar, *To.ToString(), Duration, UseHSV);
+		__func__, *GetNameSafe(Comp), Index, IsScalar, *To.ToString(), Params.Duration, UseHSV);
 
 	FAData Item;
+	Item.Obj = Comp;
 	Item.Index = Index; // still need the index for getCurrent and SetVal
-	Item.UseHSV = UseHSV;
 	Item.To = To;
+	Item.UseHSV = UseHSV;
 	Item.IsScalar = IsScalar;
+
+	Item.Pars = Params;
 	// necessary for polymorphic behavior
-	const FName Name = FName(FString::Printf(TEXT("%i"), Index));
-	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsData, &UAnim::ItemDoneData);
+	Item.Pars.Name = FName(FString::Printf(TEXT("%i"), Index));
+	
+	return ItemSetup(Item, ItemsData, &UAnim::ItemDoneData);
 }
 
 bool UAnim::CompTransFade(USceneComponent* const Comp, const FAParams& Params, const FTransform& To, const bool IsWorld,

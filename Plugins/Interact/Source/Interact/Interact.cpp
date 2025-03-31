@@ -226,11 +226,11 @@ void AInteract::ShowHint_Implementation() {
 	if (UNLIKELY(!AnimMat)) return;
 
 	// ensure from 0
-	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::Black, 0);
+	AnimMat->DataFade(Mesh, TODO, HintPrimDataID, true, FLinearColor::Black);
 	// the curve helps with the animation. it could be done on the material as well. doushio?
 	// i think this makes it clearer for art people.
-	AnimMat->DataFade(Mesh, HintPrimDataID, true, FLinearColor::White, HintTime,
-		false, HintCurve.Get());
+	AnimMat->DataFade(Mesh, TODO, HintPrimDataID, true, FLinearColor::White,
+					false);
 }
 
 void AInteract::BeginPlay() {
