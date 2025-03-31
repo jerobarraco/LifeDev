@@ -240,8 +240,8 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool MPCFloatFade(const UMaterialParameterCollection* MPC,
-					const FAParams& Params, float To = 1.0);
+	bool MPCFloatFade(const UMaterialParameterCollection* const MPC,
+		const FAParams& Params, const float To = 1.0);
 
 	// Fades a vector (or color).
 	// Name: the name of the parameter to fade
@@ -250,9 +250,8 @@ public:
 	// UseHSV: uses HSV for lerp. is more expensive, but looks better on colors.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool MPCVectorFade(const UMaterialParameterCollection* MPC,
-						const FAParams& Params,
-						const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
+	bool MPCVectorFade(const UMaterialParameterCollection* const MPC, const FAParams& Params,
+		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
 #pragma endregion
 
 #pragma region dynmat
@@ -264,7 +263,8 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const float To = 1.0);
+	bool DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params,
+		const float To = 1.0);
 
 	// Fades a vector (or color).
 	// Name: the name of the parameter to fade
@@ -286,8 +286,8 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool SndFloatFade(UAudioComponent* Comp,
-					const FAParams& Params, float To = 1.0);
+	bool SndFloatFade(UAudioComponent* const Comp,
+		const FAParams& Params, const float To = 1.0);
 #pragma endregion
 
 #pragma region data
@@ -306,18 +306,18 @@ public:
 	//		Triggering the same parameter twice will try to stop the previous as long as the component and index are the same.
 	//		This is untested though.
 	UFUNCTION(BlueprintCallable)
-	bool DataFade(UPrimitiveComponent* Comp,
-		const FAParams& Params, int32 Index, bool IsScalar = true,
+	bool DataFade(UPrimitiveComponent* const Comp, const FAParams& Params,
+		const int32 Index, bool IsScalar = true,
 		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
-		const FTransform& To, bool IsWorld = false, bool IsAdditive = false,
-		bool UseSweep = false);
+		const FTransform& To, const bool IsWorld = false, const bool IsAdditive = false,
+		const bool UseSweep = false);
 #pragma endregion
 
 #pragma region gen
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
-	bool GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAParams& Pars);
+	bool GenFade(UObject* const Owner, const FAParams& Pars, const FAnimGenUpd& OnUpd);
 #pragma endregion
 #pragma region isfading
 	// returns true while fading.

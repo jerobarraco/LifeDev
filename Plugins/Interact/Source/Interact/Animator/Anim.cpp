@@ -358,7 +358,7 @@ bool UAnim::ItemInit(FABase& IOItem) const {
 
 template <typename Item>
 bool UAnim::ItemSetup(Item& IOItem, TArray<Item>& IOItems, void(UAnim::* Done)(const Item&)) {
-	if (UNLIKELY(!ItemInitBasic(IOItem))) {
+	if (UNLIKELY(!ItemInit(IOItem))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
 		return false;
@@ -443,7 +443,8 @@ bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<It
 #pragma endregion
 
 #pragma region fade
-bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FAParams& Params, const float To) {
+bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FAParams& Params,
+const float To) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
 		__func__, *Params.Name.ToString(), To, Params.Duration);
 	
@@ -514,8 +515,8 @@ bool UAnim::SndFloatFade(UAudioComponent* const Comp, const FAParams& Params, co
 	return ItemSetup(Item, ItemsSndF, &UAnim::ItemDoneSndF);
 }
 
-bool UAnim::DataFade(UPrimitiveComponent* const Comp, const FAParams& Params, const int32 Index, const bool IsScalar,
-const FLinearColor& To, const bool UseHSV) {
+bool UAnim::DataFade(UPrimitiveComponent* const Comp, const FAParams& Params,
+const int32 Index, const bool IsScalar, const FLinearColor& To, const bool UseHSV) {
 
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, index=%i, scalar=%i, to=%s, duration=%.3f, hsv=%i"),
 		__func__, *GetNameSafe(Comp), Index, IsScalar, *To.ToString(), Params.Duration, UseHSV);
@@ -551,7 +552,7 @@ const bool IsAdditive, const bool UseSweep) {
 	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
-bool UAnim::GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAParams& Pars) {
+bool UAnim::GenFade(UObject* const Owner, const FAParams& Pars, const FAnimGenUpd& OnUpd) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Pars.Name.ToString(), Pars.Duration);
 	FAGen Item;
 	Item.OnUpdate = OnUpd;
