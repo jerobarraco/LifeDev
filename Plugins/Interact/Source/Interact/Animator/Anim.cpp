@@ -523,19 +523,21 @@ const FLinearColor& To, const float Duration, const bool UseHSV, UCurveFloat* co
 	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsData, &UAnim::ItemDoneData);
 }
 
-bool UAnim::CompTransFade(USceneComponent* const Comp, const FTransform& To, const float Duration, const bool IsWorld,
-const bool IsAdditive, const bool UseSweep, UCurveFloat* const Curve) {
+bool UAnim::CompTransFade(USceneComponent* const Comp, const FAParams& Params, const FTransform& To, const bool IsWorld,
+const bool IsAdditive, const bool UseSweep) {
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, to=%s, duration=%.3f"),
-		__func__, *GetNameSafe(Comp), *To.ToString(), Duration);
+		__func__, *GetNameSafe(Comp), *To.ToString(), Params.Duration);
 
 	FACTrans Item;
+	Item.Obj = Comp;
 	Item.To = To;
 	Item.UseSweep = UseSweep;
 	Item.IsAdditive = IsAdditive;
 	Item.IsWorld = IsWorld;
-	// necessary for polymorphic behavior
-	static const FName Name = NAME_Transform;
-	return ItemSetup(Item, Comp, Name, Curve, Duration, ItemsCompT, &UAnim::ItemDoneComp);
+
+	Item.Pars = Params;
+	Item.Pars.Name = NAME_Transform; // necessary for polymorphic behavior
+	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
 bool UAnim::GenFade(UObject* const Owner, const FAnimGenUpd& OnUpd, const FAParams& Pars) {

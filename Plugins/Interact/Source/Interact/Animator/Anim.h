@@ -320,14 +320,9 @@ public:
 		UCurveFloat* const Curve = nullptr
 	);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="To"))
-	bool CompTransFade(USceneComponent* const Comp,
-		const FTransform& To,
-		const float Duration = -1,
-		const bool IsWorld = false,
-		const bool IsAdditive = false,
-		const bool UseSweep = false,
-		UCurveFloat* const Curve = nullptr
-	);
+	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
+		const FTransform& To, bool IsWorld = false, bool IsAdditive = false,
+		bool UseSweep = false);
 #pragma endregion
 
 #pragma region gen
