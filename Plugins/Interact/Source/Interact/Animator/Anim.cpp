@@ -531,7 +531,7 @@ const int32 Index, const bool IsScalar, const FLinearColor& To, const bool UseHS
 
 	Item.Pars = Params;
 	// necessary for polymorphic behavior
-	Item.Pars.Name = FName(FString::Printf(TEXT("%i"), Index));
+	Item.Pars.Name = FName(FString::FromInt(Index));
 	
 	return ItemSetup(Item, ItemsData, &UAnim::ItemDoneData);
 }
@@ -606,7 +606,7 @@ bool UAnim::GetIsFadingDyn(const UMaterialInstanceDynamic* const Mat, const FNam
 bool UAnim::GetIsFadingData(const UPrimitiveComponent* const Comp, const int32 Index) const {
 	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	const FName Name(FString::Printf(TEXT("%i"), Index));
+	const FName Name(FString::FromInt(Index));
 	if (ItemIsIn(Comp, Name, ItemsData)) return true;
 	return false;
 }
