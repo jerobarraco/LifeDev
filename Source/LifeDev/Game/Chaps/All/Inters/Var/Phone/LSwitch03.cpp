@@ -9,13 +9,12 @@ ALSwitch03::ALSwitch03(): Super() {
 	StateNum = 1;
 	
 	const FVector Loc(-7.500000,32.500000,-77.500000);
-	
-	// Anim->TStart = FTransform(State0Rot, Loc, FVector(1));
-	Anim->TStart.SetLocation(Loc);
-	Anim->TEnd.SetLocation(FVector(0, 0, 2.5));
-	// Anim->IsBouncing = true;
+	Mesh->SetRelativeLocation(Loc);
+	Anim->TEnd.SetLocation(FVector(0, 0, -2.5));
+	// Anim->IsBouncing = true; //uses the curve
 	Anim->IsAdditive = true;
 	Anim->Duration = .4;
+	Anim->IsReversed = true; // curve is reversed
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCF(TEXT("/JUtils/Curves/PulseOut"));
 	Anim->Curve = CCF.Object;
