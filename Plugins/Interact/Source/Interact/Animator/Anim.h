@@ -15,14 +15,14 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimCompDone, USceneComponent* con
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, const FName, Name);
 DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Alpha);
 
-// TODO use this as param to call the functions
 // common stuff to be passed as parameter to all function
 USTRUCT(Blueprintable, BlueprintType)
 struct FAParams {
 	GENERATED_BODY()
 
 public:
-	// name. some do not use the name directly (the ones using index. the name gets generated)
+	// name, necessary to distinguish. without it the effect won't start.
+	// Except for Data (the ones with Index), and CompTrans.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FName Name = NAME_None;
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -205,8 +205,11 @@ public:
 	virtual bool SetLerp(const float Prog) override;
 };
 
-// Subsystem that animates materials parameter collections' parameters.
-// And custom primitive data. It's a bit deprecated. The AnimatorMPC and AnimatorData is preferred.
+// Subsystem that animates stuff in a more easy way. this is for one-off fire and forget effects.
+// it offers much less control than the "CAnimator" components.
+// CAnimator objects are preferred.
+// One of the downsides of this class is that it runs on every tick, there's no way to optimize each animation.
+// Whereas the CAnimator works really well with the Significance and other manual tweaks.
 UCLASS(Blueprintable, Category="Interact", Config=Interact, DefaultConfig)
 class INTERACT_API UAnim: public UTickableWorldSubsystem {
 	GENERATED_BODY()
@@ -309,11 +312,12 @@ public:
 	bool DataFade(UPrimitiveComponent* const Comp, const FAParams& Params,
 		const int32 Index, bool IsScalar = true,
 		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
+#pragma endregion
+
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
 		const FTransform& To, const bool IsWorld = false, const bool IsAdditive = false,
 		const bool UseSweep = false);
-#pragma endregion
 
 #pragma region gen
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
