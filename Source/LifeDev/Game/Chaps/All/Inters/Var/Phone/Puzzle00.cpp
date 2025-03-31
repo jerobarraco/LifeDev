@@ -7,12 +7,13 @@
 
 APuzzle00::APuzzle00():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
-	CPuzzle->Solution = {0,3,0,3,4,5,6}; // al telefono espero me llames tu
+	CPuzzle->Solution = {0,3,0,3,4,5,6}; // al telefono espero me llames tu // off by one
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CM(TEXT("/Game/LifeDev/Game/Inters/Var/Phone00_P"));
 	Mesh->SetStaticMesh(CM.Object);
 	SetMobility(EComponentMobility::Static);
+	ResetTimeout = 3;
 }
 
 
@@ -27,7 +28,7 @@ void APuzzle00::PostLoad() {
 		AInteract* I = Inters[i];
 		if (UNLIKELY(!I)) continue;
 
-		const FString& SI = FString::Printf(TEXT("%i"), i);
+		const FString& SI = FString::Printf(TEXT("%i"), i+1); // only 9 btns lol
 		const FText& TI = FText::FromString(SI);
 		I->Texts = {
 			TI, TI
