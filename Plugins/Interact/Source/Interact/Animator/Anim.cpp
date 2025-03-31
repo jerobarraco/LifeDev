@@ -555,9 +555,9 @@ const bool IsAdditive, const bool UseSweep) {
 bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Params.Name.ToString(), Params.Duration);
 	FAGen Item;
-	Item.OnUpdate = OnUpd;
-	Item.Pars = Params;
 	Item.Obj = Owner;
+	Item.Pars = Params;
+	Item.OnUpdate = OnUpd;
 	const bool Ok = ItemSetup(Item, ItemsGen, &UAnim::ItemDoneGen);
 	return Ok;
 }
