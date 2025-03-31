@@ -478,10 +478,9 @@ const FLinearColor& To, const bool UseHSV) {
 	return ItemSetup(Item, ItemsMPCV, &UAnim::ItemDoneMPCV);
 }
 
-bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const float To,
-const float Duration) {
+bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const float To) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
-		__func__, *Params.Name.ToString(), To, Duration);
+		__func__, *Params.Name.ToString(), To, Params.Duration);
 
 	FADFloat Item;
 	Item.Obj = Mat;
