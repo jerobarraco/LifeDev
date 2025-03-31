@@ -43,8 +43,9 @@ void UCAnimator::Finish() {
 	UE_CLOG(UseLog, LogCAnimator, Log,
 		TEXT("%hs o=%s isReversed=%i isLooping=%i isBouncing=%i"),
 		__func__, *GetNameSafe(GetOwner()), IsReversed, IsLooping, IsBouncing);
+	const bool CanBounce = IsBouncing && !HasBounced;
 	// check if we can continue at all
-	if (!IsLooping && !IsBouncing) {
+	if (!IsLooping && !CanBounce) {
 		Deactivate();
 		return;
 	}
@@ -58,12 +59,13 @@ void UCAnimator::Finish() {
 	// this is ok, since if it's reversed then the end of one == the start of the reversed
 	// also if not bouncing we want to start over.
 	Progress = 0.0;
-	if (IsBouncing) { // reverse the reversed
+	if (CanBounce) { // reverse the reversed
 		Flip(); // IsReversed = !IsReversed;
 		// bounce only once if not looping
-		if (!IsLooping) IsBouncing = false;
+		// if (!IsLooping) IsBouncing = false;
+		if (!IsLooping) HasBounced = true;
 	}
-// TODO add flag for "HasBounced" and set that to false on start. also check here.
+	// if !CanBounce implies Looping here
 	Begin(); // it technically started
 }
 
@@ -139,6 +141,7 @@ void UCAnimator::End_Implementation() {
 void UCAnimator::Begin_Implementation() {
 	UE_CLOG(Debug, LogCAnimator, Verbose, TEXT("%hs o=%s"),
 		__func__, *GetNameSafe(GetOwner()));
+
 	OnBegin.Broadcast();
 }
 
@@ -169,12 +172,15 @@ void UCAnimator::Activate(const bool bReset) {
 	
 	Super::Activate(bReset);
 
-	if (bReset) {
-		Progress = 0;
-		DTAcum = 0;
-	}
+	const bool DoRestart = !WasActive || bReset;
+	if (!DoRestart) return;
+	
+	// re-init variables
+	Progress = 0;
+	DTAcum = 0;
+	HasBounced = false;
 
-	if (!WasActive || bReset) Begin();
+	Begin();
 }
 
 void UCAnimator::Deactivate() {

@@ -147,5 +147,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UCAnimator> Parent = nullptr;
 	
-	float DTAcum = 0.0; // used for manual ticks 
+	float DTAcum = 0.0; // used for manual ticks
+	bool HasBounced = false;
 };
