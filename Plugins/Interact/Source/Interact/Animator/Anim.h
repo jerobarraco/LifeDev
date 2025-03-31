@@ -388,9 +388,7 @@ protected:
 #pragma region Items
 	bool ItemInit(FABase& IOItem) const;
 	template<typename Type>
-	bool ItemSetup(Type& OItem, UObject* const Obj, const FName Name,
-		UCurveFloat* const Curve, const float Duration, TArray<Type>& IOItems,
-		void(UAnim::* Done)(const Type&));
+	bool ItemSetup(Type& IOItem, TArray<Type>& IOItems, void(UAnim::* Done)(const Type&));
 	template<typename Type>
 	void ItemsRem(const Type& Item, TArray<Type>& IOArr);
 	// ensure te set To and Duration before calling.

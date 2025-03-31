@@ -357,7 +357,7 @@ bool UAnim::ItemInit(FABase& IOItem) const {
 }
 
 template <typename Item>
-bool UAnim::ItemSetup(Item& IOItem, TArray<Item>& IOItems, void(UAnim::* Done)(const Item&) ) {
+bool UAnim::ItemSetup(Item& IOItem, TArray<Item>& IOItems, void(UAnim::* Done)(const Item&)) {
 	if (UNLIKELY(!ItemInitBasic(IOItem))) {
 		UE_LOG(LogAnim, Warning, TEXT("%hs Failed to init param. Stop."),
 			__func__);
