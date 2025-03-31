@@ -183,33 +183,27 @@ bool UCPuzzle::CheckCondition() const {
 }
 
 void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj) {
-	// trigger update now! before done.
-	// important for APuzzle timer and for logical order in the flow
-	OnUpdate.Broadcast();
-
+	// this code sucks.
+	bool IsOk = false;
 	if (Type == EPuzzleType::SEQUENCE) {
-		const bool Ok = CheckSequence(ID);
-		// if the length matches return "done" anyway (means success false)
-		if (Solution.Num() == CurrentIds.Num()) {
-			PreDone(Ok);
-			return;
-		}
+		IsOk = CheckSequence(ID);
 	} else if (Type == EPuzzleType::COMBINATION) {
-		const bool Ok = CheckCombination(ID);
-		// if (Ok) {
-			// only trigger when complete. combination can only be completed with ok.
-			PreDone(Ok);
-			return;
-		// }
+		IsOk = CheckCombination(ID);
 	} else if (Type == EPuzzleType::CONDITION) {
-		const bool Ok = CheckCondition();
-		PreDone(Ok);
-		return;
+		IsOk = CheckCondition();
 	} else {
 		UE_LOG(LogCPuzzle, Log, TEXT("InterTrigger: Invalid puzzle type."));
 		return;
 	}
+
+	// the flags and order is like this to allow autodiags and other clients to test the currentIds before PreDone is called.
+	// trigger update now! before done.
+	// important for APuzzle timer and for logical order in the flow
+	OnUpdate.Broadcast();
+
+	PreDone(IsOk); // pre-done checks IsOk inside. so it's safe.
 }
+
 void UCPuzzle::PreDone(const bool Ok) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs. ok=%i o=%s"),
 		__func__, Ok, *GetNameSafe(this->GetOwner()));
