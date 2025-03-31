@@ -39,6 +39,7 @@ bool FABase::Tick(const float DT) {
 		return false;
 	} else if (Pars.Loop) { // loop but not bounce
 		Elapsed = 0; // restart
+		return false;
 	}
 
 	return true;
