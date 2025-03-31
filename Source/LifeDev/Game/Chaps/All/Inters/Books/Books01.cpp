@@ -31,8 +31,11 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 		if (LIKELY(AnimSub)) {
 			UMaterialInstanceDynamic* const Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
 			if (LIKELY(Mat)) {
-				AnimSub->DynFloatFade(Mat, TODO, 1);
-				AnimSub->DynFloatFade(Mat, TODO, 0);
+				FAParams P{.Name = "Fade", .Duration = 0};
+				AnimSub->DynFloatFade(Mat, P, 1);// set now, no curve.
+				P.Duration = .5;
+				P.Curve = FadeCurve;
+				AnimSub->DynFloatFade(Mat, P, 0);
 			}
 		}
 	}
