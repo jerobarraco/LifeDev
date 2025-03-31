@@ -61,9 +61,9 @@ void UCAnimator::Finish() {
 	if (IsBouncing) { // reverse the reversed
 		Flip(); // IsReversed = !IsReversed;
 		// bounce only once if not looping
-		if (!IsLooping) IsBouncing = false; 
+		if (!IsLooping) IsBouncing = false;
 	}
-
+// TODO add flag for "HasBounced" and set that to false on start. also check here.
 	Begin(); // it technically started
 }
 
