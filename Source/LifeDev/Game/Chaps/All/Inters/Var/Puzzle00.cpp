@@ -2,33 +2,43 @@
 
 #include "Puzzle00.h"
 
+#include "CQuickMesh.h"
 #include "Interact/CPuzzle.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
+
+APuzzle00::APuzzle00():Super() {
+	CPuzzle->Type = EPuzzleType::SEQUENCE;
+	CPuzzle->Solution = {0,3,0,3,4,5,6}; // al telefono espero me llames tu
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CM(TEXT("/Game/LifeDev/Game/Inters/Var/Phone00_P"));
+	Mesh->SetStaticMesh(CM.Object);
+	SetMobility(EComponentMobility::Static);
+}
+
+
+void APuzzle00::PostLoad() {
+	// by now the interacts set in editor are loaded
+	Super::PostLoad();
+	// TODO set the texts for all buttons in a simplified way
+
+	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	const int32 Num = Inters.Num();
+	for (int32 i= 0; UNLIKELY(i<Num); ++i) {
+		AInteract* I = Inters[i];
+		if (UNLIKELY(!I)) continue;
+
+		const FString& SI = FString::Printf(TEXT("%i"), i);
+		const FText& TI = FText::FromString(SI);
+		I->Texts = {
+			TI, TI
+		};
+	}
+	// static const TArray<bool> Locks = { true, false, true, false };
+	
+	// SetLocks(Locks);
+}
 //
-// APuzzleI00::APuzzleI00():Super() {
-// 	CPuzzle->Type = EPuzzleType::COMBINATION;
-// 	CPuzzle->Solution = {5,4,0,5}; // F.E.A.R.
-//
-// 	static FName DoneId = "PZ00_T";
-// 	RewardFlash = .2;
-// 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
-// 	TriggerDlg = DoneId;
-// }
-//
-// void APuzzleI00::PostLoad() {
-// 	// by now the interacts set in editor are loaded
-// 	Super::PostLoad();
-// 	static const TMap<FName, FName> Dlgs = {
-// 		{LDConsts::Items::Card0, "PZ00xC00"}
-// 	};
-// 	SetUseItemDlgs(Dlgs);
-//
-// 	static const TArray<bool> Locks = { true, false, true, false };
-// 	SetLocks(Locks);
-// }
-//
-// void APuzzleI00::BeginPlay() {
+// void APuzzle00::BeginPlay() {
 // 	Super::BeginPlay();
 // 	static const TArray<int32> States = { 5,0,0,0 };
 // 	SetStates(States);

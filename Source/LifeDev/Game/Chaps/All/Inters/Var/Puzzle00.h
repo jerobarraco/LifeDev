@@ -5,7 +5,7 @@
 
 #include "Puzzle00.generated.h"
 
-// Generic Puzzle for phones
+// Generic Puzzle for phones. Buttons should be set on the outliner.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APuzzle00: public ALPuzzle {
 	GENERATED_BODY()
@@ -15,5 +15,5 @@ public:
 
 protected:
 	virtual void PostLoad() override;
-	virtual void BeginPlay() override;
+	// virtual void BeginPlay() override;
 };

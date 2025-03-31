@@ -11,9 +11,9 @@ class LIFEDEV_API APuzzleI00: public ALPuzzle {
 	GENERATED_BODY()
 
 public:
-	// APuzzleI00();
+	APuzzleI00();
 
 protected:
-	// virtual void PostLoad() override;
-	// virtual void BeginPlay() override;
+	virtual void PostLoad() override;
+	virtual void BeginPlay() override;
 };
