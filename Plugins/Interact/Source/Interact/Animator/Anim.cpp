@@ -443,58 +443,61 @@ bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<It
 #pragma endregion
 
 #pragma region fade
-bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
-const float To, const float Duration, UCurveFloat* const Curve) {
+bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FAParams& Params, const float To, const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
-		__func__, *Name.ToString(), To, Duration);
+		__func__, *Params.Name.ToString(), To, Duration);
 	
 	if (UNLIKELY(!IsValid(MPC))) return false;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
 	
-	FAPFloat Param;
-	Param.To = To;
+	FAPFloat Item;
+	Item.To = To;
+	Item.Pars = Params;
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	return ItemSetup(Param, Obj, Name, Curve, Duration, ItemsMPCF, &UAnim::ItemDoneMPCF);
+	return ItemSetup(Item, Obj, Name, Curve, Duration, ItemsMPCF, &UAnim::ItemDoneMPCF);
 }
 
-bool UAnim::MPCVectorFade(const UMaterialParameterCollection* const MPC, const FName Name,
-const FLinearColor& To, const float Duration, const bool UseHSV,
+bool UAnim::MPCVectorFade(const UMaterialParameterCollection* const MPC, const FAParams& Params, const FLinearColor& To, const float Duration, const bool UseHSV,
 	UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
-		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
+		__func__, *Params.Name.ToString(), *To.ToString(), Duration, UseHSV);
 
-	FAPVector Param;
-	Param.UseHSV = UseHSV;
-	Param.To = To;
+	FAPVector Item;
+	Item.UseHSV = UseHSV;
+	Item.To = To;
+	Item.Pars = Params;
 
 	if (UNLIKELY(!IsValid(MPC))) return false;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
 	
 	UObject* const Obj = World->GetParameterCollectionInstance(MPC);
-	return ItemSetup(Param, Obj, Name, Curve, Duration, ItemsMPCV, &UAnim::ItemDoneMPCV);
+	return ItemSetup(Item, Obj, Name, Curve, Duration, ItemsMPCV, &UAnim::ItemDoneMPCV);
 }
 
-bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FName Name, const float To,
+bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const float To,
 const float Duration, UCurveFloat* const Curve) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
-		__func__, *Name.ToString(), To, Duration);
+		__func__, *Params.Name.ToString(), To, Duration);
 
-	FADFloat Param;
-	Param.To = To;
-	return ItemSetup(Param, Mat, Name, Curve, Duration, ItemsDynF, &UAnim::ItemDoneDynF);
+	FADFloat Item;
+	Item.To = To;
+	Item.Pars = Params;
+	return ItemSetup(Item, Mat, Name, Curve, Duration, ItemsDynF, &UAnim::ItemDoneDynF);
 }
 
-bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FName Name, const FLinearColor& To,
-const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
+bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const FLinearColor& To,
+const bool UseHSV) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
-		__func__, *Name.ToString(), *To.ToString(), Duration, UseHSV);
+		__func__, *Params.Name.ToString(), *To.ToString(), Params.Duration, UseHSV);
 
-	FADVector Param;
-	Param.UseHSV = UseHSV;
-	Param.To = To;
-	return ItemSetup(Param, Mat, Name, Curve, Duration, ItemsDynV, &UAnim::ItemDoneDynV);
+	FADVector Item;
+	Item.Obj = Mat;
+	Item.UseHSV = UseHSV;
+	Item.To = To;
+	Item.Pars = Params;
+	return ItemSetup(Item, ItemsDynV, &UAnim::ItemDoneDynV);
 }
 
 bool UAnim::SndFloatFade(UAudioComponent* const Comp, const FAParams& Params, const float To) {
