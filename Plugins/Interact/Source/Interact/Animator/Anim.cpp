@@ -497,14 +497,16 @@ const float Duration, const bool UseHSV, UCurveFloat* const Curve) {
 	return ItemSetup(Param, Mat, Name, Curve, Duration, ItemsDynV, &UAnim::ItemDoneDynV);
 }
 
-bool UAnim::SndFloatFade(UAudioComponent* const Comp, const FName Name, const float To, const float Duration,
-UCurveFloat* const Curve) {
+bool UAnim::SndFloatFade(UAudioComponent* const Comp, const FAParams& Params, const float To) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%.3f, duration=%.3f"),
-		__func__, *Name.ToString(), To, Duration);
+		__func__, *Params.Name.ToString(), To, Params.Duration);
 
-	FASFloat Param;
-	Param.To = To;
-	return ItemSetup(Param, Comp, Name, Curve, Duration, ItemsSndF, &UAnim::ItemDoneSndF);
+	FASFloat Item;
+	Item.Obj = Comp;
+	Item.To = To;
+
+	Item.Pars = Params;
+	return ItemSetup(Item, ItemsSndF, &UAnim::ItemDoneSndF);
 }
 
 bool UAnim::DataFade(UPrimitiveComponent* const Comp, const FAParams& Params, const int32 Index, const bool IsScalar,

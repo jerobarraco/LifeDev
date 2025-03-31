@@ -292,9 +292,8 @@ public:
 	// Duration: <0 uses the default, 0 is instant, >0 uses whatever specified.
 	// Curve. easing curve. has to be in the range 0-1 for both axis. Y overshooting is fine.
 	UFUNCTION(BlueprintCallable)
-	bool SndFloatFade(UAudioComponent* const Comp,
-		const FName Name, const float To = 1.0, const float Duration = -1,
-		UCurveFloat* const Curve = nullptr);
+	bool SndFloatFade(UAudioComponent* Comp,
+					const FAParams& Params, float To = 1.0);
 #pragma endregion
 
 #pragma region data
