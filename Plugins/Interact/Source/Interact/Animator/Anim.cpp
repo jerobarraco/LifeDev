@@ -375,6 +375,72 @@ bool UAnim::ItemSetup(Item& IOItem, TArray<Item>& IOItems, void(UAnim::* Done)(c
 	IsFading = true;
 	return true;
 }
+
+template <typename Type>
+bool UAnim::ItemTick(const float DT, TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
+	TArray<int32> ToRemove;
+	bool Cont = false;
+	// traversing in reverse to remove on the spot
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
+		Type& Par = IOArr[i];
+		const bool IsDone = Par.Tick(DT);
+		
+		if (UNLIKELY(!IsDone)) {
+			Cont = true;
+			continue; // continue instead of return because we need to process all items
+		}
+
+		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
+		Type Old = Par;
+		IOArr.RemoveAtSwap(i);
+		// only at end, to ensure the val is set.
+		if (LIKELY(Done))
+			(this->*Done)(Old);
+		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
+		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
+		// since new elements would be added at the end of the array, which would be the current index.
+	}
+
+	return Cont;
+}
+
+template<typename Type>
+void UAnim::ItemsEmpty(TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
+	TArray<Type> Copy = IOArr;
+	IOArr.Empty(); // empty before notifying.
+	if (UNLIKELY(!Done)) return;
+
+	for (const Type& D: Copy)
+		(this->*Done)(D);
+}
+
+template<typename Type>
+void UAnim::ItemsRem(const Type& Item, TArray<Type>& IOArr) {
+	// ensure we remove it the ones colliding. allow to remove more than 1.
+	for (int32 i = IOArr.Num()-1; i>=0; --i) {
+		const Type& O = IOArr[i];
+		if (LIKELY(!Item.IsSame(O))) continue;
+		IOArr.RemoveAtSwap(i);
+	}
+}
+
+template <typename Type>
+bool UAnim::ItemsSetNow(const Type& Item, void(UAnim::* Done)(const Type&)) {
+	if (UNLIKELY(!FMath::IsNearlyZero(Item.Pars.Duration))) return false;
+
+	Item.SetVal(Item.To);
+	(this->*Done)(Item);
+	return true;
+}
+
+template <typename Item>
+bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<Item>& IArr) const {
+	for (const Item& I: IArr)
+		if (I.IsSame(Obj, Name)) return true;
+	return false;
+}
+
 #pragma endregion
 
 bool UAnim::MPCFloatFade(const UMaterialParameterCollection* const MPC, const FName Name,
@@ -502,71 +568,6 @@ void UAnim::Tick(const float DT) {
 	IsFading = false;
 	OnDone.Broadcast();
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
-}
-
-template <typename Type>
-bool UAnim::ItemTick(const float DT, TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
-	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
-	TArray<int32> ToRemove;
-	bool Cont = false;
-	// traversing in reverse to remove on the spot
-	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		Type& Par = IOArr[i];
-		const bool IsDone = Par.Tick(DT);
-		
-		if (UNLIKELY(!IsDone)) {
-			Cont = true;
-			continue; // continue instead of return because we need to process all items
-		}
-
-		// important to clone the values, since this var is by ref, once remove is called the data is bogus.
-		Type Old = Par;
-		IOArr.RemoveAtSwap(i);
-		// only at end, to ensure the val is set.
-		if (LIKELY(Done))
-			(this->*Done)(Old);
-		// this is kind of dangerous. since someone could as side effect decide to fade another (or same) data again
-		// but since we are looping backwards using classic style loop (proof that is not obsolete) then we are fine
-		// since new elements would be added at the end of the array, which would be the current index.
-	}
-
-	return Cont;
-}
-
-template<typename Type>
-void UAnim::ItemsEmpty(TArray<Type>& IOArr, void(UAnim::* Done)(const Type&)) {
-	TArray<Type> Copy = IOArr;
-	IOArr.Empty(); // empty before notifying.
-	if (UNLIKELY(!Done)) return;
-
-	for (const Type& D: Copy)
-		(this->*Done)(D);
-}
-
-template<typename Type>
-void UAnim::ItemsRem(const Type& Item, TArray<Type>& IOArr) {
-	// ensure we remove it the ones colliding. allow to remove more than 1.
-	for (int32 i = IOArr.Num()-1; i>=0; --i) {
-		const Type& O = IOArr[i];
-		if (LIKELY(!Item.IsSame(O))) continue;
-		IOArr.RemoveAtSwap(i);
-	}
-}
-
-template <typename Type>
-bool UAnim::ItemsSetNow(const Type& Item, void(UAnim::* Done)(const Type&)) {
-	if (UNLIKELY(!FMath::IsNearlyZero(Item.Pars.Duration))) return false;
-
-	Item.SetVal(Item.To);
-	(this->*Done)(Item);
-	return true;
-}
-
-template <typename Item>
-bool UAnim::ItemIsIn(const UObject* const Obj, const FName Name, const TArray<Item>& IArr) const {
-	for (const Item& I: IArr)
-		if (I.IsSame(Obj, Name)) return true;
-	return false;
 }
 
 bool UAnim::GetIsFadingMPC(
