@@ -7,5 +7,5 @@
 APuzzleI09::APuzzleI09():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {9,1,1};
+	IsOneShot = true;
 }
-
