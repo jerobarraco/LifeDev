@@ -310,7 +310,7 @@ protected:
 	void PlayParts(UNiagaraSystem* const Part) const;
 	void InitLabel();
 
-	void EditorLabelUpd(AActor* const Actor);
+	FORCEINLINE void EditorLabelUpd(AActor* const Actor);
 
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum

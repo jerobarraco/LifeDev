@@ -299,7 +299,7 @@ void AInteract::EditorLabelUpd(AActor* const Actor) { // can't be const. it's a 
 #if WITH_EDITORONLY_DATA
 	if (LIKELY(Actor != this)) return;
 	// always rewrite (not checking empty)
-	Label = FName(GetActorLabel());
+	Label = FName(GetActorLabel(true));
 #endif
 }
 

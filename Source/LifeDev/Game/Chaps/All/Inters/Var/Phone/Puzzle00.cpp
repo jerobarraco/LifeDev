@@ -16,7 +16,6 @@ APuzzle00::APuzzle00():Super() {
 	ResetTimeout = 3;
 }
 
-
 void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
@@ -28,7 +27,9 @@ void APuzzle00::PostLoad() {
 		AInteract* I = Inters[i];
 		if (UNLIKELY(!I)) continue;
 
-		const FString& SI = FString::FromInt(i); // only 9 btns lol
+		const FString& SI =
+			i < 10 ? FString::FromInt(i) :
+			(i < 11 ? TEXT("*"): TEXT("#"));
 		const FText& TI = FText::FromString(SI);
 		I->Texts = {
 			TI, TI
