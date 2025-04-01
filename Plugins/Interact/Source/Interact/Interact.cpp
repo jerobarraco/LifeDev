@@ -79,18 +79,18 @@ void AInteract::Grab(const bool IsGrab, UCInteractor* const NewParent) {
 void AInteract::SetText_Implementation() {
 	const int32 Num = Texts.Num();
 	if (UNLIKELY(Num < 1)) {
-		UE_LOG(LogTemp, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
+		UE_LOG(LogInteract, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
 		return;
 	}
 
 	if (UNLIKELY(State < 0 || State >= Num)) {
-		UE_LOG(LogTemp, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
+		UE_LOG(LogInteract, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
 			__func__, State, Num);
 		return;
 	}
 
 	Interact->Text = Texts[State];
-	UE_LOG(LogTemp, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
+	UE_LOG(LogInteract, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
 }
 
 EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
@@ -294,35 +294,50 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-#if WITH_EDITORONLY_DATA
 void AInteract::EditorLabelUpd(AActor* const Actor) { // can't be const. it's a binding.
+	// let the compiler remove this function on runtime. because compilers are smart.
+#if WITH_EDITORONLY_DATA
 	if (LIKELY(Actor != this)) return;
 	// always rewrite (not checking empty)
 	Label = FName(GetActorLabel());
-}
 #endif
+}
 
-void AInteract::PostLoad() {
-	Super::PostLoad();
-	// this function is only called on objects on the level so ActorLabel should be correct
+void AInteract::InitLabel() {
+	UE_LOG(LogInteract, Log, TEXT("%hs Label=%s Name=%s"), __func__,
+		*Label.ToString(), *GetNameSafe(this));
 #if WITH_EDITORONLY_DATA
-	if (UNLIKELY(Label.IsNone())) // allow to be overriden. otherwise load from editor
+	if (UNLIKELY(Label.IsNone())) // allow to be overriden. otherwise load from serialized
 		EditorLabelUpd(this);
 	// automatic update
 	FCoreDelegates::OnActorLabelChanged.AddUObject(this, &AInteract::EditorLabelUpd);
+#else
+	// label shouldn't be none since it should have been serialized. we're in trouble. or it's a dynamically spawned object and i don't care then.
+	UE_CLOG(UNLIKELY(Label.IsNone()), LogInteract, Warning, TEXT("%hs Label is none! Label=%s Name=%s"), __func__,
+		*Label.ToString(), *GetNameSafe(this));
+	if (UNLIKELY(Label.IsNone())) // allow to be overriden. otherwise load from serialized
+		Label = GetFNameSafe(this);
 #endif
+}
+
+void AInteract::PostLoad() {
+	// this function is only called on objects on the level so ActorLabel should be correct
+
+	Super::PostLoad();
+	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s"), __func__, *Label.ToString(), *GetNameSafe(this));
+	InitLabel();
 }
 
 void AInteract::PostActorCreated() {
 	Super::PostActorCreated();
-	// Only called on spawning actors
+	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s"), __func__, *Label.ToString(), *GetNameSafe(this));
+	// Only called on spawning actors AND DUPLICATIONS
 	// this function is mutually exclusive with PostLoad according to the docs
-	UE_LOG(LogInteract, Log, TEXT("%hs o=%s n=%s"), __func__, *Label.ToString(), *GetFName().ToString());
-	if (Label.IsNone()) Label = GetFName();
+	InitLabel();
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
+	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
 	PlaySFX(SFX_Locked);
 }
 

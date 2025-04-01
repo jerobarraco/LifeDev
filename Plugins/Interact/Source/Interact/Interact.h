@@ -308,10 +308,9 @@ protected:
 	void PlaySFX(USoundBase* const Snd) const;
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlayParts(UNiagaraSystem* const Part) const;
+	void InitLabel();
 
-#if WITH_EDITORONLY_DATA
 	void EditorLabelUpd(AActor* const Actor);
-#endif
 
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
