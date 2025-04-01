@@ -53,3 +53,11 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
 	UJUtilsSys::CameraFade(this, true);
 }
+
+void ULGameInstance::BeginDestroy() {
+	const ULSysSettings* const SSettings = ULSysSettings::Get();
+	if (LIKELY(!IsRunningCookCommandlet() && !UJUtilsSys::IsEditor() && IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
+		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
+
+	Super::BeginDestroy();
+}

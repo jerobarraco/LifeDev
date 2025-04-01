@@ -34,8 +34,12 @@ void FLifeDevModule::ShutdownModule() {
 
 	// this somehow got the packager crashing. TODO fix.
 	// const ULSysSettings* const SSettings = ULSysSettings::Get();
-	// if (LIKELY(SSettings && !SSettings->CloseURL.IsEmpty()))
+	// if (LIKELY(IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
 		// FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
-	FPlatformProcess::LaunchURL(TEXT("https://forms.gle/aYCr8zRR3wWTomyu8"), NULL, NULL);
+	// FPlatformProcess::LaunchURL(TEXT("https://forms.gle/aYCr8zRR3wWTomyu8"), NULL, NULL);
 	IModuleInterface::ShutdownModule();
+}
+
+void FLifeDevModule::PreUnloadCallback() {
+	IModuleInterface::PreUnloadCallback();
 }

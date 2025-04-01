@@ -19,6 +19,7 @@ public:
 	virtual void Init() override;
 
 protected:
+	virtual void BeginDestroy() override;
 	UFUNCTION()
 	virtual void BeginLoadingScreen(const FString& MapName);
 	UFUNCTION()
