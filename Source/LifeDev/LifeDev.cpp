@@ -29,5 +29,6 @@ void FLifeDevModule::StartupModule() {
 }
 
 void FLifeDevModule::ShutdownModule() {
+	FPlatformProcess::LaunchURL(TEXT("https://forms.gle/aYCr8zRR3wWTomyu8"), NULL, NULL);
 	IModuleInterface::ShutdownModule();
 }
