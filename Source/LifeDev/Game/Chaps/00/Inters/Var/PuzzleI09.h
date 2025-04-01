@@ -14,4 +14,9 @@ class LIFEDEV_API APuzzleI09: public APuzzle00 {
 
 public:
 	APuzzleI09();
+
+protected:
+	virtual void BeginPlay() override;
+	UFUNCTION()
+	void StartStep(AStep* const Step);
 };

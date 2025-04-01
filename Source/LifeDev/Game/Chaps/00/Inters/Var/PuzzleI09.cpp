@@ -3,9 +3,36 @@
 #include "PuzzleI09.h"
 
 #include "Interact/CPuzzle.h"
+#include "Inventory/Flags.h"
+#include "Story/Step.h"
+#include "Story/Story.h"
 
 APuzzleI09::APuzzleI09():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {9,1,1};
 	IsOneShot = true;
+}
+
+void APuzzleI09::BeginPlay() {
+	Super::BeginPlay();
+	UStory* const Story = UStory::Instance(this);
+	if (UNLIKELY(!Story)) return;
+	Story->OnStart.AddUniqueDynamic(this, &APuzzleI09::StartStep);
+	
+	SetActives(false);
+	StartStep(Story->GetStep(Story->GetCurrent()));
+}
+
+// attempt to make this interaction chapter agnostic
+// this is kind of a test
+
+void APuzzleI09::StartStep(AStep* const Step) {
+	if (UNLIKELY(!Step)) return;
+	// only important if i want to trigger on different chapters.
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (Step->Name == "C0S0") {
+		SetActives(true);
+		CPuzzle->Solution = {9,1,1};
+	} else {
+	}
 }
