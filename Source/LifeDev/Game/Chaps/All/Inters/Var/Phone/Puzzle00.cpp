@@ -28,7 +28,7 @@ void APuzzle00::PostLoad() {
 		AInteract* I = Inters[i];
 		if (UNLIKELY(!I)) continue;
 
-		const FString& SI = FString::FromInt(i+1); // only 9 btns lol
+		const FString& SI = FString::FromInt(i); // only 9 btns lol
 		const FText& TI = FText::FromString(SI);
 		I->Texts = {
 			TI, TI
