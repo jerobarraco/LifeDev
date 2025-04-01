@@ -157,3 +157,8 @@ https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/36
 	
 # pause game
 	UGameplayStatics::SetGamePaused
+	
+# open url
+	https://docs.unrealengine.com/latest/INT/API/Runtime/Core/GenericPlatform/FGenericPlatformProcess/LaunchURL/index.html
+	https://forums.unrealengine.com/t/how-to-open-a-browser-from-the-game/24346/3?u=nande
+	FPlatformProcess::LaunchURL(TEXT("http://imgur.com/gallery/X4Sr3"), NULL, NULL);
