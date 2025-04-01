@@ -108,11 +108,10 @@ void ALInteract::BeginPlay() {
 	Flashback = World->GetSubsystem<UFlashback>();
 	Story = World->GetSubsystem<UStory>();
 
-	if (UNLIKELY(UseActiveOnce)) { // todo change if its used more
-		// intentionally not enabling, to not step to other custom code
-		const FName NTrigger = FName(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
-		if (UNLIKELY(Flags->Has(NTrigger)))
-			SetActive(false);
+	if (UNLIKELY(UseActiveOnce)) { // todo change UNLIKELY if its used more
+		// intentionally not force-enabling, to not step to other custom code.
+		const FName NTrigger(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
+		if (UNLIKELY(Flags->Has(NTrigger))) SetActive(false);
 	}
 }
 
@@ -130,8 +129,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALInteract::DoRewards() {
-	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"),
-		__func__, *Label.ToString());
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
 
 	const UWorld* const World = GetWorld();
