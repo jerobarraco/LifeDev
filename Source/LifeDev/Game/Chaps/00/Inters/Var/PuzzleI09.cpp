@@ -20,11 +20,11 @@ void APuzzleI09::BeginPlay() {
 	Story->OnStart.AddUniqueDynamic(this, &APuzzleI09::StartStep);
 	
 	SetActives(false);
-	StartStep(Story->GetStep(Story->GetCurrent()));
+	StartStep(Story->GetStep(Story->GetCurrent())); // necessary. the step is already started on beginplay. since the step loads the dl, and this is on a dl.
 }
 
 // attempt to make this interaction chapter agnostic
-// this is kind of a test
+// this is kind of a test. TODO move this class to Game/CHaps/All/Inters/Var/Phone if i decide to keep it like this.
 
 void APuzzleI09::StartStep(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
