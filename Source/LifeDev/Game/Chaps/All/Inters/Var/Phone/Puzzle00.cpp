@@ -19,7 +19,6 @@ APuzzle00::APuzzle00():Super() {
 void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
-	// TODO add another row, and add * and #
 	// sets names in a simplified way
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Inters.Num();
