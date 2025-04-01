@@ -4,6 +4,7 @@
 
 #include "Modules/ModuleManager.h"
 #include "ShaderCore.h"
+#include "Core/Settings/LSysSettings.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE(FLifeDevModule, LifeDev, "LifeDev");
 
@@ -29,6 +30,11 @@ void FLifeDevModule::StartupModule() {
 }
 
 void FLifeDevModule::ShutdownModule() {
-	FPlatformProcess::LaunchURL(TEXT("https://forms.gle/aYCr8zRR3wWTomyu8"), NULL, NULL);
+
+	// attempt to open the feedback url if any
+	const ULSysSettings* const SSettings = ULSysSettings::Get();
+	if (LIKELY(SSettings && !SSettings->CloseURL.IsEmpty()))
+		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
+
 	IModuleInterface::ShutdownModule();
 }

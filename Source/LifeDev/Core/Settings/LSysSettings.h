@@ -36,6 +36,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 GetStartChap() const;
 
+	// url to open when the game closes. usually the feedback form.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
+	FString CloseURL = TEXT("https://forms.gle/aYCr8zRR3wWTomyu8");
+
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.Item"))
