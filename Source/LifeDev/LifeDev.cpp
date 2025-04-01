@@ -30,12 +30,9 @@ void FLifeDevModule::StartupModule() {
 }
 
 void FLifeDevModule::ShutdownModule() {
-#if !WITH_EDITOR
 	// attempt to open the feedback url if any
 	const ULSysSettings* const SSettings = ULSysSettings::Get();
 	if (LIKELY(SSettings && !SSettings->CloseURL.IsEmpty()))
 		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
-#endif
-
 	IModuleInterface::ShutdownModule();
 }
