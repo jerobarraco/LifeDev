@@ -118,6 +118,9 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 		IsOk, *Label.ToString());
 
 	if (IsOk) {
+		// don't reset if we can't trigger again. avoids issue where the inters get reactivated.
+		// only on isOneShot to support puzzles that can be triggered multiple times.
+		if (IsOneShot) ClearTimer();
 		Unlock(); // force unlock. so that i can trigger.
 	} else {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
