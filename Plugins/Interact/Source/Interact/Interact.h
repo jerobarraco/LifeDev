@@ -170,9 +170,8 @@ public:
 	FName Label;
 
 	// whether to setAutoActivate. defaults to true.
-	// will call SetAutoActivate with the current value on PostLoad.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool UseAutoActivate = true; // TODO
+	bool UseAutoActivate = true; // TODO can i even do this after constructor?
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
@@ -260,7 +259,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
-	
+
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)
 	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.

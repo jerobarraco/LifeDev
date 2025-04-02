@@ -107,8 +107,8 @@ void AInteract::SetActive_Implementation(const bool Active) {
 }
 
 void AInteract::SetAutoActivate(const bool AutoActive) {
-	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s"),
-		__func__, AutoActive, *Label.ToString());
+	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s Inter=%p"),
+		__func__, AutoActive, *Label.ToString(), Interact.Get());
 	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
 	UseAutoActivate = AutoActive; // this is a patch. transitional.
 }
@@ -331,6 +331,8 @@ void AInteract::PostLoad() {
 	InitLabel();
 	// this will potentially break everything.
 	// apparently here is too late
+	// can't really do this, since SetAutoActivate can only be called during construction >_<.
+	// even though the component is not activated up until InitializeComponents!!!!!
 	if (!UseAutoActivate) SetAutoActivate(UseAutoActivate); // TODO test. remove the if once the stuff is working
 }
 
