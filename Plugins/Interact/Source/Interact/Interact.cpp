@@ -110,6 +110,7 @@ void AInteract::SetAutoActivate(const bool AutoActive) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s"),
 		__func__, AutoActive, *Label.ToString());
 	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
+	UseAutoActivate = AutoActive; // this is a patch. transitional.
 }
 
 bool AInteract::GetEnabled() const {
@@ -326,6 +327,8 @@ void AInteract::PostLoad() {
 	Super::PostLoad();
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s"), __func__, *Label.ToString(), *GetNameSafe(this));
 	InitLabel();
+	// this will potentially break everything.
+	if (!UseAutoActivate) SetAutoActivate(UseAutoActivate); // TODO test. remove the if once the stuff is working
 }
 
 void AInteract::PostActorCreated() {

@@ -60,11 +60,11 @@ public:
 	void TryTriggerWrap() {TryTrigger();}
 
 	// Enables or disables the interaction. Will not fade.
-	UFUNCTION(BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetActive(const bool Active = true);
 	// Sets the interaction to auto activate.
-	UFUNCTION(BlueprintCallable, Category="Interact", meta=(ForceAsFunction))
-	virtual void SetAutoActivate(const bool AutoActive = true);
+	UFUNCTION(BlueprintCallable, Category="Interact", meta=(DeprecatedFunction))
+	void SetAutoActivate(const bool AutoActive = true);
 
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
@@ -169,8 +169,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
 	FName Label;
 
+	// whether to setAutoActivate. defaults to true.
+	// will call SetAutoActivate with the current value on PostLoad.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool UseAutoActivate = false; // TODO
+	bool UseAutoActivate = true; // TODO
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
