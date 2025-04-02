@@ -65,7 +65,7 @@ public:
 	// Sets the interaction to auto activate.
 	UFUNCTION(BlueprintCallable, Category="Interact", meta=(ForceAsFunction))
 	virtual void SetAutoActivate(const bool AutoActive = true);
-	
+
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.
 	// and THIS function is called in the constructor everywhere.
