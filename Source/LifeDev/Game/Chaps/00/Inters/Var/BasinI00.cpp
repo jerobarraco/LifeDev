@@ -23,7 +23,6 @@ ABasinI00::ABasinI00():Super() {
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
 	IsOneShot = true;
-	Super::SetAutoActivate(true); // this is necessary to override parent's default. 
 }
 
 void ABasinI00::DoTrigger_Implementation() {

@@ -51,7 +51,6 @@ ABasin00::ABasin00():Super() {
 	Sig->IsOffIfOffscreen = true;
 	Sig->IsOffIfOccluded = true;
 
-	Super::SetAutoActivate(false);// by default don't do anything.
 	Super::SetMobility(EComponentMobility::Static);// static since we won't animate it
 }
 
