@@ -21,7 +21,7 @@ ALSwitch04::ALSwitch04():Super() {
 	Anim->Curve = CCF.Object;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/Btn")); // already grey
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/Btn1")); // already grey
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	Interact->SetRelativeLocation(FVector(7.500000,-32.500000,77.500000));
