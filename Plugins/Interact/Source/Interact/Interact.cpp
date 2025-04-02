@@ -322,12 +322,15 @@ void AInteract::InitLabel() {
 }
 
 void AInteract::PostLoad() {
+	// called when the class is loaded. called on runtime.
+	Super::PostLoad();
+	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s AutoActivate=%i"),
+		__func__, *Label.ToString(), *GetNameSafe(this), UseAutoActivate);
 	// this function is only called on objects on the level so ActorLabel should be correct
 
-	Super::PostLoad();
-	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s"), __func__, *Label.ToString(), *GetNameSafe(this));
 	InitLabel();
 	// this will potentially break everything.
+	// apparently here is too late
 	if (!UseAutoActivate) SetAutoActivate(UseAutoActivate); // TODO test. remove the if once the stuff is working
 }
 

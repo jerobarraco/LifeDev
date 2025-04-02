@@ -21,3 +21,4 @@ ALSwitchI00::ALSwitchI00():Super() {
 	Particles = { nullptr, CPart.Object};
 	Emitter->SetRelativeLocation(FVector(-20,2.5,-45));
 }
+// the other switch is bound on outliner
