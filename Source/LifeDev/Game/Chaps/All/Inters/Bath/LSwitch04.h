@@ -11,5 +11,5 @@ class LIFEDEV_API ALSwitch04: public ALSwitch {
 	GENERATED_BODY()
 
 public:
-	// ALSwitch03();
+	ALSwitch04();
 };
