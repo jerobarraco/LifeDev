@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-#include "LifeDev/Game/Interact/Base/Lights/LSwitch.h"
+#include "LifeDev/Game/Interact/Base/LSwitch.h"
 
 #include "LSwitch03.generated.h"
 
