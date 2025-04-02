@@ -109,7 +109,10 @@ void AInteract::SetActive_Implementation(const bool Active) {
 void AInteract::SetAutoActivate(const bool AutoActive) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s Inter=%p"),
 		__func__, AutoActive, *Label.ToString(), Interact.Get());
-	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
+	if (LIKELY(Interact)) {
+		Interact->SetAutoActivate(AutoActive);
+		Interact->bAutoActivate = false; // patch
+	}
 	UseAutoActivate = AutoActive; // this is a patch. transitional.
 }
 
