@@ -136,4 +136,3 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 
 	TryTrigger();
 }
-
