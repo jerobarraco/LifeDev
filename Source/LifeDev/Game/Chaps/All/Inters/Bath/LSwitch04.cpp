@@ -29,5 +29,5 @@ ALSwitch04::ALSwitch04():Super() {
 	Anim->Curve = CCF.Object;
 
 	Interact->SetRelativeLocation(FVector(7.500000,-25,77.500000));
-	Interact->SetBoxExtent(FVector(5)); // luckily with this button size it doesn't protrude that much
+	Interact->SetBoxExtent(FVector(2.5, 5, 2.5)); // luckily with this button size it doesn't protrude that much
 }
