@@ -22,7 +22,7 @@ ALSwitch04::ALSwitch04():Super() {
 	Anim->CopyTStart();
 	Anim->TEnd.SetLocation(FVector(0, 0, -2.5));
 	Anim->IsAdditive = true;
-	Anim->Duration = .4;
+	Anim->Duration = .6;
 	Anim->IsReversed = false; // curve is reversed
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCF(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown"));
