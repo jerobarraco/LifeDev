@@ -23,7 +23,6 @@ ALSwitch04::ALSwitch04():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/Btn2")); // already grey
 	Mesh->SetStaticMesh(CMesh.Object);
-	// Mesh->SetRelativeLocation(FVector(-7.5,7.5,-15));
 
 	Interact->SetRelativeLocation(FVector(7.500000,-32.500000,77.500000));
 	Interact->SetBoxExtent(FVector(2.5)); // luckily with this button size it doesn't protrude that much

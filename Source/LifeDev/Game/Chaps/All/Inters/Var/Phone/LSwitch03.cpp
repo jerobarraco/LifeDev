@@ -14,7 +14,7 @@ ALSwitch03::ALSwitch03(): Super() {
 	Anim->TEnd.SetLocation(FVector(0, 0, -2.5));
 	// Anim->IsBouncing = true; //uses the curve
 	Anim->IsAdditive = true;
-	Anim->Duration = .25;
+	Anim->Duration = .20;
 	Anim->IsReversed = false; // curve is reversed
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCF(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown"));
