@@ -161,15 +161,24 @@ public:
 	FString ULockCondition = "";
 #pragma endregion
 #pragma region Setup
+	// An interact id used for auto dialogs and such.
+	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
+	// It will default to the actor label. It will get updated when changed on the editor.
+	// if this is an instance that it's spawned, it will default to the Name.
+	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
+	FName Label;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	bool UseAutoActivate = false; // TODO
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
-	
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
-
+#pragma region State
 	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	int32 StateNum = 2;
@@ -192,19 +201,12 @@ public:
 	TArray<TObjectPtr<USoundBase>> SFXs;
 
 	// SFX that will be played on trigger. SFXs is preferred.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFX_Locked = nullptr;
-
-	// An interact id used for auto dialogs and such.
-	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
-	// It will default to the actor label. It will get updated when changed on the editor.
-	// if this is an instance that it's spawned, it will default to the Name.
-	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
-	FName Label;
+#pragma endregion
 #pragma endregion
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
