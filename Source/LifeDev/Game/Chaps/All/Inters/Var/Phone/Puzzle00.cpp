@@ -7,7 +7,7 @@
 
 APuzzle00::APuzzle00():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
-	CPuzzle->Solution = {0,3,0,3,4,5,6}; // al telefono espero me llames tu // off by one
+	CPuzzle->Solution = {0,3,0,3,4,5,6};
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CM(TEXT("/Game/LifeDev/Game/Inters/Var/Phone00_P"));

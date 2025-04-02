@@ -7,6 +7,7 @@
 
 #include "LSwitch02.generated.h"
 
+// base for one of the light switches
 UCLASS(Blueprintable, BlueprintType)
 class ALSwitch02 : public ALSwitch00 {
 	GENERATED_BODY()
