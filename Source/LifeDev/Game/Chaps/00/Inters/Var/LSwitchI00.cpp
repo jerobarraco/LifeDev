@@ -7,8 +7,7 @@
 
 #include "Interact/Animator/CAnimatorMix.h"
 
-ALSwitchI00::ALSwitchI00() {
-	
+ALSwitchI00::ALSwitchI00():Super() {
 	IsOneShot = true;
 	// only used for the ch0, kinda unnecessary, but...
 	UseActiveOnce = true;
