@@ -23,8 +23,9 @@ UCInteract::UCInteract(): Super() {
 	SetCanEverAffectNavigation(false);
 
 	UBoxComponent::SetCollisionProfileName(ProfileNone); // Start disabled, in case someone calls setAutoActivate(false) at some point
+	UCInteract::SetAutoActivate(false); // read note on the header's bottom.
 	// important to fix the issue with interact starting inactive.
-	UCInteract::SetAutoActivate(true);
+	// UCInteract::SetAutoActivate(true);
 }
 
 void UCInteract::Trigger() const {
