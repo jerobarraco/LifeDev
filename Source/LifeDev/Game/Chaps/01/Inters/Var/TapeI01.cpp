@@ -5,7 +5,8 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI01::ATapeI01():Super() {
-	Texts = { FText::FromString(TEXT("Pick up tape")) };
+	UseAutoActivate = true;
+	Texts = { NSLOCTEXT("TapeI01", "State0", "Pick up tape") };
 	TriggerDlg = FName("T1_T"); // will say what it is. triggered on pick up
 	StateNum = 1;
 	UseAnim = false;

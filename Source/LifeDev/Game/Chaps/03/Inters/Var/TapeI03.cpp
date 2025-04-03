@@ -6,7 +6,7 @@
 
 // This is a requirement for the last step
 ATapeI03::ATapeI03():Super() {
-	Texts = { FText::FromString(TEXT("One more tape")) };
+	Texts = { NSLOCTEXT("TapeI03", "State0", "One more tape") };
 	StateNum = 1;
 	UseAnim = false;
 	RewardFlash = -.1;
@@ -14,6 +14,7 @@ ATapeI03::ATapeI03():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 	Locked = true;
+	UseAutoActivate = true;
 
 	ULockItemReq = LDConsts::Items::Batts;
 	LockedDlg = FName("T03_L");

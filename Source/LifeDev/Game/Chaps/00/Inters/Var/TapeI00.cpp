@@ -5,7 +5,8 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI00::ATapeI00():Super() {
-	Texts = { FText::FromString(TEXT("Pick up tape")) };
+	UseAutoActivate = true;
+	Texts = { NSLOCTEXT("TapeI00", "State0", "Pick up tape") };
 	TriggerDlg = "T00_T"; // will say what it is. triggered on pick up
 	RewardItem = LDConsts::Items::Tape0; // "T01";
 	UseFade = true;

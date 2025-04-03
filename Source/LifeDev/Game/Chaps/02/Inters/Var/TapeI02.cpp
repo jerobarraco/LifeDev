@@ -5,16 +5,17 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI02::ATapeI02():Super() {
-	Texts = { FText::FromString(TEXT("Another of my tapes")) };
-	StateNum = 1;
+	UseAutoActivate = true;
 	UseAnim = false;
+	UseFade = true;
+	Locked = true;
+	StateNum = 1;
+	Texts = { NSLOCTEXT("TapeI02","State0","Another of my tapes") };
 	RewardFlash = .1;
 	// TODO find a way to not have to reward the tape. it's confusing.
 	// but i need it because that's how the step is advanced. happen at different times.
 	RewardItem = LDConsts::Items::Tape2;
 	UseRewardDestroy = true;
-	UseFade = true;
-	Locked = true;
 	// important to require batteries since im going to use it directly on c2s3
 	ULockItemReq = LDConsts::Items::Batts;
 	LockedDlg = FName("T02_L");
