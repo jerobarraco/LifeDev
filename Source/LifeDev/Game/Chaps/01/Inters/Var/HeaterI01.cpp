@@ -6,10 +6,11 @@ AHeaterI01::AHeaterI01():Super() {
 	UseAnim = false;
 	UseFade = false;
 	UseRewardDestroy = false;
+	UseAutoActivate = true;
 	Locked = true;
 	
 	LockedDlg = "HT01_L";
-	Texts = { FText::FromString(TEXT("Turn on")) };
+	Texts = {
+		NSLOCTEXT("HeaterI01", "Turn On", "Turn on")};
 
-	Super::SetAutoActivate(true);
 }

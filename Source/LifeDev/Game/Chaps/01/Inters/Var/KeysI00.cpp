@@ -3,11 +3,11 @@
 #include "KeysI00.h"
 
 AKeysI00::AKeysI00():Super() {
-	Texts = { FText::FromString(TEXT("Keys")) } ;
+	Texts = { NSLOCTEXT("KeysI00", "State0", "Keys")};
 	RewardFlash = .1;
 	RewardItem = "KW0";
 	UseFade = true; // needed to fade on reward
 	UseAnim = false;
 	StateNum = 1;
-	Super::SetAutoActivate(true);
+	UseAutoActivate = true;
 }
