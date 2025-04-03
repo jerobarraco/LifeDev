@@ -23,6 +23,8 @@ ALLight::ALLight():Super() {
 	FlickrOnFB = .7;
 	StateNum = 2;
 	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) };
+	// by default is just a static light. disable interaction. (specially since now i have light switches)
+	// UseAutoActivate = true;// redundant
 	
 	// these would trash the materials.
 	UseRewardDestroy = false;
@@ -77,8 +79,6 @@ ALLight::ALLight():Super() {
 	SFX_Trigger = CClick.Object;
 	
 	/// ~
-	// by default is just a static light. disable interaction. (specially since now i have light switches)
-	Super::SetAutoActivate(false);
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
 	Mesh->SetCastAllShadows(true);

@@ -10,7 +10,7 @@ APictureI00::APictureI00():Super() {
 	UseAnim = true;
 	StateNum = 3;
 	// important. the puzzle will activate them.
-	// UseAutoActivate = false; // redundant
+	UseAutoActivate = false; // redundant but, to be sure...
 	Texts = {
 		NSLOCTEXT("PictureI00", "State0", "Move"),
 		NSLOCTEXT("PictureI00", "State1", "Move again"),

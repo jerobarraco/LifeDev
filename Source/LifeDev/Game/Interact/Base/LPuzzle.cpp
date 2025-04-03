@@ -17,13 +17,13 @@ ALPuzzle::ALPuzzle():Super() {
 	UseRewardDestroy = false;
 	DisableWhileAnim = false; // ignored if !UseAnim. better safe than sorry
 	IsOneShot = true;
+	// UseAutoActivate = false; // by default i'm not using this puzzle as directly. // redundant
 
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
 	// rarely used by default.
 	if (LIKELY(Interact)) Interact->SetBoxExtent(FVector(1));
 
-	SetAutoActivate(false); // by default i'm not using this puzzle as directly.
 	SetMobility(EComponentMobility::Type::Static);
 }
 

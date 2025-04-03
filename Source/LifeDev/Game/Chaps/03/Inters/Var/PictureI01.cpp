@@ -6,14 +6,14 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 APictureI01::APictureI01():Super() {
-	Texts = { FText::FromString(TEXT("Picture"))};
+	Texts = { NSLOCTEXT("PictureI01", "State0", "Picture")};
 	TriggerDlg = "PIC01_T";
 	IsOneShot = true;
+	UseAutoActivate = true;
 	RewardFlash = .09;
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat (TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
 	if (CMat.Succeeded()) Mesh->SetMaterial(0, CMat.Object.Get());
-	APictureI01::SetAutoActivate(true);
 
 	UseAnim = true;
 	StateNum = 2;
