@@ -10,6 +10,8 @@
 
 #include "LStep.generated.h"
 
+class UCQuickMesh;
+class UCAnimatorTrans;
 class UCRandomizerFB;
 class ALInteract;
 class AInteract;
@@ -67,7 +69,10 @@ public:
 	// When UseFBDiagAuto is set, this is the target FB value used to calculate FBDiagMod.
 	// calculated on Start
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
-	float FBDlgAutoTo = 1.0;
+	float FBDlgAutoTo = 1.0;	// whether to manage the RandFB. Enable at start, disable at stop.
+	// will animate the camera using the AnimTarget as the target transform.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
+	bool UseFBDlgAnim = false;
 #pragma endregion
 
 	// whether to dis/enable the character input
@@ -81,7 +86,6 @@ public:
 	// TODO need to fix the steps that do use doStart
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition", meta=(DeprecatedProperty))
 	bool UseFadeTime = false;
-
 	// whether to manage the RandFB. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	bool UseRandFB = false;
@@ -184,6 +188,10 @@ protected:
 	void ItemMod(const FName& ItemName, int32 Diff, const FItem& Item);
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void FlagMod(const FName& FlagName, const float Diff, const float Total);
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void FBUpd(const float Value);
+	// UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	// void FBMod(const FName& FlagName, const float Diff, const float Total);
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.
 	UFUNCTION()
@@ -198,8 +206,20 @@ protected:
 	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
 	static void DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive);
 
+#pragma region cdo
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCRandomizerFB> RandFB = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCAnimatorTrans> Anim = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<USceneComponent> AnimTarget = nullptr;
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> AnimArrow = nullptr;
+#endif
+#pragma endregion
+
 #pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;

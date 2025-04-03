@@ -1,7 +1,11 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStep.h"
 
+#include "Camera/CameraComponent.h" // needed even though rider disagrees
+
+#include "CQuickMesh.h"
 #include "Diags/Diags.h"
+#include "Interact/Animator/CAnimatorTrans.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
@@ -24,6 +28,21 @@ ALStep::ALStep():Super() {
 	CamShakeClass = CShake.Class;
 	// disappeared from ue5.4 without warning
 	// UDefaultCameraShakeBase::StaticClass();
+	
+	Anim = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Anim"));
+	Anim->TRoot = Cam;
+	
+	AnimTarget = CreateDefaultSubobject<USceneComponent>(TEXT("Target"));
+	AnimTarget->SetupAttachment(Root);
+
+#if WITH_EDITORONLY_DATA
+	AnimArrow = CreateDefaultSubobject<UCQuickMesh>(TEXT("TargetArrow"));
+	AnimArrow->SetupAttachment(AnimTarget);
+	AnimArrow->SetHiddenInGame(true);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
+	if (CCam.Succeeded()) AnimArrow->SetStaticMesh(CCam.Object);
+#endif
 }
 
 void ALStep::TryStart_Implementation() {
@@ -112,7 +131,9 @@ void ALStep::Start_Implementation() {
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Activate(true);
-
+	if (UseFBDlgAnim && LIKELY(Anim && AnimTarget))
+		Anim->TEnd = AnimTarget->GetRelativeTransform();
+	
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
@@ -120,6 +141,8 @@ void ALStep::Start_Implementation() {
 	DoIntersTrigger();
 	DoIntersHint();
 
+	if (FB)
+		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
 	// show dialogs
 	StartDialogs();
 }
@@ -208,6 +231,13 @@ void ALStep::ItemMod_Implementation(const FName& ItemName, int32 Diff, const FIt
 
 void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, const float Total) {
 	CheckFlagsFinish();
+}
+
+void ALStep::FBUpd_Implementation(const float Value) {
+	if (!UseFBDlgAnim) return;
+	// notice this depends on the tick interval for the FB. it will give the most accurate animation though.
+	// i will go with something simple for now.
+	Anim->Update(Value); // set the value to match the fb. let the anim do the calculations.
 }
 
 void ALStep::CheckItemsFinish() {
