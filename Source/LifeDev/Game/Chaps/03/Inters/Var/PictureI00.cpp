@@ -9,10 +9,12 @@ APictureI00::APictureI00():Super() {
 	UseFade = false;
 	UseAnim = true;
 	StateNum = 3;
+	// important. the puzzle will activate them.
+	// UseAutoActivate = false; // redundant
 	Texts = {
-		FText::FromString(TEXT("Move")),
-		FText::FromString(TEXT("Move again")),
-		FText::FromString(TEXT("Move once more"))
+		NSLOCTEXT("PictureI00", "State0", "Move"),
+		NSLOCTEXT("PictureI00", "State1", "Move again"),
+		NSLOCTEXT("PictureI00", "State2", "Move once more")
 	};
 	const FRotator State0Rot(0,35.,0);
 	const FRotator State1Rot(0,5,0);
@@ -25,8 +27,7 @@ APictureI00::APictureI00():Super() {
 	IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
 	Anim->Duration = 0; // see beginplay
-	// important. the puzzle will activate them.
-	UseAutoActivate = false; 
+	
 	APictureI00::SetMobility(EComponentMobility::Type::Movable); // super important
 }
 
