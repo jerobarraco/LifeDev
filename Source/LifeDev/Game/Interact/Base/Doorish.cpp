@@ -19,7 +19,7 @@ ADoorish::ADoorish():Super() {
 
 	Mesh->SetCastAllShadows(true);
 	// important to call Super here. since this is called before the child constructor
-	// if the child overrides setmobility it could lead to a crash
+	// if the child overrides SetMobility it could lead to a crash
 	Super::SetMobility(EComponentMobility::Movable);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>

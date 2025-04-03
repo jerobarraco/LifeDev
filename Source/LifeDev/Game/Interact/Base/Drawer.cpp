@@ -19,5 +19,7 @@ ADrawer::ADrawer():Super() {
 
 void ADrawer::BeginPlay() {
 	Super::BeginPlay();
+	// necessary because the drawers use the rootcomponent as troot, so the transform is set on the outliner.
+	// TODO maybe one day i can implement something like i did with the AInteract::Label checking if TRoot == RootComponent.
 	Anim->CopyTStart();
 }
