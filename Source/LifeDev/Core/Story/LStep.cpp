@@ -131,9 +131,13 @@ void ALStep::Start_Implementation() {
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Activate(true);
-	if (UseFBDlgAnim && LIKELY(Anim && AnimTarget))
-		Anim->TEnd = AnimTarget->GetRelativeTransform();
 	
+	if (UseFBDlgAnim && LIKELY(Anim && AnimTarget)) {
+		// the animator trans uses relative transforms always :/
+		Anim->TStart = Cam->GetRelativeTransform();
+		Anim->TEnd = AnimTarget->GetRelativeTransform();
+	}
+
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
