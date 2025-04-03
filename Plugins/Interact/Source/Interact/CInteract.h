@@ -14,6 +14,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab
 /*
 this comp is inactive by default because
 * it's a problem for performance having stuff enabled by default
+* by having it off by default. and controlling (myself) WHEN/if it's on:
+* * it makes "race conditions" less prone.
+* * it makes it "fail-safe".
 * due to the way ue initializes things i can only set enabled by default on actor constructor. (this is the main issue)
 * * this prevents me from EXPOSING this to bps. so i can't change it on bps.
 * * UE already activates the component (twice) during startup if enabled by default.
