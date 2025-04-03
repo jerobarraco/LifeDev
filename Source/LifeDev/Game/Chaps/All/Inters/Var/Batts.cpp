@@ -9,12 +9,12 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ABatts::ABatts():Super() {
-	Texts = { FText::FromString(TEXT("Batteries")) } ;
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
-	RewardItem = LDConsts::Items::Batts;
 	UseRewardDestroy = true;
+	RewardItem = LDConsts::Items::Batts;
+	Texts = { NSLOCTEXT("Batts", "State0", "Batteries") } ;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Batts00/Batts00.Batts00"));
@@ -43,11 +43,10 @@ ABatts::ABatts():Super() {
 	UseFade = true; // a bit lazy. ideally to be set on the children.
 
 	// set static by default
-	Super::SetAutoActivate(false);
 	ABatts::SetMobility(EComponentMobility::Static);
 }
 
-void ABatts::SetMobility(EComponentMobility::Type Mobility) {
+void ABatts::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	MeshB->SetMobility(Mobility);
 }

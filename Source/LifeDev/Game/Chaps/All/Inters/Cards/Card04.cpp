@@ -10,5 +10,4 @@ ACard04::ACard04():Super() {
 	// the step will finish on this, set on the step.
 
 	ACard04::SetMobility(EComponentMobility::Static);
-	ACard04::SetAutoActivate(false);
-}
+} // not active by default. can't remember why. maybe a step.

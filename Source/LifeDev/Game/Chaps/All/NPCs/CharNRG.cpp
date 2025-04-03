@@ -21,7 +21,8 @@ ACharNRG::ACharNRG():Super() {
 	Texts = { FText::FromString("") };
 	StateNum = 2;
 	IsOneShot = false; // IsOneShot will call SetEnable as soon as it triggers.
-	
+	// UseAutoActivate = false; // The step will SetEnabled(true) via IntersFadeIn
+
 	Anim->TRoot = Root; // nice try but... (read beginplay)
 	Anim->IsAdditive = false;
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
@@ -33,9 +34,6 @@ ACharNRG::ACharNRG():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
 	Parts->SetAsset(CNiag.Object);
-	
-	// Super::SetEnabled_Implementation(false); // notice super and Implementation otherwise will call this function
-	Super::SetAutoActivate(false);// The step will SetEnabled(true) via IntersFadeIn
 }
 
 void ACharNRG::BeginPlay() {

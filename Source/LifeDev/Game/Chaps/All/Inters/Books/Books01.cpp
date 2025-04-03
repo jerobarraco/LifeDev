@@ -52,19 +52,19 @@ void ABooks01::BeginPlay() {
 }
 
 void ABooks01::ConstructB01() {
+	IsOneShot = false;
+	UseAutoActivate = true;
+
 	for (const UCQuickMesh* const B: Books) {
 		if (UNLIKELY(!B)) continue;
 		BookTrans.Add(B->GetRelativeTransform());
 	}
-
 	StateNum = Books.Num(); // automatic statenum
-	IsOneShot = false;
 	Texts = {
 		NSLOCTEXT("Books01", "Text.0", "Rearrange"),
 		NSLOCTEXT("Books01", "Text.1", "Rearrange again"),
 		NSLOCTEXT("Books01", "Text.2", "Rearrange once more"),
 	};
-	SetAutoActivate(true);
 	SetMobility(EComponentMobility::Type::Movable);
 
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>

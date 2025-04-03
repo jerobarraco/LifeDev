@@ -7,6 +7,9 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWindow00::AWindow00():Super() {
+	// disable the windows for now since they don't do anything except confusing
+	// UseAutoActivate = false;
+
 	SFX->SetRelativeLocation(FVector(9,-55,43));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -15,8 +18,6 @@ AWindow00::AWindow00():Super() {
 	Mesh->SetRelativeLocation(FVector(0,5,0));
 	Interact->SetRelativeLocation(FVector(9,-35,60));
 	Interact->SetBoxExtent(FVector(5,30,55));
-	// disable the windows for now since they don't do anything except confusing
-	Super::SetAutoActivate(false);
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CGlass(TEXT("/Game/LifeDev/Game/Inters/Window00/Window00-Glass"));

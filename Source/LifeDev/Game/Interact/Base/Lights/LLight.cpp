@@ -19,12 +19,14 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 ALLight::ALLight():Super() {
+	// by default is just a static light. disable interaction. (specially since now i have light switches)
+	// UseAutoActivate = true;// redundant
 	UseAnim = true;
 	FlickrOnFB = .7;
 	StateNum = 2;
-	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) };
-	// by default is just a static light. disable interaction. (specially since now i have light switches)
-	// UseAutoActivate = true;// redundant
+	Texts = {
+		NSLOCTEXT("LLight", "State0", "Turn On"),
+		NSLOCTEXT("LLight", "State0", "Turn Off")};
 	
 	// these would trash the materials.
 	UseRewardDestroy = false;

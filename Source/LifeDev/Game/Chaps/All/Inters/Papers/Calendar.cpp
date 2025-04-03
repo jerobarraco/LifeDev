@@ -10,7 +10,7 @@ ACalendar::ACalendar():Super() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
-	Texts = { FText::FromString(TEXT("A calendar")) } ;
+	Texts = { NSLOCTEXT("Calendar", "State0", "A calendar") } ;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar.Calendar"));
@@ -29,6 +29,5 @@ ACalendar::ACalendar():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
-	Super::SetAutoActivate(false);
 	Super::SetMobility(EComponentMobility::Static);
 }

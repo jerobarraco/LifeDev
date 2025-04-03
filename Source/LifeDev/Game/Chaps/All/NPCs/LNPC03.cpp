@@ -9,7 +9,6 @@ ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	Locked = true;
 	Texts = { FText::FromString("...") };
-	Super::SetAutoActivate(false);
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

@@ -11,6 +11,7 @@
 #include "LifeDev/Core/Consts/ConstColors.h"
 
 AStreetLight::AStreetLight():Super() {
+	FlickrOnFB = .2; // always flicker
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Arch/Neighborhood/StreetLight01.StreetLight01"));
 	Mesh->SetRelativeLocation(FVector(-17.5,17.5,0));
@@ -39,8 +40,4 @@ AStreetLight::AStreetLight():Super() {
 	Rnd->ValueMin = 1;
 	Rnd->ValueMax = 5;
 	Rnd->UseAnimRandReverse = true;
-
-	FlickrOnFB = .2; // always flicker
-
-	Super::SetAutoActivate(false); // by default, you should not be able to turn a streetlight off
 }

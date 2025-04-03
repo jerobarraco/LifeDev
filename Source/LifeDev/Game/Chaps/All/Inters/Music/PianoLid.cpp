@@ -13,7 +13,7 @@ APianoLid::APianoLid():Super() {
 	UseAnim = true;
 	UseFade = false;
 	DisableWhileAnim = false; // avoid re-enabling the Interact once triggered
-	Super::SetAutoActivate(false); // not manually triggerable
+	// UseAutoActivate = false; // not manually triggerable // redundant
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Piano_Lid.Piano_Lid"));

@@ -6,12 +6,12 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AMatchBox::AMatchBox():Super() {
-	Texts = { FText::FromString(TEXT("Match box")) };
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
-	UseFade = false; // not setting newmat because it won't fade.
 	// if you need it to fade, you'll need a new mat.
+	UseFade = false; // not setting newmat because it won't fade.
+	Texts = { NSLOCTEXT("MatchBox", "State0", "Match box") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/Matchbox00"));
@@ -26,6 +26,5 @@ AMatchBox::AMatchBox():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
 	SFX_Trigger = CSnd.Object;
 
-	Super::SetAutoActivate(false);
 	AMatchBox::SetMobility(EComponentMobility::Static);
 }

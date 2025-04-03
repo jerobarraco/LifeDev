@@ -11,6 +11,8 @@
 
 ALight02::ALight02():Super() {
 	UseAnim = true;
+	UseAutoActivate = true; // this one is ok to interact with
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
 	Mesh->SetRelativeLocation(FVector(-20,20,0));
@@ -44,10 +46,9 @@ ALight02::ALight02():Super() {
 	SFX_Flicker->SetRelativeLocation(SndLoc);
 
 	ALight02::SetMobility(EComponentMobility::Static);
-	Super::SetAutoActivate(true); // this one is ok to toggle
 }
 
-void ALight02::SetMobility(EComponentMobility::Type Mobility) {
+void ALight02::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	Cover->SetMobility(Mobility);
 }

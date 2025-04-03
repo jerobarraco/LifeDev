@@ -24,6 +24,5 @@ AKeys00::AKeys00():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19"));
 	SFX_Trigger = CSnd.Object;
 
-	Super::SetAutoActivate(false);
 	AKeys00::SetMobility(EComponentMobility::Static);
 }

@@ -7,6 +7,10 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AHeater00::AHeater00():Super() {
+	UseAnim = false;
+	UseRewardDestroy = false;
+	UseFade = false;
+
 	SFX->SetRelativeLocation(FVector(9,0,35));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Heater00/Heater00.Heater00"));
@@ -17,9 +21,4 @@ AHeater00::AHeater00():Super() {
 
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));
-
-	Super::SetAutoActivate(false); // disabled by default
-	UseAnim = false;
-	UseRewardDestroy = false;
-	UseFade = false;
 }
