@@ -9,6 +9,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ARadio00::ARadio00():Super() {
+	Texts = {NSLOCTEXT("Radio00", "State0", "Radio")};
 	UseAnim = true;
 	StateNum = 2;
 	UseRewardDestroy = false;
@@ -55,6 +56,4 @@ ARadio00::ARadio00():Super() {
 
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
-
-	Super::SetAutoActivate(false);
 }

@@ -6,10 +6,11 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 APencil::APencil():Super() {
-	Texts = { FText::FromString(TEXT("Pencil")) };
+	Texts = { NSLOCTEXT("Pencil", "State0", "Pencil") };
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Pencil_P"));
@@ -26,8 +27,6 @@ APencil::APencil():Super() {
 
 	/// Anims
 	// AnimFade->SetNewMat();
-	UseFade = true;
 
-	Super::SetAutoActivate(false);
 	APencil::SetMobility(EComponentMobility::Static);
 }

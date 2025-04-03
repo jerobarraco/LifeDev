@@ -7,7 +7,7 @@
 #include "Sounds/CSounder.h"
 
 APlant00::APlant00():Super() {
-	Texts = { FText::FromString(TEXT("Plant"))};
+	Texts = { NSLOCTEXT("Plant00", "State0", "Plant")};
 	UseAnim = false;
 	DisableWhileAnim = false;
 	UseRewardDestroy = false;
@@ -47,10 +47,9 @@ APlant00::APlant00():Super() {
 	Plant->SetCastAllShadows(true);
 
 	Super::SetMobility(EComponentMobility::Static); // static since we won't animate it
-	Super::SetAutoActivate(true);
 }
 
-void APlant00::SetMobility(EComponentMobility::Type Mobility) {
+void APlant00::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	Soil->SetMobility(Mobility);
 	Plant->SetMobility(Mobility);

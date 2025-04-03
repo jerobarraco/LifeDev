@@ -6,7 +6,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AKeys00::AKeys00():Super() {
-	Texts = { FText::FromString(TEXT("Keys")) } ;
+	Texts = { NSLOCTEXT("Keys00", "State0", "Keys") };
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;

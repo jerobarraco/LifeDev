@@ -11,7 +11,7 @@
 ATape00::ATape00():Super() {
 	UseAnim = false;
 	StateNum = 1;
-	Texts = { FText::FromString(TEXT("Tape")) };
+	Texts = { NSLOCTEXT("Tape00", "State0", "Tape") };
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
@@ -38,10 +38,9 @@ ATape00::ATape00():Super() {
 
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
-	Super::SetAutoActivate(true);
 }
 
-void ATape00::SetMobility(EComponentMobility::Type Mobility) {
+void ATape00::SetMobility(const EComponentMobility::Type Mobility) {
 	Case->SetMobility(Mobility);
 	Super::SetMobility(Mobility);
 }
