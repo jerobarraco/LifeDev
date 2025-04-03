@@ -15,14 +15,15 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFadeTime = true;
 	UseFade = true; // important since the door, also due to the load
 	CamBlendTime = 0; // doesn't get along with fade
+	UseFBDlgAnim = true; // the cam target and pos are set on the outliner
 	FinishPostWait = false;
 	TeleportChar = true;
-	UseRain = true;
 	ItemsRem = {
 		LDConsts::Items::Tape0, "Bottle00", "Bottle01"
 	}; // ensure you don't carry it.
 	Cam->SetConstraintAspectRatio(true);
 	Cam->SetAspectRatio(2);
+	UseRain = true;
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);
 }
