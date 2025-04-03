@@ -19,19 +19,4 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
-	virtual void Stop_Implementation() override;
-
-	UFUNCTION()
-	void FBUpd(const float Value);
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<USceneComponent> Target = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCAnimatorTrans> Anim = nullptr;
-
-#if WITH_EDITORONLY_DATA
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCQuickMesh> TargetArrow = nullptr;
-#endif
 };
