@@ -109,8 +109,14 @@ void AInteract::SetActive_Implementation(const bool Active) {
 void AInteract::SetAutoActivate(const bool AutoActive) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s Inter=%p"),
 		__func__, AutoActive, *Label.ToString(), Interact.Get());
-	if (LIKELY(Interact)) Interact->SetAutoActivate(AutoActive);
-	UseAutoActivate = AutoActive; // this is a patch. transitional.
+	if (LIKELY(Interact)) {
+		Interact->bAutoActivate = AutoActive;
+		Interact->SetAutoActivate(AutoActive);
+	}
+
+	// this is to ensure the state is consistent.
+	// the var has priority since it has to be able to be set on editor.
+	UseAutoActivate = AutoActive;
 }
 
 bool AInteract::GetEnabled() const {
@@ -274,6 +280,15 @@ void AInteract::BeginPlay() {
 		RewardIntersTrigger.AddUnique(I);
 	}
 
+	// apparently here is too late
+	// can't really do this, since SetAutoActivate can only be called during construction >_<.
+	// even though the component is not activated up until InitializeComponents!!!!!
+
+	// this will potentially break everything.
+	const bool IsActive = Interact->IsActive();
+	if (UseAutoActivate != IsActive)
+		SetActive(UseAutoActivate); // this will also disable if it's active. so whoever uses this class will have to be careful.
+
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
@@ -329,13 +344,6 @@ void AInteract::PostLoad() {
 	// this function is only called on objects on the level so ActorLabel should be correct
 
 	InitLabel();
-	// this will potentially break everything.
-	// apparently here is too late
-	// can't really do this, since SetAutoActivate can only be called during construction >_<.
-	// even though the component is not activated up until InitializeComponents!!!!!
-	// if (!UseAutoActivate)
-		// SetActive(false); // or smth // TODO
-		// SetAutoActivate(UseAutoActivate); // TODO test. remove the if once the stuff is working
 }
 
 void AInteract::PostActorCreated() {
@@ -344,6 +352,13 @@ void AInteract::PostActorCreated() {
 	// Only called on spawning actors AND DUPLICATIONS
 	// this function is mutually exclusive with PostLoad according to the docs
 	InitLabel();
+}
+
+void AInteract::PostInitProperties() {
+	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s AutoActivate=%i"),
+		__func__, *Label.ToString(), *GetNameSafe(this), UseAutoActivate);
+	Super::PostInitProperties();
+	// This is here just to test when and where this is being called.
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
