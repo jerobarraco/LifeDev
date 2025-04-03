@@ -15,7 +15,6 @@ class INTERACT_API UCAnimatorTrans: public UCAnimator {
 	GENERATED_BODY()
 
 public:
-
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void CopyTStart();
 
@@ -42,8 +41,6 @@ public:
 	TObjectPtr<USceneComponent> TRoot = nullptr;
 
 protected:
-	// TODO also the progress?
-	virtual void Update_Implementation(const float Alpha) override;
+	virtual void Update_Implementation(const float Alpha) override; // progress is accessible directly. it's protected.
 	virtual void DeInit() override;
-	virtual void BeginPlay() override;
 };

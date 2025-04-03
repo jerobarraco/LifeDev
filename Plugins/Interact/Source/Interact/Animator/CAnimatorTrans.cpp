@@ -29,10 +29,3 @@ void UCAnimatorTrans::Update_Implementation(const float Alpha) {
 	}
 	TRoot->SetRelativeTransform(TNew, UseSweep);
 }
-
-void UCAnimatorTrans::BeginPlay() {
-	Super::BeginPlay();
-	// TODO this breaks the switches, but removing it breaks everything else.
-	// if (IsValid(TRoot) && IsAdditive)
-		// TStart = TRoot->GetRelativeTransform(); // is this necessary? the InteractAnim takes care of this.
-}
