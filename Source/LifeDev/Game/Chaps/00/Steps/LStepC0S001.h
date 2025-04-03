@@ -7,6 +7,7 @@
 
 #include "LStepC0S001.generated.h"
 
+class UCQuickMesh;
 // chapter 0: the step where the char is in bed berating
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC0S001 : public ALStep {
@@ -17,4 +18,12 @@ public:
 
 protected:
 	virtual void Start_Implementation() override;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<USceneComponent> Target = nullptr;
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> TargetArrow = nullptr;
+#endif
 };

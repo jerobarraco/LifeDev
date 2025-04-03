@@ -28,7 +28,7 @@ AStep::AStep():Super() {
 		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
 	if (CCam.Succeeded()) Cam->SetCameraMesh(CCam.Object);
 #endif
-	
+
 	CamTarget = this;
 }
 

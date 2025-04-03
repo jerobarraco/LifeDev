@@ -15,7 +15,7 @@ public:
 	// Target point to look at
 	UPROPERTY(BlueprintReadWrite, Category="SetUp")
 	FVector Target;
-	
+
 protected:
 	virtual void Begin_Implementation() override;
 	virtual void Update_Implementation(const float Alpha) override;
