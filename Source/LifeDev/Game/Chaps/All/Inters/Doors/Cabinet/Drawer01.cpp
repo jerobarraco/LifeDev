@@ -7,6 +7,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer01::ADrawer01():Super() {
+	UseAutoActivate = true;
 	SFX->SetRelativeLocation(FVector(60,0,5));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet00-drawer0.Cabinet00-drawer0"));

@@ -6,6 +6,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ADrawer02::ADrawer02():Super() {
+	UseAutoActivate = true;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet00-drawer1.Cabinet00-drawer1"));
 	Mesh->SetStaticMesh(CMesh.Object);
