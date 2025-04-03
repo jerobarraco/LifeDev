@@ -46,12 +46,6 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
 	}
 
-	// Set the interact pieces to auto activate. Call only on constructor.
-	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	FORCEINLINE void SetAutoActives(const bool NewEnabled) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewEnabled); }
-	}
-
 	// sets "DisableWhileAnims" on all the interacts.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {

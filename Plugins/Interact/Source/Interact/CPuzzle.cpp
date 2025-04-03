@@ -267,16 +267,6 @@ void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) const {
 	}
 }
 
-void UCPuzzle::SetAutoActives(const bool NewActive) {
-	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
-		__func__, *GetNameSafe(this), NewActive);
-
-	for (AInteract* const I: Interacts) {
-		if (UNLIKELY(!IsValid(I))) continue;
-		I->SetAutoActivate(NewActive);
-	}
-}
-
 void UCPuzzle::SetActives(const bool NewActive) {
 	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
 		__func__, *GetNameSafe(this), NewActive);

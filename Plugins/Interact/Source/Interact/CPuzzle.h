@@ -53,10 +53,6 @@ public:
 	void SetDisableWhileAnims(const bool NewDisable) const;
 	
 	// Set the interact pieces to enabled
-	UFUNCTION(BlueprintCallable)
-	void SetAutoActives(const bool NewActive);
-
-	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetActives(const bool NewActive);
 

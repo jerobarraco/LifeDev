@@ -19,7 +19,10 @@
 ATv00::ATv00():Super() {
 	// can't set meshes to static or the button animation won't work :'(
 	// so much optimization lost for a single button animation...
-	Texts = { FText::FromString(TEXT("Turn On")), FText::FromString(TEXT("Turn Off")) } ;
+	Texts = {
+		NSLOCTEXT("TV00", "State0", "Turn On"),
+		NSLOCTEXT("TV00", "State0", "Turn Off") };
+	UseAutoActivate = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Btn.Tv00-Btn"));
@@ -106,8 +109,6 @@ ATv00::ATv00():Super() {
 	Sig->IsOffIfOffscreen = false; // avoid deadlocking the significance
 	Sig->TestOcclusion = true;
 	Sig->IsOffIfOccluded = false;
-
-	Super::SetAutoActivate(true);
 }
 
 void ATv00::BeginPlay() {
