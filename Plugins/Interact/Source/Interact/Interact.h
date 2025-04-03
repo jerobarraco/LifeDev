@@ -189,8 +189,8 @@ public:
 	// Make sure it matches StateNum.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<FText> Texts = {
-		FText::FromString(TEXT("Open")), // 0 == !IsOpen == Closed text
-		FText::FromString(TEXT("Close")), // 1 == IsOpen == Opened text
+		NSLOCTEXT("Interact", "State0", "Open"), // 0 == !IsOpen == Closed text
+		NSLOCTEXT("Interact", "State1", "Close"), // 1 == IsOpen == Opened text
 	};
 	// particles to emit on state change. index matches state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
