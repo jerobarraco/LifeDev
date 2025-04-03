@@ -11,7 +11,4 @@ class LIFEDEV_API ACalendarI00: public ACalendar {
 
 public:
 	ACalendarI00();
-
-protected:
-	virtual void Rewarded_Implementation() override;
 };

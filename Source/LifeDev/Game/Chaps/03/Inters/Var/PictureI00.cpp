@@ -26,7 +26,7 @@ APictureI00::APictureI00():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 0; // see beginplay
 	// important. the puzzle will activate them.
-	APictureI00::SetAutoActivate(false);
+	UseAutoActivate = false; 
 	APictureI00::SetMobility(EComponentMobility::Type::Movable); // super important
 }
 

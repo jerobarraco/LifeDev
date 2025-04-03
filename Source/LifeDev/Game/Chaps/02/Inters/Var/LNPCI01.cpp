@@ -2,6 +2,5 @@
 #include "LNPCI01.h"
 
 ALNPCI01::ALNPCI01():Super() {
-	Super::SetAutoActivate(false); // not gonna interact with this
 	UseFade = true;
 }

@@ -18,7 +18,6 @@ ADoorI14::ADoorI14():Super() {
 		// {LDConsts::Items::Card1, "D14xC01"}, // done with the ULockDlg
 		{LDConsts::Items::Card2, "D14xC02"},
 	};
-	ADoorI14::SetAutoActivate(false);
 	
 	// this door is quite confusing. and while it seems interesting it rather make it better for the player.
 	SetStateNow(1);
