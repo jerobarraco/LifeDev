@@ -15,6 +15,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	RewardItem = "WM";
 	UseRewardDestroy = true;
 	UseFade = true;
+	UseAutoActivate = true;
 
 	// TODO allow to pick without the batteries. needs to change the door and stuff.
 	// Locked = false;
@@ -24,8 +25,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	ULockItemReq = LDConsts::Items::Batts;
 	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 	Texts = {
-		NSLOCTEXT("LifeDev", "WM_TEXT", "My walkman, with no batteries"),
-	};
+		NSLOCTEXT("WalkmanI00", "State0", "My walkman, with no batteries")};
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Walkman00.Walkman00"));
@@ -38,6 +38,5 @@ AWalkmanI00::AWalkmanI00():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSnd.Object;
 
-	Super::SetAutoActivate(true);
 }
 
