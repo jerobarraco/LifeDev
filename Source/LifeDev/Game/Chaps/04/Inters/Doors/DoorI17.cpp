@@ -6,5 +6,5 @@ ADoorI17::ADoorI17():Super() {
 	UseAnim = true;
 	LockedDlg = "D17_L";
 	Locked = true;
-	Super::SetAutoActivate(true); // todo re-enable once the dialog is set
+	UseAutoActivate = true;
 }

@@ -13,6 +13,4 @@ APencilI00::APencilI00():Super() {
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	AnimFade->MatBase = CMat.Object;
-
-	Super::SetAutoActivate(false);
 }

@@ -6,7 +6,9 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AFoodBoxI00::AFoodBoxI00():Super() {
-	Texts = { FText::FromString(TEXT("Rice box"))};
+	UseAutoActivate = true;
+	StateNum = 1;
+	Texts = { NSLOCTEXT("FoodBoxI00", "State0", "Rice box") };
 	RewardItem = "Food00";
 	UseRewardDestroy = true;
 	UseFade = true;
@@ -19,6 +21,4 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette06_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	AnimFade->MatBase = CMat.Object;
-
-	Super::SetAutoActivate(true);
 }

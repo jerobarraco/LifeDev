@@ -14,6 +14,6 @@ ASpotI03::ASpotI03():Super() {
 
 	Items = { LDConsts::Items::Plate02 }; // empty plate
 
-	Super::SetAutoActivate(false); // the steps will enable it
+	// UseAutoActivate = false; // the steps will enable it // redundant
 	// RewardActor set in editor
 }

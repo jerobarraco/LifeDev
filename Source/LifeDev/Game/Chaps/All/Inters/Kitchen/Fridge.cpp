@@ -7,7 +7,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AFridge::AFridge():Super() {
-	Texts = { FText::FromString(TEXT("Fridge")) } ;
+	Texts = { NSLOCTEXT("Fridge", "State0", "Fridge") } ;
 	RewardFlash = 0;
 	UseAnim = false;
 	UseRewardDestroy = false;

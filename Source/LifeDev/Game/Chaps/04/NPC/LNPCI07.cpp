@@ -3,5 +3,5 @@
 
 ALNPCI07::ALNPCI07():Super() {
 	UseFade=true;
-	Super::SetAutoActivate(true);
+	UseAutoActivate = true;
 }

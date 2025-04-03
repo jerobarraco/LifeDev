@@ -5,7 +5,7 @@
 #include "LifeDev/Game/Chaps/04/Inters/Var/StoveI00.h"
 
 ALNPCI06::ALNPCI06():Super() {
-	Texts = {FText::FromString(FString("Talk"))};
+	Texts = { NSLOCTEXT("LNPCI06", "State0", "Talk")};
 
 	TriggerDlg = "NPCI06_T";
 	RewardStep = false; // just enable the stove
@@ -15,5 +15,5 @@ ALNPCI06::ALNPCI06():Super() {
 	UseFade = true;
 	UseAnim = false;
 	RewardIntersActiveClass = { AStoveI00::StaticClass(), AMatchBoxI00::StaticClass() };
-	Super::SetAutoActivate(false); // disabled by default. does not matter. get enabled by c4s2.
+	// UseAutoActivate = false; // disabled by default. does not matter. get enabled by c4s2. // redundant
 }

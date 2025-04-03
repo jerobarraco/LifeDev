@@ -15,6 +15,8 @@ AStoveI00::AStoveI00():Super() {
 	RewardFlash = .11;
 	RewardStep = true; // advance the story
 	RewardIntersActiveClass = {APotI00::StaticClass()};
+	// UseAutoActivate = false; // activated by LNPCI06 // redundant
+
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
 	SFX_Trigger = CSnd.Object;
@@ -22,8 +24,6 @@ AStoveI00::AStoveI00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndB(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/match_burn_meridian_-09"));
 	SFX_TriggerB = CSndB.Object;
-
-	Super::SetAutoActivate(false); // activated by LNPCI06
 }
 
 void AStoveI00::DoTrigger_Implementation() {

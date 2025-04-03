@@ -18,18 +18,19 @@
 // the other plate triggers the spot.
 
 APotI00::APotI00():Super() {
-	// RewardFlash = 0.1;
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
 	UseFade = false;
-	
+	UseAutoActivate = true;
+
 	// locked so that player can't trigger manually,
 	// but they can still use the items on it.
 	Locked = true;
 	TriggerDlg = "Pot00.0_T";
 	LockedDlg = "Pot00.0_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
-	Super::SetAutoActivate(false); // enabled by the stove
+	// UseAutoActivate = false; // enabled by the stove // redundant
+	// RewardFlash = 0.1;
 
 	// Override the states and transforms
 	// intentionally letting it loop to empty after done.
@@ -39,8 +40,8 @@ APotI00::APotI00():Super() {
 	// 0: empty
 	StateNum = 2;
 	Texts = {
-		NSLOCTEXT("LifeDev", "PotI00", "Boiling ..."),
-		NSLOCTEXT("LifeDev", "PotI00", "Cooking ..."),
+		NSLOCTEXT("PotI00", "State0", "Boiling ..."),
+		NSLOCTEXT("PotI00", "State1", "Cooking ..."),
 	};
 	const FRotator State0Rot(0, -10, 0);
 	Trans = {
