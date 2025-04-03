@@ -12,13 +12,13 @@ UCAnimator::UCAnimator():Super() {
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 	SetComponentTickInterval(IntervalDefault);
 	Super::SetAutoActivate(false);
-	
+
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Interact/Interact_C.Interact_C"));
 	Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 
-void UCAnimator::PlaySet(bool Reversed, bool Loop, bool Bounce) {
+void UCAnimator::PlaySet(const bool Reversed, const bool Loop, const bool Bounce) {
 	IsReversed = Reversed;
 	IsLooping = Loop;
 	IsBouncing = Bounce;

@@ -15,7 +15,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCAnimatorRawOnBegin);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCAnimatorRawOnUpdate, const float, Progress, const float, Alpha);
 
 // An interactive actor that can have an animation
-// You can set the tick interval to control the performance of this component
+// You can set the tick interval to control the performance of this component.
+// Not active by default.
 UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))
 class INTERACT_API UCAnimator: public UActorComponent {
 	GENERATED_BODY()
@@ -31,7 +32,7 @@ public:
 
 	// mostly for bps when you want to set and play at the same time. will override all 3 variables.
 	UFUNCTION(BlueprintCallable, CallInEditor)
-	void PlaySet(bool Reversed = false, bool Loop = false, bool Bounce = false);
+	void PlaySet(const bool Reversed = false, const bool Loop = false, const bool Bounce = false);
 	// mostly for bps and binds. when you want to flip and play.
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	FORCEINLINE void PlayMirror() {
@@ -60,6 +61,7 @@ public:
 	// Be careful as this can be called in the constructor of the owner. (see InteractAnim::SetNow)
 	// override me on child classes :) But call the parent!! (Progress can be read directly. it's a member.)
 	// does not trigger OnUpdate when called directly, only when triggered by Tick.
+	// Can be called from outside on purpose, skipping logic for IsActive/Loop/etc. Will let you bind this animation to other sources.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Animator, meta=(ForceAsFunction, AdvancedDisplay))
 	void Update(const float Alpha);
 	
