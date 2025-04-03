@@ -167,9 +167,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
 	FName Label;
 
-	// whether to setAutoActivate. defaults to true.
+	// whether to de/activate on BeginPlay. (avoid setting SetAutoActivate on the Interact component).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool UseAutoActivate = false; // TODO can i even do this after constructor?
+	bool UseAutoActivate = false;
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
