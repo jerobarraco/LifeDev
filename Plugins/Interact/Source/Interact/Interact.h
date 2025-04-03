@@ -63,9 +63,6 @@ public:
 	// Enables or disables the interaction. Will not fade.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetActive(const bool Active = true);
-	// Sets the interaction to auto activate.
-	UFUNCTION(BlueprintCallable, Category="Interact", meta=(DeprecatedFunction))
-	void SetAutoActivate(const bool AutoActive = true);
 
 	// this CAN NOT be BlueprintNativeEvent because
 	// it breaks on the constructor for some extremely weird reason i don't know of yet.

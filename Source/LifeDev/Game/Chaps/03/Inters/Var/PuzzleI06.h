@@ -20,7 +20,6 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
-	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
 	void StepStarted(AStep* const Step);

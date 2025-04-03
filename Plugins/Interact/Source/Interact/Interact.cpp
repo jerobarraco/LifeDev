@@ -106,19 +106,6 @@ void AInteract::SetActive_Implementation(const bool Active) {
 	if (LIKELY(IsValid(Interact))) Interact->SetActive(Active);
 }
 
-void AInteract::SetAutoActivate(const bool AutoActive) {
-	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s Inter=%p"),
-		__func__, AutoActive, *Label.ToString(), Interact.Get());
-	if (LIKELY(Interact)) {
-		Interact->bAutoActivate = AutoActive;
-		Interact->SetAutoActivate(AutoActive);
-	}
-
-	// this is to ensure the state is consistent.
-	// the var has priority since it has to be able to be set on editor.
-	UseAutoActivate = AutoActive;
-}
-
 bool AInteract::GetEnabled() const {
 	const bool Enabled = IsValid(Interact) && Interact->IsActive();
 	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
@@ -449,3 +436,18 @@ void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 	// done like this to allow to re-activate emitters with limited lifetime. (non-loop)
 	Emitter->Activate();
 }
+
+/*
+ un-necessary. interact is not active by default. so UseAutoActivate will control the activation always.
+void AInteract::SetAutoActivate(const bool AutoActive) {
+	UE_LOG(LogInteract, Log, TEXT("%hs: AutoActive=%i Obj=%s Inter=%p"),
+		__func__, AutoActive, *Label.ToString(), Interact.Get());
+	if (LIKELY(Interact)) {
+		Interact->bAutoActivate = AutoActive;
+		Interact->SetAutoActivate(AutoActive);
+	}
+
+	// this is to ensure the state is consistent.
+	// the var has priority since it has to be able to be set on editor.
+	UseAutoActivate = AutoActive;
+}*/

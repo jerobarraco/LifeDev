@@ -72,11 +72,6 @@ void APuzzleI06::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void APuzzleI06::PostInitializeComponents() {
-	Super::PostInitializeComponents();
-	SetAutoActives(false);
-}
-
 void APuzzleI06::StepStarted(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	if (LIKELY(Step->Name != ALStepC3S000::SName)) return;
