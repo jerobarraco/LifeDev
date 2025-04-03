@@ -67,11 +67,3 @@ void ALStepC0S001::FBUpd(const float Value) {
 // in other words: don't put your nose where it doesn't belong. don't do what you're not asked.
 // because you might not know what is needed (it was actually introducing a soft error by using the default time.)
 // also it makes it harder to find the origin.
-
-
-
-// APlayerController* const Controller = World->GetFirstPlayerController();
-// if (UNLIKELY(!Controller)) return;
-// if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
-
-// Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
