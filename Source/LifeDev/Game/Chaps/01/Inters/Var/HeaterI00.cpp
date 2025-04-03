@@ -13,26 +13,24 @@ AHeaterI00::AHeaterI00():Super() {
 	UseRewardDestroy = false;
 	UseFade = false;
 	UseRewardDestroy = false;
+	UseAnim = true;
+	UseAutoActivate = true;
 
 	TriggerDlg = "HT00_T";
 	LockedDlg = "HT00_L";
 	Texts = {
-		FText::FromString(TEXT("Turn on, it's cold")),
-		FText::FromString(TEXT("Maybe not..."))
+		NSLOCTEXT("HeaterI00", "State0", "Turn on, it's cold"),
+		NSLOCTEXT("HeaterI00", "State1", "Maybe not...")
 	};
 
 	// animation
-	static ConstructorHelpers::FObjectFinder<UCurveFloat>
-		CCurve(TEXT("/JUtils/Curves/BounceOut_C.BounceOut_C"));
-	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
-
+	Anim->IsAdditive = true;
 	Anim->SetComponentTickInterval(1/60.f);
 	Anim->TEnd.SetRotation(FRotator(-10,0,0).Quaternion());
 	Anim->Duration = .75f;
-	Anim->IsAdditive = true;
-	UseAnim = true;
-
-	Super::SetAutoActivate(true);
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/JUtils/Curves/BounceOut_C.BounceOut_C"));
+	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));

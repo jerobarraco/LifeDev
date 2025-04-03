@@ -9,8 +9,8 @@ ABattsI00::ABattsI00():Super() {
 	RewardFlash = .1;
 	RewardItem = LDConsts::Items::Batts;
 	TriggerDlg = "BattsPick";
+	UseAutoActivate = true;
 
 	// needs to move to be able to be attached to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
-	Super::SetAutoActivate(true);
 }

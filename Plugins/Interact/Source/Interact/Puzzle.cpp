@@ -11,8 +11,7 @@ APuzzle::APuzzle():Super() {
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
 	UseAnim = false;
-	UseAutoActivate = false;
-	SetAutoActivate(false); // by default i'm not using this puzzle as directly.
+	UseAutoActivate = false; // by default i'm not using this puzzle as directly.
 }
 
 void APuzzle::Reset() {

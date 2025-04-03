@@ -10,6 +10,7 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 
 ARadioI00::ARadioI00():Super() {
+	UseAutoActivate = true;
 	Locked = true;
 	// when user tries to play but has no tape
 	LockedDlg = "RD00_L";
@@ -24,7 +25,8 @@ ARadioI00::ARadioI00():Super() {
 	RewardFlash = 0; // the dialog will add 
 	UseRewardDestroy = false; // don't self-destroy
 	DisableWhileAnim = false; // to allow to disable once activated
-	Texts = { FText::FromString(TEXT("Play Tape")) };
+	Texts = {
+		NSLOCTEXT("RadioI00", "Play", "Play tape")};
 
 	// use a sounder and not the ghost object since i want to only use the sound.
 	SFX_Ghost = CreateDefaultSubobject<UCLSounder>(TEXT("SFX_Ghost"));
@@ -37,7 +39,6 @@ ARadioI00::ARadioI00():Super() {
 	SFX_Ghost->TimeStartMin = 0;
 	SFX_Ghost->TimeStartMax = 120;
 
-	ARadioI00::SetAutoActivate(true);//start active
 	SetStateNow(1); // start open
 }
 
