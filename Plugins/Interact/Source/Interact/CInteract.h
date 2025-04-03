@@ -11,11 +11,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, const bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab, UCInteractor* const, NewParent);
 
+
+
 // Base component for interactions
 // Defines a volume where the interaction is triggered.
 // Set the relative position on the viewport, (but avoid changing the scale). Also set the box extent. 
-// By default, it will start active, since there's a ue issue around that.
-// To change it you'll need to do it on BeginPlay.
+// By default, it will start INACTIVE.
+// you can call SetAutoActivate, or if using a AInteract, toggle UseAutoActivate.
 UCLASS(Blueprintable, BlueprintType,
 	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent),
 	Config=Interact, DefaultConfig)
@@ -113,3 +115,17 @@ protected:
 
 	bool IsGrabbed = false;
 };
+
+
+/*
+this comp is inactive by default because
+* it's a problem for performance having stuff enabled by default
+* due to the way ue initializes things i can only set enabled by default on actor constructor. (this is the main issue)
+* * this prevents me from EXPOSING this to bps. so i can't change it on bps.
+* * UE already activates the component (twice) during startup if enabled by default.
+* * which means if i want to try to set something deactive by default it will first activate, then deactivate.
+* * and that's not up to my standards in programming.
+* i tend to (want to) reuse the interacts as stub objects on the level, so i tend to have them deactivated quite a lot.
+* * the reason for this is to speed up development. and if i were to need to have a child class only to deactivate, it would negate that benefit.
+* also because my game is somewhat of a puzzle/point&click. most items have a chain of interaction that makes almost 99% of them inactive by default. 
+ */

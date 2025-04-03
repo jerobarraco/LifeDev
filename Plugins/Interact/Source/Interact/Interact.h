@@ -23,6 +23,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
 // And check the properties under "SetUp".
+// By default, they start inactive (See CInteract)
 UCLASS(Blueprintable, BlueprintType, Config=Interact, DefaultConfig)
 class INTERACT_API AInteract: public AActor {
 	GENERATED_BODY()
@@ -171,7 +172,7 @@ public:
 
 	// whether to setAutoActivate. defaults to true.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	bool UseAutoActivate = true; // TODO can i even do this after constructor?
+	bool UseAutoActivate = false; // TODO can i even do this after constructor?
 	// When true will disable the interact on trigger. Calling Deactivate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	bool IsOneShot = false;
