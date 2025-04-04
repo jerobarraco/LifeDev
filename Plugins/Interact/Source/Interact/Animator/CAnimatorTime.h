@@ -12,8 +12,11 @@ class INTERACT_API UCAnimatorTime: public UCAnimator {
 public:
 	UCAnimatorTime();
 
+	virtual void Activate(const bool bReset = false) override;
 	virtual void Update_Implementation(const float Alpha) override;
-
+	// When set, "From" will be set to the current on each activation.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	bool UseFromCurrent = true;
 	// Dilation factor to start from
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float From = 1;
