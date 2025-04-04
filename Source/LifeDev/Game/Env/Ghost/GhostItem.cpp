@@ -18,8 +18,8 @@ AGhostItem::AGhostItem():Super() {
 
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CMesh(
-		TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost-03"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost-03"));
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
