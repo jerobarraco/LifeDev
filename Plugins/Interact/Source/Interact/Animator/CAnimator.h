@@ -106,6 +106,9 @@ public:
 	// Can be changed directly, but beware if doing so while playing.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	bool IsReversed = false;
+	// whether to be affected or to ignore time dilation.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
+	bool UseTimeDilation = true;
 
 	// control log output per instance
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
@@ -124,7 +127,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(const float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* const ThisTickFunction) override;
 
 	// Called when the animation ends. override me on child classes :)
 	// But call the parent.
@@ -141,7 +144,7 @@ protected:
 
 	// finishes, and tentatively restart if needed.
 	void Finish();
-	void DoTick(const float DeltaSeconds);
+	void DoTick(float DT);
 	virtual void DeInit();
 	
 	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient)

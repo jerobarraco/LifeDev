@@ -69,7 +69,16 @@ void UCAnimator::Finish() {
 	Begin(); // it technically started
 }
 
-void UCAnimator::DoTick(const float DT) {
+void UCAnimator::DoTick(float DT) {
+	if (UNLIKELY(!UseTimeDilation)) {
+		const UWorld* const World = GetWorld();
+		if (UNLIKELY(!World)) return;
+
+		const AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+		if (UNLIKELY(!Settings)) return;
+		DT /= FMath::Max(UE_SMALL_NUMBER, Settings->TimeDilation);
+	}
+
 	// support duration of 0
 	if (UNLIKELY(FMath::IsNearlyZero(Duration))) {
 		Progress = 1.0;
@@ -156,7 +165,8 @@ void UCAnimator::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void UCAnimator::TickComponent(float DT, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void UCAnimator::TickComponent(const float DT, const ELevelTick TickType,
+FActorComponentTickFunction* const ThisTickFunction) {
 	Super::TickComponent(DT, TickType, ThisTickFunction);
 	DoTick(DT);
 }
