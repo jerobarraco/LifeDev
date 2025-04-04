@@ -2,6 +2,17 @@
 // SPDX-License-Identifier: MIT
 #include "CAnimatorTime.h"
 
+UCAnimatorTime::UCAnimatorTime() {
+	UseTimeDilation = false;
+	Duration = .2;
+	SetComponentTickInterval(0); // to be more accurate.
+
+	// this is the most usable for timestop
+	static ConstructorHelpers::FObjectFinder<UCurveFloat>
+		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown"));
+	if (LIKELY(CCurve.Succeeded())) Curve = CCurve.Object;
+}
+
 void UCAnimatorTime::Update_Implementation(const float Alpha) {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;

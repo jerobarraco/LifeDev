@@ -10,12 +10,14 @@ class INTERACT_API UCAnimatorTime: public UCAnimator {
 	GENERATED_BODY()
 
 public:
+	UCAnimatorTime();
+
 	virtual void Update_Implementation(const float Alpha) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float From = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float To = 1;
+	float To = .25;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
 	float Dilation = 1;
 };
