@@ -7,7 +7,7 @@
 
 ALSwitch03::ALSwitch03(): Super() {
 	StateNum = 1;
-	
+	UseAutoActivate = true;
 	const FVector Loc(-7.500000,32.500000,-77.500000);
 	Mesh->SetRelativeLocation(Loc);
 	Anim->CopyTStart();

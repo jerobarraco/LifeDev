@@ -7,6 +7,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
+// TODO make this UseAutoActivate = False once all the light switches are in place
 ALight00::ALight00():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
