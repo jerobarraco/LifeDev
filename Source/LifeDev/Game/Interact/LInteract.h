@@ -78,7 +78,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	bool UseFade = false;
 	// will deactivate if already triggered. by checking the flags, on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool UseActiveOnce = false;
 #pragma endregion
 
