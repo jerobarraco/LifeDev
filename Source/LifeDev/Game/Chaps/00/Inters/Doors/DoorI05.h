@@ -12,7 +12,4 @@ class LIFEDEV_API ADoorI05: public ADoor00 {
 
 public:
 	ADoorI05();
-
-protected:
-	virtual bool TryTrigger_Implementation() override;
 };

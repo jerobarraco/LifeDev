@@ -24,13 +24,13 @@ enum class EGroupType : uint8 {
 	// Normal sequential sequence.
 	// The group needs to pass its condition.
 	SEQUENCE,
-	// Selects the first dialog that gets added successfully.
-	// The group needs to pass its condition.
-	// It will try all the dialogs in sequential order until the first one passes its own dialog condition.
+	// Selects the *first* dialog that gets added successfully.
+	// The group needs to pass its condition too.
+	// Each dialog is tested *sequential* order. Only the first one passes its own dialog condition is shown.
 	MATCH,
-	// Selects one random dialog that gets added successfully.
-	// The group needs to pass its condition.
-	// It will try all the dialogs in random order until the first one passes its own dialog condition.
+	// Selects *one* random dialog, the first to be added successfully.
+	// The group needs to pass its own condition too.
+	// Each dialog is tested in *random* order. Only the first that passes its condition is shown.
 	RANDOM,
 	// Select one dialog depending on the condition's result value, but clamp. (Note this always passes)
 	PICK_CLAMP,
