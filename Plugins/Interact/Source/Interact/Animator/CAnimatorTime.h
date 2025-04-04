@@ -14,10 +14,13 @@ public:
 
 	virtual void Update_Implementation(const float Alpha) override;
 
+	// Dilation factor to start from
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float From = 1;
+	// Dilation factor to go to
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float To = .25;
+	float To = .1;
+	// The last dilation set
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Transient)
 	float Dilation = 1;
 };

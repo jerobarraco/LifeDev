@@ -4,10 +4,10 @@
 
 UCAnimatorTime::UCAnimatorTime() {
 	UseTimeDilation = false;
-	Duration = .2;
 	SetComponentTickInterval(0); // to be more accurate.
 
-	// this is the most usable for timestop
+	// this is the most usable for stop-action
+	Duration = .001;
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown"));
 	if (LIKELY(CCurve.Succeeded())) Curve = CCurve.Object;
