@@ -13,6 +13,11 @@ ADoorI05::ADoorI05():Super() {
 	UseAutoActivate = true;
 	IsOneShot = true;
 	RewardStep = true;
+	// i'm _assuming_ printf is more performant when building strings. because i'd make it like that.
+	ULockCondition = FString::Printf(TEXT("{%ls}&{%ls}&{V.Item.Count.%ls}"),
+		*LDConsts::Flags::Game::CH0::Basin.ToString(),
+		*LDConsts::Flags::Game::CH0::Spot.ToString(),
+		*LDConsts::Items::Card0.ToString());
 }
 
 bool ADoorI05::TryTrigger_Implementation() {

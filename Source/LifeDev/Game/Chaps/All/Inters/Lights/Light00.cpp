@@ -59,8 +59,7 @@ void ALight00::BeginPlay() {
 	// using metal instead of glass to avoid having to deal with transparency.
 	// as long as it emits when it's on. it might not be an issue. fluorescents are not transparent.
 	// passing nullptr uses the current material. note this could return nullptr, in which case the animmat will skip.
-	UMaterialInstanceDynamic* const MI = Tube->CreateDynamicMaterialInstance(0, nullptr);
-	Anim->Mat = MI;
+	Anim->Mat = Tube->CreateDynamicMaterialInstance(0, nullptr);
 }
 
 void ALight00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
