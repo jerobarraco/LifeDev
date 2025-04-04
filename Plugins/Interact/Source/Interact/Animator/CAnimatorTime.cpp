@@ -20,7 +20,8 @@ void UCAnimatorTime::Activate(const bool bReset) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
 
-		const AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+		const AWorldSettings* const Settings =
+			World->GetWorldSettings(false, false);
 		if (UNLIKELY(!Settings)) return;
 
 		From = Settings->TimeDilation;
@@ -31,7 +32,8 @@ void UCAnimatorTime::Update_Implementation(const float Alpha) {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+	AWorldSettings* const Settings =
+		World->GetWorldSettings(false, false);
 	if (UNLIKELY(!Settings)) return;
 
 	Super::Update_Implementation(Alpha);

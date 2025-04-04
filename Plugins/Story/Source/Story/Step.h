@@ -43,18 +43,17 @@ public:
 	// will target pawn automatically, will override the camTarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
-	// shake the camera on start. stops on stop.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	bool UseCamShake = false;
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
-
 	// time used to animate the change of cameras. Only where CamTarget is valid
 	// blend and fade could have some issues when used together.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam", Config)
 	float CamBlendTime = 2;
+	// shake the camera on start. stops on stop.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
+	bool UseCamShake = false;
 	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Cam")
+	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
+
 	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool FinishPostWait = false;
