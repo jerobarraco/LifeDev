@@ -10,7 +10,6 @@ UCRandomizer::UCRandomizer(): Super() {
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	PrimaryComponentTick.bCanEverTick = false;
 	UCRandomizer::SetAutoActivate(false);
-	UCRandomizer::SetActive(false); // not sure if this does much. but...
 }
 
 void UCRandomizer::Activate(const bool bReset) {

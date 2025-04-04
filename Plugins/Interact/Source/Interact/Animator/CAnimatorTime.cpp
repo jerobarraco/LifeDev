@@ -11,6 +11,6 @@ void UCAnimatorTime::Update_Implementation(const float Alpha) {
 
 	Super::Update_Implementation(Alpha);
 	const float NewDilation = FMath::LerpStable(From, To, Alpha);
-	Settings->SetTimeDilation(NewDilation); // has a clamp. also future proof.
+	Settings->SetTimeDilation(NewDilation); // has a clamp. also future-proof.
 	Dilation = Settings->TimeDilation;// get the actual one for the future.
 }
