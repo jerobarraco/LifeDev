@@ -15,5 +15,4 @@ public:
 
 protected:
 	virtual bool TryTrigger_Implementation() override;
-	virtual void DoTrigger_Implementation() override;
 };

@@ -31,13 +31,3 @@ bool ADoorI05::TryTrigger_Implementation() {
 
 	return Super::TryTrigger_Implementation();
 }
-
-void ADoorI05::DoTrigger_Implementation() {
-	static FName Step("C0S0");
-	Super::DoTrigger_Implementation();
-
-	if (!IsValid(Story)) return;
-
-	// SetActive(false); // avoid double triggering. done only if story is valid.
-	// Story->StartNext(Step);
-}
