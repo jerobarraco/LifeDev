@@ -11,7 +11,6 @@ class INTERACT_API UCAnimatorTime: public UCAnimator {
 
 public:
 	virtual void Update_Implementation(const float Alpha) override;
-	virtual void TickComponent(float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction* const ThisTickFunction) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float From = 1;
