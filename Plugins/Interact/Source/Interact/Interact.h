@@ -132,7 +132,7 @@ public:
 	TSoftObjectPtr<UCurveFloat> HintCurve = nullptr; // needs to be a soft ptr due to config
 
 	// triggered on showhint(true)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	TObjectPtr<USoundBase> SFX_Hint = nullptr;
 #pragma endregion
 #pragma region Lock
@@ -157,6 +157,9 @@ public:
 	//		On a flag: {flag}
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FString ULockCondition = "";
+	// SFX that will be played on trigger locked
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	TObjectPtr<USoundBase> SFX_Locked = nullptr;
 #pragma endregion
 #pragma region Setup
 	// An interact id used for auto dialogs and such.
@@ -164,14 +167,14 @@ public:
 	// It will default to the actor label. It will get updated when changed on the editor.
 	// if this is an instance that it's spawned, it will default to the Name.
 	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp", AdvancedDisplay, AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AdvancedDisplay, AssetRegistrySearchable)
 	FName Label;
 
 	// whether to de/activate on BeginPlay. (avoid setting SetAutoActivate on the Interact component).
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool UseAutoActivate = false;
 	// When true will disable the interact on trigger. Calling Deactivate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool IsOneShot = false;
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
@@ -202,9 +205,6 @@ public:
 	// SFX that will be played on trigger. SFXs is preferred.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
-	// SFX that will be played on trigger locked
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TObjectPtr<USoundBase> SFX_Locked = nullptr;
 #pragma endregion
 #pragma endregion
 #pragma region Rewards
