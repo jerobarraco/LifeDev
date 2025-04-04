@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Diags/DiagMan.h"
+#include "Interact/Animator/CAnimatorTime.h"
 #include "Inventory/Flags.h"
 
 #include "LDiagMan.generated.h"
@@ -43,6 +44,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCAnimatorTime> AnimTime = nullptr;
 
 	FTimerHandle AutoTimer;
 };

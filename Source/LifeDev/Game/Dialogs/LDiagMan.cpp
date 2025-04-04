@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Diags/DialogUI.h"
+#include "Interact/Animator/CAnimatorTime.h"
 #include "Inventory/Flags.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -16,6 +17,8 @@ ALDiagMan::ALDiagMan():Super() {
 	static ConstructorHelpers::FClassFinder<UDialogUI>
 		CUI(TEXT("/Game/LifeDev/Game/Dialogs/UI/W_LDialogUI"));
 	UIClass = LIKELY(CUI.Succeeded()) ? CUI.Class.Get() : UDialogUI::StaticClass();
+	AnimTime = CreateDefaultSubobject<UCAnimatorTime>(TEXT("AnimTime"));
+	AnimTime->Duration = .5;
 }
 
 ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
@@ -48,6 +51,8 @@ void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	// if (Diag.Type == EDiagType::SYSTEM) return; 
 	
 	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Diags::Shown, 1);
+
+	if (LIKELY(AnimTime)) AnimTime->Activate(); // this is a test. just me playing around.
 
 	const bool UseAuto = ULSettings::GetFeatS(W, EFeat::D_AUTO);
 	if (!UseAuto) return;
