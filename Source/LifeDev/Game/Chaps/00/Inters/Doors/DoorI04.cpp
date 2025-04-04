@@ -10,4 +10,5 @@ ADoorI04::ADoorI04():Super() {
 	ULockItemReq = LDConsts::Items::Poem0;
 	Locked = true;
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
+	UseAutoActivate = true;
 }

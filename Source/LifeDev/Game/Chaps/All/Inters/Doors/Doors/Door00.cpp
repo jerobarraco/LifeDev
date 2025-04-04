@@ -17,6 +17,6 @@ ADoor00::ADoor00():Super() {
 
 	Interact->SetRelativeLocation(FVector(-60,-7.5,100));
 	Interact->SetBoxExtent(FVector(60,10,100));
-	
+
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
 }
