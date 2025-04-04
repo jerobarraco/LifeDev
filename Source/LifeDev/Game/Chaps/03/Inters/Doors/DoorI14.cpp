@@ -7,7 +7,7 @@
 ADoorI14::ADoorI14():Super() {
 	LockedDlg = "D14_L"; // unnecessary since it uses the card1. but in case i re-organize the chapter.
 	LockedItemDlg = "D14_LI";
-	Locked = true;
+	IsLocked = true;
 	ULockDlg = "D14_U";
 	ULockItem = LDConsts::Items::Card1;
 	DisableWhileAnim = false; // avoid getting re-enabled due to state change

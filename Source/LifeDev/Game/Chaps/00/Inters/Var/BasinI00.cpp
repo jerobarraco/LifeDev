@@ -10,7 +10,7 @@
 ABasinI00::ABasinI00():Super() {
 	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
 	UseAnim = false;
-	Locked = false;
+	IsLocked = false;
 	TriggerDlg = "Basin00_T";
 	RewardFlash = .1;
 	RewardFlag = LDConsts::Flags::Game::CH0::Basin;

@@ -13,7 +13,7 @@ ATapeI03::ATapeI03():Super() {
 	RewardItem = LDConsts::Items::Tape3;
 	UseRewardDestroy = true;
 	UseFade = true;
-	Locked = true;
+	IsLocked = true;
 	UseAutoActivate = true;
 
 	ULockItemReq = LDConsts::Items::Batts;

@@ -19,7 +19,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 
 	// TODO allow to pick without the batteries. needs to change the door and stuff.
 	// Locked = false;
-	Locked = true;
+	IsLocked = true;
 	LockedDlg = "WM_L";
 	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	ULockItemReq = LDConsts::Items::Batts;

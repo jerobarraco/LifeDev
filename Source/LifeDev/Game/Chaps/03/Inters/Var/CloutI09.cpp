@@ -8,7 +8,7 @@
 ACloutI09::ACloutI09():Super() {
 	RewardItem = "CloutI04";
 	LockedDlg = "CL04_L";
-	Locked = true;
+	IsLocked = true;
 	UseAnim = false;
 	UseFade = true;
 

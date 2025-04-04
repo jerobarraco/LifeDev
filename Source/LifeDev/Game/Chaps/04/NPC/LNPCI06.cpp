@@ -10,7 +10,7 @@ ALNPCI06::ALNPCI06():Super() {
 	TriggerDlg = "NPCI06_T";
 	RewardStep = false; // just enable the stove
 	UseRewardDestroy = false;
-	Locked = false;
+	IsLocked = false;
 	IsOneShot = true;
 	UseFade = true;
 	UseAnim = false;

@@ -8,7 +8,7 @@ AHeaterI03::AHeaterI03():Super() {
 	UseRewardDestroy = false;
 	RewardFlash = .1;
 	IsOneShot = true;
-	Locked = false;
+	IsLocked = false;
 	UseAutoActivate = true;
 	// LockedDlg = "HT03_L";
 	TriggerDlg = "HT03_L"; // TODO rename

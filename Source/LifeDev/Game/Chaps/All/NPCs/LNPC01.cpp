@@ -7,7 +7,7 @@
 
 ALNPC01::ALNPC01():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	// TODO make a new instance for the chap01 and remove this text from here
 	Texts = { FText::FromString("He seems dangerous...") };
 

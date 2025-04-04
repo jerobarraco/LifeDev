@@ -216,7 +216,7 @@ bool ALInteract::ShouldUnlock_Implementation() {
 }
 
 void ALInteract::Unlock_Implementation() {
-	if (UNLIKELY(!Locked)) return; // avoid triggering the dialogs again
+	if (UNLIKELY(!IsLocked)) return; // avoid triggering the dialogs again
 
 	Super::Unlock_Implementation();
 	const FString& SLabel = Label.ToString();
@@ -320,7 +320,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 
 	// if it's not locked, we need not do anything with it. don't consume it.
 	// there's no other functionality to TryUseItem than saying something or unlocking (implies consuming)
-	if(!Locked) return EItemUseResult::BAD_TARGET;
+	if(!IsLocked) return EItemUseResult::BAD_TARGET;
 
 	/// Unlock with item - at this point is locked
 	

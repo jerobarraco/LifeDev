@@ -7,7 +7,7 @@
 
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	Texts = { FText::FromString("...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)

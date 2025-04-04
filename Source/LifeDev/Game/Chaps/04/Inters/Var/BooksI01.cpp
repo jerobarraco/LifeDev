@@ -7,7 +7,7 @@ ABooksI01::ABooksI01():Super(1, 0) {
 	TriggerDlg = "BK01_T";
 	UseRewardDestroy = false;
 	IsOneShot = true;
-	Locked = false;
+	IsLocked = false;
 	RewardStep = false; // rewards a card. set in the editor
 	UseAutoActivate = true;
 }

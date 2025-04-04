@@ -7,7 +7,7 @@
 
 ALNPC02::ALNPC02():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	Texts = { FText::FromString("...") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

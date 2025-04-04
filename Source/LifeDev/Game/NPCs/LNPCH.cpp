@@ -7,7 +7,7 @@
 
 ALNPCH::ALNPCH():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	Texts = { FText::FromString("Talk") };
 
 	Pelvis = CreateDefaultSubobject<UCQuickMesh>(TEXT("Pelvis"));

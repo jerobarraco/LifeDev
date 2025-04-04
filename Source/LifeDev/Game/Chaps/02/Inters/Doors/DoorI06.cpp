@@ -5,5 +5,5 @@
 ADoorI06::ADoorI06():Super() {
 	UseAnim = false;
 	LockedDlg = "D06_L";
-	Locked = true;
+	IsLocked = true;
 }

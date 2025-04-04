@@ -4,14 +4,15 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
-#include "Interact/Animator/CAnimatorFade.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
 
 APaper00::APaper00():Super() {
 	UseAnim = false;
+	UseFade = true;
+	UseAutoActivate = true; // ok (and lazy) here since it's very unlikely papers show without being interactable.
 	StateNum = 1;
-	Texts = { FText::FromString(TEXT("A piece of paper")) };
+	Texts = { NSLOCTEXT("Paper00", "State0", "A piece of paper") };
 	// a lazy dog is a sheet of paper
 	// a sheet of paper is an ink lined plane
 	// an inclined plane is a slope up
@@ -31,6 +32,5 @@ APaper00::APaper00():Super() {
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
 
-	UseFade = true;
 	Super::SetMobility(EComponentMobility::Static);
 }

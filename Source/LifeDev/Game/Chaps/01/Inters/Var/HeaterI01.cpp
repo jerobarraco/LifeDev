@@ -7,7 +7,7 @@ AHeaterI01::AHeaterI01():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
 	UseAutoActivate = true;
-	Locked = true;
+	IsLocked = true;
 	
 	LockedDlg = "HT01_L";
 	Texts = {

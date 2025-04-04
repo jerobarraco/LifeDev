@@ -25,7 +25,7 @@ APotI00::APotI00():Super() {
 
 	// locked so that player can't trigger manually,
 	// but they can still use the items on it.
-	Locked = true;
+	IsLocked = true;
 	TriggerDlg = "Pot00.0_T";
 	LockedDlg = "Pot00.0_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it

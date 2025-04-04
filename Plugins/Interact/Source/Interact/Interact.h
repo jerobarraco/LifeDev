@@ -150,7 +150,7 @@ public:
 	// You can change this during runtime whenever you want, but calling Unlock() is preferred.
 	// Also check 'IsOneShot'.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	bool Locked = false;
+	bool IsLocked = false;
 
 	// experimental. an eval condition that will unlock this.
 	//	E.g.

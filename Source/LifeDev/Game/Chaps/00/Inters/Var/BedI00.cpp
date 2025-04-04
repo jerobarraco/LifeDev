@@ -7,7 +7,7 @@
 ABedI00::ABedI00():Super() {
 	UseAutoActivate = true;
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	
 	RewardFlash = .1;
 	UseRewardDestroy = false;

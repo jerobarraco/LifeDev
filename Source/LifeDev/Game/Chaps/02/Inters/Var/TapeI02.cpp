@@ -8,7 +8,7 @@ ATapeI02::ATapeI02():Super() {
 	UseAutoActivate = true;
 	UseAnim = false;
 	UseFade = true;
-	Locked = true;
+	IsLocked = true;
 	StateNum = 1;
 	Texts = { NSLOCTEXT("TapeI02","State0","Another of my tapes") };
 	RewardFlash = .1;

@@ -296,6 +296,6 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
 		AInteract* const I = Interacts[i];
 		if (UNLIKELY(!IsValid(I))) continue;
-		I->Locked = Locks[i];
+		I->IsLocked = Locks[i];
 	}
 }

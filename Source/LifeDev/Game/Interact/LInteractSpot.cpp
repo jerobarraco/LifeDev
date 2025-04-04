@@ -5,7 +5,7 @@
 ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.
 	// it will trigger automatically
-	Locked = true;
+	IsLocked = true;
 	IsOneShot = true; // disable after use
 	UseAnim = false;
 	UseRewardDestroy = false;
@@ -26,7 +26,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	const FString& SLabel = Label.ToString();
 	if (UNLIKELY(Items.IsEmpty())) {
-		Locked = true; // unnecessary but complete, jic
+		IsLocked = true; // unnecessary but complete, jic
 		const bool Added = LIKELY(IsValid(Diags)) &&
 			Diags->AddId(FName("Inter.Spot.Use.Full."+SLabel));
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
@@ -52,9 +52,9 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {
-		Locked = false; // allow to trigger
+		IsLocked = false; // allow to trigger
 		Trigger(); // force trigger on all items restored
-		Locked = true; // avoid further triggering
+		IsLocked = true; // avoid further triggering
 		LockedDlg = LockedFullDlg; // from now on use the new dialog
 	} else if (UseStateInc) { // on the else since Trigger always increases state
 		SetState(State+1);

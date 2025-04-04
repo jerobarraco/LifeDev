@@ -3,7 +3,7 @@
 #include "WDoorI00.h"
 
 AWDoorI00::AWDoorI00():Super() {
-	Locked = true;
+	IsLocked = true;
 	ULockItem = "KW0";
 	ULockDlg = "W0_ULCK";
 	LockedItemDlg = "W0_LCKIT";

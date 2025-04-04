@@ -4,5 +4,5 @@
 
 ADoorI08::ADoorI08():Super() {
 	LockedDlg = "D08_L";
-	Locked = true;
+	IsLocked = true;
 }

@@ -3,6 +3,6 @@
 #include "DoorI12.h"
 
 ADoorI12::ADoorI12():Super() {
-	Locked = true;
+	IsLocked = true;
 	LockedDlg = "D12_L";
 }

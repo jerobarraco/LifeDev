@@ -4,5 +4,5 @@
 
 ADoorI03::ADoorI03():Super() {
 	LockedDlg = "D03_LCK";
-	Locked = true;
+	IsLocked = true;
 }

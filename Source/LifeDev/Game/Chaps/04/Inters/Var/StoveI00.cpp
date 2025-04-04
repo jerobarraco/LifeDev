@@ -6,7 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AStoveI00::AStoveI00():Super() {
-	Locked = true;
+	IsLocked = true;
 	IsOneShot = true;
 	TriggerDlg = "Stove00_T";
 	LockedDlg = "Stove00_L";

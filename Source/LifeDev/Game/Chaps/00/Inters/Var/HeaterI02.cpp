@@ -4,7 +4,7 @@
 
 AHeaterI02::AHeaterI02():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	UseAutoActivate = true;
 	RewardFlash = .1;
 	

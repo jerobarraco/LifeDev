@@ -8,7 +8,7 @@
 // TODO make an instance class and use that instead in chap00
 ALNPC04::ALNPC04():Super() {
 	UseAnim = false;
-	Locked = true;
+	IsLocked = true;
 	Texts = { FText::FromString("...") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

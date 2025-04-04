@@ -39,7 +39,7 @@ AHeaterI00::AHeaterI00():Super() {
 
 void AHeaterI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
-	Locked = true; // lock AFTER triggering
+	IsLocked = true; // lock AFTER triggering
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {

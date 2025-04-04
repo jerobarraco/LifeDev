@@ -5,7 +5,7 @@
 ADoorI02::ADoorI02():Super() {
 	UseAnim = false;
 	LockedDlg = "D02_LCK";
-	Locked = true;
+	IsLocked = true;
 	RootComponent->SetWorldLocation(FVector(-290,960,0));
 	RootComponent->SetWorldRotation(FRotator(0,180,0));
 }

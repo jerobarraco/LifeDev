@@ -11,7 +11,7 @@ ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
 	RewardItem = LDConsts::Items::Plate01;
 	RewardStep = true;
-	Locked = false;
+	IsLocked = false;
 	UseRewardDestroy = false;
 	UseFade = false;
 	IsOneShot = true;

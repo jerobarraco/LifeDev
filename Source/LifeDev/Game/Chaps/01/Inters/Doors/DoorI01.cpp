@@ -3,7 +3,7 @@
 #include "DoorI01.h"
 
 ADoorI01::ADoorI01():Super() {
-	Locked = true;
+	IsLocked = true;
 	ULockDlg = "D01_ULCK";
 	LockedDlg = "D01_LCK";
 	// for the future

@@ -82,7 +82,7 @@ void APuzzleI04::PostDoneSnd() {
 		return;
 	}
 
-	Lid->Locked = false;
+	Lid->IsLocked = false;
 	Lid->TryTrigger();
 	
 	// i could subscribe to the anim onEnd but this is safer.

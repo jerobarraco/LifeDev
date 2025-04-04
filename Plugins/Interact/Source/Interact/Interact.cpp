@@ -60,10 +60,10 @@ AInteract::AInteract():Super() {
 bool AInteract::TryTrigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 	
-	if (UNLIKELY(Locked && ShouldUnlock()))
+	if (UNLIKELY(IsLocked && ShouldUnlock()))
 		Unlock();
 
-	if (Locked) {
+	if (IsLocked) {
 		TriggerLocked();
 		return false;
 	}
@@ -183,8 +183,8 @@ bool AInteract::ShouldUnlock_Implementation() {
 
 void AInteract::Unlock_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
-	if (UNLIKELY(!Locked)) return; // avoid re-triggering stuff
-	Locked = false; // force unlock
+	if (UNLIKELY(!IsLocked)) return; // avoid re-triggering stuff
+	IsLocked = false; // force unlock
 }
 
 void AInteract::ShowHint_Implementation() {

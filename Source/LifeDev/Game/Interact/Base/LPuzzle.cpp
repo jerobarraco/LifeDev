@@ -11,7 +11,7 @@
 #include "LifeDev/Game/Interact/LInteract.h"
 
 ALPuzzle::ALPuzzle():Super() {
-	Locked = true; // locked means unsolved
+	IsLocked = true; // locked means unsolved
 	UseAnim = false;
 	UseFade = false;
 	UseRewardDestroy = false;
@@ -131,7 +131,7 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 			const UWorld* const W = GetWorld();
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
 		}
-		Locked = true; // force so it calls triggerLocked
+		IsLocked = true; // force so it calls triggerLocked
 	}
 
 	TryTrigger();

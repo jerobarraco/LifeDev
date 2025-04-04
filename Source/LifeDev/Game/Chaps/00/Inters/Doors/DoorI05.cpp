@@ -6,10 +6,9 @@
 #include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
-#include "Story/Story.h"
 
 ADoorI05::ADoorI05():Super() {
-	Locked = true;
+	IsLocked = true;
 	UseAnim = false; // will take us directly to the next story step
 	UseAutoActivate = true;
 	IsOneShot = true;

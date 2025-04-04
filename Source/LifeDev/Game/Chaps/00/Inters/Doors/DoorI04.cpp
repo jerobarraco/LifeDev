@@ -8,7 +8,7 @@
 ADoorI04::ADoorI04():Super() {
 	LockedDlg = "D04_LCK";
 	ULockItemReq = LDConsts::Items::Poem0;
-	Locked = true;
+	IsLocked = true;
 	Anim->TEnd.SetRotation(FRotator(0, -90, 0).Quaternion());
 	UseAutoActivate = true;
 }
