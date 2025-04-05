@@ -57,7 +57,7 @@ ARange::ARange():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 2;
 	Anim->TStart.SetScale3D(FVector(1)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
-	Anim->TEnd.SetScale3D(FVector(30));
+	Anim->TEnd.SetScale3D(FVector(15));
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
 	Anim->SetComponentTickInterval(0); // full fps this moves very fast
 
