@@ -79,8 +79,8 @@ public:
 	UFUNCTION(CallInEditor, meta=(DeprecatedFunction, DevelopmentOnly)) // just to get a button for debug
 	FORCEINLINE void Stop() { Deactivate(); }
 
-	// By default, run at 30 fps; Optimization
-	inline static float IntervalDefault = 1.0f/30.f;
+	// inline static float IntervalDefault = 1.0f/30.f; // By default, run at 30 fps; Optimization
+	inline static float IntervalDefault = 1/60.f; // cap at 60
 	// to be set by game manager depending on the flags
 	inline static bool Debug = false;
 	
