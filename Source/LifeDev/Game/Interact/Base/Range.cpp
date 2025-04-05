@@ -56,8 +56,8 @@ ARange::ARange():Super() {
 	Anim->UseSweep = true;
 	Anim->IsAdditive = false;
 	Anim->Duration = 2;
-	Anim->TStart.SetScale3D(FVector(.25)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
-	Anim->TEnd.SetScale3D(FVector(15));
+	Anim->TStart.SetScale3D(FVector(1)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
+	Anim->TEnd.SetScale3D(FVector(50));
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
 	
 	// using the mesh since the animator will mess with the location
