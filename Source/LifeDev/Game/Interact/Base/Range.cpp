@@ -34,7 +34,7 @@ ARange::ARange():Super() {
 	// Collider->SetCollisionProfileName("OverlapAllDynamic");
 	Collider->SetCollisionProfileName("OverlapInteract");
 	Collider->CanCharacterStepUpOn = ECB_No;
-	Collider->InitSphereRadius(60); // 50 is ok but with 60 i make sure its bigger than the sphere
+	Collider->InitSphereRadius(52); // 50 is ok but with 60 i make sure it's bigger than the sphere
 	
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Collider);
@@ -57,10 +57,10 @@ ARange::ARange():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 2;
 	Anim->TStart.SetScale3D(FVector(1)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
-	Anim->TEnd.SetScale3D(FVector(50));
+	Anim->TEnd.SetScale3D(FVector(30));
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
-	
-	// using the mesh since the animator will mess with the location
+	Anim->SetComponentTickInterval(0); // full fps this moves very fast
+
 	Anim->MatFName = TEXT("Opacity");
 	Anim->MatFStart = 1;
 	Anim->MatFEnd = 0;
