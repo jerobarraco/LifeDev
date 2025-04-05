@@ -41,7 +41,7 @@ ARange::ARange():Super() {
 	// Mesh->SetRelativeScale3D(FVector(UE_SMALL_NUMBER));
 	Mesh->SetQuickCollisionEnabled(false);
 	Mesh->bReceiveMobileCSMShadows = false;
-
+	Mesh->SetAffectDistanceFieldLighting(false);//needed since the material uses distance field
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Engine/EditorMeshes/AssetViewer/Sphere_inversenormals"));
 	if (LIKELY(ObjMesh.Succeeded()))
