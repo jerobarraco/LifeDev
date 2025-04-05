@@ -41,8 +41,9 @@ ARange::ARange():Super() {
 	// Mesh->SetRelativeScale3D(FVector(UE_SMALL_NUMBER));
 	Mesh->SetQuickCollisionEnabled(false);
 	Mesh->bReceiveMobileCSMShadows = false;
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		ObjMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
+		ObjMesh(TEXT("/Engine/EditorMeshes/AssetViewer/Sphere_inversenormals"));
 	if (LIKELY(ObjMesh.Succeeded()))
 		Mesh->SetStaticMesh(ObjMesh.Object);
 
