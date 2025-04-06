@@ -86,7 +86,8 @@ ATv00::ATv00():Super() {
 		CCurveMat(TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
 	AnimCrt->Curve = CCurveMat.Object;
 	AnimCrt->Duration = 2; // initial duration
-
+	AnimCrt->SetComponentTickInterval(1/30); // opt. light anim does not need to be 60.
+	
 	// randomizer for the anim
 	RndCrt = CreateDefaultSubobject<UCRandomizer>(TEXT("RndCrt"));
 	RndCrt->Anim = AnimCrt;
@@ -117,10 +118,10 @@ void ATv00::BeginPlay() {
 	// we do need create it, or it won't work. BUT NOT ON THE CONSTRUCTOR OR IT WON'T SAVE!
 	// need to set the material for the animcrt manually.
 	AnimCrt->Mat = Crt->CreateDynamicMaterialInstance(0);
-	if (LIKELY(IsValid(AnimCrt->Mat))) {
-		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
+	AnimCrt->Update(0);
+	if (LIKELY(IsValid(AnimCrt->Mat)))
 		AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
-	}
+
 	Sig->BindAnim(AnimCrt);
 	Sig->CompsTicks.AddUnique(AnimCrt);
 }
@@ -144,8 +145,7 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 	// force instant change if no strobe
 	if (!ULSettings::GetFeatS(this, EFeat::V_STROBE)) {
 		if (LIKELY(IsValid(AnimCrt->Mat))) {
-			AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName,
-				_IsOpen ? AnimCrt->MatVEnd : AnimCrt->MatVStart);
+			AnimCrt->Update(_IsOpen? 1: 0);
 		}
 		return;
 	}
@@ -154,6 +154,6 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 	AnimCrt->SetActive(_IsOpen);
 	// TODO this is not working consistently. fix.
 	// force this so that it resets the value
-	if (!_IsOpen && IsValid(AnimCrt->Mat))
-		AnimCrt->Mat->SetVectorParameterValue(AnimCrt->MatVName, AnimCrt->MatVStart);
+	if (!_IsOpen)
+		AnimCrt->Update(0);
 }
