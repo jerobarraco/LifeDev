@@ -1,6 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
+#include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "Tv00.generated.h"
@@ -21,6 +22,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetState_Implementation(const int32 NewState) override;
+	UFUNCTION()
+	void FeatUpd(const EFeat Feat, const bool bEnabled);
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCLSounder> Noise = nullptr;

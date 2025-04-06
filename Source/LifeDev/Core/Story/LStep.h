@@ -29,7 +29,7 @@ class ALStep: public AStep {
 
 public:
 	ALStep();
-	
+
 	virtual void TryStart_Implementation() override;
 	
 	// Be careful! this will remove all delegates to Dialogs.OnDone and Inventory.OnMOd

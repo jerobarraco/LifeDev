@@ -124,14 +124,23 @@ void ATv00::BeginPlay() {
 
 	Sig->BindAnim(AnimCrt);
 	Sig->CompsTicks.AddUnique(AnimCrt);
+	ULSettings* Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings))
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ATv00::FeatUpd);
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	ULSettings* Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings))
+		Settings->OnFeatUpdateVisual.RemoveAll(this);
+
 	if (LIKELY(IsValid(Sig))) {
 		Sig->UnbindAnim();
 		Sig->Deactivate();
 	}
 	Sig = nullptr;
+	if (LIKELY(AnimCrt)) AnimCrt->SetActive(false);
+	if (LIKELY(RndCrt)) RndCrt->SetActive(false);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -142,16 +151,24 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 	const bool _IsOpen = !IsEven();
 	Noise->Fade(_IsOpen);
 
+	// reuse code
+	FeatUpd(EFeat::V_STROBE, ULSettings::GetFeatS(this, EFeat::V_STROBE));
+}
+
+void ATv00::FeatUpd(const EFeat Feat, const bool bEnabled) {
 	// force instant change if no strobe
-	if (!ULSettings::GetFeatS(this, EFeat::V_STROBE)) {
-		AnimCrt->Update(_IsOpen? 1: 0);
+	if (LIKELY(Feat != EFeat::V_STROBE)) return; // likely cuz there are more
+
+	const bool _IsOpen = !IsEven();
+	if (bEnabled) {
+		RndCrt->SetActive(_IsOpen);
+		AnimCrt->SetActive(_IsOpen);
+		// when turning it off, ensure it's off.
+		if (!_IsOpen) AnimCrt->Update(0);
 		return;
 	}
-	
-	RndCrt->SetActive(_IsOpen);
-	AnimCrt->SetActive(_IsOpen);
-	// TODO this is not working consistently. fix.
-	// force this so that it resets the value
-	if (!_IsOpen)
-		AnimCrt->Update(0);
+
+	RndCrt->SetActive(false);
+	AnimCrt->SetActive(false);
+	AnimCrt->Update(_IsOpen? 1: 0);
 }
