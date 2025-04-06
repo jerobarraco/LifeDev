@@ -144,9 +144,7 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 
 	// force instant change if no strobe
 	if (!ULSettings::GetFeatS(this, EFeat::V_STROBE)) {
-		if (LIKELY(IsValid(AnimCrt->Mat))) {
-			AnimCrt->Update(_IsOpen? 1: 0);
-		}
+		AnimCrt->Update(_IsOpen? 1: 0);
 		return;
 	}
 	
