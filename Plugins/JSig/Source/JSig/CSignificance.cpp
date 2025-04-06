@@ -3,8 +3,11 @@
  
 #include "CSignificance.h"
 
-#include "SignificanceManager.h"
+#if WITH_EDITOR
+#include "Editor.h"
+#endif
 
+#include "SignificanceManager.h"
 DEFINE_LOG_CATEGORY_STATIC(LogJSigComp, Log, Log);
 
 // Allows to force significance on all classes to quickly compare the performance differences as if the system was disabled.
@@ -52,11 +55,13 @@ void UCSignificance::Register() {
 	const FName Tag(Name);
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s"), __func__, *Name);
 
-	// TODO don't even try if it's on a cook commandlet or not playing
+	// don't even try if it's on a cook commandlet or not playing
+#if WITH_EDITOR
 	if (UNLIKELY((GEditor && !GEditor->IsPlayingSessionInEditor()) || IsRunningCommandlet())) {
 		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register. Wrong play mode. Stop. Name=%s"), __func__, *Name);
 		return;
 	}
+#endif
 
 	// don't register if it doesn't have an owner
 	if (UNLIKELY(!IsValid(Owner))) {

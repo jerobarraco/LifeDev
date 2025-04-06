@@ -37,9 +37,9 @@ public class JSig: ModuleRules
 			// ... add any modules that your module loads dynamically here ...
 		});
 		
-		if (Target.bBuildEditor)
-		{
-			// PrivateDependencyModuleNames.AddRange(new string[]{ "UnrealEd"});
+		if (Target.bBuildEditor) {
+			// needed for GEditor
+			PrivateDependencyModuleNames.AddRange(new string[]{ "UnrealEd"});
 		}
 	}
 }
