@@ -4,10 +4,10 @@
 
 #include "Components/RectLightComponent.h"
 #include "Interact/CInteract.h"
-
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
+// TODO make this UseAutoActivate = False once all the light switches are in place
 ALLight01::ALLight01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support.Support"));

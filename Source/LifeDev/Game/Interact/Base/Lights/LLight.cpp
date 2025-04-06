@@ -18,6 +18,8 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
+// TODO make this UseAutoActivate = False once all the light switches are in place
+
 ALLight::ALLight():Super() {
 	// by default is just a static light. disable interaction. (specially since now i have light switches)
 	// UseAutoActivate = true;// redundant
@@ -31,6 +33,9 @@ ALLight::ALLight():Super() {
 	// these would trash the materials.
 	UseRewardDestroy = false;
 	AnimFade->Meshes.Empty();
+	
+	// small opt. cap at 30fps since this animates light (and audio) only. does not need to be 60.
+	Anim->SetComponentTickInterval(1/30.0);
 
 	Trans.Empty(); // force the simpler animation which will reverse the animation.
 	Anim->TRoot = nullptr; // by default don't animate meshes
