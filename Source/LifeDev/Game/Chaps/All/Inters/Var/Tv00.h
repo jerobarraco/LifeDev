@@ -25,18 +25,18 @@ protected:
 	UFUNCTION()
 	void FeatUpd(const EFeat Feat, const bool bEnabled);
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCLSounder> Noise = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCRandomizer> RndCrt = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCAnimatorMix> AnimCrt = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Frame = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Glass = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Crt = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCLSignificance> Sig = nullptr;
 };

@@ -33,7 +33,8 @@ ATv00::ATv00():Super() {
 	Interact->SetRelativeLocation(FVector(32.5,-22.5,25));
 	Interact->SetBoxExtent(FVector(35,35,25));
 
-	SFX->SetRelativeLocation(FVector(55,0,15));
+	// btn position from relavite
+	SFX->SetRelativeLocation(FVector(25.000000,25.000000,-10.000000));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SOpen(TEXT("/Game/LifeDev/Game/Inters/Generic/Button_Press-007.Button_Press-007"));
 	SFXs = {SOpen.Object, SOpen.Object}; // reusing the same. close, open
