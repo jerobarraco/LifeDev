@@ -58,7 +58,7 @@ void UCSignificance::Register() {
 	// don't even try if it's on a cook commandlet or not playing
 #if WITH_EDITOR
 	if (UNLIKELY((GEditor && !GEditor->IsPlayingSessionInEditor()) || IsRunningCommandlet())) {
-		UE_LOG(LogJSigComp, Warning, TEXT("%hs Can't register. Wrong play mode. Stop. Name=%s"), __func__, *Name);
+		UE_LOG(LogJSigComp, Verbose, TEXT("%hs Can't register. Wrong play mode. Stop. Name=%s"), __func__, *Name);
 		return;
 	}
 #endif
