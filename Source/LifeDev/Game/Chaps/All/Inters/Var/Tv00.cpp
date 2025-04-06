@@ -6,7 +6,6 @@
 
 #include "JSig/CSignificance.h"
 #include "JUtils/Actors/CQuickMesh.h"
-
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
