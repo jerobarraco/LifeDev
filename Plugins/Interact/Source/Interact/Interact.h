@@ -167,7 +167,7 @@ public:
 	// It will default to the actor label. It will get updated when changed on the editor.
 	// if this is an instance that it's spawned, it will default to the Name.
 	// this property is defined here so that it gets packaged correctly, which is not what ActorLabel does. mottainai.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AdvancedDisplay, AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable) // don't use advanced or it wont show since i have a subcategory (base)
 	FName Label;
 
 	// whether to de/activate on BeginPlay. (avoid setting SetAutoActivate on the Interact component).

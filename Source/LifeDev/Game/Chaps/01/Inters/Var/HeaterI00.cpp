@@ -43,7 +43,7 @@ void AHeaterI00::DoTrigger_Implementation() {
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Card0 && IsValid(Diags)) {
+	if (Name == LDConsts::Items::Card0 && LIKELY(IsValid(Diags))) {
 		Diags->AddId("HT00_IC0");
 		return EItemUseResult::BAD_HANDLED;
 	}

@@ -37,6 +37,5 @@ AWalkmanI00::AWalkmanI00():Super() {
 	ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
 	SFX_Trigger = CSnd.Object;
-
 }
 
