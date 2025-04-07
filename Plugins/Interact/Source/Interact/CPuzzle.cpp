@@ -120,7 +120,7 @@ void UCPuzzle::Unbind() {
 bool UCPuzzle::IsCurrentSolution() {
 	const int32 IdsNum = CurrentIds.Num();
 	if (UNLIKELY(IdsNum != Solution.Num())) {
-		UE_LOG(LogCPuzzle, Warning, TEXT("%hs Lenght of Solution is different from lenght of Interacts. Stop."), __func__);
+		UE_LOG(LogCPuzzle, Warning, TEXT("%hs Length of Solution is different from length of Interacts. Stop."), __func__);
 		return false;
 	}
 
@@ -185,8 +185,11 @@ bool UCPuzzle::CheckCondition() const {
 void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj) {
 	// this code sucks.
 	bool IsOk = false;
+	bool IsDone = true;
 	if (Type == EPuzzleType::SEQUENCE) {
 		IsOk = CheckSequence(ID);
+		// don't trigger Done if we haven't reached, or pass the solution size.
+		IsDone = CurrentIds.Num() >= Solution.Num();
 	} else if (Type == EPuzzleType::COMBINATION) {
 		IsOk = CheckCombination(ID);
 	} else if (Type == EPuzzleType::CONDITION) {
@@ -201,7 +204,7 @@ void UCPuzzle::InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UOb
 	// important for APuzzle timer and for logical order in the flow
 	OnUpdate.Broadcast();
 
-	PreDone(IsOk); // pre-done checks IsOk inside. so it's safe.
+	if (LIKELY(IsDone)) PreDone(IsOk); // pre-done checks IsOk inside. so it's safe.
 }
 
 void UCPuzzle::PreDone(const bool Ok) const {
@@ -244,7 +247,7 @@ void UCPuzzle::PreDone(const bool Ok) const {
 		Time = FMath::Max(Time, IA->GetAnim()->Duration);
 	}
 	
-	if (Animating) {
+	if (Animating) { // wait for animation
 		FTimerHandle H;
 		auto C = [this, Ok] { Done(Ok); };
 		World->GetTimerManager().SetTimer(H, C, Time, false);
