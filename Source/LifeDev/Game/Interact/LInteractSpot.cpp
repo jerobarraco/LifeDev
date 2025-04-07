@@ -1,6 +1,7 @@
 #include "LInteractSpot.h"
 
 #include "Diags/Diags.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 
 ALInteractSpot::ALInteractSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.
@@ -22,33 +23,32 @@ ALInteractSpot::ALInteractSpot():Super() {
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
-	// TODO move auto dialogs to the consts
 
 	const FString& SLabel = Label.ToString();
 	if (UNLIKELY(Items.IsEmpty())) {
 		IsLocked = true; // unnecessary but complete, jic
-		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.Full."+SLabel));
+		const FName Row(LDConsts::Dlgs::Inter::Spot::FullPre+SLabel);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	int32 Id;
 	const bool Ok = Items.Find(Name, Id);
 	if (!Ok) {
-		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.Bad."+SLabel));
+		const FName Row(LDConsts::Dlgs::Inter::Spot::BadPre+SLabel);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (UseOrder && Id !=0) { // TODO test
-		const bool Added = LIKELY(IsValid(Diags)) &&
-			Diags->AddId(FName("Inter.Spot.Use.BadOrder."+SLabel));
+		const FName Row(LDConsts::Dlgs::Inter::Spot::BadOrderPre+SLabel);
+		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
 	if (LIKELY(IsValid(Diags)))
 		Diags->AddId(DropDlg) ||
-		Diags->AddId(FName("Inter.Spot.Use."+SLabel));
+		Diags->AddId(FName(LDConsts::Dlgs::Inter::Spot::UsePre+SLabel));
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {

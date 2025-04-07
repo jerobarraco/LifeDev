@@ -25,6 +25,13 @@ namespace LDConsts {
 				inline static const FString ResetPre(TEXT("Inter.Puzzle.Reset."));
 				inline static const FString UpdatePre(TEXT("Inter.Puzzle.Update."));
 			}
+			namespace Spot {
+				inline static const FString UsePre(TEXT("Inter.Spot.Use."));
+				inline static const FString BadPre(TEXT("Inter.Spot.Bad."));
+				inline static const FString BadOrderPre(TEXT("Inter.Spot.BadOrder."));
+				inline static const FString FullPre(TEXT("Inter.Spot.Full."));
+				
+			}
 		}
 	}
 }
