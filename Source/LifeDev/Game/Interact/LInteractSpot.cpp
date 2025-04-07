@@ -14,8 +14,8 @@ ALInteractSpot::ALInteractSpot():Super() {
 	UseStateLoop = false; // lock on the last state, since it might trigger more time than the num of states.
 	StateNum = 2; // open and done
 	Texts = {
-		FText::FromString(TEXT("Drop here")),
-		FText::FromString(TEXT("Full"))
+		NSLOCTEXT("LSpot", "State0", "Drop Here"),
+		NSLOCTEXT("LSpot", "State0", "Full"),
 	};
 	Super::SetMobility(EComponentMobility::Static);
 }
@@ -60,5 +60,6 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 		SetState(State+1);
 	}
 
+	// todo since trigger is called before return, then Item.Use is done before Trigger. so the dialogs are in reverse.
 	return EItemUseResult::SUCCESS;
 }
