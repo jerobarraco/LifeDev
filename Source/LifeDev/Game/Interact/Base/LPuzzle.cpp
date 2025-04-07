@@ -121,13 +121,15 @@ void ALPuzzle::Done_Implementation(const bool IsOk) {
 		// don't reset if we can't trigger again. avoids issue where the inters get reactivated.
 		// only on isOneShot to support puzzles that can be triggered multiple times.
 		if (IsOneShot) ClearTimer();
+
 		Unlock(); // force unlock. so that i can trigger.
 	} else {
-		// reset if needed. but not inside done. Since done is overrideable and can change orders
+		ClearTimer(); // now that it failed, no more resets. also avoid double timers if ResetOnFail.
+
+		// reset if needed. but not right now. Since done is overrideable and children can change order.
 		// it will mess with the logical flow anyway.
 		// this is important to be done on the Puzzle since Done is overrideable and hence can be postponed if needed
 		if (ResetOnFail) {
-			ClearTimer(); // avoid having a timer for the reset too.
 			const UWorld* const W = GetWorld();
 			if (LIKELY(W)) W->GetTimerManager().SetTimerForNextTick(this, &ALPuzzle::Reset);
 		}
