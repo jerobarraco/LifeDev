@@ -5,6 +5,10 @@
 
 #include "Components/AudioComponent.h"
 
+UCAnimatorSound::UCAnimatorSound() {
+	SetComponentTickInterval(1/30); // opt. doesn't need 60fps.
+}
+
 void UCAnimatorSound::Update_Implementation(const float Alpha) {
 	Super::Update_Implementation(Alpha);
 

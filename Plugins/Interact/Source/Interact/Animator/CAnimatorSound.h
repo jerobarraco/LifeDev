@@ -11,6 +11,8 @@ class INTERACT_API UCAnimatorSound: public UCAnimator {
 	GENERATED_BODY()
 
 public:
+	UCAnimatorSound();
+
 	// the sound component to animate
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<UAudioComponent> Snd = nullptr;
