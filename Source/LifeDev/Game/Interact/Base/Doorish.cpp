@@ -11,11 +11,10 @@ ADoorish::ADoorish():Super() {
 	UseFade = false;
 	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
 	UseRewardDestroy = false; // will also avoid scrambled material
-	
+	UseAutoActivate = true;
+
 	UseAnim = true;
 	Anim->IsAdditive = true;
-	// visual: run at 60 fps since it's movement
-	Anim->SetComponentTickInterval(1/60.f);
 
 	Mesh->SetCastAllShadows(true);
 	// important to call Super here. since this is called before the child constructor

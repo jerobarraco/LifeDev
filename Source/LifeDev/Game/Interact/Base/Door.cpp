@@ -12,6 +12,7 @@ ADoor::ADoor():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/Door00.Door00"));
 	Mesh->SetStaticMesh(CMesh.Object);
+	// this is to block the user for trespassing
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Mesh->SetCollisionProfileName("BlockAllDynamic");
 	

@@ -9,8 +9,8 @@
 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AWindow: public ADoorish {
-public:
 	GENERATED_BODY()
 
+public:
 	AWindow();
 };

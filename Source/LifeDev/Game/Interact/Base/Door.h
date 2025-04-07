@@ -15,5 +15,5 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	UStaticMeshComponent* Frame = nullptr;
+	TObjectPtr<UStaticMeshComponent> Frame = nullptr;
 };

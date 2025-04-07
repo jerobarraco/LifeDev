@@ -30,15 +30,15 @@ ALLight::ALLight():Super() {
 		NSLOCTEXT("LLight", "State0", "Turn On"),
 		NSLOCTEXT("LLight", "State0", "Turn Off")};
 	
-	// these would trash the materials.
+	// these two would trash the materials.
 	UseRewardDestroy = false;
 	AnimFade->Meshes.Empty();
 	
+	Anim->TRoot = nullptr; // by default don't animate meshes
 	// small opt. cap at 30fps since this animates light (and audio) only. does not need to be 60.
 	Anim->SetComponentTickInterval(1/30.0);
 
 	Trans.Empty(); // force the simpler animation which will reverse the animation.
-	Anim->TRoot = nullptr; // by default don't animate meshes
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/JUtils/Curves/NoiseRamp_C.NoiseRamp_C"));
 	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object; // by default use noise ranmp
