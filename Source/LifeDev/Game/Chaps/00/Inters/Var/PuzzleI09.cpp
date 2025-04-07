@@ -11,6 +11,9 @@ APuzzleI09::APuzzleI09():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {9,1,1};
 	IsOneShot = true;
+	UseActiveOnce = true;
+	// idea: change the solution depending on the chapter.
+	// will also require to reset when progressing.
 }
 
 void APuzzleI09::BeginPlay() {
