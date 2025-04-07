@@ -12,6 +12,7 @@ APuzzleI09::APuzzleI09():Super() {
 	CPuzzle->Solution = {9,1,1};
 	IsOneShot = true;
 	UseActiveOnce = true;
+	ResetOnFail = true;
 	// idea: change the solution depending on the chapter.
 	// will also require to reset when progressing.
 }
@@ -36,6 +37,5 @@ void APuzzleI09::StartStep(AStep* const Step) {
 	if (Step->Name == "C0S0") {
 		SetActives(true);
 		CPuzzle->Solution = {9,1,1};
-	} else {
 	}
 }
