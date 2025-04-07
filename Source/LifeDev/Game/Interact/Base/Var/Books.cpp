@@ -61,7 +61,7 @@ void ABooks::Constructor() {
 	UseRewardDestroy = false;
 	StateNum = 1;
 	// UseAutoActivate = false; // important since i use these as decoration a lot // redundant
-	Texts = {NSLOCTEXT("Books", "State0", "Books")};
+	Texts = { NSLOCTEXT("Books", "State0", "Books")};
 	// mesh (what's this for again?)
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
 	CreateBooks();
