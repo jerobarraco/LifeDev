@@ -33,11 +33,11 @@ AGhostItem::AGhostItem():Super() {
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
 	AxisZ = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisZ"));
 
+	// used to update the values. using an anim so that i can use the significance.
 	AnimBase = CreateDefaultSubobject<UCAnimator>(TEXT("AnimBase"));
 	AnimBase->Duration = 1000;
 	AnimBase->IsLooping = true;
 	AnimBase->Curve = nullptr;
-	AnimBase->SetComponentTickInterval(1/60);
 	AnimBase->SetAutoActivate(false);
 	AnimBase->UseLog = false;
 
@@ -202,9 +202,11 @@ void AGhostItem::PosUpZ(const float Output, const float NewValue) {
 void AGhostItem::RotUpX(const float Progress, const float Alpha) {
 	OffRot.Roll = 360*Alpha;
 }
+
 void AGhostItem::RotUpY(const float Progress, const float Alpha) {
 	OffRot.Pitch = 360*Alpha;
 }
+
 void AGhostItem::RotUpZ(const float Progress, const float Alpha) {
 	OffRot.Yaw = 360*Alpha;
 }

@@ -19,7 +19,7 @@ public:
 	UCGhostAxis();
 
 	void RenameComp(const FString& Postfix);
-	virtual void Activate(bool bReset) override;
+	virtual void Activate(const bool bReset) override;
 	virtual void Deactivate() override;
 
 #pragma region CDO

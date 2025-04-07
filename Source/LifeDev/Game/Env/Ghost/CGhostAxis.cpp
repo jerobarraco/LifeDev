@@ -11,16 +11,15 @@ UCGhostAxis::UCGhostAxis():Super() {
 	Kd = 0.005;
 	StopTime = -1;
 	AutoUpdateValue = true;
-	SetComponentTickInterval(1/60);
 	Super::SetAutoActivate(false);
 	
 	Anim = CreateDefaultSubobject<UCAnimator>(TEXT("Anim"));
-	Anim->Duration=10;
+	Anim->Duration = 10;
 	Anim->IsLooping = true;
 	Anim->IsBouncing = true;
 	Anim->SetAutoActivate(false);
 	Anim->Curve = nullptr;
-	
+
 	Rand = CreateDefaultSubobject<UCRandomizer>(TEXT("Rand"));
 	Rand->DelayMin = 5;
 	Rand->DelayMax = 10;
@@ -42,7 +41,7 @@ void UCGhostAxis::RenameComp(const FString& Postfix) {
 	if (LIKELY(Anim)) Anim->Rename(*(AnimPre+Postfix));
 }
 
-void UCGhostAxis::Activate(bool bReset) {
+void UCGhostAxis::Activate(const bool bReset) {
 	Super::Activate(bReset);
 	Rand->Activate(bReset);
 	Anim->Activate(bReset);
