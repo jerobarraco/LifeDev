@@ -79,8 +79,16 @@ public:
 	UFUNCTION(CallInEditor, meta=(DeprecatedFunction, DevelopmentOnly)) // just to get a button for debug
 	FORCEINLINE void Stop() { Deactivate(); }
 
-	// inline static float IntervalDefault = 1.0f/30.f; // By default, run at 30 fps; Optimization
+	// this defines the default tick-interval. By default, it targets 60fps.
+	// if the game runs at lower fps, this means it will tick every frame.
+	// effectively, it's only a cap.
+	// i'm still not convinced whether to use 30 or 60.
+	// For now i've decided to use 60, since most of the anims are visual based (mats and transforms).
+	// which have a huge impact on the quality of the game (for my personal goals).
+	// still 60 is not 120 (so it will never run at 120, (maybe i should make this a config var)).
+	// And then i will lower the fps (increase the interval) for those that don't need to be 60 (e.g. audio or some lights).
 	inline static float IntervalDefault = 1/60.f; // cap at 60
+	
 	// to be set by game manager depending on the flags
 	inline static bool Debug = false;
 	
