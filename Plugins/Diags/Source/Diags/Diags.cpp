@@ -54,7 +54,7 @@ bool UDiags::AddId(const FName& Row, const bool Warn) {
 	// this also would capture a sequence that is empty or the ids are none.
 	UE_CLOG(Warn, LogDiags, Warning,
 		TEXT("%hs: Could not find dialog nor group with the id=%s. "
-			"Or the group was empty or invalid."), __func__, *Row.ToString());
+			"Or the group was empty or invalid. Or it didn't pass it's condition."), __func__, *Row.ToString());
 	return false;
 }
 
