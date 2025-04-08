@@ -43,13 +43,13 @@ void UCGhostAxis::RenameComp(const FString& Postfix) {
 
 void UCGhostAxis::Activate(const bool bReset) {
 	Super::Activate(bReset);
-	Rand->Activate(bReset);
-	Anim->Activate(bReset);
+	if (LIKELY(Rand)) Rand->Activate(bReset);
+	if (LIKELY(Anim)) Anim->Activate(bReset);
 }
 
 void UCGhostAxis::Deactivate() {
+	if (LIKELY(Rand)) Rand->Deactivate();
+	if (LIKELY(Anim)) Anim->Deactivate();
 	Super::Deactivate();
-	Rand->Deactivate();
-	Anim->Deactivate();
 }
 
