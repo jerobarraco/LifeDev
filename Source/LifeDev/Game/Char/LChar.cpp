@@ -283,8 +283,8 @@ void ALChar::PossessedBy(AController* const NewController) {
 	APlayerCameraManager* const Manager = Cont->PlayerCameraManager.Get();
 	if (UNLIKELY(!Manager)) return;
 
-	Manager->ViewPitchMax = 70;
-	Manager->ViewPitchMin = -70;
+	Manager->ViewPitchMax = ViewPitchMax;
+	Manager->ViewPitchMin = -ViewPitchMax;
 }
 
 /// Input

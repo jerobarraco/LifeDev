@@ -132,6 +132,9 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	float ViewPitchMax = 70;
+
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh, Config)
 	float HoverDiagTime = 2;
 
