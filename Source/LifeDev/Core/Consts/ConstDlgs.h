@@ -30,7 +30,6 @@ namespace LDConsts {
 				inline static const FString BadPre(TEXT("Inter.Spot.Bad."));
 				inline static const FString BadOrderPre(TEXT("Inter.Spot.BadOrder."));
 				inline static const FString FullPre(TEXT("Inter.Spot.Full."));
-				
 			}
 		}
 	}

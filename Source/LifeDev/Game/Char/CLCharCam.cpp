@@ -14,7 +14,7 @@ UCLCharCam::UCLCharCam():Super() {
 
 void UCLCharCam::Init_Implementation() {
 	const UFlags* const Flags = UFlags::Instance(this);
-	if (!Flags) return;
+	if (UNLIKELY(!Flags)) return;
 
 	const float Foxify =
 		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
@@ -30,10 +30,10 @@ void UCLCharCam::BeginPlay() {
 	Super::BeginPlay();
 
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (LIKELY(!World)) return;
 
 	ULSettings* const Settings = ULSettings::Instance(this);
-	if (Settings) {
+	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &UCLCharCam::FeatUpdateVisual);
 		UseFeatFOV = Settings->GetFeat(EFeat::V_FOV);
 	}
@@ -41,18 +41,18 @@ void UCLCharCam::BeginPlay() {
 	SetFB(0); // update fov
 
 	UFlashback* const FB = World->GetSubsystem<UFlashback>();
-	if (FB) FB->OnChange.AddUniqueDynamic(this, &UCLCharCam::SetFB);
+	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &UCLCharCam::SetFB);
 }
 
 void UCLCharCam::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
-	if (FB) FB->OnChange.RemoveAll(this);
+	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
-	if (Settings) 
+	if (LIKELY(Settings)) 
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
 
 	Super::EndPlay(EndPlayReason);
@@ -73,7 +73,7 @@ void UCLCharCam::FeatUpdateVisual(const EFeat Feat, const bool bEnabled) {
 		if (UseFeatFOV) {
 			// force re-set the fb value to set the correct fov
 			const UFlashback* const Flashback = UFlashback::Instance(this);
-			if (Flashback) SetFB(Flashback->GetVal()); // be aware this also affects the walk speed
+			if (LIKELY(Flashback)) SetFB(Flashback->GetVal()); // be aware this also affects the walk speed
 		} else {
 			SetFieldOfView(FOVMin);
 		}
