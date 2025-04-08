@@ -10,15 +10,12 @@
 ASpongeI00::ASpongeI00():Super() {
 	TriggerDlg = "Sponge00_T";
 	RewardItem = LDConsts::Items::Plate01;
-	RewardStep = true;
 	IsLocked = false;
-	UseRewardDestroy = false;
-	UseFade = false;
 	IsOneShot = true;
+	UseRewardDestroy = false;
+	RewardStep = true;
+	UseFade = false;
 	UseAnim = true;
-
-	// TODO if i have time, on trigger, fade out, then fade in and do reward
-	// might be easier to do with an extra step
 
 	StateNum = 2;
 	Trans = {

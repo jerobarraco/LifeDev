@@ -7,11 +7,12 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASponge::ASponge():Super() {
-	Texts = { FText::FromString(TEXT("Sponge"))};
+	Texts = { NSLOCTEXT("Sponge", "State0", "Sponge") };
 	RewardFlash = 0;
 	UseRewardDestroy = false;
 	StateNum = 1;
 	UseAnim = false;
+	UseAutoActivate = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Sponge"));

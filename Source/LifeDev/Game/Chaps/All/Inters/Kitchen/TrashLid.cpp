@@ -15,7 +15,7 @@ ATrashLid::ATrashLid():Super() {
 	StateNum = 2;
 	Texts = {
 		NSLOCTEXT("TrashLid", "State0", "Open"),
-		NSLOCTEXT("TrashLid", "State0", "Close")};
+		NSLOCTEXT("TrashLid", "State1", "Close")};
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Lid"));
