@@ -118,7 +118,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<AInteract>> IntersActivate;
 
-	// Interacts to deactivate on Start (after wait)
+	// Interacts to deactivate on Start (after wait).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TObjectPtr<AInteract>> IntersDeactivate;
 

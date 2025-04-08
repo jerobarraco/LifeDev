@@ -142,9 +142,11 @@ void ALStep::Start_Implementation() {
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
 	DoIntersFade(IntersFadeOut, false);
-	DoIntersTrigger();
-	DoIntersHint();
-
+	DoIntersDeactive();
+	DoIntersActive(); // activate after deactivate. for precedence.
+	DoIntersHint(); // hint after activate.
+	DoIntersTrigger(); // trigger after activate.
+	
 	if (FB)
 		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
 	// show dialogs
