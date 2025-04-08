@@ -33,6 +33,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
 ALChar::ALChar(): Super() {
 	Super::SetActorTickEnabled(false);
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	UCapsuleComponent* const Capsule = GetCapsuleComponent();
 	// Set size for collision capsule
@@ -271,6 +272,19 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Items = nullptr;
 
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALChar::PossessedBy(AController* const NewController) {
+	Super::PossessedBy(NewController);
+
+	const APlayerController* const Cont = Cast<APlayerController>(NewController);
+	if (UNLIKELY(!Cont)) return;
+	
+	APlayerCameraManager* const Manager = Cont->PlayerCameraManager.Get();
+	if (UNLIKELY(!Manager)) return;
+
+	Manager->ViewPitchMax = 70;
+	Manager->ViewPitchMin = -70;
 }
 
 /// Input

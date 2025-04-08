@@ -107,6 +107,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PossessedBy(AController* const NewController) override;
 
 	UFUNCTION()
 	void InteractHover(const bool bOn, UCInteract* const Comp);
