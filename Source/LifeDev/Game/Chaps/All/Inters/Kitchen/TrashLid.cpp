@@ -9,7 +9,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ATrashLid::ATrashLid():Super() {
-	UseAutoActivate = true; // most of the times it is autoactive. like a door.
+	UseAutoActivate = true; // usually, it is auto active. like a door.
 	UseRewardDestroy = false;
 	RewardFlash = 0;
 	StateNum = 2;
