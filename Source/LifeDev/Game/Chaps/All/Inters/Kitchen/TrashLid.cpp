@@ -9,10 +9,13 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ATrashLid::ATrashLid():Super() {
-	Texts = { FText::FromString(TEXT("Open")), FText::FromString(TEXT("Close")) };
-	RewardFlash = 0;
+	UseAutoActivate = true; // most of the times it is autoactive. like a door.
 	UseRewardDestroy = false;
+	RewardFlash = 0;
 	StateNum = 2;
+	Texts = {
+		NSLOCTEXT("TrashLid", "State0", "Open"),
+		NSLOCTEXT("TrashLid", "State0", "Close")};
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Trashcan/Lid"));
@@ -32,7 +35,7 @@ ATrashLid::ATrashLid():Super() {
 
 	SFXs = { CSndClose.Object, CSndOpen.Object };
 	SFX->SetRelativeLocation(FVector(-22.5,-0.5,12.5));
-	
+
 	UseAnim = true;
 	Anim->Duration = .6;
 	Anim->TEnd.SetRotation(FRotator(-43.2,0,0).Quaternion());
