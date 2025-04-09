@@ -7,7 +7,7 @@
 
 class ALInteract;
 
-// ch00 spot that works with the mixer
+// ch00 spot that works with the bottles
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpotI04: public ASpot00 {
 	GENERATED_BODY()
