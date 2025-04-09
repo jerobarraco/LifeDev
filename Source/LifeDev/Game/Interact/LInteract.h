@@ -106,8 +106,9 @@ public:
 	// use Inter.Unlock.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockDlg = NAME_None;
-	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg
+	// don't use. use the condition for LockedDlg or better yet the auto-dialog.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedItemDlg = NAME_None;
 	// dialog to show when the object is locked, and we DON'T have the ULockItem
 	// use Inter.TriggerL.ObjName
