@@ -20,7 +20,7 @@ ALSwitchI00::ALSwitchI00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CPart(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/WaterTap"));
-	Particles = { nullptr, CPart.Object}; // TODO test
-	Emitter->SetRelativeLocation(FVector(-20,2.5,-45));
+	Particles = { nullptr, CPart.Object};
+	Emitter->SetRelativeLocation(FVector(20,-5,-38));
 }
 // the other switch is bound on outliner
