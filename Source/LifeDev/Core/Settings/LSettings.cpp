@@ -204,7 +204,7 @@ bool ULSettings::GetFeatS(const UObject* const O, const EFeat Feat) {
 
 FName ULSettings::GetObjectLabel(const UObject* const Object) {
 	const AInteract* const Inter = Cast<AInteract>(Object);
-	if (Inter) return Inter->GetLabel();
+	if (LIKELY(Inter)) return Inter->GetLabel();
 
 	return Inter->GetFName();
 }
