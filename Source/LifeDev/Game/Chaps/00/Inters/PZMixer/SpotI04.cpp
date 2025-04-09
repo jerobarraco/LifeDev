@@ -17,7 +17,7 @@ ASpotI04::ASpotI04() {
 	Mesh->SetRelativeScale3D(FVector(.2));
 	Mesh->SetRelativeLocation(FVector(-6.500000,6.000000,-2.500000));
 	Interact->SetRelativeScale3D(FVector(5));
-	Interact->SetRelativeLocation(FVector(32.500000,-30.000000,20));
+	Interact->SetRelativeLocation(FVector(32.500000,-30.000000,30));
 	Interact->SetBoxExtent(FVector(10));
 }
 
