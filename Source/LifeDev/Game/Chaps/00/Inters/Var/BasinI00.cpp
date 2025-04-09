@@ -8,7 +8,7 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 
 ABasinI00::ABasinI00():Super() {
-	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Done")) };
+	Texts = { NSLOCTEXT("BasinI00", "State0", "Close"), NSLOCTEXT("BasinI00", "State1", "Done") };
 	UseAnim = false;
 	IsLocked = false;
 	TriggerDlg = "Basin00_T";
@@ -18,8 +18,8 @@ ABasinI00::ABasinI00():Super() {
 	UseRewardDestroy = false; // one shot but won't disappear nor it will fade
 
 	UseHint = true;
-	HintCondition = "{Inter.TriggerL.DoorI05}";
-	
+	HintCondition = "{Inter.TriggerL.DoorI05}"; // hint once he tried to open the door
+
 	Water->SetAutoActivate(true);
 	SND_Water->SetAutoActivate(true);
 	IsOneShot = true;
