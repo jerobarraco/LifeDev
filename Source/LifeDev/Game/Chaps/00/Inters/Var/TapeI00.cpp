@@ -7,7 +7,7 @@
 ATapeI00::ATapeI00():Super() {
 	UseAutoActivate = true;
 	Texts = { NSLOCTEXT("TapeI00", "State0", "Pick up tape") };
-	TriggerDlg = "T00_T"; // will say what it is. triggered on pick up
+	// TriggerDlg = "T00_T"; // will say what it is. triggered on pick up
 	RewardItem = LDConsts::Items::Tape0;
 	UseFade = true;
 	UseRewardDestroy = true;
