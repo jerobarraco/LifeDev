@@ -147,6 +147,11 @@ void AGhostItem::FadeAndReturn() {
 }
 
 void AGhostItem::Return() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	// avoid issues with double returns
+	World->GetTimerManager().ClearAllTimersForObject(this);
+	
 	SetActive(false);
 	AnimFade->OnEnd.RemoveAll(this);
 
