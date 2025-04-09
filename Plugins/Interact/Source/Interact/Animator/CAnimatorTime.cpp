@@ -4,7 +4,7 @@
 
 UCAnimatorTime::UCAnimatorTime() {
 	UseTimeDilation = false;
-	SetComponentTickInterval(0); // to be more accurate. (default is 30fps)
+	SetComponentTickInterval(0); // using tick interval will mess with itself.
 
 	// this is the most usable for stop-action
 	Duration = .001;
