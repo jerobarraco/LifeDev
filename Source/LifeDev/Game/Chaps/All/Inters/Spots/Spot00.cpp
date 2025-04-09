@@ -7,8 +7,8 @@
 
 ASpot00::ASpot00():Super() {
 	Texts = {
-		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")),
-		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
+		NSLOCTEXT("Spot0", "DropHere", "Drop clothes here"),
+		NSLOCTEXT("Spot0", "Full", "All done"),
 	};
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));

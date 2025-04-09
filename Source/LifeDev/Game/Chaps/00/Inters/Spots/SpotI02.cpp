@@ -11,10 +11,10 @@ ASpotI02::ASpotI02():Super() {
 	LockedDlg = "IS0_L"; // when not full
 	LockedFullDlg = "IS0_LF"; // when full
 	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
-	
+	UseRewardDestroy = false;
 	Texts = {
-		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
-		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
+		NSLOCTEXT("SpotI02", "DropHere", "Drop clothes here"), 
+		NSLOCTEXT("SpotI02", "Full", "All done"),
 	};
 	Items = {
 		// a bra and a shirt a boxer and a sock

@@ -9,7 +9,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	IsLocked = true;
 	IsOneShot = true; // disable after use
 	UseAnim = false;
-	UseRewardDestroy = false;
+	UseRewardDestroy = false; // spots always reward stuff. but don't disappear.
 	UseFade = false;
 	UseOrder = false;
 	UseStateLoop = false; // lock on the last state, since it might trigger more time than the num of states.
@@ -18,7 +18,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 		NSLOCTEXT("LSpot", "State0", "Drop Here"),
 		NSLOCTEXT("LSpot", "State0", "Full"),
 	};
-	Super::SetMobility(EComponentMobility::Static);
+	Super::SetMobility(EComponentMobility::Static); // spots don't need to move, by default.
 }
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
