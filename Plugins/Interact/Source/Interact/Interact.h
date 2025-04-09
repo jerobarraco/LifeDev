@@ -212,11 +212,10 @@ public:
 #pragma endregion
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
-	// Does not affect destroy by UseRewardDestroy (for now at least).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersHint;
 
-	// interacts to trigger when this interact is triggered. will not fade or destroy.
+	// interacts to trigger when this interact is triggered.
 	// you can still trigger an interact that is not "Active".
 	// Note that this only calls trigger. If the other one is locked it will call TriggerLocked.
 	// And if the other one has different number of states they might get out of "sync" which is not bad but keep it in mind.
@@ -228,7 +227,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSubclassOf<AInteract>> RewardIntersTriggerClass;
 	
-	// interacts to activate when this interact is triggered. will not fade or destory.
+	// interacts to activate when this interact is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TObjectPtr<AInteract>> RewardIntersActive;
 

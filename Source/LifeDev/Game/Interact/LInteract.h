@@ -38,11 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-		const bool Rewardless = (!RewardStep && ZeroFlash &&
-			RewardActor == nullptr &&
-			RewardItem.IsNone() && RewardFlag.IsNone() &&
-			// also taking this into account for animation and logic purposes
-			RewardIntersActive.Num() == 0);
+		const bool Rewardless = (!RewardStep && ZeroFlash && RewardActor == nullptr &&
+			RewardItem.IsNone() && RewardFlag.IsNone() && RewardIntersActive.Num() == 0 &&
+			RewardIntersHint.Num() == 0 && RewardIntersTrigger.Num() ==0);
 		return Rewardless;
 	}
 
