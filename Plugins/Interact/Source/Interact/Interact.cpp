@@ -47,7 +47,7 @@ AInteract::AInteract():Super() {
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
 
-	Emitter = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Particles"));
+	Emitter = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Emitter"));
 	Emitter->SetupAttachment(Interact);
 	Emitter->SetAutoActivate(false);
 	Emitter->SetUseAutoManageAttachment(true);
