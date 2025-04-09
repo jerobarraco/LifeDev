@@ -12,9 +12,8 @@ ABedI00::ABedI00():Super() {
 	RewardFlash = .1;
 	UseRewardDestroy = false;
 	
-	LockedDlg = "BED00_L";
-	Texts = {
-		NSLOCTEXT("BedI00", "State0", "I really need to sleep...")};
+	// LockedDlg = "BED00_L";
+	Texts = { NSLOCTEXT("BedI00", "State0", "I really need to sleep...")};
 	Interact->SetRelativeLocation(FVector(102.5,-55,32.5));
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
 	

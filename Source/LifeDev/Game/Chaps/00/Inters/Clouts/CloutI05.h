@@ -5,7 +5,7 @@
 
 #include "CloutI05.generated.h"
 
-// Base class for CloutI05 actors
+// ch1 and reused on ch0
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ACloutI05: public AClout01 {
 	GENERATED_BODY()
