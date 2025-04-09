@@ -201,6 +201,7 @@ void AInteract::ShowHint_Implementation() {
 
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint); // sfx checked inside
+
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
@@ -363,6 +364,8 @@ void AInteract::SetInteractAutoBounds() {
 void AInteract::DoTrigger_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s"),
 		__func__, *Label.ToString());
+
+	if (LIKELY(UseTriggerDeHint)) UseHint = false; // clear hint flag.
 
 	// set the state before, so that the sound triggers are consistent
 	if (LIKELY(StateNum > 0)) { // mostly a fix.

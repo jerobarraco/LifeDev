@@ -110,16 +110,19 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	void ShowHint();
 
-	// whether to enable hints or not. (will enable ShowHint (both true and false!))
+	// whether to enable hints or not. Will be disabled on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHint = false;
-	
-	// experimental, will set UseHint to true when the condition is true & >0
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint")
-	FString HintCondition;
-	
+	// whether to disable hints on trigger.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseTriggerDeHint = true;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
 	float HintTime = 5;
+
+	// experimental. Condition that needs to be >=1 for hint to work.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint")
+	FString HintCondition;
 
 	// when >= 0 it will also animate the custom primitive data index=ID, from 0 to 1.
 	// requires the AnimMat to be created (ShouldBeCreated defaults to false on the config files)

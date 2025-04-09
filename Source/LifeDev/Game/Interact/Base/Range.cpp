@@ -77,7 +77,7 @@ void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherAct
 	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
 	if (!Inter) return;
 
-	UE_LOG(LogTemp, Log, TEXT("ARange::%hs got'em o=%s"), __func__, *GetNameSafe(OtherActor));
+	UE_LOG(LogTemp, Log, TEXT("ARange::%hs hit o=%s"), __func__, *Inter->Label.ToString());
 	Inter->ShowHint();
 }
 
