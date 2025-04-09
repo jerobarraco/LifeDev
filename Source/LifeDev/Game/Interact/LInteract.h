@@ -100,10 +100,11 @@ public:
 	// use Inter.Trigger.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName TriggerDlg = NAME_None;
+	// Deprecated: use auto dialog: "Inter.Unlock.ObjName", 
 	// Dialog to show when unlocking, or none to not say anything.
-	// After this the TriggerDlg will trigger too. But opposed to TriggerDlg this only shows when unlocking.
+	// TriggerDlg is preferred. After this the TriggerDlg will trigger too.
+	// But opposed to TriggerDlg this only shows when unlocking, can happen by other means.
 	// (e.g. useful for doors)
-	// use Inter.Unlock.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName ULockDlg = NAME_None;
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg
