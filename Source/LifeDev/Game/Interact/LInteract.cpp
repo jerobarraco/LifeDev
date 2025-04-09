@@ -222,9 +222,7 @@ void ALInteract::Unlock_Implementation() {
 	const FString& SLabel = Label.ToString();
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
 	// now unlocked
-	if (LIKELY(IsValid(Diags)))
-		Diags->AddId(ULockDlg) ||
-		Diags->AddId(Dlg);
+	if (LIKELY(IsValid(Diags))) Diags->AddId(Dlg);
 
 	// also flags since sometimes the diag might not exist
 	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
