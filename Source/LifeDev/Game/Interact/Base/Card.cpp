@@ -7,6 +7,13 @@
 #include "Interact/CInteract.h"
 
 ACard::ACard():Super() {
+	UseAnim = false;
+	UseFade = true;
+	UseRewardDestroy = true;
+	RewardFlash = -.1;
+	StateNum = 1;
+	Texts = { NSLOCTEXT("Card", "State0", "A card") };
+	
 	Interact->SetRelativeLocation(FVector(5.000000,-2.500000,0.000000));
 	Interact->SetBoxExtent(FVector(10.000000,5.000000,5.000000));
 	
@@ -18,11 +25,5 @@ ACard::ACard():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
 	SFX_Trigger = CSnd.Object;
-	
-	Texts = { FText::FromString(TEXT("A card")) };
-	StateNum = 1;
-	UseAnim = false;
-	RewardFlash = -.1;
-	UseRewardDestroy = true;
-	UseFade = true;
+	ACard::SetMobility(EComponentMobility::Static);
 }
