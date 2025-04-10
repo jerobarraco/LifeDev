@@ -14,6 +14,8 @@
 
 #include "LightItem.h"
 
+// TODO maybe make a base pooler class. to avoid so much copypasta.
+
 ALightPool::ALightPool():Super() {
 	ItemClass = ALightItem::StaticClass();
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
