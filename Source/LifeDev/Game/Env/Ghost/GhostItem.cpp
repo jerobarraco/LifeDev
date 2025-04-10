@@ -44,7 +44,7 @@ AGhostItem::AGhostItem():Super() {
 	AnimFade = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimFade"));
 	AnimFade->MatFEnd = .75; // don't want to reach 1
 	AnimFade->MatFStart = 0;
-	AnimFade->Duration = .6;
+	AnimFade->Duration = 1.25;
 	AnimFade->MatFName = "Opacity";
 
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
