@@ -422,11 +422,8 @@ void AInteract::PlaySFX(USoundBase* const Snd) const {
 }
 
 void AInteract::PlayParts(UNiagaraSystem* const Part) const {
-	// very important because it's triggered from multiple places. and some places need to have a nullptr for space (like SFXs).
-	if (UNLIKELY(!IsValid(Part))) return;
-
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
-		__func__, *Label.ToString(), *Part->GetName());
+		__func__, *Label.ToString(), *GetNameSafe(Part));
 
 	if (LIKELY(Emitter->GetAsset() != Part)) {
 		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
@@ -435,6 +432,8 @@ void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 		Emitter->SetAsset(Part);
 	} else
 		UE_LOG(LogInteract, Log, TEXT("%hs: Reactivating old one"), __func__);
+
+	if (UNLIKELY(!IsValid(Part))) return; // check here to allow to stop the current particles
 
 	// done like this to allow to re-activate emitters with limited lifetime. (non-loop)
 	Emitter->Activate();
