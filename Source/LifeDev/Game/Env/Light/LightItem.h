@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Interact/Animator/CAnimator.h"
 
 #include "LightItem.generated.h"
 
+class UPointLightComponent;
 class UCSignificance;
 class UCAnimatorMix;
 class UCQuickMesh;
@@ -94,7 +94,7 @@ protected:
 	TObjectPtr<USceneComponent> Root = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<ULightComponent> Light = nullptr;
+	TObjectPtr<UPointLightComponent> Light = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Mesh = nullptr;
