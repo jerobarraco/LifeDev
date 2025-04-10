@@ -28,7 +28,7 @@ ALightItem::ALightItem():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CLMat(TEXT("/Game/LifeDev/Game/Env/Light/LightItem_MI"));
 	Light->SetMaterial(0, CLMat.Object);
-
+	Light->SetAutoActivate(false);
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 	// TODO
@@ -40,12 +40,13 @@ ALightItem::ALightItem():Super() {
 	Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
 
 	// TODO 
-	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
+		TEXT("/Game/LifeDev/Game/Env/Light/LightItemE_M"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
 		//TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
 		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
-	// Mesh->SetMaterial(0, CMat.Object);
+	Mesh->SetMaterial(0, CMat.Object);
 	// Mesh->SetCustomDepth(true, 1);
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
@@ -82,7 +83,7 @@ void ALightItem::SetActive(const bool Act, const bool Reset) {
 	// TODO fade in on active
 	Sig->SetActive(Act, Reset);
 	
-	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase, Light};
+	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};//, Light};
 	for (UActorComponent* const C: Cmps) {
 		if (UNLIKELY(!C)) continue;
 		C->SetActive(Act, Reset);
