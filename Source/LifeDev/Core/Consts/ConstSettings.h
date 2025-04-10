@@ -137,7 +137,6 @@ enum class EFeat: uint8 {
 ENUM_RANGE_BY_COUNT(EFeat, EFeat::DBG_MAX);
 // 	for (EFeat F : TEnumRange<EFeat>()) { https://benui.ca/unreal/iterate-over-enum-tenumrange/
 
-
 namespace LDConsts {
 	// these are just for the sake of comparing easily instead of using a char* which might get converted each time in runtime. also for ease of refactoring and maybe compile time check.
 	namespace Feats {

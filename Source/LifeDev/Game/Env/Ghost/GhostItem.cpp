@@ -59,6 +59,7 @@ AGhostItem::AGhostItem():Super() {
 }
 
 void AGhostItem::SetActive(const bool Act, const bool Reset) {
+	// TODO fade in on active
 	Sig->SetActive(Act, Reset);
 
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
