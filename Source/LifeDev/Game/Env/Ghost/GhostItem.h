@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Interact/Animator/CAnimator.h"
 
 #include "GhostItem.generated.h"
 
