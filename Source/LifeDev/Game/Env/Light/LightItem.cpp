@@ -29,6 +29,7 @@ ALightItem::ALightItem():Super() {
 		CMesh(TEXT("/Engine/BasicShapes/Sphere"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetCastAllShadows(false);
+	Mesh->SetRelativeScale3D(FVector(.1));
 
 	// TODO 
 	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
@@ -50,6 +51,7 @@ ALightItem::ALightItem():Super() {
 	AnimBase->SetAutoActivate(false);
 	AnimBase->UseLog = false;
 
+	// TODO rename fade to set the color. should be a param on light function mat.
 	AnimFade = CreateDefaultSubobject<UCAnimatorMix>(TEXT("AnimFade"));
 	AnimFade->MatFEnd = .75; // don't want to reach 1
 	AnimFade->MatFStart = 0;
