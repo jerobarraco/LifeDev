@@ -3,7 +3,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Components/LightComponent.h"
+#include "Components/PointLightComponent.h"
 
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CAnimatorMix.h"
@@ -17,13 +17,18 @@ ALightItem::ALightItem():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
 
-	Light = CreateDefaultSubobject<ULightComponent>(TEXT("Light"));
+	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
+	Light->SetupAttachment(Root);
+	Light->SetIntensityUnits(ELightUnits::Lumens);
+	Light->SetIntensity(.5);
+
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 	// TODO
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Engine/BasicShapes/Sphere"));
 	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetCastAllShadows(false);
 
 	// TODO 
 	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(

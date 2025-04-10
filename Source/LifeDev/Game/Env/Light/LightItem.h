@@ -6,6 +6,7 @@
 
 #include "LightItem.generated.h"
 
+class UCAnimator;
 class UPointLightComponent;
 class UCSignificance;
 class UCAnimatorMix;
