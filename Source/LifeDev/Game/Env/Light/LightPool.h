@@ -4,20 +4,19 @@
 
 #include "CoreMinimal.h"
 
-#include "GhostPool.generated.h"
-
+#include "LightPool.generated.h"
 
 enum class EFeat : uint8;
 class UPooler;
 class UCRandomizer;
 
-// Ghost Pooler. Controlled by EFeat::E_Ghost
+// Light Pooler. Controlled by EFeat::E_Lights
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
-class AGhostPool : public AInfo {
+class ALightPool : public AInfo {
 	GENERATED_BODY()
 
 public:
-	AGhostPool();
+	ALightPool();
 
 	UFUNCTION(BlueprintCallable)
 	void SetActive(const bool Act) const;
