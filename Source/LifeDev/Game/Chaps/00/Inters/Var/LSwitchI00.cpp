@@ -25,6 +25,6 @@ ALSwitchI00::ALSwitchI00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/OLD_STUFF_Toilet_Tank_Pull_Chain_02"));
-	SFXs = {CSnd.Object};
+	SFXs = {nullptr, CSnd.Object};
 }
 // the other switch is bound on outliner

@@ -59,5 +59,5 @@ ARadio00::ARadio00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Radio00/switch_on_042"));
-	SFX_Stop = { CSnd.Object, nullptr};
+	SFX_Stop = { CSnd.Object, nullptr}; // not sure why it needs the audio on index 0, when it should be index 1
 }
