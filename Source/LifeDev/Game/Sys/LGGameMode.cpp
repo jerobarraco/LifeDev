@@ -38,6 +38,7 @@
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
+#include "LifeDev/Game/Env/Light/LightPool.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
@@ -227,7 +228,8 @@ void ALGGameMode::Init() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
-	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass()));
+	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
+	Lights = Cast<ALightPool>(World->SpawnActor(ALightPool::StaticClass()));
 
 	// init together.
 	if (LIKELY(IsValid(InventoryMan))) {
@@ -263,6 +265,7 @@ void ALGGameMode::Init() {
 	}
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
+	if (LIKELY(Lights)) Lights->Init();
 #pragma endregion
 
 	// start listening only here. in case the previous init might trigger a false one

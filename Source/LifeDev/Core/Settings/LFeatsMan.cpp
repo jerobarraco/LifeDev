@@ -16,6 +16,7 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "Story/Story.h"
+#include "Eval.h"
 
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"

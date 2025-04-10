@@ -3,12 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Eval.h"
+
 #include "GameFramework/GameModeBase.h"
+
 #include "LifeDev/Core/Settings/FLChapter.h"
 
 #include "LGGameMode.generated.h"
 
+class UEval;
+class ALightPool;
 class UFlashback;
 struct FDiag;
 class AGhostPool;
@@ -86,6 +89,8 @@ public:
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ALightPool> Lights = nullptr;
 #pragma endregion
 #pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)
