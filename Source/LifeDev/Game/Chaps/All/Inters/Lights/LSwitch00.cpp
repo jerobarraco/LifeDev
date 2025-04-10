@@ -21,5 +21,9 @@ ALSwitch00::ALSwitch00(): Super() {
 	Base->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.Add(Base); // unused but...
 
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Wall_Light_Double_Switch_Off-004"));
+	SFXs = {CSnd.Object, CSnd.Object};
+
 	SetStateNow(1); // start on. most lights start on.
 }

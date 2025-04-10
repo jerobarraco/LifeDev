@@ -142,7 +142,7 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 		SFX->SetSound(SFXs[State]);
 		SFX->SetAutoActivate(true);
 	}
-	
+
 	if (UseParts && Emitter && State >=0 && State < Particles.Num() && Particles[State]) {
 		Emitter->SetAsset(Particles[State]);
 		Emitter->SetAutoActivate(true);

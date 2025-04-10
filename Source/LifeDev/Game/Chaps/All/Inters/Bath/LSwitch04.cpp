@@ -8,9 +8,7 @@
 
 ALSwitch04::ALSwitch04():Super() {
 	StateNum = 1;
-	Texts = {
-		NSLOCTEXT("Toilet", "BtnPush", "Push")
-	};
+	Texts = { NSLOCTEXT("Toilet", "State0", "Push") };
 
 	// SFXs = {}; // TODO need new audio
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
