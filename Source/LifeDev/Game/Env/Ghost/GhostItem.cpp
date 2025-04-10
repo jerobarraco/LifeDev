@@ -165,6 +165,9 @@ void AGhostItem::Return() {
 }
 
 void AGhostItem::BaseUp(const float Progress, const float Alpha) {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	if (UNLIKELY(!IsValid(Target))) {
 		Target = UGameplayStatics::GetActorOfClass(this, TargetClass);
 		if (UNLIKELY(!IsValid(Target))) return;
@@ -172,8 +175,6 @@ void AGhostItem::BaseUp(const float Progress, const float Alpha) {
 
 	TgtPos = Target->GetActorLocation();
 	AimPos = TgtPos + OffPos + OffRot.RotateVector(OffDist);
-
-	const UWorld* const World = GetWorld();
 
 	// if (Debug) {
 		// DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);
