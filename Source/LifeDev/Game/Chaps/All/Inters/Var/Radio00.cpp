@@ -56,4 +56,8 @@ ARadio00::ARadio00():Super() {
 
 	AnimFade->Meshes.Empty(); // don't fade this. it will also happily garble the material.
 	AnimFade->SetAutoActivate(false);
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Radio00/switch_on_042"));
+	SFX_Stop = { CSnd.Object, CSnd.Object};
 }
