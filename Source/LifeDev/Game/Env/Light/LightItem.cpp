@@ -22,16 +22,16 @@ ALightItem::ALightItem():Super() {
 	Mesh->SetupAttachment(Root);
 	// TODO
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost-03"));
+		CMesh(TEXT("/Engine/BasicShapes/Sphere"));
 	Mesh->SetStaticMesh(CMesh.Object);
 
 	// TODO 
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
-		TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
+		// TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
 		//TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
 		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
-	Mesh->SetMaterial(0, CMat.Object);
+	// Mesh->SetMaterial(0, CMat.Object);
 	// Mesh->SetCustomDepth(true, 1);
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
@@ -178,6 +178,7 @@ void ALightItem::BaseUp(const float Progress, const float Alpha) {
 	AimPos = TgtPos + OffPos + OffRot.RotateVector(OffDist);
 
 	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 
 	// if (Debug) {
 		// DrawDebugSphere(World, TgtPos, 3, 12, FColor::Emerald, false, -1, 0, 2);
