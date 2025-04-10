@@ -10,6 +10,7 @@
 #include "JSig/CSignificance.h"
 #include "Pool.h"
 #include "CQuickMesh.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Game/Env/Ghost/CGhostAxis.h"
 
@@ -30,6 +31,7 @@ ALightItem::ALightItem():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetCastAllShadows(false);
 	Mesh->SetRelativeScale3D(FVector(.1));
+	Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
 
 	// TODO 
 	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
