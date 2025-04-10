@@ -24,7 +24,7 @@ ALSwitchI00::ALSwitchI00():Super() {
 	Emitter->SetRelativeLocation(FVector(20,-5,-38));
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/TOILET_Flush_01"));
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/OLD_STUFF_Toilet_Tank_Pull_Chain_02"));
 	SFXs = {CSnd.Object};
 }
 // the other switch is bound on outliner
