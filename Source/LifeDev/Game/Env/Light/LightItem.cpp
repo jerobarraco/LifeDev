@@ -22,6 +22,7 @@ ALightItem::ALightItem():Super() {
 	Light->SetupAttachment(Root);
 	Light->SetIntensityUnits(ELightUnits::Lumens);
 	Light->SetIntensity(.5);
+	Light->SetAttenuationRadius(500);
 
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
@@ -73,8 +74,8 @@ ALightItem::ALightItem():Super() {
 
 void ALightItem::SetActive(const bool Act, const bool Reset) {
 	Sig->SetActive(Act, Reset);
-
-	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
+	
+	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase, Light};
 	for (UActorComponent* const C: Cmps) {
 		if (UNLIKELY(!C)) continue;
 		C->SetActive(Act, Reset);
