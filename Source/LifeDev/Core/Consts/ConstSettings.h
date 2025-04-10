@@ -64,7 +64,6 @@ enum class EFeat: uint8 {
 
 #pragma region Environ
 	E_GHOSTPOOL,
-	E_LIGHTPOOL,
 	E_MAX UMETA(Hidden),
 #pragma endregion
 
@@ -75,9 +74,9 @@ enum class EFeat: uint8 {
 	G_CARD1,
 	// TODO Yin
 	G_CARD2,
-	// TODO Accept ?
+	// TODO Perseverance
 	G_CARD3,
-	// TODO
+	// TODO Acceptance
 	G_CARD4,
 	// use save games. if this disabled (not present) it will always create a new savefile and ignore the saved one.
 	// this should be always enabled on default flags, so it's always used on release builds.
