@@ -39,6 +39,8 @@ protected:
 	
 	UFUNCTION()
 	void BaseUp(const float Progress, const float Alpha);
+	UFUNCTION()
+	void FadeUp(const float Progress, const float Alpha);
 
 	UFUNCTION()
 	void PosUpX(const float Output, const float NewValue);
@@ -61,21 +63,21 @@ protected:
 
 	// fixed origin from the target. is the origin of the random offset
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffPos = {0, 0, 45};
+	FVector OffPos = {0, 0, 25};
 	// offset that gets randomized. is a distance from offPos
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffDist = {75, 75, 50};
+	FVector OffDist = {50, 50, 30};
 	// what was this? an ofs
 	UPROPERTY(BlueprintReadWrite, Config)
 	FRotator ActRotOff = {-30, 30, 13};
 	UPROPERTY(BlueprintReadWrite, Config)
-	float ActRotSpeed = 1;
+	float ActRotSpeed = .5;
 	// UPROPERTY(BlueprintReadWrite, Config)
 	// bool Debug = true;
 	UPROPERTY(BlueprintReadWrite, Config)
-	float LifeTimeMin=2000000;
+	float LifeTimeMin=30;
 	UPROPERTY(BlueprintReadWrite, Config)
-	float LifeTimeMax=4000000;
+	float LifeTimeMax=40;
 #pragma endregion
 
 #pragma region Transient

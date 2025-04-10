@@ -22,9 +22,9 @@ ALightItem::ALightItem():Super() {
 	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
 	Light->SetupAttachment(Root);
 	Light->SetIntensityUnits(ELightUnits::Lumens);
-	// Light->SetIntensity(.5);
-	Light->SetIntensity(0);
-	Light->SetAttenuationRadius(500);
+	Light->SetIntensity(.5);
+	// Light->SetIntensity(0);
+	Light->SetAttenuationRadius(200);
 	Light->SetAutoActivate(false);
 	Light->Deactivate();
 
@@ -39,15 +39,15 @@ ALightItem::ALightItem():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetCastAllShadows(false);
 	Mesh->SetRelativeScale3D(FVector(.1));
-	// Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
+	Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
-		TEXT("/Game/LifeDev/Game/Env/Light/LightItemE_MI"));
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
+		// TEXT("/Game/LifeDev/Game/Env/Light/LightItemE_MI"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
 		//TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
 		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
-	Mesh->SetMaterial(0, CMat.Object);
+	// Mesh->SetMaterial(0, CMat.Object);
 	// Mesh->SetCustomDepth(true, 1);
 
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
@@ -108,6 +108,7 @@ void ALightItem::BeginPlay() {
 	UMaterialInstanceDynamic* const Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(this, Light->GetMaterial(0));
 	Light->SetMaterial(0, Mat);
 	AnimFade->Mat = Mat;
+	AnimFade->OnUpdate.AddUniqueDynamic(this, &ALightItem::FadeUp);
 	AnimBase->OnUpdate.AddUniqueDynamic(this, &ALightItem::BaseUp);
 	Reset();
 }
@@ -211,15 +212,19 @@ void ALightItem::BaseUp(const float Progress, const float Alpha) {
 	AxisY->SetTarget(AimPos.Y);
 	AxisZ->SetTarget(AimPos.Z);
 
-	const FRotator ActRotNew =
-		ActRotOff +
-		UKismetMathLibrary::FindLookAtRotation(ActPosOld, ActPos);
-	ActRot = FMath::RInterpTo(ActRot, ActRotNew,
-		World->GetDeltaSeconds(), ActRotSpeed);
+	// const FRotator ActRotNew =
+		// ActRotOff +
+		// UKismetMathLibrary::FindLookAtRotation(ActPosOld, ActPos);
+	// ActRot = FMath::RInterpTo(ActRot, ActRotNew,
+		// World->GetDeltaSeconds(), ActRotSpeed);
 
 	// SetActorLocationAndRotation(ActPos, ActRot, false, nullptr, ETeleportType::ResetPhysics);
 	SetActorLocation(ActPos);
 	ActPosOld = ActPos;
+}
+
+void ALightItem::FadeUp(const float Progress, const float Alpha) {
+	Light->SetIntensity(.5*Alpha);
 }
 
 void ALightItem::PosUpX(const float Output, const float NewValue) {
