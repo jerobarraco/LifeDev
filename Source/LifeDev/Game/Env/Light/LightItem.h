@@ -73,9 +73,9 @@ protected:
 	// UPROPERTY(BlueprintReadWrite, Config)
 	// bool Debug = true;
 	UPROPERTY(BlueprintReadWrite, Config)
-	float LifeTimeMin=20;
+	float LifeTimeMin=2000000;
 	UPROPERTY(BlueprintReadWrite, Config)
-	float LifeTimeMax=40;
+	float LifeTimeMax=4000000;
 #pragma endregion
 
 #pragma region Transient

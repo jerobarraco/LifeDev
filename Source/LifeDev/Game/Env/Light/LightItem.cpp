@@ -22,13 +22,15 @@ ALightItem::ALightItem():Super() {
 	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
 	Light->SetupAttachment(Root);
 	Light->SetIntensityUnits(ELightUnits::Lumens);
-	Light->SetIntensity(.5);
+	// Light->SetIntensity(.5);
+	Light->SetIntensity(0);
 	Light->SetAttenuationRadius(500);
+	Light->SetAutoActivate(false);
+	Light->Deactivate();
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CLMat(TEXT("/Game/LifeDev/Game/Env/Light/LightItem_MI"));
 	Light->SetMaterial(0, CLMat.Object);
-	Light->SetAutoActivate(false);
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 	// TODO
@@ -37,17 +39,17 @@ ALightItem::ALightItem():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetCastAllShadows(false);
 	Mesh->SetRelativeScale3D(FVector(.1));
-	Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
+	// Mesh->SetHiddenInGame(!UJUtilsSys::IsEditor());
 
-	// TODO 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> CMat(
-		TEXT("/Game/LifeDev/Game/Env/Light/LightItemE_M"));
+		TEXT("/Game/LifeDev/Game/Env/Light/LightItemE_MI"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/GhostFB_DMI.GhostFB_DMI"));
 		//TEXT("/Game/LifeDev/Game/Flashback/FlashbackSide_MI.FlashbackSide_MI"));
 		// TEXT("/JUtils/Mats/Post/Hidden.Hidden"));
 		// TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_PDMI.Ghost_PDMI"));
 	Mesh->SetMaterial(0, CMat.Object);
 	// Mesh->SetCustomDepth(true, 1);
+
 	AxisX = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisX"));
 	AxisY = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisY"));
 	AxisZ = CreateDefaultSubobject<UCGhostAxis>(TEXT("AxisZ"));
