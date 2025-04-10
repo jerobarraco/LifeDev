@@ -61,14 +61,15 @@ protected:
 
 	// fixed origin from the target. is the origin of the random offset
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffPos = {0, 0, 30};
+	FVector OffPos = {0, 0, 50};
 	// offset that gets randomized. is a distance from offPos
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffDist = {200, 200, 75};
+	FVector OffDist = {100, 100, 50};
+	// what was this? an ofs
 	UPROPERTY(BlueprintReadWrite, Config)
-	FRotator ActRotOff = {-15, 0, 15};
+	FRotator ActRotOff = {-30, 30, 13};
 	UPROPERTY(BlueprintReadWrite, Config)
-	float ActRotSpeed = 2.5;
+	float ActRotSpeed = 1;
 	// UPROPERTY(BlueprintReadWrite, Config)
 	// bool Debug = true;
 	UPROPERTY(BlueprintReadWrite, Config)

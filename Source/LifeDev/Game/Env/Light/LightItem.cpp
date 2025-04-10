@@ -205,7 +205,8 @@ void ALightItem::BaseUp(const float Progress, const float Alpha) {
 	ActRot = FMath::RInterpTo(ActRot, ActRotNew,
 		World->GetDeltaSeconds(), ActRotSpeed);
 
-	SetActorLocationAndRotation(ActPos, ActRot, false, nullptr, ETeleportType::ResetPhysics);
+	// SetActorLocationAndRotation(ActPos, ActRot, false, nullptr, ETeleportType::ResetPhysics);
+	SetActorLocation(ActPos);
 	ActPosOld = ActPos;
 }
 
