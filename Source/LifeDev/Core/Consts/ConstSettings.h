@@ -64,6 +64,7 @@ enum class EFeat: uint8 {
 
 #pragma region Environ
 	E_GHOSTPOOL,
+	E_LIGHTPOOL,
 	E_MAX UMETA(Hidden),
 #pragma endregion
 

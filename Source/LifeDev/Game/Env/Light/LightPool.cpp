@@ -16,7 +16,7 @@
 
 // TODO maybe make a base pooler class. to avoid so much copypasta.
 
-ALightPool::ALightPool():Super() {
+ALightPool::ALightPool() {
 	ItemClass = ALightItem::StaticClass();
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	bCollideWhenPlacing = false;
@@ -68,7 +68,8 @@ void ALightPool::Init() {
 	ULSettings* const S = ULSettings::Instance(this);
 	if (LIKELY(S))
 		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &ALightPool::FeatUpdate);
-	// FeatUpdate(EFeat::E_LightPOOL, S && S->GetFeat(EFeat::E_LightPOOL)); // TODO
+	MyFeat = EFeat::E_LIGHTPOOL;
+	FeatUpdate(MyFeat, S && S->GetFeat(MyFeat));
 }
 
 void ALightPool::BeginPlay() {
@@ -104,8 +105,8 @@ void ALightPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALightPool::FeatUpdate(const EFeat Feat, const bool bEnabled) {
-	// if (Feat != EFeat::E_LightPOOL) return; // TODO
-	// SetActive(bEnabled);
+	if (Feat != MyFeat) return;
+	SetActive(bEnabled);
 }
 
 void ALightPool::FBTo(const float To) {

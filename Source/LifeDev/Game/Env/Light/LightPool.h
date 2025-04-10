@@ -64,4 +64,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UPooler> Pooler = nullptr;
+
+	EFeat MyFeat;
 };
