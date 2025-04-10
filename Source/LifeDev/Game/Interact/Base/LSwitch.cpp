@@ -10,6 +10,7 @@ ALSwitch::ALSwitch():Super() {
 	UseRewardDestroy = false;
 	UseStateLoop = true;
 	UseAttachedSFX = true;
+	UseAutoActivate = true;
 	StateNum = 2;
 
 	// interacts start "off/closed"
