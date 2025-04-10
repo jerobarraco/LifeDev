@@ -11,6 +11,7 @@
 #include "Pool.h"
 #include "CQuickMesh.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 #include "LifeDev/Game/Env/Ghost/CGhostAxis.h"
 
@@ -23,6 +24,10 @@ ALightItem::ALightItem():Super() {
 	Light->SetIntensityUnits(ELightUnits::Lumens);
 	Light->SetIntensity(.5);
 	Light->SetAttenuationRadius(500);
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CLMat(TEXT("/Game/LifeDev/Game/Env/Light/LightItem_MI"));
+	Light->SetMaterial(0, CLMat.Object);
 
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
@@ -59,6 +64,7 @@ ALightItem::ALightItem():Super() {
 	AnimFade->MatFEnd = .75; // don't want to reach 1
 	AnimFade->MatFStart = 0;
 	AnimFade->Duration = .6;
+	AnimFade->MatFName = "Opacity";
 
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	Sig->SetAutoActivate(false);
@@ -96,7 +102,9 @@ void ALightItem::BeginPlay() {
 	// Create instance, sets it to the mesh, AND store in the anim.
 	AnimFade->Mat = Mesh->CreateDynamicMaterialInstance(
 		0, Mesh->GetMaterial(0));
-
+	UMaterialInstanceDynamic* const Mat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(this, Light->GetMaterial(0));
+	Light->SetMaterial(0, Mat);
+	AnimFade->Mat = Mat;
 	AnimBase->OnUpdate.AddUniqueDynamic(this, &ALightItem::BaseUp);
 	Reset();
 }
