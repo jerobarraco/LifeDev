@@ -61,10 +61,10 @@ protected:
 
 	// fixed origin from the target. is the origin of the random offset
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffPos = {0, 0, 50};
+	FVector OffPos = {0, 0, 45};
 	// offset that gets randomized. is a distance from offPos
 	UPROPERTY(BlueprintReadWrite, Config)
-	FVector OffDist = {100, 100, 50};
+	FVector OffDist = {75, 75, 50};
 	// what was this? an ofs
 	UPROPERTY(BlueprintReadWrite, Config)
 	FRotator ActRotOff = {-30, 30, 13};
@@ -75,7 +75,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Config)
 	float LifeTimeMin=20;
 	UPROPERTY(BlueprintReadWrite, Config)
-	float LifeTimeMax=30;
+	float LifeTimeMax=40;
 #pragma endregion
 
 #pragma region Transient

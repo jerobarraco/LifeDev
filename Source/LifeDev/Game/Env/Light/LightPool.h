@@ -44,20 +44,20 @@ protected:
 	// avoid include on header.
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	float FBMin=.4;
+	float FBMin=.3;
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float TrimTime=60;
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	float PoolSizeMin=10;
+	float PoolSizeMin=5;
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	float PoolSizeMax=20;
+	float PoolSizeMax=10;
 
 	// foxified from sizeMax and min
 	UPROPERTY(BlueprintReadOnly, Transient)
-	float PoolSize=15;
+	float PoolSize=10;
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UCRandomizer> Rnd = nullptr;
