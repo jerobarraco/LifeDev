@@ -6,6 +6,7 @@
 
 #include "GhostItem.generated.h"
 
+class UCAnimator;
 class UCSignificance;
 class UCAnimatorMix;
 class UCQuickMesh;
