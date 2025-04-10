@@ -229,7 +229,6 @@ void ALGGameMode::Init() {
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
-	Lights = Cast<ALightPool>(World->SpawnActor(ALightPool::StaticClass()));
 
 	// init together.
 	if (LIKELY(IsValid(InventoryMan))) {
@@ -265,7 +264,6 @@ void ALGGameMode::Init() {
 	}
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
-	if (LIKELY(Lights)) Lights->Init();
 #pragma endregion
 
 	// start listening only here. in case the previous init might trigger a false one

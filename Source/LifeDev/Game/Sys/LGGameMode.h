@@ -89,8 +89,6 @@ public:
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ALightPool> Lights = nullptr;
 #pragma endregion
 #pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)
