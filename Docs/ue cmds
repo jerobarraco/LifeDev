@@ -101,3 +101,6 @@ net.AllowPIESeamlessTravel=1
 
     ; Increase the number of Nanite nodes to prevent some visual issues.
     r.Nanite.MaxNodes=2621440
+
+#vsm https://dev.epicgames.com/community/learning/knowledge-base/9Jx9/unreal-engine-optimizing-ue5-advanced-rendering-graphics-performance-and-memory-management-resources
+r.shadow.virtual.showstats 1
