@@ -425,7 +425,7 @@ void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Obj=%s Part=%s"),
 		__func__, *Label.ToString(), *GetNameSafe(Part));
 
-	if (LIKELY(Emitter->GetAsset() != Part)) {
+	if (LIKELY(Emitter->GetAsset() != Part)) { // opt
 		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
 		Emitter->Deactivate();
 		Emitter->ResetSystem();
