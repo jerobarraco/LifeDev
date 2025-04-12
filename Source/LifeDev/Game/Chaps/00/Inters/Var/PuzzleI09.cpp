@@ -19,7 +19,6 @@ APuzzleI09::APuzzleI09():Super() {
 
 void APuzzleI09::BeginPlay() {
 	Super::BeginPlay();
-	UStory* const Story = UStory::Instance(this);
 	if (UNLIKELY(!Story)) return;
 	Story->OnStart.AddUniqueDynamic(this, &APuzzleI09::StartStep);
 	
@@ -33,7 +32,6 @@ void APuzzleI09::BeginPlay() {
 void APuzzleI09::StartStep(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	// only important if i want to trigger on different chapters.
-	const UFlags* const Flags = UFlags::Instance(this);
 	if (Step->Name == "C0S0") {
 		SetActives(true);
 		CPuzzle->Solution = {9,1,1};

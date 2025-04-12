@@ -2,7 +2,6 @@
 
 #pragma once
 #include "LifeDev/Game/Interact/Base/LPuzzle.h"
-#include "Story/Step.h"
 
 #include "PuzzleI07.generated.h"
 
@@ -13,7 +12,4 @@ class LIFEDEV_API APuzzleI07: public ALPuzzle {
 
 public:
 	APuzzleI07();
-
-protected:
-	virtual void BeginPlay() override;
 };
