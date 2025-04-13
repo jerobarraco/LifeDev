@@ -21,7 +21,7 @@ APotI00::APotI00():Super() {
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
 	UseFade = false;
-	UseAutoActivate = true;
+	UseAutoActivate = false; // activated by the step
 
 	// locked so that player can't trigger manually,
 	// but they can still use the items on it.
