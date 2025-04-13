@@ -5,7 +5,7 @@ namespace LDConsts {
 	namespace Flags {
 		namespace Stats {
 			namespace Lights {
-				inline static const FName On("Stats.Lights.On");
+				inline static const FName Off("Stats.Lights.Off");
 			}
 			namespace Puzzles {
 				inline static const FName Cube("Stats.Puzzles.Cube");
