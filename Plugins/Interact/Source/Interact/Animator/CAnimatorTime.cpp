@@ -16,6 +16,7 @@ UCAnimatorTime::UCAnimatorTime() {
 void UCAnimatorTime::Activate(const bool bReset) {
 	Super::Activate(bReset);
 
+	// TODO i could have done something like this for the CAnimatorTrans and CAnimatorMix (and the others maybe) 
 	if (LIKELY(UseFromCurrent && (bReset || !IsActive()))) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
