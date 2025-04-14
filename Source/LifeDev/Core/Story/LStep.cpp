@@ -104,6 +104,7 @@ void ALStep::Start_Implementation() {
 		// ensure to check if we already have the item. but not now to not affect the flow of child classes
 		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
 	}
+
 	// check flags. do on Start to avoid possibly finishing the step while it's starting.
 	if (!FlagsFinish.IsEmpty()) {
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
@@ -132,7 +133,7 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	if (UseFBDlgAnim && LIKELY(Anim && AnimTarget)) {
+	if (UseFBAnim && LIKELY(Anim && AnimTarget)) {
 		// the animator trans uses relative transforms always :/
 		Anim->TStart = Cam->GetRelativeTransform();
 		Anim->TEnd = AnimTarget->GetRelativeTransform();
@@ -147,8 +148,8 @@ void ALStep::Start_Implementation() {
 	DoIntersHint(); // hint after activate.
 	DoIntersTrigger(); // trigger after activate.
 	
-	if (FB)
-		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
+	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
+
 	// show dialogs
 	StartDialogs();
 }
@@ -194,7 +195,7 @@ void ALStep::FinishAfterDlgs() {
 		return;
 	}
 
-	// important that we use Unique here
+	// important that we use Unique here, since it can be added via the flags or items.
 	Diags->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 }
 
@@ -240,7 +241,7 @@ void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, con
 }
 
 void ALStep::FBUpd_Implementation(const float Value) {
-	if (!UseFBDlgAnim) return;
+	if (!UseFBAnim) return;
 	// notice this depends on the tick interval for the FB. it will give the most accurate animation though.
 	// i will go with something simple for now.
 	Anim->Update(Value); // set the value to match the fb. let the anim do the calculations.

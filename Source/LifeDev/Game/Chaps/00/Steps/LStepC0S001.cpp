@@ -11,7 +11,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	DlgId = FName("Intro");
 	UseFBDlgAuto = true;
 	FBDlgAutoTo = 1.05;
-	UseFBDlgAnim = true; // the cam target and pos are set on the outliner
+	UseFBAnim = true; // the cam target and pos are set on the outliner
 	CamBlendTime = 0; // doesn't get along with fade
 	InputEnabled = false;
 	UseFadeTime = true;

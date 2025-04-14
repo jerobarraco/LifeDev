@@ -70,9 +70,10 @@ public:
 	// calculated on Start
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
 	float FBDlgAutoTo = 1.0;	// whether to manage the RandFB. Enable at start, disable at stop.
-	// will animate the camera using the AnimTarget as the target transform.
+	// will animate the camera using the AnimTarget as the target transform. it's bound to the flashback.
+	// will work with dialogs if UseFBDlgAuto or FBDlgMod is used too.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
-	bool UseFBDlgAnim = false;
+	bool UseFBAnim = false;
 #pragma endregion
 
 	// whether to dis/enable the character input
