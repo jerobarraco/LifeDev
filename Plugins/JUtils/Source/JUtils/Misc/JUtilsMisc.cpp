@@ -182,9 +182,9 @@ bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
 	return true;
 }
 
-UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& FName, UScriptStruct* const RowType,
-	UObject* const Outer) {
-	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".json"));
+UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
+	TArray<FString>& OProblems, UObject* const Outer) {
+	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".json"));
 	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 
@@ -196,8 +196,8 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
 	Table->RowStruct = RowType; // important
-	const TArray<FString>& Problems = Table->CreateTableFromJSONString(S);
-	for (const FString& P: Problems) {
+	OProblems = Table->CreateTableFromJSONString(S);
+	for (const FString& P: OProblems) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
 
@@ -205,61 +205,33 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 	return Table;
 }
 
-template <typename SType>
-UDataTable* UJUtilsMisc::LoadJSONTable2(const FString& BasePath, const FString& FName, UObject* const Outer) {
-	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, FName+".json"));
+UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
+	TArray<FString>& OProblems, UObject* const Outer) {
+	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
 	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
-	if (UNLIKELY(!FPaths::FileExists(Path))) {
-		UE_LOG(LogTemp, Log, TEXT("%hs path doesn't exist '%s'"), __func__, *Path);
-		return nullptr;
-	}
+	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
+
 	FString S;
 	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
 		UE_LOG(LogTemp, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
 		return nullptr;
 	}
-	UE_LOG(LogTemp, Log, TEXT("%hs Json '%s'."), __func__, *S);
+
 	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
-	// does this work?
-	Table->RowStruct = SType::StaticClass();
-	/*
-		TSharedPtr<FJsonObject> JsonObject;
-		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(S);
+	Table->RowStruct = RowType; // important
+	Table->CreateTableFromCSVString(S);
 	
-		if (!FJsonSerializer::Deserialize(Reader, JsonObject)) return nullptr;
-		TArray<TSharedPtr<FJsonValue>> Texts = JsonObject->GetArrayField(TEXT("Texts"));
-		for (const TSharedPtr<FJsonValue>& V: Texts) {
-			const TSharedPtr<FJsonObject>* JO = nullptr;
-			
-			if (V->TryGetObject(JO) || !JO) continue;
-		
-			SType* Struct = NewObject<SType>(Outer, SType::StaticClass());
-			FJsonObjectConverter::JsonObjectToUStruct(JO, Struct);
-			const FString Name = JO->Get()->GetStringField(TEXT("Name"));
-			Table->AddRow(Name, Struct);
-		}
-	*/
-	// not working. complains of undefined symbol
-	// DT_Chaps = UJUtilsMisc::LoadJSONTable<FLChapter>(FPaths::ProjectConfigDir(), "test", this); // cant find the symbol
+	OProblems = Table->CreateTableFromJSONString(S);
+	for (const FString& P: OProblems) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
+	}
 
+	// TODO test
 	return Table;
+
+	// only for editor
+	// UDataTableFunctionLibrary::FillDataTableFromCSVFile(Table, Path, Struct);
 }
-
-UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name,
-	UScriptStruct* const Struct, UObject* const Outer) {
-#if WITH_EDITOR // :'( broken dreams
-	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
-	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
-	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
-
-	UDataTable* const Table = NewObject<UDataTable>(Outer, UDataTable::StaticClass());
-	UDataTableFunctionLibrary::FillDataTableFromCSVFile(Table, Path, Struct);
-	return Table;
-#else
-return nullptr;
-#endif
-}
-
 
 void UJUtilsMisc::SetUIScale(const float UIScale) {
 	// inspired on https://benui.ca/unreal/ui-scale/

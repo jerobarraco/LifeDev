@@ -95,18 +95,13 @@ public:
 	template <typename T>
 	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows);
 
-	// Only works on editor :'(
-	UFUNCTION(BlueprintCallable, meta=(WorldContext=Outer))
+	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
-		UScriptStruct* const Struct, UObject* const Outer = nullptr);
+		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
 
-	
-	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& FName,
-		UScriptStruct* const  RowType, UObject* const Outer = nullptr);
-
-	template <typename SType>
-	static UDataTable* LoadJSONTable2(const FString& BasePath, const FString& FName,
-		UObject* const Outer = nullptr);
+	UFUNCTION(BlueprintCallable)
+	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& Name,
+		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
 
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition

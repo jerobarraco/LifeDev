@@ -189,9 +189,10 @@ void ALGGameMode::Init() {
 	UDataTable* InvData = SysSettings->Items.LoadSynchronous();
 	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
 		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
+		TArray<FString> Problems;
 		UDataTable* const InvExt = UJUtilsMisc::LoadJSONTable(
-			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), this);
-		if (InvExt) InvData = InvExt;
+			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), Problems, this);
+		if (LIKELY(InvExt)) InvData = InvExt;
 	}
 
 	Inventory->Init(InvData);
@@ -458,15 +459,16 @@ bool ALGGameMode::ChapLoad() {
 
 	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
 		static const FString& Base = FPaths::Combine( FPaths::ProjectConfigDir(), "L10N");
+		TArray<FString> Problems;
 		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(Base,
-			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), this);
+			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), Problems, this);
 		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(Base,
-			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), this);
+			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), Problems, this);
 		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
-			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), this);
-		if (CharsExt) Chars = CharsExt;
-		if (DiagExt) DiagData = DiagExt;
-		if (GroupsExt) Groups = GroupsExt;
+			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), Problems, this);
+		if (LIKELY(CharsExt)) Chars = CharsExt;
+		if (LIKELY(DiagExt)) DiagData = DiagExt;
+		if (LIKELY(GroupsExt)) Groups = GroupsExt;
 	}
 	
 	Diags->SetData(DiagData, Chars, Groups);
