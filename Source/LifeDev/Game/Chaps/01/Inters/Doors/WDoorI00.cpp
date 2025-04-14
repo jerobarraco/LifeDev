@@ -6,6 +6,6 @@ AWDoorI00::AWDoorI00():Super() {
 	IsLocked = true;
 	ULockItem = "KW0";
 	// ULockDlg = "W0_ULCK";
-	LockedItemDlg = "W0_LCKIT"; // todo have to set this up on the data table. with a group with "Pick"
+	// LockedItemDlg = "W0_LCKIT"; // driven by datatable
 	// LockedDlg = "W0_LCK"; // already set on the table
 }
