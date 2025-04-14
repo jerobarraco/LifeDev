@@ -201,7 +201,8 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& F
 		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
 
-	return Problems.Num() <= 0 ? Table : nullptr;
+	// return Problems.Num() <= 0 ? Table : nullptr;
+	return Table;
 }
 
 template <typename SType>
