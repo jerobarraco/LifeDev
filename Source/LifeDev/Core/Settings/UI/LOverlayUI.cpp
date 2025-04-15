@@ -2,10 +2,14 @@
 
 #include "LOverlayUI.h"
 
+#include "GroupBox.h"
 #include "Components/Image.h"
 #include "Kismet/KismetMaterialLibrary.h"
 
+#include "Inventory/Flags.h"
+#include "Story/Story.h"
 #include "Interact/Animator/Anim.h"
+
 #include "LifeDev/Core/Settings/LSettings.h"
 
 ULOverlayUI::ULOverlayUI() :Super(){
@@ -16,6 +20,19 @@ ULOverlayUI::ULOverlayUI() :Super(){
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/RampUpDown.RampUpDown"));
 	SaveCurve = CCurve.Object;
+}
+
+void ULOverlayUI::ShowStatus(const bool Enabled) const {
+	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	UFlags* const Flags = UFlags::Instance(this);
+	UStory* const Story = UStory::Instance(this);
+	if (Enabled) {
+		// if (LIKELY(Flags)) Flags->OnMod.AddUniqueDynamic(this, )
+		// if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, )
+	} else {
+		if (LIKELY(Flags)) Flags->OnMod.RemoveAll(this);
+		if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
+	}
 }
 
 void ULOverlayUI::NativeOnInitialized() {

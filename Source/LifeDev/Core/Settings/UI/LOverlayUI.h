@@ -6,6 +6,7 @@
 #include "LOverlayUI.generated.h"
 
 
+class UGroupBox;
 class UTextBlock;
 class UImage;
 
@@ -16,6 +17,8 @@ class LIFEDEV_API ULOverlayUI: public UBaseUI {
 public:
 	ULOverlayUI();
 
+	void ShowStatus(const bool Enabled) const;
+
 protected:
 	virtual void NativeOnInitialized() override;
 
@@ -23,17 +26,19 @@ protected:
 	void SaveTimer();
 	UFUNCTION()
 	void SaveUpd(const bool NewIsSaving);
-	
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UMaterialInstance> SaveMat = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCurveFloat> SaveCurve = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UImage> ISaving;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> TTime;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> TState;
+	TObjectPtr<UImage> ISaving = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TTime = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TState = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGroupBox> GStatus = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> SaveMatDyn = nullptr;
