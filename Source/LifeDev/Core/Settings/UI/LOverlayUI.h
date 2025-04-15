@@ -6,6 +6,7 @@
 #include "LOverlayUI.generated.h"
 
 
+class UTextBlock;
 class UImage;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -29,6 +30,10 @@ protected:
 	TObjectPtr<UCurveFloat> SaveCurve = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> ISaving;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UTextBlock> TTime;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UTextBlock> TState;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> SaveMatDyn = nullptr;
