@@ -128,6 +128,8 @@ enum class EFeat: uint8 {
 	DBG_SIG,
 	// Test DataLayer
 	DBG_TESTDL,
+	// Overlay Status bar
+	DBG_STATUS,
 	// General debug, deprecated. don't use unless you are me.
 	DBG_BASE UMETA(Deprecated),
 	DBG_MAX UMETA(Hidden),
