@@ -63,6 +63,7 @@ void ULSetGameUI::Apply_Implementation() {
 	}
 
 	if (LIKELY(FeatsDbg)) FeatsDbg->Apply();
+	if (LIKELY(FeatsGroup)) FeatsGroup->Apply();
 
 	if (LIKELY(Langs) && Langs->IsVisible()) { // is visible because it's feature flagged
 		const FString& New = Langs->GetSelectedOption();
@@ -102,6 +103,7 @@ void ULSetGameUI::Load_Implementation() {
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
 
+	if (LIKELY(FeatsGroup)) FeatsGroup->Load();
 	if (LIKELY(FeatsDbg)) FeatsDbg->Load();
 }
 
@@ -153,6 +155,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	FeatsTexts = {
 		{EFeat::G_SHOW_POINT, NSLOCTEXT("SetGame", "Feat", "Pointer")} // this is wip since it gets rewritten in bp
 	};
+	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp(FeatsTexts);
 
 	if (LIKELY(FeatsDbg)) {
 		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
