@@ -7,6 +7,7 @@
 
 #include "LSetGameUI.generated.h"
 
+enum class EFeat : uint8;
 class UComboBoxString;
 class ULFeatsGroup;
 class UTextBlock;
@@ -36,9 +37,14 @@ protected:
 	void InterHintUpd(const float Value);
 	UFUNCTION()
 	void BlurSizeUpd(const float Value);
-	
+
+	UPROPERTY(BlueprintReadWrite)
+	TMap<EFeat, FText> FeatsTexts;
+
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsDbg;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULFeatsGroup> FeatsGroup;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLDiagAutoTime;

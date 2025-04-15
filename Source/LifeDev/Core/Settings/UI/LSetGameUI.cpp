@@ -150,12 +150,16 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
 	}
 
+	FeatsTexts = {
+		{EFeat::G_SHOW_POINT, NSLOCTEXT("SetGame", "Feat", "Pointer")} // this is wip since it gets rewritten in bp
+	};
+
 	if (LIKELY(FeatsDbg)) {
 		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
 		FeatsDbg->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 		FeatsDbg->SetUp({
 			{EFeat::G_SHOW_DIAG, FText::FromString("G_SHOW_DIAG")},
-			{EFeat::G_SHOW_POINT, FText::FromString("G_SHOW_POINT")},
+			// {EFeat::G_SHOW_POINT, FText::FromString("G_SHOW_POINT")}, // already in featstexts
 			{EFeat::G_SHOW_INV, FText::FromString("G_SHOW_INV")},
 			{EFeat::G_FLY_CAM, FText::FromString("G_FLY_CAM")},
 			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},

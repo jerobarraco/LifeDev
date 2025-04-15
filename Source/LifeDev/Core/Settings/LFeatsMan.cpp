@@ -97,9 +97,10 @@ void ALFeatsMan::BeginPlay() {
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Settings)) {
-		Settings->OnFeatUpdateVisual.RemoveAll(this);
 		Settings->OnFeatUpdate.RemoveAll(this);
+		Settings->OnFeatUpdateVisual.RemoveAll(this);
 		Settings->OnFeatUpdateUnreal.RemoveAll(this);
+		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
 	if (LIKELY(Eval)) {
@@ -124,6 +125,7 @@ void ALFeatsMan::Init() {
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
+		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALFeatsMan::FeatUpDbg);
 	}
 
 	if (LIKELY(Eval)) {
