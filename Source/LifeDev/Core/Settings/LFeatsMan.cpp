@@ -108,6 +108,8 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Eval->OnSetVarId.Clear();
 	}
 
+	if (LIKELY(OverlayUI)) OverlayUI->Hide();
+	OverlayUI = nullptr;
 	GM = nullptr;
 	MPCI = nullptr;
 	MPC = nullptr;
