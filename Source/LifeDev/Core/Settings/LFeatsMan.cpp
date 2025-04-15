@@ -129,7 +129,10 @@ void ALFeatsMan::Init() {
 		Eval->OnSetVar.BindDynamic(this, &ALFeatsMan::SetVar);
 		Eval->OnSetVarId.BindDynamic(this, &ALFeatsMan::SetVarId);
 	}
+
 	LoadFeats();
+
+	if (LIKELY(OverlayUI)) OverlayUI->Show();
 }
 
 void ALFeatsMan::LoadFeats() {
