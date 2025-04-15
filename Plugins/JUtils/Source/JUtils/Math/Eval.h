@@ -24,7 +24,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 // Operators: +,-,/,*,%
 // sqrt, abs, sat (clamps between 0 and 1)
 // a?b: random between a and b
-// !a: not a 
+// !a: not a
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1)
 //		a>b & c | d : ternary if: a>b?c:d (you can have any expression instead of A>B, <=0 is false, >0 is true) 
 // a<b a>b a=b: < > = (returns 1: true, 0: false)
