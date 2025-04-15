@@ -231,7 +231,6 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 		UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
 	} else if (Feat == EFeat::DBG_STATUS) {
 		if (LIKELY(OverlayUI)) OverlayUI->ShowStatus(Enabled);
-		// todo call the ui to show/hide the status
 	}
 }
 

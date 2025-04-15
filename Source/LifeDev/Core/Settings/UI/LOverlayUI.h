@@ -6,7 +6,8 @@
 #include "LOverlayUI.generated.h"
 
 
-class UGroupBox;
+class UGridPanel;
+class AStep;
 class UTextBlock;
 class UImage;
 
@@ -26,6 +27,10 @@ protected:
 	void SaveTimer();
 	UFUNCTION()
 	void SaveUpd(const bool NewIsSaving);
+	UFUNCTION()
+	void FlagMod(const FName& Name, const float Diff, const float Total);
+	UFUNCTION()
+	void StepStart(AStep* const Step);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UMaterialInstance> SaveMat = nullptr;
@@ -38,7 +43,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TState = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UGroupBox> GStatus = nullptr;
+	TObjectPtr<UGridPanel> GStatus = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialInstanceDynamic> SaveMatDyn = nullptr;
