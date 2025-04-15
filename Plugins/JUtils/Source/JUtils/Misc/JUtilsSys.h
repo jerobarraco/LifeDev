@@ -50,12 +50,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static FString GetProjectVersion();
 
+	// returns the user's name, as presented by the platform.
 	UFUNCTION(BlueprintCallable)
-	static FString GetUsername();
-	
+	static FString GetUserName();
+	// sets the locale culture
 	UFUNCTION(BlueprintCallable)
 	static void SetCulture(const FString& Culture);
-	// current culture
+	// current locale culture
 	UFUNCTION(BlueprintCallable)
 	static const FString& GetCulture();
 	// this one list all POSSIBLE not all supported :(

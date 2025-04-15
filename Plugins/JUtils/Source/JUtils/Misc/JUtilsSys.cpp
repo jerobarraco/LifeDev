@@ -102,7 +102,7 @@ FString UJUtilsSys::GetProjectVersion() {
 	return MoveTemp(Version);
 }
 
-FString UJUtilsSys::GetUsername() {
+FString UJUtilsSys::GetUserName() {
 	return FPlatformProcess::UserName(false);
 }
 
