@@ -153,7 +153,6 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	FeatsTexts = {
-		// ghosts, diag auto, diag text, save, concurrent tick, batche tick, card0,
 		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
 		{EFeat::D_TEXT, NSLOCTEXT("SetGame", "Feat", "Diag. Text")},
