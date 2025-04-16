@@ -18,11 +18,9 @@
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
-// TODO make this UseAutoActivate = False once all the light switches are in place
-
 ALLight::ALLight():Super() {
 	// by default is just a static light. disable interaction. (specially since now i have light switches)
-	// UseAutoActivate = true;// redundant
+	UseAutoActivate = false;
 	UseAnim = true;
 	FlickrOnFB = .7;
 	StateNum = 2;
@@ -66,7 +64,7 @@ ALLight::ALLight():Super() {
 	// disabled. since a light-source that is behind me might change the light in front of me.
 	// only change due to distance
 	Sig->OffscreenTimeMax = -1;
-	// don't off when offscreen. the light might still be onscreen 
+	// don't off when offscreen. the light might still be onscreen
 	Sig->IsOffIfOffscreen = false;
 	Sig->TestOcclusion = false; // source could be occluded but not the whole light
 	Sig->IsOffIfOccluded = false;
