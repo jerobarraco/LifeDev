@@ -6,11 +6,11 @@
 
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "JSig/CSignificance.h"
+#include "Pool.h"
 
 #include "CGhostAxis.h"
 #include "CQuickMesh.h"
-#include "Pool.h"
+#include "LifeDev/Game/Interact/CLSignificance.h"
 
 AGhostItem::AGhostItem():Super() {
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -47,20 +47,17 @@ AGhostItem::AGhostItem():Super() {
 	AnimFade->Duration = 1.25;
 	AnimFade->MatFName = "Opacity";
 
-	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	Sig = CreateDefaultSubobject<UCLSignificance>(TEXT("Sig"));
 	Sig->SetAutoActivate(false);
 	Sig->CompsTicks = {
 		AnimBase, AxisX, AxisY, AxisZ,
 		AxisX->Anim, AxisY->Anim, AxisZ->Anim,
 	};
 	Sig->OffscreenTimeMax = -1;
-	Sig->TickIntervals[ESigValue::High] = 1/60;
-	Sig->TickIntervals[ESigValue::Med] = 1/30;
-	Sig->TickIntervals[ESigValue::Low] = 1/20;
 }
 
 void AGhostItem::SetActive(const bool Act, const bool Reset) {
-	// TODO fade in on active
+	// fades are somewhere else (on reset and fadeandreturn)
 	Sig->SetActive(Act, Reset);
 
 	UActorComponent* const Cmps[] = {AxisX, AxisY, AxisZ, AnimBase};
@@ -104,7 +101,7 @@ void AGhostItem::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AGhostItem::PostDuplicate(bool Pie) {
+void AGhostItem::PostDuplicate(const bool Pie) {
 	Super::PostDuplicate(Pie);
 	// doesn't work. crashes on constructor
 	AxisX->RenameComp("X");

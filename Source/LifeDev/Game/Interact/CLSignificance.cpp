@@ -4,7 +4,11 @@
 
 #include "Interact/Animator/CAnimator.h"
 
-UCLSignificance::UCLSignificance() :Super(){ }
+UCLSignificance::UCLSignificance() :Super() {
+	TickIntervals[ESigValue::High] = 1/60;
+	TickIntervals[ESigValue::Med] = 1/30;
+	TickIntervals[ESigValue::Low] = 1/20;
+}
 
 void UCLSignificance::BindAnim(UCAnimator* const Animator) {
 	UnbindAnim();
@@ -19,10 +23,11 @@ void UCLSignificance::BindAnim(UCAnimator* const Animator) {
 }
 
 void UCLSignificance::UnbindAnim() {
-	if (IsValid(BoundAnim)) {
+	if (LIKELY(IsValid(BoundAnim))) {
 		BoundAnim->OnBegin.RemoveAll(this);
 		BoundAnim->OnEnd.RemoveAll(this);
 	}
+
 	CompsTicks.Remove(BoundAnim);
 	BoundAnim = nullptr;
 }

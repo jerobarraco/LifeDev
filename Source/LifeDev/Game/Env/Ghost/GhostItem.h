@@ -6,8 +6,8 @@
 
 #include "GhostItem.generated.h"
 
+class UCLSignificance;
 class UCAnimator;
-class UCSignificance;
 class UCAnimatorMix;
 class UCQuickMesh;
 class UCGhostAxis;
@@ -31,7 +31,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void PostDuplicate(bool Pie) override;
+	virtual void PostDuplicate(const bool Pie) override;
 	virtual void Reset() override;
 
 	void SetReturnTimer();
@@ -109,6 +109,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCAnimatorMix> AnimFade = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UCSignificance> Sig = nullptr;
-#pragma endregion 
+	TObjectPtr<UCLSignificance> Sig = nullptr;
+#pragma endregion
 };
