@@ -221,7 +221,7 @@ UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Na
 	Table->RowStruct = RowType; // important
 	Table->CreateTableFromCSVString(S);
 	
-	OProblems = Table->CreateTableFromJSONString(S);
+	OProblems = Table->CreateTableFromCSVString(S);
 	for (const FString& P: OProblems) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
