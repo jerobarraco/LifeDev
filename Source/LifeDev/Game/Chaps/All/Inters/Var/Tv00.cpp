@@ -123,7 +123,7 @@ void ATv00::BeginPlay() {
 		AnimCrt->Mat->SetScalarParameterValue("Opacity", .7);
 
 	Sig->BindAnim(AnimCrt);
-	Sig->CompsTicks.AddUnique(AnimCrt);
+
 	ULSettings* Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings))
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ATv00::FeatUpd);

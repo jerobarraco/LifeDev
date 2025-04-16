@@ -14,7 +14,7 @@
 
 
 ABasin00::ABasin00():Super() {
-	Texts = { FText::FromString(TEXT("Close")), FText::FromString(TEXT("Open"))};
+	Texts = { NSLOCTEXT("Basin0", "State0", "Close"), NSLOCTEXT("Basin0", "State1", "Open")};
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 2;
@@ -28,7 +28,7 @@ ABasin00::ABasin00():Super() {
 
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));
-	
+
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
 	Water->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>

@@ -208,7 +208,7 @@ void ALInteract::HideAfterFade() {
 
 bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already
-	
+
 	// handle item req
 	if (ULockItemReq.IsNone()) return false;
 

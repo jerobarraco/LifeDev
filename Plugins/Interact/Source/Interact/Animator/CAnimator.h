@@ -88,10 +88,10 @@ public:
 	// still 60 is not 120 (so it will never run at 120, (maybe i should make this a config var)).
 	// And then i will lower the fps (increase the interval) for those that don't need to be 60 (e.g. audio or some lights).
 	inline static float IntervalDefault = 1/60.f; // cap at 60
-	
+
 	// to be set by game manager depending on the flags
 	inline static bool Debug = false;
-	
+
 	// curve to use, if not set then code-curve will be used, if not set then it will be linear.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
 	TObjectPtr<UCurveFloat> Curve = nullptr;

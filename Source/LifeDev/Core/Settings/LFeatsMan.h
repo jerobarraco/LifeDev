@@ -57,7 +57,7 @@ protected:
 	void SetVar(const FString& Name, const double Val);
 	UFUNCTION()
 	void SetVarId(const double NameID, const double Val);
-	
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
