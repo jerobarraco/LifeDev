@@ -12,9 +12,21 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
-void UStory::Init() {}
+void UStory::Init() {
+	
+	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
+	if (UNLIKELY(!Manager)) {
+		UE_LOG(LogStory, Warning, TEXT("Could not obtain the data layer manager"));
+	} else {
+		Manager->OnDataLayerInstanceRuntimeStateChanged.AddUniqueDynamic(this, &UStory::LayerUpd);
+		//
+	}
+}
 
 void UStory::DeInit() {
+	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
+	if (LIKELY(IsValid(Manager))) Manager->OnDataLayerInstanceRuntimeStateChanged.RemoveAll(this);
+
 	Current = nullptr;
 	Steps.Empty();
 }
@@ -158,21 +170,31 @@ bool UStory::ToggleStepLayers() const {
 	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
 
 	bool Success = true;
+
 	// FIRST load all DL and THEN unload
 	// that way if there's an asset on two DL (one being loaded and another unloaded),
 	// it will remain loaded instead of being temporarily unloaded and reloaded.
 	// with all the possible issues it brings.
 	for (const UDataLayerAsset* const DLA: Current->DL_Load) {
-		Success = Success && ToggleDataLayer(DLA, true);
+		const bool CurSuccess = ToggleLayer(DLA, true);
+		Success = Success && CurSuccess; // like this to avoid short circuit
 	}
 	for (const UDataLayerAsset* const DLA: Current->DL_Unload) {
-		Success = Success && ToggleDataLayer(DLA, false);
+		const bool CurSuccess = ToggleLayer(DLA, false);
+		Success = Success && CurSuccess; // like this to avoid short circuit
 	}
 
 	return Success;
 }
 
-bool UStory::ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const {
+void UStory::LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State) {
+	
+	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
+	// if (UNLIKELY(!IsValid(Manager)))
+		// Manager->OnDataLayerInstanceRuntimeStateChanged.RemoveAll(this);
+}
+
+bool UStory::ToggleLayer(const UDataLayerAsset* const DLA, bool On) const {
 	if (UNLIKELY(!IsValid(DLA))) return false;
 
 	// This code is duplicated with JUtilsMisc::ToggleDataLayer.

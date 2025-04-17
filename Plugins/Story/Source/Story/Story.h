@@ -6,8 +6,6 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 
-#include "StoryTypes.h"
-
 #include "Story.generated.h"
 
 class AStep;
@@ -28,7 +26,7 @@ class STORY_API UStory : public UWorldSubsystem {
 public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UStory* Instance(const UObject* const O);
-	
+
 	UFUNCTION(BlueprintCallable)
 	void Init();
 
@@ -109,9 +107,12 @@ public:
 	FStoryDLChange OnDlChange;
 
 protected:
-	bool ToggleDataLayer(const UDataLayerAsset* const DLA, bool On) const;
+	bool ToggleLayer(const UDataLayerAsset* const DLA, bool On) const;
 	bool ToggleStepLayers() const;
 
+	UFUNCTION()
+	void LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State);
+	
 	// these are ALL the steps registered (i think)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TMap<FName, TObjectPtr<AStep>> Steps;
