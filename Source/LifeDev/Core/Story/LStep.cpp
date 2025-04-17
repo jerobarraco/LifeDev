@@ -100,18 +100,15 @@ void ALStep::Start_Implementation() {
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
 	if (!ItemsFinish.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
-		
-		// ensure to check if we already have the item. but not now to not affect the flow of child classes
-		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckItemsFinish);
 	}
 
 	// check flags. do on Start to avoid possibly finishing the step while it's starting.
 	if (!FlagsFinish.IsEmpty()) {
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
-		
-		// ensure to check if we already have the item. but not now to not affect the flow of child classes
-		W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFlagsFinish);
 	}
+
+	// ensure to check if we already have the item. but not now to not affect the flow of child classes
+	W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinish);
 
 	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
@@ -233,11 +230,11 @@ void ALStep::DestroyActors() {
 }
 
 void ALStep::ItemMod_Implementation(const FName& ItemName, int32 Diff, const FItem& Item) {
-	CheckItemsFinish();
+	CheckFinish(); // this is inefficient. its checking both items and flags.
 }
 
 void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, const float Total) {
-	CheckFlagsFinish();
+	CheckFinish(); // this is inefficient. its checking both items and flags.
 }
 
 void ALStep::FBUpd_Implementation(const float Value) {
@@ -247,26 +244,32 @@ void ALStep::FBUpd_Implementation(const float Value) {
 	Anim->Update(Value); // set the value to match the fb. let the anim do the calculations.
 }
 
-void ALStep::CheckItemsFinish() {
-	const int32 NumItems = ItemsFinish.Num();
-	if (NumItems<=0) return;
-
-	for (int32 i=0; i<NumItems; ++i) {
-		if (!Inventory->Has(ItemsFinish[i])) return;
-	}
-
+void ALStep::CheckFinish() {
+	if (LIKELY(!HasItemsFinish())) return;
+	if (LIKELY(!HasFlagsFinish())) return;
 	FinishAfterDlgs();
 }
 
-void ALStep::CheckFlagsFinish() {
-	const int32 NumItems = FlagsFinish.Num();
-	if (NumItems<=0) return;
+bool ALStep::HasItemsFinish() {
+	const int32 NumItems = ItemsFinish.Num();
+	if (NumItems<=0) return false; //nothing to have
 
-	for (int32 i=0; i<NumItems; ++i) {
-		if (!Flags->Has(ItemsFinish[i])) return;
+	for (int32 i=0; LIKELY(i<NumItems); ++i) {
+		if (!Inventory->Has(ItemsFinish[i])) return false;
 	}
 
-	FinishAfterDlgs();
+	return true;
+}
+
+bool ALStep::HasFlagsFinish() {
+	const int32 NumItems = FlagsFinish.Num();
+	if (NumItems<=0) return false;
+
+	for (int32 i=0; LIKELY(i<NumItems); ++i) {
+		if (!Flags->Has(ItemsFinish[i])) return false;
+	}
+
+	return true;
 }
 
 void ALStep::DlgShow_Implementation(const FDiag& Diag) {

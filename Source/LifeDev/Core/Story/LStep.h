@@ -193,12 +193,14 @@ protected:
 	void FBUpd(const float Value);
 	// UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	// void FBMod(const FName& FlagName, const float Diff, const float Total);
+
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.
 	UFUNCTION()
-	void CheckItemsFinish();
+	void CheckFinish();
+	bool HasItemsFinish();
 	UFUNCTION()
-	void CheckFlagsFinish();
+	bool HasFlagsFinish();
 	
 	// trigger inters on IntersTrigger
 	void DoIntersTrigger() const;
