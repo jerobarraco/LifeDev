@@ -3,7 +3,6 @@
 #include "DoorI01.h"
 
 ADoorI01::ADoorI01():Super() {
-	UseHint = true;
 	IsLocked = true;
 	// ULockDlg = "D01_ULCK";
 	// LockedDlg = "D01_LCK";
