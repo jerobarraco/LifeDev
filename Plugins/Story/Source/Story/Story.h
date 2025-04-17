@@ -110,9 +110,6 @@ protected:
 	bool ToggleLayer(const UDataLayerAsset* const DLA, bool On) const;
 	bool ToggleStepLayers() const;
 
-	UFUNCTION()
-	void LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State);
-	
 	// these are ALL the steps registered (i think)
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TMap<FName, TObjectPtr<AStep>> Steps;

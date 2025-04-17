@@ -13,14 +13,6 @@
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
 void UStory::Init() {
-	
-	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
-	if (UNLIKELY(!Manager)) {
-		UE_LOG(LogStory, Warning, TEXT("Could not obtain the data layer manager"));
-	} else {
-		Manager->OnDataLayerInstanceRuntimeStateChanged.AddUniqueDynamic(this, &UStory::LayerUpd);
-		//
-	}
 }
 
 void UStory::DeInit() {
@@ -110,6 +102,7 @@ bool UStory::Start(const FName Name) {
 		// now fade in
 		// trigger this here. since the load layers is synchronous (on purpose)
 		// so here it's the point where it "should"TM be loaded.
+		// (actually it seems that the dl is loaded, but the objects are not)
 		auto l2 = [this]() {
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
@@ -185,13 +178,6 @@ bool UStory::ToggleStepLayers() const {
 	}
 
 	return Success;
-}
-
-void UStory::LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State) {
-	
-	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
-	// if (UNLIKELY(!IsValid(Manager)))
-		// Manager->OnDataLayerInstanceRuntimeStateChanged.RemoveAll(this);
 }
 
 bool UStory::ToggleLayer(const UDataLayerAsset* const DLA, bool On) const {
@@ -293,3 +279,72 @@ void UStory::AutoFade(const FText& Title) {
 	TD2.BindLambda(l2);
 	World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
 }
+
+
+/*
+ *
+void UStory::LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State) {
+	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
+	if (UNLIKELY(!IsValid(Manager))) {
+		UE_LOG(LogStory, Warning, TEXT("%hs Could not get the datalayermanager."), __func__);
+		return;
+	}
+	// AWorldDataLayers* const DataLayers = GetWorld()->GetWorldDataLayers(); // subsystem is deprecated
+	// DataLayers->GetEffectiveActiveDataLayerNames() // no engine api
+	// const TSet<FName>& Actives = Manager->GetEffectiveActiveDataLayerNames();
+	// const TSet<FName>& Loaded = Manager->GetEffectiveLoadedDataLayerNames();
+	// for (FName N: Actives) {
+		// UE_LOG(LogStory, Warning, TEXT("%hs active %s"), __func__, *N.ToString());
+	// }
+	// for (FName N: Loaded) {
+		// UE_LOG(LogStory, Warning, TEXT("%hs loaded %s"), __func__, *N.ToString());
+	// }
+	// Manager->GetDataLayerInstanceEffectiveRuntimeState()
+	// TODO can make a function for this
+	for (UDataLayerAsset* const DL: Current->DL_Load) {
+		UE_LOG(LogStory, Warning, TEXT("%hs toload %s"), __func__, *DL->GetName());
+		const UDataLayerInstance* const Instance = Manager->GetDataLayerInstance(DL);
+		if (!IsValid(Instance)) continue; // unloaded?
+
+		const EDataLayerRuntimeState DLState = Instance->GetRuntimeState();
+		if (DLState != EDataLayerRuntimeState::Activated) {
+			UE_LOG(LogStory, Warning, TEXT("%hs not active yet %s"), __func__, *DL->GetName());
+		}
+		// Manager->GetData(DL)
+		// if (!Actives.Contains(DL->GetFName())) return;
+	}
+
+	for (UDataLayerAsset* const DL: Current->DL_Unload) {
+		UE_LOG(LogStory, Warning, TEXT("%hs toload %s"), __func__, *DL->GetName());
+		const UDataLayerInstance* const Instance = Manager->GetDataLayerInstance(DL);
+		if (!IsValid(Instance)) continue; // unloaded?
+
+		const EDataLayerRuntimeState DLState = Instance->GetRuntimeState();
+		if (DLState != EDataLayerRuntimeState::Unloaded) {
+			UE_LOG(LogStory, Warning, TEXT("%hs not unloaded yet %s"), __func__, *DL->GetName());
+		}
+		// Manager->GetData(DL)
+		// if (!Actives.Contains(DL->GetFName())) return;
+	}
+
+	
+	
+	// Manager->OnDataLayerInstanceRuntimeStateChanged.RemoveAll(this);
+}
+
+
+	
+UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
+	if (UNLIKELY(!Manager)) {
+		UE_LOG(LogStory, Warning, TEXT("Could not obtain the data layer manager"));
+	} else {
+		Manager->OnDataLayerInstanceRuntimeStateChanged.AddUniqueDynamic(this, &UStory::LayerUpd);
+		//
+	}
+
+
+	
+UFUNCTION()
+	void LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State);
+	
+*/
