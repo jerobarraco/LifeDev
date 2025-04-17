@@ -18,8 +18,8 @@ ULInputSelector::ULInputSelector():Super() {
 	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Brown][3]));
 	SetButtonStyle(BS);
 
-	SetNoKeySpecifiedText(FText::FromString(TEXT("[None]")));
-	SetKeySelectionText(FText::FromString(TEXT("...")));
+	SetNoKeySpecifiedText(NSLOCTEXT("InputSelector", "NoKey", "[None]"));
+	SetKeySelectionText(NSLOCTEXT("InputSelector", "Waiting", "[Waiting...]"));
 	SetAllowModifierKeys(false);
 	EscapeKeys.Add(EKeys::Escape);
 	EscapeKeys.Add(EKeys::Gamepad_Special_Right);
