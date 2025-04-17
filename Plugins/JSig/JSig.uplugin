@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"EngineVersion": "5.5.0",
-	"VersionName": "1.0",
+	"VersionName": "1.2",
 	"FriendlyName": "JSig",
 	"Description": "Significance tools",
 	"Category": "JTools",
