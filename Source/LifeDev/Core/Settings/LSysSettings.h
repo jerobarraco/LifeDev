@@ -68,7 +68,7 @@ public:
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
 	TSoftObjectPtr<UDataLayerAsset> DLBAse = TSoftObjectPtr<UDataLayerAsset>(
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base.Base"));
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
