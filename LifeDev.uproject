@@ -22,7 +22,10 @@
 		}
 	],
 	"Plugins": [
-		{"Name":"Sentry", "Enabled":true,"SupportedTargetPlatforms": [
+		{
+			"Name":"Sentry",
+			"Enabled":true,
+			"SupportedTargetPlatforms": [
 				"Win64",
 				"Android",
 				"Linux"

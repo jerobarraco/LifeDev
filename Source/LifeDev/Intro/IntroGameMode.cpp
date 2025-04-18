@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "IntroMan.h"
+#include "SentrySubsystem.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -36,6 +37,11 @@ void AIntroGameMode::BeginPlay() {
 
 	// very important NOT to save the save-game here.
 	// since none of the subsystems are initialized and it will save garbage
+
+	USentrySubsystem* const SentrySubsystem = GEngine->GetEngineSubsystem<USentrySubsystem>();
+	if (SentrySubsystem)
+		SentrySubsystem->CaptureMessage(TEXT("Capture message"));
+	else UE_LOG(LogTemp, Error, TEXT("Sentry does not work!"));
 }
 
 void AIntroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
