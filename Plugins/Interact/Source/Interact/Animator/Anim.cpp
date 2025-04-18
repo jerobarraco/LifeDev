@@ -331,6 +331,10 @@ void UAnim::ItemDoneComp(const FACTrans& Item) {
 void UAnim::ItemDoneGen(const FAGen& Item) {
 	OnItemGenDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
+
+void UAnim::ItemDoneTime(const FABase& Item) {
+	// TODO OnItemCompDone
+}
 #pragma endregion
 
 #pragma region item
@@ -570,6 +574,7 @@ bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGen
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
+	// no need to check for IsFading, that's done through IsTickable
 
 	const bool ContMPCFloat = ItemTick(DT, ItemsMPCF, &UAnim::ItemDoneMPCF);
 	const bool ContMPCVec = ItemTick(DT, ItemsMPCV, &UAnim::ItemDoneMPCV);
@@ -579,14 +584,16 @@ void UAnim::Tick(const float DT) {
 	const bool ContSndFloat = ItemTick(DT, ItemsSndF, &UAnim::ItemDoneSndF);
 	const bool ContComp = ItemTick(DT, ItemsCompT, &UAnim::ItemDoneComp);
 	const bool ContGen = ItemTick(DT, ItemsGen, &UAnim::ItemDoneGen);
+	const bool ContTime = ItemTick(DT, ItemsTime, &UAnim::ItemDoneTime);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData
-		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen;
+		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen || ContTime;
 
 	if (LIKELY(Continue)) return;
 
 	IsFading = false;
 	OnDone.Broadcast();
+	
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
 }
 #pragma endregion

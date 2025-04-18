@@ -406,6 +406,7 @@ protected:
 	void ItemDoneSndF(const FASFloat& Item);
 	void ItemDoneComp(const FACTrans& Item);
 	void ItemDoneGen(const FAGen& Item);
+	void ItemDoneTime(const FABase& Item);
 #pragma endregion
 
 #pragma region Vars
@@ -428,6 +429,6 @@ protected:
 	UPROPERTY(Transient)
 	TArray<FAGen> ItemsGen;
 	UPROPERTY(Transient)
-	TArray<FAGen> ItemsTime;
+	TArray<FABase> ItemsTime;
 #pragma endregion
 };
