@@ -168,11 +168,6 @@ EFeat ULSettings::CurrentChapterFeat() const {
 	// note that this feat is not saved in the savegame. since i want to support adding more chapters later.
 	if (UNLIKELY(ChId >= Max)) return EFeat::C_DONE;
 
-	if (UNLIKELY(GetFeat(EFeat::G_DEMO) && ChId >= DEMO_CHAP_MAX)) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs Demo build and reached chapter %i. End"), __func__, DEMO_CHAP_MAX);
-		return EFeat::C_DONE;
-	}
-
 	return LDConsts::Feats::ChapFeats[ChId];
 }
 

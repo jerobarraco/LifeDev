@@ -90,8 +90,6 @@ enum class EFeat: uint8 {
 	// (e.g. avoid quit, disable (some) settings, maybe savegame?, reduce playtime?,
 	// simplified intro level, shows a video when in the intro for too long (with CTA))
 	G_KIOSK,
-	// TODO reduce capabilities
-	G_DEMO,
 	// Ability to tweak foxify value on new game +
 	G_NGP_FOXY,
 	// Shows the dialogs, otherwise they get muted
@@ -144,9 +142,12 @@ namespace LDConsts {
 		// used to map chapter id with feats. also contains only the allowed chapters (aka the ones that do work)
 		// TODO should this be on the settings?
 		static constexpr EFeat ChapFeats[] = {
+#if LD_DEMO
+			EFeat::C_00, EFeat::C_01,
+#else
 			EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04,
-		}; // 05 included to allow to finish (is the EndStep stuff), notice not adding C_DONE
-		// EFeat::C_06, EFeat::C_07, EFeat::C_08, EFeat::C_09};
+#endif
+		};
 	}
 
 	namespace Audio {
