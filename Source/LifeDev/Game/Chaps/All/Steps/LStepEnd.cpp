@@ -11,7 +11,7 @@
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
-	static const FText ST = FText::FromString("~ The End & The Beginning ~");
+	static const FText ST = NSLOCTEXT("StepEnd", "Title", "~ The End & The Beginning ~");
 	Title = ST;
 	InputEnabled = false;
 	UseFadeTime = false; // don't override wait time
