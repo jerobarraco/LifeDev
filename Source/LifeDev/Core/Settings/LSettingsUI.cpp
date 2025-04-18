@@ -47,8 +47,8 @@ void ULSettingsUI::Show_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		const FAParams P {.Duration = PauseTime};
-		Anim->TimeFade(this, P, 1.0);
+		const FAParams P {.Duration = PauseTime, .UseDilation = false};
+		Anim->TimeFade(this, P, .2);
 	}
 
 	// then load
@@ -72,8 +72,8 @@ void ULSettingsUI::Hide_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		const FAParams P {.Duration = PauseTime};
-		Anim->TimeFade(this, P, .2);
+		const FAParams P {.Duration = PauseTime, .UseDilation = false};
+		Anim->TimeFade(this, P, 1);
 	}
 
 	Super::Hide_Implementation();

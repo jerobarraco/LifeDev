@@ -3,7 +3,6 @@
 #include "Anim.h"
 
 #include "Components/AudioComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -12,7 +11,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
 #pragma region structs
-float FABase::AddDT(const float DT) {
+float FABase::AddDT(float DT) {
+	if (!Pars.UseDilation){
+		if (UNLIKELY(!Obj)) return false;
+		const AWorldSettings* const Settings = Obj->GetWorld()->GetWorldSettings(false, false);
+		if (UNLIKELY(!Settings)) return false;
+		DT /= FMath::Max(UE_SMALL_NUMBER, Settings->TimeDilation); // avoid crash
+	}
+
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Pars.Duration);
 	if (Pars.Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
@@ -150,7 +156,12 @@ bool FATime::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
 		__func__, *Pars.Name.ToString(), Val);
 	if (UNLIKELY(!IsValid(Obj))) return false;
-	UGameplayStatics::SetGlobalTimeDilation(Obj, Val);
+	const UWorld* const World = Obj->GetWorld();
+	if (UNLIKELY(!World)) return false;
+	AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+	if (UNLIKELY(!Settings)) return false;
+
+	Settings->SetTimeDilation(Val);
 	return true;
 }
 
@@ -209,7 +220,11 @@ bool FACTrans::LoadFrom() {
 bool FATime::LoadFrom() {
 	if (UNLIKELY(!IsValid(Obj))) return false;
 
-	From = UGameplayStatics::GetGlobalTimeDilation(Obj);
+	const UWorld* const World = Obj->GetWorld();
+	if (UNLIKELY(!World)) return false;
+	const AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+	if (UNLIKELY(!Settings)) return false;
+	From = Settings->TimeDilation;
 	return true;
 }
 

@@ -67,7 +67,7 @@ public:
 	// named this way to avoid name collision with IsValid
 	virtual bool FIsValid() const;
 	// adds dt to the elapsed, returns current progress
-	float AddDT(const float DT);
+	float AddDT(float DT);
 	// returns true on done
 	bool Tick(const float DT);
 	// set value using Lerp progress. override and call SetValue yourself.
