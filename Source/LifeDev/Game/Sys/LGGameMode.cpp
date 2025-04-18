@@ -503,11 +503,21 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	}
 
 	// fading in requires a timer. since the step notifies when it just starts
-	const float Wait = (Story->FadeTime)+Story->HoldTime;
+	const float FadeTime = Story->FadeTime;
+	const float Wait = FadeTime+Story->HoldTime;
 	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
+	if (UNLIKELY(!World)) return; // error
 
 	FTimerManager& Time = World->GetTimerManager();
+	if (UNLIKELY(IsFirstFade)) { // removes the solid bg if it's necessary
+		IsFirstFade = false;
+		FTimerHandle Handle1;
+		auto Done = [Story=StoryMan] {
+			if (LIKELY(Story)) Story->ShowBGSolid(false);
+		};
+		Time.SetTimer(Handle1, Done, FadeTime, false);
+	}
+	
 	FTimerHandle Handle2;
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }

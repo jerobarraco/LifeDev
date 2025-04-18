@@ -62,7 +62,7 @@ void ALStepEnd::TryStart_Implementation() {
 		MusicMan->SetRain(false);
 	}
 
-	// TODO need to fix the fade that hides it.
+	// TODO need to fix the fade that hides it. (???)
 	const ALStoryMan* const StoryMan = ALStoryMan::Instance(World);
 	if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(true);
 }
