@@ -9,7 +9,7 @@
 
 ALStepC4S000::ALStepC4S000():Super() {
 	Name = FName("C4S0");
-	const static FText ST = FText::FromString("~ Acceptance ~");
+	const static FText ST = NSLOCTEXT("C4S0", "Title", "~ Acceptance ~");
 	Title = ST;
 	UseFade = true;
 	// DlgId = FName("C4S0"); // this chapter finishes after the dialog
@@ -23,6 +23,10 @@ ALStepC4S000::ALStepC4S000():Super() {
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
 	// needed
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));
