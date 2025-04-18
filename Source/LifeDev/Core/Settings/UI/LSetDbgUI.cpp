@@ -4,14 +4,17 @@
 
 #include "LFeatsGroup.h"
 #include "Components/ScrollBox.h"
+#include "Components/TextBlock.h"
+#include "Inventory/Flags.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
-// this ui is a waste of time. TODO rethink life choices.
+// try not to rely on this ui.
 // most of the time i would want to:
-// * use the console
+// * use the console commands
 // * print logs
 // so in the need to debug stuff i just need to make a debug build.
-// thought there would be cases where i'd want to be able to debug certain stuff on a build, not on the editor, on an expo, on a maybe shipping build (for performance)
+// thought there would be cases where i'd want to be able to debug certain stuff on a build,
+// not on the editor, on an expo, on a maybe shipping build (for performance) (hence not testing for IsDebug here)
 // though maybe i just use a debug build.
 
 void ULSetDbgUI::Apply_Implementation() {
@@ -34,27 +37,18 @@ void ULSetDbgUI::Load_Implementation() {
 	if (LIKELY(FeatsDbg))
 		FeatsDbg->Load();
 
-	if (UNLIKELY(!SBFlags)) return;
-
-	SBFlags->ClearChildren();
-
-	// const UFlags* const Flags = UFlags::Instance(this);
-	// if (UNLIKELY(!Flags)) return;
-
-	// TMap<FName, float> Map;
-	// Map = Flags->GetAll();
-
-		
-	// for (const TTuple<FName, float> KV : Map) {
-		// ue says : CreateWidget called with a null class...
-		// can't call CreateWidget with UTextBlock, it's not a UUSerWidget, but a UWidget :'(
-		// UTextBlock* const Text = Cast<UTextBlock>(
-			// CreateWidget(this, UTextBlock::StaticClass()));
-		// if (UNLIKELY(!Text)) continue;
-		// SBFlags->AddChild(Text);
-		// Text->SetText(FText::FromString(
-			// FString::Printf(TEXT("%s: %.4f"), *KV.Key.ToString(), KV.Value)));
-	// }
+	if (LIKELY(TFlags)) {
+		FString T;
+		const UFlags* const Flags = UFlags::Instance(this);
+		if (LIKELY(Flags)) {
+			TMap<FName, float> Map;
+			Map = Flags->GetAll();
+			for (const TTuple<FName, float> KV : Map) {
+				T += FString::Printf(TEXT("%s \t %.4f\n"), *KV.Key.ToString(), KV.Value);
+			}
+		}
+		TFlags->SetText(FText::FromString(T));
+	}
 }
 
 void ULSetDbgUI::NativeOnInitialized() {

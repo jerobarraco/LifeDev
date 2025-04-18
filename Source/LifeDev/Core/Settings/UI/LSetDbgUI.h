@@ -7,6 +7,7 @@
 
 #include "LSetDbgUI.generated.h"
 
+class UTextBlock;
 class ULFeatsGroup;
 class UScrollBox;
 
@@ -22,7 +23,7 @@ public:
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UScrollBox> SBFlags;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsDbg;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TFlags;
 };
