@@ -5,6 +5,8 @@
 
 #include "GameUI.generated.h"
 
+class AStep;
+class UGridPanel;
 class UImage;
 class UTextBlock;
 
@@ -26,11 +28,24 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetPointerShow(const bool Vis);
 
+	void ShowStatus(const bool Enabled) const;
+
 protected:
+	UFUNCTION()
+	void FlagMod(const FName& Name, const float Diff, const float Total);
+	UFUNCTION()
+	void StepStart(AStep* const Step);
+
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UImage> Pointer = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UWidget> PromptBG = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TTime = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TState = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UGridPanel> GStatus = nullptr;
 };

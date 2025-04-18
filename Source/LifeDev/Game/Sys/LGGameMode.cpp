@@ -517,7 +517,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 		};
 		Time.SetTimer(Handle1, Done, FadeTime, false);
 	}
-	
+
 	FTimerHandle Handle2;
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }

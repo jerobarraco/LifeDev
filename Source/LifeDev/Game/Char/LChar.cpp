@@ -197,6 +197,7 @@ void ALChar::Init_Implementation() {
 	if (Settings) {
 		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALChar::FeatUp);
 		FeatUp(EFeat::G_SHOW_POINT, Settings->GetFeat(EFeat::G_SHOW_POINT));
+		FeatUp(EFeat::G_STATUS, Settings->GetFeat(EFeat::G_STATUS));
 	}
 }
 
@@ -381,6 +382,8 @@ void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::G_SHOW_POINT) {
 		if (LIKELY(!IsValid(UI))) return;
 		UI->SetPointerShow(Enabled); // flag hides
+	} else if (Feat == EFeat::G_STATUS) {
+		if (LIKELY(IsValid(UI))) UI->ShowStatus(Enabled);
 	} else if (Feat == EFeat::G_FLY_CAM) {
 		APlayerController* const Cont = UJUtilsSys::GetFirstLocalPlayerController(this);
 		if (UNLIKELY(!Cont)) return;
