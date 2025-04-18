@@ -11,7 +11,7 @@
 
 ALStepC2S000::ALStepC2S000():Super() {
 	Name = FName("C2S0");
-	const static FText ST = FText::FromString("~ Yin ~");
+	const static FText ST = NSLOCTEXT("C2S0", "Title", "~ Yin ~");
 	Title = ST;
 	UseFade = true;
 	UseFadeTime = true;
@@ -28,6 +28,10 @@ ALStepC2S000::ALStepC2S000():Super() {
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,
 	};
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
