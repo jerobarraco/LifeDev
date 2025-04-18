@@ -205,6 +205,22 @@ public:
 	virtual bool SetLerp(const float Prog) override;
 };
 
+USTRUCT(Blueprintable, BlueprintType)
+struct FATime: public FABase {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float From = 0.0;
+
+	UPROPERTY(BlueprintReadWrite, Transient)
+	float To = 1.0;
+
+	virtual bool SetVal(const float Val = 1.0) const;
+	virtual bool SetLerp(const float Prog) override;
+	virtual bool LoadFrom() override;
+};
+
 // Subsystem that animates stuff in a more easy way. this is for one-off fire and forget effects.
 // it offers much less control than the "CAnimator" components.
 // CAnimator objects are preferred.
@@ -322,7 +338,7 @@ public:
 #pragma endregion
 #pragma region gen
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
-	bool TimeFade(UObject* const Owner, const FAParams& Params);
+	bool TimeFade(UObject* const Owner, const FAParams& Params, const float To=1.);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd);
 #pragma endregion
@@ -408,7 +424,7 @@ protected:
 	void ItemDoneSndF(const FASFloat& Item);
 	void ItemDoneComp(const FACTrans& Item);
 	void ItemDoneGen(const FAGen& Item);
-	void ItemDoneTime(const FABase& Item);
+	void ItemDoneTime(const FATime& Item);
 #pragma endregion
 
 #pragma region Vars
@@ -431,6 +447,6 @@ protected:
 	UPROPERTY(Transient)
 	TArray<FAGen> ItemsGen;
 	UPROPERTY(Transient)
-	TArray<FABase> ItemsTime;
+	TArray<FATime> ItemsTime;
 #pragma endregion
 };

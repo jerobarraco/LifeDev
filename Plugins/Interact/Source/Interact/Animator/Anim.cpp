@@ -332,7 +332,7 @@ void UAnim::ItemDoneGen(const FAGen& Item) {
 	OnItemGenDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
 
-void UAnim::ItemDoneTime(const FABase& Item) {
+void UAnim::ItemDoneTime(const FATime& Item) {
 	OnItemTimeDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
 #pragma endregion
@@ -557,8 +557,13 @@ const bool IsAdditive, const bool UseSweep) {
 	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
-bool UAnim::TimeFade(UObject* const Owner, const FAParams& Params) {
-	return true;
+bool UAnim::TimeFade(UObject* const Owner, const FAParams& Params, const float To) {
+	FATime Item;
+	Item.Obj = Owner;
+	Item.To = To;
+	Item.Pars = Params;
+	Item.Pars.Name = NAME_Timer;
+	return ItemSetup(Item, ItemsTime, &UAnim::ItemDoneTime);
 }
 
 bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd) {
