@@ -152,7 +152,7 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
 	}
 
-	FeatsTexts = {
+	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp({
 		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
 		{EFeat::D_TEXT, NSLOCTEXT("SetGame", "Feat", "Diag. Text")},
@@ -162,8 +162,7 @@ void ULSetGameUI::NativeOnInitialized() {
 		{EFeat::U_TICK_CON, NSLOCTEXT("SetGame", "Feat", "Tick Concurr.")},
 		{EFeat::U_TICK_BATCH, NSLOCTEXT("SetGame", "Feat", "Tick Batched")},
 		{EFeat::G_SAVE, NSLOCTEXT("SetGame", "Feat", "Save (Care!)")},
-	};
-	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp(FeatsTexts);
+	});
 
 	if (LIKELY(FeatsDbg)) {
 		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
