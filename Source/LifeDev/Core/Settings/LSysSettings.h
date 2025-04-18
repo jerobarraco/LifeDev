@@ -31,6 +31,7 @@ public:
 	static FORCEINLINE FName GetGameLvl() {
 		static const FName G("Game_L");
 		static const FName D("Demo_L");
+		return G; // force game level
 		#if LD_DEMO
 			return D;
 		#else

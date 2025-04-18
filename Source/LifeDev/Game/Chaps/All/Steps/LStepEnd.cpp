@@ -2,6 +2,7 @@
 #include "LStepEnd.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Story/StoryMan.h"
 
@@ -24,6 +25,10 @@ ALStepEnd::ALStepEnd():Super() {
 	// don't change the camera
 	UsePawnCam = true;
 	CamTarget = nullptr;
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+	if (LIKELY(CDLB.Succeeded())) DL_Unload.Add(CDLB.Object.Get());
 }
 
 void ALStepEnd::OpenLevel() const {
