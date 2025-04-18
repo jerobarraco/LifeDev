@@ -9,7 +9,7 @@
 
 ALStepC1S000::ALStepC1S000():Super() {
 	Name = FName("C1S0");
-	const static FText ST = FText::FromString("~ Whatever Works ~");
+	const static FText ST = NSLOCTEXT("C1S0", "Title", "~ Whatever Works ~");
 	Title = ST;
 	
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog
@@ -29,6 +29,10 @@ ALStepC1S000::ALStepC1S000():Super() {
 		// do always, not debug, since we could be skipping the chapter 0
 		LDConsts::Items::Card0
 	};
+
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL"));
