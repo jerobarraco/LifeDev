@@ -3,6 +3,7 @@
 #include "Anim.h"
 
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -145,6 +146,14 @@ bool FACTrans::SetVal(const FTransform& Val) const {
 	return true;
 }
 
+bool FATime::SetVal(const float Val) const {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+		__func__, *Pars.Name.ToString(), *Val());
+	if (UNLIKELY(!IsValid(Obj))) return false;
+	UGameplayStatics::SetGlobalTimeDilation(Obj, Val);
+	return true;
+}
+
 #pragma endregion
 #pragma region LoadFrom
 bool FAPFloat::LoadFrom() {
@@ -191,11 +200,19 @@ bool FAData::LoadFrom() {
 
 bool FACTrans::LoadFrom() {
 	const USceneComponent* const Comp = Cast<USceneComponent>(Obj);
-	if (UNLIKELY(!Comp)) return false;
+	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	From = IsWorld ? Comp->GetComponentTransform() : From = Comp->GetRelativeTransform();
+	From = IsWorld ? Comp->GetComponentTransform() : Comp->GetRelativeTransform();
 	return true;
 }
+
+bool FATime::LoadFrom() {
+	if (UNLIKELY(!IsValid(Obj))) return false;
+
+	From = UGameplayStatics::GetGlobalTimeDilation(Obj);
+	return true;
+}
+
 #pragma endregion
 
 #pragma region SetLerp

@@ -206,18 +206,11 @@ public:
 };
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FATime: public FABase {
+struct FATime: public FAPFloat {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, Transient)
-	float From = 0.0;
-
-	UPROPERTY(BlueprintReadWrite, Transient)
-	float To = 1.0;
-
 	virtual bool SetVal(const float Val = 1.0) const;
-	virtual bool SetLerp(const float Prog) override;
 	virtual bool LoadFrom() override;
 };
 
