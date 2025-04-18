@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/PostProcessVolume.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
@@ -128,8 +129,6 @@ void ALGGameMode::Init() {
 	}
 
 	/// unrelated (done first since other things can depend on this)
-	
-	// post process (does this even works?) // the featsman needs it
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Warning, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
@@ -271,7 +270,14 @@ void ALGGameMode::Init() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
-	
+
+	// this should be a "safe point" to be loading things, as the story should be showing the black bg
+	// Load the base datalayer
+	if (UNLIKELY(!SysSettings->DLBAse.IsNull()))
+		UJUtilsMisc::ToggleDataLayer(this, SysSettings->DLBAse.LoadSynchronous(), true);
+	else
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs DLBase not set on the settings! Skip."), __func__);
+
 	FTimerManager& Timer = World->GetTimerManager();
 	// force the input disabled. even though the story manager will make this disable later.
 	// in case something goes wrong.
@@ -494,7 +500,7 @@ void ALGGameMode::DiagDone() {
 
 void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	if (!bIn) {
-		SetInputDisable();
+		SetTempInputEnabled(false);
 		return;
 	}
 
@@ -504,12 +510,22 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 		if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(false);
 	}
 
-	// fading in requires a timer.
-	const float Wait = (Story->FadeTime)+Story->HoldTime;
+	// fading in requires a timer. since the step notifies when it just starts
+	const float FadeTime = Story->FadeTime;
+	const float Wait = FadeTime+Story->HoldTime;
 	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
+	if (UNLIKELY(!World)) return; // error
 
 	FTimerManager& Time = World->GetTimerManager();
+	if (UNLIKELY(IsFirstFade)) { // removes the solid bg if it's necessary
+		IsFirstFade = false;
+		FTimerHandle Handle1;
+		auto Done = [Story=StoryMan] {
+			if (LIKELY(Story)) Story->ShowBGSolid(false);
+		};
+		Time.SetTimer(Handle1, Done, FadeTime, false);
+	}
+
 	FTimerHandle Handle2;
 	Time.SetTimer(Handle2, this, &ALGGameMode::SetInputEnable, Wait, false);
 }

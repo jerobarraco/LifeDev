@@ -70,7 +70,7 @@ void UCAnimator::Finish() {
 }
 
 void UCAnimator::DoTick(float DT) {
-	if (UNLIKELY(!UseTimeDilation)) {
+	if (!UseDilation) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
 

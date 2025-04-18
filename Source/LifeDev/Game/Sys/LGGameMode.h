@@ -85,6 +85,7 @@ public:
 #pragma region Cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALChar> Char = nullptr;
+	// post process, the featsman needs it
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
@@ -131,7 +132,8 @@ protected:
 
 	void TickCounter() const;
 
-	// how often to increase the time counting flag
+	// how often to increase the time counting flag. beware if this is too small, it will flood the event for flag updated.
+	// which some objects are subscribed to.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	float CounterTime=.5;
 	// how often to increase the time counting flag

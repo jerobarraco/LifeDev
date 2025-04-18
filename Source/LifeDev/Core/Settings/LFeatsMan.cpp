@@ -149,7 +149,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
 	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
-	FeatUpDbg(EFeat::DBG_STATUS, Settings && Settings->GetFeat(EFeat::DBG_STATUS));
+	FeatUpDbg(EFeat::G_STATUS, Settings && Settings->GetFeat(EFeat::G_STATUS));
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
@@ -231,8 +231,6 @@ void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::DBG_TESTDL) {
 		UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
-	} else if (Feat == EFeat::DBG_STATUS) {
-		if (LIKELY(OverlayUI)) OverlayUI->ShowStatus(Enabled);
 	}
 }
 

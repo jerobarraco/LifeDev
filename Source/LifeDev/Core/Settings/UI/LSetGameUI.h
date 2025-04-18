@@ -38,11 +38,6 @@ protected:
 	UFUNCTION()
 	void BlurSizeUpd(const float Value);
 
-	UPROPERTY(BlueprintReadWrite)
-	TMap<EFeat, FText> FeatsTexts;
-
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatsGroup> FeatsDbg;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
 

@@ -15,6 +15,7 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "UI/LSetDbgUI.h"
 
 namespace LSetUI {
 	// first one should be skippable. needs to be in ascending order.
@@ -47,10 +48,9 @@ void ULSettingsUI::Show_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		FAnimGenUpd U;
-		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime};
-		Anim->GenFade(this, P, U); // read note inside TimeUpd
+		// i could ignore the dilation, but letting this get affected by it makes it look exponential, which i like.
+		const FAParams P {.Duration = PauseTime};
+		Anim->TimeFade(this, P, .2);
 	}
 
 	// then load
@@ -74,11 +74,9 @@ void ULSettingsUI::Hide_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		FAnimGenUpd U;
-		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime, .Reversed = true};
-		Anim->GenFade(this, P, U);
-		// clear previous
+		// i could ignore the dilation, but letting this get affected by it makes it look exponential, which i like.
+		const FAParams P {.Duration = PauseTime};
+		Anim->TimeFade(this, P, 1);
 	}
 
 	Super::Hide_Implementation();
@@ -87,9 +85,12 @@ void ULSettingsUI::Hide_Implementation() {
 	// SetVisibility(ESlateVisibility::Collapsed);
 }
 
+void ULSettingsUI::Apply_Implementation() {
+	if (LIKELY(Settings_Dbg)) Settings_Dbg->Apply();
+}
+
 void ULSettingsUI::Load_Implementation() {
-	// doesn't work as expected and prints errors
-	// if (LIKELY(Settings_Dbg)) Settings_Dbg->Load();
+	if (LIKELY(Settings_Dbg)) Settings_Dbg->Load();
 
 	// on load since this could also be on the intro level. so it could change on each show.
 	if (LIKELY(TFoxy)) {

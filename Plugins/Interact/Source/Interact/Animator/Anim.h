@@ -36,6 +36,8 @@ public:
 	bool Loop = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Bounce = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseDilation = true;
 };
 
 USTRUCT(Blueprintable, BlueprintType)
@@ -65,7 +67,7 @@ public:
 	// named this way to avoid name collision with IsValid
 	virtual bool FIsValid() const;
 	// adds dt to the elapsed, returns current progress
-	float AddDT(const float DT);
+	float AddDT(float DT);
 	// returns true on done
 	bool Tick(const float DT);
 	// set value using Lerp progress. override and call SetValue yourself.
@@ -205,6 +207,15 @@ public:
 	virtual bool SetLerp(const float Prog) override;
 };
 
+USTRUCT(Blueprintable, BlueprintType)
+struct FATime: public FAPFloat {
+	GENERATED_BODY()
+
+public:
+	virtual bool SetVal(const float Val = 1.0) const;
+	virtual bool LoadFrom() override;
+};
+
 // Subsystem that animates stuff in a more easy way. this is for one-off fire and forget effects.
 // it offers much less control than the "CAnimator" components.
 // CAnimator objects are preferred.
@@ -314,12 +325,15 @@ public:
 		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
 #pragma endregion
 
+#pragma region comp
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
 		const FTransform& To, const bool IsWorld = false, const bool IsAdditive = false,
 		const bool UseSweep = false);
-
+#pragma endregion
 #pragma region gen
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
+	bool TimeFade(UObject* const Owner, const FAParams& Params, const float To=1.);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd);
 #pragma endregion
@@ -371,6 +385,8 @@ public:
 	FAnimCompDone OnItemCompDone;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimGenDone OnItemGenDone;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimGenDone OnItemTimeDone;
 #pragma endregion
 
 protected:
@@ -403,6 +419,7 @@ protected:
 	void ItemDoneSndF(const FASFloat& Item);
 	void ItemDoneComp(const FACTrans& Item);
 	void ItemDoneGen(const FAGen& Item);
+	void ItemDoneTime(const FATime& Item);
 #pragma endregion
 
 #pragma region Vars
@@ -424,5 +441,7 @@ protected:
 	TArray<FACTrans> ItemsCompT;
 	UPROPERTY(Transient)
 	TArray<FAGen> ItemsGen;
+	UPROPERTY(Transient)
+	TArray<FATime> ItemsTime;
 #pragma endregion
 };

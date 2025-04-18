@@ -62,7 +62,6 @@ void ULSetGameUI::Apply_Implementation() {
 		}
 	}
 
-	if (LIKELY(FeatsDbg)) FeatsDbg->Apply();
 	if (LIKELY(FeatsGroup)) FeatsGroup->Apply();
 
 	if (LIKELY(Langs) && Langs->IsVisible()) { // is visible because it's feature flagged
@@ -104,7 +103,6 @@ void ULSetGameUI::Load_Implementation() {
 	BlurSizeUpd(BlurSize);
 
 	if (LIKELY(FeatsGroup)) FeatsGroup->Load();
-	if (LIKELY(FeatsDbg)) FeatsDbg->Load();
 }
 
 void ULSetGameUI::ClearConfig() {
@@ -152,35 +150,17 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
 	}
 
-	FeatsTexts = {
+	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp({
 		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
 		{EFeat::D_TEXT, NSLOCTEXT("SetGame", "Feat", "Diag. Text")},
 		{EFeat::G_CARD0, NSLOCTEXT("SetGame", "Feat", "C. Intention")},
 		{EFeat::G_SHOW_POINT, NSLOCTEXT("SetGame", "Feat", "Pointer")}, // this is wip since it gets rewritten in bp
-		{EFeat::DBG_STATUS, NSLOCTEXT("SetGame", "Feat", "Status")},
+		{EFeat::G_STATUS, NSLOCTEXT("SetGame", "Feat", "Status")},
 		{EFeat::U_TICK_CON, NSLOCTEXT("SetGame", "Feat", "Tick Concurr.")},
 		{EFeat::U_TICK_BATCH, NSLOCTEXT("SetGame", "Feat", "Tick Batched")},
 		{EFeat::G_SAVE, NSLOCTEXT("SetGame", "Feat", "Save (Care!)")},
-	};
-	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp(FeatsTexts);
-
-	if (LIKELY(FeatsDbg)) {
-		const bool IsDebug = UJUtilsSys::IsDebug() || ULSettings::GetFeatS(this, EFeat::DBG_BASE);
-		FeatsDbg->SetVisibility(IsDebug ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-		FeatsDbg->SetUp({
-			{EFeat::G_SHOW_DIAG, FText::FromString("G_SHOW_DIAG")},
-			// {EFeat::G_SHOW_POINT, FText::FromString("G_SHOW_POINT")}, // already in featstexts
-			{EFeat::G_SHOW_INV, FText::FromString("G_SHOW_INV")},
-			{EFeat::G_FLY_CAM, FText::FromString("G_FLY_CAM")},
-			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},
-			{EFeat::DBG_ANIMS, FText::FromString("DBG_ANIMS")},
-			{EFeat::DBG_SOUND, FText::FromString("DBG_SOUND")},
-			{EFeat::DBG_FB, FText::FromString("DBG_FB")},
-			{EFeat::DBG_SIG, FText::FromString("DBG_SIG")},
-			{EFeat::DBG_TESTDL, FText::FromString("DBG_TESTDL")}
-		});
-	}
+	});
 
 	if (LIKELY(Langs)) {
 		const bool IsDebug = ULSettings::GetFeatS(this, EFeat::DBG_BASE);

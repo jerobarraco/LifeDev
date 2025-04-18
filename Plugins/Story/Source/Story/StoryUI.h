@@ -26,7 +26,7 @@ public:
 	void FadeOut_Implementation(const FText& Title, const FText& Text) {}
 	
 	UFUNCTION(BlueprintCallable)
-	void ShowBGSolid(bool Show = true);
+	void ShowBGSolid(const bool Show = true);
 	
 	// variable that indicates when the Story is ready to progress.
 	// false when animating.
@@ -55,5 +55,5 @@ protected:
 	void PreShow();
 
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
-	UImage* BGSolid = nullptr;
+	TObjectPtr<UImage> BGSolid = nullptr;
 };

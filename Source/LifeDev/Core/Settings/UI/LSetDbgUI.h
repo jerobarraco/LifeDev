@@ -7,6 +7,8 @@
 
 #include "LSetDbgUI.generated.h"
 
+class UTextBlock;
+class ULFeatsGroup;
 class UScrollBox;
 
 // baseclass debug stuff
@@ -15,9 +17,13 @@ class LIFEDEV_API ULSetDbgUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
-	virtual void Apply_Implementation() override {};
+	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override;
-
+	virtual void NativeOnInitialized() override;
+	
+protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UScrollBox> SBFlags;
+	TObjectPtr<ULFeatsGroup> FeatsDbg;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TFlags;
 };

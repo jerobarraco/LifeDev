@@ -11,7 +11,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogAnim, Log, Log);
 // https://dev.epicgames.com/documentation/en-us/unreal-engine/storing-custom-data-in-unreal-engine-materials-per-primitive
 
 #pragma region structs
-float FABase::AddDT(const float DT) {
+float FABase::AddDT(float DT) {
+	if (!Pars.UseDilation){
+		if (UNLIKELY(!Obj)) return false;
+		const AWorldSettings* const Settings = Obj->GetWorld()->GetWorldSettings(false, false);
+		if (UNLIKELY(!Settings)) return false;
+		DT /= FMath::Max(UE_SMALL_NUMBER, Settings->TimeDilation); // avoid crash
+	}
+
 	// clamp to perfect duration, to avoid overshooting.
 	Elapsed = FMath::Min(Elapsed + DT,Pars.Duration);
 	if (Pars.Duration == 0) return 0; // don't need nearly zero. it's just for the division below.
@@ -145,6 +152,19 @@ bool FACTrans::SetVal(const FTransform& Val) const {
 	return true;
 }
 
+bool FATime::SetVal(const float Val) const {
+	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
+		__func__, *Pars.Name.ToString(), Val);
+	if (UNLIKELY(!IsValid(Obj))) return false;
+	const UWorld* const World = Obj->GetWorld();
+	if (UNLIKELY(!World)) return false;
+	AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+	if (UNLIKELY(!Settings)) return false;
+
+	Settings->SetTimeDilation(Val);
+	return true;
+}
+
 #pragma endregion
 #pragma region LoadFrom
 bool FAPFloat::LoadFrom() {
@@ -191,11 +211,23 @@ bool FAData::LoadFrom() {
 
 bool FACTrans::LoadFrom() {
 	const USceneComponent* const Comp = Cast<USceneComponent>(Obj);
-	if (UNLIKELY(!Comp)) return false;
+	if (UNLIKELY(!IsValid(Comp))) return false;
 
-	From = IsWorld ? Comp->GetComponentTransform() : From = Comp->GetRelativeTransform();
+	From = IsWorld ? Comp->GetComponentTransform() : Comp->GetRelativeTransform();
 	return true;
 }
+
+bool FATime::LoadFrom() {
+	if (UNLIKELY(!IsValid(Obj))) return false;
+
+	const UWorld* const World = Obj->GetWorld();
+	if (UNLIKELY(!World)) return false;
+	const AWorldSettings* const Settings = World->GetWorldSettings(false, false);
+	if (UNLIKELY(!Settings)) return false;
+	From = Settings->TimeDilation;
+	return true;
+}
+
 #pragma endregion
 
 #pragma region SetLerp
@@ -330,6 +362,10 @@ void UAnim::ItemDoneComp(const FACTrans& Item) {
 
 void UAnim::ItemDoneGen(const FAGen& Item) {
 	OnItemGenDone.Broadcast(Item.Obj, Item.Pars.Name);
+}
+
+void UAnim::ItemDoneTime(const FATime& Item) {
+	OnItemTimeDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
 #pragma endregion
 
@@ -553,6 +589,15 @@ const bool IsAdditive, const bool UseSweep) {
 	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
+bool UAnim::TimeFade(UObject* const Owner, const FAParams& Params, const float To) {
+	FATime Item;
+	Item.Obj = Owner;
+	Item.To = To;
+	Item.Pars = Params;
+	Item.Pars.Name = NAME_Timer;
+	return ItemSetup(Item, ItemsTime, &UAnim::ItemDoneTime);
+}
+
 bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Params.Name.ToString(), Params.Duration);
 	FAGen Item;
@@ -566,6 +611,7 @@ bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGen
 void UAnim::Tick(const float DT) {
 	Super::Tick(DT);
 	UE_LOG(LogAnim, Verbose, TEXT("%hs"), __func__);
+	// no need to check for IsFading, that's done through IsTickable
 
 	const bool ContMPCFloat = ItemTick(DT, ItemsMPCF, &UAnim::ItemDoneMPCF);
 	const bool ContMPCVec = ItemTick(DT, ItemsMPCV, &UAnim::ItemDoneMPCV);
@@ -575,14 +621,16 @@ void UAnim::Tick(const float DT) {
 	const bool ContSndFloat = ItemTick(DT, ItemsSndF, &UAnim::ItemDoneSndF);
 	const bool ContComp = ItemTick(DT, ItemsCompT, &UAnim::ItemDoneComp);
 	const bool ContGen = ItemTick(DT, ItemsGen, &UAnim::ItemDoneGen);
+	const bool ContTime = ItemTick(DT, ItemsTime, &UAnim::ItemDoneTime);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
 	const bool Continue = ContMPCFloat || ContMPCVec || ContData
-		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen;
+		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen || ContTime;
 
 	if (LIKELY(Continue)) return;
 
 	IsFading = false;
 	OnDone.Broadcast();
+	
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Tick Done"), __func__);
 }
 #pragma endregion

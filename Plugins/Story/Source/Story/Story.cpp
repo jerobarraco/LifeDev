@@ -12,8 +12,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
-void UStory::Init() {
-}
+void UStory::Init() { }
 
 void UStory::DeInit() {
 	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
@@ -105,16 +104,16 @@ bool UStory::Start(const FName Name) {
 		// now fade in
 		auto l2 = [this]() {
 			// attempt to wait for objects to be loaded. not sure if this works
-			UE_LOG(LogStory, Warning, TEXT("UStory::Start block start"));
+			UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
 			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
 			SMC.BlockTillAllRequestsFinished(3.f, true); // still only limit to 3. i don't like soft-locks
-			UE_LOG(LogStory, Warning, TEXT("UStory::Start block end"));
+			UE_LOG(LogStory, Log, TEXT("UStory::Start block end"));
 			
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
 		};
 
-		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff. 
+		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff.
 		if (UNLIKELY(!World2)) {
 			UE_LOG(LogStory, Warning, TEXT("%hs No world while attempted to fade out."
 				" i guess everything will be black."), __func__);

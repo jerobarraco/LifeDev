@@ -28,7 +28,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Apply();
-	virtual void Apply_Implementation(){}
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta =(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();

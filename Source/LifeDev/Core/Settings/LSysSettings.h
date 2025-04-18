@@ -30,13 +30,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE FName GetGameLvl() {
 		static const FName G("Game_L");
-		static const FName D("Demo_L");
 		return G; // force game level
-		#if LD_DEMO
-			return D;
-		#else
-			return G;
-		#endif
+		// static const FName D("Demo_L");
+		// #if LD_DEMO
+			// return D;
+		// #else
+			// return G;
+		// #endif
 	}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsDemo() {
@@ -64,6 +64,11 @@ public:
 	// url to open when the game closes. usually the feedback form.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
 	FString CloseURL = TEXT("https://forms.gle/aYCr8zRR3wWTomyu8");
+
+	// The list of items
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
+	TSoftObjectPtr<UDataLayerAsset> DLBAse = TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base.Base"));
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
@@ -108,6 +113,7 @@ public:
 		EFeat::V_SPEED, EFeat::V_FLASHBACK, EFeat::V_STROBE,
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
 	};
+
 protected:
 	// whether to use the feats listed in debugfeats or in defaultfeats
 	// this is set to false on release builds.

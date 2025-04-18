@@ -86,8 +86,9 @@ public:
 #pragma region lock
 	virtual bool ShouldUnlock_Implementation() override;
 	virtual void Unlock_Implementation() override;
+	// deprecated. use ULockCondition
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockItemReq = NAME_None;
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)

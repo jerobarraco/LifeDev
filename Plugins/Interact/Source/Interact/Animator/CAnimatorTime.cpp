@@ -3,7 +3,7 @@
 #include "CAnimatorTime.h"
 
 UCAnimatorTime::UCAnimatorTime() {
-	UseTimeDilation = false;
+	UseDilation = false;
 	SetComponentTickInterval(0); // using tick interval will mess with itself.
 
 	// this is the most usable for stop-action

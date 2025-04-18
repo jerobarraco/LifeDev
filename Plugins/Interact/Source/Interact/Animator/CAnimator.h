@@ -116,7 +116,7 @@ public:
 	bool IsReversed = false;
 	// whether to be affected or to ignore time dilation.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
-	bool UseTimeDilation = true;
+	bool UseDilation = true;
 
 	// control log output per instance
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Common")
