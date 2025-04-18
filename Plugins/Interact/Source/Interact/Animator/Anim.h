@@ -314,12 +314,15 @@ public:
 		const FLinearColor& To = FLinearColor::White, bool UseHSV = false);
 #pragma endregion
 
+#pragma region comp
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params,To"))
 	bool CompTransFade(USceneComponent* Comp, const FAParams& Params,
 		const FTransform& To, const bool IsWorld = false, const bool IsAdditive = false,
 		const bool UseSweep = false);
-
+#pragma endregion
 #pragma region gen
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
+	bool TimeFade(UObject* const Owner, const FAParams& Params);
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Params"))
 	bool GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd);
 #pragma endregion
@@ -424,5 +427,7 @@ protected:
 	TArray<FACTrans> ItemsCompT;
 	UPROPERTY(Transient)
 	TArray<FAGen> ItemsGen;
+	UPROPERTY(Transient)
+	TArray<FAGen> ItemsTime;
 #pragma endregion
 };

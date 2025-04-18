@@ -553,6 +553,10 @@ const bool IsAdditive, const bool UseSweep) {
 	return ItemSetup(Item, ItemsCompT, &UAnim::ItemDoneComp);
 }
 
+bool UAnim::TimeFade(UObject* const Owner, const FAParams& Params) {
+	return true;
+}
+
 bool UAnim::GenFade(UObject* const Owner, const FAParams& Params, const FAnimGenUpd& OnUpd) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s duration=%.3f"), __func__, *Params.Name.ToString(), Params.Duration);
 	FAGen Item;
