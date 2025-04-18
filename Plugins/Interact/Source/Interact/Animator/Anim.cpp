@@ -333,7 +333,7 @@ void UAnim::ItemDoneGen(const FAGen& Item) {
 }
 
 void UAnim::ItemDoneTime(const FABase& Item) {
-	// TODO OnItemCompDone
+	OnItemTimeDone.Broadcast(Item.Obj, Item.Pars.Name);
 }
 #pragma endregion
 

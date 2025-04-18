@@ -374,6 +374,8 @@ public:
 	FAnimCompDone OnItemCompDone;
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
 	FAnimGenDone OnItemGenDone;
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
+	FAnimGenDone OnItemTimeDone;
 #pragma endregion
 
 protected:
