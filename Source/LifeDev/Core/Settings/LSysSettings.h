@@ -30,13 +30,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE FName GetGameLvl() {
 		static const FName G("Game_L");
-		static const FName D("Demo_L");
 		return G; // force game level
-		#if LD_DEMO
-			return D;
-		#else
-			return G;
-		#endif
+		// static const FName D("Demo_L");
+		// #if LD_DEMO
+			// return D;
+		// #else
+			// return G;
+		// #endif
 	}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsDemo() {
