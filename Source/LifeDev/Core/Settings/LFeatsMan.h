@@ -62,7 +62,7 @@ protected:
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test_DL.Test_DL"));
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test.Test"));
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
 	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
