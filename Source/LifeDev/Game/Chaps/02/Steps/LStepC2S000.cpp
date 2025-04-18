@@ -30,10 +30,6 @@ ALStepC2S000::ALStepC2S000():Super() {
 	};
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
-	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
-
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
 	

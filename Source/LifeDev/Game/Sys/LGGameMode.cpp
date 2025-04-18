@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/PostProcessVolume.h"
+#include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
@@ -269,6 +270,13 @@ void ALGGameMode::Init() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
+
+	// this should be a "safe point" to be loading things, as the story should be showing the black bg
+	// Load the base datalayr
+	if (UNLIKELY(!SysSettings->DLBAse.IsNull()))
+		UJUtilsMisc::ToggleDataLayer(this, SysSettings->DLBAse.LoadSynchronous(), true);
+	else
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs DLBase not set on the settings! Skip."), __func__);
 
 	FTimerManager& Timer = World->GetTimerManager();
 	// force the input disabled. even though the story manager will make this disable later.

@@ -24,10 +24,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 	
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
-	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
-
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
 
