@@ -39,8 +39,6 @@ protected:
 	void BlurSizeUpd(const float Value);
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatsGroup> FeatsDbg;
-	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))

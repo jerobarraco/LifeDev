@@ -17,6 +17,9 @@
 void ULSetDbgUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	
+	const bool Dbg = ULSettings::GetFeatS(this, EFeat::DBG_BASE);
+	if (LIKELY(!Dbg)) return;
+
 	if (LIKELY(FeatsDbg))
 		FeatsDbg->Apply();
 }
