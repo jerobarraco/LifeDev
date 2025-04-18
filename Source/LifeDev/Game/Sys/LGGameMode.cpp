@@ -128,8 +128,6 @@ void ALGGameMode::Init() {
 	}
 
 	/// unrelated (done first since other things can depend on this)
-	
-	// post process (does this even works?) // the featsman needs it
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Warning, TEXT("%hs Could not obtain the PostProcess volume."), __func__);

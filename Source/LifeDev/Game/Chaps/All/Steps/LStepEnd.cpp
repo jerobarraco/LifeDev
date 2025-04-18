@@ -6,13 +6,19 @@
 
 #include "Story/StoryMan.h"
 
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepEnd::ALStepEnd():Super() {
 	Name = FName("End");
-	static const FText ST = NSLOCTEXT("StepEnd", "Title", "~ The End & The Beginning ~");
+	// implemented like this so it compiles both texts.
+	static const FText ST =
+		ULSysSettings::IsDemo() ?
+		NSLOCTEXT("StepEnd", "Title", "~ To be continued ... ~"):
+		NSLOCTEXT("StepEnd", "Title", "~ The End & The Beginning ~");
+
 	Title = ST;
 	InputEnabled = false;
 	UseFadeTime = false; // don't override wait time
