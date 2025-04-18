@@ -269,7 +269,7 @@ void ALGGameMode::Init() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
 	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
-	
+
 	FTimerManager& Timer = World->GetTimerManager();
 	// force the input disabled. even though the story manager will make this disable later.
 	// in case something goes wrong.

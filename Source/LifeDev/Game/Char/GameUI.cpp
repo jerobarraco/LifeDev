@@ -6,7 +6,7 @@
 #include "Components/TextBlock.h"
 
 void UGameUI::SetPrompt_Implementation(const FText& Text) {
-	if (!T_Prompt) return;
+	if (UNLIKELY(!T_Prompt)) return;
 	T_Prompt->SetText(Text);
 }
 
