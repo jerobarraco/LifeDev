@@ -22,6 +22,7 @@ public class LifeDev : ModuleRules {
 			// my stuff
 			"JUtils", "Interact", "Diags", "Inventory", "Story",
 			"Sounds", "JSig",
+			"Sentry"
 		});
 		// force user dir. this saves headaches when managing demo/playtest/release builds through steam.
 		// it also saves a lot of heaches to me when developing multiple versions
