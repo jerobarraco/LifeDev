@@ -148,7 +148,7 @@ bool FACTrans::SetVal(const FTransform& Val) const {
 
 bool FATime::SetVal(const float Val) const {
 	UE_LOG(LogAnim, Verbose, TEXT("%hs Name=%s Val=%.4f"),
-		__func__, *Pars.Name.ToString(), *Val());
+		__func__, *Pars.Name.ToString(), Val);
 	if (UNLIKELY(!IsValid(Obj))) return false;
 	UGameplayStatics::SetGlobalTimeDilation(Obj, Val);
 	return true;

@@ -36,6 +36,8 @@ public:
 	bool Loop = false;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool Bounce = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseDilation = true;
 };
 
 USTRUCT(Blueprintable, BlueprintType)

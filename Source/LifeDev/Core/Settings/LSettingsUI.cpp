@@ -47,10 +47,8 @@ void ULSettingsUI::Show_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		FAnimGenUpd U;
-		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime};
-		Anim->GenFade(this, P, U); // read note inside TimeUpd
+		const FAParams P {.Duration = PauseTime};
+		Anim->TimeFade(this, P, 1.0);
 	}
 
 	// then load
@@ -74,11 +72,8 @@ void ULSettingsUI::Hide_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		FAnimGenUpd U;
-		U.BindDynamic(this, &ULSettingsUI::TimeUpd);
-		const FAParams P {.Name = LDConsts::Static::TimeFade, .Duration = PauseTime, .Reversed = true};
-		Anim->GenFade(this, P, U);
-		// clear previous
+		const FAParams P {.Duration = PauseTime};
+		Anim->TimeFade(this, P, .2);
 	}
 
 	Super::Hide_Implementation();
