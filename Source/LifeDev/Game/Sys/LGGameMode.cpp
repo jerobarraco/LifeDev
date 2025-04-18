@@ -272,7 +272,7 @@ void ALGGameMode::Init() {
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
 
 	// this should be a "safe point" to be loading things, as the story should be showing the black bg
-	// Load the base datalayr
+	// Load the base datalayer
 	if (UNLIKELY(!SysSettings->DLBAse.IsNull()))
 		UJUtilsMisc::ToggleDataLayer(this, SysSettings->DLBAse.LoadSynchronous(), true);
 	else
