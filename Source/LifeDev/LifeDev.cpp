@@ -5,6 +5,9 @@
 #include "Modules/ModuleManager.h"
 #include "ShaderCore.h"
 
+#include "Core/Settings/LSysSettings.h"
+#include "JUtils/Misc/JUtilsSys.h"
+
 IMPLEMENT_PRIMARY_GAME_MODULE(FLifeDevModule, LifeDev, "LifeDev");
 
 void FLifeDevModule::StartupModule() {
@@ -30,12 +33,10 @@ void FLifeDevModule::StartupModule() {
 
 void FLifeDevModule::ShutdownModule() {
 	// attempt to open the feedback url if any
+	const ULSysSettings* const SSettings = ULSysSettings::Get();
+	if (LIKELY(!IsRunningCookCommandlet() && !UJUtilsSys::IsEditor() && IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
+		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
 
-	// this somehow got the packager crashing. TODO fix.
-	// const ULSysSettings* const SSettings = ULSysSettings::Get();
-	// if (LIKELY(IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
-		// FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
-	// FPlatformProcess::LaunchURL(TEXT("https://forms.gle/aYCr8zRR3wWTomyu8"), NULL, NULL);
 	IModuleInterface::ShutdownModule();
 }
 

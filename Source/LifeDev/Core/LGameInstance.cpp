@@ -55,9 +55,5 @@ void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
 }
 
 void ULGameInstance::BeginDestroy() {
-	const ULSysSettings* const SSettings = ULSysSettings::Get();
-	if (LIKELY(!IsRunningCookCommandlet() && !UJUtilsSys::IsEditor() && IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
-		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
-
 	Super::BeginDestroy();
 }
