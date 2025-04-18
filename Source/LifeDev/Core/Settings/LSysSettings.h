@@ -7,6 +7,11 @@
 
 class UDataTable;
 
+// Demo mode. avoid using the macro unless necessary.
+#ifndef LD_DEMO
+#define LD_DEMO 0
+#endif
+
 // Make sure to update FeatUpdated() after changing the feats
 
 // this class is for the settings that appears on the editor under project settings. The general system settings.
@@ -21,6 +26,25 @@ class LIFEDEV_API ULSysSettings : public UDeveloperSettings {
 public:
 	UFUNCTION(BlueprintCallable)
 	static ULSysSettings* Get();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE FName GetGameLvl() {
+		static const FName G("Game_L");
+		static const FName D("Demo_L");
+		#if LD_DEMO
+				return D;
+		#else
+				return G;
+		#endif
+	}
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static FORCEINLINE bool IsDemo() {
+		#if LD_DEMO
+				return true;
+		#else
+				return false;
+		#endif
+	}
 
 	// Overrides for display
 	virtual FName GetCategoryName() const override;
