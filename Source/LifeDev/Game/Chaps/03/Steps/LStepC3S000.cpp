@@ -8,7 +8,7 @@
 
 ALStepC3S000::ALStepC3S000():Super() {
 	Name = SName;
-	const static FText ST = FText::FromString("~ Perseverance ~");
+	const static FText ST = NSLOCTEXT("C3S0", "Title", "~ Perseverance ~");
 	Title = ST;
 	UseFade = true;
 	// DlgId = FName("C3S0"); // this chapter finishes after the dialog
@@ -23,6 +23,10 @@ ALStepC3S000::ALStepC3S000():Super() {
 	// needed
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 	
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLB(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+	if (LIKELY(CDLB.Succeeded())) DL_Load.Add(CDLB.Object);
+
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
