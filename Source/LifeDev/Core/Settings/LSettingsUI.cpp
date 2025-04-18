@@ -47,7 +47,8 @@ void ULSettingsUI::Show_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		const FAParams P {.Duration = PauseTime, .UseDilation = false};
+		// i could ignore the dilation, but letting this get affected by it makes it look exponential, which i like.
+		const FAParams P {.Duration = PauseTime};
 		Anim->TimeFade(this, P, .2);
 	}
 
@@ -72,7 +73,8 @@ void ULSettingsUI::Hide_Implementation() {
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
-		const FAParams P {.Duration = PauseTime, .UseDilation = false};
+		// i could ignore the dilation, but letting this get affected by it makes it look exponential, which i like.
+		const FAParams P {.Duration = PauseTime};
 		Anim->TimeFade(this, P, 1);
 	}
 
