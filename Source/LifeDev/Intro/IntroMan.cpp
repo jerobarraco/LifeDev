@@ -10,6 +10,7 @@
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "IntroUI.h"
 
@@ -98,7 +99,8 @@ void AIntroMan::Saving(const bool IsSaving) {
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
 	// FString Options = "Game="+ NextLevelMode;
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
+	const FName& NextLevel = ULSysSettings::GetGameLvl() ;
+	UGameplayStatics::OpenLevel(GetWorld(), NextLevel, true);
 }
 
 void AIntroMan::BeginPlay() {
