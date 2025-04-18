@@ -45,9 +45,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
-static float FadeTime = 2;
-static float HoldTime = 2;
-
 ALGGameMode::ALGGameMode():Super() {
 	Super::SetActorTickEnabled(false);
 	// set default pawn class to our Blueprinted character
@@ -179,6 +176,8 @@ void ALGGameMode::Init() {
 
 	Eval = World->GetSubsystem<UEval>();
 
+	constexpr float FadeTime = 2;
+	constexpr float HoldTime = 2;
 	const bool IsEditor = UJUtilsSys::IsEditor();
 	Story->FadeTime = IsEditor ? 1: FadeTime;
 	Story->HoldTime = IsEditor ? 1: HoldTime;
@@ -511,8 +510,9 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	}
 
 	// fading in requires a timer. since the step notifies when it just starts
-	const float FadeTime = Story->FadeTime;
-	const float Wait = FadeTime+Story->HoldTime;
+	// using the current set times for accuracy.
+	const float CurFade = Story->FadeTime;
+	const float Wait = CurFade+Story->HoldTime;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return; // error
 
@@ -523,7 +523,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 		auto Done = [Story=StoryMan] {
 			if (LIKELY(Story)) Story->ShowBGSolid(false);
 		};
-		Time.SetTimer(Handle1, Done, FadeTime, false);
+		Time.SetTimer(Handle1, Done, CurFade, false);
 	}
 
 	FTimerHandle Handle2;
