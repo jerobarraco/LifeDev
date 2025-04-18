@@ -112,7 +112,6 @@ bool UStory::Start(const FName Name) {
 			
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
-
 		};
 
 		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff. 

@@ -4,7 +4,6 @@
 
 #include "Modules/ModuleManager.h"
 #include "ShaderCore.h"
-#include "Core/Settings/LSysSettings.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE(FLifeDevModule, LifeDev, "LifeDev");
 
