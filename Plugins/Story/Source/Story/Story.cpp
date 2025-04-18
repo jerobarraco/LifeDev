@@ -97,15 +97,22 @@ bool UStory::Start(const FName Name) {
 	// callback
 	auto l = [this, Step]() {
 		// - call stop and start
+		// trigger this here. since the load layers is synchronous (on purpose)
+		// so here it's the point where it "should"TM be loaded.
+		// actually it seems that the dl is loaded, but the objects are not. so we wait below.
 		StartNow(Step);
 
 		// now fade in
-		// trigger this here. since the load layers is synchronous (on purpose)
-		// so here it's the point where it "should"TM be loaded.
-		// (actually it seems that the dl is loaded, but the objects are not)
 		auto l2 = [this]() {
+			// attempt to wait for objects to be loaded. not sure if this works
+			UE_LOG(LogStory, Warning, TEXT("UStory::Start block start"));
+			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
+			SMC.BlockTillAllRequestsFinished(3.f, true); // still only limit to 3. i don't like soft-locks
+			UE_LOG(LogStory, Warning, TEXT("UStory::Start block end"));
+			
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
+
 		};
 
 		const UWorld* const World2 = GetWorld(); // getting it again to avoid stale stuff. 
