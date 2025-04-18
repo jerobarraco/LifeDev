@@ -245,6 +245,9 @@ void ALStep::FBUpd_Implementation(const float Value) {
 }
 
 void ALStep::CheckFinish() {
+	const int32 NumItems = ItemsFinish.Num();
+	const int32 NumFlags = FlagsFinish.Num();
+	if (NumItems<1 && NumFlags<1) return; // nothing to finish
 	if (LIKELY(!HasItemsFinish())) return;
 	if (LIKELY(!HasFlagsFinish())) return;
 	FinishAfterDlgs();
@@ -252,8 +255,6 @@ void ALStep::CheckFinish() {
 
 bool ALStep::HasItemsFinish() {
 	const int32 NumItems = ItemsFinish.Num();
-	if (NumItems<=0) return false; //nothing to have
-
 	for (int32 i=0; LIKELY(i<NumItems); ++i) {
 		if (!Inventory->Has(ItemsFinish[i])) return false;
 	}
@@ -262,11 +263,9 @@ bool ALStep::HasItemsFinish() {
 }
 
 bool ALStep::HasFlagsFinish() {
-	const int32 NumItems = FlagsFinish.Num();
-	if (NumItems<=0) return false;
-
-	for (int32 i=0; LIKELY(i<NumItems); ++i) {
-		if (!Flags->Has(ItemsFinish[i])) return false;
+	const int32 NumFlags = FlagsFinish.Num();
+	for (int32 i=0; LIKELY(i<NumFlags); ++i) {
+		if (!Flags->Has(FlagsFinish[i])) return false;
 	}
 
 	return true;
