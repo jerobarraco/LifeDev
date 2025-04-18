@@ -492,7 +492,7 @@ void ALGGameMode::DiagDone() {
 
 void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	if (!bIn) {
-		SetInputDisable();
+		SetTempInputEnabled(false);
 		return;
 	}
 
@@ -502,7 +502,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 		if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(false);
 	}
 
-	// fading in requires a timer.
+	// fading in requires a timer. since the step notifies when it just starts
 	const float Wait = (Story->FadeTime)+Story->HoldTime;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
