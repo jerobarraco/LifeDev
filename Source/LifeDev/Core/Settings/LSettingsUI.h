@@ -7,6 +7,7 @@
 
 #include "LSettingsUI.generated.h"
 
+class UJButton;
 class UTextBlock;
 class ULSetDbgUI;
 class UWidgetSwitcher;
@@ -43,7 +44,7 @@ protected:
 	UFUNCTION()
 	void SetPause();
 	UFUNCTION()
-	void TimeUpd(UObject* const Obj, const FName Name, const float Alpha);
+	void SendComment(const int32 Id);
 	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> CBScale;
@@ -57,6 +58,10 @@ protected:
 	TObjectPtr<UTextBlock> TFoxy;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TTime;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TComment;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnComment;
 
 	FTimerHandle PauseTimer;
 	float PauseTime = .5;

@@ -10,7 +10,7 @@ public:
 	static USentry* Instance(const UObject* const O);;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void SendFeedback(const FString& FB);
+	void SendComment(const FString& FB);
 protected:
 	void InstInit();
 	void InstDeInit();

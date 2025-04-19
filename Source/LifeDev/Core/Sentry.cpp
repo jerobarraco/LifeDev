@@ -15,7 +15,7 @@ USentry* USentry::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<USentry>();
 }
 
-void USentry::SendFeedback(const FString& FB) {
+void USentry::SendComment(const FString& FB) {
 	if (UNLIKELY(!IsValid(Sub))) return;
 	static FString ID("Feedback");
 

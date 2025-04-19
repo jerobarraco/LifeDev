@@ -2,6 +2,7 @@
 
 #include "LSettingsUI.h"
 
+#include "JButton.h"
 #include "LSettings.h"
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
@@ -12,6 +13,7 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 #include "LifeDev/Core/Sounds/LMusicMan.h"
@@ -134,10 +136,18 @@ void ULSettingsUI::NativeOnInitialized() {
 		BtnOptDbg->SetVisibility(Dbg ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		if (UNLIKELY(Dbg)) BtnOptDbg->OnClicked.AddUniqueDynamic(this, &ULSettingsUI::ShowDbg);
 	}
+
+	if (LIKELY(BtnComment))
+		BtnComment->OnClick.AddUniqueDynamic(this, &ULSettingsUI::SendComment);
 }
 
 void ULSettingsUI::NativeDestruct() {
 	if (LIKELY(CBScale)) CBScale->OnSelectionChanged.RemoveAll(this);
+	if (LIKELY(BtnOptDbg))
+		BtnOptDbg->OnClicked.RemoveAll(this);
+
+	if (LIKELY(BtnComment))
+		BtnComment->OnClick.RemoveAll(this);
 
 	Super::NativeDestruct();
 }
@@ -158,9 +168,9 @@ void ULSettingsUI::SetPause() {
 	UGameplayStatics::SetGamePaused(this, true);
 }
 
-void ULSettingsUI::TimeUpd(UObject* const Obj, const FName Name, const float Alpha) {
-	// because this animation is affected by the time dilation. the time is an exponential curve.
-	// in other words, it's going to slow down logarithmically. if the min dilation is too small, it could take forever.
-	// since the timer and the anim both use the same duration, this animation won't really reach the end. so we cancel it on hide.
-	UGameplayStatics::SetGlobalTimeDilation(this, FMath::Lerp(1, 0.2, Alpha));
+void ULSettingsUI::SendComment(const int32 Id) {
+	USentry* const Sentry = USentry::Instance(this);
+	if (UNLIKELY(!Sentry || !TComment )) return;
+
+	Sentry->SendComment(TComment->GetText().ToString());
 }
