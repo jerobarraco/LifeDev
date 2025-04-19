@@ -4,6 +4,7 @@
 
 #include "Sentry.generated.h"
 
+class AStep;
 enum class EFeat : uint8;
 class USentrySubsystem;
 
@@ -38,6 +39,8 @@ protected:
 	void GameDeInit();
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
+	void StepStart(AStep* const Step);
 
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;

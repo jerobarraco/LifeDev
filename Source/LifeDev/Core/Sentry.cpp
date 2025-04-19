@@ -5,6 +5,8 @@
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "Settings/LSettings.h"
+#include "Story/Step.h"
+#include "Story/Story.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
 
@@ -55,11 +57,18 @@ void USentry::GameInit() {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings))
 		Settings->OnFeatUpdate.AddUniqueDynamic(this, &USentry::FeatUp);
+
+	UStory* const Story = UStory::Instance(this);
+	if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, &USentry::StepStart);
 }
 
 void USentry::GameDeInit() {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
+	
+	UStory* const Story = UStory::Instance(this);
+	if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
+	
 	if (LIKELY(Sub)) Sub->ClearBreadcrumbs();
 }
 
@@ -69,4 +78,10 @@ void USentry::FeatUp(const EFeat Feat, const bool Enabled) {
 		TagSet(Tag, "On");
 	else
 		TagRem(Tag);
+}
+
+void USentry::StepStart(AStep* const Step) {
+	const FString& N = LIKELY(IsValid(Step)) ? Step->Name.ToString() : TEXT("");
+	static const FString TagName("Story::Step");
+	TagSet(TagName, N);
 }
