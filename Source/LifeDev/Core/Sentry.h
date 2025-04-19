@@ -17,7 +17,12 @@ public:
 	void TagSet(const FString& Tag, const FString& Val) const;
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void TagRem(const FString& Tag) const;
-	
+	UFUNCTION(BlueprintCallable, BlueprintPure=false,
+		meta=(AutoCreateRefTerm="Cat,Type"))
+	void AddHint(const FString& S,
+		const TMap<FString, FString>& Data,
+		const FString& Cat = "Default", const FString& Type ="Default");
+
 protected:
 	void InstInit();
 	void InstDeInit();

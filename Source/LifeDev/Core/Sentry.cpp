@@ -31,6 +31,11 @@ void USentry::TagRem(const FString& Tag) const {
 	Sub->RemoveTag(Tag);
 }
 
+void USentry::AddHint(const FString& S, const TMap<FString, FString>& Data, const FString& Cat, const FString& Type) {
+	if (UNLIKELY(!IsValid(Sub))) return;
+	Sub->AddBreadcrumbWithParams(S, Cat, Type, Data);
+}
+
 void USentry::InstInit() {
 	Sub = GEngine->GetEngineSubsystem<USentrySubsystem>();
 	UE_CLOG(!IsValid(Sub), LogSentry, Warning, TEXT("%hs Sentry subsystem can't be found"),
@@ -47,18 +52,16 @@ void USentry::GameInit() {
 		Settings->OnFeatUpdate.AddUniqueDynamic(this, &USentry::FeatUp);
 }
 
-
 void USentry::GameDeInit() {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
+	if (LIKELY(Sub)) Sub->ClearBreadcrumbs();
 }
 
 void USentry::FeatUp(const EFeat Feat, const bool Enabled) {
-	static const FName TagFeat("Feat");
 	const FString& Tag = UEnum::GetValueAsString(Feat);
-	if (Enabled) {
+	if (Enabled)
 		TagSet(Tag, "On");
-	}
 	else
 		TagRem(Tag);
 }
