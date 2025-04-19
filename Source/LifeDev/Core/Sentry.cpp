@@ -1,6 +1,7 @@
 #include "Sentry.h"
 
 #include "SentrySubsystem.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 
@@ -11,6 +12,13 @@ USentry* USentry::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(Instance))) return nullptr;
 
 	return Instance->GetSubsystem<USentry>();
+}
+
+void USentry::SendFeedback(const FString& FB) {
+	if (UNLIKELY(!IsValid(Sub))) return;
+	static FString ID("Feedback");
+
+	Sub->CaptureUserFeedbackWithParams(ID, "", FB, UJUtilsSys::GetUserName());
 }
 
 void USentry::InstInit() {

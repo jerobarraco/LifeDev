@@ -9,6 +9,8 @@ class LIFEDEV_API USentry: public UGameInstanceSubsystem {
 public:
 	static USentry* Instance(const UObject* const O);;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	void SendFeedback(const FString& FB);
 protected:
 	void InstInit();
 	void InstDeInit();
