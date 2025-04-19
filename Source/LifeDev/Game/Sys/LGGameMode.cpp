@@ -302,7 +302,7 @@ void ALGGameMode::SetCharInputEnabled(const bool Enabled) {
 
 void ALGGameMode::SetTempInputEnabled(const bool Enabled) const {
 	UE_LOG(LogLGameMode, Log, TEXT("%hs. Enabled=%i"), __func__, Enabled);
-	if (Enabled && !CharInputEnabled) return;
+	if (UNLIKELY(Enabled && !CharInputEnabled)) return;
 
 	if (LIKELY(IsValid(Char))) Char->SetInputEnabled(Enabled);
 	if (LIKELY(IsValid(InventoryMan))) InventoryMan->SetVisible(Enabled);
@@ -388,12 +388,19 @@ void ALGGameMode::ChapStart() {
 
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Attempting to start chapter id=%i feat=%s"),
 		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
+
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (UNLIKELY(!IsValid(Instance) || !IsValid(Story))) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs No game instance or story or story manager. Can't proceed."),
 			__func__);
 		return;
+	}
+
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) {
+		const TMap<FString, FString> Data = {{"ChapId",FString::FromInt(ChapterId)}, {"Feat", UEnum::GetValueAsString(ChapFeat)}};
+		Sentry->AddHint(__func__, Data);
 	}
 
 	// stop here to avoid getting the engine stuck trying to load chapters

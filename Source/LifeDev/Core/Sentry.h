@@ -4,6 +4,7 @@
 enum class EFeat : uint8;
 class USentrySubsystem;
 
+static TMap<FString, FString> EmptyData;
 UCLASS(Blueprintable)
 class LIFEDEV_API USentry: public UGameInstanceSubsystem {
 	GENERATED_BODY()
@@ -18,7 +19,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void TagRem(const FString& Tag) const;
 	UFUNCTION(BlueprintCallable, BlueprintPure=false,
-		meta=(AutoCreateRefTerm="Cat,Type"))
+		meta=(AutoCreateRefTerm="Cat,Type,Data"))
 	void AddHint(const FString& S,
 		const TMap<FString, FString>& Data,
 		const FString& Cat = "Default", const FString& Type ="Default");
