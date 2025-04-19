@@ -39,6 +39,8 @@ protected:
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
+	void Saving(const bool IsSaving);
+	UFUNCTION()
 	void StepStart(AStep* const Step);
 
 	UPROPERTY(Transient)
