@@ -7,6 +7,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
+// TODO think how to optimize this. a way to lazy-evaluate conditions. or lazy expansion of groups. only when about to be shown.
+
 UDiags* UDiags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 	
@@ -30,7 +32,7 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 
 	double Res = 0;
 	const bool Cond = CheckCondition(OutDialog.Condition, Res);
-	if (UNLIKELY(!Cond)) { 
+	if (UNLIKELY(!Cond)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
 			__func__, *Row.ToString(), *OutDialog.Condition);
 		return false;
@@ -85,7 +87,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	double Res;
 	const bool CondOk = CheckCondition(Seq.Condition, Res);
 
-	// these two use teh condition to select the dialog
+	// these two use the condition to select the dialog
 	if (Seq.Type == EGroupType::PICK_LOOP) {
 		const int32 i = FMath::Max(0, FMath::RoundToZero(FMath::Modulo(Res, Num)));
 		const FName DiagRow = Rows[i];
@@ -101,7 +103,7 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	// the rest use the condition to pass
 	if (UNLIKELY(!CondOk)) return false;
 	
-	if (Seq.Type == EGroupType::SEQUENCE) { 
+	if (Seq.Type == EGroupType::SEQUENCE) {
 		return AddIdMany(Rows);
 	}
 	
@@ -202,7 +204,7 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn) 
 		return false;
 	}
 
-	OutChar = *Row; // here im copying, which s-u-x. but blueprints wont take a pointer.
+	OutChar = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer.
 	return true;
 }
 

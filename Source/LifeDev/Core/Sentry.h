@@ -35,8 +35,6 @@ public:
 protected:
 	void InstInit();
 	void InstDeInit();
-
-	
 	void GameInit();
 	void GameDeInit();
 	UFUNCTION()
