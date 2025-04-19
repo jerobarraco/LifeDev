@@ -272,7 +272,7 @@ settings
 palette: in ue the color should be in the srgb thing. and preview in srgb should be enabled. when using the png palette.
 
 # performance (see performance file)
-always as i go
+## always as i go
 * lower tickinterval for canimator for _specific_ stuff. (leave 60 as default)
 * disable ticks, set use attach parent bounds, use auto-manage attachment, add csignificance to animators and ticks
 * use clsignificance, add to interacts that can animate far away (not on linteract) (e.g. lights, tv, basin, looping animations)

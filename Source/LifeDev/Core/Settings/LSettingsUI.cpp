@@ -183,5 +183,7 @@ void ULSettingsUI::SendComment(const int32 Id) {
 		static const FText& Sent = NSLOCTEXT("SettingsUI", "SentComment", "Sent! Thanks a lot!");
 		static const FText& Nice = NSLOCTEXT("SettingsUI", "SentCommentBtn", "Nice!");
 		MsgBox->SetUp(Sent, {Nice});
+		MsgBox->Show();
+		TComment->SetText(FText::FromString(""));
 	}
 }
