@@ -2,22 +2,25 @@
 
 #include "LSettingsUI.h"
 
-#include "JButton.h"
-#include "LSettings.h"
+
 #include "Components/Button.h"
 #include "Components/ComboBoxString.h"
+#include "Components/EditableTextBox.h"
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include "Kismet/GameplayStatics.h"
+
 #include "Interact/Animator/Anim.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
-#include "Kismet/GameplayStatics.h"
+#include "JButton.h"
+
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
-
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "UI/LSetDbgUI.h"
+#include "LSettings.h"
 
 namespace LSetUI {
 	// first one should be skippable. needs to be in ascending order.
@@ -137,8 +140,10 @@ void ULSettingsUI::NativeOnInitialized() {
 		if (UNLIKELY(Dbg)) BtnOptDbg->OnClicked.AddUniqueDynamic(this, &ULSettingsUI::ShowDbg);
 	}
 
-	if (LIKELY(BtnComment))
+	if (LIKELY(BtnComment)) {
+		BtnComment->SetUp(NSLOCTEXT("Settings", "BtnComment", "Send Feedback"));
 		BtnComment->OnClick.AddUniqueDynamic(this, &ULSettingsUI::SendComment);
+	}
 }
 
 void ULSettingsUI::NativeDestruct() {

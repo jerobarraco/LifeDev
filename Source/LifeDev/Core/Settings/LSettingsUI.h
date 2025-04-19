@@ -7,6 +7,7 @@
 
 #include "LSettingsUI.generated.h"
 
+class UEditableTextBox;
 class UJButton;
 class UTextBlock;
 class ULSetDbgUI;
@@ -59,7 +60,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TTime;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UTextBlock> TComment;
+	TObjectPtr<UEditableTextBox> TComment;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnComment;
 
