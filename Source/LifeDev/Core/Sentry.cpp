@@ -4,6 +4,7 @@
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/LGameInstance.h"
+#include "Settings/LSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
 
@@ -35,5 +36,6 @@ void USentry::GameInit() {
 	// TODO get subsystems and bind
 }
 void USentry::GameDeInit() {
-	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
 }
