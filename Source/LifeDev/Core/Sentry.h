@@ -4,6 +4,7 @@
 
 #include "Sentry.generated.h"
 
+struct FDiag;
 class AStep;
 enum class EFeat : uint8;
 class USentrySubsystem;
@@ -34,6 +35,8 @@ public:
 protected:
 	void InstInit();
 	void InstDeInit();
+
+	
 	void GameInit();
 	void GameDeInit();
 	UFUNCTION()
@@ -44,6 +47,10 @@ protected:
 	void StepStart(AStep* const Step);
 	UFUNCTION()
 	void StepStop(AStep* const Step);
+	UFUNCTION()
+	void DiagAdd(const FName Name, const FDiag& Diag);
+	UFUNCTION()
+	void DiagDone();
 
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;

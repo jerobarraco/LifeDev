@@ -1,6 +1,7 @@
 #include "Sentry.h"
 
 #include "SentrySubsystem.h"
+#include "Diags/Diags.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/LGameInstance.h"
@@ -66,7 +67,11 @@ void USentry::GameInit() {
 		Story->OnStop.AddUniqueDynamic(this, &USentry::StepStop);
 	}
 
-	
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) { // TODO careful this could slow the game
+		Diags->OnAdd.AddUniqueDynamic(this, &USentry::DiagAdd);
+		Diags->OnDone.AddUniqueDynamic(this, &USentry::DiagDone);
+	}
 }
 
 void USentry::GameDeInit() {
@@ -80,6 +85,12 @@ void USentry::GameDeInit() {
 	if (LIKELY(Story)) {
 		Story->OnStart.RemoveAll(this);
 		Story->OnStop.RemoveAll(this);
+	}
+
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) {
+		Diags->OnAdd.RemoveAll(this);
+		Diags->OnDone.RemoveAll(this);
 	}
 	
 	if (LIKELY(Sub)) Sub->ClearBreadcrumbs();
@@ -110,4 +121,15 @@ void USentry::StepStop(AStep* const Step) {
 	if (IsValid(Step))
 		AddHint(TagNameStep, {{"Name", Step->Name.ToString()}});
 	TagRem(TagNameStep);
+}
+
+void USentry::DiagAdd(const FName Name, const FDiag& Diag) {
+	static const FString Hint("Diag::Add");
+	AddHint(Hint, {{"Name",Name.ToString()}});
+	
+}
+
+void USentry::DiagDone() {
+	static const FString Hint("Diag::Done");
+	AddHint(Hint, {});
 }
