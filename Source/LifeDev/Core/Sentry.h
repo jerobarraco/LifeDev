@@ -1,6 +1,7 @@
 #pragma once
 #include "Sentry.generated.h"
 
+enum class EFeat : uint8;
 class USentrySubsystem;
 
 UCLASS(Blueprintable)
@@ -13,15 +14,17 @@ public:
 	void SendComment(const FString& FB) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void TagSet(const FName& Tag, const FString& Val) const;
+	void TagSet(const FString& Tag, const FString& Val) const;
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void TagRem(const FName& Tag) const;
+	void TagRem(const FString& Tag) const;
 	
 protected:
 	void InstInit();
 	void InstDeInit();
 	void GameInit();
 	void GameDeInit();
+	UFUNCTION()
+	void FeatUp(const EFeat Feat, const bool Enabled);
 
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;

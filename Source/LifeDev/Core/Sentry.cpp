@@ -21,14 +21,14 @@ void USentry::SendComment(const FString& FB) const {
 	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
 }
 
-void USentry::TagSet(const FName& Tag, const FString& Val) const {
+void USentry::TagSet(const FString& Tag, const FString& Val) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
-	Sub->SetTag(Tag.ToString(), Val);
+	Sub->SetTag(Tag, Val);
 }
 
-void USentry::TagRem(const FName& Tag) const {
+void USentry::TagRem(const FString& Tag) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
-	Sub->RemoveTag(Tag.ToString());
+	Sub->RemoveTag(Tag);
 }
 
 void USentry::InstInit() {
@@ -42,9 +42,23 @@ void USentry::InstDeInit() {
 }
 
 void USentry::GameInit() {
-	// TODO get subsystems and bind
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings))
+		Settings->OnFeatUpdate.AddUniqueDynamic(this, &USentry::FeatUp);
 }
+
+
 void USentry::GameDeInit() {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
+}
+
+void USentry::FeatUp(const EFeat Feat, const bool Enabled) {
+	static const FName TagFeat("Feat");
+	const FString& Tag = UEnum::GetValueAsString(Feat);
+	if (Enabled) {
+		TagSet(Tag, "On");
+	}
+	else
+		TagRem(Tag);
 }
