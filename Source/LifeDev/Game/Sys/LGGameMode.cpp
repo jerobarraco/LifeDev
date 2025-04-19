@@ -3,13 +3,13 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
-#include "Eval.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/PostProcessVolume.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
+#include "Eval.h"
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
@@ -397,7 +397,7 @@ void ALGGameMode::ChapStart() {
 		return;
 	}
 
-	USentry* const Sentry = USentry::Instance(this);
+	const USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) {
 		const TMap<FString, FString> Data = {{"ChapId",FString::FromInt(ChapterId)}, {"Feat", UEnum::GetValueAsString(ChapFeat)}};
 		Sentry->AddHint(__func__, Data);
@@ -422,6 +422,7 @@ void ALGGameMode::ChapStart() {
 	/// load new one
 	if (UNLIKELY(!ChapLoad())) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
+		if (LIKELY(Sentry)) Sentry->AddMsg("Failed to load chapter", ESentryLevel::Error);
 		return;
 	}
 

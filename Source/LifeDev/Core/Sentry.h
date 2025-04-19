@@ -1,5 +1,7 @@
 #pragma once
+
 #include "SentryDataTypes.h"
+
 #include "Sentry.generated.h"
 
 enum class EFeat : uint8;
@@ -11,6 +13,7 @@ class LIFEDEV_API USentry: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 public:
 	static USentry* Instance(const UObject* const O);;
+	static void SAddMsg();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SendComment(const FString& FB) const;
