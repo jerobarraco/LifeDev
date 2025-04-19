@@ -18,7 +18,7 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;
 
-	friend class ULGGameMode;
+	friend class ALGGameMode;
 	friend class ULGameInstance;
 };
 

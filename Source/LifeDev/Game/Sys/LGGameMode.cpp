@@ -35,6 +35,7 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
+#include "LifeDev/Core/Story/Sentry.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
@@ -69,12 +70,15 @@ void ALGGameMode::BeginPlay() {
 	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
-	
+
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (UNLIKELY(!IsValid(Instance))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found"), __func__);
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found!"), __func__);
 		return;
 	}
+
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->GameInit();
 
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (UNLIKELY(!IsValid(Settings))) {
@@ -352,6 +356,9 @@ void ALGGameMode::DeInit() {
 		Story->OnSeqStop.RemoveAll(this);
 		Story->OnFade.RemoveAll(this);
 	}
+
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->GameDeInit();
 
 	// nullify at end in case someone tries to reference them
 	Eval = nullptr;
