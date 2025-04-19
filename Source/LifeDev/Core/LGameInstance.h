@@ -14,7 +14,7 @@ class LIFEDEV_API ULGameInstance : public UGameInstance {
 
 public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static ULGameInstance* Instance(UObject* const O);
+	static ULGameInstance* Instance(const UObject* const O);
 
 	virtual void Init() override;
 

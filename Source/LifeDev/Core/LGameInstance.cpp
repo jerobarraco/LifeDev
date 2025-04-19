@@ -9,11 +9,11 @@
 #include "Settings/LSysSettings.h"
 #include "Story/Sentry.h"
 
-ULGameInstance* ULGameInstance::Instance(UObject* const O) {
-	if (!IsValid(O)) return nullptr;
+ULGameInstance* ULGameInstance::Instance(const UObject* const O) {
+	if (UNLIKELY(!IsValid(O))) return nullptr;
 	
 	const UWorld* const World = O->GetWorld();
-	if (!World) return nullptr;
+	if (UNLIKELY(!World)) return nullptr;
 
 	return Cast<ULGameInstance>(World->GetGameInstance());
 }

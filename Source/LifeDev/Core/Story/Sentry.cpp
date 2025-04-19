@@ -1,13 +1,13 @@
 #include "Sentry.h"
 
 #include "SentrySubsystem.h"
-#include "Kismet/GameplayStatics.h"
+
+#include "LifeDev/Core/LGameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
 
 USentry* USentry::Instance(const UObject* const O) {
-	if (UNLIKELY(!IsValid(O))) return nullptr;
-	const UGameInstance* const Instance = UGameplayStatics::GetGameInstance(O);
+	const ULGameInstance* const Instance = ULGameInstance::Instance(O);
 	if (UNLIKELY(!IsValid(Instance))) return nullptr;
 
 	return Instance->GetSubsystem<USentry>();
