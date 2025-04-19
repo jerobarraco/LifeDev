@@ -5,9 +5,10 @@
 #include "MoviePlayer.h"
 
 #include "JUtils/Misc/JUtilsSys.h"
+
 #include "Settings/LSettings.h"
 #include "Settings/LSysSettings.h"
-#include "Story/Sentry.h"
+#include "Sentry.h"
 
 ULGameInstance* ULGameInstance::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;

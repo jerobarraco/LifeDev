@@ -27,6 +27,7 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSave.h"
@@ -35,7 +36,6 @@
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
-#include "LifeDev/Core/Story/Sentry.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LGPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
