@@ -31,9 +31,14 @@ void USentry::TagRem(const FString& Tag) const {
 	Sub->RemoveTag(Tag);
 }
 
-void USentry::AddHint(const FString& S, const TMap<FString, FString>& Data, const FString& Cat, const FString& Type) {
+void USentry::AddHint(const FString& Hint, const TMap<FString, FString>& Data, const FString& Cat, const FString& Type) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
-	Sub->AddBreadcrumbWithParams(S, Cat, Type, Data);
+	Sub->AddBreadcrumbWithParams(Hint, Cat, Type, Data);
+}
+
+void USentry::AddMsg(const FString& Msg, const ESentryLevel& Level) const {
+	if (UNLIKELY(!IsValid(Sub))) return;
+	Sub->CaptureMessage(Msg, Level);
 }
 
 void USentry::InstInit() {

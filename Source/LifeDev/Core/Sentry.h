@@ -1,4 +1,5 @@
 #pragma once
+#include "SentryDataTypes.h"
 #include "Sentry.generated.h"
 
 enum class EFeat : uint8;
@@ -19,10 +20,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void TagRem(const FString& Tag) const;
 	UFUNCTION(BlueprintCallable, BlueprintPure=false,
-		meta=(AutoCreateRefTerm="Cat,Type,Data"))
-	void AddHint(const FString& S,
+		meta=(AutoCreateRefTerm="Hint,Cat,Type,Data"))
+	void AddHint(const FString& Hint,
 		const TMap<FString, FString>& Data,
-		const FString& Cat = "Default", const FString& Type ="Default");
+		const FString& Cat = "Default", const FString& Type ="Default") const;
+	UFUNCTION(BlueprintCallable, BlueprintPure=false,
+		meta=(AutoCreateRefTerm="Msg, Default"))
+	void AddMsg(const FString& Msg, const ESentryLevel& Level = ESentryLevel::Info) const;
 
 protected:
 	void InstInit();
