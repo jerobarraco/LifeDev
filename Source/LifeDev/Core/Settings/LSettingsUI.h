@@ -7,6 +7,7 @@
 
 #include "LSettingsUI.generated.h"
 
+class ULMsgBox;
 class UEditableTextBox;
 class UJButton;
 class UTextBlock;
@@ -63,6 +64,9 @@ protected:
 	TObjectPtr<UEditableTextBox> TComment;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnComment;
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULMsgBox> MsgBox;
 
 	FTimerHandle PauseTimer;
 	float PauseTime = .5;

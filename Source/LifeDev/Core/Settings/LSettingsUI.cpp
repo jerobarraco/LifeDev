@@ -20,6 +20,7 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "UI/LSetDbgUI.h"
+#include "UI/LMsgBox.h"
 #include "LSettings.h"
 
 namespace LSetUI {
@@ -174,8 +175,13 @@ void ULSettingsUI::SetPause() {
 }
 
 void ULSettingsUI::SendComment(const int32 Id) {
-	USentry* const Sentry = USentry::Instance(this);
+	const USentry* const Sentry = USentry::Instance(this);
 	if (UNLIKELY(!Sentry || !TComment )) return;
 
 	Sentry->SendComment(TComment->GetText().ToString());
+	if (LIKELY(MsgBox)) {
+		static const FText& Sent = NSLOCTEXT("SettingsUI", "SentComment", "Sent! Thanks a lot!");
+		static const FText& Nice = NSLOCTEXT("SettingsUI", "SentCommentBtn", "Nice!");
+		MsgBox->SetUp(Sent, {Nice});
+	}
 }

@@ -247,7 +247,7 @@ later
 # art
 all
 * make more rooms
-* some accesories, like paper notes, pictures, 
+* some accesories, like paper notes, pictures,
 * make better water parts using refraction
 
 c04
