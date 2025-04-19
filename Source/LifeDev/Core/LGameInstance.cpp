@@ -4,10 +4,10 @@
 
 #include "MoviePlayer.h"
 
-#include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "Settings/LSettings.h"
 #include "Settings/LSysSettings.h"
+#include "Story/Sentry.h"
 
 ULGameInstance* ULGameInstance::Instance(UObject* const O) {
 	if (!IsValid(O)) return nullptr;
@@ -25,7 +25,7 @@ void ULGameInstance::Init() {
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
 	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
-
+	USentry::Instance(this);
 	// force disable debug flags
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
