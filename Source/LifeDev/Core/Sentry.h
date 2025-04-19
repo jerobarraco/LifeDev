@@ -42,6 +42,8 @@ protected:
 	void Saving(const bool IsSaving);
 	UFUNCTION()
 	void StepStart(AStep* const Step);
+	UFUNCTION()
+	void StepStop(AStep* const Step);
 
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;

@@ -248,7 +248,6 @@ later
 all
 * make more rooms
 * some accesories, like paper notes, pictures,
-* make better water parts using refraction
 
 c04
 * redo rice plate
@@ -467,3 +466,4 @@ not:
   *** gets the real sentry subsystem and sets other tags and params
   *** add function for tag
 * new : use ddx ddy for outline and watch performance
+* make better water parts using refraction

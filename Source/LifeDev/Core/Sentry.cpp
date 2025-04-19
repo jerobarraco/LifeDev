@@ -61,7 +61,12 @@ void USentry::GameInit() {
 	}
 
 	UStory* const Story = UStory::Instance(this);
-	if (LIKELY(Story)) Story->OnStart.AddUniqueDynamic(this, &USentry::StepStart);
+	if (LIKELY(Story)) {
+		Story->OnStart.AddUniqueDynamic(this, &USentry::StepStart);
+		Story->OnStop.AddUniqueDynamic(this, &USentry::StepStop);
+	}
+
+	
 }
 
 void USentry::GameDeInit() {
@@ -72,7 +77,10 @@ void USentry::GameDeInit() {
 	}
 
 	UStory* const Story = UStory::Instance(this);
-	if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
+	if (LIKELY(Story)) {
+		Story->OnStart.RemoveAll(this);
+		Story->OnStop.RemoveAll(this);
+	}
 	
 	if (LIKELY(Sub)) Sub->ClearBreadcrumbs();
 }
@@ -91,8 +99,15 @@ void USentry::Saving(const bool IsSaving) {
 	AddHint(Tag, {{TEXT("Saving"), On}});
 }
 
+static const FString TagNameStep("Story::Step");
 void USentry::StepStart(AStep* const Step) {
 	const FString& N = LIKELY(IsValid(Step)) ? Step->Name.ToString() : TEXT("");
-	static const FString TagName("Story::Step");
-	TagSet(TagName, N);
+	AddHint(TagNameStep, {{"Name", N}});
+	TagSet(TagNameStep, N);
+}
+
+void USentry::StepStop(AStep* const Step) {
+	if (IsValid(Step))
+		AddHint(TagNameStep, {{"Name", Step->Name.ToString()}});
+	TagRem(TagNameStep);
 }
