@@ -17,3 +17,7 @@ void USentry::InstInit() {
 	Sub = GEngine->GetEngineSubsystem<USentrySubsystem>();
 	UE_CLOG(!IsValid(Sub), LogSentry, Warning, TEXT("%hs SEntry subsystem can't be found"));
 }
+
+void USentry::InstDeInit() {
+	Sub = nullptr;
+}

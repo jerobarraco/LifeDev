@@ -25,7 +25,10 @@ void ULGameInstance::Init() {
 	// create widget https://forums.unrealengine.com/t/createwidget-c/462559/2
 	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &ULGameInstance::BeginLoadingScreen);
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ULGameInstance::EndLoadingScreen);
-	USentry::Instance(this);
+
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->InstInit();
+	
 	// force disable debug flags
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
@@ -55,11 +58,13 @@ void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
 }
 
 void ULGameInstance::BeginDestroy() {
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->InstDeInit();
+
 	// attempt to open the feedback url if any. it crashes on module shutdown.
 	const ULSysSettings* const SSettings = ULSysSettings::Get();
 	if (LIKELY(!CloseTriggered && !IsRunningCookCommandlet() && !UJUtilsSys::IsEditor() && IsValid(SSettings) && !SSettings->CloseURL.IsEmpty()))
 		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
 	CloseTriggered = true;
-
 	Super::BeginDestroy();
 }

@@ -10,8 +10,8 @@ public:
 	static USentry* Instance(const UObject* const O);;
 
 protected:
-	void InstInit(); // todo
-	void InstDeInit() {};
+	void InstInit();
+	void InstDeInit();
 	void GameInit() {};//todo
 	void GameDeInit() {}; //todo
 
@@ -21,3 +21,4 @@ protected:
 	friend class ULGGameMode;
 	friend class ULGameInstance;
 };
+
