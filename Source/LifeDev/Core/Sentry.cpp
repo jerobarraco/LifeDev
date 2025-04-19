@@ -15,10 +15,20 @@ USentry* USentry::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<USentry>();
 }
 
-void USentry::SendComment(const FString& FB) {
+void USentry::SendComment(const FString& FB) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 	const FString& Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
 	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
+}
+
+void USentry::TagSet(const FName& Tag, const FString& Val) const {
+	if (UNLIKELY(!IsValid(Sub))) return;
+	Sub->SetTag(Tag.ToString(), Val);
+}
+
+void USentry::TagRem(const FName& Tag) const {
+	if (UNLIKELY(!IsValid(Sub))) return;
+	Sub->RemoveTag(Tag.ToString());
 }
 
 void USentry::InstInit() {
