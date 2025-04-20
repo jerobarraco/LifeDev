@@ -6,5 +6,4 @@
 
 ACard00::ACard00():Super() {
 	RewardItem = LDConsts::Items::Card0;
-	// TriggerDlg = "C0_Pick";
 }
