@@ -21,7 +21,7 @@ USentry* USentry::Instance(const UObject* const O) {
 void USentry::SendComment(const FString& FB) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 	const FString& Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
-	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
+	Sub->CaptureUserFeedbackWithParams(Id, "", FB, "[user]");
 }
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {

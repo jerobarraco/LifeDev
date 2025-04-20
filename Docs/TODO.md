@@ -44,6 +44,24 @@
 
 ## new
 
+* remove card interactions with char and items and door
+
+* on chap 0 end, start the camera from 1st person. so its clear you are him.
+
+* ch 02: make the double door locked. o.ens with a key.
+  ** have a key sobmewhere else
+  ** use screwdriver as key
+  *** maybe card whatworxs turns the screwdriver into a key
+
+* idea, make the puzzle appear after each character. reward the card.
+  ** ch00 make the puzzle appear in front of door after basin and spot are complete.
+  *** make door say something about puzzle ?
+  *** door waits for card
+  *** but step ends with card
+  ** ch 01 puzzle appears when the character appers sitting
+
+* sentry remove user name from sontry
+* 
 * card what works turns items into usable ones.
   ** merges, unlocks, reduce cool downs, etc. shows dialog
   *** add autodialog with items as params
