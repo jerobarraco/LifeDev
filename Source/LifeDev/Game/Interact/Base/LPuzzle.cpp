@@ -68,6 +68,12 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
 	}
 }
 
+void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
+	Super::SetActorHiddenInGame(NewHidden);
+	if (UNLIKELY(CPuzzle)) return;
+	CPuzzle->SetHiddens(NewHidden);
+}
+
 void ALPuzzle::Reset() {
 	Super::Reset();
 	ClearTimer();

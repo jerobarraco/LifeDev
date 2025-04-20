@@ -31,7 +31,7 @@ public:
 	FORCEINLINE void SetStates(const TArray<int32>& States) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
-	
+
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
@@ -51,6 +51,8 @@ public:
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
+
+	void SetActorHiddenInGame(bool NewHidden) override;
 
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;

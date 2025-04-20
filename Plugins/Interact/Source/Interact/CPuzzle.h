@@ -65,8 +65,12 @@ public:
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetLocks(const TArray<bool>& Locks);
+
+	// set actors as hidden (or not). in game, not editor.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	void SetHiddens(const bool NewHidden);
 	
 	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
@@ -81,6 +85,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	const TArray<int32>& GetCurrents() const { return CurrentIds; }
+
+	
 
 	// the puzzle type. controls the behavior.
 	// beware of changing this after BeginPlay.

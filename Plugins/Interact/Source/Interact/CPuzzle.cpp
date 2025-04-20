@@ -302,3 +302,10 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 		I->IsLocked = Locks[i];
 	}
 }
+
+void UCPuzzle::SetHiddens(const bool NewHidden) {
+	for (AInteract* const I: Interacts) {
+		if (UNLIKELY(!IsValid(I))) continue;
+		I->SetActorHiddenInGame(NewHidden);
+	}
+}
