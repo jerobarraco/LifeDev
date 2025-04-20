@@ -13,17 +13,17 @@
 class USentrySettings;
 class USentryBreadcrumb;
 class USentryEvent;
+class USentryId;
 class USentryUserFeedback;
 class USentryUser;
 class USentryBeforeSendHandler;
-class USentryBeforeBreadcrumbHandler;
 class USentryTransaction;
 class USentryTraceSampler;
 class USentryTransactionContext;
 
 class ISentrySubsystem;
 class FSentryOutputDevice;
-class FSentryErrorOutputDevice;
+class FSentryOutputDeviceError;
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FConfigureSettingsDelegate, USentrySettings*, Settings);
 
@@ -55,11 +55,11 @@ public:
 
 	/** Checks whether the Sentry SDK was initialized and event capturing is enabled. */
 	UFUNCTION(BlueprintPure, Category = "Sentry")
-	bool IsEnabled() const;
+	bool IsEnabled();
 
 	/** Checks whether the app crashed during the last run. */
 	UFUNCTION(BlueprintPure, Category = "Sentry")
-	ESentryCrashedLastRun IsCrashedLastRun() const;
+	ESentryCrashedLastRun IsCrashedLastRun();
 
 	/**
 	 * Adds a breadcrumb to the current Scope.
@@ -106,11 +106,9 @@ public:
 	 *
 	 * @param Message The message to send.
 	 * @param Level The message level.
-	 *
-	 * @return Event ID (non-empty if successful)
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	FString CaptureMessage(const FString& Message, ESentryLevel Level = ESentryLevel::Info);
+	USentryId* CaptureMessage(const FString& Message, ESentryLevel Level = ESentryLevel::Info);
 
 	/**
 	 * Captures the message with a configurable scope.
@@ -121,21 +119,19 @@ public:
 	 * @param OnConfigureScope The callback to configure the scope.
 	 * @param Level The message level.
 	 *
-	 * @return Event ID (non-empty if successful)
+	 * @note: Not supported for Windows/Linux.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry", meta = (AutoCreateRefTerm = "OnConfigureScope"))
-	FString CaptureMessageWithScope(const FString& Message, const FConfigureScopeDelegate& OnConfigureScope, ESentryLevel Level = ESentryLevel::Info);
-	FString CaptureMessageWithScope(const FString& Message, const FConfigureScopeNativeDelegate& OnConfigureScope, ESentryLevel Level = ESentryLevel::Info);
+	USentryId* CaptureMessageWithScope(const FString& Message, const FConfigureScopeDelegate& OnConfigureScope, ESentryLevel Level = ESentryLevel::Info);
+	USentryId* CaptureMessageWithScope(const FString& Message, const FConfigureScopeNativeDelegate& OnConfigureScope, ESentryLevel Level = ESentryLevel::Info);
 
 	/**
 	 * Captures a manually created event and sends it to Sentry.
 	 *
 	 * @param Event The event to send to Sentry.
-	 *
-	 * @return Event ID (non-empty if successful)
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	FString CaptureEvent(USentryEvent* Event);
+	USentryId* CaptureEvent(USentryEvent* Event);
 
 	/**
 	 * Captures a manually created event and sends it to Sentry.
@@ -143,16 +139,18 @@ public:
 	 * @param Event The event to send to Sentry.
 	 * @param OnConfigureScope The callback to configure the scope.
 	 *
-	 * @return Event ID (non-empty if successful)
+	 * @note: Not supported for Windows/Linux.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	FString CaptureEventWithScope(USentryEvent* Event, const FConfigureScopeDelegate& OnConfigureScope);
-	FString CaptureEventWithScope(USentryEvent* Event, const FConfigureScopeNativeDelegate& OnConfigureScope);
+	USentryId* CaptureEventWithScope(USentryEvent* Event, const FConfigureScopeDelegate& OnConfigureScope);
+	USentryId* CaptureEventWithScope(USentryEvent* Event, const FConfigureScopeNativeDelegate& OnConfigureScope);
 
 	/**
 	 * Captures a user feedback.
 	 *
 	 * @param UserFeedback The user feedback to send to Sentry.
+	 *
+	 * @note: Not supported for Windows/Linux.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
 	void CaptureUserFeedback(USentryUserFeedback* UserFeedback);
@@ -164,9 +162,11 @@ public:
 	 * @param Email The user email.
 	 * @param Comments The user comments.
 	 * @param Name The optional username.
+	 *
+	 * @note: Not supported for Windows/Linux.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	void CaptureUserFeedbackWithParams(const FString& EventId, const FString& Email, const FString& Comments, const FString& Name);
+	void CaptureUserFeedbackWithParams(USentryId* EventId, const FString& Email, const FString& Comments, const FString& Name);
 
 	/**
 	 * Sets a user for the current scope.
@@ -292,7 +292,7 @@ public:
 
 	/** Checks if Sentry event capturing is supported for current settings. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	bool IsSupportedForCurrentSettings() const;
+	bool IsSupportedForCurrentSettings();
 
 private:
 	/** Adds default context data for all events captured by Sentry SDK. */
@@ -314,30 +314,31 @@ private:
 	void DisableAutomaticBreadcrumbs();
 
 	/** Check whether the event capturing should be enabled for the current build configuration */
-	bool IsCurrentBuildConfigurationEnabled() const;
+	bool IsCurrentBuildConfigurationEnabled();
 
 	/** Check whether the event capturing should be enabled for the current build target */
-	bool IsCurrentBuildTargetEnabled() const;
+	bool IsCurrentBuildTargetEnabled();
+
+	/** Check whether the event capturing should be enabled for the current platform */
+	bool IsCurrentPlatformEnabled();
 
 	/** Check whether the event capturing should be enabled for promoted builds only */
-	bool IsPromotedBuildsOnlyEnabled() const;
+	bool IsPromotedBuildsOnlyEnabled();
 
 	/** Add custom Sentry output device to intercept logs */
 	void ConfigureOutputDevice();
 
 	/** Add custom Sentry output device to intercept errors */
-	void ConfigureErrorOutputDevice();
+	void ConfigureOutputDeviceError();
 
 private:
 	TSharedPtr<ISentrySubsystem> SubsystemNativeImpl;
 
 	TSharedPtr<FSentryOutputDevice> OutputDevice;
-	TSharedPtr<FSentryErrorOutputDevice> OutputDeviceError;
+	TSharedPtr<FSentryOutputDeviceError> OutputDeviceError;
 
 	UPROPERTY()
 	USentryBeforeSendHandler* BeforeSendHandler;
-	UPROPERTY()
-	USentryBeforeBreadcrumbHandler* BeforeBreadcrumbHandler;
 
 	UPROPERTY()
 	USentryTraceSampler* TraceSampler;

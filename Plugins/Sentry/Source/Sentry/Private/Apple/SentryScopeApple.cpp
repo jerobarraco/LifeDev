@@ -5,7 +5,7 @@
 #include "SentryBreadcrumbApple.h"
 #include "SentryAttachmentApple.h"
 
-#include "Infrastructure/SentryConvertersApple.h"
+#include "Infrastructure/SentryConvertorsApple.h"
 
 #include "Convenience/SentryInclude.h"
 #include "Convenience/SentryMacro.h"
@@ -73,13 +73,13 @@ void SentryScopeApple::RemoveTag(const FString& key)
 
 void SentryScopeApple::SetTags(const TMap<FString, FString>& tags)
 {
-	[ScopeApple setTags:SentryConvertersApple::StringMapToNative(tags)];
+	[ScopeApple setTags:SentryConvertorsApple::StringMapToNative(tags)];
 }
 
 TMap<FString, FString> SentryScopeApple::GetTags() const
 {
 	NSDictionary* scopeDict = [ScopeApple serialize];
-	return SentryConvertersApple::StringMapToUnreal(scopeDict[@"tags"]);
+	return SentryConvertorsApple::StringMapToUnreal(scopeDict[@"tags"]);
 }
 
 void SentryScopeApple::SetDist(const FString& dist)
@@ -106,31 +106,31 @@ FString SentryScopeApple::GetEnvironment() const
 
 void SentryScopeApple::SetFingerprint(const TArray<FString>& fingerprint)
 {
-	[ScopeApple setFingerprint:SentryConvertersApple::StringArrayToNative(fingerprint)];
+	[ScopeApple setFingerprint:SentryConvertorsApple::StringArrayToNative(fingerprint)];
 }
 
 TArray<FString> SentryScopeApple::GetFingerprint() const
 {
 	NSDictionary* scopeDict = [ScopeApple serialize];
 	NSArray* fingerprint = scopeDict[@"fingerprint"];
-	return SentryConvertersApple::StringArrayToUnreal(fingerprint);
+	return SentryConvertorsApple::StringArrayToUnreal(fingerprint);
 }
 
 void SentryScopeApple::SetLevel(ESentryLevel level)
 {
-	[ScopeApple setLevel:SentryConvertersApple::SentryLevelToNative(level)];
+	[ScopeApple setLevel:SentryConvertorsApple::SentryLevelToNative(level)];
 }
 
 ESentryLevel SentryScopeApple::GetLevel() const
 {
 	NSDictionary* scopeDict = [ScopeApple serialize];
-	SentryLevel level = SentryConvertersApple::StringToSentryLevel(scopeDict[@"level"]);
-	return SentryConvertersApple::SentryLevelToUnreal(level);
+	SentryLevel level = SentryConvertorsApple::StringToSentryLevel(scopeDict[@"level"]);
+	return SentryConvertorsApple::SentryLevelToUnreal(level);
 }
 
 void SentryScopeApple::SetContext(const FString& key, const TMap<FString, FString>& values)
 {
-	[ScopeApple setContextValue:SentryConvertersApple::StringMapToNative(values) forKey:key.GetNSString()];
+	[ScopeApple setContextValue:SentryConvertorsApple::StringMapToNative(values) forKey:key.GetNSString()];
 }
 
 void SentryScopeApple::RemoveContext(const FString& key)
@@ -157,13 +157,13 @@ void SentryScopeApple::RemoveExtra(const FString& key)
 
 void SentryScopeApple::SetExtras(const TMap<FString, FString>& extras)
 {
-	[ScopeApple setExtras:SentryConvertersApple::StringMapToNative(extras)];
+	[ScopeApple setExtras:SentryConvertorsApple::StringMapToNative(extras)];
 }
 
 TMap<FString, FString> SentryScopeApple::GetExtras() const
 {
 	NSDictionary* scopeDict = [ScopeApple serialize];
-	return SentryConvertersApple::StringMapToUnreal(scopeDict[@"extra"]);
+	return SentryConvertorsApple::StringMapToUnreal(scopeDict[@"extra"]);
 }
 
 void SentryScopeApple::Clear()

@@ -2,7 +2,6 @@
 
 #include "SentryBeforeSendHandler.h"
 
-#include "SentryLibrary.h"
 #include "SentryModule.h"
 #include "SentrySettings.h"
 #include "SentryEvent.h"
@@ -17,7 +16,7 @@ USentryEvent* USentryBeforeSendHandler::HandleBeforeSend_Implementation(USentryE
 {
 	const USentrySettings* Settings = FSentryModule::Get().GetSettings();
 
-	if (Settings->EnableAutoLogAttachment && Hint != nullptr)
+	if(Settings->EnableAutoLogAttachment)
 	{
 #if PLATFORM_ANDROID || PLATFORM_APPLE
 		const FString LogFilePath = Event->IsCrash() ? SentryFileUtils::GetGameLogBackupPath() : SentryFileUtils::GetGameLogPath();
@@ -25,13 +24,13 @@ USentryEvent* USentryBeforeSendHandler::HandleBeforeSend_Implementation(USentryE
 		const FString LogFilePath = SentryFileUtils::GetGameLogPath();
 #endif
 
-		Hint->AddAttachment(
-			USentryLibrary::CreateSentryAttachmentWithPath(
-				LogFilePath,
-				FPaths::GetCleanFilename(LogFilePath),
-				TEXT("text/plain")
-			)
-		);
+		USentryAttachment* Attachment = NewObject<USentryAttachment>();
+		Attachment->InitializeWithPath(LogFilePath, FPaths::GetCleanFilename(LogFilePath), TEXT("text/plain"));
+
+		if(Hint != nullptr)
+		{
+			Hint->AddAttachment(Attachment);
+		}
 	}
 
 	return Event;

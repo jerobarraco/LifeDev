@@ -1,9 +1,8 @@
 // Copyright (c) 2022 Sentry. All Rights Reserved.
 
 #include "SentryEventApple.h"
-#include "SentryIdApple.h"
 
-#include "Infrastructure/SentryConvertersApple.h"
+#include "Infrastructure/SentryConvertorsApple.h"
 
 #include "Convenience/SentryInclude.h"
 #include "Convenience/SentryMacro.h"
@@ -28,12 +27,6 @@ SentryEvent* SentryEventApple::GetNativeObject()
 	return EventApple;
 }
 
-TSharedPtr<ISentryId> SentryEventApple::GetId() const
-{
-	SentryId* id = EventApple.eventId;
-	return MakeShareable(new SentryIdApple(id));
-}
-
 void SentryEventApple::SetMessage(const FString& message)
 {
 	SentryMessage* msg = [SENTRY_APPLE_CLASS(SentryMessage) alloc];
@@ -49,12 +42,12 @@ FString SentryEventApple::GetMessage() const
 
 void SentryEventApple::SetLevel(ESentryLevel level)
 {
-	EventApple.level = SentryConvertersApple::SentryLevelToNative(level);
+	EventApple.level = SentryConvertorsApple::SentryLevelToNative(level);
 }
 
 ESentryLevel SentryEventApple::GetLevel() const
 {
-	return SentryConvertersApple::SentryLevelToUnreal(EventApple.level);
+	return SentryConvertorsApple::SentryLevelToUnreal(EventApple.level);
 }
 
 bool SentryEventApple::IsCrash() const

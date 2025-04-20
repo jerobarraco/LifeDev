@@ -17,7 +17,6 @@ class ISentryScope;
 
 class USentrySettings;
 class USentryBeforeSendHandler;
-class USentryBeforeBreadcrumbHandler;
 class USentryTraceSampler;
 
 DECLARE_DELEGATE_OneParam(FSentryScopeDelegate, TSharedPtr<ISentryScope>);
@@ -27,7 +26,7 @@ class ISentrySubsystem
 public:
 	virtual ~ISentrySubsystem() = default;
 
-	virtual void InitWithSettings(const USentrySettings* settings, USentryBeforeSendHandler* beforeSendHandler, USentryBeforeBreadcrumbHandler* beforeBreadcrumbHandler, USentryTraceSampler* traceSampler) = 0;
+	virtual void InitWithSettings(const USentrySettings* settings, USentryBeforeSendHandler* beforeSendHandler, USentryTraceSampler* traceSampler) = 0;
 	virtual void Close() = 0;
 	virtual bool IsEnabled() = 0;
 	virtual ESentryCrashedLastRun IsCrashedLastRun() = 0;
@@ -38,6 +37,8 @@ public:
 	virtual TSharedPtr<ISentryId> CaptureMessageWithScope(const FString& message, const FSentryScopeDelegate& onConfigureScope, ESentryLevel level) = 0;
 	virtual TSharedPtr<ISentryId> CaptureEvent(TSharedPtr<ISentryEvent> event) = 0;
 	virtual TSharedPtr<ISentryId> CaptureEventWithScope(TSharedPtr<ISentryEvent> event, const FSentryScopeDelegate& onConfigureScope) = 0;
+	virtual TSharedPtr<ISentryId> CaptureException(const FString& type, const FString& message, int32 framesToSkip = 0) = 0;
+	virtual TSharedPtr<ISentryId> CaptureAssertion(const FString& type, const FString& message) = 0;
 	virtual TSharedPtr<ISentryId> CaptureEnsure(const FString& type, const FString& message) = 0;
 	virtual void CaptureUserFeedback(TSharedPtr<ISentryUserFeedback> userFeedback) = 0;
 	virtual void SetUser(TSharedPtr<ISentryUser> user) = 0;

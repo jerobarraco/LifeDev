@@ -3,7 +3,7 @@
 #include "SentrySamplingContextAndroid.h"
 #include "SentryTransactionContextAndroid.h"
 
-#include "Infrastructure/SentryConvertersAndroid.h"
+#include "Infrastructure/SentryConvertorsAndroid.h"
 #include "Infrastructure/SentryJavaClasses.h"
 
 SentrySamplingContextAndroid::SentrySamplingContextAndroid(jobject samplingContext)
@@ -34,5 +34,5 @@ TMap<FString, FString> SentrySamplingContextAndroid::GetCustomSamplingContext() 
 	FSentryJavaMethod GetDataMethod = NativeCustomSamplingContext.GetMethod("getData", "()Ljava/util/Map;");
 
 	auto data = NativeCustomSamplingContext.CallObjectMethod<jobject>(GetDataMethod);
-	return SentryConvertersAndroid::StringMapToUnreal(*data);
+	return SentryConvertorsAndroid::StringMapToUnreal(*data);
 }

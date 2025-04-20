@@ -4,21 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-
-#include "SentryImplWrapper.h"
-
 #include "SentryTransactionContext.generated.h"
 
 class ISentryTransactionContext;
 
-UCLASS(BlueprintType, NotBlueprintable, HideDropdown)
-class SENTRY_API USentryTransactionContext : public UObject, public TSentryImplWrapper<ISentryTransactionContext, USentryTransactionContext>
+UCLASS(BlueprintType)
+class SENTRY_API USentryTransactionContext : public UObject
 {
 	GENERATED_BODY()
 
 public:
+	USentryTransactionContext();
+
 	/**
-	 * Initializes the transaction context with the specified name and operation.
+	 * Initializes transaction context with specified name and operation.
 	 *
 	 * @param Name Transaction name.
 	 * @param Operation Operation name.
@@ -33,4 +32,10 @@ public:
 	/** Gets operation name. */
 	UFUNCTION(BlueprintPure, Category = "Sentry")
 	FString GetOperation() const;
+
+	void InitWithNativeImpl(TSharedPtr<ISentryTransactionContext> transactionContextImpl);
+	TSharedPtr<ISentryTransactionContext> GetNativeImpl();
+
+private:
+	TSharedPtr<ISentryTransactionContext> SentryTransactionContextNativeImpl;
 };

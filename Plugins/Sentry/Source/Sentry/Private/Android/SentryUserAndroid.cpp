@@ -2,7 +2,7 @@
 
 #include "SentryUserAndroid.h"
 
-#include "Infrastructure/SentryConvertersAndroid.h"
+#include "Infrastructure/SentryConvertorsAndroid.h"
 #include "Infrastructure/SentryJavaClasses.h"
 
 SentryUserAndroid::SentryUserAndroid()
@@ -27,8 +27,8 @@ void SentryUserAndroid::SetupClassMethods()
 	GetUsernameMethod = GetMethod("getUsername", "()Ljava/lang/String;");
 	SetIpAddressMethod = GetMethod("setIpAddress", "(Ljava/lang/String;)V");
 	GetIpAddressMethod = GetMethod("getIpAddress", "()Ljava/lang/String;");
-	SetDataMethod = GetMethod("setData", "(Ljava/util/Map;)V");
-	GetDataMethod = GetMethod("getData", "()Ljava/util/Map;");
+	SetDataMethod = GetMethod("setOthers", "(Ljava/util/Map;)V");
+	GetDataMethod = GetMethod("getOthers", "()Ljava/util/Map;");
 }
 
 void SentryUserAndroid::SetEmail(const FString& email)
@@ -73,11 +73,11 @@ FString SentryUserAndroid::GetIpAddress() const
 
 void SentryUserAndroid::SetData(const TMap<FString, FString>& data)
 {
-	CallMethod<void>(SetDataMethod, SentryConvertersAndroid::StringMapToNative(data)->GetJObject());
+	CallMethod<void>(SetDataMethod, SentryConvertorsAndroid::StringMapToNative(data)->GetJObject());
 }
 
 TMap<FString, FString> SentryUserAndroid::GetData()
 {
 	auto data = CallObjectMethod<jobject>(GetDataMethod);
-	return SentryConvertersAndroid::StringMapToUnreal(*data);
+	return SentryConvertorsAndroid::StringMapToUnreal(*data);
 }

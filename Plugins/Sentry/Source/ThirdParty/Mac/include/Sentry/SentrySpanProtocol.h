@@ -10,11 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentryId;
-@class SentryMeasurementUnit;
-@class SentrySpanId;
-@class SentryTraceContext;
-@class SentryTraceHeader;
+@class SentrySpanId, SentryId, SentryTraceHeader, SentryMeasurementUnit, SentryTraceContext;
 
 NS_SWIFT_NAME(Span)
 @protocol SentrySpan <SentrySerializable>

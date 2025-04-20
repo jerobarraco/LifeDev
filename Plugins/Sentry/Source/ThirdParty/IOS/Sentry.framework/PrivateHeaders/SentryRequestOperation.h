@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 #import "SentryAsynchronousOperation.h"
 #import "SentryQueueableRequestManager.h"
 

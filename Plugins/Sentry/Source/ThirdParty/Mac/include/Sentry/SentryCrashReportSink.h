@@ -1,9 +1,8 @@
 #import "SentryCrash.h"
 #import "SentryDefines.h"
+#import <Foundation/Foundation.h>
 
-@class SentryCrashWrapper;
-@class SentryDispatchQueueWrapper;
-@class SentryInAppLogic;
+@class SentryInAppLogic, SentryCrashWrapper, SentryDispatchQueueWrapper;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -7,9 +7,6 @@
 #include "SentryTransactionContext.h"
 #include "SentrySpan.h"
 
-#include "HAL/PlatformSentryEvent.h"
-#include "HAL/PlatformSentryTransactionContext.h"
-
 #include "UObject/UObjectGlobals.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/DateTime.h"
@@ -37,15 +34,15 @@ void SentrySubsystemSpec::Define()
 	{
 		It("should return a non-null Event ID if message captured", [this]()
 		{
-			FString eventId = SentrySubsystem->CaptureMessage(FString(TEXT("Automation: Sentry test message")), ESentryLevel::Debug);
-			TestFalse("Event ID is non-empty", eventId.IsEmpty());
+			const USentryId* eventId = SentrySubsystem->CaptureMessage(FString(TEXT("Automation: Sentry test message")), ESentryLevel::Debug);
+			TestNotNull("Event ID is non-null", eventId);
 		});
 
 		It("should always return non-null Event ID if scoped version used", [this]()
 		{
 			const FConfigureScopeNativeDelegate testDelegate;
-			FString eventId = SentrySubsystem->CaptureMessageWithScope(FString(TEXT("Automation: Sentry test message with scope")), testDelegate, ESentryLevel::Debug);
-			TestFalse("Event ID is non-empty", eventId.IsEmpty());
+			const USentryId* eventId = SentrySubsystem->CaptureMessageWithScope(FString(TEXT("Automation: Sentry test message with scope")), testDelegate, ESentryLevel::Debug);
+			TestNotNull("Event ID is non-null", eventId);
 		});
 	});
 
@@ -53,22 +50,22 @@ void SentrySubsystemSpec::Define()
 	{
 		It("should return a non-null Event ID if event captured", [this]()
 		{
-			USentryEvent* testEvent = USentryEvent::Create(CreateSharedSentryEvent());
+			USentryEvent* testEvent = NewObject<USentryEvent>();
 			testEvent->SetMessage(TEXT("Automation: Sentry test event message"));
 
-			FString eventId = SentrySubsystem->CaptureEvent(testEvent);
-			TestFalse("Event ID is non-empty", eventId.IsEmpty());
+			const USentryId* eventId = SentrySubsystem->CaptureEvent(testEvent);
+			TestNotNull("Event ID is non-null", eventId);
 		});
 
 		It("should always return non-null Event ID if scoped version used", [this]()
 		{
-			USentryEvent* testEvent = USentryEvent::Create(CreateSharedSentryEvent());
+			USentryEvent* testEvent = NewObject<USentryEvent>();
 			testEvent->SetMessage(TEXT("Automation: Sentry test event message"));
 
 			const FConfigureScopeNativeDelegate testDelegate;
 
-			FString eventId = SentrySubsystem->CaptureEventWithScope(testEvent, testDelegate);
-			TestFalse("Event ID is non-empty", eventId.IsEmpty());
+			const USentryId* eventId = SentrySubsystem->CaptureEventWithScope(testEvent, testDelegate);
+			TestNotNull("Event ID is non-null", eventId);
 		});
 	});
 
@@ -80,7 +77,7 @@ void SentrySubsystemSpec::Define()
 			TestNotNull("Transaction is non-null", transaction);
 			TestFalse("Transaction is not finished", transaction->IsFinished());
 
-			USentrySpan* span = transaction->StartChildSpan(TEXT("Automation span"), TEXT("Description text"));
+			USentrySpan* span = transaction->StartChild(TEXT("Automation span"), TEXT("Description text"));
 			TestNotNull("Span is non-null", span);
 			TestFalse("Span is not finished", span->IsFinished());
 
@@ -100,10 +97,8 @@ void SentrySubsystemSpec::Define()
 
 		It("should be started and finished with specific context", [this]()
 		{
-			USentryTransactionContext* transactionContext =
-				USentryTransactionContext::Create(
-					CreateSharedSentryTransactionContext(TEXT("Automation transaction"), TEXT("Automation operation"))
-				);
+			USentryTransactionContext* transactionContext = NewObject<USentryTransactionContext>();
+			transactionContext->Initialize(TEXT("Automation transaction"), TEXT("Automation operation"));
 
 			USentryTransaction* transaction = SentrySubsystem->StartTransactionWithContext(transactionContext);
 			TestNotNull("Transaction is non-null", transaction);
@@ -115,10 +110,8 @@ void SentrySubsystemSpec::Define()
 
 		It("should be started and finished with specific context and timings", [this]()
 		{
-			USentryTransactionContext* transactionContext =
-				USentryTransactionContext::Create(
-					CreateSharedSentryTransactionContext(TEXT("Automation transaction"), TEXT("Automation operation"))
-				);
+			USentryTransactionContext* transactionContext = NewObject<USentryTransactionContext>();
+			transactionContext->Initialize(TEXT("Automation transaction"), TEXT("Automation operation"));
 
 			USentryTransaction* transaction = SentrySubsystem->StartTransactionWithContextAndTimestamp(transactionContext, FDateTime::UtcNow().ToUnixTimestamp());
 			TestNotNull("Transaction is non-null", transaction);

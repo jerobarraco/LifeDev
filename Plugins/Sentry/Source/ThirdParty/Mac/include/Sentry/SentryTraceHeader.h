@@ -6,8 +6,7 @@
 #    import <SentryWithoutUIKit/SentrySampleDecision.h>
 #endif
 
-@class SentryId;
-@class SentrySpanId;
+@class SentryId, SentrySpanId;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -2,70 +2,101 @@
 
 #include "SentryEvent.h"
 
-#include "HAL/PlatformSentryEvent.h"
-#include "Interface/SentryIdInterface.h"
+#include "Interface/SentryEventInterface.h"
 
-void USentryEvent::Initialize()
+#if PLATFORM_ANDROID
+#include "Android/SentryEventAndroid.h"
+#elif PLATFORM_IOS || PLATFORM_MAC
+#include "Apple/SentryEventApple.h"
+#elif PLATFORM_WINDOWS || PLATFORM_LINUX
+#include "Desktop/SentryEventDesktop.h"
+#endif
+
+USentryEvent::USentryEvent()
 {
-	NativeImpl = CreateSharedSentryEvent();
+	if (USentryEvent::StaticClass()->GetDefaultObject() != this)
+	{
+#if PLATFORM_ANDROID
+		EventNativeImpl = MakeShareable(new SentryEventAndroid());
+#elif PLATFORM_IOS || PLATFORM_MAC
+		EventNativeImpl = MakeShareable(new SentryEventApple());
+#elif (PLATFORM_WINDOWS || PLATFORM_LINUX) && USE_SENTRY_NATIVE
+		EventNativeImpl = MakeShareable(new SentryEventDesktop());
+#endif
+	}
 }
 
-FString USentryEvent::GetId() const
+USentryEvent* USentryEvent::CreateEventWithMessageAndLevel(const FString& Message, ESentryLevel Level)
 {
-	if (!NativeImpl)
-		return FString();
+	USentryEvent* Event = NewObject<USentryEvent>();
 
-	TSharedPtr<ISentryId> idNativeImpl = NativeImpl->GetId();
-	if (!idNativeImpl)
-		return FString();
+	if(!Message.IsEmpty())
+	{
+		Event->SetMessage(Message);
+	}
 
-	return idNativeImpl->ToString();
+	Event->SetLevel(Level);
+
+	return Event;
 }
 
-void USentryEvent::SetMessage(const FString &Message)
+void USentryEvent::SetMessage(const FString& Message)
 {
-	if (!NativeImpl)
+	if (!EventNativeImpl)
 		return;
 
-	NativeImpl->SetMessage(Message);
+	EventNativeImpl->SetMessage(Message);
 }
 
 FString USentryEvent::GetMessage() const
 {
-	if(!NativeImpl)
+	if(!EventNativeImpl)
 		return FString();
 
-	return NativeImpl->GetMessage();
+	return EventNativeImpl->GetMessage();
 }
 
 void USentryEvent::SetLevel(ESentryLevel Level)
 {
-	if (!NativeImpl)
+	if (!EventNativeImpl)
 		return;
 
-	NativeImpl->SetLevel(Level);
+	EventNativeImpl->SetLevel(Level);
 }
 
 ESentryLevel USentryEvent::GetLevel() const
 {
-	if(!NativeImpl)
+	if(!EventNativeImpl)
 		return ESentryLevel::Debug;
 
-	return NativeImpl->GetLevel();
+	return EventNativeImpl->GetLevel();
 }
 
 bool USentryEvent::IsCrash() const
 {
-	if(!NativeImpl)
+	if(!EventNativeImpl)
 		return false;
 
-	return NativeImpl->IsCrash();
+	return EventNativeImpl->IsCrash();
 }
 
 bool USentryEvent::IsAnr() const
 {
-	if(!NativeImpl)
+	if(!EventNativeImpl)
 		return false;
 
-	return NativeImpl->IsAnr();
+	return EventNativeImpl->IsAnr();
+}
+
+void USentryEvent::InitWithNativeImpl(TSharedPtr<ISentryEvent> eventImpl)
+{
+	if (!EventNativeImpl)
+		return;
+
+	EventNativeImpl = eventImpl;
+}
+
+TSharedPtr<ISentryEvent> USentryEvent::GetNativeImpl()
+{
+	return EventNativeImpl;
 }

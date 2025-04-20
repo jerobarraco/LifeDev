@@ -2,7 +2,7 @@
 
 #include "SentryTransactionOptionsAndroid.h"
 
-#include "Infrastructure/SentryConvertersAndroid.h"
+#include "Infrastructure/SentryConvertorsAndroid.h"
 #include "Infrastructure/SentryJavaClasses.h"
 
 SentryTransactionOptionsAndroid::SentryTransactionOptionsAndroid()

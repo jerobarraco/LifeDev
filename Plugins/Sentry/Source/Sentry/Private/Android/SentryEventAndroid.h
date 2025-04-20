@@ -14,7 +14,6 @@ public:
 
 	void SetupClassMethods();
 
-	virtual TSharedPtr<ISentryId> GetId() const override;
 	virtual void SetMessage(const FString& message) override;
 	virtual FString GetMessage() const override;
 	virtual void SetLevel(ESentryLevel level) override;
@@ -23,7 +22,6 @@ public:
 	virtual bool IsAnr() const override;
 
 private:
-	FSentryJavaMethod GetIdMethod;
 	FSentryJavaMethod SetMessageMethod;
 	FSentryJavaMethod GetMessageMethod;
 	FSentryJavaMethod SetLevelMethod;

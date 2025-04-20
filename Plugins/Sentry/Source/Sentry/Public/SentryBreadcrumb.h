@@ -3,7 +3,6 @@
 #pragma once
 
 #include "SentryDataTypes.h"
-#include "SentryImplWrapper.h"
 
 #include "SentryBreadcrumb.generated.h"
 
@@ -12,15 +11,13 @@ class ISentryBreadcrumb;
 /**
  * Information to create a trail of events that happened prior to an issue.
  */
-UCLASS(BlueprintType, NotBlueprintable, HideDropdown)
-class SENTRY_API USentryBreadcrumb : public UObject, public TSentryImplWrapper<ISentryBreadcrumb, USentryBreadcrumb>
+UCLASS(BlueprintType)
+class SENTRY_API USentryBreadcrumb : public UObject
 {
 	GENERATED_BODY()
 
 public:
-	/** Initializes the breadcrumb. */
-	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	void Initialize();
+	USentryBreadcrumb();
 
 	/** Sets message of the breadcrumb. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
@@ -61,4 +58,10 @@ public:
 	/** Gets the level of the breadcrumb. */
 	UFUNCTION(BlueprintPure, Category = "Sentry")
 	ESentryLevel GetLevel() const;
+
+	void InitWithNativeImpl(TSharedPtr<ISentryBreadcrumb> breadcrumbImpl);
+	TSharedPtr<ISentryBreadcrumb> GetNativeImpl();
+
+private:
+	TSharedPtr<ISentryBreadcrumb> BreadcrumbNativeImpl;
 };

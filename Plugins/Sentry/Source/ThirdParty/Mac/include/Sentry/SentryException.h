@@ -10,8 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentryMechanism;
-@class SentryStacktrace;
+@class SentryStacktrace, SentryMechanism;
 
 NS_SWIFT_NAME(Exception)
 @interface SentryException : NSObject <SentrySerializable>

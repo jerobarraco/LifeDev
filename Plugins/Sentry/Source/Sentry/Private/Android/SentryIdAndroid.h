@@ -10,7 +10,6 @@ class SentryIdAndroid : public ISentryId, public FSentryJavaObjectWrapper
 {
 public:
 	SentryIdAndroid();
-	SentryIdAndroid(const FString& id);
 	SentryIdAndroid(jobject id);
 
 	void SetupClassMethods();
