@@ -263,6 +263,7 @@ later
 # art
 all
 * make more rooms
+* * add door spaces to the new room. size is 42 base x 41 tall x 2 wide
 * some accesories, like paper notes, pictures,
 
 c04
