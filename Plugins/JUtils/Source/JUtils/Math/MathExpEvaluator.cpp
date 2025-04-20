@@ -35,6 +35,7 @@ namespace ExpressionParser {
 	const TCHAR* const FEquals::Moniker = TEXT("=");
 	const TCHAR* const FSet::Moniker = TEXT(":");
 	const TCHAR* const FItem::Moniker = TEXT(",");
+	const TCHAR* const FIndex::Moniker = TEXT("["); // todo find better
 }
 DEFINE_EXPRESSION_NODE_TYPE(FString, 0x8444A8A3, 0x19AE4E13, 0xBCFA75EE, 0x39982B99)
 
@@ -77,6 +78,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FEquals>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSet>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FItem>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FIndex>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -111,6 +113,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FMinus>(5, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FItem>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FIndex>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FGreatThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FLessThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FEquals>(6, EAssociativity::LeftToRight);
@@ -148,8 +151,8 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	JumpTable.MapPreUnary<FPick>([](const TArray<double> A) -> double {
 		const int32 Num = A.Num();
 		const int32 I = FMath::RandRange(0, Num-1);
-		UE_LOG(LogJEvalExp, Log, TEXT("Pick A[%i] i=%i"), A.Num(), I);
-		if (UNLIKELY(Num==0)) return 0;
+		UE_LOG(LogJEvalExp, Log, TEXT("Pick A[%i] i=%i"), Num, I);
+		if (UNLIKELY(Num==0)) return NAN;
 		if (Num==1) return A[0];
 
 		return A[I];
@@ -211,26 +214,33 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return True ? 1.0: 0.0;
 	});
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%.5f B=%.5f"), __func__, A, B);
 		SetVarId(A, B);
 		return B;
 	});
 	JumpTable.MapBinary<FSet>([this](const FString& A, const double B) -> double {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%s B%.5f"), __func__, *A, B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%s B=%.5f"), __func__, *A, B);
 		SetVar(A, B);
 		return B;
 	});
 
 	JumpTable.MapBinary<FItem>([this](const double A, const double B) -> TArray<double> {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%.5f B%.5f"), __func__, A, B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%.5f B=%.5f"), __func__, A, B);
 		
 		return TArray<double>({A, B});
 	});
 	JumpTable.MapBinary<FItem>([this](const TArray<double>& A, const double B) -> TArray<double> {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%i B%.5f"), __func__, A.Num(), B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Add: A[%i] B=%.5f"), __func__, A.Num(), B);
 		TArray<double> Ret(A);
 		Ret.Add(B);
 		return Ret;
+	});
+	JumpTable.MapBinary<FItem>([this](const TArray<double>& A, const double B) -> double {
+		const int32 I = FMath::TruncToInt32(B);
+		const int32 N = A.Num();
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A[%i] B=%.5f I=%i"), __func__, N, B, I);
+		if (I<0||I>=N) return NAN;
+		return A[I];
 	});
 }
 
