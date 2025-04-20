@@ -285,6 +285,7 @@ palette: in ue the color should be in the srgb thing. and preview in srgb should
 each time:
 * make build checklist on pc
 ** set version
+** add sm5 rhi target (+TargetedRHIs=SF_VULKAN_SM5)
 ** set packaging: for distribution (saves 30 mb)
 ** check default flags
 ** check datalayers
@@ -294,9 +295,8 @@ each time:
 
 * on Steam make sure to use -UserDir=./Data
 
-* package: make a script to exclude content from the demo.
-
 later:
+* package: make a script to exclude content from the demo.
 * remove DirectoresToAlwaysCook and test the music again
 * fix rebuilding the engine on shipping (on linux on commandline)
 
