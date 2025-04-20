@@ -29,6 +29,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 //		a,b,c,d : makes a list
 //		pick(a,b,c,d) : random from a list or NAN
 //		a,b,c,d[e : chooses element index e from list (a,b,c,d)
+//		functions
 // !a: not a
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1)
 //		a>b & c | d : ternary if: a>b?c:d (you can have any expression instead of A>B, <=0 is false, >0 is true) 

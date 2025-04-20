@@ -23,9 +23,11 @@ namespace ExpressionParser {
 	const TCHAR* const FCeil::Moniker = TEXT("ceil");
 	const TCHAR* const FTrunc::Moniker = TEXT("trunc");
 	const TCHAR* const FFrac::Moniker = TEXT("frac");
+	const TCHAR* const FRound::Moniker = TEXT("round");
 	const TCHAR* const FPick::Moniker = TEXT("pick");
+	// const TCHAR* const FRand::Moniker = TEXT("rnd");
 	
-	const TCHAR* const FRand::Moniker = TEXT("?");
+	const TCHAR* const FRnd::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
 	const TCHAR* const FAnd::Moniker = TEXT("&");
 	const TCHAR* const FOr::Moniker = TEXT("|");
@@ -66,9 +68,11 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FCeil>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FTrunc>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FFrac>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FRound>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPick>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
-	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FRnd>);
+	// TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FAnd>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FOr>);
@@ -103,10 +107,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FCeil>();
 	Grammar.DefinePreUnaryOperator<FTrunc>();
 	Grammar.DefinePreUnaryOperator<FFrac>();
+	Grammar.DefinePreUnaryOperator<FRound>();
+	// Grammar.DefinePreUnaryOperator<FRnd>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPower>(3);
-	Grammar.DefineBinaryOperator<FRand>(3);
+	Grammar.DefineBinaryOperator<FRnd>(3);
 	Grammar.DefineBinaryOperator<FStar>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FForwardSlash>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
@@ -174,6 +180,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogJEvalExp, Log, TEXT("Frac A=%.5f"), A);
 		return FMath::Frac(A);
 	});
+	JumpTable.MapPreUnary<FRound>([](const double A) {
+		UE_LOG(LogJEvalExp, Log, TEXT("Round A=%.5f"), A);
+		return FMath::RoundHalfFromZero(A);
+	});
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
@@ -187,7 +197,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("ModZero", "Modulo zero"));
 		return MakeValue(FMath::Fmod(A, B)); // todo fix this on the epic's repo
 	});
-	JumpTable.MapBinary<FRand>([](const double A, const double B) -> double {
+	JumpTable.MapBinary<FRnd>([](const double A, const double B) -> double {
 		return FMath::FRandRange(A, B);
 	});
 	JumpTable.MapBinary<FAnd>([](const double A, const double B) -> double {
@@ -347,3 +357,11 @@ void FMathExpEvaluator::SetVar(const FString& NameId, const double Val) const {
 #undef LOCTEXT_NAMESPACE
 
 // see also basicmathexpressionevaluator. thanks tim team.
+
+// example of a function called like rnd(1,2)
+// JumpTable.MapPreUnary<FRand>([](const TArray<double>& A) -> FExpressionResult {
+// const int32 Num = A.Num();
+// UE_LOG(LogJEvalExp, Log, TEXT("Rnd A[%i]"), Num);
+// if (UNLIKELY(Num!=2)) return MakeError(LOCTEXT("RndParams", "Rnd requires a list of 2 parameters (double)"));
+// return MakeValue(FMath::RandRange(A[0], A[1]));
+// });
