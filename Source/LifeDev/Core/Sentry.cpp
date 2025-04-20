@@ -20,7 +20,13 @@ USentry* USentry::Instance(const UObject* const O) {
 
 void USentry::SendComment(const FString& FB) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
+
 	USentryId* const Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
+	if (UNLIKELY(!Id)) {
+		UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
+		return;
+	}
+
 	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
 }
 
