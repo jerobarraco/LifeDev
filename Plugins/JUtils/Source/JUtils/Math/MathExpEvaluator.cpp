@@ -19,7 +19,12 @@ DEFINE_LOG_CATEGORY_STATIC(LogJEvalExp, Log, Log)
 namespace ExpressionParser {
 	const TCHAR* const FSaturate::Moniker = TEXT("sat");
 	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
-	const TCHAR* const FPick::Moniker = TEXT("pck");
+	const TCHAR* const FFloor::Moniker = TEXT("floor");
+	const TCHAR* const FCeil::Moniker = TEXT("ceil");
+	const TCHAR* const FTrunc::Moniker = TEXT("trunc");
+	const TCHAR* const FFrac::Moniker = TEXT("frac");
+	const TCHAR* const FPick::Moniker = TEXT("pck"); // TODO index
+	
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
 	const TCHAR* const FAnd::Moniker = TEXT("&");
@@ -132,6 +137,16 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogJEvalExp, Log, TEXT("Not A=%.5f"), A);
 		return double(JMathExp::_IsFalse(A) ? 1.0 : 0.0);
 	});
+	JumpTable.MapPreUnary<FPick>([](const TArray<double> A) -> double {
+		const int32 Num = A.Num();
+		const int32 I = FMath::RandRange(0, Num-1);
+		UE_LOG(LogJEvalExp, Log, TEXT("Pick A[%i] i=%i"), A.Num(), I);
+		if (UNLIKELY(Num==0)) return 0;
+		if (Num==1) return A[0];
+
+		return A[I];
+	});
+
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });

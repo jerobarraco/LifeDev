@@ -21,8 +21,9 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double,
 // e.g. {V.Story.Step.Cur}={#C3S0}
 // for boolean stuff anything > 0 is true. else is false.
 // for some operators 0 and 1 will be returned. for others the actual value of the variable.
-// Operators: +,-,/,*,%
+// Operators: +,-,/,*,% (modulo)
 // sqrt, abs, sat (clamps between 0 and 1)
+// base^exp (power)
 // a?b: random between a and b
 // !a: not a
 // a&b a|b a$b: and or (returns the value) xor (returns 0,1)
