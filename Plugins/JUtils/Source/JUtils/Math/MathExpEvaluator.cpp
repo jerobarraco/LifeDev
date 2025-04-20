@@ -14,6 +14,7 @@
 #define LOCTEXT_NAMESPACE "JMathExpEvaluator"
 
 // TODO cleanup names
+DEFINE_LOG_CATEGORY_STATIC(LogJEvalExp, Log, Log)
 
 namespace ExpressionParser {
 	const TCHAR* const FSaturate::Moniker = TEXT("sat");
@@ -27,6 +28,7 @@ namespace ExpressionParser {
 	const TCHAR* const FLessThan::Moniker = TEXT("<");
 	const TCHAR* const FEquals::Moniker = TEXT("=");
 	const TCHAR* const FSet::Moniker = TEXT(":");
+	const TCHAR* const FItem::Moniker = TEXT(",");
 }
 DEFINE_EXPRESSION_NODE_TYPE(FString, 0x8444A8A3, 0x19AE4E13, 0xBCFA75EE, 0x39982B99)
 
@@ -63,6 +65,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FLessThan>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FEquals>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSet>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FItem>);
 	TokenDefinitions.DefineToken(&ConsumeLocalizedNumberWithAgnosticFallback);
 
 	// replace strings with values
@@ -84,45 +87,46 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
-	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FMinus>(5, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FPower>(3);
+	Grammar.DefineBinaryOperator<FRand>(3);
 	Grammar.DefineBinaryOperator<FStar>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FForwardSlash>(4, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FPercent>(4, EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FPower>(3);
-	Grammar.DefineBinaryOperator<FRand>(3);
-	Grammar.DefineBinaryOperator<FAnd>(7, EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FOr>(7,  EAssociativity::LeftToRight);
-	Grammar.DefineBinaryOperator<FXor>(7, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FPlus>(5, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FMinus>(5, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FItem>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FGreatThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FLessThan>(6, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FEquals>(6, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FAnd>(7, EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FOr>(7,  EAssociativity::LeftToRight);
+	Grammar.DefineBinaryOperator<FXor>(7, EAssociativity::LeftToRight);
 	Grammar.DefineBinaryOperator<FSet>(11, EAssociativity::LeftToRight);
 
 	JumpTable.MapPreUnary<FPlus>([](const double N) {
-		UE_LOG(LogTemp, Log, TEXT("Plus A=%.5f"), N);
+		UE_LOG(LogJEvalExp, Log, TEXT("Plus A=%.5f"), N);
 		return N;
 	});
 	JumpTable.MapPreUnary<FMinus>([](const double N) {
-		UE_LOG(LogTemp, Log, TEXT("minus A=%.5f"), N);
+		UE_LOG(LogJEvalExp, Log, TEXT("minus A=%.5f"), N);
 		return -N;
 	});
 	JumpTable.MapPreUnary<FSquareRoot>([](const double A)		{ 
-		UE_LOG(LogTemp, Log, TEXT("sqr A=%.5f"), A);
+		UE_LOG(LogJEvalExp, Log, TEXT("sqr A=%.5f"), A);
 		return double(FMath::Sqrt(A));
 	});
 	JumpTable.MapPreUnary<FSaturate>([](const double A){
 		const double B = FMath::Clamp(A, double(0), double(1));
-		UE_LOG(LogTemp, Log, TEXT("Saturate A=%.5f B=%.5f"), A, B);
+		UE_LOG(LogJEvalExp, Log, TEXT("Saturate A=%.5f B=%.5f"), A, B);
 		return B;
 	});
 	JumpTable.MapPreUnary<FAbsolute>([](const double A) {
 		const double B = FMath::Abs(A); 
-		UE_LOG(LogTemp, Log, TEXT("Absolute A=%.5f B=%.5f"), A, B);
+		UE_LOG(LogJEvalExp, Log, TEXT("Absolute A=%.5f B=%.5f"), A, B);
 		return double(B);
 	});
 	JumpTable.MapPreUnary<FNot>([](const double A) {
-		UE_LOG(LogTemp, Log, TEXT("Not A=%.5f"), A);
+		UE_LOG(LogJEvalExp, Log, TEXT("Not A=%.5f"), A);
 		return double(JMathExp::_IsFalse(A) ? 1.0 : 0.0);
 	});
 
@@ -166,12 +170,12 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return True ? 1.0: 0.0;
 	});
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
-		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%.5f B%.5f"), __func__, A, B);
 		SetVarId(A, B);
 		return B;
 	});
 	JumpTable.MapBinary<FSet>([this](const FString& A, const double B) -> double {
-		UE_LOG(LogTemp, Warning, TEXT("%hs FSet: A=%s B%.5f"), __func__, *A, B);
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%s B%.5f"), __func__, *A, B);
 		SetVar(A, B);
 		return B;
 	});

@@ -43,7 +43,7 @@
 * fix: rethink books01 animator with component instead of subsystem
 
 ## new
-
+* new: on savegame slot on intro menu, show also the played time (get from the flags)
 * remove card interactions with char and items and door
 
 * on chap 0 end, start the camera from 1st person. so its clear you are him.
@@ -60,8 +60,6 @@
   *** but step ends with card
   ** ch 01 puzzle appears when the character appers sitting
 
-* sentry remove user name from sontry
-* 
 * card what works turns items into usable ones.
   ** merges, unlocks, reduce cool downs, etc. shows dialog
   *** add autodialog with items as params
@@ -73,17 +71,17 @@
 ** on lbutton add breadcrumb on click with name
 *** might need to create an lbutton
 
-* new: on savegame slot on intro menu, show also the played time (get from the flags)
-
 ch0
 * arch: clouts on wardrobe room 2
 * new: maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
 * new: add stuff to the status overlay ui
+
 *  idea: add to eval
 * operator ',' that appends to a list. if the left is empty it starts a list.
 * operator ; chooses an item from a list based on the index
 
 * eval function 'pick': returns a random element from a list
+
 # architecture
 
 living00
@@ -487,3 +485,5 @@ not:
 * new : use ddx ddy for outline and watch performance
 * make better water parts using refraction
 * remove DirectoresToAlwaysCook and test the music again
+
+* sentry remove user name from sontry
