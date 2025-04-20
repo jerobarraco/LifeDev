@@ -148,14 +148,15 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		UE_LOG(LogJEvalExp, Log, TEXT("Not A=%.5f"), A);
 		return double(JMathExp::_IsFalse(A) ? 1.0 : 0.0);
 	});
-	JumpTable.MapPreUnary<FPick>([](const TArray<double> A) -> double {
+
+	JumpTable.MapPreUnary<FPick>([](const TArray<double>& A) -> FExpressionResult {
 		const int32 Num = A.Num();
 		const int32 I = FMath::RandRange(0, Num-1);
 		UE_LOG(LogJEvalExp, Log, TEXT("Pick A[%i] i=%i"), Num, I);
-		if (UNLIKELY(Num==0)) return NAN;
-		if (Num==1) return A[0];
+		if (UNLIKELY(Num==0)) return MakeError(LOCTEXT("Pick", "List is empty"));
+		if (Num==1) return MakeValue(A[0]);
 
-		return A[I];
+		return MakeValue(A[I]);
 	});
 	JumpTable.MapPreUnary<FFloor>([](const double A) {
 		UE_LOG(LogJEvalExp, Log, TEXT("Floor A=%.5f"), A);
@@ -182,9 +183,9 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("DivisionByZero", "Division by zero"));
 		return MakeValue(A / B);
 	});
-	JumpTable.MapBinary<FPercent>([](const double A, const double B) -> FExpressionResult {
+	JumpTable.MapBinary<FPercent>([](const double A, const double B) -> FExpressionResult { /// returns expression result since it can return an error
 		if (UNLIKELY(B == 0)) return MakeError(LOCTEXT("ModZero", "Modulo zero"));
-		return MakeValue(double(FMath::Fmod(A, B))); // todo fix this on the epic's repo
+		return MakeValue(FMath::Fmod(A, B)); // todo fix this on the epic's repo
 	});
 	JumpTable.MapBinary<FRand>([](const double A, const double B) -> double {
 		return FMath::FRandRange(A, B);
@@ -214,33 +215,33 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		return True ? 1.0: 0.0;
 	});
 	JumpTable.MapBinary<FSet>([this](const double A, const double B) -> double {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%.5f B=%.5f"), __func__, A, B);
+		UE_LOG(LogJEvalExp, Log, TEXT("%hs FSet: A=%.5f B=%.5f"), __func__, A, B);
 		SetVarId(A, B);
 		return B;
 	});
 	JumpTable.MapBinary<FSet>([this](const FString& A, const double B) -> double {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs FSet: A=%s B=%.5f"), __func__, *A, B);
+		UE_LOG(LogJEvalExp, Log, TEXT("%hs FSet: A=%s B=%.5f"), __func__, *A, B);
 		SetVar(A, B);
 		return B;
 	});
 
 	JumpTable.MapBinary<FItem>([this](const double A, const double B) -> TArray<double> {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%.5f B=%.5f"), __func__, A, B);
+		UE_LOG(LogJEvalExp, Log, TEXT("%hs Fitem::Base: A=%.5f B=%.5f"), __func__, A, B);
 		
 		return TArray<double>({A, B});
 	});
 	JumpTable.MapBinary<FItem>([this](const TArray<double>& A, const double B) -> TArray<double> {
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Add: A[%i] B=%.5f"), __func__, A.Num(), B);
+		UE_LOG(LogJEvalExp, Log, TEXT("%hs Fitem::Add: A[%i] B=%.5f"), __func__, A.Num(), B);
 		TArray<double> Ret(A);
 		Ret.Add(B);
 		return Ret;
 	});
-	JumpTable.MapBinary<FItem>([this](const TArray<double>& A, const double B) -> double {
+	JumpTable.MapBinary<FIndex>([this](const TArray<double>& A, const double B) -> FExpressionResult {
 		const int32 I = FMath::TruncToInt32(B);
 		const int32 N = A.Num();
-		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A[%i] B=%.5f I=%i"), __func__, N, B, I);
-		if (I<0||I>=N) return NAN;
-		return A[I];
+		UE_LOG(LogJEvalExp, Log, TEXT("%hs FIndex A[%i] B=%.5f I=%i"), __func__, N, B, I);
+		if (I<0||I>=N) return MakeError(LOCTEXT("IndexOutOfBounds", "Index <0 or >=Number (out of bounds)."));
+		return MakeValue(A[I]);
 	});
 }
 
