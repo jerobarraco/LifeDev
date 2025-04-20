@@ -19,6 +19,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogJEvalExp, Log, Log)
 namespace ExpressionParser {
 	const TCHAR* const FSaturate::Moniker = TEXT("sat");
 	const TCHAR* const FAbsolute::Moniker = TEXT("abs");
+	const TCHAR* const FPick::Moniker = TEXT("pck");
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
 	const TCHAR* const FAnd::Moniker = TEXT("&");
@@ -55,6 +56,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FPick>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FNot>);
@@ -81,10 +83,11 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	
 	Grammar.DefinePreUnaryOperator<FPlus>();
 	Grammar.DefinePreUnaryOperator<FMinus>();
-	Grammar.DefinePreUnaryOperator<FSquareRoot>(); // works
+	Grammar.DefinePreUnaryOperator<FSquareRoot>();
 	Grammar.DefinePreUnaryOperator<FNot>();
-	Grammar.DefinePreUnaryOperator<FSaturate>(); // does not
-	Grammar.DefinePreUnaryOperator<FAbsolute>(); // does not why though?
+	Grammar.DefinePreUnaryOperator<FSaturate>();
+	Grammar.DefinePreUnaryOperator<FAbsolute>();
+	Grammar.DefinePreUnaryOperator<FPick>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPower>(3);
