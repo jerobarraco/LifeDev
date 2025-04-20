@@ -25,7 +25,6 @@ public:
 	// Call this one to stop the step from outside the system, or from the step itself.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))
 	void Finish();
-	virtual void Finish_Implementation();
 
 	// teleports the player to where this step is located. including view point.
 	UFUNCTION(BlueprintCallable)

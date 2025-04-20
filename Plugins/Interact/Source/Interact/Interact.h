@@ -121,6 +121,7 @@ public:
 	float HintTime = 5;
 
 	// experimental. Condition that needs to be >=1 for hint to work.
+	// Try to use RewardInterHint on another interact or step. it'll be faster than this.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint")
 	FString HintCondition;
 

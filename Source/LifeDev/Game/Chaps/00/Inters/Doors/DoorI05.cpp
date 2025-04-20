@@ -2,19 +2,17 @@
 
 #include "DoorI05.h"
 
-#include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
-
 ADoorI05::ADoorI05():Super() {
 	IsLocked = true;
 	UseAnim = false; // will take us directly to the next story step
-	UseAutoActivate = true;
+	UseAutoActivate = true; // leave active since it shows some dialogs.
 	IsOneShot = true;
-	RewardStep = true;
+	// RewardStep = true;
+	// no need to unlock. as picking the card will end the chapter 
 	// i'm _assuming_ printf is more performant when building strings. because i'd make it like that.
-	ULockCondition = FString::Printf(TEXT("{%ls}&{%ls}&{V.Item.Count.%ls}"),
-		*LDConsts::Flags::Game::CH0::Basin.ToString(),
-		*LDConsts::Flags::Game::CH0::Spot.ToString(),
-		*LDConsts::Items::Card0.ToString());
+	// ULockCondition = FString::Printf(TEXT("{%ls}&{%ls}&{V.Item.Count.%ls}"),
+		// *LDConsts::Flags::Game::CH0::Basin.ToString(),
+		// *LDConsts::Flags::Game::CH0::Spot.ToString(),
+		// *LDConsts::Items::Card0.ToString());
 }
 
