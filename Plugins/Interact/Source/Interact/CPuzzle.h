@@ -70,7 +70,7 @@ public:
 
 	// set actors as hidden (or not). in game, not editor.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void SetHiddens(const bool NewHidden);
+	void SetHiddensInGame(const bool NewHidden);
 	
 	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))

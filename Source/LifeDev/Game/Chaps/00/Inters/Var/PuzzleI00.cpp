@@ -32,4 +32,5 @@ void APuzzleI00::BeginPlay() {
 	Super::BeginPlay();
 	static const TArray<int32> States = { 5,0,0,0 };
 	SetStates(States);
+	SetActorHiddenInGame(true); // start hidden
 }

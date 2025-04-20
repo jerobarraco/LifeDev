@@ -303,7 +303,7 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	}
 }
 
-void UCPuzzle::SetHiddens(const bool NewHidden) {
+void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
 		I->SetActorHiddenInGame(NewHidden);
