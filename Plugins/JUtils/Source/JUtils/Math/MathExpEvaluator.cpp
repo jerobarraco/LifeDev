@@ -179,6 +179,18 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		SetVar(A, B);
 		return B;
 	});
+
+	JumpTable.MapBinary<FItem>([this](const double A, const double B) -> TArray<double> {
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%.5f B%.5f"), __func__, A, B);
+		
+		return TArray<double>({A, B});
+	});
+	JumpTable.MapBinary<FItem>([this](const TArray<double>& A, const double B) -> TArray<double> {
+		UE_LOG(LogJEvalExp, Warning, TEXT("%hs Fitem::Base: A=%i B%.5f"), __func__, A.Num(), B);
+		TArray<double> Ret(A);
+		Ret.Add(B);
+		return Ret;
+	});
 }
 
 TValueOrError<double, FExpressionError> FMathExpEvaluator::Evaluate(
