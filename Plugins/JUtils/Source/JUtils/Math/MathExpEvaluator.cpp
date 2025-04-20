@@ -160,7 +160,7 @@ FMathExpEvaluator::FMathExpEvaluator() {
 		const int32 I = FMath::RandRange(0, Num-1);
 		UE_LOG(LogJEvalExp, Log, TEXT("Pick A[%i] i=%i"), Num, I);
 		if (UNLIKELY(Num==0)) return MakeError(LOCTEXT("Pick", "List is empty"));
-		if (Num==1) return MakeValue(A[0]);
+		if (UNLIKELY(Num==1)) return MakeValue(A[0]);
 
 		return MakeValue(A[I]);
 	});

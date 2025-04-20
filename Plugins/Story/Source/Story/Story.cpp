@@ -107,7 +107,10 @@ bool UStory::Start(const FName Name) {
 			UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
 			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
 			SMC.BlockTillAllRequestsFinished(3.f, true); // still only limit to 3. i don't like soft-locks
-			UE_LOG(LogStory, Log, TEXT("UStory::Start block end"));
+			UE_LOG(LogStory, Log, TEXT("UStory::Start block end, flush start"));
+			UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
+			if (World3) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
+			UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
 			
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
