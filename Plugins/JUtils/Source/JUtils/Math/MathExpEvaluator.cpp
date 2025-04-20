@@ -23,7 +23,7 @@ namespace ExpressionParser {
 	const TCHAR* const FCeil::Moniker = TEXT("ceil");
 	const TCHAR* const FTrunc::Moniker = TEXT("trunc");
 	const TCHAR* const FFrac::Moniker = TEXT("frac");
-	const TCHAR* const FPick::Moniker = TEXT("pck"); // TODO index
+	const TCHAR* const FPick::Moniker = TEXT("pick");
 	
 	const TCHAR* const FRand::Moniker = TEXT("?");
 	const TCHAR* const FNot::Moniker = TEXT("!");
@@ -61,6 +61,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSquareRoot>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FSaturate>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FAbsolute>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FFloor>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FCeil>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FTrunc>);
+	TokenDefinitions.DefineToken(&ConsumeSymbol<FFrac>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPick>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FPower>);
 	TokenDefinitions.DefineToken(&ConsumeSymbol<FRand>);
@@ -93,6 +97,10 @@ FMathExpEvaluator::FMathExpEvaluator() {
 	Grammar.DefinePreUnaryOperator<FSaturate>();
 	Grammar.DefinePreUnaryOperator<FAbsolute>();
 	Grammar.DefinePreUnaryOperator<FPick>();
+	Grammar.DefinePreUnaryOperator<FFloor>();
+	Grammar.DefinePreUnaryOperator<FCeil>();
+	Grammar.DefinePreUnaryOperator<FTrunc>();
+	Grammar.DefinePreUnaryOperator<FFrac>();
 
 	// Left-to-right evaluation is required for non-commutative binary operations, and a reasonable default for commutative ones too.
 	Grammar.DefineBinaryOperator<FPower>(3);
@@ -146,7 +154,22 @@ FMathExpEvaluator::FMathExpEvaluator() {
 
 		return A[I];
 	});
-
+	JumpTable.MapPreUnary<FFloor>([](const double A) {
+		UE_LOG(LogJEvalExp, Log, TEXT("Floor A=%.5f"), A);
+		return FMath::Floor(A);
+	});
+	JumpTable.MapPreUnary<FCeil>([](const double A) {
+		UE_LOG(LogJEvalExp, Log, TEXT("Ceil A=%.5f"), A);
+		return FMath::CeilToDouble(A);
+	});
+	JumpTable.MapPreUnary<FTrunc>([](const double A) {
+		UE_LOG(LogJEvalExp, Log, TEXT("Trunc A=%.5f"), A);
+		return FMath::TruncToDouble(A);
+	});
+	JumpTable.MapPreUnary<FFrac>([](const double A) {
+		UE_LOG(LogJEvalExp, Log, TEXT("Frac A=%.5f"), A);
+		return FMath::Frac(A);
+	});
 
 	JumpTable.MapBinary<FPlus>([](const double A, const double B)	{ return A + B; });
 	JumpTable.MapBinary<FMinus>([](const double A, const double B)	{ return A - B; });
