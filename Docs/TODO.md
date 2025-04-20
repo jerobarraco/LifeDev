@@ -297,7 +297,6 @@ each time:
 
 later:
 * package: make a script to exclude content from the demo.
-* remove DirectoresToAlwaysCook and test the music again
 * fix rebuilding the engine on shipping (on linux on commandline)
 
 * in case of problems remember i've changed "Project settings > Engine > User Interface > Allow high dpi in game"
@@ -329,11 +328,13 @@ later:
 * redo narrative
 ** story outline. see video from mata and heroe's journey.
 * decide new cycle's direction
+* define game direction
+* find better way to make investigating and interacting more engaging. (see parts file)
 
 design: * define things i want to communicate that will inform story, narrative, items, etc
 eg * 'everything is hard' * noone will help * everything is confusing 
 * 'whats this about?' 'what do i want to say' 
-"* watch vid from patrick bout signs of cptsd and extract bulletpoints, then add situations.
+"* watch vid from patrick bout signs of cptsd and extract bullet-points, then add situations.
 
 # new features
 (but not new mechanics. that's for the next iteration (1.x))
@@ -467,3 +468,4 @@ not:
   *** add function for tag
 * new : use ddx ddy for outline and watch performance
 * make better water parts using refraction
+* remove DirectoresToAlwaysCook and test the music again
