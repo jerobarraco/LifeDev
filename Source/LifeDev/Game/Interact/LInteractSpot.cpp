@@ -48,7 +48,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	if (LIKELY(IsValid(Diags)))
 		Diags->AddId(DropDlg) ||
-		Diags->AddId(FName(LDConsts::Dlgs::Inter::Spot::UsePre+SLabel));
+		Diags->AddId(FName(LDConsts::Dlgs::Inter::Spot::DropPre+SLabel)); // TODO test
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {

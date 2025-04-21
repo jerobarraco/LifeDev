@@ -5,7 +5,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI02::ASpotI02():Super() {
-	DropDlg = TEXT("IS0_D");
+	//DropDlg = TEXT("IS0_D"); // Inter.Spot.Drop.SpotI02
 	UseRewardDestroy = false;
 	Texts = {
 		NSLOCTEXT("SpotI02", "DropHere", "Drop clothes here"), 
@@ -16,8 +16,5 @@ ASpotI02::ASpotI02():Super() {
 		FName("C1C01"), FName("C1C02"), LDConsts::Items::Bra, FName("C1C04")
 	};
 
-	UseHint = true;
-	// maybe move this to consts? (see basini00)
-	HintCondition = "{Inter.TriggerL.DoorI05}"; // hint once he tried to open the door
-	// RewardActor set in editor
+	// RewardActor set in editor to the puzzle that gives a card
 }
