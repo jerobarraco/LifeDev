@@ -45,7 +45,6 @@
 
 
 ch0
-* arch: clouts on wardrobe room 2
 * new: maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
 * new: add stuff to the status overlay ui
 
@@ -53,6 +52,9 @@ ch0
 * later: animator to change owners dilation
 
 # architecture
+## general
+* clouts on wardrobes
+
 
 living00
 hall00

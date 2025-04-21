@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
-#include "Story/Step.h"
 
 #include "LNPC01I00.generated.h"
 

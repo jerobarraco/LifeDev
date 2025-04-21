@@ -3,7 +3,6 @@
 #include "LStepC1S007.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
-#include "LifeDev/Game/Chaps/01/NPCs/LNPC01I00.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S007::ALStepC1S007():Super() {
