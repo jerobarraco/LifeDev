@@ -8,7 +8,7 @@
 ALNPC03::ALNPC03():Super() {
 	UseAnim = false;
 	IsLocked = true;
-	Texts = { FText::FromString("...") };
+	Texts = { NSLOCTEXT("NPC03", "State0", "...") };
 
 	// (X=-30.000000,Y=30.000000,Z=-40.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

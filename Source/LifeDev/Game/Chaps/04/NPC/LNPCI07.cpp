@@ -2,6 +2,5 @@
 #include "LNPCI07.h"
 
 ALNPCI07::ALNPCI07():Super() {
-	UseFade=true;
-	UseAutoActivate = true;
+	UseFade = true;
 }

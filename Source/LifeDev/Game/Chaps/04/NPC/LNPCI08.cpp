@@ -3,5 +3,4 @@
 
 ALNPCI08::ALNPCI08():Super() {
 	UseFade=true;
-	UseAutoActivate = true;
 }
