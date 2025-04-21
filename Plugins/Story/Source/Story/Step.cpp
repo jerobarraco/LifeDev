@@ -62,7 +62,13 @@ void AStep::BeginPlay() {
 }
 
 void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UStory* const Story = GetWorld()->GetSubsystem<UStory>();
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
+
+	// important for weird states. so that it doesn't trigger other actions when the world is destroyed just when it's starting.
+	World->GetTimerManager().ClearAllTimersForObject(this);
+
+	UStory* const Story = World->GetSubsystem<UStory>();
 	if (LIKELY(IsValid(Story))) Story->Rem(Name);
 
 	Super::EndPlay(EndPlayReason);
@@ -103,7 +109,7 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (UNLIKELY(Debug)) DoDebug();
-	// check UseCamShake outside of CamShakeStart to allow children to call it.
+	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
 
 	/// finish post wait
@@ -126,6 +132,9 @@ void AStep::Finish_Implementation() {
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
+
+	// important for weird states. so that it doesn't trigger other actions when the world is destroyed just when it's starting.
+	World->GetTimerManager().ClearAllTimersForObject(this);
 
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!IsValid(Story))) return;
