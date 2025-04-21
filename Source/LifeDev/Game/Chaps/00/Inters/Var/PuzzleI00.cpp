@@ -26,6 +26,7 @@ void APuzzleI00::PostLoad() {
 
 	static const TArray<bool> Locks = { true, false, true, false };
 	SetLocks(Locks);
+	SetActorHiddenInGame(true);
 }
 
 void APuzzleI00::BeginPlay() {

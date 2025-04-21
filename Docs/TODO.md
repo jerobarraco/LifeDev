@@ -44,15 +44,6 @@
 * remove card interactions (non-self usage (with char and items and door))
 
 
-* todo verify addmanyid doest error if one ef the ids fail
-  ** when expanding a group of diags
-
-
-
-* card what works turns items into usable ones.
-  ** merges, unlocks, reduce cool downs, etc. shows dialog
-  *** add autodialog with items as params
-
 ch0
 * arch: clouts on wardrobe room 2
 * new: maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
@@ -100,6 +91,11 @@ chap02 freeze-sad-yin
 
 hall00
 * do something with the cubes of ch3. make them visible but unusable? or lock the door? but how to tell the player that is available now?
+
+ch01
+* card what works turns items into usable ones.
+  ** merges, unlocks, reduce cool downs, etc. shows dialog
+  *** add autodialog with items as params
 
 ch00
 room 3
@@ -493,3 +489,7 @@ not:
   *** make door say something about puzzle ?
   *** door waits for card
   *** but step ends with card
+*
+* todo verify addmanyid doest error if one ef the ids fail
+  ** when expanding a group of diags
+

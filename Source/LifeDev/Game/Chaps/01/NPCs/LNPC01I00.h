@@ -20,8 +20,9 @@ public:
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void DoTrigger_Implementation() override;
 	
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+	// virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	void StandUp();
 	
 	UFUNCTION()

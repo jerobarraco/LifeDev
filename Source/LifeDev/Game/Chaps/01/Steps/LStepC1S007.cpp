@@ -25,3 +25,5 @@ void ALStepC1S007::Start_Implementation() {
 	Super::Start_Implementation();
 	FB->SetVal(.2);
 }
+
+// fades the npc on outliner
