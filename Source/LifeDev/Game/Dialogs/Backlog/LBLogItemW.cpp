@@ -19,7 +19,7 @@ void ULBLogItemW::SetUp(const FDiag& Diag) {
 	if (UNLIKELY(!Diags)) return;
 
 	FDiagChar Char;
-	if (UNLIKELY(!Diags->GetChar(Diag.CharRow, Char, true))) return;
+	if (UNLIKELY(!Diags->GetChar(Diag.CharRow, Char))) return;
 
 	T_Name->SetText(Char.Name);
 	T_Name->SetColorAndOpacity(FSlateColor(Char.Color));
