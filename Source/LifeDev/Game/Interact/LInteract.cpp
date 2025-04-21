@@ -175,8 +175,6 @@ void ALInteract::DoRewards() {
 		// AInteract will set active on SetActorHiddenInGame
 	}
 
-	if (RewardStep && IsValid(Story)) Story->StartNext();
-
 	/// rewards virtually done
 
 	// trigger separately,

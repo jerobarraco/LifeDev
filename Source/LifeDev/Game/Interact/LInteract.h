@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
-		const bool Rewardless = (!RewardStep && ZeroFlash && RewardActor == nullptr &&
+		const bool Rewardless = (ZeroFlash && RewardActor == nullptr &&
 			RewardItem.IsNone() && RewardFlag.IsNone() && RewardIntersActive.Num() == 0 &&
 			RewardIntersHint.Num() == 0 && RewardIntersTrigger.Num() ==0);
 			// note: use all rewards here. since it's confusing having to track which rewards destroys and which don't.
@@ -61,12 +61,6 @@ public:
 	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TObjectPtr<AActor> RewardActor = nullptr;
-
-	// Will start the next story step (finishing the current one).
-	// called reward so that the UseRewardDestroy affects it.
-	// deprecated. Use LStep's FlagsFinish and ItemsFinish instead. slower but more flexible. 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
-	bool RewardStep = false;
 	// whether to self-destroy when *rewarding* (only if rewards are set).
 	// if UseFade is true AND has something to reward, it will also fade.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
