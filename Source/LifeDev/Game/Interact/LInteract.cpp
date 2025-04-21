@@ -40,8 +40,6 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	if (LIKELY(IsValid(Diags))) {
 		const FString& BName = LDConsts::Dlgs::Inter::StatePre;
-		// FString Label;
-		// UJUtilsMisc::ObjectLabel(this, Label);
 		const FString& SLabel = Label.ToString();
 		const FName DName(BName+SLabel+"."+FString::FromInt(NewState));
 		Diags->AddId(DName); // todo don't warn?
@@ -222,7 +220,7 @@ void ALInteract::Unlock_Implementation() {
 	const FString& SLabel = Label.ToString();
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
 	// now unlocked
-	if (LIKELY(IsValid(Diags))) Diags->AddId(Dlg);
+	if (LIKELY(IsValid(Diags))) Diags->AddId(Dlg); // add before flags to avoid race conditions (flags have side-effects)
 
 	// also flags since sometimes the diag might not exist
 	if (LIKELY(Flags)) Flags->Mod(Dlg, 1);
@@ -326,9 +324,9 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const bool LockBad = Item != ULockItem;
 	if (LockBad) {
 		const FName Dlg(LDConsts::Dlgs::Inter::UnlockBadPre + SLabel);
+		const bool Added = LIKELY(ValidDiags) && Diags->AddId(Dlg); // add before flag. to avoid race conditions.
 		if (LIKELY(Flags)) Flags->Mod(Dlg, 1); // also as a flag
 
-		const bool Added = LIKELY(ValidDiags) && Diags->AddId(Dlg);
 		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 

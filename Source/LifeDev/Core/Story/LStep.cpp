@@ -254,7 +254,9 @@ void ALStep::CheckFinish() {
 	// since flags can change due to many random things, including the timer.
 	ItemsFinish.Empty();
 	FlagsFinish.Empty();
-	FinishAfterDlgs();
+
+	const UWorld* const World = GetWorld();
+	World->GetTimerManager().SetTimerForNextTick(this, &ALStep::FinishAfterDlgs);
 }
 
 bool ALStep::HasItemsFinish() {
