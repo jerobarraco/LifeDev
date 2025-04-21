@@ -15,10 +15,12 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const FString&, Name, const doubl
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double, Val);
 
 // Subsystem that evaluates math expressions
-// if you want to compare strings. please use the variables with some way to detect the conversion.
-// then on getVar convert to FName and then .toUnstableInt. and use int value instead.
+// usage:
 // e.g. {Var} returns the variable. {#MyId} returns the numeric value of the FName MyId.
 // e.g. {V.Story.Step.Cur}={#C3S0}
+//		you need to implement the "#" prefix on GetVar.
+//		if you want to return a string. please use the variables with some way to detect the conversion.
+//		then on getVar convert to FName and then .toUnstableInt. and memcopy to a double, or memcopy to a double directly. this might not work
 // for boolean stuff anything > 0 is true. else is false.
 // for some operators 0 and 1 will be returned. for others the actual value of the variable.
 // Operators: +,-,/,*,% (modulo)

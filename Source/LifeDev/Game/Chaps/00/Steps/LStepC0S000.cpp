@@ -25,7 +25,13 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UsePawnCam = true;
 	UseRandFB = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
+	// wait for card AND basin. the spot is linked to the card and puzzle.
 	ItemsFinish = { LDConsts::Items::Card0 };
+	FlagsFinish = {
+		"Inter.Trigger.BasinI00"
+		// Inter.Trigger.PuzzleI00 // no need. it's linked to the card.
+		// Inter.Trigger.SpotI02 // no need. it's linked to the card.
+	};
 	// this would fix the music not being packaged
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 

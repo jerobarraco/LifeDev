@@ -1,5 +1,5 @@
 # Virtual : for EvalMath only
-* starts with @, it returns the Fname int value. eg @C3S1 > 1230192. useful for comparing values that returns a fname int.
+* starts with #, it returns the Fname int value. eg #C3S1 > 1230192. useful for comparing values that returns a fname int.
 
 * V.Item.Count.XXX returns the count of the item XXX on inventory
 * V.Item.Cur > returns fname int for current selected item
