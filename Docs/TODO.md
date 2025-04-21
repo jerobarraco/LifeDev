@@ -43,13 +43,7 @@
 * new: on savegame slot on intro menu, show also the played time (get from the flags)
 * remove card interactions (non-self usage (with char and items and door))
 
-
-ch0
-* new: maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
-* new: add stuff to the status overlay ui
-
 ## later
-* later: animator to change owners dilation
 
 # architecture
 ## general
@@ -399,6 +393,9 @@ settings menu
 ** update urls
 
 *later: maybe: could rework a bit how the item usable works, with self usable.. like using as enum UseType (usable, use self, none). or maybe not. is ok as is.
+* maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
+* later: an animator that changes the owner's custom dilation.
+
 
 # ideas (move to dump/mechanic file):
 
