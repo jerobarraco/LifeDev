@@ -13,7 +13,8 @@ ACard::ACard():Super() {
 	RewardFlash = -.1;
 	StateNum = 1;
 	Texts = { NSLOCTEXT("Card", "State0", "A card") };
-	
+	UseAutoActivate = true;
+
 	Interact->SetRelativeLocation(FVector(5.000000,-2.500000,0.000000));
 	Interact->SetBoxExtent(FVector(10.000000,5.000000,5.000000));
 	
