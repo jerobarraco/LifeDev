@@ -174,6 +174,7 @@ other
 * nsloctext from ftext::fromstring (ready: ch00)
 * rename objects (labels)
 * add world-texts
+* rework rewardStep
 * port to autodialogs
 * * spot drop, 
 * * later: replace ones from LInteract::UseItemDlgs and others
