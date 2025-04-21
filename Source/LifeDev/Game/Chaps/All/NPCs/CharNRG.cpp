@@ -45,7 +45,8 @@ void ACharNRG::BeginPlay() {
 }
 
 void ACharNRG::SetActive_Implementation(const bool Enabled) {
-	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part (that means avoid showing the collision)
+	// we don't need the interact part (that means avoid showing the collision)
+	// // Super::SetEnabled_Implementation(Enabled);
 	if (LIKELY(Parts)) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
 }
 
