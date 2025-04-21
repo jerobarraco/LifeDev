@@ -17,7 +17,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
-
+	FlagsFinish = {"Inter.Trigger.PuzzleI04"};
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
