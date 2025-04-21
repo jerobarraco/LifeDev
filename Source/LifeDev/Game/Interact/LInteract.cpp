@@ -59,11 +59,6 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
-	// i'm not super sure about this.
-	// probably could collide with the intention of fading something in without being enabled
-	// might happen on a step auto-fading something.
-	// please me from the future, be careful. "ki o tsukete!"
-	if (!FadeIn || UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
 
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
@@ -71,7 +66,14 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 			SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
 		else // !FadeIn && UseFade
 			AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
-	}
+	} else
+		// i'm not super sure about this.
+		// probably could collide with the intention of fading something in without being enabled
+		// might happen on a step auto-fading something.
+		// only on !SetHidden since SetActorHidden also handles setActive
+		// please me from the future, be careful. "ki o tsukete!"
+		if (!FadeIn || UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
+
 	
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
@@ -101,11 +103,8 @@ void ALInteract::BeginPlay() {
 			"This is legal but unlikely. o=%s"), __func__, *Label.ToString());
 	}
 
-	if (IsValid(RewardActor)) { // hide and disable reward actor if any.
-		RewardActor->SetActorHiddenInGame(true);
-		AInteract* const Reward = Cast<AInteract>(RewardActor);
-		if (IsValid(Reward)) Reward->SetActive(false);
-	}
+	// hide and disable reward actor if any. will also call setactive.
+	if (IsValid(RewardActor)) RewardActor->SetActorHiddenInGame(true);
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
@@ -168,11 +167,10 @@ void ALInteract::DoRewards() {
 
 	// do the actor
 	if (IsValid(RewardActor)) {
-		RewardActor->SetActorHiddenInGame(false);
-		
+		// fade if possible, otherwise unset hidden. setactive follows.
 		ALInteract* const LReward = Cast<ALInteract>(RewardActor);
 		if (LReward) LReward->Fade(true);
-		// AInteract will set active on SetActorHiddenInGame
+		else RewardActor->SetActorHiddenInGame(false);
 	}
 
 	/// rewards virtually done

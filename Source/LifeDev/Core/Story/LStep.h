@@ -102,8 +102,8 @@ public:
 
 #pragma region interacts
 	// Actors to show AND hide. If it's an interact, it will fade in and out.
-	// It will get destroyed on Stop. Use IntersEnable/FadeIn/FadeOut instead otherwise.
-	// purposely an actor to have flexibility
+	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
+	// purposely an actor to have flexibility.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy

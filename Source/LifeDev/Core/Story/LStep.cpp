@@ -346,15 +346,12 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 		if (UNLIKELY(!IsValid(A))) continue;
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
-		if (Inter && WithFade) {
+		if (Inter && WithFade) { // hide with fade is possible
 			Inter->Fade(Active, true);
 			continue;
 		}
-		// hiding it with fades will be jarring
-		A->SetActorHiddenInGame(!Active);
-		// fade will call set-active. otherwise have to call it manually.
-		if (Inter) Inter->SetActive(Active);
 		// Avoid calling 'Fade' twice, just in case there are side effects.
+		A->SetActorHiddenInGame(!Active);
 	}
 }
 
@@ -378,7 +375,7 @@ void ALStep::DoIntersDeactive() {
 
 void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 	for (ALInteract* const I: A) {
-		if (LIKELY(IsValid(I))) I->Fade(In);
+		if (LIKELY(IsValid(I))) I->Fade(In, true);
 	}
 }
 

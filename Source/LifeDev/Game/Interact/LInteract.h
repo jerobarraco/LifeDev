@@ -23,8 +23,9 @@ public:
 
 	// will fade in/out the object. also sets active by default.
 	// optionally will un/set the hidden flag.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction) )
-	void Fade(const bool FadeIn = false, const bool SetHidden=false);
+	// SetHidden is deprecated.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
+	void Fade(const bool FadeIn = false, const bool SetHidden=true);
 
 	virtual void SetState_Implementation(const int32 NewState) override;
 #pragma region rewards
