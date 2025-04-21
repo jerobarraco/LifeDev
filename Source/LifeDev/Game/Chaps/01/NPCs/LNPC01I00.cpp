@@ -9,6 +9,7 @@ ALNPC01I00::ALNPC01I00():Super() {
 	UseFade = true;
 	UseStateLoop = false;
 	UseAutoActivate = true;
+	UseRewardDestroy = false;
 }
 
 void ALNPC01I00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
