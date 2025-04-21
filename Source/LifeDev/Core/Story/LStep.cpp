@@ -381,7 +381,7 @@ void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
 
 void ALStep::DoIntersTrigger() const {
 	for (const TObjectPtr<ALInteract>& I: IntersTrigger) {
-		if (LIKELY(IsValid(I))) I->TryTrigger();
+		if (LIKELY(IsValid(I))) I->TriggerForced();
 	}
 }
 

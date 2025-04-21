@@ -44,6 +44,16 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	bool TryTrigger();
 
+	// Don't use if possible. use TryTrigger. This is used for binding only,
+	// since ue will complain about the return value.
+	// bindings don't work with forceinline
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
+	void TryTriggerWrap() {TryTrigger();}
+
+	// will force trigger the Interact, even if locked (will call DoTrigger instead of DoTriggerLocked). used mostly for other automations.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
+	FORCEINLINE void TriggerForced() {Trigger();};
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void Hover(const bool IsOn);
 	virtual void Hover_Implementation(const bool IsOn) {
@@ -57,12 +67,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	EItemUseResult TryUseItem(const FName& Name);
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
-
-	// Don't use if possible. use TryTrigger. This is used for binding only,
-	// since ue will complain about the return value.
-	// bindings don't work with forceinline
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
-	void TryTriggerWrap() {TryTrigger();}
 
 	// Enables or disables the interaction. Will not fade.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))

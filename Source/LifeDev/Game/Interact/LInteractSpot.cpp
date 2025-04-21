@@ -52,9 +52,7 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {
-		Unlock();
-		Trigger(); // force trigger on all items restored
-		IsLocked = true; // avoid further triggering
+		TriggerForced();
 	} else if (UseStateInc) { // on the else since Trigger always increases state
 		SetState(State+1);
 	}
