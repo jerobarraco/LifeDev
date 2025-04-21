@@ -20,7 +20,7 @@ class LIFEDEV_API UCLNoiser : public UCNoiser {
 public:
 	UCLNoiser();
 
-	virtual void Activate(bool bReset = false) override;
+	virtual void Activate(const bool bReset = false) override;
 	
 	// maximum distance with flashback system
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
@@ -43,5 +43,5 @@ protected:
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
-	void SetFB(float Value);
+	void SetFB(const float Value);
 };

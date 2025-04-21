@@ -10,8 +10,6 @@
 #include "JSig/CSignificance.h"
 #include "Sounds/CSounder.h"
 
-#include "LifeDev/Core/Sounds/CLSounder.h"
-
 ABasin00::ABasin00():Super() {
 	Texts = { NSLOCTEXT("Basin0", "State0", "Close"), NSLOCTEXT("Basin0", "State1", "Open")};
 	UseAnim = false;

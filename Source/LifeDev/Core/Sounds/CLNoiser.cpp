@@ -30,13 +30,13 @@ UCLNoiser::UCLNoiser():Super() {
 	Attenuation = CAttn.Object;
 }
 
-void UCLNoiser::Activate(bool bReset) {
+void UCLNoiser::Activate(const bool bReset) {
 	// don't activate if this is disabled
 	if (!ULSettings::GetFeatS(GetWorld(), EFeat::S_NOISE)) return;
 	Super::Activate(bReset);
 }
 
-void UCLNoiser::SetFB(float Value) {
+void UCLNoiser::SetFB(const float Value) {
 	// note that when the fb goes up, the times and dist goes down
 	DistMax = FMath::LerpStable(DistFBMax, DistFBMin, Value);
 	TimeMax = FMath::LerpStable(TimeFBMax, TimeFBMin, Value);
@@ -44,26 +44,26 @@ void UCLNoiser::SetFB(float Value) {
 
 void UCLNoiser::BeginPlay() {
 	Super::BeginPlay();
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	UFlashback* const F = UFlashback::Instance(W);
-	if (F) F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
+	if (LIKELY(F)) F->OnChange.AddUniqueDynamic(this, &UCLNoiser::SetFB);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) {
+	if (LIKELY(S)) {
 		Debug = S->GetFeat(EFeat::DBG_SOUND);
 		S->OnFeatUpdateSound.AddUniqueDynamic(this, &UCLNoiser::FeatUpdate);
 	}
 }
 
 void UCLNoiser::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UWorld* const W = GetWorld();
-	if (!W) return;
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
 
 	UFlashback* const F = UFlashback::Instance(W);
-	if (F) F->OnChange.RemoveAll(this);
+	if (LIKELY(F)) F->OnChange.RemoveAll(this);
 
 	ULSettings* const S = ULSettings::Instance(W);
-	if (S) S->OnFeatUpdateSound.RemoveAll(this);
+	if (LIKELY(S)) S->OnFeatUpdateSound.RemoveAll(this);
 	
 	Super::EndPlay(EndPlayReason);
 }
