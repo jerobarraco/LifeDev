@@ -127,8 +127,10 @@ enum class EFeat: uint8 {
 	// it surely can be abused to duplicate items or smth like that.
 	// for debug only.
 	DBG_SAVE_HOT,
-	// for captures.
-	G_FLY_CAM,
+	// fly camera. for captures.
+	DBG_FLY_CAM,
+	// warn missing diag addId
+	DBG_D_WARN,
 	DBG_BASE UMETA(Deprecated),
 	DBG_MAX UMETA(Hidden),
 #pragma endregion

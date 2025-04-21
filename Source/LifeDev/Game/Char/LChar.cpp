@@ -193,11 +193,13 @@ void ALChar::Init_Implementation() {
 	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
 
-	ULSettings* Settings = ULSettings::Instance(this);
-	if (Settings) {
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALChar::FeatUp);
+		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALChar::FeatUp);
 		FeatUp(EFeat::G_SHOW_POINT, Settings->GetFeat(EFeat::G_SHOW_POINT));
 		FeatUp(EFeat::G_STATUS, Settings->GetFeat(EFeat::G_STATUS));
+		FeatUp(EFeat::DBG_FLY_CAM, Settings->GetFeat(EFeat::DBG_FLY_CAM));
 	}
 }
 
@@ -249,8 +251,10 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (UNLIKELY(!W)) return;
 
 	ULSettings* const Settings = ULSettings::Instance(this);
-	if (Settings)
+	if (Settings) {
 		Settings->OnFeatUpdateGameplay.RemoveAll(this);
+		Settings->OnFeatUpdateDebug.RemoveAll(this);
+	}
 
 	// unbind input
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
@@ -384,7 +388,7 @@ void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 		UI->SetPointerShow(Enabled); // flag hides
 	} else if (Feat == EFeat::G_STATUS) {
 		if (LIKELY(IsValid(UI))) UI->ShowStatus(Enabled);
-	} else if (Feat == EFeat::G_FLY_CAM) {
+	} else if (Feat == EFeat::DBG_FLY_CAM) {
 		APlayerController* const Cont = UJUtilsSys::GetFirstLocalPlayerController(this);
 		if (UNLIKELY(!Cont)) return;
 
