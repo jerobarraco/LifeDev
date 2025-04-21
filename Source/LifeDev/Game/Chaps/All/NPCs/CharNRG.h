@@ -16,9 +16,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void SetActive_Implementation(const bool Enabled) override;
 	virtual void AnimEnd_Implementation() override;
-	
+	virtual void SetActorHiddenInGame(bool NewHidden) override;
+
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UNiagaraComponent> Parts = nullptr;
 	

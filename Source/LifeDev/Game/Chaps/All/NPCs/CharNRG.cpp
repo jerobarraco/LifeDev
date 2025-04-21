@@ -9,20 +9,16 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
-// q = there are 2 ways. either i do it the "right" way or i cheat really badly.
-// p = i only have 40 minutes.
-// res = i cheat really hard
-
-
-// i don't really want this to be interactable though
-// i'm just abusing the interface provided by the Interact, and the setup in the steps.
+// it's not that necessary to be an interact. but being so helps a ton.
 
 ACharNRG::ACharNRG():Super() {
 	Texts = { NSLOCTEXT("CharNrg", "State0", "") };
 	StateNum = 2;
-	IsOneShot = false; // IsOneShot will call SetEnable as soon as it triggers.
+	IsOneShot = true; // IsOneShot will call SetEnable as soon as it triggers.
+	UseAutoActivate = false;
 
 	Anim->TRoot = Root; // nice try but... (read beginplay)
+	// the TEnd is set on the editor.
 	Anim->IsAdditive = false;
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
 
@@ -33,21 +29,13 @@ ACharNRG::ACharNRG():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
 	Parts->SetAsset(CNiag.Object);
+	// the part color is set on the editor
 }
 
 void ACharNRG::BeginPlay() {
 	Super::BeginPlay();
 	Anim->TRoot = Root; // needed or it won't actually use it
-	// ok, this is a bit hackish.
-	// I need autoactivate for to get SetActive(true) on fade.
-	// but only after super::beginplay, so they don't show on startup.
-	UseAutoActivate = true;
-}
-
-void ACharNRG::SetActive_Implementation(const bool Enabled) {
-	// we don't need the interact part (that means avoid showing the collision)
-	// // Super::SetEnabled_Implementation(Enabled);
-	if (LIKELY(Parts)) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
+	SetActorHiddenInGame(true); // start hidden by default
 }
 
 void ACharNRG::AnimEnd_Implementation() {
@@ -56,4 +44,10 @@ void ACharNRG::AnimEnd_Implementation() {
 	const float Rate = State == 0 ? SpawnRateMax : SpawnRateMin;
 	if (LIKELY(Parts)) Parts->SetVariableFloat(SSpawnRate, Rate);
 	// SetEnabled(false); // leave the parts active as i still want them to keep spawning
+}
+
+void ACharNRG::SetActorHiddenInGame(const bool NewHidden) {
+	Super::SetActorHiddenInGame(NewHidden);
+	if (LIKELY(Parts)) Parts->SetActive(!NewHidden);
+	//beware interact has a member called emitter
 }
