@@ -44,6 +44,16 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 		const FName DName(BName+SLabel+"."+FString::FromInt(NewState));
 		Diags->AddId(DName); // todo don't warn?
 	}
+	/*
+	not sure about this. it will allow to use it in flagsFinish, unlockCondition, dialogs, and other stuff.
+	it might even help restore the state of a level on load (hmmmm).
+	but it might also spam the flags with a ton of useless stuff. and also has the problem of setstateNow,
+	which, again, will trigger side effects.
+	also i already have a way to check the state of an interact via the conditions.
+	const FString& BName = LDConsts::Dlgs::Inter::StatePre;
+	const FString& SLabel = Label.ToString();
+	if (LIKELY(IsValid(Flags)) Flags->Set(FName(BName+SLabel), NewState)
+	*/
 }
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
