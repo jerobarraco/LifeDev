@@ -406,7 +406,8 @@ void AInteract::PlaySFX(USoundBase* const Snd) const {
 	if (UNLIKELY(!IsValid(Snd))) {
 		// stop the sfx if it's playing. i could have used a CSounder, but i don't really need it
 		// and i don't want to break my game right now.
-		SFX->FadeOut(1, 0);
+		// this is used for looping sounds
+		if (UNLIKELY(SFX->IsPlaying())) SFX->FadeOut(1, 0);
 		return;
 	}
 
