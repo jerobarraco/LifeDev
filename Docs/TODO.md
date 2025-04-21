@@ -33,37 +33,21 @@
 ** radio, batts, heater, calendar, clouts
 
 ## fix
-* fix the game start
-* * fix: the camera fade
+* fix the game start visible
+* * fix: the level camera fade
 * fix: item.use is added after spot.trigger
 * fix feedback form opens twice. move to another place
-* fix: flycam does not work
-* fix: rethink books01 animator with component instead of subsystem
+* fix: flycam does not work ( implement own controller)
 
 ## new
 * new: on savegame slot on intro menu, show also the played time (get from the flags)
-* remove card interactions with char and items and door
+* remove card interactions (non-self usage (with char and items and door))
 
 
 * todo verify addmanyid doest error if one ef the ids fail
   ** when expanding a group of diags
 
-* on chap 0 end, start the camera from 1st person. so its clear you are him.
 
-* sentry remove user name from sontry
-* on chap 0 end, start the camera from 1st person. so its clear you are him.
-
-* ch 02: make the double door locked. o.ens with a key.
-  ** have a key sobmewhere else
-  ** use screwdriver as key
-  *** maybe card whatworxs turns the screwdriver into a key
-
-* idea, make the puzzle appear after each character. reward the card.
-  ** ch00 make the puzzle appear in front of door after basin and spot are complete.
-  *** make door say something about puzzle ?
-  *** door waits for card
-  *** but step ends with card
-  ** ch 01 puzzle appears when the character appears sitting
 
 * card what works turns items into usable ones.
   ** merges, unlocks, reduce cool downs, etc. shows dialog
@@ -178,9 +162,11 @@ other
 ## fix
 
 ch00:
+* on chap 0 end, start the camera from 1st person. so its clear you are him.
 
 ## all:
-
+* idea, make the puzzle appear after each character. reward the card.
+* * ch 01 puzzle appears when the character appears sitting. and it's what triggers the character instead of the card.
 
 ch04 - Acceptance - Union - All
 * find BETTER quote/subtitle for the card acceptance
@@ -196,10 +182,14 @@ chap 03
 	(CharRow="Main",Text=NSLOCTEXT("[239F452D4861A241E549CD782E7F4EA2]", "452657A0240448B0B8BF0A278CD7C055", "Ridi, Pagliaccio, e ognun applaudirà!"),Condition="!{Inter.Look.TapeI02}",Comment="")
 
 chap 02
-* improve hints to use card with door
+
+* ch 02: make the double door locked. o.ens with a key.
+  ** have a key sobmewhere else
+  ** use screwdriver as key
+  *** maybe card whatworxs turns the screwdriver into a key
+
 * remove the call00_T.1 "something fell into the table" from diag datatable
-* * also should be onto
-* arch: ch 02 or 03. fix the tape usable through the cabinet
+* * also, it should be onto
 
 chap 01
 * story: ch01 poem text. split on multiple pages
@@ -496,3 +486,10 @@ not:
 *
 * fix: rename G_FLY_CAM to DBG_FLY_CAM ( requires to fix char delegate binding)
 * * this is also broken and does not work.
+* fix: rethink books01 animator with component instead of subsystem
+* * sentry remove user name from sontry
+* arch: ch 02 or 03. fix the tape usable through the cabinet
+  ** ch00 make the puzzle appear in front of door after basin and spot are complete.
+  *** make door say something about puzzle ?
+  *** door waits for card
+  *** but step ends with card

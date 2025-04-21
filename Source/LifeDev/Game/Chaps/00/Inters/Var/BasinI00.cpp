@@ -3,7 +3,8 @@
 #include "BasinI00.h"
 
 ABasinI00::ABasinI00():Super() {
-	Texts = { NSLOCTEXT("BasinI00", "State0", "Close"), NSLOCTEXT("BasinI00", "State1", "Done") };
+	Texts = { NSLOCTEXT("BasinI00", "State0", "Close"),
+		NSLOCTEXT("BasinI00", "State1", "Done") };
 	UseAnim = false;
 	IsLocked = false;
 	RewardFlash = .1;

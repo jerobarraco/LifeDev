@@ -28,6 +28,7 @@ void ABooks01::SetState_Implementation(const int32 NewState) {
 
 		B->SetRelativeTransform(BookTrans[(i+State)%N]);
 		// a very basic animation so it does not look awful
+		// i can't use a CAnimatorMix because each book has its own material :')
 		if (LIKELY(AnimSub)) {
 			UMaterialInstanceDynamic* const Mat = Cast<UMaterialInstanceDynamic>(B->GetMaterial(0));
 			if (LIKELY(Mat)) {
