@@ -7,8 +7,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogDiags, Log, Log);
 
-// TODO think how to optimize this. a way to lazy-evaluate conditions. or lazy expansion of groups. only when about to be shown.
-
 UDiags* UDiags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 	

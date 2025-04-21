@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName, Name, cons
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
 
 // World subsystem to deal with dialogs
-UCLASS(Blueprintable, Category="Dialogs")
+UCLASS(Blueprintable, Category="Diags", Config="Diags", DefaultConfig)
 class DIAGS_API UDiags : public UWorldSubsystem {
 	GENERATED_BODY()
 
@@ -30,36 +30,36 @@ public:
 	// If, and only if, a *Sequence* id ends with '*' it will add a random one instead of a regular sequence (all the dialogs in it).
 	// If a dialog ends with "*" it will simply add it.
 	// This is on purpose to support certain code that can either trigger a random dialog in a sequence, or a specific dialog.
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddId(const FName& Row, const bool Warn=true);
 	// add many sequences or dialogs. can be recursive
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddIdMany(const TArray<FName>& Rows);
 
 	// add a dialog by its id
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddDiagId(const FName& Row, const bool Warn=true);
 	// add a dialog
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	void AddDiag(const FDiag& Diag);
 	
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	// Sequences ending with "*" will only add one *random* dialog from that sequence.
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddGroupId(const FName& RowName, const bool Warn=true);
 	// Adds a sequence. Use this to AddManyById.
 	// Beware this doesn't protect you from recursive sequences.
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddGroup(const FDiagGroup& Seq);
 #pragma endregion
 #pragma region Get
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar,
 		const bool Warn=true) const;
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn=true) const;
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool GetGroup(const FName& RowName, FDiagGroup& OutGroup, const bool Warn=true) const;
 
 	// true when there's a dialog showing
@@ -68,43 +68,46 @@ public:
 #pragma endregion
 
 	// called by the dialog manager when a dialogue is done showing
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DiagDone();
 
 	// EXPERIMENTAL
 	// Tests a Group's condition. Returns true if >0.
 	// See the Eval subsystem for docs.
-	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags")
 	bool CheckCondition(const FString& Expression, double& Res) const;
 	// left here in case someone needs to check the condition of a group for some weird reason.
 
 #pragma region Init
 	// set the data to be used. call upon initialization.
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups);
 
 	// initialize. called by the gamemode
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	void Init();
 
 	// de-initialize. called by the gamemode
-	UFUNCTION(BlueprintCallable, Category="Dialogs")
+	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DeInit();
+
+	UPROPERTY(BlueprintReadWrite, Category="Diags", Config)
+	bool UseWarning = false;
 #pragma endregion
 
 #pragma region Delegates
 	// When a dialog is added. Beware, this is called before OnShow.
 	// Please don't call Add directly from this, wait a frame.
 	// Otherwise, you might break OnShow or cause stack overflows.
-	UPROPERTY(BlueprintAssignable, Category="Dialogs")
+	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnAdd OnAdd;
 
 	// when a dialog needs to show. Avoid calling Add directly from this, wait a frame.
-	UPROPERTY(BlueprintAssignable, Category="Dialogs")
+	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnShow OnShow;
 
 	// when there are no more dialogs to show now
-	UPROPERTY(BlueprintAssignable, Category="Dialogs")
+	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnDone OnDone;
 #pragma endregion
 

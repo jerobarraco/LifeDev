@@ -1,4 +1,4 @@
-﻿read production timeline on reduced scope
+﻿	read production timeline on reduced scope
 	read each game system file for tasks
 	^ move from here to there, and there to here
 	when in doubt, work on whatever
@@ -18,7 +18,7 @@
 # general
 * publish ost on everywhere.
 
-* the ones from  spirit
+* the ones from spirit
 
 ## for build
 * build demo
@@ -46,6 +46,13 @@
 * new: on savegame slot on intro menu, show also the played time (get from the flags)
 * remove card interactions with char and items and door
 
+
+* todo verify addmanyid doest error if one ef the ids fail
+  ** when expanding a group of diags
+
+* on chap 0 end, start the camera from 1st person. so its clear you are him.
+
+* sentry remove user name from sontry
 * on chap 0 end, start the camera from 1st person. so its clear you are him.
 
 * ch 02: make the double door locked. o.ens with a key.
@@ -58,29 +65,19 @@
   *** make door say something about puzzle ?
   *** door waits for card
   *** but step ends with card
-  ** ch 01 puzzle appears when the character appers sitting
+  ** ch 01 puzzle appears when the character appears sitting
 
 * card what works turns items into usable ones.
   ** merges, unlocks, reduce cool downs, etc. shows dialog
   *** add autodialog with items as params
-
-* animator to change owners dilation
-
-* sentry
-  *** trigger calls on another thread? maybe not, could make report errors harder. sentry is for errors only so...
-** on lbutton add breadcrumb on click with name
-*** might need to create an lbutton
 
 ch0
 * arch: clouts on wardrobe room 2
 * new: maybe: improve the count time so that it's not affected by time dilation, or not? (maybe won't fix, so that it does not count the time in settings, but maybe it should?)
 * new: add stuff to the status overlay ui
 
-*  idea: add to eval
-* operator ',' that appends to a list. if the left is empty it starts a list.
-* operator ; chooses an item from a list based on the index
-
-* eval function 'pick': returns a random element from a list
+## later
+* later: animator to change owners dilation
 
 # architecture
 
@@ -492,3 +489,9 @@ not:
 * remove DirectoresToAlwaysCook and test the music again
 
 * sentry remove user name from sontry
+
+*  idea: add to eval
+* operator ',' that appends to a list. if the left is empty it starts a list.
+* operator ; chooses an item from a list based on the index
+
+* eval function 'pick': returns a random element from a list
