@@ -268,13 +268,10 @@ void AInteract::BeginPlay() {
 		RewardIntersTrigger.AddUnique(I);
 	}
 
-	// apparently here is too late
-	// can't really do this, since SetAutoActivate can only be called during construction >_<.
-	// even though the component is not activated up until InitializeComponents!!!!!
-
-	// this will potentially break everything.
+	// now activating if it needs to.
 	const bool IsActive = Interact->IsActive();
-	if (UseAutoActivate != IsActive)
+	if (UNLIKELY(IsHidden())) SetActive(false); // will be activated on setHiddenInGame(false)
+	else if (UseAutoActivate != IsActive)
 		SetActive(UseAutoActivate); // this will also disable if it's active. so whoever uses this class will have to be careful.
 
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
@@ -351,8 +348,7 @@ void AInteract::PostInitProperties() {
 
 void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
-	if (!NewHidden || UseAutoActivate)
-		SetActive(!NewHidden);
+	if (NewHidden || UseAutoActivate) SetActive(!NewHidden);
 }
 
 void AInteract::DoTriggerLocked_Implementation() {

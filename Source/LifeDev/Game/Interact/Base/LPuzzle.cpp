@@ -70,6 +70,7 @@ void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
 
 void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
+	SetActive(false); // set self active to false. or we'll get some weird behaviour.
 	if (UNLIKELY(!CPuzzle)) return;
 	CPuzzle->SetHiddensInGame(NewHidden);
 }

@@ -8,7 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC0S000::ALStepC0S000():Super() {
@@ -28,7 +27,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	// wait for card AND basin. the spot is linked to the card and puzzle.
 	ItemsFinish = { LDConsts::Items::Card0 };
 	FlagsFinish = {
-		"Inter.Trigger.BasinI00"
+		"Inter.Trigger.BasinI00" // TODO move to consts?
 		// Inter.Trigger.PuzzleI00 // no need. it's linked to the card.
 		// Inter.Trigger.SpotI02 // no need. it's linked to the card.
 	};

@@ -63,7 +63,7 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
 	// please me from the future, be careful. "ki o tsukete!"
-	if (!FadeIn || UseAutoActivate ) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
+	if (!FadeIn || UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
 
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
