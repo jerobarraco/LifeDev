@@ -19,5 +19,6 @@ public:
 	ABasinI00();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void DoTrigger_Implementation() override;
 };

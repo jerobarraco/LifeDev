@@ -25,7 +25,6 @@
 * g send email saying that a new build has been uploaded (test first)
 
 ## ongoing/refactor:
-* continue fixing nsloctext and ftext::fromstring
 * add item range to enums ENUM_RANGE_BY_COUNT(EItemUseResult, EItemUseResult::MAX);
 * use new room datalayers
 * rename objects / ensure labels
@@ -38,8 +37,7 @@
 * * fix: the camera fade
 * fix: item.use is added after spot.trigger
 * fix feedback form opens twice. move to another place
-* fix: rename G_FLY_CAM to DBG_FLY_CAM ( requires to fix char delegate binding)
-* * this is also broken and does not work.
+* fix: flycam does not work
 * fix: rethink books01 animator with component instead of subsystem
 
 ## new
@@ -494,4 +492,7 @@ not:
 * operator ',' that appends to a list. if the left is empty it starts a list.
 * operator ; chooses an item from a list based on the index
 
-* eval function 'pick': returns a random element from a list
+* eval function 'pick': returns a random element from a list\
+*
+* fix: rename G_FLY_CAM to DBG_FLY_CAM ( requires to fix char delegate binding)
+* * this is also broken and does not work.

@@ -12,7 +12,6 @@
 
 #include "LifeDev/Core/Sounds/CLSounder.h"
 
-
 ABasin00::ABasin00():Super() {
 	Texts = { NSLOCTEXT("Basin0", "State0", "Close"), NSLOCTEXT("Basin0", "State1", "Open")};
 	UseAnim = false;
@@ -29,23 +28,28 @@ ABasin00::ABasin00():Super() {
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));
 
+	// TODO this could be using the emitter stuff
+	const FVector WaterPos(FVector(17,12.5,18));
 	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
-	Water->SetupAttachment(RootComponent);
+	// Water->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CWater(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/WaterTap.WaterTap"));
-	Water->SetAsset(CWater.Object);
-	Water->SetAutoActivate(false);
-	Water->SetUseAutoManageAttachment(true);
-	Water->SetRelativeLocation(FVector(17,10,18));
+	// Water->SetAsset(CWater.Object);
+	// Water->SetAutoActivate(false);
+	// Water->SetUseAutoManageAttachment(true);
+	// Water->SetRelativeLocation(WaterPos);
+	Particles = {CWater.Object, nullptr};
 
-	SFX->SetRelativeLocation(FVector(10,10,0));
-	SND_Water = CreateDefaultSubobject<UCLSounder>("SND_Water");
-	SND_Water->SetupAttachment(Water);
+	Emitter->SetRelativeLocation(WaterPos);
+	SFX->SetRelativeLocation(WaterPos);
+	// SND_Water = CreateDefaultSubobject<UCLSounder>("SND_Water");
+	// SND_Water->SetupAttachment(Water);
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
 		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
-	SND_Water->SetSound(CWaterSnd.Object);
-	SND_Water->SetAutoActivate(false);
-	SND_Water->bAutoManageAttachment = true;
+	// SND_Water->SetSound(CWaterSnd.Object);
+	// SND_Water->SetAutoActivate(false);
+	// SND_Water->bAutoManageAttachment = true;
+	SFXs = {CWaterSnd.Object, nullptr};
 	
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
@@ -60,7 +64,7 @@ void ABasin00::BeginPlay() {
 	// don't do this. it will disable the interact and never come back
 	// Sig->CompsHide.AddUnique(GetRootComponent());
 	// Disable water when not looking at it
-	Sig->CompsHide.AddUnique(Water);
+	Sig->CompsHide.AddUnique(Emitter);
 }
 
 void ABasin00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
