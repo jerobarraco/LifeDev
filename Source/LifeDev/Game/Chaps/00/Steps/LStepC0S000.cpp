@@ -66,8 +66,8 @@ void ALStepC0S000::DoDebug_Implementation() {
 	Super::DoDebug_Implementation();
 	Inventory->Ensure(LDConsts::Items::Poem0);
 	Inventory->Ensure(LDConsts::Items::Card0);
-	Flags->Set(LDConsts::Flags::Game::CH0::Basin);
-	Flags->Set(LDConsts::Flags::Game::CH0::Spot);
+	Flags->Set("Inter.Trigger.BasinI00");
+	Flags->Set("Inter.Trigger.SpotI02");
 
 	AActor* const Pawn = UGameplayStatics::GetActorOfClass(GetWorld(), APawn::StaticClass());
 	if (LIKELY(Pawn)) Pawn->SetActorLocation(FVector(-683.152746,-20.003613,67.150001));

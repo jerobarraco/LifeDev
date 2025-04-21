@@ -6,4 +6,6 @@
 
 ACard00::ACard00():Super() {
 	RewardItem = LDConsts::Items::Card0;
+	UseHint = true;
+	UseAutoActivate = true; // will be hidden by default.
 }
