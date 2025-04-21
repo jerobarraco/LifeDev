@@ -10,7 +10,7 @@
 APaperI00::APaperI00():Super() {
 	// just for looks
 	UseFade = true;
-
+	UseAutoActivate = false; // we got one that can't be interacted. override parent.
 	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
 	Text->SetupAttachment(Mesh);
 	Text->SetRelativeLocation(FVector(0.400000,-19.500000,0.600000));
