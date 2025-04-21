@@ -250,6 +250,10 @@ void ALStep::CheckFinish() {
 	if (NumItems<1 && NumFlags<1) return; // nothing to finish
 	if (LIKELY(!HasItemsFinish())) return;
 	if (LIKELY(!HasFlagsFinish())) return;
+	// clear to avoid any double triggering that might happen while the dialogs are being triggered
+	// since flags can change due to many random things, including the timer.
+	ItemsFinish.Empty();
+	FlagsFinish.Empty();
 	FinishAfterDlgs();
 }
 
@@ -320,7 +324,8 @@ void ALStep::PostLoad() {
 }
 
 void ALStep::Finish_Implementation() {
-	Unbind();// avoid possible double triggering. since finish is called from several origins
+	// avoid possible double triggering. since finish is called from several origins.
+	Unbind();
 	Super::Finish_Implementation();
 }
 
