@@ -23,6 +23,7 @@
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
+#include "Diags/Diags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -231,6 +232,9 @@ void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::DBG_TESTDL) {
 		UJUtilsMisc::ToggleDataLayer(this, TestDL.LoadSynchronous(), Enabled);
+	} else if (Feat == EFeat::DBG_D_WARN) {
+		UDiags* const Diags = UDiags::Instance(this);
+		if (LIKELY(Diags)) Diags->UseWarning = Enabled;
 	}
 }
 
