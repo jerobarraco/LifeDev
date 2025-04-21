@@ -431,8 +431,10 @@ void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 
 	if (LIKELY(Emitter->GetAsset() != Part)) { // opt
 		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
-		Emitter->Deactivate();
-		Emitter->ResetSystem();
+		if (Part) { // let the system stop by itself
+			Emitter->Deactivate();
+			Emitter->ResetSystem();
+		}
 		Emitter->SetAsset(Part);
 	} else
 		UE_LOG(LogInteract, Log, TEXT("%hs: Reactivating old one"), __func__);
