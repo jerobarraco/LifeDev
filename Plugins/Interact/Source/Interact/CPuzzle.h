@@ -55,6 +55,9 @@ public:
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetActives(const bool NewActive);
+	// set the UseAutoActives on the pieces
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	void SetAutoActives(const bool NewAutoActive);
 
 	// sets the states on each registered interact.
 	// Call on or after begin play.

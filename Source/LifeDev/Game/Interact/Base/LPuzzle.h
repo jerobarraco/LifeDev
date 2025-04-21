@@ -42,8 +42,13 @@ public:
 
 	// Set the interact pieces to active. Don't call during construction.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
-	FORCEINLINE void SetActives(const bool NewEnabled) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
+	FORCEINLINE void SetActives(const bool NewActive) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewActive); }
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
+	FORCEINLINE void SetAutoActives(const bool NewActive) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewActive); }
 	}
 
 	// sets "DisableWhileAnims" on all the interacts.

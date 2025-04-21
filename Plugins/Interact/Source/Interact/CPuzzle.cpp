@@ -280,6 +280,16 @@ void UCPuzzle::SetActives(const bool NewActive) {
 	}
 }
 
+void UCPuzzle::SetAutoActives(const bool NewAutoActive) {
+	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s NewAutoActives=%i"),
+		__func__, *GetNameSafe(this), NewAutoActive);
+
+	for (AInteract* const I: Interacts) {
+		if (UNLIKELY(!IsValid(I))) continue;
+		I->UseAutoActivate = NewAutoActive;
+	}
+}
+
 void UCPuzzle::SetStates(const TArray<int32>& States) {
 	const int32 Num = States.Num();
 	const int32 Num2 = Interacts.Num();
