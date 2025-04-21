@@ -74,7 +74,6 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 		// please me from the future, be careful. "ki o tsukete!"
 		if (!FadeIn || UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
 
-	
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
 		AnimFade->Activate(true);
