@@ -34,5 +34,3 @@ void ULSaveGroup::FoxyUpd(const float Value) {
 
 	Flags->Set(LDConsts::Flags::Settings::Global::Foxy, Value);
 }
-
-// TODO fix, the foxy value is being set, but it's not set when the game starts. 
