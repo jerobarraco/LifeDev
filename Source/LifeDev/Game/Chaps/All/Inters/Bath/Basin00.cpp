@@ -29,26 +29,14 @@ ABasin00::ABasin00():Super() {
 	Interact->SetBoxExtent(FVector(30,20,12.5));
 
 	// TODO this could be using the emitter stuff
-	const FVector WaterPos(FVector(17,12.5,18));
-	Water = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Water"));
-	// Water->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CWater(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/WaterTap.WaterTap"));
-	// Water->SetAsset(CWater.Object);
-	// Water->SetAutoActivate(false);
-	// Water->SetUseAutoManageAttachment(true);
-	// Water->SetRelativeLocation(WaterPos);
-	Particles = {CWater.Object, nullptr};
-
+	const FVector WaterPos(FVector(-12.5,-2.5,5));
 	Emitter->SetRelativeLocation(WaterPos);
 	SFX->SetRelativeLocation(WaterPos);
-	// SND_Water = CreateDefaultSubobject<UCLSounder>("SND_Water");
-	// SND_Water->SetupAttachment(Water);
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
+		CWater(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/WaterTap.WaterTap"));
+	Particles = {CWater.Object, nullptr};
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
 		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
-	// SND_Water->SetSound(CWaterSnd.Object);
-	// SND_Water->SetAutoActivate(false);
-	// SND_Water->bAutoManageAttachment = true;
 	SFXs = {CWaterSnd.Object, nullptr};
 	
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));

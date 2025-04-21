@@ -2,10 +2,6 @@
 
 #include "BasinI00.h"
 
-#include "NiagaraComponent.h"
-
-#include "LifeDev/Core/Sounds/CLSounder.h"
-
 ABasinI00::ABasinI00():Super() {
 	Texts = { NSLOCTEXT("BasinI00", "State0", "Close"), NSLOCTEXT("BasinI00", "State1", "Done") };
 	UseAnim = false;
@@ -21,12 +17,13 @@ ABasinI00::ABasinI00():Super() {
 	// Water->SetAutoActivate(true);
 	// SND_Water->SetAutoActivate(true);
 	IsOneShot = true;
-	SetStateNow(0); // activate parts and audio
+
+	SetStateNow(0, true, true); // activate parts and audio
 }
 
 void ABasinI00::BeginPlay() {
 	Super::BeginPlay();
-	SetState(0);
+	// SetState(0);
 }
 
 void ABasinI00::DoTrigger_Implementation() {
