@@ -399,11 +399,16 @@ void AInteract::DoTrigger_Implementation() {
 }
 
 void AInteract::PlaySFX(USoundBase* const Snd) const {
-	// very important because it's triggered from multiple places. and some places need to have a nullptr for space (like SFXs).
-	if (UNLIKELY(!IsValid(Snd))) return;
-
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
-		__func__, UseAttachedSFX, *Label.ToString(), *Snd->GetName());
+		__func__, UseAttachedSFX, *Label.ToString(), *GetNameSafe(Snd));
+	// very important because it's triggered from multiple places.
+	// and some places need to have a nullptr for space (like SFXs).
+	if (UNLIKELY(!IsValid(Snd))) {
+		// stop the sfx if it's playing. i could have used a CSounder, but i don't really need it
+		// and i don't want to break my game right now.
+		SFX->FadeOut(1, 0);
+		return;
+	}
 
 	if (UseAttachedSFX) {
 		SFX->SetHiddenInGame(false);
@@ -431,11 +436,11 @@ void AInteract::PlayParts(UNiagaraSystem* const Part) const {
 
 	if (LIKELY(Emitter->GetAsset() != Part)) { // opt
 		UE_LOG(LogInteract, Log, TEXT("%hs: Deactivate old one"), __func__);
-		if (Part) { // let the system stop by itself
 			Emitter->Deactivate();
+		if (Part) { // let the system stop by itself
 			Emitter->ResetSystem();
+			Emitter->SetAsset(Part);
 		}
-		Emitter->SetAsset(Part);
 	} else
 		UE_LOG(LogInteract, Log, TEXT("%hs: Reactivating old one"), __func__);
 
