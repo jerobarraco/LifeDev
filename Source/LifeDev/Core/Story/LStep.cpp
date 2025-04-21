@@ -294,17 +294,11 @@ void ALStep::BeginPlay() {
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (LIKELY(IsValid(Diags))) {
-		Diags->OnDone.RemoveAll(this);
-		Diags->OnShow.RemoveAll(this);
-	}
+	Unbind();
 	Diags = nullptr;
-
-	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
 	Inventory = nullptr;
-	
-	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 	FB = nullptr;
+	Flags = nullptr;
 
 	// Ensure we destroy the actors on destroying this actor.
 	// could happen if the step is unloaded because the next step unloads the data-layer.
@@ -326,12 +320,18 @@ void ALStep::PostLoad() {
 }
 
 void ALStep::Finish_Implementation() {
-	if (LIKELY(Diags)) {
-		// avoid possible double triggering. since finish is called from several origins
-		Diags->OnDone.RemoveDynamic(this, &ALStep::Finish);
-		Diags->OnShow.RemoveDynamic(this, &ALStep::DlgShow);
-	}
+	Unbind();// avoid possible double triggering. since finish is called from several origins
 	Super::Finish_Implementation();
+}
+
+void ALStep::Unbind() const {
+	if (LIKELY(IsValid(Diags))) {
+		Diags->OnDone.RemoveAll(this);
+		Diags->OnShow.RemoveAll(this);
+	}
+	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
+	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
+	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 }
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
