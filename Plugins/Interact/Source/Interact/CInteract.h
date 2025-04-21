@@ -35,7 +35,8 @@ go to outline and ensure that the Collision profile for the CInteract comp is re
 // Defines a volume where the interaction is triggered.
 // Set the relative position on the viewport, (but avoid changing the scale). Also set the box extent. 
 // By default, it will start INACTIVE.
-// you can call SetAutoActivate, or if using a AInteract, toggle UseAutoActivate.
+// if using an AInteract, toggle UseAutoActivate, don't call SetAutoActivate.
+// but you can call it if not using an AInteract.
 UCLASS(Blueprintable, BlueprintType,
 	ClassGroup=(Interact), meta=(BlueprintSpawnableComponent),
 	Config=Interact, DefaultConfig)

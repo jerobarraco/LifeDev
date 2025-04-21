@@ -5,7 +5,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI02::ASpotI02():Super() {
-	//DropDlg = TEXT("IS0_D"); // Inter.Spot.Drop.SpotI02
 	UseRewardDestroy = false;
 	Texts = {
 		NSLOCTEXT("SpotI02", "DropHere", "Drop clothes here"), 

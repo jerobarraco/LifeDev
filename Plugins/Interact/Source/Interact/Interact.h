@@ -31,6 +31,7 @@ class INTERACT_API AInteract: public AActor {
 public:
 #pragma region base
 	AInteract();
+	// will also setActive if UseAutoActivate is true.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 #pragma endregion
 
@@ -178,7 +179,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable) // don't use advanced or it wont show since i have a subcategory (base)
 	FName Label;
 
-	// whether to de/activate on BeginPlay. (avoid setting SetAutoActivate on the Interact component).
+	// whether to de/activate on BeginPlay and SetActorHiddenInGame.
+	// (don't setting SetAutoActivate on the Interact component!).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool UseAutoActivate = false;
 	// When true will disable the interact on trigger. Calling Deactivate.

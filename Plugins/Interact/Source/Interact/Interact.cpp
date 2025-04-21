@@ -270,7 +270,9 @@ void AInteract::BeginPlay() {
 
 	// now activating if it needs to.
 	const bool IsActive = Interact->IsActive();
-	if (UNLIKELY(IsHidden())) SetActive(false); // will be activated on setHiddenInGame(false)
+	// deactivate if it's hidden. (fixes some things)
+	// it will activate back on SetActorHiddenInGame(true) if AutoActivate is true
+	if (UNLIKELY(IsHidden())) SetActive(false);
 	else if (UseAutoActivate != IsActive)
 		SetActive(UseAutoActivate); // this will also disable if it's active. so whoever uses this class will have to be careful.
 
