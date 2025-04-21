@@ -175,14 +175,13 @@ void UDiags::DeInit() {
 	Eval = nullptr;
 }
 
-bool UDiags::GetDiag(
-const FName& RowName, FDiag& OutRow, FDiagChar& OutChar, const bool Warn) const {
+bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Diags))) return false;
 
-	const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), Warn);
+	const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), UseWarning);
 	if (UNLIKELY(!Row)) {
-		UE_LOG(LogDiags, Verbose, TEXT("Could not find dialog for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find dialog for row=%s"), __func__, *RowName.ToString());
 		return false;
 	}
 
@@ -197,7 +196,7 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 
 	const FDiagChar* const Row = Chars->FindRow<FDiagChar>(RowName, TEXT(""), UseWarning);
 	if (UNLIKELY(!Row)) {
-		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Warning, TEXT("%hs Could not find character for row=%s"), __func__, *RowName.ToString());
 		return false;
 	}
 
