@@ -31,6 +31,7 @@ enum class EGroupType : uint8 {
 	// Selects *one* random dialog, the first to be added successfully.
 	// The group needs to pass its own condition too.
 	// Each dialog is tested in *random* order. Only the first that passes its condition is shown.
+	// It will keep trying to add dialogs until one succeeds.
 	RANDOM,
 	// Select one dialog depending on the condition's result value, but clamp. (Note this always passes)
 	PICK_CLAMP,

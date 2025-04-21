@@ -31,14 +31,14 @@ public:
 	// If a dialog ends with "*" it will simply add it.
 	// This is on purpose to support certain code that can either trigger a random dialog in a sequence, or a specific dialog.
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool AddId(const FName& Row, const bool Warn=true);
+	bool AddId(const FName& Row);
 	// add many sequences or dialogs. can be recursive
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddIdMany(const TArray<FName>& Rows);
 
 	// add a dialog by its id
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool AddDiagId(const FName& Row, const bool Warn=true);
+	bool AddDiagId(const FName& Row);
 	// add a dialog
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void AddDiag(const FDiag& Diag);
@@ -47,7 +47,7 @@ public:
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
 	// Sequences ending with "*" will only add one *random* dialog from that sequence.
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool AddGroupId(const FName& RowName, const bool Warn=true);
+	bool AddGroupId(const FName& RowName);
 	// Adds a sequence. Use this to AddManyById.
 	// Beware this doesn't protect you from recursive sequences.
 	UFUNCTION(BlueprintCallable, Category="Diags")
@@ -58,9 +58,9 @@ public:
 	bool GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar,
 		const bool Warn=true) const;
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn=true) const;
+	bool GetChar(const FName& RowName, FDiagChar& OutChar) const;
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool GetGroup(const FName& RowName, FDiagGroup& OutGroup, const bool Warn=true) const;
+	bool GetGroup(const FName& RowName, FDiagGroup& OutGroup) const;
 
 	// true when there's a dialog showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)

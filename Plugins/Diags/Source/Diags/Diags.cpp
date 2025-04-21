@@ -22,10 +22,10 @@ void UDiags::AddDiag(const FDiag& Diag) {
 	ShowNext();
 }
 
-bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
-	UE_LOG(LogDiags, Log, TEXT("%hs: row=%s, warn=%i"), __func__, *Row.ToString(), Warn);
+bool UDiags::AddDiagId(const FName& Row) {
+	UE_LOG(LogDiags, Log, TEXT("%hs: row=%s"), __func__, *Row.ToString());
 	FDiag OutDialog; FDiagChar OutChar;
-	const bool Ok = GetDiag(Row, OutDialog, OutChar, Warn);
+	const bool Ok = GetDiag(Row, OutDialog, OutChar);
 	if (UNLIKELY(!Ok)) return false;
 
 	double Res = 0;
@@ -41,18 +41,19 @@ bool UDiags::AddDiagId(const FName& Row, const bool Warn) {
 	return true;
 }
 
-bool UDiags::AddId(const FName& Row, const bool Warn) {
-	UE_CLOG(Warn, LogDiags, Log, TEXT("%hs: id='%s'"), __func__, *Row.ToString());
+bool UDiags::AddId(const FName& Row) {
+	UE_LOG(LogDiags, Log, TEXT("%hs: id='%s'"), __func__, *Row.ToString());
 	if (UNLIKELY(Row.IsNone())) return false;
 
 	// attempt to add a sequence (can be random) (could trigger another call to AddId)
-	if (AddGroupId(Row, false)) return true;
+	if (AddGroupId(Row)) return true;
 
 	// otherwise attempt a dialog
-	if (LIKELY(AddDiagId(Row, false))) return true;
+	// not using likely due to auto-dialogs spamming the subsystem.
+	if (AddDiagId(Row)) return true;
 
 	// this also would capture a sequence that is empty or the ids are none.
-	UE_CLOG(Warn, LogDiags, Warning,
+	UE_CLOG(UseWarning, LogDiags, Warning,
 		TEXT("%hs: Could not find dialog nor group with the id=%s. "
 			"Or the group was empty or invalid. Or it didn't pass it's condition."), __func__, *Row.ToString());
 	return false;
@@ -69,7 +70,6 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 		// notice this is recursive. that's on purpose, but be careful.
 		const bool Ok = AddId(Row);
 
-		// Success = Success && Ok; // ok will set it to false (faster than branch)
 		// now that we have conditions, some dialogs might fail, and we'll be fine with that.
 		Success = Success || Ok;
 	}
@@ -104,9 +104,8 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	if (Seq.Type == EGroupType::SEQUENCE) {
 		return AddIdMany(Rows);
 	}
-	
+
 	if (Seq.Type == EGroupType::MATCH) {
-		if (UNLIKELY(!CondOk)) return false;
 		for (const FName& N: Rows) {
 			if (AddId(N)) return true;
 		}
@@ -125,9 +124,9 @@ bool UDiags::AddGroup(const FDiagGroup& Seq) {
 	return false;
 }
 
-bool UDiags::AddGroupId(const FName& RowName, const bool Warn) {
+bool UDiags::AddGroupId(const FName& RowName) {
 	FDiagGroup Seq;
-	const bool Ok = GetGroup(RowName, Seq, Warn);
+	const bool Ok = GetGroup(RowName, Seq);
 	if (!Ok) return false;
 
 	const int32 DiagNum = Seq.DiagRows.Num();
@@ -192,11 +191,11 @@ const FName& RowName, FDiag& OutRow, FDiagChar& OutChar, const bool Warn) const 
 	return true;
 }
 
-bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn) const {
+bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Chars))) return false;
 
-	const FDiagChar* const Row = Chars->FindRow<FDiagChar>(RowName, TEXT(""), Warn);
+	const FDiagChar* const Row = Chars->FindRow<FDiagChar>(RowName, TEXT(""), UseWarning);
 	if (UNLIKELY(!Row)) {
 		UE_LOG(LogDiags, Warning, TEXT("Could not find character for row=%s"), *RowName.ToString());
 		return false;
@@ -206,14 +205,15 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar, const bool Warn) 
 	return true;
 }
 
-bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup, const bool Warn) const {
+bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Groups))) return false;
 
 	const FDiagGroup* const Row =
-		Groups->FindRow<FDiagGroup>(RowName, TEXT(""), Warn);
+		Groups->FindRow<FDiagGroup>(RowName, TEXT(""), UseWarning);
 	if (UNLIKELY(!Row)) {
-		UE_LOG(LogDiags, Verbose, TEXT("Could not find sequence for row=%s"), *RowName.ToString());
+		UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find sequence for row=%s"),
+			__func__, *RowName.ToString());
 		return false;
 	}
 
