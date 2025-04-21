@@ -29,7 +29,10 @@ class INTERACT_API AInteract: public AActor {
 	GENERATED_BODY()
 
 public:
+#pragma region base
 	AInteract();
+	virtual void SetActorHiddenInGame(const bool NewHidden) override;
+#pragma endregion
 
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
 	// Call this to trigger the interaction. Returns the success (false if locked)
@@ -263,7 +266,6 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
 	virtual void PostInitProperties() override;
-	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 	
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)

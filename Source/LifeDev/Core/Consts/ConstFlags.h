@@ -32,10 +32,6 @@ namespace LDConsts {
 			}
 		}
 		namespace Game {
-			namespace CH0 { // chap 0
-				inline static const FName Spot("Game.CH0.SpotI02");
-				inline static const FName Basin("Game.CH0.Basin");
-			}
 			namespace Emotion {
 				// TODO do something with this. keep track like a resource or smth.
 				// if i can't find a usage, remove

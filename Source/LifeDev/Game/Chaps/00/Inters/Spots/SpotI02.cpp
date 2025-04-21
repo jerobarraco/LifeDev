@@ -2,15 +2,10 @@
 
 #include "SpotI02.h"
 
-#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI02::ASpotI02():Super() {
 	DropDlg = TEXT("IS0_D");
-	TriggerDlg = "IS0_T"; // when completed
-	LockedDlg = "IS0_L"; // when not full
-	LockedFullDlg = "IS0_LF"; // when full
-	RewardFlag = LDConsts::Flags::Game::CH0::Spot;
 	UseRewardDestroy = false;
 	Texts = {
 		NSLOCTEXT("SpotI02", "DropHere", "Drop clothes here"), 
