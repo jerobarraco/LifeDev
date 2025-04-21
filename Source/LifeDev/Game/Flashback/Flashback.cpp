@@ -98,7 +98,7 @@ void UFlashback::SetMax(const float NewMax, const float Duration) {
 		__func__, Max, NewMax, Duration);
 
 	Max = NewMax;
-	
+
 	// clamp the value if needed
 	const bool Ok = NewMax >= GetValTo();
 	if (LIKELY(Ok)) return;
