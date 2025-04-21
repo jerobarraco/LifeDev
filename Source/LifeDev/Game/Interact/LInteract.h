@@ -64,7 +64,8 @@ public:
 
 	// Will start the next story step (finishing the current one).
 	// called reward so that the UseRewardDestroy affects it.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	// deprecated. Use LStep's FlagsFinish and ItemsFinish instead. slower but more flexible. 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
 	bool RewardStep = false;
 	// whether to self-destroy when *rewarding* (only if rewards are set).
 	// if UseFade is true AND has something to reward, it will also fade.
