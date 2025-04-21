@@ -171,9 +171,12 @@ other
 * REMEMBER THE THEME FOR THE CHAPTER!
 * remember chars mirror adults
 * remove bold dialog text style tag (ready: ch00, ch04)
+* nsloctext from ftext::fromstring (ready: ch00)
 * rename objects (labels)
 * add world-texts
-* later: replace ones from LInteract::UseItemDlgs and others
+* port to autodialogs
+* * spot drop, 
+* * later: replace ones from LInteract::UseItemDlgs and others
 
 
 ## fix

@@ -52,10 +52,9 @@ EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 
 	Items.RemoveAtSwap(Id);
 	if (UNLIKELY(Items.IsEmpty())) {
-		IsLocked = false; // allow to trigger
+		Unlock();
 		Trigger(); // force trigger on all items restored
 		IsLocked = true; // avoid further triggering
-		LockedDlg = LockedFullDlg; // from now on use the new dialog
 	} else if (UseStateInc) { // on the else since Trigger always increases state
 		SetState(State+1);
 	}

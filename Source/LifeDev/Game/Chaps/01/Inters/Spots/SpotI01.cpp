@@ -7,7 +7,6 @@
 ASpotI01::ASpotI01():Super() {
 	TriggerDlg = "IS_C1T";
 	LockedDlg = "IS_C1L"; // TODO
-	LockedFullDlg = "IS_C1TB";
 	DropDlg = "IS_C1D";
 	Items = {LDConsts::Items::Bra};
 	Texts = {
