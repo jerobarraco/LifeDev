@@ -13,7 +13,6 @@ ASpongeI00::ASpongeI00():Super() {
 	IsLocked = false;
 	IsOneShot = true;
 	UseRewardDestroy = false;
-	RewardStep = true; // TODO deprecated
 	UseFade = false;
 	UseAnim = true;
 

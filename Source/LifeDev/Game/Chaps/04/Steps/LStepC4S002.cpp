@@ -12,6 +12,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
+	FlagsFinish = { "Inter.Trigger.StoveI00" };
 
 	UseRandFB = true; // min is limited in c4s0
 	RandFB->DelayMin = .5;

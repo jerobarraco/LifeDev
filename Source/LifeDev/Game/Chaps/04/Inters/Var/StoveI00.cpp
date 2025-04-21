@@ -13,7 +13,6 @@ AStoveI00::AStoveI00():Super() {
 	LockedItemDlg = "Stove00_LI";
 	ULockItem = LDConsts::Items::Matches00;
 	RewardFlash = .11;
-	RewardStep = true; // advance the story TODO deprecated
 	RewardIntersActiveClass = {APotI00::StaticClass()};
 	// UseAutoActivate = false; // activated by LNPCI06 // redundant
 
