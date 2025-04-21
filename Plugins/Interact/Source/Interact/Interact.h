@@ -263,6 +263,7 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
 	virtual void PostInitProperties() override;
+	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 	
 	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
 	// Returns the success (false if locked)

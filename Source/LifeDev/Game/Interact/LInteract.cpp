@@ -63,7 +63,7 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	// probably could collide with the intention of fading something in without being enabled
 	// might happen on a step auto-fading something.
 	// please me from the future, be careful. "ki o tsukete!"
-	SetActive(FadeIn);
+	if (!FadeIn || UseAutoActivate ) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
 
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
@@ -172,12 +172,7 @@ void ALInteract::DoRewards() {
 		
 		ALInteract* const LReward = Cast<ALInteract>(RewardActor);
 		if (LReward) LReward->Fade(true);
-		else {
-			// enabled separately since on begin play it checks only for AInteract and no ALInteract
-			// do only if it's not an LInteract. since fade will set enable. and don't cast twice.
-			AInteract* const Reward = Cast<AInteract>(RewardActor);
-			if (Reward) Reward->SetActive(true);
-		}
+		// AInteract will set active on SetActorHiddenInGame
 	}
 
 	if (RewardStep && IsValid(Story)) Story->StartNext();

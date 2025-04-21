@@ -349,6 +349,12 @@ void AInteract::PostInitProperties() {
 	// This is here just to test when and where this is being called.
 }
 
+void AInteract::SetActorHiddenInGame(const bool NewHidden) {
+	Super::SetActorHiddenInGame(NewHidden);
+	if (!NewHidden || UseAutoActivate)
+		SetActive(!NewHidden);
+}
+
 void AInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
 	PlaySFX(SFX_Locked);
