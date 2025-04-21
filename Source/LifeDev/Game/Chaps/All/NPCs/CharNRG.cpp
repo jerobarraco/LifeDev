@@ -18,10 +18,9 @@
 // i'm just abusing the interface provided by the Interact, and the setup in the steps.
 
 ACharNRG::ACharNRG():Super() {
-	Texts = { FText::FromString("") };
+	Texts = { NSLOCTEXT("CharNrg", "State0", "") };
 	StateNum = 2;
 	IsOneShot = false; // IsOneShot will call SetEnable as soon as it triggers.
-	// UseAutoActivate = false; // The step will SetEnabled(true) via IntersFadeIn
 
 	Anim->TRoot = Root; // nice try but... (read beginplay)
 	Anim->IsAdditive = false;
@@ -39,10 +38,14 @@ ACharNRG::ACharNRG():Super() {
 void ACharNRG::BeginPlay() {
 	Super::BeginPlay();
 	Anim->TRoot = Root; // needed or it won't actually use it
+	// ok, this is a bit hackish.
+	// I need autoactivate for to get SetActive(true) on fade.
+	// but only after super::beginplay, so they don't show on startup.
+	UseAutoActivate = true;
 }
 
 void ACharNRG::SetActive_Implementation(const bool Enabled) {
-	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part
+	// // Super::SetEnabled_Implementation(Enabled); // we don't need the interact part (that means avoid showing the collision)
 	if (LIKELY(Parts)) Parts->SetActive(Enabled); // this is a bit of abuse, as enabled and showing !=
 }
 
