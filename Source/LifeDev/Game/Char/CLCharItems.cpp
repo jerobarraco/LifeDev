@@ -40,7 +40,6 @@ void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 bool UCLCharItems::Say(const FName& Name) const {
 	if (UNLIKELY(!IsValid(Diags))) return false;
-	// TODO don't warn. (once all is done correctly. also only on the cases i need)
 	return Diags->AddId(Name);
 }
 
@@ -111,15 +110,28 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
-
 	if (UNLIKELY(!Inventory->IsCold(Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
-		const bool Said = Say(LDConsts::Dlgs::Item::NotReady);
-		return EItemUseResult::ERROR;
+		Say(LDConsts::Dlgs::Item::NotReady);
+		return EItemUseResult::BAD_HANDLED;
 	}
 
-	EItemUseResult Res = EItemUseResult::BAD_TARGET;
-#if LD_ITEM_USE
+#if !LD_ITEM_USE
+	if (UNLIKELY(!Item.SelfUsable)) {
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item not (self) usable (with disabled item use). Skip."), __func__);
+		Say(LDConsts::Dlgs::Item::NotUsable);
+		return EItemUseResult::BAD_HANDLED; // always return if not usable
+	}
+	const bool Used = LIKELY(DoUse(Name, Item, true));
+	// this should never happen, since we check for iscold up there.
+	// but if it does, give a not too confusing dialog. 
+	if (UNLIKELY(!Used)) {
+		Say(LDConsts::Dlgs::Item::NotReady);
+		return EItemUseResult::BAD_HANDLED;
+	}
+	return EItemUseResult::SUCCESS;
+#endif
+
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
 		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
@@ -128,7 +140,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
-	Res = Interactor->TryUseItem(Name);
+	const EItemUseResult Res = Interactor->TryUseItem(Name);
 	if (Res == EItemUseResult::BAD_HANDLED) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. But it was handled."),
 			__func__);
@@ -139,9 +151,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		// since we don't want to trigger when is used with an interaction.
 		// i know the if already says success. but i rather be sure.
 		if (LIKELY(DoUse(Name, Item, false))) return EItemUseResult::SUCCESS;
-	} else // continues below.
-#endif
-	if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
+	} else if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
 		// notice only checking auto-trigger here.
 		// so that i can use an auto trigger with an ANY interact too.
 		// which allows me to not have to configure the Interact, but instead configure the item.
@@ -159,7 +169,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	const FName& DlgId = IsBadTarget ?
 		LDConsts::Dlgs::Item::BadTarget:
 		LDConsts::Dlgs::Item::NoTarget;
-	const bool Said = Say(DlgId);
+	Say(DlgId);
 
 	return Res;
 }
@@ -182,8 +192,8 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 
 	const FString& NameS = Name.ToString();
 	const FName Dlg(LDConsts::Dlgs::Item::UsePre+NameS);
-	const bool Said = Say(Dlg);
-	const bool Played = PlaySound(Item.Snd);
+	Say(Dlg);
+	PlaySound(Item.Snd);
 	Flags->Mod(Dlg, 1);
 
 	return true;

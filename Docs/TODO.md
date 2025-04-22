@@ -29,6 +29,10 @@
 ** patch chapter 02 door interaction.
 *** to be fixed with the screwdriver.
 
+later: remove item usage part 2
+* remove old code LInteractSpot, LInteract, CLCharItems, LifeDev.Build.cs
+* patch chapter 02 door interaction.
+
 ## from temp
 * new: implement ftue somehow. has to be general enough so it can be used with everything.
 

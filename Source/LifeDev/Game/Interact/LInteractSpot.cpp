@@ -86,10 +86,10 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 		break; // only use one at a time.
 	}
 
-	if (UNLIKELY(Items.IsEmpty())) // only happens once
+	if (UNLIKELY(Items.IsEmpty())) // unlikely since only happens once. not checking used in case someone decided to modify the Items array.
 		Unlock();
 	else if (Used & UseStateInc) // on the else since Trigger always increases state
 		SetState(State+1);
-	return Super::TryTrigger_Implementation();
+	return Super::TryTrigger_Implementation(); // will trigger locked if nothing is used
 #endif
 }
