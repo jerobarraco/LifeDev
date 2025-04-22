@@ -37,4 +37,7 @@ public:
 
 protected:
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
+#if !LD_ITEM_USE
+	virtual bool TryTrigger_Implementation() override;
+#endif
 };

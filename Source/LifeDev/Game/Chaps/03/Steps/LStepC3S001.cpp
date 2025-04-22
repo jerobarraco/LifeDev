@@ -26,7 +26,7 @@ ALStepC3S001::ALStepC3S001():Super() {
 
 void ALStepC3S001::TryStart_Implementation() {
 	const UWorld* const W = GetWorld();
-	if (!W) return;
+	if (UNLIKELY(!W)) return;
 
 	// make the fb raise progressively with the dialogs
 	FB->SetMax(1);

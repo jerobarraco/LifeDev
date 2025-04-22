@@ -22,8 +22,8 @@
 
 * todo patch code to disable item usage. allow only self-usag.e.
 ** patch colors
+* try to "use" the items on interact trigger. so it gets consumed. and also checks if it's cool or not.
 * patch the spots!
-* 
 
 **** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
 ** patch chapter 02 door interaction.
