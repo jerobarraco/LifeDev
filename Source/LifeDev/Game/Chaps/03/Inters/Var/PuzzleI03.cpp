@@ -4,7 +4,6 @@
 
 #include "Interact/CPuzzle.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 
 APuzzleI03::APuzzleI03():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
@@ -18,13 +17,6 @@ APuzzleI03::APuzzleI03():Super() {
 
 void APuzzleI03::PostLoad() {
 	Super::PostLoad();
-	// common item dialogs
-	static const TMap<FName, FName> Dlgs = {
-		{LDConsts::Items::Card0, "PZ03xC00"},
-		{LDConsts::Items::Card1, "PZ03xC01"},
-		{LDConsts::Items::Card2, "PZ03xC02"}
-	};
-	SetUseItemDlgs(Dlgs);
 
 	static const TArray<bool> Locks = {true, false, true, false, false};
 	SetLocks(Locks);

@@ -106,14 +106,6 @@ public:
 	// use Inter.TriggerL.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedDlg = NAME_None;
-	// Deprecated. Use Auto-dialogs: Inter.UseItem.ObjLabel.ItemName
-	// dialog to show when trying to use an item (just before actually triggering or trigger locked)
-	// the key is the item name, the value is the dialog id.
-	// this happens before trying to unlock.
-	// do not specify the same item in UseItemsDlgs and ULockItem. use ULockDlg and ULockBadDlg for that.
-	// This is a whitelist by design, since it will override trigger, trigger locked, and unlock.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
-	TMap<FName, FName> UseItemDlgs;
 #pragma endregion
 
 	// used for fading this object on rewards or whenever you want.

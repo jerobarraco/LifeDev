@@ -5,15 +5,8 @@
 #include "Diags/Diags.h"
 
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 
 ATvI01::ATvI01():Super() {
-	UseItemDlgs = {
-		{LDConsts::Items::Batts, "TV01xBatts"},
-		{LDConsts::Items::Card0, "TV01xC00"},
-		{LDConsts::Items::Card1, "TV01xC01"},
-		{LDConsts::Items::Card2, "TV01xC02"},
-	};
 	IsOneShot = true;
 	RewardFlash = .15;
 	UseRewardDestroy = false;

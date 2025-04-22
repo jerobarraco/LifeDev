@@ -30,15 +30,6 @@ APuzzleI04::APuzzleI04():Super() {
 void APuzzleI04::PostLoad() {
 	Super::PostLoad();
 
-	// common item dialogs
-	static const TMap<FName, FName> Dlgs = {
-		{LDConsts::Items::Card0, "PZ04xC00"},
-		{LDConsts::Items::Card1, "PZ04xC01"},
-		{LDConsts::Items::Card2, "PZ04xC02"},
-		// {LDConsts::Items::Card3, "PZ04xC03"} // is rewarded after this
-	};
-	SetUseItemDlgs(Dlgs);
-
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
 }

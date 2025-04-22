@@ -10,6 +10,9 @@ AScrewer00::AScrewer00():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	// TODO to the instance, to the wow
+	RewardItem = "Screwer00";
+	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Screwer_P"));

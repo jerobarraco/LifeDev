@@ -17,13 +17,6 @@ class LIFEDEV_API ALPuzzle: public ALInteract {
 public:
 	ALPuzzle();
 
-	// sets the UseItemDlg map on each registered interact.
-	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
-	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
-	// deprecated in favor of auto-dialogs
-	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(DeprecatedFunction))
-	void SetUseItemDlgs(const TMap<FName, FName>& Map) const;
-
 	// sets the states on each registered interact.
 	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 

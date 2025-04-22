@@ -7,7 +7,6 @@
 #include "Story/Story.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Game/Chaps/03/Steps/LStepC3S000.h"
 
 #define _myclass_ TEXT("APuzzleI06")
@@ -24,13 +23,6 @@ APuzzleI06::APuzzleI06():Super() {
 
 void APuzzleI06::PostLoad() {
 	Super::PostLoad();
-	// common item dialogs
-	static const TMap<FName, FName> Dlgs = {
-		{LDConsts::Items::Card0, "PZ06xC00"},
-		{LDConsts::Items::Card1, "PZ06xC01"},
-		{LDConsts::Items::Card2, "PZ06xC02"}
-	};
-	SetUseItemDlgs(Dlgs);
 
 	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);

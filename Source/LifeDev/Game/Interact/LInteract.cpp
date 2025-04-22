@@ -308,22 +308,6 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	const bool ValidDiags = IsValid(Diags);
 
 	/// Say something about it
-	
-	// 1st check if it's a regular item. since we don't care about lock at that stage
-	// and only happens if it's specified on UseItemDlgs
-	// i'm pretty sure this will break something else. but this needs improving later
-	{
-		// check if we can say something about this
-		const FName* const pDlg = UseItemDlgs.Find(Item);
-		if (pDlg) {
-			const bool Added = pDlg && ValidDiags && Diags->AddId(*pDlg);
-			// assume this is not ULockItem. if you added the same item to both places then that's wrong.
-			// Using bad_handled since we don't want to consume an item.
-			// this is only to say something about the item.
-			// if this item needs to be consumed, use ULockItem
-			return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-		}
-	}
 
 	const FString& SLabel = Label.ToString();
 	// generic say something when using an item. deprecated UseItemDlgs

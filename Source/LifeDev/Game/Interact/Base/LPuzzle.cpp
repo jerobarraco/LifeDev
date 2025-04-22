@@ -54,20 +54,6 @@ void ALPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALPuzzle::SetUseItemDlgs(const TMap<FName, FName>& Dlgs) const{
-	if (UNLIKELY(!CPuzzle)) return;
-
-	// set the dialogs on each registered interact
-	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
-	for (AInteract* const I: Inters) {
-		ALInteract* const LI = Cast<ALInteract>(I);
-		if (UNLIKELY(!IsValid(LI))) continue;
-		// better to override the whole array than having issues down the line.
-		// it also allows to remove stuff.
-		LI->UseItemDlgs = Dlgs;
-	}
-}
-
 void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
 	// the LPuzzle actor itself will follow UseAutoActive which is false by default.

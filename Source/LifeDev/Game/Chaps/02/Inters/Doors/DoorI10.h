@@ -14,7 +14,7 @@ public:
 	ADoorI10();
 
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
-	
+	virtual bool TryTrigger_Implementation() override;
 protected:
 	UFUNCTION()
 	void DoDialog();
@@ -22,7 +22,7 @@ protected:
 	void Shoot();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	USoundBase* SFX_Gun = nullptr;
+	TObjectPtr<USoundBase> SFX_Gun = nullptr;
 
 	bool Interacted = false;
 };

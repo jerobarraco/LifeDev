@@ -3,7 +3,6 @@
 #include "TvI00.h"
 
 ATvI00::ATvI00():Super() {
-	UseItemDlgs = {{"Batts", "TV00xBatts"}};
 }
 
 void ATvI00::SetState_Implementation(const int32 NewState) {

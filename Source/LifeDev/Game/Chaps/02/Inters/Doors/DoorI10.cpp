@@ -8,11 +8,8 @@
 #include "Story/Story.h"
 
 ADoorI10::ADoorI10():Super() {
+	UseAnim = false;
 	LockedDlg = "D10_L";
-	UseItemDlgs = {
-		{LDConsts::Items::Card0, "D10xC00"},
-		{LDConsts::Items::Card2, "D10xC02"},
-	};
 
 	// no unlock item nor trigger dlg. i want to keep this locked
 	IsLocked = true;
@@ -21,7 +18,6 @@ ADoorI10::ADoorI10():Super() {
 	SFX_Gun = CGun.Object;
 }
 
-
 EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
 	if (!Interacted && Name == LDConsts::Items::Card1) {
 		DoDialog();
@@ -29,6 +25,10 @@ EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
 	}
 
 	return Super::TryUseItem_Implementation(Name);
+}
+
+bool ADoorI10::TryTrigger_Implementation() {
+	return Super::TryTrigger_Implementation();
 }
 
 void ADoorI10::DoDialog() {
@@ -41,13 +41,14 @@ void ADoorI10::DoDialog() {
 }
 
 void ADoorI10::Shoot() {
-	UWorld* const W = GetWorld();
-	if (!W) return;
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
 
 	Diags->OnDone.RemoveAll(this);
 
 	PlaySFX(SFX_Gun);
 	Flashback->SetMin(.4f, .5);
+	// TODO use new autodialogs with condition for this.
 	LockedDlg = "D10_L.1"; // new dialog from now on
-	if (Story) Story->StartNext("C2S0");
+	if (LIKELY(Story)) Story->StartNext();
 }
