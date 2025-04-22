@@ -112,11 +112,6 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
-	if (UNLIKELY(!Item.Usable)) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
-		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
-		return EItemUseResult::ERROR; // always return if not usable
-	}
 
 	if (UNLIKELY(!Inventory->IsCold(Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not ready. Skip."), __func__);
@@ -124,26 +119,36 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
+	EItemUseResult Res = EItemUseResult::ERROR;
+
+#ifdef LD_ITEM_USE
+	if (UNLIKELY(!Item.Usable)) {
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
+		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
+		return EItemUseResult::ERROR; // always return if not usable
+	}
+
 	// this will try trigger the item. i can show dialogs there if i need to.
 	// though maybe it would be nice to have something generic as well.
-	const EItemUseResult Res = Interactor->TryUseItem(Name);
+	Res = Interactor->TryUseItem(Name);
 	if (Res == EItemUseResult::BAD_HANDLED) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. But it was handled."),
 			__func__);
 		return Res;
 	}
-
 	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
 		// i know the if already says success. but i rather be sure.
 		if (LIKELY(DoUse(Name, Item, false))) return EItemUseResult::SUCCESS;
-	} else if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
+	} else // continues below.
+#endif
+	if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
 		// notice only checking auto-trigger here.
 		// so that i can use an auto trigger with an ANY interact too.
 		// which allows me to not have to configure the Interact, but instead configure the item.
-		// (notice this if is separate from the one above, and that BAD_HANDLED returns,
-		// since the dialog/side-effect would have been triggered)
+		// (notice this IF is separate from the one above, and that BAD_HANDLED returns,
+		// since the dialog/side effect would have been triggered)
 		if (LIKELY(DoUse(Name, Item, true))) return EItemUseResult::SUCCESS;
 	}
 
@@ -195,13 +200,13 @@ void UCLCharItems::LookSelected() const {
 }
 
 bool UCLCharItems::PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const {
-	if (!Snd.GetUniqueID().IsValid()) return false;
+	// if (!Snd.GetUniqueID().IsValid()) return false; // do i ever need this?
 	if (!Snd.IsValid()) return false;
 
 	const AActor* const Owner = GetOwner();
 	UE_LOG(LogCharItems, Log, TEXT("%hs Play sound '%s'."),
 		__func__, *Snd.ToString());
-	if (UseSndAtLocation && LIKELY(Owner)) {
+	if (UseSndAtLocation & LIKELY(Owner)) {
 		const FVector& Location = Owner->GetActorLocation();
 		UGameplayStatics::PlaySoundAtLocation(this, Snd.Get(), Location);
 	} else

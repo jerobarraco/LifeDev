@@ -10,7 +10,7 @@ ADoorI14::ADoorI14():Super() {
 	// LockedItemDlg = "D14_LI";
 	// ULockDlg = "D14_U";
 	IsLocked = true;
-	ULockItem = LDConsts::Items::Card1;
+	ULockItemReq = ULockItem = LDConsts::Items::Card1; // TODO don't use the card! use something else! (screwdriver?)
 	// ULockItem = LDConsts::Items::Card3;
 
 	// this door is quite confusing. and while it seems interesting it rather make it better for the player.

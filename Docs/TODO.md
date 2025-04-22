@@ -21,8 +21,6 @@
 * the ones from spirit
 
 * todo patch code to disable item usage. allow only self-usag.e.
-  ** use a define. so i can undo.
-  *** modify usage on lchar.
   *** modify linteract to use ulockitem as ulockitemreq (so i can remove ulockitemreq and keep the previous).
   **** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
   ** patch chapter 02 door interaction.
@@ -513,3 +511,5 @@ not:
 * todo verify addmanyid doest error if one ef the ids fail
   ** when expanding a group of diags
 
+** use a define. so i can undo.
+*** modify usage on lchar.
