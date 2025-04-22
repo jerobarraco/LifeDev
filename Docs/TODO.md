@@ -20,6 +20,27 @@
 
 * the ones from spirit
 
+## from temp
+* new: implement ftue somehow. has to be general enough so it can be used with everything.
+
+* todo patch code to disable item usage. allow only self-usag.e.
+  ** use a define. so i can undo.
+  *** modify usage on lchar.
+  *** modify linteract to use ulockitem as ulockitemreq (so i can remove ulockitemreq and keep the previous).
+  **** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
+  ** patch chapter 02 door interaction.
+  *** to be fixed with the screwdriver.
+
+* snd: add sounds for item usages
+* aldiagman::show unlikely on world
+
+* visual feature flag for auto exposure.
+* perf disabre watr shadow vsm 8:53 https://m.youtube.com/watch?v=JJK61A66dzU
+* perf check vsm overdraw visualization
+* perf: the water material, use quolity switch to disable refraction and sphere
+* perf niagara caching
+* art: post process chain to do glitching. use 6 rt. and a time node to select each ?
+
 ## for build
 * build demo
 * g send email saying that a new build has been uploaded (test first)

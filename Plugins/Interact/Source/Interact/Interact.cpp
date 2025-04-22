@@ -83,7 +83,7 @@ void AInteract::SetText_Implementation() {
 		return;
 	}
 
-	if (UNLIKELY(State < 0 || State >= Num)) {
+	if (UNLIKELY(State < 0 | State >= Num)) {
 		UE_LOG(LogInteract, Log, TEXT("AInteractAnim.%hs: Can't set text with invalid state=%i textnum=%i"),
 			__func__, State, Num);
 		return;
@@ -133,17 +133,17 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *Label.ToString());
 	// this duplicates SetState. make sure to modify that one too.
-	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
+	if (UNLIKELY(State <0 | NewState >= StateNum)) return;
 
 	State = NewState;
 	SetText();
 
-	if (UseSFX && UseAttachedSFX && SFX && State >=0 && State < SFXs.Num() && SFXs[State]) {
+	if ((UseSFX & UseAttachedSFX & (State >=0) & (State < SFXs.Num())) && SFX  && SFXs[State]) {
 		SFX->SetSound(SFXs[State]);
 		SFX->SetAutoActivate(true);
 	}
 
-	if (UseParts && Emitter && State >=0 && State < Particles.Num() && Particles[State]) {
+	if ((UseParts & (State >=0) & (State < Particles.Num())) && Emitter && Particles[State]) {
 		Emitter->SetAsset(Particles[State]);
 		Emitter->SetAutoActivate(true);
 	}
@@ -154,13 +154,13 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 		__func__, NewState, *Label.ToString());
 	// this duplicates SetStateNow. make sure to modify that one too.
 
-	if (UNLIKELY(State <0 || NewState >= StateNum)) return;
+	if (UNLIKELY(State <0 | NewState >= StateNum)) return;
 
 	State = NewState;
 	SetText();
-	if (State >=0 && State < SFXs.Num())
+	if (State >=0 & State < SFXs.Num())
 		PlaySFX(SFXs[State]);
-	if (State >=0 && State < Particles.Num())
+	if (State >=0 & State < Particles.Num())
 		PlayParts(Particles[State]);
 }
 
@@ -350,7 +350,7 @@ void AInteract::PostInitProperties() {
 
 void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
-	if (NewHidden || UseAutoActivate) SetActive(!NewHidden);
+	if (NewHidden | UseAutoActivate) SetActive(!NewHidden);
 }
 
 void AInteract::DoTriggerLocked_Implementation() {
