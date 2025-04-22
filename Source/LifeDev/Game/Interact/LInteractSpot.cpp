@@ -70,6 +70,8 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 #if LD_ITEM_USE
 	return Super::TryTrigger_Implementation();
 #else
+	return Super::TryTrigger_Implementation();
+	
 	//
 	// const FString& SLabel = Label.ToString();
 	// if (UNLIKELY(Items.IsEmpty())) {
