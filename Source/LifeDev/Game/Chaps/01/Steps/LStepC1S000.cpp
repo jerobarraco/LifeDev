@@ -27,7 +27,8 @@ ALStepC1S000::ALStepC1S000():Super() {
 	
 	ItemsEnsure = {
 		// do always, not debug, since we could be skipping the chapter 0
-		LDConsts::Items::Card0
+		LDConsts::Items::Card0,
+		LDConsts::Items::Poem0
 	};
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
