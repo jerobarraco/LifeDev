@@ -23,7 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	FName DropDlg = NAME_None;
 
-	// items to listen to. these are the items that are allowed to be dropped here.
+	// items to receive/consume. these are the items that are allowed to be dropped here.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> Items;
 

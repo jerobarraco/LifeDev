@@ -13,7 +13,6 @@
 #include "Inventory/ItemLogic.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCharItems, Log, Log);
 

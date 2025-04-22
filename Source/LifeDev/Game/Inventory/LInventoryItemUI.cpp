@@ -47,8 +47,8 @@ const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 #if LD_ITEM_USE
 	if (Item.Usable)
 		return CUse;
-	// if (Item.Consumable) // maybe having a color for this makes it very confusing
-		// return CConsume;
 #endif
+	if (Item.Consumable) // differentiate from regular other objects.
+		return CConsume;
 	return CDefault;
 }
