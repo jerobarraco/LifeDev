@@ -119,8 +119,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::ERROR;
 	}
 
-	EItemUseResult Res = EItemUseResult::ERROR;
-
+	EItemUseResult Res = EItemUseResult::BAD_TARGET;
 #if LD_ITEM_USE
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
