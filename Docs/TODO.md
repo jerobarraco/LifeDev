@@ -30,8 +30,11 @@
 *** to be fixed with the screwdriver.
 
 later: remove item usage part 2
-* remove old code LInteractSpot, LInteract, CLCharItems, LifeDev.Build.cs
+* remove old code LInteractSpot, LInteract, CLCharItems, LifeDev.Build.cs, linventoryui
 * patch chapter 02 door interaction.
+* remove ulockitem, replace with ulockitemreq, rename ulockitemreq to ulockitem.
+* * remove lockeditemdlg.
+* unmark on datatable usabel items? remove from dt? rename self-usable to usable?
 
 ## from temp
 * new: implement ftue somehow. has to be general enough so it can be used with everything.
