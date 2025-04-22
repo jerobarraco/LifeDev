@@ -220,6 +220,14 @@ void ALInteract::Unlock_Implementation() {
 	if (UNLIKELY(!IsLocked)) return; // avoid triggering the dialogs again
 
 	Super::Unlock_Implementation();
+
+#if !LD_ITEM_USE
+	// consume items when unlocking
+	FItem Item;
+	if (Inventory->Get(ULockItemReq, Item))
+		if (Item.Consumable) Inventory->Mod(ULockItemReq, -1);
+#endif
+
 	const FString& SLabel = Label.ToString();
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
 	// now unlocked
