@@ -281,7 +281,7 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 }
 
 bool UInventory::IsUsable(const FItem& Item) const {
-	if (!Item.Usable) return false;
+	if (!Item.Usable & !Item.SelfUsable) return false;
 
 	if (Item.Locked) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Item is locked. title='%s'"),
@@ -295,11 +295,11 @@ bool UInventory::IsUsable(const FItem& Item) const {
 		return false;
 	}
 
-	// TODO make static if unused
-	if (!Item.UseCondition.IsEmpty()) {
+	// TODO make static if unused (what?)
+	if (!Item.UseCondition.IsEmpty()) { // todo remove if unused
 		const UEval* const Eval = UEval::Instance(this);
 		double Res = 0;
-		if (Eval) Eval->Eval(Item.UseCondition, Res);
+		if (LIKELY(Eval)) Eval->Eval(Item.UseCondition, Res);
 		return Res > 0;
 	}
 
