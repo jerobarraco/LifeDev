@@ -88,7 +88,7 @@ public:
 	FName ULockItemReq = NAME_None;
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
-	// WARNING! CUrrently i'm testing NOT to use this ANYMORE!
+	// WARNING! Currently i'm testing NOT to use this ANYMORE!
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockItem = NAME_None; // TODO once i've settled on the mechanic. delete this one. THEN rename ULockItemReq to ULockItem
 #pragma endregion

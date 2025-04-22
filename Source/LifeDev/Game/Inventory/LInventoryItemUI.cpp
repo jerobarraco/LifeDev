@@ -11,15 +11,15 @@ ULInventoryItemUI::ULInventoryItemUI() {
 }
 
 FText ULInventoryItemUI::GetItemCountText(const FItem& Item) {
-	static FText TNone;
-	static FText TCooling = FText::FromString(TEXT("..."));
-	static FText TLocked = FText::FromString(TEXT("X"));
-	static FText TUnlimited = FText::FromString(TEXT("∞"));  // the font has this one, but nothing more. ⛔ 🚫 ⏱ ⏲🔒
+	static const FText TNone;
+	static const FText TCooling = FText::FromString(TEXT("..."));
+	static const FText TLocked = FText::FromString(TEXT("X"));
+	static const FText TUnlimited = FText::FromString(TEXT("∞"));  // the font has this one, but nothing more. ⛔ 🚫 ⏱ ⏲🔒
 
 	if (Item.Consumable)
 		return FText::FromString(FString::FromInt(Item.Count)); // can't return a ref due to this
 
-	if (!Item.SelfUsable || !Item.Usable)
+	if (!Item.SelfUsable | !Item.Usable)
 		return TNone;
 
 	// TEXT is necessary for utf
