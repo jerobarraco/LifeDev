@@ -41,7 +41,7 @@ void ALDiagMan::Init_Implementation() {
 
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	const UWorld* const W = GetWorld();
-	if (LIKELY(!W)) return;
+	if (UNLIKELY(!W)) return;
 
 	Super::Show_Implementation(Diag);
 
