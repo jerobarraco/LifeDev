@@ -32,5 +32,6 @@ public class LifeDev : ModuleRules {
 		PublicDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("LD_DEMO=0");
+		PrivateDefinitions.Add("LD_ITEM_USE=0");
 	}
 }

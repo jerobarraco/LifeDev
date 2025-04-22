@@ -20,9 +20,6 @@
 
 * the ones from spirit
 
-## from temp
-* new: implement ftue somehow. has to be general enough so it can be used with everything.
-
 * todo patch code to disable item usage. allow only self-usag.e.
   ** use a define. so i can undo.
   *** modify usage on lchar.
@@ -30,6 +27,9 @@
   **** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
   ** patch chapter 02 door interaction.
   *** to be fixed with the screwdriver.
+
+## from temp
+* new: implement ftue somehow. has to be general enough so it can be used with everything.
 
 * snd: add sounds for item usages
 * aldiagman::show unlikely on world
