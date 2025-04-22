@@ -21,8 +21,9 @@ AScrewer00::AScrewer00():Super() {
 	Interact->SetBoxExtent(FVector(5,5,10));
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19"));
-	SFX_Trigger = CSnd.Object;
+		CSnd(TEXT(""));
+	SFXs = {CSnd.Object};
 
 	AScrewer00::SetMobility(EComponentMobility::Static);
 }
+// todo make a screweri00 and replace on outliner

@@ -22,7 +22,7 @@ AKeys00::AKeys00():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Key00/Key19"));
-	SFX_Trigger = CSnd.Object;
+	SFXs = {CSnd.Object};
 
 	AKeys00::SetMobility(EComponentMobility::Static);
 }
