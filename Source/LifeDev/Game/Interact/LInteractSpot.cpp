@@ -23,6 +23,11 @@ ALInteractSpot::ALInteractSpot():Super() {
 
 EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
 	// Super::TryUseItem_Implementation(Name); // unnecessary actually
+#if !LD_ITEM_USE
+	UE_LOG(LogTemp, Warning, TEXT("%hs Attempted usage on spot o=%s i=%s"),
+		__func__, *Label.ToString(), *Name.ToString());
+	if (LIKELY(true)) return EItemUseResult::BAD_TARGET; // if(true) avoid complaining about unreachable
+#endif
 
 	const FString& SLabel = Label.ToString();
 	if (UNLIKELY(Items.IsEmpty())) {
