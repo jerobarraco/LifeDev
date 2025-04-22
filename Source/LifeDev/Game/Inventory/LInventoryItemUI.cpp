@@ -44,12 +44,11 @@ const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 		return CLocked;
 	if (Item.SelfUsable)
 		return CUseSelf;
-#ifdef LD_ITEM_USE
+#if LD_ITEM_USE
 	if (Item.Usable)
 		return CUse;
+	// if (Item.Consumable) // maybe having a color for this makes it very confusing
+		// return CConsume;
 #endif
-
-	if (Item.Consumable)
-		return CConsume;
 	return CDefault;
 }

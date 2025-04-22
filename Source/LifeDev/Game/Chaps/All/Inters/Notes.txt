@@ -2,5 +2,7 @@ These are generic interacts but of a specific kind
 example the door 01 in its generic form
 the window 03 in its generic form
 
-no specific interaction setup (e.g. instance) those go in the chapter.
+specific interaction setup (e.g. instance) those go in the chapter.
+
+those that are very generic and can't really be used by themselves. or are really root go into ../Interact/Base. or maybe stop using Interact/Base at all
 
