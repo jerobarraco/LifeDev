@@ -282,6 +282,11 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
+#if !LD_ITEM_USE
+	UE_LOG(LogLInteract, Warning, TEXT("%hs Item usage disabled! o=%s"), __func__, *Label.ToString());
+	return EItemUseResult::BAD_TARGET;
+#endif
+
 	if (UNLIKELY(Item.IsNone())) {
 		UE_LOG(LogLInteract, Warning, TEXT("%hs, TryUseItem with item none. Skip. o=%s"),
 			__func__, *Label.ToString());
