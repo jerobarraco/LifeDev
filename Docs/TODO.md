@@ -20,17 +20,11 @@
 
 * the ones from spirit
 
-* todo patch code to disable item usage. allow only self-usag.e.
-** patch colors
-* try to "use" the items on interact trigger. so it gets consumed. and also checks if it's cool or not.
-* patch the spots!
-
-**** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
-** patch chapter 02 door interaction.
-*** to be fixed with the screwdriver.
-
+* make screwer instance
+* actually finish making the screwer base object
 * improve doori10 stuff
 * 
+
 later: remove item usage part 2
 * remove old code LInteractSpot, LInteract, CLCharItems, LifeDev.Build.cs, linventoryui
 * patch chapter 02 door interaction.
@@ -526,3 +520,12 @@ not:
 ** use a define. so i can undo.
 *** modify usage on lchar.
 *** modify linteract to use ulockitem as ulockitemreq (so i can remove ulockitemreq and keep the previous).
+
+* todo patch code to disable item usage. allow only self-usag.e.
+  ** patch colors
+* try to "use" the items on interact trigger. so it gets consumed. and also checks if it's cool or not.
+* patch the spots!
+
+**** in fact i can simply remove ulockitem and use the eval. (cant copy to eval yet sdnce i cant predict if its goinng no be used).
+** patch chapter 02 door interaction.
+*** to be fixed with the screwdriver.
