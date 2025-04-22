@@ -29,6 +29,8 @@
 ** patch chapter 02 door interaction.
 *** to be fixed with the screwdriver.
 
+* improve doori10 stuff
+* 
 later: remove item usage part 2
 * remove old code LInteractSpot, LInteract, CLCharItems, LifeDev.Build.cs, linventoryui
 * patch chapter 02 door interaction.

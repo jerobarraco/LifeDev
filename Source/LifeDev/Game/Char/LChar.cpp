@@ -294,7 +294,7 @@ void ALChar::PossessedBy(AController* const NewController) {
 
 /// Input
 
-void ALChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
+void ALChar::SetupPlayerInputComponent(UInputComponent* const PlayerInputComponent) {
 	// Set up action bindings
 	UEnhancedInputComponent* const Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (UNLIKELY(!Input)) return;

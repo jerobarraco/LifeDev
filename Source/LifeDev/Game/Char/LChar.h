@@ -129,7 +129,7 @@ protected:
 	void ActMenu();
 
 	// APawn interface
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* const InputComponent) override;
 	// End of APawn interface
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)

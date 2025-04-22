@@ -3,9 +3,11 @@
 #include "DoorI10.h"
 
 #include "Diags/Diags.h"
+#include "Inventory/Inventory.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
+// TODO improve this
 
 ADoorI10::ADoorI10():Super() {
 	UseAnim = false;
@@ -19,6 +21,7 @@ ADoorI10::ADoorI10():Super() {
 }
 
 EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
+	// shouldn't be triggered with !LD_USE_ITEM
 	if (!Interacted && Name == LDConsts::Items::Card1) {
 		DoDialog();
 		return EItemUseResult::SUCCESS;
@@ -28,6 +31,14 @@ EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
 }
 
 bool ADoorI10::TryTrigger_Implementation() {
+	if (UNLIKELY(!Inventory)) return false;
+	static const FName Name ("Screwer00");
+	if (Inventory->Has(Name)) {
+		Inventory->Mod(Name, -1);
+		DoDialog();
+		return true;
+	}
+
 	return Super::TryTrigger_Implementation();
 }
 
