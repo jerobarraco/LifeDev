@@ -44,7 +44,9 @@ void UCInteractor::Activate(const bool Reset) {
 void UCInteractor::TryTrigger() {
 	const UCInteract* const PHover = HoverComp.Get();
 	if (UNLIKELY(!IsValid(PHover))) return;
+
 	PHover->Trigger();
+	OnTrigger.Broadcast(PHover);
 }
 
 bool UCInteractor::TryGrab(const bool IsGrab) {

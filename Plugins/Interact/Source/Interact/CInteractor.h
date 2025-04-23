@@ -13,6 +13,7 @@ class UInteractorUI;
 class UArrowComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractHover, bool, On, UCInteract* const, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractTrigger, const UCInteract* const, Comp);
 
 // Will be interacting with interact objects.
 // Subclass of scene component, so you can attach it and aim from there.
@@ -62,6 +63,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractHover OnHover;
+
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FOnInteractTrigger OnTrigger;
 
 protected:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
