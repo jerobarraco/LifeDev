@@ -5,8 +5,6 @@
 
 #include "Misc/AutomationTest.h"
 
-#include "HAL/PlatformSentryBreadcrumb.h"
-
 #if WITH_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(SentryBreadcrumbSpec, "Sentry.SentryBreadcrumb", EAutomationTestFlags::ProductFilter | SentryApplicationContextMask)
@@ -17,7 +15,7 @@ void SentryBreadcrumbSpec::Define()
 {
 	BeforeEach([this]()
 	{
-		SentryBreadcrumb = USentryBreadcrumb::Create(CreateSharedSentryBreadcrumb());
+		SentryBreadcrumb = NewObject<USentryBreadcrumb>();
 	});
 
 	Describe("Breadcrumb params", [this]()

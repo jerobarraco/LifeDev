@@ -4,209 +4,239 @@
 #include "SentryBreadcrumb.h"
 #include "SentryAttachment.h"
 
-#include "HAL/PlatformSentryScope.h"
+#include "Interface/SentryScopeInterface.h"
 
-void USentryScope::Initialize()
+#if PLATFORM_ANDROID
+#include "Android/SentryScopeAndroid.h"
+#elif PLATFORM_IOS || PLATFORM_MAC
+#include "Apple/SentryScopeApple.h"
+#elif PLATFORM_WINDOWS || PLATFORM_LINUX
+#include "Desktop/SentryScopeDesktop.h"
+#endif
+
+USentryScope::USentryScope()
 {
-	NativeImpl = CreateSharedSentryScope();
+	if (USentryScope::StaticClass()->GetDefaultObject() != this)
+	{
+#if PLATFORM_ANDROID
+		ScopeNativeImpl = MakeShareable(new SentryScopeAndroid());
+#elif PLATFORM_IOS || PLATFORM_MAC
+		ScopeNativeImpl = MakeShareable(new SentryScopeApple());
+#elif (PLATFORM_WINDOWS || PLATFORM_LINUX) && USE_SENTRY_NATIVE
+		ScopeNativeImpl = MakeShareable(new SentryScopeDesktop());
+#endif
+	}
 }
 
 void USentryScope::AddBreadcrumb(USentryBreadcrumb* Breadcrumb)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->AddBreadcrumb(Breadcrumb->GetNativeObject());
+	ScopeNativeImpl->AddBreadcrumb(Breadcrumb->GetNativeImpl());
 }
 
 void USentryScope::ClearBreadcrumbs()
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->ClearBreadcrumbs();
+	ScopeNativeImpl->ClearBreadcrumbs();
 }
 
 void USentryScope::AddAttachment(USentryAttachment* Attachment)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->AddAttachment(Attachment->GetNativeObject());
+	ScopeNativeImpl->AddAttachment(Attachment->GetNativeImpl());
 }
 
 void USentryScope::ClearAttachments()
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->ClearAttachments();
+	ScopeNativeImpl->ClearAttachments();
 }
 
 void USentryScope::SetTagValue(const FString& Key, const FString& Value)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetTagValue(Key, Value);
+	ScopeNativeImpl->SetTagValue(Key, Value);
 }
 
 FString USentryScope::GetTagValue(const FString& Key) const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return FString();
 
-	return NativeImpl->GetTagValue(Key);
+	return ScopeNativeImpl->GetTagValue(Key);
 }
 
 void USentryScope::RemoveTag(const FString& Key)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->RemoveTag(Key);
+	ScopeNativeImpl->RemoveTag(Key);
 }
 
 void USentryScope::SetTags(const TMap<FString, FString>& Tags)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetTags(Tags);
+	ScopeNativeImpl->SetTags(Tags);
 }
 
 TMap<FString, FString> USentryScope::GetTags() const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return TMap<FString, FString>();
 
-	return NativeImpl->GetTags();
+	return ScopeNativeImpl->GetTags();
 }
 
 void USentryScope::SetDist(const FString& Dist)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetDist(Dist);
+	ScopeNativeImpl->SetDist(Dist);
 }
 
 FString USentryScope::GetDist() const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return FString();
 
-	return NativeImpl->GetDist();
+	return ScopeNativeImpl->GetDist();
 }
 
 void USentryScope::SetEnvironment(const FString& Environment)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetEnvironment(Environment);
+	ScopeNativeImpl->SetEnvironment(Environment);
 }
 
 FString USentryScope::GetEnvironment() const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return FString();
 
-	return NativeImpl->GetEnvironment();
+	return ScopeNativeImpl->GetEnvironment();
 }
 
 void USentryScope::SetFingerprint(const TArray<FString>& Fingerprint)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetFingerprint(Fingerprint);
+	ScopeNativeImpl->SetFingerprint(Fingerprint);
 }
 
 TArray<FString> USentryScope::GetFingerprint() const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return TArray<FString>();
 
-	return NativeImpl->GetFingerprint();
+	return ScopeNativeImpl->GetFingerprint();
 }
 
 void USentryScope::SetLevel(ESentryLevel Level)
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetLevel(Level);
+	ScopeNativeImpl->SetLevel(Level);
 }
 
 ESentryLevel USentryScope::GetLevel() const
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return ESentryLevel::Debug;
 
-	return NativeImpl->GetLevel();
+	return ScopeNativeImpl->GetLevel();
 }
 
 void USentryScope::SetContext(const FString& Key, const TMap<FString, FString>& Values)
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetContext(Key, Values);
+	ScopeNativeImpl->SetContext(Key, Values);
 }
 
 void USentryScope::RemoveContext(const FString& Key)
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return;
 
-	NativeImpl->RemoveContext(Key);
+	ScopeNativeImpl->RemoveContext(Key);
 }
 
 void USentryScope::SetExtraValue(const FString& Key, const FString& Value)
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetExtraValue(Key, Value);
+	ScopeNativeImpl->SetExtraValue(Key, Value);
 }
 
 FString USentryScope::GetExtraValue(const FString& Key) const
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return FString();
 
-	return NativeImpl->GetExtraValue(Key);
+	return ScopeNativeImpl->GetExtraValue(Key);
 }
 
 void USentryScope::RemoveExtra(const FString& Key)
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return;
 
-	NativeImpl->RemoveExtra(Key);
+	ScopeNativeImpl->RemoveExtra(Key);
 }
 
 void USentryScope::SetExtras(const TMap<FString, FString>& Extras)
 {
-	if (!NativeImpl)
+	if(!ScopeNativeImpl)
 		return;
 
-	NativeImpl->SetExtras(Extras);
+	ScopeNativeImpl->SetExtras(Extras);
 }
 
 TMap<FString, FString> USentryScope::GetExtras() const
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return TMap<FString, FString>();
 
-	return NativeImpl->GetExtras();
+	return ScopeNativeImpl->GetExtras();
 }
 
 void USentryScope::Clear()
 {
-	if (!NativeImpl)
+	if (!ScopeNativeImpl)
 		return;
 
-	NativeImpl->Clear();
+	ScopeNativeImpl->Clear();
+}
+
+void USentryScope::InitWithNativeImpl(TSharedPtr<ISentryScope> scopeImpl)
+{
+	if (!ScopeNativeImpl)
+		return;
+
+	ScopeNativeImpl = scopeImpl;
+}
+
+TSharedPtr<ISentryScope> USentryScope::GetNativeImpl()
+{
+	return ScopeNativeImpl;
 }

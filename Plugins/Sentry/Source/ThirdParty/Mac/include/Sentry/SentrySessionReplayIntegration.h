@@ -10,6 +10,8 @@
 #    import "SentryDefines.h"
 #endif
 
+#import <Foundation/Foundation.h>
+
 NS_ASSUME_NONNULL_BEGIN
 #if SENTRY_TARGET_REPLAY_SUPPORTED
 
@@ -40,10 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stop;
 
 - (void)start;
-
-- (void)showMaskPreview:(CGFloat)opacity;
-
-- (void)hideMaskPreview;
 
 @end
 #endif // SENTRY_TARGET_REPLAY_SUPPORTED

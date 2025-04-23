@@ -6,18 +6,11 @@
 
 @protocol SentrySpan;
 
-@class SentryBreadcrumb;
-@class SentryEvent;
-@class SentryFeedback;
-@class SentryId;
+@class SentryOptions, SentryEvent, SentryBreadcrumb, SentryScope, SentryUser, SentryId,
+    SentryUserFeedback, SentryTransactionContext;
 @class SentryMetricsAPI;
-@class SentryOptions;
-@class SentryReplayApi;
-@class SentryScope;
-@class SentryTransactionContext;
-@class SentryUser;
-@class SentryUserFeedback;
 @class UIView;
+@class SentryReplayApi;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -253,22 +246,27 @@ SENTRY_NO_INIT
 /**
  * Captures user feedback that was manually gathered and sends it to Sentry.
  * @param userFeedback The user feedback to send to Sentry.
- * @deprecated Use @c SentrySDK.captureFeedback or use or configure our new managed UX with
- * @c SentryOptions.configureUserFeedback .
+ * @note If you'd prefer not to have to build the UI required to gather the feedback from the user,
+ * consider using `showUserFeedbackForm`, which delivers a prepackaged user feedback experience. See
+ * @c SentryOptions.configureUserFeedback to customize a fully managed integration. See
+ * https://docs.sentry.io/platforms/apple/user-feedback/#user-feedback-api and (TODO: add link to
+ * new docs) for more information on each approach.
  */
 + (void)captureUserFeedback:(SentryUserFeedback *)userFeedback
-    NS_SWIFT_NAME(capture(userFeedback:)) DEPRECATED_MSG_ATTRIBUTE(
-        "Use SentrySDK.captureFeedback or use or configure our new managed UX with "
-        "SentryOptions.configureUserFeedback.");
+    NS_SWIFT_NAME(capture(userFeedback:));
 
 /**
- * Captures user feedback that was manually gathered and sends it to Sentry.
- * @param feedback The feedback to send to Sentry.
- * @note If you'd prefer not to have to build the UI required to gather the feedback from the user,
- * see @c SentryOptions.configureUserFeedback to customize a fully managed integration. See
- * https://docs.sentry.io/platforms/apple/user-feedback/ for more information.
+ * Display a form to gather information from an end user in the app to send to Sentry as a user
+ * feedback event.
+ * @see @c SentryOptions.enableUserFeedbackIntegration and @c SentryOptions.configureUserFeedback to
+ * enable the functionality and customize the experience.
+ * @note If @c SentryOptions.enableUserFeedbackIntegration is @c NO, this method is a no-op.
+ * @note This is a fully managed user feedback flow; there will be no need to call
+ * @c SentrySDK.captureUserFeedback . See
+ * https://docs.sentry.io/platforms/apple/user-feedback/#user-feedback-api and (TODO: add link to
+ * new docs) for more information on each approach.
  */
-+ (void)captureFeedback:(SentryFeedback *)feedback NS_SWIFT_NAME(capture(feedback:));
++ (void)showUserFeedbackForm;
 
 /**
  * Adds a Breadcrumb to the current Scope of the current Hub. If the total number of breadcrumbs
@@ -302,8 +300,6 @@ SENTRY_NO_INIT
 /**
  * Set user to the current Scope of the current Hub.
  * @param user The user to set to the current Scope.
- *
- * @note You must start the SDK before calling this method, otherwise it doesn't set the user.
  */
 + (void)setUser:(nullable SentryUser *)user;
 

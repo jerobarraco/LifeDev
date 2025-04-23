@@ -10,11 +10,7 @@
 #    import "SentrySDK.h"
 #endif
 
-@class SentryAppStartMeasurement;
-@class SentryEnvelope;
-@class SentryFeedback;
-@class SentryHub;
-@class SentryId;
+@class SentryHub, SentryId, SentryAppStartMeasurement, SentryEnvelope;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,10 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)captureCrashEvent:(SentryEvent *)event;
 
 + (void)captureCrashEvent:(SentryEvent *)event withScope:(SentryScope *)scope;
-
-#if SENTRY_HAS_UIKIT
-+ (void)captureFatalAppHangEvent:(SentryEvent *)event;
-#endif // SENTRY_HAS_UIKIT
 
 /**
  * SDK private field to store the state if onCrashedLastRun was called.

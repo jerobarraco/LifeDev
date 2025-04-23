@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class SentryEvent;
-@class SentryInAppLogic;
+@class SentryEvent, SentryInAppLogic;
 
 NS_ASSUME_NONNULL_BEGIN
 

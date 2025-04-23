@@ -10,8 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentryNSError;
-@class SentryMechanismMeta;
+@class SentryNSError, SentryMechanismMeta;
 
 NS_SWIFT_NAME(Mechanism)
 @interface SentryMechanism : NSObject <SentrySerializable>

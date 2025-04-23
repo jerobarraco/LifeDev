@@ -3,7 +3,7 @@
 #include "SentryTransactionApple.h"
 #include "SentrySpanApple.h"
 
-#include "Infrastructure/SentryConvertersApple.h"
+#include "Infrastructure/SentryConvertorsApple.h"
 
 #include "Convenience/SentryInclude.h"
 #include "Convenience/SentryMacro.h"
@@ -26,16 +26,16 @@ id<SentrySpan> SentryTransactionApple::GetNativeObject()
 	return TransactionApple;
 }
 
-TSharedPtr<ISentrySpan> SentryTransactionApple::StartChildSpan(const FString& operation, const FString& desctiption)
+TSharedPtr<ISentrySpan> SentryTransactionApple::StartChild(const FString& operation, const FString& desctiption)
 {
 	id<SentrySpan> span = [TransactionApple startChildWithOperation:operation.GetNSString() description:desctiption.GetNSString()];
 	return MakeShareable(new SentrySpanApple(span));
 }
 
-TSharedPtr<ISentrySpan> SentryTransactionApple::StartChildSpanWithTimestamp(const FString& operation, const FString& desctiption, int64 timestamp)
+TSharedPtr<ISentrySpan> SentryTransactionApple::StartChildWithTimestamp(const FString& operation, const FString& desctiption, int64 timestamp)
 {
 	UE_LOG(LogSentrySdk, Log, TEXT("Starting child span with explicit timestamp not supported on Mac/iOS."));
-	return StartChildSpan(operation, desctiption);
+	return StartChild(operation, desctiption);
 }
 
 void SentryTransactionApple::Finish()
@@ -72,7 +72,7 @@ void SentryTransactionApple::RemoveTag(const FString& key)
 
 void SentryTransactionApple::SetData(const FString& key, const TMap<FString, FString>& values)
 {
-	[TransactionApple setDataValue:SentryConvertersApple::StringMapToNative(values) forKey:key.GetNSString()];
+	[TransactionApple setDataValue:SentryConvertorsApple::StringMapToNative(values) forKey:key.GetNSString()];
 }
 
 void SentryTransactionApple::RemoveData(const FString& key)

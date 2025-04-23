@@ -1,10 +1,10 @@
 // Copyright (c) 2022 Sentry. All Rights Reserved.
 
 #include "SentryEventAndroid.h"
-#include "SentryIdAndroid.h"
+
 #include "SentryMessageAndroid.h"
 
-#include "Infrastructure/SentryConvertersAndroid.h"
+#include "Infrastructure/SentryConvertorsAndroid.h"
 #include "Infrastructure/SentryJavaClasses.h"
 
 SentryEventAndroid::SentryEventAndroid()
@@ -21,18 +21,11 @@ SentryEventAndroid::SentryEventAndroid(jobject event)
 
 void SentryEventAndroid::SetupClassMethods()
 {
-	GetIdMethod = GetMethod("getEventId", "()Lio/sentry/protocol/SentryId;");
 	SetMessageMethod = GetMethod("setMessage", "(Lio/sentry/protocol/Message;)V");
 	GetMessageMethod = GetMethod("getMessage", "()Lio/sentry/protocol/Message;");
 	SetLevelMethod = GetMethod("setLevel", "(Lio/sentry/SentryLevel;)V");
 	GetLevelMethod = GetMethod("getLevel", "()Lio/sentry/SentryLevel;");
 	IsCrashMethod = GetMethod("isCrashed", "()Z");
-}
-
-TSharedPtr<ISentryId> SentryEventAndroid::GetId() const
-{
-	auto id = CallObjectMethod<jobject>(GetIdMethod);
-	return MakeShareable(new SentryIdAndroid(*id));
 }
 
 void SentryEventAndroid::SetMessage(const FString& message)
@@ -48,13 +41,13 @@ FString SentryEventAndroid::GetMessage() const
 
 void SentryEventAndroid::SetLevel(ESentryLevel level)
 {
-	CallMethod<void>(SetLevelMethod, SentryConvertersAndroid::SentryLevelToNative(level)->GetJObject());
+	CallMethod<void>(SetLevelMethod, SentryConvertorsAndroid::SentryLevelToNative(level)->GetJObject());
 }
 
 ESentryLevel SentryEventAndroid::GetLevel() const
 {
 	auto level = CallObjectMethod<jobject>(GetLevelMethod);
-	return SentryConvertersAndroid::SentryLevelToUnreal(*level);
+	return SentryConvertorsAndroid::SentryLevelToUnreal(*level);
 }
 
 bool SentryEventAndroid::IsCrash() const

@@ -1,61 +1,83 @@
 // Copyright (c) 2022 Sentry. All Rights Reserved.
 
 #include "SentryUserFeedback.h"
+#include "SentryId.h"
 
-#include "HAL/PlatformSentryUserFeedback.h"
+#include "Interface/SentryUserFeedbackInterface.h"
 
-void USentryUserFeedback::Initialize(const FString& EventId)
+#if PLATFORM_ANDROID
+#include "Android/SentryUserFeedbackAndroid.h"
+#elif PLATFORM_IOS || PLATFORM_MAC
+#include "Apple/SentryUserFeedbackApple.h"
+#elif PLATFORM_WINDOWS || PLATFORM_LINUX
+#include "Desktop/SentryUserFeedbackDesktop.h"
+#endif
+
+void USentryUserFeedback::Initialize(USentryId* EventId)
 {
-	if (ensure(!EventId.IsEmpty()))
-	{
-		NativeImpl = CreateSharedSentryUserFeedback(EventId);
-	}
+#if PLATFORM_ANDROID
+	UserFeedbackNativeImpl = MakeShareable(new SentryUserFeedbackAndroid(EventId->GetNativeImpl()));
+#elif PLATFORM_IOS || PLATFORM_MAC
+	UserFeedbackNativeImpl = MakeShareable(new SentryUserFeedbackApple(EventId->GetNativeImpl()));
+#elif PLATFORM_WINDOWS || PLATFORM_LINUX
+	UserFeedbackNativeImpl = MakeShareable(new SentryUserFeedbackDesktop(EventId->GetNativeImpl()));
+#endif
 }
 
 void USentryUserFeedback::SetName(const FString& Name)
 {
-	if (!NativeImpl)
+	if (!UserFeedbackNativeImpl)
 		return;
 
-	NativeImpl->SetName(Name);
+	UserFeedbackNativeImpl->SetName(Name);
 }
 
 FString USentryUserFeedback::GetName() const
 {
-	if(!NativeImpl)
+	if(!UserFeedbackNativeImpl)
 		return FString();
 
-	return NativeImpl->GetName();
+	return UserFeedbackNativeImpl->GetName();
 }
 
 void USentryUserFeedback::SetEmail(const FString& Email)
 {
-	if (!NativeImpl)
+	if (!UserFeedbackNativeImpl)
 		return;
 
-	NativeImpl->SetEmail(Email);
+	UserFeedbackNativeImpl->SetEmail(Email);
 }
 
 FString USentryUserFeedback::GetEmail() const
 {
-	if(!NativeImpl)
+	if(!UserFeedbackNativeImpl)
 		return FString();
 
-	return NativeImpl->GetEmail();
+	return UserFeedbackNativeImpl->GetEmail();
 }
 
 void USentryUserFeedback::SetComment(const FString& Comments)
 {
-	if (!NativeImpl)
+	if (!UserFeedbackNativeImpl)
 		return;
 
-	NativeImpl->SetComment(Comments);
+	UserFeedbackNativeImpl->SetComment(Comments);
 }
 
 FString USentryUserFeedback::GetComment() const
 {
-	if (!NativeImpl)
+	if (!UserFeedbackNativeImpl)
 		return FString();
 
-	return NativeImpl->GetComment();
+	return UserFeedbackNativeImpl->GetComment();
+}
+
+void USentryUserFeedback::InitWithNativeImpl(TSharedPtr<ISentryUserFeedback> userFeedbackImpl)
+{
+	UserFeedbackNativeImpl = userFeedbackImpl;
+}
+
+TSharedPtr<ISentryUserFeedback> USentryUserFeedback::GetNativeImpl()
+{
+	return UserFeedbackNativeImpl;
 }

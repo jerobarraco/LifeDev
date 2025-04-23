@@ -2,7 +2,7 @@
 
 #include "SentryUserApple.h"
 
-#include "Infrastructure/SentryConvertersApple.h"
+#include "Infrastructure/SentryConvertorsApple.h"
 
 #include "Convenience/SentryInclude.h"
 #include "Convenience/SentryMacro.h"
@@ -69,10 +69,10 @@ FString SentryUserApple::GetIpAddress() const
 
 void SentryUserApple::SetData(const TMap<FString, FString>& data)
 {
-	UserApple.data = SentryConvertersApple::StringMapToNative(data);
+	UserApple.data = SentryConvertorsApple::StringMapToNative(data);
 }
 
 TMap<FString, FString> SentryUserApple::GetData()
 {
-	return SentryConvertersApple::StringMapToUnreal(UserApple.data);
+	return SentryConvertorsApple::StringMapToUnreal(UserApple.data);
 }

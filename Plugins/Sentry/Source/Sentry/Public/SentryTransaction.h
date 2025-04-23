@@ -1,12 +1,9 @@
-// Copyright (c) 2023 Sentry. All Rights Reserved.
+﻿// Copyright (c) 2023 Sentry. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-
-#include "SentryImplWrapper.h"
-
 #include "SentryTransaction.generated.h"
 
 class ISentryTransaction;
@@ -15,24 +12,24 @@ class USentrySpan;
 /**
  * Representation of an activity to measure or track.
  */
-UCLASS(BlueprintType, NotBlueprintable, HideDropdown)
-class SENTRY_API USentryTransaction : public UObject, public TSentryImplWrapper<ISentryTransaction, USentryTransaction>
+UCLASS(BlueprintType)
+class SENTRY_API USentryTransaction : public UObject
 {
 	GENERATED_BODY()
 
 public:
+	USentryTransaction();
+
 	/** Starts a new child span. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	USentrySpan* StartChildSpan(const FString& Operation, const FString& Description);
-
+	USentrySpan* StartChild(const FString& Operation, const FString& Description);
 	/** Starts a new child span with timestamp. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
-	USentrySpan* StartChildSpanWithTimestamp(const FString& Operation, const FString& Description, int64 Timestamp);
+	USentrySpan* StartChildWithTimestamp(const FString& Operation, const FString& Description, int64 Timestamp);
 
 	/** Finishes and sends a transaction to Sentry. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
 	void Finish();
-
 	/** Finishes with timestamp and sends a transaction to Sentry. */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
 	void FinishWithTimestamp(int64 Timestamp);
@@ -64,4 +61,10 @@ public:
 	/** Gets trace information that could be sent as a `sentry-trace` header */
 	UFUNCTION(BlueprintCallable, Category = "Sentry")
 	void GetTrace(FString& name, FString& value);
+
+	void InitWithNativeImpl(TSharedPtr<ISentryTransaction> transactionImpl);
+	TSharedPtr<ISentryTransaction> GetNativeImpl();
+
+private:
+	TSharedPtr<ISentryTransaction> SentryTransactionNativeImpl;
 };

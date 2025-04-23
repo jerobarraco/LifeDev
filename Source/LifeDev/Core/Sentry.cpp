@@ -2,6 +2,7 @@
 
 #include "SentrySubsystem.h"
 #include "Diags/Diags.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "Settings/LSettings.h"
@@ -19,9 +20,14 @@ USentry* USentry::Instance(const UObject* const O) {
 
 void USentry::SendComment(const FString& FB) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
-	// yes, the docs says it needs to capture a message.
-	const FString& Id = Sub->CaptureMessage("FEEDBACK!");
-	Sub->CaptureUserFeedbackWithParams(Id, "", FB, "[user]");
+
+	USentryId* const Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
+	if (UNLIKELY(!Id)) {
+		UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
+		return;
+	}
+
+	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
 }
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {

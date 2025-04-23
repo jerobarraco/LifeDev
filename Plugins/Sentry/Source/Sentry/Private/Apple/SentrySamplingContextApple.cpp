@@ -3,7 +3,7 @@
 #include "SentrySamplingContextApple.h"
 #include "SentryTransactionContextApple.h"
 
-#include "Infrastructure/SentryConvertersApple.h"
+#include "Infrastructure/SentryConvertorsApple.h"
 
 #include "Convenience/SentryInclude.h"
 #include "Convenience/SentryMacro.h"
@@ -25,7 +25,7 @@ TSharedPtr<ISentryTransactionContext> SentrySamplingContextApple::GetTransaction
 
 TMap<FString, FString> SentrySamplingContextApple::GetCustomSamplingContext() const
 {
-	return SentryConvertersApple::StringMapToUnreal(SamplingContext.customSamplingContext);
+	return SentryConvertorsApple::StringMapToUnreal(SamplingContext.customSamplingContext);
 }
 
 SentrySamplingContext* SentrySamplingContextApple::GetNativeObject()

@@ -35,12 +35,13 @@ FString SentryFileUtils::GetGameLogBackupPath()
 
 	for (int i = 0; i < GameLogBackupFiles.Num(); ++i)
 	{
-		GameLogBackupFiles[i] = FPaths::ProjectLogDir() / GameLogBackupFiles[i];
+		FString GameLogFullPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*(FPaths::ProjectLogDir() / GameLogBackupFiles[i]));
+		GameLogBackupFiles[i] = GameLogFullPath;
 	}
 
 	GameLogBackupFiles.Sort(FSentrySortFileByDatePredicate());
 
-	return IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*GameLogBackupFiles[0]);
+	return GameLogBackupFiles[0];
 }
 
 FString SentryFileUtils::GetGpuDumpPath()
