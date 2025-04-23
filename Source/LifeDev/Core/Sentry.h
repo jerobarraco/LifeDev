@@ -18,7 +18,7 @@ public:
 	static USentry* Instance(const UObject* const O);;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void SendComment(const FString& FB) const;
+	void AddComment(const FString& FB) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void TagSet(const FString& Tag, const FString& Val) const;

@@ -178,7 +178,7 @@ void ULSettingsUI::SendComment(const int32 Id) {
 	const USentry* const Sentry = USentry::Instance(this);
 	if (UNLIKELY(!Sentry || !TComment )) return;
 
-	Sentry->SendComment(TComment->GetText().ToString());
+	Sentry->AddComment(TComment->GetText().ToString());
 	if (LIKELY(MsgBox)) {
 		static const FText& Sent = NSLOCTEXT("SettingsUI", "SentComment", "Sent! Thanks a lot!");
 		static const FText& Nice = NSLOCTEXT("SettingsUI", "SentCommentBtn", "Nice!");

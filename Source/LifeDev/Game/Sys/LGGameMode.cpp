@@ -125,7 +125,7 @@ void ALGGameMode::Spawn() {
 	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Error, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
 	Char = Cast<ALChar>(
 		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Error, TEXT("%hs Could not obtain the LCharacter!."), __func__);
+	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Error, TEXT("%hs Could not obtain the LCharacter!"), __func__);
 
 	// only one to initialize right here. since i might want to know if some subsystem or actor causes issues
 	// during initialization.
@@ -154,7 +154,7 @@ void ALGGameMode::Init() {
 
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!IsValid(SysSettings))) {
-		UE_LOG(LogLGameMode, Error, TEXT("System Settings not valid. can't continue."));
+		UE_LOG(LogLGameMode, Error, TEXT("%hs System Settings not valid. can't continue."), __func__);
 		return;
 	}
 	

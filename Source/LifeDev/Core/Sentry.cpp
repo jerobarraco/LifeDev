@@ -24,7 +24,7 @@ USentry* USentry::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<USentry>();
 }
 
-void USentry::SendComment(const FString& FB) const {
+void USentry::AddComment(const FString& FB) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 
 	USentryId* const Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
