@@ -32,6 +32,11 @@ EItemUseResult ADoorI10::TryUseItem_Implementation(const FName& Name) {
 
 bool ADoorI10::TryTrigger_Implementation() {
 	if (UNLIKELY(!Inventory)) return false;
+
+	// this happens after unlocking the door
+	if (Interacted) return Super::TryTrigger_Implementation();
+	Interacted = true;
+
 	static const FName Name ("Screwer00");
 	if (Inventory->Has(Name)) {
 		Inventory->Mod(Name, -1);
@@ -43,10 +48,6 @@ bool ADoorI10::TryTrigger_Implementation() {
 }
 
 void ADoorI10::DoDialog() {
-	// this happens after unlocking the door with the card
-	if(Interacted) return;
-	Interacted = true;
-
 	Diags->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
 	Diags->AddId("D10_T"); // after unlocking with the card
 }
