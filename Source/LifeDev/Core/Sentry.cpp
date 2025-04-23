@@ -67,6 +67,8 @@ void USentry::InstDeInit() {
 }
 
 void USentry::GameInit() {
+	AddHint("GameInit", {});
+
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.AddUniqueDynamic(this, &USentry::FeatUp);
@@ -93,6 +95,8 @@ void USentry::GameInit() {
 }
 
 void USentry::GameDeInit() {
+	AddHint("GameDeInit", {});
+	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.RemoveAll(this);

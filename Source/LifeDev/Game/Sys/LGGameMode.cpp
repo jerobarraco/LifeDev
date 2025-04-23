@@ -73,13 +73,13 @@ void ALGGameMode::BeginPlay() {
 
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
 	if (UNLIKELY(!IsValid(Instance))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs No valid instance found!"), __func__);
+		UE_LOG(LogLGameMode, Error, TEXT("%hs No valid game instance found! S T O P."), __func__);
 		return;
 	}
 
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (UNLIKELY(!IsValid(Settings))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
+		UE_LOG(LogLGameMode, Error, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
 		return;
 	}
 
@@ -103,6 +103,8 @@ void ALGGameMode::BeginPlay() {
 
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
 
+	Spawn();
+
 	// manually go to init if it's already loaded.
 	FTimerManager& Timer = World->GetTimerManager();
 	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
@@ -112,28 +114,50 @@ void ALGGameMode::InitOnSave(const bool IsSaving) {
 	if (LIKELY(!IsSaving)) Init();
 }
 
+void ALGGameMode::Spawn() {
+	UE_LOG(LogLGameMode, Log, TEXT("%hs."), __func__);
+
+	UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
+	/// unrelated (done first since other things can depend on this)
+	PostProcess = Cast<APostProcessVolume>(
+		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
+	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Error, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
+	Char = Cast<ALChar>(
+		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
+	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Error, TEXT("%hs Could not obtain the LCharacter!."), __func__);
+
+	// only one to initialize right here. since i might want to know if some subsystem or actor causes issues
+	// during initialization.
+	// it does depend on the char. so i do it after obtaining it.
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->GameInit();
+
+	// spawn these here. since they might take time to actually create.
+	// also important since the storyman creates the ui that performs a blank bg. (which probably should be moved to the GameUI in the char)
+	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
+	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
+	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
+	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
+}
+
 void ALGGameMode::Init() {
 	// this is the place were we are going to be initializing everything.
 	// the savegame should be already loaded.
 	Settings->OnSaving.RemoveAll(this);
 
-	UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!IsValid(SysSettings))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("System Settings not valid. can't continue."));
+		UE_LOG(LogLGameMode, Error, TEXT("System Settings not valid. can't continue."));
 		return;
 	}
-
-	/// unrelated (done first since other things can depend on this)
-	PostProcess = Cast<APostProcessVolume>(
-		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
-	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Warning, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
-	Char = Cast<ALChar>(
-		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
-	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Warning, TEXT("%hs Could not obtain the LCharacter!."), __func__);
-
+	
 	/// set input mode
 	// this is critical or the dialogs will break
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
@@ -143,11 +167,6 @@ void ALGGameMode::Init() {
 
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
-
-	// only one to initialize right here. since i might want to know if some subsystem is doing something weird.
-	// it does depend on the char. so i do it after obtaining it.
-	USentry* const Sentry = USentry::Instance(this);
-	if (LIKELY(Sentry)) Sentry->GameInit();
 
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
@@ -226,13 +245,6 @@ void ALGGameMode::Init() {
 	// some of these tries to use the subsystems on begin play. TODO change that.
 	// it's better to spawn these objects before the savegame loads the subsystems or the delegates could confuse them
 	// the real solution is to bind to the delegates on init and not beginplay.
-	InventoryMan = Cast<ALInventoryMan>(World->SpawnActor(ALInventoryMan::StaticClass()));
-	StoryMan = Cast<ALStoryMan>(World->SpawnActor(ALStoryMan::StaticClass()));
-	DiagMan = Cast<ALDiagMan>(World->SpawnActor(ALDiagMan::StaticClass()));
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
-	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
-	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
-	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
 
 	// init together.
 	if (LIKELY(IsValid(InventoryMan))) {
