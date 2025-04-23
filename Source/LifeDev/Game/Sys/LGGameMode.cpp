@@ -77,9 +77,6 @@ void ALGGameMode::BeginPlay() {
 		return;
 	}
 
-	USentry* const Sentry = USentry::Instance(this);
-	if (LIKELY(Sentry)) Sentry->GameInit();
-
 	Settings = Instance->GetSubsystem<ULSettings>();
 	if (UNLIKELY(!IsValid(Settings))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Settings not valid. can't continue. S T O P."), __func__);
@@ -146,6 +143,11 @@ void ALGGameMode::Init() {
 
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
+
+	// only one to initialize right here. since i might want to know if some subsystem is doing something weird.
+	// it does depend on the char. so i do it after obtaining it.
+	USentry* const Sentry = USentry::Instance(this);
+	if (LIKELY(Sentry)) Sentry->GameInit();
 
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {

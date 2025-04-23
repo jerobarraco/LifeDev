@@ -1,18 +1,19 @@
 #include "Sentry.h"
 
 #include "SentrySubsystem.h"
+
 #include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
+#include "Interact/Interact.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "Story/Step.h"
+#include "Story/Story.h"
 
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Game/Char/LChar.h"
-#include "LifeDev/Game/Interact/LInteract.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "Settings/LSettings.h"
-#include "Story/Step.h"
-#include "Story/Story.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
 
@@ -83,6 +84,7 @@ void USentry::GameInit() {
 		Diags->OnAdd.AddUniqueDynamic(this, &USentry::DiagAdd);
 		Diags->OnDone.AddUniqueDynamic(this, &USentry::DiagDone);
 	}
+
 	ALGGameMode* const GM = ALGGameMode::Instance(this);
 	if (LIKELY(GM && GM->Char)) {
 		UCInteractor* const Inter = Cast<UCInteractor>(GM->Char->GetComponentByClass(UCInteractor::StaticClass()));
@@ -157,7 +159,7 @@ void USentry::DiagDone() {
 
 void USentry::InterTrigger(const UCInteract* const Comp) {
 	static const FString Hint("Inter::Trigger");
-	const ALInteract* Inter = Cast<ALInteract>(Comp->GetOwner());
+	const AInteract* Inter = Cast<AInteract>(Comp->GetOwner());
 	const FName& N = Inter ? Inter->Label : GetFNameSafe(Comp);
 	AddHint(Hint, {{"Name", N.ToString() }} );
 }
