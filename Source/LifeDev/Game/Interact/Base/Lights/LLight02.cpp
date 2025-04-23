@@ -9,7 +9,7 @@
 #include "LifeDev/Core/Consts/ConstColors.h"
 
 ALLight02::ALLight02():Super() {
-	IntensityMax = 5;
+	IntensityMax = 10;
 	Light = CreateDefaultSubobject<USpotLightComponent>(TEXT("Light"));
 	Light->SetupAttachment(Mesh);
 	Light->SetIntensityUnits(ELightUnits::Lumens);

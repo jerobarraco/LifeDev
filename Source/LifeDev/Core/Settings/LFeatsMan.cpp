@@ -190,10 +190,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		// https://forums.unrealengine.com/t/how-do-i-disable-eye-adaptation-auto-exposure/286811/6
 		// TODO fix the need to have an autoexposure of -6 instead of 0 apparently should be like... -2
 		// https://forums.unrealengine.com/t/lighting-exposure-and-intensity-units-confusion/211375/2?u=nande
-		Post->Settings.AutoExposureMinBrightness = Enabled ? -8 : -6.;
-		Post->Settings.AutoExposureMaxBrightness = -6.;
+		Post->Settings.AutoExposureMinBrightness = Enabled ? -8 : -2;
+		Post->Settings.AutoExposureMaxBrightness = Enabled ? 0 : -2;
 		Post->Settings.bOverride_AutoExposureMinBrightness = !Enabled;
-		Post->Settings.bOverride_AutoExposureMaxBrightness = !Enabled;
+		Post->Settings.bOverride_AutoExposureMaxBrightness = true;
 		// don't set to manual method ot it will be full black
 	} else if (Feat == EFeat::V_FLASHBACK) {
 		if (UNLIKELY(!FBMat)) return;

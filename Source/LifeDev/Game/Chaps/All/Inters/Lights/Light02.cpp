@@ -33,10 +33,10 @@ ALight02::ALight02():Super() {
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
 	Light->Intensity = .5;
-	Light->AttenuationRadius = 300;
-	Light->SourceRadius = 5;
-	Light->SourceLength = 5;
-	Light->SoftSourceRadius = 10;
+	Light->AttenuationRadius = 500;
+	Light->SourceRadius = 1;
+	Light->SourceLength = 1;
+	Light->SoftSourceRadius = 20;
 	
 	Interact->SetRelativeLocation(FVector(20,-20,90));
 	Interact->SetBoxExtent(FVector(20,20,90));

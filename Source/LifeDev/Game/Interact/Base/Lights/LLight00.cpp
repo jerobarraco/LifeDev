@@ -20,8 +20,8 @@ ALLight00::ALLight00():Super() {
 	Light->SetIntensityUnits(ELightUnits::Lumens);
 	Light->SetIntensity(IntensityMax);
 	Light->SetAttenuationRadius(1000);
-	Light->SetSourceRadius(10);
-	Light->SetSoftSourceRadius(5);
+	Light->SetSourceRadius(5);
+	Light->SetSoftSourceRadius(7);
 	Light->SetTemperature(3333);
 	
 	ALLight00::SetMobility(EComponentMobility::Static);

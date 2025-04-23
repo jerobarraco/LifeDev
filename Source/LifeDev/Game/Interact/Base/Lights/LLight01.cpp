@@ -21,14 +21,14 @@ ALLight01::ALLight01():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
-	if (CCurve.Succeeded()) Anim->Curve = CCurve.Object;
+	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
 
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
 	RectLight->SetupAttachment(Mesh);
 	RectLight->SetRelativeLocation(FVector(2.500000,-2.500000,-0.200000));
 	RectLight->SetRelativeRotation(FRotator(-90,-90,0));
 	RectLight->SetIntensityUnits(ELightUnits::Lumens);
-	RectLight->SetIntensity(1);
+	RectLight->SetIntensity(IntensityMax);
 	RectLight->SetAttenuationRadius(1000);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
