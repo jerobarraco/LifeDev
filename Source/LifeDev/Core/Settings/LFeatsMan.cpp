@@ -155,7 +155,10 @@ void ALFeatsMan::LoadFeats() {
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
-	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) return;
+	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) {
+		UE_LOG(LogLFeatsMan, Error, TEXT("%hs Could not find the post process or game mode!"), __func__);
+		return;
+	}
 
 	// Important:
 	// these properties on the editor have a checkbox next to them.
@@ -185,10 +188,13 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_AUTO_EXP) {
 		// TODO seems to not be working
-		Post->Settings.AutoExposureMinBrightness = -6.;
-		Post->Settings.AutoExposureMaxBrightness = -6.;
+		// https://forums.unrealengine.com/t/how-do-i-disable-eye-adaptation-auto-exposure/286811/6
+		Post->Settings.AutoExposureMinBrightness = 6.;
+		Post->Settings.AutoExposureMaxBrightness = 6.;
 		Post->Settings.bOverride_AutoExposureMinBrightness = !Enabled;
 		Post->Settings.bOverride_AutoExposureMaxBrightness = !Enabled;
+		Post->Settings.AutoExposureMethod = Enabled ? EAutoExposureMethod::AEM_Histogram : EAutoExposureMethod::AEM_Manual;
+		Post->Settings.bOverride_AutoExposureMethod = true;
 	} else if (Feat == EFeat::V_FLASHBACK) {
 		if (UNLIKELY(!FBMat)) return;
 		if (Enabled)
