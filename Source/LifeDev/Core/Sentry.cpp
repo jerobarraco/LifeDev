@@ -132,7 +132,6 @@ void USentry::StepStop(AStep* const Step) {
 void USentry::DiagAdd(const FName Name, const FDiag& Diag) {
 	static const FString Hint("Diag::Add");
 	AddHint(Hint, {{"Name",Name.ToString()}});
-	
 }
 
 void USentry::DiagDone() {
