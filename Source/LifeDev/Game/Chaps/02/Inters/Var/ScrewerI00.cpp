@@ -6,5 +6,4 @@ AScrewerI00::AScrewerI00():Super() {
 	RewardItem = "ScrewerI00";
 	UseFade = true;
 	UseAutoActivate = true;
-	AScrewerI00::SetMobility(EComponentMobility::Type::Movable);
 }
