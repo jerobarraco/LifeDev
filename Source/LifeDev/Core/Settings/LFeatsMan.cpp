@@ -145,6 +145,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
 	FeatUpVisual(EFeat::V_STROBE, Settings && Settings->GetFeat(EFeat::V_STROBE));
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
+	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
 	BlurReset();
 	
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
@@ -183,8 +184,9 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		Post->Settings.MotionBlurMax = Enabled ? MotionBlurMax: 0;
 		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_AUTO_EXP) {
-		Post->Settings.AutoExposureMinBrightness = -0.;
-		Post->Settings.AutoExposureMaxBrightness = -0.;
+		// TODO seems to not be working
+		Post->Settings.AutoExposureMinBrightness = -6.;
+		Post->Settings.AutoExposureMaxBrightness = -6.;
 		Post->Settings.bOverride_AutoExposureMinBrightness = !Enabled;
 		Post->Settings.bOverride_AutoExposureMaxBrightness = !Enabled;
 	} else if (Feat == EFeat::V_FLASHBACK) {
