@@ -2,9 +2,14 @@
 
 #include "SentrySubsystem.h"
 #include "Diags/Diags.h"
+#include "Interact/CInteract.h"
+#include "Interact/CInteractor.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Game/Char/LChar.h"
+#include "LifeDev/Game/Interact/LInteract.h"
+#include "LifeDev/Game/Sys/LGGameMode.h"
 #include "Settings/LSettings.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
@@ -78,6 +83,11 @@ void USentry::GameInit() {
 		Diags->OnAdd.AddUniqueDynamic(this, &USentry::DiagAdd);
 		Diags->OnDone.AddUniqueDynamic(this, &USentry::DiagDone);
 	}
+	ALGGameMode* const GM = ALGGameMode::Instance(this);
+	if (LIKELY(GM && GM->Char)) {
+		UCInteractor* const Inter = Cast<UCInteractor>(GM->Char->GetComponentByClass(UCInteractor::StaticClass()));
+		if (LIKELY(Inter)) Inter->OnTrigger.AddUniqueDynamic(this, &USentry::InterTrigger);
+	}
 }
 
 void USentry::GameDeInit() {
@@ -100,6 +110,12 @@ void USentry::GameDeInit() {
 	}
 	
 	if (LIKELY(Sub)) Sub->ClearBreadcrumbs();
+	
+	ALGGameMode* const GM = ALGGameMode::Instance(this);
+	if (LIKELY(GM && GM->Char)) {
+		UCInteractor* const Inter = Cast<UCInteractor>(GM->Char->GetComponentByClass(UCInteractor::StaticClass()));
+		if (LIKELY(Inter)) Inter->OnTrigger.RemoveAll(this);
+	}
 }
 
 void USentry::FeatUp(const EFeat Feat, const bool Enabled) {
@@ -137,4 +153,11 @@ void USentry::DiagAdd(const FName Name, const FDiag& Diag) {
 void USentry::DiagDone() {
 	static const FString Hint("Diag::Done");
 	AddHint(Hint, {});
+}
+
+void USentry::InterTrigger(const UCInteract* const Comp) {
+	static const FString Hint("Inter::Trigger");
+	const ALInteract* Inter = Cast<ALInteract>(Comp->GetOwner());
+	const FName& N = Inter ? Inter->Label : GetFNameSafe(Comp);
+	AddHint(Hint, {{"Name", N.ToString() }} );
 }

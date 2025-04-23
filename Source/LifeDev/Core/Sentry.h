@@ -4,6 +4,7 @@
 
 #include "Sentry.generated.h"
 
+class UCInteract;
 struct FDiag;
 class AStep;
 enum class EFeat : uint8;
@@ -49,6 +50,8 @@ protected:
 	void DiagAdd(const FName Name, const FDiag& Diag);
 	UFUNCTION()
 	void DiagDone();
+	UFUNCTION()
+	void InterTrigger(const UCInteract* const Comp);
 
 	UPROPERTY(Transient)
 	TObjectPtr<USentrySubsystem> Sub = nullptr;
