@@ -3,7 +3,7 @@
 #include "ScrewerI00.h"
 
 AScrewerI00::AScrewerI00():Super() {
-	RewardItem = "ScrewerI00";
+	RewardItem = "Screwer00";
 	UseFade = true;
 	UseAutoActivate = true;
 }
