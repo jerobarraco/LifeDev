@@ -623,8 +623,9 @@ void UAnim::Tick(const float DT) {
 	const bool ContGen = ItemTick(DT, ItemsGen, &UAnim::ItemDoneGen);
 	const bool ContTime = ItemTick(DT, ItemsTime, &UAnim::ItemDoneTime);
 	// done this way to avoid short-circuit to skip vec (though if the compiler is trying to be smart...)
-	const bool Continue = ContMPCFloat || ContMPCVec || ContData
-		|| ContDynFloat || ContDynVector || ContSndFloat || ContComp || ContGen || ContTime;
+	// | since no branches are needed NOR wanted.
+	const bool Continue = ContMPCFloat | ContMPCVec | ContData
+		| ContDynFloat | ContDynVector | ContSndFloat | ContComp | ContGen | ContTime;
 
 	if (LIKELY(Continue)) return;
 
