@@ -406,6 +406,7 @@ void ULSetVideoUI::FeatsSet() {
 	FeatTexts.Add(EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights"));
 	FeatTexts.Add(EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View"));
 	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
+	FeatTexts.Add(EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp."));
 	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen GI"));
 	FeatTexts.Add(EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights"));
 	FeatTexts.Add(EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite"));

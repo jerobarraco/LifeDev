@@ -163,6 +163,7 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	// https://forums.unrealengine.com/t/how-can-i-control-post-processing-volume-settings-using-c/465187/2?u=nande
 	// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
 
+	// if i were to have an array of pointer i could get rid of all these branches
 	APostProcessVolume* const Post = GM->PostProcess;
 	if (Feat == EFeat::V_LUMEN) {
 		// needed to allow the flag to override project settings
@@ -181,6 +182,11 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		Post->Settings.MotionBlurAmount = Enabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = Enabled ? MotionBlurMax: 0;
 		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
+	} else if (Feat == EFeat::V_AUTO_EXP) {
+		Post->Settings.AutoExposureMinBrightness = -0.;
+		Post->Settings.AutoExposureMaxBrightness = -0.;
+		Post->Settings.bOverride_AutoExposureMinBrightness = !Enabled;
+		Post->Settings.bOverride_AutoExposureMaxBrightness = !Enabled;
 	} else if (Feat == EFeat::V_FLASHBACK) {
 		if (UNLIKELY(!FBMat)) return;
 		if (Enabled)

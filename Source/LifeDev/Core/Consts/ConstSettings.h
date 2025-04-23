@@ -59,6 +59,8 @@ enum class EFeat: uint8 {
 	V_SPEED,
 	// nanite
 	V_NANITE,
+	// auto exposure
+	V_AUTO_EXP,
 	V_MAX UMETA(Hidden),
 #pragma endregion
 
