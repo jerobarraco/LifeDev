@@ -10,20 +10,15 @@ AScrewer00::AScrewer00():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	UseFade = false;
 
-	// TODO to the instance, to the wow
-	RewardItem = "Screwer00";
-	UseFade = true;
-	UseAutoActivate = true;
-
-	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Screwer_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,-0.50000,0)); // TODO
+	Mesh->SetRelativeLocation(FVector(.000000,2.500000,-2.500000));
 	
-	Interact->SetRelativeLocation(FVector(0,0,7)); // TODO
-	Interact->SetBoxExtent(FVector(5,5,10)); // TODO
+	Interact->SetRelativeLocation(FVector(12.500000,-2.500000,2.500000));
+	Interact->SetBoxExtent(FVector(12.500000,2.500000,2.500000));
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT(""));
@@ -31,4 +26,3 @@ AScrewer00::AScrewer00():Super() {
 
 	AScrewer00::SetMobility(EComponentMobility::Static);
 }
-// todo make a screweri00 and replace on outliner
