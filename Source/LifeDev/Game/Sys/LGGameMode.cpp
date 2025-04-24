@@ -281,6 +281,8 @@ void ALGGameMode::Init() {
 		Char->Init();
 	}
 
+	if (LIKELY(IsValid(LearnMan))) LearnMan->Init(nullptr);
+
 	if (LIKELY(Ghosts)) Ghosts->Init();
 #pragma endregion
 
@@ -348,11 +350,9 @@ void ALGGameMode::DeInit() {
 	// if (IsValid(Char)) Char->DeInit();
 
 	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
-
+	if (LIKELY(IsValid(LearnMan))) LearnMan->DeInit();
 	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
-
 	if (LIKELY(IsValid(InventoryMan))) InventoryMan->DeInit();
-
 	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
 
 	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
