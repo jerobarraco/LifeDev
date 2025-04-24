@@ -65,4 +65,5 @@ void ALearnMan::Hide() {
 	const FName FN(Inventory::Learn::Prefix + CurrentId.ToString());
 	Flags->Set(FN);
 	CurrentId = NAME_None;
+	OnHide.Broadcast();
 }

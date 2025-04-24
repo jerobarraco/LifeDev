@@ -7,7 +7,9 @@
 
 class UFlags;
 struct FLearnRow;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FLearnRow&, Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLearnHide);
 
 // for new users popups, and stuff.
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
@@ -34,6 +36,8 @@ public:
 #pragma region delegates
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FLearnShow OnShow;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FLearnHide OnHide;
 #pragma endregion
 
 protected:
