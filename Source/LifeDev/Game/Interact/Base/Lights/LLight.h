@@ -58,7 +58,7 @@ protected:
 	float FlickrOnFB = -1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float IntensityMax = 2;
+	float IntensityMax = 15;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCRandomizer> Rnd = nullptr;

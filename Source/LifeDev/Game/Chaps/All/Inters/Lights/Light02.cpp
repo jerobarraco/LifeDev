@@ -32,7 +32,7 @@ ALight02::ALight02():Super() {
 	Cover->bCastDistanceFieldIndirectShadow = true;
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
-	Light->Intensity = .5;
+	Light->Intensity = 5;
 	Light->AttenuationRadius = 500;
 	Light->SourceRadius = 1;
 	Light->SourceLength = 1;
