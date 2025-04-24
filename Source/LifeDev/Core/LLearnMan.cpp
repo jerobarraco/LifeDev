@@ -9,6 +9,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLLearnMan, Log, Log)
 
+namespace LifeDev {
+	namespace Learn {
+		static const FName InterTrigger("Inter.Trigger");
+	}
+}
 ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
@@ -22,7 +27,7 @@ ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 	return Cast<ALLearnMan>(UGameplayStatics::GetActorOfClass(World, ALLearnMan::StaticClass()));
 }
 
-void ALLearnMan::Init_Implementation(UDataTable* const Data) {
+void ALLearnMan::Init_Implementation(UDataTable* Data) {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
@@ -48,13 +53,13 @@ void ALLearnMan::DeInit_Implementation() {
 }
 
 void ALLearnMan::InterTriger(const UCInteract* const Comp) {
-	Hide("Inter.Trigger");
+	Hide(LifeDev::Learn::InterTrigger);
 	DeInitInter();
 }
 
 void ALLearnMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	if (!bOn & !Comp) return;
 	// TODO have a timer so that i have to look at it for a few seconnds
-	Show("Inter.Trigger");
+	Show(LifeDev::Learn::InterTrigger);
 }
 

@@ -20,7 +20,7 @@ public:
 	ALearnMan();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
-	void Init(UDataTable* const Data);
+	void Init(UDataTable* Data);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
 	void DeInit();
 #pragma endregion

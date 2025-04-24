@@ -13,7 +13,7 @@ public:
 #pragma region base
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALLearnMan* Instance(const UObject* const O);
-	virtual void Init_Implementation(UDataTable* const Data) override;
+	virtual void Init_Implementation(UDataTable* Data) override;
 	virtual void DeInit_Implementation() override;
 #pragma endregion
 
