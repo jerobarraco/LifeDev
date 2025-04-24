@@ -14,6 +14,7 @@ namespace LifeDev {
 		static const FName InterTrigger("Inter.Trigger");
 	}
 }
+
 ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
@@ -28,6 +29,8 @@ ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 }
 
 void ALLearnMan::Init_Implementation(UDataTable* Data) {
+	Super::Init_Implementation(Data);
+
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
