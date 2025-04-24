@@ -1,10 +1,12 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 // SPDX-License-Identifier: MIT
+
 #pragma once
 
-#include "Intro.generated.h"
+#include "LearnMan.generated.h"
+
 UCLASS(Blueprintable, BlueprintType)
-class AIntroMan: public AInfo {
+class ALearnMan: public AInfo {
 	GENERATED_BODY()
 public:
 	
