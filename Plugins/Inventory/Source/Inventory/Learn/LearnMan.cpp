@@ -21,7 +21,7 @@ void ALearnMan::Init(UDataTable* const Data) {
 	UE_LOG(LogLearnMan, Log, TEXT("%hs DT=%s"), __func__, *GetNameSafe(Data));
 	DT = Data;
 	Flags = UFlags::Instance(this);
-	UE_CLOG(!!Flags, LogLearnMan, Warning, TEXT("%hs Flag subsystem not found!"), __func__);
+	UE_CLOG(!Flags, LogLearnMan, Warning, TEXT("%hs Flag subsystem not found!"), __func__);
 }
 
 void ALearnMan::DeInit() {
