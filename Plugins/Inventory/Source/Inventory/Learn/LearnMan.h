@@ -5,22 +5,29 @@
 
 #include "LearnMan.generated.h"
 
+struct FLearnRow;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FLearnRow&, Row);
+
 // for new users popups, and stuff.
-UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
+UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
 class INVENTORY_API ALearnMan: public AInfo {
 	GENERATED_BODY()
 public:
+#pragma region base
 	ALearnMan();
 
 	UFUNCTION(BlueprintCallable)
 	void Init(UDataTable* const Data);
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
-
+#pragma endregion
 
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id);
 
+#pragma region delegates
+	FLearnShow OnShow;
+#pragma endregion
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;

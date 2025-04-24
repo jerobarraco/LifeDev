@@ -26,12 +26,12 @@ bool ALearnMan::Show(const FName& Id) {
 		return false;
 	}
 
-	const FLearnRow* const R = DT->FindRow<FLearnRow>(Id, "");
-	if (UNLIKELY(!R)) {
+	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "");
+	if (UNLIKELY(!pR)) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
 	}
 // TODO check
-
+	OnShow.Broadcast(Id, *pR);
 	return true;
 }
