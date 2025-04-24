@@ -50,6 +50,8 @@ void UGameUI::DeInit() {
 }
 
 void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
+	UE_LOG(LogTemp, Log, TEXT("UI:%hs Id=%s"), __func__, *Id.ToString());
+
 	if (UNLIKELY(!TLearn)) return;
 
 	TLearn->SetText(Row.Text);
@@ -58,6 +60,7 @@ void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
 }
 
 void UGameUI::LearnHide() {
+	UE_LOG(LogTemp, Log, TEXT("UI:%hs"), __func__);
 	if (UNLIKELY(!TLearn)) return;
 
 	TLearn->SetText(FText::GetEmpty());

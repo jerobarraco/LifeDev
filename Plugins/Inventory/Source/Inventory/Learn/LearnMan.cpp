@@ -30,6 +30,7 @@ void ALearnMan::DeInit() {
 }
 
 bool ALearnMan::Show(const FName& Id) {
+	UE_LOG(LogLearnMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!DT | !Flags | !W)) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs DT or Flags or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
@@ -52,17 +53,18 @@ bool ALearnMan::Show(const FName& Id) {
 
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
-	const bool T = pR->Time >0 ? pR->Time : Time;
-	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, T);
+	// const bool T = pR->Time >0 ? pR->Time : Time;
+	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, Time);
 	return true;
 }
 
 void ALearnMan::Hide() {
+	UE_LOG(LogLearnMan, Log, TEXT("%hs"), __func__);
 	if (UNLIKELY(CurrentId.IsNone() | !Flags)) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);
 		return;
 	}
-	
+
 	const FName FN(Inventory::Learn::Prefix + CurrentId.ToString());
 	Flags->Set(FN);
 	CurrentId = NAME_None;
