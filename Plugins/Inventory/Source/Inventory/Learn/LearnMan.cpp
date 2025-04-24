@@ -8,6 +8,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLearnMan, Log, Log)
 
+namespace Inventory { namespace Learn {
+	static const TCHAR * const Prefix = TEXT("Learn.");
+}}
+
+
 ALearnMan::ALearnMan():Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
@@ -25,24 +30,39 @@ void ALearnMan::DeInit() {
 }
 
 bool ALearnMan::Show(const FName& Id) {
-	if (UNLIKELY(!DT | !Flags)) {
-		UE_LOG(LogLearnMan, Warning, TEXT("%hs DT or Flags is not ok. DT=%s"), __func__, *GetNameSafe(DT));
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!DT | !Flags | !W)) {
+		UE_LOG(LogLearnMan, Warning, TEXT("%hs DT or Flags or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
 
+	// TODO hide current one if it's showing
 	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "");
 	if (UNLIKELY(!pR)) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
 	}
 
-	const FName FN("Learn." + Id.ToString());
+	CurrentId = Id;
+	const FName FN(Inventory::Learn::Prefix + Id.ToString());
 	if (UNLIKELY(Flags->Has(FN))) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
 		return true; // Todo false or true?
 	}
 
-	Flags->Set(FN);
 	OnShow.Broadcast(Id, *pR);
+	FTimerHandle H;
+	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, Time);
 	return true;
+}
+
+void ALearnMan::Hide() {
+	if (UNLIKELY(CurrentId.IsNone() | !Flags)) {
+		UE_LOG(LogLearnMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);
+		return;
+	}
+	
+	const FName FN(Inventory::Learn::Prefix + CurrentId.ToString());
+	Flags->Set(FN);
+	CurrentId = NAME_None;
 }

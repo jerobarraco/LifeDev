@@ -25,6 +25,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id); // not const in case of delegates
+	UFUNCTION(BlueprintCallable)
+	void Hide();
+
+	UPROPERTY(BlueprintReadWrite, Config)
+	float Time = 30;
 
 #pragma region delegates
 	UPROPERTY(BlueprintReadWrite, Transient)
@@ -32,6 +37,9 @@ public:
 #pragma endregion
 
 protected:
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	FName CurrentId = NAME_None;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
