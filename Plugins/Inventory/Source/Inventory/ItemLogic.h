@@ -19,14 +19,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void BeginPlay();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Look();
 	virtual void Look_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("ItemLogic.Look: %lu %s"), (int64)this, *Name.ToString());
 	}
 
 	// this will get triggered only for self-use
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Use();
 	virtual void Use_Implementation() {
 		UE_LOG(LogTemp, Log, TEXT("ItemLogic.Use: *%lu. '%s'"), (int64)this, *Name.ToString());

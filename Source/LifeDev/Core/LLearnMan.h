@@ -7,7 +7,7 @@
 #include "LLearnMan.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class INVENTORY_API ALLearnMan: public ALearnMan {
+class LIFEDEV_API ALLearnMan: public ALearnMan {
 	GENERATED_BODY()
 public:
 #pragma region base

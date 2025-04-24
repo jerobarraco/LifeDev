@@ -19,12 +19,13 @@ public:
 #pragma region base
 	ALearnMan();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
 	void Init(UDataTable* const Data);
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
 	void DeInit();
 #pragma endregion
 
+	
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id); // not const in case of delegates
 	UFUNCTION(BlueprintCallable)

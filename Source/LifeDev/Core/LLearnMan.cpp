@@ -53,7 +53,8 @@ void ALLearnMan::InterTriger(const UCInteract* const Comp) {
 }
 
 void ALLearnMan::InterHover(const bool bOn, UCInteract* const Comp) {
-	if (!Comp) return;
+	if (!bOn & !Comp) return;
+	// TODO have a timer so that i have to look at it for a few seconnds
 	Show("Inter.Trigger");
 }
 
