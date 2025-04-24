@@ -15,7 +15,6 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "Inventory/InventoryMan.h"
-#include "Inventory/Learn/LearnMan.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CAnimator.h"
 #include "Story/StoryMan.h"
@@ -28,6 +27,7 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/LLearnMan.h"
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
@@ -142,7 +142,7 @@ void ALGGameMode::Spawn() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
-	LearnMan = Cast<ALearnMan>(World->SpawnActor(ALearnMan::StaticClass()));
+	LearnMan = Cast<ALLearnMan>(World->SpawnActor(ALLearnMan::StaticClass()));
 	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
 }
 

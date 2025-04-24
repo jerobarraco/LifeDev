@@ -189,7 +189,9 @@ void ALChar::Init_Implementation() {
 		TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxy=%.4f"),
 		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 
+	
 	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
 	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
 
