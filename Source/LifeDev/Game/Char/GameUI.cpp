@@ -50,12 +50,16 @@ void UGameUI::DeInit() {
 }
 
 void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
+	if (UNLIKELY(!TLearn)) return;
+
 	TLearn->SetText(Row.Text);
 	TLearn->SetVisibility(ESlateVisibility::Visible);
 	// TODO animate
 }
 
 void UGameUI::LearnHide() {
+	if (UNLIKELY(!TLearn)) return;
+
 	TLearn->SetText(FText::GetEmpty());
 	TLearn->SetVisibility(ESlateVisibility::Hidden);
 	// TODO animate
