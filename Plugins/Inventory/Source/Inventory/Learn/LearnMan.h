@@ -13,8 +13,11 @@ public:
 	ALearnMan();
 	
 	UFUNCTION(BlueprintCallable)
-	void Init(UDataTable* const Data) { // TODO
-		};
+	void Init(UDataTable* const Data);
 	UFUNCTION(BlueprintCallable)
-	void DeInit() {};
+	void DeInit();
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UDataTable> DT = nullptr;
 };

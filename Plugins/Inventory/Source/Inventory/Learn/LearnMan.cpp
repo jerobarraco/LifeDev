@@ -6,3 +6,11 @@
 ALearnMan::ALearnMan():Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
+
+void ALearnMan::Init(UDataTable* const Data) {
+	DT = Data;
+}
+
+void ALearnMan::DeInit() {
+	DT = nullptr;
+}
