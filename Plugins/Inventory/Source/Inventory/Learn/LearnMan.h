@@ -19,9 +19,9 @@ public:
 #pragma region base
 	ALearnMan();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
 	void Init(UDataTable* const Data);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay))
 	void DeInit();
 #pragma endregion
 

@@ -2,7 +2,9 @@
 
 #include "LLearnMan.h"
 
+#include "Interact/CInteractor.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLLearnMan, Log, Log)
@@ -19,3 +21,39 @@ ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 
 	return Cast<ALLearnMan>(UGameplayStatics::GetActorOfClass(World, ALLearnMan::StaticClass()));
 }
+
+void ALLearnMan::Init_Implementation(UDataTable* const Data) {
+	const ALChar* const Char = ALChar::Instance(this);
+	if (UNLIKELY(!Char)) return;
+
+	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
+	if (UNLIKELY(!Inter)) return;
+	Inter->OnTrigger.AddUniqueDynamic(this, &ALLearnMan::InterTriger);
+	Inter->OnHover.AddUniqueDynamic(this, &ALLearnMan::InterHover);
+}
+
+void ALLearnMan::DeInitInter() {
+	const ALChar* const Char = ALChar::Instance(this);
+	if (UNLIKELY(!Char)) return;
+
+	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
+	if (UNLIKELY(!Inter)) return;
+	Inter->OnTrigger.RemoveAll(this);
+	Inter->OnHover.RemoveAll(this);
+}
+
+void ALLearnMan::DeInit_Implementation() {
+	DeInitInter();
+	Super::DeInit_Implementation();
+}
+
+void ALLearnMan::InterTriger(const UCInteract* const Comp) {
+	Hide("Inter.Trigger");
+	DeInitInter();
+}
+
+void ALLearnMan::InterHover(const bool bOn, UCInteract* const Comp) {
+	if (!Comp) return;
+	Show("Inter.Trigger");
+}
+
