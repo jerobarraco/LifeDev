@@ -11,11 +11,15 @@ class INVENTORY_API ALearnMan: public AInfo {
 	GENERATED_BODY()
 public:
 	ALearnMan();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void Init(UDataTable* const Data);
 	UFUNCTION(BlueprintCallable)
 	void DeInit();
+
+
+	UFUNCTION(BlueprintCallable)
+	bool Show(const FName& Id);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
