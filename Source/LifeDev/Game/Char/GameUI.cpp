@@ -35,7 +35,7 @@ void UGameUI::SetPointerShow_Implementation(const bool Vis) {
 
 void UGameUI::Init() {
 	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
-	if (LIKELY(!LearnMan)) { // this should be somewhere else tbh.
+	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
 		LearnMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
 		LearnMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
 	}
@@ -43,7 +43,7 @@ void UGameUI::Init() {
 
 void UGameUI::DeInit() {
 	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
-	if (LIKELY(!LearnMan)) { // this should be somewhere else tbh.
+	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
 		LearnMan->OnShow.RemoveAll(this);
 		LearnMan->OnHide.RemoveAll(this);
 	}
@@ -79,7 +79,7 @@ void UGameUI::ShowStatus(const bool Enabled) const {
 }
 
 void UGameUI::FlagMod(const FName& Name, const float Diff, const float Total) {
-	if (LIKELY(IsValid(TTime)) && Name == LDConsts::Flags::Stats::Global::Time) {
+	if (LIKELY(IsValid(TTime)) & Name == LDConsts::Flags::Stats::Global::Time) {
 		static FText TTimeF = NSLOCTEXT("Status", "Time", "Time {0}s");
 		// FFormatOrderedArguments Args;
 		// Args.Add(FText::AsNumberTotal);
@@ -88,7 +88,7 @@ void UGameUI::FlagMod(const FName& Name, const float Diff, const float Total) {
 }
 
 void UGameUI::StepStart(AStep* const Step) {
-	if (LIKELY(Step && IsValid(TState))) {
+	if (LIKELY(!!Step & IsValid(TState))) {
 		static FText TStateF = NSLOCTEXT("Status", "State", "State '{0}'");
 		// FFormatOrderedArguments Args;
 		// Args.Add(Step->Name.ToString());
