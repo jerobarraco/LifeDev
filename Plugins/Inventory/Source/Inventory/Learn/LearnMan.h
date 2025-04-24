@@ -6,8 +6,8 @@
 #include "LearnMan.generated.h"
 
 // for new users popups, and stuff.
-UCLASS(Blueprintable, BlueprintType)
-class ALearnMan: public AInfo {
+UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
+class INVENTORY_API ALearnMan: public AInfo {
 	GENERATED_BODY()
 public:
 	ALearnMan();
@@ -17,5 +17,4 @@ public:
 		};
 	UFUNCTION(BlueprintCallable)
 	void DeInit() {};
-	
 };

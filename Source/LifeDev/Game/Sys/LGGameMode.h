@@ -10,6 +10,7 @@
 
 #include "LGGameMode.generated.h"
 
+class ALearnMan;
 class UEval;
 class ALightPool;
 class UFlashback;
@@ -81,6 +82,8 @@ public:
 	TObjectPtr<AFlashbackMan> FlashbackMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALFeatsMan> FeatsMan = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ALearnMan> LearnMan = nullptr;
 #pragma endregion
 #pragma region Cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

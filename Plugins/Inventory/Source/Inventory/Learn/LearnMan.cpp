@@ -3,7 +3,6 @@
 
 #include "LearnMan.h"
 
-ALearnMan::ALearnMan() {
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
+ALearnMan::ALearnMan():Super() {
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }

@@ -28,6 +28,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
 ALFeatsMan::ALFeatsMan() :Super() {
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
 	MPC = CMPC.Object;

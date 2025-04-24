@@ -8,19 +8,20 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/PostProcessVolume.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
+#include "GameFramework/SpectatorPawn.h"
 
 #include "Eval.h"
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "Inventory/InventoryMan.h"
+#include "Inventory/Learn/LearnMan.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Animator/CAnimator.h"
 #include "Story/StoryMan.h"
 #include "Story/Story.h"
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
-#include "GameFramework/SpectatorPawn.h"
 #include "JSig/CSignificance.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
@@ -141,6 +142,7 @@ void ALGGameMode::Spawn() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
+	LearnMan = Cast<ALearnMan>(World->SpawnActor(ALearnMan::StaticClass()));
 	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
 }
 
@@ -378,6 +380,7 @@ void ALGGameMode::DeInit() {
 	Eval = nullptr;
 	Char = nullptr;
 	Ghosts = nullptr;
+	LearnMan = nullptr;
 	DiagMan = nullptr;
 	InventoryMan = nullptr;
 	StoryMan = nullptr;
