@@ -4,6 +4,7 @@
 
 #include "Components/GridPanel.h"
 #include "Components/Image.h"
+#include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 
 #include "Inventory/Flags.h"
@@ -49,10 +50,15 @@ void UGameUI::DeInit() {
 }
 
 void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
-// todo
+	TLearn->SetText(Row.Text);
+	TLearn->SetVisibility(ESlateVisibility::Visible);
+	// TODO animate
 }
+
 void UGameUI::LearnHide() {
-// todo
+	TLearn->SetText(FText::GetEmpty());
+	TLearn->SetVisibility(ESlateVisibility::Hidden);
+	// TODO animate
 }
 
 void UGameUI::ShowStatus(const bool Enabled) const {
