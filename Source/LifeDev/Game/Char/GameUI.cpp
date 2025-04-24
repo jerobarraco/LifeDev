@@ -5,10 +5,13 @@
 #include "Components/GridPanel.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+
 #include "Inventory/Flags.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
+
+#include "LifeDev/Core/LLearnMan.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 
 void UGameUI::SetPrompt_Implementation(const FText& Text) {
 	if (UNLIKELY(!T_Prompt)) return;
@@ -30,24 +33,23 @@ void UGameUI::SetPointerShow_Implementation(const bool Vis) {
 }
 
 void UGameUI::Init() {
-	
 	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
-	
-	if (LIKELY(!!LearnMan & !!UI)) { // this should be somewhere else tbh.
-		LearnMan->OnShow.AddUniqueDynamic(UI, UGameUI::LearnShow);
-		LearnMan->OnHide.AddUniqueDynamic(UI, UGameUI::LearnHide);
+	if (LIKELY(!LearnMan)) { // this should be somewhere else tbh.
+		LearnMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
+		LearnMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
 	}
 }
 
 void UGameUI::DeInit() {
-	
 	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
-	
-	if (LIKELY(!!LearnMan & !!UI)) { // this should be somewhere else tbh.
-		LearnMan->OnShow.AddUniqueDynamic(UI, UGameUI::LearnShow);
-		LearnMan->OnHide.AddUniqueDynamic(UI, UGameUI::LearnHide);
+	if (LIKELY(!LearnMan)) { // this should be somewhere else tbh.
+		LearnMan->OnShow.RemoveAll(this);
+		LearnMan->OnHide.RemoveAll(this);
 	}
 }
+
+void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {}
+void UGameUI::LearnHide() {}
 
 void UGameUI::ShowStatus(const bool Enabled) const {
 	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);

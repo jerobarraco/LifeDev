@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Blueprint/UserWidget.h"
+#include "Inventory/Learn/LearnTypes.h"
 
 #include "GameUI.generated.h"
 
@@ -18,6 +19,11 @@ class LIFEDEV_API UGameUI: public UUserWidget {
 public:
 	void Init();
 	void DeInit();
+	
+	UFUNCTION(BlueprintCallable)
+	void LearnShow(const FName& Id, const FLearnRow& Row);
+	UFUNCTION(BlueprintCallable)
+	void LearnHide();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void SetPrompt(const FText& Text);
