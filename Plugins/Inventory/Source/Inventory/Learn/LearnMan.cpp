@@ -2,3 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 #include "LearnMan.h"
+
+ALearnMan::ALearnMan() {
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+}
