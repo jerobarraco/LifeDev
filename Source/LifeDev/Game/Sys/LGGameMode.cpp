@@ -281,7 +281,7 @@ void ALGGameMode::Init() {
 		Char->Init();
 	}
 
-	if (LIKELY(IsValid(LearnMan))) LearnMan->Init(nullptr);
+	if (LIKELY(IsValid(LearnMan))) LearnMan->Init(SysSettings->Learn.LoadSynchronous());
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
 #pragma endregion
