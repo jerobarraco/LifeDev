@@ -5,6 +5,7 @@
 
 #include "LearnMan.generated.h"
 
+class UFlags;
 struct FLearnRow;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FLearnRow&, Row);
 
@@ -28,7 +29,10 @@ public:
 #pragma region delegates
 	FLearnShow OnShow;
 #pragma endregion
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UFlags> Flags = nullptr;
 };
