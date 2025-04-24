@@ -270,7 +270,7 @@ bool UStory::StartSequence(const TArray<FName>& InSeq) {
 }
 
 void UStory::AutoFade(const FText& Title) {
-	UE_LOG(LogStory, Log, TEXT("%hs: title=%i"), __func__, *Title.ToString());
+	UE_LOG(LogStory, Log, TEXT("%hs: title=%s"), __func__, *Title.ToString());
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
