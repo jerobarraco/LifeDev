@@ -414,9 +414,10 @@ void ALGGameMode::ChapStart() {
 	}
 
 	const USentry* const Sentry = USentry::Instance(this);
+	const FString& ChapFeatS = UEnum::GetValueAsString(ChapFeat);
 	if (LIKELY(Sentry)) {
 		const TMap<FString, FString> Data = {{"ChapId",FString::FromInt(ChapterId)},
-			{"Feat", UEnum::GetValueAsString(ChapFeat)}};
+			{"Feat", ChapFeatS}};
 		Sentry->AddHint(__func__, Data);
 	}
 
@@ -447,7 +448,7 @@ void ALGGameMode::ChapStart() {
 	// Start the sequence.
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
-	LearnMan->Show("ChapStart"); // TODo this is just a test
+	LearnMan->Show(FName(ChapFeatS)); // TODo this is just a test
 }
 
 void ALGGameMode::ChapStartNext() {
