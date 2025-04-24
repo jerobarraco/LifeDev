@@ -42,6 +42,7 @@ bool ALearnMan::Show(const FName& Id) {
 		return true; // Todo false or true?
 	}
 
+	Flags->Set(FN);
 	OnShow.Broadcast(Id, *pR);
 	return true;
 }

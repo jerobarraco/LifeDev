@@ -24,7 +24,7 @@ public:
 #pragma endregion
 
 	UFUNCTION(BlueprintCallable)
-	bool Show(const FName& Id);
+	bool Show(const FName& Id); // not const in case of delegates
 
 #pragma region delegates
 	FLearnShow OnShow;
