@@ -27,6 +27,7 @@ public:
 	bool Show(const FName& Id); // not const in case of delegates
 
 #pragma region delegates
+	UPROPERTY(BlueprintReadWrite, Transient)
 	FLearnShow OnShow;
 #pragma endregion
 
