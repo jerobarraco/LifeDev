@@ -171,7 +171,7 @@ void ALChar::InteractSetActive(const bool Enabled) const {
 	Interactor->SetActive(Enabled);
 }
 
-void ALChar::Init_Implementation() {
+void ALChar::Init() {
 	if (LIKELY(Camera)) Camera->Init();
 
 	// i can do this because the class defaults are in code. and then can be changed via config.
@@ -189,7 +189,7 @@ void ALChar::Init_Implementation() {
 		TEXT("%hs WalkSpeed foxified. Min=%.4f, Max=%.4f, Mod=%.4f, Foxy=%.4f"),
 		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 
-	
+	if (LIKELY(UI)) UI->Init();
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
@@ -202,6 +202,14 @@ void ALChar::Init_Implementation() {
 		FeatUp(EFeat::G_SHOW_POINT, Settings->GetFeat(EFeat::G_SHOW_POINT));
 		FeatUp(EFeat::G_STATUS, Settings->GetFeat(EFeat::G_STATUS));
 		FeatUp(EFeat::DBG_FLY_CAM, Settings->GetFeat(EFeat::DBG_FLY_CAM));
+	}
+}
+
+void ALChar::DeInit() {
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) {
+		Settings->OnFeatUpdateGameplay.RemoveAll(this);
+		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 }
 

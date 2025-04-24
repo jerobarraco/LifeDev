@@ -347,8 +347,7 @@ void ALGGameMode::DeInit() {
 
 	// destruction is reverse order than construction. actors > managers > subsystems
 
-	// if (IsValid(Char)) Char->DeInit();
-
+	if (LIKELY(IsValid(Char))) Char->DeInit();
 	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
 	if (LIKELY(IsValid(LearnMan))) LearnMan->DeInit();
 	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();

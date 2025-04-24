@@ -53,8 +53,10 @@ public:
 	void InteractSetActive(const bool Enabled) const;
 
 	// Called for the internal init
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AdvancedDisplay, ForceAsFunction))
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
 	void Init();
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
+	void DeInit();
 
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)

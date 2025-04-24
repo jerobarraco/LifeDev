@@ -29,6 +29,26 @@ void UGameUI::SetPointerShow_Implementation(const bool Vis) {
 	if (LIKELY(Pointer)) Pointer->SetVisibility(Vis ? ESlateVisibility::Visible: ESlateVisibility::Hidden);
 }
 
+void UGameUI::Init() {
+	
+	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
+	
+	if (LIKELY(!!LearnMan & !!UI)) { // this should be somewhere else tbh.
+		LearnMan->OnShow.AddUniqueDynamic(UI, UGameUI::LearnShow);
+		LearnMan->OnHide.AddUniqueDynamic(UI, UGameUI::LearnHide);
+	}
+}
+
+void UGameUI::DeInit() {
+	
+	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
+	
+	if (LIKELY(!!LearnMan & !!UI)) { // this should be somewhere else tbh.
+		LearnMan->OnShow.AddUniqueDynamic(UI, UGameUI::LearnShow);
+		LearnMan->OnHide.AddUniqueDynamic(UI, UGameUI::LearnHide);
+	}
+}
+
 void UGameUI::ShowStatus(const bool Enabled) const {
 	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 	UFlags* const Flags = UFlags::Instance(this);

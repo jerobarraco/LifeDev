@@ -16,6 +16,9 @@ class LIFEDEV_API UGameUI: public UUserWidget {
 	GENERATED_BODY()
 	
 public:
+	void Init();
+	void DeInit();
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void SetPrompt(const FText& Text);
 	
@@ -29,6 +32,7 @@ public:
 	void SetPointerShow(const bool Vis);
 
 	void ShowStatus(const bool Enabled) const;
+	
 
 protected:
 	UFUNCTION()
