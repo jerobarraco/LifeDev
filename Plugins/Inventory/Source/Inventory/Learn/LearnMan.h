@@ -28,7 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id); // not const in case of delegates
 	UFUNCTION(BlueprintCallable)
-	void Hide();
+	void HideCurrent() {Hide(CurrentId);};
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id))
+	void Hide(const FName& Id = NAME_None);
 
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;

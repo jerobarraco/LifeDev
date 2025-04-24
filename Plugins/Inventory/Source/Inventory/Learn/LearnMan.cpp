@@ -54,19 +54,29 @@ bool ALearnMan::Show(const FName& Id) {
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
 	// const bool T = (pR->Time) >0 ? (pR->Time) : Time; // TODO figure why this doesn't work
-	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, Time);
+	W->GetTimerManager().SetTimer(H, this, &ALearnMan::HideCurrent, Time);
 	return true;
 }
 
-void ALearnMan::Hide() {
-	UE_LOG(LogLearnMan, Log, TEXT("%hs"), __func__);
-	if (UNLIKELY(CurrentId.IsNone() | !Flags)) {
+void ALearnMan::Hide(const FName& Id) {
+	UE_LOG(LogLearnMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
+	if (UNLIKELY(Id.IsNone() | !Flags)) {
 		UE_LOG(LogLearnMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);
 		return;
 	}
 
-	const FName FN(Inventory::Learn::Prefix + CurrentId.ToString());
+	// allow to pre-emptively mark actions as learnt
+	const FName FN(Inventory::Learn::Prefix + Id.ToString());
 	Flags->Set(FN);
+
+	// and also hide the current one
+	if (UNLIKELY(Id != CurrentId)) return;
+
 	CurrentId = NAME_None;
+	
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().ClearAllTimersForObject(this); // in case it's called from somewhere else
+
 	OnHide.Broadcast();
 }
