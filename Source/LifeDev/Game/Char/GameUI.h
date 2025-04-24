@@ -6,6 +6,7 @@
 
 #include "GameUI.generated.h"
 
+class URichTextBlock;
 class AStep;
 class UGridPanel;
 class UImage;
@@ -38,7 +39,6 @@ public:
 	void SetPointerShow(const bool Vis);
 
 	void ShowStatus(const bool Enabled) const;
-	
 
 protected:
 	UFUNCTION()
@@ -58,4 +58,6 @@ protected:
 	TObjectPtr<UTextBlock> TState = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UGridPanel> GStatus = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<URichTextBlock> TLearn = nullptr;
 };

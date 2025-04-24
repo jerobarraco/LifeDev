@@ -52,7 +52,8 @@ bool ALearnMan::Show(const FName& Id) {
 
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
-	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, Time);
+	const bool T = pR->Time >0 ? pR->Time : Time;
+	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, T);
 	return true;
 }
 
