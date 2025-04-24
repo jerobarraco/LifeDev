@@ -48,8 +48,12 @@ void UGameUI::DeInit() {
 	}
 }
 
-void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {}
-void UGameUI::LearnHide() {}
+void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
+// todo
+}
+void UGameUI::LearnHide() {
+// todo
+}
 
 void UGameUI::ShowStatus(const bool Enabled) const {
 	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
