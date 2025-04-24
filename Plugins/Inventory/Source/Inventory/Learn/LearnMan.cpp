@@ -40,20 +40,20 @@ bool ALearnMan::Show(const FName& Id) {
 	// TODO hide current one if it's showing
 	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "");
 	if (UNLIKELY(!pR)) {
-		UE_LOG(LogLearnMan, Warning, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
+		UE_LOG(LogLearnMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
 	}
 
 	CurrentId = Id;
 	const FName FN(Inventory::Learn::Prefix + Id.ToString());
 	if (UNLIKELY(Flags->Has(FN))) {
-		UE_LOG(LogLearnMan, Warning, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
+		UE_LOG(LogLearnMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
 		return true; // Todo false or true?
 	}
 
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
-	// const bool T = pR->Time >0 ? pR->Time : Time;
+	// const bool T = (pR->Time) >0 ? (pR->Time) : Time; // TODO figure why this doesn't work
 	W->GetTimerManager().SetTimer(H, this, &ALearnMan::Hide, Time);
 	return true;
 }

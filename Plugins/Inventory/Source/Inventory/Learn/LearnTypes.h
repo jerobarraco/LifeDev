@@ -11,7 +11,7 @@ struct INVENTORY_API FLearnRow: public FTableRowBase {
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 Time = 0;
+	float Time = 0;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FText Text;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
