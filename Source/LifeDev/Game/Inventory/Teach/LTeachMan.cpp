@@ -2,9 +2,11 @@
 
 #include "LTeachMan.h"
 
+#include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
@@ -61,6 +63,40 @@ void ALTeachMan::DeInitInter() {
 	Inter->OnHover.RemoveAll(this);
 }
 
+void ALTeachMan::DeInitDiag() {
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) {
+		Diags->OnAdd.RemoveAll(this);
+	}
+}
+
+void ALTeachMan::DeInit_Implementation() {
+	DeInitInter();
+	DeInitItemMod();
+	DeInitDiag();
+	Super::DeInit_Implementation();
+}
+
+void ALTeachMan::InitDelayed() {
+	UInventory* const Items = UInventory::Instance(this);
+	if (LIKELY(Items) && !ItemHasAll()) {
+		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
+	}
+
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) {
+		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
+	}
+	
+}
+
+void ALTeachMan::DeInitItemMod() {
+	UInventory* const Items = UInventory::Instance(this);
+	if (LIKELY(Items)) {
+		Items->OnMod.RemoveAll(this);
+	}
+}
+
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
 	if (Diff>0) { // when acquiring items
 		Show( LifeDev::Teach::ItemPick);
@@ -72,26 +108,6 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 		DeInitItemMod(); // not necessary anymore. opt
 }
 
-void ALTeachMan::DeInit_Implementation() {
-	DeInitInter();
-	DeInitItemMod();
-	Super::DeInit_Implementation();
-}
-
-void ALTeachMan::InitDelayed() {
-	UInventory* const Items = UInventory::Instance(this);
-	if (Items && !ItemHasAll()) {
-		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
-	}
-}
-
-void ALTeachMan::DeInitItemMod() {
-	UInventory* const Items = UInventory::Instance(this);
-	if (LIKELY(Items)) {
-		Items->OnMod.RemoveAll(this);
-	}
-}
-
 void ALTeachMan::InterTrigger(const UCInteract* const Comp) {
 	Hide(LifeDev::Teach::InterTrigger);
 	DeInitInter();
@@ -99,11 +115,21 @@ void ALTeachMan::InterTrigger(const UCInteract* const Comp) {
 
 void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	if (!bOn & !Comp) return;
-	// TODO have a timer so that i have to look at it for a few seconnds
+	// TODO have a timer so that i have to look at it for a few seconds
 	Show(LifeDev::Teach::InterTrigger);
 }
 
 bool ALTeachMan::ItemHasAll() {
 	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume);
+}
+
+void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
+	if (UNLIKELY(Name.IsNone())) return;
+	// a cheeky way to detect events. but i don't care atm.
+	const FString& SName = Name.ToString();
+	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre))
+		Hide(LifeDev::Teach::ItemPick); // i can dismiss the message here.
+	if (SName.StartsWith(LDConsts::Dlgs::Item::UsePre))
+		Hide(LifeDev::Teach::ItemUse);
 }
 

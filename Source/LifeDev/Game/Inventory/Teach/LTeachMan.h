@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #pragma once
+#include "Diags/DiagTypes.h"
 #include "Inventory/Teach/TeachMan.h"
 
 #include "LTeachMan.generated.h"
@@ -28,6 +29,7 @@ public:
 protected:
 	void DeInitItemMod();
 	void DeInitInter();
+	void DeInitDiag();
 	UFUNCTION()
 	void ItemMod(const FName& Name, const int32 Diff, const FItem& Item);
 	UFUNCTION()
@@ -35,4 +37,6 @@ protected:
 	UFUNCTION()
 	void InterHover(const bool bOn, UCInteract* const Comp);
 	bool ItemHasAll();
+	UFUNCTION()
+	void DiagAdd(const FName& Name, const FDiag& Diag);
 };
