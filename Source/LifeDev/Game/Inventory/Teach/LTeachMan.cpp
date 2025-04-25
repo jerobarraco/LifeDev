@@ -190,7 +190,6 @@ void ALTeachMan::ItemSel(const FName& Name) {
 
 	Hide(LifeDev::Teach::ItemChange);// not working
 
-	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items))
 		Items->OnSelected.RemoveAll(this);
 }
