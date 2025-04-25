@@ -22,7 +22,7 @@ public:
 	void DeInit();
 	
 	UFUNCTION(BlueprintCallable)
-	void LearnShow(const FName& Id, const FLearnRow& Row);
+	void LearnShow(const FName& Id, const FTeachRow& Row);
 	UFUNCTION(BlueprintCallable)
 	void LearnHide();
 

@@ -6,9 +6,9 @@
 #include "TeachMan.generated.h"
 
 class UFlags;
-struct FLearnRow;
+struct FTeachRow;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FLearnRow&, Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FTeachRow&, Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLearnHide);
 
 // for new users popups, and stuff.

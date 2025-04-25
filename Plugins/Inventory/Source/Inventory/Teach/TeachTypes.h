@@ -6,7 +6,7 @@
 #include "TeachTypes.generated.h"
 
 USTRUCT(Blueprintable, BlueprintType)
-struct INVENTORY_API FLearnRow: public FTableRowBase {
+struct INVENTORY_API FTeachRow: public FTableRowBase {
 	GENERATED_BODY()
 
 public:

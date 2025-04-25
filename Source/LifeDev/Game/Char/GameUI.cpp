@@ -49,7 +49,7 @@ void UGameUI::DeInit() {
 	}
 }
 
-void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
+void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 	UE_LOG(LogTemp, Log, TEXT("UI:%hs Id=%s"), __func__, *Id.ToString());
 
 	if (UNLIKELY(!TTeach)) return;

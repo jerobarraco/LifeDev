@@ -36,7 +36,7 @@ bool ATeachMan::Show(const FName& Id) {
 		return false;
 	}
 
-	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "", false);
+	const FTeachRow* const pR = DT->FindRow<FTeachRow>(Id, "", false);
 	if (UNLIKELY(!pR)) {
 		UE_LOG(LogTeachMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
