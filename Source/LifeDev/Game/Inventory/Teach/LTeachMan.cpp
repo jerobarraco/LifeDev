@@ -13,7 +13,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 namespace LifeDev {
 	namespace Teach {
 		static const FName InterTrigger("Inter.Trigger");
-		static const FName ItemUse("Item.Use");
+		static const FName ItemPick("Item.Pick");
 	}
 }
 
@@ -60,7 +60,7 @@ void ALTeachMan::DeInitInter() {
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
 	if (Diff<1) return; // only on acquisition
-	Show(LifeDev::Teach::ItemUse);
+	Show(LifeDev::Teach::ItemPick);
 	DeInitItemMod();
 }
 
