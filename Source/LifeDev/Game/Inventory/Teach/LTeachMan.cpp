@@ -95,6 +95,8 @@ void ALTeachMan::InitDelayed() {
 	// this function exists to skip a bunch of event getting triggered during init.
 	// as well as a bunch of dead time during load and fades
 
+	// AVOID FLAGS they update too frequently.
+
 	// TODO only bind if necessary. like Items
 	// this is because otherwise this class will annoy players during load saved games too,
 	// actually not, the base class already solves that. but it's still less efficient since it's waiting for events, that might never happen (like step c1s1) 
@@ -121,7 +123,7 @@ void ALTeachMan::DeInitItemMod() {
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items)) {
 		Items->OnMod.RemoveAll(this);
-		Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
+		Items->OnSelected.RemoveAll(this);
 	}
 }
 
@@ -154,8 +156,9 @@ void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 void ALTeachMan::ItemSel(const FName& Name) {
 	++ItemSelCount;
 	if (ItemSelCount>2)
-		Hide(LifeDev::Teach::ItemChange);
-		UInventory* const Items = UInventory::Instance(this);
+		Hide(LifeDev::Teach::ItemChange);// not working
+
+	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items))
 		Items->OnSelected.RemoveAll(this);
 }
@@ -167,12 +170,13 @@ bool ALTeachMan::ItemHasAll() {
 
 void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	if (UNLIKELY(Name.IsNone())) return;
+	// unfortunately this will ONLY trigger if the dialog is ACTUALLY shown
 	// a cheeky way to detect events. but i don't care atm.
 	const FString& SName = Name.ToString();
 	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre))
 		Hide(LifeDev::Teach::ItemPick); // i can dismiss the message here.
 	if (SName.StartsWith(LDConsts::Dlgs::Item::UsePre))
-		Hide(LifeDev::Teach::ItemUse);
+		Hide(LifeDev::Teach::ItemUse); // not working
 }
 
 void ALTeachMan::StepStart(AStep* const Step) {
