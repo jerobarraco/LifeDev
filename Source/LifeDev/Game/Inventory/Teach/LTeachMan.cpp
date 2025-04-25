@@ -8,11 +8,12 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
+#include "Story/Step.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
-#include "Story/Step.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 
@@ -107,8 +108,10 @@ void ALTeachMan::InitDelayed() {
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
 	}
 
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	const int32 Chapter = Settings->CurrentChapter();
 	UStory* const Story = UStory::Instance(this);
-	if (LIKELY(!!Story & !Has(LifeDev::Teach::ItemUse))) {
+	if (Chapter < 2 && !!Story & !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
 }
@@ -161,5 +164,6 @@ void ALTeachMan::StepStart(AStep* const Step) {
 	// i want something more optimized, but this will have to do for now.
 	if (Step->Name == "C1S2") // the first safe place to tell the user to use the card
 		Show(LifeDev::Teach::ItemUse);
+
 }
 

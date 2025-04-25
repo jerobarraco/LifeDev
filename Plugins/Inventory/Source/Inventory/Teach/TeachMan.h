@@ -30,7 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id); // not const in case of delegates
 	UFUNCTION(BlueprintCallable)
-	void HideCurrent() {Hide(CurrentId);};
+	void HideCurrent() {Hide(CurrentId);}
+	// this is meant to be triggered even if the corresponding show was never called.
+	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName& Id = NAME_None);
 
