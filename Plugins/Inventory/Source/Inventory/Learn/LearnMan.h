@@ -25,7 +25,6 @@ public:
 	void DeInit();
 #pragma endregion
 
-	
 	UFUNCTION(BlueprintCallable)
 	bool Show(const FName& Id); // not const in case of delegates
 	UFUNCTION(BlueprintCallable)

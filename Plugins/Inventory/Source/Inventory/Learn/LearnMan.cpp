@@ -32,12 +32,11 @@ void ALearnMan::DeInit_Implementation() {
 bool ALearnMan::Show(const FName& Id) {
 	UE_LOG(LogLearnMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
-	if (UNLIKELY(!DT | !Flags | !W)) {
-		UE_LOG(LogLearnMan, Warning, TEXT("%hs DT or Flags or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
+	if (UNLIKELY(!DT | !Flags | !W | !CurrentId.IsNone())) {
+		UE_LOG(LogLearnMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
 
-	// TODO hide current one if it's showing
 	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "");
 	if (UNLIKELY(!pR)) {
 		UE_LOG(LogLearnMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
