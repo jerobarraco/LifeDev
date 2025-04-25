@@ -101,6 +101,7 @@ void ALTeachMan::InitDelayed() {
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items) && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
+		Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
 	}
 
 	UDiags* const Diags = UDiags::Instance(this);
@@ -120,6 +121,7 @@ void ALTeachMan::DeInitItemMod() {
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items)) {
 		Items->OnMod.RemoveAll(this);
+		Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
 	}
 }
 
@@ -145,8 +147,13 @@ void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	Show(LifeDev::Teach::InterTrigger);
 }
 
+void ALTeachMan::ItemSel(const FName& Name) {
+	
+}
+
 bool ALTeachMan::ItemHasAll() {
-	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume);
+	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume)
+	&& Has(LifeDev::Teach::ItemChange);
 }
 
 void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
@@ -162,8 +169,7 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 void ALTeachMan::StepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	// i want something more optimized, but this will have to do for now.
-	if (Step->Name == "C1S2") // the first safe place to tell the user to use the card
+	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
 		Show(LifeDev::Teach::ItemUse);
-
 }
 
