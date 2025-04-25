@@ -1,11 +1,12 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #pragma once
-#include "Diags/DiagTypes.h"
 #include "Inventory/Teach/TeachMan.h"
 
 #include "LTeachMan.generated.h"
 
+struct FDiag;
+class AStep;
 struct FItem;
 class UCInteract;
 
@@ -30,6 +31,7 @@ protected:
 	void DeInitItemMod();
 	void DeInitInter();
 	void DeInitDiag();
+	void DeInitStory();
 	UFUNCTION()
 	void ItemMod(const FName& Name, const int32 Diff, const FItem& Item);
 	UFUNCTION()
@@ -39,4 +41,6 @@ protected:
 	bool ItemHasAll();
 	UFUNCTION()
 	void DiagAdd(const FName& Name, const FDiag& Diag);
+	UFUNCTION()
+	void StepStart(AStep* const Step);
 };

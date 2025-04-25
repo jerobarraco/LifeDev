@@ -2,10 +2,13 @@
 
 #include "LTeachMan.h"
 
+#include "Kismet/GameplayStatics.h"
+
 #include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
-#include "Kismet/GameplayStatics.h"
+#include "Story/Story.h"
+
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
@@ -70,10 +73,18 @@ void ALTeachMan::DeInitDiag() {
 	}
 }
 
+void ALTeachMan::DeInitStory() {
+	UStory* const Story = UStory::Instance(this);
+	if (LIKELY(Story)) {
+		Story->OnStart.RemoveAll(this);
+	}
+}
+
 void ALTeachMan::DeInit_Implementation() {
 	DeInitInter();
 	DeInitItemMod();
 	DeInitDiag();
+	DeInitStory();
 	Super::DeInit_Implementation();
 }
 
@@ -86,6 +97,11 @@ void ALTeachMan::InitDelayed() {
 	UDiags* const Diags = UDiags::Instance(this);
 	if (LIKELY(Diags)) {
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
+	}
+
+	UStory* const Story = UStory::Instance(this);
+	if (LIKELY(Story)) {
+		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
 }
 
@@ -131,4 +147,6 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	if (SName.StartsWith(LDConsts::Dlgs::Item::UsePre))
 		Hide(LifeDev::Teach::ItemUse);
 }
+
+void ALTeachMan::StepStart(AStep* const Step) {}
 
