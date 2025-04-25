@@ -12,7 +12,6 @@ namespace Inventory { namespace Learn {
 	static const TCHAR * const Prefix = TEXT("Learn.");
 }}
 
-
 ALearnMan::ALearnMan():Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
@@ -47,9 +46,10 @@ bool ALearnMan::Show(const FName& Id) {
 	const FName FN(Inventory::Learn::Prefix + Id.ToString());
 	if (UNLIKELY(Flags->Has(FN))) {
 		UE_LOG(LogLearnMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
-		return true; // Todo false or true?
+		return true; // true because no need to show anymore.
 	}
 
+	UE_LOG(LogLearnMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
 	// const bool T = (pR->Time) >0 ? (pR->Time) : Time; // TODO figure why this doesn't work
