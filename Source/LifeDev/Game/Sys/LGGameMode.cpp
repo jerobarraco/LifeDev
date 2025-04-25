@@ -448,7 +448,6 @@ void ALGGameMode::ChapStart() {
 	// Start the sequence.
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
-	TeachMan->Show(FName(ChapFeatS)); // TODo this is just a test
 }
 
 void ALGGameMode::ChapStartNext() {

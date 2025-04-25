@@ -40,6 +40,11 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTriger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerHandle H;
+	// this should actually wait for the step start. not gonna do that atm.
+	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, 2);
 }
 
 void ALTeachMan::DeInitInter() {
@@ -55,6 +60,10 @@ void ALTeachMan::DeInitInter() {
 void ALTeachMan::DeInit_Implementation() {
 	DeInitInter();
 	Super::DeInit_Implementation();
+}
+
+void ALTeachMan::InitDelayed() {
+	
 }
 
 void ALTeachMan::InterTriger(const UCInteract* const Comp) {

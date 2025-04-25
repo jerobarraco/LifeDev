@@ -5,6 +5,8 @@
 
 #include "LTeachMan.generated.h"
 
+class UCInteract;
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALTeachMan: public ATeachMan {
 	GENERATED_BODY()
@@ -14,6 +16,8 @@ public:
 	static ALTeachMan* Instance(const UObject* const O);
 	virtual void Init_Implementation(UDataTable* Data) override;
 	virtual void DeInit_Implementation() override;
+	UFUNCTION()
+	void InitDelayed(); // called when the game already started
 #pragma endregion
 
 #pragma region delegates
