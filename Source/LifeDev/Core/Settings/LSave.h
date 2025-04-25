@@ -68,6 +68,6 @@ protected:
 		EFeat::E_GHOSTPOOL,
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
 		EFeat::D_AUTO, EFeat::D_TEXT,
-		EFeat::G_CARD0,
+		EFeat::G_CARD0, EFeat::G_TEACH, EFeat::G_STATUS,
 	};
 };

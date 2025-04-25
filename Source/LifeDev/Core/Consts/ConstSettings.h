@@ -100,6 +100,8 @@ enum class EFeat: uint8 {
 	G_STATUS,
 	// allow to attempt to load stuff from outside
 	G_DATA_EXT,
+	// the gameplay hints
+	G_TEACH,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 

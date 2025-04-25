@@ -42,14 +42,20 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 
 void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	Super::Init_Implementation(Data);
+	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALTeachMan::FeatUp);
+	InitFeat();
+}
 
+void ALTeachMan::InitFeat() {
+	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerHandle H;
 	// this should actually wait for the step start. not gonna do that atm.
 	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
 }
-
 void ALTeachMan::DeInitInter() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
@@ -74,11 +80,19 @@ void ALTeachMan::DeInitStory() {
 	}
 }
 
-void ALTeachMan::DeInit_Implementation() {
+void ALTeachMan::DeInitFeat() {
+	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__);
 	DeInitInter();
 	DeInitItemMod();
 	DeInitDiag();
 	DeInitStory();
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().ClearAllTimersForObject(this);
+}
+
+void ALTeachMan::DeInit_Implementation() {
 	Items = nullptr;
 	Super::DeInit_Implementation();
 }
@@ -123,6 +137,14 @@ void ALTeachMan::InitDelayed() {
 void ALTeachMan::BeginPlay() {
 	Super::BeginPlay();
 	Items = UInventory::Instance(this);
+}
+
+void ALTeachMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	// havoe to do it here
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void ALTeachMan::DeInitItemMod() {
@@ -209,5 +231,18 @@ void ALTeachMan::StepStart(AStep* const Step) {
 	// i want something more optimized, but this will have to do for now.
 	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
 		Show(LifeDev::Teach::ItemUse);
+}
+
+void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
+	if (LIKELY(Feat != EFeat::G_TEACH)) return;
+	// TODO need better functions
+	auto X[] = {&ALTeachMan::InitFeat, &ALTeachMan::DeInitFeat};
+	(this->*X[Enabled])();
+	// if (Enabled) {
+		// InitFeat();
+	// }
+	// else {
+		// DeInitFeat();
+	// }
 }
 

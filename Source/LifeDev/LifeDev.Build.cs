@@ -31,7 +31,7 @@ public class LifeDev : ModuleRules {
 		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/6?u=nande
 		PublicDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
-		PrivateDefinitions.Add("LD_DEMO=0");
+		PrivateDefinitions.Add("LD_DEMO=1");
 		PrivateDefinitions.Add("LD_ITEM_USE=0");
 	}
 }

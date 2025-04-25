@@ -5,6 +5,7 @@
 
 #include "LTeachMan.generated.h"
 
+enum class EFeat : uint8;
 class UInventory;
 struct FDiag;
 class AStep;
@@ -31,10 +32,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void DeInitItemMod();
 	void DeInitInter();
 	void DeInitDiag();
 	void DeInitStory();
+	void InitFeat();
+	void DeInitFeat();
 	UFUNCTION()
 	void ItemMod(const FName& Name, const int32 Diff, const FItem& Item);
 	UFUNCTION()
@@ -50,6 +54,8 @@ protected:
 	void DiagAdd(const FName& Name, const FDiag& Diag);
 	UFUNCTION()
 	void StepStart(AStep* const Step);
+	UFUNCTION()
+	void FeatUp(const EFeat Feat, const bool Enabled);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UInventory> Items = nullptr;
