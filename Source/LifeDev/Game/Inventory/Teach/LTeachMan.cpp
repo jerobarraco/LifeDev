@@ -44,7 +44,11 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	Super::Init_Implementation(Data);
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
-	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALTeachMan::FeatUp);
+	if (LIKELY(Settings)) {
+		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALTeachMan::FeatUp);
+		if (UNLIKELY(!Settings->GetFeat(EFeat::G_TEACH))) return; // don't do initfeat if i don't have the feat.
+	}
+
 	InitFeat();
 }
 
@@ -93,6 +97,8 @@ void ALTeachMan::DeInitFeat() {
 }
 
 void ALTeachMan::DeInit_Implementation() {
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
 	Items = nullptr;
 	Super::DeInit_Implementation();
 }
@@ -137,14 +143,6 @@ void ALTeachMan::InitDelayed() {
 void ALTeachMan::BeginPlay() {
 	Super::BeginPlay();
 	Items = UInventory::Instance(this);
-}
-
-void ALTeachMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	// havoe to do it here
-	ULSettings* const Settings = ULSettings::Instance(this);
-	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
-
-	Super::EndPlay(EndPlayReason);
 }
 
 void ALTeachMan::DeInitItemMod() {
@@ -236,13 +234,7 @@ void ALTeachMan::StepStart(AStep* const Step) {
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (LIKELY(Feat != EFeat::G_TEACH)) return;
 	// TODO need better functions
-	void(ALTeachMan::* X[] )() = {&ALTeachMan::InitFeat, &ALTeachMan::DeInitFeat};
+	void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
 	(this->*X[Enabled])();
-	// if (Enabled) {
-		// InitFeat();
-	// }
-	// else {
-		// DeInitFeat();
-	// }
+	// if (Enabled) { InitFeat(); } else { DeInitFeat(); }
 }
-
