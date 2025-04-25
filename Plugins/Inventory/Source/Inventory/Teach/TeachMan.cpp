@@ -26,6 +26,10 @@ void ATeachMan::Init_Implementation(UDataTable* const Data) {
 void ATeachMan::DeInit_Implementation() {
 	DT = nullptr;
 	Flags = nullptr;
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().ClearAllTimersForObject(this);
 }
 
 bool ATeachMan::Has(const FName& Id) const {
