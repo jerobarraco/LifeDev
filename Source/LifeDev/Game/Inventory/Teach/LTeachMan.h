@@ -52,6 +52,6 @@ protected:
 	void StepStart(AStep* const Step);
 
 	UPROPERTY(BlueprintReadOnly, Transient)
-	UInventory* Items = nullptr;
+	TObjectPtr<UInventory> Items = nullptr;
 	uint8 ItemSelCount = 0;
 };
