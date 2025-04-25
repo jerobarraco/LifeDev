@@ -12,6 +12,7 @@
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+#include "Story/Step.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 
@@ -20,6 +21,7 @@ namespace LifeDev {
 		static const FName InterTrigger("Inter.Trigger");
 		static const FName ItemPick("Item.Pick");
 		static const FName ItemUse("Item.Use");
+		static const FName ItemChange("Item.Change");
 		static const FName ItemConsume("Item.Consume");
 	}
 }
@@ -89,6 +91,12 @@ void ALTeachMan::DeInit_Implementation() {
 }
 
 void ALTeachMan::InitDelayed() {
+	// this function exists to skip a bunch of event getting triggered during init.
+	// as well as a bunch of dead time during load and fades
+
+	// TODO only bind if necessary. like Items
+	// this is because otherwise this class will annoy players during load saved games too,
+	// actually not, the base class already solves that. but it's still less efficient since it's waiting for events, that might never happen (like step c1s1) 
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items) && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
@@ -100,7 +108,7 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	UStory* const Story = UStory::Instance(this);
-	if (LIKELY(Story)) {
+	if (LIKELY(!!Story & !Has(LifeDev::Teach::ItemUse))) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
 }
@@ -148,5 +156,10 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 		Hide(LifeDev::Teach::ItemUse);
 }
 
-void ALTeachMan::StepStart(AStep* const Step) {}
+void ALTeachMan::StepStart(AStep* const Step) {
+	if (UNLIKELY(!Step)) return;
+	// i want something more optimized, but this will have to do for now.
+	if (Step->Name == "C1S2") // the first safe place to tell the user to use the card
+		Show(LifeDev::Teach::ItemUse);
+}
 
