@@ -63,7 +63,7 @@ public:
 
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
-	const TMap<FName, FItem>& GetItems() const;
+	const TMap<FName, FItem>& GetAll() const;
 	// overrides the current items
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
 	void SetItems(const TMap<FName, FItem>& NewItems);

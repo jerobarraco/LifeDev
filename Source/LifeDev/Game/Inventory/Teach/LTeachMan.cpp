@@ -127,6 +127,8 @@ void ALTeachMan::DeInitItemMod() {
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
 	if (Diff>0) { // when acquiring items
+		UInventory* const Items = UInventory::Instance(this);
+		const int32 NumItems = LIKELY(Items) ? Items->GetAll().Num() : -1; 
 		Show( LifeDev::Teach::ItemPick);
 	} else if (Diff<0) {
 		Show(LifeDev::Teach::ItemConsume); // item consumed

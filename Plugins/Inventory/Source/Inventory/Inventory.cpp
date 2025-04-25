@@ -181,7 +181,7 @@ void UInventory::DeInit() {
 	Items.Empty();
 }
 
-const TMap<FName, FItem>& UInventory::GetItems() const {
+const TMap<FName, FItem>& UInventory::GetAll() const {
 	return Items;
 }
 
