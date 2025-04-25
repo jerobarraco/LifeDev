@@ -36,10 +36,18 @@ class LIFEDEV_API ALChar : public ACharacter {
 	GENERATED_BODY()
 
 public:
+#pragma region base
 	ALChar();
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALChar* Instance(const UObject* const O);
+
+	// Called for the internal init
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
+	void Init();
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
+	void DeInit();
+#pragma endregion
 
 	UFUNCTION(BlueprintCallable)
 	void SetUIVisible(const bool Visible);
@@ -51,12 +59,8 @@ public:
 	// disable the interact for the character.
 	UFUNCTION(BlueprintCallable)
 	void InteractSetActive(const bool Enabled) const;
-
-	// Called for the internal init
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
-	void Init();
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
-	void DeInit();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UCInteractor* GetInteractor() const {return Interactor; }
 
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)

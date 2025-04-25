@@ -35,13 +35,11 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
-	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
+	UCInteractor* const Inter = Char->GetInteractor();
 	if (UNLIKELY(!Inter)) return;
 
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTriger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
-
-	UInventory* const Items = UInventory::Instance(this);
 }
 
 void ALTeachMan::DeInitInter() {
