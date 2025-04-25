@@ -236,7 +236,7 @@ void ALTeachMan::StepStart(AStep* const Step) {
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (LIKELY(Feat != EFeat::G_TEACH)) return;
 	// TODO need better functions
-	auto X[] = {&ALTeachMan::InitFeat, &ALTeachMan::DeInitFeat};
+	void(ALTeachMan::* X[] )() = {&ALTeachMan::InitFeat, &ALTeachMan::DeInitFeat};
 	(this->*X[Enabled])();
 	// if (Enabled) {
 		// InitFeat();
