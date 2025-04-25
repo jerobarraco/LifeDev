@@ -67,7 +67,7 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 		Show(LifeDev::Teach::ItemConsume); // item consumed
 	}
 
-	if (UNLIKELY(Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume)))
+	if (UNLIKELY(ItemHasAll()))
 		DeInitItemMod(); // not necessary anymore. opt
 }
 
@@ -79,7 +79,7 @@ void ALTeachMan::DeInit_Implementation() {
 
 void ALTeachMan::InitDelayed() {
 	UInventory* const Items = UInventory::Instance(this);
-	if (LIKELY(Items)) {
+	if (Items && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
 	}
 }
@@ -100,5 +100,9 @@ void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	if (!bOn & !Comp) return;
 	// TODO have a timer so that i have to look at it for a few seconnds
 	Show(LifeDev::Teach::InterTrigger);
+}
+
+bool ALTeachMan::ItemHasAll() {
+	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume);
 }
 

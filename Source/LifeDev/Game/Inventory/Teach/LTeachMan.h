@@ -34,4 +34,5 @@ protected:
 	void InterTrigger(const UCInteract* const Comp);
 	UFUNCTION()
 	void InterHover(const bool bOn, UCInteract* const Comp);
+	bool ItemHasAll();
 };
