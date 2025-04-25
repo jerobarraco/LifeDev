@@ -105,6 +105,7 @@ void ALTeachMan::InitDelayed() {
 	if (LIKELY(Items) && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
 		Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
+		Items->OnUsed.AddUniqueDynamic(this, &ALTeachMan::ItemUse);
 	}
 
 	UDiags* const Diags = UDiags::Instance(this);
@@ -125,6 +126,7 @@ void ALTeachMan::DeInitItemMod() {
 	if (LIKELY(Items)) {
 		Items->OnMod.RemoveAll(this);
 		Items->OnSelected.RemoveAll(this);
+		Items->OnUsed.RemoveAll(this);
 	}
 }
 
@@ -156,12 +158,25 @@ void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 
 void ALTeachMan::ItemSel(const FName& Name) {
 	++ItemSelCount;
-	if (ItemSelCount>2)
-		Hide(LifeDev::Teach::ItemChange);// not working
+	if (LIKELY(ItemSelCount<2)) return;
+
+	Hide(LifeDev::Teach::ItemChange);// not working
 
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items))
 		Items->OnSelected.RemoveAll(this);
+}
+
+void ALTeachMan::ItemUse(const FName& Name) {
+	// todo move the items to the class so i dont have to get it everytime
+	const UInventory* const Items = UInventory::Instance(this);
+	FItem Item;
+	bool Ok = false;
+	if (LIKELY(Items))
+		Ok = Items->GetSelectedItem(Item);
+	const bool ShouldHide = Ok && Item.SelfUsable;
+	if (ShouldHide)
+		Hide(LifeDev::Teach::ItemUse);
 }
 
 bool ALTeachMan::ItemHasAll() {
@@ -174,10 +189,12 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	// unfortunately this will ONLY trigger if the dialog is ACTUALLY shown
 	// a cheeky way to detect events. but i don't care atm.
 	const FString& SName = Name.ToString();
-	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre))
+	// downside. will only work if the dialog itself uses this format, which not all do.
+	// TODO find something better. some objects might not even have a look, but instead use the inventory description.
+	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre) ) {
 		Hide(LifeDev::Teach::ItemPick); // i can dismiss the message here.
-	if (SName.StartsWith(LDConsts::Dlgs::Item::UsePre))
-		Hide(LifeDev::Teach::ItemUse); // not working
+		DeInitDiag();
+	}
 }
 
 void ALTeachMan::StepStart(AStep* const Step) {

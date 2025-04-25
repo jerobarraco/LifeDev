@@ -40,6 +40,8 @@ protected:
 	void InterHover(const bool bOn, UCInteract* const Comp);
 	UFUNCTION()
 	void ItemSel(const FName& Name);
+	UFUNCTION()
+	void ItemUse(const FName& Name);
 	bool ItemHasAll();
 	UFUNCTION()
 	void DiagAdd(const FName& Name, const FDiag& Diag);
