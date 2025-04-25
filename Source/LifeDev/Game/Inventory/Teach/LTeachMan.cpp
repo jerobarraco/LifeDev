@@ -127,11 +127,13 @@ void ALTeachMan::DeInitItemMod() {
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
 	if (Diff>0) { // when acquiring items
-		UInventory* const Items = UInventory::Instance(this);
-		const int32 NumItems = LIKELY(Items) ? Items->GetAll().Num() : -1; 
-		Show( LifeDev::Teach::ItemPick);
+		const UInventory* const Items = UInventory::Instance(this);
+		const int32 NumItems = LIKELY(Items) ? Items->GetAll().Num() : -1;
+		const FName& Id = NumItems > 1 ? LifeDev::Teach::ItemChange: LifeDev::Teach::ItemPick;
+		Show(Id);
 	} else if (Diff<0) {
-		Show(LifeDev::Teach::ItemConsume); // item consumed
+		if (LIKELY(Item.Consumable)) // don't trigger on cards
+			Show(LifeDev::Teach::ItemConsume); // item consumed
 	}
 
 	if (UNLIKELY(ItemHasAll()))
@@ -150,7 +152,12 @@ void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 }
 
 void ALTeachMan::ItemSel(const FName& Name) {
-	
+	++ItemSelCount;
+	if (ItemSelCount>2)
+		Hide(LifeDev::Teach::ItemChange);
+		UInventory* const Items = UInventory::Instance(this);
+	if (LIKELY(Items))
+		Items->OnSelected.RemoveAll(this);
 }
 
 bool ALTeachMan::ItemHasAll() {

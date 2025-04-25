@@ -45,4 +45,6 @@ protected:
 	void DiagAdd(const FName& Name, const FDiag& Diag);
 	UFUNCTION()
 	void StepStart(AStep* const Step);
+
+	uint8 ItemSelCount = 0;
 };
