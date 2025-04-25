@@ -67,7 +67,8 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 		Show(LifeDev::Teach::ItemConsume); // item consumed
 	}
 
-	DeInitItemMod();
+	if (UNLIKELY(Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume)))
+		DeInitItemMod(); // not necessary anymore. opt
 }
 
 void ALTeachMan::DeInit_Implementation() {
