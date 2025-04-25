@@ -87,7 +87,6 @@ void ALTeachMan::InitDelayed() {
 	if (LIKELY(Diags)) {
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
 	}
-	
 }
 
 void ALTeachMan::DeInitItemMod() {

@@ -57,11 +57,10 @@ bool ATeachMan::Show(const FName& Id) {
 	}
 
 	CurrentId = Id;
-
+	LastTime = W->GetTimeSeconds();
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
 	OnShow.Broadcast(Id, *pR);
-	FTimerHandle H;
-	
+
 	const float T = (pR->Time) >0 ? (pR->Time) : Time;
 	FTimerManager& Timer = W->GetTimerManager();
 	Timer.ClearTimer(HShow);

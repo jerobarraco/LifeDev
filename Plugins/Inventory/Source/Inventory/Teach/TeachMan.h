@@ -47,10 +47,14 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName CurrentId = NAME_None;
+	// time at which the last hint was shown. as returned by World->GetTimeSeconds
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	float LastTime = -1;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
 	FTimerHandle HShow;
+	
 };
