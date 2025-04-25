@@ -52,8 +52,9 @@ bool ATeachMan::Show(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
 	OnShow.Broadcast(Id, *pR);
 	FTimerHandle H;
-	// const bool T = (pR->Time) >0 ? (pR->Time) : Time; // TODO figure why this doesn't work
-	W->GetTimerManager().SetTimer(H, this, &ATeachMan::HideCurrent, Time);
+	
+	const float T = (pR->Time) >0 ? (pR->Time) : Time;
+	W->GetTimerManager().SetTimer(H, this, &ATeachMan::HideCurrent, T);
 	return true;
 }
 
