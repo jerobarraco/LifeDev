@@ -78,9 +78,9 @@ public:
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
-		meta=(RowType="/Script/Inventory.LearnRow"))
-	TSoftObjectPtr<UDataTable> Learn = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Learn"));
+		meta=(RowType="/Script/Inventory.TeachRow"))
+	TSoftObjectPtr<UDataTable> Teach = TSoftObjectPtr<UDataTable>(
+		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teach.Teach"));
 
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",

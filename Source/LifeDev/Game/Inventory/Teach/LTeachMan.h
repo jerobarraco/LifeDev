@@ -5,9 +5,10 @@
 
 #include "LTeachMan.generated.h"
 
+struct FItem;
 class UCInteract;
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
 class LIFEDEV_API ALTeachMan: public ATeachMan {
 	GENERATED_BODY()
 public:
@@ -20,12 +21,17 @@ public:
 	void InitDelayed(); // called when the game already started
 #pragma endregion
 
+	UPROPERTY(BlueprintReadWrite, Config)
+	float InitDelayTime = 3;
 #pragma region delegates
 #pragma endregion
 protected:
+	void DeInitItemMod();
 	void DeInitInter();
 	UFUNCTION()
-	void InterTriger(const UCInteract* const Comp);
+	void ItemMod(const FName& Name, const int32 Diff, const FItem& Item);
+	UFUNCTION()
+	void InterTrigger(const UCInteract* const Comp);
 	UFUNCTION()
 	void InterHover(const bool bOn, UCInteract* const Comp);
 };

@@ -13,6 +13,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 namespace LifeDev {
 	namespace Teach {
 		static const FName InterTrigger("Inter.Trigger");
+		static const FName ItemUse("Item.Use");
 	}
 }
 
@@ -38,13 +39,13 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	UCInteractor* const Inter = Char->GetInteractor();
 	if (UNLIKELY(!Inter)) return;
 
-	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTriger);
+	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerHandle H;
 	// this should actually wait for the step start. not gonna do that atm.
-	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, 2);
+	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
 }
 
 void ALTeachMan::DeInitInter() {
@@ -57,16 +58,33 @@ void ALTeachMan::DeInitInter() {
 	Inter->OnHover.RemoveAll(this);
 }
 
+void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
+	if (Diff<1) return; // only on acquisition
+	Show(LifeDev::Teach::ItemUse);
+	DeInitItemMod();
+}
+
 void ALTeachMan::DeInit_Implementation() {
 	DeInitInter();
+	DeInitItemMod();
 	Super::DeInit_Implementation();
 }
 
 void ALTeachMan::InitDelayed() {
-	
+	UInventory* const Items = UInventory::Instance(this);
+	if (LIKELY(Items)) {
+		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
+	}
 }
 
-void ALTeachMan::InterTriger(const UCInteract* const Comp) {
+void ALTeachMan::DeInitItemMod() {
+	UInventory* const Items = UInventory::Instance(this);
+	if (LIKELY(Items)) {
+		Items->OnMod.RemoveAll(this);
+	}
+}
+
+void ALTeachMan::InterTrigger(const UCInteract* const Comp) {
 	Hide(LifeDev::Teach::InterTrigger);
 	DeInitInter();
 }
