@@ -35,6 +35,9 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	Super::Init_Implementation(Data);
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
@@ -43,8 +46,6 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
 	FTimerHandle H;
 	// this should actually wait for the step start. not gonna do that atm.
 	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
