@@ -14,6 +14,8 @@ namespace LifeDev {
 	namespace Teach {
 		static const FName InterTrigger("Inter.Trigger");
 		static const FName ItemPick("Item.Pick");
+		static const FName ItemUse("Item.Use");
+		static const FName ItemConsume("Item.Consume");
 	}
 }
 
@@ -59,8 +61,12 @@ void ALTeachMan::DeInitInter() {
 }
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
-	if (Diff<1) return; // only on acquisition
-	Show(LifeDev::Teach::ItemPick);
+	if (Diff>0) { // when acquiring items 
+		Show(LifeDev::Teach::ItemPick);
+	} else if (Diff<0) {
+		Show(LifeDev::Teach::ItemConsume); // item consumed
+	}
+
 	DeInitItemMod();
 }
 

@@ -28,12 +28,22 @@ void ATeachMan::DeInit_Implementation() {
 	Flags = nullptr;
 }
 
+bool ATeachMan::Has(const FName& Id) const {
+	const FName FN(Inventory::Teach::Prefix + Id.ToString());
+	return Flags->Has(FN);
+}
+
 bool ATeachMan::Show(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!DT | !Flags | !W | !CurrentId.IsNone())) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
+	}
+
+	if (UNLIKELY(Has(Id))) {
+		UE_LOG(LogTeachMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
+		return true; // true since it's already shown.
 	}
 
 	const FTeachRow* const pR = DT->FindRow<FTeachRow>(Id, "", false);
@@ -43,11 +53,6 @@ bool ATeachMan::Show(const FName& Id) {
 	}
 
 	CurrentId = Id;
-	const FName FN(Inventory::Teach::Prefix + Id.ToString());
-	if (UNLIKELY(Flags->Has(FN))) {
-		UE_LOG(LogTeachMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
-		return true; // true because no need to show anymore.
-	}
 
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
 	OnShow.Broadcast(Id, *pR);
