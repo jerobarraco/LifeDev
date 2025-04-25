@@ -36,7 +36,7 @@ bool ALearnMan::Show(const FName& Id) {
 		return false;
 	}
 
-	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "");
+	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "", false);
 	if (UNLIKELY(!pR)) {
 		UE_LOG(LogLearnMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;

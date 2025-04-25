@@ -36,6 +36,7 @@ void ALLearnMan::Init_Implementation(UDataTable* Data) {
 
 	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 	if (UNLIKELY(!Inter)) return;
+
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALLearnMan::InterTriger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALLearnMan::InterHover);
 }

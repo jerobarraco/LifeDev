@@ -17,7 +17,6 @@ public:
 	virtual void DeInit_Implementation() override;
 #pragma endregion
 
-
 #pragma region delegates
 #pragma endregion
 protected:
