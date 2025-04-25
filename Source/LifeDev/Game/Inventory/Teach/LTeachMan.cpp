@@ -45,15 +45,6 @@ void ALTeachMan::Init_Implementation(UDataTable* Data) {
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-
-	const ALChar* const Char = ALChar::Instance(this);
-	if (UNLIKELY(!Char)) return;
-
-	UCInteractor* const Inter = Char->GetInteractor();
-	if (UNLIKELY(!Inter)) return;
-
-	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
-	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
 	FTimerHandle H;
 	// this should actually wait for the step start. not gonna do that atm.
 	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
@@ -100,6 +91,16 @@ void ALTeachMan::InitDelayed() {
 	// TODO only bind if necessary. like Items
 	// this is because otherwise this class will annoy players during load saved games too,
 	// actually not, the base class already solves that. but it's still less efficient since it's waiting for events, that might never happen (like step c1s1) 
+
+	const ALChar* const Char = ALChar::Instance(this);
+	if (UNLIKELY(!Char)) return;
+
+	UCInteractor* const Inter = Char->GetInteractor();
+	if (UNLIKELY(!Inter)) return;
+
+	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
+	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
+
 	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items) && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
