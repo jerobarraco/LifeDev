@@ -61,8 +61,8 @@ void ALTeachMan::DeInitInter() {
 }
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
-	if (Diff>0) { // when acquiring items 
-		Show(LifeDev::Teach::ItemPick);
+	if (Diff>0) { // when acquiring items
+		Show( LifeDev::Teach::ItemPick);
 	} else if (Diff<0) {
 		Show(LifeDev::Teach::ItemConsume); // item consumed
 	}
