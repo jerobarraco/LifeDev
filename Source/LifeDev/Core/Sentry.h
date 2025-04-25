@@ -47,7 +47,7 @@ protected:
 	UFUNCTION()
 	void StepStop(AStep* const Step);
 	UFUNCTION()
-	void DiagAdd(const FName Name, const FDiag& Diag);
+	void DiagAdd(const FName& Name, const FDiag& Diag);
 	UFUNCTION()
 	void DiagDone();
 	UFUNCTION()

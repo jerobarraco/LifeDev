@@ -151,7 +151,7 @@ void USentry::StepStop(AStep* const Step) {
 	TagRem(TagNameStep);
 }
 
-void USentry::DiagAdd(const FName Name, const FDiag& Diag) {
+void USentry::DiagAdd(const FName& Name, const FDiag& Diag) {
 	static const FString Hint("Diag::Add");
 	AddHint(Hint, {{"Name",Name.ToString()}});
 }

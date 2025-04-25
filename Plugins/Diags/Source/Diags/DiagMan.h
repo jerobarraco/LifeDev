@@ -35,7 +35,7 @@ public:
 	void Show(const FDiag& Diag);
 	// When a dialog is added (before it's shown). Called automatically from the Diag subsystem.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Add(const FName Name, const FDiag& Diag);
+	void Add(const FName& Name, const FDiag& Diag);
 	// Diags are done showing Diags (no more Diags). Called automatically from the Diag subsystem.// note that there's an animation after this before the ui is hidden. Override "Hidden" for that.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DiagDone();

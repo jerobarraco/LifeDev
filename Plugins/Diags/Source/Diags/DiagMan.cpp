@@ -63,7 +63,7 @@ void ADiagMan::DeInit_Implementation() {
 	UI = nullptr;
 }
 
-void ADiagMan::Add_Implementation(const FName Name, const FDiag& Diag) {} // Pass: for being overriden
+void ADiagMan::Add_Implementation(const FName& Name, const FDiag& Diag) {} // Pass: for being overriden
 
 void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);

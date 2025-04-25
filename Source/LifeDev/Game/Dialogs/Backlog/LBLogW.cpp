@@ -52,7 +52,7 @@ void ULBLogW::Show_Implementation() {
 		EUMGSequencePlayMode::Forward, Speed);
 }
 
-void ULBLogW::DiagAdd(const FName Name, const FDiag& Diag) {
+void ULBLogW::DiagAdd(const FName& Name, const FDiag& Diag) {
 	if (UNLIKELY(Seen.Contains(Name))) return;
 	Seen.Add(Name);
 	

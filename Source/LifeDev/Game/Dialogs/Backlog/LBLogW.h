@@ -30,7 +30,7 @@ public:
 	
 protected:
 	UFUNCTION()
-	void DiagAdd(const FName Name, const FDiag& Diag);
+	void DiagAdd(const FName& Name, const FDiag& Diag);
 	UFUNCTION()
 	void DiagSpace();
 	UFUNCTION()
