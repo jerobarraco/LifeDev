@@ -5,6 +5,7 @@
 
 #include "LTeachMan.generated.h"
 
+class UInventory;
 struct FDiag;
 class AStep;
 struct FItem;
@@ -27,7 +28,9 @@ public:
 	float InitDelayTime = 3;
 #pragma region delegates
 #pragma endregion
+
 protected:
+	virtual void BeginPlay() override;
 	void DeInitItemMod();
 	void DeInitInter();
 	void DeInitDiag();
@@ -48,5 +51,7 @@ protected:
 	UFUNCTION()
 	void StepStart(AStep* const Step);
 
+	UPROPERTY(BlueprintReadOnly, Transient)
+	UInventory* Items = nullptr;
 	uint8 ItemSelCount = 0;
 };

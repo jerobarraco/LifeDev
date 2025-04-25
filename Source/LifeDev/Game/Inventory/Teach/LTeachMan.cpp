@@ -79,6 +79,7 @@ void ALTeachMan::DeInit_Implementation() {
 	DeInitItemMod();
 	DeInitDiag();
 	DeInitStory();
+	Items = nullptr;
 	Super::DeInit_Implementation();
 }
 
@@ -101,10 +102,8 @@ void ALTeachMan::InitDelayed() {
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
 
-	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items) && !ItemHasAll()) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
-		Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
 		Items->OnUsed.AddUniqueDynamic(this, &ALTeachMan::ItemUse);
 	}
 
@@ -121,21 +120,30 @@ void ALTeachMan::InitDelayed() {
 	}
 }
 
+void ALTeachMan::BeginPlay() {
+	Super::BeginPlay();
+	Items = UInventory::Instance(this);
+}
+
 void ALTeachMan::DeInitItemMod() {
-	UInventory* const Items = UInventory::Instance(this);
 	if (LIKELY(Items)) {
 		Items->OnMod.RemoveAll(this);
-		Items->OnSelected.RemoveAll(this);
 		Items->OnUsed.RemoveAll(this);
 	}
 }
 
 void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item) {
 	if (Diff>0) { // when acquiring items
-		const UInventory* const Items = UInventory::Instance(this);
-		const int32 NumItems = LIKELY(Items) ? Items->GetAll().Num() : -1;
-		const FName& Id = NumItems > 1 ? LifeDev::Teach::ItemChange: LifeDev::Teach::ItemPick;
-		Show(Id);
+		const bool HasItems = LIKELY(Items);
+		const int32 NumItems = HasItems ? Items->GetAll().Num() : -1;
+		const bool CanChange = NumItems > 1;
+		if (HasItems & CanChange) {
+			ItemSelCount = 0; // test
+			// bind ONLY here. so it doesn't count previous scrolls. as the user might not have realized what he did
+			Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
+			Show(LifeDev::Teach::ItemChange);
+		} else
+			Show(LifeDev::Teach::ItemPick);
 	} else if (Diff<0) {
 		if (LIKELY(Item.Consumable)) // don't trigger on cards
 			Show(LifeDev::Teach::ItemConsume); // item consumed
@@ -169,7 +177,6 @@ void ALTeachMan::ItemSel(const FName& Name) {
 
 void ALTeachMan::ItemUse(const FName& Name) {
 	// todo move the items to the class so i dont have to get it everytime
-	const UInventory* const Items = UInventory::Instance(this);
 	FItem Item;
 	bool Ok = false;
 	if (LIKELY(Items))
@@ -181,7 +188,7 @@ void ALTeachMan::ItemUse(const FName& Name) {
 
 bool ALTeachMan::ItemHasAll() {
 	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume)
-	&& Has(LifeDev::Teach::ItemChange);
+	&& Has(LifeDev::Teach::ItemChange) && Has(LifeDev::Teach::ItemUse);
 }
 
 void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
