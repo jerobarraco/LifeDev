@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "LearnMan.generated.h"
+#include "TeachMan.generated.h"
 
 class UFlags;
 struct FLearnRow;
@@ -13,11 +13,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLearnHide);
 
 // for new users popups, and stuff.
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
-class INVENTORY_API ALearnMan: public AInfo {
+class INVENTORY_API ATeachMan: public AInfo {
 	GENERATED_BODY()
 public:
 #pragma region base
-	ALearnMan();
+	ATeachMan();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
 	void Init(UDataTable* Data);

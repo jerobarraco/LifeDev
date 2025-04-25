@@ -11,8 +11,8 @@
 #include "Story/Step.h"
 #include "Story/Story.h"
 
-#include "LifeDev/Core/LLearnMan.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 void UGameUI::SetPrompt_Implementation(const FText& Text) {
 	if (UNLIKELY(!T_Prompt)) return;
@@ -34,7 +34,7 @@ void UGameUI::SetPointerShow_Implementation(const bool Vis) {
 }
 
 void UGameUI::Init() {
-	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
+	ALTeachMan* const LearnMan = ALTeachMan::Instance(this);
 	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
 		LearnMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
 		LearnMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
@@ -42,7 +42,7 @@ void UGameUI::Init() {
 }
 
 void UGameUI::DeInit() {
-	ALLearnMan* const LearnMan = ALLearnMan::Instance(this);
+	ALTeachMan* const LearnMan = ALTeachMan::Instance(this);
 	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
 		LearnMan->OnShow.RemoveAll(this);
 		LearnMan->OnHide.RemoveAll(this);

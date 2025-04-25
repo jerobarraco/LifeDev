@@ -2,7 +2,7 @@
 
 #pragma once
 #include "Blueprint/UserWidget.h"
-#include "Inventory/Learn/LearnTypes.h"
+#include "Inventory/Teach/TeachTypes.h"
 
 #include "GameUI.generated.h"
 

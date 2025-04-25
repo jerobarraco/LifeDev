@@ -1,18 +1,17 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #pragma once
-#include "Interact/CInteract.h"
-#include "Inventory/Learn/LearnMan.h"
+#include "Inventory/Teach/TeachMan.h"
 
-#include "LLearnMan.generated.h"
+#include "LTeachMan.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ALLearnMan: public ALearnMan {
+class LIFEDEV_API ALTeachMan: public ATeachMan {
 	GENERATED_BODY()
 public:
 #pragma region base
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static ALLearnMan* Instance(const UObject* const O);
+	static ALTeachMan* Instance(const UObject* const O);
 	virtual void Init_Implementation(UDataTable* Data) override;
 	virtual void DeInit_Implementation() override;
 #pragma endregion

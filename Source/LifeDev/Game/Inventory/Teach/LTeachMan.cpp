@@ -1,21 +1,22 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 
-#include "LLearnMan.h"
+#include "LTeachMan.h"
 
 #include "Interact/CInteractor.h"
+#include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogLLearnMan, Log, Log)
+DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 
 namespace LifeDev {
-	namespace Learn {
+	namespace Teach {
 		static const FName InterTrigger("Inter.Trigger");
 	}
 }
 
-ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
+ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
 	const UWorld* const World = O->GetWorld();
@@ -23,12 +24,12 @@ ALLearnMan* ALLearnMan::Instance(const UObject* const O) {
 
 	const ALGGameMode* Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
 	if (LIKELY(IsValid(Mode)))
-		return Mode->LearnMan;
+		return Mode->TeachMan;
 
-	return Cast<ALLearnMan>(UGameplayStatics::GetActorOfClass(World, ALLearnMan::StaticClass()));
+	return Cast<ALTeachMan>(UGameplayStatics::GetActorOfClass(World, ALTeachMan::StaticClass()));
 }
 
-void ALLearnMan::Init_Implementation(UDataTable* Data) {
+void ALTeachMan::Init_Implementation(UDataTable* Data) {
 	Super::Init_Implementation(Data);
 
 	const ALChar* const Char = ALChar::Instance(this);
@@ -37,11 +38,13 @@ void ALLearnMan::Init_Implementation(UDataTable* Data) {
 	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 	if (UNLIKELY(!Inter)) return;
 
-	Inter->OnTrigger.AddUniqueDynamic(this, &ALLearnMan::InterTriger);
-	Inter->OnHover.AddUniqueDynamic(this, &ALLearnMan::InterHover);
+	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTriger);
+	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
+
+	UInventory* const Items = UInventory::Instance(this);
 }
 
-void ALLearnMan::DeInitInter() {
+void ALTeachMan::DeInitInter() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
@@ -51,19 +54,19 @@ void ALLearnMan::DeInitInter() {
 	Inter->OnHover.RemoveAll(this);
 }
 
-void ALLearnMan::DeInit_Implementation() {
+void ALTeachMan::DeInit_Implementation() {
 	DeInitInter();
 	Super::DeInit_Implementation();
 }
 
-void ALLearnMan::InterTriger(const UCInteract* const Comp) {
-	Hide(LifeDev::Learn::InterTrigger);
+void ALTeachMan::InterTriger(const UCInteract* const Comp) {
+	Hide(LifeDev::Teach::InterTrigger);
 	DeInitInter();
 }
 
-void ALLearnMan::InterHover(const bool bOn, UCInteract* const Comp) {
+void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	if (!bOn & !Comp) return;
 	// TODO have a timer so that i have to look at it for a few seconnds
-	Show(LifeDev::Learn::InterTrigger);
+	Show(LifeDev::Teach::InterTrigger);
 }
 

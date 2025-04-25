@@ -27,7 +27,6 @@
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
-#include "LifeDev/Core/LLearnMan.h"
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
@@ -44,6 +43,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
+#include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
@@ -142,7 +142,7 @@ void ALGGameMode::Spawn() {
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
-	LearnMan = Cast<ALLearnMan>(World->SpawnActor(ALLearnMan::StaticClass()));
+	TeachMan = Cast<ALTeachMan>(World->SpawnActor(ALTeachMan::StaticClass()));
 	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
 }
 
@@ -281,7 +281,7 @@ void ALGGameMode::Init() {
 		Char->Init();
 	}
 
-	if (LIKELY(IsValid(LearnMan))) LearnMan->Init(SysSettings->Learn.LoadSynchronous());
+	if (LIKELY(IsValid(TeachMan))) TeachMan->Init(SysSettings->Learn.LoadSynchronous());
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
 #pragma endregion
@@ -349,7 +349,7 @@ void ALGGameMode::DeInit() {
 
 	if (LIKELY(IsValid(Char))) Char->DeInit();
 	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
-	if (LIKELY(IsValid(LearnMan))) LearnMan->DeInit();
+	if (LIKELY(IsValid(TeachMan))) TeachMan->DeInit();
 	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
 	if (LIKELY(IsValid(InventoryMan))) InventoryMan->DeInit();
 	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
@@ -379,7 +379,7 @@ void ALGGameMode::DeInit() {
 	Eval = nullptr;
 	Char = nullptr;
 	Ghosts = nullptr;
-	LearnMan = nullptr;
+	TeachMan = nullptr;
 	DiagMan = nullptr;
 	InventoryMan = nullptr;
 	StoryMan = nullptr;
@@ -448,7 +448,7 @@ void ALGGameMode::ChapStart() {
 	// Start the sequence.
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
-	LearnMan->Show(FName(ChapFeatS)); // TODo this is just a test
+	TeachMan->Show(FName(ChapFeatS)); // TODo this is just a test
 }
 
 void ALGGameMode::ChapStartNext() {

@@ -3,7 +3,7 @@
 #pragma once
 #include "Engine/DataTable.h"
 
-#include "LearnTypes.generated.h"
+#include "TeachTypes.generated.h"
 
 USTRUCT(Blueprintable, BlueprintType)
 struct INVENTORY_API FLearnRow: public FTableRowBase {

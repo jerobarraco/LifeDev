@@ -1,0 +1,81 @@
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: MIT
+
+#include "TeachMan.h"
+
+#include "TeachTypes.h"
+#include "Inventory/Flags.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogTeachMan, Log, Log)
+
+namespace Inventory { namespace Teach {
+	static const TCHAR * const Prefix = TEXT("Teach.");
+}}
+
+ATeachMan::ATeachMan():Super() {
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+}
+
+void ATeachMan::Init_Implementation(UDataTable* const Data) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs DT=%s"), __func__, *GetNameSafe(Data));
+	DT = Data;
+	Flags = UFlags::Instance(this);
+	UE_CLOG(!Flags, LogTeachMan, Warning, TEXT("%hs Flag subsystem not found!"), __func__);
+}
+
+void ATeachMan::DeInit_Implementation() {
+	DT = nullptr;
+	Flags = nullptr;
+}
+
+bool ATeachMan::Show(const FName& Id) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!DT | !Flags | !W | !CurrentId.IsNone())) {
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
+		return false;
+	}
+
+	const FLearnRow* const pR = DT->FindRow<FLearnRow>(Id, "", false);
+	if (UNLIKELY(!pR)) {
+		UE_LOG(LogTeachMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
+		return false;
+	}
+
+	CurrentId = Id;
+	const FName FN(Inventory::Teach::Prefix + Id.ToString());
+	if (UNLIKELY(Flags->Has(FN))) {
+		UE_LOG(LogTeachMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
+		return true; // true because no need to show anymore.
+	}
+
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
+	OnShow.Broadcast(Id, *pR);
+	FTimerHandle H;
+	// const bool T = (pR->Time) >0 ? (pR->Time) : Time; // TODO figure why this doesn't work
+	W->GetTimerManager().SetTimer(H, this, &ATeachMan::HideCurrent, Time);
+	return true;
+}
+
+void ATeachMan::Hide(const FName& Id) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
+	if (UNLIKELY(Id.IsNone() | !Flags)) {
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);
+		return;
+	}
+
+	// allow to pre-emptively mark actions as learnt
+	const FName FN(Inventory::Teach::Prefix + Id.ToString());
+	Flags->Set(FN);
+
+	// and also hide the current one
+	if (UNLIKELY(Id != CurrentId)) return;
+
+	CurrentId = NAME_None;
+	
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	World->GetTimerManager().ClearAllTimersForObject(this); // in case it's called from somewhere else
+
+	OnHide.Broadcast();
+}
