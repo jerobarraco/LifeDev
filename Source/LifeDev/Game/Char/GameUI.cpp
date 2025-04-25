@@ -52,19 +52,19 @@ void UGameUI::DeInit() {
 void UGameUI::LearnShow(const FName& Id, const FLearnRow& Row) {
 	UE_LOG(LogTemp, Log, TEXT("UI:%hs Id=%s"), __func__, *Id.ToString());
 
-	if (UNLIKELY(!TLearn)) return;
+	if (UNLIKELY(!TTeach)) return;
 
-	TLearn->SetText(Row.Text);
-	TLearn->SetVisibility(ESlateVisibility::Visible);
+	TTeach->SetText(Row.Text);
+	TeachBG->SetVisibility(ESlateVisibility::Visible);
 	// TODO animate
 }
 
 void UGameUI::LearnHide() {
 	UE_LOG(LogTemp, Log, TEXT("UI:%hs"), __func__);
-	if (UNLIKELY(!TLearn)) return;
+	if (UNLIKELY(!TTeach)) return;
 
-	TLearn->SetText(FText::GetEmpty());
-	TLearn->SetVisibility(ESlateVisibility::Hidden);
+	TTeach->SetText(FText::GetEmpty());
+	TeachBG->SetVisibility(ESlateVisibility::Hidden);
 	// TODO animate
 }
 

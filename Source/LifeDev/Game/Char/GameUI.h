@@ -59,5 +59,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UGridPanel> GStatus = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<URichTextBlock> TLearn = nullptr;
+	TObjectPtr<URichTextBlock> TTeach = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	TObjectPtr<UWidget> TeachBG = nullptr;
 };
