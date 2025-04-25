@@ -59,7 +59,10 @@ bool ATeachMan::Show(const FName& Id) {
 	FTimerHandle H;
 	
 	const float T = (pR->Time) >0 ? (pR->Time) : Time;
-	W->GetTimerManager().SetTimer(H, this, &ATeachMan::HideCurrent, T);
+	FTimerManager& Timer = W->GetTimerManager();
+	Timer.ClearTimer(HShow);
+	HShow.Invalidate();
+	Timer.SetTimer(HShow, this, &ATeachMan::HideCurrent, T);
 	return true;
 }
 
@@ -81,7 +84,9 @@ void ATeachMan::Hide(const FName& Id) {
 	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-	World->GetTimerManager().ClearAllTimersForObject(this); // in case it's called from somewhere else
+	
+	World->GetTimerManager().ClearTimer(HShow); // in case it's called from somewhere else
+	HShow.Invalidate();
 
 	OnHide.Broadcast();
 }

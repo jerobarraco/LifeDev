@@ -52,4 +52,5 @@ protected:
 	TObjectPtr<UDataTable> DT = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
+	FTimerHandle HShow;
 };
