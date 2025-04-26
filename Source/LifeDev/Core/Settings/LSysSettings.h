@@ -1,10 +1,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Inventory/Teach/TeachTypes.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LSysSettings.generated.h"
 
+enum class ETeachTarget : uint8;
 class UDataTable;
 
 // Demo mode. avoid using the macro unless necessary.
@@ -81,6 +83,14 @@ public:
 		meta=(RowType="/Script/Inventory.TeachRow"))
 	TSoftObjectPtr<UDataTable> Teach = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teach.Teach"));
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
+		meta=(RowType="/Script/Inventory.TeachRow"), AdvancedDisplay)
+	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> Teachs = {
+		{
+		ETeachTarget::DESK, 
+		  TSoftObjectPtr<UDataTable>(
+		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teach.Teach"))
+		}};
 
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
