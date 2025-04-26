@@ -20,11 +20,16 @@ public class LifeDevTarget : TargetRules {
 		//bEnableAddressSanitizer
 		CppStandardEngine = CppStandardVersion.Cpp20;
 		CppStandard = CppStandardVersion.Cpp20;
-		
+	
+		// disable friking warning as error
+		// doesn't work, and since i'm coding plugins for people it might actually be necessary. not sure.
+		DefaultWarningLevel = WarningLevel.Warning;
+		bWarningsAsErrors = false;
+
 		// https://forums.unrealengine.com/t/disabling-pdb-debug-gen-in-development-configuration-engine-source/617448/4
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
 			// disable pdb. it takes time and space. and i test builds. if someone has an issue ask to re-test with a debug build with logs and all.
-			bOmitPCDebugInfoInDevelopment = true;
+			bOmitPCDebugInfoInDevelopment = true; // actually sentry re-enabled it somewhere. even if i remove it.
 		}
 		
 		// https://forums.unrealengine.com/t/ue-5-5-source-linux-compilation-errors/2148769/2?u=nande
