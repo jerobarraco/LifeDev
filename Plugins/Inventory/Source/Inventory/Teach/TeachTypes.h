@@ -17,3 +17,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
 	FString Comment;
 };
+
+UENUM(Blueprintable, BlueprintType)
+enum class ETeachTarget: uint8 {
+	NONE,
+	MAX UMETA(Hidden)
+};
+
+ENUM_RANGE_BY_COUNT(ETeachTarget, ETeachTarget::MAX);

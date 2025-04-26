@@ -18,6 +18,8 @@ enum class EDiagType : uint8 {
 	MAX UMETA(Hidden)
 };
 
+ENUM_RANGE_BY_COUNT(EDiagType, EDiagType::MAX);
+
 // Modifiers for a sequence
 UENUM(BlueprintType)
 enum class EGroupType : uint8 {
@@ -37,7 +39,9 @@ enum class EGroupType : uint8 {
 	PICK_CLAMP,
 	// Select one dialog depending on the condition's result value, but loop. (Note this always passes)
 	PICK_LOOP,
+	MAX UMETA(Hidden)
 };
+ENUM_RANGE_BY_COUNT(EGroupType, EGroupType::MAX);
 
 // The base structure for dialogs.
 USTRUCT(Blueprintable, BlueprintType)

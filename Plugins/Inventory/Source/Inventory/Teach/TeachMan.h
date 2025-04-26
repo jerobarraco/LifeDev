@@ -5,6 +5,7 @@
 
 #include "TeachMan.generated.h"
 
+enum class ETeachTarget : uint8;
 class UFlags;
 struct FTeachRow;
 
@@ -35,6 +36,8 @@ public:
 	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName& Id = NAME_None);
+	UFUNCTION(BlueprintCallable)
+	void SetTarget(ETeachTarget Tgt) {  }; //TODO 0x90 pass
 
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;
