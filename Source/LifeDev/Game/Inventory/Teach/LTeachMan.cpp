@@ -195,7 +195,6 @@ void ALTeachMan::ItemSel(const FName& Name) {
 }
 
 void ALTeachMan::ItemUse(const FName& Name) {
-	// todo move the items to the class so i dont have to get it everytime
 	FItem Item;
 	bool Ok = false;
 	if (LIKELY(Items))
