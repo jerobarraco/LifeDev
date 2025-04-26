@@ -21,7 +21,7 @@ public:
 	ATeachMan();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
-	void Init(UDataTable* Data);
+	void Init();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent,  meta=(AdvancedDisplay, ForceAsFunction))
 	void DeInit();
 #pragma endregion
@@ -36,8 +36,11 @@ public:
 	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName& Id = NAME_None);
+	// first target addet is going to be set as default
 	UFUNCTION(BlueprintCallable)
-	void SetTarget(ETeachTarget Tgt) {  }; //TODO 0x90 pass
+	void AddTarget(const ETeachTarget Tgt, UDataTable* const InDT);
+	UFUNCTION(BlueprintCallable)
+	void SetTarget(const ETeachTarget Tgt);
 
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;
@@ -58,6 +61,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TMap<ETeachTarget, TObjectPtr<UDataTable>> DTs;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
 	FTimerHandle HShow;

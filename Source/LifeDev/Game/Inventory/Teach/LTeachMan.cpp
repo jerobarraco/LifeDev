@@ -40,8 +40,8 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 	return Cast<ALTeachMan>(UGameplayStatics::GetActorOfClass(World, ALTeachMan::StaticClass()));
 }
 
-void ALTeachMan::Init_Implementation(UDataTable* Data) {
-	Super::Init_Implementation(Data);
+void ALTeachMan::Init_Implementation() {
+	Super::Init_Implementation();
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) {
@@ -60,6 +60,7 @@ void ALTeachMan::InitFeat() {
 	// this should actually wait for the step start. not gonna do that atm.
 	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
 }
+
 void ALTeachMan::DeInitInter() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;

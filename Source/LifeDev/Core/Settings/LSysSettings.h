@@ -81,15 +81,11 @@ public:
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RowType="/Script/Inventory.TeachRow"))
-	TSoftObjectPtr<UDataTable> Teach = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teach.Teach"));
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
-		meta=(RowType="/Script/Inventory.TeachRow"), AdvancedDisplay)
-	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> Teachs = {
+	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> TeachDTs = {
 		{
 		ETeachTarget::DESK, 
 		  TSoftObjectPtr<UDataTable>(
-		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teach.Teach"))
+		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachDesk.TeachDesk"))
 		}};
 
 	// The list of characters

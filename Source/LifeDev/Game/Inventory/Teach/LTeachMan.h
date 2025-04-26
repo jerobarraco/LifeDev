@@ -19,7 +19,7 @@ public:
 #pragma region base
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALTeachMan* Instance(const UObject* const O);
-	virtual void Init_Implementation(UDataTable* Data) override;
+	virtual void Init_Implementation() override;
 	virtual void DeInit_Implementation() override;
 	UFUNCTION()
 	void InitDelayed(); // called when the game already started

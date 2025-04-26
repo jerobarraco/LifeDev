@@ -16,15 +16,15 @@ ATeachMan::ATeachMan():Super() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
-void ATeachMan::Init_Implementation(UDataTable* const Data) {
-	UE_LOG(LogTeachMan, Log, TEXT("%hs DT=%s"), __func__, *GetNameSafe(Data));
-	DT = Data;
+void ATeachMan::Init_Implementation() {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs"), __func__);
 	Flags = UFlags::Instance(this);
 	UE_CLOG(!Flags, LogTeachMan, Warning, TEXT("%hs Flag subsystem not found!"), __func__);
 }
 
 void ATeachMan::DeInit_Implementation() {
 	DT = nullptr;
+	DTs.Empty();
 	Flags = nullptr;
 
 	const UWorld* const World = GetWorld();
@@ -40,7 +40,11 @@ bool ATeachMan::Has(const FName& Id) const {
 bool ATeachMan::Show(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
-	if (UNLIKELY(!DT | !Flags | !W | !CurrentId.IsNone())) {
+	if (UNLIKELY(!CurrentId.IsNone())) {
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs Busy. DT=%s"), __func__, *GetNameSafe(DT));
+		return false;
+	}
+	if (UNLIKELY(!DT | !Flags | !W)) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
@@ -84,12 +88,22 @@ void ATeachMan::Hide(const FName& Id) {
 	if (UNLIKELY(Id != CurrentId)) return;
 
 	CurrentId = NAME_None;
-	
+
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-	
+
 	World->GetTimerManager().ClearTimer(HShow); // in case it's called from somewhere else
 	HShow.Invalidate();
 
 	OnHide.Broadcast();
+}
+
+void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
+	DTs.Add(Tgt, InDT);
+	if (UNLIKELY(!DT)) DT = InDT;
+}
+
+void ATeachMan::SetTarget(const ETeachTarget Tgt) {
+	TObjectPtr<UDataTable>* Ptr = DTs.Find(Tgt);
+	DT = Ptr ? *Ptr : nullptr;
 }

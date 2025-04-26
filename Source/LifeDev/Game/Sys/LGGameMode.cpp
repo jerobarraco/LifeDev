@@ -281,7 +281,13 @@ void ALGGameMode::Init() {
 		Char->Init();
 	}
 
-	if (LIKELY(IsValid(TeachMan))) TeachMan->Init(SysSettings->Teach.LoadSynchronous());
+	if (LIKELY(IsValid(TeachMan))) {
+		TeachMan->Init();
+		for (const TPair<ETeachTarget, TSoftObjectPtr<UDataTable>>& KV: SysSettings->TeachDTs) {
+			TeachMan->AddTarget(KV.Key, KV.Value.LoadSynchronous());
+		}
+		TeachMan->SetTarget(ETeachTarget::DESK);
+	}
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
 #pragma endregion
