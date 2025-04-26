@@ -36,7 +36,7 @@ public:
 	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName& Id = NAME_None);
-	// first target addet is going to be set as default
+	// first target added is going to be set as default
 	UFUNCTION(BlueprintCallable)
 	void AddTarget(const ETeachTarget Tgt, UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
