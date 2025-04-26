@@ -296,8 +296,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 #if !LD_ITEM_USE
 	UE_LOG(LogLInteract, Warning, TEXT("%hs Item usage disabled! o=%s"), __func__, *Label.ToString());
 	return EItemUseResult::BAD_TARGET;
-#endif
-
+#else
 	if (UNLIKELY(Item.IsNone())) {
 		UE_LOG(LogLInteract, Warning, TEXT("%hs, TryUseItem with item none. Skip. o=%s"),
 			__func__, *Label.ToString());
@@ -333,6 +332,7 @@ EItemUseResult ALInteract::TryUseItem_Implementation(const FName& Item) {
 	Unlock();
 	Trigger(); // force trigger
 	return EItemUseResult::SUCCESS;
+#endif
 }
 
 // too much spam. not needed atm. iranai. muda da.
