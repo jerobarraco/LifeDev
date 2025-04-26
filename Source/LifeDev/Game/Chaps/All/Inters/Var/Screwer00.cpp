@@ -19,10 +19,11 @@ AScrewer00::AScrewer00():Super() {
 	
 	Interact->SetRelativeLocation(FVector(12.500000,-2.500000,2.500000));
 	Interact->SetBoxExtent(FVector(12.500000,2.500000,2.500000));
-	
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT(""));
-	SFXs = {CSnd.Object};
+
+	// i'd get a compiler error on windows if it can't find it
+	// static ConstructorHelpers::FObjectFinder<USoundBase>
+		// CSnd(TEXT(""));
+	// SFXs = {CSnd.Object};
 
 	AScrewer00::SetMobility(EComponentMobility::Static);
 }
