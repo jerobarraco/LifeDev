@@ -93,3 +93,8 @@ https://m.youtube.com/watch?v=XJMyNM8xmS0
 *1
 https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine
 After Tonemapping 	This option indicates that post processing will take place after tonemapping and color grading has been completed. It is the preferred location for performance since the color is LDR and requires less precision and bandwidth. When this option is selected, the SceneTexture expression's Post Process Inputs 2 and 3 are used to control where Scene Color is in the pipeline. Input 2 applies scene color before tonemapping. Input 3 applies scene color after tonemapping.
+
+* perf: disable water shadow vsm 8:53 https://m.youtube.com/watch?v=JJK61A66dzU
+; they add overhead and are not needed
+r.Water.SingleLayer.ShaderSupportVSMFiltering=0
+r.Water.SingleLayer.VSMFiltering=0
