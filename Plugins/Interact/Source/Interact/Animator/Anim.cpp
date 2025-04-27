@@ -527,8 +527,8 @@ bool UAnim::DynFloatFade(UMaterialInstanceDynamic* const Mat, const FAParams& Pa
 	return ItemSetup(Item, ItemsDynF, &UAnim::ItemDoneDynF);
 }
 
-bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params, const FLinearColor& To,
-const bool UseHSV) {
+bool UAnim::DynVectorFade(UMaterialInstanceDynamic* const Mat, const FAParams& Params,
+const FLinearColor& To, const bool UseHSV) {
 	UE_LOG(LogAnim, Log, TEXT("%hs name=%s, to=%s, duration=%.3f, usehsv=%i"),
 		__func__, *Params.Name.ToString(), *To.ToString(), Params.Duration, UseHSV);
 
@@ -572,7 +572,8 @@ const int32 Index, const bool IsScalar, const FLinearColor& To, const bool UseHS
 	return ItemSetup(Item, ItemsData, &UAnim::ItemDoneData);
 }
 
-bool UAnim::CompTransFade(USceneComponent* const Comp, const FAParams& Params, const FTransform& To, const bool IsWorld,
+bool UAnim::CompTransFade(USceneComponent* const Comp, const FAParams& Params,
+const FTransform& To, const bool IsWorld,
 const bool IsAdditive, const bool UseSweep) {
 	UE_LOG(LogAnim, Log, TEXT("%hs comp=%s, to=%s, duration=%.3f"),
 		__func__, *GetNameSafe(Comp), *To.ToString(), Params.Duration);
