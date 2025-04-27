@@ -327,13 +327,13 @@ void AOTNode::Pack() {
 	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
 		if (UNLIKELY(!N)) continue;
 		N->Pack();
-		Can = Can && N->Nodes.Num() == 0; // important to filter the ones with sub nodes
+		Can = Can & (N->Nodes.Num() == 0); // important to filter the ones with sub nodes
 		NumChilds += N->Actors.Num();
 	}
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: pre-pack Can=%i NumChilds=%i"),
 		__func__, *GetNameSafe(this), Can, NumChilds);
 	
-	if (!Can || NumChilds>=ActorsMax) return;
+	if (!Can | (NumChilds>=ActorsMax)) return;
 	UE_LOG(LogJOctTree, Verbose, TEXT("%hs: %s: packing"), __func__, *GetNameSafe(this));
 	for (const TObjectPtr<AOTNode>& N: Nodes) { // this code is similar to tree::add but not quite
 		if (UNLIKELY(!N)) continue;
@@ -378,7 +378,7 @@ void AOctTree::Add(AActor* const Actor) {
 	RootNode->Add(Actor); // note rootnode and not this->add
 }
 
-int32 AOctTree::Rem(AActor* const Actor) {
+int32 AOctTree::Rem(AActor* const Actor) const {
 	if (UNLIKELY(!RootNode)) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not get the root"), __func__);
 		return 0;

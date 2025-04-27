@@ -98,6 +98,8 @@ protected:
 };
 
 // octree. Call the Set* functions before calling the other functions.
+// I just realized that unreal contains a TOctTree. i recommend you using that if you can.
+// though i think it's not available on bps.
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(JUtils), meta=(BlueprintSpawnableComponent))
 class JUTILS_API AOctTree: public AInfo { // an actor because of hunch
 	GENERATED_BODY()
@@ -110,10 +112,8 @@ public:
 	void operator+=(AActor* const Actor) {Add(Actor);} // because i can
 
 	// removes from the tree. recursive
-	UFUNCTION(BlueprintCallable)
-	int32 Rem(AActor* const Actor);
-	void operator-=(AActor* const Actor) {Rem(Actor);} // because i can
-	// not const because ue will make it pure and won't be able to call it :')
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	int32 Rem(AActor* const Actor) const;
 
 	// updates an actor, modifying the tree, this could be slower than just rebuilding depending on how many actors move.
 	// doesn't call pack, so you can update many objects before packing. or you might wanna pack not every update.
