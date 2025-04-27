@@ -627,6 +627,8 @@ void UAnim::Tick(const float DT) {
 	const bool Continue = ContMPCFloat | ContMPCVec | ContData
 		| ContDynFloat | ContDynVector | ContSndFloat | ContComp | ContGen | ContTime;
 
+	// likely since i don't care being slow when stopping. also, it's likely. it's only going to stop once.
+	// it disables tick on stop.
 	if (LIKELY(Continue)) return;
 
 	IsFading = false;
