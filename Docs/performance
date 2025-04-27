@@ -98,3 +98,15 @@ After Tonemapping 	This option indicates that post processing will take place af
 ; they add overhead and are not needed
 r.Water.SingleLayer.ShaderSupportVSMFiltering=0
 r.Water.SingleLayer.VSMFiltering=0
+
+# microopts https://www.youtube.com/watch?v=g-WPhYREFjk
+
+likely/unlikely >> really good. except if it changes in the future. use for fundamental things (like checking if a value is null)
+
+if (b) a+= c >> a += bool(b)*c
+a && b >> a & b (ensure they are boolean, and also group "< == <= etc")
+	also make sure that the combination is more predictable than each one
+
+DONT:
+	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
+	// (this->*X[Enabled])();
