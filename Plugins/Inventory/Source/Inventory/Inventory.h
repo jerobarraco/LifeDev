@@ -41,7 +41,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
 	bool Clear(const int32 NumReserve = 0);
 	
-	// "uses" an item (marks as used). removes it from the inventory if needed. returns success.
+	// "uses" an item (marks as used). consumes it if it's a consumable. returns success.
 	// it won't trigger the manager/item logic, you need to do it manually.
 	// returns whether it was successfully used.
 	UFUNCTION(BlueprintCallable, Category="Inventory")

@@ -70,7 +70,7 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 		Current = FMath::Max(0, Current+CurDiff);
 	} else {
 		// calculate the difference. non-consumable are always 1.
-		Current = 1;
+		Current = 1; // TODO allow to have a diff of -1 on non consumables.
 	}
 
 	// notify the caller that we haven't changed anything. also avoid triggering an onMod and selection
@@ -239,7 +239,7 @@ bool UInventory::Has(const FName& Name) const {
 bool UInventory::Use(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
-	if (UNLIKELY(!Found)) return false; 
+	if (UNLIKELY(!Found)) return false;
 
 	if (UNLIKELY(!IsUsable(Item))) {
 		UE_LOG(LogInventory, Warning, TEXT("%hs Item is unusable. Stop. '%s'"),
@@ -260,6 +260,7 @@ bool UInventory::Use(const FName& Name) {
 	// the fname automagically transforms to the next name. W T F
 	// (maybe the tarray copies instead of moving)
 	const FName OldName = Name;
+	
 	// intentionally calling mod so that onMod is triggered
 	Mod(Name, -1);
 
