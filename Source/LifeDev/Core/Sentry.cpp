@@ -24,7 +24,7 @@ USentry* USentry::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<USentry>();
 }
 
-void USentry::AddComment(const FString& FB) const {
+void USentry::AddComment(const FString& Comment) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 
 	USentryId* const Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
@@ -33,7 +33,7 @@ void USentry::AddComment(const FString& FB) const {
 		return;
 	}
 
-	Sub->CaptureUserFeedbackWithParams(Id, "", FB, UJUtilsSys::GetUserName());
+	Sub->CaptureUserFeedbackWithParams(Id, "", Comment, UJUtilsSys::GetUserName());
 }
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {
@@ -146,7 +146,7 @@ void USentry::StepStart(AStep* const Step) {
 }
 
 void USentry::StepStop(AStep* const Step) {
-	if (IsValid(Step))
+	if (LIKELY(IsValid(Step)))
 		AddHint(TagNameStep, {{"Name", Step->Name.ToString()}});
 	TagRem(TagNameStep);
 }
