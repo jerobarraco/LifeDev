@@ -235,7 +235,7 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	// https://www.youtube.com/watch?v=g-WPhYREFjk
 	// according to Fedor Pikus this is BAD (most of the time) unfortunately he didn't say way
 	// and while i don't know him nor i have put the time to dis/prove it,
-	// i think it's well researched and seems true. and there's no reason to complicate this   
+	// i think it's well researched and seems true. and there's no reason to complicate this
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
 	// (this->*X[Enabled])();
 	if (Enabled) { InitFeat(); } else { DeInitFeat(); }
