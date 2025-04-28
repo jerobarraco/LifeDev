@@ -113,6 +113,8 @@ r.Water.SingleLayer.VSMFiltering=0
 cpp
 * emplace
 * constness
+* constexpr
+* pass by ref
 * move
 * unlikely
 * & instead oy && when it makes sense
@@ -144,6 +146,7 @@ use emplace when possible
 	K& k = A.Emplace();
 	k.something...
 
+use reserver on arrays when possible
 
 DONT:
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
