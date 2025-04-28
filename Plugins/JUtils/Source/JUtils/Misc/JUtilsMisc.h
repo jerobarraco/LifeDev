@@ -91,9 +91,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool ObjectLabel(const UObject* const Object, FString& OLabel);
 
-	// can't be a blueprint callable since it's templatized
-	template <typename T>
-	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows);
+
 
 	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
@@ -103,6 +101,27 @@ public:
 	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
 
+	// can't be a blueprint callable since it's templatized
+	template <typename T>
+	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {
+		if (UNLIKELY(!IsValid(DT))) {
+			UE_LOG(LogTemp, Error, TEXT("%hs Data Table is not valid or unassigned."), __func__);
+			OutRows.Empty(); // optimization to not do empty before time.
+			return false;
+		}
+
+		TArray<T*> RawRows;
+		// Can't pass pointers to bps, and don't want null values either
+		DT->GetAllRows<T>(TEXT(""), RawRows);
+		OutRows.Empty(RawRows.Num());
+		for (const T* const Row: RawRows) {
+			if (UNLIKELY(!Row)) continue;
+			OutRows.Add(*Row);
+		}
+
+		return true;
+	};
+	
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
 	template <typename T>
@@ -122,4 +141,6 @@ public:
 	static inline constexpr std::size_t TextLen(const TCHAR* const T) noexcept {
 		return std::char_traits<TCHAR>::length(T);
 	}
+
+	// template functions need to be inlined >_> https://stackoverflow.com/a/456716
 };

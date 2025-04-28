@@ -100,35 +100,6 @@ void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsy
 	});
 }
 
-template <typename T>
-bool UJUtilsMisc::ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {
-	OutRows.Empty();
-	if (UNLIKELY(!IsValid(DT))) {
-		UE_LOG(LogTemp, Error, TEXT("%hs Data Table is not valid or unassigned."), __func__);
-		return false;
-	}
-
-	TArray<T*> RawRows;
-	// Can't pass pointers to bps, and don't want null values either
-	DT->GetAllRows<T>(TEXT(""), RawRows);
-	OutRows.Reserve(RawRows.Num());
-	for (const T* const Row: RawRows) {
-		if (UNLIKELY(!Row)) continue;
-		OutRows.Add(*Row);
-	}
-
-	return true;
-}
-
-// template <typename T>
-// void UJUtilsMisc::ArrayShuffle(TArray<T>& Array) {
-	// const int32 ArraySize = Array.Num();
-	// for (int32 i = ArraySize - 1; LIKELY(i > 0); --i) {
-		// const int32 RandomIndex = FMath::RandRange(0, i);
-		// Array.Swap(i, RandomIndex);
-	// }
-// }
-
 bool UJUtilsMisc::StringLooseEquals(const FString& A, const FString& B) {
 	// Receives a copy since we will modify them. But using both inlines will be faster than calling Trim().Lower().
 	return A.TrimStartAndEnd().Equals(B.TrimStartAndEnd(), ESearchCase::IgnoreCase);
