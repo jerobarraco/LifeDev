@@ -48,6 +48,5 @@ void ULLogic::Use_Implementation() {
 }
 
 bool ULLogic::Say(const FName& Id) const {
-	if (UNLIKELY(!IsValid(Diags))) return false;
-	return Diags->AddId(Id);
+	return LIKELY(IsValid(Diags)) ? Diags->AddId(Id) : false;
 }
