@@ -29,8 +29,8 @@ public:
 	virtual void Use_Implementation() override;
 	virtual void BeginPlay_Implementation() override;
 
-	UPROPERTY(BlueprintReadWrite)
-	TArray<FCard01Entry> Entries;
+	// UPROPERTY(BlueprintReadWrite)
+	// TArray<FCard01Entry> Entries;
 
 protected:
 	UPROPERTY(Transient)
