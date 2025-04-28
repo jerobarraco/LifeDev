@@ -107,14 +107,16 @@ bool UJUtilsMisc::ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {
 		UE_LOG(LogTemp, Error, TEXT("%hs Data Table is not valid or unassigned."), __func__);
 		return false;
 	}
-	
+
 	TArray<T*> RawRows;
 	// Can't pass pointers to bps, and don't want null values either
 	DT->GetAllRows<T>(TEXT(""), RawRows);
-	for (const T* Row: RawRows) {
+	OutRows.Reserve(RawRows.Num());
+	for (const T* const Row: RawRows) {
 		if (UNLIKELY(!Row)) continue;
 		OutRows.Add(*Row);
 	}
+
 	return true;
 }
 
