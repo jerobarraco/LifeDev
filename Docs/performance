@@ -99,7 +99,16 @@ After Tonemapping 	This option indicates that post processing will take place af
 r.Water.SingleLayer.ShaderSupportVSMFiltering=0
 r.Water.SingleLayer.VSMFiltering=0
 
-# microopts https://www.youtube.com/watch?v=g-WPhYREFjk
+# cpp microopts
+cpp
+* emplace
+* constness
+* move
+* unlikely
+* & instead oy && when it makes sense
+* branchless
+
+ https://www.youtube.com/watch?v=g-WPhYREFjk
 
 	likely/unlikely >> really good. except if it changes in the future. use for fundamental things (like checking if a value is null)
 
@@ -111,7 +120,23 @@ r.Water.SingleLayer.VSMFiltering=0
 extracting a bool makes no difference. the compiler undoes it. though it's nice readability. so still do it. 
 	bool x = whatever;
 	if (x)
+	
+use emplace when possible
+	K k;
+	A.add(K)
+	K.something
+	instead A.Emplace(...)
+
+	or
+	K& k = A.Emplace();
+	k.something...
+	
 
 DONT:
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
 	// (this->*X[Enabled])();
+	
+	return by value is faster than move under the right conditions.
+	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
+	and because i don't think it'll work with bps. i wont. also i don't like it.
+	
