@@ -56,22 +56,13 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 	/// update the item count
 	
 	int32 Current = Item->Count;
-	// used to broadcast even on non-consumable
-	int32 CurDiff = Diff;
-	// clamp values.
-	// for consumables clamp at 0
-	if (Item->Consumable) {
-		// calculate the difference. are clamped to the produce (0, MaxCount)
-		// get the max we can go. Current+diff to allow to grow.
-		const int32 Max = Item->MaxCount <= 0 ? Current + Diff: Item->MaxCount;
-		// clamp the diff to the max. and min.
-		CurDiff = FMath::Clamp(Diff, -Current, Max - Current);
-		// apply diff
-		Current = FMath::Max(0, Current+CurDiff);
-	} else {
-		// calculate the difference. non-consumable are always 1.
-		Current = 1; // TODO allow to have a diff of -1 on non consumables.
-	}
+	// calculate the difference. are clamped to the produce (0, MaxCount)
+	// get the max we can go. Current+diff to allow to grow.
+	const int32 Max = Item->MaxCount <= 0 ? (Current + Diff): Item->MaxCount;
+	// clamp the diff to the max. and min.
+	const int32 CurDiff = FMath::Clamp(Diff, -Current, Max - Current); // -Current means it can't reach <0
+	// apply diff
+	Current = CurDiff;
 
 	// notify the caller that we haven't changed anything. also avoid triggering an onMod and selection
 	if (UNLIKELY(CurDiff == 0)) {
@@ -86,7 +77,7 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 	FItem ItemCopy = *Item;
 	// remove empty consumables
 	// important to remove items with quantity 0. used for "Has()"
-	if (Item->Consumable && Item->Count <= 0) {
+	if (Item->Count <= 0) {
 		// preemptively select the next one
 		// this code sucks, i don't like it. todo improve.
 		if (Name == Selected) {
@@ -262,7 +253,7 @@ bool UInventory::Use(const FName& Name) {
 	const FName OldName = Name;
 	
 	// intentionally calling mod so that onMod is triggered
-	Mod(Name, -1);
+	if (Item.Consumable) Mod(Name, -1); // consume if needed
 
 	OnUsed.Broadcast(OldName);
 	return true;
