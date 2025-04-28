@@ -7,12 +7,8 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Interact/Base/Range.h"
 
-// TODO have a collision (maybe the interact itself? it has to be a sphere)
-// make other interacts react to the collisions and write to a custom channel
-// needs an anim to animate down
-// do i need a special colission channel? or can i just check the type?
-// maybe i can just add the logic to this class?
-// i would need multiple animators :/
+// todo fix the case where you spawn this, but it has not compiled the material yet.
+
 ULogicCard00::ULogicCard00():Super() {
 	RangeClass = ARange::StaticClass();
 }

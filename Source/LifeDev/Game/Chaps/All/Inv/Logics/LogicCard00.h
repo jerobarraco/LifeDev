@@ -7,6 +7,7 @@
 #include "LogicCard00.generated.h"
 
 class ARange;
+
 // item logic for card 00
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULogicCard00: public ULogicCard {

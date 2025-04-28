@@ -117,10 +117,13 @@ cpp
 	a && b >> a & b (ensure they are boolean, and also group "< == <= etc")
 	important: also make sure that the combination is more predictable than each one
 
+	return ternary is optimal. use it.
+		return b ? c : d;
+
 extracting a bool makes no difference. the compiler undoes it. though it's nice readability. so still do it. 
 	bool x = whatever;
 	if (x)
-	
+
 use emplace when possible
 	K k;
 	A.add(K)
@@ -130,7 +133,7 @@ use emplace when possible
 	or
 	K& k = A.Emplace();
 	k.something...
-	
+
 
 DONT:
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
