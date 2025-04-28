@@ -7,7 +7,7 @@
 #include "LogicCard01.generated.h"
 
 USTRUCT(Blueprintable, BlueprintType)
-struct FCard01Entry {
+struct FCard01Entry: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
