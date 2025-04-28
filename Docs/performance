@@ -10,7 +10,7 @@ automanage
 	on audio and niagara components
 	* add Activate/Deactivate on animator
 
-mesh: 
+mesh:
 	set to static or stationary if possible
 	disable cast shadows if possible
 	enable 'use attach parent bounds' if possible 
@@ -22,7 +22,7 @@ mesh:
 	WPO position writes velocity to false
 	WorldPositionOffsetDisableDistance (see quickmesh)
 
-material 
+material
 	Quality switch node
 	vertex interpolator
 	mask + dither if possible
@@ -55,6 +55,7 @@ light culling
 level streaming
 * streaming volume + manual
 * stat levels
+* stat levels
 
 animation
 * fast pass
@@ -72,27 +73,36 @@ var
 * stat none
 * postprocess: use "AfterTonemapping" (in theory)*1
 
-level streaming
-* stat levels
-
-optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
-
-profiling and optimizing in ue4 
-https://m.youtube.com/watch?v=EbXakIuZPFo
-
-optimize ue5 rendering
-https://m.youtube.com/watch?v=dj4kNnj4FAQ
-
-optimize game thread
-https://m.youtube.com/watch?v=KxREK-DYu70
-
-multithreading
-https://m.youtube.com/watch?v=XJMyNM8xmS0
-
-
 *1
 https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine
 After Tonemapping 	This option indicates that post processing will take place after tonemapping and color grading has been completed. It is the preferred location for performance since the color is LDR and requires less precision and bandwidth. When this option is selected, the SceneTexture expression's Post Process Inputs 2 and 3 are used to control where Scene Color is in the pipeline. Input 2 applies scene color before tonemapping. Input 3 applies scene color after tonemapping.
+
+# pso precache
+	; pso precaching https://www.tomlooman.com/psocaching-unreal-engine/
+	; https://dev.epicgames.com/documentation/en-us/unreal-engine/pso-precaching-for-unreal-engine
+	; https://www.youtube.com/watch?v=i35yf-wh3Bs
+	; https://dev.epicgames.com/documentation/en-us/unreal-engine/optimizing-rendering-with-pso-caches-in-unreal-engine
+	r.PSOPrecaching=1
+	; don't emit until pso ready
+	fx.Niagara.Emitter.ComputePSOPrecacheMode=1
+	r.PSOPrecache.ProxyCreationWhenPSOReady=1
+	; don't hitch use default material.  relies on the r.PSOPrecache.ProxyCreationWhenPSOReady=1
+	;0 	Skip the draw until the PSO is ready.
+	;1 	Fallback to the engine's default material until the PSO is ready.
+	r.PSOPrecache.ProxyCreationDelayStrategy=0
+	
+	; keep this active for validation with 'stat psocache', Insights AND required for ExcludePrecachePSO cvar
+	; r.PSOPrecache.Validation=2
+	; additional detail in logging for "stat psocache"
+	; r.PSOPrecache.Validation.TrackMinimalPSOs=1
+	; settings below for bundled PSO steps to combine with PSO Precache
+	; r.ShaderPipelineCache.ExcludePrecachePSO=1
+	r.ShaderPipelineCache.Enabled=1
+	; start up background compilation mode so we can run "hitchless" in a main menu (optional)
+	r.ShaderPipelineCache.StartupMode=2
+	
+	; ~ pso precache
+
 
 * perf: disable water shadow vsm 8:53 https://m.youtube.com/watch?v=JJK61A66dzU
 ; they add overhead and are not needed
@@ -142,4 +152,19 @@ DONT:
 	return by value is faster than move under the right conditions.
 	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
 	and because i don't think it'll work with bps. i wont. also i don't like it.
-	
+
+
+optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
+
+profiling and optimizing in ue4 
+https://m.youtube.com/watch?v=EbXakIuZPFo
+
+optimize ue5 rendering
+https://m.youtube.com/watch?v=dj4kNnj4FAQ
+
+optimize game thread
+https://m.youtube.com/watch?v=KxREK-DYu70
+
+multithreading
+https://m.youtube.com/watch?v=XJMyNM8xmS0
+
