@@ -40,7 +40,7 @@ void ULogicCard01::Use_Implementation() {
 	// find a group of items, replace with another
 	bool HasAll = false;
 	// apparently the optimal way to iterate
-	for (TMap<FName, uint8*>::TConstIterator I(DT->GetRowMap().CreateConstIterator()); I; ++I ) {
+	for (TMap<FName, uint8*>::TConstIterator I(DT->GetRowMap().CreateConstIterator()); I; ++I) {
 		const FCard01Entry* pE = reinterpret_cast<FCard01Entry*>(I.Value());
 		if (UNLIKELY(!pE)) continue;
 
@@ -60,9 +60,9 @@ void ULogicCard01::Use_Implementation() {
 		for (const FName& F: pE->To)
 			Inv->Mod(F, 1);
 
-		Diags->AddId(FName(NOk+I.Key().ToString()));
+		if (LIKELY(Diags)) Diags->AddId(FName(NOk+I.Key().ToString()));
 		return; // only one action at a time
 	}
 
-	Diags->AddId(NFail);
+	if (LIKELY(Diags)) Diags->AddId(NFail);
 }
