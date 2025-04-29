@@ -164,8 +164,8 @@ void UDiags::Init() {
 void UDiags::DeInit() {
 	Chars = nullptr;
 	Eval = nullptr;
-	VDiags.Empty();
-	VGroups.Empty();
+	Diags.Empty();
+	Groups.Empty();
 }
 
 bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
@@ -184,8 +184,10 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 
 bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
-	
-	for (UDataTable* const DT : VDiags) {
+
+	// iterate in reverse to allow to override stuff. but make add quicker.
+	for (int32 i = Diags.Num()-1; i>=0; --i ) {
+		UDataTable* const DT = Diags[i];
 		if (UNLIKELY(!IsValid(DT))) continue;
 
 		const FDiag* const Row =
@@ -203,7 +205,10 @@ bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow) const {
 bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 
-	for (UDataTable* const DT : VGroups) {
+	// iterate in reverse to allow to override stuff. but make add quicker.
+	for (int32 i = Groups.Num()-1; i>=0; --i ) {
+		UDataTable* const DT = Groups[i];
+
 		if (UNLIKELY(!IsValid(DT))) continue;
 
 		const FDiagGroup* const Row =
@@ -268,10 +273,10 @@ void UDiags::DTCharSet(UDataTable* const DT) {
 
 void UDiags::DTDiagAdd(UDataTable* const DT) {
 	if (UNLIKELY(!IsValid(DT))) return;
-	VDiags.AddUnique(DT);
+	Diags.AddUnique(DT);
 }
 
 void UDiags::DTGroupAdd(UDataTable* const DT) {
 	if (UNLIKELY(!IsValid(DT))) return;
-	VGroups.AddUnique(DT);
+	Groups.AddUnique(DT);
 }

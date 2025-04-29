@@ -86,11 +86,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DTDiagAdd(UDataTable* const DT);
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	void DTDiagRem(UDataTable* const DT){ VDiags.Remove(DT); }
+	void DTDiagRem(UDataTable* const DT){ Diags.Remove(DT); }
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DTGroupAdd(UDataTable* const DT);
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	void DTGroupRem(UDataTable* const DT){ VGroups.Remove(DT); }
+	void DTGroupRem(UDataTable* const DT){ Groups.Remove(DT); }
 
 	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Diags")
@@ -127,9 +127,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UDataTable>> VDiags; // TODO rename
+	TArray<TObjectPtr<UDataTable>> Diags;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UDataTable>> VGroups; // TODO rename
+	TArray<TObjectPtr<UDataTable>> Groups;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
