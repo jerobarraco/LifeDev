@@ -16,7 +16,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> To;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool Consume = true;
+	uint8 Consume:1 = true;
 };
 
 // item logic for card 01

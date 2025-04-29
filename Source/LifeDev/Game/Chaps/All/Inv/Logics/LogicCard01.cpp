@@ -4,6 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ULogicCard01::ULogicCard01() {
@@ -18,21 +19,27 @@ void ULogicCard01::Use_Implementation() {
 	Super::Use_Implementation();
 
 	if (LIKELY(FB)) FB->ModVal(FBMod);
-	
+
 	static const FString NOk("Item.Use.C1.Ok.");
 	static const FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
 
 	if (UNLIKELY(!DT)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs datatable not set"), __func__);
+		const USentry* const Sentry = USentry::Instance(this);
+		if (LIKELY(Sentry)) Sentry->AddMsg("Logic Card 01 DT not set", ESentryLevel::Warning);
 		return;
 	}
+
 	if (UNLIKELY(!Inv)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs no inventory."), __func__);
+		const USentry* const Sentry = USentry::Instance(this);
+		if (LIKELY(Sentry)) Sentry->AddMsg("Logic Card 01 no Inventory", ESentryLevel::Warning);
 		return;
 	}
 
 	// find a group of items, replace with another
 	bool HasAll = false;
+	// apparently the optimal way to iterate
 	for (TMap<FName, uint8*>::TConstIterator I(DT->GetRowMap().CreateConstIterator()); I; ++I ) {
 		const FCard01Entry* pE = reinterpret_cast<FCard01Entry*>(I.Value());
 		if (UNLIKELY(!pE)) continue;
@@ -54,7 +61,7 @@ void ULogicCard01::Use_Implementation() {
 			Inv->Mod(F, 1);
 
 		Diags->AddId(FName(NOk+I.Key().ToString()));
-		return;
+		return; // only one action at a time
 	}
 
 	Diags->AddId(NFail);
