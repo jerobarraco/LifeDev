@@ -170,8 +170,7 @@ void ALStep::SetFBDlgAuto() {
 		Len = Seq.DiagRows.Num();
 	} else {
 		FDiag D;
-		FDiagChar C;
-		const bool Ok2 = Diags->GetDiag(DlgId, D, C);
+		const bool Ok2 = Diags->GetDiag(DlgId, D);
 		if (LIKELY(Ok2)) Len = 1;
 	}
 
