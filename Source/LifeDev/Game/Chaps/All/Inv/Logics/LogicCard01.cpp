@@ -12,7 +12,7 @@ ULogicCard01::ULogicCard01() {
 	static ConstructorHelpers::FObjectFinder<UDataTable>
 		CDT(TEXT("/Game/LifeDev/Game/Inventory/Logic/C1/C1_Entries"));
 	DT = CDT.Object;
-	// TODO be able to check the amount of each object (e.g. require X of an item, and Y of another, to give Z of another)
+	// idea. be able to check the amount of each object (e.g. require X of an item, and Y of another, to give Z of another)
 }
 
 void ULogicCard01::Use_Implementation() {
