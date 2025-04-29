@@ -92,10 +92,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DTGroupRem(UDataTable* const DT){ VGroups.Remove(DT); }
 
-	// set the data to be used. call upon initialization.
-	UFUNCTION(BlueprintCallable, Category="Diags", meta=(DeprecatedFunction))
-	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups);
-
 	// initialize. called by the gamemode
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void Init();
@@ -130,10 +126,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient, meta=(DeprecatedProperty))
-	TObjectPtr<UDataTable> Diags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient, meta=(DeprecatedProperty))
-	TObjectPtr<UDataTable> Groups = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TArray<TObjectPtr<UDataTable>> VDiags; // TODO rename
 	UPROPERTY(BlueprintReadOnly, Transient)

@@ -157,24 +157,12 @@ void UDiags::DiagDone() {
 	ShowNext();
 }
 
-void UDiags::SetData(
-UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups) {
-	DTDiagAdd(AllDiags);
-	DTGroupAdd(AllGroups);
-
-	Diags = IsValid(AllDiags)? AllDiags : nullptr;
-	DTCharSet(AllChars);
-	Groups = IsValid(AllGroups)? AllGroups: nullptr;
-}
-
 void UDiags::Init() {
 	Eval = UEval::Instance(this);
 }
 
 void UDiags::DeInit() {
-	Diags = nullptr;
 	Chars = nullptr;
-	Groups = nullptr;
 	Eval = nullptr;
 	VDiags.Empty();
 	VGroups.Empty();
@@ -200,7 +188,8 @@ bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow) const {
 	for (UDataTable* const DT : VDiags) {
 		if (UNLIKELY(!IsValid(DT))) continue;
 
-		const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), UseWarning);
+		const FDiag* const Row =
+			DT->FindRow<FDiag>(RowName, TEXT(""), UseWarning);
 		if (UNLIKELY(!Row)) continue;
 
 		OutRow = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer.
@@ -218,7 +207,7 @@ bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 		if (UNLIKELY(!IsValid(DT))) continue;
 
 		const FDiagGroup* const Row =
-			Groups->FindRow<FDiagGroup>(RowName, TEXT(""), UseWarning);
+			DT->FindRow<FDiagGroup>(RowName, TEXT(""), UseWarning);
 		if (UNLIKELY(!Row)) continue;
 
 		OutGroup = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
