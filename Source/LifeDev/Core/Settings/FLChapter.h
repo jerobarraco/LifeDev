@@ -14,10 +14,10 @@ struct LIFEDEV_API FLChapter: public FTableRowBase {
 public:
 	// dialog Diags
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="Dialog")) // RowType does not work
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.Diag", RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
 	TSoftObjectPtr<UDataTable> Dialogs;
 	// dialog groups
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RowType="/Script/Diags.DiagGroup", RequiredAssetDataTags="RowStructure=/Script/Diags.DiagGroup"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagGroup"))
 	TSoftObjectPtr<UDataTable> Groups;
 	
 	// story steps belonging to this chapter
