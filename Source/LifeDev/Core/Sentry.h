@@ -16,6 +16,8 @@ class LIFEDEV_API USentry: public UGameInstanceSubsystem {
 public:
 	static USentry* Instance(const UObject* const O);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(WorldContext="O", AutoCreateRefTerm="Msg,Level"))
+	static void SAddMsg(const UObject* const O, const FString& Msg, const ESentryLevel& Level = ESentryLevel::Info);
 	// triggers a feedback. (this creates an instance)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Comment"))
 	void AddComment(const FString& Comment) const;

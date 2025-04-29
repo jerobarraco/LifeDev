@@ -25,15 +25,13 @@ void ULogicCard01::Use_Implementation() {
 
 	if (UNLIKELY(!DT)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs datatable not set"), __func__);
-		const USentry* const Sentry = USentry::Instance(this);
-		if (LIKELY(Sentry)) Sentry->AddMsg("Logic Card 01 DT not set", ESentryLevel::Warning);
+		USentry::SAddMsg(this, "Logic Card 01 DT not set", ESentryLevel::Warning);
 		return;
 	}
 
 	if (UNLIKELY(!Inv)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs no inventory."), __func__);
-		const USentry* const Sentry = USentry::Instance(this);
-		if (LIKELY(Sentry)) Sentry->AddMsg("Logic Card 01 no Inventory", ESentryLevel::Warning);
+		USentry::SAddMsg(this, "Logic Card 01 no Inventory", ESentryLevel::Warning);
 		return;
 	}
 

@@ -24,6 +24,11 @@ USentry* USentry::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<USentry>();
 }
 
+void USentry::SAddMsg(const UObject* const O, const FString& Msg, const ESentryLevel& Level) {
+	const USentry* const Sentry = USentry::Instance(O);
+	if (LIKELY(Sentry)) Sentry->AddMsg(Msg, Level);
+}
+
 void USentry::AddComment(const FString& Comment) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 
