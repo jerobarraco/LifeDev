@@ -74,13 +74,13 @@ public:
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
-		meta=(RowType="/Script/Inventory.Item"))
+		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.Item"))
 	TSoftObjectPtr<UDataTable> Items = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Items"));
 
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
-		meta=(RowType="/Script/Inventory.TeachRow"))
+		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.TeachRow"))
 	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> TeachDTs = {{
 		ETeachTarget::DESK, TSoftObjectPtr<UDataTable>(
 		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachDesk.TeachDesk"))
