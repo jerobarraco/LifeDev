@@ -32,5 +32,5 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
 	UPROPERTY(BlueprintReadWrite)
-	float FBMod = .05;
+	float FBMod = -.05;
 };
