@@ -214,7 +214,7 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	} else {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = Enabled ? 1: 0;
-		if (Feat == EFeat::V_STROBE) 
+		if (Feat == EFeat::V_STROBE)
 			MPCI->SetScalarParameterValue("Strobe", v);
 		else if (Feat == EFeat::V_SPEED) {
 			MPCI->SetScalarParameterValue("Speed", v);
@@ -225,7 +225,7 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 				Post->Settings.RemoveBlendable(SpeedMat);
 		}
 	}
-	
+
 	// } else if (Feat == EFeat::V_DOF) {
 	// // cant do this. it will break the fb post process since it does a blur pass before the fb
 	// and can't move the fb to before dof pass without breaking everything.

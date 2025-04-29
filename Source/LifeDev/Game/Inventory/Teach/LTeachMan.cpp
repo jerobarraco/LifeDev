@@ -197,10 +197,8 @@ void ALTeachMan::ItemSel(const FName& Name) {
 
 void ALTeachMan::ItemUse(const FName& Name) {
 	FItem Item;
-	bool Ok = false;
-	if (LIKELY(Items))
-		Ok = Items->GetSelectedItem(Item);
-	const bool ShouldHide = Ok && Item.SelfUsable;
+	const bool Ok = LIKELY(Items) ? Items->GetSelectedItem(Item) : false;
+	const bool ShouldHide = Ok & Item.SelfUsable;
 	if (ShouldHide)
 		Hide(LifeDev::Teach::ItemUse);
 }
