@@ -78,8 +78,19 @@ public:
 	// left here in case someone needs to check the condition of a group for some weird reason.
 
 #pragma region Init
-	// set the data to be used. call upon initialization.
+
+	// todo find better names
 	UFUNCTION(BlueprintCallable, Category="Diags")
+	void DTDiagAdd(UDataTable* const DT);
+	UFUNCTION(BlueprintCallable, Category="Diags")
+	void DTDiagRem(UDataTable* const DT){ VDiags.Remove(DT); }
+	UFUNCTION(BlueprintCallable, Category="Diags")
+	void DTGroupAdd(UDataTable* const DT);
+	UFUNCTION(BlueprintCallable, Category="Diags")
+	void DTGroupRem(UDataTable* const DT){ VGroups.Remove(DT); }
+
+	// set the data to be used. call upon initialization.
+	UFUNCTION(BlueprintCallable, Category="Diags", meta=(DeprecatedFunction))
 	void SetData(UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups);
 
 	// initialize. called by the gamemode
@@ -115,12 +126,16 @@ protected:
 	void Stop();
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<UDataTable> Diags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UDataTable> Diags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Groups = nullptr;
-	
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UDataTable>> VDiags;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TArray<TObjectPtr<UDataTable>> VGroups;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
 	

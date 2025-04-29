@@ -173,6 +173,8 @@ void UDiags::DeInit() {
 	Chars = nullptr;
 	Groups = nullptr;
 	Eval = nullptr;
+	VDiags.Empty();
+	VGroups.Empty();
 }
 
 bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar) const {
@@ -261,4 +263,14 @@ bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 
 	const bool Ok = Eval->Eval(Expression, Res);
 	return Ok && Res > 0;
+}
+
+void UDiags::DTDiagAdd(UDataTable* const DT) {
+	if (UNLIKELY(!IsValid(DT))) return;
+	VDiags.AddUnique(DT);
+}
+
+void UDiags::DTGroupAdd(UDataTable* const DT) {
+	if (UNLIKELY(!IsValid(DT))) return;
+	VGroups.AddUnique(DT);
 }
