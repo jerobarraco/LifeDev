@@ -10,7 +10,7 @@
 
 class FMathExpEvaluator;
 
-DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName, Name);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(double, FJEVGetVar, const FName&, Name);
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVar, const FString&, Name, const double, Val);
 DECLARE_DYNAMIC_DELEGATE_TwoParams(FJEVSetVarId, const double, Id, const double, Val);
 
@@ -82,32 +82,25 @@ public:
 
 private:
 	UFUNCTION()
-	double GetVar(const FName Name) { // just forward
-		if (LIKELY(OnGetVar.IsBound()))
-			return OnGetVar.Execute(Name);
-
-		UE_LOG(LogTemp, Warning, TEXT("%hs, OnGetVar not bound!"), __func__);
-		return 0;
+	double GetVar(const FName Name) {
+		const bool IsBound = OnGetVar.IsBound();
+		UE_CLOG(!IsBound, LogTemp, Warning, TEXT("%hs, OnGetVar not bound!"), __func__);
+		// just forward
+		return LIKELY(IsBound) ? OnGetVar.Execute(Name) : 0; // this is more optimal. log is removed on shipping
 	}
 
 	UFUNCTION()
 	void SetVar(const FString& Name, const double Val) { // just forward
-		if (LIKELY(OnSetVar.IsBound())) {
-			OnSetVar.Execute(Name, Val);
-			return;
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("%hs, OnSetVar not bound!"), __func__);
+		const bool IsBound = OnSetVar.IsBound(); 
+		UE_CLOG(!IsBound, LogTemp, Warning, TEXT("%hs, OnSetVar not bound!"), __func__);
+		if (LIKELY(IsBound)) OnSetVar.Execute(Name, Val);
 	}
 	
 	UFUNCTION()
 	void SetVarId(const double NameID, const double Val) const { // just forward
-		if (LIKELY(OnSetVarId.IsBound())) {
-			OnSetVarId.Execute(NameID, Val);
-			return;
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("%hs, OnSetVarId not bound!"), __func__);
+		const bool IsBound = OnSetVarId.IsBound(); 
+		UE_CLOG(!IsBound, LogTemp, Warning, TEXT("%hs, OnSetVarId not bound!"), __func__);
+		if (LIKELY(IsBound)) OnSetVarId.Execute(NameID, Val);
 	}
 
 	TSharedPtr<FMathExpEvaluator, ESPMode::NotThreadSafe> Evaluator = nullptr;

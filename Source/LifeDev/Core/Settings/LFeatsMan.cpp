@@ -24,6 +24,7 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "Diags/Diags.h"
+#include "LifeDev/Core/Sentry.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -157,7 +158,9 @@ void ALFeatsMan::LoadFeats() {
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	if (UNLIKELY(!IsValid(GM) || UNLIKELY(!IsValid(GM->PostProcess)))) {
-		UE_LOG(LogLFeatsMan, Error, TEXT("%hs Could not find the post process or game mode!"), __func__);
+		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Could not find the post process or game mode!"), __func__);
+		const USentry* const Sentry = USentry::Instance(this);
+		if (LIKELY(Sentry)) Sentry->AddMsg("Could not find the post process or game mode.", ESentryLevel::Warning);
 		return;
 	}
 

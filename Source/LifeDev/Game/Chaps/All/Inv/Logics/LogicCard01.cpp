@@ -4,6 +4,7 @@
 
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 ULogicCard01::ULogicCard01() {
 	// since this is an "instance" class, this is fine.
@@ -18,6 +19,7 @@ void ULogicCard01::Use_Implementation() {
 	
 	static const FString NOk("Item.Use.C1.Ok.");
 	static const FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
+
 	if (UNLIKELY(!DT)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs datatable not set"), __func__);
 		return;
