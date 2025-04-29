@@ -211,18 +211,20 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 
 bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
-	if (UNLIKELY(!IsValid(Groups))) return false;
+	for (UDataTable* const DT : VGroups) {
+		if (UNLIKELY(!IsValid(DT))) continue;
 
-	const FDiagGroup* const Row =
-		Groups->FindRow<FDiagGroup>(RowName, TEXT(""), UseWarning);
-	if (UNLIKELY(!Row)) {
-		UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find sequence for row=%s"),
-			__func__, *RowName.ToString());
-		return false;
+		const FDiagGroup* const Row =
+			Groups->FindRow<FDiagGroup>(RowName, TEXT(""), UseWarning);
+		if (UNLIKELY(!Row)) continue;
+
+		OutGroup = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
+		return true;
 	}
 
-	OutGroup = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer. also it's safer.
-	return true;
+	UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find sequence for row=%s"),
+		__func__, *RowName.ToString());
+	return false;
 }
 
 void UDiags::ShowNext() {
