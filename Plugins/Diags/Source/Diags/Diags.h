@@ -80,6 +80,9 @@ public:
 #pragma region Init
 
 	// todo find better names
+	
+	UFUNCTION(BlueprintCallable, Category="Diags")
+	void DTCharSet(UDataTable* const DT);
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	void DTDiagAdd(UDataTable* const DT);
 	UFUNCTION(BlueprintCallable, Category="Diags")

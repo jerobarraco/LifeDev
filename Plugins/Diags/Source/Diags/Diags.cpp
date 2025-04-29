@@ -159,8 +159,11 @@ void UDiags::DiagDone() {
 
 void UDiags::SetData(
 UDataTable* const AllDiags, UDataTable* const AllChars, UDataTable* const AllGroups) {
+	DTDiagAdd(AllDiags);
+	DTGroupAdd(AllGroups);
+
 	Diags = IsValid(AllDiags)? AllDiags : nullptr;
-	Chars = IsValid(AllChars)? AllChars: nullptr;
+	DTCharSet(AllChars);
 	Groups = IsValid(AllGroups)? AllGroups: nullptr;
 }
 
@@ -263,6 +266,10 @@ bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 
 	const bool Ok = Eval->Eval(Expression, Res);
 	return Ok && Res > 0;
+}
+
+void UDiags::DTCharSet(UDataTable* const DT) {
+	Chars = LIKELY(IsValid(DT)) ? DT: nullptr;
 }
 
 void UDiags::DTDiagAdd(UDataTable* const DT) {
