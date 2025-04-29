@@ -24,20 +24,20 @@ void UDiags::AddDiag(const FDiag& Diag) {
 
 bool UDiags::AddDiagId(const FName& Row) {
 	UE_LOG(LogDiags, Log, TEXT("%hs: row=%s"), __func__, *Row.ToString());
-	FDiag OutDialog; FDiagChar OutChar;
-	const bool Ok = GetDiag(Row, OutDialog, OutChar);
+	FDiag Diag;
+	const bool Ok = GetDiag(Row, Diag);
 	if (UNLIKELY(!Ok)) return false;
 
 	double Res = 0;
-	const bool Cond = CheckCondition(OutDialog.Condition, Res);
+	const bool Cond = CheckCondition(Diag.Condition, Res);
 	if (UNLIKELY(!Cond)) {
 		UE_LOG(LogDiags, Log, TEXT("%hs: Condition not met. row=%s condition=%s"),
-			__func__, *Row.ToString(), *OutDialog.Condition);
+			__func__, *Row.ToString(), *Diag.Condition);
 		return false;
 	}
 
-	OnAdd.Broadcast(Row, OutDialog); // before addDiag since it will trigger all sorts of other stuff.
-	AddDiag(OutDialog);
+	OnAdd.Broadcast(Row, Diag); // before addDiag since it will trigger all sorts of other stuff.
+	AddDiag(Diag);
 	return true;
 }
 
@@ -180,21 +180,6 @@ void UDiags::DeInit() {
 	VGroups.Empty();
 }
 
-bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutChar) const {
-	if (UNLIKELY(RowName.IsNone())) return false;
-	if (UNLIKELY(!IsValid(Diags))) return false;
-
-	const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), UseWarning);
-	if (UNLIKELY(!Row)) {
-		UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find dialog for row=%s"), __func__, *RowName.ToString());
-		return false;
-	}
-
-	OutRow = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer.
-	GetChar(OutRow.CharRow, OutChar); // ignore if the char is not found for the result, we only care about Diags
-	return true;
-}
-
 bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
 	if (UNLIKELY(!IsValid(Chars))) return false;
@@ -209,8 +194,26 @@ bool UDiags::GetChar(const FName& RowName, FDiagChar& OutChar) const {
 	return true;
 }
 
+bool UDiags::GetDiag(const FName& RowName, FDiag& OutRow) const {
+	if (UNLIKELY(RowName.IsNone())) return false;
+	
+	for (UDataTable* const DT : VDiags) {
+		if (UNLIKELY(!IsValid(DT))) continue;
+
+		const FDiag* const Row = Diags->FindRow<FDiag>(RowName, TEXT(""), UseWarning);
+		if (UNLIKELY(!Row)) continue;
+
+		OutRow = *Row; // here im copying, which s-u-x. but blueprints won't take a pointer.
+		return true;
+	}
+
+	UE_LOG(LogDiags, Verbose, TEXT("%hs Could not find dialog for row=%s"), __func__, *RowName.ToString());
+	return false;
+}
+
 bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	if (UNLIKELY(RowName.IsNone())) return false;
+
 	for (UDataTable* const DT : VGroups) {
 		if (UNLIKELY(!IsValid(DT))) continue;
 

@@ -55,7 +55,7 @@ public:
 #pragma endregion
 #pragma region Get
 	UFUNCTION(BlueprintCallable, Category="Diags")
-	bool GetDiag(const FName& RowName, FDiag& OutRow, FDiagChar& OutCha) const;
+	bool GetDiag(const FName& RowName, FDiag& OutRow) const;
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool GetChar(const FName& RowName, FDiagChar& OutChar) const;
 	UFUNCTION(BlueprintCallable, Category="Diags")
