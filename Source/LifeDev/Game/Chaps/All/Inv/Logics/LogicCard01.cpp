@@ -15,8 +15,9 @@ ULogicCard01::ULogicCard01() {
 
 void ULogicCard01::Use_Implementation() {
 	Super::Use_Implementation();
-	static FString NOk("Item.Use.C1.Ok.");
-	static FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
+	
+	static const FString NOk("Item.Use.C1.Ok.");
+	static const FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
 	if (UNLIKELY(!DT)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs datatable not set"), __func__);
 		return;

@@ -136,7 +136,7 @@ void ALTeachMan::InitDelayed() {
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const int32 Chapter = Settings->CurrentChapter();
 	UStory* const Story = UStory::Instance(this);
-	if (Chapter < 2 && !!Story & !Has(LifeDev::Teach::ItemUse)) {
+	if (bool(Story) & (Chapter < 2) && !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
 }

@@ -156,7 +156,7 @@ void ALFeatsMan::LoadFeats() {
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
-	if (UNLIKELY(!IsValid(GM) || !IsValid(GM->PostProcess))) {
+	if (UNLIKELY(!IsValid(GM) || UNLIKELY(!IsValid(GM->PostProcess)))) {
 		UE_LOG(LogLFeatsMan, Error, TEXT("%hs Could not find the post process or game mode!"), __func__);
 		return;
 	}
@@ -215,11 +215,11 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = Enabled ? 1: 0;
 		if (Feat == EFeat::V_STROBE) {
-			static FName N("Strobe");
+			static const FName N("Strobe");
 			MPCI->SetScalarParameterValue(N, v);
 		}
 		else if (Feat == EFeat::V_SPEED) {
-			static FName N("Speed");
+			static const FName N("Speed");
 			MPCI->SetScalarParameterValue(N, v);
 			if (UNLIKELY(!SpeedMat)) return;
 			if (Enabled)
@@ -361,7 +361,8 @@ double ALFeatsMan::GetVar(const FName Name) {
 		const UCInteract* const Comp = Int->GetHoverComp();
 		if (UNLIKELY(!Comp)) return -1;
 
-		if (Name == "V.Inter.Cur.Name") {
+		static const FName NCurName("V.Inter.Cur.Name");
+		if (Name == NCurName) {
 			const AActor* const CmpOwner = Comp->GetOwner(); // this is a different owner than this->GetOwner. Owner is a private var also, will break windoz.
 			if (UNLIKELY(!CmpOwner)) return -1;
 
@@ -371,7 +372,8 @@ double ALFeatsMan::GetVar(const FName Name) {
 			return I64ToD(I);
 		}
 
-		if (Name=="V.Inter.Cur.State") {
+		static const FName NCurState("V.Inter.Cur.State");
+		if (LIKELY(Name == NCurState)) { // likely since it's the last.
 			const AInteract* const CmpOwner = Cast<AInteract>(Comp->GetOwner());
 			if (UNLIKELY(!CmpOwner)) return -1;
 
