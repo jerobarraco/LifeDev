@@ -261,12 +261,14 @@ void ALFeatsMan::BlurReset() {
 }
 
 #pragma region Eval
-double ALFeatsMan::GetVar(const FName Name) {
+double ALFeatsMan::GetVar(const FName& Name) {
+	// important to keep this function optimized since a single Diags->AddId could trigger a bunch of evals, which could trigger an N*M flags get
+	// so it's important to cache the FNames, otherwise we'll incur in string parsing every time!
+
 	// unfortunately this needs to access _everything_. good thing we can access the gm here that has most of the stuff.
 	// but still it will put a load on this class (the includes at least)
 	const FString NameS = Name.ToString();
 	UE_LOG(LogLFeatsMan, Log, TEXT("%hs Name=%s"), __func__, *NameS);
-
 	#define I64ToD(X) *reinterpret_cast<const double*>(&X)
 
 	if (NameS.StartsWith("#")) {

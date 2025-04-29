@@ -4,6 +4,7 @@
 
 #include "LFeatsMan.generated.h"
 
+enum class EFeat : uint8;
 class ULOverlayUI;
 class ULSettings;
 class UEval;
@@ -51,7 +52,7 @@ protected:
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
-	double GetVar(const FName Name);
+	double GetVar(const FName& Name);
 	UFUNCTION()
 	void SetVar(const FString& Name, const double Val);
 	UFUNCTION()
