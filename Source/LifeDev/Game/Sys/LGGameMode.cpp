@@ -480,7 +480,7 @@ bool ALGGameMode::ChapLoad() {
 	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (UNLIKELY(!IsValid(DT_Chaps))) {
 		UE_LOG(LogLGameMode, Error, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
-		USentry::SAddMsg(this, "Could not obtain the chapter datatable from settings. Stop"), ESentryLevel::Error);
+		USentry::SAddMsg(this, "Could not obtain the chapter datatable from settings. Stop", ESentryLevel::Error);
 		return false;
 	}
 
