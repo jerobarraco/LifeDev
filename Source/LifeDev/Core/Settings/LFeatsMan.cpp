@@ -214,10 +214,13 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	} else {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = Enabled ? 1: 0;
-		if (Feat == EFeat::V_STROBE)
-			MPCI->SetScalarParameterValue("Strobe", v);
+		if (Feat == EFeat::V_STROBE) {
+			static FName N("Strobe");
+			MPCI->SetScalarParameterValue(N, v);
+		}
 		else if (Feat == EFeat::V_SPEED) {
-			MPCI->SetScalarParameterValue("Speed", v);
+			static FName N("Speed");
+			MPCI->SetScalarParameterValue(N, v);
 			if (UNLIKELY(!SpeedMat)) return;
 			if (Enabled)
 				Post->Settings.AddBlendable(SpeedMat, 1);
