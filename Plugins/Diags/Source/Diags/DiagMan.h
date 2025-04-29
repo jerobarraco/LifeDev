@@ -13,7 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 
 // The in game manager for dialogs. can be subclassed/extended.
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType, Config=Diag, DefaultConfig)
 class DIAGS_API ADiagMan : public AInfo {
 	GENERATED_BODY()
 
@@ -51,15 +51,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	int32 InputPrio = 10;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	int32 ZOrder = 3;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UDialogUI> UIClass = nullptr;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputMappingContext> Mapping = nullptr;
 
