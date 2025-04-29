@@ -290,7 +290,7 @@ double ALFeatsMan::GetVar(const FName& Name) {
 		const float Val = GM->Flags->Get(Name, -1);// default to -1 to help me detect issues while i get used to this.
 		UE_LOG(LogLFeatsMan, Log,
 			TEXT("%hs: Flag: Name=%s Val=%.5f"), __func__, *Name.ToString(), Val);
-		UE_CLOG(!GM->Flags->IsSet(Name), LogLFeatsMan, Warning,
+		UE_CLOG(UNLIKELY(!GM->Flags->IsSet(Name)), LogLFeatsMan, Warning,
 			TEXT("%hs Flag is not found. Name=%s"), __func__, *Name.ToString());
 		return Val;
 	}
