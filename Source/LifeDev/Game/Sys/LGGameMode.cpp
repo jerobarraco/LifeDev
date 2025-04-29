@@ -479,9 +479,16 @@ bool ALGGameMode::ChapLoad() {
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (UNLIKELY(!IsValid(DT_Chaps))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
+		UE_LOG(LogLGameMode, Error, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
+		USentry::SAddMsg(this, "Could not obtain the chapter datatable from settings. Stop"), ESentryLevel::Error);
 		return false;
 	}
+
+	/// unload old chapter
+	if (Chapter.Dialogs.IsValid())
+		Diags->DTDiagRem(Chapter.Dialogs.Get());
+	if (Chapter.Groups.IsValid())
+		Diags->DTGroupRem(Chapter.Groups.Get());
 	
 	// DT_Chaps = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(), "test",
 		// FLChapter::StaticStruct(), this); // cant find the symbol
@@ -498,8 +505,6 @@ bool ALGGameMode::ChapLoad() {
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
 	UDataTable* Chars = SysSettings->Characters.LoadSynchronous();
-	UDataTable* DiagData = Chapter.Dialogs.LoadSynchronous();
-	UDataTable* Groups = Chapter.Groups.LoadSynchronous();
 
 	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
 		static const FString& Base = FPaths::Combine( FPaths::ProjectConfigDir(), "L10N");
@@ -510,12 +515,17 @@ bool ALGGameMode::ChapLoad() {
 			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), Problems, this);
 		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
 			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), Problems, this);
+		Chapter.Dialogs = DiagExt;
+		Chapter.Groups = GroupsExt;
 		if (LIKELY(CharsExt)) Chars = CharsExt;
-		if (LIKELY(DiagExt)) DiagData = DiagExt;
-		if (LIKELY(GroupsExt)) Groups = GroupsExt;
+	} else {
+		Chapter.Dialogs.LoadSynchronous();
+		Chapter.Groups.LoadSynchronous();
 	}
-	
-	Diags->SetData(DiagData, Chars, Groups);
+	Diags->DTDiagAdd(Chapter.Dialogs.Get());
+	Diags->DTGroupAdd(Chapter.Groups.Get());
+	Diags->DTCharSet(Chars); // TODO move to gen init
+
 	return true;
 }
 
