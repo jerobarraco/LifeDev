@@ -130,14 +130,14 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient, meta=(DeprecatedProperty))
 	TObjectPtr<UDataTable> Diags = nullptr;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient, meta=(DeprecatedProperty))
 	TObjectPtr<UDataTable> Groups = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UDataTable>> VDiags;
+	TArray<TObjectPtr<UDataTable>> VDiags; // TODO rename
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TArray<TObjectPtr<UDataTable>> VGroups;
+	TArray<TObjectPtr<UDataTable>> VGroups; // TODO rename
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
