@@ -211,18 +211,30 @@ void ALGGameMode::Init() {
 
 	// init together. but before writing subsystems from save
 	Eval->Init();
-	UDataTable* InvData = SysSettings->Items.LoadSynchronous();
-	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
+	UDataTable* InvData = nullptr;
+	UDataTable* DiagChars = nullptr;
+	UDataTable* DiagDiags = nullptr;
+	UDataTable* DiagGroups = nullptr;
+	const bool UseExtData = Settings && Settings->GetFeat(EFeat::G_DATA_EXT);
+	if (UseExtData) {
 		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
 		TArray<FString> Problems;
 		UDataTable* const InvExt = UJUtilsMisc::LoadJSONTable(
 			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), Problems, this);
 		if (LIKELY(InvExt)) InvData = InvExt;
+	} else {
+		InvData = SysSettings->Items.LoadSynchronous();
+		DiagChars = SysSettings->Characters.LoadSynchronous();
+		DiagDiags = SysSettings->GlobalDiags.LoadSynchronous();
+		DiagGroups = SysSettings->GlobalGroups.LoadSynchronous();
 	}
 
+	Diags->Init();
+	Diags->DTCharSet(DiagChars);
+	Diags->DTDiagAdd(DiagDiags);
+	Diags->DTGroupAdd(DiagGroups);
 	Inventory->Init(InvData);
 	Flags->Init();
-	Diags->Init();
 	Story->Init();
 	Flashback->Init();
 #pragma endregion
@@ -378,6 +390,10 @@ void ALGGameMode::DeInit() {
 		Story->OnFade.RemoveAll(this);
 	}
 
+	// these could have been loaded from a json
+	Chapter.Dialogs = nullptr;
+	Chapter.Groups = nullptr;
+	
 	USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) Sentry->GameDeInit();
 
