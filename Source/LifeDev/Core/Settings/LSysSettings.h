@@ -96,13 +96,13 @@ public:
 	TSoftObjectPtr<UDataTable> Characters = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/DiagChars"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
-		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.Diags"))
+		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
 	TSoftObjectPtr<UDataTable> GlobalDiags = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalDiags"));
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalDiags.GlobalDiags"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagGroup"))
 	TSoftObjectPtr<UDataTable> GlobalGroups = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalGroups"));
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalGroups.GlobalGroups"));
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/LifeDev.LChapter"))
