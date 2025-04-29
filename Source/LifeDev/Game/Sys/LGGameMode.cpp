@@ -221,6 +221,9 @@ void ALGGameMode::Init() {
 		TArray<FString> Problems;
 		UDataTable* const InvExt = UJUtilsMisc::LoadJSONTable(
 			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), Problems, this);
+		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(Base,
+			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), Problems, this);
+		if (LIKELY(CharsExt)) DiagChars = CharsExt; 
 		if (LIKELY(InvExt)) InvData = InvExt;
 	} else {
 		InvData = SysSettings->Items.LoadSynchronous();
@@ -520,27 +523,23 @@ bool ALGGameMode::ChapLoad() {
 
 	Chapter = *pChap; // Make a copy
 	// set them on the dialog subsystem
-	UDataTable* Chars = SysSettings->Characters.LoadSynchronous(); // todo move to gen init
 
 	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
-		static const FString& Base = FPaths::Combine( FPaths::ProjectConfigDir(), "L10N");
+		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
 		TArray<FString> Problems;
-		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(Base, // todo move to gen init
-			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), Problems, this);
 		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(Base,
 			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), Problems, this);
 		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
 			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), Problems, this);
-		Chapter.Dialogs = DiagExt;
-		Chapter.Groups = GroupsExt;
-		if (LIKELY(CharsExt)) Chars = CharsExt; 
+		Chapter.Dialogs = DiagExt; // best way. so it can be unloaded too.
+		Chapter.Groups = GroupsExt; // best way. so it can be unloaded too.
 	} else {
 		Chapter.Dialogs.LoadSynchronous();
 		Chapter.Groups.LoadSynchronous();
 	}
+
 	Diags->DTDiagAdd(Chapter.Dialogs.Get());
 	Diags->DTGroupAdd(Chapter.Groups.Get());
-	Diags->DTCharSet(Chars); // TODO move to gen init
 
 	return true;
 }
