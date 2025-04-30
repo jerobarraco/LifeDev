@@ -23,8 +23,8 @@
 	],
 	"Plugins": [
 		{
-			"Name":"Sentry",
-			"Enabled":true,
+			"Name": "Sentry",
+			"Enabled": true,
 			"SupportedTargetPlatforms": [
 				"Win64",
 				"Android",
@@ -460,6 +460,10 @@
 		{
 			"Name": "InterchangeTests",
 			"Enabled": false
+		},
+		{
+			"Name": "GizmoFramework",
+			"Enabled": true
 		}
 	]
 }
