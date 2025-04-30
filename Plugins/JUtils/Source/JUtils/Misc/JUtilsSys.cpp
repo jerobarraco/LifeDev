@@ -50,7 +50,7 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
 	for (const FWorldContext& Context : WorldContexts) {
-		if ((Context.WorldType == EWorldType::PIE) && Context.World() && Context.GameViewport) {
+		if (Context.WorldType == EWorldType::PIE & bool(Context.GameViewport.Get()) & bool(Context.World())) {
 			return Context.GameViewport;
 		}
 	}
@@ -60,7 +60,7 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 
 void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float Duration,
 	const FLinearColor& Color) {
-	const UWorld* const W = O?O->GetWorld():nullptr;
+	const UWorld* const W = LIKELY(O) ? O->GetWorld():nullptr;
 	if (UNLIKELY(!W)) return;
 
 	const UGameInstance* const GI = W->GetGameInstance();
@@ -73,9 +73,9 @@ void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float D
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
 
 	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
-	APlayerCameraManager* const CamManager = Controller ? Controller->PlayerCameraManager : nullptr;
+	APlayerCameraManager* const CamManager = LIKELY(Controller) ? Controller->PlayerCameraManager : nullptr;
 	if (UNLIKELY(!CamManager)) {
-		UE_LOG(LogTemp, Warning, TEXT("Can't get camera manager, not fading"));
+		UE_LOG(LogTemp, Warning, TEXT("%hs Can't get camera manager, not fading"), __func__);
 		return;
 	}
 
