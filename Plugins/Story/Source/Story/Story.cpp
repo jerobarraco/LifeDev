@@ -176,13 +176,14 @@ bool UStory::ToggleStepLayers() const {
 	// that way if there's an asset on two DL (one being loaded and another unloaded),
 	// it will remain loaded instead of being temporarily unloaded and reloaded.
 	// with all the possible issues it brings.
-	for (const UDataLayerAsset* const DLA: Current->DL_Load) {
+	for (UDataLayerAsset* const DLA: Current->DL_Load) {
 		const bool CurSuccess = ToggleLayer(DLA, true);
-		Success = Success && CurSuccess; // like this to avoid short circuit
+		Success = Success & CurSuccess; // like this to avoid short circuit
+		Current->DL_Unload.RemoveSwap(DLA); // avoid possible issue of someone adding the same layer to unload as well
 	}
 	for (const UDataLayerAsset* const DLA: Current->DL_Unload) {
 		const bool CurSuccess = ToggleLayer(DLA, false);
-		Success = Success && CurSuccess; // like this to avoid short circuit
+		Success = Success & CurSuccess; // like this to avoid short circuit
 	}
 
 	return Success;
@@ -287,72 +288,3 @@ void UStory::AutoFade(const FText& Title) {
 	TD2.BindLambda(l2);
 	World->GetTimerManager().SetTimer(H2, TD2, FadeTime+HoldTime, false);
 }
-
-
-/*
- *
-void UStory::LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State) {
-	UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
-	if (UNLIKELY(!IsValid(Manager))) {
-		UE_LOG(LogStory, Warning, TEXT("%hs Could not get the datalayermanager."), __func__);
-		return;
-	}
-	// AWorldDataLayers* const DataLayers = GetWorld()->GetWorldDataLayers(); // subsystem is deprecated
-	// DataLayers->GetEffectiveActiveDataLayerNames() // no engine api
-	// const TSet<FName>& Actives = Manager->GetEffectiveActiveDataLayerNames();
-	// const TSet<FName>& Loaded = Manager->GetEffectiveLoadedDataLayerNames();
-	// for (FName N: Actives) {
-		// UE_LOG(LogStory, Warning, TEXT("%hs active %s"), __func__, *N.ToString());
-	// }
-	// for (FName N: Loaded) {
-		// UE_LOG(LogStory, Warning, TEXT("%hs loaded %s"), __func__, *N.ToString());
-	// }
-	// Manager->GetDataLayerInstanceEffectiveRuntimeState()
-	// TODO can make a function for this
-	for (UDataLayerAsset* const DL: Current->DL_Load) {
-		UE_LOG(LogStory, Warning, TEXT("%hs toload %s"), __func__, *DL->GetName());
-		const UDataLayerInstance* const Instance = Manager->GetDataLayerInstance(DL);
-		if (!IsValid(Instance)) continue; // unloaded?
-
-		const EDataLayerRuntimeState DLState = Instance->GetRuntimeState();
-		if (DLState != EDataLayerRuntimeState::Activated) {
-			UE_LOG(LogStory, Warning, TEXT("%hs not active yet %s"), __func__, *DL->GetName());
-		}
-		// Manager->GetData(DL)
-		// if (!Actives.Contains(DL->GetFName())) return;
-	}
-
-	for (UDataLayerAsset* const DL: Current->DL_Unload) {
-		UE_LOG(LogStory, Warning, TEXT("%hs toload %s"), __func__, *DL->GetName());
-		const UDataLayerInstance* const Instance = Manager->GetDataLayerInstance(DL);
-		if (!IsValid(Instance)) continue; // unloaded?
-
-		const EDataLayerRuntimeState DLState = Instance->GetRuntimeState();
-		if (DLState != EDataLayerRuntimeState::Unloaded) {
-			UE_LOG(LogStory, Warning, TEXT("%hs not unloaded yet %s"), __func__, *DL->GetName());
-		}
-		// Manager->GetData(DL)
-		// if (!Actives.Contains(DL->GetFName())) return;
-	}
-
-	
-	
-	// Manager->OnDataLayerInstanceRuntimeStateChanged.RemoveAll(this);
-}
-
-
-	
-UDataLayerManager* const Manager = UDataLayerManager::GetDataLayerManager(this);
-	if (UNLIKELY(!Manager)) {
-		UE_LOG(LogStory, Warning, TEXT("Could not obtain the data layer manager"));
-	} else {
-		Manager->OnDataLayerInstanceRuntimeStateChanged.AddUniqueDynamic(this, &UStory::LayerUpd);
-		//
-	}
-
-
-	
-UFUNCTION()
-	void LayerUpd(const UDataLayerInstance* const DataLayer, const EDataLayerRuntimeState State);
-	
-*/
