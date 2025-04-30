@@ -3,7 +3,6 @@
 
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
-#include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
 
