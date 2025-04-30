@@ -53,10 +53,10 @@ ALStepC1S000::ALStepC1S000():Super() {
 	DL_Load.AddUnique(CDLO2.Object);
 	DL_Load.AddUnique(CDLO3.Object);
 
+	// unload
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL"));
 	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
-
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLR2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
 	if (LIKELY(CDLR2.Succeeded())) DL_Unload.Add(CDLR2.Object);
