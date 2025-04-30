@@ -136,11 +136,13 @@ bool UDiags::AddGroupId(const FName& RowName) {
 	// int because num-1 can be negative. iterating backwards to be able to remove easily.
 	for (int32 i = DiagNum -1; i>=0; --i) {
 		const FName& DiagName = Seq.DiagRows[i];
-		if (DiagName != RowName) continue;
+		if (LIKELY(DiagName != RowName)) continue;
 
 		UE_LOG(LogDiags, Warning, TEXT("Attempted to add a recursive sequence. Seq=%s diag=%s"),
 			*RowNameStr, *DiagName.ToString());
-		Seq.DiagRows.RemoveAt(i); // this is safe only because GetSeq returns a copy. :)
+		// this is safe only because GetSeq returns a copy. :) Not using Swap due to iteration
+		// not shrinking to improve perf. i don't really care about that here. that's a temporary array. 
+		Seq.DiagRows.RemoveAt(i, EAllowShrinking::No);
 	}
 
 	if (DiagNum < 1) {
