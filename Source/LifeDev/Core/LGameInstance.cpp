@@ -51,14 +51,15 @@ void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs, Can't get movie player"), __func__);
 	}
 
-	UJUtilsSys::CameraFade(this, false);
+	UJUtilsSys::CameraFade(this, false); // todo this does not seem to be working
 }
 
-void ULGameInstance::EndLoadingScreen(UWorld* InLoadedWorld) {
+void ULGameInstance::EndLoadingScreen(UWorld* const InLoadedWorld) {
 	UJUtilsSys::CameraFade(this, true);
 }
 
-void ULGameInstance::BeginDestroy() {
+// https://forums.unrealengine.com/t/event-on-close/298087/5?u=nande
+void ULGameInstance::Shutdown() {
 	USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) Sentry->InstDeInit();
 
@@ -68,5 +69,5 @@ void ULGameInstance::BeginDestroy() {
 		(IsValid(SSettings) && !SSettings->CloseURL.IsEmpty())))
 		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
 	CloseTriggered = true;
-	Super::BeginDestroy();
+	Super::Shutdown();
 }

@@ -19,11 +19,11 @@ public:
 	virtual void Init() override;
 
 protected:
-	virtual void BeginDestroy() override;
+	virtual void Shutdown() override;
 	UFUNCTION()
 	virtual void BeginLoadingScreen(const FString& MapName);
 	UFUNCTION()
-	virtual void EndLoadingScreen(UWorld* InLoadedWorld);
+	virtual void EndLoadingScreen(UWorld* const InLoadedWorld);
 	UPROPERTY(Transient)
 	TObjectPtr<UUserWidget> LoadScreen = nullptr;
 
