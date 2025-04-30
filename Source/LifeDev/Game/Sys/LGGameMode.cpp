@@ -228,8 +228,8 @@ void ALGGameMode::Init() {
 	} else {
 		InvData = SysSettings->Items.LoadSynchronous();
 		DiagChars = SysSettings->Characters.LoadSynchronous();
-		DiagDiags = SysSettings->GlobalDiags.LoadSynchronous();
-		DiagGroups = SysSettings->GlobalGroups.LoadSynchronous();
+		DiagDiags = SysSettings->BaseDiags.LoadSynchronous();
+		DiagGroups = SysSettings->BaseGroups.LoadSynchronous();
 	}
 
 	Diags->Init();
@@ -315,8 +315,8 @@ void ALGGameMode::Init() {
 
 	// this should be a "safe point" to be loading things, as the story should be showing the black bg
 	// Load the base datalayer
-	if (UNLIKELY(!SysSettings->DLBAse.IsNull()))
-		UJUtilsMisc::ToggleDataLayer(this, SysSettings->DLBAse.LoadSynchronous(), true);
+	if (UNLIKELY(!SysSettings->BaseDL.IsNull()))
+		UJUtilsMisc::ToggleDataLayer(this, SysSettings->BaseDL.LoadSynchronous(), true);
 	else
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs DLBase not set on the settings! Skip."), __func__);
 

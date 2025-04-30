@@ -68,11 +68,6 @@ public:
 	FString CloseURL = TEXT("https://forms.gle/aYCr8zRR3wWTomyu8");
 
 	// The list of items
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
-	TSoftObjectPtr<UDataLayerAsset> DLBAse = TSoftObjectPtr<UDataLayerAsset>(
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base.Base"));
-
-	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.Item"))
 	TSoftObjectPtr<UDataTable> Items = TSoftObjectPtr<UDataTable>(
@@ -96,12 +91,16 @@ public:
 		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/DiagChars"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
-	TSoftObjectPtr<UDataTable> GlobalDiags = TSoftObjectPtr<UDataTable>(
+	TSoftObjectPtr<UDataTable> BaseDiags = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/BaseDiags"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagGroup"))
-	TSoftObjectPtr<UDataTable> GlobalGroups = TSoftObjectPtr<UDataTable>(
+	TSoftObjectPtr<UDataTable> BaseGroups = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/BaseGroups"));
+	// The base data layer that gets loaded when the game starts
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
+	TSoftObjectPtr<UDataLayerAsset> BaseDL = TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base"));
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/LifeDev.LChapter"))

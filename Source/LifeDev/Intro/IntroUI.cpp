@@ -20,7 +20,7 @@ void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 // implemented on cpp
 void UIntroUI::ShowSettings_Implementation(const int32 Id) {}
 
-// post init, and postLoad doesn't work to setup the buttons :(
+// post init, and postLoad doesn't work to set up the buttons :(
 // constructor might be too early.
 void UIntroUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
