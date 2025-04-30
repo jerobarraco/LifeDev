@@ -89,7 +89,6 @@ public:
 		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachPad.TeachPad"))
 		}};
 
-
 	// The list of characters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagChar"))
@@ -98,11 +97,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.Diag"))
 	TSoftObjectPtr<UDataTable> GlobalDiags = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalDiags.GlobalDiags"));
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/BaseDiags"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagGroup"))
 	TSoftObjectPtr<UDataTable> GlobalGroups = TSoftObjectPtr<UDataTable>(
-		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/GlobalGroups.GlobalGroups"));
+		FSoftObjectPath("/Game/LifeDev/Game/Dialogs/BaseGroups"));
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/LifeDev.LChapter"))

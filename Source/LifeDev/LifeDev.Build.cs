@@ -25,7 +25,7 @@ public class LifeDev : ModuleRules {
 			"Sentry"
 		});
 		// force user dir. this saves headaches when managing demo/playtest/release builds through steam.
-		// it also saves a lot of heaches to me when developing multiple versions
+		// it also saves a lot of headaches to me when developing multiple versions
 		// itchio users might have issues with this though :/
 		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/2?u=nande
 		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/6?u=nande
