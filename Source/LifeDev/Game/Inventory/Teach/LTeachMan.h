@@ -26,7 +26,7 @@ public:
 #pragma endregion
 
 	UPROPERTY(BlueprintReadWrite, Config)
-	float InitDelayTime = 3;
+	float InitDelayTime = 5;
 #pragma region delegates
 #pragma endregion
 
