@@ -124,6 +124,12 @@ void ALTeachMan::InitDelayed() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
+	SettingsUI = Char->GetSettingsUI();
+	if (LIKELY(SettingsUI)) {
+		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
+	} else
+		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
+
 	UCInteractor* const Inter = Char->GetInteractor();
 	if (LIKELY(Inter)) {
 		Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
@@ -155,16 +161,6 @@ void ALTeachMan::InitDelayed() {
 	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
-
-	// this is pretty trash but ...
-	TArray<UUserWidget*> Objs;
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(this, Objs, ULSettingsUI::StaticClass());
-	// if there's one it's the one. i think.
-	SettingsUI = LIKELY(Objs.Num())>0?Cast<ULSettingsUI>(Objs[0]):nullptr;
-	if (LIKELY(SettingsUI)) {
-		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
-	} else
-		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
 }
 
 void ALTeachMan::BeginPlay() {
@@ -299,6 +295,8 @@ void ALTeachMan::SettingsDone() {
 		AllDone = true;
 	}
 
-	if (LIKELY(SettingsUI) & AllDone)
+	if (LIKELY(SettingsUI) & AllDone) {
 		SettingsUI->OnDone.RemoveAll(this);
+		SettingsUI = nullptr; // don't need it anymore. (but i need to make sure i check for it in code)
+	}
 }
