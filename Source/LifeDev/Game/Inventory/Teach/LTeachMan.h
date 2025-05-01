@@ -55,8 +55,12 @@ protected:
 	void StepStart(AStep* const Step);
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
+	void TeachFlash();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UInventory> Items = nullptr;
+
+	FTimerHandle HFlash;
+
 	uint8 ItemSelCount = 0;
 };

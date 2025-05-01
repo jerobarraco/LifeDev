@@ -115,6 +115,9 @@ void ALTeachMan::InitDelayed() {
 	// this is because otherwise this class will annoy players during load saved games too,
 	// actually not, the base class already solves that. but it's still less efficient since it's waiting for events, that might never happen (like step c1s1) 
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
@@ -135,7 +138,16 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	const ULSettings* const Settings = ULSettings::Instance(this);
-	const int32 Chapter = Settings->CurrentChapter();
+	int32 Chapter = -1;
+	if (LIKELY(Settings)) {
+		Chapter = Settings->CurrentChapter();
+		// no need to check on FeatUp. this is only a warning for when you start the game with the flag set.
+		// if you turn it on, you should know what you're doing and how to turn it off.
+		if (LIKELY(Settings->GetFeat(EFeat::V_STROBE) && !Has(LifeDev::Teach::FlagFlash))) {
+			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::TeachFlash, 3, true);
+		}
+	}
+
 	UStory* const Story = UStory::Instance(this);
 	if (bool(Story) & (Chapter < 2) && !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
@@ -246,4 +258,17 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
 	// (this->*X[Enabled])();
 	if (Enabled) { InitFeat(); } else { DeInitFeat(); }
+}
+
+void ALTeachMan::TeachFlash() {
+	if (UNLIKELY(Has(LifeDev::Teach::FlagFlash))) {
+		const UWorld* const World = GetWorld();
+		if (UNLIKELY(!World)) return;
+
+		World->GetTimerManager().ClearTimer(HFlash);
+		HFlash.Invalidate();
+	}
+
+	// not bothering with the return since the timer will retry
+	Show(LifeDev::Teach::FlagFlash);
 }
