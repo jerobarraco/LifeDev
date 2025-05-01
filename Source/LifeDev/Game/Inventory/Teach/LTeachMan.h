@@ -32,6 +32,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	// virtual bool Show
 	void DeInitItemMod();
 	void DeInitInter();
 	void DeInitDiag();

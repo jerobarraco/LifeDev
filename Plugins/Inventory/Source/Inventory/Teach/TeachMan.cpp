@@ -37,7 +37,7 @@ bool ATeachMan::Has(const FName& Id) const {
 	return Flags->Has(FN);
 }
 
-bool ATeachMan::Show(const FName& Id) {
+bool ATeachMan::Show_Implementation(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!CurrentId.IsNone())) {
@@ -73,7 +73,7 @@ bool ATeachMan::Show(const FName& Id) {
 	return true;
 }
 
-void ATeachMan::Hide(const FName& Id) {
+void ATeachMan::Hide_Implementation(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	if (UNLIKELY(Id.IsNone() | !Flags)) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);

@@ -241,7 +241,7 @@ void ALTeachMan::StepStart(AStep* const Step) {
 	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
 		Show(LifeDev::Teach::ItemUse);
 	else 
-		Show(LifeDev::Teach::GameSetting);
+		Show(LifeDev::Teach::GameSetting); // not really a good place. there's a change it could appear during dialogs.
 }
 
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
