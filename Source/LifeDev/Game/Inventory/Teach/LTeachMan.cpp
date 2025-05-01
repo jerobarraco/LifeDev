@@ -2,7 +2,6 @@
 
 #include "LTeachMan.h"
 
-#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "Diags/Diags.h"
@@ -16,6 +15,13 @@
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+
+// note. the way that this class obtains information from the rest of the game
+// and interacts with objects, it's not my preferred way of doing things.
+// it might look a bit hackish. and that's fine.
+// the idea is that this class should impact the rest of the code as much as possible.
+// as if it were a late addition.
+// but i'll try to do it as cleanly as possible (without modifying the rest of the code to accomodate for this).
 
 DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 
