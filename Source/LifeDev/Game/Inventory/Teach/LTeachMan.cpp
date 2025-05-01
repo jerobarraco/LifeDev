@@ -128,17 +128,17 @@ void ALTeachMan::InitDelayed() {
 	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
 	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
 
-	if (LIKELY(Items) && !ItemHasAll()) {
+	if (LIKELY(Items) & UNLIKELY(!ItemHasAll())) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
 		Items->OnUsed.AddUniqueDynamic(this, &ALTeachMan::ItemUse);
 	}
 
-	UDiags* const Diags = UDiags::Instance(this);
+	Diags = UDiags::Instance(this);
 	if (LIKELY(Diags)) {
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
 	}
 
-	const ULSettings* const Settings = ULSettings::Instance(this);
+	Settings = ULSettings::Instance(this);
 	int32 Chapter = -1;
 	if (LIKELY(Settings)) {
 		Chapter = Settings->CurrentChapter();
@@ -149,7 +149,7 @@ void ALTeachMan::InitDelayed() {
 		}
 	}
 
-	UStory* const Story = UStory::Instance(this);
+	Story = UStory::Instance(this);
 	if (bool(Story) & (Chapter < 2) && !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
@@ -158,6 +158,13 @@ void ALTeachMan::InitDelayed() {
 void ALTeachMan::BeginPlay() {
 	Super::BeginPlay();
 	Items = UInventory::Instance(this);
+}
+
+bool ALTeachMan::Show_Implementation(const FName& Id) {
+	// don't show a hint if the diags are showing
+	if (LIKELY(Diags) & UNLIKELY(Diags->GetIsShowing())) return false;
+
+	return Super::Show_Implementation(Id);
 }
 
 void ALTeachMan::DeInitItemMod() {

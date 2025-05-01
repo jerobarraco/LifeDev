@@ -5,6 +5,9 @@
 
 #include "LTeachMan.generated.h"
 
+class UStory;
+class ULSettings;
+class UDiags;
 enum class EFeat : uint8;
 class UInventory;
 struct FDiag;
@@ -32,7 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	// virtual bool Show
+	virtual bool Show_Implementation(const FName& Id) override;
 	void DeInitItemMod();
 	void DeInitInter();
 	void DeInitDiag();
@@ -57,6 +60,13 @@ protected:
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
 	void TeachFlash();
+
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UStory> Story = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettings> Settings = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<UDiags> Diags = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UInventory> Items = nullptr;

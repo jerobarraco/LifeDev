@@ -9,7 +9,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogTeachMan, Log, Log)
 
 namespace Inventory { namespace Teach {
-	static const TCHAR * const Prefix = TEXT("Teach.");
+	static const TCHAR* const Prefix = TEXT("Teach.");
 }}
 
 ATeachMan::ATeachMan():Super() {
