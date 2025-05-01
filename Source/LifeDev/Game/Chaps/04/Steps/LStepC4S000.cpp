@@ -31,6 +31,9 @@ ALStepC4S000::ALStepC4S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
+	if (LIKELY(CDLH0.Succeeded())) DL_Unload.Add(CDLH0.Object);
 
 	// unload unnecessary outside props
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>

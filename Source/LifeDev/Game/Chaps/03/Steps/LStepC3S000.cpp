@@ -26,6 +26,9 @@ ALStepC3S000::ALStepC3S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
+	if (LIKELY(CDLH0.Succeeded())) DL_Load.Add(CDLH0.Object);
 
 	// ensure to load these two. even though they are loaded by a previous chapter,
 	// the player could jump straight to this chapter via a savegame (or hack).
@@ -44,9 +47,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLR2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
 	if (LIKELY(CDLR2.Succeeded())) DL_Unload.Add(CDLR2.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
-	if (LIKELY(CDLH0.Succeeded())) DL_Unload.Add(CDLH0.Object);
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,
