@@ -27,13 +27,19 @@ ALStepC4S000::ALStepC4S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
-	
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLK0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Kitchen"));
+	if (LIKELY(CDLK0.Succeeded())) DL_Load.Add(CDLK0.Object);
+
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
 	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
 	if (LIKELY(CDLH0.Succeeded())) DL_Unload.Add(CDLH0.Object);
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLL0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00"));
+	if (LIKELY(CDLL0.Succeeded())) DL_Unload.Add(CDLL0.Object);
 
 	// unload unnecessary outside props
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>

@@ -29,6 +29,9 @@ ALStepC3S000::ALStepC3S000():Super() {
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
 	if (LIKELY(CDLH0.Succeeded())) DL_Load.Add(CDLH0.Object);
+	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
+		CDLL0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00"));
+	if (LIKELY(CDLL0.Succeeded())) DL_Load.Add(CDLL0.Object);
 
 	// ensure to load these two. even though they are loaded by a previous chapter,
 	// the player could jump straight to this chapter via a savegame (or hack).
