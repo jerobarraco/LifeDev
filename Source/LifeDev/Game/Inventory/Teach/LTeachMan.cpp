@@ -25,6 +25,7 @@ namespace LifeDev {
 		static const FName ItemChange("Item.Change");
 		static const FName ItemConsume("Item.Consume");
 		static const FName FlagFlash("Flag.Flash");
+		static const FName GameSetting("Game.Setting");
 	}
 }
 
@@ -239,14 +240,8 @@ void ALTeachMan::StepStart(AStep* const Step) {
 	// i want something more optimized, but this will have to do for now.
 	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
 		Show(LifeDev::Teach::ItemUse);
-
-	const ULSettings* const Settings = ULSettings::Instance(this);
-	if (LIKELY(Settings && Settings->GetFeat(EFeat::V_STROBE))) {
-		// this is a critical one because it's a safety issue.
-		// hence. i'm going to keep trying to show this until it's shown.
-		// todo find a better way to do this.
-		Show(LifeDev::Teach::FlagFlash);
-	}
+	else 
+		Show(LifeDev::Teach::GameSetting);
 }
 
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
@@ -261,6 +256,8 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 }
 
 void ALTeachMan::TeachFlash() {
+	// this is a critical one because it's a safety issue.
+	// hence. i'm going to keep trying to show this until it's shown.
 	if (UNLIKELY(Has(LifeDev::Teach::FlagFlash))) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
