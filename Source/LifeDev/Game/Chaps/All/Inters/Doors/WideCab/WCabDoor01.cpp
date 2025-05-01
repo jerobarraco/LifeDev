@@ -17,7 +17,7 @@ AWCabDoor01::AWCabDoor01():Super() {
 
 	Interact->SetRelativeLocation(FVector(75,-35,42.5));
 	Interact->SetBoxExtent(FVector(7.5,30,32.5));
-	SFX->SetRelativeLocation(FVector(75,-60,42.5));
+	SFX->SetRelativeLocation(FVector(6.,-20.,0.));
 
 	Anim->TEnd.SetRotation(FRotator(0, 90, 0).Quaternion());
 }
