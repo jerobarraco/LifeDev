@@ -115,7 +115,7 @@ protected:
 	// the current feats enabled in the game
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TSet<EFeat> Feats;
-	
+
 	bool IsSaving = false;
 	int32 SlotIndex = 0;
 };

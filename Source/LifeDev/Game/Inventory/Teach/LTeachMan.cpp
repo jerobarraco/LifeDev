@@ -2,6 +2,7 @@
 
 #include "LTeachMan.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "Diags/Diags.h"
@@ -12,6 +13,7 @@
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
@@ -123,10 +125,10 @@ void ALTeachMan::InitDelayed() {
 	if (UNLIKELY(!Char)) return;
 
 	UCInteractor* const Inter = Char->GetInteractor();
-	if (UNLIKELY(!Inter)) return;
-
-	Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
-	Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
+	if (LIKELY(Inter)) {
+		Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
+		Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
+	}
 
 	if (LIKELY(Items) & UNLIKELY(!ItemHasAll())) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
@@ -150,9 +152,19 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	Story = UStory::Instance(this);
-	if (bool(Story) & (Chapter < 2) && !Has(LifeDev::Teach::ItemUse)) {
+	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LifeDev::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
+
+	// this is pretty trash but ...
+	TArray<UUserWidget*> Objs;
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(this, Objs, ULSettingsUI::StaticClass());
+	// if there's one it's the one. i think.
+	SettingsUI = LIKELY(Objs.Num())>0?Cast<ULSettingsUI>(Objs[0]):nullptr;
+	if (LIKELY(SettingsUI)) {
+		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
+	} else
+		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
 }
 
 void ALTeachMan::BeginPlay() {
@@ -275,4 +287,18 @@ void ALTeachMan::TeachFlash() {
 
 	// not bothering with the return since the timer will retry
 	Show(LifeDev::Teach::FlagFlash);
+}
+
+void ALTeachMan::SettingsDone() {
+	// this is to ensure we don't unbind before the flash is shown if it's necessary.
+	bool AllDone = LIKELY(Settings) ? !Settings->GetFeat(EFeat::V_STROBE) : true;
+	Hide(LifeDev::Teach::GameSetting); // always hide since we come from there.
+	// only hide if it was shown. important since it's a health thing. 
+	if (Has(LifeDev::Teach::FlagFlash)) {
+		Hide(LifeDev::Teach::FlagFlash);
+		AllDone = true;
+	}
+
+	if (LIKELY(SettingsUI) & AllDone)
+		SettingsUI->OnDone.RemoveAll(this);
 }

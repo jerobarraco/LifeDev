@@ -17,10 +17,10 @@ class JUTILS_API UBaseUI: public UUserWidget {
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Show();
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Hide();
-	
+
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Done(const int32 RetVal = 0);
 

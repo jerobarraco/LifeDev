@@ -5,6 +5,7 @@
 
 #include "LTeachMan.generated.h"
 
+class ULSettingsUI;
 class UStory;
 class ULSettings;
 class UDiags;
@@ -60,14 +61,17 @@ protected:
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
 	void TeachFlash();
+	UFUNCTION()
+	void SettingsDone();
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UStory> Story = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettingsUI> SettingsUI = nullptr; 
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UInventory> Items = nullptr;
 
