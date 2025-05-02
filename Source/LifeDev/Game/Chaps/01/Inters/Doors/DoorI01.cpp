@@ -10,7 +10,7 @@ ADoorI01::ADoorI01():Super() {
 	ULockItemReq = "WM"; // the wm depends on the batts so no need to go so hard on this
 	// ULockCondition = "{V.Item.Count.Batts} & {V.Item.Count.WM}";
 	UseHint = true;
-
+	HintCondition = "{Story.Step.Start.C1S0}&!{Story.Step.Start.C2S0}"; // only on chapter 1
 	RootComponent->SetWorldLocation(FVector(-290,316,0));
 	RootComponent->SetWorldRotation(FRotator(0,180,0));
 }
