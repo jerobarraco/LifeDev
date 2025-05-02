@@ -176,12 +176,19 @@ bool UStory::ToggleStepLayers() const {
 	// that way if there's an asset on two DL (one being loaded and another unloaded),
 	// it will remain loaded instead of being temporarily unloaded and reloaded.
 	// with all the possible issues it brings.
-	for (UDataLayerAsset* const DLA: Current->DL_Load) {
+	for (const TSoftObjectPtr<UDataLayerAsset>& SLA: Current->DL_Load) {
+		const UDataLayerAsset* const DLA = SLA.LoadSynchronous();
+		if (UNLIKELY(!IsValid(DLA))) continue;
+
 		const bool CurSuccess = ToggleLayer(DLA, true);
 		Success = Success & CurSuccess; // like this to avoid short circuit
 		Current->DL_Unload.RemoveSwap(DLA); // avoid possible issue of someone adding the same layer to unload as well
 	}
-	for (const UDataLayerAsset* const DLA: Current->DL_Unload) {
+
+	for (const TSoftObjectPtr<UDataLayerAsset>& SLA: Current->DL_Unload) {
+		const UDataLayerAsset* const DLA = SLA.LoadSynchronous();
+		if (UNLIKELY(!IsValid(DLA))) continue;
+
 		const bool CurSuccess = ToggleLayer(DLA, false);
 		Success = Success & CurSuccess; // like this to avoid short circuit
 	}
