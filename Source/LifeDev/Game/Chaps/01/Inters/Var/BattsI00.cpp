@@ -10,6 +10,8 @@ ABattsI00::ABattsI00():Super() {
 	RewardItem = LDConsts::Items::Batts;
 	TriggerDlg = "BattsPick";
 	UseAutoActivate = true;
+	UseHint = true;
+	HintCondition = "{Inter.TriggerL.WalkmanI00}";
 
 	// needs to move to be able to be attached to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
