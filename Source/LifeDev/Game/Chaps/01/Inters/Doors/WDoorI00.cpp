@@ -2,7 +2,7 @@
 
 #include "WDoorI00.h"
 
-AWDoorI00::AWDoorI00():Super() {
+AWDoorI00::AWDoorI00(): Super() {
 	IsLocked = true;
 	ULockItemReq = ULockItem = "KW0";
 	// ULockDlg = "W0_ULCK";
