@@ -12,6 +12,9 @@ class UDiags;
 class UInventory;
 class UFlashback;
 
+// TODO change objectPtr to SoftObjectPtr
+
+
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)

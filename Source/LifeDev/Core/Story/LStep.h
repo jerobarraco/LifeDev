@@ -10,6 +10,9 @@
 
 #include "LStep.generated.h"
 
+// TODO change objectPtr to SoftObjectPtr
+
+
 class UCQuickMesh;
 class UCAnimatorTrans;
 class UCRandomizerFB;

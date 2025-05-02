@@ -20,6 +20,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
 
+// TODO change objectPtr to SoftObjectPtr
+
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
 // And check the properties under "SetUp".

@@ -13,6 +13,7 @@ class UDataLayerAsset;
 class USceneComponent;
 class AActor;
 class USoundBase;
+// TODO change objectPtr to SoftObjectPtr
 
 // base class for story steps
 UCLASS(Blueprintable, BlueprintType, Config=Story, DefaultConfig)
