@@ -33,18 +33,14 @@ ALStepC0S000::ALStepC0S000():Super() {
 	// this would fix the music not being packaged
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL"));
-	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLOutA(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
-	if (LIKELY(CDLOutA.Succeeded())) DL_Load.Add(CDLOutA.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
-	if (LIKELY(CDLR2.Succeeded())) DL_Load.Add(CDLR2.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR3(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room03"));
-	if (LIKELY(CDLR3.Succeeded())) DL_Load.Add(CDLR3.Object);
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room03.Room03")));
 }
 
 void ALStepC0S000::TryStart_Implementation() {

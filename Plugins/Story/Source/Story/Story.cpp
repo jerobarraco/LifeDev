@@ -182,7 +182,7 @@ bool UStory::ToggleStepLayers() const {
 
 		const bool CurSuccess = ToggleLayer(DLA, true);
 		Success = Success & CurSuccess; // like this to avoid short circuit
-		Current->DL_Unload.RemoveSwap(DLA); // avoid possible issue of someone adding the same layer to unload as well
+		Current->DL_Unload.RemoveSwap(SLA); // avoid possible issue of someone adding the same layer to unload as well
 	}
 
 	for (const TSoftObjectPtr<UDataLayerAsset>& SLA: Current->DL_Unload) {
