@@ -26,7 +26,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 	UseHint = true;
 	// needed to break the loading dependency
-	HintCondition = "{V.Inter.Trigger.WDoorI00}";
+	HintCondition = "{Inter.Trigger.WDoorI00}";
 	Texts = {
 		NSLOCTEXT("WalkmanI00", "State0", "My walkman, with no batteries")};
 	
