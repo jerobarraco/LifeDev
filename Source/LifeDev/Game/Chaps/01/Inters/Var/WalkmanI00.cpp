@@ -24,9 +24,7 @@ AWalkmanI00::AWalkmanI00():Super() {
 	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	ULockItemReq = LDConsts::Items::Batts;
 	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
-	UseHint = true;
-	// needed to break the loading dependency
-	HintCondition = "{Inter.Trigger.WDoorI00}";
+
 	Texts = {
 		NSLOCTEXT("WalkmanI00", "State0", "My walkman, with no batteries")};
 	
