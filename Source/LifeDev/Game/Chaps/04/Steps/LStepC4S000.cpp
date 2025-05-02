@@ -23,6 +23,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
 	// needed
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
+	// TODo use softpaths
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL"));

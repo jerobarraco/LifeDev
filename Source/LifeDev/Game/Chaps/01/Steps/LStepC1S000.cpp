@@ -31,6 +31,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 		LDConsts::Items::Poem0
 	};
 
+	// TODo use softpaths
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL"));
 	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);

@@ -28,6 +28,8 @@ ALStepC2S000::ALStepC2S000():Super() {
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,
 	};
+	// TODo use softpaths
+
 
 	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
 		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
