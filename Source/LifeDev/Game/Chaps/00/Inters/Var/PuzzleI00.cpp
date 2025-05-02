@@ -4,7 +4,6 @@
 
 #include "Interact/CPuzzle.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 
 APuzzleI00::APuzzleI00():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
