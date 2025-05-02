@@ -354,8 +354,9 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	}
 }
 
-void ALStep::DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive) {
-	for (AInteract* const I: A) {
+void ALStep::DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive) {
+	for (const TSoftObjectPtr<AInteract>& SI : A) {
+		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->SetActive(NewActive);
 	}
 }

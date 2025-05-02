@@ -116,15 +116,15 @@ public:
 	// Interacts to activate on Start (after wait), and disable on Stop.
 	// Will be deactivated on begin play.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersActivateAuto;
+	TArray<TSoftObjectPtr<AInteract>> IntersActivateAuto;
 
 	// Interacts to activate on Start (after wait)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersActivate;
+	TArray<TSoftObjectPtr<AInteract>> IntersActivate;
 
 	// Interacts to deactivate on Start (after wait).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersDeactivate;
+	TArray<TSoftObjectPtr<AInteract>> IntersDeactivate;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
@@ -211,7 +211,7 @@ protected:
 	void DoIntersHint() const;
 	// fade an array of ALInteract
 	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
-	static void DoIntersActiveAny(const TArray<TObjectPtr<AInteract>>& A, const bool NewActive);
+	static void DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive);
 
 #pragma region cdo
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
