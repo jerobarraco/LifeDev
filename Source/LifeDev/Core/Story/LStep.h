@@ -140,7 +140,7 @@ public:
 	// Interacts to set UseHint at the Start (post wait).
 	// Will not stop being hinted automatically.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<AInteract>> IntersHint;
+	TArray<TSoftObjectPtr<AInteract>> IntersHint;
 #pragma endregion
 
 #pragma region items
