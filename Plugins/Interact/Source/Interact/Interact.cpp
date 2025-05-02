@@ -387,8 +387,9 @@ void AInteract::DoTrigger_Implementation() {
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 
-	for(AInteract* const I: RewardIntersHint) {
-		if (LIKELY(IsValid(I))) I->UseHint = true;
+	for(TSoftObjectPtr<AInteract> const I: RewardIntersHint) {
+		AInteract* const Inter = I.Get();
+		if (LIKELY(IsValid(Inter))) Inter->UseHint = true;
 	}
 
 	for(AInteract* const I: RewardIntersTrigger) {

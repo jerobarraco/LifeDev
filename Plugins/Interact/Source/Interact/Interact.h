@@ -224,7 +224,7 @@ public:
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TObjectPtr<AInteract>> RewardIntersHint;
+	TArray<TSoftObjectPtr<AInteract>> RewardIntersHint;
 
 	// interacts to trigger when this interact is triggered.
 	// It still triggers an interact even if it's not "Active".
