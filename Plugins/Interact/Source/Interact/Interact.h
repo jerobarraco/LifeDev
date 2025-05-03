@@ -20,8 +20,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
 
-// TODO change objectPtr to SoftObjectPtr
-
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
 // And check the properties under "SetUp".
@@ -235,19 +233,19 @@ public:
 	// Which is not bad, but keep it in mind.
 	// The upside is, that you can have two switches controlling the same light with this behavior.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TObjectPtr<AInteract>> RewardIntersTrigger;
+	TArray<TSoftObjectPtr<AInteract>> RewardIntersTrigger;
 
 	// Classes to add to the reward inters trigger. by using GetActorOfClass on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
 	TArray<TSubclassOf<AInteract>> RewardIntersTriggerClass;
 	
 	// interacts to activate when this interact is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TArray<TObjectPtr<AInteract>> RewardIntersActive;
+	TArray<TSoftObjectPtr<AInteract>> RewardIntersActive;
 
 	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
 	// this is useful to use by code.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
 	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
 #pragma endregion
 #pragma region Delegates

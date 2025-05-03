@@ -383,16 +383,18 @@ void AInteract::DoTrigger_Implementation() {
 
 	PlaySFX(SFX_Trigger);
 
-	for(AInteract* const I: RewardIntersActive) {
+	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
+		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->SetActive(true);
 	}
 
-	for(const TSoftObjectPtr<AInteract>& I: RewardIntersHint) {
-		AInteract* const Inter = I.Get();
-		if (LIKELY(IsValid(Inter))) Inter->UseHint = true;
+	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersHint) {
+		AInteract* const I = SI.Get();
+		if (LIKELY(IsValid(I))) I->UseHint = true;
 	}
 
-	for(AInteract* const I: RewardIntersTrigger) {
+	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersTrigger) {
+		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->TryTrigger();
 	}
 
