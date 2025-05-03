@@ -87,13 +87,13 @@ public:
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
 	// also in the data layers panel, set the initial runtime state.
 	// this is ok to be a softobjectptr since they will be loaded during the loading of the step and the dl itself.
-	// is up to you to set up the step in a way that this is not a breaking stuff.
+	// is up to you to set up the step in a way that this is not a breaking stuff (e.g. by using the fade).
 	// it HAS to have the .XXXX at the end of the path. (e.g. Rooms/Room03.Room03) or it won't load.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Load;
+	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Load; // TODO ensure this is not broken on packaged builds
 	// Data layers to unload
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload;
+	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload; // TODO ensure this is not broken on packaged builds
 
 	// set to true to use debug
 	inline static bool Debug = false;

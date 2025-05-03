@@ -62,6 +62,8 @@
 * * above it fixes the issue of an actor referencing another actor in a different data layer.
 * * This way you can reference actors in code.
 * * Don't load them unnecessarily.
+* * SoftObjectPtr could affect cooking of asset references (see Step::Music) but for level actor references is fine.
+
 Metas:
 objects
 * use readonly if i don't want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
