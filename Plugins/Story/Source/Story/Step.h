@@ -13,7 +13,6 @@ class UDataLayerAsset;
 class USceneComponent;
 class AActor;
 class USoundBase;
-// TODO change objectPtr to SoftObjectPtr
 
 // base class for story steps
 UCLASS(Blueprintable, BlueprintType, Config=Story, DefaultConfig)
@@ -38,7 +37,7 @@ public:
 	// Actor holding the camera to blend to. Or null to not use it.
 	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
-	TObjectPtr<AActor> CamTarget = nullptr;
+	TSoftObjectPtr<AActor> CamTarget = nullptr;
 
 	// will target pawn automatically, will override the camTarget
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")

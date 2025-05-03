@@ -174,8 +174,9 @@ void AStep::DoTeleport() {
 }
 
 void AStep::CamBlend() {
-	// set camera if camtarget is set
-	if (!IsValid(CamTarget)) return;
+	AActor* const Tgt = CamTarget.Get();
+	if (!IsValid(Tgt)) return; // it's not always likely
+
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	const UWorld* const World = GetWorld();
@@ -185,9 +186,9 @@ void AStep::CamBlend() {
 	if (UNLIKELY(!Controller)) return;
 
 	// enable cam tick only if it's the current target and only when the step starts
-	if (CamTarget == this && LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
+	if ((Tgt == this) & LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
-	Controller->SetViewTargetWithBlend(CamTarget, CamBlendTime, VTBlend_Cubic);
+	Controller->SetViewTargetWithBlend(Tgt, CamBlendTime, VTBlend_Cubic);
 	// ensure the step does not start before the camera ends the blending
 	WaitTime = FMath::Max(CamBlendTime, WaitTime);
 }
