@@ -58,7 +58,10 @@
 * * https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-migration-guide
 * Spawn objects in GameMode::Init instead of having them on the editor when possible
 * * Objects that don't belong to a specific datalayer.
-
+* Use TSoftObjectPtr when referencing actors in the world
+* * above it fixes the issue of an actor referencing another actor in a different data layer.
+* * This way you can reference actors in code.
+* * Don't load them unnecessarily.
 Metas:
 objects
 * use readonly if i don't want the pointer to change (eg when instantiated on cpp) (eg create default subobject)
