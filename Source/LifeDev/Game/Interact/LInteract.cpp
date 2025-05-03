@@ -103,7 +103,8 @@ void ALInteract::BeginPlay() {
 	}
 
 	// hide and disable reward actor if any. will also call setactive.
-	if (IsValid(RewardActor)) RewardActor->SetActorHiddenInGame(true);
+	AActor* const RAct = RewardActor.Get();
+	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
@@ -165,9 +166,10 @@ void ALInteract::DoRewards() {
 	if (LIKELY(IsValid(Flags))) Flags->Mod(RewardFlag, 1.0);
 
 	// do the actor
-	if (IsValid(RewardActor)) {
+	AActor* const RAct = RewardActor.Get();
+	if (IsValid(RAct)) {
 		// fade if possible, otherwise unset hidden. setactive follows.
-		ALInteract* const LReward = Cast<ALInteract>(RewardActor);
+		ALInteract* const LReward = Cast<ALInteract>(RAct);
 		if (LReward) LReward->Fade(true);
 		else RewardActor->SetActorHiddenInGame(false);
 	}

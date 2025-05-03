@@ -12,9 +12,6 @@ class UDiags;
 class UInventory;
 class UFlashback;
 
-// TODO change objectPtr to SoftObjectPtr
-
-
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
@@ -64,7 +61,7 @@ public:
 	// An actor to reward. Will be set hidden on begin play, and unhide on reward.
 	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	TObjectPtr<AActor> RewardActor = nullptr;
+	TSoftObjectPtr<AActor> RewardActor = nullptr;
 	// whether to self-destroy when *rewarding* (only if rewards are set).
 	// if UseFade is true AND has something to reward, it will also fade.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
@@ -115,7 +112,7 @@ public:
 	// remember to call SetNewMat on the constructor if you use the new material.
 	// remember to call CreateMaterial on BeginPlay if there are no rewards.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UCAnimatorFade> AnimFade = nullptr;
+	TObjectPtr<UCAnimatorFade> AnimFade = nullptr; // cdo
 
 protected:
 #pragma region Reward
