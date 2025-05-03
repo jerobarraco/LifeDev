@@ -341,7 +341,8 @@ void ALStep::Unbind() const {
 }
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
-	for (AActor* const A: ActorsShow) {
+	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
+		AActor* const A = SA.Get();
 		if (UNLIKELY(!IsValid(A))) continue;
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
@@ -373,14 +374,16 @@ void ALStep::DoIntersDeactive() {
 	DoIntersActiveAny(IntersDeactivate, false);
 }
 
-void ALStep::DoIntersFade(const TArray<ALInteract*>& A, const bool In) {
-	for (ALInteract* const I: A) {
+void ALStep::DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, const bool In) {
+	for (const TSoftObjectPtr<ALInteract>& SI: SA) {
+		ALInteract* const I = SI.Get(); 
 		if (LIKELY(IsValid(I))) I->Fade(In, true);
 	}
 }
 
 void ALStep::DoIntersTrigger() const {
-	for (const TObjectPtr<ALInteract>& I: IntersTrigger) {
+	for (const TSoftObjectPtr<ALInteract>& SI: IntersTrigger) {
+		ALInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->TriggerForced();
 	}
 }

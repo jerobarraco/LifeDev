@@ -32,8 +32,9 @@ void ALStepC4S001::Start_Implementation() {
 	// this step finishes as the dialog finishes. so deactivate all but npci6
 	// Super::Start would have faded them, but fade will set active.
 	for (uint8 i = 0; i< IntersFadeIn.Num(); ++i) {
-		AInteract* const I = IntersFadeIn[i];
+		AInteract* const I = IntersFadeIn[i].Get();
 		if (UNLIKELY(!I)) continue;
+
 		I->SetActive(i==0); // npci6 continues the flow next step
 	}
 }

@@ -42,7 +42,7 @@ void ALStepC3S001::TryStart_Implementation() {
 		return;
 	}
 
-	ALNPC03* const NPC = Cast<ALNPC03>(ActorsShow[0]);
+	ALNPC03* const NPC = Cast<ALNPC03>(ActorsShow[0].Get()); // todo specify actorshow in cdo
 	if (NPC) NPC->SetPoseScold();
 }
 

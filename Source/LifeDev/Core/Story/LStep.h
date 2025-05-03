@@ -108,7 +108,7 @@ public:
 	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
-	TArray<TObjectPtr<AActor>> ActorsShow;
+	TArray<TSoftObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
@@ -128,17 +128,17 @@ public:
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<ALInteract>> IntersTrigger;
+	TArray<TSoftObjectPtr<ALInteract>> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<ALInteract>> IntersFadeIn;
+	TArray<TSoftObjectPtr<ALInteract>> IntersFadeIn;
 
 	// Interacts to fade out during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TObjectPtr<ALInteract>> IntersFadeOut;
+	TArray<TSoftObjectPtr<ALInteract>> IntersFadeOut;
 
 	// Interacts to set UseHint at the Start (post wait).
 	// Will not stop being hinted automatically.
@@ -210,7 +210,7 @@ protected:
 	void DoIntersTrigger() const;
 	void DoIntersHint() const;
 	// fade an array of ALInteract
-	static void DoIntersFade(const TArray<ALInteract*>& A, const bool In);
+	static void DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, bool In);
 	static void DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive);
 
 #pragma region cdo
