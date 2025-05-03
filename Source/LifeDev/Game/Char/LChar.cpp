@@ -49,8 +49,8 @@ ALChar::ALChar(): Super() {
 	// Create a CameraComponent
 	Camera = CreateDefaultSubobject<UCLCharCam>(TEXT("Camera"));
 	Camera->SetupAttachment(Capsule);
-	// 40 is a biiit below c18, 45 is almost the same.
-	Camera->SetRelativeLocation(FVector(-0.f, 0.f, 47.f)); // Position the camera
+	// 40 is a biiit below c18, 45 is almost the same. it was 47 but i feel it's too tall
+	Camera->SetRelativeLocation(FVector(-0.f, 0.f, 40.f)); // Position the camera
 
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
