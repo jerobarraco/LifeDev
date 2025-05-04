@@ -22,36 +22,25 @@ ALStepC3S000::ALStepC3S000():Super() {
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
-	// TODo use softpaths
 
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL"));
-	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLH0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00"));
-	if (LIKELY(CDLH0.Succeeded())) DL_Load.Add(CDLH0.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLL0 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00"));
-	if (LIKELY(CDLL0.Succeeded())) DL_Load.Add(CDLL0.Object);
-
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00.Living00")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00.Hall00")));
 	// ensure to load these two. even though they are loaded by a previous chapter,
 	// the player could jump straight to this chapter via a savegame (or hack).
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
-	if (LIKELY(CDLO3.Succeeded())) DL_Load.AddUnique(CDLO3.Object);
-
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLO4 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D"));
-	if (LIKELY(CDLO4.Succeeded())) DL_Load.Add(CDLO4.Object);
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D")));
 
 	// unload
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL"));
-	if (LIKELY(CDL3.Succeeded())) DL_Unload.Add(CDL3.Object);
-	
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
-	if (LIKELY(CDLR2.Succeeded())) DL_Unload.Add(CDLR2.Object);
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL")));
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
 
 	ItemsEnsure = {
 		LDConsts::Items::Card0,
