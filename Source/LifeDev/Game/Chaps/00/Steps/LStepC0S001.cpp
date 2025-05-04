@@ -26,11 +26,9 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseRain = true;
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);
-	// TODo use softpaths
 
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR0(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00"));
-	if (LIKELY(CDLR0.Succeeded())) DL_Load.Add(CDLR0.Object);
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00.Room00")));
 }
 
 void ALStepC0S001::Start_Implementation() {
