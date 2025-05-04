@@ -31,39 +31,26 @@ ALStepC1S000::ALStepC1S000():Super() {
 		LDConsts::Items::Poem0
 	};
 
-	// TODo use softpaths
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL"));
-	if (LIKELY(CDL1.Succeeded())) DL_Load.Add(CDL1.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR0(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00"));
-	if (LIKELY(CDLR0.Succeeded())) DL_Load.Add(CDLR0.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR1(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room01"));
-	if (LIKELY(CDLR1.Succeeded())) DL_Load.Add(CDLR1.Object);
-
-	// out load
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLO1 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A"));
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLO2 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_B.Outside_B"));
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLO3 (TEXT("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C"));
-
-	DL_Load.AddUnique(CDLO1.Object);
-	DL_Load.AddUnique(CDLO2.Object);
-	DL_Load.AddUnique(CDLO3.Object);
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap01_DL.Chap01_DL")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00.Room00")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room01.Room01")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_B.Outside_B")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C")));
 
 	// unload
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDL2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL"));
-	if (LIKELY(CDL2.Succeeded())) DL_Unload.Add(CDL2.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR2(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02"));
-	if (LIKELY(CDLR2.Succeeded())) DL_Unload.Add(CDLR2.Object);
-	static ConstructorHelpers::FObjectFinder<UDataLayerAsset>
-		CDLR3(TEXT("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room03"));
-	if (LIKELY(CDLR3.Succeeded())) DL_Unload.Add(CDLR3.Object);
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap00_DL.Chap00_DL")));
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room03.Room03")));
 }
 
 void ALStepC1S000::TryStart_Implementation() {
