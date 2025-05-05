@@ -5,4 +5,5 @@
 ACloutI03::ACloutI03():Super() {
 	RewardItem = "C1C03"; // chapter 1 clout 3
 	TriggerDlg = "C03";
+	UseHint = true;
 }
