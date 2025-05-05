@@ -15,10 +15,10 @@ AClock00::AClock00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Clock_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(.000000,2.500000,-2.500000));
+	Mesh->SetRelativeLocation(FVector(.000000,0,0));
 
-	Interact->SetRelativeLocation(FVector(12.500000,-2.500000,2.500000));
-	Interact->SetBoxExtent(FVector(12.500000,2.500000,2.500000));
+	Interact->SetRelativeLocation(FVector(15.00000,-7.500000,10.00000));
+	Interact->SetBoxExtent(FVector(15.00000,7.500000,10.00000));
 
 	// i'd get a compiler error on windows if it can't find it
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
