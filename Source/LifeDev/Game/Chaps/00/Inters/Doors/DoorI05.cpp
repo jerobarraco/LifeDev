@@ -8,7 +8,6 @@ ADoorI05::ADoorI05():Super() {
 	UseAutoActivate = true; // leave active since it shows some dialogs.
 	IsOneShot = true;
 	UseHint = true; // the card is picked as last req
-	// RewardStep = true;
 	// no need to unlock. as picking the card will end the chapter 
 	// i'm _assuming_ printf is more performant when building strings. because i'd make it like that.
 	// ULockCondition = FString::Printf(TEXT("{%ls}&{%ls}&{V.Item.Count.%ls}"),
