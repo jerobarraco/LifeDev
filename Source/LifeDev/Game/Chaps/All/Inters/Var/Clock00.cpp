@@ -20,6 +20,7 @@ AClock00::AClock00():Super() {
 	Interact->SetRelativeLocation(FVector(15.00000,-7.500000,10.00000));
 	Interact->SetBoxExtent(FVector(15.00000,7.500000,10.00000));
 
+	// TODO
 	// i'd get a compiler error on windows if it can't find it
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
 		// CSnd(TEXT(""));
