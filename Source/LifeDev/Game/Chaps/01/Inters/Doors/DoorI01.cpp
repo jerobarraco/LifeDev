@@ -12,4 +12,7 @@ ADoorI01::ADoorI01():Super() {
 	UseHint = true;
 	RootComponent->SetWorldLocation(FVector(-290,316,0));
 	RootComponent->SetWorldRotation(FRotator(0,180,0));
+	RewardIntersHint = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PoemI01_UAID_D8BBC116E501C49F01_1976559643"))
+	};
 }
