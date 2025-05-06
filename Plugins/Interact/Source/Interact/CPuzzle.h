@@ -74,6 +74,8 @@ public:
 	// set actors as hidden (or not). in game, not editor.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetHiddensInGame(const bool NewHidden);
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
+	void ShowHint();
 	
 	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
@@ -89,7 +91,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	const TArray<int32>& GetCurrents() const { return CurrentIds; }
 
-	
 
 	// the puzzle type. controls the behavior.
 	// beware of changing this after BeginPlay.

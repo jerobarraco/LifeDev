@@ -319,3 +319,10 @@ void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
 		I->SetActorHiddenInGame(NewHidden);
 	}
 }
+
+void UCPuzzle::ShowHint() {
+	for (AInteract* const I: Interacts) {
+		if (UNLIKELY(!IsValid(I))) continue;
+		I->ShowHint();
+	}
+}

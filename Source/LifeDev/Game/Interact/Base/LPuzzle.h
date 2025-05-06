@@ -50,8 +50,9 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
-	void SetActorHiddenInGame(bool NewHidden) override;
-
+	virtual void SetActorHiddenInGame(bool NewHidden) override;
+	virtual void ShowHint_Implementation() override;
+	
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
 
