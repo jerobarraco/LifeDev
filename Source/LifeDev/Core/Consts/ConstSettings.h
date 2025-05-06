@@ -135,6 +135,8 @@ enum class EFeat: uint8 {
 	DBG_FLY_CAM,
 	// warn missing diag addId
 	DBG_D_WARN,
+	// quick cooldown of items
+	DBG_QUICK_COOL,
 	DBG_BASE UMETA(Deprecated),
 	DBG_MAX UMETA(Hidden),
 #pragma endregion

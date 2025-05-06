@@ -11,8 +11,10 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryTypes.h"
 #include "Inventory/ItemLogic.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCharItems, Log, Log);
 
@@ -196,6 +198,10 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 	Say(Dlg);
 	PlaySound(Item.Snd);
 	Flags->Mod(Dlg, 1);
+	
+	// isDebug is an optimization since the compiler will hopefully remove it . UJUtilsSys::IsDebug() & should i?
+	if ( ULSettings::GetFeatS(this, EFeat::DBG_QUICK_COOL))
+		Inventory->SetCool(Name);
 
 	return true;
 }
