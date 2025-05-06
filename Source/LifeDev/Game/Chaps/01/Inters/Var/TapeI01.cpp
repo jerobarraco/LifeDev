@@ -14,6 +14,10 @@ ATapeI01::ATapeI01():Super() {
 	UseRewardDestroy = true;
 	RewardFlash = .1;
 	RewardItem = LDConsts::Items::Tape1;
+	RewardIntersHint = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI01_UAID_D8BBC116E501FCCD01_1261387011"))
+	};
+
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }
