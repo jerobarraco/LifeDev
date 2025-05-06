@@ -62,7 +62,7 @@ void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 }
 
 bool ALPuzzle::ShowHint_Implementation() {
-	const bool Shown = Super::ShowHint_Implementation(); // todo don't call children if parent doesn't pass
+	const bool Shown = Super::ShowHint_Implementation();
 	if (!Shown) return false;
 
 	CPuzzle->ShowHint();

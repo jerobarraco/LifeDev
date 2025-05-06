@@ -323,6 +323,7 @@ void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
 void UCPuzzle::ShowHint() {
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
+		I->UseHint = true; // reset in case it got dehint on trigger.
 		I->ShowHint();
 	}
 }
