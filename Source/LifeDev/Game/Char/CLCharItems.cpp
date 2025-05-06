@@ -200,7 +200,7 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 	Flags->Mod(Dlg, 1);
 	
 	// isDebug is an optimization since the compiler will hopefully remove it . UJUtilsSys::IsDebug() & should i?
-	if ( ULSettings::GetFeatS(this, EFeat::DBG_QUICK_COOL))
+	if (ULSettings::GetFeatS(this, EFeat::DBG_FAST_COOL))
 		Inventory->SetCool(Name);
 
 	return true;
