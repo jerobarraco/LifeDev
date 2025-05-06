@@ -110,6 +110,12 @@ public:
 	bool UseSndAutoLoad = true;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
 	bool UseSndAsyncLoad = true;
+	// seconds between each cool down timer tick.
+	// does not affect the duration, but affects the performance and granularity.
+	// this should be lower than your lowest cooldown.
+	// This is like a tick interval. Items are checked for cool down every CoolTimerRate-seconds.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
+	float CoolTimerRate = 1;
 #pragma endregion
 
 #pragma region Delegates

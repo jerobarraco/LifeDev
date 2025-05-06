@@ -10,7 +10,6 @@
 
 #define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
 #define _IsNotCold(I) ((I.ActiveCoolDown>0) & !FMath::IsNearlyZero(I.ActiveCoolDown))
-static constexpr float CoolTimerRate = 1; // TODO make this a config flag
 
 UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -347,7 +346,7 @@ void UInventory::CoolTimerTick() {
 		if (_IsCold(Item)) continue;
 		
 		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-CoolTimerRate); // update cooldown, make sure to clamp
-		if (_IsNotCold(Item)) {
+		if (_IsNotCold(Item)) { // has to re-check again.
 			AllCool = false;
 			continue;
 		}
@@ -415,7 +414,7 @@ FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
 	}
 
 	FItem* const pItem = Items.Find(Name);
-	OutFound = !!pItem;
+	OutFound = bool(pItem);
 	if (UNLIKELY(!OutFound)) {
 		UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exist. '%s'"), __func__, *Name.ToString());
 		return FauxItem;
@@ -429,7 +428,7 @@ FItem& UInventory::GetRef(const FName& Name, bool& OutFound) {
 const FItem& UInventory::GetRefC(const FName& Name, bool& OutFound) const {
 	static FItem FauxItemConst;
 	const FItem* const pItem = Items.Find(Name);
-	OutFound = !!pItem;
+	OutFound = bool(pItem);
 	if (UNLIKELY(!OutFound)) {
 		UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exist. '%s'"), __func__, *Name.ToString());
 		return FauxItemConst;
