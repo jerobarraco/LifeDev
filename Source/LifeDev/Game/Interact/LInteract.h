@@ -98,6 +98,8 @@ public:
 	// use Inter.Trigger.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName TriggerDlg = NAME_None;
+	// this is pretty much useless now. since you can't do TriggerLocked while also having the ULockItem, since it will unlock.
+	// so it's safe to delete next sprint, if/when i remove the code for item usage.
 	// dialog to display if this object is locked AND we have the ULockItem. Not setting it will result in using LockDlg
 	// don't use. use the condition for LockedDlg or better yet the auto-dialog.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
