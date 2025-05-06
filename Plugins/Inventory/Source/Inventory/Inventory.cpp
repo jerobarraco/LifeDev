@@ -293,7 +293,7 @@ bool UInventory::IsUsable(const FItem& Item) const {
 	}
 
 	if (_IsNotCold(Item)) {
-		UE_LOG(LogInventory, Log, TEXT("%hs Item is not cold. title='%s' wait=%i"),
+		UE_LOG(LogInventory, Log, TEXT("%hs Item is not cold. title='%s' wait=%.4f"),
 			__func__, *Item.Title.ToString(), Item.ActiveCoolDown);
 		return false;
 	}
