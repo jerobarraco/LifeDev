@@ -19,7 +19,7 @@ public:
 	ALPuzzle();
 
 	virtual void SetActorHiddenInGame(bool NewHidden) override;
-	virtual void ShowHint_Implementation() override;
+	virtual bool ShowHint_Implementation() override;
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
 #pragma endregion

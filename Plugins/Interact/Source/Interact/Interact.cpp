@@ -187,23 +187,23 @@ void AInteract::Unlock_Implementation() {
 	IsLocked = false; // force unlock
 }
 
-void AInteract::ShowHint_Implementation() {
-	if (!UseHint | IsHidden() | !Interact->IsActive()) return;
+bool AInteract::ShowHint_Implementation() {
+	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	if (!HintCondition.IsEmpty()) {
 		const UEval* const Eval = UEval::Instance(this);
-		if (UNLIKELY(!Eval)) return; // nopes
+		if (UNLIKELY(!Eval)) return false; // nopes
 		
 		double Res;
-		if (UNLIKELY(!Eval->Eval(HintCondition, Res))) return; // nopes
-		if (Res <= 0) return; // nopess
+		if (UNLIKELY(!Eval->Eval(HintCondition, Res))) return false; // nopes
+		if (Res <= 0) return false; // nopess
 	}
 
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint); // sfx checked inside
 
 	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
+	if (UNLIKELY(!World)) return false;
 
 	FTimerHandle H;
 	auto F = [this]() {
@@ -213,12 +213,12 @@ void AInteract::ShowHint_Implementation() {
 	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
 
 	// also animate a custom primitive data.
-	if (HintPrimDataID<0) return;
+	if (HintPrimDataID<0) return false;
 
 	OnHint.Broadcast();
 
 	UAnim* const AnimMat = UAnim::Instance(this);
-	if (UNLIKELY(!AnimMat)) return;
+	if (UNLIKELY(!AnimMat)) return true; // shown, so need to return true anyway
 
 	FAParams P;
 	P.Duration = 0;
@@ -229,6 +229,8 @@ void AInteract::ShowHint_Implementation() {
 	P.Duration = HintTime;
 	P.Curve = HintCurve.Get();
 	AnimMat->DataFade(Mesh, P, HintPrimDataID, true, FLinearColor::White, false);
+
+	return true;
 }
 
 void AInteract::BeginPlay() {

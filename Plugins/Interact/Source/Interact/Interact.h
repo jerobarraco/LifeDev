@@ -116,7 +116,7 @@ public:
 	// test function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
-	void ShowHint();
+	bool ShowHint();
 
 	// whether to enable hints or not. Will be disabled on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
