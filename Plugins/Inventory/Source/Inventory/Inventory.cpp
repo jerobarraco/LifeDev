@@ -9,8 +9,8 @@
 #include "ItemLogic.h" //needed for ManType.
 
 #define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
-#define _IsNotCold(I) I.ActiveCoolDown>0
-static constexpr float CoolTimerRate = 1;
+#define _IsNotCold(I) ((I.ActiveCoolDown>0) & !FMath::IsNearlyZero(I.ActiveCoolDown))
+static constexpr float CoolTimerRate = 1; // TODO make this a config flag
 
 UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -311,7 +311,7 @@ bool UInventory::IsUsable(const FItem& Item) const {
 
 bool UInventory::IsCold(const FItem& Item) {
 	const bool Cold = _IsCold(Item);
-	UE_LOG(LogInventory, Log, TEXT("%hs cold=%i wait=%i title='%s'"),
+	UE_LOG(LogInventory, Log, TEXT("%hs cold=%i wait=%.4f title='%s'"),
 		__func__, Cold, Item.ActiveCoolDown, *Item.Title.ToString());
 	return Cold;
 }
