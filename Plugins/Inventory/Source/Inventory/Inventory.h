@@ -23,7 +23,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:
-	static UInventory* Instance(const UObject* const W);
+	static UInventory* Instance(const UObject* const O);
 
 #pragma region Regular
 	// Used for Add, Rem, and Use. Returns false if not found.
@@ -49,6 +49,9 @@ public:
 	// un/marks an item as locked. (can't be used when locked).
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetLocked(const FName& Name, const bool NewBlocked);
+	// force item cooldown. Does not immediately triggers OnCold. but instead it will trigger when the scheduled timer 
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool SetCool(const FName& Name);
 #pragma endregion
 
 #pragma region Gets

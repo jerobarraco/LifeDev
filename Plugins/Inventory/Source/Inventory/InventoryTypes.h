@@ -25,9 +25,9 @@ public:
 	// max allowed number of items, -1 is unlimited.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 MaxCount = -1;
-	// 0 == no cooldown. used for cards.
+	// Cooldown in seconds. 0 == no cooldown. used for cards. 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 CoolDown = 0;
+	float CoolDown = 0;
 	// title of the item
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Title;
@@ -60,7 +60,7 @@ public:
 	int32 Count = 0;
 	// Runtime only (transient). the current cool down being applied. used track how much remaining cool down there is.
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
-	int32 ActiveCoolDown = 0;
+	float ActiveCoolDown = 0;
 	// Runtime only (transient). whether the item is temporarily blocked (used on runtime)
 	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Transient)
 	bool Locked = false;

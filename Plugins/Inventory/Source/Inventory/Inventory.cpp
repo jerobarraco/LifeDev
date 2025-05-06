@@ -8,8 +8,9 @@
 
 #include "ItemLogic.h" //needed for ManType.
 
-#define _IsCold(I) I.ActiveCoolDown<=0
+#define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
 #define _IsNotCold(I) I.ActiveCoolDown>0
+static constexpr float CoolTimerRate = 1;
 
 UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -272,6 +273,16 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	return true;
 }
 
+bool UInventory::SetCool(const FName& Name) {
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (UNLIKELY(!Found)) return false;
+
+	Item.ActiveCoolDown = 0;
+	OnCold.Broadcast(Name);
+	return true;
+}
+
 bool UInventory::IsUsable(const FItem& Item) const {
 	if (!Item.Usable & !Item.SelfUsable) return false;
 
@@ -316,7 +327,7 @@ void UInventory::SetCoolTimerEnabled(const bool Enable) {
 	if (Enable) {
 		// check if the timer is still valid
 		if (CoolTimer.IsValid() && Time.TimerExists(CoolTimer)) return;
-		Time.SetTimer(CoolTimer, this, &UInventory::CoolTimerTick, 1, true);
+		Time.SetTimer(CoolTimer, this, &UInventory::CoolTimerTick, CoolTimerRate, true);
 	} else {
 		CoolTimer.Invalidate();
 		Time.ClearAllTimersForObject(this);
@@ -335,7 +346,7 @@ void UInventory::CoolTimerTick() {
 		FItem& Item = Items[Name];
 		if (_IsCold(Item)) continue;
 		
-		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-1); // update cooldown, make sure to clamp
+		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-CoolTimerRate); // update cooldown, make sure to clamp
 		if (_IsNotCold(Item)) {
 			AllCool = false;
 			continue;
