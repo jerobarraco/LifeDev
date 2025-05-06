@@ -25,8 +25,7 @@ class INVENTORY_API UInventory : public UWorldSubsystem {
 public:
 	static UInventory* Instance(const UObject* const W);
 
-	// regular ones ////////
-
+#pragma region Regular
 	// Used for Add, Rem, and Use. Returns false if not found.
 	// Note: It does check for maxCount but will return true even when capped.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -40,44 +39,19 @@ public:
 	// removes all items. but does not trigger any onMod. used for savegame. be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
 	bool Clear(const int32 NumReserve = 0);
-	
+#pragma endregion
+#pragma region Item
 	// "uses" an item (marks as used). consumes it if it's a consumable. returns success.
 	// it won't trigger the manager/item logic, you need to do it manually.
 	// returns whether it was successfully used.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Use(const FName& Name);
-
 	// un/marks an item as locked. (can't be used when locked).
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetLocked(const FName& Name, const bool NewBlocked);
+#pragma endregion
 
-	// returns an item from the datatable if exists. Use this only if you know what you do.
-	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
-	bool GetRaw(const FName& Name, FItem& OutItem) const;
-	// returns an item given the key name (in the loaded inventory, not the datatable)
-	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Get(const FName& Name, FItem& OutItem) const;
-	// returns how many of an item there are.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
-	int32 Count(const FName& Name) const;
-
-	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
-	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
-	const TMap<FName, FItem>& GetAll() const;
-	// overrides the current items
-	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
-	void SetItems(const TMap<FName, FItem>& NewItems);
-
-	// returns the selected item name
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
-	FORCEINLINE FName GetSelected() const { return Selected; }
-	// returns a copy of the selected item
-	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
-	bool GetSelectedItem(FItem& Item) const;
-	// sets an item as selected
-	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool SetSelected(const FName& Name);
-
+#pragma region Gets
 	// returns true if this item exists on the current inventory
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Has(const FName& Name) const;
@@ -87,6 +61,35 @@ public:
 	// returns true if the item is cold (not waiting for cooldown) (regardless of whether it uses cooldown)
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
+	// returns how many of an item there are.
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	int32 Count(const FName& Name) const;
+	// returns an item given the key name (in the loaded inventory, not the datatable)
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool Get(const FName& Name, FItem& OutItem) const;
+	// returns an item from the datatable if exists. Use this only if you know what you do.
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
+	bool GetRaw(const FName& Name, FItem& OutItem) const;
+	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
+	const TMap<FName, FItem>& GetAll() const;
+#pragma endregion
+
+	// overrides the current items
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
+	void SetItems(const TMap<FName, FItem>& NewItems);
+
+#pragma region selected
+	// returns the selected item name
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
+	FORCEINLINE FName GetSelected() const { return Selected; }
+	// returns a copy of the selected item
+	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
+	bool GetSelectedItem(FItem& Item) const;
+	// sets an item as selected
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	bool SetSelected(const FName& Name);
+#pragma endregion
 
 #pragma region system
 	UFUNCTION(BlueprintCallable, Category="Inventory")
