@@ -15,7 +15,14 @@ class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
 
 public:
+#pragma region base 
 	ALPuzzle();
+
+	virtual void SetActorHiddenInGame(bool NewHidden) override;
+	virtual void ShowHint_Implementation() override;
+	// call to reset the puzzle. Override DoReset to do custom logic.
+	virtual void Reset() override;
+#pragma endregion
 
 	// sets the states on each registered interact.
 	// Call on, or after, begin play (but not before).
@@ -49,12 +56,6 @@ public:
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
-
-	virtual void SetActorHiddenInGame(bool NewHidden) override;
-	virtual void ShowHint_Implementation() override;
-	
-	// call to reset the puzzle. Override DoReset to do custom logic.
-	virtual void Reset() override;
 
 	// Automatically reset the puzzle on failure.
 	// works only on SEQUENCE since combination can't fail.
