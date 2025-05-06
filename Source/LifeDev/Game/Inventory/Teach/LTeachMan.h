@@ -5,15 +5,15 @@
 
 #include "LTeachMan.generated.h"
 
-class ULSettingsUI;
-class UStory;
-class ULSettings;
-class UDiags;
 enum class EFeat : uint8;
-class UInventory;
 struct FDiag;
-class AStep;
 struct FItem;
+class AStep;
+class ULSettingsUI;
+class ULSettings;
+class UStory;
+class UDiags;
+class UInventory;
 class UCInteract;
 
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
@@ -78,4 +78,5 @@ protected:
 	FTimerHandle HFlash;
 
 	uint8 ItemSelCount = 0;
+	uint8 FlashShown:1 = 0;
 };

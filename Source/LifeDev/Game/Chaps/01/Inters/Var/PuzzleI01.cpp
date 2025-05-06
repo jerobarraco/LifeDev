@@ -14,6 +14,7 @@ APuzzleI01::APuzzleI01():Super() {
 	RewardFlash = .2;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	TriggerDlg = DoneId;
+	UseHint = true;
 }
 
 void APuzzleI01::PostLoad() {

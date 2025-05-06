@@ -143,8 +143,8 @@ void ALStep::Start_Implementation() {
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
-	DoIntersTrigger(); // trigger after activate.
-	
+	DoIntersTrigger(); // trigger after activate. and hint.
+
 	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
 
 	// show dialogs

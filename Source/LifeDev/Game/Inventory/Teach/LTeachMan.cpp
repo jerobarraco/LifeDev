@@ -279,7 +279,7 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 void ALTeachMan::TeachFlash() {
 	// this is a critical one because it's a safety issue.
 	// hence. i'm going to keep trying to show this until it's shown.
-	if (UNLIKELY(Has(LifeDev::Teach::FlagFlash))) {
+	if (UNLIKELY(FlashShown)) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
 
@@ -287,16 +287,16 @@ void ALTeachMan::TeachFlash() {
 		HFlash.Invalidate();
 	}
 
-	// not bothering with the return since the timer will retry
-	Show(LifeDev::Teach::FlagFlash);
+	FlashShown = Show(LifeDev::Teach::FlagFlash);
 }
 
 void ALTeachMan::SettingsDone() {
+	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__ );
 	// this is to ensure we don't unbind before the flash is shown if it's necessary.
 	bool AllDone = LIKELY(Settings) ? !Settings->GetFeat(EFeat::V_STROBE) : true;
 	Hide(LifeDev::Teach::GameSetting); // always hide since we come from there.
 	// only hide if it was shown. important since it's a health thing. 
-	if (Has(LifeDev::Teach::FlagFlash)) {
+	if (FlashShown) {
 		Hide(LifeDev::Teach::FlagFlash);
 		AllDone = true;
 	}
