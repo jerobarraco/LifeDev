@@ -44,7 +44,7 @@ public:
 	// Whether to use a background thread to perform calculations, when possible.
 	// It's pretty stable, but if you have crashes, try toggling this off.
 	// This will make some of the delegates and functions o the components to run on a background thread.
-	// That means that there are certain things you should not do there or you need to set a timer/async code.
+	// That means that there are certain things you should not do there, or you need to set a timer/async code.
 	// It's possibly this flag would make the calculation run on a next frame (untested).
 	// If so, there's the possibility that when the tick interval is too frequent,
 	// that multiple calculations would run on the same frame (not tragic but a bit wasteful, and a word of warning). 
