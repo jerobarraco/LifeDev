@@ -192,6 +192,9 @@ bool AInteract::ShowHint_Implementation() {
 		UseHint, IsHidden()); // TODO remove or verbose
 	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return false;
+
 	if (!HintCondition.IsEmpty()) {
 		const UEval* const Eval = UEval::Instance(this);
 		if (UNLIKELY(!Eval)) return false; // nopes
@@ -203,9 +206,6 @@ bool AInteract::ShowHint_Implementation() {
 
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint); // sfx checked inside
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return false;
 
 	FTimerHandle H;
 	auto F = [this]() {
