@@ -321,6 +321,7 @@ void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
 }
 
 void UCPuzzle::ShowHint() {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(GetOwner()));
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
 		I->UseHint = true; // reset in case it got dehint on trigger.
