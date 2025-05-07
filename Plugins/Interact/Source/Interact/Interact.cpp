@@ -188,8 +188,8 @@ void AInteract::Unlock_Implementation() {
 }
 
 bool AInteract::ShowHint_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i"), __func__, *Label.ToString(),
-		UseHint, IsHidden()); // TODO remove or verbose
+	UE_LOG(LogInteract, Verbose, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"), __func__, *Label.ToString(),
+		UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID); // TODO remove or verbose
 	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	const UWorld* const World = GetWorld();
@@ -207,6 +207,7 @@ bool AInteract::ShowHint_Implementation() {
 	Interact->Hint(true);
 	PlaySFX(SFX_Hint); // sfx checked inside
 
+	// schedule unhint
 	FTimerHandle H;
 	auto F = [this]() {
 		if (UNLIKELY(!IsValid(this) | !IsValid(Interact))) return;
@@ -214,13 +215,11 @@ bool AInteract::ShowHint_Implementation() {
 	};
 	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
 
+	OnHint.Broadcast(); // dispatch here (avoid return. also the rest is just animation)
+
 	// also animate a custom primitive data.
-	if (HintPrimDataID<0) return false;
-
-	OnHint.Broadcast();
-
 	UAnim* const AnimMat = UAnim::Instance(this);
-	if (UNLIKELY(!AnimMat)) return true; // shown, so need to return true anyway
+	if (UNLIKELY(!AnimMat | (HintPrimDataID<0))) return true; // shown, so need to return true anyway
 
 	FAParams P;
 	P.Duration = 0;
