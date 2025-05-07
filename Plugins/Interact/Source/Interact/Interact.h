@@ -33,6 +33,9 @@ public:
 	AInteract();
 	// will also setActive if UseAutoActivate is true.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
+	// read CInteract::SetProfileActive.
+	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
+	void SetProfileHinted() const;
 #pragma endregion
 
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)

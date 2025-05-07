@@ -16,8 +16,8 @@ APuzzleI01::APuzzleI01():Super() {
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	TriggerDlg = DoneId;
 	UseHint = true;
-	Interact->SetProfileHinted();
 	UseAutoActivate = true;
+	SetProfileHinted(); // needed so it doesn't trigger the interactor but it does trigger hint
 }
 
 void APuzzleI01::PostLoad() {

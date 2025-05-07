@@ -60,7 +60,7 @@ public:
 	// You would want to call this on constructor. If you call it later it won't actually change the profile.
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	FORCEINLINE void SetProfileActive(const FName& Name) { ProfileActive = Name; }
-	// read SetCollisionProfileActive. this calls it with ProfileHinted
+	// read SetProfileActive. this calls it with ProfileHinted
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	FORCEINLINE void SetProfileHinted() { ProfileActive = ProfileHinted; }
 
