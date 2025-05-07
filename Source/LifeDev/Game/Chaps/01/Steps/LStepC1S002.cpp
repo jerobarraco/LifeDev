@@ -31,11 +31,9 @@ void ALStepC1S002::Start_Implementation() {
 	
 	FB->SetMax(1); // reset to 1 since we will change it several times here
 	static const FName DId("C1S2.0"); // done only for the autodiagFb. notice that after Super::Start it has no effect.
-	FBDlgAutoTo = 1;
+	FBDlgAutoTo = .8;
 	SetFBDlgAuto(DId); // will calculate based on the actual dialog group.
 	// FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger
-	// can't use autodiagfb since the logic is somewhat more complex
-	// FBDlgMod = (1.0 - FB->GetValTo()) / 4.0;
 
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
 	Diags->AddId(DId); // "i'll use the tape"
@@ -50,7 +48,7 @@ void ALStepC1S002::StartShake() {
 	if (UNLIKELY(!World)) return;
 
 	CamShakeStart();
-	// FB->SetVal(1); // bump to max
+	FB->SetVal(1); // bump to max
 
 	FTimerHandle H;
 	World->GetTimerManager().SetTimer(H, this, &ALStepC1S002::ShakeStarted, 2);
@@ -70,3 +68,4 @@ void ALStepC1S002::StopShake() {
 }
 
 // TODO this would work better if i split this into two steps. so i can use fbdiag auto and cam shake easily.
+// but the naming is making it hard :l
