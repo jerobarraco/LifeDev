@@ -185,7 +185,7 @@ void ALStep::SetFBDlgAuto(const FName& Id) {
 	// GetValTo is the correct as opposed to GetVal.
 	// Since we want to move the target, the current is going to follow.
 	const float FBCurrent = FB->GetValTo();
-	FBDlgMod = (FBDlgAutoTo - FBCurrent) / Len;
+	FBDlgMod = (FBDlgAutoTo - FBCurrent) / static_cast<float>(Len); // float so that it reaches the end.
 
 	UE_LOG(LogLStoryStep, Log, TEXT("%hs Id=%s DiagMod=%f, DiagAutoTo=%f, Current=%f, Len=%i"),
 		__func__, *Id.ToString(), FBDlgMod, FBDlgAutoTo, FBCurrent, Len);
