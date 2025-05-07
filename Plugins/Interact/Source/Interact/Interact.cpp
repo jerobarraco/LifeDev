@@ -209,7 +209,7 @@ bool AInteract::ShowHint_Implementation() {
 
 	FTimerHandle H;
 	auto F = [this]() {
-		if (UNLIKELY(!IsValid(this) || !IsValid(Interact))) return;
+		if (UNLIKELY(!IsValid(this) | !IsValid(Interact))) return;
 		Interact->Hint(false);
 	};
 	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
