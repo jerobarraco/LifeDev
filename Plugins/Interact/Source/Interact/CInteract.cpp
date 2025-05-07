@@ -158,7 +158,7 @@ void UCInteract::ReparentPhys(const bool IsGrab, const UCInteractor* const NewPa
 void UCInteract::SetCollisionEnabledBool(const bool Enabled) {
 	// because this is ForceInline, maybe this can be compiled without the "if", when called with a constexpr?
 	// SetCollisionEnabled changes the whole profile, so don't use it!
-	SetCollisionProfileName(Enabled ? Profile : ProfileNone);
+	SetCollisionProfileName(Enabled ? ProfileDefault : ProfileNone);
 }
 
 void UCInteract::Deactivate() {

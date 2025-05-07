@@ -52,7 +52,7 @@ public:
 
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	static void SetCollisionProfileDefault(const FName& Name) { Profile = Name; }
+	static FORCEINLINE void SetCollisionProfileDefault(const FName& Name) { ProfileDefault = Name; }
 
 	inline static const FName ProfileInteract = "Interact";
 	inline static const FName ProfileHinted = "Hinted";
@@ -121,7 +121,7 @@ protected:
 	// <0 will disable stencil
 	void SetStencil(int32 StencilID) const;
 	
-	inline static FName Profile = ProfileInteract;
+	inline static FName ProfileDefault = ProfileInteract;
 	friend class AInteract;
 	friend class UCInteractor;
 #pragma endregion 
