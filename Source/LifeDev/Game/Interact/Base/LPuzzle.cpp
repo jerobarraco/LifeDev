@@ -62,6 +62,7 @@ void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 }
 
 bool ALPuzzle::ShowHint_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("%hs Obj=%s UseHint=%i"), __func__, *Label.ToString(), UseHint); // TODO verbose or remove
 	const bool Shown = Super::ShowHint_Implementation();
 	if (!Shown) return false;
 

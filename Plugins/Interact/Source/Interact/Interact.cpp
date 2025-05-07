@@ -188,6 +188,8 @@ void AInteract::Unlock_Implementation() {
 }
 
 bool AInteract::ShowHint_Implementation() {
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i"), __func__, *Label.ToString(),
+		UseHint, IsHidden()); // TODO remove or verbose
 	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	if (!HintCondition.IsEmpty()) {
