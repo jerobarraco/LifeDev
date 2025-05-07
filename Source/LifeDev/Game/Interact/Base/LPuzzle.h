@@ -16,7 +16,7 @@ class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
 
 public:
-#pragma region base 
+#pragma region base
 	ALPuzzle();
 
 	virtual void SetActorHiddenInGame(bool NewHidden) override;

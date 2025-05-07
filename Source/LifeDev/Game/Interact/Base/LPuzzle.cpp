@@ -21,8 +21,8 @@ ALPuzzle::ALPuzzle():Super() {
 
 	CPuzzle = CreateDefaultSubobject<UCPuzzle>(TEXT("CPuzzle"));
 	CPuzzle->DisableOnDone = true;
-	// rarely used by default.
-	if (LIKELY(Interact)) Interact->SetBoxExtent(FVector(1));
+	// rarely used by default. used on the hints.
+	if (LIKELY(Interact)) Interact->SetBoxExtent(FVector(5));
 
 	SetMobility(EComponentMobility::Type::Static);
 }
