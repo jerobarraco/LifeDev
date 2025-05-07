@@ -152,7 +152,7 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::StartDialogs() {
-	if (UNLIKELY(DlgId.IsNone())) return;
+	if (DlgId.IsNone()) return;
 
 	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
 
