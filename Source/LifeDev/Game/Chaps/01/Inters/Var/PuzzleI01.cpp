@@ -2,7 +2,6 @@
 
 #include "PuzzleI01.h"
 
-#include "Interact/CInteract.h"
 #include "Interact/CPuzzle.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
