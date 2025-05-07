@@ -174,8 +174,11 @@ void ALStep::SetFBDlgAuto(const FName& Id) {
 		if (LIKELY(Ok2)) Len = 1;
 	}
 
-	// avoid division by 0, but also makes no sense otherwise.
-	if (UNLIKELY(Len <= 0)) return;
+	if (UNLIKELY(Len <= 0)) { // avoid division by 0, but also makes no sense otherwise.
+		FBDlgMod = 0; // ensure a non-destructive value is set. though it could break something, it's a bit cleaner.
+		return;
+	}
+
 	// GetValTo is the correct as opposed to GetVal.
 	// Since we want to move the target, the current is going to follow.
 	const float FBCurrent = FB->GetValTo();
