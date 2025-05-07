@@ -81,7 +81,7 @@ void UJSig::DoTick() {
 	Man->Update(TArrayView<FTransform>(TransformArray));
 }
 
-void UJSig::Tick(float DeltaTime) {
+void UJSig::Tick(const float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	DTAcum += DeltaTime;

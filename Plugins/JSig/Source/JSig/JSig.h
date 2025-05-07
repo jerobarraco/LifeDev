@@ -58,7 +58,7 @@ protected:
 #pragma region base
 	virtual void Deinitialize() override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(const float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
 	// the default is conditional. and works fine.
 	// virtual ETickableTickType GetTickableTickType() const override { return ETickableTickType::Always; };
