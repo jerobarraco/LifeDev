@@ -7,7 +7,7 @@
 
 #include "LStepC1S007.generated.h"
 
-// npc finished dialog. wait for cards.
+// npc finished dialog. wait for card and poem.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S007 : public ALStep {
 	GENERATED_BODY()

@@ -2,7 +2,6 @@
 
 #include "LStepC1S002.h"
 
-// #include "DefaultCameraShakeBase.h"
 #include "Camera/CameraComponent.h"
 
 #include "Diags/Diags.h"
@@ -16,7 +15,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 	// uses own camera
 	UsePawnCam = false;
 	UseFadeTime = false;
-
+	UseFBDlgAuto = false; // will be manually set.
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
 
@@ -31,18 +30,20 @@ void ALStepC1S002::Start_Implementation() {
 	Super::Start_Implementation();
 	
 	FB->SetMax(1); // reset to 1 since we will change it several times here
-	FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger
+	static const FName DId("C1S2.0"); // done only for the autodiagFb. notice that after Super::Start it has no effect.
+	FBDlgAutoTo = 1;
+	SetFBDlgAuto(DId); // will calculate based on the actual dialog group.
+	// FB->SetVal(.75); // was already clamped to .7 on c1s0, so it can't be bigger
 	// can't use autodiagfb since the logic is somewhat more complex
-	FBDlgMod = (1.0 - FB->GetValTo()) / 4.0;
+	// FBDlgMod = (1.0 - FB->GetValTo()) / 4.0;
 
 	Diags->OnDone.AddUniqueDynamic(this, &ALStepC1S002::StartShake);
-	Diags->AddId("C1S2.0"); // "i'll use the tape"
+	Diags->AddId(DId); // "i'll use the tape"
 }
 
 void ALStepC1S002::StartShake() {
 	Diags->OnDone.RemoveDynamic(this, &ALStepC1S002::StartShake);
 	// don't affect further.
-	UseFBDlgAuto = false;
 	FBDlgMod = 0;
 	
 	const UWorld* const World = GetWorld();

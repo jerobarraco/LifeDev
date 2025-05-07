@@ -154,23 +154,23 @@ void ALStep::Start_Implementation() {
 void ALStep::StartDialogs() {
 	if (UNLIKELY(DlgId.IsNone())) return;
 
-	SetFBDlgAuto();
+	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
+
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 	Diags->AddId(DlgId);
+
 	FinishAfterDlgs();
 }
 
-void ALStep::SetFBDlgAuto() {
-	if (UNLIKELY(!UseFBDlgAuto)) return;
-
+void ALStep::SetFBDlgAuto(const FName& Id) {
 	FDiagGroup Seq;
 	int32 Len = 0;
-	const bool Ok = Diags->GetGroup(DlgId, Seq);
+	const bool Ok = Diags->GetGroup(Id, Seq);
 	if (Ok) {
 		Len = Seq.DiagRows.Num();
 	} else {
 		FDiag D;
-		const bool Ok2 = Diags->GetDiag(DlgId, D);
+		const bool Ok2 = Diags->GetDiag(Id, D);
 		if (LIKELY(Ok2)) Len = 1;
 	}
 
@@ -181,8 +181,8 @@ void ALStep::SetFBDlgAuto() {
 	const float FBCurrent = FB->GetValTo();
 	FBDlgMod = (FBDlgAutoTo - FBCurrent) / Len;
 
-	UE_LOG(LogLStoryStep, Log, TEXT("%hs DiagMod=%f, DiagAutoTo=%f, Current=%f, Len=%i"),
-		__func__, FBDlgMod, FBDlgAutoTo, FBCurrent, Len);
+	UE_LOG(LogLStoryStep, Log, TEXT("%hs Id=%s DiagMod=%f, DiagAutoTo=%f, Current=%f, Len=%i"),
+		__func__, *Id.ToString(), FBDlgMod, FBDlgAutoTo, FBCurrent, Len);
 }
 
 void ALStep::FinishAfterDlgs() {

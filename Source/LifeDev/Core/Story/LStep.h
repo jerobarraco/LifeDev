@@ -168,8 +168,9 @@ protected:
 	virtual void PostLoad() override;
 	virtual void Finish_Implementation() override;
 	void Unbind() const;
-	
-	void SetFBDlgAuto();
+	// Sets the FBAutoMod based on the Id passed.
+	// FBDlgAutoTo must be set first.
+	void SetFBDlgAuto(const FName& Id);
 	// will start the dialogs
 	void StartDialogs();
 	// will finish once the dialogs are done, or immediately if not showing.

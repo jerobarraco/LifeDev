@@ -9,8 +9,8 @@
 
 class UNiagaraComponent;
 
-// regaining control for player after npc01.
-// This finishes when the player receives or picks the card c1
+// regaining control for player after npc01 pt.1.
+// This finishes when the player solves the puzzle.
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S004 : public ALStep {
 	GENERATED_BODY()
