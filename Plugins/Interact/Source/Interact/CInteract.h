@@ -55,6 +55,7 @@ public:
 	static void SetDefaultCollisionProfile(const FName& Name) { Profile = Name; }
 
 	inline static const FName ProfileInteract = "Interact";
+	inline static const FName ProfileHinted = "Hinted";
 	inline static const FName ProfileNone = "NoCollision";
 	
 	// whether the parent actor can be grabbed.
