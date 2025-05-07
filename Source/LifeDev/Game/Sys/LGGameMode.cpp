@@ -63,7 +63,7 @@ ALGGameMode::ALGGameMode():Super() {
 	// without having to set it up for every single mesh.
 	// Setting it to visibility has its downsides, like having to set up more complicated collisions
 	UCInteractor::SetCollisionChannel(ECC_Visibility);
-	UCInteract::SetDefaultCollisionProfile(UCInteract::ProfileInteract);
+	UCInteract::SetCollisionProfileDefault(UCInteract::ProfileInteract);
 }
 
 void ALGGameMode::BeginPlay() {
