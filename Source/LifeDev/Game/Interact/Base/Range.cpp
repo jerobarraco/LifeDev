@@ -30,9 +30,7 @@ ARange::ARange():Super() {
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Root);
 	Collider->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-	// Collider->SetCollisionProfileName("Interact");
-	// Collider->SetCollisionProfileName("OverlapAllDynamic");
-	Collider->SetCollisionProfileName("OverlapInteract");
+	Collider->SetCollisionProfileName("Hint");
 	Collider->CanCharacterStepUpOn = ECB_No;
 	Collider->InitSphereRadius(52); // 50 is ok but with 60 i make sure it's bigger than the sphere
 	
