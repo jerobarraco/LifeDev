@@ -152,11 +152,14 @@ void ALStep::Start_Implementation() {
 }
 
 void ALStep::StartDialogs() {
+	// risky. but bind anyway. so that child classes can still benefit from the callback.
+	// and also can trigger their own dialogs and fbdlgauto would still work.
+	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
+
 	if (DlgId.IsNone()) return;
 
 	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
 
-	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 	Diags->AddId(DlgId);
 
 	FinishAfterDlgs();
