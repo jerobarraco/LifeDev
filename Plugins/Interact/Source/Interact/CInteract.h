@@ -52,17 +52,17 @@ public:
 
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	static FORCEINLINE void SetCollisionProfileDefault(const FName& Name) { ProfileDefault = Name; }
+	static FORCEINLINE void SetProfileDefault(const FName& Name) { ProfileDefault = Name; }
 
 	// Sets the profile used when active for this specific instance.
 	// Will override the one set by SetCollisionProfileDefault.
 	// SetActive will swap between this profile and ProfileNone.
 	// You would want to call this on constructor. If you call it later it won't actually change the profile.
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	FORCEINLINE void SetCollisionProfileActive(const FName& Name) { ProfileActive = Name; }
+	FORCEINLINE void SetProfileActive(const FName& Name) { ProfileActive = Name; }
 	// read SetCollisionProfileActive. this calls it with ProfileHinted
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	FORCEINLINE void SetCollisionProfileActiveHinted() { ProfileActive = ProfileHinted; }
+	FORCEINLINE void SetProfileHinted() { ProfileActive = ProfileHinted; }
 
 	inline static const FName ProfileInteract = "Interact";
 	inline static const FName ProfileHinted = "Hinted";

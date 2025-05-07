@@ -16,16 +16,13 @@ APuzzleI01::APuzzleI01():Super() {
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	TriggerDlg = DoneId;
 	UseHint = true;
-	// used for the hints. // TODO move to base class?
-	Interact->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-	Interact->SetCollisionProfileName(Interact->ProfileHinted);
+	Interact->SetProfileHinted();
+	UseAutoActivate = true;
 }
 
 void APuzzleI01::PostLoad() {
 	Super::PostLoad();
-	static const TArray<bool> Locks = {
-		true, false, true, true, false
-	};
+	static const TArray<bool> Locks = { true, false, true, true, false };
 	SetLocks(Locks);
 }
 
@@ -33,8 +30,6 @@ void APuzzleI01::BeginPlay() {
 	Super::BeginPlay();
 
 	// 2nd number and last are just random variations
-	static const TArray<int32> States = {
-		0, 4, 0, 4, 2 
-	};
+	static const TArray<int32> States = { 0, 4, 0, 4, 2 };
 	SetStates(States);
 }
