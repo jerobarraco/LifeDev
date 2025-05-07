@@ -2,6 +2,7 @@
 
 #include "PuzzleI01.h"
 
+#include "Interact/CInteract.h"
 #include "Interact/CPuzzle.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
@@ -15,6 +16,9 @@ APuzzleI01::APuzzleI01():Super() {
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	TriggerDlg = DoneId;
 	UseHint = true;
+	// used for the hints. // TODO move to base class?
+	Interact->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	Interact->SetCollisionProfileName(Interact->ProfileHinted);
 }
 
 void APuzzleI01::PostLoad() {

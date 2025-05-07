@@ -52,7 +52,7 @@ public:
 
 	// Sets the default collision channel for new instances. only need to call once. by default will use "Interact"
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	static void SetDefaultCollisionProfile(const FName& Name) { Profile = Name; }
+	static void SetCollisionProfileDefault(const FName& Name) { Profile = Name; }
 
 	inline static const FName ProfileInteract = "Interact";
 	inline static const FName ProfileHinted = "Hinted";
@@ -90,21 +90,14 @@ public:
 	TWeakObjectPtr<UPrimitiveComponent> PhysComp = nullptr;
 
 	// When this is triggered
-	// If this is replicated, this will execute only on server.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnTrigger OnTrigger;
 	
-	// When this is being hovered on/off. Not replicated.
-	// Always executes on the client that triggered this,
-	// The triggering CInteractor is always an AutonomousProxy not a SimulatedProxy.
-	// Though THIS Cinteract could be a SimulatedProxy. 
+	// When this is being hovered on/off.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnHover OnHover;
 	
-	// When the object is being grabbed or released. Not replicated
-	// Always executes on the client that triggered this,
-	// The triggering CInteractor is always an AutonomousProxy not a SimulatedProxy.
-	// Though THIS Cinteract could be a SimulatedProxy.
+	// When the object is being grabbed or released.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnGrab OnGrab;
 
