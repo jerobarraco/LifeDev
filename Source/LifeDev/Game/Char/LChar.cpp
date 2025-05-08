@@ -112,14 +112,16 @@ void ALChar::SetUIVisible(const bool Visible) {
 	UI->SetVisibility(Visible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Hidden);
 }
 
-void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
+void ALChar::InteractHover(const bool On, UCInteract* const Comp) {
+	UE_LOG(LogLChar, Log, TEXT("%hs On=%i Comp=%s"), __func__, On, *GetNameSafe(Comp));
+
 	if (UNLIKELY(!IsValid(UI))) return;
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerManager& Timer = World->GetTimerManager();
 	
 	// will hide the prompt on invalid. which is a nice side effect.
-	if (bOn & LIKELY(IsValid(Comp))) {
+	if (On & LIKELY(IsValid(Comp))) {
 		UI->PromptShow(Comp->Text);
 		Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
 	} else {

@@ -119,7 +119,7 @@ protected:
 	virtual void PossessedBy(AController* const NewController) override;
 
 	UFUNCTION()
-	void InteractHover(const bool bOn, UCInteract* const Comp);
+	void InteractHover(const bool On, UCInteract* const Comp);
 	UFUNCTION()
 	void HoverDiag();
 	void HoverDiagClear();
