@@ -14,14 +14,13 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
-void UGameUI::SetPrompt_Implementation(const FText& Text) {
+void UGameUI::PromptSet_Implementation(const FText& Text) {
 	if (UNLIKELY(!T_Prompt)) return;
 	T_Prompt->SetText(Text);
 }
 
 void UGameUI::PromptShow_Implementation(const FText& Text) {
-	if (UNLIKELY(!T_Prompt)) return;
-	T_Prompt->SetText(Text);
+	PromptSet(Text);
 	if (LIKELY(PromptBG)) PromptBG->SetVisibility(ESlateVisibility::Visible);
 }
 

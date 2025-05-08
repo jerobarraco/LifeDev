@@ -26,12 +26,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LearnHide();
 
+	// sets the prompt but doesn't show if it's not currently shown.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
-	void SetPrompt(const FText& Text);
-	
+	void PromptSet(const FText& Text);
+	// shows the prompt and sets it.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))
 	void PromptShow(const FText& Text);
-
+	// hides the prompt
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void PromptHide();
 

@@ -114,19 +114,18 @@ void ALChar::SetUIVisible(const bool Visible) {
 
 void ALChar::InteractHover(const bool bOn, UCInteract* const Comp) {
 	if (UNLIKELY(!IsValid(UI))) return;
-	// will hide the prompt on invalid. which is a nice side effect. 
-	if (bOn && LIKELY(IsValid(Comp)))
-		UI->PromptShow(Comp->Text);
-	else
-		UI->PromptHide();
-
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerManager& Timer = World->GetTimerManager();
-	if (bOn)
+	
+	// will hide the prompt on invalid. which is a nice side effect.
+	if (bOn & LIKELY(IsValid(Comp))) {
+		UI->PromptShow(Comp->Text);
 		Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
-	else
+	} else {
+		UI->PromptHide();
 		HoverDiagClear();
+	}
 }
 
 void ALChar::HoverDiag() {
@@ -173,13 +172,12 @@ void ALChar::InteractSetActive(const bool Enabled) const {
 
 void ALChar::Init() {
 	if (LIKELY(Camera)) Camera->Init();
-
+	
+	if (UNLIKELY(!Flags)) return;
 	// i can do this because the class defaults are in code. and then can be changed via config.
 	// and they get reloaded on game start (travel to game_l).
 	// and also the save-game is loaded before a game travel. and doesn't change during game.
 	// with your powers combined, it's me! Captain cringy feat!
-	if (UNLIKELY(!Flags)) return;
-
 	const float Foxify =
 		-.5 + Flags->Get(LDConsts::Flags::Settings::Global::Foxy); // -.5,.5
 	const float SpeedMod = SpeedFoxy * Foxify;
@@ -351,8 +349,8 @@ void ALChar::ActInteract() { // don't make const. the input system does not like
 	const UCInteract* const Comp = Interactor->GetHoverComp();
 	Interactor->TryTrigger(); // this is synchronous
 
-	if (IsValid(Comp) && LIKELY(IsValid(UI))) {
-		UI->SetPrompt(Comp->Text); // update the text
+	if (IsValid(Comp) & LIKELY(IsValid(UI))) {
+		UI->PromptSet(Comp->Text); // update the text with the new state
 		UE_LOG(LogLChar, Log, TEXT("%hs Text=%s"), __func__, *Comp->Text.ToString());
 	}
 }
