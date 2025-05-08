@@ -175,20 +175,26 @@ void UCInteractor::DoEnd() {
 
 void UCInteractor::DoStart(UCInteract* const Component) {
 	const UCInteract* const PHover = HoverComp.Get();
-	const bool ValidHover = IsValid(PHover);
+	// TODO try this
+	if (UNLIKELY(!IsValid(PHover) & !IsValid(Component))) {
+		UE_LOG(LogCInteractor, Log, TEXT("%hs: Dead %s"), __func__, *GetNameSafe(this));
+		DoEnd();
+		return;
+	}
+
 	// TODO fix
 	// on every tick almost
 	// skip retries
 	// pretty likely it's the same from the previous frame 
 	// Valid is important since an object could be destroyed on reward. comp == pHover but it won't be valid anymore.
-	if (LIKELY((Component == PHover) & ValidHover)) return;
+	if (LIKELY(Component == PHover)) return;
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
 		__func__, *GetNameSafe(this));
 
 	DoEnd(); // does checks and nullifies. this would allow to clean by calling doStart with null
 
-	if (UNLIKELY(!IsValid(Component) & !ValidHover)) return;
+	if (UNLIKELY(!IsValid(Component))) return;
 
 	HoverComp = Component;
 	Component->Hover(true, Cast<APawn>(GetOwner()));
