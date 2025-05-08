@@ -12,7 +12,9 @@ ABatts::ABatts():Super() {
 	RewardFlash = 0;
 	UseAnim = false;
 	StateNum = 1;
+	UseAutoActivate = true;
 	UseRewardDestroy = true;
+	RewardFlash = .1;
 	RewardItem = LDConsts::Items::Batts;
 	Texts = { NSLOCTEXT("Batts", "State0", "Batteries") } ;
 

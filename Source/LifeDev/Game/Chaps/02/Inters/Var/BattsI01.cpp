@@ -1,13 +1,14 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "BattsI00.h"
+#include "BattsI01.h"
 
-ABattsI00::ABattsI00():Super() {
+#include "LifeDev/Core/Consts/ConstItems.h"
+
+ABattsI01::ABattsI01():Super() {
 	Texts = { FText::FromString(TEXT("Pick up batteries")) };
-	TriggerDlg = "BattsPick";
-	UseHint = true;
-	HintCondition = "{Inter.TriggerL.WalkmanI00}";
+	RewardItem = LDConsts::Items::Batts;
 
 	// needs to move to be able to be attached to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
+	Super::SetActorHiddenInGame(true);
 }
