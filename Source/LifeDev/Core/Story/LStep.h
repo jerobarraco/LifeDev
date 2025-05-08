@@ -31,7 +31,7 @@ public:
 	ALStep();
 
 	virtual void TryStart_Implementation() override;
-	
+
 	// Be careful! this will remove all delegates to Dialogs.OnDone and Inventory.OnMOd
 	// it will also remove from inventory the items on RemItems.
 	// And it's possible this class will get unloaded by the next step.
@@ -40,7 +40,7 @@ public:
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
-	
+
 	// enables or disables the interacts on IntersActiveAuto
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
 	void SetIntersActiveAuto(const bool NewActive=true);

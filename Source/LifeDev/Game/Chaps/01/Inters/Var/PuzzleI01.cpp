@@ -16,7 +16,7 @@ APuzzleI01::APuzzleI01():Super() {
 	TriggerDlg = DoneId;
 	UseHint = true;
 	UseAutoActivate = true;
-	SetProfileHinted(); // needed so it doesn't trigger the interactor but it does trigger hint
+	SetProfileHinted(); // needed so it doesn't trigger the interactor, but it does trigger hint
 }
 
 void APuzzleI01::PostLoad() {
