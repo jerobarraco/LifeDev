@@ -55,24 +55,26 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 
 	/// update the item count
 	
-	int32 Current = Item->Count;
 	// calculate the difference. are clamped to the produce (0, MaxCount)
-	// get the max we can go. Current+diff to allow to grow.
+	const int32 Current = Item->Count;
+	// get the max positive possible. Current+Diff to allow to grow (clamped below).
 	const int32 Max = Item->MaxCount <= 0 ? (Current + Diff): Item->MaxCount;
-	// clamp the diff to the max. and min.
-	const int32 CurDiff = FMath::Clamp(Diff, -Current, Max - Current); // -Current means it can't reach <0
-	// apply diff
-	Current = CurDiff;
+	UE_CLOG(Diff < -Current, LogInventory, Warning,
+		TEXT("%hs Attempt to decrease beyond owned quantity. It will get clamped! Current=%i Diff=%i"),
+		__func__, Current, Diff);
+	// clamp the diff to the max. and min. -Current means it can't reach <0, but stay on 0
+	const int32 CurDiff = FMath::Clamp(Diff, -Current, Max - Current);
 
-	// notify the caller that we haven't changed anything. also avoid triggering an onMod and selection
+	// notify the caller that we haven't changed anything. also avoid triggering an onMod and selection.
 	if (UNLIKELY(CurDiff == 0)) {
-		UE_LOG(LogInventory, Warning, TEXT("%hs Item unchanged. Diff is 0. Maybe it has reached the maximum. Name=%s"),
+		UE_LOG(LogInventory, Warning, TEXT("%hs Item unchanged. Diff is 0."
+			"Maybe it has reached the maximum. or tried to go negative. Name=%s"),
 			__func__, *Name.ToString());
 		return false;
 	}
-	
-	Item->Count = Current;
-	
+
+	Item->Count = Current + CurDiff; // apply change
+
 	// intentionally copying the item, to avoid issues. the item might have been removed, or might 
 	FItem ItemCopy = *Item;
 	// remove empty consumables
