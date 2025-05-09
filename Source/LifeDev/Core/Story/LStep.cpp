@@ -31,7 +31,7 @@ ALStep::ALStep():Super() {
 	
 	Anim = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Anim"));
 	Anim->TRoot = Cam;
-	
+
 	AnimTarget = CreateDefaultSubobject<USceneComponent>(TEXT("Target"));
 	AnimTarget->SetupAttachment(Root);
 
@@ -42,6 +42,10 @@ ALStep::ALStep():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
 	if (CCam.Succeeded()) AnimArrow->SetStaticMesh(CCam.Object);
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CMat (TEXT("/Engine/EditorResources/FieldNodes/_Resources/M_FieldRadiusPreview"));
+	if (LIKELY(CMat.Succeeded())) AnimArrow->SetMaterial(0, CMat.Object);
 #endif
 }
 
@@ -252,7 +256,7 @@ void ALStep::FBUpd_Implementation(const float Value) {
 void ALStep::CheckFinish() {
 	const int32 NumItems = ItemsFinish.Num();
 	const int32 NumFlags = FlagsFinish.Num();
-	if (NumItems<1 && NumFlags<1) return; // nothing to finish
+	if ((NumItems<1) & (NumFlags<1)) return; // nothing to finish
 	if (LIKELY(!HasItemsFinish())) return;
 	if (LIKELY(!HasFlagsFinish())) return;
 	// clear to avoid any double triggering that might happen while the dialogs are being triggered

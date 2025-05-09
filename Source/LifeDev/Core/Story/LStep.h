@@ -193,8 +193,6 @@ protected:
 	void FlagMod(const FName& FlagName, const float Diff, const float Total);
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void FBUpd(const float Value);
-	// UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	// void FBMod(const FName& FlagName, const float Diff, const float Total);
 
 	// checks if we have the itemsFinish and finish (after a dialog if any)
 	// no need to call this as this class will watch the inventory. but just in case.
