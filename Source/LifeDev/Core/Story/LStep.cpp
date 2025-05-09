@@ -50,13 +50,11 @@ ALStep::ALStep():Super() {
 }
 
 void ALStep::TryStart_Implementation() {
-	
 	// initialize cam and anim for an appropriate cam blend
 	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
 		// the animator trans uses relative transforms always :/
-		Anim->CopyTStart(); // TODO find a TStart so that, at the current fb val, it will start at the current location
+		Anim->CopyTStart();
 		Anim->TEnd = AnimTarget->GetRelativeTransform();
-		if (LIKELY(FB)) FBUpd(FB->GetVal()); // avoid jumping on start when the fb is already high
 	}
 
 	Super::TryStart_Implementation();
@@ -152,7 +150,10 @@ void ALStep::Start_Implementation() {
 	DoIntersHint(); // hint after activate.
 	DoIntersTrigger(); // trigger after activate. and hint.
 
-	if (LIKELY(FB)) FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
+	if (LIKELY(FB)) {
+		FBFrom = FB->GetVal(); // used for the animfb
+		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
+	}
 
 	// show dialogs
 	StartDialogs();
@@ -242,18 +243,28 @@ void ALStep::DestroyActors() {
 }
 
 void ALStep::ItemMod_Implementation(const FName& ItemName, int32 Diff, const FItem& Item) {
-	CheckFinish(); // this is inefficient. its checking both items and flags.
+	CheckFinish(); // this is inefficient. it's checking both items and flags.
 }
 
 void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, const float Total) {
-	CheckFinish(); // this is inefficient. its checking both items and flags.
+	CheckFinish(); // this is inefficient. it's checking both items and flags.
 }
 
 void ALStep::FBUpd_Implementation(const float Value) {
 	if (!UseFBAnim) return;
-	// notice this depends on the tick interval for the FB. it will give the most accurate animation though.
+	// recalculate the range, so that the animation always starts and ends where it should.
+	// and the transforms positions are always anchored at the start and end.
+	// regardless of the start and end fb value. even if it's increasing or decreasing.
+	const float R = (FBDlgAutoTo - FBFrom); // calculate new range
+	const float V = (Value - FBFrom);
+	if (UNLIKELY(R==0)) return; // division by 0
+	const float NV = V/R; // remap
+
+	// notice this depends on the tick interval for the FB.
+	// it will give the most accurate animation though.
 	// i will go with something simple for now.
-	Anim->Update(Value); // set the value to match the fb. let the anim do the calculations.
+	// set the value to match the fb. let the anim do transform blending.
+	Anim->Update(NV);
 }
 
 void ALStep::CheckFinish() {

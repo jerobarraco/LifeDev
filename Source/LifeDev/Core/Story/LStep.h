@@ -206,7 +206,7 @@ protected:
 	void DoIntersTrigger() const;
 	void DoIntersHint() const;
 	// fade an array of ALInteract
-	static void DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, bool In);
+	static void DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, const bool In);
 	static void DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive);
 
 #pragma region cdo
@@ -236,6 +236,7 @@ protected:
 	TObjectPtr<AGhosts> Ghosts = nullptr;
 #pragma endregion 
 	FTimerHandle TimerDestroy;
+	float FBFrom = 0; // a cache used to remap the fb values for fbanim
 };
 
 // it would be nice to have a AnimatorCam but i don't need it atm. otherwise look at ALNPC01I00
