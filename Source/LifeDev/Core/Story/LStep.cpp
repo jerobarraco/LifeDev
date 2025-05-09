@@ -28,7 +28,7 @@ ALStep::ALStep():Super() {
 	CamShakeClass = CShake.Class;
 	// disappeared from ue5.4 without warning
 	// UDefaultCameraShakeBase::StaticClass();
-	
+
 	Anim = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Anim"));
 	Anim->TRoot = Cam;
 
@@ -50,12 +50,20 @@ ALStep::ALStep():Super() {
 }
 
 void ALStep::TryStart_Implementation() {
+	// initialize cam and anim for an appropriate cam blend
+	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
+		// the animator trans uses relative transforms always :/
+		Anim->CopyTStart();
+		Anim->TEnd = AnimTarget->GetRelativeTransform();
+		if (LIKELY(FB)) FBUpd(FB->GetVal()); // avoid jumping on start when the fb is already high
+	}
+
 	Super::TryStart_Implementation();
 
 	EnsureItems(); // make sure items are awarded
 
-	// works on the premise that onStart it will force input again.
 	// disable the input during camblend
+	// works on the premise that onStart it will force input again.
 	if (!CamTarget) return;
 	const UWorld* const W = GetWorld();
 	AGameModeBase* const GameModeBase = LIKELY(W) ? W->GetAuthGameMode() : nullptr;
@@ -134,12 +142,6 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
-		// the animator trans uses relative transforms always :/
-		Anim->TStart = Cam->GetRelativeTransform();
-		Anim->TEnd = AnimTarget->GetRelativeTransform();
-	}
-
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
