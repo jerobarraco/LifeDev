@@ -7,7 +7,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AStove::AStove():Super() {
-	Texts = { FText::FromString(TEXT("Stove")) } ;
+	Texts = { NSLOCTEXT("Stove", "State0", "Stove") };
 	RewardFlash = 0;
 	UseAnim = false;
 	UseRewardDestroy = false;

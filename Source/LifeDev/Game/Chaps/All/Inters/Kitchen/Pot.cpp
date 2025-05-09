@@ -11,8 +11,8 @@
 
 APot::APot():Super() {
 	Texts = {
-		FText::FromString(TEXT("Pot Full")), // closed
-		FText::FromString(TEXT("Pot"))
+		NSLOCTEXT("Pot", "State0", "Pot Full"), // closed
+		NSLOCTEXT("Pot", "State1", "Pot")
 	};
 	RewardFlash = 0;
 	UseRewardDestroy = false;

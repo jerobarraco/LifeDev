@@ -8,7 +8,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 APianoLid::APianoLid():Super() {
-	Texts = {FText::FromString("")};
+	Texts = { NSLOCTEXT("PianoLid", "State0", "") };
 	StateNum = 2;
 	UseAnim = true;
 	UseFade = false;

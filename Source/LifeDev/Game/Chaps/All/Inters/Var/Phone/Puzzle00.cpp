@@ -23,16 +23,14 @@ void APuzzle00::PostLoad() {
 	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Inters.Num();
 	for (int32 i= 0; UNLIKELY(i<Num); ++i) {
-		AInteract* I = Inters[i];
+		AInteract* const I = Inters[i];
 		if (UNLIKELY(!I)) continue;
 
 		const FString& SI =
 			i < 10 ? FString::FromInt(i) :
 			(i < 11 ? TEXT("*"): TEXT("#"));
 		const FText& TI = FText::FromString(SI);
-		I->Texts = {
-			TI, TI
-		};
+		I->Texts = { TI, TI };
 	}
 	// static const TArray<bool> Locks = { true, false, true, false };
 	

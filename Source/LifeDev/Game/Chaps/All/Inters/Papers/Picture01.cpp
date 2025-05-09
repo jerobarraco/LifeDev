@@ -13,7 +13,7 @@ APicture01::APicture01():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
-	Texts = { FText::FromString(TEXT("A Picture")) } ;
+	Texts = { NSLOCTEXT("PictureI01", "State0", "A Picture") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Picture/Picture01_P"));

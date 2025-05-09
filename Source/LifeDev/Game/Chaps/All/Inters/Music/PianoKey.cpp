@@ -7,7 +7,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 APianoKey::APianoKey():Super() {
-	Texts = {FText::FromString("Play")};
+	Texts = { NSLOCTEXT("PianoKey", "State0", "Play") };
 	StateNum = 1;
 	UseAnim = true;
 	IsOneShot = true; // will disable the keys on trigger. will be re-enabled on puzzle reset.

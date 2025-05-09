@@ -21,7 +21,7 @@ ALSwitch03::ALSwitch03(): Super() {
 	Anim->Curve = CCF.Object;
 
 	// Text is/should be set by the puzzle.
-	Texts = {FText::FromString("Push")};
+	Texts = { NSLOCTEXT("Switch03", "State0", "Push") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Bath/Toilet02/Btn2")); // already grey

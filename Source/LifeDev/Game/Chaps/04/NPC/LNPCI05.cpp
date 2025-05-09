@@ -2,7 +2,7 @@
 #include "LNPCI05.h"
 
 ALNPCI05::ALNPCI05():Super() {
-	Texts = { FText::FromString("...") };
+	Texts = { NSLOCTEXT("NPCI05", "State0", "...") };
 
 	IsLocked = true;
 	UseFade = true;

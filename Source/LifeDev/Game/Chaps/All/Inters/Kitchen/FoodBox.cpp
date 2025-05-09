@@ -7,7 +7,7 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AFoodBox::AFoodBox():Super() {
-	Texts = { FText::FromString(TEXT("FoodBox"))};
+	Texts = { NSLOCTEXT("FoodBox", "State0", "Food box") };
 	RewardFlash = 0;
 	UseRewardDestroy = true;
 	UseFade = true;
