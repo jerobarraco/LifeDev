@@ -114,7 +114,8 @@ EItemUseResult UCInteractor::TryUseItem(const FName Name) const {
 	return Result;
 }
 
-void UCInteractor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void UCInteractor::TickComponent(const float DeltaTime, const ELevelTick TickType,
+	FActorComponentTickFunction* const ThisTickFunction) {
 	// UE_LOG(LogCInteractor, Log, TEXT("%hs: %s. Server=%i, Role=%s."),
 	// __func__, *GetNameSafe(this),
 	// JU_IsServerSide, *UEnum::GetValueAsString(GetOwnerRole()));
@@ -164,38 +165,36 @@ void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void UCInteractor::DoEnd() {
-	UCInteract* const PHover = HoverComp.Get();
+	UCInteract* const PHover = HoverComp.Get(); // could be null if it was destroyed. warning.
 	HoverComp = nullptr; // important to nullify.
-	// if not valid just return. it won't be nice to broadcast onHover with an invalid component.
-	if (UNLIKELY(!IsValid(PHover))) return;
 
-	PHover->Hover(false, nullptr);
-	OnHover.Broadcast(false, PHover);
+	if (UNLIKELY(!IsHovering)) return; // avoid triggering a delegate when not needed.
+	IsHovering = false;
+
+	if (LIKELY(IsValid(PHover)))
+		PHover->Hover(false, nullptr);
+
+	OnHover.Broadcast(false, PHover); // could be null
 }
 
 void UCInteractor::DoStart(UCInteract* const Component) {
 	const UCInteract* const PHover = HoverComp.Get();
-	// TODO try this
-	if (UNLIKELY(!IsValid(PHover) & !IsValid(Component))) {
-		UE_LOG(LogCInteractor, Log, TEXT("%hs: Dead %s"), __func__, *GetNameSafe(this));
+	const bool Died = IsHovering & !IsValid(PHover); // was hovering but we've lost track of it
+	const bool UnHover = bool(PHover) & !IsValid(Component); // have one, but not anymore
+	if (UNLIKELY(Died | UnHover)) {
+		UE_LOG(LogCInteractor, Log, TEXT("%hs: No longer hovering %s"), __func__, *GetNameSafe(this));
 		DoEnd();
 		return;
 	}
 
-	// TODO fix
-	// on every tick almost
-	// skip retries
-	// pretty likely it's the same from the previous frame 
-	// Valid is important since an object could be destroyed on reward. comp == pHover but it won't be valid anymore.
+	// can't be up. since ue will nullify the phover on destroy. hence this will be true.
+	// but we still need to call doEnd
 	if (LIKELY(Component == PHover)) return;
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
 		__func__, *GetNameSafe(this));
 
-	DoEnd(); // does checks and nullifies. this would allow to clean by calling doStart with null
-
-	if (UNLIKELY(!IsValid(Component))) return;
-
+	IsHovering = true;
 	HoverComp = Component;
 	Component->Hover(true, Cast<APawn>(GetOwner()));
 	OnHover.Broadcast(true, Component);

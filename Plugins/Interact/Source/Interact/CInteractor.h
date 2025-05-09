@@ -61,6 +61,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
 	TWeakObjectPtr<UPhysicsHandleComponent> GrabHandler = nullptr;
 
+	// triggered when an interact is un/hovered. It tries to pass the interact.
+	// But if it was destroyed, it will be null.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractHover OnHover;
 
@@ -68,7 +70,8 @@ public:
 	FOnInteractTrigger OnTrigger;
 
 protected:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(const float DeltaTime, const ELevelTick TickType,
+		FActorComponentTickFunction* const ThisTickFunction) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
@@ -78,10 +81,14 @@ protected:
 	void DoStart(UCInteract* const Component);
 
 	inline static ECollisionChannel InteractChannel = ECC_Visibility;
-	
+
+	// stores whether this is supposedly hovering something. nothing that HoverComp could be null if it gest destroyed.
+	// the whole point of this is to detect that situation.
+	bool IsHovering = false;
 	// the currently hovered interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TWeakObjectPtr<UCInteract> HoverComp = nullptr;
+	// the currently grabbed interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TWeakObjectPtr<UCInteract> GrabbedComp = nullptr;
 };
