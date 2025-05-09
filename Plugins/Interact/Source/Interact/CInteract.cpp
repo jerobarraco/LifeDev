@@ -42,9 +42,9 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 
 	AActor* const Owner = GetOwner();
 	// this way kind of sucks. but it's the best. it's important to set before hover and clear after unhover.
-	if (IsHover && LIKELY(Owner)) Owner->SetInstigator(Inst); // aways before onHover if IsHover
+	if (IsHover & LIKELY(Owner)) Owner->SetInstigator(Inst); // aways before onHover if IsHover
 	OnHover.Broadcast(IsHover);
-	if (!IsHover && LIKELY(Owner)) Owner->SetInstigator(nullptr); // always null. always after onHover if !IsHover
+	if (!IsHover & LIKELY(Owner)) Owner->SetInstigator(nullptr); // always null. always after onHover if !IsHover
 }
 
 void UCInteract::DeInit() {
@@ -57,11 +57,11 @@ bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
 	UE_LOG(LogCInteract, Log, TEXT("%hs. IsGrab=%i, IsGrabbable=%i, IsGrabbed=%i, NewParent=%s"),
 		__func__, IsGrab, IsGrabbable, IsGrabbed, *GetNameSafe(NewParent));
 	// avoid stealing the grab
-	if (IsGrab && (!IsGrabbable || IsGrabbed)) return false;
+	if (IsGrab & (!IsGrabbable | IsGrabbed)) return false;
 	IsGrabbed = IsGrab;
 
 	Reparent(IsGrab, NewParent); // note this happens after IsGrabbable return above
-	
+
 	OnGrab.Broadcast(IsGrab, NewParent);
 	return true;
 }
@@ -166,6 +166,7 @@ void UCInteract::Deactivate() {
 		__func__, *GetNameSafe(GetOwner()));
 	Super::Deactivate();
 	SetCollisionEnabledBool(false);
+	SetStencil(-1); // disable stencils. the CInteractor will call Hover(false) anyway.
 }
 
 void UCInteract::Activate(const bool bReset) {
