@@ -50,10 +50,11 @@ ALStep::ALStep():Super() {
 }
 
 void ALStep::TryStart_Implementation() {
+	
 	// initialize cam and anim for an appropriate cam blend
 	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
 		// the animator trans uses relative transforms always :/
-		Anim->CopyTStart();
+		Anim->CopyTStart(); // TODO find a TStart so that, at the current fb val, it will start at the current location
 		Anim->TEnd = AnimTarget->GetRelativeTransform();
 		if (LIKELY(FB)) FBUpd(FB->GetVal()); // avoid jumping on start when the fb is already high
 	}
