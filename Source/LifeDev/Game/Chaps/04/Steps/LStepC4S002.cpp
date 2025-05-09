@@ -14,7 +14,7 @@ ALStepC4S002::ALStepC4S002():Super() {
 	TeleportChar = false;
 	FlagsFinish = { "Inter.Trigger.StoveI00" };
 
-	UseRandFB = true; // min is limited in c4s0
+	UseFBRand = true; // min is limited in c4s0
 	RandFB->DelayMin = .5;
 	RandFB->DelayMax = .85;
 	RandFB->ValueMin = -.015;

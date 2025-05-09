@@ -89,7 +89,7 @@ public:
 	bool UseFadeTime = false;
 	// whether to manage the RandFB. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
-	bool UseRandFB = false;
+	bool UseFBRand = false;
 	// whether to manage rain. Enable at start, disable at stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Extras")
 	bool UseRain = false;

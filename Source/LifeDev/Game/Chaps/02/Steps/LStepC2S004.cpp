@@ -33,7 +33,7 @@ ALStepC2S004::ALStepC2S004():Super() {
 	RandFB->ValueMin = -.07;
 	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 	// .02 is actually very generous
-	UseRandFB = true;
+	UseFBRand = true;
 }
 
 void ALStepC2S004::TryStart_Implementation() {

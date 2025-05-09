@@ -26,7 +26,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 	RandFB->DelayMax = 2;
 	RandFB->ValueMin = -.07;
 	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
-	UseRandFB = true;
+	UseFBRand = true;
 	UseRain = true;
 }
 

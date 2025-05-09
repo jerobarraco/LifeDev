@@ -21,7 +21,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
-	UseRandFB = true;
+	UseFBRand = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
 	// wait for card AND basin. the spot is linked to the card and puzzle.
 	ItemsFinish = { LDConsts::Items::Card0 };

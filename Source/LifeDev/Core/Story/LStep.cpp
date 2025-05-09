@@ -115,7 +115,7 @@ void ALStep::Start_Implementation() {
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	
 	// do only on postwait. otherwise the input is reset before it faded out.
-	// read note on trystart. important to force.
+	// read note on TryStart. important to force.
 	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(InputEnabled);
 
 	if (UseGhosts) {
@@ -128,7 +128,7 @@ void ALStep::Start_Implementation() {
 	}
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
-	if (UseRandFB & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
+	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
 	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
 		// the animator trans uses relative transforms always :/
