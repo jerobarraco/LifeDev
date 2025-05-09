@@ -188,7 +188,7 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	}
 
 	// can't be up. since ue will nullify the phover on destroy. hence this will be true.
-	// but we still need to call doEnd
+	// but on top would prevent the doEnd
 	if (LIKELY(Component == PHover)) return;
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
