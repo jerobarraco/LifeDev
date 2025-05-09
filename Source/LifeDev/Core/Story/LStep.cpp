@@ -128,9 +128,9 @@ void ALStep::Start_Implementation() {
 	}
 
 	if (UseRain) ALMusicMan::SetRainS(W, true);
-	if (UseRandFB && LIKELY(IsValid(RandFB))) RandFB->Activate(true);
+	if (UseRandFB & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	if (UseFBAnim && LIKELY(Anim && AnimTarget)) {
+	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
 		// the animator trans uses relative transforms always :/
 		Anim->TStart = Cam->GetRelativeTransform();
 		Anim->TEnd = AnimTarget->GetRelativeTransform();

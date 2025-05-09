@@ -9,6 +9,7 @@
 
 class UCAnimatorTrans;
 class UCQuickMesh;
+
 // chapter 0: the step where the char is in bed berating
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC0S001 : public ALStep {
