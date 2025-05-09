@@ -179,8 +179,10 @@ void UCInteractor::DoEnd() {
 
 void UCInteractor::DoStart(UCInteract* const Component) {
 	const UCInteract* const PHover = HoverComp.Get();
-	const bool Died = IsHovering & !IsValid(PHover); // was hovering but we've lost track of it
-	const bool UnHover = bool(PHover) & !IsValid(Component); // have one, but not anymore
+	const bool ValidHover = IsValid(PHover);
+	const bool Died = IsHovering & !ValidHover; // was hovering but we've lost track of it
+	const bool UnHover = ValidHover & !IsValid(Component); // have one, but not anymore
+	// i could micro-optimize this a bit more, but it will become harder to read.
 	if (UNLIKELY(Died | UnHover)) {
 		UE_LOG(LogCInteractor, Log, TEXT("%hs: No longer hovering %s"), __func__, *GetNameSafe(this));
 		DoEnd();
@@ -190,6 +192,9 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	// can't be up. since ue will nullify the phover on destroy. hence this will be true.
 	// but on top would prevent the doEnd
 	if (LIKELY(Component == PHover)) return;
+
+	// important when hovering one interact after the other immediately
+	if (UNLIKELY(ValidHover)) DoEnd();
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
 		__func__, *GetNameSafe(this));
