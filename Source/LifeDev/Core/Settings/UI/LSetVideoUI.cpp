@@ -216,30 +216,30 @@ void ULSetVideoUI::QSwitchesSet() {
 	QSwitches.Add(EQualityType::SHADING, QS_Shading);
 
 	QSTexts.Add(EQualityType::OVERALL,
-				FText::FromString(TEXT("Overall")));
+	NSLOCTEXT("SetVideoUI", "Overall", "Overall"));
 	QSTexts.Add(EQualityType::VIEW_DISTANCE,
-				FText::FromString(TEXT("View Distance")));
+	NSLOCTEXT("SetVideoUI", "ViewDist", "View Distance"));
 	QSTexts.Add(EQualityType::ANTI_ALIAS,
-				FText::FromString(TEXT("Anti-Aliasing")));
+	NSLOCTEXT("SetVideoUI", "AA", "Anti-Aliasing"));
 	QSTexts.Add(EQualityType::POST_PROCESS,
-				FText::FromString(TEXT("Post Processing")));
+	NSLOCTEXT("SetVideoUI", "PP", "Post Processing"));
 	QSTexts.Add(EQualityType::SHADOW,
-				FText::FromString(TEXT("Shadows")));
+	NSLOCTEXT("SetVideoUI", "Shadows", "Shadows"));
 	QSTexts.Add(EQualityType::GLOBAL_ILLUMINATION,
-				FText::FromString(TEXT("Global Illumination")));
+	NSLOCTEXT("SetVideoUI", "GI", "Global Illumination"));
 	QSTexts.Add(EQualityType::REFLECTION,
-				FText::FromString(TEXT("Reflections")));
+	NSLOCTEXT("SetVideoUI", "Reflections", "Reflections"));
 	QSTexts.Add(EQualityType::TEXTURES,
-				FText::FromString(TEXT("Textures")));
+	NSLOCTEXT("SetVideoUI", "Textures", "Textures"));
 	QSTexts.Add(EQualityType::EFFECTS,
-				FText::FromString(TEXT("Effects")));
+	NSLOCTEXT("SetVideoUI", "FX", "Effects"));
 	QSTexts.Add(EQualityType::FOLIAGE,
-				FText::FromString(TEXT("Foliage")));
+	NSLOCTEXT("SetVideoUI", "Foliage", "Foliage"));
 	QSTexts.Add(EQualityType::SHADING,
-				FText::FromString(TEXT("Shading")));
+	NSLOCTEXT("SetVideoUI", "Shading", "Shading"));
 
 	UE_LOG(LogLSetVid, Log, TEXT("LSetVideoUI::%hs QTextsN=%i QSwitchesN=%i"),
-			__func__, QSTexts.Num(), QSwitches.Num());
+		__func__, QSTexts.Num(), QSwitches.Num());
 	TArray<EQualityType> Keys;
 	QSTexts.GetKeys(Keys);
 	for (const EQualityType& Q: Keys) {
