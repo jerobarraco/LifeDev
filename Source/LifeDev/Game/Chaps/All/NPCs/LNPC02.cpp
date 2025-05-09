@@ -8,7 +8,7 @@
 ALNPC02::ALNPC02():Super() {
 	UseAnim = false;
 	IsLocked = true;
-	Texts = { FText::FromString("...") };
+	Texts = { NSLOCTEXT("NPC02", "State0", "...") };
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh1(TEXT("/Game/LifeDev/Game/Chars/Char07/Parts/Pelvis.Pelvis"));

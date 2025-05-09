@@ -90,7 +90,7 @@ void UGameUI::FlagMod(const FName& Name, const float Diff, const float Total) {
 }
 
 void UGameUI::StepStart(AStep* const Step) {
-	if (LIKELY(!!Step & IsValid(TState))) {
+	if (LIKELY(bool(Step) & IsValid(TState))) {
 		static FText TStateF = NSLOCTEXT("Status", "State", "State '{0}'");
 		// FFormatOrderedArguments Args;
 		// Args.Add(Step->Name.ToString());
