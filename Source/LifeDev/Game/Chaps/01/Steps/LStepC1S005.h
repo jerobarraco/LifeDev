@@ -7,7 +7,7 @@
 
 #include "LStepC1S005.generated.h"
 
-// npc first dialog
+// npc dialog after puzzle while sitting
 UCLASS(Blueprintable, BlueprintType)
 class ALStepC1S005 : public ALStep {
 	GENERATED_BODY()

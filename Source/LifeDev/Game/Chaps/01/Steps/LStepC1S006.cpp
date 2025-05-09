@@ -4,7 +4,7 @@
 
 ALStepC1S006::ALStepC1S006():Super() {
 	Name = FName("C1S6");
-	InputEnabled = true; // does it matters? it will show dialogs
+	InputEnabled = true; // does it matter? it will show dialogs
 	// uses pawn camera
 	CamTarget = this;
 	UsePawnCam = false;
@@ -12,5 +12,6 @@ ALStepC1S006::ALStepC1S006():Super() {
 	DlgId = "N01.1";
 	FBDlgAutoTo = .5;
 	UseFBDlgAuto = true;
+	UseFBAnim = true;
 	UseRain = true;
 }
