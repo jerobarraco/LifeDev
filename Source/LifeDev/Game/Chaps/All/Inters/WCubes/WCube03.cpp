@@ -9,11 +9,11 @@ AWCube03::AWCube03():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/WCube/WordCube03.WordCube03"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Texts = {
-		FText::FromString(TEXT("Word cube: 'M'")),
-		FText::FromString(TEXT("Word cube: 'N'")),
-		FText::FromString(TEXT("Word cube: 'O'")),
-		FText::FromString(TEXT("Word cube: 'P'")),
-		FText::FromString(TEXT("Word cube: 'Q'")),
-		FText::FromString(TEXT("Word cube: 'R'")),
+		NSLOCTEXT("WCube03", "State0", "Word cube: 'M'"),
+		NSLOCTEXT("WCube03", "State1", "Word cube: 'N'"),
+		NSLOCTEXT("WCube03", "State2", "Word cube: 'O'"),
+		NSLOCTEXT("WCube03", "State3", "Word cube: 'P'"),
+		NSLOCTEXT("WCube03", "State4", "Word cube: 'Q'"),
+		NSLOCTEXT("WCube03", "State5", "Word cube: 'R'"),
 	};
 }
