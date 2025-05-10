@@ -220,6 +220,9 @@ protected:
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> AnimArrow = nullptr;
+	// for editor previewing only. does not exists on packaged builds.
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCameraComponent> AnimCam = nullptr;
 #endif
 #pragma endregion
 

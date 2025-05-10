@@ -25,7 +25,7 @@ AStep::AStep():Super() {
 
 #if WITH_EDITORONLY_DATA
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
+		CCam (TEXT("/Niagara/DefaultAssets/S_Gnomon"));
 	if (CCam.Succeeded()) Cam->SetCameraMesh(CCam.Object);
 #endif
 

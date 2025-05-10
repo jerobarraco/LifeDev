@@ -36,16 +36,14 @@ ALStep::ALStep():Super() {
 	AnimTarget->SetupAttachment(Root);
 
 #if WITH_EDITORONLY_DATA
-	AnimArrow = CreateDefaultSubobject<UCQuickMesh>(TEXT("TargetArrow"));
-	AnimArrow->SetupAttachment(AnimTarget);
-	AnimArrow->SetHiddenInGame(true);
+	AnimCam = CreateDefaultSubobject<UCameraComponent>(TEXT("AnimCam"));
+	AnimCam->SetupAttachment(AnimTarget);
+	AnimCam->SetComponentTickEnabled(false);
+	AnimCam->SetVisibility(false);
+	AnimCam->SetHiddenInGame(true); // for preview only
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CCam (TEXT("/Niagara/DefaultAssets/S_Arrow.S_Arrow"));
-	if (CCam.Succeeded()) AnimArrow->SetStaticMesh(CCam.Object);
-
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMat (TEXT("/Engine/EditorResources/FieldNodes/_Resources/M_FieldRadiusPreview"));
-	if (LIKELY(CMat.Succeeded())) AnimArrow->SetMaterial(0, CMat.Object);
+		CCam (TEXT("/Niagara/DefaultAssets/S_Gnomon"));
+	if (CCam.Succeeded()) AnimCam->SetCameraMesh(CCam.Object);
 #endif
 }
 

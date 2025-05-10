@@ -141,7 +141,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCameraComponent> Cam = nullptr;
 
 	friend class UStory;
