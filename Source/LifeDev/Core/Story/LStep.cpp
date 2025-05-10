@@ -3,7 +3,6 @@
 
 #include "Camera/CameraComponent.h" // needed even though rider disagrees
 
-#include "CQuickMesh.h"
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorTrans.h"
 #include "Inventory/Flags.h"
