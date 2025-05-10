@@ -151,6 +151,7 @@ void ALStep::Start_Implementation() {
 	DoIntersTrigger(); // trigger after activate. and hint.
 
 	if (LIKELY(FB)) {
+		// it's ok to set it here. since fbupd is only bound here
 		FBFrom = FB->GetVal(); // used for the animfb
 		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
 	}
@@ -252,6 +253,7 @@ void ALStep::FlagMod_Implementation(const FName& FlagName, const float Diff, con
 
 void ALStep::FBUpd_Implementation(const float Value) {
 	if (!UseFBAnim) return;
+
 	// recalculate the range, so that the animation always starts and ends where it should.
 	// and the transforms positions are always anchored at the start and end.
 	// regardless of the start and end fb value. even if it's increasing or decreasing.
@@ -400,7 +402,7 @@ void ALStep::DoIntersDeactive() {
 
 void ALStep::DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, const bool In) {
 	for (const TSoftObjectPtr<ALInteract>& SI: SA) {
-		ALInteract* const I = SI.Get(); 
+		ALInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->Fade(In, true);
 	}
 }
