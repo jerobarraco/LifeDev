@@ -10,7 +10,6 @@ ALStepC1S007::ALStepC1S007():Super() {
 	InputEnabled = true;
 	// uses pawn camera
 	UsePawnCam = true;
-	UseFadeTime = false;
 	UseRain = false; // turn off rain
 	// wait for the player to talk with the npc and get the card
 	ItemsFinish = {LDConsts::Items::Card1, LDConsts::Items::Poem1};

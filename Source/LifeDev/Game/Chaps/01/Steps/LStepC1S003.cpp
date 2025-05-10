@@ -10,7 +10,6 @@ ALStepC1S003::ALStepC1S003():Super() {
 	InputEnabled = false;
 	// uses own camera
 	UsePawnCam = false;
-	UseFadeTime = false;
 	CamBlendTime = 3;
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));

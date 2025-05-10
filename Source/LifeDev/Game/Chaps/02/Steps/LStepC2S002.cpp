@@ -14,7 +14,6 @@ ALStepC2S002::ALStepC2S002():Super() {
 	// teleport after the boss interaction happens
 	TeleportChar = false;
 	// no waits
-	UseFadeTime = false;
 	FinishPostWait = false;
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
 	ItemsFinish = { LDConsts::Items::Tape2 };

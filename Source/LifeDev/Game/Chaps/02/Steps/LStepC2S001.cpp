@@ -2,8 +2,6 @@
 
 #include "LStepC2S001.h"
 
-#include "Camera/CameraComponent.h"
-
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC2S001::ALStepC2S001():Super() {
@@ -13,12 +11,8 @@ ALStepC2S001::ALStepC2S001():Super() {
 	UseFade = false;
 	InputEnabled = false;
 	UsePawnCam = false;
-	UseFadeTime = false;
 	FinishPostWait = false;
 	TeleportChar = false;
-
-	Cam->SetConstraintAspectRatio(true);
-	Cam->AspectRatio = 2;
 
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);

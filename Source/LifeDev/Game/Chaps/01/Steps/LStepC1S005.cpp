@@ -11,6 +11,5 @@ ALStepC1S005::ALStepC1S005():Super() {
 	UseFBAnim = true;
 	UseRain = false;
 	UsePawnCam = false;
-	UseFadeTime = false;
 	// WaitTime = CamBlendTime = 0; // avoid extra wait
 }

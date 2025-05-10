@@ -21,7 +21,6 @@ ALStepC2S003::ALStepC2S003():Super() {
 	// teleport after the boss interaction happens
 	TeleportChar = false;
 	// no waits
-	UseFadeTime = false;
 	FinishPostWait = false;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>

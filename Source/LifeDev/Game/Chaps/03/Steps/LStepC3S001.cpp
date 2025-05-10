@@ -14,9 +14,6 @@ ALStepC3S001::ALStepC3S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	FinishPostWait = false;
-	
-	Cam->SetConstraintAspectRatio(true);
-	Cam->AspectRatio = 2;
 
 	GhostPos = FVector(200,-42,65);
 	UseGhosts = true;

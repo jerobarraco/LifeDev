@@ -8,8 +8,7 @@ ALStepC1S004::ALStepC1S004():Super() {
 	// uses pawn camera
 	CamTarget = nullptr;
 	UsePawnCam = true;
-	UseFadeTime = false;
-	
+
 	// wait for user to solve the puzzle
 	FlagsFinish = { "Inter.Trigger.PuzzleI01" };
 }

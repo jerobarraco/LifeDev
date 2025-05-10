@@ -2,8 +2,6 @@
 
 #include "LStepC1S002.h"
 
-#include "Camera/CameraComponent.h"
-
 #include "Diags/Diags.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
@@ -14,13 +12,10 @@ ALStepC1S002::ALStepC1S002():Super() {
 	InputEnabled = false;
 	// uses own camera
 	UsePawnCam = false;
-	UseFadeTime = false;
 	UseFBDlgAuto = false; // will be manually set.
 	Root->SetWorldLocation(FVector(-78.576659,736.134006,20.947626));
 	Root->SetWorldRotation(FRotator(26.779513,334.411499,19.340760));
 
-	// Cam->SetConstraintAspectRatio(true);
-	// Cam->SetAspectRatio(2);
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
 	ItemsRem = { LDConsts::Items::Tape1 }; // use up the item

@@ -20,7 +20,6 @@ ALStepEnd::ALStepEnd():Super() {
 
 	Title = ST;
 	InputEnabled = false;
-	UseFadeTime = false; // don't override wait time
 	// this is the time to change a level, counted from Start()
 	// added to allow the music to fade.
 	// quite arbitrary. might cause issues if i change the fade time.
