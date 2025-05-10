@@ -1,8 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepC0S001.h"
 
-#include "Camera/CameraComponent.h"
-
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -20,9 +18,8 @@ ALStepC0S001::ALStepC0S001():Super() {
 	TeleportChar = true;
 	ItemsRem = {
 		LDConsts::Items::Tape0, "Bottle00", "Bottle01"
-	}; // ensure you don't carry it.
-	Cam->SetConstraintAspectRatio(true);
-	Cam->SetAspectRatio(2);
+	}; // ensure the player doesn't keep them.
+
 	UseRain = true;
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);
