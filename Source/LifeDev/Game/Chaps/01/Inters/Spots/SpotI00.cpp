@@ -20,8 +20,7 @@ ASpotI00::ASpotI00():Super() {
 // TODO this is not used anymore. to be deleted. not wrapped in a ifdef to not make it harder to find
 EItemUseResult ASpotI00::TryUseItem_Implementation(const FName& Name) {
 	if (Name == LDConsts::Items::Bra) { // custom dialog for the bra
-		bool Handled = false;
-		if (LIKELY(Diags)) Handled = Diags->AddId("IS_C0_C03");
+		const bool Handled = LIKELY(Diags) && Diags->AddId("IS_C0_C03");
 		return Handled ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
 	}
 
