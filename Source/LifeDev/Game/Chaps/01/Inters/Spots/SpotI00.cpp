@@ -7,7 +7,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI00::ASpotI00():Super() {
-	DropDlg = TEXT("IS_C0D");
 	LockedDlg = "IS_C0L";
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
