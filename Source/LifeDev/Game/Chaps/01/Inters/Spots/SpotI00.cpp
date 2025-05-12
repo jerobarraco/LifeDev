@@ -7,7 +7,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI00::ASpotI00():Super() {
-	LockedDlg = "IS_C0L";
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
 		FText(NSLOCTEXT("Chap01", "Spot00.Full", "All done")),
@@ -18,6 +17,7 @@ ASpotI00::ASpotI00():Super() {
 	};
 }
 
+// TODO this is not used anymore. to be deleted. not wrapped in a ifdef to not make it harder to find
 EItemUseResult ASpotI00::TryUseItem_Implementation(const FName& Name) {
 	if (Name == LDConsts::Items::Bra) { // custom dialog for the bra
 		bool Handled = false;
