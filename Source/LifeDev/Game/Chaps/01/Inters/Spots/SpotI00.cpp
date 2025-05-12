@@ -8,7 +8,6 @@
 
 ASpotI00::ASpotI00():Super() {
 	DropDlg = TEXT("IS_C0D");
-	TriggerDlg = "IS_C0T"; // TODO use a IS_C0T* (note the random)
 	LockedDlg = "IS_C0L";
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot00.DropHere", "Drop clothes here")), 
