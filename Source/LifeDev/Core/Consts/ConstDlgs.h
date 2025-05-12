@@ -26,6 +26,7 @@ namespace LDConsts {
 				inline static const FString UpdatePre(TEXT("Inter.Puzzle.Update."));
 			}
 			namespace Spot {
+				// these are pretty much deprecated now that object use is not used.
 				inline static const FString DropPre(TEXT("Inter.Spot.Drop."));
 				inline static const FString BadPre(TEXT("Inter.Spot.Bad."));
 				inline static const FString BadOrderPre(TEXT("Inter.Spot.BadOrder."));

@@ -8,9 +8,6 @@ AHeaterI01::AHeaterI01():Super() {
 	UseRewardDestroy = false;
 	UseAutoActivate = true;
 	IsLocked = true;
-	
-	LockedDlg = "HT01_L";
-	Texts = {
-		NSLOCTEXT("HeaterI01", "Turn On", "Turn on")};
 
+	Texts = { NSLOCTEXT("HeaterI01", "Turn On", "Turn on")};
 }

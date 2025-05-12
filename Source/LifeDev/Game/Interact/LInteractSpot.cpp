@@ -75,7 +75,7 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 	// consume items when unlocking
 
 	bool Used = false;
-	for (int32 i = Items.Num()-1; i>=0; --i){
+	for (int32 i = Items.Num()-1; i>=0; --i) {
 		const FName& N = Items[i];
 		FItem Item;
 		Used = Inventory->Get(N, Item); 
