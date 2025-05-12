@@ -7,7 +7,7 @@
 ATapeI01::ATapeI01():Super() {
 	UseAutoActivate = true;
 	Texts = { NSLOCTEXT("TapeI01", "State0", "Pick up tape") };
-	TriggerDlg = FName("T1_T"); // will say what it is. triggered on pick up
+	// TriggerDlg = FName("T1_T"); // will say what it is. triggered on pick up
 	StateNum = 1;
 	UseAnim = false;
 	UseFade = true;
