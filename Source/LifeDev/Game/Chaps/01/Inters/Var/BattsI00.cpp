@@ -4,7 +4,6 @@
 
 ABattsI00::ABattsI00():Super() {
 	Texts = { NSLOCTEXT("BattsI00", "State0", "Pick up batteries") };
-	TriggerDlg = "BattsPick";
 	UseHint = true;
 	HintCondition = "{Inter.TriggerL.WalkmanI00}";
 
