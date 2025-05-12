@@ -16,8 +16,6 @@ AHeaterI00::AHeaterI00():Super() {
 	UseAnim = true;
 	UseAutoActivate = true;
 
-	TriggerDlg = "HT00_T";
-	LockedDlg = "HT00_L";
 	Texts = {
 		NSLOCTEXT("HeaterI00", "State0", "Turn on, it's cold"),
 		NSLOCTEXT("HeaterI00", "State1", "Maybe not...")
