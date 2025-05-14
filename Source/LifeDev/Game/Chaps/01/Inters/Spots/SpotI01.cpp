@@ -5,7 +5,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI01::ASpotI01():Super() {
-	DropDlg = "IS_C1D";
 	Items = {LDConsts::Items::Bra};
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop her clothes here")),

@@ -18,11 +18,6 @@ class LIFEDEV_API ALInteractSpot: public ALInteract {
 public:
 	ALInteractSpot();
 
-	// When a drop is correct.
-	// deprecated, use auto dialog. Inter.Spot.Drop."Label"
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
-	FName DropDlg = NAME_None;
-
 	// items to receive/consume. these are the items that are allowed to be dropped here.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<FName> Items;
