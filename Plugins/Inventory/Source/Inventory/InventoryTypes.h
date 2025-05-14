@@ -17,8 +17,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Consumable = true;
 	// For things that trigger by themselves (and/or with other objects (e.g. cards))
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool SelfUsable = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
+	bool SelfUsable = false; // TODO merge self-usable and usable
 	// For items that can be used with other objects. Tentative, might get removed. (mementos are false)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Usable = true;

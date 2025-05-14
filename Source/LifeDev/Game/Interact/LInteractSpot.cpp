@@ -77,18 +77,33 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 	for (int32 i = Items.Num()-1; i>=0; --i) {
 		const FName& N = Items[i];
 		FItem Item;
-		Used = Inventory->Get(N, Item); 
+		Used = Inventory->Get(N, Item);
 		if (!Used) continue; // not return, so that it can consume the rest, otherwise it could block the story
 
 		if (Item.Consumable) Inventory->Mod(N, -1);
+
 		Items.RemoveAtSwap(i);
+		
+		// trigger the dialog here. avoid extra if below
+		const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
+		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
+		if (!Added) Diags->AddId(FName(Base));
+
 		break; // only use one at a time.
 	}
 
-	if (UNLIKELY(Items.IsEmpty())) // unlikely since only happens once. not checking used in case someone decided to modify the Items array.
+	// unlikely since only happens once. not checking used in case someone decided to modify the Items array.
+	if (UNLIKELY(Items.IsEmpty())) {
 		Unlock();
-	else if (Used & UseStateInc) // on the else since Trigger always increases state
-		SetState(State+1);
-	return Super::TryTrigger_Implementation(); // will trigger locked if nothing is used
+		return Super::TryTrigger_Implementation(); // will trigger locked if nothing is used. will trigger some dialogs.
+	}
+
+	// will trigger locked if nothing is used. will trigger some dialogs.
+	if (!Used) return Super::TryTrigger_Implementation();
+
+	// depends on !Used above returning. Trigger always increases state
+	if (UseStateInc) SetState(State+1);
+
+	return true;
 #endif
 }
