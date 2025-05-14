@@ -21,7 +21,7 @@ public class LifeDevEditorTarget : TargetRules {
 		bUseSharedPCHs = true; // speed up compilation
 		bUseUnityBuild = true;
 		bUseAdaptiveUnityBuild = true;
-		
+
 		// https://forums.unrealengine.com/t/disabling-pdb-debug-gen-in-development-configuration-engine-source/617448/4
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
 			// disable pdb. it takes time and space. and i test builds. if someone has an issue ask to re-test with a debug build with logs and all.
