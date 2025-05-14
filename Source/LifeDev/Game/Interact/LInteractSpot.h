@@ -7,8 +7,8 @@
 
 // A Place to drop other interacts.
 // It's always locked, and triggers only once when all the items are dropped (used with).
-// It will trigger LockedDlg (when already done) and TriggerDlg (once upon done) accordingly.
-// if attempt to use an item once it's done it will trigger FullDlg
+// It will trigger LockedDlg (when not done) and TriggerDlg (once upon done) accordingly.
+// disabled: if attempt to use an item once it's done it will trigger FullDlg
 // always has two states: enabled, done.
 // by default is disabled after completed.
 UCLASS(Blueprintable, BlueprintType)
