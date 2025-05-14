@@ -7,7 +7,6 @@
 
 AClout00::AClout00():Super() {
 	RewardItem = TEXT("C1C00"); // chapter 1 clout 0
-	TriggerDlg = FName("C00");
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt00.Shirt00"));
