@@ -83,7 +83,7 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 		if (Item.Consumable) Inventory->Mod(N, -1);
 
 		Items.RemoveAtSwap(i);
-		
+
 		// trigger the dialog here. avoid extra if below
 		const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
 		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
