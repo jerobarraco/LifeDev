@@ -13,18 +13,16 @@ AClock00::AClock00():Super() {
 	UseFade = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Clock_P"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Clock/Clock_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(.000000,0,0));
 
 	Interact->SetRelativeLocation(FVector(15.00000,-7.500000,10.00000));
 	Interact->SetBoxExtent(FVector(15.00000,7.500000,10.00000));
 
-	// TODO
-	// i'd get a compiler error on windows if it can't find it
-	// static ConstructorHelpers::FObjectFinder<USoundBase>
-		// CSnd(TEXT(""));
-	// SFXs = {CSnd.Object};
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Rooms/Clock/Alarm_Clock_Electric_Beeping"));
+	SFXs = {CSnd.Object};
 
 	AClock00::SetMobility(EComponentMobility::Static);
 }
