@@ -221,6 +221,7 @@ public:
 	TArray<TObjectPtr<USoundBase>> SFXs;
 
 	// SFX that will be played on trigger. SFXs is preferred.
+	// if SFXs is set, this won't play
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
 	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
 #pragma endregion
