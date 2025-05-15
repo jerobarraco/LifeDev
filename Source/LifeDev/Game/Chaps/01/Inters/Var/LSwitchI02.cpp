@@ -17,7 +17,7 @@ ALSwitchI02::ALSwitchI02(): Super() {
 		nullptr,
 		CPart0.Object
 	};
-	
+
 	RewardIntersTrigger = {
 		TSoftObjectPtr<AInteract>(FSoftObjectPath(
 			"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Light00_B_C_UAID_D8BBC116E5013DAE01_2079906675")),
