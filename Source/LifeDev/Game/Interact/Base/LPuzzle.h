@@ -11,6 +11,7 @@
 // unfortunately unreal does not allow to have multiple inheritance
 // so this reimplements APuzzle and does not inherit it.
 // When using hints, use it through this class. (e.g. set UseHint and HintCondition here)
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
@@ -23,6 +24,7 @@ public:
 	virtual bool ShowHint_Implementation() override;
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
+	virtual void SetActive_Implementation(const bool Active = true) override;
 #pragma endregion
 
 	// sets the states on each registered interact.

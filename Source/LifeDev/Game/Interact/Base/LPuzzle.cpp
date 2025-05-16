@@ -24,6 +24,9 @@ ALPuzzle::ALPuzzle():Super() {
 	// rarely used by default. used on the hints.
 	if (LIKELY(Interact)) Interact->SetBoxExtent(FVector(5));
 
+	// rarely a puzzle has a mesh in itself that you interact with it.
+	SetProfileHinted(); // needed so it doesn't trigger the interactor, but it does trigger hint
+
 	SetMobility(EComponentMobility::Type::Static);
 }
 
@@ -83,6 +86,12 @@ void ALPuzzle::Reset() {
 	}
 }
 
+void ALPuzzle::SetActive_Implementation(const bool Active) {
+	// works because of the constructor "setHinted"
+	Super::SetActive_Implementation(Active);
+	SetActives(Active);
+}
+
 void ALPuzzle::ClearTimer() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
@@ -107,7 +116,7 @@ void ALPuzzle::Update_Implementation() {
 			SCur.Add(FString::FromInt(S));
 		}
 		const FString& SCurAll = FString::Join(SCur, TEXT("_"));
-		// in the hope it will copy less strings
+		// in the hope it will copy fewer strings
 		const FString& Base = FString::Printf(TEXT("%s%s.%s"),
 			*LDConsts::Dlgs::Inter::Puzzle::UpdatePre, *Label.ToString(), *SCurAll);
 		const FName N(Base);
