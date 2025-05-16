@@ -3,7 +3,6 @@
 #include "PuzzleI09.h"
 
 #include "Interact/CPuzzle.h"
-#include "Inventory/Flags.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
 
@@ -28,6 +27,7 @@ void APuzzleI09::BeginPlay() {
 
 // attempt to make this interaction chapter agnostic
 // this is kind of a test. TODO move this class to Game/CHaps/All/Inters/Var/Phone if i decide to keep it like this.
+// TODo enable with the story step instead of this
 
 void APuzzleI09::StartStep(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
