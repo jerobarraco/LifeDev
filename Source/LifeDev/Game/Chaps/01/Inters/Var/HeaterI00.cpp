@@ -32,7 +32,8 @@ AHeaterI00::AHeaterI00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));
-	SFX_Trigger = CSnd.Object;
+	// SFX_Trigger = CSnd.Object;
+	SFXs = { nullptr, CSnd.Object};
 }
 
 void AHeaterI00::DoTrigger_Implementation() {
@@ -41,7 +42,7 @@ void AHeaterI00::DoTrigger_Implementation() {
 }
 
 EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Card0 && LIKELY(IsValid(Diags))) {
+	if (Name == LDConsts::Items::Card0 & LIKELY(IsValid(Diags))) {
 		Diags->AddId("HT00_IC0");
 		return EItemUseResult::BAD_HANDLED;
 	}

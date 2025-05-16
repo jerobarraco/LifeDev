@@ -24,7 +24,8 @@ AMatchBox::AMatchBox():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/PaperBox/KITCHEN_cardboard_box_manipulating-Cue"));
-	SFX_Trigger = CSnd.Object;
+	// SFX_Trigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	AMatchBox::SetMobility(EComponentMobility::Static);
 }

@@ -32,7 +32,8 @@ AFridge::AFridge():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/Refrigerator_-_Closing_the_Door_03"));
-	SFX_Trigger = CSnd.Object;
+	// SFX_Trigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndHum(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Fridge/kitchen_roomtone_with_refrigerator_002"));

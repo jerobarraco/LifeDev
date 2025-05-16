@@ -27,7 +27,8 @@ ACalendar::ACalendar():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
-	SFX_Trigger = CSnd.Object;
+	// SFX_Trigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	Super::SetMobility(EComponentMobility::Static);
 }

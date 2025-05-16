@@ -27,7 +27,8 @@ AStove::AStove():Super() {
 	// TODO new one
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
-	SFX_Trigger = CSnd.Object;
+	// SFX_Trigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	// set static by default
 	AStove::SetMobility(EComponentMobility::Static);

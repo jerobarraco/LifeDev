@@ -13,7 +13,8 @@ APianoKey::APianoKey():Super() {
 	IsOneShot = true; // will disable the keys on trigger. will be re-enabled on puzzle reset.
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_A"));
-	SFX_Trigger = CSFX.Object;
+	// SFX_Trigger = CSFX.Object;
+	SFXs = { CSFX.Object };
 
 	Mesh->SetCastAllShadows(true);
 	Interact->SetRelativeLocation(FVector(0,7.5,-2.5));

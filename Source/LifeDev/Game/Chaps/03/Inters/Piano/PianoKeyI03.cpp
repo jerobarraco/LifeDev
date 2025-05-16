@@ -5,5 +5,6 @@
 APianoKeyI03::APianoKeyI03():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_D"));
-	SFX_Trigger = CSFX.Object;
+	// SFX_Trigger = CSFX.Object;
+	SFXs = { CSFX.Object };
 }

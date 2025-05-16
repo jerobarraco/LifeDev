@@ -27,7 +27,8 @@ APianoLid::APianoLid():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04.Nightstand_Modern_Drawers_Wood_Close_x6_Fienup_001-04"));
-	SFX_Trigger = CSFX.Object;
+	// SFX_Trigger = CSFX.Object;
+	SFXs = { CSFX.Object };
 
 	Anim->Curve = nullptr;
 	Anim->Duration = 1;
