@@ -180,3 +180,18 @@ end to drop to ground
 shift e to select all similar
 h to hide
 ctrl h to unhide
+
+
+# disable zen
+https://dev.epicgames.com/documentation/en-us/unreal-engine/using-derived-data-cache-in-unreal-engine
+
+modify defaultEngine and add
+
+	[Zen]
+	AutoLaunch=false
+
+on rider add the command option -ddc=InstalledNoZenLocalFallback or -ddc=NoShared
+
+on .profile add the variables
+ UE_SharedDataCachePath=None
+
