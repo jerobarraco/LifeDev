@@ -9,7 +9,7 @@ APictureI00::APictureI00():Super() {
 	UseFade = false;
 	UseAnim = true;
 	StateNum = 3;
-	// important. the puzzle will activate them.
+	// important. the puzzle will activate them. only on the correct step.
 	UseAutoActivate = false; // redundant but, to be sure...
 	SFXs = { SFXs[0], SFXs[0], SFXs[0] }; // expand to 3 states
 	Texts = {

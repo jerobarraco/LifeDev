@@ -18,6 +18,18 @@ ALStepC3S000::ALStepC3S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 	FlagsFinish = {"Inter.Trigger.PuzzleI04"};
+	ItemsEnsure = {
+		LDConsts::Items::Card0,
+		LDConsts::Items::Card1,
+		LDConsts::Items::Card2,
+		LDConsts::Items::Walkman
+	};
+
+	// this is ok, even though the step is always loaded, since the dls are loaded before start is triggered.
+	IntersActivate = {
+		// the picture puzzle
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI06_UAID_D8BBC116E5014A2C02_1407893984"))
+	};
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
@@ -41,13 +53,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL")));
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
-
-	ItemsEnsure = {
-		LDConsts::Items::Card0,
-		LDConsts::Items::Card1,
-		LDConsts::Items::Card2,
-		LDConsts::Items::Walkman
-	};
 }
 
 void ALStepC3S000::TryStart_Implementation() {

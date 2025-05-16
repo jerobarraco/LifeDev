@@ -5,10 +5,7 @@
 
 #include "PuzzleI06.generated.h"
 
-class AStep;
-class AInteractAnim;
-
-// Chap 03 Puzzle Instance 05 Picture puzzles 
+// Chap 03 Puzzle Instance 05 Picture puzzles
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APuzzleI06: public ALPuzzle {
 	GENERATED_BODY()
@@ -20,7 +17,4 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PostLoad() override;
-
-	UFUNCTION()
-	void StepStarted(AStep* const Step);
 };
