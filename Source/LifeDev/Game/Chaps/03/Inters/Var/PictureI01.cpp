@@ -6,17 +6,19 @@
 #include "Interact/Animator/CAnimatorMix.h"
 
 APictureI01::APictureI01():Super() {
-	Texts = { NSLOCTEXT("PictureI01", "State0", "Picture")};
+	Texts = { NSLOCTEXT("PictureI01", "State0", "Picture") };
 	TriggerDlg = "PIC01_T";
 	IsOneShot = true;
 	UseAutoActivate = true;
 	RewardFlash = .09;
+	StateNum = 2;
+	UseAnim = true;
+	SFXs = { SFXs[0], SFXs[0]}; // expand to 2 states
+	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat (TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI"));
 	if (CMat.Succeeded()) Mesh->SetMaterial(0, CMat.Object.Get());
-
-	UseAnim = true;
-	StateNum = 2;
+	
 	Anim->IsAdditive = false;
 	// sets scale. scale ==0 by default since additive is the usual
 	Anim->TStart = Anim->TEnd = FTransform::Identity;

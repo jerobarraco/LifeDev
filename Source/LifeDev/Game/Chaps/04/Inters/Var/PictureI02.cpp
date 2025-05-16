@@ -8,7 +8,7 @@ APictureI02::APictureI02():Super() {
 	UseAutoActivate = true;
 	UseRewardDestroy = false;
 	UseFade = false;
-	UseAnim = true;
+	UseAnim = true; // TODO this is weird with 1 state.
 	StateNum = 1;
 	TriggerDlg = "Pic02_T";
 
@@ -16,6 +16,6 @@ APictureI02::APictureI02():Super() {
 	Trans = { FTransform(State0Rot) };
 	IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
-	// Anim->Duration = 0; // see beginplay
+
 	APictureI02::SetMobility(EComponentMobility::Type::Movable); // super important
 }

@@ -11,6 +11,7 @@ APictureI00::APictureI00():Super() {
 	StateNum = 3;
 	// important. the puzzle will activate them.
 	UseAutoActivate = false; // redundant but, to be sure...
+	SFXs = { SFXs[0], SFXs[0], SFXs[0] }; // expand to 3 states
 	Texts = {
 		NSLOCTEXT("PictureI00", "State0", "Move"),
 		NSLOCTEXT("PictureI00", "State1", "Move again"),
@@ -22,8 +23,7 @@ APictureI00::APictureI00():Super() {
 	Trans = {
 		FTransform(State0Rot),
 		FTransform(State1Rot),
-		FTransform(State2Rot),
-	};
+		FTransform(State2Rot)};
 	IRoot->SetRelativeTransform(Trans[0]);
 	Anim->IsAdditive = false;
 	Anim->Duration = 0; // see beginplay
