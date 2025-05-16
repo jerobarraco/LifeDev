@@ -138,12 +138,13 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 	State = NewState;
 	SetText();
 
-	if ((UseSFX & UseAttachedSFX & (State >=0) & (State < SFXs.Num())) && SFX  && SFXs[State]) {
+	// notice state <0 is checked above
+	if ((UseSFX & UseAttachedSFX & bool(SFX) & (State < SFXs.Num())) && SFXs[State]) {
 		SFX->SetSound(SFXs[State]);
 		SFX->SetAutoActivate(true);
 	}
 
-	if ((UseParts & (State >=0) & (State < Particles.Num())) && Emitter && Particles[State]) {
+	if ((UseParts & bool(Emitter) & (State < Particles.Num())) && Particles[State]) {
 		Emitter->SetAsset(Particles[State]);
 		Emitter->SetAutoActivate(true);
 	}
@@ -389,7 +390,7 @@ void AInteract::DoTrigger_Implementation() {
 	}
 
 	// only play trigger if there's not a sfxs sound. otherwise it will step on it.
-	if (UNLIKELY(State >= SFXs.Num() || !SFXs[State]))
+	if (UNLIKELY(State < 0 || State >= SFXs.Num() || !SFXs[State]))
 		PlaySFX(SFXTrigger); // deprecated
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
