@@ -69,7 +69,8 @@ void ABooks::Constructor() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
-	SFXTrigger = CSnd.Object;
+	// SFXTrigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	/// end create
 	// make them static for now

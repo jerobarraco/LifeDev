@@ -102,8 +102,8 @@ public:
 
 	// this is _similar_ to SetState. it's meant to be called from the constructor, or when a state needs to be set instantly, or skipping aspects.
 	// but mostly constructor, the rest is side effect, and not a priority.
-	// i'm pretty sure nativeevents and constructor will not call the child classes.
-	// if that fails, then use postload or smth.
+	// i'm pretty sure NativeEvents and constructor will not call the child classes.
+	// if that fails, then use PostLoad or smth.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetStateNow(const int32 NewState, const bool UseSFX = false, const bool UseParts = false);
 

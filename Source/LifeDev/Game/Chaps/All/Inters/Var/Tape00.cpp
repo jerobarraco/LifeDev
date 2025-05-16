@@ -23,8 +23,9 @@ ATape00::ATape00():Super() {
 	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSTrigger(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
-	SFXTrigger = CSTrigger.Object;
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
+	// SFXTrigger = CSTrigger.Object;
+	SFXs = { CSnd.Object };
 	SFX->SetRelativeLocation(FVector(0,-3.,1));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

@@ -30,7 +30,7 @@ APaper00::APaper00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC.Paper_SC"));
-	SFXTrigger = CSnd.Object;
-
+	// SFXTrigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 	Super::SetMobility(EComponentMobility::Static);
 }

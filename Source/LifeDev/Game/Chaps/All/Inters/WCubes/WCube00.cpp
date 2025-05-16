@@ -41,11 +41,8 @@ AWCube00::AWCube00():Super() {
 	Interact->SetRelativeLocation(FVector(4,-4,4));
 	// Interact->SetRelativeLocation(FVector(0,0,0));
 	Interact->SetBoxExtent(FVector(5,5,5));
-	
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	SFXTrigger = CSnd.Object;
-
-	
 }

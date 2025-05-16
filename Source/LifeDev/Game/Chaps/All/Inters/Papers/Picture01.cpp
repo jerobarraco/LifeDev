@@ -29,7 +29,8 @@ APicture01::APicture01():Super() {
 	// TODO new
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/DrawerOpen_C"));
-	SFXTrigger = CSnd.Object;
+	// SFXTrigger = CSnd.Object;
+	SFXs = { CSnd.Object };
 
 	// force using the material from the mesh. (though we don't use reward destroy)
 	AnimFade->MatBase = nullptr;
