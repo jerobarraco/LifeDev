@@ -11,7 +11,7 @@
 // unfortunately unreal does not allow to have multiple inheritance
 // so this reimplements APuzzle and does not inherit it.
 // When using hints, use it through this class. (e.g. set UseHint and HintCondition here)
-
+// By default this class uses the hinted collision and makes the puzzle pieces active on SetActive
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
