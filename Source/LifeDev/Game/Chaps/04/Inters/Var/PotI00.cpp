@@ -51,7 +51,7 @@ APotI00::APotI00():Super() {
 	Lid->SetRelativeRotation(State0Rot); // init the correct transform
 	Anim->IsAdditive = false;
 
-	SFX_Trigger = nullptr;
+	SFXTrigger = nullptr;
 	// preload
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
@@ -70,13 +70,13 @@ void APotI00::DoTrigger_Implementation() {
 		// all this only affects the next trigger (using the plate) for next trigger (plates)
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
-		SFX_Trigger = SND_Drops;
+		SFXTrigger = SND_Drops;
 		Story->StartNext(); // manually advance.
 	} else if (State == 0) { // has looped over (notice the check is last)
 		// reward a plate. not using rewarditem or the parent's functionality since it's too cumbersome in this case.
 		Inventory->Mod(LDConsts::Items::Plate02, 1);
 		// Could set the text here. but since it's deactivated it does not matter.
-		SFX_Trigger = nullptr; // no sound after
+		SFXTrigger = nullptr; // no sound after
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
 	}
 }

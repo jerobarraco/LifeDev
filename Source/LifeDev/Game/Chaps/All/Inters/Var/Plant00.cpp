@@ -15,7 +15,7 @@ APlant00::APlant00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Plants/Bluezone_BC0254_wood_crushing_branches_001_001.Bluezone_BC0254_wood_crushing_branches_001_001"));
-	SFX_Trigger = CSFX.Object;
+	SFXTrigger = CSFX.Object;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Plants/Pot00.Pot00"));

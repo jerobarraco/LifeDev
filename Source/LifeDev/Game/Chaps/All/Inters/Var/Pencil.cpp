@@ -23,7 +23,7 @@ APencil::APencil():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC"));
-	SFX_Trigger = CSnd.Object;
+	SFXTrigger = CSnd.Object;
 
 	/// Anims
 	// AnimFade->SetNewMat();

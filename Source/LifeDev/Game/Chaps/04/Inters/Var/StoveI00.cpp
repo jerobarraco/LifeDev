@@ -19,7 +19,7 @@ AStoveI00::AStoveI00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Boiling_Water_in_a_Coffee_Pot"));
-	SFX_Trigger = CSnd.Object;
+	SFXTrigger = CSnd.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndB(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/match_burn_meridian_-09"));

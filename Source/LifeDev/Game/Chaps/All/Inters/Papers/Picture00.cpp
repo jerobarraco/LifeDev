@@ -25,7 +25,7 @@ APicture00::APicture00():Super() {
 	// TODO new
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/DrawerOpen_C"));
-	SFX_Trigger = CSnd.Object;
+	SFXTrigger = CSnd.Object;
 
 	Super::SetMobility(EComponentMobility::Static);
 }

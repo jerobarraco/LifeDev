@@ -150,7 +150,7 @@ public:
 
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	TObjectPtr<USoundBase> SFX_Hint = nullptr;
+	TObjectPtr<USoundBase> SFXHint = nullptr;
 #pragma endregion
 #pragma region Lock
 	// Will CHECK if it needs to unlock (due to a condition, or whatever)
@@ -176,7 +176,7 @@ public:
 	FString ULockCondition = "";
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
-	TObjectPtr<USoundBase> SFX_Locked = nullptr;
+	TObjectPtr<USoundBase> SFXLocked = nullptr;
 #pragma endregion
 #pragma region Setup
 	// An interact id used for auto dialogs and such.
@@ -223,7 +223,7 @@ public:
 	// SFX that will be played on trigger. SFXs is preferred.
 	// if SFXs is set, this won't play
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX", meta=(DeprecatedProperty))
-	TObjectPtr<USoundBase> SFX_Trigger = nullptr;
+	TObjectPtr<USoundBase> SFXTrigger = nullptr;
 #pragma endregion
 #pragma endregion
 #pragma region Rewards

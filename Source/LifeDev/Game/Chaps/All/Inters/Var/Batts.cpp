@@ -38,7 +38,7 @@ ABatts::ABatts():Super() {
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
-	SFX_Trigger = CSnd.Object;
+	SFXTrigger = CSnd.Object;
 
 	/// Anims
 	AnimFade->Meshes.AddUnique(MeshB);

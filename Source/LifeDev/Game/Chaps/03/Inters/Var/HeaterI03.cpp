@@ -17,5 +17,5 @@ AHeaterI03::AHeaterI03():Super() {
 	// TODO find a new one
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Env/Noises/squeaky_closet_door_open_001.squeaky_closet_door_open_001"));
-	SFX_Trigger = CSnd.Object;
+	SFXTrigger = CSnd.Object;
 }

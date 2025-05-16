@@ -29,5 +29,5 @@ ADoorish::ADoorish():Super() {
 	SFX_Stop = {SClose.Object, nullptr};
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		SLocked(TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/door_lock_007.door_lock_007"));
-	SFX_Locked = SLocked.Object;
+	SFXLocked = SLocked.Object;
 }

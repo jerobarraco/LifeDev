@@ -24,7 +24,7 @@ ATape00::ATape00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSTrigger(TEXT("/Game/LifeDev/Game/Inters/Walkman00/Tape_SC.Tape_SC"));
-	SFX_Trigger = CSTrigger.Object;
+	SFXTrigger = CSTrigger.Object;
 	SFX->SetRelativeLocation(FVector(0,-3.,1));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>

@@ -205,7 +205,7 @@ bool AInteract::ShowHint_Implementation() {
 	}
 
 	Interact->Hint(true);
-	PlaySFX(SFX_Hint); // sfx checked inside
+	PlaySFX(SFXHint); // sfx checked inside
 
 	// schedule unhint
 	FTimerHandle H;
@@ -362,7 +362,7 @@ void AInteract::SetProfileHinted() const {
 
 void AInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
-	PlaySFX(SFX_Locked);
+	PlaySFX(SFXLocked);
 }
 
 void AInteract::SetInteractAutoBounds() {
@@ -390,7 +390,7 @@ void AInteract::DoTrigger_Implementation() {
 
 	// only play trigger if there's not a sfxs sound. otherwise it will step on it.
 	if (UNLIKELY(State >= SFXs.Num() || !SFXs[State]))
-		PlaySFX(SFX_Trigger); // deprecated
+		PlaySFX(SFXTrigger); // deprecated
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
 		AInteract* const I = SI.Get();
