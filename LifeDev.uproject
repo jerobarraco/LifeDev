@@ -102,6 +102,10 @@
 			"Enabled": true
 		},
 		{
+			"Name": "Niagara",
+			"Enabled": true
+		},
+		{
 			"Name": "Behave",
 			"Enabled": false,
 			"SupportedTargetPlatforms": [
@@ -115,10 +119,6 @@
 		{
 			"Name": "JScene",
 			"Enabled": false
-		},
-		{
-			"Name": "Niagara",
-			"Enabled": true
 		},
 		{
 			"Name": "ChaosNiagara",
