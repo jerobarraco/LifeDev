@@ -75,12 +75,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetActive(const bool Active = true);
 
-	// this CAN NOT be BlueprintNativeEvent because
-	// it breaks on the constructor for some extremely weird reason i don't know of yet.
-	// and THIS function is called in the constructor everywhere.
-	// mostly debug.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
-	bool GetEnabled() const;
+	bool GetActive() const;
 
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
 	UFUNCTION(BlueprintCallable)

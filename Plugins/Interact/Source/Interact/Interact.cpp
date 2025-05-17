@@ -106,11 +106,8 @@ void AInteract::SetActive_Implementation(const bool Active) {
 	if (LIKELY(IsValid(Interact))) Interact->SetActive(Active);
 }
 
-bool AInteract::GetEnabled() const {
-	const bool Enabled = IsValid(Interact) && Interact->IsActive();
-	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
-		__func__, Enabled, *Label.ToString());
-	return Enabled;
+bool AInteract::GetActive() const {
+	return LIKELY(IsValid(Interact)) && Interact->IsActive();
 }
 
 void AInteract::SetMobility(const EComponentMobility::Type Mobility) {
