@@ -77,12 +77,12 @@ ALNPC01::ALNPC01():Super() {
 
 	// (X=-30.000000,Y=20.000000,Z=5.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh12(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Foot.Foot"));
+		CMesh12(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/FootL.FootL"));
 	FootL->SetStaticMesh(CMesh12.Object);
 	FootL->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh13(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Foot.Foot"));
+		CMesh13(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/FootL.FootL"));
 	FootR->SetStaticMesh(CMesh13.Object);
 	FootR->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
 
