@@ -63,11 +63,13 @@ void ALInteract::SetActive_Implementation(const bool Active) {
 	// These two are the most important since they are triggered automatically. Hence, the code needs the check here.
 	if (UNLIKELY(Active & UseActiveOnce)) { // todo change UNLIKELY if its used more
 		const FName NTrigger(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
-		if (UNLIKELY(Flags->Has(NTrigger))) {
+		if (UNLIKELY(Flags && Flags->Has(NTrigger))) {
 			UE_LOG(LogLInteract, Log, TEXT("%hs not activating. UseActivateOnce && FlagHas. N=%s"),
 				__func__, *NTrigger.ToString());
 			return;
 		}
+		UE_CLOG(UNLIKELY(!Flags), LogLInteract, Warning, TEXT("%hs Flags subsystem is not loaded!. N=%s"),
+			__func__, *NTrigger.ToString());
 	}
 
 	Super::SetActive_Implementation(Active);
@@ -98,6 +100,16 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 }
 
 void ALInteract::BeginPlay() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return;
+
+	// these should be loaded first. since super::BeginPlay will call SetActive, which needs the flags.
+	Inventory = World->GetSubsystem<UInventory>();
+	Diags = World->GetSubsystem<UDiags>();
+	Flags = World->GetSubsystem<UFlags>();
+	Flashback = World->GetSubsystem<UFlashback>();
+	Story = World->GetSubsystem<UStory>();
+
 	Super::BeginPlay();
 
 	// decided not to set locked here depending on the other flags, since that actually
@@ -119,18 +131,10 @@ void ALInteract::BeginPlay() {
 			"This is legal but unlikely. o=%s"), __func__, *Label.ToString());
 	}
 
-	// hide and disable reward actor if any. will also call setactive.
+	// hide and disable reward actor if any. will also call SetActive.
 	AActor* const RAct = RewardActor.Get();
 	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
 
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!IsValid(World))) return;
-
-	Inventory = World->GetSubsystem<UInventory>();
-	Diags = World->GetSubsystem<UDiags>();
-	Flags = World->GetSubsystem<UFlags>();
-	Flashback = World->GetSubsystem<UFlashback>();
-	Story = World->GetSubsystem<UStory>();
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {

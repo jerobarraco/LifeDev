@@ -31,7 +31,7 @@ class INTERACT_API AInteract: public AActor {
 public:
 #pragma region base
 	AInteract();
-	// will also setActive if UseAutoActivate is true.
+	// will also SetActive. if UseAutoActivate or hidden is true.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 	// read CInteract::SetProfileActive.
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
