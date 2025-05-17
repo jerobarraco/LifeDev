@@ -32,46 +32,46 @@ ALNPC01::ALNPC01():Super() {
 
 	// (X=-30.000000,Y=10.000000,Z=-75.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh4(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Arm1.Arm1"));
+		CMesh4(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/ArmL1.ArmL1"));
 	ArmL1->SetStaticMesh(CMesh4.Object);
 	ArmL1->SetRelativeLocation(FVector(0.000000,15.000000,35.000000));
 	ArmL1->SetRelativeRotation(FRotator(0, 180, 0));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh5(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Arm1.Arm1"));
+		CMesh5(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/ArmL1.ArmL1")); // yeah reusing L
 	ArmR1->SetStaticMesh(CMesh5.Object);
 	ArmR1->SetRelativeLocation(FVector(0.000000,-15.000000,35.000000));
 
 	// (X=-30.000000,Y=12.500000,Z=-55.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh6(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Arm2.Arm2"));
+		CMesh6(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/ArmL2.ArmL2"));
 	ArmL2->SetStaticMesh(CMesh6.Object);
 	ArmL2->SetRelativeLocation(FVector(0,-2.5,-20));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh7(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Arm2.Arm2"));
+		CMesh7(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/ArmL2.ArmL2"));
 	ArmR2->SetStaticMesh(CMesh7.Object);
 	ArmR2->SetRelativeLocation(FVector(0,-2.5,-20));
 
 	// (X=-30.000000,Y=20.000000,Z=-25.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh8(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Leg1.Leg1"));
+		CMesh8(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/LegL1.LegL1"));
 	LegL1->SetStaticMesh(CMesh8.Object);
 	LegL1->SetRelativeLocation(FVector(0.000000,-10.000000,-15.000000));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh9(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Leg1.Leg1"));
+		CMesh9(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/LegL1.LegL1"));
 	LegR1->SetStaticMesh(CMesh9.Object);
 	LegR1->SetRelativeLocation(FVector(0.000000,10.000000,-15.000000));
 
 	// (X=-30.000000,Y=20.000000,Z=-10.000000)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh10(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Leg2.Leg2"));
+		CMesh10(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/LegL2.LegL2"));
 	LegL2->SetStaticMesh(CMesh10.Object);
 	LegL2->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh11(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/Leg2.Leg2"));
+		CMesh11(TEXT("/Game/LifeDev/Game/Chars/Char18/Parts/LegL2.LegL2"));
 	LegR2->SetStaticMesh(CMesh11.Object);
 	LegR2->SetRelativeLocation(FVector(0.000000,0.000000,-15.000000));
 
