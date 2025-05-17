@@ -18,5 +18,5 @@ protected:
 	
 	// matches snd
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
-	TObjectPtr<USoundBase> SFX_TriggerB = nullptr;
+	TObjectPtr<USoundBase> SFXTriggerB = nullptr;
 };
