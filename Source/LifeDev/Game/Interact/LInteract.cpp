@@ -42,7 +42,7 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 		const FString& BName = LDConsts::Dlgs::Inter::StatePre;
 		const FString& SLabel = Label.ToString();
 		const FName DName(BName+SLabel+"."+FString::FromInt(NewState));
-		Diags->AddId(DName); // todo don't warn?
+		Diags->AddId(DName);
 	}
 	/*
 	not sure about this. it will allow to use it in flagsFinish, unlockCondition, dialogs, and other stuff.
