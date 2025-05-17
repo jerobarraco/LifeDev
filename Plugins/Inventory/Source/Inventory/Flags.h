@@ -17,7 +17,7 @@ class INVENTORY_API UFlags : public UWorldSubsystem {
 
 public:
 	static UFlags* Instance(const UObject* const O);
-
+#pragma region Flag
 	// sets the value of a flag
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Set(const FName& Name, const float Val = 1);
@@ -41,11 +41,12 @@ public:
 	// This might be a bit slower than calling Get, unless you are also checking if it's >=1. None always returs false.
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	bool Has(const FName& Name) const;
-
-	// returns a list of flags. Warning/KIKEN/Atchung. so be careful.
+#pragma endregion
+#pragma region AllFlags
+	// returns a list of flags. Warning/KIKEN/Atchung/Peligro. so be careful.
 	// mostly used for load and saving.
-	UFUNCTION(BlueprintCallable, Category="Flags")
-	const TMap<FName, float>& GetAll() const { return Flags; };
+	UFUNCTION(BlueprintCallable, Category="Flags", meta=(AdvancedDisplay))
+	const TMap<FName, float>& GetAll() const { return Flags; }
 	// can't forceinline due to const & tmap
 
 	// overrides the current items. used for load and saving. will trigger mod on all, beware.
@@ -53,18 +54,16 @@ public:
 	void SetAll(const TMap<FName, float>& NewFlags);
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Clear(const int32 Reserve=0);
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags")
+	// prints all flags to log. used for debug
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags", meta=(AdvancedDisplay))
 	void Dump();
-
-	
-	/// system
-
+#pragma endregion
+#pragma region system
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Init() {};
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void DeInit() {};
-	
-	/// ~system
+#pragma endregion
 
 	UPROPERTY(BlueprintAssignable, Category="SetUp")
 	FFlagsOnMod OnMod;

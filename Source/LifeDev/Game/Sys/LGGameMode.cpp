@@ -84,6 +84,13 @@ void ALGGameMode::BeginPlay() {
 		return;
 	}
 
+	// spawn before loading the savegame. in case the Init gets triggered immediately.
+	// anything that needs a fully working savegame, needs to happen on init.
+	// that's an indirect note to self to ensure all spawned objects don't mess with the savegame now and in the future.
+	Spawn();
+
+	// beware of the returns below
+	
 	// load the save and init. note: the init is blocked until the save is available since we really
 	// need that beforehand. and can't work reliably without it.
 	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
@@ -95,7 +102,7 @@ void ALGGameMode::BeginPlay() {
 		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
 		return;
 	}
-	
+
 	if (UNLIKELY(Settings->GetIsSaving())) {
 		Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
 		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
@@ -103,8 +110,6 @@ void ALGGameMode::BeginPlay() {
 	}
 
 	UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame seems loaded."), __func__);
-
-	Spawn();
 
 	// manually go to init if it's already loaded.
 	FTimerManager& Timer = World->GetTimerManager();
@@ -124,8 +129,7 @@ void ALGGameMode::Spawn() {
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
 	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Error, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
-	Char = Cast<ALChar>(
-		UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
+	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Error, TEXT("%hs Could not obtain the LCharacter!"), __func__);
 
 	// only one to initialize right here. since i might want to know if some subsystem or actor causes issues
