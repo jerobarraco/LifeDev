@@ -56,13 +56,30 @@ void ALInteract::SetState_Implementation(const int32 NewState) {
 	*/
 }
 
+void ALInteract::SetActive_Implementation(const bool Active) {
+	// skip activating if is UseActiveOnce and has been activated
+	// doing inside SetActive to capture all attempts of activation.
+	// including the steps and other interactions.
+	// These two are the most important since they are triggered automatically. Hence, the code needs the check here.
+	if (UNLIKELY(Active & UseActiveOnce)) { // todo change UNLIKELY if its used more
+		const FName NTrigger(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
+		if (UNLIKELY(Flags->Has(NTrigger))) {
+			UE_LOG(LogLInteract, Log, TEXT("%hs not activating. UseActivateOnce && FlagHas. N=%s"),
+				__func__, *NTrigger.ToString());
+			return;
+		}
+	}
+
+	Super::SetActive_Implementation(Active);
+}
+
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
 
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
-		if (FadeIn || !UseFade)
+		if (FadeIn | !UseFade)
 			SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
 		else // !FadeIn && UseFade
 			AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
@@ -72,7 +89,7 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 		// might happen on a step auto-fading something.
 		// only on !SetHidden since SetActorHidden also handles setActive
 		// please me from the future, be careful. "ki o tsukete!"
-		if (!FadeIn || UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
+		if (!FadeIn | UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
 
 	if (UseFade) {
 		AnimFade->IsReversed = FadeIn;
@@ -114,12 +131,6 @@ void ALInteract::BeginPlay() {
 	Flags = World->GetSubsystem<UFlags>();
 	Flashback = World->GetSubsystem<UFlashback>();
 	Story = World->GetSubsystem<UStory>();
-
-	if (UNLIKELY(UseActiveOnce)) { // todo change UNLIKELY if its used more
-		// intentionally not force-enabling, to not step to other custom code.
-		const FName NTrigger(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
-		if (UNLIKELY(Flags->Has(NTrigger))) SetActive(false);
-	}
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {

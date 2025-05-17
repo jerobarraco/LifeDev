@@ -27,7 +27,7 @@ ALPuzzle::ALPuzzle():Super() {
 	// rarely a puzzle has a mesh in itself that you interact with it.
 	SetProfileHinted(); // needed so it doesn't trigger the interactor, but it does trigger hint
 
-	SetMobility(EComponentMobility::Type::Static);
+	ALPuzzle::SetMobility(EComponentMobility::Type::Static);
 }
 
 void ALPuzzle::BeginPlay() {

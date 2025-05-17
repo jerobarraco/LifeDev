@@ -19,6 +19,7 @@ class LIFEDEV_API ALInteract: public AInteractAnim {
 	GENERATED_BODY()
 
 public:
+#pragma region base
 	ALInteract();
 
 	// will fade in/out the object. also sets active by default.
@@ -28,6 +29,8 @@ public:
 	void Fade(const bool FadeIn = false, const bool SetHidden=true);
 
 	virtual void SetState_Implementation(const int32 NewState) override;
+	virtual void SetActive_Implementation(const bool Active = true) override;
+#pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
