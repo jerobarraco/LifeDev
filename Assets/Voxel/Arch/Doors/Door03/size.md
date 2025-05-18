@@ -1,0 +1,1 @@
+size is 42 base x 41 tall x 2 wide
