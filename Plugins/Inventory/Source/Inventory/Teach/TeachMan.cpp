@@ -34,7 +34,13 @@ void ATeachMan::DeInit_Implementation() {
 
 bool ATeachMan::Has(const FName& Id) const {
 	const FName FN(Inventory::Teach::Prefix + Id.ToString());
-	return Flags->Has(FN);
+	return LIKELY(Flags) && Flags->Has(FN);
+}
+
+void ATeachMan::Set_Implementation(const FName& Id) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
+	const FName FN(Inventory::Teach::Prefix + Id.ToString());
+	if (LIKELY(Flags)) Flags->Set(FN);
 }
 
 bool ATeachMan::Show_Implementation(const FName& Id) {
@@ -46,7 +52,7 @@ bool ATeachMan::Show_Implementation(const FName& Id) {
 	}
 
 	if (UNLIKELY(!DT | !Flags | !W)) {
-		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT, Flags, or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
 
@@ -61,6 +67,7 @@ bool ATeachMan::Show_Implementation(const FName& Id) {
 		return false;
 	}
 
+	Set(Id); // mark here as well to make logic easier.
 	CurrentId = Id;
 	LastTime = W->GetTimeSeconds();
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
@@ -81,10 +88,7 @@ void ATeachMan::Hide_Implementation(const FName& Id) {
 		return;
 	}
 
-	// allow to pre-emptively mark actions as learnt
-	const FName FN(Inventory::Teach::Prefix + Id.ToString());
-	Flags->Set(FN);
-
+	Set(Id); // allow to pre-emptively mark actions as learnt
 	// and also hide the current one
 	if (UNLIKELY(Id != CurrentId)) return;
 

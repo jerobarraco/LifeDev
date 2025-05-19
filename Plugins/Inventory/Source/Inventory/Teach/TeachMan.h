@@ -30,14 +30,17 @@ public:
 	bool Has(const FName& Id) const;
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool Show(const FName& Id); // not const in case of delegates
-	UFUNCTION(BlueprintCallable)
-	void HideCurrent() {Hide(CurrentId);}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	const FORCEINLINE FName& GetCurrent() const { return CurrentId; }
+	UFUNCTION(BlueprintCallable)
+	void HideCurrent() {Hide(CurrentId);}
 	// this is meant to be triggered even if the corresponding show was never called.
 	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName& Id = NAME_None);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
+	void Set(const FName& Id = NAME_None);
+
 	// first target added is going to be set as default
 	UFUNCTION(BlueprintCallable)
 	void AddTarget(const ETeachTarget Tgt, UDataTable* const InDT);
