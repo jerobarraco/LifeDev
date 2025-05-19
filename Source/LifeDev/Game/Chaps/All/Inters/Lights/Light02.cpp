@@ -17,6 +17,7 @@ ALight02::ALight02():Super() {
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Lamp00/Lamp00_Stand.Lamp00_Stand"));
 	Mesh->SetRelativeLocation(FVector(-20,20,0));
 	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->SetQuickCollisionEnabled(true);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Lamp00/Lamp00_Cover.Lamp00_Cover"));
