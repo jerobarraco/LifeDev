@@ -120,7 +120,7 @@ void ALTeachMan::InitDelayed() {
 
 	// AVOID FLAGS they update too frequently.
 
-	// TODO only bind if necessary. like Items
+	// only bind if necessary. like Items
 	// this is because otherwise this class will annoy players during load saved games too,
 	// actually not, the base class already solves that. but it's still less efficient since it's waiting for events, that might never happen (like step c1s1) 
 
@@ -279,24 +279,22 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 void ALTeachMan::TeachFlash() {
 	// this is a critical one because it's a safety issue.
 	// hence. i'm going to keep trying to show this until it's shown.
-	if (UNLIKELY(FlashShown)) {
-		const UWorld* const World = GetWorld();
-		if (UNLIKELY(!World)) return;
-
-		World->GetTimerManager().ClearTimer(HFlash);
-		HFlash.Invalidate();
-	}
-
-	FlashShown = Show(LifeDev::Teach::FlagFlash);
+	Show(LifeDev::Teach::FlagFlash);
 }
 
 void ALTeachMan::SettingsDone() {
 	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__ );
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	// this is to ensure we don't unbind before the flash is shown if it's necessary.
 	bool AllDone = LIKELY(Settings) ? !Settings->GetFeat(EFeat::V_STROBE) : true;
 	Hide(LifeDev::Teach::GameSetting); // always hide since we come from there.
-	// only hide if it was shown. important since it's a health thing. 
+	// only hide if it was shown. important since it's a health thing.
+	FlashShown = (GetCurrent() == LifeDev::Teach::FlagFlash) | Has(LifeDev::Teach::FlagFlash);
 	if (FlashShown) {
+		World->GetTimerManager().ClearTimer(HFlash);
+		HFlash.Invalidate();
 		Hide(LifeDev::Teach::FlagFlash);
 		AllDone = true;
 	}
