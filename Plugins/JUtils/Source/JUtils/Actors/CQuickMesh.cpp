@@ -25,7 +25,7 @@ void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
 	Super::SetCanEverAffectNavigation(Enable);
 	bNavigationRelevant = Enable;
 	if (Enable) {
-		Super::SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		Super::SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 		Super::SetCollisionProfileName("BlockAllDynamic");
 	} else {
 		Super::SetCollisionEnabled(ECollisionEnabled::NoCollision);
