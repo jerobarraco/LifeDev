@@ -291,7 +291,7 @@ void ALTeachMan::SettingsDone() {
 	bool AllDone = LIKELY(Settings) ? !Settings->GetFeat(EFeat::V_STROBE) : true;
 	Hide(LifeDev::Teach::GameSetting); // always hide since we come from there.
 	// only hide if it was shown. important since it's a health thing.
-	FlashShown = (GetCurrent() == LifeDev::Teach::FlagFlash) | Has(LifeDev::Teach::FlagFlash);
+	const bool FlashShown = Has(LifeDev::Teach::FlagFlash);
 	if (FlashShown) {
 		World->GetTimerManager().ClearTimer(HFlash);
 		HFlash.Invalidate();

@@ -78,5 +78,4 @@ protected:
 	FTimerHandle HFlash;
 
 	uint8 ItemSelCount = 0;
-	uint8 FlashShown:1 = 0;
 };
