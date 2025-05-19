@@ -44,6 +44,7 @@ bool ATeachMan::Show_Implementation(const FName& Id) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs Busy. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
+
 	if (UNLIKELY(!DT | !Flags | !W)) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT or Flags or World is not ok Or Busy. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
