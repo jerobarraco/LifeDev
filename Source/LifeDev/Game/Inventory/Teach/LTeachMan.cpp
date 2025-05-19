@@ -108,8 +108,8 @@ void ALTeachMan::DeInitFeat() {
 }
 
 void ALTeachMan::DeInit_Implementation() {
-	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
+	Settings = nullptr;
 	Items = nullptr;
 	Super::DeInit_Implementation();
 }
