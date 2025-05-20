@@ -22,6 +22,7 @@ ALStepC2S001::ALStepC2S001():Super() {
 	// FBDiagMod = .07;
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
+	UseFBAnim = true;
 }
 
 void ALStepC2S001::TryStart_Implementation() {
