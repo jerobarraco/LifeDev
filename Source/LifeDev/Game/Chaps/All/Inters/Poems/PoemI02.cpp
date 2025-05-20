@@ -7,7 +7,7 @@
 APoemI02::APoemI02():Super() {
 	RewardFlash = -.2f;
 	RewardItem = LDConsts::Items::Poem2;
-	Super::SetActorHiddenInGame(true); // made visible by step
+	Super::SetActorHiddenInGame(true); // made visible by step. this triggers a call to setActive(false) but it's ok.
 	// Can't be static since it will be inside a drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }
