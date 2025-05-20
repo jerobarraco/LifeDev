@@ -165,16 +165,16 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 bool AInteract::ShouldUnlock_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 
-	if (ULockCondition.IsEmpty()) return false; // only thing to check here.
+	if (UnlockCondition.IsEmpty()) return false; // only thing to check here.
 
 	const UEval* const Eval = UEval::Instance(this);
 	double Res = -1;
-	if (LIKELY(Eval)) Eval->Eval(ULockCondition, Res);
+	if (LIKELY(Eval)) Eval->Eval(UnlockCondition, Res);
 	
 	const bool Passed = Res > 0;
 	UE_LOG(LogInteract, Log,
 		TEXT("%hs Attempt to unlock with condition='%s', Res=%.4f, Pass=%i"),
-		__func__, *ULockCondition, Res, Passed);
+		__func__, *UnlockCondition, Res, Passed);
 
 	return Passed;
 }

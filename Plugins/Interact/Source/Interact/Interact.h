@@ -165,14 +165,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool IsLocked = false;
 
-	// experimental. an eval condition that will unlock this.
-	//	E.g.
-	//		On a flag: {flag}
+	// An eval condition that will unlock this interact.
+	//	E.g. On a flag: {flag}
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
-	FString ULockCondition = "";
+	FString UnlockCondition = "";
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	TObjectPtr<USoundBase> SFXLocked = nullptr;
+	// TODO i could have a sfxUnlock but i don't really need it just now. otherwise take a look at doorI10
 #pragma endregion
 #pragma region Setup
 	// An interact id used for auto dialogs and such.
@@ -304,7 +304,7 @@ protected:
 		// so that i'm sure that children are done.
 		OnTriggerLocked.Broadcast();
 	}
-	
+
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.

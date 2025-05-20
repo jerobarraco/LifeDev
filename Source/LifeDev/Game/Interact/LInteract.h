@@ -93,7 +93,7 @@ public:
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	// WARNING! Currently i'm testing NOT to use this ANYMORE!
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
-	FName ULockItem = NAME_None; // TODO once i've settled on the mechanic. delete this one. THEN rename ULockItemReq to ULockItem
+	FName ULockItem = NAME_None; // TODO once i've settled on the mechanic. delete this one. use ULockCondition
 #pragma endregion
 
 #pragma region dialogs
