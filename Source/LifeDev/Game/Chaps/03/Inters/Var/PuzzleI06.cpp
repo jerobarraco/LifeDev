@@ -16,6 +16,7 @@ APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 2};
 	ResetOnFail = false;
+	UseAutoActivate = false; // This is activated by the step c3s0
 
 	static FName DoneId = "PZ06_T";
 	TriggerDlg = DoneId;
@@ -43,13 +44,6 @@ void APuzzleI06::BeginPlay() {
 		UE_LOG(LogTemp, Log, TEXT("%s::%hs foxify by=%.4f"),
 			_myclass_, __func__, Diff);
 	}
-	
-	// this is the only safe place to set active and get the settings
-	// const ULSettings* const Settings = ULSettings::Instance(this);
-	// const EFeat& ChapFeat = Settings ? Settings->CurrentChapterFeat() : EFeat::NONE;
-	// const bool Active = ChapFeat == EFeat::C_03; // disabled manually. still needs work.
-	// UE_LOG(LogTemp, Log, TEXT("PuzzleI06::%hs Active=%i"), __func__, Active);
-	// SetActives(Active);
 }
 
 void APuzzleI06::EndPlay(const EEndPlayReason::Type EndPlayReason) {
