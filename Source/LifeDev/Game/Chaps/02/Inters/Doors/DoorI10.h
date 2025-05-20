@@ -12,9 +12,8 @@ class LIFEDEV_API ADoorI10: public ADoor02 {
 
 public:
 	ADoorI10();
+	virtual void DoTrigger_Implementation() override;
 
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
-	virtual bool TryTrigger_Implementation() override;
 protected:
 	UFUNCTION()
 	void DoDialog();
@@ -23,6 +22,4 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<USoundBase> SFX_Gun = nullptr;
-
-	bool Interacted = false;
 };
