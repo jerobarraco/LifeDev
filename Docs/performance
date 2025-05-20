@@ -109,6 +109,13 @@ After Tonemapping 	This option indicates that post processing will take place af
 r.Water.SingleLayer.ShaderSupportVSMFiltering=0
 r.Water.SingleLayer.VSMFiltering=0
 
+# gc
+[ConsoleVariables]
+; optimize gc. requires usage of tobjectptr https://youtu.be/d2LWbjSjsv8?t=765
+gc.AllowIncrementalReachability=1
+gc.AllowIncrementalGather=1
+gc.IncrementalReachabilityTimeLimit=0.002
+
 # cpp microopts
 cpp
 * emplace
@@ -156,7 +163,7 @@ DONT:
 	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
 	and because i don't think it'll work with bps. i wont. also i don't like it.
 
-
+# links
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
 
 profiling and optimizing in ue4 
