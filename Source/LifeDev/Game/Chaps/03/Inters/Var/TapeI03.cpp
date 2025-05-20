@@ -14,7 +14,8 @@ ATapeI03::ATapeI03():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 	IsLocked = true;
-	UseAutoActivate = false; // rewarded by the puzzle. auto-activate will mess with us
+	UseAutoActivate = true; // rewarded by the puzzle.
+	// autoActivate works well, and it's needed so it gets activated on reward.
 
 	ULockItemReq = LDConsts::Items::Batts;
 	LockedDlg = FName("T03_L");
