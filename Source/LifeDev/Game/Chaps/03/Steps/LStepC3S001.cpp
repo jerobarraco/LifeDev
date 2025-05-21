@@ -2,7 +2,6 @@
 
 #include "LStepC3S001.h"
 
-#include "Camera/CameraComponent.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC03.h"
@@ -17,7 +16,9 @@ ALStepC3S001::ALStepC3S001():Super() {
 
 	GhostPos = FVector(200,-42,65);
 	UseGhosts = true;
+	UseFBAnim = true;
 	UseFBDlgAuto = true;
+
 	FBDlgAutoTo = 1.2;
 }
 
