@@ -98,6 +98,10 @@ void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Anim)) Anim->OnEnd.RemoveAll(this);
 	if (LIKELY(Collider)) Collider->OnComponentBeginOverlap.RemoveAll(this);
 
+	const UWorld* const World = GetWorld();
+	if (World)
+		World->GetTimerManager().ClearAllTimersForObject(this);
+	
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -131,7 +135,9 @@ void ARange::Trigger() {
 	FTimerDelegate D;
 	constexpr float OutTime = .5;
 	D.BindLambda([AnimMat, OutTime, this] () {
-		if (UNLIKELY(!AnimMat)) return;
+		// avoid crashes if someone finished the game during a range >_<
+		// even though i clear the timer on EndPlay, that does NOT fix it!
+		if (UNLIKELY(!AnimMat | !IsValid(AnimMat) | !IsValid(this))) return;
 		
 		const FAParams POut {.Name = HintMPCName, .Duration = OutTime};
 		AnimMat->MPCFloatFade(MPC, POut, 0);
