@@ -304,7 +304,7 @@ void ALInteract::DoTrigger_Implementation() {
 		DiagsShown = Diags->AddId(TriggerDlg);
 		// done this way to force the autodialog even if the class one is defined 
 		const bool AutoShown = Diags->AddId(TName);
-		DiagsShown = DiagsShown || AutoShown;
+		DiagsShown = DiagsShown | AutoShown;
 	}
 
 	// ensure we reward or the player could get locked

@@ -25,9 +25,6 @@ APotI00::APotI00():Super() {
 	UseFade = false;
 	UseAutoActivate = false; // activated by the step
 
-	// locked so that player can't trigger manually,
-	// but they can still use the items on it.
-	IsLocked = true;
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	// UseAutoActivate = false; // enabled by the stove // redundant
 	// RewardFlash = 0.1;
@@ -56,6 +53,10 @@ APotI00::APotI00():Super() {
 	SND_Drops = CSnd2.Object;
 
 	// first interaction is unlocking food
+	// locked so that player can't trigger manually,
+	// but they can still use the items on it.
+	IsLocked = true;
+	IsOneShot = false;
 	TriggerDlg = "Pot00.0_T";
 	LockedDlg = "Pot00.0_L";
 	UnlockItems = { "Food00", "Food01" };
