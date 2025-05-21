@@ -152,6 +152,8 @@ bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 }
 
 bool UInventory::Get(const FName& Name, FItem& OutItem) const {
+	if (UNLIKELY(Name.IsNone())) return false;
+
 	const FItem* const pItem = Items.Find(Name);
 	if (UNLIKELY(!pItem)) return false;
 

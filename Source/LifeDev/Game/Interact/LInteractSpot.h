@@ -5,6 +5,8 @@
 
 #include "LInteractSpot.generated.h"
 
+// TODO potentially deprecated. since most functionality will be moved to base interacts.
+
 // A Place to drop other interacts.
 // It's always locked, and triggers only once when all the items are dropped (used with).
 // It will trigger LockedDlg (when not done) and TriggerDlg (once upon done) accordingly.
@@ -18,8 +20,9 @@ class LIFEDEV_API ALInteractSpot: public ALInteract {
 public:
 	ALInteractSpot();
 
+	// deprecated, use "UnlockItems"
 	// items to receive/consume. these are the items that are allowed to be dropped here.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	TArray<FName> Items;
 
 	// when true, the items can only be dropped in order.

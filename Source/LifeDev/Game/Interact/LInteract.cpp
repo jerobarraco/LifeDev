@@ -228,8 +228,11 @@ bool ALInteract::ShouldUnlock_Implementation() {
 	if (ULockItemReq.IsNone()) return false;
 	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is true here
 
+	if (ULockItemReq.IsNone()) return false; // false because no need to call unlock.
+
 	FItem Item;
-	if (!Inventory->Get(ULockItemReq, Item)) return false;
+	if (!Inventory->Get(ULockItemReq, Item)) return false; // false because we don't have it
+
 	return Inventory->IsCold(Item);
 }
 
