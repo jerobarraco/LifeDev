@@ -2,6 +2,8 @@
 
 #include "LSwitchI02.h"
 
+#include "NiagaraSystem.h" // include or crash :/  (needed for the object finder)
+
 ALSwitchI02::ALSwitchI02(): Super() {
 	IsOneShot = false;
 	UseActiveOnce = false;
@@ -13,10 +15,7 @@ ALSwitchI02::ALSwitchI02(): Super() {
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CPart0(TEXT("/Game/LifeDev/Game/Inters/Generic/Sparks/Sparks_N"));
-	Particles = {
-		nullptr,
-		CPart0.Object
-	};
+	Particles = { nullptr, CPart0.Object };
 
 	RewardIntersTrigger = {
 		TSoftObjectPtr<AInteract>(FSoftObjectPath(
