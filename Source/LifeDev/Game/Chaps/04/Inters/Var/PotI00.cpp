@@ -76,20 +76,15 @@ void APotI00::DoTrigger_Implementation() {
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
 		UnlockItems = {LDConsts::Items::Plate01};
-		RewardItem = LDConsts::Items::Plate02;
-		
 		// SFXTrigger = SND_Drops; // TODO use SFXs[]
 		IsLocked = true;
+		// story is advanced by the step
+		// Story->StartNext(); // manually advance.
+	} else if (State == 0) { // has looped over (notice the check is last)
+		RewardItem = LDConsts::Items::Plate02;
 		IsOneShot = true; // no more triggers after this
-		Story->StartNext(); // manually advance.
-	}
-	/* else if (State == 0) { // has looped over (notice the check is last)
-		// reward a plate. not using rewarditem or the parent's functionality since it's too cumbersome in this case.
-		Inventory->Mod(LDConsts::Items::Plate02, 1);
-		// Could set the text here. but since it's deactivated it does not matter.
-		SFXTrigger = nullptr; // no sound after
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
-	} */
+	} 
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {

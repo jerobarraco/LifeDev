@@ -12,6 +12,7 @@ ALStepC4S004::ALStepC4S004():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
+	FlagsFinish = { "Inter.Trigger.PotI00" }; // finish when the pot is triggered
 
 	UseFBRand = true; // min is limited in c4s0
 	RandFB->DelayMin = .5;
