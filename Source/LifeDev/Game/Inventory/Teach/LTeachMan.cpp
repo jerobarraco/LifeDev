@@ -53,7 +53,7 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 void ALTeachMan::Init_Implementation() {
 	Super::Init_Implementation();
 	
-	ULSettings* const Settings = ULSettings::Instance(this);
+	Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALTeachMan::FeatUp);
 		if (UNLIKELY(!Settings->GetFeat(EFeat::G_TEACH))) return; // don't do initfeat if i don't have the feat.
@@ -152,7 +152,6 @@ void ALTeachMan::InitDelayed() {
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
 	}
 
-	Settings = ULSettings::Instance(this);
 	int32 Chapter = -1;
 	if (LIKELY(Settings)) {
 		Chapter = Settings->CurrentChapter();
