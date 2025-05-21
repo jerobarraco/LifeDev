@@ -28,8 +28,9 @@ public:
 #pragma region Regular
 	// Used for Add, Rem, and Use. Returns false if not found.
 	// Note: It does check for maxCount but will return true even when capped.
+	// OnlyConsume will affect consumable items only. returns true if the item exists.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool Mod(const FName& Name, const int32 Diff=1);
+	bool Mod(const FName& Name, const int32 Diff=1, const bool OnlyConsume = false);
 	// ensure the item is owned, with a quantity of 1 at least.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool Ensure(const FName& Name);

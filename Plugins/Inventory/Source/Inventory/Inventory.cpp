@@ -20,7 +20,7 @@ UInventory* UInventory::Instance(const UObject* const O) {
 	return IsValid(I) ? I : nullptr;
 }
 
-bool UInventory::Mod(const FName& Name, const int32 Diff) {
+bool UInventory::Mod(const FName& Name, const int32 Diff, const bool OnlyConsume) {
 	if (UNLIKELY(Name.IsNone())) return false;
 
 	UE_LOG(LogInventory, Log, TEXT("%hs name=%s, diff=%i"),
@@ -52,6 +52,11 @@ bool UInventory::Mod(const FName& Name, const int32 Diff) {
 			SetSelect = true;
 		}
 	}
+
+	// if it's just a consume operation, and the item is not consumable, just skip and return true (the item exists).
+	// if it's consumable continue and follow the rest of the checks. if Diff>0 and consume, it makes no sense. but let's treat it the same way for now.
+	// if it's not OnlyConsume lets continue normally
+	if (UNLIKELY(OnlyConsume & !Item->Consumable)) return true;
 
 	/// update the item count
 	
@@ -255,9 +260,9 @@ bool UInventory::Use(const FName& Name) {
 	// the fname automagically transforms to the next name. W T F
 	// (maybe the tarray copies instead of moving)
 	const FName OldName = Name;
-	
-	// intentionally calling mod so that onMod is triggered
-	if (Item.Consumable) Mod(Name, -1); // consume if needed
+
+	// intentionally calling mod so that OnMod is triggered (if needed)
+	Mod(Name, -1, true); // consume if needed
 
 	OnUsed.Broadcast(OldName);
 	return true;
