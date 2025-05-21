@@ -225,10 +225,21 @@ bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already
 
 	// handle item req
-	if (ULockItemReq.IsNone()) return false;
-	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is true here
-
 	if (ULockItemReq.IsNone()) return false; // false because no need to call unlock.
+	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is not none here
+
+	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
+		const FName& N = UnlockItems[i];
+		// returns true on consumables, and true on non-consumables that i have
+		// the !N.IsNone() will allow to remove none items and check for empty array
+		if (!N.IsNone() && !Inventory->Mod(N, -1, true)) continue;
+
+		UnlockItems.RemoveAtSwap(i);
+
+		// when we've removed all unlock.
+		// notice this point is only achieved if .Num() > 0 to begin with 
+		if (UnlockItems.Num() == 0) return true;
+	}
 
 	FItem Item;
 	if (!Inventory->Get(ULockItemReq, Item)) return false; // false because we don't have it

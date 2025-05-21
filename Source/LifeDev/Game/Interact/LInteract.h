@@ -85,15 +85,24 @@ public:
 #pragma region lock
 	virtual bool ShouldUnlock_Implementation() override;
 	virtual void Unlock_Implementation() override;
-	// deprecated. use ULockCondition
+
+	// items to receive/consume in order to unlock.
+	// items will be removed from this list on runtime whenever they are consumed.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
+	TArray<FName> UnlockItems;
+
+	// deprecated. use UnlockItems
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
+	// TODO delete
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockItemReq = NAME_None;
+
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	// WARNING! Currently i'm testing NOT to use this ANYMORE!
+	// TODO once i've settled on the mechanic. delete this one. use ULockCondition
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
-	FName ULockItem = NAME_None; // TODO once i've settled on the mechanic. delete this one. use ULockCondition
+	FName ULockItem = NAME_None;
 #pragma endregion
 
 #pragma region dialogs
