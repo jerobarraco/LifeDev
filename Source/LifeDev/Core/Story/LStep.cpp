@@ -30,6 +30,7 @@ ALStep::ALStep():Super() {
 
 	Anim = CreateDefaultSubobject<UCAnimatorTrans>(TEXT("Anim"));
 	Anim->TRoot = Cam;
+	Anim->IsAdditive = false;
 
 	AnimTarget = CreateDefaultSubobject<USceneComponent>(TEXT("Target"));
 	AnimTarget->SetupAttachment(Root);

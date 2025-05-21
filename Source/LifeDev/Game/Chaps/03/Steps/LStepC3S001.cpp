@@ -18,7 +18,6 @@ ALStepC3S001::ALStepC3S001():Super() {
 	UseGhosts = true;
 	UseFBAnim = true;
 	UseFBDlgAuto = true;
-
 	FBDlgAutoTo = 1.2;
 }
 
