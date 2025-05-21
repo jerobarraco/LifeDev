@@ -5,7 +5,8 @@
 
 #include "LInteractSpot.generated.h"
 
-// TODO potentially deprecated. since most functionality will be moved to base interacts.
+// TODO deprecated. since most functionality will be moved to base interacts.
+// TODO just delete useInc and UseOrder. i'm not using them anyway.
 
 // A Place to drop other interacts.
 // It's always locked, and triggers only once when all the items are dropped (used with).

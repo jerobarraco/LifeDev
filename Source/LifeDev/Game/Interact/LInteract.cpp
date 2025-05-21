@@ -134,7 +134,6 @@ void ALInteract::BeginPlay() {
 	// hide and disable reward actor if any. will also call SetActive.
 	AActor* const RAct = RewardActor.Get();
 	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
-
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -224,10 +223,10 @@ void ALInteract::HideAfterFade() {
 bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already
 
-	// handle item req
-	if (ULockItemReq.IsNone()) return false; // false because no need to call unlock.
 	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is not none here
 
+	// handle unlockitems
+	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
 	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
 		const FName& N = UnlockItems[i];
 		// returns true on consumables, and true on non-consumables that i have
@@ -236,11 +235,19 @@ bool ALInteract::ShouldUnlock_Implementation() {
 
 		UnlockItems.RemoveAtSwap(i);
 
-		// when we've removed all unlock.
+		// trigger the dialog here. avoid extra if below
+		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
+
+		// when we've removed all, unlock.
 		// notice this point is only achieved if .Num() > 0 to begin with 
-		if (UnlockItems.Num() == 0) return true;
+		if (UnlockItems.Num() == 0) {
+			if (!Added) Diags->AddId(FName(Base)); // nopes because it will trigger for each item
+			return true;
+		}
 	}
 
+	// handle ulockitemreq
+	if (ULockItemReq.IsNone()) return false; // false because no need to call unlock.
 	FItem Item;
 	if (!Inventory->Get(ULockItemReq, Item)) return false; // false because we don't have it
 
