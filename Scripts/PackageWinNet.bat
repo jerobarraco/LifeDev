@@ -11,11 +11,11 @@ set CONFIG=Shipping
 ::set CONFIG=Development
 ::set CLEAN=-clean
 set CLEAN=
-
+set DDC="-ddc=noshared"
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
-call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/"
+call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/" %DDC%
 :: -AdditionalCookerOptions="-cookprocesscount=4"
 popd
 exit /b 0
