@@ -146,15 +146,15 @@ public:
 #pragma region items
 	//Experimental: if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> FlagsFinish;
+	TArray<FName> FlagsFinish; // TOdo rename to Finish*?
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsFinish;
+	TArray<FName> ItemsFinish; // TOdo rename to Finish*?
 
 	// items to remove (completely) when the step *finishes*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsRem; // TODO would it be better if it just Mod(-1)?
+	TArray<FName> ItemsRem;
 
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
