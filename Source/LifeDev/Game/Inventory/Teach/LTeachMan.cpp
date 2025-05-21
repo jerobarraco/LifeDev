@@ -82,10 +82,8 @@ void ALTeachMan::DeInitInter() {
 }
 
 void ALTeachMan::DeInitDiag() {
-	UDiags* const Diags = UDiags::Instance(this);
-	if (LIKELY(Diags)) {
-		Diags->OnAdd.RemoveAll(this);
-	}
+	if (LIKELY(Diags)) Diags->OnAdd.RemoveAll(this);
+	Diags = nullptr;
 }
 
 void ALTeachMan::DeInitStory() {
@@ -148,9 +146,8 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	Diags = UDiags::Instance(this);
-	if (LIKELY(Diags)) {
+	if (LIKELY(Diags))
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
-	}
 
 	int32 Chapter = -1;
 	if (LIKELY(Settings)) {
@@ -175,7 +172,7 @@ void ALTeachMan::BeginPlay() {
 
 bool ALTeachMan::Show_Implementation(const FName& Id) {
 	// don't show a hint if the diags are showing
-	if (LIKELY(Diags) & UNLIKELY(Diags->GetIsShowing())) return false;
+	if (LIKELY(Diags) && UNLIKELY(Diags->GetIsShowing())) return false;
 
 	return Super::Show_Implementation(Id);
 }
