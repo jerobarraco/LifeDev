@@ -15,10 +15,11 @@ public:
 
 protected:
 	virtual void DoTrigger_Implementation() override;
+	// unused
 	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	USoundBase* SND_Drops = nullptr;
+	TObjectPtr<USoundBase> SND_Drops = nullptr;
 
 	// keeps track of the interaction step. sucks, but not as much as
 	// the other things i came up with, which are : none.

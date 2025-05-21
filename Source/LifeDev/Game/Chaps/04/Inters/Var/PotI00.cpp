@@ -4,7 +4,6 @@
 
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
-#include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
@@ -17,6 +16,9 @@
 // the plate can be used again which rewards another plate.
 // the other plate triggers the spot.
 
+// todo i got tired of this class bringing problems for being such a snowflake,
+//	try to find a different way to implement it.
+
 APotI00::APotI00():Super() {
 	RewardItem = NAME_None;
 	UseRewardDestroy = false;
@@ -26,8 +28,6 @@ APotI00::APotI00():Super() {
 	// locked so that player can't trigger manually,
 	// but they can still use the items on it.
 	IsLocked = true;
-	TriggerDlg = "Pot00.0_T";
-	LockedDlg = "Pot00.0_L";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	// UseAutoActivate = false; // enabled by the stove // redundant
 	// RewardFlash = 0.1;
@@ -50,12 +50,16 @@ APotI00::APotI00():Super() {
 	};
 	Lid->SetRelativeRotation(State0Rot); // init the correct transform
 	Anim->IsAdditive = false;
-
-	SFXTrigger = nullptr;
 	// preload
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
 	SND_Drops = CSnd2.Object;
+
+	// first interaction is unlocking food
+	TriggerDlg = "Pot00.0_T";
+	LockedDlg = "Pot00.0_L";
+	UnlockItems = { "Food00", "Food01" };
+	SFXs = {SND_Drops, nullptr};
 }
 
 void APotI00::DoTrigger_Implementation() {
@@ -70,18 +74,25 @@ void APotI00::DoTrigger_Implementation() {
 		// all this only affects the next trigger (using the plate) for next trigger (plates)
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
 		LockedDlg = "Pot00.1_L";
-		SFXTrigger = SND_Drops;
+		UnlockItems = {LDConsts::Items::Plate01};
+		RewardItem = LDConsts::Items::Plate02;
+		
+		// SFXTrigger = SND_Drops; // TODO use SFXs[]
+		IsLocked = true;
+		IsOneShot = true; // no more triggers after this
 		Story->StartNext(); // manually advance.
-	} else if (State == 0) { // has looped over (notice the check is last)
+	}
+	/* else if (State == 0) { // has looped over (notice the check is last)
 		// reward a plate. not using rewarditem or the parent's functionality since it's too cumbersome in this case.
 		Inventory->Mod(LDConsts::Items::Plate02, 1);
 		// Could set the text here. but since it's deactivated it does not matter.
 		SFXTrigger = nullptr; // no sound after
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
-	}
+	} */
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
+#if LD_ITEM_USE
 	// only observe these items
 	// returning success will "consume" the items. (good)
 	if (State == 0 && (Name == "Food00" || Name == "Food01")) {
@@ -97,7 +108,7 @@ EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
 		Trigger();
 		return EItemUseResult::SUCCESS;
 	}
-
+#endif
 	// calling super to handle correctly
 	return Super::TryUseItem_Implementation(Name);
 }
