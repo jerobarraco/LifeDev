@@ -87,10 +87,8 @@ void ALTeachMan::DeInitDiag() {
 }
 
 void ALTeachMan::DeInitStory() {
-	UStory* const Story = UStory::Instance(this);
-	if (LIKELY(Story)) {
-		Story->OnStart.RemoveAll(this);
-	}
+	if (LIKELY(Story)) Story->OnStart.RemoveAll(this);
+	Story = nullptr;
 }
 
 void ALTeachMan::DeInitFeat() {
