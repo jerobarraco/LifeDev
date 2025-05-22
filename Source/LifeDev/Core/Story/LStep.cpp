@@ -9,6 +9,7 @@
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
@@ -48,6 +49,7 @@ ALStep::ALStep():Super() {
 }
 
 void ALStep::TryStart_Implementation() {
+	// flags is on LStoryMan, 
 	// initialize cam and anim for an appropriate cam blend
 	if (UseFBAnim & LIKELY(bool(Anim) & bool(AnimTarget))) {
 		// the animator trans uses relative transforms always :/
@@ -55,17 +57,22 @@ void ALStep::TryStart_Implementation() {
 		Anim->TEnd = AnimTarget->GetRelativeTransform();
 	}
 
+	const FString& SName = Name.ToString();
+	const FName Name(LDConsts::Flags::Story::StepStartPre + SName);
+	if (LIKELY(!Flags)) Flags->Mod(Name, 1);
+
 	Super::TryStart_Implementation();
 
 	EnsureItems(); // make sure items are awarded
 
 	// disable the input during camblend
 	// works on the premise that onStart it will force input again.
-	if (!CamTarget) return;
-	const UWorld* const W = GetWorld();
-	AGameModeBase* const GameModeBase = LIKELY(W) ? W->GetAuthGameMode() : nullptr;
-	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
+	if (CamTarget) {
+		const UWorld* const W = GetWorld();
+		AGameModeBase* const GameModeBase = LIKELY(W) ? W->GetAuthGameMode() : nullptr;
+		ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
+		if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
+	}
 }
 
 void ALStep::Stop_Implementation() {
@@ -154,7 +161,6 @@ void ALStep::Start_Implementation() {
 		FB->OnChange.AddUniqueDynamic(this, &ALStep::FBUpd);
 	}
 
-	// show dialogs
 	StartDialogs();
 }
 

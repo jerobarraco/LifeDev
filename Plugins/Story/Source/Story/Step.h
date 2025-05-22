@@ -115,12 +115,12 @@ protected:
 	void CamShakeStop();
 
 	// don't call directly. called by system.
-	// called when the step just starts. can be in the middle of a fade.
+	// called when the step just starts. it can be in the middle of a fade.
 	// You should override Start instead, unless you know what you're doing.
 	// one reason would be to do something just when the fade is on (like loading or fading something).
 	// be sure not to do anything that would finish the step here, use Start for that (and even then use a timer for next tick).
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
-	void TryStart() ;
+	void TryStart();
 	
 	// don't call this one directly. called by the system.
 	// Override to perform whatever the step needs to do at the end.

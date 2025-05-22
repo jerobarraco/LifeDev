@@ -86,5 +86,5 @@ void AStoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AStoryMan::StepStart_Implementation(AStep* Step) {}
-void AStoryMan::StepStop_Implementation(AStep* Step) {}
+void AStoryMan::StepStart_Implementation(AStep* const Step) {}
+void AStoryMan::StepStop_Implementation(AStep* const Step) {}

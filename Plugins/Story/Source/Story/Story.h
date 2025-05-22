@@ -87,7 +87,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float HoldTime = 2;
 
-	// triggered when a step starts
+	// triggered when a step starts. (just after Step->TryStart is called, probably before Step->Start)
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryStepStart OnStart;
 	// triggers when a step stops
