@@ -11,6 +11,7 @@
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
 
+#include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -73,6 +74,14 @@ void ALInteract::SetActive_Implementation(const bool Active) {
 	}
 
 	Super::SetActive_Implementation(Active);
+}
+
+bool ALInteract::TryTrigger_Implementation() {
+	const USentry* const Sentry = USentry::Instance(this);
+	// keep an eye on this in case it slows us down.
+	if (LIKELY(Sentry)) Sentry->AddHint(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString(), {});
+
+	return Super::TryTrigger_Implementation();
 }
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
@@ -177,7 +186,7 @@ void ALInteract::DoRewards() {
 	
 	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
 	// do the flags which are more flexible.
-	if (LIKELY(IsValid(Flags))) Flags->Mod(RewardFlag, 1.0);
+	if (LIKELY(Flags)) Flags->Mod(RewardFlag, 1.0);
 
 	// do the actor
 	AActor* const RAct = RewardActor.Get();
@@ -313,8 +322,8 @@ void ALInteract::DoTrigger_Implementation() {
 void ALInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Super::DoTriggerLocked_Implementation();
-	
-	if (UNLIKELY(!Inventory || !Diags)) return;
+
+	if (UNLIKELY(!Inventory | !Diags)) return;
 
 	const bool Has = Inventory->Has(ULockItem);
 
