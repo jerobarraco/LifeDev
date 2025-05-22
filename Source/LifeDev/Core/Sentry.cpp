@@ -143,17 +143,19 @@ void USentry::Saving(const bool IsSaving) {
 	AddHint(Tag, {{TEXT("Saving"), On}});
 }
 
-static const FString TagNameStep("Story::Step");
+namespace LD { namespace Sentry {
+	static const FString TagNameStep("Story::Step"); }}
+
 void USentry::StepStart(AStep* const Step) {
 	const FString& N = LIKELY(IsValid(Step)) ? Step->Name.ToString() : TEXT("");
-	AddHint(TagNameStep, {{"Name", N}});
-	TagSet(TagNameStep, N);
+	AddHint(LD::Sentry::TagNameStep, {{"Name", N}});
+	TagSet(LD::Sentry::TagNameStep, N);
 }
 
 void USentry::StepStop(AStep* const Step) {
 	if (LIKELY(IsValid(Step)))
-		AddHint(TagNameStep, {{"Name", Step->Name.ToString()}});
-	TagRem(TagNameStep);
+		AddHint(LD::Sentry::TagNameStep, {{"Name", Step->Name.ToString()}});
+	TagRem(LD::Sentry::TagNameStep);
 }
 
 void USentry::DiagAdd(const FName& Name, const FDiag& Diag) {

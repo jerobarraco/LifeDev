@@ -25,7 +25,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLTeachMan, Log, Log)
 
-namespace LifeDev {
+namespace LD {
 	namespace Teach {
 		static const FName InterTrigger("Inter.Trigger");
 		static const FName ItemPick("Item.Pick");
@@ -152,13 +152,13 @@ void ALTeachMan::InitDelayed() {
 		Chapter = Settings->CurrentChapter();
 		// no need to check on FeatUp. this is only a warning for when you start the game with the flag set.
 		// if you turn it on, you should know what you're doing and how to turn it off.
-		if (LIKELY(Settings->GetFeat(EFeat::V_STROBE) && !Has(LifeDev::Teach::FlagFlash))) {
+		if (LIKELY(Settings->GetFeat(EFeat::V_STROBE) && !Has(LD::Teach::FlagFlash))) {
 			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::TeachFlash, 3, true);
 		}
 	}
 
 	Story = UStory::Instance(this);
-	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LifeDev::Teach::ItemUse)) {
+	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LD::Teach::ItemUse)) {
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
 	}
 }
@@ -191,12 +191,12 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 			ItemSelCount = 0; // test
 			// bind ONLY here. so it doesn't count previous scrolls. as the user might not have realized what he did
 			Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
-			Show(LifeDev::Teach::ItemChange);
+			Show(LD::Teach::ItemChange);
 		} else
-			Show(LifeDev::Teach::ItemPick);
+			Show(LD::Teach::ItemPick);
 	} else if (Diff<0) {
 		if (LIKELY(Item.Consumable)) // don't trigger on cards
-			Show(LifeDev::Teach::ItemConsume); // item consumed
+			Show(LD::Teach::ItemConsume); // item consumed
 	}
 
 	if (UNLIKELY(ItemHasAll()))
@@ -204,21 +204,21 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 }
 
 void ALTeachMan::InterTrigger(const UCInteract* const Comp) {
-	Hide(LifeDev::Teach::InterTrigger);
+	Hide(LD::Teach::InterTrigger);
 	DeInitInter();
 }
 
 void ALTeachMan::InterHover(const bool bOn, UCInteract* const Comp) {
 	if (!bOn & !Comp) return;
 	// TODO have a timer so that i have to look at it for a few seconds
-	Show(LifeDev::Teach::InterTrigger);
+	Show(LD::Teach::InterTrigger);
 }
 
 void ALTeachMan::ItemSel(const FName& Name) {
 	++ItemSelCount;
 	if (LIKELY(ItemSelCount<2)) return;
 
-	Hide(LifeDev::Teach::ItemChange);// not working
+	Hide(LD::Teach::ItemChange);// not working
 
 	if (LIKELY(Items))
 		Items->OnSelected.RemoveAll(this);
@@ -229,12 +229,12 @@ void ALTeachMan::ItemUse(const FName& Name) {
 	const bool Ok = LIKELY(Items) ? Items->GetSelectedItem(Item) : false;
 	const bool ShouldHide = Ok & Item.SelfUsable;
 	if (ShouldHide)
-		Hide(LifeDev::Teach::ItemUse);
+		Hide(LD::Teach::ItemUse);
 }
 
 bool ALTeachMan::ItemHasAll() {
-	return Has(LifeDev::Teach::ItemPick) && Has(LifeDev::Teach::ItemConsume)
-	&& Has(LifeDev::Teach::ItemChange) && Has(LifeDev::Teach::ItemUse);
+	return Has(LD::Teach::ItemPick) && Has(LD::Teach::ItemConsume)
+	&& Has(LD::Teach::ItemChange) && Has(LD::Teach::ItemUse);
 }
 
 void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
@@ -245,7 +245,7 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	// downside. will only work if the dialog itself uses this format, which not all do.
 	// TODO find something better. some objects might not even have a look, but instead use the inventory description.
 	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre) ) {
-		Hide(LifeDev::Teach::ItemPick); // i can dismiss the message here.
+		Hide(LD::Teach::ItemPick); // i can dismiss the message here.
 		DeInitDiag();
 	}
 }
@@ -254,9 +254,9 @@ void ALTeachMan::StepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	// i want something more optimized, but this will have to do for now.
 	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
-		Show(LifeDev::Teach::ItemUse);
+		Show(LD::Teach::ItemUse);
 	else 
-		Show(LifeDev::Teach::GameSetting); // not really a good place. there's a change it could appear during dialogs.
+		Show(LD::Teach::GameSetting); // not really a good place. there's a change it could appear during dialogs.
 }
 
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
@@ -273,7 +273,7 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 void ALTeachMan::TeachFlash() {
 	// this is a critical one because it's a safety issue.
 	// hence. i'm going to keep trying to show this until it's shown.
-	Show(LifeDev::Teach::FlagFlash);
+	Show(LD::Teach::FlagFlash);
 }
 
 void ALTeachMan::SettingsDone() {
@@ -283,13 +283,13 @@ void ALTeachMan::SettingsDone() {
 
 	// this is to ensure we don't unbind before the flash is shown if it's necessary.
 	bool AllDone = LIKELY(Settings) ? !Settings->GetFeat(EFeat::V_STROBE) : true;
-	Hide(LifeDev::Teach::GameSetting); // always hide since we come from there.
+	Hide(LD::Teach::GameSetting); // always hide since we come from there.
 	// only hide if it was shown. important since it's a health thing.
-	const bool FlashShown = Has(LifeDev::Teach::FlagFlash);
+	const bool FlashShown = Has(LD::Teach::FlagFlash);
 	if (FlashShown) {
 		World->GetTimerManager().ClearTimer(HFlash);
 		HFlash.Invalidate();
-		Hide(LifeDev::Teach::FlagFlash);
+		Hide(LD::Teach::FlagFlash);
 		AllDone = true;
 	}
 
