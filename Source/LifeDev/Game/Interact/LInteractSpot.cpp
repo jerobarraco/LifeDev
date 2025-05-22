@@ -82,13 +82,12 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 
 		if (Item.Consumable) Inventory->Mod(N, -1);
 
-		Items.RemoveAtSwap(i);
-
 		// trigger the dialog here. avoid extra if below
 		const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
-		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
+		const bool Added = Diags->AddId(FName(Base+"."+N.ToString())); // this is crashing. 
 		if (!Added) Diags->AddId(FName(Base));
 
+		Items.RemoveAtSwap(i); // removed here, otherwise N.ToString will crash since it's a ref. or i could copy it. but i rather not.
 		break; // only use one at a time.
 	}
 

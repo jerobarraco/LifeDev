@@ -84,7 +84,7 @@ void APotI00::DoTrigger_Implementation() {
 		RewardItem = LDConsts::Items::Plate02;
 		IsOneShot = true; // no more triggers after this
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
-	} 
+	}
 }
 
 EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {

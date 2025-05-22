@@ -233,10 +233,9 @@ bool ALInteract::ShouldUnlock_Implementation() {
 		// the !N.IsNone() will allow to remove none items and check for empty array
 		if (!N.IsNone() && !Inventory->Mod(N, -1, true)) continue;
 
-		UnlockItems.RemoveAtSwap(i);
-
 		// trigger the dialog here. avoid extra if below
 		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
+		UnlockItems.RemoveAtSwap(i); // do here to avoid a crash in N.ToString() since it's a ref. and i rather not copy it. though it probably is the size of a pointer anyway.
 
 		// when we've removed all, unlock.
 		// notice this point is only achieved if .Num() > 0 to begin with 
