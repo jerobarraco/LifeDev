@@ -175,7 +175,7 @@ bool ALTeachMan::Show_Implementation(const FName& Id) {
 	return Super::Show_Implementation(Id);
 }
 
-void ALTeachMan::DeInitItemMod() {
+void ALTeachMan::DeInitItemMod() const {
 	if (LIKELY(Items)) {
 		Items->OnMod.RemoveAll(this);
 		Items->OnUsed.RemoveAll(this);
@@ -186,9 +186,9 @@ void ALTeachMan::ItemMod(const FName& Name, const int32 Diff, const FItem& Item)
 	if (Diff>0) { // when acquiring items
 		const bool HasItems = LIKELY(Items);
 		const int32 NumItems = HasItems ? Items->GetAll().Num() : -1;
-		const bool CanChange = NumItems > 1;
-		if (HasItems & CanChange) {
-			ItemSelCount = 0; // test
+		const bool CanSelect = NumItems > 1;
+		if (HasItems & CanSelect) {
+			ItemSelCount = 0; // reset
 			// bind ONLY here. so it doesn't count previous scrolls. as the user might not have realized what he did
 			Items->OnSelected.AddUniqueDynamic(this, &ALTeachMan::ItemSel);
 			Show(LD::Teach::ItemChange);
@@ -218,10 +218,9 @@ void ALTeachMan::ItemSel(const FName& Name) {
 	++ItemSelCount;
 	if (LIKELY(ItemSelCount<2)) return;
 
-	Hide(LD::Teach::ItemChange);// not working
+	Hide(LD::Teach::ItemChange);
 
-	if (LIKELY(Items))
-		Items->OnSelected.RemoveAll(this);
+	if (LIKELY(Items)) Items->OnSelected.RemoveAll(this);
 }
 
 void ALTeachMan::ItemUse(const FName& Name) {
@@ -232,7 +231,7 @@ void ALTeachMan::ItemUse(const FName& Name) {
 		Hide(LD::Teach::ItemUse);
 }
 
-bool ALTeachMan::ItemHasAll() {
+bool ALTeachMan::ItemHasAll() const {
 	return Has(LD::Teach::ItemPick) && Has(LD::Teach::ItemConsume)
 	&& Has(LD::Teach::ItemChange) && Has(LD::Teach::ItemUse);
 }

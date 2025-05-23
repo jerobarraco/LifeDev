@@ -37,7 +37,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual bool Show_Implementation(const FName& Id) override;
-	void DeInitItemMod();
+	void DeInitItemMod() const;
 	void DeInitInter();
 	void DeInitDiag();
 	void DeInitStory();
@@ -53,7 +53,7 @@ protected:
 	void ItemSel(const FName& Name);
 	UFUNCTION()
 	void ItemUse(const FName& Name);
-	bool ItemHasAll();
+	bool ItemHasAll() const;
 	UFUNCTION()
 	void DiagAdd(const FName& Name, const FDiag& Diag);
 	UFUNCTION()

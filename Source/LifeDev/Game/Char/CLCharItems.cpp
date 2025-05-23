@@ -73,7 +73,7 @@ void UCLCharItems::Look(const FName& Name) const {
 	const FName& DiagName = FName(LDConsts::Dlgs::Item::LookPre+SName);
 	// the isValid is for the add below
 	const bool Said = Say(DiagName); // || Say(DRName) ; // notice it calls Say first.
-	if (LIKELY(IsValid(Diags)) && !Said) {
+	if (LIKELY(IsValid(Diags)) & !Said) {
 		// otherwise compose one
 		// show the dialog with the description. this is temporary until i make the ui
 		FDiag Diag;
@@ -219,8 +219,7 @@ bool UCLCharItems::PlaySound(const TSoftObjectPtr<USoundBase>& Snd) const {
 	if (!Snd.IsValid()) return false;
 
 	const AActor* const Owner = GetOwner();
-	UE_LOG(LogCharItems, Log, TEXT("%hs Play sound '%s'."),
-		__func__, *Snd.ToString());
+	UE_LOG(LogCharItems, Log, TEXT("%hs Play sound '%s'."), __func__, *Snd.ToString());
 	if (UseSndAtLocation & LIKELY(Owner)) {
 		const FVector& Location = Owner->GetActorLocation();
 		UGameplayStatics::PlaySoundAtLocation(this, Snd.Get(), Location);
