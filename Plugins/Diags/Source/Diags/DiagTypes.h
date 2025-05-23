@@ -64,7 +64,7 @@ public:
 	// The dialog will be added if it's "true" (>0), or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Condition = "";
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Comment = "";
 };

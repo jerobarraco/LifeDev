@@ -41,8 +41,7 @@ void UCLCharItems::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 bool UCLCharItems::Say(const FName& Name) const {
-	if (UNLIKELY(!IsValid(Diags))) return false;
-	return Diags->AddId(Name);
+	return LIKELY(Diags) ? Diags->AddId(Name) : false;
 }
 
 void UCLCharItems::Look(const FName& Name) const {
@@ -80,6 +79,7 @@ void UCLCharItems::Look(const FName& Name) const {
 		// Diag.Type = EDialogType::SYSTEM;
 		// Diag.Text = Item.Description;
 		Diag.CharRow = "Sys";
+		Diag.Comment = "look";
 		// allow item description to split on different dialog boxes/pages.
 		for (const FText& Block: Item.Descriptions) {
 			Diag.Text = Block;
@@ -125,7 +125,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::BAD_HANDLED; // always return if not usable
 	}
 	const bool Used = LIKELY(DoUse(Name, Item, true));
-	// this should never happen, since we check for iscold up there.
+	// this should never happen, since we check for isCold up there.
 	// but if it does, give a not too confusing dialog. 
 	if (UNLIKELY(!Used)) {
 		Say(LDConsts::Dlgs::Item::NotReady);
@@ -198,7 +198,7 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogi
 	Say(Dlg);
 	PlaySound(Item.Snd);
 	Flags->Mod(Dlg, 1);
-	
+
 	// isDebug is an optimization since the compiler will hopefully remove it . UJUtilsSys::IsDebug() & should i?
 	if (ULSettings::GetFeatS(this, EFeat::DBG_FAST_COOL))
 		Inventory->SetCool(Name);
