@@ -47,7 +47,7 @@ bool ATeachMan::Show_Implementation(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!CurrentId.IsNone())) {
-		UE_LOG(LogTeachMan, Warning, TEXT("%hs Busy. DT=%s"), __func__, *GetNameSafe(DT));
+		UE_LOG(LogTeachMan, Log, TEXT("%hs Busy."), __func__);
 		return false;
 	}
 

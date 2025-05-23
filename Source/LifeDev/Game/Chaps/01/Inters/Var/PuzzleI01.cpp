@@ -11,7 +11,9 @@ APuzzleI01::APuzzleI01():Super() {
 	CPuzzle->DisableOnDone = true;
 
 	static FName DoneId = "PZ01_T";
-	RewardFlash = .2;
+	// don't do this, the fb is at .85, and we use the remaining fb to animate the camera.
+	// the step has a FbAnimTo 1
+	// RewardFlash = .2;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	TriggerDlg = DoneId;
 	UseHint = true;
