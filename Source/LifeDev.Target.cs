@@ -30,8 +30,12 @@ public class LifeDevTarget : TargetRules {
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
 			// disable pdb. it takes time and space. and i test builds. if someone has an issue ask to re-test with a debug build with logs and all.
 			bOmitPCDebugInfoInDevelopment = true; // actually sentry re-enabled it somewhere. even if i remove it.
+		} else {
+			// disable warning as error
+			DefaultWarningLevel = WarningLevel.Warning;
+			bWarningsAsErrors = false;
 		}
-		
+
 		// https://forums.unrealengine.com/t/ue-5-5-source-linux-compilation-errors/2148769/2?u=nande
 		// Disable Intel Implicit SPMD Program Compiler forced by UE 5.5 on Linux.
 		// bCompileISPC = true; // setting to false could fix some errors on linux, but disabling uba fixes it too. and also disabling this will require an engine recompilation.
