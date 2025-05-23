@@ -279,7 +279,7 @@ void ALTeachMan::FlashTeach() {
 	Show(LD::Teach::FlagFlash);
 }
 
-void ALTeachMan::FlagHide() {
+void ALTeachMan::FlagHide(const FName& Id) {
 	// this fixes the case in which the dialog is automatically dismissed
 	if (UNLIKELY(Has(LD::Teach::FlagFlash))) SettingsDone();
 }

@@ -62,7 +62,7 @@ protected:
 	void FeatUp(const EFeat Feat, const bool Enabled);
 	void FlashTeach();
 	UFUNCTION()
-	void FlagHide();
+	void FlagHide(const FName& Id);
 	UFUNCTION()
 	void SettingsDone();
 

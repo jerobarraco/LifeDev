@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LearnShow(const FName& Id, const FTeachRow& Row);
 	UFUNCTION(BlueprintCallable)
-	void LearnHide();
+	void LearnHide(const FName& Id);
 
 	// sets the prompt but doesn't show if it's not currently shown.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm=Text))

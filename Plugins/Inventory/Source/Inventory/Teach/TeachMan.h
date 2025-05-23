@@ -10,7 +10,7 @@ class UFlags;
 struct FTeachRow;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FTeachRow&, Row);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLearnHide);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLearnHide, const FName&, Id);
 
 // for new users popups, and stuff.
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
@@ -37,7 +37,7 @@ public:
 	// this is meant to be triggered even if the corresponding show was never called.
 	// for example to mark that a player might not need the hint anymore.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id))
-	void Hide(const FName& Id = NAME_None);
+	void Hide(const FName Id = NAME_None); // intentionally not a ref
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
 	void Set(const FName& Id = NAME_None);
 

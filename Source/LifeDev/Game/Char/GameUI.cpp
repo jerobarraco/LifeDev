@@ -58,8 +58,8 @@ void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 	// TODO animate
 }
 
-void UGameUI::LearnHide() {
-	UE_LOG(LogTemp, Log, TEXT("UI:%hs"), __func__);
+void UGameUI::LearnHide(const FName& Id) {
+	UE_LOG(LogTemp, Log, TEXT("UI:%hs Id=%s"), __func__, *Id.ToString());
 	if (UNLIKELY(!TTeach)) return;
 
 	TTeach->SetText(FText::GetEmpty());

@@ -81,7 +81,9 @@ bool ATeachMan::Show_Implementation(const FName& Id) {
 	return true;
 }
 
-void ATeachMan::Hide_Implementation(const FName& Id) {
+void ATeachMan::Hide_Implementation(const FName Id) { // don't use ref here.
+	// don't use ref, since we return it on OnHide. there's a slight chance it's a ref to CurrentId if called with HideCurrent (on timeout).
+
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	if (UNLIKELY(Id.IsNone() | !Flags)) {
 		UE_LOG(LogTeachMan, Warning, TEXT("%hs I have nothing to hide. Or no flags."), __func__);
@@ -100,7 +102,7 @@ void ATeachMan::Hide_Implementation(const FName& Id) {
 	World->GetTimerManager().ClearTimer(HShow); // in case it's called from somewhere else
 	HShow.Invalidate();
 
-	OnHide.Broadcast();
+	OnHide.Broadcast(Id);
 }
 
 void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
