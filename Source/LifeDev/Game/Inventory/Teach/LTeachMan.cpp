@@ -243,6 +243,7 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	const FString& SName = Name.ToString();
 	// downside. will only work if the dialog itself uses this format, which not all do.
 	// TODO find something better. some objects might not even have a look, but instead use the inventory description.
+	// those don't trigger DiagAdd but trigger DiagShow, but DiagShow doesn't pass the name.
 	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre) ) {
 		Hide(LD::Teach::ItemPick); // i can dismiss the message here.
 		DeInitDiag();
@@ -252,16 +253,18 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 void ALTeachMan::StepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	// i want something more optimized, but this will have to do for now.
-	if (Step->Name == "C1S1") // the first safe place to tell the user to use the card
+	if (Step->Name == "C1S1")
+		// this step is the first safe place to tell the user to use the card
 		Show(LD::Teach::ItemUse);
 	else 
-		Show(LD::Teach::GameSetting); // not really a good place. there's a change it could appear during dialogs.
+		// not really a good place. there's a chance that it could appear during dialogs.
+		Show(LD::Teach::GameSetting);
 }
 
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (LIKELY(Feat != EFeat::G_TEACH)) return;
 	// https://www.youtube.com/watch?v=g-WPhYREFjk
-	// according to Fedor Pikus this is BAD (most of the time) unfortunately he didn't say way
+	// according to Fedor Pikus this is BAD (most of the time) unfortunately he didn't say why
 	// and while i don't know him nor i have put the time to dis/prove it,
 	// i think it's well researched and seems true. and there's no reason to complicate this
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
