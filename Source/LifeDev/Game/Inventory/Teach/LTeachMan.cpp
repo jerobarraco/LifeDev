@@ -153,14 +153,15 @@ void ALTeachMan::InitDelayed() {
 		// no need to check on FeatUp. this is only a warning for when you start the game with the flag set.
 		// if you turn it on, you should know what you're doing and how to turn it off.
 		if (LIKELY(Settings->GetFeat(EFeat::V_STROBE) && !Has(LD::Teach::FlagFlash))) {
-			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::TeachFlash, 3, true);
+			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::FlashTeach, 3, true);
+			OnHide.AddUniqueDynamic(this, &ALTeachMan::FlagHide);
 		}
 	}
 
 	Story = UStory::Instance(this);
-	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LD::Teach::ItemUse)) {
+	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LD::Teach::ItemUse))
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
-	}
+	
 }
 
 void ALTeachMan::BeginPlay() {
@@ -272,10 +273,15 @@ void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Enabled) { InitFeat(); } else { DeInitFeat(); }
 }
 
-void ALTeachMan::TeachFlash() {
+void ALTeachMan::FlashTeach() {
 	// this is a critical one because it's a safety issue.
 	// hence. i'm going to keep trying to show this until it's shown.
 	Show(LD::Teach::FlagFlash);
+}
+
+void ALTeachMan::FlagHide() {
+	// this fixes the case in which the dialog is automatically dismissed
+	if (UNLIKELY(Has(LD::Teach::FlagFlash))) SettingsDone();
 }
 
 void ALTeachMan::SettingsDone() {
@@ -291,6 +297,7 @@ void ALTeachMan::SettingsDone() {
 	if (FlashShown) {
 		World->GetTimerManager().ClearTimer(HFlash);
 		HFlash.Invalidate();
+		OnHide.RemoveAll(this); // before hide to avoid calling itself
 		Hide(LD::Teach::FlagFlash);
 		AllDone = true;
 	}
