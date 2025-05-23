@@ -465,5 +465,9 @@
 			"Name": "GizmoFramework",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Linux",
+		"Windows"
 	]
 }
