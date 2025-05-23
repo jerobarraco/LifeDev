@@ -58,8 +58,8 @@ void ALStep::TryStart_Implementation() {
 	}
 
 	const FString& SName = Name.ToString();
-	const FName Name(LDConsts::Flags::Story::StepStartPre + SName);
-	if (LIKELY(!Flags)) Flags->Mod(Name, 1);
+	const FName FlagName(LDConsts::Flags::Story::StepStartPre + SName);
+	if (LIKELY(!Flags)) Flags->Mod(FlagName, 1);
 
 	Super::TryStart_Implementation();
 
