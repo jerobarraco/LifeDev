@@ -52,4 +52,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 	
+	FTimerHandle HRange;
 };

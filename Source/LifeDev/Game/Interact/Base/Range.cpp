@@ -75,7 +75,7 @@ void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherAct
 	ALInteract* const Inter = Cast<ALInteract>(OtherActor);
 	if (!Inter) return;
 
-	UE_LOG(LogTemp, Log, TEXT("ARange::%hs hit o=%s"), __func__, *Inter->Label.ToString());
+	UE_LOG(LogTemp, Verbose, TEXT("ARange::%hs hit o=%s"), __func__, *Inter->Label.ToString());
 	Inter->ShowHint();
 }
 
@@ -99,9 +99,12 @@ void ARange::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Collider)) Collider->OnComponentBeginOverlap.RemoveAll(this);
 
 	const UWorld* const World = GetWorld();
-	if (World)
-		World->GetTimerManager().ClearAllTimersForObject(this);
-	
+	if (World) {
+		FTimerManager& Timer = World->GetTimerManager();
+		Timer.ClearAllTimersForObject(this); // this does not fix it
+		Timer.ClearTimer(HRange); // this might. TODO retest.
+		HRange.Invalidate();
+	}
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -131,7 +134,6 @@ void ARange::Trigger() {
 		AnimMat->MPCFloatFade(MPC, P, 1);
 	}
 
-	FTimerHandle H;
 	FTimerDelegate D;
 	constexpr float OutTime = .5;
 	D.BindLambda([AnimMat, OutTime, this] () {
@@ -146,7 +148,10 @@ void ARange::Trigger() {
 	const float Rate = LIKELY(Int) ?
 		FMath::Max(.01, Int->HintTime - OutTime) :  // Just before the Interact hides the hint. 0 won't trigger :(
 		Anim->Duration; // or just the duration in case interact fails.
-	World->GetTimerManager().SetTimer(H, D, Rate, false);
+
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.ClearTimer(HRange);
+	Timer.SetTimer(HRange, D, Rate, false);
 }
 
 void ARange::SetMaxScale(const float Scale) const {
