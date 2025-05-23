@@ -153,7 +153,8 @@ void ALTeachMan::InitDelayed() {
 		// no need to check on FeatUp. this is only a warning for when you start the game with the flag set.
 		// if you turn it on, you should know what you're doing and how to turn it off.
 		if (LIKELY(Settings->GetFeat(EFeat::V_STROBE) && !Has(LD::Teach::FlagFlash))) {
-			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::FlashTeach, 3, true);
+			World->GetTimerManager().SetTimer(HFlash, this, &ALTeachMan::FlashTeach,
+				3, true);
 			OnHide.AddUniqueDynamic(this, &ALTeachMan::FlagHide);
 		}
 	}
@@ -280,12 +281,23 @@ void ALTeachMan::FlashTeach() {
 }
 
 void ALTeachMan::FlagHide(const FName& Id) {
-	// this fixes the case in which the dialog is automatically dismissed
-	if (UNLIKELY(Has(LD::Teach::FlagFlash))) SettingsDone();
+	// this fixes the case in which the dialog is dismissed by timeout
+	if (UNLIKELY(Has(LD::Teach::FlagFlash))) FlashDone();
+}
+
+void ALTeachMan::FlashDone() {
+	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__);
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	World->GetTimerManager().ClearTimer(HFlash);
+	HFlash.Invalidate();
+	OnHide.RemoveAll(this); // before hide to avoid calling itself
+	Hide(LD::Teach::FlagFlash);
 }
 
 void ALTeachMan::SettingsDone() {
-	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__ );
+	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__);
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
@@ -295,10 +307,7 @@ void ALTeachMan::SettingsDone() {
 	// only hide if it was shown. important since it's a health thing.
 	const bool FlashShown = Has(LD::Teach::FlagFlash);
 	if (FlashShown) {
-		World->GetTimerManager().ClearTimer(HFlash);
-		HFlash.Invalidate();
-		OnHide.RemoveAll(this); // before hide to avoid calling itself
-		Hide(LD::Teach::FlagFlash);
+		FlashDone();
 		AllDone = true;
 	}
 

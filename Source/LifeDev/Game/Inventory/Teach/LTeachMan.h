@@ -63,6 +63,8 @@ protected:
 	void FlashTeach();
 	UFUNCTION()
 	void FlagHide(const FName& Id);
+	void FlashDone();
+	// only call after closing settings
 	UFUNCTION()
 	void SettingsDone();
 
