@@ -19,12 +19,12 @@ public:
 	AGhosts();
 
 	UFUNCTION(BlueprintCallable)
-	void SetPlaying(bool IsPlaying);
+	void SetPlaying(const bool IsPlaying);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCLSounder* SFX = nullptr;
+	TObjectPtr<UCLSounder> SFX = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UNiagaraComponent* Parts = nullptr;
+	TObjectPtr<UNiagaraComponent> Parts = nullptr;
 };

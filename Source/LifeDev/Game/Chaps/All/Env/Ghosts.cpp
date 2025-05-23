@@ -31,7 +31,7 @@ AGhosts::AGhosts():Super() {
 	Parts->SetAsset(CNiagara.Object);
 }
 
-void AGhosts::SetPlaying(bool IsPlaying) {
+void AGhosts::SetPlaying(const bool IsPlaying) {
 	SFX->Fade(IsPlaying);
 	Parts->SetActive(true);
 }
