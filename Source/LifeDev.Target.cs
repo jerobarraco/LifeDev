@@ -20,11 +20,6 @@ public class LifeDevTarget : TargetRules {
 		//bEnableAddressSanitizer
 		CppStandardEngine = CppStandardVersion.Cpp20;
 		CppStandard = CppStandardVersion.Cpp20;
-	
-		// disable friking warning as error
-		// doesn't work, and since i'm coding plugins for people it might actually be necessary. not sure.
-		DefaultWarningLevel = WarningLevel.Warning;
-		bWarningsAsErrors = false;
 
 		// https://forums.unrealengine.com/t/disabling-pdb-debug-gen-in-development-configuration-engine-source/617448/4
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
