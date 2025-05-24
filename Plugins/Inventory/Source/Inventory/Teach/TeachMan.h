@@ -47,6 +47,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(const ETeachTarget Tgt);
 
+	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;
 

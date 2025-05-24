@@ -29,6 +29,7 @@ public:
 	void InitDelayed(); // called when the game already started
 #pragma endregion
 
+	// time to wait before triggering the delayed init
 	UPROPERTY(BlueprintReadWrite, Config)
 	float InitDelayTime = 5;
 #pragma region delegates

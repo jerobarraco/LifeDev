@@ -67,7 +67,7 @@ void ALTeachMan::InitFeat() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	FTimerHandle H;
-	// this should actually wait for the step start. not gonna do that atm.
+	// this should actually wait for the step start. not going to do that atm.
 	World->GetTimerManager().SetTimer(H, this, &ALTeachMan::InitDelayed, InitDelayTime);
 }
 
