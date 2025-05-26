@@ -16,8 +16,11 @@ UCAnimatorTime::UCAnimatorTime() {
 void UCAnimatorTime::Activate(const bool bReset) {
 	Super::Activate(bReset);
 
-	// TODO i could have done something like this for the CAnimatorTrans and CAnimatorMix (and the others maybe) 
-	if (LIKELY(UseFromCurrent && (bReset || !IsActive()))) {
+	// maybe not: i could have done something like this for the CAnimatorTrans and CAnimatorMix
+	// (and the others maybe)
+	// maybe not, it complicates the code.
+	// i already have CopyTstart, which i probably could rename and make virtual.
+	if (LIKELY(UseFromCurrent & (bReset || !IsActive()))) {
 		const UWorld* const World = GetWorld();
 		if (UNLIKELY(!World)) return;
 
