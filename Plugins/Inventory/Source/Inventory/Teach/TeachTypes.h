@@ -25,8 +25,9 @@ enum class ETeachTarget: uint8 {
 	DESK,
 	// gamepad
 	PAD,
-	// Touchscreen? (android)?
+	// Touchscreen (android?)
 	TOUCH,
+	VR,
 	MAX UMETA(Hidden),
 };
 
