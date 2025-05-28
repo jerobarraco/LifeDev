@@ -116,10 +116,11 @@ public:
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
+	// this should still allow to set useHint on the editor and constructor
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	bool SetUseHint(const bool NewHint=true);
+	virtual void SetUseHint_Implementation(const bool NewHint=true) { UseHint = NewHint; }
 
-	// whether to enable hints or not. Will be disabled on trigger.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	bool UseHint = false;
 	// whether to disable hints on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseTriggerDeHint = true;
@@ -336,6 +337,10 @@ protected:
 	// I recommend to use SetState and SetStateNow.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="SetUp|State")
 	int32 State = 0;
+
+	// whether to enable hints or not. Will be disabled on trigger.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseHint = false;
 
 #pragma region cdo
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(

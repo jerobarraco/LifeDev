@@ -421,6 +421,6 @@ void ALStep::DoIntersTrigger() const {
 void ALStep::DoIntersHint() const {
 	for (const TSoftObjectPtr<AInteract>& I: IntersHint) {
 		AInteract* const Interact = I.Get();
-		if (LIKELY(IsValid(Interact))) Interact->UseHint = true;
+		if (LIKELY(IsValid(Interact))) Interact->SetUseHint(true);
 	}
 }

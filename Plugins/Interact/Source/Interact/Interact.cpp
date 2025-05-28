@@ -398,7 +398,9 @@ void AInteract::DoTrigger_Implementation() {
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersHint) {
 		AInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->UseHint = true;
+		// important to use this to respect children.
+		// the whole reason i've implemented this virtual method.
+		if (LIKELY(IsValid(I))) I->SetUseHint(true);
 	}
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersTrigger) {

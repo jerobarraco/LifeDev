@@ -52,6 +52,10 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
+	virtual void SetUseHint_Implementation(const bool NewHint=true) override {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetUseHints(NewHint); }
+	}
+
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
 
@@ -69,7 +73,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void ClearTimer();
-	
+
 	// called when the puzzle is done. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Done(const bool IsOk);
@@ -79,12 +83,11 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Update();
 	virtual void Update_Implementation();
-	
+
 	// called when the puzzle is reset. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DoReset();
-	virtual void DoReset_Implementation() {};
-
+	virtual void DoReset_Implementation() {}
 
 	// Interact to *trigger* on Done. It will force unlock.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|OnDone")

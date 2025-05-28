@@ -76,7 +76,9 @@ public:
 	void SetHiddensInGame(const bool NewHidden);
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void ShowHint();
-	
+	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
+	void SetUseHints(const bool NewHint= true);
+
 	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	void Unbind();
@@ -90,7 +92,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Interact|Puzzle", meta=(AdvancedDisplay))
 	const TArray<int32>& GetCurrents() const { return CurrentIds; }
-
 
 	// the puzzle type. controls the behavior.
 	// beware of changing this after BeginPlay.
