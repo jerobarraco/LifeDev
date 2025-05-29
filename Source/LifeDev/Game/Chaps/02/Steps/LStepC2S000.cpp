@@ -54,8 +54,8 @@ ALStepC2S000::ALStepC2S000():Super() {
 
 	IntersFadeIn = { // fade in so that increasing the step does not hide them
 		// battery and poem
-		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310")),
-		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PoemI02_UAID_D8BBC116E5012CC501_1287868959"))
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310")),
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PoemI02_UAID_D8BBC116E5012CC501_1287868959"))
 	};
 }
 
