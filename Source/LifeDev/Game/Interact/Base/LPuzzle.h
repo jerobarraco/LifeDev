@@ -60,6 +60,12 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
+	// sets UseHint on this and the linked puzzle items
+	virtual void SetUseHint_Implementation(const bool NewHint=true) override {
+		Super::SetUseHint_Implementation(NewHint);
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetUseHints(NewHint); }
+	}
+
 	// Automatically reset the puzzle on failure.
 	// works only on SEQUENCE since combination can't fail.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")

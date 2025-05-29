@@ -21,7 +21,6 @@ void APuzzle::Reset() {
 }
 
 void APuzzle::Done_Implementation(const bool IsOk) {
-	// TODO move to trigger
 	UE_LOG(LogTemp, Log, TEXT("APuzzle::Done ok=%i o=%s"), IsOk, *GetNameSafe(this));
 	if (!IsOk) {
 		// reset if needed. but not inside done. Since done is overrideable and can change orders
