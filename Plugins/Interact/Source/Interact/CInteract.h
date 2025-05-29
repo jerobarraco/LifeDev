@@ -55,16 +55,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
 	static FORCEINLINE void SetProfileDefault(const FName& Name) { ProfileDefault = Name; }
 
-	// Sets the profile used when active for this specific instance.
-	// Will override the one set by SetCollisionProfileDefault.
-	// SetActive will swap between this profile and ProfileNone.
-	// You would want to call this on constructor. If you call it later it won't actually change the profile.
-	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	FORCEINLINE void SetProfileActive(const FName& Name) { ProfileActive = Name; }
-	// read SetProfileActive. this calls it with ProfileHinted
-	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	FORCEINLINE void SetProfileHinted() { ProfileActive = ProfileHinted; }
-
 	inline static const FName ProfileInteract = "Interact";
 	inline static const FName ProfileHinted = "Hinted";
 	inline static const FName ProfileNone = "NoCollision";
@@ -131,9 +121,6 @@ protected:
 	void Hint(const bool Show) const;
 	// <0 will disable stencil
 	void SetStencil(int32 StencilID) const;
-
-	UPROPERTY(BlueprintReadOnly, Transient, VisibleInstanceOnly)
-	FName ProfileActive = ProfileInteract;
 
 	inline static FName ProfileDefault = ProfileInteract;
 	friend class AInteract;

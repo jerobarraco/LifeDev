@@ -354,10 +354,6 @@ void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 	if (NewHidden | UseAutoActivate) SetActive(!NewHidden);
 }
 
-void AInteract::SetProfileHinted() const {
-	if (LIKELY(Interact)) Interact->SetProfileHinted();
-}
-
 void AInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
 	PlaySFX(SFXLocked);

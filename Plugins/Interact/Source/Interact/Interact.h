@@ -33,9 +33,6 @@ public:
 	AInteract();
 	// will also SetActive. if UseAutoActivate or hidden is true.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
-	// read CInteract::SetProfileActive.
-	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AdvancedDisplay))
-	void SetProfileHinted() const;
 #pragma endregion
 
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
@@ -118,7 +115,7 @@ public:
 	bool ShowHint();
 	// this should still allow to set useHint on the editor and constructor
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
-	bool SetUseHint(const bool NewHint=true);
+	void SetUseHint(const bool NewHint=true);
 	virtual void SetUseHint_Implementation(const bool NewHint=true) { UseHint = NewHint; }
 
 	// whether to disable hints on trigger.
