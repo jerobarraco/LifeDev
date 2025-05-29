@@ -63,7 +63,7 @@ void ALStep::TryStart_Implementation() {
 
 	Super::TryStart_Implementation();
 
-	EnsureItems(); // make sure items are awarded
+	DoEnsureItems(); // make sure items are awarded
 
 	// disable the input during camblend
 	// works on the premise that onStart it will force input again.
@@ -89,7 +89,7 @@ void ALStep::Stop_Implementation() {
 
 	SetActorsShowActive(false, true);
 	SetIntersActiveAuto(false);
-	RemoveItems();
+	DoRemoveItems();
 
 	const UWorld* const W = GetWorld();
 	if (UseRain) ALMusicMan::SetRainS(W, false);
@@ -214,14 +214,14 @@ void ALStep::FinishAfterDlgs() {
 	Diags->OnDone.AddUniqueDynamic(this, &ALStep::Finish);
 }
 
-void ALStep::RemoveItems() {
-	for (const FName& N: RemItems) {
+void ALStep::DoRemoveItems() {
+	for (const FName& N: RemoveItems) {
 		Inventory->Rem(N);
 	}
 }
 
-void ALStep::EnsureItems() {
-	for(const FName& N: ItemsEnsure) {
+void ALStep::DoEnsureItems() {
+	for(const FName& N: EnsureItems) {
 		Inventory->Ensure(N);
 	}
 }

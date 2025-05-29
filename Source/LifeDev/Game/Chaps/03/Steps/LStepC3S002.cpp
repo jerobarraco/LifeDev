@@ -19,7 +19,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 		LDConsts::Items::Poem3,
 		LDConsts::Items::Tape3,
 	};
-	RemItems = {LDConsts::Items::Tape3, LDConsts::Items::Batts}; // consume
+	RemoveItems = {LDConsts::Items::Tape3, LDConsts::Items::Batts}; // consume
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;

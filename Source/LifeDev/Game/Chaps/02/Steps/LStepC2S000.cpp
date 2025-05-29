@@ -23,7 +23,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS"));
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 
-	ItemsEnsure = {
+	EnsureItems = {
 		LDConsts::Items::Walkman,
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,

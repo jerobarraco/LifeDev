@@ -18,7 +18,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 	FinishFlags = {"Inter.Trigger.PuzzleI04"};
-	ItemsEnsure = {
+	EnsureItems = {
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,
 		LDConsts::Items::Card2,

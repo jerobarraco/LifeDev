@@ -16,7 +16,7 @@ ALStepC1S007::ALStepC1S007():Super() {
 
 	// the clothes are transient items that don't need to be carried
 	// the rest of the items are going to be used or required
-	RemItems = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"};
+	RemoveItems = {"C1C00", "C1C01", "C1C02", "C1C03", "C1C04"};
 }
 
 void ALStepC1S007::Start_Implementation() {

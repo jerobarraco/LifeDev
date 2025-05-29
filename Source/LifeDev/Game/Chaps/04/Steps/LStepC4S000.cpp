@@ -19,7 +19,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	FinishPostWait = false;
 	TeleportChar = true;
 	FinishItems = {LDConsts::Items::Card4};
-	ItemsEnsure = {
+	EnsureItems = {
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,
 		LDConsts::Items::Card2,

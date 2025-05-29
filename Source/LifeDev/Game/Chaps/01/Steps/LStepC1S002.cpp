@@ -18,7 +18,7 @@ ALStepC1S002::ALStepC1S002():Super() {
 
 	GhostPos = FVector(200,-4,-75);
 	UseGhosts = true;
-	RemItems = { LDConsts::Items::Tape1 }; // use up the item
+	RemoveItems = { LDConsts::Items::Tape1 }; // use up the item
 }
 
 void ALStepC1S002::Start_Implementation() {

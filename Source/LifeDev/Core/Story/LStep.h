@@ -154,11 +154,11 @@ public:
 
 	// items to remove (completely) when the step *finishes*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> RemItems;
+	TArray<FName> RemoveItems;
 
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsEnsure;
+	TArray<FName> EnsureItems;
 #pragma endregion
 
 protected:
@@ -177,9 +177,9 @@ protected:
 	// safe to call multiple times.
 	void FinishAfterDlgs();
 	// on stop, removes items on RemItems
-	void RemoveItems();
+	void DoRemoveItems();
 	// on start, adds the items on ItemsEnsure
-	void EnsureItems();
+	void DoEnsureItems();
 	// will destroy some transient actors
 	UFUNCTION()
 	void DestroyActors();

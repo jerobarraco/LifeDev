@@ -25,7 +25,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	// this one, seems to be loaded well without the patch :/? HOW?!
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous(); // left just in case
 	
-	ItemsEnsure = {
+	EnsureItems = {
 		// do always, not debug, since we could be skipping the chapter 0
 		LDConsts::Items::Card0,
 		LDConsts::Items::Poem0
