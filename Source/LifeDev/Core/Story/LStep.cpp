@@ -215,7 +215,7 @@ void ALStep::FinishAfterDlgs() {
 }
 
 void ALStep::RemoveItems() {
-	for (const FName& N: ItemsRem) {
+	for (const FName& N: RemItems) {
 		Inventory->Rem(N);
 	}
 }

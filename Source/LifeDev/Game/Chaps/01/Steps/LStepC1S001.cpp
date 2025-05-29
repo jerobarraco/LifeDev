@@ -18,7 +18,7 @@ ALStepC1S001::ALStepC1S001():Super() {
 		LDConsts::Items::Tape1, LDConsts::Items::Walkman
 	};
 	// consume the batteries. there's only one of them, so ItemsRem is ok.
-	ItemsRem = { LDConsts::Items::Batts };
+	RemItems = { LDConsts::Items::Batts };
 }
 
 void ALStepC1S001::DoDebug_Implementation() {

@@ -143,7 +143,7 @@ public:
 	TArray<TSoftObjectPtr<AInteract>> IntersHint;
 #pragma endregion
 
-#pragma region items
+#pragma region rewards
 	// it will advance once ALL flags are obtained. (it also waits for FinishItems)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> FinishFlags;
@@ -154,7 +154,7 @@ public:
 
 	// items to remove (completely) when the step *finishes*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsRem;
+	TArray<FName> RemItems;
 
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")

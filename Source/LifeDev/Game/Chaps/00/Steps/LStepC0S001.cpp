@@ -16,7 +16,7 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFade = true; // important since the door, also due to the load
 	FinishPostWait = false;
 	TeleportChar = true;
-	ItemsRem = {
+	RemItems = {
 		LDConsts::Items::Tape0, "Bottle00", "Bottle01"
 	}; // ensure the player doesn't keep them.
 
