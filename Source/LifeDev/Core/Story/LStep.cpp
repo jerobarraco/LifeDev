@@ -114,12 +114,12 @@ void ALStep::Start_Implementation() {
 	if (UNLIKELY(!W)) return;
 
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
-	if (!ItemsFinish.IsEmpty()) {
+	if (!FinishItems.IsEmpty()) {
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 	}
 
 	// check flags. do on Start to avoid possibly finishing the step while it's starting.
-	if (!FlagsFinish.IsEmpty()) {
+	if (!FinishFlags.IsEmpty()) {
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
 	}
 
@@ -274,33 +274,33 @@ void ALStep::FBUpd_Implementation(const float Value) {
 }
 
 void ALStep::CheckFinish() {
-	const int32 NumItems = ItemsFinish.Num();
-	const int32 NumFlags = FlagsFinish.Num();
+	const int32 NumItems = FinishItems.Num();
+	const int32 NumFlags = FinishFlags.Num();
 	if ((NumItems<1) & (NumFlags<1)) return; // nothing to finish
 	if (LIKELY(!HasItemsFinish())) return;
 	if (LIKELY(!HasFlagsFinish())) return;
 	// clear to avoid any double triggering that might happen while the dialogs are being triggered
 	// since flags can change due to many random things, including the timer.
-	ItemsFinish.Empty();
-	FlagsFinish.Empty();
+	FinishItems.Empty();
+	FinishFlags.Empty();
 
 	const UWorld* const World = GetWorld();
 	World->GetTimerManager().SetTimerForNextTick(this, &ALStep::FinishAfterDlgs);
 }
 
 bool ALStep::HasItemsFinish() {
-	const int32 NumItems = ItemsFinish.Num();
+	const int32 NumItems = FinishItems.Num();
 	for (int32 i=0; LIKELY(i<NumItems); ++i) {
-		if (!Inventory->Has(ItemsFinish[i])) return false;
+		if (!Inventory->Has(FinishItems[i])) return false;
 	}
 
 	return true;
 }
 
 bool ALStep::HasFlagsFinish() {
-	const int32 NumFlags = FlagsFinish.Num();
+	const int32 NumFlags = FinishFlags.Num();
 	for (int32 i=0; LIKELY(i<NumFlags); ++i) {
-		if (!Flags->Has(FlagsFinish[i])) return false;
+		if (!Flags->Has(FinishFlags[i])) return false;
 	}
 
 	return true;

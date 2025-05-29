@@ -20,7 +20,7 @@ ALStepC2S004::ALStepC2S004():Super() {
 	UseRain = true;
 	// finish when found.
 	// the tape is not necessary since that's checked on a previous step and also consumed.
-	ItemsFinish = {
+	FinishItems = {
 		LDConsts::Items::Card2,
 		LDConsts::Items::Poem2,
 	};

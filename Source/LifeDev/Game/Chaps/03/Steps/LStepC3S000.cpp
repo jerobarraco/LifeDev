@@ -17,7 +17,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
-	FlagsFinish = {"Inter.Trigger.PuzzleI04"};
+	FinishFlags = {"Inter.Trigger.PuzzleI04"};
 	ItemsEnsure = {
 		LDConsts::Items::Card0,
 		LDConsts::Items::Card1,

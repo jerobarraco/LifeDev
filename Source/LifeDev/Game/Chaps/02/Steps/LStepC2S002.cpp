@@ -16,7 +16,7 @@ ALStepC2S002::ALStepC2S002():Super() {
 	// no waits
 	FinishPostWait = false;
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
-	ItemsFinish = { LDConsts::Items::Tape2 };
+	FinishItems = { LDConsts::Items::Tape2 };
 	ItemsRem = { LDConsts::Items::Batts };
 }
 

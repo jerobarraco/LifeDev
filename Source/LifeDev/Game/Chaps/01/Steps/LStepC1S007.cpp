@@ -12,7 +12,7 @@ ALStepC1S007::ALStepC1S007():Super() {
 	UsePawnCam = true;
 	UseRain = false; // turn off rain
 	// wait for the player to talk with the npc and get the card
-	ItemsFinish = {LDConsts::Items::Card1, LDConsts::Items::Poem1};
+	FinishItems = {LDConsts::Items::Card1, LDConsts::Items::Poem1};
 
 	// the clothes are transient items that don't need to be carried
 	// the rest of the items are going to be used or required

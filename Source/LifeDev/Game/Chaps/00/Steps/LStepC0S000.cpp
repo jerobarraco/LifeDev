@@ -24,8 +24,8 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UseFBRand = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
 	// wait for card AND basin. the spot is linked to the card and puzzle.
-	ItemsFinish = { LDConsts::Items::Card0 };
-	FlagsFinish = {
+	FinishItems = { LDConsts::Items::Card0 };
+	FinishFlags = {
 		"Inter.Trigger.BasinI00" // TODO move to consts?
 		// Inter.Trigger.PuzzleI00 // no need. it's linked to the card.
 		// Inter.Trigger.SpotI02 // no need. it's linked to the card.

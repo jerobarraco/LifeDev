@@ -10,5 +10,5 @@ ALStepC1S004::ALStepC1S004():Super() {
 	UsePawnCam = true;
 
 	// wait for user to solve the puzzle
-	FlagsFinish = { "Inter.Trigger.PuzzleI01" };
+	FinishFlags = { "Inter.Trigger.PuzzleI01" };
 }

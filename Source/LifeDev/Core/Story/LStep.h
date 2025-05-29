@@ -144,13 +144,13 @@ public:
 #pragma endregion
 
 #pragma region items
-	//Experimental: if this is set. it will advance once ALL items are obtained.
+	// it will advance once ALL flags are obtained. (it also waits for FinishItems)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> FlagsFinish; // TOdo rename to Finish*?
+	TArray<FName> FinishFlags;
 
 	// if this is set. it will advance once ALL items are obtained.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
-	TArray<FName> ItemsFinish; // TOdo rename to Finish*?
+	TArray<FName> FinishItems;
 
 	// items to remove (completely) when the step *finishes*.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")

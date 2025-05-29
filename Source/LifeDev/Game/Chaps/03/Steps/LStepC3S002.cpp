@@ -14,7 +14,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;
-	ItemsFinish = {
+	FinishItems = {
 		LDConsts::Items::Card3,
 		LDConsts::Items::Poem3,
 		LDConsts::Items::Tape3,

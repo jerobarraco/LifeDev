@@ -12,7 +12,7 @@ ALStepC4S008::ALStepC4S008():Super() {
 	UsePawnCam = true;
 	FinishPostWait = false;
 	TeleportChar = false;
-	FlagsFinish = {"Inter.Trigger.SpotI03"};
+	FinishFlags = {"Inter.Trigger.SpotI03"};
 	UseFBRand = true; // min is limited in c4s0
 	RandFB->DelayMin = .5;
 	RandFB->DelayMax = .85;

@@ -14,7 +14,7 @@ ALStepC1S001::ALStepC1S001():Super() {
 	UsePawnCam = false;
 
 	// finish on obtaining these.
-	ItemsFinish = {
+	FinishItems = {
 		LDConsts::Items::Tape1, LDConsts::Items::Walkman
 	};
 	// consume the batteries. there's only one of them, so ItemsRem is ok.
