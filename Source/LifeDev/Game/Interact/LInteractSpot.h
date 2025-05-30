@@ -35,6 +35,5 @@ public:
 	bool UseStateInc = false;
 
 protected:
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 	virtual bool TryTrigger_Implementation() override;
 };

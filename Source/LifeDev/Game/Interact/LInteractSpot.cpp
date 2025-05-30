@@ -23,53 +23,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	Super::SetMobility(EComponentMobility::Static); // spots don't need to move, by default.
 }
 
-EItemUseResult ALInteractSpot::TryUseItem_Implementation(const FName& Name) {
-	// Super::TryUseItem_Implementation(Name); // unnecessary actually
-#if !LD_ITEM_USE
-	UE_LOG(LogTemp, Warning, TEXT("%hs Attempted usage on spot o=%s i=%s"),
-		__func__, *Label.ToString(), *Name.ToString());
-	if (LIKELY(true)) return EItemUseResult::BAD_TARGET; // if(true) avoid complaining about unreachable
-#endif
-	const FString& SLabel = Label.ToString();
-	if (UNLIKELY(Items.IsEmpty())) {
-		IsLocked = true; // unnecessary but complete, jic
-		const FName Row(LDConsts::Dlgs::Inter::Spot::FullPre+SLabel);
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	}
-
-	int32 Id;
-	const bool Ok = Items.Find(Name, Id);
-	if (!Ok) {
-		const FName Row(LDConsts::Dlgs::Inter::Spot::BadPre+SLabel);
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	}
-
-	if (UseOrder && Id !=0) { // TODO test
-		const FName Row(LDConsts::Dlgs::Inter::Spot::BadOrderPre+SLabel);
-		const bool Added = LIKELY(IsValid(Diags)) && Diags->AddId(Row);
-		return Added ? EItemUseResult::BAD_HANDLED : EItemUseResult::BAD_TARGET;
-	}
-
-	if (LIKELY(IsValid(Diags)))
-		Diags->AddId(FName(LDConsts::Dlgs::Inter::Spot::DropPre+SLabel));
-
-	Items.RemoveAtSwap(Id);
-	if (UNLIKELY(Items.IsEmpty())) {
-		TriggerForced();
-	} else if (UseStateInc) { // on the else since Trigger always increases state
-		SetState(State+1);
-	}
-
-	// todo since trigger is called before return, then Item.Use is done before Trigger. so the dialogs are in reverse.
-	return EItemUseResult::SUCCESS;
-}
-
 bool ALInteractSpot::TryTrigger_Implementation() {
-#if LD_ITEM_USE
-	return Super::TryTrigger_Implementation();
-#else
 	// somewhat similar to should unlock. which is not great.
 	// consume items when unlocking
 
@@ -104,5 +58,4 @@ bool ALInteractSpot::TryTrigger_Implementation() {
 	if (UseStateInc) SetState(State+1);
 
 	return true;
-#endif
 }
