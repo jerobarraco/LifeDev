@@ -2,10 +2,7 @@
 
 #include "HeaterI00.h"
 
-#include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorMix.h"
-
-#include "LifeDev/Core/Consts/ConstItems.h"
 
 AHeaterI00::AHeaterI00():Super() {
 	RewardFlash = .1f;
@@ -39,13 +36,4 @@ AHeaterI00::AHeaterI00():Super() {
 void AHeaterI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 	IsLocked = true; // lock AFTER triggering
-}
-
-EItemUseResult AHeaterI00::TryUseItem_Implementation(const FName& Name) {
-	if (Name == LDConsts::Items::Card0 & LIKELY(IsValid(Diags))) {
-		Diags->AddId("HT00_IC0");
-		return EItemUseResult::BAD_HANDLED;
-	}
-
-	return Super::TryUseItem_Implementation(Name);
 }

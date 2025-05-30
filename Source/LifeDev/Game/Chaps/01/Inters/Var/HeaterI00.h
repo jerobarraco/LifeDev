@@ -14,5 +14,4 @@ public:
 	AHeaterI00();
 
 	virtual void DoTrigger_Implementation() override;
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 };
