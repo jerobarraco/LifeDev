@@ -118,22 +118,6 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-#if !LD_ITEM_USE
-	if (UNLIKELY(!Item.SelfUsable)) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not (self) usable (with disabled item use). Skip."), __func__);
-		Say(LDConsts::Dlgs::Item::NotUsable);
-		return EItemUseResult::BAD_HANDLED; // always return if not usable
-	}
-	const bool Used = LIKELY(DoUse(Name, Item, true));
-	// this should never happen, since we check for isCold up there.
-	// but if it does, give a not too confusing dialog. 
-	if (UNLIKELY(!Used)) {
-		Say(LDConsts::Dlgs::Item::NotReady);
-		return EItemUseResult::BAD_HANDLED;
-	}
-	return EItemUseResult::SUCCESS;
-#else
-
 	if (UNLIKELY(!Item.Usable)) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
 		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
@@ -151,7 +135,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
 		// mark the item as used, it won't trigger the Logic.
 		// since we don't want to trigger when is used with an interaction.
-		// i know the if already says success. but i rather be sure.
+		// i know the "if" already says success. but i rather be sure.
 		if (LIKELY(DoUse(Name, Item, false))) return EItemUseResult::SUCCESS;
 	} else if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
 		// notice only checking auto-trigger here.
@@ -174,7 +158,6 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	Say(DlgId);
 
 	return Res;
-#endif
 }
 
 bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogic) const {
