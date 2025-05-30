@@ -50,7 +50,7 @@ APotI00::APotI00():Super() {
 	// preload
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd2(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/water_dropped_on_electric_stove_02_edit"));
-	SND_Drops = CSnd2.Object;
+	SNDDrops = CSnd2.Object;
 
 	// first interaction is unlocking food
 	// locked so that player can't trigger manually,
@@ -60,7 +60,7 @@ APotI00::APotI00():Super() {
 	TriggerDlg = "Pot00.0_T";
 	LockedDlg = "Pot00.0_L";
 	UnlockItems = { "Food00", "Food01" };
-	SFXs = {SND_Drops, nullptr};
+	SFXs = {SNDDrops, nullptr};
 }
 
 void APotI00::DoTrigger_Implementation() {
@@ -85,26 +85,4 @@ void APotI00::DoTrigger_Implementation() {
 		IsOneShot = true; // no more triggers after this
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
 	}
-}
-
-EItemUseResult APotI00::TryUseItem_Implementation(const FName& Name) {
-#if LD_ITEM_USE
-	// only observe these items
-	// returning success will "consume" the items. (good)
-	if (State == 0 && (Name == "Food00" || Name == "Food01")) {
-		++Foods;
-		// to advance the state. Trigger skips the lock check (instead of TryTrigger)
-		if (UNLIKELY(Foods == 2)) Trigger();
-		return EItemUseResult::SUCCESS;
-	} else if (State == 1 && (Name == LDConsts::Items::Plate01)) {
-		// no more interaction for you.
-		// can't disable on DoTrigger since AInteractAnim will re-enable since the disablewhileanim.
-		// i mean, i could move this there, but i don't want to have 2 (confusing) if statements.
-		IsOneShot = true;
-		Trigger();
-		return EItemUseResult::SUCCESS;
-	}
-#endif
-	// calling super to handle correctly
-	return Super::TryUseItem_Implementation(Name);
 }
