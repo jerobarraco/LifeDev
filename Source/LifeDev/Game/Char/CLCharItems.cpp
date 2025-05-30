@@ -118,61 +118,27 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-	if (UNLIKELY(!Item.Usable)) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Skip."), __func__);
+	// TODO remove self-usable
+	if (UNLIKELY(!Item.Usable & !Item.SelfUsable && !DoUse(Name, Item))) {
+		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Stop."), __func__);
 		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
-		return EItemUseResult::ERROR; // always return if not usable
+		return EItemUseResult::ERROR; // always return if not usable (why?)
 	}
 
-	// this will try trigger the item. i can show dialogs there if i need to.
-	// though maybe it would be nice to have something generic as well.
-	const EItemUseResult Res = Interactor->TryUseItem(Name);
-	if (Res == EItemUseResult::BAD_HANDLED) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. But it was handled."),
-			__func__);
-		return Res;
-	}
-	if (Res == EItemUseResult::SUCCESS) { // if it succeeded just go
-		// mark the item as used, it won't trigger the Logic.
-		// since we don't want to trigger when is used with an interaction.
-		// i know the "if" already says success. but i rather be sure.
-		if (LIKELY(DoUse(Name, Item, false))) return EItemUseResult::SUCCESS;
-	} else if (Item.SelfUsable) { // if it wasn't success (and only then). try to self-use it.
-		// notice only checking auto-trigger here.
-		// so that i can use an auto trigger with an ANY interact too.
-		// which allows me to not have to configure the Interact, but instead configure the item.
-		// (notice this IF is separate from the one above, and that BAD_HANDLED returns,
-		// since the dialog/side effect would have been triggered)
-		if (LIKELY(DoUse(Name, Item, true))) return EItemUseResult::SUCCESS;
-	}
-
-	// At this point there was an error
-
-	const bool IsBadTarget = Res == EItemUseResult::BAD_TARGET;
-	UE_LOG(LogCharItems, Log, TEXT("%hs Can't use item with that. res=%s '%s' badTarget=%i"),
-		__func__, *UEnum::GetValueAsString(Res), *Item.Title.ToString(), IsBadTarget);
-
-	const FName& DlgId = IsBadTarget ?
-		LDConsts::Dlgs::Item::BadTarget:
-		LDConsts::Dlgs::Item::NoTarget;
-	Say(DlgId);
-
-	return Res;
+	return EItemUseResult::SUCCESS;
 }
 
-bool UCLCharItems::DoUse(const FName Name, const FItem& Item, const bool UseLogic) const {
-	UE_LOG(LogCharItems, Log, TEXT("%hs: Name=%s, Item=%s, UseLogic=%i."),
-		__func__, *Name.ToString(), *Item.Title.ToString(), UseLogic);
+bool UCLCharItems::DoUse(const FName Name, const FItem& Item) const {
+	UE_LOG(LogCharItems, Log, TEXT("%hs: Name=%s, Item=%s"),
+		__func__, *Name.ToString(), *Item.Title.ToString());
 
 	const bool Used = Inventory->Use(Name); //important
-	if (UseLogic) {
-		const bool ValidLogic = IsValid(Item.Logic);
-		// save myself some pain if i forget. warn to myself.
-		UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item is self-usable but has no logic."
-			"It won't really be used. Skip."), __func__);
-		// can't quit now. we've used the item. (yes, i could change the code to accomodate for that, but no.
-		if (LIKELY(ValidLogic)) Item.Logic->Use();
-	}
+	const bool ValidLogic = IsValid(Item.Logic);
+	// save myself some pain if i forget. warn to myself.
+	UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item has no logic."
+		"It won't really be used. unless hooked somewhere else. Skip."), __func__);
+	// can't quit now. we've used the item. (yes, i could change the code to accomodate for that, but no.
+	if (LIKELY(ValidLogic)) Item.Logic->Use();
 
 	if (UNLIKELY(!Used)) return false;
 

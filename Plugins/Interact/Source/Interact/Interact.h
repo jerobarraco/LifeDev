@@ -60,14 +60,6 @@ public:
 		OnHover.Broadcast(IsOn);
 	}
 
-	// returns true if the item has been used (notice past tense)
-	//  this means when calling this function the item WILL trigger
-	// Override and activate the item here.
-	//  (but don't modify the inventory as part of this! (and you won't be able since this plugin can't see the inventory).
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
-	EItemUseResult TryUseItem(const FName& Name);
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name);
-
 	// Enables or disables the interaction. Will not fade.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetActive(const bool Active = true);

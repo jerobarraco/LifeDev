@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "InteractTypes.h"
-
 #include "CInteractor.generated.h"
 
 class UPhysicsHandleComponent;
@@ -37,8 +35,6 @@ public:
 	// Triggers the currently hovered component (if any)
 	UFUNCTION(BlueprintCallable)
 	void TryTrigger();
-	UFUNCTION(BlueprintCallable)
-	EItemUseResult TryUseItem(const FName Name) const;
 
 	// the currently hovered component. can be null.
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -12,7 +12,4 @@ class LIFEDEV_API ASpotI00: public ASpot00 {
 
 public:
 	ASpotI00();
-
-protected:
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Name) override;
 };

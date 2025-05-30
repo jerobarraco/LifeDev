@@ -40,7 +40,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	bool DoUse(const FName Name, const FItem& Item, const bool UseLogic) const;
+	bool DoUse(const FName Name, const FItem& Item) const;
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;

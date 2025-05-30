@@ -156,7 +156,6 @@ protected:
 
 	virtual void DoTrigger_Implementation() override;
 	virtual void DoTriggerLocked_Implementation() override;
-	virtual EItemUseResult TryUseItem_Implementation(const FName& Item) override;
 
 #pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)

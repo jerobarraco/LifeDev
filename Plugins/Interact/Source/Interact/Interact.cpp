@@ -93,12 +93,6 @@ void AInteract::SetText_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
 }
 
-EItemUseResult AInteract::TryUseItem_Implementation(const FName& Name) {
-	UE_LOG(LogInteract, Log, TEXT("%hs Item=%s Obj=%s"), __func__,
-		*Name.ToString(), *Label.ToString());
-	return EItemUseResult::BAD_TARGET;
-}
-
 void AInteract::SetActive_Implementation(const bool Active) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Enabled=%i Obj=%s"),
 		__func__, Active, *Label.ToString());

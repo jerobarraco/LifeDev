@@ -6,7 +6,6 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 
 #include "CInteract.h"
-#include "Interact.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCInteractor, Log, Log)
 
@@ -92,26 +91,6 @@ bool UCInteractor::TryGrab(const bool IsGrab) {
 	Old->TryGrab(false, nullptr);// intentionally ignoring the return value
 
 	return true;
-}
-
-EItemUseResult UCInteractor::TryUseItem(const FName Name) const {
-	const UCInteract* const PHover = HoverComp.Get();
-	// i can't see the inventory from here! this is the plugin.
-	if (UNLIKELY(!IsValid(PHover))) {
-		UE_LOG(LogCInteractor, Warning, TEXT("%hs Nothing to use the item with."), __func__);
-		return EItemUseResult::NO_TARGET;
-	}
-	
-	AActor* const Src = PHover->GetOwner();
-	AInteract* const Actor = Cast<AInteract>(Src);
-	if (UNLIKELY(!IsValid(Actor))) {
-		UE_LOG(LogCInteractor, Warning, TEXT("%hs: The hover actor is not an interact. Can't use the item."),
-			__func__);
-		return EItemUseResult::NO_TARGET;
-	}
-
-	const EItemUseResult& Result = Actor->TryUseItem(Name);
-	return Result;
 }
 
 void UCInteractor::TickComponent(const float DeltaTime, const ELevelTick TickType,
