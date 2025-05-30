@@ -234,6 +234,8 @@ bool ALInteract::ShouldUnlock_Implementation() {
 
 	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is not none here
 
+	// consume items when unlocking
+	UnlockItems.Add(ULockItemReq); // TODO remove ulockitemreq
 	// handle unlockitems
 	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
 	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
@@ -266,11 +268,6 @@ void ALInteract::Unlock_Implementation() {
 	if (UNLIKELY(!IsLocked)) return; // avoid triggering the dialogs again
 
 	Super::Unlock_Implementation();
-
-	// consume items when unlocking
-	FItem Item;
-	if (Inventory->Get(ULockItemReq, Item))
-		if (Item.Consumable) Inventory->Mod(ULockItemReq, -1);
 
 	const FString& SLabel = Label.ToString();
 	const FName Dlg(LDConsts::Dlgs::Inter::UnlockPre+SLabel);
