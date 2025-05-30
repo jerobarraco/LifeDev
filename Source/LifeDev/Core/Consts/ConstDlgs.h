@@ -17,7 +17,7 @@ namespace LDConsts {
 			inline static const FString LookPre("Inter.Look.");
 			inline static const FString StatePre("Inter.State.");
 			inline static const FString TriggerPre("Inter.Trigger.");
-			inline static const FString TriggerLPre("Inter.TriggerL."); // TODO rename to Inter.Locked.
+			inline static const FString LockedPre("Inter.Locked.");
 			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
 			inline static const FString UnlockBadPre(TEXT("Inter.UnlockBad."));
 			// this one triggers twice. Inter.ItemUse."Interact"."Item" and Inter.ItemUse."Interact"

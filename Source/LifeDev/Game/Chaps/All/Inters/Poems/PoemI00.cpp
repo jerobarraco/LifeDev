@@ -7,7 +7,7 @@ APoemI00::APoemI00():Super() {
 	TriggerDlg = "Item.Look.P00";
 	RewardFlash = -.1f;
 	// UseHint = true;
-	// HintCondition = "{Inter.TriggerL.DoorI04}>2"; // unfortunately the card is obtained after the door ;_;
+	// HintCondition = "{Inter.Locked.DoorI04}>2"; // unfortunately the card is obtained after the door ;_;
 	// a lazy dog is a sheet of paper
 	// a sheet of paper is an ink lined plane
 	// an inclined plane is a slope up

@@ -15,7 +15,7 @@ ABasinI00::ABasinI00():Super() {
 
 	UseHint = true;
 	// maybe move this to consts?
-	HintCondition = "{Inter.TriggerL.DoorI05}"; // hint once he tried to open the door
+	HintCondition = "{Inter.Locked.DoorI05}"; // hint once he tried to open the door
 
 	SetStateNow(0, true, true); // activate parts and audio
 }

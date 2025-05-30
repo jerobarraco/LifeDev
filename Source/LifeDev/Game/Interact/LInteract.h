@@ -118,7 +118,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedItemDlg = NAME_None;
 	// dialog to show when the object is locked, and we DON'T have the ULockItem
-	// use Inter.TriggerL.ObjName
+	// use Inter.Locked.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName LockedDlg = NAME_None;
 #pragma endregion

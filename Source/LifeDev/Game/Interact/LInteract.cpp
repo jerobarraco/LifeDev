@@ -327,7 +327,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 	// Also add the auto ones
 	const FString& SLabel = Label.ToString();
-	const FName TName = FName(LDConsts::Dlgs::Inter::TriggerLPre+SLabel);
+	const FName TName = FName(LDConsts::Dlgs::Inter::LockedPre+SLabel);
 	Diags->AddId(TName);
 	if (LIKELY(Flags)) Flags->Mod(TName, 1);
 }

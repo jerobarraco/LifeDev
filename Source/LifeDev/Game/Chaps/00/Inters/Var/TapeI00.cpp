@@ -12,7 +12,7 @@ ATapeI00::ATapeI00():Super() {
 	UseFade = true;
 	UseRewardDestroy = true;
 	UseHint = true;
-	HintCondition = "{Inter.TriggerL.RadioI00}"; // once it tried to use the radio
+	HintCondition = "{Inter.Locked.RadioI00}"; // once it tried to use the radio
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
 }

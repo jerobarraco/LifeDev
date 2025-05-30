@@ -8,7 +8,7 @@ AWDoorI00::AWDoorI00() {
 	UseHint = true;
 	// this is less performant but this door is loaded in the room not chapter causing dependency issues
 	// hint after the c1 started
-	HintCondition = "{Inter.TriggerL.DoorI01}";
+	HintCondition = "{Inter.Locked.DoorI01}";
 
 	// ULockDlg = "W0_ULCK";
 	// LockedItemDlg = "W0_LCKIT"; // driven by datatable

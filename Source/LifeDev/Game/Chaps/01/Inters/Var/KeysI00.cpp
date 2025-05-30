@@ -10,5 +10,5 @@ AKeysI00::AKeysI00():Super() {
 	StateNum = 1;
 	UseAutoActivate = true;
 	UseHint = true;
-	HintCondition = "{Inter.TriggerL.WDoorI00}";
+	HintCondition = "{Inter.Locked.WDoorI00}";
 }
