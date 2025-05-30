@@ -42,12 +42,8 @@ const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 	
 	if (Item.Locked | (Item.ActiveCoolDown>0))
 		return CLocked;
-	if (Item.SelfUsable)
+	if (Item.SelfUsable | Item.Usable) // TODO remove SElfUsable
 		return CUseSelf;
-#if LD_ITEM_USE
-	if (Item.Usable)
-		return CUse;
-#endif
 	if (Item.Consumable) // differentiate from regular other objects.
 		return CConsume;
 	return CDefault;
