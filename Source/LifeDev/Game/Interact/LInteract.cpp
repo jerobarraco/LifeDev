@@ -240,9 +240,13 @@ bool ALInteract::ShouldUnlock_Implementation() {
 	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
 	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
 		const FName& N = UnlockItems[i];
+		if (UNLIKELY(N.IsNone())) {
+			UnlockItems.RemoveAtSwap(i); // necessary for proper check of empty list
+			continue; // if there's only an empty item on the list. unlock won't trigger. that's on purpose.
+		}
+
 		// returns true on consumables, and true on non-consumables that i have
-		// the !N.IsNone() will allow to remove none items and check for empty array
-		if (!N.IsNone() && !Inventory->Mod(N, -1, true)) continue;
+		if (!Inventory->Mod(N, -1, true)) continue;
 
 		// trigger the dialog here. avoid extra if below
 		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
