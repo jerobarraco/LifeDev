@@ -108,7 +108,8 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 	FItem Item;
 	const bool Found = Inventory->GetSelectedItem(Item);
 	if (UNLIKELY(!Found)) {
-		UE_LOG(LogCharItems, Warning, TEXT("%hs Item not found '%s'. Stop."), __func__, *Name.ToString());
+		UE_LOG(LogCharItems, Warning, TEXT("%hs Item not found '%s'. Stop."),
+			__func__, *Name.ToString());
 		return EItemUseResult::ERROR;
 	}
 

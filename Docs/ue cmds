@@ -104,3 +104,7 @@ net.AllowPIESeamlessTravel=1
 
 #vsm https://dev.epicgames.com/community/learning/knowledge-base/9Jx9/unreal-engine-optimizing-ue5-advanced-rendering-graphics-performance-and-memory-management-resources
 r.shadow.virtual.showstats 1
+
+# input debug
+  showdebug enhacedinput
+  showdebug devices
