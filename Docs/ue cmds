@@ -83,8 +83,6 @@ au.ClearMutesAndSolos
 # https://forums.unrealengine.com/t/seamless-travel-with-play-in-editor/394250/22
 net.AllowPIESeamlessTravel=1
 
-
-
 # https://forums.unrealengine.com/t/heavy-nanite-bug-mesh-disappears-at-distance/574116/10
     [/Script/Engine.RendererSettings]
     r.Nanite.CoarseMeshStreaming=True
