@@ -9,6 +9,8 @@
 class USlider;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSave);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnStart);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnSettings);
 
 // LD basic savefile group box
 UCLASS(Blueprintable, BlueprintType)
@@ -21,6 +23,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnLoadDone OnLoadDone;
+	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
+	FSGOnStart OnStart;
+	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
+	FSGOnSettings OnSettings;
 
 protected:
 	virtual void NativeOnInitialized() override;
