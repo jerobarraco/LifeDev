@@ -13,13 +13,10 @@ struct INVENTORY_API FItem: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
-	// Each trigger will consume one unit
+	// Each trigger will consume one unit.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Consumable = true;
-	// For things that trigger by themselves (and/or with other objects (e.g. cards))
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DeprecatedProperty))
-	bool SelfUsable = false; // TODO merge self-usable and usable
-	// For items that can be used with other objects. Tentative, might get removed. (mementos are false)
+	// For items that can be used.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Usable = true;
 	// max allowed number of items, -1 is unlimited.

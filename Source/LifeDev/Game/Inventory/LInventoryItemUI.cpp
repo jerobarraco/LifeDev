@@ -19,7 +19,7 @@ FText ULInventoryItemUI::GetItemCountText(const FItem& Item) {
 	if (Item.Consumable)
 		return FText::FromString(FString::FromInt(Item.Count)); // can't return a ref due to this
 
-	if (!Item.SelfUsable | !Item.Usable)
+	if (!Item.Usable)
 		return TNone;
 
 	// TEXT is necessary for utf
@@ -42,7 +42,7 @@ const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 	
 	if (Item.Locked | (Item.ActiveCoolDown>0))
 		return CLocked;
-	if (Item.SelfUsable | Item.Usable) // TODO remove SElfUsable
+	if (Item.Usable)
 		return CUseSelf;
 	if (Item.Consumable) // differentiate from regular other objects.
 		return CConsume;

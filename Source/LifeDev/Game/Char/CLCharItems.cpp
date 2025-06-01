@@ -119,8 +119,7 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-	// TODO remove self-usable
-	if (UNLIKELY(!Item.Usable & !Item.SelfUsable && !DoUse(Name, Item))) {
+	if (UNLIKELY(!Item.Usable && !DoUse(Name, Item))) {
 		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Stop."), __func__);
 		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable (why?)

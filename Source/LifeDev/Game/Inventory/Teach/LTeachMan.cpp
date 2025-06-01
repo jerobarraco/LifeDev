@@ -228,7 +228,7 @@ void ALTeachMan::ItemSel(const FName& Name) {
 void ALTeachMan::ItemUse(const FName& Name) {
 	FItem Item;
 	const bool Ok = LIKELY(Items) ? Items->GetSelectedItem(Item) : false;
-	const bool ShouldHide = Ok & Item.SelfUsable;
+	const bool ShouldHide = Ok & Item.Usable;
 	if (ShouldHide)
 		Hide(LD::Teach::ItemUse);
 }

@@ -292,7 +292,7 @@ bool UInventory::SetCool(const FName& Name) {
 }
 
 bool UInventory::IsUsable(const FItem& Item) const {
-	if (!Item.Usable & !Item.SelfUsable) return false;
+	if (!Item.Usable) return false;
 
 	if (Item.Locked) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Item is locked. title='%s'"),

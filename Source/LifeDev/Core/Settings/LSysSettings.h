@@ -84,7 +84,15 @@ public:
 		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachPad.TeachPad"))
 		}};
 
-	// The list of characters
+	// the chapter to start with.
+	// during runtime use GetStartChap unless you're me and know what you're doing.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
+		meta=(ClampMax=4, ClampMin=0, UIMin=0, UIMax=4))
+	int32 StartChap = -1;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
+		meta=(RequiredAssetDataTags="RowStructure=/Script/LifeDev.LChapter"))
+	TSoftObjectPtr<UDataTable> Chapters =
+		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Dialogs/Chapters"));
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Diags.DiagChar"))
 	TSoftObjectPtr<UDataTable> Characters = TSoftObjectPtr<UDataTable>(
@@ -101,17 +109,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
 	TSoftObjectPtr<UDataLayerAsset> BaseDL = TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base"));
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
-		meta=(RequiredAssetDataTags="RowStructure=/Script/LifeDev.LChapter"))
-	TSoftObjectPtr<UDataTable> Chapters =
-		TSoftObjectPtr<UDataTable>(FSoftObjectPath("/Game/LifeDev/Game/Dialogs/Chapters"));
-
-	// the chapter to start with.
-	// during runtime use GetStartChap unless you're me and know what you're doing.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story",
-		meta=(ClampMax=4, ClampMin=0, UIMin=0, UIMax=4))
-	int32 StartChap = -1;
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
