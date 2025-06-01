@@ -26,7 +26,7 @@ void ULSaveGroup::NativeOnInitialized() {
 }
 
 void ULSaveGroup::FoxyUpd(const float Value) {
-	if (UNLIKELY(!SLFoxy || !TFoxy)) return;
+	if (UNLIKELY(!SLFoxy | !TFoxy)) return;
 
 	TFoxy->SetText(FText::FromString(FString::Printf(TEXT("Foxy: %.3f"), Value)));
 	UFlags* const Flags = UFlags::Instance(this);
