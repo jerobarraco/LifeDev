@@ -2,10 +2,13 @@
 
 #include "DoorI01.h"
 
+#include "LifeDev/Core/Consts/ConstItems.h"
+
 ADoorI01::ADoorI01():Super() {
 	IsLocked = true;
 	// for the future
-	ULockItemReq = "WM"; // the wm depends on the batts so no need to go so hard on this
+	UnlockItems = {LDConsts::Items::Walkman};
+	// ULockItemReq = "WM"; // the wm depends on the batts so no need to go so hard on this
 	// ULockCondition = "{V.Item.Count.Batts} & {V.Item.Count.WM}";
 	UseHint = true;
 	RootComponent->SetWorldLocation(FVector(-290,316,0));

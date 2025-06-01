@@ -4,7 +4,8 @@
 
 AWDoorI00::AWDoorI00() {
 	IsLocked = true;
-	ULockItemReq = ULockItem = "KW0";
+	// ULockItemReq = ULockItem = "KW0";
+	UnlockItems = {"KW0"};
 	UseHint = true;
 	// this is less performant but this door is loaded in the room not chapter causing dependency issues
 	// hint after the c1 started

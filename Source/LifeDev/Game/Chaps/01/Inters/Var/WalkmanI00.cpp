@@ -22,7 +22,8 @@ AWalkmanI00::AWalkmanI00():Super() { // todo make a baseclass
 	IsLocked = true;
 	LockedDlg = "WM_L";
 	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
-	ULockItemReq = LDConsts::Items::Batts;
+	UnlockItems = {LDConsts::Items::Batts};
+	// ULockItemReq = LDConsts::Items::Batts;
 	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 
 	Texts = {
