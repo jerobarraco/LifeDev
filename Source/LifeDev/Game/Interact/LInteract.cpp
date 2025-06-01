@@ -235,8 +235,6 @@ bool ALInteract::ShouldUnlock_Implementation() {
 	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is not none here
 
 	// consume items when unlocking
-	UnlockItems.Add(ULockItemReq); // TODO remove ulockitemreq
-	// handle unlockitems
 	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
 	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
 		const FName& N = UnlockItems[i];
@@ -260,12 +258,7 @@ bool ALInteract::ShouldUnlock_Implementation() {
 		}
 	}
 
-	// handle ulockitemreq
-	if (ULockItemReq.IsNone()) return false; // false because no need to call unlock.
-	FItem Item;
-	if (!Inventory->Get(ULockItemReq, Item)) return false; // false because we don't have it
-
-	return Inventory->IsCold(Item);
+	return false;
 }
 
 void ALInteract::Unlock_Implementation() {

@@ -94,12 +94,6 @@ public:
 	TArray<FName> UnlockItems;
 
 	// Deprecated. Use UnlockItems or UnlockCondition.
-	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
-	// TODO to be deleted
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
-	FName ULockItemReq = NAME_None;
-
-	// Deprecated. Use UnlockItems or UnlockCondition.
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
 	// TODO To be deleted.
