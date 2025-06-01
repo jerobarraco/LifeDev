@@ -15,7 +15,8 @@ ARadioI00::ARadioI00():Super() {
 	// when the user activates. though this happens automatically after ULockDlg.
 	//  it's all ok though, it's according to keikaku (keikaku means plan).
 	// TriggerDlg = "RD00_T";
-	ULockItemReq = LDConsts::Items::Tape0;
+	// ULockItemReq = LDConsts::Items::Tape0;
+	UnlockItems = {LDConsts::Items::Tape0};
 	RewardFlash = 0; // the dialog will add 
 	UseRewardDestroy = false; // don't self-destroy
 	DisableWhileAnim = false; // to allow to disable once activated
