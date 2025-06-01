@@ -13,6 +13,7 @@ class USlider;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSave);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnSettings);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnTryErase);
 
 // LD basic savefile group box
 UCLASS(Blueprintable, BlueprintType)
@@ -23,12 +24,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void LoadDoneAll();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void DoErase();
+	virtual void DoErase_Implementation(){}; // TODO move here
+
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnLoadDone OnLoadDone;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnStart OnStart;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnSettings OnSettings;
+	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, BlueprintCallable, Transient)
+	FSGOnSettings OnTryErase;
 
 protected:
 	virtual void NativeOnInitialized() override;

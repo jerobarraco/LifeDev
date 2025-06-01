@@ -21,8 +21,10 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 	
 	if (LIKELY(BtnSettings))
 		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
+	// TODO bind settings and start to the delegates
 	if (LIKELY(BtnStart))
 		BtnStart->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
+	
 	OnLoadDone.Broadcast(HasDoneSave);
 }
 
