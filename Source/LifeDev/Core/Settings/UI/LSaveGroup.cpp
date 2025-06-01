@@ -4,7 +4,10 @@
 
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+
+#include "JButton.h"
 #include "Inventory/Flags.h"
+
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 
@@ -16,6 +19,10 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 	if (LIKELY(SLFoxy)) SLFoxy->SetVisibility(Vis);
 	if (LIKELY(TFoxy)) TFoxy->SetVisibility(Vis);
 	
+	if (LIKELY(BtnSettings))
+		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
+	if (LIKELY(BtnStart))
+		BtnStart->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
 	OnLoadDone.Broadcast(HasDoneSave);
 }
 

@@ -6,7 +6,9 @@
 
 #include "LSaveGroup.generated.h"
 
+class UJButton;
 class USlider;
+// TODO move buttons here and call these delegates
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSave);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnStart);
@@ -38,6 +40,11 @@ protected:
 	TObjectPtr<USlider> SLFoxy = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> TFoxy = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnSettings = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnStart = nullptr;
+
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool HasDoneSave = false;
 	UPROPERTY(BlueprintReadWrite, Transient)

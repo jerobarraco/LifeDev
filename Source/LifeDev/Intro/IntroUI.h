@@ -6,6 +6,7 @@
 
 #include "IntroUI.generated.h"
 
+class ULSaveGroup;
 class UWidgetSwitcher;
 class UJButton;
 class UMsgBox;
@@ -24,7 +25,7 @@ public:
 	void ShowMsg(const FText& Msg);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void ShowSettings(const int32 Id);
+	void ShowSettings();
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
@@ -34,6 +35,8 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
+	UFUNCTION()
+	void Start();
 
 	UFUNCTION(BlueprintCallable)
 	void SlotsLoadDone(const bool HasDoneSave);
@@ -50,4 +53,6 @@ protected:
 	TObjectPtr<UJButton> BtnSettings = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnDone = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<ULSaveGroup> SaveGroup = nullptr;
 };
