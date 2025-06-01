@@ -89,19 +89,20 @@ public:
 
 	// items to receive/consume in order to unlock.
 	// items will be removed from this list on runtime whenever they are consumed.
+	// if the item is consumable, it will be consumed. otherwise it will only check for presence.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, meta=(DeprecatedProperty))
 	TArray<FName> UnlockItems;
 
-	// deprecated. use UnlockItems
+	// Deprecated. Use UnlockItems or UnlockCondition.
 	// name of the item that is needed to "have" to unlock this. (just having it will unlock it, unless we also set ULockItem)
-	// TODO delete
+	// TODO to be deleted
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockItemReq = NAME_None;
 
+	// Deprecated. Use UnlockItems or UnlockCondition.
 	// *Using* this item with this instance will unlock it. setting it will lock the actor on start.
 	// it will also decide whether to show LockedDlg or LockedItemDlg on trigger(locked)
-	// WARNING! Currently i'm testing NOT to use this ANYMORE!
-	// TODO once i've settled on the mechanic. delete this one. use ULockCondition
+	// TODO To be deleted.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable, meta=(DeprecatedProperty))
 	FName ULockItem = NAME_None;
 #pragma endregion
