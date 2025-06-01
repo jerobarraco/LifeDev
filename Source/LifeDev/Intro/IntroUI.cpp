@@ -30,7 +30,7 @@ void UIntroUI::NativeOnInitialized() {
 	if (LIKELY(BtnNext2))
 		BtnNext2->SetUp(NSLOCTEXT("Intro", "BtnNext2", "Ok"), 2);
 	if (LIKELY(BtnSettings))
-		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), 3);
+		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
 	if (LIKELY(BtnDone))
 		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
 	if (LIKELY(BtnNext)) BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
