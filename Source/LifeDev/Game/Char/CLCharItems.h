@@ -13,6 +13,7 @@ class UFlags;
 class UCInteractor;
 class UInventory;
 class UDiags;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLook, )
 
 // LifeDev Game character items
 // handles some stuff regarding items... 

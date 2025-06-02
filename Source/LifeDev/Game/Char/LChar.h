@@ -64,7 +64,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
-
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UCLCharItems* GetCharItems() const { return Items; }
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float InteractDrag = .5;
