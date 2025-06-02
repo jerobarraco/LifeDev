@@ -144,7 +144,7 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	Diags = UDiags::Instance(this);
-	if (LIKELY(Diags))
+	if (LIKELY(Diags) & UNLIKELY(!Has(LD::Teach::ItemPick)))
 		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
 
 	int32 Chapter = -1;
@@ -162,7 +162,6 @@ void ALTeachMan::InitDelayed() {
 	Story = UStory::Instance(this);
 	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LD::Teach::ItemUse))
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
-	
 }
 
 void ALTeachMan::BeginPlay() {
@@ -246,7 +245,7 @@ void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
 	// downside. will only work if the dialog itself uses this format, which not all do.
 	// TODO find something better. some objects might not even have a look, but instead use the inventory description.
 	// those don't trigger DiagAdd but trigger DiagShow, but DiagShow doesn't pass the name.
-	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre) ) {
+	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre)) {
 		Hide(LD::Teach::ItemPick); // i can dismiss the message here.
 		DeInitDiag();
 	}
