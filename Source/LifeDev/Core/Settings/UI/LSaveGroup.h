@@ -56,6 +56,8 @@ protected:
 	TObjectPtr<UJButton> BtnSettings = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnStart = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnErase = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool HasDoneSave = false;
