@@ -24,13 +24,13 @@ void UIntroUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Switcher)) return;
 	if (LIKELY(BtnNext)) {
-		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Continue"), 1);
+		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Ok"), 1);
 		BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
 	}
-	if (LIKELY(BtnNext2)) {
-		BtnNext2->SetUp(NSLOCTEXT("Intro", "BtnNext2", "Ok"), 2);
-		BtnNext2->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
-	}
+	// if (LIKELY(BtnNext2)) {
+		// BtnNext2->SetUp(NSLOCTEXT("Intro", "BtnNext2", "Ok"), 2);
+		// BtnNext2->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
+	// }
 	// if (LIKELY(BtnSettings))
 		// BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
 	// if (LIKELY(BtnDone))

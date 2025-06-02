@@ -35,8 +35,6 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
-	UFUNCTION()
-	void Start();
 
 	UFUNCTION(BlueprintCallable)
 	void SlotsLoadDone(const bool HasDoneSave);
@@ -47,8 +45,6 @@ protected:
 	TObjectPtr<UWidgetSwitcher> Switcher = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnNext = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnNext2 = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnSettings = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
