@@ -145,7 +145,7 @@ void ALTeachMan::InitDelayed() {
 		Inter->OnHover.AddUniqueDynamic(this, &ALTeachMan::InterHover);
 	}
 
-	if (LIKELY(Items) & UNLIKELY(!ItemHasAll())) {
+	if (LIKELY(bool(Items)) & UNLIKELY(!ItemHasAll())) {
 		Items->OnMod.AddUniqueDynamic(this, &ALTeachMan::ItemMod);
 		Items->OnUsed.AddUniqueDynamic(this, &ALTeachMan::ItemUse);
 	}
@@ -177,6 +177,11 @@ void ALTeachMan::InitDelayed() {
 void ALTeachMan::BeginPlay() {
 	Super::BeginPlay();
 	Items = UInventory::Instance(this);
+}
+
+void ALTeachMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	Diags = nullptr;
+	Super::EndPlay(EndPlayReason);
 }
 
 bool ALTeachMan::Show_Implementation(const FName& Id) {
@@ -312,7 +317,7 @@ void ALTeachMan::SettingsDone() {
 		AllDone = true;
 	}
 
-	if (LIKELY(SettingsUI) & AllDone) {
+	if (LIKELY(bool(SettingsUI)) & AllDone) {
 		SettingsUI->OnDone.RemoveAll(this);
 		SettingsUI = nullptr; // don't need it anymore. (but i need to make sure i check for it in code)
 	}

@@ -37,6 +37,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual bool Show_Implementation(const FName& Id) override;
 	void DeInitItemMod() const;
 	void DeInitInter();
