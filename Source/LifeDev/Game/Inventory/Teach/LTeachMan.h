@@ -40,7 +40,7 @@ protected:
 	virtual bool Show_Implementation(const FName& Id) override;
 	void DeInitItemMod() const;
 	void DeInitInter();
-	void DeInitDiag();
+	void DeInitLook();
 	void DeInitStory();
 	void InitFeat();
 	void DeInitFeat();
@@ -56,7 +56,7 @@ protected:
 	void ItemUse(const FName& Name);
 	bool ItemHasAll() const;
 	UFUNCTION()
-	void DiagAdd(const FName& Name, const FDiag& Diag);
+	void ItemLook(const FName& Name);
 	UFUNCTION()
 	void StepStart(AStep* const Step);
 	UFUNCTION()

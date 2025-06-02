@@ -13,6 +13,7 @@
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
+#include "LifeDev/Game/Char/CLCharItems.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
@@ -43,7 +44,7 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 	const UWorld* const World = O->GetWorld();
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 
-	const ALGGameMode* Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
+	const ALGGameMode* const Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
 	if (LIKELY(IsValid(Mode)))
 		return Mode->TeachMan;
 
@@ -77,13 +78,19 @@ void ALTeachMan::DeInitInter() {
 
 	UCInteractor* const Inter = Cast<UCInteractor>(Char->GetComponentByClass(UCInteractor::StaticClass()));
 	if (UNLIKELY(!Inter)) return;
+
 	Inter->OnTrigger.RemoveAll(this);
 	Inter->OnHover.RemoveAll(this);
 }
 
-void ALTeachMan::DeInitDiag() {
-	if (LIKELY(Diags)) Diags->OnAdd.RemoveAll(this);
-	Diags = nullptr;
+void ALTeachMan::DeInitLook() {
+	const ALChar* const Char = ALChar::Instance(this);
+	if (UNLIKELY(!Char)) return;
+
+	UCLCharItems* const Items = Char->GetCharItems();
+	if (UNLIKELY(!Items)) return;
+
+	Items->OnLook.RemoveAll(this);
 }
 
 void ALTeachMan::DeInitStory() {
@@ -95,7 +102,7 @@ void ALTeachMan::DeInitFeat() {
 	UE_LOG(LogLTeachMan, Log, TEXT("%hs"), __func__);
 	DeInitInter();
 	DeInitItemMod();
-	DeInitDiag();
+	DeInitLook();
 	DeInitStory();
 
 	const UWorld* const World = GetWorld();
@@ -144,8 +151,11 @@ void ALTeachMan::InitDelayed() {
 	}
 
 	Diags = UDiags::Instance(this);
-	if (LIKELY(Diags) & UNLIKELY(!Has(LD::Teach::ItemPick)))
-		Diags->OnAdd.AddUniqueDynamic(this, &ALTeachMan::DiagAdd);
+	if (UNLIKELY(!Has(LD::Teach::ItemPick))) {
+		UCLCharItems* const Items = Char->GetCharItems();
+		if (LIKELY(Items))
+			Items->OnLook.AddUniqueDynamic(this, &ALTeachMan::ItemLook);
+	}
 
 	int32 Chapter = -1;
 	if (LIKELY(Settings)) {
@@ -171,7 +181,7 @@ void ALTeachMan::BeginPlay() {
 
 bool ALTeachMan::Show_Implementation(const FName& Id) {
 	// don't show a hint if the diags are showing
-	if (LIKELY(Diags) && UNLIKELY(Diags->GetIsShowing())) return false;
+	if (LIKELY(Diags) & UNLIKELY(Diags->GetIsShowing())) return false;
 
 	return Super::Show_Implementation(Id);
 }
@@ -237,18 +247,10 @@ bool ALTeachMan::ItemHasAll() const {
 	&& Has(LD::Teach::ItemChange) && Has(LD::Teach::ItemUse);
 }
 
-void ALTeachMan::DiagAdd(const FName& Name, const FDiag& Diag) {
+void ALTeachMan::ItemLook(const FName& Name) {
 	if (UNLIKELY(Name.IsNone())) return;
-	// unfortunately this will ONLY trigger if the dialog is ACTUALLY shown
-	// a cheeky way to detect events. but i don't care atm.
-	const FString& SName = Name.ToString();
-	// downside. will only work if the dialog itself uses this format, which not all do.
-	// TODO find something better. some objects might not even have a look, but instead use the inventory description.
-	// those don't trigger DiagAdd but trigger DiagShow, but DiagShow doesn't pass the name.
-	if (SName.StartsWith(LDConsts::Dlgs::Item::LookPre)) {
-		Hide(LD::Teach::ItemPick); // i can dismiss the message here.
-		DeInitDiag();
-	}
+	Hide(LD::Teach::ItemPick); // i can dismiss the message here.
+	DeInitLook();
 }
 
 void ALTeachMan::StepStart(AStep* const Step) {
