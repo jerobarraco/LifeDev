@@ -119,8 +119,8 @@ EItemUseResult UCLCharItems::Use(const FName& Name) const {
 		return EItemUseResult::BAD_HANDLED;
 	}
 
-	if (UNLIKELY(!Item.Usable && !DoUse(Name, Item))) {
-		UE_LOG(LogCharItems, Log, TEXT("%hs Item not usable. Stop."), __func__);
+	if (UNLIKELY(!DoUse(Name, Item))) {
+		UE_LOG(LogCharItems, Log, TEXT("%hs Could not use the item. Stop."), __func__);
 		const bool Said = Say(LDConsts::Dlgs::Item::NotUsable);
 		return EItemUseResult::ERROR; // always return if not usable (why?)
 	}
@@ -132,15 +132,14 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item) const {
 	UE_LOG(LogCharItems, Log, TEXT("%hs: Name=%s, Item=%s"),
 		__func__, *Name.ToString(), *Item.Title.ToString());
 
-	const bool Used = Inventory->Use(Name); //important
+	const bool Used = Inventory->Use(Name); //important. Use checks for IsUsable
+	if (UNLIKELY(!Used)) return false;
+
 	const bool ValidLogic = IsValid(Item.Logic);
 	// save myself some pain if i forget. warn to myself.
 	UE_CLOG(UNLIKELY(!ValidLogic), LogCharItems, Warning, TEXT("%hs Item has no logic."
-		"It won't really be used. unless hooked somewhere else. Skip."), __func__);
-	// can't quit now. we've used the item. (yes, i could change the code to accomodate for that, but no.
+		"It won't do anything unless you hooked it somewhere else."), __func__);
 	if (LIKELY(ValidLogic)) Item.Logic->Use();
-
-	if (UNLIKELY(!Used)) return false;
 
 	const FString& NameS = Name.ToString();
 	const FName Dlg(LDConsts::Dlgs::Item::UsePre+NameS);
@@ -148,7 +147,7 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item) const {
 	PlaySound(Item.Snd);
 	Flags->Mod(Dlg, 1);
 
-	// isDebug is an optimization since the compiler will hopefully remove it . UJUtilsSys::IsDebug() & should i?
+	// isDebug is an optimization since the compiler will hopefully remove it. UJUtilsSys::IsDebug() & should i?
 	if (ULSettings::GetFeatS(this, EFeat::DBG_FAST_COOL))
 		Inventory->SetCool(Name);
 

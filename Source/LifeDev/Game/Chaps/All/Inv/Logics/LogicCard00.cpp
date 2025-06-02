@@ -16,7 +16,8 @@ ULogicCard00::ULogicCard00():Super() {
 void ULogicCard00::Use_Implementation() {
 	if (UNLIKELY(!ULSettings::GetFeatS(this, EFeat::G_CARD0))) return;
 
-	const AActor* const Pawn = UGameplayStatics::GetActorOfClass(this, ALChar::StaticClass());
+	const AActor* const Pawn = UGameplayStatics::GetActorOfClass(this,
+		ALChar::StaticClass());
 	if (UNLIKELY(!Pawn)) return;
 	
 	UWorld* const W = GetWorld();
