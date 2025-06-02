@@ -19,19 +19,33 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 	if (LIKELY(SLFoxy)) SLFoxy->SetVisibility(Vis);
 	if (LIKELY(TFoxy)) TFoxy->SetVisibility(Vis);
 	
-	if (LIKELY(BtnSettings))
+	if (LIKELY(BtnSettings)) {
 		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
-	// TODO bind settings and start to the delegates
-	if (LIKELY(BtnStart))
+		BtnSettings->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoSettings);
+	}
+	if (LIKELY(BtnStart)) {
 		BtnStart->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
+		BtnStart->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoStart);
+	}
 	
 	OnLoadDone.Broadcast(HasDoneSave);
 }
+
+// this is bound to IntroUI::Done, 0 means start
+void ULSaveGroup::DoStart(const int32 pId) { OnDone.Broadcast(0); }
+void ULSaveGroup::DoSettings(const int32 pId) { OnSettings.Broadcast(); }
 
 void ULSaveGroup::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (LIKELY(SLFoxy))
 		SLFoxy->OnValueChanged.AddUniqueDynamic(this, &ULSaveGroup::FoxyUpd);
+}
+
+void ULSaveGroup::NativeDestruct() {
+	if (LIKELY(SLFoxy)) SLFoxy->OnValueChanged.RemoveAll(this);
+	if (LIKELY(BtnSettings)) BtnSettings->OnClick.RemoveAll(this);
+	if (LIKELY(BtnStart)) BtnStart->OnClick.RemoveAll(this);
+	Super::NativeDestruct();
 }
 
 void ULSaveGroup::FoxyUpd(const float Value) {

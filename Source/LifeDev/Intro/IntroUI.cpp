@@ -39,17 +39,13 @@ void UIntroUI::NativeOnInitialized() {
 	// if (LIKELY(BtnDone)) BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
 
 	if (LIKELY(SaveGroup)) {
-		SaveGroup->OnStart.AddUniqueDynamic(this, &UIntroUI::Start);
+		SaveGroup->OnDone.AddUniqueDynamic(this, &UIntroUI::Done);
 		SaveGroup->OnSettings.AddUniqueDynamic(this, &UIntroUI::ShowSettings);
 	}
 }
 
 void UIntroUI::NativeDestruct() {
 	Super::NativeDestruct();
-}
-
-void UIntroUI::Start() {
-	Done(0);
 }
 
 void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {

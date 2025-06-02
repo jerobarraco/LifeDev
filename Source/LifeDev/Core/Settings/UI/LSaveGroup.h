@@ -8,10 +8,9 @@
 
 class UJButton;
 class USlider;
-// TODO move buttons here and call these delegates
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSave);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnStart);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnDone, const int32, Id);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnSettings);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnTryErase);
 
@@ -26,12 +25,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DoErase();
-	virtual void DoErase_Implementation(){}; // TODO move here
+	virtual void DoErase_Implementation(){} // TODO move here
+
 
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnLoadDone OnLoadDone;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
-	FSGOnStart OnStart;
+	FSGOnDone OnDone;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnSettings OnSettings;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, BlueprintCallable, Transient)
@@ -39,9 +39,14 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
 
 	UFUNCTION()
 	void FoxyUpd(const float Value);
+	UFUNCTION()
+	void DoStart(const int32 pId);
+	UFUNCTION()
+	void DoSettings(const int32 pId);
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<USlider> SLFoxy = nullptr;

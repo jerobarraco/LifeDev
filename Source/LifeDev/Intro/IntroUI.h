@@ -23,7 +23,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ShowMsg(const FText& Msg);
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ShowSettings();
 
