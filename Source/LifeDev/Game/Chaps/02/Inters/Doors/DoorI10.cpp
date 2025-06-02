@@ -6,7 +6,6 @@
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 // TODO improve this
 
 ADoorI10::ADoorI10():Super() {

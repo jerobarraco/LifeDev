@@ -232,7 +232,7 @@ void ALInteract::HideAfterFade() {
 bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already
 
-	if (UNLIKELY(!IsValid(Inventory))) return false; // false because ulockitemreq is not none here
+	if (UNLIKELY(!IsValid(Inventory))) return false;
 
 	// consume items when unlocking
 	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
