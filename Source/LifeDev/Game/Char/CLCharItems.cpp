@@ -84,6 +84,8 @@ void UCLCharItems::Look(const FName& Name) const {
 
 	// trigger manager look
 	if (IsValid(Item.Logic)) Item.Logic->Look();
+
+	OnLook.Broadcast(Name);
 }
 
 EItemUseResult UCLCharItems::Use(const FName& Name) const {

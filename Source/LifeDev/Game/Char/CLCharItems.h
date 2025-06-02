@@ -13,7 +13,8 @@ class UFlags;
 class UCInteractor;
 class UInventory;
 class UDiags;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLook, )
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLook, const FName&, Name);
 
 // LifeDev Game character items
 // handles some stuff regarding items... 
@@ -37,6 +38,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	bool UseSndAtLocation = false;
+	// when an item is triggered. Mostly only used by LTeach
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FOnLook OnLook;
 
 protected:
 	virtual void BeginPlay() override;
