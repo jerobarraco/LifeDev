@@ -39,6 +39,7 @@ void ULGameInstance::Init() {
 void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 	if (UNLIKELY(IsRunningDedicatedServer())) return;
 
+	CreateMoviePlayer();
 	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
 	if (MoviePlayer) {
 		FLoadingScreenAttributes LoadingScreen;
