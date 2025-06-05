@@ -16,8 +16,6 @@
 #include "SentryModule.h"
 #include "SentryBeforeSendHandler.h"
 
-#include "SentryTraceSampler.h"
-
 #include "Utils/SentryFileUtils.h"
 #include "Utils/SentryLogUtils.h"
 #include "Utils/SentryScreenshotUtils.h"
@@ -73,36 +71,52 @@ void PrintVerboseLog(sentry_level_t level, const char *message, va_list args, vo
 	GLog->CategorizedLogf(SentryCategoryName, SentryConvertorsDesktop::SentryLevelToLogVerbosity(level), TEXT("%s"), *MessageBuf);
 }
 
-void PrintCrashLog(const sentry_ucontext_t *uctx)
+void PrintCrashLog(const sentry_ucontext_t *uctx) 
 {
-#if PLATFORM_WINDOWS && !UE_VERSION_OLDER_THAN(5, 0, 0)
+
+
+#if PLATFORM_WINDOWS && UE_VERSION_NEWER_THAN_OR_EQUAL(5,0,0)
 
 	SentryConvertorsDesktop::SentryCrashContextToString(uctx, GErrorExceptionDescription, UE_ARRAY_COUNT(GErrorExceptionDescription));
 
 	const SIZE_T StackTraceSize = 65535;
+#if UE_VERSION_NEWER_THAN_OR_EQUAL(5,6,0)
+	ANSICHAR* StackTrace = (ANSICHAR*)FMemory::Malloc(StackTraceSize);
+#else
 	ANSICHAR* StackTrace = (ANSICHAR*)GMalloc->Malloc(StackTraceSize);
+#endif
 	StackTrace[0] = 0;
 
 	// Currently raw crash data stored in `uctx` can be utilized for stalk walking on Windows only
 	void* ProgramCounter = uctx->exception_ptrs.ExceptionRecord->ExceptionAddress;
 
 	FPlatformStackWalk::StackWalkAndDump(StackTrace, StackTraceSize, ProgramCounter);
-
+#if UE_VERSION_NEWER_THAN_OR_EQUAL(5,6,0)
+	FCString::StrncatTruncateDest(GErrorHist, UE_ARRAY_COUNT(GErrorHist), GErrorExceptionDescription);
+	FCString::StrncatTruncateDest(GErrorHist, UE_ARRAY_COUNT(GErrorHist), TEXT("\r\n\r\n"));
+	FCString::StrncatTruncateDest(GErrorHist, UE_ARRAY_COUNT(GErrorHist), ANSI_TO_TCHAR(StackTrace));
+#else
 	FCString::Strncat(GErrorHist, GErrorExceptionDescription, UE_ARRAY_COUNT(GErrorHist));
 	FCString::Strncat(GErrorHist, TEXT("\r\n\r\n"), UE_ARRAY_COUNT(GErrorHist));
 	FCString::Strncat(GErrorHist, ANSI_TO_TCHAR(StackTrace), UE_ARRAY_COUNT(GErrorHist));
+#endif
 
 #if !NO_LOGGING
 	FDebug::LogFormattedMessageWithCallstack(LogSentrySdk.GetCategoryName(), __FILE__, __LINE__, TEXT("=== Critical error: ==="), GErrorHist, ELogVerbosity::Error);
 #endif
 
-#if !UE_VERSION_OLDER_THAN(5, 1, 0)
+#if UE_VERSION_NEWER_THAN_OR_EQUAL(5, 1, 0)
 	GLog->Panic();
 #endif
 
+#if UE_VERSION_NEWER_THAN_OR_EQUAL(5,6,0)
+	FMemory::Free(StackTrace);
+#else
 	GMalloc->Free(StackTrace);
+#endif
 
 #endif
+
 }
 
 sentry_value_t HandleBeforeSend(sentry_value_t event, void *hint, void *closure)
