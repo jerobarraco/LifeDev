@@ -1,6 +1,6 @@
 :: @echo off
 :: warning pushd HATES "/" we MUST use "\"
-set UNREAL_ENGINE_ROOT=E:\ue\UE_5.5
+set UNREAL_ENGINE_ROOT=E:\ue\UE_5.6
 set WORKSPACE=F:/LifeDev
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
@@ -11,7 +11,8 @@ set CONFIG=Shipping
 ::set CONFIG=Development
 ::set CLEAN=-clean
 set CLEAN=
-set DDC="-ddc=noshared"
+::set DDC="-ddc=noshared" :: actually creates issues.
+set DDC=""
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
