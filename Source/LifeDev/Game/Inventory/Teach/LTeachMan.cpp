@@ -87,10 +87,10 @@ void ALTeachMan::DeInitLook() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
-	UCLCharItems* const Items = Char->GetCharItems();
-	if (UNLIKELY(!Items)) return;
+	UCLCharItems* const ChItems = Char->GetCharItems();
+	if (UNLIKELY(!ChItems)) return;
 
-	Items->OnLook.RemoveAll(this);
+	ChItems->OnLook.RemoveAll(this);
 }
 
 void ALTeachMan::DeInitStory() {
@@ -152,9 +152,9 @@ void ALTeachMan::InitDelayed() {
 
 	Diags = UDiags::Instance(this);
 	if (UNLIKELY(!Has(LD::Teach::ItemPick))) {
-		UCLCharItems* const Items = Char->GetCharItems();
-		if (LIKELY(Items))
-			Items->OnLook.AddUniqueDynamic(this, &ALTeachMan::ItemLook);
+		UCLCharItems* const ChItems = Char->GetCharItems();
+		if (LIKELY(ChItems))
+			ChItems->OnLook.AddUniqueDynamic(this, &ALTeachMan::ItemLook);
 	}
 
 	int32 Chapter = -1;
