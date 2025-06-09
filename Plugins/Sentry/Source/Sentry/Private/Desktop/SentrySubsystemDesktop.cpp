@@ -116,7 +116,6 @@ void PrintCrashLog(const sentry_ucontext_t *uctx)
 #endif
 
 #endif
-
 }
 
 sentry_value_t HandleBeforeSend(sentry_value_t event, void *hint, void *closure)
