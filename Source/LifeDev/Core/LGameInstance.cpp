@@ -38,7 +38,8 @@ void ULGameInstance::Init() {
 
 void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
 	if (UNLIKELY(IsRunningDedicatedServer())) return;
-
+	return;
+ // TODO use the ULoadScr
 	CreateMoviePlayer();
 	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
 	if (MoviePlayer) {

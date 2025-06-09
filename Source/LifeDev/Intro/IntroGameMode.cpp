@@ -38,7 +38,7 @@ void AIntroGameMode::BeginPlay() {
 	// very important NOT to save the save-game here.
 	// since none of the subsystems are initialized and it will save garbage
 
-	USentrySubsystem* const Sentry = GEngine->GetEngineSubsystem<USentrySubsystem>();
+	const USentrySubsystem* const Sentry = GEngine->GetEngineSubsystem<USentrySubsystem>();
 	// if (SentrySubsystem)
 		// SentrySubsystem->CaptureMessage(TEXT("Capture message"));
 	UE_CLOG(!Sentry, LogTemp, Error, TEXT("Sentry does not work!"));

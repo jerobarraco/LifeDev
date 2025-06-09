@@ -20,6 +20,13 @@ ULoadScr* ULoadScr::Instance(const UObject* const O) {
 }
 
 void ULoadScr::Show() {
+	if (!IsInGameThread()) {
+		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "));
+		return;
+	}
+
+	CreateMoviePlayer();
+
 	FLoadingScreenAttributes Attr;
 	Attr.bAutoCompleteWhenLoadingCompletes = false;
 	Attr.bWaitForManualStop = true;
@@ -27,13 +34,15 @@ void ULoadScr::Show() {
 	Attr.MinimumLoadingScreenDisplayTime = 10;
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
-	// Attr.WidgetLoadingScreen = TODO; SNew()
+	 Attr.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
 	
 	Player->SetupLoadingScreen(Attr);
+	Player->PlayMovie(); // TODO is this necessary?
+	// this actually creates a new slate thread and displays the "movie" there.
+	// and in theory puts the game in a bg thread. then on stop it reverses it.
 }
 
 void ULoadScr::Hide() {
-
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
 	Player->StopMovie();
