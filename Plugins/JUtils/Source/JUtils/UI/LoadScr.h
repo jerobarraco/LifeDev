@@ -8,5 +8,8 @@ UCLASS(Blueprintable)
 class JUTILS_API ULoadScr: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 public:
+
 	static ULoadScr* Instance(const UObject* const O);
+	UFUNCTION(BlueprintCallable)
+	void Show();
 };

@@ -31,7 +31,8 @@ public class JUtils: ModuleRules
 		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "EnhancedInput", "UMG", "Slate",
-			"JsonUtilities"
+			"JsonUtilities", 
+			"MoviePlayer" // for the loading screen
 			// "Core" // Octtree tringbuffer
 		});
 		
