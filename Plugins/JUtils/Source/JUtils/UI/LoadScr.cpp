@@ -33,5 +33,8 @@ void ULoadScr::Show() {
 }
 
 void ULoadScr::Hide() {
-	
+
+	IGameMoviePlayer* const Player = GetMoviePlayer();
+	if (UNLIKELY(!Player)) return;
+	Player->StopMovie();
 }
