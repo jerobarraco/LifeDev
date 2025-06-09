@@ -4,6 +4,7 @@
 #include "LoadScr.h"
 
 #include "MoviePlayer.h"
+#include "Blueprint/UserWidget.h"
 
 // https://www.youtube.com/watch?app=desktop&v=ON1_dEHoNDg
 
@@ -21,7 +22,7 @@ ULoadScr* ULoadScr::Instance(const UObject* const O) {
 
 void ULoadScr::Show() {
 	if (!IsInGameThread()) {
-		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "));
+		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
 		return;
 	}
 
@@ -34,7 +35,14 @@ void ULoadScr::Show() {
 	Attr.MinimumLoadingScreenDisplayTime = 10;
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
-	 Attr.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+
+	TSoftObjectPtr<UUserWidget> WObject = TSoftObjectPtr<UUserWidget>(WidgetClass);
+	UUserWidget* U = WObject.IsValid() ? WObject.LoadSynchronous() : nullptr;
+	if (!U)
+		Attr.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+	else {
+		 Attr.WidgetLoadingScreen = U->TakeWidget();
+	}
 	
 	Player->SetupLoadingScreen(Attr);
 	Player->PlayMovie(); // TODO is this necessary?
@@ -43,6 +51,7 @@ void ULoadScr::Show() {
 }
 
 void ULoadScr::Hide() {
+	CreateMoviePlayer();
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
 	Player->StopMovie();

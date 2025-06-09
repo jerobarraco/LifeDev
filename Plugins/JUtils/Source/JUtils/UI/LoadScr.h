@@ -11,10 +11,15 @@ public:
 
 	static ULoadScr* Instance(const UObject* const O);
 	UFUNCTION(BlueprintCallable)
-	void SetWidget(UObject* const O);
+	void SetWidget(UObject* const O) {};
 	
 	UFUNCTION(BlueprintCallable)
 	void Show();
 	UFUNCTION(BlueprintCallable)
 	void Hide();
+
+	// The widget to load for the loading screen.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Display, meta=(MetaClass="/Script/UMG.UserWidget"))
+	FSoftObjectPath WidgetClass = FSoftObjectPath("/JUtils/UI/TestLoadScr.TestLoadScr");
 };
+

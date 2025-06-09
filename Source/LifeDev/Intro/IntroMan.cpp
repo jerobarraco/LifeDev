@@ -13,6 +13,7 @@
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "IntroUI.h"
+#include "LoadScr.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
@@ -94,12 +95,16 @@ void AIntroMan::Saving(const bool IsSaving) {
 	if (IsSaving) return;
 
 	// once it finished saving, load the world
-	
+
+	ULoadScr* const Load = ULoadScr::Instance(this);
+	if (Load)
+		Load->Show();
+
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
 	// FString Options = "Game="+ NextLevelMode;
 	// UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true, Options);
-	const FName& NextLevel = ULSysSettings::GetGameLvl() ;
+	const FName& NextLevel = ULSysSettings::GetGameLvl();
 	UGameplayStatics::OpenLevel(GetWorld(), NextLevel, true);
 }
 

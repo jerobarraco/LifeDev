@@ -11,6 +11,7 @@
 #include "GameFramework/SpectatorPawn.h"
 
 #include "Eval.h"
+#include "LoadScr.h"
 #include "Interact/CInteract.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
@@ -575,6 +576,8 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 	if (UNLIKELY(IsFirstFade)) {
 		IsFirstFade = false;
 		if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(false);
+		ULoadScr* const Loader = ULoadScr::Instance(this);
+		if (Loader) Loader->Hide(); // TODO not working
 	}
 
 	// fading in requires a timer. since the step notifies when it just starts
