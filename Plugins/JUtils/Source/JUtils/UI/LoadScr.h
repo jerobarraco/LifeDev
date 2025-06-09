@@ -12,4 +12,6 @@ public:
 	static ULoadScr* Instance(const UObject* const O);
 	UFUNCTION(BlueprintCallable)
 	void Show();
+	UFUNCTION(BlueprintCallable)
+	void Hide();
 };

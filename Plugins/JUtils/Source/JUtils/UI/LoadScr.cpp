@@ -5,6 +5,8 @@
 
 #include "MoviePlayer.h"
 
+// https://www.youtube.com/watch?app=desktop&v=ON1_dEHoNDg
+
 ULoadScr* ULoadScr::Instance(const UObject* const O) {
 	if (UNLIKELY(!O)) return nullptr;
 	
@@ -28,4 +30,8 @@ void ULoadScr::Show() {
 	// Attr.WidgetLoadingScreen = TODO; SNew()
 	
 	Player->SetupLoadingScreen(Attr);
+}
+
+void ULoadScr::Hide() {
+	
 }
