@@ -18,7 +18,6 @@ ALStepC0S000::ALStepC0S000():Super() {
 	// DlgId = FName("Intro");
 	InputEnabled = true;
 	UseFade = true;
-	UseFadeTime = true;
 	FinishPostWait = false;
 	UsePawnCam = true;
 	UseFBRand = true;

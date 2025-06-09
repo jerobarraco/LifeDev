@@ -14,7 +14,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 	// DlgId = FName("C3S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;
-	UseFadeTime = true;
 	FinishPostWait = false;
 	TeleportChar = true;
 	FinishFlags = {"Inter.Trigger.PuzzleI04"};

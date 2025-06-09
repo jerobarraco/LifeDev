@@ -17,7 +17,6 @@ ALStepC1S000::ALStepC1S000():Super() {
 	TeleportChar = true; // move the char to where this camera is
 	CamTarget = nullptr; // use pawn cam
 	UsePawnCam = true;
-	UseFadeTime = true;
 	UseFade = true;
 	FinishPostWait = false; // will be set by seqid anyway
 

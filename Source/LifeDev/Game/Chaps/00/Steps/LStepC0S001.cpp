@@ -12,7 +12,6 @@ ALStepC0S001::ALStepC0S001():Super() {
 	UseFBAnim = true; // the cam target and pos are set on the outliner
 	CamBlendTime = 0; // doesn't get along with fade
 	InputEnabled = false;
-	UseFadeTime = true;
 	UseFade = true; // important since the door, also due to the load
 	FinishPostWait = false;
 	TeleportChar = true;

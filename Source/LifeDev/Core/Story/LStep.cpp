@@ -345,11 +345,6 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALStep::PostLoad() {
 	Super::PostLoad();
 
-	if (UseFadeTime) {
-		const UStory* const Story = UStory::Instance(GetWorld());
-		WaitTime = LIKELY(Story) ? Story->FadeTime : 1;
-	}
-
 	// avoid finishing earlier if we have Diags
 	if (!DlgId.IsNone()) FinishPostWait = false;
 }
