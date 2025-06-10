@@ -23,7 +23,7 @@ protected:
 	UFUNCTION()
 	virtual void BeginLoadingScreen(const FString& MapName);
 	UFUNCTION()
-	virtual void EndLoadingScreen(UWorld* const InLoadedWorld);
+	virtual void EndLoadingScreen(UWorld* const LoadedWorld);
 	UPROPERTY(Transient)
 	TObjectPtr<UUserWidget> LoadScreen = nullptr;
 

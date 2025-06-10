@@ -2,13 +2,14 @@
 
 #include "LGameInstance.h"
 
-#include "MoviePlayer.h"
+#include "LoadScr.h"
 
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "Settings/LSettings.h"
 #include "Settings/LSysSettings.h"
 #include "Sentry.h"
+#include "Blueprint/UserWidget.h"
 
 ULGameInstance* ULGameInstance::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -34,30 +35,33 @@ void ULGameInstance::Init() {
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
 	if (LIKELY(IsValid(Settings))) Settings->Init();
+
+	ULoadScr* const LoadScr = ULoadScr::Instance(this);
+	if (UNLIKELY(!LoadScr)) return;
+	LoadScr->Show();
+
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (UNLIKELY(!SysSettings)) return;
+	
+	UUserWidget* const Widget = SysSettings->LoadingScr.LoadSynchronous();
+	if (UNLIKELY(!IsValid(Widget))) return;
+	LoadScr->SetWidget(Widget);
+
+	
 }
 
-void ULGameInstance::BeginLoadingScreen(const FString& InMapName) {
+void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
 	if (UNLIKELY(IsRunningDedicatedServer())) return;
 	return;
- // TODO use the ULoadScr
-	CreateMoviePlayer();
-	IGameMoviePlayer* const MoviePlayer = GetMoviePlayer();
-	if (MoviePlayer) {
-		FLoadingScreenAttributes LoadingScreen;
-		LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
-		// use widget->takewidget() to get the swidget
-		// https://forums.unrealengine.com/t/how-do-you-convert-a-uuserwidget-to-a-swidget-needed-for-a-loadingscreen/343494/8
-		LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
-		MoviePlayer->SetupLoadingScreen(LoadingScreen);
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("%hs, Can't get movie player"), __func__);
-	}
 
-	UJUtilsSys::CameraFade(this, false); // todo this does not seem to be working
+	// todo this does not seem to be working.
+	// im going to be showing and hiding the load screen per level 
+	UJUtilsSys::CameraFade(this, false);
 }
 
-void ULGameInstance::EndLoadingScreen(UWorld* const InLoadedWorld) {
-	UJUtilsSys::CameraFade(this, true);
+void ULGameInstance::EndLoadingScreen(UWorld* const LoadedWorld) {
+	// ULoadScr* const LoadScr = ULoadScr::Instance(this);
+	// UJUtilsSys::CameraFade(this, true);
 }
 
 // https://forums.unrealengine.com/t/event-on-close/298087/5?u=nande

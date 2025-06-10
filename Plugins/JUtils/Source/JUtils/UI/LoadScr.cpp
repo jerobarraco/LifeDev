@@ -30,6 +30,10 @@ void ULoadScr::Initialize(FSubsystemCollectionBase& Collection) {
 		Widget = W;
 }
 
+void ULoadScr::SetWidget(UUserWidget* const O) {
+	Widget = O;
+}
+
 void ULoadScr::Show() {
 	if (!IsInGameThread()) {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);

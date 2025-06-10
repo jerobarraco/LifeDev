@@ -68,7 +68,8 @@ public:
 	FString CloseURL = TEXT("https://forms.gle/aYCr8zRR3wWTomyu8");
 
 	// The widget to load for the loading screen.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=Sys, meta=(MetaClass="/Script/UMG.UserWidget"))
+	// /Script/UMG.UserWidget , meta=(MetaClass="/Script/UMGEditor.WidgetBlueprint")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=Sys)
 	TSoftObjectPtr<UUserWidget> LoadingScr = TSoftObjectPtr<UUserWidget>(
 		FSoftObjectPath("/JUtils/UI/TestLoadScr.TestLoadScr"));
 

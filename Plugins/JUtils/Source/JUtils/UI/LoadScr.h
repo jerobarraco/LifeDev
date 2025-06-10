@@ -12,7 +12,7 @@ public:
 	static ULoadScr* Instance(const UObject* const O);
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	UFUNCTION(BlueprintCallable)
-	void SetWidget(UUserWidget* const O) {Widget = O;}
+	void SetWidget(UUserWidget* const O);
 
 	UFUNCTION(BlueprintCallable)
 	void Show();
