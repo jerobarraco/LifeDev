@@ -20,7 +20,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
 USentry* USentry::Instance(const UObject* const O) {
 	const ULGameInstance* const Instance = ULGameInstance::Instance(O);
 	if (UNLIKELY(!IsValid(Instance))) return nullptr;
-
+	// todo fix properly. probably sending calls to the game thread
+	if (!IsInGameThread()) return nullptr; // no can do. it will get into a crash loop
 	return Instance->GetSubsystem<USentry>();
 }
 
