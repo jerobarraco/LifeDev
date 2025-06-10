@@ -67,6 +67,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
 	FString CloseURL = TEXT("https://forms.gle/aYCr8zRR3wWTomyu8");
 
+	// The widget to load for the loading screen.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=Sys, meta=(MetaClass="/Script/UMG.UserWidget"))
+	TSoftObjectPtr<UUserWidget> LoadingScr = TSoftObjectPtr<UUserWidget>(
+		FSoftObjectPath("/JUtils/UI/TestLoadScr.TestLoadScr"));
+
 	// The list of items
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.Item"))
