@@ -577,7 +577,7 @@ void ALGGameMode::Fade(const bool bIn, const FText& Text) {
 		IsFirstFade = false;
 		if (LIKELY(StoryMan)) StoryMan->ShowBGSolid(false);
 		ULoadScr* const Loader = ULoadScr::Instance(this);
-		if (Loader) Loader->Hide(); // TODO not working
+		if (Loader) Loader->Hide();
 	}
 
 	// fading in requires a timer. since the step notifies when it just starts

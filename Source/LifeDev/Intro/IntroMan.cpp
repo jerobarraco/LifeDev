@@ -80,7 +80,10 @@ void AIntroMan::Done() {
 	/// all ok, continue.
 	
 	UJUtilsMisc::ShowUI(this, false);
-
+	
+	ULoadScr* const Load = ULoadScr::Instance(this);
+	if (Load) Load->Show();
+	
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.
 	// the false is important since the inventory does not work on the intro.
@@ -94,9 +97,6 @@ void AIntroMan::Saving(const bool IsSaving) {
 	if (IsSaving) return;
 
 	// once it finished saving, load the world
-
-	ULoadScr* const Load = ULoadScr::Instance(this);
-	if (Load) Load->Show();
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced

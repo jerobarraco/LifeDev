@@ -40,6 +40,10 @@ void ULoadScr::Show() {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
 		return;
 	}
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEVELOPMENT
+	UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs sorry dave, i can't let you do that. There's a bug in ue that will make your game crash.. https://issues.unrealengine.com/issue/UE-254119"), __func__);
+	return;
+#endif
 
 	CreateMoviePlayer();
 
