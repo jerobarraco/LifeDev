@@ -20,6 +20,16 @@ ULoadScr* ULoadScr::Instance(const UObject* const O) {
 	return Instance->GetSubsystem<ULoadScr>();
 }
 
+void ULoadScr::Initialize(FSubsystemCollectionBase& Collection) {
+	Super::Initialize(Collection);
+
+	const TSoftObjectPtr<UUserWidget> SoftWidget = TSoftObjectPtr<UUserWidget>(
+		FSoftObjectPath("/JUtils/UI/TestLoadScr.TestLoadScr"));
+	UUserWidget* const W = SoftWidget.LoadSynchronous();
+	if (IsValid(W))
+		Widget = W;
+}
+
 void ULoadScr::Show() {
 	if (!IsInGameThread()) {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
@@ -36,12 +46,10 @@ void ULoadScr::Show() {
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
 
-	TSoftObjectPtr<UUserWidget> WObject = TSoftObjectPtr<UUserWidget>(WidgetClass);
-	UUserWidget* U = WObject.IsValid() ? WObject.LoadSynchronous() : nullptr;
-	if (!U)
+	if (!Widget)
 		Attr.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
 	else {
-		 Attr.WidgetLoadingScreen = U->TakeWidget();
+		Attr.WidgetLoadingScreen = Widget->TakeWidget();
 	}
 	
 	Player->SetupLoadingScreen(Attr);
