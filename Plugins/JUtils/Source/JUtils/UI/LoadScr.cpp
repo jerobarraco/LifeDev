@@ -56,7 +56,7 @@ void ULoadScr::Show() {
 	else {
 		Attr.WidgetLoadingScreen = Widget->TakeWidget();
 	}
-	
+
 	Player->SetupLoadingScreen(Attr);
 	Player->PlayMovie(); // TODO is this necessary?
 	// this actually creates a new slate thread and displays the "movie" there.

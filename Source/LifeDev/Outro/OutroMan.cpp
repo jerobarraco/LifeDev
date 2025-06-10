@@ -2,6 +2,7 @@
 
 #include "OutroMan.h"
 
+#include "LoadScr.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -60,7 +61,7 @@ void AOutroMan::Retry() {
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*GameLevel), true);
 }
 
-void AOutroMan::Done(int32 RetVal) {
+void AOutroMan::Done(const int32 RetVal) {
 	if (RetVal == 0) Retry();
 	else if (RetVal ==1) Quit();
 }
@@ -68,6 +69,10 @@ void AOutroMan::Done(int32 RetVal) {
 void AOutroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
+	
+	ULoadScr* Load = ULoadScr::Instance(this);
+	if (UNLIKELY(!Load)) return;
+	Load->Hide();
 }
 
 void AOutroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
