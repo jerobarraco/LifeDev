@@ -14,6 +14,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidget(UUserWidget* const O);
 
+	UFUNCTION()
+	void DoTick(const float dt);
 	UFUNCTION(BlueprintCallable)
 	void Show();
 	UFUNCTION(BlueprintCallable)

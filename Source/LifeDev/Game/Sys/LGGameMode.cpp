@@ -436,7 +436,7 @@ void ALGGameMode::ChapStart() {
 		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
 
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (UNLIKELY(!IsValid(Instance) || !IsValid(Story))) {
+	if (UNLIKELY(!IsValid(Instance) | !IsValid(Story))) {
 		// Should this be here?
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs No game instance or story or story manager. Can't proceed."),
 			__func__);

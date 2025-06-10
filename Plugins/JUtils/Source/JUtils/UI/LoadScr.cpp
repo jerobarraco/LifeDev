@@ -34,15 +34,22 @@ void ULoadScr::SetWidget(UUserWidget* const O) {
 	Widget = O;
 }
 
+void ULoadScr::DoTick(const float dt) {
+	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs tick"), __func__);
+	class UWorld* const World = GetWorld();
+	if (!World ) return;
+	World->GetTimerManager().Tick(dt);
+}
+
 void ULoadScr::Show() {
 	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
 	if (!IsInGameThread()) {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
 		return;
 	}
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEVELOPMENT
+#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEVELOPMENT 
 	UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs sorry dave, i can't let you do that. There's a bug in ue that will make your game crash.. https://issues.unrealengine.com/issue/UE-254119"), __func__);
-	return;
+	// return;
 #endif
 
 	CreateMoviePlayer();
@@ -50,8 +57,9 @@ void ULoadScr::Show() {
 	FLoadingScreenAttributes Attr;
 	Attr.bAutoCompleteWhenLoadingCompletes = false;
 	Attr.bWaitForManualStop = true;
-	Attr.bAllowEngineTick = true;
+	Attr.bAllowEngineTick = false; // this baby bad boy will cause the crash in the log above
 	Attr.MinimumLoadingScreenDisplayTime = 10;
+
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
 
@@ -63,6 +71,8 @@ void ULoadScr::Show() {
 
 	Player->SetupLoadingScreen(Attr);
 	Player->PlayMovie(); // TODO is this necessary?
+
+	Player->OnMoviePlaybackTick().AddUObject(this, &ULoadScr::DoTick); // doesn't work
 	// this actually creates a new slate thread and displays the "movie" there.
 	// and in theory puts the game in a bg thread. then on stop it reverses it.
 }
@@ -72,7 +82,7 @@ void ULoadScr::Hide() {
 	// CreateMoviePlayer();
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
+	Player->OnMoviePlaybackTick().RemoveAll(this);
 	Player->StopMovie();
 	Player->ForceCompletion();
-	Player->WaitForMovieToFinish(true);
 }
