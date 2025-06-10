@@ -96,8 +96,7 @@ void AIntroMan::Saving(const bool IsSaving) {
 	// once it finished saving, load the world
 
 	ULoadScr* const Load = ULoadScr::Instance(this);
-	if (Load)
-		Load->Show();
+	if (Load) Load->Show();
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
@@ -110,11 +109,12 @@ void AIntroMan::Saving(const bool IsSaving) {
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
+	BeginPlayPlus();
+	// apparently the timer doesn't with the screen loader
+	// const UWorld* const World = GetWorld();
+	// if (UNLIKELY(!World)) return;
+	// FTimerManager& Timer = World->GetTimerManager();
+	// Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
 }
 
 void AIntroMan::BeginPlayPlus() {
