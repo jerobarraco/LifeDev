@@ -46,8 +46,6 @@ void ULGameInstance::Init() {
 	UUserWidget* const Widget = SysSettings->LoadingScr.LoadSynchronous();
 	if (UNLIKELY(!IsValid(Widget))) return;
 	LoadScr->SetWidget(Widget);
-
-	
 }
 
 void ULGameInstance::BeginLoadingScreen(const FString& MapName) {

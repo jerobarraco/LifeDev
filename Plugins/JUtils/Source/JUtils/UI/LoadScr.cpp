@@ -35,6 +35,7 @@ void ULoadScr::SetWidget(UUserWidget* const O) {
 }
 
 void ULoadScr::Show() {
+	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
 	if (!IsInGameThread()) {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
 		return;
@@ -63,8 +64,11 @@ void ULoadScr::Show() {
 }
 
 void ULoadScr::Hide() {
-	CreateMoviePlayer();
+	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
+	// CreateMoviePlayer();
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
 	Player->StopMovie();
+	Player->ForceCompletion();
+	Player->WaitForMovieToFinish(true);
 }

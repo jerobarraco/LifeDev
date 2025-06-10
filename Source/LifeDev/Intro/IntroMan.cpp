@@ -80,7 +80,6 @@ void AIntroMan::Done() {
 	/// all ok, continue.
 	
 	UJUtilsMisc::ShowUI(this, false);
-	
 
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.
@@ -111,6 +110,17 @@ void AIntroMan::Saving(const bool IsSaving) {
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
+}
+
+void AIntroMan::BeginPlayPlus() {
+	ULoadScr* Load = ULoadScr::Instance(this);
+	if (UNLIKELY(!Load)) return;
+	Load->Hide();
 }
 
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -121,6 +131,7 @@ void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	Super::EndPlay(EndPlayReason);
 }
+
 
 void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
