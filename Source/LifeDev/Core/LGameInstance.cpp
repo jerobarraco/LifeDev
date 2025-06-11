@@ -42,11 +42,11 @@ void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
 	// it can't find the camera manager.
 	// im going to be showing and hiding the load screen per level 
 	UJUtilsSys::CameraFade(this, false);
-	return;
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* const LoadedWorld) {
-	UJUtilsSys::CameraFade(this, true);
+	UE_LOG(LogTemp, Log, TEXT("%hs world=%p"), __func__, *LoadedWorld)
+	UJUtilsSys::CameraFade(this, true); // if this doesn't work use LoadedWorld
 }
 
 // https://forums.unrealengine.com/t/event-on-close/298087/5?u=nande
