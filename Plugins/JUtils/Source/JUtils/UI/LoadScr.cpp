@@ -40,6 +40,10 @@ void ULoadScr::DoTick(const float dt) {
 	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs tick frame=%lli"), __func__, GFrameCounter);
 	const class UWorld* const World = GetWorld();
 	if (!World) return;
+
+	// The movie player creates a new transient slate threads, and displays the "movie" there.
+	// and it puts the game in a bg thread. then on stop it reverses it.
+	
 	// this is a horrible hack to allow the timer to tick.
 	// it might as well break other things.
 	// the timermanager won't tick if this does not change.
@@ -49,21 +53,20 @@ void ULoadScr::DoTick(const float dt) {
 
 void ULoadScr::Show() {
 	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
+
 	if (!IsInGameThread()) {
 		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
 		return;
 	}
-#if UE_BUILD_DEVELOPMENT || UE_BUILD_DEVELOPMENT
-	UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs sorry dave, i can't let you do that. There's a bug in ue that will make your game crash.. https://issues.unrealengine.com/issue/UE-254119"), __func__);
-	// return;
-#endif
 
 	CreateMoviePlayer();
 
 	FLoadingScreenAttributes Attr;
 	Attr.bAutoCompleteWhenLoadingCompletes = false;
 	Attr.bWaitForManualStop = true;
-	Attr.bAllowEngineTick = false; // this baby bad boy will cause the crash in the log above
+	// There's a bug in ue that will make your game crash ... https://issues.unrealengine.com/issue/UE-254119
+	// to be fixed in 5.7
+	Attr.bAllowEngineTick = false;
 	Attr.MinimumLoadingScreenDisplayTime = 10;
 
 	IGameMoviePlayer* const Player = GetMoviePlayer();
@@ -79,17 +82,26 @@ void ULoadScr::Show() {
 	Player->PlayMovie();
 
 	Player->OnMoviePlaybackTick().AddUObject(this, &ULoadScr::DoTick); // doesn't work
-	loop = true;
+
+	if (UNLIKELY(!UseBGTick)) {
+		UE_LOG(LogTemp, Log, TEXT("ULoader::%hs UseBGTick is false. Timers won't work. Good luck."),
+			__func__);
+		// good luck. timers won't work
+		return;
+	}
+	
+	// see DoTick as to why this. yes, it's a hack.
+	UseBGLoop = true;
 	AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
-		while (loop) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			AsyncTask(ENamedThreads::GameThread, [this] {
-				DoTick(100);
+		while (UseBGLoop) { // this happens on the bg, otherwise it will lock the game thread or the slate thread
+			static constexpr uint8_t SleepTime = 100; // large enough so that the async task is processed.
+			// it's loading so we don't really need a small tick, it even could cause problems
+			std::this_thread::sleep_for(std::chrono::milliseconds(SleepTime));
+			AsyncTask(ENamedThreads::GameThread, [this] { // tick on the game thread
+				DoTick(SleepTime);
 			});
 		}
 	});
-	// this actually creates a new slate thread and displays the "movie" there.
-	// and in theory puts the game in a bg thread. then on stop it reverses it.
 }
 
 void ULoadScr::Hide() {
@@ -97,7 +109,7 @@ void ULoadScr::Hide() {
 	// CreateMoviePlayer();
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
-	loop = false;
+	UseBGLoop = false; // would stop the fake timer
 	Player->OnMoviePlaybackTick().RemoveAll(this);
 	Player->StopMovie();
 	Player->ForceCompletion();

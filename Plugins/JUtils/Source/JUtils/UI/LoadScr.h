@@ -21,9 +21,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 
+	UPROPERTY(BlueprintReadWrite)
+	bool UseBGTick = false;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UUserWidget> Widget = nullptr;
-	bool loop = false; 
+	bool UseBGLoop = false; 
 };
 
