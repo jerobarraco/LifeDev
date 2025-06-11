@@ -72,7 +72,7 @@ void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float D
 	if(LIKELY(GEngine))
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Fading screen."));	
 
-	const APlayerController* const Controller = GI->GetPrimaryPlayerController();
+	const APlayerController* const Controller = GI->GetFirstLocalPlayerController(W);
 	APlayerCameraManager* const CamManager = LIKELY(Controller) ? Controller->PlayerCameraManager : nullptr;
 	if (UNLIKELY(!CamManager)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Can't get camera manager, not fading"), __func__);

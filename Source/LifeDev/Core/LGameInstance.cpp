@@ -37,15 +37,15 @@ void ULGameInstance::Init() {
 void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
 	UE_LOG(LogTemp, Log, TEXT("%hs map=%s"), __func__, *MapName)
 	if (UNLIKELY(IsRunningDedicatedServer())) return;
-
+	
 	// todo this does not seem to be working.
+	// it can't find the camera manager.
 	// im going to be showing and hiding the load screen per level 
 	UJUtilsSys::CameraFade(this, false);
 	return;
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* const LoadedWorld) {
-	// ULoadScr* const LoadScr = ULoadScr::Instance(this);
 	UJUtilsSys::CameraFade(this, true);
 }
 
