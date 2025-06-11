@@ -13,7 +13,6 @@
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "IntroUI.h"
-#include "LoadScr.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
@@ -81,9 +80,6 @@ void AIntroMan::Done() {
 	
 	UJUtilsMisc::ShowUI(this, false);
 	
-	ULoadScr* const Load = ULoadScr::Instance(this);
-	if (Load) Load->Show();
-	
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.
 	// the false is important since the inventory does not work on the intro.
@@ -109,17 +105,6 @@ void AIntroMan::Saving(const bool IsSaving) {
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
-}
-
-void AIntroMan::BeginPlayPlus() {
-	ULoadScr* const Load = ULoadScr::Instance(this);
-	if (UNLIKELY(!Load)) return;
-	Load->Hide();
 }
 
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {

@@ -1,7 +1,6 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStepEnd.h"
 
-#include "LoadScr.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "Story/StoryMan.h"
@@ -33,10 +32,8 @@ ALStepEnd::ALStepEnd():Super() {
 }
 
 void ALStepEnd::OpenLevel() const {
-	ULoadScr* const LoadScr = ULoadScr::Instance(this);
-	if (LIKELY(LoadScr)) LoadScr->Show();
-
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*NextLevel), true);
+	const UWorld* const World = GetWorld();
+	UGameplayStatics::OpenLevel(World, FName(*NextLevel), true);
 }
 
 void ALStepEnd::TryStart_Implementation() {

@@ -2,7 +2,6 @@
 
 #include "OutroMan.h"
 
-#include "LoadScr.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -69,21 +68,10 @@ void AOutroMan::Done(const int32 RetVal) {
 void AOutroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
-	
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.SetTimerForNextTick(this, &AOutroMan::BeginPlayPlus);
-}
-
-void AOutroMan::BeginPlayPlus() {
-	ULoadScr* const Load = ULoadScr::Instance(this);
-	if (UNLIKELY(!Load)) return;
-	Load->Hide();
 }
 
 void AOutroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	if (UI) UI->OnDone.RemoveAll(this);
-
+	if (LIKELY(UI)) UI->OnDone.RemoveAll(this);
+	UI = nullptr;
 	Super::EndPlay(EndPlayReason);
 }

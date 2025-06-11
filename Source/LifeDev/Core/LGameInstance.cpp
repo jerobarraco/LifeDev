@@ -2,14 +2,11 @@
 
 #include "LGameInstance.h"
 
-#include "LoadScr.h"
-
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "Settings/LSettings.h"
 #include "Settings/LSysSettings.h"
 #include "Sentry.h"
-#include "Blueprint/UserWidget.h"
 
 ULGameInstance* ULGameInstance::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -35,31 +32,21 @@ void ULGameInstance::Init() {
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
 	ULSettings* const Settings = GetSubsystem<ULSettings>();
 	if (LIKELY(IsValid(Settings))) Settings->Init();
-
-	ULoadScr* const LoadScr = ULoadScr::Instance(this);
-	if (UNLIKELY(!LoadScr)) return;
-	LoadScr->Show();
-
-	const ULSysSettings* const SysSettings = ULSysSettings::Get();
-	if (UNLIKELY(!SysSettings)) return;
-	
-	UUserWidget* const Widget = SysSettings->LoadingScr.LoadSynchronous();
-	if (UNLIKELY(!IsValid(Widget))) return;
-	LoadScr->SetWidget(Widget);
 }
 
 void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
+	UE_LOG(LogTemp, Log, TEXT("%hs map=%s"), __func__, *MapName)
 	if (UNLIKELY(IsRunningDedicatedServer())) return;
-	return;
 
 	// todo this does not seem to be working.
 	// im going to be showing and hiding the load screen per level 
 	UJUtilsSys::CameraFade(this, false);
+	return;
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* const LoadedWorld) {
 	// ULoadScr* const LoadScr = ULoadScr::Instance(this);
-	// UJUtilsSys::CameraFade(this, true);
+	UJUtilsSys::CameraFade(this, true);
 }
 
 // https://forums.unrealengine.com/t/event-on-close/298087/5?u=nande

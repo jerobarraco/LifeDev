@@ -38,7 +38,7 @@ void ULoadScr::SetWidget(UUserWidget* const O) {
 
 void ULoadScr::DoTick(const float dt) {
 	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs tick frame=%lli"), __func__, GFrameCounter);
-	const class UWorld* const World = GetWorld();
+	const UWorld* const World = GetWorld();
 	if (!World) return;
 
 	// The movie player creates a new transient slate threads, and displays the "movie" there.

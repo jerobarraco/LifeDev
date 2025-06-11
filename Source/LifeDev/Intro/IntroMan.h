@@ -18,10 +18,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
 	
-	UFUNCTION()
-	void BeginPlayPlus();
 	UFUNCTION()
 	void SlotsDone(const bool HasDoneSave);
 	UFUNCTION()
