@@ -21,8 +21,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 
-	UPROPERTY(BlueprintReadWrite)
-	bool UseBGTick = false;
+	UPROPERTY(BlueprintReadWrite, Transient)
+	bool UseBGTick = true;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
