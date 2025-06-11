@@ -3,6 +3,8 @@
 
 #pragma once
 #include "LoadScr.generated.h"
+// This is experimental due to an issue with the background tick.
+// Don't over-rely on it yet
 
 UCLASS(Blueprintable)
 class JUTILS_API ULoadScr: public UGameInstanceSubsystem {

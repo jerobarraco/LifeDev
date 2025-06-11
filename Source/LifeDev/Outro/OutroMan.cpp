@@ -22,16 +22,16 @@ void AOutroMan::AddUI() {
 	if (!UIClass || !UIClass.Get()) return;
 
 	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	UI = CreateWidget<UOutroUI>(World, UIClass.Get());
-	if (!IsValid(UI)) return;
+	if (UNLIKELY(!IsValid(UI))) return;
 	
 	UI->AddToViewport();
 	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
 
 	const ULSettings* const Settings = ULSettings::Instance(World);
-	if (Settings && Settings->Save)
+	if (LIKELY(Settings) && Settings->Save)
 		UI->SetFlags(Settings->Save->GetFlags());
 
 	UJUtilsMisc::ShowUI(this, true, UI);
@@ -39,7 +39,7 @@ void AOutroMan::AddUI() {
 
 void AOutroMan::Quit() {
 	const UWorld* const World = GetWorld();
-	if (!World) return;
+	if (UNLIKELY(!World)) return;
 
 	UKismetSystemLibrary::QuitGame(
 		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
@@ -70,7 +70,14 @@ void AOutroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
 	
-	ULoadScr* Load = ULoadScr::Instance(this);
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimerForNextTick(this, &AOutroMan::BeginPlayPlus);
+}
+
+void AOutroMan::BeginPlayPlus() {
+	ULoadScr* const Load = ULoadScr::Instance(this);
 	if (UNLIKELY(!Load)) return;
 	Load->Hide();
 }

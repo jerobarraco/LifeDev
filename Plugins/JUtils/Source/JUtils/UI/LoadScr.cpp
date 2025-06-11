@@ -28,7 +28,7 @@ void ULoadScr::Initialize(FSubsystemCollectionBase& Collection) {
 	const TSoftObjectPtr<UUserWidget> SoftWidget = TSoftObjectPtr<UUserWidget>(
 		FSoftObjectPath("/JUtils/UI/TestLoadScr.TestLoadScr"));
 	UUserWidget* const W = SoftWidget.LoadSynchronous();
-	if (IsValid(W))
+	if (LIKELY(IsValid(W)))
 		Widget = W;
 }
 
