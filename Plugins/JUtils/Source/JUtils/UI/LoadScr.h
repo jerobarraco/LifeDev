@@ -24,5 +24,6 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UUserWidget> Widget = nullptr;
+	bool loop = false; 
 };
 
