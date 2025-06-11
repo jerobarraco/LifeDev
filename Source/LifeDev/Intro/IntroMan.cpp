@@ -109,16 +109,15 @@ void AIntroMan::Saving(const bool IsSaving) {
 void AIntroMan::BeginPlay() {
 	Super::BeginPlay();
 	AddUI();
-	BeginPlayPlus();
-	// apparently the timer doesn't with the screen loader
-	// const UWorld* const World = GetWorld();
-	// if (UNLIKELY(!World)) return;
-	// FTimerManager& Timer = World->GetTimerManager();
-	// Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
+
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimerForNextTick(this, &AIntroMan::BeginPlayPlus);
 }
 
 void AIntroMan::BeginPlayPlus() {
-	ULoadScr* Load = ULoadScr::Instance(this);
+	ULoadScr* const Load = ULoadScr::Instance(this);
 	if (UNLIKELY(!Load)) return;
 	Load->Hide();
 }

@@ -89,7 +89,7 @@ void ULoadScr::Show() {
 		// good luck. timers won't work
 		return;
 	}
-	
+
 	// see DoTick as to why this. yes, it's a hack.
 	UseBGLoop = true;
 	AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
