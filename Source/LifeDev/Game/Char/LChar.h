@@ -61,11 +61,9 @@ public:
 	void InteractSetActive(const bool Enabled) const;
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UCInteractor* GetInteractor() const {return Interactor; }
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UCLCharItems* GetCharItems() const { return Items; }
-
 
 	// factor to apply to look when hovering an Interact
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
@@ -90,8 +88,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UGameUI> UIClass = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UInputMappingContext> Mapping = nullptr;
@@ -112,8 +108,6 @@ public:
 	TObjectPtr<UInputAction> ActionItem = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionItemLook = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	TObjectPtr<UInputAction> ActionMenu = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -126,8 +120,6 @@ protected:
 	void HoverDiag();
 	void HoverDiagClear();
 	UFUNCTION()
-	void MenuDone();
-	UFUNCTION()
 	void SetFB(const float Value);
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
@@ -137,7 +129,6 @@ protected:
 	void ActInteract();
 	void ActItem();
 	void ActItemLook();
-	void ActMenu();
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* const InputComponent) override;
@@ -160,8 +151,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCLNoiser> Noiser = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UGameUI> UI = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

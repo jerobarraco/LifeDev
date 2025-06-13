@@ -22,7 +22,6 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Settings/LSettings.h"
-#include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 #include "GameUI.h"
@@ -31,7 +30,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
-ALChar::ALChar(): Super() {
+ALChar::ALChar() {
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
@@ -68,9 +67,6 @@ ALChar::ALChar(): Super() {
 	static ConstructorHelpers::FClassFinder<UUserWidget>
 		DefaultUI(TEXT("/Game/LifeDev/Game/Char/GameUI_W"));
 	UIClass = DefaultUI.Succeeded() ? DefaultUI.Class.Get() : UGameUI::StaticClass();
-	static ConstructorHelpers::FClassFinder<UUserWidget>
-		CSettingsUI(TEXT("/Game/LifeDev/Core/Settings/SettingsUI_W"));
-	SettingsUIClass = CSettingsUI.Succeeded() ? CSettingsUI.Class.Get() : ULSettingsUI::StaticClass();
 	
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
 	 	DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
@@ -96,9 +92,6 @@ ALChar::ALChar(): Super() {
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionItemLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_ItemLook"));
 	ActionItemLook = CActionItemLook.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction>
-		CActionMenu(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Menu"));
-	ActionMenu = CActionMenu.Object;
 }
 
 ALChar* ALChar::Instance(const UObject* const O) {
@@ -233,17 +226,6 @@ void ALChar::BeginPlay() {
 		}
 	}
 
-	UClass* const SClass = SettingsUIClass.Get();
-	if (LIKELY(IsValid(SClass))) {
-		SettingsUI = CreateWidget<ULSettingsUI>(World, SClass);
-		if (LIKELY(SettingsUI)) {
-			// important to add to the viewport otherwise the GC will delete our bindings :')
-			SettingsUI->AddToViewport(9999);
-			SettingsUI->OnDone.AddUniqueDynamic(this, &ALChar::MenuDone);
-			MenuDone(); // hide
-		}
-	}
-
 	Inventory = World->GetSubsystem<UInventory>();
 	Diags = World->GetSubsystem<UDiags>();
 	Flags = World->GetSubsystem<UFlags>();
@@ -274,7 +256,6 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) FB->OnChange.RemoveAll(this);
 	if (LIKELY(IsValid(UI))) UI->RemoveFromParent();
-	if (LIKELY(IsValid(SettingsUI))) SettingsUI->RemoveFromParent();
 	if (LIKELY(IsValid(Noiser))) Noiser->Deactivate();
 	if (LIKELY(IsValid(Interactor))) Interactor->OnHover.RemoveAll(this);
 
@@ -282,7 +263,6 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Diags = nullptr;
 	Flags = nullptr;
 	UI = nullptr;
-	SettingsUI = nullptr;
 	Noiser = nullptr;
 	Items = nullptr;
 
@@ -363,25 +343,6 @@ void ALChar::ActItem() {
 
 void ALChar::ActItemLook() {
 	if (LIKELY(IsValid(Items))) Items->LookSelected();
-}
-
-// i've added the settings here since the character already deals with the input.
-// but honestly it'd be nice to have it somewhere else.
-void ALChar::ActMenu() { // no const
-	if (UNLIKELY(!IsValid(SettingsUI))) return;
-
-	// toggle
-	if (SettingsUI->IsVisible()) {
-		MenuDone();
-		return;
-	}
-
-	SettingsUI->Show();
-}
-
-void ALChar::MenuDone() {
-	if (UNLIKELY(!IsValid(SettingsUI))) return;
-	SettingsUI->Hide();
 }
 
 void ALChar::SetFB(const float Value) {

@@ -10,7 +10,7 @@
 #include "Story/Story.h"
 #include "Story/Step.h"
 
-#include "LifeDev/Core/Consts/ConstDlgs.h"
+#include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
 #include "LifeDev/Game/Char/CLCharItems.h"
@@ -133,12 +133,6 @@ void ALTeachMan::InitDelayed() {
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
-	SettingsUI = Char->GetSettingsUI();
-	if (LIKELY(SettingsUI)) {
-		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
-	} else
-		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
-
 	UCInteractor* const Inter = Char->GetInteractor();
 	if (LIKELY(Inter)) {
 		Inter->OnTrigger.AddUniqueDynamic(this, &ALTeachMan::InterTrigger);
@@ -172,6 +166,14 @@ void ALTeachMan::InitDelayed() {
 	Story = UStory::Instance(this);
 	if (LIKELY(bool(Story) & (Chapter < 2)) && !Has(LD::Teach::ItemUse))
 		Story->OnStart.AddUniqueDynamic(this, &ALTeachMan::StepStart);
+
+	const ALFeatsMan* const FeatsMan = ALFeatsMan::Instance(this);
+	if (!FeatsMan) return;
+	SettingsUI = FeatsMan->GetSettingsUI();
+	if (LIKELY(SettingsUI)) {
+		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
+	} else
+		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
 }
 
 void ALTeachMan::BeginPlay() {

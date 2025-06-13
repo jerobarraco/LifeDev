@@ -4,10 +4,10 @@
 
 #include "LFeatsMan.generated.h"
 
+enum class EFeat : uint8;
 class UInputMappingContext;
 class UInputAction;
 class ULSettingsUI;
-enum class EFeat : uint8;
 class ULOverlayUI;
 class ULSettings;
 class UEval;
@@ -31,6 +31,8 @@ public:
 	// reapplies the blur
 	UFUNCTION(BlueprintCallable)
 	void BlurReset();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FringeIntensity = 1;
@@ -48,7 +50,6 @@ protected:
 
 	UFUNCTION()
 	void MenuDone();
-	UFUNCTION()
 	void ActMenu();
 
 #pragma region feats
