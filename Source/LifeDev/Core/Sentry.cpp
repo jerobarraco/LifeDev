@@ -64,7 +64,7 @@ void USentry::AddMsg(const FString& Msg, const ESentryLevel& Level) const {
 
 void USentry::InstInit() {
 	Sub = GEngine->GetEngineSubsystem<USentrySubsystem>();
-	UE_CLOG(!IsValid(Sub), LogSentry, Warning, TEXT("%hs Sentry subsystem can't be found"),
+	UE_CLOG(!IsValid(Sub), LogSentry, Warning, TEXT("%hs Sentry subsystem can't be found. maybe it's not enabled."),
 		__func__);
 }
 
