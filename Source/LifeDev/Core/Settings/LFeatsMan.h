@@ -4,6 +4,7 @@
 
 #include "LFeatsMan.generated.h"
 
+class UInputMappingContext;
 class UInputAction;
 class ULSettingsUI;
 enum class EFeat : uint8;
@@ -79,6 +80,10 @@ protected:
 	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionMenu = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TObjectPtr<UInputMappingContext> Mapping = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	int32 InputPrio = 3;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
