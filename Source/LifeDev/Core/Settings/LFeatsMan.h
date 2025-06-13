@@ -26,7 +26,7 @@ public:
 	// Called by LGGameMode
 	UFUNCTION(meta=(AdvancedDisplay))
 	virtual void Init();
-	
+
 	// reapplies the blur
 	UFUNCTION(BlueprintCallable)
 	void BlurReset();
@@ -45,6 +45,12 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION()
+	void MenuDone();
+	UFUNCTION()
+	void ActMenu();
+
+#pragma region feats
 	void LoadMPC();
 	void LoadFeats();
 	UFUNCTION()
@@ -53,14 +59,14 @@ protected:
 	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
+#pragma endregion
+
 	UFUNCTION()
 	double GetVar(const FName& Name);
 	UFUNCTION()
 	void SetVar(const FString& Name, const double Val);
 	UFUNCTION()
 	void SetVarId(const double NameID, const double Val);
-	UFUNCTION()
-	void MenuDone();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;

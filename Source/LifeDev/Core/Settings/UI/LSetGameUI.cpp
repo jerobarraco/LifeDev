@@ -53,7 +53,7 @@ void ULSetGameUI::Apply_Implementation() {
 	
 	if (LIKELY(SLBlurSize)) {
 		// use the in-level if possible
-		ALFeatsMan* Man =ALFeatsMan::Instance(this);
+		ALFeatsMan* Man = ALFeatsMan::Instance(this);
 		if (UNLIKELY(!Man)) Man = GetMutableDefault<ALFeatsMan>();
 		if (LIKELY(Man)) {
 			Man->MotionBlurAmount = SLBlurSize->GetValue();

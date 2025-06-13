@@ -163,7 +163,7 @@ void ALFeatsMan::Init() {
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 }
 
-void ALChar::ActMenu() { // no const
+void ALFeatsMan::ActMenu() { // no const
 	if (UNLIKELY(!IsValid(SettingsUI))) return;
 
 	if (SettingsUI->IsVisible()) { // toggle
