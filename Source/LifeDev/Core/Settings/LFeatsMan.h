@@ -77,7 +77,7 @@ protected:
 	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionMenu = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)

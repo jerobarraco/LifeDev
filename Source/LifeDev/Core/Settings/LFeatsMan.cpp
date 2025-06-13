@@ -101,7 +101,6 @@ void ALFeatsMan::BeginPlay() {
 		}
 	}
 
-	
 	UClass* const SClass = SettingsUIClass.Get();
 	if (LIKELY(IsValid(SClass))) {
 		SettingsUI = CreateWidget<ULSettingsUI>(W, SClass);
@@ -112,7 +111,6 @@ void ALFeatsMan::BeginPlay() {
 			MenuDone(); // hide
 		}
 	}
-
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
