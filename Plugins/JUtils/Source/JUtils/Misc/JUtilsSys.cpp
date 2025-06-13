@@ -50,7 +50,8 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 	// Then Game viewport is attached to another world context than the main Engine one. (ie: PIE Net mode set to As Client)
 	const TIndirectArray<FWorldContext>& WorldContexts = GEngine->GetWorldContexts();
 	for (const FWorldContext& Context : WorldContexts) {
-		if (Context.WorldType == EWorldType::PIE & bool(Context.GameViewport.Get()) & bool(Context.World())) {
+		if (Context.WorldType == EWorldType::PIE & bool(Context.GameViewport.Get())
+			& bool(Context.World())) {
 			return Context.GameViewport;
 		}
 	}
