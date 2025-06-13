@@ -7,6 +7,7 @@
 #include "Materials/MaterialParameterCollectionInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h" // needed to load testdl
+#include "InputMappingContext.h" // for the action object. rider doesn't detect it
 
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
@@ -48,7 +49,7 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	OverlayUIClass = COver.Succeeded() ? COver.Class.Get() : ULOverlayUI::StaticClass();
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionMenu(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Menu")); // TODO move
-	ActionMenu = CActionMenu.Object;
+	ActionMenu = CActionMenu.Object.Get();
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
@@ -82,7 +83,7 @@ void ALFeatsMan::LoadMPC() {
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
 
-	const UWorld* const W = GetWorld();
+	UWorld* const W = GetWorld(); // don't make it const or CreateWidget will fail compilation
 	if (UNLIKELY(!W)) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
