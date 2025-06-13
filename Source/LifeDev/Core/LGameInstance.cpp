@@ -45,7 +45,7 @@ void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
 }
 
 void ULGameInstance::EndLoadingScreen(UWorld* const LoadedWorld) {
-	UE_LOG(LogTemp, Log, TEXT("%hs world=%p"), __func__, *LoadedWorld)
+	UE_LOG(LogTemp, Log, TEXT("%hs world=%p"), __func__, LoadedWorld)
 	UJUtilsSys::CameraFade(this, true); // if this doesn't work use LoadedWorld
 }
 
