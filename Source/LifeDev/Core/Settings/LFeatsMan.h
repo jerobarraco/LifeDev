@@ -73,13 +73,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test.Test"));
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category = SetUp)
 	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category = SetUp)
 	TObjectPtr<UInputAction> ActionMenu = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

@@ -46,6 +46,9 @@ ALFeatsMan::ALFeatsMan() :Super() {
 	static ConstructorHelpers::FClassFinder<ULOverlayUI>
 		COver(TEXT("/Game/LifeDev/Core/Settings/Feats/LOverlayUI_W.LOverlayUI_W_C"));
 	OverlayUIClass = COver.Succeeded() ? COver.Class.Get() : ULOverlayUI::StaticClass();
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionMenu(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Menu")); // TODO move
+	ActionMenu = CActionMenu.Object;
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
@@ -54,7 +57,7 @@ ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 	const UWorld* const World = O->GetWorld();
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 
-	const ALGGameMode* Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
+	const ALGGameMode* const Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
 	if (LIKELY(IsValid(Mode)))
 		return Mode->FeatsMan;
 
@@ -79,7 +82,7 @@ void ALFeatsMan::LoadMPC() {
 void ALFeatsMan::BeginPlay() {
 	Super::BeginPlay();
 
-	UWorld* const W = GetWorld();
+	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
 	AGameModeBase* const AGMB = W->GetAuthGameMode();
