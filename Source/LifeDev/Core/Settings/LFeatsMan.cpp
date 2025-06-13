@@ -2,6 +2,7 @@
 
 #include "LFeatsMan.h"
 
+#include "EnhancedInputComponent.h"
 #include "Engine/PostProcessVolume.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
@@ -30,7 +31,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
-ALFeatsMan::ALFeatsMan() :Super() {
+ALFeatsMan::ALFeatsMan() {
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
@@ -115,6 +116,9 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
+
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
@@ -163,6 +167,9 @@ void ALFeatsMan::Init() {
 	LoadFeats();
 
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
+
+	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	if (LIKELY(Input)) Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
 }
 
 void ALFeatsMan::ActMenu() { // no const
