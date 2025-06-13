@@ -53,11 +53,12 @@ ALFeatsMan::ALFeatsMan() {
 	SettingsUIClass = CSettingsUI.Succeeded() ? CSettingsUI.Class.Get() : ULSettingsUI::StaticClass();
 	
 	static ConstructorHelpers::FObjectFinder<UInputAction>
-		CActionMenu(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IA")); // TODO move
+		CActionMenu(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IA"));
 	ActionMenu = CActionMenu.Object.Get();
-	// static ConstructorHelpers::FObjectFinder<UInputMappingContext>
-	// DefaultMapping(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC"));
-	// Mapping = DefaultMapping.Object;
+
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
+	DefaultMapping(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC"));
+	Mapping = DefaultMapping.Object;
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
@@ -123,10 +124,10 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	UJUtilsSys::ToggleMapping(this, Mapping, -1, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
-	UJUtilsSys::ToggleMapping(this, Mapping, -1, false);
 
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.RemoveAll(this);
@@ -178,8 +179,9 @@ void ALFeatsMan::Init() {
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
-	if (LIKELY(Input)) Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
-	UJUtilsSys::ToggleMapping(this, Mapping, -1, false);
+	if (LIKELY(Input))
+		Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
+	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 }
 
 void ALFeatsMan::ActMenu() { // no const

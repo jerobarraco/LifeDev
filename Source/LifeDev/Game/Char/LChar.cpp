@@ -317,7 +317,7 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* const PlayerInputCompone
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALChar::ActInteract);
 	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALChar::ActItem);
 	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALChar::ActItemLook);
-	Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALChar::ActMenu);
+	// Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALChar::ActMenu);
 }
 
 void ALChar::ActMove(const FInputActionValue& Value) {
