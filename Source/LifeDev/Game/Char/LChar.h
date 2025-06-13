@@ -162,7 +162,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UGameUI> UI = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

@@ -4,6 +4,8 @@
 
 #include "LFeatsMan.generated.h"
 
+class UInputAction;
+class ULSettingsUI;
 enum class EFeat : uint8;
 class ULOverlayUI;
 class ULSettings;
@@ -57,6 +59,8 @@ protected:
 	void SetVar(const FString& Name, const double Val);
 	UFUNCTION()
 	void SetVarId(const double NameID, const double Val);
+	UFUNCTION()
+	void MenuDone();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
@@ -66,7 +70,12 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
 	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
-
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
+	TObjectPtr<UInputAction> ActionMenu = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ULOverlayUI> OverlayUI = nullptr;
 

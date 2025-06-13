@@ -23,6 +23,7 @@
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
+#include "LSettingsUI.h"
 #include "Diags/Diags.h"
 #include "LifeDev/Core/Sentry.h"
 
@@ -89,13 +90,26 @@ void ALFeatsMan::BeginPlay() {
 	LoadMPC();
 	
 	UClass* const Class = OverlayUIClass.Get();
-	if (UNLIKELY(!IsValid(Class))) return;
+	if (LIKELY(IsValid(Class))) {
+		OverlayUI = CreateWidget<ULOverlayUI>(W, Class);
+		if (LIKELY(IsValid(OverlayUI))) {
+			OverlayUI->AddToViewport(ZOrder);
+			// OverlayUI->OnDone.AddUniqueDynamic(this, &ADiagMan::Hidden);
+		}
+	}
 
-	OverlayUI = CreateWidget<ULOverlayUI>(W, Class);
-	if (UNLIKELY(!IsValid(OverlayUI))) return;
+	
+	UClass* const SClass = SettingsUIClass.Get();
+	if (LIKELY(IsValid(SClass))) {
+		SettingsUI = CreateWidget<ULSettingsUI>(W, SClass);
+		if (LIKELY(SettingsUI)) {
+			// important to add to the viewport otherwise the GC will delete our bindings :')
+			SettingsUI->AddToViewport(9999);
+			SettingsUI->OnDone.AddUniqueDynamic(this, &ALFeatsMan::MenuDone);
+			MenuDone(); // hide
+		}
+	}
 
-	OverlayUI->AddToViewport(ZOrder);
-	// OverlayUI->OnDone.AddUniqueDynamic(this, &ADiagMan::Hidden);
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -112,7 +126,13 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Eval->OnSetVarId.Clear();
 	}
 
-	if (LIKELY(OverlayUI)) OverlayUI->Hide();
+	if (LIKELY(IsValid(SettingsUI))) {
+		SettingsUI->OnDone.RemoveAll(this);
+		SettingsUI->RemoveFromParent();
+	}
+
+	if (LIKELY(OverlayUI)) OverlayUI->RemoveFromParent();
+	SettingsUI = nullptr;
 	OverlayUI = nullptr;
 	GM = nullptr;
 	MPCI = nullptr;
@@ -121,6 +141,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	FBMat = nullptr;
 	Eval = nullptr;
 	Settings = nullptr;
+
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -142,6 +163,23 @@ void ALFeatsMan::Init() {
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 }
 
+void ALChar::ActMenu() { // no const
+	if (UNLIKELY(!IsValid(SettingsUI))) return;
+
+	if (SettingsUI->IsVisible()) { // toggle
+		MenuDone();
+		return;
+	}
+
+	SettingsUI->Show();
+}
+
+void ALFeatsMan::MenuDone() {
+	if (UNLIKELY(!IsValid(SettingsUI))) return;
+	SettingsUI->Hide();
+}
+
+#pragma region feats
 void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_LUMEN, Settings && Settings->GetFeat(EFeat::V_LUMEN));
 	FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
@@ -262,6 +300,8 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 void ALFeatsMan::BlurReset() {
 	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
 }
+
+#pragma endregion
 
 #pragma region Eval
 double ALFeatsMan::GetVar(const FName& Name) {
@@ -459,4 +499,5 @@ void ALFeatsMan::SetVarId(const double NameID, const double Val) {
 	if (UNLIKELY(N.IsNone())) return;
 	if (LIKELY(GM->Flags)) GM->Flags->Set(N, Val); */
 }
+
 #pragma endregion
