@@ -120,7 +120,7 @@ public:
 	TArray<TSoftObjectPtr<ALInteract>> IntersTrigger;
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
-	// Note: Fade also calls SetActive.
+	// Note: Fade also calls SetActive. It will also ensure is not SetHiddenInGame.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TSoftObjectPtr<ALInteract>> IntersFadeIn;
 

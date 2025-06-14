@@ -87,7 +87,7 @@ void ALPuzzle::SetActive_Implementation(const bool Active) {
 	// works because of the constructor "setHinted"
 	Super::SetActive_Implementation(Active);
 
-	// filter when has not activated due to UseActiveOnce probably. let deactivate pass.
+	// filter when has not activated due to UseActiveOnce, probably. let deactivate pass.
 	if (UNLIKELY(Active & !GetActive())) return;
 
 	SetActives(Active);
