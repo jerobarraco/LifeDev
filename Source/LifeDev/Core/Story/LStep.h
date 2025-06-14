@@ -97,7 +97,7 @@ public:
 	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
-	TArray<TSoftObjectPtr<AActor>> ActorsShow;
+	TArray<TSoftObjectPtr<AActor>> ActorsShow; // TODO separate the hide and show (show will hide on beginplay)
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
