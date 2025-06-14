@@ -13,6 +13,7 @@ APuzzleI02::APuzzleI02():Super() {
 	RewardFlash = .15;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
 	TriggerDlg = DoneId;
+	RewardActor = TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card02_UAID_D8BBC116E501DFC401_1977970429"));
 }
 
 void APuzzleI02::PostLoad() {
