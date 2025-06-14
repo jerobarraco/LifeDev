@@ -93,6 +93,14 @@ void ALPuzzle::SetActive_Implementation(const bool Active) {
 	SetActives(Active);
 }
 
+void ALPuzzle::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
+	Super::Fade_Implementation(FadeIn, SetHidden);
+	
+	// the LPuzzle actor itself will follow UseAutoActive which is false by default.
+	if (UNLIKELY(!CPuzzle)) return;
+	// CPuzzle->Fade_(NewHidden); TODO
+}
+
 void ALPuzzle::ClearTimer() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
