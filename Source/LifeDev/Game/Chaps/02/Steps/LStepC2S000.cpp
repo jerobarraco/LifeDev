@@ -51,9 +51,10 @@ ALStepC2S000::ALStepC2S000():Super() {
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_B.Outside_B")));
 
+	// bat is handled by book10 in outliner
+	// TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310")),
 	IntersFadeIn = { // fade in so that increasing the step does not hide them
-		// battery and poem
-		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310")),
+		// poem
 		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PoemI02_UAID_D8BBC116E5012CC501_1287868959"))
 	};
 }
