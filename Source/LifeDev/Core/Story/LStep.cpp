@@ -242,6 +242,7 @@ void ALStep::DestroyActors() {
 		// if (LIKELY(IsValid(A))) A->Destroy();
 	// }
 	ActorsShow.Empty(); // release the ref
+	ActorsHide.Empty();
 
 	if (IsValid(Ghosts)) Ghosts->Destroy();
 	Ghosts = nullptr;

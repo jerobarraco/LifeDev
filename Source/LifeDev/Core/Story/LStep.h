@@ -101,6 +101,12 @@ public:
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
+
+	// TODO implement this
+	// TODO move code that relies on ActorsShow hidding actors at end to use this instead
+	// TODO remove hiding actors from ActorsShow
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
+	TArray<TSoftObjectPtr<AActor>> ActorsHide;
 	
 	// Interacts to activate on Start (after wait), and disable on Stop.
 	// Will be deactivated on begin play.
