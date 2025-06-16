@@ -4,14 +4,14 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Inventory/Logics/LogicCard.h"
 
-#include "LogicCard02.generated.h"
+#include "LogicCard03.generated.h"
 
-// item logic for card 02 (yin)
+// item logic for card 03 (perseverance)
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULogicCard02: public ULogicCard {
+class LIFEDEV_API ULogicCard03: public ULogicCard {
 	GENERATED_BODY()
 
 public:
-	ULogicCard02();
+	ULogicCard03();
 	virtual void Use_Implementation() override;
 };
