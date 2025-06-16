@@ -2,11 +2,8 @@
 
 #include "LStepC3S002.h"
 
-#include "Kismet/GameplayStatics.h"
-
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
-#include "LifeDev/Game/Chaps/All/Inters/Cards/Card03.h"
 
 ALStepC3S002::ALStepC3S002():Super() {
 	Name = FName("C3S2");
@@ -32,12 +29,6 @@ ALStepC3S002::ALStepC3S002():Super() {
 
 void ALStepC3S002::BeginPlay() {
 	Super::BeginPlay();
-	if (UNLIKELY(IntersFadeIn.Num()<1)) {
-		UE_LOG(LogTemp, Warning, TEXT("C3S2: Card not set on intersfade"));
-		IntersFadeIn.AddUnique(
-			Cast<ALInteract>(
-				UGameplayStatics::GetActorOfClass(this, ACard03::StaticClass())));
-	}
 
 	// force fade the card
 	DoIntersFade(IntersFadeIn, false);
