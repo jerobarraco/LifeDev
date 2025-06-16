@@ -38,6 +38,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap03_DL.Chap03_DL")));
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00.Living00")));
+	// load the hall since we are able to see through the door.
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00.Hall00")));
 	// ensure to load these two. even though they are loaded by a previous chapter,

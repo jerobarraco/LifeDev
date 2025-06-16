@@ -31,13 +31,14 @@ ALStepC2S000::ALStepC2S000():Super() {
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap02_DL.Chap02_DL")));
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00.Hall00")));
+	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C")));
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_D.Outside_D")));
+	// load the living since we can see through the door
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
-	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00.Hall00")));
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Living00.Living00")));
 
 	// unload
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
@@ -46,6 +47,8 @@ ALStepC2S000::ALStepC2S000():Super() {
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00.Room00")));
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room01.Room01")));
+	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room02.Room02")));
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_A.Outside_A")));
 	DL_Unload.Add(TSoftObjectPtr<UDataLayerAsset>(
