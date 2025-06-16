@@ -5,6 +5,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 // This is a requirement for the last step
+// rewarded by puzzlei06
 ATapeI03::ATapeI03():Super() {
 	Texts = { NSLOCTEXT("TapeI03", "State0", "One more tape") };
 	StateNum = 1;
