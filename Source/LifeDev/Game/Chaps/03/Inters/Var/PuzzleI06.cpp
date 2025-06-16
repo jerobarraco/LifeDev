@@ -10,7 +10,7 @@
 
 #define _myclass_ TEXT("APuzzleI06")
 
-// this puzzle gets activated by the step
+// this puzzle gets activated by the step (c3s0)
 
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
