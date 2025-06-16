@@ -282,6 +282,8 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 }
 
 bool UInventory::SetCool(const FName& Name) {
+	UE_LOG(LogInventory, Log, TEXT("%hs ='%s'"),
+		__func__, *Name.ToString());
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
 	if (UNLIKELY(!Found)) return false;
