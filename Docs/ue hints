@@ -195,3 +195,4 @@ on rider add the command option -ddc=InstalledNoZenLocalFallback or -ddc=NoShare
 on .profile add the variables
  UE_SharedDataCachePath=None
 
+on project settings disable Rendering\Materials\Automatically set Material usage flags in editor 
