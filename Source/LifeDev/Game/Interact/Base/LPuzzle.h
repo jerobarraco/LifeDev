@@ -26,7 +26,7 @@ public:
 	virtual void Reset() override;
 	virtual void SetActive_Implementation(const bool Active = true) override;
 	virtual void Fade_Implementation(const bool FadeIn = false, const bool SetHidden = true) override;
-	
+
 #pragma endregion
 
 	// sets the states on each registered interact.

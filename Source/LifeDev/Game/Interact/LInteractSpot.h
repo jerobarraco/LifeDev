@@ -14,7 +14,7 @@
 // disabled: if attempt to use an item once it's done it will trigger FullDlg
 // always has two states: enabled, done.
 // by default is disabled after completed.
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Deprecated)
 class LIFEDEV_API ALInteractSpot: public ALInteract {
 	GENERATED_BODY()
 

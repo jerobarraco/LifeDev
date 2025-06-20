@@ -58,6 +58,7 @@ void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
 	// the LPuzzle actor itself will follow UseAutoActive which is false by default.
 	if (UNLIKELY(!CPuzzle)) return;
+
 	CPuzzle->SetHiddensInGame(NewHidden);
 }
 
@@ -98,7 +99,14 @@ void ALPuzzle::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	
 	// the LPuzzle actor itself will follow UseAutoActive which is false by default.
 	if (UNLIKELY(!CPuzzle)) return;
-	// CPuzzle->Fade_(NewHidden); TODO
+
+	// fade is a LD stuff, can't do at the CPuzzle level
+	const TArray<AInteract*>& Inters = CPuzzle->GetInteracts();
+	for (AInteract* const I: Inters) {
+		ALInteract* const IL = Cast<ALInteract>(I);
+		if (UNLIKELY(!IsValid(IL))) continue;
+		IL->Fade(FadeIn, SetHidden);
+	}
 }
 
 void ALPuzzle::ClearTimer() {
