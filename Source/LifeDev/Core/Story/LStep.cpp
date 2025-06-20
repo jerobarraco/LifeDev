@@ -87,6 +87,7 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 
+	SetActorsHideActive(false, true);
 	SetActorsShowActive(false, true); // TODO deprecated
 	SetIntersActiveAuto(false);
 	DoRemoveItems();
@@ -144,7 +145,6 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	SetActorsHideActive(false, true);
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);

@@ -19,6 +19,13 @@ ALStepC3S001::ALStepC3S001():Super() {
 	UseFBAnim = true;
 	UseFBDlgAuto = true;
 	FBDlgAutoTo = 1.2;
+	ActorsShow = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC03_UAID_D8BBC116E501DDDA01_2038493305"))
+	};
+	
+	ActorsHide = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC03_UAID_D8BBC116E501DDDA01_2038493305"))
+	};
 }
 
 void ALStepC3S001::TryStart_Implementation() {
@@ -39,7 +46,7 @@ void ALStepC3S001::TryStart_Implementation() {
 		return;
 	}
 
-	ALNPC03* const NPC = Cast<ALNPC03>(ActorsShow[0].Get()); // todo specify actorshow in cdo
+	ALNPC03* const NPC = Cast<ALNPC03>(ActorsShow[0].Get());
 	if (LIKELY(NPC)) NPC->SetPoseScold();
 }
 
