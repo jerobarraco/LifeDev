@@ -40,6 +40,8 @@ public:
 	// enables or disables the linked actors
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void SetActorsHideActive(bool Active, bool WithFade=true);
 
 	// enables or disables the interacts on IntersActiveAuto
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
@@ -96,14 +98,16 @@ public:
 	// Actors to show AND hide. If it's an interact, it will fade in and out.
 	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility.
+	// it will hide the actor on beginplay.
+	// the hiding on stop is deprecated. use ActorsHide
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
-	TArray<TSoftObjectPtr<AActor>> ActorsShow; // TODO separate the hide and show (show will hide on beginplay)
+	TArray<TSoftObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy
 	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 
-	// TODO implement this
-	// TODO move code that relies on ActorsShow hidding actors at end to use this instead
+	// Actors to Hide on Start. If it's an Linteract, it will fade out. it will also set active. 
+	// TODO move code that relies on ActorsShow hiding actors at end to use this instead
 	// TODO remove hiding actors from ActorsShow
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;

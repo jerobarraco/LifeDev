@@ -87,7 +87,7 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 
-	SetActorsShowActive(false, true);
+	SetActorsShowActive(false, true); // TODO deprecated
 	SetIntersActiveAuto(false);
 	DoRemoveItems();
 
@@ -114,14 +114,12 @@ void ALStep::Start_Implementation() {
 	if (UNLIKELY(!W)) return;
 
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
-	if (!FinishItems.IsEmpty()) {
+	if (!FinishItems.IsEmpty())
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
-	}
 
 	// check flags. do on Start to avoid possibly finishing the step while it's starting.
-	if (!FinishFlags.IsEmpty()) {
+	if (!FinishFlags.IsEmpty())
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
-	}
 
 	// ensure to check if we already have the item. but not now to not affect the flow of child classes
 	W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinish);
@@ -146,6 +144,7 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
+	SetActorsHideActive(false, true);
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
 	DoIntersFade(IntersFadeIn, true);
@@ -215,15 +214,11 @@ void ALStep::FinishAfterDlgs() {
 }
 
 void ALStep::DoRemoveItems() {
-	for (const FName& N: RemoveItems) {
-		Inventory->Rem(N);
-	}
+	for (const FName& N: RemoveItems) Inventory->Rem(N);
 }
 
 void ALStep::DoEnsureItems() {
-	for(const FName& N: EnsureItems) {
-		Inventory->Ensure(N);
-	}
+	for(const FName& N: EnsureItems) Inventory->Ensure(N);
 }
 
 void ALStep::DestroyActors() {
@@ -368,6 +363,21 @@ void ALStep::Unbind() const {
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
+		AActor* const A = SA.Get();
+		if (UNLIKELY(!IsValid(A))) continue;
+
+		ALInteract* const Inter = Cast<ALInteract>(A);
+		if (bool(Inter) & WithFade) { // hide with fade is possible
+			Inter->Fade(Active, true); // calls setactorhidden and setactive
+			continue;
+		}
+		// Avoid calling 'Fade' twice, just in case there are side effects.
+		A->SetActorHiddenInGame(!Active);
+	}
+}
+
+void ALStep::SetActorsHideActive(const bool Active, const bool WithFade) {
+	for (const TSoftObjectPtr<AActor>& SA: ActorsHide) {
 		AActor* const A = SA.Get();
 		if (UNLIKELY(!IsValid(A))) continue;
 
