@@ -372,7 +372,7 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 		if (UNLIKELY(!IsValid(A))) continue;
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
-		if (Inter && WithFade) { // hide with fade is possible
+		if (bool(Inter) & WithFade) { // hide with fade is possible
 			Inter->Fade(Active, true); // calls setactorhidden and setactive
 			continue;
 		}
