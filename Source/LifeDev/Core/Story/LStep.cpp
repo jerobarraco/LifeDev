@@ -88,7 +88,6 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 
 	SetActorsHideActive(false, true);
-	SetActorsShowActive(false, true); // TODO deprecated
 	SetIntersActiveAuto(false);
 	DoRemoveItems();
 
