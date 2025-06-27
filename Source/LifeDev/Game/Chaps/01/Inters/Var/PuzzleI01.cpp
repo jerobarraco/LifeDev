@@ -18,6 +18,7 @@ APuzzleI01::APuzzleI01():Super() {
 	TriggerDlg = DoneId;
 	UseHint = true;
 	UseAutoActivate = true;
+	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card01_UAID_D8BBC116E50181BA01_2066401320"));
 }
 
 void APuzzleI01::PostLoad() {
