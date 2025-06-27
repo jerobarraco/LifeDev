@@ -3,6 +3,7 @@
 #include "DoorI10.h"
 
 #include "Diags/Diags.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -15,10 +16,11 @@ ADoorI10::ADoorI10():Super() {
 	LockedDlg = "D10_L"; // TODo this dialog should change.
 	// ULockCondition = "{V.Item.Count.Screwer00}"; // TODO next sprint
 	// no unlock item nor trigger dlg. i want to keep this locked
-	IsLocked = false; // todo
+	IsLocked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CGun(TEXT("/Game/LifeDev/Game/Inters/Generic/Shotgun_Fire_Round_Eject_01.Shotgun_Fire_Round_Eject_01"));
 	SFX_Gun = CGun.Object;
+	UnlockItems = {LDConsts::Items::Key};
 }
 
 void ADoorI10::DoTrigger_Implementation() {

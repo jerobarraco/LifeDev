@@ -30,6 +30,7 @@ namespace LDConsts {
 
 		inline static const FName Batts("Batts");
 		inline static const FName Walkman("WM");
+		inline static const FName Key("Key");
 		
 		inline static const FName Bra("C1C03");
 
