@@ -3,7 +3,6 @@
 #include "DoorI10.h"
 
 #include "Diags/Diags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 #include "Story/Story.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -19,18 +18,15 @@ ADoorI10::ADoorI10():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CGun(TEXT("/Game/LifeDev/Game/Inters/Generic/Shotgun_Fire_Round_Eject_01.Shotgun_Fire_Round_Eject_01"));
 	SFX_Gun = CGun.Object;
-	UnlockItems = {LDConsts::Items::Key};
+	UnlockItems = {"Screwer00"};
 }
 
 void ADoorI10::DoTrigger_Implementation() {
-	Super::DoTrigger_Implementation();
-	DoDialog(); // TODO next sprint.
-	// this is currently this way until i implement the item usage on next sprint. maybe the screwer.
-}
-
-void ADoorI10::DoDialog() {
 	Diags->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
-	Diags->AddId("D10_T"); // after unlocking with the card
+	if (!Diags->AddId("D10_T")) // after unlocking with the card
+		Shoot();// for meanwhile
+	Super::DoTrigger_Implementation();
+	// this is currently this way until i implement the item usage on next sprint. maybe the screwer.
 }
 
 void ADoorI10::Shoot() {

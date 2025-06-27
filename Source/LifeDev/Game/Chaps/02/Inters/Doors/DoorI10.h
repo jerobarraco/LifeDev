@@ -16,8 +16,6 @@ public:
 
 protected:
 	UFUNCTION()
-	void DoDialog();
-	UFUNCTION()
 	void Shoot();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
