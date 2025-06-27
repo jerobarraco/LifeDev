@@ -13,8 +13,7 @@ ADoorI10::ADoorI10():Super() {
 	UseAnim = false; // don't animate, stay visually closed.
 	IsOneShot = true;
 	StateNum = 1;
-	LockedDlg = "D10_L"; // TODo this dialog should change.
-	// ULockCondition = "{V.Item.Count.Screwer00}"; // TODO next sprint
+	// LockedDlg = "D10_L"; // TODo this dialog should change.
 	// no unlock item nor trigger dlg. i want to keep this locked
 	IsLocked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -43,6 +42,6 @@ void ADoorI10::Shoot() {
 	PlaySFX(SFX_Gun);
 	Flashback->SetMin(.4f, .5);
 	// TODO use new autodialogs with condition for this.
-	LockedDlg = "D10_L.1"; // new dialog from now on
+	// LockedDlg = "D10_L.1"; // new dialog from now on
 	if (LIKELY(Story)) Story->StartNext();
 }
