@@ -9,6 +9,7 @@ APuzzleI02::APuzzleI02():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 0, 3}; // S.A.D.
 
+	UseHint = true;
 	static FName DoneId = "PZ02_T";
 	RewardFlash = .15;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
