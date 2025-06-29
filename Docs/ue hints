@@ -195,4 +195,7 @@ on rider add the command option -ddc=InstalledNoZenLocalFallback or -ddc=NoShare
 on .profile add the variables
  UE_SharedDataCachePath=None
 
-on project settings disable Rendering\Materials\Automatically set Material usage flags in editor 
+on project settings disable Rendering\Materials\Automatically set Material usage flags in editor
+
+disable tooltips
+https://forums.unrealengine.com/t/solved-is-there-any-way-to-disable-editor-tooltips/332197/12 
