@@ -17,14 +17,11 @@ ACup::ACup():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Utensils/Cup00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	// TQDQ
-	Mesh->SetRelativeLocation(FVector(0,0,0));
+	Mesh->SetRelativeLocation(FVector(-5.50,5.250000,0.));
 	Mesh->SetCastAllShadows(true);
 
-	// TODO
-	Interact->SetRelativeLocation(FVector(10,-5,12.5));
-	Interact->SetBoxExtent(FVector(15,7.5,15));
-	SFX->SetRelativeLocation(FVector(10,-5,12.5));
+	Interact->SetRelativeLocation(FVector(5.5,-5.25,5.25));
+	Interact->SetBoxExtent(FVector(5.750000,5.500000,5.500000));
 
 	// TODO
 	// static ConstructorHelpers::FObjectFinder<USoundBase>
