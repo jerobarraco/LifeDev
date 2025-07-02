@@ -12,14 +12,11 @@ ALStepC2S001::ALStepC2S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	FinishPostWait = false;
-	TeleportChar = false;
+	TeleportChar = false; // don't teleport or it will mess with the animation
 
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);
-	// there are 11 dialogs, and the fb should be on .4 at least.
-	// with .08 we ensure that we reach 1. but with .1 is too much
-	// .075 a couple of diags remain
-	// FBDiagMod = .07;
+
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
 	UseFBAnim = true;

@@ -12,7 +12,7 @@ ALStepC2S002::ALStepC2S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	// teleport after the boss interaction happens
-	TeleportChar = false;
+	TeleportChar = true; // so that it stays looking at the boss
 	// no waits
 	FinishPostWait = false;
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
