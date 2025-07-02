@@ -34,12 +34,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	FName Name = NAME_None;
 
-	// Actor holding the camera to blend to. Or null to not use it.
+	// Actor holding the camera to blend to. Or null to not use blend.
 	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	TSoftObjectPtr<AActor> CamTarget = nullptr;
 
 	// will target pawn automatically, will override the camTarget
+	// this allows to blend TO the pawn camera (not the current cam)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UsePawnCam = false;
 	// time used to animate the change of cameras. Only where CamTarget is valid

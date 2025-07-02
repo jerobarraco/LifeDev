@@ -6,8 +6,8 @@ ALStepC4S003::ALStepC4S003():Super() {
 	DlgId = Name; // this chapter finishes after the dialog
 	UseFade = false;
 	InputEnabled = false;
-	UsePawnCam = false;
 	FinishPostWait = false;
+	UsePawnCam = false;
 	TeleportChar = false;
 	// go a bit above to ensure we end up at 1 a couple of dialogs before
 	FBDlgAutoTo = 1.2;

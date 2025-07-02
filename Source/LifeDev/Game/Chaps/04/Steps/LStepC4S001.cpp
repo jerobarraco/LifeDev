@@ -9,7 +9,6 @@ ALStepC4S001::ALStepC4S001():Super() {
 	// includes the "im hungry"
 	UseFade = false;
 	InputEnabled = false;
-	UsePawnCam = false;
 	WaitTime = CamBlendTime = 2;
 	// FBDiagMod = .8/22.0; // .1; // only .8 available, and more than 22 dialogs.
 	FBDlgAutoTo = 1.2;
@@ -17,6 +16,7 @@ ALStepC4S001::ALStepC4S001():Super() {
 	// set wait to blend so that
 	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
 	FinishPostWait = false;
+	UsePawnCam = false;
 	TeleportChar = false;
 }
 

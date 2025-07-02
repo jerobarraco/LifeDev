@@ -9,8 +9,8 @@ ALStepC4S008::ALStepC4S008():Super() {
 	UseRain = true;
 	// DlgId = FName("C4S1");
 	InputEnabled = true;
-	UsePawnCam = true;
 	FinishPostWait = false;
+	UsePawnCam = true;
 	TeleportChar = false;
 	FinishFlags = {"Inter.Trigger.SpotI03"};
 	UseFBRand = true; // min is limited in c4s0

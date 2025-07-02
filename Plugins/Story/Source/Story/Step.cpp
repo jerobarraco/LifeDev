@@ -81,13 +81,6 @@ void AStep::PostLoad() {
 
 void AStep::TryStart_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
-
-	// teleport the character
-	// teleport before blending the camera. so they work well together.
-	// note: i don't remember why i wrote the above.
-	// it sounds now that the teleport would be better after.
-	// doTeleport does messes with the orientation of the camera. so it would break CamBlend
-	if (TeleportChar) DoTeleport();
 	
 	// blend before the wait to avoid weird issues.
 	// if you actually want to see the blend you may not want the fade anyway.
@@ -113,8 +106,13 @@ void AStep::Start_Implementation() {
 
 	if (UNLIKELY(Debug)) DoDebug();
 
-	if (TeleportCharAfter) DoTeleport();
-
+	// teleport the character
+	// teleport before blending the camera. so they work well together.
+	// note: i don't remember why i wrote the above.
+	// it sounds now that the teleport would be better after.
+	// doTeleport does messes with the orientation of the camera. so it would break CamBlend
+	if (TeleportChar) DoTeleport();
+	
 	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
 

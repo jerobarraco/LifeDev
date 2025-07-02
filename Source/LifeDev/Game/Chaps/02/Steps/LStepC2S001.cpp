@@ -12,8 +12,7 @@ ALStepC2S001::ALStepC2S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	FinishPostWait = false;
-	TeleportChar = false; // teleport after the blend
-	TeleportCharAfter = true; // don't teleport or it will mess with the animation
+	TeleportChar = true; // teleport after the blend
 
 	UseGhosts = true;
 	GhostPos = FVector(210,-42,-65);

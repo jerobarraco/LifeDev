@@ -21,5 +21,5 @@ protected:
 	virtual void TryStart_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	USoundBase* SFX_Analog = nullptr;
+	TObjectPtr<USoundBase> SFX_Analog = nullptr;
 };

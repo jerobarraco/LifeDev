@@ -9,8 +9,8 @@ ALStepC4S002::ALStepC4S002():Super() {
 	UseFade = false;
 	UseRain = true;
 	InputEnabled = true;
-	UsePawnCam = true;
 	FinishPostWait = false;
+	UsePawnCam = true;
 	TeleportChar = false;
 	FinishFlags = { "Inter.Trigger.StoveI00" };
 

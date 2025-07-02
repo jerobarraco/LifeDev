@@ -9,8 +9,8 @@ ALStepC4S004::ALStepC4S004():Super() {
 	UseFade = false;
 	UseRain = true;
 	InputEnabled = true;
-	UsePawnCam = true;
 	FinishPostWait = false;
+	UsePawnCam = true;
 	TeleportChar = false;
 	FinishFlags = { "Inter.Trigger.PotI00" }; // finish when the pot is triggered
 

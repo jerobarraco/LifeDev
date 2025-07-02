@@ -18,6 +18,7 @@ ALStepC2S000::ALStepC2S000():Super() {
 	// DlgId = FName("C2S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;
+	CamBlendTime = 0;
 	TeleportChar = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music05/Music05_MS.Music05_MS"));
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
