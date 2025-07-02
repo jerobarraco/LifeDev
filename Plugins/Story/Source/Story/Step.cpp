@@ -87,9 +87,20 @@ void AStep::TryStart_Implementation() {
 	// fade and wait are weird combination. i think.
 	CamBlend();
 
-	// do after the rest since doStart is another flow
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
+	// teleport the character
+	// doTeleport does messes with the orientation of the camera. so it would break CamBlend
+	// likely i'd want to teleport the camera _after_ the blending.
+	// otherwise i just get no blending.
+	// and if i want blending, i can set CamBlendTime to 0 or camTarget to null and UsePawnCam to false
+	if (CamBlendTime > 0) {
+		FTimerHandle H;
+		World->GetTimerManager().SetTimer(H, this, &AStep::DoTeleport, CamBlendTime);
+	} else {
+		World->GetTimerManager().SetTimerForNextTick(this, &AStep::DoTeleport);
+	}
 	
 	if (WaitTime>0) {
 		FTimerHandle Handle;
@@ -105,13 +116,6 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (UNLIKELY(Debug)) DoDebug();
-
-	// teleport the character
-	// teleport before blending the camera. so they work well together.
-	// note: i don't remember why i wrote the above.
-	// it sounds now that the teleport would be better after.
-	// doTeleport does messes with the orientation of the camera. so it would break CamBlend
-	if (TeleportChar) DoTeleport();
 	
 	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
@@ -151,6 +155,7 @@ void AStep::Finish_Implementation() {
 void AStep::DoTeleport() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+	if (!TeleportChar) return;
 
 	ACharacter* const Char = Cast<ACharacter>(
 		UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
@@ -194,6 +199,7 @@ void AStep::CamBlend() {
 	if ((Tgt == this) & LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
 
 	Controller->SetViewTargetWithBlend(Tgt, CamBlendTime, VTBlend_Cubic);
+
 	// ensure the step does not start before the camera ends the blending
 	WaitTime = FMath::Max(CamBlendTime, WaitTime);
 }
