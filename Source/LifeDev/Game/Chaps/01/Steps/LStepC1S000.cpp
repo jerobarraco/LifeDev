@@ -14,6 +14,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	
 	DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
+	CamBlendTime = 0;
 	TeleportChar = true; // move the char to where this camera is
 	CamTarget = nullptr; // use pawn cam
 	UsePawnCam = true;

@@ -81,11 +81,14 @@ void AStep::PostLoad() {
 
 void AStep::TryStart_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
-	
+
 	// teleport the character
 	// teleport before blending the camera. so they work well together.
-	DoTeleport();
-
+	// note: i don't remember why i wrote the above.
+	// it sounds now that the teleport would be better after.
+	// doTeleport does messes with the orientation of the camera. so it would break CamBlend
+	if (TeleportChar) DoTeleport();
+	
 	// blend before the wait to avoid weird issues.
 	// if you actually want to see the blend you may not want the fade anyway.
 	// fade and wait are weird combination. i think.
@@ -109,14 +112,19 @@ void AStep::Start_Implementation() {
 	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
 
 	if (UNLIKELY(Debug)) DoDebug();
+
+	if (TeleportCharAfter) DoTeleport();
+
 	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
 
 	/// finish post wait
 	// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
 	if (!FinishPostWait) return;
+
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
 }
 
@@ -145,7 +153,6 @@ void AStep::Finish_Implementation() {
 void AStep::DoTeleport() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-	if (UNLIKELY(!TeleportChar)) return;
 
 	ACharacter* const Char = Cast<ACharacter>(
 		UGameplayStatics::GetActorOfClass(World, ACharacter::StaticClass()));
@@ -164,7 +171,7 @@ void AStep::DoTeleport() {
 	// vertical is handled by the camera
 	TArray<UCameraComponent*> Cams;
 	Char->GetComponents<UCameraComponent>(Cams);
-	if (Cams.Num()<=0) return;
+	if (UNLIKELY(Cams.Num()<=0)) return;
 
 	const UCameraComponent* const C = Cams[0];
 	// if (!IsValid(C) || !C->bUsePawnControlRotation) return;

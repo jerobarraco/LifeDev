@@ -73,6 +73,9 @@ public:
 	// teleports before blending. teleports on start of step. Rotation is broken.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
+	// like teleport char but after blend (on start)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool TeleportCharAfter = false;
 
 	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
