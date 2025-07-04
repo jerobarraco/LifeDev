@@ -13,4 +13,5 @@ ALStepC1S006::ALStepC1S006():Super() {
 	UseFBDlgAuto = true;
 	UseFBAnim = true;
 	UseRain = true;
+	TeleportChar=true;
 }
