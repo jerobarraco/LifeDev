@@ -11,6 +11,8 @@ ALStepC1S003::ALStepC1S003():Super() {
 	// uses own camera
 	UsePawnCam = false;
 	CamBlendTime = 3;
+	TeleportChar = true; // teleport the char after this blend
+
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));
 	// TODo specify the intersfadein here
