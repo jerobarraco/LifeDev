@@ -11,6 +11,7 @@ ABooksI02::ABooksI02():Super(1, 0) {
 	IsOneShot = true;
 	UseAutoActivate = true;
 	HintCondition = "{Inter.Locked.TapeI02}";
+	UseHint = true;
 	
 	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310"));
 }

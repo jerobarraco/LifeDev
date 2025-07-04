@@ -12,6 +12,7 @@ ALStepC3S001::ALStepC3S001():Super() {
 	DlgId = FName("C3S1"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;
+	TeleportChar = true;
 	FinishPostWait = false;
 
 	GhostPos = FVector(200,-42,65);
