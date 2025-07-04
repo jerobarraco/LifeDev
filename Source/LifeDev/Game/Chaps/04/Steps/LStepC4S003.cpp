@@ -8,11 +8,11 @@ ALStepC4S003::ALStepC4S003():Super() {
 	InputEnabled = false;
 	FinishPostWait = false;
 	UsePawnCam = false;
-	TeleportChar = false;
 	// go a bit above to ensure we end up at 1 a couple of dialogs before
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
+	TeleportChar = true;
 }
 
 // interfadeout in editor
-
+// todo move here

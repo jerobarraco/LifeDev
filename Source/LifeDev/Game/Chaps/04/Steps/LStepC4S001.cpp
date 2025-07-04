@@ -9,15 +9,22 @@ ALStepC4S001::ALStepC4S001():Super() {
 	// includes the "im hungry"
 	UseFade = false;
 	InputEnabled = false;
-	WaitTime = CamBlendTime = 2;
+	// wait time is set to blendtime this is good so that:
+	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
+	CamBlendTime = 2;
 	// FBDiagMod = .8/22.0; // .1; // only .8 available, and more than 22 dialogs.
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
-	// set wait to blend so that
-	// FIRST you turn, and THEN it fades the chars (on Start (after wait))
 	FinishPostWait = false;
 	UsePawnCam = false;
-	TeleportChar = false;
+	TeleportChar = true;
+
+	IntersFadeIn = {
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02_UAID_D8BBC116E501A1E401_1122317285")),
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC04_UAID_D8BBC116E501A1E401_1207918287")),
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC03_UAID_D8BBC116E501A1E401_1174907286")),
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501A0E401_1820527108"))
+	};
 }
 
 void ALStepC4S001::BeginPlay() {
@@ -40,3 +47,4 @@ void ALStepC4S001::Start_Implementation() {
 }
 
 // interfadeout and interfadein on editor
+// - todo move here

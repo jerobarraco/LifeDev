@@ -8,10 +8,11 @@ ALStepC4S005::ALStepC4S005():Super() {
 	InputEnabled = false;
 	FinishPostWait = false;
 	UsePawnCam = false;
-	TeleportChar = false;
+	TeleportChar = true;
 	
 	UseFBDlgAuto = true;
 	FBDlgAutoTo = 1.2;
 }
 
 // interfadeout on editor
+// todo move here
