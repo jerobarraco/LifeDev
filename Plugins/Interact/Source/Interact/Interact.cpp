@@ -12,7 +12,6 @@
 #include "Animator/Anim.h"
 
 #include "CInteract.h"
-#include "CInteractor.h"
 #include "Eval.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
@@ -334,13 +333,6 @@ void AInteract::PostActorCreated() {
 	// Only called on spawning actors AND DUPLICATIONS
 	// this function is mutually exclusive with PostLoad according to the docs
 	InitLabel();
-}
-
-void AInteract::PostInitProperties() {
-	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s AutoActivate=%i"),
-		__func__, *Label.ToString(), *GetNameSafe(this), UseAutoActivate);
-	Super::PostInitProperties();
-	// This is here just to test when and where this is being called.
 }
 
 void AInteract::SetActorHiddenInGame(const bool NewHidden) {
