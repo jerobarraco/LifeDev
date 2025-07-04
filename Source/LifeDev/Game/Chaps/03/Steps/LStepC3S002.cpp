@@ -11,12 +11,6 @@ ALStepC3S002::ALStepC3S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;
-	FinishItems = {
-		LDConsts::Items::Card3,
-		LDConsts::Items::Poem3,
-		LDConsts::Items::Tape3,
-	};
-	RemoveItems = {LDConsts::Items::Tape3, LDConsts::Items::Batts}; // consume
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;
@@ -25,6 +19,12 @@ ALStepC3S002::ALStepC3S002():Super() {
 	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
 	UseFBRand = true;
 	UseRain = true;
+	FinishItems = {
+		LDConsts::Items::Card3,
+		LDConsts::Items::Poem3,
+		LDConsts::Items::Tape3,
+	};
+	RemoveItems = {LDConsts::Items::Tape3, LDConsts::Items::Batts}; // consume
 }
 
 void ALStepC3S002::BeginPlay() {
