@@ -130,7 +130,7 @@
 		},
 		{
 			"Name": "DisasterRecoveryClient",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "ModelingToolsEditorMode",
