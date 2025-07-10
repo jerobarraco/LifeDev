@@ -23,8 +23,8 @@ ADoorI10::ADoorI10():Super() {
 
 void ADoorI10::DoTrigger_Implementation() {
 	Diags->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
-	if (!Diags->AddId("D10_T")) // after unlocking with the card
-		Shoot();// for meanwhile
+	// FTimerHandle H;
+	// GetWorld()->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, .5); // in case the dialog doesn't fire
 	Super::DoTrigger_Implementation();
 	// this is currently this way until i implement the item usage on next sprint. maybe the screwer.
 }
