@@ -372,10 +372,10 @@ void AOctTree::Add(AActor* const Actor) {
 	// If it doesn't fit, extend
 	if (UNLIKELY(!TryExtend(Actor))) {
 		UE_LOG(LogJOctTree, Warning, TEXT("%hs, could not extend. disowning."), __func__);
-		return; // otherwise rootnode cant handle it.
+		return; // otherwise rootNode can't handle it.
 	}
 
-	RootNode->Add(Actor); // note rootnode and not this->add
+	RootNode->Add(Actor); // note rootNode and not this->add
 }
 
 int32 AOctTree::Rem(AActor* const Actor) const {
