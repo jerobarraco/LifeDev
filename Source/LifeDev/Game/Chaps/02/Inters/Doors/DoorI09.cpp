@@ -2,7 +2,7 @@
 
 #include "DoorI09.h"
 
-ADoorI09::ADoorI09():Super() {
-	LockedDlg = "D09_L";
+ADoorI09::ADoorI09():Super() { // unused
+	// LockedDlg = "D09_L";
 	IsLocked = true;
 }

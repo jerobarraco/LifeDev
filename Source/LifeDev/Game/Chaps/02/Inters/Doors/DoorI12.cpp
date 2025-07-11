@@ -4,5 +4,5 @@
 
 ADoorI12::ADoorI12():Super() {
 	IsLocked = true;
-	LockedDlg = "D12_L";
+	// LockedDlg = "D12_L";
 }
