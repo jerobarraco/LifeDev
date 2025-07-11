@@ -180,7 +180,7 @@ void AInteract::Unlock_Implementation() {
 
 bool AInteract::ShowHint_Implementation() {
 	UE_LOG(LogInteract, Verbose, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"), __func__, *Label.ToString(),
-		UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID); // TODO remove or verbose
+		UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
 	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	const UWorld* const World = GetWorld();

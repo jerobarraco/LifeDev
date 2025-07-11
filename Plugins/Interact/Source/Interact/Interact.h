@@ -106,6 +106,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
 	// this should still allow to set useHint on the editor and constructor
+	// this is virtual so that the puzzles can pass this to its pieces.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	void SetUseHint(const bool NewHint=true);
 	virtual void SetUseHint_Implementation(const bool NewHint=true) { UseHint = NewHint; }
@@ -326,7 +327,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="SetUp|State")
 	int32 State = 0;
 
-	// whether to enable hints or not. Will be disabled on trigger.
+	// whether to enable hints or not. Check "UseHintCondition", and "UseTriggerDeHint"
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHint = false;
 
