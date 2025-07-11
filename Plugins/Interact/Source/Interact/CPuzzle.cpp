@@ -324,7 +324,7 @@ void UCPuzzle::ShowHint() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(GetOwner()));
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
-		I->SetUseHint(true); // reset in case it got dehint on trigger.
+		I->SetUseHint(true); // reset in case it got de-Hint on trigger.
 		I->ShowHint();
 	}
 }
