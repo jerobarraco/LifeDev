@@ -12,7 +12,6 @@ ADoorI10::ADoorI10():Super() {
 	UseAnim = false; // don't animate, stay visually closed.
 	IsOneShot = true;
 	StateNum = 1;
-	// LockedDlg = "D10_L"; // TODo this dialog should change.
 	// no unlock item nor trigger dlg. i want to keep this locked
 	IsLocked = true;
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -23,8 +22,6 @@ ADoorI10::ADoorI10():Super() {
 
 void ADoorI10::DoTrigger_Implementation() {
 	Diags->OnDone.AddUniqueDynamic(this, &ADoorI10::Shoot);
-	// FTimerHandle H;
-	// GetWorld()->GetTimerManager().SetTimer(H, this, &ADoorI10::Shoot, .5); // in case the dialog doesn't fire
 	Super::DoTrigger_Implementation();
 	// this is currently this way until i implement the item usage on next sprint. maybe the screwer.
 }
@@ -37,7 +34,5 @@ void ADoorI10::Shoot() {
 
 	PlaySFX(SFX_Gun);
 	Flashback->SetMin(.4f, .5);
-	// TODO use new autodialogs with condition for this.
-	// LockedDlg = "D10_L.1"; // new dialog from now on
 	if (LIKELY(Story)) Story->StartNext();
 }

@@ -5,7 +5,7 @@
 
 #include "DoorI08.generated.h"
 
-// Door from room02 to room03 (or vice) // unused
+// Door from room02 to room03 (or vice) // deprecated, unused.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADoorI08: public ADoor00 {
 	GENERATED_BODY()
