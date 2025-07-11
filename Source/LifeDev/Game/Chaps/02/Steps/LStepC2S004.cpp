@@ -24,6 +24,12 @@ ALStepC2S004::ALStepC2S004():Super() {
 		LDConsts::Items::Card2,
 		LDConsts::Items::Poem2,
 	};
+	IntersHint = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath(
+			"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card02_UAID_D8BBC116E501DFC401_1977970429")),
+		TSoftObjectPtr<AInteract>(FSoftObjectPath(
+			"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PoemI02_UAID_D8BBC116E5012CC501_1287868959"))
+	};
 
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb

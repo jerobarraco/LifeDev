@@ -5,6 +5,6 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ACard02::ACard02():Super() {
-	UseHint = true;
+	UseHint = false; // hinted by step
 	RewardItem = LDConsts::Items::Card2;
 }

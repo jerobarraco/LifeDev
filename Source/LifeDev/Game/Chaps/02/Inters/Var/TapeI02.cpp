@@ -8,7 +8,7 @@ ATapeI02::ATapeI02():Super() {
 	UseAutoActivate = true;
 	UseAnim = false;
 	UseFade = true;
-	UseHint = true;
+	UseHint = false; // hinted by step
 	StateNum = 1;
 	Texts = { NSLOCTEXT("TapeI02","State0","Another of my tapes") };
 	UseRewardDestroy = true;
@@ -20,7 +20,7 @@ ATapeI02::ATapeI02():Super() {
 	IsLocked = true;
 	// important to require batteries since im going to use it directly on c2s3
 	UnlockItems = { LDConsts::Items::Batts };
-	// LockedDlg = FName("T02_L"); // todo autodialog
+	// LockedDlg = FName("T02_L"); // autodialog
 
 	// LockedItemDlg = FName("T02_LI"); // will hint to use the batts
 	// TriggerDlg = uses autodiag // will say what it is. triggered on pick up

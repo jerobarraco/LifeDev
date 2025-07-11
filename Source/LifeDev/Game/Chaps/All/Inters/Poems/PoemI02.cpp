@@ -5,7 +5,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 APoemI02::APoemI02():Super() {
-	UseHint = true;
+	UseHint = false; // hint is set on the step that waits for it. 
 	RewardFlash = -.2f;
 	RewardItem = LDConsts::Items::Poem2;
 	Super::SetActorHiddenInGame(true); // made visible by step. this triggers a call to setActive(false) but it's ok.

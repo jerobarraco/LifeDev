@@ -19,8 +19,9 @@ ALStepC2S002::ALStepC2S002():Super() {
 	FinishItems = { LDConsts::Items::Tape2 };
 	RemoveItems = { LDConsts::Items::Batts };
 	IntersFadeIn = { // fade in so that increasing the step does not hide them
-		// poem
 		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI00_UAID_D8BBC116E501E2CD01_1084873435"))};
+	IntersHint = { // tape
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI02_UAID_D8BBC116E5012DC501_2098743131"))};
 }
 
 void ALStepC2S002::BeginPlay() {
