@@ -20,7 +20,7 @@ ATapeI02::ATapeI02():Super() {
 	IsLocked = true;
 	// important to require batteries since im going to use it directly on c2s3
 	UnlockItems = { LDConsts::Items::Batts };
-	LockedDlg = FName("T02_L"); // todo autodialog
+	// LockedDlg = FName("T02_L"); // todo autodialog
 
 	// LockedItemDlg = FName("T02_LI"); // will hint to use the batts
 	// TriggerDlg = uses autodiag // will say what it is. triggered on pick up
