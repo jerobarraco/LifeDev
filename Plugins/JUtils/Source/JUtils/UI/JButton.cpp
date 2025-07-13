@@ -18,6 +18,7 @@ void UJButton::SetUp(const FText& NewText, const int32 NewId) {
 void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Btn)) return;
+
 	Btn->OnClicked.AddUniqueDynamic(this, &UJButton::DoClick);
 }
 
