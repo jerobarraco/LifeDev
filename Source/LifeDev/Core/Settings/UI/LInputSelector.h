@@ -30,5 +30,5 @@ public:
 
 protected:
 	UFUNCTION()
-	void KeySelected(FInputChord Key);
+	void KeySelected(const FInputChord Key);
 };

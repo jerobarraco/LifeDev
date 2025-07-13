@@ -9,8 +9,9 @@ ULInputSelector::ULInputSelector():Super() {
 	// Super::SetIsEnabled(false);
 
 	FTextBlockStyle S = GetTextStyle();
-	// TODO set proper colors
-	S.Font.Size = 20;
+	// Setting the style here is a bit of a headache. so i'm just going to create a bp widget for this for the time being
+	S.Font.Size = 18;
+	S.SetTypefaceFontName("Roboto");
 	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Blue][3]));
 	SetTextStyle(S);
 	
@@ -36,6 +37,6 @@ void ULInputSelector::DeInit() {
 	OnKeySelected.RemoveAll(this);
 }
 
-void ULInputSelector::KeySelected(FInputChord Key) {
+void ULInputSelector::KeySelected(const FInputChord Key) { // can't be ref due to how the deleagate is set
 	OnKeySelectedPlus.Broadcast(this, Key);
 }
