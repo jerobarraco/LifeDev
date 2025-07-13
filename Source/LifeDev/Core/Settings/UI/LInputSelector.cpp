@@ -2,23 +2,38 @@
 
 #include "LInputSelector.h"
 
+#include "Framework/Styling/ButtonWidgetStyle.h"
 #include "LifeDev/Core/Consts/ConstColors.h"
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it
 	// Super::SetIsEnabled(false);
-
+	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset> CS (TEXT("/Game/LifeDev/Core/UI/Btns/LButton_S.LButton_S"));
+	TObjectPtr<USlateWidgetStyleAsset> SlateWidgetStyleAsset = CS.Object;
 	FTextBlockStyle S = GetTextStyle();
-	// Setting the style here is a bit of a headache. so i'm just going to create a bp widget for this for the time being
-	S.Font.Size = 18;
-	S.SetTypefaceFontName("Roboto");
-	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Blue][3]));
+	// Setting the style here is a bit of a headache.
+	// i considered using a widget, but i can't subclass it, i have to wrap it.
+	// and that makes it difficult to communicate with this code. so no. 
+	// S.Font.Size = 18;
+	// S.SetTypefaceFontName("Roboto");
+	S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Grey][14]));
+	FSlateFontInfo FI;
+	FI.OutlineSettings.OutlineSize = 1;
+	FI.OutlineSettings.OutlineColor = FColor(LDConsts::Colors::Palette[LDConsts::Colors::Grey][1]);
+	FI.TypefaceFontName = "Roboto";
+	FI.Size = 18;
+	S.SetFont(MoveTemp(FI));
+	// S.ColorAndOpacity = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Blue][3]));
+
+	
 	SetTextStyle(S);
 	
 	FButtonStyle BS = GetButtonStyle();
-	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Brown][3]));
+	BS.Normal.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::Grey][5]));
+	BS.Hovered.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][5]));
+	BS.Pressed.TintColor = FSlateColor(FColor(LDConsts::Colors::Palette[LDConsts::Colors::BlueLight][8]));
 	SetButtonStyle(BS);
-
+	
 	SetNoKeySpecifiedText(NSLOCTEXT("InputSelector", "NoKey", "[None]"));
 	SetKeySelectionText(NSLOCTEXT("InputSelector", "Waiting", "[Waiting...]"));
 	SetAllowModifierKeys(false);
