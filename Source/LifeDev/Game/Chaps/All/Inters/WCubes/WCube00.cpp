@@ -44,5 +44,6 @@ AWCube00::AWCube00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
-	SFXTrigger = CSnd.Object;
+	// SFXTrigger = CSnd.Object;
+	SFXs = {CSnd.Object, CSnd.Object, CSnd.Object, CSnd.Object, CSnd.Object, CSnd.Object};
 }

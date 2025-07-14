@@ -12,7 +12,8 @@ ASpot02::ASpot02():Super() {
 	// TODO sound
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts"));
-	SFXTrigger = CSnd.Object;
+	// SFXTrigger = CSnd.Object;
+	SFXs = {CSnd.Object, CSnd.Object};
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Arch/Chairs/Chair00"));

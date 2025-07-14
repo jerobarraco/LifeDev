@@ -81,8 +81,8 @@ ALLight::ALLight():Super() {
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CClick(TEXT("/Game/LifeDev/Game/Inters/Generic/Wall_Light_Double_Switch_Off-004.Wall_Light_Double_Switch_Off-004"));
-	SFXTrigger = CClick.Object;
-	
+	SFXs = {CClick.Object, CClick.Object};
+
 	/// ~
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);

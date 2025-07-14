@@ -12,8 +12,9 @@ ASpot00::ASpot00():Super() {
 	};
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
-	SFXTrigger = CSnd.Object;
-	
+	// SFXTrigger = CSnd.Object;
+	SFXs = {CSnd.Object, CSnd.Object};
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt01.Shirt01"));
 	if (LIKELY(ObjMesh.Succeeded())) Mesh->SetStaticMesh(ObjMesh.Object);
