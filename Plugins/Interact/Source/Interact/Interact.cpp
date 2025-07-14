@@ -368,11 +368,6 @@ void AInteract::DoTrigger_Implementation() {
 		SetState(NewState);
 	}
 
-	// only play trigger if there's not a sfxs sound. otherwise it will step on it.
-	// using  || before SFXs to ensure not an out of bound access
-	if (UNLIKELY(((State < 0) | (State >= SFXs.Num())) || !SFXs[State])) 
-		PlaySFX(SFXTrigger); // deprecated
-
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
 		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I))) I->SetActive(true);
