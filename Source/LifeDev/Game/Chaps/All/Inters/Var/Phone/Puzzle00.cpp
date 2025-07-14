@@ -8,12 +8,16 @@
 APuzzle00::APuzzle00():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {0,3,0,3,4,5,6};
+	ResetTimeout = 3;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CM(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/Phone00_P"));
 	Mesh->SetStaticMesh(CM.Object);
 	SetMobility(EComponentMobility::Static);
-	ResetTimeout = 3;
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/HangUp"));
+	SFXs = {CSnd.Object, CSnd.Object};
 }
 
 void APuzzle00::PostLoad() {

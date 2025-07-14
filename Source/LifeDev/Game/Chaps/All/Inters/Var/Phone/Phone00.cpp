@@ -14,4 +14,8 @@ APhone00::APhone00():Super() {
 	Interact->SetBoxExtent(FVector(15, 15, 5));
 	SFX->SetRelativeLocation(FVector(0,0, 5));
 	SetMobility(EComponentMobility::Static);
+	
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/HangUp"));
+	SFXs = {CSnd.Object, CSnd.Object};
 }
