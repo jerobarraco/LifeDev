@@ -5,9 +5,9 @@
 
 #include "Spot02.generated.h"
 
-// Spot chair
+// Spot chair, base
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ASpot02: public ALInteractSpot {
+class LIFEDEV_API ASpot02: public ALInteract {
 	GENERATED_BODY()
 
 public:

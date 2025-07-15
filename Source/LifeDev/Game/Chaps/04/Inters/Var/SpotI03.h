@@ -7,7 +7,7 @@
 
 class ALInteract;
 
-// Spot for kitchen chair
+// Spot for kitchen chair chap 04
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ASpotI03: public ASpot02 {
 	GENERATED_BODY()
