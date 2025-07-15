@@ -7,7 +7,7 @@
 ASpotI03::ASpotI03():Super() {
 	TriggerDlg = "IS3_T"; // when completed
 	LockedDlg = "IS3_L"; // when not full, try trigger
-
+	IsLocked = true; // start locked
 	UnlockItems = { LDConsts::Items::Plate02 }; // empty plate
 
 	// UseAutoActivate = false; // the steps will enable it // redundant
