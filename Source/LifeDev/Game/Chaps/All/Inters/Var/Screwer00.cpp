@@ -13,7 +13,7 @@ AScrewer00::AScrewer00():Super() {
 	UseFade = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Screwer_SP"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Utils/Screwer_SP"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(.000000,2.500000,-2.500000));
 
