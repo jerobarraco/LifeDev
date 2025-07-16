@@ -198,4 +198,7 @@ on .profile add the variables
 on project settings disable Rendering\Materials\Automatically set Material usage flags in editor
 
 disable tooltips
-https://forums.unrealengine.com/t/solved-is-there-any-way-to-disable-editor-tooltips/332197/12 
+https://forums.unrealengine.com/t/solved-is-there-any-way-to-disable-editor-tooltips/332197/12
+
+-UserDir=./Data
+	command line option when launching the game to specify where to store stuff. 
