@@ -186,6 +186,11 @@ public:
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
 	bool UseAttachedSFX = true;
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable)
+	FString Comment;
+#endif
 #pragma region State
 	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
