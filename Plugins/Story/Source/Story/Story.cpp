@@ -103,13 +103,15 @@ bool UStory::Start(const FName Name) {
 
 		// now fade in
 		auto l2 = [this]() {
+			// blocking on load requires the data-tables to have "Override Block on slow streaming" to "Blocking"
 			// attempt to wait for objects to be loaded. not sure if this works
 			UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
 			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
-			SMC.BlockTillAllRequestsFinished(3.f, true); // still only limit to 3. i don't like soft-locks
+			SMC.BlockTillAllRequestsFinished(3.f, true); // still use time limit. i don't like soft-locks
 			UE_LOG(LogStory, Log, TEXT("UStory::Start block end, flush start"));
+
 			UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
-			if (World3) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
+			if (LIKELY(World3)) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
 			UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
 			
 			// do fade out
@@ -151,6 +153,7 @@ void UStory::Stop() {
 
 void UStory::Add(AStep* const Step) {
 	if (UNLIKELY(!IsValid(Step))) return;
+
 	// i think this replaces something if it already exists. and that's exactly what i want.
 	Steps.Add(Step->Name, Step);
 }
