@@ -47,9 +47,9 @@ public:
 	TSubclassOf<UItemLogic> LogicType = nullptr;
 
 	// Experimental: condition needed to be used or self-used. or empty. 0 is false >0 is true.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString UseCondition;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(MultiLine), AssetRegistrySearchable)
 	FString Comment;
 
 	// Runtime only (transient). used during runtime to keep track of the count

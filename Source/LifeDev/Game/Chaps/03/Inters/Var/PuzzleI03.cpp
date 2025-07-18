@@ -9,8 +9,8 @@ APuzzleI03::APuzzleI03():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 0, 0, 4}; // S.H.A.M.E
 
-	static FName DoneId = "PZ03_T";
-	TriggerDlg = DoneId;
+	// static FName DoneId = "PZ03_T";
+	// TriggerDlg = DoneId;
 	RewardFlash = .15;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
 	RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(

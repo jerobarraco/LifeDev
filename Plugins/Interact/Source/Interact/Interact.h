@@ -120,7 +120,7 @@ public:
 
 	// experimental. Condition that needs to be >=1 for hint to work.
 	// Try to use RewardInterHint on another interact or step. it'll be faster than this.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Hint", AssetRegistrySearchable)
 	FString HintCondition;
 
 	// when >= 0 it will also animate the custom primitive data index=ID, from 0 to 1.
