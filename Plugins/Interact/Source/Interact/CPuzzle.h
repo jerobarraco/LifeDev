@@ -21,7 +21,7 @@ enum class EPuzzleType: uint8 {
 	// Solution describes the state in which the interactions needs to be
 	// Index 0 is interact 0, Solution[0] == state for interact 0
 	COMBINATION,
-	// Experimental. Uses a condition
+	// Uses a condition
 	CONDITION,
 	COUNT UMETA(hidden)
 };

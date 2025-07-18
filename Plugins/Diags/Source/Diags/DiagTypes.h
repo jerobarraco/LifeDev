@@ -62,10 +62,10 @@ public:
 	// Emotion. was not a bad idea. i won't use it but other people might. maybe i can use tags. like yarn.
 
 	// The dialog will be added if it's "true" (>0), or skipped otherwise. See Diags.CheckCondition for more info.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Condition = "";
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
 };
 
@@ -84,10 +84,10 @@ public:
 	TArray<FName> DiagRows;
 
 	// Experimental. The sequence will be added if it's "true" (>0), or skipped otherwise. See Diags.CheckCondition for more info.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Condition = "";
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
 };
 
