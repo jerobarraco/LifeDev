@@ -4,17 +4,20 @@
 
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 AWCube00::AWCube00():Super() {
 	UseRewardDestroy = false;
 	DisableWhileAnim = false; // To be used with the combination puzzle.
+	UseAutoActivate = true; // a bit lazy, but unlikely i'll have word cubes that aren't active
+	UseAnim = true;
+	UseFade = true; // a bit more costly, but most of the time, these cubes fade.
+	AnimFade->MatBase = nullptr; // the cubes use palettes.
+	
 	StateNum = 6;
 	Texts = { NSLOCTEXT("WCube00", "State0", "A cube with letters") } ;
-	UseAutoActivate = true; // a bit lazy, but unlikely i'll have word cubes that aren't active
-
-	UseAnim = true;
 	Anim->IsAdditive = false;
 	Anim->Duration = 1;
 	// all the faces. order is important to match the letters' order

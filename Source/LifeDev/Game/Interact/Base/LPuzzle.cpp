@@ -97,7 +97,7 @@ void ALPuzzle::SetActive_Implementation(const bool Active) {
 void ALPuzzle::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	Super::Fade_Implementation(FadeIn, SetHidden);
 	
-	// the LPuzzle actor itself will follow UseAutoActive which is false by default.
+	// the LPuzzle actor itself will follow UseAutoActive which is false by default. (??? why did i put this here?)
 	if (UNLIKELY(!CPuzzle)) return;
 
 	// fade is a LD stuff, can't do at the CPuzzle level
