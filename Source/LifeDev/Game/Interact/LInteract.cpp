@@ -206,6 +206,8 @@ void ALInteract::DoRewards() {
 
 	if (!UseRewardDestroy) return;
 
+	SetActive(false); // avoids multiple triggers on an object that's planned for destruction.
+
 	// not calling fade here, since it's called on trigger.
 	// bind to destroy. or just destroy if the anim failed/finished.
 	if (AnimFade->IsActive()) {
