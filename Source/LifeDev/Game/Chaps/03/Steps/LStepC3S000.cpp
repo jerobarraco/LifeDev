@@ -30,6 +30,13 @@ ALStepC3S000::ALStepC3S000():Super() {
 		// the picture puzzle
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI06_UAID_D8BBC116E5014A2C02_1407893984"))
 	};
+
+	// there's a bug, where the tape is not getting hidden, but ONLY when going from the previous chapter to the new one.
+	// i have no idea why that is, since the puzzle has the tape as ActorHidden
+	// i use fadeOut since ActorsHide will trigger on step finish and not start.
+	IntersFadeOut = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"))
+	};
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
