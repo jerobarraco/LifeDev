@@ -35,7 +35,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	// i have no idea why that is, since the puzzle has the tape as ActorHidden
 	// i use fadeOut since ActorsHide will trigger on step finish and not start.
 	IntersFadeOut = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"))
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"))
 	};
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
