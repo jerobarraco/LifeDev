@@ -22,10 +22,10 @@ ALStepC2S001::ALStepC2S001():Super() {
 	UseFBAnim = true;
 
 	ActorsShow = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02B_B_C_UAID_D8BBC116E501CCC501_1291009115"))
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02B_B_C_UAID_D8BBC116E501CCC501_1291009115"))
 	};
 	ActorsHide = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02B_B_C_UAID_D8BBC116E501CCC501_1291009115"))
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02B_B_C_UAID_D8BBC116E501CCC501_1291009115"))
 	};
 }
 

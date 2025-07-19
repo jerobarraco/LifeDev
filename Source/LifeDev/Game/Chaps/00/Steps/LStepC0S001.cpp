@@ -27,10 +27,10 @@ ALStepC0S001::ALStepC0S001():Super() {
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Room00.Room00")));
 	
 	ActorsShow = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.B_NPC00_C_UAID_D8BBC116E501E38701_1654185673"))
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.B_NPC00_C_UAID_D8BBC116E501E38701_1654185673"))
 	};
 	ActorsHide = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.B_NPC00_C_UAID_D8BBC116E501E38701_1654185673"))
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.B_NPC00_C_UAID_D8BBC116E501E38701_1654185673"))
 	};
 }
 
