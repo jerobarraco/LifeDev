@@ -103,8 +103,9 @@ bool UStory::Start(const FName Name) {
 
 		// now fade in
 		auto l2 = [this]() {
+			// attempt to wait for objects to be loaded.
+			// notice there's a timer before this lambda, so we only block in case something still remains
 			// blocking on load requires the data-tables to have "Override Block on slow streaming" to "Blocking"
-			// attempt to wait for objects to be loaded. not sure if this works
 			UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
 			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
 			SMC.BlockTillAllRequestsFinished(3.f, true); // still use time limit. i don't like soft-locks

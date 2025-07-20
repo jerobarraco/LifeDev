@@ -128,7 +128,7 @@ FCString::Atoi()
 https://forums.unrealengine.com/t/changing-offline-font-settings-does-nothing/368876/3?u=nande
 
 
-# make some const& have a default value on bp node
+# make some const& have a default value on bp node (parameter of function with default value)
 	meta=(AutoCreateRefTerm=ParamName))
 	
 # new object with a tsubclassof

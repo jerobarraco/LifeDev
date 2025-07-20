@@ -27,7 +27,7 @@ public:
 	void DeInit();
 	virtual void DeInit_Implementation();
 
-	UFUNCTION(Blueprintable)
+	UFUNCTION(Blueprintable, meta=(AutoCreateRefTerm=Title))
 	void Fade(bool In, const FText& Title = FText::GetEmpty());
 	
 	UFUNCTION(BlueprintCallable)
