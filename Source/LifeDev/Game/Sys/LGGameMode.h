@@ -110,6 +110,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 #pragma endregion
+	void ChapStart(); // temporarily here for lstory man
 
 protected:
 	virtual void BeginPlay() override;
@@ -122,9 +123,6 @@ protected:
 	void Spawn();
 
 	bool ChapLoad();
-	void ChapStart();
-	UFUNCTION() // bind to delegate
-	void ChapStartNext();
 	
 	UFUNCTION() // bind to delegate
 	void DiagShown(const FDiag& Diag);

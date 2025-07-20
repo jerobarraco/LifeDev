@@ -315,7 +315,6 @@ void ALGGameMode::Init() {
 	// start listening only here. in case the previous init might trigger a false one
 	Diags->OnShow.AddUniqueDynamic(this, &ALGGameMode::DiagShown);
 	Diags->OnDone.AddUniqueDynamic(this, &ALGGameMode::DiagDone);
-	Story->OnSeqStop.AddUniqueDynamic(this, &ALGGameMode::ChapStartNext);
 	Story->OnFade.AddUniqueDynamic(this, &ALGGameMode::Fade);
 
 	// this should be a "safe point" to be loading things, as the story should be showing the black bg
@@ -463,7 +462,7 @@ void ALGGameMode::ChapStart() { // TODO move to lstoryman
 	if (UNLIKELY(ChapFeat == EFeat::NONE || !Settings->GetFeat(ChapFeat))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
 			__func__, ChapterId);
-		ChapStartNext(); // note this is recursive but there ain't that many chapters
+		StoryMan->ChapStartNext(); // note this is recursive but there ain't that many chapters
 		return;
 	}
 
@@ -478,25 +477,6 @@ void ALGGameMode::ChapStart() { // TODO move to lstoryman
 	// Start the sequence.
 	Story->StartSequence(Chapter.Steps);
 	MusicMan->SetEnviron(true);
-}
-
-void ALGGameMode::ChapStartNext() { // TODO move to lstoryman
-	if (UNLIKELY(!IsValid(Settings->Save))) {
-		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
-		return;
-	}
-	
-	// Chapter done. go to the next one. important before savegame. read note on chatpreId
-	Settings->Save->ChapterID++;
-
-	// this won't trigger at the first start. read note on chapterId.
-	Settings->SaveGame();
-	
-	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
-	// clean the ghosts
-	if (LIKELY(Ghosts)) Ghosts->Kill(true);
-
-	ChapStart();
 }
 
 bool ALGGameMode::ChapLoad() { // TODO move to lstory man

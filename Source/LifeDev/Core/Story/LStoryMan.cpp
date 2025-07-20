@@ -3,6 +3,9 @@
 #include "LStoryMan.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Settings/LSave.h"
+#include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
 #include "Story/StoryUI.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
@@ -32,19 +35,47 @@ ALStoryMan::ALStoryMan():Super() {
 
 void ALStoryMan::BeginPlay() {
 	Super::BeginPlay();
-	Story = UStory::Instance(this);
+	Settings = ULSettings::Instance(this);
+	UE_CLOG(UNLIKELY(!Settings), LogLStoryMan, Warning, TEXT("%hs Could not get the settings subsystem."), __func__);
+
+	GM = ALGGameMode::Instance(this);
+	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the game mode."), __func__);
 }
 
 void ALStoryMan::Init_Implementation() {
 	Super::Init_Implementation();
+	Ghosts = LIKELY(GM) ? GM->Ghosts : nullptr;
+	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the ghosts."), __func__);
+
+	Story->OnSeqStop.AddUniqueDynamic(this, &ALStoryMan::ChapStartNext);
 }
 
 void ALStoryMan::ChapStartEnd() const {
-	const bool Started = Story->Start(StepEndName);	// done this way to have also transitions.
+	// done this way to have also transitions. // notice short-circuit
+	const bool Started = LIKELY(Story) && Story->Start(StepEndName);
 	if (LIKELY(Started)) return;
 	
 	UE_LOG(LogLStoryMan, Warning, TEXT("%hs Could not start End step. Verify the name is correct and is added to the level! Skip."), __func__);
 	// this is just a safety net because i do not like soft-locks.
 	UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
+}
+
+void ALStoryMan::ChapStartNext() {
+	if (UNLIKELY(!IsValid(Settings->Save))) {
+		UE_LOG(LogLStoryMan, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
+		return;
+	}
+
+	// Chapter done. go to the next one. important before savegame. read note on chapterId
+	Settings->Save->ChapterID++;
+
+	// this won't trigger at the first start. read note on chapterId.
+	Settings->SaveGame();
+	
+	// can't remember if this happens during the fade out. but i'm confident i would have coded it that way.
+	// clean the ghosts
+	if (LIKELY(Ghosts)) Ghosts->Kill(true);
+
+	if (LIKELY(GM)) GM->ChapStart();
 }
 

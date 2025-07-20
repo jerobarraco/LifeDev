@@ -5,6 +5,9 @@
 
 #include "LStoryMan.generated.h"
 
+class ALGGameMode;
+class AGhostPool;
+class ULSettings;
 // Lifedev version of the Story manager
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(LifeDev), Config=LifeDev, DefaultConfig,
 	meta=(BlueprintSpawnableComponent))
@@ -20,6 +23,8 @@ public:
 
 	virtual void Init_Implementation() override;
 	void ChapStartEnd() const;
+	UFUNCTION() // bind to delegate
+	void ChapStartNext();
 
 protected:
 	virtual void BeginPlay() override;
@@ -27,4 +32,13 @@ protected:
 	// default name of the end step
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	FName StepEndName="End";
+
+#pragma region cache
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ALGGameMode> GM = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<AGhostPool> Ghosts = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TObjectPtr<ULSettings> Settings = nullptr;
+#pragma endregion
 };
