@@ -71,6 +71,7 @@ void AStoryMan::BeginPlay() {
 	if (UNLIKELY(!World)) return;
 	
 	Story = World->GetSubsystem<UStory>();
+	UE_CLOG(UNLIKELY(!Story), LogTemp, Warning, TEXT("%hs Could not get the story subsystem."), __func__);
 
 	if (LIKELY(IsValid(UIClass.Get()))) {
 		UI = CreateWidget<UStoryUI>(World, UIClass, TEXT("StoryUI"));

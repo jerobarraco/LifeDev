@@ -428,7 +428,7 @@ void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALGGameMode::ChapStart() {
+void ALGGameMode::ChapStart() { // TODO move to lstoryman
 	const int32 ChapterId = Settings->CurrentChapter();
 	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
 
@@ -455,7 +455,7 @@ void ALGGameMode::ChapStart() {
 	if (UNLIKELY(ChapFeat >= EFeat::C_DONE)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
 			__func__, ChapterId);
-		ChapStartEnd();
+		StoryMan->ChapStartEnd();
 		return;
 	}
 
@@ -480,7 +480,7 @@ void ALGGameMode::ChapStart() {
 	MusicMan->SetEnviron(true);
 }
 
-void ALGGameMode::ChapStartNext() {
+void ALGGameMode::ChapStartNext() { // TODO move to lstoryman
 	if (UNLIKELY(!IsValid(Settings->Save))) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs: Savegame is null. can't progress."), __func__);
 		return;
@@ -499,7 +499,7 @@ void ALGGameMode::ChapStartNext() {
 	ChapStart();
 }
 
-bool ALGGameMode::ChapLoad() {
+bool ALGGameMode::ChapLoad() { // TODO move to lstory man
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
 	if (UNLIKELY(!IsValid(DT_Chaps))) {
@@ -547,15 +547,6 @@ bool ALGGameMode::ChapLoad() {
 	Diags->DTGroupAdd(Chapter.Groups.Get());
 
 	return true;
-}
-
-void ALGGameMode::ChapStartEnd() const {
-	const bool Started = Story->Start(StepEndName);	// done this way to have also transitions.
-	if (LIKELY(Started)) return;
-	
-	UE_LOG(LogLGameMode, Warning, TEXT("%hs Could not start End step. Verify the name is correct and is added to the level! Skip."), __func__);
-	// this is just a safety net because i do not like soft-locks.
-	UGameplayStatics::OpenLevel(GetWorld(), FName("Outro_L"), true);
 }
 
 void ALGGameMode::DiagShown(const FDiag& Diag) {

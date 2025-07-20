@@ -122,7 +122,6 @@ protected:
 	void Spawn();
 
 	bool ChapLoad();
-	void ChapStartEnd() const;
 	void ChapStart();
 	UFUNCTION() // bind to delegate
 	void ChapStartNext();
@@ -140,9 +139,6 @@ protected:
 	// which some objects are subscribed to.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
 	float CounterTime=.5;
-	// how often to increase the time counting flag
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category="SetUp")
-	FName StepEndName="End";
 
 	/// transients
 
