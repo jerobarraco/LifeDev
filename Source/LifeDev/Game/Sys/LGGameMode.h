@@ -111,6 +111,7 @@ public:
 	TObjectPtr<ULSettings> Settings = nullptr;
 #pragma endregion
 	void ChapStart(); // temporarily here for lstory man
+	bool ChapLoad(); // temporarily
 
 protected:
 	virtual void BeginPlay() override;
@@ -122,7 +123,6 @@ protected:
 	void InitOnSave(const bool IsSaving);
 	void Spawn();
 
-	bool ChapLoad();
 	
 	UFUNCTION() // bind to delegate
 	void DiagShown(const FDiag& Diag);

@@ -3,8 +3,11 @@
 #include "LStoryMan.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/LGameInstance.h"
+#include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
 #include "Story/StoryUI.h"
@@ -82,6 +85,58 @@ void ALStoryMan::ChapStartNext() {
 	// clean the ghosts
 	if (LIKELY(Ghosts)) Ghosts->Kill(true);
 
-	if (LIKELY(GM)) GM->ChapStart();
+	ChapStart();
+}
+
+void ALStoryMan::ChapStart() {
+	const int32 ChapterId = Settings->CurrentChapter();
+	const EFeat& ChapFeat = Settings->CurrentChapterFeat();
+
+	UE_LOG(LogLStoryMan, Log, TEXT("%hs Attempting to start chapter id=%i feat=%s"),
+		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
+
+	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
+	if (UNLIKELY(!IsValid(Instance) | !IsValid(Story) | !IsValid(GM))) {
+		// Should this be here?
+		UE_LOG(LogLStoryMan, Warning, TEXT("%hs No game instance or story or story manager or game mode. Can't proceed."),
+			__func__);
+		return;
+	}
+
+	const USentry* const Sentry = USentry::Instance(this);
+	const FString& ChapFeatS = UEnum::GetValueAsString(ChapFeat);
+	if (LIKELY(Sentry)) {
+		const TMap<FString, FString> Data = {{"ChapId",FString::FromInt(ChapterId)},
+			{"Feat", ChapFeatS}};
+		Sentry->AddHint(__func__, Data);
+	}
+
+	// stop here to avoid getting the engine stuck trying to load chapters
+	if (UNLIKELY(ChapFeat >= EFeat::C_DONE)) {
+		UE_LOG(LogLStoryMan, Warning, TEXT("%hs Went beyond available chapters. Stopping dry. id=%i."),
+			__func__, ChapterId);
+		ChapStartEnd();
+		return;
+	}
+
+	// skip chapter if not enabled or just started
+	if (UNLIKELY((ChapFeat == EFeat::NONE) | !Settings->GetFeat(ChapFeat))) {
+		UE_LOG(LogLStoryMan, Warning, TEXT("%hs Skipping chapter. Not in game Feats. id=%i."),
+			__func__, ChapterId);
+		ChapStartNext(); // note this is recursive but there ain't that many chapters
+		return;
+	}
+
+	/// load new one
+	if (UNLIKELY(!GM->ChapLoad())) { // todo move here
+		UE_LOG(LogLStoryMan, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
+		if (LIKELY(Sentry)) Sentry->AddMsg("Failed to load chapter", ESentryLevel::Error);
+		return;
+	}
+
+	// the story manager will make the gm disable/enable the input
+	// Start the sequence.
+	Story->StartSequence(GM->Chapter.Steps); // maybe move here
+	GM->MusicMan->SetEnviron(true); // maybe move here
 }
 

@@ -27,6 +27,8 @@ public:
 	void ChapStartEnd() const;
 	UFUNCTION() // bind to delegate
 	void ChapStartNext();
+	UFUNCTION() // bind to delegate
+	void ChapStart();
 
 protected:
 	virtual void BeginPlay() override;

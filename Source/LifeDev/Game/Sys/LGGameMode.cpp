@@ -333,7 +333,7 @@ void ALGGameMode::Init() {
 	// finally start
 	FTimerHandle Handle;
 	// wait for loading. then start the story!
-	Timer.SetTimer(Handle, this, &ALGGameMode::ChapStart, .1);
+	Timer.SetTimer(Handle, StoryMan.Get(), &ALStoryMan::ChapStart, .1);
 	Timer.SetTimer(CounterHandle, this, &ALGGameMode::TickCounter, CounterTime, true);
 }
 
