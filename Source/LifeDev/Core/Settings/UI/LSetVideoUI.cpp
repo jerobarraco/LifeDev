@@ -417,4 +417,3 @@ void ULSetVideoUI::FeatsSet() {
 	FeatTexts.Add(EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite"));
 	FeatsGroup->SetUp(FeatTexts);
 }
-
