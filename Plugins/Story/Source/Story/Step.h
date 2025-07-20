@@ -94,10 +94,10 @@ public:
 	// is up to you to set up the step in a way that this is not a breaking stuff (e.g. by using the fade).
 	// it HAS to have the .XXXX at the end of the path. (e.g. Rooms/Room03.Room03) or it won't load.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Load; // TODO ensure this is not broken on packaged builds
+	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Load;
 	// Data layers to unload
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload; // TODO ensure this is not broken on packaged builds
+	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload;
 
 	// set to true to use debug
 	inline static bool Debug = false;
