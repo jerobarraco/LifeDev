@@ -244,7 +244,7 @@ bool UStory::StartNext(const FName CurrentName) {
 	UE_LOG(LogStory, Log, TEXT("%hs. CurrentName=%s"), __func__, *CurrentName.ToString());
 
 	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
-	if (UNLIKELY(!CurrentName.IsNone() && IsValid(Current) && Current->Name != CurrentName)) {
+	if (UNLIKELY(!CurrentName.IsNone() & (IsValid(Current) && Current->Name != CurrentName))) {
 		UE_LOG(LogStory, Warning, TEXT("%hs Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
 			__func__, *Current->Name.ToString(), *CurrentName.ToString());
 		return false;
@@ -253,7 +253,7 @@ bool UStory::StartNext(const FName CurrentName) {
 	++SeqStep;
 	if (UNLIKELY(SeqStep >= Sequence.Num())) {
 		UE_LOG(LogStory, Log, TEXT("%hs Reached end of sequence. Stopping"), __func__);
-		// not stopping here to allow transitions between end of chapter to flow correctly (i.e. fade)
+		// not stopping here to allow transitions between end of chapter to flow correctly (i.e. fade and load)
 		// OnSeqStop will tell the gamemode that the sequence (chapter) finished,
 		// the GM will load the next chapter, and call StartSequence.
 		// StartSequence will call this, which calls Start, and since Current is still valid,

@@ -90,7 +90,7 @@ public:
 	// triggered when a step starts. (just after Step->TryStart is called, probably before Step->Start)
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryStepStart OnStart;
-	// triggers when a step stops
+	// triggers when a step stops. it's not triggered for the last step, until a new chapter is loaded. see note on StartNext
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
 	FStoryStepStop OnStop;
 	// triggered when a fade should occur. the story manager should fade the ui.

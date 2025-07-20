@@ -125,6 +125,7 @@ void ALGGameMode::Spawn() {
 
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
+
 	/// unrelated (done first since other things can depend on this)
 	PostProcess = Cast<APostProcessVolume>(
 		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
