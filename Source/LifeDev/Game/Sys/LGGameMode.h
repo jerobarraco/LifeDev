@@ -110,7 +110,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 #pragma endregion
-	void ChapStart(); // temporarily here for lstory man
 	bool ChapLoad(); // temporarily
 
 protected:
