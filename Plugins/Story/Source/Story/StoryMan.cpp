@@ -27,8 +27,7 @@ void AStoryMan::DeInit_Implementation() {
 	}
 	Story = nullptr;
 
-	if (LIKELY(UI))
-		UI->RemoveFromParent();
+	if (LIKELY(UI)) UI->RemoveFromParent();
 	UI = nullptr;
 }
 

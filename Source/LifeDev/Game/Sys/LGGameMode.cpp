@@ -392,10 +392,7 @@ void ALGGameMode::DeInit() {
 	
 	if (LIKELY(IsValid(Flags))) Flags->DeInit();
 	
-	if (LIKELY(IsValid(Story))) {
-		Story->OnSeqStop.RemoveAll(this);
-		Story->OnFade.RemoveAll(this);
-	}
+	if (LIKELY(IsValid(Story))) Story->OnFade.RemoveAll(this);
 
 	// these could have been loaded from a json
 	Chapter.Dialogs = nullptr;

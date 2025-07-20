@@ -47,7 +47,13 @@ void ALStoryMan::Init_Implementation() {
 	Ghosts = LIKELY(GM) ? GM->Ghosts : nullptr;
 	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the ghosts."), __func__);
 
-	Story->OnSeqStop.AddUniqueDynamic(this, &ALStoryMan::ChapStartNext);
+	if (LIKELY(Story)) Story->OnSeqStop.AddUniqueDynamic(this, &ALStoryMan::ChapStartNext);
+}
+
+void ALStoryMan::DeInit_Implementation() {
+	if (LIKELY(Story)) Story->OnSeqStop.RemoveAll(this);
+
+	Super::DeInit_Implementation();
 }
 
 void ALStoryMan::ChapStartEnd() const {

@@ -22,6 +22,8 @@ public:
 	ALStoryMan();
 
 	virtual void Init_Implementation() override;
+	virtual void DeInit_Implementation() override;
+	
 	void ChapStartEnd() const;
 	UFUNCTION() // bind to delegate
 	void ChapStartNext();
