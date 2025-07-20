@@ -107,7 +107,7 @@ void ULSetVideoUI::ResChanged(const FString SelectedItem, const ESelectInfo::Typ
 	if (UNLIKELY(!Settings | (SelectionType == ESelectInfo::Type::Direct))) return;
 
 	const int32 Index = Resolution->GetSelectedIndex();
-	if (UNLIKELY(Index <0 | (Index > ResOpts.Num()))) return;
+	if (UNLIKELY((Index <0) | (Index > ResOpts.Num()))) return;
 
 	Settings->SetScreenResolution(ResOpts[Index]);
 }
