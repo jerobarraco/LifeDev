@@ -90,7 +90,7 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 }
 
 void ULSetVideoUI::ResSet() const {
-	if (UNLIKELY(!Settings || !Resolution)) return;
+	if (UNLIKELY(!Settings | !Resolution)) return;
 
 	Resolution->ClearOptions();
 	for (const FIntPoint& P: ResOpts)
@@ -104,10 +104,10 @@ FString ULSetVideoUI::ResToCombo(const FIntPoint& P) {
 }
 
 void ULSetVideoUI::ResChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
-	if (UNLIKELY(!Settings || SelectionType == ESelectInfo::Type::Direct)) return;
+	if (UNLIKELY(!Settings | (SelectionType == ESelectInfo::Type::Direct))) return;
 
 	const int32 Index = Resolution->GetSelectedIndex();
-	if (UNLIKELY(Index <0 || Index > ResOpts.Num())) return;
+	if (UNLIKELY(Index <0 | (Index > ResOpts.Num()))) return;
 
 	Settings->SetScreenResolution(ResOpts[Index]);
 }
@@ -117,7 +117,8 @@ void ULSetVideoUI::ResOptsSet() {
 }
 
 void ULSetVideoUI::ResScaleSet() {
-	if (UNLIKELY(!ResScale || !Settings)) return;
+	if (UNLIKELY(!ResScale | !Settings)) return;
+
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	ResScale->OnValueChanged.RemoveAll(this);
 	const float Value = Settings->GetResolutionScaleNormalized();
@@ -137,6 +138,7 @@ void ULSetVideoUI::ResScaleChanged(const float Value) {
 
 void ULSetVideoUI::DResSet() const {
 	if (UNLIKELY(!DRes)) return;
+
 	const bool Enabled = Settings ? Settings->IsDynamicResolutionEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	DRes->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
@@ -146,11 +148,13 @@ void ULSetVideoUI::DResSet() const {
 
 void ULSetVideoUI::DResChanged(const bool bIsChecked) {
 	if (UNLIKELY(!Settings)) return;
+
 	Settings->SetDynamicResolutionEnabled(bIsChecked);
 }
 
 void ULSetVideoUI::VSyncSet() const {
 	if (UNLIKELY(!VSync)) return;
+
 	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 	VSync->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
@@ -160,6 +164,7 @@ void ULSetVideoUI::VSyncSet() const {
 
 void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
 	if (UNLIKELY(!Settings)) return;
+
 	Settings->SetVSyncEnabled(bIsChecked);
 }
 
@@ -190,7 +195,7 @@ void ULSetVideoUI::FrameRateSet() const{
 
 void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 	const ESelectInfo::Type SelectionType) {
-	if (UNLIKELY(!Settings || !FrameRate)) return;
+	if (UNLIKELY(!Settings | !FrameRate)) return;
 
 	// const size_t LimitNum = FrameRateOpts.Num();
 	constexpr size_t Num = UJUtilsMisc::ArraySize(FrameRateOpts);
@@ -267,7 +272,7 @@ void ULSetVideoUI::QSwitchLoad(const EQualityType QSwitch) const {
 	if (UNLIKELY(QSwitch == EQualityType::NONE)) return;
 	
 	const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(QSwitch);
-	if (UNLIKELY(!pSwitchUI || !*pSwitchUI)) {
+	if (UNLIKELY(!pSwitchUI || !*pSwitchUI)) { // has to be shortcircuit
 		UE_LOG(LogLSetVid, Log, TEXT("Cant find quality switch for %i"), QSwitch);
 		return;
 	}
@@ -322,7 +327,7 @@ void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 	UE_LOG(LogLSetVid, Log, TEXT("SetVideoUI: Setting quality=%i newq=%i"), Quality, NewQ);
 	if (UNLIKELY(Quality == EQualityType::NONE)) return;
 
-	if (UNLIKELY(NewQ<0 || NewQ>4)) {
+	if (UNLIKELY((NewQ<0) | (NewQ>4))) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs: New Quality out of bounds quality=%i newq=%i"),
 			__func__, Quality, NewQ);
 		return;

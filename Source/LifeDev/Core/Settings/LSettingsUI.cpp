@@ -176,7 +176,7 @@ void ULSettingsUI::SetPause() {
 
 void ULSettingsUI::SendComment(const int32 Id) {
 	const USentry* const Sentry = USentry::Instance(this);
-	if (UNLIKELY(!Sentry || !TComment )) return;
+	if (UNLIKELY(!Sentry | (!TComment) )) return;
 
 	Sentry->AddComment(TComment->GetText().ToString());
 	if (LIKELY(MsgBox)) {
