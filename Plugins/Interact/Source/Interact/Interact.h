@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "InteractTypes.h"
 
 #include "Interact.generated.h"
 
@@ -188,7 +187,7 @@ public:
 	bool UseAttachedSFX = true;
 
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
 	FString Comment;
 #endif
 #pragma region State

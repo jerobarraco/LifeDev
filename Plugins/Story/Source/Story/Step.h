@@ -99,6 +99,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload;
 
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
+	FString Comment;
+#endif
 	// set to true to use debug
 	inline static bool Debug = false;
 
