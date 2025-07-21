@@ -368,9 +368,12 @@ void ALGGameMode::DeInit() {
 	// i should probably start by unbinding everything, then nullifying at the very end
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
+
+	// destruction is reverse order than construction. delegates > actors > managers > subsystems
+
 	World->GetTimerManager().ClearAllTimersForObject(this);
 
-	// destruction is reverse order than construction. actors > managers > subsystems
+	if (LIKELY(IsValid(Story))) Story->OnFade.RemoveAll(this);
 
 	if (LIKELY(IsValid(Char))) Char->DeInit();
 	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
@@ -391,12 +394,6 @@ void ALGGameMode::DeInit() {
 	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
 	
 	if (LIKELY(IsValid(Flags))) Flags->DeInit();
-	
-	if (LIKELY(IsValid(Story))) Story->OnFade.RemoveAll(this);
-
-	// these could have been loaded from a json
-	Chapter.Dialogs = nullptr;
-	Chapter.Groups = nullptr;
 	
 	USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) Sentry->GameDeInit();
@@ -422,56 +419,6 @@ void ALGGameMode::DeInit() {
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 	Super::EndPlay(EndPlayReason);
-}
-
-bool ALGGameMode::ChapLoad() { // TODO move to lstory man
-	const ULSysSettings* const SysSettings = ULSysSettings::Get();
-	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
-	if (UNLIKELY(!IsValid(DT_Chaps))) {
-		UE_LOG(LogLGameMode, Error, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
-		USentry::SAddMsg(this, "Could not obtain the chapter datatable from settings. Stop", ESentryLevel::Error);
-		return false;
-	}
-
-	/// unload old chapter
-	if (Chapter.Dialogs.IsValid())
-		Diags->DTDiagRem(Chapter.Dialogs.Get());
-	if (Chapter.Groups.IsValid())
-		Diags->DTGroupRem(Chapter.Groups.Get());
-	
-	// DT_Chaps = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(), "test",
-		// FLChapter::StaticStruct(), this); // cant find the symbol
-	
-	// load a chapter based on the rowname. which is just an int to string of the chapter id.
-	// todo find a betterest way
-	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
-	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
-	if (UNLIKELY(!pChap)) {
-		UE_LOG(LogLGameMode, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
-		return false;
-	}
-
-	Chapter = *pChap; // Make a copy
-	// set them on the dialog subsystem
-
-	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
-		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
-		TArray<FString> Problems;
-		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(Base,
-			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), Problems, this);
-		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
-			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), Problems, this);
-		Chapter.Dialogs = DiagExt; // best way. so it can be unloaded too.
-		Chapter.Groups = GroupsExt; // best way. so it can be unloaded too.
-	} else {
-		Chapter.Dialogs.LoadSynchronous();
-		Chapter.Groups.LoadSynchronous();
-	}
-
-	Diags->DTDiagAdd(Chapter.Dialogs.Get());
-	Diags->DTGroupAdd(Chapter.Groups.Get());
-
-	return true;
 }
 
 void ALGGameMode::DiagShown(const FDiag& Diag) {

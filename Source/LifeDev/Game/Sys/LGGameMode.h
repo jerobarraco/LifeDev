@@ -64,9 +64,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTempInputEnabled(const bool Enabled) const;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	FLChapter Chapter;
-
 #pragma region Managers
 	/// cache: these are public on purpose in case someone needs a handy dandy pointer to them
 	/// only making public the ones that require a GetActorOfClass (not the subsystems)
@@ -110,7 +107,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 #pragma endregion
-	bool ChapLoad(); // temporarily
 
 protected:
 	virtual void BeginPlay() override;
@@ -121,7 +117,6 @@ protected:
 	UFUNCTION()
 	void InitOnSave(const bool IsSaving);
 	void Spawn();
-
 	
 	UFUNCTION() // bind to delegate
 	void DiagShown(const FDiag& Diag);

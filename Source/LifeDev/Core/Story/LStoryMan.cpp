@@ -2,11 +2,15 @@
 
 #include "LStoryMan.h"
 
+#include "Diags/Diags.h"
+#include "Diags/DiagTypes.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
@@ -55,6 +59,10 @@ void ALStoryMan::Init_Implementation() {
 
 void ALStoryMan::DeInit_Implementation() {
 	if (LIKELY(Story)) Story->OnSeqStop.RemoveAll(this);
+
+	// these could have been loaded from a json
+	Chapter.Dialogs = nullptr;
+	Chapter.Groups = nullptr;
 
 	Super::DeInit_Implementation();
 }
@@ -128,7 +136,7 @@ void ALStoryMan::ChapStart() {
 	}
 
 	/// load new one
-	if (UNLIKELY(!GM->ChapLoad())) { // todo move here
+	if (UNLIKELY(!ChapLoad())) {
 		UE_LOG(LogLStoryMan, Warning, TEXT("%hs Chapter didn't load. Won't start any sequence."), __func__);
 		if (LIKELY(Sentry)) Sentry->AddMsg("Failed to load chapter", ESentryLevel::Error);
 		return;
@@ -136,7 +144,60 @@ void ALStoryMan::ChapStart() {
 
 	// the story manager will make the gm disable/enable the input
 	// Start the sequence.
-	Story->StartSequence(GM->Chapter.Steps); // maybe move here
+	Story->StartSequence(Chapter.Steps); // maybe move here
 	GM->MusicMan->SetEnviron(true); // maybe move here
 }
 
+bool ALStoryMan::ChapLoad() {
+	UE_LOG(LogLStoryMan, Log, TEXT("%hs"), __func__);
+
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
+	if (UNLIKELY(!IsValid(DT_Chaps))) {
+		UE_LOG(LogLStoryMan, Error, TEXT("%hs: Chapter Datatable is not properly set in the settings."), __func__);
+		USentry::SAddMsg(this, "Could not obtain the chapter datatable from settings. Stop", ESentryLevel::Error);
+		return false;
+	}
+
+	/// unload old chapter
+	if (Chapter.Dialogs.IsValid())
+		Diags->DTDiagRem(Chapter.Dialogs.Get());
+	if (Chapter.Groups.IsValid())
+		Diags->DTGroupRem(Chapter.Groups.Get());
+	
+	// DT_Chaps = UJUtilsMisc::LoadJSONTable(FPaths::ProjectConfigDir(), "test",
+		// FLChapter::StaticStruct(), this); // cant find the symbol
+	
+	// load a chapter based on the rowname. which is just an int to string of the chapter id.
+	// todo find a betterest way
+	const FName ChapName = *FString::FromInt(Settings->CurrentChapter());
+	FLChapter* const pChap = DT_Chaps->FindRow<FLChapter>(ChapName, TEXT(""));
+	if (UNLIKELY(!pChap)) {
+		UE_LOG(LogLStoryMan, Warning, TEXT("Can't get the chapter from datatable. Row=%s."), *ChapName.ToString());
+		return false;
+	}
+
+	Chapter = *pChap; // Make a copy
+	// set them on the dialog subsystem
+
+	// probably need to load before, since i use getasset name below
+	Chapter.Dialogs.LoadSynchronous();
+	Chapter.Groups.LoadSynchronous();
+	
+	if (Settings && Settings->GetFeat(EFeat::G_DATA_EXT)) {
+		static const FString& Base = FPaths::Combine(FPaths::ProjectConfigDir(), "L10N");
+		TArray<FString> Problems;
+		// wait, this is using dialogs and groups here
+		UDataTable* const DiagExt = UJUtilsMisc::LoadJSONTable(Base,
+			Chapter.Dialogs.GetAssetName(), FDiag::StaticStruct(), Problems, this);
+		UDataTable* const GroupsExt = UJUtilsMisc::LoadJSONTable(Base,
+			Chapter.Groups.GetAssetName(), FDiagGroup::StaticStruct(), Problems, this);
+		Chapter.Dialogs = DiagExt; // best way. so it can be unloaded too.
+		Chapter.Groups = GroupsExt; // best way. so it can be unloaded too.
+	}
+
+	Diags->DTDiagAdd(Chapter.Dialogs.Get());
+	Diags->DTGroupAdd(Chapter.Groups.Get());
+
+	return true;
+}
