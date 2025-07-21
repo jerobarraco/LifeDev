@@ -47,6 +47,9 @@ void ALStoryMan::BeginPlay() {
 
 	GM = ALGGameMode::Instance(this);
 	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the game mode."), __func__);
+
+	Diags = UDiags::Instance(this);
+	UE_CLOG(UNLIKELY(!Diags), LogLStoryMan, Warning, TEXT("%hs Could not get the diags subsystem."), __func__);
 }
 
 void ALStoryMan::Init_Implementation() {
@@ -64,6 +67,9 @@ void ALStoryMan::DeInit_Implementation() {
 	Chapter.Dialogs = nullptr;
 	Chapter.Groups = nullptr;
 
+	Diags = nullptr;
+	GM = nullptr;
+	Settings = nullptr;
 	Super::DeInit_Implementation();
 }
 
@@ -150,6 +156,12 @@ void ALStoryMan::ChapStart() {
 
 bool ALStoryMan::ChapLoad() {
 	UE_LOG(LogLStoryMan, Log, TEXT("%hs"), __func__);
+
+	if (UNLIKELY(!IsValid(Diags))) {
+		UE_LOG(LogLStoryMan, Error, TEXT("%hs: Invalid diags subsystem."), __func__);
+		USentry::SAddMsg(this, "Invalid Diag subsystem. Stop", ESentryLevel::Error);
+		return false;
+	}
 
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	const UDataTable* const DT_Chaps = SysSettings->Chapters.LoadSynchronous();
