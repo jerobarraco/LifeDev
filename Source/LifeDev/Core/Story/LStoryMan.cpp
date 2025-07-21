@@ -45,18 +45,22 @@ void ALStoryMan::BeginPlay() {
 	Settings = ULSettings::Instance(this);
 	UE_CLOG(UNLIKELY(!Settings), LogLStoryMan, Warning, TEXT("%hs Could not get the settings subsystem."), __func__);
 
-	GM = ALGGameMode::Instance(this);
-	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the game mode."), __func__);
-
 	Diags = UDiags::Instance(this);
 	UE_CLOG(UNLIKELY(!Diags), LogLStoryMan, Warning, TEXT("%hs Could not get the diags subsystem."), __func__);
 }
 
 void ALStoryMan::Init_Implementation() {
 	Super::Init_Implementation();
-	Ghosts = LIKELY(GM) ? GM->Ghosts : nullptr;
-	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the ghosts."), __func__);
+	
+	const ALGGameMode* const GM = ALGGameMode::Instance(this);
+	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the game mode."), __func__);
 
+	Ghosts = LIKELY(GM) ? GM->Ghosts : nullptr;
+	UE_CLOG(UNLIKELY(!Ghosts), LogLStoryMan, Warning, TEXT("%hs Could not get the ghosts."), __func__);
+
+	MusicMan = LIKELY(GM) ? GM->MusicMan : nullptr;
+	UE_CLOG(UNLIKELY(!MusicMan), LogLStoryMan, Warning, TEXT("%hs Could not get the music manager."), __func__);
+	
 	if (LIKELY(Story)) Story->OnSeqStop.AddUniqueDynamic(this, &ALStoryMan::ChapStartNext);
 }
 
@@ -68,8 +72,8 @@ void ALStoryMan::DeInit_Implementation() {
 	Chapter.Groups = nullptr;
 
 	Diags = nullptr;
-	GM = nullptr;
 	Settings = nullptr;
+	MusicMan = nullptr;
 	Super::DeInit_Implementation();
 }
 
@@ -110,7 +114,7 @@ void ALStoryMan::ChapStart() {
 		__func__, ChapterId, *UEnum::GetValueAsString(ChapFeat));
 
 	const ULGameInstance* const Instance = Cast<ULGameInstance>(GetGameInstance());
-	if (UNLIKELY(!IsValid(Instance) | !IsValid(Story) | !IsValid(GM))) {
+	if (UNLIKELY(!IsValid(Instance) | !IsValid(Story))) {
 		// Should this be here?
 		UE_LOG(LogLStoryMan, Warning, TEXT("%hs No game instance or story or story manager or game mode. Can't proceed."),
 			__func__);
@@ -151,7 +155,7 @@ void ALStoryMan::ChapStart() {
 	// the story manager will make the gm disable/enable the input
 	// Start the sequence.
 	Story->StartSequence(Chapter.Steps); // maybe move here
-	GM->MusicMan->SetEnviron(true); // maybe move here
+	MusicMan->SetEnviron(true); // maybe move here
 }
 
 bool ALStoryMan::ChapLoad() {

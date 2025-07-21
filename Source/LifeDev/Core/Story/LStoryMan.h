@@ -6,6 +6,7 @@
 
 #include "LStoryMan.generated.h"
 
+class ALMusicMan;
 class UDiags;
 class ALGGameMode;
 class AGhostPool;
@@ -46,13 +47,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FLChapter Chapter;
 
-	UPROPERTY(BlueprintReadOnly, Transient)
-	TObjectPtr<ALGGameMode> GM = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<ALMusicMan> MusicMan = nullptr;
 #pragma endregion
 };
