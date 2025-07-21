@@ -108,7 +108,7 @@ public:
 	// The base data layer that gets loaded when the game starts
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Story")
 	TSoftObjectPtr<UDataLayerAsset> BaseDL = TSoftObjectPtr<UDataLayerAsset>(
-		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base"));
+		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Base.Base"));
 
 	// The default features
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Feats")
