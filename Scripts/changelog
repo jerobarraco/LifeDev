@@ -1,6 +1,9 @@
 #!/bin/bash
 # usage: ./changelog first_commit last_commit
+# also: ./changelog HEAD 0.5.2.6
  
 #git log 7706dc84...796f6d28 > changelog_0.2.txt
-git log --pretty=oneline --abbrev-commit $2...$1 > log.txt
+#git log --pretty=oneline --abbrev-commit $2...$1 > log.txt
+# reversed
+git log --pretty=oneline --abbrev-commit $2...$1 | tac > log.txt
 
