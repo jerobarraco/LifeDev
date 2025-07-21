@@ -38,7 +38,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
 	bool UseSndAtLocation = false;
-	// when an item is triggered. Mostly only used by LTeach
+	// when an item is being looked at. Mostly only used by LTeach.
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FOnLook OnLook;
 
