@@ -739,8 +739,6 @@ void UAnim::Initialize(FSubsystemCollectionBase& Collection) {
 }
 
 bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
-	if (!FSlateApplication::IsInitialized()) return false; // this requires the Slate dependency on Bulid.cs
-
 	UE_LOG(LogAnim, Log, TEXT("%hs is=%i."),
 		__func__, ShouldBeCreated);
 
@@ -748,6 +746,13 @@ bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
 		UE_LOG(LogAnim, Log, TEXT("%hs is false. The world subsystem will not be created."
 			"Can be changed on the config file Interact.ini"), __func__);
 		return false;
+	}
+	
+	if (!FSlateApplication::IsInitialized()) {
+		UE_LOG(LogAnim, Warning, TEXT("%hs FSlateApplication::IsInitialized is false."
+			" The world subsystem will not be created."
+			" Ensure Slate is added as dependency in your Build.cs and the initialization order is correct."), __func__);
+		return false; // this requires the Slate dependency on Build.cs
 	}
 
 	return Super::ShouldCreateSubsystem(Outer);
