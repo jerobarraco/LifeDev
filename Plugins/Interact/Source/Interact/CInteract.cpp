@@ -182,10 +182,15 @@ void UCInteract::Activate(const bool bReset) {
 void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	// this is like traveling to the future backwards, i'm warning my future self of a past problem.
 	// UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
-	UE_CLOG(NeedsInitialization() | OwnerNeedsInitialization(), LogCInteract, Warning,
-		TEXT("%hs Don't call during construction! Call SetAutoActivate. O=%s"),
-		__func__, *GetNameSafe(GetOwner()));
-	
+	const bool NeedsInit = NeedsInitialization() | OwnerNeedsInitialization();
+	if (UNLIKELY(NeedsInit)) {
+		UE_LOG(LogCInteract, Warning,
+			TEXT("%hs Skipped during construction. Call SetAutoActivate. Beware, Called SetAutoActivate. O=%s"),
+			__func__, *GetNameSafe(GetOwner()));
+		SetAutoActivate(bNewActive);
+		return;
+	}
+
 	Super::SetActive(bNewActive, bReset);
 }
 
