@@ -51,6 +51,19 @@ void ULoadScr::DoTick(const float dt) {
 	World->GetTimerManager().Tick(dt);
 }
 
+bool ULoadScr::ShouldCreateSubsystem(UObject* const Outer) const {
+	// UE_LOG(LogTemp, Log, TEXT("%hs is=%i."),
+	// __func__, ShouldBeCreated);
+	//
+	// if (!ShouldBeCreated) {
+	// 	UE_LOG(LogAnim, Log, TEXT("%hs is false. The world subsystem will not be created."
+	// 		"Can be changed on the config file Interact.ini"), __func__);
+	// 	return false;
+	// }
+	//
+	return Super::ShouldCreateSubsystem(Outer);
+}
+
 void ULoadScr::Show() {
 	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
 

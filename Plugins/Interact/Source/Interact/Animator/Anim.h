@@ -364,7 +364,7 @@ public:
 	// when false, it will save some cycles, but might make the app crash.
 	// should be changed in the config file
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	bool ShouldBeCreated = true;
+	bool ShouldCreate = true;
 
 #pragma region delegates
 	// when ALL the items have faded

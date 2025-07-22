@@ -126,7 +126,7 @@ public:
 	FString HintCondition;
 
 	// when >= 0 it will also animate the custom primitive data index=ID, from 0 to 1.
-	// requires the AnimMat to be created (ShouldBeCreated defaults to false on config)
+	// requires the Anim subsystem to be created (set ShouldCreate to true on config)
 	// this is a quick way to disable CustomPrimData for this specific item
 	// or in general by setting it on the config.
 	// if this is <0 then no prim data animation is done. BUT showHint will still return true (when it succeeds).
