@@ -6,7 +6,7 @@
 // This is experimental due to an issue with the background tick.
 // Don't over-rely on it yet
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, Category=JUtils, Config=JUtils, DefaultConfig)
 class JUTILS_API ULoadScr: public UGameInstanceSubsystem {
 	GENERATED_BODY()
 
@@ -32,9 +32,17 @@ public:
 	bool UseBGTick = true;
 
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UUserWidget> Widget = nullptr;
+
+	// whether this subsystem will be created.
+	// when false, it will save some cycles, but might make the app crash if you try to use it without checking the pointer.
+	// (checking the pointer is always recommended)
+	// should be changed in the config file
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
+	bool ShouldCreate = true;
 
 	bool UseBGLoop = false;
 };

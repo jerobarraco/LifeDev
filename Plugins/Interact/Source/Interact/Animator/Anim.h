@@ -360,12 +360,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, Config)
 	float DurationDefault = 1.f;
 
-	// whether this subsystem will be created.
-	// when false, it will save some cycles, but might make the app crash.
-	// should be changed in the config file
-	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	bool ShouldCreate = true;
-
 #pragma region delegates
 	// when ALL the items have faded
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)
@@ -390,6 +384,13 @@ public:
 #pragma endregion
 
 protected:
+	// whether this subsystem will be created.
+	// when false, it will save some cycles, but might make the app crash if you try to use it without checking the pointer.
+	// (checking the pointer is always recommended)
+	// should be changed in the config file
+	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
+	bool ShouldCreate = true;
+
 #pragma region Items
 	bool ItemInit(FABase& IOItem) const;
 	template<typename Type>

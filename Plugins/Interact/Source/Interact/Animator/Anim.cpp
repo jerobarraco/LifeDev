@@ -739,11 +739,11 @@ void UAnim::Initialize(FSubsystemCollectionBase& Collection) {
 }
 
 bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
-	UE_LOG(LogAnim, Log, TEXT("%hs is=%i."),
+	UE_LOG(LogAnim, Log, TEXT("%hs ShouldCreate=%i."),
 		__func__, ShouldCreate);
 
 	if (!ShouldCreate) {
-		UE_LOG(LogAnim, Log, TEXT("%hs is false. The world subsystem will not be created."
+		UE_LOG(LogAnim, Log, TEXT("%hs ShouldCreate is false. The world subsystem will not be created."
 			"Can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}

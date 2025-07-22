@@ -10,6 +10,8 @@
 
 // https://www.youtube.com/watch?app=desktop&v=ON1_dEHoNDg
 
+DEFINE_LOG_CATEGORY_STATIC(LogLoadScr, Log, Log)
+
 ULoadScr* ULoadScr::Instance(const UObject* const O) {
 	if (UNLIKELY(!O)) return nullptr;
 	
@@ -37,7 +39,7 @@ void ULoadScr::SetWidget(UUserWidget* const O) {
 }
 
 void ULoadScr::DoTick(const float dt) {
-	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs tick frame=%lli"), __func__, GFrameCounter);
+	UE_LOG(LogLoadScr, Warning, TEXT("%hs tick frame=%lli"), __func__, GFrameCounter);
 	const UWorld* const World = GetWorld();
 	if (!World) return;
 
@@ -52,23 +54,23 @@ void ULoadScr::DoTick(const float dt) {
 }
 
 bool ULoadScr::ShouldCreateSubsystem(UObject* const Outer) const {
-	// UE_LOG(LogTemp, Log, TEXT("%hs is=%i."),
-	// __func__, ShouldBeCreated);
-	//
-	// if (!ShouldBeCreated) {
-	// 	UE_LOG(LogAnim, Log, TEXT("%hs is false. The world subsystem will not be created."
-	// 		"Can be changed on the config file Interact.ini"), __func__);
-	// 	return false;
-	// }
-	//
+	UE_LOG(LogLoadScr, Log, TEXT("%hs ShouldCreate=%i."),
+		__func__, ShouldCreate);
+	
+	if (!ShouldCreate) {
+		UE_LOG(LogLoadScr, Log, TEXT("%hs ShouldCreate is false. The world subsystem will not be created."
+			"Can be changed on the config file JUtils.ini"), __func__);
+		return false;
+	}
+
 	return Super::ShouldCreateSubsystem(Outer);
 }
 
 void ULoadScr::Show() {
-	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
+	UE_LOG(LogLoadScr, Warning, TEXT("%hs"), __func__);
 
 	if (!IsInGameThread()) {
-		UE_LOG(LogTemp, Warning, TEXT("ULoadScr::%hs was not on game thread. avoided a crash. "), __func__);
+		UE_LOG(LogLoadScr, Warning, TEXT("%hs was not on game thread. avoided a crash. "), __func__);
 		return;
 	}
 
@@ -97,7 +99,7 @@ void ULoadScr::Show() {
 	Player->OnMoviePlaybackTick().AddUObject(this, &ULoadScr::DoTick); // doesn't work
 
 	if (UNLIKELY(!UseBGTick)) {
-		UE_LOG(LogTemp, Log, TEXT("ULoader::%hs UseBGTick is false. Timers won't work. Good luck."),
+		UE_LOG(LogLoadScr, Log, TEXT("%hs UseBGTick is false. Timers won't work. Good luck."),
 			__func__);
 		// good luck. timers won't work
 		return;
@@ -118,10 +120,11 @@ void ULoadScr::Show() {
 }
 
 void ULoadScr::Hide() {
-	UE_LOG(LogTemp, Warning, TEXT("LoadScr::%hs"), __func__);
+	UE_LOG(LogLoadScr, Warning, TEXT("%hs"), __func__);
 	// CreateMoviePlayer();
 	IGameMoviePlayer* const Player = GetMoviePlayer();
 	if (UNLIKELY(!Player)) return;
+
 	UseBGLoop = false; // would stop the fake timer
 	Player->OnMoviePlaybackTick().RemoveAll(this);
 	Player->StopMovie();
