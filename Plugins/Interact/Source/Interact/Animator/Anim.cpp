@@ -744,7 +744,7 @@ bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
 
 	if (!ShouldCreate) {
 		UE_LOG(LogAnim, Log, TEXT("%hs ShouldCreate is false. The world subsystem will not be created."
-			"Can be changed on the config file Interact.ini"), __func__);
+			" It can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}
 	

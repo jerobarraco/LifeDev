@@ -3,9 +3,10 @@
 
 #pragma once
 #include "LoadScr.generated.h"
-// This is experimental due to an issue with the background tick.
-// Don't over-rely on it yet
 
+// This is experimental due to an issue with the background tick.
+// it might have issues when dealing with the timermanager or depending on the tick
+// set UseBgTick in case you need to tick.
 UCLASS(Blueprintable, Category=JUtils, Config=JUtils, DefaultConfig)
 class JUTILS_API ULoadScr: public UGameInstanceSubsystem {
 	GENERATED_BODY()
@@ -25,13 +26,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hide();
 
+	// processes a manual tick. either call this manually, or set  UseBgTick
+	// currently it only ticks the timer manager
 	UFUNCTION()
 	void DoTick(const float dt);
 
-	UPROPERTY(BlueprintReadWrite, Transient)
+	// when set, it will force call DoTick on the game thread, while on the background.
+	UPROPERTY(BlueprintReadWrite, Category=SetUp, Config)
 	bool UseBGTick = true;
 
-	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	virtual bool ShouldCreateSubsystem(UObject* const Outer) const override;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
