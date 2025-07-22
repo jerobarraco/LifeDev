@@ -9,19 +9,24 @@
 UCLASS(Blueprintable)
 class JUTILS_API ULoadScr: public UGameInstanceSubsystem {
 	GENERATED_BODY()
-public:
 
+public:
 	static ULoadScr* Instance(const UObject* const O);
+
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	// sets the widget to be used as loading screen. otherwise it will use a test one.
 	UFUNCTION(BlueprintCallable)
 	void SetWidget(UUserWidget* const O);
+	// shows the loading screen. sends the game thread to the background.
+	UFUNCTION(BlueprintCallable)
+	void Show();
+	// hides the loading screen. brings the game thread to the foreground.
+	UFUNCTION(BlueprintCallable)
+	void Hide();
 
 	UFUNCTION()
 	void DoTick(const float dt);
-	UFUNCTION(BlueprintCallable)
-	void Show();
-	UFUNCTION(BlueprintCallable)
-	void Hide();
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool UseBGTick = true;
