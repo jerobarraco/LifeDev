@@ -7,7 +7,6 @@ ALStepC4S001::ALStepC4S001():Super() {
 	Name = FName("C4S1");
 	DlgId = Name; // this chapter finishes after the dialog
 	// includes the "im hungry"
-	UseFade = false;
 	InputEnabled = false;
 	// wait time is set to blendtime this is good so that:
 	// FIRST you turn, and THEN it fades the chars (on Start (after wait))

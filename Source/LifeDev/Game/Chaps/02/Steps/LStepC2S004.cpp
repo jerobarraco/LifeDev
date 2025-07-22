@@ -10,7 +10,6 @@ ALStepC2S004::ALStepC2S004():Super() {
 	Name = N;
 	// DlgId = N; // this chapter finishes after the dialog
 	// no waits
-	UseFade = false;
 	FinishPostWait = false;
 	// returns to the player camera and control
 	InputEnabled = true;

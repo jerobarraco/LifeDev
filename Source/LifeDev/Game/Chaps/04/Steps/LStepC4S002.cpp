@@ -6,7 +6,6 @@
 ALStepC4S002::ALStepC4S002():Super() {
 	Name = FName("C4S2");
 	// DlgId = FName("C4S1");
-	UseFade = false;
 	UseRain = true;
 	InputEnabled = true;
 	FinishPostWait = false;

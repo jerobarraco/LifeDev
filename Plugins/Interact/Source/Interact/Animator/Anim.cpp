@@ -771,10 +771,13 @@ TStatId UAnim::GetStatId() const {
 	return GetStatID();
 }
 
-// thought on using operator== for removing. which looks more "chic".
-// but the code is much complex, quite probably slower, and forces me to have the "type" in the struct.
-// and do nasty checks. besides "==" is confusing in case you expect that it would also check if the target value is the same, which it wont.
-// once again the classic 20 years old for loop is still the best option. remember that some things just get better with time.
+// i thought on using operator== for removing. which looks more "chic".
+// but the code is much more complex, quite probably slower,
+// and forces me to have the "type" in the struct.
+// and do nasty checks. besides "==" is confusing in case you expect
+// that it would also check if the target value is the same, which it won't.
+// once again the classic 20 years old for loop is still the best option.
+// remember that some things just get better with time.
 // bool FMPFBase::operator==(const FMPFBase& Other) const {
 // return Type == Other.Type && Name == Other.Name && MPCI == Other.MPCI;
 // }

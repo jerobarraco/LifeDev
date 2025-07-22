@@ -66,17 +66,16 @@ public:
 
 	// When set to true, it will fade in/out using the game fade time on start.
 	// blend and fade could have some issues when used together.
+	// when set to true, loads will be awaited and will block the fade.
+	// loads with UseFade=false will not block.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
-	bool UseFade = false;
+	bool UseFade = false; // see note inside Start()
 
 	// teleports the character to where this cam is located. and also copies the rotation
 	// beware this affects the camera blend if any (if blending from/to the character)
 	// teleports before blending. teleports on start of step. Rotation is broken.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
-	// like teleport char but after blend (on start)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	bool TeleportCharAfter = false;
 
 	// Title to show. Only shown if you also set UseFade
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")

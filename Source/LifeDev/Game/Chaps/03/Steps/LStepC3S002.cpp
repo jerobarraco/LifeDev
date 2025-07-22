@@ -7,7 +7,6 @@
 
 ALStepC3S002::ALStepC3S002():Super() {
 	Name = FName("C3S2");
-	UseFade = false;
 	InputEnabled = true;
 	UsePawnCam = true;
 	FinishPostWait = false;

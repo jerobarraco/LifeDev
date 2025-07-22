@@ -4,7 +4,6 @@
 ALStepC4S005::ALStepC4S005():Super() {
 	Name = FName("C4S5");
 	DlgId = Name; // this chapter finishes after the dialog
-	UseFade = false;
 	InputEnabled = false;
 	FinishPostWait = false;
 	UsePawnCam = false;

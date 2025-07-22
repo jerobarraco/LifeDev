@@ -84,6 +84,14 @@ bool UStory::Start(const FName Name) {
 	AStep* const Step = GetStep(Name);
 	if (UNLIKELY(!IsValid(Step))) return false; // getstep prints warning
 
+	// Note. i'm currently using the UseFade flag to also imply a blocking load.
+	// it makes no difference as before because i don't need to change anything in the code.
+	// it's just a notice to the user.
+	// i did it that way instead of adding a variable because:
+	// at first i didn't wanted to have redundant stuff, since it's very unlikely you'd want to block without a fade (it will get the frames stuck)
+	// and it's very unlikely you'd want to not block during a fade. (or it wouldn't matter much).
+	// then i've re-read the code, and noticed this. which pretty much implements such idea.
+	// and makes the code much more simpler. so i'll keep it this way.
 	if (!Step->UseFade)	return StartNow(Step);
 
 	const UWorld* const World = GetWorld();
@@ -100,8 +108,6 @@ bool UStory::Start(const FName Name) {
 		// actually it seems that the dl is loaded, but the objects are not. so we wait below.
 		StartNow(Step);
 
-		// TODO add an option to not block. set it on the step. (only pass the block param not the whole step)
-		// now fade in
 		auto l2 = [this]() {
 			// attempt to wait for objects to be loaded.
 			// notice there's a timer before this lambda, so we only block in case something still remains

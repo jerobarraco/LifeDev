@@ -8,7 +8,6 @@ ALStepC2S001::ALStepC2S001():Super() {
 	static const FName N("C2S1");
 	Name = N;
 	DlgId = N; // this chapter finishes after the dialog
-	UseFade = false;
 	InputEnabled = false;
 	UsePawnCam = false;
 	FinishPostWait = false;

@@ -14,7 +14,6 @@ ALStepC2S003::ALStepC2S003():Super() {
 	static const FName N("C2S3");
 	Name = N;
 	DlgId = N; // this chapter finishes after the dialog
-	UseFade = false;
 	// returns to the player camera and control
 	InputEnabled = true;
 	UsePawnCam = true;

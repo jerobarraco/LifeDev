@@ -7,7 +7,6 @@
 ALStepC2S002::ALStepC2S002():Super() {
 	static const FName N("C2S2");
 	Name = N;
-	UseFade = false;
 	// returns to the player camera and control
 	InputEnabled = true;
 	UsePawnCam = true;
