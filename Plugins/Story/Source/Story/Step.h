@@ -68,6 +68,7 @@ public:
 	// blend and fade could have some issues when used together.
 	// when set to true, loads will be awaited and will block the fade.
 	// loads with UseFade=false will not block.
+	// blocks require the DataLayers to be set to block. read note in DL_Load.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
 	bool UseFade = false; // see note inside Start()
 
@@ -89,8 +90,10 @@ public:
 	// Data layers to load.
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
 	// also in the data layers panel, set the initial runtime state.
-	// this is ok to be a softobjectptr since they will be loaded during the loading of the step and the dl itself.
-	// is up to you to set up the step in a way that this is not a breaking stuff (e.g. by using the fade).
+	// also make sure to set the "Override blocking on slow stream" (under advanced)
+	// to whatever you need. Set it to block if you want it to block, otherwise block has no effect.
+	// this is ok to be a SoftObjectPtr. They will be loaded during the loading of the step and the dl itself.
+	// is up to you to set up the step in a way that this is not a breaking stuff (e.g. by setting UseFade or ensuring it looks ok).
 	// it HAS to have the .XXXX at the end of the path. (e.g. Rooms/Room03.Room03) or it won't load.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Load;
