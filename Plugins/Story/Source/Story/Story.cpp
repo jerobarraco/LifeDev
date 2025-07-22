@@ -32,7 +32,6 @@ UStory* UStory::Instance(const UObject* const O) {
 	return IsValid(Story) ? Story : nullptr;
 }
 
-
 AStep* UStory::GetStep(const FName Name) {
 	TObjectPtr<AStep>* const pStep = Steps.Find(Name);
 	if (UNLIKELY(!pStep)) {
@@ -101,6 +100,7 @@ bool UStory::Start(const FName Name) {
 		// actually it seems that the dl is loaded, but the objects are not. so we wait below.
 		StartNow(Step);
 
+		// TODO add an option to not block. set it on the step. (only pass the block param not the whole step)
 		// now fade in
 		auto l2 = [this]() {
 			// attempt to wait for objects to be loaded.

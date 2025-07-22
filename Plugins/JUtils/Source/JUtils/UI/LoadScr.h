@@ -26,9 +26,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool UseBGTick = true;
 
+	virtual bool ShouldCreateSubsystem(UObject* Outer) const override {
+		// todo see anim subsystem. needs a variable in the configs
+		return true;
+	};
 protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UUserWidget> Widget = nullptr;
-	bool UseBGLoop = false; 
+
+	bool UseBGLoop = false;
 };
 

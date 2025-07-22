@@ -28,7 +28,6 @@
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Sentry.h"
-#include "LifeDev/Core/Settings/FLChapter.h"
 #include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
