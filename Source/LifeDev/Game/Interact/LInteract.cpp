@@ -195,6 +195,10 @@ void ALInteract::DoRewards() {
 		ALInteract* const LReward = Cast<ALInteract>(RAct);
 		if (LReward) LReward->Fade(true);
 		else RewardActor->SetActorHiddenInGame(false);
+	} else if(UNLIKELY(!RewardActor.IsNull())) { // get failed, but it's pointing somewhere
+		UE_LOG(LogLInteract, Warning, TEXT("%hs RewardActor is not valid."
+			" Potentially not loaded. O=%s"),
+			__func__, *RewardActor->GetPathName());
 	}
 
 	/// rewards virtually done

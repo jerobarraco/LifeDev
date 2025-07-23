@@ -43,12 +43,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
+		// rewardActor==nullptr works because both TSoftObjectPtr and FSoftObjectPtr overrides ==nullptr
+		// i could have used IsNull, but this ties me a bit less to TSoftObjectPtr in particular.
 		const bool Rewardless = (ZeroFlash && RewardActor == nullptr &&
 			RewardItem.IsNone() && RewardFlag.IsNone() && RewardIntersActive.Num() == 0 &&
 			RewardIntersHint.Num() == 0 && RewardIntersTrigger.Num() ==0);
 			// note: use all rewards here. since it's confusing having to track which rewards destroys and which don't.
 			// you might want to mix rewards that destroys and don't, that's fine. The result is to destroy.
-			// you might to not destroy, then use UseRewardDestroy=false.
+			// you might want to not destroy, then use UseRewardDestroy=false.
 		return Rewardless;
 	}
 
