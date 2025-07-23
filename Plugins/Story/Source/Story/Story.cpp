@@ -124,7 +124,15 @@ bool UStory::Start(const FName Name) {
 			// this will skip GC while async loading, unless you set on your config
 			// CVarPerformGCWhileAsyncLoading gc.PerformGCWhileAsyncLoading
 			// hopefully the above things would wait until all asyncs are done.
-			if (LIKELY(GEngine)) GEngine->PerformGarbageCollectionAndCleanupActors();
+			// calling this here will crash the engine, due to a check. that it can't happen during "tick".
+			// if (LIKELY(GEngine)) GEngine->PerformGarbageCollectionAndCleanupActors();
+			// this won't run gc, but will schedule it for the next time.
+			// hopefully that will happen next frame. which means the fade might hitch.
+			// hopefully not noticeably
+			if (UseFadeGC & LIKELY(GEngine)) {
+				UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
+				GEngine->ForceGarbageCollection(true);
+			}
 
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());

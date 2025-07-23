@@ -19,7 +19,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStop);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
 // World subsystem to deal with Story flow progression
-UCLASS(Blueprintable, Category="Story")
+UCLASS(Blueprintable, Category="Story", Config=Story, DefaultConfig)
 class STORY_API UStory : public UWorldSubsystem {
 	GENERATED_BODY()
 
@@ -86,6 +86,13 @@ public:
 	// Set this from game instance or smth. Used for the timing on the steps. 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float HoldTime = 2;
+
+	// forces gc after a fade load (when a step has "UseFade")
+	// it has the side effect that it will push the next gc.
+	// so even if nothing is unloaded it will buy time till the next gc. 
+	// https://youtu.be/HaVTYSnGvxA?t=2318
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
+	bool UseFadeGC = true;
 
 	// triggered when a step starts. (just after Step->TryStart is called, probably before Step->Start)
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")
