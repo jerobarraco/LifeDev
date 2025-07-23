@@ -120,7 +120,12 @@ bool UStory::Start(const FName Name) {
 			UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
 			if (LIKELY(World3)) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
 			UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
-			
+
+			// this will skip GC while async loading, unless you set on your config
+			// CVarPerformGCWhileAsyncLoading gc.PerformGCWhileAsyncLoading
+			// hopefully the above things would wait until all asyncs are done.
+			if (LIKELY(GEngine)) GEngine->PerformGarbageCollectionAndCleanupActors();
+
 			// do fade out
 			OnFade.Broadcast(true, FText::GetEmpty());
 		};
