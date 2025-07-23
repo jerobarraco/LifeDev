@@ -81,10 +81,10 @@ public:
 	void AutoFade(const FText& Title);
 
 	// Set this from game instance or smth. Used for the timing on the steps. 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float FadeTime = 2;
 	// Set this from game instance or smth. Used for the timing on the steps. 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	float HoldTime = 2;
 
 	// forces gc after a fade load (when a step has "UseFade")
