@@ -58,6 +58,8 @@ ENABLEALLSCREENMESSAGES
 obj list -resourcesizesort
 obj list class=SkeletalMesh -resourcesizesort
 obj list class=StaticMesh -resourcesizesort
+; useful for performance. if the count is above 500k then it's bad. 100k is good.
+obj list -countsort 
 
 # garbage collection
 OBJ GC

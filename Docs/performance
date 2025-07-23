@@ -116,6 +116,12 @@ gc.AllowIncrementalReachability=1
 gc.AllowIncrementalGather=1
 gc.IncrementalReachabilityTimeLimit=0.002
 
+; this is a safety net so that the story step will not skip gc due to some missing async load See Story.cpp:127
+gc.PerformGCWhileAsyncLoading=1
+
+gc clustering (where and how?)
+console command : obj list -countsort
+
 # cpp microopts
 cpp
 * emplace
@@ -153,7 +159,7 @@ use emplace when possible
 	K& k = A.Emplace();
 	k.something...
 
-use reserver on arrays when possible
+use reserve on arrays when possible
 
 DONT:
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
@@ -162,6 +168,43 @@ DONT:
 	return by value is faster than move under the right conditions.
 	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
 	and because i don't think it'll work with bps. i wont. also i don't like it.
+
+# hitches
+	https://m.youtube.com/watch?v=HaVTYSnGvxA
+	
+	use packed instance stactic meshes
+	could use cell transformers but only with world partition
+	
+	disable generate overlaps events if not used.
+	(is it used for the interact?)
+	
+	skip update overlap on stream
+	
+	set up a pso cache strategy
+	* have to have a loading screen for the global shaders
+	fShaderpipelinecache::NumPrecompilesRemaining, wait for 0
+	
+	-clearPSODriverCache command line. add to launch.
+	check psocachebuster plugin
+	
+	r.psocachevallidation=2
+	
+	try the tools > chaos visual debugger
+	
+
+	
+	also try using gc clusters on step sequences
+	@37
+	
+	on interact, maybe step, or maybe put a warning.
+	
+	change this
+	s.AdaptiveAddToWorld.Enabled
+
+# collisions
+	https://m.youtube.com/watch?v=xIQI6nXFygA
+	make sure the collisions for movement block only pawn. and the ones for interact does that.
+
 
 # links
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
