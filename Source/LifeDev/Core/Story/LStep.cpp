@@ -363,7 +363,12 @@ void ALStep::Unbind() const {
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
 		AActor* const A = SA.Get();
-		if (UNLIKELY(!IsValid(A))) continue;
+		if (UNLIKELY(!IsValid(A))) {
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs ActorsShow set, but is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SA->GetPathName());
+			continue;
+		}
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
 		if (bool(Inter) & WithFade) { // hide with fade is possible
@@ -378,7 +383,13 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 void ALStep::SetActorsHideActive(const bool Active, const bool WithFade) {
 	for (const TSoftObjectPtr<AActor>& SA: ActorsHide) {
 		AActor* const A = SA.Get();
-		if (UNLIKELY(!IsValid(A))) continue;
+		if (UNLIKELY(!IsValid(A))) {
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs ActorsHide set, but is not valid."
+				" Potentially not loaded. O=%s"),
+			__func__, *SA->GetPathName());
+
+			continue;
+		}
 
 		ALInteract* const Inter = Cast<ALInteract>(A);
 		if (bool(Inter) & WithFade) { // hide with fade is possible
@@ -393,7 +404,12 @@ void ALStep::SetActorsHideActive(const bool Active, const bool WithFade) {
 void ALStep::DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive) {
 	for (const TSoftObjectPtr<AInteract>& SI : A) {
 		AInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->SetActive(NewActive);
+		if (LIKELY(IsValid(I)))
+			I->SetActive(NewActive);
+		else
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 }
 
@@ -412,20 +428,35 @@ void ALStep::DoIntersDeactive() {
 void ALStep::DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, const bool In) {
 	for (const TSoftObjectPtr<ALInteract>& SI: SA) {
 		ALInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->Fade(In, true);
+		if (LIKELY(IsValid(I)))
+			I->Fade(In, true);
+		else
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 }
 
 void ALStep::DoIntersTrigger() const {
 	for (const TSoftObjectPtr<ALInteract>& SI: IntersTrigger) {
 		ALInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->TriggerForced();
+		if (LIKELY(IsValid(I)))
+			I->TriggerForced();
+		else
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 }
 
 void ALStep::DoIntersHint() const {
 	for (const TSoftObjectPtr<AInteract>& I: IntersHint) {
 		AInteract* const Interact = I.Get();
-		if (LIKELY(IsValid(Interact))) Interact->SetUseHint(true);
+		if (LIKELY(IsValid(Interact)))
+			Interact->SetUseHint(true);
+		else
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *I->GetPathName());
 	}
 }
