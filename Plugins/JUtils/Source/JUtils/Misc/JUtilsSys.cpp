@@ -65,7 +65,7 @@ int64 UJUtilsSys::NumPrecompilesRem() {
 }
 
 void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float Duration,
-							const FLinearColor& Color) {
+	const FLinearColor& Color) {
 	const UWorld* const W = LIKELY(O) ? O->GetWorld():nullptr;
 	if (UNLIKELY(!W)) return;
 

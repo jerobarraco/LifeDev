@@ -32,7 +32,8 @@ public class JUtils: ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[]{
 			"CoreUObject", "Engine", "EnhancedInput", "UMG", "Slate",
 			"JsonUtilities", 
-			"MoviePlayer" // for the loading screen
+			"MoviePlayer", // for the loading screen
+			"RenderCore", // for the NumPrecompilesRemaining
 			// "Core" // Octtree tringbuffer
 		});
 		
