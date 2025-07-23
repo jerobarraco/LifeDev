@@ -114,11 +114,11 @@ void ALStep::Start_Implementation() {
 	if (UNLIKELY(!W)) return;
 
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
-	if (!FinishItems.IsEmpty())
+	if (!FinishItems.IsEmpty() & LIKELY(Inventory))
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
 
 	// check flags. do on Start to avoid possibly finishing the step while it's starting.
-	if (!FinishFlags.IsEmpty())
+	if (!FinishFlags.IsEmpty() & LIKELY(Flags))
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
 
 	// ensure to check if we already have the item. but not now to not affect the flow of child classes
