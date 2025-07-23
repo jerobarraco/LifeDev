@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
 
 #if WITH_EDITOR
@@ -59,8 +60,12 @@ UGameViewportClient* UJUtilsSys::GetAnyGameViewportClient() {
 	return nullptr;
 }
 
+int64 UJUtilsSys::NumPrecompilesRem() {
+	return FShaderPipelineCache::NumPrecompilesRemaining();
+}
+
 void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float Duration,
-	const FLinearColor& Color) {
+							const FLinearColor& Color) {
 	const UWorld* const W = LIKELY(O) ? O->GetWorld():nullptr;
 	if (UNLIKELY(!W)) return;
 

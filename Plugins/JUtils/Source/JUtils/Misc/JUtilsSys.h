@@ -69,6 +69,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static UGameViewportClient* GetAnyGameViewportClient();
+	// returns the number of (shaders?) precompilations remaining.
+	// useful at the start of the game https://m.youtube.com/watch?v=HaVTYSnGvxA
+	UFUNCTION(BlueprintCallable)
+	static int64 NumPrecompilesRem();
 
 #pragma region input
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
