@@ -309,6 +309,11 @@ void UStory::AutoFade(const FText& Title) {
 	OnFade.Broadcast(false, Title);
 
 	auto l2 = [this]() {
+		// see Start()
+		if (UseFadeGC & LIKELY(GEngine)) {
+			UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
+			GEngine->ForceGarbageCollection(true);
+		}
 		// do fade out
 		OnFade.Broadcast(true, FText::GetEmpty());
 	};
