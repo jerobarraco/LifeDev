@@ -248,20 +248,6 @@ void AInteract::BeginPlay() {
 		RewardIntersActive.AddUnique(I);
 	}
 
-	RewardIntersTrigger.Reserve(RewardIntersTrigger.Num()+RewardIntersTriggerClass.Num());
-	for (const TSubclassOf<AInteract>& C: RewardIntersTriggerClass) {
-		if (UNLIKELY(!IsValid(C))) continue;
-
-		AInteract* const I = Cast<AInteract>(UGameplayStatics::GetActorOfClass(this, C));
-		if (UNLIKELY(!IsValid(I))) {
-			UE_LOG(LogInteract, Log, TEXT("%hs: Can't find instance of class=%s. Stop."),
-				__func__, *C->GetName());
-			continue;
-		}
-
-		RewardIntersTrigger.AddUnique(I);
-	}
-
 	// now activating if it needs to.
 	const bool IsActive = Interact->IsActive();
 	// deactivate if it's hidden. (fixes some things)

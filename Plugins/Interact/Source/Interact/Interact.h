@@ -231,10 +231,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSoftObjectPtr<AInteract>> RewardIntersTrigger;
 
-	// Classes to add to the reward inters trigger. by using GetActorOfClass on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
-	TArray<TSubclassOf<AInteract>> RewardIntersTriggerClass;
-	
 	// interacts to activate when this interact is triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSoftObjectPtr<AInteract>> RewardIntersActive;
