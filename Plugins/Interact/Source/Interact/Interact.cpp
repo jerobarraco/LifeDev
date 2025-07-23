@@ -370,19 +370,34 @@ void AInteract::DoTrigger_Implementation() {
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
 		AInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->SetActive(true);
+		if (LIKELY(IsValid(I)))
+			I->SetActive(true);
+		else
+			UE_LOG(LogInteract, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersHint) {
 		AInteract* const I = SI.Get();
-		// important to use this to respect children.
-		// the whole reason i've implemented this virtual method.
-		if (LIKELY(IsValid(I))) I->SetUseHint(true);
+		// important to use this to respect children (e.g. puzzles).
+		// this is the whole reason i've implemented this virtual method.
+		if (LIKELY(IsValid(I)))
+			I->SetUseHint(true);
+		else
+			UE_LOG(LogInteract, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersTrigger) {
 		AInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I))) I->TryTrigger();
+		if (LIKELY(IsValid(I)))
+			I->TryTrigger();
+		else
+			UE_LOG(LogInteract, Warning, TEXT("%hs Actor is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SI->GetPathName());
 	}
 
 	if (IsOneShot) SetActive(false);

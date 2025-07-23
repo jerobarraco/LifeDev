@@ -241,6 +241,7 @@ public:
 
 	// Classes to add to the reward inters active. by using GetActorOfClass on begin play.
 	// this is useful to use by code.
+	// deprecated, with tsoftobjct ptr this is not needed
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", meta=(DeprecatedProperty))
 	TArray<TSubclassOf<AInteract>> RewardIntersActiveClass;
 #pragma endregion
