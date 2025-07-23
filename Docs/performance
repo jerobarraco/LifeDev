@@ -112,6 +112,8 @@ r.Water.SingleLayer.VSMFiltering=0
 # gc
 [ConsoleVariables]
 ; optimize gc. requires usage of tobjectptr https://youtu.be/d2LWbjSjsv8?t=765
+;https://dev.epicgames.com/documentation/en-us/unreal-engine/incremental-garbage-collection-in-unreal-engine
+; notice this is still experimental
 gc.AllowIncrementalReachability=1
 gc.AllowIncrementalGather=1
 gc.IncrementalReachabilityTimeLimit=0.002
@@ -121,6 +123,7 @@ gc.PerformGCWhileAsyncLoading=1
 
 gc clustering (where and how?)
 console command : obj list -countsort
+https://dev.epicgames.com/community/learning/knowledge-base/ePKR/unreal-engine-garbage-collector-internals
 
 # cpp microopts
 cpp
