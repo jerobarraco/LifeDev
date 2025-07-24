@@ -156,5 +156,5 @@ protected:
 };
 
 // not moving the reward stuff to another component.
-//No:  is not that much code. is almost always used. it will have overhead. it couples tightly with timings and such.
+// No:  is not that much code. is almost always used. it will have overhead. it couples tightly with timings and such.
 // e.g. animfade, RewardItem, useanimfade(redundant), autodestroy, RewardItemed,  flagrewarded
