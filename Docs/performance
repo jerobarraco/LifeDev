@@ -21,6 +21,9 @@ mesh:
 	move/rotate on one single call, only 1nce per frame (e.g. setTransform instead of setLocation + setRotation )
 	WPO position writes velocity to false
 	WorldPositionOffsetDisableDistance (see quickmesh)
+	; enable auto instancing https://forums.unrealengine.com/t/what-about-auto-instancing/131775/2?u=nande
+    ; seems to default to 1, but maybe better be sure. also it might only work with taa and no msaa
+    r.MeshDrawCommands.DynamicInstancing=1
 
 material
 	Quality switch node
@@ -207,6 +210,19 @@ DONT:
 # collisions
 	https://m.youtube.com/watch?v=xIQI6nXFygA
 	make sure the collisions for movement block only pawn. and the ones for interact does that.
+	disable generate overlaps events if not used.
+	
+	don't use collision if not needed (remove from mesh)
+	prefer in order: sphere, capsule, box, convex https://www.youtube.com/watch?app=desktop&v=HaVTYSnGvxA
+	
+	use default overlap during streaming to only movable. then override on each actor if needed
+	https://youtu.be/HaVTYSnGvxA?t=1141
+	[/Script/Engine.Actor]
+	; option used when UpdateOverlapsMethodDuringLevelStreaming is set to UseConfigDefault. Options are: AlwaysUpdate, OnlyUpdateMovable, NeverUpdate.
+	DefaultUpdateOverlapsMethodDuringLevelStreaming=OnlyUpdateMovable
+	
+	[/Script/Engine.TriggerVolume]
+	DefaultUpdateOverlapsMethodDuringLevelStreaming=AlwaysUpdate
 
 
 # links
