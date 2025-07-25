@@ -7,7 +7,7 @@ public class Story: ModuleRules
 {
 	public Story(ReadOnlyTargetRules Target) : base(Target)
 	{
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_5;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
@@ -19,15 +19,16 @@ public class Story: ModuleRules
 		PrivateIncludePaths.AddRange(new string[] {
 			// ... add other private include paths required here ...
 		});
-			
+
 		// ... add other public dependencies that you statically link with here ...
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
 		});
 		
-		// ... add private dependencies that you statically link with here ...	
-		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "UMG"
+		// ... add private dependencies that you statically link with here ...
+		PrivateDependencyModuleNames.AddRange(new string[] {
+			"CoreUObject", "Engine", "UMG",
+			"RenderCore"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
