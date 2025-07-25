@@ -224,7 +224,6 @@ DONT:
 	[/Script/Engine.TriggerVolume]
 	DefaultUpdateOverlapsMethodDuringLevelStreaming=AlwaysUpdate
 
-
 # links
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
 
