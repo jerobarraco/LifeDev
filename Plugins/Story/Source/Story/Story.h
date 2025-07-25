@@ -20,7 +20,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStorySeqStart);
 
 // World subsystem to deal with Story flow progression
 UCLASS(Blueprintable, Category="Story", Config=Story, DefaultConfig)
-class STORY_API UStory : public UWorldSubsystem {
+class STORY_API UStory: public UWorldSubsystem {
 	GENERATED_BODY()
 
 public:

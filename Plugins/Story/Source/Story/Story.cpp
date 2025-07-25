@@ -3,6 +3,9 @@
 
 #include "Story.h"
 
+#include <thread>
+
+#include "ShaderPipelineCache.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
@@ -132,6 +135,12 @@ bool UStory::Start(const FName Name) {
 			if (UseFadeGC & LIKELY(GEngine)) {
 				UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
 				GEngine->ForceGarbageCollection(true);
+			}
+
+			// attempt at waiting for shaders to compile on load.
+			while (FShaderPipelineCache::NumPrecompilesRemaining()>0) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+				UE_LOG(LogStory, Log, TEXT("UStory::Waiting on shaders. %i"), FShaderPipelineCache::NumPrecompilesRemaining());
 			}
 
 			// do fade out
