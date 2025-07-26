@@ -138,7 +138,7 @@ bool UStory::Start(const FName Name) {
 			}
 
 			// attempt at waiting for shaders to compile on load.
-			while (FShaderPipelineCache::NumPrecompilesRemaining()>0) {
+			while (FShaderPipelineCache::NumPrecompilesRemaining()>0) { // is it ok to spinlock this thread? should i try a different one?
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 				UE_LOG(LogStory, Log, TEXT("UStory::Waiting on shaders. %i"), FShaderPipelineCache::NumPrecompilesRemaining());
 			}
