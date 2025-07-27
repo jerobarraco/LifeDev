@@ -137,6 +137,7 @@ bool UStory::Start(const FName Name) {
 				GEngine->ForceGarbageCollection(true);
 			}
 
+			// todo use another lambda and a timer for this.
 			// attempt at waiting for shaders to compile on load.
 			while (FShaderPipelineCache::NumPrecompilesRemaining()>0) { // is it ok to spinlock this thread? should i try a different one?
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
