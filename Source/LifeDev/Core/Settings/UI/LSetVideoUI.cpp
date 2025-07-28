@@ -83,7 +83,7 @@ void ULSetVideoUI::RHIApply() {
 	if (UNLIKELY(!RHIs)) return;
 
 	const EJRHI r = EJRHI(RHIs->GetSelectedIndex());
-	UE_LOG(LogTemp, Log, TEXT("%hs RHI=%i"), __func__, *UEnum::GetValueAsString(r));
+	UE_LOG(LogTemp, Log, TEXT("%hs RHI=%s"), __func__, *UEnum::GetValueAsString(r));
 	UJUtilsSys::SetRHI(r);
 }
 
