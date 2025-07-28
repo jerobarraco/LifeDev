@@ -89,9 +89,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static int64 NumPrecompilesRem();
 
+	// returns a hardware info by name
 	UFUNCTION(BlueprintCallable)
-	static bool GetRHI(EJRHI &ORHI, FString& OutRHI);
-
+	static void GetHWInfo(const FName& Name, FString& OutInfo);
+	// gets the saved default rhi
+	UFUNCTION(BlueprintCallable)
+	static bool GetDefaultRHI(EJRHI &ORHI, FString& OutRHI);
+	// gets the rhi in use
+	UFUNCTION(BlueprintCallable)
+	static void GetRHI(FString& OutRHI);
 	// sets the default rhi. requires a restart.
 	// make sure you choose the correct rhi for your platform.
 	UFUNCTION(BlueprintCallable)

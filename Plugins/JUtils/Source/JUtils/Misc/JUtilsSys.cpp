@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "HardwareInfo.h"
 #include "JUtilsMisc.h"
 #include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
@@ -66,6 +67,10 @@ int64 UJUtilsSys::NumPrecompilesRem() {
 	return FShaderPipelineCache::NumPrecompilesRemaining();
 }
 
+void UJUtilsSys::GetHWInfo(const FName& Name, FString& OutInfo) {
+	OutInfo = FHardwareInfo::GetHardwareInfo(Name);
+}
+
 #if PLATFORM_LINUX
 static const TCHAR* const _RHI_SECTION = TEXT("/Script/LinuxTargetPlatform.LinuxTargetSettings");
 #elif PLATFORM_WINDOWS
@@ -89,7 +94,7 @@ static const TCHAR* const _RHI_VAL[] = {
 	TEXT("DefaultGraphicsRHI_VULKAN")
 };
 
-bool UJUtilsSys::GetRHI(EJRHI &ORHI, FString& OutRHI) {
+bool UJUtilsSys::GetDefaultRHI(EJRHI &ORHI, FString& OutRHI) {
 	if (UNLIKELY(!GConfig)) return false;
 	
 	GConfig->GetString(_RHI_SECTION, _RHI_KEY, OutRHI, GEngineIni);
@@ -101,6 +106,11 @@ bool UJUtilsSys::GetRHI(EJRHI &ORHI, FString& OutRHI) {
 		}
 	}
 	return true;
+}
+
+void UJUtilsSys::GetRHI(FString& OutRHI) {
+	// thanks youngjun eom https://forums.unrealengine.com/t/how-could-i-know-which-rhi-is-performing-on-the-currently-running-device/424599/2?u=nande
+	GetHWInfo(NAME_RHI, OutRHI);
 }
 
 bool UJUtilsSys::SetRHI(EJRHI RHI) {

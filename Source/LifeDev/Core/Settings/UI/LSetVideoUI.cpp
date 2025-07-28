@@ -75,7 +75,7 @@ void ULSetVideoUI::RHIsSet() {
 		RHIs->AddOption(UEnum::GetValueAsString(r));
 	}
 	EJRHI r;FString rs;
-	UJUtilsSys::GetRHI(r, rs);
+	UJUtilsSys::GetDefaultRHI(r, rs);
 	RHIs->SetSelectedIndex(uint8(r));
 	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged);
 }
