@@ -74,6 +74,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static int64 NumPrecompilesRem();
 
+	UFUNCTION(BlueprintCallable)
+	static bool GetRHI(FString& OutRHI);
+
+	// sets the default rhi. requires a restart.
+	UFUNCTION(BlueprintCallable)
+	static bool SetRHI();
+
 #pragma region input
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ToggleMapping(const UObject* const O,

@@ -64,6 +64,31 @@ int64 UJUtilsSys::NumPrecompilesRem() {
 	return FShaderPipelineCache::NumPrecompilesRemaining();
 }
 
+#if PLATFORM_LINUX
+static const TCHAR* _RHI_SECTION = TEXT("/Script/LinuxTargetPlatform.LinuxTargetSettings");
+#elif PLATFORM_WINDOWS
+static const TCHAR* _RHI_SECTION = TEXT("/Script/WindowsTargetPlatform.WindowsTargetSettings");
+#elif PLATFORM_MAC
+static const TCHAR* _RHI_SECTION = TEXT("/Script/MacTargetPlatform.MacTargetSettings");
+#endif
+
+bool UJUtilsSys::GetRHI(FString& OutRHI) {
+	if (UNLIKELY(!GConfig)) return false;
+	
+	GConfig->GetString(_RHI_SECTION, TEXT("DefaultGraphicsRHI"), OutRHI, GEngineIni);
+	return true;
+}
+
+bool UJUtilsSys::SetRHI() {
+	if (UNLIKELY(!GConfig)) return false;
+	// based a bit on https://github.com/Cesio137/UE4-GraphicsRHIManager/blob/main/Source/RHIManager/Private/RHIManagerBPLibrary.cpp
+	FString RHI;
+	
+	GConfig->GetString(_RHI_SECTION, TEXT("DefaultGraphicsRHI"), RHI, GEngineIni);
+
+	return true;
+}
+
 void UJUtilsSys::CameraFade(const UObject* const O, const bool In, const float Duration,
 	const FLinearColor& Color) {
 	const UWorld* const W = LIKELY(O) ? O->GetWorld():nullptr;

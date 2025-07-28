@@ -91,8 +91,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool ObjectLabel(const UObject* const Object, FString& OLabel);
 
-
-
 	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
