@@ -50,11 +50,13 @@ void USentry::AddComment(const FString& Comment) const {
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
+
 	Sub->SetTag(Tag, Val);
 }
 
 void USentry::TagRem(const FString& Tag) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
+
 	Sub->RemoveTag(Tag);
 }
 
@@ -70,8 +72,16 @@ void USentry::AddMsg(const FString& Msg, const ESentryLevel& Level) const {
 
 void USentry::InstInit() {
 	Sub = GEngine->GetEngineSubsystem<USentrySubsystem>();
-	UE_CLOG(!IsValid(Sub), LogSentry, Warning, TEXT("%hs Sentry subsystem can't be found. maybe it's not enabled."),
-		__func__);
+
+	if (UNLIKELY(!IsValid(Sub))) {
+		UE_LOG(LogSentry, Warning, TEXT("%hs Sentry subsystem can't be found. maybe it's not enabled."),
+			__func__);
+		return;
+	}
+
+	FString RHI;
+	UJUtilsSys::GetRHI(RHI);
+	TagSet("RHI", RHI);
 }
 
 void USentry::InstDeInit() {
