@@ -6,6 +6,7 @@
 #include "Components/AudioComponent.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 void ABooks::SetUpInteract() const {
 	// interact and sfx location
@@ -42,13 +43,11 @@ void ABooks::CreateBooks() {
 
 		const int32 MatI = RS.RandRange(0, MatMax);
 
-		TSoftObjectPtr<UMaterialInterface> Ptr = Materials[MatI];
-		if (UNLIKELY(!Ptr.IsValid())) continue;
-		
-		UMaterialInterface* const Mat = Ptr.LoadSynchronous();
+		const TObjectPtr<UMaterialInterface>& Ptr = Materials[MatI];
+		UMaterialInterface* const Mat = Ptr.Get();
 		if (UNLIKELY(!IsValid(Mat))) {
-			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material=%s"),
-				__func__, *Ptr.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("%hs. Could not get material. matI=%i"),
+				__func__, MatI);
 			continue;
 		}
 
@@ -64,6 +63,19 @@ void ABooks::Constructor() {
 	Texts = { NSLOCTEXT("Books", "State0", "Books")};
 	// mesh (what's this for again?)
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
+	const TCHAR* mats[] = {
+		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI.Palette00_DMI"),
+		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI.Palette01_DMI"),
+		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette02_DMI.Palette02_DMI"),
+		TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette03_DMI.Palette03_DMI"),
+	};
+	const uint8 num = UJUtilsMisc::ArraySize(mats);
+	for (uint8 i = 0; i<num; ++i) {
+		ConstructorHelpers::FObjectFinder<UMaterialInstance> M(mats[i]);
+		if (UNLIKELY(!IsValid(M.Object))) continue;
+		Materials.Add(M.Object);
+	}
+	
 	CreateBooks();
 	SetUpInteract();
 

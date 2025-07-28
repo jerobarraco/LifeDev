@@ -19,19 +19,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<TObjectPtr<UCQuickMesh>> Books;
 	// metas are there to be able to view them on the editor
-
-	UPROPERTY()
-	TArray<TSoftObjectPtr<UMaterialInterface>> Materials = {
-		TSoftObjectPtr<UMaterialInterface>(
-			FSoftObjectPath("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI.Palette00_DMI")),
-		TSoftObjectPtr<UMaterialInterface>(
-			FSoftObjectPath("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI.Palette01_DMI")),
-		TSoftObjectPtr<UMaterialInterface>(
-			FSoftObjectPath("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette02_DMI.Palette02_DMI")),
-		TSoftObjectPtr<UMaterialInterface>(
-			FSoftObjectPath("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette03_DMI.Palette03_DMI")),
-	};
-
+	
 	int32 BookCount = 5;
 	// if ==0 then it will be random on constructor.
 	// otherwise it will be static to the value (including negatives)
@@ -43,4 +31,7 @@ private:
 	void SetUpInteract() const;
 	void CreateBooks();
 	void Constructor(); // can't make this virtual as it won't call the child one from the constructor of the super.
+	
+	UPROPERTY() // i can't override these on parents and possibly not even on children
+	TArray<TObjectPtr<UMaterialInterface>> Materials;
 };
