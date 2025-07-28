@@ -16,6 +16,8 @@ enum class EJRHI: uint8 {
 	MTL_SM5,
 	MTL_SM6,
 	MTL_ES3,
+	// vulkan on windows
+	VK_WIN,
 	DX11,
 	DX12,
 	MAX UMETA(Hidden)
@@ -91,6 +93,7 @@ public:
 	static bool GetRHI(FString& OutRHI);
 
 	// sets the default rhi. requires a restart.
+	// make sure you choose the correct rhi for your platform.
 	UFUNCTION(BlueprintCallable)
 	static bool SetRHI(EJRHI RHI);
 

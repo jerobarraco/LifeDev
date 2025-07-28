@@ -85,6 +85,7 @@ static const TCHAR* const _RHI_VAL[] = {
 	TEXT("SF_VULKAN_SM6"),
 	TEXT("DefaultGraphicsRHI_DX11"),
 	TEXT("DefaultGraphicsRHI_DX12")
+	TEXT("DefaultGraphicsRHI_VULKAN")
 };
 
 bool UJUtilsSys::GetRHI(FString& OutRHI) {
@@ -103,7 +104,7 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 #if PLATFORM_LINUX
 	WrongPlat = RHI != EJRHI::VK_SM6 & RHI != EJRHI::VK_SM5 & RHI != EJRHI::VK_ES3;
 #elif PLATFORM_WINDOWS
-	WrongPlat = RHI != EJRHI::DX11 & RHI != EJRHI::DX12;
+	WrongPlat = RHI != EJRHI::DX11 & RHI != EJRHI::DX12 & RHI != EJRHI::VK_WIN;
 #elif PLATFORM_MAC
 	WrongPlat = RHI != EJRHI::MTL_SM5 & RHI != EJRHI::MTL_SM6 & RHI != EJRHI::MTL_ES3;
 #endif
@@ -115,7 +116,7 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 		return false;
 	}
 
-	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(RHI)], GEngineIni);
+	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(rhi)], GEngineIni);
 	GConfig->Flush(true, GEngineIni);
 	return true;
 }
