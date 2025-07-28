@@ -91,7 +91,7 @@ public:
 
 	// sets the default rhi. requires a restart.
 	UFUNCTION(BlueprintCallable)
-	static bool SetRHI();
+	static bool SetRHI(EJRHI RHI);
 
 #pragma region input
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))

@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
+#include "Kismet/GameplayStatics.h"
 
 #if WITH_EDITOR
 #include "EditorScriptingHelpers.h"
@@ -81,9 +82,25 @@ bool UJUtilsSys::GetRHI(FString& OutRHI) {
 	return true;
 }
 
-bool UJUtilsSys::SetRHI() {
-	if (UNLIKELY(!GConfig)) return false;
+bool UJUtilsSys::SetRHI(EJRHI RHI) {
 	// based a bit on https://github.com/Cesio137/UE4-GraphicsRHIManager/blob/main/Source/RHIManager/Private/RHIManagerBPLibrary.cpp
+	if (UNLIKELY(!GConfig)) return false;
+
+	bool WrongPlat = false;
+#if PLATFORM_LINUX
+	WrongPlat = RHI != EJRHI::SM6 & RHI != EJRHI::SM5 & RHI != EJRHI::VULKAN_ES3;
+#elif PLATFORM_WINDOWS
+	WrongPlat = RHI != EJRHI::DX11 & RHI != EJRHI::DX12;
+#elif PLATFORM_MAC
+	WrongPlat = RHI != EJRHI::METAL & RHI != EJRHI::METAL_ES3;
+#endif
+	if (WrongPlat) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs Attempt to store an invalid rhi for the current platform."
+			" Platform=%s, RHI=%s"), __func__,
+			*UGameplayStatics::GetPlatformName(), *UEnum::GetValueAsString(RHI));
+		return false;
+	}
+
 	// FString RHI;
 	
 	// GConfig->GetString(_RHI_SECTION, _RHI_KEY, RHI, GEngineIni);
