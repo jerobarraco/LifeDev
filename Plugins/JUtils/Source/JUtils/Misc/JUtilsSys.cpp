@@ -116,7 +116,7 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 		return false;
 	}
 
-	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(rhi)], GEngineIni);
+	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(RHI)], GEngineIni);
 	GConfig->Flush(true, GEngineIni);
 	return true;
 }
