@@ -8,6 +8,18 @@
 #include "JUtilsSys.generated.h"
 
 class UInputMappingContext;
+UENUM(BlueprintType)
+enum class EJRHI: uint8 {
+	DX12,
+	DX11,
+	SM5,
+	SM6,
+	METAL,
+	VULKAN_ES3,
+	METAL_ES3,
+	MAX UMETA(Hidden)
+};
+ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
