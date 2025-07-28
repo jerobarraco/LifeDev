@@ -90,7 +90,7 @@ public:
 	static int64 NumPrecompilesRem();
 
 	// returns a hardware info by name
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Name"))
 	static void GetHWInfo(const FName& Name, FString& OutInfo);
 	// gets the saved default rhi
 	UFUNCTION(BlueprintCallable)
