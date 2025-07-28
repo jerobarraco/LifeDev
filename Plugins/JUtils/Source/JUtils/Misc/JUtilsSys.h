@@ -90,7 +90,7 @@ public:
 	static int64 NumPrecompilesRem();
 
 	UFUNCTION(BlueprintCallable)
-	static bool GetRHI(FString& OutRHI);
+	static bool GetRHI(EJRHI &ORHI, FString& OutRHI);
 
 	// sets the default rhi. requires a restart.
 	// make sure you choose the correct rhi for your platform.

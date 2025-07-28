@@ -74,8 +74,9 @@ void ULSetVideoUI::RHIsSet() {
 	for (const EJRHI r : TEnumRange<EJRHI>()) {
 		RHIs->AddOption(UEnum::GetValueAsString(r));
 	}
-	// todo get rhi and set it here
-	RHIs->SetSelectedIndex(0);
+	EJRHI r;FString rs;
+	UJUtilsSys::GetRHI(r, rs);
+	RHIs->SetSelectedIndex(uint8(r));
 	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged);
 }
 

@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "JUtilsMisc.h"
 #include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
 #include "Kismet/GameplayStatics.h"
@@ -88,10 +89,17 @@ static const TCHAR* const _RHI_VAL[] = {
 	TEXT("DefaultGraphicsRHI_VULKAN")
 };
 
-bool UJUtilsSys::GetRHI(FString& OutRHI) {
+bool UJUtilsSys::GetRHI(EJRHI &ORHI, FString& OutRHI) {
 	if (UNLIKELY(!GConfig)) return false;
 	
 	GConfig->GetString(_RHI_SECTION, _RHI_KEY, OutRHI, GEngineIni);
+	ORHI = EJRHI::MAX;
+	for (const EJRHI r : TEnumRange<EJRHI>()) {
+		if (UJUtilsMisc::StringLooseEquals(OutRHI, FString(_RHI_VAL[uint8(r)]))) {
+			ORHI = r;
+			break;
+		}
+	}
 	return true;
 }
 
