@@ -1,0 +1,4 @@
+#!/bin/bash
+pushd ../Build/Linux
+mangohud ./LifeDev.sh -clearPSODriverCache -UserDir=./Data
+popd
