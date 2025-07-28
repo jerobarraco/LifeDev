@@ -14,6 +14,7 @@
 #include "JUtils/UI/GroupBox.h"
 
 #include "LFeatsGroup.h"
+#include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
@@ -35,6 +36,7 @@ void ULSetVideoUI::Load_Implementation() {
 	FSModeSet();
 	QSwitchesLoad();
 	if (LIKELY(AntiAlias)) AntiAlias->Load();
+	RHIsSet();
 }
 
 void ULSetVideoUI::NativeOnInitialized() {
@@ -58,7 +60,21 @@ void ULSetVideoUI::NativeDestruct() {
 	}
 
 	if (LIKELY(FrameRate)) FrameRate->ClearOptions();
+	if (LIKELY(RHIs)) RHIs->ClearOptions();
+
 	Super::NativeDestruct();
+}
+
+void ULSetVideoUI::RHIsSet() {
+	if (UNLIKELY(!RHIs)) return;
+	
+	RHIs->ClearOptions();
+	RHIs->OnSelectionChanged.RemoveAll(this);
+	for (const EJRHI r : TEnumRange<EJRHI>()) {
+		RHIs->AddOption(UEnum::GetValueAsString(r));
+	}
+	// todo get rhi and set it here
+	
 }
 
 void ULSetVideoUI::FSModeSet() {

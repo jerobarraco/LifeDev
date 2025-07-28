@@ -46,6 +46,8 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 
+	void RHIsSet();
+	
 	UFUNCTION()
 	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	void FSModeSet();
@@ -92,6 +94,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> ResScaleText;
 
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UComboBoxString> RHIs;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> FSMode;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
