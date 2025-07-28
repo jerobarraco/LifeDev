@@ -10,13 +10,14 @@
 class UInputMappingContext;
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
-	DX12,
+	VK_SM5,
+	VK_SM6,
+	VK_ES3,
+	MTL_SM5,
+	MTL_SM6,
+	MTL_ES3,
 	DX11,
-	SM5,
-	SM6,
-	METAL,
-	VULKAN_ES3,
-	METAL_ES3,
+	DX12,
 	MAX UMETA(Hidden)
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);

@@ -75,6 +75,18 @@ static const TCHAR* const _RHI_SECTION = TEXT("/Script/MacTargetPlatform.MacTarg
 
 static const TCHAR* const _RHI_KEY = TEXT("DefaultGraphicsRHI"); 
 
+static const TCHAR* const _RHI_VAL[] = {
+	TEXT("SF_VULKAN_SM5"),
+	TEXT("SF_VULKAN_SM6"),
+	TEXT("SF_VULKAN_ES31"),
+	TEXT("SF_METAL_SM5"),
+	TEXT("SF_METAL_SM6"),
+	TEXT("SF_METAL_ES3_1"),
+	TEXT("SF_VULKAN_SM6"),
+	TEXT("DefaultGraphicsRHI_DX11"),
+	TEXT("DefaultGraphicsRHI_DX12")
+};
+
 bool UJUtilsSys::GetRHI(FString& OutRHI) {
 	if (UNLIKELY(!GConfig)) return false;
 	
@@ -86,14 +98,16 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 	// based a bit on https://github.com/Cesio137/UE4-GraphicsRHIManager/blob/main/Source/RHIManager/Private/RHIManagerBPLibrary.cpp
 	if (UNLIKELY(!GConfig)) return false;
 
+	// this also covers out of bounds
 	bool WrongPlat = false;
 #if PLATFORM_LINUX
-	WrongPlat = RHI != EJRHI::SM6 & RHI != EJRHI::SM5 & RHI != EJRHI::VULKAN_ES3;
+	WrongPlat = RHI != EJRHI::VK_SM6 & RHI != EJRHI::VK_SM5 & RHI != EJRHI::VK_ES3;
 #elif PLATFORM_WINDOWS
 	WrongPlat = RHI != EJRHI::DX11 & RHI != EJRHI::DX12;
 #elif PLATFORM_MAC
-	WrongPlat = RHI != EJRHI::METAL & RHI != EJRHI::METAL_ES3;
+	WrongPlat = RHI != EJRHI::MTL_SM5 & RHI != EJRHI::MTL_SM6 & RHI != EJRHI::MTL_ES3;
 #endif
+
 	if (WrongPlat) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs Attempt to store an invalid rhi for the current platform."
 			" Platform=%s, RHI=%s"), __func__,
@@ -101,10 +115,7 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 		return false;
 	}
 
-	// FString RHI;
-	
-	// GConfig->GetString(_RHI_SECTION, _RHI_KEY, RHI, GEngineIni);
-	// GConfig->SetString(_RHI_SECTION, _RHI_KEY, *RHI_DX11, GEngineIni);
+	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(RHI)], GEngineIni);
 	GConfig->Flush(true, GEngineIni);
 	return true;
 }
