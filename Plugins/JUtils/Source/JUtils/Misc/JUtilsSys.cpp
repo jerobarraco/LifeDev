@@ -65,27 +65,30 @@ int64 UJUtilsSys::NumPrecompilesRem() {
 }
 
 #if PLATFORM_LINUX
-static const TCHAR* _RHI_SECTION = TEXT("/Script/LinuxTargetPlatform.LinuxTargetSettings");
+static const TCHAR* const _RHI_SECTION = TEXT("/Script/LinuxTargetPlatform.LinuxTargetSettings");
 #elif PLATFORM_WINDOWS
-static const TCHAR* _RHI_SECTION = TEXT("/Script/WindowsTargetPlatform.WindowsTargetSettings");
+static const TCHAR* const _RHI_SECTION = TEXT("/Script/WindowsTargetPlatform.WindowsTargetSettings");
 #elif PLATFORM_MAC
-static const TCHAR* _RHI_SECTION = TEXT("/Script/MacTargetPlatform.MacTargetSettings");
+static const TCHAR* const _RHI_SECTION = TEXT("/Script/MacTargetPlatform.MacTargetSettings");
 #endif
+
+static const TCHAR* const _RHI_KEY = TEXT("DefaultGraphicsRHI"); 
 
 bool UJUtilsSys::GetRHI(FString& OutRHI) {
 	if (UNLIKELY(!GConfig)) return false;
 	
-	GConfig->GetString(_RHI_SECTION, TEXT("DefaultGraphicsRHI"), OutRHI, GEngineIni);
+	GConfig->GetString(_RHI_SECTION, _RHI_KEY, OutRHI, GEngineIni);
 	return true;
 }
 
 bool UJUtilsSys::SetRHI() {
 	if (UNLIKELY(!GConfig)) return false;
 	// based a bit on https://github.com/Cesio137/UE4-GraphicsRHIManager/blob/main/Source/RHIManager/Private/RHIManagerBPLibrary.cpp
-	FString RHI;
+	// FString RHI;
 	
-	GConfig->GetString(_RHI_SECTION, TEXT("DefaultGraphicsRHI"), RHI, GEngineIni);
-
+	// GConfig->GetString(_RHI_SECTION, _RHI_KEY, RHI, GEngineIni);
+	// GConfig->SetString(_RHI_SECTION, _RHI_KEY, *RHI_DX11, GEngineIni);
+	GConfig->Flush(true, GEngineIni);
 	return true;
 }
 
