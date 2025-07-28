@@ -47,12 +47,13 @@ protected:
 	virtual void NativeDestruct() override;
 
 	void RHIsSet();
+	void RHIApply();
 	
 	UFUNCTION()
 	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	void FSModeSet();
+	
 	void ResSet() const;
-
 	static FString ResToCombo(const FIntPoint& P);
 	UFUNCTION()
 	void ResChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);

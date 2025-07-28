@@ -22,6 +22,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
 void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
+	RHIApply();
 	if (LIKELY(AntiAlias)) AntiAlias->Apply();
 }
 
@@ -74,8 +75,23 @@ void ULSetVideoUI::RHIsSet() {
 		RHIs->AddOption(UEnum::GetValueAsString(r));
 	}
 	// todo get rhi and set it here
-	
+	RHIs->SetSelectedIndex(0);
+	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged);
 }
+
+void ULSetVideoUI::RHIApply() {
+	if (UNLIKELY(!RHIs)) return;
+
+	const EJRHI r = EJRHI(RHIs->GetSelectedIndex());
+	UE_LOG(LogTemp, Log, TEXT("%hs RHI=%i"), __func__, UEnum::GetValueAsString(r));
+	UJUtilsSys::SetRHI(r);
+}
+
+// void ULSetVideoUI::RHIChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
+	// UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
+	// if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
+
+// }
 
 void ULSetVideoUI::FSModeSet() {
 	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
