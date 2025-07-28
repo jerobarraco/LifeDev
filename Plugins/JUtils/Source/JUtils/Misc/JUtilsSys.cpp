@@ -115,7 +115,8 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 			*UGameplayStatics::GetPlatformName(), *UEnum::GetValueAsString(RHI));
 		return false;
 	}
-
+	UE_LOG(LogTemp, Warning, TEXT("%hs Platform=%s, RHI=%s INI=%s"), __func__,
+			*UGameplayStatics::GetPlatformName(), *UEnum::GetValueAsString(RHI), GEngineIni);
 	GConfig->SetString(_RHI_SECTION, _RHI_KEY, _RHI_VAL[uint8(RHI)], GEngineIni);
 	GConfig->Flush(true, GEngineIni);
 	return true;
