@@ -33,7 +33,10 @@ enum class EAsyncExec: uint8 {
 	ThreadIfForkSafe,
 	// Execute in global queued thread pool.
 	ThreadPool,
+
+	MAX UMETA(Hidden)
 };
+ENUM_RANGE_BY_COUNT(EAsyncExec, EAsyncExec::MAX);
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsMisc: public UBlueprintFunctionLibrary {
