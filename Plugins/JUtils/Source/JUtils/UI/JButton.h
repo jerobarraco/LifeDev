@@ -25,6 +25,8 @@ class JUTILS_API UJButton: public UUserWidget {
 public:
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AutoCreateRefTerm=NewText))
 	void SetUp(const FText& NewText, const int32 NewId = -1);
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	void SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle);
 
 	// will be called automatically. it's also exposed for testing.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent)

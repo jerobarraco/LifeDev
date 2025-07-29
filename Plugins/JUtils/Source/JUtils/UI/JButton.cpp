@@ -15,6 +15,25 @@ void UJButton::SetUp(const FText& NewText, const int32 NewId) {
 	Id = NewId;
 }
 
+void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle) {
+	if (LIKELY(BtnStyle)) {
+		const FButtonStyle* const BtnStyleF = BtnStyle->GetStyle<FButtonStyle>();
+		if (LIKELY(!!Btn & !!BtnStyleF)) Btn->SetStyle(*BtnStyleF);
+	}
+	if (LIKELY(TextStyle)) {
+		const FTextBlockStyle* const TextStyleF = TextStyle->GetStyle<FTextBlockStyle>();
+		if (LIKELY(!!Text & !!TextStyleF)) {
+			Text->SetColorAndOpacity(TextStyleF->ColorAndOpacity);
+			Text->SetFont(TextStyleF->Font);
+			Text->SetShadowColorAndOpacity(TextStyleF->ShadowColorAndOpacity);
+			Text->SetStrikeBrush(TextStyleF->StrikeBrush);
+			Text->SetShadowOffset(TextStyleF->ShadowOffset);
+			Text->SetTextOverflowPolicy(TextStyleF->OverflowPolicy);
+			// have to set it manually as it does not have a setstyle :'/
+		}
+	}
+}
+
 void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Btn)) return;
