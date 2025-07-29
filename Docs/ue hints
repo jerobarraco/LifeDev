@@ -35,6 +35,10 @@ https://forums.unrealengine.com/t/what-do-if-i-cant-use-constructorhelpers-fobje
 	auto newMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT(newMeshString)));
 	m_meshComponent->SetStaticMesh(newMesh);
 	
+	do not load on constructor using TSoftObjectPtr::LoadSynchronous. it might work, but not for materials, maybe others too.
+	sometimes it work but it can crash in the future. (depending on dependencies).
+	use ConstructorHelpers::FobjectFinder instead
+
 passing lambdas
 	TUniqueFunction<void()> F = [this] {
 

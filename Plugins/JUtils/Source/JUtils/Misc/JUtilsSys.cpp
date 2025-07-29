@@ -115,6 +115,8 @@ void UJUtilsSys::GetRHI(FString& OutRHI) {
 	// i could use this one GetMaxSupportedFeatureLevel but i'd need to verify if it's supported
 	// Engine\Source\Runtime\RHI\Private\Linux\LinuxDynamicRHI.cpp:99
 	OutRHI = FApp::GetGraphicsRHI();
+	// https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/RHI/GetDynamicRHI?application_version=5.4
+	// https://forums.unrealengine.com/t/knowing-which-rhi-has-been-used-in-a-project-from-the-code/455808/2
 }
 
 bool UJUtilsSys::SetRHI(EJRHI RHI) {
