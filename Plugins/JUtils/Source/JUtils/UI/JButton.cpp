@@ -6,7 +6,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 
-void UJButton::DoClick() {
+void UJButton::DoClick_Implementation() {
 	OnClick.Broadcast(Id);
 }
 

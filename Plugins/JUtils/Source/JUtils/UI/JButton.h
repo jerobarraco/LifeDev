@@ -27,7 +27,7 @@ public:
 	void SetUp(const FText& NewText, const int32 NewId = -1);
 
 	// will be called automatically. it's also exposed for testing.
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent)
 	void DoClick();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
