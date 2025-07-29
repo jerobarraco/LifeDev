@@ -95,11 +95,16 @@ public:
 	// gets the saved default rhi
 	UFUNCTION(BlueprintCallable)
 	static bool GetDefaultRHI(EJRHI &ORHI, FString& OutRHI);
+
 	// gets the rhi in use
 	UFUNCTION(BlueprintCallable)
 	static void GetRHI(FString& OutRHI);
+
 	// sets the default rhi. requires a restart.
-	// make sure you choose the correct rhi for your platform.
+	// make sure you choose the correct rhi for your platform, otherwise it will be skipped.
+	// you also need to add to your DefaultEngine.ini the section to allow the file to be retained.
+	// Or it will be deleted on start.
+	// "[SectionsToSave] bCanSaveAllSections=true" https://forums.unrealengine.com/t/how-to-stop-local-custom-ini-files-being-deleted-after-play/1967813/2
 	UFUNCTION(BlueprintCallable)
 	static bool SetRHI(EJRHI RHI);
 

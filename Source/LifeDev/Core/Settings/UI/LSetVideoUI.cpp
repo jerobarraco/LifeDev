@@ -80,7 +80,7 @@ void ULSetVideoUI::RHIsSet() {
 	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged);
 }
 
-void ULSetVideoUI::RHIApply() {
+void ULSetVideoUI::RHIApply() const {
 	if (UNLIKELY(!RHIs)) return;
 
 	const EJRHI r = EJRHI(RHIs->GetSelectedIndex());

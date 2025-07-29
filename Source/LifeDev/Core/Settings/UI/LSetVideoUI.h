@@ -47,7 +47,7 @@ protected:
 	virtual void NativeDestruct() override;
 
 	void RHIsSet();
-	void RHIApply();
+	void RHIApply() const;
 	
 	UFUNCTION()
 	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
