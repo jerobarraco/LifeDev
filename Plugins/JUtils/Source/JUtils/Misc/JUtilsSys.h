@@ -32,6 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool IsPIE();
 
+	// also note FApp::GetBuildConfiguration()
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsEditor() {
 		#if WITH_EDITOR
@@ -63,7 +65,12 @@ public:
 	// returns the project version, as stored in the project settings
 	// for the engine version there's a bp node from the engine already (engine version)
 	UFUNCTION(BlueprintCallable)
-	static FString GetProjectVersion();
+	static void GetProjectVersion(FString& OVer);
+	UFUNCTION(BlueprintCallable)
+	static void GetUEBuildDate(FString& ODate);
+	// this is also provided by kismet library
+	UFUNCTION(BlueprintCallable)
+	static void GetUEBuildVersion(FString& OVer);
 
 	// returns the user's name, as presented by the platform.
 	UFUNCTION(BlueprintCallable)

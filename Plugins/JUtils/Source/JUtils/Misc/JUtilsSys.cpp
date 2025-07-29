@@ -109,6 +109,7 @@ bool UJUtilsSys::GetDefaultRHI(EJRHI &ORHI, FString& OutRHI) {
 }
 
 void UJUtilsSys::GetRHI(FString& OutRHI) {
+	FApp::GetBuildConfiguration();
 	// thanks youngjun eom https://forums.unrealengine.com/t/how-could-i-know-which-rhi-is-performing-on-the-currently-running-device/424599/2?u=nande
 	// GetHWInfo(NAME_RHI, OutRHI); // returns "vulkan"
 	// returns "Vulkan (SM5)". it's the easiest way i've found to get the current feature level.
@@ -181,13 +182,19 @@ UEnhancedInputComponent* UJUtilsSys::GetEInput(const UObject* const O) {
 	return Input;
 }
 
-FString UJUtilsSys::GetProjectVersion() {
+void UJUtilsSys::GetProjectVersion(FString& OVer) {
 	// https://forums.unrealengine.com/t/how-to-get-the-project-version-in-a-blueprint/461882/2?u=nande
-	FString Version;
 	if (LIKELY(GConfig)) GConfig->GetString(
 		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
-		TEXT("ProjectVersion"),Version, GGameIni);
-	return MoveTemp(Version);
+		TEXT("ProjectVersion"), OVer, GGameIni);
+}
+
+void UJUtilsSys::GetUEBuildDate(FString& ODate) {
+	ODate = FApp::GetBuildDate();
+}
+
+void UJUtilsSys::GetUEBuildVersion(FString& OVer) {
+	OVer = FApp::GetBuildVersion();
 }
 
 FString UJUtilsSys::GetUserName() {

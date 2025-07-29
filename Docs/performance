@@ -197,7 +197,6 @@ DONT:
 	
 	try the tools > chaos visual debugger
 	
-
 	
 	also try using gc clusters on step sequences
 	@37
@@ -206,6 +205,9 @@ DONT:
 	
 	change this
 	s.AdaptiveAddToWorld.Enabled
+
+	ensure the object count is sane
+	obj list -countsort
 
 # collisions
 	https://m.youtube.com/watch?v=xIQI6nXFygA
