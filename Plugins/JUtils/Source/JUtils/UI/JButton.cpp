@@ -19,10 +19,11 @@ void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Btn)) return;
 
-	Btn->OnClicked.AddUniqueDynamic(this, &UJButton::DoClick);
+	Btn->OnClicked.AddUniqueDynamic(this, &UJButton::DoClickInt);
 }
 
 void UJButton::NativeDestruct() {
 	if (LIKELY(Btn)) Btn->OnClicked.RemoveAll(this);
+
 	Super::NativeDestruct();
 }

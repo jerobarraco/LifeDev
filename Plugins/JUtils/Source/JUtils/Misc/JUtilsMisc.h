@@ -102,6 +102,8 @@ public:
 	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
 
+	// UFUNCTION(BlueprintCallable)
+	// static 
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {

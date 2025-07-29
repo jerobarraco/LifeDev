@@ -44,6 +44,9 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
+	UFUNCTION() // in order to bind a virtual method
+	void DoClickInt() {DoClick();}
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> Text = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))
