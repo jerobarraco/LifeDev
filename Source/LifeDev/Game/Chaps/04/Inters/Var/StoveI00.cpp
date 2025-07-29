@@ -2,7 +2,6 @@
 
 #include "StoveI00.h"
 
-#include "PotI00.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AStoveI00::AStoveI00():Super() {
@@ -13,7 +12,7 @@ AStoveI00::AStoveI00():Super() {
 	// LockedItemDlg = "Stove00_LI";
 	UnlockItems = {LDConsts::Items::Matches00};
 	RewardFlash = .11;
-	RewardIntersActiveClass = {APotI00::StaticClass()};
+	// RewardIntersActiveClass = {APotI00::StaticClass()};
 	// UseAutoActivate = false; // activated by LNPCI06 // redundant
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -23,6 +22,8 @@ AStoveI00::AStoveI00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSndB(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/match_burn_meridian_-09"));
 	SFXTriggerB = CSndB.Object;
+	RewardIntersActive = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501C1E701_2080650083"))};
 }
 
 void AStoveI00::DoTrigger_Implementation() {
