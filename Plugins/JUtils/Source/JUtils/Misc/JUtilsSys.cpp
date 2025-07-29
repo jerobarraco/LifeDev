@@ -110,7 +110,11 @@ bool UJUtilsSys::GetDefaultRHI(EJRHI &ORHI, FString& OutRHI) {
 
 void UJUtilsSys::GetRHI(FString& OutRHI) {
 	// thanks youngjun eom https://forums.unrealengine.com/t/how-could-i-know-which-rhi-is-performing-on-the-currently-running-device/424599/2?u=nande
-	GetHWInfo(NAME_RHI, OutRHI);
+	// GetHWInfo(NAME_RHI, OutRHI); // returns "vulkan"
+	// returns "Vulkan (SM5)". it's the easiest way i've found to get the current feature level.
+	// i could use this one GetMaxSupportedFeatureLevel but i'd need to verify if it's supported
+	// Engine\Source\Runtime\RHI\Private\Linux\LinuxDynamicRHI.cpp:99
+	OutRHI = FApp::GetGraphicsRHI();
 }
 
 bool UJUtilsSys::SetRHI(EJRHI RHI) {
