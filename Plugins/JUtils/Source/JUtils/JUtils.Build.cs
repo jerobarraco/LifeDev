@@ -35,6 +35,7 @@ public class JUtils: ModuleRules
 			"MoviePlayer", // for the loading screen
 			"RenderCore", // for the NumPrecompilesRemaining
 			// "Core" // Octtree tringbuffer
+			"SlateCore" // for loading styles
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

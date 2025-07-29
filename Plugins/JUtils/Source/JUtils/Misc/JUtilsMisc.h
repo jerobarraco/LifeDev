@@ -102,8 +102,20 @@ public:
 	static UDataTable* LoadJSONTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
 
-	// UFUNCTION(BlueprintCallable)
-	// static 
+	UFUNCTION(BlueprintCallable)
+	static bool GetStyleText(USlateWidgetStyleAsset* const Asset, FTextBlockStyle& Ret) {
+		if (UNLIKELY(!Asset)) return false;
+		Ret = *Asset->GetStyle<FTextBlockStyle>(); // copy
+		return true;
+	}
+	
+	UFUNCTION(BlueprintCallable)
+	static bool GetStyleButton(USlateWidgetStyleAsset* const Asset, FButtonStyle& Ret) {
+		if (UNLIKELY(!Asset)) return false;
+		Ret = *Asset->GetStyle<FButtonStyle>(); // copy
+		return true;
+	}
+	
 	// can't be a blueprint callable since it's templatized
 	template <typename T>
 	static bool ReadTable(const UDataTable* const DT, TArray<T>& OutRows) {
