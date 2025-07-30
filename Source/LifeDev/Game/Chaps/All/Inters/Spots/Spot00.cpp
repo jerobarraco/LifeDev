@@ -6,6 +6,8 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASpot00::ASpot00():Super() {
+	UseAnim = false;
+	UseRewardDestroy = false;
 	Texts = {
 		NSLOCTEXT("Spot0", "DropHere", "Drop clothes here"),
 		NSLOCTEXT("Spot0", "Full", "All done"),
@@ -23,8 +25,4 @@ ASpot00::ASpot00():Super() {
 	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,7.5));
 	Interact->SetBoxExtent(FVector(18,23,10));
 	Mesh->SetCastAllShadows(true);
-	// DropDlg = TEXT("IS_C0D");
-	// LockedDlg = "IS_C0TB";
-	// LockedFullDlg = "IS_C0TBF";
-	// Items = { };
 }

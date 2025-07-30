@@ -7,7 +7,7 @@
 
 // Base spot with other mesh
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ASpot01: public ALInteractSpot {
+class LIFEDEV_API ASpot01: public ALInteract {
 	GENERATED_BODY()
 
 public:

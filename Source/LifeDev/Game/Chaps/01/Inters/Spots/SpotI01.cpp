@@ -5,7 +5,8 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI01::ASpotI01():Super() {
-	Items = {LDConsts::Items::Bra};
+
+	UnlockItems = {LDConsts::Items::Bra};
 	Texts = {
 		FText(NSLOCTEXT("Chap01", "Spot01.DropHere", "Drop her clothes here")),
 		FText(NSLOCTEXT("Chap01", "Spot01.Full", "All done")),
