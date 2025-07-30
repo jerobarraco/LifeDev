@@ -16,7 +16,7 @@ ASpot01::ASpot01():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	// SFXTrigger = CSnd.Object;
-	SFXs = {CSnd.Object, CSnd.Object}; 
+	SFXs = {CSnd.Object, CSnd.Object};
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		ObjMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Shirt00.Shirt00"));

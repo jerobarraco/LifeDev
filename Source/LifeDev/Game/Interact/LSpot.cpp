@@ -1,11 +1,11 @@
-#include "LInteractSpot.h"
+#include "LSpot.h"
 
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
 
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 
-ALInteractSpot::ALInteractSpot():Super() {
+ALSpot::ALSpot():Super() {
 	// always locked. we don't want it to trigger because that gives the reward.
 	// it will trigger automatically
 	IsLocked = true;
@@ -23,7 +23,7 @@ ALInteractSpot::ALInteractSpot():Super() {
 	Super::SetMobility(EComponentMobility::Static); // spots don't need to move, by default.
 }
 
-bool ALInteractSpot::TryTrigger_Implementation() {
+bool ALSpot::TryTrigger_Implementation() {
 	// somewhat similar to should unlock. which is not great.
 	// consume items when unlocking
 

@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/LInteractSpot.h"
+#include "LifeDev/Game/Interact/LSpot.h"
 
 #include "Spot01.generated.h"
 
