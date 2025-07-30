@@ -9,8 +9,6 @@
 ASpot02::ASpot02():Super() {
 	Texts = { FText(NSLOCTEXT("Chap02", "Spot02.Sit", "Sit here")) };
 	StateNum = 1;
-	UseAnim = false;
-	UseRewardDestroy = false;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Arch/Chairs/MOROCCO_BONUS_Wood_Door_6"));

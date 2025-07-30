@@ -6,10 +6,8 @@
 #include "Interact/CInteract.h"
 
 ASpotI04::ASpotI04() {
-	UseOrder = false;
-	UseStateInc = false;
 	UseAutoActivate = true;
-	Items = {"Bottle00", "Bottle01"};
+	UnlockItems = {"Bottle00", "Bottle01"};
 	Texts = { NSLOCTEXT("SpotI04", "Text0", "Drop bottle") };
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Plants/Pot00"));

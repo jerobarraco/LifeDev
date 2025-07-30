@@ -7,7 +7,7 @@
 
 // Spot chair, base
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ASpot02: public ALInteract {
+class LIFEDEV_API ASpot02: public ALSpot {
 	GENERATED_BODY()
 
 public:

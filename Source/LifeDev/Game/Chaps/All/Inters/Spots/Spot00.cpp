@@ -6,8 +6,6 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 ASpot00::ASpot00():Super() {
-	UseAnim = false;
-	UseRewardDestroy = false;
 	Texts = {
 		NSLOCTEXT("Spot0", "DropHere", "Drop clothes here"),
 		NSLOCTEXT("Spot0", "Full", "All done"),
