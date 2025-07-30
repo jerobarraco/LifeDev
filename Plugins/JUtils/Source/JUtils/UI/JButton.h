@@ -27,6 +27,8 @@ public:
 	void SetUp(const FText& NewText, const int32 NewId = -1);
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	void SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
+	void ResetStyle() { SetStyle(BaseStyle, TextStyle); }
 
 	// will be called automatically. it's also exposed for testing.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent)
@@ -43,12 +45,18 @@ public:
 	FJButtonClick OnClick;
 
 protected:
+	virtual void NativeConstruct() override;
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	
 	UFUNCTION() // in order to bind a virtual method
 	void DoClickInt() {DoClick();}
-
+	
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<USlateWidgetStyleAsset> BaseStyle = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<USlateWidgetStyleAsset> TextStyle = nullptr;
+	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> Text = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidget))

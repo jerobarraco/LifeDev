@@ -34,6 +34,11 @@ void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyl
 	}
 }
 
+void UJButton::NativeConstruct() {
+	Super::NativeConstruct();
+	ResetStyle();
+}
+
 void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Btn)) return;
