@@ -185,7 +185,7 @@ void ALFeatsMan::Init() {
 }
 
 void ALFeatsMan::ActMenu() { // no const
-	UE_LOG(LogTemp, Warning, TEXT("%hs"), __func__);
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	if (UNLIKELY(!IsValid(SettingsUI))) return;
 
 	if (SettingsUI->IsVisible()) { // toggle
