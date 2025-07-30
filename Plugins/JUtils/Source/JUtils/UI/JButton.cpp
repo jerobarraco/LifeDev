@@ -34,9 +34,15 @@ void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyl
 	}
 }
 
+void UJButton::NativePreConstruct() {
+	Super::NativePreConstruct();
+	ResetStyle(); // this actually happens when i need to
+}
+
 void UJButton::NativeConstruct() {
 	Super::NativeConstruct();
-	ResetStyle();
+	// only happens during gameplay and not always
+	// ResetStyle();
 }
 
 void UJButton::NativeOnInitialized() {
