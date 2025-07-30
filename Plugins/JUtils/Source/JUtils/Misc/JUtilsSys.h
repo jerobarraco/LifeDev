@@ -10,16 +10,16 @@
 class UInputMappingContext;
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
-	VK_SM5,
-	VK_SM6,
-	VK_ES3,
-	MTL_SM5,
-	MTL_SM6,
-	MTL_ES3,
+	VK_SM5 UMETA(DisplayName="Vulkan SM5"),
+	VK_SM6 UMETA(DisplayName="Vulkan SM6"),
+	VK_ES3 UMETA(DisplayName="Vulkan ES3.1"),
+	MTL_SM5 UMETA(DisplayName="Metal SM5"),
+	MTL_SM6 UMETA(DisplayName="Metal SM6"),
+	MTL_ES3 UMETA(DisplayName="Metal ES3.1"),
 	// vulkan on windows
-	VK_WIN,
-	DX11,
-	DX12,
+	VK_WIN UMETA(DisplayName="Vulkan Windows"),
+	DX11 UMETA(DisplayName="DirectX 11"),
+	DX12 UMETA(DisplayName="Direct X12"),
 	MAX UMETA(Hidden)
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
