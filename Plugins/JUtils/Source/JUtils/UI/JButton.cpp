@@ -39,12 +39,6 @@ void UJButton::NativePreConstruct() {
 	ResetStyle(); // this actually happens when i need to
 }
 
-void UJButton::NativeConstruct() {
-	Super::NativeConstruct();
-	// only happens during gameplay and not always
-	// ResetStyle();
-}
-
 void UJButton::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Btn)) return;
@@ -57,3 +51,4 @@ void UJButton::NativeDestruct() {
 
 	Super::NativeDestruct();
 }
+// void UJButton::NativeConstruct() {// only happens during gameplay and not always. it's not useful for reset style
