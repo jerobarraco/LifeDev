@@ -42,10 +42,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 Id = -1;
 	// the style for the button. You need to create a Slate Widget Style Asset on the content browser.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> BtnStyle = nullptr;
 	// the style of the text.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> TextStyle = nullptr;
 	// the above are public so that they can be edited when instancing
 
