@@ -8,14 +8,15 @@ ULInputSelector::ULInputSelector():Super() {
 
 	// this is so good 
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CS(TEXT("/Game/LifeDev/Core/UI/Btns/LButton_S"));
+		CS(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonSmall_S"));
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CST(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonText_S"));
+		CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
 	USlateWidgetStyleAsset* const StyleAssB = CS.Object;
 	if (StyleAssB) {
 		const FButtonStyle* const Style = CS.Object->GetStyle<FButtonStyle>();
 		SetButtonStyle(*Style);
 	}
+
 	USlateWidgetStyleAsset* const StyleAssT = CST.Object;
 	if (StyleAssT) {
 		const FTextBlockStyle* const Style = CST.Object->GetStyle<FTextBlockStyle>();
