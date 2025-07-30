@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	void SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle);
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
-	void ResetStyle() { SetStyle(BaseStyle, TextStyle); }
+	void ResetStyle() { SetStyle(BtnStyle, TextStyle); }
 
 	// will be called automatically. it's also exposed for testing.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent)
@@ -37,8 +37,17 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UButton* GetBtn() const { return Btn;}
 
+	// the id of the button. returned on the OnClick delegate.
+	// It is up to you to put a value that makes sense to you.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 Id = -1;
+	// the style for the button. You need to create a Slate Widget Style Asset on the content browser.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> BtnStyle = nullptr;
+	// the style of the text.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> TextStyle = nullptr;
+	// the above are public so that they can be edited when instancing
 
 	// bind to this, not the regular button click.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
@@ -51,11 +60,6 @@ protected:
 	
 	UFUNCTION() // in order to bind a virtual method
 	void DoClickInt() {DoClick();}
-	
-	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<USlateWidgetStyleAsset> BaseStyle = nullptr;
-	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<USlateWidgetStyleAsset> TextStyle = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> Text = nullptr;
