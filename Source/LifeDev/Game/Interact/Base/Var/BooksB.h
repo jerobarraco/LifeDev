@@ -14,13 +14,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void ReCreate();
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TArray<TObjectPtr<UCQuickMesh>> Books;
-	// metas are there to be able to view them on the editor
+	virtual void OnConstruction(const FTransform& Transform) override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 BookCount = 5;
@@ -38,6 +37,10 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<TObjectPtr<UMaterialInterface>> Materials;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TArray<TObjectPtr<UCQuickMesh>> Books;
+	// metas are there to be able to view them on the editor
 
 private:
 	void SetUpInteract() const;

@@ -64,7 +64,9 @@ void ABooksB::ReCreate() {
 
 void ABooksB::DestroyBooks() {
 	for (UCQuickMesh* const C: Books) {
-		if (LIKELY(IsValid(C))) C->DestroyComponent(false);
+		if (LIKELY(!IsValid(C))) continue;
+		RemoveOwnedComponent(C);
+		C->DestroyComponent(false);
 	}
 	Books.Empty();
 	AnimFade->Meshes.Empty();
@@ -74,7 +76,7 @@ void ABooksB::CreateBooks() {
 	/// create 
 
 	// check against 0 to be able to use negative values as well
-	const int32 RndSeedNow = RndSeed == 0 ? FMath::Rand() : RndSeed; 
+	const int32 RndSeedNow = RndSeed == 0 ? FMath::Rand() : RndSeed; // this is a test. move to recreate and replace rndseed
 	const FRandomStream RS(RndSeedNow); // not static
 
 	// https://forums.unrealengine.com/t/what-is-the-correct-way-to-create-and-add-components-at-runtime/15605/21?u=nande
@@ -89,6 +91,7 @@ void ABooksB::CreateBooks() {
 			return;
 		}
 		
+		AddOwnedComponent(QM);
 		QM->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		QM->SetStaticMesh(BaseMesh);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
@@ -119,4 +122,12 @@ void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {
 		if (UNLIKELY(!QM)) continue;
 		QM->SetMobility(Mobility);
 	}
+}
+
+void ABooksB::OnConstruction(const FTransform& Transform) {
+	Super::OnConstruction(Transform);
+	// https://forums.unrealengine.com/t/added-components-not-showing-in-details-panel/465572/3?u=nande
+	// this is actually the correct place. it has the side effect that it will recreate when a property is changed.
+	ReCreate();
+	// https://forums.unrealengine.com/t/components-added-at-runtime-dont-show-up-in-editor-details-panel/155064/5?u=nande
 }
