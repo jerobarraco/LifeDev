@@ -6,7 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ADoorI04::ADoorI04():Super() {
-	LockedDlg = "D04_LCK";
+	// LockedDlg = "D04_LCK";
 	// ULockItemReq = LDConsts::Items::Poem0;
 	UnlockItems = {LDConsts::Items::Poem0};
 	IsLocked = true;
