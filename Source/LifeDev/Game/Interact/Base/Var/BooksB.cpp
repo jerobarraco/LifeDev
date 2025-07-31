@@ -17,6 +17,8 @@ void ABooksB::SetUpInteract() const {
 	SFX->SetRelativeLocation(IntLocation);
 }
 
+void ABooksB::DestroyBooks() {}
+
 static const TCHAR* _mats[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI.Palette00_DMI"),
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI.Palette01_DMI"),
@@ -29,7 +31,7 @@ void ABooksB::CreateBooks() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
 	// check against 0 to be able to use negative values as well
-	const FRandomStream RS(RndSeed == 0 ? FMath::Rand() : RndSeed); // not static
+	const FRandomStream RS(RndSeed); // not static
 
 	const int32 MatMax = UJUtilsMisc::ArraySize(_mats) -1;
 	for (int32 i =0; i<BookCount; ++i) {
@@ -65,7 +67,7 @@ void ABooksB::CreateBooks() {
 	}
 }
 
-void ABooksB::Constructor() {
+ABooksB::ABooksB():Super() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
@@ -85,13 +87,13 @@ void ABooksB::Constructor() {
 	/// end create
 	// make them static for now
 
-	SetMobility(EComponentMobility::Static);
+	ABooksB::SetMobility(EComponentMobility::Static);
 }
 
-// unreal made me do it.
-
-ABooksB::ABooksB():Super() {
-	Constructor(); // call the child constructor
+void ABooksB::ReCreate() {
+	RndSeed = RndSeed == 0 ? FMath::Rand() : RndSeed;
+	DestroyBooks();
+	CreateBooks();
 }
 
 void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {

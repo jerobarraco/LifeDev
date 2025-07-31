@@ -12,6 +12,9 @@ class LIFEDEV_API ABooksB: public ALInteract {
 public:
 	ABooksB();
 
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void ReCreate();
+
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 
@@ -32,6 +35,6 @@ protected:
 
 private:
 	void SetUpInteract() const;
+	void DestroyBooks();
 	void CreateBooks();
-	void Constructor(); // can't make this virtual as it won't call the child one from the constructor of the super.
 };
