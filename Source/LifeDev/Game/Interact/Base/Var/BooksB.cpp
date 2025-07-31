@@ -1,6 +1,6 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "Books.h"
+#include "BooksB.h"
 
 #include "CQuickMesh.h"
 #include "Components/AudioComponent.h"
@@ -8,7 +8,7 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
-void ABooks::SetUpInteract() const {
+void ABooksB::SetUpInteract() const {
 	// interact and sfx location
 	const float ZLen = (Spacing*BookCount)/2.0;
 	const FVector IntLocation(10,-6.250000, ZLen);
@@ -24,7 +24,7 @@ static const TCHAR* _mats[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette03_DMI.Palette03_DMI"),
 };
 
-void ABooks::CreateBooks() {
+void ABooksB::CreateBooks() {
 	/// create 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
@@ -65,7 +65,7 @@ void ABooks::CreateBooks() {
 	}
 }
 
-void ABooks::Constructor() {
+void ABooksB::Constructor() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
@@ -90,19 +90,11 @@ void ABooks::Constructor() {
 
 // unreal made me do it.
 
-ABooks::ABooks():Super() {
+ABooksB::ABooksB():Super() {
 	Constructor(); // call the child constructor
 }
 
-ABooks::ABooks(const int32 nBookCount, const int32 nRndSeed):Super() {
-	// check to avoid issues 
-	if (nBookCount>=0) BookCount = nBookCount;
-	RndSeed = nRndSeed;
-
-	Constructor(); // call the child constructor
-}
-
-void ABooks::SetMobility(const EComponentMobility::Type Mobility) {
+void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	for (const TObjectPtr<UCQuickMesh>& QM: Books) {
 		if (UNLIKELY(!QM)) continue;
