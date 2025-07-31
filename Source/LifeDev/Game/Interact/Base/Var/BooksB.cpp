@@ -26,7 +26,6 @@ ABooksB::ABooksB():Super() {
 	// mesh (what's this for again?)
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
 
-	CreateBooks();
 	SetUpInteract();
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
@@ -54,7 +53,11 @@ static const TCHAR* _mats[] = {
 };
 
 void ABooksB::DestroyBooks() {
-	// TODO
+	for (UCQuickMesh* const C: Books) {
+		RemoveOwnedComponent(C);
+	}
+	Books.Empty();
+	AnimFade->Meshes.Empty();
 }
 
 void ABooksB::CreateBooks() {
