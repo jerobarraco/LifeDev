@@ -57,9 +57,7 @@ static const TCHAR* _mats[] = {
 
 void ABooksB::DestroyBooks() {
 	for (UCQuickMesh* const C: Books) {
-		C->DetachFromParent(false, false);
-		C->UnregisterComponent();
-		RemoveOwnedComponent(C);
+		if (LIKELY(IsValid(C))) C->DestroyComponent(false);
 	}
 	Books.Empty();
 	AnimFade->Meshes.Empty();
