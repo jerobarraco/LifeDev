@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float Spacing = 2.1;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<UStaticMesh> BaseMesh = nullptr;
+
 private:
 	void SetUpInteract() const;
 	void DestroyBooks();

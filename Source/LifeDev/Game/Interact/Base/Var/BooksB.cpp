@@ -25,8 +25,10 @@ ABooksB::ABooksB():Super() {
 	Texts = { NSLOCTEXT("Books", "State0", "Books")};
 	// mesh (what's this for again?)
 	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
-
-	SetUpInteract();
+	
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
+	BaseMesh = CMesh.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
@@ -43,6 +45,7 @@ void ABooksB::ReCreate() {
 	RndSeed = RndSeed == 0 ? FMath::Rand() : RndSeed;
 	DestroyBooks();
 	CreateBooks();
+	SetUpInteract(); // depends on the number of books
 }
 
 static const TCHAR* _mats[] = {
@@ -62,8 +65,7 @@ void ABooksB::DestroyBooks() {
 
 void ABooksB::CreateBooks() {
 	/// create 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
+
 	// check against 0 to be able to use negative values as well
 	const FRandomStream RS(RndSeed); // not static
 
@@ -78,9 +80,9 @@ void ABooksB::CreateBooks() {
 			UE_LOG(LogTemp, Warning, TEXT("%hs could not create components"), __func__);
 			return;
 		}
-		
+
 		QM->SetupAttachment(Mesh);
-		QM->SetStaticMesh(CMesh.Object);
+		QM->SetStaticMesh(BaseMesh);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
 		QM->SetRelativeLocation(FVector(0, OffY, Spacing*i));
 		QM->SetCastAllShadows(true);
