@@ -4,7 +4,7 @@
 
 ARadioI01::ARadioI01():Super() {
 	// when user tries to play but has no tape
-	LockedDlg = "RD01_L";
+	// LockedDlg = "RD01_L";
 	IsLocked = true;
 	UseAutoActivate = true;
 	StateNum = 1;
