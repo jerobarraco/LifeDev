@@ -4,6 +4,6 @@
 
 ADoorI15::ADoorI15():Super() {
 	UseAnim = false;
-	LockedDlg = "D15_L";
+	// LockedDlg = "D15_L"; // todo dialog
 	IsLocked = true;
 }

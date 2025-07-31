@@ -19,7 +19,7 @@ ATapeI03::ATapeI03():Super() {
 	// autoActivate works well, and it's needed so it gets activated on reward.
 
 	UnlockItems = { LDConsts::Items::Batts };
-	LockedDlg = FName("T03_L");
+	// LockedDlg = FName("T03_L");
 	// LockedItemDlg = FName("T03_LI"); // will hint to use the batts
 	// TriggerDlg = FName("T03_Look"); // will say what it is. triggered on pick up
 }

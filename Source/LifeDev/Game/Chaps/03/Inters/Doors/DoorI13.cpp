@@ -7,7 +7,7 @@ ADoorI13::ADoorI13():Super() {
 	// LockedDlg = "D13_L";
 	IsLocked = true;
 	UseAutoActivate = false;
-	// todo this instance is not useful. recycle
+	// todo this instance is not useful. recycle, potentially by doori16
 #if WITH_EDITORONLY_DATA
 	Comment = "TODO replace with a stub door. this one is not accessible anymore."; // todo
 #endif
