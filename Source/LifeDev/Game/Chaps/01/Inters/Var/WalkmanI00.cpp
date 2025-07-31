@@ -17,12 +17,11 @@ AWalkmanI00::AWalkmanI00():Super() { // todo make a baseclass
 	UseFade = true;
 	UseAutoActivate = true;
 
-	// TODO allow to pick without the batteries. needs to change the door and stuff.
 	// Locked = false;
 	IsLocked = true;
-	LockedDlg = "WM_L";
-	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries. TODO add
 	UnlockItems = {LDConsts::Items::Batts};
+	// LockedDlg = "WM_L";
+	// LockedItemDlg = "WM_LI"; // will trigger if i have the batteries.
 	// ULockItemReq = LDConsts::Items::Batts;
 	// ULockCondition = "{V.Item.Count.Batts}"; // unlock if it has the batteries
 

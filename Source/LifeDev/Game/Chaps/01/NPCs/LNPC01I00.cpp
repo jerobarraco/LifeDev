@@ -4,7 +4,7 @@
 #include "Story/Story.h"
 
 ALNPC01I00::ALNPC01I00():Super() {
-	LockedDlg = "N01.L";
+	// LockedDlg = "N01.L"; LNPCI00
 	Texts = { NSLOCTEXT("CH01", "NPC01I00", "Looks dangerous...") };
 	UseFade = true;
 	UseStateLoop = false;
