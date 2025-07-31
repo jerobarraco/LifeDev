@@ -57,6 +57,8 @@ static const TCHAR* _mats[] = {
 
 void ABooksB::DestroyBooks() {
 	for (UCQuickMesh* const C: Books) {
+		C->DetachFromParent(false, false);
+		C->UnregisterComponent();
 		RemoveOwnedComponent(C);
 	}
 	Books.Empty();
@@ -80,8 +82,8 @@ void ABooksB::CreateBooks() {
 			UE_LOG(LogTemp, Warning, TEXT("%hs could not create components"), __func__);
 			return;
 		}
-
-		QM->SetupAttachment(Mesh);
+		
+		QM->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		QM->SetStaticMesh(BaseMesh);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
 		QM->SetRelativeLocation(FVector(0, OffY, Spacing*i));
