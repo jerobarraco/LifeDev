@@ -64,12 +64,18 @@ void ABooksB::CreateBooks() {
 	// check against 0 to be able to use negative values as well
 	const FRandomStream RS(RndSeed); // not static
 
+	// https://forums.unrealengine.com/t/what-is-the-correct-way-to-create-and-add-components-at-runtime/15605/21?u=nande
 	const int32 MatMax = UJUtilsMisc::ArraySize(_mats) -1;
 	for (int32 i =0; i<BookCount; ++i) {
 		const FString SName = TEXT("Book_") + FString::FromInt(i);
-		UCQuickMesh* const QM = CreateDefaultSubobject<UCQuickMesh>(FName(*SName));
-		if (UNLIKELY(!QM)) continue;
+		UCQuickMesh* const QM = Cast<UCQuickMesh>(
+			AddComponentByClass(UCQuickMesh::StaticClass(), true, FTransform::Identity, false));
 
+		if(UNLIKELY(!QM)) {
+			UE_LOG(LogTemp, Warning, TEXT("%hs could not create components"), __func__);
+			return;
+		}
+		
 		QM->SetupAttachment(Mesh);
 		QM->SetStaticMesh(CMesh.Object);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
@@ -78,7 +84,7 @@ void ABooksB::CreateBooks() {
 
 		Books.Add(QM);
 		AnimFade->Meshes.Add(QM);
-
+continue; // todo materials
 		// since this is static, rider will hint this out, but it's good to keep
 		if (UNLIKELY(MatMax <= 0)) continue;
 
