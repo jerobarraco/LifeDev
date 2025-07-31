@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UStaticMesh> BaseMesh = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TArray<TObjectPtr<UMaterialInterface>> Materials;
+
 private:
 	void SetUpInteract() const;
 	void DestroyBooks();
