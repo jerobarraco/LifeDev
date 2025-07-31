@@ -17,7 +17,7 @@ void ABooksB::SetUpInteract() const {
 	SFX->SetRelativeLocation(IntLocation);
 }
 
-static const TCHAR* _mats[] = {
+static const TCHAR* _matsB[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI.Palette00_DMI"),
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI.Palette01_DMI"),
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette02_DMI.Palette02_DMI"),
@@ -42,9 +42,9 @@ ABooksB::ABooksB():Super() {
 	// SFXTrigger = CSnd.Object;
 	SFXs = { CSnd.Object };
 
-	const uint8 MatMax = UJUtilsMisc::ArraySize(_mats);
+	const uint8 MatMax = UJUtilsMisc::ArraySize(_matsB);
 	for (uint8 i = 0; i<MatMax; ++i) {
-		ConstructorHelpers::FObjectFinder<UMaterialInterface> M(_mats[i]);
+		ConstructorHelpers::FObjectFinder<UMaterialInterface> M(_matsB[i]);
 		UMaterialInterface* MM = M.Object;
 		if (UNLIKELY(!IsValid(MM))) continue;
 
