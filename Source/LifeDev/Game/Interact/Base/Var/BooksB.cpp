@@ -17,7 +17,34 @@ void ABooksB::SetUpInteract() const {
 	SFX->SetRelativeLocation(IntLocation);
 }
 
-void ABooksB::DestroyBooks() {}
+ABooksB::ABooksB():Super() {
+	UseAnim = false;
+	UseRewardDestroy = false;
+	StateNum = 1;
+	// UseAutoActivate = false; // important since i use these as decoration a lot // redundant
+	Texts = { NSLOCTEXT("Books", "State0", "Books")};
+	// mesh (what's this for again?)
+	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
+
+	CreateBooks();
+	SetUpInteract();
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
+	// SFXTrigger = CSnd.Object;
+	SFXs = { CSnd.Object };
+
+	/// end create
+	// make them static for now
+
+	ABooksB::SetMobility(EComponentMobility::Static);
+}
+
+void ABooksB::ReCreate() {
+	RndSeed = RndSeed == 0 ? FMath::Rand() : RndSeed;
+	DestroyBooks();
+	CreateBooks();
+}
 
 static const TCHAR* _mats[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette00_DMI.Palette00_DMI"),
@@ -25,6 +52,10 @@ static const TCHAR* _mats[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette02_DMI.Palette02_DMI"),
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette03_DMI.Palette03_DMI"),
 };
+
+void ABooksB::DestroyBooks() {
+	// TODO
+}
 
 void ABooksB::CreateBooks() {
 	/// create 
@@ -65,35 +96,6 @@ void ABooksB::CreateBooks() {
 
 		QM->SetMaterial(0, Mat);
 	}
-}
-
-ABooksB::ABooksB():Super() {
-	UseAnim = false;
-	UseRewardDestroy = false;
-	StateNum = 1;
-	// UseAutoActivate = false; // important since i use these as decoration a lot // redundant
-	Texts = { NSLOCTEXT("Books", "State0", "Books")};
-	// mesh (what's this for again?)
-	Mesh->SetRelativeLocation(FVector(-10, 6.25, 0));
-
-	CreateBooks();
-	SetUpInteract();
-
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C"));
-	// SFXTrigger = CSnd.Object;
-	SFXs = { CSnd.Object };
-
-	/// end create
-	// make them static for now
-
-	ABooksB::SetMobility(EComponentMobility::Static);
-}
-
-void ABooksB::ReCreate() {
-	RndSeed = RndSeed == 0 ? FMath::Rand() : RndSeed;
-	DestroyBooks();
-	CreateBooks();
 }
 
 void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {
