@@ -57,8 +57,8 @@ APotI00::APotI00():Super() {
 	// but they can still use the items on it.
 	IsLocked = true;
 	IsOneShot = false;
-	TriggerDlg = "Pot00.0_T";
-	LockedDlg = "Pot00.0_L";
+	TriggerDlg = "Pot00.0_T"; // todo should be Pot00_T.0 instead
+	// LockedDlg = "Pot00_L.0"; // handled by data table
 	UnlockItems = { "Food00", "Food01" };
 	SFXs = {SNDDrops, nullptr};
 }
@@ -74,9 +74,8 @@ void APotI00::DoTrigger_Implementation() {
 		// triggered after adding food
 		// all this only affects the next trigger (using the plate) for next trigger (plates)
 		TriggerDlg = "Pot00.1_T"; // clear the trigger dialog for next step
-		LockedDlg = "Pot00.1_L";
+		// LockedDlg = "Pot00.1_L";
 		UnlockItems = {LDConsts::Items::Plate01};
-		// SFXTrigger = SND_Drops; // TODO use SFXs[]
 		IsLocked = true;
 		// story is advanced by the step
 		// Story->StartNext(); // manually advance.
