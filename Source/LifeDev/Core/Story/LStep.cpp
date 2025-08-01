@@ -168,11 +168,14 @@ void ALStep::StartDialogs() {
 	// and also can trigger their own dialogs and fbdlgauto would still work.
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 
+	if (DlgId.IsNone())
+		DlgId = FName(LDConsts::Dlgs::Step::StartPre+Name.ToString()); // TODO wip
+
+	// TODO add the check for finishpostwait here 
 	if (DlgId.IsNone()) return;
 
 	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
 
-	Diags->AddId(FName(LDConsts::Dlgs::Step::StartPre+Name.ToString())); // wip
 	Diags->AddId(DlgId);
 
 	FinishAfterDlgs();
