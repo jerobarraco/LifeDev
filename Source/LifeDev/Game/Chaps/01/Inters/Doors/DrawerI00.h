@@ -5,11 +5,11 @@
 
 #include "DrawerI00.generated.h"
 
-// Drawer 01 instance 00
+// warning. this is used in multiple places.
+// at least ch00 besides the bed and ch01
+
+// Drawer 01 instance 00. This class is unnecessary. TODO change the drawers in the world to the base and delete
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawerI00: public ADrawer01 {
 	GENERATED_BODY()
-
-protected:
-	virtual void SetState_Implementation(const int32 NewState) override;
 };
