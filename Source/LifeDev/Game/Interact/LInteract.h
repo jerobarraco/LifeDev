@@ -22,7 +22,6 @@ class UFlashback;
 // UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 // bool UseStateInc = false;
 
-
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
@@ -125,7 +124,7 @@ protected:
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Rewarded();
-	virtual void Rewarded_Implementation() {};
+	virtual void Rewarded_Implementation() {}
 
 	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.

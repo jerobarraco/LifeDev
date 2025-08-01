@@ -45,7 +45,7 @@ ABooksB::ABooksB():Super() {
 	const uint8 MatMax = UJUtilsMisc::ArraySize(_matsB);
 	for (uint8 i = 0; i<MatMax; ++i) {
 		ConstructorHelpers::FObjectFinder<UMaterialInterface> M(_matsB[i]);
-		UMaterialInterface* MM = M.Object;
+		UMaterialInterface* const MM = M.Object;
 		if (UNLIKELY(!IsValid(MM))) continue;
 
 		Materials.Add(MM);
