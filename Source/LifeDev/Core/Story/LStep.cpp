@@ -87,6 +87,7 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
+	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Name.ToString()), 1);
 
 	SetActorsHideActive(false, true);
 	SetIntersActiveAuto(false);
@@ -114,6 +115,7 @@ void ALStep::Start_Implementation() {
 	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
+	// bind before doing the rest of the things, to ensure we capture everything. (there are other actors sideeffects below)
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
 	if (!FinishItems.IsEmpty() & LIKELY(Inventory))
 		Inventory->OnMod.AddUniqueDynamic(this, &ALStep::ItemMod);
@@ -122,9 +124,11 @@ void ALStep::Start_Implementation() {
 	if (!FinishFlags.IsEmpty() & LIKELY(Flags))
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
 
+	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StartPre+Name.ToString()), 1);
+	
 	// ensure to check if we already have the item. but not now to not affect the flow of child classes
 	W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinish);
-
+	
 	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
 	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work

@@ -36,7 +36,7 @@ namespace LDConsts {
 		}
 		namespace Step {
 			inline static const FString StartPre("Step.Start.");
-			inline static const FString EndPre("Step.End.");
+			inline static const FString StopPre("Step.Stop.");
 		}
 	}
 }
