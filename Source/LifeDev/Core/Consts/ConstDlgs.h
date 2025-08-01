@@ -34,5 +34,9 @@ namespace LDConsts {
 				inline static const FString FullPre(TEXT("Inter.Spot.Full."));
 			}
 		}
+		namespace Step {
+			inline static const FString StartPre("Step.Start.");
+			inline static const FString EndPre("Step.End.");
+		}
 	}
 }

@@ -7,6 +7,7 @@
 #include "Interact/Animator/CAnimatorTrans.h"
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
+#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "Story/Story.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -171,6 +172,7 @@ void ALStep::StartDialogs() {
 
 	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
 
+	Diags->AddId(FName(LDConsts::Dlgs::Step::StartPre+Name.ToString())); // wip
 	Diags->AddId(DlgId);
 
 	FinishAfterDlgs();
