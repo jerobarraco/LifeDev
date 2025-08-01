@@ -8,10 +8,10 @@ AStoveI00::AStoveI00():Super() {
 	IsLocked = true;
 	IsOneShot = true;
 	TriggerDlg = "Stove00_T";
-	LockedDlg = "Stove00_L";
-	// LockedItemDlg = "Stove00_LI";
 	UnlockItems = {LDConsts::Items::Matches00};
 	RewardFlash = .11;
+	// LockedDlg = "Stove00_L";
+	// LockedItemDlg = "Stove00_LI";
 	// RewardIntersActiveClass = {APotI00::StaticClass()};
 	// UseAutoActivate = false; // activated by LNPCI06 // redundant
 
