@@ -60,7 +60,7 @@ public:
 	// dialog or sequence to trigger on start.
 	// This will make the step finish when the dialog finishes.
 	// it will also disable FinishPostWait.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName DlgId = NAME_None;
 	// how much to mod the fb by on each dialog.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg")

@@ -272,8 +272,9 @@ void ALStep::CheckFinish() {
 	const int32 NumItems = FinishItems.Num();
 	const int32 NumFlags = FinishFlags.Num();
 	if ((NumItems<1) & (NumFlags<1)) return; // nothing to finish
-	if (LIKELY(!HasItemsFinish())) return;
-	if (LIKELY(!HasFlagsFinish())) return;
+	
+	if (LIKELY(!HasItemsFinish() | !HasFlagsFinish())) return;
+
 	// clear to avoid any double triggering that might happen while the dialogs are being triggered
 	// since flags can change due to many random things, including the timer.
 	FinishItems.Empty();
