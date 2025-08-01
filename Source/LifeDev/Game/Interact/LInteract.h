@@ -112,10 +112,6 @@ public:
 	// use Inter.Trigger.ObjName
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
 	FName TriggerDlg = NAME_None;
-	// dialog to show when the object is locked, and we DON'T have the ULockItem
-	// use Inter.Locked.ObjName
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
-	FName LockedDlg = NAME_None;
 #pragma endregion
 
 	// used for fading this object on rewards or whenever you want.

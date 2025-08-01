@@ -323,9 +323,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 
 	if (UNLIKELY(!Inventory | !Diags)) return;
 
-	Diags->AddId(LockedDlg);
-
-	// Also add the auto ones
+	// add the auto ones
 	const FString& SLabel = Label.ToString();
 	const FName TName = FName(LDConsts::Dlgs::Inter::LockedPre+SLabel);
 	Diags->AddId(TName);
