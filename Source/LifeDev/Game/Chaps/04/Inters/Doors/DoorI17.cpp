@@ -4,7 +4,7 @@
 
 ADoorI17::ADoorI17():Super() {
 	UseAnim = true;
-	LockedDlg = "D17_L";
+	// LockedDlg = "D17_L";
 	IsLocked = true;
 	UseAutoActivate = true;
 }
