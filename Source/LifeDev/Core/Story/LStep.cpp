@@ -111,9 +111,14 @@ void ALStep::Stop_Implementation() {
 }
 
 void ALStep::Start_Implementation() {
-	Super::Start_Implementation();
 	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
+	// todo fix FinishPostWait. it has to be set before super::start otherwise it will stop the step
+	// maybe have dlg as a private or protected.
+	// set once here
+	// then check with the dialog subsystem if it exists (have to implement "Has")
+	// and set accordingly. then it can be used for the flags below and on StartDialogs
+	Super::Start_Implementation();
 
 	// bind before doing the rest of the things, to ensure we capture everything. (there are other actors sideeffects below)
 	// check items. do on Start to avoid possibly finishing the step while it's starting.
@@ -175,10 +180,9 @@ void ALStep::StartDialogs() {
 	if (DlgId.IsNone())
 		DlgId = FName(LDConsts::Dlgs::Step::StartPre+Name.ToString()); // TODO wip
 
-	// TODO add the check for finishpostwait here 
 	if (DlgId.IsNone()) return;
 
-	if (LIKELY(UseFBDlgAuto)) SetFBDlgAuto(DlgId);
+	SetFBDlgAuto(DlgId);
 
 	Diags->AddId(DlgId);
 
@@ -186,6 +190,8 @@ void ALStep::StartDialogs() {
 }
 
 void ALStep::SetFBDlgAuto(const FName& Id) {
+	if (UNLIKELY(!UseFBDlgAuto)) return;
+
 	FDiagGroup Seq;
 	int32 Len = 0;
 	const bool Ok = Diags->GetGroup(Id, Seq);
