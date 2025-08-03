@@ -9,10 +9,10 @@ APuzzleI00::APuzzleI00():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {5,4,0,5}; // F.E.A.R.
 
-	static FName DoneId = "PZ00_T";
 	RewardFlash = .2;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
-	TriggerDlg = DoneId;
+	// static FName DoneId = "PZ00_T";
+	// TriggerDlg = DoneId;
 }
 
 void APuzzleI00::PostLoad() {
