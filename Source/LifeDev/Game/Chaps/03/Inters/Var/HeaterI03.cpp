@@ -11,7 +11,7 @@ AHeaterI03::AHeaterI03():Super() {
 	IsLocked = false;
 	UseAutoActivate = true;
 	// LockedDlg = "HT03_L";
-	TriggerDlg = "HT03_L"; // TODO rename
+	// TriggerDlg = "HT03_L"; // TODO rename
 	Texts = { NSLOCTEXT("HeaterI00", "State0", "Turn on") };
 	StateNum = 1;
 	// TODO find a new one

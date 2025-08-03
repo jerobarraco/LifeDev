@@ -4,7 +4,7 @@
 
 ABooksI00::ABooksI00():Super(3, 93) {
 	Texts = { NSLOCTEXT("BooksI00", "State0", "Books")};
-	TriggerDlg = "BK00_T";
+	// TriggerDlg = "BK00_T";
 	UseRewardDestroy = false;
 	IsOneShot = true;
 	UseAutoActivate = true;
