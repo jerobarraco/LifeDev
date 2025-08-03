@@ -11,7 +11,7 @@
 
 // TODO replace the triggeldlg with auto dialog, then remove this class like draweri00
 
-// Drawer 02 instance 00. to be recycled
+// Drawer 02 instance 00. todo to be recycled 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ADrawerI01: public ADrawer02 {
 	GENERATED_BODY()

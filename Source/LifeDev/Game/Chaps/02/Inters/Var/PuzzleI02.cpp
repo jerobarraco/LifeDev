@@ -10,10 +10,10 @@ APuzzleI02::APuzzleI02():Super() {
 	CPuzzle->Solution = {0, 0, 3}; // S.A.D.
 
 	UseHint = true;
-	static FName DoneId = "PZ02_T";
 	RewardFlash = .15;
 	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
-	TriggerDlg = DoneId;
+	// static FName DoneId = "PZ02_T";
+	// TriggerDlg = DoneId;
 	RewardActor = TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card02_UAID_D8BBC116E501DFC401_1977970429"));
 }
 
