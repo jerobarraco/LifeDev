@@ -184,7 +184,7 @@ void ALStep::StartDialogs() {
 
 	SetFBDlgAuto(DlgId);
 
-	Diags->AddId(DlgId);
+	if (!Diags->AddId(DlgId)) return; // important to not finish if there was no dialog. happens a lot with autodialogs
 
 	FinishAfterDlgs();
 }

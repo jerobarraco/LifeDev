@@ -32,7 +32,7 @@ public:
 
 	// name of the step. critically necessary. for the step system to start it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	FName Name = NAME_None;
+	FName Name = NAME_None; // TODO rename to label. Name is a keyword for unreal that can confuse.
 
 	// Actor holding the camera to blend to. Or null to not use blend.
 	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
