@@ -102,7 +102,8 @@ public:
 	// items to receive/consume in order to unlock.
 	// items will be removed from this list on runtime whenever they are consumed.
 	// if the item is consumable, it will be consumed. otherwise it will only check for presence.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, AssetRegistrySearchable, meta=(DeprecatedProperty))
+	// Not using UnlockCondition here since i want to consume these items.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, AssetRegistrySearchable)
 	TArray<FName> UnlockItems;
 #pragma endregion
 
