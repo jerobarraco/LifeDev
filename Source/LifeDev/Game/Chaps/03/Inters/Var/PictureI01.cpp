@@ -7,7 +7,7 @@
 
 APictureI01::APictureI01():Super() {
 	Texts = { NSLOCTEXT("PictureI01", "State0", "Picture") };
-	TriggerDlg = "PIC01_T";
+	// TriggerDlg = "PIC01_T";
 	IsOneShot = true;
 	UseAutoActivate = true;
 	RewardFlash = .09;
@@ -28,5 +28,4 @@ APictureI01::APictureI01():Super() {
 	IRoot->SetRelativeTransform(Anim->TStart);
 	
 	Super::SetMobility(EComponentMobility::Movable);
-	// TODO, maybe i could add some card interaction to this?
 }
