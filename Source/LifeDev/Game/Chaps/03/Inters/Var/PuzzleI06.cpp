@@ -18,8 +18,8 @@ APuzzleI06::APuzzleI06():Super() {
 	ResetOnFail = false;
 	UseAutoActivate = false; // This is activated by the step c3s0
 
-	static FName DoneId = "PZ06_T";
-	TriggerDlg = DoneId;
+	// static FName DoneId = "PZ06_T";
+	// TriggerDlg = DoneId;
 	RewardFlash = .1;
 	RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(
 		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"));
