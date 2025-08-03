@@ -5,7 +5,7 @@
 // #include "Interact/CInteract.h"
 
 APlantI00::APlantI00():Super() {
-	TriggerDlg = "PL00_T";
+	// TriggerDlg = "PL00_T";
 	// the plant on c03 has some batteries. the box collides with the batts.
 	// but i've fixed that by setting the plant to oneShot.
 	IsOneShot = true;
