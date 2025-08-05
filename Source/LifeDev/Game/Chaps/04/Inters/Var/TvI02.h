@@ -12,7 +12,4 @@ class LIFEDEV_API ATvI02: public ATv00 {
 
 public:
 	ATvI02();
-
-protected:
-	virtual void SetState_Implementation(const int32 NewState) override;
 };
