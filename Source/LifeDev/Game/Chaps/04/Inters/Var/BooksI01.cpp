@@ -6,6 +6,7 @@ ABooksI01::ABooksI01() {
 	Texts = { NSLOCTEXT("BooksI01", "State", "A book") };
 	// TriggerDlg = "BK01_T";
 	BookCount = 1;
+	RndSeed = 6;
 	UseRewardDestroy = false;
 	IsOneShot = true;
 	IsLocked = false;
