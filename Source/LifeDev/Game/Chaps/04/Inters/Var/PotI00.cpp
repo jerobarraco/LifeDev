@@ -57,6 +57,7 @@ APotI00::APotI00():Super() {
 	// but they can still use the items on it.
 	IsLocked = true;
 	IsOneShot = false;
+	// TODO this will be a bit more complicated
 	TriggerDlg = "Pot00.0_T"; // todo should be Pot00_T.0 instead
 	// LockedDlg = "Pot00_L.0"; // handled by data table
 	UnlockItems = { "Food00", "Food01" };

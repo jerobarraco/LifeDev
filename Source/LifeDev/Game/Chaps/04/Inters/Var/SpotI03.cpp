@@ -5,7 +5,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ASpotI03::ASpotI03():Super() {
-	TriggerDlg = "IS3_T"; // when completed
+	// TriggerDlg = "IS3_T"; // when completed
 	UnlockItems = { LDConsts::Items::Plate02 }; // empty plate
 
 	// LockedDlg = "IS3_L"; // when not full, try trigger
