@@ -7,9 +7,9 @@
 AStoveI00::AStoveI00():Super() {
 	IsLocked = true;
 	IsOneShot = true;
-	TriggerDlg = "Stove00_T";
 	UnlockItems = {LDConsts::Items::Matches00};
 	RewardFlash = .11;
+	// TriggerDlg = "Stove00_T";
 	// LockedDlg = "Stove00_L";
 	// LockedItemDlg = "Stove00_LI";
 	// RewardIntersActiveClass = {APotI00::StaticClass()};
