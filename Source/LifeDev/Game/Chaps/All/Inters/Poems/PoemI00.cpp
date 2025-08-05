@@ -4,8 +4,8 @@
 
 APoemI00::APoemI00():Super() {
 	RewardItem = "P00";
-	TriggerDlg = "Item.Look.P00"; // todo add a new group to redirect to this dialog instead of using this var
 	RewardFlash = -.1f;
+	// TriggerDlg = "Item.Look.P00"; // todo add a new group to redirect to this dialog instead of using this var
 	// UseHint = true;
 	// HintCondition = "{Inter.Locked.DoorI04}>2"; // unfortunately the card is obtained after the door ;_;
 	// a lazy dog is a sheet of paper
