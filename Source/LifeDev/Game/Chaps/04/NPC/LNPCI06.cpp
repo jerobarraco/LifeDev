@@ -4,7 +4,7 @@
 ALNPCI06::ALNPCI06():Super() {
 	Texts = { NSLOCTEXT("LNPCI06", "State0", "Talk")};
 
-	TriggerDlg = "NPCI06_T";
+	// TriggerDlg = "NPCI06_T";
 	UseRewardDestroy = false;
 	IsLocked = false;
 	IsOneShot = true;
