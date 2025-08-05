@@ -10,7 +10,7 @@ APictureI02::APictureI02():Super() {
 	UseFade = false;
 	UseAnim = true; // TODO this is weird with 1 state.
 	StateNum = 1;
-	TriggerDlg = "Pic02_T";
+	// TriggerDlg = "Pic02_T";
 
 	const FRotator State0Rot(0,35.,0);
 	Trans = { FTransform(State0Rot) };
