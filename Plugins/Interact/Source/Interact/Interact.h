@@ -321,7 +321,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="SetUp|State")
 	int32 State = 0;
 
-	// whether to enable hints or not. Check "UseHintCondition", and "UseTriggerDeHint"
+	// whether to show hints or not. Check "UseHintCondition", and "UseTriggerDeHint".
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHint = false;
 

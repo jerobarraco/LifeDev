@@ -38,7 +38,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<TObjectPtr<UMaterialInterface>> Materials;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TArray<TObjectPtr<UCQuickMesh>> Books;
 	// metas are there to be able to view them on the editor
 
