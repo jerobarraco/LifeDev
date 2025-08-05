@@ -2,7 +2,7 @@
 
 #include "BooksI01.h"
 
-ABooksI01::ABooksI01() { //:Super(1, 0) {
+ABooksI01::ABooksI01() {
 	Texts = { NSLOCTEXT("BooksI01", "State", "A book") };
 	// TriggerDlg = "BK01_T";
 	BookCount = 1;
