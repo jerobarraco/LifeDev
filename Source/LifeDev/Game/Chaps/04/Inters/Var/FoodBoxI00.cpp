@@ -6,13 +6,13 @@
 #include "JUtils/Actors/CQuickMesh.h"
 
 AFoodBoxI00::AFoodBoxI00():Super() {
-	UseAutoActivate = true;
-	StateNum = 1;
 	Texts = { NSLOCTEXT("FoodBoxI00", "State0", "Rice box") };
+	StateNum = 1;
+	UseAutoActivate = true;
 	RewardItem = "Food00";
 	UseRewardDestroy = true;
 	UseFade = true;
-	TriggerDlg = "Food00_T";
+	// TriggerDlg = "Food00_T";
 	// RewardFlash = .1; // story works better this way
 	// Locked = true;
 	// LockedDlg = "Food00_L";

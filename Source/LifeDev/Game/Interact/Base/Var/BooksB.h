@@ -12,9 +12,9 @@ class LIFEDEV_API ABooksB: public ALInteract {
 public:
 	ABooksB();
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
 	void ReCreate();
-	UFUNCTION(BlueprintCallable, CallInEditor)
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
 	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
 
 protected:
