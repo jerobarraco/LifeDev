@@ -30,7 +30,7 @@ void AStoveI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
 
 	// small trick so that i can play 2 sfxs at once. the default one is shortlived.
-	UseAttachedSFX = false;
+	UseSFXAttached = false;
 	PlaySFX(SFXTriggerB);
-	UseAttachedSFX = true;
+	UseSFXAttached = true;
 }

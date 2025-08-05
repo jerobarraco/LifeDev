@@ -129,7 +129,7 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 	SetText();
 
 	// notice state <0 is checked above
-	if ((UseSFX & UseAttachedSFX & bool(SFX) & (State < SFXs.Num())) && SFXs[State]) {
+	if ((UseSFX & UseSFXAttached & bool(SFX) & (State < SFXs.Num())) && SFXs[State]) {
 		SFX->SetSound(SFXs[State]);
 		SFX->SetAutoActivate(true);
 	}
@@ -374,7 +374,7 @@ void AInteract::DoTrigger_Implementation() {
 
 void AInteract::PlaySFX(USoundBase* const Snd) const {
 	UE_LOG(LogInteract, Log, TEXT("%hs: Attached=%i Obj=%s Snd=%s"),
-		__func__, UseAttachedSFX, *Label.ToString(), *GetNameSafe(Snd));
+		__func__, UseSFXAttached, *Label.ToString(), *GetNameSafe(Snd));
 	// very important because it's triggered from multiple places.
 	// and some places need to have a nullptr for space (like SFXs).
 	if (UNLIKELY(!IsValid(Snd))) {
@@ -385,7 +385,7 @@ void AInteract::PlaySFX(USoundBase* const Snd) const {
 		return;
 	}
 
-	if (UseAttachedSFX) {
+	if (UseSFXAttached) {
 		SFX->SetHiddenInGame(false);
 		SFX->SetSound(Snd);
 		SFX->SetActive(true, true);

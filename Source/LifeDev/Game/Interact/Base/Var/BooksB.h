@@ -21,21 +21,21 @@ protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	int32 BookCount = 5;
 	// if ==0 then it will be random on constructor.
 	// otherwise it will be static to the value (including negatives)
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	int32 RndSeed = 0;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	float RndOff = 2;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	float Spacing = 2.1;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	TObjectPtr<UStaticMesh> BaseMesh = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	TArray<TObjectPtr<UMaterialInterface>> Materials;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)

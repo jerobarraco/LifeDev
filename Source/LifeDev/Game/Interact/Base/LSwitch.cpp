@@ -9,7 +9,7 @@ ALSwitch::ALSwitch():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
 	UseStateLoop = true;
-	UseAttachedSFX = true;
+	UseSFXAttached = true;
 	UseAutoActivate = true;
 	StateNum = 2;
 

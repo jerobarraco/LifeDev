@@ -103,7 +103,7 @@ public:
 	// items will be removed from this list on runtime whenever they are consumed.
 	// if the item is consumable, it will be consumed. otherwise it will only check for presence.
 	// Not using UnlockCondition here since i want to consume these items.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp, AssetRegistrySearchable)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	TArray<FName> UnlockItems;
 #pragma endregion
 

@@ -186,8 +186,8 @@ public:
 	bool IsOneShot = false;
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|SFX")
-	bool UseAttachedSFX = true;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|State")
+	bool UseSFXAttached = true;
 
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
