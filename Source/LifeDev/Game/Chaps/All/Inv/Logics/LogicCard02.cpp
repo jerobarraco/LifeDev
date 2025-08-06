@@ -14,7 +14,7 @@ void ULogicCard02::Use_Implementation() {
 	Super::Use_Implementation();
 	// reset the timer on one of the cards or lowers the fb
 
-	UInventory* const Inv = UInventory::Instance(this); // todo move to begin play
+	if (UNLIKELY(!Inv)) return;
 
 	static TArray<FName> Cards = {
 		// notice card02 (this) is not listed
@@ -29,7 +29,6 @@ void ULogicCard02::Use_Implementation() {
 		if (Inv->SetCool(n)) return; // notice this is a return
 	}
 
-	UFlashback* const FB = UFlashback::Instance(this); // todo move to begin play
 	if (UNLIKELY(!FB)) return;
-	FB->ModVal(FMath::FRandRange(.05, 1)); // todo have to adjust this
+	FB->ModVal(FMath::FRandRange(.05, 1));
 }
