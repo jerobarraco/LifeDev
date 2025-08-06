@@ -5,6 +5,7 @@
 #include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Game/Flashback/Flashback.h"
 
 ULogicCard02::ULogicCard02() {
 }
@@ -28,5 +29,7 @@ void ULogicCard02::Use_Implementation() {
 		if (Inv->SetCool(n)) return; // notice this is a return
 	}
 
-	
+	UFlashback* const FB = UFlashback::Instance(this); // todo move to begin play
+	if (UNLIKELY(!FB)) return;
+	FB->ModVal(FMath::FRandRange(.05, 1)); // todo have to adjust this
 }
