@@ -7,7 +7,7 @@
 
 //ch03 book that gives the poem
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ABooksI00: public ABooks {
+class LIFEDEV_API ABooksI00: public ABooks { // TODO reparent
 	GENERATED_BODY()
 
 public:

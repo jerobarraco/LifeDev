@@ -7,7 +7,7 @@
 
 // books instance on chap 02
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ABooksI02: public ABooks {
+class LIFEDEV_API ABooksI02: public ABooks { // TODO reparent
 	GENERATED_BODY()
 
 public:
