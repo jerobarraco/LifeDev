@@ -16,21 +16,6 @@ void ULogicCard02::Use_Implementation() {
 
 	if (UNLIKELY(!Inv)) return;
 
-	// TODO maybe move this card reset to logic card 03 (perseverance)
-	// then leave the fb mod for card02
-	static TArray<FName> Cards = {
-		// notice card02 (this) is not listed
-		LDConsts::Items::Card0, LDConsts::Items::Card1,
-		LDConsts::Items::Card3, LDConsts::Items::Card4
-	};
-	UJUtilsMisc::ArrayShuffle(Cards);
-
-	const int32 Num = Cards.Num();
-	for (uint8 i =0; i<Num; ++i) {
-		const FName& n = Cards[i];
-		if (Inv->SetCold(n)) return; // notice this is a return
-	}
-
 	if (UNLIKELY(!FB)) return;
 	FB->ModVal(FMath::FRandRange(-.05, -.1));
 }
