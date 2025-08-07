@@ -12,5 +12,6 @@ void ULogicCard02::Use_Implementation() {
 
 	// lowers the fb
 	if (UNLIKELY(!FB)) return;
-	FB->ModVal(FMath::FRandRange(-.05, -.1));
+
+	FB->ModVal(FMath::FRandRange(ModMin, ModMax));
 }
