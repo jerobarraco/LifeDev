@@ -48,3 +48,9 @@ const FSlateColor& ULInventoryItemUI::GetItemColor(const FItem& Item) {
 		return CConsume;
 	return CDefault;
 }
+
+void ULInventoryItemUI::Fade(const bool In) {
+	if (UNLIKELY(!AFade)) return;
+	PlayAnimation(AFade, 0, 1,
+		In ? EUMGSequencePlayMode::Forward : EUMGSequencePlayMode::Reverse, 1);
+}
