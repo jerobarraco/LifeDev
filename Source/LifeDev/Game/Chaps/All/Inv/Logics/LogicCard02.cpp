@@ -32,5 +32,5 @@ void ULogicCard02::Use_Implementation() {
 	}
 
 	if (UNLIKELY(!FB)) return;
-	FB->ModVal(FMath::FRandRange(.05, 1));
+	FB->ModVal(FMath::FRandRange(-.05, -.1));
 }
