@@ -50,7 +50,10 @@ public:
 	// un/marks an item as locked. (can't be used when locked).
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetLocked(const FName& Name, const bool NewBlocked);
-	// force item cooldown. Does not immediately triggers OnCold. but instead it will trigger when the scheduled timer 
+	// Force item cooldown.
+	// Will immediately trigger OnCold.
+	// returns: True: succeeded in making an item cold, False: no item or it was already cold.
+	// i.e. True: item found and was not cold. False: item not found or was cold.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
 	bool SetCool(const FName& Name);
 #pragma endregion

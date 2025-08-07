@@ -13,6 +13,7 @@
 
 UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
+
 	const UWorld* const W = O->GetWorld();
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 
@@ -287,6 +288,7 @@ bool UInventory::SetCool(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
 	if (UNLIKELY(!Found)) return false;
+	if (_IsCold(Item)) return false;
 
 	Item.ActiveCoolDown = 0;
 	OnCold.Broadcast(Name);

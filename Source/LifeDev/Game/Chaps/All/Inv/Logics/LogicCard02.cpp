@@ -16,6 +16,8 @@ void ULogicCard02::Use_Implementation() {
 
 	if (UNLIKELY(!Inv)) return;
 
+	// TODO maybe move this card reset to logic card 03 (perseverance)
+	// then leave the fb mod for card02
 	static TArray<FName> Cards = {
 		// notice card02 (this) is not listed
 		LDConsts::Items::Card0, LDConsts::Items::Card1,
