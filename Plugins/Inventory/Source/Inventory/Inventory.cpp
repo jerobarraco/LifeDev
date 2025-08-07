@@ -282,7 +282,7 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 	return true;
 }
 
-bool UInventory::SetCool(const FName& Name) {
+bool UInventory::SetCold(const FName& Name) {
 	UE_LOG(LogInventory, Log, TEXT("%hs ='%s'"),
 		__func__, *Name.ToString());
 	bool Found = false;
@@ -293,6 +293,13 @@ bool UInventory::SetCool(const FName& Name) {
 	Item.ActiveCoolDown = 0;
 	OnCold.Broadcast(Name);
 	return true;
+}
+
+bool UInventory::IsCold(const FItem& Item) {
+	const bool Cold = _IsCold(Item);
+	UE_LOG(LogInventory, Log, TEXT("%hs cold=%i wait=%.4f title='%s'"),
+		__func__, Cold, Item.ActiveCoolDown, *Item.Title.ToString());
+	return Cold;
 }
 
 bool UInventory::IsUsable(const FItem& Item) const {
@@ -319,13 +326,6 @@ bool UInventory::IsUsable(const FItem& Item) const {
 	}
 
 	return true;
-}
-
-bool UInventory::IsCold(const FItem& Item) {
-	const bool Cold = _IsCold(Item);
-	UE_LOG(LogInventory, Log, TEXT("%hs cold=%i wait=%.4f title='%s'"),
-		__func__, Cold, Item.ActiveCoolDown, *Item.Title.ToString());
-	return Cold;
 }
 
 void UInventory::SetCoolTimerEnabled(const bool Enable) {

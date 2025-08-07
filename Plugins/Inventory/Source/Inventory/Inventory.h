@@ -55,7 +55,7 @@ public:
 	// returns: True: succeeded in making an item cold, False: no item or it was already cold.
 	// i.e. True: item found and was not cold. False: item not found or was cold.
 	UFUNCTION(BlueprintCallable, Category="Inventory")
-	bool SetCool(const FName& Name);
+	bool SetCold(const FName& Name);
 #pragma endregion
 
 #pragma region Gets

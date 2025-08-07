@@ -146,7 +146,7 @@ bool UCLCharItems::DoUse(const FName Name, const FItem& Item) const {
 
 	// isDebug is an optimization since the compiler will hopefully remove it. UJUtilsSys::IsDebug() & should i?
 	if (UNLIKELY(ULSettings::GetFeatS(this, EFeat::DBG_FAST_COOL)))
-		Inventory->SetCool(Name);
+		Inventory->SetCold(Name);
 
 	return true;
 }

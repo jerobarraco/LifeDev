@@ -28,7 +28,7 @@ void ULogicCard02::Use_Implementation() {
 	const int32 Num = Cards.Num();
 	for (uint8 i =0; i<Num; ++i) {
 		const FName& n = Cards[i];
-		if (Inv->SetCool(n)) return; // notice this is a return
+		if (Inv->SetCold(n)) return; // notice this is a return
 	}
 
 	if (UNLIKELY(!FB)) return;

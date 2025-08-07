@@ -22,6 +22,6 @@ void ULogicCard03::Use_Implementation() {
 	
 	constexpr size_t Size = UJUtilsMisc::ArraySize(LD::Card03::Names);
 	for (size_t i = 0; i<Size; i++) {
-		Inventory->SetCool(LD::Card03::Names[i]);
+		Inventory->SetCold(LD::Card03::Names[i]);
 	}
 }
