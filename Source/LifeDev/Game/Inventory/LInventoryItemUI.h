@@ -24,7 +24,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Fade(const bool In = true);
-	
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidgetAnimOptional), Transient) // it HAS to be transient, or it will fail compilation.
 	TObjectPtr<UWidgetAnimation> AFade = nullptr;
