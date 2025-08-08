@@ -305,12 +305,7 @@ void ALInteract::DoTrigger_Implementation() {
 		// if there's a dialog. give rewards at the end of them.
 		// that way we can control the story better. it's easier to check for items than for dialogs.
 		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
-		// Keep using the stock TriggerDlg &Co. they are superior. and i don't want to over-rely on a new system.
-		// still call it if the stock one fails.
-		DiagsShown = Diags->AddId(TriggerDlg);
-		// done this way to force the autodialog even if the class one is defined 
-		const bool AutoShown = Diags->AddId(TName);
-		DiagsShown = DiagsShown | AutoShown;
+		DiagsShown = Diags->AddId(TName);
 	}
 
 	// ensure we reward or the player could get locked

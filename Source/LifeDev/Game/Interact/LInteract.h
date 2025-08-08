@@ -107,13 +107,6 @@ public:
 	TArray<FName> UnlockItems;
 #pragma endregion
 
-#pragma region dialogs
-	// dialog to show when the object is triggered. in case of a locked object this happens after the ULockDlg
-	// use Inter.Trigger.ObjName
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Dlg", meta=(DeprecatedProperty))
-	FName TriggerDlg = NAME_None;
-#pragma endregion
-
 	// used for fading this object on rewards or whenever you want.
 	// remember to call SetNewMat on the constructor if you use the new material.
 	// remember to call CreateMaterial on BeginPlay if there are no rewards.
