@@ -79,6 +79,8 @@ bool UInventory::Mod(const FName& Name, const int32 Diff, const bool OnlyConsume
 		return false;
 	}
 
+	UE_LOG(LogInventory, Log, TEXT("%hs Changing item Name=%s from=%i by=%i"),
+			__func__, *Name.ToString(), Current, CurDiff);
 	Item->Count = Current + CurDiff; // apply change
 
 	// intentionally copying the item, to avoid issues. the item might have been removed, or might 
