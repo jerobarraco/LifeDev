@@ -119,15 +119,6 @@ void AStep::Start_Implementation() {
 	
 	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
-
-	/// finish post wait
-	// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
-	if (!FinishPostWait) return;
-
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-
-	World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
 }
 
 void AStep::Stop_Implementation() {
@@ -242,3 +233,20 @@ void AStep::CamShakeStop() {
 	if (LIKELY(CameraManager))
 		CameraManager->StopAllInstancesOfCameraShake(CamShakeClass, true);
 }
+
+
+// graveyard. done in start_implementation at end
+// removed since  i don't use it, it makes no sense, and it creates issues.
+// if i need something similar, either i put it on the step, or merge the step with the next one
+/// finish post wait graveyard
+// do on next tick to avoid issues on classes inheriting this or subscribed to delegates.
+// if (!FinishPostWait) return;
+//
+// const UWorld* const World = GetWorld();
+// if (UNLIKELY(!World)) return;
+//
+// World->GetTimerManager().SetTimerForNextTick(this, &AStep::Finish);
+
+// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
+// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
+// bool FinishPostWait = false;

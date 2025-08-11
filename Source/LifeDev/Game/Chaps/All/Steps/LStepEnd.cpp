@@ -24,7 +24,7 @@ ALStepEnd::ALStepEnd():Super() {
 	// added to allow the music to fade.
 	// quite arbitrary. might cause issues if i change the fade time.
 	WaitTime = 2;
-	FinishPostWait = false; // avoid crash
+	// FinishPostWait = false; // avoid crash
 	UseFade = true;
 	// don't change the camera
 	UsePawnCam = true;

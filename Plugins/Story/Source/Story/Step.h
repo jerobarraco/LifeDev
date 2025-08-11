@@ -54,10 +54,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Cam")
 	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
 
-	// if set it will finish after the wait time. if wait time is 0 it will finish immediately.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
-	bool FinishPostWait = false;
-
 	// >0 will set the seconds to wait since the TryStart of this step. will trigger Start (override it).
 	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
 	// if a cam blend needs to happen, the wait will be clamped to _at least_ CamBlendTime.
