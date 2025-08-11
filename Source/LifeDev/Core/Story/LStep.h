@@ -167,7 +167,6 @@ protected:
 	virtual void Start_Implementation() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void PostLoad() override;
 	virtual void Finish_Implementation() override;
 	void Unbind() const;
 	// Sets the FBAutoMod based on the Id passed.
