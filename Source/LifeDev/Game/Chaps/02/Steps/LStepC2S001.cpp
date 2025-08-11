@@ -10,7 +10,6 @@ ALStepC2S001::ALStepC2S001():Super() {
 	DlgId = N; // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;
-	FinishPostWait = false;
 	TeleportChar = true; // teleport after the blend
 
 	UseGhosts = true;

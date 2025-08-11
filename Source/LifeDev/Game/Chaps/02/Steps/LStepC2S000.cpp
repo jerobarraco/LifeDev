@@ -14,7 +14,6 @@ ALStepC2S000::ALStepC2S000():Super() {
 	const static FText ST = NSLOCTEXT("C2S0", "Title", "~ Yin ~");
 	Title = ST;
 	UseFade = true;
-	FinishPostWait = false;
 	// DlgId = FName("C2S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
 	UsePawnCam = true;

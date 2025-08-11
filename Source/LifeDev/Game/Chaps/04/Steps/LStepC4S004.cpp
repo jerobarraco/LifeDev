@@ -8,7 +8,6 @@ ALStepC4S004::ALStepC4S004():Super() {
 	// DlgId = FName("C4S1");
 	UseRain = true;
 	InputEnabled = true;
-	FinishPostWait = false;
 	UsePawnCam = true;
 	TeleportChar = false;
 	FinishFlags = { "Inter.Trigger.PotI00" }; // finish when the pot is triggered

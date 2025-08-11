@@ -9,7 +9,6 @@ ALStepC3S002::ALStepC3S002():Super() {
 	Name = FName("C3S2");
 	InputEnabled = true;
 	UsePawnCam = true;
-	FinishPostWait = false;
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;

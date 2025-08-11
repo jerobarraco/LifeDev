@@ -13,7 +13,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 	UseFade = true;
 	// DlgId = FName("C3S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
-	FinishPostWait = false;
 	UsePawnCam = true;
 	CamBlendTime = 0;
 	TeleportChar = true;

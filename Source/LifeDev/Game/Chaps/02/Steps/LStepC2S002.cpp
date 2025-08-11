@@ -11,9 +11,6 @@ ALStepC2S002::ALStepC2S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	TeleportChar = false;
-
-	// no waits
-	FinishPostWait = false;
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
 	FinishItems = { LDConsts::Items::Tape2 };
 	RemoveItems = { LDConsts::Items::Batts };

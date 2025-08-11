@@ -14,7 +14,6 @@ ALStepC4S000::ALStepC4S000():Super() {
 	UseFade = true;
 	// DlgId = FName("C4S0"); // this chapter finishes after the dialog
 	InputEnabled = true;
-	FinishPostWait = false;
 	UsePawnCam = true;
 	CamBlendTime = 0;
 	TeleportChar = true;

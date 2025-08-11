@@ -8,7 +8,6 @@ ALStepC4S006::ALStepC4S006():Super() {
 	UseRain = true;
 	// DlgId = FName("C4S1");
 	InputEnabled = true;
-	FinishPostWait = false;
 	UsePawnCam = true;
 	TeleportChar = false;
 	FinishFlags = {"Inter.Trigger.SpongeI00"};

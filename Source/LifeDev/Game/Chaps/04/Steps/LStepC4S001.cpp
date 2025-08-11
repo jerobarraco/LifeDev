@@ -14,7 +14,6 @@ ALStepC4S001::ALStepC4S001():Super() {
 	// FBDiagMod = .8/22.0; // .1; // only .8 available, and more than 22 dialogs.
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
-	FinishPostWait = false;
 	UsePawnCam = false;
 	TeleportChar = true;
 

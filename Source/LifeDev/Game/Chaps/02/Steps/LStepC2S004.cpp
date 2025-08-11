@@ -9,8 +9,6 @@ ALStepC2S004::ALStepC2S004():Super() {
 	static const FName N("C2S4");
 	Name = N;
 	// DlgId = N; // this chapter finishes after the dialog
-	// no waits
-	FinishPostWait = false;
 	// returns to the player camera and control
 	InputEnabled = true;
 	UsePawnCam = true;

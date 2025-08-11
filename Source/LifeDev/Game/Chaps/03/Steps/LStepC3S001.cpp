@@ -12,7 +12,6 @@ ALStepC3S001::ALStepC3S001():Super() {
 	InputEnabled = false;
 	UsePawnCam = false;
 	TeleportChar = true;
-	FinishPostWait = false;
 
 	GhostPos = FVector(200,-42,65);
 	UseGhosts = true;

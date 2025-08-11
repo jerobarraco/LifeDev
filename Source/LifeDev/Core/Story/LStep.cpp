@@ -113,11 +113,7 @@ void ALStep::Stop_Implementation() {
 void ALStep::Start_Implementation() {
 	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
-	// todo fix FinishPostWait. it has to be set before super::start otherwise it will stop the step
-	// maybe have dlg as a private or protected.
-	// set once here
-	// then check with the dialog subsystem if it exists (have to implement "Has")
-	// and set accordingly. then it can be used for the flags below and on StartDialogs
+
 	Super::Start_Implementation();
 
 	// bind before doing the rest of the things, to ensure we capture everything. (there are other actors sideeffects below)
@@ -351,13 +347,6 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DestroyActors();
 
 	Super::EndPlay(EndPlayReason); // always at end
-}
-
-void ALStep::PostLoad() {
-	Super::PostLoad();
-
-	// avoid finishing earlier if we have Diags
-	if (!DlgId.IsNone()) FinishPostWait = false;
 }
 
 void ALStep::Finish_Implementation() {

@@ -18,7 +18,6 @@ ALStepC0S000::ALStepC0S000():Super() {
 	// DlgId = FName("Intro");
 	InputEnabled = true;
 	UseFade = true;
-	FinishPostWait = false;
 	UsePawnCam = true;
 	UseFBRand = true;
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));

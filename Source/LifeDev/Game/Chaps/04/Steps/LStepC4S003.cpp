@@ -5,7 +5,6 @@ ALStepC4S003::ALStepC4S003():Super() {
 	Name = FName("C4S3");
 	DlgId = Name; // this chapter finishes after the dialog
 	InputEnabled = false;
-	FinishPostWait = false;
 	UsePawnCam = false;
 	// go a bit above to ensure we end up at 1 a couple of dialogs before
 	FBDlgAutoTo = 1.2;

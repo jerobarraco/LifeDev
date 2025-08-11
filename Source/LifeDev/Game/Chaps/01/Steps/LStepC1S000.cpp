@@ -19,7 +19,6 @@ ALStepC1S000::ALStepC1S000():Super() {
 	CamTarget = nullptr; // use pawn cam
 	UsePawnCam = true;
 	UseFade = true;
-	FinishPostWait = false; // will be set by seqid anyway
 
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS"));
 	// this one, seems to be loaded well without the patch :/? HOW?!

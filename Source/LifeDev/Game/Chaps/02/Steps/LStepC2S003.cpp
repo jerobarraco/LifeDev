@@ -18,8 +18,6 @@ ALStepC2S003::ALStepC2S003():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	TeleportChar = false;
-	// no waits
-	FinishPostWait = false;
 	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Generic/Analog/Analog_C.Analog_C"));

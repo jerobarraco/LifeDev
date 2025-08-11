@@ -13,7 +13,6 @@ ALStepC0S001::ALStepC0S001():Super() {
 	CamBlendTime = 0; // doesn't get along with fade
 	InputEnabled = false;
 	UseFade = true; // important since the door, also due to the load
-	FinishPostWait = false;
 	TeleportChar = true;
 	RemoveItems = {
 		LDConsts::Items::Tape0, "Bottle00", "Bottle01"
