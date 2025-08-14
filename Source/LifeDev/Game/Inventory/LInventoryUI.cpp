@@ -13,6 +13,11 @@ void ULInventoryUI::Show_Implementation() {
 	Super::Show_Implementation();
 }
 
+void ULInventoryUI::Hide_Implementation() {
+	Super::Hide_Implementation();
+	PostHide();
+}
+
 void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Diff, const FItem& Item) {
 	Super::SetItemMod_Implementation(Name, Diff, Item);
 
