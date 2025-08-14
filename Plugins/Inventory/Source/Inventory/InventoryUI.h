@@ -55,4 +55,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
 	TArray<TObjectPtr<UInventoryItemUI>> WItems;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
+	TMap<FName, TObjectPtr<UInventoryItemUI>> Items;
 };
