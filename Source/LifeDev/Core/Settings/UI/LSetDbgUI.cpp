@@ -57,7 +57,8 @@ void ULSetDbgUI::NativeOnInitialized() {
 	if (LIKELY(FeatsDbg)) {
 		FeatsDbg->SetUp({
 			// {EFeat::G_SHOW_POINT, FText::FromString("G_SHOW_POINT")}, // already in setgameui
-			{EFeat::G_SHOW_DIAG, FText::FromString("G_SHOW_DIAG")},
+				// todo change the ftext on the rest
+			{EFeat::D_SHOW, UEnum::GetDisplayValueAsText(EFeat::D_SHOW)},
 			{EFeat::G_SHOW_INV, FText::FromString("G_SHOW_INV")},
 			{EFeat::DBG_FAST_COOL, FText::FromString("DBG_FAST_COOL")},
 			{EFeat::DBG_FLY_CAM, FText::FromString("DBG_FLY_CAM")},

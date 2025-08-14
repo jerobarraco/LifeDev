@@ -25,6 +25,8 @@ enum class EFeat: uint8 {
 #pragma endregion
 
 #pragma region Dialogs
+	// Shows the dialogs, otherwise they get muted
+	D_SHOW,
 	// Show the text on the dialogs, otherwise they get censored
 	D_TEXT,
 	// Automatically advances dialogs
@@ -90,8 +92,6 @@ enum class EFeat: uint8 {
 	G_KIOSK,
 	// Ability to tweak foxify value on new game +
 	G_NGP_FOXY,
-	// Shows the dialogs, otherwise they get muted
-	G_SHOW_DIAG,
 	// for captures. hides the "mouse" pointer in the center.
 	G_SHOW_POINT,
 	// for captures. shows the inventory.

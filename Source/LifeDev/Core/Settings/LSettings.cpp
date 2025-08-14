@@ -220,20 +220,20 @@ void ULSettings::Init() {
 void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 	OnFeatUpdate.Broadcast(Feat, Enable);
 
-	if (Feat >= EFeat::C_00 && Feat < EFeat::C_MAX)
+	if ((Feat >= EFeat::C_00) & (Feat < EFeat::C_MAX))
 		OnFeatUpdateChap.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::D_TEXT && Feat < EFeat::D_MAX)
+	else if((Feat >= EFeat::D_SHOW) & (Feat < EFeat::D_MAX))
 		OnFeatUpdateDiags.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::S_MUSIC && Feat < EFeat::S_MAX)
+	else if((Feat >= EFeat::S_MUSIC) & (Feat < EFeat::S_MAX))
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::V_LUMEN && Feat < EFeat::V_MAX) // < since not including the max
+	else if((Feat >= EFeat::V_LUMEN) & (Feat < EFeat::V_MAX)) // < since not including the max)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::E_GHOSTPOOL && Feat < EFeat::E_MAX)
+	else if((Feat >= EFeat::E_GHOSTPOOL) & (Feat < EFeat::E_MAX))
 		OnFeatUpdateEnviron.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::G_CARD0 && Feat < EFeat::G_MAX)
+	else if((Feat >= EFeat::G_CARD0) & (Feat < EFeat::G_MAX))
 		OnFeatUpdateGameplay.Broadcast(Feat, Enable);
-	else if (Feat >= EFeat::DBG_STEPS && Feat < EFeat::DBG_MAX)
+	else if((Feat >= EFeat::DBG_STEPS) & (Feat < EFeat::DBG_MAX))
 		OnFeatUpdateDebug.Broadcast(Feat, Enable);
-	else if (Feat>=EFeat::U_TICK_BATCH && Feat < EFeat::U_MAX)
+	else if((Feat>=EFeat::U_TICK_BATCH) & (Feat < EFeat::U_MAX))
 		OnFeatUpdateUnreal.Broadcast(Feat, Enable);
 }

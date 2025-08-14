@@ -282,7 +282,7 @@ void ALGGameMode::Init() {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
 		DiagMan->ZOrder = 3;
-		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::G_SHOW_DIAG); // skip dialogs if no feature for it
+		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
 		DiagMan->Init();
 	}
 	if (LIKELY(MusicMan)) MusicMan->Init();
