@@ -2,7 +2,14 @@
 
 #include "LInventoryUI.h"
 
+#include "LInventoryItemUI.h"
 #include "Inventory/InventoryItemUI.h"
+
+ULInventoryUI::ULInventoryUI() {
+	static ConstructorHelpers::FClassFinder<ULInventoryItemUI>
+		CItem(TEXT("/Game/LifeDev/Game/Inventory/UI/W_InvItemUI.W_InvItemUI_C"));
+	ItemClass = CItem.Class;
+}
 
 void ULInventoryUI::FadeUsed(const bool Fwd) { // todo move to uinventoryui
 	if (UNLIKELY(!AUsed)) return;
@@ -33,9 +40,12 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	}
 
 	TObjectPtr<UInventoryItemUI>* const pIt = Items.Find(Name);
-	UInventoryItemUI* const It = pIt ? pIt->Get() : nullptr;
-	if (!pIt) {
+	UInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
+	if (It) {
+		It = CreateWidget<UInventoryItemUI>(this, ItemClass.Get());
+		Items.Add(Name, It); 
 		// todo create here
+		// todo add to the view.
 	}
 
 	if (UNLIKELY(!It)) return; // safeguard

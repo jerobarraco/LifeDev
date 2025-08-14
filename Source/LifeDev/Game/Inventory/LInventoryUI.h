@@ -6,10 +6,14 @@
 
 #include "LInventoryUI.generated.h"
 
+class ULInventoryItemUI;
+
 UCLASS(Blueprintable)
 class LIFEDEV_API ULInventoryUI : public UInventoryUI {
 	GENERATED_BODY()
-
+public:
+	ULInventoryUI();
+	
 	UFUNCTION(BlueprintCallable)
 	void FadeUsed(const bool Fwd=true);
 
@@ -19,6 +23,9 @@ class LIFEDEV_API ULInventoryUI : public UInventoryUI {
 	virtual void SetItemMod_Implementation(const FName& Name, int32 Diff, const FItem& Item) override;
 
 protected:
+	// default class to use
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<ULInventoryItemUI> ItemClass = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidgetAnimOptional), Transient) // it HAS to be transient, or it will fail compilation.
 	TObjectPtr<UWidgetAnimation> AUsed = nullptr;
 };
