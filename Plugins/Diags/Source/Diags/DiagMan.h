@@ -66,9 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionBack = nullptr;
 
-	// when set it will skip showing the Diags but still mark them as read
+	// when unset (false) it will skip showing the Diags but still mark them as read
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
-	bool DebugSkip = false;
+	bool UseShow = false;
 
 protected:
 	virtual void BeginPlay() override;

@@ -61,8 +61,6 @@ protected:
 	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
-	UFUNCTION()
-	void FeatUpDlg(const EFeat Feat, const bool Enabled);
 #pragma endregion
 
 	UFUNCTION()

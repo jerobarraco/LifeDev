@@ -31,12 +31,24 @@ ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 
 void ALDiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) 
+		Settings->OnFeatUpdateDiags.RemoveAll(this);
+
+	void FeatUpDlg(const EFeat Feat, const bool Enabled);
 	Super::EndPlay(EndPlayReason);
 }
 
 void ALDiagMan::Init_Implementation() {
 	Super::Init_Implementation();
 	Flags = UFlags::Instance(this);
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) {
+		Settings->OnFeatUpdateDiags.AddUniqueDynamic(this, &ALDiagMan::FeatUp);
+		FeatUp(EFeat::D_AUTO, Settings->GetFeat(EFeat::D_AUTO));
+		FeatUp(EFeat::D_SHOW, Settings->GetFeat(EFeat::D_SHOW));
+		// FeatUp(EFeat::D_TEXT, Settings->GetFeat(EFeat::D_TEXT));
+	}
 }
 
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
@@ -49,7 +61,6 @@ void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	
 	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Diags::Shown, 1);
 
-	const bool UseAuto = ULSettings::GetFeatS(W, EFeat::D_AUTO);
 	if (!UseAuto) return;
 
 	AutoClear(); // for correctness.
@@ -76,6 +87,15 @@ void ALDiagMan::AutoClear() {
 
 	W->GetTimerManager().ClearTimer(AutoTimer);
 	AutoTimer.Invalidate();
+}
+
+void ALDiagMan::FeatUp(const EFeat Feat, const bool Enabled) {
+	if (Feat == EFeat::D_SHOW) {
+		UseShow = Enabled; // skip dialogs if no feature for it
+	} else if (Feat == EFeat::D_AUTO) {
+		UseAuto = Enabled;
+	// } else if (Feat == EFeat::D_TEXT) { // this one is tested on the ui itself.
+	}
 }
 
 // deprecated it's very redundant. no need to know which dialog got trigged.

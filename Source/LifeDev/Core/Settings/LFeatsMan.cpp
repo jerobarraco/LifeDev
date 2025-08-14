@@ -128,12 +128,10 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
-
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
 		Settings->OnFeatUpdateUnreal.RemoveAll(this);
-		Settings->OnFeatUpdateDebug.RemoveAll(this);
 		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
@@ -166,7 +164,6 @@ void ALFeatsMan::Init() {
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
-		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALFeatsMan::FeatUpDlg);
 	}
 
 	if (LIKELY(Eval)) {
@@ -318,14 +315,6 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	} else if (Feat == EFeat::DBG_D_WARN) {
 		UDiags* const Diags = UDiags::Instance(this);
 		if (LIKELY(Diags)) Diags->UseWarning = Enabled;
-	}
-}
-
-void ALFeatsMan::FeatUpDlg(const EFeat Feat, const bool Enabled) {
-	if (Feat == EFeat::D_SHOW) {
-		
-	} else if (Feat == EFeat::D_TEXT) { // this one is tested on the ui itself.
-		
 	}
 }
 

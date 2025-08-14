@@ -6,6 +6,7 @@
 
 #include "Diags/DiagMan.h"
 #include "Inventory/Flags.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LDiagMan.generated.h"
 
@@ -40,6 +41,11 @@ protected:
 	virtual void Hidden_Implementation() override;
 	virtual void Back_Implementation() override;
 	void AutoClear();
+	UFUNCTION()
+	void FeatUp(const EFeat Feat, const bool Enabled);
+
+	UPROPERTY(BlueprintReadOnly, Category="Dialogs", VisibleAnywhere, Transient)
+	bool UseAuto = false;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
