@@ -282,17 +282,11 @@ void ALGGameMode::Init() {
 		// Needs to be 10 so that it takes precedence over the character
 		DiagMan->InputPrio = 10;
 		DiagMan->ZOrder = 3;
-		DiagMan->DebugSkip = !Settings->GetFeat(EFeat::D_SHOW); // skip dialogs if no feature for it
 		DiagMan->Init();
 	}
+
 	if (LIKELY(MusicMan)) MusicMan->Init();
 	if (LIKELY(FlashbackMan)) FlashbackMan->Init();
-	// do at the end since it depends on other things.
-	// will race-condition the ghosts
-	if (LIKELY(FeatsMan)) {
-		FeatsMan->ZOrder = 111;
-		FeatsMan->Init();
-	}
 
 	// Character
 	if (LIKELY(IsValid(Char))) {
@@ -306,6 +300,13 @@ void ALGGameMode::Init() {
 			TeachMan->AddTarget(KV.Key, KV.Value.LoadSynchronous());
 		}
 		TeachMan->SetTarget(ETeachTarget::DESK);
+	}
+
+	// do at the end since it depends-on/modifies other things.
+	// will race-condition the ghosts
+	if (LIKELY(FeatsMan)) {
+		FeatsMan->ZOrder = 111;
+		FeatsMan->Init();
 	}
 
 	if (LIKELY(Ghosts)) Ghosts->Init();
