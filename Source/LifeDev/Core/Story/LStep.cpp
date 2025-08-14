@@ -8,7 +8,6 @@
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
-#include "Story/Story.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"

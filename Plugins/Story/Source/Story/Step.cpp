@@ -228,7 +228,7 @@ void AStep::CamShakeStop() {
 	const APlayerController* const Controller = World->GetFirstPlayerController();
 	if (UNLIKELY(!Controller)) return;
 
-	const TObjectPtr<APlayerCameraManager> CameraManager =  Controller->PlayerCameraManager;
+	const TObjectPtr<APlayerCameraManager> CameraManager = Controller->PlayerCameraManager;
 	// immediate needed since the shake has no end (gimme shake - Max.avi)
 	if (LIKELY(CameraManager))
 		CameraManager->StopAllInstancesOfCameraShake(CamShakeClass, true);
