@@ -134,6 +134,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
 		Settings->OnFeatUpdateUnreal.RemoveAll(this);
 		Settings->OnFeatUpdateDebug.RemoveAll(this);
+		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
 	if (LIKELY(Eval)) {
@@ -165,7 +166,7 @@ void ALFeatsMan::Init() {
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
-		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALFeatsMan::FeatUpDbg);
+		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALFeatsMan::FeatUpDlg);
 	}
 
 	if (LIKELY(Eval)) {
@@ -214,6 +215,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
 	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
 	FeatUpDbg(EFeat::G_STATUS, Settings && Settings->GetFeat(EFeat::G_STATUS));
+	// no need to initialize d_show or d_text
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
@@ -316,6 +318,14 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 	} else if (Feat == EFeat::DBG_D_WARN) {
 		UDiags* const Diags = UDiags::Instance(this);
 		if (LIKELY(Diags)) Diags->UseWarning = Enabled;
+	}
+}
+
+void ALFeatsMan::FeatUpDlg(const EFeat Feat, const bool Enabled) {
+	if (Feat == EFeat::D_SHOW) {
+		
+	} else if (Feat == EFeat::D_TEXT) { // this one is tested on the ui itself.
+		
 	}
 }
 

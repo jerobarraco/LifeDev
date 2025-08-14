@@ -23,7 +23,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALFeatsMan* Instance(const UObject* const O);
-
+	
 	// Called by LGGameMode
 	UFUNCTION(meta=(AdvancedDisplay))
 	virtual void Init();
@@ -61,6 +61,8 @@ protected:
 	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
+	void FeatUpDlg(const EFeat Feat, const bool Enabled);
 #pragma endregion
 
 	UFUNCTION()
