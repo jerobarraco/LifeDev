@@ -33,7 +33,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemUsed(const FName& Name);
-	
+
 	UFUNCTION(BlueprintCallable)
 	UInventoryItemUI* GetItem(const FName& Name);
 

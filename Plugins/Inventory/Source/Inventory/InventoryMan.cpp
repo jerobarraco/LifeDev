@@ -125,6 +125,8 @@ void AInventoryMan::BeginPlay() {
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
+	if (UNLIKELY(!Inventory)) return;
+
 	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryMan::SetSelected);
 	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryMan::SetItemMod);
 	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryMan::SetItemCold);
