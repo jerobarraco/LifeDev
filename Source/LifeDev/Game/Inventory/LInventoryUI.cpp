@@ -8,6 +8,11 @@ void ULInventoryUI::FadeUsed(const bool Fwd) { // todo move to uinventoryui
 		Fwd ? EUMGSequencePlayMode::Forward : EUMGSequencePlayMode::Reverse, 1);
 }
 
+void ULInventoryUI::Show_Implementation() {
+	PreShow();
+	Super::Show_Implementation();
+}
+
 void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Diff, const FItem& Item) {
 	Super::SetItemMod_Implementation(Name, Diff, Item);
 
