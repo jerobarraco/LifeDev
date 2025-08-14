@@ -3,6 +3,7 @@
 #include "LInventoryUI.h"
 
 #include "LInventoryItemUI.h"
+#include "Components/ScrollBox.h"
 #include "Inventory/InventoryItemUI.h"
 
 ULInventoryUI::ULInventoryUI() {
@@ -31,16 +32,19 @@ void ULInventoryUI::Hide_Implementation() {
 void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Diff, const FItem& Item) {
 	Super::SetItemMod_Implementation(Name, Diff, Item);
 
-	if (UNLIKELY(Name.IsNone())) return;
+	if (UNLIKELY(Name.IsNone() | !SItems)) return;
 
-	if (Item.Count<=0) {
-		Items.Remove(Name);
-		// todo fade, add timer. then remove.
-		return;
-	}
 
 	TObjectPtr<UInventoryItemUI>* const pIt = Items.Find(Name);
 	UInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
+	if (Item.Count<=0) {
+		if (LIKELY(It)) {
+			Items.Remove(Name);
+			SItems->RemoveChild(It);
+		}
+		// todo fade, add timer. then remove.
+		return;
+	}
 	if (It) {
 		It = CreateWidget<UInventoryItemUI>(this, ItemClass.Get());
 		Items.Add(Name, It); 
