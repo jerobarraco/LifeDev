@@ -55,6 +55,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
 		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
+		It->Name = Name; // important for later
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
 		SItems->AddChild(It);
 		It->Fade(true);
@@ -67,8 +68,27 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
 	// Super::SetItemUsed_Implementation(Name);
 	
+	// handles name==none. i have to check item after this anyway.
 	UInventoryItemUI* const Item = GetItem(Name);
 	if (LIKELY(Item)) Item->Use();
+}
+
+void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
+	// Super::SetSelected_Implementation(Name);
+	if (UNLIKELY(!SItems)) return; // if name is none it will unselect everything. it's not a good situation, but "i'll allow it!".
+
+	TArray<FName> Keys;
+	Items.GetKeys(Keys);
+	for (const FName& K: Keys) {
+		ULInventoryItemUI* const It = Items[K];
+		if (UNLIKELY(!It)) continue;
+
+		const bool Sel = It->Name == Name;
+		It->SetSelected(Sel);
+		if (!Sel) continue;
+
+		SItems->ScrollWidgetIntoView(It, true);
+	}
 }
 
 ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
