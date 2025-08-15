@@ -4,6 +4,7 @@
 
 #include "LInventoryItemUI.h"
 #include "Components/ScrollBox.h"
+#include "Components/ScrollBoxSlot.h"
 #include "Inventory/InventoryItemUI.h"
 
 ULInventoryUI::ULInventoryUI() {
@@ -57,7 +58,10 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			*Name.ToString(), It);
 		It->Name = Name; // important for later
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
-		SItems->AddChild(It);
+		UScrollBoxSlot* const Slot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
+		// this is important so the setselected works well
+		if (LIKELY(Slot)) Slot->SetVerticalAlignment(VAlign_Bottom);
+
 		It->Fade(true);
 	}
 
