@@ -27,6 +27,10 @@ protected:
 	// default class to use
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ULInventoryItemUI> ItemClass = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
+	TMap<FName, TObjectPtr<ULInventoryItemUI>> Items;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UScrollBox> SItems = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BindWidgetAnimOptional), Transient) // it HAS to be transient, or it will fail compilation.

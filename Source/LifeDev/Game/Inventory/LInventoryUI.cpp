@@ -34,22 +34,29 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(Name.IsNone() | !SItems)) return;
 
+	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Diff=%i Count=%i"), __func__, *Name.ToString(),
+		Diff, Item.Count);
 
-	TObjectPtr<UInventoryItemUI>* const pIt = Items.Find(Name);
-	UInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
+	TObjectPtr<ULInventoryItemUI>* const pIt = Items.Find(Name);
+	ULInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
 	if (Item.Count<=0) {
 		if (LIKELY(It)) {
+			UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Removing"), __func__, *Name.ToString());
 			Items.Remove(Name);
 			SItems->RemoveChild(It);
 		}
 		// todo fade, add timer. then remove.
 		return;
 	}
-	if (It) {
-		It = CreateWidget<UInventoryItemUI>(this, ItemClass.Get());
-		Items.Add(Name, It); 
-		// todo create here
-		// todo add to the view.
+	
+	if (!It) {
+		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
+		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
+			*Name.ToString(), It);
+		Items.Add(Name, It);
+		SItems->AddChild(It);
+		It->Fade(true);
+		// todo fade
 	}
 
 	if (UNLIKELY(!It)) return; // safeguard

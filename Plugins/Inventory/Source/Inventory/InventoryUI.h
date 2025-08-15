@@ -31,10 +31,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemMod(const FName& Name, int32 Diff, const FItem& Item);
 
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, DeprecatedFunction)) // move to LInventory and use the new Items
 	void SetItemUsed(const FName& Name);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction)) // move to LInventory and use the new Items
 	UInventoryItemUI* GetItem(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
@@ -45,7 +45,7 @@ public:
 	// the manager will handle this.
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Transient)
 	FInventoryUIDone OnDone;
-	
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	void PostHide();
@@ -55,7 +55,4 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
 	TArray<TObjectPtr<UInventoryItemUI>> WItems;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
-	TMap<FName, TObjectPtr<UInventoryItemUI>> Items;
 };
