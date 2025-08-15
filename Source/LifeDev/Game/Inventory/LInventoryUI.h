@@ -24,6 +24,8 @@ public:
 	ULInventoryItemUI* GetItem(const FName& Name);
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	// default class to use
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ULInventoryItemUI> ItemClass = nullptr;

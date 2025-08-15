@@ -78,3 +78,10 @@ ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
 	ULInventoryItemUI* const It = pIt ? pIt->Get() : nullptr;
 	return It;
 }
+
+void ULInventoryUI::NativeOnInitialized() {
+	Super::NativeOnInitialized();
+	if (UNLIKELY(!SItems)) return;
+
+	SItems->ClearChildren(); // needed since i leave a stub item for helping with layout
+}
