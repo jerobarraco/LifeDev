@@ -67,6 +67,8 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
+
+	// Fade(true);
 }
 
 void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
@@ -75,6 +77,8 @@ void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
 	// handles name==none. i have to check item after this anyway.
 	UInventoryItemUI* const Item = GetItem(Name);
 	if (LIKELY(Item)) Item->Use();
+
+	// Fade(true); // todo
 }
 
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
@@ -97,9 +101,11 @@ void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 
 void ULInventoryUI::SetItemCold_Implementation(const FName& Name) {
 	// Super::SetItemCold_Implementation(Name);
-	UInventory* const Inv = UInventory::Instance(this);
+	const UInventory* const Inv = UInventory::Instance(this);
 	if (UNLIKELY(!Inv)) return;
 	
+	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s p=%p"), __func__,
+		*Name.ToString());
 	UInventoryItemUI* const It = GetItem(Name);
 	FItem Item;
 	Inv->Get(Name, Item);
@@ -111,6 +117,21 @@ ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
 
 	TObjectPtr<ULInventoryItemUI>* const pIt = Items.Find(Name);
 	ULInventoryItemUI* const It = pIt ? pIt->Get() : nullptr;
+	return It;
+}
+
+ULInventoryItemUI* ULInventoryUI::ResetItem(const FName& Name) {
+	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s p=%p"), __func__, *Name.ToString());
+	
+	// Super::SetItemCold_Implementation(Name);
+	const UInventory* const Inv = UInventory::Instance(this);
+	if (UNLIKELY(!Inv)) return nullptr;
+	
+	ULInventoryItemUI* const It = GetItem(Name);
+	FItem Item;
+	const bool Ok = Inv->Get(Name, Item);
+	if (LIKELY(!!It & Ok)) It->SetItem(Name, Item);
+
 	return It;
 }
 

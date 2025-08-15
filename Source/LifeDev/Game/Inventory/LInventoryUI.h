@@ -24,7 +24,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable) // move to LInventory and use the new Items
 	ULInventoryItemUI* GetItem(const FName& Name);
-
+	// will update an item with the info from the inventory. item won't be created.
+	UFUNCTION(BlueprintCallable)
+	ULInventoryItemUI* ResetItem(const FName& Name);
+	
 protected:
 	virtual void NativeOnInitialized() override;
 
