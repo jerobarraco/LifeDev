@@ -31,11 +31,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemMod(const FName& Name, int32 Diff, const FItem& Item);
 
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction, DeprecatedFunction)) // move to LInventory and use the new Items
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void SetItemUsed(const FName& Name);
-
-	UFUNCTION(BlueprintCallable, meta=(DeprecatedFunction)) // move to LInventory and use the new Items
-	UInventoryItemUI* GetItem(const FName& Name);
 
 	// variable that indicates when the Inventory is ready to progress.
 	// false when animating.

@@ -12,13 +12,6 @@ ULInventoryUI::ULInventoryUI() {
 	ItemClass = CItem.Class;
 }
 
-void ULInventoryUI::FadeUsed(const bool Fwd) { // todo move to uinventoryui
-	if (UNLIKELY(!AUsed)) return;
-
-	PlayAnimation(AUsed, 0, 1,
-		Fwd ? EUMGSequencePlayMode::Forward : EUMGSequencePlayMode::Reverse, 1);
-}
-
 void ULInventoryUI::Show_Implementation() {
 	PreShow();
 	Super::Show_Implementation();
@@ -30,7 +23,7 @@ void ULInventoryUI::Hide_Implementation() {
 }
 
 void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Diff, const FItem& Item) {
-	Super::SetItemMod_Implementation(Name, Diff, Item);
+	// Super::SetItemMod_Implementation(Name, Diff, Item);
 
 	if (UNLIKELY(Name.IsNone() | !SItems)) return;
 
@@ -51,7 +44,9 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 				SItems->RemoveChild(It);
 			});
 			FTimerHandle H;
-			GetWorld()->GetTimerManager().SetTimer(H, D, 1, false);
+			const UWorld* const World = GetWorld();
+			// ideally this shouldn't be hardcoded. but if we overextend nobody is going to die.
+			if (LIKELY(World)) World->GetTimerManager().SetTimer(H, D, 1, false);
 		}
 		return;
 	}
@@ -67,4 +62,19 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
+}
+
+void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
+	// Super::SetItemUsed_Implementation(Name);
+	
+	UInventoryItemUI* const Item = GetItem(Name);
+	if (LIKELY(Item)) Item->Use();
+}
+
+ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
+	if (UNLIKELY(Name.IsNone())) return nullptr;
+
+	TObjectPtr<ULInventoryItemUI>* const pIt = Items.Find(Name);
+	ULInventoryItemUI* const It = pIt ? pIt->Get() : nullptr;
+	return It;
 }

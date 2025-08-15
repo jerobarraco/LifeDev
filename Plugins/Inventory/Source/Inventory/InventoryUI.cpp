@@ -15,21 +15,7 @@ void UInventoryUI::SetItemMod_Implementation(const FName& Name, int32 Diff, cons
 
 void UInventoryUI::SetItemCold_Implementation(const FName& Name) {}
 
-void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {
-	UInventoryItemUI* const Item = GetItem(Name);
-	if (LIKELY(Item)) Item->Use();
-}
-
-UInventoryItemUI* UInventoryUI::GetItem(const FName& Name) {
-	if (Name.IsNone()) return nullptr;
-
-	for (UInventoryItemUI* const I: WItems) {
-		if (UNLIKELY(!I)) continue;
-		if (I->Name == Name) return I;
-	}
-
-	return nullptr;
-}
+void UInventoryUI::SetItemUsed_Implementation(const FName& Name) {}
 
 void UInventoryUI::PostHide() {
 	// APlayerController* const Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
