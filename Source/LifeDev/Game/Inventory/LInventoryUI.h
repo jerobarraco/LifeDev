@@ -18,8 +18,8 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 	virtual void SetItemMod_Implementation(const FName& Name, int32 Diff, const FItem& Item) override;
-	virtual void SetItemUsed_Implementation(const FName& Name) override;
 	virtual void SetSelected_Implementation(const FName& Name) override;
+	virtual void SetItemUsed_Implementation(const FName& Name) override;
 	virtual void SetItemCold_Implementation(const FName& Name) override;
 	
 	UFUNCTION(BlueprintCallable) // move to LInventory and use the new Items

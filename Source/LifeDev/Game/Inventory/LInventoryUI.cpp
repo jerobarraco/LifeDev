@@ -70,17 +70,6 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	// Fade(true);
 }
-
-void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
-	// Super::SetItemUsed_Implementation(Name);
-	
-	// handles name==none. i have to check item after this anyway.
-	UInventoryItemUI* const Item = GetItem(Name);
-	if (LIKELY(Item)) Item->Use();
-
-	// Fade(true); // todo
-}
-
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 	// Super::SetSelected_Implementation(Name);
 	if (UNLIKELY(!SItems)) return; // if name is none it will unselect everything. it's not a good situation, but "i'll allow it!".
@@ -99,17 +88,22 @@ void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 	}
 }
 
+void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
+	// Super::SetItemUsed_Implementation(Name);
+	
+	// handles name==none. i have to check item after this anyway.
+	// this will update the color in case of cooldown, also count.
+	UInventoryItemUI* const Item = ResetItem(Name);
+	if (LIKELY(Item)) Item->Use(); // animate
+
+	// Fade(true); // todo
+}
+
+
 void ULInventoryUI::SetItemCold_Implementation(const FName& Name) {
 	// Super::SetItemCold_Implementation(Name);
-	const UInventory* const Inv = UInventory::Instance(this);
-	if (UNLIKELY(!Inv)) return;
-	
-	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s p=%p"), __func__,
-		*Name.ToString());
-	UInventoryItemUI* const It = GetItem(Name);
-	FItem Item;
-	Inv->Get(Name, Item);
-	if (LIKELY(It)) It->SetItem(Name, Item);
+	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
+	ResetItem(Name);
 }
 
 ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
@@ -121,7 +115,7 @@ ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
 }
 
 ULInventoryItemUI* ULInventoryUI::ResetItem(const FName& Name) {
-	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s p=%p"), __func__, *Name.ToString());
+	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 	
 	// Super::SetItemCold_Implementation(Name);
 	const UInventory* const Inv = UInventory::Instance(this);
