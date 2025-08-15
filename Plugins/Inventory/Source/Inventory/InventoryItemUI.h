@@ -25,7 +25,7 @@ public:
 	void Use();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FName Name;
+	FName Name = NAME_None;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
