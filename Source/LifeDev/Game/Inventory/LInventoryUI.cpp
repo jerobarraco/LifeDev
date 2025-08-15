@@ -32,6 +32,8 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Diff=%i Count=%i"), __func__, *Name.ToString(),
 		Diff, Item.Count);
 
+	Fade(true);
+
 	TObjectPtr<ULInventoryItemUI>* const pIt = Items.Find(Name);
 	ULInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
 	if (Item.Count<=0) {
@@ -67,8 +69,6 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
-
-	Fade(true);
 }
 
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
@@ -87,6 +87,8 @@ void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 
 		SItems->ScrollWidgetIntoView(It, true);
 	}
+
+	Fade(true);
 }
 
 void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
@@ -105,6 +107,7 @@ void ULInventoryUI::SetItemCold_Implementation(const FName& Name) {
 	// Super::SetItemCold_Implementation(Name);
 	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 	ResetItem(Name);
+	Fade(true);
 }
 
 ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
