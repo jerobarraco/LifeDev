@@ -42,21 +42,27 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	if (Item.Count<=0) {
 		if (LIKELY(It)) {
 			UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Removing"), __func__, *Name.ToString());
-			Items.Remove(Name);
-			SItems->RemoveChild(It);
+			It->Fade(false);
+			
+			// fade, add timer. then remove.
+			FTimerDelegate D;
+			D.BindLambda([It, this, Name] {
+				Items.Remove(Name);
+				SItems->RemoveChild(It);
+			});
+			FTimerHandle H;
+			GetWorld()->GetTimerManager().SetTimer(H, D, 1, false);
 		}
-		// todo fade, add timer. then remove.
 		return;
 	}
-	
+
 	if (!It) {
 		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
 		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
-		Items.Add(Name, It);
+		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
 		SItems->AddChild(It);
 		It->Fade(true);
-		// todo fade
 	}
 
 	if (UNLIKELY(!It)) return; // safeguard
