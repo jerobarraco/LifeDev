@@ -5,6 +5,7 @@
 #include "LInventoryItemUI.h"
 #include "Components/ScrollBox.h"
 #include "Components/ScrollBoxSlot.h"
+#include "Inventory/Inventory.h"
 #include "Inventory/InventoryItemUI.h"
 
 ULInventoryUI::ULInventoryUI() {
@@ -56,7 +57,6 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
 		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
-		It->Name = Name; // important for later
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
 		UScrollBoxSlot* const Slot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
 		// this is important so the setselected works well
@@ -93,6 +93,17 @@ void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 
 		SItems->ScrollWidgetIntoView(It, true);
 	}
+}
+
+void ULInventoryUI::SetItemCold_Implementation(const FName& Name) {
+	// Super::SetItemCold_Implementation(Name);
+	UInventory* const Inv = UInventory::Instance(this);
+	if (UNLIKELY(!Inv)) return;
+	
+	UInventoryItemUI* const It = GetItem(Name);
+	FItem Item;
+	Inv->Get(Name, Item);
+	if (LIKELY(It)) It->SetItem(Name, Item);
 }
 
 ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {

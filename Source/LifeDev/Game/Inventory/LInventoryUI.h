@@ -20,6 +20,7 @@ public:
 	virtual void SetItemMod_Implementation(const FName& Name, int32 Diff, const FItem& Item) override;
 	virtual void SetItemUsed_Implementation(const FName& Name) override;
 	virtual void SetSelected_Implementation(const FName& Name) override;
+	virtual void SetItemCold_Implementation(const FName& Name) override;
 	
 	UFUNCTION(BlueprintCallable) // move to LInventory and use the new Items
 	ULInventoryItemUI* GetItem(const FName& Name);
