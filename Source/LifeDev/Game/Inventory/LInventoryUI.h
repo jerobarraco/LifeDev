@@ -27,7 +27,9 @@ public:
 	// will update an item with the info from the inventory. item won't be created.
 	UFUNCTION(BlueprintCallable)
 	ULInventoryItemUI* ResetItem(const FName& Name);
-	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Fade(const bool In = true);
+
 protected:
 	virtual void NativeOnInitialized() override;
 

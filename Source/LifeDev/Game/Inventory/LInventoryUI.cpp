@@ -68,8 +68,9 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
 
-	// Fade(true);
+	Fade(true);
 }
+
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
 	// Super::SetSelected_Implementation(Name);
 	if (UNLIKELY(!SItems)) return; // if name is none it will unselect everything. it's not a good situation, but "i'll allow it!".
@@ -96,7 +97,7 @@ void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
 	UInventoryItemUI* const Item = ResetItem(Name);
 	if (LIKELY(Item)) Item->Use(); // animate
 
-	// Fade(true); // todo
+	Fade(true);
 }
 
 
@@ -128,6 +129,8 @@ ULInventoryItemUI* ULInventoryUI::ResetItem(const FName& Name) {
 
 	return It;
 }
+
+void ULInventoryUI::Fade_Implementation(const bool In) {}
 
 void ULInventoryUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();

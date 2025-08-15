@@ -49,7 +49,4 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void PreShow();
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Transient)
-	TArray<TObjectPtr<UInventoryItemUI>> WItems;
 };
