@@ -15,6 +15,8 @@ class LIFEDEV_API ULComboStr : public UComboBoxString {
 	
 public:
 	ULComboStr();
+	// TODO set style
+
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle() { };// SetStyle(BtnStyle, TextStyle); }
 
