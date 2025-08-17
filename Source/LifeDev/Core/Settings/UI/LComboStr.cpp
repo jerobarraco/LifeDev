@@ -6,6 +6,7 @@ ULComboStr::ULComboStr() {
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CCB(TEXT("/Game/LifeDev/Core/UI/Combo/LCombo_S"));
 	StyleCB = CCB.Object;
+	// can't create a slatewidgetasset of type tablerowstyle for some strange reason.
 	// static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 	// 	CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
 	// StyleItem = CST.Object;
