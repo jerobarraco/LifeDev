@@ -15,11 +15,11 @@ void ULComboStr::ResetStyle() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	if (StyleCB) {
 		const FComboBoxStyle* const S = StyleCB->GetStyle<FComboBoxStyle>();
-		if (LIKELY(!S)) SetWidgetStyle(*S);
+		if (LIKELY(S)) SetWidgetStyle(*S);
 	}
 	if (StyleItem) {
 		const FTableRowStyle* const S = StyleItem->GetStyle<FTableRowStyle>();
-		if (LIKELY(!S)) SetItemStyle(*S);
+		if (LIKELY(S)) SetItemStyle(*S);
 	}
 }
 
