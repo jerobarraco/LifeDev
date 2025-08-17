@@ -26,4 +26,6 @@ protected:
 	TObjectPtr<USlateWidgetStyleAsset> StyleCB = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleItem = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleScroll = nullptr;
 };
