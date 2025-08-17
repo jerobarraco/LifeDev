@@ -9,10 +9,10 @@ ULComboStr::ULComboStr() {
 	// 	CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
 	// StyleCB = CS.Object;
 	// StyleItem = CST.Object;
-	ResetStyle();
 }
 
 void ULComboStr::ResetStyle() {
+	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	if (StyleCB) {
 		const FComboBoxStyle* const S = StyleCB->GetStyle<FComboBoxStyle>();
 		if (LIKELY(!S)) SetWidgetStyle(*S);
