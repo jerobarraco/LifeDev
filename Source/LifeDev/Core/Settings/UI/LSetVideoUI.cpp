@@ -10,12 +10,12 @@
 #include "GameFramework/GameUserSettings.h"
 
 #include "JUtils/Misc/JUtilsMisc.h"
-#include "JUtils/Settings/UI/SetAntiAlias.h"
 #include "JUtils/UI/GroupBox.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LFeatsGroup.h"
-#include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
+#include "Pages/Video/SetAntiAlias.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
 

@@ -4,14 +4,15 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "Components/ComboBoxString.h"
+#include "LifeDev/Core/Settings/UI/LComboStr.h"
 
 #include "SetAntiAlias.generated.h"
 
-// TODO move to lifedev, and inherit from lcombostr, and fix the style
+// TODO fix the style
+
 // AntiAlias setting widget
 UCLASS(Blueprintable, BlueprintType)
-class JUTILS_API USetAntiAlias: public UComboBoxString {
+class LIFEDEV_API USetAntiAlias: public ULComboStr {
 	GENERATED_BODY()
 
 public:
