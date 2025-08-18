@@ -11,11 +11,10 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULComboStr : public UComboBoxString {
 	GENERATED_BODY()
-	
+
 public:
 	ULComboStr();
 
-	
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 

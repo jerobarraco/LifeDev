@@ -29,6 +29,7 @@ void ULComboStr::ResetStyle() {
 		// const FScrollBarStyle* const S = StyleItem->GetStyle<FScrollBarStyle>();
 		// if (LIKELY(S)) ScrollBarStyle = *S;
 	// }
+	// should i set the other style manually here? 
 }
 
 void ULComboStr::OnWidgetRebuilt() {

@@ -548,6 +548,38 @@
 		{
 			"Name": "DumpGPUServices",
 			"Enabled": false
+		},
+		{
+			"Name": "Cascade",
+			"Enabled": false
+		},
+		{
+			"Name": "ChaosInsights",
+			"Enabled": false
+		},
+		{
+			"Name": "MetaHumanSDK",
+			"Enabled": false
+		},
+		{
+			"Name": "Dataflow",
+			"Enabled": false
+		},
+		{
+			"Name": "FastBuildController",
+			"Enabled": false
+		},
+		{
+			"Name": "RenderDocPlugin",
+			"Enabled": false
+		},
+		{
+			"Name": "PropertyAnimator",
+			"Enabled": false
+		},
+		{
+			"Name": "PropertyAnimatorCore",
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
