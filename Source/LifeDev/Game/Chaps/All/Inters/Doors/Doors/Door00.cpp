@@ -12,7 +12,7 @@ ADoor00::ADoor00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Doors/Door00/Door00.Door00"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetRelativeLocation(FVector(0,2.5,0));
+	Mesh->SetRelativeLocation(FVector(0,7.5,0));
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));
 
 	Interact->SetRelativeLocation(FVector(-60,-7.5,100));
