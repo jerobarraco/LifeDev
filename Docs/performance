@@ -54,6 +54,8 @@ culling
 light culling
 * automatic : minScreenRadiusForLight 0.03
 * maxDrawDistance MaxDistanceFadeRange
+* if not using static lights, go to preferences and disable "allow static lights". it avoids issues.
+r.AllowStaticLighting=False
 
 level streaming
 * streaming volume + manual

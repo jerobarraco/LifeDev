@@ -8,6 +8,7 @@
 
 #include "SetAntiAlias.generated.h"
 
+// TODO move to lifedev, and inherit from lcombostr, and fix the style
 // AntiAlias setting widget
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API USetAntiAlias: public UComboBoxString {
