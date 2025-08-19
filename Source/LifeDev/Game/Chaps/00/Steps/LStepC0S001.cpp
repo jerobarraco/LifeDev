@@ -6,7 +6,8 @@
 
 ALStepC0S001::ALStepC0S001():Super() {
 	Name = FName("C0S1");
-	DlgId = FName("Intro");
+	// DlgId = FName("Intro");
+	
 	UseFBDlgAuto = true;
 	FBDlgAutoTo = 1.05;
 	UseFBAnim = true; // the cam target and pos are set on the outliner
