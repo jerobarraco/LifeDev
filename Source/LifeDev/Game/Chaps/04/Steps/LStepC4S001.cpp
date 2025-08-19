@@ -5,7 +5,7 @@
 
 ALStepC4S001::ALStepC4S001():Super() {
 	Name = FName("C4S1");
-	DlgId = Name; // this chapter finishes after the dialog
+	// DlgId = Name; // this chapter finishes after the dialog
 	// includes the "im hungry"
 	InputEnabled = false;
 	// wait time is set to blendtime this is good so that:
