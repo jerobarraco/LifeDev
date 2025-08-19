@@ -8,7 +8,7 @@ ALStepC1S006::ALStepC1S006():Super() {
 	// uses pawn camera
 	CamTarget = this;
 	UsePawnCam = false;
-	DlgId = "N01.1";
+	// DlgId = "N01.1";
 	FBDlgAutoTo = .5;
 	UseFBDlgAuto = true;
 	UseFBAnim = true;

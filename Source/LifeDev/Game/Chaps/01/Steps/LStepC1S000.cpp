@@ -12,7 +12,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	const static FText ST = NSLOCTEXT("C1S0", "Title", "~ Whatever Works ~");
 	Title = ST;
 	
-	DlgId = FName("C1S0"); // this chapter finishes after the dialog
+	// DlgId = FName("C1S0"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	CamBlendTime = 0;
 	TeleportChar = true; // move the char to where this camera is

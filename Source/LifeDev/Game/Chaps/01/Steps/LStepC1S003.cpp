@@ -6,7 +6,7 @@
 
 ALStepC1S003::ALStepC1S003():Super() {
 	Name = FName("C1S3");
-	DlgId = "C1S3";
+	// DlgId = "C1S3";
 	InputEnabled = false;
 	// uses own camera
 	UsePawnCam = false;
