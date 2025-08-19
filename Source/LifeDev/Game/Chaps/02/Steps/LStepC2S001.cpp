@@ -7,7 +7,7 @@
 ALStepC2S001::ALStepC2S001():Super() {
 	static const FName N("C2S1");
 	Name = N;
-	DlgId = N; // this chapter finishes after the dialog
+	// DlgId = N; // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;
 	TeleportChar = true; // teleport after the blend
