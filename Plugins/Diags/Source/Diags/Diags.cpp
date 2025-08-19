@@ -71,7 +71,7 @@ bool UDiags::AddIdMany(const TArray<FName>& Rows) {
 		const bool Ok = AddId(Row);
 
 		// now that we have conditions, some dialogs might fail, and we'll be fine with that.
-		Success = Success || Ok;
+		Success = Success | Ok;
 	}
 
 	return Success;

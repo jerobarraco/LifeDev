@@ -168,13 +168,8 @@ void ALStep::StartDialogs() {
 	// and also can trigger their own dialogs and fbdlgauto would still work.
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 
-	if (DlgId.IsNone())
-		DlgId = FName(LDConsts::Dlgs::Step::StartPre+Name.ToString()); // TODO wip
-
-	if (DlgId.IsNone()) return;
-
+	const FName DlgId(LDConsts::Dlgs::Step::StartPre+Name.ToString());
 	SetFBDlgAuto(DlgId);
-
 	if (!Diags->AddId(DlgId)) return; // important to not finish if there was no dialog. happens a lot with autodialogs
 
 	FinishAfterDlgs();
