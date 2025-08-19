@@ -57,10 +57,6 @@ void ALStep::TryStart_Implementation() {
 		Anim->TEnd = AnimTarget->GetRelativeTransform();
 	}
 
-	const FString& SName = Name.ToString();
-	const FName FlagName(LDConsts::Flags::Story::StepStartPre + SName);
-	if (LIKELY(!Flags)) Flags->Mod(FlagName, 1);
-
 	Super::TryStart_Implementation();
 
 	DoEnsureItems(); // make sure items are awarded
