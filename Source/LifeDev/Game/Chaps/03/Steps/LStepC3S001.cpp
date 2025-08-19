@@ -8,7 +8,7 @@
 
 ALStepC3S001::ALStepC3S001():Super() {
 	Name = FName("C3S1");
-	DlgId = FName("C3S1"); // this chapter finishes after the dialog
+	// DlgId = FName("C3S1"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;
 	TeleportChar = true;
