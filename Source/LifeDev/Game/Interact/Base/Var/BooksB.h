@@ -16,6 +16,9 @@ public:
 	void ReCreate();
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
 	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
+	// copies the generated seed to the base one
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp|Books")
+	void RandCopy() { RndSeed = RndSeedGen; }
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
