@@ -21,7 +21,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
 ALStep::ALStep():Super() {
 	RandFB = CreateDefaultSubobject<UCRandomizerFB>(TEXT("RandFB"));
 
-	// classes doesn't work with the ".CamShake_B" ending. (i think they need the _B_C at end) 
+	// classes doesn't work with the ".CamShake_B" ending. (i think they need the _B_C at end)
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
 		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B"));
 	CamShakeClass = CShake.Class;
