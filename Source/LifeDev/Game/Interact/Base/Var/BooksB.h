@@ -27,11 +27,12 @@ protected:
 	// otherwise it will be static to the value (including negatives)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	int32 RndSeed = 0;
+	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Category="SetUp|Books")
+	int32 RndSeedGen = -1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	float RndOff = 2;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	float Spacing = 2.1;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Books")
 	TObjectPtr<UStaticMesh> BaseMesh = nullptr;
 

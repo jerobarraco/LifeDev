@@ -73,11 +73,11 @@ void ABooksB::DestroyBooks() {
 }
 
 void ABooksB::CreateBooks() {
-	/// create 
+	/// create
 
 	// check against 0 to be able to use negative values as well
-	const int32 RndSeedNow = RndSeed == 0 ? FMath::Rand() : RndSeed; // this is a test. move to recreate and replace rndseed
-	const FRandomStream RS(RndSeedNow); // not static
+	RndSeedGen = RndSeed == 0 ? FMath::Rand() : RndSeed; // this is a test. move to recreate and replace rndseed
+	const FRandomStream RS(RndSeedGen); // not static
 
 	// https://forums.unrealengine.com/t/what-is-the-correct-way-to-create-and-add-components-at-runtime/15605/21?u=nande
 	const int32 MatMax = Materials.Num() -1;
