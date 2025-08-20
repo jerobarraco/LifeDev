@@ -12,9 +12,9 @@ class LIFEDEV_API ABooksB: public ALInteract {
 public:
 	ABooksB();
 
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp")
 	void ReCreate();
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp")
 	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
 	// copies the generated seed to the base one
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp") // buttons can't be inside sub categories
