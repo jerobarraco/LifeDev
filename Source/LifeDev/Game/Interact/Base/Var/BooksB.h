@@ -17,7 +17,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Books")
 	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
 	// copies the generated seed to the base one
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp|Books")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp") // buttons can't be inside sub categories
 	void RandCopy() { RndSeed = RndSeedGen; }
 
 protected:
