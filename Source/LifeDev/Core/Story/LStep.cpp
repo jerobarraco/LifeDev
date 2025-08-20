@@ -9,7 +9,6 @@
 #include "Inventory/Inventory.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 
-#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Chaps/All/Env/Ghosts.h"
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
