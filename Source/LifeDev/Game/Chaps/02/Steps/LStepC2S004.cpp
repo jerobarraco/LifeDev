@@ -6,8 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC2S004::ALStepC2S004():Super() {
-	static const FName N("C2S4");
-	Name = N;
+	Label = FName("C2S4");
 	// DlgId = N; // this chapter finishes after the dialog
 	// returns to the player camera and control
 	InputEnabled = true;

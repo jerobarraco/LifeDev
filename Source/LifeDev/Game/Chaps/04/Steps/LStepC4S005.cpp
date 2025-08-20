@@ -2,7 +2,7 @@
 #include "LStepC4S005.h"
 
 ALStepC4S005::ALStepC4S005():Super() {
-	Name = FName("C4S5");
+	Label = FName("C4S5");
 	// DlgId = Name; // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;

@@ -4,7 +4,7 @@
 #include "LifeDev/Game/Flashback/CRandomizerFB.h"
 
 ALStepC4S008::ALStepC4S008():Super() {
-	Name = FName("C4S8");
+	Label = FName("C4S8");
 	UseRain = true;
 	// DlgId = FName("C4S1");
 	InputEnabled = true;

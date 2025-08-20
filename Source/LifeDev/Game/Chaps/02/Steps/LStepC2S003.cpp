@@ -11,8 +11,7 @@
 // it could be inside the tape ... but this is ok also.
 
 ALStepC2S003::ALStepC2S003():Super() {
-	static const FName N("C2S3");
-	Name = N;
+	Label = FName("C2S3");
 	// DlgId = N; // this chapter finishes after the dialog
 	// returns to the player camera and control
 	InputEnabled = true;

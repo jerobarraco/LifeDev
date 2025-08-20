@@ -3,7 +3,7 @@
 #include "LStepC1S006.h"
 
 ALStepC1S006::ALStepC1S006():Super() {
-	Name = FName("C1S6");
+	Label = FName("C1S6");
 	InputEnabled = true; // does it matter? it will show dialogs
 	// uses pawn camera
 	CamTarget = this;

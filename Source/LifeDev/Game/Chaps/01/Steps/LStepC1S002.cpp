@@ -8,7 +8,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC1S002::ALStepC1S002():Super() {
-	Name = FName("C1S2");
+	Label = FName("C1S2");
 	InputEnabled = false;
 	// uses own camera
 	UsePawnCam = false;

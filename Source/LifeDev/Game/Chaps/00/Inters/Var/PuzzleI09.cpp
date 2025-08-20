@@ -28,11 +28,12 @@ void APuzzleI09::BeginPlay() {
 // attempt to make this interaction chapter agnostic
 // this is kind of a test. TODO move this class to Game/CHaps/All/Inters/Var/Phone if i decide to keep it like this.
 // TODo enable with the story step instead of this
+// todo it's better to have multiple phones than having this
 
 void APuzzleI09::StartStep(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
 	// only important if i want to trigger on different chapters.
-	if (Step->Name == "C0S0") {
+	if (Step->Label == "C0S0") {
 		SetActives(true);
 		CPuzzle->Solution = {9,1,1};
 	}

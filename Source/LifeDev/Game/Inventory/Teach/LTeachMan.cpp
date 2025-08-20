@@ -262,11 +262,12 @@ void ALTeachMan::ItemLook(const FName& Name) {
 
 void ALTeachMan::StepStart(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
+
 	// i want something more optimized, but this will have to do for now.
-	if (Step->Name == "C1S1")
+	if (Step->Label == "C1S1")
 		// this step is the first safe place to tell the user to use the card
 		Show(LD::Teach::ItemUse);
-	else 
+	else
 		// not really a good place. there's a chance that it could appear during dialogs.
 		Show(LD::Teach::GameSetting);
 }
@@ -274,7 +275,7 @@ void ALTeachMan::StepStart(AStep* const Step) {
 void ALTeachMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (LIKELY(Feat != EFeat::G_TEACH)) return;
 	// https://www.youtube.com/watch?v=g-WPhYREFjk
-	// according to Fedor Pikus this is BAD (most of the time) unfortunately he didn't say why
+	// according to Fedor Pikus this is BAD (most of the time) (he then explained it to me)
 	// and while i don't know him nor i have put the time to dis/prove it,
 	// i think it's well researched and seems true. and there's no reason to complicate this
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};

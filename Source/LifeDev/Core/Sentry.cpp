@@ -165,20 +165,20 @@ namespace LD { namespace Sentry {
 	static const FString TagNameStep("Story::Step"); }}
 
 void USentry::StepStart(AStep* const Step) {
-	const FString& N = LIKELY(IsValid(Step)) ? Step->Name.ToString() : TEXT("");
-	AddHint(LD::Sentry::TagNameStep, {{"Name", N}});
+	const FString& N = LIKELY(IsValid(Step)) ? Step->Label.ToString() : TEXT("");
+	AddHint(LD::Sentry::TagNameStep, {{"Label", N}});
 	TagSet(LD::Sentry::TagNameStep, N);
 }
 
 void USentry::StepStop(AStep* const Step) {
 	if (LIKELY(IsValid(Step)))
-		AddHint(LD::Sentry::TagNameStep, {{"Name", Step->Name.ToString()}});
+		AddHint(LD::Sentry::TagNameStep, {{"Label", Step->Label.ToString()}});
 	TagRem(LD::Sentry::TagNameStep);
 }
 
 void USentry::DiagAdd(const FName& Name, const FDiag& Diag) {
 	static const FString Hint("Diag::Add");
-	AddHint(Hint, {{"Name",Name.ToString()}});
+	AddHint(Hint, {{"Id",Name.ToString()}});
 }
 
 void USentry::DiagDone() {
@@ -190,5 +190,5 @@ void USentry::InterTrigger(const UCInteract* const Comp) {
 	static const FString Hint("Inter::Trigger");
 	const AInteract* Inter = Cast<AInteract>(Comp->GetOwner());
 	const FName& N = Inter ? Inter->Label : GetFNameSafe(Comp);
-	AddHint(Hint, {{"Name", N.ToString() }} );
+	AddHint(Hint, {{"Label", N.ToString() }} );
 }

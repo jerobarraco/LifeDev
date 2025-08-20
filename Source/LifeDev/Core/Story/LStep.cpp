@@ -81,7 +81,7 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
-	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Name.ToString()), 1);
+	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
 
 	SetActorsHideActive(false, true);
 	SetIntersActiveAuto(false);
@@ -119,7 +119,7 @@ void ALStep::Start_Implementation() {
 	if (!FinishFlags.IsEmpty() & LIKELY(Flags))
 		Flags->OnMod.AddUniqueDynamic(this, &ALStep::FlagMod);
 
-	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StartPre+Name.ToString()), 1);
+	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StartPre+Label.ToString()), 1);
 	
 	// ensure to check if we already have the item. but not now to not affect the flow of child classes
 	W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinish);
@@ -167,7 +167,7 @@ void ALStep::StartDialogs() {
 	// and also can trigger their own dialogs and fbdlgauto would still work.
 	Diags->OnShow.AddUniqueDynamic(this, &ALStep::DlgShow);
 
-	const FName DlgId(LDConsts::Dlgs::Step::StartPre+Name.ToString());
+	const FName DlgId(LDConsts::Dlgs::Step::StartPre+Label.ToString());
 	SetFBDlgAuto(DlgId);
 	if (!Diags->AddId(DlgId)) return; // important to not finish if there was no dialog. happens a lot with autodialogs
 
@@ -222,7 +222,7 @@ void ALStep::DoEnsureItems() {
 
 void ALStep::DestroyActors() {
 	// this function gets called multiple times. beware.
-	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
+	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"), __func__, *Label.ToString());
 
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;

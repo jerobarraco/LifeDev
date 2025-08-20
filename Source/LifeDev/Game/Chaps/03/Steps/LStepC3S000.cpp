@@ -7,7 +7,7 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 
 ALStepC3S000::ALStepC3S000():Super() {
-	Name = SName;
+	Label = FName("C3S0");
 	const static FText ST = NSLOCTEXT("C3S0", "Title", "~ Perseverance ~");
 	Title = ST;
 	UseFade = true;

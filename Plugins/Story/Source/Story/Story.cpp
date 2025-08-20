@@ -53,7 +53,7 @@ AStep* UStory::GetStep(const FName Name) {
 
 bool UStory::StartNow(AStep* const NewStep) {
 	// notice we don't check here to allow stop to be called. this is by design.
-	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *NewStep->Name.ToString());
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *NewStep->Label.ToString());
 
 	// stop the current step before starting a new one.
 	Stop();
@@ -68,7 +68,7 @@ bool UStory::StartNow(AStep* const NewStep) {
 
 	const bool Success = ToggleStepLayers();
 	UE_LOG(LogStory, Log, TEXT("%hs About to start step='%s' title='%s' DLLoadSuccess=%i"), 
-		__func__, *Current->Name.ToString(), *Current->Title.ToString(), Success);
+		__func__, *Current->Label.ToString(), *Current->Title.ToString(), Success);
 
 	// start before broadcasting start.
 	// important so that it's actually ready for whom-ever is subscribed to the delegate
@@ -169,7 +169,7 @@ void UStory::Stop() {
 		UE_LOG(LogStory, Log, TEXT("%hs -> Nothing to stop. Skip."), __func__);
 		return; // nothing to stop
 	}
-	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Label.ToString());
 
 	// clear up the Current variable so that the broadcast and startnextstep works fine.
 	AStep* const Step = Current;
@@ -185,7 +185,7 @@ void UStory::Add(AStep* const Step) {
 	if (UNLIKELY(!IsValid(Step))) return;
 
 	// i think this replaces something if it already exists. and that's exactly what i want.
-	Steps.Add(Step->Name, Step);
+	Steps.Add(Step->Label, Step);
 }
 
 void UStory::Rem(const FName Name) {
@@ -195,13 +195,13 @@ void UStory::Rem(const FName Name) {
 
 FName UStory::GetCurrent() const {
 	// const static FName Empty = NAME_None;
-	return LIKELY(IsValid(Current)) ? Current->Name : NAME_None;
+	return LIKELY(IsValid(Current)) ? Current->Label : NAME_None;
 }
 
 bool UStory::ToggleStepLayers() const {
 	if (UNLIKELY(!IsValid(Current))) return false;
 
-	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Name.ToString());
+	UE_LOG(LogStory, Log, TEXT("%hs -> %s"), __func__, *Current->Label.ToString());
 
 	bool Success = true;
 
@@ -274,9 +274,9 @@ bool UStory::StartNext(const FName CurrentName) {
 	UE_LOG(LogStory, Log, TEXT("%hs. CurrentName=%s"), __func__, *CurrentName.ToString());
 
 	// skip the check if there's no current. according to keikaku (no need to check if there's no one running)
-	if (UNLIKELY(!CurrentName.IsNone() & (IsValid(Current) && Current->Name != CurrentName))) {
+	if (UNLIKELY(!CurrentName.IsNone() & (IsValid(Current) && Current->Label != CurrentName))) {
 		UE_LOG(LogStory, Warning, TEXT("%hs Attempted to stop a step that is not current!!! Current='%s' ToStop='%s'"),
-			__func__, *Current->Name.ToString(), *CurrentName.ToString());
+			__func__, *Current->Label.ToString(), *CurrentName.ToString());
 		return false;
 	}
 	

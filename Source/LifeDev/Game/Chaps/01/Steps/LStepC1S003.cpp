@@ -5,7 +5,7 @@
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC01.h"
 
 ALStepC1S003::ALStepC1S003():Super() {
-	Name = FName("C1S3");
+	Label = FName("C1S3");
 	// DlgId = "C1S3";
 	InputEnabled = false;
 	// uses own camera

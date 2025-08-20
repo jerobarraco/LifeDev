@@ -35,7 +35,7 @@ AStep::AStep():Super() {
 void AStep::BeginPlay() {
 	Super::BeginPlay();
 
-	if (UNLIKELY(Name.IsNone())) {
+	if (UNLIKELY(Label.IsNone())) {
 		UE_LOG(LogStoryStep, Warning, TEXT("%hs Step name is none!"
 			" Step won't work properly, so not adding to the story. Stop."), __func__);
 		return;
@@ -69,7 +69,7 @@ void AStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	World->GetTimerManager().ClearAllTimersForObject(this);
 
 	UStory* const Story = World->GetSubsystem<UStory>();
-	if (LIKELY(IsValid(Story))) Story->Rem(Name);
+	if (LIKELY(IsValid(Story))) Story->Rem(Label);
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -80,7 +80,7 @@ void AStep::PostLoad() {
 }
 
 void AStep::TryStart_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Starting step '%s'"), __func__, *Label.ToString());
 	
 	// blend before the wait to avoid weird issues.
 	// if you actually want to see the blend you may not want the fade anyway.
@@ -113,7 +113,7 @@ void AStep::TryStart_Implementation() {
 }
 
 void AStep::Start_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Label.ToString());
 
 	if (UNLIKELY(Debug)) DoDebug();
 	
@@ -122,14 +122,14 @@ void AStep::Start_Implementation() {
 }
 
 void AStep::Stop_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs Stopping step '%s'"), __func__, *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Stopping step '%s'"), __func__, *Label.ToString());
 	// force disable since it's not wise to trust what happened before
 	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
 	if (UseCamShake) CamShakeStop();
 }
 
 void AStep::Finish_Implementation() {
-	UE_LOG(LogStoryStep, Log, TEXT("%hs Finishing step '%s'"), __func__, *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs Finishing step '%s'"), __func__, *Label.ToString());
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
@@ -140,7 +140,7 @@ void AStep::Finish_Implementation() {
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!IsValid(Story))) return;
 
-	Story->StartNext(Name);
+	Story->StartNext(Label);
 }
 
 void AStep::DoTeleport() {
@@ -178,7 +178,7 @@ void AStep::CamBlend() {
 	AActor* const Tgt = CamTarget.Get();
 	if (!IsValid(Tgt)) return; // it's not always likely
 
-	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Name.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Label.ToString());
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;

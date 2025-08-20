@@ -5,7 +5,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC0S001::ALStepC0S001():Super() {
-	Name = FName("C0S1");
+	Label = FName("C0S1");
 	// DlgId = FName("Intro");
 	
 	UseFBDlgAuto = true;

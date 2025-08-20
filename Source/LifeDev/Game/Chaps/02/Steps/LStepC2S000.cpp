@@ -10,7 +10,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC2S000::ALStepC2S000():Super() {
-	Name = FName("C2S0");
+	Label = FName("C2S0");
 	const static FText ST = NSLOCTEXT("C2S0", "Title", "~ Yin ~");
 	Title = ST;
 	UseFade = true;

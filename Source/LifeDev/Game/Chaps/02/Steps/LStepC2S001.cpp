@@ -5,8 +5,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC2S001::ALStepC2S001():Super() {
-	static const FName N("C2S1");
-	Name = N;
+	Label = FName("C2S1");
 	// DlgId = N; // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;

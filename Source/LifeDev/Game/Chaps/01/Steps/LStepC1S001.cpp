@@ -6,7 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC1S001::ALStepC1S001():Super() {
-	Name = FName("C1S1");
+	Label = FName("C1S1");
 	InputEnabled = true;
 	CamTarget = nullptr;
 	// no need to set it again since it's already set.

@@ -94,6 +94,6 @@ void UGameUI::StepStart(AStep* const Step) {
 		static FText TStateF = NSLOCTEXT("Status", "State", "State '{0}'");
 		// FFormatOrderedArguments Args;
 		// Args.Add(Step->Name.ToString());
-		TState->SetText(FText::FormatOrdered(TStateF, FText::FromString(Step->Name.ToString())));
+		TState->SetText(FText::FormatOrdered(TStateF, FText::FromString(Step->Label.ToString())));
 	}
 }

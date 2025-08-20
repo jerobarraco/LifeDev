@@ -5,7 +5,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepC4S009::ALStepC4S009():Super() {
-	Name = FName("C4S9");
+	Label = FName("C4S9");
 	// DlgId = Name; // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;

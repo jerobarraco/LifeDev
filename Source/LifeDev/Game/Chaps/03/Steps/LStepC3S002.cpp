@@ -6,7 +6,7 @@
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ALStepC3S002::ALStepC3S002():Super() {
-	Name = FName("C3S2");
+	Label = FName("C3S2");
 	InputEnabled = true;
 	UsePawnCam = true;
 	// will decrease the fb. done in this step since this step could potentially last a while until they find the

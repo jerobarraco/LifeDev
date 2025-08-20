@@ -7,7 +7,7 @@
 #include "LifeDev/Game/Chaps/All/NPCs/LNPC03.h"
 
 ALStepC3S001::ALStepC3S001():Super() {
-	Name = FName("C3S1");
+	Label = FName("C3S1");
 	// DlgId = FName("C3S1"); // this chapter finishes after the dialog
 	InputEnabled = false;
 	UsePawnCam = false;

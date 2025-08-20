@@ -11,7 +11,7 @@
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 ALStepEnd::ALStepEnd():Super() {
-	Name = FName("End");
+	Label = FName("End");
 	// implemented like this so it compiles both texts.
 	static const FText ST =
 		ULSysSettings::IsDemo() ?

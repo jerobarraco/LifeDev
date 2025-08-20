@@ -3,7 +3,7 @@
 #include "LStepC1S004.h"
 
 ALStepC1S004::ALStepC1S004():Super() {
-	Name = FName("C1S4");
+	Label = FName("C1S4");
 	InputEnabled = true;
 	// uses pawn camera
 	CamTarget = nullptr;
