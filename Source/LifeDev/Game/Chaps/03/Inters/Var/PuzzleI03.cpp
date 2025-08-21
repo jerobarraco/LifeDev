@@ -8,7 +8,7 @@
 APuzzleI03::APuzzleI03():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 0, 0, 4}; // S.H.A.M.E
-
+	UseHint = true;
 	// static FName DoneId = "PZ03_T";
 	// TriggerDlg = DoneId;
 	RewardFlash = .15;
@@ -22,7 +22,6 @@ void APuzzleI03::PostLoad() {
 
 	static const TArray<bool> Locks = {true, false, true, false, false};
 	SetLocks(Locks);
-	SetUseHint(true);
 }
 
 void APuzzleI03::BeginPlay() {

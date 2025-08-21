@@ -15,7 +15,8 @@
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 2};
-	
+	UseHint = true;
+
 	ResetOnFail = false;
 	UseAutoActivate = false; // This is activated by the step c3s0
 

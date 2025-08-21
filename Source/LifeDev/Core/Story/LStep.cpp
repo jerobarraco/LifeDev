@@ -447,7 +447,7 @@ void ALStep::DoIntersHint() const {
 	for (const TSoftObjectPtr<AInteract>& I: IntersHint) {
 		AInteract* const Interact = I.Get();
 		if (LIKELY(IsValid(Interact)))
-			Interact->SetUseHint(true);
+			Interact->UseHint = true;
 		else
 			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
 				" Potentially not loaded. O=%s"),

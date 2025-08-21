@@ -35,7 +35,6 @@ void APuzzleI04::PostLoad() {
 
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
-	SetUseHint(true);
 }
 
 void APuzzleI04::Done_Implementation(const bool Ok) {

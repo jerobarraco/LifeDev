@@ -63,10 +63,12 @@ void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 }
 
 bool ALPuzzle::ShowHint_Implementation() {
-	UE_LOG(LogTemp, Verbose, TEXT("%hs Obj=%s UseHint=%i"), __func__, *Label.ToString(), UseHint); // TODO verbose or remove
-	const bool Shown = Super::ShowHint_Implementation();
-	if (!Shown) return false;
-
+	UE_LOG(LogTemp, Verbose, TEXT("%hs Obj=%s UseHint=%i"), __func__, *Label.ToString(), UseHint);
+	// ignore active and stuff. as the puzzle itself is usually inactive
+	if (!UseHint) return false;
+	
+	Super::ShowHint_Implementation(); // still call the super in case someone want to use hint with the root puzzle object.
+	
 	CPuzzle->ShowHint();
 	return true;
 }

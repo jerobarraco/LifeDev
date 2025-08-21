@@ -352,7 +352,7 @@ void AInteract::DoTrigger_Implementation() {
 		// important to use this to respect children (e.g. puzzles).
 		// this is the whole reason i've implemented this virtual method.
 		if (LIKELY(IsValid(I)))
-			I->SetUseHint(true);
+			I->UseHint = true;
 		else
 			UE_LOG(LogInteract, Warning, TEXT("%hs Actor is not valid."
 				" Potentially not loaded. O=%s"),
