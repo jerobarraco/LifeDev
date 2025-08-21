@@ -36,6 +36,10 @@ ALStepC3S000::ALStepC3S000():Super() {
 	IntersFadeOut = {
 		TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"))
 	};
+
+	IntersHint = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI04_UAID_D8BBC116E5019FD901_1129752295"))
+	};
 	// music needs the .Music08_MS postfix
 	Music = FSoftObjectPath("/Game/LifeDev/Game/Env/Music/Music08/Music08_MS.Music08_MS");
 	// needed
