@@ -14,7 +14,7 @@ APlantI00::APlantI00():Super() {
 	UseAutoActivate = true;
 	// Interact->SetBoxExtent(FVector(37.500000,37.500000,27.500000));
 	// Interact->SetRelativeLocation(FVector(32.500000,-32.500000,30));
-
+	HintCondition = "{Inter.Locked.TapeI03}"; // has to have tried to trigger the tape at least once
 	RewardIntersHint = { // battsc3
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E501B60902_2059788063"))
 	};
