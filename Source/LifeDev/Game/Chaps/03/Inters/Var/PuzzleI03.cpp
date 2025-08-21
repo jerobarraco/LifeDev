@@ -22,6 +22,7 @@ void APuzzleI03::PostLoad() {
 
 	static const TArray<bool> Locks = {true, false, true, false, false};
 	SetLocks(Locks);
+	SetUseHint(true);
 }
 
 void APuzzleI03::BeginPlay() {
