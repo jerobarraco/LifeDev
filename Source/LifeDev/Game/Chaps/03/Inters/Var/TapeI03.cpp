@@ -15,6 +15,7 @@ ATapeI03::ATapeI03():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 	IsLocked = true;
+	UseHint = true; // auto hint since it's rewarded
 	UseAutoActivate = true; // rewarded by the puzzle.
 	// autoActivate works well, and it's needed so it gets activated on reward.
 

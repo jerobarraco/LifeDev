@@ -23,6 +23,9 @@ APuzzleI06::APuzzleI06():Super() {
 	RewardFlash = .1;
 	RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(
 		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.TapeI03_UAID_D8BBC116E501B80902_1106536415"));
+	RewardIntersHint = { // plant
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501AFD801_1178397079"))
+	};
 }
 
 void APuzzleI06::PostLoad() {
