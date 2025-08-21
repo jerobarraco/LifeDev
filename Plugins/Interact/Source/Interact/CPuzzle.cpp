@@ -277,7 +277,7 @@ void UCPuzzle::SetActives(const bool NewActive) const {
 	}
 }
 
-void UCPuzzle::SetAutoActives(const bool NewAutoActive) {
+void UCPuzzle::SetAutoActives(const bool NewAutoActive) const {
 	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s NewAutoActives=%i"),
 		__func__, *GetNameSafe(this), NewAutoActive);
 

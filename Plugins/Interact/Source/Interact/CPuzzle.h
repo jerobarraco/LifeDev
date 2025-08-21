@@ -57,7 +57,7 @@ public:
 	void SetActives(const bool NewActive) const;
 	// set the UseAutoActives on the pieces
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void SetAutoActives(const bool NewAutoActive);
+	void SetAutoActives(const bool NewAutoActive) const;
 
 	// sets the states on each registered interact.
 	// Call on or after begin play.
@@ -76,6 +76,7 @@ public:
 	void SetHiddensInGame(const bool NewHidden);
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void ShowHint();
+	// TODO remove
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void SetUseHints(const bool NewHint= true);
 

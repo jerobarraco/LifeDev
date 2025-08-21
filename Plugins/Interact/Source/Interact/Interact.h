@@ -107,7 +107,9 @@ public:
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
-	// this should still allow to set useHint on the editor and constructor
+	
+	// this should still allow to set useHint on the editor.
+	// can't be used on constructor since child classes won't be ready yet. and the cpuzzle won't have its references loaded.
 	// this is virtual so that the puzzles can pass this to its pieces.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	void SetUseHint(const bool NewHint=true);
