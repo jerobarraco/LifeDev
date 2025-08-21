@@ -287,7 +287,7 @@ void AInteract::InitLabel() {
 }
 
 void AInteract::PostLoad() {
-	// called when the class is loaded. called on runtime.
+	// called when the instance is loaded. called on runtime.
 	Super::PostLoad();
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s n=%s AutoActivate=%i"),
 		__func__, *Label.ToString(), *GetNameSafe(this), UseAutoActivate);
