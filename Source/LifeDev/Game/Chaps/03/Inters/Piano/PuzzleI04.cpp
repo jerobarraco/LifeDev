@@ -27,6 +27,10 @@ APuzzleI04::APuzzleI04():Super() {
 	// the other puzzle
 	RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(
 		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI03_UAID_D8BBC116E501EDD901_1630772030"));
+	RewardIntersHint = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath( // the word cubes
+		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI03_UAID_D8BBC116E501EDD901_1630772030"))
+	};
 }
 
 void APuzzleI04::PostLoad() {
