@@ -24,12 +24,6 @@ ALStepC3S000::ALStepC3S000():Super() {
 		LDConsts::Items::Walkman
 	};
 
-	// this is ok, even though the step is always loaded, since the dls are loaded before start is triggered.
-	IntersActivate = {
-		// the picture puzzle
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI06_UAID_D8BBC116E5014A2C02_1407893984"))
-	};
-
 	// there's a bug, where the tape is not getting hidden, but ONLY when going from the previous chapter to the new one.
 	// i have no idea why that is, since the puzzle has the tape as ActorHidden
 	// i use fadeOut since ActorsHide will trigger on step finish and not start.

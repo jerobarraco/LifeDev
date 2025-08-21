@@ -15,6 +15,7 @@
 APuzzleI06::APuzzleI06():Super() {
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 1, 2};
+	
 	ResetOnFail = false;
 	UseAutoActivate = false; // This is activated by the step c3s0
 
@@ -33,6 +34,7 @@ void APuzzleI06::PostLoad() {
 
 	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);
+	SetAutoActives(true);
 }
 
 void APuzzleI06::BeginPlay() {
