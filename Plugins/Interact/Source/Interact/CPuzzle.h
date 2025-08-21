@@ -54,7 +54,7 @@ public:
 	
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void SetActives(const bool NewActive);
+	void SetActives(const bool NewActive) const;
 	// set the UseAutoActives on the pieces
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetAutoActives(const bool NewAutoActive);

@@ -223,10 +223,7 @@ void UCPuzzle::PreDone(const bool Ok) const {
 	// when the puzzle has already been solved. hence, this is not necessary to be exposed to children or clients.
 	if (DisableOnDone) {
 		SetDisableWhileAnims(false); // force to avoid issues.
-		for(AInteract* const I: Interacts) {
-			if (UNLIKELY(!IsValid(I))) continue;
-			I->SetActive(false);
-		}
+		SetActives(false);
 	}
 
 	// call Done now or delayed if it's animating.
@@ -270,7 +267,7 @@ void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) const {
 	}
 }
 
-void UCPuzzle::SetActives(const bool NewActive) {
+void UCPuzzle::SetActives(const bool NewActive) const {
 	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
 		__func__, *GetNameSafe(this), NewActive);
 
