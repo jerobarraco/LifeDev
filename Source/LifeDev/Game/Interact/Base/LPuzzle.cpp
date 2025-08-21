@@ -63,12 +63,17 @@ void ALPuzzle::SetActorHiddenInGame(const bool NewHidden) {
 }
 
 bool ALPuzzle::ShowHint_Implementation() {
-	UE_LOG(LogTemp, Verbose, TEXT("%hs Obj=%s UseHint=%i"), __func__, *Label.ToString(), UseHint);
-	// ignore active and stuff. as the puzzle itself is usually inactive
+	UE_LOG(LogTemp, Log, TEXT("%hs Obj=%s UseHint=%i"), __func__, *Label.ToString(), UseHint);
+	// ignore active and hidden stuff. as the puzzle itself is usually inactive.
+	// still check for UseHint to allow to control hinting via the parent.
+	// this allows for things like RewardHint to work without having to have a virtual SetUseHint.
+	// (unfortunately hint condition won't work D:) (unless i clone here or make its own function)
+	// TODO fix hint condition, clone the code, move to its own function, or have a flag to ignore hidden/isactive
 	if (!UseHint) return false;
-	
-	Super::ShowHint_Implementation(); // still call the super in case someone want to use hint with the root puzzle object.
-	
+
+	// still call the super in case someone want to use hint with the root puzzle object.
+	Super::ShowHint_Implementation();
+
 	CPuzzle->ShowHint();
 	return true;
 }

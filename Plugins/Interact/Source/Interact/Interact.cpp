@@ -179,9 +179,11 @@ void AInteract::Unlock_Implementation() {
 }
 
 bool AInteract::ShowHint_Implementation() {
-	UE_LOG(LogInteract, Verbose, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"), __func__, *Label.ToString(),
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"), __func__, *Label.ToString(),
 		UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
-	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
+	if (!UseHint | IsHidden() | !Interact->IsActive()) return false; // todo maybe add a flag to ignore hidden if its a puzzle
+	// something like
+	// if (!UseHint | (UseHintVisibility & (IsHidden() | !Interact->IsActive())) return false;
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
@@ -318,7 +320,8 @@ void AInteract::SetInteractAutoBounds() {
 	// Mesh->GetLocalBounds();
 	// TODO how do i get the mesh size?
 	// Mesh->GetLocalBounds() params?
-	Interact->Bounds = Mesh->GetPlacementExtent();
+	// Interact->Bounds = Mesh->GetPlacementExtent();
+	Interact->Bounds = Root->GetLocalBounds();
 }
 
 void AInteract::DoTrigger_Implementation() {
