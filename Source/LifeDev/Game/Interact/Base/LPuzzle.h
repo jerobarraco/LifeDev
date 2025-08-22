@@ -61,6 +61,7 @@ public:
 	}
 
 	// sets UseHint on this and the linked puzzle items
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetUseHints(const bool NewHint=true) {
 		UseHint = NewHint;
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetUseHints(NewHint); }

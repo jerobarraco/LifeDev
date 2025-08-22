@@ -268,8 +268,8 @@ void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) const {
 }
 
 void UCPuzzle::SetActives(const bool NewActive) const {
-	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s newActive=%i"),
-		__func__, *GetNameSafe(this), NewActive);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s newActive=%i"),
+		__func__, *GetNameSafe(GetOwner()), NewActive);
 
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
@@ -278,8 +278,8 @@ void UCPuzzle::SetActives(const bool NewActive) const {
 }
 
 void UCPuzzle::SetAutoActives(const bool NewAutoActive) const {
-	UE_LOG(LogTemp, Log, TEXT("%hs, o=%s NewAutoActives=%i"),
-		__func__, *GetNameSafe(this), NewAutoActive);
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s NewAutoActives=%i"),
+		__func__, *GetNameSafe(GetOwner()), NewAutoActive);
 
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
@@ -301,6 +301,8 @@ void UCPuzzle::SetStates(const TArray<int32>& States) {
 }
 
 void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s"),
+		__func__, *GetNameSafe(GetOwner()));
 	const int32 Num = Locks.Num();
 	const int32 Num2 = Interacts.Num();
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
@@ -311,6 +313,8 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 }
 
 void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s newHidden=%i"),
+		__func__, *GetNameSafe(GetOwner()), NewHidden);
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
 		I->SetActorHiddenInGame(NewHidden);
