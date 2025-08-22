@@ -145,13 +145,16 @@ protected:
 	// internal. to be called when done
 	void Done(const bool Ok = true) const;
 
-	// Internal. Called when a interact gets triggered. 
+	// Internal. Called when a interact gets triggered.
 	UFUNCTION() //bound
 	void InterTrigger(UDelegateWrapper* const Wrapper, const int32 ID, UObject* const Obj);
 
 	// Set this before begin play to auto bind. Or call SetInteract otherwise. Can be set in the outliner (editor instance).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<TObjectPtr<AInteract>> Interacts;
+	// TODO rename to Pieces. and change to TSoftObjectPtr
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
+	TArray<TSoftObjectPtr<AInteract>> Pieces;
 
 	// this is recycled by both modes. and means different things :)
 	// on sequence : it's a seq of the ids used
