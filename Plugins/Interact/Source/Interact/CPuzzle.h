@@ -49,9 +49,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	FORCEINLINE TArray<AInteract*> GetInteracts() { return Interacts; }
 
+#pragma region sets
 	UFUNCTION(BlueprintCallable)
 	void SetDisableWhileAnims(const bool NewDisable) const;
-	
+
 	// Set the interact pieces to enabled
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetActives(const bool NewActive) const;
@@ -76,8 +77,12 @@ public:
 	void SetHiddensInGame(const bool NewHidden);
 
 	// Sets Use Hint on the linked puzzles.
-	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Puzzle")
 	void SetUseHints(const bool NewHint= true);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Cond"))
+	void SetHintConditions(const FString& Cond);
+#pragma endregion
 
 	// unbinds from the interacts
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle", meta=(AdvancedDisplay))

@@ -23,40 +23,48 @@ class INTERACT_API APuzzle: public AInteractAnim {
 
 public:
 	APuzzle();
-	
+#pragma region sets
 	// sets the states on each registered interact.
 	// Call on, or after, begin play (but not before).
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	FORCEINLINE void SetStates(const TArray<int32>& States) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetStates(States);
 	}
-	
+
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	FORCEINLINE void SetLocks(const TArray<bool>& Locks) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetLocks(Locks); }
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetLocks(Locks);
 	}
 
 	// Set the interact pieces to active. Don't call during construction.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
 	FORCEINLINE void SetActives(const bool NewEnabled) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewEnabled); }
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetActives(NewEnabled);
 	}
 
 	// sets "DisableWhileAnims" on all the interacts.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	FORCEINLINE void SetDisableWhileAnims(const bool NewDisabled) const {
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetDisableWhileAnims(NewDisabled);
 	}
 
 	// sets UseHint on this and the linked puzzle items
-	virtual void SetUseHints(const bool NewHint=true) {
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetUseHints(const bool NewHint=true) {
 		UseHint = NewHint;
-		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetUseHints(NewHint); }
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetUseHints(NewHint);
 	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Cond"))
+	FORCEINLINE void SetHintCondition(const FString& Cond = "") {
+		HintCondition = Cond;
+		if (LIKELY(IsValid(CPuzzle))) CPuzzle->SetHintConditions(Cond);
+	}
+#pragma endregion
 
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
