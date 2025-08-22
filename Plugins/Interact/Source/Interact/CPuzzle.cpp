@@ -325,7 +325,8 @@ void UCPuzzle::SetUseHints(const bool NewHint) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(GetOwner()));
 	for (AInteract* const I: Interacts) {
 		if (UNLIKELY(!IsValid(I))) continue;
-		I->UseHint = NewHint;
+		I->SetUseHint(NewHint);
+		// I->UseHint = NewHint;
 	}
 }
 

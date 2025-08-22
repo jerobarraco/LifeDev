@@ -24,6 +24,7 @@ public:
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
 	virtual void SetActive_Implementation(const bool Active = true) override;
+	virtual void SetUseHint_Implementation(const bool NewUseHint = true) override;
 	virtual void Fade_Implementation(const bool FadeIn = false, const bool SetHidden = true) override;
 #pragma endregion
 
@@ -60,6 +61,7 @@ public:
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetDisableWhileAnims(NewDisabled); }
 	}
 
+	
 	// sets UseHint on this and the linked puzzle items
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetUseHints(const bool NewHint=true) {

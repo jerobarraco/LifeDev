@@ -107,10 +107,9 @@ public:
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
-
-	// whether to show hints or not. Check "UseHintCondition", and "UseTriggerDeHint".
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
-	bool UseHint = false;
+	// Changes the UseHint flag on runtime. On constructors, you can use "UseHint" directly.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	void SetUseHint(const bool NewUseHint=true); // read note inside function to know why.
 
 	// whether to disable hints on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
@@ -213,7 +212,6 @@ public:
 	// SFX that will play on state change (regardless of trigger/trigger locked/manual). Index matches the state.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
-
 #pragma endregion
 #pragma endregion
 #pragma region Rewards
@@ -319,6 +317,10 @@ protected:
 	// I recommend to use SetState and SetStateNow.
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient, Category="SetUp|State")
 	int32 State = 0;
+
+	// whether to show hints or not. Check "UseHintCondition", and "UseTriggerDeHint".
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
+	bool UseHint = false;
 
 #pragma region cdo
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(

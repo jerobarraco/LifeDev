@@ -119,6 +119,16 @@ void AInteract::Reset() {
 	// SetState(0);
 }
 
+void AInteract::SetUseHint_Implementation(const bool NewUseHint) {
+	// this is done this way to support setting hint on puzzles on steps and such.
+	// the main issue is that puzzles usually don't have their root interact with collision enabled.
+	// so it can't trigger ShowHint.
+	// note that i could achieve the same effect by :
+	// * casting on LStep to LPuzzle.
+	// * having a HintCondition for the step or the interaction.
+	UseHint = true;
+}
+
 void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *Label.ToString());
