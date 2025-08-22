@@ -36,7 +36,7 @@ void APuzzleI06::PostLoad() {
 	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);
 	SetAutoActives(true);
-	SetUseHints(true);
+	// SetUseHints(true);
 }
 
 void APuzzleI06::BeginPlay() {
