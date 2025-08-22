@@ -46,7 +46,7 @@ void ULSetGameUI::Apply_Implementation() {
 	if (LIKELY(SLInterHint)) {
 		AInteract* const Inter = GetMutableDefault<AInteract>();
 		if (LIKELY(Inter)) {
-			Inter->HintTime = FMath::Max(2, SLInterHint->GetValue());
+			Inter->HintTime = FMath::Max(.001, SLInterHint->GetValue());
 			Inter->SaveConfig();
 		}
 	}

@@ -116,7 +116,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseTriggerDeHint = true;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config, meta=(ClampMin=0.001))
 	float HintTime = 5;
 
 	// experimental. Condition that needs to be >=1 for hint to work.
