@@ -74,9 +74,7 @@ public:
 	// set actors as hidden (or not). in game, not editor.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	void SetHiddensInGame(const bool NewHidden);
-	// Shows hint on the linked puzzles.
-	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
-	void ShowHint();
+
 	// Sets Use Hint on the linked puzzles.
 	UFUNCTION(BlueprintCallable, Category="Interact|Puzzle")
 	void SetUseHints(const bool NewHint= true);

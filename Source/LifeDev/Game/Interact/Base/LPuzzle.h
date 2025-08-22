@@ -21,12 +21,10 @@ public:
 	ALPuzzle();
 
 	virtual void SetActorHiddenInGame(bool NewHidden) override;
-	virtual bool ShowHint_Implementation() override;
 	// call to reset the puzzle. Override DoReset to do custom logic.
 	virtual void Reset() override;
 	virtual void SetActive_Implementation(const bool Active = true) override;
 	virtual void Fade_Implementation(const bool FadeIn = false, const bool SetHidden = true) override;
-
 #pragma endregion
 
 	// sets the states on each registered interact.
