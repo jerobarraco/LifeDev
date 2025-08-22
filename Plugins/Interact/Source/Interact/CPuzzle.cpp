@@ -11,7 +11,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 
-UCPuzzle::UCPuzzle(): Super() {
+UCPuzzle::UCPuzzle() {
 	// seems to work. but keep an eye on.
 	PrimaryComponentTick.bCanEverTick = false;
 }
