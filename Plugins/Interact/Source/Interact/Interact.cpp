@@ -126,7 +126,7 @@ void AInteract::SetUseHint_Implementation(const bool NewUseHint) {
 	// note that i could achieve the same effect by :
 	// * casting on LStep to LPuzzle.
 	// * having a HintCondition for the step or the interaction.
-	UseHint = true;
+	UseHint = NewUseHint;
 }
 
 void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseSFX, const bool UseParts) {
