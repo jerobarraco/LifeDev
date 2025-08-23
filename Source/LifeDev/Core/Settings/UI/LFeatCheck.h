@@ -48,6 +48,9 @@ protected:
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UCheckBox> Check = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))

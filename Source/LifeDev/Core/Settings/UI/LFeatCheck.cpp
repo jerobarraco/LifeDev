@@ -6,7 +6,11 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 
-ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}
+ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {
+	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
+		CSC(TEXT("/Game/LifeDev/Core/UI/LCheck_S"));
+	StyleCheck = CSC.Object;
+}
 
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
@@ -45,7 +49,14 @@ void ULFeatCheck::Reset() {
 	Apply(); // resave
 }
 
-void ULFeatCheck::ResetStyle() {}
+void ULFeatCheck::ResetStyle() {
+	if (StyleCheck) {
+		// const FButtonStyle* const Style = StyleCheck->GetStyle<FButtonStyle>();
+		// if (LIKELY(Style)) Style(*Style);
+		const FCheckBoxStyle* const S = StyleCheck->GetStyle<FCheckBoxStyle>();
+		if (LIKELY(S)) Check->SetWidgetStyle(*S);
+	}
+}
 
 void ULFeatCheck::NativeDestruct() {
 	if (Settings) Settings->OnFeatUpdate.RemoveAll(this);
