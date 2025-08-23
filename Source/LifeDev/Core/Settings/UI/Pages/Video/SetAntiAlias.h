@@ -8,8 +8,6 @@
 
 #include "SetAntiAlias.generated.h"
 
-// TODO fix the style
-
 // AntiAlias setting widget
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API USetAntiAlias: public ULComboStr {

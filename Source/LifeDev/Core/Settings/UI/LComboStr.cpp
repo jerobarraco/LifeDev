@@ -8,7 +8,7 @@ ULComboStr::ULComboStr() {
 	StyleCB = CCB.Object;
 
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CSB(TEXT("/Game/LifeDev/Core/UI/Combo/LScrollBar_S"));
+		CSB(TEXT("/Game/LifeDev/Core/UI/LScrollBar_S"));
 	StyleScroll = CSB.Object;
 
 	// can't create a slatewidgetasset of type tablerowstyle for some strange reason.
