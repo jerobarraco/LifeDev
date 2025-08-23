@@ -8,20 +8,11 @@ ULInputSelector::ULInputSelector():Super() {
 
 	// this is so good 
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CS(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonSmall_S"));
+		CSB(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonSmall_S"));
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
-	USlateWidgetStyleAsset* const StyleAssB = CS.Object;
-	if (StyleAssB) {
-		const FButtonStyle* const Style = CS.Object->GetStyle<FButtonStyle>();
-		SetButtonStyle(*Style);
-	}
-
-	USlateWidgetStyleAsset* const StyleAssT = CST.Object;
-	if (StyleAssT) {
-		const FTextBlockStyle* const Style = CST.Object->GetStyle<FTextBlockStyle>();
-		SetTextStyle(*Style);
-	}
+	StyleBtn = CSB.Object;
+	StyleText = CST.Object;
 
 	SetNoKeySpecifiedText(NSLOCTEXT("InputSelector", "NoKey", "[None]"));
 	SetKeySelectionText(NSLOCTEXT("InputSelector", "Waiting", "[Waiting...]"));
@@ -39,6 +30,23 @@ void ULInputSelector::Init(const FInputChord& Key) {
 
 void ULInputSelector::DeInit() {
 	OnKeySelected.RemoveAll(this);
+}
+
+void ULInputSelector::ResetStyle() {
+	if (StyleBtn) {
+		const FButtonStyle* const Style = StyleBtn->GetStyle<FButtonStyle>();
+		if (LIKELY(Style)) SetButtonStyle(*Style);
+	}
+
+	if (StyleText) {
+		const FTextBlockStyle* const Style = StyleText->GetStyle<FTextBlockStyle>();
+		if (LIKELY(Style)) SetTextStyle(*Style);
+	}
+}
+
+void ULInputSelector::OnWidgetRebuilt() {
+	Super::OnWidgetRebuilt();
+	ResetStyle();
 }
 
 void ULInputSelector::KeySelected(const FInputChord Key) { // can't be ref due to how the deleagate is set

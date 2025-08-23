@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void DeInit();
 
+	UFUNCTION(BlueprintCallable)
+	void ResetStyle();
+
 	// the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName InputName = NAME_None;
@@ -29,6 +32,13 @@ public:
 	FOnKeySelectedPlus OnKeySelectedPlus;
 
 protected:
+	virtual void OnWidgetRebuilt() override;
+
 	UFUNCTION()
 	void KeySelected(const FInputChord Key);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleBtn = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleText = nullptr;
 };
