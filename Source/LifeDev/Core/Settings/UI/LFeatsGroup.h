@@ -35,16 +35,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Reset();
-	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	FMargin ChildPadding;
+	FMargin ChildPadding = FMargin(10.000000,10.000000,0.000000,10.000000);
 
 protected:
 	void FeatsClear();
 	void FeatsCreate();
-	void OnWidgetRebuilt() override;
+	virtual void OnWidgetRebuilt() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<ULFeatCheck> CheckClass = nullptr;

@@ -73,7 +73,6 @@ void ULFeatsGroup::Reset() {
 }
 
 void ULFeatsGroup::ResetStyle() {
-	
 	// this is deprecated, and you can't set it after construction
 	if (StyleScroll) {
 		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();
