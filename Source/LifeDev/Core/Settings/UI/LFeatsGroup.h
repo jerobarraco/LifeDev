@@ -29,10 +29,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Load();
-
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Apply();
-
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Reset();
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)

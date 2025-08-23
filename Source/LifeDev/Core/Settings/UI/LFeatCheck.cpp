@@ -11,7 +11,7 @@ ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {}
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck::Setup feat=%s"), *UEnum::GetValueAsString(Feat));
-	if(Text) Text->SetText(NewText);
+	if (LIKELY(Text)) Text->SetText(NewText);
 
 	Load();
 }
@@ -45,6 +45,8 @@ void ULFeatCheck::Reset() {
 	Apply(); // resave
 }
 
+void ULFeatCheck::ResetStyle() {}
+
 void ULFeatCheck::NativeDestruct() {
 	if (Settings) Settings->OnFeatUpdate.RemoveAll(this);
 	Settings = nullptr;
@@ -64,8 +66,13 @@ void ULFeatCheck::NativeOnInitialized() {
 	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULFeatCheck::CheckChanged);
 }
 
+void ULFeatCheck::OnWidgetRebuilt() {
+	Super::OnWidgetRebuilt();
+	ResetStyle();
+}
+
 void ULFeatCheck::FeatUpdate(const EFeat NFeat, const bool bEnabled) {
-	if (!Check) return;
+	if (UNLIKELY(!Check)) return;
 	if (Feat != NFeat) return;
 	// avoid infinite loop and stack overflow with auto apply (it's also more efficient).
 	if (Check->IsChecked() == bEnabled) return;
