@@ -15,6 +15,7 @@ ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CSB(TEXT("/Game/LifeDev/Core/UI/LScrollBar_S"));
 	StyleScroll = CSB.Object;
+	SetScrollbarThickness(FVector2D(15));
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
