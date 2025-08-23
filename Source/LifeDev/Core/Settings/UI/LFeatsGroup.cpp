@@ -12,10 +12,11 @@ ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 	static ConstructorHelpers::FClassFinder<ULFeatCheck>
 		CCheck(TEXT("/Game/LifeDev/Core/Settings/Feats/FeatCheck_W"));
 	CheckClass = CCheck.Succeeded() ? CCheck.Class.Get() : ULFeatCheck::StaticClass();
+	
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CSB(TEXT("/Game/LifeDev/Core/UI/LScrollBar_S"));
 	StyleScroll = CSB.Object;
-	SetScrollbarThickness(FVector2D(15));
+	
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
@@ -73,10 +74,12 @@ void ULFeatsGroup::Reset() {
 }
 
 void ULFeatsGroup::ResetStyle() {
-	// this is deprecated, and you can't set it after construction
 	if (StyleScroll) {
 		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();
-		if (LIKELY(S)) SetWidgetBarStyle(*S);
+		if (LIKELY(S)) {
+			SetWidgetBarStyle(*S);
+			SetScrollbarThickness(FVector2D(S->Thickness));
+		}
 	}
 }
 
