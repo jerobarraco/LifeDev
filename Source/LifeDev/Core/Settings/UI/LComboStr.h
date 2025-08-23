@@ -8,6 +8,8 @@
 #include "LComboStr.generated.h"
 
 
+class UJTableRowStyle;
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULComboStr : public UComboBoxString {
 	GENERATED_BODY()
@@ -24,7 +26,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleCB = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<USlateWidgetStyleAsset> StyleItem = nullptr;
+	TObjectPtr<UJTableRowStyle> StyleItem = nullptr;
+	// TObjectPtr<USlateWidgetStyleAsset> StyleItem = nullptr; // until epic implements this
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleScroll = nullptr;
 };

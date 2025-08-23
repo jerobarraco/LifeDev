@@ -2,6 +2,8 @@
 
 #include "LComboStr.h"
 
+#include "JUtilsUI.h"
+
 ULComboStr::ULComboStr() {
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CCB(TEXT("/Game/LifeDev/Core/UI/Combo/LCombo_S"));
@@ -23,9 +25,12 @@ void ULComboStr::ResetStyle() {
 		if (LIKELY(S)) SetWidgetStyle(*S);
 	}
 	if (StyleItem) {
-		const FTableRowStyle* const S = StyleItem->GetStyle<FTableRowStyle>();
-		if (LIKELY(S)) SetItemStyle(*S);
+		SetItemStyle(StyleItem->Style);
 	}
+	// if (StyleItem) {
+	// 	const FTableRowStyle* const S = StyleItem->GetStyle<FTableRowStyle>();
+	// 	if (LIKELY(S)) SetItemStyle(*S);
+	// }
 	// this is deprecated, and you can't set it after construction
 	if (StyleScroll) {
 		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();
