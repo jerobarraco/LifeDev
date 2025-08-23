@@ -35,6 +35,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Reset();
+	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void ResetStyle();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FMargin ChildPadding;
@@ -42,9 +44,12 @@ public:
 protected:
 	void FeatsClear();
 	void FeatsCreate();
-
+	void OnWidgetRebuilt() override;
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<ULFeatCheck> CheckClass = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleScroll = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TMap<EFeat, TObjectPtr<ULFeatCheck>> Feats;

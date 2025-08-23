@@ -6,9 +6,11 @@ ULComboStr::ULComboStr() {
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CCB(TEXT("/Game/LifeDev/Core/UI/Combo/LCombo_S"));
 	StyleCB = CCB.Object;
-	// static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-	// 	CSB(TEXT("/Game/LifeDev/Core/UI/Combo/LScrollBar_S"));
-	// StyleScroll = CSB.Object;
+
+	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
+		CSB(TEXT("/Game/LifeDev/Core/UI/Combo/LScrollBar_S"));
+	StyleScroll = CSB.Object;
+
 	// can't create a slatewidgetasset of type tablerowstyle for some strange reason.
 	// static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 	// 	CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
@@ -25,10 +27,11 @@ void ULComboStr::ResetStyle() {
 		if (LIKELY(S)) SetItemStyle(*S);
 	}
 	// this is deprecated, and you can't set it after construction
-	// if (StyleScroll) {
-		// const FScrollBarStyle* const S = StyleItem->GetStyle<FScrollBarStyle>();
-		// if (LIKELY(S)) ScrollBarStyle = *S;
-	// }
+	if (StyleScroll) {
+		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();
+		// ReSharper disable once CppDeprecatedEntity
+		if (LIKELY(S)) ScrollBarStyle = *S;
+	}
 	// should i set the other style manually here? 
 }
 

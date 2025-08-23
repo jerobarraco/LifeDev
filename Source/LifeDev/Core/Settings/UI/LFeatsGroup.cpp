@@ -7,10 +7,14 @@
 #include "LFeatCheck.h"
 
 ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
+	SetOrientation(Orient_Horizontal);
+	
 	static ConstructorHelpers::FClassFinder<ULFeatCheck>
 		CCheck(TEXT("/Game/LifeDev/Core/Settings/Feats/FeatCheck_W"));
 	CheckClass = CCheck.Succeeded() ? CCheck.Class.Get() : ULFeatCheck::StaticClass();
-	SetOrientation(Orient_Horizontal);
+	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
+		CSB(TEXT("/Game/LifeDev/Core/UI/Combo/LScrollBar_S"));
+	StyleScroll = CSB.Object;
 }
 
 void ULFeatsGroup::SetUp(const TMap<EFeat, FText>& InTexts) {
@@ -36,6 +40,11 @@ void ULFeatsGroup::FeatsCreate() {
 	}
 }
 
+void ULFeatsGroup::OnWidgetRebuilt() {
+	Super::OnWidgetRebuilt();
+	ResetStyle();
+}
+
 void ULFeatsGroup::Load() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
@@ -59,6 +68,15 @@ void ULFeatsGroup::Reset() {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (UNLIKELY(!IsValid(Check))) continue;
 		Check->Reset();
+	}
+}
+
+void ULFeatsGroup::ResetStyle() {
+	
+	// this is deprecated, and you can't set it after construction
+	if (StyleScroll) {
+		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();
+		if (LIKELY(S)) SetWidgetBarStyle(*S);
 	}
 }
 
