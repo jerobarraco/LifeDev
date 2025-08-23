@@ -13,7 +13,7 @@ ULFeatsGroup::ULFeatsGroup(const FObjectInitializer& O):Super(O) {
 		CCheck(TEXT("/Game/LifeDev/Core/Settings/Feats/FeatCheck_W"));
 	CheckClass = CCheck.Succeeded() ? CCheck.Class.Get() : ULFeatCheck::StaticClass();
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CSB(TEXT("/Game/LifeDev/Core/UI/Combo/LScrollBar_S"));
+		CSB(TEXT("/Game/LifeDev/Core/UI/LScrollBar_S"));
 	StyleScroll = CSB.Object;
 }
 
