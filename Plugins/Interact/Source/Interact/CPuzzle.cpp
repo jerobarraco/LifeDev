@@ -18,6 +18,7 @@ UCPuzzle::UCPuzzle() {
 
 void UCPuzzle::BeginPlay() {
 	Super::BeginPlay();
+	Unbind(); // in case someone called SetPieces
 	Bind();
 }
 
@@ -41,17 +42,18 @@ void UCPuzzle::Reset_Implementation() {
 	OnReset.Broadcast();
 }
 
-void UCPuzzle::SetPieces(const TArray<AInteract*>& Inters) {
+void UCPuzzle::SetPieces(const TArray<TSoftObjectPtr<AInteract>>& NewPieces) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Unbind(); // unbind before emptying to make sure we don't remain subscribed to an orphan object.
 
-	Pieces.Empty(Inters.Num());
-	for (AInteract* const I: Inters) {
-		if (UNLIKELY(!IsValid(I))) continue;
-		Pieces.Add(I);
-	}
-
-	Bind();
+	Pieces = NewPieces; // don't check or get here. since the object might not be loaded yet.
+	// Pieces.Empty(NewPieces.Num());
+	// for (AInteract* const I: NewPieces) {
+		// if (UNLIKELY(!IsValid(I))) continue;
+		// Pieces.Add(I);
+	// }
+	// not binding, since 
+	// Bind();
 }
 
 void UCPuzzle::ResetCurrents() {
