@@ -65,14 +65,6 @@ void ULFeatsGroup::Apply() {
 	}
 }
 
-void ULFeatsGroup::Reset() {
-	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
-		const TObjectPtr<ULFeatCheck>& Check = F.Value;
-		if (UNLIKELY(!IsValid(Check))) continue;
-		Check->Reset();
-	}
-}
-
 void ULFeatsGroup::ResetStyle() {
 	if (StyleScroll) {
 		const FScrollBarStyle* const S = StyleScroll->GetStyle<FScrollBarStyle>();

@@ -20,8 +20,6 @@ public:
 	void Load();
 	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Apply();
-	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
-	void Reset();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();

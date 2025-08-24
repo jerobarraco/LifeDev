@@ -26,12 +26,6 @@ void ULFeatCheck::Load_Implementation() {
 	FeatUpdate(Feat, WasEnabled);
 }
 
-void ULFeatCheck::Reset_Implementation() {
-	// TODO remove should i just use a load?
-	FeatUpdate(Feat, WasEnabled); // update if needed.
-	Apply(); // resave
-}
-
 void ULFeatCheck::Apply_Implementation() {
 	if (!Settings) {
 		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Apply Can't find settings."));
