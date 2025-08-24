@@ -97,9 +97,9 @@ void ALPuzzle::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	if (UNLIKELY(!CPuzzle)) return;
 
 	// fade is a LD stuff, can't do at the CPuzzle level
-	const TArray<AInteract*>& Inters = CPuzzle->GetInteracts();
-	for (AInteract* const I: Inters) {
-		ALInteract* const IL = Cast<ALInteract>(I);
+	const TArray<TSoftObjectPtr<AInteract>>& Pieces = CPuzzle->GetInteracts();
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		ALInteract* const IL = Cast<ALInteract>(I.Get());
 		if (UNLIKELY(!IsValid(IL))) continue;
 		IL->Fade(FadeIn, SetHidden);
 	}

@@ -29,8 +29,8 @@ void UCPuzzle::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void UCPuzzle::Reset_Implementation() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->Reset();
 		I->SetActive(true);
 	}
@@ -59,8 +59,8 @@ void UCPuzzle::ResetCurrents() {
 	
 	CurrentIds.Empty(); // affects sequence and combo too
 	if (Type == EPuzzleType::COMBINATION) {
-		for (const AInteract* const I: Pieces) {
-			if (UNLIKELY(!IsValid(I))) continue;
+		for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+			if (UNLIKELY(!I.IsValid())) continue;
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
 		if (CurrentIds.Num() != Solution.Num()) {
@@ -74,13 +74,13 @@ void UCPuzzle::Bind() {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 
 	int32 i = 0;
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 
 		UDelegateWrapper* const Wrapper = NewObject<UDelegateWrapper>();
 		if (UNLIKELY(!IsValid(Wrapper))) continue;
 
-		Wrapper->Obj = I;
+		Wrapper->Obj = I.Get();
 		Wrapper->ID = i;
 		Wrapper->OnDispatch.AddUniqueDynamic(this, &UCPuzzle::InterTrigger);
 
@@ -141,7 +141,7 @@ bool UCPuzzle::CheckCombination(const int32 ID) {
 		return false;
 	}
 
-	AInteract* const I = Pieces[ID];
+	AInteract* const I = Pieces[ID].Get();
 	if (UNLIKELY(!IsValid(I))) {
 		UE_LOG(LogCPuzzle, Warning, TEXT("%hs Interact is invalid. ID=%i"), __func__, ID);
 		return false;
@@ -229,8 +229,8 @@ void UCPuzzle::PreDone(const bool Ok) const {
 	// call Done now or delayed if it's animating.
 	bool Animating = false;
 	float Time = 0;
-	for(AInteract* const I: Pieces) {
-		const AInteractAnim* const IA = Cast<AInteractAnim>(I);
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		const AInteractAnim* const IA = Cast<AInteractAnim>(I.Get());
 		if (UNLIKELY(!IsValid(IA))) continue;
 		
 		const UCAnimatorMix* const Anim = IA->GetAnim();
@@ -259,8 +259,8 @@ void UCPuzzle::Done(const bool Ok) const {
 }
 
 void UCPuzzle::SetDisableWhileAnims(const bool NewDisable) const {
-	for (AInteract* const I: Pieces) {
-		AInteractAnim* const IA = Cast<AInteractAnim>(I);
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		AInteractAnim* const IA = Cast<AInteractAnim>(I.Get());
 		if (UNLIKELY(!IsValid(IA))) continue;
 		// have to force it to not manage disabling, or it will break the puzzle potentially (re-enabling after anim)
 		IA->DisableWhileAnim = NewDisable;
@@ -271,8 +271,8 @@ void UCPuzzle::SetActives(const bool NewActive) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s newActive=%i"),
 		__func__, *GetNameSafe(GetOwner()), NewActive);
 
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->SetActive(NewActive);
 	}
 }
@@ -281,8 +281,8 @@ void UCPuzzle::SetAutoActives(const bool NewAutoActive) const {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s NewAutoActives=%i"),
 		__func__, *GetNameSafe(GetOwner()), NewAutoActive);
 
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->UseAutoActivate = NewAutoActive;
 	}
 }
@@ -291,7 +291,7 @@ void UCPuzzle::SetStates(const TArray<int32>& States) {
 	const int32 Num = States.Num();
 	const int32 Num2 = Pieces.Num();
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
-		AInteract* const I = Pieces[i];
+		AInteract* const I = Pieces[i].Get();
 		if (UNLIKELY(!IsValid(I))) continue;
 		I->SetState(States[i]);
 	}
@@ -306,7 +306,7 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	const int32 Num = Locks.Num();
 	const int32 Num2 = Pieces.Num();
 	for (int32 i = 0; i<Num && i<Num2; ++i) {
-		AInteract* const I = Pieces[i];
+		AInteract* const I = Pieces[i].Get();
 		if (UNLIKELY(!IsValid(I))) continue;
 		I->IsLocked = Locks[i];
 	}
@@ -315,16 +315,16 @@ void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 void UCPuzzle::SetHiddensInGame(const bool NewHidden) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s newHidden=%i"),
 		__func__, *GetNameSafe(GetOwner()), NewHidden);
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->SetActorHiddenInGame(NewHidden);
 	}
 }
 
 void UCPuzzle::SetUseHints(const bool NewHint) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(GetOwner()));
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->SetUseHint(NewHint);
 		// I->UseHint = NewHint;
 	}
@@ -332,8 +332,8 @@ void UCPuzzle::SetUseHints(const bool NewHint) {
 
 void UCPuzzle::SetHintConditions(const FString& Cond) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs Obj=%s"), __func__, *GetNameSafe(GetOwner()));
-	for (AInteract* const I: Pieces) {
-		if (UNLIKELY(!IsValid(I))) continue;
+	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
+		if (UNLIKELY(!I.IsValid())) continue;
 		I->HintCondition = Cond;
 	}
 }

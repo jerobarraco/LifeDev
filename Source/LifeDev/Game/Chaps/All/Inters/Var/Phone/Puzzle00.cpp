@@ -13,7 +13,7 @@ APuzzle00::APuzzle00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CM(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/Phone00_P"));
 	Mesh->SetStaticMesh(CM.Object);
-	SetMobility(EComponentMobility::Static);
+	APuzzle00::SetMobility(EComponentMobility::Static);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/HangUp"));
@@ -24,10 +24,10 @@ void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
 	// sets names in a simplified way
-	TArray<AInteract*> Inters = CPuzzle->GetInteracts();
+	TArray<TSoftObjectPtr<AInteract>> Inters = CPuzzle->GetInteracts();
 	const int32 Num = Inters.Num();
 	for (int32 i= 0; UNLIKELY(i<Num); ++i) {
-		AInteract* const I = Inters[i];
+		AInteract* const I = Inters[i].Get();
 		if (UNLIKELY(!I)) continue;
 
 		const FString& SI =
