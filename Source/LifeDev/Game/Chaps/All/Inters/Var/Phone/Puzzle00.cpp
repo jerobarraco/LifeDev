@@ -24,7 +24,7 @@ void APuzzle00::PostLoad() {
 	// by now the interacts set in editor are loaded
 	Super::PostLoad();
 	// sets names in a simplified way
-	TArray<TSoftObjectPtr<AInteract>> Inters = CPuzzle->GetInteracts();
+	TArray<TSoftObjectPtr<AInteract>> Inters = CPuzzle->GetPieces();
 	const int32 Num = Inters.Num();
 	for (int32 i= 0; UNLIKELY(i<Num); ++i) {
 		AInteract* const I = Inters[i].Get();

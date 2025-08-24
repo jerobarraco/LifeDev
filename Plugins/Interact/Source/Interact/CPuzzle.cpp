@@ -41,7 +41,7 @@ void UCPuzzle::Reset_Implementation() {
 	OnReset.Broadcast();
 }
 
-void UCPuzzle::SetInteracts(const TArray<AInteract*>& Inters) {
+void UCPuzzle::SetPieces(const TArray<AInteract*>& Inters) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
 	Unbind(); // unbind before emptying to make sure we don't remain subscribed to an orphan object.
 
