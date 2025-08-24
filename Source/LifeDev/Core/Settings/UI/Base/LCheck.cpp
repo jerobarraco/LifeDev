@@ -1,6 +1,5 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
 
-
 #include "LCheck.h"
 
 #include "Components/CheckBox.h"

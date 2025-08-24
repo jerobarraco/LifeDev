@@ -23,7 +23,6 @@ public:
 	void SetUp(const EFeat NFeat, const FText& NewText);
 	virtual void Load_Implementation();
 	virtual void Apply_Implementation();
-	virtual void Reset_Implementation();
 
 	// if true it will call apply on change.
 	// you can call Reset to re-apply the value from the last Load (or SetUp)

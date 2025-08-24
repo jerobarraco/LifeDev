@@ -39,7 +39,6 @@ void ULFeatCheck::Apply_Implementation() {
 	Settings->SetFeat(Feat, Check->IsChecked());
 }
 
-
 void ULFeatCheck::NativeDestruct() {
 	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
 	Settings = nullptr;
