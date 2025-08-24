@@ -38,17 +38,16 @@ void ULCheck::ResetStyle() {
 			// if (STB)
 				// STB->SetTextStyle(Style);
 			//
-			// Text->SetText( St);
-			// Text->SetFont( Font );
-			// Text->SetStrikeBrush( &StrikeBrush );
-			// Text->SetColorAndOpacity( ColorAndOpacityBinding );
-			// Text->SetShadowOffset( ShadowOffset );
-			// Text->SetShadowColorAndOpacity( ShadowColorAndOpacityBinding );
-			// Text->SetMinDesiredWidth( MinDesiredWidth );
-			// Text->SetTransformPolicy( TextTransformPolicy );
-			// Text->SetOverflowPolicy(TextOverflowPolicy);
-
-			
+			Text->SetText(Label);
+			Text->SetFont(Style->Font);
+			Text->SetStrikeBrush(Style->StrikeBrush);
+			Text->SetColorAndOpacity(Style->ColorAndOpacity);
+			Text->SetShadowOffset(Style->ShadowOffset);
+			Text->SetShadowColorAndOpacity(Style->ShadowColorAndOpacity);
+			// Text->SetMinDesiredWidth(Style->);
+			Text->SetTextTransformPolicy(Style->TransformPolicy);
+			Text->SetTextOverflowPolicy(Style->OverflowPolicy);
+			Text->SynchronizeProperties();
 		}
 	}
 }
