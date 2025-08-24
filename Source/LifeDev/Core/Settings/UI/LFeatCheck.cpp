@@ -70,6 +70,7 @@ void ULFeatCheck::NativeOnInitialized() {
 	
 	Settings = ULSettings::Instance(this);
 	if (UNLIKELY(!Settings | !Check)) return;
+
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck NativeInitialized feat=%s"),
 		*UEnum::GetValueAsString(Feat));
 
