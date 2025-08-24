@@ -19,8 +19,6 @@ class LIFEDEV_API ULFeatCheck: public ULCheck {
 	GENERATED_BODY()
 
 public:
-	ULFeatCheck(const FObjectInitializer& O);
-
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetUp(const EFeat NFeat, const FText& NewText);
 

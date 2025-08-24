@@ -7,12 +7,6 @@
 
 #include "LifeDev/Core/Settings/LSettings.h"
 
-ULFeatCheck::ULFeatCheck(const FObjectInitializer& O):Super(O) {
-	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
-		CSC(TEXT("/Game/LifeDev/Core/UI/LCheck_S"));
-	StyleCheck = CSC.Object;
-}
-
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck::Setup feat=%s"), *UEnum::GetValueAsString(Feat));

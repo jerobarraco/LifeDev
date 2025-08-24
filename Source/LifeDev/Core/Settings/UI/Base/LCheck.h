@@ -8,11 +8,14 @@
 
 class UTextBlock;
 class UCheckBox;
+
 // basic checkbox
 UCLASS()
 class LIFEDEV_API ULCheck : public UUserWidget {
 	GENERATED_BODY()
 public:
+	ULCheck(const FObjectInitializer& O);
+
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 
