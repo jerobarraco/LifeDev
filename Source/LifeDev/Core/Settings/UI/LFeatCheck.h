@@ -11,6 +11,7 @@
 
 class UTextBlock;
 class ULSettings;
+// todo inherit from ULCheck
 
 // a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)

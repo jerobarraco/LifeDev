@@ -4,6 +4,8 @@
 #include "JButton.h"
 #include "LButton.generated.h"
 
+// todo move to base
+
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULButton: public UJButton {
 	GENERATED_BODY()

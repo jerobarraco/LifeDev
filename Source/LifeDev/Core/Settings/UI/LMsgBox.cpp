@@ -5,6 +5,5 @@
 ULMsgBox::ULMsgBox():Super() {
 	static ConstructorHelpers::FClassFinder<UJButton>
 		CBtn(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonSmall.LButtonSmall_C"));
-	if (CBtn.Succeeded())
-		BtnClass = CBtn.Class;
+	BtnClass = CBtn.Class;
 }
