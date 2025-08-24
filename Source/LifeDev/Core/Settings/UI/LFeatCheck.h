@@ -30,8 +30,6 @@ public:
 	void Apply();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Reset();
-	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
-	void ResetStyle();
 
 	// if true it will call apply on change.
 	// you can call Reset to re-apply the value from the last Load (or SetUp)
@@ -41,16 +39,12 @@ public:
 protected:
 	virtual void NativeDestruct() override;
 	virtual void NativeOnInitialized() override;
-	virtual void OnWidgetRebuilt() override;
 
 	UFUNCTION()
 	void CheckChanged(const bool bIsChecked);
 	
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	EFeat Feat = EFeat::NONE;

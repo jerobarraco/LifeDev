@@ -13,7 +13,15 @@ UCLASS()
 class LIFEDEV_API ULCheck : public UUserWidget {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
+	void ResetStyle();
+
 protected:
+	virtual void OnWidgetRebuilt() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UCheckBox> Check = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
