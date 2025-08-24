@@ -29,6 +29,8 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USlateWidgetStyleAsset> StyleText = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UCheckBox> Check = nullptr;

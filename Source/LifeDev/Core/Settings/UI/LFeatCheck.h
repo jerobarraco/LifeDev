@@ -35,7 +35,7 @@ protected:
 
 	UFUNCTION()
 	void CheckChanged(const bool bIsChecked);
-	
+
 	UFUNCTION() // bind
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 

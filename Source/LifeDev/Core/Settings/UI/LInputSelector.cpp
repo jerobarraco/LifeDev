@@ -9,9 +9,9 @@ ULInputSelector::ULInputSelector():Super() {
 	// this is so good 
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CSB(TEXT("/Game/LifeDev/Core/UI/Btns/LButtonSmall_S"));
+	StyleBtn = CSB.Object;
 	static ConstructorHelpers::FObjectFinder<USlateWidgetStyleAsset>
 		CST(TEXT("/Game/LifeDev/Core/UI/Btns/LTextSmall_S"));
-	StyleBtn = CSB.Object;
 	StyleText = CST.Object;
 
 	SetNoKeySpecifiedText(NSLOCTEXT("InputSelector", "NoKey", "[None]"));
