@@ -16,6 +16,13 @@ class LIFEDEV_API ULCheck : public UUserWidget {
 public:
 	ULCheck(const FObjectInitializer& O);
 
+	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Load();
+	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Apply();
+	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	void Reset();
+
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 
@@ -25,8 +32,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UCheckBox> Check = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> Text = nullptr;
 };

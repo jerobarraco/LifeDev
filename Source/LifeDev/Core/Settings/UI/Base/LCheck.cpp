@@ -11,6 +11,12 @@ ULCheck::ULCheck(const FObjectInitializer& O):UUserWidget(O) {
 	StyleCheck = CSC.Object;
 }
 
+void ULCheck::Apply_Implementation() {}
+
+void ULCheck::Load_Implementation() {}
+
+void ULCheck::Reset_Implementation() {}
+
 void ULCheck::ResetStyle() {
 	if (bool(StyleCheck) & bool(Check)) {
 		// const FButtonStyle* const Style = StyleCheck->GetStyle<FButtonStyle>();

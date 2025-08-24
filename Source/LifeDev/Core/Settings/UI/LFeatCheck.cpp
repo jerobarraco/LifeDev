@@ -15,7 +15,7 @@ void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Load();
 }
 
-void ULFeatCheck::Load() {
+void ULFeatCheck::Load_Implementation() {
 	if (!Settings) {
 		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Load Can't find settings. feat=%s"),
 			*UEnum::GetValueAsString(Feat));
@@ -26,7 +26,13 @@ void ULFeatCheck::Load() {
 	FeatUpdate(Feat, WasEnabled);
 }
 
-void ULFeatCheck::Apply() {
+void ULFeatCheck::Reset_Implementation() {
+	// TODO remove should i just use a load?
+	FeatUpdate(Feat, WasEnabled); // update if needed.
+	Apply(); // resave
+}
+
+void ULFeatCheck::Apply_Implementation() {
 	if (!Settings) {
 		UE_LOG(LogTemp, Log, TEXT("LFeatCheck.Apply Can't find settings."));
 		return;
@@ -39,10 +45,6 @@ void ULFeatCheck::Apply() {
 	Settings->SetFeat(Feat, Check->IsChecked());
 }
 
-void ULFeatCheck::Reset() {
-	FeatUpdate(Feat, WasEnabled); // update if needed.
-	Apply(); // resave
-}
 
 void ULFeatCheck::NativeDestruct() {
 	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
