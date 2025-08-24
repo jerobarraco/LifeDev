@@ -24,6 +24,17 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 
+	// please only set before widgetrebuild is called. or call ResetStyle
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FText Label;
+	// EditAnywhere allows me to edit when placed on parent widgets
+
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UCheckBox> Check = nullptr;
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
+	TObjectPtr<UTextBlock> Text = nullptr;
+	// made public because they get accessed by other means
+
 protected:
 	virtual void OnWidgetRebuilt() override;
 
@@ -31,11 +42,4 @@ protected:
 	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleText = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	FText Label;
-
-	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UCheckBox> Check = nullptr;
-	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> Text = nullptr;
 };

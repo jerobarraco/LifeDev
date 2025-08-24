@@ -3,15 +3,14 @@
 #include "LFeatCheck.h"
 
 #include "Components/CheckBox.h"
-#include "Components/TextBlock.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
 	UE_LOG(LogTemp, Log, TEXT("LFeatCheck::Setup feat=%s"), *UEnum::GetValueAsString(Feat));
-	if (LIKELY(Text)) Text->SetText(NewText);
-
+	// if (LIKELY(Text)) Text->SetText(NewText); // not necessary
+	Label = NewText;
 	Load();
 }
 
