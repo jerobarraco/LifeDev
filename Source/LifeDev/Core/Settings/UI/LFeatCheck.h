@@ -3,19 +3,19 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "Components/CheckBox.h"
+#include "Base/LCheck.h"
 
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LFeatCheck.generated.h"
 
+class UCheckBox;
 class UTextBlock;
 class ULSettings;
-// todo inherit from ULCheck
 
 // a checkbox for a feature toggle
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULFeatCheck: public UUserWidget {
+class LIFEDEV_API ULFeatCheck: public ULCheck {
 	GENERATED_BODY()
 
 public:
@@ -51,11 +51,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> StyleCheck = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UCheckBox> Check = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> Text = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	EFeat Feat = EFeat::NONE;

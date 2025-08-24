@@ -2,6 +2,7 @@
 
 #include "LFeatCheck.h"
 
+#include "Components/CheckBox.h"
 #include "Components/TextBlock.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
