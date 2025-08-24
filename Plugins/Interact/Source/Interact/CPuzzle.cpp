@@ -52,8 +52,7 @@ void UCPuzzle::SetPieces(const TArray<TSoftObjectPtr<AInteract>>& NewPieces) {
 		// if (UNLIKELY(!IsValid(I))) continue;
 		// Pieces.Add(I);
 	// }
-	// not binding, since 
-	// Bind();
+	Bind(); // this will only work when setpieces is called after begin play or with loaded references
 }
 
 void UCPuzzle::ResetCurrents() {
