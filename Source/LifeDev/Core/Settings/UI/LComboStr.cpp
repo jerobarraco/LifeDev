@@ -28,9 +28,7 @@ void ULComboStr::ResetStyle() {
 		const FComboBoxStyle* const S = StyleCB->GetStyle<FComboBoxStyle>();
 		if (LIKELY(S)) SetWidgetStyle(*S);
 	}
-	if (StyleItem) {
-		SetItemStyle(StyleItem->Style);
-	}
+	if (StyleItem) SetItemStyle(StyleItem->Style);
 	// if (StyleItem) {
 	// 	const FTableRowStyle* const S = StyleItem->GetStyle<FTableRowStyle>();
 	// 	if (LIKELY(S)) SetItemStyle(*S);
