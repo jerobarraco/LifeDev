@@ -50,7 +50,7 @@ void ULFeatCheck::Reset() {
 }
 
 void ULFeatCheck::ResetStyle() {
-	if (StyleCheck) {
+	if (bool(StyleCheck) & bool(Check)) {
 		// const FButtonStyle* const Style = StyleCheck->GetStyle<FButtonStyle>();
 		// if (LIKELY(Style)) Style(*Style);
 		const FCheckBoxStyle* const S = StyleCheck->GetStyle<FCheckBoxStyle>();
@@ -59,7 +59,7 @@ void ULFeatCheck::ResetStyle() {
 }
 
 void ULFeatCheck::NativeDestruct() {
-	if (Settings) Settings->OnFeatUpdate.RemoveAll(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdate.RemoveAll(this);
 	Settings = nullptr;
 
 	Super::NativeDestruct();
