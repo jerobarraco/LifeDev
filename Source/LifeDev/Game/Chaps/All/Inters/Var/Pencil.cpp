@@ -7,9 +7,8 @@
 
 APencil::APencil():Super() {
 	Texts = { NSLOCTEXT("Pencil", "State0", "Pencil") };
-	RewardFlash = 0;
-	UseAnim = false;
 	StateNum = 1;
+	UseAnim = false;
 	UseFade = true;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
