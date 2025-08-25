@@ -12,16 +12,6 @@ class UDiags;
 class UInventory;
 class UFlashback;
 
-// maybe at some point and these. only if i need them
-
-// when true, the items can only be dropped in order.
-// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-// bool UseOrder = false;
-
-// when true it will increase the state on each usage
-// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-// bool UseStateInc = false;
-
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
 UCLASS(Blueprintable, BlueprintType)
@@ -94,7 +84,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool UseActiveOnce = false;
 #pragma endregion
-
 #pragma region lock
 	virtual bool ShouldUnlock_Implementation() override;
 	virtual void Unlock_Implementation() override;
@@ -154,6 +143,17 @@ protected:
 	TObjectPtr<UStory> Story = nullptr;
 #pragma endregion
 };
+
+// maybe at some point and these. only if i need them
+
+// when true, the items can only be dropped in order.
+// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+// bool UseOrder = false;
+
+// when true it will increase the state on each usage
+// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+// bool UseStateInc = false;
+
 
 // not moving the reward stuff to another component.
 // No:  is not that much code. is almost always used. it will have overhead. it couples tightly with timings and such.

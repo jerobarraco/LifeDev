@@ -152,9 +152,6 @@ protected:
 	// Set this before begin play to auto bind. Or call SetInteract otherwise. Can be set in the outliner (editor instance).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	TArray<TSoftObjectPtr<AInteract>> Pieces;
-	// TODO rename to Pieces. and change to TSoftObjectPtr
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
-	TArray<TSoftObjectPtr<AInteract>> Pieces_;
 
 	// this is recycled by both modes. and means different things :)
 	// on sequence : it's a seq of the ids used
