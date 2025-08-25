@@ -95,7 +95,6 @@ protected:
 	// called when the puzzle is reset. override if needed
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DoReset();
-	virtual void DoReset_Implementation() {};
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCPuzzle> CPuzzle = nullptr;

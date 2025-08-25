@@ -113,6 +113,8 @@ void ALPuzzle::ClearTimer() {
 	ResetTimer.Invalidate();
 }
 
+void ALPuzzle::DoReset_Implementation() {}
+
 void ALPuzzle::Update_Implementation() {
 	// note update is called before done. so it's safe to re add the timer. done will clear it if needed.
 	const UWorld* const W = GetWorld();
