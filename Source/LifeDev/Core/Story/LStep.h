@@ -127,12 +127,12 @@ public:
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive. It will also ensure is not SetHiddenInGame.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters", meta=(DeprecatedProperty))
-	TArray<TSoftObjectPtr<ALInteract>> IntersFadeIn;
+	TArray<TSoftObjectPtr<ALInteract>> IntersFadeIn; // deprecated in favor of actorShow/Hide
 
 	// Interacts to fade out during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters", meta=(DeprecatedProperty))
-	TArray<TSoftObjectPtr<ALInteract>> IntersFadeOut;
+	TArray<TSoftObjectPtr<ALInteract>> IntersFadeOut; // deprecated in favor of actorShow/Hide
 
 	// Interacts to set UseHint at the Start (post wait).
 	// Will not stop being hinted automatically.

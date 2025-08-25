@@ -26,6 +26,11 @@ ALStepC3S002::ALStepC3S002():Super() {
 	IntersHint = { // card already has hint. hint the book (poem has hint), hint the pictures (tape has hint, so does batts, pictures hints the plant)
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BooksI00_UAID_D8BBC116E5014AD901_1989999335")),
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI06_UAID_D8BBC116E5014A2C02_1407893984")),
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI03_UAID_D8BBC116E501EDD901_1630772030"))
+	};
+	
+	ActorsShow = {
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI03_UAID_D8BBC116E501EDD901_1630772030"))
 	};
 }
 

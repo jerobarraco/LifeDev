@@ -87,7 +87,6 @@ void ALPuzzle::SetActive_Implementation(const bool Active) {
 
 void ALPuzzle::SetUseHint_Implementation(const bool NewUseHint) {
 	SetUseHints(NewUseHint);
-	return Super::SetUseHint_Implementation(NewUseHint);
 }
 
 void ALPuzzle::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
