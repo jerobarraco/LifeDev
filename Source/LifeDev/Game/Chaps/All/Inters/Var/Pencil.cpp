@@ -20,13 +20,10 @@ APencil::APencil():Super() {
 	Interact->SetBoxExtent(FVector(7.5,1,1));
 	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));
 	
+	// AnimFade->MatBase = nullptr; // should this be here?
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC"));
-	// SFXTrigger = CSnd.Object;
 	SFXs = { CSnd.Object };
-
-	/// Anims
-	// AnimFade->SetNewMat();
 
 	APencil::SetMobility(EComponentMobility::Static);
 }
