@@ -120,10 +120,10 @@ void AInteract::Reset() {
 }
 
 void AInteract::SetUseHint_Implementation(const bool NewUseHint) {
-	// this is done this way to support setting hint on puzzles on steps and such.
+	// this is done this way to support setting hint on puzzles, on steps and such.
 	// the main issue is that puzzles usually don't have their root interact with collision enabled.
 	// so it can't trigger ShowHint.
-	// note that i could achieve the same effect by :
+	// note that i could achieve the same effect by:
 	// * casting on LStep to LPuzzle.
 	// * having a HintCondition for the step or the interaction.
 	UseHint = NewUseHint;

@@ -216,6 +216,9 @@ public:
 #pragma endregion
 #pragma region Rewards
 	// Interacts to set UseHint when this is triggered.
+	// Try to use "hintCondition" on the target object instead.
+	// Though this is more efficient (since the range can filter them quicker)
+	// It also forces me to support SetUseHint (see note inside)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TArray<TSoftObjectPtr<AInteract>> RewardIntersHint;
 

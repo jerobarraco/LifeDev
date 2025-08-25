@@ -12,9 +12,9 @@ class AInteract;
 
 // Note: Set* functions as Const need blueprintpure=false or bps will show them as pure and won't be able to be executed (facepalm).
 
-// Note to Jero and maybe users. This class is "abandoned", i'm using my own class due to problems of inheritance.
-// (i have an intermediat class LInteract child of AInteractAnim, but then i can't make my own LPuzzle child of LInteract and APuzzle due to ue limitation).
-// i'll leave this here as an example and as basic usage. but i've created a _copy_ and i'll use THAT instead (LPuzzle)
+// Note: This class is "abandoned", i'm using my own class due to problems of inheritance.
+// (i have an intermediate class LInteract, child of AInteractAnim; but then i can't make my own LPuzzle child of LInteract and APuzzle due to ue limitation).
+// i'll leave this here as an example and as basic usage. but i've created a _copy_ and i'll use THAT instead (LPuzzle).
 
 // Base class for Puzzles.
 UCLASS(Blueprintable, BlueprintType)
