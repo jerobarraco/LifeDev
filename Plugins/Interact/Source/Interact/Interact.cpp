@@ -189,11 +189,9 @@ void AInteract::Unlock_Implementation() {
 }
 
 bool AInteract::ShowHint_Implementation() {
-	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"), __func__, *Label.ToString(),
-		UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
-	if (!UseHint | IsHidden() | !Interact->IsActive()) return false; // todo maybe add a flag to ignore hidden if its a puzzle
-	// something like
-	// if (!UseHint | (UseHintVisibility & (IsHidden() | !Interact->IsActive())) return false;
+	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"),
+		__func__, *Label.ToString(), UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
+	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
@@ -204,7 +202,7 @@ bool AInteract::ShowHint_Implementation() {
 		
 		double Res;
 		if (UNLIKELY(!Eval->Eval(HintCondition, Res))) return false; // nopes
-		if (Res <= 0) return false; // nopess
+		if (Res <= 0) return false; // nopes
 	}
 
 	Interact->Hint(true);

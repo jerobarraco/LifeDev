@@ -103,7 +103,7 @@ public:
 	FORCEINLINE FName GetLabel() const { return Label; }
  
 #pragma region Hint
-	// test function to hint the interact (call attention to it). atm it will trigger Hover.
+	// function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
