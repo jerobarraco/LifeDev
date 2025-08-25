@@ -107,9 +107,10 @@ public:
 	// triggers OnHint, and uses the Anim subsystem (optionally).
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
 	bool ShowHint();
+	
 	// Changes the UseHint flag on runtime. On constructors, you can use "UseHint" directly.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
-	void SetUseHint(const bool NewUseHint=true); // read note inside function to know why.
+	void SetUseHint(const bool NewUseHint=true); // read note inside function to know why this exists.
 
 	// whether to disable hints on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")

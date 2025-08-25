@@ -102,6 +102,8 @@ public:
 	// but that would make it lame to use, as both classes would behave differently
 
 	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active.
+	// TODO move code that relies on ActorsShow hiding actors at end to use this instead
+	// TODO remove hiding actors from ActorsShow
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;
 	
@@ -124,18 +126,16 @@ public:
 
 	// Interacts to fade in during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive. It will also ensure is not SetHiddenInGame.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters", meta=(DeprecatedProperty))
 	TArray<TSoftObjectPtr<ALInteract>> IntersFadeIn;
 
 	// Interacts to fade out during Start (post wait). Won't change fade during beginPlay.
 	// Note: Fade also calls SetActive.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters", meta=(DeprecatedProperty))
 	TArray<TSoftObjectPtr<ALInteract>> IntersFadeOut;
 
 	// Interacts to set UseHint at the Start (post wait).
 	// Will not stop being hinted automatically.
-	// Try to use "hintCondition" on the target object instead.
-	// Though this is more efficient (since the range can filter them quicker)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
 	TArray<TSoftObjectPtr<AInteract>> IntersHint;
 #pragma endregion
