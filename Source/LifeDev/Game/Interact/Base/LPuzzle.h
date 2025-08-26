@@ -67,6 +67,12 @@ public:
 		UseHint = NewHint;
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetUseHints(NewHint); }
 	}
+	
+	// set hint conditions
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Cond"))
+	void SetHintConditions(const FString& Cond) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetHintConditions(Cond); }
+	}
 
 	// Automatically reset the puzzle on failure.
 	// works only on SEQUENCE since combination can't fail.
