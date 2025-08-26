@@ -178,7 +178,7 @@ public:
 	// don't use advanced, or it won't show since i have a subcategory (base)
 
 	// whether to de/activate on BeginPlay and SetActorHiddenInGame.
-	// (don't setting SetAutoActivate on the Interact component!).
+	// (don't call SetAutoActivate on the Interact component!).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool UseAutoActivate = false;
 	// When true will disable the interact on trigger. Calling Deactivate.

@@ -5,6 +5,7 @@
 
 #include "PoemI02.generated.h"
 
+// poem instance chap02
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APoemI02: public APaper00 {
 	GENERATED_BODY()
