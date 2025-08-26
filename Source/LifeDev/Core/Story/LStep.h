@@ -95,6 +95,7 @@ public:
 	// purposely an actor to have flexibility.
 	// it will hide the actor on beginplay.
 	// the hiding on stop is deprecated. use ActorsHide
+	// the hiding on begin play is deprecated. set on the class maybe.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsShow;
 	// i don't move this to Step because the fade has a timing component before destroy
