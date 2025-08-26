@@ -6,7 +6,8 @@
 
 ACard03::ACard03():Super() {
 	// overriden description for this chapter. will show on trigger.
-	RewardItem = LDConsts::Items::Card3;
-	Super::SetMobility(EComponentMobility::Static);
 	UseHint = true;
+	RewardItem = LDConsts::Items::Card3;
+	SetHidden(true);
+	Super::SetMobility(EComponentMobility::Static);
 }
