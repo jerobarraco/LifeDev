@@ -13,4 +13,3 @@ ALStepC4S007::ALStepC4S007():Super() {
 	// interfadeout on editor
 	IntersTrigger = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1688173495"))};
 }
-

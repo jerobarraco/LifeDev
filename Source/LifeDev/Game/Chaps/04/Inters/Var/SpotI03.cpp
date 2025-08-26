@@ -7,8 +7,9 @@
 ASpotI03::ASpotI03():Super() {
 	// TriggerDlg = "IS3_T"; // when completed
 	UnlockItems = { LDConsts::Items::Plate02 }; // empty plate
-
+	IsOneShot = true; 
 	// LockedDlg = "IS3_L"; // when not full, try trigger
 	// UseAutoActivate = false; // the steps will enable it // redundant
-	// RewardActor set in editor
+	// RewardActor plate
+	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5010EE301_1350177374"));
 }
