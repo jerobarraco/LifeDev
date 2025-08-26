@@ -19,12 +19,6 @@ APuzzleI02::APuzzleI02():Super() {
 
 void APuzzleI02::PostLoad() {
 	Super::PostLoad();
-
-	static const TArray<bool> Locks = {true, false, false};
-	SetLocks(Locks);
-	// if the player has reached here without doing the puzzle, hint.
-	SetUseHint(true);
-	SetHintConditions("{Step.Start.C2S4}");
 }
 
 void APuzzleI02::BeginPlay() {
@@ -32,6 +26,11 @@ void APuzzleI02::BeginPlay() {
 
 	static const TArray<int32> States = {0, 2, 5};
 	SetStates(States);
+	static const TArray<bool> Locks = {true, false, false};
+	SetLocks(Locks);
+	// if the player has reached here without doing the puzzle, hint.
+	SetUseHint(true);
+	SetHintConditions("{Step.Start.C2S4}");
 }
 
 
