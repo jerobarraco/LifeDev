@@ -102,7 +102,7 @@ public:
 	// or maybe i could, if i leave the "destroy" only for LStep
 	// but that would make it lame to use, as both classes would behave differently
 
-	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active.
+	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active and hidden in game.
 	// TODO move code that relies on ActorsShow hiding actors at end to use this instead
 	// TODO remove hiding actors from ActorsShow
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")

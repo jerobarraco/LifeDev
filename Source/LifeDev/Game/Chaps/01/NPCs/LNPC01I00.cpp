@@ -10,6 +10,7 @@ ALNPC01I00::ALNPC01I00():Super() {
 	UseStateLoop = false;
 	UseAutoActivate = true;
 	UseRewardDestroy = false;
+	SetActorHiddenInGame(true);
 }
 
 void ALNPC01I00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
