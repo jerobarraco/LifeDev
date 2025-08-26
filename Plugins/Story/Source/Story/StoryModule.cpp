@@ -12,7 +12,6 @@ void FStoryModule::StartupModule() {
 	UJUtilsEditor::AddOutlinerSection("Step", "Step", {"Step", "SetUp"});
 }
 
-void FStoryModule::ShutdownModule()
-{
+void FStoryModule::ShutdownModule() {
 	IModuleInterface::ShutdownModule();
 }
