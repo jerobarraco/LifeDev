@@ -3,10 +3,13 @@
 
 #include "StoryModule.h"
 
+#include "JUtils/Editor/JUtilsEditor.h"
+
 IMPLEMENT_MODULE(FStoryModule, Story)
+
 void FStoryModule::StartupModule() {
 	IModuleInterface::StartupModule();
-	// UJUtilsEditor::
+	UJUtilsEditor::AddOutlinerSection("Step", "Step", {"Step", "SetUp"});
 }
 
 void FStoryModule::ShutdownModule()
