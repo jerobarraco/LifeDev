@@ -12,6 +12,7 @@
 
 #include "Step.h"
 #include "StoryTypes.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogStory, Log, Log);
 
@@ -232,42 +233,13 @@ bool UStory::ToggleStepLayers() const {
 bool UStory::ToggleLayer(const UDataLayerAsset* const DLA, bool On) const {
 	if (UNLIKELY(!IsValid(DLA))) return false;
 
-	// This code is duplicated with JUtilsMisc::ToggleDataLayer.
-	// but i don't want to make this plugin depend on jutils only for that.
-	// even though it makes no difference for me, it might for another person.
-	// you're welcome.
-	UE_LOG(LogStory, Log, TEXT("%hs About to toggle data layer. load=%i name=%s"),
-		__func__, On, *DLA->GetName());
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!IsValid(World))) return false;
-	
-	const EDataLayerRuntimeState State =
-		(On ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
-
-	UDataLayerManager* const LayerManager = World->GetDataLayerManager();
-	if (UNLIKELY(!IsValid(LayerManager))) {
-		UE_LOG(LogStory, Warning, TEXT("%hs Could not get the data layer manager"), __func__);
-		return false;
-	}
-
-	const bool Success = LayerManager->SetDataLayerRuntimeState(DLA, State, false);
+	const bool Success = UJUtilsMisc::ToggleDataLayer(this, DLA, On);
 	UE_LOG(LogStory, Log, TEXT("%hs Data layer toggle. Ok=%i, load=%i, name='%s'"),
 		__func__, Success, On, *DLA->GetName());
 	// On loaded is usually better AFTER, on unloaded is usually better before. Which one is better? Time will tell.
 	OnDlChange.Broadcast(DLA->GetFName(), On, Success);
 
 	return Success;
-	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
-	
-	/*  the subsystem  all is deprecated
-	UDataLayerSubsystem* const Layers = World->GetSubsystem<UDataLayerSubsystem>();
-	UDataLayerInstance* Instance = Layers->GetDataLayerInstanceFromAsset(DLA);
-	Layers->SetDataLayerRuntimeState(Instance, State, true);
-	if (!IsValid(Layers)) {
-		UE_LOG(LogStory, Warning, TEXT("Could not get the data layer subsystem"), On, *DLA->GetName());
-		return;
-	}
-	*/
 }
 
 bool UStory::StartNext(const FName CurrentName) {

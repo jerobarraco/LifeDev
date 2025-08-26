@@ -4,9 +4,9 @@
 #include "StoryModule.h"
 
 IMPLEMENT_MODULE(FStoryModule, Story)
-void FStoryModule::StartupModule()
-{
+void FStoryModule::StartupModule() {
 	IModuleInterface::StartupModule();
+	// UJUtilsEditor::
 }
 
 void FStoryModule::ShutdownModule()
