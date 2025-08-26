@@ -6,4 +6,5 @@
 ALNPCI03::ALNPCI03():Super() {
 	UseFade = true;
 	AnimFade->Duration = 3; // needs to be slower due to camera movement
+	SetActorHiddenInGame(true);
 }
