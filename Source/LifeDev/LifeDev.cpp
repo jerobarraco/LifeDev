@@ -9,7 +9,9 @@ IMPLEMENT_PRIMARY_GAME_MODULE(FLifeDevModule, LifeDev, "LifeDev");
 
 void FLifeDevModule::StartupModule() {
 	IModuleInterface::StartupModule();
-	
+
+	// UJUtilsEditor::AddOutlinerSection("LInteract", "Interact", {""}) // not necessary. i'm using the same sections, if it's a subclass it works too.
+
 	// https://biq.medium.com/configuring-unreal-engine-for-custom-shader-development-biq-cf79f72e7137
 	const FString& ShaderDirectory = FPaths::Combine(FPaths::ProjectDir(), TEXT("Shaders"));
 	const FString VirtualShaderDirectory = TEXT("/Project/Shaders/LD");
@@ -26,6 +28,7 @@ void FLifeDevModule::StartupModule() {
 
 	// this won't work. probably is overriden by the engine. just go to Editor settings > Appearance > Application Scale
 	// FSlateApplication::Get().SetApplicationScale(1.3);
+	
 }
 
 void FLifeDevModule::ShutdownModule() {
