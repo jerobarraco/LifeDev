@@ -10,7 +10,7 @@ ALStepC4S005::ALStepC4S005():Super() {
 	
 	UseFBDlgAuto = true;
 	FBDlgAutoTo = 1.2;
+	IntersTrigger = {
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1649313494"))
+	};
 }
-
-// interfadeout on editor
-// todo move here
