@@ -320,7 +320,6 @@ void ALStep::BeginPlay() {
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = World->GetSubsystem<UFlags>();
 
-	SetActorsShowActive(false, false);
 	SetIntersActiveAuto(false);
 }
 
@@ -355,6 +354,7 @@ void ALStep::Unbind() const {
 }
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
+	// todo remove withFade
 	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
 		AActor* const A = SA.Get();
 		if (UNLIKELY(!IsValid(A))) {
