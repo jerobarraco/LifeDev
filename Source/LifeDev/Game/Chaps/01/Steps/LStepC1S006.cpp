@@ -14,4 +14,7 @@ ALStepC1S006::ALStepC1S006():Super() {
 	UseFBAnim = true;
 	UseRain = true;
 	TeleportChar=true;
+	ActorsHide = {
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215"))
+	};
 }
