@@ -7,4 +7,5 @@ ALNPCI05::ALNPCI05():Super() {
 	IsLocked = true;
 	UseFade = true;
 	// UseAutoActivate = false;// try to default to false. but the step will fade in and re-enable it :G (redundant)
+	SetActorHiddenInGame(true);
 }

@@ -10,6 +10,8 @@ ALNPCI06::ALNPCI06():Super() {
 	IsOneShot = true;
 	UseFade = true;
 	UseAnim = false;
+	SetActorHiddenInGame(true);
+	
 	// RewardIntersActiveClass = { AStoveI00::StaticClass(), AMatchBoxI00::StaticClass() };
 	// UseAutoActivate = false; // disabled by default. does not matter. get enabled by c4s2. // redundant
 	RewardIntersActive = {
