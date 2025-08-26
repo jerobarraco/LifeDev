@@ -105,11 +105,11 @@ public:
 #pragma region Hint
 	// function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Interact")
 	bool ShowHint();
 	
 	// Changes the UseHint flag on runtime. On constructors, you can use "UseHint" directly.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Hint")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction), Category="Interact")
 	void SetUseHint(const bool NewUseHint=true); // read note inside function to know why this exists.
 
 	// whether to disable hints on trigger.
