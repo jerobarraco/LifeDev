@@ -14,5 +14,4 @@ class LIFEDEV_API APuzzleI08: public ALPuzzle {
 
 public:
 	APuzzleI08();
-protected:
 };

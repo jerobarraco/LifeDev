@@ -33,20 +33,16 @@ APuzzleI06::APuzzleI06():Super() {
 	// ("/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50171C601_2091017155'","/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1518888333'","/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1509496332'")
 }
 
-void APuzzleI06::PostLoad() {
-	Super::PostLoad();
-
-	const TArray<bool> Locks = {false, false, false};
-	SetLocks(Locks);
-	SetAutoActives(true);
-	// SetUseHints(true);
-}
-
 void APuzzleI06::BeginPlay() {
 	Super::BeginPlay();
 
 	static const TArray<int32> States = {1, 2, 0};
 	SetStates(States);
+
+	const TArray<bool> Locks = {false, false, false};
+	SetLocks(Locks);
+	SetAutoActives(true);
+	// SetUseHints(true);
 
 	if (LIKELY(Flags)) {
 		constexpr float DiffAm = .3;

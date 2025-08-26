@@ -20,16 +20,12 @@ APuzzleI01::APuzzleI01():Super() {
 	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card01_UAID_D8BBC116E50181BA01_2066401320"));
 }
 
-void APuzzleI01::PostLoad() {
-	Super::PostLoad();
-	static const TArray<bool> Locks = { true, false, true, true, false };
-	SetLocks(Locks);
-}
-
 void APuzzleI01::BeginPlay() {
 	Super::BeginPlay();
 
 	// 2nd number and last are just random variations
 	static const TArray<int32> States = { 0, 4, 0, 4, 2 };
 	SetStates(States);
+	static const TArray<bool> Locks = { true, false, true, true, false };
+	SetLocks(Locks);
 }

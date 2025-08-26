@@ -27,9 +27,9 @@ APuzzleI04::APuzzleI04():Super() {
 	SND_Right = CSRight.Object;
 }
 
-void APuzzleI04::PostLoad() {
-	Super::PostLoad();
-
+void APuzzleI04::BeginPlay() {
+	Super::BeginPlay();
+	
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
 	SetUseHints(true);

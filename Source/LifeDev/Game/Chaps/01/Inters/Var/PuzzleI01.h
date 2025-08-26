@@ -14,6 +14,5 @@ public:
 	APuzzleI01();
 
 protected:
-	virtual void PostLoad() override;
 	virtual void BeginPlay() override;
 };

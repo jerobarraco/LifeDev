@@ -14,7 +14,5 @@ public:
 	APuzzleI02();
 
 protected:
-	// virtual void PostLoad() override; // avoid this. it only runs on editor load.
-	// it makes it so that on begin play some stuff is not applied, and then there are weird bugs.
 	virtual void BeginPlay() override;
 };

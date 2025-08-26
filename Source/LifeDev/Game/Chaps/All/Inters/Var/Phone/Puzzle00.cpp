@@ -20,9 +20,8 @@ APuzzle00::APuzzle00():Super() {
 	SFXs = {CSnd.Object, CSnd.Object};
 }
 
-void APuzzle00::PostLoad() {
-	// by now the interacts set in editor are loaded
-	Super::PostLoad();
+void APuzzle00::BeginPlay() {
+	Super::BeginPlay();
 	// sets names in a simplified way
 	TArray<TSoftObjectPtr<AInteract>> Inters = CPuzzle->GetPieces();
 	const int32 Num = Inters.Num();
@@ -40,9 +39,3 @@ void APuzzle00::PostLoad() {
 	
 	// SetLocks(Locks);
 }
-//
-// void APuzzle00::BeginPlay() {
-// 	Super::BeginPlay();
-// 	static const TArray<int32> States = { 5,0,0,0 };
-// 	SetStates(States);
-// }

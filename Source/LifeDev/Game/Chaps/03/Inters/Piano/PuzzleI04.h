@@ -16,7 +16,7 @@ public:
 	APuzzleI04();
 
 protected:
-	virtual void PostLoad() override;
+	virtual void BeginPlay() override;
 	virtual void Done_Implementation(const bool Ok) override;
 
 	UFUNCTION()

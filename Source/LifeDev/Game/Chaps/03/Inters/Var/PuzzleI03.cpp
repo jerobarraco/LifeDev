@@ -17,16 +17,12 @@ APuzzleI03::APuzzleI03():Super() {
 		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card03_UAID_D8BBC116E501EAD901_1338864495"));
 }
 
-void APuzzleI03::PostLoad() {
-	Super::PostLoad();
-
-	static const TArray<bool> Locks = {true, false, true, false, false};
-	SetLocks(Locks);
-}
-
 void APuzzleI03::BeginPlay() {
 	Super::BeginPlay();
 
 	static const TArray<int32> States = {0, 4, 0, 3, 2};
 	SetStates(States);
+
+	static const TArray<bool> Locks = {true, false, true, false, false};
+	SetLocks(Locks);
 }
