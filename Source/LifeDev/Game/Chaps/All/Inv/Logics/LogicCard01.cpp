@@ -18,8 +18,6 @@ ULogicCard01::ULogicCard01() {
 void ULogicCard01::Use_Implementation() {
 	Super::Use_Implementation();
 
-	if (LIKELY(FB)) FB->ModVal(FBMod);
-
 	static const FString NOk("Item.Use.C1.Ok.");
 	static const FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
 

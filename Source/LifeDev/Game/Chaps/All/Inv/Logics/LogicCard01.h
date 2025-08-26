@@ -29,9 +29,6 @@ public:
 	virtual void Use_Implementation() override;
 
 protected:
-	UPROPERTY(Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
-
-	UPROPERTY(BlueprintReadWrite)
-	float FBMod = -.05;
 };

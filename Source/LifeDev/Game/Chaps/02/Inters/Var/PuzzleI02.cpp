@@ -17,10 +17,6 @@ APuzzleI02::APuzzleI02():Super() {
 	RewardActor = TSoftObjectPtr<ALInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card02_UAID_D8BBC116E501DFC401_1977970429"));
 }
 
-void APuzzleI02::PostLoad() {
-	Super::PostLoad();
-}
-
 void APuzzleI02::BeginPlay() {
 	Super::BeginPlay();
 
