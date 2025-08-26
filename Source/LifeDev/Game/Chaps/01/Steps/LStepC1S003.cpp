@@ -23,10 +23,8 @@ ALStepC1S003::ALStepC1S003():Super() {
 
 void ALStepC1S003::BeginPlay() {
 	Super::BeginPlay();
-
-	DoIntersFade(IntersFadeIn, false); // force npc faded
 	
-	if (UNLIKELY(IntersFadeIn.Num()<=0)) {
+	if (UNLIKELY(ActorsShow.Num()<=0)) {
 		UE_LOG(LogTemp, Warning, TEXT("NPC not assigned to ALStep c1s3"));
 		return;
 	}
