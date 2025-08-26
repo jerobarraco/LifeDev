@@ -2,6 +2,32 @@
 // SPDX-License-Identifier: MIT
 
 #include "JUtilsEditor.h"
+
+void UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Section,
+	const TArray<FString>& Categories) {
+#if !WITH_EDITOR
+	return;
+#else
+	
+	// https://forums.unrealengine.com/t/how-to-modify-property-section-in-details-panel-in-editor/611250/4?u=nande
+	FModuleManager& Man = FModuleManager::Get();
+	
+	IModuleInterface* const IMod = Man.GetModule("PropertyEditor");
+	if (!IMod) {
+		UE_LOG(LogTemp, Warning, TEXT("%hs could not load PropertyEditor module"), __func__);
+		return;
+	}
+	FPropertyEditorModule& Mod = static_cast<FPropertyEditorModule&>(*IMod);
+	const TSharedRef<FPropertySection> Sect = Mod.FindOrCreateSection(*Class,
+		*Section, FText::FromString(Section));
+	for (const FString& C: Categories)
+		Sect->AddCategory(*C);
+	
+	Mod.NotifyCustomizationModuleChanged();
+#endif
+}
+
+
 //
 // void UJUtilsEditor::PostLoad() {
 // 	Super::PostLoad();
