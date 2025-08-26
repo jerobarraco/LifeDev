@@ -16,7 +16,7 @@ class JUTILS_API UJUtilsEditor: public UBlueprintFunctionLibrary {
 public:
 	// adds a section to the outliner properties. calling this multiple times will add the categories
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Class,Section, Categories"))
-	void AddOutlinerSection(const FString& Class, const FString& Section, const TArray<FString>& Categories);
+	static bool AddOutlinerSection(const FString& Class, const FString& Section, const TArray<FString>& Categories);
 
 // 	virtual void PostLoad() override;
 // 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "JUtils Editor")

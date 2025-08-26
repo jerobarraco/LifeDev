@@ -3,10 +3,9 @@
 
 #include "JUtilsEditor.h"
 
-void UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Section,
+bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Section,
 	const TArray<FString>& Categories) {
 #if !WITH_EDITOR
-	return;
 #else
 	
 	// https://forums.unrealengine.com/t/how-to-modify-property-section-in-details-panel-in-editor/611250/4?u=nande
@@ -15,7 +14,7 @@ void UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Sect
 	IModuleInterface* const IMod = Man.GetModule("PropertyEditor");
 	if (!IMod) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs could not load PropertyEditor module"), __func__);
-		return;
+		return false;
 	}
 	FPropertyEditorModule& Mod = static_cast<FPropertyEditorModule&>(*IMod);
 	const TSharedRef<FPropertySection> Sect = Mod.FindOrCreateSection(*Class,
@@ -24,7 +23,9 @@ void UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Sect
 		Sect->AddCategory(*C);
 	
 	Mod.NotifyCustomizationModuleChanged();
+	return true;
 #endif
+	return false;
 }
 
 
