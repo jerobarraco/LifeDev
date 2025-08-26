@@ -8,7 +8,7 @@
 APencilI00::APencilI00():Super() {
 	UseRewardDestroy = false;
 	UseFade = true;
-
+	SetActorHiddenInGame(true);
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette01_DMI"));
 	Mesh->SetMaterial(0, CMat.Object);
