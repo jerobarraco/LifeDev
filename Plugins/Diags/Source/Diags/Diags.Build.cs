@@ -25,7 +25,7 @@ public class Diags: ModuleRules
 		});
 		
 		// ... add private dependencies that you statically link with here ...
-		PrivateDependencyModuleNames.AddRange(new string[]{
+		PrivateDependencyModuleNames.AddRange(new string[] {
 			"CoreUObject", "Engine", "UMG", "EnhancedInput", "JUtils"
 		});
 		
@@ -33,8 +33,7 @@ public class Diags: ModuleRules
 			// ... add any modules that your module loads dynamically here ...
 		});
 		
-		if (Target.bBuildEditor)
-		{
+		if (Target.bBuildEditor) {
 			// PrivateDependencyModuleNames.AddRange(new string[]{});
 		}
 	}

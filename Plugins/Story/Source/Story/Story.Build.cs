@@ -27,8 +27,8 @@ public class Story: ModuleRules
 		
 		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[] {
-			"CoreUObject", "Engine", "UMG",
-			"RenderCore"
+			"CoreUObject", "Engine", "UMG", "RenderCore",
+			"JUtils"
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
