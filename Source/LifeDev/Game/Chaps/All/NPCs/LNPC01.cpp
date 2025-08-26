@@ -8,7 +8,7 @@
 ALNPC01::ALNPC01():Super() {
 	UseAnim = false;
 	IsLocked = true;
-	// TODO make a new instance for the chap01 and remove this text from here
+	// TODO make a new instance for the chap02 and remove this text from here
 	Texts = { NSLOCTEXT("NPC01", "State0", "He seems dangerous ...") };
 
 	UseFade = true;

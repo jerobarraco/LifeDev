@@ -107,6 +107,11 @@ public:
 	// TODO remove hiding actors from ActorsShow
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;
+	// Actors to set to hidden on *BeginPlay*. (this will be removed from ActorsShow)
+	// it's only usable for actors of which i don't/can't/won't have a cpp instance to set the default.
+	// since i guess i could set the default in the outliner, i won't implement this here.
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
+	// TArray<TSoftObjectPtr<AActor>> ActorsHidden;
 	
 	// Interacts to activate on Start (after wait), and disable on Stop.
 	// Will be deactivated on begin play.

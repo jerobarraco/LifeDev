@@ -3,4 +3,5 @@
 
 ALNPCI01::ALNPCI01():Super() {
 	UseFade = true;
+	SetActorHiddenInGame(true);
 }
