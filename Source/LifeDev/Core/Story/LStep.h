@@ -105,6 +105,7 @@ public:
 	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active and hidden in game.
 	// TODO move code that relies on ActorsShow hiding actors at end to use this instead
 	// TODO remove hiding actors from ActorsShow
+	// a hidden benefit from this is that i can hide things on the last step in a chapter
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;
 	// Actors to set to hidden on *BeginPlay*. (this will be removed from ActorsShow)
