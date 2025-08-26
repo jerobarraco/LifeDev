@@ -28,6 +28,11 @@ public:
 	virtual void SetUseHint_Implementation(const bool NewUseHint = true) override;
 	virtual void Fade_Implementation(const bool FadeIn = false, const bool SetHidden = true) override;
 #pragma endregion
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetHiddensInGame(const bool IsHidden) {
+		SetActorHiddenInGame(true);
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetHiddensInGame(IsHidden); }
+	}
 
 	// sets the states on each registered interact.
 	// Call on, or after, begin play (but not before).

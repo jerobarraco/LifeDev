@@ -25,4 +25,5 @@ void APuzzleI03::BeginPlay() {
 
 	static const TArray<bool> Locks = {true, false, true, false, false};
 	SetLocks(Locks);
+	SetHiddensInGame(true);
 }
