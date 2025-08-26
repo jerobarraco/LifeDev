@@ -22,7 +22,9 @@ void APuzzleI02::PostLoad() {
 
 	static const TArray<bool> Locks = {true, false, false};
 	SetLocks(Locks);
-	SetUseHint(true); // hint as soon as its shown
+	// if the player has reached here without doing the puzzle, hint.
+	SetUseHint(true);
+	SetHintConditions("{Step.Start.C2S4}");
 }
 
 void APuzzleI02::BeginPlay() {
