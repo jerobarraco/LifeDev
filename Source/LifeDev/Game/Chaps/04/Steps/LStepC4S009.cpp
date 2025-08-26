@@ -19,11 +19,6 @@ ALStepC4S009::ALStepC4S009():Super() {
 	IntersTrigger = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1481028493"))};
 }
 
-void ALStepC4S009::BeginPlay() {
-	Super::BeginPlay();
-	DoIntersFade(IntersFadeIn, false); // forcefully hide the ones we're showing.
-}
-
 void ALStepC4S009::Start_Implementation() {
 	Super::Start_Implementation();
 	// for this we want to really reach 0 since it's the very end (for dramatic purposes, not realism). 

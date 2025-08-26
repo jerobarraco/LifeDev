@@ -16,6 +16,5 @@ public:
 	ALStepC4S009();
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void Start_Implementation() override;
 };
