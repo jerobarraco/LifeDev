@@ -27,18 +27,14 @@ ALStepC4S001::ALStepC4S001():Super() {
 	};
 }
 
-void ALStepC4S001::BeginPlay() {
-	Super::BeginPlay();
-	// start with the inters faded out. a cheeky cheat to avoid doing it on each npci.
-	DoIntersFade(IntersFadeIn, false);
-}
 
 void ALStepC4S001::Start_Implementation() {
 	Super::Start_Implementation();
 	// talking actually makes it difficult because of the dialogs.
 	// this step finishes as the dialog finishes. so deactivate all but npci6
 	// Super::Start would have faded them, but fade will set active.
-	for (uint8 i = 0; i< IntersFadeIn.Num(); ++i) {
+	// todo maybe i should make them not active by default and have IntersActive on this one
+	for (uint8 i = 0; i< ActorsShow.Num(); ++i) {
 		AInteract* const I = Cast<AInteract>(ActorsShow[i].Get());
 		if (UNLIKELY(!I)) continue;
 

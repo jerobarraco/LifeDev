@@ -16,9 +16,8 @@ public:
 	ALStepC4S001();
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void Start_Implementation() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<ALInteract*> Chars;
+	TArray<TObjectPtr<ALInteract>> Chars;
 };
