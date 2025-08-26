@@ -8,4 +8,5 @@ ACard02::ACard02():Super() {
 	RewardItem = LDConsts::Items::Card2;
 	UseHint = true;
 	HintCondition = "{Step.Start.C2S4}";
+	SetActorHiddenInGame(true);
 }
