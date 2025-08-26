@@ -34,16 +34,7 @@ ALStepC3S002::ALStepC3S002():Super() {
 	};
 }
 
-void ALStepC3S002::BeginPlay() {
-	Super::BeginPlay();
-
-	// force fade the card
-	DoIntersFade(IntersFadeIn, false);
-}
-
 void ALStepC3S002::TryStart_Implementation() {
 	Super::TryStart_Implementation();
 	FB->SetMin(0);
 }
-
-// IntersFade is set to the card
