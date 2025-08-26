@@ -8,10 +8,11 @@
 #include "LPuzzle.generated.h"
 
 // Base class for LPuzzles
-// unfortunately unreal does not allow to have multiple inheritance
-// so this reimplements APuzzle and does not inherit it.
+// unreal does not allow to have multiple inheritance so this is the best way to implement it, and can't be on a plugin.
 // When using hints, use it through this class. (e.g. set UseHint and HintCondition here)
-// By default this class uses the hinted collision and makes the puzzle pieces active on SetActive
+// avoid using postLoad to set attributes. that will execute only on map load, not when the game runs (on pie),
+// and the changes are not serialized properly (it's between being serialized and not, and is saved only when other things are modified)
+// so it creates a ton of false positives.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALPuzzle: public ALInteract {
 	GENERATED_BODY()
@@ -37,8 +38,6 @@ public:
 	}
 
 	// sets the states on each registered interact.
-	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
-	// unless you've set the reference of the CPuzzle->Interacts on the constructor).
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	FORCEINLINE void SetLocks(const TArray<bool>& Locks) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetLocks(Locks); }
