@@ -146,8 +146,6 @@ void ALStep::Start_Implementation() {
 	
 	SetActorsShowActive(true, true);
 	SetIntersActiveAuto(true);
-	DoIntersFade(IntersFadeIn, true);
-	DoIntersFade(IntersFadeOut, false);
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
@@ -417,18 +415,6 @@ void ALStep::DoIntersActive() {
 
 void ALStep::DoIntersDeactive() {
 	DoIntersActiveAny(IntersDeactivate, false);
-}
-
-void ALStep::DoIntersFade(const TArray<TSoftObjectPtr<ALInteract>>& SA, const bool In) {
-	for (const TSoftObjectPtr<ALInteract>& SI: SA) {
-		ALInteract* const I = SI.Get();
-		if (LIKELY(IsValid(I)))
-			I->Fade(In, true);
-		else
-			UE_LOG(LogLStoryStep, Warning, TEXT("%hs Actor is not valid."
-				" Potentially not loaded. O=%s"),
-				__func__, *SI->GetPathName());
-	}
 }
 
 void ALStep::DoIntersTrigger() const {
