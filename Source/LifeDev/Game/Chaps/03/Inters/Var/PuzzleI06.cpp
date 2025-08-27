@@ -4,6 +4,7 @@
 
 #include "Interact/CPuzzle.h"
 #include "Inventory/Flags.h"
+#include "JUtils/Misc/JMiscConsts.h"
 #include "Story/Story.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -13,8 +14,6 @@
 // this puzzle gets activated by the step (c3s0)
 
 APuzzleI06::APuzzleI06():Super() {
-	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0, 1, 2};
 	UseHint = true;
 
 	ResetOnFail = false;
@@ -28,9 +27,14 @@ APuzzleI06::APuzzleI06():Super() {
 	RewardIntersHint = { // plant
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501AFD801_1178397079"))
 	};
-	// todo
-	// CPuzzle->SetInteracts();
-	// ("/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50171C601_2091017155'","/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1518888333'","/Script/LifeDev.PictureI00'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1509496332'")
+
+	CPuzzle->Type = EPuzzleType::COMBINATION;
+	CPuzzle->Solution = {0, 1, 2};
+	CPuzzle->SetPieces({
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50171C601_2091017155"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1518888333"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50172C601_1509496332"),
+	});
 }
 
 void APuzzleI06::BeginPlay() {
