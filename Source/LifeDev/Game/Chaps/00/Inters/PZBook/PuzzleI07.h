@@ -5,7 +5,7 @@
 
 #include "PuzzleI07.generated.h"
 
-// Chap 00 Puzzle Instance 00 flight/fear
+// TODO recycle
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APuzzleI07: public ALPuzzle {
 	GENERATED_BODY()
