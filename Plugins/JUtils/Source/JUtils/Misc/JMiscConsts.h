@@ -3,3 +3,5 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#define SoftOP(Class, Path) TSoftObjectPtr<Class>(FSoftObjectPath("Path")))
