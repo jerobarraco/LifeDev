@@ -4,6 +4,7 @@
 
 #include "Interact/CPuzzle.h"
 #include "JUtils/Misc/JMiscConsts.h"
+
 #include "LifeDev/Core/Consts/ConstFlags.h"
 
 APuzzleI02::APuzzleI02():Super() {
