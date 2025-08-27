@@ -3,12 +3,9 @@
 #include "PuzzleI01.h"
 
 #include "Interact/CPuzzle.h"
+#include "JUtils/Misc/JMiscConsts.h"
 
 APuzzleI01::APuzzleI01():Super() {
-	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0,1,0,4,5}; // A.N.G.E.R.
-	CPuzzle->DisableOnDone = true;
-
 	// don't do this, the fb is at .85, and we use the remaining fb to animate the camera.
 	// the step has a FbAnimTo 1
 	// RewardFlash = .2;
@@ -18,6 +15,17 @@ APuzzleI01::APuzzleI01():Super() {
 	UseHint = true;
 	UseAutoActivate = true;
 	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card01_UAID_D8BBC116E50181BA01_2066401320"));
+
+	CPuzzle->Type = EPuzzleType::COMBINATION;
+	CPuzzle->Solution = {0,1,0,4,5}; // A.N.G.E.R.
+	CPuzzle->DisableOnDone = true;
+	CPuzzle->SetPieces({
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501FCCD01_1555828012"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube03_UAID_D8BBC116E501FCCD01_1587630013"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube02_UAID_D8BBC116E501FCCD01_1597220014"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501FCCD01_1633171015"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube03_UAID_D8BBC116E501FCCD01_1675214017"),
+	});
 }
 
 void APuzzleI01::BeginPlay() {
