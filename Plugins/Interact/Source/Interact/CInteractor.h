@@ -26,11 +26,10 @@ public:
 	virtual void Deactivate() override;
 	virtual void Activate(const bool Reset) override;
 	
+
 	// you need to set this once. but only if you need to change the default.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
-	static void SetCollisionChannel(const ECollisionChannel NewChannel) {
-		InteractChannel = NewChannel;
-	}
+	void SetChannel(const ECollisionChannel Chan);
 
 	// Triggers the currently hovered component (if any)
 	UFUNCTION(BlueprintCallable)
@@ -66,6 +65,9 @@ public:
 	FOnInteractTrigger OnTrigger;
 
 protected:
+	UFUNCTION(BlueprintCallable, Category=SetUp)
+	void SetTrace(const ETraceTypeQuery Trace);
+
 	virtual void TickComponent(const float DeltaTime, const ELevelTick TickType,
 		FActorComponentTickFunction* const ThisTickFunction) override;
 	virtual void BeginPlay() override;
@@ -76,7 +78,11 @@ protected:
 	// attempts to trigger a start
 	void DoStart(UCInteract* const Component);
 
-	inline static ECollisionChannel InteractChannel = ECC_Visibility;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
+	TEnumAsByte<ECollisionChannel> Channel;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TEnumAsByte<ETraceTypeQuery> TraceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
+	// inline static ECollisionChannel InteractChannel = ECC_Visibility;
 
 	// stores whether this is supposedly hovering something. nothing that HoverComp could be null if it gest destroyed.
 	// the whole point of this is to detect that situation.

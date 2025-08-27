@@ -16,8 +16,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogCInteractor, Log, Log)
 	constexpr static EDrawDebugTrace::Type DrawType = EDrawDebugTrace::None;
 #endif
 
-static ETraceTypeQuery TraceType = TraceTypeQuery1;
-
 UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer) {
 	PrimaryComponentTick.bCanEverTick = true;
 	UActorComponent::SetComponentTickEnabled(false);
@@ -36,6 +34,15 @@ void UCInteractor::Deactivate() {
 void UCInteractor::Activate(const bool Reset) {
 	Super::Activate(Reset);
 	PrimaryComponentTick.SetTickFunctionEnable(true); // Believe it or not it WON'T disable tick without this.
+}
+
+void UCInteractor::SetTrace(const ETraceTypeQuery Trace) {
+	TraceType = Trace;
+}
+
+void UCInteractor::SetChannel(const ECollisionChannel Chan) {
+	Channel = Chan;
+	SetTrace(UEngineTypes::ConvertToTraceType(Chan));
 }
 
 void UCInteractor::TryTrigger() {
@@ -126,7 +133,7 @@ void UCInteractor::TickComponent(const float DeltaTime, const ELevelTick TickTyp
 			Hit, true
 		);
 	} else
-		World->LineTraceSingleByChannel(Hit, Start, End, InteractChannel, Params);
+		World->LineTraceSingleByChannel(Hit, Start, End, Channel, Params);
 	
 	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
 	UCInteract* const Interact = Cast<UCInteract>(Component);
@@ -135,7 +142,8 @@ void UCInteractor::TickComponent(const float DeltaTime, const ELevelTick TickTyp
 
 void UCInteractor::BeginPlay() {
 	Super::BeginPlay();
-	TraceType = UEngineTypes::ConvertToTraceType(InteractChannel);
+	// in case the default was changed
+	SetTrace(UEngineTypes::ConvertToTraceType(Channel));
 }
 
 void UCInteractor::EndPlay(const EEndPlayReason::Type EndPlayReason) {
