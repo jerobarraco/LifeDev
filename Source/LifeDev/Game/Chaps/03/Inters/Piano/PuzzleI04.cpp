@@ -5,19 +5,27 @@
 #include "Interact/CPuzzle.h"
 #include "Interact/InteractAnim.h"
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/Misc/JMiscConsts.h"
 
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
 constexpr float SndWait = 1.75;
 
 APuzzleI04::APuzzleI04():Super() {
-	CPuzzle->Type = EPuzzleType::SEQUENCE;
-	CPuzzle->Solution = {1, 2, 0}; /// piano sequence
 	// Keys have "OneShot"
 	// will make it easier. non-repeated keys. and make the waiting explicit.
 	// Allow for reset. this is handled with a careful setup of Super::Done
 	ResetOnFail = true;
 	UseHint = true;
+
+	CPuzzle->Type = EPuzzleType::SEQUENCE;
+	CPuzzle->Solution = {1, 2, 0}; /// piano sequence
+	CPuzzle->SetPieces({
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey00_UAID_D8BBC116E5014ED901_1075076042")
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1115099324")
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1873813367")
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1875739368")
+	});
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
