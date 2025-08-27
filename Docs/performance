@@ -61,6 +61,7 @@ level streaming
 * streaming volume + manual
 * stat levels
 * stat levels
+* project settings > navigation > Update Overlaps Method During Level Streaming = never
 
 animation
 * fast pass
