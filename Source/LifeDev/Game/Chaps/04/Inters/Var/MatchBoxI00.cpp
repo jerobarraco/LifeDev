@@ -9,9 +9,11 @@ AMatchBoxI00::AMatchBoxI00():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 	UseHint = true;
+	// HintCondition = "{Inter.Locked.// todo 
 	// Locked = true;
 	// TriggerDlg = "Matches00_T";
 	// LockedDlg = "Matches00_L";
 	RewardFlash = .1; // story works better this way
 	//UseAutoActivate = false; // activated by the npci06 // redundant
+	UseAutoActivate = true; // allow to pick up from the start
 }

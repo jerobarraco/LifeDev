@@ -16,6 +16,7 @@ ALNPCI06::ALNPCI06():Super() {
 	// UseAutoActivate = false; // disabled by default. does not matter. get enabled by c4s2. // redundant
 	RewardIntersActive = {
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E50190DA01_1820937732")),
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.MatchBox_UAID_D8BBC116E501173502_2139923511"))
+		// matchbox can be picked up early
+		// TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.MatchBox_UAID_D8BBC116E501173502_2139923511"))
 	};
 }

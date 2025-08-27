@@ -42,11 +42,6 @@ public:
 	void SetActorsShowActive(const bool Active = true, const bool WithFade=true);
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsHideActive(bool Active, bool WithFade=true);
-
-	// enables or disables the interacts on IntersActiveAuto
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
-	void SetIntersActiveAuto(const bool NewActive=true);
-
 	// activates the interacts on IntersActivate
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
 	void DoIntersActive();
@@ -113,11 +108,6 @@ public:
 	// since i guess i could set the default in the outliner, i won't implement this here.
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	// TArray<TSoftObjectPtr<AActor>> ActorsHidden;
-	
-	// Interacts to activate on Start (after wait), and disable on Stop.
-	// Will be deactivated on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TSoftObjectPtr<AInteract>> IntersActivateAuto;
 
 	// Interacts to activate on Start (after wait)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")

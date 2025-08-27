@@ -84,7 +84,6 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
 
 	SetActorsHideActive(false, true);
-	SetIntersActiveAuto(false);
 	DoRemoveItems();
 
 	const UWorld* const W = GetWorld();
@@ -145,7 +144,6 @@ void ALStep::Start_Implementation() {
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
 	SetActorsShowActive(true, true);
-	SetIntersActiveAuto(true);
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
@@ -317,8 +315,6 @@ void ALStep::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = World->GetSubsystem<UFlags>();
-
-	SetIntersActiveAuto(false);
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -352,7 +348,7 @@ void ALStep::Unbind() const {
 }
 
 void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
-	// todo remove withFade
+	// todo remove withFade (assume true)
 	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
 		AActor* const A = SA.Get();
 		if (UNLIKELY(!IsValid(A))) {
@@ -403,10 +399,6 @@ void ALStep::DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const
 				" Potentially not loaded. O=%s"),
 				__func__, *SI->GetPathName());
 	}
-}
-
-void ALStep::SetIntersActiveAuto(const bool NewActive) {
-	DoIntersActiveAny(IntersActivateAuto, NewActive);
 }
 
 void ALStep::DoIntersActive() {
