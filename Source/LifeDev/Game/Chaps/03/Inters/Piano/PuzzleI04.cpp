@@ -21,10 +21,10 @@ APuzzleI04::APuzzleI04():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
 	CPuzzle->Solution = {1, 2, 0}; /// piano sequence
 	CPuzzle->SetPieces({
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey00_UAID_D8BBC116E5014ED901_1075076042")
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1115099324")
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1873813367")
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1875739368")
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey00_UAID_D8BBC116E5014ED901_1075076042"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1115099324"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1873813367"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1875739368"),
 	});
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
