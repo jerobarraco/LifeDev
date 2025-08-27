@@ -4,4 +4,4 @@
 
 #include "CoreMinimal.h"
 
-#define SoftOP(Class, Path) TSoftObjectPtr<Class>(FSoftObjectPath("Path")))
+#define SoftOP(Class, Path) TSoftObjectPtr<Class>(FSoftObjectPath("Path"))
