@@ -17,11 +17,16 @@ APuzzleI09::APuzzleI09():Super() {
 	// will also require to reset when progressing.
 	CPuzzle->SetPieces({
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501CB5A02_1700292265"),
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501805A02_1588908064","/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1457917247"),
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1460358248","/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1470043249"),
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1478320250","/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1482305251"),
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1484441252","/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1489810253"),
-		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1491909254","/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501CB5A02_1700290264"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501805A02_1588908064"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1457917247"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1460358248"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1470043249"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1478320250"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1482305251"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1484441252"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1489810253"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501815A02_1491909254"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501CB5A02_1700290264"),
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LSwitch03_UAID_D8BBC116E501CB5A02_1700285263")});
 }
 
