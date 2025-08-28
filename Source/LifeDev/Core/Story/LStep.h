@@ -118,8 +118,9 @@ public:
 	TArray<TSoftObjectPtr<AInteract>> IntersDeactivate;
 
 	// Interacts to trigger out during Start (after wait). Won't change fade during beginPlay.
+	// Will FORCE trigger even if locked.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Setup|Inters")
-	TArray<TSoftObjectPtr<ALInteract>> IntersTrigger;
+	TArray<TSoftObjectPtr<AInteract>> IntersTrigger;
 
 	// Interacts to set UseHint at the Start (post wait).
 	// Will not stop being hinted automatically.

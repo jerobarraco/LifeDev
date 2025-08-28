@@ -410,8 +410,8 @@ void ALStep::DoIntersDeactive() {
 }
 
 void ALStep::DoIntersTrigger() const {
-	for (const TSoftObjectPtr<ALInteract>& SI: IntersTrigger) {
-		ALInteract* const I = SI.Get();
+	for (const TSoftObjectPtr<AInteract>& SI: IntersTrigger) {
+		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I)))
 			I->TriggerForced();
 		else

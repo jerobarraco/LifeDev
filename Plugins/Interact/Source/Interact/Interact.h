@@ -53,7 +53,7 @@ public:
 
 	// will force trigger the Interact, even if locked (will call DoTrigger instead of DoTriggerLocked). used mostly for other automations.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
-	FORCEINLINE void TriggerForced() {Trigger();};
+	FORCEINLINE void TriggerForced() {Trigger();}
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void Hover(const bool IsOn);

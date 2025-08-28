@@ -21,7 +21,6 @@ UCInteractor::UCInteractor(const FObjectInitializer& ObjectInitializer): Super(O
 	UActorComponent::SetComponentTickEnabled(false);
 	PrimaryComponentTick.TickInterval = .1f; // 100 ms is enough
 	Super::SetAutoActivate(false);
-	Super::SetAutoActivate(false);
 	SetIsReplicated(false); // this one is independent on each client
 }
 
