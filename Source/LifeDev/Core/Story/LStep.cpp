@@ -147,7 +147,7 @@ void ALStep::Start_Implementation() {
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
-	DoIntersTrigger(); // trigger after activate. and hint.
+	DoIntersTrigger(); // trigger after activate. and hint. (trigger could remove the hint, we should support that) 
 
 	if (LIKELY(FB)) {
 		// it's ok to set it here. since fbupd is only bound here

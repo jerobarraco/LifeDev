@@ -93,9 +93,7 @@ public:
 	// the hiding on begin play is deprecated. set on the class maybe.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsShow;
-	// i don't move this to Step because the fade has a timing component before destroy
-	// or maybe i could, if i leave the "destroy" only for LStep
-	// but that would make it lame to use, as both classes would behave differently
+	// not on AStep because i want to support fading as well, or maybe i should have the fade in LInteract::SetActorHiddenInGame? maybe i'll need a bool to tell if it needs to fade or not?
 
 	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active and hidden in game.
 	// TODO move code that relies on ActorsShow hiding actors at end to use this instead
