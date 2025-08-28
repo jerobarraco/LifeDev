@@ -37,12 +37,7 @@ public:
 	// And it's possible this class will get unloaded by the next step.
 	virtual void Stop_Implementation() override;
 
-	// enables or disables the linked actors
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetActorsShowActive(const bool Active = true);
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetActorsHideActive(bool Active, bool WithFade=true);
-	// will fade if interact
+	// Hides or show the actors. will fade if interact.
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden = false);
 	
