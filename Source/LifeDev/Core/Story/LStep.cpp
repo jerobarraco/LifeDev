@@ -47,6 +47,39 @@ ALStep::ALStep():Super() {
 #endif
 }
 
+void ALStep::Stop_Implementation() {
+	if (LIKELY(IsValid(Diags))) {
+		Diags->OnDone.RemoveAll(this);
+		Diags->OnAdd.RemoveAll(this);
+		Diags->OnShow.RemoveAll(this);
+	}
+	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
+	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
+	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
+	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
+	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
+	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
+
+	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
+	DoRemoveItems();
+
+	const UWorld* const W = GetWorld();
+	if (UseRain) ALMusicMan::SetRainS(W, false);
+	if (LIKELY(W)) { // call stop anyway (below)
+		FTimerManager& Timer = W->GetTimerManager();
+		// ensure we don't double trigger.
+		// this timer is stored in the class since clearAllTimers here could accidentally stop timers from child classes.
+		// anyway timers on or after Stop are really dangerous as the class could be unloaded.
+		// Proof of that is the patch i had to do with destroy actors.
+		Timer.ClearTimer(TimerDestroy);
+		// Destroy them during the fade
+		TimerDestroy.Invalidate();
+		Timer.SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
+	}
+
+	Super::Stop_Implementation(); // do at end.
+}
+
 void ALStep::TryStart_Implementation() {
 	// flags is on LStoryMan, 
 	// initialize cam and anim for an appropriate cam blend
@@ -68,39 +101,6 @@ void ALStep::TryStart_Implementation() {
 		ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
 		if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
 	}
-}
-
-void ALStep::Stop_Implementation() {
-	if (LIKELY(IsValid(Diags))) {
-		Diags->OnDone.RemoveAll(this);
-		Diags->OnAdd.RemoveAll(this);
-		Diags->OnShow.RemoveAll(this);
-	}
-	if (LIKELY(IsValid(Inventory))) Inventory->OnMod.RemoveAll(this);
-	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
-	if (LIKELY(IsValid(Ghosts))) Ghosts->SetPlaying(false);
-	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
-	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
-	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
-
-	SetActorsHideActive(false, true);
-	DoRemoveItems();
-
-	const UWorld* const W = GetWorld();
-	if (UseRain) ALMusicMan::SetRainS(W, false);
-	if (LIKELY(W)) { // call stop anyway (below)
-		FTimerManager& Timer = W->GetTimerManager();
-		// ensure we don't double trigger.
-		// this timer is stored in the class since clearAllTimers here could accidentally stop timers from child classes.
-		// anyway timers on or after Stop are really dangerous as the class could be unloaded.
-		// Proof of that is the patch i had to do with destroy actors.
-		Timer.ClearTimer(TimerDestroy);
-		// Destroy them during the fade
-		TimerDestroy.Invalidate();
-		Timer.SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
-	}
-
-	Super::Stop_Implementation(); // do at end.
 }
 
 void ALStep::Start_Implementation() {
@@ -143,7 +143,7 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	SetActorsShowActive(true, true);
+	SetActorsShowActive(true);
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
@@ -347,8 +347,8 @@ void ALStep::Unbind() const {
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 }
 
-void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
-	// todo remove withFade (assume true)
+void ALStep::SetActorsShowActive(const bool Active) {
+	constexpr bool WithFade = true;
 	for (const TSoftObjectPtr<AActor>& SA: ActorsShow) {
 		AActor* const A = SA.Get();
 		if (UNLIKELY(!IsValid(A))) {
@@ -363,7 +363,7 @@ void ALStep::SetActorsShowActive(const bool Active, const bool WithFade) {
 			Inter->Fade(Active, true); // calls setactorhidden and setactive
 			continue;
 		}
-		// Avoid calling 'Fade' twice, just in case there are side effects.
+		// Avoid calling 'SetActorHidden' twice, just in case there are side effects.
 		A->SetActorHiddenInGame(!Active);
 	}
 }
@@ -384,8 +384,29 @@ void ALStep::SetActorsHideActive(const bool Active, const bool WithFade) {
 			Inter->Fade(Active, true); // calls setactorhidden and setactive
 			continue;
 		}
-		// Avoid calling 'Fade' twice, just in case there are side effects.
+		// Avoid calling 'set hidden' twice, just in case there are side effects.
 		A->SetActorHiddenInGame(!Active);
+	}
+}
+
+void ALStep::SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden) {
+	constexpr bool WithFade = true;
+	for (const TSoftObjectPtr<AActor>& SA: Actors) {
+		AActor* const A = SA.Get();
+		if (UNLIKELY(!IsValid(A))) {
+			UE_LOG(LogLStoryStep, Warning, TEXT("%hs ActorsShow set, but is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SA->GetPathName());
+			continue;
+		}
+
+		ALInteract* const Inter = Cast<ALInteract>(A);
+		if (bool(Inter) & WithFade) { // hide with fade is possible
+			Inter->Fade(!Hidden, true); // calls setactorhidden and setactive
+			continue;
+		}
+		// Avoid calling 'SetActorHidden' twice, just in case there are side effects.
+		A->SetActorHiddenInGame(Hidden);
 	}
 }
 
