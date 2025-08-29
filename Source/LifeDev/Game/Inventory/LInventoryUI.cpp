@@ -44,8 +44,11 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			// fade, add timer. then remove.
 			FTimerDelegate D;
 			D.BindLambda([It, this, Name] {
+				// there's a potential bug here, where you loose an item and pick it very quickly
+				// this could get executed after the item has been picked up
+				// todo if (UNLIKELY(Inventory.Get(Name).Count >0)) return;
 				Items.Remove(Name);
-				SItems->RemoveChild(It);
+				SItems->RemoveChild(It); // remove by pointer, order could have changed
 			});
 			FTimerHandle H;
 			const UWorld* const World = GetWorld();
@@ -69,6 +72,8 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
+
+	ReorderItems();
 }
 
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
@@ -128,7 +133,7 @@ ULInventoryItemUI* ULInventoryUI::ResetItem(const FName& Name) {
 	ULInventoryItemUI* const It = GetItem(Name);
 	FItem Item;
 	const bool Ok = Inv->Get(Name, Item);
-	if (LIKELY(!!It & Ok)) It->SetItem(Name, Item);
+	if (LIKELY(bool(It) & Ok)) It->SetItem(Name, Item);
 
 	return It;
 }
@@ -140,4 +145,14 @@ void ULInventoryUI::NativeOnInitialized() {
 	if (UNLIKELY(!SItems)) return;
 
 	SItems->ClearChildren(); // needed since i leave a stub item for helping with layout
+}
+
+void ULInventoryUI::ReorderItems() {
+	const UInventory* const Inv = UInventory::Instance(this);
+	if (UNLIKELY(!Inv)) return;
+
+	const TMap<FName, FItem>& All = Inv->GetAll();
+	TArray<FName> Keys;
+	All.GetKeys(Keys);
+	// TODO reorder items
 }

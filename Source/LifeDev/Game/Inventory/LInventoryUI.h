@@ -32,6 +32,7 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+	void ReorderItems();
 
 	// default class to use
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

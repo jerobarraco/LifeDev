@@ -87,14 +87,14 @@ public:
 	// Actors to show AND hide. If it's an interact, it will fade in and out.
 	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility.
-	// it will hide the actor on beginplay.
+	// it will hide the actor on BeginPlay.
 	// the hiding on stop is deprecated. use ActorsHide
 	// the hiding on begin play is deprecated. set on the class maybe.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsShow;
 	// not on AStep because i want to support fading as well, or maybe i should have the fade in LInteract::SetActorHiddenInGame? maybe i'll need a bool to tell if it needs to fade or not?
 
-	// Actors to Hide on *End*. If it's an Linteract, it will fade out. it will also set active and hidden in game.
+	// Actors to Hide on *End*. If it's a Linteract, it will fade out. it will also set active and hidden in game.
 	// a hidden benefit from this is that i can hide things on the last step in a chapter
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;
