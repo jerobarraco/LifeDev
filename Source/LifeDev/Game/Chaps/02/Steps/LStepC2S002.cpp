@@ -15,7 +15,7 @@ ALStepC2S002::ALStepC2S002():Super() {
 	RandFB->DelayMin = .5;
 	RandFB->DelayMax = 3;
 	// there's no rain here.
-	RandFB->ValueMin = -.015;
+	RandFB->ValueMin = -.02;
 	RandFB->ValueMax = .01;
 
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
