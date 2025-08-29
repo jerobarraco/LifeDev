@@ -24,11 +24,11 @@ public:
 	
 	// Test only. use Activate and deactivate. used for binding.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(AdvancedDisplay))
-	FORCEINLINE void Start() {Activate (true);};
+	FORCEINLINE void Start() {Activate (true);}
 
 	// Test only. use Activate and deactivate.
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(DeprecatedFunction))
-	FORCEINLINE void Stop() {Deactivate();};
+	FORCEINLINE void Stop() {Deactivate();}
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp")
 	float DelayMin = 0.5;

@@ -3,6 +3,7 @@
 #include "LStepC2S002.h"
 
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Game/Flashback/CRandomizerFB.h"
 
 ALStepC2S002::ALStepC2S002():Super() {
 	Label = FName("C2S2");
@@ -10,6 +11,13 @@ ALStepC2S002::ALStepC2S002():Super() {
 	InputEnabled = true;
 	UsePawnCam = true;
 	TeleportChar = false;
+	UseFBRand = true;
+	RandFB->DelayMin = .5;
+	RandFB->DelayMax = 3;
+	// there's no rain here.
+	RandFB->ValueMin = -.015;
+	RandFB->ValueMax = .01;
+
 	// wait for the tape (important the next step lowers the fb to allow to find other items)
 	FinishItems = { LDConsts::Items::Tape2 };
 	RemoveItems = { LDConsts::Items::Batts };

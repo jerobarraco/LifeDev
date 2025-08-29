@@ -25,8 +25,8 @@ ALStepC2S004::ALStepC2S004():Super() {
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;
 	RandFB->DelayMax = 2;
-	RandFB->ValueMin = -.07;
-	RandFB->ValueMax = .02; // you wouldn't think is so easy to get out of a flashback, do you?
+	RandFB->ValueMin = -.03;
+	RandFB->ValueMax = .01; // you wouldn't think is so easy to get out of a flashback, do you?
 	// .02 is actually very generous
 	UseFBRand = true;
 }
