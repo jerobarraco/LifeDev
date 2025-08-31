@@ -74,7 +74,6 @@ protected:
 	TArray<TObjectPtr<UJButton>> Btns;
 
 private:
-	// internal usage only.
-	UPROPERTY(Transient)
+	UPROPERTY(Transient) // internal use only.
 	FWidgetAnimationDynamicEvent OnHideFinished;
 };
