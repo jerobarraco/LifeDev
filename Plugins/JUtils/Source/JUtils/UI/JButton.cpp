@@ -18,11 +18,11 @@ void UJButton::SetUp(const FText& NewText, const int32 NewId) {
 void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle) {
 	if (LIKELY(BtnStyle)) {
 		const FButtonStyle* const BtnStyleF = BtnStyle->GetStyle<FButtonStyle>();
-		if (LIKELY(!!Btn & !!BtnStyleF)) Btn->SetStyle(*BtnStyleF);
+		if (LIKELY(bool(Btn) & bool(BtnStyleF))) Btn->SetStyle(*BtnStyleF);
 	}
 	if (LIKELY(TextStyle)) {
 		const FTextBlockStyle* const TextStyleF = TextStyle->GetStyle<FTextBlockStyle>();
-		if (LIKELY(!!Text & !!TextStyleF)) {
+		if (LIKELY(bool(Text) & bool(TextStyleF))) {
 			Text->SetColorAndOpacity(TextStyleF->ColorAndOpacity);
 			Text->SetFont(TextStyleF->Font);
 			Text->SetShadowColorAndOpacity(TextStyleF->ShadowColorAndOpacity);
@@ -32,6 +32,11 @@ void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyl
 			// have to set it manually as it does not have a setstyle :'/
 		}
 	}
+}
+
+void UJButton::ResetStyle() {
+	SetStyle(BtnStyle, TextStyle);
+	if (LIKELY(Text)) Text->SetText(Label);
 }
 
 void UJButton::OnWidgetRebuilt() {

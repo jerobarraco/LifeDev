@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category=SetUp)
 	void SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle);
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
-	void ResetStyle() { SetStyle(BtnStyle, TextStyle); }
+	void ResetStyle();
 
 	// will be called automatically. it's also exposed for testing.
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent)
