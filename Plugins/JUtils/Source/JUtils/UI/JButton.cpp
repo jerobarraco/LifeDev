@@ -11,8 +11,9 @@ void UJButton::DoClick_Implementation() {
 }
 
 void UJButton::SetUp(const FText& NewText, const int32 NewId) {
-	if (LIKELY(Text)) Text->SetText(NewText);
 	Id = NewId;
+	Label = NewText; // important in case this function is called before widget rebuild
+	if (LIKELY(Text)) Text->SetText(Label);
 }
 
 void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle) {
