@@ -39,7 +39,7 @@ public:
 
 	// the id of the button. returned on the OnClick delegate.
 	// It is up to you to put a value that makes sense to you.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	int32 Id = -1;
 	// the style for the button. You need to create a Slate Widget Style Asset on the content browser.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
