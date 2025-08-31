@@ -14,7 +14,7 @@
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "LFeatsGroup.h"
-#include "LifeDev/Core/Settings/LSysSettings.h"
+#include "Base/LCheck.h"
 #include "Pages/Video/SetAntiAlias.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
@@ -174,9 +174,10 @@ void ULSetVideoUI::DResSet() const {
 
 	const bool Enabled = Settings ? Settings->IsDynamicResolutionEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
-	DRes->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
-	DRes->SetCheckedState(IsChecked);
-	DRes->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::DResChanged); // important or it will change the current
+	const TObjectPtr<UCheckBox> Check = DRes->Check;
+	Check->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
+	Check->SetCheckedState(IsChecked);
+	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::DResChanged); // important or it will change the current
 }
 
 void ULSetVideoUI::DResChanged(const bool bIsChecked) {
@@ -190,9 +191,10 @@ void ULSetVideoUI::VSyncSet() const {
 
 	const bool Enabled = Settings ? Settings->IsVSyncEnabled(): false;
 	const ECheckBoxState IsChecked = Enabled ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
-	VSync->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
-	VSync->SetCheckedState(IsChecked);
-	VSync->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::VSyncChanged); // important or it will change the current
+	const TObjectPtr<UCheckBox> Check = VSync->Check;
+	Check->OnCheckStateChanged.RemoveAll(this); // important or it will change the current
+	Check->SetCheckedState(IsChecked);
+	Check->OnCheckStateChanged.AddUniqueDynamic(this, &ULSetVideoUI::VSyncChanged); // important or it will change the current
 }
 
 void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {

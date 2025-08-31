@@ -7,6 +7,7 @@
 
 #include "LSetVideoUI.generated.h"
 
+class ULCheck;
 class ULFeatsGroup;
 class UTextBlock;
 class USlider;
@@ -100,9 +101,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> FSMode;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UCheckBox> DRes;
+	TObjectPtr<ULCheck> DRes;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UCheckBox> VSync;
+	TObjectPtr<ULCheck> VSync;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USetAntiAlias> AntiAlias;
 
