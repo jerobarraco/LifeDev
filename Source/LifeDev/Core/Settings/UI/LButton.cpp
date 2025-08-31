@@ -8,6 +8,6 @@ void ULButton::DoClick_Implementation() {
 	const USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry))
 		Sentry->AddHint("LButton", {{"Name", GetNameSafe(this)}});
-	
+
 	Super::DoClick_Implementation();
 }
