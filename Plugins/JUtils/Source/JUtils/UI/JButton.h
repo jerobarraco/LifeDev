@@ -49,12 +49,16 @@ public:
 	TObjectPtr<USlateWidgetStyleAsset> TextStyle = nullptr;
 	// the above are public so that they can be edited when instancing
 
+	// please only set before Widgetrebuild is called. or call ResetStyle.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FText Label; // EditAnywhere allows me to edit when placed on parent widgets
+
 	// bind to this, not the regular button click.
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FJButtonClick OnClick;
 
 protected:
-	virtual void NativePreConstruct() override;
+	virtual void OnWidgetRebuilt() override;
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	

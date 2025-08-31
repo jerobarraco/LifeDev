@@ -34,8 +34,11 @@ void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyl
 	}
 }
 
-void UJButton::NativePreConstruct() {
-	Super::NativePreConstruct();
+void UJButton::OnWidgetRebuilt() {
+	Super::OnWidgetRebuilt();
+	// NativePreConstruct i could use this. but this only exists on user widgets,
+	// so it doesn't exist on all objects, e.g. ComboBoxes.
+	// so i rather use WidgetRebuilt to keep consistency as i don't have a strong preference atm for both.
 	ResetStyle(); // this actually happens when i need to
 }
 

@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 
-	// please only set before widgetrebuild is called. or call ResetStyle
+	// please only set before WidgetRebuild is called. or call ResetStyle
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FText Label;
 	// EditAnywhere allows me to edit when placed on parent widgets
