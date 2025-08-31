@@ -29,13 +29,13 @@ public:
 	// Used for Add, Rem, and Use. Returns false if not found.
 	// Note: It does check for maxCount but will return true even when capped.
 	// OnlyConsume will affect consumable items only. returns true if the item exists.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Mod(const FName& Name, const int32 Diff=1, const bool OnlyConsume = false);
 	// ensure the item is owned, with a quantity of 1 at least.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Ensure(const FName& Name);
 	// removes an item by modding it with negative quantity.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Rem(const FName& Name);
 	// removes all items. but does not trigger any onMod. used for savegame. be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
@@ -45,22 +45,22 @@ public:
 	// "uses" an item (marks as used). consumes it if it's a consumable. returns success.
 	// it won't trigger the manager/item logic, you need to do it manually.
 	// returns whether it was successfully used.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Use(const FName& Name);
 	// un/marks an item as locked. (can't be used when locked).
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool SetLocked(const FName& Name, const bool NewBlocked);
 	// Force item cooldown.
 	// Will immediately trigger OnCold.
 	// returns: True: succeeded in making an item cold, False: no item or it was already cold.
 	// i.e. True: item found and was not cold. False: item not found or was cold.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool SetCold(const FName& Name);
 #pragma endregion
 
 #pragma region Gets
 	// returns true if this item exists on the current inventory
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Has(const FName& Name) const;
 	// returns true if the item is usable (implies cold)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Inventory")
@@ -69,13 +69,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")
 	static bool IsCold(const FItem& Item);
 	// returns how many of an item there are.
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	int32 Count(const FName& Name) const;
 	// returns an item given the key name (in the loaded inventory, not the datatable)
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool Get(const FName& Name, FItem& OutItem) const;
 	// returns an item from the datatable if exists. Use this only if you know what you do.
-	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay, AutoCreateRefTerm=Name))
 	bool GetRaw(const FName& Name, FItem& OutItem) const;
 	// returns a list of items. Warning/KIKEN/Atchung modifying the item might modify the storage. so be careful.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AdvancedDisplay))
@@ -94,7 +94,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Inventory") // not pure because it creates a copy
 	bool GetSelectedItem(FItem& Item) const;
 	// sets an item as selected
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool SetSelected(const FName& Name);
 #pragma endregion
 
@@ -107,7 +107,7 @@ public:
 	// returns the next key on the list. forwards says the direction,
 	// from says which key from, if not specified it will from be the selected.
 	// if less than 2 items exists it will return none
-	UFUNCTION(BlueprintCallable, Category="Inventory")
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=From))
 	FName GetNextKey(const bool Forward = true, FName From = NAME_None) const;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
@@ -149,10 +149,10 @@ protected:
 	// utility function, can't be ufunction since it can't return a pointer.
 	FItem* AddNew(const FName& Name);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Name))
 	FItem& GetRef(const FName& Name, bool& OutFound);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm=Name))
 	const FItem& GetRefC(const FName& Name, bool& OutFound) const;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

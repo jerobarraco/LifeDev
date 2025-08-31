@@ -51,7 +51,9 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 				if (LIKELY(Inv)) {
 					FItem NIt;
 					if (UNLIKELY(Inv->Get(Name, NIt) || NIt.Count >0)) { // notice shortcut ||
-						UE_LOG(LogTemp, Log, TEXT("%hs Item re-added before the remove animation was done. Crisis averted."))
+						UE_LOG(LogTemp, Log,
+							TEXT("%hs Item re-added before the remove animation was done. Crisis averted."),
+							__func__, *Name.ToString());
 						// In theory, the IT is shared since we get and store in the SItems.
 						// so we need to show it again.
 						It->Fade(true);
