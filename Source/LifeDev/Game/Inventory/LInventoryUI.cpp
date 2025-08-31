@@ -58,22 +58,24 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 		return;
 	}
 
+	bool Created = false;
 	if (!It) {
 		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
 		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
 		UScrollBoxSlot* const Slot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
-		// this is important so the setselected works well
+		// this is important so the SetSelected works well
 		if (LIKELY(Slot)) Slot->SetVerticalAlignment(VAlign_Bottom);
 
 		It->Fade(true);
+		Created = true;
 	}
 
 	if (UNLIKELY(!It)) return; // safeguard
 	It->SetItem(Name, Item);
 
-	ReorderItems();
+	if (UNLIKELY(Created)) ReorderItems(); // this adds quite some processing so let's gate it.
 }
 
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
@@ -154,5 +156,18 @@ void ULInventoryUI::ReorderItems() {
 	const TMap<FName, FItem>& All = Inv->GetAll();
 	TArray<FName> Keys;
 	All.GetKeys(Keys);
-	// TODO reorder items
+	const int32 Num = Keys.Num();
+	for (uint32 i = 0; i<Num; ++i) {
+		const FName& K = Keys[i];
+		TObjectPtr<ULInventoryItemUI>* const pIUI = Items.Find(K);
+		if (UNLIKELY(!pIUI)) {
+			UE_LOG(LogTemp, Warning,
+				TEXT("%hs Could not find the widget for the specified item. N=%s"),
+				__func__, *K.ToString());
+			continue;
+		}
+		
+		ULInventoryItemUI* const IUI = pIUI->Get();
+		SItems->ShiftChild(i, IUI);
+	}
 }
