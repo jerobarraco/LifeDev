@@ -162,7 +162,7 @@ void ULSettingsUI::ScaleUpd(const FString SelectedItem, const ESelectInfo::Type 
 	if (UNLIKELY(!CBScale)) return;
 
 	const int32 I = CBScale->GetSelectedIndex();
-	if (UNLIKELY(I<1 || I>=LSetUI::ScalesLen)) return; // actually ignore 0
+	if (UNLIKELY((I<1) | (I>=LSetUI::ScalesLen))) return; // actually ignore 0, since that's just "scale"
 	UJUtilsMisc::SetUIScale(LSetUI::Scales[I]);
 }
 
@@ -176,7 +176,7 @@ void ULSettingsUI::SetPause() {
 
 void ULSettingsUI::SendComment(const int32 Id) {
 	const USentry* const Sentry = USentry::Instance(this);
-	if (UNLIKELY(!Sentry | (!TComment) )) return;
+	if (UNLIKELY(!Sentry | !TComment )) return;
 
 	Sentry->AddComment(TComment->GetText().ToString());
 	if (LIKELY(MsgBox)) {
