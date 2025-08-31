@@ -45,8 +45,20 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			FTimerDelegate D;
 			D.BindLambda([It, this, Name] {
 				// there's a potential bug here, where you loose an item and pick it very quickly
-				// this could get executed after the item has been picked up
-				// todo if (UNLIKELY(Inventory.Get(Name).Count >0)) return;
+				// this could get executed after the item has been picked up.
+				// it's a very strange edge case, but i rather cover it now.
+				UInventory* const Inv = UInventory::Instance(this);
+				if (LIKELY(Inv)) {
+					FItem NIt;
+					if (UNLIKELY(Inv->Get(Name, NIt) || NIt.Count >0)) { // notice shortcut ||
+						UE_LOG(LogTemp, Log, TEXT("%hs Item re-added before the remove animation was done. Crisis averted."))
+						// In theory, the IT is shared since we get and store in the SItems.
+						// so we need to show it again.
+						It->Fade(true);
+						return; // don't remove
+					}
+				}
+				
 				Items.Remove(Name);
 				SItems->RemoveChild(It); // remove by pointer, order could have changed
 			});
@@ -168,6 +180,6 @@ void ULInventoryUI::ReorderItems() {
 		}
 		
 		ULInventoryItemUI* const IUI = pIUI->Get();
-		SItems->ShiftChild(i, IUI);
+		SItems->ShiftChild(i, IUI); // Thanks, Tim's team. amazing addition.
 	}
 }
