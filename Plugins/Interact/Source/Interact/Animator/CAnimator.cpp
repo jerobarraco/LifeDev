@@ -45,7 +45,7 @@ void UCAnimator::Finish() {
 		__func__, *GetNameSafe(GetOwner()), IsReversed, IsLooping, IsBouncing);
 	const bool CanBounce = IsBouncing && !HasBounced;
 	// check if we can continue at all
-	if (!IsLooping && !CanBounce) {
+	if (!IsLooping & !CanBounce) {
 		Deactivate();
 		return;
 	}
@@ -182,7 +182,7 @@ void UCAnimator::Activate(const bool bReset) {
 	
 	Super::Activate(bReset);
 
-	const bool DoRestart = !WasActive || bReset;
+	const bool DoRestart = !WasActive | bReset;
 	if (!DoRestart) return;
 	
 	// re-init variables
