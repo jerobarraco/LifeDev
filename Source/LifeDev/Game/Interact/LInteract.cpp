@@ -90,6 +90,7 @@ void ALInteract::SetActorHiddenInGame(const bool NewHidden) {
 		Super::SetActorHiddenInGame(NewHidden);
 		return;
 	}
+
 	Fade(!NewHidden, true);
 }
 
@@ -97,10 +98,11 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
 
+	
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
 		if (FadeIn | !UseFade)
-			SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
+			Super::SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
 		else // !FadeIn && UseFade
 			AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
 	} else
@@ -241,7 +243,7 @@ void ALInteract::DestroyAfterReward() {
 void ALInteract::HideAfterFade() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::HideAfterFade);
-	SetActorHiddenInGame(true);
+	Super::SetActorHiddenInGame(true); // important to be super
 }
 
 bool ALInteract::ShouldUnlock_Implementation() {
