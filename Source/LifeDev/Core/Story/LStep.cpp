@@ -347,7 +347,8 @@ void ALStep::Unbind() const {
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 }
 
-void ALStep::SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden) {
+void ALStep::SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors,
+	const bool Hidden) {
 	constexpr bool WithFade = true;
 	for (const TSoftObjectPtr<AActor>& SA: Actors) {
 		AActor* const A = SA.Get();

@@ -31,6 +31,7 @@ public:
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual void SetActive_Implementation(const bool Active = true) override;
 	virtual bool TryTrigger_Implementation() override;
+	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 #pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.

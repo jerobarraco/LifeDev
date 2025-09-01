@@ -10,6 +10,7 @@
 #include "Inventory/Inventory.h"
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
+#include "JUtils/Misc/JUtilsMisc.h"
 
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
@@ -82,6 +83,14 @@ bool ALInteract::TryTrigger_Implementation() {
 	if (LIKELY(Sentry)) Sentry->AddHint(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString(), {});
 
 	return Super::TryTrigger_Implementation();
+}
+
+void ALInteract::SetActorHiddenInGame(const bool NewHidden) {
+	if (UNLIKELY(UJUtilsMisc::IsInConstructor())) {
+		Super::SetActorHiddenInGame(NewHidden);
+		return;
+	}
+	Fade(!NewHidden, true);
 }
 
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
