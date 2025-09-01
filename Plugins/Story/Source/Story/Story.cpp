@@ -7,7 +7,6 @@
 
 #include "ShaderPipelineCache.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
-#include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
 
 #include "Step.h"
@@ -124,6 +123,8 @@ bool UStory::Start(const FName Name) {
 			UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
 			if (LIKELY(World3)) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
 			UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
+
+			// there's a way to get the load percent for a specific package https://forums.unrealengine.com/t/ue5-5-5-6-call-function-getasyncloadpercentage-packagename-the-return-value-is-incorrect-return-1/2652655?u=nande
 
 			// this will skip GC while async loading, unless you set on your config
 			// CVarPerformGCWhileAsyncLoading gc.PerformGCWhileAsyncLoading

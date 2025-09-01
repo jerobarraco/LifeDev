@@ -34,6 +34,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	FName Label = NAME_None;
 
+	// Title to show. Only shown if you also set UseFade
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
+	FText Title = FText::GetEmpty();
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
+	FString Comment;
+#endif
+
 	// Actor holding the camera to blend to. Or null to not use blend.
 	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
@@ -50,7 +59,7 @@ public:
 	// shake the camera on start. stops on stop.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
 	bool UseCamShake = false;
-	
+	// class that defines the shake. depends on UseCamShake.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Cam")
 	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
 
@@ -74,9 +83,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
 
-	// Title to show. Only shown if you also set UseFade
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Transition")
-	FText Title = FText::GetEmpty();
+	// Actors to show AND hide. If it's an interact, it will fade in and out.
+	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
+	// purposely an actor to have flexibility.
+	// it will hide the actor on BeginPlay.
+	// the hiding on stop is deprecated. use ActorsHide
+	// the hiding on begin play is deprecated. set on the class maybe.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
+	TArray<TSoftObjectPtr<AActor>> ActorsShow;
+	// not on AStep because i want to support fading as well, or maybe i should have the fade in LInteract::SetActorHiddenInGame? maybe i'll need a bool to tell if it needs to fade or not?
+
+	// Actors to Hide on *End*. If it's a Linteract, it will fade out. it will also set active and hidden in game.
+	// a hidden benefit from this is that i can hide things on the last step in a chapter
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
+	TArray<TSoftObjectPtr<AActor>> ActorsHide;
 
 	// Music to play. Setting it to empty does not stop the music.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
@@ -85,7 +105,7 @@ public:
 
 	// Data layers to load.
 	// make sure to mark the data-layer-asset as "runtime" or it won't work. (open it)
- 	// also in the data layers panel, set the initial runtime state.
+	// also in the data layers panel, set the initial runtime state.
 	// also make sure to set the "Override blocking on slow stream" (under advanced)
 	// to whatever you need. Set it to block if you want it to block, otherwise block has no effect.
 	// this is ok to be a SoftObjectPtr. They will be loaded during the loading of the step and the dl itself.
@@ -97,10 +117,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload;
 
-#if WITH_EDITORONLY_DATA
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
-	FString Comment;
-#endif
 	// set to true to use debug
 	inline static bool Debug = false;
 
