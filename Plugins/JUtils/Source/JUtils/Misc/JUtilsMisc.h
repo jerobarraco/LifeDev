@@ -94,6 +94,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool ObjectLabel(const UObject* const Object, FString& OLabel);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	static FORCEINLINE bool NeedsInit(const UObject* const Object) {
+		return bool(Object) & Object->HasAnyFlags(RF_NeedInitialization);
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	static FORCEINLINE bool IsInConstructor() {
+		// https://forums.unrealengine.com/t/how-to-tell-if-a-function-is-called-by-a-constructor/413102/6?u=nande
+		const FUObjectThreadContext& ThreadContext = FUObjectThreadContext::Get();
+		return ThreadContext.IsInConstructor > 0;
+	}
+
 	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);

@@ -30,6 +30,7 @@ class INTERACT_API AInteract: public AActor {
 public:
 #pragma region base
 	AInteract();
+
 	// will also SetActive if UseAutoActivate or hidden is true.
 	// will not SetActive if NewHidden is false (when showing back).
 	// during constructor will set UseAutoActivate instead.
