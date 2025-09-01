@@ -119,6 +119,8 @@ void AStep::Start_Implementation() {
 	
 	// check UseCamShake outside CamShakeStart to allow children to call it.
 	if (UseCamShake) CamShakeStart();
+
+	SetActorsHiddenAny(ActorsShow, false);
 }
 
 void AStep::Stop_Implementation() {
@@ -126,6 +128,8 @@ void AStep::Stop_Implementation() {
 	// force disable since it's not wise to trust what happened before
 	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
 	if (UseCamShake) CamShakeStop();
+
+	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
 }
 
 void AStep::Finish_Implementation() {

@@ -30,7 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DoTeleport();
 
-	// Hides or show the actors. will fade if interact.
+	// Hides or show the actors. will fade if its an LInteract.
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden = false);
 

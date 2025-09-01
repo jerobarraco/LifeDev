@@ -60,7 +60,6 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
 
-	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
 	DoRemoveItems();
 
 	const UWorld* const W = GetWorld();
@@ -143,7 +142,6 @@ void ALStep::Start_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
-	SetActorsHiddenAny(ActorsShow, false);
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
