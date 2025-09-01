@@ -143,6 +143,21 @@ void AStep::Finish_Implementation() {
 	Story->StartNext(Label);
 }
 
+void AStep::SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors,
+	const bool Hidden) {
+	for (const TSoftObjectPtr<AActor>& SA: Actors) {
+		AActor* const A = SA.Get();
+		if (UNLIKELY(!IsValid(A))) {
+			UE_LOG(LogStoryStep, Warning, TEXT("%hs ActorsShow set, but is not valid."
+				" Potentially not loaded. O=%s"),
+				__func__, *SA->GetPathName());
+			continue;
+		}
+		// "LInteract" overrides this and will fade. it will also call SetActive in both cases.
+		A->SetActorHiddenInGame(Hidden);
+	}
+}
+
 void AStep::DoTeleport() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;

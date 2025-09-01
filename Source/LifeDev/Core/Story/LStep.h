@@ -37,10 +37,6 @@ public:
 	// And it's possible this class will get unloaded by the next step.
 	virtual void Stop_Implementation() override;
 
-	// Hides or show the actors. will fade if interact.
-	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
-	void SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden = false);
-	
 	// activates the interacts on IntersActivate
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay, UnsafeDuringActorConstruction))
 	void DoIntersActive();

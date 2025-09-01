@@ -91,6 +91,8 @@ void ALInteract::SetActorHiddenInGame(const bool NewHidden) {
 		return;
 	}
 
+	// always fade when toggling hidden.
+	// maybe in the future use a flag in the instance like "UseFadeOnHide" 
 	Fade(!NewHidden, true);
 }
 

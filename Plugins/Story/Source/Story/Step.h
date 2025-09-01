@@ -30,6 +30,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DoTeleport();
 
+	// Hides or show the actors. will fade if interact.
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	void SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors, const bool Hidden = false);
+
 	// name of the step. critically necessary. for the step system to start it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	FName Label = NAME_None;

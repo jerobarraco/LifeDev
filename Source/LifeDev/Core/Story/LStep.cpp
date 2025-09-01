@@ -347,28 +347,6 @@ void ALStep::Unbind() const {
 	if (LIKELY(IsValid(FB))) FB->OnChange.RemoveAll(this);
 }
 
-void ALStep::SetActorsHiddenAny(const TArray<TSoftObjectPtr<AActor>>& Actors,
-	const bool Hidden) {
-	constexpr bool WithFade = true;
-	for (const TSoftObjectPtr<AActor>& SA: Actors) {
-		AActor* const A = SA.Get();
-		if (UNLIKELY(!IsValid(A))) {
-			UE_LOG(LogLStoryStep, Warning, TEXT("%hs ActorsShow set, but is not valid."
-				" Potentially not loaded. O=%s"),
-				__func__, *SA->GetPathName());
-			continue;
-		}
-
-		ALInteract* const Inter = Cast<ALInteract>(A);
-		if (bool(Inter) & WithFade) { // hide with fade is possible
-			Inter->Fade(!Hidden, true); // calls setactorhidden and setactive
-			continue;
-		}
-		// Avoid calling 'SetActorHidden' twice, just in case there are side effects.
-		A->SetActorHiddenInGame(Hidden);
-	}
-}
-
 void ALStep::DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive) {
 	for (const TSoftObjectPtr<AInteract>& SI : A) {
 		AInteract* const I = SI.Get();
