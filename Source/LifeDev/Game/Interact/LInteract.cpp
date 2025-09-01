@@ -97,26 +97,27 @@ void ALInteract::SetActorHiddenInGame(const bool NewHidden) {
 void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s in=%i hidden=%i useFade=%i"),
 		__func__, *Label.ToString(), FadeIn, SetHidden, UseFade);
-
 	
+	if (!UseFade) {
+		if (SetHidden) Super::SetActorHiddenInGame(!FadeIn);
+		return;
+	}
+
 	// before the fade on purpose. for the hidden and the bind
 	if (SetHidden) {
-		if (FadeIn | !UseFade)
-			Super::SetActorHiddenInGame(!FadeIn); // handle hidden if no UseFade is set
-		else // !FadeIn && UseFade
-			AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
+		// handle hiding on fading out
+		if (!FadeIn) AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
 	} else
-		// i'm not super sure about this.
-		// probably could collide with the intention of fading something in without being enabled
-		// might happen on a step auto-fading something.
+		// handle de/activating on fade manually.
 		// only on !SetHidden since SetActorHidden also handles setActive
 		// please me from the future, be careful. "ki o tsukete!"
-		if (!FadeIn | UseAutoActivate) SetActive(FadeIn); //!FadeIn important to not have the collision while faded
+		// !FadeIn for when it's about to fade out. deactivate first
+		//		that's important to not have the collision while faded
+		// UseAutoActivate to only reactivate if it's set to.
+		if (!FadeIn | UseAutoActivate) SetActive(FadeIn);
 
-	if (UseFade) {
-		AnimFade->IsReversed = FadeIn;
-		AnimFade->Activate(true);
-	}
+	AnimFade->IsReversed = FadeIn;
+	AnimFade->Activate(true);
 }
 
 void ALInteract::BeginPlay() {
