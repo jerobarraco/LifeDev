@@ -88,7 +88,7 @@ ALMusicMan::ALMusicMan():Super() {
 		CSFX(TEXT("/Game/LifeDev/Core/Audio/Effects/HPF_FX"));
 	MusicFX = CSFX.Object;
 	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
-		CSFX2(TEXT("/Game/LifeDev/Core/Audio/Effects/Delay_FX"));
+		CSFX2(TEXT("/Game/LifeDev/Core/Audio/Effects/StereoDelay_FX"));
 	FXFX = CSFX2.Object;
 }
 
