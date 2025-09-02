@@ -29,9 +29,9 @@ class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
 public:
+#pragma region info
 	UFUNCTION(BlueprintCallable)
 	static bool IsPIE();
-
 	// also note FApp::GetBuildConfiguration()
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -71,7 +71,6 @@ public:
 	// this is also provided by kismet library
 	UFUNCTION(BlueprintCallable)
 	static void GetUEBuildVersion(FString& OVer);
-
 	// returns the user's name, as presented by the platform.
 	UFUNCTION(BlueprintCallable)
 	static FString GetUserName();
@@ -84,13 +83,17 @@ public:
 	// this one list all POSSIBLE not all supported :(
 	UFUNCTION(BlueprintCallable)
 	static void GetAllCultures(TArray<FString>& Names);
-	
+#pragma endregion
+
+#pragma region camera
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
 		const float Duration = .5f, const FLinearColor& Color = FLinearColor::Black);
 
 	UFUNCTION(BlueprintCallable)
 	static UGameViewportClient* GetAnyGameViewportClient();
+#pragma endregion
+#pragma rhi
 	// returns the number of (shaders?) precompilations remaining.
 	// useful at the start of the game https://m.youtube.com/watch?v=HaVTYSnGvxA
 	UFUNCTION(BlueprintCallable)
@@ -114,7 +117,7 @@ public:
 	// "[SectionsToSave] bCanSaveAllSections=true" https://forums.unrealengine.com/t/how-to-stop-local-custom-ini-files-being-deleted-after-play/1967813/2
 	UFUNCTION(BlueprintCallable)
 	static bool SetRHI(EJRHI RHI);
-
+#pragma endregion
 #pragma region input
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ToggleMapping(const UObject* const O,

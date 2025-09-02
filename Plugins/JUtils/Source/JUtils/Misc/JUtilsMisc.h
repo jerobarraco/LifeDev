@@ -9,6 +9,7 @@
 #include <string>
 #include "CoreMinimal.h"
 
+class ULevelStreamingDynamic;
 class UInputMappingContext;
 class UWorld;
 class UWidget;
@@ -84,10 +85,48 @@ public:
 	// returns true when two strings are similar, ignoring case and whitespace.
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
-
+#pragma levels
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
+	
+	// loads an *instance* of a level. (dynamic)
+	// this is a level that is not in the "Levels" panel.
+	// Allows to load the same level multiple times. and it's more memory efficient.
+	// O: world context object
+	// Level: the level to load
+	// Trans: the transform used for the loaded level
+	// Visible: whether to make it visible on load
+	// Returns the LevelStreamingDynamic object. Keep this object in order to unload.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ULevelStreamingDynamic* LevelDynLoad(
+		UObject* const O, const TSoftObjectPtr<UWorld> Level, const FTransform& Trans = FTransform(),
+		const bool Visible=false);
 
+	// unloads a Dynamic level.
+	// block: whether to block on unload
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool LevelDynUnload(const UObject* const O, ULevelStreamingDynamic* const Stream,
+		const bool Block = false);
+
+	// attempts to return a level by its name. mostly for the ones in the "levels" panel.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static ULevelStreaming* GetLevel(const UObject* const O, const FName Name);
+	// loads a level specified in the "Levels" panel.
+	// can only be loaded once, and can be loaded blocking.
+	// can't use transforms. and it's less memory efficient.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool LevelLoad(const UObject* const O, const FName Name,
+		const bool MakeVisible = true, const bool Block = false);
+	// Unloads a level specified in the "Levels" panel.
+	// Potentially loaded by LevelLoad or set visible from a sequence visibility track.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool LevelUnload(const UObject* const O, const FName Name, const bool Block = false);
+	// Unloads a level specified in the "Levels" panel.
+	// Potentially loaded by LevelLoad or set visible from a sequence visibility track.
+	// Takes a object (pointer) version.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static bool LevelUnloadPtr(const UObject* const O, ULevelStreaming* const Level, const bool Block = false);
+#pragma endregion
 #pragma region objects
 	// returns the Classname. without the _C for bps.
 	// returns the "default" actor label for an actor. Not the REAL actor label (that does not exist on runtime builds)

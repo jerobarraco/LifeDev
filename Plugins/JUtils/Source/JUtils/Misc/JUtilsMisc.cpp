@@ -6,11 +6,15 @@
 #include <Async/Async.h>
 #include "CoreGlobals.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogJUtilsMisc, Log, Log);
 
 // TODO fix packaging fails with this one
 // https://www.reddit.com/r/unrealengine/comments/sbqb5k/comment/hu4c6ze/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -112,20 +116,20 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 	if (UNLIKELY(!World)) return false;
 
 	if (UNLIKELY(!IsValid(DataLayer))) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Invalid data layer."), __func__);
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Invalid data layer."), __func__);
 		return false;
 	}
 
 	UDataLayerManager* const Manager = World->GetDataLayerManager();
 	if (UNLIKELY(!IsValid(Manager))) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the data layer manager"), __func__);
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Could not get the data layer manager"), __func__);
 		return false;
 	}
 
 	const EDataLayerRuntimeState State =
 		(Enabled ? EDataLayerRuntimeState::Activated : EDataLayerRuntimeState::Unloaded);
 	const bool Success = Manager->SetDataLayerRuntimeState(DataLayer, State, false);
-	UE_LOG(LogTemp, Log, TEXT("%hs Data layer toggle. Ok=%i, Enable=%i, Name='%s'"),
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Data layer toggle. Ok=%i, Enable=%i, Name='%s'"),
 		__func__, Success, Enabled, *DataLayer->GetName());
 	return Success;
 	// arigatou! https://kinnaji.com/2022/12/24/worldpartition-datalayer/
@@ -139,6 +143,88 @@ bool UJUtilsMisc::ToggleDataLayer(const UObject* const O, const UDataLayerAsset*
 		return;
 	}
 	*/
+}
+
+ULevelStreamingDynamic* UJUtilsMisc::LevelDynLoad(UObject* const O,
+	const TSoftObjectPtr<UWorld> Level, const FTransform& Trans, const bool Visible) {
+
+	bool LoadOk = false; 
+	ULevelStreamingDynamic* const Stream = ULevelStreamingDynamic::LoadLevelInstanceBySoftObjectPtr(
+		O, Level, Trans.GetLocation(), Trans.Rotator(), LoadOk);
+	if (UNLIKELY(!LoadOk | !Stream)) {
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs, Failed to load the streamed level. Stop."), __func__);
+		return nullptr;
+	}
+
+	// done on flag only since setting SetShouldBeVisible(true) right after this function on the same frame seems to bring issues
+	if (!Visible) {
+		// should be visible is required. the side effect is that "begin play" of objects is not processed until the
+		// visibility changes. but that is actually a good thing, otherwise is really hard to signal the sequence to start.
+		// in other words, that quirk is a feature we will use.
+		Stream->SetShouldBeVisible(false);
+		Stream->bInitiallyVisible = false; // make sure it starts invisible
+	}
+
+	return Stream;
+}
+
+bool UJUtilsMisc::LevelDynUnload(const UObject* const O, ULevelStreamingDynamic* const Stream, const bool Block) {
+	return LevelUnloadPtr(O, Stream, Block);
+}
+
+// level load and unload are not exposed to bp in ue. they are only available as latent actions. so we make our own.
+
+ULevelStreaming* UJUtilsMisc::GetLevel(const UObject* const O, const FName Name) {
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs. Name=%s"), __func__, *Name.ToString());
+	if (UNLIKELY(Name.IsNone())) return nullptr;
+	if (UNLIKELY(!IsValid(O))) return nullptr;
+	
+	ULevelStreaming* const Level = UGameplayStatics::GetStreamingLevel(O, Name);
+	UE_CLOG(UNLIKELY(!IsValid(Level)), LogJUtilsMisc, Warning, TEXT("%hs. Could not get the level. Name=%s"),
+		__func__, *Name.ToString());
+
+	return Level;
+}
+
+bool UJUtilsMisc::LevelLoad(const UObject* const O, const FName Name, const bool MakeVisible, const bool Block) {
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs. Name=%s Visible=%i Block=%i"),
+		__func__, *Name.ToString(), MakeVisible, Block);
+	if (UNLIKELY(Name.IsNone())) return false;
+	if (UNLIKELY(!IsValid(O))) return false;
+
+	FLatentActionInfo LAI;
+	UGameplayStatics::LoadStreamLevel(O, Name, MakeVisible, Block, LAI);
+	
+	return true;
+}
+
+bool UJUtilsMisc::LevelUnload(const UObject* const O, const FName Name, const bool Block) {
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs. Name=%s Block=%i"),
+		__func__, *Name.ToString(), Block);
+	if (UNLIKELY(Name.IsNone())) return false;
+	if (UNLIKELY(!IsValid(O))) return false;
+	
+	ULevelStreaming* const Level = GetLevel(O, Name);
+	return LevelUnloadPtr(O, Level, Block);
+}
+
+bool UJUtilsMisc::LevelUnloadPtr(const UObject* const O, ULevelStreaming* const Level, const bool Block) {
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs. Name=%s Block=%i Package=%s"),
+		__func__, *GetNameSafe(Level), Block, Level?*Level->GetWorldAssetPackageName():TEXT("???"));
+	if (UNLIKELY(!IsValid(O))) return false;
+	if (UNLIKELY(!IsValid(Level))) {
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Can't unload the level. It seems invalid. Stop."), __func__);
+		return false;
+	}
+	
+	Level->SetShouldBeVisible(true); // this is important.
+	Level->SetShouldBeLoaded(false); // to be sure. not critical but sometimes helps.
+	FLatentActionInfo LAI;
+	LAI.UUID = Level->GetUniqueID(); // this is critical, or it won't unload multiple in a row.
+
+	// appears to be correct https://dev.epicgames.com/documentation/en-us/unreal-engine/loading-and-unloading-levels-using-cplusplus-in-unreal-engine
+	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(O, Level, LAI, Block);
+	return true;
 }
 
 bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
@@ -156,12 +242,12 @@ bool UJUtilsMisc::ObjectLabel(const UObject* const Object, FString& OLabel) {
 UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
 	TArray<FString>& OProblems, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".json"));
-	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 
 	FString S;
 	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
-		UE_LOG(LogTemp, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
+		UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
 		return nullptr;
 	}
 
@@ -169,22 +255,22 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& N
 	Table->RowStruct = RowType; // important
 	OProblems = Table->CreateTableFromJSONString(S);
 	for (const FString& P: OProblems) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
 
-	// return Problems.Num() <= 0 ? Table : nullptr;
+	// alternative return Problems.Num() <= 0 ? Table : nullptr;
 	return Table;
 }
 
 UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
 	TArray<FString>& OProblems, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
-	UE_LOG(LogTemp, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 
 	FString S;
-	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
-		UE_LOG(LogTemp, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
+	if (UNLIKELY(!FFileHelper::LoadFileToString(S, *Path,FFileHelper::EHashOptions::None))) {
+		UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
 		return nullptr;
 	}
 
@@ -194,7 +280,7 @@ UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Na
 	
 	OProblems = Table->CreateTableFromCSVString(S);
 	for (const FString& P: OProblems) {
-		UE_LOG(LogTemp, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Problem on '%s' :'%s'"), __func__, *Path, *P);
 	}
 
 	// TODO test
