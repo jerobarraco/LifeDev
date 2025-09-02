@@ -14,3 +14,11 @@ void UCAnimatorSFX::Activate(const bool bReset) {
 
 	Super::Activate(bReset);
 }
+
+void UCAnimatorSFX::Update_Implementation(const float Alpha) {
+	Super::Update_Implementation(Alpha);
+	if (UNLIKELY(!bool(Submix))) return;
+
+	Submix->SetSubmixWetLevel(this, Alpha);
+	Submix->SetSubmixDryLevel(this, 1.0-Alpha);
+}

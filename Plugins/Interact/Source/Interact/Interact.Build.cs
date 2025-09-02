@@ -25,11 +25,12 @@ public class Interact: ModuleRules
 			"Core",
 		});
 		
-		// ... add private dependencies that you statically link with here ...	
+		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "JUtils",
+			"CoreUObject", "Engine",
 			"Slate", // for AnimMat should be created
-			"Niagara",
+			"Niagara", "AudioMixer", // for the CAnimatorSFX
+			"JUtils",
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {

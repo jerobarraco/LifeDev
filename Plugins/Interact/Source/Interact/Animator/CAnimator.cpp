@@ -5,7 +5,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogCAnimator, Log, Log)
 
-UCAnimator::UCAnimator():Super() {
+UCAnimator::UCAnimator() {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 	// if this is true, it will start active anyway.
