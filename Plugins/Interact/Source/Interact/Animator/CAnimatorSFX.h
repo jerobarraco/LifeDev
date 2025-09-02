@@ -15,7 +15,16 @@ public:
 	virtual void Activate(const bool bReset = false) override;
 	virtual void Update_Implementation(const float Alpha) override;
 	virtual void End_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintPure=false)
+	void FXAdd() const;
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintPure=false)
+	void FXRem() const;
 	
+	// will add the effect on start, and remove on end.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	bool UseAutoManage = true;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> Submix = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")

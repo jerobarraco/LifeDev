@@ -5,12 +5,21 @@
 
 #include "AudioMixerBlueprintLibrary.h"
 
+
+void UCAnimatorSFX::FXAdd() const {
+	UAudioMixerBlueprintLibrary::AddSubmixEffect(
+		this, Submix, FX);
+}
+
+void UCAnimatorSFX::FXRem() const {
+	UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
+			this, Submix, FX);
+}
+
 void UCAnimatorSFX::Activate(const bool bReset) {
 	if (UNLIKELY(bool(!Submix) | (!FX))) return;
 
-	if (!IsReversed)
-		UAudioMixerBlueprintLibrary::AddSubmixEffect(
-			this, Submix, FX);
+	if (UseAutoManage & !IsReversed) FXAdd();
 
 	Super::Activate(bReset);
 }
@@ -29,7 +38,6 @@ void UCAnimatorSFX::End_Implementation() {
 	if (UNLIKELY(!bool(FX) | !bool(Submix))) return;
 
 	const bool Remove = IsReversed;
-	if (Remove)
-		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
-			this, Submix, FX);
+	if (UseAutoManage & Remove) FXRem();
 }
+
