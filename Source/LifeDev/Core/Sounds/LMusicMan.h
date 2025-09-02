@@ -74,16 +74,22 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> MusicSubmix = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundEffectSubmixPreset> MusicFX = nullptr;
 	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	TObjectPtr<USoundSubmix> FXSubmix = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	TObjectPtr<USoundEffectSubmixPreset> FXFX = nullptr;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|Sub")
 	TObjectPtr<UCLSounder> Rain = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
 	TObjectPtr<UCLSounder> Environ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
 	TObjectPtr<UCAnimator> AnimMusicFX = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
+	TObjectPtr<UCAnimator> AnimFXFX = nullptr;
 
 	bool EnvironOverride = true;
 };
