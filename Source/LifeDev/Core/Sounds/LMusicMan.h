@@ -6,6 +6,7 @@
 
 #include "LMusicMan.generated.h"
 
+enum class EFeat : uint8;
 class UCAnimator;
 class UCLSounder;
 class AStep;
@@ -30,11 +31,12 @@ public:
 
 	// Called by LGGameMode
 	void Init();
-	
+
+	// play/stop the rain
 	UFUNCTION(BlueprintCallable)
 	void SetRain(const bool Play) const;
 
-	// the flashback value for the Environ
+	// applies a fx to the music. used for the settings.
 	UFUNCTION(BlueprintCallable)
 	void FadeMusicFX(const bool On) const;
 

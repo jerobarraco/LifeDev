@@ -8,7 +8,8 @@
 class UCSounder;
 
 // Music manager for a level
-UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Sounds), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, Placeable, ClassGroup=(Sounds),
+	meta=(BlueprintSpawnableComponent))
 class SOUNDS_API AMusicMan: public AInfo {
 	GENERATED_BODY()
 
@@ -21,10 +22,10 @@ public:
 	virtual void Fade_Implementation(const bool In);
 
 	// for debug only
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug", meta=(AdvancedDisplay))
 	FORCEINLINE void FadeIn() {Fade(true);}
 	// for debug only
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug", meta=(AdvancedDisplay))
 	FORCEINLINE void FadeOut() {Fade(false);}
 
 	// be careful that calling fade just before or after this, can cause timing issues
