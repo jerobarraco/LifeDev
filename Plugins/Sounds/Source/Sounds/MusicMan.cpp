@@ -8,7 +8,7 @@
 
 #include "Sounds/CSounder.h"
 
-AMusicMan::AMusicMan():Super() {
+AMusicMan::AMusicMan() {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	PrimaryActorTick.SetTickFunctionEnable(false);

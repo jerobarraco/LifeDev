@@ -68,9 +68,9 @@ protected:
 	UFUNCTION() // bind
 	void SetStep(AStep* const Step); // can't be const AStep
 	UFUNCTION() // bind
-	void AnimFXUpdate(const float Progress, const float Alpha);
+	void AnimMusicFXUpd(const float Progress, const float Alpha);
 	UFUNCTION()
-	void AnimFXEnd(); // bind
+	void AnimMusicFXEnd(); // bind
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> MusicSubmix = nullptr;
