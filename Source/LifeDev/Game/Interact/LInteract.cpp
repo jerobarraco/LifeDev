@@ -86,7 +86,11 @@ bool ALInteract::TryTrigger_Implementation() {
 }
 
 void ALInteract::SetActorHiddenInGame(const bool NewHidden) {
-	if (UNLIKELY(UJUtilsMisc::IsInConstructor())) {
+	const bool InConstructor = UJUtilsMisc::IsInConstructor();
+	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s inConstructor=%i hidden=%i useFade=%i"),
+		__func__, *Label.ToString(), InConstructor, NewHidden, UseFade);
+
+	if (UNLIKELY(InConstructor)) {
 		Super::SetActorHiddenInGame(NewHidden);
 		return;
 	}
