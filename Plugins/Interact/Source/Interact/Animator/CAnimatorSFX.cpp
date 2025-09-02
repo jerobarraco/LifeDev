@@ -22,3 +22,14 @@ void UCAnimatorSFX::Update_Implementation(const float Alpha) {
 	Submix->SetSubmixWetLevel(this, Alpha);
 	Submix->SetSubmixDryLevel(this, 1.0-Alpha);
 }
+
+void UCAnimatorSFX::End_Implementation() {
+	Super::End_Implementation();
+	
+	if (UNLIKELY(!bool(FX) | !bool(Submix))) return;
+
+	const bool Remove = IsReversed;
+	if (Remove)
+		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
+			this, Submix, FX);
+}

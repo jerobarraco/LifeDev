@@ -14,6 +14,7 @@ class INTERACT_API UCAnimatorSFX : public UCAnimator {
 public:
 	virtual void Activate(const bool bReset = false) override;
 	virtual void Update_Implementation(const float Alpha) override;
+	virtual void End_Implementation() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> Submix = nullptr;
