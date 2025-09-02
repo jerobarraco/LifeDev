@@ -6,6 +6,7 @@
 
 #include "LMusicMan.generated.h"
 
+class UCAnimatorSFX;
 enum class EFeat : uint8;
 class UCAnimator;
 class UCLSounder;
@@ -88,9 +89,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
 	TObjectPtr<UCLSounder> Environ = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
-	TObjectPtr<UCAnimator> AnimMusicFX = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Setup|Sub")
-	TObjectPtr<UCAnimator> AnimFXFX = nullptr;
+	TObjectPtr<UCAnimatorSFX> AnimMusicFX = nullptr;
 
 	bool EnvironOverride = true;
 };

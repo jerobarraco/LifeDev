@@ -4,6 +4,7 @@
 
 #include "AudioMixerBlueprintLibrary.h"
 #include "Interact/Animator/CAnimator.h"
+#include "Interact/Animator/CAnimatorSFX.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundClass.h"
 #include "Sound/SoundSubmix.h"
@@ -58,18 +59,12 @@ ALMusicMan::ALMusicMan():Super() {
 	// environ uses the same class as sfx since they behave the same way,
 	// and i've already paid a lot of attention trying to mix them.
 
-	AnimMusicFX = CreateDefaultSubobject<UCAnimator>("AnimMusicFX");
+	AnimMusicFX = CreateDefaultSubobject<UCAnimatorSFX>("AnimMusicFX");
 	// important otherwise the pause via the settings menu won't work.
 	AnimMusicFX->SetTickableWhenPaused(true);
 	AnimMusicFX->SetComponentTickInterval(0); // it HAS to be 0, or it will NOT tick on paused.
 	AnimMusicFX->Duration = .5;
 	// SetTickableWhenPaused(true); // unneeded
-
-	AnimFXFX = CreateDefaultSubobject<UCAnimator>("AnimFXFX");
-	// important otherwise the pause via the settings menu won't work.
-	AnimFXFX->SetTickableWhenPaused(true);
-	// AnimFXFX->SetComponentTickInterval(0); // it HAS to be 0, or it will NOT tick on paused.
-	AnimFXFX->Duration = .5;
 
 	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	// unnoticeable but....
@@ -79,14 +74,14 @@ ALMusicMan::ALMusicMan():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
 		CSmx (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDMusic.LDMusic"));
-	MusicSubmix = CSmx.Object;
+	AnimMusicFX->Submix = MusicSubmix = CSmx.Object;
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
 		CSmxFX (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDSFX.LDSFX"));
 	FXSubmix = CSmxFX.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
 		CSFX(TEXT("/Game/LifeDev/Core/Audio/Effects/HPF_FX"));
-	MusicFX = CSFX.Object;
+	AnimMusicFX->FX = MusicFX = CSFX.Object;
 	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
 		CSFX2(TEXT("/Game/LifeDev/Core/Audio/Effects/StereoDelay_FX"));
 	FXFX = CSFX2.Object;
@@ -137,16 +132,11 @@ void ALMusicMan::SetEnvironFB(const float V) const {
 }
 
 void ALMusicMan::FadeMusicFX(const bool On) const {
-	if (UNLIKELY(!IsValid(AnimMusicFX) | !IsValid(MusicFX) | !IsValid(MusicSubmix)))
-		return;
+	if (UNLIKELY(!IsValid(AnimMusicFX))) return;
 
 	UE_LOG(LogTemp, Log, TEXT("%hs On=%i"), __func__, On);
 	AnimMusicFX->IsReversed = !On;
 	AnimMusicFX->Activate(false);
-
-	if (On) // don't add if it wasn't there and we don't need it.
-		UAudioMixerBlueprintLibrary::AddSubmixEffect(
-			this, MusicSubmix, MusicFX);
 }
 
 void ALMusicMan::Fade_Implementation(const bool In) {
@@ -200,13 +190,10 @@ void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
-	// important to not clip
-	if (LIKELY(MusicSubmix))
-		AnimMusicFXUpd(0, 0); //forces wetmix to 0 resets dry to 1
-
 	if (LIKELY(AnimMusicFX)) {
-		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXUpd);
-		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXEnd);
+		AnimMusicFX->Update(0); // force reset
+		// AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXUpd);
+		// AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXEnd);
 	}
 
 	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
@@ -227,11 +214,6 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	ULSettings* const S = ULSettings::Instance(W);
 	if (LIKELY(S)) S->OnFeatUpdateSound.RemoveAll(this);
-
-	if (LIKELY(AnimMusicFX)) {
-		AnimMusicFX->OnUpdate.RemoveAll(this);
-		AnimMusicFX->OnEnd.RemoveAll(this);
-	}
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -280,29 +262,10 @@ void ALMusicMan::SetStep(AStep* const Step) {
 	Play(Sound);
 }
 
-void ALMusicMan::AnimMusicFXUpd(const float Progress, const float Alpha) {
-	if (UNLIKELY(!IsValid(MusicSubmix))) return;
-	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
-
-	MusicSubmix->SetSubmixWetLevel(this, Alpha);
-	MusicSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
-}
-
-void ALMusicMan::AnimMusicFXEnd() {
-	// TODO i can move this to a animSndFX
-	if (UNLIKELY(!MusicFX | !MusicSubmix)) return;
-
-	// done this way, because i want it to remove it if there's no animmusic.
-	const bool Remove = !AnimMusicFX || AnimMusicFX->IsReversed;
-	if (Remove)
-		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
-			this, MusicSubmix, MusicFX);
-}
-
 void ALMusicMan::AnimFXFXUpd(const float Progress, const float Alpha) {
 	if (UNLIKELY(!IsValid(FXSubmix))) return;
 	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
 
 	FXSubmix->SetSubmixWetLevel(this, Alpha);
-	FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
+	// FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
 }
