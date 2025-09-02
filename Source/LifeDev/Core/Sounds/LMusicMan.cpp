@@ -191,8 +191,8 @@ void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
 	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
-		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
-		AnimFXFXUpd(0, 0);
+		// UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
+		// AnimFXFXUpd(0, 0);
 	}
 }
 

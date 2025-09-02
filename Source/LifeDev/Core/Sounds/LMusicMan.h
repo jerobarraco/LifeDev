@@ -68,10 +68,6 @@ protected:
 	void FeatUpdate(const EFeat Feat, const bool bEnabled);
 	UFUNCTION() // bind
 	void SetStep(AStep* const Step); // can't be const AStep
-	UFUNCTION() // bind
-	void AnimMusicFXUpd(const float Progress, const float Alpha);
-	UFUNCTION()
-	void AnimMusicFXEnd(); // bind
 	void AnimFXFXUpd(const float Progress, const float Alpha); // not really bound
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
