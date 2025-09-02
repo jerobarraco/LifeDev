@@ -71,11 +71,6 @@ protected:
 	void AnimFXFXUpd(const float Progress, const float Alpha); // not really bound
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	TObjectPtr<USoundSubmix> MusicSubmix = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
-	TObjectPtr<USoundEffectSubmixPreset> MusicFX = nullptr;
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> FXSubmix = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundEffectSubmixPreset> FXFX = nullptr;

@@ -3,12 +3,13 @@
 #include "LMusicMan.h"
 
 #include "AudioMixerBlueprintLibrary.h"
-#include "Interact/Animator/CAnimator.h"
-#include "Interact/Animator/CAnimatorSFX.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundClass.h"
 #include "Sound/SoundSubmix.h"
 
+#include "Interact/Animator/CAnimator.h"
+#include "Interact/Animator/CAnimatorSFX.h"
 #include "Story/Step.h"
 #include "Story/Story.h"
 #include "Sounds/CSounder.h"
@@ -74,14 +75,14 @@ ALMusicMan::ALMusicMan():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
 		CSmx (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDMusic.LDMusic"));
-	AnimMusicFX->Submix = MusicSubmix = CSmx.Object;
+	AnimMusicFX->Submix = CSmx.Object;
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
 		CSmxFX (TEXT("/Game/LifeDev/Core/Audio/Mixes/LDSFX.LDSFX"));
 	FXSubmix = CSmxFX.Object;
 
 	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
 		CSFX(TEXT("/Game/LifeDev/Core/Audio/Effects/HPF_FX"));
-	AnimMusicFX->FX = MusicFX = CSFX.Object;
+	AnimMusicFX->FX = CSFX.Object;
 	static ConstructorHelpers::FObjectFinder<USoundEffectSubmixPreset>
 		CSFX2(TEXT("/Game/LifeDev/Core/Audio/Effects/StereoDelay_FX"));
 	FXFX = CSFX2.Object;
