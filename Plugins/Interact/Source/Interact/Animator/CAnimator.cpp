@@ -65,6 +65,7 @@ void UCAnimator::Finish() {
 		// if (!IsLooping) IsBouncing = false;
 		if (!IsLooping) HasBounced = true;
 	}
+
 	// if !CanBounce implies Looping here
 	Begin(); // it technically started
 }
@@ -191,6 +192,10 @@ void UCAnimator::Activate(const bool bReset) {
 	HasBounced = false;
 
 	Begin();
+
+	// this could be dangerous. TODO keep an eye.
+	// not sure this is worth it. it doesn't fix anything. so let's just not do it.
+	// DoTick(0);// force calculating the first update. this might help on certain element
 }
 
 void UCAnimator::Deactivate() {

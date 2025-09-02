@@ -190,12 +190,6 @@ void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
-	if (LIKELY(AnimMusicFX)) {
-		AnimMusicFX->Update(0); // force reset
-		// AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXUpd);
-		// AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXEnd);
-	}
-
 	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
 		AnimFXFXUpd(0, 0);
