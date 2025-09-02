@@ -180,7 +180,7 @@ void ALMusicMan::SetFB(float V) {
 	static FName NInt = "Intensity";
 	Player->SetSafeParamFloat(NInt, V);
 	SetEnvironFB(V);
-	AnimFXFXUpd(0, V);
+	AnimFXFXUpd(V, V);
 }
 
 void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
@@ -211,6 +211,7 @@ void ALMusicMan::BeginPlay() {
 
 	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
+		AnimFXFXUpd(0, 0);
 	}
 }
 
