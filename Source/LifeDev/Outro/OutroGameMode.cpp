@@ -35,7 +35,7 @@ void AOutroGameMode::BeginPlay() {
 	
 	if (LIKELY(MusicMan)) {
 		MusicMan->Init(); // very important
-		MusicMan->PlayMusic(Music, false);
+		MusicMan->Play(Music, false);
 	}
 }
 

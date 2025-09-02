@@ -123,5 +123,5 @@ void AIntroMan::SlotsDone(const bool HasDoneSave) {
 
 	// the whole issue was i was not initializing this instance on intro game mode. :')
 	USoundBase* const M = HasDoneSave ? MusicNew.LoadSynchronous() : Music.LoadSynchronous();
-	Man->PlayMusic(M, true);
+	Man->Play(M, true);
 }

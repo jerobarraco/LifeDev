@@ -25,7 +25,7 @@ void AMusicMan::Fade_Implementation(const bool In) {
 	Player->Fade(In);
 }
 
-void AMusicMan::PlayMusic(USoundBase* const Snd, const bool FadeOut) {
+void AMusicMan::Play(USoundBase* const Snd, const bool FadeOut) {
 	if (UNLIKELY(!IsValid(Snd))) {
 		UE_LOG(LogSounds, Log, TEXT("%hs. Sound not valid! Stop"), __func__);
 		return;
@@ -34,7 +34,7 @@ void AMusicMan::PlayMusic(USoundBase* const Snd, const bool FadeOut) {
 	UE_LOG(LogSounds, Log, TEXT("%hs '%s'"), __func__, *Snd->GetName());
 	
 	NextMusic = Snd;
-	if (FadeOut && Player->IsPlaying()) Fade(false); // will trigger SetNextMusic on finish
+	if (FadeOut & Player->IsPlaying()) Fade(false); // will trigger SetNextMusic on finish
 	else SetNextMusic();
 }
 

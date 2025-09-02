@@ -27,11 +27,11 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Debug")
 	FORCEINLINE void FadeOut() {Fade(false);}
 
-	// be careful that calling fade just before or after playmusic can cause timing issues
+	// be careful that calling fade just before or after this, can cause timing issues
 	// plays a music with(out) fadeout of the previous if any
 	// if snd is invalid it will stop the previous one
 	UFUNCTION(BlueprintCallable)
-	void PlayMusic(USoundBase* const Snd, const bool FadeOut = true);
+	void Play(USoundBase* const Snd, const bool FadeOut = true);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE UCSounder* GetPlayer() const { return Player; }

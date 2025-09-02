@@ -36,7 +36,7 @@ public:
 
 	// the flashback value for the Environ
 	UFUNCTION(BlueprintCallable)
-	void FadeFX(const bool On) const;
+	void FadeMusic(const bool On) const;
 
 	// set the flashback level. will also set the environ fb.
 	// this is the intensity param for the music. not the volume.

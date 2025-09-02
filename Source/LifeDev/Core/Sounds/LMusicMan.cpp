@@ -124,8 +124,8 @@ void ALMusicMan::SetEnvironFB(const float V) const {
 	Environ->SetSafeParamFloat(NFB, V);
 }
 
-void ALMusicMan::FadeFX(const bool On) const {
-	if (UNLIKELY(!IsValid(AnimMusicFX) || !IsValid(MusicFX) || !IsValid(MusicSubmix)))
+void ALMusicMan::FadeMusic(const bool On) const {
+	if (UNLIKELY(!IsValid(AnimMusicFX) | !IsValid(MusicFX) | !IsValid(MusicSubmix)))
 		return;
 
 	UE_LOG(LogTemp, Log, TEXT("%hs On=%i"), __func__, On);
@@ -259,7 +259,7 @@ void ALMusicMan::SetStep(AStep* const Step) {
 		return;
 	}
 
-	PlayMusic(Sound);
+	Play(Sound);
 }
 
 void ALMusicMan::AnimFXUpdate(const float Progress, const float Alpha) {
