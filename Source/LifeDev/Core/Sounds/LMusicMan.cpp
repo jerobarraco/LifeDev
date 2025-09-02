@@ -147,9 +147,6 @@ void ALMusicMan::FadeMusicFX(const bool On) const {
 	if (On) // don't add if it wasn't there and we don't need it.
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
 			this, MusicSubmix, MusicFX);
-
-			// UAudioMixerBlueprintLibrary::AddSubmixEffect(
-			// this, FXSubmix, FXFX);
 }
 
 void ALMusicMan::Fade_Implementation(const bool In) {
@@ -183,6 +180,7 @@ void ALMusicMan::SetFB(float V) {
 	static FName NInt = "Intensity";
 	Player->SetSafeParamFloat(NInt, V);
 	SetEnvironFB(V);
+	AnimFXFXUpd(0, V);
 }
 
 void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
@@ -209,6 +207,10 @@ void ALMusicMan::BeginPlay() {
 	if (LIKELY(AnimMusicFX)) {
 		AnimMusicFX->OnUpdate.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXUpd);
 		AnimMusicFX->OnEnd.AddUniqueDynamic(this, &ALMusicMan::AnimMusicFXEnd);
+	}
+
+	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
+		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
 	}
 }
 
@@ -286,6 +288,7 @@ void ALMusicMan::AnimMusicFXUpd(const float Progress, const float Alpha) {
 }
 
 void ALMusicMan::AnimMusicFXEnd() {
+	// TODO i can move this to a animSndFX
 	if (UNLIKELY(!MusicFX | !MusicSubmix)) return;
 
 	// done this way, because i want it to remove it if there's no animmusic.
@@ -293,4 +296,12 @@ void ALMusicMan::AnimMusicFXEnd() {
 	if (Remove)
 		UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
 			this, MusicSubmix, MusicFX);
+}
+
+void ALMusicMan::AnimFXFXUpd(const float Progress, const float Alpha) {
+	if (UNLIKELY(!IsValid(FXSubmix))) return;
+	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
+
+	FXSubmix->SetSubmixWetLevel(this, Alpha);
+	FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
 }

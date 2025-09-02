@@ -71,6 +71,7 @@ protected:
 	void AnimMusicFXUpd(const float Progress, const float Alpha);
 	UFUNCTION()
 	void AnimMusicFXEnd(); // bind
+	void AnimFXFXUpd(const float Progress, const float Alpha); // not really bound
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
 	TObjectPtr<USoundSubmix> MusicSubmix = nullptr;
