@@ -88,6 +88,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
 
+#pragma region objects
 	// returns the Classname. without the _C for bps.
 	// returns the "default" actor label for an actor. Not the REAL actor label (that does not exist on runtime builds)
 	// copied from AActor::GetDefaultActorLabel
@@ -105,7 +106,9 @@ public:
 		const FUObjectThreadContext& ThreadContext = FUObjectThreadContext::Get();
 		return ThreadContext.IsInConstructor > 0;
 	}
+#pragma endregion
 
+#pragma region tables
 	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
 		UScriptStruct* const RowType, TArray<FString>& OProblems, UObject* const Outer = nullptr);
@@ -133,8 +136,9 @@ public:
 		}
 
 		return true;
-	};
-	
+	}
+#pragma endregion
+
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
 	template <typename T>

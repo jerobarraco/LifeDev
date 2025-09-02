@@ -37,18 +37,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsEditor() {
 		#if WITH_EDITOR
-				return true;
+			return true;
 		#else
-				return false;
+			return false;
 		#endif
 	}
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsDebug() {
 		#if (UE_BUILD_TEST || UE_BUILD_SHIPPING)
-				return false;
+			return false;
 		#else
-				return true;
+			return true;
 		#endif
 	}
 
@@ -56,9 +56,9 @@ public:
 	static FORCEINLINE bool IsAndroid() {
 		// return UGameplayStatics::GetPlatformName() == "Android";
 		#if PLATFORM_ANDROID
-				return true;
+			return true;
 		#else
-				return false;
+			return false;
 		#endif
 	}
 

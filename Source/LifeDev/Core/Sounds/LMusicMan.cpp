@@ -192,7 +192,7 @@ void ALMusicMan::BeginPlay() {
 	Super::BeginPlay();
 
 	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
-		// UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
+		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
 		// AnimFXFXUpd(0, 0);
 	}
 }
@@ -261,6 +261,7 @@ void ALMusicMan::AnimFXFXUpd(const float Progress, const float Alpha) {
 	if (UNLIKELY(!IsValid(FXSubmix))) return;
 	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
 
+	// TODO this is not working for some reasen
 	FXSubmix->SetSubmixWetLevel(this, Alpha);
-	// FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
+	FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
 }
