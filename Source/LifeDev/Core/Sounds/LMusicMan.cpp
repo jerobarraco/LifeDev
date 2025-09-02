@@ -142,7 +142,7 @@ void ALMusicMan::FadeMusicFX(const bool On) const {
 
 	UE_LOG(LogTemp, Log, TEXT("%hs On=%i"), __func__, On);
 	AnimMusicFX->IsReversed = !On;
-	AnimMusicFX->Activate(true);
+	AnimMusicFX->Activate(false);
 
 	if (On) // don't add if it wasn't there and we don't need it.
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(
