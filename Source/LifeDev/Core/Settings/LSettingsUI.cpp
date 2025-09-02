@@ -50,7 +50,7 @@ void ULSettingsUI::Show_Implementation() {
 	// start fading
 
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
-	if (LIKELY(Man)) Man->FadeMusic(true);
+	if (LIKELY(Man)) Man->FadeMusicFX(true);
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {
@@ -76,7 +76,7 @@ void ULSettingsUI::Hide_Implementation() {
 	PauseTimer.Invalidate();
 
 	const ALMusicMan* const Man = ALMusicMan::Instance(this);
-	if (LIKELY(Man)) Man->FadeMusic(false);
+	if (LIKELY(Man)) Man->FadeMusicFX(false);
 
 	UAnim* const Anim = UAnim::Instance(this);
 	if (LIKELY(Anim)) {

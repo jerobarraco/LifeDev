@@ -124,7 +124,7 @@ void ALMusicMan::SetEnvironFB(const float V) const {
 	Environ->SetSafeParamFloat(NFB, V);
 }
 
-void ALMusicMan::FadeMusic(const bool On) const {
+void ALMusicMan::FadeMusicFX(const bool On) const {
 	if (UNLIKELY(!IsValid(AnimMusicFX) | !IsValid(MusicFX) | !IsValid(MusicSubmix)))
 		return;
 
