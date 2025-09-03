@@ -164,6 +164,10 @@ void ALMusicMan::Fade_Implementation(const bool In) {
 }
 
 void ALMusicMan::SetFB(float V) {
+	UE_LOG(LogTemp, VeryVerbose, TEXT("%hs a=%.5f"), __func__, V);
+	AnimFXFXUpd(V, V); // done before the rest, because i modify V
+
+	// handle the environ and music
 	// force fb to 0 if the music is not playing.
 	// hence handling feature flags for S_MUSIC without having to poll the ULSettings
 	if (UNLIKELY(!Player->IsPlaying())) V = 0;
@@ -171,7 +175,6 @@ void ALMusicMan::SetFB(float V) {
 	static FName NInt = "Intensity";
 	Player->SetSafeParamFloat(NInt, V);
 	SetEnvironFB(V);
-	AnimFXFXUpd(V, V);
 }
 
 void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
@@ -186,15 +189,6 @@ void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
 	if (UNLIKELY(!MM)) return;
 
 	MM->Fade(In);
-}
-
-void ALMusicMan::BeginPlay() {
-	Super::BeginPlay();
-
-	if (LIKELY(bool(FXSubmix) & bool(FXFX))) {
-		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
-		// AnimFXFXUpd(0, 0);
-	}
 }
 
 void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -215,6 +209,11 @@ void ALMusicMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ALMusicMan::Init() {
 	const UWorld* const W = GetWorld();
+	
+	if (LIKELY(bool(FXSubmix) & bool(FXFX)))
+		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
+	// fb is forced below which will force the value. so no need to init here.
+	
 	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (LIKELY(Flashback)) {
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
@@ -259,9 +258,8 @@ void ALMusicMan::SetStep(AStep* const Step) {
 
 void ALMusicMan::AnimFXFXUpd(const float Progress, const float Alpha) {
 	if (UNLIKELY(!IsValid(FXSubmix))) return;
-	// UE_LOG(LogTemp, Log, TEXT("%hs a=%.5f"), __func__, Alpha);
+	UE_LOG(LogTemp, VeryVerbose, TEXT("%hs a=%.5f"), __func__, Alpha);
 
-	// TODO this is not working for some reasen
 	FXSubmix->SetSubmixWetLevel(this, Alpha);
 	FXSubmix->SetSubmixDryLevel(this, 1.0-Alpha);
 }
