@@ -213,7 +213,7 @@ void ALMusicMan::Init() {
 	if (LIKELY(bool(FXSubmix) & bool(FXFX)))
 		UAudioMixerBlueprintLibrary::AddSubmixEffect(this, FXSubmix, FXFX);
 	// fb is forced below which will force the value. so no need to init here.
-	
+
 	UFlashback* const Flashback = UFlashback::Instance(W);
 	if (LIKELY(Flashback)) {
 		Flashback->OnChange.AddUniqueDynamic(this, &ALMusicMan::SetFB);
