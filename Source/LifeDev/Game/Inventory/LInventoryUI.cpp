@@ -8,6 +8,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryItemUI.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogLInventoryUI, Log, Log)
 ULInventoryUI::ULInventoryUI() {
 	static ConstructorHelpers::FClassFinder<ULInventoryItemUI>
 		CItem(TEXT("/Game/LifeDev/Game/Inventory/UI/W_InvItemUI.W_InvItemUI_C"));
@@ -29,7 +30,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 
 	if (UNLIKELY(Name.IsNone() | !SItems)) return;
 
-	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Diff=%i Count=%i"), __func__, *Name.ToString(),
+	UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s Diff=%i Count=%i"), __func__, *Name.ToString(),
 		Diff, Item.Count);
 
 	Fade(true);
@@ -38,7 +39,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	ULInventoryItemUI* It = pIt ? pIt->Get() : nullptr;
 	if (Item.Count<=0) {
 		if (LIKELY(It)) {
-			UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Removing"), __func__, *Name.ToString());
+			UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s Removing"), __func__, *Name.ToString());
 			It->Fade(false);
 			
 			// fade, add timer. then remove.
@@ -51,7 +52,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 				if (LIKELY(Inv)) {
 					FItem NIt;
 					if (UNLIKELY(Inv->Get(Name, NIt) || NIt.Count >0)) { // notice shortcut ||
-						UE_LOG(LogTemp, Log,
+						UE_LOG(LogLInventoryUI, Log,
 							TEXT("%hs Item re-added before the remove animation was done. Crisis averted."),
 							__func__, *Name.ToString());
 						// In theory, the IT is shared since we get and store in the SItems.
@@ -75,7 +76,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	bool Created = false;
 	if (!It) {
 		It = CreateWidget<ULInventoryItemUI>(this, ItemClass.Get());
-		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
+		UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
 		// "Slot" is a class member, don't shadow or windows will cry.
@@ -127,7 +128,7 @@ void ULInventoryUI::SetItemUsed_Implementation(const FName& Name) {
 
 void ULInventoryUI::SetItemCold_Implementation(const FName& Name) {
 	// Super::SetItemCold_Implementation(Name);
-	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
+	UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 	ResetItem(Name);
 	Fade(true);
 }
@@ -141,7 +142,7 @@ ULInventoryItemUI* ULInventoryUI::GetItem(const FName& Name) {
 }
 
 ULInventoryItemUI* ULInventoryUI::ResetItem(const FName& Name) {
-	UE_LOG(LogTemp, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
+	UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s"), __func__, *Name.ToString());
 	
 	// Super::SetItemCold_Implementation(Name);
 	const UInventory* const Inv = UInventory::Instance(this);
@@ -176,7 +177,7 @@ void ULInventoryUI::ReorderItems() {
 		const FName& K = Keys[i];
 		TObjectPtr<ULInventoryItemUI>* const pIUI = Items.Find(K);
 		if (UNLIKELY(!pIUI)) {
-			UE_LOG(LogTemp, Warning,
+			UE_LOG(LogLInventoryUI, Warning,
 				TEXT("%hs Could not find the widget for the specified item. N=%s"),
 				__func__, *K.ToString());
 			continue;
