@@ -16,7 +16,7 @@ void UJButton::SetUp(const FText& NewText, const int32 NewId) {
 	if (LIKELY(Text)) Text->SetText(Label);
 }
 
-void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyleAsset* const TextStyle) {
+void UJButton::ResetStyle() {
 	if (LIKELY(BtnStyle)) {
 		const FButtonStyle* const BtnStyleF = BtnStyle->GetStyle<FButtonStyle>();
 		if (LIKELY(bool(Btn) & bool(BtnStyleF))) Btn->SetStyle(*BtnStyleF);
@@ -33,10 +33,7 @@ void UJButton::SetStyle(USlateWidgetStyleAsset* const BtnStyle, USlateWidgetStyl
 			// have to set it manually as it does not have a setstyle :'/
 		}
 	}
-}
 
-void UJButton::ResetStyle() {
-	SetStyle(BtnStyle, TextStyle);
 	if (LIKELY(Text)) Text->SetText(Label);
 }
 
