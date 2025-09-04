@@ -129,7 +129,9 @@ bool UInventory::Rem(const FName& Name) {
 		__func__, *Name.ToString(), *NextKey.ToString());
 	
 	Items.Remove(Name);
-	OnMod.Broadcast(Name, -Item.Count, Item);
+	const int32 Diff = -Item.Count;
+	Item.Count = 0; // it needs to be zeroed out, or people listening to this will get confused. (LInventoryUI)
+	OnMod.Broadcast(Name, Diff, MoveTemp(Item));
 
 	SetSelected(NextKey);
 	return true;
