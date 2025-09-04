@@ -127,11 +127,11 @@ bool UJUtilsSys::SetRHI(EJRHI RHI) {
 	// this also covers out of bounds
 	bool WrongPlat = false;
 #if PLATFORM_LINUX
-	WrongPlat = RHI != EJRHI::VK_SM6 & RHI != EJRHI::VK_SM5 & RHI != EJRHI::VK_ES3;
+	WrongPlat = (RHI != EJRHI::VK_SM6) & (RHI != EJRHI::VK_SM5) & (RHI != EJRHI::VK_ES3);
 #elif PLATFORM_WINDOWS
-	WrongPlat = RHI != EJRHI::DX11 & RHI != EJRHI::DX12 & RHI != EJRHI::VK_WIN;
+	WrongPlat = (RHI != EJRHI::DX11) & (RHI != EJRHI::DX12) & (RHI != EJRHI::VK_WIN);
 #elif PLATFORM_MAC
-	WrongPlat = RHI != EJRHI::MTL_SM5 & RHI != EJRHI::MTL_SM6 & RHI != EJRHI::MTL_ES3;
+	WrongPlat = (RHI != EJRHI::MTL_SM5) & (RHI != EJRHI::MTL_SM6) & (RHI != EJRHI::MTL_ES3);
 #endif
 
 	if (WrongPlat) {

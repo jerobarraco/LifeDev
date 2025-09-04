@@ -93,7 +93,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UGameViewportClient* GetAnyGameViewportClient();
 #pragma endregion
-#pragma rhi
+#pragma region rhi
 	// returns the number of (shaders?) precompilations remaining.
 	// useful at the start of the game https://m.youtube.com/watch?v=HaVTYSnGvxA
 	UFUNCTION(BlueprintCallable)
