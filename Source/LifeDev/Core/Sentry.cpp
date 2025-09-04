@@ -80,7 +80,7 @@ void USentry::InstInit() {
 		return;
 	}
 
-	FString RHIS; EJRHI RHI;
+	FString RHIS;
 	UJUtilsSys::GetRHI(RHIS);
 	TagSet("RHI", RHIS);
 }
