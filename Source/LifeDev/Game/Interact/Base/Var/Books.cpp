@@ -25,7 +25,7 @@ static const TCHAR* _mats[] = {
 };
 
 void ABooks::CreateBooks() {
-	/// create 
+	/// create
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Books/BookP.BookP"));
 	// check against 0 to be able to use negative values as well

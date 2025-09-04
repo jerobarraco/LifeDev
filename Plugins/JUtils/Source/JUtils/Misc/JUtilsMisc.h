@@ -85,7 +85,7 @@ public:
 	// returns true when two strings are similar, ignoring case and whitespace.
 	UFUNCTION(BlueprintCallable)
 	static bool StringLooseEquals(const FString& A, const FString& B);
-#pragma levels
+#pragma region levels
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static bool ToggleDataLayer(const UObject* const O, const UDataLayerAsset* const DataLayer, const bool Enabled = true);
 	
