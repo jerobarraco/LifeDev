@@ -171,7 +171,7 @@ void ULInventoryUI::ReorderItems() {
 	TArray<FName> Keys;
 	All.GetKeys(Keys);
 	const int32 Num = Keys.Num();
-	for (uint32 i = 0; i<Num; ++i) {
+	for (int32 i = 0; i<Num; ++i) {
 		const FName& K = Keys[i];
 		TObjectPtr<ULInventoryItemUI>* const pIUI = Items.Find(K);
 		if (UNLIKELY(!pIUI)) {

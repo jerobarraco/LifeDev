@@ -18,7 +18,7 @@ ALStepC4S008::ALStepC4S008():Super() {
 	RandFB->ValueMax = .005;
 	// spot
 	IntersActivate = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501FFE301_1677671777"))};
-	ActorsShow = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1481028493"))};
+	ActorsShow = {TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1481028493"))};
 }
 
 // allows the player to sit on the table. enables a spot (set on editor)
