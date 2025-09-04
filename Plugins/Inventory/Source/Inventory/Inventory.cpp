@@ -129,7 +129,7 @@ bool UInventory::Rem(const FName& Name) {
 		__func__, *Name.ToString(), *NextKey.ToString());
 	
 	Items.Remove(Name);
-	OnMod.Broadcast(Name, -Item.Count, MoveTemp(Item));
+	OnMod.Broadcast(Name, -Item.Count, Item);
 
 	SetSelected(NextKey);
 	return true;
