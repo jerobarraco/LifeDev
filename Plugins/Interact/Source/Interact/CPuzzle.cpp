@@ -65,14 +65,15 @@ void UCPuzzle::ResetCurrents() {
 			CurrentIds.Add(I->GetState()); // initialize to the current value. important since it could be different.
 		}
 		if (CurrentIds.Num() != Solution.Num()) {
-			UE_LOG(LogCPuzzle, Warning, TEXT("Current ids and Solution ids have different lenghts, the puzzle will not solve!"));
+			UE_LOG(LogCPuzzle, Warning, TEXT("%hs o=%s Current ids and Solution ids have different lengths."
+				" The puzzle will not solve!"), __func__, *GetNameSafe(GetOwner()));
 		}
 	} else if (Type == EPuzzleType::SEQUENCE) {
 	}
 }
 
 void UCPuzzle::Bind() {
-	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(this));
+	UE_LOG(LogCPuzzle, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 
 	int32 i = 0;
 	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
