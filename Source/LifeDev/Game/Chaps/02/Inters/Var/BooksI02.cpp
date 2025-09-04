@@ -15,6 +15,6 @@ ABooksI02::ABooksI02():Super(1, 0) {
 	
 	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310"));
 
-	// hint the batteries in case teh user don't see it. can happen due to fb
+	// hint the batteries in case the user don't see it. can happen due to fb
 	RewardIntersHint = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.BattsI00_UAID_D8BBC116E5012EC501_1469610310"))};
 }
