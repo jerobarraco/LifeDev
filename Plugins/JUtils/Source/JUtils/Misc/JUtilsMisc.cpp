@@ -223,7 +223,7 @@ bool UJUtilsMisc::LevelUnloadPtr(const UObject* const O, ULevelStreaming* const 
 	LAI.UUID = Level->GetUniqueID(); // this is critical, or it won't unload multiple in a row.
 
 	// appears to be correct https://dev.epicgames.com/documentation/en-us/unreal-engine/loading-and-unloading-levels-using-cplusplus-in-unreal-engine
-	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(O, Level, LAI, Block);
+	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(O, Level->GetWorldAsset(), LAI, Block);
 	return true;
 }
 
