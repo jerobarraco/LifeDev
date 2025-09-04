@@ -78,9 +78,10 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 		UE_LOG(LogTemp, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
-		UScrollBoxSlot* const Slot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
+		// "Slot" is a class member, don't shadow or windows will cry.
+		UScrollBoxSlot* const pSlot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
 		// this is important so the SetSelected works well
-		if (LIKELY(Slot)) Slot->SetVerticalAlignment(VAlign_Bottom);
+		if (LIKELY(pSlot)) pSlot->SetVerticalAlignment(VAlign_Bottom);
 
 		It->Fade(true);
 		Created = true;
