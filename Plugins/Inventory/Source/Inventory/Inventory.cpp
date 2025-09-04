@@ -97,7 +97,7 @@ bool UInventory::Mod(const FName& Name, const int32 Diff, const bool OnlyConsume
 		Items.Remove(Name);
 	}
 
-	// finally notify
+	// finally notify. using move since curDiff is cached.
 	OnMod.Broadcast(Name, CurDiff, MoveTemp(ItemCopy));
 
 	// Set selected only after removing.
@@ -131,7 +131,7 @@ bool UInventory::Rem(const FName& Name) {
 	Items.Remove(Name);
 	const int32 Diff = -Item.Count;
 	Item.Count = 0; // it needs to be zeroed out, or people listening to this will get confused. (LInventoryUI)
-	OnMod.Broadcast(Name, Diff, MoveTemp(Item));
+	OnMod.Broadcast(Name, Diff, MoveTemp(Item)); // i use movetemp here only because i cache "Diff" and i don't use it anymore.
 
 	SetSelected(NextKey);
 	return true;

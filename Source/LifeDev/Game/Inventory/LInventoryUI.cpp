@@ -69,6 +69,10 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			const UWorld* const World = GetWorld();
 			// ideally this shouldn't be hardcoded. but if we overextend nobody is going to die.
 			if (LIKELY(World)) World->GetTimerManager().SetTimer(H, D, 1, false);
+			// seems to be necessary. unfortunately the Keys in the inventory gets reordered when an item gets removed. (wtf)
+			// and i won't have an extra array to fix that (for now at least)
+			// so we need to reorder on removal. there's also reorder on add, so it's ok if an item gets readded. 
+			ReorderItems();
 		}
 		return;
 	}

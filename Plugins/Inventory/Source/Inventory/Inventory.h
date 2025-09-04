@@ -18,6 +18,7 @@ DECLARE_LOG_CATEGORY_CLASS(LogInventory, Log, Log);
 class UDataTable;
 
 // World subsystem to deal with Inventory
+// Note: adding/removing items might change their order.
 UCLASS(Blueprintable, BlueprintType, Category="Inventory", Config=Inventory, DefaultConfig)
 class INVENTORY_API UInventory : public UWorldSubsystem {
 	GENERATED_BODY()
