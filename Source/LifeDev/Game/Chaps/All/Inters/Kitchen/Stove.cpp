@@ -20,8 +20,9 @@ AStove::AStove():Super() {
 	Mesh->SetQuickCollisionEnabled(true);
 	Mesh->SetCastAllShadows(true);
 
-	Interact->SetRelativeLocation(FVector(37.5,-42.5,55));
-	Interact->SetBoxExtent(FVector(37.5,42.5,55));
+	Interact->SetRelativeLocation(FVector(37.5,-42.5,45));
+	// made less-tall so that it's easier to get the matches and not confuse with the pot.
+	Interact->SetBoxExtent(FVector(37.5,42.5,40));
 	SFX->SetRelativeLocation(FVector(37.5,-42.5,42.5));
 
 	// TODO new one
