@@ -63,7 +63,7 @@ void ALInteract::SetActive_Implementation(const bool Active) {
 	// doing inside SetActive to capture all attempts of activation.
 	// including the steps and other interactions.
 	// These two are the most important since they are triggered automatically. Hence, the code needs the check here.
-	if (UNLIKELY(Active & UseActiveOnce)) { // todo change UNLIKELY if its used more
+	if (UNLIKELY(Active & UseActiveOnce)) { // note: change UNLIKELY if it's used more
 		const FName NTrigger(LDConsts::Dlgs::Inter::TriggerPre+Label.ToString());
 		if (UNLIKELY(Flags && Flags->Has(NTrigger))) {
 			UE_LOG(LogLInteract, Log, TEXT("%hs not activating. UseActivateOnce && FlagHas. N=%s"),
