@@ -187,8 +187,7 @@ void ULInventoryUI::ReorderItems() {
 	for (int32 i = 0; i<Num; ++i) {
 		const FName& K = Keys[i];
 		ULInventoryItemUI* const IUI = GetItem(K);
-		UE_LOG(LogLInventoryUI, Verbose,
-			TEXT("%hs moving item n=%s p=%llu i=%i"),
+		UE_LOG(LogLInventoryUI, Verbose, TEXT("%hs moving item n=%s p=%llu i=%i"),
 			__func__, *K.ToString(), IUI, i);
 		if (UNLIKELY(!IUI)) {
 			UE_LOG(LogLInventoryUI, Warning,
