@@ -13,8 +13,8 @@ ALStepC3S002::ALStepC3S002():Super() {
 	// required items, and it's hard to find them with a fb
 	RandFB->DelayMin = .5;
 	RandFB->DelayMax = 2;
-	RandFB->ValueMin = -.03;
-	RandFB->ValueMax = .01; // you wouldn't think is so easy to get out of a flashback, do you?
+	RandFB->ValueMin = -.005;
+	RandFB->ValueMax = .005; // you wouldn't think is so easy to get out of a flashback, do you?
 	UseFBRand = true;
 	UseRain = true;
 	FinishItems = {

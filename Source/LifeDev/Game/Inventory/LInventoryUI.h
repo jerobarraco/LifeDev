@@ -32,6 +32,8 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+	void AddItem(UWidget* const It) const;
+	UFUNCTION(BlueprintCallable, CallInEditor) // ufunction to be able to trigger from the console
 	void ReorderItems();
 
 	// default class to use

@@ -83,10 +83,8 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 		UE_LOG(LogLInventoryUI, Log, TEXT("%hs Name=%s Creating p=%p"), __func__,
 			*Name.ToString(), It);
 		Items.Add(Name, It); // the padding is embedded in the itemui_w itself
-		// "Slot" is a class member, don't shadow or windows will cry.
-		UScrollBoxSlot* const pSlot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
-		// this is important so the SetSelected works well
-		if (LIKELY(pSlot)) pSlot->SetVerticalAlignment(VAlign_Bottom);
+		
+		AddItem(It);
 
 		It->Fade(true);
 		Created = true;
@@ -96,6 +94,13 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 	It->SetItem(Name, Item);
 
 	if (UNLIKELY(Created)) ReorderItems(); // this adds quite some processing so let's gate it.
+}
+
+void ULInventoryUI::AddItem(UWidget* const It) const {
+	// "Slot" is a class member, don't shadow or windows will cry.
+	UScrollBoxSlot* const pSlot = Cast<UScrollBoxSlot>(SItems->AddChild(It));
+	// this is important so the SetSelected works well
+	if (LIKELY(pSlot)) pSlot->SetVerticalAlignment(VAlign_Bottom);
 }
 
 void ULInventoryUI::SetSelected_Implementation(const FName& Name) {
@@ -167,9 +172,11 @@ void ULInventoryUI::NativeOnInitialized() {
 	if (UNLIKELY(!SItems)) return;
 
 	SItems->ClearChildren(); // needed since i leave a stub item for helping with layout
+	Items.Empty();
 }
 
 void ULInventoryUI::ReorderItems() {
+	UE_LOG(LogLInventoryUI, Log, TEXT("%hs"), __func__);
 	const UInventory* const Inv = UInventory::Instance(this);
 	if (UNLIKELY(!Inv)) return;
 
@@ -179,15 +186,25 @@ void ULInventoryUI::ReorderItems() {
 	const int32 Num = Keys.Num();
 	for (int32 i = 0; i<Num; ++i) {
 		const FName& K = Keys[i];
-		TObjectPtr<ULInventoryItemUI>* const pIUI = Items.Find(K);
-		if (UNLIKELY(!pIUI)) {
+		ULInventoryItemUI* const IUI = GetItem(K);
+		UE_LOG(LogLInventoryUI, Verbose,
+			TEXT("%hs moving item n=%s p=%llu i=%i"),
+			__func__, *K.ToString(), IUI, i);
+		if (UNLIKELY(!IUI)) {
 			UE_LOG(LogLInventoryUI, Warning,
 				TEXT("%hs Could not find the widget for the specified item. N=%s"),
 				__func__, *K.ToString());
 			continue;
 		}
-		
-		ULInventoryItemUI* const IUI = pIUI->Get();
-		SItems->ShiftChild(i, IUI); // Thanks, Tim's team. amazing addition.
+		// ok so this is not working. i'll do it manually
+		// SItems->ShiftChild(i, IUI); // Thanks, Tim's team. amazing addition.
+		// this works because i'm removing basically all items (at some point)
+		// and adding them in order (since i'm iterating by the key array)
+		// so in the end they'll end up in order
+		// if there's an item that is not in the keys array, it will end up first.
+		// this happens when removing an item. it's a shame. but... i also don't want to overcomplicate this
+		// it's probably less efficient than ShiftChild too
+		SItems->RemoveChild(IUI);
+		AddItem(IUI);
 	}
 }
