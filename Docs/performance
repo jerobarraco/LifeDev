@@ -206,8 +206,8 @@ DONT:
 	
 	on interact, maybe step, or maybe put a warning.
 	
-	change this
-	s.AdaptiveAddToWorld.Enabled
+	change this (allows to call beginplay staggered in multiple frames) in defaultEnigne @ [ConsoleVariables]
+	s.AdaptiveAddToWorld.Enabled=1
 
 	ensure the object count is sane
 	obj list -countsort
