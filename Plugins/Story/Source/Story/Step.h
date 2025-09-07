@@ -87,12 +87,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	bool TeleportChar = false;
 
-	// Actors to show AND hide. If it's an interact, it will fade in and out.
+	// Actors to show. If it's an interact, it will fade in and out.
 	// Use IntersEnable/FadeIn/FadeOut instead otherwise.
 	// purposely an actor to have flexibility.
-	// it will hide the actor on BeginPlay.
-	// the hiding on stop is deprecated. use ActorsHide
-	// the hiding on begin play is deprecated. set on the class maybe.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsShow;
 	// not on AStep because i want to support fading as well, or maybe i should have the fade in LInteract::SetActorHiddenInGame? maybe i'll need a bool to tell if it needs to fade or not?

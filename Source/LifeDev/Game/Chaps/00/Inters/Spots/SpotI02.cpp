@@ -16,3 +16,4 @@ ASpotI02::ASpotI02():Super() {
 
 	// RewardActor set in editor to the puzzle that gives a card
 }
+// todo /Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI00_UAID_D8BBC116E5014BCE01_1680297915

@@ -84,7 +84,7 @@ public:
 	bool ResetOnFail = false;
 
 	// Will reset when reaching this time without interacting with it
-	// Disabled if <=0 
+	// Disabled if <=0
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reset")
 	float ResetTimeout = 0;
 

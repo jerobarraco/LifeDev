@@ -69,9 +69,9 @@ protected:
 	void SetStep(AStep* const Step); // can't be const AStep
 	void AnimFXFXUpd(const float Progress, const float Alpha); // not really bound
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Sub")
 	TObjectPtr<USoundSubmix> FXSubmix = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Sub")
 	TObjectPtr<USoundEffectSubmixPreset> FXFX = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="SetUp|Sub")

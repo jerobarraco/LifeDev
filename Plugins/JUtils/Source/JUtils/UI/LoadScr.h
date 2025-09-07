@@ -46,7 +46,7 @@ protected:
 	// (checking the pointer is always recommended)
 	// should be changed in the config file
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	bool ShouldCreate = true;
+	bool ShouldCreate = false;
 
 	bool UseBGLoop = false;
 };

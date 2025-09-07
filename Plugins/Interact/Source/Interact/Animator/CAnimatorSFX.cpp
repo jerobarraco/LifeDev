@@ -5,7 +5,6 @@
 
 #include "AudioMixerBlueprintLibrary.h"
 
-
 void UCAnimatorSFX::FXAdd() const {
 	UAudioMixerBlueprintLibrary::AddSubmixEffect(
 		this, Submix, FX);
