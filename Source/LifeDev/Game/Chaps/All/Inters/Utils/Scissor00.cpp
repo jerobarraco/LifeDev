@@ -12,7 +12,6 @@ AScissor00::AScissor00() {
 	UseAnim = false;
 	UseFade = true;
 
-	// TODO fix material, it shows black on runtime (probably the animfade)
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Utils/Scissor/Scissor_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
