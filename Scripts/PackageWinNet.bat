@@ -14,6 +14,10 @@ set CLEAN=
 ::set DDC="-ddc=noshared" :: actually creates issues.
 set DDC=""
 
+:: Copy app icon
+mkdir "%WORKSPACE%/Build/Windows/"
+xcopy /y "%WORKSPACE%/Application.ico" "%WORKSPACE%/Build/Windows/Application.ico"
+
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
 call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/" %DDC%
