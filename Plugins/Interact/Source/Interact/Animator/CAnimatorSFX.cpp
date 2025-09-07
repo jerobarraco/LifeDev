@@ -13,7 +13,7 @@ void UCAnimatorSFX::FXAdd() const {
 
 void UCAnimatorSFX::FXRem() const {
 	UAudioMixerBlueprintLibrary::RemoveSubmixEffect(
-			this, Submix, FX);
+		this, Submix, FX);
 }
 
 void UCAnimatorSFX::Activate(const bool bReset) {
