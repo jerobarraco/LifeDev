@@ -16,7 +16,7 @@ set DDC=""
 
 :: Copy app icon
 mkdir "%WORKSPACE%/Build/Windows/"
-xcopy /y "%WORKSPACE%/Application.ico" "%WORKSPACE%/Build/Windows/Application.ico"
+xcopy /y "%WORKSPACE%/Content/Omake/Application.ico" "%WORKSPACE%/Build/Windows/Application.ico"
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
