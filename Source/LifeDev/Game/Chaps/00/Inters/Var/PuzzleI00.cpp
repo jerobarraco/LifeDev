@@ -4,11 +4,11 @@
 
 #include "Interact/CPuzzle.h"
 #include "JUtils/Misc/JMiscConsts.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
+// #include "LifeDev/Core/Consts/ConstFlags.h"
 
 APuzzleI00::APuzzleI00():Super() {
 	RewardFlash = .2;
-	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
+	// RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube; // i could move this to a base class for cube puzzles
 	// static FName DoneId = "PZ00_T";
 	// TriggerDlg = DoneId;
 	CPuzzle->Type = EPuzzleType::COMBINATION;

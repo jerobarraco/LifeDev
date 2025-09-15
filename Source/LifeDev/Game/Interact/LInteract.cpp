@@ -204,8 +204,6 @@ void ALInteract::DoRewards() {
 	}
 	
 	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
-	// do the flags which are more flexible.
-	if (LIKELY(Flags)) Flags->Mod(RewardFlag, 1.0);
 
 	// do the actor
 	AActor* const RAct = RewardActor.Get();

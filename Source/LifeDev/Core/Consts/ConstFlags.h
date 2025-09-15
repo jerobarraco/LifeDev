@@ -7,9 +7,9 @@ namespace LDConsts {
 			namespace Lights {
 				inline static const FName Off("Stats.Lights.Off");
 			}
-			namespace Puzzles {
-				inline static const FName Cube("Stats.Puzzles.Cube");
-			}
+			// namespace Puzzles {
+				// inline static const FName Cube("Stats.Puzzles.Cube");
+			// }
 			namespace Inter {
 				inline static const FName Trigger("Stats.Inters.Trigger");
 			}

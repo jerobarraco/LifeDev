@@ -4,14 +4,14 @@
 
 #include "Interact/CPuzzle.h"
 #include "JUtils/Misc/JMiscConsts.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
+// #include "LifeDev/Core/Consts/ConstFlags.h"
 
 APuzzleI03::APuzzleI03():Super() {
 	UseHint = true;
 	// static FName DoneId = "PZ03_T";
 	// TriggerDlg = DoneId;
 	RewardFlash = .15;
-	RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
+	// RewardFlag = LDConsts::Flags::Stats::Puzzles::Cube;
 	RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(
 		"/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card03_UAID_D8BBC116E501EAD901_1338864495"));
 

@@ -47,9 +47,9 @@ public:
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
 		// rewardActor==nullptr works because both TSoftObjectPtr and FSoftObjectPtr overrides ==nullptr
 		// i could have used IsNull, but this ties me a bit less to TSoftObjectPtr in particular.
-		const bool Rewardless = (ZeroFlash && RewardActor == nullptr &&
-			RewardItem.IsNone() && RewardFlag.IsNone() && RewardIntersActive.Num() == 0 &&
-			RewardIntersHint.Num() == 0 && RewardIntersTrigger.Num() ==0);
+		const bool Rewardless = (ZeroFlash & (RewardActor == nullptr) &
+			RewardItem.IsNone() & (RewardIntersActive.Num() == 0) &
+			(RewardIntersHint.Num() == 0) & (RewardIntersTrigger.Num() ==0));
 			// note: use all rewards here. since it's confusing having to track which rewards destroys and which don't.
 			// you might want to mix rewards that destroys and don't, that's fine. The result is to destroy.
 			// you might want to not destroy, then use UseRewardDestroy=false.
@@ -59,9 +59,7 @@ public:
 	// setting this will reward the item on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
-	// setting this will reward a flag on trigger, adding 1 *each* time.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
-	FName RewardFlag = NAME_None;
+
 	// the mod value for the flash system when it's triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
