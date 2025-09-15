@@ -2,6 +2,7 @@
 
 #include "TapeI00.h"
 
+#include "JUtils/Misc/JMiscConsts.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 ATapeI00::ATapeI00():Super() {
@@ -15,4 +16,7 @@ ATapeI00::ATapeI00():Super() {
 	HintCondition = "{Inter.Locked.RadioI00}"; // once it tried to use the radio
 	// needed to be able to attach to the drawer
 	Super::SetMobility(EComponentMobility::Movable);
+	RewardIntersHint = {
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Radio00_UAID_D8BBC116E501DCB901_1099601259")
+	};
 }
