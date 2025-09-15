@@ -2,6 +2,8 @@
 
 #include "LStepC1S006.h"
 
+#include "JUtils/Misc/JMiscConsts.h"
+
 ALStepC1S006::ALStepC1S006():Super() {
 	Label = FName("C1S6");
 	InputEnabled = true; // does it matter? it will show dialogs
@@ -16,5 +18,8 @@ ALStepC1S006::ALStepC1S006():Super() {
 	TeleportChar=true;
 	ActorsHide = {
 		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215"))
+	};
+	IntersTrigger = {
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215")
 	};
 }
