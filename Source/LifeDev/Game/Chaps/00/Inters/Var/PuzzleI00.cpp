@@ -19,6 +19,7 @@ APuzzleI00::APuzzleI00():Super() {
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube02_UAID_D8BBC116E5014BCE01_1753569918"),
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube03_UAID_D8BBC116E5014BCE01_1810824921"),
 	});
+	RewardActor = SoftOP(AActor, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card01_UAID_D8BBC116E50181BA01_2066401320");
 }
 
 void APuzzleI00::BeginPlay() {
