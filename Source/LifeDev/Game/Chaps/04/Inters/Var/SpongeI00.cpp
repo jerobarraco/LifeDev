@@ -3,6 +3,7 @@
 #include "SpongeI00.h"
 
 #include "Interact/Animator/CAnimatorMix.h"
+#include "JUtils/Misc/JMiscConsts.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 // deactivated by default. activated by a step triggered by the pot.
@@ -30,21 +31,32 @@ ASpongeI00::ASpongeI00():Super() {
 	// TriggerDlg = "Sponge00_T";
 	// SFXTrigger = CSnd.Object;
 	SFXs = { nullptr, CSnd.Object};
+	Plates = {
+		SoftOP(ALInteract, "/Script/LifeDev.Plate'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5019DE401_2031044825'"),
+		SoftOP(ALInteract, "/Script/LifeDev.Plate'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5019DE401_2013816824'"),
+		SoftOP(ALInteract, "/Script/LifeDev.Plate'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5019DE401_2013811823'"),
+		SoftOP(ALInteract, "/Script/LifeDev.Plate'/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5010EE301_1945677390'"),
+	};
 }
 
 void ASpongeI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
-	for (ALInteract* const I: Plates) {
+	for (const TSoftObjectPtr<ALInteract>& pI: Plates) {
+		ALInteract* const I = pI.Get();
 		if (UNLIKELY(!IsValid(I))) continue;
+
 		I->Fade(false);
 	}
+
 	Plates.Empty();
 }
 
 void ASpongeI00::BeginPlay() {
 	Super::BeginPlay();
-	for (ALInteract* const I: Plates) {
+	for (const TSoftObjectPtr<ALInteract>& pI: Plates) {
+		ALInteract* const I = pI.Get();
 		if (UNLIKELY(!IsValid(I))) continue;
+
 		I->Fade(true);
 		I->SetActive(false); // force them disabled.
 	}

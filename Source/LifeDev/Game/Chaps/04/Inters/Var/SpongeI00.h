@@ -17,5 +17,5 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TArray<TObjectPtr<ALInteract>> Plates;
+	TArray<TSoftObjectPtr<ALInteract>> Plates;
 };
