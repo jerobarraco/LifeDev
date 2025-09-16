@@ -40,14 +40,16 @@ void USentry::SAddMsg(const UObject* const O, const FString& Msg, const ESentryL
 void USentry::AddComment(const FString& Comment) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 
-	// const FString& Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
-	// if (UNLIKELY(Id.IsEmpty())) {
-		// UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
-		// return;
-	// }
-	// TODO test if leaving the event id as "" still works
-	Sub->CaptureFeedbackWithParams(Comment, UJUtilsSys::GetUserName(), "[Email]", "");
-	// Sub->CaptureUserFeedbackWithParams(Id, "", Comment, );
+	const FString& Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
+	if (UNLIKELY(Id.IsEmpty())) {
+		UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
+		return;
+	}
+	// if the Id is empty, it will still work. but capturing a message,
+	// also captures a lot of useful information about the context (e.g. which sequence is running, etc.).
+	// it's probable (hoped) that the user sends the feedback as soon as he finds an issue,
+	// so the context is important.
+	Sub->CaptureFeedbackWithParams(Comment, UJUtilsSys::GetUserName(), "[Email]", Id);
 }
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {

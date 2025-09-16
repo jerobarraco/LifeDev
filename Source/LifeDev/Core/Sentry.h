@@ -34,7 +34,7 @@ public:
 	// aka breadcrumb, something that happened between instances. does not create an instance.
 	// this is mostly necessary when you know what you want to debug. for a SPECIFIC bug you're tracking.
 	// don't add unnecessarily, specially since the types are VERY heavy.
-	// this is something that _happen_ most of the time (as breadcrumbs gets stored in a timeline)
+	// this is something that _happen_ (not just the state) (breadcrumbs gets stored in a timeline, as opposed to tags)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false,meta=(AutoCreateRefTerm="Hint,Cat,Type,Data"))
 	void AddHint(const FString& Hint, const TMap<FName, FString>& Data,
 		const FString& Cat = "Default", const FString& Type ="Default") const;
