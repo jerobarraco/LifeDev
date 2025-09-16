@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Sentry. All Rights Reserved.
+// Copyright (c) 2025 Sentry. All Rights Reserved.
 
 #pragma once
 
@@ -22,4 +22,12 @@ enum class ESentryCrashedLastRun : uint8
 	NotEvaluated,
 	NotCrashed,
 	Crashed
+};
+
+UENUM(BlueprintType)
+enum class EUserConsent : uint8
+{
+	Revoked,
+	Given,
+	Unknown
 };

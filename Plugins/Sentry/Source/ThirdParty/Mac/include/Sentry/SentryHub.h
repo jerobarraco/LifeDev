@@ -1,15 +1,21 @@
-
 #if __has_include(<Sentry/Sentry.h>)
 #    import <Sentry/SentryDefines.h>
-#    import <Sentry/SentrySpanProtocol.h>
-#else
+#elif __has_include(<SentryWithoutUIKit/Sentry.h>)
 #    import <SentryWithoutUIKit/SentryDefines.h>
-#    import <SentryWithoutUIKit/SentrySpanProtocol.h>
+#else
+#    import <SentryDefines.h>
 #endif
+#import SENTRY_HEADER(SentrySpanProtocol)
 
-@class SentryEvent, SentryClient, SentryScope, SentryUser, SentryBreadcrumb, SentryId,
-    SentryUserFeedback, SentryTransactionContext;
-@class SentryMetricsAPI;
+@class SentryBreadcrumb;
+@class SentryClient;
+@class SentryEvent;
+@class SentryFeedback;
+@class SentryId;
+@class SentryScope;
+@class SentryTransactionContext;
+@class SentryUser;
+@class SentryUserFeedback;
 
 NS_ASSUME_NONNULL_BEGIN
 @interface SentryHub : NSObject
@@ -17,8 +23,6 @@ SENTRY_NO_INIT
 
 - (instancetype)initWithClient:(SentryClient *_Nullable)client
                       andScope:(SentryScope *_Nullable)scope;
-
-@property (nonatomic, readonly) SentryMetricsAPI *metrics;
 
 /**
  * Starts a new SentrySession. If there's a running SentrySession, it ends it before starting the
@@ -166,12 +170,21 @@ SENTRY_NO_INIT
 - (SentryId *)captureMessage:(NSString *)message
                    withScope:(SentryScope *)scope NS_SWIFT_NAME(capture(message:scope:));
 
+#if !SDK_V9
 /**
  * Captures a manually created user feedback and sends it to Sentry.
  * @param userFeedback The user feedback to send to Sentry.
+ * @deprecated Use @c -[SentryHub @c captureFeedback:] .
  */
-- (void)captureUserFeedback:(SentryUserFeedback *)userFeedback
-    NS_SWIFT_NAME(capture(userFeedback:));
+- (void)captureUserFeedback:(SentryUserFeedback *)userFeedback NS_SWIFT_NAME(capture(userFeedback:))
+                                DEPRECATED_MSG_ATTRIBUTE("Use -[SentryHub captureFeedback:].");
+#endif // !SDK_V9
+
+/**
+ * Captures a new-style user feedback and sends it to Sentry.
+ * @param feedback The user feedback to send to Sentry.
+ */
+- (void)captureFeedback:(SentryFeedback *)feedback;
 
 /**
  * Use this method to modify the Scope of the Hub. The SDK uses the Scope to attach

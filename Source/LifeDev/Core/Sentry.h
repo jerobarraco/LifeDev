@@ -36,7 +36,7 @@ public:
 	// don't add unnecessarily, specially since the types are VERY heavy.
 	// this is something that _happen_ most of the time (as breadcrumbs gets stored in a timeline)
 	UFUNCTION(BlueprintCallable, BlueprintPure=false,meta=(AutoCreateRefTerm="Hint,Cat,Type,Data"))
-	void AddHint(const FString& Hint, const TMap<FString, FString>& Data,
+	void AddHint(const FString& Hint, const TMap<FName, FString>& Data,
 		const FString& Cat = "Default", const FString& Type ="Default") const;
 
 protected:

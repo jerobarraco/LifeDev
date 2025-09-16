@@ -40,13 +40,14 @@ void USentry::SAddMsg(const UObject* const O, const FString& Msg, const ESentryL
 void USentry::AddComment(const FString& Comment) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
 
-	USentryId* const Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
-	if (UNLIKELY(!Id)) {
-		UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
-		return;
-	}
-
-	Sub->CaptureUserFeedbackWithParams(Id, "", Comment, UJUtilsSys::GetUserName());
+	// const FString& Id = Sub->CaptureMessage("FEEDBACK!"); // yes, the docs says it needs to be like this.
+	// if (UNLIKELY(Id.IsEmpty())) {
+		// UE_LOG(LogSentry, Error, TEXT("%hs Could not capture message. Id is null."), __func__);
+		// return;
+	// }
+	// TODO test if leaving the event id as "" still works
+	Sub->CaptureFeedbackWithParams(Comment, UJUtilsSys::GetUserName(), "[Email]", "");
+	// Sub->CaptureUserFeedbackWithParams(Id, "", Comment, );
 }
 
 void USentry::TagSet(const FString& Tag, const FString& Val) const {
@@ -61,9 +62,17 @@ void USentry::TagRem(const FString& Tag) const {
 	Sub->RemoveTag(Tag);
 }
 
-void USentry::AddHint(const FString& Hint, const TMap<FString, FString>& Data, const FString& Cat, const FString& Type) const {
+void USentry::AddHint(const FString& Hint, const TMap<FName, FString>& Data, const FString& Cat, const FString& Type) const {
 	if (UNLIKELY(!IsValid(Sub))) return;
-	Sub->AddBreadcrumbWithParams(Hint, Cat, Type, Data);
+
+	TMap<FString, FSentryVariant> DataIn; // protect the project from FSentryVariant, even though it takes more time
+	TArray<FName> Keys; // fnames are faster to iterate (as they are faster to compare)
+	Data.GetKeys(Keys);
+	for (const FName& K: Keys) {
+		const FString& D = Data[K];
+		DataIn.Add(K.ToString(), D);
+	}
+	Sub->AddBreadcrumbWithParams(Hint, Cat, Type, DataIn);
 }
 
 void USentry::AddMsg(const FString& Msg, const ESentryLevel& Level) const {

@@ -124,7 +124,7 @@ void ALStoryMan::ChapStart() {
 	const USentry* const Sentry = USentry::Instance(this);
 	const FString& ChapFeatS = UEnum::GetValueAsString(ChapFeat);
 	if (LIKELY(Sentry)) {
-		const TMap<FString, FString> Data = {{"ChapId",FString::FromInt(ChapterId)},
+		const TMap<FName, FString> Data = {{"ChapId",FString::FromInt(ChapterId)},
 			{"Feat", ChapFeatS}};
 		Sentry->AddHint(__func__, Data);
 	}
