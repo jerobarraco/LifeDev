@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/Doorish.h"
+#include "Doors/Doorish.h"
 
 #include "Drawer.generated.h"
 

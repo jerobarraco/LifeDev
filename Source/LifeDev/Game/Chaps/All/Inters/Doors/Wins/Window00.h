@@ -2,7 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "LifeDev/Game/Interact/Base/Window.h"
+#include "LifeDev/Game/Interact/Base/Doors/Window.h"
 
 #include "Window00.generated.h"
 

@@ -2,8 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
-
-#include "LifeDev/Game/Interact/Base/Doorish.h"
+#include "Doorish.h"
 
 #include "Window.generated.h"
 

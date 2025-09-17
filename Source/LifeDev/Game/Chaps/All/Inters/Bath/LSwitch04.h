@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/LSwitch.h"
+#include "LifeDev/Game/Interact/Base/Lights/LSwitch.h"
 
 #include "LSwitch04.generated.h"
 
