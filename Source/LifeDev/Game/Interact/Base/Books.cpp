@@ -1,6 +1,6 @@
 // Copyright Jerónimo Barraco-Mármol
 
-#include "BooksB.h"
+#include "Books.h"
 
 #include "CQuickMesh.h"
 #include "Components/AudioComponent.h"
@@ -8,7 +8,7 @@
 #include "Interact/Animator/CAnimatorFade.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 
-void ABooksB::SetUpInteract() const {
+void ABooks::SetUpInteract() const {
 	// interact and sfx location
 	const float ZLen = (Spacing*BookCount)/2.0;
 	const FVector IntLocation(10,-6.250000, ZLen);
@@ -24,7 +24,7 @@ static const TCHAR* _matsB[] = {
 	TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/Palettes/Palette03_DMI.Palette03_DMI"),
 };
 
-ABooksB::ABooksB():Super() {
+ABooks::ABooks():Super() {
 	UseAnim = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
@@ -53,16 +53,16 @@ ABooksB::ABooksB():Super() {
 	/// end create
 	// make them static for now
 
-	ABooksB::SetMobility(EComponentMobility::Static);
+	ABooks::SetMobility(EComponentMobility::Static);
 }
 
-void ABooksB::ReCreate() {
+void ABooks::ReCreate() {
 	DestroyBooks();
 	CreateBooks();
 	SetUpInteract(); // depends on the number of books
 }
 
-void ABooksB::DestroyBooks() {
+void ABooks::DestroyBooks() {
 	for (UCQuickMesh* const C: Books) {
 		if (LIKELY(!IsValid(C))) continue;
 		RemoveOwnedComponent(C);
@@ -72,7 +72,7 @@ void ABooksB::DestroyBooks() {
 	AnimFade->Meshes.Empty();
 }
 
-void ABooksB::CreateBooks() {
+void ABooks::CreateBooks() {
 	/// create
 
 	// check against 0 to be able to use negative values as well
@@ -116,7 +116,7 @@ void ABooksB::CreateBooks() {
 	}
 }
 
-void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {
+void ABooks::SetMobility(const EComponentMobility::Type Mobility) {
 	Super::SetMobility(Mobility);
 	for (const TObjectPtr<UCQuickMesh>& QM: Books) {
 		if (UNLIKELY(!QM)) continue;
@@ -124,7 +124,7 @@ void ABooksB::SetMobility(const EComponentMobility::Type Mobility) {
 	}
 }
 
-void ABooksB::OnConstruction(const FTransform& Transform) {
+void ABooks::OnConstruction(const FTransform& Transform) {
 	Super::OnConstruction(Transform);
 	// https://forums.unrealengine.com/t/added-components-not-showing-in-details-panel/465572/3?u=nande
 	// this is actually the correct place. it has the side effect that it will recreate when a property is changed.

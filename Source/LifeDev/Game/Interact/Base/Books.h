@@ -3,14 +3,14 @@
 #pragma once
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "BooksB.generated.h"
+#include "Books.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ABooksB: public ALInteract {
+class LIFEDEV_API ABooks: public ALInteract {
 	GENERATED_BODY()
 
 public:
-	ABooksB();
+	ABooks();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp")
 	void ReCreate();

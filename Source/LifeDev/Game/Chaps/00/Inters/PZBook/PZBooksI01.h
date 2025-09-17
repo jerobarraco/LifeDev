@@ -5,12 +5,12 @@
 
 #include "PZBooksI01.generated.h"
 
-
 // ch00 book puzzle i 01
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APZBooksI01: public ABooks01 {
 	GENERATED_BODY()
 
 public:
-	APZBooksI01():Super(80) {}; // 78
+	// TODO
+	// APZBooksI01():Super(80) {}; // 78
 };

@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/Var/Books.h"
+#include "LifeDev/Game/Interact/Base/Books.h"
 
 #include "Books03.generated.h"
 

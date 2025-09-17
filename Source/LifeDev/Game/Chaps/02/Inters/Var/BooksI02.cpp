@@ -2,7 +2,7 @@
 
 #include "BooksI02.h"
 
-ABooksI02::ABooksI02():Super(1, 0) {
+ABooksI02::ABooksI02() {
 	Texts = { NSLOCTEXT("BooksI02", "State", "A book") };
 	
 	UseRewardDestroy = false;

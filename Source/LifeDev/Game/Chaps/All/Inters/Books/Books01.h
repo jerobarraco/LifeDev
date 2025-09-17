@@ -1,7 +1,7 @@
 // Copyright Jerónimo Barraco-Mármol
 
 #pragma once
-#include "LifeDev/Game/Interact/Base/Var/Books.h"
+#include "LifeDev/Game/Interact/Base/Books.h"
 
 #include "Books01.generated.h"
 
@@ -12,7 +12,6 @@ class LIFEDEV_API ABooks01: public ABooks {
 
 public:
 	ABooks01();
-	ABooks01(const int32 Seed);
 
 protected:
 	virtual void SetState_Implementation(const int32 NewState) override;

@@ -5,11 +5,7 @@
 #include "CQuickMesh.h"
 #include "Interact/Animator/Anim.h"
 
-ABooks01::ABooks01():Super(3, 0) {
-	ConstructB01();
-}
-
-ABooks01::ABooks01(const int32 Seed):Super(3, Seed) {
+ABooks01::ABooks01() { // Super(3, 0)
 	ConstructB01();
 }
 
