@@ -5,7 +5,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtilsUI.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 
@@ -33,7 +33,7 @@ void AOutroMan::AddUI() {
 	if (LIKELY(Settings) && Settings->Save)
 		UI->SetFlags(Settings->Save->GetFlags());
 
-	UJUtilsMisc::ShowUI(this, true, UI);
+	UJUtilsUI::ShowUI(this, true, UI);
 }
 
 void AOutroMan::Quit() {

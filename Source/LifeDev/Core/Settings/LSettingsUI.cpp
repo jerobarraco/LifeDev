@@ -15,6 +15,7 @@
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/UI/GroupBox.h"
 #include "JButton.h"
+#include "JUtilsUI.h"
 
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -122,7 +123,7 @@ void ULSettingsUI::NativeOnInitialized() {
 	if (LIKELY(CBScale)) {
 		CBScale->ClearOptions();
 		CBScale->AddOption("UI Scale");
-		const float ScaleCur = UJUtilsMisc::GetUIScale();
+		const float ScaleCur = UJUtilsUI::GetUIScale();
 		int32 SelectedI = 0;
 		for (uint8 i = 1; i<LSetUI::ScalesLen; ++i) {//skip initial
 			const float S = LSetUI::Scales[i];
@@ -163,7 +164,8 @@ void ULSettingsUI::ScaleUpd(const FString SelectedItem, const ESelectInfo::Type 
 
 	const int32 I = CBScale->GetSelectedIndex();
 	if (UNLIKELY((I<1) | (I>=LSetUI::ScalesLen))) return; // actually ignore 0, since that's just "scale"
-	UJUtilsMisc::SetUIScale(LSetUI::Scales[I]);
+
+	UJUtilsUI::SetUIScale(LSetUI::Scales[I]);
 }
 
 void ULSettingsUI::ShowDbg() {

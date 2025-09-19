@@ -4,7 +4,7 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtilsUI.h"
 
 #include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LifeDev/Core/Settings/LSettings.h"
@@ -38,7 +38,7 @@ void AIntroMan::AddUI() {
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
 	UI->OnSlotsDone.AddDynamic(this, &AIntroMan::SlotsDone);
 
-	UJUtilsMisc::ShowUI(this, true, UI);
+	UJUtilsUI::ShowUI(this, true, UI);
 }
 
 void AIntroMan::Done() {
@@ -78,7 +78,7 @@ void AIntroMan::Done() {
 	}
 	/// all ok, continue.
 	
-	UJUtilsMisc::ShowUI(this, false);
+	UJUtilsUI::ShowUI(this, false);
 	
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.

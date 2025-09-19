@@ -2,13 +2,13 @@
 
 #include "BaseUI.h"
 
-#include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtilsUI.h"
 
 void UBaseUI::Show_Implementation() {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	SetVisibility(ESlateVisibility::Visible);
 	if (ShowCursor)
-		UJUtilsMisc::ShowUI(this, true, this);
+		UJUtilsUI::ShowUI(this, true, this);
 }
 
 void UBaseUI::Hide_Implementation() {
@@ -16,7 +16,7 @@ void UBaseUI::Hide_Implementation() {
 	// can put Collapsed into a var in case i ever want to change that on children
 	SetVisibility(ESlateVisibility::Collapsed);
 	if (ShowCursor)
-		UJUtilsMisc::ShowUI(this, false, nullptr);
+		UJUtilsUI::ShowUI(this, false, nullptr);
 
 	if (AutoUnbind) {
 		OnDone.Clear();

@@ -5,9 +5,7 @@
 
 #include <Async/Async.h>
 #include "CoreGlobals.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/LevelStreamingDynamic.h"
-#include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
@@ -73,23 +71,6 @@ UWorld* UJUtilsMisc::JGetWorld(UWorld* World) {
 	if (UNLIKELY(!World)) World = GEngine->GetWorld();
 
 	return World;
-}
-
-void UJUtilsMisc::ShowUI(const UObject* const O, const bool Show,  UWidget* const Focus) {
-	if (UNLIKELY(!IsValid(O))) return;
-
-	const UWorld* const World = O->GetWorld();
-	if (UNLIKELY(!IsValid(World))) return;
-
-	APlayerController* const Controller = World->GetFirstPlayerController();
-	if (UNLIKELY(!IsValid(Controller))) return;
-
-	if (Show) {
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(
-			Controller, Focus, EMouseLockMode::DoNotLock, true);
-	} else UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
-
-	Controller->SetShowMouseCursor(Show);
 }
 
 void UJUtilsMisc::BPAsync(const FOnJAsync& Task, const FOnJAsyncDone& Done, EAsyncExec Exec) {
@@ -288,21 +269,4 @@ UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Na
 
 	// only for editor
 	// UDataTableFunctionLibrary::FillDataTableFromCSVFile(Table, Path, Struct);
-}
-
-void UJUtilsMisc::SetUIScale(const float UIScale) {
-	// inspired on https://benui.ca/unreal/ui-scale/
-	UUserInterfaceSettings* const UISettings =
-		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
-
-	if (UNLIKELY(!UISettings)) return;
-	UISettings->ApplicationScale = UIScale;
-}
-
-float UJUtilsMisc::GetUIScale() {
-	const UUserInterfaceSettings* const UISettings =
-		GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
-
-	if (UNLIKELY(!UISettings)) return 1;
-	return UISettings->ApplicationScale;
 }
