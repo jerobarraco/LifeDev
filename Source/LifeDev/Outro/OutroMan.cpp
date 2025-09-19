@@ -44,7 +44,7 @@ void AOutroMan::Quit() const {
 		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }
 
-void AOutroMan::Retry() {
+void AOutroMan::Retry() const {
 	// GetWorld()->ServerTravel(NextLevel);
 	// https://stackoverflow.com/a/50205038
 	// https://www.reddit.com/r/unrealengine/comments/bf46lz/comment/elaskww/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button

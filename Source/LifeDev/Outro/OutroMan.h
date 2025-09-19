@@ -26,7 +26,7 @@ protected:
 	
 	void AddUI();
 	void Quit() const;
-	void Retry();
+	void Retry() const;
 
 	UFUNCTION()
 	void Done(const int32 RetVal);
