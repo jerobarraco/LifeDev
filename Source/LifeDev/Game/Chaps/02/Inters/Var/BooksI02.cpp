@@ -3,6 +3,8 @@
 #include "BooksI02.h"
 
 ABooksI02::ABooksI02() {
+	BookCount = 1;
+	RndSeed = 3;
 	Texts = { NSLOCTEXT("BooksI02", "State", "A book") };
 	
 	UseRewardDestroy = false;
