@@ -36,7 +36,7 @@ void AOutroMan::AddUI() {
 	UJUtilsUI::ShowUI(this, true, UI);
 }
 
-void AOutroMan::Quit() {
+void AOutroMan::Quit() const {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 

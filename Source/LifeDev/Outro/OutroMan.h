@@ -25,12 +25,12 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	void AddUI();
-	void Quit();
+	void Quit() const;
 	void Retry();
 
 	UFUNCTION()
-	void Done(int32 RetVal);
+	void Done(const int32 RetVal);
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	UOutroUI* UI = nullptr;
+	TObjectPtr<UOutroUI> UI = nullptr;
 };
