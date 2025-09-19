@@ -6,6 +6,7 @@
 #include "Interact/Animator/Anim.h"
 
 ABooks01::ABooks01() { // Super(3, 0)
+	BookCount = 3;
 	ConstructB01();
 }
 
