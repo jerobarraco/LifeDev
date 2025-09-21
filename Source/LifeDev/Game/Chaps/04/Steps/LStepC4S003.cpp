@@ -13,8 +13,4 @@ ALStepC4S003::ALStepC4S003():Super() {
 	ActorsHide = {
 		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02_UAID_D8BBC116E501A1E401_1122317285"))
 	};
-	IntersTrigger = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1688570496"))
-	};
-	
 }
