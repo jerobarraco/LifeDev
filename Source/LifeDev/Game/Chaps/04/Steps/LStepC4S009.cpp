@@ -15,7 +15,9 @@ ALStepC4S009::ALStepC4S009():Super() {
 	FBDlgAutoTo = -.05;
 	ActorsShow = {
 		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PaperI00_UAID_D8BBC116E50101EF01_1328482739")),
-		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Pencil_UAID_D8BBC116E5014CEF01_1096293939"))};
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Pencil_UAID_D8BBC116E5014CEF01_1096293939")),
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E5010EE301_1350177374")),
+	};
 	IntersTrigger = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1481028493"))};
 }
 
