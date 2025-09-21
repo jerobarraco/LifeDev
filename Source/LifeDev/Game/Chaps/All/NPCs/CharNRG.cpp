@@ -16,6 +16,7 @@ ACharNRG::ACharNRG():Super() {
 	StateNum = 2;
 	IsOneShot = true; // IsOneShot will call SetEnable as soon as it triggers.
 	UseAutoActivate = false;
+	SetActorHiddenInGame(true); // start hidden by default
 
 	Anim->TRoot = Root; // nice try but... (read beginplay)
 	// the TEnd is set on the editor.
@@ -29,13 +30,13 @@ ACharNRG::ACharNRG():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
 	Parts->SetAsset(CNiag.Object);
-	// the part color is set on the editor
+	// the part color is set on the editor (todo move here?)
 }
 
 void ACharNRG::BeginPlay() {
 	Super::BeginPlay();
-	Anim->TRoot = Root; // needed or it won't actually use it
-	SetActorHiddenInGame(true); // start hidden by default
+	Anim->TRoot = Root; // needed or it won't actually use it (why?)
+	Anim->CopyTStart();
 }
 
 void ACharNRG::AnimEnd_Implementation() {
