@@ -9,18 +9,19 @@
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
-// it's not that necessary to be an interact. but being so helps a ton.
+// does not need to be an interact. but it helps.
 
-ACharNRG::ACharNRG():Super() {
+ACharNRG::ACharNRG() {
 	Texts = { NSLOCTEXT("CharNrg", "State0", "") };
 	StateNum = 2;
 	IsOneShot = true; // IsOneShot will call SetEnable as soon as it triggers.
 	UseAutoActivate = false;
-	SetActorHiddenInGame(true); // start hidden by default
+	SetActorHiddenInGame(true); // start hidden by default. notice before creating the parts component.
 
-	Anim->TRoot = Root; // nice try but... (read beginplay)
-	// the TEnd is set on the editor.
+	Anim->TRoot = Root; // nice try but... (read BeginPlay)
+	Anim->TEnd.SetLocation(FVector(-2117.500000,2037.500000,72.500000));
 	Anim->IsAdditive = false;
+	
 	Interact->SetBoxExtent(FVector(.1)); // make it minimal. no need to interact with it.
 
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
@@ -30,7 +31,7 @@ ACharNRG::ACharNRG():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
 	Parts->SetAsset(CNiag.Object);
-	// the part color is set on the editor (todo move here?)
+	// the part color is set on the editor
 }
 
 void ACharNRG::BeginPlay() {
