@@ -19,6 +19,7 @@ ACharNRG::ACharNRG() {
 	SetActorHiddenInGame(true); // start hidden by default. notice before creating the parts component.
 
 	Anim->TRoot = Root; // nice try but... (read BeginPlay)
+	Anim->TEnd.SetIdentity();
 	Anim->TEnd.SetLocation(FVector(-2117.500000,2037.500000,72.500000));
 	Anim->IsAdditive = false;
 	
