@@ -14,7 +14,7 @@ class UFlashback;
 
 // An interactive actor that can have an animation
 // Dialogs/Flags added see ConstDiags.h
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALInteract: public AInteractAnim {
 	GENERATED_BODY()
 
@@ -33,6 +33,15 @@ public:
 	virtual bool TryTrigger_Implementation() override;
 	// will fade if it's not constructing.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
+	// will tweak the anim fps based on the fb.
+	// beware it can make a performance mess if there are too many interacts. 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool UseFBAnimFPS = false;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
+	float FBAnimMin = 1/5.0;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
+	float FBAnimMax = 1/60.0;
+	
 #pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
@@ -127,6 +136,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION()
+	void FBUpd(const float Value);
 	virtual void DoTrigger_Implementation() override;
 	virtual void DoTriggerLocked_Implementation() override;
 

@@ -12,7 +12,4 @@ class LIFEDEV_API ADoorish: public ALInteract {
 
 public:
 	ADoorish();
-	UFUNCTION()
-	void FBUpd(const float Value);
-	virtual void BeginPlay() override;
 };

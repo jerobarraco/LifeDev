@@ -16,6 +16,7 @@
 #include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
@@ -162,6 +163,19 @@ void ALInteract::BeginPlay() {
 	// hide and disable reward actor if any. will also call SetActive.
 	AActor* const RAct = RewardActor.Get();
 	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
+
+	// this is just an experiment
+	// it lacks unbinding on feature change. also the max and min intervals should be a variable
+	// that can be changed on the config.
+	// and possibly this could be moved to linteract
+	// and also would require a flag to disable on specific interacts,
+	// e.g. the ones that use the significance (e.g. lights)
+	const bool FBAnim = ULSettings::GetFeatS(this, EFeat::G_FB_ANIM);
+	if (!FBAnim) return;
+
+	UFlashback* const FB = UFlashback::Instance(this);
+	if (UNLIKELY(!FB)) return;
+	FB->OnChange.AddUniqueDynamic(this, &ALInteract::FBUpd);
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
@@ -175,6 +189,10 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	RewardActor = nullptr; // free reference
 	
 	Super::EndPlay(EndPlayReason);
+}
+
+void ALInteract::FBUpd(const float Value) {
+	Anim->SetComponentTickInterval(FMath::LerpStable(FBAnimMax,  FBAnimMin, Value));
 }
 
 void ALInteract::DoRewards() {
