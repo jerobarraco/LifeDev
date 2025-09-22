@@ -4,10 +4,10 @@
 
 #include "Interact/Animator/CAnimator.h"
 
-UCLSignificance::UCLSignificance() :Super() {
-	TickIntervals[ESigValue::High] = 1/60;
-	TickIntervals[ESigValue::Med] = 1/30;
-	TickIntervals[ESigValue::Low] = 1/20;
+UCLSignificance::UCLSignificance() {
+	TickIntervals[ESigValue::High] = 1/60.;
+	TickIntervals[ESigValue::Med] = 1/30.;
+	TickIntervals[ESigValue::Low] = 1/20.;
 }
 
 void UCLSignificance::BindAnim(UCAnimator* const Animator) {
@@ -36,5 +36,3 @@ void UCLSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	UnbindAnim();
 	Super::EndPlay(EndPlayReason);
 }
-
-
