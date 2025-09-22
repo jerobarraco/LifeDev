@@ -102,6 +102,8 @@ enum class EFeat: uint8 {
 	G_DATA_EXT,
 	// the gameplay hints
 	G_TEACH,
+	// tweaks the anim fps with fb
+	G_FB_ANIM,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 
