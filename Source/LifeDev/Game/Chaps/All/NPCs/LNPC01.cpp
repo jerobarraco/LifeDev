@@ -163,8 +163,3 @@ void ALNPC01::SetPoseSit() const {
 void ALNPC01::SetPoseChair() const {
 	SetPose(PoseChair);
 }
-
-void ALNPC01::SetVisible(const bool Vis) {
-	Interact->SetActive(Vis);
-	SetActorHiddenInGame(!Vis);
-}

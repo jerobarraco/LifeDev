@@ -25,9 +25,6 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
 	void SetPoseChair() const;
 
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="NPC")
-	void SetVisible(const bool Vis);
-
 protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FNPCHPose PoseSit;
