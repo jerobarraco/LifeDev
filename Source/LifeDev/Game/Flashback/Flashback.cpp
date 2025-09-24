@@ -44,11 +44,15 @@ void UFlashback::SetValNow(const float New) {
 }
 
 void UFlashback::SetValToNow(const float New) {
+	UE_LOG(LogFlashback, Log, TEXT("%hs Min=%.5f Max=%.5f ValTo=%.5f Val=%.5f NewVal=%.5f"),
+		__func__, Min, Max, ValTo, Val, New);
 	ValTo = New;
 	OnTo.Broadcast(ValTo);
 }
 
 void UFlashback::AnimEnd() {
+	UE_LOG(LogFlashback, Log, TEXT("%hs Min=%.5f Max=%.5f ValTo=%.5f Val=%.5f"),
+		__func__, Min, Max, ValTo, Val);
 	OnEnd.Broadcast(Val);
 }
 
@@ -62,7 +66,10 @@ void UFlashback::SetVal(float New, float Duration) {
 	
 	// critical to use ValTo and not Val here or the dialogs FBDiagMod fails on quick change.
 	// keep an eye on it in case it breaks other things.
-	if (FMath::IsNearlyEqual(ValTo, New)) return;
+	if (FMath::IsNearlyEqual(ValTo, New)) {
+		UE_LOG(LogFlashback, Log, TEXT("%hs: nearly equals. skip."), __func__);
+		return;
+	}
 
 	// important to set, set here to keep it always up to date.
 	ValFrom = Val;
@@ -71,7 +78,8 @@ void UFlashback::SetVal(float New, float Duration) {
 		// reset animation if any
 		Animator->Deactivate();
 		// important to set ValTo and Val so that the value is always up-to-date.
-		// since it's used for GetValTo and in turn by SetVal
+		// since it's used for GetValTo and in turn by SetVal.
+		// And also for the delegates.
 		SetValToNow(New);
 		SetValNow(New);
 		AnimEnd(); // force notify even though it's instant. has to be after SetValNow.

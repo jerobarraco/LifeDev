@@ -174,12 +174,18 @@ void ALInteract::BeginPlay() {
 	if (!FBAnim) return;
 
 	UFlashback* const FB = UFlashback::Instance(this);
-	if (UNLIKELY(!FB)) return;
-	FB->OnChange.AddUniqueDynamic(this, &ALInteract::FBUpd);
+	// using onTo instead of OnChange to avoid the exponential explosion of having
+	// all interacts updating on every frame.
+	// though this one will have all interacts updating in ONE frame.
+	if (LIKELY(FB))
+		FB->OnTo.AddUniqueDynamic(this, &ALInteract::FBUpd);
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	AnimFade->OnEnd.RemoveAll(this);
+	UFlashback* const FB = UFlashback::Instance(this);
+	if (LIKELY(FB))
+		FB->OnTo.RemoveAll(this);
 
 	Inventory = nullptr;
 	Diags = nullptr;
