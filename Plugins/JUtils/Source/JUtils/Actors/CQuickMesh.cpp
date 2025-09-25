@@ -16,7 +16,8 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bWorldPositionOffsetWritesVelocity = false;
 	bCastDistanceFieldIndirectShadow = true; // TODO is this a perf improv or not?
 	bCanEverAffectNavigation = false;
-
+	// https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
+	NanitePixelProgrammableDistance = 1000;
 	SetQuickCollisionEnabled(false);
 	SetCastAllShadows(false);
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/ 
