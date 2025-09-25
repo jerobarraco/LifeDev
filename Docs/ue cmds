@@ -116,3 +116,5 @@ abtest cvar vala valb
 	ctrl+' opens it too
 	needs to be enabled in editor settings
 
+* cmd ToggleForceDefaultMaterial
+* cmd dumphitches
