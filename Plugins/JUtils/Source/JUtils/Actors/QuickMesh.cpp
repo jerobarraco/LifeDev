@@ -5,7 +5,7 @@
 
 #include "CQuickMesh.h"
 
-AQuickMesh::AQuickMesh(): Super() {
+AQuickMesh::AQuickMesh() {
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
 	
