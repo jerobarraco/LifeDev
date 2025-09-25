@@ -232,6 +232,8 @@ DONT:
 	
 	don't use collision if not needed (remove from mesh)
 	prefer in order: sphere, capsule, box, convex https://www.youtube.com/watch?app=desktop&v=HaVTYSnGvxA
+
+	check "NeverNeedsCookedCollisionData" on each mesh
 	
 	use default overlap during streaming to only movable. then override on each actor if needed
 	https://youtu.be/HaVTYSnGvxA?t=1141
