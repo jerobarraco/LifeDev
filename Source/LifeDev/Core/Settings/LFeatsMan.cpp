@@ -236,11 +236,14 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		// needed to allow the flag to override project settings
 		Post->Settings.bOverride_DynamicGlobalIlluminationMethod = true;
 		Post->Settings.bOverride_ReflectionMethod = true;
+		Post->Settings.bOverride_AmbientOcclusionStaticFraction = true;
 		Post->Settings.DynamicGlobalIlluminationMethod =
 			Enabled ?
 			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::None;
 		Post->Settings.ReflectionMethod =
-			Enabled ? EReflectionMethod::Lumen : EReflectionMethod::None;
+			Enabled ? EReflectionMethod::Lumen : EReflectionMethod::ScreenSpace;
+		// from coursera. it should give a bit more of performance when using lumen
+		Post->Settings.AmbientOcclusionStaticFraction = Enabled ? 0 : 1;
 	} else if (Feat == EFeat::V_MLIGHTS) {
 		// needed to allow the flag to override project settings
 		Post->Settings.bOverride_bMegaLights = true;
