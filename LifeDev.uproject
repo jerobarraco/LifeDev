@@ -584,6 +584,10 @@
 		{
 			"Name": "AnimationData",
 			"Enabled": false
+		},
+		{
+			"Name": "GPULightmass",
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
