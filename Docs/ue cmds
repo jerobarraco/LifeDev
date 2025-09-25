@@ -110,3 +110,9 @@ r.shadow.virtual.showstats 1
   showdebug devices
 
 abtest cvar vala valb
+
+# gameplay debug tools
+	EnableGDT
+	ctrl+' opens it too
+	needs to be enabled in editor settings
+
