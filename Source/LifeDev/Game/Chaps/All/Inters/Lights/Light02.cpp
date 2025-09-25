@@ -28,13 +28,18 @@ ALight02::ALight02():Super() {
 	// important: in order for the shadows to work correctly at this short distance
 	// from the source. the mesh needs to use the translucent material.
 	// to use the translucent material, it needs to not be nanite.
-	Cover->bDisallowNanite = true;
-	Cover->SetCastAllShadows(true);
-	Cover->bCastDistanceFieldIndirectShadow = true;
+	// Cover->bDisallowNanite = true;
+	// Cover->SetCastAllShadows(true);
+	// Cover->bCastDistanceFieldIndirectShadow = true;
+	// i'm actually going to disable the shadows and imagine it's just passing through
+	// the shader is quite expensive otherwise
+	Cover->bDisallowNanite = false;
+	Cover->SetCastAllShadows(false);
+	Cover->bCastDistanceFieldIndirectShadow = false;
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
 	Light->Intensity = 5;
-	Light->AttenuationRadius = 500;
+	Light->AttenuationRadius = 400;
 	Light->SourceRadius = 1;
 	Light->SourceLength = 1;
 	Light->SoftSourceRadius = 20;
