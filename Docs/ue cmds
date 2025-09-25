@@ -108,3 +108,5 @@ r.shadow.virtual.showstats 1
 # input debug
   showdebug enhacedinput
   showdebug devices
+
+abtest cvar vala valb
