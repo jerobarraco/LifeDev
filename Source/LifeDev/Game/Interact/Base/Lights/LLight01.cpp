@@ -7,8 +7,9 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-// TODO make this UseAutoActivate = False once all the light switches are in place
 ALLight01::ALLight01():Super() {
+	UseAutoActivate = false;
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support.Support"));
 	Mesh->SetRelativeLocation(FVector(0,0,0));
@@ -28,8 +29,9 @@ ALLight01::ALLight01():Super() {
 	RectLight->SetRelativeLocation(FVector(2.500000,-2.500000,-0.200000));
 	RectLight->SetRelativeRotation(FRotator(-90,-90,0));
 	RectLight->SetIntensityUnits(ELightUnits::Lumens);
+	IntensityMax = 20;
 	RectLight->SetIntensity(IntensityMax);
-	RectLight->SetAttenuationRadius(1000);
+	RectLight->SetAttenuationRadius(400);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.010101);

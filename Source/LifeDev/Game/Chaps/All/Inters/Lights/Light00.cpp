@@ -7,7 +7,6 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-// TODO make this UseAutoActivate = False once all the light switches are in place
 ALight00::ALight00():Super() {
 	UseFade = false;
 	UseRewardDestroy = false;
@@ -22,7 +21,6 @@ ALight00::ALight00():Super() {
 	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
 
 	// objects
-	// TODO adjust on the level
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Support"));
@@ -40,8 +38,7 @@ ALight00::ALight00():Super() {
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
 	RectLight->SetBarnDoorLength(7);
-	RectLight->AttenuationRadius = 400; // default room size
-	
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));

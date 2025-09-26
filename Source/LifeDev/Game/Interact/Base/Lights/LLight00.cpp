@@ -7,7 +7,8 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-ALLight00::ALLight00():Super() {
+ALLight00::ALLight00() {
+	UseAutoActivate = false;
 	/// anim
 	// enable the animation so that we get the update. but don't actually animate any material
 	Anim->Mat = nullptr;
@@ -18,6 +19,7 @@ ALLight00::ALLight00():Super() {
 	Light->SetupAttachment(Mesh);
 	Light->SetRelativeLocation(FVector(27.5,-27.5,9));
 	Light->SetIntensityUnits(ELightUnits::Lumens);
+
 	Light->SetIntensity(IntensityMax);
 	Light->SetAttenuationRadius(1000);
 	Light->SetSourceRadius(5);
