@@ -24,7 +24,7 @@ mesh:
 	; enable auto instancing https://forums.unrealengine.com/t/what-about-auto-instancing/131775/2?u=nande
 	; seems to default to 1, but maybe better be sure. also it might only work with taa and no msaa
 	r.MeshDrawCommands.DynamicInstancing=1
-	NanitePixelProgrammableDistance = 1000
+	NanitePixelProgrammableDistance = 600
 		https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
 
 # lumen
