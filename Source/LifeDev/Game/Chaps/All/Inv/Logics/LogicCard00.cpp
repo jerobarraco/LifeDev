@@ -15,17 +15,13 @@ ULogicCard00::ULogicCard00():Super() {
 
 void ULogicCard00::Use_Implementation() {
 	if (UNLIKELY(!ULSettings::GetFeatS(this, EFeat::G_CARD0))) return;
+	if (UNLIKELY(!IsValid(Range))) return;
 
 	const AActor* const Pawn = UGameplayStatics::GetActorOfClass(this,
 		ALChar::StaticClass());
 	if (UNLIKELY(!Pawn)) return;
-	
-	UWorld* const W = GetWorld();
-	if (UNLIKELY(!W)) return;
+
 	const FVector& Location = Pawn->GetActorLocation();
-
-	// have to spawn on use since beginplay gets executed way too early.
-
 	Range->SetActorLocation(Location);
 	Range->Trigger();
 
@@ -34,8 +30,10 @@ void ULogicCard00::Use_Implementation() {
 
 void ULogicCard00::BeginPlay_Implementation() {
 	Super::BeginPlay_Implementation();
-	if (UNLIKELY(!IsValid(Range)))
-		Range = Cast<ARange>(GetWorld()->SpawnActor(RangeClass, 0,0));
+	UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
+
+	Range = Cast<ARange>(W->SpawnActor(RangeClass, 0,0));
 }
 
 void ULogicCard00::BeginDestroy() {
