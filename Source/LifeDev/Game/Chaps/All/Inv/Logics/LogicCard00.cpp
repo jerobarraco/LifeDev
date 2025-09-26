@@ -25,8 +25,7 @@ void ULogicCard00::Use_Implementation() {
 	const FVector& Location = Pawn->GetActorLocation();
 
 	// have to spawn on use since beginplay gets executed way too early.
-	if (UNLIKELY(!IsValid(Range)))
-		Range = Cast<ARange>(W->SpawnActor(RangeClass, 0,0));
+
 	Range->SetActorLocation(Location);
 	Range->Trigger();
 
@@ -35,6 +34,8 @@ void ULogicCard00::Use_Implementation() {
 
 void ULogicCard00::BeginPlay_Implementation() {
 	Super::BeginPlay_Implementation();
+	if (UNLIKELY(!IsValid(Range)))
+		Range = Cast<ARange>(GetWorld()->SpawnActor(RangeClass, 0,0));
 }
 
 void ULogicCard00::BeginDestroy() {

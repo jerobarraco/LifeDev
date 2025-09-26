@@ -7,7 +7,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-ALLight01::ALLight01():Super() {
+ALLight01::ALLight01() {
 	UseAutoActivate = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -31,7 +31,7 @@ ALLight01::ALLight01():Super() {
 	RectLight->SetIntensityUnits(ELightUnits::Lumens);
 	IntensityMax = 20;
 	RectLight->SetIntensity(IntensityMax);
-	RectLight->SetAttenuationRadius(400);
+	RectLight->SetAttenuationRadius(500);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.010101);

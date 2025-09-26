@@ -7,7 +7,7 @@
 #include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-ALight00::ALight00():Super() {
+ALight00::ALight00() {
 	UseFade = false;
 	UseRewardDestroy = false;
 

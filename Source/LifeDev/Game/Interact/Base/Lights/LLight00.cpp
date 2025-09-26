@@ -21,7 +21,7 @@ ALLight00::ALLight00() {
 	Light->SetIntensityUnits(ELightUnits::Lumens);
 
 	Light->SetIntensity(IntensityMax);
-	Light->SetAttenuationRadius(1000);
+	Light->SetAttenuationRadius(500);
 	Light->SetSourceRadius(5);
 	Light->SetSoftSourceRadius(7);
 	Light->SetTemperature(3333);

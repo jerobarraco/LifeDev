@@ -16,7 +16,7 @@ ALight01::ALight01():Super() {
 	SFX->SetRelativeLocation(FVector(27.5,-27.5,0));
 
 	Light->SetRelativeLocation(FVector(27.500000,-27.5,50));
-	Light->AttenuationRadius = 400;
+	Light->AttenuationRadius = 500;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Light00/Light00-GlassB"));
