@@ -5,7 +5,6 @@
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
 #include "LifeDev/Core/Sentry.h"
-#include "LifeDev/Game/Flashback/Flashback.h"
 
 ULogicCard01::ULogicCard01() {
 	// since this is an "instance" class, this is fine.
@@ -37,7 +36,7 @@ void ULogicCard01::Use_Implementation() {
 	bool HasAll = false;
 	// apparently the optimal way to iterate
 	for (TMap<FName, uint8*>::TConstIterator I(DT->GetRowMap().CreateConstIterator()); I; ++I) {
-		const FCard01Entry* pE = reinterpret_cast<FCard01Entry*>(I.Value());
+		const FCard01Entry* const pE = reinterpret_cast<FCard01Entry*>(I.Value());
 		if (UNLIKELY(!pE)) continue;
 
 		HasAll = true;
