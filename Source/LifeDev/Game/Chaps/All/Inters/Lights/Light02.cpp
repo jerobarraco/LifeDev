@@ -39,7 +39,7 @@ ALight02::ALight02():Super() {
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
 	Light->Intensity = 5;
-	Light->AttenuationRadius = 400;
+	Light->AttenuationRadius = 250;
 	Light->SourceRadius = 1;
 	Light->SourceLength = 1;
 	Light->SoftSourceRadius = 20;

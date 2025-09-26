@@ -40,6 +40,7 @@ ALight00::ALight00():Super() {
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
 	RectLight->SetBarnDoorLength(7);
+	RectLight->AttenuationRadius = 400; // default room size
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
