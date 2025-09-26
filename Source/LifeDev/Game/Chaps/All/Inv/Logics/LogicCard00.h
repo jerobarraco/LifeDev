@@ -8,7 +8,7 @@
 
 class ARange;
 
-// item logic for card 00
+// item logic for card 00 (intention)
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULogicCard00: public ULogicCard {
 	GENERATED_BODY()

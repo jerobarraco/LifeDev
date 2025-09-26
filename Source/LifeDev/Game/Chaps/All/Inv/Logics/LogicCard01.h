@@ -19,7 +19,7 @@ public:
 	uint8 Consume:1 = true;
 };
 
-// item logic for card 01
+// item logic for card 01 (whatever works)
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULogicCard01: public ULogicCard {
 	GENERATED_BODY()
