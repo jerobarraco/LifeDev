@@ -239,8 +239,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		Post->Settings.bOverride_AmbientOcclusionStaticFraction = true;
 		Post->Settings.DynamicGlobalIlluminationMethod =
 			Enabled ?
-			EDynamicGlobalIlluminationMethod::Lumen : EDynamicGlobalIlluminationMethod::ScreenSpace;
-		//EDynamicGlobalIlluminationMethod::None;
+			EDynamicGlobalIlluminationMethod::Lumen :
+			EDynamicGlobalIlluminationMethod::None;
+		// this one makes the light reach better, but unfortunately is *very* noisy
+		// EDynamicGlobalIlluminationMethod::ScreenSpace;
 		Post->Settings.ReflectionMethod =
 			Enabled ? EReflectionMethod::Lumen : EReflectionMethod::ScreenSpace;
 		// from coursera. it should give a bit more of performance when using lumen
