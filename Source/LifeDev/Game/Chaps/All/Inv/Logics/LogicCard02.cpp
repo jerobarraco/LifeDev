@@ -9,9 +9,7 @@ ULogicCard02::ULogicCard02() {
 
 void ULogicCard02::Use_Implementation() {
 	Super::Use_Implementation();
-
-	// lowers the fb
 	if (UNLIKELY(!FB)) return;
 
-	FB->ModVal(FMath::FRandRange(ModMin, ModMax));
+	FB->ModVal(FMath::FRandRange(ModMin, ModMax)); // lowers the fb by a random
 }
