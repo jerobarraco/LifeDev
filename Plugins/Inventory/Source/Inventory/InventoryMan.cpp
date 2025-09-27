@@ -13,7 +13,7 @@
 #include "InventoryUI.h"
 #include "Inventory.h"
 
-AInventoryMan::AInventoryMan():Super(){
+AInventoryMan::AInventoryMan(): Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
 
