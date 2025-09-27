@@ -68,7 +68,7 @@ void AInventoryMan::SetVisible(const bool Vis) {
 }
 
 void AInventoryMan::Show() {
-	if (UNLIKELY(IsShowing || !IsShowEnabled)) return;
+	if (UNLIKELY(IsShowing | !IsShowEnabled)) return;
 
 	IsShowing = true;
 	if (LIKELY(IsValid(UI))) UI->Show();
