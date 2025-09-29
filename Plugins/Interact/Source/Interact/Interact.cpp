@@ -189,9 +189,15 @@ void AInteract::Unlock_Implementation() {
 }
 
 bool AInteract::ShowHint_Implementation() {
+	if (!UseHint | IsHidden() | !Interact->IsActive()) {
+		// notice verbose and return
+		UE_LOG(LogInteract, Verbose, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"),
+		__func__, *Label.ToString(), UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
+		return false;
+	}
+	// log here to avoid spam
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s UseHint=%i Hidden=%i IsActive=%i PrimId=%i"),
 		__func__, *Label.ToString(), UseHint, IsHidden(), Interact->IsActive(), HintPrimDataID);
-	if (!UseHint | IsHidden() | !Interact->IsActive()) return false;
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return false;
