@@ -9,7 +9,7 @@ AMatchBoxI00::AMatchBoxI00():Super() {
 	UseRewardDestroy = true;
 	UseFade = true;
 	UseHint = true;
-	// HintCondition = "{Inter.Locked.// todo 
+	HintCondition = "{Inter.Locked.StoveI00}"; // hint once the player tried to activate the stove
 	// Locked = true;
 	// TriggerDlg = "Matches00_T";
 	// LockedDlg = "Matches00_L";
