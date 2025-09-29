@@ -37,7 +37,7 @@ ALStepC3S000::ALStepC3S000():Super() {
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Rooms/Hall00.Hall00")));
 	// ensure to load these two. even though they are loaded by a previous chapter,
-	// the player could jump straight to this chapter via a savegame (or hack).
+	// the player could jump straight to this chapter via a savegame (or crack).
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Outside/Outside_C.Outside_C")));
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(

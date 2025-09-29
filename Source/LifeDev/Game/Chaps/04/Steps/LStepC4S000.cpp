@@ -27,8 +27,7 @@ ALStepC4S000::ALStepC4S000():Super() {
 	};
 
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
-	// needed
-	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
+	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();// needed
 
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Chaps/Chap04_DL.Chap04_DL")));
