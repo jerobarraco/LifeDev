@@ -9,6 +9,10 @@ AStoveI00::AStoveI00():Super() {
 	IsOneShot = true;
 	UnlockItems = {LDConsts::Items::Matches00};
 	RewardFlash = .11;
+	UseHint = true;
+	// this gets deactivated after trigger. so this expression is fine
+	HintCondition = "{Inter.Trigger.LNPCI06}";
+	
 	// TriggerDlg = "Stove00_T";
 	// LockedDlg = "Stove00_L";
 	// LockedItemDlg = "Stove00_LI";
