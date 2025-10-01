@@ -7,7 +7,9 @@
 ASpotI03::ASpotI03():Super() {
 	// TriggerDlg = "IS3_T"; // when completed
 	UnlockItems = { LDConsts::Items::Plate02 }; // empty plate
-	IsOneShot = true; 
+	IsOneShot = true;
+	UseHint = true;
+	HintCondition = "{V.Item.Count.Plate02}"; // only after getting the plate with food
 	// LockedDlg = "IS3_L"; // when not full, try trigger
 	// UseAutoActivate = false; // the steps will enable it // redundant
 	// RewardActor plate
