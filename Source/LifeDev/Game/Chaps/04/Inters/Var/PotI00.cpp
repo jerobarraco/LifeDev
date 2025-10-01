@@ -5,7 +5,6 @@
 #include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
-#include "Story/Story.h"
 
 // deactivated by default
 // stove activates it.
@@ -24,7 +23,8 @@ APotI00::APotI00():Super() {
 	UseRewardDestroy = false;
 	UseFade = false;
 	UseAutoActivate = false; // activated by the step
-
+	UseHint = true;
+	HintCondition = "{Inter.Trigger.StoveI00}";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	// UseAutoActivate = false; // enabled by the stove // redundant
 	// RewardFlash = 0.1;

@@ -10,6 +10,7 @@ ALNPCI06::ALNPCI06():Super() {
 	IsOneShot = true;
 	UseFade = true;
 	UseAnim = false;
+	HintCondition = "{Inter.Trigger.Card04}";
 	SetActorHiddenInGame(true);
 	
 	// RewardIntersActiveClass = { AStoveI00::StaticClass(), AMatchBoxI00::StaticClass() };
