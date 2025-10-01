@@ -12,6 +12,8 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	RewardItem = "Food00";
 	UseRewardDestroy = true;
 	UseFade = true;
+	UseHint = true;
+	HintCondition = "{Inter.Locked.PotI00}";
 	// TriggerDlg = "Food00_T";
 	// RewardFlash = .1; // story works better this way
 	// Locked = true;

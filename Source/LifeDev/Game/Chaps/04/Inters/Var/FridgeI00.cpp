@@ -8,6 +8,8 @@ AFridgeI00::AFridgeI00():Super() {
 	UseRewardDestroy = false;
 	RewardItem = "Food01";
 	UseFade = false;
+	UseHint = true;
+	HintCondition = "{Inter.Locked.PotI00}";
 	// Locked=true;
 	// TriggerDlg="Fridge00_T";
 	// RewardFlash = .1;
