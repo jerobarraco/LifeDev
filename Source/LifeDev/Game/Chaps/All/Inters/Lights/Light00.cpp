@@ -41,9 +41,14 @@ ALight00::ALight00() {
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
+	// the default material blocks the light, so i decided to use this one.
+	// it's set on the mesh itself, so no need to load it here.
+	// also using the D version. this mat has emissive as well.
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		// CTubeMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelGlassSemi_DMI"));
 	Tube = CreateDefaultSubobject<UCQuickMesh>(TEXT("Tube"));
 	Tube->SetupAttachment(Mesh);
-	if(LIKELY(CTube.Succeeded())) Tube->SetStaticMesh(CTube.Object);
+	if (LIKELY(CTube.Succeeded())) Tube->SetStaticMesh(CTube.Object);
 	
 	Tube->SetRelativeLocation(FVector(0,0,-5));
 	Tube->SetCastAllShadows(false);
