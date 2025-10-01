@@ -24,6 +24,7 @@ APotI00::APotI00():Super() {
 	UseFade = false;
 	UseAutoActivate = false; // activated by the step
 	UseHint = true;
+	UseTriggerDeHint = false; // because i want to keep hinting at this. luckily the condition can stay the same.
 	HintCondition = "{Inter.Trigger.StoveI00}";
 	// IsOneShot = true; // not one shot since we need to use the items on it
 	// UseAutoActivate = false; // enabled by the stove // redundant
