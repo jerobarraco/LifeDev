@@ -14,14 +14,15 @@ APuzzleI05::APuzzleI05():Super() {
 		// "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card03_UAID_D8BBC116E501EAD901_1338864495"));
 
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0, 1, 0, 0, 4, 0}; // A.C.C.E.P.T. // TODO
+	CPuzzle->Solution = {0, 2, 2, 4, 6, 0}; // A.C.C.E.P.T.
 	CPuzzle->SetPieces({
-	// 	SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube04_UAID_D8BBC116E501EDD901_1493147028"),
-	// 	SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube02_UAID_D8BBC116E501EDD901_1351720023"),
-	// 	SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501EDD901_1421491025"),
-	// 	SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube03_UAID_D8BBC116E501EDD901_1442181026"),
-	// 	SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501EDD901_1487611027"),
-	}); // TODO
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A29402_1690365296"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A29402_1695862297"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A29402_1699051298"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A39402_1323041478"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube03_UAID_D8BBC116E501A29402_1773873301"),
+		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube04_UAID_D8BBC116E501A29402_1713043300"),
+	});
 }
 
 void APuzzleI05::BeginPlay() {
