@@ -27,9 +27,9 @@ APuzzleI05::APuzzleI05():Super() {
 
 void APuzzleI05::BeginPlay() {
 	Super::BeginPlay();
-
-	static const TArray<int32> States = {0, 4, 0, 3, 2, 0}; // TODO
-	SetStates(States);
+// {0, 2, 2, 4, 6, 0}
+	// static const TArray<int32> States = {x, 4, x, 3, 2, x}; // TODO
+	// SetStates(States);
 
 	static const TArray<bool> Locks = {true, false, true, false, false, false}; // TODO
 	SetLocks(Locks);
