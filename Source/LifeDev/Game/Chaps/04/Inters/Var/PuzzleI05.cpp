@@ -24,11 +24,12 @@ APuzzleI05::APuzzleI05():Super() {
 
 void APuzzleI05::BeginPlay() {
 	Super::BeginPlay();
-	// {0, 2, 2, 4, 3, 1}
-	static const TArray<int32> States = {3, 2, 5, 4, 3, 3};
+
+	static const TArray<int32> States = {3, 2, 5, 4, 3, 3}; // {0, 2, 2, 4, 3, 1}
 	SetStates(States);
 
 	static const TArray<bool> Locks = {false, true, false, true, true, false};
 	SetLocks(Locks);
 	SetHiddensInGame(true);
+	SetUseHints(true); // start with hints
 }
