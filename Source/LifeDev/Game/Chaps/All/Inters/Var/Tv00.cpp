@@ -152,10 +152,10 @@ void ATv00::SetState_Implementation(const int32 NewState) {
 	Noise->Fade(_IsOpen);
 
 	// reuse code
-	FeatUpd(EFeat::V_STROBE, ULSettings::GetFeatS(this, EFeat::V_STROBE));
+	FeatUpdV(EFeat::V_STROBE, ULSettings::GetFeatS(this, EFeat::V_STROBE));
 }
 
-void ATv00::FeatUpd(const EFeat Feat, const bool bEnabled) {
+void ATv00::FeatUpdV(const EFeat Feat, const bool bEnabled) {
 	// force instant change if no strobe
 	if (LIKELY(Feat != EFeat::V_STROBE)) return; // likely cuz there are more
 

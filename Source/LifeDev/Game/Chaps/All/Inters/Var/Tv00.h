@@ -23,7 +23,7 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetState_Implementation(const int32 NewState) override;
 	UFUNCTION()
-	void FeatUpd(const EFeat Feat, const bool bEnabled);
+	void FeatUpdV(const EFeat Feat, const bool bEnabled);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCLSounder> Noise = nullptr;

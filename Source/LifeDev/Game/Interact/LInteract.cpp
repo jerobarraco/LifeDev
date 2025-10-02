@@ -164,29 +164,25 @@ void ALInteract::BeginPlay() {
 	AActor* const RAct = RewardActor.Get();
 	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
 
-	// this is just an experiment
-	// it lacks unbinding on feature change. also the max and min intervals should be a variable
-	// that can be changed on the config.
-	// and possibly this could be moved to linteract
-	// and also would require a flag to disable on specific interacts,
-	// e.g. the ones that use the significance (e.g. lights)
-	const bool FBAnim = ULSettings::GetFeatS(this, EFeat::G_FB_ANIM);
-	if (!FBAnim) return;
+	
+	ULSettings* const Settings = ULSettings::Instance(this);
+	const bool FBAnimAble = UseFBAnimFPS & bool(Settings);
+	if (FBAnimAble) {
+		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInteract::FeatUpd);
+	}
 
-	UFlashback* const FB = UFlashback::Instance(this);
-	// using onTo instead of OnChange to avoid the exponential explosion of having
-	// all interacts updating on every frame.
-	// though this one will have all interacts updating in ONE frame.
-	if (LIKELY(FB))
-		FB->OnTo.AddUniqueDynamic(this, &ALInteract::FBUpd);
+	// done this way because i want to ensure correct initialization.
+	// it will override the fps and have other side effects. but that's the reason why.
+	FeatUpd(EFeat::G_FB_ANIM, FBAnimAble && Settings->GetFeat(EFeat::G_FB_ANIM)); // force init
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	AnimFade->OnEnd.RemoveAll(this);
-	UFlashback* const FB = UFlashback::Instance(this);
-	if (LIKELY(FB))
-		FB->OnTo.RemoveAll(this);
+	ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
+	FeatUpd(EFeat::G_FB_ANIM, false); // force unbind
 
+	AnimFade->OnEnd.RemoveAll(this);
+	
 	Inventory = nullptr;
 	Diags = nullptr;
 	Flags = nullptr;
@@ -197,10 +193,7 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-void ALInteract::FBUpd(const float Value) {
-	Anim->SetComponentTickInterval(FMath::LerpStable(FBAnimMax,  FBAnimMin, Value));
-}
-
+#pragma region rewards
 void ALInteract::DoRewards() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
@@ -269,12 +262,34 @@ void ALInteract::DestroyAfterReward() {
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::DestroyAfterReward);
 	Destroy();
 }
+#pragma endregion
 
 void ALInteract::HideAfterFade() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	AnimFade->OnEnd.RemoveDynamic(this, &ALInteract::HideAfterFade);
 	Super::SetActorHiddenInGame(true); // important to be super
 }
+
+#pragma region fbanim
+void ALInteract::FeatUpd(const EFeat Feat, const bool Enabled) {
+	if (Feat != EFeat::G_FB_ANIM) return;
+	
+	UFlashback* const FB = UFlashback::Instance(this);
+	if (UNLIKELY(!FB)) return;
+
+	if (Enabled) {
+		FB->OnTo.AddUniqueDynamic(this, &ALInteract::FBUpd);
+	} else {
+		FB->OnTo.RemoveAll(this);
+		FBUpd(0); // restore the max fps
+	}
+}
+
+void ALInteract::FBUpd(const float Value) {
+	Anim->SetComponentTickInterval(FMath::LerpStable(FBAnimMax,  FBAnimMin, Value));
+}
+
+#pragma endregion
 
 bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already

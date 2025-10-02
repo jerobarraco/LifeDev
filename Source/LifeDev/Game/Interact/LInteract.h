@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Interact/InteractAnim.h"
+#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LInteract.generated.h"
 
@@ -39,9 +40,10 @@ public:
 	bool UseFBAnimFPS = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
 	float FBAnimMin = 1/5.0;
+	// note, this will override the default fps for the Anim on BeginPlay
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
 	float FBAnimMax = 1/60.0;
-	
+
 #pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
@@ -112,6 +114,13 @@ public:
 	TObjectPtr<UCAnimatorFade> AnimFade = nullptr; // cdo
 
 protected:
+#pragma region base
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	virtual void DoTrigger_Implementation() override;
+	virtual void DoTriggerLocked_Implementation() override;
+#pragma endregion
 #pragma region Reward
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
@@ -133,13 +142,12 @@ protected:
 	UFUNCTION() // bound
 	void HideAfterFade();
 
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
+#pragma region fbanim
+	UFUNCTION()
+	void FeatUpd(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FBUpd(const float Value);
-	virtual void DoTrigger_Implementation() override;
-	virtual void DoTriggerLocked_Implementation() override;
+#pragma endregion
 
 #pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)
