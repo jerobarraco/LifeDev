@@ -167,19 +167,18 @@ void ALInteract::BeginPlay() {
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	const bool FBAnimAble = UseFBAnimFPS & bool(Settings);
-	if (FBAnimAble) {
-		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInteract::FeatUpd);
-	}
+	if (FBAnimAble) Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInteract::FeatUpdG);
+
 
 	// done this way because i want to ensure correct initialization.
 	// it will override the fps and have other side effects. but that's the reason why.
-	FeatUpd(EFeat::G_FB_ANIM, FBAnimAble && Settings->GetFeat(EFeat::G_FB_ANIM)); // force init
+	FeatUpdG(EFeat::G_FB_ANIM, FBAnimAble && Settings->GetFeat(EFeat::G_FB_ANIM)); // force init
 }
 
 void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->OnFeatUpdateGameplay.RemoveAll(this);
-	FeatUpd(EFeat::G_FB_ANIM, false); // force unbind
+	FeatUpdG(EFeat::G_FB_ANIM, false); // force unbind
 
 	AnimFade->OnEnd.RemoveAll(this);
 	
@@ -271,7 +270,7 @@ void ALInteract::HideAfterFade() {
 }
 
 #pragma region fbanim
-void ALInteract::FeatUpd(const EFeat Feat, const bool Enabled) {
+void ALInteract::FeatUpdG(const EFeat Feat, const bool Enabled) {
 	if (Feat != EFeat::G_FB_ANIM) return;
 	
 	UFlashback* const FB = UFlashback::Instance(this);

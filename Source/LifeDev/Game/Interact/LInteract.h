@@ -144,7 +144,7 @@ protected:
 
 #pragma region fbanim
 	UFUNCTION()
-	void FeatUpd(const EFeat Feat, const bool Enabled);
+	void FeatUpdG(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
 	void FBUpd(const float Value);
 #pragma endregion

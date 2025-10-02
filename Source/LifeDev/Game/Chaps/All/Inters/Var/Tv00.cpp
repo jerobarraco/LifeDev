@@ -126,7 +126,7 @@ void ATv00::BeginPlay() {
 
 	ULSettings* Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings))
-		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ATv00::FeatUpd);
+		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ATv00::FeatUpdG);
 }
 
 void ATv00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
