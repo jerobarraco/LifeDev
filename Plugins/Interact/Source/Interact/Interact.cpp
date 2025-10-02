@@ -78,7 +78,8 @@ void AInteract::Grab(const bool IsGrab, UCInteractor* const NewParent) {
 void AInteract::SetText_Implementation() {
 	const int32 Num = Texts.Num();
 	if (UNLIKELY(Num < 1)) {
-		UE_LOG(LogInteract, Warning, TEXT("AInteractAnim.SetText: Object has no text to set"));
+		UE_LOG(LogInteract, Warning, TEXT("AInteractAnim.%hs: Object has no text to set"),
+			__func__);
 		return;
 	}
 
@@ -88,8 +89,10 @@ void AInteract::SetText_Implementation() {
 		return;
 	}
 
+
 	Interact->Text = Texts[State];
-	UE_LOG(LogInteract, Log, TEXT("AInteractAnim.SetText: State=%i, NewText=%s"), State, *Interact->Text.ToString());
+	UE_LOG(LogInteract, Log, TEXT("AInteractAnim.%hs: State=%i, NewText=%s"),
+		__func__, State, *Interact->Text.ToString());
 }
 
 void AInteract::SetActive_Implementation(const bool Active) {
