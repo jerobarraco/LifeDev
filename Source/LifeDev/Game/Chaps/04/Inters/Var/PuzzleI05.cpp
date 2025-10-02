@@ -4,14 +4,11 @@
 
 #include "Interact/CPuzzle.h"
 #include "JUtils/Misc/JMiscConsts.h"
-// #include "LifeDev/Core/Consts/ConstFlags.h"
 
 APuzzleI05::APuzzleI05():Super() {
 	UseHint = true;
 	RewardFlash = .15;
-	// TODO
-	// RewardActor = TSoftObjectPtr<AInteract>(FSoftObjectPath(
-		// "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card03_UAID_D8BBC116E501EAD901_1338864495"));
+	RewardActor = SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card04_UAID_D8BBC116E501FB3602_1428206695");
 
 	CPuzzle->Type = EPuzzleType::COMBINATION;
 	CPuzzle->Solution = {0, 2, 2, 4, 3, 1}; // A.C.C.E.P.T.
@@ -27,12 +24,11 @@ APuzzleI05::APuzzleI05():Super() {
 
 void APuzzleI05::BeginPlay() {
 	Super::BeginPlay();
-	// {0, 2, 2, 4, 6, 0}
-	static const TArray<int32> States = {0, 2, 2, 4, 6, 0}; // TODO x, z, x, z, z, x
+	// {0, 2, 2, 4, 3, 1}
+	static const TArray<int32> States = {3, 2, 5, 4, 3, 3};
 	SetStates(States);
 
-	// static const TArray<bool> Locks = {false, true, false, true, true, false};
-	static const TArray<bool> Locks = {false, false, false, false, false, false};
+	static const TArray<bool> Locks = {false, true, false, true, true, false};
 	SetLocks(Locks);
-	SetHiddensInGame(false);
+	SetHiddensInGame(true);
 }

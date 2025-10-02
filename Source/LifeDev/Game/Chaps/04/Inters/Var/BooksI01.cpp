@@ -13,5 +13,6 @@ ABooksI01::ABooksI01() {
 	UseHint = true; // hint at the start.
 	IsOneShot = true;
 	IsLocked = false;
-	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card04_UAID_D8BBC116E501FB3602_1428206695"));
+	RewardActor =
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI05_UAID_D8BBC116E501A29402_1284366295"));
 }
