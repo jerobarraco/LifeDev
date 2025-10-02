@@ -278,6 +278,7 @@ void ALInteract::FeatUpdG(const EFeat Feat, const bool Enabled) {
 
 	if (Enabled) {
 		FB->OnTo.AddUniqueDynamic(this, &ALInteract::FBUpd);
+		FBUpd(FB->GetValTo()); // note using GetValTo in case it's animating.
 	} else {
 		FB->OnTo.RemoveAll(this);
 		FBUpd(0); // restore the max fps
@@ -285,7 +286,7 @@ void ALInteract::FeatUpdG(const EFeat Feat, const bool Enabled) {
 }
 
 void ALInteract::FBUpd(const float Value) {
-	Anim->SetComponentTickInterval(FMath::LerpStable(FBAnimMax,  FBAnimMin, Value));
+	if (LIKELY(Anim)) Anim->SetComponentTickInterval(FMath::LerpStable(FBAnimMax,  FBAnimMin, Value));
 }
 
 #pragma endregion
