@@ -14,7 +14,7 @@ APuzzleI05::APuzzleI05():Super() {
 		// "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Card03_UAID_D8BBC116E501EAD901_1338864495"));
 
 	CPuzzle->Type = EPuzzleType::COMBINATION;
-	CPuzzle->Solution = {0, 2, 2, 4, 6, 0}; // A.C.C.E.P.T.
+	CPuzzle->Solution = {0, 2, 2, 4, 3, 1}; // A.C.C.E.P.T.
 	CPuzzle->SetPieces({
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A29402_1690365296"),
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.WCube01_UAID_D8BBC116E501A29402_1695862297"),
@@ -31,7 +31,8 @@ void APuzzleI05::BeginPlay() {
 	static const TArray<int32> States = {0, 2, 2, 4, 6, 0}; // TODO x, z, x, z, z, x
 	SetStates(States);
 
-	static const TArray<bool> Locks = {false, true, false, true, true, false};
+	// static const TArray<bool> Locks = {false, true, false, true, true, false};
+	static const TArray<bool> Locks = {false, false, false, false, false, false};
 	SetLocks(Locks);
 	SetHiddensInGame(false);
 }
