@@ -27,11 +27,11 @@ APuzzleI05::APuzzleI05():Super() {
 
 void APuzzleI05::BeginPlay() {
 	Super::BeginPlay();
-// {0, 2, 2, 4, 6, 0}
-	// static const TArray<int32> States = {x, 4, x, 3, 2, x}; // TODO
-	// SetStates(States);
+	// {0, 2, 2, 4, 6, 0}
+	static const TArray<int32> States = {0, 2, 2, 4, 6, 0}; // TODO x, z, x, z, z, x
+	SetStates(States);
 
-	static const TArray<bool> Locks = {true, false, true, false, false, false}; // TODO
+	static const TArray<bool> Locks = {false, true, false, true, true, false};
 	SetLocks(Locks);
-	SetHiddensInGame(true);
+	SetHiddensInGame(false);
 }
