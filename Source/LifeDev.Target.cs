@@ -7,6 +7,8 @@ public class LifeDevTarget : TargetRules {
 		Type = TargetType.Game;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
+		CppStandardEngine = CppStandardVersion.Cpp20;
+		CppStandard = CppStandardVersion.Cpp20;
 		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
 		ExtraModuleNames.Add("LifeDev");
 		bAllowHotReload = true;
@@ -18,8 +20,6 @@ public class LifeDevTarget : TargetRules {
 		// bAllCores = true;
 		bUsePDBFiles = false;
 		//bEnableAddressSanitizer
-		CppStandardEngine = CppStandardVersion.Cpp20;
-		CppStandard = CppStandardVersion.Cpp20;
 
 		// https://forums.unrealengine.com/t/disabling-pdb-debug-gen-in-development-configuration-engine-source/617448/4
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
