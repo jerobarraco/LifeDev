@@ -17,7 +17,7 @@ ALStepC1S006::ALStepC1S006():Super() {
 	UseRain = true;
 	TeleportChar=true;
 	ActorsHide = {
-		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215"))
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPCI01_UAID_D8BBC116E501259502_1582893351"))
 	};
 	IntersTrigger = {
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215")

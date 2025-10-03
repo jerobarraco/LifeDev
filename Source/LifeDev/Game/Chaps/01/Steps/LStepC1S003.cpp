@@ -16,7 +16,7 @@ ALStepC1S003::ALStepC1S003():Super() {
 	Root->SetWorldLocation(FVector(-91.291630,813.867677,156.699670));
 	Root->SetWorldRotation(FRotator(-29.498704,91.508393,-5.725105));
 	ActorsShow = {
-		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC01_UAID_D8BBC116E501119001_1693349215")),
+		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPCI01_UAID_D8BBC116E501259502_1582893351")),
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PuzzleI01_UAID_D8BBC116E501FCCD01_1261387011"))
 	};
 }
