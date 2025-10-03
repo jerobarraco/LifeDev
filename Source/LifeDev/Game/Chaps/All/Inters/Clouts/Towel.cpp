@@ -10,7 +10,6 @@ ATowel::ATowel():Super() {
 	RewardFlash = 0;
 	UseFade = true;
 	Texts = { NSLOCTEXT("Towel", "State0", "Towel")};
-	UseAutoActivate = false;
 	UseAnim = false;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
