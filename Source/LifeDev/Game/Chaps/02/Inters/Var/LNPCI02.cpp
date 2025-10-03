@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
-#include "LNPCI01.h"
+#include "LNPCI02.h"
 
-ALNPCI01::ALNPCI01():Super() {
+ALNPCI02::ALNPCI02():Super() {
 	UseFade = true;
 	SetActorHiddenInGame(true);
 }
