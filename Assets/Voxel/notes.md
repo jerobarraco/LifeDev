@@ -21,7 +21,7 @@ approx size 50cm = .5m
 
 # palette
 preview in srgb should be enabled. when using the png palette.
-copy the color into the srgb box.
+paste the color into the srgb box.
 the preview window will mismatch everything probably, don't worry. pick whatever looks ok on the preview don't worry about the picker.
 but leave picker colors correct.
 
