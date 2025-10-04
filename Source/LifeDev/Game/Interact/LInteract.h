@@ -37,7 +37,7 @@ public:
 	// will tweak the anim fps based on the fb.
 	// beware it can make a performance mess if there are too many interacts. 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	bool UseFBAnimFPS = false;
+	bool UseAnimFBFPS = false;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
 	float FBAnimMin = 1/5.0;
 	// note, this will override the default fps for the Anim on BeginPlay

@@ -166,7 +166,7 @@ void ALInteract::BeginPlay() {
 
 	
 	ULSettings* const Settings = ULSettings::Instance(this);
-	const bool FBAnimAble = UseFBAnimFPS & bool(Settings);
+	const bool FBAnimAble = UseAnimFBFPS & bool(Settings);
 	if (FBAnimAble) Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInteract::FeatUpdG);
 
 

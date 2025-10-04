@@ -12,7 +12,7 @@ ADoorish::ADoorish():Super() {
 	AnimFade->Meshes.Empty(); // avoid getting the material scrambled
 	UseRewardDestroy = false; // will also avoid scrambled material
 	UseAutoActivate = true;
-	UseFBAnimFPS = true;
+	UseAnimFBFPS = true;
 
 	UseAnim = true;
 	Anim->IsAdditive = true;
