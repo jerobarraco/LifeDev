@@ -16,8 +16,4 @@ class LIFEDEV_API ALNPCI00 : public ALNPC04 {
 
 public:
 	ALNPCI00();
-
-protected:
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void DoTrigger_Implementation() override;
 };
