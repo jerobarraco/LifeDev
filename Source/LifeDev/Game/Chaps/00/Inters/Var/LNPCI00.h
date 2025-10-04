@@ -9,7 +9,7 @@
 
 class UCAnimatorCam;
 
-// the instance for the npc01 in chapter 01 at boss step 
+// the instance for the npc04 in chapter 00 at boss step 
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALNPCI00 : public ALNPC04 {
 	GENERATED_BODY()
