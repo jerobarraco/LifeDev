@@ -111,6 +111,6 @@ void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
 }
 
 void ATeachMan::SetTarget(const ETeachTarget Tgt) {
-	TObjectPtr<UDataTable>* Ptr = DTs.Find(Tgt);
+	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Tgt);
 	DT = Ptr ? *Ptr : nullptr;
 }
