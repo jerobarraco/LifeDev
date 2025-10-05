@@ -22,15 +22,14 @@ void UGameUI::PromptSet_Implementation(const FText& Text) {
 void UGameUI::PromptShow_Implementation(const FText& Text) {
 	PromptSet(Text);
 	if (LIKELY(APromptIn))
-		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, AnimSpeed);
 	else if (LIKELY(PromptBG))
 		PromptBG->SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
 void UGameUI::PromptHide_Implementation() {
-	TPrompt->SetText(FText::GetEmpty()); // patch. avoid issue with the game starting by hiding the prompt and hence showing the animation unnecessarily
 	if (LIKELY(APromptIn))
-		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
+		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Reverse, AnimSpeed);
 	else if (LIKELY(PromptBG))
 		PromptBG->SetVisibility(ESlateVisibility::Hidden);
 }
@@ -45,6 +44,10 @@ void UGameUI::Init() {
 		TeachMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
 		TeachMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
 	}
+
+	// patch. avoid issue with the game starting by hiding the prompt and hence showing the animation unnecessarily
+	TPrompt->SetText(FText::GetEmpty());
+	if (LIKELY(TTeach)) TTeach->SetText(FText::GetEmpty());
 }
 
 void UGameUI::DeInit() {
@@ -62,18 +65,15 @@ void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 
 	TTeach->SetText(Row.Text);
 	if (LIKELY(ATeachIn))
-		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Forward, AnimSpeed);
 	else if (LIKELY(TeachBG))
 		TeachBG->SetVisibility(ESlateVisibility::HitTestInvisible); // controlled by animation
 }
 
 void UGameUI::LearnHide(const FName& Id) {
 	UE_LOG(LogTemp, Log, TEXT("UI:%hs Id=%s"), __func__, *Id.ToString());
-	if (UNLIKELY(!TTeach)) return;
-
-	TTeach->SetText(FText::GetEmpty());
 	if (LIKELY(ATeachIn))
-		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
+		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Reverse, AnimSpeed);
 	else if (LIKELY(TeachBG))
 		TeachBG->SetVisibility(ESlateVisibility::Hidden); // controlled by animation
 }

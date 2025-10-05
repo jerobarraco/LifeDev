@@ -47,10 +47,11 @@ protected:
 	UFUNCTION()
 	void StepStart(AStep* const Step);
 
+	// speed multiplier for animations.
+	// using the same speed for teachs and prompts, due to the idea that
+	// having different speeds would look odd or feel jarring
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TeachAnimSpeed = 2; // 500ms
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float PromptAnimSpeed = 6; // ms
+	float AnimSpeed = 3;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> TPrompt = nullptr;
