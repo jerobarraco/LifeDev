@@ -51,6 +51,8 @@ enum class EFeat: uint8 {
 	V_MLIGHTS,
 	// blur
 	V_BLUR,
+	// color aberration / fringe
+	V_FRINGE,
 	// strobing lights
 	V_STROBE,
 	// field of view
