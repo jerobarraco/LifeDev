@@ -50,16 +50,21 @@ void ULSetGameUI::Apply_Implementation() {
 			Inter->SaveConfig();
 		}
 	}
-	
-	if (LIKELY(SLBlurSize)) {
-		// use the in-level if possible
-		ALFeatsMan* Man = ALFeatsMan::Instance(this);
-		if (UNLIKELY(!Man)) Man = GetMutableDefault<ALFeatsMan>();
-		if (LIKELY(Man)) {
-			Man->MotionBlurAmount = SLBlurSize->GetValue();
-			Man->SaveConfig();
-			Man->BlurReset(); // i can do this because i check nullptrs
-		}
+
+	// use the in-level if possible
+	ALFeatsMan* Man = ALFeatsMan::Instance(this);
+	// otherwise the default
+	if (UNLIKELY(!Man)) Man = GetMutableDefault<ALFeatsMan>();
+
+	if (LIKELY(bool(SLBlurSize) & bool(Man))) {
+		Man->MotionBlurAmount = SLBlurSize->GetValue();
+		Man->SaveConfig();
+		Man->BlurReset(); // i can do this because i check nullptrs
+	}
+	if (LIKELY(bool(SLFringe) & bool(Man))) {
+		Man->FringeIntensity = SLFringe->GetValue();
+		Man->SaveConfig();
+		Man->FringeReset(); // i can do this because i check nullptrs
 	}
 
 	if (LIKELY(FeatsGroup)) FeatsGroup->Apply();
