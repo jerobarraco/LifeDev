@@ -50,7 +50,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	float TeachAnimSpeed = 2; // 500ms
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float PromptAnimSpeed = 4; // ms
+	float PromptAnimSpeed = 6; // ms
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;

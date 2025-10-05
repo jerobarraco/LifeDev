@@ -29,7 +29,7 @@ void UGameUI::PromptShow_Implementation(const FText& Text) {
 
 void UGameUI::PromptHide_Implementation() {
 	if (LIKELY(APromptIn))
-		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
 	else if (LIKELY(PromptBG))
 		PromptBG->SetVisibility(ESlateVisibility::Collapsed);
 }
