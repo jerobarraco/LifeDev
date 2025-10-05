@@ -55,7 +55,8 @@ void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 
 	TTeach->SetText(Row.Text);
 	TeachBG->SetVisibility(ESlateVisibility::Visible);
-	// TODO animate
+	if (LIKELY(ATeachIn))
+		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
 }
 
 void UGameUI::LearnHide(const FName& Id) {
@@ -64,7 +65,8 @@ void UGameUI::LearnHide(const FName& Id) {
 
 	TTeach->SetText(FText::GetEmpty());
 	TeachBG->SetVisibility(ESlateVisibility::Hidden);
-	// TODO animate
+	if (LIKELY(ATeachIn))
+		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
 }
 
 void UGameUI::ShowStatus(const bool Enabled) const {

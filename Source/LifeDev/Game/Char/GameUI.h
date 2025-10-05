@@ -47,6 +47,8 @@ protected:
 	UFUNCTION()
 	void StepStart(AStep* const Step);
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	float TeachAnimSpeed = 2; //1/.5;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -63,4 +65,6 @@ protected:
 	TObjectPtr<URichTextBlock> TTeach = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UWidget> TeachBG = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetAnimOptional))
+	TObjectPtr<UWidgetAnimation> ATeachIn = nullptr;
 };
