@@ -171,9 +171,9 @@ void ULSetGameUI::NativeOnInitialized() {
 			// TArray<FString> Cultures;
 			// UJUtilsSys::GetAllCultures(Cultures); // this one list all POSSIBLE not all supported :(
 			TArray<FString> Cultures = {"en", "es"};
-			for (const FString& C: Cultures) {
+			for (const FString& C: Cultures)
 				Langs->AddOption(C);
-			}
+
 			const FString& Cur = UJUtilsSys::GetCulture();
 			Langs->SetSelectedOption(Cur);
 		}
