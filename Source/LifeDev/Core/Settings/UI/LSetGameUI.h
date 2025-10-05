@@ -37,6 +37,8 @@ protected:
 	void InterHintUpd(const float Value);
 	UFUNCTION()
 	void BlurSizeUpd(const float Value);
+	UFUNCTION()
+	void FringeUpd(const float Value);
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
@@ -61,6 +63,10 @@ protected:
 	TObjectPtr<USlider> SLBlurSize;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TBlurSize;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SLFringe;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UTextBlock> TFringe;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> Langs;
 };

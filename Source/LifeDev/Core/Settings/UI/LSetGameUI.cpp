@@ -150,6 +150,12 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLBlurSize->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::BlurSizeUpd);
 	}
 
+	if (LIKELY(SLFringe)) {
+		SLFringe->SetMaxValue(1);
+		SLFringe->SetMinValue(0);
+		SLFringe->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::FringeUpd);
+	}
+
 	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp({
 		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
@@ -233,4 +239,15 @@ void ULSetGameUI::BlurSizeUpd(const float Value) {
 	NFOption.MinimumFractionalDigits = 3;
 	const FText Num = FText::AsNumber(Value, &NFOption);
 	TBlurSize->SetText(FText::Format(Fmt, Num));
+}
+
+void ULSetGameUI::FringeUpd(const float Value) {
+	if (UNLIKELY(!TFringe)) return;
+
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TFringe", "{0}");
+	static FNumberFormattingOptions NFOption;
+	NFOption.MaximumFractionalDigits = 3;
+	NFOption.MinimumFractionalDigits = 3;
+	const FText Num = FText::AsNumber(Value, &NFOption);
+	TFringe->SetText(FText::Format(Fmt, Num));
 }
