@@ -71,7 +71,7 @@ ALChar::ALChar() {
 	// load the ui class here with the class finder.
 	// and also all the other default objects
 	static ConstructorHelpers::FClassFinder<UUserWidget>
-		DefaultUI(TEXT("/Game/LifeDev/Game/Char/GameUI_W"));
+		DefaultUI(TEXT("/Game/LifeDev/Game/Sys/GameUI_W"));
 	UIClass = DefaultUI.Succeeded() ? DefaultUI.Class.Get() : UGameUI::StaticClass();
 	
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
