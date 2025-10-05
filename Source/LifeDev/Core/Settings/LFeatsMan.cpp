@@ -333,7 +333,6 @@ void ALFeatsMan::BlurReset() {
 void ALFeatsMan::FringeReset() {
 	FeatUpVisual(EFeat::V_FRINGE, Settings && Settings->GetFeat(EFeat::V_FRINGE));
 }
-
 #pragma endregion
 
 #pragma region Eval

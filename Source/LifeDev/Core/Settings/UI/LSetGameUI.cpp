@@ -102,6 +102,10 @@ void ULSetGameUI::Load_Implementation() {
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
 
+	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : 1;
+	if (LIKELY(SLFringe)) SLFringe->SetValue(FringeSize);
+	FringeUpd(FringeSize);
+
 	if (LIKELY(FeatsGroup)) FeatsGroup->Load();
 }
 
