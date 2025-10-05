@@ -63,7 +63,7 @@ void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 	if (LIKELY(ATeachIn))
 		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
 	else if (LIKELY(TeachBG))
-		TeachBG->SetVisibility(ESlateVisibility::Visible); // controlled by animation
+		TeachBG->SetVisibility(ESlateVisibility::HitTestInvisible); // controlled by animation
 }
 
 void UGameUI::LearnHide(const FName& Id) {
