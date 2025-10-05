@@ -446,7 +446,7 @@ void ULSetVideoUI::FeatsSet() {
 		{EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights")},
 		{EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View")},
 		{EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur")},
-		{EFeat::V_FRINGE, NSLOCTEXT("SetVideo", "Fringe", "Color Abber.")},
+		{EFeat::V_FRINGE, NSLOCTEXT("SetVideo", "Fringe", "Chroma Aber.")},
 		{EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp.")},
 		{EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen")},
 		{EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights")},

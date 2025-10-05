@@ -102,7 +102,9 @@ void ULSetGameUI::Load_Implementation() {
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
 	InterDragUpd(InterHint);
 
-	const ALFeatsMan* const FMan = GetMutableDefault<ALFeatsMan>();
+	// use the in-level if possible
+	ALFeatsMan* FMan = ALFeatsMan::Instance(this);
+	if (UNLIKELY(!FMan)) FMan = GetMutableDefault<ALFeatsMan>();
 	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : 1;
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
@@ -160,7 +162,7 @@ void ULSetGameUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(SLFringe)) {
-		SLFringe->SetMaxValue(1);
+		SLFringe->SetMaxValue(5);
 		SLFringe->SetMinValue(0);
 		SLFringe->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::FringeUpd);
 	}
