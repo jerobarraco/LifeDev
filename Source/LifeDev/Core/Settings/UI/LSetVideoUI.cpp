@@ -440,15 +440,17 @@ void ULSetVideoUI::FeatsApply() const {
 void ULSetVideoUI::FeatsSet() {
 	if (UNLIKELY(!FeatsGroup)) return;
 
-	TMap<EFeat, FText> FeatTexts;
-	FeatTexts.Add(EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post"));
-	FeatTexts.Add(EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed FX"));
-	FeatTexts.Add(EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights"));
-	FeatTexts.Add(EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View"));
-	FeatTexts.Add(EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur"));
-	FeatTexts.Add(EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp."));
-	FeatTexts.Add(EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen"));
-	FeatTexts.Add(EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights"));
-	FeatTexts.Add(EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite"));
+	const TMap<EFeat, FText> FeatTexts = {
+		{EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post")},
+		{EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed FX")},
+		{EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights")},
+		{EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View")},
+		{EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur")},
+		{EFeat::V_FRINGE, NSLOCTEXT("SetVideo", "Fringe", "Color Abber.")},
+		{EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp.")},
+		{EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen")},
+		{EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights")},
+		{EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite")},
+	};
 	FeatsGroup->SetUp(FeatTexts);
 }
