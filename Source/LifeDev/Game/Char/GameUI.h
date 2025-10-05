@@ -53,7 +53,7 @@ protected:
 	float PromptAnimSpeed = 6; // ms
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
-	TObjectPtr<UTextBlock> T_Prompt = nullptr;
+	TObjectPtr<UTextBlock> TPrompt = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> Pointer = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidgetOptional))

@@ -15,8 +15,8 @@
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 void UGameUI::PromptSet_Implementation(const FText& Text) {
-	if (UNLIKELY(!T_Prompt)) return;
-	T_Prompt->SetText(Text);
+	if (UNLIKELY(!TPrompt)) return;
+	TPrompt->SetText(Text);
 }
 
 void UGameUI::PromptShow_Implementation(const FText& Text) {
@@ -24,18 +24,19 @@ void UGameUI::PromptShow_Implementation(const FText& Text) {
 	if (LIKELY(APromptIn))
 		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
 	else if (LIKELY(PromptBG))
-		PromptBG->SetVisibility(ESlateVisibility::Visible);
+		PromptBG->SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
 void UGameUI::PromptHide_Implementation() {
+	TPrompt->SetText(FText::GetEmpty()); // patch. avoid issue with the game starting by hiding the prompt and hence showing the animation unnecessarily
 	if (LIKELY(APromptIn))
 		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
 	else if (LIKELY(PromptBG))
-		PromptBG->SetVisibility(ESlateVisibility::Collapsed);
+		PromptBG->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UGameUI::SetPointerShow_Implementation(const bool Vis) {
-	if (LIKELY(Pointer)) Pointer->SetVisibility(Vis ? ESlateVisibility::Visible: ESlateVisibility::Hidden);
+	if (LIKELY(Pointer)) Pointer->SetVisibility(Vis ? ESlateVisibility::HitTestInvisible: ESlateVisibility::Hidden);
 }
 
 void UGameUI::Init() {
@@ -78,7 +79,7 @@ void UGameUI::LearnHide(const FName& Id) {
 }
 
 void UGameUI::ShowStatus(const bool Enabled) const {
-	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	if (LIKELY(GStatus)) GStatus->SetVisibility(Enabled ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
 	UFlags* const Flags = UFlags::Instance(this);
 	UStory* const Story = UStory::Instance(this);
 	if (Enabled) {
