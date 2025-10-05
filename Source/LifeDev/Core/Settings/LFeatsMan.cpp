@@ -207,6 +207,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
 	BlurReset();
+	FringeReset();
 	
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
@@ -327,6 +328,10 @@ void ALFeatsMan::FeatUpDbg(const EFeat Feat, const bool Enabled) {
 
 void ALFeatsMan::BlurReset() {
 	FeatUpVisual(EFeat::V_BLUR, Settings && Settings->GetFeat(EFeat::V_BLUR));
+}
+
+void ALFeatsMan::FringeReset() {
+	FeatUpVisual(EFeat::V_FRINGE, Settings && Settings->GetFeat(EFeat::V_FRINGE));
 }
 
 #pragma endregion

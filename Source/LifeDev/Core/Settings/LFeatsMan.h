@@ -27,12 +27,15 @@ public:
 	// Called by LGGameMode
 	UFUNCTION(meta=(AdvancedDisplay))
 	virtual void Init();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
 
 	// reapplies the blur
 	UFUNCTION(BlueprintCallable)
 	void BlurReset();
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
+	// reapplies the color aberration
+	UFUNCTION(BlueprintCallable)
+	void FringeReset();
 
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float FringeIntensity = 1;
