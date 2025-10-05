@@ -21,11 +21,17 @@ void UGameUI::PromptSet_Implementation(const FText& Text) {
 
 void UGameUI::PromptShow_Implementation(const FText& Text) {
 	PromptSet(Text);
-	if (LIKELY(PromptBG)) PromptBG->SetVisibility(ESlateVisibility::Visible);
+	if (LIKELY(APromptIn))
+		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+	else if (LIKELY(PromptBG))
+		PromptBG->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UGameUI::PromptHide_Implementation() {
-	if (LIKELY(PromptBG)) PromptBG->SetVisibility(ESlateVisibility::Collapsed);
+	if (LIKELY(APromptIn))
+		PlayAnimation(APromptIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+	else if (LIKELY(PromptBG))
+		PromptBG->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UGameUI::SetPointerShow_Implementation(const bool Vis) {
@@ -54,9 +60,10 @@ void UGameUI::LearnShow(const FName& Id, const FTeachRow& Row) {
 	if (UNLIKELY(!TTeach)) return;
 
 	TTeach->SetText(Row.Text);
-	TeachBG->SetVisibility(ESlateVisibility::Visible);
 	if (LIKELY(ATeachIn))
 		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Forward, TeachAnimSpeed);
+	else if (LIKELY(TeachBG))
+		TeachBG->SetVisibility(ESlateVisibility::Visible); // controlled by animation
 }
 
 void UGameUI::LearnHide(const FName& Id) {
@@ -64,9 +71,10 @@ void UGameUI::LearnHide(const FName& Id) {
 	if (UNLIKELY(!TTeach)) return;
 
 	TTeach->SetText(FText::GetEmpty());
-	TeachBG->SetVisibility(ESlateVisibility::Hidden);
 	if (LIKELY(ATeachIn))
 		PlayAnimation(ATeachIn, 0, 1, EUMGSequencePlayMode::Reverse, TeachAnimSpeed);
+	else if (LIKELY(TeachBG))
+		TeachBG->SetVisibility(ESlateVisibility::Hidden); // controlled by animation
 }
 
 void UGameUI::ShowStatus(const bool Enabled) const {

@@ -48,12 +48,15 @@ protected:
 	void StepStart(AStep* const Step);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	float TeachAnimSpeed = 2; //1/.5;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	float TeachAnimSpeed = 2; // 500ms
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	float PromptAnimSpeed = 4; // ms
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> T_Prompt = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UImage> Pointer = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidget> PromptBG = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TTime = nullptr;
@@ -63,9 +66,11 @@ protected:
 	TObjectPtr<UGridPanel> GStatus = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<URichTextBlock> TTeach = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UWidget> TeachBG = nullptr;
 	// it HAS to be transient or the widget bp won't compile
 	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> ATeachIn = nullptr;
+	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
+	TObjectPtr<UWidgetAnimation> APromptIn = nullptr;
 };
