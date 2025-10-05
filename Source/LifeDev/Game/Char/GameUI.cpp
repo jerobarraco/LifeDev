@@ -33,18 +33,18 @@ void UGameUI::SetPointerShow_Implementation(const bool Vis) {
 }
 
 void UGameUI::Init() {
-	ALTeachMan* const LearnMan = ALTeachMan::Instance(this);
-	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
-		LearnMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
-		LearnMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
+	ALTeachMan* const TeachMan = ALTeachMan::Instance(this);
+	if (LIKELY(TeachMan)) { // this should be somewhere else tbh.
+		TeachMan->OnShow.AddUniqueDynamic(this, &UGameUI::LearnShow);
+		TeachMan->OnHide.AddUniqueDynamic(this, &UGameUI::LearnHide);
 	}
 }
 
 void UGameUI::DeInit() {
-	ALTeachMan* const LearnMan = ALTeachMan::Instance(this);
-	if (LIKELY(LearnMan)) { // this should be somewhere else tbh.
-		LearnMan->OnShow.RemoveAll(this);
-		LearnMan->OnHide.RemoveAll(this);
+	ALTeachMan* const TeachMan = ALTeachMan::Instance(this);
+	if (LIKELY(TeachMan)) { // this should be somewhere else tbh.
+		TeachMan->OnShow.RemoveAll(this);
+		TeachMan->OnHide.RemoveAll(this);
 	}
 }
 
