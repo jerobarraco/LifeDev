@@ -108,3 +108,7 @@ void UGameUI::StepStart(AStep* const Step) {
 		TState->SetText(FText::FormatOrdered(TStateF, FText::FromString(Step->Label.ToString())));
 	}
 }
+
+// note on the animations:
+// i can't animate the blur amount NOR the render opacity of the bg blur. of neither the prompt nor teach.
+// since it adds an issue where the bg shows a different roundness and flashes a brighter bg.
