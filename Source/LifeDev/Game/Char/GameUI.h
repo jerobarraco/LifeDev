@@ -65,6 +65,7 @@ protected:
 	TObjectPtr<URichTextBlock> TTeach = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetOptional))
 	TObjectPtr<UWidget> TeachBG = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidgetAnimOptional))
+	// it HAS to be transient or the widget bp won't compile
+	UPROPERTY(BlueprintReadWrite, Transient, meta=(BindWidgetAnimOptional))
 	TObjectPtr<UWidgetAnimation> ATeachIn = nullptr;
 };
