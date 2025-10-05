@@ -254,6 +254,7 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	} else if (Feat == EFeat::V_BLUR) {
 		Post->Settings.MotionBlurAmount = Enabled ? MotionBlurAmount: 0;
 		Post->Settings.MotionBlurMax = Enabled ? MotionBlurMax: 0;
+	} else if (Feat == EFeat::V_FRINGE) {
 		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_AUTO_EXP) {
 		// https://forums.unrealengine.com/t/how-do-i-disable-eye-adaptation-auto-exposure/286811/6
