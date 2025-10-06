@@ -50,6 +50,7 @@ void ULFeatsGroup::Load() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (UNLIKELY(!IsValid(Check))) continue;
+
 		Check->Load();
 	}
 }
@@ -59,6 +60,7 @@ void ULFeatsGroup::Apply() {
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (UNLIKELY(!IsValid(Check.Get()))) continue;
+
 		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply check=%s"), __func__, *GetNameSafe(Check));
 		Check->Apply();
 	}

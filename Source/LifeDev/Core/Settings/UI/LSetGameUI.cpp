@@ -82,7 +82,7 @@ void ULSetGameUI::Load_Implementation() {
 
 	float AutoTime = 0;
 	const ALDiagMan* const Man = ALDiagMan::InstanceL(this); // this probably will only be changeable during gameplay and not intro
-	if (LIKELY(Man)) AutoTime = Man->GetAutoTime();
+	if (LIKELY(Man)) AutoTime = Man->AutoTime;
 
 	if (LIKELY(SLDiagAutoTime))
 		SLDiagAutoTime->SetValue(AutoTime);
@@ -208,6 +208,19 @@ void ULSetGameUI::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
+void ULSetGameUI::DoReset(const int32 Id) {
+	static const float AutoTime =
+		GetMutableDefault<ALDiagMan>()->AutoTime;
+		;// 2.5;// todo find a way to have these somewhere
+	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
+	DiagAutoTimeUpd(AutoTime); // not called automatically
+	
+	// todo for feat group. set the feats to the settings, then call featsgroup->Load
+	// hmm nopes, that would set them before apply. maybe have a "SetDefaults or DoReset" inside
+	FeatsGroup->Load();
+	// todo
+}
+
 void ULSetGameUI::DiagAutoTimeUpd(const float Value) {
 	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TDiagAutoTime", "{0} secs.");
 	if (LIKELY(TDiagAutoTime)) {
@@ -274,6 +287,3 @@ void ULSetGameUI::FringeUpd(const float Value) {
 	TFringe->SetText(FText::Format(Fmt, Num));
 }
 
-void ULSetGameUI::DoReset(const int32 Id) {
-	// todo
-}

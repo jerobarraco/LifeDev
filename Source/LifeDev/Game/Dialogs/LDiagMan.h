@@ -6,7 +6,6 @@
 
 #include "Diags/DiagMan.h"
 #include "Inventory/Flags.h"
-#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LDiagMan.generated.h"
 
@@ -24,9 +23,6 @@ public:
 	static ALDiagMan* InstanceL(const UObject* const O);
 
 	virtual void Init_Implementation() override;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetAutoTime() const { return AutoTime; }
 
 	// how much to wait before trying to auto skip.
 	// Requires feature flag D_AUTO
