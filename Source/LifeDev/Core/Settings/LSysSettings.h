@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Inventory/Teach/TeachTypes.h"
+#include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LSysSettings.generated.h"
@@ -27,7 +28,9 @@ class LIFEDEV_API ULSysSettings : public UDeveloperSettings {
 
 public:
 	UFUNCTION(BlueprintCallable)
-	static ULSysSettings* Get();
+	static FORCEINLINE ULSysSettings* Get() {
+		return GetMutableDefault<ULSysSettings>(); // the same as the previous code.
+	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE FName GetGameLvl() {
@@ -35,22 +38,25 @@ public:
 		return G; // force game level
 		// static const FName D("Demo_L");
 		// #if LD_DEMO
-			// return D;
+		// return D;
 		// #else
-			// return G;
+		// return G;
 		// #endif
 	}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FORCEINLINE bool IsDemo() {
-		#if LD_DEMO
-			return true;
-		#else
-			return false;
-		#endif
+#if LD_DEMO
+		return true;
+#else
+		return false;
+#endif
 	}
 
 	// Overrides for display
-	virtual FName GetCategoryName() const override;
+	virtual FName GetCategoryName() const override{ 
+		static const FName Cat = FName("LifeDev"); 
+		return Cat;
+	}
 
 	// returns initial features for shipping builds (Default on shipping, debug if debug enabled and debug build)
 	// for the *actual current instance* feats, get them from LSettings
@@ -61,10 +67,15 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	bool GetUseDebugFeats() const;
+	FORCEINLINE bool GetUseDebugFeats() const {
+		return UseDebugFeats & UJUtilsSys::IsDebug();
+	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	int32 GetStartChap() const;
+	FORCEINLINE int32 GetStartChap() const{
+		const bool UseDebug = GetUseDebugFeats();
+		return UseDebug ? StartChap : 0; // force to 0 on release
+	}
 
 	// url to open when the game closes. usually the feedback form.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
