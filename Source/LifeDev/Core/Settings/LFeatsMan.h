@@ -37,12 +37,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FringeReset();
 
+	static constexpr float DefFringe = 1;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	float FringeIntensity = 1;
+	float FringeIntensity = DefFringe;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
 	float MotionBlurMax = 5;
+	static constexpr float DefBlurAmount = .5;
 	UPROPERTY(BlueprintReadWrite, Config, Category=SetUp)
-	float MotionBlurAmount = .5;
+	float MotionBlurAmount = DefBlurAmount;
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 111;

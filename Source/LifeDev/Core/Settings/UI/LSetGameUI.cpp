@@ -18,13 +18,6 @@
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
-
-// todo find a better place
-namespace LDConsts { namespace Settings { namespace Game {
-	static constexpr float DefBlurSize = .5;
-	static constexpr float DefFringe = 1.;
-}}}
-
 void ULSetGameUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	if (LIKELY(SLDiagAutoTime)) {
@@ -110,11 +103,11 @@ void ULSetGameUI::Load_Implementation() {
 	// use the in-level if possible
 	const ALFeatsMan* FMan = ALFeatsMan::Instance(this);
 	if (UNLIKELY(!FMan)) FMan = GetMutableDefault<ALFeatsMan>();
-	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : LDConsts::Settings::Game::DefBlurSize;
+	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : ALFeatsMan::DefBlurAmount;
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
 
-	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : LDConsts::Settings::Game::DefFringe;
+	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : ALFeatsMan::DefFringe;
 	if (LIKELY(SLFringe)) SLFringe->SetValue(FringeSize);
 	FringeUpd(FringeSize);
 
@@ -232,11 +225,11 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
 	InterDragUpd(InterHint);
 
-	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(LDConsts::Settings::Game::DefBlurSize);
-	BlurSizeUpd(LDConsts::Settings::Game::DefBlurSize);
+	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(ALFeatsMan::DefBlurAmount);
+	BlurSizeUpd(ALFeatsMan::DefBlurAmount);
 
-	if (LIKELY(SLFringe)) SLFringe->SetValue(LDConsts::Settings::Game::DefFringe);
-	FringeUpd(LDConsts::Settings::Game::DefFringe);
+	if (LIKELY(SLFringe)) SLFringe->SetValue(ALFeatsMan::DefFringe);
+	FringeUpd(ALFeatsMan::DefFringe);
 	
 	FeatsGroup->SetDefaults();
 }
