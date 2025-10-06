@@ -20,7 +20,7 @@
 
 
 // todo find a better place
-namespace LDConsts { namespace Set { namespace Game {
+namespace LDConsts { namespace Settings { namespace Game {
 	static constexpr float DefBlurSize = .5;
 	static constexpr float DefFringe = 1.;
 }}}
@@ -110,11 +110,11 @@ void ULSetGameUI::Load_Implementation() {
 	// use the in-level if possible
 	const ALFeatsMan* FMan = ALFeatsMan::Instance(this);
 	if (UNLIKELY(!FMan)) FMan = GetMutableDefault<ALFeatsMan>();
-	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : LDConsts::Set::Game::DefBlurSize;
+	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : LDConsts::Settings::Game::DefBlurSize;
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
 
-	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : LDConsts::Set::Game::DefFringe;
+	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : LDConsts::Settings::Game::DefFringe;
 	if (LIKELY(SLFringe)) SLFringe->SetValue(FringeSize);
 	FringeUpd(FringeSize);
 
@@ -232,11 +232,11 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
 	InterDragUpd(InterHint);
 
-	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(LDConsts::Set::Game::DefBlurSize);
-	BlurSizeUpd(LDConsts::Set::Game::DefBlurSize);
+	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(LDConsts::Settings::Game::DefBlurSize);
+	BlurSizeUpd(LDConsts::Settings::Game::DefBlurSize);
 
-	if (LIKELY(SLFringe)) SLFringe->SetValue(LDConsts::Set::Game::DefFringe);
-	FringeUpd(LDConsts::Set::Game::DefFringe);
+	if (LIKELY(SLFringe)) SLFringe->SetValue(LDConsts::Settings::Game::DefFringe);
+	FringeUpd(LDConsts::Settings::Game::DefFringe);
 	
 	FeatsGroup->SetDefaults();
 }

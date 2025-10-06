@@ -11,5 +11,6 @@ void ULogicCard02::Use_Implementation() {
 	Super::Use_Implementation();
 	if (UNLIKELY(!FB)) return;
 
+	// todo foxify
 	FB->ModVal(FMath::FRandRange(ModMin, ModMax)); // lowers the fb by a random
 }
