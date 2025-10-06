@@ -101,7 +101,7 @@ void ULSetGameUI::Load_Implementation() {
 	FBTimeUpd(FBAnimTime);
 
 	const ALChar* const Char = ALChar::Instance(this);
-	const float InterDrag = Char ? Char->InteractDrag : .5;
+	const float InterDrag = Char ? Char->InteractDrag : ALChar::DefInteractDrag;
 	if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
 	InterDragUpd(InterDrag);
 	
@@ -226,11 +226,10 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	// const UFlashback* const Flash = UFlashback::Instance(this);
 	// if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
 	// FBTimeUpd(FBAnimTime);
-
-	// const ALChar* const Char = ALChar::Instance(this);
-	// const float InterDrag = Char ? Char->InteractDrag : .5;
-	// if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
-	// InterDragUpd(InterDrag);
+	
+	constexpr float InterDrag = ALChar::DefInteractDrag;
+	if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
+	InterDragUpd(InterDrag);
 	
 	constexpr float InterHint = AInteract::DefHintTime;
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);

@@ -65,10 +65,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UCLCharItems* GetCharItems() const { return Items; }
 
-	// factor to apply to look when hovering an Interact
+	// .3 is too little and annoying.
+	static constexpr float DefInteractDrag = .5;
+	// factor to apply to look when hovering an Interact.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
-	float InteractDrag = .5;
-	// ^ .3 is too little and annoying.
+	float InteractDrag = DefInteractDrag;
 
 	// TODO fix speedMin and Max on config.
 	// Somehow unreal saves the values after a play.
