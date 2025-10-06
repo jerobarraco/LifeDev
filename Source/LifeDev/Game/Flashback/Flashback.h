@@ -61,10 +61,11 @@ public:
 	// duration works like in SetVal
 	UFUNCTION(BlueprintCallable)
 	void SetMin(const float NewMin, const float Duration=-1.f);
-	
+
+	static constexpr float DefAnimTime = 20.f;
 	// default flashback anim speed
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category=SetUp, Config)
-	float AnimTime = 20.f;
+	float AnimTime = DefAnimTime;
 
 	// triggered with each value update (updates per tick).
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite, Transient)

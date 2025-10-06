@@ -93,7 +93,7 @@ void ULSetGameUI::Load_Implementation() {
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 	
 	const UFlashback* const Flash = UFlashback::Instance(this);
-	const float FBAnimTime = Flash ? Flash->AnimTime : 20;
+	const float FBAnimTime = Flash ? Flash->AnimTime : UFlashback::DefAnimTime;
 	if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
 	FBTimeUpd(FBAnimTime);
 
@@ -220,10 +220,10 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 
-	// const UFlashback* const Flash = UFlashback::Instance(this);
-	// if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
-	// FBTimeUpd(FBAnimTime);
-	
+	constexpr float FBAnimTime = UFlashback::DefAnimTime;
+	if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
+	FBTimeUpd(FBAnimTime);
+
 	constexpr float InterDrag = ALChar::DefInteractDrag;
 	if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
 	InterDragUpd(InterDrag);
