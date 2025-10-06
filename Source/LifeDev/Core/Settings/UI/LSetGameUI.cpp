@@ -104,13 +104,13 @@ void ULSetGameUI::Load_Implementation() {
 	InterDragUpd(InterHint);
 
 	// use the in-level if possible
-	ALFeatsMan* FMan = ALFeatsMan::Instance(this);
+	const ALFeatsMan* FMan = ALFeatsMan::Instance(this);
 	if (UNLIKELY(!FMan)) FMan = GetMutableDefault<ALFeatsMan>();
-	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : 1;
+	const float BlurSize = LIKELY(FMan) ? FMan->MotionBlurAmount : .5;
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
 	BlurSizeUpd(BlurSize);
 
-	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : 1;
+	const float FringeSize = LIKELY(FMan) ? FMan->FringeIntensity : 1.;
 	if (LIKELY(SLFringe)) SLFringe->SetValue(FringeSize);
 	FringeUpd(FringeSize);
 
@@ -216,7 +216,28 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 
-	if (LIKELY(SLFringe)) SLFringe->SetValue(1);
+	// const UFlashback* const Flash = UFlashback::Instance(this);
+	// if (LIKELY(SLFBTime)) SLFBTime->SetValue(FBAnimTime);
+	// FBTimeUpd(FBAnimTime);
+
+	// const ALChar* const Char = ALChar::Instance(this);
+	// const float InterDrag = Char ? Char->InteractDrag : .5;
+	// if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
+	// InterDragUpd(InterDrag);
+	
+	// const AInteract* const Inter = GetMutableDefault<AInteract>();
+	// const float InterHint = Inter ? Inter->HintTime : 1.5;
+	// if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
+	// InterDragUpd(InterHint);
+
+	// use the in-level if possible
+	// ALFeatsMan* FMan = ALFeatsMan::Instance(this);
+	// if (UNLIKELY(!FMan)) FMan = GetMutableDefault<ALFeatsMan>();
+	static constexpr float BlurSize = .5;
+	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(BlurSize);
+	BlurSizeUpd(BlurSize);
+
+	if (LIKELY(SLFringe)) SLFringe->SetValue(1); // TODO find a better place to put this.
 	
 	FeatsGroup->SetDefaults();
 }

@@ -26,7 +26,7 @@ public:
 
 	virtual void Init_Implementation() override;
 
-	static const inline float DefAutoTime= 2.5;
+	static const inline float DefAutoTime = 2.5;
 	// how much to wait before trying to auto skip.
 	// Requires feature flag D_AUTO
 	// a very low value can break stuff.
