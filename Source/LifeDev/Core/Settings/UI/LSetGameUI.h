@@ -7,6 +7,7 @@
 
 #include "LSetGameUI.generated.h"
 
+class UJButton;
 enum class EFeat : uint8;
 class UComboBoxString;
 class ULFeatsGroup;
@@ -27,6 +28,7 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
 	UFUNCTION()
 	void DiagAutoTimeUpd(const float Value);
 	UFUNCTION()
@@ -39,6 +41,8 @@ protected:
 	void BlurSizeUpd(const float Value);
 	UFUNCTION()
 	void FringeUpd(const float Value);
+	UFUNCTION()
+	void DoReset(const int32 Id);
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
@@ -69,4 +73,6 @@ protected:
 	TObjectPtr<UTextBlock> TFringe;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> Langs;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnReset = nullptr;
 };

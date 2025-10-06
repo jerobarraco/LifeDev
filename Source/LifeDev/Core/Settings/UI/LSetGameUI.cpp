@@ -2,6 +2,7 @@
 
 #include "LSetGameUI.h"
 
+#include "JButton.h"
 #include "Components/ComboBoxString.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
@@ -195,6 +196,16 @@ void ULSetGameUI::NativeOnInitialized() {
 			Langs->SetSelectedOption(Cur);
 		}
 	}
+
+	if (LIKELY(BtnReset))
+		BtnReset->OnClick.AddUniqueDynamic(this, &ULSetGameUI::DoReset);
+}
+
+void ULSetGameUI::NativeDestruct() {
+	// todo the rest of the things?
+	if (LIKELY(BtnReset))
+		BtnReset->OnClick.RemoveAll(this);
+	Super::NativeDestruct();
 }
 
 void ULSetGameUI::DiagAutoTimeUpd(const float Value) {
@@ -261,4 +272,8 @@ void ULSetGameUI::FringeUpd(const float Value) {
 	NFOption.MinimumFractionalDigits = 3;
 	const FText Num = FText::AsNumber(Value, &NFOption);
 	TFringe->SetText(FText::Format(Fmt, Num));
+}
+
+void ULSetGameUI::DoReset(const int32 Id) {
+	// todo
 }
