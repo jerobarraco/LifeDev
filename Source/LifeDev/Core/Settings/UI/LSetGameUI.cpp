@@ -210,14 +210,14 @@ void ULSetGameUI::NativeDestruct() {
 
 void ULSetGameUI::SetDefaults(const int32 Id) {
 	static const float AutoTime =
-		GetMutableDefault<ALDiagMan>()->AutoTime;
+		GetMutableDefault<ALDiagMan>()->AutoTime; // todo this does not work. set a static value in the class
 		;// 2.5;// todo find a way to have these somewhere
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 	
 	// todo for feat group. set the feats to the settings, then call featsgroup->Load
 	// hmm nopes, that would set them before apply. maybe have a "SetDefaults or DoReset" inside
-	FeatsGroup->Load();
+	FeatsGroup->SetDefaults();
 	// todo
 }
 

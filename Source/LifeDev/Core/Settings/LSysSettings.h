@@ -55,7 +55,10 @@ public:
 	// returns initial features for shipping builds (Default on shipping, debug if debug enabled and debug build)
 	// for the *actual current instance* feats, get them from LSettings
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TSet<EFeat>& GetFeats();
+	const FORCEINLINE TSet<EFeat>& GetFeats() const {
+		const bool UseDebug = GetUseDebugFeats();
+		return UseDebug ? DebugFeats : DefaultFeats; // force defaults on release
+	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool GetUseDebugFeats() const;

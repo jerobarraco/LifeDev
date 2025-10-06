@@ -56,13 +56,24 @@ void ULFeatsGroup::Load() {
 }
 
 void ULFeatsGroup::Apply() {
-	UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply num =%i"), __func__, Feats.Num());
+	UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs num=%i"), __func__, Feats.Num());
 	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
 		const TObjectPtr<ULFeatCheck>& Check = F.Value;
 		if (UNLIKELY(!IsValid(Check.Get()))) continue;
 
-		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs apply check=%s"), __func__, *GetNameSafe(Check));
+		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs check=%s"), __func__, *GetNameSafe(Check));
 		Check->Apply();
+	}
+}
+
+void ULFeatsGroup::SetDefaults() {
+	UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs num=%i"), __func__, Feats.Num());
+	for (const TTuple<EFeat, TObjectPtr<ULFeatCheck>>& F: Feats) {
+		const TObjectPtr<ULFeatCheck>& Check = F.Value;
+		if (UNLIKELY(!IsValid(Check.Get()))) continue;
+
+		UE_LOG(LogTemp, Log, TEXT("FeatsGroup::%hs check=%s"), __func__, *GetNameSafe(Check));
+		Check->SetDefault();
 	}
 }
 

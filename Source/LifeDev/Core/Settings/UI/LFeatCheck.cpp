@@ -5,6 +5,7 @@
 #include "Components/CheckBox.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 
 void ULFeatCheck::SetUp(const EFeat NFeat, const FText& NewText) {
 	Feat = NFeat;
@@ -36,6 +37,14 @@ void ULFeatCheck::Apply_Implementation() {
 	}
 	
 	Settings->SetFeat(Feat, Check->IsChecked());
+}
+
+void ULFeatCheck::SetDefault() {
+	const ULSysSettings* const Settings = ULSysSettings::Get();
+	if (UNLIKELY(!Settings)) return;
+
+	const TSet<EFeat>& Feats = Settings->GetFeats();
+	FeatUpdate(Feat, Feats.Contains(Feat));
 }
 
 void ULFeatCheck::NativeDestruct() {

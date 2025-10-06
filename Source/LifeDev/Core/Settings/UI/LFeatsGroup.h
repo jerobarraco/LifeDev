@@ -23,7 +23,7 @@ class LIFEDEV_API ULFeatsGroup: public UScrollBox {
 public:
 	ULFeatsGroup(const FObjectInitializer& O);
 
-	// don't call this on onInitialize of your widget. it will nastly crash.
+	// don't call this on onInitialize of your widget. it will crash.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetUp(const TMap<EFeat, FText>& InTexts);
 
@@ -31,6 +31,10 @@ public:
 	void Load();
 	UFUNCTION(BlueprintCallable, CallInEditor, meta=(UnsafeDuringActorConstruction))
 	void Apply();
+	// loads the checks with the default values, without changing the feat system
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetDefaults();
+
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
 

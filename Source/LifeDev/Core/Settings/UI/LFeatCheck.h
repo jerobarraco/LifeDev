@@ -23,6 +23,9 @@ public:
 	void SetUp(const EFeat NFeat, const FText& NewText);
 	virtual void Load_Implementation() override;
 	virtual void Apply_Implementation() override;
+	// loads the checks with the default values, without changing the feat system
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetDefault();
 
 	// if true it will call apply on change.
 	// you can call Reset to re-apply the value from the last Load (or SetUp)
