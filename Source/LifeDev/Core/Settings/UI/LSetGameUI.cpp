@@ -173,6 +173,9 @@ void ULSetGameUI::NativeOnInitialized() {
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
 		{EFeat::D_TEXT, NSLOCTEXT("SetGame", "Feat", "Diag. Text")},
 		{EFeat::G_CARD0, NSLOCTEXT("SetGame", "Feat", "C. Intention")},
+		{EFeat::G_CARD1, NSLOCTEXT("SetGame", "Feat", "C. 1")},
+		{EFeat::G_CARD2, NSLOCTEXT("SetGame", "Feat", "C. 2")},
+		{EFeat::G_CARD3, NSLOCTEXT("SetGame", "Feat", "C. 3")},
 		{EFeat::G_TEACH, NSLOCTEXT("SetGame", "Feat", "Tutorial")},
 		{EFeat::G_FB_ANIM, NSLOCTEXT("SetGame", "Feat", "AnimFBFPS")},
 		{EFeat::G_SHOW_POINT, NSLOCTEXT("SetGame", "Feat", "Pointer")}, // this is wip since it gets rewritten in bp
@@ -209,11 +212,11 @@ void ULSetGameUI::NativeDestruct() {
 }
 
 void ULSetGameUI::SetDefaults(const int32 Id) {
-	static const float AutoTime =
-		GetMutableDefault<ALDiagMan>()->AutoTime; // todo this does not work. set a static value in the class
-		;// 2.5;// todo find a way to have these somewhere
+	static const float AutoTime = ALDiagMan::DefAutoTime;
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
+
+	if (LIKELY(SLFringe)) SLFringe->SetValue(1);
 	
 	FeatsGroup->SetDefaults();
 }
