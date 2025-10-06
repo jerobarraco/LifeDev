@@ -69,5 +69,4 @@ protected:
 	TObjectPtr<UTextBlock> TFringe;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> Langs;
-	// todo button to reset
 };
