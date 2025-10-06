@@ -19,6 +19,11 @@ ALStepC4S008::ALStepC4S008():Super() {
 	// spot
 	IntersActivate = {TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501FFE301_1677671777"))};
 	ActorsShow = {TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.CharNRG_UAID_D8BBC116E50193F001_1481028493"))};
+	ActorsHide = {
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LWorldText_UAID_D8BBC116E501E59502_1910779143")),
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LWorldText_UAID_D8BBC116E501E69502_1636614320")),
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LWorldText_UAID_D8BBC116E501E69502_1749170321")),
+	};
 }
 
 // allows the player to sit on the table. enables a spot (set on editor)

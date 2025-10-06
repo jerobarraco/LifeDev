@@ -10,6 +10,9 @@ ALStepC4S003::ALStepC4S003():Super() {
 	FBDlgAutoTo = 1.2;
 	UseFBDlgAuto = true;
 	TeleportChar = true;
+	ActorsShow = {
+		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LWorldText_UAID_D8BBC116E501E69502_1749170321"))
+	};
 	ActorsHide = {
 		TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.LNPC02_UAID_D8BBC116E501A1E401_1122317285"))
 	};
