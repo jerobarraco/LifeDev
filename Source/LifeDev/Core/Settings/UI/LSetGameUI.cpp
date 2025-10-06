@@ -215,10 +215,7 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 	
-	// todo for feat group. set the feats to the settings, then call featsgroup->Load
-	// hmm nopes, that would set them before apply. maybe have a "SetDefaults or DoReset" inside
 	FeatsGroup->SetDefaults();
-	// todo
 }
 
 void ULSetGameUI::DiagAutoTimeUpd(const float Value) {

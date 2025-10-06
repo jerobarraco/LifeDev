@@ -9,6 +9,8 @@
 
 #include "LDiagMan.generated.h"
 
+enum class EFeat : uint8;
+
 // Dialog manager. dynamically instanced on the level
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ALDiagMan : public ADiagMan {
@@ -24,11 +26,12 @@ public:
 
 	virtual void Init_Implementation() override;
 
+	static const inline float DefAutoTime= 2.5;
 	// how much to wait before trying to auto skip.
 	// Requires feature flag D_AUTO
 	// a very low value can break stuff.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config, meta=(ClampMin=.05))
-	float AutoTime = 2.5;
+	float AutoTime = DefAutoTime;
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
