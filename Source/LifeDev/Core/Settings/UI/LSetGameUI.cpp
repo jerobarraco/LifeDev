@@ -87,12 +87,9 @@ void ULSetGameUI::Apply_Implementation() {
 void ULSetGameUI::Load_Implementation() {
 	Super::Load_Implementation();
 
-	float AutoTime = 0;
 	const ALDiagMan* const Man = ALDiagMan::InstanceL(this); // this probably will only be changeable during gameplay and not intro
-	if (LIKELY(Man)) AutoTime = Man->AutoTime;
-
-	if (LIKELY(SLDiagAutoTime))
-		SLDiagAutoTime->SetValue(AutoTime);
+	const float AutoTime = LIKELY(Man) ? Man->AutoTime : ALDiagMan::DefAutoTime;
+	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 	
 	const UFlashback* const Flash = UFlashback::Instance(this);
