@@ -117,8 +117,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseTriggerDeHint = true;
 
+	static constexpr float DefHintTime = 5;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config, meta=(ClampMin=0.001))
-	float HintTime = 5;
+	float HintTime = DefHintTime;
 
 	// Condition that needs to be >=1 for hint to work.
 	// This is less performant than RewardInterHint on Interact or Step.

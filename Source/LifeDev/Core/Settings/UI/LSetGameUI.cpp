@@ -106,7 +106,7 @@ void ULSetGameUI::Load_Implementation() {
 	InterDragUpd(InterDrag);
 	
 	const AInteract* const Inter = GetMutableDefault<AInteract>();
-	const float InterHint = Inter ? Inter->HintTime : 1.5;
+	const float InterHint = Inter ? Inter->HintTime : AInteract::DefHintTime;
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
 	InterDragUpd(InterHint);
 
@@ -219,7 +219,7 @@ void ULSetGameUI::NativeDestruct() {
 }
 
 void ULSetGameUI::SetDefaults(const int32 Id) {
-	static const float AutoTime = ALDiagMan::DefAutoTime;
+	constexpr float AutoTime = ALDiagMan::DefAutoTime;
 	if (LIKELY(SLDiagAutoTime)) SLDiagAutoTime->SetValue(AutoTime);
 	DiagAutoTimeUpd(AutoTime); // not called automatically
 
@@ -232,15 +232,14 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	// if (LIKELY(SLInterDrag)) SLInterDrag->SetValue(InterDrag);
 	// InterDragUpd(InterDrag);
 	
-	// const AInteract* const Inter = GetMutableDefault<AInteract>();
-	// const float InterHint = Inter ? Inter->HintTime : 1.5;
-	// if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
-	// InterDragUpd(InterHint);
+	constexpr float InterHint = AInteract::DefHintTime;
+	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
+	InterDragUpd(InterHint);
 
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(LDConsts::Set::Game::DefBlurSize);
 	BlurSizeUpd(LDConsts::Set::Game::DefBlurSize);
 
-	if (LIKELY(SLFringe)) SLFringe->SetValue(LDConsts::Set::Game::DefFringe); // TODO find a better place to put this.
+	if (LIKELY(SLFringe)) SLFringe->SetValue(LDConsts::Set::Game::DefFringe);
 	FringeUpd(LDConsts::Set::Game::DefFringe);
 	
 	FeatsGroup->SetDefaults();
