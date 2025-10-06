@@ -197,18 +197,18 @@ void ULSetGameUI::NativeOnInitialized() {
 		}
 	}
 
-	if (LIKELY(BtnReset))
-		BtnReset->OnClick.AddUniqueDynamic(this, &ULSetGameUI::DoReset);
+	if (LIKELY(BtnDefaults))
+		BtnDefaults->OnClick.AddUniqueDynamic(this, &ULSetGameUI::SetDefaults);
 }
 
 void ULSetGameUI::NativeDestruct() {
 	// todo the rest of the things?
-	if (LIKELY(BtnReset))
-		BtnReset->OnClick.RemoveAll(this);
+	if (LIKELY(BtnDefaults))
+		BtnDefaults->OnClick.RemoveAll(this);
 	Super::NativeDestruct();
 }
 
-void ULSetGameUI::DoReset(const int32 Id) {
+void ULSetGameUI::SetDefaults(const int32 Id) {
 	static const float AutoTime =
 		GetMutableDefault<ALDiagMan>()->AutoTime;
 		;// 2.5;// todo find a way to have these somewhere

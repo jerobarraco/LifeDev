@@ -42,7 +42,7 @@ protected:
 	UFUNCTION()
 	void FringeUpd(const float Value);
 	UFUNCTION()
-	void DoReset(const int32 Id);
+	void SetDefaults(const int32 Id);
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
@@ -74,5 +74,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UComboBoxString> Langs;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnReset = nullptr;
+	TObjectPtr<UJButton> BtnDefaults = nullptr;
 };

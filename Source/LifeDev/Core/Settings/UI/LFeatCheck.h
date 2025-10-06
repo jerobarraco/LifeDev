@@ -21,8 +21,8 @@ class LIFEDEV_API ULFeatCheck: public ULCheck {
 public:
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetUp(const EFeat NFeat, const FText& NewText);
-	virtual void Load_Implementation();
-	virtual void Apply_Implementation();
+	virtual void Load_Implementation() override;
+	virtual void Apply_Implementation() override;
 
 	// if true it will call apply on change.
 	// you can call Reset to re-apply the value from the last Load (or SetUp)
