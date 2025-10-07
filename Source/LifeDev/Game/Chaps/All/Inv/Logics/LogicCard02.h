@@ -14,11 +14,12 @@ class LIFEDEV_API ULogicCard02: public ULogicCard {
 public:
 	ULogicCard02();
 	virtual void Use_Implementation() override;
+	virtual void BeginPlay_Implementation() override;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float ModMin = -.05;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	float ModMax = -.1;
 };
