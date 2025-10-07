@@ -184,10 +184,9 @@ void UCInteract::SetActive(const bool bNewActive, const bool bReset) {
 	// UE_CLOG(bRegistered && !IsOwnerRunningUserConstructionScript(), LogCInteract, Warning,
 	const bool NeedsInit = NeedsInitialization() | OwnerNeedsInitialization();
 	if (UNLIKELY(NeedsInit)) {
-		UE_LOG(LogCInteract, Warning,
-			TEXT("%hs Skipped during construction. Call SetAutoActivate. Beware, Called SetAutoActivate. O=%s"),
+		UE_LOG(LogCInteract, Warning, TEXT("%hs Skipped during construction. O=%s"),
 			__func__, *GetNameSafe(GetOwner()));
-		SetAutoActivate(bNewActive);
+		// SetAutoActivate(bNewActive); // no, don't use autoactivate since it can break other logics.
 		return;
 	}
 

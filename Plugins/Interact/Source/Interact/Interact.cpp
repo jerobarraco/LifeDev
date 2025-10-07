@@ -13,6 +13,7 @@
 
 #include "CInteract.h"
 #include "Eval.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -325,6 +326,9 @@ void AInteract::PostActorCreated() {
 
 void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
+	const bool InConstructor = UJUtilsMisc::IsInConstructor();
+	if (UNLIKELY(InConstructor)) return; // no need to change active here
+
 	if (NewHidden | UseAutoActivate) SetActive(!NewHidden);
 }
 
