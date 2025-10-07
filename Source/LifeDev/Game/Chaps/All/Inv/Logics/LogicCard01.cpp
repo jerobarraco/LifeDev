@@ -21,7 +21,7 @@ void ULogicCard01::Use_Implementation() {
 
 	Super::Use_Implementation();
 
-	static const FString NOk("Item.Use.C1.Ok.");
+	static const FString NOk("Item.Use.C1.");
 	static const FName NFail("Item.Use.C1.Fail"); // avoid conversion each time.
 
 	if (UNLIKELY(!DT)) {
