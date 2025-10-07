@@ -4,7 +4,9 @@
 
 #include "Diags/Diags.h"
 #include "Inventory/Inventory.h"
+
 #include "LifeDev/Core/Sentry.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 ULogicCard01::ULogicCard01() {
 	// since this is an "instance" class, this is fine.
@@ -15,6 +17,8 @@ ULogicCard01::ULogicCard01() {
 }
 
 void ULogicCard01::Use_Implementation() {
+	if (UNLIKELY(!ULSettings::GetFeatS(this, EFeat::G_CARD1))) return;
+
 	Super::Use_Implementation();
 
 	static const FString NOk("Item.Use.C1.Ok.");

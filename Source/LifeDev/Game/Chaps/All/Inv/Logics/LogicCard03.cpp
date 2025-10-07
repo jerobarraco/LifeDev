@@ -5,11 +5,14 @@
 #include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 ULogicCard03::ULogicCard03() {
 }
 
 void ULogicCard03::Use_Implementation() {
+	if (UNLIKELY(!ULSettings::GetFeatS(this, EFeat::G_CARD3))) return;
+	
 	Super::Use_Implementation();
 	if (UNLIKELY(!Inv)) return;
 	
