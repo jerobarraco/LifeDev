@@ -46,6 +46,7 @@ void ULogicCard01::Use_Implementation() {
 		HasAll = true;
 		for (const FName& F: pE->From) {
 			if (Inv->Has(F)) continue;
+
 			HasAll = false;
 			break;
 		}
