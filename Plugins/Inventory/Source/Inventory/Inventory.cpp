@@ -305,10 +305,6 @@ bool UInventory::IsUsable(const FItem& Item) const {
 #pragma endregion
 
 #pragma region sets
-void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
-	Items = NewItems;
-}
-
 bool UInventory::SetSelected(const FName& Name) {
 	if (UNLIKELY(!Name.IsNone() & !Items.Contains(Name))) return false;
 	if (UNLIKELY(Name == Selected)) return false;
