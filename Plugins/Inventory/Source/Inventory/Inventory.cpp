@@ -11,6 +11,7 @@
 #define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
 #define _IsNotCold(I) ((I.ActiveCoolDown>0) & !FMath::IsNearlyZero(I.ActiveCoolDown))
 
+#pragma region base
 UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
 
@@ -21,6 +22,18 @@ UInventory* UInventory::Instance(const UObject* const O) {
 	return IsValid(I) ? I : nullptr;
 }
 
+
+void UInventory::Init(UDataTable* const DataTable) {
+	if (LIKELY(IsValid(DataTable))) DT = DataTable;
+}
+
+void UInventory::DeInit() {
+	DT = nullptr;
+	Items.Empty();
+}
+#pragma endregion
+
+#pragma region actions
 bool UInventory::Mod(const FName& Name, const int32 Diff, const bool OnlyConsume) {
 	if (UNLIKELY(Name.IsNone())) return false;
 
@@ -83,13 +96,13 @@ bool UInventory::Mod(const FName& Name, const int32 Diff, const bool OnlyConsume
 			__func__, *Name.ToString(), Current, CurDiff);
 	Item->Count = Current + CurDiff; // apply change
 
-	// intentionally copying the item, to avoid issues. the item might have been removed, or might 
+	// intentionally copying the item, to avoid issues. the item might have been removed, or might ...
 	FItem ItemCopy = *Item;
 	// remove empty consumables
 	// important to remove items with quantity 0. used for "Has()"
 	if (Item->Count <= 0) {
 		// preemptively select the next one
-		// this code sucks, i don't like it. todo improve.
+		// i don't like this code. todo improve.
 		if (Name == Selected) {
 			NewSel = GetNextKey();
 			SetSelect = true;
@@ -150,97 +163,6 @@ bool UInventory::Clear(const int32 NumReserve) {
 	return true;
 }
 
-bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
-	if (UNLIKELY(!IsValid(DT))) return false;
-
-	const FItem* const Item = DT->FindRow<FItem>(Name, TEXT(""));
-	if (UNLIKELY(!Item)) return false;
-
-	// set the item anyway even if not found
-	OutItem = *Item; // note this is a copy
-	return true;
-}
-
-bool UInventory::Get(const FName& Name, FItem& OutItem) const {
-	if (UNLIKELY(Name.IsNone())) return false;
-
-	const FItem* const pItem = Items.Find(Name);
-	if (UNLIKELY(!pItem)) return false;
-
-	OutItem = *pItem; // purposely return a copy
-	return true;
-}
-
-int32 UInventory::Count(const FName& Name) const {
-	FItem Item;
-	const bool Ok = Get(Name, Item);
-	return LIKELY(Ok) ? Item.Count : 0;
-}
-
-void UInventory::Init(UDataTable* const DataTable) {
-	if (LIKELY(IsValid(DataTable))) DT = DataTable;
-}
-
-void UInventory::DeInit() {
-	DT = nullptr;
-	Items.Empty();
-}
-
-const TMap<FName, FItem>& UInventory::GetAll() const {
-	return Items;
-}
-
-void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
-	Items = NewItems;
-}
-
-bool UInventory::GetSelectedItem(FItem& Item) const {
-	if (UNLIKELY(Selected.IsNone())) {
-		UE_LOG(LogInventory, Warning, TEXT("%hs No item is selected."), __func__);
-		return false;
-	}
-	
-	if (LIKELY(Get(Selected, Item))) return true;
-	
-	UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exists? But that shouldn't happen here."),
-		__func__);
-	return false;
-}
-
-FName UInventory::GetNextKey(const bool Forward, FName From) const {
-	if (UNLIKELY(From.IsNone())) {
-		if (UNLIKELY(Selected.IsNone())) return NAME_None;
-		From = Selected;
-	}
-
-	TArray<FName> Keys;
-	Items.GetKeys(Keys);
-	// <2 because one will get removed. and we need to tell this situation apart to clear the selected
-	if (UNLIKELY(Keys.Num()<2)) return NAME_None;
-
-	const int32 Num = Keys.Num();
-	int32 Index = Keys.Find(From);
-	Index += Forward ? 1 : -1; // shift
-	Index += Num; // pad in case it goes into negatives
-	Index = Index % Num; // wrap
-	return Keys[Index];
-}
-
-bool UInventory::SetSelected(const FName& Name) {
-	if (UNLIKELY(!Name.IsNone() && !Items.Contains(Name))) return false;
-	if (UNLIKELY(Name == Selected)) return false;
-	
-	Selected = Name;
-	OnSelected.Broadcast(Selected);
-	return true;
-}
-
-bool UInventory::Has(const FName& Name) const {
-	if (UNLIKELY(Name.IsNone())) return false;
-	// note that this depends on items being removed when quantity is <=0
-	return Items.Contains(Name);
-}
-
 bool UInventory::Use(const FName& Name) {
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
@@ -276,27 +198,81 @@ bool UInventory::Use(const FName& Name) {
 	// and we need to support using with other items.
 	// since a self-usable item can also be used with other items, only the caller really knows.
 }
+#pragma endregion
 
-bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
-	bool Found = false;
-	FItem& Item = GetRef(Name, Found);
-	if (UNLIKELY(!Found)) return false;
+#pragma region gets
+void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
+	Items = NewItems;
+}
 
-	Item.Locked = NewBlocked;
+bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
+	if (UNLIKELY(!IsValid(DT))) return false;
+
+	const FItem* const Item = DT->FindRow<FItem>(Name, TEXT(""));
+	if (UNLIKELY(!Item)) return false;
+
+	// set the item anyway even if not found
+	OutItem = *Item; // note this is a copy
 	return true;
 }
 
-bool UInventory::SetCold(const FName& Name) {
-	UE_LOG(LogInventory, Log, TEXT("%hs ='%s'"),
-		__func__, *Name.ToString());
-	bool Found = false;
-	FItem& Item = GetRef(Name, Found);
-	if (UNLIKELY(!Found)) return false;
-	if (_IsCold(Item)) return false;
+bool UInventory::Get(const FName& Name, FItem& OutItem) const {
+	if (UNLIKELY(Name.IsNone())) return false;
 
-	Item.ActiveCoolDown = 0;
-	OnCold.Broadcast(Name);
+	const FItem* const pItem = Items.Find(Name);
+	if (UNLIKELY(!pItem)) return false;
+
+	OutItem = *pItem; // purposely return a copy
 	return true;
+}
+
+const TMap<FName, FItem>& UInventory::GetAll() const {
+	return Items;
+}
+
+int32 UInventory::Count(const FName& Name) const {
+	FItem Item;
+	const bool Ok = Get(Name, Item);
+	return LIKELY(Ok) ? Item.Count : 0;
+}
+
+bool UInventory::Has(const FName& Name) const {
+	if (UNLIKELY(Name.IsNone())) return false;
+	// note that this depends on items being removed when quantity is <=0
+	return Items.Contains(Name);
+}
+
+bool UInventory::GetSelectedItem(FItem& Item) const {
+	if (UNLIKELY(Selected.IsNone())) {
+		UE_LOG(LogInventory, Warning, TEXT("%hs No item is selected."), __func__);
+		return false;
+	}
+	
+	if (LIKELY(Get(Selected, Item))) return true;
+	
+	UE_LOG(LogInventory, Warning, TEXT("%hs Item does not exists? But that shouldn't happen here."),
+		__func__);
+	return false;
+}
+
+
+FName UInventory::GetNextKey(const bool Forward, FName From) const {
+	if (UNLIKELY(From.IsNone())) {
+		if (UNLIKELY(Selected.IsNone())) return NAME_None;
+		From = Selected;
+	}
+
+	TArray<FName> Keys;
+	Items.GetKeys(Keys);
+	// <2 because one will get removed. and we need to tell this situation apart to clear the selected
+	if (UNLIKELY(Keys.Num()<2)) return NAME_None;
+
+	const int32 Num = Keys.Num();
+	int32 Index = Keys.Find(From);
+	Index += Forward ? 1 : -1; // shift
+	Index += Num; // pad in case it goes into negatives
+	Index = Index % Num; // wrap
+	return Keys[Index];
 }
 
 bool UInventory::IsCold(const FItem& Item) {
@@ -332,6 +308,40 @@ bool UInventory::IsUsable(const FItem& Item) const {
 	return true;
 }
 
+#pragma endregion
+
+#pragma region sets
+bool UInventory::SetSelected(const FName& Name) {
+	if (UNLIKELY(!Name.IsNone() & !Items.Contains(Name))) return false;
+	if (UNLIKELY(Name == Selected)) return false;
+	
+	Selected = Name;
+	OnSelected.Broadcast(Selected);
+	return true;
+}
+
+bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (UNLIKELY(!Found)) return false;
+
+	Item.Locked = NewBlocked;
+	return true;
+}
+
+bool UInventory::SetCold(const FName& Name) {
+	UE_LOG(LogInventory, Log, TEXT("%hs ='%s'"),
+		__func__, *Name.ToString());
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (UNLIKELY(!Found)) return false;
+	if (_IsCold(Item)) return false;
+
+	Item.ActiveCoolDown = 0;
+	OnCold.Broadcast(Name);
+	return true;
+}
+
 void UInventory::SetCoolTimerEnabled(const bool Enable) {
 	const UWorld* const World = GetWorld();
 	if (LIKELY(!World)) return;
@@ -349,6 +359,7 @@ void UInventory::SetCoolTimerEnabled(const bool Enable) {
 		Time.ClearAllTimersForObject(this);
 	}
 }
+#pragma endregion
 
 void UInventory::CoolTimerTick() {
 	TArray<FName> Keys;
