@@ -324,8 +324,7 @@ bool UInventory::SetLocked(const FName& Name, const bool NewBlocked) {
 }
 
 bool UInventory::SetCold(const FName& Name) {
-	UE_LOG(LogInventory, Log, TEXT("%hs ='%s'"),
-		__func__, *Name.ToString());
+	UE_LOG(LogInventory, Log, TEXT("%hs N='%s'"), __func__, *Name.ToString());
 	bool Found = false;
 	FItem& Item = GetRef(Name, Found);
 	if (UNLIKELY(!Found)) return false;
@@ -333,6 +332,16 @@ bool UInventory::SetCold(const FName& Name) {
 
 	Item.ActiveCoolDown = 0;
 	OnCold.Broadcast(Name);
+	return true;
+}
+
+bool UInventory::SetCoolDown(const FName& Name, const float NewCoolDown) {
+	UE_LOG(LogInventory, Log, TEXT("%hs N='%s', Cool=%.3f"), __func__, *Name.ToString(), NewCoolDown);
+	bool Found = false;
+	FItem& Item = GetRef(Name, Found);
+	if (UNLIKELY(!Found)) return false;
+
+	Item.CoolDown = FMath::Max(0, NewCoolDown);// min 0 of cooldown
 	return true;
 }
 

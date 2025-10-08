@@ -55,6 +55,10 @@ public:
 	// i.e. True: item found and was not cold. False: item not found or was cold.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool SetCold(const FName& Name);
+	// Overrides the cooldown time from the data table with the new one.
+	// does not set the item as cold.
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
+	bool SetCoolDown(const FName& Name, const float NewCoolDown = 1);
 #pragma endregion
 
 #pragma region Gets
@@ -114,7 +118,7 @@ public:
 	bool UseSndAsyncLoad = true;
 	// seconds between each cool down timer tick.
 	// does not affect the duration, but affects the performance and granularity.
-	// this should be lower than your lowest cooldown.
+	// this should be lower/equal than your lowest cooldown.
 	// This is like a tick interval. Items are checked for cool down every CoolTimerRate-seconds.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory", Config)
 	float CoolTimerRate = 1;
