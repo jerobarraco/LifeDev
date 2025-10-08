@@ -201,10 +201,6 @@ bool UInventory::Use(const FName& Name) {
 #pragma endregion
 
 #pragma region gets
-void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
-	Items = NewItems;
-}
-
 bool UInventory::GetRaw(const FName& Name, FItem& OutItem) const {
 	if (UNLIKELY(!IsValid(DT))) return false;
 
@@ -254,7 +250,6 @@ bool UInventory::GetSelectedItem(FItem& Item) const {
 		__func__);
 	return false;
 }
-
 
 FName UInventory::GetNextKey(const bool Forward, FName From) const {
 	if (UNLIKELY(From.IsNone())) {
@@ -307,10 +302,13 @@ bool UInventory::IsUsable(const FItem& Item) const {
 
 	return true;
 }
-
 #pragma endregion
 
 #pragma region sets
+void UInventory::SetItems(const TMap<FName, FItem>& NewItems) {
+	Items = NewItems;
+}
+
 bool UInventory::SetSelected(const FName& Name) {
 	if (UNLIKELY(!Name.IsNone() & !Items.Contains(Name))) return false;
 	if (UNLIKELY(Name == Selected)) return false;
