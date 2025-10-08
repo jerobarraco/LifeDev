@@ -13,5 +13,6 @@ class LIFEDEV_API ULogicCard03: public ULogicCard {
 
 public:
 	ULogicCard03();
+	virtual void BeginPlay_Implementation() override;
 	virtual void Use_Implementation() override;
 };
