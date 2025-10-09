@@ -49,9 +49,12 @@ void ULogicCard00::BeginPlay_Implementation() {
 	if (UNLIKELY(!Inv->Get(LDConsts::Items::Card0, Item))) return;
 
 	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
-	const float NewCool = Item.CoolDown * (.75 + (.25*Foxy)); // goes from .75 to 1 in theory
+	const float FoxyFact = (.75 + (.25*Foxy));
+	const float NewCool = Item.CoolDown * FoxyFact; // goes from .75 to 1 in theory
 	const bool Ok = Inv->SetCoolDown(LDConsts::Items::Card0, NewCool);
-	
+
+	Range->SetScaleMax(Range->DefScaleMax*FoxyFact);
+
 	UE_LOG(LogTemp, Log, TEXT("LogicCard00::%hs Foxy=%.3f NewCool=%.3f Ok=%i"),
 		__func__, Foxy, NewCool, Ok);
 }
