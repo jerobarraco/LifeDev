@@ -55,7 +55,7 @@ ARange::ARange():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 2;
 	Anim->TStart.SetScale3D(FVector(1)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
-	Anim->TEnd.SetScale3D(FVector(ScaleMax)); // note that the serialized value is not available here. so this is just a fallback.
+	Anim->TEnd.SetScale3D(FVector(DefScaleMax)); // note that the serialized value is not available here. so this is just a fallback.
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
 	Anim->SetComponentTickInterval(0); // full fps this moves very fast
 
@@ -90,7 +90,7 @@ void ARange::BeginPlay() {
 	Anim->CodeCurve.Clear();
 	Anim->Curve = nullptr;
 	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
-	SetScaleMax(ScaleMax);
+
 	// Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd); // nopes
 	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OverlapBegin);
 
@@ -158,7 +158,8 @@ void ARange::Trigger() {
 	Timer.SetTimer(HRange, D, Rate, false);
 }
 
-void ARange::SetScaleMax(const float Scale) {
-	ScaleMax = Scale;
+void ARange::SetScaleMax(const float Scale) const {
+	if (UNLIKELY(!Anim)) return;
+
 	Anim->TEnd.SetScale3D(FVector(Scale));
 }
