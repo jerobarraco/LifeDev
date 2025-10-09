@@ -26,6 +26,7 @@ class LIFEDEV_API ULogicCard01: public ULogicCard {
 
 public:
 	ULogicCard01();
+	void BeginPlay_Implementation();
 	virtual void Use_Implementation() override;
 
 protected:
