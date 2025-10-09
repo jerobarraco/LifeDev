@@ -12,7 +12,7 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Interact/Base/Range.h"
 
-// todo fix the case where you spawn this, but it has not compiled the material yet.
+// todo fix the case where you spawn this, but it has not compiled the material yet and it's visible with default mat.
 
 ULogicCard00::ULogicCard00():Super() {
 	RangeClass = ARange::StaticClass();

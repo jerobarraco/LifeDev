@@ -59,6 +59,9 @@ public:
 	// does not set the item as cold.
 	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
 	bool SetCoolDown(const FName& Name, const float NewCoolDown = 1);
+	// Changes the rate at which items cool down. a factor of 2 is twice as fast. .5 is twice as slow.
+	UFUNCTION(BlueprintCallable, Category="Inventory", meta=(AutoCreateRefTerm=Name))
+	void SetCoolDownFactor(const float NewCoolDownFactor = 1.);
 #pragma endregion
 
 #pragma region Gets
@@ -156,7 +159,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm=Name))
 	const FItem& GetRefC(const FName& Name, bool& OutFound) const;
-	
+
+	// actual amount to change per cool timer tick. set via SetCoolDownFactor. cache.
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	float CoolTimerAmount = 1.0;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName Selected = NAME_None;
 

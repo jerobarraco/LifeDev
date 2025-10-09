@@ -25,6 +25,7 @@ UInventory* UInventory::Instance(const UObject* const O) {
 
 void UInventory::Init(UDataTable* const DataTable) {
 	if (LIKELY(IsValid(DataTable))) DT = DataTable;
+	SetCoolDownFactor(1);
 }
 
 void UInventory::DeInit() {
@@ -345,6 +346,11 @@ bool UInventory::SetCoolDown(const FName& Name, const float NewCoolDown) {
 	return true;
 }
 
+void UInventory::SetCoolDownFactor(const float NewCoolDownFactor) {
+	// intentionally clamp at 0, so that the cooldown timer can be "frozen" or paused. i guess.
+	CoolTimerAmount = FMath::Max(0, CoolTimerRate * NewCoolDownFactor);
+}
+
 void UInventory::SetCoolTimerEnabled(const bool Enable) {
 	const UWorld* const World = GetWorld();
 	if (LIKELY(!World)) return;
@@ -376,7 +382,7 @@ void UInventory::CoolTimerTick() {
 		FItem& Item = Items[Name];
 		if (_IsCold(Item)) continue;
 		
-		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-CoolTimerRate); // update cooldown, make sure to clamp
+		Item.ActiveCoolDown = FMath::Max(0, Item.ActiveCoolDown-CoolTimerAmount); // update cooldown, make sure to clamp
 		if (_IsNotCold(Item)) { // has to re-check again.
 			AllCool = false;
 			continue;
