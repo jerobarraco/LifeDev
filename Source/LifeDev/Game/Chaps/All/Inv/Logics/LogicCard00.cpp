@@ -2,8 +2,13 @@
 
 #include "LogicCard00.h"
 
+#include "Inventory/Flags.h"
+#include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+#include "LifeDev/Game/Char/CLCharItems.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Interact/Base/Range.h"
 
@@ -33,7 +38,22 @@ void ULogicCard00::BeginPlay_Implementation() {
 	UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
-	Range = Cast<ARange>(W->SpawnActor(RangeClass, 0,0));
+	Range = Cast<ARange>(W->SpawnActor(RangeClass, 0, 0));
+
+	// duplicated code in card01 and 03
+	UInventory* const Inv = UInventory::Instance(this);
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (UNLIKELY(!Flags | !Inv)) return;
+
+	FItem Item;
+	if (UNLIKELY(!Inv->Get(LDConsts::Items::Card0, Item))) return;
+
+	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
+	const float NewCool = Item.CoolDown * (.75 + (.25*Foxy)); // goes from .75 to 1 in theory
+	const bool Ok = Inv->SetCoolDown(LDConsts::Items::Card0, NewCool);
+	
+	UE_LOG(LogTemp, Log, TEXT("LogicCard00::%hs Foxy=%.3f NewCool=%.3f Ok=%i"),
+		__func__, Foxy, NewCool, Ok);
 }
 
 void ULogicCard00::BeginDestroy() {
