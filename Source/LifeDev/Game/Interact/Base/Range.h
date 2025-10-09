@@ -9,7 +9,7 @@ class USphereComponent;
 class UCAnimatorMix;
 
 // Base class for Range actors
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API ARange: public AActor {
 public:
 	GENERATED_BODY()
@@ -20,12 +20,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Trigger();
 
+	static constexpr float DefScaleMax = 20;
 	UFUNCTION(BlueprintCallable)
-	void SetMaxScale(const float Scale) const;
+	void SetScaleMax(const float Scale);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetScaleMax() const { return ScaleMax; }
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UMaterialInterface> Mat = nullptr;
-
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -37,6 +39,9 @@ protected:
 
 	UFUNCTION()
 	void AnimEnd();
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Config)
+	float ScaleMax = DefScaleMax;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> Root = nullptr;

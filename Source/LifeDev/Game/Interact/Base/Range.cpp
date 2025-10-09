@@ -55,7 +55,7 @@ ARange::ARange():Super() {
 	Anim->IsAdditive = false;
 	Anim->Duration = 2;
 	Anim->TStart.SetScale3D(FVector(1)); // 1 would avoid flashing the player, but doesn't touch items that are close. (makes no sense)
-	Anim->TEnd.SetScale3D(FVector(20));
+	Anim->TEnd.SetScale3D(FVector(ScaleMax)); // note that the serialized value is not available here. so this is just a fallback.
 	Anim->TRoot = Collider; // using the collider since sweep only happens for this component
 	Anim->SetComponentTickInterval(0); // full fps this moves very fast
 
@@ -66,6 +66,8 @@ ARange::ARange():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC.Flashback_MPC"));
 	MPC = CMPC.Object;
+
+	SetActorHiddenInGame(true);
 }
 
 void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherActor,
@@ -81,12 +83,14 @@ void ARange::OverlapBegin(UPrimitiveComponent* const Cmp, AActor* const OtherAct
 
 void ARange::BeginPlay() {
 	Super::BeginPlay();
-	SetActorHiddenInGame(true);
-	
+
+	if (UNLIKELY(!Anim | !Collider)) return;
+
 	Anim->Mat = Mesh->CreateDynamicMaterialInstance(0);
 	Anim->CodeCurve.Clear();
 	Anim->Curve = nullptr;
 	Anim->OnEnd.AddUniqueDynamic(this, &ARange::AnimEnd);
+	SetScaleMax(ScaleMax);
 	// Anim->OnUpdate.AddUniqueDynamic(this, &ARange::AnimUpd); // nopes
 	Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ARange::OverlapBegin);
 
@@ -154,6 +158,7 @@ void ARange::Trigger() {
 	Timer.SetTimer(HRange, D, Rate, false);
 }
 
-void ARange::SetMaxScale(const float Scale) const {
+void ARange::SetScaleMax(const float Scale) {
+	ScaleMax = Scale;
 	Anim->TEnd.SetScale3D(FVector(Scale));
 }
