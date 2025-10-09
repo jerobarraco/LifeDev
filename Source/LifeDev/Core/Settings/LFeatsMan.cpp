@@ -10,6 +10,7 @@
 #include "WorldPartition/DataLayer/DataLayerAsset.h" // needed to load testdl
 #include "InputMappingContext.h" // for the action object. rider doesn't detect it
 
+#include "Diags/Diags.h"
 #include "Interact/CInteract.h"
 #include "Interact/CInteractor.h"
 #include "Interact/Interact.h"
@@ -20,14 +21,14 @@
 #include "Story/Story.h"
 #include "Eval.h"
 
+#include "LifeDev/Core/Sentry.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
-#include "Diags/Diags.h"
-#include "LifeDev/Core/Sentry.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -131,7 +132,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
-		Settings->OnFeatUpdateUnreal.RemoveAll(this);
+		Settings->OnFeatUpdateUnreal. RemoveAll(this);
 		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
@@ -173,6 +174,15 @@ void ALFeatsMan::Init() {
 	}
 
 	LoadFeats();
+
+	// foxify inventory cool down
+	UInventory* const Inv = UInventory::Instance(this);
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(bool(Flags) & bool(Inv))) {
+		const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
+		const float FoxyFact = (.75 + (.25*Foxy));
+		Inv->SetCoolDownFactor(FoxyFact);
+	}
 
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 

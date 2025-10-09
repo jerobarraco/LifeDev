@@ -349,6 +349,8 @@ bool UInventory::SetCoolDown(const FName& Name, const float NewCoolDown) {
 void UInventory::SetCoolDownFactor(const float NewCoolDownFactor) {
 	// intentionally clamp at 0, so that the cooldown timer can be "frozen" or paused. i guess.
 	CoolTimerAmount = FMath::Max(0, CoolTimerRate * NewCoolDownFactor);
+	UE_LOG(LogInventory, Log, TEXT("%hs Rate=%.3f, Fact=%.3f, Amount=%.3f"),
+		__func__, CoolTimerRate, NewCoolDownFactor, CoolTimerAmount);
 }
 
 void UInventory::SetCoolTimerEnabled(const bool Enable) {
