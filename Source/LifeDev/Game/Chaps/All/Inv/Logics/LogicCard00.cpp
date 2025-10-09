@@ -40,23 +40,15 @@ void ULogicCard00::BeginPlay_Implementation() {
 
 	Range = Cast<ARange>(W->SpawnActor(RangeClass, 0, 0));
 
-	// duplicated code in card01 and 03
-	UInventory* const Inv = UInventory::Instance(this);
 	const UFlags* const Flags = UFlags::Instance(this);
-	if (UNLIKELY(!Flags | !Inv)) return;
-
-	FItem Item;
-	if (UNLIKELY(!Inv->Get(LDConsts::Items::Card0, Item))) return;
+	if (UNLIKELY(!Flags)) return;
 
 	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
 	const float FoxyFact = (.75 + (.25*Foxy));
-	const float NewCool = Item.CoolDown * FoxyFact; // goes from .75 to 1 in theory
-	const bool Ok = Inv->SetCoolDown(LDConsts::Items::Card0, NewCool);
-
 	Range->SetScaleMax(Range->DefScaleMax*FoxyFact);
 
-	UE_LOG(LogTemp, Log, TEXT("LogicCard00::%hs Foxy=%.3f NewCool=%.3f Ok=%i"),
-		__func__, Foxy, NewCool, Ok);
+	UE_LOG(LogTemp, Log, TEXT("LogicCard00::%hs Foxy=%.3f Fact=%.3f"),
+		__func__, Foxy, FoxyFact);
 }
 
 void ULogicCard00::BeginDestroy() {

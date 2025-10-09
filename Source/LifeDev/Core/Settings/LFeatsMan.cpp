@@ -180,7 +180,7 @@ void ALFeatsMan::Init() {
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (LIKELY(bool(Flags) & bool(Inv))) {
 		const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
-		const float FoxyFact = (.75 + (.25*Foxy));
+		const float FoxyFact = (1. - (.25*Foxy));
 		Inv->SetCoolDownFactor(FoxyFact);
 	}
 
