@@ -18,10 +18,10 @@ void ULogicCard03::BeginPlay_Implementation() {
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags | !Inv)) return;
 
-	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
 	FItem Item;
-	if (UNLIKELY(Inv->Get(LDConsts::Items::Card3, Item))) return;
+	if (UNLIKELY(!Inv->Get(LDConsts::Items::Card3, Item))) return;
 
+	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
 	const float NewCool = Item.CoolDown * (.75 + (.25*Foxy)); // goes from .75 to 1 in theory
 	const bool Ok = Inv->SetCoolDown(LDConsts::Items::Card3, NewCool);
 	
