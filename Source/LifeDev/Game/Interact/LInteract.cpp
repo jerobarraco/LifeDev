@@ -297,7 +297,7 @@ bool ALInteract::ShouldUnlock_Implementation() {
 	if (UNLIKELY(!IsValid(Inventory))) return false;
 
 	// consume items when unlocking
-	const FString& Base = LDConsts::Dlgs::Inter::UseItemPre + Label.ToString();
+	const FString& Base = LDConsts::Dlgs::Inter::ItemPre + Label.ToString();
 	for (int32 i = UnlockItems.Num()-1; i>=0; --i) {
 		const FName& N = UnlockItems[i];
 		if (UNLIKELY(N.IsNone())) {
@@ -309,13 +309,15 @@ bool ALInteract::ShouldUnlock_Implementation() {
 		if (!Inventory->Mod(N, -1, true)) continue;
 
 		// trigger the dialog here. avoid extra if below
-		const bool Added = Diags->AddId(FName(Base+"."+N.ToString()));
+		const FName DId(Base+"."+N.ToString());
+		const bool Added = Diags->AddId(DId);
+		Flags->Mod(DId, 1); // also add the flag.
 		UnlockItems.RemoveAtSwap(i); // do here to avoid a crash in N.ToString() since it's a ref. and i rather not copy it. though it probably is the size of a pointer anyway.
 
 		// when we've removed all, unlock.
-		// notice this point is only achieved if .Num() > 0 to begin with 
+		// notice this point is only reached if .Num() > 0 to begin with
 		if (UnlockItems.Num() == 0) {
-			if (!Added) Diags->AddId(FName(Base)); // nopes because it will trigger for each item
+			if (!Added) Diags->AddId(FName(Base));
 			return true;
 		}
 	}

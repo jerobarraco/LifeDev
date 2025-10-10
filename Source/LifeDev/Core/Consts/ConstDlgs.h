@@ -20,8 +20,8 @@ namespace LDConsts {
 			inline static const FString TriggerPre("Inter.Trigger.");
 			inline static const FString LockedPre("Inter.Locked.");
 			inline static const FString UnlockPre(TEXT("Inter.Unlock.")); // not as flag since trigger implies unlock
-			// this one triggers twice. Inter.ItemUse. "Interact"."Item" and Inter.ItemUse."Interact"
-			inline static const FString UseItemPre(TEXT("Inter.ItemUse."));
+			// Inter.Item."Interact"."Item" for when an item is used with an Interact.
+			inline static const FString ItemPre(TEXT("Inter.Item."));
 			namespace Puzzle {
 				inline static const FString ResetPre(TEXT("Inter.Puzzle.Reset."));
 				inline static const FString UpdatePre(TEXT("Inter.Puzzle.Update."));
