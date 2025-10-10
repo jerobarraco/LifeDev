@@ -310,14 +310,14 @@ bool ALInteract::ShouldUnlock_Implementation() {
 
 		// trigger the dialog here. avoid extra if below
 		const FName DId(Base+"."+N.ToString());
-		const bool Added = Diags->AddId(DId);
+		Diags->AddId(DId);
 		Flags->Mod(DId, 1); // also add the flag.
 		UnlockItems.RemoveAtSwap(i); // do here to avoid a crash in N.ToString() since it's a ref. and i rather not copy it. though it probably is the size of a pointer anyway.
 
 		// when we've removed all, unlock.
 		// notice this point is only reached if .Num() > 0 to begin with
 		if (UnlockItems.Num() == 0) {
-			if (!Added) Diags->AddId(FName(Base));
+			Diags->AddId(FName(Base)); // generic dialog to capture all items
 			return true;
 		}
 	}
