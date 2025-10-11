@@ -18,7 +18,7 @@ public:
 	void Randomize() { RndSeed = FMath::Rand(); ReCreate(); }
 	// copies the generated seed to the base one
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="SetUp") // buttons can't be inside sub categories
-	void RandCopy() { RndSeed = RndSeedGen; }
+	void RandStore() { RndSeed = RndSeedGen; }
 
 protected:
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
