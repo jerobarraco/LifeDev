@@ -165,6 +165,7 @@ void ULSetGameUI::NativeOnInitialized() {
 		SLFringe->OnValueChanged.AddUniqueDynamic(this, &ULSetGameUI::FringeUpd);
 	}
 
+	// maybe some of these can be moved to another featgrup that only shows on debug?
 	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp({
 		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
