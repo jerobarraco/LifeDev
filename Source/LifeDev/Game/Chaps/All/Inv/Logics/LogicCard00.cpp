@@ -2,13 +2,12 @@
 
 #include "LogicCard00.h"
 
-#include "Inventory/Flags.h"
-#include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "Inventory/Flags.h"
+
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstItems.h"
 #include "LifeDev/Core/Settings/LSettings.h"
-#include "LifeDev/Game/Char/CLCharItems.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Interact/Base/Range.h"
 
