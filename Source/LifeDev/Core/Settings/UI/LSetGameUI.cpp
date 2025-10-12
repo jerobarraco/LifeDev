@@ -173,6 +173,7 @@ void ULSetGameUI::NativeOnInitialized() {
 		{EFeat::G_CARD1, NSLOCTEXT("SetGame", "Feat", "C. 1")},
 		{EFeat::G_CARD2, NSLOCTEXT("SetGame", "Feat", "C. 2")},
 		{EFeat::G_CARD3, NSLOCTEXT("SetGame", "Feat", "C. 3")},
+		{EFeat::G_CARD4, NSLOCTEXT("SetGame", "Feat", "C. 4")},
 		{EFeat::G_TEACH, NSLOCTEXT("SetGame", "Feat", "Tutorial")},
 		{EFeat::G_FB_ANIM, NSLOCTEXT("SetGame", "Feat", "AnimFBFPS")},
 		{EFeat::G_SHOW_POINT, NSLOCTEXT("SetGame", "Feat", "Pointer")}, // this is wip since it gets rewritten in bp
