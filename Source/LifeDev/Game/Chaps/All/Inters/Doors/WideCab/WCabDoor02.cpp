@@ -11,9 +11,10 @@
 AWCabDoor02::AWCabDoor02():Super() {
 	SFX->SetRelativeLocation(FVector(0,55,32.5));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet01-DoorR.Cabinet01-DoorR"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Arch/Cabinets/Cabinet01-DoorR.Cabinet01-DoorR"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-75,130,-10));
+
 	Interact->SetRelativeLocation(FVector(75,-100,42.5));
 	SFX->SetRelativeLocation(FVector(6.,20.,0.));
 

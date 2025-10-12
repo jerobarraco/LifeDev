@@ -9,7 +9,7 @@
 ADrawer02::ADrawer02():Super() {
 	UseAutoActivate = true;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cabinets/Cabinet00-drawer1.Cabinet00-drawer1"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Arch/Cabinets/Cabinet00-drawer1.Cabinet00-drawer1"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(80.000000,-62.500000,0.000000));
 	Interact->SetRelativeLocation(FVector(-20.000000,62.5,20.000000));
