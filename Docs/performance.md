@@ -41,7 +41,7 @@ material
 	DistanceCullFade to blend the cull
 	-  min max draw distance
 
-shadow maps
+# shadow maps
 	r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
 	r.Shadow.Virtual.UseFarShadowCulling 0
 	set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
@@ -50,17 +50,33 @@ shadow maps
 	r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
 	r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
 
+	* try r.shadow.virtualcache.staticseparate
+	  https://m.youtube.com/watch?v=BKaAzhMHJZ0
+
+* enable on settings 'allow static bakedlighting'
+* on world settings remove world partition
+
+
 culling
 * use distance cull volumes
 * showflag.distanceculledprimitives 1
 * stat initviews
 * freezerendering to test culling
 
-light culling
+# light
+## light culling
 * automatic : minScreenRadiusForLight 0.03
 * maxDrawDistance MaxDistanceFadeRange
 * if not using static lights, go to preferences and disable "allow static lights". it avoids issues.
 r.AllowStaticLighting=False
+
+## baked lights
+
+* enable on settings 'allow static bakedlighting'
+* disable "support hardware raytrace"
+* on world settings remove world partition
+* restart
+* on world settings remove "force no precomputed light"
 
 level streaming
 * streaming volume + manual
@@ -76,20 +92,6 @@ animation
 * visibilitybasedanimtickoption
 * bRenderAsStatic bPauseAnims bNoSkeletonUpdate
 
-# var
-* size map
-* statistics window
-* cmd ToggleForceDefaultMaterial
-* cmd dumphitches
-* stat none
-* postprocess: use "AfterTonemapping" (in theory)*1
-* pixel programmable pipeline
-* perf visualizers
-* nanite overdraw
-* vsm nanite overdraw
-*1
-https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine
-After Tonemapping 	This option indicates that post processing will take place after tonemapping and color grading has been completed. It is the preferred location for performance since the color is LDR and requires less precision and bandwidth. When this option is selected, the SceneTexture expression's Post Process Inputs 2 and 3 are used to control where Scene Color is in the pipeline. Input 2 applies scene color before tonemapping. Input 3 applies scene color after tonemapping.
 
 # pso precache
 	; pso precaching https://www.tomlooman.com/psocaching-unreal-engine/
@@ -134,6 +136,26 @@ After Tonemapping 	This option indicates that post processing will take place af
 r.Water.SingleLayer.ShaderSupportVSMFiltering=0
 r.Water.SingleLayer.VSMFiltering=0
 
+
+# collisions
+	https://m.youtube.com/watch?v=xIQI6nXFygA
+	make sure the collisions for movement block only pawn. and the ones for interact does that.
+	disable generate overlaps events if not used.
+	
+	don't use collision if not needed (remove from mesh)
+	prefer in order: sphere, capsule, box, convex https://www.youtube.com/watch?app=desktop&v=HaVTYSnGvxA
+
+	check "NeverNeedsCookedCollisionData" on each mesh
+	
+	use default overlap during streaming to only movable. then override on each actor if needed
+	https://youtu.be/HaVTYSnGvxA?t=1141
+	[/Script/Engine.Actor]
+	; option used when UpdateOverlapsMethodDuringLevelStreaming is set to UseConfigDefault. Options are: AlwaysUpdate, OnlyUpdateMovable, NeverUpdate.
+	DefaultUpdateOverlapsMethodDuringLevelStreaming=OnlyUpdateMovable
+	
+	[/Script/Engine.TriggerVolume]
+	DefaultUpdateOverlapsMethodDuringLevelStreaming=AlwaysUpdate
+
 # gc
 [ConsoleVariables]
 ; optimize gc. requires usage of tobjectptr https://youtu.be/d2LWbjSjsv8?t=765
@@ -152,6 +174,58 @@ aactor::CanBeClusterRoot and CanBeInCluster
 console command : obj list -countsort
 https://dev.epicgames.com/community/learning/knowledge-base/ePKR/unreal-engine-garbage-collector-internals
 https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7%A3%E6%9E%904/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en
+
+
+# var
+* size map
+* statistics window
+* cmd ToggleForceDefaultMaterial
+* cmd dumphitches
+* stat none
+* postprocess: use "AfterTonemapping" (in theory)*1
+* pixel programmable pipeline
+* perf visualizers
+* nanite overdraw
+* vsm nanite overdraw
+  *1
+  https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine
+  After Tonemapping 	This option indicates that post processing will take place after tonemapping and color grading has been completed. It is the preferred location for performance since the color is LDR and requires less precision and bandwidth. When this option is selected, the SceneTexture expression's Post Process Inputs 2 and 3 are used to control where Scene Color is in the pipeline. Input 2 applies scene color before tonemapping. Input 3 applies scene color after tonemapping.
+
+
+# hitches
+	https://m.youtube.com/watch?v=HaVTYSnGvxA
+	
+	use packed instance stactic meshes
+	could use cell transformers but only with world partition
+	
+	disable generate overlaps events if not used.
+	(is it used for the interact?)
+	
+	skip update overlap on stream
+	
+	set up a pso cache strategy
+	* have to have a loading screen for the global shaders
+	fShaderpipelinecache::NumPrecompilesRemaining, wait for 0
+	
+	-clearPSODriverCache command line. add to launch.
+	check psocachebuster plugin
+	
+	r.psocachevallidation=2
+	
+	try the tools > chaos visual debugger
+	
+	
+	also try using gc clusters on step sequences
+	@37
+	
+	on interact, maybe step, or maybe put a warning.
+	
+	change this (allows to call beginplay staggered in multiple frames) in defaultEnigne @ [ConsoleVariables]
+	s.AdaptiveAddToWorld.Enabled=1
+
+	ensure the object count is sane
+	obj list -countsort
+
 
 # cpp microopts
 cpp
@@ -200,58 +274,6 @@ DONT:
 	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
 	and because i don't think it'll work with bps. i wont. also i don't like it.
 
-# hitches
-	https://m.youtube.com/watch?v=HaVTYSnGvxA
-	
-	use packed instance stactic meshes
-	could use cell transformers but only with world partition
-	
-	disable generate overlaps events if not used.
-	(is it used for the interact?)
-	
-	skip update overlap on stream
-	
-	set up a pso cache strategy
-	* have to have a loading screen for the global shaders
-	fShaderpipelinecache::NumPrecompilesRemaining, wait for 0
-	
-	-clearPSODriverCache command line. add to launch.
-	check psocachebuster plugin
-	
-	r.psocachevallidation=2
-	
-	try the tools > chaos visual debugger
-	
-	
-	also try using gc clusters on step sequences
-	@37
-	
-	on interact, maybe step, or maybe put a warning.
-	
-	change this (allows to call beginplay staggered in multiple frames) in defaultEnigne @ [ConsoleVariables]
-	s.AdaptiveAddToWorld.Enabled=1
-
-	ensure the object count is sane
-	obj list -countsort
-
-# collisions
-	https://m.youtube.com/watch?v=xIQI6nXFygA
-	make sure the collisions for movement block only pawn. and the ones for interact does that.
-	disable generate overlaps events if not used.
-	
-	don't use collision if not needed (remove from mesh)
-	prefer in order: sphere, capsule, box, convex https://www.youtube.com/watch?app=desktop&v=HaVTYSnGvxA
-
-	check "NeverNeedsCookedCollisionData" on each mesh
-	
-	use default overlap during streaming to only movable. then override on each actor if needed
-	https://youtu.be/HaVTYSnGvxA?t=1141
-	[/Script/Engine.Actor]
-	; option used when UpdateOverlapsMethodDuringLevelStreaming is set to UseConfigDefault. Options are: AlwaysUpdate, OnlyUpdateMovable, NeverUpdate.
-	DefaultUpdateOverlapsMethodDuringLevelStreaming=OnlyUpdateMovable
-	
-	[/Script/Engine.TriggerVolume]
-	DefaultUpdateOverlapsMethodDuringLevelStreaming=AlwaysUpdate
 
 # links
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
