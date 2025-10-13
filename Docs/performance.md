@@ -183,6 +183,7 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 * cmd dumphitches
 * stat none
 * postprocess: use "AfterTonemapping" (in theory)*1
+* write velocity after base pass
 * pixel programmable pipeline
 * perf visualizers
 * nanite overdraw
@@ -290,5 +291,5 @@ https://m.youtube.com/watch?v=KxREK-DYu70
 multithreading
 https://m.youtube.com/watch?v=XJMyNM8xmS0
 
-write velocity after base pass
-
+Preempting Challenges in AAA Unreal Engine Development | GDC 2025
+https://www.youtube.com/watch?v=vgsZGZ0csVQ
