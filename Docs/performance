@@ -121,7 +121,13 @@ After Tonemapping 	This option indicates that post processing will take place af
 	https://www.youtube.com/live/i35yf-wh3Bs
 	https://www.unrealengine.com/en-US/tech-blog/game-engines-and-shader-stuttering-unreal-engines-solution-to-the-problem
 	Use r.PSOPrecache.Validation=2 as explained in the documentation to identify misses or late PSOs and understand the causes.
+	r.PSOPrecache.Validation=2
+	r.PSOPrecache.Validation.TrackMinimalPSOs=1
 	Using the -clearPSODriverCache command-line argument during playtests 
+
+
+	to test:
+	Without any changes applied, run the packaged game with -trace=default -clearPSODriverCache and the Unreal Insights session browser open (InstallFolder/Engine/Binaries/Win64/UnrealInsights.exe).
 
 * perf: disable water shadow vsm 8:53 https://m.youtube.com/watch?v=JJK61A66dzU
 ; they add overhead and are not needed
