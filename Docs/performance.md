@@ -191,7 +191,8 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
   *1
   https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine
   After Tonemapping 	This option indicates that post processing will take place after tonemapping and color grading has been completed. It is the preferred location for performance since the color is LDR and requires less precision and bandwidth. When this option is selected, the SceneTexture expression's Post Process Inputs 2 and 3 are used to control where Scene Color is in the pipeline. Input 2 applies scene color before tonemapping. Input 3 applies scene color after tonemapping.
-
+* screen percentage and upscaling
+ https://dev.epicgames.com/documentation/en-us/unreal-engine/screen-percentage-with-temporal-upscale-in-unreal-engine
 
 # hitches
 	https://m.youtube.com/watch?v=HaVTYSnGvxA
