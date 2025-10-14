@@ -194,6 +194,16 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 * screen percentage and upscaling
  https://dev.epicgames.com/documentation/en-us/unreal-engine/screen-percentage-with-temporal-upscale-in-unreal-engine
 
+# package size
+https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-Builds-7993544e050041f9800512acd3500cfc
+* use shipping
+* disable prerequisite installer
+* specify maps to cook
+* disable plugins
+* forward shading (i'm not using this because i use more advanced features)
+* default pak rules (too much trouble too little gain for me, too much risk also, can break core features now or in the future, for only 3 mb)
+
+
 # hitches
 	https://m.youtube.com/watch?v=HaVTYSnGvxA
 	
