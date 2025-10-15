@@ -64,10 +64,12 @@ void ABooks::ReCreate() {
 
 void ABooks::DestroyBooks() {
 	for (UCQuickMesh* const C: Books) {
-		if (LIKELY(!IsValid(C))) continue;
+		if (UNLIKELY(!IsValid(C))) continue;
+
 		RemoveOwnedComponent(C);
 		C->DestroyComponent(false);
 	}
+
 	Books.Empty();
 	AnimFade->Meshes.Empty();
 }

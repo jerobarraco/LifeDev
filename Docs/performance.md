@@ -221,7 +221,7 @@ https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-
 	
 	-clearPSODriverCache command line. add to launch.
 	check psocachebuster plugin
-	
+	p
 	r.psocachevallidation=2
 	
 	try the tools > chaos visual debugger
