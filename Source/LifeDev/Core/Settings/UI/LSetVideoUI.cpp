@@ -419,8 +419,8 @@ void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 
 void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
 	if (UNLIKELY(
-		ID <= static_cast<uint8>(EQualityType::NONE) ||
-		ID >= static_cast<uint8>(EQualityType::_MAX))) {
+		(ID <= static_cast<uint8>(EQualityType::NONE)) |
+		(ID >= static_cast<uint8>(EQualityType::_MAX)))) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
 	}
@@ -442,15 +442,15 @@ void ULSetVideoUI::FeatsSet() {
 
 	const TMap<EFeat, FText> FeatTexts = {
 		{EFeat::V_FLASHBACK, NSLOCTEXT("SetVideo", "FFB", "Flashback Post")},
-		{EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed FX")},
 		{EFeat::V_STROBE, NSLOCTEXT("SetVideo", "Strobe", "Flashing Lights")},
 		{EFeat::V_FOV, NSLOCTEXT("SetVideo", "FOV", "Field of View")},
 		{EFeat::V_BLUR, NSLOCTEXT("SetVideo", "Blur", "Motion Blur")},
 		{EFeat::V_FRINGE, NSLOCTEXT("SetVideo", "Fringe", "Chroma Aber.")},
 		{EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp.")},
+		{EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "Speed FX")},
+		{EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite")},
 		{EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen")},
 		{EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights")},
-		{EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite")},
 	};
 	FeatsGroup->SetUp(FeatTexts);
 }
