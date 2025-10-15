@@ -33,8 +33,9 @@ void ULSetVideoUI::Load_Implementation() {
 	VSyncSet();
 	DResSet();
 	ResScaleSet();
-	ResSet();
 	FSModeSet();
+
+	ResSet();
 	QSwitchesLoad();
 	if (LIKELY(AntiAlias)) AntiAlias->Load();
 	RHIsSet();
@@ -47,7 +48,7 @@ void ULSetVideoUI::NativeOnInitialized() {
 	QSwitchesSet();
 	FeatsSet();
 	FrameRateSet();
-	ResOptsSet();
+	ResOptsSet(true);
 }
 
 void ULSetVideoUI::NativeDestruct() {
@@ -71,9 +72,9 @@ void ULSetVideoUI::RHIsSet() {
 	
 	RHIs->ClearOptions();
 	RHIs->OnSelectionChanged.RemoveAll(this);
-	for (const EJRHI r : TEnumRange<EJRHI>()) {
+	for (const EJRHI r : TEnumRange<EJRHI>())
 		RHIs->AddOption(UEnum::GetValueAsString(r));
-	}
+
 	EJRHI r;FString rs;
 	UJUtilsSys::GetDefaultRHI(r, rs);
 	RHIs->SetSelectedIndex(uint8(r));
@@ -97,15 +98,15 @@ void ULSetVideoUI::RHIApply() const {
 void ULSetVideoUI::FSModeSet() {
 	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
 	if (UNLIKELY(!Mode)) return;
-
 	if (UNLIKELY(!FSMode)) return;
+
 	FSMode->OnSelectionChanged.RemoveAll(this);
 	FSMode->ClearOptions();
 
 	// order matters
 	// static EWindowMode::Type Modes[] = {
 		// EWindowMode::Fullscreen, EWindowMode::WindowedFullscreen, EWindowMode::Windowed};
-	static FString Names[] {
+	static const FString Names[] {
 		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
 	};
 	constexpr size_t Size = UJUtilsMisc::ArraySize(Names);
@@ -116,18 +117,26 @@ void ULSetVideoUI::FSModeSet() {
 	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
 }
 
+EWindowMode::Type ULSetVideoUI::FSModeGet() const {
+	return static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex());
+}
+
 void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
 	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
 	if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
-	Settings->SetFullscreenMode(static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex()));
+
+	Settings->SetFullscreenMode(FSModeGet());
+	ResSet();
 }
 
-void ULSetVideoUI::ResSet() const {
+void ULSetVideoUI::ResSet() {
 	if (UNLIKELY(!Settings | !Resolution)) return;
 
+	ResOptsSet(FSModeGet() == EWindowMode::Fullscreen);
 	Resolution->ClearOptions();
 	for (const FIntPoint& P: ResOpts)
 		Resolution->AddOption(ResToCombo(P));
+
 	Resolution->SetSelectedOption(ResToCombo(Settings->GetScreenResolution()));
 	Resolution->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::ResChanged);
 }
@@ -145,8 +154,16 @@ void ULSetVideoUI::ResChanged(const FString SelectedItem, const ESelectInfo::Typ
 	Settings->SetScreenResolution(ResOpts[Index]);
 }
 
-void ULSetVideoUI::ResOptsSet() {
-	UKismetSystemLibrary::GetConvenientWindowedResolutions(ResOpts);
+void ULSetVideoUI::ResOptsSet(const bool FullScreen) {
+	ResOpts.Empty();
+	bool Ok = false;
+	if (FullScreen) {
+		Ok = UKismetSystemLibrary::GetSupportedFullscreenResolutions(ResOpts);
+		UE_CLOG(!Ok, LogTemp, Warning, TEXT("%hs Could not get the fullscreen resolutions."), __func__);
+	}
+
+	if (!Ok)
+		UKismetSystemLibrary::GetConvenientWindowedResolutions(ResOpts);
 }
 
 void ULSetVideoUI::ResScaleSet() {

@@ -53,12 +53,13 @@ protected:
 	UFUNCTION()
 	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	void FSModeSet();
+	EWindowMode::Type FSModeGet() const;
 	
-	void ResSet() const;
+	void ResSet();
+	void ResOptsSet(const bool FullScreen = true);
 	static FString ResToCombo(const FIntPoint& P);
 	UFUNCTION()
 	void ResChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
-	void ResOptsSet();
 	
 	void ResScaleSet();
 	UFUNCTION()
