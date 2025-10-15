@@ -27,6 +27,7 @@ void ULSetVideoUI::Apply_Implementation() {
 }
 
 void ULSetVideoUI::Load_Implementation() {
+	UE_LOG(LogTemp, Log, TEXT("SetVideoUI::%hs"), __func__);
 	Super::Load_Implementation();
 	FeatsLoad();
 	FrameRateSet();
@@ -34,7 +35,6 @@ void ULSetVideoUI::Load_Implementation() {
 	DResSet();
 	ResScaleSet();
 	FSModeSet();
-
 	ResSet();
 	QSwitchesLoad();
 	if (LIKELY(AntiAlias)) AntiAlias->Load();
@@ -96,13 +96,13 @@ void ULSetVideoUI::RHIApply() const {
 // }
 
 void ULSetVideoUI::FSModeSet() {
-	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
-	if (UNLIKELY(!Mode)) return;
 	if (UNLIKELY(!FSMode)) return;
 
 	FSMode->OnSelectionChanged.RemoveAll(this);
 	FSMode->ClearOptions();
 
+	const EWindowMode::Type Mode = Settings->GetFullscreenMode();
+	UE_LOG(LogTemp, Log, TEXT("%hs Mode=%i"), __func__, Mode);
 	// order matters
 	// static EWindowMode::Type Modes[] = {
 		// EWindowMode::Fullscreen, EWindowMode::WindowedFullscreen, EWindowMode::Windowed};
@@ -118,6 +118,7 @@ void ULSetVideoUI::FSModeSet() {
 }
 
 EWindowMode::Type ULSetVideoUI::FSModeGet() const {
+	if (UNLIKELY(!FSMode)) return EWindowMode::Type::Fullscreen;
 	return static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex());
 }
 
