@@ -138,13 +138,13 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 		ResChanged("", ESelectInfo::Type::OnMouseClick); // params ignored except type
 	else
 		// reset to the actual screen resolution. this fixes a flashing that happens when changing from capture mouse and not, between chapters
-		Settings->SetScreenResolution(Settings->GetDefaultResolution());
+		Settings->SetScreenResolution(Settings->GetDesktopResolution()); // todo this doesn't work. it still stores the last resolution.
 }
 
 void ULSetVideoUI::ResSet() {
 	if (UNLIKELY(!Settings | !Resolution)) return;
 
-	ResOptsSet(FSModeGet() == EWindowMode::Fullscreen);
+	ResOptsSet(FSModeGet() != EWindowMode::Type::Windowed);
 	Resolution->ClearOptions();
 	for (const FIntPoint& P: ResOpts)
 		Resolution->AddOption(ResToCombo(P));

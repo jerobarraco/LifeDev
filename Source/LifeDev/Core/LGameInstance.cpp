@@ -56,8 +56,8 @@ void ULGameInstance::Shutdown() {
 
 	// attempt to open the feedback url if any. it crashes on module shutdown.
 	const ULSysSettings* const SSettings = ULSysSettings::Get();
-	if (LIKELY(!CloseTriggered & !UJUtilsSys::IsEditor() & !IsRunningCookCommandlet() &
-		(IsValid(SSettings) && !SSettings->CloseURL.IsEmpty())))
+	if (LIKELY(!CloseTriggered & !UJUtilsSys::IsDebug() & !UJUtilsSys::IsEditor()
+		& !IsRunningCookCommandlet() & (IsValid(SSettings) && !SSettings->CloseURL.IsEmpty())))
 		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
 	CloseTriggered = true;
 	Super::Shutdown();
