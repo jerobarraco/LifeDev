@@ -19,11 +19,11 @@ AHanger::AHanger():Super() {
 
 	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(17.500000,22.500000,2.500000));
-	// TODO
-	// static ConstructorHelpers::FObjectFinder<USoundBase>
-	// 	CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Hanger00_P"));
-	// SFXs = {CSnd.Object};
-	
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Hanger/Move/HangerMove"));
+	SFXs = {CSnd.Object};
+
 	Mesh->SetCastAllShadows(true);
 	Super::SetMobility(EComponentMobility::Static);
 }
