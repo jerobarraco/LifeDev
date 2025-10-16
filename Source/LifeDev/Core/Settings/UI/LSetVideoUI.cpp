@@ -107,12 +107,12 @@ void ULSetVideoUI::FSModeSet() {
 	// order matters
 	// static EWindowMode::Type Modes[] = {
 		// EWindowMode::Fullscreen, EWindowMode::WindowedFullscreen, EWindowMode::Windowed};
-	// static const FString Names[] {
-		// TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
-	// };
-	constexpr size_t Size = 3;//UJUtilsMisc::ArraySize(Names);
+	static const FString Names[] {
+		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
+	};
+	constexpr size_t Size = UJUtilsMisc::ArraySize(Names);
 	for (size_t i = 0; i < Size; ++i)
-		FSMode->AddOption(LexToString(Mode));//Names[i]);
+		FSMode->AddOption(Names[i]); //LexToString(i)); lex has some not user friendly strings (e.g. lacks spaces)
 
 	FSMode->SetSelectedIndex(Mode);
 	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
@@ -138,7 +138,7 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 		ResChanged("", ESelectInfo::Type::OnMouseClick); // params ignored except type
 	else
 		// reset to the actual screen resolution. this fixes a flashing that happens when changing from capture mouse and not, between chapters
-		Settings->SetScreenResolution(Settings->GetDesktopResolution()); // todo this doesn't work. it still stores the last resolution.
+		Settings->SetScreenResolution(Settings->GetDesktopResolution());
 }
 
 void ULSetVideoUI::ResSet() {
