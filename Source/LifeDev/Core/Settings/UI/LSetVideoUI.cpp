@@ -122,7 +122,7 @@ void ULSetVideoUI::FSModeSet() {
 EWindowMode::Type ULSetVideoUI::FSModeGet() const {
 	if (UNLIKELY(!FSMode)) return EWindowMode::Type::Fullscreen;
 	return static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex());
-}
+} 
 
 void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
 	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
