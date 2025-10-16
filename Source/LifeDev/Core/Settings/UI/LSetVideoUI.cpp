@@ -36,7 +36,7 @@ void ULSetVideoUI::Load_Implementation() {
 	DResSet();
 	ResScaleSet();
 	FSModeSet();
-	ResSet();
+	// ResSet(); // called by fsmodeset
 	QSwitchesLoad();
 	if (LIKELY(AntiAlias)) AntiAlias->Load();
 	RHIsSet();
@@ -116,6 +116,7 @@ void ULSetVideoUI::FSModeSet() {
 
 	FSMode->SetSelectedIndex(Mode);
 	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
+	FSModeChanged("", ESelectInfo::Type::OnMouseClick); // force set resSet and enable it
 }
 
 EWindowMode::Type ULSetVideoUI::FSModeGet() const {
@@ -131,7 +132,7 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 	Settings->SetFullscreenMode(NewMode);
 	ResSet();
 	
-	const bool IsWindow = NewMode != EWindowMode::Type::Fullscreen;
+	const bool IsWindow = NewMode == EWindowMode::Type::Windowed;
 	Resolution->SetIsEnabled(IsWindow);
 	if (IsWindow) // force resetting the res
 		ResChanged("", ESelectInfo::Type::OnMouseClick); // params ignored except type
@@ -192,7 +193,7 @@ void ULSetVideoUI::ResScaleSet() {
 void ULSetVideoUI::ResScaleChanged(const float Value) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
 	const int32 PVal = trunc(Value*100);
-	if (LIKELY(Settings)) Settings->SetResolutionScaleNormalized(PVal / 100.0);
+	if (LIKELY(Settings)) Settings->SetResolutionScaleNormalized(Value);
 	if (LIKELY(ResScaleText)) ResScaleText->SetText(
 		FText::FromString( FString::FromInt(PVal) + "%" ));
 }
