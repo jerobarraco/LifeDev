@@ -20,7 +20,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 	UseFade = true;
 	UsePawnCam = true;
 	UseFBRand = true;
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS"));
 	// wait for card AND basin. the spot is linked to the card and puzzle.
 	FinishItems = { LDConsts::Items::Card0 };
 	FinishFlags = {

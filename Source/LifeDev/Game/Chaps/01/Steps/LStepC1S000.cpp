@@ -20,7 +20,7 @@ ALStepC1S000::ALStepC1S000():Super() {
 	UsePawnCam = true;
 	UseFade = true;
 
-	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music02/Music02_MS.Music02_MS"));
+	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music04/Music04_MS.Music04_MS"));
 	// this one, seems to be loaded well without the patch :/? HOW?!
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous(); // left just in case
 	
