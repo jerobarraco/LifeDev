@@ -23,6 +23,7 @@ void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
 	RHIApply();
+
 	if (LIKELY(AntiAlias)) AntiAlias->Apply();
 }
 
@@ -106,12 +107,12 @@ void ULSetVideoUI::FSModeSet() {
 	// order matters
 	// static EWindowMode::Type Modes[] = {
 		// EWindowMode::Fullscreen, EWindowMode::WindowedFullscreen, EWindowMode::Windowed};
-	static const FString Names[] {
-		TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
-	};
-	constexpr size_t Size = UJUtilsMisc::ArraySize(Names);
+	// static const FString Names[] {
+		// TEXT("Fullscreen"), TEXT("Maximized Window"), TEXT("Windowed")
+	// };
+	constexpr size_t Size = 3;//UJUtilsMisc::ArraySize(Names);
 	for (size_t i = 0; i < Size; ++i)
-		FSMode->AddOption(Names[i]);
+		FSMode->AddOption(LexToString(Mode));//Names[i]);
 
 	FSMode->SetSelectedIndex(Mode);
 	FSMode->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FSModeChanged);
@@ -126,8 +127,17 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
 	if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
 
-	Settings->SetFullscreenMode(FSModeGet());
+	EWindowMode::Type NewMode = FSModeGet();
+	Settings->SetFullscreenMode(NewMode);
 	ResSet();
+	
+	const bool IsWindow = NewMode != EWindowMode::Type::Fullscreen;
+	Resolution->SetIsEnabled(IsWindow);
+	if (IsWindow) // force resetting the res
+		ResChanged("", ESelectInfo::Type::OnMouseClick); // params ignored except type
+	else
+		// reset to the actual screen resolution. this fixes a flashing that happens when changing from capture mouse and not, between chapters
+		Settings->SetScreenResolution(Settings->GetDefaultResolution());
 }
 
 void ULSetVideoUI::ResSet() {
