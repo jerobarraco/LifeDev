@@ -28,7 +28,6 @@ void FLifeDevModule::StartupModule() {
 
 	// this won't work. probably is overriden by the engine. just go to Editor settings > Appearance > Application Scale
 	// FSlateApplication::Get().SetApplicationScale(1.3);
-	
 }
 
 void FLifeDevModule::ShutdownModule() {
