@@ -24,4 +24,6 @@ APhone00::APhone00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Rooms/Phone/HangUp"));
 	SFXs = {CSnd.Object, CSnd.Object};
+	// /Script/Engine.SoundCue'/Game/LifeDev/Game/Inters/Rooms/Phone/RingOnce.RingOnce'
+	// /Script/Engine.SoundCue'/Game/LifeDev/Game/Inters/Rooms/Phone/Ring.Ring'
 }
