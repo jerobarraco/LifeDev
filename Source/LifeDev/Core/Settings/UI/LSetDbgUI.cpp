@@ -2,10 +2,12 @@
 
 #include "LSetDbgUI.h"
 
+#include "JButton.h"
 #include "LFeatsGroup.h"
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Inventory/Flags.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #include "LifeDev/Core/Settings/LSettings.h"
 // try not to rely on this ui.
@@ -71,4 +73,24 @@ void ULSetDbgUI::NativeOnInitialized() {
 			{EFeat::DBG_TESTDL, FText::FromString("DBG_TESTDL")}
 		});
 	}
+
+	if (LIKELY(BTrace))
+		BTrace->OnClick.AddUniqueDynamic(this, &ULSetDbgUI::OnTrace);
+}
+
+void ULSetDbgUI::NativeDestruct() {
+	UKismetSystemLibrary::ExecuteConsoleCommand(this, "Trace.Stop");
+	if (LIKELY(BTrace)) BTrace->OnClick.RemoveAll(this);
+
+	Super::NativeDestruct();
+}
+
+void ULSetDbgUI::OnTrace(const int32 Id) {
+	const bool Start = Id == 0;
+	const TCHAR* const Cmd =
+		Start ? TEXT("Trace.File TraceFile gpu,cpu,frame") : TEXT("Trace.Stop") ;
+	BTrace->Id = !Id;
+	BTrace->Label = FText::FromString(Start ? TEXT("Trace Stop") : TEXT("Trace Start"));
+	BTrace->ResetStyle();
+	UKismetSystemLibrary::ExecuteConsoleCommand(this, Cmd);
 }

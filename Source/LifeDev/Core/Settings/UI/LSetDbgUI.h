@@ -7,6 +7,7 @@
 
 #include "LSetDbgUI.generated.h"
 
+class UJButton;
 class UTextBlock;
 class ULFeatsGroup;
 class UScrollBox;
@@ -20,10 +21,16 @@ public:
 	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override;
 	virtual void NativeOnInitialized() override;
-	
+	virtual void NativeDestruct() override;
+
 protected:
+	UFUNCTION()
+	void OnTrace(const int32 Id);
+	
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsDbg;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UTextBlock> TFlags;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BTrace;
 };
