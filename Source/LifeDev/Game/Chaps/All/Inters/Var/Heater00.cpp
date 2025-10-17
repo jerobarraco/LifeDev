@@ -21,4 +21,5 @@ AHeater00::AHeater00():Super() {
 
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));
+	// todo /Script/Engine.SoundWave'/Game/LifeDev/Game/Inters/Rooms/Heater/OLD_STUFF_Water_Heater_01-start.OLD_STUFF_Water_Heater_01-start'
 }
