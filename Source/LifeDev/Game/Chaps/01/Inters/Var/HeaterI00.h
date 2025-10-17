@@ -12,6 +12,4 @@ class LIFEDEV_API AHeaterI00: public AHeater00 {
 
 public:
 	AHeaterI00();
-
-	virtual void DoTrigger_Implementation() override;
 };

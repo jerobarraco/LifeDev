@@ -14,9 +14,7 @@ AHeaterI03::AHeaterI03():Super() {
 	// TriggerDlg = "HT03_L";
 	Texts = { NSLOCTEXT("HeaterI00", "State0", "Turn on") };
 	StateNum = 1;
-	// TODO find a new one
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Env/Noises/squeaky_closet_door_open_001.squeaky_closet_door_open_001"));
-	// SFXTrigger = CSnd.Object;
-	SFXs = { CSnd.Object };
+//	static ConstructorHelpers::FObjectFinder<USoundBase>
+		// CSnd(TEXT("/Game/LifeDev/Game/Env/Noises/squeaky_closet_door_open_001.squeaky_closet_door_open_001"));
+	// SFXs = { CSnd.Object };
 }

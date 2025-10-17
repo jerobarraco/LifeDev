@@ -12,6 +12,7 @@ AHeaterI00::AHeaterI00():Super() {
 	UseRewardDestroy = false;
 	UseAnim = true;
 	UseAutoActivate = true;
+	IsOneShot = true;
 
 	Texts = {
 		NSLOCTEXT("HeaterI00", "State0", "Turn on, it's cold"),
@@ -29,11 +30,6 @@ AHeaterI00::AHeaterI00():Super() {
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Heater00/dry_hard_metal_grind_09-01.dry_hard_metal_grind_09-01"));
-	// SFX_Trigger = CSnd.Object;
-	SFXs = { nullptr, CSnd.Object};
-}
 
-void AHeaterI00::DoTrigger_Implementation() {
-	Super::DoTrigger_Implementation();
-	IsLocked = true; // lock AFTER triggering
+	SFXs = { nullptr, CSnd.Object}; // override base ones
 }

@@ -11,7 +11,6 @@ AHeater00::AHeater00():Super() {
 	UseRewardDestroy = false;
 	UseFade = false;
 
-	SFX->SetRelativeLocation(FVector(9,0,35));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Heater00/Heater00.Heater00"));
 	Mesh->SetStaticMesh(CMesh.Object);
@@ -21,5 +20,10 @@ AHeater00::AHeater00():Super() {
 
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));
-	// todo /Script/Engine.SoundWave'/Game/LifeDev/Game/Inters/Rooms/Heater/OLD_STUFF_Water_Heater_01-start.OLD_STUFF_Water_Heater_01-start'
+
+	SFX->SetRelativeLocation(FVector(9,0,35));
+	
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Heater/OLD_STUFF_Water_Heater_01-start"));
+	SFXs = { CSFX.Object, CSFX.Object};
 }
