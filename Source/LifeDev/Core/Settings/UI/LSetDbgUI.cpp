@@ -88,7 +88,7 @@ void ULSetDbgUI::NativeDestruct() {
 void ULSetDbgUI::OnTrace(const int32 Id) {
 	const bool Start = Id == 0;
 	const TCHAR* const Cmd =
-		Start ? TEXT("Trace.File TraceFile gpu,cpu,frame") : TEXT("Trace.Stop") ;
+		Start ? TEXT("Trace.File TraceFile Gpu,Screenshot,Region,Bookmark,Frame,Cpu,Log,") : TEXT("Trace.Stop") ;
 	BTrace->Id = !Id;
 	BTrace->Label = FText::FromString(Start ? TEXT("Trace Stop") : TEXT("Trace Start"));
 	BTrace->ResetStyle();
