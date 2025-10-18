@@ -194,7 +194,7 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 * screen percentage and upscaling
  https://dev.epicgames.com/documentation/en-us/unreal-engine/screen-percentage-with-temporal-upscale-in-unreal-engine
 
-* use stat game to see cpu usage. profile in standalone at least, better in develop. lower screen scale to detect cpu bounds. gpu times are always larger than cpu since it waits for cpu. https://forums.unrealengine.com/t/performance-issue-with-ue4-27-2/2666278/2?u=nande
+* use `stat game` to see cpu usage. profile in standalone at least, better in develop. lower screen scale to detect cpu bounds. gpu times are always larger than cpu since it waits for cpu. https://forums.unrealengine.com/t/performance-issue-with-ue4-27-2/2666278/2?u=nande
 
 # package size
 https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-Builds-7993544e050041f9800512acd3500cfc
