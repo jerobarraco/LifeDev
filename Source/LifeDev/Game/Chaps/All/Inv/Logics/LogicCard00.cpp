@@ -39,7 +39,6 @@ void ULogicCard00::BeginPlay_Implementation() {
 
 	Range = Cast<ARange>(W->SpawnActor(RangeClass, 0, 0));
 
-	const UFlags* const Flags = UFlags::Instance(this);
 	if (UNLIKELY(!Flags)) return;
 
 	const float Foxy = Flags->Get(LDConsts::Flags::Settings::Global::Foxy);
