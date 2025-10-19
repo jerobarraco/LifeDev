@@ -40,10 +40,10 @@ void ULFeatCheck::Apply_Implementation() {
 }
 
 void ULFeatCheck::SetDefault() {
-	const ULSysSettings* const Settings = ULSysSettings::Get();
-	if (UNLIKELY(!Settings)) return;
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (UNLIKELY(!SysSettings)) return;
 
-	const TSet<EFeat>& Feats = Settings->GetFeats();
+	const TSet<EFeat>& Feats = SysSettings->GetFeats();
 	FeatUpdate(Feat, Feats.Contains(Feat));
 }
 
