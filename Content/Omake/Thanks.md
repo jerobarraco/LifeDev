@@ -19,4 +19,4 @@ a ton of ppl in #linux or unreal discord, answering my questions and helping in 
 * maliku, ben, daekesh, allora, nathan, xdiel, syscrusher
 
 a ton of ppl in the official forums helping too
-* Ben white
+* ben white
