@@ -165,14 +165,14 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	State = NewState;
 	SetText();
 	const bool GTZ = State >=0;
-	if (GTZ & (State < SFXs.Num()))
-		PlaySFX(SFXs[State]);
-	if (GTZ & (State < Particles.Num()))
-		PlayParts(Particles[State]);
+	if (GTZ & (SFXs.Num() >0))
+		PlaySFX(SFXs[State%SFXs.Num()]);
+	if (GTZ & (Particles.Num()>0))
+		PlayParts(Particles[State%Particles.Num()]);
 
-	if (GTZ & (State < Rumbles.Num())) {
+	if (GTZ & (Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		if (Controller) Controller->ClientPlayForceFeedback(Rumbles[State]);
+		if (Controller) Controller->ClientPlayForceFeedback(Rumbles[State%Rumbles.Num()]);
 	}
 }
 

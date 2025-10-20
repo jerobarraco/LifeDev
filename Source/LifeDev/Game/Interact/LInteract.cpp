@@ -37,6 +37,14 @@ ALInteract::ALInteract():Super() {
 	// set to true, it's needed for the range. TODO if it creates issues rollback to false.
 	// added here to not clutter the CInteract base.
 	Interact->SetGenerateOverlapEvents(true);
+
+	static ConstructorHelpers::FObjectFinder<UForceFeedbackEffect>
+		CFFLocked(TEXT("/Game/LifeDev/Game/Inters/Generic/Locked_FF"));
+	RumbleLocked = CFFLocked.Object;
+
+	static ConstructorHelpers::FObjectFinder<UForceFeedbackEffect>
+		CFFTrigger(TEXT("/Game/LifeDev/Game/Inters/Generic/Trigger_FF"));
+	Rumbles = {CFFTrigger.Object};
 }
 
 void ALInteract::SetState_Implementation(const int32 NewState) {

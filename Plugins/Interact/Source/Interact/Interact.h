@@ -196,16 +196,7 @@ public:
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|State")
 	bool UseSFXAttached = true;
-	
-	// rumble to play when trigger
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
-	// rumble to play when locked
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TObjectPtr<UForceFeedbackEffect> RumbleLocked = nullptr;
-	// rumble to play when unlocking
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
+
 
 #pragma region State
 	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
@@ -222,12 +213,23 @@ public:
 		NSLOCTEXT("Interact", "State0", "Open"), // 0 == !IsOpen == Closed text
 		NSLOCTEXT("Interact", "State1", "Close"), // 1 == IsOpen == Opened text
 	};
-	// particles to emit on state change. index matches state.
+	// particles to emit on state change. index matches state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<UNiagaraSystem>> Particles;
-	// SFX that will play on state change (regardless of trigger/trigger locked/manual). Index matches the state.
+	// SFX that will play on state change (regardless of trigger/trigger locked/manual).
+	// Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
+		
+	// rumble to play when trigger. Index matches the state, but also rotate.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
+	// rumble to play when locked
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TObjectPtr<UForceFeedbackEffect> RumbleLocked = nullptr;
+	// rumble to play when unlocking
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
 #pragma endregion
 #pragma endregion
 #pragma region Rewards
