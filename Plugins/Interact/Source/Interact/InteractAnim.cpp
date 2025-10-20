@@ -45,7 +45,7 @@ void AInteractAnim::SetState_Implementation(const int32 NewState) { // called by
 
 bool AInteractAnim::TryTrigger_Implementation() {
 	// cancel re-trigger if it's busy.
-	if (UNLIKELY(UseAnim && Anim->IsActive())) return false;
+	if (UNLIKELY(UseAnim & Anim->IsActive())) return false;
 	return Super::TryTrigger_Implementation();
 }
 
