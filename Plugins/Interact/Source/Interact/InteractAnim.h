@@ -38,7 +38,7 @@ public:
 	// SHOULD be ignored if UseAnim == false. but beware of bugs.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Anim")
 	bool DisableWhileAnim = true;
-	
+
 	// the transforms for each state. if this is set it will override the anim values.
 	// the isAdditive flag will be respected, but probably won't work nicely.
 	// won't affect the reversed flag.

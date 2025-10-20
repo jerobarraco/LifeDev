@@ -14,6 +14,7 @@
 #include "CInteract.h"
 #include "Eval.h"
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -163,10 +164,16 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 
 	State = NewState;
 	SetText();
-	if ((State >=0) & (State < SFXs.Num()))
+	const bool GTZ = State >=0;
+	if (GTZ & (State < SFXs.Num()))
 		PlaySFX(SFXs[State]);
-	if ((State >=0) & (State < Particles.Num()))
+	if (GTZ & (State < Particles.Num()))
 		PlayParts(Particles[State]);
+
+	if (GTZ & (State < Rumbles.Num())) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientPlayForceFeedback(Rumbles[State]);
+	}
 }
 
 bool AInteract::ShouldUnlock_Implementation() {
@@ -190,6 +197,10 @@ void AInteract::Unlock_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 	if (UNLIKELY(!IsLocked)) return; // avoid re-triggering stuff
 	IsLocked = false; // force unlock
+	if (RumbleUnlock) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientPlayForceFeedback(RumbleUnlock);
+	}
 }
 
 bool AInteract::ShowHint_Implementation() {
@@ -335,6 +346,10 @@ void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 void AInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
 	PlaySFX(SFXLocked);
+	if (RumbleLocked) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientPlayForceFeedback(RumbleLocked);
+	}
 }
 
 void AInteract::SetInteractAutoBounds() {
@@ -350,6 +365,7 @@ void AInteract::DoTrigger_Implementation() {
 		__func__, *Label.ToString());
 
 	if (LIKELY(UseTriggerDeHint)) UseHint = false; // clear hint flag.
+
 
 	// set the state before, so that the sound triggers are consistent
 	if (LIKELY(StateNum > 0)) { // mostly a fix.

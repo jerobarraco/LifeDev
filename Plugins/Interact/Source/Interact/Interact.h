@@ -142,6 +142,7 @@ public:
 	// triggered on showhint(true)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	TObjectPtr<USoundBase> SFXHint = nullptr;
+
 #pragma endregion
 #pragma region Lock
 	// Will CHECK if it needs to unlock (due to a condition, or whatever)
@@ -179,6 +180,11 @@ public:
 	FName Label;
 	// don't use advanced, or it won't show since i have a subcategory (base)
 
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
+	FString Comment;
+#endif
+
 	// whether to de/activate on BeginPlay and SetActorHiddenInGame.
 	// (don't call SetAutoActivate on the Interact component!).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
@@ -190,11 +196,17 @@ public:
 	// A subclass changes this to allow for playing sounds when destroying.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|State")
 	bool UseSFXAttached = true;
+	
+	// rumble to play when trigger
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
+	// rumble to play when locked
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TObjectPtr<UForceFeedbackEffect> RumbleLocked = nullptr;
+	// rumble to play when unlocking
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
 
-#if WITH_EDITORONLY_DATA
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
-	FString Comment;
-#endif
 #pragma region State
 	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
