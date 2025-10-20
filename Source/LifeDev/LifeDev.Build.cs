@@ -27,8 +27,9 @@ public class LifeDev : ModuleRules {
 		// force user dir. this saves headaches when managing demo/playtest/release builds through steam.
 		// it also saves a lot of headaches to me when developing multiple versions
 		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/2?u=nande
+		// todo this is not working. the command line argument is.
 		PublicDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
-		PrivateDefinitions.Add("LD_DEMO=1");
+		PrivateDefinitions.Add("LD_DEMO=0");
 	}
 }
