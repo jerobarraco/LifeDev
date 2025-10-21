@@ -254,10 +254,12 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		Post->Settings.bOverride_DynamicGlobalIlluminationMethod = true;
 		Post->Settings.bOverride_ReflectionMethod = true;
 		Post->Settings.bOverride_AmbientOcclusionStaticFraction = true;
+		// resetting gi to SS instead of None. if the player wants to disable gi they can set the quality to low.
+		// this way they have the option to turn SS gi if they don't want to use Lumen
 		Post->Settings.DynamicGlobalIlluminationMethod =
 			Enabled ?
 			EDynamicGlobalIlluminationMethod::Lumen :
-			EDynamicGlobalIlluminationMethod::None;
+			EDynamicGlobalIlluminationMethod::ScreenSpace;
 		// this one makes the light reach better, but unfortunately is *very* noisy
 		// EDynamicGlobalIlluminationMethod::ScreenSpace;
 		Post->Settings.ReflectionMethod =
