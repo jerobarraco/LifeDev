@@ -6,7 +6,7 @@
 UENUM(BlueprintType)
 enum class EFeat: uint8 {
 	NONE, // empty one to be able to add to the set.
-	/// General
+
 #pragma region Chapters
 	// Chaps
 	C_00,
@@ -53,23 +53,19 @@ enum class EFeat: uint8 {
 	V_NANITE,
 	// blur
 	V_BLUR,
+	// field of view
+	V_FOV,
+	// auto exposure
+	V_AUTO_EXP,
 	// color aberration / fringe
 	V_FRINGE,
 	// strobing lights
 	V_STROBE,
-	// field of view
-	V_FOV,
 	// flashback post process
 	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
-	// auto exposure
-	V_AUTO_EXP,
 	V_MAX UMETA(Hidden),
-#pragma endregion
-
-#pragma region Environ
-	E_MAX UMETA(Hidden),
 #pragma endregion
 
 #pragma region Gameplay

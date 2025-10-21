@@ -66,11 +66,10 @@ protected:
 		EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
 		EFeat::V_STROBE, EFeat::V_SPEED, EFeat::V_FLASHBACK,
 		
-		
-		EFeat::G_GHOSTS,
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
-		EFeat::D_AUTO, EFeat::D_TEXT,
+		EFeat::D_AUTO, EFeat::D_TEXT, EFeat::D_SHOW,
+		EFeat::G_GHOSTS,
 		EFeat::G_CARD0, EFeat::G_CARD1, EFeat::G_CARD2, EFeat::G_CARD3, EFeat::G_CARD4,
-		EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE
+		EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM
 	};
 };
