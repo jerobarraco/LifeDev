@@ -65,8 +65,8 @@ void AGhostPool::Init() {
 
 	ULSettings* const S = ULSettings::Instance(this);
 	if (LIKELY(S))
-		S->OnFeatUpdateEnviron.AddUniqueDynamic(this, &AGhostPool::FeatUpdate);
-	FeatUpdate(EFeat::E_GHOSTPOOL, S && S->GetFeat(EFeat::E_GHOSTPOOL));
+		S->OnFeatUpdateGameplay.AddUniqueDynamic(this, &AGhostPool::FeatUpdate);
+	FeatUpdate(EFeat::G_GHOSTS, S && S->GetFeat(EFeat::G_GHOSTS));
 }
 
 void AGhostPool::BeginPlay() {
@@ -91,7 +91,7 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(Flashback)) Flashback->OnTo.RemoveAll(this);
 	
 	ULSettings* const S = ULSettings::Instance(this);
-	if (LIKELY(S)) S->OnFeatUpdateEnviron.RemoveAll(this);
+	if (LIKELY(S)) S->OnFeatUpdateGameplay.RemoveAll(this);
 
 	// set to max=0 to destroy them. set the trimtime to 0 to destroy now.
 	if (Pooler)
@@ -102,7 +102,7 @@ void AGhostPool::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void AGhostPool::FeatUpdate(const EFeat Feat, const bool bEnabled) {
-	if (Feat != EFeat::E_GHOSTPOOL) return;
+	if (Feat != EFeat::G_GHOSTS) return;
 	SetActive(bEnabled);
 }
 

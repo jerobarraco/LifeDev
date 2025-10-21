@@ -49,6 +49,8 @@ enum class EFeat: uint8 {
 	V_LUMEN,
 	// MegaLights
 	V_MLIGHTS,
+	// nanite
+	V_NANITE,
 	// blur
 	V_BLUR,
 	// color aberration / fringe
@@ -61,29 +63,27 @@ enum class EFeat: uint8 {
 	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
-	// nanite
-	V_NANITE,
 	// auto exposure
 	V_AUTO_EXP,
 	V_MAX UMETA(Hidden),
 #pragma endregion
 
 #pragma region Environ
-	E_GHOSTPOOL,
 	E_MAX UMETA(Hidden),
 #pragma endregion
 
 #pragma region Gameplay
 	// Intention
 	G_CARD0,
-	// TODO What works
+	// What works
 	G_CARD1,
-	// TODO Yin
+	// Yin
 	G_CARD2,
-	// TODO Perseverance
+	// Perseverance
 	G_CARD3,
 	// TODO Acceptance
 	G_CARD4,
+	G_GHOSTS,
 	// use save games. if this disabled (not present) it will always create a new savefile and ignore the saved one.
 	// this should be always enabled on default flags, so it's always used on release builds.
 	G_SAVE,

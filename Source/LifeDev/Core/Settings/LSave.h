@@ -62,12 +62,15 @@ protected:
 	// the features to affect during load/save, the rest will be ignored.
 	inline static TSet<EFeat> WatchFeats = {
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
-		EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_STROBE,
-		EFeat::V_FOV, EFeat::V_SPEED, EFeat::V_MLIGHTS,
-		EFeat::V_FLASHBACK, EFeat::V_NANITE, EFeat::V_AUTO_EXP,
-		EFeat::E_GHOSTPOOL,
+		EFeat::V_AUTO_EXP, EFeat::V_FRINGE, EFeat::V_FOV, EFeat::V_BLUR,
+		EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
+		EFeat::V_STROBE, EFeat::V_SPEED, EFeat::V_FLASHBACK,
+		
+		
+		EFeat::G_GHOSTS,
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
 		EFeat::D_AUTO, EFeat::D_TEXT,
-		EFeat::G_CARD0, EFeat::G_TEACH, EFeat::G_STATUS,
+		EFeat::G_CARD0, EFeat::G_CARD1, EFeat::G_CARD2, EFeat::G_CARD3, EFeat::G_CARD4,
+		EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE
 	};
 };

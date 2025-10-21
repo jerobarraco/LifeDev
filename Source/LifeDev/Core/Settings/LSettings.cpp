@@ -228,8 +228,6 @@ void ULSettings::FeatUpdated(const EFeat Feat, const bool Enable) const {
 		OnFeatUpdateSound.Broadcast(Feat, Enable);
 	else if((Feat >= EFeat::V_LUMEN) & (Feat < EFeat::V_MAX)) // < since not including the max)
 		OnFeatUpdateVisual.Broadcast(Feat, Enable);
-	else if((Feat >= EFeat::E_GHOSTPOOL) & (Feat < EFeat::E_MAX))
-		OnFeatUpdateEnviron.Broadcast(Feat, Enable);
 	else if((Feat >= EFeat::G_CARD0) & (Feat < EFeat::G_MAX))
 		OnFeatUpdateGameplay.Broadcast(Feat, Enable);
 	else if((Feat >= EFeat::DBG_STEPS) & (Feat < EFeat::DBG_MAX))

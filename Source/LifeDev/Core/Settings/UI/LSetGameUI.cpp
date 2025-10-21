@@ -167,7 +167,7 @@ void ULSetGameUI::NativeOnInitialized() {
 
 	// maybe some of these can be moved to another featgrup that only shows on debug?
 	if (LIKELY(FeatsGroup)) FeatsGroup->SetUp({
-		{EFeat::E_GHOSTPOOL, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
+		{EFeat::G_GHOSTS, NSLOCTEXT("SetGame", "Feat", "Ghosts")},
 		{EFeat::D_AUTO, NSLOCTEXT("SetGame", "Feat", "Diag. Auto")},
 		{EFeat::D_TEXT, NSLOCTEXT("SetGame", "Feat", "Diag. Text")},
 		{EFeat::G_TEACH, NSLOCTEXT("SetGame", "Feat", "Tutorial")},

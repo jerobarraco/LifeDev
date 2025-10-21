@@ -95,8 +95,6 @@ public:
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateVisual;
 	UPROPERTY(BlueprintAssignable, Transient)
-	FOnFeatUpdate OnFeatUpdateEnviron;
-	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateGameplay;
 	UPROPERTY(BlueprintAssignable, Transient)
 	FOnFeatUpdate OnFeatUpdateAccess;
