@@ -106,6 +106,8 @@ enum class EFeat: uint8 {
 	G_TEACH,
 	// tweaks the anim fps with fb
 	G_FB_ANIM,
+	// enables or disables force feedback
+	G_RUMBLE,
 	G_MAX UMETA(Hidden),
 #pragma endregion
 
