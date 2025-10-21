@@ -193,9 +193,17 @@ void ULSetVideoUI::ResScaleSet() {
 void ULSetVideoUI::ResScaleChanged(const float Value) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs Val=%.4f"), __func__, Value);
 	const int32 PVal = trunc(Value*100);
-	if (LIKELY(Settings)) Settings->SetResolutionScaleNormalized(Value);
+	float Cur = Value*100;
+	if (LIKELY(Settings)) {
+		Settings->SetResolutionScaleNormalized(Value);
+		// while this would work. it introduces issues when the user changes resolutions sizes before applying.
+		// i think i will leave it for now.
+		float CurNorm, Min, Max;
+		Settings->GetResolutionScaleInformationEx(CurNorm, Cur, Min, Max);
+	}
+
 	if (LIKELY(ResScaleText)) ResScaleText->SetText(
-		FText::FromString( FString::FromInt(PVal) + "%" ));
+		FText::FromString( FString::FromInt(trunc(Cur)) + "%" ));
 }
 
 void ULSetVideoUI::DResSet() const {
