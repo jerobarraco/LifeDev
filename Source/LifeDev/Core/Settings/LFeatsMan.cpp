@@ -221,8 +221,10 @@ void ALFeatsMan::LoadFeats() {
 	
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
+	FeatUpGame(EFeat::G_RUMBLE, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
+	
 	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
-	FeatUpDbg(EFeat::G_STATUS, Settings && Settings->GetFeat(EFeat::G_STATUS));
+	FeatUpDbg(EFeat::DBG_D_WARN, Settings && Settings->GetFeat(EFeat::G_STATUS));
 	// no need to initialize d_show or d_text
 }
 
@@ -324,6 +326,14 @@ void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 		IConsoleVariable* const CVar =
 			IConsoleManager::Get().FindConsoleVariable(TEXT("tick.AllowConcurrentTickQueue"));
 		if (LIKELY(CVar)) CVar->Set(Enabled ? 1 : 0, EConsoleVariableFlags::ECVF_SetByCode);
+	}
+}
+
+void ALFeatsMan::FeatUpGame(const EFeat Feat, const bool Enabled) {
+	if (Feat == EFeat::G_RUMBLE) {
+		IConsoleVariable* const CVar =
+			IConsoleManager::Get().FindConsoleVariable(TEXT("inter.rumble.use"));
+		if (LIKELY(CVar)) CVar->Set(Enabled, EConsoleVariableFlags::ECVF_SetByCode);
 	}
 }
 

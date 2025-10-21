@@ -19,7 +19,7 @@
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 // using a cvar so it can be changed on bps. and also overriden on inis by the player.
 static TAutoConsoleVariable<bool> CVarUseRumble(
-	TEXT("Inter.Rumble.Use"),
+	TEXT("inter.rumble.use"),
 	true,
 	TEXT("Whether to use force feedback.\n"),
 	ECVF_RenderThreadSafe

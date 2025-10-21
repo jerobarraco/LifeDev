@@ -65,6 +65,8 @@ protected:
 	UFUNCTION()
 	void FeatUpUnreal(const EFeat Feat, const bool Enabled);
 	UFUNCTION()
+	void FeatUpGame(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
 	void FeatUpDbg(const EFeat Feat, const bool Enabled);
 #pragma endregion
 
