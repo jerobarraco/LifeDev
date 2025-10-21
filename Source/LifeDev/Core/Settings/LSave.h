@@ -67,9 +67,14 @@ protected:
 		EFeat::V_STROBE, EFeat::V_SPEED, EFeat::V_FLASHBACK,
 		
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
-		EFeat::D_AUTO, EFeat::D_TEXT, EFeat::D_SHOW,
-		EFeat::G_GHOSTS,
+
+		EFeat::D_AUTO, EFeat::D_TEXT,
+		
 		EFeat::G_CARD0, EFeat::G_CARD1, EFeat::G_CARD2, EFeat::G_CARD3, EFeat::G_CARD4,
-		EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM
+		EFeat::G_GHOSTS, EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM
 	};
+	// EFeat::D_SHOW, // since this is not on the previous savegames,
+	// and also is not on the settings in user builds, it's better not to watch it,
+	// or it will default to false.
+	// TODO implement versioning
 };
