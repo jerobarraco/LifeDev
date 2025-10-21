@@ -117,7 +117,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseTriggerDeHint = true;
 
-	static constexpr float DefHintTime = 5;
+	static constexpr float DefHintTime = 5; // todo use a cvar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint", Config, meta=(ClampMin=0.001))
 	float HintTime = DefHintTime;
 
@@ -220,8 +220,6 @@ public:
 	// Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
-
-	static inline bool UseRumble = false;
 
 	// rumble to play when trigger. Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
