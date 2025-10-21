@@ -77,4 +77,5 @@ protected:
 	// and also is not on the settings in user builds, it's better not to watch it,
 	// or it will default to false.
 	// TODO implement versioning
+	// todo rename watch to something else, maybe
 };
