@@ -133,6 +133,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Settings->OnFeatUpdate.RemoveAll(this);
 		Settings->OnFeatUpdateVisual.RemoveAll(this);
 		Settings->OnFeatUpdateUnreal. RemoveAll(this);
+		Settings->OnFeatUpdateGameplay.RemoveAll(this);
 		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
@@ -165,6 +166,8 @@ void ALFeatsMan::Init() {
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
+		Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALFeatsMan::FeatUpGame);
+		Settings->OnFeatUpdateDebug.AddUniqueDynamic(this, &ALFeatsMan::FeatUpDbg);
 	}
 
 	if (LIKELY(Eval)) {
@@ -221,6 +224,7 @@ void ALFeatsMan::LoadFeats() {
 	
 	FeatUpUnreal(EFeat::U_TICK_BATCH, Settings && Settings->GetFeat(EFeat::U_TICK_BATCH));
 	FeatUpUnreal(EFeat::U_TICK_CON, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
+
 	FeatUpGame(EFeat::G_RUMBLE, Settings && Settings->GetFeat(EFeat::U_TICK_CON));
 	
 	FeatUpDbg(EFeat::DBG_TESTDL, Settings && Settings->GetFeat(EFeat::DBG_TESTDL));
