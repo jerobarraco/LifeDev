@@ -17,6 +17,13 @@
 #include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
+// using a cvar so it can be changed on bps. and also overriden on inis by the player.
+static TAutoConsoleVariable<bool> CVarUseRumble(
+	TEXT("Inter.Rumble.Use"),
+	true,
+	TEXT("Whether to use force feedback.\n"),
+	ECVF_RenderThreadSafe
+);
 
 AInteract::AInteract():Super() {
 	// super important or it will NOT work
@@ -170,7 +177,9 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	if (GTZ & (Particles.Num()>0))
 		PlayParts(Particles[State%Particles.Num()]);
 
-	if (GTZ & (Rumbles.Num()>0)) {
+	bool UseRumble = false;
+	CVarUseRumble->GetValue(UseRumble);
+	if (UseRumble & GTZ & (Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->ClientPlayForceFeedback(Rumbles[State%Rumbles.Num()]);
 	}
@@ -197,7 +206,9 @@ void AInteract::Unlock_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 	if (UNLIKELY(!IsLocked)) return; // avoid re-triggering stuff
 	IsLocked = false; // force unlock
-	if (RumbleUnlock) {
+	bool UseRumble = false;
+	CVarUseRumble->GetValue(UseRumble);
+	if (UseRumble & bool(RumbleUnlock)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->ClientPlayForceFeedback(RumbleUnlock);
 	}
@@ -231,7 +242,7 @@ bool AInteract::ShowHint_Implementation() {
 
 	// schedule unhint
 	FTimerHandle H;
-	auto F = [this]() {
+	auto F = [this] () {
 		if (UNLIKELY(!IsValid(this) | !IsValid(Interact))) return;
 		Interact->Hint(false);
 	};

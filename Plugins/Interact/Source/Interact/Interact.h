@@ -220,7 +220,9 @@ public:
 	// Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
-		
+
+	static inline bool UseRumble = false;
+
 	// rumble to play when trigger. Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
