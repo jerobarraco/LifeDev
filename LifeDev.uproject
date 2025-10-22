@@ -588,6 +588,10 @@
 		{
 			"Name": "GPULightmass",
 			"Enabled": false
+		},
+		{
+			"Name": "FunctionalTestingEditor",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
