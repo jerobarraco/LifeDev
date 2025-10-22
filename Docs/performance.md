@@ -131,6 +131,11 @@ animation
 	to test:
 	Without any changes applied, run the packaged game with -trace=default -clearPSODriverCache and the Unreal Insights session browser open (InstallFolder/Engine/Binaries/Win64/UnrealInsights.exe).
 
+	There are many more CVARs available in the different PSO related code files:
+	RenderCore/ShaderPipelineCache.cpp
+	Engine/PSOPrecache.cpp
+
+
 * perf: disable water shadow vsm 8:53 https://m.youtube.com/watch?v=JJK61A66dzU
 ; they add overhead and are not needed
 r.Water.SingleLayer.ShaderSupportVSMFiltering=0

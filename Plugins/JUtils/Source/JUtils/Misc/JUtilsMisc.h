@@ -39,6 +39,25 @@ enum class EAsyncExec: uint8 {
 };
 ENUM_RANGE_BY_COUNT(EAsyncExec, EAsyncExec::MAX);
 
+// The shader pipeline batch mode
+// Sets the compilation batch mode, which should be one of:\n\tPause: .\n\tBackground: Low priority precompilation.\n\tFast: High priority precompilation.
+// Engine\Source\Runtime\RenderCore\Private\ShaderPipelineCache.cpp:259
+UENUM(BlueprintType)
+enum class EShaderBatchMode: uint8 {
+	// Suspend precompilation
+	PAUSE,
+	// Low priority. During gameplay. slower but will try not to stutter.
+	// The maximum batch size is defined by r.ShaderPipelineCache.BackgroundBatchSize
+	BACKGROUND,
+	// High priority. For loading screens, will mess with the times in render thread.
+	// The maximum batch size is defined by r.ShaderPipelineCache.BatchSize
+	FAST,
+	// The maximum batch size is defined by r.ShaderPipelineCache.PrecompileBatchSize
+	PRECOMPILE,
+	MAX UMETA(Hidden)
+};
+ENUM_RANGE_BY_COUNT(EShaderBatchMode, EShaderBatchMode::MAX);
+
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsMisc: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
@@ -129,7 +148,6 @@ public:
 		return ThreadContext.IsInConstructor > 0;
 	}
 #pragma endregion
-
 #pragma region tables
 	UFUNCTION(BlueprintCallable)
 	static UDataTable* LoadCSVTable(const FString& BasePath, const FString& Name,
@@ -161,6 +179,9 @@ public:
 	}
 #pragma endregion
 
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void SetShaderBatchMode(const UObject* const O, const EShaderBatchMode Mode);
+	
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
 	template <typename T>

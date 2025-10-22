@@ -243,6 +243,18 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& N
 	return Table;
 }
 
+void UJUtilsMisc::SetShaderBatchMode(const UObject* const O, const EShaderBatchMode Mode) {
+	// https://www.tomlooman.com/psocaching-unreal-engine/
+	// Use “Fast” for loading screens, “Background” for UI and interactive moments r.ShaderPipelineCache.SetBatchMode pause/fast/background/precompile
+	if (UNLIKELY(!IsValid(O) | (Mode >= EShaderBatchMode::MAX))) return;
+
+	static const TCHAR* const Base = TEXT("r.ShaderPipelineCache.SetBatchMode ");
+	static const TCHAR* const Texts[] = { TEXT("Pause"), TEXT("Background"), TEXT("Fast"), TEXT("Precompile") };
+	const FString Cmd = FString(Base) + Texts[static_cast<uint8>(Mode)];
+	UKismetSystemLibrary::ExecuteConsoleCommand(O, Cmd);
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to set shader batch mode to '%s'"), __func__, *Cmd);
+}
+
 UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
 	TArray<FString>& OProblems, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
