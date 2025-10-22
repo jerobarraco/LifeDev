@@ -747,9 +747,10 @@ bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
 			" It can be changed on the config file Interact.ini"), __func__);
 		return false;
 	}
-	
-	if (!FSlateApplication::IsInitialized()) {
-		UE_LOG(LogAnim, Warning, TEXT("%hs FSlateApplication::IsInitialized is false."
+
+	const bool IsCooking = IsRunningCookCommandlet();
+	if (!FSlateApplication::IsInitialized() | IsCooking) {
+		UE_CLOG(!IsCooking, LogAnim, Warning, TEXT("%hs FSlateApplication::IsInitialized is false."
 			" The world subsystem will not be created."
 			" Ensure Slate is added as dependency in your Build.cs and the initialization order is correct."), __func__);
 		return false; // this requires the Slate dependency on Build.cs
@@ -760,7 +761,7 @@ bool UAnim::ShouldCreateSubsystem(UObject* const Outer) const {
 
 bool UAnim::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	// The world subsystem shouldn't be used in the editor. from enhanced input system
-	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE;
+	return (WorldType == EWorldType::Game) | (WorldType == EWorldType::PIE);
 }
 
 
