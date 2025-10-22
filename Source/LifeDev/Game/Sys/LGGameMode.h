@@ -6,8 +6,6 @@
 
 #include "GameFramework/GameModeBase.h"
 
-#include "LifeDev/Core/Settings/FLChapter.h"
-
 #include "LGGameMode.generated.h"
 
 class ALTeachMan;

@@ -6,7 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "IntroMan.h"
-#include "SentrySubsystem.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
@@ -19,7 +19,8 @@ AIntroGameMode::AIntroGameMode():Super() {
 void AIntroGameMode::BeginPlay() {
 	Super::BeginPlay();
 	UWorld* const World = GetWorld();
-
+	
+	UJUtilsMisc::SetShaderBatchMode(this, EShaderBatchMode::BACKGROUND); // bg from this point onwards.
 	Manager = Cast<AIntroMan>(World->SpawnActor(AIntroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 	if (LIKELY(MusicMan)) {

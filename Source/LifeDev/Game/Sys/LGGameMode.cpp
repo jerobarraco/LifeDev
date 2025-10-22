@@ -15,7 +15,6 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "Inventory/InventoryMan.h"
-#include "Interact/CInteractor.h"
 #include "Interact/Animator/CAnimator.h"
 #include "Story/StoryMan.h"
 #include "Story/Story.h"
@@ -45,6 +44,8 @@
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
+
+// Note: not changing the shader batch mode here since it's controlled by the story plugin
 
 ALGGameMode::ALGGameMode():Super() {
 	Super::SetActorTickEnabled(false);

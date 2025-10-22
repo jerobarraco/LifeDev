@@ -93,6 +93,9 @@ public:
 	// https://youtu.be/HaVTYSnGvxA?t=2318
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	bool UseFadeGC = true;
+	// changes the shader batch mode during fades (set to fast, then bg)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
+	bool UseFadeShaderMode = true;
 
 	// triggered when a step starts. (just after Step->TryStart is called, probably before Step->Start)
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Category="SetUp|Events")

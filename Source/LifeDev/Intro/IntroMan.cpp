@@ -13,6 +13,7 @@
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
 #include "IntroUI.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 AIntroMan::AIntroMan():Super() {
 	static ConstructorHelpers::FClassFinder<UIntroUI>
@@ -48,6 +49,7 @@ void AIntroMan::Done() {
 	const UWorld* const World = GetWorld();
 	ULSettings* const Settings = ULSettings::Instance(World);
 	if (UNLIKELY(!Settings)) return;
+
 	if (UNLIKELY(!Settings->Save)) {
 		Settings->NewGame();
 		if (UNLIKELY(!Settings->Save)) {
@@ -90,9 +92,9 @@ void AIntroMan::Done() {
 }
 
 void AIntroMan::Saving(const bool IsSaving) {
-	if (IsSaving) return;
+	if (IsSaving) return; // once it finished saving, load the world
 
-	// once it finished saving, load the world
+	UJUtilsMisc::SetShaderBatchMode(this, EShaderBatchMode::FAST); // force fast load the next level. stutter.
 
 	// this is actually not needed since the game mode is set on the world settings
 	// but if we were to need it here it is. we will need to add to the game mode aliases on the map&modes settings, under advanced
