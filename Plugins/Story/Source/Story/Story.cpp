@@ -112,6 +112,8 @@ bool UStory::Start(const FName Name) {
 		StartNow(Step);
 
 		auto l2 = [this]() {
+			// i don't need to block the main thread. but does the gc flush and shader block work on the bg?
+			AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
 			// attempt to wait for objects to be loaded.
 			// notice there's a timer before this lambda, so we only block in case something still remains
 			// blocking on load requires the data-tables to have "Override Block on slow streaming" to "Blocking"
@@ -139,7 +141,6 @@ bool UStory::Start(const FName Name) {
 				GEngine->ForceGarbageCollection(true);
 			}
 
-			AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
 				// attempt at waiting for shaders to compile on load.
 				while (FShaderPipelineCache::NumPrecompilesRemaining()>0) { // is it ok to spinlock this thread? should i try a different one?
 					UE_LOG(LogStory, Log, TEXT("UStory::Waiting on shaders. %i"), FShaderPipelineCache::NumPrecompilesRemaining());
