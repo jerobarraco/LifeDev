@@ -59,7 +59,7 @@ void AInteractAnim::DoTrigger_Implementation() { // called by trytrigger
 }
 
 void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
-	if (!UseAnim || UNLIKELY(!Anim)) {
+	if (!UseAnim | UNLIKELY(!Anim)) {
 		// OnTriggerAnim is dispatched on AnimEnd. but if it's not being used. we force it.
 		// the anim is triggered by setstate.
 		// Calling AnimEnd has some other side effects. like playing sounds. which, while odd, i think it's benign side effect.
@@ -75,11 +75,11 @@ void AInteractAnim::AnimPlay() { // called by setstate. called by dotrigger.
 }
 
 void AInteractAnim::AnimSet() {
-	if (!UseAnim || UNLIKELY(!Anim)) return;
+	if (!UseAnim | UNLIKELY(!Anim)) return;
 	// important not to check for troot here for things like lights
 	
 	// both checks avoid an out of bound access
-	if (Trans.Num() == 0 || State < 0) {
+	if (Trans.Num() == 0) {
 		// this creates so many issues. notice how it's set.
 		// this plays AFTER the state has changed.
 		// which means: if it's open, it was closed, so it needs to play from Closed to Open
