@@ -134,6 +134,11 @@ void AStep::Stop_Implementation() {
 	if (UNLIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(false);
 	if (UseCamShake) CamShakeStop();
 
+	if (Rumble) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientStopForceFeedback(Rumble, "");
+	}
+
 	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
 }
 
@@ -146,10 +151,6 @@ void AStep::Finish_Implementation() {
 	// important for weird states. so that it doesn't trigger other actions when the world is destroyed just when it's starting.
 	World->GetTimerManager().ClearAllTimersForObject(this);
 
-	if (Rumble) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		if (Controller) Controller->ClientStopForceFeedback(Rumble, "");
-	}
 	
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!IsValid(Story))) return;

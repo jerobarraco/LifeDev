@@ -16,6 +16,10 @@
 #include "LifeDev/Game/Interact/LInteract.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 
+// todo ha a function to set the default ghost rumble
+// todo increase the rumble value with fb, is that possible? yes with 		Controller->ForceFeedbackScale
+// duration needs to change as well, maybe can be done.
+// i need a way to control each motor individually with the same ff asset. so simulate a heartbeat 
 DEFINE_LOG_CATEGORY_STATIC(LogLStoryStep, Log, Log);
 
 ALStep::ALStep():Super() {
