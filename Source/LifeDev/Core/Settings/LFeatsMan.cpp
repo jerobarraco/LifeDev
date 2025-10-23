@@ -337,9 +337,8 @@ void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 
 void ALFeatsMan::FeatUpGame(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::G_RUMBLE) {
-		IConsoleVariable* const CVar =
-			IConsoleManager::Get().FindConsoleVariable(TEXT("inter.rumble.use"));
-		if (LIKELY(CVar)) CVar->Set(Enabled, EConsoleVariableFlags::ECVF_SetByCode);
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->bForceFeedbackEnabled = Enabled;
 	}
 }
 
