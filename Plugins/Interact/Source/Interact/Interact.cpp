@@ -167,19 +167,20 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 		__func__, NewState, *Label.ToString());
 	// this duplicates SetStateNow. make sure to modify that one too.
 
-	if (UNLIKELY((State <0) | (NewState >= StateNum))) return;
+	// NewState<0 helps with bounds on the arrays. same for >=StateNum
+	// this also implies that StateNum >0 since newstate can't be >=0 & <StateNum otherwise.
+	if (UNLIKELY((NewState<0) | (NewState >= StateNum))) return;
 
 	State = NewState;
 	SetText();
-	const bool GTZ = State >=0;
-	if (GTZ & (SFXs.Num() >0))
+	if ((SFXs.Num() >0))
 		PlaySFX(SFXs[State%SFXs.Num()]);
-	if (GTZ & (Particles.Num()>0))
+	if ((Particles.Num()>0))
 		PlayParts(Particles[State%Particles.Num()]);
 
 	bool UseRumble = false;
 	CVarUseRumble->GetValue(UseRumble);
-	if (UseRumble & GTZ & (Rumbles.Num()>0)) {
+	if (UseRumble & (Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		const TObjectPtr<UForceFeedbackEffect> Rumble = Rumbles[State%Rumbles.Num()];
 		if (bool(Rumble) & bool(Controller)) Controller->ClientPlayForceFeedback(Rumble);
