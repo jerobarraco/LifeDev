@@ -6,7 +6,6 @@
 
 #include "Story/Step.h"
 #include "Inventory/InventoryTypes.h"
-#include "Diags/DiagTypes.h"
 
 #include "LStep.generated.h"
 
