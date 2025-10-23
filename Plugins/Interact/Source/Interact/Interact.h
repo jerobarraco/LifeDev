@@ -102,7 +102,7 @@ public:
 	// returns the "label" for this interact actor.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE FName GetLabel() const { return Label; }
- 
+
 #pragma region Hint
 	// function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
@@ -169,6 +169,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	TObjectPtr<USoundBase> SFXLocked = nullptr;
 	// TODO i could have a sfxUnlock but i don't really need it just now. otherwise take a look at doorI10
+	// unlock might also overlap trigger. since on my game unlocking happens with trigger
 #pragma endregion
 #pragma region Setup
 	// An interact id used for auto dialogs and such.

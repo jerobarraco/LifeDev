@@ -17,13 +17,6 @@
 #include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
-// using a cvar so it can be changed on bps. and also overriden on inis by the player.
-static TAutoConsoleVariable<bool> CVarUseRumble(
-	TEXT("inter.rumble.use"),
-	true,
-	TEXT("Whether to use force feedback.\n"),
-	ECVF_RenderThreadSafe
-);
 
 AInteract::AInteract():Super() {
 	// super important or it will NOT work
@@ -178,9 +171,7 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	if ((Particles.Num()>0))
 		PlayParts(Particles[State%Particles.Num()]);
 
-	bool UseRumble = false;
-	CVarUseRumble->GetValue(UseRumble);
-	if (UseRumble & (Rumbles.Num()>0)) {
+	if ((Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		const TObjectPtr<UForceFeedbackEffect> Rumble = Rumbles[State%Rumbles.Num()];
 		if (bool(Rumble) & bool(Controller)) Controller->ClientPlayForceFeedback(Rumble);
