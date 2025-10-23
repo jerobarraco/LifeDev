@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 
 #include "Story.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogStoryStep, Log, Log);
 
@@ -121,6 +122,10 @@ void AStep::Start_Implementation() {
 	if (UseCamShake) CamShakeStart();
 
 	SetActorsHiddenAny(ActorsShow, false);
+	if (Rumble) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientPlayForceFeedback(Rumble);
+	}
 }
 
 void AStep::Stop_Implementation() {
@@ -141,6 +146,11 @@ void AStep::Finish_Implementation() {
 	// important for weird states. so that it doesn't trigger other actions when the world is destroyed just when it's starting.
 	World->GetTimerManager().ClearAllTimersForObject(this);
 
+	if (Rumble) {
+		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		if (Controller) Controller->ClientStopForceFeedback(Rumble, "");
+	}
+	
 	UStory* const Story = World->GetSubsystem<UStory>();
 	if (UNLIKELY(!IsValid(Story))) return;
 

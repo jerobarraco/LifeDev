@@ -99,6 +99,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Inters")
 	TArray<TSoftObjectPtr<AActor>> ActorsHide;
 
+	// rumble to play when trigger. Index matches the state, but also rotate.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	TObjectPtr<UForceFeedbackEffect> Rumble;
+
 	// Music to play. Setting it to empty does not stop the music.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TSoftObjectPtr<USoundBase> Music = nullptr;
