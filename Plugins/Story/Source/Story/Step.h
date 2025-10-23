@@ -102,6 +102,8 @@ public:
 	// rumble to play when trigger. Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TObjectPtr<UForceFeedbackEffect> Rumble;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool UseRumbleLoop = true;
 
 	// Music to play. Setting it to empty does not stop the music.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")

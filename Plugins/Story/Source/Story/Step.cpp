@@ -124,7 +124,10 @@ void AStep::Start_Implementation() {
 	SetActorsHiddenAny(ActorsShow, false);
 	if (Rumble) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		if (Controller) Controller->ClientPlayForceFeedback(Rumble);
+		FForceFeedbackParameters Params;
+		Params.bLooping = UseRumbleLoop;
+		Params.bPlayWhilePaused = false;
+		if (Controller) Controller->ClientPlayForceFeedback(Rumble, Params);
 	}
 }
 
