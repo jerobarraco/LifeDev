@@ -168,8 +168,18 @@ public:
 	// SFX that will be played on trigger locked
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	TObjectPtr<USoundBase> SFXLocked = nullptr;
-	// TODO i could have a sfxUnlock but i don't really need it just now. otherwise take a look at doorI10
-	// unlock might also overlap trigger. since on my game unlocking happens with trigger
+	// SFX that will be played on unlock
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	TObjectPtr<USoundBase> SFXUnlock = nullptr;
+	// this is more for other people using the plugin than for me, as i don't use it.
+	// unlock might overlap trigger. since on my game unlocking happens with trigger
+
+	// rumble to play when locked
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	TObjectPtr<UForceFeedbackEffect> RumbleLocked = nullptr;
+	// rumble to play when unlocking
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
+	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
 #pragma endregion
 #pragma region Setup
 	// An interact id used for auto dialogs and such.
@@ -195,9 +205,8 @@ public:
 	bool IsOneShot = false;
 	// whether to use the attached SFX component or just spawn a "sound at location".
 	// A subclass changes this to allow for playing sounds when destroying.
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|State")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp|Base")
 	bool UseSFXAttached = true;
-
 
 #pragma region State
 	// Number of states. It will wrap State if UseStateLoop is set. Otherwise, it will clamp at StateNum-1.
@@ -225,12 +234,6 @@ public:
 	// rumble to play when trigger. Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
 	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
-	// rumble to play when locked
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TObjectPtr<UForceFeedbackEffect> RumbleLocked = nullptr;
-	// rumble to play when unlocking
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
 #pragma endregion
 #pragma endregion
 #pragma region Rewards

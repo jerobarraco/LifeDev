@@ -198,13 +198,17 @@ bool AInteract::ShouldUnlock_Implementation() {
 void AInteract::Unlock_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs Obj=%s"), __func__, *Label.ToString());
 	if (UNLIKELY(!IsLocked)) return; // avoid re-triggering stuff
+
 	IsLocked = false; // force unlock
-	bool UseRumble = false;
-	CVarUseRumble->GetValue(UseRumble);
-	if (UseRumble & bool(RumbleUnlock)) {
+
+	if (bool(RumbleUnlock)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->ClientPlayForceFeedback(RumbleUnlock);
 	}
+
+	// i use an if on this one to not stop other sounds if they are playing unnecessarily.
+	// as that feature is more for the state
+	if (SFXUnlock) PlaySFX(SFXUnlock);
 }
 
 bool AInteract::ShowHint_Implementation() {
