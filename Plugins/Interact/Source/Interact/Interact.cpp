@@ -181,7 +181,8 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	CVarUseRumble->GetValue(UseRumble);
 	if (UseRumble & GTZ & (Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		if (Controller) Controller->ClientPlayForceFeedback(Rumbles[State%Rumbles.Num()]);
+		const TObjectPtr<UForceFeedbackEffect> Rumble = Rumbles[State%Rumbles.Num()];
+		if (bool(Rumble) & bool(Controller)) Controller->ClientPlayForceFeedback(Rumble);
 	}
 }
 
