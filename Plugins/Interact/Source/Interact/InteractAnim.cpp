@@ -39,7 +39,9 @@ void AInteractAnim::SetStateNow_Implementation(const int32 NewState, const bool 
 
 void AInteractAnim::SetState_Implementation(const int32 NewState) { // called by dotrigger
 	// this is a bit ugly for my taste, but it's the best place for now.
-	// has to happen before SetState. since it will rumble. It also has to check for NewState
+	// has to happen before SetState. since it will rumble. It also has to check for NewState.
+	// i can't do it before because the user can change the duration at any moment.
+	// though after testing i don't notice any difference. it might be because i'm using embedded curves instead of curve assets.
 	if (UseAnim & LIKELY((NewState >=0)) & (NewState<Rumbles.Num()))
 		Rumbles[NewState]->Duration = Anim->Duration;
 
