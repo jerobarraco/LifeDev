@@ -36,11 +36,14 @@ ABasin00::ABasin00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase> // mizu no oto
 		CWaterSnd(TEXT("/Game/LifeDev/Game/Inters/Bath/HandBasin/0008_Water_small_drainpipe_close_to_opening.0008_Water_small_drainpipe_close_to_opening"));
 	SFXs = {CWaterSnd.Object, nullptr};
-	
+
+	// TODO remove the significance. since the niagara effect type uses the significance system and does
+	// some of this stuff
 	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
 	Sig->IsOffIfOffscreen = true;
 	Sig->IsOffIfOccluded = true;
+	Sig->CompsHide.AddUnique(Emitter);
 
 	Super::SetMobility(EComponentMobility::Static);// static since we won't animate it
 }
