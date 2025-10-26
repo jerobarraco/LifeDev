@@ -161,6 +161,11 @@ r.Water.SingleLayer.VSMFiltering=0
 	[/Script/Engine.TriggerVolume]
 	DefaultUpdateOverlapsMethodDuringLevelStreaming=AlwaysUpdate
 
+# niagara
+
+https://m.youtube.com/watch?v=c2MH20OPSw0 17:34
+on niagara system activate culling. set the "effect type" on the system.
+
 # gc
 [ConsoleVariables]
 ; optimize gc. requires usage of tobjectptr https://youtu.be/d2LWbjSjsv8?t=765
