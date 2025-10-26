@@ -39,25 +39,25 @@ ABasin00::ABasin00():Super() {
 
 	// TODO remove the significance. since the niagara effect type uses the significance system and does
 	// some of this stuff
-	Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
+	// Sig = CreateDefaultSubobject<UCSignificance>(TEXT("Sig"));
 	// Sig->CompsActivate.AddUnique(Water); // don't do this. it will happily crash every time
-	Sig->IsOffIfOffscreen = true;
-	Sig->IsOffIfOccluded = true;
-	Sig->CompsHide.AddUnique(Emitter);
+	// Sig->IsOffIfOffscreen = true;
+	// Sig->IsOffIfOccluded = true;
+	// Sig->CompsHide.AddUnique(Emitter);
 
 	Super::SetMobility(EComponentMobility::Static);// static since we won't animate it
 }
 
-void ABasin00::BeginPlay() {
-	Super::BeginPlay();
+// void ABasin00::BeginPlay() {
+	// Super::BeginPlay();
 	// don't do this. it will disable the interact and never come back
 	// Sig->CompsHide.AddUnique(GetRootComponent());
 	// Disable water when not looking at it
-	Sig->CompsHide.AddUnique(Emitter);
-}
+	// Sig->CompsHide.AddUnique(Emitter);
+// }
 
-void ABasin00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	Sig->Deactivate();
-	Super::EndPlay(EndPlayReason);
-}
+// void ABasin00::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	// Sig->Deactivate();
+	// Super::EndPlay(EndPlayReason);
+// }
 
