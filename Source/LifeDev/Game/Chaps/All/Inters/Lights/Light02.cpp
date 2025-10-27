@@ -6,6 +6,7 @@
 #include "Components/PointLightComponent.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 #include "LifeDev/Core/Sounds/CLSounder.h"
 
@@ -43,7 +44,6 @@ ALight02::ALight02():Super() {
 	Light->SourceLength = 1;
 	Light->SoftSourceRadius = 20;
 	Light->SetAffectTranslucentLighting(false); // small optimization. this lamp is not that important.
-
 	Light->Intensity = 250; // 500lm ~= 50w
 	// small trick to make the light seem larger than it is
 	// this trick kind of sucks when you have multiple lights like me, since you can see the difference in gradients,
@@ -58,6 +58,8 @@ ALight02::ALight02():Super() {
 	const FVector SndLoc(15,-20,145);
 	SFX->SetRelativeLocation(SndLoc);
 	SFX_Flicker->SetRelativeLocation(SndLoc);
+
+	Anim->Duration = 1; // relatively quick.
 
 	ALight02::SetMobility(EComponentMobility::Static);
 }
