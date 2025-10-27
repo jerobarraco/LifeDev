@@ -26,6 +26,8 @@ APuzzleI04::APuzzleI04():Super() {
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1873813367"),
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1875739368"),
 	});
+	SetAutoActives(true);
+	SetUseHints(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
@@ -40,8 +42,6 @@ void APuzzleI04::BeginPlay() {
 	
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
-	SetUseHints(true);
-	SetAutoActives(true);
 }
 
 void APuzzleI04::Done_Implementation(const bool Ok) {
@@ -75,7 +75,7 @@ void APuzzleI04::PostDone() {
 }
 
 void APuzzleI04::PostDoneSnd() {
-	if (UNLIKELY(!WasOk || !IsValid(Lid))) {
+	if (UNLIKELY(!WasOk | !IsValid(Lid))) {
 		UE_CLOG(!Lid, LogTemp, Warning, TEXT("APuzzleI04::%hs Lid is invalid. it can't be completed."), __func__);
 		// retry or skip animation
 		LidDone();
