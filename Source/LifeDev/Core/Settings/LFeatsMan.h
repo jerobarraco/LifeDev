@@ -82,9 +82,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<UDataLayerAsset> TestDL = TSoftObjectPtr<UDataLayerAsset> (
 		FSoftObjectPath("/Game/LifeDev/Game/Sys/DataLayers/Test.Test"));
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category = SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TSubclassOf<ULOverlayUI> OverlayUIClass = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<ULSettingsUI> SettingsUIClass = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionMenu = nullptr;
@@ -92,6 +92,8 @@ protected:
 	TObjectPtr<UInputMappingContext> Mapping = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 3;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
+	float ExposureFixed = 2;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
