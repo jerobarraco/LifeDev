@@ -43,6 +43,7 @@ ALight02::ALight02():Super() {
 	Light->SourceRadius = 1;
 	Light->SourceLength = 1;
 	Light->SoftSourceRadius = 20;
+	Light->SetAffectTranslucentLighting(false); // small optimization. this lamp is not that important.
 	
 	Interact->SetRelativeLocation(FVector(20,-20,90));
 	Interact->SetBoxExtent(FVector(20,20,90));

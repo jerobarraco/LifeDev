@@ -161,6 +161,10 @@ protected:
 	void DoIntersHint() const;
 	static void DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive);
 
+	UPROPERTY(BlueprintReadOnly)
+	TSoftObjectPtr<UForceFeedbackEffect> FFGhost = TSoftObjectPtr<UForceFeedbackEffect>(FSoftObjectPath(TEXT(
+		""))); // TODO
+
 #pragma region cdo
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCRandomizerFB> RandFB = nullptr;
