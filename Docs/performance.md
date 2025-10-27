@@ -64,8 +64,12 @@ automanage
 * 'freezerendering' to test culling
 
 # light
+* use spotlights instead of pointlights as they are faster
+* be intentional about casting shadows and dynamic lights, disable by default
+
 ## light culling
-* automatic : minScreenRadiusForLight 0.03
+* automatic : r.MinScreenRadiusForLights 0.03 
+* * maybe r.Shadow.RadiusThreshold
 * maxDrawDistance MaxDistanceFadeRange
 * if not using static lights, go to preferences and disable "allow static lights". it avoids issues.
 r.AllowStaticLighting=False
