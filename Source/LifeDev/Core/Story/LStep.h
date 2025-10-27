@@ -163,7 +163,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	TSoftObjectPtr<UForceFeedbackEffect> FFGhost = TSoftObjectPtr<UForceFeedbackEffect>(FSoftObjectPath(TEXT(
-		""))); // TODO
+		"/Game/LifeDev/Game/Env/HeartBeat_FF"))); // TODO
 
 #pragma region cdo
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
