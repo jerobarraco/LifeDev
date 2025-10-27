@@ -10,7 +10,7 @@ automanage
 	on audio and niagara components
 	* add Activate/Deactivate on animator
 
-mesh:
+# mesh
 	set to static or stationary if possible
 	disable cast shadows if possible
 	enable 'use attach parent bounds' if possible 
@@ -30,7 +30,7 @@ mesh:
 # lumen
 	AmbientOcclusionStaticFraction set to false for lumen. can be changed on the post process.
 
-material
+# material
 	Quality switch node
 	vertex interpolator
 	mask + dither if possible
@@ -57,11 +57,11 @@ material
 * on world settings remove world partition
 
 
-culling
+# culling
 * use distance cull volumes
 * showflag.distanceculledprimitives 1
 * stat initviews
-* freezerendering to test culling
+* 'freezerendering' to test culling
 
 # light
 ## light culling
@@ -166,6 +166,9 @@ r.Water.SingleLayer.VSMFiltering=0
 https://m.youtube.com/watch?v=c2MH20OPSw0 17:34
 on niagara system activate culling. set the "effect type" on the system.
 
+# nanite
+* r.nanite.maxpixelsperedge
+
 # gc
 [ConsoleVariables]
 ; optimize gc. requires usage of tobjectptr https://youtu.be/d2LWbjSjsv8?t=765
@@ -210,6 +213,7 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 * nanitestats
 * stat none
 * stat unitgraph, unit, fps,
+* stat initviews for culling
 
 # package size
 https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-Builds-7993544e050041f9800512acd3500cfc
