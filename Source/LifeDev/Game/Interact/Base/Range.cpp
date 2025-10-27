@@ -7,9 +7,7 @@
 
 #include "Interact/Animator/Anim.h"
 #include "Interact/Animator/CAnimatorMix.h"
-
 #include "JUtils/Actors/CQuickMesh.h"
-
 
 #include "LifeDev/Game/Interact/LInteract.h"
 // this requires to create an object channel "Range"
@@ -46,7 +44,7 @@ ARange::ARange():Super() {
 		Mesh->SetStaticMesh(ObjMesh.Object);
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		ObjMat(TEXT("/Game/LifeDev/Game/Inters/Cards/Card00Outline_MI.Card00Outline_MI"));
+		ObjMat(TEXT("/Game/LifeDev/Game/Inters/Cards/Card00Outline_MI"));
 	if (LIKELY(ObjMat.Succeeded()))
 		Mesh->SetMaterial(0, ObjMat.Object);
 
