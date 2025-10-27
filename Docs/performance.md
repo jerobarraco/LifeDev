@@ -68,8 +68,8 @@ automanage
 * be intentional about casting shadows and dynamic lights, disable by default
 
 ## light culling
-* automatic : r.MinScreenRadiusForLights 0.03 
-* * maybe r.Shadow.RadiusThreshold
+* automatic : r.MinScreenRadiusForLights 0.03 (disables the LIGHT at that radius)
+* * maybe r.Shadow.RadiusThreshold should disable the shadow at that radius, but it's not working
 * maxDrawDistance MaxDistanceFadeRange
 * if not using static lights, go to preferences and disable "allow static lights". it avoids issues.
 r.AllowStaticLighting=False
