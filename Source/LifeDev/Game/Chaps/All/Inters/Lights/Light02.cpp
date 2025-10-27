@@ -38,12 +38,19 @@ ALight02::ALight02():Super() {
 	Cover->bCastDistanceFieldIndirectShadow = false;
 
 	Light->SetRelativeLocation(FVector(20,-20,160));
-	Light->Intensity = 7;
 	Light->AttenuationRadius = 250;
 	Light->SourceRadius = 1;
 	Light->SourceLength = 1;
 	Light->SoftSourceRadius = 20;
 	Light->SetAffectTranslucentLighting(false); // small optimization. this lamp is not that important.
+
+	Light->Intensity = 250; // 500lm ~= 50w
+	// small trick to make the light seem larger than it is
+	// this trick kind of sucks when you have multiple lights like me, since you can see the difference in gradients,
+	// making it look really odd.
+	// Light->SetUseInverseSquaredFalloff(false); // changes the unit
+	// Light->SetLightFalloffExponent(2);
+	// Light->InverseExposureBlend = .25;
 	
 	Interact->SetRelativeLocation(FVector(20,-20,90));
 	Interact->SetBoxExtent(FVector(20,20,90));

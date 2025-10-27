@@ -29,8 +29,7 @@ ALLight01::ALLight01() {
 	RectLight->SetRelativeLocation(FVector(2.500000,-2.500000,-0.200000));
 	RectLight->SetRelativeRotation(FRotator(-90,-90,0));
 	RectLight->SetIntensityUnits(ELightUnits::Lumens);
-	IntensityMax = 20;
-	RectLight->SetIntensity(IntensityMax);
+	RectLight->SetIntensity(500);
 	RectLight->SetAttenuationRadius(500);
 	RectLight->SetSourceWidth(75);
 	RectLight->SetSourceHeight(5);

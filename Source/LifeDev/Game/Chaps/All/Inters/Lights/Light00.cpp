@@ -38,6 +38,7 @@ ALight00::ALight00() {
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.000000);
 	RectLight->SetBarnDoorLength(7);
+	RectLight->SetIntensity(700);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/Fluorescent"));
