@@ -31,6 +31,11 @@ ALLight00::ALLight00() {
 	// careful that the A_STROBE will disable later maybe
 }
 
+void ALLight00::BeginPlay() {
+	Super::BeginPlay();
+	IntensityMax = Light->Intensity;
+}
+
 void ALLight00::AnimUpdate_Implementation(const float Progress, const float Alpha) {
 	Super::AnimUpdate_Implementation(Progress, Alpha);
 	Light->SetIntensity(IntensityMax*Alpha);

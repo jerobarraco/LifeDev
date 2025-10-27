@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
 #include "LLight.generated.h"
@@ -10,6 +9,10 @@
 class UCLSounder;
 class UCLSignificance;
 class UCRandomizer;
+
+// note light calculations
+// https://www.any-lamp.ie/lumen-to-watt/50-watt-in-lumens
+// https://www.rapidtables.com/calc/light/watt-to-lumen-calculator.html
 
 // Base class for light actors. doesn't include the light itself. see LLight00
 // notice that it expects to use the Anim for animations.
@@ -57,8 +60,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category=SetUp)
 	float FlickrOnFB = -1;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float IntensityMax = 12;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCRandomizer> Rnd = nullptr;
@@ -69,4 +70,8 @@ protected:
 	// the sound needs to be assigned. and a float param will be set for "Duration"
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCLSounder> SFX_Flicker = nullptr;
+
+protected:
+	// used as a cache for the anim. it's read on begin play
+	float IntensityMax = 12;
 };

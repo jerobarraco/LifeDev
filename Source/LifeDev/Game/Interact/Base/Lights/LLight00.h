@@ -17,6 +17,7 @@ public:
 	ALLight00();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void SetMobility(const EComponentMobility::Type Mobility) override;
 	virtual void AnimUpdate_Implementation(const float Progress, const float Alpha) override;
 
