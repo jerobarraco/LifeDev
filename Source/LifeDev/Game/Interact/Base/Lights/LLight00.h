@@ -8,7 +8,7 @@
 class UPointLightComponent;
 class URectLightComponent;
 
-// Base class for point light actors
+// Base class for point light actors with a point light
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ALLight00: public ALLight {
 	GENERATED_BODY()

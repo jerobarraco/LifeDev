@@ -6,6 +6,7 @@
 #include "Components/PointLightComponent.h"
 
 #include "Interact/CInteract.h"
+#include "Interact/Animator/CAnimatorMix.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
 ALight01::ALight01():Super() {
@@ -17,6 +18,7 @@ ALight01::ALight01():Super() {
 
 	Light->SetRelativeLocation(FVector(27.500000,-27.5,50));
 	Light->AttenuationRadius = 500;
+	Light->SetIntensity(700);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CTube (TEXT("/Game/LifeDev/Game/Inters/Lights/Light00/Light00-GlassB"));
@@ -32,6 +34,7 @@ ALight01::ALight01():Super() {
 	Interact->SetRelativeLocation(FVector(27.5,-27.5,15));
 	Interact->SetBoxExtent(FVector(28,28.5,15.5));
 
+	Anim->Duration = .25; // it's a bulb.
 	ALight01::SetMobility(EComponentMobility::Static);
 }
 

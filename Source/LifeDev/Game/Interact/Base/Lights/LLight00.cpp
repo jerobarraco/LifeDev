@@ -19,8 +19,7 @@ ALLight00::ALLight00() {
 	Light->SetupAttachment(Mesh);
 	Light->SetRelativeLocation(FVector(27.5,-27.5,9));
 	Light->SetIntensityUnits(ELightUnits::Lumens);
-
-	Light->SetIntensity(IntensityMax);
+	Light->SetIntensity(700); // a 75w approx
 	Light->SetAttenuationRadius(500);
 	Light->SetSourceRadius(5);
 	Light->SetSoftSourceRadius(7);
