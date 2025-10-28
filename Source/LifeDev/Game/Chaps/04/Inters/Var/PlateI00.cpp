@@ -17,9 +17,9 @@ APlateI00::APlateI00():Super() {
 	Interact->SetRelativeLocation(FVector(2.500000,-2.500000,10));
 	Interact->SetBoxExtent(FVector(20,20,10));
 
-	// force reloading the material, since the base Plate removes it for the palettes.
-	// but this mesh doesn't use palettes, and i don't want to set the material to voxel fade (in case i use it statically)
-	// i can't change the base Plate since it's used for other plates that need to fade and use palettes.
+	// force reloading the material, since the base Plate class removes it, so that it can be used with palettes.
+	// i can't change the base Plate, since it's used for other plates that need to fade and use palettes.
+	// but this mesh doesn't use palettes, and i don't want to set the material on the mesh itself to voxel fade (in case i use it statically)
 	// remember kids, each exception/special case will multiply the amount of work.
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
