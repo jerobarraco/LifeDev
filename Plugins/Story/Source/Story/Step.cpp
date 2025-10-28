@@ -123,11 +123,11 @@ void AStep::Start_Implementation() {
 	SetActorsHiddenAny(ActorsShow, false);
 	if (Rumble) {
 		const UWorld* const World = GetWorld();
-		APlayerController* const Controller = World ? World->GetFirstPlayerController() : nullptr;
+		APlayerController* const Controller = LIKELY(World) ? World->GetFirstPlayerController() : nullptr;
 		FForceFeedbackParameters Params;
 		Params.bLooping = UseRumbleLoop;
 		Params.bPlayWhilePaused = false;
-		if (Controller) Controller->ClientPlayForceFeedback(Rumble, Params);
+		if (LIKELY(Controller)) Controller->ClientPlayForceFeedback(Rumble, Params);
 	}
 }
 
@@ -139,8 +139,8 @@ void AStep::Stop_Implementation() {
 
 	if (Rumble) {
 		const UWorld* const World = GetWorld();
-		APlayerController* const Controller = World ? World->GetFirstPlayerController() : nullptr;
-		if (Controller) Controller->ClientStopForceFeedback(Rumble, "");
+		APlayerController* const Controller = LIKELY(World) ? World->GetFirstPlayerController() : nullptr;
+		if (LIKELY(Controller)) Controller->ClientStopForceFeedback(Rumble, "");
 	}
 
 	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
