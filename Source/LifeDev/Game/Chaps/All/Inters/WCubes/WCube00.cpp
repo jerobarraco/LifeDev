@@ -12,14 +12,14 @@ AWCube00::AWCube00():Super() {
 	UseRewardDestroy = false;
 	DisableWhileAnim = false; // To be used with the combination puzzle.
 	UseAutoActivate = true; // a bit lazy, but unlikely i'll have word cubes that aren't active
+	UseFade = true; // a bit more costly, but most of the time, these cubes fade.
 	UseAnim = true;
 	UseAnimFBFPS = true;
-	UseFade = true; // a bit more costly, but most of the time, these cubes fade.
 	AnimFade->MatBase = nullptr; // the cubes use palettes.
-	StateNum = 6;
-	Texts = { NSLOCTEXT("WCube00", "State0", "A cube with letters") } ;
 	Anim->IsAdditive = false;
 	Anim->Duration = 1;
+	StateNum = 6;
+	Texts = { NSLOCTEXT("WCube00", "State0", "A cube with letters") } ;
 	// all the faces. order is important to match the letters' order
 	Trans = {
 		FTransform::Identity,

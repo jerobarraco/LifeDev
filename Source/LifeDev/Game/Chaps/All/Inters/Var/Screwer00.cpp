@@ -8,9 +8,9 @@
 AScrewer00::AScrewer00():Super() {
 	Texts = { NSLOCTEXT("Screwer00", "State0", "Screw-driver") };
 	RewardFlash = 0;
-	UseAnim = false;
 	StateNum = 1;
 	UseFade = false;
+	UseAnim = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Utils/Screwer_SP"));
