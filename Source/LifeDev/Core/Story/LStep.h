@@ -162,8 +162,8 @@ protected:
 	static void DoIntersActiveAny(const TArray<TSoftObjectPtr<AInteract>>& A, const bool NewActive);
 
 	UPROPERTY(BlueprintReadOnly)
-	TSoftObjectPtr<UForceFeedbackEffect> FFGhost = TSoftObjectPtr<UForceFeedbackEffect>(FSoftObjectPath(TEXT(
-		"/Game/LifeDev/Game/Env/HeartBeat_FF"))); // TODO
+	TSoftObjectPtr<UForceFeedbackEffect> GhostFF = TSoftObjectPtr<UForceFeedbackEffect>(FSoftObjectPath(TEXT(
+		"/Game/LifeDev/Game/Env/HeartBeat_FF.HeartBeat_FF")));
 
 #pragma region cdo
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)

@@ -64,11 +64,11 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(IsValid(RandFB))) RandFB->Deactivate();
 	if (LIKELY(IsValid(Flags))) Flags->OnMod.RemoveAll(this);
 	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
-
 	DoRemoveItems();
 
 	const UWorld* const W = GetWorld();
 	if (UseRain) ALMusicMan::SetRainS(W, false);
+
 	if (LIKELY(W)) { // call stop anyway (below)
 		FTimerManager& Timer = W->GetTimerManager();
 		// ensure we don't double trigger.
@@ -265,6 +265,7 @@ void ALStep::FBUpd_Implementation(const float Value) {
 	// i will go with something simple for now.
 	// set the value to match the fb. let the anim do transform blending.
 	Anim->Update(NV);
+	// todo update heartbeat force feedback
 }
 
 void ALStep::CheckFinish() {
@@ -318,6 +319,17 @@ void ALStep::BeginPlay() {
 	Inventory = World->GetSubsystem<UInventory>();
 	FB = World->GetSubsystem<UFlashback>();
 	Flags = World->GetSubsystem<UFlags>();
+	if (UseGhosts) {
+		FLoadSoftObjectPathAsyncDelegate D;
+		// i could use TryStart for this instead. which could be a bit more optimal.
+		// but if the step doesn't have a fade, then it will block the render
+		D.BindLambda([this](const FSoftObjectPath&, UObject* O) {
+			UE_LOG(LogTemp, Log, TEXT("ALStep::BeginPlay %hs GhostFF=%p O=%p"), __func__, GhostFF.LoadSynchronous(), O);
+			Rumble = Cast<UForceFeedbackEffect>(O);
+			UseRumbleLoop = true;
+		});
+		GhostFF.LoadAsync(D); // preload
+	}
 }
 
 void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
