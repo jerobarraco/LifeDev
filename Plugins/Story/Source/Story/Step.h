@@ -150,7 +150,7 @@ protected:
 	// be sure not to do anything that would finish the step here, use Start for that (and even then use a timer for next tick).
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(AdvancedDisplay, ForceAsFunction))
 	void TryStart();
-	
+
 	// don't call this one directly. called by the system.
 	// Override to perform whatever the step needs to do at the end.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction))

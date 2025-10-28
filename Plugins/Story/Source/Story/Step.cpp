@@ -8,7 +8,6 @@
 #include "Camera/CameraComponent.h"
 
 #include "Story.h"
-#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogStoryStep, Log, Log);
 
@@ -123,7 +122,8 @@ void AStep::Start_Implementation() {
 
 	SetActorsHiddenAny(ActorsShow, false);
 	if (Rumble) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		const UWorld* const World = GetWorld();
+		APlayerController* const Controller = World ? World->GetFirstPlayerController() : nullptr;
 		FForceFeedbackParameters Params;
 		Params.bLooping = UseRumbleLoop;
 		Params.bPlayWhilePaused = false;
@@ -138,7 +138,8 @@ void AStep::Stop_Implementation() {
 	if (UseCamShake) CamShakeStop();
 
 	if (Rumble) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		const UWorld* const World = GetWorld();
+		APlayerController* const Controller = World ? World->GetFirstPlayerController() : nullptr;
 		if (Controller) Controller->ClientStopForceFeedback(Rumble, "");
 	}
 
