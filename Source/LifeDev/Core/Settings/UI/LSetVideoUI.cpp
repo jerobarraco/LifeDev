@@ -25,6 +25,9 @@ void ULSetVideoUI::Apply_Implementation() {
 	RHIApply();
 
 	if (LIKELY(AntiAlias)) AntiAlias->Apply();
+	
+	if (LIKELY(Settings))
+		Settings->ApplySettings(false);
 }
 
 void ULSetVideoUI::Load_Implementation() {
