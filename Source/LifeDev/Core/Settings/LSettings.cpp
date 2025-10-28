@@ -15,7 +15,6 @@
 DEFINE_LOG_CATEGORY_STATIC(LogLSettings, Log, Log);
 
 static const FString SaveSlot("LifeDev_");
-static constexpr uint8 DEMO_CHAP_MAX = 2;
 
 ULSettings* ULSettings::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
