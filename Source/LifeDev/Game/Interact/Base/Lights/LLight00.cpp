@@ -10,6 +10,7 @@
 ALLight00::ALLight00() {
 	UseAutoActivate = false;
 	/// anim
+	UseAnim = true; // careful that the A_STROBE will disable later maybe
 	// enable the animation so that we get the update. but don't actually animate any material
 	Anim->Mat = nullptr;
 	Anim->SetComponentTickInterval(1.0/30); // optim. it's used for light and audio, can be lower. might help not invalidate vsm, even though my tests indicate that it doesn't.
@@ -27,8 +28,6 @@ ALLight00::ALLight00() {
 	Light->SetTemperature(3333);
 	
 	ALLight00::SetMobility(EComponentMobility::Static);
-	UseAnim = true; // important to do after setmobility since it will turn it off.
-	// careful that the A_STROBE will disable later maybe
 }
 
 void ALLight00::BeginPlay() {
