@@ -23,6 +23,7 @@ ALLight01::ALLight01() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve (TEXT("/Game/LifeDev/Game/Inters/Lights/Fluorescent/C_Fluorescent.C_Fluorescent"));
 	if (LIKELY(CCurve.Succeeded())) Anim->Curve = CCurve.Object;
+	Anim->SetComponentTickInterval(1.0/30); // optim. it's used for light and audio, can be lower. might help not invalidate vsm, even though my tests indicate that it doesn't.
 
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("Light"));
 	RectLight->SetupAttachment(Mesh);

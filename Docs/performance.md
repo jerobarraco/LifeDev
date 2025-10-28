@@ -55,6 +55,15 @@ automanage
 
 * enable on settings 'allow static bakedlighting'
 * on world settings remove world partition
+* reducing the DirectionalLOD and reduce vt sizes https://drive.google.com/file/d/18uiEkezcrznO6XK1IdEVUg9UzP8ZJh2L/view
+
+## vsm
+* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine
+* * try to use stationary instead of movable
+* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine#managing-cache-invalidations
+* Use the following console variables in succession to enable stats:
+  r.ShaderPrintEnable 1
+  r.Shadow.Virtual.ShowStats 1 (or 2 to show only the page statistics)
 
 
 # culling

@@ -12,6 +12,7 @@ ALLight00::ALLight00() {
 	/// anim
 	// enable the animation so that we get the update. but don't actually animate any material
 	Anim->Mat = nullptr;
+	Anim->SetComponentTickInterval(1.0/30); // optim. it's used for light and audio, can be lower. might help not invalidate vsm, even though my tests indicate that it doesn't.
 	// Anim->MatVEnd = FLinearColor(1, 1, 1, 1);
 	// Anim->MatVName = "Emissive";
 
