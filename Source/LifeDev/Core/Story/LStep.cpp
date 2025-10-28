@@ -79,6 +79,10 @@ void ALStep::Stop_Implementation() {
 		// Destroy them during the fade
 		TimerDestroy.Invalidate();
 		Timer.SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
+
+		APlayerController* const Controller = W->GetFirstPlayerController();
+		// restore possible rumble stuff. do it regardless of useGhosts and useRumble to ensure proper cleanup. 
+		if (LIKELY(Controller)) Controller->ForceFeedbackScale = 1;
 	}
 
 	Super::Stop_Implementation(); // do at end.
@@ -265,7 +269,12 @@ void ALStep::FBUpd_Implementation(const float Value) {
 	// i will go with something simple for now.
 	// set the value to match the fb. let the anim do transform blending.
 	Anim->Update(NV);
-	// todo update heartbeat force feedback
+	if (Rumble) {
+		const UWorld* const W = GetWorld();
+		APlayerController* const Controller = LIKELY(W) ? W->GetFirstPlayerController(): nullptr;
+		// kinda ugly since i'm applying it globally. but since this is my game, i know that there won't be player interactions during ghost sequences.
+		if (LIKELY(Controller)) Controller->ForceFeedbackScale = Value;
+	}
 }
 
 void ALStep::CheckFinish() {
