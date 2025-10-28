@@ -12,4 +12,5 @@ class LIFEDEV_API AFridgeI00: public AFridge {
 
 public:
 	AFridgeI00();
+	virtual void DoTrigger_Implementation() override;
 };
