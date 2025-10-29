@@ -31,9 +31,11 @@ APuzzleI01::APuzzleI01():Super() {
 void APuzzleI01::BeginPlay() {
 	Super::BeginPlay();
 
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
 	// 2nd number and last are just random variations
 	static const TArray<int32> States = { 0, 4, 0, 4, 2 };
-	SetStates(States);
+	SetStatesNow(States); // no sounds or parts
 	static const TArray<bool> Locks = { true, false, true, true, false };
 	SetLocks(Locks);
 	SetHiddensInGame(true);

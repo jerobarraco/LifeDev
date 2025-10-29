@@ -25,8 +25,10 @@ APuzzleI02::APuzzleI02():Super() {
 void APuzzleI02::BeginPlay() {
 	Super::BeginPlay();
 
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
 	static const TArray<int32> States = {0, 2, 5};
-	SetStates(States);
+	SetStatesNow(States);
 	static const TArray<bool> Locks = {true, false, false};
 	SetLocks(Locks);
 	// if the player has reached here without doing the puzzle, hint.

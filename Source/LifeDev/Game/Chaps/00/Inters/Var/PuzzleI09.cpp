@@ -35,7 +35,10 @@ void APuzzleI09::BeginPlay() {
 	if (UNLIKELY(!Story)) return;
 	Story->OnStart.AddUniqueDynamic(this, &APuzzleI09::StartStep);
 	
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
 	SetActives(false);
+	SetAutoActives(false);
 	StartStep(Story->GetStep(Story->GetCurrent())); // necessary. the step is already started on beginplay. since the step loads the dl, and this is on a dl.
 }
 

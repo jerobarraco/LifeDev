@@ -40,12 +40,15 @@ APuzzleI06::APuzzleI06():Super() {
 void APuzzleI06::BeginPlay() {
 	Super::BeginPlay();
 
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
 	static const TArray<int32> States = {1, 2, 0};
-	SetStates(States);
+	SetStatesNow(States);
 
 	const TArray<bool> Locks = {false, false, false};
 	SetLocks(Locks);
 	SetAutoActives(true);
+	SetActives(true);
 	// SetUseHints(true);
 
 	if (LIKELY(Flags)) {

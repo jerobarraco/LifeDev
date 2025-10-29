@@ -26,8 +26,6 @@ APuzzleI04::APuzzleI04():Super() {
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1873813367"),
 		SoftOP(AInteract, "/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.PianoKey01_UAID_D8BBC116E5014FD901_1875739368"),
 	});
-	SetAutoActives(true);
-	SetUseHints(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSWrong (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Group_Bad.Group_Bad"));
@@ -40,8 +38,15 @@ APuzzleI04::APuzzleI04():Super() {
 void APuzzleI04::BeginPlay() {
 	Super::BeginPlay();
 	
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
+	// remember to use setState*NOW* if i want to change the state here. (which i won't because the pieces only have one state)
 	static const TArray<bool> Locks = {false, false, false, false};
 	SetLocks(Locks);
+	// todo make piano keys auto active in the constructor
+	SetAutoActives(true); // not sure that the autoactivate works here the pieces might already have gone through the constructor
+	SetActives(true);
+	SetUseHints(true);
 }
 
 void APuzzleI04::Done_Implementation(const bool Ok) {

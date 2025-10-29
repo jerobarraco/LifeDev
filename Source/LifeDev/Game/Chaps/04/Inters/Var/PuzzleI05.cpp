@@ -25,8 +25,10 @@ APuzzleI05::APuzzleI05():Super() {
 void APuzzleI05::BeginPlay() {
 	Super::BeginPlay();
 
+	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
+	
 	static const TArray<int32> States = {3, 2, 5, 4, 3, 3}; // {0, 2, 2, 4, 3, 1}
-	SetStates(States);
+	SetStatesNow(States);
 
 	static const TArray<bool> Locks = {false, true, false, true, true, false};
 	SetLocks(Locks);
