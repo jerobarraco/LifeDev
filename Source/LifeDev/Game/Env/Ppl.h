@@ -5,12 +5,15 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "People.generated.h"
+#include "Ppl.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API APeople : public ALInteract {
+class LIFEDEV_API APpl : public ALInteract {
 	GENERATED_BODY()
 
 public:
-	APeople();
+	APpl();
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCQuickMesh> Head = nullptr;
 };
