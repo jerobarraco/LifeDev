@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "Toy.generated.h"
+#include "Toy00.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API AToy : public ALInteract {
+class LIFEDEV_API AToy00 : public ALInteract {
 	GENERATED_BODY()
 };
