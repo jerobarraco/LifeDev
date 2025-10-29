@@ -10,4 +10,6 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AToy00 : public ALInteract {
 	GENERATED_BODY()
+public:
+	AToy00();
 };

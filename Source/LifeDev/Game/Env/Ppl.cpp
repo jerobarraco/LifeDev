@@ -8,7 +8,7 @@
 
 APpl::APpl():Super() {
 	Texts = {
-		NSLOCTEXT("Ppl", "State0", "..."), // closed
+		NSLOCTEXT("Ppl", "State0", "..."), // closed // TODO
 	};
 	RewardFlash = 0;
 	UseRewardDestroy = false;
