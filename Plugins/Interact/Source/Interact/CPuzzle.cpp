@@ -275,6 +275,7 @@ void UCPuzzle::SetActives(const bool NewActive) const {
 
 	for (const TSoftObjectPtr<AInteract>& I: Pieces) {
 		if (UNLIKELY(!I.IsValid())) continue;
+		
 		I->SetActive(NewActive);
 	}
 }

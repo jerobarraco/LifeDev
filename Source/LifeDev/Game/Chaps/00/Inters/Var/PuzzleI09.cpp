@@ -37,8 +37,8 @@ void APuzzleI09::BeginPlay() {
 	
 	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
 	
-	SetActives(false);
 	SetAutoActives(false);
+	SetActives(false);
 	StartStep(Story->GetStep(Story->GetCurrent())); // necessary. the step is already started on beginplay. since the step loads the dl, and this is on a dl.
 }
 
