@@ -27,13 +27,17 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 		BtnStart->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
 		BtnStart->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoStart);
 	}
-	
+
+	if (LIKELY(BtnBack))
+		BtnBack->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoBack);
+
 	OnLoadDone.Broadcast(HasDoneSave);
 }
 
 // this is bound to IntroUI::Done, 0 means start
 void ULSaveGroup::DoStart(const int32 pId) { OnDone.Broadcast(0); }
 void ULSaveGroup::DoSettings(const int32 pId) { OnSettings.Broadcast(); }
+void ULSaveGroup::DoBack(const int32 pId) { OnBack.Broadcast(); }
 
 void ULSaveGroup::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -45,6 +49,7 @@ void ULSaveGroup::NativeDestruct() {
 	if (LIKELY(SLFoxy)) SLFoxy->OnValueChanged.RemoveAll(this);
 	if (LIKELY(BtnSettings)) BtnSettings->OnClick.RemoveAll(this);
 	if (LIKELY(BtnStart)) BtnStart->OnClick.RemoveAll(this);
+	if (LIKELY(BtnBack)) BtnBack->OnClick.RemoveAll(this);
 	Super::NativeDestruct();
 }
 

@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnLoadDone, const bool, HasDoneSa
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSGOnDone, const int32, Id);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnSettings);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnTryErase);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSGOnBack);
 
 // LD basic savefile group box
 UCLASS(Blueprintable, BlueprintType)
@@ -27,7 +28,6 @@ public:
 	void DoErase();
 	virtual void DoErase_Implementation(){} // TODO move here
 
-
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnLoadDone OnLoadDone;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
@@ -36,6 +36,8 @@ public:
 	FSGOnSettings OnSettings;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, BlueprintCallable, Transient)
 	FSGOnSettings OnTryErase;
+	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
+	FSGOnBack OnBack;
 
 protected:
 	virtual void NativeOnInitialized() override;
@@ -47,7 +49,9 @@ protected:
 	void DoStart(const int32 pId);
 	UFUNCTION()
 	void DoSettings(const int32 pId);
-	
+	UFUNCTION()
+	void DoBack(const int32 pId);
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<USlider> SLFoxy = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
@@ -58,6 +62,8 @@ protected:
 	TObjectPtr<UJButton> BtnStart = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnErase = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnBack = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool HasDoneSave = false;
