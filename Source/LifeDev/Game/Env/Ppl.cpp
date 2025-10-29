@@ -25,7 +25,7 @@ APpl::APpl():Super() {
 	Mesh->SetMaterial(0, CBodyMat.Object);
 	Mesh->SetRelativeLocation(FVector(40,-40,0));
 	
-	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Lid"));
+	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Head"));
 	Head->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CHeadMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Head"));
