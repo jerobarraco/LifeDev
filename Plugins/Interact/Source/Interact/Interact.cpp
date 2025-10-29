@@ -174,7 +174,11 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 	if ((Rumbles.Num()>0)) {
 		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
 		const TObjectPtr<UForceFeedbackEffect> Rumble = Rumbles[State%Rumbles.Num()];
-		if (bool(Rumble) & bool(Controller)) Controller->ClientPlayForceFeedback(Rumble);
+		if (bool(Rumble) & LIKELY(bool(Controller))) {
+			Controller->ClientPlayForceFeedback(Rumble);
+			UE_LOG(LogInteract, Log, TEXT("%hs Rumble=%s O=%s"), __func__,
+				*GetNameSafe(Rumble.Get()), *Label.ToString());
+		}
 	}
 }
 
