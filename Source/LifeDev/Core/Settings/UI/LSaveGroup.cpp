@@ -37,6 +37,8 @@ void ULSaveGroup::LoadDoneAll_Implementation() {
 // this is bound to IntroUI::Done, 0 means start
 void ULSaveGroup::DoStart(const int32 pId) { OnDone.Broadcast(0); }
 void ULSaveGroup::DoSettings(const int32 pId) { OnSettings.Broadcast(); }
+// i don't really need this, since there's nothing before the save group other than the warning.
+// but at some point i might have other things in the main menu, and a proper main menu.
 void ULSaveGroup::DoBack(const int32 pId) { OnBack.Broadcast(); }
 
 void ULSaveGroup::NativeOnInitialized() {
