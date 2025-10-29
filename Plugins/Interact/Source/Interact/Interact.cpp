@@ -155,6 +155,17 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 	}
 }
 
+void AInteract::PlayRumble(UForceFeedbackEffect* const Rumble) const {
+	UE_LOG(LogInteract, Log, TEXT("%hs Rumble=%s O=%s"), __func__,
+			*GetNameSafe(Rumble), *Label.ToString());
+
+	const UWorld* const World = GetWorld();
+	APlayerController* const Controller = LIKELY(World) ? World->GetFirstPlayerController() : nullptr;
+	if (!bool(Rumble) | ! UNLIKELY(bool(Controller))) return;
+
+	Controller->ClientPlayForceFeedback(Rumble);
+}
+
 void AInteract::SetState_Implementation(const int32 NewState) {
 	UE_LOG(LogInteract, Log, TEXT("%hs: NewState=%i Obj=%s"),
 		__func__, NewState, *Label.ToString());
@@ -172,13 +183,8 @@ void AInteract::SetState_Implementation(const int32 NewState) {
 		PlayParts(Particles[State%Particles.Num()]);
 
 	if ((Rumbles.Num()>0)) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
-		const TObjectPtr<UForceFeedbackEffect> Rumble = Rumbles[State%Rumbles.Num()];
-		if (bool(Rumble) & LIKELY(bool(Controller))) {
-			Controller->ClientPlayForceFeedback(Rumble);
-			UE_LOG(LogInteract, Log, TEXT("%hs Rumble=%s O=%s"), __func__,
-				*GetNameSafe(Rumble.Get()), *Label.ToString());
-		}
+		UForceFeedbackEffect* const Rumble = Rumbles[State%Rumbles.Num()];
+		PlayRumble(Rumble);
 	}
 }
 

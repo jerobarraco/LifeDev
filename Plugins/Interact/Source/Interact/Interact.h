@@ -332,8 +332,10 @@ protected:
 	void PlaySFX(USoundBase* const Snd) const;
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlayParts(UNiagaraSystem* const Part) const;
-	void InitLabel();
+	UFUNCTION(BlueprintCallable, Category=Interact)
+	void PlayRumble(UForceFeedbackEffect* Rumble) const;
 
+	void InitLabel();
 	FORCEINLINE void EditorLabelUpd(AActor* const Actor);
 
 	// The state (index) of the Interact.
