@@ -15,5 +15,5 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UCQuickMesh* Lid = nullptr;
+	TObjectPtr<UCQuickMesh> Lid = nullptr;
 };
