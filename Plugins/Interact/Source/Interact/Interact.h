@@ -333,7 +333,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlayParts(UNiagaraSystem* const Part) const;
 	UFUNCTION(BlueprintCallable, Category=Interact)
-	void PlayRumble(UForceFeedbackEffect* Rumble) const;
+	void PlayRumble(UForceFeedbackEffect* const Rumble) const;
 
 	void InitLabel();
 	FORCEINLINE void EditorLabelUpd(AActor* const Actor);
