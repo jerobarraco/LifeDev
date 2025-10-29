@@ -41,6 +41,10 @@ public:
 	FORCEINLINE void SetStates(const TArray<int32>& States) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStates(States); }
 	}
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	FORCEINLINE void SetStatesNow(const TArray<int32>& States) const {
+		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetStatesNow(States); }
+	}
 
 	// sets the states on each registered interact.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)

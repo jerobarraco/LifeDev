@@ -302,6 +302,19 @@ void UCPuzzle::SetStates(const TArray<int32>& States) {
 	ResetCurrents();
 }
 
+void UCPuzzle::SetStatesNow(const TArray<int32>& States) {
+	const int32 Num = States.Num();
+	const int32 Num2 = Pieces.Num();
+	for (int32 i = 0; i<Num && i<Num2; ++i) {
+		AInteract* const I = Pieces[i].Get();
+		if (UNLIKELY(!IsValid(I))) continue;
+		
+		I->SetStateNow(States[i]);
+	}
+
+	// reload the ids if needed. important.
+	ResetCurrents();
+}
 void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s"),
 		__func__, *GetNameSafe(GetOwner()));

@@ -61,11 +61,16 @@ public:
 	void SetAutoActives(const bool NewAutoActive) const;
 
 	// sets the states on each registered interact.
-	// Call on or after begin play.
+	// Call on or after begin play, not constructor.
 	// Note that this will reset the cpuzzle (and interacts) 
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void SetStates(const TArray<int32>& States);
-	
+	// sets the states on each registered interact. Skips playing particles sounds rumbles and others.
+	// To be used on initialization. Can be used on constructor.
+	// Note that this will reset the cpuzzle (and interacts) 
+	UFUNCTION(BlueprintCallable)
+	void SetStatesNow(const TArray<int32>& States);
+
 	// sets the states on each registered interact.
 	// Use on PostLoad (or BeginPlay) (if you've set the interacts on the editor's world outliner
 	// unless you've set the reference of the CPuzzle->Interacts on the constructor).

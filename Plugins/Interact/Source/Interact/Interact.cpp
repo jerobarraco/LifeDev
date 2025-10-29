@@ -143,6 +143,9 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 	State = NewState;
 	SetText();
 
+	// the stuff below makes it so that it plays sound and parts on begin play.
+	// no rumbles because rumbles are one off and makes no sense.
+
 	// notice state <0 is checked above
 	if ((UseSFX & UseSFXAttached & bool(SFX) & (State < SFXs.Num())) && SFXs[State]) {
 		SFX->SetSound(SFXs[State]);
