@@ -14,6 +14,7 @@ APpl::APpl():Super() {
 	UseRewardDestroy = false;
 	StateNum = 1;
 	UseAnim = false;
+	UseFade = true;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Body"));
@@ -33,6 +34,7 @@ APpl::APpl():Super() {
 	Head->SetMaterial(0, CBodyMat.Object);
 	Head->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.AddUnique(Head);
+	AnimFade->MatBase = nullptr; // the mesh uses a palette. force using the mesh's material.
 
 	Interact->SetRelativeLocation(FVector(-40,40,110));
 	Interact->SetBoxExtent(FVector(40,25,110));
