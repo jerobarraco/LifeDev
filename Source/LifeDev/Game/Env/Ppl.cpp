@@ -3,6 +3,7 @@
 #include "Ppl.h"
 
 #include "CQuickMesh.h"
+#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
 APpl::APpl():Super() {
@@ -21,20 +22,18 @@ APpl::APpl():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CBodyMat(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_MI"));
 	Mesh->SetMaterial(0, CBodyMat.Object);
-	// Mesh->SetRelativeLocation(FVector(0,0,0));
-	// TODO positions
+	Mesh->SetRelativeLocation(FVector(40,-40,0));
 	
 	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Lid"));
 	Head->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CHeadMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Pot01_Lid"));
+		CHeadMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Head"));
 	Head->SetStaticMesh(CHeadMesh.Object);
 	Head->SetCastAllShadows(true);
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CHeadMat(TEXT("/ame/LifeDev/Game/Env/Ppl/Ppl_MI"));
-	Head->SetMaterial(0, CHeadMat.Object);
-
-	Head->SetRelativeLocation(FVector(0.000000,-2.747865,0.895474));
-
+	Head->SetMaterial(0, CBodyMat.Object);
+	Head->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.AddUnique(Head);
+
+	Interact->SetRelativeLocation(FVector(-40,40,110));
+	Interact->SetBoxExtent(FVector(40,25,110));
 }
