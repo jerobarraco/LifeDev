@@ -97,9 +97,15 @@ bool UStory::Start(const FName Name) {
 	// and makes the code much more simpler. so i'll keep it this way.
 	if (!Step->UseFade)	return StartNow(Step);
 
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!IsValid(World))) return false;
+	if (UNLIKELY(IsLoading)) {
+		UE_LOG(LogStory, Warning, TEXT("%hs A step is currently being loaded. Skip."), __func__);
+		return false;
+	}
 
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!IsValid(World))) return false; // object being deleted? better not to write to "this".
+	
+	IsLoading = true;
 	// do the fade
 	OnFade.Broadcast(false, Step->Title);
 
@@ -155,6 +161,8 @@ bool UStory::Start(const FName Name) {
 					if (UseFadeShaderMode) 	UJUtilsMisc::SetShaderBatchMode(this, EShaderBatchMode::BACKGROUND);
 					// do fade out
 					OnFade.Broadcast(true, FText::GetEmpty());
+
+					IsLoading = false;
 				});
 			});
 		};

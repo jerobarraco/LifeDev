@@ -132,5 +132,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	int32 SeqStep = -1;
+
+	bool IsLoading = false;
 };
 
