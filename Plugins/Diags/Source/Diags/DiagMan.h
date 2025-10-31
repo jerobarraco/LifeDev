@@ -49,7 +49,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void AutoStart();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void AutoStop(); // todo rename to autostop
+	void AutoStop();
 
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)

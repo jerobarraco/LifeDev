@@ -41,7 +41,7 @@ ADiagMan* ADiagMan::Instance(const UObject* const O) {
 }
 
 void ADiagMan::Init_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("Init"));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 	if (UNLIKELY(!IsValid(Diags))) return;
 
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
@@ -50,7 +50,7 @@ void ADiagMan::Init_Implementation() {
 }
 
 void ADiagMan::DeInit_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DeInit"));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
@@ -106,7 +106,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 }
 
 void ADiagMan::DiagDone_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("DiagMan: UIDiagDone IsShowing=%i"), IsShowing);
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs IsShowing=%i"), __func__, IsShowing);
 	if (UNLIKELY(!IsShowing)) return;
 	if (UNLIKELY(!IsValid(UI))) return;
 
@@ -132,10 +132,11 @@ void ADiagMan::BeginPlay() {
 			Input->BindAction<ADiagMan>(
 				ActionBack, ETriggerEvent::Triggered, this, &ADiagMan::Back);
 		if (LIKELY(IsValid(ActionAuto))) {
+			// TODO this is not working. it's triggering stop right after start (ugh)
 			Input->BindAction<ADiagMan>(
 				ActionAuto, ETriggerEvent::Started, this, &ADiagMan::AutoStart);
 			Input->BindAction<ADiagMan>(
-				ActionAuto, ETriggerEvent::Triggered, this, &ADiagMan::AutoStop);
+				ActionAuto, ETriggerEvent::Completed, this, &ADiagMan::AutoStop);
 		}
 	}
 
@@ -163,24 +164,25 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ADiagMan::Hidden_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 	// clear before Done as it could trigger a new, call show, and maybe we clear something else.
 	// actually the subsystem has a protection for that, but it's better to be sure.
 	// this case is important when the auto timer runs on a loop
-	AutoStop();
+	// disabled. this is kinda not necessary and it's creating issues with the auto with a key.
+	// if (UseAutoForce) AutoStop(); 
 
 	if (LIKELY(IsValid(Diags))) Diags->DiagDone();
 }
 
 void ADiagMan::Skip_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("Skip"));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 	if(UNLIKELY(!IsValid(UI))) return;
 
 	UI->Skip();
 }
 
 void ADiagMan::Back_Implementation() {
-	UE_LOG(LogTextDialogs, Log, TEXT("Back"));
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 	if(UNLIKELY(!IsValid(UI))) return;
 
 	AutoStop(); // this is the actual important one, we want to pause skipping if you go back.
@@ -188,6 +190,7 @@ void ADiagMan::Back_Implementation() {
 }
 
 void ADiagMan::AutoStop_Implementation() {
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
@@ -200,6 +203,7 @@ void ADiagMan::AutoStart_Implementation() {
 	if (UNLIKELY(!W)) return;
 
 	AutoStop(); // for correctness.
+	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__); // here because stop logs
 	// will set loop if time <2, that's to account for the animation
 	W->GetTimerManager().SetTimer(AutoTimer, this, &ADiagMan::Skip, AutoTime, AutoTime < 2);
 }
