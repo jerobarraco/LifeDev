@@ -64,7 +64,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionSkip = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
-	TObjectPtr<UInputAction> ActionSkipAuto = nullptr;
+	TObjectPtr<UInputAction> ActionAuto = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionBack = nullptr;
 

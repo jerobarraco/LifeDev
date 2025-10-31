@@ -29,8 +29,8 @@ ADiagMan::ADiagMan():Super() {
 		CActionBack(TEXT("/Diags/Input/IA_Back"));
 	ActionBack = CActionBack.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction>
-		CActionAuto(TEXT("/Diags/Input/IA_Back"));
-	ActionSkipAuto = CActionAuto.Object;
+		CActionAuto(TEXT("/Diags/Input/IA_Auto"));
+	ActionAuto = CActionAuto.Object;
 	
 	UIClass = UDialogUI::StaticClass();
 }
