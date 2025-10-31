@@ -222,11 +222,12 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 
 ## stats
 * use `stat game` to see cpu usage. profile in standalone at least, better in develop. lower screen scale to detect cpu bounds. gpu times are always larger than cpu since it waits for cpu. https://forums.unrealengine.com/t/performance-issue-with-ue4-27-2/2666278/2?u=nande
-* r.nanite.showstats 1/0
+* r.nanite.showstats 1/0, r.shadow.virtual.showstats (etc?)
 * nanitestats
 * stat none
 * stat unitgraph, unit, fps,
 * stat initviews for culling
+* r.shaderPrint 1 and r.SHaderPrint.Zoom 1
 
 # package size
 https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-Builds-7993544e050041f9800512acd3500cfc
