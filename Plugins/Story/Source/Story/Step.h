@@ -46,7 +46,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base", AssetRegistrySearchable, meta=(MultiLine))
 	FString Comment;
 #endif
-
+#pragma region Cam
 	// Actor holding the camera to blend to. Or null to not use blend.
 	// By default, it's this own step. or you can set UsePawnCam to use the pawn's camera.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Cam")
@@ -66,6 +66,7 @@ public:
 	// class that defines the shake. depends on UseCamShake.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="SetUp|Cam")
 	TSubclassOf<UCameraShakeBase> CamShakeClass = nullptr;
+#pragma endregion
 
 	// >0 will set the seconds to wait since the TryStart of this step. will trigger Start (override it).
 	// This ONLY happens on Start. This affects the dialogs (the main usage). See UseFadeTime.
@@ -125,7 +126,7 @@ public:
 	TArray<TSoftObjectPtr<UDataLayerAsset>> DL_Unload;
 
 	// set to true to use debug
-	inline static bool Debug = false;
+	inline static bool Debug = false;// TODO use a cvar
 
 protected:
 	virtual void BeginPlay() override;

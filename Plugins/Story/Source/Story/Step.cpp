@@ -22,6 +22,7 @@ AStep::AStep():Super() {
 	Cam->SetupAttachment(Root);
 	Cam->SetComponentTickEnabled(false);
 	Cam->SetVisibility(false);
+	Cam->SetAutoActivate(false);
 
 #if WITH_EDITORONLY_DATA
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
@@ -144,6 +145,14 @@ void AStep::Stop_Implementation() {
 	}
 
 	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
+
+	if (CamTarget == this) {
+		Cam->SetActive(false);
+		Cam->SetComponentTickEnabled(false);
+		// this is challenging since the next step could have a blend, and i don't know the duration from here.
+		// todo make sure this doesn't cause issues.
+		// at this point i assume the new step starts and tweens
+	}
 }
 
 void AStep::Finish_Implementation() {
@@ -221,7 +230,10 @@ void AStep::CamBlend() {
 	if (UNLIKELY(!Controller)) return;
 
 	// enable cam tick only if it's the current target and only when the step starts
-	if ((Tgt == this) & LIKELY(IsValid(Cam))) Cam->SetComponentTickEnabled(true);
+	if ((Tgt == this) & LIKELY(IsValid(Cam))) {
+		Cam->SetActive(true);
+		Cam->SetComponentTickEnabled(true);
+	}
 
 	Controller->SetViewTargetWithBlend(Tgt, CamBlendTime, VTBlend_Cubic);
 
