@@ -20,6 +20,10 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// 600 is about the size of a room
 	NanitePixelProgrammableDistance = 600;
 	SetQuickCollisionEnabled(false);
+	// i personally don't really like how contact shadows behave and are set. so i'm disabling them by default.
+	// https://dev.epicgames.com/documentation/en-us/unreal-engine/contact-shadows-in-unreal-engine
+	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
+	bCastContactShadow = false;
 	SetCastAllShadows(false);
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/ 
 }
@@ -42,6 +46,7 @@ void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
 void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
+	// bCastContactShadow = Cast;
 	// by default this is false, i don't want to mess with it. so just don't.
 	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
