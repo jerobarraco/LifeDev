@@ -16,7 +16,8 @@ ACalendar::ACalendar():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar.Calendar"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-22.5,22.5,0));
-	
+	Mesh->SetCastAllShadows(true);
+
 	Interact->SetRelativeLocation(FVector(22.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(22.500000,22.500000,2.500000));
 	SFX->SetRelativeLocation(FVector(22.500000,-22.500000,2.500000));
