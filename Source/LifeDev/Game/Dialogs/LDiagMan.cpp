@@ -60,40 +60,13 @@ void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	// if (Diag.Type == EDiagType::SYSTEM) return; 
 	
 	if (LIKELY(Flags)) Flags->Mod(LDConsts::Flags::Stats::Diags::Shown, 1);
-
-	if (!UseAuto) return;
-
-	AutoClear(); // for correctness.
-	// will set loop if time <2, that's to account for the animation
-	W->GetTimerManager().SetTimer(AutoTimer, this, &ALDiagMan::Skip, AutoTime, AutoTime < 2);
-}
-
-void ALDiagMan::Hidden_Implementation() {
-	// clear before super as it could trigger a new, call show, and maybe we clear something else.
-	// actually the dialog subsystem has a protection for that, but it's better to be sure.
-	// this case it's important when the auto timer runs on a loop
-	AutoClear();
-	Super::Hidden_Implementation();
-}
-
-void ALDiagMan::Back_Implementation() {
-	Super::Back_Implementation();
-	AutoClear(); // this is the actual important one, we want to pause skipping if you go back.
-}
-
-void ALDiagMan::AutoClear() {
-	const UWorld* const W = GetWorld();
-	if (UNLIKELY(!W)) return;
-
-	W->GetTimerManager().ClearTimer(AutoTimer);
-	AutoTimer.Invalidate();
 }
 
 void ALDiagMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::D_SHOW) {
 		UseShow = Enabled; // skip dialogs if no feature for it
 	} else if (Feat == EFeat::D_AUTO) {
-		UseAuto = Enabled;
+		UseAutoForce = Enabled;
 	// } else if (Feat == EFeat::D_TEXT) { // this one is tested on the ui itself.
 	}
 }

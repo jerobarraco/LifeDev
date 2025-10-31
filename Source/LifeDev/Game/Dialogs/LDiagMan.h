@@ -26,28 +26,12 @@ public:
 
 	virtual void Init_Implementation() override;
 
-	static constexpr float DefAutoTime = 2.5;
-	// how much to wait before trying to auto skip.
-	// Requires feature flag D_AUTO
-	// a very low value can break stuff.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dialogs", Config, meta=(ClampMin=.05))
-	float AutoTime = DefAutoTime;
-
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Show_Implementation(const FDiag& Diag) override;
-	// virtual void Add_Implementation(const FName Name, const FDiag& Diag) override;
-	virtual void Hidden_Implementation() override;
-	virtual void Back_Implementation() override;
-	void AutoClear();
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
 
-	UPROPERTY(BlueprintReadOnly, Category="Dialogs", VisibleAnywhere, Transient)
-	bool UseAuto = false;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
-
-	FTimerHandle AutoTimer;
 };

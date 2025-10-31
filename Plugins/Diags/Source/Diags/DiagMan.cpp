@@ -68,6 +68,7 @@ void ADiagMan::DeInit_Implementation() {
 
 void ADiagMan::Add_Implementation(const FName& Name, const FDiag& Diag) {} // Pass: for being overriden
 
+
 void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	UE_LOG(LogTextDialogs, Log, TEXT("%hs"), __func__);
 
@@ -100,6 +101,8 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	// we need to actually add and remove so that it doesn't eat the input while not showing
 	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
 	UI->ShowDlg(Diag);
+	
+	if (UseAutoForce) AutoStart();
 }
 
 void ADiagMan::DiagDone_Implementation() {
@@ -128,6 +131,12 @@ void ADiagMan::BeginPlay() {
 		if (LIKELY(IsValid(ActionBack)))
 			Input->BindAction<ADiagMan>(
 				ActionBack, ETriggerEvent::Triggered, this, &ADiagMan::Back);
+		if (LIKELY(IsValid(ActionAuto))) {
+			Input->BindAction<ADiagMan>(
+				ActionAuto, ETriggerEvent::Started, this, &ADiagMan::AutoStart);
+			Input->BindAction<ADiagMan>(
+				ActionAuto, ETriggerEvent::Triggered, this, &ADiagMan::AutoStop);
+		}
 	}
 
 	// create ui
@@ -155,9 +164,12 @@ void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 void ADiagMan::Hidden_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("UIDiagDone"));
-	if (UNLIKELY(!IsValid(Diags))) return;
+	// clear before Done as it could trigger a new, call show, and maybe we clear something else.
+	// actually the subsystem has a protection for that, but it's better to be sure.
+	// this case is important when the auto timer runs on a loop
+	AutoStop();
 
-	Diags->DiagDone();
+	if (LIKELY(IsValid(Diags))) Diags->DiagDone();
 }
 
 void ADiagMan::Skip_Implementation() {
@@ -171,5 +183,23 @@ void ADiagMan::Back_Implementation() {
 	UE_LOG(LogTextDialogs, Log, TEXT("Back"));
 	if(UNLIKELY(!IsValid(UI))) return;
 
+	AutoStop(); // this is the actual important one, we want to pause skipping if you go back.
 	UI->Back();
+}
+
+void ADiagMan::AutoStop_Implementation() {
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
+
+	W->GetTimerManager().ClearTimer(AutoTimer);
+	AutoTimer.Invalidate();
+}
+
+void ADiagMan::AutoStart_Implementation() {
+	const UWorld* const W = GetWorld();
+	if (UNLIKELY(!W)) return;
+
+	AutoStop(); // for correctness.
+	// will set loop if time <2, that's to account for the animation
+	W->GetTimerManager().SetTimer(AutoTimer, this, &ADiagMan::Skip, AutoTime, AutoTime < 2);
 }

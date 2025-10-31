@@ -46,6 +46,10 @@ public:
 	// Attempts to go back
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Back();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void AutoStart();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void AutoStop(); // todo rename to autostop
 
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -55,7 +59,20 @@ public:
 	int32 InputPrio = 10;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp, Config)
 	int32 ZOrder = 3;
+	// when set, will force use of auto on all dialogs.
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp", Config)
+	bool UseAutoForce = false;
+	static constexpr float DefAutoTime = 2.5;
+	// how much to wait before trying to auto skip.
+	// Requires feature flag D_AUTO
+	// a very low value can break stuff.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SetUp", Config, meta=(ClampMin=.05))
+	float AutoTime = DefAutoTime;
 
+	// when unset (false) it will skip showing the Diags but still mark them as read
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
+	bool UseShow = false;
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UDialogUI> UIClass = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
@@ -67,10 +84,6 @@ public:
 	TObjectPtr<UInputAction> ActionAuto = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionBack = nullptr;
-
-	// when unset (false) it will skip showing the Diags but still mark them as read
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
-	bool UseShow = false;
 
 protected:
 	virtual void BeginPlay() override;
@@ -86,6 +99,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDialogUI> UI = nullptr;
 
+	FTimerHandle AutoTimer;
 private:
 	bool IsShowing = false;
 };
