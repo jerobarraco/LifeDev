@@ -64,6 +64,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionSkip = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
+	TObjectPtr<UInputAction> ActionSkipAuto = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionBack = nullptr;
 
 	// when unset (false) it will skip showing the Diags but still mark them as read
