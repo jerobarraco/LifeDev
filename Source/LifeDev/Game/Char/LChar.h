@@ -9,6 +9,7 @@
 
 #include "LChar.generated.h"
 
+class UCLDust;
 class UFlags;
 class UInventory;
 class UCLCharCam;
@@ -151,6 +152,8 @@ protected:
 	TObjectPtr<UCLCharItems> Items = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCLNoiser> Noiser = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+	TObjectPtr<UCLDust> Dust = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UGameUI> UI = nullptr;

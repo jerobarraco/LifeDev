@@ -27,6 +27,7 @@
 #include "GameUI.h"
 #include "CLCharCam.h"
 #include "CLCharItems.h"
+#include "LifeDev/Game/Env/CLDust.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLChar, Log, Log);
 
@@ -64,6 +65,10 @@ ALChar::ALChar() {
 
 	Noiser = CreateDefaultSubobject<UCLNoiser>(TEXT("Noiser"));
 
+	Dust = CreateDefaultSubobject<UCLDust>(TEXT("Dust"));
+	// attach to the camera. this might create issues when changing cameras, but let's hope not, if the bounds are big enough it will be ok.
+	Dust->SetupAttachment(Camera);
+	
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSfx(TEXT("/Game/LifeDev/Game/Env/Noises/Noises.Noises"));
 	Noiser->SFX = CSfx.Object;
