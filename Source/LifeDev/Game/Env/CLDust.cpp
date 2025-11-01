@@ -1,5 +1,7 @@
 #include "CLDust.h"
 
+#include "NiagaraSystem.h"
+
 UCLDust::UCLDust() {
 	bAutoManageAttachment = true;
 	SetAutoActivate(true); // TODO use the feats to toggle this.

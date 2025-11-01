@@ -65,6 +65,8 @@ enum class EFeat: uint8 {
 	V_FLASHBACK,
 	// speed vfx
 	V_SPEED,
+	// dust particles
+	V_DUST,
 	V_MAX UMETA(Hidden),
 #pragma endregion
 
