@@ -31,9 +31,12 @@ AStreetLight::AStreetLight():Super() {
 	static const FColor Col(
 		LDConsts::Colors::Palette[LDConsts::Colors::Brown][10]);
 	Light->SetLightColor(Col, true);
-	Light->SetAttenuationRadius(500);
-	Light->SetInnerConeAngle(10);
-	Light->SetOuterConeAngle(40);
+	Light->SetInnerConeAngle(50);
+	Light->SetOuterConeAngle(70);
+	Light->SetAttenuationRadius(700);
+	Light->SetIntensityUnits(ELightUnits::Lumens);
+	Light->SetIntensity(9001);
+	Light->SetCastVolumetricShadow(true);
 
 	Rnd->DelayMin = 10;
 	Rnd->DelayMax = 50;
