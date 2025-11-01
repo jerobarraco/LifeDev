@@ -148,7 +148,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCInteractor> Interactor = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-	TObjectPtr<UCLCharItems> Items = nullptr;;
+	TObjectPtr<UCLCharItems> Items = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCLNoiser> Noiser = nullptr;
 
