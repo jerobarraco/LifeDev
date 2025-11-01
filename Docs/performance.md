@@ -41,30 +41,6 @@ automanage
 	DistanceCullFade to blend the cull
 	-  min max draw distance
 
-# shadow maps
-	r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
-	r.Shadow.Virtual.UseFarShadowCulling 0
-	set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
-	r.Shadow.Virtual.MaxPhysicalPages (512),
-	r.Shadow.Virtual.MaxPhysicalPagesSceneCapture (512),
-	r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
-	r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
-
-	* try r.shadow.virtualcache.staticseparate
-	  https://m.youtube.com/watch?v=BKaAzhMHJZ0
-
-* enable on settings 'allow static bakedlighting'
-* on world settings remove world partition
-* reducing the DirectionalLOD and reduce vt sizes https://drive.google.com/file/d/18uiEkezcrznO6XK1IdEVUg9UzP8ZJh2L/view
-
-## vsm
-* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine
-* * try to use stationary instead of movable
-* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine#managing-cache-invalidations
-* Use the following console variables in succession to enable stats:
-  r.ShaderPrintEnable 1
-  r.Shadow.Virtual.ShowStats 1 (or 2 to show only the page statistics)
-
 
 # culling
 * use distance cull volumes
@@ -104,6 +80,34 @@ animation
 * update rate optimization on distance for skeletal mesh 
 * visibilitybasedanimtickoption
 * bRenderAsStatic bPauseAnims bNoSkeletonUpdate
+
+## shadows
+* removed support for local fog volumes
+* disable cast volumetric shadows on lights
+
+## shadow maps
+	r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
+	r.Shadow.Virtual.UseFarShadowCulling 0
+	set foliage (grass, etc) to not cast shadows on low lod https://www.youtube.com/watch?v=AobyMegpUMg
+	r.Shadow.Virtual.MaxPhysicalPages (512),
+	r.Shadow.Virtual.MaxPhysicalPagesSceneCapture (512),
+	r.Shadow.Virtual.ResolutionLodBiasLocal (1.00), and
+	r.Shadow.Virtual.ResolutionLodBiasDirectional (0.00)
+
+	* try r.shadow.virtualcache.staticseparate
+	  https://m.youtube.com/watch?v=BKaAzhMHJZ0
+
+* enable on settings 'allow static bakedlighting'
+* on world settings remove world partition
+* reducing the DirectionalLOD and reduce vt sizes https://drive.google.com/file/d/18uiEkezcrznO6XK1IdEVUg9UzP8ZJh2L/view
+
+## vsm
+* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine
+* * try to use stationary instead of movable
+* https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine#managing-cache-invalidations
+* Use the following console variables in succession to enable stats:
+  r.ShaderPrintEnable 1
+  r.Shadow.Virtual.ShowStats 1 (or 2 to show only the page statistics)
 
 
 # pso precache
