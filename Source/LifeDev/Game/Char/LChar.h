@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
-#include "LifeDev/Core/Consts/ConstSettings.h"
 
 #include "LChar.generated.h"
 
