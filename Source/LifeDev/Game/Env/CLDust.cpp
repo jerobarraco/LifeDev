@@ -4,7 +4,7 @@
 
 UCLDust::UCLDust() {
 	bAutoManageAttachment = true;
-	SetAutoActivate(true); // TODO use the feats to toggle this.
+	SetAutoActivate(true); // TODO use the feats to toggle this. // todo test the feature flag
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		DefaultMapping(TEXT("/Game/LifeDev/Game/Env/Ambience/Dust"));
