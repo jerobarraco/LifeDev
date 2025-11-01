@@ -13,7 +13,6 @@ class UFlags;
 class UInventory;
 class UCLCharCam;
 class UCLCharItems;
-class ULSettingsUI;
 class UDiags;
 class UCInteractor;
 class UCInteract;
