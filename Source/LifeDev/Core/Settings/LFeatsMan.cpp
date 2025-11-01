@@ -21,11 +21,12 @@
 #include "Story/Story.h"
 #include "Eval.h"
 
-#include "LifeDev/Core/Sentry.h"
-#include "LifeDev/Core/Consts/ConstFlags.h"
 #include "LifeDev/Game/Char/LChar.h"
+#include "LifeDev/Core/Consts/ConstFlags.h"
+#include "LifeDev/Game/Env/CLDust.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
+#include "LifeDev/Core/Sentry.h"
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
@@ -219,6 +220,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_STROBE, Settings && Settings->GetFeat(EFeat::V_STROBE));
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
+	FeatUpVisual(EFeat::V_DUST, Settings && Settings->GetFeat(EFeat::V_DUST));
 	BlurReset();
 	FringeReset();
 	
@@ -298,6 +300,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 			return;
 		}
 		Variable->Set(Enabled?1:0);
+	} else if (Feat == EFeat::V_DUST) {
+		const ALChar* const Char = ALChar::Instance(this);
+		UActorComponent* const Dust = Char->GetComponentByClass(UCLDust::StaticClass());
+		if (LIKELY(Dust)) Dust->SetActive(Enabled);
 	} else {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = Enabled ? 1: 0;
