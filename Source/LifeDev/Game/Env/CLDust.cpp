@@ -1,6 +1,6 @@
-#include "CDust.h"
+#include "CLDust.h"
 
-UCDust::UCDust() {
+UCLDust::UCLDust() {
 	bAutoManageAttachment = true;
 	SetAutoActivate(false);
 
