@@ -23,7 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
-
+	
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
+	void SetDefault();
+	
 	// the one used in the player mappable input key stuff very long name persistence that does not work and will crash your game_experimental
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName InputName = NAME_None;

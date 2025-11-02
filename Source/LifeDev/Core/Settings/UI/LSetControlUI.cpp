@@ -3,6 +3,7 @@
 #include "LSetControlUI.h"
 
 #include "JButton.h"
+#include "LInputSelector.h"
 
 void ULSetControlUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -19,5 +20,7 @@ void ULSetControlUI::NativeDestruct() {
 }
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
-	
+	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		S->SetDefault();
+	}
 }

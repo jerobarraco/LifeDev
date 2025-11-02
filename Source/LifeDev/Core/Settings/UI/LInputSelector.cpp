@@ -44,6 +44,10 @@ void ULInputSelector::ResetStyle() {
 	}
 }
 
+void ULInputSelector::SetDefault() {
+	// TODO
+}
+
 void ULInputSelector::OnWidgetRebuilt() {
 	Super::OnWidgetRebuilt();
 	ResetStyle();

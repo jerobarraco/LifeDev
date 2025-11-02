@@ -30,5 +30,4 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnDefaults = nullptr;
-	
 };
