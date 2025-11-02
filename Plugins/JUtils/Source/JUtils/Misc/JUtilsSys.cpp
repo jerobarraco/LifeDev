@@ -185,13 +185,16 @@ UEnhancedInputLocalPlayerSubsystem* UJUtilsSys::GetEInputSub(const UObject* cons
 	const ULocalPlayer* const Player = LIKELY(W) ? W->GetFirstLocalPlayerFromController() : nullptr;
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
 		LIKELY(Player) ? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player) : nullptr;
+	UE_CLOG(!Subsystem, LogTemp, Warning, TEXT("%hs Could not get the current UEnhancedInputLocalPlayerSubsystem"), __func__);
 	return Subsystem;
 }
 
 UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* const O) {
 	const UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
 	const UEnhancedInputUserSettings* const Settings = LIKELY(Subsystem) ? Subsystem->GetUserSettings() : nullptr;
+	UE_CLOG(!Settings, LogTemp, Warning, TEXT("%hs Could not get the EnhancedInputUserSettings"), __func__);
 	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
+	UE_CLOG(!Profile, LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 	return Profile;
 }
 
@@ -199,7 +202,6 @@ void UJUtilsSys::ResetEInputMapsAll(const UObject* const O) {
 	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetToDefault();
-	else UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 }
 
 void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
@@ -207,7 +209,6 @@ void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
 
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
-	else UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 }
 
 void UJUtilsSys::GetProjectVersion(FString& OVer) {
