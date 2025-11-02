@@ -27,8 +27,6 @@ void ULSetControlUI::SetDefaults(const int32 Id) {
 	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2?u=nande
 	// todo move to jutilssys
 
-	ULocalPlayer* Player = GetWorld()->GetFirstLocalPlayerFromController();
-	UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player);
 	UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings();
 	UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetActiveKeyProfile();
 	Profile->ResetToDefault();

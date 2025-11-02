@@ -7,6 +7,7 @@
 
 #include "JUtilsSys.generated.h"
 
+class UEnhancedInputLocalPlayerSubsystem;
 class UInputMappingContext;
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
@@ -128,5 +129,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UEnhancedInputLocalPlayerSubsystem* GetEInputSub(const UObject* const O);
+	
 #pragma endregion // TODO maybe move to UtilsInput one day
 };

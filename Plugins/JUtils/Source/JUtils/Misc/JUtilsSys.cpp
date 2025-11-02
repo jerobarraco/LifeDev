@@ -182,6 +182,14 @@ UEnhancedInputComponent* UJUtilsSys::GetEInput(const UObject* const O) {
 	return Input;
 }
 
+UEnhancedInputLocalPlayerSubsystem* UJUtilsSys::GetEInputSub(const UObject* const O) {
+	const UWorld* const W = LIKELY(O) ? O->GetWorld() : nullptr;
+	const ULocalPlayer* const Player = LIKELY(W) ? W->GetFirstLocalPlayerFromController() : nullptr;
+	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
+		LIKELY(Player) ? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player) : nullptr;
+	return Subsystem;
+}
+
 void UJUtilsSys::GetProjectVersion(FString& OVer) {
 	// https://forums.unrealengine.com/t/how-to-get-the-project-version-in-a-blueprint/461882/2?u=nande
 	if (LIKELY(GConfig)) GConfig->GetString(
