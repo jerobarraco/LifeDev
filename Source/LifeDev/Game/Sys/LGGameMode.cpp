@@ -3,6 +3,7 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
+#include "EnhancedInputSubsystems.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
@@ -169,6 +170,12 @@ void ALGGameMode::Init() {
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 
+	
+	// initialize the input user settings. do here otherwise the input won't work. i think. todo also do it on the intro.
+	// TODO this doesn't work either
+	UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
+	if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
+	
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);
