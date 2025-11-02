@@ -47,6 +47,7 @@ AInteract::AInteract():Super() {
 	SFX->SetupAttachment(Interact);
 	SFX->SetAutoActivate(false);
 	SFX->bAutoManageAttachment = true;
+	SFX->AutoAttachLocationRule = EAttachmentRule::KeepRelative;
 
 	Emitter = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Emitter"));
 	Emitter->SetupAttachment(Interact);

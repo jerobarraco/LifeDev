@@ -36,6 +36,7 @@ ALMusicMan::ALMusicMan():Super() {
 	Rain->SetSound(CSnd.Object);
 	Rain->SetAutoActivate(false);
 	Rain->bAutoManageAttachment = true;
+	Rain->AutoAttachLocationRule = EAttachmentRule::KeepRelative;
 	Rain->TimeFadeIn = 2;
 	Rain->TimeFadeOut = 2;
 	Rain->TimeStartMin = 0;
@@ -47,7 +48,6 @@ ALMusicMan::ALMusicMan():Super() {
 		CEnv(TEXT("/Game/LifeDev/Game/Env/Ambience/Ambience"));
 	Environ->SetSound(CEnv.Object);
 	Environ->SetAutoActivate(false);
-	Environ->bAutoManageAttachment = true;
 	Environ->TimeFadeIn = 2;
 	Environ->TimeFadeOut = 2;
 	Environ->TimeStartMin = 0;

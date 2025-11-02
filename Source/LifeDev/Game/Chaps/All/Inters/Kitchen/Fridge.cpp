@@ -6,6 +6,8 @@
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
+#include "LifeDev/Core/Sounds/CLSounder.h"
+
 AFridge::AFridge():Super() {
 	Texts = { NSLOCTEXT("Fridge", "State0", "Fridge") } ;
 	RewardFlash = 0;
@@ -22,7 +24,7 @@ AFridge::AFridge():Super() {
 	Interact->SetBoxExtent(FVector(35,7.5,85));
 	SFX->SetRelativeLocation(FVector(-90,-15,95));
 
-	SFXHum = CreateDefaultSubobject<UAudioComponent>(TEXT("SFXHum"));
+	SFXHum = CreateDefaultSubobject<UCLSounder>(TEXT("SFXHum"));
 	SFXHum->SetupAttachment(Interact);
 	SFXHum->SetAutoActivate(true);
 	SFXHum->bAutoManageAttachment = true;

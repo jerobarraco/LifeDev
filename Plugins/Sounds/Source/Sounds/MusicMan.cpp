@@ -17,8 +17,8 @@ AMusicMan::AMusicMan() {
 
 	Player = CreateDefaultSubobject<UCSounder>(TEXT("Player"));
 	Player->SetAutoActivate(false);
-	Player->bAutoManageAttachment = true;
 	Player->TimeFadeIn = 1.0;
+	// csounder is automanaged by default
 }
 
 void AMusicMan::Fade_Implementation(const bool In) {
