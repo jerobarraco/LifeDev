@@ -199,6 +199,7 @@ UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* c
 }
 
 void UJUtilsSys::ResetEInputMapsAll(const UObject* const O) {
+	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetToDefault();
 	else UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);

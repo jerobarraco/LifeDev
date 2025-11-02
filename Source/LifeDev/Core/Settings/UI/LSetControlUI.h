@@ -24,10 +24,11 @@ protected:
 
 	UFUNCTION()
 	void SetDefaults(const int32 Id);
-	
+
+	// WIP TODO use
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TObjectPtr<ULInputSelector>> Selectors;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnDefaults = nullptr;
+	TObjectPtr<UJButton> BDefaults = nullptr;
 };

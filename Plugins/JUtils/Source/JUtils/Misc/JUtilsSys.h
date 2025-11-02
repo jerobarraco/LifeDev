@@ -121,20 +121,23 @@ public:
 	static bool SetRHI(EJRHI RHI);
 #pragma endregion
 #pragma region input
+	// returns the first local player controller. this is safe to use in network environments.
+	// where the local player might not be the first controller.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);
+	
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ToggleMapping(const UObject* const O,
 		const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable);
-
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);
-
+	// returns the current enhanced input component
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);
+	// returns the current enhanced input local player subsystem
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputLocalPlayerSubsystem* GetEInputSub(const UObject* const O);
+	// returns the current profile
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedPlayerMappableKeyProfile* GetEInputProfile(const UObject* const O);
-	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI/EnhancedInput/UserSettings/ResetMappingtoDefault
 	// "Resets every player key mapping to this mapping back to its default value."
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
