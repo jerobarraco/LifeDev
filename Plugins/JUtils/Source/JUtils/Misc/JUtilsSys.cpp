@@ -30,7 +30,7 @@ void UJUtilsSys::EInputToggleContext(const UObject* const O,
 	if (UNLIKELY(!IsValid(Subsystem))) return;
 
 	FModifyContextOptions Op;
-	Op.bNotifyUserSettings = WSetting;
+	Op.bNotifyUserSettings = WSetting; // TODO this still is not working
 	if (Enable) Subsystem->AddMappingContext(Ctx, Prio, Op);
 	else Subsystem->RemoveMappingContext(Ctx, Op);
 }

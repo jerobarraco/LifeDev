@@ -27,7 +27,7 @@ void ULSave::Reset(const UObject* const O) {
 	SFlags.Empty();
 	SFeats.Empty();
 
-	ULSysSettings* const SysSettings = ULSysSettings::Get();
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!SysSettings)) {
 		UE_LOG(LogLSave, Warning, TEXT("%hs Can't get the ULSysSettings. Stop"), __func__);
 		return;
