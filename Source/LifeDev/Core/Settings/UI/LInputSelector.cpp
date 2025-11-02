@@ -2,6 +2,8 @@
 
 #include "LInputSelector.h"
 
+#include "JUtils/Misc/JUtilsSys.h"
+
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it
 	// Super::SetIsEnabled(false);
@@ -44,13 +46,8 @@ void ULInputSelector::ResetStyle() {
 	}
 }
 
-void ULInputSelector::SetDefault() {
-	// TODO
-	// ULocalPlayer* Player = GetWorld()->GetFirstLocalPlayerFromController();
-	// UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player);
-	// UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings();
-	// UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetActiveKeyProfile();
-	// Profile->ResetMappingToDefault(InputName);
+void ULInputSelector::SetDefault() const {
+	UJUtilsSys::ResetEInputMap(this, InputName);
 }
 
 void ULInputSelector::OnWidgetRebuilt() {
