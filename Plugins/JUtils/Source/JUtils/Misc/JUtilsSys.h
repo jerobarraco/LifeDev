@@ -7,6 +7,7 @@
 
 #include "JUtilsSys.generated.h"
 
+class UEnhancedPlayerMappableKeyProfile;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputMappingContext;
 UENUM(BlueprintType)
@@ -131,6 +132,17 @@ public:
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputLocalPlayerSubsystem* GetEInputSub(const UObject* const O);
-	
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UEnhancedPlayerMappableKeyProfile* GetEInputProfile(const UObject* const O);
+	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
+	// https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI/EnhancedInput/UserSettings/ResetMappingtoDefault
+	// "Resets every player key mapping to this mapping back to its default value."
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void ResetEInputMapsAll(const UObject* const O);
+	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
+	// Resets the named mapping to its default value
+	// N is the "Name" in the player mapping in the input action or context.
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static void ResetEInputMap(const UObject* const O, const FName N);
 #pragma endregion // TODO maybe move to UtilsInput one day
 };

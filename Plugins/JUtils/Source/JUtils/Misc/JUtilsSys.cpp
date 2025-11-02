@@ -5,12 +5,13 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "EnhancedInput/Public/UserSettings/EnhancedInputUserSettings.h"
 #include "HardwareInfo.h"
-#include "JUtilsMisc.h"
 #include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "JUtilsMisc.h"
 #if WITH_EDITOR
 #include "EditorScriptingHelpers.h"
 #endif
@@ -188,6 +189,27 @@ UEnhancedInputLocalPlayerSubsystem* UJUtilsSys::GetEInputSub(const UObject* cons
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
 		LIKELY(Player) ? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player) : nullptr;
 	return Subsystem;
+}
+
+UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* const O) {
+	const UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
+	const UEnhancedInputUserSettings* const Settings = LIKELY(Subsystem) ? Subsystem->GetUserSettings() : nullptr;
+	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
+	return Profile;
+}
+
+void UJUtilsSys::ResetEInputMapsAll(const UObject* const O) {
+	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
+	if (LIKELY(Profile)) Profile->ResetToDefault();
+	else UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
+}
+
+void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
+	if (UNLIKELY(N.IsNone() | !O)) return; // !O is cheap so put it there too.
+
+	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
+	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
+	else UE_LOG(LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 }
 
 void UJUtilsSys::GetProjectVersion(FString& OVer) {
