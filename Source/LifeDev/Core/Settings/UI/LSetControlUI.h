@@ -7,6 +7,7 @@
 
 #include "LSetControlUI.generated.h"
 
+class ULInputSelector;
 class UJButton;
 // baseclass for the control settings
 UCLASS(Blueprintable, BlueprintType)
@@ -24,6 +25,10 @@ protected:
 	UFUNCTION()
 	void SetDefaults(const int32 Id);
 	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<TObjectPtr<ULInputSelector>> Selectors;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnDefaults = nullptr;
+	
 };
