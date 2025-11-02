@@ -26,4 +26,5 @@ AHeater00::AHeater00():Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Heater/OLD_STUFF_Water_Heater_01-start"));
 	SFXs = { CSFX.Object, CSFX.Object};
+	SFXLocked = CSFX.Object;
 }
