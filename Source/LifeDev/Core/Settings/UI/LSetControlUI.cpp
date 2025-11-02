@@ -2,8 +2,12 @@
 
 #include "LSetControlUI.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "JButton.h"
 #include "LInputSelector.h"
+#include "JUtils/Misc/JUtilsSys.h"
+#include "EnhancedInput/Public/UserSettings/EnhancedInputUserSettings.h"
 
 void ULSetControlUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
@@ -20,7 +24,12 @@ void ULSetControlUI::NativeDestruct() {
 }
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
-	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
-		S->SetDefault();
-	}
+	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2?u=nande
+	// todo move to jutilssys
+
+	ULocalPlayer* Player = GetWorld()->GetFirstLocalPlayerFromController();
+	UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player);
+	UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings();
+	UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetActiveKeyProfile();
+	Profile->ResetToDefault();
 }

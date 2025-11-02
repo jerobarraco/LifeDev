@@ -46,6 +46,11 @@ void ULInputSelector::ResetStyle() {
 
 void ULInputSelector::SetDefault() {
 	// TODO
+	// ULocalPlayer* Player = GetWorld()->GetFirstLocalPlayerFromController();
+	// UEnhancedInputLocalPlayerSubsystem* const Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player);
+	// UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings();
+	// UEnhancedPlayerMappableKeyProfile* Profile = Settings->GetActiveKeyProfile();
+	// Profile->ResetMappingToDefault(InputName);
 }
 
 void ULInputSelector::OnWidgetRebuilt() {
