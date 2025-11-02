@@ -7,12 +7,23 @@
 
 #include "LSetControlUI.generated.h"
 
+class UJButton;
 // baseclass for the control settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
-	virtual void Apply_Implementation() override {};
-	virtual void Load_Implementation() override {};
+	virtual void Apply_Implementation() override {}
+	virtual void Load_Implementation() override {}
+
+protected:
+	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
+
+	UFUNCTION()
+	void SetDefaults(const int32 Id);
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BtnDefaults = nullptr;
 };
