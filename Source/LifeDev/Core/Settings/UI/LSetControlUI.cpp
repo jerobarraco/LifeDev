@@ -20,4 +20,7 @@ void ULSetControlUI::NativeDestruct() {
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
 	UJUtilsSys::ResetEInputMapsAll(this);
+	// todo this requires to enable the input user settings on the project setttings
+	// but when i do no input works, potentially because they need to be registered with the settings???
+	
 }

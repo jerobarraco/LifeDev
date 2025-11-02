@@ -24,18 +24,15 @@ bool UJUtilsSys::IsPIE() {
 #endif
 }
 
-void UJUtilsSys::ToggleMapping(const UObject* const O,
-	const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable) {
-	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
-	if (UNLIKELY(!IsValid(Controller))) return;
-
-	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
-		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
-			Controller->GetLocalPlayer());
+void UJUtilsSys::EInputToggleContext(const UObject* const O,
+	const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable, const bool WSetting) {
+	UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
 	if (UNLIKELY(!IsValid(Subsystem))) return;
 
-	if (Enable) Subsystem->AddMappingContext(Ctx, Prio);
-	else Subsystem->RemoveMappingContext(Ctx);
+	FModifyContextOptions Op;
+	Op.bNotifyUserSettings = WSetting;
+	if (Enable) Subsystem->AddMappingContext(Ctx, Prio, Op);
+	else Subsystem->RemoveMappingContext(Ctx, Op);
 }
 
 APlayerController* UJUtilsSys::GetFirstLocalPlayerController(const UObject* const O) {

@@ -160,7 +160,7 @@ void ALChar::HoverDiagClear() {
 
 void ALChar::SetInputEnabled(const bool Enabled) {
 	if (LIKELY(IsValid(UI))) UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, Enabled);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// TODO improve, maybe add a param
 	// this is a stub behaviour to disable noises while the player is not actively playing.
@@ -223,7 +223,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (LIKELY(IsValid(Class))) {
@@ -260,7 +260,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	// unbind input
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 	

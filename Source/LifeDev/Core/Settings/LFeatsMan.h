@@ -89,7 +89,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionMenu = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TObjectPtr<UInputMappingContext> Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> Context = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 InputPrio = 3;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)

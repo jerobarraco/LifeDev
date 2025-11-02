@@ -47,7 +47,7 @@ void AInventoryMan::DeInit_Implementation() {
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
 
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
 }
 
 void AInventoryMan::ActOpen() {
@@ -122,7 +122,7 @@ void AInventoryMan::BeginPlay() {
 		}
 	}
 
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
 	if (UNLIKELY(!Inventory)) return;

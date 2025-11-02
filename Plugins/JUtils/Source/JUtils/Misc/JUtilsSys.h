@@ -125,10 +125,13 @@ public:
 	// where the local player might not be the first controller.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);
-	
+
+	// WSettings notifies the UserSettings, otherwise they won't work (have to be enabled in the project settings)
+	// This is necessary for being able to reset them
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ToggleMapping(const UObject* const O,
-		const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable);
+	static void EInputToggleContext(const UObject* const O,
+		const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable,
+		const bool WSetting = true);
 	// returns the current enhanced input component
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputComponent* GetEInput(const UObject* const O);

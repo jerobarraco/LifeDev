@@ -99,7 +99,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, true);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
 	UI->ShowDlg(Diag);
 	
 	if (UseAutoForce) AutoStart();
@@ -112,7 +112,7 @@ void ADiagMan::DiagDone_Implementation() {
 
 	IsShowing = false;
 	UI->Hide();
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -154,7 +154,7 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJUtilsSys::ToggleMapping(this, Mapping, InputPrio, false);
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
