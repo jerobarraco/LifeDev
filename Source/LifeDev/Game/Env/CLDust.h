@@ -6,7 +6,7 @@
 UCLASS(Blueprintable, BlueprintType)
 class UCLDust: public UNiagaraComponent {
 	GENERATED_BODY()
+
 public:
 	UCLDust();
-
 };

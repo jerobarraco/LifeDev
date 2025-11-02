@@ -27,7 +27,6 @@ ACharNRG::ACharNRG() {
 
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(Mesh);
-	Parts->bAutoManageAttachment = true;
 	Parts->bAutoActivate = false;
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiag(TEXT("/Game/LifeDev/Game/Chars/CharEnergy_N"));
