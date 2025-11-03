@@ -173,8 +173,9 @@ void ALGGameMode::Init() {
 	
 	// initialize the input user settings. do here otherwise the input won't work. i think. todo also do it on the intro.
 	// TODO this doesn't work either
-	UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
-	if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
+	// doesn't seem to be needed
+	// UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
+	// if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
 	
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {

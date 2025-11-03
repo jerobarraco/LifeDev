@@ -31,8 +31,16 @@ void UJUtilsSys::EInputToggleContext(const UObject* const O,
 
 	FModifyContextOptions Op;
 	Op.bNotifyUserSettings = WSetting; // TODO this still is not working
-	if (Enable) Subsystem->AddMappingContext(Ctx, Prio, Op);
-	else Subsystem->RemoveMappingContext(Ctx, Op);
+	UEnhancedInputUserSettings* const Settings = Subsystem->GetUserSettings();
+	if (Enable) {
+		Subsystem->AddMappingContext(Ctx, Prio, Op);
+		// attempt at making this work with user settings
+		if (LIKELY(Settings)) Settings->RegisterInputMappingContext(Ctx);
+	}
+	else {
+		Subsystem->RemoveMappingContext(Ctx, Op);
+		if (LIKELY(Settings)) Settings->UnregisterInputMappingContext(Ctx);
+	}
 }
 
 APlayerController* UJUtilsSys::GetFirstLocalPlayerController(const UObject* const O) {
