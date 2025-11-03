@@ -2,11 +2,14 @@
 
 #include "LGameInstance.h"
 
+#include "UserSettings/EnhancedInputUserSettings.h"
+
+#include "Sentry.h"
+
 #include "JUtils/Misc/JUtilsSys.h"
 
 #include "Settings/LSettings.h"
 #include "Settings/LSysSettings.h"
-#include "Sentry.h"
 
 ULGameInstance* ULGameInstance::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;
@@ -27,6 +30,17 @@ void ULGameInstance::Init() {
 
 	USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) Sentry->InstInit();
+	
+	// initialize the input user settings. do here otherwise the input won't work. i think. todo also do it on the intro.
+	// TODO this doesn't work either
+	// doesn't seem to be needed
+	// UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
+	// if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
+
+	// TODO maybe this should be in the game instance
+	
+	const UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
+	if (EISettings) EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
 	
 	// force disable debug flags
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();

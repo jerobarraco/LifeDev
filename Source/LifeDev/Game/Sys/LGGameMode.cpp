@@ -171,16 +171,6 @@ void ALGGameMode::Init() {
 #pragma region Subsystems
 	// start by initializing the subsystems, since most other stuff needs it.
 
-	// initialize the input user settings. do here otherwise the input won't work. i think. todo also do it on the intro.
-	// TODO this doesn't work either
-	// doesn't seem to be needed
-	// UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
-	// if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
-
-	// TODO maybe this should be in the game instance
-	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
-	if (EISettings) EISettings->LoadOrCreateSettings(Controller->GetLocalPlayer());
-
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);
