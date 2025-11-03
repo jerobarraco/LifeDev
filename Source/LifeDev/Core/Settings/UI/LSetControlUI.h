@@ -15,7 +15,7 @@ class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
-	virtual void Apply_Implementation() override {}
+	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override {}
 
 protected:

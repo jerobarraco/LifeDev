@@ -43,6 +43,7 @@
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
@@ -177,6 +178,9 @@ void ALGGameMode::Init() {
 	// UEnhancedInputLocalPlayerSubsystem* InputSub = UJUtilsSys::GetEInputSub(this);
 	// if (LIKELY(InputSub)) InputSub->InitalizeUserSettings();
 	
+	UEnhancedInputUserSettings* EISettings = UJUtilsSys::GetEInputSettings(this);
+	if (EISettings) EISettings->LoadOrCreateSettings(Controller->GetLocalPlayer());
+
 	Flashback = World->GetSubsystem<UFlashback>();
 	if (UNLIKELY(!Flashback)) {
 		UE_LOG(LogLGameMode, Warning, TEXT("%hs Can't get the Flashback subsystem. Stop."), __func__);

@@ -138,6 +138,9 @@ public:
 	// returns the current enhanced input local player subsystem
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedInputLocalPlayerSubsystem* GetEInputSub(const UObject* const O);
+	// returns the enhanced input user settings object
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
+	static UEnhancedInputUserSettings* GetEInputSettings(const UObject* const O);
 	// returns the current profile
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static UEnhancedPlayerMappableKeyProfile* GetEInputProfile(const UObject* const O);

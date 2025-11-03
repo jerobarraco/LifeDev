@@ -197,10 +197,15 @@ UEnhancedInputLocalPlayerSubsystem* UJUtilsSys::GetEInputSub(const UObject* cons
 	return Subsystem;
 }
 
-UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* const O) {
+UEnhancedInputUserSettings* UJUtilsSys::GetEInputSettings(const UObject* const O) {
 	const UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
-	const UEnhancedInputUserSettings* const Settings = LIKELY(Subsystem) ? Subsystem->GetUserSettings() : nullptr;
+	UEnhancedInputUserSettings* const Settings = LIKELY(Subsystem) ? Subsystem->GetUserSettings() : nullptr;
 	UE_CLOG(!Settings, LogTemp, Warning, TEXT("%hs Could not get the EnhancedInputUserSettings"), __func__);
+	return Settings;
+}
+
+UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* const O) {
+	const UEnhancedInputUserSettings* const Settings = GetEInputSettings(O); 
 	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
 	UE_CLOG(!Profile, LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 	return Profile;
