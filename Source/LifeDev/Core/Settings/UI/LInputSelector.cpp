@@ -3,6 +3,7 @@
 #include "LInputSelector.h"
 
 #include "JUtils/Misc/JUtilsSys.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it
@@ -26,12 +27,33 @@ ULInputSelector::ULInputSelector():Super() {
 }
 
 void ULInputSelector::Init(const FInputChord& Key) {
-	SetSelectedKey(Key);
+	// TODO load from settings
+	// TODO remove Key
+	// TODO move the allow gamepad here
+	// SetSelectedKey(Key);
 	OnKeySelected.AddUniqueDynamic(this, &ULInputSelector::KeySelected);
 }
 
 void ULInputSelector::DeInit() {
 	OnKeySelected.RemoveAll(this);
+}
+
+void ULInputSelector::Apply() {
+	const FMapPlayerKeyArgs Args = {
+		.MappingName = InputName, .Slot = EPlayerMappableKeySlot::First, .NewKey = GetSelectedKey().Key};
+	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
+	// If you want to, you can additionally specify this mapping to only be applied to a certain hardware device or key profile
+	//Args.ProfileId =
+	//Args.HardwareDeviceId =
+	FGameplayTagContainer FailureReason;
+	if (LIKELY(Settings)) Settings->MapPlayerKey(Args, FailureReason);
+}
+
+void ULInputSelector::Load() {
+	const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsSys::GetEInputProfile(this);
+	TArray<FKey> Keys;
+	Profile->GetMappedKeysInRow(InputName, Keys);
+	if (Keys.Num()>0) SetSelectedKey(Keys[0]);
 }
 
 void ULInputSelector::ResetStyle() {
@@ -55,6 +77,6 @@ void ULInputSelector::OnWidgetRebuilt() {
 	ResetStyle();
 }
 
-void ULInputSelector::KeySelected(const FInputChord Key) { // can't be ref due to how the deleagate is set
+void ULInputSelector::KeySelected(const FInputChord Key) { // can't be ref due to how the delegate is set
 	OnKeySelectedPlus.Broadcast(this, Key);
 }

@@ -205,7 +205,8 @@ UEnhancedInputUserSettings* UJUtilsSys::GetEInputSettings(const UObject* const O
 }
 
 UEnhancedPlayerMappableKeyProfile* UJUtilsSys::GetEInputProfile(const UObject* const O) {
-	const UEnhancedInputUserSettings* const Settings = GetEInputSettings(O); 
+	const UEnhancedInputUserSettings* const Settings = GetEInputSettings(O);
+	
 	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
 	UE_CLOG(!Profile, LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 	return Profile;
@@ -222,6 +223,7 @@ void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
 
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
+
 }
 
 void UJUtilsSys::GetProjectVersion(FString& OVer) {
