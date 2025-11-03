@@ -102,6 +102,7 @@ void AInventoryMan::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
 	if (ActionOpen) {
 		UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
 		if (LIKELY(IsValid(Input))) {
@@ -122,7 +123,6 @@ void AInventoryMan::BeginPlay() {
 		}
 	}
 
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
 
 	Inventory = World->GetSubsystem<UInventory>();
 	if (UNLIKELY(!Inventory)) return;

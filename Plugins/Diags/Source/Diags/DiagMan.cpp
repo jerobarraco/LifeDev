@@ -14,6 +14,7 @@
 #include "Diags.h"
 #include "DiagTypes.h" // Log
 #include "Kismet/GameplayStatics.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
 
 ADiagMan::ADiagMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -112,7 +113,8 @@ void ADiagMan::DiagDone_Implementation() {
 
 	IsShowing = false;
 	UI->Hide();
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
+	// last false avoids removing the ctx which is needed for remapping
+	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -124,6 +126,7 @@ void ADiagMan::BeginPlay() {
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
 	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(World);
+
 	if (LIKELY(IsValid(Input))) {
 		if (LIKELY(IsValid(ActionSkip)))
 			Input->BindAction<ADiagMan>(

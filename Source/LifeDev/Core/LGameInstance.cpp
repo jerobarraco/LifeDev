@@ -39,8 +39,16 @@ void ULGameInstance::Init() {
 
 	// TODO maybe this should be in the game instance
 	
-	const UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
 	if (EISettings) EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
+
+	const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
+		FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
+	EISettings->RegisterInputMappingContext(CtxDiags.LoadSynchronous());
+
+	const TSoftObjectPtr<UInputMappingContext> CtxInv = TSoftObjectPtr<UInputMappingContext>(
+		FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory")));
+	EISettings->RegisterInputMappingContext(CtxInv.LoadSynchronous());
 	
 	// force disable debug flags
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
