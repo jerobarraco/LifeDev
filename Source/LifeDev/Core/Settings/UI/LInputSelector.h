@@ -27,6 +27,8 @@ public:
 	// loads from enhanced input. requires uenhancedinputusersettings
 	UFUNCTION(BlueprintCallable,CallInEditor)
 	void Load();
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintPure=false)
+	bool IsMapGP() const;
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();

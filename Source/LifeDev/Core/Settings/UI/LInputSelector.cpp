@@ -35,6 +35,8 @@ void ULInputSelector::DeInit() {
 }
 
 void ULInputSelector::Apply() {
+	if (UNLIKELY(InputName.IsNone())) return;
+	// https://dev.epicgames.com/community/learning/tutorials/Vp69/unreal-engine-player-mappable-keys-using-enhanced-input
 	FMapPlayerKeyArgs Args;
 	Args.MappingName = InputName;
 	Args.Slot = EPlayerMappableKeySlot::First;
@@ -52,6 +54,12 @@ void ULInputSelector::Load() {
 	TArray<FKey> Keys;
 	Profile->GetMappedKeysInRow(InputName, Keys);
 	if (Keys.Num()>0) SetSelectedKey(Keys[0]);
+
+	SetAllowGamepadKeys(IsMapGP());
+}
+
+bool ULInputSelector::IsMapGP() const {
+	return InputName.ToString().EndsWith("_GP");
 }
 
 void ULInputSelector::ResetStyle() {
