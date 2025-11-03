@@ -14,6 +14,7 @@ void ULSetControlUI::Apply_Implementation() {
 	if (LIKELY(Settings)) Settings->AsyncSaveSettings();
 	
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		if (UNLIKELY(!S)) continue;
 		S->Load();
 	}
 }
@@ -21,6 +22,7 @@ void ULSetControlUI::Apply_Implementation() {
 void ULSetControlUI::Load_Implementation() {
 	Super::Load_Implementation();
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		if (UNLIKELY(!S)) continue;
 		S->Load();
 	}
 }
@@ -32,6 +34,7 @@ void ULSetControlUI::NativeOnInitialized() {
 		BDefaults->OnClick.AddUniqueDynamic(this, &ULSetControlUI::SetDefaults);
 	
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		if (UNLIKELY(!S)) continue;
 		S->Init();
 	}
 }
@@ -41,6 +44,7 @@ void ULSetControlUI::NativeDestruct() {
 		BDefaults->OnClick.RemoveAll(this);
 	
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		if (UNLIKELY(!S)) continue;
 		S->DeInit();
 	}
 	Super::NativeDestruct();
