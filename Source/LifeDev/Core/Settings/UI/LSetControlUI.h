@@ -16,7 +16,7 @@ class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {
 
 public:
 	virtual void Apply_Implementation() override;
-	virtual void Load_Implementation() override {}
+	virtual void Load_Implementation() override;
 
 protected:
 	virtual void NativeOnInitialized() override;

@@ -26,11 +26,7 @@ ULInputSelector::ULInputSelector():Super() {
 	// SetToolTipText(FText::FromString(TEXT("Sorry. Rebinding is not available at the moment.")));
 }
 
-void ULInputSelector::Init(const FInputChord& Key) {
-	// TODO load from settings
-	// TODO remove Key
-	// TODO move the allow gamepad here
-	// SetSelectedKey(Key);
+void ULInputSelector::Init() {
 	OnKeySelected.AddUniqueDynamic(this, &ULInputSelector::KeySelected);
 }
 
@@ -39,8 +35,10 @@ void ULInputSelector::DeInit() {
 }
 
 void ULInputSelector::Apply() {
-	const FMapPlayerKeyArgs Args = {
-		.MappingName = InputName, .Slot = EPlayerMappableKeySlot::First, .NewKey = GetSelectedKey().Key};
+	FMapPlayerKeyArgs Args;
+	Args.MappingName = InputName;
+	Args.Slot = EPlayerMappableKeySlot::First;
+	Args.NewKey = GetSelectedKey().Key;
 	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
 	// If you want to, you can additionally specify this mapping to only be applied to a certain hardware device or key profile
 	//Args.ProfileId =

@@ -17,7 +17,7 @@ public:
 	ULInputSelector();
 
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
-	void Init(const FInputChord& Key);
+	void Init();
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void DeInit();
 

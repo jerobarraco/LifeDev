@@ -5,12 +5,24 @@
 #include "UserSettings/EnhancedInputUserSettings.h"
 
 #include "JButton.h"
+#include "LInputSelector.h"
 #include "JUtils/Misc/JUtilsSys.h"
 
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
-	UEnhancedInputUserSettings* Settings = UJUtilsSys::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
 	if (LIKELY(Settings)) Settings->AsyncSaveSettings();
+	
+	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		S->Load();
+	}
+}
+
+void ULSetControlUI::Load_Implementation() {
+	Super::Load_Implementation();
+	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		S->Load();
+	}
 }
 
 void ULSetControlUI::NativeOnInitialized() {
@@ -18,11 +30,19 @@ void ULSetControlUI::NativeOnInitialized() {
 	
 	if (LIKELY(BDefaults))
 		BDefaults->OnClick.AddUniqueDynamic(this, &ULSetControlUI::SetDefaults);
+	
+	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		S->Init();
+	}
 }
 
 void ULSetControlUI::NativeDestruct() {
 	if (LIKELY(BDefaults))
 		BDefaults->OnClick.RemoveAll(this);
+	
+	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+		S->DeInit();
+	}
 	Super::NativeDestruct();
 }
 
