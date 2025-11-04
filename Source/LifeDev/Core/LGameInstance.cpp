@@ -39,17 +39,6 @@ void ULGameInstance::Init() {
 
 	// TODO maybe this should be in the game instance
 	
-	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
-	if (EISettings) EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
-
-	// find a better place and way, this crashes the game
-	// const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
-		// FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
-	// EISettings->RegisterInputMappingContext(CtxDiags.LoadSynchronous());
-
-	// const TSoftObjectPtr<UInputMappingContext> CtxInv = TSoftObjectPtr<UInputMappingContext>(
-		// FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory")));
-	// EISettings->RegisterInputMappingContext(CtxInv.LoadSynchronous());
 	
 	// force disable debug flags
 	// ULSysSettings* const SysSettings = ULSysSettings::Get();
@@ -63,7 +52,7 @@ void ULGameInstance::BeginLoadingScreen(const FString& MapName) {
 	
 	// todo this does not seem to be working.
 	// it can't find the camera manager.
-	// im going to be showing and hiding the load screen per level 
+	// im going to be showing and hiding the load screen per level
 	UJUtilsSys::CameraFade(this, false);
 }
 
@@ -82,6 +71,7 @@ void ULGameInstance::Shutdown() {
 	if (LIKELY(!CloseTriggered & !UJUtilsSys::IsDebug() & !UJUtilsSys::IsEditor()
 		& !IsRunningCookCommandlet() & (IsValid(SSettings) && !SSettings->CloseURL.IsEmpty())))
 		FPlatformProcess::LaunchURL(*SSettings->CloseURL, NULL, NULL);
+
 	CloseTriggered = true;
 	Super::Shutdown();
 }
