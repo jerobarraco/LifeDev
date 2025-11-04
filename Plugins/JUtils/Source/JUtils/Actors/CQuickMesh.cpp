@@ -42,7 +42,6 @@ void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
 	}
 }
 
-
 void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
@@ -51,7 +50,7 @@ void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
 
-void UCQuickMesh::SetCastContactShadow(const bool Contact) {
+void UCQuickMesh::SetUseContactShadow(const bool Contact) {
 	bCastContactShadow = Contact;
 	bCastDynamicShadow = !Contact;
 }

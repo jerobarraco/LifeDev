@@ -15,8 +15,9 @@ APencil::APencil():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Pencil_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
-	Mesh->SetCastAllShadows(true);
-
+	// Mesh->SetCastAllShadows(true);
+	Mesh->SetCastContactShadow(true);
+	
 	Interact->SetBoxExtent(FVector(7.5,1,1));
 	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));
 	

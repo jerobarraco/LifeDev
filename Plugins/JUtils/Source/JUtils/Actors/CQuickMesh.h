@@ -22,7 +22,7 @@ public:
 	// a bit of optimization. When "Contact" is set it will use contact shadows and disable dynamic shadows.
 	// your lights need to have a contact shadow length.
 	UFUNCTION(BlueprintCallable)
-	void SetCastContactShadow(const bool Contact);
+	void SetUseContactShadow(const bool Contact);
 
 	UFUNCTION(BlueprintCallable)
 	void SetCustomDepth(const bool Enable, const int32 Val=0);
