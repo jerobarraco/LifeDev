@@ -50,7 +50,6 @@ automanage
 
 # light
 * use spotlights instead of pointlights as they are faster
-* be intentional about casting shadows and dynamic lights, disable by default
 
 ## light culling
 * automatic : r.MinScreenRadiusForLights 0.03 (disables the LIGHT at that radius)
@@ -84,6 +83,13 @@ animation
 ## shadows
 * removed support for local fog volumes
 * disable cast volumetric shadows on lights
+* be intentional about casting shadows and dynamic lights, disable by default
+* (not sure this is good) @raditsyz :A great tip for any other artists/tech artists is to tune your lights by disabling 'Exponential Falloff' on your lights and set your exponent to 2-3. You can use this to make better fill lights that don't need as high of an attenuation radius. This trick combined with an increased 'Indirect Lighting Intensity' can create some gains for you without losing too much light detail and accuracy, especially when it comes to fill lights.
+* use contact shadows instead of dynamic ones
+* * set contact shdow length in dir light settings
+* * on mesh disable dynamdc shadows, enable contact shadows only
+* on mesh set the invalidation to static if possible https://m.youtube.com/watch?v=tV4bpjm-bIg
+* 
 
 ## shadow maps
 	r.Shadow.Virtual.NonNanite.IncludeInCoarsePages 0
@@ -108,7 +114,21 @@ animation
 * Use the following console variables in succession to enable stats:
   r.ShaderPrintEnable 1
   r.Shadow.Virtual.ShowStats 1 (or 2 to show only the page statistics)
+* r.shadow.virtual.dynamicres.maxpagepoolloadfactor  0.85 might help reduce the size
+* r.shadow.virtual.smrt.raycountlocal ( note this is controlled by scallability, so has to be changed there)
+* * r.shadow.virtual.visualize.advanced 1 to see advanced visualizations including smrt
 
+* r.shadow.virtual.cache.staticseparate 1 enabled by dufault but doubles vram
+
+* * reduce max pshysical pages. max sure the lights dont une more than that
+* r.shadow.virtual.resolutionlodbias[Local]
+  < 1 detail, more than 1 rough detail
+* r.shadow.virtual.resolutionlodbiaslocalmoving
+* these values also exists for directional too
+  ** optimize the ones for directional. since i rarelf use them
+  r.shadow.virtual.resolutionlodbiasdirectional and moving
+
+* adjust size of r.shadow.vdrtual.clipmap.firstlevel and lastlevel. probably can get away with less lastlevel
 
 # pso precache
 	; pso precaching https://www.tomlooman.com/psocaching-unreal-engine/
