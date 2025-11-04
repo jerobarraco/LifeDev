@@ -18,7 +18,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCastAllShadows(const bool Cast);
-	
+
+	// a bit of optimization. When "Contact" is set it will use contact shadows and disable dynamic shadows.
+	// your lights need to have a contact shadow length.
 	UFUNCTION(BlueprintCallable)
 	void SetCastContactShadow(const bool Contact);
 

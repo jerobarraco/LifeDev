@@ -8,7 +8,8 @@
 AQuickMesh::AQuickMesh() {
 	Mesh = CreateDefaultSubobject<UCQuickMesh>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
-	
+	Mesh->SetCastContactShadow(true);
+
 	Super::SetActorTickEnabled(false);
 	PrimaryActorTick.SetTickFunctionEnable(false);
 	PrimaryActorTick.bStartWithTickEnabled = false;

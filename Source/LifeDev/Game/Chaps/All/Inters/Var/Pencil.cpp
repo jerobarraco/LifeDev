@@ -26,4 +26,5 @@ APencil::APencil():Super() {
 	SFXs = { CSnd.Object };
 
 	APencil::SetMobility(EComponentMobility::Static);
+	
 }
