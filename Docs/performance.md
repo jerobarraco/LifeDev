@@ -50,6 +50,7 @@ automanage
 
 # light
 * use spotlights instead of pointlights as they are faster
+* light: can have a check "affects world"
 
 ## light culling
 * automatic : r.MinScreenRadiusForLights 0.03 (disables the LIGHT at that radius)
