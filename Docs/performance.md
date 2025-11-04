@@ -128,8 +128,15 @@ animation
   ** optimize the ones for directional. since i rarelf use them
   r.shadow.virtual.resolutionlodbiasdirectional and moving
 
-* adjust size of r.shadow.vdrtual.clipmap.firstlevel and lastlevel. probably can get away with less lastlevel
+* adjust size of r.shadow.virtual.clipmap.firstlevel and lastlevel. affects mostly directional light (and memory)
 
+* * reduce max pshysical pages. max sure the lights dont une more than that
+* r.shadow.virtual.resolutionlodbias[Local]
+  < 1 detail, more than 1 rough detail
+* r.shadow.virtual.resolutionlodbiaslocalmoving
+* these values also exists for directional too
+  ** optimize the ones for directional. since i rarelf use them
+  r.shadow.virtual.resolutionlodbiasdirectional and moving
 # pso precache
 	; pso precaching https://www.tomlooman.com/psocaching-unreal-engine/
 	; https://dev.epicgames.com/documentation/en-us/unreal-engine/pso-precaching-for-unreal-engine
