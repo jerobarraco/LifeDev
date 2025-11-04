@@ -51,6 +51,11 @@ void UCQuickMesh::SetCastAllShadows(const bool Cast) {
 	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
 
+void UCQuickMesh::SetCastContactShadow(const bool Contact) {
+	bCastContactShadow = Contact;
+	bCastDynamicShadow = !Contact;
+}
+
 void UCQuickMesh::SetCustomDepth(const bool Enable, const int32 Val) {
 	// use alongside JUtils/Mats/Post/Hidden
 	CustomDepthStencilValue = Val;
