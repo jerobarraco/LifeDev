@@ -3,10 +3,13 @@
 
 #include "TeachMan.h"
 
+#include "EnhancedInputSubsystems.h"
 #include "GameFramework/InputDeviceSubsystem.h"
 
 #include "TeachTypes.h"
+#include "TPInput.h"
 #include "Inventory/Flags.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogTeachMan, Log, Log)
 
@@ -26,12 +29,20 @@ void ATeachMan::Init_Implementation() {
 	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.AddDynamic(this, &ATeachMan::OnHardwareChanged);
 	else UE_LOG(LogTeachMan, Log, TEXT("%hs can't get input subsystem"), __func__);
+
+	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsSys::GetEInputSub(this);
+	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
+	if (LIKELY(PInput)) PInput->OnChange.AddUniqueDynamic(this, &ATeachMan::InputChanged);
 }
 
 void ATeachMan::DeInit_Implementation() {
 	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.RemoveAll(this);
 	
+	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsSys::GetEInputSub(this);
+	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
+	if (LIKELY(PInput)) PInput->OnChange.RemoveAll(this);
+
 	DT = nullptr;
 	DTs.Empty();
 	Flags = nullptr;
@@ -128,4 +139,9 @@ void ATeachMan::SetTarget(const ETeachTarget Tgt) {
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {
 	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/19?u=nande
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
+}
+
+void ATeachMan::InputChanged(const bool IsGP) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed IsGP=%i"), __func__, IsGP);
+	SetTarget(IsGP ? ETeachTarget::PAD : ETeachTarget::DESK);
 }
