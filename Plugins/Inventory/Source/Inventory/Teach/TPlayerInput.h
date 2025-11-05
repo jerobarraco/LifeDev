@@ -9,4 +9,7 @@
 UCLASS(Blueprintable, BlueprintType)
 class INVENTORY_API UTPlayerInput : public UEnhancedPlayerInput {
 	GENERATED_BODY()
+
+protected:
+	virtual bool InputKey(const FInputKeyEventArgs& Params) override;
 };
