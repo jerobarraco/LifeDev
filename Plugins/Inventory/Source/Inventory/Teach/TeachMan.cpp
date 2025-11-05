@@ -3,7 +3,6 @@
 
 #include "TeachMan.h"
 
-#include "IAudioParameterTransmitter.h"
 #include "GameFramework/InputDeviceSubsystem.h"
 
 #include "TeachTypes.h"
@@ -26,15 +25,20 @@ void ATeachMan::Init_Implementation() {
 	
 	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.AddDynamic(this, &ATeachMan::OnHardwareChanged);
+	else UE_LOG(LogTeachMan, Log, TEXT("%hs can't get input subsystem"), __func__);
 }
 
 void ATeachMan::DeInit_Implementation() {
+	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
+	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.RemoveAll(this);
+	
 	DT = nullptr;
 	DTs.Empty();
 	Flags = nullptr;
-
+	
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+	
 	World->GetTimerManager().ClearAllTimersForObject(this);
 }
 
