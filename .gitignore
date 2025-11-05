@@ -86,3 +86,6 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+!Plugins/Sentry/ThirdParty/**/*.exe
+!Plugins/Sentry/ThirdParty/**/*.dll
+!Plugins/Sentry/ThirdParty/**/*.lib
