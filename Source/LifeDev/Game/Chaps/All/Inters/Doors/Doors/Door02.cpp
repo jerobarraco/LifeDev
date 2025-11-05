@@ -20,14 +20,14 @@ ADoor02::ADoor02():Super() {
 		CMesh1(TEXT("/Game/LifeDev/Game/Inters/Doors/Door02/DoorA-WinA.DoorA-WinA"));
 	WinA->SetStaticMesh(CMesh1.Object);
 	WinA->SetRelativeLocation(FVector(0,0,0));
-	WinA->SetCastAllShadows(false); // opt
+	WinA->SetUseDynShadow(false); // opt
 	WinA->bUseAttachParentBound = true; // opt
 	
 	WinB = CreateDefaultSubobject<UCQuickMesh>(TEXT("WinB"));
 	WinB->SetupAttachment(Mesh);
 	WinB->SetStaticMesh(CMesh1.Object);
 	WinB->SetRelativeLocation(FVector(0,0,-55));
-	WinB->SetCastAllShadows(false); // opt
+	WinB->SetUseDynShadow(false); // opt
 	WinB->bUseAttachParentBound = true; // opt
 	
 	SFX->SetRelativeLocation(FVector(100,-10,82.5));

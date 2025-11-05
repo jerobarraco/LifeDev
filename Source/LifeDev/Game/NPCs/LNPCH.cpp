@@ -12,55 +12,55 @@ ALNPCH::ALNPCH():Super() {
 
 	Pelvis = CreateDefaultSubobject<UCQuickMesh>(TEXT("Pelvis"));
 	Pelvis->SetupAttachment(Mesh);
-	Pelvis->SetCastAllShadows(true);
+	Pelvis->SetUseDynShadow(true);
 
 	Torso = CreateDefaultSubobject<UCQuickMesh>(TEXT("Torso"));
 	Torso->SetupAttachment(Pelvis);
-	Torso->SetCastAllShadows(true);
+	Torso->SetUseDynShadow(true);
 
 	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Head"));
 	Head->SetupAttachment(Torso);
-	Head->SetCastAllShadows(true);
+	Head->SetUseDynShadow(true);
 
 	ArmL1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmL1"));
 	ArmL1->SetupAttachment(Torso);
-	ArmL1->SetCastAllShadows(true);
+	ArmL1->SetUseDynShadow(true);
 		
 	ArmR1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmR1"));
 	ArmR1->SetupAttachment(Torso);
-	ArmR1->SetCastAllShadows(true);
+	ArmR1->SetUseDynShadow(true);
 
 	ArmL2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmL2"));
 	ArmL2->SetupAttachment(ArmL1);
-	ArmL2->SetCastAllShadows(true);
+	ArmL2->SetUseDynShadow(true);
 
 	ArmR2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("ArmR2"));
 	ArmR2->SetupAttachment(ArmR1);
-	ArmR2->SetCastAllShadows(true);
+	ArmR2->SetUseDynShadow(true);
 	
 	LegL1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegL1"));
 	LegL1->SetupAttachment(Pelvis);
-	LegL1->SetCastAllShadows(true);
+	LegL1->SetUseDynShadow(true);
 	
 	LegR1 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegR1"));
 	LegR1->SetupAttachment(Pelvis);
-	LegR1->SetCastAllShadows(true);
+	LegR1->SetUseDynShadow(true);
 
 	LegL2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegL2"));
 	LegL2->SetupAttachment(LegL1);
-	LegL2->SetCastAllShadows(true);
+	LegL2->SetUseDynShadow(true);
 
 	LegR2 = CreateDefaultSubobject<UCQuickMesh>(TEXT("LegR2"));
 	LegR2->SetupAttachment(LegR1);
-	LegR2->SetCastAllShadows(true);
+	LegR2->SetUseDynShadow(true);
 
 	FootL = CreateDefaultSubobject<UCQuickMesh>(TEXT("FootL"));
 	FootL->SetupAttachment(LegL2);
-	FootL->SetCastAllShadows(true);
+	FootL->SetUseDynShadow(true);
 	
 	FootR = CreateDefaultSubobject<UCQuickMesh>(TEXT("FootR"));
 	FootR->SetupAttachment(LegR2);
-	FootR->SetCastAllShadows(true);
+	FootR->SetUseDynShadow(true);
 
 	/// anim fade
 	AnimFade->Meshes = {

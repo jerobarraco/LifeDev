@@ -18,7 +18,7 @@ AFoodBox::AFoodBox():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Box_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	// not bothering with the material for now, i prefer not to load 2 materials.
 	// would have to be set on child instances.
 	

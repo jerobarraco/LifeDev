@@ -15,7 +15,7 @@ AHanger::AHanger():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Hanger/Hanger_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-7.500000,12.500000,-2.500000));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(17.500000,-22.500000,2.500000));
 	Interact->SetBoxExtent(FVector(17.500000,22.500000,2.500000));
@@ -24,6 +24,6 @@ AHanger::AHanger():Super() {
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Hanger/Move/HangerMove"));
 	SFXs = {CSnd.Object};
 
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	Super::SetMobility(EComponentMobility::Static);
 }

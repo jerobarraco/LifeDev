@@ -16,7 +16,7 @@ AScissor00::AScissor00() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Utils/Scissor/Scissor_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-4.500000,0.,-1.));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	AnimFade->MatBase = nullptr; // fix material
 
 	Interact->SetRelativeLocation(FVector(4.500000,-12.500000,1.000000));

@@ -86,7 +86,7 @@ ALLight::ALLight():Super() {
 	/// ~
 	// a bit dangerous to do on here. since it will execute before the constructor of the children
 	ALLight::SetMobility(EComponentMobility::Static);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	SetStateNow(1); // start on
 }
 

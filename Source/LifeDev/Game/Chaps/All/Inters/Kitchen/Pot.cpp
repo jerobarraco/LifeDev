@@ -23,7 +23,7 @@ APot::APot():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Pot01_Base"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Lid = CreateDefaultSubobject<UCQuickMesh>(TEXT("Lid"));
 	Lid->SetupAttachment(Mesh);
@@ -31,7 +31,7 @@ APot::APot():Super() {
 		CMeshLid(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Pot/Pot01_Lid"));
 	Lid->SetStaticMesh(CMeshLid.Object);
 	Lid->SetRelativeLocation(FVector(0,0,0));
-	Lid->SetCastAllShadows(true);
+	Lid->SetUseDynShadow(true);
 
 	AnimFade->Meshes.AddUnique(Lid);
 	Anim->TRoot = Lid;

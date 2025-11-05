@@ -17,7 +17,7 @@ ACup::ACup():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Utensils/Cup00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5.50,5.250000,0.));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(5.5,-5.25,5.25));
 	Interact->SetBoxExtent(FVector(5.750000,5.500000,5.500000));

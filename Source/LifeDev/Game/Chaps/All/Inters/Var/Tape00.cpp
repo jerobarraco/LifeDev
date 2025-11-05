@@ -17,7 +17,7 @@ ATape00::ATape00():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Tape00/Cassette00_Tape.Cassette00_Tape"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-5.725000,0,0));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(5.725000,-2.500000,1.250000));
 	Interact->SetBoxExtent(FVector(7.000000,6.000000,2.500000));
@@ -33,7 +33,7 @@ ATape00::ATape00():Super() {
 	Case = CreateDefaultSubobject<UCQuickMesh>(TEXT("Case"));
 	Case->SetupAttachment(IRoot);
 	Case->SetStaticMesh(CCase.Object);
-	Case->SetCastAllShadows(true);
+	Case->SetUseDynShadow(true);
 	Case->SetRelativeLocation(FVector(-5.725000,0,0));
 	AnimFade->Meshes.Add(Case);
 

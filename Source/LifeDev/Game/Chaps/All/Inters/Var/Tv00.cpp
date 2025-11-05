@@ -51,14 +51,14 @@ ATv00::ATv00():Super() {
 	Frame->SetRelativeLocation(FVector(-32.5,27.5,0));
 	Frame->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Frame->SetCollisionProfileName("BlockAllDynamic");
-	Frame->SetCastAllShadows(true);
+	Frame->SetUseDynShadow(true);
 	
 	Glass = CreateDefaultSubobject<UCQuickMesh>(TEXT("Glass"));
 	Glass->SetupAttachment(Frame);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CGlass(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Screen.Tv00-Screen"));
 	Glass->SetStaticMesh(CGlass.Object);
-	Glass->SetCastAllShadows(false); // opt
+	Glass->SetUseDynShadow(false); // opt
 	Glass->bUseAttachParentBound = true; // opt
 	
 	Crt = CreateDefaultSubobject<UCQuickMesh>(TEXT("Crt"));
@@ -66,7 +66,7 @@ ATv00::ATv00():Super() {
 		CCrt(TEXT("/Game/LifeDev/Game/Inters/Tv00/Tv00-Crt.Tv00-Crt"));
 	Crt->SetupAttachment(Frame);
 	Crt->SetStaticMesh(CCrt.Object);
-	Crt->SetCastAllShadows(false); // opt
+	Crt->SetUseDynShadow(false); // opt
 	Crt->bUseAttachParentBound = true; // opt
 	
 	/// anims

@@ -23,7 +23,7 @@ APlant00::APlant00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-32.5,32.5,0));
 	Mesh->SetQuickCollisionEnabled(true);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	SFX->SetRelativeLocation(FVector(32.5,-32.5,30));
 	// interact extent is a bit buffed to be easily triggerable
@@ -45,7 +45,7 @@ APlant00::APlant00():Super() {
 	Plant->SetupAttachment(Mesh);
 	Plant->SetStaticMesh(CPlant.Object);
 	Plant->SetRelativeLocation(FVector(5,-5,50));
-	Plant->SetCastAllShadows(true);
+	Plant->SetUseDynShadow(true);
 
 	Super::SetMobility(EComponentMobility::Static); // static since we won't animate it
 }

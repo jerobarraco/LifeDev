@@ -29,7 +29,7 @@ ALight01::ALight01():Super() {
 	// important since by default it uses the masked material (and nanite).
 	// the masked material doesn't work well with shadows so close to the light source
 	// and nanite does not support translucent.
-	Glass->SetCastAllShadows(false);
+	Glass->SetUseDynShadow(false);
 
 	Interact->SetRelativeLocation(FVector(27.5,-27.5,15));
 	Interact->SetBoxExtent(FVector(28,28.5,15.5));

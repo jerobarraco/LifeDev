@@ -19,7 +19,7 @@ AToy00::AToy00() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Toy01_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	Mesh->SetRelativeLocation(FVector(-10,2.225,0));
 
 	AnimFade->MatBase = nullptr; // the mesh uses a palette. force using the mesh's material.

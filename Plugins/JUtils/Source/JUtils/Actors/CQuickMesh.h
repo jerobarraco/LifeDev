@@ -17,7 +17,7 @@ public:
 	void SetQuickCollisionEnabled(const bool Enable);
 
 	UFUNCTION(BlueprintCallable)
-	void SetCastAllShadows(const bool Cast);
+	void SetUseDynShadow(const bool Cast);
 
 	// a bit of optimization. When "Contact" is set it will use contact shadows and disable dynamic shadows.
 	// your lights need to have a contact shadow length.

@@ -35,7 +35,7 @@ ALight02::ALight02():Super() {
 	// i'm actually going to disable the shadows and imagine it's just passing through
 	// the shader is quite expensive otherwise
 	Cover->bDisallowNanite = false;
-	Cover->SetCastAllShadows(false);
+	Cover->SetUseDynShadow(false);
 	Cover->bCastDistanceFieldIndirectShadow = false;
 
 	Light->SetRelativeLocation(FVector(20,-20,160));

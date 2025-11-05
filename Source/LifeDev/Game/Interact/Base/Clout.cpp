@@ -24,7 +24,7 @@ AClout::AClout():Super() {
 		CSnd (TEXT("/Game/LifeDev/Game/Inters/Clouts/Clouts.Clouts"));
 	// SFX_Trigger = CSnd.Object;
 	SFXs = {CSnd.Object};
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Super::SetMobility(EComponentMobility::Static);
 }

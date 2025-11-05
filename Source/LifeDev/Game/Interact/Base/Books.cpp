@@ -98,7 +98,7 @@ void ABooks::CreateBooks() {
 		QM->SetStaticMesh(BaseMesh);
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
 		QM->SetRelativeLocation(FVector(0, OffY, Spacing*i));
-		QM->SetCastAllShadows(true);
+		QM->SetUseDynShadow(true);
 
 		Books.Add(QM);
 		AnimFade->Meshes.Add(QM);

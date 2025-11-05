@@ -20,7 +20,7 @@ APicture01::APicture01():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeRotation(FRotator(90,0,90).Quaternion());
 	Mesh->SetRelativeLocation(FVector(25,0,0));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(30.000000,-25.000000,7.5));
 	Interact->SetBoxExtent(FVector(35,30,7.5));

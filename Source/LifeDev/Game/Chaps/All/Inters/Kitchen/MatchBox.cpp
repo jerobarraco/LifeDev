@@ -17,7 +17,7 @@ AMatchBox::AMatchBox():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/MatchBox/Matchbox00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-2.000000,2.750000,-0.500000));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(2.000000,-2.750000,0.750000));
 	Interact->SetBoxExtent(FVector(4.000000,5.000000,1.500000));

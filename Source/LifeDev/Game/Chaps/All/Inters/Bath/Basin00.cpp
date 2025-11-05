@@ -21,7 +21,7 @@ ABasin00::ABasin00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(40,30,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90,0).Quaternion());
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(30,-20,12.5));
 	Interact->SetBoxExtent(FVector(30,20,12.5));

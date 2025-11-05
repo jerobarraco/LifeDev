@@ -37,7 +37,7 @@ AWCube00::AWCube00():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	// Mesh->SetRelativeLocation(FVector(0,0,0));
 	Mesh->SetRelativeLocation(FVector(-4,4,-4));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	SFX->SetRelativeLocation(FVector(4,-4,4));
 	// SFX->SetRelativeLocation(FVector(0,0,0));

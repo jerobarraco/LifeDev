@@ -52,7 +52,7 @@ ALight00::ALight00() {
 	if (LIKELY(CTube.Succeeded())) Tube->SetStaticMesh(CTube.Object);
 	
 	Tube->SetRelativeLocation(FVector(0,0,-5));
-	Tube->SetCastAllShadows(false);
+	Tube->SetUseDynShadow(false);
 
 	ALight00::SetMobility(EComponentMobility::Static);
 }

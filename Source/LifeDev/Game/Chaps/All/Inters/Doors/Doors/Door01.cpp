@@ -19,7 +19,7 @@ ADoor01::ADoor01():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh1(TEXT("/Game/LifeDev/Game/Inters/Doors/Door01/Door01-Window.Door01-Window"));
 	Window->SetStaticMesh(CMesh1.Object);
-	Window->SetCastAllShadows(true);
+	Window->SetUseDynShadow(true);
 	Window->bUseAttachParentBound = true; // opt
 	
 	SFX->SetRelativeLocation(FVector(-112.5,0,105));

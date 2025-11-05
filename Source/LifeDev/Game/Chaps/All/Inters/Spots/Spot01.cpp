@@ -23,5 +23,5 @@ ASpot01::ASpot01():Super() {
 	Mesh->SetRelativeLocation(FVector(-17.500000,17.500000,-0.000000));
 	Interact->SetRelativeLocation(FVector(17.500000,-17.500000,5.0));
 	Interact->SetBoxExtent(FVector(20.000000,20.000000,9.000000));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 }

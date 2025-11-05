@@ -19,7 +19,7 @@ APpl::APpl():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Body"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CBodyMat(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_MI"));
 	Mesh->SetMaterial(0, CBodyMat.Object);
@@ -30,7 +30,7 @@ APpl::APpl():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CHeadMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Head"));
 	Head->SetStaticMesh(CHeadMesh.Object);
-	Head->SetCastAllShadows(true);
+	Head->SetUseDynShadow(true);
 	Head->SetMaterial(0, CBodyMat.Object);
 	Head->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.AddUnique(Head);

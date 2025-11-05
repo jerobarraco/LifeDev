@@ -18,7 +18,7 @@ AStove::AStove():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,45,0));
 	Mesh->SetQuickCollisionEnabled(true);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(37.5,-42.5,45));
 	// made less-tall so that it's easier to get the matches and not confuse with the pot.

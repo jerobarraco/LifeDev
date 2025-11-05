@@ -16,7 +16,7 @@ APianoKey::APianoKey():Super() {
 	// SFX_Trigger = CSFX.Object;
 	SFXs = { CSFX.Object };
 
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	Interact->SetRelativeLocation(FVector(0,7.5,-2.5));
 	Interact->SetBoxExtent(FVector(12.5,7.5,2.5)); // this is the most common
 

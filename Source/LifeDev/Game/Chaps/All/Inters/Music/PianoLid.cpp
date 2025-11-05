@@ -19,7 +19,7 @@ APianoLid::APianoLid():Super() {
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Music/Piano/Piano_Lid.Piano_Lid"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-72.5,25,-70));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(72.5,-25,80));
 	Interact->SetBoxExtent(FVector(57.2,5,10));

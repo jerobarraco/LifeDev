@@ -20,7 +20,7 @@ ABedI00::ABedI00():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Beds/Bed00.Bed00"));
 	Mesh->SetStaticMesh(CMesh.Object);
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);

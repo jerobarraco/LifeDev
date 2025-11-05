@@ -25,21 +25,21 @@ AWindow00::AWindow00():Super() {
 	GlassA->SetupAttachment(Mesh);
 	GlassA->SetStaticMesh(CGlass.Object);
 	GlassA->bUseAttachParentBound = true;
-	GlassA->SetCastAllShadows(true);
+	GlassA->SetUseDynShadow(true);
 
 	GlassB = CreateDefaultSubobject<UCQuickMesh>(TEXT("GlassB"));
 	GlassB->SetupAttachment(Mesh);
 	GlassB->SetStaticMesh(CGlass.Object);
 	GlassB->SetRelativeLocation(FVector(0,0,-35));
 	GlassB->bUseAttachParentBound = true;
-	GlassB->SetCastAllShadows(true);
+	GlassB->SetUseDynShadow(true);
 	
 	GlassC = CreateDefaultSubobject<UCQuickMesh>(TEXT("GlassC"));
 	GlassC->SetupAttachment(Mesh);
 	GlassC->SetStaticMesh(CGlass.Object);
 	GlassC->SetRelativeLocation(FVector(0,0,-70));
 	GlassC->bUseAttachParentBound = true;
-	GlassC->SetCastAllShadows(true);
+	GlassC->SetUseDynShadow(true);
 	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CGlassMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelGlass_DMI"));

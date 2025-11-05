@@ -102,7 +102,7 @@ public:
 	// returns the "label" for this interact actor.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE FName GetLabel() const { return Label; }
-
+	
 #pragma region Hint
 	// function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
@@ -182,6 +182,13 @@ public:
 	TObjectPtr<UForceFeedbackEffect> RumbleUnlock = nullptr;
 #pragma endregion
 #pragma region Setup
+	
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetShadowOff();
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetShadowContactOnly();
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetShadowDynamic();
 	// An interact id used for auto dialogs and such.
 	// This is to overcome the issue with GetActorLabel not working on packaged builds ò_ó
 	// It will default to the actor label. It will get updated when changed on the editor.

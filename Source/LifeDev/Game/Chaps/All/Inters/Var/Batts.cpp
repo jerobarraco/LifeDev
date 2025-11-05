@@ -23,14 +23,14 @@ ABatts::ABatts():Super() {
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,2,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90,90));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	
 	MeshB = CreateDefaultSubobject<UCQuickMesh>(TEXT("MeshB"));
 	MeshB->SetupAttachment(Mesh);
 	MeshB->SetStaticMesh(CMesh.Object);
 	MeshB->SetRelativeLocation(FVector(-0.116369,0.143369,-2.243960));
 	MeshB->SetRelativeRotation(FRotator(-11,0,0));
-	MeshB->SetCastAllShadows(true);
+	MeshB->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(2.522632,-1.030120,-0.728246));
 	Interact->SetBoxExtent(FVector(4.2,0.7,2.5));

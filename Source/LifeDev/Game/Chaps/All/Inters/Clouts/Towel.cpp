@@ -16,7 +16,7 @@ ATowel::ATowel():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Clouts/Towel00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-7.500000,12.500000,0.000000));
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 
 	Interact->SetRelativeLocation(FVector(7.500000,-12.500000,17.500000));
 	Interact->SetBoxExtent(FVector(7.500000,12.500000,17.500000));
@@ -26,6 +26,6 @@ ATowel::ATowel():Super() {
 	// TODO
 	// SFXs = {CSnd.Object};
 	
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	Super::SetMobility(EComponentMobility::Static);
 }

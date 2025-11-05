@@ -278,6 +278,18 @@ bool AInteract::ShowHint_Implementation() {
 	return true;
 }
 
+void AInteract::SetShadowOff() {
+	Mesh->SetUseDynShadow(false);
+}
+
+void AInteract::SetShadowContactOnly() {
+	Mesh->SetUseContactShadow(true);
+}
+
+void AInteract::SetShadowDynamic() {
+	Mesh->SetUseDynShadow(true);
+}
+
 void AInteract::BeginPlay() {
 	Super::BeginPlay();
 	SetText();

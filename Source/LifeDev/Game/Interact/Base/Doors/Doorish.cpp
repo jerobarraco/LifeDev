@@ -17,7 +17,7 @@ ADoorish::ADoorish():Super() {
 	UseAnim = true;
 	Anim->IsAdditive = true;
 
-	Mesh->SetCastAllShadows(true);
+	Mesh->SetUseDynShadow(true);
 	// important to call Super here. since this is called before the child constructor
 	// if the child overrides SetMobility it could lead to a crash
 	Super::SetMobility(EComponentMobility::Movable);

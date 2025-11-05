@@ -24,7 +24,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/contact-shadows-in-unreal-engine
 	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
 	bCastContactShadow = false;
-	SetCastAllShadows(false);
+	SetUseDynShadow(false);
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/ 
 }
 
@@ -42,12 +42,12 @@ void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
 	}
 }
 
-void UCQuickMesh::SetCastAllShadows(const bool Cast) {
+void UCQuickMesh::SetUseDynShadow(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
-	// bCastContactShadow = Cast;
+	bCastContactShadow = !Cast; // TODO what's the impact of casting both.
 	// by default this is false, i don't want to mess with it. so just don't.
-	// bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
+	bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
 
 void UCQuickMesh::SetUseContactShadow(const bool Contact) {
