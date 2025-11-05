@@ -3,7 +3,6 @@
 #include "LGGameMode.h"
 
 #include "CoreGlobals.h"
-#include "EnhancedInputSubsystems.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
@@ -43,7 +42,6 @@
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
-#include "UserSettings/EnhancedInputUserSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLGameMode, Log, Log);
 
