@@ -6,10 +6,10 @@
 
 #include "GameFramework/PlayerController.h"
 
-#include "LGPController.generated.h"
+#include "LPController.generated.h"
 
-// LifeDev Game PlayerController
+// LifeDev PlayerController
 UCLASS(Blueprintable)
-class LIFEDEV_API ALGPController : public APlayerController {
+class LIFEDEV_API ALPController : public APlayerController {
 	GENERATED_BODY()
 };

@@ -36,7 +36,7 @@
 #include "LifeDev/Core/Story/LStep.h"
 #include "LifeDev/Core/Story/LStoryMan.h"
 #include "LifeDev/Game/Char/LChar.h"
-#include "LifeDev/Game/Char/LGPController.h"
+#include "LifeDev/Game/Char/LPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
@@ -56,7 +56,7 @@ ALGGameMode::ALGGameMode():Super() {
 		CChar(TEXT("/Game/LifeDev/Game/Char/LChar_B"));
 	DefaultPawnClass = CChar.Succeeded() ? CChar.Class.Get(): ALChar::StaticClass();
 
-	PlayerControllerClass = ALGPController::StaticClass();
+	PlayerControllerClass = ALPController::StaticClass();
 	SpectatorClass = ASpectatorPawn::StaticClass();
 
 	UCInteract::SetProfileDefault(UCInteract::ProfileInteract);
