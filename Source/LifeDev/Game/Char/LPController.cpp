@@ -3,10 +3,10 @@
 
 #include "LPController.h"
 
-#include "Inventory/Teach/TPlayerInput.h"
+#include "Inventory/Teach/TPInput.h"
 
 
 void ALPController::BeginPlay() {
 	Super::BeginPlay();
-	OverridePlayerInputClass = UTPlayerInput::StaticClass();
+	OverridePlayerInputClass = UTPInput::StaticClass();
 }

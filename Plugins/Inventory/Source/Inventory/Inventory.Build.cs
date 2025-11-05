@@ -24,7 +24,8 @@ public class Inventory: ModuleRules {
 		
 		// ... add private dependencies that you statically link with here ...
 		PrivateDependencyModuleNames.AddRange(new string[]{
-			"CoreUObject", "Engine", "EnhancedInput", "UMG", "JUtils"
+			"CoreUObject", "Engine", "EnhancedInput", "UMG", "JUtils",
+			"InputCore" // for obtaining key.IsGamePad
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
