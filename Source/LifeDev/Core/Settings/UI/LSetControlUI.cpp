@@ -12,8 +12,11 @@
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
-	if (LIKELY(Settings)) Settings->AsyncSaveSettings();
-	
+	if (LIKELY(Settings)) {
+		Settings->ApplySettings();
+		Settings->AsyncSaveSettings();
+	}
+
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
 		if (UNLIKELY(!S)) continue;
 		S->Apply();
@@ -34,7 +37,7 @@ void ULSetControlUI::NativeOnInitialized() {
 	// not sure if i *need* this. or if the load is async, which should be.
 	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
 	if (EISettings) EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
-	
+
 	// force register the imcs so that the rebinding works well
 	// i'm not super happy to do loadSynchronous, but this will get loaded at the start of each level (intro and game)
 	const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
