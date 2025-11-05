@@ -59,6 +59,9 @@ public:
 #pragma endregion
 
 protected:
+	UFUNCTION()
+	void OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId);
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName CurrentId = NAME_None;
 	// time at which the last hint was shown. as returned by World->GetTimeSeconds

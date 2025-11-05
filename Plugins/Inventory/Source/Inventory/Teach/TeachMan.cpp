@@ -3,6 +3,9 @@
 
 #include "TeachMan.h"
 
+#include "IAudioParameterTransmitter.h"
+#include "GameFramework/InputDeviceSubsystem.h"
+
 #include "TeachTypes.h"
 #include "Inventory/Flags.h"
 
@@ -20,6 +23,9 @@ void ATeachMan::Init_Implementation() {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs"), __func__);
 	Flags = UFlags::Instance(this);
 	UE_CLOG(!Flags, LogTeachMan, Warning, TEXT("%hs Flag subsystem not found!"), __func__);
+	
+	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
+	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.AddDynamic(this, &ATeachMan::OnHardwareChanged);
 }
 
 void ATeachMan::DeInit_Implementation() {
@@ -113,4 +119,9 @@ void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
 void ATeachMan::SetTarget(const ETeachTarget Tgt) {
 	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Tgt);
 	DT = Ptr ? *Ptr : nullptr;
+}
+
+void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {
+	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/19?u=nande
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
 }
