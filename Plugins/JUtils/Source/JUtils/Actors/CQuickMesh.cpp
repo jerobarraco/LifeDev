@@ -25,7 +25,10 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
 	bCastContactShadow = false;
 	SetUseDynShadow(false);
-	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/ 
+	// by default use distance fields for lighting. if cast shadows is off, it won't be used.
+	bAffectDistanceFieldLighting = true;
+	bCastDistanceFieldIndirectShadow = true; // depends on mesh being movable, having distance fields generated, and project supporting it.
+	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
 }
 
 void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {
