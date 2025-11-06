@@ -94,6 +94,7 @@ void UCSignificance::Register() {
 	auto PostUpdate = [&] (USignificanceManager::FManagedObjectInfo* const ObjectInfo,
 	const float Old, const float New, const bool Final) {
 		if (UNLIKELY(!IsValid(this))) return;
+
 		Update(ObjectInfo, Old, New, Final);
 	};
 

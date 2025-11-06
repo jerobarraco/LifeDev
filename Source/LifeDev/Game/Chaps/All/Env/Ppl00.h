@@ -17,7 +17,10 @@ class LIFEDEV_API APpl00 : public APpl {
 public:
 	APpl00();
 
+	
 protected:
+	void BeginPlay() override;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCPplSig> Sig = nullptr;
 };
