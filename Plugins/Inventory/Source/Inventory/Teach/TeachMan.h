@@ -53,9 +53,12 @@ public:
 	void AddTarget(const ETeachTarget Target, UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(const ETeachTarget Target);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE ETeachTarget GetTarget() const { return Tgt; }
+
 	// pass the key names, that you use when formatting the data tables
 	// e.g. if in the datatable you have "Press the {inventory_next} button", you need one entry with key "inventory_next"
-	// and the value "
+	// and the value "X".
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
 	void SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names);
