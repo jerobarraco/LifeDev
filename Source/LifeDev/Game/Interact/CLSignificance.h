@@ -24,7 +24,7 @@ public:
 	// will bind to one animator, other animators will be unbound.
 	// don't call on CDO
 	// beware of the IsOffIf* flags, since the animator might not re-activate,
-	// and so this component might never reactivate, hence never becoming on again.
+	// and so this component might never reactivate, hence never becoming "on" again.
 	UFUNCTION(BlueprintCallable, meta=(UnsafeDuringActorConstruction))
 	void BindAnim(UCAnimator* const Animator);
 
