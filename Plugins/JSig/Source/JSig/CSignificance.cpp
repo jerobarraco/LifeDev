@@ -134,7 +134,7 @@ const FTransform& Viewpoint) {
 	}
 	
 	// test offscreen
-	if (OffscreenTimeMax >= 0.0f && Owner && !Owner->WasRecentlyRendered(OffscreenTimeMax)) {
+	if (OffscreenTimeMax >= 0.0f & (Owner && !Owner->WasRecentlyRendered(OffscreenTimeMax))) {
 		UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor offscreen for too long. Now is off/low. name=%s"),
 			__func__, *GetNameSafe(Owner));
 		
