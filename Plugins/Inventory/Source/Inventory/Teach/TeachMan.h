@@ -9,8 +9,9 @@ enum class ETeachTarget : uint8;
 class UFlags;
 struct FTeachRow;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLearnShow, const FName&, Id, const FTeachRow&, Row);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLearnHide, const FName&, Id);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTeachShow, const FName&, Id, const FTeachRow&, Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTeachHide, const FName&, Id);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(const FString, FTeachKeyName, const FString&, Key);
 
 // for new users popups, and stuff.
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
@@ -58,9 +59,12 @@ public:
 
 #pragma region delegates
 	UPROPERTY(BlueprintReadWrite, Transient)
-	FLearnShow OnShow;
+	FTeachShow OnShow;
 	UPROPERTY(BlueprintReadWrite, Transient)
-	FLearnHide OnHide;
+	FTeachHide OnHide;
+	// override to be able to set custom key names
+	UPROPERTY(BlueprintReadWrite, Transient)
+	FTeachKeyName OnKeyName;
 #pragma endregion
 
 protected:
