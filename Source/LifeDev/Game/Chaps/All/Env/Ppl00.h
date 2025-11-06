@@ -8,9 +8,16 @@
 
 #include "Ppl00.generated.h"
 
+class UCPplSig;
 // A ppl that appears when you're not looking. and says something when you look at it.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APpl00 : public APpl {
 	GENERATED_BODY()
 
+public:
+	APpl00();
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UCPplSig> Sig = nullptr;
 };
