@@ -118,13 +118,13 @@ const FTransform& Viewpoint) {
 		return GSigOverride;
 
 	const AActor* const Owner = GetOwner();
-	if (IsOffIfHidden && Owner && Owner->IsHidden())
+	if (IsOffIfHidden & (Owner && Owner->IsHidden()))
 		return static_cast<float>(ESigValue::Off);
 
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
 	// but in truth it will contradict the occlusion and return low even if occluded
-	if (TestOcclusion && Owner) {
+	if (TestOcclusion & !!Owner) {
 		if (IsOccluded(Owner, Viewpoint)) {
 			UE_LOG(LogJSigComp, Verbose, TEXT("%hs. Actor occluded. Now is off/low. name=%s"),
 				__func__, *GetNameSafe(Owner));
