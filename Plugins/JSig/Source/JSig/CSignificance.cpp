@@ -28,7 +28,7 @@ void UCSignificance::Activate(const bool Reset) {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	const bool WasActive = IsActive();
 	// some objects use this.
-	if (!Reset && WasActive) return;
+	if (!Reset & WasActive) return;
 
 	Super::Activate(Reset);
 	if (LIKELY(!WasActive)) Register(); // ensure no-double registration.
@@ -41,7 +41,7 @@ void UCSignificance::Deactivate() {
 }
 
 void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	// Unregister(); call deactivate better.
+	// Unregister(); called by deactivate
 	Deactivate(); // important or the sigmanager will leak and then crash :) (according to ue docs)
 	
 	CompsActivate.Empty();
