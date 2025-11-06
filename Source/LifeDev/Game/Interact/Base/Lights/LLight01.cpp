@@ -36,6 +36,7 @@ ALLight01::ALLight01() {
 	RectLight->SetSourceHeight(5);
 	RectLight->SetBarnDoorAngle(90.010101);
 	RectLight->SetBarnDoorLength(7);
+	RectLight->SetUseRayTracedDistanceFieldShadows(true);
 
 	ALLight01::SetMobility(EComponentMobility::Static);
 }

@@ -21,8 +21,10 @@ ALLight02::ALLight02():Super() {
 	Light->SetAttenuationRadius(500);
 	Light->SetInnerConeAngle(10);
 	Light->SetOuterConeAngle(40);
+	Light->SetUseRayTracedDistanceFieldShadows(true);
+
 	ALLight02::SetMobility(EComponentMobility::Static);
-	UseAnim = true; // restore anim set by Super::SetMobility
+	// UseAnim = true; // restore anim set by Super::SetMobility // not necessary anymore. delete.
 }
 
 void ALLight02::SetMobility(const EComponentMobility::Type Mobility) {
