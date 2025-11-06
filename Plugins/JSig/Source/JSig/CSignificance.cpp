@@ -118,8 +118,9 @@ const FTransform& Viewpoint) {
 		return GSigOverride;
 
 	const AActor* const Owner = GetOwner();
-	if (IsOffIfHidden & (Owner && Owner->IsHidden()))
-		return static_cast<float>(ESigValue::Off);
+	if (IsOffIfHidden & !!Owner)
+		if (Owner->IsHidden()) // this way i only use two jumps
+			return static_cast<float>(ESigValue::Off);
 
 	// test occlusion BEFORE offscreen
 	// i was tempted to believe i will save time.
