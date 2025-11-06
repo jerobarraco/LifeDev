@@ -79,7 +79,6 @@ protected:
 	void OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId);
 
 	// todo maybe make virtual. maybe make settarget virtual.
-	// todo reload text on change
 	UFUNCTION()
 	void InputChanged(const bool IsGP);
 

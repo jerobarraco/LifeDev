@@ -95,12 +95,16 @@ bool ATeachMan::ShowNow(const FName& Id) {
 		UE_LOG(LogTeachMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
 	}
-	// TODO format the datatable stuff
+
 	FTeachRow NR = *pR;
-	const FText& TextOld = pR->Text;
-	
-	NR.Text = FText::Format(TextOld, KeyArgs[Tgt]);
-	UE_LOG(LogTeachMan, Log, TEXT("%hs Formatted =%s"), __func__, *NR.Text.ToString());
+	FFormatNamedArguments* const pArgs = KeyArgs.Find(Tgt);
+	if (LIKELY(pArgs)) {
+		NR.Text = FText::Format(pR->Text, *pArgs);
+		UE_LOG(LogTeachMan, Log, TEXT("%hs Formatted =%s"), __func__, *NR.Text.ToString());
+	} else {
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs Could not find keynames for target =%s"),
+			__func__, *UEnum::GetValueAsString(Tgt));
+	}
 	
 	Set(Id); // mark here as well to make logic easier.
 	CurrentId = Id;
