@@ -59,6 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="JSig")
 	FORCEINLINE ESigValue GetSignificance() const { return Significance; }
 
+#pragma region options
 	static inline bool Debug = false;
 
 	// Whether the update of this component is concurrent or sequential.
@@ -133,7 +134,14 @@ public:
 		{ESigValue::Low, .3},
 		{ESigValue::Off, -1},
 	};
+	// The component used to calculate the distance.
+	// If not set, it will use the owner's root.
+	// CalcLocation takes precedence.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	TObjectPtr<USceneComponent> Origin;
+#pragma endregion
 
+#pragma region comps
 	// Components to manage ticks.
 	// Components set here, will have it's TickInterval managed by the 'TickIntervals' property.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
@@ -143,13 +151,6 @@ public:
 	// The components listed will be deactivated when the significance is Off, and reactivated when it's not Off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<TObjectPtr<UActorComponent>> CompsActivate;
-
-	// The component used to calculate the distance.
-	// If not set, it will use the owner's root.
-	// CalcLocation takes precedence.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<USceneComponent> Origin;
-	
 	// components to manage HiddenInGame, ONLY when the significance is Off.
 	// When significance is Off it will set all the components to HiddenInGame
 	// otherwise it will unset HiddenInGame.
@@ -160,7 +161,9 @@ public:
 	// That's by design, beware.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TArray<TObjectPtr<USceneComponent>> CompsHide;
+#pragma endregion
 
+#pragma region delegates
 	// triggered when the significance changes. Guaranteed to trigger in game thread.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnSignificanceChanged OnChanged;
@@ -184,6 +187,7 @@ public:
 	// (on bp use the "Set" node, not bind) 
 	UPROPERTY(BlueprintReadWrite, Transient, Category=SetUp)
 	FCalcLocation CalcLocation;
+#pragma endregion
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

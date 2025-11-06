@@ -17,6 +17,7 @@ UCPplSig::UCPplSig() {
 		{ESigValue::Off, 200*200},
 		{ESigValue::High, 201*201}
 	};
+	SetDefaultSignificance(ESigValue::Off);
 }
 
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
