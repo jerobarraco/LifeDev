@@ -10,7 +10,7 @@
 
 UCPplSig::UCPplSig() {
 	SetAutoActivate(true);
-	IsOffIfHidden = false; // we are actually
+	IsOffIfHidden = false; // the owner is hidden by default.
 	TestOcclusion = false;
 	OffscreenTimeMax = -1;
 	DistanceSqr = { // unnecessary but...
@@ -39,4 +39,7 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 void UCPplSig::BeginPlay() {
 	Super::BeginPlay();
 	CalcSignificance.BindDynamic(this, &UCPplSig::CalcPplSig);
+	SetSignificance(ESigValue::Off);
+	
+	SetActive(true);
 }
