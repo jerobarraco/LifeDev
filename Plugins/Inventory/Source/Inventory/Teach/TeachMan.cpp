@@ -137,6 +137,7 @@ void ATeachMan::SetTarget(const ETeachTarget Tgt) {
 }
 
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {
+	// todo this does not work
 	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/19?u=nande
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
 }

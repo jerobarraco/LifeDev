@@ -18,7 +18,9 @@ public:
 	FString Comment;
 };
 
-UENUM(Blueprintable, BlueprintType)
+// todo create a input type or use one from ue. and use that instead.
+// probably EHardwareDevicePrimaryType or EInputDevices
+UENUM(Blueprintable, BlueprintType, meta=(Deprecated))
 enum class ETeachTarget: uint8 {
 	NONE,
 	// desktop kb and mouse
