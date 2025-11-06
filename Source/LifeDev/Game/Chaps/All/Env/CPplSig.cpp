@@ -15,3 +15,12 @@ UCPplSig::UCPplSig() {
 	OffscreenTimeMax = -1;
 	
 }
+
+ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
+	return ESigValue::Off;
+}
+
+void UCPplSig::BeginPlay() {
+	Super::BeginPlay();
+	CalcSignificance.BindDynamic(this, &UCPplSig::CalcPplSig);
+}

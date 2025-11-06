@@ -13,5 +13,10 @@ class LIFEDEV_API UCPplSig : public UCSignificance {
 
 public:
 	UCPplSig();
-	
+
+protected:
+	void BeginPlay() override;
+
+	UFUNCTION()
+	ESigValue CalcPplSig(const FTransform& Viewpoint);
 };
