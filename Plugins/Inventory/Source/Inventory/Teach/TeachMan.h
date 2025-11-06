@@ -58,7 +58,7 @@ public:
 	// it will have  automatically added to the end : _kb if keyboard/mouse _gp if gamepad, _tc if touch
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
-	void SetKeyNames(const TMap<FString, FString> Names){};
+	FORCEINLINE void SetKeyNames(const TMap<FString, FText> Names) { KeyNames = Names; }
 	
 	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)
@@ -92,5 +92,8 @@ protected:
 	TMap<ETeachTarget, TObjectPtr<UDataTable>> DTs;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient)
+	TMap<FString, FText> KeyNames;
+	
 	FTimerHandle HShow;
 };
