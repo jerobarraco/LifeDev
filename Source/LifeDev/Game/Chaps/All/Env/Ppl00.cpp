@@ -15,4 +15,13 @@ void APpl00::BeginPlay() {
 	Super::BeginPlay();
 	UseFade = false; // disable fade here, so that the significance doesn't use it.
 	// but so we can use it later.
+	Sig->OnChanged.AddUniqueDynamic(this, &APpl00::SigChanged);
+}
+
+void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
+	// once it's shown, deactivate.
+	if (Significance == ESigValue::High) {
+		Sig->Deactivate();
+		UseFade = true;
+	}
 }

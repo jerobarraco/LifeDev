@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "JSig/JSigTypes.h"
 
 #include "LifeDev/Game/Env/Ppl.h"
 
@@ -19,7 +20,10 @@ public:
 
 	
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCPplSig> Sig = nullptr;

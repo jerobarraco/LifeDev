@@ -15,7 +15,9 @@ public:
 	UCPplSig();
 
 protected:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
+	UFUNCTION()
+	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
 	UFUNCTION()
 	ESigValue CalcPplSig(const FTransform& Viewpoint);
