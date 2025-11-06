@@ -95,7 +95,13 @@ bool ATeachMan::ShowNow(const FName& Id) {
 		UE_LOG(LogTeachMan, Log, TEXT("%hs Row not found. Row=%s"), __func__, *Id.ToString());
 		return false;
 	}
-
+	// TODO format the datatable stuff
+	FTeachRow NR = *pR;
+	const FText& TextOld = pR->Text;
+	
+	NR.Text = FText::Format(TextOld, KeyArgs);
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Formatted =%s"), __func__, *NR.Text.ToString());
+	
 	Set(Id); // mark here as well to make logic easier.
 	CurrentId = Id;
 	LastTime = W->GetTimeSeconds();
@@ -146,6 +152,14 @@ void ATeachMan::SetTarget(const ETeachTarget Tgt) {
 	// refresh the dialog if needed. shownow checks for currentid.isnone. and hide sets it to none.
 	// so it's only valid while showing.
 	ShowNow(CurrentId);
+}
+
+void ATeachMan::SetKeyNames(const TMap<FString, FText> Names) {
+	FFormatNamedArguments Arg;
+	for (auto KV: Names) {
+		Arg.Add(KV.Key, KV.Value);
+	}
+	KeyArgs = Arg; // clean the old
 }
 
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {
