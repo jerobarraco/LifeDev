@@ -52,7 +52,14 @@ public:
 	void AddTarget(const ETeachTarget Tgt, UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(const ETeachTarget Tgt);
-
+	// pass the key names, that you use when formatting the data tables
+	// e.g. if in the datatable you have "Press the {inventory_next} button", you need one entry with key "inventory_next"
+	// and the value "
+	// it will have  automatically added to the end : _kb if keyboard/mouse _gp if gamepad, _tc if touch
+	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
+	UFUNCTION(BlueprintCallable)
+	void SetKeyNames(const TMap<FString, FString> Names){};
+	
 	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;
@@ -62,9 +69,6 @@ public:
 	FTeachShow OnShow;
 	UPROPERTY(BlueprintReadWrite, Transient)
 	FTeachHide OnHide;
-	// override to be able to set custom key names
-	UPROPERTY(BlueprintReadWrite, Transient)
-	FTeachKeyName OnKeyName;
 #pragma endregion
 
 protected:
