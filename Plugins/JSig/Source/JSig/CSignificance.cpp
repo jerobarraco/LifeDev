@@ -56,12 +56,14 @@ void UCSignificance::Register() {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s"), __func__, *Name);
 
 	// don't even try if it's on a cook commandlet or not playing
-#if WITH_EDITOR
+	#if WITH_EDITOR
 	if (UNLIKELY((GEditor && !GEditor->IsPlayingSessionInEditor()) || IsRunningCommandlet())) {
+	#else
+	if (UNLIKELY(IsRunningCommandlet())) {
+	#endif
 		UE_LOG(LogJSigComp, Verbose, TEXT("%hs Can't register. Wrong play mode. Stop. Name=%s"), __func__, *Name);
 		return;
 	}
-#endif
 
 	// don't register if it doesn't have an owner
 	if (UNLIKELY(!IsValid(Owner))) {
