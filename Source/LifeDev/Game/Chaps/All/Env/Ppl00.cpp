@@ -17,7 +17,7 @@ void APpl00::BeginPlay() {
 	Sig->SetSignificance(ESigValue::Off);
 	// but so we can use it later.
 	Sig->OnChanged.AddUniqueDynamic(this, &APpl00::SigChanged);
-	Sig->SetActive(true);
+	Sig->SetActive(true, true);
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {

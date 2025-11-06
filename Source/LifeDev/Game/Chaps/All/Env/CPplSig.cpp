@@ -9,7 +9,7 @@
 // It starts insignificant
 
 UCPplSig::UCPplSig() {
-	SetAutoActivate(true);
+	SetAutoActivate(false);
 	IsOffIfHidden = false; // the owner is hidden by default.
 	TestOcclusion = false;
 	OffscreenTimeMax = -1;
@@ -23,6 +23,7 @@ UCPplSig::UCPplSig() {
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	// it has to be at a certain distance
 
+	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	if (!Origin) return ESigValue::Off;
 
 	const FVector& OrgLoc = Origin->GetComponentLocation();
@@ -40,6 +41,4 @@ void UCPplSig::BeginPlay() {
 	Super::BeginPlay();
 	CalcSignificance.BindDynamic(this, &UCPplSig::CalcPplSig);
 	SetSignificance(ESigValue::Off);
-	
-	SetActive(true);
 }
