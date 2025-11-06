@@ -28,7 +28,10 @@ ALight00::ALight00() {
 	Mesh->SetRelativeLocation(FVector(0,0,0));
 	Mesh->SetRelativeRotation(FRotator(0,270,90));
 	Mesh->SetRelativeScale3D(FVector(1,1,1));
-	
+	// fixes an issue with this
+	Mesh->bAffectDistanceFieldLighting = false;
+	Mesh->bCastDistanceFieldIndirectShadow = false;
+
 	Interact->SetRelativeLocation(FVector(2.500000,-2.500000,0));
 	Interact->SetBoxExtent(FVector(42.500000,7.500000,5.000000));
 
