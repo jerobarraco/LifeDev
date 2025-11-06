@@ -46,6 +46,7 @@ void UCSignificance::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	
 	CompsActivate.Empty();
 	CompsTicks.Empty();
+	CompsHide.Empty();
 	Super::EndPlay(EndPlayReason);
 }
 
