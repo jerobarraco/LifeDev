@@ -6,5 +6,6 @@
 
 APpl00::APpl00() {
 	Sig = CreateDefaultSubobject<UCPplSig>(TEXT("Sig"));
-	Sig->SetAutoActivate(true);
+	SetActorHiddenInGame(true);
+	Sig->CompsHide.AddUnique(Root);
 }

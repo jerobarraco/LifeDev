@@ -13,11 +13,24 @@ UCPplSig::UCPplSig() {
 	IsOffIfHidden = false; // we are actually
 	TestOcclusion = false;
 	OffscreenTimeMax = -1;
-	
+	DistanceSqr = { // unnecessary but...
+		{ESigValue::Off, 200*200},
+		{ESigValue::High, 201*201}
+	};
 }
 
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
-	return ESigValue::Off;
+	// it has to be at a certain distance
+
+	if (!Origin) return ESigValue::Off;
+
+	const FVector& OrgLoc = Origin->GetComponentLocation();
+	const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
+	if (DistSqr < 200*200) return ESigValue::Off;
+
+	// TODO not looking
+
+	return ESigValue::High; // show
 }
 
 void UCPplSig::BeginPlay() {
