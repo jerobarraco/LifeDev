@@ -12,4 +12,5 @@ class LIFEDEV_API UCPplSig : public UCSignificance {
 	GENERATED_BODY()
 
 public:
+	UCPplSig();
 };
