@@ -58,7 +58,7 @@ bool ATeachMan::Has(const FName& Id) const {
 	return LIKELY(Flags) && Flags->Has(FN);
 }
 
-void ATeachMan::Set_Implementation(const FName& Id) {
+void ATeachMan::Set_Implementation(const FName& Id) const {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
 	const FName FN(Inventory::Teach::Prefix + Id.ToString());
 	if (LIKELY(Flags)) Flags->Set(FN);
@@ -66,20 +66,28 @@ void ATeachMan::Set_Implementation(const FName& Id) {
 
 bool ATeachMan::Show_Implementation(const FName& Id) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
-	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!CurrentId.IsNone())) {
 		UE_LOG(LogTeachMan, Log, TEXT("%hs Busy."), __func__);
-		return false;
-	}
-
-	if (UNLIKELY(!DT | !Flags | !W)) {
-		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT, Flags, or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
 		return false;
 	}
 
 	if (UNLIKELY(Has(Id))) {
 		UE_LOG(LogTeachMan, Log, TEXT("%hs User already saw this. Row=%s"), __func__, *Id.ToString());
 		return true; // true since it's already shown.
+	}
+
+	return ShowNow(Id);
+}
+
+bool ATeachMan::ShowNow(const FName& Id) {
+	if (UNLIKELY(Id.IsNone())) return false;
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Id=%s"), __func__, *Id.ToString());
+
+	const UWorld* const W = GetWorld();
+
+	if (UNLIKELY(!DT | !W)) {
+		UE_LOG(LogTeachMan, Warning, TEXT("%hs DT, or World is not ok. DT=%s"), __func__, *GetNameSafe(DT));
+		return false;
 	}
 
 	const FTeachRow* const pR = DT->FindRow<FTeachRow>(Id, "", false);
@@ -132,8 +140,12 @@ void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
 }
 
 void ATeachMan::SetTarget(const ETeachTarget Tgt) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Target %s"), __func__, *UEnum::GetValueAsString(Tgt));
 	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Tgt);
 	DT = Ptr ? *Ptr : nullptr;
+	// refresh the dialog if needed. shownow checks for currentid.isnone. and hide sets it to none.
+	// so it's only valid while showing.
+	ShowNow(CurrentId);
 }
 
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {

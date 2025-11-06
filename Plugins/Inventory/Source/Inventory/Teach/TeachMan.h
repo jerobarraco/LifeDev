@@ -28,8 +28,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	bool Has(const FName& Id) const;
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	// default entry point to show a teach entry
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id))
 	bool Show(const FName& Id); // not const in case of delegates
+	// force show a teach entry skipping checks 
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
+	bool ShowNow(const FName& Id);
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	const FORCEINLINE FName& GetCurrent() const { return CurrentId; }
 	UFUNCTION(BlueprintCallable)
@@ -39,7 +44,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id))
 	void Hide(const FName Id = NAME_None); // intentionally not a ref
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
-	void Set(const FName& Id = NAME_None);
+	void Set(const FName& Id = NAME_None) const;
 
 	// first target added is going to be set as default
 	UFUNCTION(BlueprintCallable)
