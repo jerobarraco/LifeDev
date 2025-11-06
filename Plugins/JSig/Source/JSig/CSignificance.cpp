@@ -85,7 +85,7 @@ void UCSignificance::Register() {
 	UE_LOG(LogJSigComp, Verbose, TEXT("%hs name=%s origin=%s"), __func__, *Name, *GetNameSafe(Origin));
 	// this is lame, but it's how it works
 	auto LamCalculate = [&] (USignificanceManager::FManagedObjectInfo* const ObjectInfo,
-	const FTransform& Viewpoint) -> float {
+		const FTransform& Viewpoint) -> float {
 		if (UNLIKELY(!IsValid(this))) return -1;
 
 		return Calculate(ObjectInfo, Viewpoint);

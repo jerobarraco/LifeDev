@@ -180,21 +180,21 @@ public:
 
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	/// interface
+#pragma region interface
 	float Calculate(USignificanceManager::FManagedObjectInfo* const ObjectInfo, const FTransform& Viewpoint);
 	void Update(USignificanceManager::FManagedObjectInfo* const Info, const float OldSig, const float Sig, const bool Final);
-	/// ~
+#pragma endregion
 	
-	/// utils
+#pragma region utils
 	void Register();
 	// make sure this gets called only by Deactivate, to ensure a proper re-register.
 	void Unregister();
 	float GetDistanceSignificance(const float DistSqr);
 	// returns true when the actor is not visible (occluded or invalid)
 	bool IsOccluded(const AActor* const Owner, const FTransform& Viewpoint) const;
-	/// ~
+#pragma endregion
 	
-	/// updates
+#pragma region updates
 	/// all these will run on game thread
 	
 	// finish the update. calling all the update functions and triggering the delegate.
@@ -202,7 +202,7 @@ protected:
 	void UpdateTicks();
 	void UpdateActivate();
 	void UpdateHidden();
-	///~
+#pragma endregion
 
 	UPROPERTY(BlueprintReadOnly, VisibleInstanceOnly, Transient, Category="JSig")
 	ESigValue Significance = ESigValue::High;
