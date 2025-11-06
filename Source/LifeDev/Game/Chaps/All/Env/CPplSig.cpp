@@ -26,11 +26,13 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	if (!Origin) return ESigValue::Off;
 
 	const FVector& OrgLoc = Origin->GetComponentLocation();
-	const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
+	const FVector& Line = OrgLoc - Viewpoint.GetLocation();
+	const float DistSqr = Line.SquaredLength();
+	// const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
 	if (DistSqr < 200*200) return ESigValue::Off;
 
 	// TODO not looking
-
+	
 	return ESigValue::High; // show
 }
 
