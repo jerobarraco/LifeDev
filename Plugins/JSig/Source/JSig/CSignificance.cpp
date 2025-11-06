@@ -229,9 +229,12 @@ bool UCSignificance::IsOccluded(const AActor* const Owner, const FTransform& Vie
 }
 
 void UCSignificance::Update(USignificanceManager::FManagedObjectInfo* const Info,
-const float OldSig, const float Sig, const bool Final) {
-	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
+	const float OldSig, const float Sig, const bool Final) {
 	const ESigValue NewSig = static_cast<ESigValue>(FMath::FloorToInt32(Sig));
+	UpdateSig(NewSig);
+}
+
+void UCSignificance::UpdateSig(const ESigValue NewSig) {
 	// don't trust "old" and "sig", use the actually stored. to ensure proper initialization.
 	// const bool Equals = FMath::IsNearlyEqual(OldSig, Sig);
 	const bool Equals = NewSig == Significance; 
@@ -240,6 +243,7 @@ const float OldSig, const float Sig, const bool Final) {
 	SignificanceOld = Significance;
 	Significance = NewSig;
 
+	const uint32 ThreadId = FPlatformTLS::GetCurrentThreadId();
 	UE_CLOG(Debug, LogJSigComp, Log, TEXT("%hs threadId=%i sig=%i owner=%s"),
 		__func__, ThreadId, Significance, *GetNameSafe(GetOwner()));
 

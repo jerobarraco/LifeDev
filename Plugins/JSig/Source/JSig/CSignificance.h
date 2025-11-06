@@ -47,7 +47,14 @@ public:
 
 	virtual void Activate(const bool bReset=false) override;
 	virtual void Deactivate() override;
-	
+
+	// override the starting significance. Constructor safe.
+	UFUNCTION(BlueprintCallable, Category="JSig")
+	FORCEINLINE void SetDefaultSignificance(const ESigValue Sig) { Significance = Sig; SignificanceOld = Sig; }
+	// manually sets a significance. this triggers all side-effects. unsafe on constructor.
+	UFUNCTION(BlueprintCallable, Category="JSig")
+	FORCEINLINE void SetSignificance(const ESigValue NewSig) { UpdateSig(NewSig); }
+
 	// returns the current sig
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="JSig")
 	FORCEINLINE ESigValue GetSignificance() const { return Significance; }
@@ -184,7 +191,7 @@ protected:
 	float Calculate(USignificanceManager::FManagedObjectInfo* const ObjectInfo, const FTransform& Viewpoint);
 	void Update(USignificanceManager::FManagedObjectInfo* const Info, const float OldSig, const float Sig, const bool Final);
 #pragma endregion
-	
+
 #pragma region utils
 	void Register();
 	// make sure this gets called only by Deactivate, to ensure a proper re-register.
@@ -193,8 +200,9 @@ protected:
 	// returns true when the actor is not visible (occluded or invalid)
 	bool IsOccluded(const AActor* const Owner, const FTransform& Viewpoint) const;
 #pragma endregion
-	
+
 #pragma region updates
+	void UpdateSig(const ESigValue NewSig); // not on main thread
 	/// all these will run on game thread
 	
 	// finish the update. calling all the update functions and triggering the delegate.
