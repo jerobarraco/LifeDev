@@ -295,6 +295,8 @@ void ALGGameMode::Init() {
 			TeachMan->AddTarget(KV.Key, KV.Value.LoadSynchronous());
 		}
 		TeachMan->SetTarget(ETeachTarget::DESK);
+		// todo load mapping probably on the input setup
+		TeachMan->SetKeyNames(ETeachTarget::DESK, {{TEXT("test"), FText::FromString("button a")}});
 	}
 
 	// do at the end since it depends-on/modifies other things.

@@ -99,14 +99,14 @@ bool ATeachMan::ShowNow(const FName& Id) {
 	FTeachRow NR = *pR;
 	const FText& TextOld = pR->Text;
 	
-	NR.Text = FText::Format(TextOld, KeyArgs);
+	NR.Text = FText::Format(TextOld, KeyArgs[Tgt]);
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Formatted =%s"), __func__, *NR.Text.ToString());
 	
 	Set(Id); // mark here as well to make logic easier.
 	CurrentId = Id;
 	LastTime = W->GetTimeSeconds();
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Time =%.3f"), __func__, pR->Time);
-	OnShow.Broadcast(Id, *pR);
+	OnShow.Broadcast(Id, NR); //*pR);
 
 	const float T = (pR->Time) >0 ? (pR->Time) : Time;
 	FTimerManager& Timer = W->GetTimerManager();
@@ -140,26 +140,28 @@ void ATeachMan::Hide_Implementation(const FName Id) { // don't use ref here.
 	OnHide.Broadcast(Id);
 }
 
-void ATeachMan::AddTarget(const ETeachTarget Tgt, UDataTable* const InDT) {
-	DTs.Add(Tgt, InDT);
+void ATeachMan::AddTarget(const ETeachTarget Target, UDataTable* const InDT) {
+	DTs.Add(Target, InDT);
 	if (UNLIKELY(!DT)) DT = InDT;
 }
 
-void ATeachMan::SetTarget(const ETeachTarget Tgt) {
-	UE_LOG(LogTeachMan, Log, TEXT("%hs Target %s"), __func__, *UEnum::GetValueAsString(Tgt));
-	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Tgt);
+void ATeachMan::SetTarget(const ETeachTarget Target) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Target %s"), __func__, *UEnum::GetValueAsString(Target));
+	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Target);
 	DT = Ptr ? *Ptr : nullptr;
 	// refresh the dialog if needed. shownow checks for currentid.isnone. and hide sets it to none.
 	// so it's only valid while showing.
 	ShowNow(CurrentId);
+	Tgt = Target;
 }
 
-void ATeachMan::SetKeyNames(const TMap<FString, FText> Names) {
+void ATeachMan::SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names) {
 	FFormatNamedArguments Arg;
 	for (auto KV: Names) {
 		Arg.Add(KV.Key, KV.Value);
 	}
-	KeyArgs = Arg; // clean the old
+
+	KeyArgs[Target] = Arg; // replace the old one
 }
 
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include "TeachTypes.h"
 
 #include "TeachMan.generated.h"
 
@@ -49,16 +50,15 @@ public:
 
 	// first target added is going to be set as default
 	UFUNCTION(BlueprintCallable)
-	void AddTarget(const ETeachTarget Tgt, UDataTable* const InDT);
+	void AddTarget(const ETeachTarget Target, UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
-	void SetTarget(const ETeachTarget Tgt);
+	void SetTarget(const ETeachTarget Target);
 	// pass the key names, that you use when formatting the data tables
 	// e.g. if in the datatable you have "Press the {inventory_next} button", you need one entry with key "inventory_next"
 	// and the value "
-	// it will have  automatically added to the end : _kb if keyboard/mouse _gp if gamepad, _tc if touch
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
-	void SetKeyNames(const TMap<FString, FText> Names);
+	void SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names);
 	
 	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)
@@ -92,7 +92,9 @@ protected:
 	TMap<ETeachTarget, TObjectPtr<UDataTable>> DTs;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
+	TMap<ETeachTarget, FFormatNamedArguments> KeyArgs;
 
-	FFormatNamedArguments KeyArgs;
+	ETeachTarget Tgt = ETeachTarget::DESK;
+
 	FTimerHandle HShow;
 };
