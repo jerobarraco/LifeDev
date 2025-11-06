@@ -52,7 +52,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="JSig")
 	FORCEINLINE void SetDefaultSignificance(const ESigValue Sig) { Significance = Sig; SignificanceOld = Sig; }
 	// manually sets a significance. this triggers all side-effects. unsafe on constructor.
-	UFUNCTION(BlueprintCallable, Category="JSig")
+	UFUNCTION(BlueprintCallable, Category="JSig", meta=(UnsafeDuringActorConstruction))
 	FORCEINLINE void SetSignificance(const ESigValue NewSig) { UpdateSig(NewSig); }
 
 	// returns the current sig
