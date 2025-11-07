@@ -13,6 +13,7 @@ APpl00::APpl00() {
 
 void APpl00::BeginPlay() {
 	Super::BeginPlay();
+
 	UseFade = false; // disable fade here, so that the significance doesn't use it.
 	Sig->SetSignificance(ESigValue::Off);
 	// but so we can use it later.

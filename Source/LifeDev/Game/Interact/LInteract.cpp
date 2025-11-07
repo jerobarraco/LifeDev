@@ -172,11 +172,9 @@ void ALInteract::BeginPlay() {
 	AActor* const RAct = RewardActor.Get();
 	if (IsValid(RAct)) RAct->SetActorHiddenInGame(true);
 
-	
 	ULSettings* const Settings = ULSettings::Instance(this);
 	const bool FBAnimAble = UseAnimFBFPS & bool(Settings);
 	if (FBAnimAble) Settings->OnFeatUpdateGameplay.AddUniqueDynamic(this, &ALInteract::FeatUpdG);
-
 
 	// done this way because i want to ensure correct initialization.
 	// it will override the fps and have other side effects. but that's the reason why.

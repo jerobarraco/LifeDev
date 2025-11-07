@@ -18,7 +18,6 @@ class LIFEDEV_API APpl00 : public APpl {
 public:
 	APpl00();
 
-	
 protected:
 	virtual void BeginPlay() override;
 
