@@ -122,7 +122,7 @@ void ALInteract::Fade_Implementation(const bool FadeIn, const bool SetHidden) {
 	if (SetHidden) {
 		// handle hiding on fading out
 		if (!FadeIn) AnimFade->OnEnd.AddUniqueDynamic(this, &ALInteract::HideAfterFade);
-		else Super::SetActorHiddenInGame(!FadeIn); // show if needed
+		else Super::SetActorHiddenInGame(!FadeIn); // show if needed, also activate
 	} else
 		// handle de/activating on fade manually.
 		// only on !SetHidden since SetActorHidden also handles setActive

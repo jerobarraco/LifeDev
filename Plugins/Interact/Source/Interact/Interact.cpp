@@ -374,7 +374,7 @@ void AInteract::SetActorHiddenInGame(const bool NewHidden) {
 	const bool InConstructor = UJUtilsMisc::IsInConstructor();
 	if (UNLIKELY(InConstructor)) return; // no need to change active here
 
-	if (NewHidden | UseAutoActivate) SetActive(!NewHidden);
+	if (NewHidden | UseAutoActivate) SetActive(!NewHidden); // only activate on show if it's autoactivate.
 }
 
 void AInteract::DoTriggerLocked_Implementation() {

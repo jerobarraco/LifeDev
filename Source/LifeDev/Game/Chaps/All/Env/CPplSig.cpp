@@ -8,6 +8,9 @@
 // it becomes significant once you pass a couple of conditions
 // It starts insignificant
 
+constexpr float _PplDist = 150;
+constexpr float _PplDistSq = _PplDist*_PplDist;
+
 UCPplSig::UCPplSig() {
 	SetAutoActivate(false);
 	IsOffIfHidden = false; // the owner is hidden by default.
