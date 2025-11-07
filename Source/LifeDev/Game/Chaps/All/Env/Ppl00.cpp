@@ -2,10 +2,13 @@
 
 #include "Ppl00.h"
 
-#include "CPplSig.h"
-#include "CQuickMesh.h"
 #include "Components/BoxComponent.h"
+
+#include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
+#include "CQuickMesh.h"
+
+#include "CPplSig.h"
 
 APpl00::APpl00() {
 	UseFade = true; // read begin play
@@ -18,15 +21,17 @@ APpl00::APpl00() {
 	Head->SetEvaluateWorldPositionOffset(true);
 	// todo there's a tiny hitch the first time the first ppl is set to not hidden.
 	// unfortunately putting this into beginplay does not fixes it
-	SetActorHiddenInGame(true);
 
 	// Sig->CompsHide.AddUnique(Root);
 
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	Box->SetupAttachment(Mesh);
+	Box->SetupAttachment(Interact);
 	Box->SetGenerateOverlapEvents(false);
 	Box->CanCharacterStepUpOn = ECB_No;
-	// TODO set up extents
+	Box->SetRelativeLocation(FVector(0,5,0));
+	Box->SetBoxExtent(FVector(50,50,110));
+
+	SetActorHiddenInGame(true); // depends on the box
 }
 
 void APpl00::BeginPlay() {
