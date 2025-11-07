@@ -3,11 +3,22 @@
 #include "Ppl00.h"
 
 #include "CPplSig.h"
+#include "CQuickMesh.h"
+#include "Interact/Animator/CAnimatorFade.h"
 
 APpl00::APpl00() {
 	UseFade = true; // read begin play
 	Sig = CreateDefaultSubobject<UCPplSig>(TEXT("Sig"));
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		CHeadMat(TEXT("/Game/LifeDev/Game/Env/Ppl/PplHead_MI.PplHead_MI"));
+	AnimFade->MatBase = CHeadMat.Object;
+	Mesh->SetEvaluateWorldPositionOffset(true);
+	Head->SetEvaluateWorldPositionOffset(true);
+	// todo there's a tiny hitch the first time the first ppl is set to not hidden.
+	// unfortunately putting this into beginplay does not fixes it
 	SetActorHiddenInGame(true);
+
 	// Sig->CompsHide.AddUnique(Root);
 }
 
