@@ -9,6 +9,7 @@
 #include "CQuickMesh.h"
 
 #include "CPplSig.h"
+#include "Components/CapsuleComponent.h"
 
 APpl00::APpl00() {
 	UseFade = true; // read begin play
@@ -24,12 +25,14 @@ APpl00::APpl00() {
 
 	// Sig->CompsHide.AddUnique(Root);
 
-	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	Box->SetupAttachment(Interact);
-	Box->SetGenerateOverlapEvents(false);
-	Box->CanCharacterStepUpOn = ECB_No;
-	Box->SetRelativeLocation(FVector(0,5,0));
-	Box->SetBoxExtent(FVector(50,50,110));
+	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
+	Collider->SetupAttachment(Interact);
+	Collider->SetGenerateOverlapEvents(false);
+	Collider->CanCharacterStepUpOn = ECB_No;
+	// Collider->SetRelativeLocation(FVector(0,5,0));
+	// Collider->SetCapsuleRadius(100);
+	Collider->SetCapsuleSize(175, 175);
+	// SetBoxExtent(FVector(50,50,110));
 
 	SetActorHiddenInGame(true); // depends on the box
 }
@@ -47,7 +50,7 @@ void APpl00::BeginPlay() {
 
 void APpl00::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
-	Box->SetCollisionProfileName(NewHidden ? "NoCollision" :"BlockAllDynamic" );
+	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" :"BlockAllDynamic" );
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {

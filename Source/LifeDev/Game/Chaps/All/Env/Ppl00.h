@@ -9,8 +9,9 @@
 
 #include "Ppl00.generated.h"
 
-class UBoxComponent;
+class UCapsuleComponent;
 class UCPplSig;
+
 // A ppl that appears when you're not looking. and says something when you look at it.
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API APpl00 : public APpl {
@@ -30,5 +31,5 @@ protected:
 	TObjectPtr<UCPplSig> Sig = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	TObjectPtr<UBoxComponent> Box = nullptr;
+	TObjectPtr<UCapsuleComponent> Collider = nullptr;
 };

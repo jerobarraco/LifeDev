@@ -36,6 +36,6 @@ APpl::APpl():Super() {
 	AnimFade->Meshes.AddUnique(Head);
 	AnimFade->MatBase = nullptr; // the mesh uses a palette. force using the mesh's material.
 
-	Interact->SetRelativeLocation(FVector(-40,40,110));
+	Interact->SetRelativeLocation(FVector(-40,45,110));
 	Interact->SetBoxExtent(FVector(40,25,110));
 }
