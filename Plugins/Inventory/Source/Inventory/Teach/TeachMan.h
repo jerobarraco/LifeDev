@@ -36,7 +36,7 @@ public:
 	// force show a teach entry skipping checks 
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
 	bool ShowNow(const FName& Id);
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	const FORCEINLINE FName& GetCurrent() const { return CurrentId; }
 	UFUNCTION(BlueprintCallable)
@@ -78,7 +78,6 @@ protected:
 	UFUNCTION()
 	void OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId);
 
-	// todo maybe make virtual. maybe make settarget virtual.
 	UFUNCTION()
 	void InputChanged(const bool IsGP);
 
@@ -94,9 +93,9 @@ protected:
 	TMap<ETeachTarget, TObjectPtr<UDataTable>> DTs;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
-	TMap<ETeachTarget, FFormatNamedArguments> KeyArgs;
-
-	ETeachTarget Tgt = ETeachTarget::DESK;
+	
+	TMap<ETeachTarget, FFormatNamedArguments> KeyArgs; // key names for format
+	ETeachTarget Tgt = ETeachTarget::DESK; // current target
 
 	FTimerHandle HShow;
 };

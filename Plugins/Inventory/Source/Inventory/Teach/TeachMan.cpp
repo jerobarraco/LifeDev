@@ -165,7 +165,7 @@ void ATeachMan::SetKeyNames(const ETeachTarget Target, const TMap<FString, FText
 		Arg.Add(KV.Key, KV.Value);
 	}
 
-	KeyArgs[Target] = Arg; // replace the old one
+	KeyArgs.Add(Target, Arg); // replace the old one (can't use KeyArs[] or it will crash >:'[ )
 }
 
 void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId) {
