@@ -27,10 +27,8 @@ UCPplSig::UCPplSig() {
 }
 
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
-	// it has to be at a certain distance
-
-	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
-	if (!Origin) return ESigValue::Off;
+	UE_LOG(LogTemp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
+	if (!Origin) return ESigValue::Off; // required
 
 	// check distance. don't show if too close
 	const FVector& OrgLoc = Origin->GetComponentLocation();
@@ -49,7 +47,7 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	// const float RX = DifRot.GetComponentForAxis(EAxis::Type::X); // unnecessary, always 0
 	const float RY = DifRot.GetComponentForAxis(EAxis::Type::Y);
 	const float RZ = DifRot.GetComponentForAxis(EAxis::Type::Z);
-	UE_LOG(LogTemp, Log, TEXT("%hs rot y=%.5f z=%.5f o=%s"), __func__, RY, RZ,
+	UE_LOG(LogTemp, Verbose, TEXT("%hs rot y=%.5f z=%.5f o=%s"), __func__, RY, RZ,
 		*GetNameSafe(GetOwner()));
 
 	// the object is visible in this range y (up/down) -37 to 93 // z (left/right) -65 to 65
