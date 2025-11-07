@@ -3,6 +3,8 @@
 
 #include "CPplSig.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 // note, this is using the significance system in a weird way. so read this.
 // it leverages the sig system for polling this component async.
 // it becomes significant once you pass a couple of conditions
@@ -30,14 +32,29 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	if (!Origin) return ESigValue::Off;
 
+	// check distance. don't show if too close
 	const FVector& OrgLoc = Origin->GetComponentLocation();
 	const FVector& Line = OrgLoc - Viewpoint.GetLocation();
 	const float DistSqr = Line.SquaredLength();
 	// const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
 	if (DistSqr < _PplDistSq) return ESigValue::Off;
 
-	// TODO not looking
-	
+	/// check the angle. don't show if looking at it.
+	// rotation that correspond to look directly at the orgloc (it's on the feet btw)
+	const FRotator& LookRot = UKismetMathLibrary::FindLookAtRotation(Viewpoint.GetLocation(), OrgLoc);
+	const FRotator& ViewRot = Viewpoint.Rotator(); // current view rotation
+	FRotator DifRot = ViewRot - LookRot; // angle between looking at it, and current
+	DifRot.Normalize();
+
+	// const float RX = DifRot.GetComponentForAxis(EAxis::Type::X); // unnecessary, always 0
+	const float RY = DifRot.GetComponentForAxis(EAxis::Type::Y);
+	const float RZ = DifRot.GetComponentForAxis(EAxis::Type::Z);
+	UE_LOG(LogTemp, Log, TEXT("%hs rot y=%.5f z=%.5f o=%s"), __func__, RY, RZ,
+		*GetNameSafe(GetOwner()));
+
+	// the object is visible in this range y (up/down) -37 to 93 // z (left/right) -65 to 65
+	if ((RZ>-65 & RZ<65) & (RY>-40 & RY<95)) return ESigValue::Off; // looking at it vertically. notice only check this AFTER the horizontal
+
 	return ESigValue::High; // show
 }
 
