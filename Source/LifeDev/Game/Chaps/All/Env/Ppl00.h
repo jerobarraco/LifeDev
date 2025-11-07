@@ -9,6 +9,7 @@
 
 #include "Ppl00.generated.h"
 
+class UBoxComponent;
 class UCPplSig;
 // A ppl that appears when you're not looking. and says something when you look at it.
 UCLASS(Blueprintable, BlueprintType)
@@ -20,10 +21,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void SetActorHiddenInGame(bool NewHidden) override;
+	
 	UFUNCTION()
 	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCPplSig> Sig = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TObjectPtr<UBoxComponent> Box = nullptr;
 };

@@ -4,6 +4,7 @@
 
 #include "CPplSig.h"
 #include "CQuickMesh.h"
+#include "Components/BoxComponent.h"
 #include "Interact/Animator/CAnimatorFade.h"
 
 APpl00::APpl00() {
@@ -20,6 +21,12 @@ APpl00::APpl00() {
 	SetActorHiddenInGame(true);
 
 	// Sig->CompsHide.AddUnique(Root);
+
+	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	Box->SetupAttachment(Mesh);
+	Box->SetGenerateOverlapEvents(false);
+	Box->CanCharacterStepUpOn = ECB_No;
+	// TODO set up extents
 }
 
 void APpl00::BeginPlay() {
@@ -31,6 +38,11 @@ void APpl00::BeginPlay() {
 	Sig->OnChanged.AddUniqueDynamic(this, &APpl00::SigChanged);
 	Sig->SetActive(true, true);
 	UseFade = true; // restore for the sigchanged
+}
+
+void APpl00::SetActorHiddenInGame(const bool NewHidden) {
+	Super::SetActorHiddenInGame(NewHidden);
+	Box->SetCollisionProfileName(NewHidden ? "NoCollision" :"BlockAllDynamic" );
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
