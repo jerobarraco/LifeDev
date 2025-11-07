@@ -20,18 +20,18 @@ APpl::APpl():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Body"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CBodyMat(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_MI"));
-	Mesh->SetMaterial(0, CBodyMat.Object);
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		// CBodyMat(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_MI"));
+	// Mesh->SetMaterial(0, CBodyMat.Object);
 	Mesh->SetRelativeLocation(FVector(40,-40,0));
-	
+
 	Head = CreateDefaultSubobject<UCQuickMesh>(TEXT("Head"));
 	Head->SetupAttachment(Mesh);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CHeadMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Head"));
 	Head->SetStaticMesh(CHeadMesh.Object);
 	Head->SetUseDynShadow(true);
-	Head->SetMaterial(0, CBodyMat.Object);
+	// Head->SetMaterial(0, CBodyMat.Object);
 	Head->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.AddUnique(Head);
 	AnimFade->MatBase = nullptr; // the mesh uses a palette. force using the mesh's material.
