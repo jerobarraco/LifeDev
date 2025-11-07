@@ -26,7 +26,7 @@ ALLight00::ALLight00() {
 	Light->SetSourceRadius(5);
 	Light->SetSoftSourceRadius(7);
 	Light->SetTemperature(3333);
-	Light->SetUseRayTracedDistanceFieldShadows(true);
+	// Light->SetUseRayTracedDistanceFieldShadows(true); // breaks fading and masks
 
 	ALLight00::SetMobility(EComponentMobility::Static);
 }

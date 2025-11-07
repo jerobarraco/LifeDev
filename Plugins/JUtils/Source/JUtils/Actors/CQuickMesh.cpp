@@ -25,9 +25,13 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
 	bCastContactShadow = false;
 	SetUseDynShadow(false);
+	// disable distance field shadows. as they break fading. but also they have to be enabled per light.
+	// if the light is distance fields, it _only_ uses distance fields, otherwise it _only_ uses dynamic shadows. so i can NOT mix objects.
+	// thereby, i can only rely on dynamic shadows. 
 	// by default use distance fields for lighting. if cast shadows is off, it won't be used.
-	bAffectDistanceFieldLighting = true;
-	bCastDistanceFieldIndirectShadow = true; // depends on mesh being movable, having distance fields generated, and project supporting it.
+	// this is necessary to be true, or it won't show the shadow on distance field mode
+	bAffectDistanceFieldLighting = false;
+	bCastDistanceFieldIndirectShadow = false; // depends on mesh being movable, having distance fields generated, and project supporting it.
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
 }
 
@@ -49,8 +53,6 @@ void UCQuickMesh::SetUseDynShadow(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
 	bCastContactShadow = !Cast; // TODO what's the impact of casting both.
-	// by default this is false, i don't want to mess with it. so just don't.
-	bCastDistanceFieldIndirectShadow = Cast; //?? is this too much of a micro optimization?
 }
 
 void UCQuickMesh::SetUseContactShadow(const bool Contact) {
