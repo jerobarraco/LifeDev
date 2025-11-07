@@ -16,9 +16,9 @@ UCPplSig::UCPplSig() {
 	IsOffIfHidden = false; // the owner is hidden by default.
 	TestOcclusion = false;
 	OffscreenTimeMax = -1;
-	DistanceSqr = { // unnecessary but...
-		{ESigValue::Off, 200*200},
-		{ESigValue::High, 201*201}
+	DistanceSqr = { // unnecessary but.... the CalcPplSig overrides this
+		{ESigValue::Off, _PplDistSq},
+		{ESigValue::High, _PplDistSq+10}
 	};
 	SetDefaultSignificance(ESigValue::Off);
 }
@@ -33,7 +33,7 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	const FVector& Line = OrgLoc - Viewpoint.GetLocation();
 	const float DistSqr = Line.SquaredLength();
 	// const float DistSqr = FVector::DistSquared(OrgLoc, Viewpoint.GetLocation());
-	if (DistSqr < 200*200) return ESigValue::Off;
+	if (DistSqr < _PplDistSq) return ESigValue::Off;
 
 	// TODO not looking
 	

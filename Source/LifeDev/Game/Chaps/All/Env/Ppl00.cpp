@@ -8,7 +8,7 @@ APpl00::APpl00() {
 	UseFade = true; // read begin play
 	Sig = CreateDefaultSubobject<UCPplSig>(TEXT("Sig"));
 	SetActorHiddenInGame(true);
-	Sig->CompsHide.AddUnique(Root);
+	// Sig->CompsHide.AddUnique(Root);
 }
 
 void APpl00::BeginPlay() {
@@ -21,9 +21,11 @@ void APpl00::BeginPlay() {
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
+	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	// once it's shown, deactivate.
 	if (Significance == ESigValue::High) {
 		Sig->Deactivate();
 		UseFade = true;
+		SetActorHiddenInGame(false);
 	}
 }
