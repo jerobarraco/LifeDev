@@ -13,6 +13,7 @@ class LIFEDEV_API APpl : public ALInteract {
 
 public:
 	APpl();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCQuickMesh> Head = nullptr;

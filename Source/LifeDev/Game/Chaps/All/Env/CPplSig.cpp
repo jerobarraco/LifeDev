@@ -20,6 +20,7 @@ UCPplSig::UCPplSig() {
 		{ESigValue::Off, _PplDistSq},
 		{ESigValue::High, _PplDistSq+10}
 	};
+	TickIntervals.Empty(); // don't mess with the intervals, otherwise the animations won't play
 	SetDefaultSignificance(ESigValue::Off);
 }
 
@@ -42,6 +43,7 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 
 void UCPplSig::BeginPlay() {
 	Super::BeginPlay();
+
 	CalcSignificance.BindDynamic(this, &UCPplSig::CalcPplSig);
 	SetSignificance(ESigValue::Off);
 }

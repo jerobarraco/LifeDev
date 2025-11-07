@@ -18,6 +18,7 @@ void APpl00::BeginPlay() {
 	// but so we can use it later.
 	Sig->OnChanged.AddUniqueDynamic(this, &APpl00::SigChanged);
 	Sig->SetActive(true, true);
+	UseFade = true; // restore for the sigchanged
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
@@ -25,7 +26,7 @@ void APpl00::SigChanged(const ESigValue Significance, const ESigValue Significan
 	// once it's shown, deactivate.
 	if (Significance == ESigValue::High) {
 		Sig->Deactivate();
-		UseFade = true;
+		// UseFade = true;
 		SetActorHiddenInGame(false);
 	}
 }
