@@ -174,7 +174,7 @@ void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDevi
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
 }
 
-void ATeachMan::InputChanged(const bool IsGP) {
-	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed IsGP=%i"), __func__, IsGP);
-	SetTarget(IsGP ? ETeachTarget::PAD : ETeachTarget::DESK);
+void ATeachMan::InputChanged(const ETeachTarget Tgt) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed Tgt=%s"), __func__, *UEnum::GetValueAsString(Tgt));
+	SetTarget(Tgt);
 }
