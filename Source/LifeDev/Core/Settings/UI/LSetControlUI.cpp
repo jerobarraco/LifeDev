@@ -8,6 +8,7 @@
 #include "JButton.h"
 #include "LInputSelector.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
@@ -40,30 +41,35 @@ void ULSetControlUI::NativeOnInitialized() {
 
 	// not sure if i *need* this. or if the load is async, which should be.
 	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
-	if (EISettings) EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (LIKELY(bool(EISettings) & bool(SysSettings))) {
+		EISettings->LoadOrCreateSettings(GetWorld()->GetFirstLocalPlayerFromController());
 
-	// force register the imcs so that the rebinding works well
-	// i'm not super happy to do loadSynchronous, but this will get loaded at the start of each level (intro and game)
-	const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
-		FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
-	UInputMappingContext* Imc = CtxDiags.LoadSynchronous();
-	TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
-	// Mappings[0].Action->ActionDescription
-	Mappings[0].Key.GetDisplayName();
-	EISettings->RegisterInputMappingContext(Imc);
+		// force register the imcs so that the rebinding works well
+		// i'm not super happy to do loadSynchronous, but this will get loaded at the start of each level (intro and game)
 
-	const TSoftObjectPtr<UInputMappingContext> CtxInv = TSoftObjectPtr<UInputMappingContext>(
-		FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory")));
-	EISettings->RegisterInputMappingContext(CtxInv.LoadSynchronous());
+		for (const TSoftObjectPtr<UInputMappingContext>& SIMC: SysSettings->IMCs) {
+			// const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
+				// FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
+			const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
+			// TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
+			// Mappings[0].Action->ActionDescription
+			// Mappings[0].Key.GetDisplayName();
+			EISettings->RegisterInputMappingContext(Imc);
 
-	const TSoftObjectPtr<UInputMappingContext> CtxChar = TSoftObjectPtr<UInputMappingContext>(
-		FSoftObjectPath(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char.IMC_Char")));
-	EISettings->RegisterInputMappingContext(CtxChar.LoadSynchronous());
+			// const TSoftObjectPtr<UInputMappingContext> CtxInv = TSoftObjectPtr<UInputMappingContext>(
+				// FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory")));
+			// EISettings->RegisterInputMappingContext(CtxInv.LoadSynchronous());
 
-	const TSoftObjectPtr<UInputMappingContext> CtxMenu = TSoftObjectPtr<UInputMappingContext>(
-		FSoftObjectPath(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC.Menu_IMC")));
-	EISettings->RegisterInputMappingContext(CtxMenu.LoadSynchronous());
+			// const TSoftObjectPtr<UInputMappingContext> CtxChar = TSoftObjectPtr<UInputMappingContext>(
+				// FSoftObjectPath(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char.IMC_Char")));
+			// EISettings->RegisterInputMappingContext(CtxChar.LoadSynchronous());
 
+			// const TSoftObjectPtr<UInputMappingContext> CtxMenu = TSoftObjectPtr<UInputMappingContext>(
+				// FSoftObjectPath(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC.Menu_IMC")));
+			// EISettings->RegisterInputMappingContext(CtxMenu.LoadSynchronous());
+		}
+	}
 	if (LIKELY(BDefaults))
 		BDefaults->OnClick.AddUniqueDynamic(this, &ULSetControlUI::SetDefaults);
 
