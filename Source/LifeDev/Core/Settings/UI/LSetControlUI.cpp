@@ -39,20 +39,24 @@ void ULSetControlUI::ApplyKeyNames() {
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!SysSettings | !TeachMan)) return;
 
-	
+	TMap<ETeachTarget, TMap<FString, FText>> Names;
 	for (const TSoftObjectPtr<UInputMappingContext>& SIMC: SysSettings->IMCs) {
 		const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
 		if (UNLIKELY(!Imc)) continue;
 
 		TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
 		for (const FEnhancedActionKeyMapping& M: Mappings) {
+			const FKey& Key = M.Key;
 			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
 			const FName& Category = M.Key.GetMenuCategory();
-
+			const ETeachTarget Tgt = ATeachMan::GetKeyTarget(Key);
+			
 		}
 	}
-	
-	// TeachMan->SetKeyNames()
+
+	// todo fix will crash if names[] not set
+	// TeachMan->SetKeyNames(ETeachTarget::DESK, Names[ETeachTarget::DESK]);
+	// TeachMan->SetKeyNames(ETeachTarget::PAD, Names[ETeachTarget::PAD]);
 }
 
 void ULSetControlUI::NativeOnInitialized() {
