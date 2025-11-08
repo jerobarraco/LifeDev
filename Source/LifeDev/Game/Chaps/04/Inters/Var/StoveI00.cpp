@@ -2,9 +2,6 @@
 
 #include "StoveI00.h"
 
-#include "CQuickMesh.h"
-#include "NiagaraComponent.h"
-#include "NiagaraSystem.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AStoveI00::AStoveI00():Super() {
