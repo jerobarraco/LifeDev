@@ -25,11 +25,7 @@ AStove::AStove():Super() {
 	Interact->SetBoxExtent(FVector(37.5,42.5,40));
 	SFX->SetRelativeLocation(FVector(37.5,-42.5,42.5));
 
-	// TODO new one
-	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSnd(TEXT("/Game/LifeDev/Game/Inters/Generic/Grab_C.Grab_C"));
-	// SFX_Trigger = CSnd.Object;
-	SFXs = { CSnd.Object };
+	SFXs = {};
 
 	// set static by default
 	AStove::SetMobility(EComponentMobility::Static);
