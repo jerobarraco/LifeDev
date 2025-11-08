@@ -25,7 +25,6 @@ public:
 	UCInteractor(const FObjectInitializer& ObjectInitializer);
 	virtual void Deactivate() override;
 	virtual void Activate(const bool Reset) override;
-	
 
 	// you need to set this once. but only if you need to change the default.
 	UFUNCTION(BlueprintCallable, Category=SetUp)
