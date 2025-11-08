@@ -19,9 +19,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<USoundBase> SNDDrops = nullptr;
 
-	// keeps track of the interaction step. sucks, but not as much as
-	// the other things i came up with, which are : none.
-	// uint8 Step = 0;
-	uint8 Foods = 0;
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+
 };
 
