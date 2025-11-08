@@ -34,6 +34,13 @@ void ULSetControlUI::Load_Implementation() {
 
 void ULSetControlUI::ApplyKeyNames() {
 	
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (UNLIKELY(!SysSettings)) return;
+	for (const TSoftObjectPtr<UInputMappingContext>& SIMC: SysSettings->IMCs) {
+		const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
+		if (UNLIKELY(!Imc)) continue;
+		
+	}
 }
 
 void ULSetControlUI::NativeOnInitialized() {
@@ -52,6 +59,7 @@ void ULSetControlUI::NativeOnInitialized() {
 			// const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
 				// FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
 			const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
+			if (UNLIKELY(!Imc)) continue;
 			// TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
 			// Mappings[0].Action->ActionDescription
 			// Mappings[0].Key.GetDisplayName();
