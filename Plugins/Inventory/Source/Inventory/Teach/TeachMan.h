@@ -65,7 +65,7 @@ public:
 
 	// TODO this belongs in the JUTils 50/50
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE ETeachTarget GetKeyTarget(const FKey& Key) const {
+	static FORCEINLINE ETeachTarget GetKeyTarget(const FKey& Key) {
 		if (Key.IsGamepadKey()) return ETeachTarget::PAD;
 		if (Key.IsTouch()) return ETeachTarget::TOUCH;
 		return ETeachTarget::DESK;

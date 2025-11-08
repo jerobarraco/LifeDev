@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedPlayerInput.h"
+#include "TeachMan.h"
 
 #include "TPInput.generated.h"
 
+enum class ETeachTarget : uint8;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const bool, IsGP);
 
 // you need to set this as the default input in the project settings > input
@@ -23,6 +25,8 @@ public:
 
 protected:
 	virtual bool InputKey(const FInputKeyEventArgs& Params) override;
+
+	ETeachTarget Tgt = ETeachTarget::NONE;
 
 	bool WasGP = false;
 };
