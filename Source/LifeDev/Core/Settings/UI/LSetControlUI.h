@@ -18,6 +18,9 @@ public:
 	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override;
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyKeyNames();
+
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
@@ -30,4 +33,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BDefaults = nullptr;
+
+	
 };

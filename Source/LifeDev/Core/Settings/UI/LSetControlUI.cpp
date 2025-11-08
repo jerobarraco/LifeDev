@@ -31,6 +31,10 @@ void ULSetControlUI::Load_Implementation() {
 	}
 }
 
+void ULSetControlUI::ApplyKeyNames() {
+	
+}
+
 void ULSetControlUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 
@@ -42,7 +46,11 @@ void ULSetControlUI::NativeOnInitialized() {
 	// i'm not super happy to do loadSynchronous, but this will get loaded at the start of each level (intro and game)
 	const TSoftObjectPtr<UInputMappingContext> CtxDiags = TSoftObjectPtr<UInputMappingContext>(
 		FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs")));
-	EISettings->RegisterInputMappingContext(CtxDiags.LoadSynchronous());
+	UInputMappingContext* Imc = CtxDiags.LoadSynchronous();
+	TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
+	// Mappings[0].Action->ActionDescription
+	Mappings[0].Key.GetDisplayName();
+	EISettings->RegisterInputMappingContext(Imc);
 
 	const TSoftObjectPtr<UInputMappingContext> CtxInv = TSoftObjectPtr<UInputMappingContext>(
 		FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory")));

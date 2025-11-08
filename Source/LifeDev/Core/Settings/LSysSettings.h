@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputMappingContext.h"
 #include "Inventory/Teach/TeachTypes.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -87,7 +88,7 @@ public:
 	TSoftObjectPtr<UDataTable> Items = TSoftObjectPtr<UDataTable>(
 		FSoftObjectPath("/Game/LifeDev/Game/Inventory/Items"));
 
-	// The list of items
+	// The data tables for the teachs
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.TeachRow"))
 	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> TeachDTs = {{
@@ -97,6 +98,16 @@ public:
 		ETeachTarget::PAD, TSoftObjectPtr<UDataTable>(
 		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachPad.TeachPad"))
 		}};
+
+	// the input mapping contexts used in game.
+	// this is necessary so that the settings panel can rebind the keys
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Sys")
+	TArray<TSoftObjectPtr<UInputMappingContext>> IMCs = {
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs"))),
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory"))),
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs"))),
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC.Menu_IMC")))
+	};
 
 	// the chapter to start with.
 	// during runtime use GetStartChap unless you're me and know what you're doing.

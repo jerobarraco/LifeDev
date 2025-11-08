@@ -53,6 +53,8 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	// the object is visible in this range y (up/down) -37 to 93 // z (left/right) -65 to 65
 	if ((RZ>-65 & RZ<65) & (RY>-40 & RY<95)) return ESigValue::Off; // looking at it vertically. notice only check this AFTER the horizontal
 
+	// TODO add also some time delay
+
 	return ESigValue::High; // show
 }
 
