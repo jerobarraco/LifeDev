@@ -54,6 +54,8 @@ void ULSetControlUI::ApplyKeyNames() {
 			const ETeachTarget Tgt = ATeachMan::GetKeyTarget(Key);
 			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
 			Map.Add(Category.ToString(), Name);
+			UE_LOG(LogTemp, Log, TEXT("%hs Added key name=%s cat=%s tgt=%s"), __func__,
+				*Name.ToString(), *Category.ToString(), *UEnum::GetValueAsString(Tgt));
 		}
 	}
 
