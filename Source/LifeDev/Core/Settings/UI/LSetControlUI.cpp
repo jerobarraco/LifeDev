@@ -9,6 +9,7 @@
 #include "LInputSelector.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
+#include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
@@ -33,14 +34,25 @@ void ULSetControlUI::Load_Implementation() {
 }
 
 void ULSetControlUI::ApplyKeyNames() {
-	
+	ALTeachMan* const TeachMan = ALTeachMan::Instance(this);
+	// TODO get the TeachMan
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
-	if (UNLIKELY(!SysSettings)) return;
+	if (UNLIKELY(!SysSettings | !TeachMan)) return;
+
+	
 	for (const TSoftObjectPtr<UInputMappingContext>& SIMC: SysSettings->IMCs) {
 		const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
 		if (UNLIKELY(!Imc)) continue;
-		
+
+		TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
+		for (const FEnhancedActionKeyMapping& M: Mappings) {
+			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
+			const FName& Category = M.Key.GetMenuCategory();
+
+		}
 	}
+	
+	// TeachMan->SetKeyNames()
 }
 
 void ULSetControlUI::NativeOnInitialized() {

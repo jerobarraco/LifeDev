@@ -45,8 +45,7 @@ ALTeachMan* ALTeachMan::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 
 	const ALGGameMode* const Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
-	if (LIKELY(IsValid(Mode)))
-		return Mode->TeachMan;
+	if (LIKELY(IsValid(Mode))) return Mode->TeachMan;
 
 	return Cast<ALTeachMan>(UGameplayStatics::GetActorOfClass(World, ALTeachMan::StaticClass()));
 }
