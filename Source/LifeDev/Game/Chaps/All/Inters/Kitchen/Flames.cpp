@@ -19,12 +19,15 @@ AFlames::AFlames() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Flames/Flame_NS"));
 
+	constexpr FVector Poss[8] = {
+	};
 	// flames
 	for (uint8 i= 0; i<8; ++i) {
 		const FString SName = TEXT("Flame_") + FString::FromInt(i);
 		UNiagaraComponent* Comp = CreateDefaultSubobject<UNiagaraComponent>(FName(SName));
 		if (UNLIKELY(!Comp)) continue;
 		Comp->SetupAttachment(Interact);
+		// Comp->SetRelativeLocation(Poss[i]);
 		Comp->SetAsset(CFlame.Object);
 		// Comp->SetUseAutoManageAttachment(true);
 		// Comp->SetAutoActivate(false);
