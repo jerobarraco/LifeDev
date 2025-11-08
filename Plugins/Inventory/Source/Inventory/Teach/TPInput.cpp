@@ -7,7 +7,15 @@ bool UTPInput::InputKey(const FInputKeyEventArgs& Params) {
 	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/15?u=nande
 	// TODO use a new type instead of bool, for the device type. search in case ue has one already. and replace teachtarget
 
-	
+	const ETeachTarget NewTgt = ATeachMan::GetKeyTarget(Params.Key);
+	if (Tgt != NewTgt) {
+		UE_LOG(LogTemp, VeryVerbose, TEXT("UTPlayerInput::%hs Changed Was=%s Is=%s"), __func__,
+			*UEnum::GetValueAsString(Tgt), *UEnum::GetValueAsString(NewTgt));
+		Tgt = NewTgt;
+		OnChange.Broadcast(Tgt);
+	}
+	return Super::InputKey(Params);
+/*
 	const bool IsGP = Params.IsGamepad();
 	// Params.bIsTouchEvent
 	// Params.Key.IsGamepadKey() // the key also has a bunch of these. Params.IsGamePad returns the value on the key
@@ -20,5 +28,5 @@ bool UTPInput::InputKey(const FInputKeyEventArgs& Params) {
 		OnChange.Broadcast(IsGP);
 	}
 
-	return Super::InputKey(Params);
+	return Super::InputKey(Params);*/
 }

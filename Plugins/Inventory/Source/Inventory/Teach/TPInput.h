@@ -9,7 +9,8 @@
 #include "TPInput.generated.h"
 
 enum class ETeachTarget : uint8;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const bool, IsGP);
+// DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const bool, IsGP);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const ETeachTarget, Tgt);
 
 // you need to set this as the default input in the project settings > input
 // in theory you can also set is as OverridePlayerInputClass = UTPInput::StaticClass(); on the player controller
@@ -22,11 +23,12 @@ public:
 	// triggers when the input type changes. the parameter specifies if it's a GamePad.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	FTPIOnChange OnChange;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
+	// FTPIOnChangeT OnChangeT;
 
 protected:
 	virtual bool InputKey(const FInputKeyEventArgs& Params) override;
 
 	ETeachTarget Tgt = ETeachTarget::NONE;
-
-	bool WasGP = false;
+	bool WasGP = false; // deprecated
 };
