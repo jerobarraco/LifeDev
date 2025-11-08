@@ -37,7 +37,6 @@ void ULSetControlUI::Load_Implementation() {
 
 void ULSetControlUI::ApplyKeyNames() {
 	ALTeachMan* const TeachMan = ALTeachMan::Instance(this);
-	// TODO get the TeachMan
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!SysSettings | !TeachMan)) return;
 
@@ -51,7 +50,7 @@ void ULSetControlUI::ApplyKeyNames() {
 			const FKey& Key = M.Key;
 			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
 			const FName& Category = M.Key.GetMenuCategory();
-			const ETeachTarget Tgt = ATeachMan::GetKeyTarget(Key);
+			const ETeachTarget Tgt = UJUtilsSys::GetKeyTarget(Key);
 			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
 			Map.Add(Category.ToString(), Name);
 			UE_LOG(LogTemp, Log, TEXT("%hs Added key name=%s cat=%s tgt=%s"), __func__,

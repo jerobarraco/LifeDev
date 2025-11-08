@@ -1,13 +1,12 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
 
-
 #include "TPInput.h"
+
+#include "JUtils/Misc/JUtilsSys.h"
 
 bool UTPInput::InputKey(const FInputKeyEventArgs& Params) {
 	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/15?u=nande
-	// TODO use a new type instead of bool, for the device type. search in case ue has one already. and replace teachtarget
-
-	const ETeachTarget NewTgt = ATeachMan::GetKeyTarget(Params.Key);
+	const ETeachTarget NewTgt = UJUtilsSys::GetKeyTarget(Params.Key);
 	if (Tgt != NewTgt) {
 		UE_LOG(LogTemp, VeryVerbose, TEXT("UTPlayerInput::%hs Changed Was=%s Is=%s"), __func__,
 			*UEnum::GetValueAsString(Tgt), *UEnum::GetValueAsString(NewTgt));

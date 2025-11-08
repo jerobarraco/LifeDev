@@ -4,12 +4,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputCoreTypes.h"
 
 #include "JUtilsSys.generated.h"
 
 class UEnhancedPlayerMappableKeyProfile;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputMappingContext;
+
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
 	VK_SM5 UMETA(DisplayName="Vulkan SM5"),
@@ -25,6 +27,25 @@ enum class EJRHI: uint8 {
 	MAX UMETA(Hidden)
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
+
+
+// TODO rename now it's outside of teach. Maybe EInputTarget
+// todo create a input type or use one from ue. and use that instead.
+// probably EHardwareDevicePrimaryType or EInputDevices
+UENUM(Blueprintable, BlueprintType, meta=(Deprecated))
+enum class ETeachTarget: uint8 {
+	NONE,
+	// desktop kb and mouse
+	DESK, // rename to KBM
+	// gamepad
+	PAD,
+	// Touchscreen (android?)
+	TOUCH,
+	VR,
+	MAX UMETA(Hidden),
+};
+
+ENUM_RANGE_BY_COUNT(ETeachTarget, ETeachTarget::MAX);
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
@@ -154,5 +175,12 @@ public:
 	// N is the "Name" in the player mapping in the input action or context.
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void ResetEInputMap(const UObject* const O, const FName N);
+	// Returns the Teach Target for a key
+	UFUNCTION(BlueprintCallable)
+	static FORCEINLINE ETeachTarget GetKeyTarget(const FKey& Key) {
+		if (Key.IsGamepadKey()) return ETeachTarget::PAD;
+		if (Key.IsTouch()) return ETeachTarget::TOUCH;
+		return ETeachTarget::DESK;
+	}
 #pragma endregion // TODO maybe move to UtilsInput one day
 };

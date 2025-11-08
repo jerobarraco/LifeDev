@@ -25,7 +25,7 @@ public class JUtils: ModuleRules
 
 		// ... add other public dependencies that you statically link with here ...
 		PublicDependencyModuleNames.AddRange(new string[] {
-			"Core",
+			"Core", "InputCore"
 		});
 		
 		// ... add private dependencies that you statically link with here ...
@@ -35,7 +35,8 @@ public class JUtils: ModuleRules
 			"MoviePlayer", // for the loading screen
 			"RenderCore", // for the NumPrecompilesRemaining
 			// "Core" // Octtree tringbuffer
-			"SlateCore" // for loading styles
+			"SlateCore", // for loading styles
+			"InputCore" // for obtaining key.IsGamePad
 		});
 		
 		DynamicallyLoadedModuleNames.AddRange(new string[] {
