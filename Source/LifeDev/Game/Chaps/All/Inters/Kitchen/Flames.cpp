@@ -5,9 +5,8 @@
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
 
-#include "CQuickMesh.h"
-
 #include "Interact/CInteract.h"
+#include "JUtils/Misc/JUtilsMisc.h"
 
 AFlames::AFlames() {
 	StateNum = 2;
@@ -18,18 +17,30 @@ AFlames::AFlames() {
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Flames/Flame_NS"));
-
-	constexpr FVector Poss[8] = {
+	// todo test the positions
+	// todo reset on the outliner
+	
+	const FVector Poss[] = {
+		FVector(7.500000,7.500000,0.000000),
+		FVector(7.500000,-7.500000,0.000000),
+		FVector(12.500000,00000,0.000000),
+		FVector(0,12.500000,0.000000),
+		FVector(0,-12.500000,0.000000),
+		FVector(-7.5,-7.500000,0.000000),
+		FVector(-7.5,7.500000,0.000000),
+		FVector(12.5,00000,0.000000),
 	};
+	const size_t PosN = UJUtilsMisc::ArraySize(Poss);
+
 	// flames
-	for (uint8 i= 0; i<8; ++i) {
+	for (uint8 i= 0; i<PosN; ++i) {
 		const FString SName = TEXT("Flame_") + FString::FromInt(i);
 		UNiagaraComponent* Comp = CreateDefaultSubobject<UNiagaraComponent>(FName(SName));
 		if (UNLIKELY(!Comp)) continue;
 		Comp->SetupAttachment(Interact);
-		// Comp->SetRelativeLocation(Poss[i]);
+		Comp->SetRelativeLocation(Poss[i]);
 		Comp->SetAsset(CFlame.Object);
-		// Comp->SetUseAutoManageAttachment(true);
+		// Comp->SetUseAutoManageAttachment(true); // TODO re-enable these two. disable autoactivate
 		// Comp->SetAutoActivate(false);
 		Comp->SetAutoActivate(true); // debug
 		Flames.Add(Comp);
