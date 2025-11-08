@@ -4,10 +4,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputCoreTypes.h"
 
 #include "JUtilsSys.generated.h"
 
+class UEnhancedInputUserSettings;
 class UEnhancedPlayerMappableKeyProfile;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputMappingContext;
@@ -28,10 +28,8 @@ enum class EJRHI: uint8 {
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
 
-
 // TODO rename now it's outside of teach. Maybe EInputTarget
-// todo create a input type or use one from ue. and use that instead.
-// probably EHardwareDevicePrimaryType or EInputDevices
+// EInputDevices is not exposed to bps!
 UENUM(Blueprintable, BlueprintType, meta=(Deprecated))
 enum class ETeachTarget: uint8 {
 	NONE,
@@ -177,10 +175,8 @@ public:
 	static void ResetEInputMap(const UObject* const O, const FName N);
 	// Returns the Teach Target for a key
 	UFUNCTION(BlueprintCallable)
-	static FORCEINLINE ETeachTarget GetKeyTarget(const FKey& Key) {
-		if (Key.IsGamepadKey()) return ETeachTarget::PAD;
-		if (Key.IsTouch()) return ETeachTarget::TOUCH;
-		return ETeachTarget::DESK;
-	}
+	static ETeachTarget GetKeyTarget(const FKey& Key);
+	// not forceinlining since that will force any plugin using this to also depend on inputcore unecessarily
+	
 #pragma endregion // TODO maybe move to UtilsInput one day
 };

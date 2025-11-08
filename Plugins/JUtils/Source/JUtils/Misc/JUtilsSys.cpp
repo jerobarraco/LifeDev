@@ -10,6 +10,7 @@
 #include "ShaderPipelineCache.h"
 #include "Internationalization/Culture.h"
 #include "Kismet/GameplayStatics.h"
+#include "InputCoreTypes.h"
 
 #include "JUtilsMisc.h"
 #if WITH_EDITOR
@@ -224,6 +225,12 @@ void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
 
+}
+
+ETeachTarget UJUtilsSys::GetKeyTarget(const FKey& Key) {
+	if (Key.IsGamepadKey()) return ETeachTarget::PAD;
+	if (Key.IsTouch()) return ETeachTarget::TOUCH;
+	return ETeachTarget::DESK;
 }
 
 void UJUtilsSys::GetProjectVersion(FString& OVer) {
