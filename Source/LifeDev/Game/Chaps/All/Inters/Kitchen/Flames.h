@@ -11,10 +11,11 @@ class LIFEDEV_API AFlames : public ALInteract {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	AFlames();
 
 protected:
+	virtual void SetState_Implementation(const int32 NewState) override;
 
-public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TArray<TObjectPtr<UNiagaraComponent>> Flames;
 };
