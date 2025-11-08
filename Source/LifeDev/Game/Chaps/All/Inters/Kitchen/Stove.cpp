@@ -14,7 +14,7 @@ AStove::AStove():Super() {
 	StateNum = 1;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove.Stove"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove/Stove.Stove"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0.5,45,0));
 	Mesh->SetQuickCollisionEnabled(true);
