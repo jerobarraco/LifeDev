@@ -15,8 +15,11 @@ public:
 
 protected:
 	virtual void DoTrigger_Implementation() override;
-	
+
 	// matches snd
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
 	TObjectPtr<USoundBase> SFXTriggerB = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|SFX")
+	TArray<TObjectPtr<UNiagaraComponent>> Flames;
 };

@@ -2,6 +2,9 @@
 
 #include "StoveI00.h"
 
+#include "CQuickMesh.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 #include "LifeDev/Core/Consts/ConstItems.h"
 
 AStoveI00::AStoveI00():Super() {
@@ -28,6 +31,22 @@ AStoveI00::AStoveI00():Super() {
 	SFXTriggerB = CSndB.Object;
 	RewardIntersActive = {
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501C1E701_2080650083"))};
+
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
+		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove/Flame_NS"));
+
+	// flames
+	for (uint8 i= 0; i<8; ++i) {
+		const FString SName = TEXT("Flame_") + FString::FromInt(i);
+		UNiagaraComponent* Comp = CreateDefaultSubobject<UNiagaraComponent>(FName(SName));
+		if (UNLIKELY(!Comp)) continue;
+		Comp->SetupAttachment(Mesh);
+		Comp->SetAsset(CFlame.Object);
+		Comp->SetUseAutoManageAttachment(true);
+		// Comp->SetAutoActivate(false);
+		Comp->SetAutoActivate(true);
+		Flames.Add(Comp);
+	}
 }
 
 void AStoveI00::DoTrigger_Implementation() {
