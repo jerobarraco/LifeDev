@@ -17,7 +17,7 @@ AFlames::AFlames() {
 	// UseAutoActivate = false; // the default
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
-		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Stove/Flame_NS"));
+		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Flames/Flame_NS"));
 
 	// flames
 	for (uint8 i= 0; i<8; ++i) {
@@ -26,7 +26,7 @@ AFlames::AFlames() {
 		if (UNLIKELY(!Comp)) continue;
 		Comp->SetupAttachment(Interact);
 		Comp->SetAsset(CFlame.Object);
-		Comp->SetUseAutoManageAttachment(true);
+		// Comp->SetUseAutoManageAttachment(true);
 		// Comp->SetAutoActivate(false);
 		Comp->SetAutoActivate(true); // debug
 		Flames.Add(Comp);
