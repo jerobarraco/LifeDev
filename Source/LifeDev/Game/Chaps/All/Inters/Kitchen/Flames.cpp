@@ -1,12 +1,13 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
 
+#include "Flames.h"
 
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
 
 #include "CQuickMesh.h"
 
-#include "Flames.h"
+#include "Interact/CInteract.h"
 
 AFlames::AFlames() {
 	StateNum = 2;
@@ -23,7 +24,7 @@ AFlames::AFlames() {
 		const FString SName = TEXT("Flame_") + FString::FromInt(i);
 		UNiagaraComponent* Comp = CreateDefaultSubobject<UNiagaraComponent>(FName(SName));
 		if (UNLIKELY(!Comp)) continue;
-		Comp->SetupAttachment(Mesh);
+		Comp->SetupAttachment(Interact);
 		Comp->SetAsset(CFlame.Object);
 		Comp->SetUseAutoManageAttachment(true);
 		// Comp->SetAutoActivate(false);

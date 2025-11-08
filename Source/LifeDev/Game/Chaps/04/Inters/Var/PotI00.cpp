@@ -63,6 +63,7 @@ APotI00::APotI00():Super() {
 	// LockedDlg = "Pot00_L.0"; // handled by data table
 	UnlockItems = { "Food00", "Food01" };
 	SFXs = {SNDDrops, nullptr};
+	Flames = TSoftObjectPtr<ALInteract>(FSoftObjectPath(TEXT("")));
 }
 
 void APotI00::DoTrigger_Implementation() {

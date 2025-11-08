@@ -19,7 +19,6 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TObjectPtr<USoundBase> SNDDrops = nullptr;
 
-	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<ALInteract> Flames = nullptr;
 };
-
