@@ -62,7 +62,15 @@ public:
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
 	void SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names);
-	
+
+	// TODO this belongs in the JUTils 50/50
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE ETeachTarget GetKeyTarget(const FKey& Key) const {
+		if (Key.IsGamepadKey()) return ETeachTarget::PAD;
+		if (Key.IsTouch()) return ETeachTarget::TOUCH;
+		return ETeachTarget::DESK;
+	};
+
 	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)
 	float Time = 30;
