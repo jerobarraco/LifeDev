@@ -23,6 +23,8 @@ void ULSetControlUI::Apply_Implementation() {
 		if (UNLIKELY(!S)) continue;
 		S->Apply();
 	}
+	
+	ApplyKeyNames();
 }
 
 void ULSetControlUI::Load_Implementation() {
@@ -50,13 +52,16 @@ void ULSetControlUI::ApplyKeyNames() {
 			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
 			const FName& Category = M.Key.GetMenuCategory();
 			const ETeachTarget Tgt = ATeachMan::GetKeyTarget(Key);
-			
+			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
+			Map.Add(Category.ToString(), Name);
 		}
 	}
 
 	// todo fix will crash if names[] not set
-	// TeachMan->SetKeyNames(ETeachTarget::DESK, Names[ETeachTarget::DESK]);
-	// TeachMan->SetKeyNames(ETeachTarget::PAD, Names[ETeachTarget::PAD]);
+	if (Names.Contains(ETeachTarget::DESK))
+		TeachMan->SetKeyNames(ETeachTarget::DESK, Names[ETeachTarget::DESK]);
+	if (Names.Contains(ETeachTarget::PAD))
+		TeachMan->SetKeyNames(ETeachTarget::PAD, Names[ETeachTarget::PAD]);
 }
 
 void ULSetControlUI::NativeOnInitialized() {
@@ -94,6 +99,8 @@ void ULSetControlUI::NativeOnInitialized() {
 			// EISettings->RegisterInputMappingContext(CtxMenu.LoadSynchronous());
 		}
 	}
+	ApplyKeyNames();
+	
 	if (LIKELY(BDefaults))
 		BDefaults->OnClick.AddUniqueDynamic(this, &ULSetControlUI::SetDefaults);
 
