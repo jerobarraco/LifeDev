@@ -161,7 +161,7 @@ void ATeachMan::SetTarget(const ETeachTarget Target) {
 
 void ATeachMan::SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names) {
 	FFormatNamedArguments Arg;
-	for (auto KV: Names) {
+	for (const TTuple<FString, FText>& KV: Names) {
 		Arg.Add(KV.Key, KV.Value);
 	}
 
