@@ -102,7 +102,7 @@ protected:
 	TObjectPtr<UFlags> Flags = nullptr;
 	
 	TMap<EInputType, FFormatNamedArguments> KeyArgs; // key names for format
-	EInputType Tgt = EInputType::DESK; // current target
+	EInputType Tgt = EInputType::KBM; // current target
 
 	FTimerHandle HShow;
 };

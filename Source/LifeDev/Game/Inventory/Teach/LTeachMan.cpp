@@ -221,8 +221,8 @@ void ALTeachMan::SetCurrentKeyNames() {
 	}
 
 	// fix, will crash if names[] not set
-	if (Names.Contains(EInputType::DESK))
-		SetKeyNames(EInputType::DESK, Names[EInputType::DESK]);
+	if (Names.Contains(EInputType::KBM))
+		SetKeyNames(EInputType::KBM, Names[EInputType::KBM]);
 	if (Names.Contains(EInputType::PAD))
 		SetKeyNames(EInputType::PAD, Names[EInputType::PAD]);
 }

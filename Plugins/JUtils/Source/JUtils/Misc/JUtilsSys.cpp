@@ -230,7 +230,7 @@ EInputType UJUtilsSys::GetKeyTarget(const FKey& Key) {
 	// Key.GetMenuCategory() this also hints to the target. but i'm unsure how accurate it is
 	if (Key.IsGamepadKey()) return EInputType::PAD;
 	if (Key.IsTouch()) return EInputType::TOUCH;
-	return EInputType::DESK;
+	return EInputType::KBM;
 }
 
 void UJUtilsSys::GetProjectVersion(FString& OVer) {

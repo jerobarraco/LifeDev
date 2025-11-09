@@ -33,7 +33,7 @@ UENUM(Blueprintable, BlueprintType)
 enum class EInputType: uint8 {
 	NONE,
 	// desktop kb and mouse
-	DESK, // rename to KBM
+	KBM, // rename to KBM
 	// gamepad
 	PAD,
 	// Touchscreen (android?)
