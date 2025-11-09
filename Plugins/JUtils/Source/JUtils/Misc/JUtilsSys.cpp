@@ -228,6 +228,7 @@ void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
 }
 
 ETeachTarget UJUtilsSys::GetKeyTarget(const FKey& Key) {
+	// Key.GetMenuCategory() this also hints to the target. but i'm unsure how accurate it is
 	if (Key.IsGamepadKey()) return ETeachTarget::PAD;
 	if (Key.IsTouch()) return ETeachTarget::TOUCH;
 	return ETeachTarget::DESK;

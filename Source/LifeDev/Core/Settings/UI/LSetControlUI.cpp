@@ -48,14 +48,15 @@ void ULSetControlUI::ApplyKeyNames() {
 		TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
 		for (const FEnhancedActionKeyMapping& M: Mappings) {
 			const FKey& Key = M.Key;
-			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
-			const FName& Category = M.Key.GetMenuCategory();
-			M.Key.get
+			// const FName& Name = M.Key.GetMenuCategory(); // the category doesn't give what i want.
+			// it actually gives the target "gamepad" "keyboard" etc
+
+			const FText& Text = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
 			const ETeachTarget Tgt = UJUtilsSys::GetKeyTarget(Key);
 			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
-			Map.Add(Category.ToString(), Name);
-			UE_LOG(LogTemp, Log, TEXT("%hs Added key name=%s cat=%s tgt=%s"), __func__,
-				*Name.ToString(), *Category.ToString(), *UEnum::GetValueAsString(Tgt));
+			Map.Add(Name.ToString(), Text);
+			UE_LOG(LogTemp, Log, TEXT("%hs Added key text=%s name=%s tgt=%s"), __func__,
+				*Text.ToString(), *Name.ToString(), *UEnum::GetValueAsString(Tgt));
 		}
 	}
 	// TODO category doesn't give what i need.
