@@ -50,6 +50,7 @@ void ULSetControlUI::ApplyKeyNames() {
 			const FKey& Key = M.Key;
 			const FText& Name = M.Key.GetDisplayName(); // i hope this works. it binds to the key.
 			const FName& Category = M.Key.GetMenuCategory();
+			M.Key.get
 			const ETeachTarget Tgt = UJUtilsSys::GetKeyTarget(Key);
 			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
 			Map.Add(Category.ToString(), Name);
@@ -57,6 +58,7 @@ void ULSetControlUI::ApplyKeyNames() {
 				*Name.ToString(), *Category.ToString(), *UEnum::GetValueAsString(Tgt));
 		}
 	}
+	// TODO category doesn't give what i need.
 
 	// todo fix will crash if names[] not set
 	if (Names.Contains(ETeachTarget::DESK))
