@@ -16,6 +16,7 @@
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Misc/JUtilsInput.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Sounds/CLNoiser.h"
@@ -160,7 +161,7 @@ void ALChar::HoverDiagClear() {
 
 void ALChar::SetInputEnabled(const bool Enabled) {
 	if (LIKELY(IsValid(UI))) UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, Enabled);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// TODO improve, maybe add a param
 	// this is a stub behaviour to disable noises while the player is not actively playing.
@@ -223,7 +224,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (LIKELY(IsValid(Class))) {
@@ -260,8 +261,8 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	// unbind input
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 	
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();
@@ -371,7 +372,7 @@ void ALChar::FeatUp(const EFeat Feat, const bool Enabled) {
 	} else if (Feat == EFeat::G_STATUS) {
 		if (LIKELY(IsValid(UI))) UI->ShowStatus(Enabled);
 	} else if (Feat == EFeat::DBG_FLY_CAM) {
-		APlayerController* const Cont = UJUtilsSys::GetFirstLocalPlayerController(this);
+		APlayerController* const Cont = UJUtilsInput::GetFirstLocalPlayerController(this);
 		if (UNLIKELY(!Cont)) return;
 
 		Cont->ChangeState(Enabled ? NAME_Spectating : NAME_Playing);

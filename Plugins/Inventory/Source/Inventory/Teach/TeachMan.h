@@ -3,7 +3,7 @@
 
 #pragma once
 #include "TeachTypes.h"
-#include "JUtils/Misc/JUtilsSys.h"
+#include "TPInput.h"
 
 #include "TeachMan.generated.h"
 

@@ -8,9 +8,7 @@
 #include "JUtilsSys.generated.h"
 
 class UEnhancedInputUserSettings;
-class UEnhancedPlayerMappableKeyProfile;
 class UEnhancedInputLocalPlayerSubsystem;
-class UInputMappingContext;
 
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
@@ -27,21 +25,6 @@ enum class EJRHI: uint8 {
 	MAX UMETA(Hidden)
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
-
-// EInputDevices is not exposed to bps!
-UENUM(Blueprintable, BlueprintType)
-enum class EInputType: uint8 {
-	NONE,
-	// desktop kb and mouse
-	KBM, // rename to KBM
-	// gamepad
-	PAD,
-	// Touchscreen (android?)
-	TOUCH,
-	VR,
-	MAX UMETA(Hidden),
-};
-ENUM_RANGE_BY_COUNT(EInputType, EInputType::MAX);
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
@@ -103,7 +86,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void GetAllCultures(TArray<FString>& Names);
 #pragma endregion
-
 #pragma region camera
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void CameraFade(const UObject* const O, const bool In = false,
@@ -137,44 +119,4 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool SetRHI(EJRHI RHI);
 #pragma endregion
-#pragma region input
-	// returns the first local player controller. this is safe to use in network environments.
-	// where the local player might not be the first controller.
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static APlayerController* GetFirstLocalPlayerController(const UObject* const O);
-
-	// WSettings notifies the UserSettings, otherwise they won't work (have to be enabled in the project settings)
-	// This is necessary for being able to reset them
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void EInputToggleContext(const UObject* const O,
-		const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable,
-		const bool WSetting = true);
-	// returns the current enhanced input component
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static UEnhancedInputComponent* GetEInput(const UObject* const O);
-	// returns the current enhanced input local player subsystem
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static UEnhancedInputLocalPlayerSubsystem* GetEInputSub(const UObject* const O);
-	// returns the enhanced input user settings object
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static UEnhancedInputUserSettings* GetEInputSettings(const UObject* const O);
-	// returns the current profile
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static UEnhancedPlayerMappableKeyProfile* GetEInputProfile(const UObject* const O);
-	// https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI/EnhancedInput/UserSettings/ResetMappingtoDefault
-	// "Resets every player key mapping to this mapping back to its default value."
-	// note, this and get profile requires that you enable "EnableUserSettings" on the project settings
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ResetEInputMapsAll(const UObject* const O);
-	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
-	// Resets the named mapping to its default value
-	// N is the "Name" in the player mapping in the input action or context.
-	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
-	static void ResetEInputMap(const UObject* const O, const FName N);
-	// Returns the Teach Target for a key
-	UFUNCTION(BlueprintCallable)
-	static EInputType GetKeyTarget(const FKey& Key);
-	// not forceinlining since that will force any plugin using this to also depend on inputcore unecessarily
-	
-#pragma endregion // TODO maybe move to UtilsInput one day
 };

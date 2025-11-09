@@ -8,6 +8,7 @@
 #include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
+#include "JUtils/Misc/JUtilsInput.h"
 #include "Story/Story.h"
 #include "Story/Step.h"
 
@@ -212,7 +213,7 @@ void ALTeachMan::SetCurrentKeyNames() {
 
 			const FText& Text = Key.GetDisplayName(); // i hope this works. it binds to the key.
 			// const FText& Text = KeySettings->DisplayName; // doesn't automatically provide the text, maybe i will have to set it myself. not for now
-			const EInputType Tgt = UJUtilsSys::GetKeyTarget(Key);
+			const EInputType Tgt = UJUtilsInput::GetKeyTarget(Key);
 			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
 			Map.Add(Name.ToString(), Text);
 			UE_LOG(LogTemp, Log, TEXT("%hs Added key text=%s name=%s tgt=%s"), __func__,

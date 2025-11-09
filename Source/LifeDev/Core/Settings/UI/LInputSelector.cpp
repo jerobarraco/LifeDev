@@ -2,8 +2,9 @@
 
 #include "LInputSelector.h"
 
-#include "JUtils/Misc/JUtilsSys.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
+
+#include "JUtils/Misc/JUtilsInput.h"
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it
@@ -43,7 +44,7 @@ void ULInputSelector::Apply() {
 	Args.MappingName = InputName;
 	Args.Slot = EPlayerMappableKeySlot::First;
 	Args.NewKey = GetSelectedKey().Key;
-	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetEInputSettings(this);
 	// If you want to, you can additionally specify this mapping to only be applied to a certain hardware device or key profile
 	//Args.ProfileId =
 	//Args.HardwareDeviceId =
@@ -54,7 +55,7 @@ void ULInputSelector::Apply() {
 void ULInputSelector::Load() {
 	UE_LOG(LogTemp, Log, TEXT("LInputSelector::%hs Name=%s"), __func__, *InputName.ToString());
 
-	const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsSys::GetEInputProfile(this);
+	const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsInput::GetEInputProfile(this);
 	TArray<FKey> Keys;
 	Profile->GetMappedKeysInRow(InputName, Keys);
 	if (Keys.Num()>0) SetSelectedKey(Keys[0]);
@@ -85,7 +86,7 @@ void ULInputSelector::ResetStyle() {
 }
 
 void ULInputSelector::SetDefault() const {
-	UJUtilsSys::ResetEInputMap(this, InputName);
+	UJUtilsInput::ResetEInputMap(this, InputName);
 }
 
 void ULInputSelector::OnWidgetRebuilt() {

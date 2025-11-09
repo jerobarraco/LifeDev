@@ -13,8 +13,8 @@
 
 #include "CInteract.h"
 #include "Eval.h"
+#include "JUtils/Misc/JUtilsInput.h"
 #include "JUtils/Misc/JUtilsMisc.h"
-#include "JUtils/Misc/JUtilsSys.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 
@@ -216,7 +216,7 @@ void AInteract::Unlock_Implementation() {
 	IsLocked = false; // force unlock
 
 	if (bool(RumbleUnlock)) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		APlayerController* const Controller = UJUtilsInput::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->ClientPlayForceFeedback(RumbleUnlock);
 	}
 
@@ -381,7 +381,7 @@ void AInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogInteract, Log, TEXT("%hs l=%s"), __func__, *Label.ToString());
 	PlaySFX(SFXLocked);
 	if (RumbleLocked) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		APlayerController* const Controller = UJUtilsInput::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->ClientPlayForceFeedback(RumbleLocked);
 	}
 }

@@ -8,7 +8,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Misc/JUtilsInput.h"
 
 #include "InventoryUI.h"
 #include "Inventory.h"
@@ -44,10 +44,10 @@ void AInventoryMan::DeInit_Implementation() {
 	}
 	Inventory = nullptr;
 
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
 
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
 }
 
 void AInventoryMan::ActOpen() {
@@ -102,9 +102,9 @@ void AInventoryMan::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
 	if (ActionOpen) {
-		UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+		UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 		if (LIKELY(IsValid(Input))) {
 			Input->BindAction<AInventoryMan>(
 				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);
@@ -122,8 +122,7 @@ void AInventoryMan::BeginPlay() {
 			UI->OnDone.AddUniqueDynamic(this, &AInventoryMan::UIDone);
 		}
 	}
-
-
+	
 	Inventory = World->GetSubsystem<UInventory>();
 	if (UNLIKELY(!Inventory)) return;
 

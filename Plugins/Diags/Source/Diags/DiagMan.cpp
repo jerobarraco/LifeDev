@@ -7,14 +7,13 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
 
-#include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Misc/JUtilsInput.h"
 
 #include "DialogUI.h"
 #include "Diags.h"
 #include "DiagTypes.h" // Log
-#include "Kismet/GameplayStatics.h"
-#include "UserSettings/EnhancedInputUserSettings.h"
 
 ADiagMan::ADiagMan():Super() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -100,7 +99,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
 	UI->ShowDlg(Diag);
 	
 	if (UseAutoForce) AutoStart();
@@ -114,7 +113,7 @@ void ADiagMan::DiagDone_Implementation() {
 	IsShowing = false;
 	UI->Hide();
 	// last false avoids removing the ctx which is needed for remapping
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false, false);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -125,7 +124,7 @@ void ADiagMan::BeginPlay() {
 
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(World);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(World);
 
 	if (LIKELY(IsValid(Input))) {
 		if (LIKELY(IsValid(ActionSkip)))
@@ -157,8 +156,8 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJUtilsSys::EInputToggleContext(this, Mapping, InputPrio, false);
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
 	DeInit();

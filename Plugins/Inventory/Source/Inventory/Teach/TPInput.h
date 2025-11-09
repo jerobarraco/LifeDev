@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedPlayerInput.h"
-#include "TeachMan.h"
+
+#include "JUtils/Misc/JUtilsInput.h"
 
 #include "TPInput.generated.h"
 

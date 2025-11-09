@@ -6,13 +6,14 @@
 
 #include "JButton.h"
 #include "LInputSelector.h"
-#include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Misc/JUtilsInput.h"
+
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
-	UEnhancedInputUserSettings* const Settings = UJUtilsSys::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetEInputSettings(this);
 	if (LIKELY(Settings)) {
 		Settings->ApplySettings();
 		Settings->AsyncSaveSettings();
@@ -50,7 +51,7 @@ void ULSetControlUI::NativeOnInitialized() {
 	// though probably belong somewhere else.
 
 	// not sure if i *need* this. or if the load is async, which should be. but i'm relying it on being sync.
-	UEnhancedInputUserSettings* const EISettings = UJUtilsSys::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const EISettings = UJUtilsInput::GetEInputSettings(this);
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
@@ -91,7 +92,7 @@ void ULSetControlUI::NativeDestruct() {
 }
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
-	UJUtilsSys::ResetEInputMapsAll(this);
+	UJUtilsInput::ResetEInputMapsAll(this);
 	Load();
 }
 

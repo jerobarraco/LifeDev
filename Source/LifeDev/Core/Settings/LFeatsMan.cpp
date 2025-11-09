@@ -30,6 +30,7 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
+#include "JUtils/Misc/JUtilsInput.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -126,8 +127,8 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJUtilsSys::EInputToggleContext(this, Context, -1, false);
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	UJUtilsInput::EInputToggleContext(this, Context, -1, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
 	if (LIKELY(Settings)) {
@@ -190,10 +191,10 @@ void ALFeatsMan::Init() {
 
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 
-	UEnhancedInputComponent* const Input = UJUtilsSys::GetEInput(this);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
 	if (LIKELY(Input))
 		Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
-	UJUtilsSys::EInputToggleContext(this, Context, InputPrio, true);
+	UJUtilsInput::EInputToggleContext(this, Context, InputPrio, true);
 }
 
 void ALFeatsMan::ActMenu() { // no const
@@ -342,7 +343,7 @@ void ALFeatsMan::FeatUpUnreal(const EFeat Feat, const bool Enabled) {
 
 void ALFeatsMan::FeatUpGame(const EFeat Feat, const bool Enabled) {
 	if (Feat == EFeat::G_RUMBLE) {
-		APlayerController* const Controller = UJUtilsSys::GetFirstLocalPlayerController(this);
+		APlayerController* const Controller = UJUtilsInput::GetFirstLocalPlayerController(this);
 		if (Controller) Controller->bForceFeedbackEnabled = Enabled;
 	}
 }
