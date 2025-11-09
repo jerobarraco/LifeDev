@@ -2,6 +2,7 @@
 
 #include "LTeachMan.h"
 
+#include "PlayerMappableKeySettings.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "Diags/Diags.h"
@@ -13,6 +14,7 @@
 #include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSettingsUI.h"
+#include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Char/CLCharItems.h"
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
@@ -60,6 +62,10 @@ void ALTeachMan::Init_Implementation() {
 	}
 
 	InitFeat();
+
+	// this is called by the setcontrolsui, but just in case call it here too, since there could be a race condition.
+	// the last one will be ok.
+	SetCurrentKeyNames();
 }
 
 void ALTeachMan::InitFeat() {
@@ -173,6 +179,49 @@ void ALTeachMan::InitDelayed() {
 		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
 	} else
 		UE_LOG(LogLTeachMan, Warning, TEXT("%hs SettingsUI not found."), __func__);
+}
+
+void ALTeachMan::SetCurrentKeyNames() {
+	const ULSysSettings* const SysSettings = ULSysSettings::Get();
+	if (UNLIKELY(!SysSettings)) return;
+
+	TMap<ETeachTarget, TMap<FString, FText>> Names;
+	for (const TSoftObjectPtr<UInputMappingContext>& SIMC: SysSettings->IMCs) {
+		const UInputMappingContext* const Imc = SIMC.LoadSynchronous();
+		if (UNLIKELY(!Imc)) continue;
+
+		TArray<FEnhancedActionKeyMapping> Mappings = Imc->GetMappings();
+		for (const FEnhancedActionKeyMapping& M: Mappings) {
+			const FKey& Key = M.Key;
+			const UPlayerMappableKeySettings* const KeySettings = M.GetPlayerMappableKeySettings();
+			if (!KeySettings) continue;
+			
+			const FName& FNamePre = KeySettings->Name;
+			if (FNamePre.IsNone()) continue; // means the key is unmappable
+			
+			// derive the generic name from the name. remove the last _gp _kb
+			const FString& NamePre = FNamePre.ToString();
+			FString NameLeft, NameRight;
+			// not sure if i should use _ or .
+			NamePre.Split(".", &NameLeft, &NameRight, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+			const FName Name(NameLeft);
+			if (Name.IsNone()) continue;
+
+			const FText& Text = Key.GetDisplayName(); // i hope this works. it binds to the key.
+			// const FText& Text = KeySettings->DisplayName; // doesn't automatically provide the text, maybe i will have to set it myself. not for now
+			const ETeachTarget Tgt = UJUtilsSys::GetKeyTarget(Key);
+			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
+			Map.Add(Name.ToString(), Text);
+			UE_LOG(LogTemp, Log, TEXT("%hs Added key text=%s name=%s tgt=%s"), __func__,
+				*Text.ToString(), *Name.ToString(), *UEnum::GetValueAsString(Tgt));
+		}
+	}
+
+	// fix, will crash if names[] not set
+	if (Names.Contains(ETeachTarget::DESK))
+		SetKeyNames(ETeachTarget::DESK, Names[ETeachTarget::DESK]);
+	if (Names.Contains(ETeachTarget::PAD))
+		SetKeyNames(ETeachTarget::PAD, Names[ETeachTarget::PAD]);
 }
 
 void ALTeachMan::BeginPlay() {

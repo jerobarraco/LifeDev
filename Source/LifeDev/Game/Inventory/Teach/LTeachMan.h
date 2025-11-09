@@ -27,6 +27,10 @@ public:
 	virtual void DeInit_Implementation() override;
 	UFUNCTION()
 	void InitDelayed(); // called when the game already started
+
+	// will set the key names to whatever is current in the imcs
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void SetCurrentKeyNames();
 #pragma endregion
 
 	// time to wait before triggering the delayed init
