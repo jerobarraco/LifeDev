@@ -91,13 +91,9 @@ public:
 	// The data tables for the teachs
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="Inventory",
 		meta=(RequiredAssetDataTags="RowStructure=/Script/Inventory.TeachRow"))
-	TMap<ETeachTarget, TSoftObjectPtr<UDataTable>> TeachDTs = {{
-		ETeachTarget::DESK, TSoftObjectPtr<UDataTable>(
-		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachDesk.TeachDesk"))
-		},{
-		ETeachTarget::PAD, TSoftObjectPtr<UDataTable>(
-		  FSoftObjectPath("/Game/LifeDev/Game/Inventory/TeachPad.TeachPad"))
-		}};
+	TSoftObjectPtr<UDataTable> TeachDT =
+		TSoftObjectPtr<UDataTable>(
+			FSoftObjectPath("/Game/LifeDev/Game/Inventory/Teachs.Teachs"));
 
 	// the input mapping contexts used in game.
 	// this is necessary so that the settings panel can rebind the keys

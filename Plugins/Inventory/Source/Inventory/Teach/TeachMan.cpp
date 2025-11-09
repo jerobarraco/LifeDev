@@ -144,19 +144,17 @@ void ATeachMan::Hide_Implementation(const FName Id) { // don't use ref here.
 	OnHide.Broadcast(Id);
 }
 
-void ATeachMan::AddTarget(const ETeachTarget Target, UDataTable* const InDT) {
-	DTs.Add(Target, InDT);
-	if (UNLIKELY(!DT)) DT = InDT;
+
+void ATeachMan::SetDT(UDataTable* const InDT) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs"), __func__);
+	DT = InDT;
 }
 
 void ATeachMan::SetTarget(const ETeachTarget Target) {
-	UE_LOG(LogTeachMan, Log, TEXT("%hs Target %s"), __func__, *UEnum::GetValueAsString(Target));
-	TObjectPtr<UDataTable>* const Ptr = DTs.Find(Target);
-	DT = Ptr ? *Ptr : nullptr;
 	// refresh the dialog if needed. shownow checks for currentid.isnone. and hide sets it to none.
 	// so it's only valid while showing.
-	ShowNow(CurrentId);
 	Tgt = Target;
+	ShowNow(CurrentId);
 }
 
 void ATeachMan::SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names) {

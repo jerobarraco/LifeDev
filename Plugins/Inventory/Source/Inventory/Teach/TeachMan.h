@@ -14,7 +14,14 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTeachShow, const FName&, Id, const
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTeachHide, const FName&, Id);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(const FString, FTeachKeyName, const FString&, Key);
 
-// for new users popups, and stuff.
+// for new users popups.
+// to show buttons, on your DT you need to use {}.
+// the value inside would be the "Key" defined by SetKeyNames. the text is the value.
+// A way to obtain this, is to iterate through all the IMCs, then iterate over each Mapping,
+// On each mapping get the PlayerMappableKeySettings (you need to set it on the imcs)
+// And use the "Name" field as the key. You can add a suffix to distinguish each target, since these names have to be unique.
+// Before passing to SetKeyNames, you would need to remove that suffix.
+// The text can be obtained through Mapping.Key.GetDisplayName.
 UCLASS(Blueprintable, BlueprintType, Config=Inventory, DefaultConfig)
 class INVENTORY_API ATeachMan: public AInfo {
 	GENERATED_BODY()
@@ -47,10 +54,9 @@ public:
 	void Hide(const FName Id = NAME_None); // intentionally not a ref
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(AutoCreateRefTerm=Id, AdvancedDisplay))
 	void Set(const FName& Id = NAME_None) const;
-
-	// first target added is going to be set as default
+	
 	UFUNCTION(BlueprintCallable)
-	void AddTarget(const ETeachTarget Target, UDataTable* const InDT);
+	void SetDT(UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(const ETeachTarget Target);
 	UFUNCTION(BlueprintCallable, BlueprintPure)
