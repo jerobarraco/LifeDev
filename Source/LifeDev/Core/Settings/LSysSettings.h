@@ -102,7 +102,8 @@ public:
 		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs"))),
 		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Inventory/Input/IMC_Inventory.IMC_Inventory"))),
 		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Diags/Input/IMC_Dialogs.IMC_Dialogs"))),
-		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC.Menu_IMC")))
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Game/LifeDev/Core/Settings/Input/Menu_IMC.Menu_IMC"))),
+		TSoftObjectPtr<UInputMappingContext>(FSoftObjectPath(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char.IMC_Char")))
 	};
 
 	// the chapter to start with.
