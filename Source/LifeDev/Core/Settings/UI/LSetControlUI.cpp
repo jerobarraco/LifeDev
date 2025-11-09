@@ -59,7 +59,8 @@ void ULSetControlUI::ApplyKeyNames() {
 			// derive the generic name from the name. remove the last _gp _kb
 			const FString& NamePre = FNamePre.ToString();
 			FString NameLeft, NameRight;
-			NamePre.Split("_", &NameLeft, &NameRight, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+			// not sure if i should use _ or .
+			NamePre.Split(".", &NameLeft, &NameRight, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
 			const FName Name(NameLeft);
 			if (Name.IsNone()) continue;
 

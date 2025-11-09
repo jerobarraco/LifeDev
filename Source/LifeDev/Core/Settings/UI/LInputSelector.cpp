@@ -63,7 +63,13 @@ void ULInputSelector::Load() {
 }
 
 bool ULInputSelector::IsMapGP() const {
-	return InputName.ToString().EndsWith("_GP");
+	// const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsSys::GetEInputProfile(this);
+	// TArray<FKey> Keys;
+	// Profile->GetMappedKeysInRow(InputName, Keys);
+	// Keys[0].IsGamepadKey(); or JUtils inputtarget
+	// what i want to know is if the slot is for gamepads, not if the actual key bound.
+
+	return InputName.ToString().EndsWith(".GP");
 }
 
 void ULInputSelector::ResetStyle() {
