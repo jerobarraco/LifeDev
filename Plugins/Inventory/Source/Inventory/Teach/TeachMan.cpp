@@ -150,14 +150,14 @@ void ATeachMan::SetDT(UDataTable* const InDT) {
 	DT = InDT;
 }
 
-void ATeachMan::SetTarget(const ETeachTarget Target) {
+void ATeachMan::SetTarget(const EInputType Target) {
 	// refresh the dialog if needed. shownow checks for currentid.isnone. and hide sets it to none.
 	// so it's only valid while showing.
 	Tgt = Target;
 	ShowNow(CurrentId);
 }
 
-void ATeachMan::SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names) {
+void ATeachMan::SetKeyNames(const EInputType Target, const TMap<FString, FText> Names) {
 	FFormatNamedArguments Arg;
 	for (const TTuple<FString, FText>& KV: Names) {
 		Arg.Add(KV.Key, KV.Value);
@@ -172,7 +172,7 @@ void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDevi
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
 }
 
-void ATeachMan::InputChanged(const ETeachTarget Tgt) {
+void ATeachMan::InputChanged(const EInputType Tgt) {
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed Tgt=%s"), __func__, *UEnum::GetValueAsString(Tgt));
 	SetTarget(Tgt);
 }

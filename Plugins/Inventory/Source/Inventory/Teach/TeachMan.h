@@ -58,16 +58,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetDT(UDataTable* const InDT);
 	UFUNCTION(BlueprintCallable)
-	void SetTarget(const ETeachTarget Target);
+	void SetTarget(const EInputType Target);
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE ETeachTarget GetTarget() const { return Tgt; }
+	FORCEINLINE EInputType GetTarget() const { return Tgt; }
 
 	// pass the key names, that you use when formatting the data tables
 	// e.g. if in the datatable you have "Press the {inventory_next} button", you need one entry with key "inventory_next"
 	// and the value "X".
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
-	void SetKeyNames(const ETeachTarget Target, const TMap<FString, FText> Names);
+	void SetKeyNames(const EInputType Target, const TMap<FString, FText> Names);
 	// later. this could live in a subsystem if i wanted to use elsewhere. or maybe just keep using the teach.
 
 	// default duration for teach items. when the item time is <=0.
@@ -86,7 +86,7 @@ protected:
 	void OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId);
 
 	UFUNCTION()
-	void InputChanged(const ETeachTarget Tgt);
+	void InputChanged(const EInputType Tgt);
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName CurrentId = NAME_None;
@@ -97,12 +97,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> DT = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
-	TMap<ETeachTarget, TObjectPtr<UDataTable>> DTs;
+	TMap<EInputType, TObjectPtr<UDataTable>> DTs;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
 	
-	TMap<ETeachTarget, FFormatNamedArguments> KeyArgs; // key names for format
-	ETeachTarget Tgt = ETeachTarget::DESK; // current target
+	TMap<EInputType, FFormatNamedArguments> KeyArgs; // key names for format
+	EInputType Tgt = EInputType::DESK; // current target
 
 	FTimerHandle HShow;
 };

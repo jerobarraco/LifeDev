@@ -8,8 +8,8 @@
 
 #include "TPInput.generated.h"
 
-enum class ETeachTarget : uint8;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const ETeachTarget, Tgt);
+enum class EInputType : uint8;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const EInputType, Tgt);
 
 // you need to set this as the default input in the project settings > input
 // in theory you can also set is as OverridePlayerInputClass = UTPInput::StaticClass(); on the player controller
@@ -26,5 +26,5 @@ public:
 protected:
 	virtual bool InputKey(const FInputKeyEventArgs& Params) override;
 
-	ETeachTarget Tgt = ETeachTarget::NONE;
+	EInputType Tgt = EInputType::NONE;
 };

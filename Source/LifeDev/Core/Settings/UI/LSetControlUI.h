@@ -9,6 +9,7 @@
 
 class ULInputSelector;
 class UJButton;
+
 // baseclass for the control settings
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {

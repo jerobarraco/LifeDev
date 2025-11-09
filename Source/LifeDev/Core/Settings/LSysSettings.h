@@ -8,7 +8,7 @@
 
 #include "LSysSettings.generated.h"
 
-enum class ETeachTarget : uint8;
+enum class EInputType : uint8;
 class UDataTable;
 
 // Demo mode. avoid using the macro unless necessary.

@@ -292,9 +292,9 @@ void ALGGameMode::Init() {
 	if (LIKELY(IsValid(TeachMan))) {
 		TeachMan->Init();
 		TeachMan->SetDT(SysSettings->TeachDT.LoadSynchronous());
-		TeachMan->SetTarget(ETeachTarget::DESK);
+		TeachMan->SetTarget(EInputType::DESK);
 		// todo load mapping probably on the input setup
-		TeachMan->SetKeyNames(ETeachTarget::DESK, {{TEXT("test"), FText::FromString("button a")}});
+		TeachMan->SetKeyNames(EInputType::DESK, {{TEXT("test"), FText::FromString("button a")}});
 	}
 
 	// do at the end since it depends-on/modifies other things.

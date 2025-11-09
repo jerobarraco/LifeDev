@@ -28,10 +28,9 @@ enum class EJRHI: uint8 {
 };
 ENUM_RANGE_BY_COUNT(EJRHI, EJRHI::MAX);
 
-// TODO rename now it's outside of teach. Maybe EInputTarget
 // EInputDevices is not exposed to bps!
-UENUM(Blueprintable, BlueprintType, meta=(Deprecated))
-enum class ETeachTarget: uint8 {
+UENUM(Blueprintable, BlueprintType)
+enum class EInputType: uint8 {
 	NONE,
 	// desktop kb and mouse
 	DESK, // rename to KBM
@@ -42,8 +41,7 @@ enum class ETeachTarget: uint8 {
 	VR,
 	MAX UMETA(Hidden),
 };
-
-ENUM_RANGE_BY_COUNT(ETeachTarget, ETeachTarget::MAX);
+ENUM_RANGE_BY_COUNT(EInputType, EInputType::MAX);
 
 UCLASS(Blueprintable)
 class JUTILS_API UJUtilsSys: public UBlueprintFunctionLibrary {
@@ -175,7 +173,7 @@ public:
 	static void ResetEInputMap(const UObject* const O, const FName N);
 	// Returns the Teach Target for a key
 	UFUNCTION(BlueprintCallable)
-	static ETeachTarget GetKeyTarget(const FKey& Key);
+	static EInputType GetKeyTarget(const FKey& Key);
 	// not forceinlining since that will force any plugin using this to also depend on inputcore unecessarily
 	
 #pragma endregion // TODO maybe move to UtilsInput one day
