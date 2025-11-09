@@ -31,7 +31,7 @@ void UJUtilsSys::EInputToggleContext(const UObject* const O,
 	if (UNLIKELY(!IsValid(Subsystem))) return;
 
 	FModifyContextOptions Op;
-	Op.bNotifyUserSettings = WSetting; // TODO this still is not working
+	Op.bNotifyUserSettings = WSetting; // todo not sure i need this.
 	UEnhancedInputUserSettings* const Settings = Subsystem->GetUserSettings();
 	if (Enable) {
 		Subsystem->AddMappingContext(Ctx, Prio, Op);

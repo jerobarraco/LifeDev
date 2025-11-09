@@ -5,7 +5,6 @@
 
 #include "Inventory/Teach/TPInput.h"
 
-
 ALPController::ALPController() {
 	OverridePlayerInputClass = UTPInput::StaticClass();
 }
