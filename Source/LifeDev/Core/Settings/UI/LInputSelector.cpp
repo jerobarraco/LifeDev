@@ -44,7 +44,7 @@ void ULInputSelector::Apply() {
 	Args.MappingName = InputName;
 	Args.Slot = EPlayerMappableKeySlot::First;
 	Args.NewKey = GetSelectedKey().Key;
-	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetInputSettings(this);
 	// If you want to, you can additionally specify this mapping to only be applied to a certain hardware device or key profile
 	//Args.ProfileId =
 	//Args.HardwareDeviceId =
@@ -55,7 +55,7 @@ void ULInputSelector::Apply() {
 void ULInputSelector::Load() {
 	UE_LOG(LogTemp, Log, TEXT("LInputSelector::%hs Name=%s"), __func__, *InputName.ToString());
 
-	const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsInput::GetEInputProfile(this);
+	const UEnhancedPlayerMappableKeyProfile* const Profile = UJUtilsInput::GetInputProfile(this);
 	TArray<FKey> Keys;
 	Profile->GetMappedKeysInRow(InputName, Keys);
 	if (Keys.Num()>0) SetSelectedKey(Keys[0]);
@@ -86,7 +86,7 @@ void ULInputSelector::ResetStyle() {
 }
 
 void ULInputSelector::SetDefault() const {
-	UJUtilsInput::ResetEInputMap(this, InputName);
+	UJUtilsInput::ResetInputMap(this, InputName);
 }
 
 void ULInputSelector::OnWidgetRebuilt() {

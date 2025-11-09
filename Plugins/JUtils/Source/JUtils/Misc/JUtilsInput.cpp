@@ -6,9 +6,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 
-void UJUtilsInput::EInputToggleContext(const UObject* const O,
+void UJUtilsInput::ToggleContext(const UObject* const O,
 	const UInputMappingContext* const Ctx, const int32 Prio, const bool Enable, const bool WSetting) {
-	UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
+	UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetInputSub(O);
 	if (UNLIKELY(!IsValid(Subsystem))) return;
 
 	FModifyContextOptions Op;
@@ -35,7 +35,7 @@ APlayerController* UJUtilsInput::GetFirstLocalPlayerController(const UObject* co
 	return Instance->GetFirstLocalPlayerController(W);
 }
 
-UEnhancedInputComponent* UJUtilsInput::GetEInput(const UObject* const O) {
+UEnhancedInputComponent* UJUtilsInput::GetInput(const UObject* const O) {
 	const APlayerController* const Controller = GetFirstLocalPlayerController(O);
 	if (UNLIKELY(!Controller)) return nullptr;
 
@@ -44,7 +44,7 @@ UEnhancedInputComponent* UJUtilsInput::GetEInput(const UObject* const O) {
 	return Input;
 }
 
-UEnhancedInputLocalPlayerSubsystem* UJUtilsInput::GetEInputSub(const UObject* const O) {
+UEnhancedInputLocalPlayerSubsystem* UJUtilsInput::GetInputSub(const UObject* const O) {
 	const UWorld* const W = LIKELY(O) ? O->GetWorld() : nullptr;
 	const ULocalPlayer* const Player = LIKELY(W) ? W->GetFirstLocalPlayerFromController() : nullptr;
 	UEnhancedInputLocalPlayerSubsystem* const Subsystem =
@@ -53,35 +53,35 @@ UEnhancedInputLocalPlayerSubsystem* UJUtilsInput::GetEInputSub(const UObject* co
 	return Subsystem;
 }
 
-UEnhancedInputUserSettings* UJUtilsInput::GetEInputSettings(const UObject* const O) {
-	const UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetEInputSub(O);
+UEnhancedInputUserSettings* UJUtilsInput::GetInputSettings(const UObject* const O) {
+	const UEnhancedInputLocalPlayerSubsystem* const Subsystem = GetInputSub(O);
 	UEnhancedInputUserSettings* const Settings = LIKELY(Subsystem) ? Subsystem->GetUserSettings() : nullptr;
 	UE_CLOG(!Settings, LogTemp, Warning, TEXT("%hs Could not get the EnhancedInputUserSettings"), __func__);
 	return Settings;
 }
 
-UEnhancedPlayerMappableKeyProfile* UJUtilsInput::GetEInputProfile(const UObject* const O) {
-	const UEnhancedInputUserSettings* const Settings = GetEInputSettings(O);
+UEnhancedPlayerMappableKeyProfile* UJUtilsInput::GetInputProfile(const UObject* const O) {
+	const UEnhancedInputUserSettings* const Settings = GetInputSettings(O);
 	
 	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
 	UE_CLOG(!Profile, LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 	return Profile;
 }
 
-void UJUtilsInput::ResetEInputMapsAll(const UObject* const O) {
+void UJUtilsInput::ResetInputMapsAll(const UObject* const O) {
 	// https://forums.unrealengine.com/t/get-enhanced-input-local-player-subsystem-in-c/1732524/2
-	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
+	UEnhancedPlayerMappableKeyProfile* const Profile = GetInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetToDefault();
 }
 
-void UJUtilsInput::ResetEInputMap(const UObject* const O, const FName N) {
+void UJUtilsInput::ResetInputMap(const UObject* const O, const FName N) {
 	if (UNLIKELY(N.IsNone() | !O)) return; // !O is cheap so put it there too.
 
-	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
+	UEnhancedPlayerMappableKeyProfile* const Profile = GetInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
 }
 
-EInputType UJUtilsInput::GetKeyTarget(const FKey& Key) {
+EInputType UJUtilsInput::GetKeyType(const FKey& Key) {
 	// Key.GetMenuCategory() this also hints to the target. but i'm unsure how accurate it is
 	if (Key.IsGamepadKey()) return EInputType::PAD;
 	if (Key.IsTouch()) return EInputType::TOUCH;

@@ -99,7 +99,7 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 	// only set the flag if we are showing something
 	IsShowing = true;
 	// we need to actually add and remove so that it doesn't eat the input while not showing
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, true);
 	UI->ShowDlg(Diag);
 	
 	if (UseAutoForce) AutoStart();
@@ -113,7 +113,7 @@ void ADiagMan::DiagDone_Implementation() {
 	IsShowing = false;
 	UI->Hide();
 	// last false avoids removing the ctx which is needed for remapping
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false, false);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false, false);
 }
 
 void ADiagMan::BeginPlay() {
@@ -124,7 +124,7 @@ void ADiagMan::BeginPlay() {
 
 	Diags = World->GetSubsystem<UDiags>();
 	// bind the action
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(World);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(World);
 
 	if (LIKELY(IsValid(Input))) {
 		if (LIKELY(IsValid(ActionSkip)))
@@ -156,8 +156,8 @@ void ADiagMan::BeginPlay() {
 }
 
 void ADiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
 	DeInit();

@@ -29,7 +29,7 @@ void ATeachMan::Init_Implementation() {
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.AddDynamic(this, &ATeachMan::OnHardwareChanged);
 	else UE_LOG(LogTeachMan, Log, TEXT("%hs can't get input subsystem"), __func__);
 
-	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetEInputSub(this);
+	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
 	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
 	if (LIKELY(PInput)) PInput->OnChange.AddUniqueDynamic(this, &ATeachMan::InputChanged);
 }
@@ -38,7 +38,7 @@ void ATeachMan::DeInit_Implementation() {
 	UInputDeviceSubsystem* const Inputs = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>();
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.RemoveAll(this);
 	
-	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetEInputSub(this);
+	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
 	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
 	if (LIKELY(PInput)) PInput->OnChange.RemoveAll(this);
 

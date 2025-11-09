@@ -4,7 +4,7 @@
 
 bool UTPInput::InputKey(const FInputKeyEventArgs& Params) {
 	// https://forums.unrealengine.com/t/enhanced-input-detect-gamepad-vs-keyboard-input/1231533/15?u=nande
-	const EInputType NewTgt = UJUtilsInput::GetKeyTarget(Params.Key);
+	const EInputType NewTgt = UJUtilsInput::GetKeyType(Params.Key);
 	if (Tgt != NewTgt) {
 		UE_LOG(LogTemp, VeryVerbose, TEXT("UTPlayerInput::%hs Changed Was=%s Is=%s"), __func__,
 			*UEnum::GetValueAsString(Tgt), *UEnum::GetValueAsString(NewTgt));

@@ -127,8 +127,8 @@ void ALFeatsMan::BeginPlay() {
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
-	UJUtilsInput::EInputToggleContext(this, Context, -1, false);
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+	UJUtilsInput::ToggleContext(this, Context, -1, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 
 	if (LIKELY(Settings)) {
@@ -191,10 +191,10 @@ void ALFeatsMan::Init() {
 
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
 
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input))
 		Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
-	UJUtilsInput::EInputToggleContext(this, Context, InputPrio, true);
+	UJUtilsInput::ToggleContext(this, Context, InputPrio, true);
 }
 
 void ALFeatsMan::ActMenu() { // no const

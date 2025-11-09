@@ -161,7 +161,7 @@ void ALChar::HoverDiagClear() {
 
 void ALChar::SetInputEnabled(const bool Enabled) {
 	if (LIKELY(IsValid(UI))) UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, Enabled);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// TODO improve, maybe add a param
 	// this is a stub behaviour to disable noises while the player is not actively playing.
@@ -224,7 +224,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (LIKELY(IsValid(Class))) {
@@ -261,8 +261,8 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	// unbind input
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 	
 	UFlashback* const FB = W->GetSubsystem<UFlashback>();

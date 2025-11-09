@@ -44,10 +44,10 @@ void AInventoryMan::DeInit_Implementation() {
 	}
 	Inventory = nullptr;
 
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
 
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, false);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false);
 }
 
 void AInventoryMan::ActOpen() {
@@ -102,9 +102,9 @@ void AInventoryMan::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	
-	UJUtilsInput::EInputToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, true);
 	if (ActionOpen) {
-		UEnhancedInputComponent* const Input = UJUtilsInput::GetEInput(this);
+		UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 		if (LIKELY(IsValid(Input))) {
 			Input->BindAction<AInventoryMan>(
 				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);

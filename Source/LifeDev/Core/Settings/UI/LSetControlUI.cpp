@@ -13,7 +13,7 @@
 
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
-	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetInputSettings(this);
 	if (LIKELY(Settings)) {
 		Settings->ApplySettings();
 		Settings->AsyncSaveSettings();
@@ -51,7 +51,7 @@ void ULSetControlUI::NativeOnInitialized() {
 	// though probably belong somewhere else.
 
 	// not sure if i *need* this. or if the load is async, which should be. but i'm relying it on being sync.
-	UEnhancedInputUserSettings* const EISettings = UJUtilsInput::GetEInputSettings(this);
+	UEnhancedInputUserSettings* const EISettings = UJUtilsInput::GetInputSettings(this);
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
@@ -92,7 +92,7 @@ void ULSetControlUI::NativeDestruct() {
 }
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
-	UJUtilsInput::ResetEInputMapsAll(this);
+	UJUtilsInput::ResetInputMapsAll(this);
 	Load();
 }
 

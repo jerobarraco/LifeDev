@@ -7,9 +7,6 @@
 
 #include "JUtilsSys.generated.h"
 
-class UEnhancedInputUserSettings;
-class UEnhancedInputLocalPlayerSubsystem;
-
 UENUM(BlueprintType)
 enum class EJRHI: uint8 {
 	VK_SM5 UMETA(DisplayName="Vulkan SM5"),
