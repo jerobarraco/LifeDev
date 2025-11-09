@@ -62,10 +62,6 @@ void ALTeachMan::Init_Implementation() {
 	}
 
 	InitFeat();
-
-	// this is called by the setcontrolsui, but just in case call it here too, since there could be a race condition.
-	// the last one will be ok.
-	SetCurrentKeyNames();
 }
 
 void ALTeachMan::InitFeat() {
@@ -135,6 +131,12 @@ void ALTeachMan::InitDelayed() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
+	// this is called by the setcontrolsui, but just in case call it here too, since there could be a race condition.
+	// apparently some stuff is not loaded in time. not even on init.
+	// since no teachs appear before this function, this is ideal.
+	// beware that this could hitch, actually.
+	SetCurrentKeyNames();
+	
 	const ALChar* const Char = ALChar::Instance(this);
 	if (UNLIKELY(!Char)) return;
 
@@ -174,6 +176,7 @@ void ALTeachMan::InitDelayed() {
 
 	const ALFeatsMan* const FeatsMan = ALFeatsMan::Instance(this);
 	if (!FeatsMan) return;
+
 	SettingsUI = FeatsMan->GetSettingsUI();
 	if (LIKELY(SettingsUI)) {
 		SettingsUI->OnDone.AddUniqueDynamic(this, &ALTeachMan::SettingsDone);
