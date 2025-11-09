@@ -224,7 +224,6 @@ void UJUtilsSys::ResetEInputMap(const UObject* const O, const FName N) {
 
 	UEnhancedPlayerMappableKeyProfile* const Profile = GetEInputProfile(O);
 	if (LIKELY(Profile)) Profile->ResetMappingToDefault(N);
-
 }
 
 ETeachTarget UJUtilsSys::GetKeyTarget(const FKey& Key) {
