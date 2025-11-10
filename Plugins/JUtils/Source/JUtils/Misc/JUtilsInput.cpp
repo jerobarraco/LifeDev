@@ -18,8 +18,7 @@ void UJUtilsInput::ToggleContext(const UObject* const O,
 		Subsystem->AddMappingContext(Ctx, Prio, Op);
 		// attempt at making this work with user settings
 		if (LIKELY(Settings)) Settings->RegisterInputMappingContext(Ctx);
-	}
-	else {
+	} else {
 		Subsystem->RemoveMappingContext(Ctx, Op);
 		if (LIKELY(Settings)) Settings->UnregisterInputMappingContext(Ctx);
 	}
