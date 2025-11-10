@@ -40,9 +40,9 @@ AFlames::AFlames() {
 		Comp->SetupAttachment(Interact);
 		Comp->SetRelativeLocation(Poss[i]);
 		Comp->SetAsset(CFlame.Object);
-		// Comp->SetUseAutoManageAttachment(true); // TODO re-enable these two. disable autoactivate
-		// Comp->SetAutoActivate(false);
-		Comp->SetAutoActivate(true); // debug
+		Comp->SetUseAutoManageAttachment(true); // TODO re-enable these two. disable autoactivate
+		Comp->SetAutoActivate(false);
+		// Comp->SetAutoActivate(true); // debug
 		Flames.Add(Comp);
 	}
 }
@@ -51,6 +51,7 @@ void AFlames::SetState_Implementation(const int32 NewState) {
 	Super::SetState_Implementation(NewState);
 	for (const TObjectPtr<UNiagaraComponent>& N: Flames) {
 		if (UNLIKELY(!N)) continue;
+
 		N->SetActive(NewState == 1);
 	}
 }

@@ -63,16 +63,16 @@ APotI00::APotI00():Super() {
 	// LockedDlg = "Pot00_L.0"; // handled by data table
 	UnlockItems = { "Food00", "Food01" };
 	SFXs = {SNDDrops, nullptr};
+	// /Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Flames_UAID_D8BBC116E50149A002_2093575303
 	Flames = TSoftObjectPtr<ALInteract>(FSoftObjectPath(TEXT("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Flames_UAID_D8BBC116E50149A002_2093575303")));
 	// todo enable/disable flames according to states
 }
 
 void APotI00::DoTrigger_Implementation() {
 	Super::DoTrigger_Implementation();
-	UE_LOG(LogTemp, Log, TEXT("%hs state=%i"), __func__, State);
+	UE_LOG(LogTemp, Log, TEXT("%hs state=%i flames=%s"), __func__, State, *GetNameSafe(Flames.Get()));
 
 	// this could potentially be SetState instead of DoTrigger, but it's possible that SetState(0) is called on beginplay
-
 	// state ought to be the new one after super::doTrigger (that means that the first time it's going to be 1)
 	if (State == 1) {
 		// triggered after adding food
