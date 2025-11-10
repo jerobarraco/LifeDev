@@ -28,6 +28,9 @@ AStoveI00::AStoveI00():Super() {
 	SFXTriggerB = CSndB.Object;
 	RewardIntersActive = {
 		TSoftObjectPtr<AInteract>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.StaticMeshActor_UAID_D8BBC116E501C1E701_2080650083"))};
+	RewardIntersTrigger= { // activate flames
+		TSoftObjectPtr<ALInteract>(FSoftObjectPath(TEXT("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Flames_UAID_D8BBC116E50149A002_2093575303")))
+	};
 }
 
 void AStoveI00::DoTrigger_Implementation() {

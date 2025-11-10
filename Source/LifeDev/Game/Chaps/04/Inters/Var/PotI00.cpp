@@ -63,9 +63,7 @@ APotI00::APotI00():Super() {
 	// LockedDlg = "Pot00_L.0"; // handled by data table
 	UnlockItems = { "Food00", "Food01" };
 	SFXs = {SNDDrops, nullptr};
-	// /Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Flames_UAID_D8BBC116E50149A002_2093575303
 	Flames = TSoftObjectPtr<ALInteract>(FSoftObjectPath(TEXT("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Flames_UAID_D8BBC116E50149A002_2093575303")));
-	// todo enable/disable flames according to states
 }
 
 void APotI00::DoTrigger_Implementation() {
@@ -81,13 +79,13 @@ void APotI00::DoTrigger_Implementation() {
 		// LockedDlg = "Pot00.1_L";
 		UnlockItems = {LDConsts::Items::Plate01};
 		IsLocked = true;
-		if (LIKELY(Flames)) Flames->SetState(1); // i could use trigger. but this is more accurate.
+		// if (LIKELY(Flames)) Flames->SetState(1); // done by the stove, is previous to this part
 		// story is advanced by the step
 		// Story->StartNext(); // manually advance.
 	} else if (State == 0) { // has looped over (notice the check is last)
 		RewardItem = LDConsts::Items::Plate02;
 		IsOneShot = true; // no more triggers after this
-		if (LIKELY(Flames)) Flames->SetState(0);
+		if (LIKELY(Flames)) Flames->SetState(0);  // i could use trigger. but this is more accurate.
 		// not advancing the story here. it will advance when the player uses the plate on the chair (spot)
 	}
 }

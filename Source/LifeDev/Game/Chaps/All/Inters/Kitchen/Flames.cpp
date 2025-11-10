@@ -12,13 +12,11 @@ AFlames::AFlames() {
 	StateNum = 2;
 	UseAnim = false;
 	UseFade = false;
-	IsLocked = true;
+	IsLocked = false; // so that the stove can trigger
 	// UseAutoActivate = false; // the default
 
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CFlame(TEXT("/Game/LifeDev/Game/Inters/Kitchen/Flames/Flame_NS"));
-	// todo test the positions
-	// todo reset on the outliner
 	
 	const FVector Poss[] = {
 		FVector(7.500000,7.500000,0.000000),
