@@ -89,9 +89,10 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	// The ui is done with the text and hidden.
+	// The ui is done with the text. Has shown the last it knows.
+	// The diag sub might still have some more diags.
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Hidden();
+	void UIDone();
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDiags> Diags = nullptr;
