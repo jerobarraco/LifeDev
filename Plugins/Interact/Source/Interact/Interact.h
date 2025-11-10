@@ -239,7 +239,7 @@ public:
 	TArray<TObjectPtr<USoundBase>> SFXs;
 
 	// rumble to play when trigger. Index matches the state, but also rotate.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
 #pragma endregion
 #pragma endregion

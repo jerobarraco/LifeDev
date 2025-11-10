@@ -68,5 +68,5 @@ public:
 	// Returns the Teach Target for a key
 	UFUNCTION(BlueprintCallable)
 	static EInputType GetKeyType(const FKey& Key);
-	// not forceinlining since that will force any plugin using this to also depend on inputcore unecessarily
+	// not force-inlining since that will force any plugin using this to also depend on inputcore unecessarily
 };
