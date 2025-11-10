@@ -28,7 +28,7 @@ AFlames::AFlames() {
 		FVector(0,-12.500000,0.000000),
 		FVector(-7.5,-7.500000,0.000000),
 		FVector(-7.5,7.500000,0.000000),
-		FVector(12.5,00000,0.000000),
+		FVector(-12.5,00000,0.000000),
 	};
 	const size_t PosN = UJUtilsMisc::ArraySize(Poss);
 
