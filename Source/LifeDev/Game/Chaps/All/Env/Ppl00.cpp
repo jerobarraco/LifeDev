@@ -49,7 +49,7 @@ void APpl00::BeginPlay() {
 
 void APpl00::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
-	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" :"BlockAllDynamic" );
+	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" : "BlockAllDynamic");
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
