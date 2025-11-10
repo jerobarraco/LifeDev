@@ -28,8 +28,13 @@ UCPplSig::UCPplSig() {
 
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	UE_LOG(LogTemp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
-	if (!Origin) return ESigValue::Off; // required
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World) | !Origin) return ESigValue::Off; // required
 
+	// force to wait some time
+	const double Time = World->GetTimeSeconds();
+	if (Time-BeginTime < WaitTime) return ESigValue::Off;
+	
 	// check distance. don't show if too close
 	const FVector& OrgLoc = Origin->GetComponentLocation();
 	const FVector& Line = OrgLoc - Viewpoint.GetLocation();
@@ -53,8 +58,6 @@ ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
 	// the object is visible in this range y (up/down) -37 to 93 // z (left/right) -65 to 65
 	if ((RZ>-65 & RZ<65) & (RY>-40 & RY<95)) return ESigValue::Off; // looking at it vertically. notice only check this AFTER the horizontal
 
-	// TODO add also some time delay
-
 	return ESigValue::High; // show
 }
 
@@ -63,4 +66,12 @@ void UCPplSig::BeginPlay() {
 
 	CalcSignificance.BindDynamic(this, &UCPplSig::CalcPplSig);
 	SetSignificance(ESigValue::Off);
+
+	// in theory is ok to get these numbers her since this instance is loaded per chapter.
+	// so this begin play will be executed when the chapter starts
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	BeginTime = World->GetTimeSeconds();
+	WaitTime = FMath::FRandRange(WaitTimeMin, WaitTimeMax);
 }

@@ -7,7 +7,8 @@
 #include "CPplSig.generated.h"
 
 
-UCLASS(Blueprintable, BlueprintType, meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, meta=(BlueprintSpawnableComponent),
+Config=LifeDev, DefaultConfig)
 class LIFEDEV_API UCPplSig : public UCSignificance {
 	GENERATED_BODY()
 
@@ -19,4 +20,12 @@ protected:
 
 	UFUNCTION()
 	ESigValue CalcPplSig(const FTransform& Viewpoint);
+
+	UPROPERTY(BlueprintReadOnly, Config)
+	double WaitTimeMin = 5;
+	UPROPERTY(BlueprintReadOnly, Config)
+	double WaitTimeMax = 10;
+
+	double WaitTime = 5;
+	double BeginTime = -1;
 };
