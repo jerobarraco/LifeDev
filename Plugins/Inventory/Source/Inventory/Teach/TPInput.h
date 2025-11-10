@@ -20,6 +20,9 @@ class INVENTORY_API UTPInput : public UEnhancedPlayerInput {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE EInputType GetLastType() const { return LastType; }
+
 	// triggers when the input type changes. the parameter specifies if it's a GamePad.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Transient)
 	FTPIOnChange OnChange;
@@ -27,5 +30,5 @@ public:
 protected:
 	virtual bool InputKey(const FInputKeyEventArgs& Params) override;
 
-	EInputType Tgt = EInputType::NONE;
+	EInputType LastType = EInputType::NONE;
 };
