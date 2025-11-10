@@ -22,9 +22,9 @@ protected:
 	ESigValue CalcPplSig(const FTransform& Viewpoint);
 
 	UPROPERTY(BlueprintReadOnly, Config)
-	double WaitTimeMin = 5;
+	double WaitTimeMin = 10;
 	UPROPERTY(BlueprintReadOnly, Config)
-	double WaitTimeMax = 10;
+	double WaitTimeMax = 20;
 
 	double WaitTime = 5;
 	double BeginTime = -1;

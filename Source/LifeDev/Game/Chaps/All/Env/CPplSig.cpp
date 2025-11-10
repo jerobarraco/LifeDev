@@ -27,13 +27,15 @@ UCPplSig::UCPplSig() {
 }
 
 ESigValue UCPplSig::CalcPplSig(const FTransform& Viewpoint) {
-	UE_LOG(LogTemp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
+	// UE_LOG(LogTemp, Verbose, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
+	UE_LOG(LogTemp, Verbose, TEXT("%hs o=%s begin=%f wait=%f"), __func__, *GetNameSafe(GetOwner()),
+		BeginTime, WaitTime);
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World) | !Origin) return ESigValue::Off; // required
 
 	// force to wait some time
 	const double Time = World->GetTimeSeconds();
-	if (Time-BeginTime < WaitTime) return ESigValue::Off;
+	if ((BeginTime+WaitTime) > Time) return ESigValue::Off;
 	
 	// check distance. don't show if too close
 	const FVector& OrgLoc = Origin->GetComponentLocation();
