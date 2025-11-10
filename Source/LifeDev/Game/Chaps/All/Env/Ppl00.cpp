@@ -2,14 +2,13 @@
 
 #include "Ppl00.h"
 
-#include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "CQuickMesh.h"
 
 #include "CPplSig.h"
-#include "Components/CapsuleComponent.h"
 
 APpl00::APpl00() {
 	UseFade = true; // read begin play
