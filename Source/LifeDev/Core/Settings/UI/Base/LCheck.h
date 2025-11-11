@@ -16,9 +16,9 @@ class LIFEDEV_API ULCheck : public UUserWidget {
 public:
 	ULCheck(const FObjectInitializer& O);
 
-	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Load();
-	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction))
+	UFUNCTION(BlueprintNativeEvent, CallInEditor, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
 	void Apply();
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
