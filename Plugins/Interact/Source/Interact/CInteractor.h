@@ -85,11 +85,10 @@ protected:
 	void DoStart(UCInteract* const Component);
 	void Look() const;
 	void LookClear();
-	
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Config, Category=SetUp)
 	TEnumAsByte<ECollisionChannel> Channel;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category=SetUp)
 	TEnumAsByte<ETraceTypeQuery> TraceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
 	// inline static ECollisionChannel InteractChannel = ECC_Visibility;
 

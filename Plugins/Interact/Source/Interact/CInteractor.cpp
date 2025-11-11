@@ -191,8 +191,7 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	if (UNLIKELY(ValidOld)) DoEnd();
 	if (!ValidNew) return; // safeguard, we could get a doStart with an empty comp
 
-	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
-		__func__, *GetNameSafe(this));
+	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"), __func__, *GetNameSafe(this));
 
 	IsHovering = true;
 	HoverComp = Component;
