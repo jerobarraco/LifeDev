@@ -19,6 +19,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogLSetVid, Log, Log);
 
+// Note: keep fixed frame rate disabled on the settings.
+
 void ULSetVideoUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	FeatsApply();
@@ -28,7 +30,8 @@ void ULSetVideoUI::Apply_Implementation() {
 	
 	if (LIKELY(Settings))
 		Settings->ApplySettings(false);
-	GEngine->FixedFrameRate = Settings->GetFrameRateLimit();
+
+	FrameRateApply();
 }
 
 void ULSetVideoUI::Load_Implementation() {
@@ -97,7 +100,6 @@ void ULSetVideoUI::RHIApply() const {
 // void ULSetVideoUI::RHIChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
 	// if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
-
 // }
 
 void ULSetVideoUI::FSModeSet() {
@@ -247,7 +249,7 @@ void ULSetVideoUI::VSyncChanged(const bool bIsChecked) {
 void ULSetVideoUI::FrameRateSet() const{
 	if (UNLIKELY(!FrameRate)) return;
 
-	const float Current = Settings ? Settings->GetFrameRateLimit() : 0;
+	const float Current = LIKELY(Settings) ? Settings->GetFrameRateLimit() : 0;
 
 	FrameRate->OnSelectionChanged.RemoveAll(this); // important or it will change the current
 	FrameRate->ClearOptions();
@@ -267,6 +269,8 @@ void ULSetVideoUI::FrameRateSet() const{
 	
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Index=%i Limit=%s"),
 		__func__, CurrentI, *FrameRate->GetSelectedOption());
+
+	if (LIKELY(FRSmooth)) FRSmooth->SetChecked(!GEngine->bForceDisableFrameRateSmoothing);
 }
 
 void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
@@ -279,12 +283,38 @@ void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 	const int32 Index = FMath::Clamp(SelIndex, 0, Num-1);
 	const float Limit = FrameRateOpts[Index];
 	Settings->SetFrameRateLimit(Limit);
-	GEngine->bUseFixedFrameRate = Index !=0;
-	// TODO enable to override smooth frame range
-	GEngine->SmoothedFrameRateRange.SetUpperBoundValue(Limit);
-	
+
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i SelIndex=%i, Index=%i Limit=%f"),
 		__func__, Num, SelIndex, Index, Limit);
+}
+
+void ULSetVideoUI::FrameRateApply() const {
+	// note, it seems that none of this is necessary.
+	// if i leave "fixed frame rate" disabled in the settings,
+	// the "Settings->SetFRameRateLimit" works as expected.
+	// fixed frame rate makes the deltatime always equals (in theory),
+	// which can introduce slight visuals timings for players, but also fixes physics.
+	// for my game neither is important.
+	// using fixedframerate might ensure things work well in the future,
+	// or it might create issues that i have to track down. who knows.
+	// since i might change the fixed settings in the project settings and ruin everything, i rather control it here.
+
+	if (UNLIKELY(!Settings | !FrameRate)) return;
+	
+	const float Limit = Settings->GetFrameRateLimit();
+	const int32 SelIndex = FrameRate->GetSelectedIndex();
+
+	// maybe this is not the exact way that it "should" be used.
+	// maybe it needs to be a combo of "Regular, Fixed, Smooth" (in fact the engine should provide as that)
+	// but for simplicity i'll use this.
+	const bool UseSmooth = LIKELY(FRSmooth) ? FRSmooth->GetChecked() : false;
+	GEngine->bUseFixedFrameRate = SelIndex !=0 & !UseSmooth;
+	GEngine->bForceDisableFrameRateSmoothing = (SelIndex == 0) | (!UseSmooth);
+	GEngine->SmoothedFrameRateRange.SetUpperBoundValue(Limit);
+	GEngine->FixedFrameRate = Limit;
+
+	UE_LOG(LogLSetVid, Log, TEXT("%hs SelIndex=%i Limit=%f Smooth=%i"),
+		__func__, SelIndex, Limit, UseSmooth);
 }
 
 void ULSetVideoUI::QSwitchesSet() {

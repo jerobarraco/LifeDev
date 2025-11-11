@@ -64,15 +64,19 @@ protected:
 	void ResScaleSet();
 	UFUNCTION()
 	void ResScaleChanged(const float Value);
+
 	void DResSet() const;
 	UFUNCTION()
 	void DResChanged(const bool bIsChecked);
+
 	void VSyncSet() const;
 	UFUNCTION()
 	void VSyncChanged(const bool bIsChecked);
+
 	void FrameRateSet() const;
 	UFUNCTION() // bound
 	void FrameRateChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
+	void FrameRateApply() const;
 
 	void QSwitchesSet();
 	UFUNCTION(BlueprintCallable)
