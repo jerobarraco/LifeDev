@@ -308,6 +308,7 @@ void AInteract::BeginPlay() {
 	Interact->OnTrigger.AddUniqueDynamic(this, &AInteract::TryTriggerWrap);
 	Interact->OnHover.AddUniqueDynamic(this, &AInteract::Hover);
 	Interact->OnGrab.AddUniqueDynamic(this, &AInteract::Grab);
+	Interact->OnLook.AddUniqueDynamic(this, &AInteract::Look);
 
 	HintCurve.LoadSynchronous(); // ensure it's loaded.
 }
@@ -317,6 +318,7 @@ void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Interact->OnTrigger.RemoveAll(this);
 		Interact->OnHover.RemoveAll(this);
 		Interact->OnGrab.RemoveAll(this);
+		Interact->OnLook.RemoveAll(this);
 		Interact->DeInit();
 	}
 

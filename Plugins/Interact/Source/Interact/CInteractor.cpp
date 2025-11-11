@@ -206,6 +206,7 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 }
 
 void UCInteractor::Look() const {
+	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"), __func__, *GetNameSafe(this));
 	const UCInteract* const Comp = HoverComp.Get();
 	if(UNLIKELY(!IsValid(Comp))) return;
 

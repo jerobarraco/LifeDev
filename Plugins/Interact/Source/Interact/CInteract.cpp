@@ -50,6 +50,7 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 }
 
 void UCInteract::Look() const {
+	UE_LOG(LogCInteract, Log, TEXT("%hs: %s"), __func__, *GetNameSafe(this));
 	// no need to set instigator. it's already done on hover
 	OnLook.Broadcast();
 }
@@ -65,8 +66,8 @@ bool UCInteract::TryGrab(const bool IsGrab, UCInteractor* const NewParent) {
 		__func__, IsGrab, IsGrabbable, IsGrabbed, *GetNameSafe(NewParent));
 	// avoid stealing the grab
 	if (IsGrab & (!IsGrabbable | IsGrabbed)) return false;
+	
 	IsGrabbed = IsGrab;
-
 	Reparent(IsGrab, NewParent); // note this happens after IsGrabbable return above
 
 	OnGrab.Broadcast(IsGrab, NewParent);
