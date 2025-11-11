@@ -252,46 +252,50 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 
 	// if i were to have an array of pointer i could get rid of all these branches
 	APostProcessVolume* const Post = GM->PostProcess;
+	struct FPostProcessSettings& Sets = Post->Settings;
 	if (Feat == EFeat::V_LUMEN) {
 		// needed to allow the flag to override project settings
-		Post->Settings.bOverride_DynamicGlobalIlluminationMethod = true;
-		Post->Settings.bOverride_ReflectionMethod = true;
-		Post->Settings.bOverride_AmbientOcclusionStaticFraction = true;
+		Sets.bOverride_DynamicGlobalIlluminationMethod = true;
+		Sets.bOverride_ReflectionMethod = true;
+		Sets.bOverride_AmbientOcclusionStaticFraction = true;
 		// resetting gi to SS instead of None. if the player wants to disable gi they can set the quality to low.
 		// this way they have the option to turn SS gi if they don't want to use Lumen
-		Post->Settings.DynamicGlobalIlluminationMethod =
+		Sets.DynamicGlobalIlluminationMethod =
 			Enabled ?
 			EDynamicGlobalIlluminationMethod::Lumen :
 			EDynamicGlobalIlluminationMethod::ScreenSpace;
 		// this one makes the light reach better, but unfortunately is *very* noisy
 		// EDynamicGlobalIlluminationMethod::ScreenSpace;
-		Post->Settings.ReflectionMethod =
+		Sets.ReflectionMethod =
 			Enabled ? EReflectionMethod::Lumen : EReflectionMethod::ScreenSpace;
 		// from coursera. it should give a bit more of performance when using lumen
-		Post->Settings.AmbientOcclusionStaticFraction = Enabled ? 0 : 1;
+		Sets.AmbientOcclusionStaticFraction = Enabled ? 0 : 1;
 	} else if (Feat == EFeat::V_MLIGHTS) {
 		// needed to allow the flag to override project settings
-		Post->Settings.bOverride_bMegaLights = true;
-		Post->Settings.bMegaLights = Enabled;
+		Sets.bOverride_bMegaLights = true;
+		Sets.bMegaLights = Enabled;
 	} else if (Feat == EFeat::V_BLUR) {
-		Post->Settings.MotionBlurAmount = Enabled ? MotionBlurAmount: 0;
-		Post->Settings.MotionBlurMax = Enabled ? MotionBlurMax: 0;
+		Sets.bOverride_MotionBlurMax = true;
+		Sets.bOverride_MotionBlurAmount = true;
+		Sets.MotionBlurAmount = Enabled ? MotionBlurAmount: 0;
+		Sets.MotionBlurMax = Enabled ? MotionBlurMax: 0;
 	} else if (Feat == EFeat::V_FRINGE) {
-		Post->Settings.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
+		Sets.bOverride_SceneFringeIntensity = true;
+		Sets.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
 	} else if (Feat == EFeat::V_AUTO_EXP) {
 		// https://forums.unrealengine.com/t/how-do-i-disable-eye-adaptation-auto-exposure/286811/6
 		// https://forums.unrealengine.com/t/lighting-exposure-and-intensity-units-confusion/211375/2?u=nande
-		Post->Settings.AutoExposureMinBrightness = Enabled ? -10 : ExposureFixed;
-		Post->Settings.AutoExposureMaxBrightness = Enabled ? 20 : ExposureFixed;
-		Post->Settings.bOverride_AutoExposureMinBrightness = true; //!Enabled;
-		Post->Settings.bOverride_AutoExposureMaxBrightness = true;
+		Sets.bOverride_AutoExposureMinBrightness = true;
+		Sets.bOverride_AutoExposureMaxBrightness = true;
+		Sets.AutoExposureMinBrightness = Enabled ? -10 : ExposureFixed;
+		Sets.AutoExposureMaxBrightness = Enabled ? 20 : ExposureFixed;
 		// don't set to manual method ot it will be full black
 	} else if (Feat == EFeat::V_FLASHBACK) {
 		if (UNLIKELY(!FBMat)) return;
 		if (Enabled)
-			Post->Settings.AddBlendable(FBMat, 1);
+			Sets.AddBlendable(FBMat, 1);
 		else
-			Post->Settings.RemoveBlendable(FBMat);
+			Sets.RemoveBlendable(FBMat);
 	} else if (Feat == EFeat::V_NANITE) {
 		UE_LOG(LogLFeatsMan, Log, TEXT("%hs Nanite=%i"), __func__, Enabled);
 		IConsoleVariable* const Variable =
@@ -317,9 +321,9 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 			MPCI->SetScalarParameterValue(N, v);
 			if (UNLIKELY(!SpeedMat)) return;
 			if (Enabled)
-				Post->Settings.AddBlendable(SpeedMat, 1);
+				Sets.AddBlendable(SpeedMat, 1);
 			else
-				Post->Settings.RemoveBlendable(SpeedMat);
+				Sets.RemoveBlendable(SpeedMat);
 		}
 	}
 
