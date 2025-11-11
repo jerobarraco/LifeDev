@@ -380,12 +380,10 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Super::DoTriggerLocked_Implementation();
 
-	if (UNLIKELY(!Diags)) return;
-
 	// add the auto ones
 	const FString& SLabel = Label.ToString();
 	const FName TName = FName(LDConsts::Dlgs::Inter::LockedPre+SLabel);
-	Diags->AddId(TName);
+	if (LIKELY(Diags)) Diags->AddId(TName);
 	if (LIKELY(Flags)) Flags->Mod(TName, 1);
 }
 
