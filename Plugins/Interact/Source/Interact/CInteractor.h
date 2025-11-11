@@ -83,7 +83,7 @@ protected:
 	void DoEnd();
 	// attempts to trigger a start
 	void DoStart(UCInteract* const Component);
-	void Look();
+	void Look() const;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
 	TEnumAsByte<ECollisionChannel> Channel;
