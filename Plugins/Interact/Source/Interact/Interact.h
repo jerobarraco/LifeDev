@@ -18,6 +18,7 @@ class UAudioComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnLook);
 
 // Base class for interactable actors (actors to interact with)
 // Override DoTrigger and DoTriggerLocked, maybe OnHover.
@@ -55,12 +56,6 @@ public:
 	// will force trigger the Interact, even if locked (will call DoTrigger instead of DoTriggerLocked). used mostly for other automations.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
 	FORCEINLINE void TriggerForced() {Trigger();}
-	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
-	void Hover(const bool IsOn);
-	virtual void Hover_Implementation(const bool IsOn) {
-		OnHover.Broadcast(IsOn);
-	}
 
 	// Enables or disables the interaction. Will not fade.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
@@ -102,7 +97,7 @@ public:
 	// returns the "label" for this interact actor.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE FName GetLabel() const { return Label; }
-	
+
 #pragma region Hint
 	// function to hint the interact (call attention to it). atm it will trigger Hover.
 	// triggers OnHint, and uses the Anim subsystem (optionally).
@@ -269,17 +264,17 @@ public:
 	// Either you override DoTrigger or you subscribe to this, but unlikely both.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTrigger;
-
 	// When this is triggered while locked.
 	// Can also override DoTriggerLocked.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTriggerLocked;
-
 	// When this is being hovered on/off
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHover OnHover;
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHint OnHint;
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FAInteractOnLook OnLook;
 #pragma endregion
 
 protected:
@@ -288,17 +283,28 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
 
-	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
-	// Returns the success (false if locked)
-	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
-	// these are called by the CInteract which is called by the CInteractor.
-	// This is quite a complex interaction that's why it's protected.
-	UFUNCTION()
-	void Grab(const bool IsGrab, UCInteractor* const NewParent);
-
-	// Set the current text on the CInteract. Called on SetState, BeginPlay and by SetStateNow.
+	// Override if needed. Set the current text on the CInteract. Called on SetState, BeginPlay and by SetStateNow.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
+	// Override if needed. Called by the CInteract on hover.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
+	void Hover(const bool IsOn);
+	virtual void Hover_Implementation(const bool IsOn) { OnHover.Broadcast(IsOn); }
+	// Override if needed. Called by the CInteract when looking, after a delay.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
+	void Look();
+	virtual void Look_Implementation() { OnLook.Broadcast(); }
+
+	// called when the object is triggered.
+	// override if you need to change the logic for the triggering. or when trigger but not reset.
+	// otherwise setState is much more preferred.
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
+	void DoTrigger();
+	
+	// called when an attempt to trigger happened while locked.
+	// Override if you need to do something then.
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
+	void DoTriggerLocked();
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
@@ -318,17 +324,14 @@ protected:
 		OnTriggerLocked.Broadcast();
 	}
 
-	// called when the object is triggered.
-	// override if you need to change the logic for the triggering. or when trigger but not reset.
-	// otherwise setState is much more preferred.
-	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
-	void DoTrigger();
+	// Will attempt to grab the interaction. can be blocked by internal flags (isGrabbable)
+	// Returns the success (false if locked)
+	// this function has side effects (calls doGrabbed/doUnGrabbed) so call at the end of your function.
+	// these are called by the CInteract which is called by the CInteractor.
+	// This is quite a complex interaction that's why it's protected.
+	UFUNCTION()
+	void Grab(const bool IsGrab, UCInteractor* const NewParent);
 	
-	// called when an attempt to trigger happened while locked.
-	// Override if you need to do something then.
-	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
-	void DoTriggerLocked();
-
 	// test function.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
 	void SetInteractAutoBounds();
