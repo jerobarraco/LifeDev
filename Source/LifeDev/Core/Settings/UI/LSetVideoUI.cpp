@@ -308,7 +308,7 @@ void ULSetVideoUI::FrameRateApply() const {
 	// maybe it needs to be a combo of "Regular, Fixed, Smooth" (in fact the engine should provide as that)
 	// but for simplicity i'll use this.
 	const bool UseSmooth = LIKELY(FRSmooth) ? FRSmooth->GetChecked() : false;
-	GEngine->bUseFixedFrameRate = SelIndex !=0 & !UseSmooth;
+	GEngine->bUseFixedFrameRate = (SelIndex != 0) & (!UseSmooth);
 	GEngine->bForceDisableFrameRateSmoothing = (SelIndex == 0) | (!UseSmooth);
 	GEngine->SmoothedFrameRateRange.SetUpperBoundValue(Limit);
 	GEngine->FixedFrameRate = Limit;
