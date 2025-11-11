@@ -162,6 +162,8 @@ void UCInteractor::DoEnd() {
 		PHover->Hover(false, nullptr);
 
 	OnHover.Broadcast(false, PHover); // could be null
+
+	LookClear();
 }
 
 void UCInteractor::DoStart(UCInteract* const Component) {
@@ -210,4 +212,13 @@ void UCInteractor::Look() const {
 	// Comp->Look(Cast<APawn>(GetOwner())); // todo
 	
 	OnLook.Broadcast(Comp);
+}
+
+void UCInteractor::LookClear() {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.ClearTimer(LookHandle);
+	LookHandle.Invalidate();
 }

@@ -137,7 +137,7 @@ void ALChar::InteractHover(const bool On, UCInteract* const Comp) {
 	}
 }
 
-void ALChar::HoverDiag() {
+void ALChar::HoverDiag() { // todo delete
 	// TODO move elsewhere. i could get the char. then the component. and bind to OnHover.
 	// would be nice to move this elsewhere, but i can't put it on the cInteractor and i'm not going to make a LCInteractor for this 
 	const UCInteract* const Comp = Interactor->GetHoverComp();
@@ -152,7 +152,7 @@ void ALChar::HoverDiag() {
 	if (LIKELY(Flags)) Flags->Mod(N, 1);
 }
 
-void ALChar::HoverDiagClear() {
+void ALChar::HoverDiagClear() { // todo delete
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
