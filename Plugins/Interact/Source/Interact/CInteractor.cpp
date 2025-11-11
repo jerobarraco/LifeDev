@@ -134,7 +134,8 @@ void UCInteractor::TickComponent(const float DeltaTime, const ELevelTick TickTyp
 	} else
 		World->LineTraceSingleByChannel(Hit, Start, End, Channel, Params);
 	
-	USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
+	// USceneComponent* const Component = Hit.Component.IsValid() ? Hit.Component.Get() : nullptr;
+	USceneComponent* const Component = Hit.Component.Get(); // todo test if this doesn't crash
 	UCInteract* const Interact = Cast<UCInteract>(Component);
 	DoStart(Interact);
 }
@@ -155,8 +156,8 @@ void UCInteractor::DoEnd() {
 	HoverComp = nullptr; // important to nullify.
 
 	if (UNLIKELY(!IsHovering)) return; // avoid triggering a delegate when not needed.
+	
 	IsHovering = false;
-
 	if (LIKELY(IsValid(PHover)))
 		PHover->Hover(false, nullptr);
 
@@ -164,10 +165,18 @@ void UCInteractor::DoEnd() {
 }
 
 void UCInteractor::DoStart(UCInteract* const Component) {
+	const UWorld* const World = GetWorld();
+	if (UNLIKELY(!World)) return;
+
 	const UCInteract* const PHover = HoverComp.Get();
-	const bool ValidHover = IsValid(PHover);
-	const bool Died = IsHovering & !ValidHover; // was hovering but we've lost track of it
-	const bool UnHover = ValidHover & !IsValid(Component); // have one, but not anymore
+	// can't be up. since ue will nullify the phover on destroy. hence this will be true.
+	// but on top would prevent the doEnd
+	if (LIKELY(Component == PHover)) return;
+
+	const bool ValidOld = IsValid(PHover);
+	const bool ValidNew = IsValid(Component);
+	const bool Died = IsHovering & !ValidOld; // was hovering but we've lost track of it
+	const bool UnHover = ValidOld & !ValidNew; // have one, but not anymore
 	// i could micro-optimize this a bit more, but it will become harder to read.
 	if (UNLIKELY(Died | UnHover)) {
 		UE_LOG(LogCInteractor, Log, TEXT("%hs: No longer hovering %s"), __func__, *GetNameSafe(this));
@@ -175,12 +184,10 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 		return;
 	}
 
-	// can't be up. since ue will nullify the phover on destroy. hence this will be true.
-	// but on top would prevent the doEnd
-	if (LIKELY(Component == PHover)) return;
-
-	// important when hovering one interact after the other immediately
-	if (UNLIKELY(ValidHover)) DoEnd();
+	// important when hovering one interact after the other immediately.
+	// end the previous. notice no return.
+	if (UNLIKELY(ValidOld)) DoEnd();
+	if (!ValidNew) return; // safeguard, we could get a doStart with an empty comp
 
 	UE_LOG(LogCInteractor, Log, TEXT("%hs: %s"),
 		__func__, *GetNameSafe(this));
@@ -189,4 +196,16 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	HoverComp = Component;
 	Component->Hover(true, Cast<APawn>(GetOwner()));
 	OnHover.Broadcast(true, Component);
+
+	/// look
+	FTimerManager& Timer = World->GetTimerManager();
+	
+	// will hide the prompt on invalid. which is a nice side effect.
+	// if (& LIKELY(IsValid(Comp))) {
+		// UI->PromptShow(Comp->Text);
+		// Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
+	// } else {
+		// UI->PromptHide();
+		// HoverDiagClear();
+	// }
 }
