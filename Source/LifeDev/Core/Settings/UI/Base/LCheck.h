@@ -23,7 +23,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
 	void ResetStyle();
-
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	void SetChecked(const bool NewChecked) const;
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	bool GetChecked() const;
+	
 	// please only set before WidgetRebuild is called. or call ResetStyle
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FText Label;

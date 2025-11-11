@@ -52,6 +52,14 @@ void ULCheck::ResetStyle() {
 	}
 }
 
+void ULCheck::SetChecked(const bool NewChecked) const {
+	if (LIKELY(Check)) Check->SetIsChecked(NewChecked);
+}
+
+bool ULCheck::GetChecked() const {
+	return LIKELY(Check) ? Check->GetCheckedState() == ECheckBoxState::Checked : false;
+}
+
 void ULCheck::OnWidgetRebuilt() {
 	Super::OnWidgetRebuilt();
 	ResetStyle();
