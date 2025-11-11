@@ -47,8 +47,10 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 	if (!IsHover & LIKELY(Owner)) Owner->SetInstigator(nullptr); // always null. always after onHover if !IsHover
 }
 
-void UCInteract::Look(APawn* const Pawn) const {
-	// OnLook.Broadcast(Pawn);
+void UCInteract::Look(APawn* const Inst) const {
+	AActor* const Owner = GetOwner();
+	if (LIKELY(Owner)) Owner->SetInstigator(Inst);
+	OnLook.Broadcast();
 }
 
 void UCInteract::DeInit() {

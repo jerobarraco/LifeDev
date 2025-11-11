@@ -104,6 +104,9 @@ public:
 	// When the object is being grabbed or released.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnHint OnHint;
+	// When the object is being grabbed or released.
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
+	FInteractOnLook OnLook;
 
 protected:
 	void Reparent(const bool bIsGrab, UCInteractor* const NewParent) const;
@@ -115,7 +118,7 @@ protected:
 	void Trigger() const;
 	// un/hovers. Inst=the instigator, will always be set to null on unhover.
 	void Hover(const bool IsHover, APawn* const Inst) const;
-	void Look(APawn* const Pawn) const;
+	void Look(APawn* const Inst) const;
 
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
 	void Hint(const bool Show) const;
