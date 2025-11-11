@@ -230,10 +230,14 @@ public:
 	// Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<USoundBase>> SFXs;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TObjectPtr<USoundBase> SFXLook = nullptr; // todo a new category?
 
 	// rumble to play when trigger. Index matches the state, but also rotate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
 	TArray<TObjectPtr<UForceFeedbackEffect>> Rumbles;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|State")
+	TObjectPtr<UForceFeedbackEffect> RumbleLook = nullptr; // todo new category?
 #pragma endregion
 #pragma endregion
 #pragma region Rewards
@@ -289,7 +293,6 @@ protected:
 	// Override if needed. Called by the CInteract when looking, after a delay.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void Look();
-	virtual void Look_Implementation() { OnLook.Broadcast(); }
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.

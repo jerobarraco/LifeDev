@@ -161,7 +161,7 @@ void AInteract::SetStateNow_Implementation(const int32 NewState, const bool UseS
 
 void AInteract::PlayRumble(UForceFeedbackEffect* const Rumble) const {
 	UE_LOG(LogInteract, Log, TEXT("%hs Rumble=%s O=%s"), __func__,
-			*GetNameSafe(Rumble), *Label.ToString());
+		*GetNameSafe(Rumble), *Label.ToString());
 
 	const UWorld* const World = GetWorld();
 	APlayerController* const Controller = LIKELY(World) ? World->GetFirstPlayerController() : nullptr;
@@ -288,6 +288,12 @@ void AInteract::SetShadowContactOnly() {
 
 void AInteract::SetShadowDynamic() {
 	Mesh->SetUseDynShadow(true);
+}
+
+void AInteract::Look_Implementation() {
+	PlaySFX(SFXLook);
+	PlayRumble(RumbleLook);
+	OnLook.Broadcast();
 }
 
 void AInteract::BeginPlay() {
