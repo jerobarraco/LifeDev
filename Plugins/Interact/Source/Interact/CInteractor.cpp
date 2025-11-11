@@ -204,6 +204,8 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 }
 
 void UCInteractor::Look() {
-	if(UNLIKELY(!IsValid(HoverComp.Get()))) return;
-	// OnLook.Broadcast
+	const UCInteract* const Comp = HoverComp.Get();
+	if(UNLIKELY(!IsValid(Comp))) return;
+
+	OnLook.Broadcast(Comp);
 }

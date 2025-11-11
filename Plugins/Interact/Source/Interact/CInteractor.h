@@ -12,6 +12,7 @@ class UArrowComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractHover, bool, On, UCInteract* const, Comp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractTrigger, const UCInteract* const, Comp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractLook, const UCInteract* const, Comp);
 
 // Will be interacting with interact objects.
 // Subclass of scene component, so you can attach it and aim from there.
@@ -58,13 +59,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
 	TWeakObjectPtr<UPhysicsHandleComponent> GrabHandler = nullptr;
 
-	// triggered when an interact is un/hovered. It tries to pass the interact.
+	// triggered when an interact is un/hovered. It tries to pass the Interact.
 	// But if it was destroyed, it will be null.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractHover OnHover;
-
+	// triggered when an interact is triggered.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FOnInteractTrigger OnTrigger;
+	// triggered when an interact is looked at. depends on LookTime.
+	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
+	FOnInteractLook OnLook;
 
 protected:
 	UFUNCTION(BlueprintCallable, Category=SetUp)
