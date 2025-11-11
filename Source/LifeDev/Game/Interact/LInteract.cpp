@@ -390,13 +390,9 @@ void ALInteract::DoTriggerLocked_Implementation() {
 void ALInteract::Look_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	
-	const AActor* const CmpOwner = GetOwner();
-	if (LIKELY(CmpOwner)) {
-		const FName Label = ULSettings::GetObjectLabel(CmpOwner);
-		const FName N(LDConsts::Dlgs::Inter::LookPre+Label.ToString());
-		if (LIKELY(Diags)) Diags->AddId(N);
-		if (LIKELY(Flags)) Flags->Mod(N, 1);
-	}
+	const FName N(LDConsts::Dlgs::Inter::LookPre+Label.ToString());
+	if (LIKELY(Diags)) Diags->AddId(N);
+	if (LIKELY(Flags)) Flags->Mod(N, 1);
 
 	// calling super after, since it triggers a delegate which can have side-effects,
 	// and the user might expect what i've done above.
