@@ -26,10 +26,13 @@ UCInteract::UCInteract(): Super() {
 	UCInteract::SetAutoActivate(false); // read note on the header's bottom.
 }
 
-void UCInteract::Trigger() const {
-	UE_LOG(LogCInteract, Log, TEXT("%hs Interact triggered. Obj=%s"),
-		__func__, *GetNameSafe(GetOwner()));
+void UCInteract::Trigger(APawn* const Inst) const {
+	UE_LOG(LogCInteract, Log, TEXT("%hs Interact triggered. Obj=%s"), __func__,
+		*GetNameSafe(GetOwner()));
 	// this is synchronous. will call AInteract(Anim, Fade) tryTrigger. and SetText at some point before this function returns
+
+	AActor* const Owner = GetOwner();
+	if (LIKELY(Owner)) Owner->SetInstigator(Inst);
 	OnTrigger.Broadcast();
 }
 

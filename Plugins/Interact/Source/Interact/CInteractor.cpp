@@ -47,8 +47,8 @@ void UCInteractor::SetChannel(const ECollisionChannel Chan) {
 void UCInteractor::TryTrigger() {
 	const UCInteract* const PHover = HoverComp.Get();
 	if (UNLIKELY(!IsValid(PHover))) return;
-
-	PHover->Trigger();
+	
+	PHover->Trigger(Cast<APawn>(GetOwner()));
 	OnTrigger.Broadcast(PHover);
 }
 
@@ -208,8 +208,7 @@ void UCInteractor::Look() const {
 	const UCInteract* const Comp = HoverComp.Get();
 	if(UNLIKELY(!IsValid(Comp))) return;
 
-	Comp->Look(Cast<APawn>(GetOwner())); // todo
-	
+	Comp->Look(Cast<APawn>(GetOwner()));
 	OnLook.Broadcast(Comp);
 }
 
