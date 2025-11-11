@@ -131,7 +131,7 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 	UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
 	if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
 
-	EWindowMode::Type NewMode = FSModeGet();
+	const EWindowMode::Type NewMode = FSModeGet();
 	Settings->SetFullscreenMode(NewMode);
 	ResSet();
 	
@@ -254,7 +254,7 @@ void ULSetVideoUI::FrameRateSet() const{
 	int32 CurrentI = 0; // defaults to unlimited
 	constexpr size_t N = UJUtilsMisc::ArraySize(FrameRateOpts);
 	for (int32 i = 0; i < N; ++i) {
-		const float& F = FrameRateOpts[i];
+		const float F = FrameRateOpts[i];
 		FrameRate->AddOption(FMath::IsNearlyZero(F) ?
 			TEXT("!+UNLIMITED+!") : FString::SanitizeFloat(F, 0));
 
@@ -264,8 +264,8 @@ void ULSetVideoUI::FrameRateSet() const{
 	FrameRate->SetSelectedIndex(CurrentI); // set before binding
 	FrameRate->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::FrameRateChanged);
 	
-	UE_LOG(LogLSetVid, Log, TEXT("%hs Index=%i Limit=%f"),
-		__func__, CurrentI, Current);
+	UE_LOG(LogLSetVid, Log, TEXT("%hs Index=%i Limit=%s"),
+		__func__, CurrentI, *FrameRate->GetSelectedOption());
 }
 
 void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
@@ -274,12 +274,13 @@ void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 
 	// const size_t LimitNum = FrameRateOpts.Num();
 	constexpr size_t Num = UJUtilsMisc::ArraySize(FrameRateOpts);
+	const int32 SelIndex = FrameRate->GetSelectedIndex();
+	const int32 Index = FMath::Clamp(SelIndex, 0, Num-1);
+	const float Limit = FrameRateOpts[Index];
+	Settings->SetFrameRateLimit(Limit);
 
-	const int32 Index = FMath::Clamp(FrameRate->GetSelectedIndex(), 0, Num-1);
-	Settings->SetFrameRateLimit(FrameRateOpts[Index]);
-
-	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i Index=%i Limit=%f"),
-		__func__, Num, Index, FrameRateOpts[Index]);
+	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i SelIndex=%i, Index=%i Limit=%f"),
+		__func__, Num, SelIndex, Index, Limit);
 }
 
 void ULSetVideoUI::QSwitchesSet() {
@@ -326,7 +327,7 @@ void ULSetVideoUI::QSwitchesSet() {
 		const FText* const T = QSTexts.Find(Q);
 		if (UNLIKELY(!T)) continue;
 		
-		TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
+		const TObjectPtr<UGroupBox>* const pSwitchUI = QSwitches.Find(Q);
 		if (UNLIKELY(!pSwitchUI)) continue;
 
 		const TObjectPtr<UGroupBox>& SwitchUI = *pSwitchUI;
