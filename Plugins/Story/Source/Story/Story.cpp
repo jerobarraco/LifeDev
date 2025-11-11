@@ -121,35 +121,35 @@ bool UStory::Start(const FName Name) {
 		StartNow(Step);
 
 		auto l2 = [this]() {
+			// attempt to wait for objects to be loaded.
+			// notice there's a timer before this lambda, so we only block in case something still remains
+			// blocking on load requires the data-tables to have "Override Block on slow streaming" to "Blocking"
+			// this function has to be called on the game thread or it will cause an error due to some cvar "getvalueongamethread"
+			UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
+			FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
+			SMC.BlockTillAllRequestsFinished(3.f, true); // still use time limit. i don't like soft-locks
+			UE_LOG(LogStory, Log, TEXT("UStory::Start block end, flush start"));
+
+			UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
+			if (LIKELY(World3)) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
+			UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
+
+			// there's a way to get the load percent for a specific package https://forums.unrealengine.com/t/ue5-5-5-6-call-function-getasyncloadpercentage-packagename-the-return-value-is-incorrect-return-1/2652655?u=nande
+
+			// this will skip GC while async loading, unless you set on your config
+			// CVarPerformGCWhileAsyncLoading gc.PerformGCWhileAsyncLoading
+			// hopefully the above things would wait until all asyncs are done.
+			// calling this here will crash the engine, due to a check. that it can't happen during "tick".
+			// if (LIKELY(GEngine)) GEngine->PerformGarbageCollectionAndCleanupActors();
+			// this won't run gc, but will schedule it for the next time.
+			// hopefully that will happen next frame. which means the fade might hitch.
+			// hopefully not noticeably
+			if (UseFadeGC & LIKELY(GEngine)) {
+				UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
+				GEngine->ForceGarbageCollection(true);
+			}
 			// i don't need to block the main thread. but does the gc flush and shader block work on the bg?
 			AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
-				// attempt to wait for objects to be loaded.
-				// notice there's a timer before this lambda, so we only block in case something still remains
-				// blocking on load requires the data-tables to have "Override Block on slow streaming" to "Blocking"
-				UE_LOG(LogStory, Log, TEXT("UStory::Start block start"));
-				FStreamingManagerCollection& SMC = FStreamingManagerCollection::Get();
-				SMC.BlockTillAllRequestsFinished(3.f, true); // still use time limit. i don't like soft-locks
-				UE_LOG(LogStory, Log, TEXT("UStory::Start block end, flush start"));
-
-				UWorld* const World3 = GetWorld(); // getting it again to avoid stale stuff.
-				if (LIKELY(World3)) World3->FlushLevelStreaming(); // https://forums.unrealengine.com/t/blocking-load-not-working-when-streaming-levels/368085/25?u=nande
-				UE_LOG(LogStory, Log, TEXT("UStory::Flush end"));
-
-				// there's a way to get the load percent for a specific package https://forums.unrealengine.com/t/ue5-5-5-6-call-function-getasyncloadpercentage-packagename-the-return-value-is-incorrect-return-1/2652655?u=nande
-
-				// this will skip GC while async loading, unless you set on your config
-				// CVarPerformGCWhileAsyncLoading gc.PerformGCWhileAsyncLoading
-				// hopefully the above things would wait until all asyncs are done.
-				// calling this here will crash the engine, due to a check. that it can't happen during "tick".
-				// if (LIKELY(GEngine)) GEngine->PerformGarbageCollectionAndCleanupActors();
-				// this won't run gc, but will schedule it for the next time.
-				// hopefully that will happen next frame. which means the fade might hitch.
-				// hopefully not noticeably
-				if (UseFadeGC & LIKELY(GEngine)) {
-					UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
-					GEngine->ForceGarbageCollection(true);
-				}
-
 				// attempt at waiting for shaders to compile on load.
 				while (FShaderPipelineCache::NumPrecompilesRemaining()>0) { // is it ok to spinlock this thread? should i try a different one?
 					UE_LOG(LogStory, Log, TEXT("UStory::Waiting on shaders. %i"), FShaderPipelineCache::NumPrecompilesRemaining());
