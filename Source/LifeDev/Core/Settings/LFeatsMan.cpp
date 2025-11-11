@@ -282,6 +282,10 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	} else if (Feat == EFeat::V_FRINGE) {
 		Sets.bOverride_SceneFringeIntensity = true;
 		Sets.SceneFringeIntensity = Enabled ? FringeIntensity: 0;
+		// i could change the r.scenecolorfringequeality to 0 on disabled here.
+		// but a) it will be a bit of a mess with cvars.
+		// b) hard to roll back to default values.
+		// c) also set by scalability settings, so it might be turned on from outside or might be hard to change using configs
 	} else if (Feat == EFeat::V_AUTO_EXP) {
 		// https://forums.unrealengine.com/t/how-do-i-disable-eye-adaptation-auto-exposure/286811/6
 		// https://forums.unrealengine.com/t/lighting-exposure-and-intensity-units-confusion/211375/2?u=nande
