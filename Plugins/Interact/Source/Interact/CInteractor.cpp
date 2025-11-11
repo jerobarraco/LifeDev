@@ -47,7 +47,8 @@ void UCInteractor::SetChannel(const ECollisionChannel Chan) {
 void UCInteractor::TryTrigger() {
 	const UCInteract* const PHover = HoverComp.Get();
 	if (UNLIKELY(!IsValid(PHover))) return;
-	
+
+	LookClear(); // important, we don't want a silly dialog after or before a trigger dialog
 	PHover->Trigger();
 	OnTrigger.Broadcast(PHover);
 }

@@ -117,9 +117,6 @@ protected:
 	UFUNCTION()
 	void InteractHover(const bool On, UCInteract* const Comp);
 	UFUNCTION()
-	void HoverDiag();
-	void HoverDiagClear();
-	UFUNCTION()
 	void SetFB(const float Value);
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
@@ -161,7 +158,5 @@ protected:
 	TObjectPtr<UDiags> Diags = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UFlags> Flags = nullptr;
-
-	FTimerHandle HoverDiagHandle;
 };
 

@@ -122,43 +122,12 @@ void ALChar::InteractHover(const bool On, UCInteract* const Comp) {
 
 	if (UNLIKELY(!IsValid(UI))) return;
 	
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-	
-	FTimerManager& Timer = World->GetTimerManager();
-	
 	// will hide the prompt on invalid. which is a nice side effect.
 	if (On & LIKELY(IsValid(Comp))) {
 		UI->PromptShow(Comp->Text);
-		Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
 	} else {
 		UI->PromptHide();
-		HoverDiagClear();
 	}
-}
-
-void ALChar::HoverDiag() { // todo delete
-	// TODO move elsewhere. i could get the char. then the component. and bind to OnHover.
-	// would be nice to move this elsewhere, but i can't put it on the cInteractor and i'm not going to make a LCInteractor for this 
-	const UCInteract* const Comp = Interactor->GetHoverComp();
-	if (UNLIKELY(!Comp)) return;
-
-	const AActor* const CmpOwner = Comp->GetOwner();
-	if (UNLIKELY(!CmpOwner)) return;
-
-	const FName Label = ULSettings::GetObjectLabel(CmpOwner);
-	const FName N(LDConsts::Dlgs::Inter::LookPre+Label.ToString());
-	if (LIKELY(Diags)) Diags->AddId(N);
-	if (LIKELY(Flags)) Flags->Mod(N, 1);
-}
-
-void ALChar::HoverDiagClear() { // todo delete
-	const UWorld* const World = GetWorld();
-	if (UNLIKELY(!World)) return;
-
-	FTimerManager& Timer = World->GetTimerManager();
-	Timer.ClearTimer(HoverDiagHandle);
-	HoverDiagHandle.Invalidate();
 }
 
 void ALChar::SetInputEnabled(const bool Enabled) {
@@ -339,7 +308,6 @@ void ALChar::ActLook(const FInputActionValue& Value) {
 
 void ALChar::ActInteract() { // don't make const. the input system does not like it
 	if (UNLIKELY(!Interactor)) return;
-	HoverDiagClear(); // important, we don't want a silly dialog after or before a trigger dialog
 
 	// store before calling TryTrigger. since it might become null afterward :shrug:
 	const UCInteract* const Comp = Interactor->GetHoverComp();

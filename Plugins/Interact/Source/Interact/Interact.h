@@ -15,6 +15,9 @@ class UCInteract;
 class USoundBase;
 class UAudioComponent;
 
+// Notes: I have these delegates here, even though it looks duplicated from the CInteract
+// Because the Interact has some additional concerns (timing, checks, etc.). Not always but mostly.
+// Also future proofing it. Whatever *that* means.
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAInteractOnHover, bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAInteractOnHint);
@@ -38,6 +41,18 @@ public:
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
 #pragma endregion
 
+	// Enables or disables the interaction. Will not fade. Override if needed
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
+	void SetActive(const bool Active = true);
+	// this is _similar_ to SetState. it's meant to be called from the constructor, or when a state needs to be set instantly, or skipping aspects.
+	// but mostly constructor, the rest is side effect, and not a priority.
+	// i'm pretty sure NativeEvents and constructor will not call the child classes.
+	// if that fails, then use PostLoad or smth.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
+	void SetStateNow(const int32 NewState, const bool UseSFX = false, const bool UseParts = false);
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
+	bool GetActive() const; // not inlined for includes
+
 	// Will attempt to trigger the interaction. can be blocked by internal flags (locked)
 	// Call this to trigger the interaction. Returns the success (false if locked)
 	// this function has side effects (calls trigger/triggerLocked) so call at the end of your function.
@@ -46,24 +61,14 @@ public:
 	// but it's better to override DoTrigger and/or DoTriggerLocked.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	bool TryTrigger();
-
 	// Don't use if possible. use TryTrigger. This is used for binding only,
 	// since ue will complain about the return value.
 	// bindings don't work with forceinline
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
 	void TryTriggerWrap() {TryTrigger();}
-
 	// will force trigger the Interact, even if locked (will call DoTrigger instead of DoTriggerLocked). used mostly for other automations.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(AdvancedDisplay))
 	FORCEINLINE void TriggerForced() {Trigger();}
-
-	// Enables or disables the interaction. Will not fade.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
-	void SetActive(const bool Active = true);
-
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact")
-	bool GetActive() const;
-
 	// be careful with this. will set an actor mobility and its components too. Override this and also apply to every scene component (or child of) you have or the object will break on builds (but not PIE)
 	UFUNCTION(BlueprintCallable)
 	virtual void SetMobility(const EComponentMobility::Type Mobility);
@@ -81,13 +86,6 @@ public:
 	// If StateNum ==1 this will might get called with the same state as current (might change, but probably not)
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
 	void SetState(const int32 NewState);
-
-	// this is _similar_ to SetState. it's meant to be called from the constructor, or when a state needs to be set instantly, or skipping aspects.
-	// but mostly constructor, the rest is side effect, and not a priority.
-	// i'm pretty sure NativeEvents and constructor will not call the child classes.
-	// if that fails, then use PostLoad or smth.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Interact", meta=(ForceAsFunction))
-	void SetStateNow(const int32 NewState, const bool UseSFX = false, const bool UseParts = false);
 
 	// this function has no documentation, oh noes, is so complicated i can't even
 	// begin to describe it. too bad.
@@ -268,11 +266,13 @@ public:
 	// Can also override DoTriggerLocked.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnTrigger OnTriggerLocked;
-	// When this is being hovered on/off
+	// When this is being hovered on/off.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHover OnHover;
+	// when a hint is activated (after passing all the checks)
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnHint OnHint;
+	// on look.
 	UPROPERTY(BlueprintAssignable, Transient, Category=SetUp)
 	FAInteractOnLook OnLook;
 #pragma endregion
