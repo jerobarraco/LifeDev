@@ -168,6 +168,7 @@ void ALChar::Init() {
 	if (LIKELY(UI)) UI->Init();
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	const UFlashback* const FB = World->GetSubsystem<UFlashback>();
 	if (LIKELY(FB)) SetFB(FB->GetVal()); // update walk speed values.
 
