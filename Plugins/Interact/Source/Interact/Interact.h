@@ -278,11 +278,7 @@ public:
 #pragma endregion
 
 protected:
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual void PostLoad() override;
-	virtual void PostActorCreated() override;
-
+#pragma region override
 	// Override if needed. Set the current text on the CInteract. Called on SetState, BeginPlay and by SetStateNow.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void SetText();
@@ -294,17 +290,23 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void Look();
 	virtual void Look_Implementation() { OnLook.Broadcast(); }
-
 	// called when the object is triggered.
 	// override if you need to change the logic for the triggering. or when trigger but not reset.
 	// otherwise setState is much more preferred.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTrigger();
-	
 	// called when an attempt to trigger happened while locked.
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTriggerLocked();
+#pragma endregion
+
+#pragma region base
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void PostLoad() override;
+	virtual void PostActorCreated() override;
+#pragma endregion
 
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.

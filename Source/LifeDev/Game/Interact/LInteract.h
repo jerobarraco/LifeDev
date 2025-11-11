@@ -119,6 +119,7 @@ protected:
 	
 	virtual void DoTrigger_Implementation() override;
 	virtual void DoTriggerLocked_Implementation() override;
+	virtual void Look_Implementation() override;
 #pragma endregion
 #pragma region Reward
 	// triggered when something is rewarded. override to be notified.
