@@ -380,7 +380,7 @@ void ALInteract::DoTriggerLocked_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Super::DoTriggerLocked_Implementation();
 
-	if (UNLIKELY(!Inventory | !Diags)) return;
+	if (UNLIKELY(!Diags)) return;
 
 	// add the auto ones
 	const FString& SLabel = Label.ToString();
