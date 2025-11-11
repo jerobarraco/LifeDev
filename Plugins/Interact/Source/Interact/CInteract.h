@@ -115,10 +115,10 @@ protected:
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
 #pragma region Interactor
 	void DeInit();
-	void Trigger(APawn* const Inst) const;
+	void Trigger() const;
 	// un/hovers. Inst=the instigator, will always be set to null on unhover.
 	void Hover(const bool IsHover, APawn* const Inst) const;
-	void Look(APawn* const Inst) const;
+	void Look() const;
 
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
 	void Hint(const bool Show) const;

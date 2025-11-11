@@ -48,7 +48,7 @@ void UCInteractor::TryTrigger() {
 	const UCInteract* const PHover = HoverComp.Get();
 	if (UNLIKELY(!IsValid(PHover))) return;
 	
-	PHover->Trigger(Cast<APawn>(GetOwner()));
+	PHover->Trigger();
 	OnTrigger.Broadcast(PHover);
 }
 
@@ -208,7 +208,7 @@ void UCInteractor::Look() const {
 	const UCInteract* const Comp = HoverComp.Get();
 	if(UNLIKELY(!IsValid(Comp))) return;
 
-	Comp->Look(Cast<APawn>(GetOwner()));
+	Comp->Look();
 	OnLook.Broadcast(Comp);
 }
 
