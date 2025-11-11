@@ -10,6 +10,8 @@ class UCInteractor;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnTrigger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHover, const bool, IsOn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractOnGrab, const bool, IsGrab, UCInteractor* const, NewParent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractOnHint, const bool, Show);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnLook);
 
 // TODO document how to set the collision profiles
 
@@ -93,14 +95,15 @@ public:
 	// When this is triggered
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnTrigger OnTrigger;
-	
 	// When this is being hovered on/off.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnHover OnHover;
-	
 	// When the object is being grabbed or released.
 	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
 	FInteractOnGrab OnGrab;
+	// When the object is being grabbed or released.
+	UPROPERTY(BlueprintAssignable, Transient, Category="SetUp|Delegates")
+	FInteractOnHint OnHint;
 
 protected:
 	void Reparent(const bool bIsGrab, UCInteractor* const NewParent) const;
@@ -108,15 +111,12 @@ protected:
 	void ReparentPhys(const bool IsGrab, const UCInteractor* const NewParent) const;
 	FORCEINLINE void SetCollisionEnabledBool(const bool Enabled);
 #pragma region Interactor
-	/// interactor
-	// used by the interactor. don't call directly. subscribe to OnTrigger.
+	void DeInit();
 	void Trigger() const;
 	// un/hovers. Inst=the instigator, will always be set to null on unhover.
-	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
 	void Hover(const bool IsHover, APawn* const Inst) const;
-	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
-	void DeInit();
-	// used by the interactor. don't call directly. subscribe to the OnHover delegate.
+	void Look(APawn* const Pawn) const;
+
 	bool TryGrab(const bool IsGrab, UCInteractor* const NewParent);
 	void Hint(const bool Show) const;
 	// <0 will disable stencil

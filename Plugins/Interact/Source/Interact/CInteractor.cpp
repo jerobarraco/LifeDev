@@ -208,7 +208,7 @@ void UCInteractor::Look() const {
 	const UCInteract* const Comp = HoverComp.Get();
 	if(UNLIKELY(!IsValid(Comp))) return;
 
-	// Comp->Look(Cast<APawn>(GetOwner())); // todo
+	Comp->Look(Cast<APawn>(GetOwner())); // todo
 	
 	OnLook.Broadcast(Comp);
 }

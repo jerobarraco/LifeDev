@@ -42,9 +42,13 @@ void UCInteract::Hover(const bool IsHover, APawn* const Inst) const {
 
 	AActor* const Owner = GetOwner();
 	// this way kind of sucks. but it's the best. it's important to set before hover and clear after unhover.
-	if (IsHover & LIKELY(Owner)) Owner->SetInstigator(Inst); // aways before onHover if IsHover
+	if (IsHover & LIKELY(Owner)) Owner->SetInstigator(Inst); // always before onHover if IsHover
 	OnHover.Broadcast(IsHover);
 	if (!IsHover & LIKELY(Owner)) Owner->SetInstigator(nullptr); // always null. always after onHover if !IsHover
+}
+
+void UCInteract::Look(APawn* const Pawn) const {
+	// OnLook.Broadcast(Pawn);
 }
 
 void UCInteract::DeInit() {
@@ -73,6 +77,7 @@ void UCInteract::Hint(const bool Show) const {
 	const int32 StencilID = Show ? HintStencilID :
 		(Instigator ? HoverStencilID : -1);
 	SetStencil(StencilID);
+	OnHint.Broadcast(Show);
 }
 
 void UCInteract::SetStencil(int32 StencilID) const {
