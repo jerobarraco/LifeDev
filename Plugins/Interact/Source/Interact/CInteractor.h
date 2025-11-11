@@ -41,12 +41,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool TryGrab(const bool IsGrab=true);
 	
-	// The max length to trace for
+	// The max length to trace for.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float TraceLen = 200.0;
-	// if <1 it will use a line trace. > will use a box trace
+	// if <1 it will use a line trace. > will use a box trace.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float TraceSize = 2;
+	// delay before triggering a Look event, in seconds.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
+	float LookTime = 2;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="SetUp|Grab")
 	TWeakObjectPtr<UPrimitiveComponent> GrabRoot = nullptr;
@@ -76,6 +79,7 @@ protected:
 	void DoEnd();
 	// attempts to trigger a start
 	void DoStart(UCInteract* const Component);
+	void Look();
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category=SetUp)
 	TEnumAsByte<ECollisionChannel> Channel;
@@ -92,4 +96,6 @@ protected:
 	// the currently grabbed interact component
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TWeakObjectPtr<UCInteract> GrabbedComp = nullptr;
+
+	FTimerHandle LookHandle;
 };

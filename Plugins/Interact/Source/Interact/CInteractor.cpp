@@ -198,14 +198,12 @@ void UCInteractor::DoStart(UCInteract* const Component) {
 	OnHover.Broadcast(true, Component);
 
 	/// look
-	FTimerManager& Timer = World->GetTimerManager();
-	
 	// will hide the prompt on invalid. which is a nice side effect.
-	// if (& LIKELY(IsValid(Comp))) {
-		// UI->PromptShow(Comp->Text);
-		// Timer.SetTimer(HoverDiagHandle, this, &ALChar::HoverDiag, HoverDiagTime);
-	// } else {
-		// UI->PromptHide();
-		// HoverDiagClear();
-	// }
+	FTimerManager& Timer = World->GetTimerManager();
+	Timer.SetTimer(LookHandle, this, &UCInteractor::Look, LookTime);
+}
+
+void UCInteractor::Look() {
+	if(UNLIKELY(!IsValid(HoverComp.Get()))) return;
+	// OnLook.Broadcast
 }
