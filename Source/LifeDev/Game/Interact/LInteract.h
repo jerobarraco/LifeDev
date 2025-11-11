@@ -43,7 +43,6 @@ public:
 	// note, this will override the default fps for the Anim on BeginPlay
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
 	float FBAnimMax = 1/60.0;
-
 #pragma endregion
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.

@@ -12,6 +12,7 @@
 
 APpl00::APpl00() {
 	UseFade = true; // read begin play
+	UseAutoActivate = true;
 	Sig = CreateDefaultSubobject<UCPplSig>(TEXT("Sig"));
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
