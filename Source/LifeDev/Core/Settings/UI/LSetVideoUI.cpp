@@ -28,6 +28,7 @@ void ULSetVideoUI::Apply_Implementation() {
 	
 	if (LIKELY(Settings))
 		Settings->ApplySettings(false);
+	GEngine->FixedFrameRate = Settings->GetFrameRateLimit();
 }
 
 void ULSetVideoUI::Load_Implementation() {
@@ -278,7 +279,10 @@ void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 	const int32 Index = FMath::Clamp(SelIndex, 0, Num-1);
 	const float Limit = FrameRateOpts[Index];
 	Settings->SetFrameRateLimit(Limit);
-
+	GEngine->bUseFixedFrameRate = Index !=0;
+	// TODO enable to override smooth frame range
+	GEngine->SmoothedFrameRateRange.SetUpperBoundValue(Limit);
+	
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i SelIndex=%i, Index=%i Limit=%f"),
 		__func__, Num, SelIndex, Index, Limit);
 }
