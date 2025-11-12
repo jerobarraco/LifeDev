@@ -18,12 +18,9 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
 	// 600 is about the size of a room
 	NanitePixelProgrammableDistance = 600;
-	
-	// this setting seems to be crashing the editor on load
-	// bComputeBoundsOnceForGame = true; // TODO test if it affects interacts that move.
-	// bComputeFastLocalBounds = true;
+	bComputeFastLocalBounds = true; // i think this is pretty safe to do, since my meshes don't change size, just position.
 	SetQuickCollisionEnabled(false);
-	
+
 	// i personally don't really like how contact shadows behave and are set. so i'm disabling them by default.
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/contact-shadows-in-unreal-engine
 	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
@@ -37,6 +34,10 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bAffectDistanceFieldLighting = false;
 	bCastDistanceFieldIndirectShadow = false; // depends on mesh being movable, having distance fields generated, and project supporting it.
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
+
+	// these setting seems to be crashing the editor on load. even if i just use one
+	// bComputeBoundsOnceForGame = true; // TODO test if it affects interacts that move.
+	// bComputeFastLocalBounds = true;
 }
 
 void UCQuickMesh::SetQuickCollisionEnabled(const bool Enable) {

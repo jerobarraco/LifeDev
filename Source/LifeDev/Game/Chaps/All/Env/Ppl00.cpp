@@ -34,7 +34,9 @@ APpl00::APpl00() {
 	// Collider->SetCapsuleRadius(100);
 	Collider->SetCapsuleSize(150, 150);
 	// Collider->bComputeBoundsOnceForGame = true;
+	// Collider->bComputedBoundsOnceForGame = false;
 	// SetBoxExtent(FVector(50,50,110));
+	Collider->bComputeFastLocalBounds = true;
 
 	SetActorHiddenInGame(true); // depends on the box
 }
