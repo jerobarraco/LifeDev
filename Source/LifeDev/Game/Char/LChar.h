@@ -107,7 +107,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionInteract = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
-	TObjectPtr<UInputAction> ActionItem = nullptr;
+	TObjectPtr<UInputAction> ActionItemUse = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = SetUp)
 	TObjectPtr<UInputAction> ActionItemLook = nullptr;
 

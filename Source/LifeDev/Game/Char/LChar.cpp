@@ -104,10 +104,10 @@ ALChar::ALChar() {
 		 CMapItem(TEXT("/Inventory/Input/IMC_Inventory"));
 	CtxItems = CMapItem.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction>
-		CActionItem(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Item"));
-	ActionItem = CActionItem.Object;
+		CActionItem(TEXT("/Inventory/Input/IA_ItemUse"));
+	ActionItemUse = CActionItem.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction>
-		CActionItemLook(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_ItemLook"));
+		CActionItemLook(TEXT("/Inventory/Input/IA_ItemLook"));
 	ActionItemLook = CActionItemLook.Object;
 }
 
@@ -284,7 +284,7 @@ void ALChar::SetupPlayerInputComponent(UInputComponent* const PlayerInputCompone
 	Input->BindAction(ActionMove, ETriggerEvent::Triggered, this, &ALChar::ActMove);
 	Input->BindAction(ActionLook, ETriggerEvent::Triggered, this, &ALChar::ActLook);
 	Input->BindAction(ActionInteract, ETriggerEvent::Triggered, this, &ALChar::ActInteract);
-	Input->BindAction(ActionItem, ETriggerEvent::Triggered, this, &ALChar::ActItem);
+	Input->BindAction(ActionItemUse, ETriggerEvent::Triggered, this, &ALChar::ActItem);
 	Input->BindAction(ActionItemLook, ETriggerEvent::Triggered, this, &ALChar::ActItemLook);
 	// Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALChar::ActMenu);
 }
