@@ -19,9 +19,13 @@ APpl00::APpl00() {
 		CFFe(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_FFE"));
 	RumbleLook = CFFe.Object;
 
-	// static ConstructorHelpers::FObjectFinder<USoundBase>
-		// CSFX(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_FFE"));
-	// SFXLook = CSFX.Object;
+	// TODO on sfx class set the loading stuff
+
+	// this sound is intentionally stereo since it plays with the panning
+	// and i think it's suitable
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSFX(TEXT("/Game/LifeDev/Game/Env/Ppl/UIGlitch_26"));
+	SFXLook = CSFX.Object;
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CHeadMat(TEXT("/Game/LifeDev/Game/Env/Ppl/PplHead_MI"));
