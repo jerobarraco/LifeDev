@@ -17,11 +17,14 @@ AInventoryMan::AInventoryMan(): Super() {
 	PrimaryActorTick.bCanEverTick = false;
 	Super::SetActorTickEnabled(false);
 
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> DefaultMapping(TEXT("/Inventory/Input/IMC_Inventory"));
-	Mapping = DefaultMapping.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionOpen(TEXT("/Inventory/Input/IA_Open"));
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
+		DefaultMapping(TEXT("/Inventory/Input/IMC_Inventory"));
+	Ctx = DefaultMapping.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionOpen(TEXT("/Inventory/Input/IA_Open"));
 	ActionOpen = CActionOpen.Object;
-	static ConstructorHelpers::FObjectFinder<UInputAction> CActionSelect(TEXT("/Inventory/Input/IA_Select"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CActionSelect(TEXT("/Inventory/Input/IA_Select"));
 	ActionSelect = CActionSelect.Object;
 	UIClass = UInventoryUI::StaticClass();
 }
@@ -47,7 +50,7 @@ void AInventoryMan::DeInit_Implementation() {
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
 
-	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false);
+	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, false);
 }
 
 void AInventoryMan::ActOpen() {
@@ -102,15 +105,15 @@ void AInventoryMan::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
 	
-	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, true);
-	if (ActionOpen) {
-		UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
-		if (LIKELY(IsValid(Input))) {
+	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, true);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
+	if (LIKELY(IsValid(Input))) {
+		if (ActionOpen)
 			Input->BindAction<AInventoryMan>(
-				ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);
-			Input->BindAction<AInventoryMan>(
-				ActionSelect, ETriggerEvent::Triggered, this, &AInventoryMan::ActSelect);
-		}
+					ActionOpen, ETriggerEvent::Triggered, this, &AInventoryMan::ActOpen);
+		if (ActionSelect)
+				Input->BindAction<AInventoryMan>(
+					ActionSelect, ETriggerEvent::Triggered, this, &AInventoryMan::ActSelect);
 	}
 	
 	UClass* const Class = UIClass.Get();

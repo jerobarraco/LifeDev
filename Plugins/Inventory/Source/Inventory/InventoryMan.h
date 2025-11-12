@@ -70,7 +70,7 @@ public:
 	TSubclassOf<UInventoryUI> UIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<UInputMappingContext> Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> Ctx = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<UInputAction> ActionOpen = nullptr;
