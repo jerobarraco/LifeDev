@@ -69,6 +69,11 @@ void APpl00::SetActorHiddenInGame(const bool NewHidden) {
 	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" : "InvisibleWall");
 }
 
+void APpl00::Look_Implementation() {
+	Super::Look_Implementation();
+	SetActive(false);
+}
+
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
 	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
 	// once it's shown, deactivate.

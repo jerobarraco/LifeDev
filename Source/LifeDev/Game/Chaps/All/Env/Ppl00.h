@@ -23,7 +23,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetActorHiddenInGame(bool NewHidden) override;
-
+	virtual void Look_Implementation() override;
+	
 	UFUNCTION()
 	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
