@@ -82,7 +82,8 @@ ALChar::ALChar() {
 	
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
 	 	DefaultMapping(TEXT("/Game/LifeDev/Game/Char/Input/IMC_Char"));
-	Mapping = DefaultMapping.Object;
+	CtxChar = DefaultMapping.Object;
+	
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 	 	CActionJump(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Jump"));
 	ActionJump = CActionJump.Object;
@@ -98,6 +99,10 @@ ALChar::ALChar() {
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionInteract(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Interact"));
 	ActionInteract = CActionInteract.Object;
+	
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext>
+		 CMapItem(TEXT("/Inventory/Input/IMC_Inventory"));
+	CtxItems = CMapItem.Object;
 	static ConstructorHelpers::FObjectFinder<UInputAction>
 		CActionItem(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Item"));
 	ActionItem = CActionItem.Object;
@@ -132,7 +137,7 @@ void ALChar::InteractHover(const bool On, UCInteract* const Comp) {
 
 void ALChar::SetInputEnabled(const bool Enabled) {
 	if (LIKELY(IsValid(UI))) UI->SetVisibility(Enabled? ESlateVisibility::Visible: ESlateVisibility::Hidden);
-	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, Enabled);
+	UJUtilsInput::ToggleContext(this, CtxChar, InputPrio, Enabled);
 	InteractSetActive(Enabled);
 	// TODO improve, maybe add a param
 	// this is a stub behaviour to disable noises while the player is not actively playing.
@@ -196,7 +201,7 @@ void ALChar::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
-	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, true);
+	UJUtilsInput::ToggleContext(this, CtxChar, InputPrio, true);
 	
 	UClass* const Class = UIClass.Get();
 	if (LIKELY(IsValid(Class))) {
@@ -233,7 +238,7 @@ void ALChar::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	}
 
 	// unbind input
-	UJUtilsInput::ToggleContext(this, Mapping, InputPrio, false);
+	UJUtilsInput::ToggleContext(this, CtxChar, InputPrio, false);
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
 	

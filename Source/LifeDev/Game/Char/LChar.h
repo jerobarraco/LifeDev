@@ -90,7 +90,9 @@ public:
 	TSubclassOf<UGameUI> UIClass = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
-	TObjectPtr<UInputMappingContext> Mapping = nullptr;
+	TObjectPtr<UInputMappingContext> CtxChar = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
+	TObjectPtr<UInputMappingContext> CtxItems = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UInputAction> ActionJump = nullptr;
