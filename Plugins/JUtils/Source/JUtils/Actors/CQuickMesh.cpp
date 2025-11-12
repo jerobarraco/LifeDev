@@ -18,8 +18,11 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
 	// 600 is about the size of a room
 	NanitePixelProgrammableDistance = 600;
+	
+	// this setting seems to be crashing the editor on load
+	// bComputeBoundsOnceForGame = true; // TODO test if it affects interacts that move.
+	// bComputeFastLocalBounds = true;
 	SetQuickCollisionEnabled(false);
-
 	
 	// i personally don't really like how contact shadows behave and are set. so i'm disabling them by default.
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/contact-shadows-in-unreal-engine

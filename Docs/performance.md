@@ -26,6 +26,8 @@ automanage
 	r.MeshDrawCommands.DynamicInstancing=1
 	NanitePixelProgrammableDistance = 600
 		https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
+	bComputeBoundsOnceForGame
+	NanitePixelProgrammableDistance
 
 # lumen
 	AmbientOcclusionStaticFraction set to false for lumen. can be changed on the post process.

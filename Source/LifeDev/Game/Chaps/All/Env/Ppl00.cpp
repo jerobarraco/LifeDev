@@ -28,12 +28,12 @@ APpl00::APpl00() {
 	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Interact);
 	Collider->SetGenerateOverlapEvents(false);
+	// Collider->bUseAttachParentBound = true;
 	Collider->CanCharacterStepUpOn = ECB_No;
 	// Collider->SetRelativeLocation(FVector(0,5,0));
 	// Collider->SetCapsuleRadius(100);
 	Collider->SetCapsuleSize(150, 150);
-	Collider->bComputeBoundsOnceForGame = true;
-	Collider->bUseAttachParentBound = true;
+	// Collider->bComputeBoundsOnceForGame = true;
 	// SetBoxExtent(FVector(50,50,110));
 
 	SetActorHiddenInGame(true); // depends on the box
