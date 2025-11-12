@@ -28,7 +28,7 @@ APpl00::APpl00() {
 	Collider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Interact);
 	Collider->SetGenerateOverlapEvents(false);
-	// Collider->bUseAttachParentBound = true;
+	Collider->bUseAttachParentBound = true;
 	Collider->CanCharacterStepUpOn = ECB_No;
 	// Collider->SetRelativeLocation(FVector(0,5,0));
 	// Collider->SetCapsuleRadius(100);
