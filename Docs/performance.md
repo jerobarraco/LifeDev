@@ -214,7 +214,7 @@ https://m.youtube.com/watch?v=c2MH20OPSw0 17:34
 on niagara system activate culling. set the "effect type" on the system.
 
 # nanite
-* r.nanite.maxpixelsperedge ( see nanite vis mode for triangles or clusters)
+* r.Nanite.MaxPixelsPerEdge ( see nanite vis mode for triangles or clusters) (1 to 30)
 
 # gc
 [ConsoleVariables]
