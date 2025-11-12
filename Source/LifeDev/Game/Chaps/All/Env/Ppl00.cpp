@@ -31,7 +31,7 @@ APpl00::APpl00() {
 	Collider->CanCharacterStepUpOn = ECB_No;
 	// Collider->SetRelativeLocation(FVector(0,5,0));
 	// Collider->SetCapsuleRadius(100);
-	Collider->SetCapsuleSize(175, 175);
+	Collider->SetCapsuleSize(150, 150);
 	// SetBoxExtent(FVector(50,50,110));
 
 	SetActorHiddenInGame(true); // depends on the box
@@ -50,7 +50,7 @@ void APpl00::BeginPlay() {
 
 void APpl00::SetActorHiddenInGame(const bool NewHidden) {
 	Super::SetActorHiddenInGame(NewHidden);
-	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" : "BlockAllDynamic");
+	Collider->SetCollisionProfileName(NewHidden ? "NoCollision" : "InvisibleWall");
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
