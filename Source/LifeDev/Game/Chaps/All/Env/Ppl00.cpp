@@ -15,8 +15,16 @@ APpl00::APpl00() {
 	UseAutoActivate = true;
 	Sig = CreateDefaultSubobject<UCPplSig>(TEXT("Sig"));
 
+	static ConstructorHelpers::FObjectFinder<UForceFeedbackEffect>
+		CFFe(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_FFE"));
+	RumbleLook = CFFe.Object;
+
+	// static ConstructorHelpers::FObjectFinder<USoundBase>
+		// CSFX(TEXT("/Game/LifeDev/Game/Env/Ppl/Ppl_FFE"));
+	// SFXLook = CSFX.Object;
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CHeadMat(TEXT("/Game/LifeDev/Game/Env/Ppl/PplHead_MI.PplHead_MI"));
+		CHeadMat(TEXT("/Game/LifeDev/Game/Env/Ppl/PplHead_MI"));
 	AnimFade->MatBase = CHeadMat.Object;
 	Mesh->SetEvaluateWorldPositionOffset(true);
 	Head->SetEvaluateWorldPositionOffset(true);
