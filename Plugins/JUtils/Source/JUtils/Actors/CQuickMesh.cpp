@@ -14,12 +14,13 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bEvaluateWorldPositionOffsetInRayTracing = false;
 	WorldPositionOffsetDisableDistance = 1;
 	bWorldPositionOffsetWritesVelocity = false;
-	bCastDistanceFieldIndirectShadow = true; // TODO is this a perf improv or not?
 	bCanEverAffectNavigation = false;
 	// https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
 	// 600 is about the size of a room
 	NanitePixelProgrammableDistance = 600;
 	SetQuickCollisionEnabled(false);
+
+	
 	// i personally don't really like how contact shadows behave and are set. so i'm disabling them by default.
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/contact-shadows-in-unreal-engine
 	// https://www.youtube.com/live/nm1slxtF_qA?t=1867
