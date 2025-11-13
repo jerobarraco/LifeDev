@@ -12,7 +12,7 @@ AWCube00::AWCube00():Super() {
 	UseRewardDestroy = false;
 	DisableWhileAnim = false; // To be used with the combination puzzle.
 	UseAutoActivate = true; // a bit lazy, but unlikely i'll have word cubes that aren't active
-	UseFade = true; // a bit more costly, but most of the time, these cubes fade.
+	UseFade = true; // a bit more costly, but most of the time, these cubes will fade.
 	UseAnim = true;
 	UseAnimFBFPS = true;
 	AnimFade->MatBase = nullptr; // the cubes use palettes.

@@ -54,3 +54,8 @@ group : UI
 
 /// nopes: max texture size : 256
 
+
+# notes on materials
+* Don't use the _M materials directly
+* The _M materials will be the more optimized ones (hence less features)
+* The _MI will override settings to enable features
