@@ -9,7 +9,7 @@ ACup::ACup():Super() {
 	Texts = { NSLOCTEXT("Cup", "State0", "A cup") };
 	RewardFlash = 0;
 	UseRewardDestroy = true;
-	UseFade = true;
+	UseFade = false;
 	StateNum = 1;
 	UseAnim = false;
 
