@@ -26,8 +26,7 @@ automanage
 	r.MeshDrawCommands.DynamicInstancing=1
 	NanitePixelProgrammableDistance = 600
 		https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
-	bComputeBoundsOnceForGame
-	NanitePixelProgrammableDistance
+	bComputeFastBounds (teh compute once per frame will crash)
 
 # lumen
 	AmbientOcclusionStaticFraction set to false for lumen. can be changed on the post process.
@@ -56,7 +55,7 @@ automanage
 
 ## light culling
 * automatic : r.MinScreenRadiusForLights 0.03 (disables the LIGHT at that radius)
-* * maybe r.Shadow.RadiusThreshold should disable the shadow at that radius, but it's not working
+* * maybe r.Shadow.RadiusThreshold should disable the shadow at that radius, but it's not working (it's overriden by scalability)
 * maxDrawDistance MaxDistanceFadeRange
 * if not using static lights, go to preferences and disable "allow static lights". it avoids issues.
 r.AllowStaticLighting=False
