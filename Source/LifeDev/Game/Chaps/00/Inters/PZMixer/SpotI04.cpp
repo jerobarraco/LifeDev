@@ -18,7 +18,7 @@ ASpotI04::ASpotI04() {
 	Interact->SetRelativeScale3D(FVector(5));
 	Interact->SetRelativeLocation(FVector(32.500000,-30.000000,30));
 	Interact->SetBoxExtent(FVector(10));
-	RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Actor_UAID_D8BBC116E501F35202_1248921863"));
-}
 
-// rewards actor is set on editor
+	// already being shown in the step, shows with the other stuff
+	// RewardActor = TSoftObjectPtr<AActor>(FSoftObjectPath("/Game/LifeDev/Game/Sys/Game_L.Game_L:PersistentLevel.Actor_UAID_D8BBC116E501F35202_1248921863"));
+}
