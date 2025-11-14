@@ -22,7 +22,7 @@ APlateI00::APlateI00():Super() {
 	// but this mesh doesn't use palettes, and i don't want to set the material on the mesh itself to voxel fade (in case i use it statically)
 	// remember kids, each exception/special case will multiply the amount of work.
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_DMI.VoxelFade_DMI"));
+		CMatBaseNew(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelFade_MMI"));
 	if (LIKELY(CMatBaseNew.Succeeded()))
 		AnimFade->MatBase = CMatBaseNew.Object;
 }
