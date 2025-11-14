@@ -86,7 +86,7 @@ protected:
 	void OnHardwareChanged(const FPlatformUserId UserId, const FInputDeviceId DeviceId);
 
 	UFUNCTION()
-	void InputChanged(const EInputType Tgt);
+	void InputChanged(const EInputType NewTgt);
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	FName CurrentId = NAME_None;

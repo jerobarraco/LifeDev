@@ -171,7 +171,8 @@ void ATeachMan::OnHardwareChanged(const FPlatformUserId UserId, const FInputDevi
 	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Device Changed %i"), __func__, DeviceId.GetId());
 }
 
-void ATeachMan::InputChanged(const EInputType Tgt) {
-	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed Tgt=%s"), __func__, *UEnum::GetValueAsString(Tgt));
-	SetTarget(Tgt);
+void ATeachMan::InputChanged(const EInputType NewTgt) {
+	UE_LOG(LogTeachMan, Log, TEXT("%hs Input Changed Tgt=%s NewTgt=%s"), __func__,
+		*UEnum::GetValueAsString(Tgt), *UEnum::GetValueAsString(NewTgt));
+	SetTarget(NewTgt);
 }
