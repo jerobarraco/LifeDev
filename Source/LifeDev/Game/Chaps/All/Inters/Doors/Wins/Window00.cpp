@@ -42,7 +42,7 @@ AWindow00::AWindow00():Super() {
 	GlassC->SetUseDynShadow(true);
 	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CGlassMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelGlass_DMI"));
+		CGlassMat(TEXT("/Game/LifeDev/Game/Var/Mats/Voxel/VoxelGlass_MMI"));
 	if (LIKELY(CGlassMat.Succeeded())) {
 		GlassA->SetMaterial(0, CGlassMat.Object);
 		GlassB->SetMaterial(0, CGlassMat.Object);
