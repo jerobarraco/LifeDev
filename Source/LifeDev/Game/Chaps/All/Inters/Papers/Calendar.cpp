@@ -8,12 +8,13 @@
 
 ACalendar::ACalendar():Super() {
 	UseAnim = false;
+	UseFade = false;
 	UseRewardDestroy = false;
 	StateNum = 1;
 	Texts = { NSLOCTEXT("Calendar", "State0", "A calendar") } ;
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar.Calendar"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Calendar/Calendar"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(-22.5,22.5,0));
 	Mesh->SetUseDynShadow(true);
