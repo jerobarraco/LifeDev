@@ -141,6 +141,9 @@ animation
   ** optimize the ones for directional. since i rarelf use them
   r.shadow.virtual.resolutionlodbiasdirectional and moving
 
+
+r.shadow.virtual.smrt.raycountlocal (already set by scalability settings)
+
 ## megalights
 https://www.youtube.com/watch?app=desktop&v=3PQga-2vLm4
 * enable using postprocess volume (or globally, but not recommended)
