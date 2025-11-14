@@ -213,11 +213,11 @@ void ALTeachMan::SetCurrentKeyNames() {
 
 			const FText& Text = Key.GetDisplayName(); // i hope this works. it binds to the key.
 			// const FText& Text = KeySettings->DisplayName; // doesn't automatically provide the text, maybe i will have to set it myself. not for now
-			const EInputType Tgt = UJUtilsInput::GetKeyType(Key);
-			TMap<FString, FText>& Map = Names.FindOrAdd(Tgt);
+			const EInputType TmpTgt = UJUtilsInput::GetKeyType(Key);
+			TMap<FString, FText>& Map = Names.FindOrAdd(TmpTgt);
 			Map.Add(Name.ToString(), Text);
 			UE_LOG(LogTemp, Log, TEXT("%hs Added key text=%s name=%s tgt=%s"), __func__,
-				*Text.ToString(), *Name.ToString(), *UEnum::GetValueAsString(Tgt));
+				*Text.ToString(), *Name.ToString(), *UEnum::GetValueAsString(TmpTgt));
 		}
 	}
 
