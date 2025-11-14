@@ -9,10 +9,10 @@ AFoodBoxI00::AFoodBoxI00():Super() {
 	Texts = { NSLOCTEXT("FoodBoxI00", "State0", "Rice box") };
 	StateNum = 1;
 	UseAutoActivate = true;
-	RewardItem = "Food00";
-	UseRewardDestroy = true;
 	UseFade = true;
 	UseHint = true;
+	RewardItem = "Food00";
+	UseRewardDestroy = true;
 	HintCondition = "{Inter.Locked.PotI00}";
 	// TriggerDlg = "Food00_T";
 	// RewardFlash = .1; // story works better this way
