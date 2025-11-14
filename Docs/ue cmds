@@ -125,3 +125,8 @@ abtest cvar vala valb
 
 # audio
 audio visualization https://dev.epicgames.com/documentation/en-us/unreal-engine/audio-console-commands-in-unreal-engine
+
+# 5.7 update
+https://www.youtube.com/watch?v=3PQga-2vLm4
+* r.megalights.debug 1 + r.shaderprint.1
+* r.forward.lightgriddebug 1

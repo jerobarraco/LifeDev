@@ -52,6 +52,7 @@ automanage
 # light
 * use spotlights instead of pointlights as they are faster
 * light: can have a check "affects world"
+* r.forward.lightgriddebug 1
 
 ## light culling
 * automatic : r.MinScreenRadiusForLights 0.03 (disables the LIGHT at that radius)
@@ -139,6 +140,16 @@ animation
 * these values also exists for directional too
   ** optimize the ones for directional. since i rarelf use them
   r.shadow.virtual.resolutionlodbiasdirectional and moving
+
+## megalights
+https://www.youtube.com/watch?app=desktop&v=3PQga-2vLm4
+* enable using postprocess volume (or globally, but not recommended)
+* r.megalights.hairstrands.*  .HairVoxelTraces
+* r.megalights.directionallights are not enabled by defaults. it has issues with lower light scenes. enabled with 1
+* * ghosting and noise
+* r.megalights.debug 1 + r.shaderprint.1
+* r.forward.lightgriddebug 1
+
 # pso precache
 	; pso precaching https://www.tomlooman.com/psocaching-unreal-engine/
 	; https://dev.epicgames.com/documentation/en-us/unreal-engine/pso-precaching-for-unreal-engine
