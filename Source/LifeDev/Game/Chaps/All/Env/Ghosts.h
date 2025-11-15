@@ -9,8 +9,7 @@
 class UCLSounder;
 class UNiagaraComponent;
 
-// make a baseclass for sound stuff? 
-//  class for the Ghosts 
+//  class for the Ghosts that appear during a boss step
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API AGhosts : public AActor {
 	GENERATED_BODY()
