@@ -29,9 +29,11 @@ AGhosts::AGhosts():Super() {
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiagara(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_NS.Ghost_NS"));
 	Parts->SetAsset(CNiagara.Object);
+	Parts->bAutoManageAttachment = true;
 }
 
 void AGhosts::SetPlaying(const bool IsPlaying) {
 	SFX->Fade(IsPlaying);
+	// Parts->
 	Parts->SetActive(true);
 }
