@@ -70,6 +70,10 @@ void ALStep::Stop_Implementation() {
 	if (UseRain) ALMusicMan::SetRainS(W, false);
 
 	if (LIKELY(W)) { // call stop anyway (below)
+		APlayerController* const Controller = W->GetFirstPlayerController();
+		// restore possible rumble stuff. do it regardless of useGhosts and useRumble to ensure proper cleanup. 
+		if (LIKELY(Controller)) Controller->ForceFeedbackScale = 1;
+		
 		FTimerManager& Timer = W->GetTimerManager();
 		// ensure we don't double trigger.
 		// this timer is stored in the class since clearAllTimers here could accidentally stop timers from child classes.
@@ -78,11 +82,7 @@ void ALStep::Stop_Implementation() {
 		Timer.ClearTimer(TimerDestroy);
 		// Destroy them during the fade
 		TimerDestroy.Invalidate();
-		Timer.SetTimer(TimerDestroy, this, &ALStep::DestroyActors, 2);
-
-		APlayerController* const Controller = W->GetFirstPlayerController();
-		// restore possible rumble stuff. do it regardless of useGhosts and useRumble to ensure proper cleanup. 
-		if (LIKELY(Controller)) Controller->ForceFeedbackScale = 1;
+		Timer.SetTimer(TimerDestroy, this, &ALStep::ClearActors, 2);
 	}
 
 	Super::Stop_Implementation(); // do at end.
@@ -223,13 +223,15 @@ void ALStep::DoEnsureItems() {
 	for(const FName& N: EnsureItems) Inventory->Ensure(N);
 }
 
-void ALStep::DestroyActors() {
+void ALStep::ClearActors() {
 	// this function gets called multiple times. beware.
 	UE_LOG(LogLStoryStep, Log, TEXT("%hs Name=%s"), __func__, *Label.ToString());
 
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
 
+	// clear timer in case this get's called by endplay just before the timer triggers.
+	// though it's virtually impossible the timer will trigger.
 	W->GetTimerManager().ClearTimer(TimerDestroy);
 
 	// this doesn't work, since it might destroy the actor while it's still fading.
@@ -241,8 +243,10 @@ void ALStep::DestroyActors() {
 	ActorsShow.Empty(); // release the ref
 	ActorsHide.Empty();
 
-	if (IsValid(Ghosts)) Ghosts->Destroy();
-	Ghosts = nullptr;
+	// do not destroy or nullify ghosts. as the particles will still be alive.
+	// usually happens since this function is also called by a timer after stop.
+	// if (IsValid(Ghosts)) Ghosts->Destroy();
+	// Ghosts = nullptr;
 }
 
 void ALStep::ItemMod_Implementation(const FName& ItemName, int32 Diff, const FItem& Item) {
@@ -350,7 +354,7 @@ void ALStep::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 
 	// Ensure we destroy the actors on destroying this actor.
 	// could happen if the step is unloaded because the next step unloads the data-layer.
-	DestroyActors();
+	ClearActors();
 
 	Super::EndPlay(EndPlayReason); // always at end
 }

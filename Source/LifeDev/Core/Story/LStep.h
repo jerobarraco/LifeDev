@@ -136,7 +136,7 @@ protected:
 	void DoEnsureItems();
 	// will destroy some transient actors
 	UFUNCTION()
-	void DestroyActors();
+	void ClearActors();
 	
 	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
 	void DlgShow(const FDiag& Diag);
