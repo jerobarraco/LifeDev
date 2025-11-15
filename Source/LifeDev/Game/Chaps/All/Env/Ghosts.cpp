@@ -26,14 +26,15 @@ AGhosts::AGhosts():Super() {
 	Parts = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Parts"));
 	Parts->SetupAttachment(RootComponent);
 	Parts->SetAutoActivate(false);
+	Parts->bAutoManageAttachment = true;
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem>
 		CNiagara(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghost_NS.Ghost_NS"));
 	Parts->SetAsset(CNiagara.Object);
-	Parts->bAutoManageAttachment = true;
 }
 
 void AGhosts::SetPlaying(const bool IsPlaying) {
 	SFX->Fade(IsPlaying);
-	// Parts->
+	Parts->bAllowConcurrentTick = true;
+	
 	Parts->SetActive(true);
 }
