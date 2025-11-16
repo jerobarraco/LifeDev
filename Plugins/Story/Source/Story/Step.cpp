@@ -221,7 +221,8 @@ void AStep::CamBlend() {
 	AActor* const Tgt = CamTarget.Get();
 	if (!IsValid(Tgt)) return; // it's not always likely
 
-	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s"), __func__, *Label.ToString());
+	UE_LOG(LogStoryStep, Log, TEXT("%hs -> %s CamBlendTime=%.3f"), __func__,
+		*Label.ToString(), CamBlendTime);
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
