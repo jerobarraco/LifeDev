@@ -35,6 +35,20 @@ void ULSetControlUI::Load_Implementation() {
 		if (UNLIKELY(!S)) continue;
 		S->Load();
 	}
+
+	
+	// disable rebind on kiosk mode
+	// native initialize seems to be too early for selectors array to be populated.
+	// bdefaults is populated though. 
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
+	if (UNLIKELY(Kiosk)) {
+		BDefaults->SetIsEnabled(false);
+		for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+			if (UNLIKELY(!S)) continue;
+			S->SetIsEnabled(false);
+		}
+	}
 }
 
 void ULSetControlUI::ApplyKeyNames() {
@@ -80,15 +94,6 @@ void ULSetControlUI::NativeOnInitialized() {
 		S->Init();
 	}
 
-	// disable rebind on kiosk mode
-	const ULSettings* const Settings = ULSettings::Instance(this);
-	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
-	if (UNLIKELY(Kiosk)) {
-		for (const TObjectPtr<ULInputSelector>& S: Selectors) {
-			if (UNLIKELY(!S)) continue;
-			S->SetIsEnabled(false);
-		}
-	}
 }
 
 void ULSetControlUI::NativeDestruct() {
