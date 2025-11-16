@@ -17,6 +17,8 @@ public:
 	// adds a section to the outliner properties. calling this multiple times will add the categories
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Class,Section, Categories"))
 	static bool AddOutlinerSection(const FString& Class, const FString& Section, const TArray<FString>& Categories);
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AutoCreateRefTerm="Class,Section, Categories"))
+	static bool PlayInEditor();
 
 // 	virtual void PostLoad() override;
 // 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "JUtils Editor")

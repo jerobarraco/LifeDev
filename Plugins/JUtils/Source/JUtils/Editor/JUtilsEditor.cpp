@@ -3,16 +3,18 @@
 
 #include "JUtilsEditor.h"
 
+#if WITH_EDITOR
+#include "Kismet2/DebuggerCommands.h"
+#endif
+
 bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Section,
 	const TArray<FString>& Categories) {
 #if !WITH_EDITOR
 #else
-	
 	// https://forums.unrealengine.com/t/how-to-modify-property-section-in-details-panel-in-editor/611250/4?u=nande
 	FModuleManager& Man = FModuleManager::Get();
-	
 	IModuleInterface* const IMod = Man.GetModule("PropertyEditor");
-	if (!IMod) {
+	if (UNLIKELY(!IMod)) {
 		UE_LOG(LogTemp, Warning, TEXT("%hs could not load PropertyEditor module"), __func__);
 		return false;
 	}
@@ -26,6 +28,19 @@ bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Sect
 	return true;
 #endif
 	return false;
+}
+
+bool UJUtilsEditor::PlayInEditor() {
+#if !WITH_EDITOR
+	return false;
+#else
+	// https://forums.unrealengine.com/t/starting-pie-programmatically/1213447/2?u=nande
+	const FUICommandList* const Actions = FPlayWorldCommands::GlobalPlayWorldActions.Get();
+	if (UNLIKELY(Actions)) return false;
+
+	const FPlayWorldCommands& Commands = FPlayWorldCommands::Get();
+	return Actions->ExecuteAction(Commands.PlayInViewport.ToSharedRef());
+#endif
 }
 
 
