@@ -36,7 +36,7 @@ bool UJUtilsEditor::PlayInEditor() {
 #else
 	// https://forums.unrealengine.com/t/starting-pie-programmatically/1213447/2?u=nande
 	const FUICommandList* const Actions = FPlayWorldCommands::GlobalPlayWorldActions.Get();
-	if (UNLIKELY(Actions)) return false;
+	if (UNLIKELY(!Actions)) return false;
 
 	const FPlayWorldCommands& Commands = FPlayWorldCommands::Get();
 	return Actions->ExecuteAction(Commands.PlayInViewport.ToSharedRef());
