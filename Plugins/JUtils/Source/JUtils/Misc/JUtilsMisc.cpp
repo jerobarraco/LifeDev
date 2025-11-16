@@ -255,7 +255,7 @@ void UJUtilsMisc::SetShaderBatchMode(const UObject* const O, const EShaderBatchM
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to set shader batch mode to '%s'"), __func__, *Cmd);
 }
 
-void UJUtilsMisc::SetCVarChar(const TCHAR* Name, const int32 Val) {
+void UJUtilsMisc::SetCVarChar(const TCHAR* const Name, const int32 Val) {
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs %s=%i"), __func__, Name, Val);
 	IConsoleVariable* const Variable = IConsoleManager::Get().FindConsoleVariable(Name);
 	if (UNLIKELY(!Variable)) {

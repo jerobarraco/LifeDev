@@ -189,7 +189,8 @@ public:
 	static void SetShaderBatchMode(const UObject* const O, const EShaderBatchMode Mode);
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O", AutoCreateRefTerm="Name"))
 	static void SetCVar(const FString& Name, const int32 Val) {SetCVarChar(*Name, Val);};
-	static void SetCVarChar(const TCHAR* Name, const int32 Val);
+	// faster than setcvar
+	static void SetCVarChar(const TCHAR* const Name, const int32 Val);
 	
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
