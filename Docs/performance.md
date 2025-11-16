@@ -30,6 +30,10 @@ automanage
 
 # lumen
 	AmbientOcclusionStaticFraction set to false for lumen. can be changed on the post process.
+mesh cards / surface cache
+	https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine
+	r.Lumen.Visualize.CardPlacement 1
+	
 
 # material
 	Quality switch node
@@ -41,7 +45,7 @@ automanage
 	lower num samples
 	DistanceCullFade to blend the cull
 	-  min max draw distance
-
+	RayTracingQualitySwitchReplace to make it look better with lumen https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine
 
 # culling
 * use distance cull volumes
