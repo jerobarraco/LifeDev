@@ -146,13 +146,13 @@ void AStep::Stop_Implementation() {
 
 	SetActorsHiddenAny(ActorsHide, true); // hide the hidden
 
-	if (CamTarget == this) {
-		Cam->SetActive(false);
-		Cam->SetComponentTickEnabled(false);
-		// this is challenging since the next step could have a blend, and i don't know the duration from here.
-		// todo make sure this doesn't cause issues.
-		// at this point i assume the new step starts and tweens
-	}
+	// todo this breaks the tween at the end of the step. todo find a better way.
+	// this is challenging since the next step could have a blend, and i don't know the duration from here.
+	// at this point i assume the new step starts and tweens
+	// if (CamTarget == this) {
+		// Cam->SetActive(false);
+		// Cam->SetComponentTickEnabled(false);
+	// }
 }
 
 void AStep::Finish_Implementation() {
