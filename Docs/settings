@@ -1,3 +1,7 @@
 
 bAllowHighDPIInGameMode=True
 * this one fixes the performance issue with vsm
+
+Allow Distance field mesh
+* used to optimized shadows. i think it has to be enabled on the lights
+* it's also disabled by the feats

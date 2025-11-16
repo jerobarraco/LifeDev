@@ -205,4 +205,9 @@ disable tooltips
 https://forums.unrealengine.com/t/solved-is-there-any-way-to-disable-editor-tooltips/332197/12
 
 -UserDir=./Data
-	command line option when launching the game to specify where to store stuff. 
+	command line option when launching the game to specify where to store stuff.
+	
+	
+# Links
+* * https://forums.unrealengine.com/t/static-switching-between-masked-and-opaque/70507/3
+* maybe use ffe for area https://dev.epicgames.com/documentation/en-us/unreal-engine/force-feedback-in-unreal-engine
