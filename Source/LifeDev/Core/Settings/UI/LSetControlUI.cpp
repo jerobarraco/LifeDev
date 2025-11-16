@@ -7,6 +7,7 @@
 #include "JButton.h"
 #include "LInputSelector.h"
 #include "JUtils/Misc/JUtilsInput.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
@@ -77,6 +78,16 @@ void ULSetControlUI::NativeOnInitialized() {
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
 		if (UNLIKELY(!S)) continue;
 		S->Init();
+	}
+
+	// disable rebind on kiosk mode
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
+	if (UNLIKELY(Kiosk)) {
+		for (const TObjectPtr<ULInputSelector>& S: Selectors) {
+			if (UNLIKELY(!S)) continue;
+			S->SetIsEnabled(false);
+		}
 	}
 }
 
