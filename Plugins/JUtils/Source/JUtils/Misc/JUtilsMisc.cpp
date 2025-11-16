@@ -272,7 +272,7 @@ UObject* UJUtilsMisc::GetMutableDefault(const TSubclassOf<UObject>& Class, const
 }
 
 UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
-									TArray<FString>& OProblems, UObject* const Outer) {
+	TArray<FString>& OProblems, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;

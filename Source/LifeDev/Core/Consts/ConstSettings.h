@@ -51,6 +51,8 @@ enum class EFeat: uint8 {
 	V_MLIGHTS,
 	// nanite
 	V_NANITE,
+	// ray traced shadows
+	V_SHAD_RAY,
 	// blur
 	V_BLUR,
 	// field of view
