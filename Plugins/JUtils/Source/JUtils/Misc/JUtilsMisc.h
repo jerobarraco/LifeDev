@@ -147,6 +147,10 @@ public:
 		const FUObjectThreadContext& ThreadContext = FUObjectThreadContext::Get();
 		return ThreadContext.IsInConstructor > 0;
 	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure=false)
+	static UObject* GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded=true);
+
 #pragma endregion
 #pragma region tables
 	UFUNCTION(BlueprintCallable)

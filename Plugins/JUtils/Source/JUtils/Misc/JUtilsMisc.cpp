@@ -255,8 +255,13 @@ void UJUtilsMisc::SetShaderBatchMode(const UObject* const O, const EShaderBatchM
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to set shader batch mode to '%s'"), __func__, *Cmd);
 }
 
+UObject* UJUtilsMisc::GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded) {
+	return Class.Get()->GetDefaultObject(CreateIfNeeded);
+	// copied from 	GetMutableDefault<Class.Get()>();
+}
+
 UDataTable* UJUtilsMisc::LoadCSVTable(const FString& BasePath, const FString& Name, UScriptStruct* const RowType,
-	TArray<FString>& OProblems, UObject* const Outer) {
+									TArray<FString>& OProblems, UObject* const Outer) {
 	const FString& Path = FPaths::ConvertRelativePathToFull(FPaths::Combine(BasePath, Name+".csv"));
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to load '%s'"), __func__, *Path);
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
