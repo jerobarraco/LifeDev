@@ -33,6 +33,7 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// this is necessary to be true, or it won't show the shadow on distance field mode
 	bAffectDistanceFieldLighting = false;
 	bCastDistanceFieldIndirectShadow = false; // depends on mesh being movable, having distance fields generated, and project supporting it.
+	bAffectDistanceFieldLighting = true; // only used if cast shadows is true
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
 
 	// these setting seems to be crashing the editor on load. even if i just use one
@@ -58,6 +59,7 @@ void UCQuickMesh::SetUseDynShadow(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
 	bCastContactShadow = !Cast; // TODO what's the impact of casting both.
+	bCastDistanceFieldIndirectShadow = Cast; // TODO what's the impact of casting both.
 }
 
 void UCQuickMesh::SetUseContactShadow(const bool Contact) {
