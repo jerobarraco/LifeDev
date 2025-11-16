@@ -222,6 +222,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
 	FeatUpVisual(EFeat::V_DUST, Settings && Settings->GetFeat(EFeat::V_DUST));
+	FeatUpVisual(EFeat::V_SHAD_RAY, Settings && Settings->GetFeat(EFeat::V_SHAD_RAY));
 	BlurReset();
 	FringeReset();
 	
@@ -313,6 +314,8 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		const ALChar* const Char = ALChar::Instance(this);
 		UActorComponent* const Dust = Char->GetComponentByClass(UCLDust::StaticClass());
 		if (LIKELY(Dust)) Dust->SetActive(Enabled);
+	} else if (Feat == EFeat::V_SHAD_RAY) {
+		UJUtilsMisc::SetCVarChar(TEXT("r.RayTracing.Shadows"), Enabled?1:0);
 	} else {
 		if (UNLIKELY(!MPCI)) return; // on purpose like this, to not make a mistake myself.
 		const float v = Enabled ? 1: 0;

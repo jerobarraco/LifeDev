@@ -527,6 +527,7 @@ void ULSetVideoUI::FeatsSet() {
 		{EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite")},
 		{EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen")},
 		{EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights")},
+		{EFeat::V_SHAD_RAY, NSLOCTEXT("SetVideo", "RTSHads", "RTShadows")},
 	};
 	FeatsGroup->SetUp(FeatTexts);
 }
