@@ -255,6 +255,17 @@ void UJUtilsMisc::SetShaderBatchMode(const UObject* const O, const EShaderBatchM
 	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Try to set shader batch mode to '%s'"), __func__, *Cmd);
 }
 
+void UJUtilsMisc::SetCVarChar(const TCHAR* Name, const int32 Val) {
+	UE_LOG(LogJUtilsMisc, Log, TEXT("%hs %s=%i"), __func__, Name, Val);
+	IConsoleVariable* const Variable = IConsoleManager::Get().FindConsoleVariable(Name);
+	if (UNLIKELY(!Variable)) {
+		UE_LOG(LogJUtilsMisc, Warning, TEXT("%hs Can't find var=%s. Stop"), __func__, Name);
+		return;
+	}
+
+	Variable->Set(Val);
+}
+
 UObject* UJUtilsMisc::GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded) {
 	return Class.Get()->GetDefaultObject(CreateIfNeeded);
 	// copied from 	GetMutableDefault<Class.Get()>();

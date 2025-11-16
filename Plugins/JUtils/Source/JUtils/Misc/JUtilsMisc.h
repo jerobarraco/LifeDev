@@ -148,6 +148,8 @@ public:
 		return ThreadContext.IsInConstructor > 0;
 	}
 
+	// Get the default object from the class. Optionally creating it if it's not there yet.
+	// TODO test
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	static UObject* GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded=true);
 
@@ -185,6 +187,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static void SetShaderBatchMode(const UObject* const O, const EShaderBatchMode Mode);
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="O", AutoCreateRefTerm="Name"))
+	static void SetCVar(const FString& Name, const int32 Val) {SetCVarChar(*Name, Val);};
+	static void SetCVarChar(const TCHAR* Name, const int32 Val);
 	
 	// shuffles an array in place.
 	// has to be inlined or the compiler won't find the definition
