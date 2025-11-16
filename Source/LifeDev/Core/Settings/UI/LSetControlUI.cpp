@@ -43,7 +43,7 @@ void ULSetControlUI::Load_Implementation() {
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
 	if (UNLIKELY(Kiosk)) {
-		BDefaults->SetIsEnabled(false);
+		// BDefaults->SetIsEnabled(false); // mights still be useful
 		for (const TObjectPtr<ULInputSelector>& S: Selectors) {
 			if (UNLIKELY(!S)) continue;
 			S->SetIsEnabled(false);
