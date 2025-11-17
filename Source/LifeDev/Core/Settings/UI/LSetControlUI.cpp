@@ -36,13 +36,12 @@ void ULSetControlUI::Load_Implementation() {
 		S->Load();
 	}
 
-	
 	// disable rebind on kiosk mode
 	// native initialize seems to be too early for selectors array to be populated.
 	// bdefaults is populated though. 
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
-	if (UNLIKELY(Kiosk)) {
+	if (UNLIKELY(Kiosk)) { // optimized for shipping build
 		// BDefaults->SetIsEnabled(false); // mights still be useful
 		for (const TObjectPtr<ULInputSelector>& S: Selectors) {
 			if (UNLIKELY(!S)) continue;
