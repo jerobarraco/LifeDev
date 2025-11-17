@@ -38,7 +38,7 @@ void ULSetControlUI::Load_Implementation() {
 
 	// disable rebind on kiosk mode
 	// native initialize seems to be too early for selectors array to be populated.
-	// bdefaults is populated though. 
+	// bdefaults is populated though.
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	const bool Kiosk = Settings && Settings->GetFeat(EFeat::G_KIOSK);
 	if (UNLIKELY(Kiosk)) { // optimized for shipping build
