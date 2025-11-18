@@ -17,7 +17,7 @@ AToy00::AToy00() {
 	UseFade = false; // by default skip it
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Var/Toy01_P"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toy/Toy01_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
 	Mesh->SetRelativeLocation(FVector(-10,2.225,0));
@@ -26,4 +26,7 @@ AToy00::AToy00() {
 
 	Interact->SetRelativeLocation(FVector(5.000000,-2.225000,1.250000));
 	Interact->SetBoxExtent(FVector(5.000000,2.225000,1.250000));
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toy/Toy_C"));
+	SFXs = { CSFX.Object, CSFX.Object};
 }
