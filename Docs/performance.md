@@ -33,7 +33,7 @@ automanage
 mesh cards / surface cache
 	https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine
 	r.Lumen.Visualize.CardPlacement 1
-	
+
 
 # material
 	Quality switch node
