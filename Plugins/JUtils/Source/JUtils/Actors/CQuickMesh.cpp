@@ -16,8 +16,8 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bWorldPositionOffsetWritesVelocity = false;
 	bCanEverAffectNavigation = false;
 	// https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
-	// 600 is about the size of a room
-	NanitePixelProgrammableDistance = 600;
+	// 1200 is about the size of a room
+	NanitePixelProgrammableDistance = 1000;
 	bComputeFastLocalBounds = true; // i think this is pretty safe to do, since my meshes don't change size, just position.
 	SetQuickCollisionEnabled(false);
 
