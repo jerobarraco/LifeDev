@@ -117,7 +117,7 @@ void ULSetControlUI::SetDefaults(const int32 Id) {
 	Load();
 }
 
-void ULSetControlUI::ResetModifier(UInputAction* const Action) {
+void ULSetControlUI::SetModifier(UInputAction* const Action, const double Val) {
 	if (UNLIKELY(!Action)) return;
 	if (UNLIKELY(Action->Modifiers.Num()<1)) return;
 
@@ -127,7 +127,7 @@ void ULSetControlUI::ResetModifier(UInputAction* const Action) {
 		UE_LOG(LogTemp, Warning, TEXT("SetControlUI::%hs Can't get the modifier scalar. Stop."), __func__);
 		return;
 	}
-	ModScalar->Scalar.X = 1;
+	ModScalar->Scalar.X = Val;
 
 	UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
 	if (LIKELY(InputSub)) InputSub->RequestRebuildControlMappings();

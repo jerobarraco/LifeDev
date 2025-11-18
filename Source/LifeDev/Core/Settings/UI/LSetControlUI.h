@@ -33,7 +33,9 @@ protected:
 	void ResetSelectors();
 	// it only resets the action, it does not save it nor load the slider
 	UFUNCTION(BlueprintCallable)
-	void ResetModifier(UInputAction* const Action);
+	void SetModifier(UInputAction* const Action, const double Val);
+	UFUNCTION(BlueprintCallable)
+	void ResetModifier(UInputAction* const Action) { SetModifier(Action, 1); }
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TObjectPtr<ULInputSelector>> Selectors;
