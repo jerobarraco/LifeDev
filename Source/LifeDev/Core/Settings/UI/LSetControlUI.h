@@ -51,5 +51,4 @@ protected:
 	TObjectPtr<USlider> SMove = nullptr; // set on the bp, todo move here
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLook = nullptr;
-
 };
