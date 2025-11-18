@@ -7,9 +7,8 @@
 #include "Interact/Animator/CAnimatorFade.h"
 
 APpl::APpl():Super() {
-	Texts = {
-		NSLOCTEXT("Ppl", "State0", ""), // closed
-	};
+	Texts = { NSLOCTEXT("Ppl", "State0", "")};// closed
+
 	RewardFlash = 0;
 	UseRewardDestroy = false;
 	StateNum = 1;
@@ -31,6 +30,12 @@ APpl::APpl():Super() {
 		CHeadMesh(TEXT("/Game/LifeDev/Game/Env/Ppl/Head"));
 	Head->SetStaticMesh(CHeadMesh.Object);
 	Head->SetUseDynShadow(true);
+
+	// a bit of optimization to avoid invalidating the vsm cache every frame.
+	// this is ok since in the material i've use a constant value for the shadow pass
+	Mesh->ShadowCacheInvalidationBehavior = EShadowCacheInvalidationBehavior::Rigid;
+	Head->ShadowCacheInvalidationBehavior = EShadowCacheInvalidationBehavior::Rigid;
+
 	// Head->SetMaterial(0, CBodyMat.Object);
 	Head->SetRelativeLocation(FVector(0,0,0));
 	AnimFade->Meshes.AddUnique(Head);
