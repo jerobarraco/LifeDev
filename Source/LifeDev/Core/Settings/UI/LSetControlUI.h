@@ -34,7 +34,7 @@ protected:
 	// it only resets the action, it does not save it nor load the slider
 	UFUNCTION(BlueprintCallable)
 	void ResetModifier(UInputAction* const Action);
-	
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TObjectPtr<ULInputSelector>> Selectors;
 

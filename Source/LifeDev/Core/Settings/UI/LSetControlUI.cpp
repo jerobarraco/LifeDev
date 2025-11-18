@@ -2,6 +2,7 @@
 
 #include "LSetControlUI.h"
 
+#include "EnhancedInputSubsystems.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 
 #include "JButton.h"
@@ -117,8 +118,19 @@ void ULSetControlUI::SetDefaults(const int32 Id) {
 }
 
 void ULSetControlUI::ResetModifier(UInputAction* const Action) {
-	
-	
+	if (UNLIKELY(!Action)) return;
+	if (UNLIKELY(Action->Modifiers.Num()<1)) return;
+
+	const TObjectPtr<UInputModifier>& Modifier = Action->Modifiers[Action->Modifiers.Num()-1];
+	UInputModifierScalar* const ModScalar = Cast<UInputModifierScalar>(Modifier);
+	if (UNLIKELY(!ModScalar)) {
+		UE_LOG(LogTemp, Warning, TEXT("SetControlUI::%hs Can't get the modifier scalar. Stop."), __func__);
+		return;
+	}
+	ModScalar->Scalar.X = 1;
+
+	UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
+	if (LIKELY(InputSub)) InputSub->RequestRebuildControlMappings();
 }
 
 void ULSetControlUI::ResetSelectors_Implementation() {
