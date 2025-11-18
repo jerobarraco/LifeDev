@@ -7,6 +7,7 @@
 
 #include "LSetControlUI.generated.h"
 
+class USlider;
 class ULInputSelector;
 class UJButton;
 
@@ -34,4 +35,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BDefaults = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SMove = nullptr;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
+	TObjectPtr<USlider> SLook = nullptr;
 };
