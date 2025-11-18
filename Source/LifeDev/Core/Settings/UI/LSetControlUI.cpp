@@ -12,6 +12,9 @@
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 
+// todo move sliders stuff here
+// todo move selectors stuff here
+
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetInputSettings(this);
@@ -108,7 +111,19 @@ void ULSetControlUI::NativeDestruct() {
 
 void ULSetControlUI::SetDefaults(const int32 Id) {
 	UJUtilsInput::ResetInputMapsAll(this);
+	ResetSelectors();
+
 	Load();
+}
+
+void ULSetControlUI::ResetModifier(UInputAction* const Action) {
+	
+	
+}
+
+void ULSetControlUI::ResetSelectors_Implementation() {
+	// todo move here and remove blueprintnativeevent
+	
 }
 
 /*

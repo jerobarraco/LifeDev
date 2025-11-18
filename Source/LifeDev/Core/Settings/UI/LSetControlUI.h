@@ -7,6 +7,7 @@
 
 #include "LSetControlUI.generated.h"
 
+class UInputAction;
 class USlider;
 class ULInputSelector;
 class UJButton;
@@ -26,10 +27,14 @@ public:
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
-
 	UFUNCTION()
 	void SetDefaults(const int32 Id);
-	// WIP TODO use
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void ResetSelectors();
+	// it only resets the action, it does not save it nor load the slider
+	UFUNCTION(BlueprintCallable)
+	void ResetModifier(UInputAction* const Action);
+	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TObjectPtr<ULInputSelector>> Selectors;
 
