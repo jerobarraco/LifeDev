@@ -16,6 +16,15 @@
 // todo move sliders stuff here
 // todo move selectors stuff here
 
+ULSetControlUI::ULSetControlUI() {
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CIAM(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Move.IA_Move"));
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		CIAL(TEXT("/Game/LifeDev/Game/Char/Input/Actions/IA_Look.IA_Look"));
+	IA_Move = CIAM.Object;
+	IA_Look = CIAL.Object;
+}
+
 void ULSetControlUI::Apply_Implementation() {
 	Super::Apply_Implementation();
 	UEnhancedInputUserSettings* const Settings = UJUtilsInput::GetInputSettings(this);
@@ -135,7 +144,8 @@ void ULSetControlUI::SetModifier(UInputAction* const Action, const double Val) {
 
 void ULSetControlUI::ResetSelectors_Implementation() {
 	// todo move here and remove blueprintnativeevent
-	
+	ResetModifier(IA_Move);
+	ResetModifier(IA_Look);
 }
 
 /*

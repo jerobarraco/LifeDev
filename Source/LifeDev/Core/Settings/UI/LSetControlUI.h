@@ -18,6 +18,7 @@ class LIFEDEV_API ULSetControlUI : public ULSetBaseUI {
 	GENERATED_BODY()
 
 public:
+	ULSetControlUI();
 	virtual void Apply_Implementation() override;
 	virtual void Load_Implementation() override;
 
@@ -31,19 +32,24 @@ protected:
 	void SetDefaults(const int32 Id);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ResetSelectors();
-	// it only resets the action, it does not save it nor load the slider
+	// it only resets the action, it does not load the slider
 	UFUNCTION(BlueprintCallable)
 	void SetModifier(UInputAction* const Action, const double Val);
 	UFUNCTION(BlueprintCallable)
-	void ResetModifier(UInputAction* const Action) { SetModifier(Action, 1); }
+	FORCEINLINE void ResetModifier(UInputAction* const Action) { SetModifier(Action, 1); }
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TArray<TObjectPtr<ULInputSelector>> Selectors;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TObjectPtr<UInputAction> IA_Move = nullptr;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TObjectPtr<UInputAction> IA_Look = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BDefaults = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<USlider> SMove = nullptr;
+	TObjectPtr<USlider> SMove = nullptr; // set on the bp, todo move here
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<USlider> SLook = nullptr;
+
 };
