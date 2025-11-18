@@ -2,6 +2,7 @@
 
 #include "Drawer.h"
 
+#include "CQuickMesh.h"
 #include "Interact/Animator/CAnimatorMix.h"
 
 ADrawer::ADrawer():Super() {
@@ -10,6 +11,9 @@ ADrawer::ADrawer():Super() {
 	// but that means the Tend is always in word coords depending on rotation. and it sucks.
 	Anim->TRoot = RootComponent;
 	Anim->TEnd.SetLocation(FVector(40, 0,0));
+
+	// not sure if this works since the other meshes are attached to the root component :/
+	Mesh->SetLightAttachmentsAsGroup(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CDrawer (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Drawer_C.Drawer_C"));

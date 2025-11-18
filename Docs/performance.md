@@ -33,7 +33,8 @@ automanage
 mesh cards / surface cache
 	https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine
 	r.Lumen.Visualize.CardPlacement 1
-
+	* lumen mesh cards group id (Ray tracing group id ). it's on the mesh. it's global though.
+	* light attachment as group
 
 # material
 	Quality switch node
