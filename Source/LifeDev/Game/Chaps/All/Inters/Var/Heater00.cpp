@@ -12,7 +12,7 @@ AHeater00::AHeater00():Super() {
 	UseFade = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Heater00/Heater00.Heater00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Heater00/Heater00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(30,40,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90, 0));
