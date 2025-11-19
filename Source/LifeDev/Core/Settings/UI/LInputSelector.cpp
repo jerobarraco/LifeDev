@@ -37,6 +37,7 @@ void ULInputSelector::DeInit() {
 
 void ULInputSelector::Apply() {
 	if (UNLIKELY(InputName.IsNone())) return;
+
 	UE_LOG(LogTemp, Log, TEXT("LInputSelector::%hs Name=%s"), __func__, *InputName.ToString());
 
 	// https://dev.epicgames.com/community/learning/tutorials/Vp69/unreal-engine-player-mappable-keys-using-enhanced-input
