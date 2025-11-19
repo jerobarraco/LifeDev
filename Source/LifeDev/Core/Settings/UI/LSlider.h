@@ -7,6 +7,7 @@
 
 #include "LSlider.generated.h"
 
+// base class for sliders. implements load/save and style
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSlider : public USlider {
 	GENERATED_BODY()
