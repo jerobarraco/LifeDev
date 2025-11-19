@@ -2,14 +2,13 @@
 
 #pragma once
 #include "CoreMinimal.h"
-
-#include "Components/Slider.h"
+#include "LSlider.h"
 
 #include "LVolumeSlider.generated.h"
 
 // class used to manipulate the sound volume
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULVolumeSlider: public USlider {
+class LIFEDEV_API ULVolumeSlider: public ULSlider {
 	GENERATED_BODY()
 
 public:
@@ -18,13 +17,6 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor)
 	void Preview();
 
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Apply();
-
-	// Loads and applies the value from the flags
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Load();
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<USoundSubmix> Submix = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
@@ -32,9 +24,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool UseAutoPreview = true;
 
-
 protected:
 	virtual void PostInitProperties() override;
+	virtual void Apply_Implementation() override;
+	virtual void Load_Implementation() override;
+
 	UFUNCTION()
 	void ValChanged(const float NVal) { if (UseAutoPreview) Preview(); };
 };

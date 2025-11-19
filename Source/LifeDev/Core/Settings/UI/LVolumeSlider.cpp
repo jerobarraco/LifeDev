@@ -24,7 +24,8 @@ void ULVolumeSlider::Preview() {
 	Submix->SetSubmixOutputVolume(this, Val);
 }
 
-void ULVolumeSlider::Apply() {
+void ULVolumeSlider::Apply_Implementation() {
+	Super::Apply_Implementation();
 	UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
@@ -44,7 +45,8 @@ void ULVolumeSlider::Apply() {
 	Flags->Set(Key, Val);
 }
 
-void ULVolumeSlider::Load() {
+void ULVolumeSlider::Load_Implementation() {
+	Super::Load_Implementation();
 	const UFlags* const Flags = UFlags::Instance(this);
 	if (!IsValid(Flags)) return;
 
