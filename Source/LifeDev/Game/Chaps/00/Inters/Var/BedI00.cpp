@@ -22,6 +22,10 @@ ABedI00::ABedI00():Super() { // TODO base class
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
 
+	static ConstructorHelpers::FObjectFinder<USoundBase>
+		CSfx(TEXT("/Game/LifeDev/Game/Inters/Rooms/Beds/Creak.Creak"));
+	SFXLocked = CSfx.Object;
+	SFXs = {CSfx.Object};
 	// static since we won't animate it
 	Super::SetMobility(EComponentMobility::Static);
 }
