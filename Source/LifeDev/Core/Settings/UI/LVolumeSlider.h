@@ -32,9 +32,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool UseAutoPreview = true;
 
-	virtual void PostInitProperties() override;
 
 protected:
+	virtual void PostInitProperties() override;
 	UFUNCTION()
 	void ValChanged(const float NVal) { if (UseAutoPreview) Preview(); };
 };

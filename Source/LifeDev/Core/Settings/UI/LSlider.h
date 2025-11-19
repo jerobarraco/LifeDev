@@ -10,4 +10,12 @@
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSlider : public USlider {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Apply() {};
+
+	// Loads and applies the value from the flags
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void Load() {};
 };
