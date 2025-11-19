@@ -6,8 +6,14 @@ void UJSlider::Apply_Implementation() {}
 
 void UJSlider::Load_Implementation() {}
 
-void UJSlider::ResetStyle() {}
+void UJSlider::ResetStyle() {
+	if (SliderStyle) {
+		const FSliderStyle* const WStyle = SliderStyle->GetStyle<FSliderStyle>();
+		SetWidgetStyle(*WStyle);
+	}
+}
 
 void UJSlider::OnWidgetRebuilt() {
 	Super::OnWidgetRebuilt();
+	ResetStyle();
 }
