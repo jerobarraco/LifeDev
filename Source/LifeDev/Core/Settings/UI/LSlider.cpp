@@ -2,7 +2,3 @@
 
 
 #include "LSlider.h"
-
-void ULSlider::Apply_Implementation() {}
-
-void ULSlider::Load_Implementation() {}

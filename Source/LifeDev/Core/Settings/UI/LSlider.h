@@ -3,20 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/Slider.h"
+#include "JSlider.h"
 
 #include "LSlider.generated.h"
 
 // base class for sliders. implements load/save and style
 UCLASS(Blueprintable, BlueprintType)
-class LIFEDEV_API ULSlider : public USlider {
+class LIFEDEV_API ULSlider : public UJSlider {
 	GENERATED_BODY()
-
-public:
-	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Apply();
-
-	// Loads and applies the value from the flags
-	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Load();
 };
