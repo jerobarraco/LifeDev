@@ -5,3 +5,9 @@
 void UJSlider::Apply_Implementation() {}
 
 void UJSlider::Load_Implementation() {}
+
+void UJSlider::ResetStyle() {}
+
+void UJSlider::OnWidgetRebuilt() {
+	Super::OnWidgetRebuilt();
+}

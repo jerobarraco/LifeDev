@@ -148,7 +148,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsGroup;
-	
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UGameUserSettings> Settings;
 };

@@ -18,4 +18,10 @@ public:
 	// Loads and applies the value from the flags
 	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Load();
+
+	UFUNCTION(BlueprintCallable, CallInEditor, Category=SetUp)
+	void ResetStyle();
+
+protected:
+	virtual void OnWidgetRebuilt() override;
 };
