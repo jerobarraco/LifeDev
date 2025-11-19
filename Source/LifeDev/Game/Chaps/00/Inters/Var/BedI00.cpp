@@ -4,7 +4,7 @@
 #include "Interact/CInteract.h"
 #include "JUtils/Actors/CQuickMesh.h"
 
-ABedI00::ABedI00():Super() {
+ABedI00::ABedI00():Super() { // TODO base class 
 	UseAutoActivate = true;
 	UseAnim = false;
 	IsLocked = true;
@@ -18,7 +18,7 @@ ABedI00::ABedI00():Super() {
 	Interact->SetBoxExtent(FVector(102.5,55,32.5));
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Beds/Bed00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Beds/Bed00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
 
