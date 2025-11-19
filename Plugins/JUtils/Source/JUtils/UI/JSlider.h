@@ -25,7 +25,8 @@ public:
 protected:
 	virtual void OnWidgetRebuilt() override;
 
-	// FSlider is not exposed to bps!!! WTF?!
+	// FSliderStyle is not exposed to bps somehow, even though it has the tags and all.
+	// so we can't use it :'/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	TObjectPtr<USlateWidgetStyleAsset> SliderStyle = nullptr;
 };
