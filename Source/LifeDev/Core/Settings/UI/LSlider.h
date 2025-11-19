@@ -12,10 +12,10 @@ class LIFEDEV_API ULSlider : public USlider {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Apply() {};
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Apply();
 
 	// Loads and applies the value from the flags
-	UFUNCTION(BlueprintCallable, CallInEditor)
-	void Load() {};
+	UFUNCTION(BlueprintCallable, CallInEditor, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void Load();
 };
