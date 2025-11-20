@@ -167,7 +167,7 @@ namespace LDConsts {
 	namespace Audio {
 		namespace Attns {
 			static constexpr const TCHAR* const SFX =
-				TEXT("/Game/LifeDev/Core/Audio/Attenuations/SFX");
+				TEXT("/Game/LifeDev/Core/Audio/Attenuations/SFX"); // TODO rename
 			static constexpr const TCHAR* const Noise =
 				TEXT("/Game/LifeDev/Core/Audio/Attenuations/Noise");
 			static constexpr const TCHAR* const Env =
@@ -179,7 +179,7 @@ namespace LDConsts {
 			static constexpr const TCHAR* const Music =
 				TEXT("/Game/LifeDev/Core/Audio/Classes/Music");
 			static constexpr const TCHAR* const SFX =
-				TEXT("/Game/LifeDev/Core/Audio/Classes/SFX");
+				TEXT("/Game/LifeDev/Core/Audio/Classes/SFX"); // TODO rename
 			static constexpr const TCHAR* const UI =
 				TEXT("/Game/LifeDev/Core/Audio/Classes/UI");
 		}

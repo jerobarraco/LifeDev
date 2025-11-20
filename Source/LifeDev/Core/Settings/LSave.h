@@ -71,7 +71,8 @@ protected:
 		EFeat::D_AUTO, EFeat::D_TEXT,
 		
 		EFeat::G_CARD0, EFeat::G_CARD1, EFeat::G_CARD2, EFeat::G_CARD3, EFeat::G_CARD4,
-		EFeat::G_GHOSTS, EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM
+		EFeat::G_GHOSTS, EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM,
+		EFeat::G_SHOW_POINT
 	};
 	// EFeat::D_SHOW, // since this is not on the previous savegames,
 	// and also is not on the settings in user builds, it's better not to watch it,
