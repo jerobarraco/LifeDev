@@ -7,10 +7,10 @@ void UJSlider::Apply_Implementation() {}
 void UJSlider::Load_Implementation() {}
 
 void UJSlider::ResetStyle() {
-	if (SliderStyle) {
-		const FSliderStyle* const WStyle = SliderStyle->GetStyle<FSliderStyle>();
-		SetWidgetStyle(*WStyle);
-	}
+	if (!SliderStyle) return;
+
+	const FSliderStyle* const WStyle = SliderStyle->GetStyle<FSliderStyle>();
+	if (LIKELY(WStyle)) SetWidgetStyle(*WStyle);
 }
 
 void UJSlider::OnWidgetRebuilt() {

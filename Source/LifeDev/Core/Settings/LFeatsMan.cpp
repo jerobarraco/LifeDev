@@ -217,7 +217,7 @@ void ALFeatsMan::MenuDone() {
 #pragma region feats
 void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_LUMEN, Settings && Settings->GetFeat(EFeat::V_LUMEN));
-	FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
+	// FeatUpVisual(EFeat::V_SPEED, Settings && Settings->GetFeat(EFeat::V_SPEED));
 	FeatUpVisual(EFeat::V_STROBE, Settings && Settings->GetFeat(EFeat::V_STROBE));
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
@@ -323,15 +323,15 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 			static const FName N("Strobe");
 			MPCI->SetScalarParameterValue(N, v);
 		}
-		else if (Feat == EFeat::V_SPEED) {
-			static const FName N("Speed");
-			MPCI->SetScalarParameterValue(N, v);
-			if (UNLIKELY(!SpeedMat)) return;
-			if (Enabled)
-				Sets.AddBlendable(SpeedMat, 1);
-			else
-				Sets.RemoveBlendable(SpeedMat);
-		}
+		// else if (Feat == EFeat::V_SPEED) {
+		// 	static const FName N("Speed");
+		// 	MPCI->SetScalarParameterValue(N, v);
+		// 	if (UNLIKELY(!SpeedMat)) return;
+		// 	if (Enabled)
+		// 		Sets.AddBlendable(SpeedMat, 1);
+		// 	else
+		// 		Sets.RemoveBlendable(SpeedMat);
+		// }
 	}
 
 	// } else if (Feat == EFeat::V_DOF) {
