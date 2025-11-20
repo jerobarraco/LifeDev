@@ -98,7 +98,7 @@ void ULSetGameUI::Load_Implementation() {
 	const AInteract* const Inter = GetMutableDefault<AInteract>();
 	const float InterHint = Inter ? Inter->HintTime : AInteract::DefHintTime;
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
-	InterDragUpd(InterHint);
+	InterHintUpd(InterHint);
 
 	// use the in-level if possible
 	const ALFeatsMan* FMan = ALFeatsMan::Instance(this);
@@ -260,7 +260,7 @@ void ULSetGameUI::FBTimeUpd(const float Value) {
 }
 
 void ULSetGameUI::InterDragUpd(const float Value) {
-	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} multiplier");
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} x.");
 	if (LIKELY(TInterDrag)) {
 		static FNumberFormattingOptions NFOption;
 		NFOption.MaximumFractionalDigits = 3;
@@ -271,7 +271,7 @@ void ULSetGameUI::InterDragUpd(const float Value) {
 }
 
 void ULSetGameUI::InterHintUpd(const float Value) {
-	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterHint", "{0} secs");
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterHint", "{0} secs.");
 	if (LIKELY(TInterHint)) {
 		static FNumberFormattingOptions NFOption;
 		NFOption.MaximumFractionalDigits = 3;
