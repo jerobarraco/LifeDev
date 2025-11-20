@@ -260,7 +260,7 @@ void ULSetGameUI::FBTimeUpd(const float Value) {
 }
 
 void ULSetGameUI::InterDragUpd(const float Value) {
-	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "{0} x.");
+	static FText Fmt = NSLOCTEXT("ULSetGameUI", "TInterDrag", "x {0}.");
 	if (LIKELY(TInterDrag)) {
 		static FNumberFormattingOptions NFOption;
 		NFOption.MaximumFractionalDigits = 3;
