@@ -40,9 +40,9 @@ ALFeatsMan::ALFeatsMan() {
 		CMPC(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MPC"));
 	MPC = CMPC.Object;
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
-		CSpeedMat(TEXT("/Game/LifeDev/Game/Flashback/FlashbackVel_MI"));
-	SpeedMat = CSpeedMat.Object;
+	// static ConstructorHelpers::FObjectFinder<UMaterialInterface>
+		// CSpeedMat(TEXT("/Game/LifeDev/Game/Flashback/FlashbackVel_MI"));
+	// SpeedMat = CSpeedMat.Object;
 	
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface>
 		CFBMat(TEXT("/Game/LifeDev/Game/Flashback/Flashback_MI"));
@@ -156,7 +156,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	GM = nullptr;
 	MPCI = nullptr;
 	MPC = nullptr;
-	SpeedMat = nullptr; // free as a bird
+	// SpeedMat = nullptr;
 	FBMat = nullptr;
 	Eval = nullptr;
 	Settings = nullptr;
