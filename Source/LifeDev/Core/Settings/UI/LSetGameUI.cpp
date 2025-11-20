@@ -226,7 +226,7 @@ void ULSetGameUI::SetDefaults(const int32 Id) {
 	
 	constexpr float InterHint = AInteract::DefHintTime;
 	if (LIKELY(SLInterHint)) SLInterHint->SetValue(InterHint);
-	InterDragUpd(InterHint);
+	InterHintUpd(InterHint);
 
 	if (LIKELY(SLBlurSize)) SLBlurSize->SetValue(ALFeatsMan::DefBlurAmount);
 	BlurSizeUpd(ALFeatsMan::DefBlurAmount);
