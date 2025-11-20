@@ -105,13 +105,12 @@ void ULSetControlUI::NativeOnInitialized() {
 		if (UNLIKELY(!S)) continue;
 		S->Init();
 	}
-
 }
 
 void ULSetControlUI::NativeDestruct() {
 	if (LIKELY(BDefaults))
 		BDefaults->OnClick.RemoveAll(this);
-	
+
 	for (const TObjectPtr<ULInputSelector>& S: Selectors) {
 		if (UNLIKELY(!S)) continue;
 		S->DeInit();
