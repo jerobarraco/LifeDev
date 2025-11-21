@@ -48,7 +48,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 				// there's a potential bug here, where you loose an item and pick it very quickly
 				// this could get executed after the item has been picked up.
 				// it's a very strange edge case, but i rather cover it now.
-				UInventory* const Inv = UInventory::Instance(this);
+				const UInventory* const Inv = UInventory::Instance(this);
 				if (LIKELY(Inv)) {
 					FItem NIt;
 					if (UNLIKELY(Inv->Get(Name, NIt) || NIt.Count >0)) { // notice shortcut ||
