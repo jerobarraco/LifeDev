@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
 #include "CoreMinimal.h"
+#include "Diags/DiagTypes.h"
 
 #include "Inventory/InventoryMan.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -18,4 +19,8 @@ public:
 protected:
 	UFUNCTION()
 	void FeatUp(const EFeat Feat, const bool Enabled);
+	UFUNCTION()
+	void DiagShow(const FDiag& Diag) {ToggleInput(false);}
+	UFUNCTION()
+	void DiagDone() { ToggleInput(true); }
 };
