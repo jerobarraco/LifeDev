@@ -45,7 +45,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			// fade, add timer. then remove.
 			FTimerDelegate D;
 			D.BindLambda([It, this, Name] {
-				if (UNLIKELY(!IsValid(this))) {
+				if (UNLIKELY(!IsValid(this))) { // doesn't work
 					UE_LOG(LogLInventoryUI, Warning, TEXT("%hs 'this' is dead. crisis averted."), __func__);
 					return; // odd but seems to be happening on level reload. and begin destroy is not helping.
 				}

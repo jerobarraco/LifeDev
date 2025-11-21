@@ -76,7 +76,11 @@ void ULSetDbgUI::NativeOnInitialized() {
 	}
 
 	if (LIKELY(BTrace))
-		BTrace->OnClick.AddUniqueDynamic(this, &ULSetDbgUI::OnTrace);
+		BTrace->OnClick.AddUniqueDynamic(this, &ULSetDbgUI::DoTrace);
+	if (LIKELY(BFeatsDump))
+		BFeatsDump->OnClick.AddUniqueDynamic(this, &ULSetDbgUI::FeatsDump);
+	if (LIKELY(BFlagsDump))
+		BFlagsDump->OnClick.AddUniqueDynamic(this, &ULSetDbgUI::FlagsDump);
 }
 
 void ULSetDbgUI::NativeDestruct() {
@@ -87,7 +91,7 @@ void ULSetDbgUI::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void ULSetDbgUI::OnTrace(const int32 Id) {
+void ULSetDbgUI::DoTrace(const int32 Id) {
 	const bool Start = Id == 0;
 	const TCHAR* const Cmd =
 		Start ? TEXT("Trace.File TraceFile Gpu,Screenshot,Region,Bookmark,Frame,Cpu,Log,") : TEXT("Trace.Stop") ;
