@@ -320,6 +320,10 @@ void AInteract::BeginPlay() {
 }
 
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	// clear the hint timer. actually necessary in case you reload the level while the timer is on. no, ue doesn't do this automatically.
+	const UWorld* const World = GetWorld();
+	if (LIKELY(World)) World->GetTimerManager().ClearAllTimersForObject(this);
+	
 	if (LIKELY(IsValid(Interact))) {
 		Interact->OnTrigger.RemoveAll(this);
 		Interact->OnHover.RemoveAll(this);
