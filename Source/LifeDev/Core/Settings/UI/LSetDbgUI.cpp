@@ -100,3 +100,8 @@ void ULSetDbgUI::DoTrace(const int32 Id) {
 	BTrace->ResetStyle();
 	UKismetSystemLibrary::ExecuteConsoleCommand(this, Cmd);
 }
+
+void ULSetDbgUI::FeatsDump(const int32 Id) {
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	if (LIKELY(Settings)) Settings->FeatsDump();
+}

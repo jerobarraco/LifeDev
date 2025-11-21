@@ -27,7 +27,7 @@ protected:
 	UFUNCTION()
 	void DoTrace(const int32 Id);
 	UFUNCTION()
-	void FeatsDump(const int32 Id) {};
+	void FeatsDump(const int32 Id);
 	UFUNCTION()
 	void FlagsDump(const int32 Id) {};
 
