@@ -21,7 +21,7 @@ public:
 	virtual void SetSelected_Implementation(const FName& Name) override;
 	virtual void SetItemUsed_Implementation(const FName& Name) override;
 	virtual void SetItemCold_Implementation(const FName& Name) override;
-	
+
 	UFUNCTION(BlueprintCallable) // move to LInventory and use the new Items
 	ULInventoryItemUI* GetItem(const FName& Name);
 	// will update an item with the info from the inventory. item won't be created.
@@ -32,6 +32,8 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
+	
 	void AddItem(UWidget* const It) const;
 	UFUNCTION(BlueprintCallable, CallInEditor) // ufunction to be able to trigger from the console
 	void ReorderItems();

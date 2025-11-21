@@ -175,6 +175,15 @@ void ULInventoryUI::NativeOnInitialized() {
 	Items.Empty();
 }
 
+void ULInventoryUI::NativeDestruct() {
+	// very important when reloading the level after an item use.
+	const UWorld* const World = GetWorld();
+	if (LIKELY(World)) World->GetTimerManager().ClearAllTimersForObject(this);
+	
+	Super::NativeDestruct();
+	
+}
+
 void ULInventoryUI::ReorderItems() {
 	UE_LOG(LogLInventoryUI, Log, TEXT("%hs"), __func__);
 	const UInventory* const Inv = UInventory::Instance(this);
