@@ -115,7 +115,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnShow OnShow;
 
-	// when there are no more dialogs to show now
+	// when all dialogs have finished showing.
 	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnDone OnDone;
 #pragma endregion

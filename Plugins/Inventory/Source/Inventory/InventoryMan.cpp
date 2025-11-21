@@ -32,7 +32,12 @@ AInventoryMan::AInventoryMan(): Super() {
 void AInventoryMan::Init_Implementation() {}
 
 void AInventoryMan::DeInit_Implementation() {
+	ToggleInput(false);
+	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
+	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
+
 	Hide();
+
 	if (LIKELY(IsValid(UI))) {
 		UI->RemoveFromParent();
 		UI->OnDone.RemoveAll(this);
@@ -46,11 +51,6 @@ void AInventoryMan::DeInit_Implementation() {
 		Inventory->OnCold.RemoveAll(this);
 	}
 	Inventory = nullptr;
-
-	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
-	if (LIKELY(IsValid(Input))) Input->ClearBindingsForObject(this);
-
-	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, false);
 }
 
 void AInventoryMan::ActSelect(const FInputActionValue& InputActionValue) {
@@ -94,6 +94,10 @@ void AInventoryMan::SetItemUsed(const FName& Name) {
 	if (LIKELY(IsValid(UI))) UI->SetItemUsed(Name);
 }
 
+void AInventoryMan::ToggleInput(const bool Enable) const {
+	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, Enable);
+}
+
 void AInventoryMan::BeginPlay() {
 	Super::BeginPlay();
 
@@ -102,7 +106,6 @@ void AInventoryMan::BeginPlay() {
 	if (UNLIKELY(!IsValid(World))) return;
 
 	ToggleInput(true);
-	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, true);
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(IsValid(Input))) {
 		if (ActionOpen)
@@ -136,8 +139,4 @@ void AInventoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 
 	Super::EndPlay(EndPlayReason);
-}
-
-void AInventoryMan::UIDone() {
-	Hide();
 }

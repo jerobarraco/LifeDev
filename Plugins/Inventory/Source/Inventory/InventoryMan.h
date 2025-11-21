@@ -50,7 +50,7 @@ public:
 	void SetItemUsed(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleInput(bool bCond) {};
+	void ToggleInput(const bool Enable) const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=SetUp)
 	int32 InputPrio = 9;
@@ -78,7 +78,7 @@ private:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION()
-	void UIDone();
+	void UIDone() { Hide(); }
 	UFUNCTION()
 	void ActOpen() { Show(); }
 	UFUNCTION()
