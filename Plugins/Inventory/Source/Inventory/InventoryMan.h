@@ -49,11 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetItemUsed(const FName& Name);
 
-	UFUNCTION()
-	void ActOpen();
-	UFUNCTION()
-	void ActSelect(const FInputActionValue& InputActionValue);
-
+	UFUNCTION(BlueprintCallable)
+	void ToggleInput(bool bCond);
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -81,6 +78,10 @@ public:
 private:
 	UFUNCTION()
 	void UIDone();
+	UFUNCTION()
+	void ActOpen() { Show(); }
+	UFUNCTION()
+	void ActSelect(const FInputActionValue& InputActionValue);
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInventory> Inventory = nullptr;

@@ -53,10 +53,6 @@ void AInventoryMan::DeInit_Implementation() {
 	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, false);
 }
 
-void AInventoryMan::ActOpen() {
-	Show();
-}
-
 void AInventoryMan::ActSelect(const FInputActionValue& InputActionValue) {
 	const bool Next = InputActionValue.GetMagnitude() > 0;
 	const FName& NextKey = Inventory->GetNextKey(Next);
@@ -104,7 +100,8 @@ void AInventoryMan::BeginPlay() {
 	// bind the action
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!IsValid(World))) return;
-	
+
+	ToggleInput(true);
 	UJUtilsInput::ToggleContext(this, Ctx, InputPrio, true);
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(IsValid(Input))) {
