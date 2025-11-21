@@ -29,7 +29,14 @@ AInventoryMan::AInventoryMan(): Super() {
 	UIClass = UInventoryUI::StaticClass();
 }
 
-void AInventoryMan::Init_Implementation() {}
+void AInventoryMan::Init_Implementation() {
+	if (UNLIKELY(!Inventory)) return;
+
+	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryMan::SetSelected);
+	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryMan::SetItemMod);
+	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryMan::SetItemCold);
+	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryMan::SetItemUsed);
+}
 
 void AInventoryMan::DeInit_Implementation() {
 	ToggleInput(false);
@@ -127,12 +134,6 @@ void AInventoryMan::BeginPlay() {
 	}
 	
 	Inventory = World->GetSubsystem<UInventory>();
-	if (UNLIKELY(!Inventory)) return;
-
-	Inventory->OnSelected.AddUniqueDynamic(this, &AInventoryMan::SetSelected);
-	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryMan::SetItemMod);
-	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryMan::SetItemCold);
-	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryMan::SetItemUsed);
 }
 
 void AInventoryMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {

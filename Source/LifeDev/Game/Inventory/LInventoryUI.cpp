@@ -184,6 +184,7 @@ void ULInventoryUI::BeginDestroy() {
 	UE_LOG(LogLInventoryUI, Log, TEXT("%hs"), __func__);
 	// very important when reloading the level after an item use.
 	const UWorld* const World = GetWorld();
+	// doesn't work, it still crashes. maybe the world is not valid
 	if (LIKELY(World)) World->GetTimerManager().ClearAllTimersForObject(this);
 	
 	Super::BeginDestroy();
