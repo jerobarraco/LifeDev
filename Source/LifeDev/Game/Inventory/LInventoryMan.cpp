@@ -33,6 +33,8 @@ void ALInventoryMan::FeatUp(const EFeat Feat, const bool Enabled) {
 	if (Feat != EFeat::G_SHOW_INV) return;
 	IsShowEnabled = Enabled; // flag is to hide.
 
-	// this could break it if the feat changes while a dialog is showing. but ... i don't care.
-	if (IsShowEnabled) Show(); else Hide();
+	// this could break it if the feat changes while a dialog is showing.
+	// but that can't happen, the settings menu can't be accessed during a dialog.
+	if (IsShowEnabled) Show();
+	else Hide();
 }
