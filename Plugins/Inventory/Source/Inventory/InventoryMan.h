@@ -50,9 +50,7 @@ public:
 	void SetItemUsed(const FName& Name);
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleInput(bool bCond);
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void ToggleInput(bool bCond) {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=SetUp)
 	int32 InputPrio = 9;
@@ -76,6 +74,9 @@ public:
 	TObjectPtr<UInputAction> ActionSelect = nullptr;
 
 private:
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UFUNCTION()
 	void UIDone();
 	UFUNCTION()
