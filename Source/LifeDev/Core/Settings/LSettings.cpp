@@ -204,7 +204,7 @@ FName ULSettings::GetObjectLabel(const UObject* const Object) {
 	return Inter->GetFName();
 }
 
-void ULSettings::DumpFeats() const {
+void ULSettings::FeatDump() const {
 	// Not sure if i should surround this with shipping only. not for now.
 	// even if logs are disabled by default on shipping, i might need it some day.
 	// and the player can't destroy anything with this.
