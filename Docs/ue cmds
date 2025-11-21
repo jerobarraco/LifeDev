@@ -134,3 +134,9 @@ https://www.youtube.com/watch?v=3PQga-2vLm4
 # lumen 
 enable hard or soft rt
 r.Lumen.HardwareRayTracing= 0 or 1
+
+
+# my commands
+ke * startnext
+ke * featsdump
+ke * flagsdump
