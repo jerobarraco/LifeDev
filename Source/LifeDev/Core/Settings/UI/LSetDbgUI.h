@@ -26,11 +26,15 @@ public:
 protected:
 	UFUNCTION()
 	void OnTrace(const int32 Id);
-	
+
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<ULFeatsGroup> FeatsDbg;
+	TObjectPtr<ULFeatsGroup> FeatsDbg = nullptr;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UTextBlock> TFlags;
+	TObjectPtr<UTextBlock> TFlags = nullptr;
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BTrace;
+	TObjectPtr<UJButton> BTrace = nullptr;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BFeatDump = nullptr;
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
+	TObjectPtr<UJButton> BFlagDump = nullptr;
 };

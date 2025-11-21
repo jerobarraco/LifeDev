@@ -2,14 +2,15 @@
 
 #include "LSetDbgUI.h"
 
-#include "JButton.h"
-#include "LFeatsGroup.h"
-#include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
-#include "Inventory/Flags.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "JButton.h"
+#include "Inventory/Flags.h"
+
+#include "LFeatsGroup.h"
 #include "LifeDev/Core/Settings/LSettings.h"
+
 // try not to rely on this ui.
 // most of the time i would want to:
 // * use the console commands
@@ -79,6 +80,7 @@ void ULSetDbgUI::NativeOnInitialized() {
 }
 
 void ULSetDbgUI::NativeDestruct() {
+	// todo this might not work. use begindestroy?
 	UKismetSystemLibrary::ExecuteConsoleCommand(this, "Trace.Stop");
 	if (LIKELY(BTrace)) BTrace->OnClick.RemoveAll(this);
 
