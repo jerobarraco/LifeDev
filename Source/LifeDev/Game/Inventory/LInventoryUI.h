@@ -32,7 +32,7 @@ public:
 
 protected:
 	virtual void NativeOnInitialized() override;
-	virtual void NativeDestruct() override;
+	virtual void BeginDestroy() override;
 	
 	void AddItem(UWidget* const It) const;
 	UFUNCTION(BlueprintCallable, CallInEditor) // ufunction to be able to trigger from the console

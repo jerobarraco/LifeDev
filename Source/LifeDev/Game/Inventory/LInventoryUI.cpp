@@ -45,6 +45,11 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			// fade, add timer. then remove.
 			FTimerDelegate D;
 			D.BindLambda([It, this, Name] {
+				if (UNLIKELY(!IsValid(this))) {
+					UE_LOG(LogLInventoryUI, Warning, TEXT("%hs 'this' is dead. crisis averted."), __func__);
+					return; // odd but seems to be happening on level reload. and begin destroy is not helping.
+				}
+
 				// there's a potential bug here, where you loose an item and pick it very quickly
 				// this could get executed after the item has been picked up.
 				// it's a very strange edge case, but i rather cover it now.
@@ -71,7 +76,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 			if (LIKELY(World)) World->GetTimerManager().SetTimer(H, D, 1, false);
 			// seems to be necessary. unfortunately the Keys in the inventory gets reordered when an item gets removed. (wtf)
 			// and i won't have an extra array to fix that (for now at least)
-			// so we need to reorder on removal. there's also reorder on add, so it's ok if an item gets readded. 
+			// so we need to reorder on removal. there's also reorder on add, so it's ok if an item gets readded.
 			ReorderItems();
 		}
 		return;
@@ -175,13 +180,13 @@ void ULInventoryUI::NativeOnInitialized() {
 	Items.Empty();
 }
 
-void ULInventoryUI::NativeDestruct() {
+void ULInventoryUI::BeginDestroy() {
+	UE_LOG(LogLInventoryUI, Log, TEXT("%hs"), __func__);
 	// very important when reloading the level after an item use.
 	const UWorld* const World = GetWorld();
 	if (LIKELY(World)) World->GetTimerManager().ClearAllTimersForObject(this);
 	
-	Super::NativeDestruct();
-	
+	Super::BeginDestroy();
 }
 
 void ULInventoryUI::ReorderItems() {
