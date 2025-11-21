@@ -72,9 +72,9 @@ public:
 	FORCEINLINE	bool GetFeat(const EFeat Feat) const { return Feats.Contains(Feat); }
 
 	// left here so that it can be called by the console
-	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	void FeatDump() const;
-	
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AdvancedDisplay))
+	void FeatsDump() const;
+
 	// only call once by the gameinstance or smth
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void Init();

@@ -54,9 +54,9 @@ public:
 	void SetAll(const TMap<FName, float>& NewFlags);
 	UFUNCTION(BlueprintCallable, Category="Flags")
 	void Clear(const int32 Reserve=0);
-	// prints all flags to log. used for debug
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags", meta=(AdvancedDisplay))
-	void Dump();
+	// prints all flags to log. used for debug. called via console.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags", BlueprintPure=false, meta=(AdvancedDisplay))
+	void FlagsDump();
 #pragma endregion
 #pragma region system
 	UFUNCTION(BlueprintCallable, Category="Flags")

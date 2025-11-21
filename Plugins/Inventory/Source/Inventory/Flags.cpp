@@ -98,7 +98,7 @@ void UFlags::Clear(const int32 Reserve) {
 	Flags.Empty(Reserve);
 }
 
-void UFlags::Dump() {
+void UFlags::FlagsDump() {
 	TArray<FName> Keys;
 	Flags.GetKeys(Keys);
 	for (const FName& K: Keys) {
