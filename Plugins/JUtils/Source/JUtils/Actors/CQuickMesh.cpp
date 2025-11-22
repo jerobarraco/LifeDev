@@ -36,6 +36,8 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	bAffectDistanceFieldLighting = true; // only used if cast shadows is true
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
 
+	// bLightAttachmentsAsGroup  SetLightAttachmentsAsGroup(). these can cause a crash
+
 	// these setting seems to be crashing the editor on load. even if i just use one
 	// bComputeBoundsOnceForGame = true; // TODO test if it affects interacts that move.
 	// bComputeFastLocalBounds = true;
