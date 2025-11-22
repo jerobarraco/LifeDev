@@ -13,7 +13,7 @@ ADrawer::ADrawer():Super() {
 	Anim->TEnd.SetLocation(FVector(40, 0,0));
 
 	// not sure if this works since the other meshes are attached to the root component :/
-	Mesh->SetLightAttachmentsAsGroup(true);
+	// Mesh->SetLightAttachmentsAsGroup(true);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CDrawer (TEXT("/Game/LifeDev/Game/Inters/Generic/Drawers/Drawer_C.Drawer_C"));
