@@ -30,14 +30,14 @@ UCQuickMesh::UCQuickMesh(): Super() {
 	// if the light is distance fields, it _only_ uses distance fields, otherwise it _only_ uses dynamic shadows. so i can NOT mix objects.
 	// thereby, i can only rely on dynamic shadows. 
 	// by default use distance fields for lighting. if cast shadows is off, it won't be used.
-	// this is necessary to be true, or it won't show the shadow on distance field mode
+	// if this is false, it won't show shadows on distance field lights.
 	bAffectDistanceFieldLighting = false;
-	bCastDistanceFieldIndirectShadow = false; // depends on mesh being movable, having distance fields generated, and project supporting it.
-	bAffectDistanceFieldLighting = true; // only used if cast shadows is true
+	// depends on mesh being movable, having distance fields generated, and project supporting it.
+	// setting this to true can cause a soft-lock
+	bCastDistanceFieldIndirectShadow = false;
 	// ShadowCacheInvalidationBehavior = // needs to be set on a case by case basis :/
 
 	// bLightAttachmentsAsGroup  SetLightAttachmentsAsGroup(). these can cause a crash
-
 	// these setting seems to be crashing the editor on load. even if i just use one
 	// bComputeBoundsOnceForGame = true; // TODO test if it affects interacts that move.
 	// bComputeFastLocalBounds = true;
@@ -61,7 +61,9 @@ void UCQuickMesh::SetUseDynShadow(const bool Cast) {
 	SetCastShadow(Cast);
 	bCastDynamicShadow = Cast;
 	bCastContactShadow = !Cast; // TODO what's the impact of casting both.
-	bCastDistanceFieldIndirectShadow = Cast; // TODO what's the impact of casting both.
+	// no, this actually gets the rendering stuck and then crashes but only on one object.
+	// relies on bAffectDistanceFieldLighting=true
+	// bCastDistanceFieldIndirectShadow = Cast;
 }
 
 void UCQuickMesh::SetUseContactShadow(const bool Contact) {
