@@ -56,7 +56,7 @@ public:
 	void Clear(const int32 Reserve=0);
 	// prints all flags to log. used for debug. called via console.
 	UFUNCTION(BlueprintCallable, CallInEditor, Category="Flags", BlueprintPure=false, meta=(AdvancedDisplay))
-	void FlagsDump();
+	void FlagsDump() const;
 #pragma endregion
 #pragma region system
 	UFUNCTION(BlueprintCallable, Category="Flags")

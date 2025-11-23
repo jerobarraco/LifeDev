@@ -105,3 +105,8 @@ void ULSetDbgUI::FeatsDump(const int32 Id) {
 	const ULSettings* const Settings = ULSettings::Instance(this);
 	if (LIKELY(Settings)) Settings->FeatsDump();
 }
+
+void ULSetDbgUI::FlagsDump(const int32 Id) {
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Flags)) Flags->FlagsDump();
+}

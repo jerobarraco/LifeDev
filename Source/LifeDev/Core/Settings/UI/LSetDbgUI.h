@@ -29,7 +29,7 @@ protected:
 	UFUNCTION()
 	void FeatsDump(const int32 Id);
 	UFUNCTION()
-	void FlagsDump(const int32 Id) {};
+	void FlagsDump(const int32 Id);
 
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional))
 	TObjectPtr<ULFeatsGroup> FeatsDbg = nullptr;

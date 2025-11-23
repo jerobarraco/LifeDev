@@ -98,12 +98,8 @@ void UFlags::Clear(const int32 Reserve) {
 	Flags.Empty(Reserve);
 }
 
-void UFlags::FlagsDump() {
-	TArray<FName> Keys;
-	Flags.GetKeys(Keys);
-	for (const FName& K: Keys) {
-		const float* const pV = Flags.Find(K);
-		if (UNLIKELY(!pV)) continue;
-		UE_LOG(LogFlags, Log, TEXT("%hs name=%s\t\t val=%.5f"), __func__, *K.ToString(), *pV);
+void UFlags::FlagsDump() const {
+	for (const TTuple<FName, float>& KV: Flags) {
+		UE_LOG(LogFlags, Log, TEXT("%hs name=%s\t\t val=%.5f"), __func__, *KV.Key.ToString(), KV.Value);
 	}
 }
