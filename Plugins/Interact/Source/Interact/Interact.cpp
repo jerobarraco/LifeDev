@@ -252,12 +252,16 @@ bool AInteract::ShowHint_Implementation() {
 	PlaySFX(SFXHint); // sfx checked inside
 
 	// schedule unhint
-	FTimerHandle H;
-	auto F = [this] () {
-		if (UNLIKELY(!IsValid(this) | !IsValid(Interact))) return;
+	World->GetTimerManager().ClearTimer(HintTimer);
+	HintTimer.Invalidate();
+
+	FTimerDelegate D;
+	D.BindLambda([this] () {
+		if (UNLIKELY(!IsValid(this) | !IsValid(Interact))) return; // doesn't work
+
 		Interact->Hint(false);
-	};
-	World->GetTimerManager().SetTimer(H, F, HintTime, false, -1);
+	});
+	World->GetTimerManager().SetTimer(HintTimer, D, HintTime, false, -1);
 
 	OnHint.Broadcast(); // dispatch here (avoid return. also the rest is just animation)
 
@@ -322,7 +326,14 @@ void AInteract::BeginPlay() {
 void AInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	// clear the hint timer. actually necessary in case you reload the level while the timer is on. no, ue doesn't do this automatically.
 	const UWorld* const World = GetWorld();
-	if (LIKELY(World)) World->GetTimerManager().ClearAllTimersForObject(this);
+	if (LIKELY(World)) {
+		FTimerManager& TimerManager = World->GetTimerManager();
+		TimerManager.ClearAllTimersForObject(this);
+		// super important, or it will crash if changing levels when while a hint is showing
+		// the line above doesn't affect the hinttimer
+		TimerManager.ClearTimer(HintTimer);
+	}
+	HintTimer.Invalidate();
 	
 	if (LIKELY(IsValid(Interact))) {
 		Interact->OnTrigger.RemoveAll(this);

@@ -364,6 +364,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHint = false;
 
+	FTimerHandle HintTimer;
+
 #pragma region cdo
 	// added here, so it can be changed in the editor. otherwise it, won't show. :(
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
