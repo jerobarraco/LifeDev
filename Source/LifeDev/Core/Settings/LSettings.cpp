@@ -214,7 +214,8 @@ void ULSettings::FeatsDump() const {
 }
 
 void ULSettings::Init() {
-	ResetFeats(); // important to do before checking for savegame
+	ResetFeats(); // important to do before checking for savegame, or the getFeat below won't work.
+	// also i need it for the feats that are not watched.
 	
 	// clear. and force for loadgame. not broadcasting here since it will confuse the caller, this is internal only.
 	IsSaving = false;

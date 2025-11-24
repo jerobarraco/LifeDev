@@ -91,16 +91,17 @@ void ALGGameMode::BeginPlay() {
 	// all the important objects are also spawned dynamically and not set in world, that gives us more control.
 	// - Thank you so much Jero, that's really how i needed it.
 	// - dou itashimashite!
-	if (UNLIKELY(!IsValid(Settings->Save))) {
-		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
-		Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
-		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
+	Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
+	if (UNLIKELY(Settings->GetIsSaving())) {
+		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
 		return;
 	}
 
-	if (UNLIKELY(Settings->GetIsSaving())) {
-		Settings->OnSaving.AddUniqueDynamic(this, &ALGGameMode::InitOnSave);
-		UE_LOG(LogLGameMode, Log, TEXT("%hs Savegame currently loading. waiting for it."), __func__);
+	if (UNLIKELY(!IsValid(Settings->Save))) {
+		// this is just a fallback. it should not happen. since the system is initialized on the game instance.
+		// hence this is a warning.
+		UE_LOG(LogLGameMode, Warning, TEXT("%hs Savegame not valid. Attempt to load or create."), __func__);
+		Settings->Init(); // force load. if it's currently loading then it won't re-trigger
 		return;
 	}
 
@@ -108,7 +109,7 @@ void ALGGameMode::BeginPlay() {
 
 	// manually go to init if it's already loaded.
 	FTimerManager& Timer = World->GetTimerManager();
-	Timer.SetTimerForNextTick(this, &ALGGameMode::Init);
+	Timer.SetTimerForNextTick(this, &ALGGameMode::Init); // important on next tick
 }
 
 void ALGGameMode::InitOnSave(const bool IsSaving) {

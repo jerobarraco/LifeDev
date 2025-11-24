@@ -34,13 +34,15 @@ public:
 	// the object is ready after the call, but it won't be saved just yet.
 	UFUNCTION(BlueprintCallable)
 	void NewGame(const int32 NewSlotIndex =-1);
-	
 	// loads a game, or creates a new one if not found.
 	// Defaults to current slot (-1).
+	// it will NOT write the subsystems. you need to do that manually.
+	// make sure to check if the save is valid. 
 	UFUNCTION(BlueprintCallable)
 	void LoadGame(const int32 NewSlotIndex =-1);
 	// saves the current game if any
 	// defaults to current slot (-1)
+	// it will read the subsystems
 	UFUNCTION(BlueprintCallable)
 	void SaveGame(const int32 NewSlotIndex =-1);
 	// returns true if it's busy saving/loading
@@ -60,7 +62,8 @@ public:
 	EFeat CurrentChapterFeat() const;
 	
 	// Reset all features to factory default (depends on if it's a shipping build)
-	UFUNCTION(BlueprintCallable)
+	// by default it will be loaded with the savegame ones
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void ResetFeats();
 
 	// Sets a feature to be enabled or disabled
@@ -75,7 +78,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(AdvancedDisplay))
 	void FeatsDump() const;
 
-	// only call once by the gameinstance or smth
+	// only call once. on the game entry point ideally.
 	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	void Init();
 
@@ -108,6 +111,7 @@ public:
 	FOnFeatUpdate OnFeatUpdateUnreal;
 
 protected:
+
 	// broadcasts the corresponding delegates
 	void FeatUpdated(const EFeat Feat, const bool Enable) const;
 	void SaveGameDone(const FString& Slot, const int32 Index, const bool Success);
