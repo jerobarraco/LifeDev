@@ -73,8 +73,9 @@ void ULSave::WriteSubsystems(const UObject* const O) {
 
 	UInventory* const Inventory = UInventory::Instance(W);
 	if (LIKELY(Inventory)) {
-		UE_LOG(LogLSave, Log, TEXT("%hs: Writing Inventory"), __func__);
-		Inventory->Clear(SInventory.Num());
+		const uint32 Num = SInventory.Num();
+		UE_LOG(LogLSave, Log, TEXT("%hs: Writing Inventory. Num=%i"), __func__, Num);
+		Inventory->Clear(Num);
 
 		for (const TTuple<FName, int32>& KV: SInventory) {
 			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *KV.Key.ToString(), KV.Value);

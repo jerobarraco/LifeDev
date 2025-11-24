@@ -147,9 +147,10 @@ void ULSettings::LoadGameDone(const FString& Slot, const int32 Index, USaveGame*
 		// TODO "do something!"
 	}
 
-	// TODO should i really do this here?
-	Save->WriteSubsystems(GetWorld());
-	
+	// i've decided i don't need to do this here. it brings a lot of problems.
+	// it's better to write subsystems manually.
+	// Save->WriteSubsystems(GetWorld());
+
 	UE_LOG(LogLSettings, Log, TEXT("%hs Load game succeeded."), __func__);
 	SetIsSaving(false);
 }
