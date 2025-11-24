@@ -111,7 +111,6 @@ void ULSave::ReadSubsystems(const UObject* const O, const bool WithInventory) {
 		SFlags = Flags->GetAll();
 	}
 
-	
 	const UInventory* const Inventory = UInventory::Instance(W);
 	if (LIKELY(Inventory && WithInventory)) {
 		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory"), __func__);

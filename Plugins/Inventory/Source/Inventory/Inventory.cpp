@@ -19,7 +19,7 @@ UInventory* UInventory::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(W))) return nullptr;
 
 	UInventory* const I = W->GetSubsystem<UInventory>();
-	return IsValid(I) ? I : nullptr;
+	return LIKELY(IsValid(I)) ? I : nullptr;
 }
 
 
