@@ -12,6 +12,7 @@ AWCube00::AWCube00():Super() {
 	UseRewardDestroy = false;
 	DisableWhileAnim = false; // To be used with the combination puzzle.
 	UseAutoActivate = true; // a bit lazy, but unlikely i'll have word cubes that aren't active
+	UseTriggerDeHint = false; // nopes, because we rotate them with trigger.
 	UseFade = true; // a bit more costly, but most of the time, these cubes will fade.
 	UseAnim = true;
 	UseAnimFBFPS = true;
