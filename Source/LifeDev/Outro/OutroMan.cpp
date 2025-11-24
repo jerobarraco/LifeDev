@@ -29,6 +29,7 @@ void AOutroMan::AddUI() {
 	UI->AddToViewport();
 	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
 
+	// TODO the correct way is to have a flag subsystem, and call WriteSubsystems on init
 	const ULSettings* const Settings = ULSettings::Instance(World);
 	if (LIKELY(Settings) && Settings->Save)
 		UI->SetFlags(Settings->Save->GetFlags());

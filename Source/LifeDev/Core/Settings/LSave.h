@@ -8,8 +8,11 @@
 
 #include "LSave.generated.h"
 
+// VERY IMPORTANT NOTE:
+// DO NOT READ/WRITE TO THIS CLASS DYNAMICALLY DURING GAMEPLAY
+// THIS CLASS IS SUPPOSED TO STORE JUST A SNAPSHOT AND THEN USE READ/WRITESUBSYSTEMS.
 // baseclass for lifedev savegame
-// this class can't access the world 
+// this class can't access the world
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULSave : public USaveGame {
 	GENERATED_BODY()
@@ -31,7 +34,7 @@ public:
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
 	// this is just for internal use.
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay, DeprecatedFunction))
 	FORCEINLINE TMap<FName, float> GetFlags() { return SFlags; }
 
 	// the current chapter.

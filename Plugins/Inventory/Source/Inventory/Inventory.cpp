@@ -22,7 +22,6 @@ UInventory* UInventory::Instance(const UObject* const O) {
 	return LIKELY(IsValid(I)) ? I : nullptr;
 }
 
-
 void UInventory::Init(UDataTable* const DataTable) {
 	if (LIKELY(IsValid(DataTable))) DT = DataTable;
 	SetCoolDownFactor(1);
@@ -436,7 +435,7 @@ FItem* UInventory::AddNew(const FName& Name) {
 	if (UseSndAutoLoad && Snd.ToSoftObjectPath().IsValid() && !Snd.IsValid()) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Loading sound. Name=%s Async=%i Snd=%s"),
 			__func__, *Name.ToString(), UseSndAsyncLoad, *Snd.ToString());
-		if (UseSndAsyncLoad) 
+		if (UseSndAsyncLoad)
 			UAssetManager::GetStreamableManager().RequestSyncLoad(Snd.ToSoftObjectPath());
 		else
 			Snd.LoadSynchronous();
