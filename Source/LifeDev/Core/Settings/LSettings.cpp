@@ -108,7 +108,6 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 
-	// TODO add time here. how?
 	Save->ReadSubsystems(this);
 	
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
@@ -171,7 +170,7 @@ EFeat ULSettings::CurrentChapterFeat() const {
 }
 
 void ULSettings::ResetFeats() {
-	ULSysSettings* const Settings = ULSysSettings::Get();
+	const ULSysSettings* const Settings = ULSysSettings::Get();
 	if (UNLIKELY(!Settings)) return;
 
 	Feats = Settings->GetFeats();

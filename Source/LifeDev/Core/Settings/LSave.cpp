@@ -80,6 +80,8 @@ void ULSave::WriteSubsystems(const UObject* const O) {
 			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *KV.Key.ToString(), KV.Value);
 			Inventory->Mod(KV.Key, KV.Value);
 		}
+	} else {
+		UE_LOG(LogLSave, Warning, TEXT("%hs: Can't obtain the Inventory. Skipped!"), __func__);
 	}
 
 	ULSettings* const Settings = ULSettings::Instance(W);
