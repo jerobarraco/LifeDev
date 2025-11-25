@@ -44,7 +44,7 @@ public:
 	// defaults to current slot (-1)
 	// it will read the subsystems
 	UFUNCTION(BlueprintCallable)
-	void SaveGame(const int32 NewSlotIndex =-1);
+	void SaveGame(const int32 NewSlotIndex =-1, const bool WithInventory=true);
 	// returns true if it's busy saving/loading
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsSaving() const { return IsSaving; }

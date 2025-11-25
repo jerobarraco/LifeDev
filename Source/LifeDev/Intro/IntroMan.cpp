@@ -8,7 +8,6 @@
 
 #include "LifeDev/Core/Consts/ConstSettings.h"
 #include "LifeDev/Core/Settings/LSettings.h"
-#include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 
@@ -85,10 +84,10 @@ void AIntroMan::Done() {
 	// this is a patch to ensure the settings are respected when going to the game.
 	// as well as the foxify value.
 	// the false is important since the inventory does not work on the intro.
-	// reading subsystems is important since the settings and flags could change.
-	Settings->Save->ReadSubsystems(this, false);
+	// this is important since the settings and flags could change.
+	// notice we only save on Done, this means we can change the savestate, and it will reset the options. that's ... ok?
 	Settings->OnSaving.AddUniqueDynamic(this, &AIntroMan::Saving);
-	Settings->SaveGame();
+	Settings->SaveGame(false);
 }
 
 void AIntroMan::Saving(const bool IsSaving) {

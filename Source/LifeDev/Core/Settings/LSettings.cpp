@@ -78,7 +78,7 @@ void ULSettings::LoadGame(const int32 NewSlotIndex) {
 	UGameplayStatics::AsyncLoadGameFromSlot(SlotName, 0, OnLoadGameDone);
 }
 
-void ULSettings::SaveGame(const int32 NewSlotIndex) {
+void ULSettings::SaveGame(const int32 NewSlotIndex, const bool WithInventory) {
 	if (UNLIKELY(IsSaving)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted, save system is busy. Stop."), __func__);
 		// not triggering OnSaving here since we're just aborting, and something else must be in the works.
@@ -108,8 +108,8 @@ void ULSettings::SaveGame(const int32 NewSlotIndex) {
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
 	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
 
-	Save->ReadSubsystems(this);
-	
+	Save->ReadSubsystems(this, WithInventory);
+
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
 	UGameplayStatics::AsyncSaveGameToSlot(Save, SlotName, 0, OnSaveGameDone);
