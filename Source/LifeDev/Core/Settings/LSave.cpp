@@ -53,7 +53,7 @@ void ULSave::Reset(const UObject* const O) {
 	SFlags.Add(LDConsts::Flags::Settings::Global::Foxy, FMath::FRand());
 
 	// TODO this is a bit risky. keep an eye on it
-	// WriteSubsystems(O);
+	// WriteSubsystems(O); // nopes, don't write on load.
 }
 
 void ULSave::WriteSubsystems(const UObject* const O) {
