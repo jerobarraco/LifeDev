@@ -49,7 +49,7 @@ protected:
 
 	void RHIsSet();
 	void RHIApply() const;
-	
+
 	UFUNCTION()
 	void FSModeChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType);
 	void FSModeSet();

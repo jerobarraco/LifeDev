@@ -103,7 +103,7 @@ void ULSetVideoUI::RHIsSet() {
 	EJRHI r;FString rs;
 	UJUtilsSys::GetDefaultRHI(r, rs);
 	RHIs->SetSelectedIndex(uint8(r));
-	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged); // 
+	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged); // not needed. rhiapply
 }
 
 void ULSetVideoUI::RHIApply() const {
@@ -113,7 +113,7 @@ void ULSetVideoUI::RHIApply() const {
 	UE_LOG(LogTemp, Log, TEXT("%hs RHI=%s"), __func__, *UEnum::GetValueAsString(r));
 	UJUtilsSys::SetRHI(r);
 }
-
+// using rhiapply instead
 // void ULSetVideoUI::RHIChanged(const FString SelectedItem, const ESelectInfo::Type SelectionType) {
 	// UE_LOG(LogTemp, Log, TEXT("%hs Item=%s, Type=%i"), __func__, *SelectedItem, SelectionType);
 	// if (UNLIKELY(SelectionType == ESelectInfo::Direct)) return;
