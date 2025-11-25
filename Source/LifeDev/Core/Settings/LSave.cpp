@@ -115,10 +115,11 @@ void ULSave::ReadSubsystems(const UObject* const O, const bool WithInventory) {
 	}
 
 	const UInventory* const Inventory = UInventory::Instance(W);
-	if (LIKELY(Inventory && WithInventory)) {
-		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory"), __func__);
+	if (LIKELY(bool(Inventory) & WithInventory)) {
 		const TMap<FName, FItem>& Items = Inventory->GetAll();
-		SInventory.Empty(Items.Num());
+		const int32 Num = Items.Num();
+		UE_LOG(LogLSave, Log, TEXT("%hs.Inventory Num=%i"), __func__, Num);
+		SInventory.Empty(Num);
 
 		for (const TTuple<FName, FItem>& I: Items) {
 			UE_LOG(LogLSave, Log, TEXT("%hs.Inventory: Name=%s count=%i"), __func__, *I.Key.ToString(), I.Value.Count);
