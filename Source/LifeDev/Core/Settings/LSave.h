@@ -35,7 +35,7 @@ public:
 
 	// this is just for internal use.
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
-	FORCEINLINE TMap<FName, float> GetFlags() { return SFlags; } // can't use Const on tmaps :'(
+	const TMap<FName, float>& GetFlags() { return SFlags; }
 
 	// the current chapter.
 	// it will save the chapterid past the last.
