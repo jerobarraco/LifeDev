@@ -87,7 +87,7 @@ void AIntroMan::Done() {
 	// this is important since the settings and flags could change.
 	// notice we only save on Done, this means we can change the savestate, and it will reset the options. that's ... ok?
 	Settings->OnSaving.AddUniqueDynamic(this, &AIntroMan::Saving);
-	Settings->SaveGame(false);
+	Settings->SaveGame(-1, false);
 }
 
 void AIntroMan::Saving(const bool IsSaving) {

@@ -106,7 +106,8 @@ void ULSettings::SaveGame(const int32 NewSlotIndex, const bool WithInventory) {
 	if (SlotIndex < 0) SlotIndex = 0;
 
 	const FString& SlotName = SaveSlot + FString::FromInt(SlotIndex);
-	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName=%s"), __func__, *SlotName);
+	UE_LOG(LogLSettings, Log, TEXT("%hs. SlotName='%s' WithInventory=%i "), __func__,
+		*SlotName, WithInventory);
 
 	Save->ReadSubsystems(this, WithInventory);
 
