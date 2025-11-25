@@ -117,7 +117,6 @@ void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Super::EndPlay(EndPlayReason);
 }
 
-
 void AIntroMan::SlotsDone(const bool HasDoneSave) {
 	ALMusicMan* const Man = ALMusicMan::Instance(this);
 	if (UNLIKELY(!Man)) return;
