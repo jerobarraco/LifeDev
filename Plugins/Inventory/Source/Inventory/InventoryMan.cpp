@@ -36,6 +36,11 @@ void AInventoryMan::Init_Implementation() {
 	Inventory->OnMod.AddUniqueDynamic(this, &AInventoryMan::SetItemMod);
 	Inventory->OnCold.AddUniqueDynamic(this, &AInventoryMan::SetItemCold);
 	Inventory->OnUsed.AddUniqueDynamic(this, &AInventoryMan::SetItemUsed);
+
+	// make sure to actually load the new items
+	for (const TTuple<FName, FItem>& KV: Inventory->GetAll()) {
+		SetItemMod(KV.Key, KV.Value.Count, KV.Value);
+	}
 }
 
 void AInventoryMan::DeInit_Implementation() {

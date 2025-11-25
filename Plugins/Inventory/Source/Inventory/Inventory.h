@@ -91,7 +91,6 @@ public:
 	const TMap<FName, FItem>& GetAll() const;
 #pragma endregion
 
-
 #pragma region selected
 	// returns the selected item name
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Inventory")

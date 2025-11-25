@@ -23,7 +23,13 @@ ALStepC4S000::ALStepC4S000():Super() {
 		LDConsts::Items::Card1,
 		LDConsts::Items::Card2,
 		LDConsts::Items::Card3,
-		LDConsts::Items::Walkman
+		LDConsts::Items::Walkman,
+
+		// i'm going to use these
+		LDConsts::Items::Poem0,
+		LDConsts::Items::Poem1,
+		LDConsts::Items::Poem2,
+		LDConsts::Items::Poem3,
 	};
 
 	Music = FSoftObjectPath(TEXT("/Game/LifeDev/Game/Env/Music/Music07/Music06-07_MS.Music06-07_MS"));
