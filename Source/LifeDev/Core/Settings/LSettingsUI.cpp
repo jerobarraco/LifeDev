@@ -23,7 +23,6 @@
 #include "UI/LSetDbgUI.h"
 #include "UI/LMsgBox.h"
 #include "LSettings.h"
-#include "GameFramework/GameUserSettings.h"
 
 namespace LSetUI {
 	// first one should be skippable. needs to be in ascending order.

@@ -33,7 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
-	// this is just for internal use.
+	// this is just for internal use. you can also use the UFlags subsystem, but you need to make sure to writeSubsystems on load.
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
 	const TMap<FName, float>& GetFlags() { return SFlags; }
 
@@ -51,6 +51,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 Version = -1;
 
+	// used only for major version changes, where i need to port a savefile to another format.
 	static const inline int32 VersionLast = 1;
 
 protected:
