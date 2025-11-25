@@ -69,8 +69,25 @@ void ULSetVideoUI::NativeDestruct() {
 		(*pSwitchUI)->OnChange.RemoveAll(this);
 	}
 
-	if (LIKELY(FrameRate)) FrameRate->ClearOptions();
-	if (LIKELY(RHIs)) RHIs->ClearOptions();
+	if (LIKELY(FrameRate)) {
+		FrameRate->OnSelectionChanged.RemoveAll(this); // important or it will reset the fps
+		FrameRate->ClearOptions();
+	}
+	
+	if (LIKELY(RHIs)) {
+		RHIs->OnSelectionChanged.RemoveAll(this);
+		RHIs->ClearOptions();
+	}
+
+	if ( LIKELY(FSMode)) {
+		FSMode->OnSelectionChanged.RemoveAll(this);
+		FSMode->ClearOptions();
+	}
+
+	if (LIKELY(Resolution)) {
+		Resolution->OnSelectionChanged.RemoveAll(this);
+		Resolution->ClearOptions();
+	}
 
 	Super::NativeDestruct();
 }
@@ -86,7 +103,7 @@ void ULSetVideoUI::RHIsSet() {
 	EJRHI r;FString rs;
 	UJUtilsSys::GetDefaultRHI(r, rs);
 	RHIs->SetSelectedIndex(uint8(r));
-	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged);
+	// RHIs->OnSelectionChanged.AddUniqueDynamic(this, &ULSetVideoUI::RHIChanged); // 
 }
 
 void ULSetVideoUI::RHIApply() const {
@@ -127,6 +144,7 @@ void ULSetVideoUI::FSModeSet() {
 
 EWindowMode::Type ULSetVideoUI::FSModeGet() const {
 	if (UNLIKELY(!FSMode)) return EWindowMode::Type::Fullscreen;
+
 	return static_cast<EWindowMode::Type>(FSMode->GetSelectedIndex());
 } 
 
@@ -150,6 +168,7 @@ void ULSetVideoUI::FSModeChanged(const FString SelectedItem, const ESelectInfo::
 void ULSetVideoUI::ResSet() {
 	if (UNLIKELY(!Settings | !Resolution)) return;
 
+	Resolution->OnSelectionChanged.RemoveAll(this);
 	ResOptsSet(FSModeGet() != EWindowMode::Type::Windowed);
 	Resolution->ClearOptions();
 	for (const FIntPoint& P: ResOpts)
