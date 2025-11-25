@@ -34,8 +34,8 @@ public:
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
 	// this is just for internal use.
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay, DeprecatedFunction))
-	FORCEINLINE TMap<FName, float> GetFlags() { return SFlags; }
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
+	FORCEINLINE TMap<FName, float> GetFlags() { return SFlags; } // can't use Const on tmaps :'(
 
 	// the current chapter.
 	// it will save the chapterid past the last.
