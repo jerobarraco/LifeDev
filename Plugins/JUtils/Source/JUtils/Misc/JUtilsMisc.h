@@ -149,7 +149,6 @@ public:
 	}
 
 	// Get the default object from the class. Optionally creating it if it's not there yet.
-	// TODO test
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	static UObject* GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded=true);
 
