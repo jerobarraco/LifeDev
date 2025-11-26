@@ -1,10 +1,12 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
+// SPDX-License-Identifier: MIT
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "EnhancedPlayerInput.h"
-#include "JUtils/Misc/JUtilsInput.h"
+
+#include "JUtilsInput.h"
 
 #include "JPInput.generated.h"
 

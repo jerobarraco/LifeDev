@@ -1,10 +1,9 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-
 #include "LPController.h"
 
-#include "Inventory/Teach/TPInput.h"
+#include "JUtils/Input/JPInput.h"
 
 ALPController::ALPController() {
-	OverridePlayerInputClass = UTPInput::StaticClass();
+	OverridePlayerInputClass = UJPInput::StaticClass();
 }

@@ -1,8 +1,8 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
+// SPDX-License-Identifier: MIT
 
 #pragma once
 
-// TODO move to teh Input folder
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 

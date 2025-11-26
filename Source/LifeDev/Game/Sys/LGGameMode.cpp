@@ -21,7 +21,7 @@
 #include "Sounds/MusicMan.h"
 #include "Diags/Diags.h"
 #include "JSig/CSignificance.h"
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
 

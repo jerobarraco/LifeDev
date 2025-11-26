@@ -8,7 +8,7 @@
 #include "Diags/Diags.h"
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 #include "Story/Story.h"
 #include "Story/Step.h"
 

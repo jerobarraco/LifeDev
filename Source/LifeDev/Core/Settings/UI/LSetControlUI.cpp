@@ -7,9 +7,9 @@
 
 #include "JButton.h"
 #include "LInputSelector.h"
-#include "JUtils/Misc/JUtilsInput.h"
-#include "LifeDev/Core/Settings/LSettings.h"
+#include "JUtils/Input/JUtilsInput.h"
 
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
 #include "LifeDev/Game/Inventory/Teach/LTeachMan.h"
 

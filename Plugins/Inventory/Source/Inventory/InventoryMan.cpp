@@ -8,7 +8,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 
 #include "InventoryUI.h"
 #include "Inventory.h"

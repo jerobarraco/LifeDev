@@ -9,12 +9,12 @@
 #include "NiagaraSystem.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
-#include "Animator/Anim.h"
-
-#include "CInteract.h"
-#include "Eval.h"
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "Eval.h"
+
+#include "Animator/Anim.h"
+#include "CInteract.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogInteract, Log, Log);
 

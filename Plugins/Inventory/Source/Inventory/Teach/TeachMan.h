@@ -3,7 +3,7 @@
 
 #pragma once
 #include "TeachTypes.h"
-#include "TPInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 
 #include "TeachMan.generated.h"
 
@@ -68,7 +68,7 @@ public:
 	// https://github.com/ibbles/LearningUnrealEngine/blob/master/Text%20and%20string%20formatting.md
 	UFUNCTION(BlueprintCallable)
 	void SetKeyNames(const EInputType Target, const TMap<FString, FText> Names);
-	// later. this could live in a subsystem if i wanted to use elsewhere. or maybe just keep using the teach.
+	// later. this could live in a subsystem if i wanted to use elsewhere. or maybe just keep using the Teach.
 
 	// default duration for teach items. when the item time is <=0.
 	UPROPERTY(BlueprintReadWrite, Config)

@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 
 #include "DialogUI.h"
 #include "Diags.h"

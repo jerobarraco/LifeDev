@@ -15,13 +15,11 @@
 #include "Interact/CInteractor.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/Flags.h"
-#include "JUtils/Misc/JUtilsSys.h"
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Core/Sounds/CLNoiser.h"
 #include "LifeDev/Core/Consts/ConstFlags.h"
-#include "LifeDev/Core/Consts/ConstDlgs.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Sys/LGGameMode.h"
 

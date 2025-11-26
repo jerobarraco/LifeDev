@@ -4,7 +4,7 @@
 
 #include "UserSettings/EnhancedInputUserSettings.h"
 
-#include "JUtils/Misc/JUtilsInput.h"
+#include "JUtils/Input/JUtilsInput.h"
 
 ULInputSelector::ULInputSelector():Super() {
 	// ATM the enhanced input will make the key unusable when i rebind it

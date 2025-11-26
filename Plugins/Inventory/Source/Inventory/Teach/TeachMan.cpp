@@ -6,9 +6,11 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/InputDeviceSubsystem.h"
 
-#include "TeachTypes.h"
-#include "TPInput.h"
 #include "Inventory/Flags.h"
+#include "JUtils/Input/JPInput.h"
+#include "JUtils/Input/JUtilsInput.h"
+
+#include "TeachTypes.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogTeachMan, Log, Log)
 
@@ -30,7 +32,7 @@ void ATeachMan::Init_Implementation() {
 	else UE_LOG(LogTeachMan, Log, TEXT("%hs can't get input subsystem"), __func__);
 
 	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
-	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
+	UJPInput* const PInput = LIKELY(InputSub) ? Cast<UJPInput>(InputSub->GetPlayerInput()) : nullptr;
 	if (LIKELY(PInput)) PInput->OnChange.AddUniqueDynamic(this, &ATeachMan::InputChanged);
 }
 
@@ -39,7 +41,7 @@ void ATeachMan::DeInit_Implementation() {
 	if (LIKELY(Inputs)) Inputs->OnInputHardwareDeviceChanged.RemoveAll(this);
 	
 	const UEnhancedInputLocalPlayerSubsystem* const InputSub = UJUtilsInput::GetInputSub(this);
-	UTPInput* const PInput = LIKELY(InputSub) ? Cast<UTPInput>(InputSub->GetPlayerInput()) : nullptr;
+	UJPInput* const PInput = LIKELY(InputSub) ? Cast<UJPInput>(InputSub->GetPlayerInput()) : nullptr;
 	if (LIKELY(PInput)) PInput->OnChange.RemoveAll(this);
 
 	DT = nullptr;

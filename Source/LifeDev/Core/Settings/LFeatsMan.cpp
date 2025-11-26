@@ -18,6 +18,7 @@
 #include "Inventory/Inventory.h"
 #include "JUtils/Misc/JUtilsMisc.h"
 #include "JUtils/Misc/JUtilsSys.h"
+#include "JUtils/Input/JUtilsInput.h"
 #include "Story/Story.h"
 #include "Eval.h"
 
@@ -30,7 +31,6 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
-#include "JUtils/Misc/JUtilsInput.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 

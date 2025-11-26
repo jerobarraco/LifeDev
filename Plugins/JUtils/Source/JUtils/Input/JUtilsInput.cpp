@@ -1,4 +1,5 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
+// SPDX-License-Identifier: MIT
 
 #include "JUtilsInput.h"
 
