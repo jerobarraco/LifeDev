@@ -9,6 +9,8 @@
 
 #include "TPInput.generated.h"
 
+// TODO move to JUtils plugin
+
 enum class EInputType : uint8;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const EInputType, Tgt);
 
@@ -16,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTPIOnChange, const EInputType, Tgt)
 // in theory you can also set is as OverridePlayerInputClass = UTPInput::StaticClass(); on the player controller
 // but that didn't work for me
 UCLASS(Blueprintable, BlueprintType)
-class INVENTORY_API UTPInput : public UEnhancedPlayerInput {
+class INVENTORY_API UTPInput : public UEnhancedPlayerInput { // TODO don't forget to change the module macro tag
 	GENERATED_BODY()
 
 public:
