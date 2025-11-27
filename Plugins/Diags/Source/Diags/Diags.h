@@ -27,9 +27,6 @@ public:
 	// Main function. Use this.
 	// Attempts to add a group id. Otherwise, it will attempt to add a dialog id.
 	// Groups can contain other groups, so this could be recursive or cyclic (and might crash). Beware!
-	// If, and only if, a *Sequence* id ends with '*' it will add a random one instead of a regular sequence (all the dialogs in it).
-	// If a dialog ends with "*" it will simply add it.
-	// This is on purpose to support certain code that can either trigger a random dialog in a sequence, or a specific dialog.
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddId(const FName& Row);
 	// add many sequences or dialogs. can be recursive
@@ -45,7 +42,6 @@ public:
 	
 	// add a sequence by id.
 	// Sequence ids can contain other sequences, so this could be recursive or cyclic. Beware!
-	// Sequences ending with "*" will only add one *random* dialog from that sequence.
 	UFUNCTION(BlueprintCallable, Category="Diags")
 	bool AddGroupId(const FName& RowName);
 	// Adds a sequence. Use this to AddManyById.
@@ -78,7 +74,6 @@ public:
 	// left here in case someone needs to check the condition of a group for some weird reason.
 
 #pragma region Init
-
 	// todo find better names
 	
 	UFUNCTION(BlueprintCallable, Category="Diags")

@@ -62,6 +62,7 @@ public:
 	// when set, will force use of auto on all dialogs.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="SetUp", Config)
 	bool UseAutoForce = false;
+
 	static constexpr float DefAutoTime = 2.5;
 	// how much to wait before trying to auto skip.
 	// Requires feature flag D_AUTO
@@ -70,9 +71,9 @@ public:
 	float AutoTime = DefAutoTime;
 
 	// when unset (false) it will skip showing the Diags but still mark them as read
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Debug, Config)
 	bool UseShow = false;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UDialogUI> UIClass = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=SetUp)

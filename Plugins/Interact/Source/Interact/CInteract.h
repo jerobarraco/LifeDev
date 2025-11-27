@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractOnLook);
 /*
 this comp is inactive by default because:
 * it's a problem for performance having stuff enabled by default
-* by having it off by default. and controlling (myself) WHEN/if it's on:
+* by having it off by default. and controlling (myself) WHEN/IF it's on:
 * * it makes "race conditions" less prone.
 * * it makes it "fail-safe".
 * due to the way ue initializes things, i can only set enabled by default on actor constructor. (this is the main issue)

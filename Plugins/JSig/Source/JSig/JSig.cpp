@@ -37,7 +37,7 @@ void UJSig::Reset() {
 	Man = USignificanceManager::Get(W);
 	int32 Num = NumPCs>0? NumPCs : W->GetNumPlayerControllers(); 
 	for(FConstPlayerControllerIterator Iterator = W->GetPlayerControllerIterator();
-		Iterator && Num > 0; ++Iterator ) {
+		bool(Iterator) & (Num > 0); ++Iterator ) {
 		--Num;
 		APlayerController* const Controller = Iterator->Get();
 		if(UNLIKELY(!Controller)) continue;
@@ -69,6 +69,7 @@ void UJSig::DoTick() {
 	TArray<FTransform> TransformArray;
 	for (APlayerController* const PC: PCs) {
 		if (UNLIKELY(!IsValid(PC))) continue;
+
 		FVector ViewLocation;
 		FRotator ViewRotation;
 		PC->GetPlayerViewPoint(ViewLocation, ViewRotation);
