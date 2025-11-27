@@ -33,7 +33,7 @@ enum class EQualityType: uint8 {
 	SHADING,
 	MAX UMETA(Hidden)
 };
-ENUM_RANGE_BY_COUNT(EFeat, EQualityType::MAX);
+ENUM_RANGE_BY_COUNT(EQualityType, EQualityType::MAX);
 
 // base class for the video settings
 UCLASS(Blueprintable, BlueprintType)
