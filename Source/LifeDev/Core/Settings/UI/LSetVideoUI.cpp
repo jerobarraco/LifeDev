@@ -514,7 +514,7 @@ void ULSetVideoUI::QualitySet(const EQualityType Quality, const int32 NewQ) {
 void ULSetVideoUI::QSwitchChanged(const int32 ID, const int32 NewQ) {
 	if (UNLIKELY(
 		(ID <= static_cast<uint8>(EQualityType::NONE)) |
-		(ID >= static_cast<uint8>(EQualityType::_MAX)))) {
+		(ID >= static_cast<uint8>(EQualityType::MAX)))) {
 		UE_LOG(LogLSetVid, Warning, TEXT("%hs. Invalid quality id=%i q=%i"), __func__, ID, NewQ);
 		return;
 	}

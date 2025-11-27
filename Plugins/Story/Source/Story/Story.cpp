@@ -148,6 +148,7 @@ bool UStory::Start(const FName Name) {
 				UE_LOG(LogStory, Log, TEXT("UStory::Scheduled GC"));
 				GEngine->ForceGarbageCollection(true);
 			}
+
 			// i don't need to block the main thread. but does the gc flush and shader block work on the bg?
 			AsyncTask(ENamedThreads::Type::AnyBackgroundThreadNormalTask, [this] {
 				// attempt at waiting for shaders to compile on load.
