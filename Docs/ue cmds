@@ -135,6 +135,8 @@ https://www.youtube.com/watch?v=3PQga-2vLm4
 enable hard or soft rt
 r.Lumen.HardwareRayTracing= 0 or 1
 
+# collision
+show collision
 
 # my commands
 see [ld cmds](./ld cmds.md)
