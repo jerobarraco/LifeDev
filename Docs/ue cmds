@@ -137,6 +137,4 @@ r.Lumen.HardwareRayTracing= 0 or 1
 
 
 # my commands
-ke * startnext
-ke * featsdump
-ke * flagsdump
+see [ld cmds](./ld cmds.md)
