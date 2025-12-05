@@ -279,6 +279,7 @@ https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7
 * stat none
 * stat unitgraph, unit, fps,
 * stat initviews for culling
+* show collision and stat for collision game https://dev.epicgames.com/documentation/en-us/unreal-engine/review-collision-in-your-unreal-engine-game
 * r.shaderPrint 1 and r.SHaderPrint.Zoom 1
 
 # package size
@@ -370,6 +371,7 @@ use reserve on arrays when possible
 DONT:
 	// void(ALTeachMan::* X[] )() = {&ALTeachMan::DeInitFeat, &ALTeachMan::InitFeat};
 	// (this->*X[Enabled])();
+	// the cpu can't optimize the jump to function. so there's no advantage. the branch predictor will be blind anyway.
 	
 	return by value is faster than move under the right conditions.
 	since that's really hard to keep in mind, and also because you can inhibit the compiler to generate the move constructors.
