@@ -69,6 +69,8 @@ enum class EFeat: uint8 {
 	V_SPEED,
 	// dust particles
 	V_DUST,
+	// cam smoothness delay
+	V_CAM_LAG,
 	V_MAX UMETA(Hidden),
 #pragma endregion
 

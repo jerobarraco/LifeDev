@@ -66,10 +66,11 @@ protected:
 	// the features to affect during load/save, the rest will be ignored.
 	inline static TSet<EFeat> WatchFeats = {
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
+
 		EFeat::V_AUTO_EXP, EFeat::V_FRINGE, EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_DUST,
 		EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE, EFeat::V_SHAD_RAY,
-		EFeat::V_STROBE, EFeat::V_FLASHBACK,
-		 // EFeat::V_SPEED
+		EFeat::V_STROBE, EFeat::V_FLASHBACK, EFeat::V_CAM_LAG,
+
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
 
 		EFeat::D_AUTO, EFeat::D_TEXT,
