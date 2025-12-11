@@ -8,6 +8,8 @@
 
 #include "CLCharCam.generated.h"
 
+enum class EFeat : uint8;
+
 // LifeDev Game character camera
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
 class LIFEDEV_API UCLCharCam : public UCameraComponent {
