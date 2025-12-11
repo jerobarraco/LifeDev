@@ -8,6 +8,8 @@
 
 #include "LChar.generated.h"
 
+enum class EFeat : uint8;
+class USpringArmComponent;
 class UCLDust;
 class UFlags;
 class UInventory;
@@ -133,15 +135,17 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* const InputComponent) override;
 	// End of APawn interface
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=Camera)
 	float ViewPitchMax = 70;
 
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Mesh, Config)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Config, Category=Mesh)
 	float HoverDiagTime = 2;
 
 	// First person camera
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = Camera)
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Camera)
 	TObjectPtr<UCLCharCam> Camera = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Camera)
+	TObjectPtr<USpringArmComponent> Arm = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCInteractor> Interactor = nullptr;

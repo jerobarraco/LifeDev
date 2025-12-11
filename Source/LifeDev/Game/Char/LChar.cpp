@@ -9,6 +9,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 #include "Diags/Diags.h"
 #include "Interact/CInteract.h"
@@ -45,11 +46,22 @@ ALChar::ALChar() {
 		Movement->MaxWalkSpeedCrouched = SpeedMax/2;
 	}
 
-	// Create a CameraComponent
+	// the arm is mostly to have a smoth rotation lag.
+	// important to set the usepawncontrolrotation here and disable on the cam
+	Arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	Arm->SetupAttachment(Capsule);
+	Arm->bEnableCameraRotationLag = true;
+	Arm->bEnableCameraLag = true;
+	Arm->TargetArmLength = 0;
+	Arm->CameraLagMaxDistance = 100;
+	Arm->bDoCollisionTest = false;
+	Arm->bUsePawnControlRotation = true;
+	
 	Camera = CreateDefaultSubobject<UCLCharCam>(TEXT("Camera"));
-	Camera->SetupAttachment(Capsule);
+	Camera->SetupAttachment(Arm);
 	// 40 is a biiit below c18, 45 is almost the same. it was 47 but i feel it's too tall
 	Camera->SetRelativeLocation(FVector(-0.f, 0.f, 40.f)); // Position the camera
+	Camera->bUsePawnControlRotation = false;
 
 	Interactor = CreateDefaultSubobject<UCInteractor>(TEXT("Interactor"));
 	Interactor->SetupAttachment(Camera);
@@ -155,6 +167,7 @@ void ALChar::Init() {
 	if (LIKELY(Camera)) Camera->Init();
 	
 	if (UNLIKELY(!Flags)) return;
+
 	// i can do this because the class defaults are in code. and then can be changed via config.
 	// and they get reloaded on game start (travel to game_l).
 	// and also the save-game is loaded before a game travel. and doesn't change during game.
@@ -169,6 +182,7 @@ void ALChar::Init() {
 		__func__, SpeedMin, SpeedMax, SpeedMod, Foxify);
 
 	if (LIKELY(UI)) UI->Init();
+
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 
