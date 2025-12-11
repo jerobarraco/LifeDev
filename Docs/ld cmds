@@ -10,4 +10,5 @@ setval X
 ke * mod name x
 
 # flags
-ke * dumpflags
+ke * featsdump
+ke * flagsdump
