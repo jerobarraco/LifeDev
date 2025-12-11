@@ -53,6 +53,7 @@ mesh cards / surface cache
 * showflag.distanceculledprimitives 1
 * stat initviews
 * 'freezerendering' to test culling
+* remove "can be occluder" on small things or with many holes. not only it won't occlude much, but it will also take time to process.
 
 # light
 * use spotlights instead of pointlights as they are faster

@@ -13,7 +13,6 @@ t.MaxFPS 120
 # set ppol size
 r.streaming.poolsize 2000
 
-
 # show culling https://docs.unrealengine.com/5.0/en-US/visibility-and-occlusion-culling-in-unreal-engine/
 stat initviews
 
