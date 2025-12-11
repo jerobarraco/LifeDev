@@ -18,12 +18,12 @@ public class LifeDevTarget : TargetRules {
 		// bWarningsAsErrors = false;
 		// bUseIris = false; // can't be used, since windows will fail and request a "unique" build environment. which is not supported on binaries.
 		// bAllCores = true;
-		bUsePDBFiles = false;
 		//bEnableAddressSanitizer
 
 		// https://forums.unrealengine.com/t/disabling-pdb-debug-gen-in-development-configuration-engine-source/617448/4
 		if(Configuration == UnrealTargetConfiguration.Shipping) { 
 			// disable pdb. it takes time and space. and i test builds. if someone has an issue ask to re-test with a debug build with logs and all.
+			// bUsePDBFiles = false; // allowed for sentry though
 			bOmitPCDebugInfoInDevelopment = true; // actually sentry re-enabled it somewhere. even if i remove it.
 		} else {
 			// disable warning as error
