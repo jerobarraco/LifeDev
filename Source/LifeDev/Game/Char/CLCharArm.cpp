@@ -11,4 +11,5 @@ UCLCharArm::UCLCharArm() {
 	CameraLagMaxDistance = 100;
 	bDoCollisionTest = false;
 	bUsePawnControlRotation = true;
+	// i could bind to the feat change here. but it's actually much more efficient to do it on LFeatsMan
 }

@@ -31,6 +31,7 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
+#include "LifeDev/Game/Char/CLCharArm.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -222,6 +223,7 @@ void ALFeatsMan::LoadFeats() {
 	FeatUpVisual(EFeat::V_FLASHBACK, Settings && Settings->GetFeat(EFeat::V_FLASHBACK));
 	FeatUpVisual(EFeat::V_AUTO_EXP, Settings && Settings->GetFeat(EFeat::V_AUTO_EXP));
 	FeatUpVisual(EFeat::V_DUST, Settings && Settings->GetFeat(EFeat::V_DUST));
+	FeatUpVisual(EFeat::V_CAM_LAG, Settings && Settings->GetFeat(EFeat::V_CAM_LAG));
 	FeatUpVisual(EFeat::V_SHAD_RAY, Settings && Settings->GetFeat(EFeat::V_SHAD_RAY));
 	BlurReset();
 	FringeReset();
@@ -314,6 +316,13 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 		const ALChar* const Char = ALChar::Instance(this);
 		UActorComponent* const Dust = Char->GetComponentByClass(UCLDust::StaticClass());
 		if (LIKELY(Dust)) Dust->SetActive(Enabled);
+	} else if (Feat == EFeat::V_CAM_LAG) {
+		const ALChar* const Char = ALChar::Instance(this);
+		UCLCharArm* const Arm = Cast<UCLCharArm>(Char->GetComponentByClass(UCLCharArm::StaticClass()));
+		if (LIKELY(Arm)) {
+			Arm->bEnableCameraLag = Enabled;
+			Arm->bEnableCameraRotationLag = Enabled;
+		}
 	} else if (Feat == EFeat::V_SHAD_RAY) {
 		UJUtilsMisc::SetCVarChar(TEXT("r.RayTracing.Shadows"), Enabled?1:0);
 	} else {

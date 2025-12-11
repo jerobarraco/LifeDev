@@ -543,6 +543,7 @@ void ULSetVideoUI::FeatsSet() {
 		{EFeat::V_AUTO_EXP, NSLOCTEXT("SetVideo", "AutoExp", "Auto Exp.")},
 		// {EFeat::V_SPEED, NSLOCTEXT("SetVideo", "Speed", "SpeedFX")},
 		{EFeat::V_DUST, NSLOCTEXT("SetVideo", "Dust", "Dust")},
+		{EFeat::V_CAM_LAG, NSLOCTEXT("SetVideo", "Cam Lag", "Cam Lag")},
 		{EFeat::V_NANITE, NSLOCTEXT("SetVideo", "Nanite", "Nanite")},
 		{EFeat::V_LUMEN, NSLOCTEXT("SetVideo", "Lumen", "Lumen")},
 		{EFeat::V_MLIGHTS, NSLOCTEXT("SetVideo", "MLights", "MegaLights")},

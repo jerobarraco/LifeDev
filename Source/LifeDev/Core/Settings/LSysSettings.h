@@ -138,7 +138,7 @@ public:
 		EFeat::D_SHOW, EFeat::D_TEXT,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_MLIGHTS, EFeat::V_NANITE,
-		EFeat::V_FLASHBACK, EFeat::V_STROBE, EFeat::V_DUST,
+		EFeat::V_FLASHBACK, EFeat::V_STROBE, EFeat::V_DUST, EFeat::V_CAM_LAG,
 		// EFeat::V_SPEED, 
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
 	};
@@ -150,7 +150,7 @@ public:
 		EFeat::D_SHOW,
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 		EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE,
-		EFeat::V_FLASHBACK, EFeat::V_STROBE, EFeat::V_DUST,
+		EFeat::V_FLASHBACK, EFeat::V_STROBE, EFeat::V_DUST, EFeat::V_CAM_LAG,
 		// EFeat::V_SPEED, 
 		EFeat::C_00, EFeat::C_01, EFeat::C_02, EFeat::C_03, EFeat::C_04, EFeat::C_05
 	};
