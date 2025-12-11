@@ -9,7 +9,7 @@
 #include "LChar.generated.h"
 
 enum class EFeat : uint8;
-class USpringArmComponent;
+class UCLCharArm;
 class UCLDust;
 class UFlags;
 class UInventory;
@@ -145,7 +145,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Camera)
 	TObjectPtr<UCLCharCam> Camera = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category=Camera)
-	TObjectPtr<USpringArmComponent> Arm = nullptr;
+	TObjectPtr<UCLCharArm> Arm = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCInteractor> Interactor = nullptr;

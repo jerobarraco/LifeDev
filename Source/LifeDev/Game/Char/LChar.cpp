@@ -2,6 +2,7 @@
 
 #include "LChar.h"
 
+#include "CLCharArm.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
@@ -48,14 +49,8 @@ ALChar::ALChar() {
 
 	// the arm is mostly to have a smoth rotation lag.
 	// important to set the usepawncontrolrotation here and disable on the cam
-	Arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	Arm = CreateDefaultSubobject<UCLCharArm>(TEXT("Arm"));
 	Arm->SetupAttachment(Capsule);
-	Arm->bEnableCameraRotationLag = true;
-	Arm->bEnableCameraLag = true;
-	Arm->TargetArmLength = 0;
-	Arm->CameraLagMaxDistance = 100;
-	Arm->bDoCollisionTest = false;
-	Arm->bUsePawnControlRotation = true;
 	
 	Camera = CreateDefaultSubobject<UCLCharCam>(TEXT("Camera"));
 	Camera->SetupAttachment(Arm);
