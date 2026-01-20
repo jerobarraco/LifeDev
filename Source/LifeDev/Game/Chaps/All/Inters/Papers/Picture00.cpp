@@ -18,7 +18,8 @@ APicture00::APicture00():Super() {
 	Mesh->SetRelativeLocation(FVector(-12.5,-1.25,0));
 	Mesh->SetRelativeRotation(FRotator(0,0,90).Quaternion());
 	Mesh->SetUseDynShadow(true);
-
+	Mesh->bUseAsOccluder = false; // optim. against wall, can't occlude.
+	
 	Interact->SetRelativeLocation(FVector(12.5,-7.5,1.25));
 	Interact->SetBoxExtent(FVector(15,10,2.5));
 	SFX->SetRelativeLocation(FVector(12.5,-7.5,1.25));

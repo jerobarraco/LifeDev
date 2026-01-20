@@ -17,6 +17,7 @@ AHeater00::AHeater00():Super() {
 	Mesh->SetRelativeLocation(FVector(30,40,0));
 	Mesh->SetRelativeRotation(FRotator(0,-90, 0));
 	Mesh->SetUseDynShadow(true);
+	Mesh->bUseAsOccluder = false; // optim. can't really occlude anything, it's against the wall.
 
 	Interact->SetRelativeLocation(FVector(40.,-15.,47.5));
 	Interact->SetBoxExtent(FVector(40,15,47.5));
