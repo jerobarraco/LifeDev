@@ -51,6 +51,11 @@ void ALDiagMan::Init_Implementation() {
 	}
 }
 
+void ALDiagMan::DoEffect_Implementation(const FName& Name, const bool Enabled) {
+	Super::DoEffect_Implementation(Name, Enabled);
+	// TODO*
+}
+
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;

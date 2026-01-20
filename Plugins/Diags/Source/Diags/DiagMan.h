@@ -50,9 +50,6 @@ public:
 	void AutoStart();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void AutoStop();
-	// triggered when a dialog-specified-effect is set to on/off.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm="Name"))
-	void DoEffect(const FName& Name, const bool Enabled);
 
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -92,6 +89,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	// triggered when a dialog-specified-effect is set to on/off. Override it.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm="Name"))
+	void DoEffect(const FName& Name, const bool Enabled);
 
 	// The ui is done with the text. Has shown the last it knows.
 	// The diag sub might still have some more diags.

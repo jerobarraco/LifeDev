@@ -27,6 +27,7 @@ public:
 	virtual void Init_Implementation() override;
 
 protected:
+	virtual void DoEffect_Implementation(const FName& Name, const bool Enabled) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Show_Implementation(const FDiag& Diag) override;
 	UFUNCTION()
