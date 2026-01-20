@@ -65,6 +65,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
+	
+	// Experimental: effects triggered by this dialog. is up to you to implement each effect.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> Effects;
 };
 
 // The base structure for dialog group. For sequences, randoms, selections, etc.

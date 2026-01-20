@@ -13,6 +13,7 @@ class UEval;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDiagOnShow, const FDiag&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnAdd, const FName&, Name, const FDiag&, Diag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiagOnDone);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiagOnEffect, const FName&, Name, const bool, Enable);
 
 // World subsystem to deal with dialogs
 UCLASS(Blueprintable, Category="Diags", Config="Diags", DefaultConfig)
@@ -113,11 +114,16 @@ public:
 	// when all dialogs have finished showing.
 	UPROPERTY(BlueprintAssignable, Category="Diags")
 	FDiagOnDone OnDone;
+
+	// triggered for each effect a dialog might specify. also trigger for effects that have been turned off.
+	UPROPERTY(BlueprintAssignable, Category="Diags")
+	FDiagOnEffect OnEffect;
 #pragma endregion
 
 protected:
 	void ShowNext();
 	void Stop();
+	void DoEffects(const FDiag& Diag);
 	
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
@@ -128,7 +134,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UEval> Eval = nullptr;
-	
+
+	TArray<FName> Effects;
 	TArray<FDiag> Pending;
 	bool IsShowing = false;
 };

@@ -226,6 +226,35 @@ bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	return false;
 }
 
+void UDiags::DoEffects(const FDiag& Diag) {
+	// process the effects
+	// use a tmap to keep track of which was enabled or disabled.
+	TMap<FName, bool> EffectDiff;
+	EffectDiff.Reserve(Effects.Num()+Diag.Effects.Num());
+	
+	// turn old effects off
+	TArray<FName> OldEffects = Effects;
+	TArray<FName> NewEffects;
+	NewEffects.Reserve(Diag.Effects.Num());
+	Effects = Diag.Effects; // copy the new, important.
+	
+	for (const FName& N: Effects) {
+		// don't turn off the effects that are still on
+		// in that case no need to have it in the old, nor new effects.
+		if (UNLIKELY(OldEffects.RemoveSwap(N, EAllowShrinking::No)>0)) continue;
+		
+		NewEffects.Add(N);
+	}
+
+	// turning the events off first, then on, it's a feature.
+	for (const FName& N: OldEffects) {
+		OnEffect.Broadcast(N, false);
+	}
+	for (const FName& N: NewEffects) {
+		OnEffect.Broadcast(N, true);
+	}
+}
+
 void UDiags::ShowNext() {
 	if (UNLIKELY(IsShowing)) return;
 	// this is important for stop to work correctly. and also in general
@@ -238,10 +267,12 @@ void UDiags::ShowNext() {
 
 	// Do NOT get a reference here,
 	// since we will remove later, it will actually return weird data.
-	FDiag Diag = Pending[0];
+	const FDiag Diag = Pending[0];
 	Pending.RemoveAt(0);
 
 	OnShow.Broadcast(Diag);
+	
+	DoEffects(Diag);
 }
 
 void UDiags::Stop() {
