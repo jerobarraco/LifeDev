@@ -59,11 +59,13 @@ public:
 	// The dialog will be added if it's "true" (>0), or skipped otherwise. See Diags.CheckCondition for more info.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Condition = "";
-
+	
+	// a comment for your documentation. (or usage)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
 	
 	// Experimental: effects triggered by this dialog. is up to you to implement each effect.
+	// DiagMan will call the function DoEffect whenever an effect is turned on or off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> Effects;
 };
@@ -86,6 +88,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Condition = "";
 	
+	// a comment for your documentation. (or usage)
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
 };
