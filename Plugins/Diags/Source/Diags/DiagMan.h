@@ -50,6 +50,9 @@ public:
 	void AutoStart();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void AutoStop();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction, AutoCreateRefTerm="Name"))
+	void DoEffect(const FName& Name, const bool Enabled);
 
 	// whether the ui is showing
 	UFUNCTION(BlueprintCallable, BlueprintPure)

@@ -43,6 +43,11 @@ ADiagMan* ADiagMan::Instance(const UObject* const O) {
 	return Cast<ADiagMan>(UGameplayStatics::GetActorOfClass(O, StaticClass()));
 }
 
+void ADiagMan::DoEffect_Implementation(const FName& Name, const bool Enabled) {
+	UE_LOG(LogDiagMan, Log, TEXT("%hs Effect='%s' On=%i"),
+		__func__, *Name.ToString(), Enabled);
+}
+
 void ADiagMan::Init_Implementation() {
 	UE_LOG(LogDiagMan, Log, TEXT("%hs"), __func__);
 	if (UNLIKELY(!IsValid(Diags))) return;
@@ -50,6 +55,7 @@ void ADiagMan::Init_Implementation() {
 	Diags->OnShow.AddUniqueDynamic(this, &ADiagMan::Show);
 	Diags->OnAdd.AddUniqueDynamic(this, &ADiagMan::Add);
 	Diags->OnDone.AddUniqueDynamic(this, &ADiagMan::DiagDone);
+	Diags->OnEffect.AddUniqueDynamic(this, &ThisClass::DoEffect);
 }
 
 void ADiagMan::DeInit_Implementation() {
@@ -59,6 +65,7 @@ void ADiagMan::DeInit_Implementation() {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnAdd.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
+		Diags->OnEffect.RemoveAll(this);
 	}
 	Diags = nullptr;
 
@@ -78,13 +85,6 @@ void ADiagMan::Show_Implementation(const FDiag& Diag) {
 		__func__);
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-
-	// Idea
-	// if (Diag.Type == EDiagType::SYSTEM) {
-	// maybe even add a delegate here. for events. some events might need to control WHEN to call Diags->DiagDone (e.g. wait)
-	// 	Diags->DiagDone();
-	// 	return;
-	// }
 
 	if (UNLIKELY(!UseShow)) {
 		UE_LOG(LogDiagMan, Log, TEXT("%hs: DebugSkip is set. Skipping."), __func__);

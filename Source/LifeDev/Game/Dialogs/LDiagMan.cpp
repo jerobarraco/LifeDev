@@ -32,7 +32,7 @@ ALDiagMan* ALDiagMan::InstanceL(const UObject* const O) {
 void ALDiagMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	Flags = nullptr;
 	ULSettings* const Settings = ULSettings::Instance(this);
-	if (LIKELY(Settings)) 
+	if (LIKELY(Settings))
 		Settings->OnFeatUpdateDiags.RemoveAll(this);
 
 	void FeatUpDlg(const EFeat Feat, const bool Enabled);

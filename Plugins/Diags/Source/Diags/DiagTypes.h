@@ -47,9 +47,6 @@ struct DIAGS_API FDiag: public FTableRowBase {
 	GENERATED_BODY()
 
 public:
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	// EDiagType Type = EDiagType::NORMAL; // idea: use system to trigger events.
-
 	// this is the row name in the datatable of type FChar
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName CharRow;
