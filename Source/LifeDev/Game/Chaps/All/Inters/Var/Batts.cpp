@@ -31,6 +31,7 @@ ABatts::ABatts():Super() {
 	MeshB->SetRelativeLocation(FVector(-0.116369,0.143369,-2.243960));
 	MeshB->SetRelativeRotation(FRotator(-11,0,0));
 	MeshB->SetUseDynShadow(true);
+	Mesh->bUseAsOccluder = MeshB->bUseAsOccluder = false; // Optim
 
 	Interact->SetRelativeLocation(FVector(2.522632,-1.030120,-0.728246));
 	Interact->SetBoxExtent(FVector(4.2,0.7,2.5));

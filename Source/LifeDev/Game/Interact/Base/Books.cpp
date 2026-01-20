@@ -99,7 +99,8 @@ void ABooks::CreateBooks() {
 		const int32 OffY = RS.RandRange(-RndOff, RndOff);
 		QM->SetRelativeLocation(FVector(0, OffY, Spacing*i));
 		QM->SetUseDynShadow(true);
-
+		QM->bUseAsOccluder = false; // optim. too small to really occlude anything
+		
 		Books.Add(QM);
 		AnimFade->Meshes.Add(QM);
 

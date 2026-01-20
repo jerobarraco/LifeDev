@@ -21,6 +21,7 @@ ACard::ACard():Super() {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Cards/Card00.Card00"));
 	Mesh->SetStaticMesh(CMesh.Object);
+	Mesh->bUseAsOccluder = false; // optim
 
 	// stolen from paper. maybe get a new one?
 	static ConstructorHelpers::FObjectFinder<USoundBase>

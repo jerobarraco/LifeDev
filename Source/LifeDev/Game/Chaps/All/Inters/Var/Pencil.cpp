@@ -17,6 +17,7 @@ APencil::APencil():Super() {
 	Mesh->SetRelativeLocation(FVector(0,0.750000,-0.750000));
 	Mesh->SetUseDynShadow(true);
 	// Mesh->SetCastContactShadow(true);
+	Mesh->bUseAsOccluder = false;
 	
 	Interact->SetBoxExtent(FVector(7.5,1,1));
 	Interact->SetRelativeLocation(FVector(7,-0.750000,0.750000));

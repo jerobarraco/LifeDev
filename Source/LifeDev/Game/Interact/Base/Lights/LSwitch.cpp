@@ -24,6 +24,7 @@ ALSwitch::ALSwitch():Super() {
 		CMesh (TEXT("/Game/LifeDev/Game/Inters/Lights/Switch00/btn"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(0,0,0));
+	Mesh->bUseAsOccluder = false; // optim
 
 	Interact->SetRelativeLocation(FVector(7.500000,-7.500000,12.500000));
 	Interact->SetBoxExtent(FVector(5));

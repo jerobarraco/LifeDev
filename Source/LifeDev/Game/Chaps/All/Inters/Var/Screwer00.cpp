@@ -16,6 +16,7 @@ AScrewer00::AScrewer00():Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Utils/Screwer_SP"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetRelativeLocation(FVector(.000000,2.500000,-2.500000));
+	Mesh->bUseAsOccluder = false;
 
 	Interact->SetRelativeLocation(FVector(12.500000,-2.500000,2.500000));
 	Interact->SetBoxExtent(FVector(12.500000,2.500000,2.500000));
