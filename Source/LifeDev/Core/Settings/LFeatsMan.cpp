@@ -31,6 +31,7 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
+#include "LifeDev/Core/Consts/ConstEffects.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Char/CLCharArm.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
@@ -77,14 +78,11 @@ ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 }
 
 void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
-	// TODO
-	static const FName N_Ghosts("Ghosts");
-	// TODO think of putting it somewher. if only i had a const file. like an ldconsts.....
-	// this comparison is much faster. at the cost of storing the static const
+	// TODO moar MOAR!
 	
-	if (Name == N_Ghosts) {
+	if (Name == LDConsts::Effects::Ghosts) {
 		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
-	} else if (Name == "Rain") {
+	} else if (Name == LDConsts::Effects::Rain) {
 		if (GM && GM->MusicMan) GM->MusicMan->SetRain(Enable);
 	}
 }

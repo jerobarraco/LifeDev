@@ -19,6 +19,5 @@ See LDConsts::Dlgs
 # Flags
 see LDConsts::Flags
 
-# effects
-Ghosts > GhostPool
-Rain > Rain
+# Effects
+see LDConsts::Effects
