@@ -72,7 +72,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALStoryMan> StoryMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<ALMusicMan> MusicMan = nullptr; // another possible move to the featsman
+	TObjectPtr<ALMusicMan> MusicMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AFlashbackMan> FlashbackMan = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)

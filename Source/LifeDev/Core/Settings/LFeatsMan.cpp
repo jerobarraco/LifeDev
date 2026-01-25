@@ -81,8 +81,7 @@ void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
 	if (Name == "Ghosts") {
 		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
 	} else if (Name == "Rain") {
-		// todo consider moving almusic man here like ghosts
-		ALMusicMan::SetRainS(this, Enable);
+		if (GM && GM->MusicMan) GM->MusicMan->SetRain(Enable);
 	}
 }
 
