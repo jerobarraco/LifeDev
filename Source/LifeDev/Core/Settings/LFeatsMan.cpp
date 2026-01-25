@@ -181,7 +181,6 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	GM = nullptr;
 	MPCI = nullptr;
 	MPC = nullptr;
-	// SpeedMat = nullptr;
 	FBMat = nullptr;
 	Eval = nullptr;
 	Settings = nullptr;

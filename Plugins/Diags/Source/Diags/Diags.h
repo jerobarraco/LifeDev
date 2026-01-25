@@ -63,6 +63,10 @@ public:
 	FORCEINLINE bool GetIsShowing() const { return IsShowing; }
 #pragma endregion
 
+	// allows to force set an effect. mostly a utility for the future. if i start adding effects.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags", meta=(AdvancedDisplay))
+	FORCEINLINE void SetEffect(const FName& Name, const bool Enable) const { OnEffect.Broadcast(Name, Enable); }
+	
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Diags", meta=(AdvancedDisplay))
 	void DiagDone();
