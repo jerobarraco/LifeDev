@@ -68,8 +68,9 @@ public:
 #pragma endregion
 
 	// empty evaluates to (ok, 0)
+	// IsEmptyFailure: if the evaluation string is empty, will return: true:1, false:0 on res. 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	bool Eval(const FString& Exp, double& Res) const;
+	bool Eval(const FString& Exp, double& Res, const bool IsEmptyFailure = false) const;
 
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)

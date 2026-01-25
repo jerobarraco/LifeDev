@@ -64,10 +64,9 @@ public:
 #pragma endregion
 
 	// called by the dialog manager when a dialogue is done showing
-	UFUNCTION(BlueprintCallable, Category="Diags")
+	UFUNCTION(BlueprintCallable, Category="Diags", meta=(AdvancedDisplay))
 	void DiagDone();
 
-	// EXPERIMENTAL
 	// Tests a Group's condition. Returns true if >0.
 	// See the Eval subsystem for docs.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags")
