@@ -284,20 +284,16 @@ void UDiags::Stop() {
 
 bool UDiags::CheckCondition(const FString& Expression, double& Res) const {
 	Res = 0;
-	// empty expressions passes (true)
-	// not unlikely because i don't know how many dialogs have an empty condition
-	if (Expression.TrimStartAndEnd().IsEmpty()) {
-		Res = 1; // avoid issues down the road
-		return true;
-	}
 
 	if (UNLIKELY(!Eval)) {
 		UE_LOG(LogDiags, Warning, TEXT("%hs Could not obtain Eval subsystem. Make sure it's enabled in config."), __func__);
 		return false;
 	}
 
-	const bool Ok = Eval->Eval(Expression, Res);
-	return Ok && Res > 0;
+	// empty expressions passes (true)
+	// not unlikely because i don't know how many dialogs have an empty condition
+	const bool Ok = Eval->Eval(Expression, Res, true);
+	return Ok & (Res > 0);
 }
 
 void UDiags::DTCharSet(UDataTable* const DT) {

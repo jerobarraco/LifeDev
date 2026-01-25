@@ -67,12 +67,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Diags", meta=(AdvancedDisplay))
 	void DiagDone();
 
-	// Tests a Group's condition. Returns true if >0.
-	// See the Eval subsystem for docs.
-	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags")
-	bool CheckCondition(const FString& Expression, double& Res) const;
-	// left here in case someone needs to check the condition of a group for some weird reason.
-
 #pragma region Init
 	// todo find better names
 	
@@ -123,7 +117,12 @@ protected:
 	void ShowNext();
 	void Stop();
 	void DoEffects(const FDiag& Diag);
-	
+	// Tests a Group's condition. Returns true if >0.
+	// See the Eval subsystem for docs.
+	// left here in case someone needs to check the condition of a group for some weird reason.
+	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags")
+	bool CheckCondition(const FString& Expression, double& Res) const;
+
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UDataTable> Chars = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)

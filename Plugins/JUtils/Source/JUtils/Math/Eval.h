@@ -67,10 +67,12 @@ public:
 	bool UseSubsystem = true;
 #pragma endregion
 
-	// empty evaluates to (ok, 0)
-	// IsEmptyFailure: if the evaluation string is empty, will return: true:1, false:0 on res. 
+	// evals an expression.
+	// empty evaluates to (ok, 1)
+	// IsEmptySuccess: if the evaluation string is empty, will return: true:1, false:0 on res.
+	// return: true on no issues, false if there was a problem. says nothing about the result of the expression itself. empty is not an error.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	bool Eval(const FString& Exp, double& Res, const bool IsEmptyFailure = false) const;
+	bool Eval(const FString& Exp, double& Res, const bool IsEmptySuccess = true) const;
 
 	// called when a variable is needed. be sure to hook to this.
 	UPROPERTY(BlueprintReadWrite, Category=EvalMath)

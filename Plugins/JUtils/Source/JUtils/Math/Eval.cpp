@@ -63,9 +63,9 @@ bool UEval::DoesSupportWorldType(const EWorldType::Type WorldType) const {
 	return WorldType == EWorldType::Game || WorldType == EWorldType::PIE || WorldType == EWorldType::Editor;
 }
 
-bool UEval::Eval(const FString& Exp, double& Res, const bool IsEmptyFailure) const {
+bool UEval::Eval(const FString& Exp, double& Res, const bool IsEmptySuccess) const {
 	if (UNLIKELY(Exp.TrimStartAndEnd().IsEmpty())) {
-		Res = IsEmptyFailure ? 0 : 1;
+		Res = IsEmptySuccess ? 1 : 0;
 		return true;
 	}
 
