@@ -239,32 +239,39 @@ bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 }
 
 void UDiags::DiagSetEffects(const FDiag& Diag) {
-	// process the effects
-	// use a tmap to keep track of which was enabled or disabled.
-	TMap<FName, bool> EffectDiff;
-	EffectDiff.Reserve(Effects.Num()+Diag.Effects.Num());
-	
 	// turn old effects off
-	TArray<FName> OldEffects = Effects;
-	TArray<FName> NewEffects;
-	NewEffects.Reserve(Diag.Effects.Num());
-	Effects = Diag.Effects; // copy the new, important.
+	TArray<FName> EffectsOff; // = Effects;
+	TArray<FName> EffectsOn;
+	EffectsOn.Reserve(Diag.Effects.Num());
+	EffectsOff.Reserve(Diag.Effects.Num());
 	
-	for (const FName& N: Effects) {
-		// don't turn off the effects that are still on
-		// in that case no need to have it in the old, nor new effects.
-		if (UNLIKELY(OldEffects.RemoveSwap(N, EAllowShrinking::No)>0)) continue;
-		
-		NewEffects.Add(N);
+	for (const TPair<FName, bool>& Pair: Diag.Effects) {
+		if (Pair.Value) {
+			if (Effects.Contains(Pair.Key)) continue;
+
+			EffectsOn.AddUnique(Pair.Key); // mark as pending adding if it was there
+		} else {
+			if (Effects.RemoveSwap(Pair.Key, EAllowShrinking::No) < 1) continue;
+
+			EffectsOff.AddUnique(Pair.Key); // if it was there, then mark as pending removal
+		}
 	}
 
+	// Effects = Diag.Effects; // copy the new, important.
+	
+	// for (const FName& N: Effects) {
+		// don't turn off the effects that are still on
+		// in that case no need to have it in the old, nor new effects.
+		// if (UNLIKELY(EffectsOff.RemoveSwap(N, EAllowShrinking::No)>0)) continue;
+		
+		// EffectsOn.Add(N);
+	// }
+
 	// turning the events off first, then on. keeping that order is a feature.
-	for (const FName& N: OldEffects) {
+	for (const FName& N: EffectsOff)
 		OnEffect.Broadcast(N, false);
-	}
-	for (const FName& N: NewEffects) {
+	for (const FName& N: EffectsOn)
 		OnEffect.Broadcast(N, true);
-	}
 }
 
 void UDiags::ShowNext() {

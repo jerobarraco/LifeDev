@@ -41,9 +41,14 @@ enum class EGroupType : uint8 {
 };
 ENUM_RANGE_BY_COUNT(EGroupType, EGroupType::MAX);
 
-// not entirely comfortable with this approach. if i change my mind, check lstep.cpp
+// not entirely comfortable with this feature/approach. if i change my mind, check lstep.cpp
+// currently i use a tmap<name, bool> which means
+// * it's faster to look up, maybe not so much to traverse.
+// * con: i won't be able to add more fields easily
+// * pro: it's easier to see at a glance. the struct gets collapsed.
+// * pro: might be easier to work with
 // USTRUCT(Blueprintable, BlueprintType)
-// struct DIAGS_API FDiagEffect {
+// struct DIAGS_API FDiagEffect: public FTableRowBase {
 	// GENERATED_BODY()
 
 // public:
@@ -79,7 +84,7 @@ public:
 	// Experimental: effects triggered by this dialog. is up to you to implement each effect.
 	// DiagMan will call the function DoEffect whenever an effect is turned on or off.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FName> Effects;
+	TMap<FName, bool> Effects;
 };
 
 // The base structure for dialog group. For sequences, randoms, selections, etc.
