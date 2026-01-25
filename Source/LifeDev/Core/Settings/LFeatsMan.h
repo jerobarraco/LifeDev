@@ -23,7 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="O"))
 	static ALFeatsMan* Instance(const UObject* const O);
-	
+
+	UFUNCTION(BlueprintCallable)
+	void DoEffect(const FName& Name, const bool bEnable);
+
 	// Called by LGGameMode
 	UFUNCTION(meta=(AdvancedDisplay))
 	virtual void Init();

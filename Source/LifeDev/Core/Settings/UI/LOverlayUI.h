@@ -7,6 +7,7 @@
 
 class UImage;
 
+// a ui root for things that show in an overlay. like the save icon.
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LIFEDEV_API ULOverlayUI: public UBaseUI {
 	GENERATED_BODY()

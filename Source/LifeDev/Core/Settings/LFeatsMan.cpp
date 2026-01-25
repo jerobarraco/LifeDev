@@ -78,6 +78,10 @@ ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 	return Cast<ALFeatsMan>(UGameplayStatics::GetActorOfClass(World, ALFeatsMan::StaticClass()));
 }
 
+void ALFeatsMan::DoEffect(const FName& Name, const bool bEnable) {
+	// TODO
+}
+
 void ALFeatsMan::LoadMPC() {
 	const UWorld* const W = GetWorld();
 	if (UNLIKELY(!W)) return;
@@ -151,6 +155,10 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		SettingsUI->RemoveFromParent();
 	}
 
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags))
+		Diags->OnEffect.RemoveAll(this);
+	
 	if (LIKELY(OverlayUI)) OverlayUI->RemoveFromParent();
 	SettingsUI = nullptr;
 	OverlayUI = nullptr;
@@ -166,6 +174,9 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 void ALFeatsMan::Init() {
+	LoadFeats(); // good to load the features before binding. to ensure events gets filtered correctly
+	if (LIKELY(OverlayUI)) OverlayUI->Show();
+
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
 		Settings->OnFeatUpdateUnreal.AddUniqueDynamic(this, &ALFeatsMan::FeatUpUnreal);
@@ -179,8 +190,6 @@ void ALFeatsMan::Init() {
 		Eval->OnSetVarId.BindDynamic(this, &ALFeatsMan::SetVarId);
 	}
 
-	LoadFeats();
-
 	// foxify inventory cool down
 	UInventory* const Inv = UInventory::Instance(this);
 	const UFlags* const Flags = UFlags::Instance(this);
@@ -190,8 +199,11 @@ void ALFeatsMan::Init() {
 		Inv->SetCoolDownFactor(FoxyFact);
 	}
 
-	if (LIKELY(OverlayUI)) OverlayUI->Show();
-
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags))
+		Diags->OnEffect.AddUniqueDynamic(this, &ThisClass::DoEffect);
+	
+	// input at last
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input))
 		Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);

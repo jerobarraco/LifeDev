@@ -54,6 +54,7 @@ void ALDiagMan::Init_Implementation() {
 void ALDiagMan::DoEffect_Implementation(const FName& Name, const bool Enabled) {
 	Super::DoEffect_Implementation(Name, Enabled);
 	// TODO*
+	// TODO not sure if this is the best place to listen for effect, or i should use the FeatMan
 }
 
 void ALDiagMan::Show_Implementation(const FDiag& Diag) {
