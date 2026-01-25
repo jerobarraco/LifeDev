@@ -78,7 +78,11 @@ ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 
 void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
 	// TODO
-	if (Name == "Ghosts") {
+	static const FName N_Ghosts("Ghosts");
+	// TODO think of putting it somewher. if only i had a const file. like an ldconsts.....
+	// this comparison is much faster. at the cost of storing the static const
+	
+	if (Name == N_Ghosts) {
 		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
 	} else if (Name == "Rain") {
 		if (GM && GM->MusicMan) GM->MusicMan->SetRain(Enable);
