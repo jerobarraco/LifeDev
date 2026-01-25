@@ -144,7 +144,6 @@ void ALGGameMode::Spawn() {
 	FlashbackMan = Cast<AFlashbackMan>(World->SpawnActor(AFlashbackMan::StaticClass()));
 	FeatsMan = Cast<ALFeatsMan>(World->SpawnActor(ALFeatsMan::StaticClass()));
 	TeachMan = Cast<ALTeachMan>(World->SpawnActor(ALTeachMan::StaticClass()));
-	Ghosts = Cast<AGhostPool>(World->SpawnActor(AGhostPool::StaticClass())); // does not need to be here. could be on the featsman
 }
 
 void ALGGameMode::Init() {
@@ -305,8 +304,6 @@ void ALGGameMode::Init() {
 		FeatsMan->ZOrder = 111;
 		FeatsMan->Init();
 	}
-
-	if (LIKELY(Ghosts)) Ghosts->Init();
 #pragma endregion
 
 	// start listening only here. in case the previous init might trigger a false one
@@ -349,16 +346,16 @@ void ALGGameMode::SetTempInputEnabled(const bool Enabled) const {
 }
 
 ALGGameMode* ALGGameMode::Instance(const UObject* const O) {
-	const UWorld* const World = O? O->GetWorld(): nullptr;
+	const UWorld* const World = LIKELY(IsValid(O)) ? O->GetWorld(): nullptr;
 	if (UNLIKELY(!IsValid(World))) return nullptr;
 
 	AGameModeBase* const AuthGameMode = World->GetAuthGameMode();
-	if (UNLIKELY(!IsValid(AuthGameMode))) return nullptr;
+	// if (UNLIKELY(!IsValid(AuthGameMode))) return nullptr; // not necessary, cast won't crash.
 	
-	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(AuthGameMode);
-	if (UNLIKELY(!IsValid(LGGameMode))) return nullptr;
+	ALGGameMode* const Mode = Cast<ALGGameMode>(AuthGameMode);
+	if (UNLIKELY(!IsValid(Mode))) return nullptr;
 
-	return LGGameMode;
+	return Mode;
 }
 
 void ALGGameMode::DeInit() {
@@ -372,33 +369,29 @@ void ALGGameMode::DeInit() {
 
 	if (LIKELY(IsValid(Story))) Story->OnFade.RemoveAll(this);
 
-	if (LIKELY(IsValid(Char))) Char->DeInit();
-	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
-	if (LIKELY(IsValid(TeachMan))) TeachMan->DeInit();
-	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
-	if (LIKELY(IsValid(InventoryMan))) InventoryMan->DeInit();
-	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
-
-	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
-	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
-
 	if (LIKELY(IsValid(Diags))) {
 		Diags->OnShow.RemoveAll(this);
 		Diags->OnDone.RemoveAll(this);
 		Diags->DeInit();
 	}
 
+	// probably won't get a chance to fade since the game mode is ending. but for sake of completion.
+	if (LIKELY(IsValid(MusicMan))) MusicMan->Fade(false);
+	if (LIKELY(IsValid(Char))) Char->DeInit();
+	if (LIKELY(IsValid(TeachMan))) TeachMan->DeInit();
+	if (LIKELY(IsValid(DiagMan))) DiagMan->DeInit();
+	if (LIKELY(IsValid(InventoryMan))) InventoryMan->DeInit();
+	if (LIKELY(IsValid(StoryMan))) StoryMan->DeInit();
+	if (LIKELY(IsValid(FeatsMan))) FeatsMan->DeInit();
 	if (LIKELY(IsValid(Inventory))) Inventory->DeInit();
-	
 	if (LIKELY(IsValid(Flags))) Flags->DeInit();
-	
+
 	USentry* const Sentry = USentry::Instance(this);
 	if (LIKELY(Sentry)) Sentry->GameDeInit();
 
 	// nullify at end in case someone tries to reference them
 	Eval = nullptr;
 	Char = nullptr;
-	Ghosts = nullptr;
 	TeachMan = nullptr;
 	DiagMan = nullptr;
 	InventoryMan = nullptr;
@@ -411,6 +404,7 @@ void ALGGameMode::DeInit() {
 	Story = nullptr;
 	Flashback = nullptr;
 	Settings = nullptr; // no deinit. it's a gameinstance subystem
+	FeatsMan = nullptr;
 }
 
 void ALGGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {

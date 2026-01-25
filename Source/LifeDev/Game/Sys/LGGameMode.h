@@ -86,8 +86,6 @@ public:
 	// post process, the featsman needs it
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<AGhostPool> Ghosts = nullptr;
 #pragma endregion
 #pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)

@@ -32,6 +32,7 @@
 #include "LSettings.h"
 #include "LSettingsUI.h"
 #include "LifeDev/Game/Char/CLCharArm.h"
+#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogLFeatsMan, Log, Log);
 
@@ -66,20 +67,19 @@ ALFeatsMan::ALFeatsMan() {
 }
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
-	if (UNLIKELY(!IsValid(O))) return nullptr;
-
-	const UWorld* const World = O->GetWorld();
-	if (UNLIKELY(!IsValid(World))) return nullptr;
-
-	const ALGGameMode* const Mode = Cast<ALGGameMode>(World->GetAuthGameMode());
+	const ALGGameMode* const Mode = ALGGameMode::Instance(O);
 	if (LIKELY(IsValid(Mode)))
 		return Mode->FeatsMan;
 
-	return Cast<ALFeatsMan>(UGameplayStatics::GetActorOfClass(World, ALFeatsMan::StaticClass()));
+	return Cast<ALFeatsMan>(
+		UGameplayStatics::GetActorOfClass(O->GetWorld(), ALFeatsMan::StaticClass()));
 }
 
-void ALFeatsMan::DoEffect(const FName& Name, const bool bEnable) {
+void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
 	// TODO
+	if (Name == "Ghosts") {
+		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
+	}
 }
 
 void ALFeatsMan::LoadMPC() {
@@ -129,9 +129,11 @@ void ALFeatsMan::BeginPlay() {
 			MenuDone(); // hide
 		}
 	}
+	Ghosts = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
 }
 
-void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+void ALFeatsMan::DeInit() {
+	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
 	UJUtilsInput::ToggleContext(this, Context, -1, false);
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
@@ -160,6 +162,13 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 		Diags->OnEffect.RemoveAll(this);
 	
 	if (LIKELY(OverlayUI)) OverlayUI->RemoveFromParent();
+	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
+	Ghosts = nullptr;
+}
+
+void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
+	DeInit();
+
 	SettingsUI = nullptr;
 	OverlayUI = nullptr;
 	GM = nullptr;
@@ -176,6 +185,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 void ALFeatsMan::Init() {
 	LoadFeats(); // good to load the features before binding. to ensure events gets filtered correctly
 	if (LIKELY(OverlayUI)) OverlayUI->Show();
+	if (LIKELY(Ghosts)) Ghosts->Init();
 
 	if (LIKELY(Settings)) {
 		Settings->OnFeatUpdateVisual.AddUniqueDynamic(this, &ALFeatsMan::FeatUpVisual);
@@ -209,6 +219,7 @@ void ALFeatsMan::Init() {
 		Input->BindAction(ActionMenu, ETriggerEvent::Triggered, this, &ALFeatsMan::ActMenu);
 	UJUtilsInput::ToggleContext(this, Context, InputPrio, true);
 }
+
 
 void ALFeatsMan::ActMenu() { // no const
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);

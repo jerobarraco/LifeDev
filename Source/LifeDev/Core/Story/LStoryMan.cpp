@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "LifeDev/Core/LGameInstance.h"
 #include "LifeDev/Core/Sentry.h"
+#include "LifeDev/Core/Settings/LFeatsMan.h"
 #include "LifeDev/Core/Settings/LSave.h"
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Settings/LSysSettings.h"
@@ -55,10 +56,11 @@ void ALStoryMan::Init_Implementation() {
 	const ALGGameMode* const GM = ALGGameMode::Instance(this);
 	UE_CLOG(UNLIKELY(!GM), LogLStoryMan, Warning, TEXT("%hs Could not get the game mode."), __func__);
 
-	Ghosts = LIKELY(GM) ? GM->Ghosts : nullptr;
+	const ALFeatsMan* const Feats = ALFeatsMan::Instance(this);
+	Ghosts = LIKELY(Feats) ? Feats->Ghosts : nullptr;
 	UE_CLOG(UNLIKELY(!Ghosts), LogLStoryMan, Warning, TEXT("%hs Could not get the ghosts."), __func__);
 
-	MusicMan = LIKELY(GM) ? GM->MusicMan : nullptr;
+	MusicMan = LIKELY(GM) ? GM->MusicMan : nullptr; // should i move the music man to the feats?
 	UE_CLOG(UNLIKELY(!MusicMan), LogLStoryMan, Warning, TEXT("%hs Could not get the music manager."), __func__);
 	
 	if (LIKELY(Story)) Story->OnSeqStop.AddUniqueDynamic(this, &ALStoryMan::ChapStartNext);

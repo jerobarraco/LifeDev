@@ -12,6 +12,7 @@ class ULOverlayUI;
 class ULSettings;
 class UEval;
 class ALGGameMode;
+class AGhostPool;
 
 // Handles feat changes and init for things that can't do it themselves ONLY
 UCLASS(Blueprintable, Config=LifeDev, DefaultConfig)
@@ -25,11 +26,13 @@ public:
 	static ALFeatsMan* Instance(const UObject* const O);
 
 	UFUNCTION(BlueprintCallable)
-	void DoEffect(const FName& Name, const bool bEnable);
+	void DoEffect(const FName& Name, const bool Enable);
 
 	// Called by LGGameMode
-	UFUNCTION(meta=(AdvancedDisplay))
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
 	virtual void Init();
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay))
+	virtual void DeInit();
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	ULSettingsUI* GetSettingsUI() const { return SettingsUI; }
 
@@ -51,6 +54,9 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 111;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<AGhostPool> Ghosts = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
