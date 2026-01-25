@@ -31,6 +31,7 @@
 #include "UI/LOverlayUI.h"
 #include "LSettings.h"
 #include "LSettingsUI.h"
+#include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Char/CLCharArm.h"
 #include "LifeDev/Game/Env/Ghost/GhostPool.h"
 
@@ -79,6 +80,9 @@ void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
 	// TODO
 	if (Name == "Ghosts") {
 		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
+	} else if (Name == "Rain") {
+		// todo consider moving almusic man here like ghosts
+		ALMusicMan::SetRainS(this, Enable);
 	}
 }
 

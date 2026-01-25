@@ -154,6 +154,18 @@ bool UDiags::AddGroupId(const FName& RowName) {
 	return AddGroup(Seq);
 }
 
+void UDiags::SetEffect(const FName& Name, const bool Enable) {
+	if (Effects.Contains(Name) == Enable) return; // no change
+
+	if (Enable) {
+		Effects.Add(Name);
+	} else {
+		Effects.RemoveSwap(Name);
+	}
+
+	OnEffect.Broadcast(Name, Enable);
+}
+
 void UDiags::DiagDone() {
 	IsShowing = false;
 	ShowNext();
@@ -226,7 +238,7 @@ bool UDiags::GetGroup(const FName& RowName, FDiagGroup& OutGroup) const {
 	return false;
 }
 
-void UDiags::DoEffects(const FDiag& Diag) {
+void UDiags::DiagSetEffects(const FDiag& Diag) {
 	// process the effects
 	// use a tmap to keep track of which was enabled or disabled.
 	TMap<FName, bool> EffectDiff;
@@ -246,7 +258,7 @@ void UDiags::DoEffects(const FDiag& Diag) {
 		NewEffects.Add(N);
 	}
 
-	// turning the events off first, then on, it's a feature.
+	// turning the events off first, then on. keeping that order is a feature.
 	for (const FName& N: OldEffects) {
 		OnEffect.Broadcast(N, false);
 	}
@@ -272,7 +284,7 @@ void UDiags::ShowNext() {
 
 	OnShow.Broadcast(Diag);
 	
-	DoEffects(Diag);
+	DiagSetEffects(Diag);
 }
 
 void UDiags::Stop() {

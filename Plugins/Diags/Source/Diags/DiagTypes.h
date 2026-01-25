@@ -41,6 +41,18 @@ enum class EGroupType : uint8 {
 };
 ENUM_RANGE_BY_COUNT(EGroupType, EGroupType::MAX);
 
+// not entirely comfortable with this approach. if i change my mind, check lstep.cpp
+// USTRUCT(Blueprintable, BlueprintType)
+// struct DIAGS_API FDiagEffect {
+	// GENERATED_BODY()
+
+// public:
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// FName Name;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// bool Enable;
+// };
+
 // The base structure for dialogs.
 USTRUCT(Blueprintable, BlueprintType)
 struct DIAGS_API FDiag: public FTableRowBase {

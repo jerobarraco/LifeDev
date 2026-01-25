@@ -177,15 +177,15 @@ void ALMusicMan::SetFB(float V) {
 	SetEnvironFB(V);
 }
 
-void ALMusicMan::SetRainS(const UWorld* const W, const bool Play) {
-	const ALMusicMan* const MM = Instance(W);
+void ALMusicMan::SetRainS(const UObject* const O, const bool Play) {
+	const ALMusicMan* const MM = Instance(O);
 	if (UNLIKELY(!MM)) return;
 	
 	MM->SetRain(Play);
 }
 
-void ALMusicMan::FadeS(const UWorld* const W, const bool In) {
-	ALMusicMan* const MM = Instance(W);
+void ALMusicMan::FadeS(const UObject* const O, const bool In) {
+	ALMusicMan* const MM = Instance(O);
 	if (UNLIKELY(!MM)) return;
 
 	MM->Fade(In);

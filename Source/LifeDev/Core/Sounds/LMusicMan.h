@@ -25,10 +25,10 @@ public:
 	static ALMusicMan* Instance(const UObject* const O);
 
 	UFUNCTION(BlueprintCallable)
-	static void SetRainS(const UWorld* const W, const bool Play);
+	static void SetRainS(const UObject* const O, const bool Play);
 
 	UFUNCTION(BlueprintCallable)
-	static void FadeS(const UWorld* const W, const bool In=true);
+	static void FadeS(const UObject* const O, const bool In=true);
 
 	// Called by LGGameMode
 	void Init();

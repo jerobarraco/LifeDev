@@ -65,7 +65,7 @@ public:
 
 	// allows to force set an effect. mostly a utility for the future. if i start adding effects.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, Category="Diags", meta=(AdvancedDisplay))
-	FORCEINLINE void SetEffect(const FName& Name, const bool Enable) const { OnEffect.Broadcast(Name, Enable); }
+	void SetEffect(const FName& Name, const bool Enable);
 	
 	// called by the dialog manager when a dialogue is done showing
 	UFUNCTION(BlueprintCallable, Category="Diags", meta=(AdvancedDisplay))
@@ -120,7 +120,7 @@ public:
 protected:
 	void ShowNext();
 	void Stop();
-	void DoEffects(const FDiag& Diag);
+	void DiagSetEffects(const FDiag& Diag);
 	// Tests a Group's condition. Returns true if >0.
 	// See the Eval subsystem for docs.
 	// left here in case someone needs to check the condition of a group for some weird reason.

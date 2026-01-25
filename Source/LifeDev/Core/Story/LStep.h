@@ -9,6 +9,7 @@
 
 #include "LStep.generated.h"
 
+struct FDiag;
 class UCQuickMesh;
 class UCAnimatorTrans;
 class UCRandomizerFB;
@@ -114,6 +115,8 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> EnsureItems;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
+	TArray<FName> Effects;
 #pragma endregion
 
 protected:

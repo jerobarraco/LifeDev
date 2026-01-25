@@ -65,9 +65,20 @@ void ALStep::Stop_Implementation() {
 	if (LIKELY(Flags)) Flags->Mod(FName(LDConsts::Dlgs::Step::StopPre+Label.ToString()), 1);
 	DoRemoveItems();
 
-	const UWorld* const W = GetWorld();
-	if (UseRain) ALMusicMan::SetRainS(W, false);
+	// disables effects specified. this has a few side effects.
+	// * it makes it easy to manage effects, and reorder steps.
+	// * it makes it harder to have an effect that spans more than one step,
+	//	since it will stop and start on the same frame. or more frames if loading. beware.
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) {
+		for (const FName& N: Effects) {
+			if (Diags) Diags->SetEffect(N, false);
+		}
+	}
 
+	if (UseRain) ALMusicMan::SetRainS(this, false);
+
+	const UWorld* const W = GetWorld();
 	if (LIKELY(W)) { // call stop anyway (below)
 		APlayerController* const Controller = W->GetFirstPlayerController();
 		// restore possible rumble stuff. do it regardless of useGhosts and useRumble to ensure proper cleanup. 
@@ -103,10 +114,8 @@ void ALStep::TryStart_Implementation() {
 	// disable the input during camblend
 	// works on the premise that onStart it will force input again.
 	if (CamTarget) {
-		const UWorld* const W = GetWorld();
-		AGameModeBase* const GameModeBase = LIKELY(W) ? W->GetAuthGameMode() : nullptr;
-		ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
-		if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(false);
+		ALGGameMode* const Mode = ALGGameMode::Instance(this);
+		if (LIKELY(IsValid(Mode))) Mode->SetCharInputEnabled(false);
 	}
 }
 
@@ -130,13 +139,12 @@ void ALStep::Start_Implementation() {
 	// ensure to check if we already have the item. but not now to not affect the flow of child classes
 	W->GetTimerManager().SetTimerForNextTick(this, &ALStep::CheckFinish);
 	
-	AGameModeBase* const GameModeBase = W->GetAuthGameMode();
-	ALGGameMode* const LGGameMode = Cast<ALGGameMode>(GameModeBase);
+	ALGGameMode* const Mode = Cast<ALGGameMode>(W->GetAuthGameMode());
 	// ALGGameMode* const LGGameMode = ALGGameMode::Get(); // doesn't work
 	
 	// do only on postwait. otherwise the input is reset before it faded out.
 	// read note on TryStart. important to force.
-	if (LIKELY(IsValid(LGGameMode))) LGGameMode->SetCharInputEnabled(InputEnabled);
+	if (LIKELY(IsValid(Mode))) Mode->SetCharInputEnabled(InputEnabled);
 
 	if (UseGhosts) {
 		Ghosts = Cast<AGhosts>(W->SpawnActor(AGhosts::StaticClass()));
@@ -147,13 +155,20 @@ void ALStep::Start_Implementation() {
 		}
 	}
 
-	if (UseRain) ALMusicMan::SetRainS(W, true);
+	if (UseRain) ALMusicMan::SetRainS(this, true);
 	if (UseFBRand & LIKELY(IsValid(RandFB))) RandFB->Activate(true);
 	
 	DoIntersDeactive();
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
 	DoIntersTrigger(); // trigger after activate. and hint. (trigger could remove the hint, we should support that) 
+
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags)) {
+		for (const FName& N: Effects) {
+			if (Diags) Diags->SetEffect(N, true);
+		}
+	}
 
 	if (LIKELY(FB)) {
 		// it's ok to set it here. since fbupd is only bound here
