@@ -54,9 +54,13 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	int32 ZOrder = 111;
-	
+
+#pragma region cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<AGhostPool> Ghosts = nullptr;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
+	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
+#pragma endregion
 
 protected:
 	virtual void BeginPlay() override;
@@ -85,7 +89,7 @@ protected:
 	void SetVar(const FString& Name, const double Val);
 	UFUNCTION()
 	void SetVarId(const double NameID, const double Val);
-
+#pragma region setup
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TObjectPtr<UMaterialParameterCollection> MPC = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -103,17 +107,18 @@ protected:
 	int32 InputPrio = 3;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Config, Category=SetUp)
 	float ExposureFixed = 2;
+#pragma endregion
 
+#pragma region cache
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettingsUI> SettingsUI = nullptr;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ULOverlayUI> OverlayUI = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialParameterCollectionInstance> MPCI = nullptr;
-	UPROPERTY(Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialInterface> SpeedMat = nullptr;
-	UPROPERTY(Transient)
+	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<UMaterialInterface> FBMat = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ALGGameMode> GM = nullptr;
@@ -121,4 +126,5 @@ protected:
 	TObjectPtr<UEval> Eval = nullptr;
 	UPROPERTY(BlueprintReadOnly, Transient)
 	TObjectPtr<ULSettings> Settings = nullptr;
+#pragma endregion
 };

@@ -129,11 +129,16 @@ void ALFeatsMan::BeginPlay() {
 			MenuDone(); // hide
 		}
 	}
+	PostProcess = Cast<APostProcessVolume>(
+	UGameplayStatics::GetActorOfClass(W, APostProcessVolume::StaticClass()));
+	UE_CLOG(UNLIKELY(!PostProcess), LogLFeatsMan, Error,
+		TEXT("%hs Could not obtain the PostProcess volume."), __func__);
+	
 	Ghosts = Cast<AGhostPool>(W->SpawnActor(AGhostPool::StaticClass()));
 }
 
 void ALFeatsMan::DeInit() {
-	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
+
 	UJUtilsInput::ToggleContext(this, Context, -1, false);
 	UEnhancedInputComponent* const Input = UJUtilsInput::GetInput(this);
 	if (LIKELY(Input)) Input->ClearBindingsForObject(this);
@@ -146,31 +151,33 @@ void ALFeatsMan::DeInit() {
 		Settings->OnFeatUpdateDebug.RemoveAll(this);
 	}
 
+	UDiags* const Diags = UDiags::Instance(this);
+	if (LIKELY(Diags))
+		Diags->OnEffect.RemoveAll(this);
+	
 	if (LIKELY(Eval)) {
 		Eval->OnGetVar.Clear();
 		Eval->OnSetVar.Clear();
 		Eval->OnSetVarId.Clear();
 	}
 
+	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
+	Ghosts = nullptr;
+
 	if (LIKELY(IsValid(SettingsUI))) {
 		SettingsUI->OnDone.RemoveAll(this);
 		SettingsUI->RemoveFromParent();
 	}
+	SettingsUI = nullptr;
 
-	UDiags* const Diags = UDiags::Instance(this);
-	if (LIKELY(Diags))
-		Diags->OnEffect.RemoveAll(this);
-	
-	if (LIKELY(OverlayUI)) OverlayUI->RemoveFromParent();
-	if (LIKELY(IsValid(Ghosts))) Ghosts->Destroy();
-	Ghosts = nullptr;
+	if (LIKELY(IsValid(OverlayUI)))
+		OverlayUI->RemoveFromParent();
+	OverlayUI = nullptr;
 }
 
 void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	DeInit();
 
-	SettingsUI = nullptr;
-	OverlayUI = nullptr;
 	GM = nullptr;
 	MPCI = nullptr;
 	MPC = nullptr;
@@ -178,7 +185,7 @@ void ALFeatsMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	FBMat = nullptr;
 	Eval = nullptr;
 	Settings = nullptr;
-
+	PostProcess = nullptr;
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -262,7 +269,7 @@ void ALFeatsMan::LoadFeats() {
 }
 
 void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
-	if (UNLIKELY(!IsValid(GM) || UNLIKELY(!IsValid(GM->PostProcess)))) {
+	if (UNLIKELY(!IsValid(PostProcess))) {
 		UE_LOG(LogLFeatsMan, Warning, TEXT("%hs Could not find the post process or game mode!"), __func__);
 		const USentry* const Sentry = USentry::Instance(this);
 		if (LIKELY(Sentry)) Sentry->AddMsg("Could not find the post process or game mode.", ESentryLevel::Warning);
@@ -277,8 +284,7 @@ void ALFeatsMan::FeatUpVisual(const EFeat Feat, const bool Enabled) {
 	// disable lumen on runtime https://forums.unrealengine.com/t/is-there-a-way-to-add-an-option-to-enable-disable-lumen-for-in-game-settings/613756
 
 	// if i were to have an array of pointer i could get rid of all these branches
-	APostProcessVolume* const Post = GM->PostProcess;
-	struct FPostProcessSettings& Sets = Post->Settings;
+	FPostProcessSettings& Sets = PostProcess->Settings;
 	if (Feat == EFeat::V_LUMEN) {
 		// needed to allow the flag to override project settings
 		Sets.bOverride_DynamicGlobalIlluminationMethod = true;

@@ -83,9 +83,6 @@ public:
 #pragma region Cache
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
 	TObjectPtr<ALChar> Char = nullptr;
-	// post process, the featsman needs it
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Transient)
-	TObjectPtr<APostProcessVolume> PostProcess = nullptr;
 #pragma endregion
 #pragma region Subsystems
 	UPROPERTY(BlueprintReadOnly, Transient)

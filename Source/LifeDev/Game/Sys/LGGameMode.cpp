@@ -123,9 +123,6 @@ void ALGGameMode::Spawn() {
 	if (UNLIKELY(!IsValid(World))) return;
 
 	/// unrelated (done first since other things can depend on this)
-	PostProcess = Cast<APostProcessVolume>(
-		UGameplayStatics::GetActorOfClass(World, APostProcessVolume::StaticClass()));
-	UE_CLOG(UNLIKELY(!PostProcess), LogLGameMode, Error, TEXT("%hs Could not obtain the PostProcess volume."), __func__);
 	Char = Cast<ALChar>(UGameplayStatics::GetActorOfClass(World, ALChar::StaticClass()));
 	UE_CLOG(UNLIKELY(!Char), LogLGameMode, Error, TEXT("%hs Could not obtain the LCharacter!"), __func__);
 
