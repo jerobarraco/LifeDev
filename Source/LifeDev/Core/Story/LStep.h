@@ -115,6 +115,8 @@ public:
 	// items to ensure when starting. mostly for skipping chapters
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> EnsureItems;
+	// EXPERIMENTAL: Turn an effect on start, and turns it off at end.
+	// It's preferred to use the other flags instead of this. at least for now.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Items")
 	TArray<FName> Effects;
 #pragma endregion

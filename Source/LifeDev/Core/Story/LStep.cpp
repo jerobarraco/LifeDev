@@ -72,7 +72,7 @@ void ALStep::Stop_Implementation() {
 	UDiags* const Diags = UDiags::Instance(this);
 	if (LIKELY(Diags)) {
 		for (const FName& N: Effects) {
-			if (Diags) Diags->SetEffect(N, false);
+			Diags->SetEffect(N, false);
 		}
 	}
 
@@ -166,7 +166,7 @@ void ALStep::Start_Implementation() {
 	UDiags* const Diags = UDiags::Instance(this);
 	if (LIKELY(Diags)) {
 		for (const FName& N: Effects) {
-			if (Diags) Diags->SetEffect(N, true);
+			Diags->SetEffect(N, true);
 		}
 	}
 

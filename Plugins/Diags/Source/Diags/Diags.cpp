@@ -270,6 +270,7 @@ void UDiags::DiagSetEffects(const FDiag& Diag) {
 
 void UDiags::ShowNext() {
 	if (UNLIKELY(IsShowing)) return;
+
 	// this is important for stop to work correctly. and also in general
 	IsShowing = true;
 	
