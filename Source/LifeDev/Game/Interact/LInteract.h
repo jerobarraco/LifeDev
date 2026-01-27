@@ -23,17 +23,29 @@ public:
 #pragma region base
 	ALInteract();
 
-	// will fade in/out the object. also sets active by default.
-	// optionally will un/set the hidden flag.
-	// SetHidden is deprecated.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
-	void Fade(const bool FadeIn = false, const bool SetHidden=true);
-
+#pragma region override
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual void SetActive_Implementation(const bool Active = true) override;
 	virtual bool TryTrigger_Implementation() override;
 	// will fade if it's not constructing.
 	virtual void SetActorHiddenInGame(const bool NewHidden) override;
+#pragma endregion
+	// will fade in/out the object. also sets active by default.
+	// optionally will un/set the hidden flag.
+	// SetHidden is deprecated.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(UnsafeDuringActorConstruction, ForceAsFunction))
+	void Fade(const bool FadeIn = false, const bool SetHidden=true);
+	// Whether to use fade at all. if set it will *create* a dynamic material instance.
+	// uses the AnimFade object and what's set there.
+	// Remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
+	// By default, it's false. Other-wise it will cost performance.
+	// (will replace your material and incur in extra draw calls).
+	// Important to set it when using the Reward stuff and UseRewardDestroy.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	bool UseFade = false;
+	// will deactivate if already triggered. by checking the flags, on begin play.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
+	bool UseActiveOnce = false;
 	// will tweak the anim fps based on the fb.
 	// beware it can make a performance mess if there are too many interacts. 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
@@ -65,7 +77,10 @@ public:
 			// you might want to not destroy, then use UseRewardDestroy=false.
 		return Rewardless;
 	}
-
+	// whether to self-destroy when *rewarding* (only if rewards are set).
+	// if UseFade is true AND has something to reward, it will also fade.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	bool UseRewardDestroy = true;
 	// setting this will reward the item on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
@@ -78,21 +93,6 @@ public:
 	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TSoftObjectPtr<AActor> RewardActor = nullptr;
-	// whether to self-destroy when *rewarding* (only if rewards are set).
-	// if UseFade is true AND has something to reward, it will also fade.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseRewardDestroy = true;
-	// Whether to use fade at all. if set it will *create* a dynamic material instance.
-	// uses the AnimFade object and what's set there.
-	// Remember to call AnimFade->SetNewMat on the _constructor_ if you use the new material.
-	// By default, it's false. Other-wise it will cost performance.
-	// (will replace your material and incur in extra draw calls).
-	// Important to set it when using the Reward stuff and UseRewardDestroy.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
-	bool UseFade = false;
-	// will deactivate if already triggered. by checking the flags, on begin play.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Base")
-	bool UseActiveOnce = false;
 #pragma endregion
 #pragma region lock
 	virtual bool ShouldUnlock_Implementation() override;
@@ -121,7 +121,7 @@ protected:
 	virtual void DoTriggerLocked_Implementation() override;
 	virtual void Look_Implementation() override;
 #pragma endregion
-#pragma region Reward
+#pragma region reward
 	// triggered when something is rewarded. override to be notified.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void Rewarded();

@@ -71,6 +71,7 @@ protected:
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;
 
+	
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 	void AnimSet();
