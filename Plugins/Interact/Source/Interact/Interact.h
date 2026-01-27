@@ -302,6 +302,8 @@ protected:
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTriggerLocked();
+	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
+	void DoRewards();
 #pragma endregion
 
 #pragma region base
@@ -310,6 +312,7 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
 #pragma endregion
+
 #pragma region interaction
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.

@@ -422,7 +422,7 @@ void AInteract::DoTrigger_Implementation() {
 		__func__, *Label.ToString());
 
 	if (LIKELY(UseTriggerDeHint)) UseHint = false; // clear hint flag.
-
+	if (IsOneShot) SetActive(false);
 
 	// set the state before, so that the sound triggers are consistent
 	if (LIKELY(StateNum > 0)) { // mostly a fix.
@@ -434,6 +434,10 @@ void AInteract::DoTrigger_Implementation() {
 		SetState(NewState);
 	}
 
+	DoRewards();
+}
+
+void AInteract::DoRewards_Implementation() {
 	for(const TSoftObjectPtr<AInteract>& SI: RewardIntersActive) {
 		AInteract* const I = SI.Get();
 		if (LIKELY(IsValid(I)))
@@ -450,7 +454,7 @@ void AInteract::DoTrigger_Implementation() {
 		// this is the whole reason i've implemented this virtual method.
 		if (LIKELY(IsValid(I)))
 			I->SetUseHint(true);
-			// I->UseHint = true;
+		// I->UseHint = true;
 		else
 			UE_LOG(LogInteract, Warning, TEXT("%hs Actor is not valid."
 				" Potentially not loaded. O=%s"),
@@ -466,8 +470,6 @@ void AInteract::DoTrigger_Implementation() {
 				" Potentially not loaded. O=%s"),
 				__func__, *SI->GetPathName());
 	}
-
-	if (IsOneShot) SetActive(false);
 }
 
 void AInteract::PlaySFX(USoundBase* const Snd) const {
