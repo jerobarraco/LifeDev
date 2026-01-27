@@ -68,9 +68,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool IsRewardless() const {
 		const bool ZeroFlash = FMath::IsNearlyZero(RewardFlash);
+		const bool ZeroEffects = RewardEffects.Num() == 0;
 		// rewardActor==nullptr works because both TSoftObjectPtr and FSoftObjectPtr overrides ==nullptr
 		// i could have used IsNull, but this ties me a bit less to TSoftObjectPtr in particular.
-		const bool Rewardless = (ZeroFlash & (RewardActor == nullptr) &
+		const bool Rewardless = (ZeroFlash & ZeroEffects & (RewardActor == nullptr) &
 			RewardItem.IsNone() & (RewardIntersActive.Num() == 0) &
 			(RewardIntersHint.Num() == 0) & (RewardIntersTrigger.Num() == 0));
 			// note: use all rewards here. since it's confusing having to track which rewards destroys and which don't.
@@ -94,6 +95,9 @@ public:
 	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TSoftObjectPtr<AActor> RewardActor = nullptr;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
+	TMap<FName, bool> RewardEffects;
 #pragma endregion
 
 #pragma region lock

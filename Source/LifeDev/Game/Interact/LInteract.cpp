@@ -201,10 +201,18 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 #pragma region rewards
 void ALInteract::DoRewards_Implementation() {
 	Super::DoRewards_Implementation();
-	// i think i want this to happen _before_ the dialogs... i _think_.
-	// if (LIKELY(Diags)) Diags->SetEffect()
 	
-	// yes, this is a waste. but a "complete" waste. also for the future.
+	// i think i want these two to happen _before_ the dialogs... i _think_.
+	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
+	
+	if (LIKELY(Diags)) {
+		for (const TPair<FName, bool>& Pair: RewardEffects) {
+			Diags->SetEffect(Pair.Key, Pair.Value);
+		}
+	}
+
+	// yes, overriding and declaring this function this is a waste. but a "complete" waste.
+	// also for the future. maybe. probably not, i can't tell the future as much as i'd like.
 }
 
 void ALInteract::DoLDRewards_Implementation() {
@@ -232,8 +240,6 @@ void ALInteract::DoLDRewards_Implementation() {
 			// given this return will cancel the effect, do before the rest.
 		}
 	}
-
-	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
 
 	// do the actor
 	AActor* const RAct = RewardActor.Get();
