@@ -6,8 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "JUtilsUI.h"
-#include "LifeDev/Core/Settings/LSave.h"
-#include "LifeDev/Core/Settings/LSettings.h"
+#include "Inventory/Flags.h"
 
 #include "OutroUI.h"
 
@@ -33,9 +32,9 @@ void AOutroMan::AddUI() {
 	UI->AddToViewport();
 	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
 
-	const ULSettings* const Settings = ULSettings::Instance(World);
-	if (LIKELY(Settings) && Settings->Save)
-		UI->SetFlags(Settings->Save->GetFlags());
+	const UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Flags))
+		UI->SetFlags(Flags->GetAll());
 
 	UJUtilsUI::ShowUI(this, true, UI);
 }
