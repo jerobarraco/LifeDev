@@ -17,6 +17,10 @@ AOutroMan::AOutroMan():Super() {
 	UIClass = CUI.Class;
 }
 
+void AOutroMan::Init() {
+	AddUI();
+}
+
 void AOutroMan::AddUI() {
 	if (!UIClass || !UIClass.Get()) return;
 
@@ -67,11 +71,11 @@ void AOutroMan::Done(const int32 RetVal) {
 
 void AOutroMan::BeginPlay() {
 	Super::BeginPlay();
-	AddUI();
 }
 
 void AOutroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(UI)) UI->OnDone.RemoveAll(this);
+
 	UI = nullptr;
 	Super::EndPlay(EndPlayReason);
 }

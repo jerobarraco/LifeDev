@@ -13,6 +13,8 @@ class LIFEDEV_API AOutroMan : public AActor {
 public:
 	AOutroMan();
 
+	void Init();
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	TSubclassOf<UOutroUI> UIClass = nullptr;
 

@@ -27,10 +27,6 @@ void AOutroGameMode::BeginPlay() {
 
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
-	
-	/// managers
-	Manager = Cast<AOutroMan>(World->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
-	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 
 	/// load data
 	// i won't bother checking for the savestate and loading the data as it should be here already.
@@ -38,6 +34,10 @@ void AOutroGameMode::BeginPlay() {
 	if (Settings && Settings->Save)
 		Settings->Save->WriteSubsystems(this);
 	
+	/// spawn
+	Manager = Cast<AOutroMan>(World->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
+	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
+
 	/// init stuff
 	/// subsystems
 	UFlashback* const FB = UFlashback::Instance(World);
@@ -54,6 +54,8 @@ void AOutroGameMode::BeginPlay() {
 		MusicMan->Init(); // very important
 		MusicMan->Play(Music, false);
 	}
+
+	if (LIKELY(Manager)) Manager->Init();
 }
 
 void AOutroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
