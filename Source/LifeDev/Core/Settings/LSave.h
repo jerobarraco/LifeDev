@@ -33,8 +33,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
-	// this is just for internal use. you can also use the UFlags subsystem, but you need to make sure to writeSubsystems on load.
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AdvancedDisplay))
+	// this is just for internal use. use the UFlags subsystem
+	// you need to make sure to writeSubsystems on load of the level.
 	const TMap<FName, float>& GetFlags() { return SFlags; }
 
 	// the current chapter.

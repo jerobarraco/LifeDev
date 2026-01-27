@@ -56,6 +56,7 @@ void AOutroGameMode::BeginPlay() {
 	}
 
 	if (LIKELY(Manager)) Manager->Init();
+	// potentially init the items
 }
 
 void AOutroGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason) {
