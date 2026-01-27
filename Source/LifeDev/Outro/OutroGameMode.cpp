@@ -5,9 +5,13 @@
 #include "GameFramework/SpectatorPawn.h"
 #include "UObject/ConstructorHelpers.h"
 
-#include "OutroMan.h"
+#include "Inventory/Flags.h"
+
+#include "LifeDev/Core/Settings/LSave.h"
+#include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Core/Sounds/LMusicMan.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
+#include "OutroMan.h"
 
 AOutroGameMode::AOutroGameMode():Super() {
 	Super::SetActorTickEnabled(false);
@@ -24,15 +28,28 @@ void AOutroGameMode::BeginPlay() {
 	UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
 	
+	/// managers
 	Manager = Cast<AOutroMan>(World->SpawnActor<AOutroMan>(AOutroMan::StaticClass()));
 	MusicMan = Cast<ALMusicMan>(World->SpawnActor(ALMusicMan::StaticClass()));
 
+	/// load data
+	// i won't bother checking for the savestate and loading the data as it should be here already.
+	const ULSettings* const Settings = ULSettings::Instance(this);
+	if (Settings && Settings->Save)
+		Settings->Save->WriteSubsystems(this);
+	
+	/// init stuff
+	/// subsystems
 	UFlashback* const FB = UFlashback::Instance(World);
 	if (LIKELY(FB)) {
 		FB->Init();
 		FB->SetVal(1, 5);
 	}
-	
+
+	UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Flags)) Flags->Init();
+
+	/// managers
 	if (LIKELY(MusicMan)) {
 		MusicMan->Init(); // very important
 		MusicMan->Play(Music, false);
