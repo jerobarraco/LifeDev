@@ -40,14 +40,14 @@ void AOutroGameMode::BeginPlay() {
 
 	/// init stuff
 	/// subsystems
+	UFlags* const Flags = UFlags::Instance(this);
+	if (LIKELY(Flags)) Flags->Init();
+
 	UFlashback* const FB = UFlashback::Instance(World);
 	if (LIKELY(FB)) {
 		FB->Init();
 		FB->SetVal(1, 5);
 	}
-
-	UFlags* const Flags = UFlags::Instance(this);
-	if (LIKELY(Flags)) Flags->Init();
 
 	/// managers
 	if (LIKELY(MusicMan)) {
