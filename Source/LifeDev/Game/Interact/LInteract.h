@@ -56,6 +56,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Config, Category="SetUp|Base")
 	float FBAnimMax = 1/60.0;
 #pragma endregion
+
 #pragma region rewards
 	// returns true if this object is set to perform a reward and destroy.
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -71,7 +72,7 @@ public:
 		// i could have used IsNull, but this ties me a bit less to TSoftObjectPtr in particular.
 		const bool Rewardless = (ZeroFlash & (RewardActor == nullptr) &
 			RewardItem.IsNone() & (RewardIntersActive.Num() == 0) &
-			(RewardIntersHint.Num() == 0) & (RewardIntersTrigger.Num() ==0));
+			(RewardIntersHint.Num() == 0) & (RewardIntersTrigger.Num() == 0));
 			// note: use all rewards here. since it's confusing having to track which rewards destroys and which don't.
 			// you might want to mix rewards that destroys and don't, that's fine. The result is to destroy.
 			// you might want to not destroy, then use UseRewardDestroy=false.
@@ -94,6 +95,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TSoftObjectPtr<AActor> RewardActor = nullptr;
 #pragma endregion
+
 #pragma region lock
 	virtual bool ShouldUnlock_Implementation() override;
 	virtual void Unlock_Implementation() override;
@@ -122,6 +124,8 @@ protected:
 	virtual void Look_Implementation() override;
 #pragma endregion
 #pragma region reward
+	void DoRewards_Implementation() override;
+
 	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.
 	// Callable in case you want to do multiple rewards, in which case don't set UseRewardDestroy.
@@ -168,7 +172,6 @@ protected:
 // when true it will increase the state on each usage
 // UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 // bool UseStateInc = false;
-
 
 // not moving the reward stuff to another component.
 // No:  is not that much code. is almost always used. it will have overhead. it couples tightly with timings and such.

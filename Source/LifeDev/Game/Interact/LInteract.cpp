@@ -199,6 +199,14 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 #pragma region rewards
+void ALInteract::DoRewards_Implementation() {
+	Super::DoRewards_Implementation();
+	// i think i want this to happen _before_ the dialogs... i _think_.
+	// if (LIKELY(Diags)) Diags->SetEffect()
+	
+	// yes, this is a waste. but a "complete" waste. also for the future.
+}
+
 void ALInteract::DoLDRewards_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
 	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoLDRewards);
@@ -219,12 +227,12 @@ void ALInteract::DoLDRewards_Implementation() {
 		// return if we fail to reward
 		// for example on maxed-out (e.g. picked up consumables)
 		if (UNLIKELY(!IsValid(Inventory) || !Inventory->Mod(RewardItem, 1))) {
-			Fade(true); // faded before calling doRewards. fade will call setactive which is also needed.
+			Fade(true); // faded before calling doRewards. fade will call SetActive which is also needed.
 			return;
 			// given this return will cancel the effect, do before the rest.
 		}
 	}
-	
+
 	if (LIKELY(Flashback)) Flashback->ModVal(RewardFlash);
 
 	// do the actor
@@ -395,3 +403,4 @@ void ALInteract::Look_Implementation() {
 	// and the user might expect what i've done above.
 	Super::Look_Implementation();
 }
+

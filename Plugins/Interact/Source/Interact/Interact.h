@@ -302,6 +302,7 @@ protected:
 	// Override if you need to do something then.
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoTriggerLocked();
+	// process rewards. done inside DoTrigger. (i know it's a bit redundant, but for clarity)
 	UFUNCTION(BlueprintNativeEvent, Category=Interact, meta=(ForceAsFunction))
 	void DoRewards();
 #pragma endregion
