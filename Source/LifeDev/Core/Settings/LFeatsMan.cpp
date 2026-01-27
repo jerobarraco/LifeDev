@@ -70,21 +70,23 @@ ALFeatsMan::ALFeatsMan() {
 
 ALFeatsMan* ALFeatsMan::Instance(const UObject* const O) {
 	const ALGGameMode* const Mode = ALGGameMode::Instance(O);
-	if (LIKELY(IsValid(Mode)))
-		return Mode->FeatsMan;
+	if (LIKELY(IsValid(Mode))) return Mode->FeatsMan;
 
 	return Cast<ALFeatsMan>(
 		UGameplayStatics::GetActorOfClass(O->GetWorld(), ALFeatsMan::StaticClass()));
 }
 
 void ALFeatsMan::DoEffect(const FName& Name, const bool Enable) {
-	// TODO moar MOAR!
+	// TODO moar MOAR! (carefully though, i want to use it the less possible.
 	
 	if (Name == LDConsts::Effects::Ghosts) {
 		if (LIKELY(Ghosts)) Ghosts->SetActive(Enable);
 	} else if (Name == LDConsts::Effects::Rain) {
 		if (GM && GM->MusicMan) GM->MusicMan->SetRain(Enable);
+	} else if (Name == LDConsts::Effects::Rumble) {
+		// todo
 	}
+	// note, don't move the managers here. leave them in the gm.
 }
 
 void ALFeatsMan::LoadMPC() {

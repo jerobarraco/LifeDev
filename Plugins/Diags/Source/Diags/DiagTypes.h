@@ -81,8 +81,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	FString Comment = "";
 	
-	// Experimental: effects triggered by this dialog. is up to you to implement each effect.
+	// EXPERIMENTAL: effects triggered by this dialog. is up to you to implement each effect.
 	// DiagMan will call the function DoEffect whenever an effect is turned on or off.
+	// Try not to use it whenever possible.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	TMap<FName, bool> Effects;
 };

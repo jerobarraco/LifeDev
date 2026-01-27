@@ -8,5 +8,6 @@ namespace LDConsts {
 	namespace Effects {
 		inline static const FName Ghosts("Ghosts");
 		inline static const FName Rain("Rain");
+		inline static const FName Rumble("Rumble");
 	}
 }
