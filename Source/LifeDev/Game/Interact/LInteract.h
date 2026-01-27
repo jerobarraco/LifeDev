@@ -122,11 +122,6 @@ protected:
 	virtual void Look_Implementation() override;
 #pragma endregion
 #pragma region reward
-	// triggered when something is rewarded. override to be notified.
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void Rewarded();
-	virtual void Rewarded_Implementation() {}
-
 	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.
 	// exposed in case you want to do multiple rewards, in which case don't set UseRewardDestroy

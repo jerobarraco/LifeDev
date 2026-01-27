@@ -71,7 +71,9 @@ protected:
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;
 
-	
+	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
+	void XXX();
+
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 	void AnimSet();

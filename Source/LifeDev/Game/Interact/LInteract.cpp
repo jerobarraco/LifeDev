@@ -240,11 +240,8 @@ void ALInteract::DoRewards() {
 			__func__, *RewardActor->GetPathName());
 	}
 
-	/// rewards virtually done
+	///~ rewards virtually done
 
-	// trigger separately,
-	Rewarded();
-	
 	/// done: Process auto destroy. (do at the end.)
 
 	if (!UseRewardDestroy) return;
