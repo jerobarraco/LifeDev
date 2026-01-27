@@ -124,9 +124,10 @@ protected:
 #pragma region reward
 	// mostly internal. gives the rewards. if UseRewardDestroy it WILL self-destroy.
 	// it won't fade, you'll have to do it manually.
-	// exposed in case you want to do multiple rewards, in which case don't set UseRewardDestroy
-	UFUNCTION(BlueprintCallable)
-	void DoRewards();
+	// Callable in case you want to do multiple rewards, in which case don't set UseRewardDestroy.
+	// this gets called after the dialog is done.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
+	void DoLDRewards();
 
 	// called when the item reward fade ends. it WILL destroy the object.
 	UFUNCTION() // bound

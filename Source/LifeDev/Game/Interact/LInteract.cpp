@@ -199,9 +199,9 @@ void ALInteract::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 }
 
 #pragma region rewards
-void ALInteract::DoRewards() {
+void ALInteract::DoLDRewards_Implementation() {
 	UE_LOG(LogLInteract, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
-	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoRewards);
+	Diags->OnDone.RemoveDynamic(this, &ALInteract::DoLDRewards);
 
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
@@ -365,12 +365,12 @@ void ALInteract::DoTrigger_Implementation() {
 	if (LIKELY(IsValid(Diags))) {
 		// if there's a dialog. give rewards at the end of them.
 		// that way we can control the story better. it's easier to check for items than for dialogs.
-		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoRewards);
+		Diags->OnDone.AddUniqueDynamic(this, &ALInteract::DoLDRewards);
 		DiagsShown = Diags->AddId(TName);
 	}
 
 	// ensure we reward or the player could get locked
-	if (!DiagsShown) DoRewards();
+	if (!DiagsShown) DoLDRewards();
 }
 
 void ALInteract::DoTriggerLocked_Implementation() {
