@@ -310,7 +310,7 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostActorCreated() override;
 #pragma endregion
-
+#pragma region interaction
 	// called when the object actually gets triggered. and dispatches the delegate.
 	// TryTrigger is preferred. unless you want to skip the checks.
 	FORCEINLINE void Trigger() {
@@ -336,11 +336,9 @@ protected:
 	// This is quite a complex interaction that's why it's protected.
 	UFUNCTION()
 	void Grab(const bool IsGrab, UCInteractor* const NewParent);
-	
-	// test function.
-	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
-	void SetInteractAutoBounds();
+#pragma endregion
 
+#pragma region play
 	// plays a sound using the SFX object.
 	// Unless UseAttachedSFX is false, in which case it plays a sound at the location of the sfx object.
 	UFUNCTION(BlueprintCallable, Category=Interact)
@@ -349,10 +347,15 @@ protected:
 	void PlayParts(UNiagaraSystem* const Part) const;
 	UFUNCTION(BlueprintCallable, Category=Interact)
 	void PlayRumble(UForceFeedbackEffect* const Rumble) const;
+#pragma endregion
 
+	// test function.
+	UFUNCTION(BlueprintCallable, CallInEditor, Category="Interact", meta=(DeprecatedFunction))
+	void SetInteractAutoBounds();
 	void InitLabel();
 	FORCEINLINE void EditorLabelUpd(AActor* const Actor);
 
+#pragma region setup
 	// The state (index) of the Interact.
 	// it increases with every trigger. wraps by stateNum. so it's 0<=State<StateNum
 	// will be used by the puzzle and the interactanim, but also you can use it however you want.
@@ -363,6 +366,7 @@ protected:
 	// whether to show hints or not. Check "UseHintCondition", and "UseTriggerDeHint".
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Hint")
 	bool UseHint = false;
+#pragma endregion
 
 	FTimerHandle HintTimer;
 
