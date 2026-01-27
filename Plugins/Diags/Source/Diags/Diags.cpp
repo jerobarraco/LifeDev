@@ -243,29 +243,23 @@ void UDiags::DiagSetEffects(const FDiag& Diag) {
 	TArray<FName> EffectsOff; // = Effects;
 	TArray<FName> EffectsOn;
 	EffectsOn.Reserve(Diag.Effects.Num());
-	EffectsOff.Reserve(Diag.Effects.Num());
+	EffectsOff.Reserve(Effects.Num());
 	
 	for (const TPair<FName, bool>& Pair: Diag.Effects) {
 		if (Pair.Value) {
-			if (Effects.Contains(Pair.Key)) continue;
+			// try to add. mark as pending adding if it wasn't there
+			if (LIKELY(Effects.AddUnique(Pair.Key)<0)) continue;
 
-			EffectsOn.AddUnique(Pair.Key); // mark as pending adding if it was there
+			EffectsOn.AddUnique(Pair.Key);
 		} else {
+			// if it was there, then mark as pending removal
 			if (Effects.RemoveSwap(Pair.Key, EAllowShrinking::No) < 1) continue;
 
-			EffectsOff.AddUnique(Pair.Key); // if it was there, then mark as pending removal
+			EffectsOff.AddUnique(Pair.Key);
 		}
 	}
 
-	// Effects = Diag.Effects; // copy the new, important.
-	
-	// for (const FName& N: Effects) {
-		// don't turn off the effects that are still on
-		// in that case no need to have it in the old, nor new effects.
-		// if (UNLIKELY(EffectsOff.RemoveSwap(N, EAllowShrinking::No)>0)) continue;
-		
-		// EffectsOn.Add(N);
-	// }
+	Effects.Shrink(); // shrink at the end
 
 	// turning the events off first, then on. keeping that order is a feature.
 	for (const FName& N: EffectsOff)
@@ -296,8 +290,8 @@ void UDiags::ShowNext() {
 
 void UDiags::Stop() {
 	if (UNLIKELY(!IsShowing)) return;
-	IsShowing = false;
 
+	IsShowing = false;
 	OnDone.Broadcast();
 }
 

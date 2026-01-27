@@ -11,7 +11,6 @@ enum class EDiagType : uint8 {
 	WHISPER,
 	GROUP,
 	MISTERY,
-	// TODO idea: you can use this one to trigger events. if you ignore them on the ui.
 	SYSTEM,
 	MAX UMETA(Hidden)
 };
@@ -47,6 +46,7 @@ ENUM_RANGE_BY_COUNT(EGroupType, EGroupType::MAX);
 // * con: i won't be able to add more fields easily
 // * pro: it's easier to see at a glance. the struct gets collapsed.
 // * pro: might be easier to work with
+// * pro: i can't add the same effect twice by mistake
 // USTRUCT(Blueprintable, BlueprintType)
 // struct DIAGS_API FDiagEffect: public FTableRowBase {
 	// GENERATED_BODY()
@@ -83,7 +83,7 @@ public:
 	
 	// Experimental: effects triggered by this dialog. is up to you to implement each effect.
 	// DiagMan will call the function DoEffect whenever an effect is turned on or off.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, AssetRegistrySearchable)
 	TMap<FName, bool> Effects;
 };
 
