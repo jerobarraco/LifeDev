@@ -86,16 +86,14 @@ public:
 	// setting this will reward the item on trigger.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward", AssetRegistrySearchable)
 	FName RewardItem = NAME_None;
-
 	// the mod value for the flash system when it's triggered.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	float RewardFlash = 0;
-
 	// An actor to reward. Will be set hidden on begin play, and unhide on reward.
 	// will fade if it's an LInteract.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TSoftObjectPtr<AActor> RewardActor = nullptr;
-	
+	// dialog effects to reward. they reward before the dialogs
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Reward")
 	TMap<FName, bool> RewardEffects;
 #pragma endregion

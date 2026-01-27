@@ -65,15 +65,15 @@ public:
 	FAInteractOnTrigger OnAnimEnd;
 
 protected:
+#pragma region overrides
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetState_Implementation(const int32 NewState) override;
 	virtual bool TryTrigger_Implementation() override;
 	virtual void DoTrigger_Implementation() override;
+#pragma endregion
 
-	UFUNCTION(BlueprintNativeEvent, meta=(ForceAsFunction))
-	void XXX();
-
+#pragma region anim
 	// triggers the animation. checks some flags first.
 	void AnimPlay();
 	void AnimSet();
@@ -88,10 +88,11 @@ protected:
 	// Called when the animation end. It gets called each loop.
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, meta=(ForceAsFunction)) // bound
 	void AnimEnd();
-	
+
 	// The animator, by default set up for the mesh material and iroot.
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 	TObjectPtr<UCAnimatorMix> Anim = nullptr;
+#pragma endregion
 };
 
 
