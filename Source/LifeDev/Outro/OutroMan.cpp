@@ -33,8 +33,7 @@ void AOutroMan::AddUI() {
 	UI->OnDoneVal.AddUniqueDynamic(this, &AOutroMan::Done);
 
 	const UFlags* const Flags = UFlags::Instance(this);
-	if (LIKELY(Flags))
-		UI->SetFlags(Flags->GetAll());
+	if (LIKELY(Flags)) UI->SetFlags(Flags->GetAll());
 
 	UJUtilsUI::ShowUI(this, true, UI);
 }

@@ -85,12 +85,6 @@ void ULSettings::SaveGame(const int32 NewSlotIndex, const bool WithInventory) {
 		return;
 	}
 
-	if (UNLIKELY(!GetFeat(EFeat::G_SAVE))) {
-		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. Savegame feature flag is unset. Stop."), __func__);
-		SetIsSaving(false); // technically done. important or objects might get stuck (gamemode)
-		return;
-	}
-
 	if (UNLIKELY(!Save)) {
 		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. No savegame to save. Stop"), __func__);
 		SetIsSaving(false); // technically done. important or objects might get stuck (gamemode)
@@ -110,6 +104,15 @@ void ULSettings::SaveGame(const int32 NewSlotIndex, const bool WithInventory) {
 		*SlotName, WithInventory);
 
 	Save->ReadSubsystems(this, WithInventory);
+
+	// if savegame is disabled. don't actually save to disk. still keep the savegame working "as if" in memory.
+	// so that other object can also work "as if".
+	if (UNLIKELY(!GetFeat(EFeat::G_SAVE))) {
+		UE_LOG(LogLSettings, Warning, TEXT("%hs Save game aborted. Savegame feature flag is unset. Skip"), __func__);
+		// technically done. important or objects might get stuck (gamemode)
+		SaveGameDone(SlotName, 0, true); 
+		return;
+	}
 
 	FAsyncSaveGameToSlotDelegate OnSaveGameDone;
 	OnSaveGameDone.BindUObject(this, &ULSettings::SaveGameDone);
