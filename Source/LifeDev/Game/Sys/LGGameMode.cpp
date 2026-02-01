@@ -38,7 +38,6 @@
 #include "LifeDev/Game/Char/LChar.h"
 #include "LifeDev/Game/Char/LPController.h"
 #include "LifeDev/Game/Dialogs/LDiagMan.h"
-#include "LifeDev/Game/Env/Ghost/GhostPool.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 #include "LifeDev/Game/Flashback/FlashbackMan.h"
 #include "LifeDev/Game/Inventory/LInventoryMan.h"
