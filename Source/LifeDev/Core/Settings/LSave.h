@@ -38,7 +38,7 @@ public:
 	const TMap<FName, float>& GetFlags() { return SFlags; }
 
 	// the current chapter.
-	// it will save the chapterid past the last.
+	// it will save the chapterId past the last.
 	// why? because that way i can differentiate someone who's playing the last chapter and someone that finished the game.
 	// Settings->GetChapterFeat will return C_DONE
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

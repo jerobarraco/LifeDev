@@ -160,7 +160,7 @@ void ALGGameMode::Init() {
 	/// set input mode
 	// this is critical or the dialogs will break
 	APlayerController* const Controller = UGameplayStatics::GetPlayerController(World, 0);
-	// these are not needed since we are using the input actions
+	// these are not needed since we are using the input actions*
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Controller, true);
 	Controller->bShowMouseCursor = false;
 
