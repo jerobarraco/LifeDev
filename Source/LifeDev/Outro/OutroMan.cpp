@@ -43,7 +43,9 @@ void AOutroMan::Quit() const {
 	if (UNLIKELY(!World)) return;
 
 	UKismetSystemLibrary::QuitGame(
-		World, World->GetFirstPlayerController(), EQuitPreference::Quit, false);
+		World, nullptr, EQuitPreference::Quit, false);
+	// this one kills the game, and also the editor if in pie.
+	// FGenericPlatformMisc::RequestExit(false);
 }
 
 void AOutroMan::Retry() const {

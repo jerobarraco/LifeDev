@@ -6,13 +6,15 @@
 
 #include "JButton.h"
 #include "MsgBox.h"
+#include "JUtils/Misc/JUtilsSys.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "LifeDev/Core/Settings/UI/LSaveGroup.h"
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
 	if (UNLIKELY(!MsgBox)) return;
-	static TArray<FText> Texts = {	NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
+	static TArray<FText> Btns = {	NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
 	
-	MsgBox->SetUp(Msg, Texts);
+	MsgBox->SetUp(Msg, Btns);
 	MsgBox->Show();
 }
 
@@ -37,11 +39,12 @@ void UIntroUI::NativeOnInitialized() {
 	}
 	if (LIKELY(BtnDone)) {
 		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnDone", "Start"), -1);
-		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::DoQuit);
+		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
 	}
+
 	if (LIKELY(BtnQuit)) {
 		BtnQuit->SetUp(NSLOCTEXT("Intro", "BtnQuit", "Quit"), -1);
-		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
+		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::DoQuit);
 	}
 
 	if (LIKELY(SaveGroup)) {
@@ -56,7 +59,10 @@ void UIntroUI::NativeDestruct() {
 }
 
 void UIntroUI::DoQuit(const int32 Id) {
-	FGenericPlatformMisc::RequestExit(false);
+	ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?")); // todo add buttons and hook to callback
+
+	UKismetSystemLibrary::QuitGame(this, nullptr,
+		EQuitPreference::Quit, false);
 }
 
 void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
