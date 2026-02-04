@@ -33,10 +33,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int32 ItemsNum() const { return SInventory.Num(); }
 
-	// this is just for internal use. use the UFlags subsystem
-	// you need to make sure to writeSubsystems on load of the level.
-	const TMap<FName, float>& GetFlags() { return SFlags; }
-
 	// the current chapter.
 	// it will save the chapterId past the last.
 	// why? because that way i can differentiate someone who's playing the last chapter and someone that finished the game.

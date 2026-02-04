@@ -62,7 +62,8 @@ UEnhancedInputUserSettings* UJUtilsInput::GetInputSettings(const UObject* const 
 
 UEnhancedPlayerMappableKeyProfile* UJUtilsInput::GetInputProfile(const UObject* const O) {
 	const UEnhancedInputUserSettings* const Settings = GetInputSettings(O);
-	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ? Settings->GetActiveKeyProfile() : nullptr;
+	UEnhancedPlayerMappableKeyProfile* const Profile = LIKELY(Settings) ?
+		Settings->GetActiveKeyProfile() : nullptr;
 	UE_CLOG(!Profile, LogTemp, Warning, TEXT("%hs Could not get the current EnhancedPlayerMappableKeyProfile"), __func__);
 	return Profile;
 }
