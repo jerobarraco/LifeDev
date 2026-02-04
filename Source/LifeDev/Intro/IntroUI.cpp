@@ -43,7 +43,7 @@ void UIntroUI::NativeOnInitialized() {
 
 	if (LIKELY(BtnQuit)) {
 		BtnQuit->SetUp(NSLOCTEXT("Intro", "BtnQuit", "Quit"), -1);
-		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::DoQuit);
+		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::DoDoneMsg);
 	}
 
 	if (LIKELY(SaveGroup)) {
@@ -57,13 +57,30 @@ void UIntroUI::NativeDestruct() {
 	Super::NativeDestruct();
 }
 
-void UIntroUI::DoQuit(const int32 Id) {
-	ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?"), {}); // todo add buttons and hook to callback
+void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
+	OnSlotsDone.Broadcast(HasDoneSave);
+}
+
+void UIntroUI::DoDoneMsg(const int32 Id) {
+	if (LIKELY(MsgBox)) {
+		ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?"), {
+			NSLOCTEXT("Intro", "QuitPrompt_Yes", "Yes"),
+			NSLOCTEXT("Intro", "QuitPrompt_No", "No")
+		});
+		MsgBox->OnDoneVal.AddUniqueDynamic(this, &ThisClass::DoMsgClose);
+	} else {
+		DoMsgClose(0);
+	}
+}
+
+void UIntroUI::DoMsgClose(const int32 RetVal) {
+	if (LIKELY(MsgBox)) 
+		MsgBox->OnDoneVal.RemoveDynamic(this, &ThisClass::DoMsgClose);
+
+	if (RetVal == 1) {
+		return;
+	}
 
 	UKismetSystemLibrary::QuitGame(this, nullptr,
 		EQuitPreference::Quit, false);
-}
-
-void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
-	OnSlotsDone.Broadcast(HasDoneSave);
 }

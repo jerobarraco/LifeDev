@@ -59,7 +59,7 @@ void AIntroMan::Done() {
 				"Savegame was erroneous and a new one could not be created.\n"
 				"No idea what went wrong, check the logs if any.\n"
 				"Sorry."));
-			UI->ShowMsg(TheEnd);
+			UI->ShowMsg(TheEnd, {});
 			return;
 		}
 	}
@@ -74,7 +74,7 @@ void AIntroMan::Done() {
 				"This save is at the end.\n"
 				"Maybe in a distant future i'll add more.\n"
 				"But for now you can't go further."));
-		UI->ShowMsg(TheEnd);
+		UI->ShowMsg(TheEnd, {});
 		return;
 	}
 	/// all ok, continue.

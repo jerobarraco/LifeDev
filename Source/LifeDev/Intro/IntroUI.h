@@ -37,10 +37,13 @@ protected:
 	virtual void NativeDestruct() override;
 	UFUNCTION()
 	virtual void DoSettings(int32 I) {ShowSettings();}
-	UFUNCTION()
-	void DoQuit(const int32 Id);
+
 	UFUNCTION(BlueprintCallable)
 	void SlotsLoadDone(const bool HasDoneSave);
+	UFUNCTION()
+	void DoDoneMsg(const int32 Id);
+	UFUNCTION()
+	void DoMsgClose(const int32 RetVal);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UMsgBox> MsgBox = nullptr;
