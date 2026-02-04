@@ -36,8 +36,12 @@ void UIntroUI::NativeOnInitialized() {
 		BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::DoSettings);
 	}
 	if (LIKELY(BtnDone)) {
-		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
-		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
+		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnDone", "Start"), -1);
+		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::DoQuit);
+	}
+	if (LIKELY(BtnQuit)) {
+		BtnQuit->SetUp(NSLOCTEXT("Intro", "BtnQuit", "Quit"), -1);
+		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
 	}
 
 	if (LIKELY(SaveGroup)) {
@@ -49,6 +53,10 @@ void UIntroUI::NativeOnInitialized() {
 
 void UIntroUI::NativeDestruct() {
 	Super::NativeDestruct();
+}
+
+void UIntroUI::DoQuit(const int32 Id) {
+	FGenericPlatformMisc::RequestExit(false);
 }
 
 void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
