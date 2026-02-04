@@ -3,17 +3,16 @@
 #include "IntroUI.h"
 
 #include "Components/WidgetSwitcher.h"
+#include "Kismet/KismetSystemLibrary.h"
 
+#include "LifeDev/Core/Settings/UI/LSaveGroup.h"
 #include "JButton.h"
 #include "MsgBox.h"
-#include "JUtils/Misc/JUtilsSys.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "LifeDev/Core/Settings/UI/LSaveGroup.h"
 
-void UIntroUI::ShowMsg_Implementation(const FText& Msg) {
+void UIntroUI::ShowMsg_Implementation(const FText& Msg, const TArray<FText>& NewBtns) {
 	if (UNLIKELY(!MsgBox)) return;
-	static TArray<FText> Btns = {	NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
-	
+	static TArray<FText> DefaultBtns = { NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
+	const TArray<FText>& Btns = NewBtns.Num() >0 ? NewBtns : DefaultBtns;  
 	MsgBox->SetUp(Msg, Btns);
 	MsgBox->Show();
 }
@@ -59,7 +58,7 @@ void UIntroUI::NativeDestruct() {
 }
 
 void UIntroUI::DoQuit(const int32 Id) {
-	ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?")); // todo add buttons and hook to callback
+	ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?"), {}); // todo add buttons and hook to callback
 
 	UKismetSystemLibrary::QuitGame(this, nullptr,
 		EQuitPreference::Quit, false);

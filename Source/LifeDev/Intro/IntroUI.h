@@ -22,7 +22,7 @@ public:
 	void Done(const int32 Id=0) {OnDone.Broadcast();}
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
-	void ShowMsg(const FText& Msg);
+	void ShowMsg(const FText& Msg, const TArray<FText>& NewBtns);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, meta=(ForceAsFunction))
 	void ShowSettings();
