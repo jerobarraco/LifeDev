@@ -27,20 +27,23 @@ void UIntroUI::NativeOnInitialized() {
 		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Ok"), 1);
 		BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
 	}
-	// if (LIKELY(BtnNext2)) {
-		// BtnNext2->SetUp(NSLOCTEXT("Intro", "BtnNext2", "Ok"), 2);
-		// BtnNext2->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
-	// }
-	// if (LIKELY(BtnSettings))
-		// BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
-	// if (LIKELY(BtnDone))
-		// BtnDone->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
-	// if (LIKELY(BtnSettings)) BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::ShowSettings);
-	// if (LIKELY(BtnDone)) BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
+	if (LIKELY(BtnBack)) {
+		BtnBack->SetUp(NSLOCTEXT("Intro", "BtnBack", "Back"), 0);
+		BtnBack->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
+	}
+	if (LIKELY(BtnSettings)) {
+		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
+		BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::DoSettings);
+	}
+	if (LIKELY(BtnDone)) {
+		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
+		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
+	}
 
 	if (LIKELY(SaveGroup)) {
-		SaveGroup->OnDone.AddUniqueDynamic(this, &UIntroUI::Done);
-		SaveGroup->OnSettings.AddUniqueDynamic(this, &UIntroUI::ShowSettings);
+		SaveGroup->OnDone.AddUniqueDynamic(this, &UIntroUI::Done); // todo remove
+		SaveGroup->OnSettings.AddUniqueDynamic(this, &UIntroUI::ShowSettings); // todo remove
+		// SaveGroup->OnBack // todo remove 
 	}
 }
 
