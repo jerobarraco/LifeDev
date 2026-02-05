@@ -30,10 +30,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
 	FSGOnLoadDone OnLoadDone;
-	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
-	FSGOnDone OnDone;
-	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
-	FSGOnSettings OnSettings;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, BlueprintCallable, Transient)
 	FSGOnSettings OnTryErase;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
@@ -45,12 +41,6 @@ protected:
 
 	UFUNCTION()
 	void FoxyUpd(const float Value);
-	UFUNCTION()
-	void DoStart(const int32 pId);
-	UFUNCTION()
-	void DoSettings(const int32 pId);
-	UFUNCTION()
-	void DoBack(const int32 pId);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<USlider> SLFoxy = nullptr;

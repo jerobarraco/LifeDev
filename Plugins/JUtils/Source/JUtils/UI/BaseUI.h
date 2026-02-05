@@ -27,7 +27,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool ShowCursor = false;
 
-	// will auto-unbind from done on hide
+	// will auto-unbind from done and doneVal on hide
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category=SetUp)
 	bool AutoUnbind = true;
 

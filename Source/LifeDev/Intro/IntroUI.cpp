@@ -51,12 +51,8 @@ void UIntroUI::NativeOnInitialized() {
 		BtnQuit->SetIsEnabled(false);
 	}
 
-	if (LIKELY(SaveGroup)) {
-		SaveGroup->OnDone.AddUniqueDynamic(this, &UIntroUI::Done); // todo remove
-		SaveGroup->OnSettings.AddUniqueDynamic(this, &UIntroUI::ShowSettings); // todo remove
+	if (LIKELY(SaveGroup))
 		SaveGroup->OnLoadDone.AddUniqueDynamic(this, &ThisClass::DoLoadDone);
-		// SaveGroup->OnBack // todo remove 
-	}
 }
 
 void UIntroUI::NativeDestruct() {
@@ -68,10 +64,6 @@ void UIntroUI::DoLoadDone(const bool HasDoneSave) {
 	if (LIKELY(BtnSettings)) BtnSettings->SetIsEnabled(true);
 	if (LIKELY(BtnDone)) BtnDone->SetIsEnabled(true);
 	if (LIKELY(BtnQuit)) BtnQuit->SetIsEnabled(true);
-}
-
-void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {
-	OnSlotsDone.Broadcast(HasDoneSave);
 }
 
 void UIntroUI::DoDoneMsg(const int32 Id) {
@@ -87,9 +79,6 @@ void UIntroUI::DoDoneMsg(const int32 Id) {
 }
 
 void UIntroUI::DoMsgClose(const int32 RetVal) {
-	if (LIKELY(MsgBox)) 
-		MsgBox->OnDoneVal.RemoveDynamic(this, &ThisClass::DoMsgClose);
-
 	if (RetVal == 1) {
 		return;
 	}

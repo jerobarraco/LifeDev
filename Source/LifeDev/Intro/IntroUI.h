@@ -29,8 +29,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
-	FIntroUISlotsDone OnSlotsDone;
 
 protected:
 	virtual void NativeOnInitialized() override;
@@ -40,8 +38,6 @@ protected:
 	UFUNCTION()
 	virtual void DoSettings(int32 I) {ShowSettings();}
 
-	UFUNCTION(BlueprintCallable)
-	void SlotsLoadDone(const bool HasDoneSave);
 	UFUNCTION()
 	void DoDoneMsg(const int32 Id);
 	UFUNCTION()
