@@ -48,11 +48,11 @@ void UMsgBox::BtnsClear(const uint32 Reserve) {
 	Btns.Empty(Reserve);
 }
 
-void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
+void UMsgBox::SetUp(const FText& Message, const TArray<FText>& BtnTexts) {
 	UE_LOG(LogTemp, Log, TEXT("%hs"), __func__);
 	Msg->SetText(Message);
 	
-	const int32 Num = Texts.Num();
+	const int32 Num = BtnTexts.Num();
 	BtnsClear(Num);
 
 	if (UNLIKELY(!BtnBox)) return;
@@ -61,7 +61,7 @@ void UMsgBox::SetUp(const FText& Message, const TArray<FText>& Texts) {
 		UJButton* const B = Cast<UJButton>(CreateWidget(this, BtnClass.Get()));
 		if (UNLIKELY(!B)) continue;
 
-		B->SetUp(Texts[i], i);
+		B->SetUp(BtnTexts[i], i);
 		B->SetPadding(FMargin(Pad, 0,0,0));
 		Btns.AddUnique(B);
 		BtnBox->AddChild(B);
@@ -108,6 +108,12 @@ void UMsgBox::Hide_Implementation() {
 	// timer might not work here. who knew.
 	// important to rebind on each call, see note on hideanimfinished.
 	BindToAnimationFinished(AnimShow, OnHideFinished);
+}
+
+void UMsgBox::ShowNow(const FText& Message, const TArray<FText>& BtnTexts, const FMsgBoxOnDone& NewOnDoneVal) {
+	OnDoneVal.Add(NewOnDoneVal);
+	SetUp(Message, BtnTexts);
+	Show();
 }
 
 void UMsgBox::BtnClick(const int32 ID) {

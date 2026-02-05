@@ -51,8 +51,10 @@ void UIntroUI::NativeOnInitialized() {
 		BtnQuit->SetIsEnabled(false);
 	}
 
-	if (LIKELY(SaveGroup))
+	if (LIKELY(SaveGroup)) {
 		SaveGroup->OnLoadDone.AddUniqueDynamic(this, &ThisClass::DoLoadDone);
+		SaveGroup->OnTryErase.AddUniqueDynamic(this, &ThisClass::DoTryErase);
+	}
 }
 
 void UIntroUI::NativeDestruct() {
@@ -69,8 +71,8 @@ void UIntroUI::DoLoadDone(const bool HasDoneSave) {
 void UIntroUI::DoDoneMsg(const int32 Id) {
 	if (LIKELY(MsgBox)) {
 		ShowMsg(NSLOCTEXT("Intro", "QuitPrompt", "Are you sure?"), {
-			NSLOCTEXT("Intro", "QuitPrompt_Yes", "Yes"),
-			NSLOCTEXT("Intro", "QuitPrompt_No", "No")
+			NSLOCTEXT("Intro", "Prompt_Yes", "Yes"),
+			NSLOCTEXT("Intro", "Prompt_No", "No")
 		});
 		MsgBox->OnDoneVal.AddUniqueDynamic(this, &ThisClass::DoMsgClose);
 	} else {
@@ -79,10 +81,26 @@ void UIntroUI::DoDoneMsg(const int32 Id) {
 }
 
 void UIntroUI::DoMsgClose(const int32 RetVal) {
-	if (RetVal == 1) {
-		return;
-	}
+	if (RetVal == 1) return;
 
 	UKismetSystemLibrary::QuitGame(this, nullptr,
 		EQuitPreference::Quit, false);
+}
+
+void UIntroUI::DoTryErase() {
+	MsgBox->OnDoneVal.AddUniqueDynamic(this, &ThisClass::DoErase);
+	static const FText Prompt = NSLOCTEXT("Intro", "TryErase_Prompt", "Are you sure you want to erase the selected slot?\n"
+		"The selected progress will be lost.\n"
+		"Other slots will be unaffected.");
+	MsgBox->SetUp(Prompt, {
+		NSLOCTEXT("Intro", "Prompt_Yes", "Yes"),
+		NSLOCTEXT("Intro", "Prompt_No", "No")
+	});
+	MsgBox->Show();
+}
+
+void UIntroUI::DoErase(const int32 RetVal) {
+	if (RetVal == 1) return;
+	
+	
 }

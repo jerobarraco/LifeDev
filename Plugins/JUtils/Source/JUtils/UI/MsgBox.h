@@ -16,6 +16,8 @@ class UTextBlock;
 class UButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
+// unfortunately FBaseUIOnDoneVal::FDelegate doesn't work with UFUNCTION.
+DECLARE_DYNAMIC_DELEGATE_OneParam(FMsgBoxOnDone, const int32, RetVal);
 
 // Base message box.
 // Will trigger OnDoneVal(ButtonId) on button clicked.
@@ -30,8 +32,13 @@ public:
 	virtual void Show_Implementation() override;
 	virtual void Hide_Implementation() override;
 
+	// shows with the message, btntexts, and callback.
+	// it will add the newOnDoneVal to the OnDoneVal
 	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AutoCreateRefTerm=Message))
-	void SetUp(const FText& Message, const TArray<FText>& Texts);
+	void ShowNow(const FText& Message, const TArray<FText>& BtnTexts,
+		const FMsgBoxOnDone& NewOnDoneVal);
+	UFUNCTION(BlueprintCallable, Category=SetUp, meta=(AutoCreateRefTerm=Message))
+	void SetUp(const FText& Message, const TArray<FText>& BtnTexts);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float AnimDuration = .5;

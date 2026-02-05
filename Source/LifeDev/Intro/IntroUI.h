@@ -10,6 +10,7 @@ class ULSaveGroup;
 class UWidgetSwitcher;
 class UJButton;
 class UMsgBox;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIntroUIDone);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIntroUISlotsDone, const bool, HasDoneSave);
 
@@ -42,6 +43,10 @@ protected:
 	void DoDoneMsg(const int32 Id);
 	UFUNCTION()
 	void DoMsgClose(const int32 RetVal);
+	UFUNCTION()
+	void DoTryErase();
+	UFUNCTION()
+	void DoErase(const int32 RetVal);
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UMsgBox> MsgBox = nullptr;
