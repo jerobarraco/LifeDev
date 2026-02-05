@@ -30,6 +30,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
+	// when the slots finishes loading all slots
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUILoadDone OnLoadDone;
 
