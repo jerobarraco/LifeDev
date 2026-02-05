@@ -12,7 +12,7 @@ class UJButton;
 class UMsgBox;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIntroUIDone);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIntroUISlotsDone, const bool, HasDoneSave);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIntroUILoadDone, const bool, HasDoneSave);
 
 UCLASS(Blueprintable)
 class LIFEDEV_API UIntroUI : public UUserWidget {
@@ -30,6 +30,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
 	FIntroUIDone OnDone;
+	UPROPERTY(BlueprintAssignable, EditAnywhere, Transient)
+	FIntroUILoadDone OnLoadDone;
 
 protected:
 	virtual void NativeOnInitialized() override;

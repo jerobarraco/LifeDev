@@ -16,6 +16,7 @@ class UTextBlock;
 class UButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMsgBoxHidden);
+// Used as parameter for ShowNow
 // unfortunately FBaseUIOnDoneVal::FDelegate doesn't work with UFUNCTION.
 DECLARE_DYNAMIC_DELEGATE_OneParam(FMsgBoxOnDone, const int32, RetVal);
 

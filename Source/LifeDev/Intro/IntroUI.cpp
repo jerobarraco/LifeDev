@@ -11,6 +11,7 @@
 
 void UIntroUI::ShowMsg_Implementation(const FText& Msg, const TArray<FText>& NewBtns) {
 	if (UNLIKELY(!MsgBox)) return;
+
 	static TArray<FText> DefaultBtns = { NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
 	const TArray<FText>& Btns = NewBtns.Num() >0 ? NewBtns : DefaultBtns;
 	MsgBox->SetUp(Msg, Btns);
@@ -66,6 +67,7 @@ void UIntroUI::DoLoadDone(const bool HasDoneSave) {
 	if (LIKELY(BtnSettings)) BtnSettings->SetIsEnabled(true);
 	if (LIKELY(BtnDone)) BtnDone->SetIsEnabled(true);
 	if (LIKELY(BtnQuit)) BtnQuit->SetIsEnabled(true);
+	OnLoadDone.Broadcast(HasDoneSave);
 }
 
 void UIntroUI::DoDoneMsg(const int32 Id) {
@@ -88,19 +90,20 @@ void UIntroUI::DoMsgClose(const int32 RetVal) {
 }
 
 void UIntroUI::DoTryErase() {
-	MsgBox->OnDoneVal.AddUniqueDynamic(this, &ThisClass::DoErase);
+	FMsgBoxOnDone D;
+	D.BindDynamic(this, &ThisClass::DoErase);
 	static const FText Prompt = NSLOCTEXT("Intro", "TryErase_Prompt", "Are you sure you want to erase the selected slot?\n"
 		"The selected progress will be lost.\n"
 		"Other slots will be unaffected.");
-	MsgBox->SetUp(Prompt, {
-		NSLOCTEXT("Intro", "Prompt_Yes", "Yes"),
-		NSLOCTEXT("Intro", "Prompt_No", "No")
-	});
-	MsgBox->Show();
+	MsgBox->ShowNow(Prompt, {
+		NSLOCTEXT("Intro", "TryErase_Yes", "Yes."),
+		NSLOCTEXT("Intro", "TryErase_No", "No! Wait!")
+	}, D);
 }
 
 void UIntroUI::DoErase(const int32 RetVal) {
+	UE_LOG(LogTemp, Log, TEXT("%hs RetVal=%i"), __func__, RetVal);
 	if (RetVal == 1) return;
 	
-	
+	SaveGroup->DoErase();
 }

@@ -36,7 +36,7 @@ void AIntroMan::AddUI() {
 	
 	UI->AddToViewport();
 	UI->OnDone.AddDynamic(this, &AIntroMan::Done);
-	UI->OnSlotsDone.AddDynamic(this, &AIntroMan::SlotsDone);
+	UI->OnLoadDone.AddDynamic(this, &AIntroMan::SlotsDone);
 
 	UJUtilsUI::ShowUI(this, true, UI);
 }
@@ -111,7 +111,7 @@ void AIntroMan::BeginPlay() {
 void AIntroMan::EndPlay(const EEndPlayReason::Type EndPlayReason) {
 	if (LIKELY(UI)) {
 		UI->OnDone.RemoveAll(this);
-		UI->OnSlotsDone.RemoveAll(this);
+		UI->OnLoadDone.RemoveAll(this);
 	}
 
 	Super::EndPlay(EndPlayReason);
