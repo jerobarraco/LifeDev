@@ -36,6 +36,8 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeDestruct() override;
 	UFUNCTION()
+	void DoLoadDone(const bool HasDoneSave);
+	UFUNCTION()
 	virtual void DoSettings(int32 I) {ShowSettings();}
 
 	UFUNCTION(BlueprintCallable)

@@ -12,7 +12,7 @@
 void UIntroUI::ShowMsg_Implementation(const FText& Msg, const TArray<FText>& NewBtns) {
 	if (UNLIKELY(!MsgBox)) return;
 	static TArray<FText> DefaultBtns = { NSLOCTEXT("Intro", "MsgBox.Btn.OK", "Ok") };
-	const TArray<FText>& Btns = NewBtns.Num() >0 ? NewBtns : DefaultBtns;  
+	const TArray<FText>& Btns = NewBtns.Num() >0 ? NewBtns : DefaultBtns;
 	MsgBox->SetUp(Msg, Btns);
 	MsgBox->Show();
 }
@@ -24,6 +24,7 @@ void UIntroUI::ShowSettings_Implementation() {}
 void UIntroUI::NativeOnInitialized() {
 	Super::NativeOnInitialized();
 	if (UNLIKELY(!Switcher)) return;
+	
 	if (LIKELY(BtnNext)) {
 		BtnNext->SetUp(NSLOCTEXT("Intro", "BtnNext", "Ok"), 1);
 		BtnNext->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
@@ -31,30 +32,42 @@ void UIntroUI::NativeOnInitialized() {
 	if (LIKELY(BtnBack)) {
 		BtnBack->SetUp(NSLOCTEXT("Intro", "BtnBack", "Back"), 0);
 		BtnBack->OnClick.AddUniqueDynamic(Switcher, &UWidgetSwitcher::SetActiveWidgetIndex);
+		BtnBack->SetIsEnabled(false);
 	}
 	if (LIKELY(BtnSettings)) {
 		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
 		BtnSettings->OnClick.AddUniqueDynamic(this, &UIntroUI::DoSettings);
+		BtnSettings->SetIsEnabled(false);
 	}
 	if (LIKELY(BtnDone)) {
 		BtnDone->SetUp(NSLOCTEXT("Intro", "BtnDone", "Start"), -1);
 		BtnDone->OnClick.AddUniqueDynamic(this, &UIntroUI::Done);
+		BtnDone->SetIsEnabled(false);
 	}
 
 	if (LIKELY(BtnQuit)) {
 		BtnQuit->SetUp(NSLOCTEXT("Intro", "BtnQuit", "Quit"), -1);
 		BtnQuit->OnClick.AddUniqueDynamic(this, &UIntroUI::DoDoneMsg);
+		BtnQuit->SetIsEnabled(false);
 	}
 
 	if (LIKELY(SaveGroup)) {
 		SaveGroup->OnDone.AddUniqueDynamic(this, &UIntroUI::Done); // todo remove
 		SaveGroup->OnSettings.AddUniqueDynamic(this, &UIntroUI::ShowSettings); // todo remove
+		SaveGroup->OnLoadDone.AddUniqueDynamic(this, &ThisClass::DoLoadDone);
 		// SaveGroup->OnBack // todo remove 
 	}
 }
 
 void UIntroUI::NativeDestruct() {
 	Super::NativeDestruct();
+}
+
+void UIntroUI::DoLoadDone(const bool HasDoneSave) {
+	if (LIKELY(BtnBack)) BtnBack->SetIsEnabled(true);
+	if (LIKELY(BtnSettings)) BtnSettings->SetIsEnabled(true);
+	if (LIKELY(BtnDone)) BtnDone->SetIsEnabled(true);
+	if (LIKELY(BtnQuit)) BtnQuit->SetIsEnabled(true);
 }
 
 void UIntroUI::SlotsLoadDone(const bool HasDoneSave) {

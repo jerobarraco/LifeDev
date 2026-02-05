@@ -14,32 +14,13 @@
 void ULSaveGroup::LoadDoneAll_Implementation() {
 	LoadAllSlots = false; // finished
 
-	const bool ShowFoxy = HasDoneSave && ULSettings::GetFeatS(this, EFeat::G_NGP_FOXY);
+	const bool ShowFoxy = HasDoneSave & ULSettings::GetFeatS(this, EFeat::G_NGP_FOXY);
 	const ESlateVisibility Vis = ShowFoxy ? ESlateVisibility::Visible: ESlateVisibility::Collapsed;
 	if (LIKELY(SLFoxy)) SLFoxy->SetVisibility(Vis);
 	if (LIKELY(TFoxy)) TFoxy->SetVisibility(Vis);
-	
-	if (LIKELY(BtnSettings)) {
-		BtnSettings->SetUp(NSLOCTEXT("Intro", "BtnSettings", "Settings"), -1);
-		BtnSettings->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoSettings);
-	}
-	if (LIKELY(BtnStart)) {
-		BtnStart->SetUp(NSLOCTEXT("Intro", "BtnStart", "Start"), -1);
-		BtnStart->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoStart);
-	}
-
-	if (LIKELY(BtnBack))
-		BtnBack->OnClick.AddUniqueDynamic(this, &ULSaveGroup::DoBack);
 
 	OnLoadDone.Broadcast(HasDoneSave);
 }
-
-// this is bound to IntroUI::Done, 0 means start
-void ULSaveGroup::DoStart(const int32 pId) { OnDone.Broadcast(0); }
-void ULSaveGroup::DoSettings(const int32 pId) { OnSettings.Broadcast(); }
-// i don't really need this, since there's nothing before the save group other than the warning.
-// but at some point i might have other things in the main menu, and a proper main menu.
-void ULSaveGroup::DoBack(const int32 pId) { OnBack.Broadcast(); }
 
 void ULSaveGroup::NativeOnInitialized() {
 	Super::NativeOnInitialized();
