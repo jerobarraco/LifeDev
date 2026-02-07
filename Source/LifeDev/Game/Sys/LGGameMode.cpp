@@ -152,7 +152,7 @@ void ALGGameMode::Init() {
 
 	const ULSysSettings* const SysSettings = ULSysSettings::Get();
 	if (UNLIKELY(!IsValid(SysSettings))) {
-		UE_LOG(LogLGameMode, Error, TEXT("%hs System Settings not valid. can't continue."), __func__);
+		UE_LOG(LogLGameMode, Error, TEXT("%hs System Settings not valid. Can't continue."), __func__);
 		return;
 	}
 	
