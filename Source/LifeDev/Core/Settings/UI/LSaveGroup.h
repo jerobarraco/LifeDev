@@ -32,8 +32,6 @@ public:
 	FSGOnLoadDone OnLoadDone;
 	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, BlueprintCallable, Transient)
 	FSGOnSettings OnTryErase;
-	UPROPERTY(BlueprintReadWrite, BlueprintAssignable, Transient)
-	FSGOnBack OnBack;
 
 protected:
 	virtual void NativeOnInitialized() override;
