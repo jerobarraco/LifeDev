@@ -5,7 +5,6 @@
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 
-#include "JButton.h"
 #include "Inventory/Flags.h"
 
 #include "LifeDev/Core/Consts/ConstFlags.h"
@@ -30,9 +29,6 @@ void ULSaveGroup::NativeOnInitialized() {
 
 void ULSaveGroup::NativeDestruct() {
 	if (LIKELY(SLFoxy)) SLFoxy->OnValueChanged.RemoveAll(this);
-	if (LIKELY(BtnSettings)) BtnSettings->OnClick.RemoveAll(this);
-	if (LIKELY(BtnStart)) BtnStart->OnClick.RemoveAll(this);
-	if (LIKELY(BtnBack)) BtnBack->OnClick.RemoveAll(this);
 	Super::NativeDestruct();
 }
 

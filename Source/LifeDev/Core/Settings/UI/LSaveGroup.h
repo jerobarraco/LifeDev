@@ -45,13 +45,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(BindWidget))
 	TObjectPtr<UTextBlock> TFoxy = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnSettings = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnStart = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
 	TObjectPtr<UJButton> BtnErase = nullptr;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta=(BindWidgetOptional))
-	TObjectPtr<UJButton> BtnBack = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, Transient)
 	bool HasDoneSave = false;
