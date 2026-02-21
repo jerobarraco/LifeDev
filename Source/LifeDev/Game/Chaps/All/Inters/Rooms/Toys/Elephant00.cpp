@@ -26,5 +26,7 @@ AElephant00::AElephant00(): Super() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toy/Toy_C"));
 	SFXs = { CSFX.Object, CSFX.Object};
+
+	Super::SetMobility(EComponentMobility::Static);
 }
 

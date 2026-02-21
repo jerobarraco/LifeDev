@@ -29,4 +29,6 @@ AToy00::AToy00() {
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toys/Toy_C"));
 	SFXs = { CSFX.Object, CSFX.Object};
+	
+	Super::SetMobility(EComponentMobility::Static);
 }
