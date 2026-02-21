@@ -17,28 +17,28 @@ ANotes00::ANotes00() {
 	UseFade = false; // by default skip it
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Supplies/Note"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Supplies/Note00_P"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
-	Mesh->SetRelativeLocation(FVector(-4.,7.,0.));
+	Mesh->SetRelativeLocation(FVector(-4.,4.,0.));
 
-	Interact->SetRelativeLocation(FVector(4.,-7., 6.));
-	Interact->SetBoxExtent(FVector(3.,8.,6.));
+	Interact->SetRelativeLocation(FVector(4.000000,-4.000000,0.250000));
+	Interact->SetBoxExtent(FVector(4.,4.,1.));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Inters/Paper00/Paper_SC"));
 	SFXs = { CSnd.Object };
 	
 	Text = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
 	Text->SetupAttachment(Mesh);
-	Text->SetRelativeLocation(FVector(0.400000,-19.500000,0.600000));
-	Text->SetRelativeRotation(FRotator(90,0,-90));
+	Text->SetRelativeLocation(FVector(0.2,-0.200000,.6));
+	Text->SetRelativeRotation(FRotator(90,0,0));
 	// Text->SetText(NSLOCTEXT("", "", ""));
 	Text->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
 	Text->SetTextRenderColor(FColor::Black);
 	Text->SetComponentTickEnabled(false);
 	Text->SetWorldSize(1);
-	Text->SetYScale(1.5);
-	Text->SetVertSpacingAdjust(8.5);
+	Text->SetYScale(1);
+	Text->SetVertSpacingAdjust(0);
 	
 	Super::SetMobility(EComponentMobility::Static);
 }
