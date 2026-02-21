@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "LifeDev/Game/Interact/LInteract.h"
 
-#include "Notes.generated.h"
+#include "Notes00.generated.h"
 
 class UTextRenderComponent;
 
 UCLASS(Blueprintable)
-class LIFEDEV_API ANotes : public ALInteract {
+class LIFEDEV_API ANotes00 : public ALInteract {
 	GENERATED_BODY()
 
 public:
-	ANotes();
+	ANotes00();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)

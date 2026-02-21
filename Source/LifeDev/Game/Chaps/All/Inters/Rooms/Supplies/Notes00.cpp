@@ -1,14 +1,14 @@
 // Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
 
-#include "Notes.h"
+#include "Notes00.h"
 
 #include "CQuickMesh.h"
 #include "Components/TextRenderComponent.h"
 #include "Interact/CInteract.h"
 
-ANotes::ANotes() {
+ANotes00::ANotes00() {
 	Texts = {
-		NSLOCTEXT("Ppl", "State0", "A toy elephant"), // closed
+		NSLOCTEXT("Ppl", "Notes00", "A sticky note"), // closed
 	};
 	RewardFlash = 0;
 	UseRewardDestroy = false;
@@ -17,7 +17,7 @@ ANotes::ANotes() {
 	UseFade = false; // by default skip it
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
-		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toys/Elephant00"));
+		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Supplies/Note"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
 	Mesh->SetRelativeLocation(FVector(-4.,7.,0.));
