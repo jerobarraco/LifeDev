@@ -19,10 +19,10 @@ AElephant00::AElephant00(): Super() {
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toys/Elephant00"));
 	Mesh->SetStaticMesh(CMesh.Object);
 	Mesh->SetUseDynShadow(true);
-	Mesh->SetRelativeLocation(FVector(-10,2.225,0));
+	Mesh->SetRelativeLocation(FVector(-4.,7.,0.));
 
-	Interact->SetRelativeLocation(FVector(5.000000,-2.225000,1.250000));
-	Interact->SetBoxExtent(FVector(5.000000,2.225000,1.250000));
+	Interact->SetRelativeLocation(FVector(4.,-7., 6.));
+	Interact->SetBoxExtent(FVector(3.,8.,6.));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toy/Toy_C"));
 	SFXs = { CSFX.Object, CSFX.Object};
