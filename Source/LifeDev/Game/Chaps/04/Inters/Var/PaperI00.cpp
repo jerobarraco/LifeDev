@@ -20,7 +20,7 @@ APaperI00::APaperI00():Super() {
 	// This text must match c4s7
 	// this is ok to be here since this object is only shown by the last step (c4s9)
 	Text->SetText(
-		NSLOCTEXT("[F55AC1309BFDF396EFA8FD363F894B68]", "C2C0842F189C448F84E75A511F80204F",
+		NSLOCTEXT("PaperI00", "Text",
 			"Even if things around me\n don't change.\nI could change.\n"
 			"I still have today.\nIt's not over yet."));
 	Text->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
