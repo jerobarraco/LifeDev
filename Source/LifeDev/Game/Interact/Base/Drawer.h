@@ -12,4 +12,8 @@ class LIFEDEV_API ADrawer: public ADoorish {
 public:
 	ADrawer();
 	virtual void BeginPlay() override;
+	
+	// transitional property to allow drawers to have relative tends with arbitrary ROTATIONS (scale not taken into account)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(Deprecated), Category="SetUp|Anim")
+	bool IsTEndRelative = false;
 };

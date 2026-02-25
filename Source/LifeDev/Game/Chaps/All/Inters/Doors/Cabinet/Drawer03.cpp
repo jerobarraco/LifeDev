@@ -8,6 +8,7 @@
 
 ADrawer03::ADrawer03():Super() {
 	UseAutoActivate = true;
+	IsTEndRelative = true;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CMesh(TEXT("/Game/LifeDev/Game/Inters/Arch/Cabinets/Cabinet02-Drawer"));
 	Mesh->SetStaticMesh(CMesh.Object);

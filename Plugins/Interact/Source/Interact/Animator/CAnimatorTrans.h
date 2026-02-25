@@ -9,7 +9,8 @@
 class UCurveFloat;
 class USceneComponent;
 
-// An interactive actor that can have an animation. Use AnimatorMix
+// A component that allows to animate the relative transform of another component (or actor)
+// if the TRoot specified is the root of the actor, then the transform will be the world transform.
 UCLASS(Blueprintable, BlueprintType,Placeable, ClassGroup=(Interact), meta=(BlueprintSpawnableComponent, DeprecatedNode))
 class INTERACT_API UCAnimatorTrans: public UCAnimator {
 	GENERATED_BODY()
