@@ -63,7 +63,8 @@ void ULSetDbgUI::NativeOnInitialized() {
 				// todo change the ftext on the rest
 			{EFeat::D_SHOW, UEnum::GetDisplayValueAsText(EFeat::D_SHOW)},
 			{EFeat::G_SHOW_INV, FText::FromString("G_SHOW_INV")},
-			{EFeat::DBG_FAST_COOL, FText::FromString("DBG_FAST_COOL")},
+			{EFeat::DBG_SKIP_LOCK, UEnum::GetDisplayValueAsText(EFeat::DBG_SKIP_LOCK)},
+			{EFeat::DBG_FAST_COOL, UEnum::GetDisplayValueAsText(EFeat::DBG_FAST_COOL)},
 			{EFeat::DBG_FLY_CAM, FText::FromString("DBG_FLY_CAM")},
 			{EFeat::DBG_D_WARN, FText::FromString("DBG_D_WARN")},
 			{EFeat::DBG_STEPS, FText::FromString("DBG_STEPS")},

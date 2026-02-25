@@ -11,6 +11,7 @@
 #include "Story/Story.h"
 #include "CQuickMesh.h" // this is necessary for the .add(Mesh) below. rider says it's not but don't believe him. windows will fail.
 #include "JUtils/Misc/JUtilsMisc.h"
+#include "JUtils/Misc/JUtilsSys.h"
 
 #include "LifeDev/Core/Sentry.h"
 #include "LifeDev/Core/Consts/ConstDlgs.h"
@@ -310,6 +311,10 @@ void ALInteract::FBUpd(const float Value) {
 
 bool ALInteract::ShouldUnlock_Implementation() {
 	if (Super::ShouldUnlock_Implementation()) return true; // it's enough if it passes on parent already
+
+	if (UNLIKELY(UJUtilsSys::IsDebug())
+		&& UNLIKELY(ULSettings::GetFeatS(this, EFeat::DBG_SKIP_LOCK)))
+		return true;
 
 	if (UNLIKELY(!IsValid(Inventory))) return false;
 

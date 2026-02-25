@@ -145,6 +145,8 @@ enum class EFeat: uint8 {
 	DBG_D_WARN,
 	// quick cooldown of items
 	DBG_FAST_COOL,
+	// skips interaction locks (always unlocked)
+	DBG_SKIP_LOCK,
 	DBG_BASE UMETA(Deprecated),
 	DBG_MAX UMETA(Hidden),
 #pragma endregion
