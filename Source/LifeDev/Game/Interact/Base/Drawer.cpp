@@ -26,7 +26,7 @@ void ADrawer::BeginPlay() {
 	// TODO maybe one day i can implement something like i did with the AInteract::Label checking if TRoot == RootComponent.
 	Anim->CopyTStart();
 	
-	// TODO once all objects in the scene has this to True, remove this variable (but keep the adjustment)
+	// TODO once all objects in the scene has this to True, remove this variable (but keep the patch)
 	if (IsTEndRelative) {
 		// Rotate the offset and re-set
 		Anim->TEnd.SetLocation(Anim->TStart.GetRotation().RotateVector(Anim->TEnd.GetLocation()));
