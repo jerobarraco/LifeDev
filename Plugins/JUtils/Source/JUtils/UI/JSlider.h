@@ -6,6 +6,9 @@
 
 #include "JSlider.generated.h"
 
+class USliderWidgetStyle;
+
+// base class for a styleable slider with apply and load
 UCLASS(Blueprintable, BlueprintType)
 class JUTILS_API UJSlider : public USlider {
 	GENERATED_BODY()
@@ -24,8 +27,6 @@ public:
 protected:
 	virtual void OnWidgetRebuilt() override;
 
-	// FSliderStyle is not exposed to bps somehow, even though it has the tags and all.
-	// so we can't use it :'/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<USlateWidgetStyleAsset> SliderStyle = nullptr;
+	TObjectPtr<USliderWidgetStyle> SliderStyle = nullptr;
 };

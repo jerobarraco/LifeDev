@@ -1,4 +1,5 @@
-// Copyright (C) 2023-2025 Jeronimo Barraco-Marmol
+// Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
+// SPDX-License-Identifier: MIT
 
 #include "JSlider.h"
 
