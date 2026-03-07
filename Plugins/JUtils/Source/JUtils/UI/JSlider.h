@@ -28,5 +28,5 @@ protected:
 	virtual void OnWidgetRebuilt() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	TObjectPtr<USliderWidgetStyle> SliderStyle = nullptr;
+	TObjectPtr<USlateWidgetStyleAsset> SliderStyle = nullptr;
 };
