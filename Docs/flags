@@ -1,3 +1,6 @@
+# Any flag:
+just write as {name.of.flag}
+
 # Virtual : for EvalMath only
 * starts with #, it returns the Fname int value. eg #C3S1 > 1230192. useful for comparing values that returns a fname int.
 
