@@ -76,10 +76,12 @@ void APpl00::Look_Implementation() {
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
-	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
+	UE_LOG(LogTemp, Log, TEXT("%hs o=%s v=%s"),
+		__func__, *Label.ToString(), *UEnum::GetValueAsString(Significance));
 	
-	if (Significance != ESigValue::High) return;
-	
+	// only happens when the player is far away. if it's high (close) discard
+	if (Significance > ESigValue::Med) return;
+
 	const UEval* const Eval = UEval::Instance(this);
 	double Res = 0;
 	const bool Ok = LIKELY(Eval) && Eval->Eval(ShowCondition, Res, true);

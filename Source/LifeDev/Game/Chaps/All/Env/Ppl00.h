@@ -28,6 +28,7 @@ protected:
 	UFUNCTION()
 	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
+	// for the ppl. condition to gate showing up. on top of the distance.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	FString ShowCondition;
 
