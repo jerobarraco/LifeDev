@@ -34,7 +34,6 @@ APpl::APpl():Super() {
 	// a bit of optimization to avoid invalidating the vsm cache every frame.
 	// this is ok since in the material i've use a constant value for the shadow pass
 	Mesh->ShadowCacheInvalidationBehavior = EShadowCacheInvalidationBehavior::Rigid;
-	Head->ShadowCacheInvalidationBehavior = EShadowCacheInvalidationBehavior::Rigid;
 
 	// Head->SetMaterial(0, CBodyMat.Object);
 	Head->SetRelativeLocation(FVector(0,0,0));

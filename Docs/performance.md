@@ -27,6 +27,7 @@ automanage
 	NanitePixelProgrammableDistance = 600
 		https://forums.unrealengine.com/t/nanite-pixel-programmable-distance-for-ism-component-huge-performance-wins/2278017/8
 	bComputeFastBounds (teh compute once per frame will crash)
+	ShadowCacheInvalidationBehavior
 
 # lumen
 	AmbientOcclusionStaticFraction set to false for lumen. can be changed on the post process.
@@ -380,6 +381,9 @@ DONT:
 
 
 # links
+
+Playlist https://www.youtube.com/playlist?list=PLxhgIN2qNZy3QNP4qENDpQdUrsuGo8rK2
+
 optimization on a budget https://m.youtube.com/watch?v=G51QWcitCII&t=174s
 
 profiling and optimizing in ue4 
