@@ -28,6 +28,9 @@ protected:
 	UFUNCTION()
 	void SigChanged(const ESigValue Significance, const ESigValue SignificanceOld);
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
+	FString ShowCondition;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UCPplSig> Sig = nullptr;
 

@@ -4,6 +4,7 @@
 
 #include "Components/CapsuleComponent.h"
 
+#include "Eval.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "CQuickMesh.h"
@@ -56,7 +57,7 @@ APpl00::APpl00() {
 void APpl00::BeginPlay() {
 	Super::BeginPlay();
 
-	UseFade = false; // disable fade here, so that the significance doesn't use it.
+	UseFade = false; // disable fade here, so that the (SetActive) significance doesn't use it.
 	Sig->SetSignificance(ESigValue::Off);
 	// but so we can use it later.
 	Sig->OnChanged.AddUniqueDynamic(this, &APpl00::SigChanged);
@@ -75,11 +76,21 @@ void APpl00::Look_Implementation() {
 }
 
 void APpl00::SigChanged(const ESigValue Significance, const ESigValue SignificanceOld) {
-	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *GetNameSafe(GetOwner()));
-	// once it's shown, deactivate.
-	if (Significance == ESigValue::High) {
-		Sig->Deactivate();
-		// UseFade = true;
-		SetActorHiddenInGame(false);
+	UE_LOG(LogTemp, Log, TEXT("%hs o=%s"), __func__, *Label.ToString());
+	
+	if (Significance != ESigValue::High) return;
+	
+	const UEval* const Eval = UEval::Instance(this);
+	double Res = 0;
+	const bool Ok = LIKELY(Eval) && Eval->Eval(ShowCondition, Res, true);
+	if (!Ok | (Res <= 0)) {
+		UE_LOG(LogTemp, Log, TEXT("%hs o=%s Condition unsuccessful: '%s'."),
+			__func__, *Label.ToString(), *ShowCondition);
+		return;
 	}
+
+	// once it's shown, deactivate.
+	Sig->Deactivate();
+	// UseFade = true;
+	SetActorHiddenInGame(false);
 }
