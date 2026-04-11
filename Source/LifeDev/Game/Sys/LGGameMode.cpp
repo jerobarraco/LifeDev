@@ -255,7 +255,7 @@ void ALGGameMode::Init() {
 	/// Managers
 	// now the managers. which, as they are actors they tend to have side effects,
 	// some of which requires the subsystems.
-	// some of these tries to use the subsystems on begin play. TODO change that.
+	// some of these try to use the subsystems on begin play. TODO change that.
 	// it's better to spawn these objects before the savegame loads the subsystems or the delegates could confuse them
 	// the real solution is to bind to the delegates on init and not beginplay.
 
