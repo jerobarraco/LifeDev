@@ -154,7 +154,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock")
 	bool IsLocked = false;
 
-	// An eval condition that will unlock this interact.
+	// An eval condition that will unlock this interact (when interacted with).
 	//	E.g. On a flag: {flag}
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SetUp|Lock", AssetRegistrySearchable)
 	FString UnlockCondition = "";

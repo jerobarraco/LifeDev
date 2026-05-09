@@ -219,7 +219,7 @@ void ALGGameMode::Init() {
 			Base, SysSettings->Items.GetAssetName(), FItem::StaticStruct(), Problems, this);
 		UDataTable* const CharsExt = UJUtilsMisc::LoadJSONTable(Base,
 			SysSettings->Characters.GetAssetName(), FDiagChar::StaticStruct(), Problems, this);
-		if (LIKELY(CharsExt)) DiagChars = CharsExt; 
+		if (LIKELY(CharsExt)) DiagChars = CharsExt;
 		if (LIKELY(InvExt)) InvData = InvExt;
 	} else {
 		InvData = SysSettings->Items.LoadSynchronous();
