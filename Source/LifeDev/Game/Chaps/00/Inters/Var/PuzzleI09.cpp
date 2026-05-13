@@ -9,7 +9,7 @@
 
 APuzzleI09::APuzzleI09():Super() {
 	CPuzzle->Type = EPuzzleType::SEQUENCE;
-	CPuzzle->Solution = {9,1,1};
+	CPuzzle->Solution = {0,0,0};
 	IsOneShot = true;
 	// UseActiveOnce = true; // i think this might make this disabled when it's been saved
 	ResetOnFail = true;
@@ -37,8 +37,8 @@ void APuzzleI09::BeginPlay() {
 	
 	/// apply these here since the cpuzzle pieces might not be loaded in the constructor.
 	
-	SetAutoActives(false);
-	SetActives(false);
+	// SetAutoActives(false); // this one breaks it // todo call this on postload or somth
+	SetActives(false); // doesn't really work
 	StartStep(Story->GetStep(Story->GetCurrent())); // necessary. the step is already started on beginplay. since the step loads the dl, and this is on a dl.
 }
 
@@ -49,9 +49,11 @@ void APuzzleI09::BeginPlay() {
 
 void APuzzleI09::StartStep(AStep* const Step) {
 	if (UNLIKELY(!Step)) return;
+
 	// only important if i want to trigger on different chapters.
 	if (Step->Label == "C0S0") {
-		SetActives(true);
+		Reset();
+		// SetActives(true);
 		CPuzzle->Solution = {9,1,1};
 	}
 }

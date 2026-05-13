@@ -53,11 +53,15 @@ public:
 	}
 
 	// Set the interact pieces to active. Don't call during construction.
+	// Calling during BeginPlay is risky, as the pieces might have not gone through their BeginPlay,
+	// and if they have AutoActive set, then they might activate again.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
 	FORCEINLINE void SetActives(const bool NewActive) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetActives(NewActive); }
 	}
 
+	// note, calling this on begin play might not be the best,
+	// as the puzzle pieces might have gone through their BeginPlay.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(UnsafeDuringActorConstruction))
 	FORCEINLINE void SetAutoActives(const bool NewActive) const {
 		if (LIKELY(IsValid(CPuzzle))) { CPuzzle->SetAutoActives(NewActive); }

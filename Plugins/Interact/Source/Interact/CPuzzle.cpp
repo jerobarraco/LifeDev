@@ -316,6 +316,7 @@ void UCPuzzle::SetStatesNow(const TArray<int32>& States) {
 	// reload the ids if needed. important.
 	ResetCurrents();
 }
+
 void UCPuzzle::SetLocks(const TArray<bool>& Locks) {
 	UE_LOG(LogCPuzzle, Log, TEXT("%hs, o=%s"),
 		__func__, *GetNameSafe(GetOwner()));
