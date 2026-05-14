@@ -53,7 +53,7 @@ void APuzzleI09::StartStep(AStep* const Step) {
 	// only important if i want to trigger on different chapters.
 	if (Step->Label == "C0S0") {
 		Reset();
-		// SetActives(true);
+		SetActives(true);
 		CPuzzle->Solution = {9,1,1};
 	}
 }
