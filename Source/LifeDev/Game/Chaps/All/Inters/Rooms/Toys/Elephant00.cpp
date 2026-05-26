@@ -24,7 +24,7 @@ AElephant00::AElephant00(): Super() {
 	Interact->SetRelativeLocation(FVector(4.,-7., 6.));
 	Interact->SetBoxExtent(FVector(3.,8.,6.));
 	static ConstructorHelpers::FObjectFinder<USoundBase>
-		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toy/Toy_C"));
+		CSFX(TEXT("/Game/LifeDev/Game/Inters/Rooms/Toys/Toy_C"));
 	SFXs = { CSFX.Object, CSFX.Object};
 
 	Super::SetMobility(EComponentMobility::Static);
