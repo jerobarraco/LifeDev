@@ -161,8 +161,7 @@ void ALStep::Start_Implementation() {
 	DoIntersActive(); // activate after deactivate. for precedence.
 	DoIntersHint(); // hint after activate.
 	DoIntersTrigger(); // trigger after activate. and hint. (trigger could remove the hint, we should support that) 
-
-	UDiags* const Diags = UDiags::Instance(this);
+	
 	if (LIKELY(Diags)) {
 		for (const FName& N: Effects) {
 			Diags->SetEffect(N, true);
