@@ -63,16 +63,16 @@ protected:
 	inline static TSet<EFeat> WatchFeats = {
 		EFeat::S_ENV, EFeat::S_MUSIC, EFeat::S_NOISE,
 
-		EFeat::V_AUTO_EXP, EFeat::V_FRINGE, EFeat::V_FOV, EFeat::V_BLUR, EFeat::V_DUST,
+		EFeat::V_FRINGE, EFeat::V_AUTO_EXP, EFeat::V_FOV, EFeat::V_BLUR,
 		EFeat::V_LUMEN, EFeat::V_MLIGHTS, EFeat::V_NANITE, EFeat::V_SHAD_RAY,
-		EFeat::V_STROBE, EFeat::V_FLASHBACK, EFeat::V_CAM_LAG,
+		EFeat::V_STROBE, EFeat::V_FLASHBACK, EFeat::V_DUST, EFeat::V_CAM_LAG,
 
 		EFeat::U_TICK_BATCH, EFeat::U_TICK_BATCH,
 
 		EFeat::D_AUTO, EFeat::D_TEXT,
 		
 		EFeat::G_CARD0, EFeat::G_CARD1, EFeat::G_CARD2, EFeat::G_CARD3, EFeat::G_CARD4,
-		EFeat::G_GHOSTS, EFeat::G_TEACH, EFeat::G_STATUS, EFeat::G_RUMBLE, EFeat::G_FB_ANIM,
+		EFeat::G_GHOSTS, EFeat::G_STATUS, EFeat::G_TEACH, EFeat::G_FB_ANIM, EFeat::G_RUMBLE,
 		EFeat::G_SHOW_POINT
 	};
 	// EFeat::D_SHOW, // since this is not on the previous savegames,
