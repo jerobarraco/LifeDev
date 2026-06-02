@@ -69,7 +69,6 @@ void ALStep::Stop_Implementation() {
 	// * it makes it easy to manage effects, and reorder steps.
 	// * it makes it harder to have an effect that spans more than one step,
 	//	since it will stop and start on the same frame. or more frames if loading. beware.
-	UDiags* const Diags = UDiags::Instance(this);
 	if (LIKELY(Diags)) {
 		for (const FName& N: Effects) {
 			Diags->SetEffect(N, false);
@@ -220,7 +219,7 @@ void ALStep::SetFBDlgAuto(const FName& Id) {
 }
 
 void ALStep::FinishAfterDlgs() {
-	if (!Diags->GetIsShowing()) {
+	if (UNLIKELY(!Diags) || !Diags->GetIsShowing()) {
 		Finish();
 		return;
 	}
