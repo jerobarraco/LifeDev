@@ -24,6 +24,7 @@ public class LifeDev : ModuleRules {
 			"Sounds", "JSig",
 			"Sentry"
 		});
+		
 		// force user dir. this saves headaches when managing demo/playtest/release builds through steam.
 		// it also saves a lot of headaches to me when developing multiple versions
 		// https://forums.unrealengine.com/t/setting-global-preprocessor-definitions-for-a-module/339593/2?u=nande

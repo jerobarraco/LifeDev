@@ -155,6 +155,10 @@ bool UDiags::AddGroupId(const FName& RowName) {
 }
 
 void UDiags::SetEffect(const FName& Name, const bool Enable) {
+	// todo consider moving the handling of effects and keeping track of, to another more general place
+	// it's also used by lstep, but i can't set it on the step plugin since it would have to depend on 
+	// this module, and i don't want that.
+	// maybe jutils?
 	if (Effects.Contains(Name) == Enable) return; // no change
 
 	if (Enable) {
