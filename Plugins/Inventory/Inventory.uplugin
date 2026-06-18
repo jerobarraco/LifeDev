@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"EngineVersion": "5.6.0",
+	"EngineVersion": "5.8.0",
 	"VersionName": "1.9",
 	"FriendlyName": "Inventory",
 	"Description": "Inventory, Flags, and new user experience.",
