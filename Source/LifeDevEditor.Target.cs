@@ -5,11 +5,12 @@ using UnrealBuildTool;
 public class LifeDevEditorTarget : TargetRules {
 	public LifeDevEditorTarget(TargetInfo Target) : base(Target) {
 		Type = TargetType.Editor;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
-		CppStandardEngine = CppStandardVersion.Cpp20;
-		CppStandard = CppStandardVersion.Cpp20;
-		ExtraModuleNames.Add("LifeDev");
+	
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
+		DefaultBuildSettings = BuildSettingsVersion.V7;
+		CppStandardEngine = CppStandardVersion.Cpp23;
+		CppStandard = CppStandardVersion.Cpp23;
+		//ExtraModuleNames.Add("LifeDev"); // +?
 		bAllowHotReload = true;
 
 		// https://forums.unrealengine.com/t/ue-5-5-source-linux-compilation-errors/2148769/2?u=nande
