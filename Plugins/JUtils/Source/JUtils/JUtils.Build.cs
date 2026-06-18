@@ -7,8 +7,8 @@ public class JUtils: ModuleRules
 {
 	public JUtils(ReadOnlyTargetRules Target) : base(Target)
 	{
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
+		DefaultBuildSettings = BuildSettingsVersion.V7;
 
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
