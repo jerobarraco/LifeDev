@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "GameFramework/Info.h"
+
 #include "MusicMan.generated.h"
 
 class UCSounder;
