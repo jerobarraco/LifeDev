@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include "Components/ActorComponent.h"
 
 #include "CNoiser.generated.h"
 
+class USoundClass;
 class UCurveFloat;
 class USceneComponent;
 class USoundAttenuation;
