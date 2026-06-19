@@ -12,6 +12,7 @@ class ACameraActor;
 class UDataLayerAsset;
 class USceneComponent;
 class USoundBase;
+class UCameraShakeBase;
 
 // base class for story steps
 UCLASS(Blueprintable, BlueprintType, Config=Story, DefaultConfig)
