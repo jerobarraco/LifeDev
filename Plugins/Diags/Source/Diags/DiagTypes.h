@@ -5,6 +5,8 @@
 #include "Runtime/Core/Public/Misc/EnumRange.h"
 #include "DiagTypes.generated.h"
 
+class UTexture2D;
+
 UENUM(BlueprintType)
 enum class EDiagType : uint8 {
 	NORMAL,
