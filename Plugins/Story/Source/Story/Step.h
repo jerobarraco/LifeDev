@@ -7,6 +7,7 @@
 
 #include "Step.generated.h"
 
+class UForceFeedbackEffect;
 class UCameraComponent;
 class ACameraActor;
 class UDataLayerAsset;
