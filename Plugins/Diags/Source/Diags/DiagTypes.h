@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 #include "Engine/DataTable.h"
-
+#include "Runtime/Core/Public/Misc/EnumRange.h"
 #include "DiagTypes.generated.h"
 
 UENUM(BlueprintType)
