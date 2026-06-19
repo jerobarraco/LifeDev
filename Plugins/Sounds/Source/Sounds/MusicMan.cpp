@@ -5,6 +5,7 @@
 
 #include "SoundsModule.h"
 #include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 
 #include "Sounds/CSounder.h"
 
