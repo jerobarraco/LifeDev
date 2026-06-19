@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameFramework/Info.h"
+
 #include "DiagTypes.h"
 
 #include "DiagMan.generated.h"

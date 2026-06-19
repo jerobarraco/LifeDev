@@ -3,6 +3,7 @@
 
 #include "CNoiser.h"
 
+#include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCNoiser, Log, Log);
@@ -14,7 +15,7 @@ UCNoiser::UCNoiser():Super() {
 	Super::SetAutoActivate(false);
 }
 
-void UCNoiser::Activate(bool bReset) {
+void UCNoiser::Activate(const bool bReset) {
 	UE_LOG(LogCNoiser, Log, TEXT("%hs Reset=%i"), __func__, bReset);
 	if (IsActive() && !bReset) return;
 
