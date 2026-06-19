@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 
 #include "Step.generated.h"
 
@@ -11,7 +11,6 @@ class UCameraComponent;
 class ACameraActor;
 class UDataLayerAsset;
 class USceneComponent;
-class AActor;
 class USoundBase;
 
 // base class for story steps
