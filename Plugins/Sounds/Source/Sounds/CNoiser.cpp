@@ -3,8 +3,12 @@
 
 #include "CNoiser.h"
 
+#include "TimerManager.h"
 #include "Engine/World.h"
+#include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "Sound/SoundBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCNoiser, Log, Log);
 
@@ -34,7 +38,7 @@ void UCNoiser::Deactivate() {
 void UCNoiser::TimerStop() {
 	UE_LOG(LogCNoiser, Log, TEXT("%hs"), __func__);
 	const UWorld* const World = GetWorld();
-	if (!World || !TimerPlay.IsValid()) return;
+	if (UNLIKELY(!World) || !TimerPlay.IsValid()) return;
 
 	World->GetTimerManager().ClearTimer(TimerPlay);
 	TimerPlay.Invalidate();
