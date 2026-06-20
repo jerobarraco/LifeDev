@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include "GameFramework/Actor.h"
 
 #include "Interact.generated.h"
 
+class UCurveFloat;
 class UNiagaraSystem;
 class UNiagaraComponent;
 class UCInteractor;
