@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Subsystems/WorldSubsystem.h"
+#include "UObject/ObjectPtr.h"
 
 #include "Anim.generated.h"
 
@@ -14,6 +15,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimDataDone, UPrimitiveComponent*
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimCompDone, USceneComponent* const, Comp, const FName, Name);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAnimGenDone, UObject* const, Obj, const FName, Name);
 DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAnimGenUpd, UObject* const, Obj, const FName, Name, const float, Alpha);
+
+class UCurveFloat;
 
 // common stuff to be passed as parameter to all function
 USTRUCT(Blueprintable, BlueprintType)
