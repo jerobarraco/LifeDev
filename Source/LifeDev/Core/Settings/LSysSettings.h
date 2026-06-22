@@ -9,6 +9,7 @@
 
 #include "LSysSettings.generated.h"
 
+class UDataLayerAsset;
 enum class EInputType : uint8;
 class UDataTable;
 

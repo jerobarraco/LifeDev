@@ -266,6 +266,12 @@ void UJUtilsMisc::SetCVarChar(const TCHAR* const Name, const int32 Val) {
 	Variable->Set(Val);
 }
 
+bool UJUtilsMisc::IsInConstructor() {
+	// https://forums.unrealengine.com/t/how-to-tell-if-a-function-is-called-by-a-constructor/413102/6?u=nande
+	const FUObjectThreadContext& ThreadContext = FUObjectThreadContext::Get();
+	return ThreadContext.IsInConstructor > 0;
+}
+
 UObject* UJUtilsMisc::GetMutableDefault(const TSubclassOf<UObject>& Class, const bool CreateIfNeeded) {
 	return Class.Get()->GetDefaultObject(CreateIfNeeded);
 	// copied from 	GetMutableDefault<Class.Get()>();

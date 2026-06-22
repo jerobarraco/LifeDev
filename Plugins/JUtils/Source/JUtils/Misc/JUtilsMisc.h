@@ -6,8 +6,8 @@
 // This is called misc utils because is the misc group
 // later i plan on having more groups
 
-#include <string>
-#include "CoreMinimal.h"
+#include <string> // for std::char_traits 
+#include "Misc/EnumRange.h"
 
 class ULevelStreamingDynamic;
 class UInputMappingContext;
@@ -142,11 +142,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	static FORCEINLINE bool IsInConstructor() {
-		// https://forums.unrealengine.com/t/how-to-tell-if-a-function-is-called-by-a-constructor/413102/6?u=nande
-		const FUObjectThreadContext& ThreadContext = FUObjectThreadContext::Get();
-		return ThreadContext.IsInConstructor > 0;
-	}
+	static FORCEINLINE bool IsInConstructor();
 
 	// Get the default object from the class. Optionally creating it if it's not there yet.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)

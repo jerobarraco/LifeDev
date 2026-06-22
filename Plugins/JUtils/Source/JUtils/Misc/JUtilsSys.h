@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Runtime/Core/Public/Misc/EnumerateRange.h"
+#include "Misc/EnumRange.h"
 
 #include "JUtilsSys.generated.h"
 
