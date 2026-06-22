@@ -2,8 +2,12 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "TeachTypes.h"
+
+#include "GameFramework/Info.h"
+
 #include "JUtils/Input/JUtilsInput.h"
+
+#include "TeachTypes.h"
 
 #include "TeachMan.generated.h"
 

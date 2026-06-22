@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+
+#include "Components/ActorComponent.h"
+
 #include "JUtils/Math/CodeCurve.h"
 
 #include "CAnimator.generated.h"

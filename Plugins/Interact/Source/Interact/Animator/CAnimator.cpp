@@ -3,6 +3,11 @@
 
 #include "CAnimator.h"
 
+#include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/WorldSettings.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogCAnimator, Log, Log)
 
 UCAnimator::UCAnimator() {
@@ -77,6 +82,7 @@ void UCAnimator::DoTick(float DT) {
 
 		const AWorldSettings* const Settings = World->GetWorldSettings(false, false);
 		if (UNLIKELY(!Settings)) return;
+
 		DT /= FMath::Max(UE_SMALL_NUMBER, Settings->TimeDilation); // avoid crash
 	}
 
