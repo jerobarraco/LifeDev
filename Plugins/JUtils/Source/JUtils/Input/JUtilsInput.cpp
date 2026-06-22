@@ -5,6 +5,10 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Engine/GameInstance.h"
+#include "Engine/LocalPlayer.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 
 void UJUtilsInput::ToggleContext(const UObject* const O,

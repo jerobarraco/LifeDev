@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Misc/EnumRange.h"
 
 #include "JUtilsInput.generated.h"
 
