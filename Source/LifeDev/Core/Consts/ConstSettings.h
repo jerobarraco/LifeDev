@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Runtime/Core/Public/Misc/EnumRange.h"
 #include "ConstSettings.generated.h"
 
 // game features

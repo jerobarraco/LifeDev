@@ -1,7 +1,8 @@
 #pragma once
 
-#include "CoreMinimal.h"
 #include "InputMappingContext.h"
+#include "Engine/DeveloperSettings.h"
+
 #include "Inventory/Teach/TeachTypes.h"
 #include "JUtils/Misc/JUtilsSys.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
