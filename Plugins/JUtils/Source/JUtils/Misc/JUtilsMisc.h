@@ -7,6 +7,8 @@
 // later i plan on having more groups
 
 #include <string> // for std::char_traits 
+
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "Misc/EnumRange.h"
 
 class ULevelStreamingDynamic;

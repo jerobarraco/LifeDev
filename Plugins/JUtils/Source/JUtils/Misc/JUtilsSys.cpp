@@ -13,6 +13,7 @@
 #include "InputCoreTypes.h"
 
 #include "JUtilsMisc.h"
+#include "Engine/Engine.h"
 #if WITH_EDITOR
 #include "EditorScriptingHelpers.h"
 #endif

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Curves/CurveEvaluation.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "CodeCurve.generated.h"
 
