@@ -2,6 +2,8 @@
 
 #include "LifeDev/Core/Settings/LSave.h"
 
+#include "Engine/World.h"
+
 #include "Inventory/Flags.h"
 #include "Inventory/Inventory.h"
 

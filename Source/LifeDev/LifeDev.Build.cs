@@ -32,5 +32,8 @@ public class LifeDev : ModuleRules {
 		PublicDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("UE_SAVED_DIR_OVERRIDE=./MyData");
 		PrivateDefinitions.Add("LD_DEMO=0");
+		// todo fix once i fix the rest
+		// this is to not have sentry giving me errors
+		// PrivateDefinitions.Add("USE_SENTRY_NATIVE=0");
 	}
 }
