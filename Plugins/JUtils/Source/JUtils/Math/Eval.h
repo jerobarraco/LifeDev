@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
-
+#include "Subsystems/WorldSubsystem.h"
 #include "Templates/SharedPointer.h"
 
 #include "Eval.generated.h"

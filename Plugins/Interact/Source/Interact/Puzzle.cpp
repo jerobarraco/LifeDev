@@ -3,6 +3,9 @@
 
 #include "Puzzle.h"
 
+#include "Engine/World.h"
+#include "TimerManager.h"
+
 #include "Interact.h"
 
 #include "Interact/CPuzzle.h"

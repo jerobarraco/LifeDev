@@ -2,10 +2,12 @@
 
 #include "FlashbackMan.h"
 
-#include "Flashback.h"
-#include "LifeDev/Core/Settings/LSettings.h"
+#include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
+
+#include "Flashback.h"
 
 AFlashbackMan::AFlashbackMan():Super() {
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection>

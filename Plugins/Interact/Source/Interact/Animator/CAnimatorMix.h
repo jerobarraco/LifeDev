@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+
 #include "CAnimatorTrans.h"
 
 #include "CAnimatorMix.generated.h"
 
+class UMaterialInstanceDynamic;
 class UCurveFloat;
 class USceneComponent;
 

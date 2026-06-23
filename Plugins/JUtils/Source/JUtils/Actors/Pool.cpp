@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: MIT
 #include "Pool.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, Log);
+#include "TimerManager.h"
+#include "Engine/World.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogJPool, Log, All);
 
 bool UPool::Spawn() {
 	UE_LOG(LogJPool, Verbose, TEXT("%hs."), __func__);

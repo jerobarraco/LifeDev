@@ -3,8 +3,10 @@
 #pragma once
 
 #include "Blueprint/UserWidget.h"
+
 #include "LCheck.generated.h"
 
+class USlateWidgetStyleAsset;
 class UTextBlock;
 class UCheckBox;
 

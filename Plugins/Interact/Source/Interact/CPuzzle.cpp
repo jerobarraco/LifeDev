@@ -10,6 +10,7 @@
 #include "Animator/CAnimatorMix.h"
 #include "Interact.h"
 #include "InteractAnim.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogCPuzzle, Log, Log);
 

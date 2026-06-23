@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include "Subsystems/WorldSubsystem.h"
+
 #include "Pool.generated.h"
 
 // Note, i thought about the idea to make this into a object pool too. but there's some overhead.

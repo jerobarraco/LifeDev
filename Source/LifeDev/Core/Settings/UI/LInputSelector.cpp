@@ -4,6 +4,7 @@
 
 #include "UserSettings/EnhancedInputUserSettings.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 #include "JUtils/Input/JUtilsInput.h"
 

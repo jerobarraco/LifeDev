@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: MIT
 #include "Eval.h"
 
+#include "Engine/World.h"
 #include "MathExpEvaluator.h"
+#include "Framework/Application/SlateApplication.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogEval, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogEval, Log, All);
 
 UEval::UEval():Super() {}
 

@@ -5,6 +5,7 @@
 
 #include "LOverlayUI.generated.h"
 
+class UMaterialInstance;
 class UImage;
 
 // a ui root for things that show in an overlay. like the save icon.

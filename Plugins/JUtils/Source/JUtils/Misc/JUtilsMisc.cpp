@@ -3,16 +3,15 @@
 
 #include "JUtilsMisc.h"
 
-#include <Async/Async.h>
-#include "CoreGlobals.h"
 #include "Engine/LevelStreamingDynamic.h"
+#include "Misc/FileHelper.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerInstance.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogJUtilsMisc, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogJUtilsMisc, Log, All);
 
 // TODO fix packaging fails with this one
 // https://www.reddit.com/r/unrealengine/comments/sbqb5k/comment/hu4c6ze/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -227,7 +226,7 @@ UDataTable* UJUtilsMisc::LoadJSONTable(const FString& BasePath, const FString& N
 	if (UNLIKELY(!FPaths::FileExists(Path))) return nullptr;
 
 	FString S;
-	if (UNLIKELY(!FFileHelper::LoadFileToString(S,*Path,FFileHelper::EHashOptions::None))) {
+	if (UNLIKELY(!FFileHelper::LoadFileToString(S, *Path, FFileHelper::EHashOptions::None))) {
 		UE_LOG(LogJUtilsMisc, Log, TEXT("%hs Can't read '%s'. Stop"), __func__, *Path);
 		return nullptr;
 	}

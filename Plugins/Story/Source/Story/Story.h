@@ -8,8 +8,10 @@
 
 #include "Story.generated.h"
 
+class UDataLayerAsset;
 class AStep;
 class UDataTable;
+
 // can't use *Const as it breaks AStoryMan due to ue bug
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStop, AStep *, Step);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStoryStepStart, AStep *, Step);

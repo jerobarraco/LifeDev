@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/InputKeySelector.h"
 
 #include "LInputSelector.generated.h"
+
+class USlateWidgetStyleAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnKeySelectedPlus, class ULInputSelector*, Sel, const FInputChord&, Key);
 

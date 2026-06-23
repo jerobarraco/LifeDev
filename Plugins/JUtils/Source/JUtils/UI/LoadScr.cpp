@@ -5,6 +5,7 @@
 
 #include <thread>
 
+#include "Engine/GameInstance.h"
 #include "MoviePlayer.h"
 #include "Blueprint/UserWidget.h"
 

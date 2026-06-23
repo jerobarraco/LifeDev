@@ -3,6 +3,8 @@
 
 #include "InteractAnim.h"
 
+#include "GameFramework/ForceFeedbackEffect.h"
+
 #include "Animator/CAnimatorMix.h" // needed for Prim = Mesh. yes.
 
 AInteractAnim::AInteractAnim():Super() {

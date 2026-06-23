@@ -1,10 +1,12 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
-#include "CoreMinimal.h"
+
 #include "GameFramework/Info.h"
 
 #include "LFeatsMan.generated.h"
 
+class UMaterialParameterCollectionInstance;
+class UMaterialParameterCollection;
 class APostProcessVolume;
 enum class EFeat : uint8;
 class UInputMappingContext;
