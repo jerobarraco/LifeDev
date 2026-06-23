@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Modules/ModuleInterface.h"
 
 // module for significance manager stuff
 class JSIG_API FJSigModule : public IModuleInterface {

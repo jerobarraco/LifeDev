@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Modules/ModuleInterface.h"
+#include "Logging/LogCategory.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogSounds, Log, Log)
+DECLARE_LOG_CATEGORY_EXTERN(LogSounds, Log, All)
 
 class SOUNDS_API FSoundsModule : public IModuleInterface {
 public:

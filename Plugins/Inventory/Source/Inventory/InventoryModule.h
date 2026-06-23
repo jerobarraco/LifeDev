@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Modules/ModuleInterface.h"
 
 class INVENTORY_API FInventoryModule : public IModuleInterface {
 public:
