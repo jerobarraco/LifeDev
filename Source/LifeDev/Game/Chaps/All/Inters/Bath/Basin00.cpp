@@ -4,6 +4,7 @@
 
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "CQuickMesh.h"
 #include "Interact/CInteract.h"

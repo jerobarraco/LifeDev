@@ -5,6 +5,7 @@
 
 #include <thread>
 
+#include "ContentStreaming.h"
 #include "ShaderPipelineCache.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
 #include "WorldPartition/DataLayer/DataLayerManager.h"
@@ -87,7 +88,7 @@ bool UStory::Start(const FName Name) {
 	AStep* const Step = GetStep(Name);
 	if (UNLIKELY(!IsValid(Step))) return false; // getstep prints warning
 
-	// Note. i'm currently using the UseFade flag to also imply a blocking load.
+	// Note. I'm currently using the UseFade flag to also imply a blocking load.
 	// it makes no difference as before because i don't need to change anything in the code.
 	// it's just a notice to the user.
 	// i did it that way instead of adding a variable because:

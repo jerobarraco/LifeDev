@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h" // needed to load testdl
 #include "InputMappingContext.h" // for the action object. rider doesn't detect it
+#include "UObject/ConstructorHelpers.h"
 
 #include "Diags/Diags.h"
 #include "Interact/CInteract.h"

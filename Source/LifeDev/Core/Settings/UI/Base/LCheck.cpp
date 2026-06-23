@@ -2,6 +2,9 @@
 
 #include "LCheck.h"
 
+#include "UObject/ConstructorHelpers.h"
+#include "Styling/SlateWidgetStyleAsset.h"
+
 #include "Components/CheckBox.h"
 #include "Components/TextBlock.h"
 

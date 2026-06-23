@@ -4,6 +4,7 @@
 #include "CInteract.h"
 
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 
 #include "CInteractor.h"

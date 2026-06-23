@@ -3,6 +3,7 @@
 #include "LInputSelector.h"
 
 #include "UserSettings/EnhancedInputUserSettings.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "JUtils/Input/JUtilsInput.h"
 

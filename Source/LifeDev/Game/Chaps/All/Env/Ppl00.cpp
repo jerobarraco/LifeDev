@@ -3,6 +3,7 @@
 #include "Ppl00.h"
 
 #include "Components/CapsuleComponent.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "Eval.h"
 #include "Interact/CInteract.h"

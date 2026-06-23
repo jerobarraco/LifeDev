@@ -3,6 +3,7 @@
 
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"

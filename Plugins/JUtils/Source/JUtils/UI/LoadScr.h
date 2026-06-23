@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+
+#include "Subsystems/GameInstanceSubsystem.h"
+
 #include "LoadScr.generated.h"
+
+class UUserWidget;
 
 // This is experimental due to an issue with the background tick.
 // it might have issues when dealing with the timermanager or depending on the tick

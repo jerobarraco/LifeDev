@@ -10,6 +10,7 @@
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Misc/EnumRange.h"
+#include "Engine/DataTable.h"
 
 class ULevelStreamingDynamic;
 class UInputMappingContext;

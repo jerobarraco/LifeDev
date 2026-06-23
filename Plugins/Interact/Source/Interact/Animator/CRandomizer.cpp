@@ -3,6 +3,9 @@
 
 #include "CRandomizer.h"
 
+#include "Engine/World.h"
+#include "TimerManager.h"
+
 #include "CAnimator.h"
 
 UCRandomizer::UCRandomizer(): Super() {

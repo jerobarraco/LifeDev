@@ -4,6 +4,9 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
+#include "GameFramework/Pawn.h"
 
 #include "CInteract.h"
 

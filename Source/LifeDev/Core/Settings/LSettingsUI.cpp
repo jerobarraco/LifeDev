@@ -9,6 +9,7 @@
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 #include "Interact/Animator/Anim.h"
 #include "Inventory/Flags.h"

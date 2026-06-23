@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "Components/ActorComponent.h"
+
 #include "CRandomizer.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTrigger);

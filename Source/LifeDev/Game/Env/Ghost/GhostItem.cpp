@@ -3,6 +3,9 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/Pawn.h"
+#include "UObject/ConstructorHelpers.h"
+#include "TimerManager.h"
 
 #include "Interact/Animator/CAnimator.h"
 #include "Interact/Animator/CAnimatorMix.h"
@@ -13,6 +16,7 @@
 #include "LifeDev/Game/Interact/CLSignificance.h"
 
 AGhostItem::AGhostItem():Super() {
+	TargetClass = APawn::StaticClass();
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
 
@@ -148,6 +152,7 @@ void AGhostItem::FadeAndReturn() {
 void AGhostItem::Return() {
 	const UWorld* const World = GetWorld();
 	if (UNLIKELY(!World)) return;
+
 	// avoid issues with double returns
 	World->GetTimerManager().ClearAllTimersForObject(this);
 	

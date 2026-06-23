@@ -6,6 +6,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
+#include "Camera/CameraShakeBase.h"
 
 #include "Story.h"
 

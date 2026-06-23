@@ -7,6 +7,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
+#include "GameFramework/ForceFeedbackEffect.h"
+#include "Sound/SoundBase.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "JUtils/Actors/CQuickMesh.h"
 #include "JUtils/Input/JUtilsInput.h"

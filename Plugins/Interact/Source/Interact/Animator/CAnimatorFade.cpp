@@ -3,7 +3,13 @@
 
 #include "CAnimatorFade.h"
 
+#include "Components/StaticMeshComponent.h"
+#include "Curves/CurveFloat.h"
+#include "Engine/World.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/MaterialInterface.h"
+#include "UObject/ConstructorHelpers.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogAnimFade, Log, Log);
 

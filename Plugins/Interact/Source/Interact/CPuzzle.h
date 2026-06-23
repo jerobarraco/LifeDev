@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include "Components/ActorComponent.h"
+
 #include "CPuzzle.generated.h"
 
 class AInteract;

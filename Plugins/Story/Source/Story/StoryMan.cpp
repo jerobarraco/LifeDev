@@ -3,6 +3,8 @@
 
 #include "StoryMan.h"
 
+#include "UObject/ConstructorHelpers.h"
+
 #include "Story.h"
 #include "StoryUI.h"
 

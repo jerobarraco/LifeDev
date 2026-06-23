@@ -5,6 +5,10 @@
 #include "Components/GridPanel.h"
 #include "Components/Image.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "UObject/ConstructorHelpers.h"
+#include "TimerManager.h"
+#include "Materials/MaterialInstance.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 #include "Interact/Animator/Anim.h"
 

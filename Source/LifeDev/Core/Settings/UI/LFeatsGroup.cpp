@@ -3,6 +3,7 @@
 #include "LFeatsGroup.h"
 
 #include "Components/ScrollBox.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "LFeatCheck.h"
 

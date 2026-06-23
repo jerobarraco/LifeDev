@@ -1,11 +1,11 @@
 // Copyright (C) 2023 Jeronimo Barraco-Marmol
 
 #pragma once
-
-#include "CoreMinimal.h"
+#include "GameFramework/Info.h"
 
 #include "FlashbackMan.generated.h"
 
+class UMaterialParameterCollection;
 class UMaterialParameterCollectionInstance;
 
 // base class for the flashback manager

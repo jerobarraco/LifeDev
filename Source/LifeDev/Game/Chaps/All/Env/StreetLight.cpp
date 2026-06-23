@@ -2,9 +2,11 @@
 
 #include "StreetLight.h"
 
-#include "CQuickMesh.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Components/AudioComponent.h"
 #include "Components/SpotLightComponent.h"
+
+#include "CQuickMesh.h"
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorMix.h"
 #include "Interact/Animator/CRandomizer.h"

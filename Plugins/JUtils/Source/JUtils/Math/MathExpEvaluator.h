@@ -4,6 +4,7 @@
 
 #include "CoreTypes.h"
 #include "Internationalization/FastDecimalFormat.h"
+#include "Math/BasicMathExpressionEvaluator.h"
 #include "Misc/ExpressionParserTypes.h"
 #include "Misc/Optional.h"
 #include "Templates/ValueOrError.h"

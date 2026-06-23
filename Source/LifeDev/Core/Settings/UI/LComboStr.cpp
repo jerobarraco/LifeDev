@@ -2,6 +2,8 @@
 
 #include "LComboStr.h"
 
+#include "UObject/ConstructorHelpers.h"
+
 #include "JUtilsUI.h"
 
 ULComboStr::ULComboStr() {

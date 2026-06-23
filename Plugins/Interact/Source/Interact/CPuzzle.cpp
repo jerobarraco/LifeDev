@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #include "CPuzzle.h"
 
+#include "Engine/World.h"
+
 #include "DelegateWrappers.h"
 #include "Eval.h"
 

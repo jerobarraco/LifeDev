@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 
 #include "GhostItem.generated.h"
 
@@ -56,7 +56,7 @@ protected:
 	// settings
 #pragma region Settings
 	UPROPERTY(BlueprintReadWrite)
-	TSubclassOf<AActor> TargetClass = APawn::StaticClass();
+	TSubclassOf<AActor> TargetClass;
 
 	// fixed origin from the target. is the origin of the random offset
 	UPROPERTY(BlueprintReadWrite, Config)
