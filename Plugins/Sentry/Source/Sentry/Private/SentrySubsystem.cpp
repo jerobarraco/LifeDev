@@ -32,6 +32,8 @@
 #include "HAL/PlatformSentryFeedback.h"
 #include "HAL/PlatformSentryId.h"
 #include "HAL/PlatformSentrySubsystem.h"
+// TODO remove or upgrade
+#include "Null/NullSentrySubsystem.h"
 
 void USentrySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {

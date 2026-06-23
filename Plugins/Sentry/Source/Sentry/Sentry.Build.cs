@@ -140,7 +140,8 @@ public class Sentry : ModuleRules
 			PublicAdditionalLibraries.Add(Path.Combine(PlatformThirdPartyPath, "lib", "libmini_chromium.a"));
 			PublicAdditionalLibraries.Add(Path.Combine(PlatformThirdPartyPath, "lib", "libsentry.a"));
 
-			PublicDefinitions.Add("USE_SENTRY_NATIVE=1");
+			// TODO change back once i fix the rest. or upgrade sentry
+			PublicDefinitions.Add("USE_SENTRY_NATIVE=0");
 			PublicDefinitions.Add("SENTRY_BUILD_STATIC=1");
 
 			AddEngineThirdPartyPrivateStaticDependencies(Target, "libcurl");

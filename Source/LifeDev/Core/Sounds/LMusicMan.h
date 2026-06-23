@@ -6,6 +6,8 @@
 
 #include "LMusicMan.generated.h"
 
+class USoundEffectSubmixPreset;
+class USoundSubmix;
 class UCAnimatorSFX;
 enum class EFeat : uint8;
 class UCAnimator;
