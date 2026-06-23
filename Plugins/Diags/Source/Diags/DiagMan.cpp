@@ -8,6 +8,8 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "UObject/ConstructorHelpers.h"
+#include "TimerManager.h"
 
 #include "JUtils/Input/JUtilsInput.h"
 

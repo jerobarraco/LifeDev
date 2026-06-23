@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #include "InteractModule.h"
 
+#include "Modules/ModuleManager.h"
+
 #include "JUtils/Editor/JUtilsEditor.h"
 
 IMPLEMENT_MODULE(FInteractModule, Interact)

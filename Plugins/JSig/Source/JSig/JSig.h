@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Subsystems/WorldSubsystem.h"
 
 #include "JSig.generated.h"
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Modules/ModuleInterface.h"
 
 class DIAGS_API FDiagsModule : public IModuleInterface {
 public:
