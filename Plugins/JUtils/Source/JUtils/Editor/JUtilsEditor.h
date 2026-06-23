@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+
 #include "JUtilsEditor.generated.h"
 
 // DECLARE_DYNAMIC_DELEGATE_OneParam(FJUEOnPie, const bool, IsSimulating);

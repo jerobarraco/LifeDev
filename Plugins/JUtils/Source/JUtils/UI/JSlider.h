@@ -6,6 +6,7 @@
 
 #include "JSlider.generated.h"
 
+class USlateWidgetStyleAsset;
 class USliderWidgetStyle;
 
 // base class for a styleable slider with apply and load

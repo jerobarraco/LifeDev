@@ -6,6 +6,8 @@
 
 #include "LVolumeSlider.generated.h"
 
+class USoundSubmix;
+
 // class used to manipulate the sound volume
 UCLASS(Blueprintable, BlueprintType)
 class LIFEDEV_API ULVolumeSlider: public ULSlider {

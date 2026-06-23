@@ -4,12 +4,15 @@
 #include "JUtilsEditor.h"
 
 #if WITH_EDITOR
+#include "Modules/ModuleManager.h"
+#include "PropertyEditorModule.h"
 #include "Kismet2/DebuggerCommands.h"
 #endif
 
 bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Section,
 	const TArray<FString>& Categories) {
 #if !WITH_EDITOR
+	return false;
 #else
 	// https://forums.unrealengine.com/t/how-to-modify-property-section-in-details-panel-in-editor/611250/4?u=nande
 	FModuleManager& Man = FModuleManager::Get();
@@ -18,6 +21,7 @@ bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Sect
 		UE_LOG(LogTemp, Warning, TEXT("%hs could not load PropertyEditor module"), __func__);
 		return false;
 	}
+
 	FPropertyEditorModule& Mod = static_cast<FPropertyEditorModule&>(*IMod);
 	const TSharedRef<FPropertySection> Sect = Mod.FindOrCreateSection(*Class,
 		*Section, FText::FromString(Section));
@@ -27,7 +31,6 @@ bool UJUtilsEditor::AddOutlinerSection(const FString& Class, const FString& Sect
 	Mod.NotifyCustomizationModuleChanged();
 	return true;
 #endif
-	return false;
 }
 
 bool UJUtilsEditor::PlayInEditor() {

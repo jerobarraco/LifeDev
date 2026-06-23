@@ -3,6 +3,9 @@
 
 #include "TeachMan.h"
 
+#include "Engine/Engine.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/InputDeviceSubsystem.h"
 

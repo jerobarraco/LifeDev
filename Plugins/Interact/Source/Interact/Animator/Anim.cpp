@@ -3,6 +3,11 @@
 #include "Anim.h"
 
 #include "Components/AudioComponent.h"
+#include "Components/PrimitiveComponent.h"
+#include "Engine/World.h"
+#include "Framework/Application/SlateApplication.h"
+#include "GameFramework/WorldSettings.h"
+#include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 

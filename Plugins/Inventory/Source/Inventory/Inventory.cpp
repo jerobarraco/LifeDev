@@ -7,6 +7,8 @@
 #include "Engine/AssetManager.h"
 
 #include "ItemLogic.h" //needed for ManType.
+#include "TimerManager.h"
+#include "Engine/World.h"
 
 #define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
 #define _IsNotCold(I) ((I.ActiveCoolDown>0) & !FMath::IsNearlyZero(I.ActiveCoolDown))

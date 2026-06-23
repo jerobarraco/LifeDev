@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
+
 #include "Base/LCheck.h"
 
 #include "LifeDev/Core/Consts/ConstSettings.h"

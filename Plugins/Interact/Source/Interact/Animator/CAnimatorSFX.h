@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "CoreMinimal.h"
 #include "CAnimator.h"
+
 #include "CAnimatorSFX.generated.h"
+
+class USoundEffectSubmixPreset;
+class USoundSubmix;
 
 // Animator that handles submixes effects
 UCLASS(ClassGroup=(Interact), meta=(BlueprintSpawnableComponent))

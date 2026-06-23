@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "JSlider.h"
 
 #include "LSlider.generated.h"

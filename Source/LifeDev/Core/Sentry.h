@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Subsystems/GameInstanceSubsystem.h"
+
 #include "SentryDataTypes.h"
 
 #include "Sentry.generated.h"

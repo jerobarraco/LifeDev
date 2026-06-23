@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 
 #include "JButton.generated.h"
 
+class USlateWidgetStyleAsset;
 class USlateBrushAsset;
 class UButton;
 class UTextBlock;
