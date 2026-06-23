@@ -1,5 +1,7 @@
 #include "Sentry.h"
 
+#include "Engine/Engine.h"
+
 #include "SentrySubsystem.h"
 
 #include "Diags/Diags.h"

@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 
 #include "LGameInstance.generated.h"
+
+class UUserWidget;
 
 // LifeDev GameInstance
 UCLASS(Blueprintable)

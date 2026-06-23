@@ -2,6 +2,7 @@
 
 #include "LGameInstance.h"
 
+#include "Engine/World.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 
 #include "Sentry.h"
