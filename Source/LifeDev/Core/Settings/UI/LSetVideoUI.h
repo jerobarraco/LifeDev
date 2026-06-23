@@ -1,12 +1,12 @@
 // Copyright (C) 2024 - Jeronimo Barraco-Marmol. All rights reserved.
 
 #pragma once
-#include "CoreMinimal.h"
 
 #include "LSetBaseUI.h"
 
 #include "LSetVideoUI.generated.h"
 
+class UGameUserSettings;
 class ULCheck;
 class ULFeatsGroup;
 class UTextBlock;

@@ -3,7 +3,8 @@
 #include "LMusicMan.h"
 
 #include "AudioMixerBlueprintLibrary.h"
-
+#include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundClass.h"
 #include "Sound/SoundSubmix.h"
