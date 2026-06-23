@@ -4,6 +4,9 @@
 // inspired by ProgressWidgetStyle
 #pragma once
 
+#include "Styling/SlateWidgetStyleContainerBase.h"
+#include "Styling/SlateStyle.h"
+
 #include "JSlateStyles.generated.h"
 
 // style for a slider widget

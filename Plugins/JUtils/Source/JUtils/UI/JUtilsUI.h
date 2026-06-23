@@ -3,7 +3,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine/DataAsset.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Style/JSlateStyles.h"
 
 #include "JUtilsUI.generated.h"
 
