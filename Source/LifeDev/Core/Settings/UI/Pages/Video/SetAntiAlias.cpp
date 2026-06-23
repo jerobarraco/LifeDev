@@ -5,7 +5,8 @@
 
 #include "Misc/ConfigCacheIni.h"
 
-ENUM_RANGE_BY_COUNT(EAntiAliasingMethod, EAntiAliasingMethod::AAM_MAX); // benui told me to do it
+// benui told me to do it
+ENUM_RANGE_BY_COUNT(EAntiAliasingMethod, EAntiAliasingMethod::AAM_MAX);
 
 void USetAntiAlias::Load_Implementation() {
 	ClearOptions(); // could be called multiple times during runtime.

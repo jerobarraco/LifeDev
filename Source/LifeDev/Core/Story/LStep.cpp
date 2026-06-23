@@ -1,7 +1,12 @@
 // Copyright (c) 2023 Jeronimo Barraco-Marmol. All rights reserved.
 #include "LStep.h"
 
+#include "Engine/World.h"
+#include "TimerManager.h"
+#include "UObject/ConstructorHelpers.h"
+#include "GameFramework/ForceFeedbackEffect.h"
 #include "Camera/CameraComponent.h" // needed even though rider disagrees
+#include "Camera/CameraShakeBase.h"
 
 #include "Diags/Diags.h"
 #include "Interact/Animator/CAnimatorTrans.h"
@@ -28,6 +33,7 @@ ALStep::ALStep():Super() {
 	// classes doesn't work with the ".CamShake_B" ending. (i think they need the _B_C at end)
 	static ConstructorHelpers::FClassFinder<UCameraShakeBase>
 		CShake(TEXT("/Game/LifeDev/Game/Env/CamShake_B"));
+
 	CamShakeClass = CShake.Class;
 	// disappeared from ue5.4 without warning
 	// UDefaultCameraShakeBase::StaticClass();

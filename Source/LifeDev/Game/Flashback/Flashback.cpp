@@ -3,6 +3,7 @@
 
 #include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Curves/CurveFloat.h"
 
 #include "Interact/Animator/CAnimator.h"
 
@@ -16,6 +17,7 @@ UFlashback::UFlashback():Super() {
 	static ConstructorHelpers::FObjectFinder<UCurveFloat>
 		CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/SmoothRampUp.SmoothRampUp"));
 		// CCurve(TEXT("/Niagara/DefaultAssets/Curves/Templates/EaseIn.EaseIn"));
+
 	Animator->Curve = CCurve.Succeeded() ? CCurve.Object : nullptr;
 }
 

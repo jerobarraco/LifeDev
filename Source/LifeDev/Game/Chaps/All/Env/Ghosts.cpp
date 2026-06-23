@@ -4,6 +4,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Sound/SoundBase.h"
 
 #include "LifeDev/Core/Sounds/CLSounder.h"
 #include "LifeDev/Core/Consts/ConstSettings.h"
@@ -15,6 +16,7 @@ AGhosts::AGhosts():Super() {
 	SFX->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSnd(TEXT("/Game/LifeDev/Game/Env/Ghost/Ghosts_S.Ghosts_S"));
+
 	SFX->SetSound(CSnd.Object);
 	SFX->TimeFadeIn = 1;
 	SFX->TimeFadeOut = 2.0;

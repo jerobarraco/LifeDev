@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: MIT
 #include "Inventory.h"
 
-#include "Eval.h"
 #include "Engine/DataTable.h"
 #include "Engine/AssetManager.h"
-
-#include "ItemLogic.h" //needed for ManType.
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "Sound/SoundBase.h"
+
+#include "Eval.h"
+
+#include "ItemLogic.h" //needed for ManType.
 
 #define _IsCold(I) ((I.ActiveCoolDown<=0) | FMath::IsNearlyZero(I.ActiveCoolDown))
 #define _IsNotCold(I) ((I.ActiveCoolDown>0) & !FMath::IsNearlyZero(I.ActiveCoolDown))
@@ -434,6 +436,7 @@ FItem* UInventory::AddNew(const FName& Name) {
 	TSoftObjectPtr<USoundBase>& Snd = pOutItem->Snd;
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/asynchronous-asset-loading-in-unreal-engine\https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nandehttps://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
 	// https://forums.unrealengine.com/t/would-it-be-possible-to-get-some-explanation-for-async-asset-loading/282540/4?u=nande
+
 	if (UseSndAutoLoad && Snd.ToSoftObjectPath().IsValid() && !Snd.IsValid()) {
 		UE_LOG(LogInventory, Log, TEXT("%hs Loading sound. Name=%s Async=%i Snd=%s"),
 			__func__, *Name.ToString(), UseSndAsyncLoad, *Snd.ToString());

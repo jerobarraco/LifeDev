@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include "UObject/Object.h"
+
 #include "ItemLogic.generated.h"
 
 // Base class for the logic of each item 
