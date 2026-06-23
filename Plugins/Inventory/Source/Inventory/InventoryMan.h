@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/Info.h"
+
 #include "InventoryTypes.h"
 
 #include "InventoryMan.generated.h"

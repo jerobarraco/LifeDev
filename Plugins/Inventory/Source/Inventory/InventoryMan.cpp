@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "JUtils/Input/JUtilsInput.h"
 

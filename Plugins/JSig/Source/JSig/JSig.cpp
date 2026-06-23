@@ -3,6 +3,7 @@
 #include "JSig.h"
 
 #include "SignificanceManager.h"
+#include "GameFramework/PlayerController.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogJSigSub, Log, Log);
 
@@ -67,7 +68,7 @@ void UJSig::DoTick() {
 	UE_LOG(LogJSigSub, Verbose, TEXT("%hs: will update"), __func__);
 
 	TArray<FTransform> TransformArray;
-	for (APlayerController* const PC: PCs) {
+	for (const APlayerController* const PC: PCs) {
 		if (UNLIKELY(!IsValid(PC))) continue;
 
 		FVector ViewLocation;
