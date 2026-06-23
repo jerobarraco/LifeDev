@@ -3,6 +3,8 @@
 #include "Tv00.h"
 
 #include "Components/AudioComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "UObject/ConstructorHelpers.h"
 
 #include "JSig/CSignificance.h"
 #include "JUtils/Actors/CQuickMesh.h"

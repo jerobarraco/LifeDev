@@ -5,13 +5,14 @@
 
 #include <thread>
 
+#include "TimerManager.h"
 #include "Engine/GameInstance.h"
 #include "MoviePlayer.h"
 #include "Blueprint/UserWidget.h"
 
 // https://www.youtube.com/watch?app=desktop&v=ON1_dEHoNDg
 
-DEFINE_LOG_CATEGORY_STATIC(LogLoadScr, Log, Log)
+DEFINE_LOG_CATEGORY_STATIC(LogLoadScr, Log, All)
 
 ULoadScr* ULoadScr::Instance(const UObject* const O) {
 	if (UNLIKELY(!O)) return nullptr;

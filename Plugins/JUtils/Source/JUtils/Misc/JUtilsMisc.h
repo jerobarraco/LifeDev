@@ -145,7 +145,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
-	static FORCEINLINE bool IsInConstructor();
+	static bool IsInConstructor();
 
 	// Get the default object from the class. Optionally creating it if it's not there yet.
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)

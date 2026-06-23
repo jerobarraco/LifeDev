@@ -1,9 +1,12 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #include "Flashback.h"
 
+#include "Engine/Engine.h"
+#include "UObject/ConstructorHelpers.h"
+
 #include "Interact/Animator/CAnimator.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogFlashback, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogFlashback, Log, All);
 
 UFlashback::UFlashback():Super() {
 	Animator = CreateDefaultSubobject<UCAnimator>(TEXT("Animator"));

@@ -3,6 +3,8 @@
 
 #include "SetAntiAlias.h"
 
+#include "Misc/ConfigCacheIni.h"
+
 ENUM_RANGE_BY_COUNT(EAntiAliasingMethod, EAntiAliasingMethod::AAM_MAX); // benui told me to do it
 
 void USetAntiAlias::Load_Implementation() {

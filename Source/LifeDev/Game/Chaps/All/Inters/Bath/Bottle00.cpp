@@ -2,6 +2,8 @@
 
 #include "Bottle00.h"
 
+#include "UObject/ConstructorHelpers.h"
+
 #include "CQuickMesh.h"
 #include "Interact/CInteract.h"
 

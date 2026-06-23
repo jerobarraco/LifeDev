@@ -3,6 +3,8 @@
 
 #include "JUtilsMath.h"
 
+#include "Math/BasicMathExpressionEvaluator.h"
+
 float UJUtilsMath::MathEval(const FString& Expression) {
 	// TODO find better name.
 	const FBasicMathExpressionEvaluator Parser;

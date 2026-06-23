@@ -3,6 +3,8 @@
 
 #include "CAnimatorMix.h"
 
+#include "Materials/MaterialInstanceDynamic.h"
+
 void UCAnimatorMix::DeInit() {
 	Mat = nullptr;
 	Super::DeInit();
