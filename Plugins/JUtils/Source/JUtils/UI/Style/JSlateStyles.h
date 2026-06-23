@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Styling/SlateWidgetStyleContainerBase.h"
-#include "Styling/SlateStyle.h"
+#include "Styling/SlateTypes.h"
 
 #include "JSlateStyles.generated.h"
 

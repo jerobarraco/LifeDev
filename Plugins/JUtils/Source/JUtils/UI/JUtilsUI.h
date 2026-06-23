@@ -9,7 +9,9 @@
 
 #include "JUtilsUI.generated.h"
 
+class USlateWidgetStyleAsset;
 class UDelegateWrapper;
+
 // note, this is transitional until epic decides to allow creating a combo item style using a slate widget style asset
 UCLASS(BlueprintType)
 class UJTableRowStyle : public UDataAsset {
@@ -41,16 +43,8 @@ public:
 	static float GetUIScale();
 
 	UFUNCTION(BlueprintCallable)
-	static bool GetStyleText(USlateWidgetStyleAsset* const Asset, FTextBlockStyle& Ret) {
-		if (UNLIKELY(!Asset)) return false;
-		Ret = *Asset->GetStyle<FTextBlockStyle>(); // copy
-		return true;
-	}
-	
+	static bool GetStyleText(USlateWidgetStyleAsset* const Asset, FTextBlockStyle& Ret);
+
 	UFUNCTION(BlueprintCallable)
-	static bool GetStyleButton(USlateWidgetStyleAsset* const Asset, FButtonStyle& Ret) {
-		if (UNLIKELY(!Asset)) return false;
-		Ret = *Asset->GetStyle<FButtonStyle>(); // copy
-		return true;
-	}
+	static bool GetStyleButton(USlateWidgetStyleAsset* const Asset, FButtonStyle& Ret);
 };

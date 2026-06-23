@@ -4,7 +4,9 @@
 #include "JUtilsUI.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Engine/World.h"
 #include "Engine/UserInterfaceSettings.h"
+#include "GameFramework/PlayerController.h"
 
 void UJUtilsUI::ShowUI(const UObject* const O, const bool Show,  UWidget* const Focus) {
 	if (UNLIKELY(!IsValid(O))) return;
@@ -38,4 +40,16 @@ float UJUtilsUI::GetUIScale() {
 
 	if (UNLIKELY(!UISettings)) return 1;
 	return UISettings->ApplicationScale;
+}
+
+bool UJUtilsUI::GetStyleText(USlateWidgetStyleAsset* const Asset, FTextBlockStyle& Ret) {
+	if (UNLIKELY(!Asset)) return false;
+	Ret = *Asset->GetStyle<FTextBlockStyle>(); // copy
+	return true;
+}
+
+bool UJUtilsUI::GetStyleButton(USlateWidgetStyleAsset* const Asset, FButtonStyle& Ret) {
+	if (UNLIKELY(!Asset)) return false;
+	Ret = *Asset->GetStyle<FButtonStyle>(); // copy
+	return true;
 }
