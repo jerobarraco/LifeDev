@@ -2,6 +2,7 @@
 #include "LStep.h"
 
 #include "Engine/World.h"
+#include "Engine/StaticMesh.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/ForceFeedbackEffect.h"
@@ -51,6 +52,7 @@ ALStep::ALStep():Super() {
 	AnimCam->SetComponentTickEnabled(false);
 	AnimCam->SetVisibility(false);
 	AnimCam->SetHiddenInGame(true); // for preview only
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		CCam (TEXT("/Niagara/DefaultAssets/S_Gnomon"));
 	if (CCam.Succeeded()) AnimCam->SetCameraMesh(CCam.Object);

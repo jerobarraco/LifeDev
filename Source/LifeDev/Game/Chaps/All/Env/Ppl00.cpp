@@ -4,6 +4,8 @@
 
 #include "Components/CapsuleComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include "GameFramework/ForceFeedbackEffect.h"
+#include "Sound/SoundBase.h"
 
 #include "Eval.h"
 #include "Interact/CInteract.h"
@@ -25,6 +27,7 @@ APpl00::APpl00() {
 
 	// this sound is intentionally stereo since it plays with the panning
 	// and i think it's suitable
+
 	static ConstructorHelpers::FObjectFinder<USoundBase>
 		CSFX(TEXT("/Game/LifeDev/Game/Env/Ppl/UIGlitch_26"));
 	SFXLook = CSFX.Object;
