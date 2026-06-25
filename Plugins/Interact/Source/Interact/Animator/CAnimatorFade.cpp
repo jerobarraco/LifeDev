@@ -11,7 +11,7 @@
 #include "Materials/MaterialInterface.h"
 #include "UObject/ConstructorHelpers.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogAnimFade, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogAnimFade, Log, All);
 
 UCAnimatorFade::UCAnimatorFade():Super() {
 	MatFName = "Fade";
@@ -31,12 +31,12 @@ void UCAnimatorFade::CreateMaterial() {
 	if (UNLIKELY(Meshes.Num()<1)) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
-		UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
-		if (LIKELY(Lib))
-			CodeCurve.BindDynamic(Lib, &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
-		else
-			UE_LOG(LogAnimFade, Warning, TEXT("%hs Could not create the CodeCurve. Skip."),
-				__func__);
+		// UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
+		// if (LIKELY(Lib))
+			CodeCurve.BindDynamic(UCodeCurveLib::Instance(), &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
+		// else
+			// UE_LOG(LogAnimFade, Warning, TEXT("%hs Could not create the CodeCurve. Skip."),
+				// __func__);
 	}
 
 	if (!IsValid(MatBase)) {
