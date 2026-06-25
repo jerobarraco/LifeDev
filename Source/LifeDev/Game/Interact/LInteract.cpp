@@ -2,6 +2,8 @@
 
 #include "Components/AudioComponent.h"
 #include "Sound/SoundClass.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Engine/World.h"
 
 #include "Diags/Diags.h"
 #include "Interact/CInteract.h"
@@ -20,7 +22,7 @@
 #include "LifeDev/Core/Settings/LSettings.h"
 #include "LifeDev/Game/Flashback/Flashback.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogLInteract, Log, All);
 
 ALInteract::ALInteract():Super() {
 	// This attenuation has the occlusion disabled to avoid self-occlusion on play detached

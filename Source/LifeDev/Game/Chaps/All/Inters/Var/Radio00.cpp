@@ -2,7 +2,9 @@
 
 #include "Radio00.h"
 
+#include "UObject/ConstructorHelpers.h"
 #include "Components/AudioComponent.h"
+
 #include "Interact/CInteract.h"
 #include "Interact/Animator/CAnimatorFade.h"
 #include "Interact/Animator/CAnimatorMix.h"
