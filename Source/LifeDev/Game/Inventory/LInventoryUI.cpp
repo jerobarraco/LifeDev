@@ -2,13 +2,17 @@
 
 #include "LInventoryUI.h"
 
+#include "UObject/ConstructorHelpers.h"
+#include "TimerManager.h"
+
 #include "LInventoryItemUI.h"
 #include "Components/ScrollBox.h"
 #include "Components/ScrollBoxSlot.h"
 #include "Inventory/Inventory.h"
 #include "Inventory/InventoryItemUI.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogLInventoryUI, Log, Log)
+DEFINE_LOG_CATEGORY_STATIC(LogLInventoryUI, Log, All)
+
 ULInventoryUI::ULInventoryUI() {
 	static ConstructorHelpers::FClassFinder<ULInventoryItemUI>
 		CItem(TEXT("/Game/LifeDev/Game/Inventory/UI/W_InvItemUI.W_InvItemUI_C"));
@@ -58,7 +62,7 @@ void ULInventoryUI::SetItemMod_Implementation(const FName& Name, const int32 Dif
 					FItem NIt;
 					if (UNLIKELY(Inv->Get(Name, NIt) || NIt.Count >0)) { // notice shortcut ||
 						UE_LOG(LogLInventoryUI, Log,
-							TEXT("%hs Item re-added before the remove animation was done. Crisis averted."),
+							TEXT("%hs Item re-added before the remove animation was done. Crisis averted. Name=%s"),
 							__func__, *Name.ToString());
 						// In theory, the IT is shared since we get and store in the SItems.
 						// so we need to show it again.
