@@ -4,6 +4,8 @@
 // some of these curves are taken from here https://easings.net/en#
 #include "CodeCurve.h"
 
+#include "Animation/AnimCurveTypes.h"
+
 UCodeCurveLib* UCodeCurveLib::Instance() {
 	return GetMutableDefault<UCodeCurveLib>();
 }
