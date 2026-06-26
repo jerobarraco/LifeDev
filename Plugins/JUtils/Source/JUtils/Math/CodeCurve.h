@@ -20,7 +20,7 @@ class JUTILS_API UCodeCurveLib: public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
-	static UCodeCurveLib* Instance();
+	static UCodeCurveLib* Instance(); // TODO ! This ain't no working. fix.
 	
 	// cant bind a const not static : lame :(
 

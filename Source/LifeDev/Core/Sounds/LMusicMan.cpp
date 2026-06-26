@@ -69,8 +69,9 @@ ALMusicMan::ALMusicMan():Super() {
 	// SetTickableWhenPaused(true); // unneeded
 
 	// unnoticeable but....
-	AnimMusicFX->CodeCurve.BindDynamic(UCodeCurveLib::Instance(),
-		&UCodeCurveLib::UCodeCurveLib::UCodeCurveLib::InOutQuart);
+	// TODO fix this. it's not packaging
+	// AnimMusicFX->CodeCurve.BindDynamic(GetDefault<UCodeCurveLib>(),
+		// &UCodeCurveLib::UCodeCurveLib::UCodeCurveLib::InOutQuart);
 	AnimMusicFX->Curve = nullptr;
 
 	static ConstructorHelpers::FObjectFinder<USoundSubmix>
