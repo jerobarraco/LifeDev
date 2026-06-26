@@ -2,6 +2,7 @@
 #include "LStepC0S000.h"
 
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
+#include "Sound/SoundBase.h"
 
 #include "Inventory/Inventory.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,6 +30,7 @@ ALStepC0S000::ALStepC0S000():Super() {
 		// Inter.Trigger.SpotI02 // no need. it's linked to the card.
 	};
 	// this would fix the music not being packaged
+
 	if (UNLIKELY(IsRunningCookCommandlet())) Music.LoadSynchronous();
 
 	DL_Load.Add(TSoftObjectPtr<UDataLayerAsset>(

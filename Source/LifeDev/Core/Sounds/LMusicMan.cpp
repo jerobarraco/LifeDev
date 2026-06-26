@@ -68,9 +68,8 @@ ALMusicMan::ALMusicMan():Super() {
 	AnimMusicFX->Duration = .5;
 	// SetTickableWhenPaused(true); // unneeded
 
-	UCodeCurveLib* const Lib = NewObject<UCodeCurveLib>();
 	// unnoticeable but....
-	AnimMusicFX->CodeCurve.BindDynamic(Lib,
+	AnimMusicFX->CodeCurve.BindDynamic(UCodeCurveLib::Instance(),
 		&UCodeCurveLib::UCodeCurveLib::UCodeCurveLib::InOutQuart);
 	AnimMusicFX->Curve = nullptr;
 
