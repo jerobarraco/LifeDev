@@ -31,7 +31,7 @@ void UCAnimatorFade::CreateMaterial() {
 	if (UNLIKELY(Meshes.Num()<1)) return;
 	
 	if (!IsValid(Curve) && !CodeCurve.IsBound()) {
-		CodeCurve.Bind* Dynamic(UCodeCurveLib::Instance(), &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
+		CodeCurve.BindDynamic(UCodeCurveLib::Instance(), &UCodeCurveLib::UCodeCurveLib::BOutInQuad);
 	}
 
 	if (!IsValid(MatBase)) {
