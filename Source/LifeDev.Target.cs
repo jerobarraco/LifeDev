@@ -41,6 +41,7 @@ public class LifeDevTarget : TargetRules {
 		bUseSharedPCHs = true; // speed up compilation
 		bUseUnityBuild = true;
 		bUseAdaptiveUnityBuild = true;
+		
 		/*
 		bUseUnityBuild = false;  // with 32 cores this is faster to iterate changes. it might be slower when making a build though.
 		bUseAdaptiveUnityBuild = false;
