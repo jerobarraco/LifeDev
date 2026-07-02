@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
 
 #include "BaseUI.h"
 #include "JButton.h"

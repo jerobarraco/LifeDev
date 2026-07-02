@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
 
 #include "Curves/CurveEvaluation.h"
 #include "Kismet/BlueprintFunctionLibrary.h"

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "EnhancedPlayerInput.h"
 
 #include "JUtilsInput.h"

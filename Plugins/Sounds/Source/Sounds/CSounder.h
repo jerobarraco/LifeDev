@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/AudioComponent.h"
 
 #include "CSounder.generated.h"

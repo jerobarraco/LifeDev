@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
 #include "JUtils/UI/BaseUI.h"
 
 #include "GroupBox.generated.h"

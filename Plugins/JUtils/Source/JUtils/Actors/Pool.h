@@ -8,10 +8,10 @@
 
 // Note, i thought about the idea to make this into a object pool too. but there's some overhead.
 // a couple of extra castings and isValid checks. and possibly another cast on the client code's side.
-// at the moment i really don´t need a uobject pool. and can't really think of a case where that would be necessary.
+// at the moment i really don´t need an uobject pool. and can't really think of a case where that would be necessary.
 // I'm using an actor since that's more likely the type of objects to get pooled and i can use the basic functions
 // on them to set them up and disable. This is to avoid unnecessary interfaces and such. Whereas uobjects have none of that.
-// so, K.I.S.S..
+// so, K.I.S.S.
 
 // basic actor pooling.
 // you can use this directly if you want a local pool. but you would need to return the actors by a ref to your pool.

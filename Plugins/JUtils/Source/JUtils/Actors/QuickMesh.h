@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "GameFramework/Actor.h"
+
 #include "QuickMesh.generated.h"
 
 class UCQuickMesh;
