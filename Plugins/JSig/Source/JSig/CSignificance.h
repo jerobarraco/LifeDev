@@ -3,7 +3,6 @@
 // inspired by code from Tom Looman https://github.com/tomlooman/ActionRoguelike/blob/master/Source/ActionRoguelike/Public/Components/SSignificanceComponent.h
 
 #pragma once
-#include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 
 #include "SignificanceManager.h" // i wish i could avoid this but the function call seems to need this

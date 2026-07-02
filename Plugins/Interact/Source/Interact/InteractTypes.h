@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include "UObject/ObjectMacros.h"
+#include "Misc/EnumRange.h"
 
 // Results for using items
 UENUM(BlueprintType)

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+#include "Components/ActorComponent.h"
 #include "CAnimatorPID.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAPIDUpdate, const float, Output, const float, Value);

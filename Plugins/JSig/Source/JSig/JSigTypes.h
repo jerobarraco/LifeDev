@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
+
+#include "Misc/EnumRange.h"
+
 #include "JSigTypes.generated.h"
 
 // Defines the different levels of significance.
@@ -18,3 +20,4 @@ enum class ESigValue : uint8 {
 	High,
 	MAX UMETA(Hidden)
 };
+ENUM_RANGE_BY_COUNT(ESigValue, ESigValue::MAX);

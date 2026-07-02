@@ -1,6 +1,7 @@
 // Copyright (C) 2023 - Jeronimo Barraco-Marmol. All rights reserved.
 #pragma once
-#include "CoreMinimal.h"
+
+#include "GameFramework/Actor.h"
 
 #include "OutroMan.generated.h"
 

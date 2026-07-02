@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 
 #include "InventoryItemUI.generated.h"
