@@ -147,8 +147,8 @@ float UCodeCurveLib::OutBack(float p) {
 }
 
 float UCodeCurveLib::InOutBack(float p) {
-	constexpr float c1 = 1.70158;
-	constexpr float c2 = c1 * 1.525;
+	constexpr float c1 = 1.70158f;
+	constexpr float c2 = c1 * 1.525f;
 	constexpr float c21 = (c2 + 1);
 
 	const float p2 = 2 * p;
@@ -171,14 +171,14 @@ float UCodeCurveLib::OutExpo(float p) {
 float UCodeCurveLib::InOutExpo(float p) {
 	return FMath::IsNearlyZero(p) ? 0 :
 		( FMath::IsNearlyEqual(p, 1) ? 1 :
-		( p < 0.5 ?
+		( p < 0.5f ?
 			FMath::Pow(2, 20 * p - 10) / 2 :
 			(2 - FMath::Pow(2, -20 * p + 10)) / 2));
 }
 
 
 float UCodeCurveLib::BOutInQuad(float T) {
-	return UE::Curves::BezierInterp(0.0, .75, .25, 1.0, T);
+	return UE::Curves::BezierInterp(0.0f, .75f, .25f, 1.0f, T);
 }
 
 // TODO implement the rest

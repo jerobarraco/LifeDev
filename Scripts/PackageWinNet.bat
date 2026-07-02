@@ -1,7 +1,7 @@
 :: @echo off
 :: warning pushd HATES "/" we MUST use "\"
 set UNREAL_ENGINE_ROOT=E:\ue\UE_5.8
-set WORKSPACE=Z:/ld
+set WORKSPACE=F:\ld
 set PROJECT_NAME=LifeDev
 set INSTALLED=-installed
 :: set INSTALLED=
@@ -20,7 +20,7 @@ xcopy /y "%WORKSPACE%\Content\Omake\Application.ico" "%WORKSPACE%\Build\Windows\
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
-call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%/%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%/Build/" %DDC%
+call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%\%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%\Build\" %DDC%
 :: -AdditionalCookerOptions="-cookprocesscount=4"
 popd
 

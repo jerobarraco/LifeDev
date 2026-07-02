@@ -7,7 +7,7 @@ public class LifeDevTarget : TargetRules {
 		Type = TargetType.Game;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
 		DefaultBuildSettings = BuildSettingsVersion.V7;
-		CppStandardEngine = CppStandardVersion.Cpp23;
+		// CppStandardEngine = CppStandardVersion.Cpp23;
 		CppStandard = CppStandardVersion.Cpp23;
 		// OptimizationLevel = OptimizationMode.SizeAndSpeed;
 		// ExtraModuleNames.Add("LifeDev");

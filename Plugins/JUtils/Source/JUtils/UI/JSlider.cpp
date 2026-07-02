@@ -3,6 +3,8 @@
 
 #include "JSlider.h"
 
+#include "Styling/SlateWidgetStyleAsset.h"
+
 void UJSlider::Apply_Implementation() {}
 
 void UJSlider::Load_Implementation() {}

@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 void UJButton::DoClick_Implementation() {
 	OnClick.Broadcast(Id);
